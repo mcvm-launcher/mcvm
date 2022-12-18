@@ -1,4 +1,5 @@
 #include "commands/command.hh"
+#include "io/paths.hh"
 
 #include <assert.h>
 #include <iostream>
@@ -21,7 +22,7 @@ int main(int argc, char** argv) {
 
 		try {
 			mcvm::command_map.at(subcommand)(argc_slice, argv_slice);
-		} catch(std::out_of_range& e) {
+		} catch(const std::out_of_range& e) {
 			std::cerr << "Unknown subcommand " << subcommand << "\n";
 			std::cout << mcvm::help_message() << "\n";
 		}

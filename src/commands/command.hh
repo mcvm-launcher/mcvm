@@ -7,7 +7,7 @@
 #include <iostream>
 
 namespace mcvm {
-	typedef const std::vector<std::string>& CommandArgs;
+	typedef std::vector<std::string>& CommandArgs;
 
 	// Command function definitions
 	extern void user_command(const unsigned int argc, CommandArgs argv);
