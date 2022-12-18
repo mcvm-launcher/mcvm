@@ -30,6 +30,6 @@ namespace mcvm {
 			Keep in mind that even though 3-character long usernames are no longer possible,
 			they are still considered valid as usernames that long used to be possible and still exist 
 		*/
-		static const bool is_valid_username(const std::string username);
+		static bool is_valid_username(const std::string username);
 	};
 };
