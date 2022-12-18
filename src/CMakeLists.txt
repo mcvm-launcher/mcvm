@@ -1,3 +1,6 @@
-target_include_directories(mcvm PUBLIC .)
+target_include_directories(mcvm PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+
+add_subdirectory(data)
+add_subdirectory(user)
 
 target_sources(mcvm PUBLIC main.cc)

@@ -1,0 +1,1 @@
+target_sources(mcvm PUBLIC user.cc)
