@@ -6,6 +6,10 @@
 #include <iostream>
 
 int main(int argc, char** argv) {
+	// Make sure directories are set up
+	// mcvm::cache_paths();
+	mcvm::get_mcvm_dir();
+	std::cout << mcvm::get_mcvm_dir().c_str() << "\n";
 	mcvm::net_start();
 
 	mcvm::update_assets();

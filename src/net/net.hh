@@ -1,10 +1,11 @@
 #pragma once
-#include "io/paths.hh"
+#include "io/files.hh"
 
 #include <curl/curl.h>
 
 #include <iostream>
 #include <fstream>
+#include <assert.h>
 
 namespace mcvm {
 	// Start / initialize networking stuff

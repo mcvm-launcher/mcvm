@@ -14,4 +14,6 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_executable(mcvm "")
 target_link_libraries(mcvm curl)
+# Required otherwise stuff segfaults
+target_link_libraries(mcvm stdc++fs)
 add_subdirectory(src)

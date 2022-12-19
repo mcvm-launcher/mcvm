@@ -1,8 +1,12 @@
 #pragma once
 #include <sys/stat.h>
 #include <cstdlib>
+#include <filesystem>
 #include <string>
 #include <cstring>
+#include <iostream>
+
+namespace fs = std::filesystem;
 
 // Path creation utilities
 #define PATH_SEP "/"
@@ -13,7 +17,6 @@
 #define PATH_CONCAT_6(path1, path2, path3, path4, path5, path6) PATH_CONCAT_2(PATH_CONCAT_5(path1, path2, path3, path4, path5), path6)
 
 // Base path definitions
-#define MCVM_DIR path_concat(HOME_DIR, PATH_CONCAT_3(".local", "share", "mcvm"))
 #ifdef WIN32
 	// TODO: Actual path with user detection, in appdata or something
 	#define MCVM_DIR PATH_CONCAT_2("C:", "mcvm")
@@ -23,20 +26,43 @@
 #define ASSETS_DIR "assets"
 
 namespace mcvm {
-	static const std::string path_concat(const std::string& str1, const std::string& str2) {
+	static std::string path_concat(const std::string& str1, const std::string& str2) {
 		return str1 + PATH_SEP + str2;
 	}
 
-	static std::string get_home_dir() {
-		return std::getenv("HOME");
+	
+
+	// Paths relying on home dir that are checked and computed once
+	static fs::path home_dir;
+	static fs::path mcvm_dir;
+
+	static fs::path get_home_dir() {
+		#ifdef LINUX
+			return fs::path(std::getenv("HOME"));
+		#else
+			#ifdef WIN32
+				return fs::path("C:")
+			#endif
+		#endif
 	}
 
-	static std::string get_mcvm_dir() {
-		return path_concat(get_home_dir(), std::string(".local" PATH_SEP "share" PATH_SEP "mcvm"));
+	static fs::path get_mcvm_dir() {
+		#ifdef LINUX
+			return get_home_dir() / fs::path(".local" PATH_SEP "share" PATH_SEP "mcvm");
+		#else
+			#ifdef WIN32
+				return get_home_dir() / fs::path("mcvm");
+			#endif
+		#endif
 	}
 
-	static const bool file_exists(const std::string& path) {
-		struct stat buffer;
-		return (stat (path.c_str(), &buffer) == 0); 
-	}
+	// static void cache_paths() {
+	// 	#if defined(LINUX)
+	// 		home_dir = fs::path(std::getenv("HOME"));
+	// 		mcvm_dir = home_dir / fs::path(".local" PATH_SEP "share" PATH_SEP "mcvm");
+	// 	#elif defined(WIN32)
+	// 		home_dir = fs::path("C:")
+	// 		mcvm_dir = home_dir / fs::path("mcvm");
+	// 	#endif
+	// }
 };
