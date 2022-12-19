@@ -13,4 +13,5 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 20)
 
 add_executable(mcvm "")
+target_link_libraries(mcvm curl)
 add_subdirectory(src)

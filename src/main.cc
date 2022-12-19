@@ -1,10 +1,15 @@
 #include "commands/command.hh"
 #include "io/paths.hh"
+#include "net/net.hh"
 
 #include <assert.h>
 #include <iostream>
 
 int main(int argc, char** argv) {
+	mcvm::net_start();
+
+	mcvm::update_assets();
+
 	assert(argc > 0);
 	// If we have 1 arg (just the executable), send the help message
 	if (argc == 1) {
@@ -27,6 +32,8 @@ int main(int argc, char** argv) {
 			std::cout << mcvm::help_message() << "\n";
 		}
 	}
+
+	mcvm::net_stop();
 
 	return 0;
 }
