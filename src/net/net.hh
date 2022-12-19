@@ -2,20 +2,39 @@
 #include "io/files.hh"
 
 #include <curl/curl.h>
-#include <rapidjson/rapidjson.h>
+#include <rapidjson/document.h>
 
 #include <iostream>
 #include <fstream>
 #include <assert.h>
+#include <memory>
+
+// URLs
+#define VERSION_MANIFEST_URL "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json"
+#define MOJANG_LIBRARIES_URL "https://libraries.minecraft.net/"
 
 namespace mcvm {
+	// A struct passed in file writing from curl that holds both a file ptr and a char buffer to write into
+	struct CurlResult {
+		FILE* file;
+		char* str;
+
+		~CurlResult();
+	};
+
 	// Start / initialize networking stuff
 	extern void net_start();
 	// Stop networking stuff
 	extern void net_stop();
 
 	// Updates asset and library indexes with Mojang servers
-	extern void update_assets();
+	// Returns the manifest json file
+	extern CurlResult* update_assets();
+
+	// Obtain libraries for a version
+	extern void obtain_libraries(const std::string& version);
 
 	extern std::size_t write_data_to_file(void* buffer, size_t size, size_t nmemb, void* file);
+
+	extern std::size_t write_data_to_file_and_str(void* buffer, size_t size, size_t nmemb, void* curl_result);
 };
