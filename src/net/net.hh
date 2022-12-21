@@ -2,6 +2,7 @@
 #include "io/files.hh"
 
 #include <curl/curl.h>
+#include <rapidjson/rapidjson.h>
 
 #include <iostream>
 #include <fstream>

@@ -12,6 +12,8 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O2")
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 20)
 
+find_package(RapidJSON)
+
 add_executable(mcvm "")
 target_link_libraries(mcvm curl)
 # Required otherwise stuff segfaults
