@@ -8,7 +8,7 @@
 int main(int argc, char** argv) {
 	mcvm::net_start();
 
-	mcvm::obtain_libraries("poop");
+	// mcvm::obtain_libraries("poop");
 
 	assert(argc > 0);
 	// If we have 1 arg (just the executable), send the help message
