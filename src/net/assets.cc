@@ -17,6 +17,8 @@ namespace mcvm {
 		create_leading_directories(manifest_file_path);
 		manifest_file = fopen(manifest_file_path.c_str(), "wb");
 		if (manifest_file) {
+			// We gotta update this again since it changed from fopen
+			res->file = manifest_file;
 			curl_easy_setopt(handle, CURLOPT_WRITEDATA, res);
 			curl_easy_perform(handle);
 		} else {

@@ -8,6 +8,8 @@
 int main(int argc, char** argv) {
 	mcvm::net_start();
 
+	mcvm::obtain_libraries("1.19.3");
+
 	// argc = 3;
 	// argv[0] = "mcvm";
 	// argv[1] = "profile";
