@@ -1,5 +1,6 @@
 target_include_directories(mcvm PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
+add_subdirectory(lib)
 add_subdirectory(data)
 add_subdirectory(user)
 add_subdirectory(io)

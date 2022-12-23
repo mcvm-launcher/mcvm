@@ -2,8 +2,12 @@
 
 namespace mcvm {
 	const std::string help_message() {
-		// TODO: Add help message
-		return "Help message";
+		return
+			"Usage: mcvm [subcommand] [...]" "\n"
+			"Commands:" "\n"
+			"\t" "help: show this message" "\n"
+			"\t" "user: modify users and accounts" "\n"
+			"\t" "profile: modify, add, and launch profiles";
 	}
 
 	void help_command(const unsigned int argc, CommandArgs argv) {

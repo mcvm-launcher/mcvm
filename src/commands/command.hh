@@ -1,10 +1,14 @@
 #pragma once
 #include "data/profile.hh"
 #include "user/user.hh"
+#include "io/files.hh"
+#include "lib/util.hh"
 
 #include <map>
 #include <vector>
-#include <iostream>
+
+// Check if argc is a certain value. If not, then show the help message for the command
+#define ARGC_CHECK(len, subcommand) if (argc == len) { show ## subcommand ## _help_message(); return; }
 
 namespace mcvm {
 	typedef std::vector<std::string>& CommandArgs;

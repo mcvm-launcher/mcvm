@@ -53,7 +53,7 @@ namespace mcvm {
 	class ResourceRef {};
 
 	template <typename T>
-	class StaticResourceRef : public ResourceRef {
+	class StaticResourceRef : public ResourceRef<T> {
 		Resource* res;
 	};
 
@@ -61,9 +61,9 @@ namespace mcvm {
 	
 	// Global shared resources
 	struct GlobalResources {
-		std::vector<ResourceRef<WorldResource>&> worlds;
-		std::vector<ResourceRef<ResourcePackResource>&> resource_packs;
-		std::vector<ResourceRef<DatapackResource>&> datapacks;
-		std::vector<ResourceRef<PluginResource>&> plugins;
+		std::vector<ResourceRef<WorldResource>*> worlds;
+		std::vector<ResourceRef<ResourcePackResource>*> resource_packs;
+		std::vector<ResourceRef<DatapackResource>*> datapacks;
+		std::vector<ResourceRef<PluginResource>*> plugins;
 	};
 };
