@@ -5,6 +5,7 @@
 #include <string>
 #include <cstring>
 #include <iostream>
+#include <exception>
 
 namespace fs = std::filesystem;
 
@@ -40,4 +41,10 @@ namespace mcvm {
 			#endif
 		#endif
 	}
+
+	struct FileOpenError : public std::exception {
+		char* what() {
+			return "File was not opened";
+		}
+	};
 };

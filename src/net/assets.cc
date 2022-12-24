@@ -3,32 +3,19 @@
 namespace json = rapidjson;
 
 namespace mcvm {
-	CurlResult* update_assets() {
+	std::string update_assets() {
 		std::cout << "Updating assets index..." << "\n";
-		CURL* handle = curl_easy_init();
 
 		// Download version manifest
-		CurlResult* res = new CurlResult{};
-
 		const std::filesystem::path manifest_file_path = get_mcvm_dir() / std::filesystem::path(ASSETS_DIR) / std::filesystem::path("version_manifest.json");
-		curl_easy_setopt(handle, CURLOPT_URL, VERSION_MANIFEST_URL);
-		curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, &write_data_to_file_and_str);
-
 		create_leading_directories(manifest_file_path);
-		res->file = fopen(manifest_file_path.c_str(), "wb");
-		if (res->file) {
-			curl_easy_setopt(handle, CURLOPT_WRITEDATA, res);
-			curl_easy_perform(handle);
-		} else {
-			return nullptr;
-		}
-		curl_easy_cleanup(handle);
-
-		return res;
+		DownloadHelper helper(DownloadHelper::FILE_AND_STR, VERSION_MANIFEST_URL, manifest_file_path);
+		bool success = helper.perform();
+		return helper.get_str();
 	}
 
 	void obtain_libraries(const std::string& version) {
-		CurlResult* manifest_file = update_assets();
+		const std::string manifest_file = update_assets();
 
 		const std::string test_json =
 			"{"
@@ -45,34 +32,36 @@ namespace mcvm {
 				"]"
 			"}";
 
-		if (manifest_file != nullptr) {
-			json::Document doc;
-			doc.Parse(manifest_file->str.c_str());
+		json::Document doc;
+		doc.Parse(manifest_file.c_str());
 
-			std::string ver_url;
-			std::string ver_hash;
-			// We have to search them as they aren't indexed
-			assert(doc.HasMember("versions"));
-			for (auto&ver : doc["versions"].GetArray()) {
-				json::GenericObject ver_obj = ver.GetObject();
-				assert(ver_obj.HasMember("id"));
-				if (ver_obj["id"].GetString() == version) {
-					assert(ver_obj.HasMember("url"));
-					assert(ver_obj.HasMember("sha1"));
+		std::string ver_url;
+		std::string ver_hash;
+		// We have to search them as they aren't indexed
+		assert(doc.HasMember("versions"));
+		for (auto&ver : doc["versions"].GetArray()) {
+			json::GenericObject ver_obj = ver.GetObject();
+			assert(ver_obj.HasMember("id"));
+			if (ver_obj["id"].GetString() == version) {
+				assert(ver_obj.HasMember("url"));
+				assert(ver_obj.HasMember("sha1"));
 
-					ver_url = ver_obj["url"].GetString();
-					ver_hash = ver_obj["sha1"].GetString();
-					assert(ver_hash.size() == 40);
+				ver_url = ver_obj["url"].GetString();
+				ver_hash = ver_obj["sha1"].GetString();
+				assert(ver_hash.size() == 40);
 
-					break;
-				}
-			}
-			if (ver_url.empty()) {
-				delete manifest_file;
-				throw VersionNotFoundException();
+				break;
 			}
 		}
-		
-		delete manifest_file;
+		if (ver_url.empty()) {
+			throw VersionNotFoundException();
+		}
+		// We now have to download the libraries manifest
+		// TODO: Checksum
+
+		const std::string index_file_name = version + ".json";
+		const std::filesystem::path index_file_path = get_mcvm_dir() / std::filesystem::path(ASSETS_DIR) / std::filesystem::path(index_file_name);
+		DownloadHelper helper(DownloadHelper::FILE_AND_STR, ver_url, index_file_path);
+		bool success = helper.perform();
 	}
 };

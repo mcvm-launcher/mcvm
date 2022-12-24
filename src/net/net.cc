@@ -20,9 +20,7 @@ namespace mcvm {
 		CurlResult* result = static_cast<CurlResult*>(curl_result);
 		size_t written = write_data_to_file(buffer, size, nmemb, result->file);
 
-		// Append to the str
-		char* strbuf = static_cast<char*>(calloc(nmemb + 1, size));
-		strcpy(strbuf, static_cast<const char*>(buffer));
+		// Append to the string
 		result->str.append(static_cast<const char*>(buffer), size * nmemb);
 
 		return written;
@@ -30,5 +28,47 @@ namespace mcvm {
 	
 	CurlResult::~CurlResult() {
 		fclose(file);
+	}
+
+	DownloadHelper::DownloadHelper(DownloadMode _mode, const std::string& url, const fs::path path)
+	: mode(_mode) {
+		handle = curl_easy_init();
+
+		curl_easy_setopt(handle, CURLOPT_URL, url.c_str());
+
+		curl_easy_setopt(handle, CURLOPT_ERRORBUFFER, errbuf);
+		errbuf[0] = 0;
+
+		curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, &write_data_to_file_and_str);
+		curl_easy_setopt(handle, CURLOPT_WRITEDATA, &res);
+
+		// TODO: Actually change function based on mode
+		if (mode == DownloadMode::FILE || mode == DownloadMode::FILE_AND_STR) {
+			res.file = fopen(path.c_str(), "wb");
+			if (!res.file) {
+				throw FileOpenError{};
+			}
+		}
+	}
+
+	bool DownloadHelper::perform() {
+		CURLcode success = curl_easy_perform(handle);
+
+		// We don't need to fclose since thats in the destructor for CurlResult, but we should put one here when switch based on mode
+		curl_easy_cleanup(handle);
+
+		if (success != CURLcode::CURLE_OK) {
+			ERR(errbuf);
+			return false;
+		}
+		return true;
+	}
+
+	std::string DownloadHelper::get_str() {
+		return res.str;
+	}
+
+	std::string DownloadHelper::get_err() {
+		return std::string(errbuf);
 	}
 };

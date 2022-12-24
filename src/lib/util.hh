@@ -11,7 +11,7 @@
 	#define LOG(val) std::cout << val << std::endl
 #endif
 // Return if a condition is false
-#define ENSURE(condition) if (condition) return;
+#define ENSURE(condition) if (!(condition)) return;
 
 namespace mcvm {
 

@@ -31,7 +31,7 @@ namespace mcvm {
 
 	// Updates asset and library indexes with Mojang servers
 	// Returns the manifest json file
-	extern CurlResult* update_assets();
+	extern std::string update_assets();
 
 	// Obtain libraries for a version
 	extern void obtain_libraries(const std::string& version);
@@ -39,4 +39,28 @@ namespace mcvm {
 	extern std::size_t write_data_to_file(void* buffer, size_t size, size_t nmemb, void* file);
 
 	extern std::size_t write_data_to_file_and_str(void* buffer, size_t size, size_t nmemb, void* curl_result);
+
+	// Wrapper around a libcurl handle
+	class DownloadHelper {
+		public:
+		// Option for what data should be obtained when downloading
+		enum DownloadMode {
+			FILE,
+			STR,
+			FILE_AND_STR
+		};
+
+		DownloadHelper(DownloadMode _mode, const std::string& url, const fs::path path);
+
+		bool perform();
+
+		std::string get_str();
+		std::string get_err();
+
+		private:
+		CURL* handle;
+		char errbuf[CURL_ERROR_SIZE];
+		CurlResult res;
+		DownloadMode mode;
+	};
 };
