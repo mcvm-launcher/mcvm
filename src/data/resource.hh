@@ -48,23 +48,23 @@ namespace mcvm {
 		using Resource::Resource;
 	};
 
-	// An abstraction of a resource that allows for packages and the such
-	// The template is only for type checking reasons
-	template <typename T>
-	class ResourceRef {};
+	// An managed pointer to a resource that allows for packages and the such
+	// Not used now, maybe not ever
+	template <typename Resource_T>
+	class ResourceRef {
+		public:
+		enum ResourceRefType {
 
-	template <typename T>
-	class StaticResourceRef : public ResourceRef<T> {
-		Resource* res;
+		};
 	};
 
 	// typedef std::vector<ResourceRef<T>&> ResourceList
 	
 	// Global shared resources
 	struct GlobalResources {
-		std::vector<ResourceRef<WorldResource>*> worlds;
-		std::vector<ResourceRef<ResourcePackResource>*> resource_packs;
-		std::vector<ResourceRef<DatapackResource>*> datapacks;
-		std::vector<ResourceRef<PluginResource>*> plugins;
+		std::vector<WorldResource*> worlds;
+		std::vector<ResourcePackResource*> resource_packs;
+		std::vector<DatapackResource*> datapacks;
+		std::vector<PluginResource*> plugins;
 	};
 };

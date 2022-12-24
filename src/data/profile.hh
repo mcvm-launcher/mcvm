@@ -2,11 +2,18 @@
 #include "resource.hh"
 
 namespace mcvm {
+	// A profile, which holds game settings and can be depended on by runnable instances 
+	class Profile {
+		Profile() = default;
+	};
+
 	// Base for profile
-	class ProfileBase {
-		ProfileBase* parent = nullptr;
+	class Instance {
+		// The profile that this instance is created from
+		Profile* parent = nullptr;
 
 		public:
+		Instance(Profile* _parent, MCVersion& _version);
 		MCVersion version;
 
 		// Make sure that the profile has a cached rendered config
@@ -14,17 +21,24 @@ namespace mcvm {
 	};
 
 	// A profile that also holds client-specific resources
-	class Profile : public ProfileBase {
+	class ClientInstance : public Instance {
 		// Resources
-		std::vector<ResourceRef<WorldResource>*> worlds;
+		// Important to remember that this is only a list of worlds installed by packages and managed by mcvm
+		std::vector<WorldResource*> worlds;
+
+		public:
+		using Instance::Instance;
 	};
 
-	class ServerProfile : public ProfileBase {
+	class ServerInstance : public Instance {
 		// Resources
-		std::vector<ResourceRef<PluginResource>*> plugins;
+		std::vector<PluginResource*> plugins;
 		// A server can only have one world but we store multiple as well for
 		// easy switching and bungeecord/multiverse and stuff
-		std::vector<ResourceRef<WorldResource>*> worlds;
-		ResourceRef<WorldResource>* current_world;
+		std::vector<WorldResource*> worlds;
+		WorldResource* current_world;
+
+		public:
+		using Instance::Instance;
 	};
 };
