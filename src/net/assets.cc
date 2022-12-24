@@ -48,14 +48,12 @@ namespace mcvm {
 		if (manifest_file != nullptr) {
 			json::Document doc;
 			doc.Parse(manifest_file->str.c_str());
-			// doc.Parse(test_json.c_str());
 
 			std::string ver_url;
 			std::string ver_hash;
 			// We have to search them as they aren't indexed
 			assert(doc.HasMember("versions"));
-			LOG(doc["latest"]["snapshot"].GetString());
-			for (auto& ver : doc["versions"].GetArray()) {
+			for (auto&ver : doc["versions"].GetArray()) {
 				json::GenericObject ver_obj = ver.GetObject();
 				assert(ver_obj.HasMember("id"));
 				if (ver_obj["id"].GetString() == version) {

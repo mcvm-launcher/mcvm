@@ -23,7 +23,7 @@ namespace mcvm {
 		// Append to the str
 		char* strbuf = static_cast<char*>(calloc(nmemb + 1, size));
 		strcpy(strbuf, static_cast<const char*>(buffer));
-		result->str += strbuf;
+		result->str.append(static_cast<const char*>(buffer), size * nmemb);
 
 		return written;
 	}
