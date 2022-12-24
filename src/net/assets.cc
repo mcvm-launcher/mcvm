@@ -4,7 +4,7 @@ namespace json = rapidjson;
 
 namespace mcvm {
 	std::string update_assets() {
-		std::cout << "Updating assets index..." << "\n";
+		OUT("Updating assets index...");
 
 		// Download version manifest
 		const std::filesystem::path manifest_file_path = get_mcvm_dir() / std::filesystem::path(ASSETS_DIR) / std::filesystem::path("version_manifest.json");

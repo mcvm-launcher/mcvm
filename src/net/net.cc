@@ -15,13 +15,19 @@ namespace mcvm {
 		FILE* file_cast = static_cast<FILE*>(file);
 		return fwrite(buffer, size, nmemb, file_cast);
 	}
+
+	std::size_t write_data_to_str(void* buffer, size_t size, size_t nmemb, void* str) {
+		std::string* str_cast = static_cast<std::string*>(str);
+		std::size_t write_size = size * nmemb;
+		str_cast->append(static_cast<const char*>(buffer), write_size);
+		return write_size;
+	}
 	
 	std::size_t write_data_to_file_and_str(void* buffer, size_t size, size_t nmemb, void* curl_result) {
 		CurlResult* result = static_cast<CurlResult*>(curl_result);
 		size_t written = write_data_to_file(buffer, size, nmemb, result->file);
-
 		// Append to the string
-		result->str.append(static_cast<const char*>(buffer), size * nmemb);
+		write_data_to_str(buffer, size, nmemb, &result->str);
 
 		return written;
 	}

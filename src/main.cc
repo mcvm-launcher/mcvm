@@ -17,7 +17,7 @@ int main(int argc, char** argv) {
 	assert(argc > 0);
 	// If we have 1 arg (just the executable), send the help message
 	if (argc == 1) {
-		std::cout << mcvm::help_message() << "\n";
+		OUT(mcvm::help_message());
 	}
 	// If we have 2+ args (executable and a subcommand, plus any number of args), run the command
 	if (argc > 1) {
@@ -32,8 +32,8 @@ int main(int argc, char** argv) {
 		try {
 			mcvm::command_map.at(subcommand)(argc_slice, argv_slice);
 		} catch(const std::out_of_range& e) {
-			std::cerr << "Unknown subcommand " << subcommand << "\n";
-			std::cout << mcvm::help_message() << "\n";
+			ERR("Unknown subcommand " << subcommand);
+			OUT(mcvm::help_message());
 		}
 	}
 

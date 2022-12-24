@@ -16,7 +16,7 @@
 #define MOJANG_LIBRARIES_URL "https://libraries.minecraft.net/"
 
 namespace mcvm {
-	// A struct passed in file writing from curl that holds both a file ptr and a char buffer to write into
+	// A struct passed in file writing from curl that holds both a file ptr and a string buffer to write into
 	struct CurlResult {
 		FILE* file = nullptr;
 		std::string str = "";
@@ -30,14 +30,19 @@ namespace mcvm {
 	extern void net_stop();
 
 	// Updates asset and library indexes with Mojang servers
-	// Returns the manifest json file
+	// Returns the manifest json file contents
 	extern std::string update_assets();
 
 	// Obtain libraries for a version
 	extern void obtain_libraries(const std::string& version);
 
+	// Callback response for curl perform that writes the data to a file
 	extern std::size_t write_data_to_file(void* buffer, size_t size, size_t nmemb, void* file);
 
+	// Callback response for curl perform that writes the data to a string
+	extern std::size_t write_data_to_str(void* buffer, size_t size, size_t nmemb, void* str);
+
+	// Callback response for curl perform that writes the data to a file and a string
 	extern std::size_t write_data_to_file_and_str(void* buffer, size_t size, size_t nmemb, void* curl_result);
 
 	// Wrapper around a libcurl handle

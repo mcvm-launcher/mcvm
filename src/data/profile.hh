@@ -2,17 +2,11 @@
 #include "resource.hh"
 
 namespace mcvm {
-	// Represents the settings for a profile
-	struct ProfileSettings {
-		
-	};
-
 	// Base for profile
 	class ProfileBase {
 		ProfileBase* parent = nullptr;
 
 		public:
-		ProfileSettings settings;
 		MCVersion version;
 
 		// Make sure that the profile has a cached rendered config

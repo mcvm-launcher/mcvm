@@ -6,14 +6,14 @@ namespace mcvm {
 	typedef std::string MCVersion;
 	typedef std::string ResourceVersion;
 
-	// Type of modloader
+	// Enum of different types of modloaders
 	enum ModType {
 		FABRIC,
 		FORGE,
 		QUILT
 	};
 
-	// Type for a version
+	// Enums for different types / subdivisions of Minecraft versions
 	enum VersionType {
 		RELEASE,
 		SNAPSHOT,

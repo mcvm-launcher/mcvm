@@ -2,7 +2,5 @@
 
 namespace mcvm {
 	// A skin for the player character
-	class Skin {
-		
-	};
+	class Skin {};
 };

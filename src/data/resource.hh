@@ -4,6 +4,7 @@
 #include <vector>
 
 namespace mcvm {
+		// Object for a file installed in your Minecraft directory
 		class Resource {
 		public:
 		Resource(const MCVersion _mc_vers, const ResourceVersion _vers)

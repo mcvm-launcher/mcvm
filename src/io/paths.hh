@@ -43,7 +43,7 @@ namespace mcvm {
 	}
 
 	struct FileOpenError : public std::exception {
-		char* what() {
+		const char* what() {
 			return "File was not opened";
 		}
 	};

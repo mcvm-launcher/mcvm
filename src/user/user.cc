@@ -13,10 +13,6 @@ namespace mcvm {
 			return false;
 		}
 
-		if (isdigit(username[0])) {
-			return false;
-		}
-
 		for (unsigned int i = 0; i < len; i++) {
 			if (
 				!isalnum(username[i]) &&
