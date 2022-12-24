@@ -3,6 +3,8 @@
 
 #define OUT(val) std::cout << val << "\n"
 #define OUT_LIT(val) std::cout << (val "\n")
+#define ERR(val) std::cerr << val << "\n"
+#define ERR_LIT(val) std::cerr << (val "\n")
 
 #define LOG(val)
 #ifndef NDEBUG

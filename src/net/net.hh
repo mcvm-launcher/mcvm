@@ -1,5 +1,7 @@
 #pragma once
 #include "io/files.hh"
+#include "data/info.hh"
+#include "lib/util.hh"
 
 #include <curl/curl.h>
 #include <rapidjson/document.h>
@@ -16,8 +18,8 @@
 namespace mcvm {
 	// A struct passed in file writing from curl that holds both a file ptr and a char buffer to write into
 	struct CurlResult {
-		FILE* file;
-		char* str;
+		FILE* file = nullptr;
+		std::string str = "";
 
 		~CurlResult();
 	};

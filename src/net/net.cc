@@ -20,16 +20,15 @@ namespace mcvm {
 		CurlResult* result = static_cast<CurlResult*>(curl_result);
 		size_t written = write_data_to_file(buffer, size, nmemb, result->file);
 
-		// Write to the str
-		result->str = static_cast<char*>(calloc(nmemb, size));
-		strcpy(result->str, static_cast<const char*>(buffer));
+		// Append to the str
+		char* strbuf = static_cast<char*>(calloc(nmemb + 1, size));
+		strcpy(strbuf, static_cast<const char*>(buffer));
+		result->str += strbuf;
 
 		return written;
 	}
-
 	
 	CurlResult::~CurlResult() {
-		free(str);
 		fclose(file);
 	}
 };
