@@ -8,12 +8,6 @@
 int main(int argc, char** argv) {
 	mcvm::net_start();
 
-	try {
-		mcvm::obtain_libraries("1.19.3");
-	} catch (mcvm::VersionNotFoundException& e) {
-		ERR(e.what());
-	}
-
 	assert(argc > 0);
 	// If we have 1 arg (just the executable), send the help message
 	if (argc == 1) {
