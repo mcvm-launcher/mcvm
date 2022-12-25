@@ -1,7 +1,5 @@
 #include "net.hh"
 
-namespace json = rapidjson;
-
 namespace mcvm {
 	std::string update_assets() {
 		// Ensure assets dir
@@ -17,23 +15,9 @@ namespace mcvm {
 		return helper.get_str();
 	}
 
-	void obtain_libraries(const std::string& version) {
+	void obtain_version_json(const std::string& version, json::Document* ret) {
+		OUT_LIT("Downloading version json...");
 		const std::string manifest_file = update_assets();
-
-		const std::string test_json =
-			"{"
-				"\"versions\": ["
-					"{"
-						"\"id\": \"1.19.3\""
-						"\"type\": \"release\""
-						"\"url\": \"https://launchermeta.mojang.com/v1/packages/598eedd6f67db4aefbae6ed119029e3d7373ecf5/1.3.2.json\""
-						"\"time\": \"2022-03-10T09:51:38+00:00\""
-						"\"releaseTime\": \"2012-08-15T22:00:00+00:00\""
-						"\"sha1\": \"598eedd6f67db4aefbae6ed119029e3d7373ecf5\""
-						"\"complianceLevel\": 0"
-					"}"
-				"]"
-			"}";
 
 		json::Document doc;
 		doc.Parse(manifest_file.c_str());
@@ -59,12 +43,20 @@ namespace mcvm {
 		if (ver_url.empty()) {
 			throw VersionNotFoundException();
 		}
-		// We now have to download the libraries manifest
+		// We now have to download the manifest for the specific version
 		// TODO: Checksum
 
 		const std::string index_file_name = version + ".json";
 		const fs::path index_file_path = get_mcvm_dir() / fs::path(ASSETS_DIR) / fs::path(index_file_name);
 		DownloadHelper helper(DownloadHelper::FILE_AND_STR, ver_url, index_file_path);
 		bool success = helper.perform();
+		ret->Parse(helper.get_str().c_str());
+	}
+
+	void obtain_libraries(const std::string& version, json::Document* ret) {
+		obtain_version_json(version, ret);
+
+		OUT_LIT("Downloading libraries...");
+		assert(ret->HasMember("libraries"));
 	}
 };

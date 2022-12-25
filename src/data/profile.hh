@@ -19,14 +19,11 @@ namespace mcvm {
 
 	// Base for instance
 	class Instance {
+		protected:
+		Instance(Profile* _parent, const std::string _name, const fs::path& mcvm_dir, const std::string& subpath);
+
 		// The profile that this instance is created from
 		Profile* parent = nullptr;
-
-		protected:
-		// Implementation of create
-		virtual void create_impl() {}
-
-		Instance(Profile* _parent, const std::string _name, const fs::path& mcvm_dir, const std::string& subpath);
 
 		public:
 		const std::string name;
@@ -36,10 +33,10 @@ namespace mcvm {
 		// void ensure_cached() {}
 
 		// Create the instance and all of its files
-		void create();
+		virtual void create();
 
 		// Make sure that the instance has a created directory
-		void ensure_instance_dir();
+		virtual void ensure_instance_dir();
 	};
 
 	// A profile that also holds client-specific resources
@@ -47,11 +44,11 @@ namespace mcvm {
 		// Resources
 		std::vector<WorldResource*> worlds;
 
-		protected:
-		void create_impl() override {}
-
 		public:
 		ClientInstance(Profile* _parent, const std::string _name, const fs::path& mcvm_dir);
+
+		void create() override;
+		void ensure_instance_dir() override;
 	};
 
 	class ServerInstance : public Instance {
@@ -62,10 +59,12 @@ namespace mcvm {
 		std::vector<WorldResource*> worlds;
 		WorldResource* current_world;
 
-		protected:
-		void create_impl() override {}
+		const fs::path server_dir;
 
 		public:
 		ServerInstance(Profile* _parent, const std::string _name, const fs::path& mcvm_dir);
+
+		void create() override;
+		void ensure_instance_dir() override;
 	};
 };

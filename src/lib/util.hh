@@ -21,4 +21,23 @@
 // Return if a condition is false
 #define ENSURE(condition) GUARD(!(condition))
 
-namespace mcvm {};
+// The current os as a string
+#define OS_STRING ""
+#ifdef __linux__
+	#define OS_STRING "linux"
+#endif
+#ifdef _WIN32
+	#define OS_STRING "windows"
+#endif
+#ifdef __APPLE__
+	#define OS_STRING "osx"
+#endif
+
+namespace mcvm {
+	// Compute the length of a string literal at compile time\
+	// https://stackoverflow.com/a/26082447
+	template <std::size_t N>
+	constexpr std::size_t litlen(const char[N]) {
+		return N - 1;
+	}
+};

@@ -6,6 +6,10 @@
 #include <assert.h>
 #include <iostream>
 
+inline void run_subcommand(const std::string& subcommand, int argc, std::vector<std::string> argv) {
+	mcvm::command_map.at(subcommand)(argc, argv);
+}
+
 int main(int argc, char** argv) {
 	mcvm::net_start();
 
@@ -17,12 +21,15 @@ int main(int argc, char** argv) {
 	mcvm::create_dir_if_not_exists(cache_dir);
 
 	mcvm::Profile prof("1.19.3 Vanilla", "1.19.3");
-	mcvm::ClientInstance inst(&prof, "1.19.3 Vanilla", mcvm_dir);
+	mcvm::ClientInstance client(&prof, "1.19.3 Vanilla", mcvm_dir);
+	client.create();
+	mcvm::ServerInstance server(&prof, "1.19.3 Vanilla", mcvm_dir);
+	server.create();
 
-	mcvm::RemotePackage* rmt_pkg = new mcvm::RemotePackage("sodium", "localhost:8080/sodium.pkg.txt", cache_dir);
-	rmt_pkg->ensure_contents();
+	// mcvm::RemotePackage* rmt_pkg = new mcvm::RemotePackage("sodium", "localhost:8080/sodium.pkg.txt", cache_dir);
+	// rmt_pkg->ensure_contents();
 
-	prof.add_package(rmt_pkg);
+	// prof.add_package(rmt_pkg);
 
 	// If we have 0-1 args, send the help message
 	if (argc <= 1) {
@@ -39,14 +46,14 @@ int main(int argc, char** argv) {
 		}
 
 		try {
-			mcvm::command_map.at(subcommand)(argc_slice, argv_slice);
+			run_subcommand(subcommand, argc_slice, argv_slice);
 		} catch(const std::out_of_range& e) {
 			ERR("Unknown subcommand " << subcommand);
 			OUT(mcvm::help_message());
 		}
 	}
 
-	prof.delete_all_packages();
+	// prof.delete_all_packages();
 
 	mcvm::net_stop();
 
