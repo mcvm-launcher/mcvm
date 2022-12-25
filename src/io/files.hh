@@ -18,4 +18,7 @@ namespace mcvm {
 
 	// Reads from a file into a string using an ifstream
 	extern void read_file(const fs::path& path, std::string& out);
+
+	// Writes chars to a file using a file handler
+	extern void write_file(const fs::path& path, const char* text);
 };

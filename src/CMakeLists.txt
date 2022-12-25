@@ -8,4 +8,7 @@ add_subdirectory(io)
 add_subdirectory(net)
 add_subdirectory(commands)
 
-target_sources(mcvm PUBLIC main.cc)
+target_sources(mcvm PUBLIC
+	main.cc
+	daemon.cc
+)

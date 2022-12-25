@@ -72,14 +72,7 @@ namespace mcvm {
 		const bool success = helper.perform();
 
 		// Create the EULA
-		FILE* eula = fopen((server_dir / "eula.txt").c_str(), "w");
-		if (eula) {
-			static const char* text = "eula = true\n";
-			fwrite(text, sizeof(char), strlen(text), eula);
-			fclose(eula);
-		} else {
-			throw FileOpenError{};
-		}
+		write_file(server_dir / "eula.txt", "eula = true\n");
 	}
 
 	void ServerInstance::ensure_instance_dir() {

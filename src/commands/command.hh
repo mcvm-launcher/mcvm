@@ -3,6 +3,7 @@
 #include "user/user.hh"
 #include "io/files.hh"
 #include "lib/util.hh"
+#include "daemon.hh"
 
 #include <map>
 #include <vector>
@@ -17,6 +18,10 @@ namespace mcvm {
 	extern void user_command(const unsigned int argc, CommandArgs argv);
 	extern void profile_command(const unsigned int argc, CommandArgs argv);
 	extern void help_command(const unsigned int argc, CommandArgs argv);
+	// Internal command used as the init function for the daemon
+	static void start_daemon_command(const unsigned int argc, CommandArgs argv) {
+		Daemon::daemon_init();
+	}
 
 	// Command subfunction definitions
 	extern const std::string help_message();
@@ -24,6 +29,7 @@ namespace mcvm {
 	static std::map<std::string, void(*)(unsigned int, CommandArgs)> command_map = {
 		{"user", &user_command},
 		{"profile", &profile_command},
-		{"help", &help_command}
+		{"help", &help_command},
+		{"__daemon_start__", &start_daemon_command}
 	};
 };

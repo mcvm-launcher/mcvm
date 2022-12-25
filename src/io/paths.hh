@@ -80,6 +80,20 @@ namespace mcvm {
 		#endif
 	}
 
+	static fs::path get_run_dir() {
+		#ifdef __linux__
+			char* base_dir = std::getenv("XDG_RUNTIME_DIR");
+			if (base_dir) {
+				return fs::path(base_dir);
+			}
+			return fs::path("/run/user") / std::getenv("UID");
+		#else
+			#ifdef _WIN32
+				return get_cache_dir();
+			#endif
+		#endif
+	}
+
 	// File extensions
 	static std::string add_package_extension(const std::string& name) {
 		return name + ".pkg.txt";

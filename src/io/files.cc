@@ -38,6 +38,18 @@ namespace mcvm {
 				const char appendbuf = file.get();
 				out += appendbuf;
 			}
+		} else {
+			throw FileOpenError{};
+		}
+	}
+
+	void write_file(const fs::path& path, const char* text) {
+		FILE* file = fopen(path.c_str(), "w");
+		if (file) {
+			fwrite(text, sizeof(char), strlen(text), file);
+			fclose(file);
+		} else {
+			throw FileOpenError{};
 		}
 	}
 };

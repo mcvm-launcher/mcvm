@@ -18,6 +18,7 @@ add_executable(mcvm "")
 target_link_libraries(mcvm curl)
 # Required otherwise stuff segfaults
 target_link_libraries(mcvm stdc++fs)
+target_link_libraries(mcvm uv)
 add_subdirectory(src)
 
 install(TARGETS mcvm DESTINATION "/usr/bin")

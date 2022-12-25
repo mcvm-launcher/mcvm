@@ -2,6 +2,7 @@
 #include "io/files.hh"
 #include "net/net.hh"
 #include "package/package.hh"
+#include "daemon.hh"
 
 #include <assert.h>
 #include <iostream>
@@ -17,19 +18,12 @@ int main(int argc, char** argv) {
 	const fs::path home_dir = mcvm::get_home_dir();
 	const fs::path mcvm_dir = mcvm::get_mcvm_dir(home_dir);
 	const fs::path cache_dir = mcvm::get_cache_dir(home_dir);
+	const fs::path run_dir = mcvm::get_run_dir();
 	mcvm::create_dir_if_not_exists(mcvm_dir);
 	mcvm::create_dir_if_not_exists(cache_dir);
 
-	mcvm::Profile prof("1.19.3 Vanilla", "1.19.3");
-	mcvm::ClientInstance client(&prof, "1.19.3 Vanilla", mcvm_dir);
-	client.create();
-	mcvm::ServerInstance server(&prof, "1.19.3 Vanilla", mcvm_dir);
-	server.create();
-
-	// mcvm::RemotePackage* rmt_pkg = new mcvm::RemotePackage("sodium", "localhost:8080/sodium.pkg.txt", cache_dir);
-	// rmt_pkg->ensure_contents();
-
-	// prof.add_package(rmt_pkg);
+	// mcvm::Daemon dmon(run_dir);
+	// dmon.ensure_started();
 
 	// If we have 0-1 args, send the help message
 	if (argc <= 1) {
