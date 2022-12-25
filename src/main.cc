@@ -1,5 +1,5 @@
 #include "commands/command.hh"
-#include "io/paths.hh"
+#include "io/files.hh"
 #include "net/net.hh"
 
 #include <assert.h>
@@ -7,6 +7,13 @@
 
 int main(int argc, char** argv) {
 	mcvm::net_start();
+
+	// Make sure the mcvm directory is created
+	const fs::path mcvm_dir = mcvm::get_mcvm_dir();
+	mcvm::create_dir_if_not_exists(mcvm_dir);
+
+	mcvm::Profile prof("1.19.3 Vanilla", "1.19.3");
+	mcvm::ClientInstance inst(&prof, "1.19.3 Vanilla", mcvm_dir);
 
 	assert(argc > 0);
 	// If we have 1 arg (just the executable), send the help message

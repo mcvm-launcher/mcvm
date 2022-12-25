@@ -1,5 +1,6 @@
 #pragma once
 #include "info.hh"
+#include "io/files.hh"
 
 #include <vector>
 

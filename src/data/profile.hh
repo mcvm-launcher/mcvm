@@ -4,7 +4,13 @@
 namespace mcvm {
 	// A profile, which holds game settings and can be depended on by runnable instances 
 	class Profile {
-		Profile() = default;
+		const std::string name;
+		MCVersion version;
+
+		public:
+		Profile(const std::string _name, MCVersion _version);
+
+		MCVersion get_version();
 	};
 
 	// Base for profile
@@ -12,22 +18,36 @@ namespace mcvm {
 		// The profile that this instance is created from
 		Profile* parent = nullptr;
 
-		public:
-		Instance(Profile* _parent, MCVersion& _version);
-		MCVersion version;
+		protected:
+		// Implementation of create
+		virtual void create_impl() {}
 
-		// Make sure that the profile has a cached rendered config
-		void ensure_cached() {}
+		Instance(Profile* _parent, const std::string _name, const fs::path& mcvm_dir, const std::string& subpath);
+
+		public:
+		const std::string name;
+		fs::path dir;
+
+		// Make sure that the instance has a cached rendered config
+		// void ensure_cached() {}
+
+		// Create the instance and all of its files
+		void create();
+
+		// Make sure that the instance has a created directory
+		void ensure_instance_dir();
 	};
 
 	// A profile that also holds client-specific resources
 	class ClientInstance : public Instance {
 		// Resources
-		// Important to remember that this is only a list of worlds installed by packages and managed by mcvm
 		std::vector<WorldResource*> worlds;
 
+		protected:
+		void create_impl() override {}
+
 		public:
-		using Instance::Instance;
+		ClientInstance(Profile* _parent, const std::string _name, const fs::path& mcvm_dir);
 	};
 
 	class ServerInstance : public Instance {
@@ -38,7 +58,10 @@ namespace mcvm {
 		std::vector<WorldResource*> worlds;
 		WorldResource* current_world;
 
+		protected:
+		void create_impl() override {}
+
 		public:
-		using Instance::Instance;
+		ServerInstance(Profile* _parent, const std::string _name, const fs::path& mcvm_dir);
 	};
 };

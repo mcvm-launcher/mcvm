@@ -20,6 +20,9 @@ namespace fs = std::filesystem;
 // Relative paths to locations of mcvm files from mcvm base dir
 #define ASSETS_DIR "assets"
 #define PROFILES_DIR "profiles"
+#define INSTANCES_DIR "instances"
+#define CLIENT_INSTANCES_DIR "client"
+#define SERVER_INSTANCES_DIR "server"
 
 namespace mcvm {
 	static fs::path get_home_dir() {

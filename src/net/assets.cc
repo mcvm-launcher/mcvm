@@ -4,11 +4,14 @@ namespace json = rapidjson;
 
 namespace mcvm {
 	std::string update_assets() {
+		// Ensure assets dir
+		const fs::path assets_path = get_mcvm_dir() / fs::path(ASSETS_DIR);
+		create_dir_if_not_exists(assets_path);
+
 		OUT("Updating assets index...");
 
 		// Download version manifest
-		const std::filesystem::path manifest_file_path = get_mcvm_dir() / std::filesystem::path(ASSETS_DIR) / std::filesystem::path("version_manifest.json");
-		create_leading_directories(manifest_file_path);
+		const fs::path manifest_file_path = assets_path / fs::path("version_manifest.json");
 		DownloadHelper helper(DownloadHelper::FILE_AND_STR, VERSION_MANIFEST_URL, manifest_file_path);
 		bool success = helper.perform();
 		return helper.get_str();
@@ -60,7 +63,7 @@ namespace mcvm {
 		// TODO: Checksum
 
 		const std::string index_file_name = version + ".json";
-		const std::filesystem::path index_file_path = get_mcvm_dir() / std::filesystem::path(ASSETS_DIR) / std::filesystem::path(index_file_name);
+		const fs::path index_file_path = get_mcvm_dir() / fs::path(ASSETS_DIR) / fs::path(index_file_name);
 		DownloadHelper helper(DownloadHelper::FILE_AND_STR, ver_url, index_file_path);
 		bool success = helper.perform();
 	}
