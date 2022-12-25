@@ -1,6 +1,7 @@
 #include "commands/command.hh"
 #include "io/files.hh"
 #include "net/net.hh"
+#include "package/package.hh"
 
 #include <assert.h>
 #include <iostream>
@@ -15,9 +16,12 @@ int main(int argc, char** argv) {
 	mcvm::Profile prof("1.19.3 Vanilla", "1.19.3");
 	mcvm::ClientInstance inst(&prof, "1.19.3 Vanilla", mcvm_dir);
 
-	assert(argc > 0);
-	// If we have 1 arg (just the executable), send the help message
-	if (argc == 1) {
+	const fs::path cache_dir = mcvm::get_cache_dir();
+	mcvm::LocalPackage pkg("sodium", fs::path("/home/pango/test/sodium.pkg.txt"));
+	pkg.ensure_contents(cache_dir);
+
+	// If we have 0-1 args, send the help message
+	if (argc <= 1) {
 		OUT(mcvm::help_message());
 	}
 	// If we have 2+ args (executable and a subcommand, plus any number of args), run the command

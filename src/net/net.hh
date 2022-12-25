@@ -7,7 +7,6 @@
 #include <rapidjson/document.h>
 
 #include <iostream>
-#include <fstream>
 #include <assert.h>
 #include <memory>
 

@@ -23,8 +23,11 @@ namespace fs = std::filesystem;
 #define INSTANCES_DIR "instances"
 #define CLIENT_INSTANCES_DIR "client"
 #define SERVER_INSTANCES_DIR "server"
+#define CACHED_PACKAGES_DIR "pkg"
 
 namespace mcvm {
+	// TODO: Make all of this xdg desktop compliant
+
 	static fs::path get_home_dir() {
 		#ifdef __linux__
 			return fs::path(std::getenv("HOME"));
@@ -40,9 +43,24 @@ namespace mcvm {
 			return get_home_dir() / fs::path(".local" PATH_SEP "share" PATH_SEP "mcvm");
 		#else
 			#ifdef _WIN32
-				return get_home_dir() / fs::path("mcvm");
+				return fs::path(std::getenv("APPDATA")) / "mcvm";
 			#endif
 		#endif
+	}
+
+	static fs::path get_cache_dir() {
+		#ifdef __linux__
+			return get_mcvm_dir() / "cache";
+		#else
+			#ifdef _WIN32
+				return get_mcvm_dir() / "cache";
+			#endif
+		#endif
+	}
+
+	// File extensions
+	static std::string add_package_extension(const std::string& name) {
+		return name + ".pkg.txt";
 	}
 
 	struct FileOpenError : public std::exception {

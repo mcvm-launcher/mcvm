@@ -30,4 +30,14 @@ namespace mcvm {
 			create_dir_if_not_exists(full_path);
 		}
 	}
+
+	void read_file(const fs::path& path, std::string& out) {
+		std::ifstream file(path);
+		if (file.is_open()) {
+			while (file.good()) {
+				const char appendbuf = file.get();
+				out += appendbuf;
+			}
+		}
+	}
 };
