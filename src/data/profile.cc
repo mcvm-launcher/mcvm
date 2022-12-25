@@ -8,6 +8,17 @@ namespace mcvm {
 		return version;
 	}
 
+	void Profile::add_package(Package* pkg) {
+		packages.push_back(pkg);
+	}
+
+	void Profile::delete_all_packages() {
+		for (std::vector<Package*>::iterator i = packages.begin(); i != packages.end(); i++) {
+			delete *i;
+		}
+		packages = {};
+	}
+
 	Instance::Instance(Profile* _parent, const std::string _name, const fs::path& mcvm_dir, const std::string& subpath)
 	: parent(_parent), name(_name), dir(mcvm_dir / subpath / name) {}
 

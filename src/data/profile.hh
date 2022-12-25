@@ -1,19 +1,23 @@
 #pragma once
 #include "resource.hh"
+#include "package/package.hh"
 
 namespace mcvm {
 	// A profile, which holds game settings and can be depended on by runnable instances 
 	class Profile {
 		const std::string name;
 		MCVersion version;
+		std::vector<Package*> packages;
 
 		public:
 		Profile(const std::string _name, MCVersion _version);
 
 		MCVersion get_version();
+		void add_package(Package* pkg);
+		void delete_all_packages();
 	};
 
-	// Base for profile
+	// Base for instance
 	class Instance {
 		// The profile that this instance is created from
 		Profile* parent = nullptr;

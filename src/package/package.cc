@@ -7,22 +7,23 @@ namespace mcvm {
 	RemotePackage::RemotePackage(const std::string& name, const std::string& _url, const fs::path& cache_dir)
 	: Package(name, cache_dir / CACHED_PACKAGES_DIR / add_package_extension(name)), url(_url) {}
 
-	void RemotePackage::ensure_contents(const fs::path cache_dir) {
-		const fs::path cached_package_path = cache_dir / CACHED_PACKAGES_DIR / add_package_extension(name);
+	void RemotePackage::ensure_contents() {
 		// Check if it is already downloaded
-		if (!file_exists(cached_package_path)) {
-			DownloadHelper helper(DownloadHelper::FILE_AND_STR, url, cached_package_path);
+		if (!file_exists(location)) {
+			create_leading_directories(location);
+			DownloadHelper helper(DownloadHelper::FILE_AND_STR, url, location);
 			bool success = helper.perform();
 			contents = helper.get_str();
+			return;
 		}
 
-		read_file(cached_package_path, contents);
+		read_file(location, contents);
 	}
 
 	LocalPackage::LocalPackage(const std::string& _name, const fs::path& path)
 	: Package(_name, path) {}
 
-	void LocalPackage::ensure_contents(const fs::path cache_dir) {
+	void LocalPackage::ensure_contents() {
 		read_file(location, contents);
 	}
 };

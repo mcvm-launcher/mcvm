@@ -14,12 +14,15 @@ int main(int argc, char** argv) {
 	const fs::path mcvm_dir = mcvm::get_mcvm_dir(home_dir);
 	const fs::path cache_dir = mcvm::get_cache_dir(home_dir);
 	mcvm::create_dir_if_not_exists(mcvm_dir);
+	mcvm::create_dir_if_not_exists(cache_dir);
 
 	mcvm::Profile prof("1.19.3 Vanilla", "1.19.3");
 	mcvm::ClientInstance inst(&prof, "1.19.3 Vanilla", mcvm_dir);
 
-	mcvm::LocalPackage pkg("sodium", fs::path("/home/pango/test/sodium.pkg.txt"));
-	pkg.ensure_contents(cache_dir);
+	mcvm::RemotePackage* rmt_pkg = new mcvm::RemotePackage("sodium", "localhost:8080/sodium.pkg.txt", cache_dir);
+	rmt_pkg->ensure_contents();
+
+	prof.add_package(rmt_pkg);
 
 	// If we have 0-1 args, send the help message
 	if (argc <= 1) {
@@ -42,6 +45,8 @@ int main(int argc, char** argv) {
 			OUT(mcvm::help_message());
 		}
 	}
+
+	prof.delete_all_packages();
 
 	mcvm::net_stop();
 

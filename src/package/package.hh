@@ -11,14 +11,14 @@ namespace mcvm {
 		fs::path location;
 		// Contents of the package build script
 		std::string contents;
-		// Whether the package was installed locally or from the internet. Internet packages have more restrictions
-		const bool is_local = false;
 
 		Package(const std::string& _name, const fs::path& _location);
 
 		public:
 		// Ensure that the package contents are stored in memory
-		virtual void ensure_contents(const fs::path cache_dir) {}
+		virtual void ensure_contents() {}
+
+		virtual ~Package() = default;
 	};
 
 	// A package installed from the internet, which has more restrictions
@@ -28,7 +28,7 @@ namespace mcvm {
 		public:
 		RemotePackage(const std::string& _name, const std::string& _url, const fs::path& cache_dir);
 
-		void ensure_contents(const fs::path cache_dir) override;
+		void ensure_contents() override;
 	};
 
 	// A package installed from the local filesystem
@@ -36,6 +36,6 @@ namespace mcvm {
 		public:
 		LocalPackage(const std::string& _name, const fs::path& path);
 
-		void ensure_contents(const fs::path cache_dir) override;
+		void ensure_contents() override;
 	};
 };
