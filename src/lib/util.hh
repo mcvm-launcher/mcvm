@@ -34,7 +34,7 @@
 #endif
 
 namespace mcvm {
-	// Compute the length of a string literal at compile time\
+	// Compute the length of a string literal at compile time
 	// https://stackoverflow.com/a/26082447
 	template <std::size_t N>
 	constexpr std::size_t litlen(const char[N]) {

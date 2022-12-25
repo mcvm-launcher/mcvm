@@ -25,6 +25,10 @@ int main(int argc, char** argv) {
 	// mcvm::Daemon dmon(run_dir);
 	// dmon.ensure_started();
 
+	mcvm::Profile prof("1.19.3 Vanilla", "1.19.3");
+	mcvm::ClientInstance client(&prof, "1.19.3 Vanilla", mcvm_dir);
+	client.create();
+
 	// If we have 0-1 args, send the help message
 	if (argc <= 1) {
 		OUT(mcvm::help_message());

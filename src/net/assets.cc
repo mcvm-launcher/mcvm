@@ -56,7 +56,49 @@ namespace mcvm {
 	void obtain_libraries(const std::string& version, json::Document* ret) {
 		obtain_version_json(version, ret);
 
+		const fs::path libraries_path = get_mcvm_dir() / "libraries";
+		create_dir_if_not_exists(libraries_path);
+
+		// TODO: Use a multi handle to make this asynchronous
 		OUT_LIT("Downloading libraries...");
 		assert(ret->HasMember("libraries"));
+		for (auto& lib_val : ret->operator[]("libraries").GetArray()) {
+			const json::GenericObject lib = lib_val.GetObject();
+			assert(lib.HasMember("downloads"));
+			const json::GenericObject download_artifact = lib["downloads"]["artifact"].GetObject();
+
+			assert(download_artifact.HasMember("path"));
+			const char* path_str = download_artifact["path"].GetString();
+			const fs::path path = libraries_path / path_str;
+			create_leading_directories(path);
+			
+			assert(download_artifact.HasMember("url"));
+			const char* url = download_artifact["url"].GetString();
+
+			assert(lib.HasMember("name"));
+			const char* name = lib["name"].GetString();
+
+			// Check rules
+			if (lib.HasMember("rules")) {
+				bool rule_fail = false;
+				for (auto& rule : lib["rules"].GetArray()) {
+					assert(rule.HasMember("action"));
+					const char* action = rule["action"].GetString();
+					const char* os_name = rule["os"]["name"].GetString();
+					const std::string test = OS_STRING;
+					if (
+						(action == "allow" && os_name != OS_STRING) ||
+						(action == "disallow" && os_name == OS_STRING)
+					) {
+						rule_fail = true;
+					}
+				}
+				if (rule_fail) continue;
+			}
+
+			DownloadHelper helper(DownloadHelper::FILE, url, path);
+			helper.perform();
+			OUT("Downloaded " << name);
+		}
 	}
 };
