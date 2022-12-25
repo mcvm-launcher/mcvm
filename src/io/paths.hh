@@ -26,11 +26,25 @@ namespace fs = std::filesystem;
 #define CACHED_PACKAGES_DIR "pkg"
 
 namespace mcvm {
-	// TODO: Make all of this xdg desktop compliant
+	struct GetDirectoryException : public std::exception {
+		const std::string dir;
+		GetDirectoryException(const std::string& _dir) : dir(_dir) {}
+
+		const char* what() {
+			return ("Directory [" + dir + "] could not be located").c_str();
+		}
+	};
 
 	static fs::path get_home_dir() {
 		#ifdef __linux__
-			return fs::path(std::getenv("HOME"));
+			char* home_dir = std::getenv("XDG_HOME");
+			if (!home_dir) {
+				home_dir = std::getenv("HOME");
+			}
+			if (!home_dir) {
+				throw GetDirectoryException{"home"};
+			}
+			return fs::path(home_dir);
 		#else
 			#ifdef _WIN32
 				return fs::path("C:")
@@ -40,6 +54,10 @@ namespace mcvm {
 
 	static fs::path get_mcvm_dir() {
 		#ifdef __linux__
+			char* base_dir = std::getenv("XDG_DATA_HOME");
+			if (base_dir) {
+				return fs::path(base_dir) / "mcvm";
+			}
 			return get_home_dir() / fs::path(".local" PATH_SEP "share" PATH_SEP "mcvm");
 		#else
 			#ifdef _WIN32
@@ -50,7 +68,11 @@ namespace mcvm {
 
 	static fs::path get_cache_dir() {
 		#ifdef __linux__
-			return get_mcvm_dir() / "cache";
+			char* base_dir = std::getenv("XDG_CACHE_HOME");
+			if (base_dir) {
+				return fs::path(base_dir) / "mcvm";
+			}
+			return get_home_dir() / fs::path(".cache" PATH_SEP "mcvm");
 		#else
 			#ifdef _WIN32
 				return get_mcvm_dir() / "cache";
