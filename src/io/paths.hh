@@ -52,7 +52,7 @@ namespace mcvm {
 		#endif
 	}
 
-	static fs::path get_mcvm_dir() {
+	static fs::path get_mcvm_dir(const fs::path& home_dir = get_home_dir()) {
 		#ifdef __linux__
 			char* base_dir = std::getenv("XDG_DATA_HOME");
 			if (base_dir) {
@@ -66,7 +66,7 @@ namespace mcvm {
 		#endif
 	}
 
-	static fs::path get_cache_dir() {
+	static fs::path get_cache_dir(const fs::path& home_dir = get_home_dir()) {
 		#ifdef __linux__
 			char* base_dir = std::getenv("XDG_CACHE_HOME");
 			if (base_dir) {

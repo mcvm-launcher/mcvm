@@ -9,14 +9,15 @@
 int main(int argc, char** argv) {
 	mcvm::net_start();
 
-	// Make sure the mcvm directory is created
-	const fs::path mcvm_dir = mcvm::get_mcvm_dir();
+	// Directories
+	const fs::path home_dir = mcvm::get_home_dir();
+	const fs::path mcvm_dir = mcvm::get_mcvm_dir(home_dir);
+	const fs::path cache_dir = mcvm::get_cache_dir(home_dir);
 	mcvm::create_dir_if_not_exists(mcvm_dir);
 
 	mcvm::Profile prof("1.19.3 Vanilla", "1.19.3");
 	mcvm::ClientInstance inst(&prof, "1.19.3 Vanilla", mcvm_dir);
 
-	const fs::path cache_dir = mcvm::get_cache_dir();
 	mcvm::LocalPackage pkg("sodium", fs::path("/home/pango/test/sodium.pkg.txt"));
 	pkg.ensure_contents(cache_dir);
 
