@@ -5,4 +5,8 @@ namespace mcvm {
 	: version(_version) {
 		
 	}
+
+	void GameRunner::launch() {
+		system(output);
+	}
 };

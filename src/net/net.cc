@@ -63,13 +63,14 @@ namespace mcvm {
 	}
 
 	void DownloadHelper::set_options(DownloadMode mode, const std::string& url, const fs::path& path) {
-		curl_easy_setopt(handle, CURLOPT_URL, url.c_str());
-
-		// Reset the result
+		// Reset
+		curl_easy_reset(handle);
 		res.str = "";
 		if (res.file) {
 			fclose(res.file);
 		}
+
+		curl_easy_setopt(handle, CURLOPT_URL, url.c_str());
 
 		if (mode == DownloadMode::FILE || mode == DownloadMode::FILE_AND_STR) {
 			res.file = fopen(path.c_str(), "wb");
@@ -112,12 +113,12 @@ namespace mcvm {
 	}
 
 	void DownloadHelper::add_progress_meter(ProgressData::ProgressStyle style, const std::string &title) {
-		progress_data.is_used = true;
-		progress_data.style = style;
-		progress_data.title = title;
-		curl_easy_setopt(handle, CURLOPT_NOPROGRESS, 0);
-		curl_easy_setopt(handle, CURLOPT_XFERINFOFUNCTION, &progress_callback);
-		curl_easy_setopt(handle, CURLOPT_PROGRESSDATA, progress_data);
+		// progress_data.is_used = true;
+		// progress_data.style = style;
+		// progress_data.title = title;
+		// curl_easy_setopt(handle, CURLOPT_NOPROGRESS, 0);
+		// curl_easy_setopt(handle, CURLOPT_XFERINFOFUNCTION, &progress_callback);
+		// curl_easy_setopt(handle, CURLOPT_PROGRESSDATA, progress_data);
 	}
 
 	std::string DownloadHelper::get_str() {

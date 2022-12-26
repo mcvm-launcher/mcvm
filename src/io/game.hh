@@ -1,6 +1,5 @@
 #pragma once
 #include "data/profile.hh"
-#include "paths.hh"
 
 #include <rapidjson/rapidjson.h>
 
@@ -15,6 +14,8 @@ namespace mcvm {
 
 		// Add a command line flag to the command
 		void add_flag(const std::string& flag);
+		// Finish up and launch
+		void launch();
 
 		MCVersion version;
 	};
