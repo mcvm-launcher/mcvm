@@ -3,6 +3,29 @@
 #include "net/net.hh"
 
 namespace mcvm {
+
+
+	// The result from evaluation
+	struct PkgEvalResult {
+
+	};
+
+	struct EvalType {
+		// The extent of evaluation to perform on a package
+		enum __EvalType {
+			INSTALL, // Evaluates the full package while actually running things
+			GET_INFO // Evaluates the full package without actually running anything
+		};
+	};
+
+	// The level of evaluation to be performed
+	enum RunLevel {
+		ALL, // Run all commands
+		RESTRICTED, // Restrict the scope of commands
+		INFO, // Only run commands that set information
+		NONE // Don't run any commands
+	};
+
 	// A mcvm package
 	class Package {
 		protected:
@@ -17,6 +40,8 @@ namespace mcvm {
 		public:
 		// Ensure that the package contents are stored in memory
 		virtual void ensure_contents() {}
+		// Parse and evaluate the package contents
+		void evaluate(PkgEvalResult& ret, const std::string& routine, RunLevel level);
 
 		virtual ~Package() = default;
 	};

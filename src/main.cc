@@ -27,7 +27,10 @@ int main(int argc, char** argv) {
 
 	mcvm::Profile prof("1.19.3 Vanilla", "1.19.3");
 	mcvm::ClientInstance client(&prof, "1.19.3 Vanilla", mcvm_dir);
-	client.create();
+	mcvm::LocalPackage pkg("sodium", mcvm::get_home_dir() / "test/sodium.pkg.txt");
+	mcvm::PkgEvalResult res;
+	pkg.ensure_contents();
+	pkg.evaluate(res, "INFO", mcvm::RunLevel::ALL);
 
 	// If we have 0-1 args, send the help message
 	if (argc <= 1) {
