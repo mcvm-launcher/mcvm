@@ -30,7 +30,27 @@ namespace mcvm {
 
 		return written;
 	}
-	
+
+	// TODO: Unfinished
+	int progress_callback(void* clientp, double dltotal, double dlnow, double ultotal, double ulnow) {
+		ProgressData* data = static_cast<ProgressData*>(clientp);
+		static unsigned int intervals = 10;
+		if (dltotal != 0 && dlnow != 0) {
+			std::string bar = "";
+			const unsigned int count = round(dlnow / dltotal * intervals);
+			for (unsigned int i = 0; i < intervals; i++) {
+				if (i < count) {
+					bar.push_back('.');
+				} else {
+					bar.push_back(' ');
+				}
+			}
+			OUT_REPL(data->title << '[' << bar << ']');
+		}
+
+		return CURL_PROGRESSFUNC_CONTINUE;
+	}
+
 	CurlResult::~CurlResult() {
 		fclose(file);
 	}
@@ -75,6 +95,10 @@ namespace mcvm {
 	bool DownloadHelper::perform() {
 		CURLcode success = curl_easy_perform(handle);
 
+		if (progress_data.is_used) {
+			OUT_NEWLINE();
+		}
+
 		if (success != CURLcode::CURLE_OK) {
 			ERR(errbuf);
 			return false;
@@ -85,6 +109,15 @@ namespace mcvm {
 	bool DownloadHelper::sha1_checksum(const std::string& checksum) {
 		// TODO: Temporary
 		return true;
+	}
+
+	void DownloadHelper::add_progress_meter(ProgressData::ProgressStyle style, const std::string &title) {
+		progress_data.is_used = true;
+		progress_data.style = style;
+		progress_data.title = title;
+		curl_easy_setopt(handle, CURLOPT_NOPROGRESS, 0);
+		curl_easy_setopt(handle, CURLOPT_XFERINFOFUNCTION, &progress_callback);
+		curl_easy_setopt(handle, CURLOPT_PROGRESSDATA, progress_data);
 	}
 
 	std::string DownloadHelper::get_str() {
@@ -117,9 +150,7 @@ namespace mcvm {
 				code = curl_multi_poll(handle, NULL, 0, 1000, NULL);
 			}
 
-			if (code) {
-				break;
-			}
+			if (code) break;
 		}
 		// TODO: Error handling and messages for multi helper
 		return true;
@@ -130,6 +161,13 @@ namespace mcvm {
 			curl_multi_remove_handle(handle, helpers[i]->handle);
 		}
 		helpers = {};
+	}
+
+	void MultiDownloadHelper::add_progress_meter(ProgressData::ProgressStyle style, const std::string &title) {
+		// progress_data.style = style;
+		// progress_data.title = title;
+		// curl_multi_setopt(handle, CURLOPT_PROGRESSFUNCTION, &progress_callback);
+		// curl_multi_setopt(handle, CURLOPT_PROGRESSDATA, progress_data);
 	}
 
 	MultiDownloadHelper::~MultiDownloadHelper() {

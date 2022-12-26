@@ -107,7 +107,9 @@ namespace mcvm {
 			std::shared_ptr<DownloadHelper> lib_helper = std::make_shared<DownloadHelper>();
 			lib_helper->set_options(DownloadHelper::FILE, url, path);
 			multi_helper.add_helper(lib_helper);
+			OUT_REPL(name);
 		}
+		OUT_NEWLINE();
 
 		// Assets
 		const fs::path assets_path = get_mcvm_dir() / "assets";
@@ -123,7 +125,7 @@ namespace mcvm {
 			helper->set_options(DownloadHelper::FILE_AND_STR, assets_url, asset_index_path);
 			OUT("Downloading assets index...");
 			helper->perform();
-			asset_index_contents = helper->get_str();
+			asset_index_contents = helper->get_str();	
 		}
 
 		create_dir_if_not_exists(assets_path / "objects");

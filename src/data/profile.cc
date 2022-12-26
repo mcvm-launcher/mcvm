@@ -47,7 +47,7 @@ namespace mcvm {
 		const json::GenericObject client_download = doc["downloads"]["client"].GetObject();
 		DownloadHelper helper;
 		helper.set_options(DownloadHelper::FILE, client_download["url"].GetString(), jar_path);
-		OUT_LIT("Downloading client jar...");
+		helper.add_progress_meter(ProgressData::DEFAULT, "Downloading client...");
 		helper.perform();
 	}
 
@@ -70,10 +70,10 @@ namespace mcvm {
 		// Get the server jar
 		const fs::path jar_path = server_dir / "server.jar";
 		assert(doc.HasMember("downloads"));
-		const json::GenericObject client_download = doc["downloads"]["server"].GetObject();
+		const json::GenericObject server_download = doc["downloads"]["server"].GetObject();
 		DownloadHelper helper;
-		helper.set_options(DownloadHelper::FILE, client_download["url"].GetString(), jar_path);
-		OUT_LIT("Downloading server jar...");
+		helper.set_options(DownloadHelper::FILE, server_download["url"].GetString(), jar_path);
+		helper.add_progress_meter(ProgressData::DEFAULT, "Downloading server...");
 		helper.perform();
 
 		// Create the EULA

@@ -2,13 +2,17 @@
 #include <iostream>
 
 // Print value to cout
-#define OUT(val) std::cout << val << "\n"
+#define OUT(val) std::cout << val << '\n'
 // Faster OUT for literal values
 #define OUT_LIT(val) std::cout << (val "\n")
+// OUT that replaces on a single line
+#define OUT_REPL(val) std::cout << val << '\r' << std::flush
+// Print a single newline
+#define OUT_NEWLINE() std::cout << '\n'
 // Print value to cerr
-#define ERR(val) std::cerr << val << "\n"
+#define ERR(val) std::cerr << val << '\n'
 // Faster ERR for literal values
-#define ERR_LIT(val) std::cerr << (val "\n")
+#define ERR_LIT(val) std::cerr << (val '\n')
 
 // Print value to cout only on debug builds
 #define LOG(val)
