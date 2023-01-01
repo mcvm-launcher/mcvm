@@ -100,8 +100,10 @@ namespace mcvm {
 	}
 
 	struct FileOpenError : public std::exception {
+		FileOpenError(const char* _filename) : filename(_filename) {} 
+		const char* filename;
 		const char* what() {
-			return "File was not opened";
+			return strcat(strcat("File ", filename), " could not be opened");
 		}
 	};
 };

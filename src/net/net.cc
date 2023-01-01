@@ -52,7 +52,7 @@ namespace mcvm {
 		if (mode == DownloadMode::FILE || mode == DownloadMode::FILE_AND_STR) {
 			res.file = fopen(path.c_str(), "wb");
 			if (!res.file) {
-				throw FileOpenError{};
+				throw FileOpenError{path.c_str()};
 			}
 		}
 	}

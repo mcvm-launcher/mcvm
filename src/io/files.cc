@@ -39,7 +39,7 @@ namespace mcvm {
 				out += appendbuf;
 			}
 		} else {
-			throw FileOpenError{};
+			throw FileOpenError{path.c_str()};
 		}
 	}
 
@@ -49,7 +49,7 @@ namespace mcvm {
 			fwrite(text, sizeof(char), strlen(text), file);
 			fclose(file);
 		} else {
-			throw FileOpenError{};
+			throw FileOpenError{path.c_str()};
 		}
 	}
 };
