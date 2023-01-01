@@ -53,6 +53,16 @@ namespace mcvm {
 	// Callback response for curl perform that writes the data to a file and a string
 	extern std::size_t write_data_to_file_and_str(void* buffer, size_t size, size_t nmemb, void* curl_result);
 
+	struct FileValidateException : public std::exception {
+		FileValidateException(const std::string& _file, const std::string& _url)
+		: file(_file), url(_url) {} 
+		const std::string& file;
+		const std::string& url;
+		const char* what() {
+			return (std::string("File ") + file + " downloaded from " + url + " did not pass checksum").c_str();
+		}
+	};
+
 	// Wrapper around a libcurl handle
 	class DownloadHelper {
 		public:
@@ -67,6 +77,7 @@ namespace mcvm {
 
 		void set_options(DownloadMode mode, const std::string& url, const fs::path& path);
 		bool perform();
+		bool sha1_checksum(const std::string& checksum);
 
 		std::string get_str();
 		std::string get_err();

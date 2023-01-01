@@ -45,13 +45,13 @@ namespace mcvm {
 		if (ver_url.empty()) {
 			throw VersionNotFoundException();
 		}
-		// We now have to download the manifest for the specific version
-		// TODO: Checksum
 
+		// We now have to download the manifest for the specific version
 		const std::string index_file_name = version + ".json";
 		const fs::path index_file_path = get_mcvm_dir() / fs::path(ASSETS_DIR) / fs::path(index_file_name);
 		helper->set_options(DownloadHelper::FILE_AND_STR, ver_url, index_file_path);
 		helper->perform();
+		helper->sha1_checksum(ver_hash);
 		ret->Parse(helper->get_str().c_str());
 	}
 

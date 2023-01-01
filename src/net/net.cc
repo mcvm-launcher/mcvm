@@ -11,23 +11,22 @@ namespace mcvm {
 		curl_global_cleanup();
 	}
 
-	std::size_t write_data_to_file(void* buffer, size_t size, size_t nmemb, void* file) {
-		FILE* file_cast = static_cast<FILE*>(file);
-		return fwrite(buffer, size, nmemb, file_cast);
+	std::size_t write_data_to_file(void* buffer, size_t size, size_t nmemb, void* curl_result) {
+		FILE* file = static_cast<CurlResult*>(curl_result)->file;
+		return fwrite(buffer, size, nmemb, file);
 	}
 
-	std::size_t write_data_to_str(void* buffer, size_t size, size_t nmemb, void* str) {
-		std::string* str_cast = static_cast<std::string*>(str);
+	std::size_t write_data_to_str(void* buffer, size_t size, size_t nmemb, void* curl_result) {
+		std::string* str = &static_cast<CurlResult*>(curl_result)->str;
 		std::size_t write_size = size * nmemb;
-		str_cast->append(static_cast<const char*>(buffer), write_size);
+		str->append(static_cast<const char*>(buffer), write_size);
 		return write_size;
 	}
 	
 	std::size_t write_data_to_file_and_str(void* buffer, size_t size, size_t nmemb, void* curl_result) {
 		CurlResult* result = static_cast<CurlResult*>(curl_result);
-		size_t written = write_data_to_file(buffer, size, nmemb, result->file);
-		// Append to the string
-		write_data_to_str(buffer, size, nmemb, &result->str);
+		size_t written = write_data_to_file(buffer, size, nmemb, result);
+		write_data_to_str(buffer, size, nmemb, result);
 
 		return written;
 	}
@@ -62,17 +61,15 @@ namespace mcvm {
 		switch (mode) {
 			case DownloadMode::FILE:
 				curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, &write_data_to_file);
-				curl_easy_setopt(handle, CURLOPT_WRITEDATA, res.file);
 				break;
 			case DownloadMode::STR:
 				curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, &write_data_to_str);
-				curl_easy_setopt(handle, CURLOPT_WRITEDATA, &res.str);
 				break;
 			case DownloadMode::FILE_AND_STR:
 				curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, &write_data_to_file_and_str);
-				curl_easy_setopt(handle, CURLOPT_WRITEDATA, &res);
 				break;
 		}
+		curl_easy_setopt(handle, CURLOPT_WRITEDATA, &res);
 	}
 
 	bool DownloadHelper::perform() {
@@ -82,6 +79,11 @@ namespace mcvm {
 			ERR(errbuf);
 			return false;
 		}
+		return true;
+	}
+
+	bool DownloadHelper::sha1_checksum(const std::string& checksum) {
+		// TODO: Temporary
 		return true;
 	}
 
