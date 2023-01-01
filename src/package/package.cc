@@ -11,8 +11,9 @@ namespace mcvm {
 		// Check if it is already downloaded
 		if (!file_exists(location)) {
 			create_leading_directories(location);
-			DownloadHelper helper(DownloadHelper::FILE_AND_STR, url, location);
-			bool success = helper.perform();
+			DownloadHelper helper;
+			helper.set_options(DownloadHelper::FILE_AND_STR, url, location);
+			helper.perform();
 			contents = helper.get_str();
 			return;
 		}

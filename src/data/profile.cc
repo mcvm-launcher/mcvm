@@ -44,9 +44,10 @@ namespace mcvm {
 		const fs::path jar_path = dir / "client.jar";
 		assert(doc.HasMember("downloads"));
 		const json::GenericObject client_download = doc["downloads"]["client"].GetObject();
-		DownloadHelper helper(DownloadHelper::FILE, client_download["url"].GetString(), jar_path);
+		DownloadHelper helper;
+		helper.set_options(DownloadHelper::FILE, client_download["url"].GetString(), jar_path);
 		OUT_LIT("Downloading client jar...");
-		const bool success = helper.perform();
+		helper.perform();
 	}
 
 	void ClientInstance::ensure_instance_dir() {
@@ -67,9 +68,10 @@ namespace mcvm {
 		const fs::path jar_path = server_dir / "server.jar";
 		assert(doc.HasMember("downloads"));
 		const json::GenericObject client_download = doc["downloads"]["server"].GetObject();
-		DownloadHelper helper(DownloadHelper::FILE, client_download["url"].GetString(), jar_path);
+		DownloadHelper helper;
+		helper.set_options(DownloadHelper::FILE, client_download["url"].GetString(), jar_path);
 		OUT_LIT("Downloading server jar...");
-		const bool success = helper.perform();
+		helper.perform();
 
 		// Create the EULA
 		write_file(server_dir / "eula.txt", "eula = true\n");

@@ -10,8 +10,9 @@ namespace mcvm {
 
 		// Download version manifest
 		const fs::path manifest_file_path = assets_path / fs::path("version_manifest.json");
-		DownloadHelper helper(DownloadHelper::FILE_AND_STR, VERSION_MANIFEST_URL, manifest_file_path);
-		bool success = helper.perform();
+		DownloadHelper helper;
+		helper.set_options(DownloadHelper::FILE_AND_STR, VERSION_MANIFEST_URL, manifest_file_path);
+		helper.perform();
 		return helper.get_str();
 	}
 
@@ -48,8 +49,9 @@ namespace mcvm {
 
 		const std::string index_file_name = version + ".json";
 		const fs::path index_file_path = get_mcvm_dir() / fs::path(ASSETS_DIR) / fs::path(index_file_name);
-		DownloadHelper helper(DownloadHelper::FILE_AND_STR, ver_url, index_file_path);
-		bool success = helper.perform();
+		DownloadHelper helper;
+		helper.set_options(DownloadHelper::FILE_AND_STR, ver_url, index_file_path);
+		helper.perform();
 		ret->Parse(helper.get_str().c_str());
 	}
 
@@ -59,8 +61,10 @@ namespace mcvm {
 		const fs::path libraries_path = get_mcvm_dir() / "libraries";
 		create_dir_if_not_exists(libraries_path);
 
-		// TODO: Use a multi handle to make this asynchronous
 		OUT_LIT("Downloading libraries...");
+
+		MultiDownloadHelper multi_helper;
+
 		assert(ret->HasMember("libraries"));
 		for (auto& lib_val : ret->operator[]("libraries").GetArray()) {
 			const json::GenericObject lib = lib_val.GetObject();
@@ -70,8 +74,10 @@ namespace mcvm {
 			assert(download_artifact.HasMember("path"));
 			const char* path_str = download_artifact["path"].GetString();
 			const fs::path path = libraries_path / path_str;
+			// If we already have the library don't download it again
+			if (file_exists(path)) continue;
 			create_leading_directories(path);
-			
+
 			assert(download_artifact.HasMember("url"));
 			const char* url = download_artifact["url"].GetString();
 
@@ -83,8 +89,8 @@ namespace mcvm {
 				bool rule_fail = false;
 				for (auto& rule : lib["rules"].GetArray()) {
 					assert(rule.HasMember("action"));
-					const char* action = rule["action"].GetString();
-					const char* os_name = rule["os"]["name"].GetString();
+					const std::string_view action = rule["action"].GetString();
+					const std::string_view os_name = rule["os"]["name"].GetString();
 					const std::string test = OS_STRING;
 					if (
 						(action == "allow" && os_name != OS_STRING) ||
@@ -96,9 +102,11 @@ namespace mcvm {
 				if (rule_fail) continue;
 			}
 
-			DownloadHelper helper(DownloadHelper::FILE, url, path);
-			helper.perform();
-			OUT("Downloaded " << name);
+			OUT("Downloading " << name);
+			std::shared_ptr<DownloadHelper> helper = std::make_shared<DownloadHelper>();
+			helper->set_options(DownloadHelper::FILE, url, path);
+			multi_helper.add_helper(helper);
 		}
+		multi_helper.perform_blocking();
 	}
 };

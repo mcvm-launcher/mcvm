@@ -31,6 +31,7 @@ int main(int argc, char** argv) {
 	mcvm::PkgEvalResult res;
 	pkg.ensure_contents();
 	pkg.evaluate(res, "INFO", mcvm::RunLevel::ALL);
+	client.create();
 
 	// If we have 0-1 args, send the help message
 	if (argc <= 1) {

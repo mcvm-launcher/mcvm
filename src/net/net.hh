@@ -9,6 +9,7 @@
 #include <iostream>
 #include <assert.h>
 #include <memory>
+#include <vector>
 
 // URLs
 #define VERSION_MANIFEST_URL "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json"
@@ -49,6 +50,8 @@ namespace mcvm {
 	// Callback response for curl perform that writes the data to a file and a string
 	extern std::size_t write_data_to_file_and_str(void* buffer, size_t size, size_t nmemb, void* curl_result);
 
+	class MultiDownloadHelper;
+
 	// Wrapper around a libcurl handle
 	class DownloadHelper {
 		public:
@@ -59,17 +62,39 @@ namespace mcvm {
 			FILE_AND_STR
 		};
 
-		DownloadHelper(DownloadMode _mode, const std::string& url, const fs::path path);
+		DownloadHelper();
 
+		void set_options(DownloadMode mode, const std::string& url, const fs::path& path);
 		bool perform();
 
 		std::string get_str();
 		std::string get_err();
 
+		~DownloadHelper();
+
 		private:
 		CURL* handle;
 		char errbuf[CURL_ERROR_SIZE];
 		CurlResult res;
-		DownloadMode mode;
+
+		friend class MultiDownloadHelper;
+	};
+
+	// Wrapper around a libcurl multi handle
+	class MultiDownloadHelper {
+		CURLM* handle;
+		std::vector<std::shared_ptr<DownloadHelper>> helpers;
+		int is_performing = 1;
+		int messages_left;
+		
+		public:
+		MultiDownloadHelper();
+
+		// Add a download helper to the multi
+		void add_helper(std::shared_ptr<DownloadHelper> helper);
+		// Do the performs (blocking)
+		bool perform_blocking();
+
+		~MultiDownloadHelper();
 	};
 };
