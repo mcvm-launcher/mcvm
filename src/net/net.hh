@@ -18,6 +18,9 @@
 namespace json = rapidjson;
 
 namespace mcvm {
+	class MultiDownloadHelper;
+	class DownloadHelper;
+
 	// A struct passed in file writing from curl that holds both a file ptr and a string buffer to write into
 	struct CurlResult {
 		FILE* file = nullptr;
@@ -33,7 +36,7 @@ namespace mcvm {
 
 	// Updates asset and library indexes with Mojang servers
 	// Returns the manifest json file contents
-	extern std::string update_assets();
+	extern std::shared_ptr<DownloadHelper> update_assets();
 
 	// Obtain the json file for a version
 	extern void obtain_version_json(const std::string& version, json::Document* ret);
@@ -49,8 +52,6 @@ namespace mcvm {
 
 	// Callback response for curl perform that writes the data to a file and a string
 	extern std::size_t write_data_to_file_and_str(void* buffer, size_t size, size_t nmemb, void* curl_result);
-
-	class MultiDownloadHelper;
 
 	// Wrapper around a libcurl handle
 	class DownloadHelper {

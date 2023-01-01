@@ -1,7 +1,7 @@
 #include "net.hh"
 
 namespace mcvm {
-	std::string update_assets() {
+	std::shared_ptr<DownloadHelper> update_assets() {
 		// Ensure assets dir
 		const fs::path assets_path = get_mcvm_dir() / fs::path(ASSETS_DIR);
 		create_dir_if_not_exists(assets_path);
@@ -10,15 +10,16 @@ namespace mcvm {
 
 		// Download version manifest
 		const fs::path manifest_file_path = assets_path / fs::path("version_manifest.json");
-		DownloadHelper helper;
-		helper.set_options(DownloadHelper::FILE_AND_STR, VERSION_MANIFEST_URL, manifest_file_path);
-		helper.perform();
-		return helper.get_str();
+		std::shared_ptr<DownloadHelper> helper = std::make_shared<DownloadHelper>();
+		helper->set_options(DownloadHelper::FILE_AND_STR, VERSION_MANIFEST_URL, manifest_file_path);
+		helper->perform();
+		return helper;
 	}
 
 	void obtain_version_json(const std::string& version, json::Document* ret) {
 		OUT_LIT("Downloading version json...");
-		const std::string manifest_file = update_assets();
+		std::shared_ptr<DownloadHelper> helper = update_assets();
+		const std::string manifest_file = helper->get_str();
 
 		json::Document doc;
 		doc.Parse(manifest_file.c_str());
@@ -49,10 +50,9 @@ namespace mcvm {
 
 		const std::string index_file_name = version + ".json";
 		const fs::path index_file_path = get_mcvm_dir() / fs::path(ASSETS_DIR) / fs::path(index_file_name);
-		DownloadHelper helper;
-		helper.set_options(DownloadHelper::FILE_AND_STR, ver_url, index_file_path);
-		helper.perform();
-		ret->Parse(helper.get_str().c_str());
+		helper->set_options(DownloadHelper::FILE_AND_STR, ver_url, index_file_path);
+		helper->perform();
+		ret->Parse(helper->get_str().c_str());
 	}
 
 	void obtain_libraries(const std::string& version, json::Document* ret) {
