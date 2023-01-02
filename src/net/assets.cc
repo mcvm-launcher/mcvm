@@ -1,14 +1,15 @@
 #include "net.hh"
 
 namespace mcvm {
-	std::shared_ptr<DownloadHelper> update_assets() {
+	// README: https://wiki.vg/Game_files
+
+	std::shared_ptr<DownloadHelper> get_version_manifest() {
 		// Ensure assets dir
 		const fs::path assets_path = get_mcvm_dir() / fs::path(ASSETS_DIR);
 		create_dir_if_not_exists(assets_path);
 
-		OUT("Updating assets index...");
+		OUT("Obtaining version index...");
 
-		// Download version manifest
 		const fs::path manifest_file_path = assets_path / fs::path("version_manifest.json");
 		std::shared_ptr<DownloadHelper> helper = std::make_shared<DownloadHelper>();
 		helper->set_options(DownloadHelper::FILE_AND_STR, VERSION_MANIFEST_URL, manifest_file_path);
@@ -16,9 +17,9 @@ namespace mcvm {
 		return helper;
 	}
 
-	void obtain_version_json(const std::string& version, json::Document* ret) {
+	std::shared_ptr<DownloadHelper> obtain_version_json(const std::string& version, json::Document* ret) {
 		OUT_LIT("Downloading version json...");
-		std::shared_ptr<DownloadHelper> helper = update_assets();
+		std::shared_ptr<DownloadHelper> helper = get_version_manifest();
 		const std::string manifest_file = helper->get_str();
 
 		json::Document doc;
@@ -53,10 +54,12 @@ namespace mcvm {
 		helper->perform();
 		helper->sha1_checksum(ver_hash);
 		ret->Parse(helper->get_str().c_str());
+
+		return helper;
 	}
 
-	void obtain_libraries(const std::string& version, json::Document* ret) {
-		obtain_version_json(version, ret);
+	void obtain_libraries(const std::string& version, const fs::path& minecraft_path, json::Document* ret) {
+		std::shared_ptr<DownloadHelper> helper = obtain_version_json(version, ret);
 
 		const fs::path libraries_path = get_mcvm_dir() / "libraries";
 		create_dir_if_not_exists(libraries_path);
@@ -91,7 +94,6 @@ namespace mcvm {
 					assert(rule.HasMember("action"));
 					const std::string_view action = rule["action"].GetString();
 					const std::string_view os_name = rule["os"]["name"].GetString();
-					const std::string test = OS_STRING;
 					if (
 						(action == "allow" && os_name != OS_STRING) ||
 						(action == "disallow" && os_name == OS_STRING)
@@ -102,11 +104,53 @@ namespace mcvm {
 				if (rule_fail) continue;
 			}
 
-			OUT("Downloading " << name);
-			std::shared_ptr<DownloadHelper> helper = std::make_shared<DownloadHelper>();
-			helper->set_options(DownloadHelper::FILE, url, path);
-			multi_helper.add_helper(helper);
+			std::shared_ptr<DownloadHelper> lib_helper = std::make_shared<DownloadHelper>();
+			lib_helper->set_options(DownloadHelper::FILE, url, path);
+			multi_helper.add_helper(lib_helper);
 		}
+
+		// Assets
+		const fs::path assets_path = get_mcvm_dir() / "assets";
+		create_dir_if_not_exists(assets_path / "index");
+		const fs::path asset_index_path = assets_path / "index" / (version + ".json");
+
+		std::string asset_index_contents;
+		if (file_exists(asset_index_path)) {
+			read_file(asset_index_path, asset_index_contents);
+		} else {
+			assert(ret->HasMember("assetIndex"));
+			const std::string assets_url = ret->operator[]("assetIndex")["url"].GetString();
+			helper->set_options(DownloadHelper::FILE_AND_STR, assets_url, asset_index_path);
+			OUT("Downloading assets index...");
+			helper->perform();
+			asset_index_contents = helper->get_str();
+		}
+
+		create_dir_if_not_exists(assets_path / "objects");
+		// TODO: Make a copy in virtual for old versions
+		create_dir_if_not_exists(assets_path / "virtual");
+
+		json::Document asset_index;
+		asset_index.Parse<json::kParseStopWhenDoneFlag>(asset_index_contents.c_str());
+
+		assert(asset_index.HasMember("objects"));
+		for (auto& asset_val : asset_index["objects"].GetObject()) {
+			const json::GenericObject asset = asset_val.value.GetObject();
+			assert(asset.HasMember("hash"));
+			const std::string hash = asset["hash"].GetString();
+			const std::string hash_path = hash.substr(0, 2) + '/' + hash;
+			const fs::path path = assets_path / "objects" / hash_path;
+			if (file_exists(path)) continue;
+			const std::string url = std::string("http://resources.download.minecraft.net/" + hash_path);
+
+			create_leading_directories(path);
+
+			std::shared_ptr<DownloadHelper> asset_helper = std::make_shared<DownloadHelper>();
+			asset_helper->set_options(DownloadHelper::FILE, url, path);
+			multi_helper.add_helper(asset_helper);
+		}
+
+		OUT("Downloading libraries and assets...");
 		multi_helper.perform_blocking();
 	}
 };

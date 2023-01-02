@@ -36,9 +36,10 @@ namespace mcvm {
 
 	void ClientInstance::create() {
 		ensure_instance_dir();
+		const fs::path mc_dir = dir / ".minecraft";
 
 		json::Document doc;
-		obtain_libraries(parent->get_version(), &doc);
+		obtain_libraries(parent->get_version(), mc_dir, &doc);
 
 		// Get the client jar
 		const fs::path jar_path = dir / "client.jar";
@@ -52,7 +53,9 @@ namespace mcvm {
 
 	void ClientInstance::ensure_instance_dir() {
 		Instance::ensure_instance_dir();
-		create_dir_if_not_exists(dir / ".minecraft");
+		const fs::path mc_dir = dir / ".minecraft";
+		create_dir_if_not_exists(mc_dir);
+		create_dir_if_not_exists(mc_dir / "assets");
 	}
 
 	ServerInstance::ServerInstance(Profile* _parent, const std::string _name, const fs::path& mcvm_dir)

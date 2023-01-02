@@ -36,13 +36,13 @@ namespace mcvm {
 
 	// Updates asset and library indexes with Mojang servers
 	// Returns the manifest json file contents
-	extern std::shared_ptr<DownloadHelper> update_assets();
+	extern std::shared_ptr<DownloadHelper> get_version_manifest();
 
 	// Obtain the json file for a version
-	extern void obtain_version_json(const std::string& version, json::Document* ret);
+	extern std::shared_ptr<DownloadHelper> obtain_version_json(const std::string& version, json::Document* ret);
 
 	// Obtain libraries for a version
-	extern void obtain_libraries(const std::string& version, json::Document* ret);
+	extern void obtain_libraries(const std::string& version, const fs::path& minecraft_path, json::Document* ret);
 
 	// Callback response for curl perform that writes the data to a file
 	extern std::size_t write_data_to_file(void* buffer, size_t size, size_t nmemb, void* file);
@@ -106,6 +106,8 @@ namespace mcvm {
 		void add_helper(std::shared_ptr<DownloadHelper> helper);
 		// Do the performs (blocking)
 		bool perform_blocking();
+		// Reset to prepare another multi transfer
+		void reset();
 
 		~MultiDownloadHelper();
 	};

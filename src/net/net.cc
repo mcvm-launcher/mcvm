@@ -125,10 +125,15 @@ namespace mcvm {
 		return true;
 	}
 
-	MultiDownloadHelper::~MultiDownloadHelper() {
+	void MultiDownloadHelper::reset() {
 		for (unsigned int i = 0; i < helpers.size(); i++) {
 			curl_multi_remove_handle(handle, helpers[i]->handle);
 		}
+		helpers = {};
+	}
+
+	MultiDownloadHelper::~MultiDownloadHelper() {
+		reset();
 		curl_multi_cleanup(handle);
 	}
 };
