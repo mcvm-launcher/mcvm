@@ -44,4 +44,11 @@ namespace mcvm {
 	constexpr std::size_t litlen(const char[N]) {
 		return N - 1;
 	}
+	// Finds and replaces first occurrence of a string in another string and replaces it with something else
+	// Will modify source
+	static void fandr(std::string& source, const std::string& find, const std::string_view repl) {
+		std::size_t pos = source.find(find);
+		if (pos == std::string::npos) return;
+		source.replace(pos, find.length(), repl);
+	}
 };

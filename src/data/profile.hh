@@ -1,6 +1,6 @@
 #pragma once
-#include "resource.hh"
 #include "package/package.hh"
+#include "io/game.hh"
 
 namespace mcvm {
 	// A profile, which holds game settings and can be depended on by runnable instances 
@@ -25,6 +25,9 @@ namespace mcvm {
 		// The profile that this instance is created from
 		Profile* parent = nullptr;
 
+		// Version json downloaded from Mojang
+		json::Document version_json;
+
 		public:
 		const std::string name;
 		fs::path dir;
@@ -37,6 +40,12 @@ namespace mcvm {
 
 		// Make sure that the instance has a created directory
 		virtual void ensure_instance_dir();
+
+		// Run the instance
+		virtual void launch(User* user) {}
+
+		// Obtain the version of the instance
+		MCVersion get_version();
 	};
 
 	// A profile that also holds client-specific resources
@@ -49,6 +58,7 @@ namespace mcvm {
 
 		void create() override;
 		void ensure_instance_dir() override;
+		void launch(User* user) override;
 	};
 
 	class ServerInstance : public Instance {

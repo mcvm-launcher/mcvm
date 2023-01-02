@@ -1,1 +1,4 @@
-target_sources(mcvm PUBLIC files.cc)
+target_sources(mcvm PUBLIC
+	files.cc
+	game.cc
+)

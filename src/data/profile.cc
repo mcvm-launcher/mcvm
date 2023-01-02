@@ -30,6 +30,10 @@ namespace mcvm {
 		create_leading_directories(dir);
 		create_dir_if_not_exists(dir);
 	}
+	
+	MCVersion Instance::get_version() {
+		return parent->get_version();
+	}
 
 	ClientInstance::ClientInstance(Profile* _parent, const std::string _name, const fs::path& mcvm_dir)
 	: Instance(_parent, _name, mcvm_dir, CLIENT_INSTANCES_DIR) {}
@@ -38,13 +42,12 @@ namespace mcvm {
 		ensure_instance_dir();
 		const fs::path mc_dir = dir / ".minecraft";
 
-		json::Document doc;
-		obtain_libraries(parent->get_version(), mc_dir, &doc);
+		obtain_libraries(parent->get_version(), mc_dir, &version_json);
 
 		// Get the client jar
 		const fs::path jar_path = dir / "client.jar";
-		assert(doc.HasMember("downloads"));
-		const json::GenericObject client_download = doc["downloads"]["client"].GetObject();
+		assert(version_json.HasMember("downloads"));
+		const json::GenericObject client_download = version_json["downloads"]["client"].GetObject();
 		DownloadHelper helper;
 		helper.set_options(DownloadHelper::FILE, client_download["url"].GetString(), jar_path);
 		helper.add_progress_meter(ProgressData::DEFAULT, "Downloading client...");
@@ -58,19 +61,24 @@ namespace mcvm {
 		create_dir_if_not_exists(mc_dir / "assets");
 	}
 
+	void ClientInstance::launch(User* user) {
+		mcvm::GameRunner game(parent->get_version(), dir / ".minecraft", dir / "client.jar", user);
+		game.parse_args(&version_json);
+		game.launch();
+	}
+
 	ServerInstance::ServerInstance(Profile* _parent, const std::string _name, const fs::path& mcvm_dir)
 	: Instance(_parent, _name, mcvm_dir, SERVER_INSTANCES_DIR), server_dir(dir / "server") {}
 
 	void ServerInstance::create() {
 		ensure_instance_dir();
 		
-		json::Document doc;
-		obtain_version_json(parent->get_version(), &doc);
+		obtain_version_json(parent->get_version(), &version_json);
 
 		// Get the server jar
 		const fs::path jar_path = server_dir / "server.jar";
-		assert(doc.HasMember("downloads"));
-		const json::GenericObject server_download = doc["downloads"]["server"].GetObject();
+		assert(version_json.HasMember("downloads"));
+		const json::GenericObject server_download = version_json["downloads"]["server"].GetObject();
 		DownloadHelper helper;
 		helper.set_options(DownloadHelper::FILE, server_download["url"].GetString(), jar_path);
 		helper.add_progress_meter(ProgressData::DEFAULT, "Downloading server...");

@@ -113,8 +113,8 @@ namespace mcvm {
 
 		// Assets
 		const fs::path assets_path = get_mcvm_dir() / "assets";
-		create_dir_if_not_exists(assets_path / "index");
-		const fs::path asset_index_path = assets_path / "index" / (version + ".json");
+		create_dir_if_not_exists(assets_path / "indexes");
+		const fs::path asset_index_path = assets_path / "indexes" / (version + ".json");
 
 		std::string asset_index_contents;
 		if (file_exists(asset_index_path)) {
@@ -151,6 +151,8 @@ namespace mcvm {
 			asset_helper->set_options(DownloadHelper::FILE, url, path);
 			multi_helper.add_helper(asset_helper);
 		}
+
+		// TODO: Natives
 
 		OUT("Downloading libraries and assets...");
 		multi_helper.perform_blocking();

@@ -3,6 +3,7 @@
 #include "net/net.hh"
 #include "package/package.hh"
 #include "daemon.hh"
+#include "io/game.hh"
 
 #include <assert.h>
 #include <iostream>
@@ -32,6 +33,9 @@ int main(int argc, char** argv) {
 	pkg.ensure_contents();
 	pkg.evaluate(res, "INFO", mcvm::RunLevel::ALL);
 	client.create();
+
+	mcvm::User user;
+	client.launch(&user);
 
 	// If we have 0-1 args, send the help message
 	if (argc <= 1) {
