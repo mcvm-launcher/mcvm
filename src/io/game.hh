@@ -36,14 +36,12 @@ namespace mcvm {
 			User* _user
 		);
 
+		// Add word to the command
+		void add_word(const std::string& word);
 		// Add a command line flag to the command
 		void add_flag(const std::string& flag);
 		// Parse arguments from a JSON file
 		void parse_args(json::Document* ret);
-
-		// Options
-
-		void authenticate(const std::string& username, const std::string& access_token);
 
 		// Finish up and launch
 		void launch();

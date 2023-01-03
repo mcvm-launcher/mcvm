@@ -175,4 +175,27 @@ namespace mcvm {
 		reset();
 		curl_multi_cleanup(handle);
 	}
+
+	std::string download_cached_file(const std::string& url, const fs::path& path, bool download_str) {
+		if (file_exists(path)) {
+			if (download_str) {
+				std::string ret;
+				read_file(path, ret);
+				return ret;
+			} else {
+				return "";
+			}
+		} else {
+			DownloadHelper helper;
+			DownloadHelper::DownloadMode mode;
+			if (download_str) {
+				mode = DownloadHelper::FILE_AND_STR;
+			} else {
+				mode = DownloadHelper::FILE;
+			}
+			helper.set_options(mode, url, path);
+			helper.perform();
+			return helper.get_str();
+		}
+	}
 };

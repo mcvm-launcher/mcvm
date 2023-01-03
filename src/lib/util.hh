@@ -1,4 +1,7 @@
 #pragma once
+
+#include <rapidjson/document.h>
+
 #include <iostream>
 
 // Print value to cout
@@ -37,6 +40,12 @@
 	#define OS_STRING "osx"
 #endif
 
+// Attributes
+#define UNUSED [[maybe_unused]]
+#define FALLTHROUGH [[fallthrough]]
+
+namespace json = rapidjson;
+
 namespace mcvm {
 	// Compute the length of a string literal at compile time
 	// https://stackoverflow.com/a/26082447
@@ -46,9 +55,25 @@ namespace mcvm {
 	}
 	// Finds and replaces first occurrence of a string in another string and replaces it with something else
 	// Will modify source
-	static void fandr(std::string& source, const std::string& find, const std::string_view repl) {
+	static inline void fandr(std::string& source, const std::string& find, const std::string_view repl) {
 		std::size_t pos = source.find(find);
 		if (pos == std::string::npos) return;
 		source.replace(pos, find.length(), repl);
+	}
+
+	// Access a json value with an assertion that it is there
+	static inline json::Value& json_access(json::Value& val, const char* key) {
+		assert(val.HasMember(key));
+		return val[key];
+	}
+
+	static inline json::Value& json_access(json::Value* val, const char* key) {
+		assert(val->HasMember(key));
+		return val->operator[](key);
+	}
+
+	static inline json::Value& json_access(json::GenericObject<false, json::Value>& val, const char* key) {
+		assert(val.HasMember(key));
+		return val[key];
 	}
 };

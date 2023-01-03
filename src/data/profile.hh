@@ -42,7 +42,7 @@ namespace mcvm {
 		virtual void ensure_instance_dir();
 
 		// Run the instance
-		virtual void launch(User* user) {}
+		virtual void launch(UNUSED User* user) {}
 
 		// Obtain the version of the instance
 		MCVersion get_version();

@@ -28,16 +28,11 @@ namespace mcvm {
 		std::string ver_url;
 		std::string ver_hash;
 		// We have to search them as they aren't indexed
-		assert(doc.HasMember("versions"));
-		for (auto&ver : doc["versions"].GetArray()) {
+		for (auto&ver : json_access(doc, "versions").GetArray()) {
 			json::GenericObject ver_obj = ver.GetObject();
-			assert(ver_obj.HasMember("id"));
-			if (ver_obj["id"].GetString() == version) {
-				assert(ver_obj.HasMember("url"));
-				assert(ver_obj.HasMember("sha1"));
-
-				ver_url = ver_obj["url"].GetString();
-				ver_hash = ver_obj["sha1"].GetString();
+			if (json_access(ver_obj, "id").GetString() == version) {
+				ver_url = json_access(ver_obj, "url").GetString();
+				ver_hash = json_access(ver_obj, "sha1").GetString();
 				assert(ver_hash.size() == 40);
 
 				break;
@@ -58,7 +53,7 @@ namespace mcvm {
 		return helper;
 	}
 
-	void obtain_libraries(const std::string& version, const fs::path& minecraft_path, json::Document* ret) {
+	void obtain_libraries(const std::string& version, json::Document* ret) {
 		std::shared_ptr<DownloadHelper> helper = obtain_version_json(version, ret);
 
 		const fs::path libraries_path = get_mcvm_dir() / "libraries";
@@ -68,32 +63,26 @@ namespace mcvm {
 
 		MultiDownloadHelper multi_helper;
 
-		assert(ret->HasMember("libraries"));
-		for (auto& lib_val : ret->operator[]("libraries").GetArray()) {
-			const json::GenericObject lib = lib_val.GetObject();
-			assert(lib.HasMember("downloads"));
-			const json::GenericObject download_artifact = lib["downloads"]["artifact"].GetObject();
+		for (auto& lib_val : json_access(ret, "libraries").GetArray()) {
+			json::GenericObject lib = lib_val.GetObject();
+			json::GenericObject download_artifact = json_access(json_access(lib, "downloads"), "artifact").GetObject();
 
-			assert(download_artifact.HasMember("path"));
-			const char* path_str = download_artifact["path"].GetString();
+			const char* path_str = json_access(download_artifact, "path").GetString();
 			const fs::path path = libraries_path / path_str;
 			// If we already have the library don't download it again
 			if (file_exists(path)) continue;
 			create_leading_directories(path);
 
-			assert(download_artifact.HasMember("url"));
-			const char* url = download_artifact["url"].GetString();
+			const char* url = json_access(download_artifact, "url").GetString();
 
-			assert(lib.HasMember("name"));
-			const char* name = lib["name"].GetString();
+			const char* name = json_access(lib, "name").GetString();
 
 			// Check rules
 			if (lib.HasMember("rules")) {
 				bool rule_fail = false;
 				for (auto& rule : lib["rules"].GetArray()) {
-					assert(rule.HasMember("action"));
-					const std::string_view action = rule["action"].GetString();
-					const std::string_view os_name = rule["os"]["name"].GetString();
+					const std::string_view action = json_access(rule, "action").GetString();
+					const std::string_view os_name = json_access(json_access(rule, "os"), "name").GetString();
 					if (
 						(action == "allow" && os_name != OS_STRING) ||
 						(action == "disallow" && os_name == OS_STRING)
@@ -116,17 +105,7 @@ namespace mcvm {
 		create_dir_if_not_exists(assets_path / "indexes");
 		const fs::path asset_index_path = assets_path / "indexes" / (version + ".json");
 
-		std::string asset_index_contents;
-		if (file_exists(asset_index_path)) {
-			read_file(asset_index_path, asset_index_contents);
-		} else {
-			assert(ret->HasMember("assetIndex"));
-			const std::string assets_url = ret->operator[]("assetIndex")["url"].GetString();
-			helper->set_options(DownloadHelper::FILE_AND_STR, assets_url, asset_index_path);
-			OUT("Downloading assets index...");
-			helper->perform();
-			asset_index_contents = helper->get_str();	
-		}
+		std::string asset_index_contents = download_cached_file(json_access(json_access(ret, "assetIndex"), "url").GetString(), asset_index_path, true);
 
 		create_dir_if_not_exists(assets_path / "objects");
 		// TODO: Make a copy in virtual for old versions
@@ -135,11 +114,9 @@ namespace mcvm {
 		json::Document asset_index;
 		asset_index.Parse<json::kParseStopWhenDoneFlag>(asset_index_contents.c_str());
 
-		assert(asset_index.HasMember("objects"));
-		for (auto& asset_val : asset_index["objects"].GetObject()) {
-			const json::GenericObject asset = asset_val.value.GetObject();
-			assert(asset.HasMember("hash"));
-			const std::string hash = asset["hash"].GetString();
+		for (auto& asset_val : json_access(asset_index, "objects").GetObject()) {
+			json::GenericObject asset = asset_val.value.GetObject();
+			const std::string hash = json_access(asset, "hash").GetString();
 			const std::string hash_path = hash.substr(0, 2) + '/' + hash;
 			const fs::path path = assets_path / "objects" / hash_path;
 			if (file_exists(path)) continue;

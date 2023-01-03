@@ -10,7 +10,7 @@ namespace mcvm {
 			"\t" "profile: modify, add, and launch profiles";
 	}
 
-	void help_command(const unsigned int argc, CommandArgs argv) {
+	void help_command(const unsigned int argc, UNUSED CommandArgs argv) {
 		OUT(help_message());
 	}
 };

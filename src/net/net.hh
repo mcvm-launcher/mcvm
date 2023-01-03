@@ -35,7 +35,7 @@ namespace mcvm {
 	extern std::shared_ptr<DownloadHelper> obtain_version_json(const std::string& version, json::Document* ret);
 
 	// Obtain libraries for a version
-	extern void obtain_libraries(const std::string& version, const fs::path& minecraft_path, json::Document* ret);
+	extern void obtain_libraries(const std::string& version, json::Document* ret);
 
 	// CURL callbacks
 
@@ -134,4 +134,7 @@ namespace mcvm {
 
 		~MultiDownloadHelper();
 	};
+
+	// Download a file if it is not already cached locally
+	extern std::string download_cached_file(const std::string& url, const fs::path& path, bool download_str = false);
 };

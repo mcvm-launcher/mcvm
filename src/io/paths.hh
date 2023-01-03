@@ -35,7 +35,7 @@ namespace mcvm {
 		}
 	};
 
-	static fs::path get_home_dir() {
+	static inline fs::path get_home_dir() {
 		#ifdef __linux__
 			char* home_dir = std::getenv("XDG_HOME");
 			if (!home_dir) {
@@ -52,13 +52,13 @@ namespace mcvm {
 		#endif
 	}
 
-	static fs::path get_mcvm_dir(const fs::path& home_dir = get_home_dir()) {
+	static inline fs::path get_mcvm_dir(const fs::path& home_dir = get_home_dir()) {
 		#ifdef __linux__
 			char* base_dir = std::getenv("XDG_DATA_HOME");
 			if (base_dir) {
 				return fs::path(base_dir) / "mcvm";
 			}
-			return get_home_dir() / fs::path(".local" PATH_SEP "share" PATH_SEP "mcvm");
+			return home_dir / fs::path(".local" PATH_SEP "share" PATH_SEP "mcvm");
 		#else
 			#ifdef _WIN32
 				return fs::path(std::getenv("APPDATA")) / "mcvm";
@@ -66,13 +66,13 @@ namespace mcvm {
 		#endif
 	}
 
-	static fs::path get_cache_dir(const fs::path& home_dir = get_home_dir()) {
+	static inline fs::path get_cache_dir(const fs::path& home_dir = get_home_dir()) {
 		#ifdef __linux__
 			char* base_dir = std::getenv("XDG_CACHE_HOME");
 			if (base_dir) {
 				return fs::path(base_dir) / "mcvm";
 			}
-			return get_home_dir() / fs::path(".cache" PATH_SEP "mcvm");
+			return home_dir / fs::path(".cache" PATH_SEP "mcvm");
 		#else
 			#ifdef _WIN32
 				return get_mcvm_dir() / "cache";
@@ -80,7 +80,7 @@ namespace mcvm {
 		#endif
 	}
 
-	static fs::path get_run_dir() {
+	static inline fs::path get_run_dir() {
 		#ifdef __linux__
 			char* base_dir = std::getenv("XDG_RUNTIME_DIR");
 			if (base_dir) {
@@ -95,7 +95,7 @@ namespace mcvm {
 	}
 
 	// File extensions
-	static std::string add_package_extension(const std::string& name) {
+	static inline std::string add_package_extension(const std::string& name) {
 		return name + ".pkg.txt";
 	}
 
@@ -103,7 +103,7 @@ namespace mcvm {
 		FileOpenError(const char* _filename) : filename(_filename) {} 
 		const char* filename;
 		const char* what() {
-			return strcat(strcat("File ", filename), " could not be opened");
+			return (std::string() + "File " + filename + " could not be opened").c_str();
 		}
 	};
 };

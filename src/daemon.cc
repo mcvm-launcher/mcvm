@@ -8,7 +8,7 @@ namespace mcvm {
 	Daemon::Daemon(const fs::path& run_dir)
 	: pid_path(run_dir / "mcvm.pid") {}
 
-	void Daemon::on_exit(uv_process_t *req, int64_t exit_status, int term_signal) {
+	void Daemon::on_exit(uv_process_t *req, UNUSED int64_t exit_status, UNUSED int term_signal) {
 		uv_close((uv_handle_t*) req, NULL);
 	}
 

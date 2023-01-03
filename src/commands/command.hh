@@ -19,7 +19,7 @@ namespace mcvm {
 	extern void profile_command(const unsigned int argc, CommandArgs argv);
 	extern void help_command(const unsigned int argc, CommandArgs argv);
 	// Internal command used as the init function for the daemon
-	static void start_daemon_command(const unsigned int argc, CommandArgs argv) {
+	static void start_daemon_command(UNUSED const unsigned int argc, UNUSED CommandArgs argv) {
 		Daemon::daemon_init();
 	}
 

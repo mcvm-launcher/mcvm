@@ -67,7 +67,7 @@ namespace mcvm {
 			const char& c = contents[i];
 
 			switch (c) {
-				case ';':
+				FALLTHROUGH case ';':
 					if (prs.string.state != ParseString::INSIDE && prs.string.state != ParseString::BEGIN) {
 						prs.instruction++;
 						break;

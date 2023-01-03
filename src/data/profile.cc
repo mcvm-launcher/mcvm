@@ -42,16 +42,13 @@ namespace mcvm {
 		ensure_instance_dir();
 		const fs::path mc_dir = dir / ".minecraft";
 
-		obtain_libraries(parent->get_version(), mc_dir, &version_json);
+		obtain_libraries(parent->get_version(), &version_json);
 
 		// Get the client jar
-		const fs::path jar_path = dir / "client.jar";
-		assert(version_json.HasMember("downloads"));
-		const json::GenericObject client_download = version_json["downloads"]["client"].GetObject();
-		DownloadHelper helper;
-		helper.set_options(DownloadHelper::FILE, client_download["url"].GetString(), jar_path);
-		helper.add_progress_meter(ProgressData::DEFAULT, "Downloading client...");
-		helper.perform();
+		json::GenericObject client_download = json_access(json_access(version_json, "downloads"), "client").GetObject();
+		const std::string client_url = json_access(client_download, "url").GetString();
+		OUT_LIT("Downloading client jar");
+		download_cached_file(client_url, dir / "client.jar");
 	}
 
 	void ClientInstance::ensure_instance_dir() {
@@ -77,11 +74,9 @@ namespace mcvm {
 
 		// Get the server jar
 		const fs::path jar_path = server_dir / "server.jar";
-		assert(version_json.HasMember("downloads"));
-		const json::GenericObject server_download = version_json["downloads"]["server"].GetObject();
+		json::GenericObject server_download = json_access(json_access(version_json, "downloads"), "server").GetObject();
 		DownloadHelper helper;
-		helper.set_options(DownloadHelper::FILE, server_download["url"].GetString(), jar_path);
-		helper.add_progress_meter(ProgressData::DEFAULT, "Downloading server...");
+		helper.set_options(DownloadHelper::FILE, json_access(server_download, "url").GetString(), jar_path);
 		helper.perform();
 
 		// Create the EULA

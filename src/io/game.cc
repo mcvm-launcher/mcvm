@@ -12,6 +12,11 @@ namespace mcvm {
 	)
 	: version(_version), mc_dir(_mc_dir), jar_path(_jar_path), user(_user) {}
 
+	void GameRunner::add_word(const std::string& word) {
+		output.push_back(' ');
+		output.append(word);
+	}
+
 	void GameRunner::add_flag(const std::string& flag) {
 		flags.push_back(flag);
 	}
@@ -57,18 +62,17 @@ namespace mcvm {
 	void GameRunner::parse_args(json::Document* ret) {
 		assert(ret->IsObject());
 		assert(ret->HasMember("arguments"));
-		json::GenericArray game_args = ret->operator[]("arguments")["game"].GetArray();
-		json::GenericArray jvm_args = ret->operator[]("arguments")["jvm"].GetArray();
+		json::GenericObject arguments = json_access(ret, "arguments").GetObject();
+		json::GenericArray game_args = json_access(arguments, "game").GetArray();
+		json::GenericArray jvm_args = json_access(arguments, "jvm").GetArray();
 
 		for (auto& arg : jvm_args) {
 			parse_single_arg(arg, true);
 		}
 		write_flags();
 
-		assert(ret->HasMember("mainClass"));
-		const std::string main_class = ret->operator[]("mainClass").GetString();
-		output.push_back(' ');
-		output.append(main_class);
+		const std::string main_class = json_access(ret, "mainClass").GetString();
+		add_word(main_class);
 		
 		for (auto& arg : game_args) {
 			parse_single_arg(arg, false);
@@ -78,20 +82,14 @@ namespace mcvm {
 
 	void GameRunner::write_flags() {
 		for (unsigned int i = 0; i < flags.size(); i++) {
-			output.push_back(' ');
-			output.append(flags[i]);
+			add_word(flags[i]);
 		}
 		flags = {};
 	}
 
-	void GameRunner::authenticate(const std::string& username, const std::string& access_token) {
-
-	}
-
 	void GameRunner::launch() {
 		// system(output.c_str());
-		output.push_back(' ');
-		output.append(jar_path);
+		add_word(jar_path);
 		OUT(output);
 	}
 };
