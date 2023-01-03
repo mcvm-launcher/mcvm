@@ -18,16 +18,18 @@ int main(int argc, char** argv) {
 	// Directories
 	const fs::path home_dir = mcvm::get_home_dir();
 	const fs::path mcvm_dir = mcvm::get_mcvm_dir(home_dir);
+	const fs::path internal_dir = mcvm::get_internal_dir(mcvm_dir);
 	const fs::path cache_dir = mcvm::get_cache_dir(home_dir);
 	const fs::path run_dir = mcvm::get_run_dir();
 	mcvm::create_dir_if_not_exists(mcvm_dir);
+	mcvm::create_dir_if_not_exists(internal_dir);
 	mcvm::create_dir_if_not_exists(cache_dir);
 
 	// mcvm::Daemon dmon(run_dir);
 	// dmon.ensure_started();
 
-	mcvm::Profile prof("1.19.3 Vanilla", "1.19.3");
-	mcvm::ClientInstance client(&prof, "1.19.3 Vanilla", mcvm_dir);
+	mcvm::Profile prof("Vanilla", "1.13");
+	mcvm::ClientInstance client(&prof, "Vanilla", mcvm_dir);
 	mcvm::LocalPackage pkg("sodium", mcvm::get_home_dir() / "test/sodium.pkg.txt");
 	mcvm::PkgEvalResult res;
 	pkg.ensure_contents();

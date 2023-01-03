@@ -5,6 +5,7 @@
 
 #include <curl/curl.h>
 #include <rapidjson/document.h>
+#include <zip.h>
 
 #include <iostream>
 #include <assert.h>

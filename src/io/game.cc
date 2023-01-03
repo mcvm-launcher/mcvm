@@ -41,7 +41,7 @@ namespace mcvm {
 			_GAME_ARG_REPL("${auth_uuid}", "aaaaa-aaaaa-aaaa-a");
 		}
 		// assert(!contents.find('$'));
-		if (contents.find('$')) {
+		if (contents.find('$') != std::string::npos) {
 			return true;
 		}
 		return false;
@@ -61,7 +61,6 @@ namespace mcvm {
 
 	void GameRunner::parse_args(json::Document* ret) {
 		assert(ret->IsObject());
-		assert(ret->HasMember("arguments"));
 		json::GenericObject arguments = json_access(ret, "arguments").GetObject();
 		json::GenericArray game_args = json_access(arguments, "game").GetArray();
 		json::GenericArray jvm_args = json_access(arguments, "jvm").GetArray();

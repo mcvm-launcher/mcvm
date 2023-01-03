@@ -66,6 +66,10 @@ namespace mcvm {
 		#endif
 	}
 
+	static inline fs::path get_internal_dir(const fs::path& mcvm_dir = get_mcvm_dir()) {
+		return mcvm_dir / "internal";
+	}
+
 	static inline fs::path get_cache_dir(const fs::path& home_dir = get_home_dir()) {
 		#ifdef __linux__
 			char* base_dir = std::getenv("XDG_CACHE_HOME");
