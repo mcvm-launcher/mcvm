@@ -1,7 +1,7 @@
 #include "commands/command.hh"
 #include "io/files.hh"
 #include "net/net.hh"
-#include "package/package.hh"
+#include "package/ast.hh"
 #include "daemon.hh"
 #include "io/game.hh"
 
@@ -28,16 +28,16 @@ int main(int argc, char** argv) {
 	// mcvm::Daemon dmon(run_dir);
 	// dmon.ensure_started();
 
-	mcvm::Profile prof("Vanilla", "1.13");
+	mcvm::Profile prof("Vanilla", "1.19.2");
 	mcvm::ClientInstance client(&prof, "Vanilla", mcvm_dir);
 	mcvm::LocalPackage pkg("sodium", mcvm::get_home_dir() / "test/sodium.pkg.txt");
-	mcvm::PkgEvalResult res;
 	pkg.ensure_contents();
-	pkg.evaluate(res, "INFO", mcvm::RunLevel::ALL);
-	client.create();
+	mcvm::PkgAST* ast = pkg.parse();
+	delete ast;
+	// client.create();
 
-	mcvm::User user;
-	client.launch(&user);
+	// mcvm::User user;
+	// client.launch(&user);
 
 	// If we have 0-1 args, send the help message
 	if (argc <= 1) {

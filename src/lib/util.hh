@@ -3,6 +3,7 @@
 #include <rapidjson/document.h>
 
 #include <iostream>
+#include <vector>
 
 // Print value to cout
 #define OUT(val) std::cout << val << '\n'
@@ -75,5 +76,13 @@ namespace mcvm {
 	static inline json::Value& json_access(json::GenericObject<false, json::Value>& val, const char* key) {
 		assert(val.HasMember(key));
 		return val[key];
+	}
+
+	// Obtain a subvector of a parent vector
+	template <typename T>
+	static inline std::vector<T> vec_slice(const std::vector<T>& src, std::size_t start, std::size_t len) {
+		auto first = src.cbegin() + start;
+		auto second = first + len;
+		return std::vector<T>(first, second);
 	}
 };

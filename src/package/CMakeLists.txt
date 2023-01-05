@@ -1,4 +1,4 @@
 target_sources(mcvm PUBLIC
+	parse.cc
 	package.cc
-	eval.cc
 )

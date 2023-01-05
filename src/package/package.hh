@@ -3,12 +3,14 @@
 #include "net/net.hh"
 
 namespace mcvm {
-
-
 	// The result from evaluation
 	struct PkgEvalResult {
-
+		std::string pkg_name;
+		std::string pkg_version;
 	};
+
+	class PkgAST;
+	class ParseData;
 
 	struct EvalType {
 		// The extent of evaluation to perform on a package
@@ -40,8 +42,9 @@ namespace mcvm {
 		public:
 		// Ensure that the package contents are stored in memory
 		virtual void ensure_contents() {}
-		// Parse and evaluate the package contents
-		void evaluate(PkgEvalResult& ret, const std::string& routine, RunLevel level);
+		// Parse the package contents
+		PkgAST* parse();
+		void evaluate(ParseData* ret, const std::string& routine, RunLevel level) {}
 
 		virtual ~Package() = default;
 	};
