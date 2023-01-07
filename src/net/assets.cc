@@ -9,7 +9,7 @@ namespace mcvm {
 
 		OUT("Obtaining version index...");
 
-		const fs::path manifest_file_path = assets_path / fs::path("version_manifest.json");
+		const fs::path manifest_file_path = assets_path / "version_manifest.json";
 		std::shared_ptr<DownloadHelper> helper = std::make_shared<DownloadHelper>();
 		helper->set_options(DownloadHelper::FILE_AND_STR, VERSION_MANIFEST_URL, manifest_file_path);
 		helper->perform();
@@ -60,7 +60,7 @@ namespace mcvm {
 		zip_stat_t st;
 		for (unsigned int i = 0; i < zip_get_num_entries(z, 0); i++) {
 			if (zip_stat_index(z, i, 0, &st) == 0) {
-				OUT("NATIVE" << st.name);
+				OUT("NATIVE " << st.name);
 			}
 		}
 	}
@@ -73,7 +73,7 @@ namespace mcvm {
 		const fs::path natives_path = get_internal_dir() / "versions" / version / "natives";
 		create_leading_directories(natives_path);
 
-		OUT_LIT("Downloading libraries...");
+		OUT_LIT("Finding libraries...");
 
 		MultiDownloadHelper multi_helper;
 
@@ -132,8 +132,9 @@ namespace mcvm {
 		std::string asset_index_contents = download_cached_file(json_access(json_access(ret, "assetIndex"), "url").GetString(), asset_index_path, true, helper);
 
 		create_dir_if_not_exists(assets_path / "objects");
-		// TODO: Make a copy in virtual for old versions
-		create_dir_if_not_exists(assets_path / "virtual");
+		if (!fs::exists(assets_path / "virtual")) {
+			fs::create_directory_symlink(assets_path / "objects", assets_path / "virtual");
+		}
 
 		json::Document asset_index;
 		asset_index.Parse<json::kParseStopWhenDoneFlag>(asset_index_contents.c_str());
