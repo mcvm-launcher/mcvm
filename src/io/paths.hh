@@ -9,14 +9,6 @@
 
 namespace fs = std::filesystem;
 
-// Path creation utilities
-#define PATH_SEP "/"
-#define PATH_CONCAT_2(path1, path2) path1 PATH_SEP path2
-#define PATH_CONCAT_3(path1, path2, path3) PATH_CONCAT_2(PATH_CONCAT_2(path1, path2), path3)
-#define PATH_CONCAT_4(path1, path2, path3, path4) PATH_CONCAT_2(PATH_CONCAT_3(path1, path2, path3), path4)
-#define PATH_CONCAT_5(path1, path2, path3, path4, path5) PATH_CONCAT_2(PATH_CONCAT_4(path1, path2, path3, path4), path5)
-#define PATH_CONCAT_6(path1, path2, path3, path4, path5, path6) PATH_CONCAT_2(PATH_CONCAT_5(path1, path2, path3, path4, path5), path6)
-
 // Relative paths to locations of mcvm files from mcvm base dir
 #define ASSETS_DIR "assets"
 #define PROFILES_DIR "profiles"
@@ -26,6 +18,9 @@ namespace fs = std::filesystem;
 #define CACHED_PACKAGES_DIR "pkg"
 
 namespace mcvm {
+	// Creates a directory at the path if it does not exist already
+	extern void create_dir_if_not_exists(const fs::path& path);
+
 	struct GetDirectoryException : public std::exception {
 		const std::string dir;
 		GetDirectoryException(const std::string& _dir) : dir(_dir) {}
@@ -55,13 +50,13 @@ namespace mcvm {
 		#endif
 	}
 
-	static inline fs::path get_mcvm_dir(const fs::path& home_dir = get_home_dir()) {
+	static inline fs::path get_data_dir(const fs::path& home_dir = get_home_dir()) {
 		#ifdef __linux__
 			char* base_dir = std::getenv("XDG_DATA_HOME");
 			if (base_dir) {
 				return fs::path(base_dir) / "mcvm";
 			}
-			return home_dir / fs::path(".local" PATH_SEP "share" PATH_SEP "mcvm");
+			return home_dir / ".local" / "share" / "mcvm";
 		#else
 			#ifdef _WIN32
 				return fs::path(std::getenv("APPDATA")) / "mcvm";
@@ -69,7 +64,7 @@ namespace mcvm {
 		#endif
 	}
 
-	static inline fs::path get_internal_dir(const fs::path& mcvm_dir = get_mcvm_dir()) {
+	static inline fs::path get_internal_dir(const fs::path& mcvm_dir = get_data_dir()) {
 		return mcvm_dir / "internal";
 	}
 
@@ -79,10 +74,24 @@ namespace mcvm {
 			if (base_dir) {
 				return fs::path(base_dir) / "mcvm";
 			}
-			return home_dir / fs::path(".cache" PATH_SEP "mcvm");
+			return home_dir / ".cache" / "mcvm";
 		#else
 			#ifdef _WIN32
-				return get_mcvm_dir() / "cache";
+				return get_data_dir() / "cache";
+			#endif
+		#endif
+	}
+
+	static inline fs::path get_config_dir(const fs::path& home_dir = get_home_dir()) {
+		#ifdef __linux__
+			char* base_dir = std::getenv("XDG_CONFIG_HOME");
+			if (base_dir) {
+				return fs::path(base_dir) / "mcvm";
+			}
+			return home_dir / ".config" / "mcvm";
+		#else
+			#ifdef _WIN32
+				return get_data_dir() / "config" / "mcvm";
 			#endif
 		#endif
 	}
@@ -100,6 +109,31 @@ namespace mcvm {
 			#endif
 		#endif
 	}
+
+	// Struct that holds all cached paths and is passed down through functions
+	struct CachedPaths {
+		const fs::path home;
+		const fs::path data;
+		const fs::path internal;
+		const fs::path cache;
+		const fs::path config;
+		const fs::path run;
+		const fs::path assets;
+
+		CachedPaths()
+		: home(get_home_dir()),
+		data(get_data_dir(home)),
+		internal(get_internal_dir(data)),
+		cache(get_cache_dir(home)),
+		config(get_config_dir(home)),
+		run(get_run_dir()),
+		assets(internal / "assets") {
+			create_dir_if_not_exists(data);
+			create_dir_if_not_exists(internal);
+			create_dir_if_not_exists(cache);
+			create_dir_if_not_exists(config);
+		}
+	};
 
 	// File extensions
 	static inline std::string add_package_extension(const std::string& name) {

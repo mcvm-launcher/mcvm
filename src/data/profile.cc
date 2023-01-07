@@ -19,10 +19,10 @@ namespace mcvm {
 		packages = {};
 	}
 
-	Instance::Instance(Profile* _parent, const std::string _name, const fs::path& mcvm_dir, const std::string& subpath)
-	: parent(_parent), name(_name), dir(mcvm_dir / subpath / name) {}
+	Instance::Instance(Profile* _parent, const std::string _name, const CachedPaths& paths, const std::string& subpath)
+	: parent(_parent), name(_name), dir(paths.data / subpath / name) {}
 
-	void Instance::create() {
+	void Instance::create(const CachedPaths& paths) {
 		ensure_instance_dir();
 	}
 
@@ -35,14 +35,14 @@ namespace mcvm {
 		return parent->get_version();
 	}
 
-	ClientInstance::ClientInstance(Profile* _parent, const std::string _name, const fs::path& mcvm_dir)
-	: Instance(_parent, _name, mcvm_dir, CLIENT_INSTANCES_DIR) {}
+	ClientInstance::ClientInstance(Profile* _parent, const std::string _name, const CachedPaths& paths)
+	: Instance(_parent, _name, paths, CLIENT_INSTANCES_DIR) {}
 
-	void ClientInstance::create() {
+	void ClientInstance::create(const CachedPaths& paths) {
 		ensure_instance_dir();
 		const fs::path mc_dir = dir / ".minecraft";
 
-		std::shared_ptr<DownloadHelper> helper = obtain_libraries(parent->get_version(), &version_json);
+		std::shared_ptr<DownloadHelper> helper = obtain_libraries(parent->get_version(), &version_json, paths);
 
 		// Get the client jar
 		json::GenericObject client_download = json_access(json_access(version_json, "downloads"), "client").GetObject();
@@ -58,19 +58,19 @@ namespace mcvm {
 		create_dir_if_not_exists(mc_dir / "assets");
 	}
 
-	void ClientInstance::launch(User* user) {
+	void ClientInstance::launch(User* user, const CachedPaths& paths) {
 		mcvm::GameRunner game(parent->get_version(), dir / ".minecraft", dir / "client.jar", user);
-		game.parse_args(&version_json);
+		game.parse_args(&version_json, paths);
 		game.launch();
 	}
 
-	ServerInstance::ServerInstance(Profile* _parent, const std::string _name, const fs::path& mcvm_dir)
-	: Instance(_parent, _name, mcvm_dir, SERVER_INSTANCES_DIR), server_dir(dir / "server") {}
+	ServerInstance::ServerInstance(Profile* _parent, const std::string _name, const CachedPaths& paths)
+	: Instance(_parent, _name, paths, SERVER_INSTANCES_DIR), server_dir(dir / "server") {}
 
-	void ServerInstance::create() {
+	void ServerInstance::create(const CachedPaths& paths) {
 		ensure_instance_dir();
 		
-		std::shared_ptr<DownloadHelper> helper = obtain_version_json(parent->get_version(), &version_json);
+		std::shared_ptr<DownloadHelper> helper = obtain_version_json(parent->get_version(), &version_json, paths);
 
 		// Get the server jar
 		const fs::path jar_path = server_dir / "server.jar";

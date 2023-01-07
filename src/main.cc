@@ -16,21 +16,14 @@ int main(int argc, char** argv) {
 	mcvm::net_start();
 
 	// Directories
-	const fs::path home_dir = mcvm::get_home_dir();
-	const fs::path mcvm_dir = mcvm::get_mcvm_dir(home_dir);
-	const fs::path internal_dir = mcvm::get_internal_dir(mcvm_dir);
-	const fs::path cache_dir = mcvm::get_cache_dir(home_dir);
-	const fs::path run_dir = mcvm::get_run_dir();
-	mcvm::create_dir_if_not_exists(mcvm_dir);
-	mcvm::create_dir_if_not_exists(internal_dir);
-	mcvm::create_dir_if_not_exists(cache_dir);
+	const mcvm::CachedPaths paths;
 
-	// mcvm::Daemon dmon(run_dir);
+	// mcvm::Daemon dmon(paths.run);
 	// dmon.ensure_started();
 
 	mcvm::Profile prof("Vanilla", "1.18.2");
-	mcvm::ClientInstance client(&prof, "Vanilla", mcvm_dir);
-	mcvm::LocalPackage pkg("sodium", mcvm::get_home_dir() / "test/sodium2.pkg.txt");
+	mcvm::ClientInstance client(&prof, "Vanilla", paths);
+	mcvm::LocalPackage pkg("sodium", paths.home / "test/sodium2.pkg.txt");
 	pkg.ensure_contents();
 	pkg.parse();
 	mcvm::PkgEvalData res;
@@ -38,7 +31,7 @@ int main(int argc, char** argv) {
 	global.mc_version = prof.get_version();
 	global.side = mcvm::MinecraftSide::CLIENT;
 	pkg.evaluate(res, "@install", global);
-	client.create();
+	client.create(paths);
 
 	// mcvm::User user;
 	// client.launch(&user);

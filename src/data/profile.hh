@@ -20,7 +20,7 @@ namespace mcvm {
 	// Base for instance
 	class Instance {
 		protected:
-		Instance(Profile* _parent, const std::string _name, const fs::path& mcvm_dir, const std::string& subpath);
+		Instance(Profile* _parent, const std::string _name, const CachedPaths& paths, const std::string& subpath);
 
 		// The profile that this instance is created from
 		Profile* parent = nullptr;
@@ -36,13 +36,13 @@ namespace mcvm {
 		// void ensure_cached() {}
 
 		// Create the instance and all of its files
-		virtual void create();
+		virtual void create(const CachedPaths& paths);
 
 		// Make sure that the instance has a created directory
 		virtual void ensure_instance_dir();
 
 		// Run the instance
-		virtual void launch(UNUSED User* user) {}
+		virtual void launch(UNUSED User* user, const CachedPaths& paths) {}
 
 		// Obtain the version of the instance
 		MCVersion get_version();
@@ -54,11 +54,11 @@ namespace mcvm {
 		std::vector<WorldResource*> worlds;
 
 		public:
-		ClientInstance(Profile* _parent, const std::string _name, const fs::path& mcvm_dir);
+		ClientInstance(Profile* _parent, const std::string _name, const CachedPaths& paths);
 
-		void create() override;
+		void create(const CachedPaths& paths) override;
 		void ensure_instance_dir() override;
-		void launch(User* user) override;
+		void launch(User* user, const CachedPaths& paths) override;
 	};
 
 	class ServerInstance : public Instance {
@@ -72,9 +72,9 @@ namespace mcvm {
 		const fs::path server_dir;
 
 		public:
-		ServerInstance(Profile* _parent, const std::string _name, const fs::path& mcvm_dir);
+		ServerInstance(Profile* _parent, const std::string _name, const CachedPaths& paths);
 
-		void create() override;
+		void create(const CachedPaths& paths) override;
 		void ensure_instance_dir() override;
 	};
 };

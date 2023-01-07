@@ -22,9 +22,9 @@ namespace mcvm {
 		User* user;
 
 		// Replaces tokens on an argument. Returns true if the previous argument should be deleted
-		bool repl_arg_token(std::string& contents, bool is_jvm);
+		bool repl_arg_token(std::string& contents, bool is_jvm, const CachedPaths& paths);
 		// Parse a single argument value from the document
-		void parse_single_arg(const json::Value& arg, bool is_jvm);
+		void parse_single_arg(const json::Value& arg, bool is_jvm, const CachedPaths& paths);
 		// Write flags to the output
 		void write_flags();
 		
@@ -41,7 +41,7 @@ namespace mcvm {
 		// Add a command line flag to the command
 		void add_flag(const std::string& flag);
 		// Parse arguments from a JSON file
-		void parse_args(json::Document* ret);
+		void parse_args(json::Document* ret, const CachedPaths& paths);
 
 		// Finish up and launch
 		void launch();

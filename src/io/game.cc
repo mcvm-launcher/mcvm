@@ -21,7 +21,7 @@ namespace mcvm {
 		flags.push_back(flag);
 	}
 
-	bool GameRunner::repl_arg_token(std::string& contents, bool is_jvm)	{
+	bool GameRunner::repl_arg_token(std::string& contents, bool is_jvm, const CachedPaths& paths)	{
 		if (is_jvm) {
 			fandr(contents, "${launcher_name}", "mcvm");
 			fandr(contents, "${launcher_version}", "alpha");
@@ -33,8 +33,8 @@ namespace mcvm {
 			_GAME_ARG_REPL("${version_type}", "mcvm");
 			// Directories
 			_GAME_ARG_REPL("${game_directory}", mc_dir);
-			_GAME_ARG_REPL("${assets_root}", get_mcvm_dir() / "assets");
-			_GAME_ARG_REPL("${assets_index_name}", get_mcvm_dir() / "assets" / "indexes" / (version + ".json"));
+			_GAME_ARG_REPL("${assets_root}", paths.assets);
+			_GAME_ARG_REPL("${assets_index_name}", paths.assets / "indexes" / (version + ".json"));
 			// TODO: Actual auth
 			_GAME_ARG_REPL("${auth_player_name}", "CarbonSmasher");
 			_GAME_ARG_REPL("${auth_access_token}", "abc123abc123");
@@ -47,26 +47,26 @@ namespace mcvm {
 		return false;
 	}
 
-	void GameRunner::parse_single_arg(const json::Value& arg, bool is_jvm) {
+	void GameRunner::parse_single_arg(const json::Value& arg, bool is_jvm, const CachedPaths& paths) {
 		std::string contents; // The contents of the argument, will get changed based on the json item type and text replacement
 		if (arg.IsString()) {
 			contents = arg.GetString();
 		}
-		if (repl_arg_token(contents, is_jvm)) {
+		if (repl_arg_token(contents, is_jvm, paths)) {
 			if (flags.size() > 0) flags.pop_back();
 			return;
 		}
 		add_flag(contents);
 	}
 
-	void GameRunner::parse_args(json::Document* ret) {
+	void GameRunner::parse_args(json::Document* ret, const CachedPaths& paths) {
 		assert(ret->IsObject());
 		json::GenericObject arguments = json_access(ret, "arguments").GetObject();
 		json::GenericArray game_args = json_access(arguments, "game").GetArray();
 		json::GenericArray jvm_args = json_access(arguments, "jvm").GetArray();
 
 		for (auto& arg : jvm_args) {
-			parse_single_arg(arg, true);
+			parse_single_arg(arg, true, paths);
 		}
 		write_flags();
 
@@ -74,7 +74,7 @@ namespace mcvm {
 		add_word(main_class);
 		
 		for (auto& arg : game_args) {
-			parse_single_arg(arg, false);
+			parse_single_arg(arg, false, paths);
 		}
 		write_flags();
 	}

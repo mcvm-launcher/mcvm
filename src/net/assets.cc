@@ -3,8 +3,8 @@
 namespace mcvm {
 	// README: https://wiki.vg/Game_files
 
-	std::shared_ptr<DownloadHelper> get_version_manifest() {
-		const fs::path assets_path = get_internal_dir() / ASSETS_DIR;
+	std::shared_ptr<DownloadHelper> get_version_manifest(const CachedPaths& paths) {
+		const fs::path assets_path = paths.internal / ASSETS_DIR;
 		create_dir_if_not_exists(assets_path);
 
 		OUT("Obtaining version index...");
@@ -16,9 +16,9 @@ namespace mcvm {
 		return helper;
 	}
 
-	std::shared_ptr<DownloadHelper> obtain_version_json(const std::string& version, json::Document* ret) {
+	std::shared_ptr<DownloadHelper> obtain_version_json(const std::string& version, json::Document* ret, const CachedPaths& paths) {
 		OUT_LIT("Downloading version json...");
-		std::shared_ptr<DownloadHelper> helper = get_version_manifest();
+		std::shared_ptr<DownloadHelper> helper = get_version_manifest(paths);
 		const std::string manifest_file = helper->get_str();
 
 		json::Document doc;
@@ -43,7 +43,7 @@ namespace mcvm {
 
 		// We now have to download the manifest for the specific version
 		const std::string index_file_name = version + ".json";
-		const fs::path index_file_path = get_internal_dir() / ASSETS_DIR / fs::path(index_file_name);
+		const fs::path index_file_path = paths.internal / ASSETS_DIR / fs::path(index_file_name);
 		helper->set_options(DownloadHelper::FILE_AND_STR, ver_url, index_file_path);
 		helper->perform();
 		helper->sha1_checksum(ver_hash);
@@ -65,12 +65,12 @@ namespace mcvm {
 		}
 	}
 
-	std::shared_ptr<DownloadHelper> obtain_libraries(const std::string& version, json::Document* ret) {
-		std::shared_ptr<DownloadHelper> helper = obtain_version_json(version, ret);
+	std::shared_ptr<DownloadHelper> obtain_libraries(const std::string& version, json::Document* ret, const CachedPaths& paths) {
+		std::shared_ptr<DownloadHelper> helper = obtain_version_json(version, ret, paths);
 
-		const fs::path libraries_path = get_internal_dir() / "libraries";
+		const fs::path libraries_path = paths.internal / "libraries";
 		create_dir_if_not_exists(libraries_path);
-		const fs::path natives_path = get_internal_dir() / "versions" / version / "natives";
+		const fs::path natives_path = paths.internal / "versions" / version / "natives";
 		create_leading_directories(natives_path);
 
 		OUT_LIT("Finding libraries...");
@@ -125,7 +125,7 @@ namespace mcvm {
 		}
 
 		// Assets
-		const fs::path assets_path = get_internal_dir() / "assets";
+		const fs::path assets_path = paths.assets;
 		create_dir_if_not_exists(assets_path / "indexes");
 		const fs::path asset_index_path = assets_path / "indexes" / (version + ".json");
 
