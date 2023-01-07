@@ -129,7 +129,7 @@ namespace mcvm {
 		create_dir_if_not_exists(assets_path / "indexes");
 		const fs::path asset_index_path = assets_path / "indexes" / (version + ".json");
 
-		std::string asset_index_contents = download_cached_file(json_access(json_access(ret, "assetIndex"), "url").GetString(), asset_index_path, true);
+		std::string asset_index_contents = download_cached_file(json_access(json_access(ret, "assetIndex"), "url").GetString(), asset_index_path, true, helper);
 
 		create_dir_if_not_exists(assets_path / "objects");
 		// TODO: Make a copy in virtual for old versions
