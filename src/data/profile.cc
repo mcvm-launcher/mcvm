@@ -42,13 +42,13 @@ namespace mcvm {
 		ensure_instance_dir();
 		const fs::path mc_dir = dir / ".minecraft";
 
-		obtain_libraries(parent->get_version(), &version_json);
+		std::shared_ptr<DownloadHelper> helper = obtain_libraries(parent->get_version(), &version_json);
 
 		// Get the client jar
 		json::GenericObject client_download = json_access(json_access(version_json, "downloads"), "client").GetObject();
 		const std::string client_url = json_access(client_download, "url").GetString();
 		OUT_LIT("Downloading client jar");
-		download_cached_file(client_url, dir / "client.jar");
+		download_cached_file(client_url, dir / "client.jar", false, helper);
 	}
 
 	void ClientInstance::ensure_instance_dir() {
@@ -70,14 +70,12 @@ namespace mcvm {
 	void ServerInstance::create() {
 		ensure_instance_dir();
 		
-		obtain_version_json(parent->get_version(), &version_json);
+		std::shared_ptr<DownloadHelper> helper = obtain_version_json(parent->get_version(), &version_json);
 
 		// Get the server jar
 		const fs::path jar_path = server_dir / "server.jar";
 		json::GenericObject server_download = json_access(json_access(version_json, "downloads"), "server").GetObject();
-		DownloadHelper helper;
-		helper.set_options(DownloadHelper::FILE, json_access(server_download, "url").GetString(), jar_path);
-		helper.perform();
+		download_cached_file(json_access(server_download, "url").GetString(), jar_path, false, helper);
 
 		// Create the EULA
 		write_file(server_dir / "eula.txt", "eula = true\n");

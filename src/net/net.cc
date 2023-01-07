@@ -52,7 +52,9 @@ namespace mcvm {
 	}
 
 	CurlResult::~CurlResult() {
-		fclose(file);
+		if (file != nullptr) {
+			fclose(file);
+		}
 	}
 
 	DownloadHelper::DownloadHelper() {
@@ -176,7 +178,7 @@ namespace mcvm {
 		curl_multi_cleanup(handle);
 	}
 
-	std::string download_cached_file(const std::string& url, const fs::path& path, bool download_str) {
+	std::string download_cached_file(const std::string& url, const fs::path& path, bool download_str, std::shared_ptr<DownloadHelper> helper) {
 		if (file_exists(path)) {
 			if (download_str) {
 				std::string ret;
@@ -186,16 +188,15 @@ namespace mcvm {
 				return "";
 			}
 		} else {
-			DownloadHelper helper;
 			DownloadHelper::DownloadMode mode;
 			if (download_str) {
 				mode = DownloadHelper::FILE_AND_STR;
 			} else {
 				mode = DownloadHelper::FILE;
 			}
-			helper.set_options(mode, url, path);
-			helper.perform();
-			return helper.get_str();
+			helper->set_options(mode, url, path);
+			helper->perform();
+			return helper->get_str();
 		}
 	}
 };

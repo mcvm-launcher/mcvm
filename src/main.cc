@@ -28,7 +28,7 @@ int main(int argc, char** argv) {
 	// mcvm::Daemon dmon(run_dir);
 	// dmon.ensure_started();
 
-	mcvm::Profile prof("Vanilla", "1.19.3");
+	mcvm::Profile prof("Vanilla", "1.18.2");
 	mcvm::ClientInstance client(&prof, "Vanilla", mcvm_dir);
 	mcvm::LocalPackage pkg("sodium", mcvm::get_home_dir() / "test/sodium2.pkg.txt");
 	pkg.ensure_contents();
@@ -38,7 +38,7 @@ int main(int argc, char** argv) {
 	global.mc_version = prof.get_version();
 	global.side = mcvm::MinecraftSide::CLIENT;
 	pkg.evaluate(res, "@install", global);
-	// client.create();
+	client.create();
 
 	// mcvm::User user;
 	// client.launch(&user);

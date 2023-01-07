@@ -65,7 +65,7 @@ namespace mcvm {
 		}
 	}
 
-	void obtain_libraries(const std::string& version, json::Document* ret) {
+	std::shared_ptr<DownloadHelper> obtain_libraries(const std::string& version, json::Document* ret) {
 		std::shared_ptr<DownloadHelper> helper = obtain_version_json(version, ret);
 
 		const fs::path libraries_path = get_internal_dir() / "libraries";
@@ -162,5 +162,7 @@ namespace mcvm {
 		for (unsigned int i = 0; i < native_libs.size(); i++) {
 			install_native_library(native_libs[i]);
 		}
+
+		return helper;
 	}
 };

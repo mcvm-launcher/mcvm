@@ -39,8 +39,10 @@
 
 // Delete pointed to elements of a vector but do not delete the elements themselves
 #define DEL_VECTOR(vec) for (unsigned int __i = 0; __i < vec.size(); __i++) { delete vec[__i]; }
+// Delete an object with a nullptr assertion
+#define ASSERTED_DEL(obj) (assert(obj != nullptr); delete obj)
 // Delete an object with a nullptr check
-#define PROTECTED_DEL(obj) (assert(obj != nullptr); delete obj)
+#define PROTECTED_DEL(obj) (if (obj != nullptr) delete obj)
 
 // The current os as a string
 #ifdef __linux__

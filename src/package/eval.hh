@@ -57,7 +57,6 @@ namespace mcvm {
 
 		RunLevel current_run_level = RunLevel::NONE; // Run level that is used with respect to routine
 		RunLevel user_run_level; // Run level that the user set
-		std::string routine;
 		PkgBlock* current_block = nullptr;
 		PkgBlock* default_routine_block = nullptr;
 		ParseType expected_type = ParseType::ROOT; // Expected type of next character

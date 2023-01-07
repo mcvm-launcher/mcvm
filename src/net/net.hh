@@ -36,7 +36,7 @@ namespace mcvm {
 	extern std::shared_ptr<DownloadHelper> obtain_version_json(const std::string& version, json::Document* ret);
 
 	// Obtain libraries for a version
-	extern void obtain_libraries(const std::string& version, json::Document* ret);
+	extern std::shared_ptr<DownloadHelper> obtain_libraries(const std::string& version, json::Document* ret);
 
 	// CURL callbacks
 
@@ -137,5 +137,5 @@ namespace mcvm {
 	};
 
 	// Download a file if it is not already cached locally
-	extern std::string download_cached_file(const std::string& url, const fs::path& path, bool download_str = false);
+	extern std::string download_cached_file(const std::string& url, const fs::path& path, bool download_str = false, std::shared_ptr<DownloadHelper> helper = std::make_shared<DownloadHelper>());
 };
