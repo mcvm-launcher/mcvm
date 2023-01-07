@@ -12,7 +12,7 @@ namespace mcvm {
 
 	class PkgInstruction : public PkgNode {
 		public:
-		virtual void evaluate(PkgEvalResult& result, RunLevel level) {}
+		virtual void evaluate(PkgEvalData& result, RunLevel level) {}
 
 		virtual ~PkgInstruction() = default;
 	};
@@ -24,7 +24,7 @@ namespace mcvm {
 		std::vector<PkgInstruction*> instructions;
 		PkgBlock* parent = nullptr;
 
-		void evaluate(PkgEvalResult& result, RunLevel level);
+		void evaluate(PkgEvalData& result, RunLevel level);
 	};
 
 	class PkgAST {

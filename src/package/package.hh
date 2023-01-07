@@ -3,8 +3,14 @@
 #include "net/net.hh"
 
 namespace mcvm {
+	// Used to download resources at the end
+	class ResourceAquirer {
+		public:
+		ResourceAquirer();
+	};
+
 	// The result from evaluation
-	struct PkgEvalResult {
+	struct PkgEvalData {
 		std::string pkg_name;
 		std::string pkg_version;
 		std::string package_requested_version;
@@ -12,10 +18,17 @@ namespace mcvm {
 		// TODO: Temporary
 		ModType modloader = ModType::FABRIC; 
 		MinecraftSide side = MinecraftSide::CLIENT;
+		// The list of resources to be aquired once the whole package is evaluated
+		std::vector<ResourceAquirer*> resources;
+
+		~PkgEvalData() {
+			for (unsigned int i = 0; i < resources.size(); i++) {
+				delete resources[i];
+			}
+		}
 	};
 
 	class PkgAST;
-	struct PkgEvalResult;
 
 	// The level of evaluation to be performed
 	enum RunLevel {
@@ -49,7 +62,7 @@ namespace mcvm {
 		virtual void ensure_contents() {}
 		// Parse the package contents
 		void parse();
-		void evaluate(PkgEvalResult& ret, const std::string& routine_name, RunLevel level);
+		void evaluate(PkgEvalData& ret, const std::string& routine_name, RunLevel level);
 
 		virtual ~Package();
 	};

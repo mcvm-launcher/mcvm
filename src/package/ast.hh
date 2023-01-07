@@ -21,15 +21,10 @@ namespace mcvm {
 
 	class PkgIfInstruction : public PkgInstruction {
 		public:
-		PkgBlock* nested_block = nullptr;
+		PkgBlock nested_block;
 		PkgIfCondition condition;
 
-		void evaluate(PkgEvalResult& result, RunLevel level) override;
-
-		~PkgIfInstruction() {
-			assert(nested_block != nullptr);
-			delete nested_block;
-		}
+		void evaluate(PkgEvalData& result, RunLevel level) override;
 	};
 	
 	class PkgCommandInstruction : public PkgInstruction {
@@ -47,6 +42,6 @@ namespace mcvm {
 		PkgCommand command;
 		std::vector<std::string> args;
 
-		void evaluate(PkgEvalResult& result, RunLevel level) override;
+		void evaluate(PkgEvalData& result, RunLevel level) override;
 	};
 };

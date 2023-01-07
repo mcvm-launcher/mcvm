@@ -43,10 +43,9 @@ namespace mcvm {
 				}
 				inst->condition = cond;
 
-				inst->nested_block = new PkgBlock;
-				inst->nested_block->parent = prs.current_block;
+				inst->nested_block.parent = prs.current_block;
 				prs.current_block->instructions.push_back(inst);
-				prs.current_block = inst->nested_block;
+				prs.current_block = &inst->nested_block;
 			} else {
 				PkgCommandInstruction* inst = new PkgCommandInstruction;
 				const std::map<std::string, PkgCommandInstruction::PkgCommand> command_map = {

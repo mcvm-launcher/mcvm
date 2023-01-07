@@ -68,4 +68,14 @@ namespace mcvm {
 		std::vector<DatapackResource*> datapacks;
 		std::vector<PluginResource*> plugins;
 	};
+
+	// Enum for resource types
+	enum ResourceType {
+		RESOURCE_PACK,
+		MOD,
+		PLUGIN,
+		WORLD,
+		DATAPACK,
+		SHADER_PACK
+	};
 };

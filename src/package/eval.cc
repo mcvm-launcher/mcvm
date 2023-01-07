@@ -1,7 +1,7 @@
 #include "ast.hh"
 
 namespace mcvm {
-	bool mod_supported(PkgEvalResult& result, const ModType& loader) {
+	bool mod_supported(PkgEvalData& result, const ModType& loader) {
 		// TODO: Mod bridges
 		switch (loader) {
 			case ModType::FORGE:
@@ -12,22 +12,33 @@ namespace mcvm {
 		}
 	}
 
-	void PkgBlock::evaluate(PkgEvalResult& result, RunLevel level) {
+	void PkgBlock::evaluate(PkgEvalData& result, RunLevel level) {
 		for (unsigned int i = 0; i < instructions.size(); i++) {
 			instructions[i]->evaluate(result, level);
 		}
 	}
 
-	void PkgCommandInstruction::evaluate(PkgEvalResult& result, RunLevel level) {
+	void PkgCommandInstruction::evaluate(PkgEvalData& result, RunLevel level) {
 		std::cout << text;
 		for (unsigned int i = 0; i < args.size(); i++) {
 			std::cout << ' ';
 			std::cout << args[i];
 		}
 		OUT_NEWLINE();
+
+		switch (command) {
+			case PkgCommandInstruction::SET_NAME:
+				result.pkg_name = args.at(1);
+				break;
+			case PkgCommandInstruction::SET_VERSION:
+				result.pkg_version = args.at(1);
+				break;
+			case PkgCommandInstruction::RESOURCE_TYPE:
+				break;
+		}
 	}
 
-	void PkgIfInstruction::evaluate(PkgEvalResult& result, RunLevel level) {
+	void PkgIfInstruction::evaluate(PkgEvalData& result, RunLevel level) {
 		bool condition_success = false;
 		switch (condition.condition) {
 			case PkgIfCondition::MATCH:
@@ -59,12 +70,12 @@ namespace mcvm {
 		// TODO: temporary
 		OUT_LIT("if {");
 		if (condition_success) {
-			nested_block->evaluate(result, level);
+			nested_block.evaluate(result, level);
 		}
 		OUT_LIT("}");
 	}
 
-	void Package::evaluate(PkgEvalResult& ret, const std::string& routine_name, RunLevel level) {
+	void Package::evaluate(PkgEvalData& ret, const std::string& routine_name, RunLevel level) {
 		ret.pkg_name = name;
 		PkgBlock& routine = ast->routines.at(routine_name);
 		routine.evaluate(ret, level);

@@ -33,7 +33,7 @@ int main(int argc, char** argv) {
 	mcvm::LocalPackage pkg("sodium", mcvm::get_home_dir() / "test/sodium2.pkg.txt");
 	pkg.ensure_contents();
 	pkg.parse();
-	mcvm::PkgEvalResult res;
+	mcvm::PkgEvalData res;
 	res.mc_version = prof.get_version();
 	res.side = mcvm::MinecraftSide::CLIENT;
 	pkg.evaluate(res, "@install", mcvm::RunLevel::ALL);
