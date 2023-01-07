@@ -1,8 +1,6 @@
 #pragma once
 #include "package.hh"
 
-#include <map>
-
 namespace mcvm {
 	// A node in the abstract syntax tree
 	class PkgNode {
@@ -12,37 +10,9 @@ namespace mcvm {
 
 	class PkgInstruction : public PkgNode {
 		public:
-		virtual void evaluate(PkgEvalData& result, RunLevel level) {}
+		virtual void evaluate(PkgEvalData& data, const PkgEvalGlobals& global) {}
 
 		virtual ~PkgInstruction() = default;
-	};
-
-	class PkgBlock {
-		public:
-		PkgBlock() = default;
-
-		std::vector<PkgInstruction*> instructions;
-		PkgBlock* parent = nullptr;
-
-		void evaluate(PkgEvalData& result, RunLevel level);
-	};
-
-	class PkgAST {
-		public:
-		std::map<std::string, PkgBlock> routines;
-
-		PkgAST() = default;
-
-		~PkgAST() {
-			for (std::map<std::string, PkgBlock>::iterator i = routines.begin(); i != routines.end(); i++) {
-				PkgBlock rtn = i->second;
-				for (std::vector<PkgInstruction*>::iterator j = rtn.instructions.begin(); j != rtn.instructions.end(); j++) {
-					delete *j;
-					rtn.instructions.erase(j);
-				}
-				routines.erase(i);
-			}
-		}
 	};
 	
 	// The different objects that are evaluated

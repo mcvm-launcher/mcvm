@@ -34,9 +34,10 @@ int main(int argc, char** argv) {
 	pkg.ensure_contents();
 	pkg.parse();
 	mcvm::PkgEvalData res;
-	res.mc_version = prof.get_version();
-	res.side = mcvm::MinecraftSide::CLIENT;
-	pkg.evaluate(res, "@install", mcvm::RunLevel::ALL);
+	mcvm::PkgEvalGlobals global;
+	global.mc_version = prof.get_version();
+	global.side = mcvm::MinecraftSide::CLIENT;
+	pkg.evaluate(res, "@install", global);
 	// client.create();
 
 	// mcvm::User user;

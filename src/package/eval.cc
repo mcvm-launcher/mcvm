@@ -1,24 +1,26 @@
 #include "ast.hh"
 
 namespace mcvm {
-	bool mod_supported(PkgEvalData& result, const ModType& loader) {
+	bool mod_supported(const PkgEvalGlobals& global, const ModType& loader) {
 		// TODO: Mod bridges
 		switch (loader) {
 			case ModType::FORGE:
 			case ModType::QUILT:
-				return (result.modloader == loader);
+				return (global.modloader == loader);
 			case ModType::FABRIC:
-				return (result.modloader == ModType::FABRIC || result.modloader == ModType::QUILT);
+				return (global.modloader == ModType::FABRIC || global.modloader == ModType::QUILT);
+			default:
+				return false;
 		}
 	}
 
-	void PkgBlock::evaluate(PkgEvalData& result, RunLevel level) {
+	void PkgBlock::evaluate(PkgEvalData& data, const PkgEvalGlobals& global) {
 		for (unsigned int i = 0; i < instructions.size(); i++) {
-			instructions[i]->evaluate(result, level);
+			instructions[i]->evaluate(data, global);
 		}
 	}
 
-	void PkgCommandInstruction::evaluate(PkgEvalData& result, RunLevel level) {
+	void PkgCommandInstruction::evaluate(PkgEvalData& data, const PkgEvalGlobals& global) {
 		std::cout << text;
 		for (unsigned int i = 0; i < args.size(); i++) {
 			std::cout << ' ';
@@ -28,24 +30,26 @@ namespace mcvm {
 
 		switch (command) {
 			case PkgCommandInstruction::SET_NAME:
-				result.pkg_name = args.at(1);
+				data.pkg_name = args.at(1);
 				break;
 			case PkgCommandInstruction::SET_VERSION:
-				result.pkg_version = args.at(1);
+				data.pkg_version = args.at(1);
 				break;
 			case PkgCommandInstruction::RESOURCE_TYPE:
 				break;
 		}
 	}
 
-	void PkgIfInstruction::evaluate(PkgEvalData& result, RunLevel level) {
+	void PkgIfInstruction::evaluate(PkgEvalData& data, const PkgEvalGlobals& global) {
+		GUARD(global.level == RunLevel::NONE);
+
 		bool condition_success = false;
 		switch (condition.condition) {
 			case PkgIfCondition::MATCH:
 				condition_success = (condition.left_side == condition.right_side);
 				break;
 			case PkgIfCondition::VERSION:
-				condition_success = (condition.left_side == result.mc_version);
+				condition_success = (condition.left_side == global.mc_version);
 				break;
 			case PkgIfCondition::MODLOADER: {
 				const std::map<std::string, ModType> mod_map = {
@@ -53,7 +57,7 @@ namespace mcvm {
 					{"fabric", ModType::FABRIC},
 					{"quilt", ModType::QUILT}
 				};
-				condition_success = mod_supported(result, mod_map.at(condition.left_side));
+				condition_success = mod_supported(global, mod_map.at(condition.left_side));
 				break;
 			}
 			case PkgIfCondition::SIDE: {
@@ -61,7 +65,7 @@ namespace mcvm {
 					{"client", MinecraftSide::CLIENT},
 					{"server", MinecraftSide::SERVER}
 				};
-				condition_success = (side_map.at(condition.left_side) == result.side);
+				condition_success = (side_map.at(condition.left_side) == global.side);
 				break;
 			}
 		}
@@ -70,14 +74,13 @@ namespace mcvm {
 		// TODO: temporary
 		OUT_LIT("if {");
 		if (condition_success) {
-			nested_block.evaluate(result, level);
+			nested_block.evaluate(data, global);
 		}
 		OUT_LIT("}");
 	}
 
-	void Package::evaluate(PkgEvalData& ret, const std::string& routine_name, RunLevel level) {
-		ret.pkg_name = name;
+	void Package::evaluate(PkgEvalData& data, const std::string& routine_name, const PkgEvalGlobals& global) {
 		PkgBlock& routine = ast->routines.at(routine_name);
-		routine.evaluate(ret, level);
+		routine.evaluate(data, global);
 	}
 };

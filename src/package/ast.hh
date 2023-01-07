@@ -24,7 +24,7 @@ namespace mcvm {
 		PkgBlock nested_block;
 		PkgIfCondition condition;
 
-		void evaluate(PkgEvalData& result, RunLevel level) override;
+		void evaluate(PkgEvalData& data, const PkgEvalGlobals& global) override;
 	};
 	
 	class PkgCommandInstruction : public PkgInstruction {
@@ -42,6 +42,6 @@ namespace mcvm {
 		PkgCommand command;
 		std::vector<std::string> args;
 
-		void evaluate(PkgEvalData& result, RunLevel level) override;
+		void evaluate(PkgEvalData& data, const PkgEvalGlobals& global) override;
 	};
 };

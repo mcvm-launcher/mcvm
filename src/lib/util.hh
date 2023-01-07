@@ -5,6 +5,8 @@
 #include <iostream>
 #include <vector>
 
+// Output
+
 // Print value to cout
 #define OUT(val) std::cout << val << '\n'
 // Faster OUT for literal values
@@ -24,13 +26,23 @@
 	#define LOG(val) std::cout << val << std::endl
 #endif
 
+// Error checking
+
 // Return if a condition is true
 #define GUARD(condition) if (condition) return
 // Return if a condition is false
 #define ENSURE(condition) GUARD(!(condition))
+// Assert that this statement will never be run
+#define ASSERT_NOREACH() assert(false)
+
+// Memory utilities
+
+// Delete pointed to elements of a vector but do not delete the elements themselves
+#define DEL_VECTOR(vec) for (unsigned int __i = 0; __i < vec.size(); __i++) { delete vec[__i]; }
+// Delete an object with a nullptr check
+#define PROTECTED_DEL(obj) (assert(obj != nullptr); delete obj)
 
 // The current os as a string
-#define OS_STRING ""
 #ifdef __linux__
 	#define OS_STRING "linux"
 #endif
@@ -42,6 +54,7 @@
 #endif
 
 // Attributes
+
 #define UNUSED [[maybe_unused]]
 #define FALLTHROUGH [[fallthrough]]
 
