@@ -28,12 +28,15 @@ int main(int argc, char** argv) {
 	// mcvm::Daemon dmon(run_dir);
 	// dmon.ensure_started();
 
-	mcvm::Profile prof("Vanilla", "1.19.2");
+	mcvm::Profile prof("Vanilla", "1.19.3");
 	mcvm::ClientInstance client(&prof, "Vanilla", mcvm_dir);
-	mcvm::LocalPackage pkg("sodium", mcvm::get_home_dir() / "test/sodium.pkg.txt");
+	mcvm::LocalPackage pkg("sodium", mcvm::get_home_dir() / "test/sodium2.pkg.txt");
 	pkg.ensure_contents();
-	mcvm::PkgAST* ast = pkg.parse();
-	delete ast;
+	pkg.parse();
+	mcvm::PkgEvalResult res;
+	res.mc_version = prof.get_version();
+	res.side = mcvm::MinecraftSide::CLIENT;
+	pkg.evaluate(res, "@install", mcvm::RunLevel::ALL);
 	// client.create();
 
 	// mcvm::User user;

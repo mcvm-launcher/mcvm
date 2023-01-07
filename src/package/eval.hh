@@ -4,11 +4,27 @@
 #include <map>
 
 namespace mcvm {
-	class PkgInstruction;
+	// A node in the abstract syntax tree
+	class PkgNode {
+		public:
+		std::string text;
+	};
 
-	struct PkgBlock {
+	class PkgInstruction : public PkgNode {
+		public:
+		virtual void evaluate(PkgEvalResult& result, RunLevel level) {}
+
+		virtual ~PkgInstruction() = default;
+	};
+
+	class PkgBlock {
+		public:
+		PkgBlock() = default;
+
 		std::vector<PkgInstruction*> instructions;
 		PkgBlock* parent = nullptr;
+
+		void evaluate(PkgEvalResult& result, RunLevel level);
 	};
 
 	class PkgAST {
@@ -73,6 +89,7 @@ namespace mcvm {
 		RunLevel user_run_level; // Run level that the user set
 		std::string routine;
 		PkgBlock* current_block = nullptr;
+		PkgBlock* default_routine_block = nullptr;
 		ParseType expected_type = ParseType::ROOT; // Expected type of next character
 
 		// Extra

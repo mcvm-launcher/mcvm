@@ -7,18 +7,15 @@ namespace mcvm {
 	struct PkgEvalResult {
 		std::string pkg_name;
 		std::string pkg_version;
+		std::string package_requested_version;
+		MCVersion mc_version;
+		// TODO: Temporary
+		ModType modloader = ModType::FABRIC; 
+		MinecraftSide side = MinecraftSide::CLIENT;
 	};
 
 	class PkgAST;
-	class ParseData;
-
-	struct EvalType {
-		// The extent of evaluation to perform on a package
-		enum __EvalType {
-			INSTALL, // Evaluates the full package while actually running things
-			GET_INFO // Evaluates the full package without actually running anything
-		};
-	};
+	struct PkgEvalResult;
 
 	// The level of evaluation to be performed
 	enum RunLevel {
@@ -26,6 +23,12 @@ namespace mcvm {
 		RESTRICTED, // Restrict the scope of commands
 		INFO, // Only run commands that set information
 		NONE // Don't run any commands
+	};
+
+	// Package eval global information
+	struct PkgEvalGlobals {
+		RunLevel level;
+		const fs::path& working_directory;
 	};
 
 	// A mcvm package
@@ -36,6 +39,8 @@ namespace mcvm {
 		fs::path location;
 		// Contents of the package build script
 		std::string contents;
+		// The abstract syntax tree
+		PkgAST* ast = nullptr;
 
 		Package(const std::string& _name, const fs::path& _location);
 
@@ -43,10 +48,10 @@ namespace mcvm {
 		// Ensure that the package contents are stored in memory
 		virtual void ensure_contents() {}
 		// Parse the package contents
-		PkgAST* parse();
-		void evaluate(ParseData* ret, const std::string& routine, RunLevel level) {}
+		void parse();
+		void evaluate(PkgEvalResult& ret, const std::string& routine_name, RunLevel level);
 
-		virtual ~Package() = default;
+		virtual ~Package();
 	};
 
 	// A package installed from the internet, which has more restrictions

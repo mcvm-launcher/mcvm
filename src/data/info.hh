@@ -8,6 +8,7 @@ namespace mcvm {
 
 	// Enum of different types of modloaders
 	enum ModType {
+		VANILLA,
 		FABRIC,
 		FORGE,
 		QUILT
@@ -18,6 +19,12 @@ namespace mcvm {
 		RELEASE,
 		SNAPSHOT,
 		OLD_ALPHA
+	};
+
+	// Enum for the sidedness
+	enum MinecraftSide {
+		CLIENT,
+		SERVER
 	};
 
 	// Thrown when a Minecraft version does not exist

@@ -5,28 +5,18 @@
 #include <string>
 
 namespace mcvm {
-	// A node in the abstract syntax tree
-	class PkgNode {
-		public:
-		std::string text;
-	};
-
-	class PkgInstruction : public PkgNode {
-		public:
-		virtual void evaluate(PkgEvalResult& result, ParseData& prs) {}
-
-		virtual ~PkgInstruction() = default;
-	};
-
 	struct PkgIfCondition {
 		enum Condition {
+			NOT,
 			MATCH,
 			VERSION,
-			MODLOADER
+			MODLOADER,
+			SIDE
 		};
 		Condition condition;
 		std::string left_side;
 		std::string right_side;
+		bool inverted = false;
 	};
 
 	class PkgIfInstruction : public PkgInstruction {
@@ -34,9 +24,7 @@ namespace mcvm {
 		PkgBlock* nested_block = nullptr;
 		PkgIfCondition condition;
 
-		void evaluate(PkgEvalResult& result, ParseData& prs) override {
-
-		}
+		void evaluate(PkgEvalResult& result, RunLevel level) override;
 
 		~PkgIfInstruction() {
 			assert(nested_block != nullptr);
@@ -46,7 +34,19 @@ namespace mcvm {
 	
 	class PkgCommandInstruction : public PkgInstruction {
 		public:
-		std::string command;
+		enum PkgCommand {
+			SET_NAME,
+			SET_VERSION,
+			RESOURCE_TYPE,
+			RESOURCE_NAME,
+			DOWNLOAD_RESOURCE,
+			FINISH,
+			FAIL
+		};
+
+		PkgCommand command;
 		std::vector<std::string> args;
+
+		void evaluate(PkgEvalResult& result, RunLevel level) override;
 	};
 };

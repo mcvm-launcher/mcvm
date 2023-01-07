@@ -4,6 +4,10 @@ namespace mcvm {
 	Package::Package(const std::string &_name, const fs::path& _location)
 	: name(_name), location(_location) {}
 
+	Package::~Package() {
+		delete ast;
+	}
+
 	RemotePackage::RemotePackage(const std::string& name, const std::string& _url, const fs::path& cache_dir)
 	: Package(name, cache_dir / CACHED_PACKAGES_DIR / add_package_extension(name)), url(_url) {}
 

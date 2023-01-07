@@ -35,6 +35,9 @@ namespace mcvm {
 		}
 	};
 
+	// FIXME: On Windows I'm pretty sure these paths won't work
+	// TODO: Add paths for MacOS
+
 	static inline fs::path get_home_dir() {
 		#ifdef __linux__
 			char* home_dir = std::getenv("XDG_HOME");
