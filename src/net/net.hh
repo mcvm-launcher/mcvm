@@ -79,7 +79,7 @@ namespace mcvm {
 		const std::string& file;
 		const std::string& url;
 		const char* what() {
-			return (std::string("File ") + file + " downloaded from " + url + " did not pass checksum").c_str();
+			return NICE_STR_CAT("File " + file + " downloaded from " + url + " did not pass checksum");
 		}
 	};
 

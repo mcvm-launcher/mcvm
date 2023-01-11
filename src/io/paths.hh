@@ -1,4 +1,6 @@
 #pragma once
+#include "lib/util.hh"
+
 #include <sys/stat.h>
 #include <cstdlib>
 #include <filesystem>
@@ -148,7 +150,7 @@ namespace mcvm {
 		FileOpenError(const char* _filename) : filename(_filename) {} 
 		const char* filename;
 		const char* what() {
-			return (std::string() + "File " + filename + " could not be opened").c_str();
+			return NICE_STR_CAT("File " + filename + " could not be opened");
 		}
 	};
 };

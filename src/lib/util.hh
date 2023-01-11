@@ -21,8 +21,9 @@
 #define ERR_LIT(val) std::cerr << (val '\n')
 
 // Print value to cout only on debug builds
-#define LOG(val)
-#ifndef NDEBUG
+#if defined(NDEBUG)
+	#define LOG(val) (void)0
+#else
 	#define LOG(val) std::cout << val << std::endl
 #endif
 
@@ -35,32 +36,17 @@
 // Assert that this statement will never be run
 #define ASSERT_NOREACH() assert(false)
 
+// Used for making nice messages for exception whats
+#define NICE_STR_CAT(str) (std::string() + str).c_str()
+
 // Memory utilities
 
 // Delete pointed to elements of a vector but do not delete the elements themselves
-#define DEL_VECTOR(vec) for (unsigned int __i = 0; __i < vec.size(); __i++) { delete vec[__i]; }
+#define DEL_VECTOR(vec) for (uint __i = 0; __i < vec.size(); __i++) { delete vec[__i]; }
 // Delete an object with a nullptr assertion
 #define ASSERTED_DEL(obj) (assert(obj != nullptr); delete obj)
 // Delete an object with a nullptr check
 #define PROTECTED_DEL(obj) (if (obj != nullptr) delete obj)
-
-// The current os as a string
-#ifdef __linux__
-	#define OS_STRING "linux"
-#endif
-#ifdef _WIN32
-	#define OS_STRING "windows"
-#endif
-#ifdef __APPLE__
-	#define OS_STRING "osx"
-#endif
-
-// The current arch as a string
-#ifdef __x86_64
-	#define ARCH_STRING "x86"
-#else
-	#define ARCH_STRING ""
-#endif
 
 // Attributes
 
