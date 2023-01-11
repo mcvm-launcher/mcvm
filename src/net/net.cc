@@ -160,13 +160,13 @@ namespace mcvm {
 	}
 
 	void MultiDownloadHelper::reset() {
-		for (unsigned int i = 0; i < helpers.size(); i++) {
+		for (uint i = 0; i < helpers.size(); i++) {
 			curl_multi_remove_handle(handle, helpers[i]->handle);
 		}
 		helpers = {};
 	}
 
-	void MultiDownloadHelper::add_progress_meter(ProgressData::ProgressStyle style, const std::string &title) {
+	void MultiDownloadHelper::add_progress_meter(UNUSED ProgressData::ProgressStyle style, UNUSED const std::string &title) {
 		// progress_data.style = style;
 		// progress_data.title = title;
 		// curl_multi_setopt(handle, CURLOPT_PROGRESSFUNCTION, &progress_callback);

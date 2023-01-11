@@ -1,4 +1,4 @@
-#include "ast.hh"
+#include "package.hh"
 
 namespace mcvm {
 	bool mod_supported(const PkgEvalGlobals& global, const ModType& loader) {

@@ -33,10 +33,11 @@ namespace mcvm {
 
 	void read_file(const fs::path& path, std::string& out) {
 		std::ifstream file(path);
+		std::string line;
 		if (file.is_open()) {
 			while (file.good()) {
-				const char appendbuf = file.get();
-				out += appendbuf;
+				std::getline(file, line);
+				out += line;
 			}
 		} else {
 			throw FileOpenError{path.c_str()};

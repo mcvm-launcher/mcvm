@@ -1,4 +1,4 @@
-#include "ast.hh"
+#include "package.hh"
 
 namespace mcvm {
 	void reset_instruction(ParseData& prs) {

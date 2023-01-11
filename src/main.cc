@@ -1,7 +1,7 @@
 #include "commands/command.hh"
 #include "io/files.hh"
 #include "net/net.hh"
-#include "package/ast.hh"
+#include "package/package.hh"
 #include "daemon.hh"
 #include "io/game.hh"
 
