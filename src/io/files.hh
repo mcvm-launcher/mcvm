@@ -5,7 +5,7 @@
 
 namespace mcvm {
 	// Returns whether a file at the specified path exists
-	extern bool file_exists(const std::string& path);
+	extern bool file_exists(const fs::path& path);
 
 	// Returns the length of a path by iterating over it
 	extern std::size_t path_length(const fs::path& path);

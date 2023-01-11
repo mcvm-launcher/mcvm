@@ -8,12 +8,12 @@ namespace mcvm {
 	}
 
 	bool MojangUser::is_valid_username(const std::string username) {
-		const unsigned int len = username.size();
+		const std::size_t len = username.size();
 		if (len > 16) {
 			return false;
 		}
 
-		for (unsigned int i = 0; i < len; i++) {
+		for (std::size_t i = 0; i < len; i++) {
 			if (
 				!isalnum(username[i]) &&
 				username[i] != '_'

@@ -6,6 +6,8 @@
 
 #include <rapidjson/rapidjson.h>
 
+#include <stack>
+
 namespace mcvm {
 	// Set of game options that are added to and passed as args before running the game
 	class GameRunner {
@@ -13,7 +15,7 @@ namespace mcvm {
 		std::string output = "java -jar";
 		// The list of flags to be written and appended to the output
 		// TODO: Make this a stack probably
-		std::vector<std::string> flags;
+		std::stack<std::string> flags;
 
 		// Properties
 		const MCVersion& version;
@@ -28,6 +30,11 @@ namespace mcvm {
 		// Write flags to the output
 		void write_flags();
 		
+		// Add word to the command
+		void add_word(const std::string& word);
+		// Add a command line flag to the command
+		void add_flag(const std::string& flag);
+
 		public:
 		GameRunner(
 			const MCVersion& _version,
@@ -36,15 +43,10 @@ namespace mcvm {
 			User* _user
 		);
 
-		// Add word to the command
-		void add_word(const std::string& word);
-		// Add a command line flag to the command
-		void add_flag(const std::string& flag);
 		// Parse arguments from a JSON file
 		void parse_args(json::Document* ret, const CachedPaths& paths);
 
 		// Finish up and launch
 		void launch();
-
 	};
 };

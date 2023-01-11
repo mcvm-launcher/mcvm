@@ -10,7 +10,11 @@
 namespace fs = std::filesystem;
 
 // Relative paths to locations of mcvm files from mcvm base dir
-#define ASSETS_DIR "assets"
+
+#define ASSETS_INDEXES_DIR "indexes"
+#define ASSETS_OBJECTS_DIR "objects"
+#define ASSETS_VIRTUAL_DIR "virtual"
+
 #define PROFILES_DIR "profiles"
 #define INSTANCES_DIR "instances"
 #define CLIENT_INSTANCES_DIR "client"

@@ -18,7 +18,7 @@ namespace mcvm {
 	}
 
 	void GameRunner::add_flag(const std::string& flag) {
-		flags.push_back(flag);
+		flags.push(flag);
 	}
 
 	bool GameRunner::repl_arg_token(std::string& contents, bool is_jvm, const CachedPaths& paths)	{
@@ -48,12 +48,13 @@ namespace mcvm {
 	}
 
 	void GameRunner::parse_single_arg(const json::Value& arg, bool is_jvm, const CachedPaths& paths) {
-		std::string contents; // The contents of the argument, will get changed based on the json item type and text replacement
+		// The contents of the argument, will get changed based on the json item type and text replacement
+		std::string contents;
 		if (arg.IsString()) {
 			contents = arg.GetString();
 		}
 		if (repl_arg_token(contents, is_jvm, paths)) {
-			if (flags.size() > 0) flags.pop_back();
+			if (flags.size() > 0) flags.pop();
 			return;
 		}
 		add_flag(contents);
@@ -80,10 +81,10 @@ namespace mcvm {
 	}
 
 	void GameRunner::write_flags() {
-		for (unsigned int i = 0; i < flags.size(); i++) {
-			add_word(flags[i]);
+		for (uint i = 0; i < flags.size(); i++) {
+			add_word(flags.top());
+			flags.pop();
 		}
-		flags = {};
 	}
 
 	void GameRunner::launch() {

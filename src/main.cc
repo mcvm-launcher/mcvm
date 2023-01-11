@@ -33,8 +33,8 @@ int main(int argc, char** argv) {
 	pkg.evaluate(res, "@install", global);
 	client.create(paths);
 
-	// mcvm::User user;
-	// client.launch(&user);
+	mcvm::User user;
+	client.launch(&user, paths);
 
 	// If we have 0-1 args, send the help message
 	if (argc <= 1) {

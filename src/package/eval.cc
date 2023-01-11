@@ -15,14 +15,14 @@ namespace mcvm {
 	}
 
 	void PkgBlock::evaluate(PkgEvalData& data, const PkgEvalGlobals& global) {
-		for (unsigned int i = 0; i < instructions.size(); i++) {
+		for (uint i = 0; i < instructions.size(); i++) {
 			instructions[i]->evaluate(data, global);
 		}
 	}
 
 	void PkgCommandInstruction::evaluate(PkgEvalData& data, const PkgEvalGlobals& global) {
 		std::cout << text;
-		for (unsigned int i = 0; i < args.size(); i++) {
+		for (uint i = 0; i < args.size(); i++) {
 			std::cout << ' ';
 			std::cout << args[i];
 		}
@@ -52,7 +52,7 @@ namespace mcvm {
 				condition_success = (condition.left_side == global.mc_version);
 				break;
 			case PkgIfCondition::MODLOADER: {
-				const std::map<std::string, ModType> mod_map = {
+				static const std::map<std::string, ModType> mod_map = {
 					{"forge", ModType::FORGE},
 					{"fabric", ModType::FABRIC},
 					{"quilt", ModType::QUILT}
@@ -61,7 +61,7 @@ namespace mcvm {
 				break;
 			}
 			case PkgIfCondition::SIDE: {
-				const std::map<std::string, MinecraftSide> side_map = {
+				static const std::map<std::string, MinecraftSide> side_map = {
 					{"client", MinecraftSide::CLIENT},
 					{"server", MinecraftSide::SERVER}
 				};
@@ -71,7 +71,6 @@ namespace mcvm {
 		}
 		if (condition.inverted) condition_success = !condition_success;
 
-		// TODO: temporary
 		OUT_LIT("if {");
 		if (condition_success) {
 			nested_block.evaluate(data, global);

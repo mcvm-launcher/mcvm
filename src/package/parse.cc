@@ -30,7 +30,7 @@ namespace mcvm {
 					{"modloader", PkgIfCondition::MODLOADER},
 					{"side", PkgIfCondition::SIDE}
 				};
-				unsigned int arg_root_pos = 1;
+				uint arg_root_pos = 1;
 				cond.condition = cond_map.at(prs.root.words.at(arg_root_pos));
 				if (cond.condition == PkgIfCondition::NOT) {
 					cond.inverted = true;
@@ -48,7 +48,7 @@ namespace mcvm {
 				prs.current_block = &inst->nested_block;
 			} else {
 				PkgCommandInstruction* inst = new PkgCommandInstruction;
-				const std::map<std::string, PkgCommandInstruction::PkgCommand> command_map = {
+				static const std::map<std::string, PkgCommandInstruction::PkgCommand> command_map = {
 					{"name", PkgCommandInstruction::SET_NAME},
 					{"version", PkgCommandInstruction::SET_VERSION},
 					{"resource-type", PkgCommandInstruction::RESOURCE_TYPE},
@@ -97,7 +97,7 @@ namespace mcvm {
 		PkgBlock* block = &pair.first->second;
 		prs.default_routine_block = prs.current_block = block;
 		
-		for (unsigned int i = 0; i < contents.length(); i++) {
+		for (uint i = 0; i < contents.length(); i++) {
 			prs.character = i;
 			const char& c = contents[i];
 

@@ -13,7 +13,7 @@ namespace mcvm {
 	}
 
 	void Daemon::start() {
-		OUT("Starting daemon...");
+		OUT_LIT("Starting daemon...");
 
 		loop = uv_default_loop();
 

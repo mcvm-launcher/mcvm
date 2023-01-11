@@ -33,10 +33,10 @@ namespace mcvm {
 	extern std::shared_ptr<DownloadHelper> get_version_manifest(const CachedPaths& paths);
 
 	// Obtain the json file for a version
-	extern std::shared_ptr<DownloadHelper> obtain_version_json(const std::string& version, json::Document* ret, const CachedPaths& paths);
+	extern std::shared_ptr<DownloadHelper> obtain_version_json(const MCVersion& version, json::Document* ret, const CachedPaths& paths);
 
 	// Obtain libraries for a version
-	extern std::shared_ptr<DownloadHelper> obtain_libraries(const std::string& version, json::Document* ret, const CachedPaths& paths);
+	extern std::shared_ptr<DownloadHelper> obtain_libraries(const MCVersion& version, json::Document* ret, const CachedPaths& paths);
 
 	// CURL callbacks
 
