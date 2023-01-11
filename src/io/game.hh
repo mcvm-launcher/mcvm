@@ -3,10 +3,11 @@
 #include "user/user.hh"
 #include "net/net.hh"
 #include "lib/util.hh"
+#include "lib/mojang.hh"
 
 #include <rapidjson/rapidjson.h>
 
-#include <stack>
+#include <deque>
 
 namespace mcvm {
 	// Set of game options that are added to and passed as args before running the game
@@ -15,7 +16,7 @@ namespace mcvm {
 		std::string output = "java -jar";
 		// The list of flags to be written and appended to the output
 		// TODO: Make this a stack probably
-		std::stack<std::string> flags;
+		std::deque<std::string> flags;
 
 		// Properties
 		const MCVersion& version;
@@ -26,7 +27,7 @@ namespace mcvm {
 		// Replaces tokens on an argument. Returns true if the previous argument should be deleted
 		bool repl_arg_token(std::string& contents, bool is_jvm, const CachedPaths& paths);
 		// Parse a single argument value from the document
-		void parse_single_arg(const json::Value& arg, bool is_jvm, const CachedPaths& paths);
+		void parse_single_arg(json::Value& arg, bool is_jvm, const CachedPaths& paths);
 		// Write flags to the output
 		void write_flags();
 		

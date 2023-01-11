@@ -103,12 +103,11 @@ namespace mcvm {
 			if (lib.HasMember("rules")) {
 				bool rule_fail = false;
 				for (auto& rule : lib["rules"].GetArray()) {
-					const std::string_view action = json_access(rule, "action").GetString();
+					const std::string action = json_access(rule, "action").GetString();
 					if (rule.HasMember("os")) {
 						const std::string_view os_name = json_access(rule["os"], "name").GetString();
 						if (
-							(action == "allow" && os_name != OS_STRING) ||
-							(action == "disallow" && os_name == OS_STRING)
+							(is_allowed(action) != (os_name == OS_STRING))
 						) {
 							rule_fail = true;
 						}

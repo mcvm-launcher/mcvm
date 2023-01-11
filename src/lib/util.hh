@@ -55,6 +55,13 @@
 	#define OS_STRING "osx"
 #endif
 
+// The current arch as a string
+#ifdef __x86_64
+	#define ARCH_STRING "x86"
+#else
+	#define ARCH_STRING ""
+#endif
+
 // Attributes
 
 #define UNUSED [[maybe_unused]]

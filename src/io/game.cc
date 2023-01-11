@@ -18,7 +18,7 @@ namespace mcvm {
 	}
 
 	void GameRunner::add_flag(const std::string& flag) {
-		flags.push(flag);
+		flags.push_back(flag);
 	}
 
 	bool GameRunner::repl_arg_token(std::string& contents, bool is_jvm, const CachedPaths& paths)	{
@@ -42,21 +42,55 @@ namespace mcvm {
 		}
 		// assert(!contents.find('$'));
 		if (contents.find('$') != std::string::npos) {
-			return true;
+			// return true;
 		}
 		return false;
 	}
 
-	void GameRunner::parse_single_arg(const json::Value& arg, bool is_jvm, const CachedPaths& paths) {
+	void GameRunner::parse_single_arg(json::Value& arg, bool is_jvm, const CachedPaths& paths) {
 		// The contents of the argument, will get changed based on the json item type and text replacement
 		std::string contents;
 		if (arg.IsString()) {
 			contents = arg.GetString();
+		} else if (arg.IsObject()) {
+			json::GenericObject arg_obj = arg.GetObject();
+			json::GenericArray rules = json_access(arg_obj, "rules").GetArray();
+			for (auto& rule_val : rules) {
+				json::GenericObject rule = rule_val.GetObject();
+				const bool allowed = is_allowed(json_access(rule, "action").GetString());
+				if (rule.HasMember("os")) {
+					json::GenericObject os = rule["os"].GetObject();
+					if (os.HasMember("name")) {
+						if (allowed != (OS_STRING == os["name"])) return;
+					}
+					if (os.HasMember("arch")) {
+						if (allowed != (ARCH_STRING == os["arch"])) return;
+					}
+				}
+				if (rule.HasMember("features")) {
+					json::GenericObject features = rule["features"].GetObject();
+					if (features.HasMember("has_custom_resolution")) {
+						return;
+					}
+					if (features.HasMember("is_demo_user")) {
+						return;
+					}
+				}
+			}
+			parse_single_arg(json_access(arg_obj, "value"), is_jvm, paths);
+			return;
+		} else if (arg.IsArray()) {
+			for (auto& value : arg.GetArray()) {
+				parse_single_arg(value, is_jvm, paths);
+			}
+		} else {
+			ASSERT_NOREACH();
 		}
 		if (repl_arg_token(contents, is_jvm, paths)) {
-			if (flags.size() > 0) flags.pop();
+			if (flags.size() > 0) flags.pop_back();
 			return;
 		}
+		assert(contents != "");
 		add_flag(contents);
 	}
 
@@ -82,9 +116,9 @@ namespace mcvm {
 
 	void GameRunner::write_flags() {
 		for (uint i = 0; i < flags.size(); i++) {
-			add_word(flags.top());
-			flags.pop();
+			add_word(flags[i]);
 		}
+		flags = {};
 	}
 
 	void GameRunner::launch() {

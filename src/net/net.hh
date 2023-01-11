@@ -2,6 +2,7 @@
 #include "io/files.hh"
 #include "data/info.hh"
 #include "lib/util.hh"
+#include "lib/mojang.hh"
 
 #include <curl/curl.h>
 #include <rapidjson/document.h>
