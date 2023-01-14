@@ -4,6 +4,7 @@
 #include "package/package.hh"
 #include "daemon.hh"
 #include "io/game.hh"
+#include "io/config.hh"
 
 #include <assert.h>
 #include <iostream>
@@ -17,6 +18,15 @@ int main(int argc, char** argv) {
 
 	// Directories
 	const mcvm::CachedPaths paths;
+
+	// Config
+	mcvm::ProgramConfig config;
+	try {
+		mcvm::fetch_program_config(config, paths);
+	} catch (mcvm::ConfigEvalError& err) {
+		OUT(err.what());
+		return 1;
+	}
 
 	// mcvm::Daemon dmon(paths.run);
 	// dmon.ensure_started();
@@ -33,7 +43,7 @@ int main(int argc, char** argv) {
 	pkg.evaluate(res, "@install", global);
 	client.create(paths);
 
-	mcvm::User user;
+	mcvm::MicrosoftUser user("carbon", "CarbonSmasher");
 	client.launch(&user, paths);
 
 	// If we have 0-1 args, send the help message

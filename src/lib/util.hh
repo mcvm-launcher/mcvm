@@ -53,6 +53,12 @@
 #define UNUSED [[maybe_unused]]
 #define FALLTHROUGH [[fallthrough]]
 
+// Nice numbers
+
+#define CHARBUF_SMALL 256
+#define CHARBUF_MEDIUM 4096
+#define CHARBUF_LARGE 65536
+
 namespace json = rapidjson;
 
 namespace mcvm {

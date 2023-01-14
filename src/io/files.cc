@@ -40,7 +40,7 @@ namespace mcvm {
 				out += line;
 			}
 		} else {
-			throw FileOpenError{path.c_str()};
+			throw FileOpenError{path};
 		}
 	}
 
@@ -50,7 +50,7 @@ namespace mcvm {
 			fwrite(text, sizeof(char), strlen(text), file);
 			fclose(file);
 		} else {
-			throw FileOpenError{path.c_str()};
+			throw FileOpenError{path};
 		}
 	}
 };

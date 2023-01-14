@@ -73,7 +73,9 @@ namespace mcvm {
 						return;
 					}
 					if (features.HasMember("is_demo_user")) {
-						return;
+						if (!user->is_demo()) {
+							return;
+						}
 					}
 				}
 			}

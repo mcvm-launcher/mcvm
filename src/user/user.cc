@@ -1,13 +1,16 @@
 #include "user.hh"
 
 namespace mcvm {
-	MojangUser::MojangUser(const std::string _username) : username(_username) {
+	User::User(std::string _id) : id(_id) {}
+
+	MicrosoftUser::MicrosoftUser(std::string _id, std::string _username)
+	: User(_id), username(_username) {
 		if (!is_valid_username(_username)) {
 			throw InvalidUsernameException();
 		}
 	}
 
-	bool MojangUser::is_valid_username(const std::string username) {
+	bool MicrosoftUser::is_valid_username(std::string username) {
 		const std::size_t len = username.size();
 		if (len > 16) {
 			return false;
