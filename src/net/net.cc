@@ -123,7 +123,7 @@ namespace mcvm {
 		// curl_easy_setopt(handle, CURLOPT_PROGRESSDATA, progress_data);
 	}
 
-	std::string DownloadHelper::get_str() {
+	const std::string& DownloadHelper::get_str() {
 		return res.str;
 	}
 

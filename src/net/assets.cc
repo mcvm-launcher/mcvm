@@ -59,7 +59,7 @@ namespace mcvm {
 		zip_stat_t st;
 		for (uint i = 0; i < zip_get_num_entries(z, 0); i++) {
 			if (zip_stat_index(z, i, 0, &st) == 0) {
-				OUT("NATIVE " << st.name);
+				// OUT("NATIVE " << st.name);
 			}
 		}
 	}

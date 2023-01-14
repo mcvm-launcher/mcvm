@@ -3,8 +3,8 @@
 namespace mcvm {
 	User::User(std::string _id) : id(_id) {}
 
-	MicrosoftUser::MicrosoftUser(std::string _id, std::string _username)
-	: User(_id), username(_username) {
+	MicrosoftUser::MicrosoftUser(std::string _id, std::string _username, std::string _uuid)
+	: User(_id), username(_username), uuid(_uuid) {
 		if (!is_valid_username(_username)) {
 			throw InvalidUsernameException();
 		}
@@ -25,5 +25,16 @@ namespace mcvm {
 			}
 		}
 		return true;
+	}
+
+	void MicrosoftUser::ensure_uuid() {
+		ENSURE(uuid == "");
+
+		DownloadHelper helper;
+		helper.set_options(DownloadHelper::STR, "https://api.mojang.com/users/profiles/minecraft/" + username);
+		helper.perform();
+		const std::string& response = helper.get_str();
+		json::Document doc;
+		doc.Parse(response.c_str());
 	}
 };

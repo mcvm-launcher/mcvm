@@ -95,12 +95,12 @@ namespace mcvm {
 
 		DownloadHelper();
 
-		void set_options(DownloadMode mode, const std::string& url, const fs::path& path);
+		void set_options(DownloadMode mode, const std::string& url, const fs::path& path = "/");
 		bool perform();
 		bool sha1_checksum(const std::string& checksum);
 		void add_progress_meter(ProgressData::ProgressStyle style, const std::string& title);
 
-		std::string get_str();
+		const std::string& get_str();
 		std::string get_err();
 
 		~DownloadHelper();

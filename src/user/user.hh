@@ -1,6 +1,7 @@
 #pragma once
-
+#include "lib/util.hh"
 #include "skin.hh"
+#include "net/net.hh"
 
 #include <string>
 #include <ctype.h>
@@ -26,7 +27,7 @@ namespace mcvm {
 
 	class MicrosoftUser : public User {
 		public:
-		MicrosoftUser(std::string _id, std::string _username);
+		MicrosoftUser(std::string _id, std::string _username, std::string _uuid = "");
 
 		std::string username;
 		std::string uuid;
@@ -40,9 +41,7 @@ namespace mcvm {
 		static bool is_valid_username(std::string username);
 
 		// Grabs the UUID from the Mojang API
-		void ensure_uuid() {
-			
-		}
+		void ensure_uuid();
 	};
 
 	class DemoUser : public User {

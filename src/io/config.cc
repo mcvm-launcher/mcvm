@@ -49,10 +49,21 @@ namespace mcvm {
 			const std::string user_type = user_obj["type"].GetString();
 
 			if (user_type == "microsoft") {
+				MicrosoftUser* user;
+
 				_CONFIG_ENSURE_KEY(user_obj, "[user]", "name");
 				_CONFIG_ENSURE_TYPE(user_obj, "[user]", "name", String);
 				const std::string name = user_obj["name"].GetString();
-				config.users.push_back(new MicrosoftUser(user_id, name));
+
+				if (user_obj.HasMember("uuid")) {
+					_CONFIG_ENSURE_TYPE(user_obj, "[user]", "uuid", String);
+					user = new MicrosoftUser(user_id, name, user_obj["uuid"].GetString());
+				} else {
+					OUT("Warning: It is recommended to have your uuid along with your username in user profile " + name);
+					user = new MicrosoftUser(user_id, name);
+					user->ensure_uuid();
+				}
+				config.users.push_back(user);
 			} else if (user_type == "demo") {
 				config.users.push_back(new DemoUser(user_id));
 			} else {

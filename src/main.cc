@@ -33,18 +33,18 @@ int main(int argc, char** argv) {
 
 	mcvm::Profile prof("Vanilla", "1.18.2");
 	mcvm::ClientInstance client(&prof, "Vanilla", paths);
-	mcvm::LocalPackage pkg("sodium", paths.home / "test/sodium2.pkg.txt");
-	pkg.ensure_contents();
-	pkg.parse();
-	mcvm::PkgEvalData res;
-	mcvm::PkgEvalGlobals global;
-	global.mc_version = prof.get_version();
-	global.side = mcvm::MinecraftSide::CLIENT;
-	pkg.evaluate(res, "@install", global);
-	client.create(paths);
+	// mcvm::LocalPackage pkg("sodium", paths.home / "test/sodium2.pkg.txt");
+	// pkg.ensure_contents();
+	// pkg.parse();
+	// mcvm::PkgEvalData res;
+	// mcvm::PkgEvalGlobals global;
+	// global.mc_version = prof.get_version();
+	// global.side = mcvm::MinecraftSide::CLIENT;
+	// pkg.evaluate(res, "@install", global);
+	// client.create(paths);
 
-	mcvm::MicrosoftUser user("carbon", "CarbonSmasher");
-	client.launch(&user, paths);
+	// mcvm::MicrosoftUser user("carbon", "CarbonSmasher");
+	// client.launch(&user, paths);
 
 	// If we have 0-1 args, send the help message
 	if (argc <= 1) {
