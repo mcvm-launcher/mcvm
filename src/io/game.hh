@@ -19,7 +19,7 @@ namespace mcvm {
 		std::deque<std::string> flags;
 
 		// Properties
-		const MCVersion& version;
+		const MinecraftVersion version;
 		const fs::path mc_dir;
 		const fs::path jar_path;
 		User* user;
@@ -38,7 +38,7 @@ namespace mcvm {
 
 		public:
 		GameRunner(
-			const MCVersion& _version,
+			MinecraftVersion _version,
 			const fs::path _mc_dir,
 			const fs::path _jar_path,
 			User* _user

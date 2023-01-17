@@ -49,7 +49,7 @@ namespace mcvm {
 		RunLevel level = RunLevel::ALL;
 		fs::path working_directory;
 		std::string package_requested_version;
-		MCVersion mc_version;
+		MCVersionString mc_version;
 		ModType modloader = ModType::FABRIC; 
 		MinecraftSide side = MinecraftSide::CLIENT;
 	};

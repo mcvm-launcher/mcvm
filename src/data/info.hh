@@ -3,7 +3,7 @@
 #include <exception>
 
 namespace mcvm {
-	typedef std::string MCVersion;
+	typedef std::string MCVersionString;
 	typedef std::string ResourceVersion;
 
 	// Enum of different types of modloaders

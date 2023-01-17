@@ -5,7 +5,7 @@ namespace mcvm {
 	// FIXME
 
 	GameRunner::GameRunner(
-		const MCVersion& _version,
+		MinecraftVersion _version,
 		const fs::path _mc_dir,
 		const fs::path _jar_path,
 		User* _user
@@ -28,13 +28,15 @@ namespace mcvm {
 		} else {
 			#define _GAME_ARG_REPL(check, expr) if (contents == check) contents = expr
 
+			const MCVersionString version_string = mc_version_reverse_map.at(version);
+
 			// Version
-			_GAME_ARG_REPL("${version_name}", version);
+			_GAME_ARG_REPL("${version_name}", version_string);
 			_GAME_ARG_REPL("${version_type}", "mcvm");
 			// Directories
 			_GAME_ARG_REPL("${game_directory}", mc_dir);
 			_GAME_ARG_REPL("${assets_root}", paths.assets);
-			_GAME_ARG_REPL("${assets_index_name}", paths.assets / "indexes" / (version + ".json"));
+			_GAME_ARG_REPL("${assets_index_name}", paths.assets / "indexes" / (version_string + ".json"));
 			// TODO: Actual auth
 			_GAME_ARG_REPL("${auth_player_name}", "CarbonSmasher");
 			_GAME_ARG_REPL("${auth_access_token}", "abc123abc123");

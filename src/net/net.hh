@@ -3,6 +3,7 @@
 #include "data/info.hh"
 #include "lib/json.hh"
 #include "lib/mojang.hh"
+#include "lib/versions.hh"
 
 #include <curl/curl.h>
 #include <rapidjson/document.h>
@@ -34,10 +35,10 @@ namespace mcvm {
 	extern std::shared_ptr<DownloadHelper> get_version_manifest(const CachedPaths& paths);
 
 	// Obtain the json file for a version
-	extern std::shared_ptr<DownloadHelper> obtain_version_json(const MCVersion& version, json::Document* ret, const CachedPaths& paths);
+	extern std::shared_ptr<DownloadHelper> obtain_version_json(const MCVersionString& version, json::Document* ret, const CachedPaths& paths);
 
 	// Obtain libraries for a version
-	extern std::shared_ptr<DownloadHelper> obtain_libraries(const MCVersion& version, json::Document* ret, const CachedPaths& paths);
+	extern std::shared_ptr<DownloadHelper> obtain_libraries(MinecraftVersion version, json::Document* ret, const CachedPaths& paths);
 
 	// CURL callbacks
 

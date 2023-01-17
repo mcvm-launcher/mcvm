@@ -29,7 +29,7 @@ int main(int argc, char** argv) {
 	// mcvm::Daemon dmon(paths.run);
 	// dmon.ensure_started();
 
-	mcvm::Profile prof("Vanilla", "1.18.2");
+	mcvm::Profile prof("Vanilla", mcvm::MinecraftVersion::V_20W11A);
 	mcvm::ClientInstance client(&prof, "Vanilla", paths);
 	// mcvm::LocalPackage pkg("sodium", paths.home / "test/sodium2.pkg.txt");
 	// pkg.ensure_contents();
@@ -39,7 +39,7 @@ int main(int argc, char** argv) {
 	// global.mc_version = prof.get_version();
 	// global.side = mcvm::MinecraftSide::CLIENT;
 	// pkg.evaluate(res, "@install", global);
-	// client.create(paths);
+	client.create(paths);
 
 	// mcvm::MicrosoftUser user("carbon", "CarbonSmasher");
 	// client.launch(&user, paths);

@@ -1,10 +1,10 @@
 #include "profile.hh"
 
 namespace mcvm {
-	Profile::Profile(const std::string _name, MCVersion _version)
+	Profile::Profile(const std::string _name, MinecraftVersion _version)
 	: name(_name), version(_version) {}
 
-	MCVersion Profile::get_version() {
+	MinecraftVersion Profile::get_version() {
 		return version;
 	}
 
@@ -31,7 +31,7 @@ namespace mcvm {
 		create_dir_if_not_exists(dir);
 	}
 	
-	MCVersion Instance::get_version() {
+	MinecraftVersion Instance::get_version() {
 		return parent->get_version();
 	}
 
@@ -73,7 +73,7 @@ namespace mcvm {
 	void ServerInstance::create(const CachedPaths& paths) {
 		ensure_instance_dir();
 		
-		std::shared_ptr<DownloadHelper> helper = obtain_version_json(parent->get_version(), &version_json, paths);
+		std::shared_ptr<DownloadHelper> helper = obtain_version_json(mc_version_reverse_map.at(parent->get_version()), &version_json, paths);
 
 		// Get the server jar
 		const fs::path jar_path = server_dir / "server.jar";

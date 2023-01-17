@@ -8,13 +8,13 @@ namespace mcvm {
 		// Object for a file installed in your Minecraft directory
 		class Resource {
 		public:
-		Resource(const MCVersion _mc_vers, const ResourceVersion _vers)
+		Resource(const MCVersionString _mc_vers, const ResourceVersion _vers)
 		: mc_vers(_mc_vers), vers(_vers) {}
 
 		// Ensures that a resource is available for use by Minecraft
 		virtual void ensure_render() {}
 
-		MCVersion mc_vers;
+		MCVersionString mc_vers;
 		ResourceVersion vers;
 	};
 
@@ -37,7 +37,7 @@ namespace mcvm {
 
 	class ModResource : public Resource {
 		public:
-		ModResource(const MCVersion _mc_vers, const ResourceVersion _vers, const ModType _type)
+		ModResource(const MCVersionString _mc_vers, const ResourceVersion _vers, const ModType _type)
 		: Resource(_mc_vers, _vers), type(_type) {}
 
 		const ModType type;

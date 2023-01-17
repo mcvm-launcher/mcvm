@@ -6,13 +6,13 @@ namespace mcvm {
 	// A profile, which holds game settings and can be depended on by runnable instances 
 	class Profile {
 		const std::string name;
-		MCVersion version;
+		MinecraftVersion version;
 		std::vector<Package*> packages;
 
 		public:
-		Profile(const std::string _name, MCVersion _version);
+		Profile(const std::string _name, MinecraftVersion _version);
 
-		MCVersion get_version();
+		MinecraftVersion get_version();
 		void add_package(Package* pkg);
 		void delete_all_packages();
 	};
@@ -45,7 +45,7 @@ namespace mcvm {
 		virtual void launch(UNUSED User* user, UNUSED const CachedPaths& paths) {}
 
 		// Obtain the version of the instance
-		MCVersion get_version();
+		MinecraftVersion get_version();
 	};
 
 	// A profile that also holds client-specific resources
