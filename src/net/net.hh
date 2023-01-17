@@ -1,7 +1,7 @@
 #pragma once
 #include "io/files.hh"
 #include "data/info.hh"
-#include "lib/util.hh"
+#include "lib/json.hh"
 #include "lib/mojang.hh"
 
 #include <curl/curl.h>

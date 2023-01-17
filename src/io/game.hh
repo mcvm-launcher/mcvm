@@ -2,7 +2,7 @@
 #include "data/resource.hh"
 #include "user/user.hh"
 #include "net/net.hh"
-#include "lib/util.hh"
+#include "lib/json.hh"
 #include "lib/mojang.hh"
 
 #include <rapidjson/rapidjson.h>

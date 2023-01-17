@@ -1,6 +1,4 @@
 #include "commands/command.hh"
-#include "io/files.hh"
-#include "net/net.hh"
 #include "package/package.hh"
 #include "daemon.hh"
 #include "io/game.hh"
@@ -9,8 +7,8 @@
 #include <assert.h>
 #include <iostream>
 
-inline void run_subcommand(const std::string& subcommand, int argc, std::vector<std::string> argv) {
-	mcvm::command_map.at(subcommand)(argc, argv);
+inline void run_subcommand(const std::string& subcommand, int argc, std::vector<std::string> argv, const mcvm::CachedPaths& paths) {
+	mcvm::command_map.at(subcommand)(argc, argv, paths);
 }
 
 int main(int argc, char** argv) {
@@ -61,7 +59,7 @@ int main(int argc, char** argv) {
 		}
 
 		try {
-			run_subcommand(subcommand, argc_slice, argv_slice);
+			run_subcommand(subcommand, argc_slice, argv_slice, paths);
 		} catch(const std::out_of_range& e) {
 			ERR("Unknown subcommand " << subcommand);
 			OUT(mcvm::help_message());

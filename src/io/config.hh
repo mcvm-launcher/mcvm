@@ -31,6 +31,12 @@ namespace mcvm {
 			);
 		}
 	};
+	
+	// Write JSON data to the program config
+	extern void write_program_config(json::Document& doc, const CachedPaths& paths);
+
+	// Open the program config
+	extern void open_program_config(json::Document& doc, const fs::path& config_path);
 
 	// Get updated program config
 	extern void fetch_program_config(ProgramConfig& config, const CachedPaths& paths);

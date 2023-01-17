@@ -76,22 +76,6 @@ namespace mcvm {
 		source.replace(pos, find.length(), repl);
 	}
 
-	// Access a json value with an assertion that it is there
-	static inline json::Value& json_access(json::Value& val, const char* key) {
-		assert(val.HasMember(key));
-		return val[key];
-	}
-
-	static inline json::Value& json_access(json::Value* val, const char* key) {
-		assert(val->HasMember(key));
-		return val->operator[](key);
-	}
-
-	static inline json::Value& json_access(json::GenericObject<false, json::Value>& val, const char* key) {
-		assert(val.HasMember(key));
-		return val[key];
-	}
-
 	// Obtain a subvector of a parent vector
 	template <typename T>
 	static inline std::vector<T> vec_slice(const std::vector<T>& src, std::size_t start, std::size_t len) {
