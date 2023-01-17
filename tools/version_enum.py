@@ -7,8 +7,10 @@ urllib.request.urlretrieve("https://piston-meta.mojang.com/mc/game/version_manif
 with open("vmanifest.json", "r") as file:
 	man = json.loads(file.read())
 	versions = man["versions"]
+
 	version_names = []
 	version_names_raw = []
+
 	for version in versions:
 		id = str(version["id"])
 		version_names_raw.append(id)
