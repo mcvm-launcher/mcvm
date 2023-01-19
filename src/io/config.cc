@@ -39,6 +39,10 @@ namespace mcvm {
 		json::Document doc;
 		open_program_config(doc, config_path);
 
+		if (!doc.IsObject()) {
+			throw ConfigEvalError{config_path, "Root was expected to be of type 'Object'"};
+		}
+
 		// Users
 		_CONFIG_ENSURE(doc, "root", "users", Object);
 		if (!doc.HasMember("users")) doc.AddMember("users", json::kObjectType, doc.GetAllocator());
@@ -156,7 +160,7 @@ namespace mcvm {
 		try {
 			load(paths);
 		} catch (mcvm::ConfigEvalError& err) {
-			OUT(err.what());
+			ERR(err.what());
 			exit(1);
 		}
 	}
