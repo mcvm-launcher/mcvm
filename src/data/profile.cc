@@ -81,7 +81,7 @@ namespace mcvm {
 			"client"
 		).GetObject();
 		const std::string client_url = json_access(client_download, "url").GetString();
-		if (verbose) OUT_LIT("\tDownloading client jar");
+		if (verbose) OUT_LIT("\tDownloading client jar...");
 		download_cached_file(client_url, dir / "client.jar", false, helper);
 	}
 
@@ -118,7 +118,7 @@ namespace mcvm {
 			"server"
 		).GetObject();
 
-		if (verbose) OUT_LIT("\tDownloading server jar");
+		if (verbose) OUT_LIT("\tDownloading server jar...");
 		download_cached_file(
 			json_access(server_download, "url").GetString(),
 			jar_path, false, helper

@@ -34,7 +34,7 @@ namespace mcvm {
 		}
 	}
 
-	void fetch_program_config(ProgramConfig& config, const CachedPaths& paths) {
+	void ProgramConfig::load(const CachedPaths& paths) {
 		const fs::path config_path = paths.config / "mcvm.json";
 		json::Document doc;
 		open_program_config(doc, config_path);
@@ -63,9 +63,9 @@ namespace mcvm {
 					user = new MicrosoftUser(user_id, name);
 					user->ensure_uuid();
 				}
-				config.users.insert(std::make_pair(user_id, user));
+				users.insert(std::make_pair(user_id, user));
 			} else if (user_type == "demo") {
-				config.users.insert(
+				users.insert(
 					std::make_pair(user_id, new DemoUser(user_id))
 				);
 			} else {
@@ -75,11 +75,11 @@ namespace mcvm {
 
 		if (doc.HasMember("default_user")) {
 			_CONFIG_ENSURE_TYPE(doc, "root", "default_user", String)
-			const std::string default_user = doc["default_user"].GetString();
-			if (config.users.contains(default_user)) {
-				config.default_user = config.users[default_user];
+			const std::string default_user_str = doc["default_user"].GetString();
+			if (users.contains(default_user_str)) {
+				default_user = users[default_user_str];
 			} else {
-				throw ConfigEvalError{config_path, "In key [default_user]: Unknown user '" + default_user + "'."};
+				throw ConfigEvalError{config_path, "In key [default_user]: Unknown user '" + default_user_str + "'."};
 			}
 		}
 
@@ -99,7 +99,7 @@ namespace mcvm {
 			}
 
 			Profile* profile = new Profile(profile_id, profile_version);
-			config.profiles.insert(std::make_pair(profile_id, profile));
+			profiles.insert(std::make_pair(profile_id, profile));
 
 			// Instances
 			if (profile_obj.HasMember("instances")) {
@@ -147,6 +147,17 @@ namespace mcvm {
 					profile->add_package(package);
 				}
 			}
+		}
+	}
+
+	void ProgramConfig::ensure_loaded(const CachedPaths& paths) {
+		GUARD(is_loaded);
+
+		try {
+			load(paths);
+		} catch (mcvm::ConfigEvalError& err) {
+			OUT(err.what());
+			exit(1);
 		}
 	}
 };

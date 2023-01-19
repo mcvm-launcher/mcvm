@@ -11,18 +11,6 @@
 #include <map>
 
 namespace mcvm {
-	struct ProgramConfig {
-		std::map<std::string, User*> users;
-		std::map<std::string, Profile*> profiles;
-
-		User* default_user = nullptr;
-
-		~ProgramConfig() {
-			DEL_MAP(profiles);
-			DEL_MAP(users);
-		}
-	};
-
 	struct ConfigEvalError : public std::exception {
 		const fs::path path;
 		const std::string message;
@@ -44,6 +32,23 @@ namespace mcvm {
 	// Open the program config
 	extern void open_program_config(json::Document& doc, const fs::path& config_path);
 
-	// Get updated program config
-	extern void fetch_program_config(ProgramConfig& config, const CachedPaths& paths);
+	class ProgramConfig {
+		bool is_loaded = false;
+
+		void load(const CachedPaths& paths);
+		
+		public:
+		std::map<std::string, User*> users;
+		std::map<std::string, Profile*> profiles;
+
+		User* default_user = nullptr;
+
+		// Load the config if it isn't loaded already
+		void ensure_loaded(const CachedPaths& paths);
+
+		~ProgramConfig() {
+			DEL_MAP(profiles);
+			DEL_MAP(users);
+		}
+	};
 };

@@ -10,6 +10,8 @@ namespace mcvm {
 		ARGC_CHECK(0,);
 		ARGC_CHECK(1,);
 
+		data.config.ensure_loaded(data.paths);
+
 		const std::string& profile_id = argv[0];
 		const std::string& instance_id = argv[1];
 

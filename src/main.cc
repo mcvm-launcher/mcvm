@@ -24,12 +24,6 @@ int main(int argc, char** argv) {
 
 	// Config
 	mcvm::ProgramConfig config;
-	try {
-		mcvm::fetch_program_config(config, paths);
-	} catch (mcvm::ConfigEvalError& err) {
-		OUT(err.what());
-		return 1;
-	}
 
 	mcvm::CommandData command_data{paths, config};
 

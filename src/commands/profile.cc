@@ -18,6 +18,7 @@ namespace mcvm {
 	}
 
 	void profile_update_command(const std::string& name, CommandData& data) {
+		data.config.ensure_loaded(data.paths);
 		if (data.config.profiles.contains(name)) {
 			Profile* profile = data.config.profiles[name];
 			OUT_LIT("Updating packages...");

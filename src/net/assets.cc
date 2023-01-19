@@ -171,7 +171,6 @@ namespace mcvm {
 
 		if (verbose) OUT_LIT("\tDownloading libraries and assets...");
 		multi_helper.perform_blocking();
-		if (verbose) OUT_LIT("\tLibraries and assets downloaded");
 
 		// Deal with proper installation of native libraries now that we have them
 		if (verbose) OUT_LIT("\tExtracting natives...");

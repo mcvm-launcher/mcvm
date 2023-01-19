@@ -24,6 +24,8 @@ namespace mcvm {
 	void user_command(const unsigned int argc, CommandArgs argv, CommandData& data) {
 		ARGC_CHECK(0,);
 
+		data.config.ensure_loaded(data.paths);
+
 		// if (argv[0] == "add") {
 		// 	ARGC_CHECK(2, _add);
 		// 	_add_command(argv[1], argv[2], data);
