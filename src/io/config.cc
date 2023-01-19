@@ -63,9 +63,11 @@ namespace mcvm {
 					user = new MicrosoftUser(user_id, name);
 					user->ensure_uuid();
 				}
-				config.users.push_back(user);
+				config.users.insert(std::make_pair(user_id, user));
 			} else if (user_type == "demo") {
-				config.users.push_back(new DemoUser(user_id));
+				config.users.insert(
+					std::make_pair(user_id, new DemoUser(user_id))
+				);
 			} else {
 				throw ConfigEvalError{config_path, "Unknown user type '" + user_type + "'."};
 			}
@@ -73,18 +75,18 @@ namespace mcvm {
 
 		if (doc.HasMember("default_user")) {
 			_CONFIG_ENSURE_TYPE(doc, "root", "default_user", String)
-			for (uint i = 0; i < config.users.size(); i++) {
-				User* user = config.users[i];
-				if (user->id == doc["default_user"].GetString()) {
-					config.default_user = user;
-				}
+			const std::string default_user = doc["default_user"].GetString();
+			if (config.users.contains(default_user)) {
+				config.default_user = config.users[default_user];
+			} else {
+				throw ConfigEvalError{config_path, "In key [default_user]: Unknown user '" + default_user + "'."};
 			}
 		}
 
 		// Profiles
 		_CONFIG_ENSURE(doc, "root", "profiles", Object);
 		for (auto& profile_val : doc["profiles"].GetObject()) {
-			const std::string profile_name = profile_val.name.GetString();
+			const std::string profile_id = profile_val.name.GetString();
 			json::GenericObject profile_obj = profile_val.value.GetObject();
 
 			_CONFIG_ENSURE(profile_obj, "[profile]", "version", String);
@@ -96,28 +98,26 @@ namespace mcvm {
 				throw ConfigEvalError{config_path, "Invalid Minecraft version '" + profile_version_str + "'."};
 			}
 
-			Profile* profile = new Profile(profile_name, profile_version);
-			config.profiles.push_back(profile);
+			Profile* profile = new Profile(profile_id, profile_version);
+			config.profiles.insert(std::make_pair(profile_id, profile));
 
 			// Instances
 			if (profile_obj.HasMember("instances")) {
 				_CONFIG_ENSURE_TYPE(profile_obj, "[profile]", "instances", Object);
 				for (auto& instance_val : profile_obj["instances"].GetObject()) {
-					const std::string instance_name = instance_val.name.GetString();
+					const std::string instance_id = instance_val.name.GetString();
 					json::GenericObject instance_obj = instance_val.value.GetObject();
 
 					_CONFIG_ENSURE_TYPE(instance_obj, "[profile][instance]", "type", String);
 					const std::string instance_type = instance_obj["type"].GetString();
 					Instance* instance;
 					if (instance_type == "client") {
-						instance = new ClientInstance(profile, instance_name, paths);
+						instance = new ClientInstance(profile, instance_id, paths);
 					} else if (instance_type == "server") {
-						instance = new ServerInstance(profile, instance_name, paths);
+						instance = new ServerInstance(profile, instance_id, paths);
 					} else {
 						throw ConfigEvalError{config_path, "Unknown instance type '" + instance_type + "'."};
 					}
-
-					config.instances.push_back(instance);
 				}
 			}
 

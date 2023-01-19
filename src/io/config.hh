@@ -12,16 +12,14 @@
 
 namespace mcvm {
 	struct ProgramConfig {
-		std::vector<User*> users;
-		std::vector<Profile*> profiles;
-		std::vector<Instance*> instances;
+		std::map<std::string, User*> users;
+		std::map<std::string, Profile*> profiles;
 
 		User* default_user = nullptr;
 
 		~ProgramConfig() {
-			DEL_VECTOR(profiles);
-			DEL_VECTOR(instances);
-			DEL_VECTOR(users);
+			DEL_MAP(profiles);
+			DEL_MAP(users);
 		}
 	};
 

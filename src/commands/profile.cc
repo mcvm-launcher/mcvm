@@ -19,12 +19,14 @@ namespace mcvm {
 	}
 
 	inline void profile_update_command(const std::string& name, CommandData& data) {
-		for (uint i = 0; i < data.config.profiles.size(); i++) {
-			Profile* profile = data.config.profiles[i];
-			if (profile->get_name() == name) {
-				profile->update_packages();
-				profile->create_instances(data.paths);
-			}
+		if (data.config.profiles.contains(name)) {
+			Profile* profile = data.config.profiles[name];
+			OUT_LIT("Updating packages...");
+			profile->update_packages();
+			OUT_LIT("Updating instances...");
+			profile->create_instances(data.paths);
+		} else {
+			ERR("Error: No profile named '" << name << "'.");
 		}
 	}
 

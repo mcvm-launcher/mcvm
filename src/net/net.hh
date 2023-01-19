@@ -31,14 +31,25 @@ namespace mcvm {
 	extern void net_stop();
 
 	// Updates asset and library indexes with Mojang servers
-	// Returns the manifest json file contents
-	extern std::shared_ptr<DownloadHelper> get_version_manifest(const CachedPaths& paths);
+	extern std::shared_ptr<DownloadHelper> get_version_manifest(
+		const CachedPaths& paths, bool verbose = true
+	);
 
 	// Obtain the json file for a version
-	extern std::shared_ptr<DownloadHelper> obtain_version_json(const MCVersionString& version, json::Document* ret, const CachedPaths& paths);
+	extern std::shared_ptr<DownloadHelper> obtain_version_json(
+		const MCVersionString& version,
+		json::Document* ret,
+		const CachedPaths& paths,
+		bool verbose = true
+	);
 
 	// Obtain libraries for a version
-	extern std::shared_ptr<DownloadHelper> obtain_libraries(MinecraftVersion version, json::Document* ret, const CachedPaths& paths);
+	extern std::shared_ptr<DownloadHelper> obtain_libraries(
+		MinecraftVersion version,
+		json::Document* ret,
+		const CachedPaths& paths,
+		bool verbose = true
+	);
 
 	// CURL callbacks
 

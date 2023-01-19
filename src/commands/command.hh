@@ -27,6 +27,7 @@ namespace mcvm {
 	// Command function definitions
 	extern void user_command(const unsigned int argc, CommandArgs argv, CommandData& data);
 	extern void profile_command(const unsigned int argc, CommandArgs argv, CommandData& data);
+	extern void launch_command(const unsigned int argc, CommandArgs argv, CommandData& data);
 	extern void help_command(const unsigned int argc, CommandArgs argv, CommandData& data);
 	// Internal command used as the init function for the daemon
 	static void start_daemon_command(UNUSED const unsigned int argc, UNUSED CommandArgs argv, UNUSED CommandData& data) {
@@ -39,6 +40,7 @@ namespace mcvm {
 	static std::map<std::string, void(*)(unsigned int, CommandArgs, CommandData&)> command_map = {
 		{"user", &user_command},
 		{"profile", &profile_command},
+		{"launch", &launch_command},
 		{"help", &help_command},
 		{"__daemon_start__", &start_daemon_command}
 	};

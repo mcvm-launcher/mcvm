@@ -43,6 +43,8 @@
 
 // Delete pointed to elements of a vector but do not delete the elements themselves
 #define DEL_VECTOR(vec) for (uint __i = 0; __i < vec.size(); __i++) { delete vec[__i]; }
+// Delete pointed to elements of a map but do not delete the elements themselves
+#define DEL_MAP(map) for (auto __i = map.begin(); __i != map.end(); __i++) { delete __i->second; }
 // Delete an object with a nullptr assertion
 #define ASSERTED_DEL(obj) (assert(obj != nullptr); delete obj)
 // Delete an object with a nullptr check

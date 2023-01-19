@@ -10,9 +10,10 @@ namespace mcvm {
 		const std::string name;
 		MinecraftVersion version;
 		std::vector<Package*> packages;
-		std::vector<Instance*> instances;
 
 		public:
+		std::map<std::string, Instance*> instances;
+
 		Profile(const std::string _name, MinecraftVersion _version);
 
 		const std::string& get_name();
@@ -20,7 +21,6 @@ namespace mcvm {
 		void add_package(Package* pkg);
 		void update_packages();
 		void delete_all_packages();
-		void add_instance(Instance* instance);
 		void create_instances(const CachedPaths& paths);
 
 		~Profile() = default;
@@ -45,7 +45,7 @@ namespace mcvm {
 		// void ensure_cached() {}
 
 		// Create the instance and all of its files
-		virtual void create(const CachedPaths& paths);
+		virtual void create(UNUSED const CachedPaths& paths, UNUSED bool verbose = true);
 
 		// Make sure that the instance has a created directory
 		virtual void ensure_instance_dir();
@@ -55,6 +55,8 @@ namespace mcvm {
 
 		// Obtain the version of the instance
 		MinecraftVersion get_version();
+
+		virtual ~Instance() = default;
 	};
 
 	// A profile that also holds client-specific resources
@@ -65,7 +67,7 @@ namespace mcvm {
 		public:
 		ClientInstance(Profile* _parent, const std::string _name, const CachedPaths& paths);
 
-		void create(const CachedPaths& paths) override;
+		void create(const CachedPaths& paths, bool verbose = true) override;
 		void ensure_instance_dir() override;
 		void launch(User* user, const CachedPaths& paths) override;
 	};
@@ -83,7 +85,7 @@ namespace mcvm {
 		public:
 		ServerInstance(Profile* _parent, const std::string _name, const CachedPaths& paths);
 
-		void create(const CachedPaths& paths) override;
+		void create(const CachedPaths& paths, bool verbose = true) override;
 		void ensure_instance_dir() override;
 	};
 };

@@ -3,10 +3,10 @@
 namespace mcvm {
 	// README: https://wiki.vg/Game_files
 
-	std::shared_ptr<DownloadHelper> get_version_manifest(const CachedPaths& paths) {
+	std::shared_ptr<DownloadHelper> get_version_manifest(const CachedPaths& paths, bool verbose) {
 		create_dir_if_not_exists(paths.assets);
 
-		OUT("Obtaining version index...");
+		if (verbose) OUT("\tObtaining version index...");
 
 		const fs::path manifest_file_path = paths.assets / "version_manifest.json";
 		std::shared_ptr<DownloadHelper> helper = std::make_shared<DownloadHelper>();
@@ -15,9 +15,14 @@ namespace mcvm {
 		return helper;
 	}
 
-	std::shared_ptr<DownloadHelper> obtain_version_json(const MCVersionString& version, json::Document* ret, const CachedPaths& paths) {
-		OUT_LIT("Downloading version json...");
-		std::shared_ptr<DownloadHelper> helper = get_version_manifest(paths);
+	std::shared_ptr<DownloadHelper> obtain_version_json(
+		const MCVersionString& version,
+		json::Document* ret,
+		const CachedPaths& paths,
+		bool verbose
+	) {
+		if (verbose) OUT_LIT("\tDownloading version json...");
+		std::shared_ptr<DownloadHelper> helper = get_version_manifest(paths, verbose);
 		const std::string manifest_file = helper->get_str();
 
 		json::Document doc;
@@ -64,17 +69,22 @@ namespace mcvm {
 		}
 	}
 
-	std::shared_ptr<DownloadHelper> obtain_libraries(MinecraftVersion version, json::Document* ret, const CachedPaths& paths) {
+	std::shared_ptr<DownloadHelper> obtain_libraries(
+		MinecraftVersion version,
+		json::Document* ret,
+		const CachedPaths& paths,
+		bool verbose
+	) {
 		const MCVersionString version_string = mc_version_reverse_map.at(version);
 		
-		std::shared_ptr<DownloadHelper> helper = obtain_version_json(version_string, ret, paths);
+		std::shared_ptr<DownloadHelper> helper = obtain_version_json(version_string, ret, paths, verbose);
 
 		const fs::path libraries_path = paths.internal / "libraries";
 		create_dir_if_not_exists(libraries_path);
 		const fs::path natives_path = paths.internal / "versions" / version_string / "natives";
 		create_leading_directories(natives_path);
 
-		OUT_LIT("Finding libraries...");
+		if (verbose) OUT_LIT("\tFinding libraries...");
 
 		MultiDownloadHelper multi_helper;
 
@@ -121,7 +131,7 @@ namespace mcvm {
 			std::shared_ptr<DownloadHelper> lib_helper = std::make_shared<DownloadHelper>();
 			lib_helper->set_options(DownloadHelper::FILE, url, path);
 			multi_helper.add_helper(lib_helper);
-			OUT("Found library " << name);
+			if (verbose) OUT("\t\tFound library " << name);
 		}
 
 		// Assets
@@ -159,12 +169,12 @@ namespace mcvm {
 			multi_helper.add_helper(asset_helper);
 		}
 
-		OUT_LIT("Downloading libraries and assets...");
+		if (verbose) OUT_LIT("\tDownloading libraries and assets...");
 		multi_helper.perform_blocking();
-		OUT_LIT("Libraries and assets downloaded");
+		if (verbose) OUT_LIT("\tLibraries and assets downloaded");
 
 		// Deal with proper installation of native libraries now that we have them
-		OUT_LIT("Extracting natives...");
+		if (verbose) OUT_LIT("\tExtracting natives...");
 		for (uint i = 0; i < native_libs.size(); i++) {
 			install_native_library(native_libs[i]);
 		}
