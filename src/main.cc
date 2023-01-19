@@ -12,8 +12,13 @@ inline void run_subcommand(
 	int argc, std::vector<std::string> argv,
 	mcvm::CommandData& data
 ) {
-	assert(argc == argv.size());
-	mcvm::command_map.at(subcommand)(argc, argv, data);
+	try {
+		assert(argc == argv.size());
+		mcvm::command_map.at(subcommand)(argc, argv, data);
+	} catch (mcvm::FileOpenError& err) {
+		ERR(err.what());
+		exit(1);
+	}
 }
 
 int main(int argc, char** argv) {
@@ -27,13 +32,10 @@ int main(int argc, char** argv) {
 
 	mcvm::CommandData command_data{paths, config};
 
-	// run_subcommand("launch", 2, {"1.19", "client"}, command_data);
+	// run_subcommand("profile", 2, {"update", "1.16.5"}, command_data);
 
 	// mcvm::Daemon dmon(paths.run);
 	// dmon.ensure_started();
-
-	// mcvm::MicrosoftUser user("carbon", "CarbonSmasher");
-	// client.launch(&user, paths);
 
 	// If we have 0-1 args, send the help message
 	if (argc <= 1) {

@@ -155,8 +155,8 @@ namespace mcvm {
 	}
 
 	struct FileOpenError : public std::exception {
-		FileOpenError(const fs::path& _filename) : filename(_filename) {} 
-		const fs::path& filename;
+		FileOpenError(const fs::path _filename) : filename(_filename) {} 
+		const fs::path filename;
 		std::string what() {
 			return NICE_STR_CAT("File " + filename.c_str() + " could not be opened");
 		}

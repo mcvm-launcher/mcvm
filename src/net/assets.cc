@@ -5,10 +5,11 @@ namespace mcvm {
 
 	std::shared_ptr<DownloadHelper> get_version_manifest(const CachedPaths& paths, bool verbose) {
 		create_dir_if_not_exists(paths.assets);
+		create_dir_if_not_exists(paths.internal / "versions");
 
 		if (verbose) OUT("\tObtaining version index...");
 
-		const fs::path manifest_file_path = paths.assets / "version_manifest.json";
+		const fs::path manifest_file_path = paths.internal / "versions" / "version_manifest.json";
 		std::shared_ptr<DownloadHelper> helper = std::make_shared<DownloadHelper>();
 		helper->set_options(DownloadHelper::FILE_AND_STR, VERSION_MANIFEST_URL, manifest_file_path);
 		helper->perform();
@@ -47,7 +48,8 @@ namespace mcvm {
 
 		// We now have to download the manifest for the specific version
 		const std::string index_file_name = version + ".json";
-		const fs::path index_file_path = paths.assets / fs::path(index_file_name);
+		create_dir_if_not_exists(paths.internal / "versions" / version);
+		const fs::path index_file_path = paths.internal / "versions" / version / fs::path(index_file_name);
 		helper->set_options(DownloadHelper::FILE_AND_STR, ver_url, index_file_path);
 		helper->perform();
 		helper->sha1_checksum(ver_hash);
@@ -57,16 +59,37 @@ namespace mcvm {
 	}
 
 	// TODO: Make this a string instead so we don't store so many redundant paths
-	void install_native_library(const fs::path& path) {
-		int zip_err = 0;
-		zip* z = zip_open(path.c_str(), 0, &zip_err);
+	void install_native_library(const fs::path& path, const fs::path& natives_dir) {
+		int zip_err = ZIP_ER_OK;
+		zip* jar_file = zip_open(path.c_str(), ZIP_RDONLY, &zip_err);
+		if (zip_err != ZIP_ER_OK) {
+			ERR("Failed to open jar file with error code " << zip_err);
+			if (zip_err == ZIP_ER_NOZIP) {
+				ERR("File is not a zip archive");
+			}
+			return;
+		}
 
-		zip_stat_t st;
-		for (uint i = 0; i < zip_get_num_entries(z, 0); i++) {
-			if (zip_stat_index(z, i, 0, &st) == 0) {
-				// OUT("NATIVE " << st.name);
+		zip_stat_t file_stat;
+		zip_file* file;
+		for (uint i = 0; i < zip_get_num_entries(jar_file, 0); i++) {
+			if (zip_stat_index(jar_file, i, 0, &file_stat) == 0) {
+				fs::path name_path = file_stat.name;
+				name_path = name_path.filename();
+				if (
+					name_path.extension() != ".so"
+					&& name_path.extension() != ".dylib"
+					&& name_path.extension() != ".dll"
+				) continue;
+
+				file = zip_fopen_index(jar_file, i, 0);
+				char* contents = new char[file_stat.size];
+				zip_fread(file, contents, file_stat.size);
+				write_file(natives_dir / name_path, contents);
 			}
 		}
+
+		zip_close(jar_file);
 	}
 
 	std::shared_ptr<DownloadHelper> obtain_libraries(
@@ -83,28 +106,44 @@ namespace mcvm {
 		const fs::path libraries_path = paths.internal / "libraries";
 		create_dir_if_not_exists(libraries_path);
 		const fs::path natives_path = paths.internal / "versions" / version_string / "natives";
-		create_leading_directories(natives_path);
+		create_dir_if_not_exists(natives_path);
+		const fs::path native_jars_path = paths.internal / "natives";
 
 		if (verbose) OUT_LIT("\tFinding libraries...");
 
 		MultiDownloadHelper multi_helper;
 
-		// TODO: Maybe use the vector inside the multi helper, but that would be weird since nothing else uses it
 		std::vector<fs::path> native_libs;
 
 		for (auto& lib_val : json_access(ret, "libraries").GetArray()) {
 			json::GenericObject lib = lib_val.GetObject();
-			json::GenericObject download_artifact = json_access(json_access(lib, "downloads"), "artifact").GetObject();
 
 			const std::string name = json_access(lib, "name").GetString();
-			const char* path_str = json_access(download_artifact, "path").GetString();
-			fs::path path;
-			if (lib.HasMember("natives")) {
-				path = natives_path / path_str;
+			if (lib.HasMember("natives") && lib["natives"].HasMember(OS_STRING)) {
+				const std::string natives_key = lib["natives"][OS_STRING].GetString();
+				json::GenericObject classifiers = json_access(
+					json_access(lib, "downloads"), "classifiers"
+				).GetObject();
+				json::GenericObject classifier = json_access(classifiers, natives_key.c_str()).GetObject();
+				const std::string path_str = json_access(classifier, "path").GetString();
+
+				fs::path path = native_jars_path / path_str;
+				create_leading_directories(path);
 				native_libs.push_back(path);
-			} else {
-				path = libraries_path / path_str;
+				classpath += path.c_str();
+				classpath += ':';
+
+				const std::string url = json_access(classifier, "url").GetString();
+				std::shared_ptr<DownloadHelper> native_helper = std::make_shared<DownloadHelper>();
+				native_helper->set_options(DownloadHelper::FILE, url, path);
+				multi_helper.add_helper(native_helper);
 			}
+
+			if (!lib.HasMember("downloads")) return helper;
+			if (!lib["downloads"].HasMember("artifact")) return helper;
+			json::GenericObject download_artifact = json_access(json_access(lib, "downloads"), "artifact").GetObject();
+			const char* path_str =  json_access(download_artifact, "path").GetString();
+			fs::path path = libraries_path / path_str;
 
 			classpath += path.c_str();
 			classpath += ':';
@@ -176,10 +215,13 @@ namespace mcvm {
 		if (verbose) OUT_LIT("\tDownloading libraries and assets...");
 		multi_helper.perform_blocking();
 
+		// We have to do this to close the file handlers
+		multi_helper.reset();
+
 		// Deal with proper installation of native libraries now that we have them
 		if (verbose) OUT_LIT("\tExtracting natives...");
 		for (uint i = 0; i < native_libs.size(); i++) {
-			install_native_library(native_libs[i]);
+			install_native_library(native_libs[i], natives_path);
 		}
 
 		return helper;

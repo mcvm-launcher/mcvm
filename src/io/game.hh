@@ -13,7 +13,7 @@ namespace mcvm {
 	// Set of game options that are added to and passed as args before running the game
 	class GameRunner {
 		// The command that is run with system() to launch the game
-		std::string output = "java -jar";
+		std::string output = "java";
 		// The list of flags to be written and appended to the output
 		// TODO: Make this a stack probably
 		std::deque<std::string> flags;

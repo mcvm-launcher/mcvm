@@ -36,7 +36,7 @@
 // Print a single newline
 #define OUT_NEWLINE() std::cout << '\n'
 // Print value to cerr
-#define ERR(val) std::cerr << BOLD(RED_START << val) << '\n'
+#define ERR(val) std::cerr << BOLD(RED(val)) << '\n'
 
 // Print value to cout only on debug builds
 #if defined(NDEBUG)

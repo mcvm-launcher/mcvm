@@ -23,14 +23,16 @@ namespace mcvm {
 	}
 
 	bool GameRunner::repl_arg_token(std::string& contents, bool is_jvm, const CachedPaths& paths)	{
+			const MCVersionString version_string = mc_version_reverse_map.at(version);
 		if (is_jvm) {
 			fandr(contents, "${launcher_name}", "mcvm");
 			fandr(contents, "${launcher_version}", "alpha");
-			fandr(contents, "${classpath}", classpath);
+			fandr(contents, "${classpath}", '"' + classpath + '"');
+			fandr(contents, "${natives_directory}",
+				(paths.internal / "versions" / version_string / "natives").c_str()
+			);
 		} else {
 			#define _GAME_ARG_REPL(check, expr) if (contents == check) contents = expr
-
-			const MCVersionString version_string = mc_version_reverse_map.at(version);
 
 			// Version
 			_GAME_ARG_REPL("${version_name}", version_string);
@@ -38,7 +40,7 @@ namespace mcvm {
 			// Directories
 			_GAME_ARG_REPL("${game_directory}", mc_dir);
 			_GAME_ARG_REPL("${assets_root}", paths.assets);
-			_GAME_ARG_REPL("${assets_index_name}", paths.assets / "indexes" / (version_string + ".json"));
+			_GAME_ARG_REPL("${assets_index_name}", version_string);
 			// TODO: Actual auth
 			if (user->is_offline()) {
 				if (
@@ -56,10 +58,7 @@ namespace mcvm {
 			// Other
 			_GAME_ARG_REPL("${user_type}", "mojang");
 		}
-		// assert(contents.find('$') != std::string::npos);
-		if (contents.find('$') != std::string::npos) {
-			return true;
-		}
+		assert(contents.find('$') == std::string::npos);
 		return false;
 	}
 
@@ -121,6 +120,7 @@ namespace mcvm {
 		for (auto& arg : jvm_args) {
 			parse_single_arg(arg, true, paths);
 		}
+		add_flag("-Dorg.lwjgl.util.DebugLoader=true");
 		write_flags();
 
 		const std::string main_class = json_access(ret, "mainClass").GetString();
@@ -140,8 +140,8 @@ namespace mcvm {
 	}
 
 	void GameRunner::launch() {
-		system(output.c_str());
-		add_word(jar_path);
-		// OUT(output);
+		// add_word(jar_path);
+		OUT(output);
+		exit(system(output.c_str()));
 	}
 };
