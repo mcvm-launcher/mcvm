@@ -43,7 +43,7 @@ int main(int argc, char** argv) {
 
 	// If we have 0-1 args, send the help message
 	if (argc <= 1) {
-		OUT(mcvm::help_message());
+		mcvm::show_main_help_message();
 	}
 	// If we have 2+ args (executable and a subcommand, plus any number of args), run the command
 	if (argc > 1) {
@@ -59,7 +59,7 @@ int main(int argc, char** argv) {
 			run_subcommand(subcommand, argc_slice, argv_slice, command_data);
 		} catch(const std::out_of_range& e) {
 			ERR("Unknown subcommand " << subcommand);
-			OUT(mcvm::help_message());
+			mcvm::show_main_help_message();
 		}
 	}
 

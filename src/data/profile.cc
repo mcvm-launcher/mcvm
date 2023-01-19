@@ -38,7 +38,7 @@ namespace mcvm {
 
 	void Profile::create_instances(const CachedPaths& paths) {
 		for (auto i = instances.begin(); i != instances.end(); i++) {
-			OUT("Updating instance '" << i->first << "'...");
+			OUT(BOLD("Updating instance '" << i->first << "'..."));
 			i->second->create(paths);
 		}
 	}

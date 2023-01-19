@@ -1,18 +1,11 @@
 #include "command.hh"
 
-#define _ADD_COMMAND_DESCRIPTION "Create a new user"
-
 namespace mcvm {
-	inline void show_help_message() {
-		OUT_LIT("Manage mcvm users");
-		OUT_LIT("Usage: mcvm user [command] [options]");
-		OUT_LIT("Commands:");
-		OUT_LIT("add: " _ADD_COMMAND_DESCRIPTION);
-	}
-
-	inline void show_add_help_message() {
-		OUT_LIT(_ADD_COMMAND_DESCRIPTION);
-		OUT_LIT("Usage: mcvm user add [name]");
+	static void show_help_message() {
+		OUT(BOLD("Manage mcvm users"));
+		// OUT(BOLD("Usage: ") << "mcvm user " << GRAY("[command] [options]"));
+		// OUT(BOLD("Commands:"));
+		// OUT(ITALIC("add: ") << _ADD_COMMAND_DESCRIPTION);
 	}
 
 	inline void _add_command(const std::string& id, const std::string& name, CommandData& data) {
@@ -31,9 +24,11 @@ namespace mcvm {
 	void user_command(const unsigned int argc, CommandArgs argv, CommandData& data) {
 		ARGC_CHECK(0,);
 
-		if (argv[0] == "add") {
-			ARGC_CHECK(2, _add);
-			_add_command(argv[1], argv[2], data);
-		}
+		// if (argv[0] == "add") {
+		// 	ARGC_CHECK(2, _add);
+		// 	_add_command(argv[1], argv[2], data);
+		// } else {
+		// 	ERR("Unknown subcommand '" << argv[0] << "'.");
+		// }
 	}
 };

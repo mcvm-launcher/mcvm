@@ -30,11 +30,11 @@ namespace mcvm {
 	void MicrosoftUser::ensure_uuid() {
 		ENSURE(uuid == "");
 
-		DownloadHelper helper;
-		helper.set_options(DownloadHelper::STR, "https://api.mojang.com/users/profiles/minecraft/" + username);
-		helper.perform();
-		const std::string& response = helper.get_str();
-		json::Document doc;
-		doc.Parse(response.c_str());
+		// DownloadHelper helper;
+		// helper.set_options(DownloadHelper::STR, "https://api.mojang.com/users/profiles/minecraft/" + username);
+		// helper.perform();
+		// const std::string& response = helper.get_str();
+		// json::Document doc;
+		// doc.Parse(response.c_str());
 	}
 };

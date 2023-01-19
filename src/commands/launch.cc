@@ -1,9 +1,9 @@
 #include "command.hh"
 
 namespace mcvm {
-	inline void show_help_message() {
-		OUT_LIT("Launch the game");
-		OUT_LIT("Usage: mcvm launch [profile] [instance]");
+	static void show_help_message() {
+		OUT(BOLD("Launch the game"));
+		OUT(BOLD("Usage: ") << "mcvm launch " << GRAY("[profile] [instance]"));
 	}
 
 	void launch_command(const unsigned int argc, CommandArgs argv, CommandData& data) {	

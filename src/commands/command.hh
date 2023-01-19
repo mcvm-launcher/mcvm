@@ -24,6 +24,9 @@ namespace mcvm {
 		: paths(_paths), config(_config) {}
 	};
 
+	// Show the main help function
+	extern void show_main_help_message();
+
 	// Command function definitions
 	extern void user_command(const unsigned int argc, CommandArgs argv, CommandData& data);
 	extern void profile_command(const unsigned int argc, CommandArgs argv, CommandData& data);
@@ -33,9 +36,6 @@ namespace mcvm {
 	static void start_daemon_command(UNUSED const unsigned int argc, UNUSED CommandArgs argv, UNUSED CommandData& data) {
 		Daemon::daemon_init();
 	}
-
-	// Command subfunction definitions
-	extern const std::string help_message();
 
 	static std::map<std::string, void(*)(unsigned int, CommandArgs, CommandData&)> command_map = {
 		{"user", &user_command},

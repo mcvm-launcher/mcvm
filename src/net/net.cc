@@ -103,6 +103,7 @@ namespace mcvm {
 		}
 
 		if (success != CURLcode::CURLE_OK) {
+			// TODO: Download error
 			ERR(errbuf);
 			return false;
 		}

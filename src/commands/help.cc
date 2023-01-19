@@ -1,17 +1,17 @@
 #include "command.hh"
 
 namespace mcvm {
-	const std::string help_message() {
-		return
-			"Usage: mcvm [subcommand] [...]" "\n"
-			"Commands:" "\n"
-			"\t" "help: show this message" "\n"
-			"\t" "user: modify users and accounts" "\n"
-			"\t" "profile: modify, add, and launch profiles" "\n"
-			"\t" "launch: launch instances (play the game!)";
+	void show_main_help_message() {
+		OUT(BOLD("Usage: ") << "mcvm " << GRAY("[subcommand] [...]"));
+		OUT_NEWLINE();
+		OUT(BOLD("Commands:"));
+		OUT("\t" << ITALIC("help: ") << "show this message");
+		OUT("\t" << ITALIC("user: ") << "modify users and accounts");
+		OUT("\t" << ITALIC("profile: ") << "modify, add, and launch profiles");
+		OUT("\t" << ITALIC("launch: ") << "launch instances (play the game!)");
 	}
 
 	void help_command(const unsigned int argc, UNUSED CommandArgs argv, CommandData& data) {
-		OUT(help_message());
+		show_main_help_message();
 	}
 };

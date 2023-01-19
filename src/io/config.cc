@@ -59,7 +59,7 @@ namespace mcvm {
 					_CONFIG_ENSURE_TYPE(user_obj, "[user]", "uuid", String);
 					user = new MicrosoftUser(user_id, name, user_obj["uuid"].GetString());
 				} else {
-					OUT("Warning: It is recommended to have your uuid along with your username in user profile " + name);
+					OUT(YELLOW("Warning: It is recommended to have your uuid along with your username in user profile " << name));
 					user = new MicrosoftUser(user_id, name);
 					user->ensure_uuid();
 				}
