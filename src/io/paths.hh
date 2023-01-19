@@ -146,6 +146,14 @@ namespace mcvm {
 		return name + ".pkg.txt";
 	}
 
+	// Replace the '~' character at the start of a path with the home directory
+	static inline std::string& substitute_home(std::string& path, const CachedPaths& paths) {
+		if (path[0] == '~') {
+			path.replace(0, 1, paths.home.c_str());
+		}
+		return path;
+	}
+
 	struct FileOpenError : public std::exception {
 		FileOpenError(const fs::path& _filename) : filename(_filename) {} 
 		const fs::path& filename;

@@ -3,18 +3,27 @@
 #include "io/game.hh"
 
 namespace mcvm {
+	class Instance;
+
 	// A profile, which holds game settings and can be depended on by runnable instances 
 	class Profile {
 		const std::string name;
 		MinecraftVersion version;
 		std::vector<Package*> packages;
+		std::vector<Instance*> instances;
 
 		public:
 		Profile(const std::string _name, MinecraftVersion _version);
 
+		const std::string& get_name();
 		MinecraftVersion get_version();
 		void add_package(Package* pkg);
+		void update_packages();
 		void delete_all_packages();
+		void add_instance(Instance* instance);
+		void create_instances(const CachedPaths& paths);
+
+		~Profile() = default;
 	};
 
 	// Base for instance

@@ -7,8 +7,12 @@
 #include <assert.h>
 #include <iostream>
 
-inline void run_subcommand(const std::string& subcommand, int argc, std::vector<std::string> argv, const mcvm::CachedPaths& paths) {
-	mcvm::command_map.at(subcommand)(argc, argv, paths);
+inline void run_subcommand(
+	const std::string& subcommand,
+	int argc, std::vector<std::string> argv,
+	mcvm::CommandData& data
+) {
+	mcvm::command_map.at(subcommand)(argc, argv, data);
 }
 
 int main(int argc, char** argv) {
@@ -26,20 +30,12 @@ int main(int argc, char** argv) {
 		return 1;
 	}
 
+	mcvm::CommandData command_data{paths, config};
+
+	run_subcommand("profile", 2, {"update", "1.19"}, command_data);
+
 	// mcvm::Daemon dmon(paths.run);
 	// dmon.ensure_started();
-
-	mcvm::Profile prof("Vanilla", mcvm::MinecraftVersion::V_20W11A);
-	mcvm::ClientInstance client(&prof, "Vanilla", paths);
-	// mcvm::LocalPackage pkg("sodium", paths.home / "test/sodium2.pkg.txt");
-	// pkg.ensure_contents();
-	// pkg.parse();
-	// mcvm::PkgEvalData res;
-	// mcvm::PkgEvalGlobals global;
-	// global.mc_version = prof.get_version();
-	// global.side = mcvm::MinecraftSide::CLIENT;
-	// pkg.evaluate(res, "@install", global);
-	client.create(paths);
 
 	// mcvm::MicrosoftUser user("carbon", "CarbonSmasher");
 	// client.launch(&user, paths);
@@ -59,14 +55,12 @@ int main(int argc, char** argv) {
 		}
 
 		try {
-			run_subcommand(subcommand, argc_slice, argv_slice, paths);
+			run_subcommand(subcommand, argc_slice, argv_slice, command_data);
 		} catch(const std::out_of_range& e) {
 			ERR("Unknown subcommand " << subcommand);
 			OUT(mcvm::help_message());
 		}
 	}
-
-	// prof.delete_all_packages();
 
 	mcvm::net_stop();
 

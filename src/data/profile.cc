@@ -4,12 +4,29 @@ namespace mcvm {
 	Profile::Profile(const std::string _name, MinecraftVersion _version)
 	: name(_name), version(_version) {}
 
+	const std::string& Profile::get_name() {
+		return name;
+	}
+
 	MinecraftVersion Profile::get_version() {
 		return version;
 	}
 
 	void Profile::add_package(Package* pkg) {
 		packages.push_back(pkg);
+	}
+
+	void Profile::update_packages() {
+		for (uint i = 0; i < packages.size(); i++) {
+			Package* pkg = packages[i];
+			pkg->ensure_contents();
+			pkg->parse();
+			mcvm::PkgEvalData res;
+			mcvm::PkgEvalGlobals global;
+			global.mc_version = version;
+			global.side = mcvm::MinecraftSide::CLIENT;
+			pkg->evaluate(res, "@install", global);
+		}
 	}
 
 	void Profile::delete_all_packages() {
@@ -19,10 +36,22 @@ namespace mcvm {
 		packages = {};
 	}
 
-	Instance::Instance(Profile* _parent, const std::string _name, const CachedPaths& paths, const std::string& subpath)
-	: parent(_parent), name(_name), dir(paths.data / subpath / name) {}
+	void Profile::add_instance(Instance* instance) {
+		instances.push_back(instance);
+	}
 
-	void Instance::create(const CachedPaths& paths) {
+	void Profile::create_instances(const CachedPaths& paths) {
+		for (uint i = 0; i < instances.size(); i++) {
+			instances[i]->create(paths);
+		}
+	}
+
+	Instance::Instance(Profile* _parent, const std::string _name, const CachedPaths& paths, const std::string& subpath)
+	: parent(_parent), name(_name), dir(paths.data / subpath / name) {
+		parent->add_instance(this);
+	}
+
+	void Instance::create(UNUSED const CachedPaths& paths) {
 		ensure_instance_dir();
 	}
 

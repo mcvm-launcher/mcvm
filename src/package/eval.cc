@@ -21,10 +21,10 @@ namespace mcvm {
 	}
 
 	void PkgCommandInstruction::evaluate(PkgEvalData& data, const PkgEvalGlobals& global) {
-		std::cout << text;
+		// std::cout << text;
 		for (uint i = 0; i < args.size(); i++) {
-			std::cout << ' ';
-			std::cout << args[i];
+			// std::cout << ' ';
+			// std::cout << args[i];
 		}
 		OUT_NEWLINE();
 
@@ -49,7 +49,11 @@ namespace mcvm {
 				condition_success = (condition.left_side == condition.right_side);
 				break;
 			case PkgIfCondition::VERSION:
-				condition_success = (condition.left_side == global.mc_version);
+				try {
+					condition_success = (mc_version_forward_map.at(condition.left_side) == global.mc_version);
+				} catch (std::out_of_range&) {
+					// TODO: Add proper version not found errors
+				}
 				break;
 			case PkgIfCondition::MODLOADER: {
 				static const std::map<std::string, ModType> mod_map = {
@@ -71,11 +75,11 @@ namespace mcvm {
 		}
 		if (condition.inverted) condition_success = !condition_success;
 
-		OUT_LIT("if {");
+		// OUT_LIT("if {");
 		if (condition_success) {
 			nested_block.evaluate(data, global);
 		}
-		OUT_LIT("}");
+		// OUT_LIT("}");
 	}
 
 	void Package::evaluate(PkgEvalData& data, const std::string& routine_name, const PkgEvalGlobals& global) {

@@ -17,6 +17,8 @@ namespace mcvm {
 		virtual bool is_demo() {
 			return false;
 		}
+
+		virtual ~User() = default;
 	};
 
 	struct InvalidUsernameException : public std::exception {

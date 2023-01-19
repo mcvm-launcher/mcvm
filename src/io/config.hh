@@ -1,6 +1,8 @@
 #pragma once
 #include "files.hh"
 #include "user/user.hh"
+#include "data/profile.hh"
+#include "package/package.hh"
 
 #include <rapidjson/filereadstream.h>
 #include <rapidjson/filewritestream.h>
@@ -11,8 +13,14 @@
 namespace mcvm {
 	struct ProgramConfig {
 		std::vector<User*> users;
+		std::vector<Profile*> profiles;
+		std::vector<Instance*> instances;
+
+		User* default_user = nullptr;
 
 		~ProgramConfig() {
+			DEL_VECTOR(profiles);
+			DEL_VECTOR(instances);
 			DEL_VECTOR(users);
 		}
 	};

@@ -1,5 +1,6 @@
 #pragma once
 #include "lib/util.hh"
+#include "lib/versions.hh"
 
 #include <map>
 
@@ -49,7 +50,7 @@ namespace mcvm {
 		RunLevel level = RunLevel::ALL;
 		fs::path working_directory;
 		std::string package_requested_version;
-		MCVersionString mc_version;
+		MinecraftVersion mc_version;
 		ModType modloader = ModType::FABRIC; 
 		MinecraftSide side = MinecraftSide::CLIENT;
 	};

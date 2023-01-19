@@ -15,7 +15,7 @@ namespace mcvm {
 		OUT_LIT("Usage: mcvm user add [name]");
 	}
 
-	inline void _add_command(const std::string& id, const std::string& name, const CachedPaths& paths) {
+	inline void _add_command(const std::string& id, const std::string& name, CommandData& data) {
 		// json::Document doc;
 		// const fs::path config_path = paths.config / "mcvm.json";
 		// open_program_config(doc, config_path);
@@ -28,12 +28,12 @@ namespace mcvm {
 		// write_program_config(doc, paths);
 	}
 
-	void user_command(const unsigned int argc, CommandArgs argv, const CachedPaths& paths) {
+	void user_command(const unsigned int argc, CommandArgs argv, CommandData& data) {
 		ARGC_CHECK(0,);
 
 		if (argv[0] == "add") {
 			ARGC_CHECK(2, _add);
-			_add_command(argv[1], argv[2], paths);
+			_add_command(argv[1], argv[2], data);
 		}
 	}
 };
