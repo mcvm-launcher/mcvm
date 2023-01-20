@@ -25,7 +25,7 @@
 // Delete an object with a nullptr assertion
 #define ASSERTED_DEL(obj) (assert(obj != nullptr); delete obj)
 // Delete an object with a nullptr check
-#define PROTECTED_DEL(obj) (if (obj != nullptr) delete obj)
+#define PROTECTED_DEL(obj) if (obj != nullptr) delete obj;
 
 // Attributes
 

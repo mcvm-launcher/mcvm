@@ -77,6 +77,15 @@ namespace mcvm {
 
 			classpath += jar_path.c_str();
 
+			const std::string major_version = std::to_string(json_access(
+				json_access(version_json, "javaVersion"), "majorVersion"
+			).GetUint());
+			java = new AdoptiumJava(
+				major_version
+			);
+
+			java->ensure_installed(paths);
+
 			// Get the client jar
 			json::GenericObject client_download = json_access(
 				json_access(version_json, "downloads"),
@@ -99,7 +108,14 @@ namespace mcvm {
 	}
 
 	void ClientInstance::launch(User* user, const CachedPaths& paths) {
-		mcvm::GameRunner game(parent->get_version(), dir / ".minecraft", dir / "client.jar", user, classpath);
+		mcvm::GameRunner game(
+			parent->get_version(),
+			dir / ".minecraft",
+			dir / "client.jar",
+			user,
+			classpath,
+			java->jre_path(paths)
+		);
 		game.parse_args(&version_json, paths);
 		game.launch();
 	}
@@ -116,6 +132,15 @@ namespace mcvm {
 			paths,
 			verbose
 		);
+
+		const std::string major_version = std::to_string(json_access(
+			json_access(version_json, "javaVersion"), "majorVersion"
+		).GetUint());
+		java = new AdoptiumJava(
+			major_version
+		);
+
+		java->ensure_installed(paths);
 
 		try {
 			// Get the server jar
@@ -146,7 +171,9 @@ namespace mcvm {
 	void ServerInstance::launch(User* user, const CachedPaths& paths) {
 		const fs::path server_path = dir / "server";
 		const fs::path server_jar_path = server_path / "server.jar";
-		const std::string command = NICE_STR_CAT("java -jar " + server_jar_path.c_str());
+		assert(java != nullptr);
+		const std::string java_command = java->jre_path(paths);
+		const std::string command = java_command + " -jar " + server_jar_path.c_str();
 		chdir(server_path.c_str());
 		exit(system(command.c_str()));
 	}

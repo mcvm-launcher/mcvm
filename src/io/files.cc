@@ -88,5 +88,6 @@ namespace mcvm {
 		tar_extract_all(tar_extract_file, extract_to);
 
 		tar_close(tar_extract_file);
+		remove(tar_path.c_str());
 	}
 };

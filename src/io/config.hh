@@ -3,6 +3,7 @@
 #include "user/user.hh"
 #include "data/profile.hh"
 #include "package/package.hh"
+#include "java/config.hh"
 
 #include <rapidjson/filereadstream.h>
 #include <rapidjson/filewritestream.h>

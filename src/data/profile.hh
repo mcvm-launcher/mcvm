@@ -36,6 +36,8 @@ namespace mcvm {
 		// Version json downloaded from Mojang
 		json::Document version_json;
 
+		JavaInstallation* java = nullptr;
+
 		public:
 		const std::string name;
 		fs::path dir;
@@ -55,7 +57,9 @@ namespace mcvm {
 		// Obtain the version of the instance
 		MinecraftVersion get_version();
 
-		virtual ~Instance() = default;
+		virtual ~Instance() {
+			PROTECTED_DEL(java);
+		}
 	};
 
 	// A profile that also holds client-specific resources

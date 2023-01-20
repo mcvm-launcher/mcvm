@@ -33,9 +33,7 @@ int main(int argc, char** argv) {
 
 	mcvm::CommandData command_data{paths, config};
 
-	// run_subcommand("profile", 2, {"update", "1.16.5"}, command_data);
-	mcvm::AdoptiumJava java("17");
-	java.ensure_installed(paths);
+	// run_subcommand("launch", 2, {"1.19-vanilla", "server"}, command_data);
 
 	// mcvm::Daemon dmon(paths.run);
 	// dmon.ensure_started();

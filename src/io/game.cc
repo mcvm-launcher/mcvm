@@ -9,9 +9,15 @@ namespace mcvm {
 		const fs::path _mc_dir,
 		const fs::path _jar_path,
 		User* _user,
-		const std::string& _classpath
+		const std::string& _classpath,
+		const std::string& jre_path
 	)
-	: version(_version), mc_dir(_mc_dir), jar_path(_jar_path), user(_user), classpath(_classpath) {}
+	: version(_version),
+	mc_dir(_mc_dir),
+	jar_path(_jar_path),
+	user(_user),
+	classpath(_classpath),
+	output(jre_path) {}
 
 	void GameRunner::add_word(const std::string& word) {
 		output.push_back(' ');

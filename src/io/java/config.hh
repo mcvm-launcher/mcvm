@@ -5,14 +5,16 @@
 namespace mcvm {
 	// The set of all options pertaining to the java installation
 	class JavaInstallation {
-		protected:
-		// The major Java version (e.g. 8 or 17)
-		const std::string major_version;
-
 		public:
+		JavaInstallation() = default;
 		JavaInstallation(std::string _major_version);
 
+		// The major Java version (e.g. 8 or 17)
+		std::string major_version;
 		virtual void ensure_installed(const CachedPaths& paths) {}
+		virtual std::string jre_path(const CachedPaths& paths) {
+			ASSERT_NOREACH();
+		}
 	};
 
 	class AdoptiumJava : public JavaInstallation {
@@ -20,5 +22,6 @@ namespace mcvm {
 		using JavaInstallation::JavaInstallation;
 		
 		void ensure_installed(const CachedPaths& paths) override;
+		std::string jre_path(const CachedPaths& paths) override;
 	};
 };
