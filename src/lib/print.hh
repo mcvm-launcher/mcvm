@@ -51,4 +51,4 @@
 #endif
 
 // Used for making nice messages for exception whats
-#define NICE_STR_CAT(str) std::string() + str
+#define NICE_STR_CAT(str) (std::string() + str)

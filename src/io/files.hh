@@ -1,6 +1,9 @@
 #pragma once
 #include "paths.hh"
 
+#include <zlib.h>
+#include <libtar.h>
+
 #include <fstream>
 
 namespace mcvm {
@@ -18,4 +21,7 @@ namespace mcvm {
 
 	// Writes chars to a file using a file handler
 	extern void write_file(const fs::path& path, const char* text);
+
+	// Extract a tar.gz
+	extern void extract_tar_gz(const fs::path& path);
 };

@@ -92,6 +92,21 @@ namespace mcvm {
 		curl_easy_setopt(handle, CURLOPT_WRITEDATA, &res);
 	}
 
+	void DownloadHelper::follow_redirect() {
+		curl_easy_setopt(handle, CURLOPT_FOLLOWLOCATION, 1L);
+		curl_easy_setopt(handle, CURLOPT_MAXREDIRS, 10);
+		curl_easy_setopt(handle, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+	}
+
+	void DownloadHelper::set_verbose(const CachedPaths& paths) {
+		#ifndef NDEBUG
+			curl_easy_setopt(handle, CURLOPT_VERBOSE, 1);
+			create_dir_if_not_exists(paths.internal / "log");
+			const fs::path out_path = paths.internal / "log" / "curl.log";
+			curl_easy_setopt(handle, CURLOPT_STDERR, fopen(out_path.c_str(), "w+"));
+		#endif
+	}
+
 	bool DownloadHelper::perform() {
 		CURLcode success = curl_easy_perform(handle);
 
@@ -165,6 +180,19 @@ namespace mcvm {
 
 	std::string DownloadHelper::get_err() {
 		return std::string(errbuf);
+	}
+
+	long DownloadHelper::get_response_code() {
+		long codebuf;
+		curl_easy_getinfo(handle, CURLINFO_RESPONSE_CODE, &codebuf);
+		return codebuf;
+	}
+
+	void DownloadHelper::log_results() {
+		LOG("Response code: " << std::to_string(get_response_code()));
+		char* effective_url = NULL;
+		curl_easy_getinfo(handle, CURLINFO_EFFECTIVE_URL, &effective_url);
+		LOG("Effective URL: " << effective_url);
 	}
 
 	DownloadHelper::~DownloadHelper() {

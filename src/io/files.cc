@@ -53,4 +53,40 @@ namespace mcvm {
 			throw FileOpenError{path};
 		}
 	}
+
+	void extract_tar_gz(const fs::path& path) {
+		gzFile gz_file = gzopen(path.c_str(), "r");
+		fs::path tar_path = path;
+		tar_path.replace_extension(".tar");
+		FILE* tar_file = fopen(tar_path.c_str(), "wb");
+		if (!tar_file) {
+			gzclose_r(gz_file);
+			throw FileOpenError{tar_path, errno};
+		}
+		// This will be a large file so we have to do this incrementally
+		static const uint buf_size = CHARBUF_LARGE;
+		char buf[CHARBUF_LARGE];
+		int write_n;
+		while(true) {
+			write_n = gzread(gz_file, &buf, buf_size);
+			if (write_n == 0) break;
+			if (write_n < 0) {
+				ERR("Failed to decompress " << path);
+				ERR("Error code: " << gzerror(gz_file, NULL));
+				exit(1);
+			}
+			fwrite(&buf, sizeof(char), write_n, tar_file);
+		}
+		gzclose_r(gz_file);
+		fclose(tar_file);
+
+		char extract_to[CHARBUF_SMALL];
+		strcpy(extract_to, path.parent_path().c_str());
+
+		TAR* tar_extract_file;
+		tar_open(&tar_extract_file, tar_path.c_str(), NULL, 0, 0, 0);
+		tar_extract_all(tar_extract_file, extract_to);
+
+		tar_close(tar_extract_file);
+	}
 };

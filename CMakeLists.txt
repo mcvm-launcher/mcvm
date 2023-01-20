@@ -22,6 +22,8 @@ target_link_libraries(mcvm uv)
 target_link_libraries(mcvm zip)
 target_link_libraries(mcvm crypto)
 target_link_libraries(mcvm ssl)
+target_link_libraries(mcvm z)
+target_link_libraries(mcvm tar)
 add_subdirectory(src)
 
 install(TARGETS mcvm DESTINATION "/usr/bin")

@@ -104,6 +104,8 @@ namespace mcvm {
 		DownloadHelper();
 
 		void set_options(DownloadMode _mode, const std::string& url, const fs::path& _path = "/");
+		void follow_redirect();
+		void set_verbose(const CachedPaths& paths);
 		bool perform();
 		void reset();
 		void set_checksum(const std::string& _checksum);
@@ -112,6 +114,8 @@ namespace mcvm {
 
 		const std::string& get_str();
 		std::string get_err();
+		long get_response_code();
+		void log_results();
 
 		~DownloadHelper();
 

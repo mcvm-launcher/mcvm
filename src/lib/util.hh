@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <vector>
+#include <filesystem>
 
 // Error checking
 
@@ -38,6 +39,7 @@
 #define CHARBUF_LARGE 65536
 
 namespace json = rapidjson;
+namespace fs = std::filesystem;
 
 namespace mcvm {
 	// Compute the length of a string literal at compile time

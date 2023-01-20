@@ -15,7 +15,7 @@
 
 // The current arch as a string
 #if defined(__x86_64)
-	#define ARCH_STRING "x86"
+	#define ARCH_STRING "x64"
 #else
 	#define ARCH_STRING ""
 #endif
