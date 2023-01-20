@@ -1,6 +1,3 @@
-target_sources(mcvm PUBLIC
-	parse.cc
-	eval.cc
-	resources.cc
-	package.cc
-)
+add_subdirectory(eval)
+
+target_sources(mcvm PUBLIC package.cc)

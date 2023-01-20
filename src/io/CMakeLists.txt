@@ -1,7 +1,7 @@
 add_subdirectory(java)
+add_subdirectory(files)
 
 target_sources(mcvm PUBLIC
-	files.cc
 	game.cc
 	config.cc
 )

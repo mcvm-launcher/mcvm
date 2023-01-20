@@ -1,7 +1,7 @@
 #pragma once
 #include "data/profile.hh"
 #include "user/user.hh"
-#include "io/files.hh"
+#include "io/files/files.hh"
 #include "lib/util.hh"
 #include "daemon.hh"
 #include "io/config.hh"
