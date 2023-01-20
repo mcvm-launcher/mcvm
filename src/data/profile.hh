@@ -88,5 +88,6 @@ namespace mcvm {
 
 		void create(const CachedPaths& paths, bool verbose = true) override;
 		void ensure_instance_dir() override;
+		void launch(User* user, const CachedPaths& paths) override;
 	};
 };

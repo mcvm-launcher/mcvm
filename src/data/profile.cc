@@ -142,4 +142,12 @@ namespace mcvm {
 		Instance::ensure_instance_dir();
 		create_dir_if_not_exists(dir / "server");
 	}
+
+	void ServerInstance::launch(User* user, const CachedPaths& paths) {
+		const fs::path server_path = dir / "server";
+		const fs::path server_jar_path = server_path / "server.jar";
+		const std::string command = NICE_STR_CAT("java -jar " + server_jar_path.c_str());
+		chdir(server_path.c_str());
+		exit(system(command.c_str()));
+	}
 };
