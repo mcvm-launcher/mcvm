@@ -58,7 +58,9 @@ namespace mcvm {
 		errbuf[0] = 0;
 	}
 
-	void DownloadHelper::set_options(DownloadMode mode, const std::string& url, const fs::path& path) {
+	void DownloadHelper::set_options(DownloadMode _mode, const std::string& url, const fs::path& _path) {
+		mode = _mode;
+		path = _path;
 		// Reset
 		curl_easy_reset(handle);
 		res.str = "";
@@ -93,10 +95,7 @@ namespace mcvm {
 	bool DownloadHelper::perform() {
 		CURLcode success = curl_easy_perform(handle);
 
-		if (res.file != nullptr) {
-			fclose(res.file);
-			res.file = nullptr;
-		}
+		reset();
 
 		if (progress_data.is_used) {
 			OUT_NEWLINE();
@@ -110,9 +109,45 @@ namespace mcvm {
 		return true;
 	}
 
-	bool DownloadHelper::sha1_checksum(const std::string& checksum) {
-		// TODO: Temporary
-		return true;
+	void DownloadHelper::reset() {
+		if (res.file != nullptr) {
+			fclose(res.file);
+			res.file = nullptr;
+		}
+	}
+
+	void DownloadHelper::set_checksum(const std::string& _checksum) {
+		checksum = _checksum;
+	}
+
+	void DownloadHelper::perform_checksum(SHA1* sha1) {
+		if (!checksum.empty()) {
+			std::string checksum_result;
+			switch (mode) {
+				case DownloadMode::FILE: {
+					checksum_result = SHA1::from_file(path);
+					break;
+				}
+				case DownloadMode::STR:
+				case DownloadMode::FILE_AND_STR: {
+					if (sha1) {
+						sha1->update(res.str);
+						checksum_result = sha1->final();
+					} else {
+						SHA1 sha1_local;
+						sha1_local.update(res.str);
+						checksum_result = sha1_local.final();
+					}
+					break;
+				}
+			}
+			if (checksum_result != checksum) {
+				if (mode == DownloadMode::FILE || mode == DownloadMode::FILE_AND_STR) {
+					ERR("Checksum failed for file " << path << ".");
+				}
+				throw FileValidateException{};
+			}
+		}
 	}
 
 	void DownloadHelper::add_progress_meter(ProgressData::ProgressStyle style, const std::string &title) {
@@ -134,9 +169,7 @@ namespace mcvm {
 
 	DownloadHelper::~DownloadHelper() {
 		curl_easy_cleanup(handle);
-		if (res.file != nullptr) {
-			fclose(res.file);
-		}
+		reset();
 	}
 
 	MultiDownloadHelper::MultiDownloadHelper() {
@@ -150,6 +183,7 @@ namespace mcvm {
 
 	bool MultiDownloadHelper::perform_blocking() {
 		CURLMsg* msg;
+		SHA1 sha1;
 		while (msgs_in_queue) {
 			CURLMcode code = curl_multi_perform(handle, &msgs_in_queue);
 
@@ -164,6 +198,9 @@ namespace mcvm {
 				if (msg && (msg->msg == CURLMSG_DONE)) {
 					CURL* easy_handle = msg->easy_handle;
 					assert(helpers.contains(easy_handle));
+					std::shared_ptr<DownloadHelper> easy_helper = helpers[easy_handle];
+					easy_helper->reset();
+					easy_helper->perform_checksum(&sha1);
 					curl_multi_remove_handle(handle, easy_handle);
 					helpers.erase(easy_handle);
 				}

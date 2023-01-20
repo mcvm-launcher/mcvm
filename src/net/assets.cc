@@ -51,8 +51,9 @@ namespace mcvm {
 		create_dir_if_not_exists(paths.internal / "versions" / version);
 		const fs::path index_file_path = paths.internal / "versions" / version / fs::path(index_file_name);
 		helper->set_options(DownloadHelper::FILE_AND_STR, ver_url, index_file_path);
+		helper->set_checksum(ver_hash);
 		helper->perform();
-		helper->sha1_checksum(ver_hash);
+		helper->perform_checksum();
 		ret->Parse(helper->get_str().c_str());
 
 		return helper;
@@ -188,34 +189,7 @@ namespace mcvm {
 
 		for (auto& lib_val : json_access(ret, "libraries").GetArray()) {
 			json::GenericObject lib = lib_val.GetObject();
-
-			const std::string name = json_access(lib, "name").GetString();
-			if (lib.HasMember("natives") && lib["natives"].HasMember(OS_STRING)) {
-				const std::string natives_key = lib["natives"][OS_STRING].GetString();
-				json::GenericObject classifiers = json_access(
-					json_access(lib, "downloads"), "classifiers"
-				).GetObject();
-				json::GenericObject classifier = json_access(classifiers, natives_key.c_str()).GetObject();
-				const std::string path_str = json_access(classifier, "path").GetString();
-
-				fs::path path = native_jars_path / path_str;
-				create_leading_directories(path);
-				native_libs.push_back(path);
-				classpath += path.c_str();
-				classpath += ':';
-
-				const std::string url = json_access(classifier, "url").GetString();
-				std::shared_ptr<DownloadHelper> native_helper = std::make_shared<DownloadHelper>();
-				native_helper->set_options(DownloadHelper::FILE, url, path);
-				multi_helper.add_helper(native_helper);
-			}
-
-			if (!lib.HasMember("downloads")) return helper;
-			if (!lib["downloads"].HasMember("artifact")) return helper;
-			json::GenericObject download_artifact = json_access(json_access(lib, "downloads"), "artifact").GetObject();
-			const char* path_str =  json_access(download_artifact, "path").GetString();
-			fs::path path = libraries_path / path_str;
-
+			
 			// Check rules
 			if (lib.HasMember("rules")) {
 				bool rule_fail = false;
@@ -233,6 +207,35 @@ namespace mcvm {
 				if (rule_fail) continue;
 			}
 
+			const std::string name = json_access(lib, "name").GetString();
+			if (lib.HasMember("natives") && lib["natives"].HasMember(OS_STRING)) {
+				const std::string natives_key = lib["natives"][OS_STRING].GetString();
+				json::GenericObject classifiers = json_access(
+					json_access(lib, "downloads"), "classifiers"
+				).GetObject();
+				json::GenericObject classifier = json_access(classifiers, natives_key.c_str()).GetObject();
+				const std::string path_str = json_access(classifier, "path").GetString();
+
+				fs::path path = native_jars_path / path_str;
+				create_leading_directories(path);
+				native_libs.push_back(path);
+				classpath += path.c_str();
+				classpath += ':';
+
+				const std::string url = json_access(classifier, "url").GetString();
+				const std::string hash = json_access(classifier, "sha1").GetString();
+				std::shared_ptr<DownloadHelper> native_helper = std::make_shared<DownloadHelper>();
+				native_helper->set_options(DownloadHelper::FILE, url, path);
+				native_helper->set_checksum(hash);
+				multi_helper.add_helper(native_helper);
+			}
+
+			if (!lib.HasMember("downloads")) return helper;
+			if (!lib["downloads"].HasMember("artifact")) return helper;
+			json::GenericObject download_artifact = json_access(json_access(lib, "downloads"), "artifact").GetObject();
+			const char* path_str =  json_access(download_artifact, "path").GetString();
+			fs::path path = libraries_path / path_str;
+
 			classpath += path.c_str();
 			classpath += ':';
 
@@ -241,9 +244,11 @@ namespace mcvm {
 			create_leading_directories(path);
 
 			const char* url = json_access(download_artifact, "url").GetString();
+			const std::string hash = json_access(download_artifact, "sha1").GetString();
 
 			std::shared_ptr<DownloadHelper> lib_helper = std::make_shared<DownloadHelper>();
 			lib_helper->set_options(DownloadHelper::FILE, url, path);
+			lib_helper->set_checksum(hash);
 			multi_helper.add_helper(lib_helper);
 			if (verbose) OUT("\t\tFound library " << name);
 		}

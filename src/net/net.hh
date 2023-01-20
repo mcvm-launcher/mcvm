@@ -4,6 +4,7 @@
 #include "lib/json.hh"
 #include "lib/mojang.hh"
 #include "lib/versions.hh"
+#include "sha1.hh"
 
 #include <curl/curl.h>
 #include <rapidjson/document.h>
@@ -85,12 +86,8 @@ namespace mcvm {
 	int progress_callback(void* clientp, double dltotal, double dlnow, double ultotal, double ulnow);
 
 	struct FileValidateException : public std::exception {
-		FileValidateException(const std::string _file, const std::string _url)
-		: file(_file), url(_url) {} 
-		const std::string file;
-		const std::string url;
 		std::string what() {
-			return NICE_STR_CAT("File " + file + " downloaded from " + url + " did not pass checksum");
+			return NICE_STR_CAT("File did not pass checksum");
 		}
 	};
 
@@ -106,9 +103,11 @@ namespace mcvm {
 
 		DownloadHelper();
 
-		void set_options(DownloadMode mode, const std::string& url, const fs::path& path = "/");
+		void set_options(DownloadMode _mode, const std::string& url, const fs::path& _path = "/");
 		bool perform();
-		bool sha1_checksum(const std::string& checksum);
+		void reset();
+		void set_checksum(const std::string& _checksum);
+		void perform_checksum(SHA1* sha1 = nullptr);
 		void add_progress_meter(ProgressData::ProgressStyle style, const std::string& title);
 
 		const std::string& get_str();
@@ -119,8 +118,11 @@ namespace mcvm {
 		private:
 		CURL* handle;
 		char errbuf[CURL_ERROR_SIZE];
+		DownloadMode mode;
+		fs::path path;
 		CurlResult res;
 		ProgressData progress_data;
+		std::string checksum = "";
 
 		friend class MultiDownloadHelper;
 	};
