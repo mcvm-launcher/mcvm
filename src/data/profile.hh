@@ -9,7 +9,7 @@ namespace mcvm {
 	class Profile {
 		const std::string name;
 		MinecraftVersion version;
-		std::vector<Package*> packages;
+		std::vector<std::shared_ptr<Package>> packages;
 
 		public:
 		std::map<std::string, Instance*> instances;
@@ -18,12 +18,11 @@ namespace mcvm {
 
 		const std::string& get_name();
 		MinecraftVersion get_version();
-		void add_package(Package* pkg);
+		void add_package(std::shared_ptr<Package> pkg);
 		void update_packages();
-		void delete_all_packages();
 		void create_instances(const CachedPaths& paths);
 
-		~Profile() = default;
+		~Profile();
 	};
 
 	// Base for instance

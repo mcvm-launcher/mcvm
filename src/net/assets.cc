@@ -157,7 +157,9 @@ namespace mcvm {
 				file = zip_fopen_index(jar_file, i, 0);
 				char* contents = new char[file_stat.size];
 				zip_fread(file, contents, file_stat.size);
+				zip_fclose(file);
 				write_file(natives_dir / name_path, contents);
+				delete[] contents;
 			}
 		}
 

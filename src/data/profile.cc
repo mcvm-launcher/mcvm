@@ -12,13 +12,13 @@ namespace mcvm {
 		return version;
 	}
 
-	void Profile::add_package(Package* pkg) {
+	void Profile::add_package(std::shared_ptr<Package> pkg) {
 		packages.push_back(pkg);
 	}
 
 	void Profile::update_packages() {
 		for (uint i = 0; i < packages.size(); i++) {
-			Package* pkg = packages[i];
+			std::shared_ptr<Package> pkg = packages[i];
 			pkg->ensure_contents();
 			pkg->parse();
 			mcvm::PkgEvalData res;
@@ -29,18 +29,15 @@ namespace mcvm {
 		}
 	}
 
-	void Profile::delete_all_packages() {
-		for (auto i = packages.begin(); i != packages.end(); i++) {
-			delete *i;
-		}
-		packages = {};
-	}
-
 	void Profile::create_instances(const CachedPaths& paths) {
 		for (auto i = instances.begin(); i != instances.end(); i++) {
 			OUT(BOLD("Updating instance '" << i->first << "'..."));
 			i->second->create(paths);
 		}
+	}
+
+	Profile::~Profile() {
+		DEL_MAP(instances);
 	}
 
 	Instance::Instance(Profile* _parent, const std::string _name, const CachedPaths& paths, const std::string& subpath)

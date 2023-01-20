@@ -36,7 +36,10 @@ namespace mcvm {
 	}
 
 	ProgramConfig::ProgramConfig() {
-		default_user = new OfflineUser("offline");
+		static const std::string offline_user_id = "offline";
+		OfflineUser* offline_user = new OfflineUser(offline_user_id);
+		users.insert(std::make_pair(offline_user_id, offline_user));
+		default_user = offline_user;
 	}
 
 	void ProgramConfig::load(const CachedPaths& paths) {
@@ -119,11 +122,10 @@ namespace mcvm {
 
 					_CONFIG_ENSURE_TYPE(instance_obj, "[profile][instance]", "type", String);
 					const std::string instance_type = instance_obj["type"].GetString();
-					Instance* instance;
 					if (instance_type == "client") {
-						instance = new ClientInstance(profile, instance_id, paths);
+						new ClientInstance(profile, instance_id, paths);
 					} else if (instance_type == "server") {
-						instance = new ServerInstance(profile, instance_id, paths);
+						new ServerInstance(profile, instance_id, paths);
 					} else {
 						throw ConfigEvalError{config_path, "Unknown instance type '" + instance_type + "'."};
 					}
@@ -138,13 +140,13 @@ namespace mcvm {
 
 					_CONFIG_ENSURE_TYPE(package_obj, "[profile][package]", "type", String);
 					const std::string package_type = package_obj["type"].GetString();
-					Package* package;
+					std::shared_ptr<Package> package;
 					if (package_type == "local") {
 						_CONFIG_ENSURE_TYPE(package_obj, "[profile][package]", "path", String);
 						std::string package_path_str = package_obj["path"].GetString();
 						const fs::path package_path = substitute_home(package_path_str, paths);
 						const std::string package_name = package_path.stem();
-						package = new LocalPackage(package_name, package_path);
+						package = std::make_shared<LocalPackage>(package_name, package_path);
 					} else if (package_type == "remote") {
 						_CONFIG_ENSURE_TYPE(package_obj, "[profile][package]", "url", String);
 						const std::string package_url = package_obj["url"].GetString();
