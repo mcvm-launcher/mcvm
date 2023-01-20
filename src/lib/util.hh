@@ -15,9 +15,6 @@
 // Assert that this statement will never be run
 #define ASSERT_NOREACH() assert(false)
 
-// Used for making nice messages for exception whats
-#define NICE_STR_CAT(str) (std::string() + str).c_str()
-
 // Memory utilities
 
 // Delete pointed to elements of a vector but do not delete the elements themselves

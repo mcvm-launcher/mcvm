@@ -68,7 +68,7 @@ namespace mcvm {
 					_CONFIG_ENSURE_TYPE(user_obj, "[user]", "uuid", String);
 					user = new MicrosoftUser(user_id, name, user_obj["uuid"].GetString());
 				} else {
-					OUT(YELLOW("Warning: It is recommended to have your uuid along with your username in user profile " << name));
+					WARN("Warning: It is recommended to have your uuid along with your username in user profile " << name);
 					user = new MicrosoftUser(user_id, name);
 					user->ensure_uuid();
 				}
@@ -160,10 +160,11 @@ namespace mcvm {
 	}
 
 	void ProgramConfig::ensure_loaded(const CachedPaths& paths) {
-		GUARD(is_loaded);
+		if (is_loaded) return;
 
 		try {
 			load(paths);
+			is_loaded = true;
 		} catch (mcvm::ConfigEvalError& err) {
 			ERR(err.what());
 			exit(1);

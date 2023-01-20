@@ -58,8 +58,6 @@ namespace mcvm {
 	struct CurlResult {
 		FILE* file = nullptr;
 		std::string str = "";
-
-		~CurlResult();
 	};
 
 	// Callback response for curl perform that writes the data to a file
@@ -87,11 +85,11 @@ namespace mcvm {
 	int progress_callback(void* clientp, double dltotal, double dlnow, double ultotal, double ulnow);
 
 	struct FileValidateException : public std::exception {
-		FileValidateException(const std::string& _file, const std::string& _url)
+		FileValidateException(const std::string _file, const std::string _url)
 		: file(_file), url(_url) {} 
-		const std::string& file;
-		const std::string& url;
-		const char* what() {
+		const std::string file;
+		const std::string url;
+		std::string what() {
 			return NICE_STR_CAT("File " + file + " downloaded from " + url + " did not pass checksum");
 		}
 	};
@@ -130,9 +128,9 @@ namespace mcvm {
 	// Wrapper around a libcurl multi handle
 	class MultiDownloadHelper {
 		CURLM* handle;
-		std::vector<std::shared_ptr<DownloadHelper>> helpers;
-		int is_performing = 1;
-		int messages_left;
+		// This is pretty stupid but this lets us clean up a helper when it is done
+		std::map<CURL*, std::shared_ptr<DownloadHelper>> helpers;
+		int msgs_in_queue = 1;
 		ProgressData progress_data;
 		
 		public:
@@ -146,6 +144,10 @@ namespace mcvm {
 		void reset();
 		// Add a progress meter
 		void add_progress_meter(ProgressData::ProgressStyle style, const std::string& title);
+		// Set a limit to the number of concurrent connections. Useful for avoid file descriptor limits
+		void set_connection_limit(ulong limit);
+		// How many helpers are in the multi helper
+		std::size_t get_helper_count();
 
 		~MultiDownloadHelper();
 	};

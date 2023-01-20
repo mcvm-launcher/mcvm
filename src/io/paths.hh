@@ -155,10 +155,30 @@ namespace mcvm {
 	}
 
 	struct FileOpenError : public std::exception {
-		FileOpenError(const fs::path _filename) : filename(_filename) {} 
-		const fs::path filename;
+		FileOpenError(const fs::path _file_path, int _errnum = -1)
+		: file_path(_file_path), errnum(_errnum) {}
+		
+		const fs::path file_path;
+		const int errnum;
 		std::string what() {
-			return NICE_STR_CAT("File " + filename.c_str() + " could not be opened");
+			std::string message = NICE_STR_CAT("File " + file_path.c_str() + " failed to open");
+			message += '\n';
+			switch (errnum) {
+				case ENOENT:
+					message += "The referenced file does not exist";
+					break;
+				case EACCES:
+					message += "Access to the file is denied";
+					break;
+				case EMFILE:
+					message += "Too many files open in the process. Please report this as an issue!";
+					break;
+				default:
+					message += "Error code: " + std::to_string(errnum) + ". Please report this as an issue!";
+					break;
+			}
+			
+			return message;
 		}
 	};
 };

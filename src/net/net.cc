@@ -51,12 +51,6 @@ namespace mcvm {
 		return CURL_PROGRESSFUNC_CONTINUE;
 	}
 
-	CurlResult::~CurlResult() {
-		if (file != nullptr) {
-			fclose(file);
-		}
-	}
-
 	DownloadHelper::DownloadHelper() {
 		handle = curl_easy_init();
 
@@ -77,7 +71,8 @@ namespace mcvm {
 		if (mode == DownloadMode::FILE || mode == DownloadMode::FILE_AND_STR) {
 			res.file = fopen(path.c_str(), "wb");
 			if (!res.file) {
-				throw FileOpenError{path.c_str()};
+				ERR("Downloader failed to open file!");
+				throw FileOpenError{path.c_str(), errno};
 			}
 		}
 
@@ -97,6 +92,11 @@ namespace mcvm {
 
 	bool DownloadHelper::perform() {
 		CURLcode success = curl_easy_perform(handle);
+
+		if (res.file != nullptr) {
+			fclose(res.file);
+			res.file = nullptr;
+		}
 
 		if (progress_data.is_used) {
 			OUT_NEWLINE();
@@ -133,8 +133,10 @@ namespace mcvm {
 	}
 
 	DownloadHelper::~DownloadHelper() {
-		// We don't need to fclose since thats in the destructor for CurlResult, but we should put one here when switch based on mode
 		curl_easy_cleanup(handle);
+		if (res.file != nullptr) {
+			fclose(res.file);
+		}
 	}
 
 	MultiDownloadHelper::MultiDownloadHelper() {
@@ -142,36 +144,56 @@ namespace mcvm {
 	}
 
 	void MultiDownloadHelper::add_helper(std::shared_ptr<DownloadHelper> helper) {
-		helpers.push_back(helper);
+		helpers.insert(std::make_pair(helper->handle, helper));
 		curl_multi_add_handle(handle, helper->handle);
 	}
 
 	bool MultiDownloadHelper::perform_blocking() {
-		while (is_performing) {
-			CURLMcode code = curl_multi_perform(handle, &is_performing);
+		CURLMsg* msg;
+		while (msgs_in_queue) {
+			CURLMcode code = curl_multi_perform(handle, &msgs_in_queue);
 
-			if (is_performing) {
+			if (msgs_in_queue) {
 				code = curl_multi_poll(handle, NULL, 0, 1000, NULL);
 			}
-
 			if (code) break;
+
+			while (true) {
+				int msgq = 0;
+				msg = curl_multi_info_read(handle, &msgq);
+				if (msg && (msg->msg == CURLMSG_DONE)) {
+					CURL* easy_handle = msg->easy_handle;
+					assert(helpers.contains(easy_handle));
+					curl_multi_remove_handle(handle, easy_handle);
+					helpers.erase(easy_handle);
+				}
+				if (!msg) break;
+			}
 		}
+		// Reset
+		assert(helpers.empty());
+		// Set to one so that the while loop starts
+		msgs_in_queue = 1;
+
 		// TODO: Error handling and messages for multi helper
 		return true;
 	}
 
-	void MultiDownloadHelper::reset() {
-		for (uint i = 0; i < helpers.size(); i++) {
-			curl_multi_remove_handle(handle, helpers[i]->handle);
-		}
-		helpers = {};
-	}
+	void MultiDownloadHelper::reset() {}
 
 	void MultiDownloadHelper::add_progress_meter(UNUSED ProgressData::ProgressStyle style, UNUSED const std::string &title) {
 		// progress_data.style = style;
 		// progress_data.title = title;
 		// curl_multi_setopt(handle, CURLOPT_PROGRESSFUNCTION, &progress_callback);
 		// curl_multi_setopt(handle, CURLOPT_PROGRESSDATA, progress_data);
+	}
+
+	void MultiDownloadHelper::set_connection_limit(ulong limit) {
+		curl_multi_setopt(handle, CURLMOPT_MAX_TOTAL_CONNECTIONS, limit);
+	}
+
+	std::size_t MultiDownloadHelper::get_helper_count() {
+		return helpers.size();
 	}
 
 	MultiDownloadHelper::~MultiDownloadHelper() {

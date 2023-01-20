@@ -58,6 +58,77 @@ namespace mcvm {
 		return helper;
 	}
 
+	void download_assets(
+		json::Document* ret,
+		const CachedPaths& paths,
+		std::shared_ptr<DownloadHelper> helper,
+		MultiDownloadHelper& multi_helper,
+		const std::string& version_string,
+		bool verbose
+	) {
+		const fs::path indexes_path = paths.assets / ASSETS_INDEXES_DIR;
+		create_dir_if_not_exists(indexes_path);
+		const fs::path asset_index_path = indexes_path / (version_string + ".json");
+
+		const std::string asset_index_url = json_access(json_access(ret, "assetIndex"), "url").GetString();
+		std::string asset_index_contents = download_cached_file(asset_index_url, asset_index_path, true, helper);
+
+		json::Document asset_index;
+		asset_index.Parse<json::kParseStopWhenDoneFlag>(asset_index_contents.c_str());
+		json::ParseErrorCode error_code = asset_index.GetParseError();
+		if (error_code != json::kParseErrorNone) {
+			WARN("Asset index was malformed, redownloading...");
+			asset_index_contents = download_cached_file(asset_index_url, asset_index_path, true, helper);
+			asset_index.Parse<json::kParseStopWhenDoneFlag>(asset_index_contents.c_str());
+		}
+
+		const fs::path assets_objects_path = paths.assets / ASSETS_OBJECTS_DIR;
+		const fs::path assets_virtual_path = paths.assets / ASSETS_VIRTUAL_DIR;
+		create_dir_if_not_exists(assets_objects_path);
+		if (!fs::exists(assets_virtual_path)) {
+			fs::create_directory_symlink(assets_objects_path, assets_virtual_path);
+		}
+
+		json::GenericObject assets = json_access(asset_index, "objects").GetObject();
+
+		if (verbose) {
+			OUT("\tFound " << BLUE(assets.MemberCount()) << " assets...");
+		}
+
+		// We have to batch these to prevent going over the file descriptor limit
+		static const uint batch_size = 128;
+		uint batch_index = 0;
+		uint batch_count = 0;
+
+		for (auto& asset_val : assets) {
+			json::GenericObject asset = asset_val.value.GetObject();
+			const std::string hash = json_access(asset, "hash").GetString();
+			const std::string hash_path = hash.substr(0, 2) + '/' + hash;
+			const fs::path path = assets_objects_path / hash_path;
+			if (file_exists(path)) continue;
+			const std::string url = std::string("http://resources.download.minecraft.net/" + hash_path);
+
+			create_leading_directories(path);
+
+			if (batch_index > batch_size) {
+				if (verbose) OUT_REPL(
+					GRAY_START << "\t\tDownloading batch "
+					<< BLUE_START << batch_count << GRAY("...")
+				);
+				multi_helper.perform_blocking();
+				batch_index = 0;
+				batch_count++;
+			}
+
+			std::shared_ptr<DownloadHelper> asset_helper = std::make_shared<DownloadHelper>();
+			asset_helper->set_options(DownloadHelper::FILE, url, path);
+			multi_helper.add_helper(asset_helper);
+			batch_index++;
+		}
+
+		if (verbose) OUT_NEWLINE();
+	}
+
 	// TODO: Make this a string instead so we don't store so many redundant paths
 	void install_native_library(const fs::path& path, const fs::path& natives_dir) {
 		int zip_err = ZIP_ER_OK;
@@ -145,15 +216,6 @@ namespace mcvm {
 			const char* path_str =  json_access(download_artifact, "path").GetString();
 			fs::path path = libraries_path / path_str;
 
-			classpath += path.c_str();
-			classpath += ':';
-
-			// If we already have the library don't download it again
-			if (file_exists(path)) continue;
-			create_leading_directories(path);
-
-			const char* url = json_access(download_artifact, "url").GetString();
-
 			// Check rules
 			if (lib.HasMember("rules")) {
 				bool rule_fail = false;
@@ -171,52 +233,25 @@ namespace mcvm {
 				if (rule_fail) continue;
 			}
 
+			classpath += path.c_str();
+			classpath += ':';
+
+			// If we already have the library don't download it again
+			if (file_exists(path)) continue;
+			create_leading_directories(path);
+
+			const char* url = json_access(download_artifact, "url").GetString();
+
 			std::shared_ptr<DownloadHelper> lib_helper = std::make_shared<DownloadHelper>();
 			lib_helper->set_options(DownloadHelper::FILE, url, path);
 			multi_helper.add_helper(lib_helper);
 			if (verbose) OUT("\t\tFound library " << name);
 		}
 
-		// Assets
-		const fs::path indexes_path = paths.assets / ASSETS_INDEXES_DIR;
-		create_dir_if_not_exists(indexes_path);
-		const fs::path asset_index_path = indexes_path / (version_string + ".json");
-
-		std::string asset_index_contents = download_cached_file(
-			json_access(json_access(ret, "assetIndex"), "url").GetString(),
-			asset_index_path, true, helper
-		);
-
-		const fs::path assets_objects_path = paths.assets / ASSETS_OBJECTS_DIR;
-		const fs::path assets_virtual_path = paths.assets / ASSETS_VIRTUAL_DIR;
-		create_dir_if_not_exists(assets_objects_path);
-		if (!fs::exists(assets_virtual_path)) {
-			fs::create_directory_symlink(assets_objects_path, assets_virtual_path);
-		}
-
-		json::Document asset_index;
-		asset_index.Parse<json::kParseStopWhenDoneFlag>(asset_index_contents.c_str());
-
-		for (auto& asset_val : json_access(asset_index, "objects").GetObject()) {
-			json::GenericObject asset = asset_val.value.GetObject();
-			const std::string hash = json_access(asset, "hash").GetString();
-			const std::string hash_path = hash.substr(0, 2) + '/' + hash;
-			const fs::path path = assets_objects_path / hash_path;
-			if (file_exists(path)) continue;
-			const std::string url = std::string("http://resources.download.minecraft.net/" + hash_path);
-
-			create_leading_directories(path);
-
-			std::shared_ptr<DownloadHelper> asset_helper = std::make_shared<DownloadHelper>();
-			asset_helper->set_options(DownloadHelper::FILE, url, path);
-			multi_helper.add_helper(asset_helper);
-		}
-
-		if (verbose) OUT_LIT("\tDownloading libraries and assets...");
+		if (verbose) OUT("\tDownloading " << BLUE(multi_helper.get_helper_count()) << " libraries...");
 		multi_helper.perform_blocking();
 
-		// We have to do this to close the file handlers
-		multi_helper.reset();
+		download_assets(ret, paths, helper, multi_helper, version_string, verbose);
 
 		// Deal with proper installation of native libraries now that we have them
 		if (verbose) OUT_LIT("\tExtracting natives...");

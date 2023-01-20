@@ -55,10 +55,18 @@ namespace mcvm {
 				_GAME_ARG_REPL("${auth_access_token}", "abc123abc123");
 				_GAME_ARG_REPL("${auth_uuid}", "aaaaa-aaaaa-aaaa-a");
 			}
+			// Also temp until we figure out what these are for
+			_GAME_ARG_REPL("${clientid}", "mcvm");
+			_GAME_ARG_REPL("${auth_xuid}", "mcvm");
 			// Other
 			_GAME_ARG_REPL("${user_type}", "mojang");
 		}
-		assert(contents.find('$') == std::string::npos);
+		#ifndef NDEBUG
+			if (contents.find('$') != std::string::npos) {
+				ERR("Unsubstituted arg: " << contents);
+				exit(1);
+			}
+		#endif
 		return false;
 	}
 
@@ -120,9 +128,10 @@ namespace mcvm {
 		for (auto& arg : jvm_args) {
 			parse_single_arg(arg, true, paths);
 		}
-		add_flag("-Dorg.lwjgl.util.DebugLoader=true");
 		write_flags();
 
+		// add_word("-jar");
+		// add_word(jar_path);
 		const std::string main_class = json_access(ret, "mainClass").GetString();
 		add_word(main_class);
 		
@@ -140,7 +149,6 @@ namespace mcvm {
 	}
 
 	void GameRunner::launch() {
-		// add_word(jar_path);
 		OUT(output);
 		exit(system(output.c_str()));
 	}

@@ -26,7 +26,7 @@ namespace mcvm {
 			// std::cout << ' ';
 			// std::cout << args[i];
 		}
-		OUT_NEWLINE();
+		// OUT_NEWLINE();
 
 		switch (command) {
 			case PkgCommandInstruction::SET_NAME:
