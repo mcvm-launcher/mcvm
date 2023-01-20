@@ -2,7 +2,6 @@
 
 namespace mcvm {
 	// README: https://wiki.vg/Launching_the_game
-	// FIXME
 
 	GameRunner::GameRunner(
 		MinecraftVersion _version,

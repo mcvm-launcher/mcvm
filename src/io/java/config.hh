@@ -11,10 +11,12 @@ namespace mcvm {
 
 		// The major Java version (e.g. 8 or 17)
 		std::string major_version;
-		virtual void ensure_installed(const CachedPaths& paths) {}
-		virtual std::string jre_path(const CachedPaths& paths) {
+		virtual void ensure_installed(UNUSED const CachedPaths& paths) {}
+		virtual std::string jre_path(UNUSED const CachedPaths& paths) {
 			ASSERT_NOREACH();
 		}
+
+		virtual ~JavaInstallation() = default;
 	};
 
 	class AdoptiumJava : public JavaInstallation {

@@ -8,7 +8,7 @@
 
 inline void run_subcommand(
 	const std::string& subcommand,
-	int argc, std::vector<std::string> argv,
+	uint argc, std::vector<std::string> argv,
 	mcvm::CommandData& data
 ) {
 	try {
@@ -44,9 +44,9 @@ int main(int argc, char** argv) {
 	if (argc > 1) {
 		const char* subcommand = argv[1];
 		// Remove both the executable and subcommand arguments
-		const int argc_slice = argc - 2;
+		const uint argc_slice = argc - 2;
 		std::vector<std::string> argv_slice;
-		for (int i = 2; i < argc; i++) {
+		for (uint i = 2; i < argc; i++) {
 			argv_slice.push_back(std::string(argv[i]));
 		}
 

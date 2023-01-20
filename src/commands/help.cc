@@ -11,7 +11,7 @@ namespace mcvm {
 		OUT("\t" << ITALIC("launch: ") << "launch instances (play the game!)");
 	}
 
-	void help_command(const unsigned int argc, UNUSED CommandArgs argv, CommandData& data) {
+	void help_command(UNUSED const unsigned int argc, UNUSED CommandArgs argv, UNUSED CommandData& data) {
 		show_main_help_message();
 	}
 };

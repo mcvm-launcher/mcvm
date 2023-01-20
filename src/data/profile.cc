@@ -168,7 +168,7 @@ namespace mcvm {
 		create_dir_if_not_exists(dir / "server");
 	}
 
-	void ServerInstance::launch(User* user, const CachedPaths& paths) {
+	void ServerInstance::launch(UNUSED User* user, const CachedPaths& paths) {
 		const fs::path server_path = dir / "server";
 		const fs::path server_jar_path = server_path / "server.jar";
 		assert(java != nullptr);

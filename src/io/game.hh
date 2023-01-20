@@ -13,18 +13,17 @@
 namespace mcvm {
 	// Set of game options that are added to and passed as args before running the game
 	class GameRunner {
-		// The command that is run with system() to launch the game
-		std::string output;
-		// The list of flags to be written and appended to the output
-		// TODO: Make this a stack probably
-		std::deque<std::string> flags;
-
 		// Properties
 		const MinecraftVersion version;
 		const fs::path mc_dir;
 		const fs::path jar_path;
 		User* user;
 		const std::string& classpath;
+
+		// The command that is run with system() to launch the game
+		std::string output;
+		// The list of flags to be written and appended to the output
+		std::deque<std::string> flags;
 
 		// Replaces tokens on an argument. Returns true if the previous argument should be deleted
 		bool repl_arg_token(std::string& contents, bool is_jvm, const CachedPaths& paths);
