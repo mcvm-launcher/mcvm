@@ -227,7 +227,8 @@ namespace mcvm {
 				const std::string url = json_access(classifier, "url").GetString();
 				const std::string hash = json_access(classifier, "sha1").GetString();
 				std::shared_ptr<DownloadHelper> native_helper = std::make_shared<DownloadHelper>();
-				native_helper->set_options(DownloadHelper::FILE, url, path);
+				// Set to FILE_AND_STR so that the checksum is faster
+				native_helper->set_options(DownloadHelper::FILE_AND_STR, url, path);
 				native_helper->set_checksum(hash);
 				multi_helper.add_helper(native_helper);
 			}

@@ -20,6 +20,8 @@ target_link_libraries(mcvm curl)
 target_link_libraries(mcvm stdc++fs)
 target_link_libraries(mcvm uv)
 target_link_libraries(mcvm zip)
+target_link_libraries(mcvm crypto)
+target_link_libraries(mcvm ssl)
 add_subdirectory(src)
 
 install(TARGETS mcvm DESTINATION "/usr/bin")
