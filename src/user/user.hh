@@ -18,6 +18,10 @@ namespace mcvm {
 			return false;
 		}
 
+		virtual bool is_offline() {
+			return false;
+		}
+
 		virtual ~User() = default;
 	};
 
@@ -51,6 +55,15 @@ namespace mcvm {
 		using User::User;
 
 		bool is_demo() override {
+			return true;
+		}
+	};
+
+	class OfflineUser : public User {
+		public:
+		using User::User;
+
+		bool is_offline() override {
 			return true;
 		}
 	};

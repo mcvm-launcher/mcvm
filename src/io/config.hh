@@ -38,10 +38,12 @@ namespace mcvm {
 		void load(const CachedPaths& paths);
 		
 		public:
+		ProgramConfig();
+
 		std::map<std::string, User*> users;
 		std::map<std::string, Profile*> profiles;
 
-		User* default_user = nullptr;
+		User* default_user;
 
 		// Load the config if it isn't loaded already
 		void ensure_loaded(const CachedPaths& paths);

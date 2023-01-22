@@ -38,9 +38,13 @@ namespace mcvm {
 			_GAME_ARG_REPL("${assets_root}", paths.assets);
 			_GAME_ARG_REPL("${assets_index_name}", paths.assets / "indexes" / (version_string + ".json"));
 			// TODO: Actual auth
-			_GAME_ARG_REPL("${auth_player_name}", "CarbonSmasher");
-			_GAME_ARG_REPL("${auth_access_token}", "abc123abc123");
-			_GAME_ARG_REPL("${auth_uuid}", "aaaaa-aaaaa-aaaa-a");
+			if (user->is_offline()) {
+				return true;
+			} else {
+				_GAME_ARG_REPL("${auth_player_name}", "CarbonSmasher");
+				_GAME_ARG_REPL("${auth_access_token}", "abc123abc123");
+				_GAME_ARG_REPL("${auth_uuid}", "aaaaa-aaaaa-aaaa-a");
+			}
 		}
 		// assert(!contents.find('$'));
 		if (contents.find('$') != std::string::npos) {

@@ -27,7 +27,7 @@ int main(int argc, char** argv) {
 
 	mcvm::CommandData command_data{paths, config};
 
-	// run_subcommand("launch", 2, {"1.19-vanilla", "client"}, command_data);
+	// run_subcommand("launch", 2, {"1.19", "client"}, command_data);
 
 	// mcvm::Daemon dmon(paths.run);
 	// dmon.ensure_started();

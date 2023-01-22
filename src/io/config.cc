@@ -28,10 +28,15 @@ namespace mcvm {
 			json_read(doc, config_path);
 		} else {
 			doc.SetObject();
-			doc.AddMember("users", json::kArrayType, doc.GetAllocator());
+			doc.AddMember("users", json::kObjectType, doc.GetAllocator());
+			doc.AddMember("profiles", json::kObjectType, doc.GetAllocator());
 			
 			json_write(doc, config_path);
 		}
+	}
+
+	ProgramConfig::ProgramConfig() {
+		default_user = new OfflineUser("offline");
 	}
 
 	void ProgramConfig::load(const CachedPaths& paths) {
