@@ -63,6 +63,8 @@ namespace mcvm {
 	class ClientInstance : public Instance {
 		// Resources
 		std::vector<WorldResource*> worlds;
+		// Used as an argument for launching in the game; The libraries and client.jar paths separated by colons
+		std::string classpath;
 
 		public:
 		ClientInstance(Profile* _parent, const std::string _name, const CachedPaths& paths);

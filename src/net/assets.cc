@@ -73,6 +73,7 @@ namespace mcvm {
 		MinecraftVersion version,
 		json::Document* ret,
 		const CachedPaths& paths,
+		std::string& classpath,
 		bool verbose
 	) {
 		const MCVersionString version_string = mc_version_reverse_map.at(version);
@@ -104,6 +105,9 @@ namespace mcvm {
 			} else {
 				path = libraries_path / path_str;
 			}
+
+			classpath += path.c_str();
+			classpath += ':';
 
 			// If we already have the library don't download it again
 			if (file_exists(path)) continue;

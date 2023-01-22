@@ -8,9 +8,10 @@ namespace mcvm {
 		MinecraftVersion _version,
 		const fs::path _mc_dir,
 		const fs::path _jar_path,
-		User* _user
+		User* _user,
+		const std::string& _classpath
 	)
-	: version(_version), mc_dir(_mc_dir), jar_path(_jar_path), user(_user) {}
+	: version(_version), mc_dir(_mc_dir), jar_path(_jar_path), user(_user), classpath(_classpath) {}
 
 	void GameRunner::add_word(const std::string& word) {
 		output.push_back(' ');
@@ -25,6 +26,7 @@ namespace mcvm {
 		if (is_jvm) {
 			fandr(contents, "${launcher_name}", "mcvm");
 			fandr(contents, "${launcher_version}", "alpha");
+			fandr(contents, "${classpath}", classpath);
 		} else {
 			#define _GAME_ARG_REPL(check, expr) if (contents == check) contents = expr
 
@@ -39,16 +41,24 @@ namespace mcvm {
 			_GAME_ARG_REPL("${assets_index_name}", paths.assets / "indexes" / (version_string + ".json"));
 			// TODO: Actual auth
 			if (user->is_offline()) {
-				return true;
+				if (
+					contents == "${auth_player_name}"
+					|| contents == "${auth_access_token}"
+					|| contents == "${auth_uuid}"
+				) {
+					return true;
+				}
 			} else {
 				_GAME_ARG_REPL("${auth_player_name}", "CarbonSmasher");
 				_GAME_ARG_REPL("${auth_access_token}", "abc123abc123");
 				_GAME_ARG_REPL("${auth_uuid}", "aaaaa-aaaaa-aaaa-a");
 			}
+			// Other
+			_GAME_ARG_REPL("${user_type}", "mojang");
 		}
-		// assert(!contents.find('$'));
+		// assert(contents.find('$') != std::string::npos);
 		if (contents.find('$') != std::string::npos) {
-			// return true;
+			return true;
 		}
 		return false;
 	}
@@ -130,8 +140,8 @@ namespace mcvm {
 	}
 
 	void GameRunner::launch() {
-		// system(output.c_str());
+		system(output.c_str());
 		add_word(jar_path);
-		OUT(output);
+		// OUT(output);
 	}
 };

@@ -23,6 +23,7 @@ namespace mcvm {
 		const fs::path mc_dir;
 		const fs::path jar_path;
 		User* user;
+		const std::string& classpath;
 
 		// Replaces tokens on an argument. Returns true if the previous argument should be deleted
 		bool repl_arg_token(std::string& contents, bool is_jvm, const CachedPaths& paths);
@@ -41,7 +42,8 @@ namespace mcvm {
 			MinecraftVersion _version,
 			const fs::path _mc_dir,
 			const fs::path _jar_path,
-			User* _user
+			User* _user,
+			const std::string& _classpath
 		);
 
 		// Parse arguments from a JSON file

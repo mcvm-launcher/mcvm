@@ -67,13 +67,17 @@ namespace mcvm {
 	void ClientInstance::create(const CachedPaths& paths, bool verbose) {
 		ensure_instance_dir();
 		const fs::path mc_dir = dir / ".minecraft";
+		const fs::path jar_path = dir / "client.jar";
 
 		std::shared_ptr<DownloadHelper> helper = obtain_libraries(
 			parent->get_version(),
 			&version_json,
 			paths,
+			classpath,
 			verbose
 		);
+
+		classpath += jar_path.c_str();
 
 		// Get the client jar
 		json::GenericObject client_download = json_access(
@@ -82,7 +86,7 @@ namespace mcvm {
 		).GetObject();
 		const std::string client_url = json_access(client_download, "url").GetString();
 		if (verbose) OUT_LIT("\tDownloading client jar...");
-		download_cached_file(client_url, dir / "client.jar", false, helper);
+		download_cached_file(client_url, jar_path, false, helper);
 	}
 
 	void ClientInstance::ensure_instance_dir() {
@@ -93,7 +97,7 @@ namespace mcvm {
 	}
 
 	void ClientInstance::launch(User* user, const CachedPaths& paths) {
-		mcvm::GameRunner game(parent->get_version(), dir / ".minecraft", dir / "client.jar", user);
+		mcvm::GameRunner game(parent->get_version(), dir / ".minecraft", dir / "client.jar", user, classpath);
 		game.parse_args(&version_json, paths);
 		game.launch();
 	}

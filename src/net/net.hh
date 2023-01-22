@@ -48,6 +48,7 @@ namespace mcvm {
 		MinecraftVersion version,
 		json::Document* ret,
 		const CachedPaths& paths,
+		std::string& classpath,
 		bool verbose = true
 	);
 
