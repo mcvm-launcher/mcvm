@@ -29,7 +29,7 @@ namespace mcvm {
 		}
 	}
 
-	void Profile::create_instances(const CachedPaths& paths) {
+	void Profile::create_instances(const CachedPaths& paths, bool force) {
 		for (auto i = instances.begin(); i != instances.end(); i++) {
 			OUT(BOLD("Updating instance '" << i->first << "'..."));
 			i->second->create(paths);
@@ -45,7 +45,7 @@ namespace mcvm {
 		parent->instances.insert(std::make_pair(name, this));
 	}
 
-	void Instance::create(const CachedPaths& paths, bool verbose) {
+	void Instance::create(UNUSED const CachedPaths& paths, UNUSED bool verbose, UNUSED bool force) {
 		ensure_instance_dir();
 	}
 
@@ -61,7 +61,7 @@ namespace mcvm {
 	ClientInstance::ClientInstance(Profile* _parent, const std::string _name, const CachedPaths& paths)
 	: Instance(_parent, _name, paths, CLIENT_INSTANCES_DIR) {}
 
-	void ClientInstance::create(const CachedPaths& paths, bool verbose) {
+	void ClientInstance::create(const CachedPaths& paths, bool verbose, bool force) {
 		ensure_instance_dir();
 		const fs::path mc_dir = dir / ".minecraft";
 		const fs::path jar_path = dir / "client.jar";
@@ -72,10 +72,11 @@ namespace mcvm {
 				&version_json,
 				paths,
 				classpath,
-				verbose
+				verbose,
+				force
 			);
 
-			obtain_assets(&version_json, parent->get_version(), helper, paths, verbose);
+			obtain_assets(&version_json, parent->get_version(), helper, paths, verbose, force);
 
 			classpath += jar_path.c_str();
 
@@ -95,7 +96,13 @@ namespace mcvm {
 			).GetObject();
 			const std::string client_url = json_access(client_download, "url").GetString();
 			if (verbose) OUT_LIT("\tDownloading client jar...");
-			download_cached_file(client_url, jar_path, false, helper);
+			if (force) {
+				DownloadHelper helper;
+				helper.set_options(DownloadHelper::FILE, client_url, jar_path);
+				helper.perform();
+			} else {
+				download_cached_file(client_url, jar_path, false, helper);
+			}
 		} catch (FileValidateException& err) {
 			ERR(err.what());
 			exit(1);
@@ -125,7 +132,7 @@ namespace mcvm {
 	ServerInstance::ServerInstance(Profile* _parent, const std::string _name, const CachedPaths& paths)
 	: Instance(_parent, _name, paths, SERVER_INSTANCES_DIR), server_dir(dir / "server") {}
 
-	void ServerInstance::create(const CachedPaths& paths, bool verbose) {
+	void ServerInstance::create(const CachedPaths& paths, bool verbose, bool force) {
 		ensure_instance_dir();
 		
 		std::shared_ptr<DownloadHelper> helper = obtain_libraries(
@@ -133,7 +140,8 @@ namespace mcvm {
 			&version_json,
 			paths,
 			classpath,
-			verbose
+			verbose,
+			force
 		);
 
 		const fs::path jar_path = server_dir / "server.jar";
@@ -154,12 +162,19 @@ namespace mcvm {
 				json_access(version_json, "downloads"),
 				"server"
 			).GetObject();
+			const std::string server_jar_url = json_access(server_download, "url").GetString();
 
 			if (verbose) OUT_LIT("\tDownloading server jar...");
-			download_cached_file(
-				json_access(server_download, "url").GetString(),
-				jar_path, false, helper
-			);
+			if (force) {
+				DownloadHelper helper;
+				helper.set_options(DownloadHelper::FILE, server_jar_url, jar_path);
+				helper.perform();
+			} else {
+				download_cached_file(
+					server_jar_url,
+					jar_path, false, helper
+				);
+			}
 		} catch (FileValidateException& err) {
 			ERR(err.what());
 			exit(1);

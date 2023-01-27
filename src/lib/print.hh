@@ -53,7 +53,7 @@
 #if defined(NDEBUG)
 	#define LOG(val) (void)0
 #else
-	#define LOG(val) std::cout << val << std::endl
+	#define LOG(val) OUT(GRAY(val)) << std::flush
 #endif
 
 // Used for making nice messages for exception whats

@@ -50,7 +50,8 @@ namespace mcvm {
 		json::Document* ret,
 		const CachedPaths& paths,
 		std::string& classpath,
-		bool verbose = true
+		bool verbose = true,
+		bool force = false
 	);
 
 	void obtain_assets(
@@ -58,7 +59,8 @@ namespace mcvm {
 		const MinecraftVersion& version,
 		std::shared_ptr<DownloadHelper> helper,
 		const CachedPaths& paths,
-		bool verbose
+		bool verbose,
+		bool force = false
 	);
 
 	// CURL callbacks

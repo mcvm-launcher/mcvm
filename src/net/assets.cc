@@ -100,7 +100,8 @@ namespace mcvm {
 		json::Document* ret,
 		const CachedPaths& paths,
 		std::string& classpath,
-		bool verbose
+		bool verbose,
+		bool force
 	) {
 		const MCVersionString version_string = mc_version_reverse_map.at(version);
 		
@@ -138,7 +139,6 @@ namespace mcvm {
 				if (rule_fail) continue;
 			}
 
-
 			const std::string name = json_access(lib, "name").GetString();
 			if (lib.HasMember("natives") && lib["natives"].HasMember(OS_STRING)) {
 				const std::string natives_key = lib["natives"][OS_STRING].GetString();
@@ -149,7 +149,7 @@ namespace mcvm {
 				const std::string path_str = json_access(classifier, "path").GetString();
 
 				fs::path path = native_jars_path / path_str;
-				if (file_exists(path)) continue;
+				if (!force && file_exists(path)) continue;
 				create_leading_directories(path);
 				native_libs.push_back(path);
 				classpath += path.c_str();
@@ -176,7 +176,7 @@ namespace mcvm {
 			classpath += ':';
 
 			// If we already have the library don't download it again
-			if (file_exists(path)) continue;
+			if (!force && file_exists(path)) continue;
 			create_leading_directories(path);
 
 			const char* url = json_access(download_artifact, "url").GetString();
@@ -189,7 +189,7 @@ namespace mcvm {
 			if (verbose) OUT("\t\tFound library " << BLUE(name));
 		}
 
-		if (verbose && (multi_helper.get_helper_count() > 0)) {
+		if (multi_helper.get_helper_count() > 0) {
 			OUT("\tDownloading " << BLUE(multi_helper.get_helper_count()) << " libraries...");
 		}
 		multi_helper.perform_blocking();
@@ -208,7 +208,8 @@ namespace mcvm {
 		const MinecraftVersion& version,
 		std::shared_ptr<DownloadHelper> helper,
 		const CachedPaths& paths,
-		bool verbose
+		bool verbose,
+		bool force
 	) {
 		const MCVersionString version_string = mc_version_reverse_map.at(version);
 		const fs::path indexes_path = paths.assets / ASSETS_INDEXES_DIR;
@@ -230,7 +231,7 @@ namespace mcvm {
 		const fs::path assets_objects_path = paths.assets / ASSETS_OBJECTS_DIR;
 		const fs::path assets_virtual_path = paths.assets / ASSETS_VIRTUAL_DIR;
 		create_dir_if_not_exists(assets_objects_path);
-		if (!fs::exists(assets_virtual_path)) {
+		if (!force && !fs::exists(assets_virtual_path)) {
 			fs::create_directory_symlink(assets_objects_path, assets_virtual_path);
 		}
 
@@ -252,13 +253,13 @@ namespace mcvm {
 			const std::string hash = json_access(asset, "hash").GetString();
 			const std::string hash_path = hash.substr(0, 2) + '/' + hash;
 			const fs::path path = assets_objects_path / hash_path;
-			if (file_exists(path)) continue;
+			if (!force && file_exists(path)) continue;
 			const std::string url = std::string("https://resources.download.minecraft.net/" + hash_path);
 
 			create_leading_directories(path);
 
 			if (batch_index > batch_size) {
-				if (verbose) OUT_REPL(
+				OUT_REPL(
 					GRAY_START << "\t\tDownloading batch "
 					<< BLUE_START << batch_count << GRAY("...")
 				);
@@ -273,6 +274,8 @@ namespace mcvm {
 			batch_index++;
 		}
 
-		if (verbose) OUT_NEWLINE();
+		if (batch_count > 0) {
+			OUT_NEWLINE();
+		}
 	}
 };
