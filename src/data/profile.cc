@@ -75,6 +75,8 @@ namespace mcvm {
 				verbose
 			);
 
+			obtain_assets(&version_json, parent->get_version(), helper, paths, verbose);
+
 			classpath += jar_path.c_str();
 
 			const std::string major_version = std::to_string(json_access(
@@ -126,12 +128,16 @@ namespace mcvm {
 	void ServerInstance::create(const CachedPaths& paths, bool verbose) {
 		ensure_instance_dir();
 		
-		std::shared_ptr<DownloadHelper> helper = obtain_version_json(
-			mc_version_reverse_map.at(parent->get_version()),
+		std::shared_ptr<DownloadHelper> helper = obtain_libraries(
+			parent->get_version(),
 			&version_json,
 			paths,
+			classpath,
 			verbose
 		);
+
+		const fs::path jar_path = server_dir / "server.jar";
+		classpath += jar_path.c_str();
 
 		const std::string major_version = std::to_string(json_access(
 			json_access(version_json, "javaVersion"), "majorVersion"
@@ -144,7 +150,6 @@ namespace mcvm {
 
 		try {
 			// Get the server jar
-			const fs::path jar_path = server_dir / "server.jar";
 			json::GenericObject server_download = json_access(
 				json_access(version_json, "downloads"),
 				"server"
@@ -173,7 +178,10 @@ namespace mcvm {
 		const fs::path server_jar_path = server_path / "server.jar";
 		assert(java != nullptr);
 		const std::string java_command = java->jre_path(paths);
-		const std::string command = java_command + " -jar " + server_jar_path.c_str();
+		const std::string command = java_command
+			+ " -cp " + classpath
+			+ " -jar " + server_jar_path.c_str()
+			+ " nogui";
 		chdir(server_path.c_str());
 		exit(system(command.c_str()));
 	}

@@ -53,6 +53,14 @@ namespace mcvm {
 		bool verbose = true
 	);
 
+	void obtain_assets(
+		json::Document* version_json,
+		const MinecraftVersion& version,
+		std::shared_ptr<DownloadHelper> helper,
+		const CachedPaths& paths,
+		bool verbose
+	);
+
 	// CURL callbacks
 
 	// A struct passed in file writing from curl that holds both a file ptr and a string buffer to write into

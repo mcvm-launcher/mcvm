@@ -40,6 +40,7 @@ namespace mcvm {
 		create_leading_directories(file_path);
 		helper.set_options(DownloadHelper::FILE, bin_url, file_path);
 		helper.follow_redirect();
+		OUT("\tDownloading Adoptium Temurin JRE " << json_access(version, "release_name").GetString() << "...");
 		helper.perform();
 		helper.reset();
 		extract_tar_gz(file_path);
@@ -54,12 +55,10 @@ namespace mcvm {
 		// This is so we can index it later
 		// Should probably make it faster
 		create_dir_if_not_exists(install_path);
-		// I don't know why this is giving an error but it works so
+		// I don't know why this is giving an error but it works... so *gulp*
 		try {
 			fs::copy(extracted_bin_path, install_path, fs::copy_options::recursive | fs::copy_options::update_existing);
-		} catch (fs::filesystem_error& err) {
-			LOG("Err");
-		}
+		} catch (fs::filesystem_error& err) {}
 		fs::remove_all(extracted_bin_path);
 	}
 

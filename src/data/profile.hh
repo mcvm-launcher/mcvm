@@ -86,6 +86,8 @@ namespace mcvm {
 		WorldResource* current_world;
 
 		const fs::path server_dir;
+		// Used as an argument for launching in the game; The libraries and client.jar paths separated by colons
+		std::string classpath;
 
 		public:
 		ServerInstance(Profile* _parent, const std::string _name, const CachedPaths& paths);

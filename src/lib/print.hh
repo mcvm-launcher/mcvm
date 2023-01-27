@@ -30,6 +30,12 @@
 #define BLUE_START _FMT("34m")
 #define BLUE(txt) BLUE_START << txt << COL_RESET
 
+#define GREEN_START _FMT("32m")
+#define GREEN(txt) GREEN_START << txt << COL_RESET
+
+#define CYAN_START _FMT("36m")
+#define CYAN(txt) CYAN_START << txt << COL_RESET
+
 // Print value to cout
 #define OUT(val) std::cout << val << '\n'
 // Faster OUT for literal values

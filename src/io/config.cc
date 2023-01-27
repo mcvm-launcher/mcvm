@@ -120,7 +120,7 @@ namespace mcvm {
 					const std::string instance_id = instance_val.name.GetString();
 					json::GenericObject instance_obj = instance_val.value.GetObject();
 
-					_CONFIG_ENSURE_TYPE(instance_obj, "[profile][instance]", "type", String);
+					_CONFIG_ENSURE(instance_obj, "[profile][instance]", "type", String);
 					const std::string instance_type = instance_obj["type"].GetString();
 					if (instance_type == "client") {
 						new ClientInstance(profile, instance_id, paths);
