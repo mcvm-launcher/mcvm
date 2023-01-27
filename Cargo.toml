@@ -1,0 +1,8 @@
+[package]
+name = "mcvm"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+color-print = "0.3.4"
+curl = "0.4.44"
