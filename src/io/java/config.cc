@@ -57,7 +57,9 @@ namespace mcvm {
 		// I don't know why this is giving an error but it works so
 		try {
 			fs::copy(extracted_bin_path, install_path, fs::copy_options::recursive | fs::copy_options::update_existing);
-		} catch (fs::filesystem_error& err) {}
+		} catch (fs::filesystem_error& err) {
+			LOG("Err");
+		}
 		fs::remove_all(extracted_bin_path);
 	}
 

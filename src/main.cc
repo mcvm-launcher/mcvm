@@ -1,9 +1,7 @@
 #include "commands/command.hh"
 #include "package/package.hh"
 #include "daemon.hh"
-#include "io/game.hh"
 #include "io/config.hh"
-#include "io/java/config.hh"
 
 #include <assert.h>
 #include <iostream>
@@ -33,7 +31,7 @@ int main(int argc, char** argv) {
 
 	mcvm::CommandData command_data{paths, config};
 
-	// run_subcommand("launch", 2, {"1.19-vanilla", "server"}, command_data);
+	run_subcommand("launch", 2, {"1.19", "server"}, command_data);
 
 	// mcvm::Daemon dmon(paths.run);
 	// dmon.ensure_started();

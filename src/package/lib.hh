@@ -113,7 +113,8 @@ namespace mcvm {
 			RESOURCE_NAME,
 			DOWNLOAD_RESOURCE,
 			FINISH,
-			FAIL
+			FAIL,
+			SUCCEED
 		};
 
 		PkgCommand command;

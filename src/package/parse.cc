@@ -55,7 +55,8 @@ namespace mcvm {
 					{"resource-name", PkgCommandInstruction::RESOURCE_NAME},
 					{"download-resource", PkgCommandInstruction::DOWNLOAD_RESOURCE},
 					{"finish", PkgCommandInstruction::FINISH},
-					{"fail", PkgCommandInstruction::FAIL}
+					{"fail", PkgCommandInstruction::FAIL},
+					{"succeed", PkgCommandInstruction::SUCCEED}
 				};
 				inst->command = command_map.at(instruction);
 				inst->text = instruction;
