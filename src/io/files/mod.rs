@@ -60,14 +60,14 @@ impl Paths {
 		create_existing_dir(&run).unwrap();
 		
 		Paths {
-			home: home.into(),
-			data: data.into(),
-			internal: internal.into(),
-			assets: assets.into(),
-			java: java.into(),
-			cache: cache.into(),
-			config: config.into(),
-			run: run.into(),
+			home,
+			data,
+			internal,
+			assets,
+			java,
+			cache,
+			config,
+			run,
 		}
 	}
 }

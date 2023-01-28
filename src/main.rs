@@ -1,6 +1,8 @@
 mod commands;
 mod data;
 mod io;
+mod net;
+mod lib;
 
 use std::env;
 
@@ -9,7 +11,7 @@ use io::files::Paths;
 
 fn main() {
 	let argv: Vec<String> = env::args().collect();
-	let argc: u8 = argv.len().try_into().unwrap();
+	let argc: usize = argv.len();
 	match argc {
 		0 => debug_assert!(false),
 		1 => help_command_impl(),
@@ -17,7 +19,7 @@ fn main() {
 			let paths = Paths::new();
 			let argv_slice = &argv[2..];
 			let argc_slice = argc - 2;
-			run_command(&argv[1], argc_slice, argv_slice, paths);
+			run_command(&argv[1], argc_slice, argv_slice, &paths);
 		}
 	}
 }

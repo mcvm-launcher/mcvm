@@ -5,7 +5,6 @@ pub fn help_command_impl() {
 	cprintln!("Mcvm: <i>A Minecraft launcher for the future");
 }
 
-pub fn help_command(_argc: u8, _argv: &[String], paths: Paths) {
-	println!("{}", paths.internal.to_str().unwrap());
+pub fn help_command(_argc: usize, _argv: &[String], _paths: &Paths) {
 	help_command_impl();
 }

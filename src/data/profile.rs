@@ -1,4 +1,4 @@
-struct Profile {
+struct _Profile {
 
 }
 
@@ -6,10 +6,10 @@ trait Instance {
 
 }
 
-struct Client {
+struct _Client {
 
 }
 
-struct Server {
+struct _Server {
 
 }
