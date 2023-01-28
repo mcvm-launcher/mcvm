@@ -1,22 +1,30 @@
-use core::fmt;
-
-pub type MinecraftVersion = String;
-
-#[derive(Debug)]
+#[derive(Debug, thiserror::Error)]
+#[error("Version not found: {}", .version.as_string())]
 pub struct VersionNotFoundError {
-	version: String
+	pub version: MinecraftVersion
 }
 
 impl VersionNotFoundError {
-	pub fn new(version: &str) -> VersionNotFoundError {
-		VersionNotFoundError { version: version.to_string() }
+	pub fn new(version: MinecraftVersion) -> VersionNotFoundError {
+		VersionNotFoundError{version}
 	}
 }
 
-impl std::error::Error for VersionNotFoundError {}
+#[derive(Debug)]
+pub enum MinecraftVersion {
+	Unknown(String)
+}
 
-impl fmt::Display for VersionNotFoundError {
-	fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-		f.write_fmt(format_args!("Version not found: {}", self.version))
+impl MinecraftVersion {
+	pub fn from(string: &str) -> Self {
+		Self::Unknown(string.to_string())
+	}
+
+	pub fn as_string(&self) -> &String {
+		match self {
+			Self::Unknown(string) => string
+		}
 	}
 }
+
+static _VERSION_LIST: [&str; 1] = ["1.19"];
