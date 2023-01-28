@@ -1,6 +1,10 @@
+use core::panic;
+use std::rc::Rc;
+use std::sync::Arc;
 use std::{io::Write, string::FromUtf8Error};
 
 use curl::easy::Easy;
+use curl::multi::Multi;
 pub enum DownloadMode {
 	File(std::fs::File)
 }
@@ -26,12 +30,12 @@ struct StringWriter {
 pub struct Download {
 	modes: Vec<DownloadMode>,
 	string: Option<StringWriter>,
-	pub easy: Easy
+	pub easy: Box<Easy>
 }
 
 impl Download {
 	pub fn new() -> Self {
-		let easy = Easy::new();
+		let easy = Box::new(Easy::new());
 		Download{modes: vec![], string: None, easy}
 	}
 
@@ -56,30 +60,63 @@ impl Download {
 	}
 
 	pub fn perform(&mut self) -> Result<(), DownloadError> {
-		{
-			let mut transfer = self.easy.transfer();
-			transfer.write_function(|data| {
-				for mode in self.modes.iter_mut() {
-					match mode {
-						DownloadMode::File(file) => if file.write_all(data).is_err() {
-							return Err(curl::easy::WriteError::Pause);
-						}
-					};
-				}
-				if let Some(string) = &mut self.string {
-					string.data.extend_from_slice(data);
-				}
-				Ok(data.len())
-			})?;
-			transfer.perform()?;
-		}
-		if let Some(string) = &mut self.string {
-			string.string = String::from_utf8(string.data.to_vec())?;
-		}
+		let mut transfer = self.easy.transfer();
+		transfer.write_function(|data| {
+			for mode in self.modes.iter_mut() {
+				match mode {
+					DownloadMode::File(file) => if file.write_all(data).is_err() {
+						return Err(curl::easy::WriteError::Pause);
+					}
+				};
+			}
+			if let Some(string) = &mut self.string {
+				string.data.extend_from_slice(data);
+			}
+			Ok(data.len())
+		})?;
+		transfer.perform()?;
 		Ok(())
 	}
 
-	pub fn get_str(&self) -> String {
-		self.string.as_ref().expect("String not set to write into").string.clone()
+	pub fn get_str(&mut self) -> Result<String, DownloadError> {
+		match &mut self.string {
+			Some(writer) => {
+				writer.string = String::from_utf8(writer.data.to_vec())?;
+				Ok(writer.string.clone())
+			},
+			None => panic!("String not set to write into")
+		}
 	}
 }
+
+// pub fn MultiDownload
+
+// #[derive(Debug, thiserror::Error)]
+// enum MultiDownloadError {
+// 	#[error("When downloading: {}", .0)]
+// 	Download(DownloadError),
+// 	#[error("When performing multiple downloads: {}", .0)]
+// 	Multi(#[from] curl::MultiError)
+// }
+
+// pub struct MultiDownload {
+// 	handles: Vec<Box<Easy>>,
+// 	multi: Multi
+// }
+
+// impl MultiDownload {
+// 	pub fn new() -> Self {
+// 		MultiDownload { handles: Vec::new(), multi: Multi::new() }
+// 	}
+
+// 	pub fn download(&mut self, easy: Box<Easy>) -> Result<(), MultiDownloadError> {
+// 		self.multi.add(*easy);
+// 		self.handles.push(easy);
+// 		Ok(())
+// 	}
+
+// 	pub fn perform(&mut self) -> Result<(), MultiDownloadError> {
+// 		let perform = self.multi.perform()?;
+// 		Ok(())
+// 	}
+// }

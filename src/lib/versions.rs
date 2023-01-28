@@ -5,12 +5,12 @@ pub struct VersionNotFoundError {
 }
 
 impl VersionNotFoundError {
-	pub fn new(version: MinecraftVersion) -> VersionNotFoundError {
-		VersionNotFoundError{version}
+	pub fn new(version: &MinecraftVersion) -> VersionNotFoundError {
+		VersionNotFoundError{version: version.clone()}
 	}
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum MinecraftVersion {
 	Unknown(String)
 }
