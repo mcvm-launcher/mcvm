@@ -3,6 +3,7 @@ mod data;
 mod io;
 mod net;
 mod lib;
+mod package;
 
 use std::env;
 
@@ -30,6 +31,14 @@ fn main() {
 			if let Err(err) = net::game_files::get_assets(&doc, &paths, &version, true, true) {
 				eprintln!("{err}");
 			}
+			// let mut reg = data::profile::InstanceRegistry::new();
+			// let mut client = reg.insert(
+			// 	"client".to_string(),
+			// 	Box::new(data::profile::Client::new("client"))
+			// ).unwrap() as Box<data::profile::Client>;
+			// let mut prof = data::profile::Profile::new("main", &version);
+			// prof.add_instance(client.name);
+
 			let argv_slice = &argv[2..];
 			let argc_slice = argc - 2;
 			run_command(&argv[1], argc_slice, argv_slice, &paths);
