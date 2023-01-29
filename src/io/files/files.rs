@@ -17,3 +17,16 @@ pub fn create_leading_dirs(path: &Path) -> std::io::Result<()> {
 	}
 	Ok(())
 }
+
+// Cross platform - create a directory soft link
+#[cfg(target_os = "windows")]
+pub fn dir_symlink(path: &Path, target: &Path) -> std::io::Result<()> {
+	std::os::windows::fs::symlink_dir(path, target)?;
+	Ok(())
+}
+
+#[cfg(target_os = "linux")]
+pub fn dir_symlink(path: &Path, target: &Path) -> std::io::Result<()> {
+	std::os::unix::fs::symlink(path, target)?;
+	Ok(())
+}

@@ -5,9 +5,13 @@ use crate::lib::json::{self, JsonObject};
 use crate::net::helper;
 use crate::net::helper::Download;
 use crate::lib::mojang;
+use crate::lib::print::ReplPrinter;
 
 use color_print::cprintln;
+use color_print::cprint;
+use color_print::cformat;
 
+use std::io::Write;
 use std::path::PathBuf;
 
 #[derive(Debug, thiserror::Error)]
@@ -100,8 +104,6 @@ pub fn get_version_json(version: &MinecraftVersion, paths: &Paths, verbose: bool
 pub enum LibrariesError {
 	#[error("Failed to evaluate json file: {}", .0)]
 	ParseError(#[from] json::JsonError),
-	#[error("{}", .0)]
-	VersionManifest(#[from] VersionManifestError),
 	#[error("Error when downloading library:\n\t{}", .0)]
 	Download(#[from] helper::DownloadError),
 	#[error("Failed to convert string to UTF-8")]
@@ -167,6 +169,7 @@ pub fn get_libraries(
 	let mut native_paths: Vec<PathBuf> = Vec::new();
 	let mut classpath = String::new();
 	let mut download = Download::new();
+	let mut printer = ReplPrinter::new();
 
 	for lib_val in json::access_array(version_json, "libraries")?.iter() {
 		let lib = json::ensure_type(lib_val.as_object(), json::JsonType::Object)?;
@@ -186,7 +189,9 @@ pub fn get_libraries(
 			if !force && path.exists() {
 				continue;
 			}
-			cprintln!("Downloading library <b!>{}...", name);
+			if verbose {
+				printer.print(&cformat!("\r\tDownloading library <b!>{}</>...", name));
+			}
 			download_library(&mut download, classifier, &path, &mut classpath)?;
 			native_paths.push(path);
 			continue;
@@ -197,10 +202,115 @@ pub fn get_libraries(
 			if !force && path.exists() {
 				continue;
 			}
-			cprintln!("Downloading library <b>{}", name);
+			if verbose {
+				printer.print(&cformat!("\r\tDownloading library <b>{}</>...", name));
+			}
 			download_library(&mut download, artifact, &path, &mut classpath)?;
 			continue;
 		}
 	}
+	printer.print("Libraries downloaded");
+	printer.finish();
+
 	Ok(classpath)
+}
+
+#[derive(Debug, thiserror::Error)]
+pub enum AssetsError {
+	#[error("Failed to evaluate json file: {}", .0)]
+	ParseError(#[from] json::JsonError),
+	#[error("Error when downloading asset:\n\t{}", .0)]
+	Download(#[from] helper::DownloadError)
+}
+
+fn download_asset_index(url: &str, path: &PathBuf) -> Result<Box<json::JsonObject>, AssetsError> {
+	let mut download = Download::new();
+	download.url(url)?;
+	download.add_file(&path)?;
+	download.add_str();
+	download.perform()?;
+	
+	let doc = json::parse_object(&download.get_str()?)?;
+	Ok(doc)
+}
+
+// Download a single asset from the index. Returns false if the loop should continue
+fn download_asset(
+	asset: &json::JsonObject,
+	objects_dir: &PathBuf,
+	download: &mut Download,
+	force: bool
+) -> Result<bool, AssetsError> {
+	let hash = json::access_str(asset, "hash")?.to_owned();
+	let hash_path = hash[..2].to_owned() + "/" + &hash;
+	let url = "https://resources.download.minecraft.net/".to_owned() + &hash_path;
+	
+	let path = objects_dir.join(&hash_path);
+	if !force && path.exists() {
+		return Ok(false);
+	}
+	files::create_leading_dirs(&path).expect("Failed to create leading directories for asset");
+	
+	download.reset();
+	download.url(&url)?;
+	download.add_file(&path)?;
+	download.perform()?;
+
+	Ok(true)
+}
+
+pub fn get_assets(
+	version_json: &json::JsonObject,
+	paths: &Paths,
+	version: &MinecraftVersion,
+	verbose: bool,
+	force: bool
+) -> Result<(), AssetsError> {
+	let version_string = version.as_string().to_owned();
+	let indexes_dir = paths.assets.join("indexes");
+	files::create_dir(&indexes_dir).expect("Failed to create indexes directory");
+	
+	let index_path = indexes_dir.join(version_string + ".json");
+	let index_url = json::access_str(
+		json::access_object(version_json, "assetIndex")?, "url"
+	)?;
+	
+	let objects_dir = paths.assets.join("objects");
+	files::create_dir(&objects_dir).expect("Failed to create asset objects directory");
+	let virtual_dir = paths.assets.join("virtual");
+	if !force && virtual_dir.exists() && !virtual_dir.is_symlink() {
+		files::dir_symlink(&virtual_dir, &objects_dir).expect("Failed to create symlink for old assets");
+	}
+
+	let index = match download_asset_index(index_url, &index_path) {
+		Ok(val) => val,
+		Err(err) => {
+			eprintln!("Failed to obtain asset index:\n\t{}\nRedownloading...", err);
+			download_asset_index(index_url, &index_path)?
+		}
+	};
+
+	let assets = json::access_object(&index, "objects")?;
+	let count = assets.len();
+	if verbose {
+		cprintln!("\tDownloading <b>{}</> assets...", count);
+	}
+
+	let mut download = Download::new();
+	let mut printer = ReplPrinter::new();
+	let mut i = 0;
+	for (key, asset_val) in assets.iter() {
+		i += 1;
+		let asset = json::ensure_type(asset_val.as_object(), json::JsonType::Object)?;
+		if !download_asset(asset, &objects_dir, &mut download, force)? {
+			continue;
+		}
+		if verbose {
+			printer.print(&cformat!("\r\t(<g>{}</g>/<g>{}</g>) <k!>{}", i, count, key));
+		}
+	}
+	printer.print("\tAssets downloaded");
+	printer.finish();
+
+	Ok(())
 }

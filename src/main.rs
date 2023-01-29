@@ -27,6 +27,9 @@ fn main() {
 			if let Err(err) = net::game_files::get_libraries(&doc, &paths, &version, true, true) {
 				eprintln!("{err}");
 			}
+			if let Err(err) = net::game_files::get_assets(&doc, &paths, &version, true, true) {
+				eprintln!("{err}");
+			}
 			let argv_slice = &argv[2..];
 			let argc_slice = argc - 2;
 			run_command(&argv[1], argc_slice, argv_slice, &paths);
