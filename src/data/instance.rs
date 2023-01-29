@@ -77,7 +77,8 @@ impl Instance {
 		let dir = paths.data.join("client").join(&self.id);
 		files::create_leading_dirs(&dir).expect("Failed to create client directory");
 		files::create_dir(&dir).expect("Failed to create client directory");
-		let _mc_dir = dir.join(".minecraft");
+		let mc_dir = dir.join(".minecraft");
+		files::create_dir(&mc_dir).expect("Failed to create minecraft directory");
 		let jar_path = dir.join("client.jar");
 
 		let (version_json, mut download) = game_files::get_version_json(&self.version, paths, verbose)?;
@@ -115,6 +116,7 @@ impl Instance {
 		files::create_leading_dirs(&dir).expect("Failed to create server directory");
 		files::create_dir(&dir).expect("Failed to create server directory");
 		let server_dir = dir.join("server");
+		files::create_dir(&server_dir).expect("Failed to create server directory");
 		let jar_path = server_dir.join("server.jar");
 
 		let (version_json, mut download) = game_files::get_version_json(&self.version, paths, verbose)?;
