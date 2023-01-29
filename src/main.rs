@@ -7,7 +7,8 @@ mod package;
 
 use std::env;
 
-use commands::{run_command, help_command_impl};
+use commands::run_command;
+use commands::help;
 use io::files::Paths;
 
 fn main() {
@@ -15,7 +16,7 @@ fn main() {
 	let argc: usize = argv.len();
 	match argc {
 		0 => debug_assert!(false),
-		1 => help_command_impl(),
+		1 => help::help(),
 		_ => {
 			let paths = Paths::new();
 			let version = lib::versions::MinecraftVersion::from("1.5");
@@ -25,10 +26,10 @@ fn main() {
 				Ok(val) => val,
 				Err(err) => panic!("{}", err)
 			};
-			if let Err(err) = net::game_files::get_libraries(&doc, &paths, &version, true, true) {
+			if let Err(err) = net::game_files::get_libraries(&doc, &paths, &version, true, false) {
 				eprintln!("{err}");
 			}
-			if let Err(err) = net::game_files::get_assets(&doc, &paths, &version, true, true) {
+			if let Err(err) = net::game_files::get_assets(&doc, &paths, &version, true, false) {
 				eprintln!("{err}");
 			}
 			// let mut reg = data::profile::InstanceRegistry::new();
