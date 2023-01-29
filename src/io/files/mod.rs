@@ -1,6 +1,6 @@
 pub mod files;
 
-use files::create_existing_dir;
+use files::create_dir;
 
 use std::path::PathBuf;
 use std::env::var;
@@ -51,13 +51,13 @@ impl Paths {
 			}
 		};
 		
-		create_existing_dir(&data).unwrap();
-		create_existing_dir(&internal).unwrap();
-		create_existing_dir(&assets).unwrap();
-		create_existing_dir(&java).unwrap();
-		create_existing_dir(&cache).unwrap();
-		create_existing_dir(&config).unwrap();
-		create_existing_dir(&run).unwrap();
+		create_dir(&data).unwrap();
+		create_dir(&internal).unwrap();
+		create_dir(&assets).unwrap();
+		create_dir(&java).unwrap();
+		create_dir(&cache).unwrap();
+		create_dir(&config).unwrap();
+		create_dir(&run).unwrap();
 		
 		Paths {
 			home,

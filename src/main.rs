@@ -17,14 +17,14 @@ fn main() {
 		1 => help_command_impl(),
 		_ => {
 			let paths = Paths::new();
-			let version = lib::versions::MinecraftVersion::from("1.19.3");
+			let version = lib::versions::MinecraftVersion::from("1.5");
 			let (doc, _) = match net::game_files::get_version_json(
 				&version, &paths, true
 			) {
 				Ok(val) => val,
 				Err(err) => panic!("{}", err)
 			};
-			if let Err(err) = net::game_files::get_libraries(&doc, &paths, &version, true) {
+			if let Err(err) = net::game_files::get_libraries(&doc, &paths, &version, true, true) {
 				eprintln!("{err}");
 			}
 			let argv_slice = &argv[2..];

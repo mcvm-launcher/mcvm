@@ -1,10 +1,7 @@
 use core::panic;
-use std::rc::Rc;
-use std::sync::Arc;
 use std::{io::Write, string::FromUtf8Error};
 
 use curl::easy::Easy;
-use curl::multi::Multi;
 pub enum DownloadMode {
 	File(std::fs::File)
 }
@@ -21,21 +18,15 @@ pub enum DownloadError {
 	StringConvert(#[from] FromUtf8Error)
 }
 
-// Holds data for writing to a string with an easy transfer
-struct StringWriter {
-	string: String,
-	data: Vec<u8>
-}
-
 pub struct Download {
 	modes: Vec<DownloadMode>,
-	string: Option<StringWriter>,
-	pub easy: Box<Easy>
+	string: Option<Vec<u8>>,
+	pub easy: Easy
 }
 
 impl Download {
 	pub fn new() -> Self {
-		let easy = Box::new(Easy::new());
+		let easy = Easy::new();
 		Download{modes: vec![], string: None, easy}
 	}
 
@@ -51,7 +42,7 @@ impl Download {
 	}
 
 	pub fn add_str(&mut self) {
-		self.string = Some(StringWriter {string: String::new(), data: Vec::new()});
+		self.string = Some(Vec::new());
 	}
 
 	pub fn reset(&mut self) {
@@ -70,7 +61,7 @@ impl Download {
 				};
 			}
 			if let Some(string) = &mut self.string {
-				string.data.extend_from_slice(data);
+				string.extend_from_slice(data);
 			}
 			Ok(data.len())
 		})?;
@@ -80,9 +71,9 @@ impl Download {
 
 	pub fn get_str(&mut self) -> Result<String, DownloadError> {
 		match &mut self.string {
-			Some(writer) => {
-				writer.string = String::from_utf8(writer.data.to_vec())?;
-				Ok(writer.string.clone())
+			Some(string) => {
+				let out = String::from_utf8(string.to_vec())?;
+				Ok(out)
 			},
 			None => panic!("String not set to write into")
 		}
