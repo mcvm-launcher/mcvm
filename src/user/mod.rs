@@ -26,6 +26,6 @@ impl User {
 }
 
 pub enum AuthState<'a> {
-	Auth(&'a mut User),
+	Authed(&'a mut User),
 	Offline
 }

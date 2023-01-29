@@ -2,8 +2,11 @@ use crate::lib::json;
 use crate::user::User;
 use crate::user::UserKind;
 use crate::user::AuthState;
+use crate::lib::versions::MinecraftVersion;
 use super::profile::InstanceRegistry;
 use super::profile::Profile;
+use super::instance::Instance;
+use super::instance::InstKind;
 
 use color_print::cprintln;
 use serde_json::json;
@@ -33,8 +36,10 @@ pub enum ConfigError {
 
 #[derive(Debug, thiserror::Error)]
 pub enum ContentError {
-	#[error("Unknown user type {} for user {}", .0, .1)]
-	UserType(String, String)
+	#[error("Unknown type {} for user {}", .0, .1)]
+	UserType(String, String),
+	#[error("Unknown type {} for instance {}", .0, .1)]
+	InstType(String, String)
 }
 
 impl<'a> ConfigData<'a> {
@@ -71,8 +76,7 @@ impl<'a> ConfigData<'a> {
 		let users = json::access_object(&doc, "users")?;
 		for (user_id, user_val) in users.iter() {
 			let user_obj = json::ensure_type(user_val.as_object(), json::JsonType::Object)?;
-			// Ok(User::new(UserKind::Microsoft, user_id, json::access_str(user_obj, "name")?))
-			let kind: UserKind = match json::access_str(user_obj, "type")? {
+			let kind = match json::access_str(user_obj, "type")? {
 				"mojang" => {
 					Ok(UserKind::Microsoft)
 				},
@@ -90,6 +94,40 @@ impl<'a> ConfigData<'a> {
 			}
 
 			config.users.insert(user_id.to_string(), user);
+		}
+
+		// Profiles
+		let profiles = json::access_object(&doc, "profiles")?;
+		for (profile_id, profile_val) in profiles.iter() {
+			let profile_obj = json::ensure_type(profile_val.as_object(), json::JsonType::Object)?;
+			let version =  MinecraftVersion::from(json::access_str(profile_obj, "version")?);
+
+			let mut profile = Profile::new(profile_id, &version);
+			
+			// Instances
+			if let Some(instances_val) = profile_obj.get("instances") {
+				let instances = json::ensure_type(instances_val.as_object(), json::JsonType::Object)?;
+				for (instance_id, instance_val) in instances.iter() {
+					let instance_obj = json::ensure_type(instance_val.as_object(), json::JsonType::Object)?;
+					let kind = match json::access_str(instance_obj, "type")? {
+						"client" => {
+							Ok(InstKind::Client)
+						},
+						"server" => {
+							Ok(InstKind::Server)
+						},
+						typ => Err(ContentError::InstType(typ.to_string(), instance_id.to_string()))
+					}?;
+
+					let instance = Instance::new(kind, &instance_id, &version);
+					profile.add_instance(&instance_id);
+					config.instances.insert(instance_id.to_string(), instance);
+				}
+			}
+
+			// TODO: Packages
+			
+			config.profiles.insert(profile_id.to_string(), Box::new(profile));
 		}
 
 		Ok(config)

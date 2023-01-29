@@ -14,7 +14,7 @@ pub enum InstKind {
 
 pub struct Instance {
 	kind: InstKind,
-	name: String,
+	pub id: String,
 	version: MinecraftVersion
 }
 
@@ -27,10 +27,10 @@ pub enum CreateError {
 }
 
 impl Instance {
-	pub fn new(kind: InstKind, name: &str, version: &MinecraftVersion) -> Self {
+	pub fn new(kind: InstKind, id: &str, version: &MinecraftVersion) -> Self {
 		Self {
 			kind,
-			name: name.to_owned(),
+			id: id.to_owned(),
 			version: version.to_owned()
 		}
 	}
@@ -40,17 +40,17 @@ impl Instance {
 		match &self.kind {
 			InstKind::Client => {
 				if force {
-					cprintln!("<s>Rebuilding client <y>{}</y>", self.name);
+					cprintln!("<s>Rebuilding client <y>{}</y>", self.id);
 				} else {
-					cprintln!("<s>Updating client <y>{}</y>", self.name);
+					cprintln!("<s>Updating client <y>{}</y>", self.id);
 				}
 				self.create_client(paths, verbose, force)?;
 			},
 			InstKind::Server => {
 				if force {
-					cprintln!("<s>Rebuilding server <b>{}</b>", self.name);
+					cprintln!("<s>Rebuilding server <b>{}</b>", self.id);
 				} else {
-					cprintln!("<s>Updating server <b>{}</b>", self.name);
+					cprintln!("<s>Updating server <b>{}</b>", self.id);
 				}
 				self.create_server(paths, verbose, force)?
 			}
@@ -59,7 +59,7 @@ impl Instance {
 	}
 
 	fn create_client(&mut self, paths: &Paths, verbose: bool, force: bool) -> Result<(), CreateError> {
-		let dir = paths.data.join("client").join(&self.name);
+		let dir = paths.data.join("client").join(&self.id);
 		files::create_leading_dirs(&dir).expect("Failed to create client directory");
 		files::create_dir(&dir).expect("Failed to create client directory");
 		Ok(())
