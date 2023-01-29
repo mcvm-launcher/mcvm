@@ -2,6 +2,7 @@ use crate::lib::json;
 use crate::lib::versions::MinecraftVersion;
 use crate::net::helper;
 use crate::io::files::files;
+use crate::io::java::{Java, JavaKind, JavaError};
 use crate::Paths;
 use crate::net::game_files;
 use crate::lib::print::ReplPrinter;
@@ -21,7 +22,8 @@ pub struct Instance {
 	pub kind: InstKind,
 	pub id: String,
 	pub version: MinecraftVersion,
-	version_json: Option<Box<json::JsonObject>>
+	version_json: Option<Box<json::JsonObject>>,
+	java: Option<Java>
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -37,7 +39,9 @@ pub enum CreateError {
 	#[error("Failed to download assets:\n\t{}", .0)]
 	Assets(#[from] game_files::AssetsError),
 	#[error("Error when accessing files:\n\t{}", .0)]
-	Io(#[from] std::io::Error)
+	Io(#[from] std::io::Error),
+	#[error("Failed to install java for this instance:\n\t{}", .0)]
+	Java(#[from] JavaError)
 }
 
 impl Instance {
@@ -46,7 +50,8 @@ impl Instance {
 			kind,
 			id: id.to_owned(),
 			version: version.to_owned(),
-			version_json: None
+			version_json: None,
+			java: None
 		}
 	}
 
@@ -88,6 +93,10 @@ impl Instance {
 
 		game_files::get_assets(&version_json, paths, &self.version, verbose, force)?;
 
+		let java = Java::new(JavaKind::Adoptium, "17");
+		let java_path = java.install(paths, verbose, force)?;
+		let jre_path = java_path.join("bin/java");
+
 		if !jar_path.exists() || force {
 			let mut printer = ReplPrinter::new();
 			if verbose {
@@ -108,6 +117,7 @@ impl Instance {
 		}
 
 		self.version_json = Some(version_json);
+		self.java = Some(java);
 		Ok(())
 	}
 

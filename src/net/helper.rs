@@ -78,6 +78,12 @@ impl Download {
 			None => panic!("String not set to write into")
 		}
 	}
+
+	pub fn follow_redirects(&mut self) -> Result<(), DownloadError> {
+		self.easy.follow_location(true)?;
+		self.easy.max_redirections(5)?;
+		Ok(())
+	}
 }
 
 // pub fn MultiDownload
