@@ -6,10 +6,10 @@ pub enum UserKind {
 
 #[derive(Debug)]
 pub struct User {
-	kind: UserKind,
-	id: String,
-	name: String,
-	uuid: Option<String>
+	pub kind: UserKind,
+	pub id: String,
+	pub name: String,
+	pub uuid: Option<String>
 }
 
 impl User {
@@ -28,7 +28,7 @@ impl User {
 }
 
 #[derive(Debug)]
-pub enum AuthState<'a> {
-	Authed(&'a mut User),
+pub enum AuthState {
+	Authed(String),
 	Offline
 }

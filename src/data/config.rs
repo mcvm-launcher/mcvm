@@ -1,12 +1,8 @@
 use crate::lib::json;
-use crate::user::User;
-use crate::user::UserKind;
-use crate::user::AuthState;
+use crate::user::{User, UserKind, AuthState};
 use crate::lib::versions::MinecraftVersion;
-use super::profile::InstanceRegistry;
-use super::profile::Profile;
-use super::instance::Instance;
-use super::instance::InstKind;
+use super::profile::{Profile, InstanceRegistry};
+use super::instance::{Instance, InstKind};
 
 use color_print::cprintln;
 use serde_json::json;
@@ -16,9 +12,9 @@ use std::path::PathBuf;
 use std::fs;
 
 #[derive(Debug)]
-pub struct ConfigData<'a> {
+pub struct ConfigData {
 	pub users: HashMap<String, User>,
-	pub auth: AuthState<'a>,
+	pub auth: AuthState,
 	pub instances: InstanceRegistry,
 	pub profiles: HashMap<String, Box<Profile>>
 }
@@ -43,7 +39,7 @@ pub enum ContentError {
 	InstType(String, String)
 }
 
-impl<'a> ConfigData<'a> {
+impl ConfigData {
 	pub fn new() -> Self {
 		Self {
 			users: HashMap::new(),
@@ -61,8 +57,7 @@ impl<'a> ConfigData<'a> {
 			let doc = json!(
 				{
 					"users": {},
-					"profiles": {},
-					"fart": true
+					"profiles": {}
 				}
 			);
 			fs::write(path, serde_json::to_string_pretty(&doc)?)?;
@@ -75,16 +70,21 @@ impl<'a> ConfigData<'a> {
 		let doc = Self::open(path)?;
 
 		// Users
+		if let Some(user_val) = doc.get("default_user") {
+			config.auth = AuthState::Authed(json::ensure_type(user_val.as_str(), json::JsonType::Str)?.to_string());
+		}
+
 		let users = json::access_object(&doc, "users")?;
 		for (user_id, user_val) in users.iter() {
 			let user_obj = json::ensure_type(user_val.as_object(), json::JsonType::Object)?;
 			let kind = match json::access_str(user_obj, "type")? {
 				"microsoft" => {
+					if let AuthState::Offline = config.auth {
+						config.auth = AuthState::Authed(user_id.to_string());
+					}
 					Ok(UserKind::Microsoft)
 				},
-				"demo" => {
-					Ok(UserKind::Demo)
-				},
+				"demo" => Ok(UserKind::Demo),
 				typ => Err(ContentError::UserType(typ.to_string(), user_id.to_string()))
 			}?;
 			let mut user = User::new(kind, user_id, json::access_str(user_obj, "name")?);
@@ -137,12 +137,12 @@ impl<'a> ConfigData<'a> {
 }
 
 #[derive(Debug)]
-pub struct Config<'a> {
-	pub data: Option<ConfigData<'a>>,
+pub struct Config {
+	pub data: Option<ConfigData>,
 	path: PathBuf
 }
 
-impl<'a> Config<'a> {
+impl Config {
 	pub fn new(path: &PathBuf) -> Self {
 		Self {
 			data: None,

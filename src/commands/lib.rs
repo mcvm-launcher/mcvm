@@ -5,12 +5,12 @@ use crate::data::instance::CreateError;
 use phf_macros::phf_map;
 
 // Data passed to commands
-pub struct CmdData<'a> {
+pub struct CmdData {
 	pub paths: Paths,
-	pub config: Config<'a>
+	pub config: Config
 }
 
-impl<'a> CmdData<'a> {
+impl CmdData {
 	pub fn new() -> Self {
 		let paths = Paths::new();
 		let config_path = paths.config.join("mcvm.json");
@@ -33,10 +33,12 @@ pub enum CmdError {
 
 pub enum Command {
 	Help,
-	Profile
+	Profile,
+	User
 }
 
 pub static COMMAND_MAP: phf::Map<&'static str, Command> = phf_map! {
 	"help" => Command::Help,
-	"profile" => Command::Profile
+	"profile" => Command::Profile,
+	"user" => Command::User
 };

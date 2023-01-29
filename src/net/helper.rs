@@ -2,6 +2,7 @@ use core::panic;
 use std::{io::Write, string::FromUtf8Error};
 
 use curl::easy::Easy;
+
 pub enum DownloadMode {
 	File(std::fs::File)
 }
@@ -12,8 +13,6 @@ pub enum DownloadError {
 	Curl(#[from] curl::Error),
 	#[error("Failed to open file: {}", .0)]
 	File(#[from] std::io::Error),
-	#[error("Failed to write data")]
-	_Write,
 	#[error("Failed to convert string to UTF-8")]
 	StringConvert(#[from] FromUtf8Error)
 }

@@ -8,9 +8,9 @@ static UPDATE_HELP: &'static str = "Update the packages and instances of a profi
 
 pub fn help() {
 	cprintln!("<i>profile:</i> Manage mcvm profiles");
-	cprintln!("<s>Usage:</s> mcvm profile <k!><<command>> [options]</k!>");
+	cprintln!("<s>Usage:</s> mcvm profile <k!><<subcommand>> [options]</k!>");
 	cprintln!();
-	cprintln!("<s>Commands:");
+	cprintln!("<s>Subcommands:");
 	cprintln!("\t <i>list:</i> {}", LIST_HELP);
 	cprintln!("\t <i>update:</i> {}", UPDATE_HELP);
 }

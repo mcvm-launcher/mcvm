@@ -1,6 +1,7 @@
 pub mod lib;
 pub mod help;
 mod profile;
+mod user;
 use lib::{Command, CmdData, COMMAND_MAP};
 
 use color_print::cprintln;
@@ -12,14 +13,16 @@ impl Command {
 	-> Result<(), CmdError> {
 		match self {
 			Self::Help => help::run(argc, argv, data),
-			Self::Profile => profile::run(argc, argv, data)
+			Self::Profile => profile::run(argc, argv, data),
+			Self::User => user::run(argc, argv, data)
 		}
 	}
 
 	pub fn help(&self) {
 		match self {
 			Command::Help => help::help(),
-			Command::Profile => profile::help()
+			Command::Profile => profile::help(),
+			Command::User => user::help()
 		}
 	}
 }
