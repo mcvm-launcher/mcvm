@@ -1,0 +1,31 @@
+pub enum UserKind {
+	Microsoft,
+	Demo
+}
+
+pub struct User {
+	kind: UserKind,
+	id: String,
+	name: String,
+	uuid: Option<String>
+}
+
+impl User {
+	pub fn new(kind: UserKind, id: &str, name: &str) -> Self {
+		Self {
+			kind,
+			id: id.to_owned(),
+			name: name.to_owned(),
+			uuid: None
+		}
+	}
+
+	pub fn set_uuid(&mut self, uuid: &str) {
+		self.uuid = Some(uuid.to_owned());
+	}
+}
+
+pub enum AuthState<'a> {
+	Auth(&'a mut User),
+	Offline
+}

@@ -4,6 +4,7 @@ mod io;
 mod net;
 mod lib;
 mod package;
+mod user;
 
 use std::env;
 
@@ -19,19 +20,24 @@ fn main() {
 		1 => help::help(),
 		_ => {
 			let paths = Paths::new();
-			let version = lib::versions::MinecraftVersion::from("1.5");
-			let (doc, _) = match net::game_files::get_version_json(
-				&version, &paths, true
-			) {
-				Ok(val) => val,
-				Err(err) => panic!("{}", err)
-			};
-			if let Err(err) = net::game_files::get_libraries(&doc, &paths, &version, true, false) {
-				eprintln!("{err}");
+			let mut config = data::config::Config::new(&paths.config.join("mcvm.json"));
+			match config.load() {
+				Ok(..) => {},
+				Err(err) => color_print::cprintln!("<r>{}", err)
 			}
-			if let Err(err) = net::game_files::get_assets(&doc, &paths, &version, true, false) {
-				eprintln!("{err}");
-			}
+			// let version = lib::versions::MinecraftVersion::from("1.5");
+			// let (doc, _) = match net::game_files::get_version_json(
+			// 	&version, &paths, true
+			// ) {
+			// 	Ok(val) => val,
+			// 	Err(err) => panic!("{}", err)
+			// };
+			// if let Err(err) = net::game_files::get_libraries(&doc, &paths, &version, true, false) {
+			// 	eprintln!("{err}");
+			// }
+			// if let Err(err) = net::game_files::get_assets(&doc, &paths, &version, true, false) {
+			// 	eprintln!("{err}");
+			// }
 			// let mut reg = data::profile::InstanceRegistry::new();
 			// let mut client = reg.insert(
 			// 	"client".to_string(),
