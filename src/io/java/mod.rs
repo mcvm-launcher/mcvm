@@ -45,7 +45,7 @@ impl Java {
 	pub fn install(&self, paths: &Paths, verbose: bool, force: bool) -> Result<PathBuf, JavaError> {
 		match self.kind {
 			JavaKind::Adoptium => {
-				let mut printer = ReplPrinter::new();
+				let mut printer = ReplPrinter::new(verbose);
 
 				let out_dir = paths.java.join("adoptium");
 				files::create_dir(&out_dir)?;
@@ -86,24 +86,18 @@ impl Java {
 				download.url(bin_url)?;
 				download.follow_redirects()?;
 				download.add_file(&tar_path)?;
-				if verbose {
-					printer.print(&cformat!("\tDownloading Adoptium Temurin JRE <b>{}</b>...", json::access_str(version, "release_name")?));
-				}
+				printer.print(&cformat!("\tDownloading Adoptium Temurin JRE <b>{}</b>...", json::access_str(version, "release_name")?));
 				download.perform()?;
 				// Close the files
 				download.reset();
 
 				// Extraction
-				if verbose {
-					printer.print(&cformat!("\tExtracting..."));
-				}
+				printer.print(&cformat!("\tExtracting..."));
 				let data = fs::read(&tar_path)?;
 				let mut decoder = Decoder::new(data.as_slice())?;
 				let mut arc = Archive::new(&mut decoder);
 				arc.unpack(out_dir)?;
-				if verbose {
-					printer.print(&cformat!("\t<g>Java installation finished."));
-				}
+				printer.print(&cformat!("\t<g>Java installation finished."));
 				Ok(extracted_bin_dir)
 			}
 		}

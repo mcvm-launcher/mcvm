@@ -2,28 +2,28 @@ use crate::Paths;
 use crate::io::files::files;
 use crate::lib::versions::{VersionNotFoundError, MinecraftVersion};
 use crate::lib::json::{self, JsonObject};
-use crate::net::helper;
-use crate::net::helper::Download;
+use crate::net::helper::{Download, DownloadError};
 use crate::lib::mojang;
 use crate::lib::print::ReplPrinter;
 
-use color_print::cprintln;
-use color_print::cformat;
+use color_print::{cprintln, cformat};
 
 use std::path::PathBuf;
 
 #[derive(Debug, thiserror::Error)]
 pub enum VersionManifestError {
 	#[error("Failed to download version manifest:\n{}", .0)]
-	Download(#[from] helper::DownloadError),
+	Download(#[from] DownloadError),
 	#[error("Failed to evaluate json file:\n{}", .0)]
-	ParseError(#[from] json::JsonError)
+	ParseError(#[from] json::JsonError),
+	#[error("File operation failed:\n\t{}", .0)]
+	Io(#[from] std::io::Error)
 }
 
 // So we can do this without a retry
 fn get_version_manifest_contents(paths: &Paths) -> Result<Box<Download>, VersionManifestError> {
 	let mut path = paths.internal.join("versions");
-	files::create_dir(&path).expect("Failed to create versions directory");
+	files::create_dir(&path)?;
 	path.push("manifest.json");
 
 	let mut download = Download::new();
@@ -45,7 +45,7 @@ pub fn get_version_manifest(paths: &Paths, verbose: bool)
 	let manifest = match json::parse_object(&manifest_contents) {
 		Ok(manifest) => manifest,
 		Err(..) => {
-			println!("Failed to parse version manifest. Redownloading...");
+			cprintln!("<r>Failed to parse version manifest. Redownloading...");
 			download = get_version_manifest_contents(paths)?;
 			manifest_contents = download.get_str()?;
 			json::parse_object(&manifest_contents)?
@@ -63,7 +63,9 @@ pub enum VersionJsonError {
 	#[error("{}", .0)]
 	VersionManifest(#[from] VersionManifestError),
 	#[error("Error when downloading version json:\n\t{}", .0)]
-	Download(#[from] helper::DownloadError)
+	Download(#[from] DownloadError),
+	#[error("File operation failed:\n\t{}", .0)]
+	Io(#[from] std::io::Error)
 }
 
 pub fn get_version_json(version: &MinecraftVersion, paths: &Paths, verbose: bool)
@@ -86,7 +88,7 @@ pub fn get_version_json(version: &MinecraftVersion, paths: &Paths, verbose: bool
 
 	let version_json_name: String = version_string.clone() + ".json";
 	let version_folder = paths.internal.join("versions").join(version_string);
-	files::create_dir(&version_folder).expect("Failed to create version folder");
+	files::create_dir(&version_folder)?;
 	download.reset();
 	download.url(version_url.expect("Version does not exist"))?;
 	download.add_file(&version_folder.join(version_json_name))?;
@@ -100,12 +102,14 @@ pub fn get_version_json(version: &MinecraftVersion, paths: &Paths, verbose: bool
 
 #[derive(Debug, thiserror::Error)]
 pub enum LibrariesError {
-	#[error("Failed to evaluate json file: {}", .0)]
+	#[error("Failed to evaluate json file:\n\t{}", .0)]
 	ParseError(#[from] json::JsonError),
 	#[error("Error when downloading library:\n\t{}", .0)]
-	Download(#[from] helper::DownloadError),
+	Download(#[from] DownloadError),
 	#[error("Failed to convert string to UTF-8")]
-	UTF
+	UTF,
+	#[error("File operation failed:\n\t{}", .0)]
+	Io(#[from] std::io::Error)
 }
 
 // Checks the rules of a library to see if it should be installed
@@ -134,7 +138,7 @@ fn download_library(
 	path: &PathBuf,
 	classpath: &mut String
 ) -> Result<(), LibrariesError> {
-	files::create_leading_dirs(path).expect("Couldn't create directories for library");
+	files::create_leading_dirs(path)?;
 	classpath.push_str(path.to_str().ok_or(LibrariesError::UTF)?);
 	classpath.push(':');
 	let url = json::access_str(lib_download, "url")?;
@@ -153,9 +157,9 @@ pub fn get_libraries(
 	force: bool
 ) -> Result<String, LibrariesError> {
 	let libraries_path = paths.internal.join("libraries");
-	files::create_dir(&libraries_path).expect("Failed to create libraries directory");
+	files::create_dir(&libraries_path)?;
 	let natives_path = paths.internal.join("versions").join(version.as_string()).join("natives");
-	files::create_dir(&natives_path).expect("Failed to create native libraries directory");
+	files::create_dir(&natives_path)?;
 	let natives_jars_path = paths.internal.join("natives");
 	// I can't figure out how to get curl multi to work with non-static write methods :( so this will be kinda slow
 	// Might have to make it unsafe >:)
@@ -163,12 +167,11 @@ pub fn get_libraries(
 	let mut native_paths: Vec<PathBuf> = Vec::new();
 	let mut classpath = String::new();
 	let mut download = Download::new();
-	let mut printer = ReplPrinter::new();
+	let mut printer = ReplPrinter::new(verbose);
+	printer.indent(1);
 
 	let libraries = json::access_array(version_json, "libraries")?;
-	if verbose {
-		cprintln!("\tDownloading <b>{}</> libraries...", libraries.len());
-	}
+	printer.print(&cformat!("Downloading <b>{}</> libraries...", libraries.len()));
 
 	for lib_val in libraries.iter() {
 		let lib = json::ensure_type(lib_val.as_object(), json::JsonType::Object)?;
@@ -188,9 +191,7 @@ pub fn get_libraries(
 			if !force && path.exists() {
 				continue;
 			}
-			if verbose {
-				printer.print(&cformat!("\r\tDownloading library <b!>{}</>...", name));
-			}
+			printer.print(&cformat!("Downloading library <b!>{}</>...", name));
 			download_library(&mut download, classifier, &path, &mut classpath)?;
 			native_paths.push(path);
 			continue;
@@ -201,14 +202,12 @@ pub fn get_libraries(
 			if !force && path.exists() {
 				continue;
 			}
-			if verbose {
-				printer.print(&cformat!("\r\tDownloading library <b>{}</>...", name));
-			}
+			printer.print(&cformat!("Downloading library <b>{}</>...", name));
 			download_library(&mut download, artifact, &path, &mut classpath)?;
 			continue;
 		}
 	}
-	printer.print(&cformat!("\t<g>Libraries downloaded."));
+	printer.print(&cformat!("<g>Libraries downloaded."));
 	printer.finish();
 
 	Ok(classpath)
@@ -219,7 +218,9 @@ pub enum AssetsError {
 	#[error("Failed to evaluate json file: {}", .0)]
 	ParseError(#[from] json::JsonError),
 	#[error("Error when downloading asset:\n\t{}", .0)]
-	Download(#[from] helper::DownloadError)
+	Download(#[from] DownloadError),
+	#[error("File operation failed:\n\t{}", .0)]
+	Io(#[from] std::io::Error)
 }
 
 fn download_asset_index(url: &str, path: &PathBuf) -> Result<Box<json::JsonObject>, AssetsError> {
@@ -248,7 +249,7 @@ fn download_asset(
 	if !force && path.exists() {
 		return Ok(false);
 	}
-	files::create_leading_dirs(&path).expect("Failed to create leading directories for asset");
+	files::create_leading_dirs(&path)?;
 	
 	download.reset();
 	download.url(&url)?;
@@ -267,7 +268,7 @@ pub fn get_assets(
 ) -> Result<(), AssetsError> {
 	let version_string = version.as_string().to_owned();
 	let indexes_dir = paths.assets.join("indexes");
-	files::create_dir(&indexes_dir).expect("Failed to create indexes directory");
+	files::create_dir(&indexes_dir)?;
 	
 	let index_path = indexes_dir.join(version_string + ".json");
 	let index_url = json::access_str(
@@ -275,16 +276,16 @@ pub fn get_assets(
 	)?;
 	
 	let objects_dir = paths.assets.join("objects");
-	files::create_dir(&objects_dir).expect("Failed to create asset objects directory");
+	files::create_dir(&objects_dir)?;
 	let virtual_dir = paths.assets.join("virtual");
 	if !force && virtual_dir.exists() && !virtual_dir.is_symlink() {
-		files::dir_symlink(&virtual_dir, &objects_dir).expect("Failed to create symlink for old assets");
+		files::dir_symlink(&virtual_dir, &objects_dir)?;
 	}
 
 	let index = match download_asset_index(index_url, &index_path) {
 		Ok(val) => val,
 		Err(err) => {
-			eprintln!("Failed to obtain asset index:\n\t{}\nRedownloading...", err);
+			cprintln!("<r>Failed to obtain asset index:\n\t{}\nRedownloading...", err);
 			download_asset_index(index_url, &index_path)?
 		}
 	};
@@ -296,7 +297,8 @@ pub fn get_assets(
 	}
 
 	let mut download = Download::new();
-	let mut printer = ReplPrinter::new();
+	let mut printer = ReplPrinter::new(verbose);
+	printer.indent(1);
 	let mut i = 0;
 	for (key, asset_val) in assets.iter() {
 		i += 1;
@@ -304,11 +306,9 @@ pub fn get_assets(
 		if !download_asset(asset, &objects_dir, &mut download, force)? {
 			continue;
 		}
-		if verbose {
-			printer.print(&cformat!("\r\t(<b>{}</b>/<b>{}</b>) <k!>{}", i, count, key));
-		}
+		printer.print(&cformat!("(<b>{}</b><k!>/</k!><b>{}</b>) <k!>{}", i, count, key));
 	}
-	printer.print(&cformat!("\t<g>Assets downloaded."));
+	printer.print(&cformat!("<g>Assets downloaded."));
 	printer.finish();
 
 	Ok(())

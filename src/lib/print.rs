@@ -1,20 +1,27 @@
-use std::io::Stdout;
-use std::io::Write;
+use std::io::{Stdout, Write};
 
 // Used to print text that is replaced
 pub struct ReplPrinter {
 	stdout: Stdout,
 	chars_written: usize,
-	finished: bool
+	finished: bool,
+	verbose: bool,
+	indent: usize
 }
 
 impl ReplPrinter {
-	pub fn new() -> Self {
+	pub fn new(verbose: bool) -> Self {
 		ReplPrinter {
 			stdout: std::io::stdout(),
 			chars_written: 0,
-			finished: false
+			finished: false,
+			verbose,
+			indent: 0
 		}
+	}
+
+	pub fn indent(&mut self, indent: usize) {
+		self.indent = indent;
 	}
 
 	pub fn clearline(&mut self) {
@@ -31,8 +38,12 @@ impl ReplPrinter {
 	}
 
 	pub fn print(&mut self, text: &str) {
+		if !self.verbose {
+			return;
+		}
 		self.clearline();
-		print!("\r{text}");
+		let indent_str = std::iter::repeat("\t").take(self.indent).collect::<String>();
+		print!("\r{indent_str}{text}");
 		self.chars_written = text.len();
 		self.stdout.flush().unwrap();
 	}
@@ -41,8 +52,10 @@ impl ReplPrinter {
 		if self.finished {
 			return;
 		}
-		self.chars_written = 0;
-		println!();
+		if self.chars_written != 0 {
+			println!();
+			self.chars_written = 0;
+		}
 		self.finished = true;
 	}
 }

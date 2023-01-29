@@ -80,10 +80,10 @@ impl Instance {
 
 	fn create_client(&mut self, paths: &Paths, verbose: bool, force: bool) -> Result<(), CreateError> {
 		let dir = paths.data.join("client").join(&self.id);
-		files::create_leading_dirs(&dir).expect("Failed to create client directory");
-		files::create_dir(&dir).expect("Failed to create client directory");
+		files::create_leading_dirs(&dir)?;
+		files::create_dir(&dir)?;
 		let mc_dir = dir.join(".minecraft");
-		files::create_dir(&mc_dir).expect("Failed to create minecraft directory");
+		files::create_dir(&mc_dir)?;
 		let jar_path = dir.join("client.jar");
 
 		let (version_json, mut download) = game_files::get_version_json(&self.version, paths, verbose)?;
@@ -98,10 +98,9 @@ impl Instance {
 		let jre_path = java_path.join("bin/java");
 
 		if !jar_path.exists() || force {
-			let mut printer = ReplPrinter::new();
-			if verbose {
-				printer.print("\tDownloading client jar...");
-			}
+			let mut printer = ReplPrinter::new(verbose);
+			printer.indent(1);
+			printer.print("Downloading client jar...");
 			download.reset();
 			download.add_file(&jar_path)?;
 			let client_download = json::access_object(
@@ -110,10 +109,8 @@ impl Instance {
 			)?;
 			download.url(json::access_str(client_download, "url")?)?;
 			download.perform()?;
-			if verbose {
-				printer.print(cformat!("\t<g>Client jar downloaded.").as_str());
-				printer.finish();
-			}
+			printer.print(cformat!("<g>Client jar downloaded.").as_str());
+			printer.finish();
 		}
 
 		self.version_json = Some(version_json);
@@ -123,19 +120,18 @@ impl Instance {
 
 	fn create_server(&mut self, paths: &Paths, verbose: bool, force: bool) -> Result<(), CreateError> {
 		let dir = paths.data.join("server").join(&self.id);
-		files::create_leading_dirs(&dir).expect("Failed to create server directory");
-		files::create_dir(&dir).expect("Failed to create server directory");
+		files::create_leading_dirs(&dir)?;
+		files::create_dir(&dir)?;
 		let server_dir = dir.join("server");
-		files::create_dir(&server_dir).expect("Failed to create server directory");
+		files::create_dir(&server_dir)?;
 		let jar_path = server_dir.join("server.jar");
 
 		let (version_json, mut download) = game_files::get_version_json(&self.version, paths, verbose)?;
 
 		if !jar_path.exists() || force {
-			let mut printer = ReplPrinter::new();
-			if verbose {
-				printer.print("\tDownloading server jar...");
-			}
+			let mut printer = ReplPrinter::new(verbose);
+			printer.indent(1);
+			printer.print("Downloading server jar...");
 			download.reset();
 			download.add_file(&jar_path)?;
 			let client_download = json::access_object(
@@ -144,10 +140,8 @@ impl Instance {
 			)?;
 			download.url(json::access_str(client_download, "url")?)?;
 			download.perform()?;
-			if verbose {
-				printer.print(cformat!("\t<g>Server jar downloaded.").as_str());
-				printer.finish();
-			}
+			printer.print(cformat!("<g>Server jar downloaded.").as_str());
+			printer.finish();
 		}
 
 		fs::write(server_dir.join("eula.txt"), "eula = true\n")?;
