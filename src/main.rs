@@ -16,7 +16,7 @@ fn main() -> Result<(), CmdError> {
 	let argc: usize = argv.len();
 	match argc {
 		0 => debug_assert!(false),
-		1 => help::help(),
+		1 => help::main_help(),
 		_ => {
 			let mut data = commands::lib::CmdData::new();
 			// let version = lib::versions::MinecraftVersion::from("1.5");

@@ -1,8 +1,10 @@
+
 use serde_json::Value;
 
 pub type JsonObject = serde_json::Map<String, Value>;
 
 #[derive(Debug)]
+#[allow(dead_code)]
 pub enum JsonType {
 	Int,
 	Float,
@@ -36,7 +38,7 @@ pub enum JsonError {
 	#[error("Value was expected to be of type {}", .0)]
 	Type(JsonType),
 	#[error("Array index [{}] out of range [{}]", .0, .1)]
-	Index(usize, usize)
+	_Index(usize, usize)
 }
 
 pub fn parse_json(contents: &str) -> Result<Box<Value>, JsonError> {
