@@ -2,7 +2,7 @@ mod commands;
 mod data;
 mod io;
 mod net;
-mod lib;
+mod util;
 mod package;
 mod user;
 

@@ -1,14 +1,14 @@
 use crate::Paths;
-use crate::io::files::files;
-use crate::lib::versions::{VersionNotFoundError, MinecraftVersion};
-use crate::lib::json::{self, JsonObject};
+use crate::io::files::lib;
+use crate::util::versions::{VersionNotFoundError, MinecraftVersion};
+use crate::util::json::{self, JsonObject};
 use crate::net::helper::{Download, DownloadError};
-use crate::lib::mojang;
-use crate::lib::print::ReplPrinter;
+use crate::util::mojang;
+use crate::util::print::ReplPrinter;
 
 use color_print::{cprintln, cformat};
 
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 #[derive(Debug, thiserror::Error)]
 pub enum VersionManifestError {
@@ -23,7 +23,7 @@ pub enum VersionManifestError {
 // So we can do this without a retry
 fn get_version_manifest_contents(paths: &Paths) -> Result<Box<Download>, VersionManifestError> {
 	let mut path = paths.internal.join("versions");
-	files::create_dir(&path)?;
+	lib::create_dir(&path)?;
 	path.push("manifest.json");
 
 	let mut download = Download::new();
@@ -88,7 +88,7 @@ pub fn get_version_json(version: &MinecraftVersion, paths: &Paths, verbose: bool
 
 	let version_json_name: String = version_string.clone() + ".json";
 	let version_folder = paths.internal.join("versions").join(version_string);
-	files::create_dir(&version_folder)?;
+	lib::create_dir(&version_folder)?;
 	download.reset();
 	download.url(version_url.expect("Version does not exist"))?;
 	download.add_file(&version_folder.join(version_json_name))?;
@@ -107,7 +107,7 @@ pub enum LibrariesError {
 	#[error("Error when downloading library:\n\t{}", .0)]
 	Download(#[from] DownloadError),
 	#[error("Failed to convert string to UTF-8")]
-	UTF,
+	Utf,
 	#[error("File operation failed:\n\t{}", .0)]
 	Io(#[from] std::io::Error)
 }
@@ -135,11 +135,11 @@ fn is_library_allowed(lib: &JsonObject) -> Result<bool, LibrariesError> {
 fn download_library(
 	download: &mut Download,
 	lib_download: &json::JsonObject,
-	path: &PathBuf,
+	path: &Path,
 	classpath: &mut String
 ) -> Result<(), LibrariesError> {
-	files::create_leading_dirs(path)?;
-	classpath.push_str(path.to_str().ok_or(LibrariesError::UTF)?);
+	lib::create_leading_dirs(path)?;
+	classpath.push_str(path.to_str().ok_or(LibrariesError::Utf)?);
 	classpath.push(':');
 	let url = json::access_str(lib_download, "url")?;
 	download.reset();
@@ -157,9 +157,9 @@ pub fn get_libraries(
 	force: bool
 ) -> Result<String, LibrariesError> {
 	let libraries_path = paths.internal.join("libraries");
-	files::create_dir(&libraries_path)?;
+	lib::create_dir(&libraries_path)?;
 	let natives_path = paths.internal.join("versions").join(version.as_string()).join("natives");
-	files::create_dir(&natives_path)?;
+	lib::create_dir(&natives_path)?;
 	let natives_jars_path = paths.internal.join("natives");
 	// I can't figure out how to get curl multi to work with non-static write methods :( so this will be kinda slow
 	// Might have to make it unsafe >:)
@@ -223,10 +223,10 @@ pub enum AssetsError {
 	Io(#[from] std::io::Error)
 }
 
-fn download_asset_index(url: &str, path: &PathBuf) -> Result<Box<json::JsonObject>, AssetsError> {
+fn download_asset_index(url: &str, path: &Path) -> Result<Box<json::JsonObject>, AssetsError> {
 	let mut download = Download::new();
 	download.url(url)?;
-	download.add_file(&path)?;
+	download.add_file(path)?;
 	download.add_str();
 	download.perform()?;
 	
@@ -237,7 +237,7 @@ fn download_asset_index(url: &str, path: &PathBuf) -> Result<Box<json::JsonObjec
 // Download a single asset from the index. Returns false if the loop should continue
 fn download_asset(
 	asset: &json::JsonObject,
-	objects_dir: &PathBuf,
+	objects_dir: &Path,
 	download: &mut Download,
 	force: bool
 ) -> Result<bool, AssetsError> {
@@ -249,7 +249,7 @@ fn download_asset(
 	if !force && path.exists() {
 		return Ok(false);
 	}
-	files::create_leading_dirs(&path)?;
+	lib::create_leading_dirs(&path)?;
 	
 	download.reset();
 	download.url(&url)?;
@@ -268,7 +268,7 @@ pub fn get_assets(
 ) -> Result<(), AssetsError> {
 	let version_string = version.as_string().to_owned();
 	let indexes_dir = paths.assets.join("indexes");
-	files::create_dir(&indexes_dir)?;
+	lib::create_dir(&indexes_dir)?;
 	
 	let index_path = indexes_dir.join(version_string + ".json");
 	let index_url = json::access_str(
@@ -276,10 +276,10 @@ pub fn get_assets(
 	)?;
 	
 	let objects_dir = paths.assets.join("objects");
-	files::create_dir(&objects_dir)?;
+	lib::create_dir(&objects_dir)?;
 	let virtual_dir = paths.assets.join("virtual");
 	if !force && virtual_dir.exists() && !virtual_dir.is_symlink() {
-		files::dir_symlink(&virtual_dir, &objects_dir)?;
+		lib::dir_symlink(&virtual_dir, &objects_dir)?;
 	}
 
 	let index = match download_asset_index(index_url, &index_path) {
@@ -299,9 +299,7 @@ pub fn get_assets(
 	let mut download = Download::new();
 	let mut printer = ReplPrinter::new(verbose);
 	printer.indent(1);
-	let mut i = 0;
-	for (key, asset_val) in assets.iter() {
-		i += 1;
+	for (i, (key, asset_val)) in assets.iter().enumerate() {
 		let asset = json::ensure_type(asset_val.as_object(), json::JsonType::Object)?;
 		if !download_asset(asset, &objects_dir, &mut download, force)? {
 			continue;

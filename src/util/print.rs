@@ -42,7 +42,7 @@ impl ReplPrinter {
 			return;
 		}
 		self.clearline();
-		let indent_str = std::iter::repeat("\t").take(self.indent).collect::<String>();
+		let indent_str = "\t".repeat(self.indent);
 		print!("\r{indent_str}{text}");
 		self.chars_written = text.len();
 		self.stdout.flush().unwrap();

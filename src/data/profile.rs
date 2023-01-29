@@ -1,7 +1,7 @@
 use crate::data::instance::Instance;
 use crate::data::instance::CreateError;
 use crate::package::Package;
-use crate::lib::versions::MinecraftVersion;
+use crate::util::versions::MinecraftVersion;
 use crate::Paths;
 
 pub type InstanceRegistry = std::collections::HashMap<String, Instance>;

@@ -1,11 +1,11 @@
-use crate::lib::json;
-use crate::lib::versions::MinecraftVersion;
+use crate::util::json;
+use crate::util::versions::MinecraftVersion;
 use crate::net::helper;
-use crate::io::files::files;
+use crate::io::files::lib;
 use crate::io::java::{Java, JavaKind, JavaError};
 use crate::Paths;
 use crate::net::game_files;
-use crate::lib::print::ReplPrinter;
+use crate::util::print::ReplPrinter;
 
 use color_print::{cprintln, cformat};
 
@@ -80,10 +80,10 @@ impl Instance {
 
 	fn create_client(&mut self, paths: &Paths, verbose: bool, force: bool) -> Result<(), CreateError> {
 		let dir = paths.data.join("client").join(&self.id);
-		files::create_leading_dirs(&dir)?;
-		files::create_dir(&dir)?;
+		lib::create_leading_dirs(&dir)?;
+		lib::create_dir(&dir)?;
 		let mc_dir = dir.join(".minecraft");
-		files::create_dir(&mc_dir)?;
+		lib::create_dir(&mc_dir)?;
 		let jar_path = dir.join("client.jar");
 
 		let (version_json, mut download) = game_files::get_version_json(&self.version, paths, verbose)?;
@@ -120,10 +120,10 @@ impl Instance {
 
 	fn create_server(&mut self, paths: &Paths, verbose: bool, force: bool) -> Result<(), CreateError> {
 		let dir = paths.data.join("server").join(&self.id);
-		files::create_leading_dirs(&dir)?;
-		files::create_dir(&dir)?;
+		lib::create_leading_dirs(&dir)?;
+		lib::create_dir(&dir)?;
 		let server_dir = dir.join("server");
-		files::create_dir(&server_dir)?;
+		lib::create_dir(&server_dir)?;
 		let jar_path = server_dir.join("server.jar");
 
 		let (version_json, mut download) = game_files::get_version_json(&self.version, paths, verbose)?;

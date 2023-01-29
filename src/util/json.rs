@@ -45,7 +45,7 @@ pub fn parse_json(contents: &str) -> Result<Box<Value>, JsonError> {
 	Ok(Box::new(doc))
 }
 
-pub fn parse_object<'a>(contents: &str) -> Result<Box<JsonObject>, JsonError> {
+pub fn parse_object(contents: &str) -> Result<Box<JsonObject>, JsonError> {
 	let doc: Value = serde_json::from_str(contents)?;
 	let obj = ensure_type(doc.as_object(), JsonType::Object)?;
 	Ok(Box::new(obj.clone()))

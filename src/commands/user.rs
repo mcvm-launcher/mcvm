@@ -3,8 +3,8 @@ use crate::user::{UserKind, AuthState};
 
 use color_print::{cprintln, cprint};
 
-static LIST_HELP: &'static str = "List all users";
-static AUTH_HELP: &'static str = "Show your current user";
+static LIST_HELP: &str = "List all users";
+static AUTH_HELP: &str = "Show your current user";
 
 pub fn help() {
 	cprintln!("<i>user:</i> Manage mcvm users");

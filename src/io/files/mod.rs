@@ -1,6 +1,6 @@
-pub mod files;
+pub mod lib;
 
-use files::create_dir;
+use lib::create_dir;
 
 use std::path::PathBuf;
 use std::env::var;

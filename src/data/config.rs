@@ -1,6 +1,6 @@
-use crate::lib::json;
+use crate::util::json;
 use crate::user::{User, UserKind, AuthState};
-use crate::lib::versions::MinecraftVersion;
+use crate::util::versions::MinecraftVersion;
 use super::profile::{Profile, InstanceRegistry};
 use super::instance::{Instance, InstKind};
 
@@ -121,8 +121,8 @@ impl ConfigData {
 						typ => Err(ContentError::InstType(typ.to_string(), instance_id.to_string()))
 					}?;
 
-					let instance = Instance::new(kind, &instance_id, &version);
-					profile.add_instance(&instance_id);
+					let instance = Instance::new(kind, instance_id, &version);
+					profile.add_instance(instance_id);
 					config.instances.insert(instance_id.to_string(), instance);
 				}
 			}
@@ -151,7 +151,7 @@ impl Config {
 	}
 
 	pub fn load(&mut self) -> Result<(), ConfigError> {
-		if let None = &mut self.data {
+		if self.data.is_none() {
 			self.data = match ConfigData::load(&self.path) {
 				Ok(data) => Some(data),
 				Err(err) => {

@@ -1,8 +1,8 @@
-use crate::io::files::{Paths, files};
-use crate::lib::mojang::{ARCH_STRING, OS_STRING};
+use crate::io::files::{Paths, lib};
+use crate::util::mojang::{ARCH_STRING, OS_STRING};
 use crate::net::helper::{Download, DownloadError};
-use crate::lib::json;
-use crate::lib::print::ReplPrinter;
+use crate::util::json;
+use crate::util::print::ReplPrinter;
 
 use color_print::cformat;
 use libflate::gzip::Decoder;
@@ -48,7 +48,7 @@ impl Java {
 				let mut printer = ReplPrinter::new(verbose);
 
 				let out_dir = paths.java.join("adoptium");
-				files::create_dir(&out_dir)?;
+				lib::create_dir(&out_dir)?;
 				let url = format!(
 					"https://api.adoptium.net/v3/assets/latest/{}/hotspot?image_type=jre&vendor=eclipse&architecture={}&os={}",
 					self.major_version,
@@ -80,7 +80,7 @@ impl Java {
 				}
 				
 				let tar_name = "adoptium".to_owned() + &self.major_version + ".tar.gz";
-				let tar_path = out_dir.join(&tar_name);
+				let tar_path = out_dir.join(tar_name);
 
 				download.reset();
 				download.url(bin_url)?;

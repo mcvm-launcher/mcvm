@@ -3,8 +3,8 @@ use crate::data::instance::InstKind;
 
 use color_print::cprintln;
 
-static LIST_HELP: &'static str = "List all profiles and their instances";
-static UPDATE_HELP: &'static str = "Update the packages and instances of a profile";
+static LIST_HELP: &str = "List all profiles and their instances";
+static UPDATE_HELP: &str = "Update the packages and instances of a profile";
 
 pub fn help() {
 	cprintln!("<i>profile:</i> Manage mcvm profiles");
@@ -40,7 +40,7 @@ fn update(data: &mut CmdData, id: &String) -> Result<(), CmdError> {
 		if let Some(profile) = config.profiles.get_mut(id) {
 			profile.create_instances(&mut config.instances, &data.paths, true, false)?;
 		} else {
-			return Err(CmdError::Custom(format!("Unknown profile {}", id)));
+			return Err(CmdError::Custom(format!("Unknown profile {id}")));
 		}
 	}
 	Ok(())
