@@ -8,10 +8,8 @@ use crate::lib::mojang;
 use crate::lib::print::ReplPrinter;
 
 use color_print::cprintln;
-use color_print::cprint;
 use color_print::cformat;
 
-use std::io::Write;
 use std::path::PathBuf;
 
 #[derive(Debug, thiserror::Error)]
@@ -161,17 +159,18 @@ pub fn get_libraries(
 	let natives_jars_path = paths.internal.join("natives");
 	// I can't figure out how to get curl multi to work with non-static write methods :( so this will be kinda slow
 	// Might have to make it unsafe >:)
-
-	if verbose {
-		println!("\tDownloading libraries...");
-	}
-
+	
 	let mut native_paths: Vec<PathBuf> = Vec::new();
 	let mut classpath = String::new();
 	let mut download = Download::new();
 	let mut printer = ReplPrinter::new();
 
-	for lib_val in json::access_array(version_json, "libraries")?.iter() {
+	let libraries = json::access_array(version_json, "libraries")?;
+	if verbose {
+		cprintln!("\tDownloading <b>{}</> libraries...", libraries.len());
+	}
+
+	for lib_val in libraries.iter() {
 		let lib = json::ensure_type(lib_val.as_object(), json::JsonType::Object)?;
 		if !is_library_allowed(lib)? {
 			continue;
@@ -209,7 +208,7 @@ pub fn get_libraries(
 			continue;
 		}
 	}
-	printer.print("Libraries downloaded");
+	printer.print(&cformat!("\t<g>Libraries downloaded."));
 	printer.finish();
 
 	Ok(classpath)
@@ -306,10 +305,10 @@ pub fn get_assets(
 			continue;
 		}
 		if verbose {
-			printer.print(&cformat!("\r\t(<g>{}</g>/<g>{}</g>) <k!>{}", i, count, key));
+			printer.print(&cformat!("\r\t(<b>{}</b>/<b>{}</b>) <k!>{}", i, count, key));
 		}
 	}
-	printer.print("\tAssets downloaded");
+	printer.print(&cformat!("\t<g>Assets downloaded."));
 	printer.finish();
 
 	Ok(())
