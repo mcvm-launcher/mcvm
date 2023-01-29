@@ -5,6 +5,7 @@ use files::create_dir;
 use std::path::PathBuf;
 use std::env::var;
 
+#[derive(Debug)]
 pub struct Paths {
 	pub home: PathBuf,
 	pub data: PathBuf,
@@ -35,12 +36,12 @@ impl Paths {
 		
 		let cache: PathBuf = match var("XDG_CACHE_HOME") {
 			Ok(path) => PathBuf::from(&path).join("mcvm"),
-			Err(_) => home.join(".config/mcvm")
+			Err(_) => home.join(".cache/mcvm")
 		};
 		
 		let config: PathBuf = match var("XDG_CACHE_HOME") {
 			Ok(path) => PathBuf::from(&path).join("mcvm"),
-			Err(_) => home.join(".cache/mcvm")
+			Err(_) => home.join(".config/mcvm")
 		};
 		
 		let run: PathBuf = match var("XDG_CACHE_HOME") {

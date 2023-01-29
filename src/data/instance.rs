@@ -1,19 +1,20 @@
 use crate::lib::json;
 use crate::lib::versions::MinecraftVersion;
 use crate::net::helper;
-use crate::net::helper::Download;
 use crate::io::files::files;
 use crate::Paths;
 
 use color_print::cprintln;
 
+#[derive(Debug)]
 pub enum InstKind {
 	Client,
 	Server
 }
 
+#[derive(Debug)]
 pub struct Instance {
-	kind: InstKind,
+	pub kind: InstKind,
 	pub id: String,
 	version: MinecraftVersion
 }
@@ -40,17 +41,17 @@ impl Instance {
 		match &self.kind {
 			InstKind::Client => {
 				if force {
-					cprintln!("<s>Rebuilding client <y>{}</y>", self.id);
+					cprintln!("<s>Rebuilding client <y!>{}</y!>", self.id);
 				} else {
-					cprintln!("<s>Updating client <y>{}</y>", self.id);
+					cprintln!("<s>Updating client <y!>{}</y!>", self.id);
 				}
 				self.create_client(paths, verbose, force)?;
 			},
 			InstKind::Server => {
 				if force {
-					cprintln!("<s>Rebuilding server <b>{}</b>", self.id);
+					cprintln!("<s>Rebuilding server <c!>{}</c!>", self.id);
 				} else {
-					cprintln!("<s>Updating server <b>{}</b>", self.id);
+					cprintln!("<s>Updating server <c!>{}</c!>", self.id);
 				}
 				self.create_server(paths, verbose, force)?
 			}

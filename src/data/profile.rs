@@ -6,11 +6,12 @@ use crate::Paths;
 
 pub type InstanceRegistry = std::collections::HashMap<String, Instance>;
 
+#[derive(Debug)]
 pub struct Profile {
-	name: String,
-	version: MinecraftVersion,
-	instances: Vec<String>,
-	packages: Vec<String>
+	pub name: String,
+	pub version: MinecraftVersion,
+	pub instances: Vec<String>,
+	pub packages: Vec<String>
 }
 
 impl Profile {

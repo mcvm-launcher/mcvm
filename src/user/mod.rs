@@ -1,8 +1,10 @@
+#[derive(Debug)]
 pub enum UserKind {
 	Microsoft,
 	Demo
 }
 
+#[derive(Debug)]
 pub struct User {
 	kind: UserKind,
 	id: String,
@@ -25,6 +27,7 @@ impl User {
 	}
 }
 
+#[derive(Debug)]
 pub enum AuthState<'a> {
 	Authed(&'a mut User),
 	Offline

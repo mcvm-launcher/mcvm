@@ -15,11 +15,12 @@ use std::collections::HashMap;
 use std::path::PathBuf;
 use std::fs;
 
+#[derive(Debug)]
 pub struct ConfigData<'a> {
-	users: HashMap<String, User>,
-	auth: AuthState<'a>,
-	instances: InstanceRegistry,
-	profiles: HashMap<String, Box<Profile>>
+	pub users: HashMap<String, User>,
+	pub auth: AuthState<'a>,
+	pub instances: InstanceRegistry,
+	pub profiles: HashMap<String, Box<Profile>>
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -60,7 +61,8 @@ impl<'a> ConfigData<'a> {
 			let doc = json!(
 				{
 					"users": {},
-					"profiles": {}
+					"profiles": {},
+					"fart": true
 				}
 			);
 			fs::write(path, serde_json::to_string_pretty(&doc)?)?;
@@ -77,7 +79,7 @@ impl<'a> ConfigData<'a> {
 		for (user_id, user_val) in users.iter() {
 			let user_obj = json::ensure_type(user_val.as_object(), json::JsonType::Object)?;
 			let kind = match json::access_str(user_obj, "type")? {
-				"mojang" => {
+				"microsoft" => {
 					Ok(UserKind::Microsoft)
 				},
 				"demo" => {
@@ -134,8 +136,9 @@ impl<'a> ConfigData<'a> {
 	}
 }
 
+#[derive(Debug)]
 pub struct Config<'a> {
-	data: Option<ConfigData<'a>>,
+	pub data: Option<ConfigData<'a>>,
 	path: PathBuf
 }
 
