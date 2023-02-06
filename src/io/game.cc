@@ -28,7 +28,7 @@ namespace mcvm {
 	}
 
 	bool GameRunner::repl_arg_token(std::string& contents, bool is_jvm, const CachedPaths& paths)	{
-			const MCVersionString version_string = mc_version_reverse_map.at(version);
+		const MCVersionString version_string = mc_version_reverse_map.at(version);
 		if (is_jvm) {
 			fandr(contents, "${launcher_name}", "mcvm");
 			fandr(contents, "${launcher_version}", "alpha");

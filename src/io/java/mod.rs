@@ -31,18 +31,20 @@ pub enum JavaError {
 #[derive(Debug)]
 pub struct Java {
 	kind: JavaKind,
-	major_version: String
+	major_version: String,
+	pub path: Option<PathBuf>
 }
 
 impl Java {
 	pub fn new(kind: JavaKind, version: &str) -> Self {
 		Self {
 			kind,
-			major_version: version.to_owned()
+			major_version: version.to_owned(),
+			path: None
 		}
 	}
 
-	pub fn install(&self, paths: &Paths, verbose: bool, force: bool) -> Result<PathBuf, JavaError> {
+	pub fn install(&mut self, paths: &Paths, verbose: bool, force: bool) -> Result<(), JavaError> {
 		match self.kind {
 			JavaKind::Adoptium => {
 				let mut printer = ReplPrinter::new(verbose);
@@ -63,7 +65,10 @@ impl Java {
 				
 				let manifest_val = json::parse_json(&download.get_str()?)?;
 				let manifest = json::ensure_type(manifest_val.as_array(), json::JsonType::Array)?;
-				let version = json::ensure_type(manifest.get(0).ok_or(JavaError::InstallationNotFound)?.as_object(), json::JsonType::Object)?;
+				let version = json::ensure_type(
+					manifest.get(0).ok_or(JavaError::InstallationNotFound)?.as_object(),
+					json::JsonType::Object
+				)?;
 				let bin_url = json::access_str(
 					json::access_object(
 						json::access_object(version, "binary")?,
@@ -75,8 +80,9 @@ impl Java {
 				extracted_bin_name.push_str("-jre");
 				let extracted_bin_dir = out_dir.join(&extracted_bin_name);
 
+				self.path = Some(extracted_bin_dir.clone());
 				if !force && extracted_bin_dir.exists() {
-					return Ok(extracted_bin_dir);
+					return Ok(());
 				}
 				
 				let tar_name = "adoptium".to_owned() + &self.major_version + ".tar.gz";
@@ -98,7 +104,7 @@ impl Java {
 				let mut arc = Archive::new(&mut decoder);
 				arc.unpack(out_dir)?;
 				printer.print(&cformat!("\t<g>Java installation finished."));
-				Ok(extracted_bin_dir)
+				Ok(())
 			}
 		}
 	}

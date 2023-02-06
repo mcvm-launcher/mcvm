@@ -1,6 +1,6 @@
 use crate::io::files::Paths;
 use crate::data::config::{Config, ConfigError};
-use crate::data::instance::CreateError;
+use crate::data::instance::{CreateError, LaunchError};
 
 use phf_macros::phf_map;
 
@@ -27,6 +27,8 @@ pub enum CmdError {
 	Config(#[from] ConfigError),
 	#[error("Failed to create profile:\n\t{}", .0)]
 	ProfileCreate(#[from] CreateError),
+	#[error("Failed to launch instance:\n\t{}", .0)]
+	Launch(#[from] LaunchError),
 	#[error("{}", .0)]
 	Custom(String)
 }
@@ -34,11 +36,13 @@ pub enum CmdError {
 pub enum Command {
 	Help,
 	Profile,
-	User
+	User,
+	Launch
 }
 
 pub static COMMAND_MAP: phf::Map<&'static str, Command> = phf_map! {
 	"help" => Command::Help,
 	"profile" => Command::Profile,
-	"user" => Command::User
+	"user" => Command::User,
+	"launch" => Command::Launch
 };

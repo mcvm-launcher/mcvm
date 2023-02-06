@@ -1,5 +1,5 @@
 use crate::util::json;
-use crate::user::{User, UserKind, AuthState};
+use crate::user::{User, UserKind, AuthState, Auth};
 use crate::util::versions::MinecraftVersion;
 use super::profile::{Profile, InstanceRegistry};
 use super::instance::{Instance, InstKind};
@@ -13,8 +13,7 @@ use std::fs;
 
 #[derive(Debug)]
 pub struct ConfigData {
-	pub users: HashMap<String, User>,
-	pub auth: AuthState,
+	pub auth: Auth,
 	pub instances: InstanceRegistry,
 	pub profiles: HashMap<String, Box<Profile>>
 }
@@ -36,14 +35,15 @@ pub enum ContentError {
 	#[error("Unknown type {} for user {}", .0, .1)]
 	UserType(String, String),
 	#[error("Unknown type {} for instance {}", .0, .1)]
-	InstType(String, String)
+	InstType(String, String),
+	#[error("Unknown default user '{}'", .0)]
+	DefaultUserNotFound(String)
 }
 
 impl ConfigData {
 	pub fn new() -> Self {
 		Self {
-			users: HashMap::new(),
-			auth: AuthState::Offline,
+			auth: Auth::new(),
 			instances: InstanceRegistry::new(),
 			profiles: HashMap::new()
 		}
@@ -70,32 +70,36 @@ impl ConfigData {
 		let doc = Self::open(path)?;
 
 		// Users
-		if let Some(user_val) = doc.get("default_user") {
-			config.auth = AuthState::Authed(json::ensure_type(user_val.as_str(), json::JsonType::Str)?.to_string());
-		}
-
 		let users = json::access_object(&doc, "users")?;
 		for (user_id, user_val) in users.iter() {
 			let user_obj = json::ensure_type(user_val.as_object(), json::JsonType::Object)?;
 			let kind = match json::access_str(user_obj, "type")? {
-				"microsoft" => {
-					if let AuthState::Offline = config.auth {
-						config.auth = AuthState::Authed(user_id.to_string());
-					}
-					Ok(UserKind::Microsoft)
-				},
+				"microsoft" => Ok(UserKind::Microsoft),
 				"demo" => Ok(UserKind::Demo),
 				typ => Err(ContentError::UserType(typ.to_string(), user_id.to_string()))
 			}?;
 			let mut user = User::new(kind, user_id, json::access_str(user_obj, "name")?);
 
-			if let Some(uuid) = user_obj.get("uuid") {
-				user.set_uuid(json::ensure_type(uuid.as_str(), json::JsonType::Str)?);
-			} else {
-				cprintln!("<y>Warning: It is recommended to have your uuid in the configuration for user {}", user_id);
-			}
+			match user_obj.get("uuid") {
+				Some(uuid) => user.set_uuid(json::ensure_type(uuid.as_str(), json::JsonType::Str)?),
+				None => cprintln!("<y>Warning: It is recommended to have your uuid in the configuration for user {}", user_id)
+			};
+			
+			config.auth.users.insert(user_id.to_string(), user);
+		}
 
-			config.users.insert(user_id.to_string(), user);
+		if let Some(user_val) = doc.get("default_user") {
+			let user_id = json::ensure_type(user_val.as_str(), json::JsonType::Str)?.to_string();
+			match config.auth.users.get(&user_id) {
+				Some(..) => config.auth.state = AuthState::Authed(user_id),
+				None => return Err(ConfigError::from(ContentError::DefaultUserNotFound(user_id)))
+			}
+		} else {
+			if users.len() > 0 {
+				cprintln!("<y>Warning: Users are available but no default user is set. Starting in offline mode");
+			} else {
+				cprintln!("<y>Warning: No users are available. Starting in offline mode");
+			}
 		}
 
 		// Profiles

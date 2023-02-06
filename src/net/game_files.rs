@@ -138,9 +138,8 @@ fn download_library(
 	path: &Path,
 	classpath: &mut String
 ) -> Result<(), LibrariesError> {
+	println!("lib");
 	lib::create_leading_dirs(path)?;
-	classpath.push_str(path.to_str().ok_or(LibrariesError::Utf)?);
-	classpath.push(':');
 	let url = json::access_str(lib_download, "url")?;
 	download.reset();
 	download.url(url)?;
@@ -188,6 +187,8 @@ pub fn get_libraries(
 			)?;
 
 			let path = natives_jars_path.join(json::access_str(classifier, "path")?);
+			classpath.push_str(path.to_str().ok_or(LibrariesError::Utf)?);
+			classpath.push(':');
 			if !force && path.exists() {
 				continue;
 			}
@@ -199,6 +200,8 @@ pub fn get_libraries(
 		if let Some(artifact_val) = downloads.get("artifact") {
 			let artifact = json::ensure_type(artifact_val.as_object(), json::JsonType::Object)?;
 			let path = libraries_path.join(json::access_str(artifact, "path")?);
+			classpath.push_str(path.to_str().ok_or(LibrariesError::Utf)?);
+			classpath.push(':');
 			if !force && path.exists() {
 				continue;
 			}

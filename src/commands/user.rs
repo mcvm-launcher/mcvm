@@ -1,5 +1,5 @@
 use super::lib::{CmdData, CmdError};
-use crate::user::{UserKind, AuthState};
+use crate::user::UserKind;
 
 use color_print::{cprintln, cprint};
 
@@ -19,7 +19,7 @@ fn list(data: &mut CmdData) -> Result<(), CmdError> {
 	data.config.load()?;
 	if let Some(config) = &data.config.data {
 		cprintln!("<s>Users:");
-		for (id, user) in config.users.iter() {
+		for (id, user) in config.auth.users.iter() {
 			cprint!("<k!> - </k!>");
 			match user.kind {
 				UserKind::Microsoft => cprintln!("<s><g>{}</g> <k!>({})</k!>", user.name, id),
@@ -33,17 +33,16 @@ fn list(data: &mut CmdData) -> Result<(), CmdError> {
 fn auth(data: &mut CmdData) -> Result<(), CmdError> {
 	data.config.load()?;
 	if let Some(config) = &data.config.data {
-		match &config.auth {
-			AuthState::Authed(id) => {
-				let user = config.users.get(id).expect("User does not exist");
+		match config.auth.get_user() {
+			Some(user) => {
 				cprint!("<g>Logged in as ");
 				match user.kind {
 					UserKind::Microsoft => cprint!("<s,g!>{}", &user.name),
 					UserKind::Demo => cprint!("<s,k!>{}", &user.name),
 				}
-				cprintln!(" <k!>({})</k!>", id);
+				cprintln!(" <k!>({})</k!>", user.id);
 			}
-			AuthState::Offline => cprintln!("<r>Currently logged out")
+			None => cprintln!("<r>Currently logged out")
 		}
 	}
 	Ok(())

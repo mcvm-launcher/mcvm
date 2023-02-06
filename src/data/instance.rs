@@ -6,10 +6,14 @@ use crate::io::java::{Java, JavaKind, JavaError};
 use crate::Paths;
 use crate::net::game_files;
 use crate::util::print::ReplPrinter;
+use crate::user::Auth;
+use super::client_args::process_client_arg;
 
 use color_print::{cprintln, cformat};
 
 use std::fs;
+use std::path::PathBuf;
+use std::process::Command;
 
 #[derive(Debug)]
 pub enum InstKind {
@@ -23,13 +27,14 @@ pub struct Instance {
 	pub id: String,
 	pub version: MinecraftVersion,
 	version_json: Option<Box<json::JsonObject>>,
-	java: Option<Java>
+	java: Option<Java>,
+	classpath: Option<String>
 }
 
 #[derive(Debug, thiserror::Error)]
 pub enum CreateError {
 	#[error("Failed to evaluate json file:\n\t{}", .0)]
-	ParseError(#[from] json::JsonError),
+	Parse(#[from] json::JsonError),
 	#[error("Error when downloading file:\n\t{}", .0)]
 	Download(#[from] helper::DownloadError),
 	#[error("Failed to process version json:\n\t{}", .0)]
@@ -44,6 +49,18 @@ pub enum CreateError {
 	Java(#[from] JavaError)
 }
 
+#[derive(Debug, thiserror::Error)]
+pub enum LaunchError {
+	#[error("Failed to create instance:\n{}", .0)]
+	Create(#[from] CreateError),
+	#[error("Java is not installed")]
+	Java,
+	#[error("Command failed:\n{}", .0)]
+	Command(std::io::Error),
+	#[error("Failed to evaluate json file:\n\t{}", .0)]
+	Json(#[from] json::JsonError),
+}
+
 impl Instance {
 	pub fn new(kind: InstKind, id: &str, version: &MinecraftVersion) -> Self {
 		Self {
@@ -51,7 +68,23 @@ impl Instance {
 			id: id.to_owned(),
 			version: version.to_owned(),
 			version_json: None,
-			java: None
+			java: None,
+			classpath: None
+		}
+	}
+
+	fn get_java(&mut self, kind: JavaKind, version: &str, paths: &Paths, verbose: bool, force: bool)
+	-> Result<(), JavaError> {
+		let mut java = Java::new(kind, version);
+		java.install(paths, verbose, force)?;
+		self.java = Some(java);
+		Ok(())
+	}
+
+	fn get_dir(&self, paths: &Paths) -> PathBuf {
+		match &self.kind {
+			InstKind::Client => paths.data.join("client").join(&self.id),
+			InstKind::Server => paths.data.join("server").join(&self.id),
 		}
 	}
 
@@ -79,7 +112,7 @@ impl Instance {
 	}
 
 	fn create_client(&mut self, paths: &Paths, verbose: bool, force: bool) -> Result<(), CreateError> {
-		let dir = paths.data.join("client").join(&self.id);
+		let dir = self.get_dir(paths);
 		lib::create_leading_dirs(&dir)?;
 		lib::create_dir(&dir)?;
 		let mc_dir = dir.join(".minecraft");
@@ -90,12 +123,10 @@ impl Instance {
 		
 		let mut classpath = game_files::get_libraries(&version_json, paths, &self.version, verbose, force)?;
 		classpath.push_str(jar_path.to_str().expect("Failed to convert client.jar path to a string"));
-
+		
 		game_files::get_assets(&version_json, paths, &self.version, verbose, force)?;
 
-		let java = Java::new(JavaKind::Adoptium, "17");
-		let java_path = java.install(paths, verbose, force)?;
-		let jre_path = java_path.join("bin/java");
+		self.get_java(JavaKind::Adoptium, "17", paths, verbose, force)?;
 
 		if !jar_path.exists() || force {
 			let mut printer = ReplPrinter::new(verbose);
@@ -112,14 +143,14 @@ impl Instance {
 			printer.print(cformat!("<g>Client jar downloaded.").as_str());
 			printer.finish();
 		}
-
+		
+		self.classpath = Some(classpath);
 		self.version_json = Some(version_json);
-		self.java = Some(java);
 		Ok(())
 	}
 
 	fn create_server(&mut self, paths: &Paths, verbose: bool, force: bool) -> Result<(), CreateError> {
-		let dir = paths.data.join("server").join(&self.id);
+		let dir = self.get_dir(paths);
 		lib::create_leading_dirs(&dir)?;
 		lib::create_dir(&dir)?;
 		let server_dir = dir.join("server");
@@ -127,6 +158,8 @@ impl Instance {
 		let jar_path = server_dir.join("server.jar");
 
 		let (version_json, mut download) = game_files::get_version_json(&self.version, paths, verbose)?;
+
+		self.get_java(JavaKind::Adoptium, "17", paths, verbose, force)?;
 
 		if !jar_path.exists() || force {
 			let mut printer = ReplPrinter::new(verbose);
@@ -148,5 +181,95 @@ impl Instance {
 		
 		self.version_json = Some(version_json);
 		Ok(())
+	}
+	
+	// Launch the instance
+	pub fn launch(&mut self, paths: &Paths, auth: &Auth) -> Result<(), LaunchError> {
+		cprintln!("Checking for updates...");
+		match &self.kind {
+			InstKind::Client => {
+				self.create_client(paths, false, false)?;
+				cprintln!("<g>Launching!");
+				self.launch_client(paths, auth)?;
+			},
+			InstKind::Server => {
+				self.create_server(paths, false, false)?;
+				cprintln!("<g>Launching!");
+				self.launch_server(paths, auth)?;
+			}
+		}
+		Ok(())
+	}
+
+	fn launch_client(&mut self, paths: &Paths, auth: &Auth) -> Result<(), LaunchError> {
+		match &self.java {
+			Some(java) => match &java.path {
+				Some(java_path) => {
+					let jre_path = java_path.join("bin/java");
+					let client_dir = self.get_dir(paths).join(".minecraft");
+					let mut command = Command::new(jre_path.to_str().expect("Failed to convert java path to a string"));
+					command.current_dir(client_dir);
+
+					if let Some(version_json) = &self.version_json {
+						if let Some(classpath) = &self.classpath {
+							let args = json::access_object(&version_json, "arguments")?;
+							
+							for arg in json::access_array(args, "jvm")? {
+								for sub_arg in process_client_arg(self, arg, paths, auth, classpath) {
+									command.arg(sub_arg);
+								}
+							}
+
+							let main_class = json::access_str(version_json, "mainClass")?;
+							command.arg(main_class);
+
+							for arg in json::access_array(args, "game")? {
+								for sub_arg in process_client_arg(self, arg, paths, auth, classpath) {
+									command.arg(sub_arg);
+								}
+							}
+							let mut child = match command.spawn() {
+								Ok(child) => child,
+								Err(err) => return Err(LaunchError::Command(err))
+							};
+		
+							child.wait().expect("Child failed");
+						}
+					}
+					
+					Ok(())
+				}
+				None => Err(LaunchError::Java)
+			}
+			None => Err(LaunchError::Java)
+		}
+	}
+
+	fn launch_server(&mut self, paths: &Paths, _auth: &Auth) -> Result<(), LaunchError> {
+		match &self.java {
+			Some(java) => match &java.path {
+				Some(java_path) => {
+					let jre_path = java_path.join("bin/java");
+					let server_dir = self.get_dir(paths).join("server");
+					let jar_path = server_dir.join("server.jar");
+
+					let mut command = Command::new(jre_path.to_str().expect("Failed to convert java path to a string"));
+					command.current_dir(server_dir);
+					command.arg("-jar");
+					command.arg(jar_path.to_str().expect("Failed to convert server.jar path to a string"));
+					command.arg("nogui");
+					let mut child = match command.spawn() {
+						Ok(child) => child,
+						Err(err) => return Err(LaunchError::Command(err))
+					};
+
+					child.wait().expect("Child failed");
+
+					Ok(())
+				}
+				None => Err(LaunchError::Java)
+			}
+			None => Err(LaunchError::Java)
+		}
 	}
 }

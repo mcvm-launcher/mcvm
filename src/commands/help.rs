@@ -9,6 +9,8 @@ pub fn main_help() {
 	cprintln!("<s>Commands:");
 	cprintln!("\t<i>help:</i> show this message");
 	cprintln!("\t<i>profile:</i> modify profiles");
+	cprintln!("\t<i>user:</i> modify users");
+	cprintln!("\t<i>launch:</i> play the game");
 }
 
 pub fn help() {
