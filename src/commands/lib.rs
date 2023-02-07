@@ -1,4 +1,4 @@
-use crate::io::files::Paths;
+use crate::io::files::paths::{Paths, PathsError};
 use crate::data::config::{Config, ConfigError};
 use crate::data::instance::{CreateError, LaunchError};
 
@@ -6,18 +6,34 @@ use phf_macros::phf_map;
 
 // Data passed to commands
 pub struct CmdData {
-	pub paths: Paths,
-	pub config: Config
+	pub paths: Option<Paths>,
+	pub config: Option<Config>
 }
 
 impl CmdData {
 	pub fn new() -> Self {
-		let paths = Paths::new();
-		let config_path = paths.config.join("mcvm.json");
+		// let config_path = paths.project..join("mcvm.json");
 		Self {
-			paths,
-			config: Config::new(&config_path)
+			paths: None,
+			config: None
 		}
+	}
+
+	pub fn ensure_paths(&mut self) -> Result<(), PathsError> {
+		if let None = self.paths {
+			self.paths = Some(Paths::new()?);
+		}
+		Ok(())
+	}
+
+	pub fn ensure_config(&mut self) -> Result<(), CmdError> {
+		if let None = self.config {
+			self.ensure_paths()?;
+			if let Some(paths) = &self.paths {
+				self.config = Some(Config::load(&paths.project.config_dir().join("mcvm.json"))?);
+			}
+		}
+		Ok(())
 	}
 }
 
@@ -25,6 +41,8 @@ impl CmdData {
 pub enum CmdError {
 	#[error("Failed to load config mcvm.json\n{}", .0)]
 	Config(#[from] ConfigError),
+	#[error("Failed to create paths:\n\t{}", .0)]
+	Paths(#[from] PathsError),
 	#[error("Failed to create profile:\n\t{}", .0)]
 	ProfileCreate(#[from] CreateError),
 	#[error("Failed to launch instance:\n\t{}", .0)]

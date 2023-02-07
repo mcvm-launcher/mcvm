@@ -1,5 +1,5 @@
 use super::lib::{CmdData, CmdError};
-use crate::user::UserKind;
+use crate::data::user::UserKind;
 
 use color_print::{cprintln, cprint};
 
@@ -16,8 +16,9 @@ pub fn help() {
 }
 
 fn list(data: &mut CmdData) -> Result<(), CmdError> {
-	data.config.load()?;
-	if let Some(config) = &data.config.data {
+	data.ensure_config()?;
+
+	if let Some(config) = &data.config {
 		cprintln!("<s>Users:");
 		for (id, user) in config.auth.users.iter() {
 			cprint!("<k!> - </k!>");
@@ -31,8 +32,9 @@ fn list(data: &mut CmdData) -> Result<(), CmdError> {
 }
 
 fn auth(data: &mut CmdData) -> Result<(), CmdError> {
-	data.config.load()?;
-	if let Some(config) = &data.config.data {
+	data.ensure_config()?;
+
+	if let Some(config) = &data.config {
 		match config.auth.get_user() {
 			Some(user) => {
 				cprint!("<g>Logged in as ");

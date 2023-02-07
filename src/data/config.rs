@@ -1,5 +1,5 @@
 use crate::util::json;
-use crate::user::{User, UserKind, AuthState, Auth};
+use super::user::{User, UserKind, AuthState, Auth};
 use crate::util::versions::MinecraftVersion;
 use super::profile::{Profile, InstanceRegistry};
 use super::instance::{Instance, InstKind};
@@ -12,7 +12,7 @@ use std::path::PathBuf;
 use std::fs;
 
 #[derive(Debug)]
-pub struct ConfigData {
+pub struct Config {
 	pub auth: Auth,
 	pub instances: InstanceRegistry,
 	pub profiles: HashMap<String, Box<Profile>>
@@ -40,7 +40,7 @@ pub enum ContentError {
 	DefaultUserNotFound(String)
 }
 
-impl ConfigData {
+impl Config {
 	pub fn new() -> Self {
 		Self {
 			auth: Auth::new(),
@@ -137,33 +137,5 @@ impl ConfigData {
 		}
 
 		Ok(config)
-	}
-}
-
-#[derive(Debug)]
-pub struct Config {
-	pub data: Option<ConfigData>,
-	path: PathBuf
-}
-
-impl Config {
-	pub fn new(path: &PathBuf) -> Self {
-		Self {
-			data: None,
-			path: path.to_owned()
-		}
-	}
-
-	pub fn load(&mut self) -> Result<(), ConfigError> {
-		if self.data.is_none() {
-			self.data = match ConfigData::load(&self.path) {
-				Ok(data) => Some(data),
-				Err(err) => {
-					cprintln!("<r>Error when evaluating config:\n{}", err);
-					None
-				}
-			}
-		}
-		Ok(())
 	}
 }

@@ -4,12 +4,11 @@ mod io;
 mod net;
 mod util;
 mod package;
-mod user;
 
 use std::env;
 
 use commands::{run_command, help, lib::CmdError};
-use io::files::Paths;
+use io::files::paths::Paths;
 
 fn main() -> Result<(), CmdError> {
 	let argv: Vec<String> = env::args().collect();

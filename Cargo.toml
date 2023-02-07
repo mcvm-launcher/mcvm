@@ -12,6 +12,7 @@ strip = true
 cfg-match = "0.2.1"
 color-print = "0.3.4"
 curl = "0.4.44"
+directories = "4.0.1"
 libflate = "1.2.0"
 phf = "0.11.1"
 phf_macros = "0.11.1"

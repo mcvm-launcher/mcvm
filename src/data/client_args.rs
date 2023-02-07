@@ -1,4 +1,4 @@
-use crate::user::{Auth, UserKind};
+use super::user::{Auth, UserKind};
 use crate::util::mojang::{is_allowed, OS_STRING, ARCH_STRING};
 use crate::{skip_fail, skip_none};
 use crate::Paths;
@@ -26,7 +26,7 @@ fn process_string_arg(
 	out = out.replace("${version_type}", "mcvm");
 	out = out.replace(
 		"${game_directory}",
-		paths.data.join("client").join(&instance.id).to_str()
+		paths.project.data_dir().join("client").join(&instance.id).to_str()
 			.expect("Failed to convert client directory to a string")
 	);
 	out = out.replace(

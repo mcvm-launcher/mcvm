@@ -16,8 +16,9 @@ pub fn help() {
 }
 
 fn list(data: &mut CmdData) -> Result<(), CmdError> {
-	data.config.load()?;
-	if let Some(config) = &data.config.data {
+	data.ensure_config()?;
+
+	if let Some(config) = &data.config {
 		cprintln!("<s>Profiles:");
 		for (id, profile) in config.profiles.iter() {
 			cprintln!("\t<s><g>{}", id);
@@ -35,12 +36,16 @@ fn list(data: &mut CmdData) -> Result<(), CmdError> {
 }
 
 fn update(data: &mut CmdData, id: &String) -> Result<(), CmdError> {
-	data.config.load()?;
-	if let Some(config) = &mut data.config.data {
-		if let Some(profile) = config.profiles.get_mut(id) {
-			profile.create_instances(&mut config.instances, &data.paths, true, false)?;
-		} else {
-			return Err(CmdError::Custom(format!("Unknown profile '{id}'")));
+	data.ensure_paths()?;
+	data.ensure_config()?;
+
+	if let Some(config) = &mut data.config {
+		if let Some(paths) = &data.paths {
+			if let Some(profile) = config.profiles.get_mut(id) {
+				profile.create_instances(&mut config.instances, &paths, true, false)?;
+			} else {
+				return Err(CmdError::Custom(format!("Unknown profile '{id}'")));
+			}
 		}
 	}
 	Ok(())

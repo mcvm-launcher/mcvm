@@ -1,5 +1,4 @@
-use crate::Paths;
-use crate::io::files::lib;
+use crate::io::files::{self, paths::Paths};
 use crate::util::versions::{VersionNotFoundError, MinecraftVersion};
 use crate::util::json::{self, JsonObject};
 use crate::net::helper::{Download, DownloadError};
@@ -23,7 +22,7 @@ pub enum VersionManifestError {
 // So we can do this without a retry
 fn get_version_manifest_contents(paths: &Paths) -> Result<Box<Download>, VersionManifestError> {
 	let mut path = paths.internal.join("versions");
-	lib::create_dir(&path)?;
+	files::create_dir(&path)?;
 	path.push("manifest.json");
 
 	let mut download = Download::new();
@@ -88,7 +87,7 @@ pub fn get_version_json(version: &MinecraftVersion, paths: &Paths, verbose: bool
 
 	let version_json_name: String = version_string.clone() + ".json";
 	let version_folder = paths.internal.join("versions").join(version_string);
-	lib::create_dir(&version_folder)?;
+	files::create_dir(&version_folder)?;
 	download.reset();
 	download.url(version_url.expect("Version does not exist"))?;
 	download.add_file(&version_folder.join(version_json_name))?;
@@ -135,11 +134,9 @@ fn is_library_allowed(lib: &JsonObject) -> Result<bool, LibrariesError> {
 fn download_library(
 	download: &mut Download,
 	lib_download: &json::JsonObject,
-	path: &Path,
-	classpath: &mut String
+	path: &Path
 ) -> Result<(), LibrariesError> {
-	println!("lib");
-	lib::create_leading_dirs(path)?;
+	files::create_leading_dirs(path)?;
 	let url = json::access_str(lib_download, "url")?;
 	download.reset();
 	download.url(url)?;
@@ -156,9 +153,9 @@ pub fn get_libraries(
 	force: bool
 ) -> Result<String, LibrariesError> {
 	let libraries_path = paths.internal.join("libraries");
-	lib::create_dir(&libraries_path)?;
+	files::create_dir(&libraries_path)?;
 	let natives_path = paths.internal.join("versions").join(version.as_string()).join("natives");
-	lib::create_dir(&natives_path)?;
+	files::create_dir(&natives_path)?;
 	let natives_jars_path = paths.internal.join("natives");
 	// I can't figure out how to get curl multi to work with non-static write methods :( so this will be kinda slow
 	// Might have to make it unsafe >:)
@@ -193,7 +190,7 @@ pub fn get_libraries(
 				continue;
 			}
 			printer.print(&cformat!("Downloading library <b!>{}</>...", name));
-			download_library(&mut download, classifier, &path, &mut classpath)?;
+			download_library(&mut download, classifier, &path)?;
 			native_paths.push(path);
 			continue;
 		}
@@ -206,7 +203,7 @@ pub fn get_libraries(
 				continue;
 			}
 			printer.print(&cformat!("Downloading library <b>{}</>...", name));
-			download_library(&mut download, artifact, &path, &mut classpath)?;
+			download_library(&mut download, artifact, &path)?;
 			continue;
 		}
 	}
@@ -252,7 +249,7 @@ fn download_asset(
 	if !force && path.exists() {
 		return Ok(false);
 	}
-	lib::create_leading_dirs(&path)?;
+	files::create_leading_dirs(&path)?;
 	
 	download.reset();
 	download.url(&url)?;
@@ -271,7 +268,7 @@ pub fn get_assets(
 ) -> Result<(), AssetsError> {
 	let version_string = version.as_string().to_owned();
 	let indexes_dir = paths.assets.join("indexes");
-	lib::create_dir(&indexes_dir)?;
+	files::create_dir(&indexes_dir)?;
 	
 	let index_path = indexes_dir.join(version_string + ".json");
 	let index_url = json::access_str(
@@ -279,10 +276,10 @@ pub fn get_assets(
 	)?;
 	
 	let objects_dir = paths.assets.join("objects");
-	lib::create_dir(&objects_dir)?;
+	files::create_dir(&objects_dir)?;
 	let virtual_dir = paths.assets.join("virtual");
 	if !force && virtual_dir.exists() && !virtual_dir.is_symlink() {
-		lib::dir_symlink(&virtual_dir, &objects_dir)?;
+		files::dir_symlink(&virtual_dir, &objects_dir)?;
 	}
 
 	let index = match download_asset_index(index_url, &index_path) {

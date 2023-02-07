@@ -1,74 +1,34 @@
-pub mod lib;
+pub mod paths;
 
-use lib::create_dir;
+use std::fs;
+use std::path::Path;
 
-use std::path::PathBuf;
-use std::env::var;
-
-#[derive(Debug)]
-pub struct Paths {
-	pub home: PathBuf,
-	pub data: PathBuf,
-	pub internal: PathBuf,
-	pub assets: PathBuf,
-	pub java: PathBuf,
-	pub cache: PathBuf,
-	pub config: PathBuf,
-	pub run: PathBuf,
+// Create a directory that may already exist
+pub fn create_dir(path: &Path) -> std::io::Result<()> {
+	if path.exists() {
+		Ok(())
+	} else {
+		fs::create_dir(path)
+	}
 }
 
-impl Paths {
-	pub fn new() -> Paths {
-		// TODO: Non-Linux paths
-		let home: PathBuf = match var("XDG_HOME") {
-			Ok(path) => PathBuf::from(&path),
-			Err(_) => PathBuf::from(&var("HOME").unwrap())
-		};
-
-		let data: PathBuf = match var("XDG_DATA_HOME") {
-			Ok(path) => PathBuf::from(&path).join("mcvm"),
-			Err(_) => home.join(".local/share/mcvm")
-		};
-		
-		let internal: PathBuf = data.join("internal");
-		let assets: PathBuf = internal.join("assets");
-		let java: PathBuf = internal.join("java");
-		
-		let cache: PathBuf = match var("XDG_CACHE_HOME") {
-			Ok(path) => PathBuf::from(&path).join("mcvm"),
-			Err(_) => home.join(".cache/mcvm")
-		};
-		
-		let config: PathBuf = match var("XDG_CACHE_HOME") {
-			Ok(path) => PathBuf::from(&path).join("mcvm"),
-			Err(_) => home.join(".config/mcvm")
-		};
-		
-		let run: PathBuf = match var("XDG_CACHE_HOME") {
-			Ok(path) => PathBuf::from(&path).join("mcvm"),
-			Err(_) => match var("UID") {
-				Ok(uid) => home.join("/run/user").join(uid),
-				Err(_) => internal.join("run")
-			}
-		};
-		
-		create_dir(&data).unwrap();
-		create_dir(&internal).unwrap();
-		create_dir(&assets).unwrap();
-		create_dir(&java).unwrap();
-		create_dir(&cache).unwrap();
-		create_dir(&config).unwrap();
-		create_dir(&run).unwrap();
-		
-		Paths {
-			home,
-			data,
-			internal,
-			assets,
-			java,
-			cache,
-			config,
-			run,
-		}
+// Create all the directories leading up to a path
+pub fn create_leading_dirs(path: &Path) -> std::io::Result<()> {
+	if let Some(parent) = path.parent() {
+		fs::create_dir_all(parent)?;
 	}
+	Ok(())
+}
+
+// Cross platform - create a directory soft link
+#[cfg(target_os = "windows")]
+pub fn dir_symlink(path: &Path, target: &Path) -> std::io::Result<()> {
+	std::os::windows::fs::symlink_dir(path, target)?;
+	Ok(())
+}
+
+#[cfg(target_os = "linux")]
+pub fn dir_symlink(path: &Path, target: &Path) -> std::io::Result<()> {
+	std::os::unix::fs::symlink(path, target)?;
+	Ok(())
 }

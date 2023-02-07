@@ -1,4 +1,4 @@
-use crate::io::files::{Paths, lib};
+use crate::io::files::{self, paths::Paths};
 use crate::util::mojang::{ARCH_STRING, OS_STRING};
 use crate::net::helper::{Download, DownloadError};
 use crate::util::json;
@@ -50,7 +50,7 @@ impl Java {
 				let mut printer = ReplPrinter::new(verbose);
 
 				let out_dir = paths.java.join("adoptium");
-				lib::create_dir(&out_dir)?;
+				files::create_dir(&out_dir)?;
 				let url = format!(
 					"https://api.adoptium.net/v3/assets/latest/{}/hotspot?image_type=jre&vendor=eclipse&architecture={}&os={}",
 					self.major_version,

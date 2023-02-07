@@ -1,12 +1,12 @@
 use crate::util::json;
 use crate::util::versions::MinecraftVersion;
 use crate::net::helper;
-use crate::io::files::lib;
+use crate::io::files;
 use crate::io::java::{Java, JavaKind, JavaError};
 use crate::Paths;
 use crate::net::game_files;
 use crate::util::print::ReplPrinter;
-use crate::user::Auth;
+use super::user::Auth;
 use super::client_args::process_client_arg;
 
 use color_print::{cprintln, cformat};
@@ -83,8 +83,8 @@ impl Instance {
 
 	fn get_dir(&self, paths: &Paths) -> PathBuf {
 		match &self.kind {
-			InstKind::Client => paths.data.join("client").join(&self.id),
-			InstKind::Server => paths.data.join("server").join(&self.id),
+			InstKind::Client => paths.project.data_dir().join("client").join(&self.id),
+			InstKind::Server => paths.project.data_dir().join("server").join(&self.id),
 		}
 	}
 
@@ -113,10 +113,10 @@ impl Instance {
 
 	fn create_client(&mut self, paths: &Paths, verbose: bool, force: bool) -> Result<(), CreateError> {
 		let dir = self.get_dir(paths);
-		lib::create_leading_dirs(&dir)?;
-		lib::create_dir(&dir)?;
+		files::create_leading_dirs(&dir)?;
+		files::create_dir(&dir)?;
 		let mc_dir = dir.join(".minecraft");
-		lib::create_dir(&mc_dir)?;
+		files::create_dir(&mc_dir)?;
 		let jar_path = dir.join("client.jar");
 
 		let (version_json, mut download) = game_files::get_version_json(&self.version, paths, verbose)?;
@@ -151,10 +151,10 @@ impl Instance {
 
 	fn create_server(&mut self, paths: &Paths, verbose: bool, force: bool) -> Result<(), CreateError> {
 		let dir = self.get_dir(paths);
-		lib::create_leading_dirs(&dir)?;
-		lib::create_dir(&dir)?;
+		files::create_leading_dirs(&dir)?;
+		files::create_dir(&dir)?;
 		let server_dir = dir.join("server");
-		lib::create_dir(&server_dir)?;
+		files::create_dir(&server_dir)?;
 		let jar_path = server_dir.join("server.jar");
 
 		let (version_json, mut download) = game_files::get_version_json(&self.version, paths, verbose)?;
@@ -236,7 +236,6 @@ impl Instance {
 							child.wait().expect("Child failed");
 						}
 					}
-					
 					Ok(())
 				}
 				None => Err(LaunchError::Java)
