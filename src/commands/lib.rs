@@ -55,12 +55,14 @@ pub enum Command {
 	Help,
 	Profile,
 	User,
-	Launch
+	Launch,
+	Version
 }
 
 pub static COMMAND_MAP: phf::Map<&'static str, Command> = phf_map! {
 	"help" => Command::Help,
 	"profile" => Command::Profile,
 	"user" => Command::User,
-	"launch" => Command::Launch
+	"launch" => Command::Launch,
+	"version" => Command::Version
 };

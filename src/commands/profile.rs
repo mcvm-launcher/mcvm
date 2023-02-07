@@ -1,5 +1,6 @@
 use super::lib::{CmdData, CmdError};
 use crate::data::instance::InstKind;
+use crate::util::print::HYPHEN_POINT;
 
 use color_print::cprintln;
 
@@ -11,8 +12,8 @@ pub fn help() {
 	cprintln!("<s>Usage:</s> mcvm profile <k!><<subcommand>> [options]</k!>");
 	cprintln!();
 	cprintln!("<s>Subcommands:");
-	cprintln!("\t <i>list:</i> {}", LIST_HELP);
-	cprintln!("\t <i>update:</i> {}", UPDATE_HELP);
+	cprintln!("{}<i,c>list:</i,c> {}", HYPHEN_POINT, LIST_HELP);
+	cprintln!("{}<i,c>update:</i,c> {}", HYPHEN_POINT, UPDATE_HELP);
 }
 
 fn list(data: &mut CmdData) -> Result<(), CmdError> {
@@ -25,8 +26,8 @@ fn list(data: &mut CmdData) -> Result<(), CmdError> {
 			for inst_id in profile.instances.iter() {
 				if let Some(instance) = config.instances.get(inst_id) {
 					match instance.kind {
-						InstKind::Client => cprintln!("\t<k!> - </k!><y!>{}", inst_id),
-						InstKind::Server => cprintln!("\t<k!> - </k!><c!>{}", inst_id)
+						InstKind::Client => cprintln!("\t{}<y!>{}", HYPHEN_POINT, inst_id),
+						InstKind::Server => cprintln!("\t{}<c!>{}", HYPHEN_POINT, inst_id)
 					}
 				}
 			}

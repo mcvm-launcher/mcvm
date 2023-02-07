@@ -2,16 +2,7 @@ use super::create_dir;
 
 use directories::{BaseDirs, ProjectDirs};
 
-use std::{path::PathBuf, fmt::Display};
-
-// #[derive(Debug)]
-// pub struct PathsError {}
-// impl Display for PathsError {
-// 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-// 		write!(f, "Failed to open program base directories")
-// 	}
-// }
-// impl std::error::Error for PathsError {}
+use std::path::PathBuf;
 
 #[derive(Debug, thiserror::Error)]
 pub enum PathsError {

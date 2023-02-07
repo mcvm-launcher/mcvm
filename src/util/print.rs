@@ -1,5 +1,7 @@
 use std::io::{Stdout, Write};
 
+use color_print::cstr;
+
 // Used to print text that is replaced
 pub struct ReplPrinter {
 	stdout: Stdout,
@@ -65,3 +67,5 @@ impl Drop for ReplPrinter {
 		self.finish();
 	}
 }
+
+pub static HYPHEN_POINT: &str = cstr!("<k!> - </k!>");

@@ -3,6 +3,7 @@ pub mod help;
 mod profile;
 mod user;
 mod launch;
+mod version;
 use lib::{Command, CmdData, COMMAND_MAP};
 
 use color_print::cprintln;
@@ -16,7 +17,8 @@ impl Command {
 			Self::Help => help::run(argc, argv, data),
 			Self::Profile => profile::run(argc, argv, data),
 			Self::User => user::run(argc, argv, data),
-			Self::Launch => launch::run(argc, argv, data)
+			Self::Launch => launch::run(argc, argv, data),
+			Self::Version => version::run(argc, argv, data)
 		}
 	}
 
@@ -25,7 +27,8 @@ impl Command {
 			Self::Help => help::help(),
 			Self::Profile => profile::help(),
 			Self::User => user::help(),
-			Self::Launch => launch::help()
+			Self::Launch => launch::help(),
+			Self::Version => version::help()
 		}
 	}
 }

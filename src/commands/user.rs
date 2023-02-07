@@ -1,5 +1,6 @@
 use super::lib::{CmdData, CmdError};
 use crate::data::user::UserKind;
+use crate::util::print::HYPHEN_POINT;
 
 use color_print::{cprintln, cprint};
 
@@ -11,8 +12,8 @@ pub fn help() {
 	cprintln!("<s>Usage:</s> mcvm user <k!><<subcommand>> [options]</k!>");
 	cprintln!();
 	cprintln!("<s>Subcommands:");
-	cprintln!("\t <i>list:</i> {}", LIST_HELP);
-	cprintln!("\t <i>auth:</i> {}", AUTH_HELP);
+	cprintln!("{}<i,c>list:</i,c> {}", HYPHEN_POINT, LIST_HELP);
+	cprintln!("{}<i,c>auth:</i,c> {}", HYPHEN_POINT, AUTH_HELP);
 }
 
 fn list(data: &mut CmdData) -> Result<(), CmdError> {
@@ -21,7 +22,7 @@ fn list(data: &mut CmdData) -> Result<(), CmdError> {
 	if let Some(config) = &data.config {
 		cprintln!("<s>Users:");
 		for (id, user) in config.auth.users.iter() {
-			cprint!("<k!> - </k!>");
+			cprint!("{}", HYPHEN_POINT);
 			match user.kind {
 				UserKind::Microsoft => cprintln!("<s><g>{}</g> <k!>({})</k!>", user.name, id),
 				UserKind::Demo => cprintln!("<s><y!>{}</y!> <k!>({})</k!>", user.name, id)

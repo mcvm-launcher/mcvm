@@ -1,16 +1,17 @@
 use super::lib::{CmdData, CmdError, COMMAND_MAP};
+use crate::util::print::HYPHEN_POINT;
 
 use color_print::cprintln;
 
 pub fn main_help() {
-	cprintln!("Mcvm: <i>A Minecraft launcher for the future");
-	cprintln!("<s>Usage:</s> mcvm <k!><<subcommand>> [...]</k!>");
+	cprintln!("mcvm: <i>A Minecraft launcher for the future");
+	cprintln!("<s>Usage:</s> mcvm <k!><<command>> [...]</k!>");
 	cprintln!();
 	cprintln!("<s>Commands:");
-	cprintln!("\t<i>help:</i> show this message");
-	cprintln!("\t<i>profile:</i> modify profiles");
-	cprintln!("\t<i>user:</i> modify users");
-	cprintln!("\t<i>launch:</i> play the game");
+	cprintln!("{}<i,c>help:</i,c> show this message", HYPHEN_POINT);
+	cprintln!("{}<i,c>profile:</i,c> modify profiles", HYPHEN_POINT);
+	cprintln!("{}<i,c>user:</i,c> modify users", HYPHEN_POINT);
+	cprintln!("{}<i,c>launch:</i,c> play the game", HYPHEN_POINT);
 }
 
 pub fn help() {
