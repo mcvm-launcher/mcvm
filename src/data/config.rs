@@ -1,6 +1,7 @@
 use super::user::{User, UserKind, AuthState, Auth};
 use super::profile::{Profile, InstanceRegistry};
 use super::instance::{Instance, InstKind};
+use crate::package::{Package, PkgError, PkgKind};
 use crate::util::{json, versions::MinecraftVersion};
 
 use color_print::cprintln;
@@ -14,7 +15,8 @@ use std::fs;
 pub struct Config {
 	pub auth: Auth,
 	pub instances: InstanceRegistry,
-	pub profiles: HashMap<String, Box<Profile>>
+	pub profiles: HashMap<String, Box<Profile>>,
+	pub packages: HashMap<String, Box<Package>>
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -35,6 +37,8 @@ pub enum ContentError {
 	UserType(String, String),
 	#[error("Unknown type {} for instance {}", .0, .1)]
 	InstType(String, String),
+	#[error("Unknown type {} for package {}", .0, .1)]
+	PkgType(String, String),
 	#[error("Unknown default user '{}'", .0)]
 	DefaultUserNotFound(String),
 	#[error("Duplicate instance '{}'", .0)]
@@ -46,7 +50,8 @@ impl Config {
 		Self {
 			auth: Auth::new(),
 			instances: InstanceRegistry::new(),
-			profiles: HashMap::new()
+			profiles: HashMap::new(),
+			packages: HashMap::new()
 		}
 	}
 
@@ -103,7 +108,7 @@ impl Config {
 
 		// Profiles
 		let profiles = json::access_object(&doc, "profiles")?;
-		for (profile_id, profile_val) in profiles.iter() {
+		for (profile_id, profile_val) in profiles {
 			let profile_obj = json::ensure_type(profile_val.as_object(), json::JsonType::Object)?;
 			let version =  MinecraftVersion::from(json::access_str(profile_obj, "version")?);
 
@@ -112,19 +117,15 @@ impl Config {
 			// Instances
 			if let Some(instances_val) = profile_obj.get("instances") {
 				let instances = json::ensure_type(instances_val.as_object(), json::JsonType::Object)?;
-				for (instance_id, instance_val) in instances.iter() {
+				for (instance_id, instance_val) in instances {
 					if config.instances.contains_key(instance_id) {
 						return Err(ConfigError::from(ContentError::DuplicateInstance(instance_id.to_string())));
 					}
 
 					let instance_obj = json::ensure_type(instance_val.as_object(), json::JsonType::Object)?;
 					let kind = match json::access_str(instance_obj, "type")? {
-						"client" => {
-							Ok(InstKind::Client)
-						},
-						"server" => {
-							Ok(InstKind::Server)
-						},
+						"client" => Ok(InstKind::Client),
+						"server" => Ok(InstKind::Server),
 						typ => Err(ContentError::InstType(typ.to_string(), instance_id.to_string()))
 					}?;
 
@@ -134,7 +135,20 @@ impl Config {
 				}
 			}
 
-			// TODO: Packages
+			if let Some(packages_val) = profile_obj.get("packages") {
+				let packages = json::ensure_type(packages_val.as_array(), json::JsonType::Array)?;
+				for package_val in packages {
+					let package_obj = json::ensure_type(package_val.as_object(), json::JsonType::Object)?;
+					let package_type = json::access_str(package_obj, "type")?;
+					let kind = match package_type {
+						"local" => {
+							let package_path = json::access_str(package_obj, "path")?;
+							Ok(PkgKind::Local(PathBuf::from(package_path)))
+						},
+						typ => Err(ContentError::InstType(typ.to_string(), "package".to_string()))
+					}?;
+				}
+			}
 			
 			config.profiles.insert(profile_id.to_string(), Box::new(profile));
 		}
