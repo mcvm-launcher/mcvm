@@ -24,3 +24,10 @@ macro_rules! skip_none {
 		}
 	};
 }
+
+// Combo of option and result
+pub enum OptionResult<T, E> {
+	Some(T),
+	None,
+	Err(E)
+}

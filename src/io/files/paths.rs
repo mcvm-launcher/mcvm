@@ -19,7 +19,9 @@ pub struct Paths {
 	pub internal: PathBuf,
 	pub assets: PathBuf,
 	pub libraries: PathBuf,
-	pub java: PathBuf
+	pub java: PathBuf,
+	pub pkg_cache: PathBuf,
+	pub pkg_index_cache: PathBuf
 }
 
 impl Paths {
@@ -31,6 +33,8 @@ impl Paths {
 		let assets = internal.join("assets");
 		let libraries = internal.join("libraries");
 		let java = internal.join("java");
+		let pkg_cache = project.cache_dir().join("pkg");
+		let pkg_index_cache = pkg_cache.join("index");
 		
 		create_dir(project.data_dir())?;
 		create_dir(project.cache_dir())?;
@@ -39,6 +43,8 @@ impl Paths {
 		create_dir(&internal)?;
 		create_dir(&assets)?;
 		create_dir(&java)?;
+		create_dir(&pkg_cache)?;
+		create_dir(&pkg_index_cache)?;
 		
 		Ok(Paths {
 			base,
@@ -47,6 +53,8 @@ impl Paths {
 			assets,
 			libraries,
 			java,
+			pkg_cache,
+			pkg_index_cache
 		})
 	}
 }

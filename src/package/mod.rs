@@ -1,5 +1,5 @@
 pub mod eval;
-pub mod api;
+pub mod repo;
 
 use crate::io::files::{self, paths::Paths};
 use crate::net::helper::{Download, DownloadError};

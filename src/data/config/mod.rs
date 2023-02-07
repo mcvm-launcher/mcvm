@@ -1,7 +1,10 @@
+pub mod preferences;
+
+use preferences::ConfigPreferences;
 use super::user::{User, UserKind, AuthState, Auth};
 use super::profile::{Profile, InstanceRegistry};
 use super::instance::{Instance, InstKind};
-use crate::package::{Package, PkgError, PkgKind};
+use crate::package::{Package, PkgKind};
 use crate::util::{json, versions::MinecraftVersion};
 
 use color_print::cprintln;
@@ -16,7 +19,8 @@ pub struct Config {
 	pub auth: Auth,
 	pub instances: InstanceRegistry,
 	pub profiles: HashMap<String, Box<Profile>>,
-	pub packages: HashMap<String, Box<Package>>
+	pub packages: HashMap<String, Box<Package>>,
+	pub prefs: ConfigPreferences
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -51,7 +55,8 @@ impl Config {
 			auth: Auth::new(),
 			instances: InstanceRegistry::new(),
 			profiles: HashMap::new(),
-			packages: HashMap::new()
+			packages: HashMap::new(),
+			prefs: ConfigPreferences::new()
 		}
 	}
 

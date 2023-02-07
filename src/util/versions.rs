@@ -28,3 +28,18 @@ impl MinecraftVersion {
 }
 
 static _VERSION_LIST: [&str; 1] = ["1.19"];
+
+pub enum VersionPattern {
+	Single(String)
+}
+
+impl VersionPattern {
+	pub fn matches(&self, versions: &Vec<String>) -> Option<String> {
+		match self {
+			VersionPattern::Single(version) => match versions.contains(version) {
+				true => Some(version.to_string()),
+				false => None
+			}
+		}
+	}
+}
