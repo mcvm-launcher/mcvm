@@ -16,13 +16,13 @@ fn process_string_arg(
 
 	let mut out = arg.replace("${launcher_name}", "mcvm");
 	out = out.replace("${launcher_version}", "alpha");
-	out = out.replace("${classpath}", &format!("{}", classpath));
+	out = out.replace("${classpath}", classpath);
 	out = out.replace(
 		"${natives_directory}",
 		paths.internal.join("versions").join(version_string).join("natives").to_str()
 			.expect("Failed to convert natives directory to a string")
 	);
-	out = out.replace("${version_name}", &version_string);
+	out = out.replace("${version_name}", version_string);
 	out = out.replace("${version_type}", "mcvm");
 	out = out.replace(
 		"${game_directory}",
@@ -33,7 +33,7 @@ fn process_string_arg(
 		"${assets_root}",
 		paths.assets.to_str().expect("Failed to convert assets directory to a string")
 	);
-	out = out.replace("${assets_index_name}", &version_string);
+	out = out.replace("${assets_index_name}", version_string);
 	out = out.replace("${user_type}", "mojang");
 	out = out.replace("${clientid}", "mcvm");
 	out = out.replace("${auth_xuid}", "mcvm");
@@ -71,12 +71,15 @@ pub fn process_client_arg(
 ) -> Vec<String> {
 	let mut out = Vec::new();
 	if let Some(contents) = arg.as_str() {
-		let processed = process_string_arg(instance, &contents, paths, auth, classpath);
+		let processed = process_string_arg(instance, contents, paths, auth, classpath);
 		if let Some(processed_arg) = processed {
 			out.push(processed_arg);
 		}
 	} else if let Some(contents) = arg.as_object() {
-		let rules = json::access_array(contents, "rules").unwrap();
+		let rules = match json::access_array(contents, "rules") {
+			Ok(rules) => rules,
+			Err(..) => return vec![]
+		};
 		for rule_val in rules.iter() {
 			let rule = skip_none!(rule_val.as_object());
 			let allowed = is_allowed(skip_fail!(json::access_str(rule, "action")));
@@ -100,12 +103,7 @@ pub fn process_client_arg(
 				}
 				if features.get("is_demo_user").is_some() {
 					let fail = match auth.get_user() {
-						Some(user) => {
-							match user.kind {
-								UserKind::Demo => true,
-								_ => false
-							}
-						},
+						Some(user) => matches!(user.kind, UserKind::Demo),
 						None => false
 					};
 					if fail {

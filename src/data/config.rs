@@ -1,8 +1,7 @@
-use crate::util::json;
 use super::user::{User, UserKind, AuthState, Auth};
-use crate::util::versions::MinecraftVersion;
 use super::profile::{Profile, InstanceRegistry};
 use super::instance::{Instance, InstKind};
+use crate::util::{json, versions::MinecraftVersion};
 
 use color_print::cprintln;
 use serde_json::json;
@@ -37,7 +36,9 @@ pub enum ContentError {
 	#[error("Unknown type {} for instance {}", .0, .1)]
 	InstType(String, String),
 	#[error("Unknown default user '{}'", .0)]
-	DefaultUserNotFound(String)
+	DefaultUserNotFound(String),
+	#[error("Duplicate instance '{}'", .0)]
+	DuplicateInstance(String)
 }
 
 impl Config {
@@ -61,7 +62,7 @@ impl Config {
 				}
 			);
 			fs::write(path, serde_json::to_string_pretty(&doc)?)?;
-			Ok(Box::new(doc.as_object().expect("Expected config to be an object").clone()))
+			Ok(Box::new(json::ensure_type(doc.as_object(), json::JsonType::Object)?.clone()))
 		}
 	}
 
@@ -94,12 +95,10 @@ impl Config {
 				Some(..) => config.auth.state = AuthState::Authed(user_id),
 				None => return Err(ConfigError::from(ContentError::DefaultUserNotFound(user_id)))
 			}
+		} else if users.is_empty() {
+			cprintln!("<y>Warning: Users are available but no default user is set. Starting in offline mode");
 		} else {
-			if users.len() > 0 {
-				cprintln!("<y>Warning: Users are available but no default user is set. Starting in offline mode");
-			} else {
-				cprintln!("<y>Warning: No users are available. Starting in offline mode");
-			}
+			cprintln!("<y>Warning: No users are available. Starting in offline mode");
 		}
 
 		// Profiles
@@ -114,6 +113,10 @@ impl Config {
 			if let Some(instances_val) = profile_obj.get("instances") {
 				let instances = json::ensure_type(instances_val.as_object(), json::JsonType::Object)?;
 				for (instance_id, instance_val) in instances.iter() {
+					if config.instances.contains_key(instance_id) {
+						return Err(ConfigError::from(ContentError::DuplicateInstance(instance_id.to_string())));
+					}
+
 					let instance_obj = json::ensure_type(instance_val.as_object(), json::JsonType::Object)?;
 					let kind = match json::access_str(instance_obj, "type")? {
 						"client" => {

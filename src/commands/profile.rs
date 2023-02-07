@@ -43,7 +43,7 @@ fn update(data: &mut CmdData, id: &String) -> Result<(), CmdError> {
 	if let Some(config) = &mut data.config {
 		if let Some(paths) = &data.paths {
 			if let Some(profile) = config.profiles.get_mut(id) {
-				profile.create_instances(&mut config.instances, &paths, true, false)?;
+				profile.create_instances(&mut config.instances, paths, true, false)?;
 			} else {
 				return Err(CmdError::Custom(format!("Unknown profile '{id}'")));
 			}

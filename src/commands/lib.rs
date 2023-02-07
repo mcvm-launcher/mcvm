@@ -20,14 +20,14 @@ impl CmdData {
 	}
 
 	pub fn ensure_paths(&mut self) -> Result<(), PathsError> {
-		if let None = self.paths {
+		if self.paths.is_none() {
 			self.paths = Some(Paths::new()?);
 		}
 		Ok(())
 	}
 
 	pub fn ensure_config(&mut self) -> Result<(), CmdError> {
-		if let None = self.config {
+		if self.config.is_none() {
 			self.ensure_paths()?;
 			if let Some(paths) = &self.paths {
 				self.config = Some(Config::load(&paths.project.config_dir().join("mcvm.json"))?);
@@ -39,13 +39,13 @@ impl CmdData {
 
 #[derive(Debug, thiserror::Error)]
 pub enum CmdError {
-	#[error("Failed to load config mcvm.json\n{}", .0)]
+	#[error("Failed to load config mcvm.json:\n{}", .0)]
 	Config(#[from] ConfigError),
-	#[error("Failed to create paths:\n\t{}", .0)]
+	#[error("Failed to create paths:\n{}", .0)]
 	Paths(#[from] PathsError),
-	#[error("Failed to create profile:\n\t{}", .0)]
+	#[error("Failed to create profile:\n{}", .0)]
 	ProfileCreate(#[from] CreateError),
-	#[error("Failed to launch instance:\n\t{}", .0)]
+	#[error("Failed to launch instance:\n{}", .0)]
 	Launch(#[from] LaunchError),
 	#[error("{}", .0)]
 	Custom(String)

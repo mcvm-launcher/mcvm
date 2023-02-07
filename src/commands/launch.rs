@@ -20,7 +20,7 @@ pub fn run(argc: usize, argv: &[String], data: &mut CmdData)
 	if let Some(config) = &mut data.config {
 		if let Some(paths) = &data.paths {
 			if let Some(instance) = config.instances.get_mut(&argv[0]) {
-				instance.launch(&paths, &config.auth)?;
+				instance.launch(paths, &config.auth)?;
 			} else {
 				return Err(CmdError::Custom(format!("Unknown instance '{}'", &argv[0])));
 			}
