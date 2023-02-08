@@ -47,6 +47,8 @@ pub enum CmdError {
 	ProfileCreate(#[from] CreateError),
 	#[error("Failed to launch instance:\n{}", .0)]
 	Launch(#[from] LaunchError),
+	#[error("IO operation failed:\n{}", .0)]
+	Io(#[from] std::io::Error),
 	#[error("{}", .0)]
 	Custom(String)
 }
@@ -56,7 +58,9 @@ pub enum Command {
 	Profile,
 	User,
 	Launch,
-	Version
+	Version,
+	Files,
+	Package
 }
 
 pub static COMMAND_MAP: phf::Map<&'static str, Command> = phf_map! {
@@ -64,5 +68,7 @@ pub static COMMAND_MAP: phf::Map<&'static str, Command> = phf_map! {
 	"profile" => Command::Profile,
 	"user" => Command::User,
 	"launch" => Command::Launch,
-	"version" => Command::Version
+	"version" => Command::Version,
+	"files" => Command::Files,
+	"package" => Command::Package
 };

@@ -81,7 +81,7 @@ impl Instance {
 		Ok(())
 	}
 
-	fn get_dir(&self, paths: &Paths) -> PathBuf {
+	pub fn get_dir(&self, paths: &Paths) -> PathBuf {
 		match &self.kind {
 			InstKind::Client => paths.project.data_dir().join("client").join(&self.id),
 			InstKind::Server => paths.project.data_dir().join("server").join(&self.id),

@@ -145,6 +145,10 @@ impl Config {
 						},
 						typ => Err(ContentError::PkgType(typ.to_string(), "package".to_string()))
 					}?;
+					let package_id = json::access_str(package_obj, "id")?;
+					let package = Package::new(package_id, "0.0.1", kind);
+					profile.add_package(&package);
+					packages.insert(package_id.to_string(), Box::new(package));
 				}
 			}
 			

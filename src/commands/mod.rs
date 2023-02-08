@@ -4,6 +4,9 @@ mod profile;
 mod user;
 mod launch;
 mod version;
+mod files;
+pub mod package;
+
 use lib::{Command, CmdData, COMMAND_MAP};
 
 use color_print::cprintln;
@@ -18,7 +21,9 @@ impl Command {
 			Self::Profile => profile::run(argc, argv, data).await,
 			Self::User => user::run(argc, argv, data),
 			Self::Launch => launch::run(argc, argv, data).await,
-			Self::Version => version::run(argc, argv, data)
+			Self::Version => version::run(argc, argv, data),
+			Self::Files => files::run(argc, argv, data),
+			Self::Package => package::run(argc, argv, data)
 		}
 	}
 
@@ -28,7 +33,9 @@ impl Command {
 			Self::Profile => profile::help(),
 			Self::User => user::help(),
 			Self::Launch => launch::help(),
-			Self::Version => version::help()
+			Self::Version => version::help(),
+			Self::Files => files::help(),
+			Self::Package => package::help()
 		}
 	}
 }
