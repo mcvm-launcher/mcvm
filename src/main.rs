@@ -10,8 +10,8 @@ use std::env;
 use commands::{run_command, help, lib::CmdError};
 use io::files::paths::Paths;
 
-
-fn main() -> Result<(), CmdError> {
+#[tokio::main]
+async fn main() -> Result<(), CmdError> {
 	let argv: Vec<String> = env::args().collect();
 	let argc: usize = argv.len();
 	match argc {
@@ -21,7 +21,7 @@ fn main() -> Result<(), CmdError> {
 			let mut data = commands::lib::CmdData::new();
 			let argv_slice = &argv[2..];
 			let argc_slice = argc - 2;
-			run_command(&argv[1], argc_slice, argv_slice, &mut data);
+			run_command(&argv[1], argc_slice, argv_slice, &mut data).await;
 		}
 	}
 	Ok(())

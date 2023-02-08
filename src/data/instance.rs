@@ -33,19 +33,19 @@ pub struct Instance {
 
 #[derive(Debug, thiserror::Error)]
 pub enum CreateError {
-	#[error("Failed to evaluate json file:\n\t{}", .0)]
+	#[error("Failed to evaluate json file:\n{}", .0)]
 	Parse(#[from] json::JsonError),
-	#[error("Error when downloading file:\n\t{}", .0)]
+	#[error("Error when downloading file:\n{}", .0)]
 	Download(#[from] helper::DownloadError),
-	#[error("Failed to process version json:\n\t{}", .0)]
+	#[error("Failed to process version json:\n{}", .0)]
 	VersionJson(#[from] game_files::VersionJsonError),
-	#[error("Failed to install libraries:\n\t{}", .0)]
+	#[error("Failed to install libraries:\n{}", .0)]
 	Libraries(#[from] game_files::LibrariesError),
-	#[error("Failed to download assets:\n\t{}", .0)]
+	#[error("Failed to download assets:\n{}", .0)]
 	Assets(#[from] game_files::AssetsError),
-	#[error("Error when accessing files:\n\t{}", .0)]
+	#[error("Error when accessing files:\n{}", .0)]
 	Io(#[from] std::io::Error),
-	#[error("Failed to install java for this instance:\n\t{}", .0)]
+	#[error("Failed to install java for this instance:\n{}", .0)]
 	Java(#[from] JavaError)
 }
 
@@ -89,7 +89,7 @@ impl Instance {
 	}
 
 	// Create the data for the instance
-	pub fn create(&mut self, paths: &Paths, verbose: bool, force: bool) -> Result<(), CreateError> {
+	pub async fn create(&mut self, paths: &Paths, verbose: bool, force: bool) -> Result<(), CreateError> {
 		match &self.kind {
 			InstKind::Client => {
 				if force {
@@ -97,7 +97,7 @@ impl Instance {
 				} else {
 					cprintln!("<s>Updating client <y!>{}</y!>", self.id);
 				}
-				self.create_client(paths, verbose, force)?;
+				self.create_client(paths, verbose, force).await?;
 			},
 			InstKind::Server => {
 				if force {
@@ -111,7 +111,7 @@ impl Instance {
 		Ok(())
 	}
 
-	fn create_client(&mut self, paths: &Paths, verbose: bool, force: bool) -> Result<(), CreateError> {
+	async fn create_client(&mut self, paths: &Paths, verbose: bool, force: bool) -> Result<(), CreateError> {
 		let dir = self.get_dir(paths);
 		files::create_leading_dirs(&dir)?;
 		files::create_dir(&dir)?;
@@ -124,7 +124,7 @@ impl Instance {
 		let mut classpath = game_files::get_libraries(&version_json, paths, &self.version, verbose, force)?;
 		classpath.push_str(jar_path.to_str().expect("Failed to convert client.jar path to a string"));
 		
-		game_files::get_assets(&version_json, paths, &self.version, verbose, force)?;
+		game_files::get_assets(&version_json, paths, &self.version, verbose, force).await?;
 
 		self.get_java(JavaKind::Adoptium, "17", paths, verbose, force)?;
 
@@ -184,11 +184,11 @@ impl Instance {
 	}
 	
 	// Launch the instance
-	pub fn launch(&mut self, paths: &Paths, auth: &Auth) -> Result<(), LaunchError> {
+	pub async fn launch(&mut self, paths: &Paths, auth: &Auth) -> Result<(), LaunchError> {
 		cprintln!("Checking for updates...");
 		match &self.kind {
 			InstKind::Client => {
-				self.create_client(paths, false, false)?;
+				self.create_client(paths, false, false).await?;
 				cprintln!("<g>Launching!");
 				self.launch_client(paths, auth)?;
 			},

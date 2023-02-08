@@ -7,7 +7,9 @@ use crate::util::print::ReplPrinter;
 
 use color_print::{cprintln, cformat};
 use reqwest::Client;
+use tokio::task::JoinSet;
 
+use std::fs;
 use std::path::{Path, PathBuf};
 
 #[derive(Debug, thiserror::Error)]
@@ -158,8 +160,6 @@ pub fn get_libraries(
 	let natives_path = paths.internal.join("versions").join(version.as_string()).join("natives");
 	files::create_dir(&natives_path)?;
 	let natives_jars_path = paths.internal.join("natives");
-	// I can't figure out how to get curl multi to work with non-static write methods :( so this will be kinda slow
-	// Might have to make it unsafe >:)
 	
 	let mut native_paths: Vec<PathBuf> = Vec::new();
 	let mut classpath = String::new();
@@ -223,7 +223,9 @@ pub enum AssetsError {
 	#[error("Error when downloading asset:\n{}", .0)]
 	MultiDownload(#[from] reqwest::Error),
 	#[error("File operation failed:\n{}", .0)]
-	Io(#[from] std::io::Error)
+	Io(#[from] std::io::Error),
+	#[error("Failed to join tasks:\n{}", .0)]
+	Join(#[from] tokio::task::JoinError)
 }
 
 fn download_asset_index(url: &str, path: &Path) -> Result<Box<json::JsonObject>, AssetsError> {
@@ -237,7 +239,7 @@ fn download_asset_index(url: &str, path: &Path) -> Result<Box<json::JsonObject>,
 	Ok(doc)
 }
 
-pub fn get_assets(
+pub async fn get_assets(
 	version_json: &json::JsonObject,
 	paths: &Paths,
 	version: &MinecraftVersion,
@@ -268,18 +270,16 @@ pub fn get_assets(
 		}
 	};
 
-	let assets = json::access_object(&index, "objects")?;
-	let count = assets.len();
-	if verbose {
-		cprintln!("\tDownloading <b>{}</> assets...", count);
-	}
-
-	let mut download = Download::new();
+	let assets = json::access_object(&index, "objects")?.clone();
+	
+	let client = Client::new();
+	let mut join = JoinSet::new();
 	let mut printer = ReplPrinter::new(verbose);
 	printer.indent(1);
-	for (i, (key, asset_val)) in assets.iter().enumerate() {
+	let mut count = 0;
+	for (key, asset_val) in assets {
 		let asset = json::ensure_type(asset_val.as_object(), json::JsonType::Object)?;
-
+		
 		let hash = json::access_str(asset, "hash")?.to_owned();
 		let hash_path = hash[..2].to_owned() + "/" + &hash;
 		let url = "https://resources.download.minecraft.net/".to_owned() + &hash_path;
@@ -288,14 +288,35 @@ pub fn get_assets(
 		if !force && path.exists() {
 			continue;
 		}
-		files::create_leading_dirs(&path)?;
 		
-		download.reset();
-		download.url(&url)?;
-		download.add_file(&path)?;
-		download.perform()?;
-		printer.print(&cformat!("(<b>{}</b><k!>/</k!><b>{}</b>) <k!>{}", i, count, key));
+		files::create_leading_dirs(&path)?;
+		let client = client.clone();
+		let fut = async move {
+			let response = client.get(url).send();
+			fs::write(path, response.await?.bytes().await?)?;
+			Ok::<String, AssetsError>(key)
+		};
+		join.spawn(fut);
+		count += 1;
 	}
+
+	if verbose {
+		cprintln!("\tDownloading <b>{}</> assets...", count);
+	}
+	
+	let mut num_done = 0;
+	while let Some(asset) = join.join_next().await {
+		num_done += 1;
+		let name = match asset? {
+			Ok(name) => name,
+			Err(err) => {
+				cprintln!("<r>Failed to download asset, skipping...\n{}", err);
+				continue;
+			}
+		};
+		printer.print(&cformat!("(<b>{}</b><k!>/</k!><b>{}</b>) <k!>{}", num_done, count, name));
+	}
+
 	printer.print(&cformat!("<g>Assets downloaded."));
 	printer.finish();
 

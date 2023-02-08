@@ -36,14 +36,14 @@ fn list(data: &mut CmdData) -> Result<(), CmdError> {
 	Ok(())
 }
 
-fn update(data: &mut CmdData, id: &String) -> Result<(), CmdError> {
+async fn update(data: &mut CmdData, id: &String) -> Result<(), CmdError> {
 	data.ensure_paths()?;
 	data.ensure_config()?;
 
 	if let Some(config) = &mut data.config {
 		if let Some(paths) = &data.paths {
 			if let Some(profile) = config.profiles.get_mut(id) {
-				profile.create_instances(&mut config.instances, paths, true, false)?;
+				profile.create_instances(&mut config.instances, paths, true, false).await?;
 			} else {
 				return Err(CmdError::Custom(format!("Unknown profile '{id}'")));
 			}
@@ -52,7 +52,7 @@ fn update(data: &mut CmdData, id: &String) -> Result<(), CmdError> {
 	Ok(())
 }
 
-pub fn run(argc: usize, argv: &[String], data: &mut CmdData)
+pub async fn run(argc: usize, argv: &[String], data: &mut CmdData)
 -> Result<(), CmdError> {
 	if argc == 0 {
 		help();
@@ -63,7 +63,7 @@ pub fn run(argc: usize, argv: &[String], data: &mut CmdData)
 		"list" => list(data)?,
 		"update" => match argc {
 			1 => cprintln!("{}", LIST_HELP),
-			_ => update(data, &argv[1])?,
+			_ => update(data, &argv[1]).await?,
 		}
 		"help" => help(),
 		cmd => cprintln!("<r>Unknown subcommand {}", cmd)

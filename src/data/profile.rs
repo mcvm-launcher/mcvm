@@ -32,7 +32,7 @@ impl Profile {
 		self.instances.push(instance.to_owned());
 	}
 
-	pub fn create_instances(
+	pub async fn create_instances(
 		&mut self,
 		reg: &mut InstanceRegistry,
 		paths: &Paths,
@@ -42,7 +42,7 @@ impl Profile {
 	-> Result<(), CreateError> {
 		for id in self.instances.iter_mut() {
 			let instance = reg.get_mut(id).expect("Profile has unknown instance");
-			instance.create(paths, verbose, force)?;
+			instance.create(paths, verbose, force).await?;
 		}
 		Ok(())
 	}
