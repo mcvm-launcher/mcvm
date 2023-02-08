@@ -10,6 +10,7 @@ use std::env;
 use commands::{run_command, help, lib::CmdError};
 use io::files::paths::Paths;
 
+
 fn main() -> Result<(), CmdError> {
 	let argv: Vec<String> = env::args().collect();
 	let argc: usize = argv.len();

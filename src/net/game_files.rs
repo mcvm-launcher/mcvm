@@ -6,6 +6,7 @@ use crate::util::mojang;
 use crate::util::print::ReplPrinter;
 
 use color_print::{cprintln, cformat};
+use reqwest::Client;
 
 use std::path::{Path, PathBuf};
 
@@ -15,7 +16,7 @@ pub enum VersionManifestError {
 	Download(#[from] DownloadError),
 	#[error("Failed to evaluate json file:\n{}", .0)]
 	ParseError(#[from] json::JsonError),
-	#[error("File operation failed:\n\t{}", .0)]
+	#[error("File operation failed:\n{}", .0)]
 	Io(#[from] std::io::Error)
 }
 
@@ -57,13 +58,13 @@ pub fn get_version_manifest(paths: &Paths, verbose: bool)
 pub enum VersionJsonError {
 	#[error("Version {} does not exist", .0)]
 	VersionNotFound(#[from] VersionNotFoundError),
-	#[error("Failed to evaluate json file:\n\t{}", .0)]
+	#[error("Failed to evaluate json file:\n{}", .0)]
 	ParseError(#[from] json::JsonError),
 	#[error("{}", .0)]
 	VersionManifest(#[from] VersionManifestError),
-	#[error("Error when downloading version json:\n\t{}", .0)]
+	#[error("Error when downloading version json:\n{}", .0)]
 	Download(#[from] DownloadError),
-	#[error("File operation failed:\n\t{}", .0)]
+	#[error("File operation failed:\n{}", .0)]
 	Io(#[from] std::io::Error)
 }
 
@@ -101,13 +102,13 @@ pub fn get_version_json(version: &MinecraftVersion, paths: &Paths, verbose: bool
 
 #[derive(Debug, thiserror::Error)]
 pub enum LibrariesError {
-	#[error("Failed to evaluate json file:\n\t{}", .0)]
+	#[error("Failed to evaluate json file:\n{}", .0)]
 	ParseError(#[from] json::JsonError),
-	#[error("Error when downloading library:\n\t{}", .0)]
+	#[error("Error when downloading library:\n{}", .0)]
 	Download(#[from] DownloadError),
 	#[error("Failed to convert string to UTF-8")]
 	Utf,
-	#[error("File operation failed:\n\t{}", .0)]
+	#[error("File operation failed:\n{}", .0)]
 	Io(#[from] std::io::Error)
 }
 
@@ -217,9 +218,11 @@ pub fn get_libraries(
 pub enum AssetsError {
 	#[error("Failed to evaluate json file: {}", .0)]
 	ParseError(#[from] json::JsonError),
-	#[error("Error when downloading asset:\n\t{}", .0)]
+	#[error("Error when downloading asset:\n{}", .0)]
 	Download(#[from] DownloadError),
-	#[error("File operation failed:\n\t{}", .0)]
+	#[error("Error when downloading asset:\n{}", .0)]
+	MultiDownload(#[from] reqwest::Error),
+	#[error("File operation failed:\n{}", .0)]
 	Io(#[from] std::io::Error)
 }
 
@@ -232,31 +235,6 @@ fn download_asset_index(url: &str, path: &Path) -> Result<Box<json::JsonObject>,
 	
 	let doc = json::parse_object(&download.get_str()?)?;
 	Ok(doc)
-}
-
-// Download a single asset from the index. Returns false if the loop should continue
-fn download_asset(
-	asset: &json::JsonObject,
-	objects_dir: &Path,
-	download: &mut Download,
-	force: bool
-) -> Result<bool, AssetsError> {
-	let hash = json::access_str(asset, "hash")?.to_owned();
-	let hash_path = hash[..2].to_owned() + "/" + &hash;
-	let url = "https://resources.download.minecraft.net/".to_owned() + &hash_path;
-	
-	let path = objects_dir.join(&hash_path);
-	if !force && path.exists() {
-		return Ok(false);
-	}
-	files::create_leading_dirs(&path)?;
-	
-	download.reset();
-	download.url(&url)?;
-	download.add_file(&path)?;
-	download.perform()?;
-
-	Ok(true)
 }
 
 pub fn get_assets(
@@ -301,9 +279,21 @@ pub fn get_assets(
 	printer.indent(1);
 	for (i, (key, asset_val)) in assets.iter().enumerate() {
 		let asset = json::ensure_type(asset_val.as_object(), json::JsonType::Object)?;
-		if !download_asset(asset, &objects_dir, &mut download, force)? {
+
+		let hash = json::access_str(asset, "hash")?.to_owned();
+		let hash_path = hash[..2].to_owned() + "/" + &hash;
+		let url = "https://resources.download.minecraft.net/".to_owned() + &hash_path;
+		
+		let path = objects_dir.join(&hash_path);
+		if !force && path.exists() {
 			continue;
 		}
+		files::create_leading_dirs(&path)?;
+		
+		download.reset();
+		download.url(&url)?;
+		download.add_file(&path)?;
+		download.perform()?;
 		printer.print(&cformat!("(<b>{}</b><k!>/</k!><b>{}</b>) <k!>{}", i, count, key));
 	}
 	printer.print(&cformat!("<g>Assets downloaded."));

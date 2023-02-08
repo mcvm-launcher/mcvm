@@ -29,7 +29,7 @@ impl Paths {
 		let base = BaseDirs::new().ok_or(PathsError::Base)?;
 		let project = ProjectDirs::from("", "mcvm", "mcvm").ok_or(PathsError::Base)?;
 		
-		let internal= base.data_dir().join("internal");
+		let internal = project.data_dir().join("internal");
 		let assets = internal.join("assets");
 		let libraries = internal.join("libraries");
 		let java = internal.join("java");
