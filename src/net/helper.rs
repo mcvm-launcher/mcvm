@@ -96,23 +96,26 @@ impl Download {
 // }
 
 // pub struct MultiDownload {
-// 	handles: Vec<Box<Easy>>,
-// 	multi: Multi
+// 	handles: Vec<Easy>,
 // }
 
 // impl MultiDownload {
 // 	pub fn new() -> Self {
-// 		MultiDownload { handles: Vec::new(), multi: Multi::new() }
+// 		Self {
+// 			handles: Vec::new()
+// 		}
 // 	}
 
-// 	pub fn download(&mut self, easy: Box<Easy>) -> Result<(), MultiDownloadError> {
-// 		self.multi.add(*easy);
+// 	pub fn download(&mut self, easy: Easy) -> Result<(), MultiDownloadError> {
 // 		self.handles.push(easy);
 // 		Ok(())
 // 	}
 
 // 	pub fn perform(&mut self) -> Result<(), MultiDownloadError> {
-// 		let perform = self.multi.perform()?;
+// 		for easy in self.handles.par_iter() {
+
+// 		}
+
 // 		Ok(())
 // 	}
 // }
