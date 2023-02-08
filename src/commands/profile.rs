@@ -20,6 +20,7 @@ fn list(data: &mut CmdData) -> Result<(), CmdError> {
 	data.ensure_config()?;
 
 	if let Some(config) = &data.config {
+		dbg!(config);
 		cprintln!("<s>Profiles:");
 		for (id, profile) in config.profiles.iter() {
 			cprintln!("\t<s><g>{}", id);

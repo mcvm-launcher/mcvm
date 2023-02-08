@@ -50,16 +50,6 @@ pub enum ContentError {
 }
 
 impl Config {
-	pub fn new() -> Self {
-		Self {
-			auth: Auth::new(),
-			instances: InstanceRegistry::new(),
-			profiles: HashMap::new(),
-			packages: HashMap::new(),
-			prefs: ConfigPreferences::new()
-		}
-	}
-
 	fn open(path: &PathBuf) -> Result<Box<json::JsonObject>, ConfigError> {
 		if path.exists() {
 			let doc = json::parse_object(&fs::read_to_string(path)?)?;
@@ -77,8 +67,11 @@ impl Config {
 	}
 
 	pub fn load(path: &PathBuf) -> Result<Self, ConfigError> {
-		let mut config = Self::new();
 		let doc = Self::open(path)?;
+		let mut auth = Auth::new();
+		let mut instances = InstanceRegistry::new();
+		let mut profiles = HashMap::new();
+		let mut packages = HashMap::new();
 
 		// Users
 		let users = json::access_object(&doc, "users")?;
@@ -96,13 +89,13 @@ impl Config {
 				None => cprintln!("<y>Warning: It is recommended to have your uuid in the configuration for user {}", user_id)
 			};
 			
-			config.auth.users.insert(user_id.to_string(), user);
+			auth.users.insert(user_id.to_string(), user);
 		}
 
 		if let Some(user_val) = doc.get("default_user") {
 			let user_id = json::ensure_type(user_val.as_str(), json::JsonType::Str)?.to_string();
-			match config.auth.users.get(&user_id) {
-				Some(..) => config.auth.state = AuthState::Authed(user_id),
+			match auth.users.get(&user_id) {
+				Some(..) => auth.state = AuthState::Authed(user_id),
 				None => return Err(ConfigError::from(ContentError::DefaultUserNotFound(user_id)))
 			}
 		} else if users.is_empty() {
@@ -112,8 +105,8 @@ impl Config {
 		}
 
 		// Profiles
-		let profiles = json::access_object(&doc, "profiles")?;
-		for (profile_id, profile_val) in profiles {
+		let doc_profiles = json::access_object(&doc, "profiles")?;
+		for (profile_id, profile_val) in doc_profiles {
 			let profile_obj = json::ensure_type(profile_val.as_object(), json::JsonType::Object)?;
 			let version =  MinecraftVersion::from(json::access_str(profile_obj, "version")?);
 
@@ -121,9 +114,9 @@ impl Config {
 			
 			// Instances
 			if let Some(instances_val) = profile_obj.get("instances") {
-				let instances = json::ensure_type(instances_val.as_object(), json::JsonType::Object)?;
-				for (instance_id, instance_val) in instances {
-					if config.instances.contains_key(instance_id) {
+				let doc_instances = json::ensure_type(instances_val.as_object(), json::JsonType::Object)?;
+				for (instance_id, instance_val) in doc_instances {
+					if instances.contains_key(instance_id) {
 						return Err(ConfigError::from(ContentError::DuplicateInstance(instance_id.to_string())));
 					}
 
@@ -136,13 +129,13 @@ impl Config {
 
 					let instance = Instance::new(kind, instance_id, &version);
 					profile.add_instance(instance_id);
-					config.instances.insert(instance_id.to_string(), instance);
+					instances.insert(instance_id.to_string(), instance);
 				}
 			}
 
 			if let Some(packages_val) = profile_obj.get("packages") {
-				let packages = json::ensure_type(packages_val.as_array(), json::JsonType::Array)?;
-				for package_val in packages {
+				let doc_packages = json::ensure_type(packages_val.as_array(), json::JsonType::Array)?;
+				for package_val in doc_packages {
 					let package_obj = json::ensure_type(package_val.as_object(), json::JsonType::Object)?;
 					let package_type = json::access_str(package_obj, "type")?;
 					let kind = match package_type {
@@ -150,14 +143,23 @@ impl Config {
 							let package_path = json::access_str(package_obj, "path")?;
 							Ok(PkgKind::Local(PathBuf::from(package_path)))
 						},
-						typ => Err(ContentError::InstType(typ.to_string(), "package".to_string()))
+						typ => Err(ContentError::PkgType(typ.to_string(), "package".to_string()))
 					}?;
 				}
 			}
 			
-			config.profiles.insert(profile_id.to_string(), Box::new(profile));
+			profiles.insert(profile_id.to_string(), Box::new(profile));
 		}
 
-		Ok(config)
+		// Preferences
+		let prefs = ConfigPreferences::new(doc.get("preferences"))?;
+
+		Ok(Self {
+			auth,
+			instances,
+			profiles,
+			packages,
+			prefs
+		})
 	}
 }
