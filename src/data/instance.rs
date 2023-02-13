@@ -1,6 +1,6 @@
 use crate::util::json;
 use crate::util::versions::MinecraftVersion;
-use crate::net::helper;
+use crate::net::download;
 use crate::io::files;
 use crate::io::java::{Java, JavaKind, JavaError};
 use crate::Paths;
@@ -36,7 +36,7 @@ pub enum CreateError {
 	#[error("Failed to evaluate json file:\n{}", .0)]
 	Parse(#[from] json::JsonError),
 	#[error("Error when downloading file:\n{}", .0)]
-	Download(#[from] helper::DownloadError),
+	Download(#[from] download::DownloadError),
 	#[error("Failed to process version json:\n{}", .0)]
 	VersionJson(#[from] game_files::VersionJsonError),
 	#[error("Failed to install libraries:\n{}", .0)]
@@ -119,7 +119,7 @@ impl Instance {
 		files::create_dir(&mc_dir)?;
 		let jar_path = dir.join("client.jar");
 
-		let (version_json, mut download) = game_files::get_version_json(&self.version, paths, verbose)?;
+		let (version_json, mut dwn) = game_files::get_version_json(&self.version, paths, verbose)?;
 		
 		let mut classpath = game_files::get_libraries(&version_json, paths, &self.version, verbose, force)?;
 		classpath.push_str(jar_path.to_str().expect("Failed to convert client.jar path to a string"));
@@ -132,14 +132,14 @@ impl Instance {
 			let mut printer = ReplPrinter::new(verbose);
 			printer.indent(1);
 			printer.print("Downloading client jar...");
-			download.reset();
-			download.add_file(&jar_path)?;
+			dwn.reset();
+			dwn.add_file(&jar_path)?;
 			let client_download = json::access_object(
 				json::access_object(&version_json, "downloads")?,
 				"client"
 			)?;
-			download.url(json::access_str(client_download, "url")?)?;
-			download.perform()?;
+			dwn.url(json::access_str(client_download, "url")?)?;
+			dwn.perform()?;
 			printer.print(cformat!("<g>Client jar downloaded.").as_str());
 			printer.finish();
 		}
@@ -157,7 +157,7 @@ impl Instance {
 		files::create_dir(&server_dir)?;
 		let jar_path = server_dir.join("server.jar");
 
-		let (version_json, mut download) = game_files::get_version_json(&self.version, paths, verbose)?;
+		let (version_json, mut dwn) = game_files::get_version_json(&self.version, paths, verbose)?;
 
 		self.get_java(JavaKind::Adoptium, "17", paths, verbose, force)?;
 
@@ -165,14 +165,14 @@ impl Instance {
 			let mut printer = ReplPrinter::new(verbose);
 			printer.indent(1);
 			printer.print("Downloading server jar...");
-			download.reset();
-			download.add_file(&jar_path)?;
+			dwn.reset();
+			dwn.add_file(&jar_path)?;
 			let client_download = json::access_object(
 				json::access_object(&version_json, "downloads")?,
 				"server"
 			)?;
-			download.url(json::access_str(client_download, "url")?)?;
-			download.perform()?;
+			dwn.url(json::access_str(client_download, "url")?)?;
+			dwn.perform()?;
 			printer.print(cformat!("<g>Server jar downloaded.").as_str());
 			printer.finish();
 		}

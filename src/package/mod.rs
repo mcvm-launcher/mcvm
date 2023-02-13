@@ -2,7 +2,7 @@ pub mod eval;
 pub mod repo;
 
 use crate::io::files::{self, paths::Paths};
-use crate::net::helper::{Download, DownloadError};
+use crate::net::download::{Download, DownloadError};
 
 use std::path::PathBuf;
 use std::fs;

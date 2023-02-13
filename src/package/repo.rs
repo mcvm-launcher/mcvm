@@ -1,4 +1,4 @@
-use crate::net::helper::{Download, DownloadError};
+use crate::net::download::{Download, DownloadError};
 use crate::io::files::paths::Paths;
 use super::{Package, PkgKind, PKG_EXTENSION};
 use crate::util::versions::VersionPattern;

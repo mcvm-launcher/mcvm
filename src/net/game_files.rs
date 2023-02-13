@@ -1,7 +1,7 @@
 use crate::io::files::{self, paths::Paths};
 use crate::util::versions::{VersionNotFoundError, MinecraftVersion};
 use crate::util::json::{self, JsonObject};
-use crate::net::helper::{Download, DownloadError};
+use crate::net::download::{Download, DownloadError};
 use crate::util::mojang;
 use crate::util::print::ReplPrinter;
 
@@ -135,16 +135,16 @@ fn is_library_allowed(lib: &JsonObject) -> Result<bool, LibrariesError> {
 
 // Finishes up and downloads a library
 fn download_library(
-	download: &mut Download,
+	dwn: &mut Download,
 	lib_download: &json::JsonObject,
 	path: &Path
 ) -> Result<(), LibrariesError> {
 	files::create_leading_dirs(path)?;
 	let url = json::access_str(lib_download, "url")?;
-	download.reset();
-	download.url(url)?;
-	download.add_file(path)?;
-	download.perform()?;
+	dwn.reset();
+	dwn.url(url)?;
+	dwn.add_file(path)?;
+	dwn.perform()?;
 	Ok(())
 }
 
@@ -163,7 +163,7 @@ pub fn get_libraries(
 	
 	let mut native_paths: Vec<PathBuf> = Vec::new();
 	let mut classpath = String::new();
-	let mut download = Download::new();
+	let mut dwn = Download::new();
 	let mut printer = ReplPrinter::new(verbose);
 	printer.indent(1);
 
@@ -191,7 +191,7 @@ pub fn get_libraries(
 				continue;
 			}
 			printer.print(&cformat!("Downloading library <b!>{}</>...", name));
-			download_library(&mut download, classifier, &path)?;
+			download_library(&mut dwn, classifier, &path)?;
 			native_paths.push(path);
 			continue;
 		}
@@ -204,7 +204,7 @@ pub fn get_libraries(
 				continue;
 			}
 			printer.print(&cformat!("Downloading library <b>{}</>...", name));
-			download_library(&mut download, artifact, &path)?;
+			download_library(&mut dwn, artifact, &path)?;
 			continue;
 		}
 	}
@@ -229,13 +229,13 @@ pub enum AssetsError {
 }
 
 fn download_asset_index(url: &str, path: &Path) -> Result<Box<json::JsonObject>, AssetsError> {
-	let mut download = Download::new();
-	download.url(url)?;
-	download.add_file(path)?;
-	download.add_str();
-	download.perform()?;
+	let mut dwn = Download::new();
+	dwn.url(url)?;
+	dwn.add_file(path)?;
+	dwn.add_str();
+	dwn.perform()?;
 	
-	let doc = json::parse_object(&download.get_str()?)?;
+	let doc = json::parse_object(&dwn.get_str()?)?;
 	Ok(doc)
 }
 

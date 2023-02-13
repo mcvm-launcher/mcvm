@@ -1,6 +1,6 @@
 use crate::io::files::{self, paths::Paths};
 use crate::util::mojang::{ARCH_STRING, OS_STRING};
-use crate::net::helper::{Download, DownloadError};
+use crate::net::download::{Download, DownloadError};
 use crate::util::json;
 use crate::util::print::ReplPrinter;
 
@@ -57,13 +57,13 @@ impl Java {
 					ARCH_STRING,
 					OS_STRING
 				);
-				let mut download = Download::new();
-				download.url(&url)?;
-				download.follow_redirects()?;
-				download.add_str();
-				download.perform()?;
+				let mut dwn = Download::new();
+				dwn.url(&url)?;
+				dwn.follow_redirects()?;
+				dwn.add_str();
+				dwn.perform()?;
 				
-				let manifest_val = json::parse_json(&download.get_str()?)?;
+				let manifest_val = json::parse_json(&dwn.get_str()?)?;
 				let manifest = json::ensure_type(manifest_val.as_array(), json::JsonType::Array)?;
 				let version = json::ensure_type(
 					manifest.get(0).ok_or(JavaError::InstallationNotFound)?.as_object(),
@@ -88,14 +88,14 @@ impl Java {
 				let tar_name = "adoptium".to_owned() + &self.major_version + ".tar.gz";
 				let tar_path = out_dir.join(tar_name);
 
-				download.reset();
-				download.url(bin_url)?;
-				download.follow_redirects()?;
-				download.add_file(&tar_path)?;
+				dwn.reset();
+				dwn.url(bin_url)?;
+				dwn.follow_redirects()?;
+				dwn.add_file(&tar_path)?;
 				printer.print(&cformat!("\tDownloading Adoptium Temurin JRE <b>{}</b>...", json::access_str(version, "release_name")?));
-				download.perform()?;
+				dwn.perform()?;
 				// Close the files
-				download.reset();
+				dwn.reset();
 
 				// Extraction
 				printer.print(&cformat!("\tExtracting..."));
