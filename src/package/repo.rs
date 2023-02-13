@@ -19,11 +19,18 @@ pub enum ApiError {
 	Download(#[from] DownloadError)
 }
 
+// An entry in the list of versions for a package
+#[derive(Debug, Deserialize)]
+struct PkgVersionEntry {
+	name: String,
+	url: String
+}
+
 // An entry in the index that specifies what package versions are available
 #[derive(Debug, Deserialize)]
 pub struct PkgEntry {
 	// A list of package versions available from this repository. Ordered from oldest to newest
-	versions: Vec<String>
+	versions: Vec<PkgVersionEntry>
 }
 
 #[derive(Debug, Deserialize)]
@@ -33,7 +40,7 @@ pub struct RepoIndex {
 
 #[derive(Debug)]
 pub struct PkgRepo {
-	id: String,
+	pub id: String,
 	url: String,
 	contents: Option<RepoIndex>
 }
@@ -42,7 +49,7 @@ impl PkgRepo {
 	pub fn new(id: &str, url: &str) -> Self {
 		Self {
 			id: id.to_owned(),
-			url: url.to_owned() + "/api/mcvm",
+			url: url.to_owned(),
 			contents: None
 		}
 	}
@@ -59,7 +66,7 @@ impl PkgRepo {
 
 	pub fn sync(&mut self, paths: &Paths) -> Result<(), ApiError> {
 		let mut dwn = Download::new();
-		dwn.url(&self.url)?;
+		dwn.url(&self.index_url())?;
 		dwn.add_file(&self.get_path(paths))?;
 		dwn.add_str();
 		dwn.perform()?;
@@ -80,20 +87,23 @@ impl PkgRepo {
 	}
 
 	fn index_url(&self) -> String {
-		self.url.to_owned() + "/index.json"
-	}
-
-	fn get_package_url(&self, id: &str, version: &str) -> String {
-		format!("{}/pkg/{id}_{version}{}", self.url, PKG_EXTENSION)
+		self.url.to_owned() + "/api/mcvm/index.json"
 	}
 
 	pub fn query(&mut self, id: &str, version: &VersionPattern, paths: &Paths) -> Result<Option<Box<Package>>, ApiError> {
 		self.ensure_contents(paths)?;
 		if let Some(contents) = &self.contents {
 			if let Some(entry) = contents.packages.get(id) {
-				if let Some(found_version) = version.matches(&entry.versions) {
-					let url = self.get_package_url(id, &found_version);
-					let package = Package::new(id, &found_version, PkgKind::Remote(url));
+				let versions_vec = Vec::from_iter(entry.versions.iter().map(|entry| {
+					entry.name.clone()
+				}));
+
+				if let Some(found_version) = version.matches(&versions_vec) {
+					let url = &entry.versions.iter().find(|entry| {
+						entry.name == found_version
+					}).expect("Failed to locate url for version").name;
+
+					let package = Package::new(id, &found_version, PkgKind::Remote(url.to_owned()));
 					return Ok(Some(Box::new(package)));
 				}
 			}

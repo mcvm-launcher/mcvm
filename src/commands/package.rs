@@ -1,10 +1,11 @@
 use super::lib::{CmdData, CmdError};
-use crate::util::print::HYPHEN_POINT;
+use crate::util::print::{HYPHEN_POINT, ReplPrinter};
 use crate::package::PkgKind;
 
-use color_print::{cprintln, cprint};
+use color_print::{cprintln, cprint, cformat};
 
 static LIST_HELP: &str = "List all installed packages";
+static SYNC_HELP: &str = "Update all package indexes";
 
 pub fn help() {
 	cprintln!("<i>package:</i> Manage mcvm packages");
@@ -12,6 +13,7 @@ pub fn help() {
 	cprintln!();
 	cprintln!("<s>Subcommands:");
 	cprintln!("{}<i,c>list:</i,c> {}", HYPHEN_POINT, LIST_HELP);
+	cprintln!("{}<i,c>sync:</i,c> {}", HYPHEN_POINT, SYNC_HELP);
 }
 
 fn list(data: &mut CmdData) -> Result<(), CmdError> {
@@ -36,6 +38,25 @@ fn list(data: &mut CmdData) -> Result<(), CmdError> {
 	Ok(())
 }
 
+fn sync(data: &mut CmdData) -> Result<(), CmdError> {
+	data.ensure_config()?;
+	data.ensure_paths()?;
+
+	if let Some(config) = &mut data.config {
+		if let Some(paths) = &data.paths {
+			let mut printer = ReplPrinter::new(true);
+			for repo in config.prefs.repositories.iter_mut() {
+				printer.print(&cformat!("Syncing repository <b>{}</b>...", repo.id));
+				repo.sync(paths)?;
+				printer.print(&cformat!("<g>Synced repository <b!>{}</b!>", repo.id));
+				cprintln!();
+			}
+		}
+	}
+	
+	Ok(())
+}
+
 pub fn run(argc: usize, argv: &[String], data: &mut CmdData)
 -> Result<(), CmdError> {
 	if argc == 0 {
@@ -45,6 +66,7 @@ pub fn run(argc: usize, argv: &[String], data: &mut CmdData)
 
 	match argv[0].as_str() {
 		"list" => list(data)?,
+		"sync" => sync(data)?,
 		"help" => help(),
 		cmd => cprintln!("<r>Unknown subcommand {}", cmd)
 	}
