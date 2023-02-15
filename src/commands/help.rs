@@ -9,9 +9,12 @@ pub fn main_help() {
 	cprintln!();
 	cprintln!("<s>Commands:");
 	cprintln!("{}<i,c>help:</i,c> show this message", HYPHEN_POINT);
+	cprintln!("{}<i,c>version:</i,c> show mcvm's current version", HYPHEN_POINT);
 	cprintln!("{}<i,c>profile:</i,c> modify profiles", HYPHEN_POINT);
 	cprintln!("{}<i,c>user:</i,c> modify users", HYPHEN_POINT);
 	cprintln!("{}<i,c>launch:</i,c> play the game", HYPHEN_POINT);
+	cprintln!("{}<i,c>package:</i,c> manage packages", HYPHEN_POINT);
+	cprintln!("{}<i,c>files:</i,c> work with internal files", HYPHEN_POINT);
 }
 
 pub fn help() {
