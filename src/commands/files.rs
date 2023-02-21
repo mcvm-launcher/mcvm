@@ -33,7 +33,6 @@ pub fn run(argc: usize, argv: &[String], data: &mut CmdData)
 
 	match argv[0].as_str() {
 		"remove" => remove(data)?,
-		"help" => help(),
 		cmd => cprintln!("<r>Unknown subcommand {}", cmd)
 	}
 

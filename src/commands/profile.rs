@@ -115,7 +115,6 @@ pub async fn run(argc: usize, argv: &[String], data: &mut CmdData)
 			1 => cprintln!("{}", REINSTALL_HELP),
 			_ => profile_update(data, &argv[1], true).await?
 		}
-		"help" => help(),
 		cmd => cprintln!("<r>Unknown subcommand {}", cmd)
 	}
 

@@ -10,7 +10,6 @@ use crate::util::{json, versions::MinecraftVersion};
 use color_print::cprintln;
 use serde_json::json;
 
-use std::arch::asm;
 use std::collections::HashMap;
 use std::path::PathBuf;
 use std::fs;
