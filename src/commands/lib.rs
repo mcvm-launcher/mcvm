@@ -1,7 +1,7 @@
 use crate::io::files::paths::{Paths, PathsError};
 use crate::data::config::{Config, ConfigError};
 use crate::data::instance::{CreateError, LaunchError};
-use crate::package::repo::ApiError;
+use crate::package::repo::RepoError;
 
 use phf_macros::phf_map;
 
@@ -51,7 +51,7 @@ pub enum CmdError {
 	#[error("IO operation failed:\n{}", .0)]
 	Io(#[from] std::io::Error),
 	#[error("Failed to access package repository:\n{}", .0)]
-	Repo(#[from] ApiError),
+	Repo(#[from] RepoError),
 	#[error("{}", .0)]
 	Custom(String)
 }

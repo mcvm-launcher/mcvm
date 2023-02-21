@@ -10,6 +10,7 @@ use std::fs;
 
 static PKG_EXTENSION: &str = ".pkg.txt";
 
+// Data pertaining to the contents of a package
 #[derive(Debug)]
 pub struct PkgData {
 	contents: String,
@@ -33,12 +34,14 @@ impl PkgData {
 	}
 }
 
+// Type of a package
 #[derive(Debug)]
 pub enum PkgKind {
-	Local(PathBuf),
-	Remote(String)
+	Local(PathBuf), // Contained on the local filesystem
+	Remote(String) // Contained on an external repository
 }
 
+// An installable package that loads content into your game
 #[derive(Debug)]
 pub struct Package {
 	pub name: String,
@@ -57,10 +60,12 @@ impl Package {
 		}
 	}
 
+	// Get the cached file name of the package
 	pub fn filename(&self) -> String {
 		self.name.clone() + &self.version + PKG_EXTENSION
 	}
 
+	// Ensure the raw contents of the package
 	pub fn ensure_loaded(&mut self, paths: &Paths) -> Result<(), PkgError> {
 		if self.data.is_none() {
 			match &self.kind {
