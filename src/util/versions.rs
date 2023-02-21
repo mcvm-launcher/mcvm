@@ -43,3 +43,19 @@ impl VersionPattern {
 		}
 	}
 }
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+
+	#[test]
+	fn test_version_pattern() {
+		let versions = vec![
+			String::from("1.19.3"),
+			String::from("1.18")
+		];
+		assert_eq!(VersionPattern::Single(String::from("1.19.3")).matches(&versions), Some(String::from("1.19.3")));
+		assert_eq!(VersionPattern::Single(String::from("1.18")).matches(&versions), Some(String::from("1.18")));
+		assert_eq!(VersionPattern::Single(String::from("")).matches(&versions), None);
+	}
+}

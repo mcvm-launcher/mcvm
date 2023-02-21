@@ -38,8 +38,7 @@ impl Profile {
 		paths: &Paths,
 		verbose: bool,
 		force: bool
-	)
-	-> Result<(), CreateError> {
+	) -> Result<(), CreateError> {
 		for id in self.instances.iter_mut() {
 			let instance = reg.get_mut(id).expect("Profile has unknown instance");
 			instance.create(paths, verbose, force).await?;

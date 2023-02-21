@@ -1,5 +1,4 @@
 use crate::package::repo::PkgRepo;
-use crate::util::json;
 use super::ConfigError;
 
 use serde::Deserialize;
