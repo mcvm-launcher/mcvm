@@ -10,9 +10,38 @@ use crate::util::{json, versions::MinecraftVersion};
 use color_print::cprintln;
 use serde_json::json;
 
+use std::arch::asm;
 use std::collections::HashMap;
 use std::path::PathBuf;
 use std::fs;
+
+// Default program configuration
+fn default_config() -> serde_json::Value {
+	return json!(
+		{
+			"users": {
+				"example": {
+					"type": "microsoft",
+					"name": "ExampleUser441"
+				}
+			},
+			"profiles": {
+				"example": {
+					"version": "1.19.3",
+					"instances": {
+						"example-client": {
+							"type": "client"
+						},
+						"example-server": {
+							"type": "server"
+						}
+					}
+				}
+			},
+			"packages": []
+		}
+	);
+}
 
 #[derive(Debug)]
 pub struct Config {
@@ -55,26 +84,20 @@ impl Config {
 			let doc = json::parse_object(&fs::read_to_string(path)?)?;
 			Ok(doc)
 		} else {
-			let doc = json!(
-				{
-					"users": {},
-					"profiles": {}
-				}
-			);
+			let doc = default_config();
 			fs::write(path, serde_json::to_string_pretty(&doc)?)?;
 			Ok(Box::new(json::ensure_type(doc.as_object(), json::JsonType::Object)?.clone()))
 		}
 	}
 
-	pub fn load(path: &PathBuf) -> Result<Self, ConfigError> {
-		let doc = Self::open(path)?;
+	fn load_from_obj(obj: &json::JsonObject) -> Result<Self, ConfigError> {
 		let mut auth = Auth::new();
 		let mut instances = InstanceRegistry::new();
 		let mut profiles = HashMap::new();
 		let mut packages = HashMap::new();
 
 		// Users
-		let users = json::access_object(&doc, "users")?;
+		let users = json::access_object(&obj, "users")?;
 		for (user_id, user_val) in users.iter() {
 			let user_obj = json::ensure_type(user_val.as_object(), json::JsonType::Object)?;
 			let kind = match json::access_str(user_obj, "type")? {
@@ -92,7 +115,7 @@ impl Config {
 			auth.users.insert(user_id.to_string(), user);
 		}
 
-		if let Some(user_val) = doc.get("default_user") {
+		if let Some(user_val) = obj.get("default_user") {
 			let user_id = json::ensure_type(user_val.as_str(), json::JsonType::Str)?.to_string();
 			match auth.users.get(&user_id) {
 				Some(..) => auth.state = AuthState::Authed(user_id),
@@ -105,7 +128,7 @@ impl Config {
 		}
 
 		// Profiles
-		let doc_profiles = json::access_object(&doc, "profiles")?;
+		let doc_profiles = json::access_object(&obj, "profiles")?;
 		for (profile_id, profile_val) in doc_profiles {
 			let profile_obj = json::ensure_type(profile_val.as_object(), json::JsonType::Object)?;
 			let version =  MinecraftVersion::from(json::access_str(profile_obj, "version")?);
@@ -156,7 +179,7 @@ impl Config {
 		}
 
 		// Preferences
-		let prefs = ConfigPreferences::new(doc.get("preferences"))?;
+		let prefs = ConfigPreferences::new(obj.get("preferences"))?;
 
 		Ok(Self {
 			auth,
@@ -165,5 +188,22 @@ impl Config {
 			packages,
 			prefs
 		})
+	}
+
+	pub fn load(path: &PathBuf) -> Result<Self, ConfigError> {
+		let obj = Self::open(path)?;
+		Self::load_from_obj(&obj)
+	}
+}
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+
+	#[test]
+	fn test_default_config() {
+		let obj = json::ensure_type(default_config().as_object(),
+			json::JsonType::Object).unwrap().clone();
+		Config::load_from_obj(&obj).unwrap();
 	}
 }
