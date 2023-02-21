@@ -1,1 +1,0 @@
-target_sources(mcvm PUBLIC profile.cc)
