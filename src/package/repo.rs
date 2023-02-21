@@ -1,6 +1,5 @@
 use crate::net::download::{Download, DownloadError};
 use crate::io::files::paths::Paths;
-use super::{Package, PkgKind};
 use crate::util::versions::VersionPattern;
 
 use serde::Deserialize;
@@ -96,8 +95,9 @@ impl PkgRepo {
 		self.url.to_owned() + "/api/mcvm/index.json"
 	}
 
-	// Ask if the index has a package and return that package if it exists
-	pub fn query(&mut self, id: &str, version: &VersionPattern, paths: &Paths) -> Result<Option<Box<Package>>, RepoError> {
+	// Ask if the index has a package and return the url for that package if it exists
+	pub fn query(&mut self, id: &str, version: &VersionPattern, paths: &Paths)
+	-> Result<Option<String>, RepoError> {
 		self.ensure_index(paths)?;
 		if let Some(index) = &self.index {
 			if let Some(entry) = index.packages.get(id) {
@@ -110,11 +110,21 @@ impl PkgRepo {
 						entry.name == found_version
 					}).expect("Failed to locate url for version").name;
 
-					let package = Package::new(id, &found_version, PkgKind::Remote(url.to_owned()));
-					return Ok(Some(Box::new(package)));
+					return Ok(Some(url.clone()));
 				}
 			}
 		}
 		Ok(None)
 	}
+}
+
+// Query a list of repos
+pub fn query_all(repos: &mut [PkgRepo], id: &str, version: &VersionPattern, paths: &Paths)
+-> Result<Option<String>, RepoError> {
+	for repo in repos {
+		if let Some(url) = repo.query(id, version, paths)? {
+			return Ok(Some(url));
+		}
+	}
+	Ok(None)
 }

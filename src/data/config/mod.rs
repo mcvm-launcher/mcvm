@@ -5,6 +5,7 @@ use super::user::{User, UserKind, AuthState, Auth};
 use super::profile::{Profile, InstanceRegistry};
 use super::instance::{Instance, InstKind};
 use crate::package::{Package, PkgKind};
+use crate::util::versions::VersionPattern;
 use crate::util::{json, versions::MinecraftVersion};
 
 use color_print::cprintln;
@@ -159,16 +160,31 @@ impl Config {
 				let doc_packages = json::ensure_type(packages_val.as_array(), json::JsonType::Array)?;
 				for package_val in doc_packages {
 					let package_obj = json::ensure_type(package_val.as_object(), json::JsonType::Object)?;
-					let package_type = json::access_str(package_obj, "type")?;
-					let kind = match package_type {
-						"local" => {
-							let package_path = json::access_str(package_obj, "path")?;
-							Ok(PkgKind::Local(PathBuf::from(package_path)))
+					let kind = match package_obj.get("type") {
+						Some(val) => {
+							match json::ensure_type(val.as_str(), json::JsonType::Str)? {
+								"local" => {
+									let package_path = json::access_str(package_obj, "path")?;
+									Ok(PkgKind::Local(PathBuf::from(package_path)))
+								},
+								"remote" => {
+									Ok(PkgKind::Remote(None))
+								}
+								typ => Err(ContentError::PkgType(typ.to_string(), "package".to_string()))
+							}
 						},
-						typ => Err(ContentError::PkgType(typ.to_string(), "package".to_string()))
+						None => {
+							Ok(PkgKind::Remote(None))
+						}
 					}?;
 					let package_id = json::access_str(package_obj, "id")?;
-					let package = Package::new(package_id, "0.0.1", kind);
+					let package_version = match package_obj.get("version") {
+						Some(version) => VersionPattern::Single(
+							json::ensure_type(version.as_str(), json::JsonType::Str)?.to_owned()
+						),
+						None => VersionPattern::Latest(None)
+					};
+					let package = Package::new(package_id, package_version, kind);
 					profile.add_package(&package);
 					packages.insert(package_id.to_string(), Box::new(package));
 				}

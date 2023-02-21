@@ -45,8 +45,8 @@ fn info(data: &mut CmdData, id: &String) -> Result<(), CmdError> {
 				if let Some(package) = config.packages.get(pkg_id) {
 					cprint!("   {}", HYPHEN_POINT);
 					match package.kind {
-						PkgKind::Local(..) => cprint!("<m!>{} <g>v<g!>{}", pkg_id, package.version),
-						PkgKind::Remote(..) => cprint!("<g!>{} <g>v<g!>{}", pkg_id, package.version)
+						PkgKind::Local(..) => cprint!("<m!>{} <g>v<g!>{}", pkg_id, package.version.as_string()),
+						PkgKind::Remote(..) => cprint!("<g!>{} <g>v<g!>{}", pkg_id, package.version.as_string())
 					}
 					cprintln!();
 				}

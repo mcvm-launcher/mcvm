@@ -24,8 +24,8 @@ fn list(data: &mut CmdData) -> Result<(), CmdError> {
 		for (id, package) in config.packages.iter() {
 			cprint!("{}", HYPHEN_POINT);
 			match package.kind {
-				PkgKind::Local(..) => cprint!("<m!>{}", id),
-				PkgKind::Remote(..) => cprint!("<g!>{}", id)
+				PkgKind::Local(..) => cprint!("<m!>{}", package.full_name()),
+				PkgKind::Remote(..) => cprint!("<g!>{}", package.full_name())
 			}
 			for (prof_id, profile) in config.profiles.iter() {
 				if profile.packages.contains(id) {

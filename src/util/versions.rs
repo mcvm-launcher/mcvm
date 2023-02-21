@@ -29,17 +29,32 @@ impl MinecraftVersion {
 
 static _VERSION_LIST: [&str; 1] = ["1.19"];
 
+// Pattern matching for the version of Minecraft or a package
+#[derive(Debug)]
 pub enum VersionPattern {
-	Single(String)
+	Single(String),
+	Latest(Option<String>)
 }
 
 impl VersionPattern {
+	// Finds a match in a list of versions
 	pub fn matches(&self, versions: &[String]) -> Option<String> {
 		match self {
 			VersionPattern::Single(version) => match versions.contains(version) {
 				true => Some(version.to_string()),
 				false => None
+			},
+			VersionPattern::Latest(found) => match found {
+				Some(found) => Some(found.clone()),
+				None => versions.get(versions.len()).cloned()
 			}
+		}
+	}
+
+	pub fn as_string(&self) -> &str {
+		match self {
+			Self::Single(version) => version,
+			Self::Latest(..) => "latest"
 		}
 	}
 }
