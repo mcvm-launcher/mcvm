@@ -34,7 +34,7 @@ pub enum VersionPattern {
 }
 
 impl VersionPattern {
-	pub fn matches(&self, versions: &Vec<String>) -> Option<String> {
+	pub fn matches(&self, versions: &[String]) -> Option<String> {
 		match self {
 			VersionPattern::Single(version) => match versions.contains(version) {
 				true => Some(version.to_string()),

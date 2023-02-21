@@ -16,7 +16,7 @@ use std::fs;
 
 // Default program configuration
 fn default_config() -> serde_json::Value {
-	return json!(
+	json!(
 		{
 			"users": {
 				"example": {
@@ -39,7 +39,7 @@ fn default_config() -> serde_json::Value {
 			},
 			"packages": []
 		}
-	);
+	)
 }
 
 #[derive(Debug)]
@@ -96,7 +96,7 @@ impl Config {
 		let mut packages = HashMap::new();
 
 		// Users
-		let users = json::access_object(&obj, "users")?;
+		let users = json::access_object(obj, "users")?;
 		for (user_id, user_val) in users.iter() {
 			let user_obj = json::ensure_type(user_val.as_object(), json::JsonType::Object)?;
 			let kind = match json::access_str(user_obj, "type")? {
@@ -127,7 +127,7 @@ impl Config {
 		}
 
 		// Profiles
-		let doc_profiles = json::access_object(&obj, "profiles")?;
+		let doc_profiles = json::access_object(obj, "profiles")?;
 		for (profile_id, profile_val) in doc_profiles {
 			let profile_obj = json::ensure_type(profile_val.as_object(), json::JsonType::Object)?;
 			let version =  MinecraftVersion::from(json::access_str(profile_obj, "version")?);
