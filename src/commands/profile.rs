@@ -1,7 +1,6 @@
 use super::lib::{CmdData, CmdError};
 use crate::data::instance::InstKind;
 use crate::util::print::HYPHEN_POINT;
-use crate::package::PkgKind;
 
 use color_print::{cprintln, cprint};
 

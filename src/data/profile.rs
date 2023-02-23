@@ -1,6 +1,5 @@
 use crate::data::instance::Instance;
 use crate::data::instance::CreateError;
-use crate::package::Package;
 use crate::package::reg::PkgRequest;
 use crate::util::versions::MinecraftVersion;
 use crate::Paths;

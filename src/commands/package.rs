@@ -1,7 +1,9 @@
+use std::collections::HashMap;
+
 use super::lib::{CmdData, CmdError};
 use crate::util::print::{HYPHEN_POINT, ReplPrinter};
 
-use color_print::{cprintln, cprint, cformat};
+use color_print::{cprintln, cformat};
 
 static LIST_HELP: &str = "List all installed packages";
 static SYNC_HELP: &str = "Update all package indexes";
@@ -19,20 +21,22 @@ fn list(data: &mut CmdData) -> Result<(), CmdError> {
 	data.ensure_config()?;
 
 	if let Some(config) = &data.config {
+		let mut found_pkgs: HashMap<String, Vec<(String, String)>> = HashMap::new();
+		for (id, profile) in config.profiles.iter() {
+			if !profile.packages.is_empty() {
+				for req in profile.packages.iter() {
+					found_pkgs.entry(req.name.clone())
+						.or_insert(vec![]).push((req.version.as_string().to_owned(), id.clone()));
+				}
+			}
+		}
 		cprintln!("<s>Packages:");
-		// for (id, package) in config.packages.iter() {
-		// 	cprint!("{}", HYPHEN_POINT);
-		// 	match package.kind {
-		// 		PkgKind::Local(..) => cprint!("<m!>{}", package.full_name()),
-		// 		PkgKind::Remote(..) => cprint!("<g!>{}", package.full_name())
-		// 	}
-		// 	for (prof_id, profile) in config.profiles.iter() {
-		// 		if profile.packages.contains(id) {
-		// 			cprint!(" <k!>({})", prof_id);
-		// 		}
-		// 	}
-		// 	cprintln!();
-		// }
+		for (pkg, versions) in found_pkgs {
+			cprintln!("<g!>{}", pkg);
+			for (version, profile) in versions {
+				cprintln!("{}<b>{} <k!>{}", HYPHEN_POINT, version, profile);
+			}
+		}
 	}
 	Ok(())
 }

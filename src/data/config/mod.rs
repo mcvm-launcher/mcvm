@@ -6,7 +6,6 @@ use super::profile::{Profile, InstanceRegistry};
 use super::instance::{Instance, InstKind};
 use crate::package::reg::{PkgRegistry, PkgRequest, PkgIdentifier};
 use crate::package::repo::PkgRepo;
-use crate::package::{Package, PkgKind};
 use crate::util::versions::VersionPattern;
 use crate::util::{json, versions::MinecraftVersion};
 
