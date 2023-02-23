@@ -4,7 +4,7 @@ pub mod reg;
 
 use crate::io::files::{self, paths::Paths};
 use crate::net::download::{Download, DownloadError};
-use eval::parse::PkgAst;
+// use eval::parse::PkgAst;
 
 use std::path::PathBuf;
 use std::fs;
@@ -17,8 +17,7 @@ static PKG_EXTENSION: &str = ".pkg.txt";
 // Data pertaining to the contents of a package
 #[derive(Debug)]
 pub struct PkgData {
-	contents: String,
-	ast: Option<PkgAst>
+	contents: String
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -34,8 +33,7 @@ pub enum PkgError {
 impl PkgData {
 	pub fn new(contents: &str) -> Self {
 		Self {
-			contents: contents.to_owned(),
-			ast: None
+			contents: contents.to_owned()
 		}
 	}
 
