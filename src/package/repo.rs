@@ -108,7 +108,7 @@ impl PkgRepo {
 				if let Some(found_version) = version.matches(&versions_vec) {
 					let url = &entry.versions.iter().find(|entry| {
 						entry.name == found_version
-					}).expect("Failed to locate url for version").name;
+					}).expect("Failed to locate url for version").url;
 
 					return Ok(Some((url.clone(), found_version)));
 				}

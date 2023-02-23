@@ -57,11 +57,4 @@ impl Auth {
 			AuthState::Offline => None
 		}
 	}
-
-	pub fn get_user_mut(&mut self) -> Option<&mut User> {
-		match &self.state {
-			AuthState::Authed(user_id) => self.users.get_mut(user_id),
-			AuthState::Offline => None
-		}
-	}
 }
