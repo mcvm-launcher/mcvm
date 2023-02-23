@@ -4,7 +4,7 @@ use crate::{util::versions::VersionPattern, io::files::paths::Paths};
 
 use std::collections::HashMap;
 use std::fmt::Display;
-use std::path::PathBuf;
+use std::path::Path;
 
 // Used to store a request for a package that will be fulfilled later
 #[derive(Debug)]
@@ -38,15 +38,15 @@ pub enum RegError {
 
 #[derive(Debug)]
 pub struct PkgRegistry {
-	repos: Vec<PkgRepo>,
+	pub repos: Vec<PkgRepo>,
 	versions: HashMap<String, Vec<String>>,
 	packages: HashMap<PkgIdentifier, Package>
 }
 
 impl PkgRegistry {
-	pub fn new() -> Self {
+	pub fn new(repos: Vec<PkgRepo>) -> Self {
 		Self {
-			repos: Vec::new(),
+			repos,
 			versions: HashMap::new(),
 			packages: HashMap::new()
 		}
@@ -65,8 +65,8 @@ impl PkgRegistry {
 
 		match query_all(&mut self.repos, &pkg_name, &pkg_vers, paths)? {
 			Some((url, version)) => {
-				let id = PkgIdentifier {name: pkg_name.clone(), version};
-				Ok(self.insert(&id, Package::new(&pkg_name, pkg_vers, PkgKind::Remote(Some(url)))))
+				let id = PkgIdentifier {name: pkg_name.clone(), version: version.clone()};
+				Ok(self.insert(&id, Package::new(&pkg_name, &version, PkgKind::Remote(Some(url)))))
 			}
 			None => Err(RegError::NotFound(pkg_name))
 		}
@@ -75,21 +75,19 @@ impl PkgRegistry {
 	fn get(&mut self, req: &PkgRequest, paths: &Paths) -> Result<&mut Package, RegError> {
 		let pkg_name = req.name.clone();
 		let pkg_vers = req.version.clone();
-		{
-			match self.versions.get(&pkg_name) {
-				Some(versions) => match pkg_vers.matches(versions) {
-					Some(vers) => {
-						let key = PkgIdentifier {name: pkg_name.clone(), version: vers};
-						if self.packages.contains_key(&key) {
-							Ok(self.packages.get_mut(&key).unwrap())
-						} else {
-							self.query_insert(req, paths)
-						}
+		match self.versions.get(&pkg_name) {
+			Some(versions) => match pkg_vers.matches(versions) {
+				Some(vers) => {
+					let key = PkgIdentifier {name: pkg_name.clone(), version: vers};
+					if self.packages.contains_key(&key) {
+						Ok(self.packages.get_mut(&key).unwrap())
+					} else {
+						self.query_insert(req, paths)
 					}
-					None => self.query_insert(req, paths)
 				}
 				None => self.query_insert(req, paths)
 			}
+			None => self.query_insert(req, paths)
 		}
 	}
 
@@ -102,7 +100,7 @@ impl PkgRegistry {
 	}
 
 	// Insert a local package into the registry
-	pub fn insert_local(&mut self, id: &PkgIdentifier, path: &PathBuf) {
-		self.insert(id, Package::new(&id.name, VersionPattern::Single(id.version.clone()), PkgKind::Local(path.clone())));
+	pub fn insert_local(&mut self, id: &PkgIdentifier, path: &Path) {
+		self.insert(id, Package::new(&id.name, &id.version, PkgKind::Local(path.to_path_buf())));
 	}
 }

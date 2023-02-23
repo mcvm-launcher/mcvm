@@ -5,7 +5,6 @@ use super::user::{User, UserKind, AuthState, Auth};
 use super::profile::{Profile, InstanceRegistry};
 use super::instance::{Instance, InstKind};
 use crate::package::reg::{PkgRegistry, PkgRequest, PkgIdentifier};
-use crate::package::repo::PkgRepo;
 use crate::util::versions::VersionPattern;
 use crate::util::{json, versions::MinecraftVersion};
 
@@ -67,7 +66,9 @@ pub enum ContentError {
 	#[error("Unknown default user '{}'", .0)]
 	DefaultUserNotFound(String),
 	#[error("Duplicate instance '{}'", .0)]
-	DuplicateInstance(String)
+	DuplicateInstance(String),
+	#[error("Package '{}': Local packages must specify their exact version without special patterns", .0)]
+	LocalPackageVersion(String)
 }
 
 #[derive(Debug)]
@@ -76,8 +77,7 @@ pub struct Config {
 	pub instances: InstanceRegistry,
 	pub profiles: HashMap<String, Box<Profile>>,
 	pub packages: PkgRegistry,
-	pub prefs: ConfigPreferences,
-	pub package_repos: Vec<PkgRepo>
+	pub prefs: ConfigPreferences
 }
 
 impl Config {
@@ -96,10 +96,10 @@ impl Config {
 		let mut auth = Auth::new();
 		let mut instances = InstanceRegistry::new();
 		let mut profiles = HashMap::new();
-		let mut packages = PkgRegistry::new();
-
 		// Preferences
 		let (prefs, repositories) = ConfigPreferences::read(obj.get("preferences"))?;
+
+		let mut packages = PkgRegistry::new(repositories);
 
 		// Users
 		let users = json::access_object(obj, "users")?;
@@ -173,24 +173,23 @@ impl Config {
 						None => VersionPattern::Latest(None)
 					};
 					let req = PkgRequest {name: package_id.to_owned(), version: package_version.clone()};
-					match package_obj.get("type") {
-						Some(val) => {
-							match json::ensure_type(val.as_str(), json::JsonType::Str)? {
-								"local" => {
-									let package_path = json::access_str(package_obj, "path")?;
-									if let VersionPattern::Single(version) = package_version {
-										packages.insert_local(
-											&PkgIdentifier {name: package_id.to_owned(), version},
-											&PathBuf::from(package_path)
-										);
-									}
-								},
-								"remote" => {}
-								typ => Err(ContentError::PkgType(typ.to_string(), "package".to_string()))?
-							}
-						},
-						None => {}
-					};
+					if let Some(val) = package_obj.get("type") {
+						match json::ensure_type(val.as_str(), json::JsonType::Str)? {
+							"local" => {
+								let package_path = json::access_str(package_obj, "path")?;
+								if let VersionPattern::Single(version) = package_version {
+									packages.insert_local(
+										&PkgIdentifier {name: package_id.to_owned(), version},
+										&PathBuf::from(package_path)
+									);
+								} else {
+									Err(ContentError::LocalPackageVersion(package_id.to_owned()))?
+								}
+							},
+							"remote" => {}
+							typ => Err(ContentError::PkgType(typ.to_string(), "package".to_string()))?
+						}
+					}
 					profile.packages.push(req);
 				}
 			}
@@ -203,8 +202,7 @@ impl Config {
 			instances,
 			profiles,
 			packages,
-			prefs,
-			package_repos: repositories
+			prefs
 		})
 	}
 

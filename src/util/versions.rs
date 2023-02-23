@@ -51,10 +51,19 @@ impl VersionPattern {
 		}
 	}
 
+	// Converts to a string representation
 	pub fn as_string(&self) -> &str {
 		match self {
 			Self::Single(version) => version,
 			Self::Latest(..) => "latest"
+		}
+	}
+
+	// Creates a version pattern by parsing a string
+	pub fn from(text: &str) -> Self {
+		match text {
+			"latest" => Self::Latest(None),
+			single => Self::Single(single.to_owned())
 		}
 	}
 }

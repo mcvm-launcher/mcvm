@@ -1,12 +1,13 @@
 use std::collections::HashMap;
 
 use super::lib::{CmdData, CmdError};
-use crate::util::print::{HYPHEN_POINT, ReplPrinter};
+use crate::{util::{print::{HYPHEN_POINT, ReplPrinter}, versions::VersionPattern}, package::reg::PkgRequest};
 
 use color_print::{cprintln, cformat};
 
 static LIST_HELP: &str = "List all installed packages";
 static SYNC_HELP: &str = "Update all package indexes";
+static CAT_HELP: &str = "Print the contents of a package";
 
 pub fn help() {
 	cprintln!("<i>package:</i> Manage mcvm packages");
@@ -15,6 +16,7 @@ pub fn help() {
 	cprintln!("<s>Subcommands:");
 	cprintln!("{}<i,c>list:</i,c> {}", HYPHEN_POINT, LIST_HELP);
 	cprintln!("{}<i,c>sync:</i,c> {}", HYPHEN_POINT, SYNC_HELP);
+	cprintln!("{}<i,c>cat:</i,c> {}", HYPHEN_POINT, CAT_HELP);
 }
 
 fn list(data: &mut CmdData) -> Result<(), CmdError> {
@@ -48,7 +50,7 @@ fn sync(data: &mut CmdData) -> Result<(), CmdError> {
 	if let Some(config) = &mut data.config {
 		if let Some(paths) = &data.paths {
 			let mut printer = ReplPrinter::new(true);
-			for repo in config.package_repos.iter_mut() {
+			for repo in config.packages.repos.iter_mut() {
 				printer.print(&cformat!("Syncing repository <b>{}</b>...", repo.id));
 				repo.sync(paths)?;
 				printer.print(&cformat!("<g>Synced repository <b!>{}</b!>", repo.id));
@@ -57,6 +59,22 @@ fn sync(data: &mut CmdData) -> Result<(), CmdError> {
 		}
 	}
 	
+	Ok(())
+}
+
+fn cat(data: &mut CmdData, name: &str, version: &str) -> Result<(), CmdError> {
+	data.ensure_config()?;
+	data.ensure_paths()?;
+
+	if let Some(config) = &mut data.config {
+		if let Some(paths) = &data.paths {
+			let req = PkgRequest {name: name.to_owned(), version: VersionPattern::from(version)};
+			let contents = config.packages.load(&req, paths)?;
+			cprintln!("<s,b>Contents of package <g>{}</g>:</s,b>", req);
+			cprintln!("<k!>{}", contents);
+		}
+	}
+
 	Ok(())
 }
 
@@ -70,6 +88,11 @@ pub fn run(argc: usize, argv: &[String], data: &mut CmdData)
 	match argv[0].as_str() {
 		"list" => list(data)?,
 		"sync" => sync(data)?,
+		"cat" => match argc {
+			2 => cat(data, &argv[1], "latest")?,
+			3 => cat(data, &argv[1], &argv[2])?,
+			_ => cprintln!("{}", CAT_HELP)
+		}
 		cmd => cprintln!("<r>Unknown subcommand {}", cmd)
 	}
 

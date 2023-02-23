@@ -1,6 +1,7 @@
 use crate::io::files::paths::{Paths, PathsError};
 use crate::data::config::{Config, ConfigError};
 use crate::data::instance::{CreateError, LaunchError};
+use crate::package::reg::RegError;
 use crate::package::repo::RepoError;
 
 use phf_macros::phf_map;
@@ -52,6 +53,8 @@ pub enum CmdError {
 	Io(#[from] std::io::Error),
 	#[error("Failed to access package repository:\n{}", .0)]
 	Repo(#[from] RepoError),
+	#[error("Failed to access package from registry:\n{}", .0)]
+	Reg(#[from] RegError),
 	#[error("{}", .0)]
 	Custom(String)
 }

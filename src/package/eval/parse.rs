@@ -96,7 +96,7 @@ impl ParseData {
 
 impl Package {
 	pub fn parse(&mut self) -> Result<(), ParseError> {
-		let mut data = ParseData::new();
+		let data = ParseData::new();
 
 		Ok(())
 	}
