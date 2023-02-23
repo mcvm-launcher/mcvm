@@ -1,4 +1,3 @@
-use core::panic;
 use std::{io::Write, string::FromUtf8Error};
 
 use curl::easy::Easy;
@@ -68,14 +67,8 @@ impl Download {
 		Ok(())
 	}
 
-	pub fn get_str(&mut self) -> Result<String, DownloadError> {
-		match &mut self.string {
-			Some(string) => {
-				let out = String::from_utf8(string.to_vec())?;
-				Ok(out)
-			},
-			None => panic!("String not set to write into")
-		}
+	pub fn get_str(&self) -> Result<String, DownloadError> {
+		Ok(String::from_utf8(self.string.as_ref().expect("String not set to write into").to_vec())?)
 	}
 
 	pub fn follow_redirects(&mut self) -> Result<(), DownloadError> {
@@ -84,38 +77,3 @@ impl Download {
 		Ok(())
 	}
 }
-
-// pub fn MultiDownload
-
-// #[derive(Debug, thiserror::Error)]
-// enum MultiDownloadError {
-// 	#[error("When downloading: {}", .0)]
-// 	Download(DownloadError),
-// 	#[error("When performing multiple downloads: {}", .0)]
-// 	Multi(#[from] curl::MultiError)
-// }
-
-// pub struct MultiDownload {
-// 	handles: Vec<Easy>,
-// }
-
-// impl MultiDownload {
-// 	pub fn new() -> Self {
-// 		Self {
-// 			handles: Vec::new()
-// 		}
-// 	}
-
-// 	pub fn download(&mut self, easy: Easy) -> Result<(), MultiDownloadError> {
-// 		self.handles.push(easy);
-// 		Ok(())
-// 	}
-
-// 	pub fn perform(&mut self) -> Result<(), MultiDownloadError> {
-// 		for easy in self.handles.par_iter() {
-
-// 		}
-
-// 		Ok(())
-// 	}
-// }

@@ -9,8 +9,8 @@ pub enum JsonType {
 	Float,
 	Bool,
 	Str,
-	Array,
-	Object
+	Arr,
+	Obj
 }
 
 impl std::fmt::Display for JsonType {
@@ -20,8 +20,8 @@ impl std::fmt::Display for JsonType {
 			JsonType::Float => write!(f, "Float"),
 			JsonType::Bool => write!(f, "Bool"),
 			JsonType::Str => write!(f, "String"),
-			JsonType::Array => write!(f, "Array"),
-			JsonType::Object => write!(f, "Object")
+			JsonType::Arr => write!(f, "Array"),
+			JsonType::Obj => write!(f, "Object")
 		}
 	}
 }
@@ -47,7 +47,7 @@ pub fn parse_json(contents: &str) -> Result<Box<Value>, JsonError> {
 
 pub fn parse_object(contents: &str) -> Result<Box<JsonObject>, JsonError> {
 	let doc: Value = serde_json::from_str(contents)?;
-	let obj = ensure_type(doc.as_object(), JsonType::Object)?;
+	let obj = ensure_type(doc.as_object(), JsonType::Obj)?;
 	Ok(Box::new(obj.clone()))
 }
 
@@ -95,7 +95,7 @@ pub fn access_array<'a>(obj: &'a JsonObject, key: &str) -> Result<&'a Vec<Value>
 	match obj.get(key) {
 		Some(val) => match val.as_array() {
 			Some(val) => Ok(val),
-			None => Err(JsonError::KeyType(key.to_string(), JsonType::Array))
+			None => Err(JsonError::KeyType(key.to_string(), JsonType::Arr))
 		},
 		None => Err(JsonError::Key(key.to_string()))
 	}
@@ -105,7 +105,7 @@ pub fn access_object<'a>(obj: &'a JsonObject, key: &str) -> Result<&'a JsonObjec
 	match obj.get(key) {
 		Some(val) => match val.as_object() {
 			Some(val) => Ok(val),
-			None => Err(JsonError::KeyType(key.to_string(), JsonType::Object))
+			None => Err(JsonError::KeyType(key.to_string(), JsonType::Obj))
 		},
 		None => Err(JsonError::Key(key.to_string()))
 	}

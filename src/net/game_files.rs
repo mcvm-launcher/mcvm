@@ -1,6 +1,6 @@
 use crate::io::files::{self, paths::Paths};
 use crate::util::versions::{VersionNotFoundError, MinecraftVersion};
-use crate::util::json::{self, JsonObject};
+use crate::util::json::{self, JsonObject, JsonType};
 use crate::net::download::{Download, DownloadError};
 use crate::util::mojang;
 use crate::util::print::ReplPrinter;
@@ -79,7 +79,7 @@ pub fn get_version_json(version: &MinecraftVersion, paths: &Paths, verbose: bool
 	let versions = json::access_array(&manifest_doc, "versions")?;
 	let mut version_url: Option<&str> = None;
 	for entry in versions.iter() {
-		let obj = json::ensure_type(entry.as_object(), json::JsonType::Object)?;
+		let obj = json::ensure_type(entry.as_object(), JsonType::Obj)?;
 		if json::access_str(obj, "id")? == version_string {
 			version_url = Some(json::access_str(obj, "url")?);
 		}
@@ -117,12 +117,12 @@ pub enum LibrariesError {
 // Checks the rules of a library to see if it should be installed
 fn is_library_allowed(lib: &JsonObject) -> Result<bool, LibrariesError> {
 	if let Some(rules_val) = lib.get("rules") {
-		let rules = json::ensure_type(rules_val.as_array(), json::JsonType::Array)?;
+		let rules = json::ensure_type(rules_val.as_array(), JsonType::Arr)?;
 		for rule_val in rules.iter() {
-			let rule = json::ensure_type(rule_val.as_object(), json::JsonType::Object)?;
+			let rule = json::ensure_type(rule_val.as_object(), JsonType::Obj)?;
 			let action = json::access_str(rule, "action")?;
 			if let Some(os_val) = rule.get("os") {
-				let os = json::ensure_type(os_val.as_object(), json::JsonType::Object)?;
+				let os = json::ensure_type(os_val.as_object(), JsonType::Obj)?;
 				let os_name = json::access_str(os, "name")?;
 				if mojang::is_allowed(action) != (os_name == mojang::OS_STRING) {
 					return Ok(false);
@@ -171,14 +171,14 @@ pub fn get_libraries(
 	printer.print(&cformat!("Downloading <b>{}</> libraries...", libraries.len()));
 
 	for lib_val in libraries.iter() {
-		let lib = json::ensure_type(lib_val.as_object(), json::JsonType::Object)?;
+		let lib = json::ensure_type(lib_val.as_object(), JsonType::Obj)?;
 		if !is_library_allowed(lib)? {
 			continue;
 		}
 		let name = json::access_str(lib, "name")?;
 		let downloads = json::access_object(lib, "downloads")?;
 		if let Some(natives_val) = lib.get("natives") {
-			let natives = json::ensure_type(natives_val.as_object(), json::JsonType::Object)?;
+			let natives = json::ensure_type(natives_val.as_object(), JsonType::Obj)?;
 			let key = json::access_str(natives, mojang::OS_STRING)?;
 			let classifier = json::access_object(
 				json::access_object(downloads, "classifiers")?, key
@@ -196,7 +196,7 @@ pub fn get_libraries(
 			continue;
 		}
 		if let Some(artifact_val) = downloads.get("artifact") {
-			let artifact = json::ensure_type(artifact_val.as_object(), json::JsonType::Object)?;
+			let artifact = json::ensure_type(artifact_val.as_object(), JsonType::Obj)?;
 			let path = libraries_path.join(json::access_str(artifact, "path")?);
 			classpath.push_str(path.to_str().ok_or(LibrariesError::Utf)?);
 			classpath.push(':');
@@ -278,7 +278,7 @@ pub async fn get_assets(
 	printer.indent(1);
 	let mut count = 0;
 	for (key, asset_val) in assets {
-		let asset = json::ensure_type(asset_val.as_object(), json::JsonType::Object)?;
+		let asset = json::ensure_type(asset_val.as_object(), JsonType::Obj)?;
 		
 		let hash = json::access_str(asset, "hash")?.to_owned();
 		let hash_path = hash[..2].to_owned() + "/" + &hash;

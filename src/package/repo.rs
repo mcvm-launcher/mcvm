@@ -92,7 +92,7 @@ impl PkgRepo {
 	}
 
 	fn index_url(&self) -> String {
-		self.url.to_owned() + "/api/mcvm/index.json"
+		self.url.clone() + "/api/mcvm/index.json"
 	}
 
 	// Ask if the index has a package and return the url for that package if it exists

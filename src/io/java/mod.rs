@@ -1,7 +1,7 @@
 use crate::io::files::{self, paths::Paths};
 use crate::util::mojang::{ARCH_STRING, OS_STRING};
 use crate::net::download::{Download, DownloadError};
-use crate::util::json;
+use crate::util::json::{self, JsonType};
 use crate::util::print::ReplPrinter;
 
 use color_print::cformat;
@@ -64,10 +64,10 @@ impl Java {
 				dwn.perform()?;
 				
 				let manifest_val = json::parse_json(&dwn.get_str()?)?;
-				let manifest = json::ensure_type(manifest_val.as_array(), json::JsonType::Array)?;
+				let manifest = json::ensure_type(manifest_val.as_array(), JsonType::Arr)?;
 				let version = json::ensure_type(
 					manifest.get(0).ok_or(JavaError::InstallationNotFound)?.as_object(),
-					json::JsonType::Object
+					JsonType::Obj
 				)?;
 				let bin_url = json::access_str(
 					json::access_object(

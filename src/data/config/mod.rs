@@ -5,8 +5,8 @@ use super::user::{User, UserKind, AuthState, Auth};
 use super::profile::{Profile, InstanceRegistry};
 use super::instance::{Instance, InstKind};
 use crate::package::reg::{PkgRegistry, PkgRequest, PkgIdentifier};
-use crate::util::versions::VersionPattern;
-use crate::util::{json, versions::MinecraftVersion};
+use crate::util::versions::{VersionPattern, MinecraftVersion};
+use crate::util::json::{self, JsonType};
 
 use color_print::cprintln;
 use serde_json::json;
@@ -88,7 +88,7 @@ impl Config {
 		} else {
 			let doc = default_config();
 			fs::write(path, serde_json::to_string_pretty(&doc)?)?;
-			Ok(Box::new(json::ensure_type(doc.as_object(), json::JsonType::Object)?.clone()))
+			Ok(Box::new(json::ensure_type(doc.as_object(), JsonType::Obj)?.clone()))
 		}
 	}
 	
@@ -104,7 +104,7 @@ impl Config {
 		// Users
 		let users = json::access_object(obj, "users")?;
 		for (user_id, user_val) in users.iter() {
-			let user_obj = json::ensure_type(user_val.as_object(), json::JsonType::Object)?;
+			let user_obj = json::ensure_type(user_val.as_object(), JsonType::Obj)?;
 			let kind = match json::access_str(user_obj, "type")? {
 				"microsoft" => Ok(UserKind::Microsoft),
 				"demo" => Ok(UserKind::Demo),
@@ -113,7 +113,7 @@ impl Config {
 			let mut user = User::new(kind, user_id, json::access_str(user_obj, "name")?);
 
 			match user_obj.get("uuid") {
-				Some(uuid) => user.set_uuid(json::ensure_type(uuid.as_str(), json::JsonType::Str)?),
+				Some(uuid) => user.set_uuid(json::ensure_type(uuid.as_str(), JsonType::Str)?),
 				None => cprintln!("<y>Warning: It is recommended to have your uuid in the configuration for user {}", user_id)
 			};
 			
@@ -121,7 +121,7 @@ impl Config {
 		}
 		
 		if let Some(user_val) = obj.get("default_user") {
-			let user_id = json::ensure_type(user_val.as_str(), json::JsonType::Str)?.to_string();
+			let user_id = json::ensure_type(user_val.as_str(), JsonType::Str)?.to_string();
 			match auth.users.get(&user_id) {
 				Some(..) => auth.state = AuthState::Authed(user_id),
 				None => return Err(ConfigError::from(ContentError::DefaultUserNotFound(user_id)))
@@ -135,20 +135,20 @@ impl Config {
 		// Profiles
 		let doc_profiles = json::access_object(obj, "profiles")?;
 		for (profile_id, profile_val) in doc_profiles {
-			let profile_obj = json::ensure_type(profile_val.as_object(), json::JsonType::Object)?;
+			let profile_obj = json::ensure_type(profile_val.as_object(), JsonType::Obj)?;
 			let version =  MinecraftVersion::from(json::access_str(profile_obj, "version")?);
 
 			let mut profile = Profile::new(profile_id, &version);
 			
 			// Instances
 			if let Some(instances_val) = profile_obj.get("instances") {
-				let doc_instances = json::ensure_type(instances_val.as_object(), json::JsonType::Object)?;
+				let doc_instances = json::ensure_type(instances_val.as_object(), JsonType::Obj)?;
 				for (instance_id, instance_val) in doc_instances {
 					if instances.contains_key(instance_id) {
 						return Err(ConfigError::from(ContentError::DuplicateInstance(instance_id.to_string())));
 					}
 
-					let instance_obj = json::ensure_type(instance_val.as_object(), json::JsonType::Object)?;
+					let instance_obj = json::ensure_type(instance_val.as_object(), JsonType::Obj)?;
 					let kind = match json::access_str(instance_obj, "type")? {
 						"client" => Ok(InstKind::Client),
 						"server" => Ok(InstKind::Server),
@@ -162,19 +162,19 @@ impl Config {
 			}
 
 			if let Some(packages_val) = profile_obj.get("packages") {
-				let doc_packages = json::ensure_type(packages_val.as_array(), json::JsonType::Array)?;
+				let doc_packages = json::ensure_type(packages_val.as_array(), JsonType::Arr)?;
 				for package_val in doc_packages {
-					let package_obj = json::ensure_type(package_val.as_object(), json::JsonType::Object)?;
+					let package_obj = json::ensure_type(package_val.as_object(), JsonType::Obj)?;
 					let package_id = json::access_str(package_obj, "id")?;
 					let package_version = match package_obj.get("version") {
 						Some(version) => VersionPattern::Single(
-							json::ensure_type(version.as_str(), json::JsonType::Str)?.to_owned()
+							json::ensure_type(version.as_str(), JsonType::Str)?.to_owned()
 						),
 						None => VersionPattern::Latest(None)
 					};
 					let req = PkgRequest {name: package_id.to_owned(), version: package_version.clone()};
 					if let Some(val) = package_obj.get("type") {
-						match json::ensure_type(val.as_str(), json::JsonType::Str)? {
+						match json::ensure_type(val.as_str(), JsonType::Str)? {
 							"local" => {
 								let package_path = json::access_str(package_obj, "path")?;
 								if let VersionPattern::Single(version) = package_version {
@@ -219,7 +219,7 @@ mod tests {
 	#[test]
 	fn test_default_config() {
 		let obj = json::ensure_type(default_config().as_object(),
-			json::JsonType::Object).unwrap().clone();
+			JsonType::Obj).unwrap().clone();
 		Config::load_from_obj(&obj).unwrap();
 	}
 }

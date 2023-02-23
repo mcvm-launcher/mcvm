@@ -13,6 +13,15 @@ pub struct PkgRequest {
 	pub version: VersionPattern
 }
 
+impl PkgRequest {
+	pub fn new(name: &str, version: &VersionPattern) -> Self {
+		Self {
+			name: name.to_owned(),
+			version: version.clone()
+		}
+	}
+}
+
 impl Display for PkgRequest {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		write!(f, "{}@{}", self.name, self.version.as_string())
@@ -24,6 +33,15 @@ impl Display for PkgRequest {
 pub struct PkgIdentifier {
 	pub name: String,
 	pub version: String
+}
+
+impl PkgIdentifier {
+	pub fn new(name: &str, version: &str) -> Self {
+		Self {
+			name: name.to_owned(),
+			version: version.to_owned()
+		}
+	}
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -65,7 +83,7 @@ impl PkgRegistry {
 
 		match query_all(&mut self.repos, &pkg_name, &pkg_vers, paths)? {
 			Some((url, version)) => {
-				let id = PkgIdentifier {name: pkg_name.clone(), version: version.clone()};
+				let id = PkgIdentifier::new(&pkg_name, &version);
 				Ok(self.insert(&id, Package::new(&pkg_name, &version, PkgKind::Remote(Some(url)))))
 			}
 			None => Err(RegError::NotFound(pkg_name))
@@ -78,7 +96,7 @@ impl PkgRegistry {
 		match self.versions.get(&pkg_name) {
 			Some(versions) => match pkg_vers.matches(versions) {
 				Some(vers) => {
-					let key = PkgIdentifier {name: pkg_name.clone(), version: vers};
+					let key = PkgIdentifier::new(&pkg_name, &vers);
 					if self.packages.contains_key(&key) {
 						Ok(self.packages.get_mut(&key).unwrap())
 					} else {
@@ -102,5 +120,28 @@ impl PkgRegistry {
 	// Insert a local package into the registry
 	pub fn insert_local(&mut self, id: &PkgIdentifier, path: &Path) {
 		self.insert(id, Package::new(&id.name, &id.version, PkgKind::Local(path.to_path_buf())));
+	}
+
+	// Checks if a package is in the registry already
+	pub fn has_now(&self, req: &PkgRequest) -> bool {
+		if let Some(versions) = self.versions.get(&req.name) {
+			req.version.matches(versions).is_some()
+		} else {
+			false
+		}
+	}
+}
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+	use std::path::PathBuf;
+
+	#[test]
+	fn test_reg_insert() {
+		let mut reg = PkgRegistry::new(vec![]);
+		reg.insert_local(&PkgIdentifier::new("test", "1.1"), &PathBuf::from("./test"));
+		assert!(reg.has_now(&PkgRequest::new("test", &VersionPattern::Single("1.1".to_string()))));
+		assert!(!reg.has_now(&PkgRequest::new("doesnotexist", &VersionPattern::Single("foo".to_string()))));
 	}
 }
