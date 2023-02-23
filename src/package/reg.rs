@@ -3,17 +3,24 @@ use super::repo::{PkgRepo, query_all, RepoError};
 use crate::{util::versions::VersionPattern, io::files::paths::Paths};
 
 use std::collections::HashMap;
+use std::fmt::Display;
 use std::path::PathBuf;
 
 // Used to store a request for a package that will be fulfilled later
-#[derive(Hash)]
+#[derive(Debug)]
 pub struct PkgRequest {
 	pub name: String,
 	pub version: VersionPattern
 }
 
+impl Display for PkgRequest {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "{}@{}", self.name, self.version.as_string())
+	}
+}
+
 // A known identifier for a package
-#[derive(Hash, Clone, PartialEq, Eq)]
+#[derive(Debug, Hash, Clone, PartialEq, Eq)]
 pub struct PkgIdentifier {
 	pub name: String,
 	pub version: String
@@ -29,6 +36,7 @@ pub enum RegError {
 	Package(#[from] PkgError)
 }
 
+#[derive(Debug)]
 pub struct PkgRegistry {
 	repos: Vec<PkgRepo>,
 	versions: HashMap<String, Vec<String>>,

@@ -41,15 +41,10 @@ fn info(data: &mut CmdData, id: &String) -> Result<(), CmdError> {
 				}
 			}
 			cprintln!("   <s>Packages:");
-			for pkg_id in profile.packages.iter() {
-				if let Some(package) = config.packages.get(pkg_id) {
-					cprint!("   {}", HYPHEN_POINT);
-					match package.kind {
-						PkgKind::Local(..) => cprint!("<m!>{} <g>v<g!>{}", pkg_id, package.version.as_string()),
-						PkgKind::Remote(..) => cprint!("<g!>{} <g>v<g!>{}", pkg_id, package.version.as_string())
-					}
-					cprintln!();
-				}
+			for req in profile.packages.iter() {
+				cprint!("   {}", HYPHEN_POINT);
+				cprint!("<b!>{}:<g!>{}", req.name, req.version.as_string());
+				cprintln!();
 			}
 		} else {
 			return Err(CmdError::Custom(format!("Unknown profile '{id}'")));

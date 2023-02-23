@@ -1,6 +1,5 @@
 use super::lib::{CmdData, CmdError};
 use crate::util::print::{HYPHEN_POINT, ReplPrinter};
-use crate::package::PkgKind;
 
 use color_print::{cprintln, cprint, cformat};
 
@@ -21,19 +20,19 @@ fn list(data: &mut CmdData) -> Result<(), CmdError> {
 
 	if let Some(config) = &data.config {
 		cprintln!("<s>Packages:");
-		for (id, package) in config.packages.iter() {
-			cprint!("{}", HYPHEN_POINT);
-			match package.kind {
-				PkgKind::Local(..) => cprint!("<m!>{}", package.full_name()),
-				PkgKind::Remote(..) => cprint!("<g!>{}", package.full_name())
-			}
-			for (prof_id, profile) in config.profiles.iter() {
-				if profile.packages.contains(id) {
-					cprint!(" <k!>({})", prof_id);
-				}
-			}
-			cprintln!();
-		}
+		// for (id, package) in config.packages.iter() {
+		// 	cprint!("{}", HYPHEN_POINT);
+		// 	match package.kind {
+		// 		PkgKind::Local(..) => cprint!("<m!>{}", package.full_name()),
+		// 		PkgKind::Remote(..) => cprint!("<g!>{}", package.full_name())
+		// 	}
+		// 	for (prof_id, profile) in config.profiles.iter() {
+		// 		if profile.packages.contains(id) {
+		// 			cprint!(" <k!>({})", prof_id);
+		// 		}
+		// 	}
+		// 	cprintln!();
+		// }
 	}
 	Ok(())
 }

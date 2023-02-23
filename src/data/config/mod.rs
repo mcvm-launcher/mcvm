@@ -4,6 +4,7 @@ use preferences::ConfigPreferences;
 use super::user::{User, UserKind, AuthState, Auth};
 use super::profile::{Profile, InstanceRegistry};
 use super::instance::{Instance, InstKind};
+use crate::package::reg::{PkgRegistry, PkgRequest, PkgIdentifier};
 use crate::package::repo::PkgRepo;
 use crate::package::{Package, PkgKind};
 use crate::util::versions::VersionPattern;
@@ -75,7 +76,7 @@ pub struct Config {
 	pub auth: Auth,
 	pub instances: InstanceRegistry,
 	pub profiles: HashMap<String, Box<Profile>>,
-	pub packages: HashMap<String, Box<Package>>,
+	pub packages: PkgRegistry,
 	pub prefs: ConfigPreferences,
 	pub package_repos: Vec<PkgRepo>
 }
@@ -91,12 +92,15 @@ impl Config {
 			Ok(Box::new(json::ensure_type(doc.as_object(), json::JsonType::Object)?.clone()))
 		}
 	}
-
+	
 	fn load_from_obj(obj: &json::JsonObject) -> Result<Self, ConfigError> {
 		let mut auth = Auth::new();
 		let mut instances = InstanceRegistry::new();
 		let mut profiles = HashMap::new();
-		let mut packages = HashMap::new();
+		let mut packages = PkgRegistry::new();
+
+		// Preferences
+		let (prefs, repositories) = ConfigPreferences::read(obj.get("preferences"))?;
 
 		// Users
 		let users = json::access_object(obj, "users")?;
@@ -116,7 +120,7 @@ impl Config {
 			
 			auth.users.insert(user_id.to_string(), user);
 		}
-
+		
 		if let Some(user_val) = obj.get("default_user") {
 			let user_id = json::ensure_type(user_val.as_str(), json::JsonType::Str)?.to_string();
 			match auth.users.get(&user_id) {
@@ -162,23 +166,6 @@ impl Config {
 				let doc_packages = json::ensure_type(packages_val.as_array(), json::JsonType::Array)?;
 				for package_val in doc_packages {
 					let package_obj = json::ensure_type(package_val.as_object(), json::JsonType::Object)?;
-					let kind = match package_obj.get("type") {
-						Some(val) => {
-							match json::ensure_type(val.as_str(), json::JsonType::Str)? {
-								"local" => {
-									let package_path = json::access_str(package_obj, "path")?;
-									Ok(PkgKind::Local(PathBuf::from(package_path)))
-								},
-								"remote" => {
-									Ok(PkgKind::Remote(None))
-								}
-								typ => Err(ContentError::PkgType(typ.to_string(), "package".to_string()))
-							}
-						},
-						None => {
-							Ok(PkgKind::Remote(None))
-						}
-					}?;
 					let package_id = json::access_str(package_obj, "id")?;
 					let package_version = match package_obj.get("version") {
 						Some(version) => VersionPattern::Single(
@@ -186,17 +173,31 @@ impl Config {
 						),
 						None => VersionPattern::Latest(None)
 					};
-					let package = Package::new(package_id, package_version, kind);
-					profile.add_package(&package);
-					packages.insert(package_id.to_string(), Box::new(package));
+					let req = PkgRequest {name: package_id.to_owned(), version: package_version.clone()};
+					match package_obj.get("type") {
+						Some(val) => {
+							match json::ensure_type(val.as_str(), json::JsonType::Str)? {
+								"local" => {
+									let package_path = json::access_str(package_obj, "path")?;
+									if let VersionPattern::Single(version) = package_version {
+										packages.insert_local(
+											&PkgIdentifier {name: package_id.to_owned(), version},
+											&PathBuf::from(package_path)
+										);
+									}
+								},
+								"remote" => {}
+								typ => Err(ContentError::PkgType(typ.to_string(), "package".to_string()))?
+							}
+						},
+						None => {}
+					};
+					profile.packages.push(req);
 				}
 			}
 			
 			profiles.insert(profile_id.to_string(), Box::new(profile));
 		}
-
-		// Preferences
-		let (prefs, repositories) = ConfigPreferences::read(obj.get("preferences"))?;
 
 		Ok(Self {
 			auth,

@@ -1,6 +1,7 @@
 use crate::data::instance::Instance;
 use crate::data::instance::CreateError;
 use crate::package::Package;
+use crate::package::reg::PkgRequest;
 use crate::util::versions::MinecraftVersion;
 use crate::Paths;
 
@@ -11,7 +12,7 @@ pub struct Profile {
 	pub name: String,
 	pub version: MinecraftVersion,
 	pub instances: Vec<String>,
-	pub packages: Vec<String>
+	pub packages: Vec<PkgRequest>
 }
 
 impl Profile {
@@ -22,10 +23,6 @@ impl Profile {
 			instances: Vec::new(),
 			packages: Vec::new()
 		}
-	}
-
-	pub fn add_package(&mut self, pkg: &Package) {
-		self.packages.push(pkg.name.to_owned());
 	}
 
 	pub fn add_instance(&mut self, instance: &str) {
