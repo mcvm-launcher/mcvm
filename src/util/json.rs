@@ -51,7 +51,7 @@ pub fn parse_object(contents: &str) -> Result<Box<JsonObject>, JsonError> {
 	Ok(Box::new(obj.clone()))
 }
 
-pub fn access_i64(obj: &JsonObject, key: &str) -> Result<i64, JsonError> {
+pub fn _access_i64(obj: &JsonObject, key: &str) -> Result<i64, JsonError> {
 	match obj.get(key) {
 		Some(val) => match val.as_i64() {
 			Some(val) => Ok(val),
@@ -61,7 +61,7 @@ pub fn access_i64(obj: &JsonObject, key: &str) -> Result<i64, JsonError> {
 	}
 }
 
-pub fn access_f64(obj: &JsonObject, key: &str) -> Result<f64, JsonError> {
+pub fn _access_f64(obj: &JsonObject, key: &str) -> Result<f64, JsonError> {
 	match obj.get(key) {
 		Some(val) => match val.as_f64() {
 			Some(val) => Ok(val),
@@ -71,7 +71,7 @@ pub fn access_f64(obj: &JsonObject, key: &str) -> Result<f64, JsonError> {
 	}
 }
 
-pub fn access_bool(obj: &JsonObject, key: &str) -> Result<bool, JsonError> {
+pub fn _access_bool(obj: &JsonObject, key: &str) -> Result<bool, JsonError> {
 	match obj.get(key) {
 		Some(val) => match val.as_bool() {
 			Some(val) => Ok(val),
