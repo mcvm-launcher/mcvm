@@ -45,7 +45,7 @@ fn sync(data: &mut CmdData) -> Result<(), CmdError> {
 	if let Some(config) = &mut data.config {
 		if let Some(paths) = &data.paths {
 			let mut printer = ReplPrinter::new(true);
-			for repo in config.prefs.repositories.iter_mut() {
+			for repo in config.package_repos.iter_mut() {
 				printer.print(&cformat!("Syncing repository <b>{}</b>...", repo.id));
 				repo.sync(paths)?;
 				printer.print(&cformat!("<g>Synced repository <b!>{}</b!>", repo.id));

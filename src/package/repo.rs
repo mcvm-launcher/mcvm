@@ -97,7 +97,7 @@ impl PkgRepo {
 
 	// Ask if the index has a package and return the url for that package if it exists
 	pub fn query(&mut self, id: &str, version: &VersionPattern, paths: &Paths)
-	-> Result<Option<String>, RepoError> {
+	-> Result<Option<(String, String)>, RepoError> {
 		self.ensure_index(paths)?;
 		if let Some(index) = &self.index {
 			if let Some(entry) = index.packages.get(id) {
@@ -110,7 +110,7 @@ impl PkgRepo {
 						entry.name == found_version
 					}).expect("Failed to locate url for version").name;
 
-					return Ok(Some(url.clone()));
+					return Ok(Some((url.clone(), found_version)));
 				}
 			}
 		}
@@ -120,10 +120,10 @@ impl PkgRepo {
 
 // Query a list of repos
 pub fn query_all(repos: &mut [PkgRepo], id: &str, version: &VersionPattern, paths: &Paths)
--> Result<Option<String>, RepoError> {
+-> Result<Option<(String, String)>, RepoError> {
 	for repo in repos {
-		if let Some(url) = repo.query(id, version, paths)? {
-			return Ok(Some(url));
+		if let Some(result) = repo.query(id, version, paths)? {
+			return Ok(Some(result));
 		}
 	}
 	Ok(None)

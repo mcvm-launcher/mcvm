@@ -3,11 +3,6 @@ use super::ConfigError;
 
 use serde::Deserialize;
 
-#[derive(Debug)]
-pub struct ConfigPreferences {
-	pub repositories: Vec<PkgRepo>
-}
-
 #[derive(Deserialize)]
 struct SerRepo {
 	id: String,
@@ -28,8 +23,13 @@ struct PrefSerialize {
 	pub repositories: SerRepositories
 }
 
+#[derive(Debug)]
+pub struct ConfigPreferences {
+
+}
+
 impl ConfigPreferences {
-	pub fn new(obj: Option<&serde_json::Value>) -> Result<Self, ConfigError> {
+	pub fn read(obj: Option<&serde_json::Value>) -> Result<(Self, Vec<PkgRepo>), ConfigError> {
 		match obj {
 			Some(obj) => {
 				let prefs = serde_json::from_value::<PrefSerialize>(obj.clone())?;
@@ -41,13 +41,9 @@ impl ConfigPreferences {
 					repositories.push(PkgRepo::new(&repo.id, &repo.url));
 				}
 
-				Ok(Self {
-					repositories
-				})
+				Ok((Self {}, repositories))
 			},
-			None => Ok(Self {
-				repositories: vec![]
-			})
+			None => Ok((Self {}, vec![]))
 		}
 	}
 }

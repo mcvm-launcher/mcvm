@@ -30,7 +30,7 @@ impl MinecraftVersion {
 static _VERSION_LIST: [&str; 1] = ["1.19"];
 
 // Pattern matching for the version of Minecraft or a package
-#[derive(Debug)]
+#[derive(Debug, Hash, Clone)]
 pub enum VersionPattern {
 	Single(String),
 	Latest(Option<String>)

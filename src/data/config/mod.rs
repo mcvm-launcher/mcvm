@@ -4,6 +4,7 @@ use preferences::ConfigPreferences;
 use super::user::{User, UserKind, AuthState, Auth};
 use super::profile::{Profile, InstanceRegistry};
 use super::instance::{Instance, InstKind};
+use crate::package::repo::PkgRepo;
 use crate::package::{Package, PkgKind};
 use crate::util::versions::VersionPattern;
 use crate::util::{json, versions::MinecraftVersion};
@@ -43,15 +44,6 @@ fn default_config() -> serde_json::Value {
 	)
 }
 
-#[derive(Debug)]
-pub struct Config {
-	pub auth: Auth,
-	pub instances: InstanceRegistry,
-	pub profiles: HashMap<String, Box<Profile>>,
-	pub packages: HashMap<String, Box<Package>>,
-	pub prefs: ConfigPreferences
-}
-
 #[derive(Debug, thiserror::Error)]
 pub enum ConfigError {
 	#[error("{}", .0)]
@@ -76,6 +68,16 @@ pub enum ContentError {
 	DefaultUserNotFound(String),
 	#[error("Duplicate instance '{}'", .0)]
 	DuplicateInstance(String)
+}
+
+#[derive(Debug)]
+pub struct Config {
+	pub auth: Auth,
+	pub instances: InstanceRegistry,
+	pub profiles: HashMap<String, Box<Profile>>,
+	pub packages: HashMap<String, Box<Package>>,
+	pub prefs: ConfigPreferences,
+	pub package_repos: Vec<PkgRepo>
 }
 
 impl Config {
@@ -194,14 +196,15 @@ impl Config {
 		}
 
 		// Preferences
-		let prefs = ConfigPreferences::new(obj.get("preferences"))?;
+		let (prefs, repositories) = ConfigPreferences::read(obj.get("preferences"))?;
 
 		Ok(Self {
 			auth,
 			instances,
 			profiles,
 			packages,
-			prefs
+			prefs,
+			package_repos: repositories
 		})
 	}
 

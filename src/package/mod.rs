@@ -1,5 +1,6 @@
 pub mod eval;
 pub mod repo;
+pub mod reg;
 
 use crate::io::files::{self, paths::Paths};
 use crate::net::download::{Download, DownloadError};
@@ -9,7 +10,7 @@ use crate::util::versions::VersionPattern;
 use std::path::PathBuf;
 use std::fs;
 
-use self::repo::{PkgRepo, query_all, RepoError};
+use self::repo::RepoError;
 
 static PKG_EXTENSION: &str = ".pkg.txt";
 
@@ -38,6 +39,10 @@ impl PkgData {
 			contents: contents.to_owned(),
 			ast: None
 		}
+	}
+
+	pub fn get_contents(&self) -> String {
+		self.contents.clone()
 	}
 }
 
@@ -78,7 +83,7 @@ impl Package {
 	}
 
 	// Ensure the raw contents of the package
-	pub fn ensure_loaded(&mut self, paths: &Paths, repos: &mut [PkgRepo]) -> Result<(), PkgError> {
+	pub fn ensure_loaded(&mut self, paths: &Paths) -> Result<(), PkgError> {
 		if self.data.is_none() {
 			match &self.kind {
 				PkgKind::Local(path) => {
@@ -91,13 +96,9 @@ impl Package {
 					if path.exists() {
 						self.data = Some(PkgData::new(&fs::read_to_string(path)?));
 					} else {
-						let url = match url {
-							Some(url) => url.clone(),
-							None => query_all(repos, &self.name, &self.version, paths)?
-								.ok_or(PkgError::NotFound(self.full_name()))?
-						};
+						let url = url.as_ref().expect("URL for remote package missing");
 						let mut dwn = Download::new();
-						dwn.url(&url)?;
+						dwn.url(url)?;
 						dwn.add_file(&path)?;
 						dwn.add_str();
 						dwn.perform()?;
