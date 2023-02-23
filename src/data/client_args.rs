@@ -5,7 +5,7 @@ use crate::Paths;
 use crate::util::json;
 use super::instance::Instance;
 
-fn process_string_arg(
+pub fn process_string_arg(
 	instance: &Instance,
 	arg: &str,
 	paths: &Paths,
@@ -40,13 +40,20 @@ fn process_string_arg(
 
 	// User
 	match auth.get_user() {
-		Some(user) =>  {
+		Some(user) => {
 			out = out.replace("${auth_player_name}", &user.name);
 			if let Some(uuid) = &user.uuid {
 				out = out.replace("${auth_uuid}", uuid);
 			}
 			if let Some(token) = &user.access_token {
 				out = out.replace("${auth_access_token}", token);
+			}
+			if
+				out.contains("${auth_player_name}")
+				|| out.contains("${auth_access_token}")
+				|| out.contains("${auth_uuid}")
+			{
+				return None;
 			}
 		},
 		None => if

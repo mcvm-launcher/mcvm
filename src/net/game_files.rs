@@ -2,7 +2,7 @@ use crate::io::files::{self, paths::Paths};
 use crate::util::versions::{VersionNotFoundError, MinecraftVersion};
 use crate::util::json::{self, JsonObject, JsonType};
 use crate::net::download::{Download, DownloadError};
-use crate::util::mojang;
+use crate::util::mojang::{self, CLASSPATH_SEP};
 use crate::util::print::ReplPrinter;
 
 use color_print::{cprintln, cformat};
@@ -186,7 +186,7 @@ pub fn get_libraries(
 
 			let path = natives_jars_path.join(json::access_str(classifier, "path")?);
 			classpath.push_str(path.to_str().ok_or(LibrariesError::Utf)?);
-			classpath.push(':');
+			classpath.push(CLASSPATH_SEP);
 			if !force && path.exists() {
 				continue;
 			}
@@ -199,7 +199,7 @@ pub fn get_libraries(
 			let artifact = json::ensure_type(artifact_val.as_object(), JsonType::Obj)?;
 			let path = libraries_path.join(json::access_str(artifact, "path")?);
 			classpath.push_str(path.to_str().ok_or(LibrariesError::Utf)?);
-			classpath.push(':');
+			classpath.push(CLASSPATH_SEP);
 			if !force && path.exists() {
 				continue;
 			}

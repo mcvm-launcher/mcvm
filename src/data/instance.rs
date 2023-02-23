@@ -3,11 +3,11 @@ use crate::util::versions::MinecraftVersion;
 use crate::net::download;
 use crate::io::files;
 use crate::io::java::{Java, JavaKind, JavaError};
-use crate::Paths;
+use crate::{Paths, skip_none};
 use crate::net::game_files;
 use crate::util::print::ReplPrinter;
 use super::user::Auth;
-use super::client_args::process_client_arg;
+use super::client_args::{process_client_arg, process_string_arg};
 
 use color_print::{cprintln, cformat};
 
@@ -57,7 +57,7 @@ pub enum LaunchError {
 	Java,
 	#[error("Command failed:\n{}", .0)]
 	Command(std::io::Error),
-	#[error("Failed to evaluate json file:\n\t{}", .0)]
+	#[error("Failed to evaluate json file:\n{}", .0)]
 	Json(#[from] json::JsonError),
 }
 
@@ -126,7 +126,10 @@ impl Instance {
 		
 		game_files::get_assets(&version_json, paths, &self.version, verbose, force).await?;
 
-		self.get_java(JavaKind::Adoptium, "17", paths, verbose, force)?;
+		let java_vers = json::access_i64(
+			json::access_object(&version_json, "javaVersion")?,	"majorVersion"
+		)?;
+		self.get_java(JavaKind::Adoptium, &java_vers.to_string(), paths, verbose, force)?;
 
 		if !jar_path.exists() || force {
 			let mut printer = ReplPrinter::new(verbose);
@@ -158,8 +161,10 @@ impl Instance {
 		let jar_path = server_dir.join("server.jar");
 
 		let (version_json, mut dwn) = game_files::get_version_json(&self.version, paths, verbose)?;
-
-		self.get_java(JavaKind::Adoptium, "17", paths, verbose, force)?;
+		let java_vers = json::access_i64(
+			json::access_object(&version_json, "javaVersion")?,	"majorVersion"
+		)?;
+		self.get_java(JavaKind::Adoptium, &java_vers.to_string(), paths, verbose, force)?;
 
 		if !jar_path.exists() || force {
 			let mut printer = ReplPrinter::new(verbose);
@@ -212,28 +217,42 @@ impl Instance {
 
 					if let Some(version_json) = &self.version_json {
 						if let Some(classpath) = &self.classpath {
-							let args = json::access_object(version_json, "arguments")?;
-							
-							for arg in json::access_array(args, "jvm")? {
-								for sub_arg in process_client_arg(self, arg, paths, auth, classpath) {
-									command.arg(sub_arg);
-								}
-							}
-
 							let main_class = json::access_str(version_json, "mainClass")?;
-							command.arg(main_class);
 
-							for arg in json::access_array(args, "game")? {
-								for sub_arg in process_client_arg(self, arg, paths, auth, classpath) {
-									command.arg(sub_arg);
+							if let Ok(args) = json::access_object(version_json, "arguments") {
+								for arg in json::access_array(args, "jvm")? {
+									for sub_arg in process_client_arg(self, arg, paths, auth, classpath) {
+										command.arg(sub_arg);
+									}
+								}
+
+								command.arg(main_class);
+
+								for arg in json::access_array(args, "game")? {
+									for sub_arg in process_client_arg(self, arg, paths, auth, classpath) {
+										command.arg(sub_arg);
+									}
+								}
+							} else {
+								// Behavior for versions prior to 1.12.2
+								let args = json::access_str(version_json, "minecraftArguments")?;
+
+								command.arg("-cp");
+								command.arg(classpath);
+
+								command.arg(main_class);
+
+								for arg in args.split(' ') {
+									command.arg(skip_none!(process_string_arg(self, arg, paths, auth, classpath)));
 								}
 							}
+
 							let mut child = match command.spawn() {
 								Ok(child) => child,
 								Err(err) => return Err(LaunchError::Command(err))
 							};
 		
-							child.wait().expect("Child failed");
+							child.wait().expect("Failed to wait for child process");
 						}
 					}
 					Ok(())
