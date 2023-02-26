@@ -1,35 +1,43 @@
-use super::super::Package;
-use super::CommandType;
+use std::collections::HashMap;
 
-use trees::{Tree, Node};
+use crate::io::files::paths::Paths;
+
+use super::super::{Package, PkgError};
+use super::lex::{lex, LexError, Token, reduce_tokens, TextPos};
 
 #[derive(Debug, thiserror::Error)]
 pub enum ParseError {
-	
+	#[error("{}", .0)]
+	Lex(#[from] LexError),
+	#[error("Unexpected token '{}' at {}", .0, .1)]
+	UnexpectedToken(String, TextPos)
 }
 
-#[derive(Debug)]
-pub enum NodeKind {
-	Command(CommandType, Vec<String>),
+#[derive(Debug, Clone)]
+pub enum InstrKind {
+	None,
 	Routine(String),
-	Root,
 	If
 }
 
-#[derive(Debug)]
-pub struct AstNode {
-	pub kind: NodeKind
+#[derive(Debug, Clone)]
+pub struct Instruction {
+	kind: InstrKind
 }
 
-impl AstNode {
-	pub fn new(kind: NodeKind) -> Self {
+impl Instruction {
+	pub fn new() -> Self {
+		Self {
+			kind: InstrKind::None
+		}
+	}
+
+	pub fn new_kind(kind: InstrKind) -> Self {
 		Self {
 			kind
 		}
 	}
 }
-
-pub type PkgAst = Tree<AstNode>;
 
 // Data for the root of an instruction
 pub enum ParseRoot {
@@ -38,66 +46,85 @@ pub enum ParseRoot {
 	None
 }
 
-// Modes for what we expect to be parsing
-pub enum ParseMode {
-	Word(String),
-	Str(String)
-}
-
 // Data used for parsing
+#[derive(Debug)]
 pub struct ParseData {
-	// A list of trees for each routine
-	ast: PkgAst,
-	// The current instruction number
-	instruction: u32,
-	// Character number in the instruction
-	instruction_char: i32,
-	// Data for parse root
-	root: ParseRoot,
-	// Name of the current routine
-	routine: Option<String>,
-	// Current parsing mode
-	mode: ParseMode
+	routines: HashMap<String, Vec<Instruction>>,
+	instruction_n: u32,
+	routine: String,
+	block: Vec<Instruction>,
+	instruction: Instruction,
+	push_to_routine: bool
 }
 
 impl ParseData {
 	pub fn new() -> Self {
+		let default_rtn = String::from("__default__");
 		Self {
-			ast: Tree::new(AstNode::new(NodeKind::Root)),
-			instruction: 0,
-			instruction_char: -1,
-			root: ParseRoot::None,
-			routine: None,
-			mode: ParseMode::Word(String::new())
+			routines: HashMap::from([(default_rtn.clone(), Vec::new())]),
+			instruction_n: 0,
+			routine: default_rtn,
+			block: Vec::new(),
+			instruction: Instruction::new(),
+			push_to_routine: false
 		}
 	}
 
 	// Reset the instruction data
 	pub fn reset_instruction(&mut self) {
-		self.instruction += 1;
-		self.instruction_char = -1;
-		self.root = ParseRoot::None;
-	}
-
-	// Parse the current instruction and start a new one
-	pub fn new_instruction(&mut self) -> Result<(), ParseError> {
-		match &self.root {
-			ParseRoot::None => return Ok(()),
-			ParseRoot::Routine(name) => {
-
-			}
-			ParseRoot::Instruction(name, args) => {
-
-			}
-		}
-		Ok(())
+		self.instruction_n += 1;
+		self.block.push(self.instruction.clone());
+		self.instruction = Instruction::new();
 	}
 }
 
 impl Package {
-	pub fn parse(&mut self) -> Result<(), ParseError> {
-		let data = ParseData::new();
+	pub fn parse(&mut self, paths: &Paths) -> Result<(), PkgError> {
+		self.ensure_loaded(paths)?;
+		if let Some(data) = &self.data {
+			let tokens = match lex(&data.contents) {
+				Ok(tokens) => Ok(tokens),
+				Err(e) => Err(ParseError::from(e))
+			}?;
+			let tokens = reduce_tokens(&tokens);
 
+			let mut prs = ParseData::new();
+			for (tok, pos) in tokens.iter() {
+				let mut instr_finished = false;
+				let mut block_finished = false;
+				match &mut prs.instruction.kind {
+					InstrKind::None => {
+						match tok {
+							Token::Routine => {
+								prs.instruction = Instruction::new_kind(InstrKind::Routine(String::new()));
+							}
+							_ => {}
+						}
+						Ok(())
+					}
+					InstrKind::Routine(name) => {
+						match tok {
+							Token::Ident(ident) => {
+								*name = ident.to_string();
+								instr_finished = true;
+							}
+							_ => {
+								return Err(PkgError::Parse(ParseError::UnexpectedToken(tok.as_string(), pos.clone())))
+							}
+						}
+						Ok(())
+					}
+					_ => {
+						Ok::<(), PkgError>(())
+					}
+				}?;
+
+				if instr_finished {
+					prs.reset_instruction();
+				}
+			}
+			dbg!(&prs);
+		}
 		Ok(())
 	}
 }

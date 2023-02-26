@@ -9,6 +9,7 @@ use crate::net::download::{Download, DownloadError};
 use std::path::PathBuf;
 use std::fs;
 
+use self::eval::parse::ParseError;
 use self::reg::PkgIdentifier;
 use self::repo::RepoError;
 
@@ -27,7 +28,9 @@ pub enum PkgError {
 	#[error("Download failed:\n{}", .0)]
 	Download(#[from] DownloadError),
 	#[error("Error in repository:\n{}", .0)]
-	Repo(#[from] RepoError)
+	Repo(#[from] RepoError),
+	#[error("Failed to parse package:\n{}", .0)]
+	Parse(#[from] ParseError)
 }
 
 impl PkgData {

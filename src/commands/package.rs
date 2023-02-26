@@ -72,6 +72,7 @@ fn cat(data: &mut CmdData, name: &str, version: &str) -> Result<(), CmdError> {
 			let contents = config.packages.load(&req, paths)?;
 			cprintln!("<s,b>Contents of package <g>{}</g>:</s,b>", req);
 			cprintln!("<k!>{}", contents);
+			config.packages.parse(&req, paths)?;
 		}
 	}
 

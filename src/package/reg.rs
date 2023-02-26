@@ -117,6 +117,13 @@ impl PkgRegistry {
 		Ok(contents)
 	}
 
+	// Parse a package
+	pub fn parse(&mut self, req: &PkgRequest, paths: &Paths) -> Result<(), RegError> {
+		let pkg = self.get(req, paths)?;
+		pkg.parse(paths)?;
+		Ok(())
+	}
+
 	// Insert a local package into the registry
 	pub fn insert_local(&mut self, id: &PkgIdentifier, path: &Path) {
 		self.insert(id, Package::new(&id.name, &id.version, PkgKind::Local(path.to_path_buf())));

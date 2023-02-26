@@ -1,4 +1,4 @@
-use std::fmt::Display;
+use std::fmt::{Display, Debug};
 
 // Generic side for something like a bracket
 #[derive(Debug, PartialEq, Clone)]
@@ -22,11 +22,44 @@ pub enum Token {
 	Routine
 }
 
+impl Token {
+	pub fn as_string(&self) -> String {
+		match self {
+			Token::None => String::from("none"),
+			Token::Whitespace => String::from("whitespace"),
+			Token::Semicolon => String::from(";"),
+			Token::Curly(side) => match side {
+				Side::Left => String::from("{"),
+				Side::Right => String::from("}")
+			}
+			Token::Square(side) => match side {
+				Side::Left => String::from("["),
+				Side::Right => String::from("]")
+			}
+			Token::Paren(side) => match side {
+				Side::Left => String::from("("),
+				Side::Right => String::from(")")
+			}
+			Token::Comment(text) => String::from("# ") + text,
+			Token::Ident(name) => String::from("identifier ") + name,
+			Token::Num(num) => String::from("number ") + &num.to_string(),
+			Token::Str(string) => format!("\"{}\"", string),
+			Token::Routine => String::from("routine")
+		}
+	}
+}
+
 // Text positional information
-#[derive(Debug, Clone)]
+#[derive(Clone)]
 pub struct TextPos {
 	pub row: usize,
 	pub col: usize
+}
+
+impl Debug for TextPos {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "({}:{})", self.row, self.col)
+	}
 }
 
 impl Display for TextPos {
