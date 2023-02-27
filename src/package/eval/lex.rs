@@ -12,6 +12,7 @@ pub enum Token {
 	None,
 	Whitespace,
 	Semicolon,
+	Dollar,
 	Curly(Side),
 	Square(Side),
 	Paren(Side),
@@ -28,6 +29,7 @@ impl Token {
 			Token::None => String::from("none"),
 			Token::Whitespace => String::from("whitespace"),
 			Token::Semicolon => String::from(";"),
+			Token::Dollar => String::from("$"),
 			Token::Curly(side) => match side {
 				Side::Left => String::from("{"),
 				Side::Right => String::from("}")
@@ -144,6 +146,10 @@ pub fn lex(text: &str) -> Result<Vec<(Token, TextPos)>, LexError> {
 					match c {
 						';' => {
 							tok = Token::Semicolon;
+							tok_finished = true;
+						}
+						'$' => {
+							tok = Token::Dollar;
 							tok_finished = true;
 						}
 						'{' => {

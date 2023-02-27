@@ -1,9 +1,9 @@
-use std::collections::HashMap;
-
 use crate::io::files::paths::Paths;
-use crate::package::eval::lex::Side;
 use super::super::{Package, PkgError};
-use super::lex::{lex, LexError, Token, reduce_tokens, TextPos};
+use super::lex::{lex, LexError, Token, reduce_tokens, TextPos, Side};
+use super::instruction::{Instruction, InstrKind};
+
+use std::collections::HashMap;
 
 static DEFAULT_ROUTINE: &str = "__default__";
 
@@ -19,34 +19,15 @@ pub enum ParseError {
 	UnknownInstr(String, TextPos)
 }
 
-#[derive(Debug, Clone)]
-pub enum InstrKind {
-	Unknown(String, Vec<String>),
-	If(BlockId)
-}
+pub type BlockId = u16;
 
 #[derive(Debug, Clone)]
-pub struct Instruction {
-	kind: InstrKind
-}
-
-impl Instruction {
-	pub fn new(kind: InstrKind) -> Self {
-		Self {
-			kind
-		}
-	}
-}
-
-type BlockId = u16;
-
-#[derive(Debug, Clone)]
-pub struct InstrBlock {
+pub struct Block {
 	contents: Vec<Instruction>,
 	parent: Option<BlockId>
 }
 
-impl InstrBlock {
+impl Block {
 	pub fn new(parent: Option<BlockId>) -> Self {
 		Self {
 			contents: Vec::new(),
@@ -61,7 +42,7 @@ impl InstrBlock {
 
 #[derive(Debug)]
 pub struct Parsed {
-	pub blocks: HashMap<BlockId, InstrBlock>,
+	pub blocks: HashMap<BlockId, Block>,
 	pub routines: HashMap<String, BlockId>,
 	id_count: BlockId
 }
@@ -80,7 +61,7 @@ impl Parsed {
 	// Creates a new block and returns its ID
 	pub fn new_block(&mut self, parent: Option<BlockId>) -> BlockId {
 		self.id_count += 1;
-		self.blocks.insert(self.id_count, InstrBlock::new(parent));
+		self.blocks.insert(self.id_count, Block::new(parent));
 		self.id_count
 	}
 
@@ -97,7 +78,7 @@ impl Parsed {
 enum ParseMode {
 	Root,
 	Routine(Option<String>),
-	Instruction(Instruction, Vec<String>),
+	Instruction(Instruction),
 	If(Vec<String>)
 }
 
@@ -169,10 +150,7 @@ impl Package {
 										prs.mode = ParseMode::If(Vec::new());
 									},
 									name => {
-										prs.mode = ParseMode::Instruction(
-											Instruction::new(InstrKind::Unknown(name.to_owned(), Vec::new())),
-											Vec::new()
-										);
+										prs.mode = ParseMode::Instruction(Instruction::from_str(name));
 									}
 								}
 							}
@@ -245,26 +223,12 @@ impl Package {
 						}
 						Ok(())
 					}
-					ParseMode::Instruction(instr, args) => {
-						match tok {
-							Token::Ident(name) => {
-								args.push(name.clone());
-							}
-							Token::Str(text) => {
-								args.push(text.clone());
-							}
-							Token::Semicolon => {
-								instr_to_push = Some(instr.clone());
-								mode_to_set = Some(ParseMode::Root);
-							}
-							_ => {}
+					ParseMode::Instruction(instr) => {
+						if instr.parse(tok, pos)? {
+							instr_to_push = Some(instr.clone());
+							mode_to_set = Some(ParseMode::Root);
 						}
-						match &mut instr.kind {
-							InstrKind::Unknown(.., instr_args) => {
-								*instr_args = args.clone();
-							}
-							_ => {}
-						}
+
 						Ok(())
 					}
 				}?;
