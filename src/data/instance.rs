@@ -15,10 +15,20 @@ use std::fs;
 use std::path::PathBuf;
 use std::process::Command;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum InstKind {
 	Client,
 	Server
+}
+
+impl InstKind {
+	pub fn from_str(string: &str) -> Option<Self> {
+		match string {
+			"client" => Some(Self::Client),
+			"server" => Some(Self::Server),
+			_ => None
+		}
+	}
 }
 
 #[derive(Debug)]

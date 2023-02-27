@@ -33,3 +33,19 @@ impl Asset {
 		}
 	}
 }
+
+#[derive(Debug, Clone)]
+pub enum Modloader {
+	Forge,
+	Fabric
+}
+
+impl Modloader {
+	pub fn from_str(string: &str) -> Option<Self> {
+		match string {
+			"forge" => Some(Self::Forge),
+			"fabric" => Some(Self::Fabric),
+			_ => None
+		}
+	}
+}

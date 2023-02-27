@@ -3,6 +3,7 @@ use std::collections::HashMap;
 pub mod lex;
 pub mod parse;
 pub mod instruction;
+pub mod conditions;
 
 // Argument to a command that could be constant or a variable
 #[derive(Debug, Clone)]

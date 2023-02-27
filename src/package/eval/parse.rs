@@ -1,5 +1,7 @@
 use crate::io::files::paths::Paths;
+use crate::package::eval::conditions::ConditionKind;
 use super::super::{Package, PkgError};
+use super::conditions::Condition;
 use super::lex::{lex, LexError, Token, reduce_tokens, TextPos, Side};
 use super::instruction::{Instruction, InstrKind};
 
@@ -79,7 +81,7 @@ enum ParseMode {
 	Root,
 	Routine(Option<String>),
 	Instruction(Instruction),
-	If(Vec<String>)
+	If(Option<Condition>)
 }
 
 // Data used for parsing
@@ -147,7 +149,7 @@ impl Package {
 							Token::Ident(name) => {
 								match name.as_str() {
 									"if" => {
-										prs.mode = ParseMode::If(Vec::new());
+										prs.mode = ParseMode::If(None);
 									},
 									name => {
 										prs.mode = ParseMode::Instruction(Instruction::from_str(name));
@@ -199,19 +201,13 @@ impl Package {
 						}
 						Ok(())
 					}
-					ParseMode::If(args) => {
+					ParseMode::If(condition) => {
 						match tok {
-							Token::Ident(name) => {
-								args.push(name.clone());
-							}
-							Token::Str(text) => {
-								args.push(text.clone());
-							}
 							Token::Curly(side) => {
 								match side {
-									Side::Left => {
+									Side::Left => if let Some(condition) = condition {
 										prs.block = prs.parsed.new_block(Some(prs.block));
-										prs.new_instruction(Instruction::new(InstrKind::If(prs.block)));
+										instr_to_push = Some(Instruction::new(InstrKind::If(condition.clone(), prs.block)));
 										prs.mode = ParseMode::Root;
 									}
 									Side::Right => {
@@ -219,7 +215,16 @@ impl Package {
 									}
 								}
 							}
-							_ => {}
+							_ => match condition {
+								Some(condition) => condition.parse(tok, pos)?,
+								None => match tok {
+									Token::Ident(name) => match ConditionKind::from_str(name) {
+										Some(new_condition) => *condition = Some(Condition::new(new_condition)),
+										None => {}
+									},
+									_ => return Err(PkgError::Parse(ParseError::UnexpectedToken(tok.as_string(), pos.clone())))
+								}
+							}
 						}
 						Ok(())
 					}

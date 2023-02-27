@@ -1,10 +1,11 @@
 use super::{parse::{BlockId, ParseError}, lex::{Token, TextPos}, Value};
+use super::conditions::Condition;
 use crate::data::asset::AssetKind;
 
 #[derive(Debug, Clone)]
 pub enum InstrKind {
 	Unknown(String, Vec<String>),
-	If(BlockId),
+	If(Condition, BlockId),
 	Name(Value),
 	Version(Value),
 	AssetType(Option<AssetKind>),
@@ -101,13 +102,13 @@ impl Instruction {
 	}
 }
 
-enum ParseArgResult {
+pub enum ParseArgResult {
 	Value(Value),
 	ParseVar
 }
 
 // Parses a generic instruction argument
-fn parse_arg(tok: &Token, pos: &TextPos, parse_var: bool) -> Result<ParseArgResult, ParseError> {
+pub fn parse_arg(tok: &Token, pos: &TextPos, parse_var: bool) -> Result<ParseArgResult, ParseError> {
 	match tok {
 		Token::Dollar => Ok(ParseArgResult::ParseVar),
 		Token::Ident(name) => if parse_var {
