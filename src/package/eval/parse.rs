@@ -25,7 +25,7 @@ pub type BlockId = u16;
 
 #[derive(Debug, Clone)]
 pub struct Block {
-	contents: Vec<Instruction>,
+	pub contents: Vec<Instruction>,
 	parent: Option<BlockId>
 }
 
@@ -125,7 +125,7 @@ impl ParseData {
 impl Package {
 	pub fn parse(&mut self, paths: &Paths) -> Result<(), PkgError> {
 		self.ensure_loaded(paths)?;
-		if let Some(data) = &self.data {
+		if let Some(data) = &mut self.data {
 			let tokens = match lex(&data.contents) {
 				Ok(tokens) => Ok(tokens),
 				Err(e) => Err(ParseError::from(e))
@@ -250,7 +250,7 @@ impl Package {
 					prs.new_block();
 				}
 			}
-			dbg!(&prs);
+			data.parsed = Some(prs.parsed);
 		}
 		Ok(())
 	}

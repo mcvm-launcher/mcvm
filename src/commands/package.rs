@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use super::lib::{CmdData, CmdError};
-use crate::{util::{print::{HYPHEN_POINT, ReplPrinter}, versions::VersionPattern}, package::reg::PkgRequest};
+use crate::{util::{print::{HYPHEN_POINT, ReplPrinter}, versions::{VersionPattern, MinecraftVersion}}, package::{reg::PkgRequest, eval::eval::{EvalConstants, EvalPermissions}}, data::{asset::Modloader, instance::InstKind}};
 
 use color_print::{cprintln, cformat};
 
@@ -73,6 +73,13 @@ fn cat(data: &mut CmdData, name: &str, version: &str) -> Result<(), CmdError> {
 			cprintln!("<s,b>Contents of package <g>{}</g>:</s,b>", req);
 			cprintln!("<k!>{}", contents);
 			config.packages.parse(&req, paths)?;
+			let constants = EvalConstants {
+				perms: EvalPermissions::All,
+				version: MinecraftVersion::Unknown(String::from("1.19.3")),
+				modloader: Modloader::Fabric,
+				side: InstKind::Client
+			};
+			config.packages.eval(&req, paths, "info", &constants)?;
 		}
 	}
 

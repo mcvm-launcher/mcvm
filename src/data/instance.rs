@@ -15,7 +15,7 @@ use std::fs;
 use std::path::PathBuf;
 use std::process::Command;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum InstKind {
 	Client,
 	Server

@@ -3,8 +3,7 @@ pub enum AssetKind {
 	ResourcePack,
 	Datapack,
 	Mod,
-	Plugin,
-	World
+	Plugin
 }
 
 impl AssetKind {
@@ -14,7 +13,6 @@ impl AssetKind {
 			"datapack" => Some(Self::Datapack),
 			"mod" => Some(Self::Mod),
 			"plugin" => Some(Self::Plugin),
-			"world" => Some(Self::World),
 			_ => None
 		}
 	}
@@ -34,8 +32,9 @@ impl Asset {
 	}
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum Modloader {
+	Vanilla,
 	Forge,
 	Fabric
 }
@@ -43,6 +42,7 @@ pub enum Modloader {
 impl Modloader {
 	pub fn from_str(string: &str) -> Option<Self> {
 		match string {
+			"vanilla" => Some(Self::Vanilla),
 			"forge" => Some(Self::Forge),
 			"fabric" => Some(Self::Fabric),
 			_ => None

@@ -1,11 +1,14 @@
 use crate::data::asset::Modloader;
 use crate::data::instance::InstKind;
+use crate::util::versions::MinecraftVersion;
 
 use super::Value;
+use super::eval::{EvalConstants, EvalResult, EvalError, EvalData};
 use super::lex::{Token, TextPos};
 use super::parse::ParseError;
 use super::instruction::{parse_arg, ParseArgResult};
 
+use std::collections::HashMap;
 
 #[derive(Debug, Clone)]
 pub enum ConditionKind {
@@ -72,6 +75,27 @@ impl ConditionKind {
 					_ => return Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone()))
 				}
 				Ok(false)
+			}
+		}
+	}
+
+	pub fn eval(&self, constants: &EvalConstants, eval: &EvalData)
+	-> Result<bool, EvalError> {
+		match self {
+			Self::Not(condition) => {
+				condition.as_ref().expect("Not condition is missing").eval(constants, eval)
+			}
+			Self::Version(version) => {
+				let version = version.get(&eval.vars)?;
+				match &constants.version {
+					MinecraftVersion::Unknown(other) => Ok(version == *other)
+				}
+			}
+			Self::Side(side) => {
+				Ok(constants.side == *side.as_ref().expect("If side is missing"))
+			}
+			Self::Modloader(modloader) => {
+				Ok(constants.modloader == *modloader.as_ref().expect("If modloader is missing"))
 			}
 		}
 	}

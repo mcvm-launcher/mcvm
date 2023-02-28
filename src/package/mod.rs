@@ -9,17 +9,12 @@ use crate::net::download::{Download, DownloadError};
 use std::path::PathBuf;
 use std::fs;
 
-use self::eval::parse::ParseError;
+use self::eval::eval::EvalError;
+use self::eval::parse::{ParseError, Parsed};
 use self::reg::PkgIdentifier;
 use self::repo::RepoError;
 
 static PKG_EXTENSION: &str = ".pkg.txt";
-
-// Data pertaining to the contents of a package
-#[derive(Debug)]
-pub struct PkgData {
-	contents: String
-}
 
 #[derive(Debug, thiserror::Error)]
 pub enum PkgError {
@@ -30,13 +25,23 @@ pub enum PkgError {
 	#[error("Error in repository:\n{}", .0)]
 	Repo(#[from] RepoError),
 	#[error("Failed to parse package:\n{}", .0)]
-	Parse(#[from] ParseError)
+	Parse(#[from] ParseError),
+	#[error("Failed to evaluate package:\n{}", .0)]
+	Eval(#[from] EvalError)
+}
+
+// Data pertaining to the contents of a package
+#[derive(Debug)]
+pub struct PkgData {
+	contents: String,
+	parsed: Option<Parsed>
 }
 
 impl PkgData {
 	pub fn new(contents: &str) -> Self {
 		Self {
-			contents: contents.to_owned()
+			contents: contents.to_owned(),
+			parsed: None
 		}
 	}
 

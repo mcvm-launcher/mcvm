@@ -1,3 +1,4 @@
+use super::eval::eval::EvalConstants;
 use super::{Package, PkgKind, PkgError};
 use super::repo::{PkgRepo, query_all, RepoError};
 use crate::{util::versions::VersionPattern, io::files::paths::Paths};
@@ -121,6 +122,14 @@ impl PkgRegistry {
 	pub fn parse(&mut self, req: &PkgRequest, paths: &Paths) -> Result<(), RegError> {
 		let pkg = self.get(req, paths)?;
 		pkg.parse(paths)?;
+		Ok(())
+	}
+
+	// Evaluate a package
+	pub fn eval(&mut self, req: &PkgRequest, paths: &Paths, routine: &str, constants: &EvalConstants)
+	-> Result<(), RegError> {
+		let pkg = self.get(req, paths)?;
+		pkg.eval(paths, routine, constants)?;
 		Ok(())
 	}
 

@@ -4,6 +4,9 @@ pub mod lex;
 pub mod parse;
 pub mod instruction;
 pub mod conditions;
+pub mod eval;
+
+use eval::EvalError;
 
 // Argument to a command that could be constant or a variable
 #[derive(Debug, Clone)]
@@ -14,11 +17,13 @@ pub enum Value {
 }
 
 impl Value {
-	pub fn get(&self, vars: &HashMap<String, String>) -> Option<String> {
+	pub fn get(&self, vars: &HashMap<String, String>) -> Result<String, EvalError> {
 		match self {
-			Self::None => None,
-			Self::Constant(val) => Some(val.clone()),
-			Self::Var(name) => vars.get(name).cloned()
+			Self::None => Err(EvalError::VarNotDefined(String::from(""))),
+			Self::Constant(val) => Ok(val.clone()),
+			Self::Var(name) => {
+				vars.get(name).cloned().ok_or(EvalError::VarNotDefined(name.clone()))
+			}
 		}
 	}
 }
