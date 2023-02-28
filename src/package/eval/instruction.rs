@@ -11,6 +11,11 @@ pub enum InstrKind {
 	AssetType(Option<AssetKind>),
 	AssetName(Value),
 	DownloadAsset(Value),
+	Asset {
+		name: Value,
+		kind: Option<AssetKind>,
+		url: Value
+	},
 	Set(Option<String>, Value),
 	Finish(),
 	Fail()

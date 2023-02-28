@@ -12,6 +12,8 @@ pub enum Token {
 	None,
 	Whitespace,
 	Semicolon,
+	Colon,
+	Comma,
 	Dollar,
 	Curly(Side),
 	Square(Side),
@@ -27,8 +29,10 @@ impl Token {
 	pub fn as_string(&self) -> String {
 		match self {
 			Token::None => String::from("none"),
-			Token::Whitespace => String::from("whitespace"),
+			Token::Whitespace => String::from(" "),
 			Token::Semicolon => String::from(";"),
+			Token::Colon => String::from(":"),
+			Token::Comma => String::from(","),
 			Token::Dollar => String::from("$"),
 			Token::Curly(side) => match side {
 				Side::Left => String::from("{"),
@@ -120,7 +124,7 @@ pub fn lex(text: &str) -> Result<Vec<(Token, TextPos)>, LexError> {
 	let mut tokens: Vec<(Token, TextPos)> = Vec::new();
 
 	// Positional
-	let mut line_n: usize = 0;
+	let mut line_n: usize = 1;
 	let mut last_line_i: usize = 0;
 
 	// Current token
@@ -146,6 +150,14 @@ pub fn lex(text: &str) -> Result<Vec<(Token, TextPos)>, LexError> {
 					match c {
 						';' => {
 							tok = Token::Semicolon;
+							tok_finished = true;
+						}
+						':' => {
+							tok = Token::Colon;
+							tok_finished = true;
+						}
+						',' => {
+							tok = Token::Comma;
 							tok_finished = true;
 						}
 						'$' => {

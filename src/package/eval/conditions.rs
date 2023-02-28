@@ -3,12 +3,10 @@ use crate::data::instance::InstKind;
 use crate::util::versions::MinecraftVersion;
 
 use super::Value;
-use super::eval::{EvalConstants, EvalResult, EvalError, EvalData};
+use super::eval::{EvalConstants, EvalError, EvalData};
 use super::lex::{Token, TextPos};
 use super::parse::ParseError;
 use super::instruction::{parse_arg, ParseArgResult};
-
-use std::collections::HashMap;
 
 #[derive(Debug, Clone)]
 pub enum ConditionKind {
@@ -83,7 +81,7 @@ impl ConditionKind {
 	-> Result<bool, EvalError> {
 		match self {
 			Self::Not(condition) => {
-				condition.as_ref().expect("Not condition is missing").eval(constants, eval)
+				condition.as_ref().expect("Not condition is missing").eval(constants, eval).map(|op| !op)
 			}
 			Self::Version(version) => {
 				let version = version.get(&eval.vars)?;

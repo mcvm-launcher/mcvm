@@ -71,7 +71,7 @@ fn cat(data: &mut CmdData, name: &str, version: &str) -> Result<(), CmdError> {
 			let req = PkgRequest {name: name.to_owned(), version: VersionPattern::from(version)};
 			let contents = config.packages.load(&req, paths)?;
 			cprintln!("<s,b>Contents of package <g>{}</g>:</s,b>", req);
-			cprintln!("<k!>{}", contents);
+			cprintln!("{}", contents);
 			config.packages.parse(&req, paths)?;
 			let constants = EvalConstants {
 				perms: EvalPermissions::All,
@@ -79,7 +79,7 @@ fn cat(data: &mut CmdData, name: &str, version: &str) -> Result<(), CmdError> {
 				modloader: Modloader::Fabric,
 				side: InstKind::Client
 			};
-			config.packages.eval(&req, paths, "info", &constants)?;
+			config.packages.eval(&req, paths, "install", &constants)?;
 		}
 	}
 

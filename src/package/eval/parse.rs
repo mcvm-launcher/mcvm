@@ -1,9 +1,11 @@
+use crate::data::asset::AssetKind;
 use crate::io::files::paths::Paths;
 use crate::package::eval::conditions::ConditionKind;
 use super::super::{Package, PkgError};
+use super::Value;
 use super::conditions::Condition;
 use super::lex::{lex, LexError, Token, reduce_tokens, TextPos, Side};
-use super::instruction::{Instruction, InstrKind};
+use super::instruction::{Instruction, InstrKind, parse_arg, ParseArgResult};
 
 use std::collections::HashMap;
 
@@ -13,12 +15,14 @@ static DEFAULT_ROUTINE: &str = "__default__";
 pub enum ParseError {
 	#[error("{}", .0)]
 	Lex(#[from] LexError),
-	#[error("Unexpected token '{}' at {}", .0, .1)]
+	#[error("Unexpected token '{}' {}", .0, .1)]
 	UnexpectedToken(String, TextPos),
 	#[error("Routines must be declared at the root scope {}", .0)]
 	UnexpectedRoutine(TextPos),
-	#[error("Unknown instruction '{}' at {}", .0, .1)]
-	UnknownInstr(String, TextPos)
+	#[error("Unknown instruction '{}' {}", .0, .1)]
+	UnknownInstr(String, TextPos),
+	#[error("Unknown asset key '{}' {}", .0, .1)]
+	UnknownAssetKey(String, TextPos)
 }
 
 pub type BlockId = u16;
@@ -75,13 +79,39 @@ impl Parsed {
 	}
 }
 
+// State of the asset parser
+#[derive(Debug)]
+enum AssetMode {
+	Opening,
+	Key,
+	Colon,
+	Value,
+	Comma
+}
+
+// Current key for the asset parser
+#[derive(Debug)]
+enum AssetKey {
+	None,
+	Kind,
+	Url
+}
+
 // Mode for what we are currently parsing
 #[derive(Debug)]
 enum ParseMode {
 	Root,
 	Routine(Option<String>),
 	Instruction(Instruction),
-	If(Option<Condition>)
+	If(Option<Condition>),
+	Asset {
+		mode: AssetMode,
+		parse_var: bool,
+		key: AssetKey,
+		name: Value,
+		kind: Option<AssetKind>,
+		url: Value
+	}
 }
 
 // Data used for parsing
@@ -136,6 +166,7 @@ impl Package {
 			for (tok, pos) in tokens.iter() {
 				let mut instr_to_push = None;
 				let mut mode_to_set = None;
+				let mut block_to_set = None;
 				let mut block_finished = false;
 				match &mut prs.mode {
 					ParseMode::Root => {
@@ -148,9 +179,17 @@ impl Package {
 							}
 							Token::Ident(name) => {
 								match name.as_str() {
-									"if" => {
-										prs.mode = ParseMode::If(None);
-									},
+									"if" => prs.mode = ParseMode::If(None),
+									"asset" => {
+										prs.mode = ParseMode::Asset {
+											mode: AssetMode::Opening,
+											parse_var: false,
+											key: AssetKey::None,
+											name: Value::None,
+											kind: None,
+											url: Value::None
+										};
+									}
 									name => {
 										prs.mode = ParseMode::Instruction(Instruction::from_str(name));
 									}
@@ -203,17 +242,14 @@ impl Package {
 					}
 					ParseMode::If(condition) => {
 						match tok {
-							Token::Curly(side) => {
-								match side {
-									Side::Left => if let Some(condition) = condition {
-										prs.block = prs.parsed.new_block(Some(prs.block));
-										instr_to_push = Some(Instruction::new(InstrKind::If(condition.clone(), prs.block)));
-										prs.mode = ParseMode::Root;
-									}
-									Side::Right => {
-										return Err(PkgError::Parse(ParseError::UnexpectedToken(tok.as_string(), pos.clone())))
-									}
-								}
+							Token::Curly(Side::Left) => if let Some(condition) = condition {
+								let block = prs.parsed.new_block(Some(prs.block));
+								block_to_set = Some(block);
+								instr_to_push = Some(Instruction::new(InstrKind::If(condition.clone(), block)));
+								prs.mode = ParseMode::Root;
+							}
+							Token::Curly(Side::Right) => {
+								return Err(PkgError::Parse(ParseError::UnexpectedToken(tok.as_string(), pos.clone())))
 							}
 							_ => match condition {
 								Some(condition) => condition.parse(tok, pos)?,
@@ -226,12 +262,92 @@ impl Package {
 								}
 							}
 						}
+
 						Ok(())
 					}
 					ParseMode::Instruction(instr) => {
 						if instr.parse(tok, pos)? {
 							instr_to_push = Some(instr.clone());
 							mode_to_set = Some(ParseMode::Root);
+						}
+
+						Ok(())
+					}
+					ParseMode::Asset {
+						mode,
+						parse_var,
+						key,
+						name,
+						kind,
+						url
+					} => {
+						dbg!(&mode, &parse_var, &key, &name, &kind, &url);
+						println!();
+						match mode {
+							AssetMode::Opening => match tok {
+								Token::Paren(Side::Left) => {
+									if let Value::None = name {
+										return Err(PkgError::Parse(ParseError::UnexpectedToken(tok.as_string(), pos.clone())))
+									}
+									*mode = AssetMode::Key;
+								}
+								_ => match parse_arg(tok, pos, *parse_var)? {
+									ParseArgResult::ParseVar => *parse_var = true,
+									ParseArgResult::Value(new_val) => {
+										*name = new_val;
+										*parse_var = false;
+									}
+								}
+							}
+							AssetMode::Key => match tok {
+								Token::Ident(name) => {
+									match name.as_str() {
+										"kind" => *key = AssetKey::Kind,
+										"url" => *key = AssetKey::Url,
+										_ => return Err(PkgError::Parse(ParseError::UnknownAssetKey(name.to_owned(), pos.clone())))
+									}
+									*mode = AssetMode::Colon;
+								}
+								_ => return Err(PkgError::Parse(ParseError::UnexpectedToken(tok.as_string(), pos.clone())))
+							}
+							AssetMode::Colon => match tok {
+								Token::Colon => *mode = AssetMode::Value,
+								_ => return Err(PkgError::Parse(ParseError::UnexpectedToken(tok.as_string(), pos.clone())))
+							}
+							AssetMode::Value => {
+								match tok {
+									Token::Ident(name) if !*parse_var => {
+										match key {
+											AssetKey::Kind => *kind = AssetKind::from_str(name),
+											_ => return Err(PkgError::Parse(ParseError::UnexpectedToken(tok.as_string(), pos.clone())))
+										}
+										*mode = AssetMode::Comma;
+									}
+									_ => match parse_arg(tok, pos, *parse_var)? {
+										ParseArgResult::ParseVar => *parse_var = true,
+										ParseArgResult::Value(new_val) => {
+											match key {
+												AssetKey::Url => *url = new_val,
+												_ => return Err(PkgError::Parse(ParseError::UnexpectedToken(tok.as_string(), pos.clone())))
+											}
+											*parse_var = false;
+											*mode = AssetMode::Comma;
+										}
+									}
+								}
+							}
+							AssetMode::Comma => match tok {
+								Token::Comma => *mode = AssetMode::Key,
+								Token::Paren(Side::Right) => {
+									instr_to_push = Some(Instruction::new(InstrKind::Asset {
+										name: name.clone(),
+										kind: kind.clone(),
+										url: url.clone()
+									}));
+									prs.mode = ParseMode::Root;
+								}
+								_ => return Err(PkgError::Parse(ParseError::UnexpectedToken(tok.as_string(), pos.clone())))
+							}
 						}
 
 						Ok(())
@@ -244,6 +360,10 @@ impl Package {
 
 				if let Some(mode) = mode_to_set {
 					prs.mode = mode;
+				}
+
+				if let Some(block) = block_to_set {
+					prs.block = block;
 				}
 				
 				if block_finished {
