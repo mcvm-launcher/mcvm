@@ -34,18 +34,12 @@ impl Token {
 			Token::Colon => String::from(":"),
 			Token::Comma => String::from(","),
 			Token::Dollar => String::from("$"),
-			Token::Curly(side) => match side {
-				Side::Left => String::from("{"),
-				Side::Right => String::from("}")
-			}
-			Token::Square(side) => match side {
-				Side::Left => String::from("["),
-				Side::Right => String::from("]")
-			}
-			Token::Paren(side) => match side {
-				Side::Left => String::from("("),
-				Side::Right => String::from(")")
-			}
+			Token::Curly(Side::Left) => String::from("{"),
+			Token::Curly(Side::Right) => String::from("}"),
+			Token::Square(Side::Left) => String::from("["),
+			Token::Square(Side::Right) => String::from("]"),
+			Token::Paren(Side::Left) => String::from("("),
+			Token::Paren(Side::Right) => String::from(")"),
 			Token::Comment(text) => String::from("# ") + text,
 			Token::Ident(name) => String::from("identifier ") + name,
 			Token::Num(num) => String::from("number ") + &num.to_string(),

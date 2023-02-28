@@ -23,7 +23,7 @@ impl Command {
 			Self::Launch => launch::run(argc, argv, data).await,
 			Self::Version => version::run(argc, argv, data),
 			Self::Files => files::run(argc, argv, data),
-			Self::Package => package::run(argc, argv, data)
+			Self::Package => package::run(argc, argv, data).await
 		}
 	}
 

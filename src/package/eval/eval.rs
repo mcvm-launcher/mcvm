@@ -2,7 +2,8 @@ use super::parse::{BlockId, Block};
 use super::instruction::{Instruction, InstrKind};
 use super::super::{Package, PkgError};
 use crate::data::instance::InstKind;
-use crate::data::asset::Modloader;
+use crate::data::asset::{Modloader, AssetDownload, Asset};
+use crate::package::reg::PkgIdentifier;
 use crate::util::versions::MinecraftVersion;
 use crate::io::files::paths::Paths;
 
@@ -50,38 +51,46 @@ pub struct EvalConstants {
 #[derive(Debug, Clone)]
 pub struct EvalData<'a> {
 	pub vars: HashMap<String, String>,
-	pub constants: &'a EvalConstants
+	pub downloads: Vec<AssetDownload>,
+	pub constants: &'a EvalConstants,
+	pub id: PkgIdentifier
 }
 
 impl<'a> EvalData<'a> {
-	pub fn new(constants: &'a EvalConstants) -> Self {
+	pub fn new(constants: &'a EvalConstants, id: PkgIdentifier) -> Self {
 		Self {
 			vars: HashMap::new(),
-			constants
+			downloads: Vec::new(),
+			constants,
+			id
 		}
 	}
 }
 
 pub struct EvalResult {
 	vars_to_set: HashMap<String, String>,
-	finish: bool
+	finish: bool,
+	downloads: Vec<AssetDownload>
 }
 
 impl EvalResult {
 	pub fn new() -> Self {
 		Self {
 			vars_to_set: HashMap::new(),
-			finish: false
+			finish: false,
+			downloads: Vec::new()
 		}
 	}
 
 	pub fn merge(&mut self, other: EvalResult) {
 		self.vars_to_set.extend(other.vars_to_set);
+		self.finish = other.finish;
+		self.downloads.extend(other.downloads);
 	}
 }
 
 impl Package {
-	pub fn eval(&mut self, paths: &Paths, routine: &str, constants: &EvalConstants)
+	pub async fn eval(&mut self, paths: &Paths, routine: &str, constants: &EvalConstants)
 	-> Result<(), PkgError> {
 		self.ensure_loaded(paths)?;
 		self.parse(paths)?;
@@ -92,7 +101,7 @@ impl Package {
 				let block = parsed.blocks.get(routine_id)
 					.ok_or(EvalError::RoutineDoesNotExist(routine.to_owned()))?;
 
-				let mut eval = EvalData::new(constants);
+				let mut eval = EvalData::new(constants, self.id.clone());
 
 				match constants.perms {
 					EvalPermissions::All | EvalPermissions::Info => {
@@ -101,9 +110,14 @@ impl Package {
 							for (var, val) in result.vars_to_set {
 								eval.vars.insert(var, val);
 							}
+							eval.downloads.extend(result.downloads);
 							if result.finish {
 								break;
 							}
+						}
+
+						for asset in &eval.downloads {
+								asset.download(&paths).await?;
 						}
 					}
 					EvalPermissions::None => {}
@@ -118,23 +132,21 @@ fn eval_block(block: &Block, constants: &EvalConstants, eval: &EvalData, blocks:
 -> Result<EvalResult, EvalError> {
 	// We clone this so that state can be changed between each instruction
 	let mut eval_clone = eval.clone();
-	let mut finish = false;
+	let mut out = EvalResult::new();
 
 	for instr in &block.contents {
 		let result = instr.eval(constants, &eval_clone, blocks)?;
-		for (var, val) in result.vars_to_set {
+		for (var, val) in result.vars_to_set.clone() {
 			eval_clone.vars.insert(var, val);
 		}
 		if result.finish {
-			finish = true;
+			out.finish = true;
 			break;
 		}
+		out.merge(result);
 	}
 
-	Ok(EvalResult {
-		vars_to_set: eval_clone.vars,
-		finish
-	})
+	Ok(out)
 }
 
 impl Instruction {
@@ -157,6 +169,19 @@ impl Instruction {
 					out.vars_to_set.insert(var.to_owned(), val.get(&eval.vars)?);
 				}
 				InstrKind::Finish() => out.finish = true,
+				InstrKind::Asset {
+					name,
+					kind,
+					url
+				} => {
+					let asset = Asset::new(
+						kind.as_ref().expect("Asset kind missing").clone(),
+						&name.get(&eval.vars)?,
+						eval.id.clone()
+					);
+
+					out.downloads.push(AssetDownload::new(asset, &url.get(&eval.vars)?));
+				},
 				_ => {}
 			}
 		}

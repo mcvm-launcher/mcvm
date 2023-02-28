@@ -1,6 +1,10 @@
-use std::path::PathBuf;
+use crate::io::files::create_leading_dirs;
+use crate::net::download::DownloadError;
+use crate::package::reg::PkgIdentifier;
+use crate::io::files::paths::Paths;
 
-use crate::{io::files::paths::Paths, package::reg::PkgIdentifier};
+use std::path::PathBuf;
+use std::fs;
 
 #[derive(Debug, Clone)]
 pub enum AssetKind {
@@ -31,6 +35,7 @@ impl AssetKind {
 	}
 }
 
+#[derive(Debug, Clone)]
 pub struct Asset {
 	pub kind: AssetKind,
 	pub name: String,
@@ -55,6 +60,7 @@ impl Asset {
 	}
 }
 
+#[derive(Debug, Clone)]
 pub struct AssetDownload {
 	asset: Asset,
 	url: String
@@ -66,6 +72,15 @@ impl AssetDownload {
 			asset,
 			url: url.to_owned()
 		}
+	}
+
+	pub async fn download(&self, paths: &Paths) -> Result<(), DownloadError> {
+		let path = self.asset.get_path(paths);
+		create_leading_dirs(&path)?;
+		let client = reqwest::Client::new();
+		let response = client.get(&self.url).send();
+		fs::write(path, response.await?.bytes().await?)?;
+		Ok(())
 	}
 }
 

@@ -191,7 +191,7 @@ impl Package {
 										};
 									}
 									name => {
-										prs.mode = ParseMode::Instruction(Instruction::from_str(name));
+										prs.mode = ParseMode::Instruction(Instruction::from_str(name, pos)?);
 									}
 								}
 							}
@@ -281,8 +281,6 @@ impl Package {
 						kind,
 						url
 					} => {
-						dbg!(&mode, &parse_var, &key, &name, &kind, &url);
-						println!();
 						match mode {
 							AssetMode::Opening => match tok {
 								Token::Paren(Side::Left) => {

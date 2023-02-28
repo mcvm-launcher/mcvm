@@ -62,7 +62,7 @@ fn sync(data: &mut CmdData) -> Result<(), CmdError> {
 	Ok(())
 }
 
-fn cat(data: &mut CmdData, name: &str, version: &str) -> Result<(), CmdError> {
+async fn cat(data: &mut CmdData, name: &str, version: &str) -> Result<(), CmdError> {
 	data.ensure_config()?;
 	data.ensure_paths()?;
 
@@ -79,14 +79,14 @@ fn cat(data: &mut CmdData, name: &str, version: &str) -> Result<(), CmdError> {
 				modloader: Modloader::Fabric,
 				side: InstKind::Client
 			};
-			config.packages.eval(&req, paths, "install", &constants)?;
+			config.packages.eval(&req, paths, "install", &constants).await?;
 		}
 	}
 
 	Ok(())
 }
 
-pub fn run(argc: usize, argv: &[String], data: &mut CmdData)
+pub async fn run(argc: usize, argv: &[String], data: &mut CmdData)
 -> Result<(), CmdError> {
 	if argc == 0 {
 		help();
@@ -97,8 +97,8 @@ pub fn run(argc: usize, argv: &[String], data: &mut CmdData)
 		"list" => list(data)?,
 		"sync" => sync(data)?,
 		"cat" => match argc {
-			2 => cat(data, &argv[1], "latest")?,
-			3 => cat(data, &argv[1], &argv[2])?,
+			2 => cat(data, &argv[1], "latest").await?,
+			3 => cat(data, &argv[1], &argv[2]).await?,
 			_ => cprintln!("{}", CAT_HELP)
 		}
 		cmd => cprintln!("<r>Unknown subcommand {}", cmd)

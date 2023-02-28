@@ -13,7 +13,9 @@ pub enum DownloadError {
 	#[error("Failed to open file: {}", .0)]
 	File(#[from] std::io::Error),
 	#[error("Failed to convert string to UTF-8")]
-	StringConvert(#[from] FromUtf8Error)
+	StringConvert(#[from] FromUtf8Error),
+	#[error("Download failed:\n{}", .0)]
+	Reqwest(#[from] reqwest::Error)
 }
 
 pub struct Download {

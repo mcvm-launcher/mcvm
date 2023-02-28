@@ -126,10 +126,10 @@ impl PkgRegistry {
 	}
 
 	// Evaluate a package
-	pub fn eval(&mut self, req: &PkgRequest, paths: &Paths, routine: &str, constants: &EvalConstants)
+	pub async fn eval(&mut self, req: &PkgRequest, paths: &Paths, routine: &str, constants: &EvalConstants)
 	-> Result<(), RegError> {
 		let pkg = self.get(req, paths)?;
-		pkg.eval(paths, routine, constants)?;
+		pkg.eval(paths, routine, constants).await?;
 		Ok(())
 	}
 

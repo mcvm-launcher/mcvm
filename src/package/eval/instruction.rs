@@ -4,13 +4,9 @@ use crate::data::asset::AssetKind;
 
 #[derive(Debug, Clone)]
 pub enum InstrKind {
-	Unknown(String, Vec<String>),
 	If(Condition, BlockId),
 	Name(Value),
 	Version(Value),
-	AssetType(Option<AssetKind>),
-	AssetName(Value),
-	DownloadAsset(Value),
 	Asset {
 		name: Value,
 		kind: Option<AssetKind>,
@@ -35,19 +31,16 @@ impl Instruction {
 		}
 	}
 
-	pub fn from_str(string: &str) -> Self {
+	pub fn from_str(string: &str, pos: &TextPos) -> Result<Self, ParseError> {
 		let kind = match string {
-			"name" => InstrKind::Name(Value::None),
-			"version" => InstrKind::Version(Value::None),
-			"asset_type" => InstrKind::AssetType(None),
-			"asset_name" => InstrKind::AssetName(Value::None),
-			"download_asset" => InstrKind::DownloadAsset(Value::None),
-			"set" => InstrKind::Set(None, Value::None),
-			"finish" => InstrKind::Finish(),
-			"fail" => InstrKind::Fail(),
-			string => InstrKind::Unknown(string.to_owned(), Vec::new())
-		};
-		Instruction::new(kind)
+			"name" => Ok(InstrKind::Name(Value::None)),
+			"version" => Ok(InstrKind::Version(Value::None)),
+			"set" => Ok(InstrKind::Set(None, Value::None)),
+			"finish" => Ok(InstrKind::Finish()),
+			"fail" => Ok(InstrKind::Fail()),
+			string => Err(ParseError::UnknownInstr(string.to_owned(), pos.clone()))
+		}?;
+		Ok(Instruction::new(kind))
 	}
 
 	// Parses a token and returns true if finished
@@ -56,17 +49,6 @@ impl Instruction {
 			Ok(true)
 		} else {
 			match &mut self.kind {
-				InstrKind::Unknown(.., args) => match tok {
-					Token::Ident(name) => {
-						args.push(name.clone());
-					}
-					Token::Str(text) => {
-						args.push(text.clone());
-					}
-					_ => {}
-				}
-				InstrKind::AssetName(val) |
-				InstrKind::DownloadAsset(val) |
 				InstrKind::Name(val) |
 				InstrKind::Version(val) => {
 					match parse_arg(tok, pos, self.parse_var)? {
@@ -75,12 +57,6 @@ impl Instruction {
 							*val = new_val;
 							self.parse_var = false;
 						}
-					}
-				}
-				InstrKind::AssetType(kind) => {
-					match tok {
-						Token::Ident(name) => *kind = AssetKind::from_str(name),
-						_ => return Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone()))
 					}
 				}
 				InstrKind::Set(var, val) => {
