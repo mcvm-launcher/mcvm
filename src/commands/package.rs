@@ -1,11 +1,9 @@
 use std::collections::HashMap;
 
 use super::lib::{CmdData, CmdError};
-use crate::data::{asset::Modloader, instance::InstKind};
 use crate::package::reg::PkgRequest;
-use crate::package::eval::eval::{EvalConstants, Routine};
 use crate::util::print::{HYPHEN_POINT, ReplPrinter};
-use crate::util::versions::{VersionPattern, MinecraftVersion};
+use crate::util::versions::VersionPattern;
 
 use color_print::{cprintln, cformat};
 
@@ -76,22 +74,6 @@ async fn cat(data: &mut CmdData, name: &str, version: &str) -> Result<(), CmdErr
 			let contents = config.packages.load(&req, paths)?;
 			cprintln!("<s,b>Contents of package <g>{}</g>:</s,b>", req);
 			cprintln!("{}", contents);
-			config.packages.parse(&req, paths)?;
-			let constants = EvalConstants {
-				version: MinecraftVersion::Unknown(String::from("1.19.3")),
-				modloader: Modloader::Fabric,
-				side: InstKind::Client
-			};
-			let eval = config.packages.eval(&req, paths, Routine::Install, constants).await?;
-			for (id, profile) in config.profiles.iter() {
-				for instance in profile.instances.iter() {
-					if let Some(instance) = config.instances.get(instance) {
-						for asset in eval.downloads.iter() {
-							instance.create_asset(&asset.asset, paths)?;
-						}
-					}
-				}
-			}
 		}
 	}
 

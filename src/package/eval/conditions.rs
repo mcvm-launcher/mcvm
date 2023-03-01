@@ -3,7 +3,7 @@ use crate::data::instance::InstKind;
 use crate::util::versions::MinecraftVersion;
 
 use super::Value;
-use super::eval::{EvalConstants, EvalError, EvalData};
+use super::eval::{EvalError, EvalData};
 use super::lex::{Token, TextPos};
 use super::parse::ParseError;
 use super::instruction::{parse_arg, ParseArgResult};

@@ -1,4 +1,7 @@
 use super::lib::{CmdData, CmdError};
+use crate::data::asset::Modloader;
+use crate::package::eval::eval::Routine;
+use crate::package::eval::eval::EvalConstants;
 use crate::data::instance::InstKind;
 use crate::util::print::HYPHEN_POINT;
 
@@ -80,6 +83,25 @@ async fn profile_update(data: &mut CmdData, id: &String, force: bool) -> Result<
 		if let Some(paths) = &data.paths {
 			if let Some(profile) = config.profiles.get_mut(id) {
 				profile.create_instances(&mut config.instances, paths, true, force).await?;
+				
+				cprintln!("<s>Updating packages");
+				for req in profile.packages.iter() {
+					let constants = EvalConstants {
+						version: profile.version.clone(),
+						modloader: Modloader::Vanilla,
+						side: InstKind::Client
+					};
+					
+					let eval = config.packages.eval(req, paths, Routine::Install, constants).await?;
+
+					for instance in profile.instances.iter() {
+						if let Some(instance) = config.instances.get(instance) {
+							for asset in eval.downloads.iter() {
+								instance.create_asset(&asset.asset, paths)?;
+							}
+						}
+					}
+				}
 			} else {
 				return Err(CmdError::Custom(format!("Unknown profile '{id}'")));
 			}
