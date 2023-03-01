@@ -49,8 +49,8 @@ impl PkgIdentifier {
 pub enum RegError {
 	#[error("Repository operation failed:\n{}", .0)]
 	Repo(#[from] RepoError),
-	#[error("Package {} not found", .0)]
-	NotFound(String),
+	#[error("Package '{}' with version '{}' not found", .0, .1)]
+	NotFound(String, String),
 	#[error("Error in package:\n{}", .0)]
 	Package(#[from] PkgError)
 }
@@ -87,7 +87,7 @@ impl PkgRegistry {
 				let id = PkgIdentifier::new(&pkg_name, &version);
 				Ok(self.insert(&id, Package::new(&pkg_name, &version, PkgKind::Remote(Some(url)))))
 			}
-			None => Err(RegError::NotFound(pkg_name))
+			None => Err(RegError::NotFound(pkg_name, pkg_vers.as_string().to_owned()))
 		}
 	}
 

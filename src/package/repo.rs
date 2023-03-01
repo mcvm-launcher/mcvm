@@ -1,5 +1,6 @@
 use crate::net::download::{Download, DownloadError};
 use crate::io::files::paths::Paths;
+use crate::skip_fail;
 use crate::util::versions::VersionPattern;
 
 use serde::Deserialize;
@@ -122,7 +123,7 @@ impl PkgRepo {
 pub fn query_all(repos: &mut [PkgRepo], id: &str, version: &VersionPattern, paths: &Paths)
 -> Result<Option<(String, String)>, RepoError> {
 	for repo in repos {
-		if let Some(result) = repo.query(id, version, paths)? {
+		if let Some(result) = skip_fail!(repo.query(id, version, paths)) {
 			return Ok(Some(result));
 		}
 	}
