@@ -82,7 +82,16 @@ async fn cat(data: &mut CmdData, name: &str, version: &str) -> Result<(), CmdErr
 				modloader: Modloader::Fabric,
 				side: InstKind::Client
 			};
-			config.packages.eval(&req, paths, Routine::Install, &constants).await?;
+			let eval = config.packages.eval(&req, paths, Routine::Install, constants).await?;
+			for (id, profile) in config.profiles.iter() {
+				for instance in profile.instances.iter() {
+					if let Some(instance) = config.instances.get(instance) {
+						for asset in eval.downloads.iter() {
+							instance.create_asset(&asset.asset, paths)?;
+						}
+					}
+				}
+			}
 		}
 	}
 

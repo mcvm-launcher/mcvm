@@ -1,4 +1,4 @@
-use super::eval::eval::{EvalConstants, Routine};
+use super::eval::eval::{EvalConstants, Routine, EvalData};
 use super::{Package, PkgKind, PkgError};
 use super::repo::{PkgRepo, query_all, RepoError};
 use crate::{util::versions::VersionPattern, io::files::paths::Paths};
@@ -126,11 +126,10 @@ impl PkgRegistry {
 	}
 
 	// Evaluate a package
-	pub async fn eval(&mut self, req: &PkgRequest, paths: &Paths, routine: Routine, constants: &EvalConstants)
-	-> Result<(), RegError> {
+	pub async fn eval(&mut self, req: &PkgRequest, paths: &Paths, routine: Routine, constants: EvalConstants)
+	-> Result<EvalData, RegError> {
 		let pkg = self.get(req, paths)?;
-		pkg.eval(paths, routine, constants).await?;
-		Ok(())
+		return Ok(pkg.eval(paths, routine, constants).await?);
 	}
 
 	// Insert a local package into the registry

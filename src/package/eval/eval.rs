@@ -14,7 +14,9 @@ pub enum EvalError {
 	#[error("Variable '{}' is not defined", .0)]
 	VarNotDefined(String),
 	#[error("Routine '{}' does not exist", .0)]
-	RoutineDoesNotExist(String)
+	RoutineDoesNotExist(String),
+	#[error("Evaluator failed to start")]
+	Start
 }
 
 #[derive(Debug, Clone)]
@@ -59,7 +61,7 @@ impl Routine {
 	}
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct EvalConstants {
 	pub version: MinecraftVersion,
 	pub modloader: Modloader,
@@ -67,16 +69,16 @@ pub struct EvalConstants {
 }
 
 #[derive(Debug, Clone)]
-pub struct EvalData<'a> {
+pub struct EvalData {
 	pub vars: HashMap<String, String>,
 	pub downloads: Vec<AssetDownload>,
-	pub constants: &'a EvalConstants,
+	pub constants: EvalConstants,
 	pub id: PkgIdentifier,
 	pub level: EvalLevel
 }
 
-impl<'a> EvalData<'a> {
-	pub fn new(constants: &'a EvalConstants, id: PkgIdentifier, routine: &Routine) -> Self {
+impl EvalData {
+	pub fn new(constants: EvalConstants, id: PkgIdentifier, routine: &Routine) -> Self {
 		Self {
 			vars: HashMap::new(),
 			downloads: Vec::new(),
@@ -110,8 +112,8 @@ impl EvalResult {
 }
 
 impl Package {
-	pub async fn eval(&mut self, paths: &Paths, routine: Routine, constants: &EvalConstants)
-	-> Result<(), PkgError> {
+	pub async fn eval(&mut self, paths: &Paths, routine: Routine, constants: EvalConstants)
+	-> Result<EvalData, PkgError> {
 		self.ensure_loaded(paths)?;
 		self.parse(paths)?;
 		if let Some(data) = &mut self.data {
@@ -127,7 +129,7 @@ impl Package {
 				match eval.level {
 					EvalLevel::All | EvalLevel::Info => {
 						for instr in &block.contents {
-							let result = instr.eval(constants, &eval, &parsed.blocks)?;
+							let result = instr.eval(&eval, &parsed.blocks)?;
 							for (var, val) in result.vars_to_set {
 								eval.vars.insert(var, val);
 							}
@@ -138,25 +140,26 @@ impl Package {
 						}
 
 						for asset in &eval.downloads {
-								asset.download(&paths).await?;
+							asset.download(&paths).await?;
 						}
 					}
 					EvalLevel::None => {}
 				}
+				return Ok(eval);
 			}
 		}
-		Ok(())
+		Err(PkgError::Eval(EvalError::Start))
 	}
 }
 
-fn eval_block(block: &Block, constants: &EvalConstants, eval: &EvalData, blocks: &HashMap<BlockId, Block>)
+fn eval_block(block: &Block, eval: &EvalData, blocks: &HashMap<BlockId, Block>)
 -> Result<EvalResult, EvalError> {
 	// We clone this so that state can be changed between each instruction
 	let mut eval_clone = eval.clone();
 	let mut out = EvalResult::new();
 
 	for instr in &block.contents {
-		let result = instr.eval(constants, &eval_clone, blocks)?;
+		let result = instr.eval(&eval_clone, blocks)?;
 		for (var, val) in result.vars_to_set.clone() {
 			eval_clone.vars.insert(var, val);
 		}
@@ -171,16 +174,16 @@ fn eval_block(block: &Block, constants: &EvalConstants, eval: &EvalData, blocks:
 }
 
 impl Instruction {
-	pub fn eval(&self, constants: &EvalConstants, eval: &EvalData, blocks: &HashMap<BlockId, Block>)
+	pub fn eval(&self, eval: &EvalData, blocks: &HashMap<BlockId, Block>)
 	-> Result<EvalResult, EvalError> {
 		let mut out = EvalResult::new();
 		if eval.level.is_all() {
 			match &self.kind {
 				InstrKind::If(condition, block) => {
-					if condition.kind.eval(constants, eval)? {
+					if condition.kind.eval(eval)? {
 						let result = eval_block(
 							blocks.get(block).expect("If block missing"),
-							constants, eval, blocks
+							eval, blocks
 						)?;
 						out.merge(result);
 					}

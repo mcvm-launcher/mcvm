@@ -77,23 +77,23 @@ impl ConditionKind {
 		}
 	}
 
-	pub fn eval(&self, constants: &EvalConstants, eval: &EvalData)
+	pub fn eval(&self, eval: &EvalData)
 	-> Result<bool, EvalError> {
 		match self {
 			Self::Not(condition) => {
-				condition.as_ref().expect("Not condition is missing").eval(constants, eval).map(|op| !op)
+				condition.as_ref().expect("Not condition is missing").eval(eval).map(|op| !op)
 			}
 			Self::Version(version) => {
 				let version = version.get(&eval.vars)?;
-				match &constants.version {
+				match &eval.constants.version {
 					MinecraftVersion::Unknown(other) => Ok(version == *other)
 				}
 			}
 			Self::Side(side) => {
-				Ok(constants.side == *side.as_ref().expect("If side is missing"))
+				Ok(eval.constants.side == *side.as_ref().expect("If side is missing"))
 			}
 			Self::Modloader(modloader) => {
-				Ok(constants.modloader == *modloader.as_ref().expect("If modloader is missing"))
+				Ok(eval.constants.modloader == *modloader.as_ref().expect("If modloader is missing"))
 			}
 		}
 	}

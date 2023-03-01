@@ -6,13 +6,14 @@ use crate::io::java::{Java, JavaKind, JavaError};
 use crate::{Paths, skip_none};
 use crate::net::game_files;
 use crate::util::print::ReplPrinter;
+use super::asset::{Asset, AssetKind};
 use super::user::Auth;
 use super::client_args::{process_client_arg, process_string_arg};
 
 use color_print::{cprintln, cformat};
 
 use std::fs;
-use std::path::PathBuf;
+use std::path::{PathBuf, Path};
 use std::process::Command;
 
 #[derive(Debug, Clone, PartialEq)]
@@ -94,8 +95,15 @@ impl Instance {
 	pub fn get_dir(&self, paths: &Paths) -> PathBuf {
 		match &self.kind {
 			InstKind::Client => paths.project.data_dir().join("client").join(&self.id),
-			InstKind::Server => paths.project.data_dir().join("server").join(&self.id),
+			InstKind::Server => paths.project.data_dir().join("server").join(&self.id)
 		}
+	}
+
+	pub fn get_subdir(&self, paths: &Paths) -> PathBuf {
+		self.get_dir(paths).join(match self.kind {
+			InstKind::Client => ".minecraft",
+			InstKind::Server => "server"
+		})
 	}
 
 	// Create the data for the instance
@@ -125,7 +133,7 @@ impl Instance {
 		let dir = self.get_dir(paths);
 		files::create_leading_dirs(&dir)?;
 		files::create_dir(&dir)?;
-		let mc_dir = dir.join(".minecraft");
+		let mc_dir = self.get_subdir(paths);
 		files::create_dir(&mc_dir)?;
 		let jar_path = dir.join("client.jar");
 
@@ -166,7 +174,7 @@ impl Instance {
 		let dir = self.get_dir(paths);
 		files::create_leading_dirs(&dir)?;
 		files::create_dir(&dir)?;
-		let server_dir = dir.join("server");
+		let server_dir = self.get_subdir(paths);
 		files::create_dir(&server_dir)?;
 		let jar_path = server_dir.join("server.jar");
 
@@ -221,7 +229,7 @@ impl Instance {
 			Some(java) => match &java.path {
 				Some(java_path) => {
 					let jre_path = java_path.join("bin/java");
-					let client_dir = self.get_dir(paths).join(".minecraft");
+					let client_dir = self.get_subdir(paths);
 					let mut command = Command::new(jre_path.to_str().expect("Failed to convert java path to a string"));
 					command.current_dir(client_dir);
 
@@ -278,7 +286,7 @@ impl Instance {
 			Some(java) => match &java.path {
 				Some(java_path) => {
 					let jre_path = java_path.join("bin/java");
-					let server_dir = self.get_dir(paths).join("server");
+					let server_dir = self.get_subdir(paths);
 					let jar_path = server_dir.join("server.jar");
 
 					let mut command = Command::new(jre_path.to_str().expect("Failed to convert java path to a string"));
@@ -299,5 +307,33 @@ impl Instance {
 			}
 			None => Err(LaunchError::Java)
 		}
+	}
+
+	fn link_asset(dir: &Path, asset: &Asset, paths: &Paths) -> Result<(), CreateError> {
+		files::create_dir(&dir)?;
+		let link = dir.join(&asset.name);
+		if !link.exists() {
+			fs::hard_link(asset.get_path(paths), dir.join(&asset.name))?;
+		}
+		Ok(())
+	}
+
+	pub fn create_asset(&self, asset: &Asset, paths: &Paths) -> Result<(), CreateError> {
+		let inst_dir = self.get_subdir(paths);
+		files::create_leading_dirs(&inst_dir)?;
+		files::create_dir(&inst_dir)?;
+		match asset.kind {
+			AssetKind::ResourcePack => match self.kind {
+				InstKind::Client => Self::link_asset(&inst_dir.join("resourcepacks"), asset, paths)?,
+				InstKind::Server => {}
+			}
+			AssetKind::Mod => Self::link_asset(&inst_dir.join("mods"), asset, paths)?,
+			AssetKind::Plugin => match self.kind {
+				InstKind::Client => {},
+				InstKind::Server => Self::link_asset(&inst_dir.join("plugins"), asset, paths)?
+			}
+		}
+		
+		Ok(())
 	}
 }

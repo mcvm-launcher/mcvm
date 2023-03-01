@@ -9,7 +9,6 @@ use std::fs;
 #[derive(Debug, Clone)]
 pub enum AssetKind {
 	ResourcePack,
-	Datapack,
 	Mod,
 	Plugin
 }
@@ -18,7 +17,6 @@ impl AssetKind {
 	pub fn from_str(string: &str) -> Option<Self> {
 		match string {
 			"resource_pack" => Some(Self::ResourcePack),
-			"datapack" => Some(Self::Datapack),
 			"mod" => Some(Self::Mod),
 			"plugin" => Some(Self::Plugin),
 			_ => None
@@ -28,7 +26,6 @@ impl AssetKind {
 	pub fn to_plural_string(&self) -> String {
 		match self {
 			Self::ResourcePack => String::from("resource_packs"),
-			Self::Datapack => String::from("datapacks"),
 			Self::Mod => String::from("mods"),
 			Self::Plugin => String::from("plugins")
 		}
@@ -62,7 +59,7 @@ impl Asset {
 
 #[derive(Debug, Clone)]
 pub struct AssetDownload {
-	asset: Asset,
+	pub asset: Asset,
 	url: String
 }
 
