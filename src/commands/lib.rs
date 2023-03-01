@@ -1,6 +1,7 @@
 use crate::io::files::paths::{Paths, PathsError};
 use crate::data::config::{Config, ConfigError};
 use crate::data::instance::{CreateError, LaunchError};
+use crate::net::download::DownloadError;
 use crate::package::reg::RegError;
 use crate::package::repo::RepoError;
 
@@ -55,6 +56,8 @@ pub enum CmdError {
 	Repo(#[from] RepoError),
 	#[error("Failed to access package from registry:\n{}", .0)]
 	Reg(#[from] RegError),
+	#[error("Download failed;\n{}", .0)]
+	Download(#[from] DownloadError),
 	#[error("{}", .0)]
 	Custom(String)
 }

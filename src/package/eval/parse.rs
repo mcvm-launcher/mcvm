@@ -1,6 +1,7 @@
 use crate::data::asset::AssetKind;
 use crate::io::files::paths::Paths;
 use crate::package::eval::conditions::ConditionKind;
+use crate::util::yes_no;
 use super::super::{Package, PkgError};
 use super::Value;
 use super::conditions::Condition;
@@ -22,7 +23,9 @@ pub enum ParseError {
 	#[error("Unknown instruction '{}' {}", .0, .1)]
 	UnknownInstr(String, TextPos),
 	#[error("Unknown asset key '{}' {}", .0, .1)]
-	UnknownAssetKey(String, TextPos)
+	UnknownAssetKey(String, TextPos),
+	#[error("Expected 'yes' or 'no', but got {} {}", .0, .1)]
+	YesNo(String, TextPos)
 }
 
 pub type BlockId = u16;
@@ -94,7 +97,8 @@ enum AssetMode {
 enum AssetKey {
 	None,
 	Kind,
-	Url
+	Url,
+	Force
 }
 
 // Mode for what we are currently parsing
@@ -109,7 +113,8 @@ enum ParseMode {
 		key: AssetKey,
 		name: Value,
 		kind: Option<AssetKind>,
-		url: Value
+		url: Value,
+		force: bool
 	}
 }
 
@@ -189,7 +194,8 @@ impl Package {
 											key: AssetKey::None,
 											name: Value::None,
 											kind: None,
-											url: Value::None
+											url: Value::None,
+											force: false
 										};
 									}
 									name => {
@@ -280,7 +286,8 @@ impl Package {
 						key,
 						name,
 						kind,
-						url
+						url,
+						force
 					} => {
 						match mode {
 							AssetMode::Opening => match tok {
@@ -297,6 +304,7 @@ impl Package {
 									match name.as_str() {
 										"kind" => *key = AssetKey::Kind,
 										"url" => *key = AssetKey::Url,
+										"force" => *key = AssetKey::Force,
 										_ => return Err(PkgError::Parse(ParseError::UnknownAssetKey(name.to_owned(), pos.clone())))
 									}
 									*mode = AssetMode::Colon;
@@ -312,6 +320,10 @@ impl Package {
 									Token::Ident(name) => {
 										match key {
 											AssetKey::Kind => *kind = AssetKind::from_str(name),
+											AssetKey::Force => match yes_no(name) {
+												Some(value) => *force = value,
+												None => return Err(PkgError::Parse(ParseError::YesNo(name.to_owned(), pos.clone())))
+											}
 											_ => return Err(PkgError::Parse(ParseError::UnexpectedToken(tok.as_string(), pos.clone())))
 										}
 										*mode = AssetMode::Comma;
@@ -331,7 +343,8 @@ impl Package {
 									instr_to_push = Some(Instruction::new(InstrKind::Asset {
 										name: name.clone(),
 										kind: kind.clone(),
-										url: url.clone()
+										url: url.clone(),
+										force: force.clone()
 									}));
 									prs.mode = ParseMode::Root;
 								}

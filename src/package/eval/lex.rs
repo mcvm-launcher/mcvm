@@ -14,6 +14,7 @@ pub enum Token {
 	Semicolon,
 	Colon,
 	Comma,
+	Pipe,
 	Variable(String),
 	Curly(Side),
 	Square(Side),
@@ -33,6 +34,7 @@ impl Token {
 			Token::Semicolon => String::from(";"),
 			Token::Colon => String::from(":"),
 			Token::Comma => String::from(","),
+			Token::Pipe => String::from("|"),
 			Token::Variable(name) => String::from("$") + name,
 			Token::Curly(Side::Left) => String::from("{"),
 			Token::Curly(Side::Right) => String::from("}"),
@@ -152,6 +154,10 @@ pub fn lex(text: &str) -> Result<Vec<(Token, TextPos)>, LexError> {
 						}
 						',' => {
 							tok = Token::Comma;
+							tok_finished = true;
+						}
+						'|' => {
+							tok = Token::Pipe;
 							tok_finished = true;
 						}
 						'{' => {
@@ -397,7 +403,7 @@ mod tests {
 	#[test]
 	fn test_all() {
 		assert_tokens!(
-			"\"Hello\"; ident{}@routine[]$var():-1000,# comment",
+			"\"Hello\"; ident{}@routine[]$var():-1000,|# comment",
 			vec![
 				Token::Str(String::from("Hello")),
 				Token::Semicolon,
@@ -415,6 +421,7 @@ mod tests {
 				Token::Colon,
 				Token::Num(-1000),
 				Token::Comma,
+				Token::Pipe,
 				Token::Comment(String::from(" comment"))
 			]
 		);

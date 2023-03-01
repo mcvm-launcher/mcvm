@@ -60,19 +60,24 @@ impl Asset {
 #[derive(Debug, Clone)]
 pub struct AssetDownload {
 	pub asset: Asset,
-	url: String
+	url: String,
+	force: bool
 }
 
 impl AssetDownload {
-	pub fn new(asset: Asset, url: &str) -> Self {
+	pub fn new(asset: Asset, url: &str, force: bool) -> Self {
 		Self {
 			asset,
-			url: url.to_owned()
+			url: url.to_owned(),
+			force
 		}
 	}
 
 	pub async fn download(&self, paths: &Paths) -> Result<(), DownloadError> {
 		let path = self.asset.get_path(paths);
+		if !self.force && path.exists() {
+			return Ok(())
+		}
 		create_leading_dirs(&path)?;
 		let client = reqwest::Client::new();
 		let response = client.get(&self.url).send();

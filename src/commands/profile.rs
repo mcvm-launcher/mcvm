@@ -4,7 +4,9 @@ use crate::package::eval::eval::Routine;
 use crate::package::eval::eval::EvalConstants;
 use crate::data::instance::InstKind;
 use crate::util::print::HYPHEN_POINT;
+use crate::util::print::ReplPrinter;
 
+use color_print::cformat;
 use color_print::{cprintln, cprint};
 
 static INFO_HELP: &str = "View helpful information about a profile";
@@ -85,11 +87,11 @@ async fn profile_update(data: &mut CmdData, id: &String, force: bool) -> Result<
 				profile.create_instances(&mut config.instances, paths, true, force).await?;
 				
 				cprintln!("<s>Updating packages");
+				let mut printer = ReplPrinter::new(true);
 				for pkg in profile.packages.iter() {
-					
-					
 					for instance in profile.instances.iter() {
 						if let Some(instance) = config.instances.get(instance) {
+							printer.print(&cformat!("\t(<b!>{}</b!>) Evaluating...", pkg.req));
 							let constants = EvalConstants {
 								version: profile.version.clone(),
 								modloader: Modloader::Vanilla,
@@ -97,12 +99,16 @@ async fn profile_update(data: &mut CmdData, id: &String, force: bool) -> Result<
 								features: pkg.features.clone()
 							};
 							let eval = config.packages.eval(&pkg.req, paths, Routine::Install, constants).await?;
+							printer.print(&cformat!("\t(<b!>{}</b!>) Downloading files...", pkg.req));
 							for asset in eval.downloads.iter() {
+								asset.download(&paths).await?;
 								instance.create_asset(&asset.asset, paths)?;
 							}
 						}
 					}
 				}
+				printer.print(&cformat!("\t<g>Finished installing packages."));
+				printer.finish();
 			} else {
 				return Err(CmdError::Custom(format!("Unknown profile '{id}'")));
 			}

@@ -4,7 +4,7 @@ use super::super::{Package, PkgError};
 use crate::data::instance::InstKind;
 use crate::data::asset::{Modloader, AssetDownload, Asset};
 use crate::package::reg::PkgIdentifier;
-use crate::util::versions::MinecraftVersion;
+use crate::util::versions::{MinecraftVersion, VersionPattern};
 use crate::io::files::paths::Paths;
 
 use std::collections::HashMap;
@@ -23,6 +23,7 @@ pub enum EvalError {
 pub enum EvalLevel {
 	None,
 	Info,
+	Dependencies,
 	All
 }
 
@@ -31,6 +32,13 @@ impl EvalLevel {
 		match self {
 			Self::None => false,
 			_ => true
+		}
+	}
+
+	pub fn is_deps(&self) -> bool {
+		match self {
+			Self::Dependencies | Self::All => true,
+			_ => false
 		}
 	}
 
@@ -44,19 +52,22 @@ impl EvalLevel {
 
 // A routine that we will run
 pub enum Routine {
-	Install
+	Install,
+	Dependencies
 }
 
 impl Routine {
 	pub fn to_string(&self) -> String {
 		String::from(match self {
-			Self::Install => "install"
+			Self::Install => "install",
+			Self::Dependencies => "install"
 		})
 	}
 
 	pub fn get_level(&self) -> EvalLevel {
 		match self {
-			Self::Install => EvalLevel::All
+			Self::Install => EvalLevel::All,
+			Self::Dependencies => EvalLevel::Dependencies
 		}
 	}
 }
@@ -75,7 +86,8 @@ pub struct EvalData {
 	pub downloads: Vec<AssetDownload>,
 	pub constants: EvalConstants,
 	pub id: PkgIdentifier,
-	pub level: EvalLevel
+	pub level: EvalLevel,
+	pub deps: Vec<Vec<VersionPattern>>
 }
 
 impl EvalData {
@@ -85,7 +97,8 @@ impl EvalData {
 			downloads: Vec::new(),
 			constants,
 			id,
-			level: routine.get_level()
+			level: routine.get_level(),
+			deps: Vec::new()
 		}
 	}
 }
@@ -93,7 +106,8 @@ impl EvalData {
 pub struct EvalResult {
 	vars_to_set: HashMap<String, String>,
 	finish: bool,
-	downloads: Vec<AssetDownload>
+	downloads: Vec<AssetDownload>,
+	deps: Vec<Vec<VersionPattern>>
 }
 
 impl EvalResult {
@@ -101,7 +115,8 @@ impl EvalResult {
 		Self {
 			vars_to_set: HashMap::new(),
 			finish: false,
-			downloads: Vec::new()
+			downloads: Vec::new(),
+			deps: Vec::new()
 		}
 	}
 
@@ -109,6 +124,7 @@ impl EvalResult {
 		self.vars_to_set.extend(other.vars_to_set);
 		self.finish = other.finish;
 		self.downloads.extend(other.downloads);
+		self.deps.extend(other.deps);
 	}
 }
 
@@ -128,20 +144,17 @@ impl Package {
 				let mut eval = EvalData::new(constants, self.id.clone(), &routine);
 
 				match eval.level {
-					EvalLevel::All | EvalLevel::Info => {
+					EvalLevel::All | EvalLevel::Info | EvalLevel::Dependencies => {
 						for instr in &block.contents {
 							let result = instr.eval(&eval, &parsed.blocks)?;
 							for (var, val) in result.vars_to_set {
 								eval.vars.insert(var, val);
 							}
 							eval.downloads.extend(result.downloads);
+							eval.deps.extend(result.deps);
 							if result.finish {
 								break;
 							}
-						}
-
-						for asset in &eval.downloads {
-							asset.download(&paths).await?;
 						}
 					}
 					EvalLevel::None => {}
@@ -197,7 +210,8 @@ impl Instruction {
 				InstrKind::Asset {
 					name,
 					kind,
-					url
+					url,
+					force
 				} => {
 					let asset = Asset::new(
 						kind.as_ref().expect("Asset kind missing").clone(),
@@ -205,8 +219,22 @@ impl Instruction {
 						eval.id.clone()
 					);
 
-					out.downloads.push(AssetDownload::new(asset, &url.get(&eval.vars)?));
+					out.downloads.push(AssetDownload::new(asset, &url.get(&eval.vars)?, *force));
 				},
+				_ => {}
+			}
+		}
+		if eval.level.is_deps() {
+			match &self.kind {
+				InstrKind::Rely(deps, ..) => {
+					for dep in deps {
+						let mut dep_to_push = Vec::new();
+						for dep in dep {
+							dep_to_push.push(VersionPattern::from(&dep.get(&eval.vars)?));
+						}
+						out.deps.push(dep_to_push);
+					}
+				}
 				_ => {}
 			}
 		}

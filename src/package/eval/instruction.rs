@@ -1,4 +1,6 @@
-use super::{parse::{BlockId, ParseError}, lex::{Token, TextPos}, Value};
+use super::Value;
+use super::lex::{Token, TextPos, Side};
+use super::parse::{BlockId, ParseError};
 use super::conditions::Condition;
 use crate::data::asset::AssetKind;
 
@@ -11,9 +13,11 @@ pub enum InstrKind {
 	Asset {
 		name: Value,
 		kind: Option<AssetKind>,
-		url: Value
+		url: Value,
+		force: bool
 	},
 	Set(Option<String>, Value),
+	Rely(Vec<Vec<Value>>, Option<Vec<Value>>),
 	Finish(),
 	Fail()
 }
@@ -38,6 +42,7 @@ impl Instruction {
 			"set" => Ok(InstrKind::Set(None, Value::None)),
 			"finish" => Ok(InstrKind::Finish()),
 			"fail" => Ok(InstrKind::Fail()),
+			"rely" => Ok(InstrKind::Rely(Vec::new(), None)),
 			string => Err(ParseError::UnknownInstr(string.to_owned(), pos.clone()))
 		}?;
 		Ok(Instruction::new(kind))
@@ -59,6 +64,23 @@ impl Instruction {
 						match tok {
 							Token::Ident(name) => *var = Some(name.clone()),
 							_ => return Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone()))
+						}
+					}
+				}
+				InstrKind::Rely(deps, dep) => match tok {
+					Token::Paren(Side::Left) => match dep {
+						Some(..) => return Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone())),
+						None => *dep = Some(Vec::new())
+					}
+					Token::Paren(Side::Right) => match dep {
+						Some(..) => deps.push(dep.take().expect("Dependency in option missing when pushing")),
+						None => return Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone()))
+					}
+					_ => {
+						let val = parse_arg(tok, pos)?;
+						match dep {
+							Some(dep) => dep.push(val),
+							None => deps.push(vec![val])
 						}
 					}
 				}
