@@ -7,10 +7,14 @@ use crate::util::print::ReplPrinter;
 
 use color_print::{cprintln, cformat};
 use reqwest::Client;
+use tokio::sync::Semaphore;
 use tokio::task::JoinSet;
 
 use std::fs;
 use std::path::{Path, PathBuf};
+use std::sync::Arc;
+
+use super::download::FD_SENSIBLE_LIMIT;
 
 #[derive(Debug, thiserror::Error)]
 pub enum VersionManifestError {
@@ -277,6 +281,8 @@ pub async fn get_assets(
 	let mut printer = ReplPrinter::new(verbose);
 	printer.indent(1);
 	let mut count = 0;
+	// Used to limit the number of open file descriptors
+	let sem = Arc::new(Semaphore::new(FD_SENSIBLE_LIMIT));
 	for (key, asset_val) in assets {
 		let asset = json::ensure_type(asset_val.as_object(), JsonType::Obj)?;
 		
@@ -306,6 +312,7 @@ pub async fn get_assets(
 	
 	let mut num_done = 0;
 	while let Some(asset) = join.join_next().await {
+		let _ = Arc::clone(&sem).acquire_owned().await;
 		num_done += 1;
 		let name = match asset? {
 			Ok(name) => name,

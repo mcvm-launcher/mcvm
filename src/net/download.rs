@@ -2,6 +2,9 @@ use std::{io::Write, string::FromUtf8Error};
 
 use curl::easy::Easy;
 
+// Sensible open file descriptor limit for asynchronous transfers
+pub static FD_SENSIBLE_LIMIT: usize = 15;
+
 pub enum DownloadMode {
 	File(std::fs::File)
 }
