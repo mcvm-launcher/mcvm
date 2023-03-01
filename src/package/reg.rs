@@ -1,4 +1,4 @@
-use super::eval::eval::EvalConstants;
+use super::eval::eval::{EvalConstants, Routine};
 use super::{Package, PkgKind, PkgError};
 use super::repo::{PkgRepo, query_all, RepoError};
 use crate::{util::versions::VersionPattern, io::files::paths::Paths};
@@ -126,7 +126,7 @@ impl PkgRegistry {
 	}
 
 	// Evaluate a package
-	pub async fn eval(&mut self, req: &PkgRequest, paths: &Paths, routine: &str, constants: &EvalConstants)
+	pub async fn eval(&mut self, req: &PkgRequest, paths: &Paths, routine: Routine, constants: &EvalConstants)
 	-> Result<(), RegError> {
 		let pkg = self.get(req, paths)?;
 		pkg.eval(paths, routine, constants).await?;
@@ -157,7 +157,7 @@ mod tests {
 	fn test_reg_insert() {
 		let mut reg = PkgRegistry::new(vec![]);
 		reg.insert_local(&PkgIdentifier::new("test", "1.1"), &PathBuf::from("./test"));
-		assert!(reg.has_now(&PkgRequest::new("test", &VersionPattern::Single("1.1".to_string()))));
-		assert!(!reg.has_now(&PkgRequest::new("doesnotexist", &VersionPattern::Single("foo".to_string()))));
+		assert!(reg.has_now(&PkgRequest::new("test", &VersionPattern::Single(String::from("1.1")))));
+		assert!(!reg.has_now(&PkgRequest::new("doesnotexist", &VersionPattern::Single(String::from("foo")))));
 	}
 }

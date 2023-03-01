@@ -17,14 +17,14 @@ pub enum EvalError {
 	RoutineDoesNotExist(String)
 }
 
-#[derive(Debug)]
-pub enum EvalPermissions {
+#[derive(Debug, Clone)]
+pub enum EvalLevel {
 	None,
 	Info,
 	All
 }
 
-impl EvalPermissions {
+impl EvalLevel {
 	pub fn is_info(&self) -> bool {
 		match self {
 			Self::None => false,
@@ -40,9 +40,27 @@ impl EvalPermissions {
 	}
 }
 
+// A routine that we will run
+pub enum Routine {
+	Install
+}
+
+impl Routine {
+	pub fn to_string(&self) -> String {
+		String::from(match self {
+			Self::Install => "install"
+		})
+	}
+
+	pub fn get_level(&self) -> EvalLevel {
+		match self {
+			Self::Install => EvalLevel::All
+		}
+	}
+}
+
 #[derive(Debug)]
 pub struct EvalConstants {
-	pub perms: EvalPermissions,
 	pub version: MinecraftVersion,
 	pub modloader: Modloader,
 	pub side: InstKind
@@ -53,16 +71,18 @@ pub struct EvalData<'a> {
 	pub vars: HashMap<String, String>,
 	pub downloads: Vec<AssetDownload>,
 	pub constants: &'a EvalConstants,
-	pub id: PkgIdentifier
+	pub id: PkgIdentifier,
+	pub level: EvalLevel
 }
 
 impl<'a> EvalData<'a> {
-	pub fn new(constants: &'a EvalConstants, id: PkgIdentifier) -> Self {
+	pub fn new(constants: &'a EvalConstants, id: PkgIdentifier, routine: &Routine) -> Self {
 		Self {
 			vars: HashMap::new(),
 			downloads: Vec::new(),
 			constants,
-			id
+			id,
+			level: routine.get_level()
 		}
 	}
 }
@@ -90,21 +110,22 @@ impl EvalResult {
 }
 
 impl Package {
-	pub async fn eval(&mut self, paths: &Paths, routine: &str, constants: &EvalConstants)
+	pub async fn eval(&mut self, paths: &Paths, routine: Routine, constants: &EvalConstants)
 	-> Result<(), PkgError> {
 		self.ensure_loaded(paths)?;
 		self.parse(paths)?;
 		if let Some(data) = &mut self.data {
 			if let Some(parsed) = &mut data.parsed {
-				let routine_id = parsed.routines.get(routine)
-					.ok_or(EvalError::RoutineDoesNotExist(routine.to_owned()))?;
+				let routine_name = routine.to_string();
+				let routine_id = parsed.routines.get(&routine_name)
+					.ok_or(EvalError::RoutineDoesNotExist(routine_name.clone()))?;
 				let block = parsed.blocks.get(routine_id)
-					.ok_or(EvalError::RoutineDoesNotExist(routine.to_owned()))?;
+					.ok_or(EvalError::RoutineDoesNotExist(routine_name))?;
 
-				let mut eval = EvalData::new(constants, self.id.clone());
+				let mut eval = EvalData::new(constants, self.id.clone(), &routine);
 
-				match constants.perms {
-					EvalPermissions::All | EvalPermissions::Info => {
+				match eval.level {
+					EvalLevel::All | EvalLevel::Info => {
 						for instr in &block.contents {
 							let result = instr.eval(constants, &eval, &parsed.blocks)?;
 							for (var, val) in result.vars_to_set {
@@ -120,7 +141,7 @@ impl Package {
 								asset.download(&paths).await?;
 						}
 					}
-					EvalPermissions::None => {}
+					EvalLevel::None => {}
 				}
 			}
 		}
@@ -153,7 +174,7 @@ impl Instruction {
 	pub fn eval(&self, constants: &EvalConstants, eval: &EvalData, blocks: &HashMap<BlockId, Block>)
 	-> Result<EvalResult, EvalError> {
 		let mut out = EvalResult::new();
-		if constants.perms.is_all() {
+		if eval.level.is_all() {
 			match &self.kind {
 				InstrKind::If(condition, block) => {
 					if condition.kind.eval(constants, eval)? {
@@ -185,7 +206,7 @@ impl Instruction {
 				_ => {}
 			}
 		}
-		if constants.perms.is_info() {}
+		if eval.level.is_info() {}
 
 		Ok(out)
 	}

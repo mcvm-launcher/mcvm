@@ -172,7 +172,7 @@ impl Config {
 						),
 						None => VersionPattern::Latest(None)
 					};
-					let req = PkgRequest {name: package_id.to_owned(), version: package_version.clone()};
+					let req = PkgRequest::new(package_id, &package_version);
 					if let Some(val) = package_obj.get("type") {
 						match json::ensure_type(val.as_str(), JsonType::Str)? {
 							"local" => {
@@ -187,7 +187,7 @@ impl Config {
 								}
 							},
 							"remote" => {}
-							typ => Err(ContentError::PkgType(typ.to_string(), "package".to_string()))?
+							typ => Err(ContentError::PkgType(typ.to_string(), String::from("package")))?
 						}
 					}
 					profile.packages.push(req);

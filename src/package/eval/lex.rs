@@ -358,7 +358,7 @@ mod tests {
 		assert_tokens!(
 			"\"Hello\"",
 			vec![
-				Token::Str("Hello".to_string())
+				Token::Str(String::from("Hello"))
 			]
 		);
 	}
@@ -368,16 +368,16 @@ mod tests {
 		assert_tokens!(
 			"\"Uno\"; \"Dos\"; \"Tres\"; Identifier",
 			vec![
-				Token::Str("Uno".to_string()),
+				Token::Str(String::from("Uno")),
 				Token::Semicolon,
 				Token::Whitespace,
-				Token::Str("Dos".to_string()),
+				Token::Str(String::from("Dos")),
 				Token::Semicolon,
 				Token::Whitespace,
-				Token::Str("Tres".to_string()),
+				Token::Str(String::from("Tres")),
 				Token::Semicolon,
 				Token::Whitespace,
-				Token::Ident("Identifier".to_string())
+				Token::Ident(String::from("Identifier"))
 			]
 		);
 	}
@@ -387,11 +387,11 @@ mod tests {
 		assert_tokens!(
 			"\"Foo\" # Comment\n \"Bar\"",
 			vec![
-				Token::Str("Foo".to_string()),
+				Token::Str(String::from("Foo")),
 				Token::Whitespace,
-				Token::Comment(" Comment".to_string()),
+				Token::Comment(String::from(" Comment")),
 				Token::Whitespace,
-				Token::Str("Bar".to_string())
+				Token::Str(String::from("Bar"))
 			]
 		);
 	}
