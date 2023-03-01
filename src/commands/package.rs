@@ -28,9 +28,9 @@ fn list(data: &mut CmdData) -> Result<(), CmdError> {
 		let mut found_pkgs: HashMap<String, Vec<(String, String)>> = HashMap::new();
 		for (id, profile) in config.profiles.iter() {
 			if !profile.packages.is_empty() {
-				for req in profile.packages.iter() {
-					found_pkgs.entry(req.name.clone())
-						.or_insert(vec![]).push((req.version.as_string().to_owned(), id.clone()));
+				for pkg in profile.packages.iter() {
+					found_pkgs.entry(pkg.req.name.clone())
+						.or_insert(vec![]).push((pkg.req.version.as_string().to_owned(), id.clone()));
 				}
 			}
 		}

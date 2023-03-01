@@ -7,6 +7,7 @@ pub enum InstrKind {
 	If(Condition, BlockId),
 	Name(Value),
 	Version(Value),
+	DefaultFeatures(Vec<Value>),
 	Asset {
 		name: Value,
 		kind: Option<AssetKind>,
@@ -35,6 +36,7 @@ impl Instruction {
 		let kind = match string {
 			"name" => Ok(InstrKind::Name(Value::None)),
 			"version" => Ok(InstrKind::Version(Value::None)),
+			"default_features" => Ok(InstrKind::DefaultFeatures(Vec::new())),
 			"set" => Ok(InstrKind::Set(None, Value::None)),
 			"finish" => Ok(InstrKind::Finish()),
 			"fail" => Ok(InstrKind::Fail()),
@@ -55,6 +57,15 @@ impl Instruction {
 						ParseArgResult::ParseVar => self.parse_var = true,
 						ParseArgResult::Value(new_val) => {
 							*val = new_val;
+							self.parse_var = false;
+						}
+					}
+				}
+				InstrKind::DefaultFeatures(features) => {
+					match parse_arg(tok, pos, self.parse_var)? {
+						ParseArgResult::ParseVar => self.parse_var = true,
+						ParseArgResult::Value(new_val) => {
+							features.push(new_val);
 							self.parse_var = false;
 						}
 					}

@@ -1,6 +1,6 @@
 use crate::data::instance::Instance;
 use crate::data::instance::CreateError;
-use crate::package::reg::PkgRequest;
+use crate::package::PkgConfig;
 use crate::util::versions::MinecraftVersion;
 use crate::Paths;
 
@@ -11,7 +11,7 @@ pub struct Profile {
 	pub name: String,
 	pub version: MinecraftVersion,
 	pub instances: Vec<String>,
-	pub packages: Vec<PkgRequest>
+	pub packages: Vec<PkgConfig>
 }
 
 impl Profile {

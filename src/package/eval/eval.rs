@@ -65,7 +65,8 @@ impl Routine {
 pub struct EvalConstants {
 	pub version: MinecraftVersion,
 	pub modloader: Modloader,
-	pub side: InstKind
+	pub side: InstKind,
+	pub features: Vec<String>
 }
 
 #[derive(Debug, Clone)]
@@ -209,7 +210,11 @@ impl Instruction {
 				_ => {}
 			}
 		}
-		if eval.level.is_info() {}
+		if eval.level.is_info() {
+			match &self.kind {
+				_ => {}
+			}
+		}
 
 		Ok(out)
 	}

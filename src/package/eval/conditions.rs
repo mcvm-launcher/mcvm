@@ -13,7 +13,8 @@ pub enum ConditionKind {
 	Not(Option<Box<ConditionKind>>),
 	Version(Value),
 	Side(Option<InstKind>),
-	Modloader(Option<Modloader>)
+	Modloader(Option<Modloader>),
+	Feature(Value)
 }
 
 impl ConditionKind {
@@ -23,6 +24,7 @@ impl ConditionKind {
 			"version" => Some(Self::Version(Value::None)),
 			"side" => Some(Self::Side(None)),
 			"modloader" => Some(Self::Modloader(None)),
+			"feature" => Some(Self::Feature(Value::None)),
 			_ => None
 		}
 	}
@@ -45,7 +47,8 @@ impl ConditionKind {
 
 				Ok(false)
 			}
-			ConditionKind::Version(val) => {
+			ConditionKind::Version(val) |
+			ConditionKind::Feature(val) => {
 				match parse_arg(tok, pos, parse_var)? {
 					ParseArgResult::ParseVar => Ok(true),
 					ParseArgResult::Value(new_val) => {
@@ -94,6 +97,9 @@ impl ConditionKind {
 			}
 			Self::Modloader(modloader) => {
 				Ok(eval.constants.modloader == *modloader.as_ref().expect("If modloader is missing"))
+			}
+			Self::Feature(feature) => {
+				Ok(eval.constants.features.contains(&feature.get(&eval.vars)?))
 			}
 		}
 	}

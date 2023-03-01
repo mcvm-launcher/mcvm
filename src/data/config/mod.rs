@@ -4,6 +4,7 @@ use preferences::ConfigPreferences;
 use super::user::{User, UserKind, AuthState, Auth};
 use super::profile::{Profile, InstanceRegistry};
 use super::instance::{Instance, InstKind};
+use crate::package::PkgConfig;
 use crate::package::reg::{PkgRegistry, PkgRequest, PkgIdentifier};
 use crate::util::versions::{VersionPattern, MinecraftVersion};
 use crate::util::json::{self, JsonType};
@@ -190,7 +191,23 @@ impl Config {
 							typ => Err(ContentError::PkgType(typ.to_string(), String::from("package")))?
 						}
 					}
-					profile.packages.push(req);
+					let features = match package_obj.get("features") {
+						Some(list) => {
+							json::ensure_type(list.as_array(), JsonType::Arr)?;
+							let mut out = Vec::new();
+							for feature in list.as_array().expect("Features list is not an array") {
+								json::ensure_type(feature.as_str(), JsonType::Str)?;
+								out.push(feature.as_str().expect("Feature is not a string").to_owned());
+							}
+							out
+						}
+						None => Vec::new()
+					};
+					let pkg = PkgConfig {
+						req,
+						features
+					};
+					profile.packages.push(pkg);
 				}
 			}
 			

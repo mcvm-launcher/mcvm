@@ -11,7 +11,7 @@ use std::fs;
 
 use self::eval::eval::EvalError;
 use self::eval::parse::{ParseError, Parsed};
-use self::reg::PkgIdentifier;
+use self::reg::{PkgIdentifier, PkgRequest};
 use self::repo::RepoError;
 
 static PKG_EXTENSION: &str = ".pkg.txt";
@@ -123,4 +123,11 @@ mod tests {
 		let package = Package::new("fabriclike-api", "1.3.2", PkgKind::Remote(None));
 		assert_eq!(package.filename(), "fabriclike-api_1.3.2".to_owned() + PKG_EXTENSION);
 	}
+}
+
+// Config for a package, stored in a profile
+#[derive(Debug)]
+pub struct PkgConfig {
+	pub req: PkgRequest,
+	pub features: Vec<String>
 }

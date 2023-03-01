@@ -43,9 +43,9 @@ fn info(data: &mut CmdData, id: &String) -> Result<(), CmdError> {
 				}
 			}
 			cprintln!("   <s>Packages:");
-			for req in profile.packages.iter() {
+			for pkg in profile.packages.iter() {
 				cprint!("   {}", HYPHEN_POINT);
-				cprint!("<b!>{}:<g!>{}", req.name, req.version.as_string());
+				cprint!("<b!>{}:<g!>{}", pkg.req.name, pkg.req.version.as_string());
 				cprintln!();
 			}
 		} else {
@@ -85,17 +85,18 @@ async fn profile_update(data: &mut CmdData, id: &String, force: bool) -> Result<
 				profile.create_instances(&mut config.instances, paths, true, force).await?;
 				
 				cprintln!("<s>Updating packages");
-				for req in profile.packages.iter() {
-					let constants = EvalConstants {
-						version: profile.version.clone(),
-						modloader: Modloader::Vanilla,
-						side: InstKind::Client
-					};
+				for pkg in profile.packages.iter() {
 					
-					let eval = config.packages.eval(req, paths, Routine::Install, constants).await?;
-
+					
 					for instance in profile.instances.iter() {
 						if let Some(instance) = config.instances.get(instance) {
+							let constants = EvalConstants {
+								version: profile.version.clone(),
+								modloader: Modloader::Vanilla,
+								side: instance.kind.clone(),
+								features: pkg.features.clone()
+							};
+							let eval = config.packages.eval(&pkg.req, paths, Routine::Install, constants).await?;
 							for asset in eval.downloads.iter() {
 								instance.create_asset(&asset.asset, paths)?;
 							}
