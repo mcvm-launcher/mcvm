@@ -38,7 +38,7 @@ fn list(data: &mut CmdData) -> Result<(), CmdError> {
 		for (pkg, versions) in found_pkgs {
 			cprintln!("<g!>{}", pkg);
 			for (version, profile) in versions {
-				cprintln!("{}<b>{} <k!>{}", HYPHEN_POINT, version, profile);
+				cprintln!("{}<b!>{} <k!>{}", HYPHEN_POINT, version, profile);
 			}
 		}
 	}
