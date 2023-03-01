@@ -6,7 +6,7 @@ use super::Value;
 use super::eval::{EvalError, EvalData};
 use super::lex::{Token, TextPos};
 use super::parse::ParseError;
-use super::instruction::{parse_arg, ParseArgResult};
+use super::instruction::parse_arg;
 
 #[derive(Debug, Clone)]
 pub enum ConditionKind {
@@ -29,12 +29,12 @@ impl ConditionKind {
 		}
 	}
 	
-	pub fn parse(&mut self, tok: &Token, pos: &TextPos, parse_var: bool) -> Result<bool, ParseError> {
+	pub fn parse(&mut self, tok: &Token, pos: &TextPos) -> Result<(), ParseError> {
 		match self {
 			ConditionKind::Not(condition) => {
 				match condition {
 					Some(condition) => {
-						return condition.parse(tok, pos, parse_var);
+						return condition.parse(tok, pos);
 					}
 					None => match tok {
 						Token::Ident(name) => match ConditionKind::from_str(name) {
@@ -44,19 +44,9 @@ impl ConditionKind {
 						_ => return Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone()))
 					}
 				}
-
-				Ok(false)
 			}
 			ConditionKind::Version(val) |
-			ConditionKind::Feature(val) => {
-				match parse_arg(tok, pos, parse_var)? {
-					ParseArgResult::ParseVar => Ok(true),
-					ParseArgResult::Value(new_val) => {
-						*val = new_val;
-						Ok(false)
-					}
-				}
-			}
+			ConditionKind::Feature(val) => *val = parse_arg(tok, pos)?,
 			ConditionKind::Side(side) => {
 				match tok {
 					Token::Ident(name) => match InstKind::from_str(name) {
@@ -65,7 +55,6 @@ impl ConditionKind {
 					}
 					_ => return Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone()))
 				}
-				Ok(false)
 			}
 			ConditionKind::Modloader(loader) => {
 				match tok {
@@ -75,9 +64,9 @@ impl ConditionKind {
 					}
 					_ => return Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone()))
 				}
-				Ok(false)
 			}
 		}
+		Ok(())
 	}
 
 	pub fn eval(&self, eval: &EvalData)
@@ -107,20 +96,18 @@ impl ConditionKind {
 
 #[derive(Debug, Clone)]
 pub struct Condition {
-	pub kind: ConditionKind,
-	parse_var: bool
+	pub kind: ConditionKind
 }
 
 impl Condition {
 	pub fn new(kind: ConditionKind) -> Self {
 		Self {
-			kind,
-			parse_var: false
+			kind
 		}
 	}
 	
 	pub fn parse(&mut self, tok: &Token, pos: &TextPos) -> Result<(), ParseError> {
-		self.parse_var = self.kind.parse(tok, pos, self.parse_var)?;
+		self.kind.parse(tok, pos)?;
 		Ok(())
 	}
 }

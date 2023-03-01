@@ -20,15 +20,13 @@ pub enum InstrKind {
 
 #[derive(Debug, Clone)]
 pub struct Instruction {
-	pub kind: InstrKind,
-	parse_var: bool
+	pub kind: InstrKind
 }
 
 impl Instruction {
 	pub fn new(kind: InstrKind) -> Self {
 		Self {
-			kind,
-			parse_var: false
+			kind
 		}
 	}
 
@@ -52,33 +50,11 @@ impl Instruction {
 		} else {
 			match &mut self.kind {
 				InstrKind::Name(val) |
-				InstrKind::Version(val) => {
-					match parse_arg(tok, pos, self.parse_var)? {
-						ParseArgResult::ParseVar => self.parse_var = true,
-						ParseArgResult::Value(new_val) => {
-							*val = new_val;
-							self.parse_var = false;
-						}
-					}
-				}
-				InstrKind::DefaultFeatures(features) => {
-					match parse_arg(tok, pos, self.parse_var)? {
-						ParseArgResult::ParseVar => self.parse_var = true,
-						ParseArgResult::Value(new_val) => {
-							features.push(new_val);
-							self.parse_var = false;
-						}
-					}
-				}
+				InstrKind::Version(val) => *val = parse_arg(tok, pos)?,
+				InstrKind::DefaultFeatures(features) => features.push(parse_arg(tok, pos)?),
 				InstrKind::Set(var, val) => {
 					if var.is_some() {
-						match parse_arg(tok, pos, self.parse_var)? {
-							ParseArgResult::ParseVar => self.parse_var = true,
-							ParseArgResult::Value(new_val) => {
-								*val = new_val;
-								self.parse_var = false;
-							}
-						}
+						*val = parse_arg(tok, pos)?;
 					} else {
 						match tok {
 							Token::Ident(name) => *var = Some(name.clone()),
@@ -94,22 +70,12 @@ impl Instruction {
 	}
 }
 
-pub enum ParseArgResult {
-	Value(Value),
-	ParseVar
-}
-
 // Parses a generic instruction argument
-pub fn parse_arg(tok: &Token, pos: &TextPos, parse_var: bool) -> Result<ParseArgResult, ParseError> {
+pub fn parse_arg(tok: &Token, pos: &TextPos) -> Result<Value, ParseError> {
 	match tok {
-		Token::Dollar => Ok(ParseArgResult::ParseVar),
-		Token::Ident(name) => if parse_var {
-			Ok(ParseArgResult::Value(Value::Var(name.clone())))
-		} else {
-			Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone()))
-		}
-		Token::Str(text) => Ok(ParseArgResult::Value(Value::Constant(text.clone()))),
-		Token::Num(num) => Ok(ParseArgResult::Value(Value::Constant(num.to_string().clone()))),
+		Token::Variable(name) => Ok(Value::Var(name.to_string())),
+		Token::Str(text) => Ok(Value::Constant(text.clone())),
+		Token::Num(num) => Ok(Value::Constant(num.to_string().clone())),
 		_ => Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone()))
 	}
 }

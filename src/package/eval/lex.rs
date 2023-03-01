@@ -14,7 +14,7 @@ pub enum Token {
 	Semicolon,
 	Colon,
 	Comma,
-	Dollar,
+	Variable(String),
 	Curly(Side),
 	Square(Side),
 	Paren(Side),
@@ -33,7 +33,7 @@ impl Token {
 			Token::Semicolon => String::from(";"),
 			Token::Colon => String::from(":"),
 			Token::Comma => String::from(","),
-			Token::Dollar => String::from("$"),
+			Token::Variable(name) => String::from("$") + name,
 			Token::Curly(Side::Left) => String::from("{"),
 			Token::Curly(Side::Right) => String::from("}"),
 			Token::Square(Side::Left) => String::from("["),
@@ -154,10 +154,6 @@ pub fn lex(text: &str) -> Result<Vec<(Token, TextPos)>, LexError> {
 							tok = Token::Comma;
 							tok_finished = true;
 						}
-						'$' => {
-							tok = Token::Dollar;
-							tok_finished = true;
-						}
 						'{' => {
 							tok = Token::Curly(Side::Left);
 							tok_finished = true;
@@ -188,6 +184,7 @@ pub fn lex(text: &str) -> Result<Vec<(Token, TextPos)>, LexError> {
 						}
 						'"' => tok = Token::Str(String::new()),
 						'#' => tok = Token::Comment(String::new()),
+						'$' => tok = Token::Variable(String::new()),
 						c if is_whitespace(c) => tok = Token::Whitespace,
 						c if is_num(c, true) => {
 							tok = Token::Num(0);
@@ -215,6 +212,21 @@ pub fn lex(text: &str) -> Result<Vec<(Token, TextPos)>, LexError> {
 						tok_finished = true;
 					} else {
 						string.push(c);
+					}
+				}
+				Token::Variable(name) => {
+					let allowed = if name.is_empty() {
+						is_ident(c, true)
+					} else {
+						is_ident(c, false)
+					};
+					
+					if allowed {
+						name.push(c);
+					} else {
+						repeat = true;
+						tokens.push((tok, pos.clone()));
+						tok = Token::None;
 					}
 				}
 				Token::Whitespace => {
@@ -378,6 +390,32 @@ mod tests {
 				Token::Semicolon,
 				Token::Whitespace,
 				Token::Ident(String::from("Identifier"))
+			]
+		);
+	}
+
+	#[test]
+	fn test_all() {
+		assert_tokens!(
+			"\"Hello\"; ident{}@routine[]$var():-1000,# comment",
+			vec![
+				Token::Str(String::from("Hello")),
+				Token::Semicolon,
+				Token::Whitespace,
+				Token::Ident(String::from("ident")),
+				Token::Curly(Side::Left),
+				Token::Curly(Side::Right),
+				Token::Routine,
+				Token::Ident(String::from("routine")),
+				Token::Square(Side::Left),
+				Token::Square(Side::Right),
+				Token::Variable(String::from("var")),
+				Token::Paren(Side::Left),
+				Token::Paren(Side::Right),
+				Token::Colon,
+				Token::Num(-1000),
+				Token::Comma,
+				Token::Comment(String::from(" comment"))
 			]
 		);
 	}

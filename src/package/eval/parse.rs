@@ -5,7 +5,7 @@ use super::super::{Package, PkgError};
 use super::Value;
 use super::conditions::Condition;
 use super::lex::{lex, LexError, Token, reduce_tokens, TextPos, Side};
-use super::instruction::{Instruction, InstrKind, parse_arg, ParseArgResult};
+use super::instruction::{Instruction, InstrKind, parse_arg};
 
 use std::collections::HashMap;
 
@@ -106,7 +106,6 @@ enum ParseMode {
 	If(Option<Condition>),
 	Asset {
 		mode: AssetMode,
-		parse_var: bool,
 		key: AssetKey,
 		name: Value,
 		kind: Option<AssetKind>,
@@ -156,6 +155,10 @@ impl Package {
 	pub fn parse(&mut self, paths: &Paths) -> Result<(), PkgError> {
 		self.ensure_loaded(paths)?;
 		if let Some(data) = &mut self.data {
+			if data.parsed.is_some() {
+				return Ok(())
+			}
+
 			let tokens = match lex(&data.contents) {
 				Ok(tokens) => Ok(tokens),
 				Err(e) => Err(ParseError::from(e))
@@ -183,7 +186,6 @@ impl Package {
 									"asset" => {
 										prs.mode = ParseMode::Asset {
 											mode: AssetMode::Opening,
-											parse_var: false,
 											key: AssetKey::None,
 											name: Value::None,
 											kind: None,
@@ -275,7 +277,6 @@ impl Package {
 					}
 					ParseMode::Asset {
 						mode,
-						parse_var,
 						key,
 						name,
 						kind,
@@ -289,13 +290,7 @@ impl Package {
 									}
 									*mode = AssetMode::Key;
 								}
-								_ => match parse_arg(tok, pos, *parse_var)? {
-									ParseArgResult::ParseVar => *parse_var = true,
-									ParseArgResult::Value(new_val) => {
-										*name = new_val;
-										*parse_var = false;
-									}
-								}
+								_ => *name = parse_arg(tok, pos)?
 							}
 							AssetMode::Key => match tok {
 								Token::Ident(name) => {
@@ -314,23 +309,19 @@ impl Package {
 							}
 							AssetMode::Value => {
 								match tok {
-									Token::Ident(name) if !*parse_var => {
+									Token::Ident(name) => {
 										match key {
 											AssetKey::Kind => *kind = AssetKind::from_str(name),
 											_ => return Err(PkgError::Parse(ParseError::UnexpectedToken(tok.as_string(), pos.clone())))
 										}
 										*mode = AssetMode::Comma;
 									}
-									_ => match parse_arg(tok, pos, *parse_var)? {
-										ParseArgResult::ParseVar => *parse_var = true,
-										ParseArgResult::Value(new_val) => {
-											match key {
-												AssetKey::Url => *url = new_val,
-												_ => return Err(PkgError::Parse(ParseError::UnexpectedToken(tok.as_string(), pos.clone())))
-											}
-											*parse_var = false;
-											*mode = AssetMode::Comma;
+									_ => {
+										match key {
+											AssetKey::Url => *url = parse_arg(tok, pos)?,
+											_ => return Err(PkgError::Parse(ParseError::UnexpectedToken(tok.as_string(), pos.clone())))
 										}
+										*mode = AssetMode::Comma;
 									}
 								}
 							}
