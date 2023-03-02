@@ -3,7 +3,6 @@ use std::collections::HashMap;
 use super::lib::{CmdData, CmdError};
 use crate::package::reg::PkgRequest;
 use crate::util::print::{HYPHEN_POINT, ReplPrinter};
-use crate::util::versions::VersionPattern;
 
 use color_print::{cprintln, cformat};
 
@@ -22,23 +21,27 @@ pub fn help() {
 }
 
 fn list(data: &mut CmdData) -> Result<(), CmdError> {
+	data.ensure_paths()?;
 	data.ensure_config()?;
 
-	if let Some(config) = &data.config {
-		let mut found_pkgs: HashMap<String, Vec<(String, String)>> = HashMap::new();
-		for (id, profile) in config.profiles.iter() {
-			if !profile.packages.is_empty() {
-				for pkg in profile.packages.iter() {
-					found_pkgs.entry(pkg.req.name.clone())
-						.or_insert(vec![]).push((pkg.req.version.as_string().to_owned(), id.clone()));
+	if let Some(config) = &mut data.config {
+		if let Some(paths) = &data.paths {
+			let mut found_pkgs: HashMap<String, (String, Vec<String>)> = HashMap::new();
+			for (id, profile) in config.profiles.iter() {
+				if !profile.packages.is_empty() {
+					for pkg in profile.packages.iter() {
+						let version = config.packages.get_version(&pkg.req, paths)?;
+						found_pkgs.entry(pkg.req.name.clone())
+							.or_insert((version, vec![])).1.push(id.clone());
+					}
 				}
 			}
-		}
-		cprintln!("<s>Packages:");
-		for (pkg, versions) in found_pkgs {
-			cprintln!("<g!>{}", pkg);
-			for (version, profile) in versions {
-				cprintln!("{}<b!>{} <k!>{}", HYPHEN_POINT, version, profile);
+			cprintln!("<s>Packages:");
+			for (pkg, (version, profiles)) in found_pkgs {
+				cprintln!("<b!>{}:{}", pkg, version);
+				for profile in profiles {
+					cprintln!("{}<k!>{}", HYPHEN_POINT, profile);
+				}
 			}
 		}
 	}
@@ -64,14 +67,14 @@ fn sync(data: &mut CmdData) -> Result<(), CmdError> {
 	Ok(())
 }
 
-async fn cat(data: &mut CmdData, name: &str, version: &str) -> Result<(), CmdError> {
+async fn cat(data: &mut CmdData, name: &str) -> Result<(), CmdError> {
 	data.ensure_config()?;
 	data.ensure_paths()?;
 
 	if let Some(config) = &mut data.config {
 		if let Some(paths) = &data.paths {
-			let req = PkgRequest::new(name, &VersionPattern::from(version));
-			let contents = config.packages.load(&req, "none", paths)?;
+			let req = PkgRequest::new(name);
+			let contents = config.packages.load(&req, paths)?;
 			cprintln!("<s,b>Contents of package <g>{}</g>:</s,b>", req);
 			cprintln!("{}", contents);
 		}
@@ -91,8 +94,7 @@ pub async fn run(argc: usize, argv: &[String], data: &mut CmdData)
 		"list" => list(data)?,
 		"sync" => sync(data)?,
 		"cat" => match argc {
-			2 => cat(data, &argv[1], "latest").await?,
-			3 => cat(data, &argv[1], &argv[2]).await?,
+			2 => cat(data, &argv[1]).await?,
 			_ => cprintln!("{}", CAT_HELP)
 		}
 		cmd => cprintln!("<r>Unknown subcommand {}", cmd)

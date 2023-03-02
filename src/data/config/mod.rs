@@ -5,8 +5,8 @@ use super::user::{User, UserKind, AuthState, Auth};
 use super::profile::{Profile, InstanceRegistry};
 use super::instance::{Instance, InstKind};
 use crate::package::PkgConfig;
-use crate::package::reg::{PkgRegistry, PkgRequest, PkgIdentifier};
-use crate::util::versions::{VersionPattern, MinecraftVersion};
+use crate::package::reg::{PkgRegistry, PkgRequest};
+use crate::util::versions::MinecraftVersion;
 use crate::util::json::{self, JsonType};
 
 use color_print::cprintln;
@@ -69,7 +69,9 @@ pub enum ContentError {
 	#[error("Duplicate instance '{}'", .0)]
 	DuplicateInstance(String),
 	#[error("Package '{}': Local packages must specify their exact version without special patterns", .0)]
-	LocalPackageVersion(String)
+	LocalPackageVersion(String),
+	#[error("Duplicate package '{}' in profile '{}'", .0, .1)]
+	DuplicatePackage(String, String)
 }
 
 #[derive(Debug)]
@@ -162,31 +164,32 @@ impl Config {
 				}
 			}
 
+			// Packages
 			if let Some(packages_val) = profile_obj.get("packages") {
 				let doc_packages = json::ensure_type(packages_val.as_array(), JsonType::Arr)?;
 				for package_val in doc_packages {
 					let package_obj = json::ensure_type(package_val.as_object(), JsonType::Obj)?;
 					let package_id = json::access_str(package_obj, "id")?;
-					let package_version = match package_obj.get("version") {
-						Some(version) => VersionPattern::Single(
-							json::ensure_type(version.as_str(), JsonType::Str)?.to_owned()
-						),
-						None => VersionPattern::Latest(None)
-					};
-					let req = PkgRequest::new(package_id, &package_version);
+					
+					let req = PkgRequest::new(package_id);
+					for cfg in profile.packages.iter() {
+						if cfg.req == req {
+							Err(ContentError::DuplicatePackage(req.name.clone(), profile_id.clone()))?;
+						}
+					}
 					if let Some(val) = package_obj.get("type") {
 						match json::ensure_type(val.as_str(), JsonType::Str)? {
 							"local" => {
 								let package_path = json::access_str(package_obj, "path")?;
-								if let VersionPattern::Single(version) = package_version {
-									packages.insert_local(
-										&PkgIdentifier {name: package_id.to_owned(), version},
-										&profile_id,
-										&PathBuf::from(package_path)
-									);
-								} else {
-									Err(ContentError::LocalPackageVersion(package_id.to_owned()))?
-								}
+								let package_version = match json::access_str(package_obj, "version") {
+									Ok(version) => Ok(version),
+									Err(..) => Err(ContentError::LocalPackageVersion(package_id.to_owned()))
+								}?;
+								packages.insert_local(
+									&req,
+									package_version,
+									&PathBuf::from(package_path)
+								);
 							},
 							"remote" => {}
 							typ => Err(ContentError::PkgType(typ.to_string(), String::from("package")))?

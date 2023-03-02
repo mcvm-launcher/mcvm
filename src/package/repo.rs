@@ -1,7 +1,6 @@
 use crate::net::download::{Download, DownloadError};
 use crate::io::files::paths::Paths;
 use crate::skip_fail;
-use crate::util::versions::VersionPattern;
 
 use serde::Deserialize;
 
@@ -29,8 +28,9 @@ struct PkgVersionEntry {
 // An entry in the index that specifies what package versions are available
 #[derive(Debug, Deserialize)]
 pub struct PkgEntry {
-	// A list of package versions available from this repository. Ordered from oldest to newest
-	versions: Vec<PkgVersionEntry>
+	// The latest package version available from this repository.
+	version: String,
+	url: String
 }
 
 // JSON format for a repository index
@@ -96,39 +96,27 @@ impl PkgRepo {
 		self.url.clone() + "/api/mcvm/index.json"
 	}
 
-	// Get the list of versions for a package from the repo index
-	pub fn get_versions(&mut self, package: &str, paths: &Paths) -> Result<Vec<String>, RepoError> {
+	// Get the version for a package from the repo index
+	pub fn get_version(&mut self, package: &str, paths: &Paths) -> Result<Option<String>, RepoError> {
 		self.ensure_index(paths)?;
 		if let Some(index) = &self.index {
 			if let Some(entry) = index.packages.get(package) {
-				Ok(Vec::from_iter(entry.versions.iter().map(|entry| {
-					entry.name.clone()
-				})))
+				Ok(Some(entry.version.clone()))
 			} else {
-				Ok(vec![])
+				Ok(None)
 			}
 		} else {
-			Ok(vec![])
+			Ok(None)
 		}
 	}
 
 	// Ask if the index has a package and return the url for that package if it exists
-	pub fn query(&mut self, id: &str, version: &VersionPattern, paths: &Paths)
+	pub fn query(&mut self, id: &str, paths: &Paths)
 	-> Result<Option<(String, String)>, RepoError> {
 		self.ensure_index(paths)?;
 		if let Some(index) = &self.index {
 			if let Some(entry) = index.packages.get(id) {
-				let versions_vec = Vec::from_iter(entry.versions.iter().map(|entry| {
-					entry.name.clone()
-				}));
-
-				if let Some(found_version) = version.get_match(&versions_vec) {
-					let url = &entry.versions.iter().find(|entry| {
-						entry.name == found_version
-					}).expect("Failed to locate url for version").url;
-
-					return Ok(Some((url.clone(), found_version)));
-				}
+				return Ok(Some((entry.url.clone(), entry.version.clone())));
 			}
 		}
 		Ok(None)
@@ -136,10 +124,10 @@ impl PkgRepo {
 }
 
 // Query a list of repos
-pub fn query_all(repos: &mut [PkgRepo], id: &str, version: &VersionPattern, paths: &Paths)
+pub fn query_all(repos: &mut [PkgRepo], name: &str, paths: &Paths)
 -> Result<Option<(String, String)>, RepoError> {
 	for repo in repos {
-		if let Some(result) = skip_fail!(repo.query(id, version, paths)) {
+		if let Some(result) = skip_fail!(repo.query(name, paths)) {
 			return Ok(Some(result));
 		}
 	}

@@ -29,29 +29,31 @@ fn info(data: &mut CmdData, id: &String) -> Result<(), CmdError> {
 	data.ensure_paths()?;
 	data.ensure_config()?;
 
-	if let Some(config) = &data.config {
-		if let Some(profile) = config.profiles.get(id) {
-			cprintln!("<s><g>Profile <b>{}", id);
-			cprintln!("   <s>Version:</s> <b!>{}", profile.version.as_string());
-			cprintln!("   <s>Instances:");
-			for inst_id in profile.instances.iter() {
-				if let Some(instance) = config.instances.get(inst_id) {
-					cprint!("   {}", HYPHEN_POINT);
-					match instance.kind {
-						InstKind::Client => cprint!("<y!>Client {}", inst_id),
-						InstKind::Server => cprint!("<c!>Server {}", inst_id)
+	if let Some(config) = &mut data.config {
+		if let Some(paths) = &data.paths {
+			if let Some(profile) = config.profiles.get(id) {
+				cprintln!("<s><g>Profile <b>{}", id);
+				cprintln!("   <s>Version:</s> <b!>{}", profile.version.as_string());
+				cprintln!("   <s>Instances:");
+				for inst_id in profile.instances.iter() {
+					if let Some(instance) = config.instances.get(inst_id) {
+						cprint!("   {}", HYPHEN_POINT);
+						match instance.kind {
+							InstKind::Client => cprint!("<y!>Client {}", inst_id),
+							InstKind::Server => cprint!("<c!>Server {}", inst_id)
+						}
+						cprintln!();
 					}
+				}
+				cprintln!("   <s>Packages:");
+				for pkg in profile.packages.iter() {
+					cprint!("   {}", HYPHEN_POINT);
+					cprint!("<b!>{}:<g!>{}", pkg.req.name, config.packages.get_version(&pkg.req, paths)?);
 					cprintln!();
 				}
+			} else {
+				return Err(CmdError::Custom(format!("Unknown profile '{id}'")));
 			}
-			cprintln!("   <s>Packages:");
-			for pkg in profile.packages.iter() {
-				cprint!("   {}", HYPHEN_POINT);
-				cprint!("<b!>{}:<g!>{}", pkg.req.name, pkg.req.version.as_string());
-				cprintln!();
-			}
-		} else {
-			return Err(CmdError::Custom(format!("Unknown profile '{id}'")));
 		}
 	}
 	Ok(())
@@ -98,7 +100,7 @@ async fn profile_update(data: &mut CmdData, id: &String, force: bool) -> Result<
 								side: instance.kind.clone(),
 								features: pkg.features.clone()
 							};
-							let eval = config.packages.eval(&pkg.req, &id, paths, Routine::Install, constants).await?;
+							let eval = config.packages.eval(&pkg.req, paths, Routine::Install, constants).await?;
 							printer.print(&cformat!("\t(<b!>{}</b!>) Downloading files...", pkg.req));
 							for asset in eval.downloads.iter() {
 								asset.download(&paths).await?;

@@ -67,10 +67,7 @@ pub struct Package {
 impl Package {
 	pub fn new(name: &str, version: &str, kind: PkgKind) -> Self {
 		Self {
-			id: PkgIdentifier {
-				name: name.to_owned(),
-				version: version.to_owned()
-			},
+			id: PkgIdentifier::new(name, version),
 			kind,
 			data: None
 		}
