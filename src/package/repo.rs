@@ -96,6 +96,22 @@ impl PkgRepo {
 		self.url.clone() + "/api/mcvm/index.json"
 	}
 
+	// Get the list of versions for a package from the repo index
+	pub fn get_versions(&mut self, package: &str, paths: &Paths) -> Result<Vec<String>, RepoError> {
+		self.ensure_index(paths)?;
+		if let Some(index) = &self.index {
+			if let Some(entry) = index.packages.get(package) {
+				Ok(Vec::from_iter(entry.versions.iter().map(|entry| {
+					entry.name.clone()
+				})))
+			} else {
+				Ok(vec![])
+			}
+		} else {
+			Ok(vec![])
+		}
+	}
+
 	// Ask if the index has a package and return the url for that package if it exists
 	pub fn query(&mut self, id: &str, version: &VersionPattern, paths: &Paths)
 	-> Result<Option<(String, String)>, RepoError> {
@@ -106,7 +122,7 @@ impl PkgRepo {
 					entry.name.clone()
 				}));
 
-				if let Some(found_version) = version.matches(&versions_vec) {
+				if let Some(found_version) = version.get_match(&versions_vec) {
 					let url = &entry.versions.iter().find(|entry| {
 						entry.name == found_version
 					}).expect("Failed to locate url for version").url;

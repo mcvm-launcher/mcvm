@@ -98,7 +98,7 @@ async fn profile_update(data: &mut CmdData, id: &String, force: bool) -> Result<
 								side: instance.kind.clone(),
 								features: pkg.features.clone()
 							};
-							let eval = config.packages.eval(&pkg.req, paths, Routine::Install, constants).await?;
+							let eval = config.packages.eval(&pkg.req, &id, paths, Routine::Install, constants).await?;
 							printer.print(&cformat!("\t(<b!>{}</b!>) Downloading files...", pkg.req));
 							for asset in eval.downloads.iter() {
 								asset.download(&paths).await?;

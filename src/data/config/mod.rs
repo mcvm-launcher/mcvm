@@ -181,6 +181,7 @@ impl Config {
 								if let VersionPattern::Single(version) = package_version {
 									packages.insert_local(
 										&PkgIdentifier {name: package_id.to_owned(), version},
+										&profile_id,
 										&PathBuf::from(package_path)
 									);
 								} else {

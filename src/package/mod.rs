@@ -4,7 +4,6 @@ pub mod reg;
 
 use crate::io::files::{self, paths::Paths};
 use crate::net::download::{Download, DownloadError};
-// use eval::parse::PkgAst;
 
 use std::path::PathBuf;
 use std::fs;
@@ -51,7 +50,7 @@ impl PkgData {
 }
 
 // Type of a package
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum PkgKind {
 	Local(PathBuf), // Contained on the local filesystem
 	Remote(Option<String>) // Contained on an external repository

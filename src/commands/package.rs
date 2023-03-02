@@ -71,7 +71,7 @@ async fn cat(data: &mut CmdData, name: &str, version: &str) -> Result<(), CmdErr
 	if let Some(config) = &mut data.config {
 		if let Some(paths) = &data.paths {
 			let req = PkgRequest::new(name, &VersionPattern::from(version));
-			let contents = config.packages.load(&req, paths)?;
+			let contents = config.packages.load(&req, "none", paths)?;
 			cprintln!("<s,b>Contents of package <g>{}</g>:</s,b>", req);
 			cprintln!("{}", contents);
 		}
