@@ -18,13 +18,6 @@ pub enum RepoError {
 	Download(#[from] DownloadError)
 }
 
-// An entry in the list of versions for a package
-#[derive(Debug, Deserialize)]
-struct PkgVersionEntry {
-	name: String,
-	url: String
-}
-
 // An entry in the index that specifies what package versions are available
 #[derive(Debug, Deserialize)]
 pub struct PkgEntry {
@@ -94,20 +87,6 @@ impl PkgRepo {
 
 	fn index_url(&self) -> String {
 		self.url.clone() + "/api/mcvm/index.json"
-	}
-
-	// Get the version for a package from the repo index
-	pub fn get_version(&mut self, package: &str, paths: &Paths) -> Result<Option<String>, RepoError> {
-		self.ensure_index(paths)?;
-		if let Some(index) = &self.index {
-			if let Some(entry) = index.packages.get(package) {
-				Ok(Some(entry.version.clone()))
-			} else {
-				Ok(None)
-			}
-		} else {
-			Ok(None)
-		}
 	}
 
 	// Ask if the index has a package and return the url for that package if it exists
