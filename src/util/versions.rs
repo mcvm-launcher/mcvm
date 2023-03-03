@@ -1,33 +1,14 @@
 #[derive(Debug, thiserror::Error)]
-#[error("Version not found: {}", .version.as_string())]
+#[error("Version not found: {}", .version)]
 pub struct VersionNotFoundError {
-	pub version: MinecraftVersion
+	pub version: String
 }
 
 impl VersionNotFoundError {
-	pub fn new(version: &MinecraftVersion) -> VersionNotFoundError {
-		VersionNotFoundError{version: version.clone()}
+	pub fn new(version: &str) -> VersionNotFoundError {
+		Self{version: version.to_owned()}
 	}
 }
-
-#[derive(Debug, Clone)]
-pub enum MinecraftVersion {
-	Unknown(String)
-}
-
-impl MinecraftVersion {
-	pub fn from(string: &str) -> Self {
-		Self::Unknown(string.to_string())
-	}
-
-	pub fn as_string(&self) -> &String {
-		match self {
-			Self::Unknown(string) => string
-		}
-	}
-}
-
-static _VERSION_LIST: [&str; 1] = ["1.19"];
 
 // Pattern matching for the version of Minecraft or a package
 #[derive(Debug, Hash, Clone, PartialEq)]

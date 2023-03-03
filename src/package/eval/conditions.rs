@@ -1,6 +1,6 @@
 use crate::data::asset::ModloaderMatch;
 use crate::data::instance::InstKind;
-use crate::util::versions::MinecraftVersion;
+use crate::util::versions::VersionPattern;
 
 use super::Value;
 use super::eval::{EvalError, EvalData};
@@ -77,9 +77,8 @@ impl ConditionKind {
 			}
 			Self::Version(version) => {
 				let version = version.get(&eval.vars)?;
-				match &eval.constants.version {
-					MinecraftVersion::Unknown(other) => Ok(version == *other)
-				}
+				let version = VersionPattern::from(&version);
+				Ok(version.matches_single(&eval.constants.version, &eval.constants.versions))
 			}
 			Self::Side(side) => {
 				Ok(eval.constants.side == *side.as_ref().expect("If side is missing"))

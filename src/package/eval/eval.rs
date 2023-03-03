@@ -4,7 +4,7 @@ use super::super::{Package, PkgError};
 use crate::data::instance::InstKind;
 use crate::data::asset::{Modloader, AssetDownload, Asset};
 use crate::package::reg::PkgIdentifier;
-use crate::util::versions::{MinecraftVersion, VersionPattern};
+use crate::util::versions::VersionPattern;
 use crate::io::files::paths::Paths;
 
 use std::collections::HashMap;
@@ -101,10 +101,11 @@ impl FailReason {
 
 #[derive(Debug, Clone)]
 pub struct EvalConstants {
-	pub version: MinecraftVersion,
+	pub version: String,
 	pub modloader: Modloader,
 	pub side: InstKind,
-	pub features: Vec<String>
+	pub features: Vec<String>,
+	pub versions: Vec<String>
 }
 
 #[derive(Debug, Clone)]

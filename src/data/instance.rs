@@ -1,5 +1,4 @@
 use crate::util::json;
-use crate::util::versions::MinecraftVersion;
 use crate::net::download;
 use crate::io::files;
 use crate::io::java::{Java, JavaKind, JavaError};
@@ -36,7 +35,7 @@ impl InstKind {
 pub struct Instance {
 	pub kind: InstKind,
 	pub id: String,
-	pub version: MinecraftVersion,
+	pub version: String,
 	version_json: Option<Box<json::JsonObject>>,
 	java: Option<Java>,
 	classpath: Option<String>
@@ -73,7 +72,7 @@ pub enum LaunchError {
 }
 
 impl Instance {
-	pub fn new(kind: InstKind, id: &str, version: &MinecraftVersion) -> Self {
+	pub fn new(kind: InstKind, id: &str, version: &str) -> Self {
 		Self {
 			kind,
 			id: id.to_owned(),
@@ -107,7 +106,7 @@ impl Instance {
 	}
 
 	// Create the data for the instance
-	pub async fn create(&mut self, paths: &Paths, verbose: bool, force: bool) -> Result<(), CreateError> {
+	pub async fn create(&mut self, version_manifest: &json::JsonObject, paths: &Paths, verbose: bool, force: bool) -> Result<(), CreateError> {
 		match &self.kind {
 			InstKind::Client => {
 				if force {
@@ -115,7 +114,7 @@ impl Instance {
 				} else {
 					cprintln!("<s>Updating client <y!>{}</y!>", self.id);
 				}
-				self.create_client(paths, verbose, force).await?;
+				self.create_client(version_manifest, paths, verbose, force).await?;
 			},
 			InstKind::Server => {
 				if force {
@@ -123,13 +122,19 @@ impl Instance {
 				} else {
 					cprintln!("<s>Updating server <c!>{}</c!>", self.id);
 				}
-				self.create_server(paths, verbose, force)?
+				self.create_server(version_manifest, paths, verbose, force)?
 			}
 		}
 		Ok(())
 	}
 
-	async fn create_client(&mut self, paths: &Paths, verbose: bool, force: bool) -> Result<(), CreateError> {
+	async fn create_client(
+		&mut self,
+		version_manifest: &json::JsonObject,
+		paths: &Paths,
+		verbose: bool,
+		force: bool
+	) -> Result<(), CreateError> {
 		let dir = self.get_dir(paths);
 		files::create_leading_dirs(&dir)?;
 		files::create_dir(&dir)?;
@@ -137,7 +142,7 @@ impl Instance {
 		files::create_dir(&mc_dir)?;
 		let jar_path = dir.join("client.jar");
 
-		let (version_json, mut dwn) = game_files::get_version_json(&self.version, paths, verbose)?;
+		let (version_json, mut dwn) = game_files::get_version_json(&self.version, version_manifest, paths)?;
 		
 		let mut classpath = game_files::get_libraries(&version_json, paths, &self.version, verbose, force)?;
 		classpath.push_str(jar_path.to_str().expect("Failed to convert client.jar path to a string"));
@@ -170,7 +175,13 @@ impl Instance {
 		Ok(())
 	}
 
-	fn create_server(&mut self, paths: &Paths, verbose: bool, force: bool) -> Result<(), CreateError> {
+	fn create_server(
+		&mut self,
+		version_manifest: &json::JsonObject,
+		paths: &Paths,
+		verbose: bool,
+		force: bool
+	) -> Result<(), CreateError> {
 		let dir = self.get_dir(paths);
 		files::create_leading_dirs(&dir)?;
 		files::create_dir(&dir)?;
@@ -178,7 +189,8 @@ impl Instance {
 		files::create_dir(&server_dir)?;
 		let jar_path = server_dir.join("server.jar");
 
-		let (version_json, mut dwn) = game_files::get_version_json(&self.version, paths, verbose)?;
+		let (version_json, mut dwn) = game_files::get_version_json(&self.version, version_manifest, paths)?;
+
 		let java_vers = json::access_i64(
 			json::access_object(&version_json, "javaVersion")?,	"majorVersion"
 		)?;
@@ -207,16 +219,16 @@ impl Instance {
 	}
 	
 	// Launch the instance
-	pub async fn launch(&mut self, paths: &Paths, auth: &Auth) -> Result<(), LaunchError> {
+	pub async fn launch(&mut self, version_manifest: &json::JsonObject, paths: &Paths, auth: &Auth) -> Result<(), LaunchError> {
 		cprintln!("Checking for updates...");
 		match &self.kind {
 			InstKind::Client => {
-				self.create_client(paths, false, false).await?;
+				self.create_client(version_manifest, paths, false, false).await?;
 				cprintln!("<g>Launching!");
 				self.launch_client(paths, auth)?;
 			},
 			InstKind::Server => {
-				self.create_server(paths, false, false)?;
+				self.create_server(version_manifest, paths, false, false)?;
 				cprintln!("<g>Launching!");
 				self.launch_server(paths, auth)?;
 			}

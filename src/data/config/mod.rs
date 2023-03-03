@@ -6,7 +6,7 @@ use super::profile::{Profile, InstanceRegistry};
 use super::instance::{Instance, InstKind};
 use crate::package::PkgConfig;
 use crate::package::reg::{PkgRegistry, PkgRequest};
-use crate::util::versions::{MinecraftVersion, VersionPattern};
+use crate::util::versions::VersionPattern;
 use crate::util::json::{self, JsonType};
 
 use color_print::cprintln;
@@ -145,9 +145,8 @@ impl Config {
 			if !VersionPattern::validate(version) {
 				Err(ContentError::InvalidString(version.to_owned()))?
 			}
-			let version =  MinecraftVersion::from(version);
 
-			let mut profile = Profile::new(profile_id, &version);
+			let mut profile = Profile::new(profile_id, version);
 			
 			// Instances
 			if let Some(instances_val) = profile_obj.get("instances") {

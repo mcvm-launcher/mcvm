@@ -1,5 +1,5 @@
 use crate::io::files::{self, paths::Paths};
-use crate::util::versions::{VersionNotFoundError, MinecraftVersion};
+use crate::util::versions::VersionNotFoundError;
 use crate::util::json::{self, JsonObject, JsonType};
 use crate::net::download::{Download, DownloadError};
 use crate::util::mojang::{self, CLASSPATH_SEP};
@@ -40,12 +40,8 @@ fn get_version_manifest_contents(paths: &Paths) -> Result<Box<Download>, Version
 	Ok(Box::new(download))
 }
 
-pub fn get_version_manifest(paths: &Paths, verbose: bool)
+pub fn get_version_manifest(paths: &Paths)
 -> Result<(Box<json::JsonObject>, Box<Download>), VersionManifestError> {
-	if verbose {
-		println!("\tObtaining version index...");
-	}
-
 	let mut download = get_version_manifest_contents(paths)?;
 	let mut manifest_contents = download.get_str()?;
 	let manifest = match json::parse_object(&manifest_contents) {
@@ -58,6 +54,19 @@ pub fn get_version_manifest(paths: &Paths, verbose: bool)
 		}
 	};
 	Ok((manifest, download))
+}
+
+// Makes an ordered list of versions from the manifest to use for matching
+pub fn make_version_list(version_manifest: &json::JsonObject)
+-> Result<Vec<String>, VersionManifestError> {
+	let versions = json::access_array(version_manifest, "versions")?;
+	let mut out = Vec::new();
+	for entry in versions {
+		let entry_obj = json::ensure_type(entry.as_object(), JsonType::Obj)?;
+		out.push(json::access_str(entry_obj, "id")?.to_owned());
+	}
+	out.reverse();
+	Ok(out)
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -74,13 +83,13 @@ pub enum VersionJsonError {
 	Io(#[from] std::io::Error)
 }
 
-pub fn get_version_json(version: &MinecraftVersion, paths: &Paths, verbose: bool)
+pub fn get_version_json(version: &str, version_manifest: &json::JsonObject, paths: &Paths)
 -> Result<(Box<json::JsonObject>, Box<Download>), VersionJsonError> {
-	let version_string = version.as_string().to_owned();
+	let version_string = version.to_owned();
 
-	let (manifest_doc, mut download) = get_version_manifest(paths, verbose)?;
+	let mut dwn = Download::new();
 	// Find the version out of all of them
-	let versions = json::access_array(&manifest_doc, "versions")?;
+	let versions = json::access_array(version_manifest, "versions")?;
 	let mut version_url: Option<&str> = None;
 	for entry in versions.iter() {
 		let obj = json::ensure_type(entry.as_object(), JsonType::Obj)?;
@@ -95,15 +104,15 @@ pub fn get_version_json(version: &MinecraftVersion, paths: &Paths, verbose: bool
 	let version_json_name: String = version_string.clone() + ".json";
 	let version_folder = paths.internal.join("versions").join(version_string);
 	files::create_dir(&version_folder)?;
-	download.reset();
-	download.url(version_url.expect("Version does not exist"))?;
-	download.add_file(&version_folder.join(version_json_name))?;
-	download.add_str();
-	download.perform()?;
+	dwn.reset();
+	dwn.url(version_url.expect("Version does not exist"))?;
+	dwn.add_file(&version_folder.join(version_json_name))?;
+	dwn.add_str();
+	dwn.perform()?;
 
-	let version_doc = json::parse_object(&download.get_str()?)?;
+	let version_doc = json::parse_object(&dwn.get_str()?)?;
 
-	Ok((version_doc, download))
+	Ok((version_doc, Box::new(dwn)))
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -155,13 +164,13 @@ fn download_library(
 pub fn get_libraries(
 	version_json: &json::JsonObject,
 	paths: &Paths,
-	version: &MinecraftVersion,
+	version: &str,
 	verbose: bool,
 	force: bool
 ) -> Result<String, LibrariesError> {
 	let libraries_path = paths.internal.join("libraries");
 	files::create_dir(&libraries_path)?;
-	let natives_path = paths.internal.join("versions").join(version.as_string()).join("natives");
+	let natives_path = paths.internal.join("versions").join(version).join("natives");
 	files::create_dir(&natives_path)?;
 	let natives_jars_path = paths.internal.join("natives");
 	
@@ -246,11 +255,11 @@ fn download_asset_index(url: &str, path: &Path) -> Result<Box<json::JsonObject>,
 pub async fn get_assets(
 	version_json: &json::JsonObject,
 	paths: &Paths,
-	version: &MinecraftVersion,
+	version: &str,
 	verbose: bool,
 	force: bool
 ) -> Result<(), AssetsError> {
-	let version_string = version.as_string().to_owned();
+	let version_string = version.to_owned();
 	let indexes_dir = paths.assets.join("indexes");
 	files::create_dir(&indexes_dir)?;
 	

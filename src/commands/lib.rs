@@ -2,6 +2,7 @@ use crate::io::files::paths::{Paths, PathsError};
 use crate::data::config::{Config, ConfigError};
 use crate::data::instance::{CreateError, LaunchError};
 use crate::net::download::DownloadError;
+use crate::net::game_files::VersionManifestError;
 use crate::package::reg::RegError;
 use crate::package::repo::RepoError;
 
@@ -58,6 +59,8 @@ pub enum CmdError {
 	Reg(#[from] RegError),
 	#[error("Download failed;\n{}", .0)]
 	Download(#[from] DownloadError),
+	#[error("Failed to download version manifest:\n{}", .0)]
+	VersionManifest(#[from] VersionManifestError),
 	#[error("{}", .0)]
 	Custom(String)
 }

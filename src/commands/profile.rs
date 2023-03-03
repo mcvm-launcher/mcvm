@@ -1,5 +1,7 @@
 use super::lib::{CmdData, CmdError};
 use crate::data::asset::Modloader;
+use crate::net::game_files::get_version_manifest;
+use crate::net::game_files::make_version_list;
 use crate::package::eval::eval::Routine;
 use crate::package::eval::eval::EvalConstants;
 use crate::data::instance::InstKind;
@@ -33,7 +35,7 @@ fn info(data: &mut CmdData, id: &String) -> Result<(), CmdError> {
 		if let Some(paths) = &data.paths {
 			if let Some(profile) = config.profiles.get(id) {
 				cprintln!("<s><g>Profile <b>{}", id);
-				cprintln!("   <s>Version:</s> <b!>{}", profile.version.as_string());
+				cprintln!("   <s>Version:</s> <b!>{}", profile.version);
 				cprintln!("   <s>Instances:");
 				for inst_id in profile.instances.iter() {
 					if let Some(instance) = config.instances.get(inst_id) {
@@ -86,7 +88,9 @@ async fn profile_update(data: &mut CmdData, id: &String, force: bool) -> Result<
 	if let Some(config) = &mut data.config {
 		if let Some(paths) = &data.paths {
 			if let Some(profile) = config.profiles.get_mut(id) {
-				profile.create_instances(&mut config.instances, paths, true, force).await?;
+				cprintln!("<s>Obtaining version index...");
+				let (version_manifest, ..) = get_version_manifest(paths)?;
+				profile.create_instances(&mut config.instances, &version_manifest, paths, true, force).await?;
 				
 				cprintln!("<s>Updating packages");
 				let mut printer = ReplPrinter::new(true);
@@ -98,7 +102,8 @@ async fn profile_update(data: &mut CmdData, id: &String, force: bool) -> Result<
 								version: profile.version.clone(),
 								modloader: Modloader::Vanilla,
 								side: instance.kind.clone(),
-								features: pkg.features.clone()
+								features: pkg.features.clone(),
+								versions: make_version_list(&version_manifest)?
 							};
 							let eval = config.packages.eval(&pkg.req, paths, Routine::Install, constants).await?;
 							printer.print(&cformat!("\t(<b!>{}</b!>) Downloading files...", pkg.req));

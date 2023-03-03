@@ -12,17 +12,15 @@ pub fn process_string_arg(
 	auth: &Auth,
 	classpath: &str
 ) -> Option<String> {
-	let version_string = instance.version.as_string();
-
 	let mut out = arg.replace("${launcher_name}", "mcvm");
 	out = out.replace("${launcher_version}", "alpha");
 	out = out.replace("${classpath}", classpath);
 	out = out.replace(
 		"${natives_directory}",
-		paths.internal.join("versions").join(version_string).join("natives").to_str()
+		paths.internal.join("versions").join(&instance.version).join("natives").to_str()
 			.expect("Failed to convert natives directory to a string")
 	);
-	out = out.replace("${version_name}", version_string);
+	out = out.replace("${version_name}", &instance.version);
 	out = out.replace("${version_type}", "mcvm");
 	out = out.replace(
 		"${game_directory}",
@@ -33,7 +31,7 @@ pub fn process_string_arg(
 		"${assets_root}",
 		paths.assets.to_str().expect("Failed to convert assets directory to a string")
 	);
-	out = out.replace("${assets_index_name}", version_string);
+	out = out.replace("${assets_index_name}", &instance.version);
 	out = out.replace("${user_type}", "mojang");
 	out = out.replace("${clientid}", "mcvm");
 	out = out.replace("${auth_xuid}", "mcvm");

@@ -1,7 +1,7 @@
 use crate::data::instance::Instance;
 use crate::data::instance::CreateError;
 use crate::package::PkgConfig;
-use crate::util::versions::MinecraftVersion;
+use crate::util::json;
 use crate::Paths;
 
 pub type InstanceRegistry = std::collections::HashMap<String, Instance>;
@@ -9,13 +9,13 @@ pub type InstanceRegistry = std::collections::HashMap<String, Instance>;
 #[derive(Debug)]
 pub struct Profile {
 	pub name: String,
-	pub version: MinecraftVersion,
+	pub version: String,
 	pub instances: Vec<String>,
 	pub packages: Vec<PkgConfig>
 }
 
 impl Profile {
-	pub fn new(name: &str, version: &MinecraftVersion) -> Self {
+	pub fn new(name: &str, version: &str) -> Self {
 		Profile {
 			name: name.to_owned(),
 			version: version.to_owned(),
@@ -31,13 +31,14 @@ impl Profile {
 	pub async fn create_instances(
 		&mut self,
 		reg: &mut InstanceRegistry,
+		version_manifest: &json::JsonObject,
 		paths: &Paths,
 		verbose: bool,
 		force: bool
 	) -> Result<(), CreateError> {
 		for id in self.instances.iter_mut() {
 			let instance = reg.get_mut(id).expect("Profile has unknown instance");
-			instance.create(paths, verbose, force).await?;
+			instance.create(version_manifest, paths, verbose, force).await?;
 		}
 		Ok(())
 	}
