@@ -6,7 +6,7 @@ use super::profile::{Profile, InstanceRegistry};
 use super::instance::{Instance, InstKind};
 use crate::package::PkgConfig;
 use crate::package::reg::{PkgRegistry, PkgRequest};
-use crate::util::versions::MinecraftVersion;
+use crate::util::versions::{MinecraftVersion, VersionPattern};
 use crate::util::json::{self, JsonType};
 
 use color_print::cprintln;
@@ -71,7 +71,9 @@ pub enum ContentError {
 	#[error("Package '{}': Local packages must specify their exact version without special patterns", .0)]
 	LocalPackageVersion(String),
 	#[error("Duplicate package '{}' in profile '{}'", .0, .1)]
-	DuplicatePackage(String, String)
+	DuplicatePackage(String, String),
+	#[error("String '{}' is invalid", .0)]
+	InvalidString(String)
 }
 
 #[derive(Debug)]
@@ -139,7 +141,11 @@ impl Config {
 		let doc_profiles = json::access_object(obj, "profiles")?;
 		for (profile_id, profile_val) in doc_profiles {
 			let profile_obj = json::ensure_type(profile_val.as_object(), JsonType::Obj)?;
-			let version =  MinecraftVersion::from(json::access_str(profile_obj, "version")?);
+			let version = json::access_str(profile_obj, "version")?;
+			if !VersionPattern::validate(version) {
+				Err(ContentError::InvalidString(version.to_owned()))?
+			}
+			let version =  MinecraftVersion::from(version);
 
 			let mut profile = Profile::new(profile_id, &version);
 			
@@ -181,6 +187,7 @@ impl Config {
 						match json::ensure_type(val.as_str(), JsonType::Str)? {
 							"local" => {
 								let package_path = json::access_str(package_obj, "path")?;
+								let package_path = shellexpand::tilde(package_path);
 								let package_version = match json::access_str(package_obj, "version") {
 									Ok(version) => Ok(version),
 									Err(..) => Err(ContentError::LocalPackageVersion(package_id.to_owned()))
@@ -188,7 +195,7 @@ impl Config {
 								packages.insert_local(
 									&req,
 									package_version,
-									&PathBuf::from(package_path)
+									&PathBuf::from(package_path.to_string())
 								);
 							},
 							"remote" => {}

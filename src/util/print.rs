@@ -60,6 +60,10 @@ impl ReplPrinter {
 		}
 		self.finished = true;
 	}
+
+	pub fn newline(&self) {
+		println!();
+	}
 }
 
 impl Drop for ReplPrinter {

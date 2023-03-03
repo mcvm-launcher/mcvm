@@ -16,7 +16,9 @@ pub enum EvalError {
 	#[error("Routine '{}' does not exist", .0)]
 	RoutineDoesNotExist(String),
 	#[error("Evaluator failed to start")]
-	Start
+	Start,
+	#[error("Package reported an error:\n{}", .0.to_string())]
+	Fail(FailReason)
 }
 
 #[derive(Debug, Clone)]
@@ -68,6 +70,31 @@ impl Routine {
 		match self {
 			Self::Install => EvalLevel::All,
 			Self::Dependencies => EvalLevel::Dependencies
+		}
+	}
+}
+
+#[derive(Debug, Clone)]
+pub enum FailReason {
+	None,
+	UnsupportedVersion,
+	UnsupportedModloader
+}
+
+impl FailReason {
+	pub fn from_string(string: &str) -> Option<Self> {
+		match string {
+			"unsupported_version" => Some(Self::UnsupportedVersion),
+			"unsupported_modloader" => Some(Self::UnsupportedModloader),
+			_ => None
+		}
+	}
+	
+	pub fn to_string(&self) -> String {
+		match self {
+			Self::None => String::from(""),
+			Self::UnsupportedVersion => String::from("Unsupported Minecraft version"),
+			Self::UnsupportedModloader => String::from("Unsupported modloader")
 		}
 	}
 }
@@ -207,6 +234,10 @@ impl Instruction {
 					out.vars_to_set.insert(var.to_owned(), val.get(&eval.vars)?);
 				}
 				InstrKind::Finish() => out.finish = true,
+				InstrKind::Fail(reason) => {
+					out.finish = true;
+					return Err(EvalError::Fail(reason.as_ref().unwrap_or(&FailReason::None).clone()));
+				}
 				InstrKind::Asset {
 					name,
 					kind,

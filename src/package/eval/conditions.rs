@@ -1,4 +1,4 @@
-use crate::data::asset::Modloader;
+use crate::data::asset::ModloaderMatch;
 use crate::data::instance::InstKind;
 use crate::util::versions::MinecraftVersion;
 
@@ -13,7 +13,7 @@ pub enum ConditionKind {
 	Not(Option<Box<ConditionKind>>),
 	Version(Value),
 	Side(Option<InstKind>),
-	Modloader(Option<Modloader>),
+	Modloader(Option<ModloaderMatch>),
 	Feature(Value)
 }
 
@@ -58,7 +58,7 @@ impl ConditionKind {
 			}
 			ConditionKind::Modloader(loader) => {
 				match tok {
-					Token::Ident(name) => match Modloader::from_str(name) {
+					Token::Ident(name) => match ModloaderMatch::from_str(name) {
 						Some(kind) => *loader = Some(kind),
 						None => {}
 					}
@@ -85,7 +85,7 @@ impl ConditionKind {
 				Ok(eval.constants.side == *side.as_ref().expect("If side is missing"))
 			}
 			Self::Modloader(modloader) => {
-				Ok(eval.constants.modloader == *modloader.as_ref().expect("If modloader is missing"))
+				Ok(modloader.as_ref().expect("If modloader is missing").matches(&eval.constants.modloader))
 			}
 			Self::Feature(feature) => {
 				Ok(eval.constants.features.contains(&feature.get(&eval.vars)?))

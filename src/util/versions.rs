@@ -155,6 +155,19 @@ impl VersionPattern {
 			}
 		}
 	}
+
+	// Checks that a string contains no pattern-special characters
+	pub fn validate(text: &str) -> bool {
+		if text.contains('*') || text == "latest" {
+			return false
+		}
+		if let Some(last) = text.chars().last() {
+			if last == '-' || last == '+' {
+				return false
+			}
+		}
+		true
+	}
 }
 
 #[cfg(test)]
@@ -196,5 +209,14 @@ mod tests {
 		assert_eq!(VersionPattern::from("latest"), VersionPattern::Latest(None));
 		assert_eq!(VersionPattern::from("1.19.5-"), VersionPattern::Before(String::from("1.19.5")));
 		assert_eq!(VersionPattern::from("1.19.5+"), VersionPattern::After(String::from("1.19.5")));
+	}
+
+	#[test]
+	fn test_version_pattern_validation() {
+		assert!(VersionPattern::validate("hello"));
+		assert!(!VersionPattern::validate("latest"));
+		assert!(!VersionPattern::validate("foo-"));
+		assert!(!VersionPattern::validate("foo+"));
+		assert!(!VersionPattern::validate("f*o"));
 	}
 }

@@ -73,7 +73,9 @@ impl Display for TextPos {
 #[derive(Debug, thiserror::Error)]
 pub enum LexError {
 	#[error("Unexpected character '{}' at {}", .0, .1)]
-	Unexpected(char, TextPos)
+	Unexpected(char, TextPos),
+	#[error("Invalid number '{}' '{}'", .0, .1)]
+	InvalidNumber(String, TextPos)
 }
 
 #[derive(Debug, PartialEq)]
@@ -256,6 +258,9 @@ pub fn lex(text: &str) -> Result<Vec<(Token, TextPos)>, LexError> {
 						num_str.push(c);
 					} else {
 						repeat = true;
+						if num_str == "-" {
+							Err(LexError::InvalidNumber(num_str.clone(), pos.clone()))?
+						}
 						*num = num_str.parse().expect("Number contains invalid characters");
 						tokens.push((tok, pos.clone()));
 						tok = Token::None;

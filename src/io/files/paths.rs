@@ -62,11 +62,3 @@ impl Paths {
 		})
 	}
 }
-
-// Replace tilde in a string with the home directory
-pub fn _replace_home(string: &str, paths: &Paths) -> String {
-	string.to_owned().replace(
-		'~',
-		paths.base.home_dir().to_str().expect("Failed to convert home directory to a string")
-	)
-}

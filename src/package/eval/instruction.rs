@@ -1,4 +1,5 @@
 use super::Value;
+use super::eval::FailReason;
 use super::lex::{Token, TextPos, Side};
 use super::parse::{BlockId, ParseError};
 use super::conditions::Condition;
@@ -19,7 +20,7 @@ pub enum InstrKind {
 	Set(Option<String>, Value),
 	Rely(Vec<Vec<Value>>, Option<Vec<Value>>),
 	Finish(),
-	Fail()
+	Fail(Option<FailReason>)
 }
 
 #[derive(Debug, Clone)]
@@ -41,7 +42,7 @@ impl Instruction {
 			"default_features" => Ok(InstrKind::DefaultFeatures(Vec::new())),
 			"set" => Ok(InstrKind::Set(None, Value::None)),
 			"finish" => Ok(InstrKind::Finish()),
-			"fail" => Ok(InstrKind::Fail()),
+			"fail" => Ok(InstrKind::Fail(None)),
 			"rely" => Ok(InstrKind::Rely(Vec::new(), None)),
 			string => Err(ParseError::UnknownInstr(string.to_owned(), pos.clone()))
 		}?;
@@ -54,8 +55,8 @@ impl Instruction {
 			Ok(true)
 		} else {
 			match &mut self.kind {
-				InstrKind::Name(val) |
-				InstrKind::Version(val) => *val = parse_arg(tok, pos)?,
+				InstrKind::Name(val)
+				| InstrKind::Version(val) => *val = parse_arg(tok, pos)?,
 				InstrKind::DefaultFeatures(features) => features.push(parse_arg(tok, pos)?),
 				InstrKind::Set(var, val) => {
 					if var.is_some() {
@@ -66,6 +67,13 @@ impl Instruction {
 							_ => return Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone()))
 						}
 					}
+				}
+				InstrKind::Fail(reason) => match tok {
+					Token::Ident(name) => *reason = match FailReason::from_string(name) {
+						Some(reason) => Some(reason),
+						None => return Err(ParseError::UnknownReason(name.clone(), pos.clone()))
+					},
+					_ => return Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone()))
 				}
 				InstrKind::Rely(deps, dep) => match tok {
 					Token::Paren(Side::Left) => match dep {

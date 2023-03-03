@@ -25,7 +25,9 @@ pub enum ParseError {
 	#[error("Unknown asset key '{}' {}", .0, .1)]
 	UnknownAssetKey(String, TextPos),
 	#[error("Expected 'yes' or 'no', but got {} {}", .0, .1)]
-	YesNo(String, TextPos)
+	YesNo(String, TextPos),
+	#[error("Unknown reason '{}' {}", .0, .1)]
+	UnknownReason(String, TextPos)
 }
 
 pub type BlockId = u16;
@@ -118,6 +120,13 @@ enum ParseMode {
 	}
 }
 
+#[macro_export]
+macro_rules! unexpected_token {
+	($tok:expr, $pos:expr) => {
+		return Err(PkgError::Parse(ParseError::UnexpectedToken($tok.as_string(), $pos.clone())))
+	};
+}
+
 // Data used for parsing
 #[derive(Debug)]
 pub struct ParseData {
@@ -206,7 +215,7 @@ impl Package {
 							Token::Curly(side) => {
 								match side {
 									Side::Left => {
-										return Err(PkgError::Parse(ParseError::UnexpectedToken(tok.as_string(), pos.clone())))
+										unexpected_token!(tok, pos)
 									}
 									Side::Right => {
 										block_finished = true;
@@ -227,23 +236,17 @@ impl Package {
 											prs.block = prs.parsed.new_routine(name);
 											prs.mode = ParseMode::Root;
 										}
-										Side::Right => {
-											return Err(PkgError::Parse(ParseError::UnexpectedToken(tok.as_string(), pos.clone())))
-										}
+										Side::Right => unexpected_token!(tok, pos)
 									}
 								}
-								_ => {
-									return Err(PkgError::Parse(ParseError::UnexpectedToken(tok.as_string(), pos.clone())))
-								}
+								_ => unexpected_token!(tok, pos)
 							}
 						} else {
 							match tok {
 								Token::Ident(ident) => {
 									*name = Some(ident.to_string());
 								}
-								_ => {
-									return Err(PkgError::Parse(ParseError::UnexpectedToken(tok.as_string(), pos.clone())))
-								}
+								_ => unexpected_token!(tok, pos)
 							}
 						}
 						Ok(())
@@ -256,9 +259,7 @@ impl Package {
 								instr_to_push = Some(Instruction::new(InstrKind::If(condition.clone(), block)));
 								prs.mode = ParseMode::Root;
 							}
-							Token::Curly(Side::Right) => {
-								return Err(PkgError::Parse(ParseError::UnexpectedToken(tok.as_string(), pos.clone())))
-							}
+							Token::Curly(Side::Right) => unexpected_token!(tok, pos),
 							_ => match condition {
 								Some(condition) => condition.parse(tok, pos)?,
 								None => match tok {

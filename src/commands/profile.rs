@@ -106,6 +106,7 @@ async fn profile_update(data: &mut CmdData, id: &String, force: bool) -> Result<
 								asset.download(&paths).await?;
 								instance.create_asset(&asset.asset, paths)?;
 							}
+							printer.newline();
 						}
 					}
 				}
