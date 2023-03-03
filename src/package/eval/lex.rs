@@ -43,10 +43,10 @@ impl Token {
 			Token::Paren(Side::Left) => String::from("("),
 			Token::Paren(Side::Right) => String::from(")"),
 			Token::Comment(text) => String::from("# ") + text,
-			Token::Ident(name) => String::from("identifier ") + name,
-			Token::Num(num) => String::from("number ") + &num.to_string(),
-			Token::Str(string) => format!("\"{}\"", string),
-			Token::Routine => String::from("routine")
+			Token::Ident(name) => name.clone(),
+			Token::Num(num) => num.to_string(),
+			Token::Str(string) => format!("\"{string}\""),
+			Token::Routine => String::from("@")
 		}
 	}
 }
@@ -102,10 +102,8 @@ fn is_whitespace(c: char) -> bool {
 }
 
 fn is_ident(c: char, first: bool) -> bool {
-	if first {
-		if c.is_numeric() {
-			return false;
-		}
+	if first && c.is_numeric() {
+		return false;
 	}
 	c.is_alphanumeric() || c == '_'
 }

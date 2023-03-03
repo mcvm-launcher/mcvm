@@ -310,7 +310,7 @@ impl Instance {
 	}
 
 	fn link_asset(dir: &Path, asset: &Asset, paths: &Paths) -> Result<(), CreateError> {
-		files::create_dir(&dir)?;
+		files::create_dir(dir)?;
 		let link = dir.join(&asset.name);
 		if !link.exists() {
 			fs::hard_link(asset.get_path(paths), dir.join(&asset.name))?;

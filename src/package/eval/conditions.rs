@@ -39,7 +39,7 @@ impl ConditionKind {
 					None => match tok {
 						Token::Ident(name) => match ConditionKind::from_str(name) {
 							Some(nested_cond) => *condition = Some(Box::new(nested_cond)),
-							None => {}
+							None => return Err(ParseError::UnknownCondition(name.clone(), pos.clone()))
 						},
 						_ => return Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone()))
 					}

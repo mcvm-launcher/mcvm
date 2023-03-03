@@ -105,7 +105,7 @@ pub fn parse_arg(tok: &Token, pos: &TextPos) -> Result<Value, ParseError> {
 	match tok {
 		Token::Variable(name) => Ok(Value::Var(name.to_string())),
 		Token::Str(text) => Ok(Value::Constant(text.clone())),
-		Token::Num(num) => Ok(Value::Constant(num.to_string().clone())),
+		Token::Num(num) => Ok(Value::Constant(num.to_string())),
 		_ => Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone()))
 	}
 }

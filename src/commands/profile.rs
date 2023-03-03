@@ -103,7 +103,7 @@ async fn profile_update(data: &mut CmdData, id: &String, force: bool) -> Result<
 							let eval = config.packages.eval(&pkg.req, paths, Routine::Install, constants).await?;
 							printer.print(&cformat!("\t(<b!>{}</b!>) Downloading files...", pkg.req));
 							for asset in eval.downloads.iter() {
-								asset.download(&paths).await?;
+								asset.download(paths).await?;
 								instance.create_asset(&asset.asset, paths)?;
 							}
 							printer.newline();

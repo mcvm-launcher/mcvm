@@ -27,7 +27,9 @@ pub enum ParseError {
 	#[error("Expected 'yes' or 'no', but got {} {}", .0, .1)]
 	YesNo(String, TextPos),
 	#[error("Unknown reason '{}' {}", .0, .1)]
-	UnknownReason(String, TextPos)
+	UnknownReason(String, TextPos),
+	#[error("Unknown condition '{}' {}", .0, .1)]
+	UnknownCondition(String, TextPos)
 }
 
 pub type BlockId = u16;
@@ -214,9 +216,7 @@ impl Package {
 							}
 							Token::Curly(side) => {
 								match side {
-									Side::Left => {
-										unexpected_token!(tok, pos)
-									}
+									Side::Left => unexpected_token!(tok, pos),
 									Side::Right => {
 										block_finished = true;
 										prs.mode = ParseMode::Root;
@@ -265,9 +265,9 @@ impl Package {
 								None => match tok {
 									Token::Ident(name) => match ConditionKind::from_str(name) {
 										Some(new_condition) => *condition = Some(Condition::new(new_condition)),
-										None => {}
+										None => return Err(PkgError::Parse(ParseError::UnknownCondition(name.clone(), pos.clone())))
 									},
-									_ => return Err(PkgError::Parse(ParseError::UnexpectedToken(tok.as_string(), pos.clone())))
+									_ => unexpected_token!(tok, pos)
 								}
 							}
 						}
@@ -294,7 +294,7 @@ impl Package {
 							AssetMode::Opening => match tok {
 								Token::Paren(Side::Left) => {
 									if let Value::None = name {
-										return Err(PkgError::Parse(ParseError::UnexpectedToken(tok.as_string(), pos.clone())))
+										unexpected_token!(tok, pos)
 									}
 									*mode = AssetMode::Key;
 								}
@@ -310,11 +310,11 @@ impl Package {
 									}
 									*mode = AssetMode::Colon;
 								}
-								_ => return Err(PkgError::Parse(ParseError::UnexpectedToken(tok.as_string(), pos.clone())))
+								_ => unexpected_token!(tok, pos)
 							}
 							AssetMode::Colon => match tok {
 								Token::Colon => *mode = AssetMode::Value,
-								_ => return Err(PkgError::Parse(ParseError::UnexpectedToken(tok.as_string(), pos.clone())))
+								_ => unexpected_token!(tok, pos)
 							}
 							AssetMode::Value => {
 								match tok {
@@ -325,14 +325,14 @@ impl Package {
 												Some(value) => *force = value,
 												None => return Err(PkgError::Parse(ParseError::YesNo(name.to_owned(), pos.clone())))
 											}
-											_ => return Err(PkgError::Parse(ParseError::UnexpectedToken(tok.as_string(), pos.clone())))
+											_ => unexpected_token!(tok, pos)
 										}
 										*mode = AssetMode::Comma;
 									}
 									_ => {
 										match key {
 											AssetKey::Url => *url = parse_arg(tok, pos)?,
-											_ => return Err(PkgError::Parse(ParseError::UnexpectedToken(tok.as_string(), pos.clone())))
+											_ => unexpected_token!(tok, pos)
 										}
 										*mode = AssetMode::Comma;
 									}
@@ -345,11 +345,11 @@ impl Package {
 										name: name.clone(),
 										kind: kind.clone(),
 										url: url.clone(),
-										force: force.clone()
+										force: *force
 									}));
 									prs.mode = ParseMode::Root;
 								}
-								_ => return Err(PkgError::Parse(ParseError::UnexpectedToken(tok.as_string(), pos.clone())))
+								_ => unexpected_token!(tok, pos)
 							}
 						}
 
