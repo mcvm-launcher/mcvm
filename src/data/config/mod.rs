@@ -1,6 +1,7 @@
 pub mod preferences;
 
 use preferences::ConfigPreferences;
+use super::asset::{PluginLoader, Modloader};
 use super::user::{User, UserKind, AuthState, Auth};
 use super::profile::{Profile, InstanceRegistry};
 use super::instance::{Instance, InstKind};
@@ -73,7 +74,11 @@ pub enum ContentError {
 	#[error("Duplicate package '{}' in profile '{}'", .0, .1)]
 	DuplicatePackage(String, String),
 	#[error("String '{}' is invalid", .0)]
-	InvalidString(String)
+	InvalidString(String),
+	#[error("Unknown modloader '{}'", .0)]
+	UnknownModloader(String),
+	#[error("Unknown pluginloader '{}'", .0)]
+	UnknownPluginLoader(String)
 }
 
 #[derive(Debug)]
@@ -146,7 +151,21 @@ impl Config {
 				Err(ContentError::InvalidString(version.to_owned()))?
 			}
 
-			let mut profile = Profile::new(profile_id, version);
+			let modloader = match profile_obj.get("modloader") {
+				Some(loader) => json::ensure_type(loader.as_str(), JsonType::Str),
+				None => Ok("vanilla")
+			}?;
+			let modloader = Modloader::from_str(modloader)
+				.ok_or(ContentError::UnknownModloader(modloader.to_owned()))?;
+
+			let pluginloader = match profile_obj.get("plugin_loader") {
+				Some(loader) => json::ensure_type(loader.as_str(), JsonType::Str),
+				None => Ok("vanilla")
+			}?;
+			let pluginloader = PluginLoader::from_str(pluginloader)
+				.ok_or(ContentError::UnknownPluginLoader(pluginloader.to_owned()))?;
+
+			let mut profile = Profile::new(profile_id, version, modloader, pluginloader);
 			
 			// Instances
 			if let Some(instances_val) = profile_obj.get("instances") {

@@ -1,4 +1,4 @@
-use crate::data::asset::ModloaderMatch;
+use crate::data::asset::{ModloaderMatch, PluginLoaderMatch};
 use crate::data::instance::InstKind;
 use crate::util::versions::VersionPattern;
 
@@ -14,6 +14,7 @@ pub enum ConditionKind {
 	Version(Value),
 	Side(Option<InstKind>),
 	Modloader(Option<ModloaderMatch>),
+	PluginLoader(Option<PluginLoaderMatch>),
 	Feature(Value),
 	Value(Value, Value)
 }
@@ -25,6 +26,7 @@ impl ConditionKind {
 			"version" => Some(Self::Version(Value::None)),
 			"side" => Some(Self::Side(None)),
 			"modloader" => Some(Self::Modloader(None)),
+			"pluginloader" => Some(Self::PluginLoader(None)),
 			"feature" => Some(Self::Feature(Value::None)),
 			"value" => Some(Self::Value(Value::None, Value::None)),
 			_ => None
@@ -61,6 +63,13 @@ impl ConditionKind {
 				}
 				_ => return Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone()))
 			}
+			Self::PluginLoader(loader) => match tok {
+				Token::Ident(name) => match PluginLoaderMatch::from_str(name) {
+					Some(kind) => *loader = Some(kind),
+					None => {}
+				}
+				_ => return Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone()))
+			}
 			Self::Value(left, right) => match left {
 				Value::None => *left = parse_arg(tok, pos)?,
 				_ => *right = parse_arg(tok, pos)?
@@ -83,8 +92,11 @@ impl ConditionKind {
 			Self::Side(side) => {
 				Ok(eval.constants.side == *side.as_ref().expect("If side is missing"))
 			}
-			Self::Modloader(modloader) => {
-				Ok(modloader.as_ref().expect("If modloader is missing").matches(&eval.constants.modloader))
+			Self::Modloader(loader) => {
+				Ok(loader.as_ref().expect("If modloader is missing").matches(&eval.constants.modloader))
+			}
+			Self::PluginLoader(loader) => {
+				Ok(loader.as_ref().expect("If pluginloader is missing").matches(&eval.constants.pluginloader))
 			}
 			Self::Feature(feature) => {
 				Ok(eval.constants.features.contains(&feature.get(&eval.vars)?))

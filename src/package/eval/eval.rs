@@ -2,7 +2,7 @@ use super::parse::{BlockId, Block};
 use super::instruction::{Instruction, InstrKind};
 use super::super::{Package, PkgError};
 use crate::data::instance::InstKind;
-use crate::data::asset::{Modloader, AssetDownload, Asset};
+use crate::data::asset::{Modloader, AssetDownload, Asset, PluginLoader};
 use crate::package::reg::PkgIdentifier;
 use crate::util::versions::VersionPattern;
 use crate::io::files::paths::Paths;
@@ -103,6 +103,7 @@ impl FailReason {
 pub struct EvalConstants {
 	pub version: String,
 	pub modloader: Modloader,
+	pub pluginloader: PluginLoader,
 	pub side: InstKind,
 	pub features: Vec<String>,
 	pub versions: Vec<String>

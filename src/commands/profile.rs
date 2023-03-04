@@ -1,5 +1,4 @@
 use super::lib::{CmdData, CmdError};
-use crate::data::asset::Modloader;
 use crate::net::game_files::get_version_manifest;
 use crate::net::game_files::make_version_list;
 use crate::package::eval::eval::Routine;
@@ -35,7 +34,9 @@ fn info(data: &mut CmdData, id: &String) -> Result<(), CmdError> {
 		if let Some(paths) = &data.paths {
 			if let Some(profile) = config.profiles.get(id) {
 				cprintln!("<s><g>Profile <b>{}", id);
-				cprintln!("   <s>Version:</s> <b!>{}", profile.version);
+				cprintln!("   <s>Version:</s> <g>{}", profile.version);
+				cprintln!("   <s>Modloader:</s> <g>{}", profile.modloader);
+				cprintln!("   <s>Plugin Loader:</s> <g>{}", profile.pluginloader);
 				cprintln!("   <s>Instances:");
 				for inst_id in profile.instances.iter() {
 					if let Some(instance) = config.instances.get(inst_id) {
@@ -100,7 +101,8 @@ async fn profile_update(data: &mut CmdData, id: &String, force: bool) -> Result<
 							printer.print(&cformat!("\t(<b!>{}</b!>) Evaluating...", pkg.req));
 							let constants = EvalConstants {
 								version: profile.version.clone(),
-								modloader: Modloader::Vanilla,
+								modloader: profile.modloader.clone(),
+								pluginloader: profile.pluginloader.clone(),
 								side: instance.kind.clone(),
 								features: pkg.features.clone(),
 								versions: make_version_list(&version_manifest)?

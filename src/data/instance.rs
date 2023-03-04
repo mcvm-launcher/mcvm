@@ -335,14 +335,15 @@ impl Instance {
 		files::create_leading_dirs(&inst_dir)?;
 		files::create_dir(&inst_dir)?;
 		match asset.kind {
-			AssetKind::ResourcePack => match self.kind {
-				InstKind::Client => Self::link_asset(&inst_dir.join("resourcepacks"), asset, paths)?,
-				InstKind::Server => {}
+			AssetKind::ResourcePack => if let InstKind::Client = self.kind {
+				Self::link_asset(&inst_dir.join("resourcepacks"), asset, paths)?;
 			}
 			AssetKind::Mod => Self::link_asset(&inst_dir.join("mods"), asset, paths)?,
-			AssetKind::Plugin => match self.kind {
-				InstKind::Client => {},
-				InstKind::Server => Self::link_asset(&inst_dir.join("plugins"), asset, paths)?
+			AssetKind::Plugin => if let InstKind::Server = self.kind {
+				Self::link_asset(&inst_dir.join("plugins"), asset, paths)?;
+			}
+			AssetKind::Shader => if let InstKind::Client = self.kind {
+				Self::link_asset(&inst_dir.join("shaders"), asset, paths)?;
 			}
 		}
 		

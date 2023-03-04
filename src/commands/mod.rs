@@ -47,6 +47,6 @@ pub async fn run_command(command: &str, argc: usize, argv: &[String], data: &mut
 			Ok(..) => {},
 			Err(err) => cprintln!("<r>Error occurred in command:\n{}", err)
 		},
-		None => cprintln!("<r>Error: {} is not a valid command", command)
+		None => cprintln!("<r>Error: {} is not a valid command\nRun <b>mcvm help</b> for a list of commands.", command)
 	}
 }
