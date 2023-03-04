@@ -159,7 +159,7 @@ impl EvalResult {
 impl Package {
 	pub async fn eval(&mut self, paths: &Paths, routine: Routine, constants: EvalConstants)
 	-> Result<EvalData, PkgError> {
-		self.ensure_loaded(paths)?;
+		self.ensure_loaded(paths, false)?;
 		self.parse(paths)?;
 		if let Some(data) = &mut self.data {
 			if let Some(parsed) = &mut data.parsed {

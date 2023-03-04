@@ -98,9 +98,9 @@ impl PkgRegistry {
 	}
 
 	// Load a package
-	pub fn load(&mut self, req: &PkgRequest, paths: &Paths) -> Result<String, RegError> {
+	pub fn load(&mut self, req: &PkgRequest, force: bool, paths: &Paths) -> Result<String, RegError> {
 		let pkg = self.get(req, paths)?;
-		pkg.ensure_loaded(paths)?;
+		pkg.ensure_loaded(paths, force)?;
 		let contents = pkg.data.as_ref().expect("Package data was not loaded").get_contents();
 		Ok(contents)
 	}
@@ -117,6 +117,13 @@ impl PkgRegistry {
 	-> Result<EvalData, RegError> {
 		let pkg = self.get(req, paths)?;
 		return Ok(pkg.eval(paths, routine, constants).await?);
+	}
+
+	// Remove a cached package
+	pub fn remove_cached(&mut self, req: &PkgRequest, paths: &Paths) -> Result<(), RegError> {
+		let pkg = self.get(req, paths)?;
+		pkg.remove_cached(paths)?;
+		Ok(())
 	}
 
 	// Insert a local package into the registry

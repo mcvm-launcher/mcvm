@@ -57,9 +57,22 @@ fn sync(data: &mut CmdData) -> Result<(), CmdError> {
 			let mut printer = ReplPrinter::new(true);
 			for repo in config.packages.repos.iter_mut() {
 				printer.print(&cformat!("Syncing repository <b>{}</b>...", repo.id));
-				repo.sync(paths)?;
+				match repo.sync(paths) {
+					Ok(..) => {}
+					Err(e) => {
+						printer.print(&cformat!("<r>{}", e));
+						continue;
+					}
+				};
 				printer.print(&cformat!("<g>Synced repository <b!>{}</b!>", repo.id));
 				cprintln!();
+			}
+			printer.finish();
+			cprintln!("<s>Removing cached packages...");
+			for (_, profile) in config.profiles.iter() {
+				for pkg in profile.packages.iter() {
+					config.packages.remove_cached(&pkg.req, paths)?;
+				}
 			}
 		}
 	}
@@ -74,7 +87,7 @@ async fn cat(data: &mut CmdData, name: &str) -> Result<(), CmdError> {
 	if let Some(config) = &mut data.config {
 		if let Some(paths) = &data.paths {
 			let req = PkgRequest::new(name);
-			let contents = config.packages.load(&req, paths)?;
+			let contents = config.packages.load(&req, false, paths)?;
 			cprintln!("<s,b>Contents of package <g>{}</g>:</s,b>", req);
 			cprintln!("{}", contents);
 		}

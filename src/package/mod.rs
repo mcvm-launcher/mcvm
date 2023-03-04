@@ -77,9 +77,24 @@ impl Package {
 	pub fn filename(&self) -> String {
 		self.id.name.clone() + "_" + &self.id.version + PKG_EXTENSION
 	}
+	
+	// Get the cached path of the package
+	pub fn cached_path(&self, paths: &Paths) -> PathBuf {
+		let cache_dir = paths.project.cache_dir().join("pkg");
+		cache_dir.join(self.filename())
+	}
+
+	// Remove the cached package file
+	pub fn remove_cached(&self, paths: &Paths) -> Result<(), PkgError> {
+		let path = self.cached_path(paths);
+		if path.exists() {
+			fs::remove_file(path)?;
+		}
+		Ok(())
+	}
 
 	// Ensure the raw contents of the package
-	pub fn ensure_loaded(&mut self, paths: &Paths) -> Result<(), PkgError> {
+	pub fn ensure_loaded(&mut self, paths: &Paths, force: bool) -> Result<(), PkgError> {
 		if self.data.is_none() {
 			match &self.kind {
 				PkgKind::Local(path) => {
@@ -88,8 +103,8 @@ impl Package {
 				PkgKind::Remote(url) => {
 					let cache_dir = paths.project.cache_dir().join("pkg");
 					files::create_dir(&cache_dir)?;
-					let path = cache_dir.join(self.filename());
-					if path.exists() {
+					let path = self.cached_path(paths);
+					if !force && path.exists() {
 						self.data = Some(PkgData::new(&fs::read_to_string(path)?));
 					} else {
 						let url = url.as_ref().expect("URL for remote package missing");
