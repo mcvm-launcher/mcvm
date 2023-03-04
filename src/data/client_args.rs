@@ -24,7 +24,7 @@ pub fn process_string_arg(
 	out = out.replace("${version_type}", "mcvm");
 	out = out.replace(
 		"${game_directory}",
-		paths.project.data_dir().join("client").join(&instance.id).to_str()
+		instance.get_subdir(paths).to_str()
 			.expect("Failed to convert client directory to a string")
 	);
 	out = out.replace(
