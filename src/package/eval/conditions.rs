@@ -14,7 +14,8 @@ pub enum ConditionKind {
 	Version(Value),
 	Side(Option<InstKind>),
 	Modloader(Option<ModloaderMatch>),
-	Feature(Value)
+	Feature(Value),
+	Value(Value, Value)
 }
 
 impl ConditionKind {
@@ -25,45 +26,44 @@ impl ConditionKind {
 			"side" => Some(Self::Side(None)),
 			"modloader" => Some(Self::Modloader(None)),
 			"feature" => Some(Self::Feature(Value::None)),
+			"value" => Some(Self::Value(Value::None, Value::None)),
 			_ => None
 		}
 	}
 	
 	pub fn parse(&mut self, tok: &Token, pos: &TextPos) -> Result<(), ParseError> {
 		match self {
-			ConditionKind::Not(condition) => {
-				match condition {
-					Some(condition) => {
-						return condition.parse(tok, pos);
-					}
-					None => match tok {
-						Token::Ident(name) => match ConditionKind::from_str(name) {
-							Some(nested_cond) => *condition = Some(Box::new(nested_cond)),
-							None => return Err(ParseError::UnknownCondition(name.clone(), pos.clone()))
-						},
-						_ => return Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone()))
-					}
+			Self::Not(condition) => match condition {
+				Some(condition) => {
+					return condition.parse(tok, pos);
 				}
-			}
-			ConditionKind::Version(val) |
-			ConditionKind::Feature(val) => *val = parse_arg(tok, pos)?,
-			ConditionKind::Side(side) => {
-				match tok {
-					Token::Ident(name) => match InstKind::from_str(name) {
-						Some(kind) => *side = Some(kind),
-						None => {}
-					}
+				None => match tok {
+					Token::Ident(name) => match Self::from_str(name) {
+						Some(nested_cond) => *condition = Some(Box::new(nested_cond)),
+						None => return Err(ParseError::UnknownCondition(name.clone(), pos.clone()))
+					},
 					_ => return Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone()))
 				}
 			}
-			ConditionKind::Modloader(loader) => {
-				match tok {
-					Token::Ident(name) => match ModloaderMatch::from_str(name) {
-						Some(kind) => *loader = Some(kind),
-						None => {}
-					}
-					_ => return Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone()))
+			Self::Version(val) |
+			Self::Feature(val) => *val = parse_arg(tok, pos)?,
+			Self::Side(side) => match tok {
+				Token::Ident(name) => match InstKind::from_str(name) {
+					Some(kind) => *side = Some(kind),
+					None => {}
 				}
+				_ => return Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone()))
+			}
+			Self::Modloader(loader) => match tok {
+				Token::Ident(name) => match ModloaderMatch::from_str(name) {
+					Some(kind) => *loader = Some(kind),
+					None => {}
+				}
+				_ => return Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone()))
+			}
+			Self::Value(left, right) => match left {
+				Value::None => *left = parse_arg(tok, pos)?,
+				_ => *right = parse_arg(tok, pos)?
 			}
 		}
 		Ok(())
@@ -88,6 +88,9 @@ impl ConditionKind {
 			}
 			Self::Feature(feature) => {
 				Ok(eval.constants.features.contains(&feature.get(&eval.vars)?))
+			}
+			Self::Value(left, right) => {
+				Ok(left.get(&eval.vars)? == right.get(&eval.vars)?)
 			}
 		}
 	}

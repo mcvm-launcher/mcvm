@@ -77,7 +77,13 @@ impl PkgRepo {
 		if self.index.is_none() {
 			let path = self.get_path(paths);
 			if path.exists() {
-				self.set_index(&fs::read_to_string(path)?)?;
+				match self.set_index(&fs::read_to_string(&path)?) {
+					Ok(..) => {},
+					Err(..) => {
+						self.sync(paths)?;
+						self.set_index(&fs::read_to_string(&path)?)?;
+					}
+				};
 			} else {
 				self.sync(paths)?;
 			}
