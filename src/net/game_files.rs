@@ -285,11 +285,15 @@ pub async fn get_assets(
 
 	let assets = json::access_object(&index, "objects")?.clone();
 	
+	
 	let client = Client::new();
 	let mut join = JoinSet::new();
 	let mut printer = ReplPrinter::new(verbose);
 	printer.indent(1);
-	let mut count = 0;
+	if verbose {
+		cprintln!("\tDownloading assets...");
+	}
+	// let mut count = 0;
 	// Used to limit the number of open file descriptors
 	let sem = Arc::new(Semaphore::new(FD_SENSIBLE_LIMIT));
 	for (key, asset_val) in assets {
@@ -306,31 +310,35 @@ pub async fn get_assets(
 		
 		files::create_leading_dirs(&path)?;
 		let client = client.clone();
+		let permit = Arc::clone(&sem).acquire_owned().await;
 		let fut = async move {
 			let response = client.get(url).send();
+			let _permit = permit;
 			fs::write(path, response.await?.bytes().await?)?;
-			Ok::<String, AssetsError>(key)
+			Ok::<(), AssetsError>(())
 		};
 		join.spawn(fut);
-		count += 1;
-	}
-
-	if verbose {
-		cprintln!("\tDownloading <b>{}</> assets...", count);
+		// count += 1;
 	}
 	
-	let mut num_done = 0;
+	// if verbose {
+	// 	cprintln!("\tDownloading <b>{}</> assets...", count);
+	// }
+	
+	// TODO: Bring back progress functionality
+	// let mut num_done = 0;
 	while let Some(asset) = join.join_next().await {
-		let _ = Arc::clone(&sem).acquire_owned().await;
-		num_done += 1;
-		let name = match asset? {
+		// num_done += 1;
+		let () = match asset? {
 			Ok(name) => name,
 			Err(err) => {
 				cprintln!("<r>Failed to download asset, skipping...\n{}", err);
 				continue;
 			}
 		};
-		printer.print(&cformat!("(<b>{}</b><k!>/</k!><b>{}</b>) <k!>{}", num_done, count, name));
+		// fs::write(path, bytes)?;
+		// bytes.p
+		// printer.print(&cformat!("(<b>{}</b><k!>/</k!><b>{}</b>) <k!>{}", num_done, count, name));
 	}
 
 	printer.print(&cformat!("<g>Assets downloaded."));

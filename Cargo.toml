@@ -9,6 +9,7 @@ codegen-units = 1
 strip = true
 
 [dependencies]
+bytes = "1.4.0"
 cfg-match = "0.2.1"
 color-print = "0.3.4"
 curl = "0.4.44"

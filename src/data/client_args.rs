@@ -51,7 +51,7 @@ pub fn process_string_arg(
 				|| out.contains("${auth_access_token}")
 				|| out.contains("${auth_uuid}")
 			{
-				return None;
+				return Some(String::new());
 			}
 		},
 		None => if
@@ -59,7 +59,7 @@ pub fn process_string_arg(
 			|| out.contains("${auth_access_token}")
 			|| out.contains("${auth_uuid}")
 		{
-			return None;
+			return Some(String::new());
 		}
 	}
 
