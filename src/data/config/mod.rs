@@ -1,7 +1,7 @@
 pub mod preferences;
 
 use preferences::ConfigPreferences;
-use super::asset::{PluginLoader, Modloader};
+use super::asset::{PluginLoader, Modloader, game_modifications_compatible};
 use super::user::{User, UserKind, AuthState, Auth};
 use super::profile::{Profile, InstanceRegistry};
 use super::instance::{Instance, InstKind};
@@ -78,7 +78,9 @@ pub enum ContentError {
 	#[error("Unknown modloader '{}'", .0)]
 	UnknownModloader(String),
 	#[error("Unknown pluginloader '{}'", .0)]
-	UnknownPluginLoader(String)
+	UnknownPluginLoader(String),
+	#[error("Modloader and plugin loader are incompatible for profile '{}'", .0)]
+	IncompatibleGameMods(String)
 }
 
 #[derive(Debug)]
@@ -164,6 +166,10 @@ impl Config {
 			}?;
 			let pluginloader = PluginLoader::from_str(pluginloader)
 				.ok_or(ContentError::UnknownPluginLoader(pluginloader.to_owned()))?;
+
+			if !game_modifications_compatible(&modloader, &pluginloader) {
+				return Err(ConfigError::Content(ContentError::IncompatibleGameMods(profile_id.clone())));
+			}
 
 			let mut profile = Profile::new(profile_id, version, modloader.clone(), pluginloader.clone());
 			

@@ -200,3 +200,24 @@ impl PluginLoaderMatch {
 		}
 	}
 }
+
+// Checks if the modloader and plugin loader are compatible with each other
+pub fn game_modifications_compatible(modloader: &Modloader, plugin_loader: &PluginLoader) -> bool {
+	match (modloader, plugin_loader) {
+		(Modloader::Vanilla, _) => true,
+		(_, PluginLoader::Vanilla) => true,
+		_ => false
+	}
+}
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+
+	#[test]
+	fn test_game_mods_compat() {
+		assert!(game_modifications_compatible(&Modloader::Fabric, &PluginLoader::Vanilla));
+		assert!(game_modifications_compatible(&Modloader::Vanilla, &PluginLoader::Vanilla));
+		assert!(!game_modifications_compatible(&Modloader::Forge, &PluginLoader::Paper));
+	}
+}
