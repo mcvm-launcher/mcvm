@@ -5,9 +5,10 @@ use crate::io::java::{Java, JavaKind, JavaError};
 use crate::{Paths, skip_none};
 use crate::net::game_files;
 use crate::util::print::ReplPrinter;
-use super::asset::{Asset, AssetKind};
+use super::asset::{Asset, AssetKind, Modloader, PluginLoader};
 use super::user::Auth;
 use super::client_args::{process_client_arg, process_string_arg};
+use crate::net::paper;
 
 use color_print::{cprintln, cformat};
 
@@ -36,9 +37,12 @@ pub struct Instance {
 	pub kind: InstKind,
 	pub id: String,
 	pub version: String,
+	modloader: Modloader,
+	plugin_loader: PluginLoader,
 	version_json: Option<Box<json::JsonObject>>,
 	java: Option<Java>,
-	classpath: Option<String>
+	classpath: Option<String>,
+	jar_path: Option<PathBuf>
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -56,7 +60,9 @@ pub enum CreateError {
 	#[error("Error when accessing files:\n{}", .0)]
 	Io(#[from] std::io::Error),
 	#[error("Failed to install java for this instance:\n{}", .0)]
-	Java(#[from] JavaError)
+	Java(#[from] JavaError),
+	#[error("Failed to install a Paper server:\n{}", .0)]
+	Paper(#[from] paper::PaperError)
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -68,18 +74,27 @@ pub enum LaunchError {
 	#[error("Command failed:\n{}", .0)]
 	Command(std::io::Error),
 	#[error("Failed to evaluate json file:\n{}", .0)]
-	Json(#[from] json::JsonError),
+	Json(#[from] json::JsonError)
 }
 
 impl Instance {
-	pub fn new(kind: InstKind, id: &str, version: &str) -> Self {
+	pub fn new(
+		kind: InstKind,
+		id: &str,
+		version: &str,
+		modloader: Modloader,
+		plugin_loader: PluginLoader
+	) -> Self {
 		Self {
 			kind,
 			id: id.to_owned(),
 			version: version.to_owned(),
+			modloader,
+			plugin_loader,
 			version_json: None,
 			java: None,
-			classpath: None
+			classpath: None,
+			jar_path: None
 		}
 	}
 
@@ -122,7 +137,7 @@ impl Instance {
 				} else {
 					cprintln!("<s>Updating server <c!>{}</c!>", self.id);
 				}
-				self.create_server(version_manifest, paths, verbose, force)?
+				self.create_server(version_manifest, paths, verbose, force).await?
 			}
 		}
 		Ok(())
@@ -172,10 +187,11 @@ impl Instance {
 		
 		self.classpath = Some(classpath);
 		self.version_json = Some(version_json);
+		self.jar_path = Some(jar_path);
 		Ok(())
 	}
 
-	fn create_server(
+	async fn create_server(
 		&mut self,
 		version_manifest: &json::JsonObject,
 		paths: &Paths,
@@ -208,11 +224,24 @@ impl Instance {
 			)?;
 			dwn.url(json::access_str(client_download, "url")?)?;
 			dwn.perform()?;
-			printer.print(cformat!("<g>Server jar downloaded.").as_str());
+			printer.print(&cformat!("<g>Server jar downloaded."));
 			printer.finish();
 		}
 
 		fs::write(server_dir.join("eula.txt"), "eula = true\n")?;
+
+		self.jar_path = Some(match self.plugin_loader {
+			PluginLoader::Vanilla => jar_path,
+			PluginLoader::Paper => {
+				let mut printer = ReplPrinter::new(verbose);
+				printer.indent(1);
+				printer.print("Downloading Paper server...");
+				let (build_num, ..) = paper::get_newest_build(&self.version).await?;
+				let path = paper::download_server_jar(&self.version, build_num, &server_dir).await?;
+				printer.print(&cformat!("<g>Paper server downloaded."));
+				path
+			}
+		});
 		
 		self.version_json = Some(version_json);
 		Ok(())
@@ -228,7 +257,7 @@ impl Instance {
 				self.launch_client(paths, auth)?;
 			},
 			InstKind::Server => {
-				self.create_server(version_manifest, paths, false, false)?;
+				self.create_server(version_manifest, paths, false, false).await?;
 				cprintln!("<g>Launching!");
 				self.launch_server(paths, auth)?;
 			}
@@ -299,12 +328,13 @@ impl Instance {
 				Some(java_path) => {
 					let jre_path = java_path.join("bin/java");
 					let server_dir = self.get_subdir(paths);
-					let jar_path = server_dir.join("server.jar");
 
 					let mut command = Command::new(jre_path.to_str().expect("Failed to convert java path to a string"));
 					command.current_dir(server_dir);
 					command.arg("-jar");
-					command.arg(jar_path.to_str().expect("Failed to convert server.jar path to a string"));
+					let jar_path_str = self.jar_path.as_ref().expect("Jar path missing").to_str()
+						.expect("Failed to convert server.jar path to a string");
+					command.arg(jar_path_str);
 					command.arg("nogui");
 					let mut child = match command.spawn() {
 						Ok(child) => child,

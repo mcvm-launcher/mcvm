@@ -165,7 +165,7 @@ impl Config {
 			let pluginloader = PluginLoader::from_str(pluginloader)
 				.ok_or(ContentError::UnknownPluginLoader(pluginloader.to_owned()))?;
 
-			let mut profile = Profile::new(profile_id, version, modloader, pluginloader);
+			let mut profile = Profile::new(profile_id, version, modloader.clone(), pluginloader.clone());
 			
 			// Instances
 			if let Some(instances_val) = profile_obj.get("instances") {
@@ -182,7 +182,7 @@ impl Config {
 						typ => Err(ContentError::InstType(typ.to_string(), instance_id.to_string()))
 					}?;
 
-					let instance = Instance::new(kind, instance_id, &version);
+					let instance = Instance::new(kind, instance_id, &version, modloader.clone(), pluginloader.clone());
 					profile.add_instance(instance_id);
 					instances.insert(instance_id.to_string(), instance);
 				}
