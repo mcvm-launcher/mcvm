@@ -2,7 +2,6 @@ use crate::util::json;
 use crate::net::download;
 use crate::io::files;
 use crate::io::java::{Java, JavaKind, JavaError};
-use crate::util::versions::VersionPattern;
 use crate::{Paths, skip_none};
 use crate::net::game_files;
 use crate::util::print::ReplPrinter;
@@ -325,6 +324,7 @@ impl Instance {
 								}
 								command.args(&self.launch.args.game.parse());
 							}
+							dbg!(&command);
 							
 							let mut child = match command.spawn() {
 								Ok(child) => child,

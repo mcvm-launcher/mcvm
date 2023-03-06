@@ -35,6 +35,8 @@ pub fn process_string_arg(
 	out = out.replace("${user_type}", "mojang");
 	out = out.replace("${clientid}", "mcvm");
 	out = out.replace("${auth_xuid}", "mcvm");
+	// Apparently this is used for Twitch on older versions
+	out = out.replace("${user_properties}", "\"\"");
 
 	// User
 	match auth.get_user() {
