@@ -1,10 +1,12 @@
-pub mod preferences;
+mod preferences;
+pub mod instance;
 
 use preferences::ConfigPreferences;
+use self::instance::parse_instance_config;
+
 use super::asset::{PluginLoader, Modloader, game_modifications_compatible};
 use super::user::{User, UserKind, AuthState, Auth};
 use super::profile::{Profile, InstanceRegistry};
-use super::instance::{Instance, InstKind};
 use crate::package::PkgConfig;
 use crate::package::reg::{PkgRegistry, PkgRequest};
 use crate::util::versions::VersionPattern;
@@ -181,14 +183,8 @@ impl Config {
 						return Err(ConfigError::from(ContentError::DuplicateInstance(instance_id.to_string())));
 					}
 
-					let instance_obj = json::ensure_type(instance_val.as_object(), JsonType::Obj)?;
-					let kind = match json::access_str(instance_obj, "type")? {
-						"client" => Ok(InstKind::Client),
-						"server" => Ok(InstKind::Server),
-						typ => Err(ContentError::InstType(typ.to_string(), instance_id.to_string()))
-					}?;
-
-					let instance = Instance::new(kind, instance_id, &version, modloader.clone(), pluginloader.clone());
+					let instance = parse_instance_config(instance_id, instance_val, &profile)?;
+					
 					profile.add_instance(instance_id);
 					instances.insert(instance_id.to_string(), instance);
 				}

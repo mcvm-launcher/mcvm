@@ -6,6 +6,7 @@ use crate::{Paths, skip_none};
 use crate::net::game_files;
 use crate::util::print::ReplPrinter;
 use super::asset::{Asset, AssetKind, Modloader, PluginLoader};
+use super::config::instance::LaunchOptions;
 use super::user::Auth;
 use super::client_args::{process_client_arg, process_string_arg};
 use crate::net::paper;
@@ -39,6 +40,7 @@ pub struct Instance {
 	pub version: String,
 	modloader: Modloader,
 	plugin_loader: PluginLoader,
+	launch: LaunchOptions,
 	version_json: Option<Box<json::JsonObject>>,
 	java: Option<Java>,
 	classpath: Option<String>,
@@ -83,7 +85,8 @@ impl Instance {
 		id: &str,
 		version: &str,
 		modloader: Modloader,
-		plugin_loader: PluginLoader
+		plugin_loader: PluginLoader,
+		launch: LaunchOptions
 	) -> Self {
 		Self {
 			kind,
@@ -91,6 +94,7 @@ impl Instance {
 			version: version.to_owned(),
 			modloader,
 			plugin_loader,
+			launch,
 			version_json: None,
 			java: None,
 			classpath: None,
@@ -284,26 +288,30 @@ impl Instance {
 										command.arg(sub_arg);
 									}
 								}
-
+								command.args(&self.launch.args.jvm);
+								
 								command.arg(main_class);
-
+								
 								for arg in json::access_array(args, "game")? {
 									for sub_arg in process_client_arg(self, arg, paths, auth, classpath) {
 										command.arg(sub_arg);
 									}
 								}
+								command.args(&self.launch.args.game);
 							} else {
 								// Behavior for versions prior to 1.12.2
 								let args = json::access_str(version_json, "minecraftArguments")?;
-
+								command.args(&self.launch.args.jvm);
+								
 								command.arg("-cp");
 								command.arg(classpath);
-
+								
 								command.arg(main_class);
-
+								
 								for arg in args.split(' ') {
 									command.arg(skip_none!(process_string_arg(self, arg, paths, auth, classpath)));
 								}
+								command.args(&self.launch.args.game);
 							}
 
 							let mut child = match command.spawn() {
@@ -331,16 +339,18 @@ impl Instance {
 
 					let mut command = Command::new(jre_path.to_str().expect("Failed to convert java path to a string"));
 					command.current_dir(server_dir);
+					command.args(&self.launch.args.jvm);
 					command.arg("-jar");
 					let jar_path_str = self.jar_path.as_ref().expect("Jar path missing").to_str()
-						.expect("Failed to convert server.jar path to a string");
+					.expect("Failed to convert server.jar path to a string");
 					command.arg(jar_path_str);
 					command.arg("nogui");
 					let mut child = match command.spawn() {
 						Ok(child) => child,
 						Err(err) => return Err(LaunchError::Command(err))
 					};
-
+					command.args(&self.launch.args.game);
+					
 					child.wait().expect("Child failed");
 
 					Ok(())
