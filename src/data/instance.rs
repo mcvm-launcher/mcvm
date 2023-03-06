@@ -2,6 +2,7 @@ use crate::util::json;
 use crate::net::download;
 use crate::io::files;
 use crate::io::java::{Java, JavaKind, JavaError};
+use crate::util::versions::VersionPattern;
 use crate::{Paths, skip_none};
 use crate::net::game_files;
 use crate::util::print::ReplPrinter;
@@ -252,7 +253,12 @@ impl Instance {
 	}
 	
 	// Launch the instance
-	pub async fn launch(&mut self, version_manifest: &json::JsonObject, paths: &Paths, auth: &Auth) -> Result<(), LaunchError> {
+	pub async fn launch(
+		&mut self,
+		version_manifest: &json::JsonObject,
+		paths: &Paths,
+		auth: &Auth
+	) -> Result<(), LaunchError> {
 		cprintln!("Checking for updates...");
 		match &self.kind {
 			InstKind::Client => {
@@ -263,13 +269,14 @@ impl Instance {
 			InstKind::Server => {
 				self.create_server(version_manifest, paths, false, false).await?;
 				cprintln!("<g>Launching!");
-				self.launch_server(paths, auth)?;
+				self.launch_server(paths)?;
 			}
 		}
 		Ok(())
 	}
 
-	fn launch_client(&mut self, paths: &Paths, auth: &Auth) -> Result<(), LaunchError> {
+	fn launch_client(&mut self, paths: &Paths, auth: &Auth)
+	-> Result<(), LaunchError> {
 		match &self.java {
 			Some(java) => match &java.path {
 				Some(java_path) => {
@@ -302,7 +309,12 @@ impl Instance {
 								// Behavior for versions prior to 1.12.2
 								let args = json::access_str(version_json, "minecraftArguments")?;
 								command.args(&self.launch.args.jvm.parse());
-								
+
+								command.arg(format!(
+									"-Djava.library.path={}",
+									paths.internal.join("versions").join(&self.version).join("natives").to_str()
+										.expect("Failed to convert natives directory to a string")
+								));
 								command.arg("-cp");
 								command.arg(classpath);
 								
@@ -313,7 +325,7 @@ impl Instance {
 								}
 								command.args(&self.launch.args.game.parse());
 							}
-
+							
 							let mut child = match command.spawn() {
 								Ok(child) => child,
 								Err(err) => return Err(LaunchError::Command(err))
@@ -330,7 +342,7 @@ impl Instance {
 		}
 	}
 
-	fn launch_server(&mut self, paths: &Paths, _auth: &Auth) -> Result<(), LaunchError> {
+	fn launch_server(&mut self, paths: &Paths) -> Result<(), LaunchError> {
 		match &self.java {
 			Some(java) => match &java.path {
 				Some(java_path) => {

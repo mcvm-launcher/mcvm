@@ -1,4 +1,4 @@
-use crate::net::game_files::get_version_manifest;
+use crate::net::game_files::{get_version_manifest, make_version_list};
 
 use super::lib::{CmdData, CmdError};
 

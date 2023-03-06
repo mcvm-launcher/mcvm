@@ -9,8 +9,9 @@ use color_print::{cprintln, cformat};
 use reqwest::Client;
 use tokio::sync::Semaphore;
 use tokio::task::JoinSet;
+use zip::ZipArchive;
 
-use std::fs;
+use std::fs::{self, File};
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 
@@ -124,7 +125,9 @@ pub enum LibrariesError {
 	#[error("Failed to convert string to UTF-8")]
 	Utf,
 	#[error("File operation failed:\n{}", .0)]
-	Io(#[from] std::io::Error)
+	Io(#[from] std::io::Error),
+	#[error("Failed to access zip file:\n{}", .0)]
+	Zip(#[from] zip::result::ZipError)
 }
 
 // Checks the rules of a library to see if it should be installed
@@ -161,6 +164,26 @@ fn download_library(
 	Ok(())
 }
 
+pub fn extract_native_library(path: &Path, natives_dir: &Path) -> Result<(), LibrariesError> {
+	let file = File::open(path)?;
+	let mut zip = ZipArchive::new(file)?;
+	for i in 0..zip.len() {
+		let mut file = zip.by_index(i)?;
+		let rel_path = PathBuf::from(file.enclosed_name().expect("Invalid compressed file path"));
+		if let Some(extension) = rel_path.extension() {
+			match extension.to_str() {
+				Some("so" | "dylib" | "dll") => {
+					let mut out_file = File::create(natives_dir.join(rel_path))?;
+					std::io::copy(&mut file, &mut out_file)?;
+				}
+				_ => continue
+			}
+		}
+	}
+
+	Ok(())
+}
+
 pub fn get_libraries(
 	version_json: &json::JsonObject,
 	paths: &Paths,
@@ -174,7 +197,7 @@ pub fn get_libraries(
 	files::create_dir(&natives_path)?;
 	let natives_jars_path = paths.internal.join("natives");
 	
-	let mut native_paths: Vec<PathBuf> = Vec::new();
+	let mut native_paths = Vec::new();
 	let mut classpath = String::new();
 	let mut dwn = Download::new();
 	let mut printer = ReplPrinter::new(verbose);
@@ -200,12 +223,13 @@ pub fn get_libraries(
 			let path = natives_jars_path.join(json::access_str(classifier, "path")?);
 			classpath.push_str(path.to_str().ok_or(LibrariesError::Utf)?);
 			classpath.push(CLASSPATH_SEP);
+
+			native_paths.push((path.clone(), name.clone()));
 			if !force && path.exists() {
 				continue;
 			}
 			printer.print(&cformat!("Downloading library <b!>{}</>...", name));
 			download_library(&mut dwn, classifier, &path)?;
-			native_paths.push(path);
 			continue;
 		}
 		if let Some(artifact_val) = downloads.get("artifact") {
@@ -221,6 +245,12 @@ pub fn get_libraries(
 			continue;
 		}
 	}
+
+	for (path, name) in native_paths {
+		printer.print(&cformat!("Extracting library <b!>{}...", name));
+		extract_native_library(&path, &natives_path)?;
+	}
+
 	printer.print(&cformat!("<g>Libraries downloaded."));
 	printer.finish();
 
@@ -284,7 +314,6 @@ pub async fn get_assets(
 	};
 
 	let assets = json::access_object(&index, "objects")?.clone();
-	
 	
 	let client = Client::new();
 	let mut join = JoinSet::new();
