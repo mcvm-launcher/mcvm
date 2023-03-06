@@ -288,7 +288,7 @@ impl Instance {
 										command.arg(sub_arg);
 									}
 								}
-								command.args(&self.launch.args.jvm);
+								command.args(&self.launch.args.jvm.parse());
 								
 								command.arg(main_class);
 								
@@ -297,11 +297,11 @@ impl Instance {
 										command.arg(sub_arg);
 									}
 								}
-								command.args(&self.launch.args.game);
+								command.args(&self.launch.args.game.parse());
 							} else {
 								// Behavior for versions prior to 1.12.2
 								let args = json::access_str(version_json, "minecraftArguments")?;
-								command.args(&self.launch.args.jvm);
+								command.args(&self.launch.args.jvm.parse());
 								
 								command.arg("-cp");
 								command.arg(classpath);
@@ -311,7 +311,7 @@ impl Instance {
 								for arg in args.split(' ') {
 									command.arg(skip_none!(process_string_arg(self, arg, paths, auth, classpath)));
 								}
-								command.args(&self.launch.args.game);
+								command.args(&self.launch.args.game.parse());
 							}
 
 							let mut child = match command.spawn() {
@@ -339,7 +339,7 @@ impl Instance {
 
 					let mut command = Command::new(jre_path.to_str().expect("Failed to convert java path to a string"));
 					command.current_dir(server_dir);
-					command.args(&self.launch.args.jvm);
+					command.args(&self.launch.args.jvm.parse());
 					command.arg("-jar");
 					let jar_path_str = self.jar_path.as_ref().expect("Jar path missing").to_str()
 					.expect("Failed to convert server.jar path to a string");
@@ -349,7 +349,7 @@ impl Instance {
 						Ok(child) => child,
 						Err(err) => return Err(LaunchError::Command(err))
 					};
-					command.args(&self.launch.args.game);
+					command.args(&self.launch.args.game.parse());
 					
 					child.wait().expect("Child failed");
 

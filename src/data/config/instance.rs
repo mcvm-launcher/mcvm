@@ -6,11 +6,32 @@ use crate::data::{instance::{Instance, InstKind}, profile::Profile};
 use super::{ConfigError, ContentError};
 
 #[derive(Deserialize, Debug)]
+pub enum Args {
+	List(Vec<String>),
+	String(String)
+}
+
+impl Args {
+	pub fn parse(&self) -> Vec<String> {
+		match self {
+			Self::List(vec) => vec.clone(),
+			Self::String(string) => string.split(' ').map(|string| string.to_owned()).collect()
+		}
+	}
+}
+
+impl Default for Args {
+	fn default() -> Self {
+		Self::List(Vec::new())
+	}
+}
+
+#[derive(Deserialize, Debug)]
 pub struct LaunchArgs {
 	#[serde(default)]
-	pub jvm: Vec<String>,
+	pub jvm: Args,
 	#[serde(default)]
-	pub game: Vec<String>
+	pub game: Args
 }
 
 #[derive(Deserialize, Debug)]
@@ -22,8 +43,8 @@ impl Default for LaunchOptions {
 	fn default() -> Self {
 		Self {
 			args: LaunchArgs {
-				jvm: Vec::new(),
-				game: Vec::new()
+				jvm: Args::default(),
+				game: Args::default()
 			}
 		}
 	}
