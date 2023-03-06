@@ -372,7 +372,29 @@ impl Instance {
 			None => Err(LaunchError::Java)
 		}
 	}
-
+	
+	pub fn get_linked_asset_path(&self, asset: &Asset, paths: &Paths) -> Option<PathBuf> {
+		let inst_dir = self.get_subdir(paths);
+		match asset.kind {
+			AssetKind::ResourcePack => if let InstKind::Client = self.kind {
+				Some(inst_dir.join("resourcepacks"))
+			} else {
+				None
+			}
+			AssetKind::Mod => Some(inst_dir.join("mods")),
+			AssetKind::Plugin => if let InstKind::Server = self.kind {
+				Some(inst_dir.join("plugins"))
+			} else {
+				None
+			}
+			AssetKind::Shader => if let InstKind::Client = self.kind {
+				Some(inst_dir.join("shaders"))
+			} else {
+				None
+			}
+		}
+	}
+	
 	fn link_asset(dir: &Path, asset: &Asset, paths: &Paths) -> Result<(), CreateError> {
 		files::create_dir(dir)?;
 		let link = dir.join(&asset.name);
@@ -381,22 +403,13 @@ impl Instance {
 		}
 		Ok(())
 	}
-
+	
 	pub fn create_asset(&self, asset: &Asset, paths: &Paths) -> Result<(), CreateError> {
 		let inst_dir = self.get_subdir(paths);
 		files::create_leading_dirs(&inst_dir)?;
 		files::create_dir(&inst_dir)?;
-		match asset.kind {
-			AssetKind::ResourcePack => if let InstKind::Client = self.kind {
-				Self::link_asset(&inst_dir.join("resourcepacks"), asset, paths)?;
-			}
-			AssetKind::Mod => Self::link_asset(&inst_dir.join("mods"), asset, paths)?,
-			AssetKind::Plugin => if let InstKind::Server = self.kind {
-				Self::link_asset(&inst_dir.join("plugins"), asset, paths)?;
-			}
-			AssetKind::Shader => if let InstKind::Client = self.kind {
-				Self::link_asset(&inst_dir.join("shaders"), asset, paths)?;
-			}
+		if let Some(path) = self.get_linked_asset_path(asset, paths) {
+			Self::link_asset(&path, asset, paths)?;
 		}
 		
 		Ok(())

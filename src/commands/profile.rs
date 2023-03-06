@@ -1,4 +1,6 @@
 use super::lib::{CmdData, CmdError};
+use crate::io::lock::Lockfile;
+use crate::io::lock::LockfileAsset;
 use crate::net::game_files::get_version_manifest;
 use crate::net::game_files::make_version_list;
 use crate::package::eval::eval::Routine;
@@ -95,7 +97,10 @@ async fn profile_update(data: &mut CmdData, id: &String, force: bool) -> Result<
 				
 				cprintln!("<s>Updating packages");
 				let mut printer = ReplPrinter::new(true);
+				let mut lock = Lockfile::open(paths)?;
+				let mut assets = Vec::new();
 				for pkg in profile.packages.iter() {
+					let version = config.packages.get_version(&pkg.req, paths)?;
 					for instance in profile.instances.iter() {
 						if let Some(instance) = config.instances.get(instance) {
 							printer.print(&cformat!("\t(<b!>{}</b!>) Evaluating...", pkg.req));
@@ -112,11 +117,24 @@ async fn profile_update(data: &mut CmdData, id: &String, force: bool) -> Result<
 							for asset in eval.downloads.iter() {
 								asset.download(paths).await?;
 								instance.create_asset(&asset.asset, paths)?;
+								assets.push(
+									LockfileAsset::from_asset(&asset.asset, paths)
+								);
 							}
+
 							printer.newline();
 						}
 					}
+					lock.update_package(&pkg.req.name, id, &version, &assets)?;
 				}
+				lock.finish(paths)?;
+				printer.print(&cformat!("\tRemoving unused packages..."));
+				lock.remove_unused_packages(
+					id,
+					&profile.packages.iter().map(|x| x.req.name.clone())
+						.collect::<Vec<String>>()
+				)?;
+
 				printer.print(&cformat!("\t<g>Finished installing packages."));
 				printer.finish();
 			} else {

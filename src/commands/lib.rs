@@ -1,6 +1,7 @@
 use crate::io::files::paths::{Paths, PathsError};
 use crate::data::config::{Config, ConfigError};
 use crate::data::instance::{CreateError, LaunchError};
+use crate::io::lock::LockfileError;
 use crate::net::download::DownloadError;
 use crate::net::game_files::VersionManifestError;
 use crate::package::reg::RegError;
@@ -61,6 +62,8 @@ pub enum CmdError {
 	Download(#[from] DownloadError),
 	#[error("Failed to download version manifest:\n{}", .0)]
 	VersionManifest(#[from] VersionManifestError),
+	#[error("Failed to access lockfile:\n{}", .0)]
+	Lock(#[from] LockfileError),
 	#[error("{}", .0)]
 	Custom(String)
 }

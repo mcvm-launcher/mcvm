@@ -2,6 +2,7 @@ use super::eval::eval::{EvalConstants, Routine, EvalData};
 use super::{Package, PkgKind, PkgError};
 use super::repo::{PkgRepo, query_all, RepoError};
 use crate::io::files::paths::Paths;
+use crate::io::lock::LockfileError;
 
 use std::collections::HashMap;
 use std::fmt::Display;
@@ -50,7 +51,9 @@ pub enum RegError {
 	#[error("Package '{}' not found", .0)]
 	NotFound(String),
 	#[error("Error in package:\n{}", .0)]
-	Package(#[from] PkgError)
+	Package(#[from] PkgError),
+	#[error("Failed to access lockfile:\n{}", .0)]
+	Lock(#[from] LockfileError)
 }
 
 #[derive(Debug)]
@@ -116,7 +119,8 @@ impl PkgRegistry {
 	pub async fn eval(&mut self, req: &PkgRequest, paths: &Paths, routine: Routine, constants: EvalConstants)
 	-> Result<EvalData, RegError> {
 		let pkg = self.get(req, paths)?;
-		return Ok(pkg.eval(paths, routine, constants).await?);
+		let eval = pkg.eval(paths, routine, constants).await?;
+		return Ok(eval);
 	}
 
 	// Remove a cached package

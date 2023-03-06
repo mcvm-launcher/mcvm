@@ -26,6 +26,15 @@ impl AssetKind {
 		}
 	}
 
+	pub fn to_string(&self) -> String {
+		match self {
+			Self::ResourcePack => String::from("resource_pack"),
+			Self::Mod => String::from("mod"),
+			Self::Plugin => String::from("plugin"),
+			Self::Shader => String::from("shader")
+		}
+	}
+
 	pub fn to_plural_string(&self) -> String {
 		match self {
 			Self::ResourcePack => String::from("resource_packs"),
@@ -58,6 +67,14 @@ impl Asset {
 
 	pub fn get_path(&self, paths: &Paths) -> PathBuf {
 		self.get_dir(paths).join(&self.id.name).join(&self.id.version).join(&self.name)
+	}
+
+	// Gets all paths linked to this asset
+	pub fn get_all_paths(&self, paths: &Paths) -> Vec<PathBuf> {
+		let mut out = Vec::new();
+		out.push(self.get_dir(paths));
+
+		out
 	}
 }
 
