@@ -34,8 +34,8 @@ pub enum JsonError {
 	Key(String),
 	#[error("Key [{}] was expected to be of type {}", .0, .1)]
 	KeyType(String, JsonType),
-	#[error("Value was expected to be of type {}", .0)]
-	Type(JsonType),
+	#[error("Value was expected to be of type {:?}", .0)]
+	Type(Vec<JsonType>),
 	#[error("Array index [{}] out of range [{}]", .0, .1)]
 	_Index(usize, usize)
 }
@@ -115,7 +115,7 @@ pub fn access_object<'a>(obj: &'a JsonObject, key: &str) -> Result<&'a JsonObjec
 pub fn ensure_type<T>(value: Option<T>, typ: JsonType) -> Result<T, JsonError> {
 	match value {
 		Some(val) => Ok(val),
-		None => Err(JsonError::Type(typ))
+		None => Err(JsonError::Type(vec![typ]))
 	}
 }
 

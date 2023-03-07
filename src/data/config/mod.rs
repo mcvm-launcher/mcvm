@@ -194,51 +194,61 @@ impl Config {
 			if let Some(packages_val) = profile_obj.get("packages") {
 				let doc_packages = json::ensure_type(packages_val.as_array(), JsonType::Arr)?;
 				for package_val in doc_packages {
-					let package_obj = json::ensure_type(package_val.as_object(), JsonType::Obj)?;
-					let package_id = json::access_str(package_obj, "id")?;
-					
-					let req = PkgRequest::new(package_id);
-					for cfg in profile.packages.iter() {
-						if cfg.req == req {
-							Err(ContentError::DuplicatePackage(req.name.clone(), profile_id.clone()))?;
-						}
-					}
-					if let Some(val) = package_obj.get("type") {
-						match json::ensure_type(val.as_str(), JsonType::Str)? {
-							"local" => {
-								let package_path = json::access_str(package_obj, "path")?;
-								let package_path = shellexpand::tilde(package_path);
-								let package_version = match json::access_str(package_obj, "version") {
-									Ok(version) => Ok(version),
-									Err(..) => Err(ContentError::LocalPackageVersion(package_id.to_owned()))
-								}?;
-								packages.insert_local(
-									&req,
-									package_version,
-									&PathBuf::from(package_path.to_string())
-								);
-							},
-							"remote" => {}
-							typ => Err(ContentError::PkgType(typ.to_string(), String::from("package")))?
-						}
-					}
-					let features = match package_obj.get("features") {
-						Some(list) => {
-							json::ensure_type(list.as_array(), JsonType::Arr)?;
-							let mut out = Vec::new();
-							for feature in list.as_array().expect("Features list is not an array") {
-								json::ensure_type(feature.as_str(), JsonType::Str)?;
-								out.push(feature.as_str().expect("Feature is not a string").to_owned());
+					if let Some(package_obj) = package_val.as_object() {
+						let package_id = json::access_str(package_obj, "id")?;
+						
+						let req = PkgRequest::new(package_id);
+						for cfg in profile.packages.iter() {
+							if cfg.req == req {
+								Err(ContentError::DuplicatePackage(req.name.clone(), profile_id.clone()))?;
 							}
-							out
 						}
-						None => Vec::new()
-					};
-					let pkg = PkgConfig {
-						req,
-						features
-					};
-					profile.packages.push(pkg);
+						if let Some(val) = package_obj.get("type") {
+							match json::ensure_type(val.as_str(), JsonType::Str)? {
+								"local" => {
+									let package_path = json::access_str(package_obj, "path")?;
+									let package_path = shellexpand::tilde(package_path);
+									let package_version = match json::access_str(package_obj, "version") {
+										Ok(version) => Ok(version),
+										Err(..) => Err(ContentError::LocalPackageVersion(package_id.to_owned()))
+									}?;
+									packages.insert_local(
+										&req,
+										package_version,
+										&PathBuf::from(package_path.to_string())
+									);
+								},
+								"remote" => {}
+								typ => Err(ContentError::PkgType(typ.to_string(), String::from("package")))?
+							}
+						}
+						let features = match package_obj.get("features") {
+							Some(list) => {
+								json::ensure_type(list.as_array(), JsonType::Arr)?;
+								let mut out = Vec::new();
+								for feature in list.as_array().expect("Features list is not an array") {
+									json::ensure_type(feature.as_str(), JsonType::Str)?;
+									out.push(feature.as_str().expect("Feature is not a string").to_owned());
+								}
+								out
+							}
+							None => Vec::new()
+						};
+						let pkg = PkgConfig {
+							req,
+							features
+						};
+						profile.packages.push(pkg);
+					} else if let Some(package_str) = package_val.as_str() {
+						let req = PkgRequest::new(package_str);
+						let pkg = PkgConfig {
+							req,
+							features: Vec::new()
+						};
+						profile.packages.push(pkg);
+					} else {
+						return Err(ConfigError::Json(json::JsonError::Type(vec![JsonType::Obj, JsonType::Str])));
+					}
 				}
 			}
 			
