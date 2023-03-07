@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum UserKind {
 	Microsoft,
 	Demo
@@ -56,5 +56,38 @@ impl Auth {
 			AuthState::Authed(user_id) => self.users.get(user_id),
 			AuthState::Offline => None
 		}
+	}
+}
+
+pub fn validate_username(kind: UserKind, name: &str) -> bool {
+	match kind {
+		UserKind::Microsoft | UserKind::Demo => {
+			if name.len() < 1 || name.len() > 16 {
+				return false;
+			}
+
+			for c in name.chars() {
+				if !c.is_ascii_alphanumeric() && c != '_' {
+					return false;
+				}
+			}
+		}
+	}
+	
+	true
+}
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+
+	#[test]
+	fn test_username_validation() {
+		assert!(validate_username(UserKind::Microsoft, "CarbonSmasher"));
+		assert!(validate_username(UserKind::Demo, "12345"));
+		assert!(validate_username(UserKind::Microsoft, "Foo_Bar888"));
+		assert!(!validate_username(UserKind::Microsoft, ""));
+		assert!(!validate_username(UserKind::Microsoft, "ABCDEFGHIJKLMNOPQRS"));
+		assert!(!validate_username(UserKind::Microsoft, "+++"));
 	}
 }

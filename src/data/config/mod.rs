@@ -5,7 +5,7 @@ use preferences::ConfigPreferences;
 use self::instance::parse_instance_config;
 
 use super::addon::{PluginLoader, Modloader, game_modifications_compatible};
-use super::user::{User, UserKind, AuthState, Auth};
+use super::user::{User, UserKind, AuthState, Auth, validate_username};
 use super::profile::{Profile, InstanceRegistry};
 use crate::package::PkgConfig;
 use crate::package::reg::{PkgRegistry, PkgRequest};
@@ -119,13 +119,20 @@ impl Config {
 		// Users
 		let users = json::access_object(obj, "users")?;
 		for (user_id, user_val) in users.iter() {
+			if !validate_identifier(&user_id) {
+				Err(ContentError::InvalidString(user_id.to_owned()))?
+			}
 			let user_obj = json::ensure_type(user_val.as_object(), JsonType::Obj)?;
 			let kind = match json::access_str(user_obj, "type")? {
 				"microsoft" => Ok(UserKind::Microsoft),
 				"demo" => Ok(UserKind::Demo),
 				typ => Err(ContentError::UserType(typ.to_string(), user_id.to_string()))
 			}?;
-			let mut user = User::new(kind, user_id, json::access_str(user_obj, "name")?);
+			let username = json::access_str(user_obj, "name")?;
+			if !validate_username(kind.clone(), username) {
+				Err(ContentError::InvalidString(username.to_owned()))?
+			}
+			let mut user = User::new(kind, user_id, username);
 
 			match user_obj.get("uuid") {
 				Some(uuid) => user.set_uuid(json::ensure_type(uuid.as_str(), JsonType::Str)?),
