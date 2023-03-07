@@ -6,6 +6,7 @@ use crate::data::{instance::{Instance, InstKind}, profile::Profile};
 use super::{ConfigError, ContentError};
 
 #[derive(Deserialize, Debug)]
+#[serde(untagged)]
 pub enum Args {
 	List(Vec<String>),
 	String(String)
