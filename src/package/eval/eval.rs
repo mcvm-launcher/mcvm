@@ -1,3 +1,4 @@
+use super::Value;
 use super::parse::{BlockId, Block};
 use super::instruction::{Instruction, InstrKind};
 use super::super::{Package, PkgError};
@@ -244,11 +245,16 @@ impl Instruction {
 					name,
 					kind,
 					url,
-					force
+					force,
+					append
 				} => {
+					let name = match append {
+						Value::None => name.get(&eval.vars)?,
+						_ => append.get(&eval.vars)? + "-" + &name.get(&eval.vars)?
+					};
 					let addon = Addon::new(
 						kind.as_ref().expect("Addon kind missing").clone(),
-						&name.get(&eval.vars)?,
+						&name,
 						eval.id.clone()
 					);
 

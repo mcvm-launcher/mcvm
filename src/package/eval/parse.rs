@@ -104,7 +104,8 @@ enum AddonKey {
 	None,
 	Kind,
 	Url,
-	Force
+	Force,
+	Append
 }
 
 // Mode for what we are currently parsing
@@ -120,7 +121,8 @@ enum ParseMode {
 		name: Value,
 		kind: Option<AddonKind>,
 		url: Value,
-		force: bool
+		force: bool,
+		append: Value
 	}
 }
 
@@ -208,7 +210,8 @@ impl Package {
 											name: Value::None,
 											kind: None,
 											url: Value::None,
-											force: false
+											force: false,
+											append: Value::None
 										};
 									}
 									name => {
@@ -290,7 +293,8 @@ impl Package {
 						name,
 						kind,
 						url,
-						force
+						force,
+						append
 					} => {
 						match mode {
 							AddonMode::Opening => match tok {
@@ -308,6 +312,7 @@ impl Package {
 										"kind" => *key = AddonKey::Kind,
 										"url" => *key = AddonKey::Url,
 										"force" => *key = AddonKey::Force,
+										"append" => *key = AddonKey::Append,
 										_ => return Err(PkgError::Parse(ParseError::UnknownAddonKey(name.to_owned(), pos.clone())))
 									}
 									*mode = AddonMode::Colon;
@@ -334,6 +339,7 @@ impl Package {
 									_ => {
 										match key {
 											AddonKey::Url => *url = parse_arg(tok, pos)?,
+											AddonKey::Append => *append = parse_arg(tok, pos)?,
 											_ => unexpected_token!(tok, pos)
 										}
 										*mode = AddonMode::Comma;
@@ -347,7 +353,8 @@ impl Package {
 										name: name.clone(),
 										kind: kind.clone(),
 										url: url.clone(),
-										force: *force
+										force: *force,
+										append: append.clone()
 									}));
 									prs.mode = ParseMode::Root;
 								}
