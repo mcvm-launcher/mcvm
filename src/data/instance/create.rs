@@ -146,12 +146,16 @@ impl Instance {
 			PluginLoader::Paper => {
 				let mut printer = ReplPrinter::new(verbose);
 				printer.indent(1);
-				printer.print("Downloading Paper server...");
+				printer.print("Checking for paper updates...");
 				let (build_num, ..) = paper::get_newest_build(&self.version).await?;
 				let file_name = paper::get_jar_file_name(&self.version, build_num).await?;
-				let path = paper::download_server_jar(&self.version, build_num, &file_name, &server_dir).await?;
-				printer.print(&cformat!("<g>Paper server downloaded."));
-				path
+				let paper_jar_path = server_dir.join(&file_name);
+				if !paper_jar_path.exists() {
+					printer.print("Downloading Paper server...");
+					paper::download_server_jar(&self.version, build_num, &file_name, &server_dir).await?;
+					printer.print(&cformat!("<g>Paper server downloaded."));
+				}
+				paper_jar_path
 			}
 		});
 		
