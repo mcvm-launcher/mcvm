@@ -27,7 +27,7 @@ impl Default for Args {
 	}
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Default)]
 pub struct LaunchArgs {
 	#[serde(default)]
 	pub jvm: Args,
@@ -37,6 +37,7 @@ pub struct LaunchArgs {
 
 #[derive(Deserialize, Debug)]
 pub struct LaunchOptions {
+	#[serde(default)]
 	pub args: LaunchArgs
 }
 
