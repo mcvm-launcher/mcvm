@@ -9,6 +9,7 @@ use super::user::{User, UserKind, AuthState, Auth};
 use super::profile::{Profile, InstanceRegistry};
 use crate::package::PkgConfig;
 use crate::package::reg::{PkgRegistry, PkgRequest};
+use crate::util::validate_identifier;
 use crate::util::versions::VersionPattern;
 use crate::util::json::{self, JsonType};
 
@@ -149,6 +150,9 @@ impl Config {
 		// Profiles
 		let doc_profiles = json::access_object(obj, "profiles")?;
 		for (profile_id, profile_val) in doc_profiles {
+			if !validate_identifier(&profile_id) {
+				Err(ContentError::InvalidString(profile_id.to_owned()))?
+			}
 			let profile_obj = json::ensure_type(profile_val.as_object(), JsonType::Obj)?;
 			let version = json::access_str(profile_obj, "version")?;
 			if !VersionPattern::validate(version) {
@@ -179,6 +183,9 @@ impl Config {
 			if let Some(instances_val) = profile_obj.get("instances") {
 				let doc_instances = json::ensure_type(instances_val.as_object(), JsonType::Obj)?;
 				for (instance_id, instance_val) in doc_instances {
+					if !validate_identifier(&instance_id) {
+						Err(ContentError::InvalidString(instance_id.to_owned()))?
+					}
 					if instances.contains_key(instance_id) {
 						return Err(ConfigError::from(ContentError::DuplicateInstance(instance_id.to_string())));
 					}
@@ -196,6 +203,9 @@ impl Config {
 				for package_val in doc_packages {
 					if let Some(package_obj) = package_val.as_object() {
 						let package_id = json::access_str(package_obj, "id")?;
+						if !validate_identifier(&package_id) {
+							Err(ContentError::InvalidString(package_id.to_owned()))?
+						}
 						
 						let req = PkgRequest::new(package_id);
 						for cfg in profile.packages.iter() {
@@ -227,8 +237,11 @@ impl Config {
 								json::ensure_type(list.as_array(), JsonType::Arr)?;
 								let mut out = Vec::new();
 								for feature in list.as_array().expect("Features list is not an array") {
-									json::ensure_type(feature.as_str(), JsonType::Str)?;
-									out.push(feature.as_str().expect("Feature is not a string").to_owned());
+									let feature = json::ensure_type(feature.as_str(), JsonType::Str)?;
+									if !validate_identifier(&feature) {
+										Err(ContentError::InvalidString(feature.to_owned()))?
+									}
+									out.push(feature.to_owned());
 								}
 								out
 							}
@@ -239,8 +252,11 @@ impl Config {
 							features
 						};
 						profile.packages.push(pkg);
-					} else if let Some(package_str) = package_val.as_str() {
-						let req = PkgRequest::new(package_str);
+					} else if let Some(package_id) = package_val.as_str() {
+						if !validate_identifier(&package_id) {
+							Err(ContentError::InvalidString(package_id.to_owned()))?
+						}
+						let req = PkgRequest::new(package_id);
 						let pkg = PkgConfig {
 							req,
 							features: Vec::new()

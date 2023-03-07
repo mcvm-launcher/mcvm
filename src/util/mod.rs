@@ -32,3 +32,43 @@ macro_rules! skip_none {
 		}
 	};
 }
+
+// Validates a simple string identifier
+pub fn validate_identifier(id: &str) -> bool {
+	for c in id.chars() {
+		if !c.is_ascii() {
+			return false;
+		}
+
+		if c.is_ascii_punctuation() {
+			match c {
+				'_' | '-' | '.' => {}
+				_ => return false
+			}
+		}
+
+		if c.is_ascii_whitespace() {
+			return false;
+		}
+	}
+
+	true
+}
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+
+	#[test]
+	fn test_id_validation() {
+		assert!(validate_identifier("hello"));
+		assert!(validate_identifier("Hello"));
+		assert!(validate_identifier("H3110"));
+		assert!(validate_identifier("hello-world"));
+		assert!(validate_identifier("hello_world"));
+		assert!(validate_identifier("hello.world"));
+		assert!(!validate_identifier("hello*world"));
+		assert!(!validate_identifier("hello\nworld"));
+		assert!(!validate_identifier("hello world"));
+	}
+}
