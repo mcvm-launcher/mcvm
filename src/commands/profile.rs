@@ -1,8 +1,10 @@
 use super::lib::{CmdData, CmdError};
+use crate::data::addon::PluginLoader;
 use crate::io::lock::Lockfile;
 use crate::io::lock::LockfileAddon;
 use crate::net::game_files::get_version_manifest;
 use crate::net::game_files::make_version_list;
+use crate::net::paper;
 use crate::package::eval::eval::Routine;
 use crate::package::eval::eval::EvalConstants;
 use crate::data::instance::InstKind;
@@ -87,17 +89,46 @@ fn list(data: &mut CmdData) -> Result<(), CmdError> {
 async fn profile_update(data: &mut CmdData, id: &String, force: bool) -> Result<(), CmdError> {
 	data.ensure_paths()?;
 	data.ensure_config()?;
-
+	
 	if let Some(config) = &mut data.config {
 		if let Some(paths) = &data.paths {
 			if let Some(profile) = config.profiles.get_mut(id) {
+				let (paper_build_num, paper_file_name) = if let PluginLoader::Paper = profile.plugin_loader {
+					let (build_num, ..) = paper::get_newest_build(&profile.version).await?;
+					let paper_file_name = paper::get_jar_file_name(&profile.version, build_num).await?;
+					(Some(build_num), Some(paper_file_name))
+				} else {
+					(None, None)
+				};
+				let mut lock = Lockfile::open(paths)?;
+				if lock.update_profile_version(&id, &profile.version) {
+					cprintln!("<s>Updating profile version...");
+					for inst in profile.instances.iter() {
+						if let Some(inst) = config.instances.get(inst) {
+							inst.teardown(paths, paper_file_name.clone())?;
+						}
+					}
+				}
+				if let Some(build_num) = paper_build_num {
+					if let Some(file_name) = paper_file_name {
+						if lock.update_profile_paper_build(&id, build_num) {
+							for inst in profile.instances.iter() {
+								if let Some(inst) = config.instances.get(inst) {
+									inst.remove_paper(paths, file_name.clone())?;
+								}
+							}
+						}
+					}
+				}
+
+				lock.finish(paths)?;
+
 				cprintln!("<s>Obtaining version index...");
 				let (version_manifest, ..) = get_version_manifest(paths)?;
 				profile.create_instances(&mut config.instances, &version_manifest, paths, true, force).await?;
 				
 				cprintln!("<s>Updating packages");
 				let mut printer = ReplPrinter::new(true);
-				let mut lock = Lockfile::open(paths)?;
 				let mut addons = Vec::new();
 				for pkg in profile.packages.iter() {
 					let version = config.packages.get_version(&pkg.req, paths)?;

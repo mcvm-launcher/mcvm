@@ -54,17 +54,23 @@ struct BuildInfoResponse {
 	downloads: BuildInfoDownloads
 }
 
-pub async fn download_server_jar(version: &str, build_num: u16, path: &Path) -> Result<PathBuf, PaperError> {
+pub async fn get_jar_file_name(version: &str, build_num: u16) -> Result<String, PaperError> {
 	let num_str = build_num.to_string();
 	let url = format!("https://api.papermc.io/v2/projects/paper/versions/{version}/builds/{num_str}");
 	let client = Client::new();
 	let resp = serde_json::from_str::<BuildInfoResponse>(
 		&client.get(url).send().await?.text().await?
 	)?;
-	let file_name = resp.downloads.application.name;
-	let file_path = path.join(&file_name);
 
+	Ok(resp.downloads.application.name)
+}
+
+pub async fn download_server_jar(version: &str, build_num: u16, file_name: &str, path: &Path) -> Result<PathBuf, PaperError> {
+	let num_str = build_num.to_string();
+	let file_path = path.join(file_name);
 	let url = format!("https://api.papermc.io/v2/projects/paper/versions/{version}/builds/{num_str}/downloads/{file_name}");
+
+	let client = Client::new();
 	let bytes = client.get(url).send().await?.bytes().await?;
 	fs::write(&file_path, bytes)?;
 

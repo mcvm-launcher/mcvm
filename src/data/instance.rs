@@ -241,7 +241,8 @@ impl Instance {
 				printer.indent(1);
 				printer.print("Downloading Paper server...");
 				let (build_num, ..) = paper::get_newest_build(&self.version).await?;
-				let path = paper::download_server_jar(&self.version, build_num, &server_dir).await?;
+				let file_name = paper::get_jar_file_name(&self.version, build_num).await?;
+				let path = paper::download_server_jar(&self.version, build_num, &file_name, &server_dir).await?;
 				printer.print(&cformat!("<g>Paper server downloaded."));
 				path
 			}
@@ -324,7 +325,6 @@ impl Instance {
 								}
 								command.args(&self.launch.args.game.parse());
 							}
-							dbg!(&command);
 							
 							let mut child = match command.spawn() {
 								Ok(child) => child,
@@ -423,6 +423,43 @@ impl Instance {
 			}
 		}
 		
+		Ok(())
+	}
+
+	// Removes the paper server jar file from a server instance
+	pub fn remove_paper(&self, paths: &Paths, paper_file_name: String) -> Result<(), CreateError> {
+		let inst_dir = self.get_subdir(paths);
+		let paper_path = inst_dir.join(&paper_file_name);
+		if paper_path.exists() {
+			fs::remove_file(paper_path)?;
+		}
+
+		Ok(())
+	}
+
+	// Removes files such as the game jar for when the profile version changes
+	pub fn teardown(&self, paths: &Paths, paper_file_name: Option<String>) -> Result<(), CreateError> {
+		match self.kind {
+			InstKind::Client => {
+				let inst_dir = self.get_dir(paths);
+				let jar_path = inst_dir.join("client.jar");
+				if jar_path.exists() {
+					fs::remove_file(jar_path)?;
+				}
+			}
+			InstKind::Server => {
+				let inst_dir = self.get_subdir(paths);
+				let jar_path = inst_dir.join("server.jar");
+				if jar_path.exists() {
+					fs::remove_file(jar_path)?;
+				}
+
+				if let Some(file_name) = paper_file_name {
+					self.remove_paper(paths, file_name)?;
+				}
+			}
+		}
+
 		Ok(())
 	}
 }

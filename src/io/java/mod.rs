@@ -52,7 +52,7 @@ impl Java {
 				let out_dir = paths.java.join("adoptium");
 				files::create_dir(&out_dir)?;
 				let url = format!(
-					"https://api.adoptium.net/v3/addons/latest/{}/hotspot?image_type=jre&vendor=eclipse&architecture={}&os={}",
+					"https://api.adoptium.net/v3/assets/latest/{}/hotspot?image_type=jre&vendor=eclipse&architecture={}&os={}",
 					self.major_version,
 					ARCH_STRING,
 					OS_STRING
@@ -62,7 +62,7 @@ impl Java {
 				dwn.follow_redirects()?;
 				dwn.add_str();
 				dwn.perform()?;
-				
+
 				let manifest_val = json::parse_json(&dwn.get_str()?)?;
 				let manifest = json::ensure_type(manifest_val.as_array(), JsonType::Arr)?;
 				let version = json::ensure_type(

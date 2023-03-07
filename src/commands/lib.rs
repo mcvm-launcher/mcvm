@@ -4,6 +4,7 @@ use crate::data::instance::{CreateError, LaunchError};
 use crate::io::lock::LockfileError;
 use crate::net::download::DownloadError;
 use crate::net::game_files::VersionManifestError;
+use crate::net::paper::PaperError;
 use crate::package::reg::RegError;
 use crate::package::repo::RepoError;
 
@@ -64,6 +65,8 @@ pub enum CmdError {
 	VersionManifest(#[from] VersionManifestError),
 	#[error("Failed to access lockfile:\n{}", .0)]
 	Lock(#[from] LockfileError),
+	#[error("Failed to download Paper server:\n{}", .0)]
+	Paper(#[from] PaperError),
 	#[error("{}", .0)]
 	Custom(String)
 }

@@ -64,10 +64,19 @@ pub struct LockfilePackage {
 	addons: Vec<LockfileAddon>
 }
 
+#[derive(Serialize, Deserialize)]
+struct LockfileProfile {
+	version: String,
+	paper_build: Option<u16>
+}
+
 #[derive(Serialize, Deserialize, Default)]
 #[serde(default)]
 struct LockfileContents {
-	packages: HashMap<String, HashMap<String, LockfilePackage>>
+	#[serde(default)]
+	packages: HashMap<String, HashMap<String, LockfilePackage>>,
+	#[serde(default)]
+	profiles: HashMap<String, LockfileProfile>
 }
 
 // A file that remembers what files and packages are currently installed
@@ -165,6 +174,47 @@ impl Lockfile {
 			Ok(addons_to_remove)
 		} else {
 			Ok(vec![])
+		}
+	}
+
+	// Updates a profile in the lockfile. Returns true if the version has changed
+	pub fn update_profile_version(&mut self, profile: &str, version: &str) -> bool {
+		if let Some(profile) = self.contents.profiles.get_mut(profile) {
+			if profile.version == version {
+				false
+			} else {
+				profile.version = version.to_owned();
+				true
+			}
+		} else {
+			self.contents.profiles.insert(
+				profile.to_owned(),
+				LockfileProfile {
+					version: version.to_owned(),
+					paper_build: None
+				}
+			);
+
+			false
+		}
+	}
+
+	// Updates a profile with a new paper build. Returns true if the version has changed
+	pub fn update_profile_paper_build(&mut self, profile: &str, build_num: u16) -> bool {
+		if let Some(profile) = self.contents.profiles.get_mut(profile) {
+			if let Some(paper_build) = profile.paper_build.as_mut() {
+				if *paper_build == build_num {
+					false
+				} else {
+					*paper_build = build_num;
+					true
+				}
+			} else {
+				profile.paper_build = Some(build_num);
+				false
+			}
+		} else {
+			false
 		}
 	}
 }
