@@ -101,7 +101,7 @@ async fn profile_update(data: &mut CmdData, id: &String, force: bool) -> Result<
 					(None, None)
 				};
 				let mut lock = Lockfile::open(paths)?;
-				if lock.update_profile_version(&id, &profile.version) {
+				if lock.update_profile_version(id, &profile.version) {
 					cprintln!("<s>Updating profile version...");
 					for inst in profile.instances.iter() {
 						if let Some(inst) = config.instances.get(inst) {
@@ -111,7 +111,7 @@ async fn profile_update(data: &mut CmdData, id: &String, force: bool) -> Result<
 				}
 				if let Some(build_num) = paper_build_num {
 					if let Some(file_name) = paper_file_name {
-						if lock.update_profile_paper_build(&id, build_num) {
+						if lock.update_profile_paper_build(id, build_num) {
 							for inst in profile.instances.iter() {
 								if let Some(inst) = config.instances.get(inst) {
 									inst.remove_paper(paths, file_name.clone())?;

@@ -97,7 +97,7 @@ impl VersionPattern {
 	}
 
 	// Returns the union of matches for multiple patterns
-	pub fn match_union(&self, other: &Self, versions: &[String]) -> Vec<String> {
+	pub fn _match_union(&self, other: &Self, versions: &[String]) -> Vec<String> {
 		self.get_matches(versions).iter().zip(other.get_matches(versions))
 			.filter_map(|(left, right)| {
 				if *left == right {
@@ -109,7 +109,7 @@ impl VersionPattern {
 	}
 
 	// Converts to a string representation
-	pub fn as_string(&self) -> String {
+	pub fn _as_string(&self) -> String {
 		match self {
 			Self::Single(version) => version.to_owned(),
 			Self::Latest(..) => String::from("latest"),

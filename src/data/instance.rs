@@ -429,7 +429,7 @@ impl Instance {
 	// Removes the paper server jar file from a server instance
 	pub fn remove_paper(&self, paths: &Paths, paper_file_name: String) -> Result<(), CreateError> {
 		let inst_dir = self.get_subdir(paths);
-		let paper_path = inst_dir.join(&paper_file_name);
+		let paper_path = inst_dir.join(paper_file_name);
 		if paper_path.exists() {
 			fs::remove_file(paper_path)?;
 		}

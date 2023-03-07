@@ -52,21 +52,21 @@ impl ConditionKind {
 			Self::Side(side) => match tok {
 				Token::Ident(name) => match InstKind::from_str(name) {
 					Some(kind) => *side = Some(kind),
-					None => {}
+					None => return Err(ParseError::UnknownConditionArg(name.to_owned(), pos.clone()))
 				}
 				_ => return Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone()))
 			}
 			Self::Modloader(loader) => match tok {
 				Token::Ident(name) => match ModloaderMatch::from_str(name) {
 					Some(kind) => *loader = Some(kind),
-					None => {}
+					None => return Err(ParseError::UnknownConditionArg(name.to_owned(), pos.clone()))
 				}
 				_ => return Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone()))
 			}
 			Self::PluginLoader(loader) => match tok {
 				Token::Ident(name) => match PluginLoaderMatch::from_str(name) {
 					Some(kind) => *loader = Some(kind),
-					None => {}
+					None => return Err(ParseError::UnknownConditionArg(name.to_owned(), pos.clone()))
 				}
 				_ => return Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone()))
 			}

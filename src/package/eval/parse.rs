@@ -29,7 +29,9 @@ pub enum ParseError {
 	#[error("Unknown reason '{}' {}", .0, .1)]
 	UnknownReason(String, TextPos),
 	#[error("Unknown condition '{}' {}", .0, .1)]
-	UnknownCondition(String, TextPos)
+	UnknownCondition(String, TextPos),
+	#[error("Unknown condition argument '{}' {}", .0, .1)]
+	UnknownConditionArg(String, TextPos)
 }
 
 pub type BlockId = u16;

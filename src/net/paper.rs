@@ -36,7 +36,7 @@ pub async fn get_newest_build(version: &str) -> Result<(u16, Client), PaperError
 
 	let build = resp.builds.last().ok_or(PaperError::BuildNotFound)?;
 
-	Ok((build.clone(), client))
+	Ok((*build, client))
 }
 
 #[derive(Deserialize)]

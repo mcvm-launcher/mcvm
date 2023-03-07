@@ -15,7 +15,9 @@ pub enum LockfileError {
 	#[error("Error when accessing file:\n{}", .0)]
 	Io(#[from] std::io::Error),
 	#[error("Failed to parse json:\n{}", .0)]
-	SerdeJson(#[from] serde_json::Error)
+	SerdeJson(#[from] serde_json::Error),
+	#[error("Unknown addon kind '{}' in addon '{}'", .0, .1)]
+	AddonKind(String, String)
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Clone)]
@@ -38,12 +40,13 @@ impl LockfileAddon {
 		}
 	}
 
-	pub fn to_addon(&self, id: PkgIdentifier) -> Addon {
-		Addon {
-			kind: AddonKind::from_str(&self.kind).expect("Unknown addon kind"),
+	pub fn to_addon(&self, id: PkgIdentifier) -> Result<Addon, LockfileError> {
+		Ok(Addon {
+			kind: AddonKind::from_str(&self.kind)
+				.ok_or(LockfileError::AddonKind(self.kind.clone(), self.name.clone()))?,
 			name: self.name.clone(),
 			id
-		}
+		})
 	}
 	
 	pub fn remove(&self) -> Result<(), LockfileError> {
@@ -166,7 +169,7 @@ impl Lockfile {
 					for addon in pkg.addons {
 						addon.remove()?;
 						let id = PkgIdentifier { name: pkg_id.clone(), version: pkg.version.clone() };
-						addons_to_remove.push(addon.to_addon(id));
+						addons_to_remove.push(addon.to_addon(id)?);
 					}
 				}
 			}

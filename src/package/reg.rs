@@ -120,7 +120,7 @@ impl PkgRegistry {
 	-> Result<EvalData, RegError> {
 		let pkg = self.get(req, paths)?;
 		let eval = pkg.eval(paths, routine, constants).await?;
-		return Ok(eval);
+		Ok(eval)
 	}
 
 	// Remove a cached package

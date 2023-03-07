@@ -224,7 +224,7 @@ pub fn get_libraries(
 			classpath.push_str(path.to_str().ok_or(LibrariesError::Utf)?);
 			classpath.push(CLASSPATH_SEP);
 
-			native_paths.push((path.clone(), name.clone()));
+			native_paths.push((path.clone(), name.to_owned()));
 			if !force && path.exists() {
 				continue;
 			}
@@ -325,7 +325,7 @@ pub async fn get_assets(
 	// let mut count = 0;
 	// Used to limit the number of open file descriptors
 	let sem = Arc::new(Semaphore::new(FD_SENSIBLE_LIMIT));
-	for (key, asset_val) in assets {
+	for (_key, asset_val) in assets {
 		let asset = json::ensure_type(asset_val.as_object(), JsonType::Obj)?;
 		
 		let hash = json::access_str(asset, "hash")?.to_owned();
