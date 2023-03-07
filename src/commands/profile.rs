@@ -129,7 +129,6 @@ async fn profile_update(data: &mut CmdData, id: &String, force: bool) -> Result<
 				
 				cprintln!("<s>Updating packages");
 				let mut printer = ReplPrinter::new(true);
-				let mut addons = Vec::new();
 				for pkg in profile.packages.iter() {
 					let version = config.packages.get_version(&pkg.req, paths)?;
 					for instance_id in profile.instances.iter() {
@@ -148,11 +147,11 @@ async fn profile_update(data: &mut CmdData, id: &String, force: bool) -> Result<
 							for addon in eval.downloads.iter() {
 								addon.download(paths).await?;
 								instance.create_addon(&addon.addon, paths)?;
-								addons.push(
-									LockfileAddon::from_addon(&addon.addon, paths)
-								);
 							}
-							let addons_to_remove = lock.update_package(&pkg.req.name, instance_id, &version, &addons)?;
+							let lockfile_addons = eval.downloads.iter().map(|x| {
+								LockfileAddon::from_addon(&x.addon, paths)
+							}).collect::<Vec<LockfileAddon>>();
+							let addons_to_remove = lock.update_package(&pkg.req.name, instance_id, &version, &lockfile_addons)?;
 							for addon in eval.downloads.iter() {
 								if addons_to_remove.contains(&addon.addon.name) {
 									instance.remove_addon(&addon.addon, paths)?;

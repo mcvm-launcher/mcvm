@@ -49,7 +49,7 @@ impl LockfileAddon {
 		})
 	}
 	
-	pub fn remove(&self) -> Result<(), LockfileError> {
+	pub fn _remove(&self) -> Result<(), LockfileError> {
 		for file in self.files.iter() {
 			let path = PathBuf::from(file);
 			if path.exists() {
@@ -131,8 +131,7 @@ impl Lockfile {
 					}
 				}
 				for i in indices {
-					let addon = pkg.addons.remove(i);
-					addon.remove()?;
+					pkg.addons.remove(i);
 				}
 				pkg.addons = addons.to_vec();
 			} else {
@@ -152,7 +151,7 @@ impl Lockfile {
 		Ok(addons_to_remove)
 	}
 
-	// Remove any unused packages for a profile. Returns any addons that need to be removed from the instance
+	// Remove any unused packages for an instance. Returns any addons that need to be removed from the instance
 	pub fn remove_unused_packages(&mut self, instance: &str, used_packages: &[String])
 	-> Result<Vec<Addon>, LockfileError> {
 		if let Some(inst) = self.contents.packages.get_mut(instance) {
@@ -167,7 +166,6 @@ impl Lockfile {
 			for pkg_id in pkgs_to_remove {
 				if let Some(pkg) = inst.remove(&pkg_id) {
 					for addon in pkg.addons {
-						addon.remove()?;
 						let id = PkgIdentifier { name: pkg_id.clone(), version: pkg.version.clone() };
 						addons_to_remove.push(addon.to_addon(id)?);
 					}
