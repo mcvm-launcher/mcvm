@@ -3,6 +3,7 @@ use std::io::{Stdout, Write};
 use color_print::cstr;
 
 // Used to print text that is replaced
+#[derive(Debug)]
 pub struct ReplPrinter {
 	stdout: Stdout,
 	chars_written: usize,
@@ -46,7 +47,7 @@ impl ReplPrinter {
 		self.clearline();
 		let indent_str = "\t".repeat(self.indent);
 		print!("\r{indent_str}{text}");
-		self.chars_written = text.len();
+		self.chars_written = text.len() + (indent_str.len() * 8);
 		self.stdout.flush().unwrap();
 	}
 

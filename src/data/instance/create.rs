@@ -136,7 +136,6 @@ impl Instance {
 			dwn.url(json::access_str(client_download, "url")?)?;
 			dwn.perform()?;
 			printer.print(&cformat!("<g>Server jar downloaded."));
-			printer.finish();
 		}
 
 		fs::write(server_dir.join("eula.txt"), "eula = true\n")?;
@@ -150,7 +149,9 @@ impl Instance {
 				let (build_num, ..) = paper::get_newest_build(&self.version).await?;
 				let file_name = paper::get_jar_file_name(&self.version, build_num).await?;
 				let paper_jar_path = server_dir.join(&file_name);
-				if !paper_jar_path.exists() {
+				if paper_jar_path.exists() {
+					printer.print(&cformat!("<g>Paper is up to date."));
+				} else {
 					printer.print("Downloading Paper server...");
 					paper::download_server_jar(&self.version, build_num, &file_name, &server_dir).await?;
 					printer.print(&cformat!("<g>Paper server downloaded."));
