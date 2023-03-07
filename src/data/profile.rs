@@ -1,11 +1,11 @@
 use crate::data::instance::Instance;
-use crate::data::instance::CreateError;
 use crate::package::PkgConfig;
 use crate::util::json;
 use crate::Paths;
 
 use super::addon::Modloader;
 use super::addon::PluginLoader;
+use super::instance::create::CreateError;
 
 pub type InstanceRegistry = std::collections::HashMap<String, Instance>;
 

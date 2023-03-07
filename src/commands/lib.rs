@@ -1,6 +1,7 @@
+use crate::data::instance::create::CreateError;
+use crate::data::instance::launch::LaunchError;
 use crate::io::files::paths::{Paths, PathsError};
 use crate::data::config::{Config, ConfigError};
-use crate::data::instance::{CreateError, LaunchError};
 use crate::io::lock::LockfileError;
 use crate::net::download::DownloadError;
 use crate::net::game_files::VersionManifestError;
