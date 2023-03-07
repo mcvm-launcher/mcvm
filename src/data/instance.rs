@@ -414,4 +414,15 @@ impl Instance {
 		
 		Ok(())
 	}
+
+	pub fn remove_asset(&self, asset: &Asset, paths: &Paths) -> Result<(), CreateError> {
+		if let Some(path) = self.get_linked_asset_path(asset, paths) {
+			let path = path.join(&asset.name);
+			if path.exists() {
+				fs::remove_file(path)?;
+			}
+		}
+		
+		Ok(())
+	}
 }

@@ -101,8 +101,8 @@ async fn profile_update(data: &mut CmdData, id: &String, force: bool) -> Result<
 				let mut assets = Vec::new();
 				for pkg in profile.packages.iter() {
 					let version = config.packages.get_version(&pkg.req, paths)?;
-					for instance in profile.instances.iter() {
-						if let Some(instance) = config.instances.get(instance) {
+					for instance_id in profile.instances.iter() {
+						if let Some(instance) = config.instances.get(instance_id) {
 							printer.print(&cformat!("\t(<b!>{}</b!>) Evaluating...", pkg.req));
 							let constants = EvalConstants {
 								version: profile.version.clone(),
@@ -121,19 +121,33 @@ async fn profile_update(data: &mut CmdData, id: &String, force: bool) -> Result<
 									LockfileAsset::from_asset(&asset.asset, paths)
 								);
 							}
+							let assets_to_remove = lock.update_package(&pkg.req.name, instance_id, &version, &assets)?;
+							for asset in eval.downloads.iter() {
+								if assets_to_remove.contains(&asset.asset.name) {
+									instance.remove_asset(&asset.asset, paths)?;
+								}
+							}
 
 							printer.newline();
 						}
 					}
-					lock.update_package(&pkg.req.name, id, &version, &assets)?;
 				}
+				
+				for instance_id in profile.instances.iter() {
+					if let Some(instance) = config.instances.get(instance_id) {
+						let assets_to_remove = lock.remove_unused_packages(
+							instance_id,
+							&profile.packages.iter().map(|x| x.req.name.clone())
+								.collect::<Vec<String>>()
+						)?;
+
+						for asset in assets_to_remove {
+							instance.remove_asset(&asset, paths)?;
+						}
+					}
+				}
+
 				lock.finish(paths)?;
-				printer.print(&cformat!("\tRemoving unused packages..."));
-				lock.remove_unused_packages(
-					id,
-					&profile.packages.iter().map(|x| x.req.name.clone())
-						.collect::<Vec<String>>()
-				)?;
 
 				printer.print(&cformat!("\t<g>Finished installing packages."));
 				printer.finish();
