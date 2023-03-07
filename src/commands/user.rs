@@ -12,7 +12,7 @@ pub fn help() {
 	cprintln!("<s>Usage:</s> mcvm user <k!><<subcommand>> [options]</k!>");
 	cprintln!();
 	cprintln!("<s>Subcommands:");
-	cprintln!("{}<i,c>list:</i,c> {}", HYPHEN_POINT, LIST_HELP);
+	cprintln!("{}<i,c>list, ls:</i,c> {}", HYPHEN_POINT, LIST_HELP);
 	cprintln!("{}<i,c>auth:</i,c> {}", HYPHEN_POINT, AUTH_HELP);
 }
 
@@ -59,7 +59,7 @@ pub fn run(argc: usize, argv: &[String], data: &mut CmdData)
 	}
 
 	match argv[0].as_str() {
-		"list" => list(data)?,
+		"list" | "ls" => list(data)?,
 		"auth" => auth(data)?,
 		cmd => cprintln!("<r>Unknown subcommand {}", cmd)
 	}

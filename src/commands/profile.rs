@@ -25,7 +25,7 @@ pub fn help() {
 	cprintln!();
 	cprintln!("<s>Subcommands:");
 	cprintln!("{}<i,c>info:</i,c> {}", HYPHEN_POINT, INFO_HELP);
-	cprintln!("{}<i,c>list:</i,c> {}", HYPHEN_POINT, LIST_HELP);
+	cprintln!("{}<i,c>list, ls:</i,c> {}", HYPHEN_POINT, LIST_HELP);
 	cprintln!("{}<i,c>update:</i,c> {}", HYPHEN_POINT, UPDATE_HELP);
 	cprintln!("{}<i,c>reinstall:</i,c> {}", HYPHEN_POINT, REINSTALL_HELP);
 }
@@ -198,7 +198,7 @@ pub async fn run(argc: usize, argv: &[String], data: &mut CmdData)
 	}
 
 	match argv[0].as_str() {
-		"list" => list(data)?,
+		"list" | "ls" => list(data)?,
 		"info" => match argc {
 			1 => cprintln!("{}", INFO_HELP),
 			_ => info(data, &argv[1])?

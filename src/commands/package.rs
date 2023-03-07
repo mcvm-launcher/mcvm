@@ -15,7 +15,7 @@ pub fn help() {
 	cprintln!("<s>Usage:</s> mcvm package <k!><<subcommand>> [options]</k!>");
 	cprintln!();
 	cprintln!("<s>Subcommands:");
-	cprintln!("{}<i,c>list:</i,c> {}", HYPHEN_POINT, LIST_HELP);
+	cprintln!("{}<i,c>list, ls:</i,c> {}", HYPHEN_POINT, LIST_HELP);
 	cprintln!("{}<i,c>sync:</i,c> {}", HYPHEN_POINT, SYNC_HELP);
 	cprintln!("{}<i,c>cat:</i,c> {}", HYPHEN_POINT, CAT_HELP);
 }
@@ -104,7 +104,7 @@ pub async fn run(argc: usize, argv: &[String], data: &mut CmdData)
 	}
 
 	match argv[0].as_str() {
-		"list" => list(data)?,
+		"list" | "ls" => list(data)?,
 		"sync" => sync(data)?,
 		"cat" => match argc {
 			2 => cat(data, &argv[1]).await?,
