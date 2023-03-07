@@ -79,7 +79,7 @@ pub enum ContentError {
 	InvalidString(String),
 	#[error("Unknown modloader '{}'", .0)]
 	UnknownModloader(String),
-	#[error("Unknown pluginloader '{}'", .0)]
+	#[error("Unknown plugin_loader '{}'", .0)]
 	UnknownPluginLoader(String),
 	#[error("Modloader and plugin loader are incompatible for profile '{}'", .0)]
 	IncompatibleGameMods(String)
@@ -162,18 +162,18 @@ impl Config {
 			let modloader = Modloader::from_str(modloader)
 				.ok_or(ContentError::UnknownModloader(modloader.to_owned()))?;
 
-			let pluginloader = match profile_obj.get("plugin_loader") {
+			let plugin_loader = match profile_obj.get("plugin_loader") {
 				Some(loader) => json::ensure_type(loader.as_str(), JsonType::Str),
 				None => Ok("vanilla")
 			}?;
-			let pluginloader = PluginLoader::from_str(pluginloader)
-				.ok_or(ContentError::UnknownPluginLoader(pluginloader.to_owned()))?;
+			let plugin_loader = PluginLoader::from_str(plugin_loader)
+				.ok_or(ContentError::UnknownPluginLoader(plugin_loader.to_owned()))?;
 
-			if !game_modifications_compatible(&modloader, &pluginloader) {
+			if !game_modifications_compatible(&modloader, &plugin_loader) {
 				return Err(ConfigError::Content(ContentError::IncompatibleGameMods(profile_id.clone())));
 			}
 
-			let mut profile = Profile::new(profile_id, version, modloader.clone(), pluginloader.clone());
+			let mut profile = Profile::new(profile_id, version, modloader.clone(), plugin_loader.clone());
 			
 			// Instances
 			if let Some(instances_val) = profile_obj.get("instances") {

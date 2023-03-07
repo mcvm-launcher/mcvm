@@ -16,18 +16,18 @@ pub struct Profile {
 	pub instances: Vec<String>,
 	pub packages: Vec<PkgConfig>,
 	pub modloader: Modloader,
-	pub pluginloader: PluginLoader
+	pub plugin_loader: PluginLoader
 }
 
 impl Profile {
-	pub fn new(name: &str, version: &str, modloader: Modloader, pluginloader: PluginLoader) -> Self {
+	pub fn new(name: &str, version: &str, modloader: Modloader, plugin_loader: PluginLoader) -> Self {
 		Profile {
 			name: name.to_owned(),
 			version: version.to_owned(),
 			instances: Vec::new(),
 			packages: Vec::new(),
 			modloader,
-			pluginloader
+			plugin_loader
 		}
 	}
 

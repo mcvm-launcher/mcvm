@@ -72,7 +72,7 @@ pub fn parse_instance_config(id: &str, val: &Value, profile: &Profile) -> Result
 		id,
 		&profile.version,
 		profile.modloader.clone(),
-		profile.pluginloader.clone(),
+		profile.plugin_loader.clone(),
 		config.launch_options
 	);
 

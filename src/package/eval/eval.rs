@@ -103,7 +103,7 @@ impl FailReason {
 pub struct EvalConstants {
 	pub version: String,
 	pub modloader: Modloader,
-	pub pluginloader: PluginLoader,
+	pub plugin_loader: PluginLoader,
 	pub side: InstKind,
 	pub features: Vec<String>,
 	pub versions: Vec<String>

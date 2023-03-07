@@ -26,7 +26,7 @@ impl ConditionKind {
 			"version" => Some(Self::Version(Value::None)),
 			"side" => Some(Self::Side(None)),
 			"modloader" => Some(Self::Modloader(None)),
-			"pluginloader" => Some(Self::PluginLoader(None)),
+			"plugin_loader" => Some(Self::PluginLoader(None)),
 			"feature" => Some(Self::Feature(Value::None)),
 			"value" => Some(Self::Value(Value::None, Value::None)),
 			_ => None
@@ -96,7 +96,7 @@ impl ConditionKind {
 				Ok(loader.as_ref().expect("If modloader is missing").matches(&eval.constants.modloader))
 			}
 			Self::PluginLoader(loader) => {
-				Ok(loader.as_ref().expect("If pluginloader is missing").matches(&eval.constants.pluginloader))
+				Ok(loader.as_ref().expect("If plugin_loader is missing").matches(&eval.constants.plugin_loader))
 			}
 			Self::Feature(feature) => {
 				Ok(eval.constants.features.contains(&feature.get(&eval.vars)?))

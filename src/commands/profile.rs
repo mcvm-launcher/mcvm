@@ -38,7 +38,7 @@ fn info(data: &mut CmdData, id: &String) -> Result<(), CmdError> {
 				cprintln!("<s><g>Profile <b>{}", id);
 				cprintln!("   <s>Version:</s> <g>{}", profile.version);
 				cprintln!("   <s>Modloader:</s> <g>{}", profile.modloader);
-				cprintln!("   <s>Plugin Loader:</s> <g>{}", profile.pluginloader);
+				cprintln!("   <s>Plugin Loader:</s> <g>{}", profile.plugin_loader);
 				cprintln!("   <s>Instances:");
 				for inst_id in profile.instances.iter() {
 					if let Some(instance) = config.instances.get(inst_id) {
@@ -107,7 +107,7 @@ async fn profile_update(data: &mut CmdData, id: &String, force: bool) -> Result<
 							let constants = EvalConstants {
 								version: profile.version.clone(),
 								modloader: profile.modloader.clone(),
-								pluginloader: profile.pluginloader.clone(),
+								plugin_loader: profile.plugin_loader.clone(),
 								side: instance.kind.clone(),
 								features: pkg.features.clone(),
 								versions: make_version_list(&version_manifest)?
