@@ -4,7 +4,7 @@ pub mod instance;
 use preferences::ConfigPreferences;
 use self::instance::parse_instance_config;
 
-use super::asset::{PluginLoader, Modloader, game_modifications_compatible};
+use super::addon::{PluginLoader, Modloader, game_modifications_compatible};
 use super::user::{User, UserKind, AuthState, Auth};
 use super::profile::{Profile, InstanceRegistry};
 use crate::package::PkgConfig;

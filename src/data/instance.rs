@@ -5,7 +5,7 @@ use crate::io::java::{Java, JavaKind, JavaError};
 use crate::{Paths, skip_none};
 use crate::net::game_files;
 use crate::util::print::ReplPrinter;
-use super::asset::{Asset, AssetKind, Modloader, PluginLoader};
+use super::addon::{Addon, AddonKind, Modloader, PluginLoader};
 use super::config::instance::LaunchOptions;
 use super::user::Auth;
 use super::client_args::{process_client_arg, process_string_arg};
@@ -373,21 +373,21 @@ impl Instance {
 		}
 	}
 	
-	pub fn get_linked_asset_path(&self, asset: &Asset, paths: &Paths) -> Option<PathBuf> {
+	pub fn get_linked_addon_path(&self, addon: &Addon, paths: &Paths) -> Option<PathBuf> {
 		let inst_dir = self.get_subdir(paths);
-		match asset.kind {
-			AssetKind::ResourcePack => if let InstKind::Client = self.kind {
+		match addon.kind {
+			AddonKind::ResourcePack => if let InstKind::Client = self.kind {
 				Some(inst_dir.join("resourcepacks"))
 			} else {
 				None
 			}
-			AssetKind::Mod => Some(inst_dir.join("mods")),
-			AssetKind::Plugin => if let InstKind::Server = self.kind {
+			AddonKind::Mod => Some(inst_dir.join("mods")),
+			AddonKind::Plugin => if let InstKind::Server = self.kind {
 				Some(inst_dir.join("plugins"))
 			} else {
 				None
 			}
-			AssetKind::Shader => if let InstKind::Client = self.kind {
+			AddonKind::Shader => if let InstKind::Client = self.kind {
 				Some(inst_dir.join("shaders"))
 			} else {
 				None
@@ -395,29 +395,29 @@ impl Instance {
 		}
 	}
 	
-	fn link_asset(dir: &Path, asset: &Asset, paths: &Paths) -> Result<(), CreateError> {
+	fn link_addon(dir: &Path, addon: &Addon, paths: &Paths) -> Result<(), CreateError> {
 		files::create_dir(dir)?;
-		let link = dir.join(&asset.name);
+		let link = dir.join(&addon.name);
 		if !link.exists() {
-			fs::hard_link(asset.get_path(paths), dir.join(&asset.name))?;
+			fs::hard_link(addon.get_path(paths), dir.join(&addon.name))?;
 		}
 		Ok(())
 	}
 	
-	pub fn create_asset(&self, asset: &Asset, paths: &Paths) -> Result<(), CreateError> {
+	pub fn create_addon(&self, addon: &Addon, paths: &Paths) -> Result<(), CreateError> {
 		let inst_dir = self.get_subdir(paths);
 		files::create_leading_dirs(&inst_dir)?;
 		files::create_dir(&inst_dir)?;
-		if let Some(path) = self.get_linked_asset_path(asset, paths) {
-			Self::link_asset(&path, asset, paths)?;
+		if let Some(path) = self.get_linked_addon_path(addon, paths) {
+			Self::link_addon(&path, addon, paths)?;
 		}
 		
 		Ok(())
 	}
 
-	pub fn remove_asset(&self, asset: &Asset, paths: &Paths) -> Result<(), CreateError> {
-		if let Some(path) = self.get_linked_asset_path(asset, paths) {
-			let path = path.join(&asset.name);
+	pub fn remove_addon(&self, addon: &Addon, paths: &Paths) -> Result<(), CreateError> {
+		if let Some(path) = self.get_linked_addon_path(addon, paths) {
+			let path = path.join(&addon.name);
 			if path.exists() {
 				fs::remove_file(path)?;
 			}

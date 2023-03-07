@@ -2,7 +2,7 @@ use super::parse::{BlockId, Block};
 use super::instruction::{Instruction, InstrKind};
 use super::super::{Package, PkgError};
 use crate::data::instance::InstKind;
-use crate::data::asset::{Modloader, AssetDownload, Asset, PluginLoader};
+use crate::data::addon::{Modloader, AddonDownload, Addon, PluginLoader};
 use crate::package::reg::PkgIdentifier;
 use crate::util::versions::VersionPattern;
 use crate::io::files::paths::Paths;
@@ -112,7 +112,7 @@ pub struct EvalConstants {
 #[derive(Debug, Clone)]
 pub struct EvalData {
 	pub vars: HashMap<String, String>,
-	pub downloads: Vec<AssetDownload>,
+	pub downloads: Vec<AddonDownload>,
 	pub constants: EvalConstants,
 	pub id: PkgIdentifier,
 	pub level: EvalLevel,
@@ -135,7 +135,7 @@ impl EvalData {
 pub struct EvalResult {
 	vars_to_set: HashMap<String, String>,
 	finish: bool,
-	downloads: Vec<AssetDownload>,
+	downloads: Vec<AddonDownload>,
 	deps: Vec<Vec<VersionPattern>>
 }
 
@@ -240,19 +240,19 @@ impl Instruction {
 					out.finish = true;
 					return Err(EvalError::Fail(reason.as_ref().unwrap_or(&FailReason::None).clone()));
 				}
-				InstrKind::Asset {
+				InstrKind::Addon {
 					name,
 					kind,
 					url,
 					force
 				} => {
-					let asset = Asset::new(
-						kind.as_ref().expect("Asset kind missing").clone(),
+					let addon = Addon::new(
+						kind.as_ref().expect("Addon kind missing").clone(),
 						&name.get(&eval.vars)?,
 						eval.id.clone()
 					);
 
-					out.downloads.push(AssetDownload::new(asset, &url.get(&eval.vars)?, *force));
+					out.downloads.push(AddonDownload::new(addon, &url.get(&eval.vars)?, *force));
 				},
 				_ => {}
 			}

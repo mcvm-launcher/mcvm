@@ -20,7 +20,7 @@ pub struct Paths {
 	pub assets: PathBuf,
 	pub libraries: PathBuf,
 	pub java: PathBuf,
-	pub mcvm_assets: PathBuf,
+	pub addons: PathBuf,
 	pub pkg_cache: PathBuf,
 	pub pkg_index_cache: PathBuf
 }
@@ -34,7 +34,7 @@ impl Paths {
 		let assets = internal.join("assets");
 		let libraries = internal.join("libraries");
 		let java = internal.join("java");
-		let mcvm_assets = internal.join("mcvm_assets");
+		let addons = internal.join("addons");
 		let pkg_cache = project.cache_dir().join("pkg");
 		let pkg_index_cache = pkg_cache.join("index");
 		
@@ -45,7 +45,7 @@ impl Paths {
 		create_dir(&internal)?;
 		create_dir(&assets)?;
 		create_dir(&java)?;
-		create_dir(&mcvm_assets)?;
+		create_dir(&addons)?;
 		create_dir(&pkg_cache)?;
 		create_dir(&pkg_index_cache)?;
 		
@@ -56,7 +56,7 @@ impl Paths {
 			assets,
 			libraries,
 			java,
-			mcvm_assets,
+			addons,
 			pkg_cache,
 			pkg_index_cache
 		})

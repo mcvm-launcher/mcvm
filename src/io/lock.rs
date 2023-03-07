@@ -5,7 +5,7 @@ use std::io::{Read, Write};
 
 use serde::{Serialize, Deserialize};
 
-use crate::data::asset::{Asset, AssetKind};
+use crate::data::addon::{Addon, AddonKind};
 use crate::package::reg::PkgIdentifier;
 
 use super::files::paths::Paths;
@@ -19,28 +19,28 @@ pub enum LockfileError {
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Clone)]
-pub struct LockfileAsset {
+pub struct LockfileAddon {
 	name: String,
 	files: Vec<String>,
 	kind: String
 }
 
-impl LockfileAsset {
-	// Converts an asset to the format used by the lockfile
-	pub fn from_asset(asset: &Asset, paths: &Paths) -> Self {
+impl LockfileAddon {
+	// Converts an addon to the format used by the lockfile
+	pub fn from_addon(addon: &Addon, paths: &Paths) -> Self {
 		Self {
-			name: asset.name.clone(),
+			name: addon.name.clone(),
 			files: vec![
-				asset.get_path(paths).to_str()
-					.expect("Failed to convert asset path to a string").to_owned()
+				addon.get_path(paths).to_str()
+					.expect("Failed to convert addon path to a string").to_owned()
 			],
-			kind: asset.kind.to_string()
+			kind: addon.kind.to_string()
 		}
 	}
 
-	pub fn to_asset(&self, id: PkgIdentifier) -> Asset {
-		Asset {
-			kind: AssetKind::from_str(&self.kind).expect("Unknown asset kind"),
+	pub fn to_addon(&self, id: PkgIdentifier) -> Addon {
+		Addon {
+			kind: AddonKind::from_str(&self.kind).expect("Unknown addon kind"),
 			name: self.name.clone(),
 			id
 		}
@@ -61,7 +61,7 @@ impl LockfileAsset {
 #[derive(Serialize, Deserialize)]
 pub struct LockfilePackage {
 	version: String,
-	assets: Vec<LockfileAsset>
+	addons: Vec<LockfileAddon>
 }
 
 #[derive(Serialize, Deserialize, Default)]
@@ -105,44 +105,44 @@ impl Lockfile {
 	}
 
 	// Updates a package with a new version
-	pub fn update_package(&mut self, name: &str, instance: &str, version: &str, assets: &[LockfileAsset])
+	pub fn update_package(&mut self, name: &str, instance: &str, version: &str, addons: &[LockfileAddon])
 	-> Result<Vec<String>, LockfileError> {
-		let mut assets_to_remove = Vec::new();
+		let mut addons_to_remove = Vec::new();
 		if let Some(instance) = self.contents.packages.get_mut(instance) {
 			if let Some(pkg) = instance.get_mut(name) {
 				pkg.version = version.to_owned();
 				let mut indices = Vec::new();
-				for (i, asset) in pkg.assets.iter().enumerate() {
-					if !assets.contains(asset) {
+				for (i, addon) in pkg.addons.iter().enumerate() {
+					if !addons.contains(addon) {
 						indices.push(i);
-						assets_to_remove.push(asset.name.clone());
+						addons_to_remove.push(addon.name.clone());
 					}
 				}
 				for i in indices {
-					let asset = pkg.assets.remove(i);
-					asset.remove()?;
+					let addon = pkg.addons.remove(i);
+					addon.remove()?;
 				}
-				pkg.assets = assets.to_vec();
+				pkg.addons = addons.to_vec();
 			} else {
 				instance.insert(
 					name.to_owned(),
 					LockfilePackage {
 						version: version.to_owned(),
-						assets: assets.to_vec()
+						addons: addons.to_vec()
 					}
 				);
 			}
 		} else {
 			self.contents.packages.insert(instance.to_owned(), HashMap::new());
-			self.update_package(name, instance, version, assets)?;
+			self.update_package(name, instance, version, addons)?;
 		}
 		
-		Ok(assets_to_remove)
+		Ok(addons_to_remove)
 	}
 
-	// Remove any unused packages for a profile. Returns any assets that need to be removed from the instance
+	// Remove any unused packages for a profile. Returns any addons that need to be removed from the instance
 	pub fn remove_unused_packages(&mut self, instance: &str, used_packages: &[String])
-	-> Result<Vec<Asset>, LockfileError> {
+	-> Result<Vec<Addon>, LockfileError> {
 		if let Some(inst) = self.contents.packages.get_mut(instance) {
 			let mut pkgs_to_remove = Vec::new();
 			for (pkg, ..) in inst.iter() {
@@ -151,18 +151,18 @@ impl Lockfile {
 				}
 			}
 
-			let mut assets_to_remove = Vec::new();
+			let mut addons_to_remove = Vec::new();
 			for pkg_id in pkgs_to_remove {
 				if let Some(pkg) = inst.remove(&pkg_id) {
-					for asset in pkg.assets {
-						asset.remove()?;
+					for addon in pkg.addons {
+						addon.remove()?;
 						let id = PkgIdentifier { name: pkg_id.clone(), version: pkg.version.clone() };
-						assets_to_remove.push(asset.to_asset(id));
+						addons_to_remove.push(addon.to_addon(id));
 					}
 				}
 			}
 
-			Ok(assets_to_remove)
+			Ok(addons_to_remove)
 		} else {
 			Ok(vec![])
 		}

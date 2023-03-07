@@ -8,14 +8,14 @@ use std::path::PathBuf;
 use std::fs;
 
 #[derive(Debug, Clone)]
-pub enum AssetKind {
+pub enum AddonKind {
 	ResourcePack,
 	Mod,
 	Plugin,
 	Shader
 }
 
-impl AssetKind {
+impl AddonKind {
 	pub fn from_str(string: &str) -> Option<Self> {
 		match string {
 			"resource_pack" => Some(Self::ResourcePack),
@@ -46,14 +46,14 @@ impl AssetKind {
 }
 
 #[derive(Debug, Clone)]
-pub struct Asset {
-	pub kind: AssetKind,
+pub struct Addon {
+	pub kind: AddonKind,
 	pub name: String,
 	pub id: PkgIdentifier
 }
 
-impl Asset {
-	pub fn new(kind: AssetKind, name: &str, id: PkgIdentifier) -> Self {
+impl Addon {
+	pub fn new(kind: AddonKind, name: &str, id: PkgIdentifier) -> Self {
 		Self {
 			kind,
 			name: name.to_owned(),
@@ -62,7 +62,7 @@ impl Asset {
 	}
 
 	pub fn get_dir(&self, paths: &Paths) -> PathBuf {
-		paths.mcvm_assets.join(self.kind.to_plural_string())
+		paths.addons.join(self.kind.to_plural_string())
 	}
 
 	pub fn get_path(&self, paths: &Paths) -> PathBuf {
@@ -71,23 +71,23 @@ impl Asset {
 }
 
 #[derive(Debug, Clone)]
-pub struct AssetDownload {
-	pub asset: Asset,
+pub struct AddonDownload {
+	pub addon: Addon,
 	url: String,
 	force: bool
 }
 
-impl AssetDownload {
-	pub fn new(asset: Asset, url: &str, force: bool) -> Self {
+impl AddonDownload {
+	pub fn new(addon: Addon, url: &str, force: bool) -> Self {
 		Self {
-			asset,
+			addon,
 			url: url.to_owned(),
 			force
 		}
 	}
 
 	pub async fn download(&self, paths: &Paths) -> Result<(), DownloadError> {
-		let path = self.asset.get_path(paths);
+		let path = self.addon.get_path(paths);
 		if !self.force && path.exists() {
 			return Ok(())
 		}

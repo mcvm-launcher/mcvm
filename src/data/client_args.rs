@@ -28,10 +28,10 @@ pub fn process_string_arg(
 			.expect("Failed to convert client directory to a string")
 	);
 	out = out.replace(
-		"${assets_root}",
-		paths.assets.to_str().expect("Failed to convert assets directory to a string")
+		"${addons_root}",
+		paths.addons.to_str().expect("Failed to convert addons directory to a string")
 	);
-	out = out.replace("${assets_index_name}", &instance.version);
+	out = out.replace("${addons_index_name}", &instance.version);
 	out = out.replace("${user_type}", "mojang");
 	out = out.replace("${clientid}", "mcvm");
 	out = out.replace("${auth_xuid}", "mcvm");

@@ -3,7 +3,7 @@ use super::eval::FailReason;
 use super::lex::{Token, TextPos, Side};
 use super::parse::{BlockId, ParseError};
 use super::conditions::Condition;
-use crate::data::asset::AssetKind;
+use crate::data::addon::AddonKind;
 
 #[derive(Debug, Clone)]
 pub enum InstrKind {
@@ -11,9 +11,9 @@ pub enum InstrKind {
 	Name(Value),
 	Version(Value),
 	DefaultFeatures(Vec<Value>),
-	Asset {
+	Addon {
 		name: Value,
-		kind: Option<AssetKind>,
+		kind: Option<AddonKind>,
 		url: Value,
 		force: bool
 	},

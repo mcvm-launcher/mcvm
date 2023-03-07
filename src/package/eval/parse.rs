@@ -1,4 +1,4 @@
-use crate::data::asset::AssetKind;
+use crate::data::addon::AddonKind;
 use crate::io::files::paths::Paths;
 use crate::package::eval::conditions::ConditionKind;
 use crate::util::yes_no;
@@ -22,8 +22,8 @@ pub enum ParseError {
 	UnexpectedRoutine(TextPos),
 	#[error("Unknown instruction '{}' {}", .0, .1)]
 	UnknownInstr(String, TextPos),
-	#[error("Unknown asset key '{}' {}", .0, .1)]
-	UnknownAssetKey(String, TextPos),
+	#[error("Unknown addon key '{}' {}", .0, .1)]
+	UnknownAddonKey(String, TextPos),
 	#[error("Expected 'yes' or 'no', but got {} {}", .0, .1)]
 	YesNo(String, TextPos),
 	#[error("Unknown reason '{}' {}", .0, .1)]
@@ -86,9 +86,9 @@ impl Parsed {
 	}
 }
 
-// State of the asset parser
+// State of the addon parser
 #[derive(Debug)]
-enum AssetMode {
+enum AddonMode {
 	Opening,
 	Key,
 	Colon,
@@ -96,9 +96,9 @@ enum AssetMode {
 	Comma
 }
 
-// Current key for the asset parser
+// Current key for the addon parser
 #[derive(Debug)]
-enum AssetKey {
+enum AddonKey {
 	None,
 	Kind,
 	Url,
@@ -112,11 +112,11 @@ enum ParseMode {
 	Routine(Option<String>),
 	Instruction(Instruction),
 	If(Option<Condition>),
-	Asset {
-		mode: AssetMode,
-		key: AssetKey,
+	Addon {
+		mode: AddonMode,
+		key: AddonKey,
 		name: Value,
-		kind: Option<AssetKind>,
+		kind: Option<AddonKind>,
 		url: Value,
 		force: bool
 	}
@@ -199,10 +199,10 @@ impl Package {
 							Token::Ident(name) => {
 								match name.as_str() {
 									"if" => prs.mode = ParseMode::If(None),
-									"asset" => {
-										prs.mode = ParseMode::Asset {
-											mode: AssetMode::Opening,
-											key: AssetKey::None,
+									"addon" => {
+										prs.mode = ParseMode::Addon {
+											mode: AddonMode::Opening,
+											key: AddonKey::None,
 											name: Value::None,
 											kind: None,
 											url: Value::None,
@@ -282,7 +282,7 @@ impl Package {
 
 						Ok(())
 					}
-					ParseMode::Asset {
+					ParseMode::Addon {
 						mode,
 						key,
 						name,
@@ -291,57 +291,57 @@ impl Package {
 						force
 					} => {
 						match mode {
-							AssetMode::Opening => match tok {
+							AddonMode::Opening => match tok {
 								Token::Paren(Side::Left) => {
 									if let Value::None = name {
 										unexpected_token!(tok, pos)
 									}
-									*mode = AssetMode::Key;
+									*mode = AddonMode::Key;
 								}
 								_ => *name = parse_arg(tok, pos)?
 							}
-							AssetMode::Key => match tok {
+							AddonMode::Key => match tok {
 								Token::Ident(name) => {
 									match name.as_str() {
-										"kind" => *key = AssetKey::Kind,
-										"url" => *key = AssetKey::Url,
-										"force" => *key = AssetKey::Force,
-										_ => return Err(PkgError::Parse(ParseError::UnknownAssetKey(name.to_owned(), pos.clone())))
+										"kind" => *key = AddonKey::Kind,
+										"url" => *key = AddonKey::Url,
+										"force" => *key = AddonKey::Force,
+										_ => return Err(PkgError::Parse(ParseError::UnknownAddonKey(name.to_owned(), pos.clone())))
 									}
-									*mode = AssetMode::Colon;
+									*mode = AddonMode::Colon;
 								}
 								_ => unexpected_token!(tok, pos)
 							}
-							AssetMode::Colon => match tok {
-								Token::Colon => *mode = AssetMode::Value,
+							AddonMode::Colon => match tok {
+								Token::Colon => *mode = AddonMode::Value,
 								_ => unexpected_token!(tok, pos)
 							}
-							AssetMode::Value => {
+							AddonMode::Value => {
 								match tok {
 									Token::Ident(name) => {
 										match key {
-											AssetKey::Kind => *kind = AssetKind::from_str(name),
-											AssetKey::Force => match yes_no(name) {
+											AddonKey::Kind => *kind = AddonKind::from_str(name),
+											AddonKey::Force => match yes_no(name) {
 												Some(value) => *force = value,
 												None => return Err(PkgError::Parse(ParseError::YesNo(name.to_owned(), pos.clone())))
 											}
 											_ => unexpected_token!(tok, pos)
 										}
-										*mode = AssetMode::Comma;
+										*mode = AddonMode::Comma;
 									}
 									_ => {
 										match key {
-											AssetKey::Url => *url = parse_arg(tok, pos)?,
+											AddonKey::Url => *url = parse_arg(tok, pos)?,
 											_ => unexpected_token!(tok, pos)
 										}
-										*mode = AssetMode::Comma;
+										*mode = AddonMode::Comma;
 									}
 								}
 							}
-							AssetMode::Comma => match tok {
-								Token::Comma => *mode = AssetMode::Key,
+							AddonMode::Comma => match tok {
+								Token::Comma => *mode = AddonMode::Key,
 								Token::Paren(Side::Right) => {
-									instr_to_push = Some(Instruction::new(InstrKind::Asset {
+									instr_to_push = Some(Instruction::new(InstrKind::Addon {
 										name: name.clone(),
 										kind: kind.clone(),
 										url: url.clone(),

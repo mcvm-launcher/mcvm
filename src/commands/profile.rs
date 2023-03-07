@@ -1,6 +1,6 @@
 use super::lib::{CmdData, CmdError};
 use crate::io::lock::Lockfile;
-use crate::io::lock::LockfileAsset;
+use crate::io::lock::LockfileAddon;
 use crate::net::game_files::get_version_manifest;
 use crate::net::game_files::make_version_list;
 use crate::package::eval::eval::Routine;
@@ -98,7 +98,7 @@ async fn profile_update(data: &mut CmdData, id: &String, force: bool) -> Result<
 				cprintln!("<s>Updating packages");
 				let mut printer = ReplPrinter::new(true);
 				let mut lock = Lockfile::open(paths)?;
-				let mut assets = Vec::new();
+				let mut addons = Vec::new();
 				for pkg in profile.packages.iter() {
 					let version = config.packages.get_version(&pkg.req, paths)?;
 					for instance_id in profile.instances.iter() {
@@ -114,17 +114,17 @@ async fn profile_update(data: &mut CmdData, id: &String, force: bool) -> Result<
 							};
 							let eval = config.packages.eval(&pkg.req, paths, Routine::Install, constants).await?;
 							printer.print(&cformat!("\t(<b!>{}</b!>) Downloading files...", pkg.req));
-							for asset in eval.downloads.iter() {
-								asset.download(paths).await?;
-								instance.create_asset(&asset.asset, paths)?;
-								assets.push(
-									LockfileAsset::from_asset(&asset.asset, paths)
+							for addon in eval.downloads.iter() {
+								addon.download(paths).await?;
+								instance.create_addon(&addon.addon, paths)?;
+								addons.push(
+									LockfileAddon::from_addon(&addon.addon, paths)
 								);
 							}
-							let assets_to_remove = lock.update_package(&pkg.req.name, instance_id, &version, &assets)?;
-							for asset in eval.downloads.iter() {
-								if assets_to_remove.contains(&asset.asset.name) {
-									instance.remove_asset(&asset.asset, paths)?;
+							let addons_to_remove = lock.update_package(&pkg.req.name, instance_id, &version, &addons)?;
+							for addon in eval.downloads.iter() {
+								if addons_to_remove.contains(&addon.addon.name) {
+									instance.remove_addon(&addon.addon, paths)?;
 								}
 							}
 
@@ -135,14 +135,14 @@ async fn profile_update(data: &mut CmdData, id: &String, force: bool) -> Result<
 				
 				for instance_id in profile.instances.iter() {
 					if let Some(instance) = config.instances.get(instance_id) {
-						let assets_to_remove = lock.remove_unused_packages(
+						let addons_to_remove = lock.remove_unused_packages(
 							instance_id,
 							&profile.packages.iter().map(|x| x.req.name.clone())
 								.collect::<Vec<String>>()
 						)?;
 
-						for asset in assets_to_remove {
-							instance.remove_asset(&asset, paths)?;
+						for addon in addons_to_remove {
+							instance.remove_addon(&addon, paths)?;
 						}
 					}
 				}

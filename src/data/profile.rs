@@ -4,8 +4,8 @@ use crate::package::PkgConfig;
 use crate::util::json;
 use crate::Paths;
 
-use super::asset::Modloader;
-use super::asset::PluginLoader;
+use super::addon::Modloader;
+use super::addon::PluginLoader;
 
 pub type InstanceRegistry = std::collections::HashMap<String, Instance>;
 

@@ -1,4 +1,4 @@
-use crate::data::asset::{ModloaderMatch, PluginLoaderMatch};
+use crate::data::addon::{ModloaderMatch, PluginLoaderMatch};
 use crate::data::instance::InstKind;
 use crate::util::versions::VersionPattern;
 
