@@ -3,7 +3,7 @@ pub mod server;
 
 use color_print::cprintln;
 
-use crate::{data::{instance::InstKind, user::Auth}, util::json, io::files::paths::Paths};
+use crate::{data::{instance::InstKind, user::Auth}, util::json, io::{files::paths::Paths, java::{args::{MemoryNum, MemoryArg}, JavaKind}}};
 
 use super::{Instance, create::CreateError};
 
@@ -13,7 +13,7 @@ pub enum LaunchError {
 	Create(#[from] CreateError),
 	#[error("Java is not installed")]
 	Java,
-	#[error("Command failed:\n{}", .0)]
+	#[error("Game process failed:\n{}", .0)]
 	Command(std::io::Error),
 	#[error("Failed to evaluate json file:\n{}", .0)]
 	Json(#[from] json::JsonError)
@@ -41,5 +41,28 @@ impl Instance {
 			}
 		}
 		Ok(())
+	}
+}
+
+#[derive(Debug)]
+pub struct LaunchOptions {
+	pub java: JavaKind,
+	pub jvm_args: Vec<String>,
+	pub game_args: Vec<String>,
+	pub init_mem: Option<MemoryNum>,
+	pub max_mem: Option<MemoryNum>,
+}
+
+impl LaunchOptions {
+	pub fn generate_jvm_args(&self) -> Vec<String> {
+		let mut out = self.jvm_args.clone();
+		if let Some(n) = &self.init_mem {
+			out.push(MemoryArg::Init.to_string(n.clone()));
+		}
+		if let Some(n) = &self.max_mem {
+			out.push(MemoryArg::Max.to_string(n.clone()));
+		}
+
+		out
 	}
 }

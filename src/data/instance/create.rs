@@ -80,7 +80,7 @@ impl Instance {
 		let java_vers = json::access_i64(
 			json::access_object(&version_json, "javaVersion")?,	"majorVersion"
 		)?;
-		self.get_java(JavaKind::Adoptium, &java_vers.to_string(), paths, verbose, force)?;
+		self.get_java(&java_vers.to_string(), paths, verbose, force)?;
 		
 		if !jar_path.exists() || force {
 			let mut printer = ReplPrinter::new(verbose);
@@ -130,7 +130,7 @@ impl Instance {
 		let java_vers = json::access_i64(
 			json::access_object(&version_json, "javaVersion")?,	"majorVersion"
 		)?;
-		self.get_java(JavaKind::Adoptium, &java_vers.to_string(), paths, verbose, force)?;
+		self.get_java(&java_vers.to_string(), paths, verbose, force)?;
 
 		if !jar_path.exists() || force {
 			let mut printer = ReplPrinter::new(verbose);

@@ -28,7 +28,7 @@ impl Instance {
 										command.arg(sub_arg);
 									}
 								}
-								command.args(&self.launch.args.jvm.parse());
+								command.args(&self.launch.generate_jvm_args());
 								
 								command.arg(main_class);
 								
@@ -37,11 +37,11 @@ impl Instance {
 										command.arg(sub_arg);
 									}
 								}
-								command.args(&self.launch.args.game.parse());
+								command.args(&self.launch.game_args);
 							} else {
 								// Behavior for versions prior to 1.12.2
 								let args = json::access_str(version_json, "minecraftArguments")?;
-								command.args(&self.launch.args.jvm.parse());
+								command.args(&self.launch.generate_jvm_args());
 
 								command.arg(format!(
 									"-Djava.library.path={}",
@@ -56,7 +56,7 @@ impl Instance {
 								for arg in args.split(' ') {
 									command.arg(skip_none!(process_string_arg(self, arg, paths, auth, classpath)));
 								}
-								command.args(&self.launch.args.game.parse());
+								command.args(&self.launch.game_args);
 							}
 							
 							let mut child = match command.spawn() {

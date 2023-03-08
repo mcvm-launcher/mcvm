@@ -1,3 +1,5 @@
+pub mod args;
+
 use crate::io::files::{self, paths::Paths};
 use crate::util::mojang::{ARCH_STRING, OS_STRING};
 use crate::net::download::{Download, DownloadError};
@@ -11,9 +13,19 @@ use tar::Archive;
 use std::fs;
 use std::path::PathBuf;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum JavaKind {
-	Adoptium
+	Adoptium(Option<String>),
+	Custom(PathBuf)
+}
+
+impl JavaKind {
+	pub fn from_str(string: &str) -> Self {
+		match string {
+			"adoptium" => Self::Adoptium(None),
+			path => Self::Custom(PathBuf::from(String::from(shellexpand::tilde(path))))
+		}
+	}
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -31,29 +43,28 @@ pub enum JavaError {
 #[derive(Debug)]
 pub struct Java {
 	kind: JavaKind,
-	major_version: String,
 	pub path: Option<PathBuf>
 }
 
 impl Java {
-	pub fn new(kind: JavaKind, version: &str) -> Self {
+	pub fn new(kind: JavaKind) -> Self {
 		Self {
 			kind,
-			major_version: version.to_owned(),
 			path: None
 		}
 	}
 
 	pub fn install(&mut self, paths: &Paths, verbose: bool, force: bool) -> Result<(), JavaError> {
-		match self.kind {
-			JavaKind::Adoptium => {
+		match &self.kind {
+			JavaKind::Adoptium(major_version) => {
+				let major_version = major_version.as_ref().expect("Major version should exist");
 				let mut printer = ReplPrinter::new(verbose);
 
 				let out_dir = paths.java.join("adoptium");
 				files::create_dir(&out_dir)?;
 				let url = format!(
 					"https://api.adoptium.net/v3/assets/latest/{}/hotspot?image_type=jre&vendor=eclipse&architecture={}&os={}",
-					self.major_version,
+					major_version,
 					ARCH_STRING,
 					OS_STRING
 				);
@@ -85,7 +96,7 @@ impl Java {
 					return Ok(());
 				}
 				
-				let tar_name = "adoptium".to_owned() + &self.major_version + ".tar.gz";
+				let tar_name = "adoptium".to_owned() + &major_version + ".tar.gz";
 				let tar_path = out_dir.join(tar_name);
 
 				dwn.reset();
@@ -104,6 +115,11 @@ impl Java {
 				let mut arc = Archive::new(&mut decoder);
 				arc.unpack(out_dir)?;
 				printer.print(&cformat!("\t<g>Java installation finished."));
+				Ok(())
+			}
+			JavaKind::Custom(path) => {
+				self.path = Some(path.clone());
+
 				Ok(())
 			}
 		}

@@ -14,7 +14,8 @@ impl Instance {
 
 					let mut command = Command::new(jre_path.to_str().expect("Failed to convert java path to a string"));
 					command.current_dir(server_dir);
-					command.args(&self.launch.args.jvm.parse());
+					dbg!(&self.launch.generate_jvm_args());
+					command.args(&self.launch.generate_jvm_args());
 					if let Some(classpath) = &self.classpath {
 						command.arg("-cp");
 						command.arg(classpath);
@@ -31,7 +32,7 @@ impl Instance {
 						Ok(child) => child,
 						Err(err) => return Err(LaunchError::Command(err))
 					};
-					command.args(&self.launch.args.game.parse());
+					command.args(&self.launch.game_args);
 					
 					child.wait().expect("Child failed");
 

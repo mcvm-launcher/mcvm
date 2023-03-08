@@ -7,9 +7,9 @@ use crate::io::files;
 use crate::io::java::{Java, JavaKind, JavaError};
 use crate::Paths;
 use self::create::CreateError;
+use self::launch::LaunchOptions;
 
 use super::addon::{Addon, AddonKind, Modloader, PluginLoader};
-use super::config::instance::LaunchOptions;
 
 use std::fs;
 use std::path::{PathBuf, Path};
@@ -69,9 +69,13 @@ impl Instance {
 		}
 	}
 
-	fn get_java(&mut self, kind: JavaKind, version: &str, paths: &Paths, verbose: bool, force: bool)
+	fn get_java(&mut self, version: &str, paths: &Paths, verbose: bool, force: bool)
 	-> Result<(), JavaError> {
-		let mut java = Java::new(kind, version);
+		let kind = match &self.launch.java {
+			JavaKind::Adoptium(..) => JavaKind::Adoptium(Some(version.to_owned())),
+			x => x.clone()
+		};
+		let mut java = Java::new(kind);
 		java.install(paths, verbose, force)?;
 		self.java = Some(java);
 		Ok(())
