@@ -8,7 +8,7 @@ use crate::net::download::{Download, DownloadError};
 use std::path::PathBuf;
 use std::fs;
 
-use self::eval::eval::EvalError;
+use self::eval::eval::{EvalError, EvalPermissions};
 use self::eval::parse::{ParseError, Parsed};
 use self::reg::{PkgIdentifier, PkgRequest};
 use self::repo::RepoError;
@@ -140,5 +140,6 @@ mod tests {
 #[derive(Debug)]
 pub struct PkgConfig {
 	pub req: PkgRequest,
-	pub features: Vec<String>
+	pub features: Vec<String>,
+	pub permissions: EvalPermissions
 }

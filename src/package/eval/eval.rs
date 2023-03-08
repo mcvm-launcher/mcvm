@@ -3,23 +3,34 @@ use super::parse::{BlockId, Block};
 use super::instruction::{Instruction, InstrKind};
 use super::super::{Package, PkgError};
 use crate::data::instance::InstKind;
-use crate::data::addon::{Modloader, AddonDownload, Addon, PluginLoader};
+use crate::data::addon::{Modloader, AddonRequest, Addon, PluginLoader, AddonLocation};
 use crate::package::reg::PkgIdentifier;
 use crate::util::versions::VersionPattern;
 use crate::io::files::paths::Paths;
 
 use std::collections::HashMap;
+use std::path::PathBuf;
 
 #[derive(Debug, thiserror::Error)]
 pub enum EvalError {
+	#[error("Evaluator failed to start")]
+	Start,
+	#[error("Package reported an error:\n{}", .0.to_string())]
+	Fail(FailReason),
+	#[error("Package is not authorized to perform this action:\n{}", .0)]
+	Permissions(#[from] PermissionsError),
 	#[error("Variable '{}' is not defined", .0)]
 	VarNotDefined(String),
 	#[error("Routine '{}' does not exist", .0)]
 	RoutineDoesNotExist(String),
-	#[error("Evaluator failed to start")]
-	Start,
-	#[error("Package reported an error:\n{}", .0.to_string())]
-	Fail(FailReason)
+	#[error("Expected 'url' or 'path' key for addon '{}'", .0)]
+	NoAddonLocation(String)
+}
+
+#[derive(Debug, thiserror::Error)]
+pub enum PermissionsError {
+	#[error("Tried to access '{}' from the local filesystem", .0)]
+	LocalFile(String)
 }
 
 #[derive(Debug, Clone)]
@@ -49,6 +60,25 @@ impl EvalLevel {
 		match self {
 			Self::All => true,
 			_ => false
+		}
+	}
+}
+
+#[derive(Debug, Clone)]
+// Permissions level for an evaluation
+pub enum EvalPermissions {
+	Restricted,
+	Standard,
+	Elevated
+}
+
+impl EvalPermissions {
+	pub fn from_str(string: &str) -> Option<Self> {
+		match string {
+			"restricted" => Some(Self::Restricted),
+			"standard" => Some(Self::Standard),
+			"elevated" => Some(Self::Elevated),
+			_ => None
 		}
 	}
 }
@@ -107,13 +137,14 @@ pub struct EvalConstants {
 	pub plugin_loader: PluginLoader,
 	pub side: InstKind,
 	pub features: Vec<String>,
-	pub versions: Vec<String>
+	pub versions: Vec<String>,
+	pub perms: EvalPermissions
 }
 
 #[derive(Debug, Clone)]
 pub struct EvalData {
 	pub vars: HashMap<String, String>,
-	pub downloads: Vec<AddonDownload>,
+	pub addon_reqs: Vec<AddonRequest>,
 	pub constants: EvalConstants,
 	pub id: PkgIdentifier,
 	pub level: EvalLevel,
@@ -124,7 +155,7 @@ impl EvalData {
 	pub fn new(constants: EvalConstants, id: PkgIdentifier, routine: &Routine) -> Self {
 		Self {
 			vars: HashMap::new(),
-			downloads: Vec::new(),
+			addon_reqs: Vec::new(),
 			constants,
 			id,
 			level: routine.get_level(),
@@ -136,7 +167,7 @@ impl EvalData {
 pub struct EvalResult {
 	vars_to_set: HashMap<String, String>,
 	finish: bool,
-	downloads: Vec<AddonDownload>,
+	addon_reqs: Vec<AddonRequest>,
 	deps: Vec<Vec<VersionPattern>>
 }
 
@@ -145,7 +176,7 @@ impl EvalResult {
 		Self {
 			vars_to_set: HashMap::new(),
 			finish: false,
-			downloads: Vec::new(),
+			addon_reqs: Vec::new(),
 			deps: Vec::new()
 		}
 	}
@@ -153,7 +184,7 @@ impl EvalResult {
 	pub fn merge(&mut self, other: EvalResult) {
 		self.vars_to_set.extend(other.vars_to_set);
 		self.finish = other.finish;
-		self.downloads.extend(other.downloads);
+		self.addon_reqs.extend(other.addon_reqs);
 		self.deps.extend(other.deps);
 	}
 }
@@ -180,7 +211,7 @@ impl Package {
 							for (var, val) in result.vars_to_set {
 								eval.vars.insert(var, val);
 							}
-							eval.downloads.extend(result.downloads);
+							eval.addon_reqs.extend(result.addon_reqs);
 							eval.deps.extend(result.deps);
 							if result.finish {
 								break;
@@ -246,7 +277,8 @@ impl Instruction {
 					kind,
 					url,
 					force,
-					append
+					append,
+					path
 				} => {
 					let name = match append {
 						Value::None => name.get(&eval.vars)?,
@@ -258,7 +290,23 @@ impl Instruction {
 						eval.id.clone()
 					);
 
-					out.downloads.push(AddonDownload::new(addon, &url.get(&eval.vars)?, *force));
+					if let Value::Constant(..) | Value::Var(..) = url {
+						let location = AddonLocation::Remote(url.get(&eval.vars)?);
+						out.addon_reqs.push(AddonRequest::new(addon, location, *force));
+					} else if let Value::Constant(..) | Value::Var(..) = path {
+						let path = path.get(&eval.vars)?;
+						match eval.constants.perms {
+							EvalPermissions::Elevated => {
+								let path = String::from(shellexpand::tilde(&path));
+								let path = PathBuf::from(path);
+								let location = AddonLocation::Local(path);
+								out.addon_reqs.push(AddonRequest::new(addon, location, *force));
+							}
+							_ => return Err(EvalError::Permissions(PermissionsError::LocalFile(path)))
+						}
+					} else {
+						return Err(EvalError::NoAddonLocation(name));
+					}
 				},
 				_ => {}
 			}

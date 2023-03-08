@@ -16,7 +16,8 @@ pub enum InstrKind {
 		kind: Option<AddonKind>,
 		url: Value,
 		force: bool,
-		append: Value
+		append: Value,
+		path: Value
 	},
 	Set(Option<String>, Value),
 	Rely(Vec<Vec<Value>>, Option<Vec<Value>>),

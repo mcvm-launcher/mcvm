@@ -8,6 +8,7 @@ use super::addon::{PluginLoader, Modloader, game_modifications_compatible};
 use super::user::{User, UserKind, AuthState, Auth, validate_username};
 use super::profile::{Profile, InstanceRegistry};
 use crate::package::PkgConfig;
+use crate::package::eval::eval::EvalPermissions;
 use crate::package::reg::{PkgRegistry, PkgRequest};
 use crate::util::validate_identifier;
 use crate::util::versions::VersionPattern;
@@ -68,6 +69,8 @@ pub enum ContentError {
 	InstType(String, String),
 	#[error("Unknown type {} for package {}", .0, .1)]
 	PkgType(String, String),
+	#[error("Unknown package permissions '{}'", .0)]
+	UnknownPkgPerms(String),
 	#[error("Unknown default user '{}'", .0)]
 	DefaultUserNotFound(String),
 	#[error("Duplicate instance '{}'", .0)]
@@ -240,10 +243,10 @@ impl Config {
 							}
 						}
 						let features = match package_obj.get("features") {
-							Some(list) => {
-								json::ensure_type(list.as_array(), JsonType::Arr)?;
+							Some(features) => {
+								let features = json::ensure_type(features.as_array(), JsonType::Arr)?;
 								let mut out = Vec::new();
-								for feature in list.as_array().expect("Features list is not an array") {
+								for feature in features {
 									let feature = json::ensure_type(feature.as_str(), JsonType::Str)?;
 									if !validate_identifier(&feature) {
 										Err(ContentError::InvalidString(feature.to_owned()))?
@@ -254,9 +257,19 @@ impl Config {
 							}
 							None => Vec::new()
 						};
+
+						let perms = match package_obj.get("permissions") {
+							Some(perms) => {
+								let perms = json::ensure_type(perms.as_str(), JsonType::Str)?;
+								EvalPermissions::from_str(perms).ok_or(ContentError::UnknownPkgPerms(perms.to_owned()))?
+							}
+							None => EvalPermissions::Standard
+						};
+
 						let pkg = PkgConfig {
 							req,
-							features
+							features,
+							permissions: perms
 						};
 						profile.packages.push(pkg);
 					} else if let Some(package_id) = package_val.as_str() {
@@ -266,7 +279,8 @@ impl Config {
 						let req = PkgRequest::new(package_id);
 						let pkg = PkgConfig {
 							req,
-							features: Vec::new()
+							features: Vec::new(),
+							permissions: EvalPermissions::Standard
 						};
 						profile.packages.push(pkg);
 					} else {

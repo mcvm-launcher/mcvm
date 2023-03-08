@@ -140,19 +140,20 @@ async fn profile_update(data: &mut CmdData, id: &String, force: bool) -> Result<
 								plugin_loader: profile.plugin_loader.clone(),
 								side: instance.kind.clone(),
 								features: pkg.features.clone(),
-								versions: make_version_list(&version_manifest)?
+								versions: make_version_list(&version_manifest)?,
+								perms: pkg.permissions.clone()
 							};
 							let eval = config.packages.eval(&pkg.req, paths, Routine::Install, constants).await?;
 							printer.print(&cformat!("\t(<b!>{}</b!>) Downloading files...", pkg.req));
-							for addon in eval.downloads.iter() {
-								addon.download(paths).await?;
+							for addon in eval.addon_reqs.iter() {
+								addon.acquire(paths).await?;
 								instance.create_addon(&addon.addon, paths)?;
 							}
-							let lockfile_addons = eval.downloads.iter().map(|x| {
+							let lockfile_addons = eval.addon_reqs.iter().map(|x| {
 								LockfileAddon::from_addon(&x.addon, paths)
 							}).collect::<Vec<LockfileAddon>>();
 							let addons_to_remove = lock.update_package(&pkg.req.name, instance_id, &version, &lockfile_addons)?;
-							for addon in eval.downloads.iter() {
+							for addon in eval.addon_reqs.iter() {
 								if addons_to_remove.contains(&addon.addon.name) {
 									instance.remove_addon(&addon.addon, paths)?;
 								}

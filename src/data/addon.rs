@@ -71,30 +71,43 @@ impl Addon {
 }
 
 #[derive(Debug, Clone)]
-pub struct AddonDownload {
+pub enum AddonLocation {
+	Remote(String),
+	Local(PathBuf)
+}
+
+#[derive(Debug, Clone)]
+pub struct AddonRequest {
 	pub addon: Addon,
-	url: String,
+	location: AddonLocation,
 	force: bool
 }
 
-impl AddonDownload {
-	pub fn new(addon: Addon, url: &str, force: bool) -> Self {
+impl AddonRequest {
+	pub fn new(addon: Addon, location: AddonLocation, force: bool) -> Self {
 		Self {
 			addon,
-			url: url.to_owned(),
+			location,
 			force
 		}
 	}
 
-	pub async fn download(&self, paths: &Paths) -> Result<(), DownloadError> {
+	pub async fn acquire(&self, paths: &Paths) -> Result<(), DownloadError> {
 		let path = self.addon.get_path(paths);
 		if !self.force && path.exists() {
 			return Ok(())
 		}
 		create_leading_dirs(&path)?;
-		let client = reqwest::Client::new();
-		let response = client.get(&self.url).send();
-		fs::write(path, response.await?.bytes().await?)?;
+		match &self.location {
+			AddonLocation::Remote(url) => {
+				let client = reqwest::Client::new();
+				let response = client.get(url).send();
+				fs::write(path, response.await?.bytes().await?)?;
+			}
+			AddonLocation::Local(actual_path) => {
+				fs::hard_link(actual_path, path)?;
+			}
+		}
 		Ok(())
 	}
 }
