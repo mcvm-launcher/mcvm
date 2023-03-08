@@ -1,6 +1,6 @@
-use super::eval::eval::{EvalConstants, Routine, EvalData};
-use super::{Package, PkgKind, PkgError};
-use super::repo::{PkgRepo, query_all, RepoError};
+use super::eval::eval::{EvalConstants, EvalData, Routine};
+use super::repo::{query_all, PkgRepo, RepoError};
+use super::{Package, PkgError, PkgKind};
 use crate::io::files::paths::Paths;
 use crate::io::lock::LockfileError;
 
@@ -11,13 +11,13 @@ use std::path::Path;
 // Used to store a request for a package that will be fulfilled later
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct PkgRequest {
-	pub name: String
+	pub name: String,
 }
 
 impl PkgRequest {
 	pub fn new(name: &str) -> Self {
 		Self {
-			name: name.to_owned()
+			name: name.to_owned(),
 		}
 	}
 }
@@ -32,14 +32,14 @@ impl Display for PkgRequest {
 #[derive(Debug, Hash, Clone, PartialEq, Eq)]
 pub struct PkgIdentifier {
 	pub name: String,
-	pub version: String
+	pub version: String,
 }
 
 impl PkgIdentifier {
 	pub fn new(name: &str, version: &str) -> Self {
 		Self {
 			name: name.to_owned(),
-			version: version.to_owned()
+			version: version.to_owned(),
 		}
 	}
 }
@@ -53,36 +53,39 @@ pub enum RegError {
 	#[error("Error in package:\n{}", .0)]
 	Package(#[from] PkgError),
 	#[error("Failed to access lockfile:\n{}", .0)]
-	Lock(#[from] LockfileError)
+	Lock(#[from] LockfileError),
 }
 
 #[derive(Debug)]
 pub struct PkgRegistry {
 	pub repos: Vec<PkgRepo>,
-	packages: HashMap<PkgRequest, Package>
+	packages: HashMap<PkgRequest, Package>,
 }
 
 impl PkgRegistry {
 	pub fn new(repos: Vec<PkgRepo>) -> Self {
 		Self {
 			repos,
-			packages: HashMap::new()
+			packages: HashMap::new(),
 		}
 	}
 
 	fn insert(&mut self, req: &PkgRequest, pkg: Package) -> &mut Package {
 		self.packages.insert(req.clone(), pkg);
-		self.packages.get_mut(req).expect("Package was not inserted into map")
+		self.packages
+			.get_mut(req)
+			.expect("Package was not inserted into map")
 	}
 
 	fn query_insert(&mut self, req: &PkgRequest, paths: &Paths) -> Result<&mut Package, RegError> {
 		let pkg_name = req.name.clone();
 
 		match query_all(&mut self.repos, &pkg_name, paths)? {
-			Some((url, version)) => {
-				Ok(self.insert(req, Package::new(&pkg_name, &version, PkgKind::Remote(Some(url)))))
-			}
-			None => Err(RegError::NotFound(pkg_name))
+			Some((url, version)) => Ok(self.insert(
+				req,
+				Package::new(&pkg_name, &version, PkgKind::Remote(Some(url))),
+			)),
+			None => Err(RegError::NotFound(pkg_name)),
 		}
 	}
 
@@ -101,10 +104,19 @@ impl PkgRegistry {
 	}
 
 	// Load a package
-	pub fn load(&mut self, req: &PkgRequest, force: bool, paths: &Paths) -> Result<String, RegError> {
+	pub fn load(
+		&mut self,
+		req: &PkgRequest,
+		force: bool,
+		paths: &Paths,
+	) -> Result<String, RegError> {
 		let pkg = self.get(req, paths)?;
 		pkg.ensure_loaded(paths, force)?;
-		let contents = pkg.data.as_ref().expect("Package data was not loaded").get_contents();
+		let contents = pkg
+			.data
+			.as_ref()
+			.expect("Package data was not loaded")
+			.get_contents();
 		Ok(contents)
 	}
 
@@ -116,8 +128,13 @@ impl PkgRegistry {
 	}
 
 	// Evaluate a package
-	pub async fn eval(&mut self, req: &PkgRequest, paths: &Paths, routine: Routine, constants: EvalConstants)
-	-> Result<EvalData, RegError> {
+	pub async fn eval(
+		&mut self,
+		req: &PkgRequest,
+		paths: &Paths,
+		routine: Routine,
+		constants: EvalConstants,
+	) -> Result<EvalData, RegError> {
 		let pkg = self.get(req, paths)?;
 		let eval = pkg.eval(paths, routine, constants).await?;
 		Ok(eval)
@@ -132,7 +149,10 @@ impl PkgRegistry {
 
 	// Insert a local package into the registry
 	pub fn insert_local(&mut self, req: &PkgRequest, version: &str, path: &Path) {
-		self.insert(req, Package::new(&req.name, version, PkgKind::Local(path.to_path_buf())));
+		self.insert(
+			req,
+			Package::new(&req.name, version, PkgKind::Local(path.to_path_buf())),
+		);
 	}
 
 	// Checks if a package is in the registry already

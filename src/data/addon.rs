@@ -1,18 +1,18 @@
 use crate::io::files::create_leading_dirs;
+use crate::io::files::paths::Paths;
 use crate::net::download::DownloadError;
 use crate::package::reg::PkgIdentifier;
-use crate::io::files::paths::Paths;
 
 use std::fmt::Display;
-use std::path::PathBuf;
 use std::fs;
+use std::path::PathBuf;
 
 #[derive(Debug, Clone)]
 pub enum AddonKind {
 	ResourcePack,
 	Mod,
 	Plugin,
-	Shader
+	Shader,
 }
 
 impl AddonKind {
@@ -22,7 +22,7 @@ impl AddonKind {
 			"mod" => Some(Self::Mod),
 			"plugin" => Some(Self::Plugin),
 			"shader" => Some(Self::Shader),
-			_ => None
+			_ => None,
 		}
 	}
 
@@ -31,7 +31,7 @@ impl AddonKind {
 			Self::ResourcePack => String::from("resource_pack"),
 			Self::Mod => String::from("mod"),
 			Self::Plugin => String::from("plugin"),
-			Self::Shader => String::from("shader")
+			Self::Shader => String::from("shader"),
 		}
 	}
 
@@ -40,7 +40,7 @@ impl AddonKind {
 			Self::ResourcePack => String::from("resource_packs"),
 			Self::Mod => String::from("mods"),
 			Self::Plugin => String::from("plugins"),
-			Self::Shader => String::from("shaders")
+			Self::Shader => String::from("shaders"),
 		}
 	}
 }
@@ -49,7 +49,7 @@ impl AddonKind {
 pub struct Addon {
 	pub kind: AddonKind,
 	pub name: String,
-	pub id: PkgIdentifier
+	pub id: PkgIdentifier,
 }
 
 impl Addon {
@@ -57,7 +57,7 @@ impl Addon {
 		Self {
 			kind,
 			name: name.to_owned(),
-			id
+			id,
 		}
 	}
 
@@ -66,21 +66,24 @@ impl Addon {
 	}
 
 	pub fn get_path(&self, paths: &Paths) -> PathBuf {
-		self.get_dir(paths).join(&self.id.name).join(&self.id.version).join(&self.name)
+		self.get_dir(paths)
+			.join(&self.id.name)
+			.join(&self.id.version)
+			.join(&self.name)
 	}
 }
 
 #[derive(Debug, Clone)]
 pub enum AddonLocation {
 	Remote(String),
-	Local(PathBuf)
+	Local(PathBuf),
 }
 
 #[derive(Debug, Clone)]
 pub struct AddonRequest {
 	pub addon: Addon,
 	location: AddonLocation,
-	force: bool
+	force: bool,
 }
 
 impl AddonRequest {
@@ -88,14 +91,14 @@ impl AddonRequest {
 		Self {
 			addon,
 			location,
-			force
+			force,
 		}
 	}
 
 	pub async fn acquire(&self, paths: &Paths) -> Result<(), DownloadError> {
 		let path = self.addon.get_path(paths);
 		if !self.force && path.exists() {
-			return Ok(())
+			return Ok(());
 		}
 		create_leading_dirs(&path)?;
 		match &self.location {
@@ -117,7 +120,7 @@ pub enum Modloader {
 	Vanilla,
 	Forge,
 	Fabric,
-	Quilt
+	Quilt,
 }
 
 impl Modloader {
@@ -127,7 +130,7 @@ impl Modloader {
 			"forge" => Some(Self::Forge),
 			"fabric" => Some(Self::Fabric),
 			"quilt" => Some(Self::Quilt),
-			_ => None
+			_ => None,
 		}
 	}
 }
@@ -138,7 +141,7 @@ impl Display for Modloader {
 			Self::Vanilla => write!(f, "None"),
 			Self::Forge => write!(f, "Forge"),
 			Self::Fabric => write!(f, "Fabric"),
-			Self::Quilt => write!(f, "Quilt")
+			Self::Quilt => write!(f, "Quilt"),
 		}
 	}
 }
@@ -149,7 +152,7 @@ pub enum ModloaderMatch {
 	Forge,
 	Fabric,
 	Quilt,
-	FabricLike
+	FabricLike,
 }
 
 impl ModloaderMatch {
@@ -160,7 +163,7 @@ impl ModloaderMatch {
 			"fabric" => Some(Self::Fabric),
 			"quilt" => Some(Self::Quilt),
 			"fabriclike" => Some(Self::FabricLike),
-			_ => None
+			_ => None,
 		}
 	}
 
@@ -170,7 +173,7 @@ impl ModloaderMatch {
 			Self::Forge => matches!(other, Modloader::Forge),
 			Self::Fabric => matches!(other, Modloader::Fabric),
 			Self::Quilt => matches!(other, Modloader::Quilt),
-			Self::FabricLike => matches!(other, Modloader::Fabric | Modloader::Quilt)
+			Self::FabricLike => matches!(other, Modloader::Fabric | Modloader::Quilt),
 		}
 	}
 }
@@ -178,7 +181,7 @@ impl ModloaderMatch {
 #[derive(Debug, Clone)]
 pub enum PluginLoader {
 	Vanilla,
-	Paper
+	Paper,
 }
 
 impl PluginLoader {
@@ -186,7 +189,7 @@ impl PluginLoader {
 		match string {
 			"vanilla" => Some(Self::Vanilla),
 			"paper" => Some(Self::Paper),
-			_ => None
+			_ => None,
 		}
 	}
 }
@@ -195,7 +198,7 @@ impl Display for PluginLoader {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		match self {
 			Self::Vanilla => write!(f, "None"),
-			Self::Paper => write!(f, "Paper")
+			Self::Paper => write!(f, "Paper"),
 		}
 	}
 }
@@ -203,7 +206,7 @@ impl Display for PluginLoader {
 #[derive(Debug, Clone)]
 pub enum PluginLoaderMatch {
 	Vanilla,
-	BukkitLike
+	BukkitLike,
 }
 
 impl PluginLoaderMatch {
@@ -211,14 +214,14 @@ impl PluginLoaderMatch {
 		match string {
 			"vanilla" => Some(Self::Vanilla),
 			"bukkitlike" => Some(Self::BukkitLike),
-			_ => None
+			_ => None,
 		}
 	}
 
 	pub fn matches(&self, other: &PluginLoader) -> bool {
 		match self {
 			Self::Vanilla => matches!(other, PluginLoader::Vanilla),
-			Self::BukkitLike => matches!(other, PluginLoader::Paper)
+			Self::BukkitLike => matches!(other, PluginLoader::Paper),
 		}
 	}
 }
@@ -228,7 +231,7 @@ pub fn game_modifications_compatible(modloader: &Modloader, plugin_loader: &Plug
 	match (modloader, plugin_loader) {
 		(Modloader::Vanilla, _) => true,
 		(_, PluginLoader::Vanilla) => true,
-		_ => false
+		_ => false,
 	}
 }
 
@@ -238,8 +241,17 @@ mod tests {
 
 	#[test]
 	fn test_game_mods_compat() {
-		assert!(game_modifications_compatible(&Modloader::Fabric, &PluginLoader::Vanilla));
-		assert!(game_modifications_compatible(&Modloader::Vanilla, &PluginLoader::Vanilla));
-		assert!(!game_modifications_compatible(&Modloader::Forge, &PluginLoader::Paper));
+		assert!(game_modifications_compatible(
+			&Modloader::Fabric,
+			&PluginLoader::Vanilla
+		));
+		assert!(game_modifications_compatible(
+			&Modloader::Vanilla,
+			&PluginLoader::Vanilla
+		));
+		assert!(!game_modifications_compatible(
+			&Modloader::Forge,
+			&PluginLoader::Paper
+		));
 	}
 }

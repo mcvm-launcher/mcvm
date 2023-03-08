@@ -7,8 +7,7 @@ pub fn help() {
 	cprintln!("<s>Usage:</s> mcvm version");
 }
 
-pub fn run(_argc: usize, _argv: &[String], _data: &mut CmdData)
--> Result<(), CmdError> {
+pub fn run(_argc: usize, _argv: &[String], _data: &mut CmdData) -> Result<(), CmdError> {
 	cprintln!("mcvm version <g>{}</g>", env!("CARGO_PKG_VERSION"));
 
 	Ok(())

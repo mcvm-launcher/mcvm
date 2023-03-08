@@ -1,39 +1,49 @@
 use std::process::Command;
 
 use super::LaunchError;
-use crate::data::user::{Auth, UserKind};
 use crate::data::instance::Instance;
-use crate::util::mojang::{is_allowed, OS_STRING, ARCH_STRING};
-use crate::{skip_fail, skip_none};
-use crate::Paths;
+use crate::data::user::{Auth, UserKind};
 use crate::util::json;
+use crate::util::mojang::{is_allowed, ARCH_STRING, OS_STRING};
+use crate::Paths;
+use crate::{skip_fail, skip_none};
 
 impl Instance {
-	pub fn launch_client(&mut self, paths: &Paths, auth: &Auth)
-	-> Result<(), LaunchError> {
+	pub fn launch_client(&mut self, paths: &Paths, auth: &Auth) -> Result<(), LaunchError> {
 		match &self.java {
 			Some(java) => match &java.path {
 				Some(java_path) => {
 					let jre_path = java_path.join("bin/java");
 					let client_dir = self.get_subdir(paths);
-					let mut command = Command::new(jre_path.to_str().expect("Failed to convert java path to a string"));
+					let mut command = Command::new(
+						jre_path
+							.to_str()
+							.expect("Failed to convert java path to a string"),
+					);
 					command.current_dir(client_dir);
 
 					if let Some(version_json) = &self.version_json {
 						if let Some(classpath) = &self.classpath {
-							let main_class = self.main_class.as_ref().expect("Main class is missing for client");
+							let main_class = self
+								.main_class
+								.as_ref()
+								.expect("Main class is missing for client");
 							if let Ok(args) = json::access_object(version_json, "arguments") {
 								for arg in json::access_array(args, "jvm")? {
-									for sub_arg in process_client_arg(self, arg, paths, auth, classpath) {
+									for sub_arg in
+										process_client_arg(self, arg, paths, auth, classpath)
+									{
 										command.arg(sub_arg);
 									}
 								}
 								command.args(&self.launch.generate_jvm_args());
-								
+
 								command.arg(main_class);
-								
+
 								for arg in json::access_array(args, "game")? {
-									for sub_arg in process_client_arg(self, arg, paths, auth, classpath) {
+									for sub_arg in
+										process_client_arg(self, arg, paths, auth, classpath)
+									{
 										command.arg(sub_arg);
 									}
 								}
@@ -45,33 +55,40 @@ impl Instance {
 
 								command.arg(format!(
 									"-Djava.library.path={}",
-									paths.internal.join("versions").join(&self.version).join("natives").to_str()
+									paths
+										.internal
+										.join("versions")
+										.join(&self.version)
+										.join("natives")
+										.to_str()
 										.expect("Failed to convert natives directory to a string")
 								));
 								command.arg("-cp");
 								command.arg(classpath);
-								
+
 								command.arg(main_class);
-								
+
 								for arg in args.split(' ') {
-									command.arg(skip_none!(process_string_arg(self, arg, paths, auth, classpath)));
+									command.arg(skip_none!(process_string_arg(
+										self, arg, paths, auth, classpath
+									)));
 								}
 								command.args(&self.launch.game_args);
 							}
-							
+
 							let mut child = match command.spawn() {
 								Ok(child) => child,
-								Err(err) => return Err(LaunchError::Command(err))
+								Err(err) => return Err(LaunchError::Command(err)),
 							};
-		
+
 							child.wait().expect("Failed to wait for child process");
 						}
 					}
 					Ok(())
 				}
-				None => Err(LaunchError::Java)
-			}
-			None => Err(LaunchError::Java)
+				None => Err(LaunchError::Java),
+			},
+			None => Err(LaunchError::Java),
 		}
 	}
 }
@@ -81,26 +98,36 @@ pub fn process_string_arg(
 	arg: &str,
 	paths: &Paths,
 	auth: &Auth,
-	classpath: &str
+	classpath: &str,
 ) -> Option<String> {
 	let mut out = arg.replace("${launcher_name}", "mcvm");
 	out = out.replace("${launcher_version}", "alpha");
 	out = out.replace("${classpath}", classpath);
 	out = out.replace(
 		"${natives_directory}",
-		paths.internal.join("versions").join(&instance.version).join("natives").to_str()
-			.expect("Failed to convert natives directory to a string")
+		paths
+			.internal
+			.join("versions")
+			.join(&instance.version)
+			.join("natives")
+			.to_str()
+			.expect("Failed to convert natives directory to a string"),
 	);
 	out = out.replace("${version_name}", &instance.version);
 	out = out.replace("${version_type}", "mcvm");
 	out = out.replace(
 		"${game_directory}",
-		instance.get_subdir(paths).to_str()
-			.expect("Failed to convert client directory to a string")
+		instance
+			.get_subdir(paths)
+			.to_str()
+			.expect("Failed to convert client directory to a string"),
 	);
 	out = out.replace(
 		"${addons_root}",
-		paths.addons.to_str().expect("Failed to convert addons directory to a string")
+		paths
+			.addons
+			.to_str()
+			.expect("Failed to convert addons directory to a string"),
 	);
 	out = out.replace("${addons_index_name}", &instance.version);
 	out = out.replace("${user_type}", "mojang");
@@ -119,20 +146,20 @@ pub fn process_string_arg(
 			if let Some(token) = &user.access_token {
 				out = out.replace("${auth_access_token}", token);
 			}
-			if
-				out.contains("${auth_player_name}")
+			if out.contains("${auth_player_name}")
 				|| out.contains("${auth_access_token}")
 				|| out.contains("${auth_uuid}")
 			{
 				return Some(String::new());
 			}
-		},
-		None => if
-			out.contains("${auth_player_name}")
-			|| out.contains("${auth_access_token}")
-			|| out.contains("${auth_uuid}")
-		{
-			return Some(String::new());
+		}
+		None => {
+			if out.contains("${auth_player_name}")
+				|| out.contains("${auth_access_token}")
+				|| out.contains("${auth_uuid}")
+			{
+				return Some(String::new());
+			}
 		}
 	}
 
@@ -145,7 +172,7 @@ pub fn process_client_arg(
 	arg: &serde_json::Value,
 	paths: &Paths,
 	auth: &Auth,
-	classpath: &str
+	classpath: &str,
 ) -> Vec<String> {
 	let mut out = Vec::new();
 	if let Some(contents) = arg.as_str() {
@@ -156,7 +183,7 @@ pub fn process_client_arg(
 	} else if let Some(contents) = arg.as_object() {
 		let rules = match json::access_array(contents, "rules") {
 			Ok(rules) => rules,
-			Err(..) => return vec![]
+			Err(..) => return vec![],
 		};
 		for rule_val in rules.iter() {
 			let rule = skip_none!(rule_val.as_object());
@@ -182,7 +209,7 @@ pub fn process_client_arg(
 				if features.get("is_demo_user").is_some() {
 					let fail = match auth.get_user() {
 						Some(user) => matches!(user.kind, UserKind::Demo),
-						None => false
+						None => false,
 					};
 					if fail {
 						return vec![];
@@ -192,12 +219,15 @@ pub fn process_client_arg(
 		}
 		match arg.get("value") {
 			Some(value) => process_client_arg(instance, value, paths, auth, classpath),
-			None => return vec![]
+			None => return vec![],
 		};
 	} else if let Some(contents) = arg.as_array() {
 		for val in contents {
 			out.push(
-				process_client_arg(instance, val, paths, auth, classpath).get(0).expect("Expected an argument").to_string()
+				process_client_arg(instance, val, paths, auth, classpath)
+					.get(0)
+					.expect("Expected an argument")
+					.to_string(),
 			);
 		}
 	} else {

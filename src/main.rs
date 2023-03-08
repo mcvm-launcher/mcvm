@@ -2,12 +2,12 @@ mod commands;
 mod data;
 mod io;
 mod net;
-mod util;
 mod package;
+mod util;
 
 use std::env;
 
-use commands::{run_command, help, lib::CmdError};
+use commands::{help, lib::CmdError, run_command};
 use io::files::paths::Paths;
 
 #[tokio::main]

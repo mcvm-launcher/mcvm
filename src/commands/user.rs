@@ -2,7 +2,7 @@ use super::lib::{CmdData, CmdError};
 use crate::data::user::UserKind;
 use crate::util::print::HYPHEN_POINT;
 
-use color_print::{cprintln, cprint};
+use color_print::{cprint, cprintln};
 
 static LIST_HELP: &str = "List all users";
 static AUTH_HELP: &str = "Show your current user";
@@ -25,7 +25,7 @@ fn list(data: &mut CmdData) -> Result<(), CmdError> {
 			cprint!("{}", HYPHEN_POINT);
 			match user.kind {
 				UserKind::Microsoft => cprintln!("<s><g>{}</g> <k!>({})</k!>", user.name, id),
-				UserKind::Demo => cprintln!("<s><y!>{}</y!> <k!>({})</k!>", user.name, id)
+				UserKind::Demo => cprintln!("<s><y!>{}</y!> <k!>({})</k!>", user.name, id),
 			}
 		}
 	}
@@ -45,14 +45,13 @@ fn auth(data: &mut CmdData) -> Result<(), CmdError> {
 				}
 				cprintln!(" <k!>({})</k!>", user.id);
 			}
-			None => cprintln!("<r>Currently logged out")
+			None => cprintln!("<r>Currently logged out"),
 		}
 	}
 	Ok(())
 }
 
-pub fn run(argc: usize, argv: &[String], data: &mut CmdData)
--> Result<(), CmdError> {
+pub fn run(argc: usize, argv: &[String], data: &mut CmdData) -> Result<(), CmdError> {
 	if argc == 0 {
 		help();
 		return Ok(());
@@ -61,7 +60,7 @@ pub fn run(argc: usize, argv: &[String], data: &mut CmdData)
 	match argv[0].as_str() {
 		"list" | "ls" => list(data)?,
 		"auth" => auth(data)?,
-		cmd => cprintln!("<r>Unknown subcommand {}", cmd)
+		cmd => cprintln!("<r>Unknown subcommand {}", cmd),
 	}
 
 	Ok(())

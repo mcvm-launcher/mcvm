@@ -1,10 +1,10 @@
 use std::collections::HashMap;
 
-pub mod lex;
-pub mod parse;
-pub mod instruction;
 pub mod conditions;
 pub mod eval;
+pub mod instruction;
+pub mod lex;
+pub mod parse;
 
 use eval::EvalError;
 
@@ -13,7 +13,7 @@ use eval::EvalError;
 pub enum Value {
 	None,
 	Constant(String),
-	Var(String)
+	Var(String),
 }
 
 impl Value {
@@ -21,9 +21,10 @@ impl Value {
 		match self {
 			Self::None => Err(EvalError::VarNotDefined(String::from(""))),
 			Self::Constant(val) => Ok(val.clone()),
-			Self::Var(name) => {
-				vars.get(name).cloned().ok_or(EvalError::VarNotDefined(name.clone()))
-			}
+			Self::Var(name) => vars
+				.get(name)
+				.cloned()
+				.ok_or(EvalError::VarNotDefined(name.clone())),
 		}
 	}
 }

@@ -1,12 +1,14 @@
 #[derive(Debug, thiserror::Error)]
 #[error("Version not found: {}", .version)]
 pub struct VersionNotFoundError {
-	pub version: String
+	pub version: String,
 }
 
 impl VersionNotFoundError {
 	pub fn new(version: &str) -> VersionNotFoundError {
-		Self{version: version.to_owned()}
+		Self {
+			version: version.to_owned(),
+		}
 	}
 }
 
@@ -17,7 +19,7 @@ pub enum VersionPattern {
 	Latest(Option<String>),
 	Before(String),
 	After(String),
-	Any
+	Any,
 }
 
 impl VersionPattern {
@@ -26,28 +28,24 @@ impl VersionPattern {
 		match self {
 			Self::Single(version) => match versions.contains(version) {
 				true => vec![version.to_string()],
-				false => vec![]
+				false => vec![],
 			},
 			Self::Latest(found) => match found {
 				Some(found) => vec![found.clone()],
 				None => match versions.get(versions.len()).cloned() {
 					Some(version) => vec![version],
-					None => vec![]
-				}
-			}
+					None => vec![],
+				},
+			},
 			Self::Before(version) => match versions.iter().position(|e| e == version) {
-				Some(pos) => {
-					versions[..pos + 1].to_vec()
-				}
-				None => vec![]
-			}
+				Some(pos) => versions[..pos + 1].to_vec(),
+				None => vec![],
+			},
 			Self::After(version) => match versions.iter().position(|e| e == version) {
-				Some(pos) => {
-					versions[pos..].to_vec()
-				}
-				None => vec![]
-			}
-			Self::Any => versions.to_vec()
+				Some(pos) => versions[pos..].to_vec(),
+				None => vec![],
+			},
+			Self::Any => versions.to_vec(),
 		}
 	}
 
@@ -64,12 +62,14 @@ impl VersionPattern {
 			Self::Single(vers) => version == vers,
 			Self::Latest(cached) => match cached {
 				Some(vers) => version == vers,
-				None => if let Some(latest) = versions.last() {
-					version == latest
-				} else {
-					false
+				None => {
+					if let Some(latest) = versions.last() {
+						version == latest
+					} else {
+						false
+					}
 				}
-			}
+			},
 			Self::Before(vers) => {
 				if let Some(vers_pos) = versions.iter().position(|x| x == vers) {
 					if let Some(version_pos) = versions.iter().position(|x| x == version) {
@@ -92,20 +92,25 @@ impl VersionPattern {
 					false
 				}
 			}
-			Self::Any => versions.contains(&version.to_owned())
+			Self::Any => versions.contains(&version.to_owned()),
 		}
 	}
 
 	// Returns the union of matches for multiple patterns
 	pub fn _match_union(&self, other: &Self, versions: &[String]) -> Vec<String> {
-		self.get_matches(versions).iter().zip(other.get_matches(versions))
-			.filter_map(|(left, right)| {
-				if *left == right {
-					Some(right)
-				} else {
-					None
-				}
-			}).collect()
+		self.get_matches(versions)
+			.iter()
+			.zip(other.get_matches(versions))
+			.filter_map(
+				|(left, right)| {
+					if *left == right {
+						Some(right)
+					} else {
+						None
+					}
+				},
+			)
+			.collect()
 	}
 
 	// Converts to a string representation
@@ -115,7 +120,7 @@ impl VersionPattern {
 			Self::Latest(..) => String::from("latest"),
 			Self::Before(version) => version.to_owned() + "-",
 			Self::After(version) => version.to_owned() + "+",
-			Self::Any => String::from("*")
+			Self::Any => String::from("*"),
 		}
 	}
 
@@ -140,11 +145,11 @@ impl VersionPattern {
 	// Checks that a string contains no pattern-special characters
 	pub fn validate(text: &str) -> bool {
 		if text.contains('*') || text == "latest" {
-			return false
+			return false;
 		}
 		if let Some(last) = text.chars().last() {
 			if last == '-' || last == '+' {
-				return false
+				return false;
 			}
 		}
 		true
@@ -161,22 +166,41 @@ mod tests {
 			String::from("1.16.5"),
 			String::from("1.17"),
 			String::from("1.18"),
-			String::from("1.19.3")
+			String::from("1.19.3"),
 		];
 
-		assert_eq!(VersionPattern::Single(String::from("1.19.3")).get_match(&versions), Some(String::from("1.19.3")));
-		assert_eq!(VersionPattern::Single(String::from("1.18")).get_match(&versions), Some(String::from("1.18")));
-		assert_eq!(VersionPattern::Single(String::from("")).get_match(&versions), None);
-		assert_eq!(VersionPattern::Before(String::from("1.18")).get_match(&versions), Some(String::from("1.18")));
-		assert_eq!(VersionPattern::After(String::from("1.16.5")).get_match(&versions), Some(String::from("1.19.3")));
-		
+		assert_eq!(
+			VersionPattern::Single(String::from("1.19.3")).get_match(&versions),
+			Some(String::from("1.19.3"))
+		);
+		assert_eq!(
+			VersionPattern::Single(String::from("1.18")).get_match(&versions),
+			Some(String::from("1.18"))
+		);
+		assert_eq!(
+			VersionPattern::Single(String::from("")).get_match(&versions),
+			None
+		);
+		assert_eq!(
+			VersionPattern::Before(String::from("1.18")).get_match(&versions),
+			Some(String::from("1.18"))
+		);
+		assert_eq!(
+			VersionPattern::After(String::from("1.16.5")).get_match(&versions),
+			Some(String::from("1.19.3"))
+		);
+
 		assert_eq!(
 			VersionPattern::Before(String::from("1.17")).get_matches(&versions),
-			vec![ String::from("1.16.5"), String::from("1.17") ]
+			vec![String::from("1.16.5"), String::from("1.17")]
 		);
 		assert_eq!(
 			VersionPattern::After(String::from("1.17")).get_matches(&versions),
-			vec![ String::from("1.17"), String::from("1.18"), String::from("1.19.3") ]
+			vec![
+				String::from("1.17"),
+				String::from("1.18"),
+				String::from("1.19.3")
+			]
 		);
 
 		assert!(VersionPattern::Before(String::from("1.18")).matches_single("1.16.5", &versions));
@@ -186,10 +210,19 @@ mod tests {
 
 	#[test]
 	fn test_version_pattern_parse() {
-		assert_eq!(VersionPattern::from("+1.19.5"), VersionPattern::Single(String::from("+1.19.5")));
+		assert_eq!(
+			VersionPattern::from("+1.19.5"),
+			VersionPattern::Single(String::from("+1.19.5"))
+		);
 		assert_eq!(VersionPattern::from("latest"), VersionPattern::Latest(None));
-		assert_eq!(VersionPattern::from("1.19.5-"), VersionPattern::Before(String::from("1.19.5")));
-		assert_eq!(VersionPattern::from("1.19.5+"), VersionPattern::After(String::from("1.19.5")));
+		assert_eq!(
+			VersionPattern::from("1.19.5-"),
+			VersionPattern::Before(String::from("1.19.5"))
+		);
+		assert_eq!(
+			VersionPattern::from("1.19.5+"),
+			VersionPattern::After(String::from("1.19.5"))
+		);
 	}
 
 	#[test]

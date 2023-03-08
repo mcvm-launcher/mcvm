@@ -9,8 +9,7 @@ pub fn help() {
 	cprintln!("<s>Usage:</s> mcvm launch <k!><<instance>></k!>");
 }
 
-pub async fn run(argc: usize, argv: &[String], data: &mut CmdData)
--> Result<(), CmdError> {
+pub async fn run(argc: usize, argv: &[String], data: &mut CmdData) -> Result<(), CmdError> {
 	if argc == 0 {
 		help();
 		return Ok(());
@@ -23,7 +22,9 @@ pub async fn run(argc: usize, argv: &[String], data: &mut CmdData)
 		if let Some(paths) = &data.paths {
 			if let Some(instance) = config.instances.get_mut(&argv[0]) {
 				let (version_manifest, ..) = get_version_manifest(paths)?;
-				instance.launch(&version_manifest, paths, &config.auth).await?;
+				instance
+					.launch(&version_manifest, paths, &config.auth)
+					.await?;
 			} else {
 				return Err(CmdError::Custom(format!("Unknown instance '{}'", &argv[0])));
 			}

@@ -1,5 +1,5 @@
-pub mod config;
-pub mod profile;
-pub mod instance;
-pub mod user;
 pub mod addon;
+pub mod config;
+pub mod instance;
+pub mod profile;
+pub mod user;

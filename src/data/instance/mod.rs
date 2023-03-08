@@ -1,23 +1,23 @@
 pub mod create;
 pub mod launch;
 
-use crate::net::fabric_quilt::{FabricError, get_quilt_meta, download_quilt_files};
-use crate::util::json;
-use crate::io::files;
-use crate::io::java::{Java, JavaKind, JavaError};
-use crate::Paths;
 use self::create::CreateError;
 use self::launch::LaunchOptions;
+use crate::io::files;
+use crate::io::java::{Java, JavaError, JavaKind};
+use crate::net::fabric_quilt::{download_quilt_files, get_quilt_meta, FabricError};
+use crate::util::json;
+use crate::Paths;
 
 use super::addon::{Addon, AddonKind, Modloader, PluginLoader};
 
 use std::fs;
-use std::path::{PathBuf, Path};
+use std::path::{Path, PathBuf};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum InstKind {
 	Client,
-	Server
+	Server,
 }
 
 impl InstKind {
@@ -25,7 +25,7 @@ impl InstKind {
 		match string {
 			"client" => Some(Self::Client),
 			"server" => Some(Self::Server),
-			_ => None
+			_ => None,
 		}
 	}
 }
@@ -42,7 +42,7 @@ pub struct Instance {
 	java: Option<Java>,
 	classpath: Option<String>,
 	jar_path: Option<PathBuf>,
-	main_class: Option<String>
+	main_class: Option<String>,
 }
 
 impl Instance {
@@ -52,7 +52,7 @@ impl Instance {
 		version: &str,
 		modloader: Modloader,
 		plugin_loader: PluginLoader,
-		launch: LaunchOptions
+		launch: LaunchOptions,
 	) -> Self {
 		Self {
 			kind,
@@ -65,15 +65,20 @@ impl Instance {
 			java: None,
 			classpath: None,
 			jar_path: None,
-			main_class: None
+			main_class: None,
 		}
 	}
 
-	fn get_java(&mut self, version: &str, paths: &Paths, verbose: bool, force: bool)
-	-> Result<(), JavaError> {
+	fn get_java(
+		&mut self,
+		version: &str,
+		paths: &Paths,
+		verbose: bool,
+		force: bool,
+	) -> Result<(), JavaError> {
 		let kind = match &self.launch.java {
 			JavaKind::Adoptium(..) => JavaKind::Adoptium(Some(version.to_owned())),
-			x => x.clone()
+			x => x.clone(),
 		};
 		let mut java = Java::new(kind);
 		java.install(paths, verbose, force)?;
@@ -81,53 +86,65 @@ impl Instance {
 		Ok(())
 	}
 
-	async fn get_quilt(&mut self, paths: &Paths, verbose: bool, force: bool) -> Result<String, FabricError> {
+	async fn get_quilt(
+		&mut self,
+		paths: &Paths,
+		verbose: bool,
+		force: bool,
+	) -> Result<String, FabricError> {
 		let meta = get_quilt_meta(&self.version).await?;
-		let classpath = download_quilt_files(&meta, paths, self.kind.clone(), verbose, force).await?;
+		let classpath =
+			download_quilt_files(&meta, paths, self.kind.clone(), verbose, force).await?;
 		self.main_class = Some(match self.kind {
 			InstKind::Client => meta.launcher_meta.main_class.client,
-			InstKind::Server => meta.launcher_meta.main_class.server
+			InstKind::Server => meta.launcher_meta.main_class.server,
 		});
-		
+
 		Ok(classpath)
 	}
 
 	pub fn get_dir(&self, paths: &Paths) -> PathBuf {
 		match &self.kind {
 			InstKind::Client => paths.project.data_dir().join("client").join(&self.id),
-			InstKind::Server => paths.project.data_dir().join("server").join(&self.id)
+			InstKind::Server => paths.project.data_dir().join("server").join(&self.id),
 		}
 	}
 
 	pub fn get_subdir(&self, paths: &Paths) -> PathBuf {
 		self.get_dir(paths).join(match self.kind {
 			InstKind::Client => ".minecraft",
-			InstKind::Server => "server"
+			InstKind::Server => "server",
 		})
 	}
-	
+
 	pub fn get_linked_addon_path(&self, addon: &Addon, paths: &Paths) -> Option<PathBuf> {
 		let inst_dir = self.get_subdir(paths);
 		match addon.kind {
-			AddonKind::ResourcePack => if let InstKind::Client = self.kind {
-				Some(inst_dir.join("resourcepacks"))
-			} else {
-				None
+			AddonKind::ResourcePack => {
+				if let InstKind::Client = self.kind {
+					Some(inst_dir.join("resourcepacks"))
+				} else {
+					None
+				}
 			}
 			AddonKind::Mod => Some(inst_dir.join("mods")),
-			AddonKind::Plugin => if let InstKind::Server = self.kind {
-				Some(inst_dir.join("plugins"))
-			} else {
-				None
+			AddonKind::Plugin => {
+				if let InstKind::Server = self.kind {
+					Some(inst_dir.join("plugins"))
+				} else {
+					None
+				}
 			}
-			AddonKind::Shader => if let InstKind::Client = self.kind {
-				Some(inst_dir.join("shaders"))
-			} else {
-				None
+			AddonKind::Shader => {
+				if let InstKind::Client = self.kind {
+					Some(inst_dir.join("shaders"))
+				} else {
+					None
+				}
 			}
 		}
 	}
-	
+
 	fn link_addon(dir: &Path, addon: &Addon, paths: &Paths) -> Result<(), CreateError> {
 		files::create_dir(dir)?;
 		let link = dir.join(&addon.name);
@@ -136,7 +153,7 @@ impl Instance {
 		}
 		Ok(())
 	}
-	
+
 	pub fn create_addon(&self, addon: &Addon, paths: &Paths) -> Result<(), CreateError> {
 		let inst_dir = self.get_subdir(paths);
 		files::create_leading_dirs(&inst_dir)?;
@@ -144,7 +161,7 @@ impl Instance {
 		if let Some(path) = self.get_linked_addon_path(addon, paths) {
 			Self::link_addon(&path, addon, paths)?;
 		}
-		
+
 		Ok(())
 	}
 
@@ -155,7 +172,7 @@ impl Instance {
 				fs::remove_file(path)?;
 			}
 		}
-		
+
 		Ok(())
 	}
 
@@ -171,7 +188,11 @@ impl Instance {
 	}
 
 	// Removes files such as the game jar for when the profile version changes
-	pub fn teardown(&self, paths: &Paths, paper_file_name: Option<String>) -> Result<(), CreateError> {
+	pub fn teardown(
+		&self,
+		paths: &Paths,
+		paper_file_name: Option<String>,
+	) -> Result<(), CreateError> {
 		match self.kind {
 			InstKind::Client => {
 				let inst_dir = self.get_dir(paths);

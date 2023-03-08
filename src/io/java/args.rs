@@ -3,7 +3,7 @@ pub enum MemoryNum {
 	B(u32),
 	Kb(u32),
 	Mb(u32),
-	Gb(u32)
+	Gb(u32),
 }
 
 impl MemoryNum {
@@ -21,21 +21,21 @@ impl MemoryNum {
 			Self::B(n) => n.to_string(),
 			Self::Kb(n) => n.to_string() + "k",
 			Self::Mb(n) => n.to_string() + "m",
-			Self::Gb(n) => n.to_string() + "g"
+			Self::Gb(n) => n.to_string() + "g",
 		}
 	}
 }
 
 pub enum MemoryArg {
 	Init,
-	Max
+	Max,
 }
 
 impl MemoryArg {
 	pub fn to_string(&self, n: MemoryNum) -> String {
 		let arg = match self {
 			Self::Init => String::from("-Xms"),
-			Self::Max => String::from("-Xmx")
+			Self::Max => String::from("-Xmx"),
 		};
 
 		arg + &n.to_string()

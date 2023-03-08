@@ -1,12 +1,12 @@
-use crate::net::download::{Download, DownloadError};
 use crate::io::files::paths::Paths;
+use crate::net::download::{Download, DownloadError};
 use crate::skip_fail;
 
 use serde::Deserialize;
 
 use std::collections::HashMap;
-use std::path::PathBuf;
 use std::fs;
+use std::path::PathBuf;
 
 #[derive(Debug, thiserror::Error)]
 pub enum RepoError {
@@ -15,7 +15,7 @@ pub enum RepoError {
 	#[error("Failed to parse json file:\n{}", .0)]
 	Parse(#[from] serde_json::Error),
 	#[error("Download failed:\n{}", .0)]
-	Download(#[from] DownloadError)
+	Download(#[from] DownloadError),
 }
 
 // An entry in the index that specifies what package versions are available
@@ -23,13 +23,13 @@ pub enum RepoError {
 pub struct PkgEntry {
 	// The latest package version available from this repository.
 	version: String,
-	url: String
+	url: String,
 }
 
 // JSON format for a repository index
 #[derive(Debug, Deserialize)]
 pub struct RepoIndex {
-	packages: HashMap<String, PkgEntry>
+	packages: HashMap<String, PkgEntry>,
 }
 
 // A remote source for mcvm packages
@@ -37,7 +37,7 @@ pub struct RepoIndex {
 pub struct PkgRepo {
 	pub id: String,
 	url: String,
-	index: Option<RepoIndex>
+	index: Option<RepoIndex>,
 }
 
 impl PkgRepo {
@@ -45,7 +45,7 @@ impl PkgRepo {
 		Self {
 			id: id.to_owned(),
 			url: url.to_owned(),
-			index: None
+			index: None,
 		}
 	}
 
@@ -78,7 +78,7 @@ impl PkgRepo {
 			let path = self.get_path(paths);
 			if path.exists() {
 				match self.set_index(&fs::read_to_string(&path)?) {
-					Ok(..) => {},
+					Ok(..) => {}
 					Err(..) => {
 						self.sync(paths)?;
 						self.set_index(&fs::read_to_string(&path)?)?;
@@ -96,8 +96,11 @@ impl PkgRepo {
 	}
 
 	// Ask if the index has a package and return the url for that package if it exists
-	pub fn query(&mut self, id: &str, paths: &Paths)
-	-> Result<Option<(String, String)>, RepoError> {
+	pub fn query(
+		&mut self,
+		id: &str,
+		paths: &Paths,
+	) -> Result<Option<(String, String)>, RepoError> {
 		self.ensure_index(paths)?;
 		if let Some(index) = &self.index {
 			if let Some(entry) = index.packages.get(id) {
@@ -109,8 +112,11 @@ impl PkgRepo {
 }
 
 // Query a list of repos
-pub fn query_all(repos: &mut [PkgRepo], name: &str, paths: &Paths)
--> Result<Option<(String, String)>, RepoError> {
+pub fn query_all(
+	repos: &mut [PkgRepo],
+	name: &str,
+	paths: &Paths,
+) -> Result<Option<(String, String)>, RepoError> {
 	for repo in repos {
 		if let Some(result) = skip_fail!(repo.query(name, paths)) {
 			return Ok(Some(result));

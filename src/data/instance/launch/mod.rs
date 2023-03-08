@@ -3,12 +3,15 @@ pub mod server;
 
 use color_print::cprintln;
 
-use crate::io::java::{args::{MemoryNum, MemoryArg}, JavaKind};
-use crate::io::files::paths::Paths;
-use crate::util::json;
 use crate::data::{instance::InstKind, user::Auth};
+use crate::io::files::paths::Paths;
+use crate::io::java::{
+	args::{MemoryArg, MemoryNum},
+	JavaKind,
+};
+use crate::util::json;
 
-use super::{Instance, create::CreateError};
+use super::{create::CreateError, Instance};
 
 #[derive(Debug, thiserror::Error)]
 pub enum LaunchError {
@@ -19,7 +22,7 @@ pub enum LaunchError {
 	#[error("Game process failed:\n{}", .0)]
 	Command(std::io::Error),
 	#[error("Failed to evaluate json file:\n{}", .0)]
-	Json(#[from] json::JsonError)
+	Json(#[from] json::JsonError),
 }
 
 impl Instance {
@@ -28,17 +31,19 @@ impl Instance {
 		&mut self,
 		version_manifest: &json::JsonObject,
 		paths: &Paths,
-		auth: &Auth
+		auth: &Auth,
 	) -> Result<(), LaunchError> {
 		cprintln!("Checking for updates...");
 		match &self.kind {
 			InstKind::Client => {
-				self.create_client(version_manifest, paths, false, false).await?;
+				self.create_client(version_manifest, paths, false, false)
+					.await?;
 				cprintln!("<g>Launching!");
 				self.launch_client(paths, auth)?;
-			},
+			}
 			InstKind::Server => {
-				self.create_server(version_manifest, paths, false, false).await?;
+				self.create_server(version_manifest, paths, false, false)
+					.await?;
 				cprintln!("<g>Launching!");
 				self.launch_server(paths)?;
 			}

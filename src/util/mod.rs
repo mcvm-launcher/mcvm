@@ -1,13 +1,13 @@
-pub mod versions;
 pub mod json;
 pub mod mojang;
 pub mod print;
+pub mod versions;
 
 pub fn yes_no(string: &str) -> Option<bool> {
 	match string {
 		"yes" => Some(true),
 		"no" => Some(false),
-		_ => None
+		_ => None,
 	}
 }
 
@@ -17,7 +17,7 @@ macro_rules! skip_fail {
 	($res:expr) => {
 		match $res {
 			Ok(val) => val,
-			Err(..) => continue
+			Err(..) => continue,
 		}
 	};
 }
@@ -28,7 +28,7 @@ macro_rules! skip_none {
 	($res:expr) => {
 		match $res {
 			Some(val) => val,
-			None => continue
+			None => continue,
 		}
 	};
 }
@@ -43,7 +43,7 @@ pub fn validate_identifier(id: &str) -> bool {
 		if c.is_ascii_punctuation() {
 			match c {
 				'_' | '-' | '.' => {}
-				_ => return false
+				_ => return false,
 			}
 		}
 

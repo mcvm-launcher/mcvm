@@ -6,7 +6,7 @@ use curl::easy::Easy;
 pub static FD_SENSIBLE_LIMIT: usize = 15;
 
 pub enum DownloadMode {
-	File(std::fs::File)
+	File(std::fs::File),
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -18,19 +18,23 @@ pub enum DownloadError {
 	#[error("Failed to convert string to UTF-8")]
 	StringConvert(#[from] FromUtf8Error),
 	#[error("Download failed:\n{}", .0)]
-	Reqwest(#[from] reqwest::Error)
+	Reqwest(#[from] reqwest::Error),
 }
 
 pub struct Download {
 	modes: Vec<DownloadMode>,
 	string: Option<Vec<u8>>,
-	pub easy: Easy
+	pub easy: Easy,
 }
 
 impl Download {
 	pub fn new() -> Self {
 		let easy = Easy::new();
-		Download{modes: vec![], string: None, easy}
+		Download {
+			modes: vec![],
+			string: None,
+			easy,
+		}
 	}
 
 	pub fn url(&mut self, url: &str) -> Result<(), DownloadError> {
@@ -58,8 +62,10 @@ impl Download {
 		transfer.write_function(|data| {
 			for mode in self.modes.iter_mut() {
 				match mode {
-					DownloadMode::File(file) => if file.write_all(data).is_err() {
-						return Err(curl::easy::WriteError::Pause);
+					DownloadMode::File(file) => {
+						if file.write_all(data).is_err() {
+							return Err(curl::easy::WriteError::Pause);
+						}
 					}
 				};
 			}
@@ -73,7 +79,12 @@ impl Download {
 	}
 
 	pub fn get_str(&self) -> Result<String, DownloadError> {
-		Ok(String::from_utf8(self.string.as_ref().expect("String not set to write into").to_vec())?)
+		Ok(String::from_utf8(
+			self.string
+				.as_ref()
+				.expect("String not set to write into")
+				.to_vec(),
+		)?)
 	}
 
 	pub fn follow_redirects(&mut self) -> Result<(), DownloadError> {

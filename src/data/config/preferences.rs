@@ -1,12 +1,12 @@
-use crate::package::repo::PkgRepo;
 use super::ConfigError;
+use crate::package::repo::PkgRepo;
 
 use serde::Deserialize;
 
 #[derive(Deserialize)]
 struct SerRepo {
 	id: String,
-	url: String
+	url: String,
 }
 
 #[derive(Deserialize, Default)]
@@ -14,19 +14,17 @@ struct SerRepositories {
 	#[serde(default)]
 	pub preferred: Vec<SerRepo>,
 	#[serde(default)]
-	pub backup: Vec<SerRepo>
+	pub backup: Vec<SerRepo>,
 }
 
 #[derive(Deserialize)]
 struct PrefSerialize {
 	#[serde(default)]
-	pub repositories: SerRepositories
+	pub repositories: SerRepositories,
 }
 
 #[derive(Debug)]
-pub struct ConfigPreferences {
-
-}
+pub struct ConfigPreferences {}
 
 impl ConfigPreferences {
 	pub fn read(obj: Option<&serde_json::Value>) -> Result<(Self, Vec<PkgRepo>), ConfigError> {
@@ -42,8 +40,8 @@ impl ConfigPreferences {
 				}
 
 				Ok((Self {}, repositories))
-			},
-			None => Ok((Self {}, vec![]))
+			}
+			None => Ok((Self {}, vec![])),
 		}
 	}
 }

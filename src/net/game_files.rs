@@ -1,11 +1,11 @@
 use crate::io::files::{self, paths::Paths};
-use crate::util::versions::VersionNotFoundError;
-use crate::util::json::{self, JsonObject, JsonType};
 use crate::net::download::{Download, DownloadError};
+use crate::util::json::{self, JsonObject, JsonType};
 use crate::util::mojang::{self, CLASSPATH_SEP};
 use crate::util::print::ReplPrinter;
+use crate::util::versions::VersionNotFoundError;
 
-use color_print::{cprintln, cformat};
+use color_print::{cformat, cprintln};
 use reqwest::Client;
 use tokio::sync::Semaphore;
 use tokio::task::JoinSet;
@@ -24,7 +24,7 @@ pub enum VersionManifestError {
 	#[error("Failed to evaluate json file:\n{}", .0)]
 	ParseError(#[from] json::JsonError),
 	#[error("File operation failed:\n{}", .0)]
-	Io(#[from] std::io::Error)
+	Io(#[from] std::io::Error),
 }
 
 // So we can do this without a retry
@@ -41,8 +41,9 @@ fn get_version_manifest_contents(paths: &Paths) -> Result<Box<Download>, Version
 	Ok(Box::new(download))
 }
 
-pub fn get_version_manifest(paths: &Paths)
--> Result<(Box<json::JsonObject>, Box<Download>), VersionManifestError> {
+pub fn get_version_manifest(
+	paths: &Paths,
+) -> Result<(Box<json::JsonObject>, Box<Download>), VersionManifestError> {
 	let mut download = get_version_manifest_contents(paths)?;
 	let mut manifest_contents = download.get_str()?;
 	let manifest = match json::parse_object(&manifest_contents) {
@@ -58,8 +59,9 @@ pub fn get_version_manifest(paths: &Paths)
 }
 
 // Makes an ordered list of versions from the manifest to use for matching
-pub fn make_version_list(version_manifest: &json::JsonObject)
--> Result<Vec<String>, VersionManifestError> {
+pub fn make_version_list(
+	version_manifest: &json::JsonObject,
+) -> Result<Vec<String>, VersionManifestError> {
 	let versions = json::access_array(version_manifest, "versions")?;
 	let mut out = Vec::new();
 	for entry in versions {
@@ -81,11 +83,14 @@ pub enum VersionJsonError {
 	#[error("Error when downloading version json:\n{}", .0)]
 	Download(#[from] DownloadError),
 	#[error("File operation failed:\n{}", .0)]
-	Io(#[from] std::io::Error)
+	Io(#[from] std::io::Error),
 }
 
-pub fn get_version_json(version: &str, version_manifest: &json::JsonObject, paths: &Paths)
--> Result<(Box<json::JsonObject>, Box<Download>), VersionJsonError> {
+pub fn get_version_json(
+	version: &str,
+	version_manifest: &json::JsonObject,
+	paths: &Paths,
+) -> Result<(Box<json::JsonObject>, Box<Download>), VersionJsonError> {
 	let version_string = version.to_owned();
 
 	let mut dwn = Download::new();
@@ -127,7 +132,7 @@ pub enum LibrariesError {
 	#[error("File operation failed:\n{}", .0)]
 	Io(#[from] std::io::Error),
 	#[error("Failed to access zip file:\n{}", .0)]
-	Zip(#[from] zip::result::ZipError)
+	Zip(#[from] zip::result::ZipError),
 }
 
 // Checks the rules of a library to see if it should be installed
@@ -153,7 +158,7 @@ fn is_library_allowed(lib: &JsonObject) -> Result<bool, LibrariesError> {
 fn download_library(
 	dwn: &mut Download,
 	lib_download: &json::JsonObject,
-	path: &Path
+	path: &Path,
 ) -> Result<(), LibrariesError> {
 	files::create_leading_dirs(path)?;
 	let url = json::access_str(lib_download, "url")?;
@@ -176,7 +181,7 @@ pub fn extract_native_library(path: &Path, natives_dir: &Path) -> Result<(), Lib
 					let mut out_file = File::create(natives_dir.join(rel_path))?;
 					std::io::copy(&mut file, &mut out_file)?;
 				}
-				_ => continue
+				_ => continue,
 			}
 		}
 	}
@@ -189,14 +194,18 @@ pub fn get_libraries(
 	paths: &Paths,
 	version: &str,
 	verbose: bool,
-	force: bool
+	force: bool,
 ) -> Result<String, LibrariesError> {
 	let libraries_path = paths.internal.join("libraries");
 	files::create_dir(&libraries_path)?;
-	let natives_path = paths.internal.join("versions").join(version).join("natives");
+	let natives_path = paths
+		.internal
+		.join("versions")
+		.join(version)
+		.join("natives");
 	files::create_dir(&natives_path)?;
 	let natives_jars_path = paths.internal.join("natives");
-	
+
 	let mut native_paths = Vec::new();
 	let mut classpath = String::new();
 	let mut dwn = Download::new();
@@ -204,7 +213,10 @@ pub fn get_libraries(
 	printer.indent(1);
 
 	let libraries = json::access_array(version_json, "libraries")?;
-	printer.print(&cformat!("Downloading <b>{}</> libraries...", libraries.len()));
+	printer.print(&cformat!(
+		"Downloading <b>{}</> libraries...",
+		libraries.len()
+	));
 
 	for lib_val in libraries.iter() {
 		let lib = json::ensure_type(lib_val.as_object(), JsonType::Obj)?;
@@ -216,9 +228,8 @@ pub fn get_libraries(
 		if let Some(natives_val) = lib.get("natives") {
 			let natives = json::ensure_type(natives_val.as_object(), JsonType::Obj)?;
 			let key = json::access_str(natives, mojang::OS_STRING)?;
-			let classifier = json::access_object(
-				json::access_object(downloads, "classifiers")?, key
-			)?;
+			let classifier =
+				json::access_object(json::access_object(downloads, "classifiers")?, key)?;
 
 			let path = natives_jars_path.join(json::access_str(classifier, "path")?);
 			classpath.push_str(path.to_str().ok_or(LibrariesError::Utf)?);
@@ -268,7 +279,7 @@ pub enum AssetsError {
 	#[error("File operation failed:\n{}", .0)]
 	Io(#[from] std::io::Error),
 	#[error("Failed to join tasks:\n{}", .0)]
-	Join(#[from] tokio::task::JoinError)
+	Join(#[from] tokio::task::JoinError),
 }
 
 fn download_asset_index(url: &str, path: &Path) -> Result<Box<json::JsonObject>, AssetsError> {
@@ -277,7 +288,7 @@ fn download_asset_index(url: &str, path: &Path) -> Result<Box<json::JsonObject>,
 	dwn.add_file(path)?;
 	dwn.add_str();
 	dwn.perform()?;
-	
+
 	let doc = json::parse_object(&dwn.get_str()?)?;
 	Ok(doc)
 }
@@ -287,17 +298,15 @@ pub async fn get_assets(
 	paths: &Paths,
 	version: &str,
 	verbose: bool,
-	force: bool
+	force: bool,
 ) -> Result<(), AssetsError> {
 	let version_string = version.to_owned();
 	let indexes_dir = paths.assets.join("indexes");
 	files::create_dir(&indexes_dir)?;
-	
+
 	let index_path = indexes_dir.join(version_string + ".json");
-	let index_url = json::access_str(
-		json::access_object(version_json, "assetIndex")?, "url"
-	)?;
-	
+	let index_url = json::access_str(json::access_object(version_json, "assetIndex")?, "url")?;
+
 	let objects_dir = paths.assets.join("objects");
 	files::create_dir(&objects_dir)?;
 	let virtual_dir = paths.assets.join("virtual");
@@ -308,13 +317,16 @@ pub async fn get_assets(
 	let index = match download_asset_index(index_url, &index_path) {
 		Ok(val) => val,
 		Err(err) => {
-			cprintln!("<r>Failed to obtain asset index:\n\t{}\nRedownloading...", err);
+			cprintln!(
+				"<r>Failed to obtain asset index:\n\t{}\nRedownloading...",
+				err
+			);
 			download_asset_index(index_url, &index_path)?
 		}
 	};
 
 	let assets = json::access_object(&index, "objects")?.clone();
-	
+
 	let client = Client::new();
 	let mut join = JoinSet::new();
 	let mut printer = ReplPrinter::new(verbose);
@@ -327,16 +339,16 @@ pub async fn get_assets(
 	let sem = Arc::new(Semaphore::new(FD_SENSIBLE_LIMIT));
 	for (_key, asset_val) in assets {
 		let asset = json::ensure_type(asset_val.as_object(), JsonType::Obj)?;
-		
+
 		let hash = json::access_str(asset, "hash")?.to_owned();
 		let hash_path = hash[..2].to_owned() + "/" + &hash;
 		let url = "https://resources.download.minecraft.net/".to_owned() + &hash_path;
-		
+
 		let path = objects_dir.join(&hash_path);
 		if !force && path.exists() {
 			continue;
 		}
-		
+
 		files::create_leading_dirs(&path)?;
 		let client = client.clone();
 		let permit = Arc::clone(&sem).acquire_owned().await;
@@ -349,11 +361,11 @@ pub async fn get_assets(
 		join.spawn(fut);
 		// count += 1;
 	}
-	
+
 	// if verbose {
 	// 	cprintln!("\tDownloading <b>{}</> assets...", count);
 	// }
-	
+
 	// TODO: Bring back progress functionality
 	// let mut num_done = 0;
 	while let Some(asset) = join.join_next().await {

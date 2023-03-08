@@ -1,7 +1,7 @@
+use crate::data::config::{Config, ConfigError};
 use crate::data::instance::create::CreateError;
 use crate::data::instance::launch::LaunchError;
 use crate::io::files::paths::{Paths, PathsError};
-use crate::data::config::{Config, ConfigError};
 use crate::io::lock::LockfileError;
 use crate::net::download::DownloadError;
 use crate::net::game_files::VersionManifestError;
@@ -14,7 +14,7 @@ use phf_macros::phf_map;
 // Data passed to commands
 pub struct CmdData {
 	pub paths: Option<Paths>,
-	pub config: Option<Config>
+	pub config: Option<Config>,
 }
 
 impl CmdData {
@@ -22,7 +22,7 @@ impl CmdData {
 		// let config_path = paths.project..join("mcvm.json");
 		Self {
 			paths: None,
-			config: None
+			config: None,
 		}
 	}
 
@@ -69,7 +69,7 @@ pub enum CmdError {
 	#[error("Failed to download Paper server:\n{}", .0)]
 	Paper(#[from] PaperError),
 	#[error("{}", .0)]
-	Custom(String)
+	Custom(String),
 }
 
 pub enum Command {
@@ -79,7 +79,7 @@ pub enum Command {
 	Launch,
 	Version,
 	Files,
-	Package
+	Package,
 }
 
 pub static COMMAND_MAP: phf::Map<&'static str, Command> = phf_map! {

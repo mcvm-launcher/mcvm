@@ -9,7 +9,7 @@ pub enum PathsError {
 	#[error("IO operation failed:{}", .0)]
 	Io(#[from] std::io::Error),
 	#[error("Failed to find base directories")]
-	Base
+	Base,
 }
 
 #[derive(Debug, Clone)]
@@ -22,14 +22,14 @@ pub struct Paths {
 	pub java: PathBuf,
 	pub addons: PathBuf,
 	pub pkg_cache: PathBuf,
-	pub pkg_index_cache: PathBuf
+	pub pkg_index_cache: PathBuf,
 }
 
 impl Paths {
 	pub fn new() -> Result<Paths, PathsError> {
 		let base = BaseDirs::new().ok_or(PathsError::Base)?;
 		let project = ProjectDirs::from("", "mcvm", "mcvm").ok_or(PathsError::Base)?;
-		
+
 		let internal = project.data_dir().join("internal");
 		let assets = internal.join("assets");
 		let libraries = internal.join("libraries");
@@ -37,7 +37,7 @@ impl Paths {
 		let addons = internal.join("addons");
 		let pkg_cache = project.cache_dir().join("pkg");
 		let pkg_index_cache = pkg_cache.join("index");
-		
+
 		create_dir(project.data_dir())?;
 		create_dir(project.cache_dir())?;
 		create_dir(project.config_dir())?;
@@ -48,7 +48,7 @@ impl Paths {
 		create_dir(&addons)?;
 		create_dir(&pkg_cache)?;
 		create_dir(&pkg_index_cache)?;
-		
+
 		Ok(Paths {
 			base,
 			project,
@@ -58,7 +58,7 @@ impl Paths {
 			java,
 			addons,
 			pkg_cache,
-			pkg_index_cache
+			pkg_index_cache,
 		})
 	}
 }

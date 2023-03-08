@@ -2,11 +2,11 @@ use crate::data::addon::{ModloaderMatch, PluginLoaderMatch};
 use crate::data::instance::InstKind;
 use crate::util::versions::VersionPattern;
 
-use super::Value;
-use super::eval::{EvalError, EvalData};
-use super::lex::{Token, TextPos};
-use super::parse::ParseError;
+use super::eval::{EvalData, EvalError};
 use super::instruction::parse_arg;
+use super::lex::{TextPos, Token};
+use super::parse::ParseError;
+use super::Value;
 
 #[derive(Debug, Clone)]
 pub enum ConditionKind {
@@ -16,7 +16,7 @@ pub enum ConditionKind {
 	Modloader(Option<ModloaderMatch>),
 	PluginLoader(Option<PluginLoaderMatch>),
 	Feature(Value),
-	Value(Value, Value)
+	Value(Value, Value),
 }
 
 impl ConditionKind {
@@ -29,10 +29,10 @@ impl ConditionKind {
 			"plugin_loader" => Some(Self::PluginLoader(None)),
 			"feature" => Some(Self::Feature(Value::None)),
 			"value" => Some(Self::Value(Value::None, Value::None)),
-			_ => None
+			_ => None,
 		}
 	}
-	
+
 	pub fn parse(&mut self, tok: &Token, pos: &TextPos) -> Result<(), ParseError> {
 		match self {
 			Self::Not(condition) => match condition {
@@ -42,48 +42,65 @@ impl ConditionKind {
 				None => match tok {
 					Token::Ident(name) => match Self::from_str(name) {
 						Some(nested_cond) => *condition = Some(Box::new(nested_cond)),
-						None => return Err(ParseError::UnknownCondition(name.clone(), pos.clone()))
+						None => {
+							return Err(ParseError::UnknownCondition(name.clone(), pos.clone()))
+						}
 					},
-					_ => return Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone()))
-				}
-			}
-			Self::Version(val) |
-			Self::Feature(val) => *val = parse_arg(tok, pos)?,
+					_ => return Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone())),
+				},
+			},
+			Self::Version(val) | Self::Feature(val) => *val = parse_arg(tok, pos)?,
 			Self::Side(side) => match tok {
 				Token::Ident(name) => match InstKind::from_str(name) {
 					Some(kind) => *side = Some(kind),
-					None => return Err(ParseError::UnknownConditionArg(name.to_owned(), pos.clone()))
-				}
-				_ => return Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone()))
-			}
+					None => {
+						return Err(ParseError::UnknownConditionArg(
+							name.to_owned(),
+							pos.clone(),
+						))
+					}
+				},
+				_ => return Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone())),
+			},
 			Self::Modloader(loader) => match tok {
 				Token::Ident(name) => match ModloaderMatch::from_str(name) {
 					Some(kind) => *loader = Some(kind),
-					None => return Err(ParseError::UnknownConditionArg(name.to_owned(), pos.clone()))
-				}
-				_ => return Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone()))
-			}
+					None => {
+						return Err(ParseError::UnknownConditionArg(
+							name.to_owned(),
+							pos.clone(),
+						))
+					}
+				},
+				_ => return Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone())),
+			},
 			Self::PluginLoader(loader) => match tok {
 				Token::Ident(name) => match PluginLoaderMatch::from_str(name) {
 					Some(kind) => *loader = Some(kind),
-					None => return Err(ParseError::UnknownConditionArg(name.to_owned(), pos.clone()))
-				}
-				_ => return Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone()))
-			}
+					None => {
+						return Err(ParseError::UnknownConditionArg(
+							name.to_owned(),
+							pos.clone(),
+						))
+					}
+				},
+				_ => return Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone())),
+			},
 			Self::Value(left, right) => match left {
 				Value::None => *left = parse_arg(tok, pos)?,
-				_ => *right = parse_arg(tok, pos)?
-			}
+				_ => *right = parse_arg(tok, pos)?,
+			},
 		}
 		Ok(())
 	}
 
-	pub fn eval(&self, eval: &EvalData)
-	-> Result<bool, EvalError> {
+	pub fn eval(&self, eval: &EvalData) -> Result<bool, EvalError> {
 		match self {
-			Self::Not(condition) => {
-				condition.as_ref().expect("Not condition is missing").eval(eval).map(|op| !op)
-			}
+			Self::Not(condition) => condition
+				.as_ref()
+				.expect("Not condition is missing")
+				.eval(eval)
+				.map(|op| !op),
 			Self::Version(version) => {
 				let version = version.get(&eval.vars)?;
 				let version = VersionPattern::from(&version);
@@ -92,34 +109,32 @@ impl ConditionKind {
 			Self::Side(side) => {
 				Ok(eval.constants.side == *side.as_ref().expect("If side is missing"))
 			}
-			Self::Modloader(loader) => {
-				Ok(loader.as_ref().expect("If modloader is missing").matches(&eval.constants.modloader))
-			}
-			Self::PluginLoader(loader) => {
-				Ok(loader.as_ref().expect("If plugin_loader is missing").matches(&eval.constants.plugin_loader))
-			}
+			Self::Modloader(loader) => Ok(loader
+				.as_ref()
+				.expect("If modloader is missing")
+				.matches(&eval.constants.modloader)),
+			Self::PluginLoader(loader) => Ok(loader
+				.as_ref()
+				.expect("If plugin_loader is missing")
+				.matches(&eval.constants.plugin_loader)),
 			Self::Feature(feature) => {
 				Ok(eval.constants.features.contains(&feature.get(&eval.vars)?))
 			}
-			Self::Value(left, right) => {
-				Ok(left.get(&eval.vars)? == right.get(&eval.vars)?)
-			}
+			Self::Value(left, right) => Ok(left.get(&eval.vars)? == right.get(&eval.vars)?),
 		}
 	}
 }
 
 #[derive(Debug, Clone)]
 pub struct Condition {
-	pub kind: ConditionKind
+	pub kind: ConditionKind,
 }
 
 impl Condition {
 	pub fn new(kind: ConditionKind) -> Self {
-		Self {
-			kind
-		}
+		Self { kind }
 	}
-	
+
 	pub fn parse(&mut self, tok: &Token, pos: &TextPos) -> Result<(), ParseError> {
 		self.kind.parse(tok, pos)?;
 		Ok(())

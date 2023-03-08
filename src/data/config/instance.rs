@@ -1,27 +1,26 @@
 use serde::Deserialize;
 use serde_json::Value;
 
-use crate::data::profile::Profile;
-use crate::data::instance::{Instance, InstKind};
 use crate::data::instance::launch::LaunchOptions;
-use crate::io::java::JavaKind;
+use crate::data::instance::{InstKind, Instance};
+use crate::data::profile::Profile;
 use crate::io::java::args::MemoryNum;
+use crate::io::java::JavaKind;
 
 use super::{ConfigError, ContentError};
-
 
 #[derive(Deserialize, Debug)]
 #[serde(untagged)]
 pub enum Args {
 	List(Vec<String>),
-	String(String)
+	String(String),
 }
 
 impl Args {
 	pub fn parse(&self) -> Vec<String> {
 		match self {
 			Self::List(vec) => vec.clone(),
-			Self::String(string) => string.split(' ').map(|string| string.to_owned()).collect()
+			Self::String(string) => string.split(' ').map(|string| string.to_owned()).collect(),
 		}
 	}
 }
@@ -37,7 +36,7 @@ pub struct LaunchArgs {
 	#[serde(default)]
 	pub jvm: Args,
 	#[serde(default)]
-	pub game: Args
+	pub game: Args,
 }
 
 #[derive(Deserialize, Debug, Default)]
@@ -46,7 +45,10 @@ pub enum LaunchMemory {
 	#[default]
 	None,
 	Single(String),
-	Both { init: String, max: String }
+	Both {
+		init: String,
+		max: String,
+	},
 }
 
 fn default_java() -> String {
@@ -60,7 +62,7 @@ pub struct LaunchConfig {
 	#[serde(default)]
 	pub memory: LaunchMemory,
 	#[serde(default = "default_java")]
-	pub java: String
+	pub java: String,
 }
 
 impl LaunchConfig {
@@ -68,19 +70,19 @@ impl LaunchConfig {
 		let init_mem = match &self.memory {
 			LaunchMemory::None => None,
 			LaunchMemory::Single(string) => MemoryNum::from_str(&string),
-			LaunchMemory::Both{init, ..} => MemoryNum::from_str(&init)
+			LaunchMemory::Both { init, .. } => MemoryNum::from_str(&init),
 		};
 		let max_mem = match &self.memory {
 			LaunchMemory::None => None,
 			LaunchMemory::Single(string) => MemoryNum::from_str(&string),
-			LaunchMemory::Both{max, ..} => MemoryNum::from_str(&max)
+			LaunchMemory::Both { max, .. } => MemoryNum::from_str(&max),
 		};
 		LaunchOptions {
 			jvm_args: self.args.jvm.parse(),
 			game_args: self.args.game.parse(),
 			init_mem,
 			max_mem,
-			java: JavaKind::from_str(&self.java)
+			java: JavaKind::from_str(&self.java),
 		}
 	}
 }
@@ -93,7 +95,7 @@ impl Default for LaunchConfig {
 				game: Args::default(),
 			},
 			memory: LaunchMemory::default(),
-			java: default_java()
+			java: default_java(),
 		}
 	}
 }
@@ -103,15 +105,19 @@ struct InstanceConfig {
 	#[serde(rename = "type")]
 	kind: String,
 	#[serde(default)]
-	launch: LaunchConfig
+	launch: LaunchConfig,
 }
 
-pub fn parse_instance_config(id: &str, val: &Value, profile: &Profile) -> Result<Instance, ConfigError> {
+pub fn parse_instance_config(
+	id: &str,
+	val: &Value,
+	profile: &Profile,
+) -> Result<Instance, ConfigError> {
 	let config = serde_json::from_value::<InstanceConfig>(val.clone())?;
 	let kind = match config.kind.as_str() {
 		"client" => Ok(InstKind::Client),
 		"server" => Ok(InstKind::Server),
-		typ => Err(ContentError::InstType(typ.to_string(), id.to_owned()))
+		typ => Err(ContentError::InstType(typ.to_string(), id.to_owned())),
 	}?;
 
 	let instance = Instance::new(
@@ -120,7 +126,7 @@ pub fn parse_instance_config(id: &str, val: &Value, profile: &Profile) -> Result
 		&profile.version,
 		profile.modloader.clone(),
 		profile.plugin_loader.clone(),
-		config.launch.to_options()
+		config.launch.to_options(),
 	);
 
 	Ok(instance)

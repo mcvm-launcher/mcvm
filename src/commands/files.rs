@@ -24,8 +24,7 @@ pub fn remove(data: &mut CmdData) -> Result<(), CmdError> {
 	Ok(())
 }
 
-pub fn run(argc: usize, argv: &[String], data: &mut CmdData)
--> Result<(), CmdError> {
+pub fn run(argc: usize, argv: &[String], data: &mut CmdData) -> Result<(), CmdError> {
 	if argc == 0 {
 		help();
 		return Ok(());
@@ -33,7 +32,7 @@ pub fn run(argc: usize, argv: &[String], data: &mut CmdData)
 
 	match argv[0].as_str() {
 		"remove" => remove(data)?,
-		cmd => cprintln!("<r>Unknown subcommand {}", cmd)
+		cmd => cprintln!("<r>Unknown subcommand {}", cmd),
 	}
 
 	Ok(())

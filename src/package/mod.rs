@@ -1,12 +1,12 @@
 pub mod eval;
-pub mod repo;
 pub mod reg;
+pub mod repo;
 
 use crate::io::files::{self, paths::Paths};
 use crate::net::download::{Download, DownloadError};
 
-use std::path::PathBuf;
 use std::fs;
+use std::path::PathBuf;
 
 use self::eval::eval::{EvalError, EvalPermissions};
 use self::eval::parse::{ParseError, Parsed};
@@ -26,21 +26,21 @@ pub enum PkgError {
 	#[error("Failed to parse package:\n{}", .0)]
 	Parse(#[from] ParseError),
 	#[error("Failed to evaluate package:\n{}", .0)]
-	Eval(#[from] EvalError)
+	Eval(#[from] EvalError),
 }
 
 // Data pertaining to the contents of a package
 #[derive(Debug)]
 pub struct PkgData {
 	contents: String,
-	parsed: Option<Parsed>
+	parsed: Option<Parsed>,
 }
 
 impl PkgData {
 	pub fn new(contents: &str) -> Self {
 		Self {
 			contents: contents.to_owned(),
-			parsed: None
+			parsed: None,
 		}
 	}
 
@@ -52,8 +52,8 @@ impl PkgData {
 // Type of a package
 #[derive(Debug, Clone)]
 pub enum PkgKind {
-	Local(PathBuf), // Contained on the local filesystem
-	Remote(Option<String>) // Contained on an external repository
+	Local(PathBuf),         // Contained on the local filesystem
+	Remote(Option<String>), // Contained on an external repository
 }
 
 // An installable package that loads content into your game
@@ -61,7 +61,7 @@ pub enum PkgKind {
 pub struct Package {
 	pub id: PkgIdentifier,
 	pub kind: PkgKind,
-	pub data: Option<PkgData>
+	pub data: Option<PkgData>,
 }
 
 impl Package {
@@ -69,7 +69,7 @@ impl Package {
 		Self {
 			id: PkgIdentifier::new(name, version),
 			kind,
-			data: None
+			data: None,
 		}
 	}
 
@@ -77,7 +77,7 @@ impl Package {
 	pub fn filename(&self) -> String {
 		self.id.name.clone() + "_" + &self.id.version + PKG_EXTENSION
 	}
-	
+
 	// Get the cached path of the package
 	pub fn cached_path(&self, paths: &Paths) -> PathBuf {
 		let cache_dir = paths.project.cache_dir().join("pkg");
@@ -129,10 +129,16 @@ mod tests {
 	#[test]
 	fn test_package_name() {
 		let package = Package::new("sodium", "latest", PkgKind::Remote(None));
-		assert_eq!(package.filename(), "sodium_latest".to_owned() + PKG_EXTENSION);
+		assert_eq!(
+			package.filename(),
+			"sodium_latest".to_owned() + PKG_EXTENSION
+		);
 
 		let package = Package::new("fabriclike-api", "1.3.2", PkgKind::Remote(None));
-		assert_eq!(package.filename(), "fabriclike-api_1.3.2".to_owned() + PKG_EXTENSION);
+		assert_eq!(
+			package.filename(),
+			"fabriclike-api_1.3.2".to_owned() + PKG_EXTENSION
+		);
 	}
 }
 
@@ -141,5 +147,5 @@ mod tests {
 pub struct PkgConfig {
 	pub req: PkgRequest,
 	pub features: Vec<String>,
-	pub permissions: EvalPermissions
+	pub permissions: EvalPermissions,
 }

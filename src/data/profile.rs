@@ -16,18 +16,23 @@ pub struct Profile {
 	pub instances: Vec<String>,
 	pub packages: Vec<PkgConfig>,
 	pub modloader: Modloader,
-	pub plugin_loader: PluginLoader
+	pub plugin_loader: PluginLoader,
 }
 
 impl Profile {
-	pub fn new(name: &str, version: &str, modloader: Modloader, plugin_loader: PluginLoader) -> Self {
+	pub fn new(
+		name: &str,
+		version: &str,
+		modloader: Modloader,
+		plugin_loader: PluginLoader,
+	) -> Self {
 		Profile {
 			name: name.to_owned(),
 			version: version.to_owned(),
 			instances: Vec::new(),
 			packages: Vec::new(),
 			modloader,
-			plugin_loader
+			plugin_loader,
 		}
 	}
 
@@ -41,11 +46,13 @@ impl Profile {
 		version_manifest: &json::JsonObject,
 		paths: &Paths,
 		verbose: bool,
-		force: bool
+		force: bool,
 	) -> Result<(), CreateError> {
 		for id in self.instances.iter_mut() {
 			let instance = reg.get_mut(id).expect("Profile has unknown instance");
-			instance.create(version_manifest, paths, verbose, force).await?;
+			instance
+				.create(version_manifest, paths, verbose, force)
+				.await?;
 		}
 		Ok(())
 	}

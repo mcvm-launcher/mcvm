@@ -9,7 +9,7 @@ pub struct ReplPrinter {
 	chars_written: usize,
 	finished: bool,
 	verbose: bool,
-	indent: usize
+	indent: usize,
 }
 
 impl ReplPrinter {
@@ -19,7 +19,7 @@ impl ReplPrinter {
 			chars_written: 0,
 			finished: false,
 			verbose,
-			indent: 0
+			indent: 0,
 		}
 	}
 

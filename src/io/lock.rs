@@ -1,9 +1,9 @@
 use std::collections::HashMap;
 use std::fs::{self, File};
-use std::path::PathBuf;
 use std::io::{Read, Write};
+use std::path::PathBuf;
 
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 use crate::data::addon::{Addon, AddonKind};
 use crate::package::reg::PkgIdentifier;
@@ -17,14 +17,14 @@ pub enum LockfileError {
 	#[error("Failed to parse json:\n{}", .0)]
 	SerdeJson(#[from] serde_json::Error),
 	#[error("Unknown addon kind '{}' in addon '{}'", .0, .1)]
-	AddonKind(String, String)
+	AddonKind(String, String),
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Clone)]
 pub struct LockfileAddon {
 	name: String,
 	files: Vec<String>,
-	kind: String
+	kind: String,
 }
 
 impl LockfileAddon {
@@ -32,23 +32,26 @@ impl LockfileAddon {
 	pub fn from_addon(addon: &Addon, paths: &Paths) -> Self {
 		Self {
 			name: addon.name.clone(),
-			files: vec![
-				addon.get_path(paths).to_str()
-					.expect("Failed to convert addon path to a string").to_owned()
-			],
-			kind: addon.kind.to_string()
+			files: vec![addon
+				.get_path(paths)
+				.to_str()
+				.expect("Failed to convert addon path to a string")
+				.to_owned()],
+			kind: addon.kind.to_string(),
 		}
 	}
 
 	pub fn to_addon(&self, id: PkgIdentifier) -> Result<Addon, LockfileError> {
 		Ok(Addon {
-			kind: AddonKind::from_str(&self.kind)
-				.ok_or(LockfileError::AddonKind(self.kind.clone(), self.name.clone()))?,
+			kind: AddonKind::from_str(&self.kind).ok_or(LockfileError::AddonKind(
+				self.kind.clone(),
+				self.name.clone(),
+			))?,
 			name: self.name.clone(),
-			id
+			id,
 		})
 	}
-	
+
 	pub fn _remove(&self) -> Result<(), LockfileError> {
 		for file in self.files.iter() {
 			let path = PathBuf::from(file);
@@ -56,7 +59,7 @@ impl LockfileAddon {
 				fs::remove_file(path)?;
 			}
 		}
-		
+
 		Ok(())
 	}
 }
@@ -64,13 +67,13 @@ impl LockfileAddon {
 #[derive(Serialize, Deserialize)]
 pub struct LockfilePackage {
 	version: String,
-	addons: Vec<LockfileAddon>
+	addons: Vec<LockfileAddon>,
 }
 
 #[derive(Serialize, Deserialize)]
 struct LockfileProfile {
 	version: String,
-	paper_build: Option<u16>
+	paper_build: Option<u16>,
 }
 
 #[derive(Serialize, Deserialize, Default)]
@@ -79,12 +82,12 @@ struct LockfileContents {
 	#[serde(default)]
 	packages: HashMap<String, HashMap<String, LockfilePackage>>,
 	#[serde(default)]
-	profiles: HashMap<String, LockfileProfile>
+	profiles: HashMap<String, LockfileProfile>,
 }
 
 // A file that remembers what files and packages are currently installed
 pub struct Lockfile {
-	contents: LockfileContents
+	contents: LockfileContents,
 }
 
 impl Lockfile {
@@ -98,9 +101,7 @@ impl Lockfile {
 		} else {
 			LockfileContents::default()
 		};
-		Ok(Self {
-			contents
-		})
+		Ok(Self { contents })
 	}
 
 	pub fn get_path(paths: &Paths) -> PathBuf {
@@ -112,13 +113,18 @@ impl Lockfile {
 		let out = serde_json::to_string_pretty(&self.contents)?;
 		let mut file = File::create(Self::get_path(paths))?;
 		file.write_all(out.as_bytes())?;
-		
+
 		Ok(())
 	}
 
 	// Updates a package with a new version
-	pub fn update_package(&mut self, name: &str, instance: &str, version: &str, addons: &[LockfileAddon])
-	-> Result<Vec<String>, LockfileError> {
+	pub fn update_package(
+		&mut self,
+		name: &str,
+		instance: &str,
+		version: &str,
+		addons: &[LockfileAddon],
+	) -> Result<Vec<String>, LockfileError> {
 		let mut addons_to_remove = Vec::new();
 		if let Some(instance) = self.contents.packages.get_mut(instance) {
 			if let Some(pkg) = instance.get_mut(name) {
@@ -139,21 +145,26 @@ impl Lockfile {
 					name.to_owned(),
 					LockfilePackage {
 						version: version.to_owned(),
-						addons: addons.to_vec()
-					}
+						addons: addons.to_vec(),
+					},
 				);
 			}
 		} else {
-			self.contents.packages.insert(instance.to_owned(), HashMap::new());
+			self.contents
+				.packages
+				.insert(instance.to_owned(), HashMap::new());
 			self.update_package(name, instance, version, addons)?;
 		}
-		
+
 		Ok(addons_to_remove)
 	}
 
 	// Remove any unused packages for an instance. Returns any addons that need to be removed from the instance
-	pub fn remove_unused_packages(&mut self, instance: &str, used_packages: &[String])
-	-> Result<Vec<Addon>, LockfileError> {
+	pub fn remove_unused_packages(
+		&mut self,
+		instance: &str,
+		used_packages: &[String],
+	) -> Result<Vec<Addon>, LockfileError> {
 		if let Some(inst) = self.contents.packages.get_mut(instance) {
 			let mut pkgs_to_remove = Vec::new();
 			for (pkg, ..) in inst.iter() {
@@ -166,7 +177,10 @@ impl Lockfile {
 			for pkg_id in pkgs_to_remove {
 				if let Some(pkg) = inst.remove(&pkg_id) {
 					for addon in pkg.addons {
-						let id = PkgIdentifier { name: pkg_id.clone(), version: pkg.version.clone() };
+						let id = PkgIdentifier {
+							name: pkg_id.clone(),
+							version: pkg.version.clone(),
+						};
 						addons_to_remove.push(addon.to_addon(id)?);
 					}
 				}
@@ -192,8 +206,8 @@ impl Lockfile {
 				profile.to_owned(),
 				LockfileProfile {
 					version: version.to_owned(),
-					paper_build: None
-				}
+					paper_build: None,
+				},
 			);
 
 			false

@@ -1,10 +1,10 @@
-use std::fmt::{Display, Debug};
+use std::fmt::{Debug, Display};
 
 // Generic side for something like a bracket
 #[derive(Debug, PartialEq, Clone)]
 pub enum Side {
 	Left,
-	Right
+	Right,
 }
 
 #[derive(Debug, PartialEq, Clone)]
@@ -23,7 +23,7 @@ pub enum Token {
 	Ident(String),
 	Num(i64),
 	Str(String),
-	Routine
+	Routine,
 }
 
 impl Token {
@@ -46,7 +46,7 @@ impl Token {
 			Token::Ident(name) => name.clone(),
 			Token::Num(num) => num.to_string(),
 			Token::Str(string) => format!("\"{string}\""),
-			Token::Routine => String::from("@")
+			Token::Routine => String::from("@"),
 		}
 	}
 }
@@ -55,7 +55,7 @@ impl Token {
 #[derive(Clone)]
 pub struct TextPos {
 	pub row: usize,
-	pub col: usize
+	pub col: usize,
 }
 
 impl Debug for TextPos {
@@ -75,14 +75,14 @@ pub enum LexError {
 	#[error("Unexpected character '{}' at {}", .0, .1)]
 	Unexpected(char, TextPos),
 	#[error("Invalid number '{}' '{}'", .0, .1)]
-	InvalidNumber(String, TextPos)
+	InvalidNumber(String, TextPos),
 }
 
 #[derive(Debug, PartialEq)]
 enum StrLexResult {
 	Append,
 	Escape,
-	End
+	End,
 }
 
 fn lex_string_char(c: char, escape: bool) -> StrLexResult {
@@ -92,7 +92,7 @@ fn lex_string_char(c: char, escape: bool) -> StrLexResult {
 		match c {
 			'"' => StrLexResult::End,
 			'\\' => StrLexResult::Escape,
-			_ => StrLexResult::Append
+			_ => StrLexResult::Append,
 		}
 	}
 }
@@ -132,7 +132,10 @@ pub fn lex(text: &str) -> Result<Vec<(Token, TextPos)>, LexError> {
 	let mut num_str = String::new();
 
 	for (i, c) in text.chars().enumerate() {
-		let pos = TextPos {row: line_n, col: i - last_line_i};
+		let pos = TextPos {
+			row: line_n,
+			col: i - last_line_i,
+		};
 		if c == '\n' {
 			line_n += 1;
 			last_line_i = i;
@@ -142,77 +145,73 @@ pub fn lex(text: &str) -> Result<Vec<(Token, TextPos)>, LexError> {
 		loop {
 			let mut repeat = false;
 			match &mut tok {
-				Token::None => {
-					match c {
-						';' => {
-							tok = Token::Semicolon;
-							tok_finished = true;
-						}
-						':' => {
-							tok = Token::Colon;
-							tok_finished = true;
-						}
-						',' => {
-							tok = Token::Comma;
-							tok_finished = true;
-						}
-						'|' => {
-							tok = Token::Pipe;
-							tok_finished = true;
-						}
-						'{' => {
-							tok = Token::Curly(Side::Left);
-							tok_finished = true;
-						}
-						'}' => {
-							tok = Token::Curly(Side::Right);
-							tok_finished = true;
-						}
-						'[' => {
-							tok = Token::Square(Side::Left);
-							tok_finished = true;
-						}
-						']' => {
-							tok = Token::Square(Side::Right);
-							tok_finished = true;
-						}
-						'(' => {
-							tok = Token::Paren(Side::Left);
-							tok_finished = true;
-						}
-						')' => {
-							tok = Token::Paren(Side::Right);
-							tok_finished = true;
-						}
-						'@' => {
-							tok = Token::Routine;
-							tok_finished = true;
-						}
-						'"' => tok = Token::Str(String::new()),
-						'#' => tok = Token::Comment(String::new()),
-						'$' => tok = Token::Variable(String::new()),
-						c if is_whitespace(c) => tok = Token::Whitespace,
-						c if is_num(c, true) => {
-							tok = Token::Num(0);
-							num_str = String::from(c);
-						}
-						c if is_ident(c, true) => tok = Token::Ident(String::from(c)),
-						_ => return Err(LexError::Unexpected(c, pos))
+				Token::None => match c {
+					';' => {
+						tok = Token::Semicolon;
+						tok_finished = true;
 					}
-				}
-				Token::Str(string) => {
-					match lex_string_char(c, escape) {
-						StrLexResult::Append => {
-							string.push(c);
-							escape = false;
-						}
-						StrLexResult::Escape => escape = true,
-						StrLexResult::End => {
-							tok_finished = true;
-							escape = false;
-						}
+					':' => {
+						tok = Token::Colon;
+						tok_finished = true;
 					}
-				}
+					',' => {
+						tok = Token::Comma;
+						tok_finished = true;
+					}
+					'|' => {
+						tok = Token::Pipe;
+						tok_finished = true;
+					}
+					'{' => {
+						tok = Token::Curly(Side::Left);
+						tok_finished = true;
+					}
+					'}' => {
+						tok = Token::Curly(Side::Right);
+						tok_finished = true;
+					}
+					'[' => {
+						tok = Token::Square(Side::Left);
+						tok_finished = true;
+					}
+					']' => {
+						tok = Token::Square(Side::Right);
+						tok_finished = true;
+					}
+					'(' => {
+						tok = Token::Paren(Side::Left);
+						tok_finished = true;
+					}
+					')' => {
+						tok = Token::Paren(Side::Right);
+						tok_finished = true;
+					}
+					'@' => {
+						tok = Token::Routine;
+						tok_finished = true;
+					}
+					'"' => tok = Token::Str(String::new()),
+					'#' => tok = Token::Comment(String::new()),
+					'$' => tok = Token::Variable(String::new()),
+					c if is_whitespace(c) => tok = Token::Whitespace,
+					c if is_num(c, true) => {
+						tok = Token::Num(0);
+						num_str = String::from(c);
+					}
+					c if is_ident(c, true) => tok = Token::Ident(String::from(c)),
+					_ => return Err(LexError::Unexpected(c, pos)),
+				},
+				Token::Str(string) => match lex_string_char(c, escape) {
+					StrLexResult::Append => {
+						string.push(c);
+						escape = false;
+					}
+					StrLexResult::Escape => escape = true,
+					StrLexResult::End => {
+						tok_finished = true;
+						escape = false;
+					}
+				},
 				Token::Comment(string) => {
 					if c == '\n' {
 						tok_finished = true;
@@ -226,7 +225,7 @@ pub fn lex(text: &str) -> Result<Vec<(Token, TextPos)>, LexError> {
 					} else {
 						is_ident(c, false)
 					};
-					
+
 					if allowed {
 						name.push(c);
 					} else {
@@ -276,14 +275,17 @@ pub fn lex(text: &str) -> Result<Vec<(Token, TextPos)>, LexError> {
 			tok = Token::None;
 		}
 	}
-	let final_pos = TextPos {row: line_n, col: text.len() - last_line_i};
+	let final_pos = TextPos {
+		row: line_n,
+		col: text.len() - last_line_i,
+	};
 	match &mut tok {
 		Token::Num(num) => {
 			*num = num_str.parse().expect("Number contains invalid characters");
 			tokens.push((tok, final_pos));
 		}
 		Token::None => {}
-		_ => tokens.push((tok, final_pos))
+		_ => tokens.push((tok, final_pos)),
 	}
 	Ok(tokens)
 }
@@ -294,7 +296,7 @@ pub fn reduce_tokens(tokens: &[(Token, TextPos)]) -> Vec<(Token, TextPos)> {
 	for (tok, pos) in tokens.iter().cloned() {
 		match tok {
 			Token::Comment(..) | Token::Whitespace | Token::None => {}
-			_ => out.push((tok, pos.clone()))
+			_ => out.push((tok, pos.clone())),
 		}
 	}
 	out
@@ -304,7 +306,7 @@ pub fn reduce_tokens(tokens: &[(Token, TextPos)]) -> Vec<(Token, TextPos)> {
 mod tests {
 	use super::*;
 	use color_print::cprintln;
-	
+
 	macro_rules! assert_tokens {
 		($text:literal, $toks:expr) => {
 			assert_tokens!(lex($text), $toks)
@@ -325,7 +327,7 @@ mod tests {
 			};
 		};
 	}
-	
+
 	#[test]
 	fn test_chars() {
 		assert!(is_ident('a', false));
@@ -355,13 +357,7 @@ mod tests {
 
 	#[test]
 	fn test_semicolon() {
-		assert_tokens!(
-			";;",
-			vec![
-				Token::Semicolon,
-				Token::Semicolon
-			]
-		);
+		assert_tokens!(";;", vec![Token::Semicolon, Token::Semicolon]);
 	}
 
 	#[test]
@@ -376,12 +372,7 @@ mod tests {
 
 	#[test]
 	fn test_string() {
-		assert_tokens!(
-			"\"Hello\"",
-			vec![
-				Token::Str(String::from("Hello"))
-			]
-		);
+		assert_tokens!("\"Hello\"", vec![Token::Str(String::from("Hello"))]);
 	}
 
 	#[test]

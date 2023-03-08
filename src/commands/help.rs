@@ -9,7 +9,10 @@ pub fn main_help() {
 	cprintln!();
 	cprintln!("<s>Commands:");
 	cprintln!("{}<i,c>help:</i,c> show this message", HYPHEN_POINT);
-	cprintln!("{}<i,c>version:</i,c> show mcvm's current version", HYPHEN_POINT);
+	cprintln!(
+		"{}<i,c>version:</i,c> show mcvm's current version",
+		HYPHEN_POINT
+	);
 	cprintln!("{}<i,c>profile:</i,c> modify profiles", HYPHEN_POINT);
 	cprintln!("{}<i,c>user:</i,c> modify users", HYPHEN_POINT);
 	cprintln!("{}<i,c>launch:</i,c> play the game", HYPHEN_POINT);
@@ -22,8 +25,7 @@ pub fn help() {
 	cprintln!("<s>Usage:</s> mcvm help <k!>[subcommand]</k!>");
 }
 
-pub fn run(argc: usize, argv: &[String], _data: &mut CmdData)
--> Result<(), CmdError> {
+pub fn run(argc: usize, argv: &[String], _data: &mut CmdData) -> Result<(), CmdError> {
 	match argc {
 		0 => main_help(),
 		_ => {
@@ -32,8 +34,8 @@ pub fn run(argc: usize, argv: &[String], _data: &mut CmdData)
 				Some(cmd) => {
 					cprintln!("<b>Help for command {}:", cmd_name);
 					cmd.help();
-				},
-				None => cprintln!("<r>Help: Unknown subcommand {}", cmd_name)
+				}
+				None => cprintln!("<r>Help: Unknown subcommand {}", cmd_name),
 			}
 		}
 	}

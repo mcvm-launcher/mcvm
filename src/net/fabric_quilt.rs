@@ -28,46 +28,46 @@ pub enum FabricError {
 	#[error("Failed to join task:\n{}", .0)]
 	Join(#[from] tokio::task::JoinError),
 	#[error("No compatible modloader version found")]
-	NoneFound
+	NoneFound,
 }
 
 #[derive(Deserialize, Clone)]
 pub struct QuiltLibrary {
 	name: String,
-	url: String
+	url: String,
 }
 
 #[derive(Deserialize)]
 pub struct QuiltLibraries {
 	common: Vec<QuiltLibrary>,
 	client: Vec<QuiltLibrary>,
-	server: Vec<QuiltLibrary>
+	server: Vec<QuiltLibrary>,
 }
 
 #[derive(Deserialize)]
 pub struct MainClass {
 	pub client: String,
-	pub server: String
+	pub server: String,
 }
 
 #[derive(Deserialize)]
 pub struct LauncherMeta {
 	libraries: QuiltLibraries,
 	#[serde(rename = "mainClass")]
-	pub main_class: MainClass
+	pub main_class: MainClass,
 }
 
 #[derive(Deserialize)]
 pub struct QuiltMeta {
 	#[serde(rename = "launcherMeta")]
-	pub launcher_meta: LauncherMeta
+	pub launcher_meta: LauncherMeta,
 }
 
 #[derive(Debug, PartialEq)]
 struct LibraryParts {
 	orgs: Vec<String>,
 	package: String,
-	version: String
+	version: String,
 }
 
 impl LibraryParts {
@@ -76,7 +76,11 @@ impl LibraryParts {
 		let orgs: Vec<String> = parts.nth(0)?.split('.').map(|x| x.to_owned()).collect();
 		let package = parts.nth(0)?.to_owned();
 		let version = parts.nth(0)?.to_owned();
-		Some(Self {orgs, package, version})
+		Some(Self {
+			orgs,
+			package,
+			version,
+		})
 	}
 }
 
@@ -98,8 +102,8 @@ fn get_lib_path(name: &str) -> Option<String> {
 		url.push_str(&org);
 		url.push('/');
 	}
-	url.push_str(
-		&format!("{package}/{version}/{package}-{version}.jar",
+	url.push_str(&format!(
+		"{package}/{version}/{package}-{version}.jar",
 		package = parts.package,
 		version = parts.version
 	));
@@ -107,8 +111,12 @@ fn get_lib_path(name: &str) -> Option<String> {
 	Some(url)
 }
 
-pub async fn download_quilt_libraries(libs: &[QuiltLibrary], paths: &Paths, verbose: bool, force: bool)
--> Result<String, FabricError> {
+pub async fn download_quilt_libraries(
+	libs: &[QuiltLibrary],
+	paths: &Paths,
+	verbose: bool,
+	force: bool,
+) -> Result<String, FabricError> {
 	let mut classpath = String::new();
 	let mut printer = ReplPrinter::new(verbose);
 	printer.indent(1);
@@ -139,28 +147,30 @@ pub async fn download_quilt_files(
 	paths: &Paths,
 	side: InstKind,
 	verbose: bool,
-	force: bool
+	force: bool,
 ) -> Result<String, FabricError> {
 	let mut classpath = String::new();
 	let libs = meta.launcher_meta.libraries.common.clone();
 	let paths_clone = paths.clone();
-	let common_task = tokio::spawn(async move {
-		download_quilt_libraries(&libs, &paths_clone, verbose, force).await
-	});
-	
+	let common_task =
+		tokio::spawn(
+			async move { download_quilt_libraries(&libs, &paths_clone, verbose, force).await },
+		);
+
 	let libs = match side {
 		InstKind::Client => meta.launcher_meta.libraries.client.clone(),
-		InstKind::Server => meta.launcher_meta.libraries.server.clone()
+		InstKind::Server => meta.launcher_meta.libraries.server.clone(),
 	};
 	let paths_clone = paths.clone();
-	let side_task = tokio::spawn(async move {
-		download_quilt_libraries(&libs, &paths_clone, verbose, force).await
-	});
+	let side_task =
+		tokio::spawn(
+			async move { download_quilt_libraries(&libs, &paths_clone, verbose, force).await },
+		);
 
 	classpath.push_str(&common_task.await??);
 	classpath.push_str(&side_task.await??);
 	println!("{classpath}");
-	
+
 	Ok(classpath)
 }
 
@@ -171,9 +181,14 @@ mod tests {
 	#[test]
 	fn test_library_destructuring() {
 		assert_eq!(
-			LibraryParts::from_str("foo.bar.baz:hel.lo:wo.rld").expect("Parts did not parse correctly"),
+			LibraryParts::from_str("foo.bar.baz:hel.lo:wo.rld")
+				.expect("Parts did not parse correctly"),
 			LibraryParts {
-				orgs: vec![String::from("foo"), String::from("bar"), String::from("baz")],
+				orgs: vec![
+					String::from("foo"),
+					String::from("bar"),
+					String::from("baz")
+				],
 				package: String::from("hel.lo"),
 				version: String::from("wo.rld")
 			}

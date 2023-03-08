@@ -10,7 +10,7 @@ pub enum JsonType {
 	Bool,
 	Str,
 	Arr,
-	Obj
+	Obj,
 }
 
 impl std::fmt::Display for JsonType {
@@ -21,7 +21,7 @@ impl std::fmt::Display for JsonType {
 			JsonType::Bool => write!(f, "Bool"),
 			JsonType::Str => write!(f, "String"),
 			JsonType::Arr => write!(f, "Array"),
-			JsonType::Obj => write!(f, "Object")
+			JsonType::Obj => write!(f, "Object"),
 		}
 	}
 }
@@ -37,7 +37,7 @@ pub enum JsonError {
 	#[error("Value was expected to be of type {:?}", .0)]
 	Type(Vec<JsonType>),
 	#[error("Array index [{}] out of range [{}]", .0, .1)]
-	_Index(usize, usize)
+	_Index(usize, usize),
 }
 
 pub fn parse_json(contents: &str) -> Result<Box<Value>, JsonError> {
@@ -55,9 +55,9 @@ pub fn access_i64(obj: &JsonObject, key: &str) -> Result<i64, JsonError> {
 	match obj.get(key) {
 		Some(val) => match val.as_i64() {
 			Some(val) => Ok(val),
-			None => Err(JsonError::KeyType(key.to_string(), JsonType::Int))
+			None => Err(JsonError::KeyType(key.to_string(), JsonType::Int)),
 		},
-		None => Err(JsonError::Key(key.to_string()))
+		None => Err(JsonError::Key(key.to_string())),
 	}
 }
 
@@ -65,9 +65,9 @@ pub fn _access_f64(obj: &JsonObject, key: &str) -> Result<f64, JsonError> {
 	match obj.get(key) {
 		Some(val) => match val.as_f64() {
 			Some(val) => Ok(val),
-			None => Err(JsonError::KeyType(key.to_string(), JsonType::Float))
+			None => Err(JsonError::KeyType(key.to_string(), JsonType::Float)),
 		},
-		None => Err(JsonError::Key(key.to_string()))
+		None => Err(JsonError::Key(key.to_string())),
 	}
 }
 
@@ -75,9 +75,9 @@ pub fn _access_bool(obj: &JsonObject, key: &str) -> Result<bool, JsonError> {
 	match obj.get(key) {
 		Some(val) => match val.as_bool() {
 			Some(val) => Ok(val),
-			None => Err(JsonError::KeyType(key.to_string(), JsonType::Bool))
+			None => Err(JsonError::KeyType(key.to_string(), JsonType::Bool)),
 		},
-		None => Err(JsonError::Key(key.to_string()))
+		None => Err(JsonError::Key(key.to_string())),
 	}
 }
 
@@ -85,9 +85,9 @@ pub fn access_str<'a>(obj: &'a JsonObject, key: &str) -> Result<&'a str, JsonErr
 	match obj.get(key) {
 		Some(val) => match val.as_str() {
 			Some(val) => Ok(val),
-			None => Err(JsonError::KeyType(key.to_string(), JsonType::Str))
+			None => Err(JsonError::KeyType(key.to_string(), JsonType::Str)),
 		},
-		None => Err(JsonError::Key(key.to_string()))
+		None => Err(JsonError::Key(key.to_string())),
 	}
 }
 
@@ -95,9 +95,9 @@ pub fn access_array<'a>(obj: &'a JsonObject, key: &str) -> Result<&'a Vec<Value>
 	match obj.get(key) {
 		Some(val) => match val.as_array() {
 			Some(val) => Ok(val),
-			None => Err(JsonError::KeyType(key.to_string(), JsonType::Arr))
+			None => Err(JsonError::KeyType(key.to_string(), JsonType::Arr)),
 		},
-		None => Err(JsonError::Key(key.to_string()))
+		None => Err(JsonError::Key(key.to_string())),
 	}
 }
 
@@ -105,9 +105,9 @@ pub fn access_object<'a>(obj: &'a JsonObject, key: &str) -> Result<&'a JsonObjec
 	match obj.get(key) {
 		Some(val) => match val.as_object() {
 			Some(val) => Ok(val),
-			None => Err(JsonError::KeyType(key.to_string(), JsonType::Obj))
+			None => Err(JsonError::KeyType(key.to_string(), JsonType::Obj)),
 		},
-		None => Err(JsonError::Key(key.to_string()))
+		None => Err(JsonError::Key(key.to_string())),
 	}
 }
 
@@ -115,7 +115,7 @@ pub fn access_object<'a>(obj: &'a JsonObject, key: &str) -> Result<&'a JsonObjec
 pub fn ensure_type<T>(value: Option<T>, typ: JsonType) -> Result<T, JsonError> {
 	match value {
 		Some(val) => Ok(val),
-		None => Err(JsonError::Type(vec![typ]))
+		None => Err(JsonError::Type(vec![typ])),
 	}
 }
 
@@ -132,8 +132,6 @@ macro_rules! access {
 #[macro_export]
 macro_rules! access {
 	($obj:expr, $key:expr, $typ:ident) => {
-		unsafe {
-			concat_idents!(access_, $typ)($obj, $key).unwrap_unchecked()
-		}
+		unsafe { concat_idents!(access_, $typ)($obj, $key).unwrap_unchecked() }
 	};
 }

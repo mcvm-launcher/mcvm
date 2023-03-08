@@ -1,12 +1,12 @@
-use super::Value;
-use super::parse::{BlockId, Block};
-use super::instruction::{Instruction, InstrKind};
 use super::super::{Package, PkgError};
+use super::instruction::{InstrKind, Instruction};
+use super::parse::{Block, BlockId};
+use super::Value;
+use crate::data::addon::{Addon, AddonLocation, AddonRequest, Modloader, PluginLoader};
 use crate::data::instance::InstKind;
-use crate::data::addon::{Modloader, AddonRequest, Addon, PluginLoader, AddonLocation};
+use crate::io::files::paths::Paths;
 use crate::package::reg::PkgIdentifier;
 use crate::util::versions::VersionPattern;
-use crate::io::files::paths::Paths;
 
 use std::collections::HashMap;
 use std::path::PathBuf;
@@ -24,13 +24,13 @@ pub enum EvalError {
 	#[error("Routine '{}' does not exist", .0)]
 	RoutineDoesNotExist(String),
 	#[error("Expected 'url' or 'path' key for addon '{}'", .0)]
-	NoAddonLocation(String)
+	NoAddonLocation(String),
 }
 
 #[derive(Debug, thiserror::Error)]
 pub enum PermissionsError {
 	#[error("Tried to access '{}' from the local filesystem", .0)]
-	LocalFile(String)
+	LocalFile(String),
 }
 
 #[derive(Debug, Clone)]
@@ -38,28 +38,28 @@ pub enum EvalLevel {
 	None,
 	Info,
 	Dependencies,
-	All
+	All,
 }
 
 impl EvalLevel {
 	pub fn is_info(&self) -> bool {
 		match self {
 			Self::None => false,
-			_ => true
+			_ => true,
 		}
 	}
 
 	pub fn is_deps(&self) -> bool {
 		match self {
 			Self::Dependencies | Self::All => true,
-			_ => false
+			_ => false,
 		}
 	}
 
 	pub fn is_all(&self) -> bool {
 		match self {
 			Self::All => true,
-			_ => false
+			_ => false,
 		}
 	}
 }
@@ -69,7 +69,7 @@ impl EvalLevel {
 pub enum EvalPermissions {
 	Restricted,
 	Standard,
-	Elevated
+	Elevated,
 }
 
 impl EvalPermissions {
@@ -78,7 +78,7 @@ impl EvalPermissions {
 			"restricted" => Some(Self::Restricted),
 			"standard" => Some(Self::Standard),
 			"elevated" => Some(Self::Elevated),
-			_ => None
+			_ => None,
 		}
 	}
 }
@@ -86,21 +86,21 @@ impl EvalPermissions {
 // A routine that we will run
 pub enum Routine {
 	Install,
-	Dependencies
+	Dependencies,
 }
 
 impl Routine {
 	pub fn to_string(&self) -> String {
 		String::from(match self {
 			Self::Install => "install",
-			Self::Dependencies => "install"
+			Self::Dependencies => "install",
 		})
 	}
 
 	pub fn get_level(&self) -> EvalLevel {
 		match self {
 			Self::Install => EvalLevel::All,
-			Self::Dependencies => EvalLevel::Dependencies
+			Self::Dependencies => EvalLevel::Dependencies,
 		}
 	}
 }
@@ -109,7 +109,7 @@ impl Routine {
 pub enum FailReason {
 	None,
 	UnsupportedVersion,
-	UnsupportedModloader
+	UnsupportedModloader,
 }
 
 impl FailReason {
@@ -117,15 +117,15 @@ impl FailReason {
 		match string {
 			"unsupported_version" => Some(Self::UnsupportedVersion),
 			"unsupported_modloader" => Some(Self::UnsupportedModloader),
-			_ => None
+			_ => None,
 		}
 	}
-	
+
 	pub fn to_string(&self) -> String {
 		match self {
 			Self::None => String::from(""),
 			Self::UnsupportedVersion => String::from("Unsupported Minecraft version"),
-			Self::UnsupportedModloader => String::from("Unsupported modloader")
+			Self::UnsupportedModloader => String::from("Unsupported modloader"),
 		}
 	}
 }
@@ -138,7 +138,7 @@ pub struct EvalConstants {
 	pub side: InstKind,
 	pub features: Vec<String>,
 	pub versions: Vec<String>,
-	pub perms: EvalPermissions
+	pub perms: EvalPermissions,
 }
 
 #[derive(Debug, Clone)]
@@ -148,7 +148,7 @@ pub struct EvalData {
 	pub constants: EvalConstants,
 	pub id: PkgIdentifier,
 	pub level: EvalLevel,
-	pub deps: Vec<Vec<VersionPattern>>
+	pub deps: Vec<Vec<VersionPattern>>,
 }
 
 impl EvalData {
@@ -159,7 +159,7 @@ impl EvalData {
 			constants,
 			id,
 			level: routine.get_level(),
-			deps: Vec::new()
+			deps: Vec::new(),
 		}
 	}
 }
@@ -168,7 +168,7 @@ pub struct EvalResult {
 	vars_to_set: HashMap<String, String>,
 	finish: bool,
 	addon_reqs: Vec<AddonRequest>,
-	deps: Vec<Vec<VersionPattern>>
+	deps: Vec<Vec<VersionPattern>>,
 }
 
 impl EvalResult {
@@ -177,7 +177,7 @@ impl EvalResult {
 			vars_to_set: HashMap::new(),
 			finish: false,
 			addon_reqs: Vec::new(),
-			deps: Vec::new()
+			deps: Vec::new(),
 		}
 	}
 
@@ -190,16 +190,24 @@ impl EvalResult {
 }
 
 impl Package {
-	pub async fn eval(&mut self, paths: &Paths, routine: Routine, constants: EvalConstants)
-	-> Result<EvalData, PkgError> {
+	pub async fn eval(
+		&mut self,
+		paths: &Paths,
+		routine: Routine,
+		constants: EvalConstants,
+	) -> Result<EvalData, PkgError> {
 		self.ensure_loaded(paths, false)?;
 		self.parse(paths)?;
 		if let Some(data) = &mut self.data {
 			if let Some(parsed) = &mut data.parsed {
 				let routine_name = routine.to_string();
-				let routine_id = parsed.routines.get(&routine_name)
+				let routine_id = parsed
+					.routines
+					.get(&routine_name)
 					.ok_or(EvalError::RoutineDoesNotExist(routine_name.clone()))?;
-				let block = parsed.blocks.get(routine_id)
+				let block = parsed
+					.blocks
+					.get(routine_id)
 					.ok_or(EvalError::RoutineDoesNotExist(routine_name))?;
 
 				let mut eval = EvalData::new(constants, self.id.clone(), &routine);
@@ -227,8 +235,11 @@ impl Package {
 	}
 }
 
-fn eval_block(block: &Block, eval: &EvalData, blocks: &HashMap<BlockId, Block>)
--> Result<EvalResult, EvalError> {
+fn eval_block(
+	block: &Block,
+	eval: &EvalData,
+	blocks: &HashMap<BlockId, Block>,
+) -> Result<EvalResult, EvalError> {
 	// We clone this so that state can be changed between each instruction
 	let mut eval_clone = eval.clone();
 	let mut out = EvalResult::new();
@@ -249,17 +260,18 @@ fn eval_block(block: &Block, eval: &EvalData, blocks: &HashMap<BlockId, Block>)
 }
 
 impl Instruction {
-	pub fn eval(&self, eval: &EvalData, blocks: &HashMap<BlockId, Block>)
-	-> Result<EvalResult, EvalError> {
+	pub fn eval(
+		&self,
+		eval: &EvalData,
+		blocks: &HashMap<BlockId, Block>,
+	) -> Result<EvalResult, EvalError> {
 		let mut out = EvalResult::new();
 		if eval.level.is_all() {
 			match &self.kind {
 				InstrKind::If(condition, block) => {
 					if condition.kind.eval(eval)? {
-						let result = eval_block(
-							blocks.get(block).expect("If block missing"),
-							eval, blocks
-						)?;
+						let result =
+							eval_block(blocks.get(block).expect("If block missing"), eval, blocks)?;
 						out.merge(result);
 					}
 				}
@@ -270,7 +282,9 @@ impl Instruction {
 				InstrKind::Finish() => out.finish = true,
 				InstrKind::Fail(reason) => {
 					out.finish = true;
-					return Err(EvalError::Fail(reason.as_ref().unwrap_or(&FailReason::None).clone()));
+					return Err(EvalError::Fail(
+						reason.as_ref().unwrap_or(&FailReason::None).clone(),
+					));
 				}
 				InstrKind::Addon {
 					name,
@@ -278,21 +292,22 @@ impl Instruction {
 					url,
 					force,
 					append,
-					path
+					path,
 				} => {
 					let name = match append {
 						Value::None => name.get(&eval.vars)?,
-						_ => append.get(&eval.vars)? + "-" + &name.get(&eval.vars)?
+						_ => append.get(&eval.vars)? + "-" + &name.get(&eval.vars)?,
 					};
 					let addon = Addon::new(
 						kind.as_ref().expect("Addon kind missing").clone(),
 						&name,
-						eval.id.clone()
+						eval.id.clone(),
 					);
 
 					if let Value::Constant(..) | Value::Var(..) = url {
 						let location = AddonLocation::Remote(url.get(&eval.vars)?);
-						out.addon_reqs.push(AddonRequest::new(addon, location, *force));
+						out.addon_reqs
+							.push(AddonRequest::new(addon, location, *force));
 					} else if let Value::Constant(..) | Value::Var(..) = path {
 						let path = path.get(&eval.vars)?;
 						match eval.constants.perms {
@@ -300,14 +315,19 @@ impl Instruction {
 								let path = String::from(shellexpand::tilde(&path));
 								let path = PathBuf::from(path);
 								let location = AddonLocation::Local(path);
-								out.addon_reqs.push(AddonRequest::new(addon, location, *force));
+								out.addon_reqs
+									.push(AddonRequest::new(addon, location, *force));
 							}
-							_ => return Err(EvalError::Permissions(PermissionsError::LocalFile(path)))
+							_ => {
+								return Err(EvalError::Permissions(PermissionsError::LocalFile(
+									path,
+								)))
+							}
 						}
 					} else {
 						return Err(EvalError::NoAddonLocation(name));
 					}
-				},
+				}
 				_ => {}
 			}
 		}

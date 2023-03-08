@@ -2,9 +2,9 @@ use std::collections::HashMap;
 
 use super::lib::{CmdData, CmdError};
 use crate::package::reg::PkgRequest;
-use crate::util::print::{HYPHEN_POINT, ReplPrinter};
+use crate::util::print::{ReplPrinter, HYPHEN_POINT};
 
-use color_print::{cprintln, cformat};
+use color_print::{cformat, cprintln};
 
 static LIST_HELP: &str = "List all installed packages";
 static SYNC_HELP: &str = "Update all package indexes";
@@ -31,8 +31,11 @@ fn list(data: &mut CmdData) -> Result<(), CmdError> {
 				if !profile.packages.is_empty() {
 					for pkg in profile.packages.iter() {
 						let version = config.packages.get_version(&pkg.req, paths)?;
-						found_pkgs.entry(pkg.req.name.clone())
-							.or_insert((version, vec![])).1.push(id.clone());
+						found_pkgs
+							.entry(pkg.req.name.clone())
+							.or_insert((version, vec![]))
+							.1
+							.push(id.clone());
 					}
 				}
 			}
@@ -76,7 +79,7 @@ fn sync(data: &mut CmdData) -> Result<(), CmdError> {
 			}
 		}
 	}
-	
+
 	Ok(())
 }
 
@@ -96,8 +99,7 @@ async fn cat(data: &mut CmdData, name: &str) -> Result<(), CmdError> {
 	Ok(())
 }
 
-pub async fn run(argc: usize, argv: &[String], data: &mut CmdData)
--> Result<(), CmdError> {
+pub async fn run(argc: usize, argv: &[String], data: &mut CmdData) -> Result<(), CmdError> {
 	if argc == 0 {
 		help();
 		return Ok(());
@@ -108,9 +110,9 @@ pub async fn run(argc: usize, argv: &[String], data: &mut CmdData)
 		"sync" => sync(data)?,
 		"cat" => match argc {
 			2 => cat(data, &argv[1]).await?,
-			_ => cprintln!("{}", CAT_HELP)
-		}
-		cmd => cprintln!("<r>Unknown subcommand {}", cmd)
+			_ => cprintln!("{}", CAT_HELP),
+		},
+		cmd => cprintln!("<r>Unknown subcommand {}", cmd),
 	}
 
 	Ok(())

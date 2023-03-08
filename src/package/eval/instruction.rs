@@ -1,8 +1,8 @@
-use super::Value;
-use super::eval::FailReason;
-use super::lex::{Token, TextPos, Side};
-use super::parse::{BlockId, ParseError};
 use super::conditions::Condition;
+use super::eval::FailReason;
+use super::lex::{Side, TextPos, Token};
+use super::parse::{BlockId, ParseError};
+use super::Value;
 use crate::data::addon::AddonKind;
 
 #[derive(Debug, Clone)]
@@ -17,24 +17,22 @@ pub enum InstrKind {
 		url: Value,
 		force: bool,
 		append: Value,
-		path: Value
+		path: Value,
 	},
 	Set(Option<String>, Value),
 	Rely(Vec<Vec<Value>>, Option<Vec<Value>>),
 	Finish(),
-	Fail(Option<FailReason>)
+	Fail(Option<FailReason>),
 }
 
 #[derive(Debug, Clone)]
 pub struct Instruction {
-	pub kind: InstrKind
+	pub kind: InstrKind,
 }
 
 impl Instruction {
 	pub fn new(kind: InstrKind) -> Self {
-		Self {
-			kind
-		}
+		Self { kind }
 	}
 
 	pub fn from_str(string: &str, pos: &TextPos) -> Result<Self, ParseError> {
@@ -46,7 +44,7 @@ impl Instruction {
 			"finish" => Ok(InstrKind::Finish()),
 			"fail" => Ok(InstrKind::Fail(None)),
 			"rely" => Ok(InstrKind::Rely(Vec::new(), None)),
-			string => Err(ParseError::UnknownInstr(string.to_owned(), pos.clone()))
+			string => Err(ParseError::UnknownInstr(string.to_owned(), pos.clone())),
 		}?;
 		Ok(Instruction::new(kind))
 	}
@@ -57,8 +55,7 @@ impl Instruction {
 			Ok(true)
 		} else {
 			match &mut self.kind {
-				InstrKind::Name(val)
-				| InstrKind::Version(val) => *val = parse_arg(tok, pos)?,
+				InstrKind::Name(val) | InstrKind::Version(val) => *val = parse_arg(tok, pos)?,
 				InstrKind::DefaultFeatures(features) => features.push(parse_arg(tok, pos)?),
 				InstrKind::Set(var, val) => {
 					if var.is_some() {
@@ -66,34 +63,50 @@ impl Instruction {
 					} else {
 						match tok {
 							Token::Ident(name) => *var = Some(name.clone()),
-							_ => return Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone()))
+							_ => {
+								return Err(ParseError::UnexpectedToken(
+									tok.as_string(),
+									pos.clone(),
+								))
+							}
 						}
 					}
 				}
 				InstrKind::Fail(reason) => match tok {
-					Token::Ident(name) => *reason = match FailReason::from_string(name) {
-						Some(reason) => Some(reason),
-						None => return Err(ParseError::UnknownReason(name.clone(), pos.clone()))
-					},
-					_ => return Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone()))
-				}
+					Token::Ident(name) => {
+						*reason = match FailReason::from_string(name) {
+							Some(reason) => Some(reason),
+							None => {
+								return Err(ParseError::UnknownReason(name.clone(), pos.clone()))
+							}
+						}
+					}
+					_ => return Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone())),
+				},
 				InstrKind::Rely(deps, dep) => match tok {
 					Token::Paren(Side::Left) => match dep {
-						Some(..) => return Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone())),
-						None => *dep = Some(Vec::new())
-					}
+						Some(..) => {
+							return Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone()))
+						}
+						None => *dep = Some(Vec::new()),
+					},
 					Token::Paren(Side::Right) => match dep {
-						Some(..) => deps.push(dep.take().expect("Dependency in option missing when pushing")),
-						None => return Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone()))
-					}
+						Some(..) => deps.push(
+							dep.take()
+								.expect("Dependency in option missing when pushing"),
+						),
+						None => {
+							return Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone()))
+						}
+					},
 					_ => {
 						let val = parse_arg(tok, pos)?;
 						match dep {
 							Some(dep) => dep.push(val),
-							None => deps.push(vec![val])
+							None => deps.push(vec![val]),
 						}
 					}
-				}
+				},
 				_ => {}
 			}
 
@@ -108,6 +121,6 @@ pub fn parse_arg(tok: &Token, pos: &TextPos) -> Result<Value, ParseError> {
 		Token::Variable(name) => Ok(Value::Var(name.to_string())),
 		Token::Str(text) => Ok(Value::Constant(text.clone())),
 		Token::Num(num) => Ok(Value::Constant(num.to_string())),
-		_ => Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone()))
+		_ => Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone())),
 	}
 }
