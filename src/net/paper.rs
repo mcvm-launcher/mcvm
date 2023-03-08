@@ -1,4 +1,5 @@
-use std::{path::{Path, PathBuf}, fs};
+use std::fs;
+use std::path::{Path, PathBuf};
 
 use crate::util::json;
 use super::download::DownloadError;

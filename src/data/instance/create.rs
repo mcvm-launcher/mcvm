@@ -4,7 +4,7 @@ use color_print::{cprintln, cformat};
 
 use crate::data::addon::{PluginLoader, Modloader};
 use crate::io::files::{paths::Paths, self};
-use crate::io::java::{JavaError, JavaKind};
+use crate::io::java::JavaError;
 use crate::net::fabric_quilt::FabricError;
 use crate::net::{paper, game_files, download};
 use crate::util::{json, print::ReplPrinter};

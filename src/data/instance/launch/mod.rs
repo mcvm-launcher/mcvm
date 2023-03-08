@@ -3,7 +3,10 @@ pub mod server;
 
 use color_print::cprintln;
 
-use crate::{data::{instance::InstKind, user::Auth}, util::json, io::{files::paths::Paths, java::{args::{MemoryNum, MemoryArg}, JavaKind}}};
+use crate::io::java::{args::{MemoryNum, MemoryArg}, JavaKind};
+use crate::io::files::paths::Paths;
+use crate::util::json;
+use crate::data::{instance::InstKind, user::Auth};
 
 use super::{Instance, create::CreateError};
 

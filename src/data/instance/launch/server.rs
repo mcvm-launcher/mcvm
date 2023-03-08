@@ -1,6 +1,7 @@
 use std::process::Command;
 
-use crate::{data::instance::Instance, io::files::paths::Paths};
+use crate::io::files::paths::Paths;
+use crate::data::instance::Instance;
 
 use super::LaunchError;
 
