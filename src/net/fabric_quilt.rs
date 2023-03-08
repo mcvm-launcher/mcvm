@@ -1,6 +1,6 @@
 use std::fs;
 
-use color_print::cformat;
+use color_print::{cformat, cprintln};
 use reqwest::Client;
 use serde::Deserialize;
 
@@ -12,6 +12,8 @@ use crate::util::mojang::CLASSPATH_SEP;
 use crate::util::print::ReplPrinter;
 
 use super::download::DownloadError;
+
+static QUILT_MAVEN_URL: &str = "https://maven.quiltmc.org/repository/release/";
 
 #[derive(Debug, thiserror::Error)]
 pub enum FabricError {
@@ -35,6 +37,11 @@ pub enum FabricError {
 pub struct QuiltLibrary {
 	name: String,
 	url: String,
+}
+
+#[derive(Deserialize, Clone)]
+pub struct QuiltMainLibrary {
+	maven: String,
 }
 
 #[derive(Deserialize)]
@@ -61,6 +68,8 @@ pub struct LauncherMeta {
 pub struct QuiltMeta {
 	#[serde(rename = "launcherMeta")]
 	pub launcher_meta: LauncherMeta,
+	pub loader: QuiltMainLibrary,
+	pub intermediary: QuiltMainLibrary
 }
 
 #[derive(Debug, PartialEq)]
@@ -111,7 +120,7 @@ fn get_lib_path(name: &str) -> Option<String> {
 	Some(url)
 }
 
-pub async fn download_quilt_libraries(
+async fn download_quilt_libraries(
 	libs: &[QuiltLibrary],
 	paths: &Paths,
 	verbose: bool,
@@ -124,22 +133,45 @@ pub async fn download_quilt_libraries(
 	for lib in libs.iter() {
 		let path = get_lib_path(&lib.name);
 		if let Some(path) = path {
-			let url = lib.url.clone() + &path;
-			let lib_path = paths.libraries.join(path);
-			printer.print(&cformat!("Downloading library <b>{}</>...", lib.name));
-			let resp = client.get(url).send().await?.bytes().await?;
+			let lib_path = paths.libraries.join(&path);
 			if !force && lib_path.exists() {
 				continue;
 			}
+			let url = lib.url.clone() + &path;
+			printer.print(&cformat!("Downloading library <b>{}</>...", lib.name));
+			let resp = client.get(url).send().await?.bytes().await?;
 			files::create_leading_dirs(&lib_path)?;
-			fs::write(lib_path, resp)?;
+			fs::write(&lib_path, resp)?;
 
-			classpath.push_str(&lib.name);
+			classpath.push_str(lib_path.to_str().expect("Failed to convert path to a string"));
 			classpath.push(CLASSPATH_SEP);
 		}
 	}
 
 	Ok(classpath)
+}
+
+async fn download_quilt_main_library(
+	lib: &QuiltMainLibrary,
+	paths: &Paths,
+	verbose: bool,
+	force: bool
+) -> Result<String, FabricError> {
+	let path = get_lib_path(&lib.maven).expect("Expected a valid path");
+	let lib_path = paths.libraries.join(&path);
+	let lib_path_str = lib_path.to_str().expect("Failed to convert path to a string").to_owned();
+	if !force && lib_path.exists() {
+		return Ok(lib_path_str);
+	}
+	let url = String::from(QUILT_MAVEN_URL) + &path;
+	if verbose {
+		cprintln!("\tDownloading library <b>{}</>...", lib.maven);
+	}
+	let client = Client::new();
+	let resp = client.get(url).send().await?.bytes().await?;
+	files::create_leading_dirs(&lib_path)?;
+	fs::write(&lib_path, resp)?;
+	Ok(lib_path_str)
 }
 
 pub async fn download_quilt_files(
@@ -152,24 +184,34 @@ pub async fn download_quilt_files(
 	let mut classpath = String::new();
 	let libs = meta.launcher_meta.libraries.common.clone();
 	let paths_clone = paths.clone();
-	let common_task =
-		tokio::spawn(
-			async move { download_quilt_libraries(&libs, &paths_clone, verbose, force).await },
-		);
+	let common_task = tokio::spawn(
+		async move { download_quilt_libraries(&libs, &paths_clone, verbose, force).await }
+	);
 
 	let libs = match side {
 		InstKind::Client => meta.launcher_meta.libraries.client.clone(),
 		InstKind::Server => meta.launcher_meta.libraries.server.clone(),
 	};
 	let paths_clone = paths.clone();
-	let side_task =
-		tokio::spawn(
-			async move { download_quilt_libraries(&libs, &paths_clone, verbose, force).await },
-		);
+	let side_task = tokio::spawn(
+		async move { download_quilt_libraries(&libs, &paths_clone, verbose, force).await }
+	);
+
+	let paths_clone = paths.clone();
+	let loader_clone = meta.loader.clone();
+	let intermediary_clone = meta.intermediary.clone();
+	let main_libs_task = tokio::spawn(async move {
+		(
+			download_quilt_main_library(&loader_clone, &paths_clone, verbose, force).await,
+			download_quilt_main_library(&intermediary_clone, &paths_clone, verbose, force).await,
+		)
+	});
 
 	classpath.push_str(&common_task.await??);
 	classpath.push_str(&side_task.await??);
-	println!("{classpath}");
+	let (loader_name, intermediary_name) = main_libs_task.await?;
+	classpath.push_str(&loader_name?);
+	classpath.push_str(&intermediary_name?);
 
 	Ok(classpath)
 }
