@@ -21,8 +21,7 @@ impl Instance {
 
 					if let Some(version_json) = &self.version_json {
 						if let Some(classpath) = &self.classpath {
-							let main_class = json::access_str(version_json, "mainClass")?;
-
+							let main_class = self.main_class.as_ref().expect("Main class is missing for client");
 							if let Ok(args) = json::access_object(version_json, "arguments") {
 								for arg in json::access_array(args, "jvm")? {
 									for sub_arg in process_client_arg(self, arg, paths, auth, classpath) {

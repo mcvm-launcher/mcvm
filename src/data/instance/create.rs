@@ -2,9 +2,10 @@ use std::fs;
 
 use color_print::{cprintln, cformat};
 
-use crate::data::addon::PluginLoader;
+use crate::data::addon::{PluginLoader, Modloader};
 use crate::io::files::{paths::Paths, self};
 use crate::io::java::{JavaError, JavaKind};
+use crate::net::fabric_quilt::FabricError;
 use crate::net::{paper, game_files, download};
 use crate::util::{json, print::ReplPrinter};
 
@@ -27,7 +28,9 @@ pub enum CreateError {
 	#[error("Failed to install java for this instance:\n{}", .0)]
 	Java(#[from] JavaError),
 	#[error("Failed to install a Paper server:\n{}", .0)]
-	Paper(#[from] paper::PaperError)
+	Paper(#[from] paper::PaperError),
+	#[error("Failed to install Fabric or Quilt:\n{}", .0)]
+	Fabric(#[from] FabricError)
 }
 
 impl Instance {
@@ -71,15 +74,14 @@ impl Instance {
 		let (version_json, mut dwn) = game_files::get_version_json(&self.version, version_manifest, paths)?;
 		
 		let mut classpath = game_files::get_libraries(&version_json, paths, &self.version, verbose, force)?;
-		classpath.push_str(jar_path.to_str().expect("Failed to convert client.jar path to a string"));
 		
 		game_files::get_assets(&version_json, paths, &self.version, verbose, force).await?;
-
+		
 		let java_vers = json::access_i64(
 			json::access_object(&version_json, "javaVersion")?,	"majorVersion"
 		)?;
 		self.get_java(JavaKind::Adoptium, &java_vers.to_string(), paths, verbose, force)?;
-
+		
 		if !jar_path.exists() || force {
 			let mut printer = ReplPrinter::new(verbose);
 			printer.indent(1);
@@ -95,7 +97,14 @@ impl Instance {
 			printer.print(cformat!("<g>Client jar downloaded.").as_str());
 			printer.finish();
 		}
+
+		if let Modloader::Quilt = self.modloader {
+			classpath.push_str(&self.get_quilt(paths, verbose, force).await?);
+		}
+
+		classpath.push_str(jar_path.to_str().expect("Failed to convert client.jar path to a string"));
 		
+		self.main_class = Some(json::access_str(&version_json, "mainClass")?.to_owned());
 		self.classpath = Some(classpath);
 		self.version_json = Some(version_json);
 		self.jar_path = Some(jar_path);
@@ -138,6 +147,12 @@ impl Instance {
 			printer.print(&cformat!("<g>Server jar downloaded."));
 		}
 
+		let classpath = if let Modloader::Quilt = self.modloader {
+			Some(self.get_quilt(paths, verbose, force).await?)
+		} else {
+			None
+		};
+
 		fs::write(server_dir.join("eula.txt"), "eula = true\n")?;
 
 		self.jar_path = Some(match self.plugin_loader {
@@ -161,6 +176,7 @@ impl Instance {
 		});
 		
 		self.version_json = Some(version_json);
+		self.classpath = classpath;
 		Ok(())
 	}
 }

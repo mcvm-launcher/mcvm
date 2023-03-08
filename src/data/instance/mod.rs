@@ -1,6 +1,7 @@
 pub mod create;
 pub mod launch;
 
+use crate::net::fabric_quilt::{FabricError, get_quilt_meta, download_quilt_files};
 use crate::util::json;
 use crate::io::files;
 use crate::io::java::{Java, JavaKind, JavaError};
@@ -40,7 +41,8 @@ pub struct Instance {
 	version_json: Option<Box<json::JsonObject>>,
 	java: Option<Java>,
 	classpath: Option<String>,
-	jar_path: Option<PathBuf>
+	jar_path: Option<PathBuf>,
+	main_class: Option<String>
 }
 
 impl Instance {
@@ -62,7 +64,8 @@ impl Instance {
 			version_json: None,
 			java: None,
 			classpath: None,
-			jar_path: None
+			jar_path: None,
+			main_class: None
 		}
 	}
 
@@ -72,6 +75,17 @@ impl Instance {
 		java.install(paths, verbose, force)?;
 		self.java = Some(java);
 		Ok(())
+	}
+
+	async fn get_quilt(&mut self, paths: &Paths, verbose: bool, force: bool) -> Result<String, FabricError> {
+		let meta = get_quilt_meta(&self.version).await?;
+		let classpath = download_quilt_files(&meta, paths, self.kind.clone(), verbose, force).await?;
+		self.main_class = Some(match self.kind {
+			InstKind::Client => meta.launcher_meta.main_class.client,
+			InstKind::Server => meta.launcher_meta.main_class.server
+		});
+		
+		Ok(classpath)
 	}
 
 	pub fn get_dir(&self, paths: &Paths) -> PathBuf {
