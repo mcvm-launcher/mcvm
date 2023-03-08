@@ -1,4 +1,4 @@
-use crate::net::game_files::get_version_manifest;
+use crate::net::mojang::get_version_manifest;
 
 use super::lib::{CmdData, CmdError};
 

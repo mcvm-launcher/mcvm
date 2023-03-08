@@ -6,7 +6,7 @@ use crate::data::addon::{Modloader, PluginLoader};
 use crate::io::files::{self, paths::Paths};
 use crate::io::java::JavaError;
 use crate::net::fabric_quilt::FabricError;
-use crate::net::{download, game_files, paper};
+use crate::net::{download, mojang, paper};
 use crate::util::{json, print::ReplPrinter};
 
 use super::{InstKind, Instance};
@@ -18,11 +18,11 @@ pub enum CreateError {
 	#[error("Error when downloading file:\n{}", .0)]
 	Download(#[from] download::DownloadError),
 	#[error("Failed to process version json:\n{}", .0)]
-	VersionJson(#[from] game_files::VersionJsonError),
+	VersionJson(#[from] mojang::VersionJsonError),
 	#[error("Failed to install libraries:\n{}", .0)]
-	Libraries(#[from] game_files::LibrariesError),
+	Libraries(#[from] mojang::LibrariesError),
 	#[error("Failed to download assets:\n{}", .0)]
-	Assets(#[from] game_files::AssetsError),
+	Assets(#[from] mojang::AssetsError),
 	#[error("Error when accessing files:\n{}", .0)]
 	Io(#[from] std::io::Error),
 	#[error("Failed to install java for this instance:\n{}", .0)]
@@ -80,12 +80,12 @@ impl Instance {
 		let jar_path = dir.join("client.jar");
 
 		let (version_json, mut dwn) =
-			game_files::get_version_json(&self.version, version_manifest, paths)?;
+			mojang::get_version_json(&self.version, version_manifest, paths)?;
 
 		let mut classpath =
-			game_files::get_libraries(&version_json, paths, &self.version, verbose, force)?;
+			mojang::get_libraries(&version_json, paths, &self.version, verbose, force)?;
 
-		game_files::get_assets(&version_json, paths, &self.version, verbose, force).await?;
+		mojang::get_assets(&version_json, paths, &self.version, verbose, force).await?;
 
 		let java_vers = json::access_i64(
 			json::access_object(&version_json, "javaVersion")?,
@@ -139,7 +139,7 @@ impl Instance {
 		let jar_path = server_dir.join("server.jar");
 
 		let (version_json, mut dwn) =
-			game_files::get_version_json(&self.version, version_manifest, paths)?;
+			mojang::get_version_json(&self.version, version_manifest, paths)?;
 
 		let java_vers = json::access_i64(
 			json::access_object(&version_json, "javaVersion")?,

@@ -4,7 +4,7 @@ use crate::data::instance::launch::LaunchError;
 use crate::io::files::paths::{Paths, PathsError};
 use crate::io::lock::LockfileError;
 use crate::net::download::DownloadError;
-use crate::net::game_files::VersionManifestError;
+use crate::net::mojang::VersionManifestError;
 use crate::net::paper::PaperError;
 use crate::package::reg::RegError;
 use crate::package::repo::RepoError;
@@ -19,7 +19,6 @@ pub struct CmdData {
 
 impl CmdData {
 	pub fn new() -> Self {
-		// let config_path = paths.project..join("mcvm.json");
 		Self {
 			paths: None,
 			config: None,
