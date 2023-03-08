@@ -1,4 +1,5 @@
 pub mod args;
+pub mod classpath;
 
 use crate::io::files::{self, paths::Paths};
 use crate::net::download::{Download, DownloadError};

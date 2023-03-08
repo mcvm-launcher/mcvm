@@ -4,6 +4,7 @@ pub mod launch;
 use self::create::CreateError;
 use self::launch::LaunchOptions;
 use crate::io::files;
+use crate::io::java::classpath::Classpath;
 use crate::io::java::{Java, JavaError, JavaKind};
 use crate::net::fabric_quilt::{download_quilt_files, get_quilt_meta, FabricError};
 use crate::util::json;
@@ -40,7 +41,7 @@ pub struct Instance {
 	launch: LaunchOptions,
 	version_json: Option<Box<json::JsonObject>>,
 	java: Option<Java>,
-	classpath: Option<String>,
+	classpath: Option<Classpath>,
 	jar_path: Option<PathBuf>,
 	main_class: Option<String>,
 }
@@ -91,7 +92,7 @@ impl Instance {
 		paths: &Paths,
 		verbose: bool,
 		force: bool,
-	) -> Result<String, FabricError> {
+	) -> Result<Classpath, FabricError> {
 		let meta = get_quilt_meta(&self.version).await?;
 		let classpath =
 			download_quilt_files(&meta, paths, self.kind.clone(), verbose, force).await?;

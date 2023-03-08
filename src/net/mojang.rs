@@ -1,7 +1,8 @@
 use crate::io::files::{self, paths::Paths};
+use crate::io::java::classpath::Classpath;
 use crate::net::download::{Download, DownloadError};
 use crate::util::json::{self, JsonObject, JsonType};
-use crate::util::mojang::{self, CLASSPATH_SEP};
+use crate::util::mojang;
 use crate::util::print::ReplPrinter;
 use crate::util::versions::VersionNotFoundError;
 
@@ -127,8 +128,6 @@ pub enum LibrariesError {
 	ParseError(#[from] json::JsonError),
 	#[error("Error when downloading library:\n{}", .0)]
 	Download(#[from] DownloadError),
-	#[error("Failed to convert string to UTF-8")]
-	Utf,
 	#[error("File operation failed:\n{}", .0)]
 	Io(#[from] std::io::Error),
 	#[error("Failed to access zip file:\n{}", .0)]
@@ -195,7 +194,7 @@ pub fn get_libraries(
 	version: &str,
 	verbose: bool,
 	force: bool,
-) -> Result<String, LibrariesError> {
+) -> Result<Classpath, LibrariesError> {
 	let libraries_path = paths.internal.join("libraries");
 	files::create_dir(&libraries_path)?;
 	let natives_path = paths
@@ -207,7 +206,7 @@ pub fn get_libraries(
 	let natives_jars_path = paths.internal.join("natives");
 
 	let mut native_paths = Vec::new();
-	let mut classpath = String::new();
+	let mut classpath = Classpath::new();
 	let mut dwn = Download::new();
 	let mut printer = ReplPrinter::new(verbose);
 	printer.indent(1);
@@ -232,8 +231,7 @@ pub fn get_libraries(
 				json::access_object(json::access_object(downloads, "classifiers")?, key)?;
 
 			let path = natives_jars_path.join(json::access_str(classifier, "path")?);
-			classpath.push_str(path.to_str().ok_or(LibrariesError::Utf)?);
-			classpath.push(CLASSPATH_SEP);
+			classpath.add_path(&path);
 
 			native_paths.push((path.clone(), name.to_owned()));
 			if !force && path.exists() {
@@ -246,8 +244,7 @@ pub fn get_libraries(
 		if let Some(artifact_val) = downloads.get("artifact") {
 			let artifact = json::ensure_type(artifact_val.as_object(), JsonType::Obj)?;
 			let path = libraries_path.join(json::access_str(artifact, "path")?);
-			classpath.push_str(path.to_str().ok_or(LibrariesError::Utf)?);
-			classpath.push(CLASSPATH_SEP);
+			classpath.add_path(&path);
 			if !force && path.exists() {
 				continue;
 			}

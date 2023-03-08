@@ -5,6 +5,7 @@ use color_print::{cformat, cprintln};
 use crate::data::addon::{Modloader, PluginLoader};
 use crate::io::files::{self, paths::Paths};
 use crate::io::java::JavaError;
+use crate::io::java::classpath::Classpath;
 use crate::net::fabric_quilt::FabricError;
 use crate::net::{download, mojang, paper};
 use crate::util::{json, print::ReplPrinter};
@@ -82,8 +83,8 @@ impl Instance {
 		let (version_json, mut dwn) =
 			mojang::get_version_json(&self.version, version_manifest, paths)?;
 
-		let mut classpath =
-			mojang::get_libraries(&version_json, paths, &self.version, verbose, force)?;
+		let mut classpath = Classpath::new();
+		classpath.extend(mojang::get_libraries(&version_json, paths, &self.version, verbose, force)?);
 
 		mojang::get_assets(&version_json, paths, &self.version, verbose, force).await?;
 
@@ -108,14 +109,10 @@ impl Instance {
 		}
 
 		if let Modloader::Quilt = self.modloader {
-			classpath.push_str(&self.get_quilt(paths, verbose, force).await?);
+			classpath.extend(self.get_quilt(paths, verbose, force).await?);
 		}
 
-		classpath.push_str(
-			jar_path
-				.to_str()
-				.expect("Failed to convert client.jar path to a string"),
-		);
+		classpath.add_path(&jar_path);
 
 		self.main_class = Some(json::access_str(&version_json, "mainClass")?.to_owned());
 		self.classpath = Some(classpath);

@@ -3,6 +3,7 @@ use std::process::Command;
 use super::LaunchError;
 use crate::data::instance::Instance;
 use crate::data::user::{Auth, UserKind};
+use crate::io::java::classpath::Classpath;
 use crate::util::json;
 use crate::util::mojang::{is_allowed, ARCH_STRING, OS_STRING};
 use crate::Paths;
@@ -64,7 +65,7 @@ impl Instance {
 										.expect("Failed to convert natives directory to a string")
 								));
 								command.arg("-cp");
-								command.arg(classpath);
+								command.arg(classpath.get_str());
 
 								command.arg(main_class);
 
@@ -98,11 +99,11 @@ pub fn process_string_arg(
 	arg: &str,
 	paths: &Paths,
 	auth: &Auth,
-	classpath: &str,
+	classpath: &Classpath,
 ) -> Option<String> {
 	let mut out = arg.replace("${launcher_name}", "mcvm");
 	out = out.replace("${launcher_version}", "alpha");
-	out = out.replace("${classpath}", classpath);
+	out = out.replace("${classpath}", &classpath.get_str());
 	out = out.replace(
 		"${natives_directory}",
 		paths
@@ -172,7 +173,7 @@ pub fn process_client_arg(
 	arg: &serde_json::Value,
 	paths: &Paths,
 	auth: &Auth,
-	classpath: &str,
+	classpath: &Classpath,
 ) -> Vec<String> {
 	let mut out = Vec::new();
 	if let Some(contents) = arg.as_str() {

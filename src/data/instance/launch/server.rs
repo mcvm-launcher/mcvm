@@ -19,11 +19,10 @@ impl Instance {
 							.expect("Failed to convert java path to a string"),
 					);
 					command.current_dir(server_dir);
-					dbg!(&self.launch.generate_jvm_args());
 					command.args(&self.launch.generate_jvm_args());
 					if let Some(classpath) = &self.classpath {
 						command.arg("-cp");
-						command.arg(classpath);
+						command.arg(classpath.get_str());
 					}
 					command.arg("-jar");
 					let jar_path_str = self

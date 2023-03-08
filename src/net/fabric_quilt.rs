@@ -7,8 +7,8 @@ use serde::Deserialize;
 use crate::data::instance::InstKind;
 use crate::io::files;
 use crate::io::files::paths::Paths;
+use crate::io::java::classpath::Classpath;
 use crate::util::json::{self, JsonType};
-use crate::util::mojang::CLASSPATH_SEP;
 use crate::util::print::ReplPrinter;
 
 use super::download::DownloadError;
@@ -125,8 +125,8 @@ async fn download_quilt_libraries(
 	paths: &Paths,
 	verbose: bool,
 	force: bool,
-) -> Result<String, FabricError> {
-	let mut classpath = String::new();
+) -> Result<Classpath, FabricError> {
+	let mut classpath = Classpath::new();
 	let mut printer = ReplPrinter::new(verbose);
 	printer.indent(1);
 	let client = Client::new();
@@ -143,8 +143,7 @@ async fn download_quilt_libraries(
 			files::create_leading_dirs(&lib_path)?;
 			fs::write(&lib_path, resp)?;
 
-			classpath.push_str(lib_path.to_str().expect("Failed to convert path to a string"));
-			classpath.push(CLASSPATH_SEP);
+			classpath.add_path(&lib_path);
 		}
 	}
 
@@ -180,8 +179,8 @@ pub async fn download_quilt_files(
 	side: InstKind,
 	verbose: bool,
 	force: bool,
-) -> Result<String, FabricError> {
-	let mut classpath = String::new();
+) -> Result<Classpath, FabricError> {
+	let mut classpath = Classpath::new();
 	let libs = meta.launcher_meta.libraries.common.clone();
 	let paths_clone = paths.clone();
 	let common_task = tokio::spawn(
@@ -207,11 +206,11 @@ pub async fn download_quilt_files(
 		)
 	});
 
-	classpath.push_str(&common_task.await??);
-	classpath.push_str(&side_task.await??);
+	classpath.extend(common_task.await??);
+	classpath.extend(side_task.await??);
 	let (loader_name, intermediary_name) = main_libs_task.await?;
-	classpath.push_str(&loader_name?);
-	classpath.push_str(&intermediary_name?);
+	classpath.add(&loader_name?);
+	classpath.add(&intermediary_name?);
 
 	Ok(classpath)
 }
