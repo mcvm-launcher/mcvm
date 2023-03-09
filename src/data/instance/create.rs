@@ -6,7 +6,7 @@ use crate::data::addon::{Modloader, PluginLoader};
 use crate::io::files::{self, paths::Paths};
 use crate::io::java::JavaError;
 use crate::io::java::classpath::Classpath;
-use crate::net::fabric_quilt::FabricError;
+use crate::net::fabric_quilt::{FabricQuiltError, self};
 use crate::net::{download, mojang, paper};
 use crate::util::{json, print::ReplPrinter};
 
@@ -31,7 +31,7 @@ pub enum CreateError {
 	#[error("Failed to install a Paper server:\n{}", .0)]
 	Paper(#[from] paper::PaperError),
 	#[error("Failed to install Fabric or Quilt:\n{}", .0)]
-	Fabric(#[from] FabricError),
+	Fabric(#[from] FabricQuiltError),
 }
 
 impl Instance {
@@ -110,8 +110,13 @@ impl Instance {
 
 		self.main_class = Some(json::access_str(&version_json, "mainClass")?.to_owned());
 		
-		if let Modloader::Quilt = self.modloader {
-			classpath.extend(self.get_quilt(paths, verbose, force).await?);
+		let fq_mode = match self.modloader {
+			Modloader::Fabric => Some(fabric_quilt::Mode::Fabric),
+			Modloader::Quilt => Some(fabric_quilt::Mode::Quilt),
+			_ => None,
+		};
+		if let Some(mode) = fq_mode {
+			classpath.extend(self.get_fabric_quilt(mode, paths, verbose, force).await?);
 		}
 
 		classpath.add_path(&jar_path);
@@ -158,10 +163,10 @@ impl Instance {
 			printer.print(&cformat!("<g>Server jar downloaded."));
 		}
 
-		let classpath = if let Modloader::Quilt = self.modloader {
-			Some(self.get_quilt(paths, verbose, force).await?)
-		} else {
-			None
+		let classpath = match self.modloader {
+			Modloader::Fabric => Some(self.get_fabric_quilt(fabric_quilt::Mode::Fabric, paths, verbose, force).await?),
+			Modloader::Quilt => Some(self.get_fabric_quilt(fabric_quilt::Mode::Quilt, paths, verbose, force).await?),
+			_ => None,
 		};
 
 		fs::write(server_dir.join("eula.txt"), "eula = true\n")?;

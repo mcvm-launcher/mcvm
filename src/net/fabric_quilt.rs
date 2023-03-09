@@ -11,9 +11,13 @@ use crate::io::java::classpath::Classpath;
 use crate::util::json::{self, JsonType};
 use crate::util::print::ReplPrinter;
 
+pub enum Mode {
+	Fabric,
+	Quilt
+}
 
 #[derive(Debug, thiserror::Error)]
-pub enum FabricError {
+pub enum FabricQuiltError {
 	#[error("Failed to evaluate json file:\n{}", .0)]
 	ParseError(#[from] json::JsonError),
 	#[error("Failed to parse json file:\n{}", .0)]
@@ -29,21 +33,21 @@ pub enum FabricError {
 }
 
 #[derive(Debug, Deserialize, Clone)]
-pub struct QuiltLibrary {
+pub struct Library {
 	name: String,
 	url: String,
 }
 
 #[derive(Deserialize, Clone)]
-pub struct QuiltMainLibrary {
+pub struct MainLibrary {
 	maven: String,
 }
 
 #[derive(Deserialize)]
-pub struct QuiltLibraries {
-	common: Vec<QuiltLibrary>,
-	client: Vec<QuiltLibrary>,
-	server: Vec<QuiltLibrary>,
+pub struct Libraries {
+	common: Vec<Library>,
+	client: Vec<Library>,
+	server: Vec<Library>,
 }
 
 #[derive(Deserialize)]
@@ -54,17 +58,17 @@ pub struct MainClass {
 
 #[derive(Deserialize)]
 pub struct LauncherMeta {
-	libraries: QuiltLibraries,
+	libraries: Libraries,
 	#[serde(rename = "mainClass")]
 	pub main_class: MainClass,
 }
 
 #[derive(Deserialize)]
-pub struct QuiltMeta {
+pub struct FabricQuiltMeta {
 	#[serde(rename = "launcherMeta")]
 	pub launcher_meta: LauncherMeta,
-	pub loader: QuiltMainLibrary,
-	pub intermediary: QuiltMainLibrary
+	pub loader: MainLibrary,
+	pub intermediary: MainLibrary
 }
 
 #[derive(Debug, PartialEq)]
@@ -88,13 +92,13 @@ impl LibraryParts {
 	}
 }
 
-pub async fn get_quilt_meta(version: &str) -> Result<QuiltMeta, FabricError> {
+pub async fn get_meta(version: &str) -> Result<FabricQuiltMeta, FabricQuiltError> {
 	let meta_url = format!("https://meta.quiltmc.org/v3/versions/loader/{version}");
 	let client = Client::new();
 	let meta = client.get(&meta_url).send().await?.error_for_status()?.text().await?;
 	let meta = json::parse_json(&meta)?;
 	let meta = json::ensure_type(meta.as_array(), JsonType::Arr)?;
-	let meta = meta.first().ok_or(FabricError::NoneFound)?;
+	let meta = meta.first().ok_or(FabricQuiltError::NoneFound)?;
 
 	Ok(serde_json::from_value(meta.clone())?)
 }
@@ -115,11 +119,11 @@ fn get_lib_path(name: &str) -> Option<String> {
 	Some(url)
 }
 
-async fn download_quilt_libraries(
-	libs: &[QuiltLibrary],
+async fn download_libraries(
+	libs: &[Library],
 	paths: &Paths,
 	force: bool,
-) -> Result<Classpath, FabricError> {
+) -> Result<Classpath, FabricQuiltError> {
 	let mut classpath = Classpath::new();
 	let client = Client::new();
 	for lib in libs.iter() {
@@ -140,12 +144,12 @@ async fn download_quilt_libraries(
 	Ok(classpath)
 }
 
-async fn download_quilt_main_library(
-	lib: &QuiltMainLibrary,
+async fn download_main_library(
+	lib: &MainLibrary,
 	url: &str,
 	paths: &Paths,
 	force: bool
-) -> Result<String, FabricError> {
+) -> Result<String, FabricQuiltError> {
 	let path = get_lib_path(&lib.maven).expect("Expected a valid path");
 	let lib_path = paths.libraries.join(&path);
 	let lib_path_str = lib_path.to_str().expect("Failed to convert path to a string").to_owned();
@@ -160,21 +164,25 @@ async fn download_quilt_main_library(
 	Ok(lib_path_str)
 }
 
-pub async fn download_quilt_files(
-	meta: &QuiltMeta,
+pub async fn download_files(
+	meta: &FabricQuiltMeta,
 	paths: &Paths,
 	side: InstKind,
+	mode: Mode,
 	verbose: bool,
 	force: bool,
-) -> Result<Classpath, FabricError> {
+) -> Result<Classpath, FabricQuiltError> {
 	let mut printer = ReplPrinter::new(verbose);
 	printer.indent(1);
-	printer.print("Downloading Quilt...");
+	match mode {
+		Mode::Fabric => printer.print("Downloading Fabric..."),
+		Mode::Quilt => printer.print("Downloading Quilt..."),
+	}
 	let mut classpath = Classpath::new();
 	let libs = meta.launcher_meta.libraries.common.clone();
 	let paths_clone = paths.clone();
 	let common_task = tokio::spawn(
-		async move { download_quilt_libraries(&libs, &paths_clone, force).await }
+		async move { download_libraries(&libs, &paths_clone, force).await }
 	);
 
 	let libs = match side {
@@ -183,16 +191,20 @@ pub async fn download_quilt_files(
 	};
 	let paths_clone = paths.clone();
 	let side_task = tokio::spawn(
-		async move { download_quilt_libraries(&libs, &paths_clone, force).await }
+		async move { download_libraries(&libs, &paths_clone, force).await }
 	);
 
 	let paths_clone = paths.clone();
 	let loader_clone = meta.loader.clone();
 	let intermediary_clone = meta.intermediary.clone();
+	let loader_url = match mode {
+		Mode::Fabric => "https://maven.fabricmc.net/",
+		Mode::Quilt => "https://maven.quiltmc.org/repository/release/",
+	};
 	let main_libs_task = tokio::spawn(async move {
 		(
-			download_quilt_main_library(&loader_clone, "https://maven.quiltmc.org/repository/release/", &paths_clone, force).await,
-			download_quilt_main_library(&intermediary_clone, "https://maven.fabricmc.net/", &paths_clone, force).await,
+			download_main_library(&loader_clone, loader_url, &paths_clone, force).await,
+			download_main_library(&intermediary_clone, "https://maven.fabricmc.net/", &paths_clone, force).await,
 		)
 	});
 

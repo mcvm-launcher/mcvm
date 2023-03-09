@@ -6,7 +6,7 @@ use self::launch::LaunchOptions;
 use crate::io::files;
 use crate::io::java::classpath::Classpath;
 use crate::io::java::{Java, JavaError, JavaKind};
-use crate::net::fabric_quilt::{download_quilt_files, get_quilt_meta, FabricError};
+use crate::net::fabric_quilt::{self, FabricQuiltError};
 use crate::util::json;
 use crate::Paths;
 
@@ -87,15 +87,16 @@ impl Instance {
 		Ok(())
 	}
 
-	async fn get_quilt(
+	async fn get_fabric_quilt(
 		&mut self,
+		mode: fabric_quilt::Mode,
 		paths: &Paths,
 		verbose: bool,
 		force: bool,
-	) -> Result<Classpath, FabricError> {
-		let meta = get_quilt_meta(&self.version).await?;
+	) -> Result<Classpath, FabricQuiltError> {
+		let meta = fabric_quilt::get_meta(&self.version).await?;
 		let classpath =
-			download_quilt_files(&meta, paths, self.kind.clone(), verbose, force).await?;
+			fabric_quilt::download_files(&meta, paths, self.kind.clone(), mode, verbose, force).await?;
 		self.main_class = Some(match self.kind {
 			InstKind::Client => meta.launcher_meta.main_class.client,
 			InstKind::Server => meta.launcher_meta.main_class.server,
