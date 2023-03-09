@@ -139,9 +139,9 @@ async fn profile_update(data: &mut CmdData, id: &String, force: bool) -> Result<
 				let mut printer = ReplPrinter::new(true);
 				for pkg in profile.packages.iter() {
 					let version = config.packages.get_version(&pkg.req, paths)?;
+					printer.print(&cformat!("\t(<b!>{}</b!>) Installing...", pkg.req));
 					for instance_id in profile.instances.iter() {
 						if let Some(instance) = config.instances.get(instance_id) {
-							printer.print(&cformat!("\t(<b!>{}</b!>) Evaluating...", pkg.req));
 							let constants = EvalConstants {
 								version: profile.version.clone(),
 								modloader: profile.modloader.clone(),
@@ -152,13 +152,11 @@ async fn profile_update(data: &mut CmdData, id: &String, force: bool) -> Result<
 								perms: pkg.permissions.clone(),
 							};
 							let eval = config
-								.packages
-								.eval(&pkg.req, paths, Routine::Install, constants)
-								.await?;
-							printer
-								.print(&cformat!("\t(<b!>{}</b!>) Downloading files...", pkg.req));
-							for addon in eval.addon_reqs.iter() {
-								addon.acquire(paths).await?;
+							.packages
+							.eval(&pkg.req, paths, Routine::Install, constants)
+							.await?;
+						for addon in eval.addon_reqs.iter() {
+							addon.acquire(paths).await?;
 								instance.create_addon(&addon.addon, paths)?;
 							}
 							let lockfile_addons = eval
@@ -177,10 +175,10 @@ async fn profile_update(data: &mut CmdData, id: &String, force: bool) -> Result<
 									instance.remove_addon(&addon.addon, paths)?;
 								}
 							}
-
-							printer.newline();
 						}
 					}
+					printer.print(&cformat!("\t(<b!>{}</b!>) <g>Installed.", pkg.req));
+					printer.newline();
 				}
 
 				for instance_id in profile.instances.iter() {

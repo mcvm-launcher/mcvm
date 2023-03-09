@@ -1,6 +1,6 @@
 use std::fs;
 
-use color_print::{cformat, cprintln};
+use color_print::cformat;
 use reqwest::Client;
 use serde::Deserialize;
 
@@ -118,12 +118,9 @@ fn get_lib_path(name: &str) -> Option<String> {
 async fn download_quilt_libraries(
 	libs: &[QuiltLibrary],
 	paths: &Paths,
-	verbose: bool,
 	force: bool,
 ) -> Result<Classpath, FabricError> {
 	let mut classpath = Classpath::new();
-	let mut printer = ReplPrinter::new(verbose);
-	printer.indent(1);
 	let client = Client::new();
 	for lib in libs.iter() {
 		let path = get_lib_path(&lib.name);
@@ -134,7 +131,6 @@ async fn download_quilt_libraries(
 				continue;
 			}
 			let url = lib.url.clone() + &path;
-			printer.print(&cformat!("Downloading library <b>{}</>...", lib.name));
 			let resp = client.get(url).send().await?.error_for_status()?.bytes().await?;
 			files::create_leading_dirs(&lib_path)?;
 			fs::write(&lib_path, resp)?;
@@ -148,7 +144,6 @@ async fn download_quilt_main_library(
 	lib: &QuiltMainLibrary,
 	url: &str,
 	paths: &Paths,
-	verbose: bool,
 	force: bool
 ) -> Result<String, FabricError> {
 	let path = get_lib_path(&lib.maven).expect("Expected a valid path");
@@ -158,9 +153,6 @@ async fn download_quilt_main_library(
 		return Ok(lib_path_str);
 	}
 	let url = url.to_owned() + &path;
-	if verbose {
-		cprintln!("\tDownloading library <b>{}</>...", lib.maven);
-	}
 	let client = Client::new();
 	let resp = client.get(url).send().await?.error_for_status()?.bytes().await?;
 	files::create_leading_dirs(&lib_path)?;
@@ -175,11 +167,14 @@ pub async fn download_quilt_files(
 	verbose: bool,
 	force: bool,
 ) -> Result<Classpath, FabricError> {
+	let mut printer = ReplPrinter::new(verbose);
+	printer.indent(1);
+	printer.print("Downloading Quilt...");
 	let mut classpath = Classpath::new();
 	let libs = meta.launcher_meta.libraries.common.clone();
 	let paths_clone = paths.clone();
 	let common_task = tokio::spawn(
-		async move { download_quilt_libraries(&libs, &paths_clone, verbose, force).await }
+		async move { download_quilt_libraries(&libs, &paths_clone, force).await }
 	);
 
 	let libs = match side {
@@ -188,7 +183,7 @@ pub async fn download_quilt_files(
 	};
 	let paths_clone = paths.clone();
 	let side_task = tokio::spawn(
-		async move { download_quilt_libraries(&libs, &paths_clone, verbose, force).await }
+		async move { download_quilt_libraries(&libs, &paths_clone, force).await }
 	);
 
 	let paths_clone = paths.clone();
@@ -196,8 +191,8 @@ pub async fn download_quilt_files(
 	let intermediary_clone = meta.intermediary.clone();
 	let main_libs_task = tokio::spawn(async move {
 		(
-			download_quilt_main_library(&loader_clone, "https://maven.quiltmc.org/repository/release/", &paths_clone, verbose, force).await,
-			download_quilt_main_library(&intermediary_clone, "https://maven.fabricmc.net/", &paths_clone, verbose, force).await,
+			download_quilt_main_library(&loader_clone, "https://maven.quiltmc.org/repository/release/", &paths_clone, force).await,
+			download_quilt_main_library(&intermediary_clone, "https://maven.fabricmc.net/", &paths_clone, force).await,
 		)
 	});
 
@@ -206,6 +201,8 @@ pub async fn download_quilt_files(
 	let (loader_name, intermediary_name) = main_libs_task.await?;
 	classpath.add(&loader_name?);
 	classpath.add(&intermediary_name?);
+
+	printer.print(&cformat!("<g>Quilt downloaded."));
 
 	Ok(classpath)
 }
