@@ -108,13 +108,14 @@ impl Instance {
 			printer.finish();
 		}
 
+		self.main_class = Some(json::access_str(&version_json, "mainClass")?.to_owned());
+		
 		if let Modloader::Quilt = self.modloader {
 			classpath.extend(self.get_quilt(paths, verbose, force).await?);
 		}
 
 		classpath.add_path(&jar_path);
 
-		self.main_class = Some(json::access_str(&version_json, "mainClass")?.to_owned());
 		self.classpath = Some(classpath);
 		self.version_json = Some(version_json);
 		self.jar_path = Some(jar_path);

@@ -13,8 +13,6 @@ use crate::util::print::ReplPrinter;
 
 use super::download::DownloadError;
 
-static QUILT_MAVEN_URL: &str = "https://maven.quiltmc.org/repository/release/";
-
 #[derive(Debug, thiserror::Error)]
 pub enum FabricError {
 	#[error("Failed to evaluate json file:\n{}", .0)]
@@ -33,7 +31,7 @@ pub enum FabricError {
 	NoneFound,
 }
 
-#[derive(Deserialize, Clone)]
+#[derive(Debug, Deserialize, Clone)]
 pub struct QuiltLibrary {
 	name: String,
 	url: String,
@@ -134,6 +132,7 @@ async fn download_quilt_libraries(
 		let path = get_lib_path(&lib.name);
 		if let Some(path) = path {
 			let lib_path = paths.libraries.join(&path);
+			classpath.add_path(&lib_path);
 			if !force && lib_path.exists() {
 				continue;
 			}
@@ -142,8 +141,6 @@ async fn download_quilt_libraries(
 			let resp = client.get(url).send().await?.bytes().await?;
 			files::create_leading_dirs(&lib_path)?;
 			fs::write(&lib_path, resp)?;
-
-			classpath.add_path(&lib_path);
 		}
 	}
 
@@ -152,6 +149,7 @@ async fn download_quilt_libraries(
 
 async fn download_quilt_main_library(
 	lib: &QuiltMainLibrary,
+	url: &str,
 	paths: &Paths,
 	verbose: bool,
 	force: bool
@@ -162,7 +160,7 @@ async fn download_quilt_main_library(
 	if !force && lib_path.exists() {
 		return Ok(lib_path_str);
 	}
-	let url = String::from(QUILT_MAVEN_URL) + &path;
+	let url = url.to_owned() + &path;
 	if verbose {
 		cprintln!("\tDownloading library <b>{}</>...", lib.maven);
 	}
@@ -201,8 +199,8 @@ pub async fn download_quilt_files(
 	let intermediary_clone = meta.intermediary.clone();
 	let main_libs_task = tokio::spawn(async move {
 		(
-			download_quilt_main_library(&loader_clone, &paths_clone, verbose, force).await,
-			download_quilt_main_library(&intermediary_clone, &paths_clone, verbose, force).await,
+			download_quilt_main_library(&loader_clone, "https://maven.quiltmc.org/repository/release/", &paths_clone, verbose, force).await,
+			download_quilt_main_library(&intermediary_clone, "https://maven.fabricmc.net/", &paths_clone, verbose, force).await,
 		)
 	});
 
