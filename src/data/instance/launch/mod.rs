@@ -5,6 +5,7 @@ use color_print::cprintln;
 
 use crate::data::{instance::InstKind, user::Auth};
 use crate::io::files::paths::Paths;
+use crate::io::java::args::ArgsPreset;
 use crate::io::java::{
 	args::{MemoryArg, MemoryNum},
 	JavaKind,
@@ -59,6 +60,7 @@ pub struct LaunchOptions {
 	pub game_args: Vec<String>,
 	pub init_mem: Option<MemoryNum>,
 	pub max_mem: Option<MemoryNum>,
+	pub preset: ArgsPreset
 }
 
 impl LaunchOptions {
@@ -70,6 +72,15 @@ impl LaunchOptions {
 		if let Some(n) = &self.max_mem {
 			out.push(MemoryArg::Max.to_string(n.clone()));
 		}
+
+		let avg = match &self.init_mem {
+			Some(init) => match &self.max_mem {
+				Some(max) => Some(MemoryNum::avg(init.clone(), max.clone())),
+				None => None
+			}
+			None => None	
+		};
+		out.extend(self.preset.generate_args(avg));
 
 		out
 	}

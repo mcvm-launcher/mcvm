@@ -4,7 +4,7 @@ use serde_json::Value;
 use crate::data::instance::launch::LaunchOptions;
 use crate::data::instance::{InstKind, Instance};
 use crate::data::profile::Profile;
-use crate::io::java::args::MemoryNum;
+use crate::io::java::args::{MemoryNum, ArgsPreset};
 use crate::io::java::JavaKind;
 
 use super::{ConfigError, ContentError};
@@ -55,6 +55,10 @@ fn default_java() -> String {
 	String::from("adoptium")
 }
 
+fn default_flags_preset() -> String {
+	String::from("none")
+}
+
 #[derive(Deserialize, Debug)]
 pub struct LaunchConfig {
 	#[serde(default)]
@@ -63,6 +67,8 @@ pub struct LaunchConfig {
 	pub memory: LaunchMemory,
 	#[serde(default = "default_java")]
 	pub java: String,
+	#[serde(default = "default_flags_preset")]
+	pub preset: String,
 }
 
 impl LaunchConfig {
@@ -83,6 +89,7 @@ impl LaunchConfig {
 			init_mem,
 			max_mem,
 			java: JavaKind::from_str(&self.java),
+			preset: ArgsPreset::from_str(&self.preset),
 		}
 	}
 }
@@ -96,6 +103,7 @@ impl Default for LaunchConfig {
 			},
 			memory: LaunchMemory::default(),
 			java: default_java(),
+			preset: default_flags_preset(),
 		}
 	}
 }
