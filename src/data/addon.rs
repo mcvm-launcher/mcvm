@@ -105,7 +105,7 @@ impl AddonRequest {
 			AddonLocation::Remote(url) => {
 				let client = reqwest::Client::new();
 				let response = client.get(url).send();
-				fs::write(path, response.await?.bytes().await?)?;
+				fs::write(path, response.await?.error_for_status()?.bytes().await?)?;
 			}
 			AddonLocation::Local(actual_path) => {
 				fs::hard_link(actual_path, path)?;

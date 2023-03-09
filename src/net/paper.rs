@@ -76,7 +76,7 @@ pub async fn download_server_jar(
 	let url = format!("https://api.papermc.io/v2/projects/paper/versions/{version}/builds/{num_str}/downloads/{file_name}");
 
 	let client = Client::new();
-	let bytes = client.get(url).send().await?.bytes().await?;
+	let bytes = client.get(url).send().await?.error_for_status()?.bytes().await?;
 	fs::write(&file_path, bytes)?;
 
 	Ok(file_path)

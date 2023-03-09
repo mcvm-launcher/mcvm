@@ -11,7 +11,6 @@ use crate::io::java::classpath::Classpath;
 use crate::util::json::{self, JsonType};
 use crate::util::print::ReplPrinter;
 
-use super::download::DownloadError;
 
 #[derive(Debug, thiserror::Error)]
 pub enum FabricError {
@@ -20,9 +19,7 @@ pub enum FabricError {
 	#[error("Failed to parse json file:\n{}", .0)]
 	Serde(#[from] serde_json::Error),
 	#[error("Error when downloading modloader:\n{}", .0)]
-	Download(#[from] DownloadError),
-	#[error("Error when downloading modloader:\n{}", .0)]
-	MultiDownload(#[from] reqwest::Error),
+	Download(#[from] reqwest::Error),
 	#[error("File operation failed:\n{}", .0)]
 	Io(#[from] std::io::Error),
 	#[error("Failed to join task:\n{}", .0)]
@@ -94,7 +91,7 @@ impl LibraryParts {
 pub async fn get_quilt_meta(version: &str) -> Result<QuiltMeta, FabricError> {
 	let meta_url = format!("https://meta.quiltmc.org/v3/versions/loader/{version}");
 	let client = Client::new();
-	let meta = client.get(&meta_url).send().await?.text().await?;
+	let meta = client.get(&meta_url).send().await?.error_for_status()?.text().await?;
 	let meta = json::parse_json(&meta)?;
 	let meta = json::ensure_type(meta.as_array(), JsonType::Arr)?;
 	let meta = meta.first().ok_or(FabricError::NoneFound)?;
@@ -138,7 +135,7 @@ async fn download_quilt_libraries(
 			}
 			let url = lib.url.clone() + &path;
 			printer.print(&cformat!("Downloading library <b>{}</>...", lib.name));
-			let resp = client.get(url).send().await?.bytes().await?;
+			let resp = client.get(url).send().await?.error_for_status()?.bytes().await?;
 			files::create_leading_dirs(&lib_path)?;
 			fs::write(&lib_path, resp)?;
 		}
@@ -165,7 +162,7 @@ async fn download_quilt_main_library(
 		cprintln!("\tDownloading library <b>{}</>...", lib.maven);
 	}
 	let client = Client::new();
-	let resp = client.get(url).send().await?.bytes().await?;
+	let resp = client.get(url).send().await?.error_for_status()?.bytes().await?;
 	files::create_leading_dirs(&lib_path)?;
 	fs::write(&lib_path, resp)?;
 	Ok(lib_path_str)

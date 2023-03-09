@@ -352,7 +352,7 @@ pub async fn get_assets(
 		let fut = async move {
 			let response = client.get(url).send();
 			let _permit = permit;
-			fs::write(path, response.await?.bytes().await?)?;
+			fs::write(path, response.await?.error_for_status()?.bytes().await?)?;
 			Ok::<(), AssetsError>(())
 		};
 		join.spawn(fut);
