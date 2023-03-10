@@ -94,7 +94,7 @@ impl Instance {
 		verbose: bool,
 		force: bool,
 	) -> Result<Classpath, FabricQuiltError> {
-		let meta = fabric_quilt::get_meta(&self.version).await?;
+		let meta = fabric_quilt::get_meta(&self.version, &mode).await?;
 		let classpath =
 			fabric_quilt::download_files(&meta, paths, self.kind.clone(), mode, verbose, force).await?;
 		self.main_class = Some(match self.kind {

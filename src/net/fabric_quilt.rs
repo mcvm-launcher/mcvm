@@ -92,8 +92,11 @@ impl LibraryParts {
 	}
 }
 
-pub async fn get_meta(version: &str) -> Result<FabricQuiltMeta, FabricQuiltError> {
-	let meta_url = format!("https://meta.quiltmc.org/v3/versions/loader/{version}");
+pub async fn get_meta(version: &str, mode: &Mode) -> Result<FabricQuiltMeta, FabricQuiltError> {
+	let meta_url = match mode {
+		Mode::Fabric => format!("https://meta.fabricmc.net/v2/versions/loader/{version}"),
+		Mode::Quilt => format!("https://meta.quiltmc.org/v3/versions/loader/{version}"),
+	};
 	let client = Client::new();
 	let meta = client.get(&meta_url).send().await?.error_for_status()?.text().await?;
 	let meta = json::parse_json(&meta)?;

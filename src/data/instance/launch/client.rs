@@ -76,7 +76,6 @@ impl Instance {
 								}
 								command.args(&self.launch.game_args);
 							}
-
 							let mut child = match command.spawn() {
 								Ok(child) => child,
 								Err(err) => return Err(LaunchError::Command(err)),
