@@ -1,4 +1,21 @@
 # Packages
+An MCVM package is simply a script that is run to install files and dependencies. The file usually follows the format of `package-name.pkg.txt`. Package names may contain only letters, numbers, and hyphens (`-`).
+
+# Repository
+A package repository is any server that provides an `index.json` of packages for the user to source. All that is required to run a repository yourself is to make this `index.json` under `https://example.com/api/mcvm/index.json`. An index follows this format:
+```json
+{
+	"packages": {
+		"package-name": {
+			"version": String,
+			"url": String
+		}
+	}
+}
+```
+ * `package-name`: The name of the package.
+ * `version`: The package version known by the repository.
+ * `url`: The URL to the `package.pkg.txt` file.
 
 # Syntax
 At the root level, a package is organized into **routines** which describe a list of instructions to be run to perform some action. Routines can have any name, but some have special meaning.
