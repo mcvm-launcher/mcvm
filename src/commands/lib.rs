@@ -4,7 +4,7 @@ use crate::data::instance::launch::LaunchError;
 use crate::io::files::paths::{Paths, PathsError};
 use crate::io::lock::LockfileError;
 use crate::net::download::DownloadError;
-use crate::net::mojang::VersionManifestError;
+use crate::net::minecraft::VersionManifestError;
 use crate::net::paper::PaperError;
 use crate::package::reg::RegError;
 use crate::package::repo::RepoError;
