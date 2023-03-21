@@ -14,7 +14,7 @@ use tar::Archive;
 use std::fs;
 use std::path::PathBuf;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Hash, PartialEq, Eq)]
 pub enum JavaKind {
 	Adoptium(Option<String>),
 	Custom(PathBuf),
@@ -50,6 +50,14 @@ pub struct Java {
 impl Java {
 	pub fn new(kind: JavaKind) -> Self {
 		Self { kind, path: None }
+	}
+
+	/// Add a version to an installation that supports it
+	pub fn add_version(&mut self, version: &str) {
+		match &mut self.kind {
+			JavaKind::Adoptium(vers) => *vers = Some(version.to_owned()),
+			JavaKind::Custom(..) => {}
+		};
 	}
 
 	pub fn install(&mut self, paths: &Paths, verbose: bool, force: bool) -> Result<(), JavaError> {

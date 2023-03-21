@@ -1,12 +1,16 @@
+use std::collections::HashSet;
 use std::fs;
 
 use color_print::{cformat, cprintln};
 
 use crate::data::addon::{Modloader, PluginLoader};
+use crate::data::profile::update::{UpdateRequirement, UpdateManager};
 use crate::io::files::{self, paths::Paths};
-use crate::io::java::JavaError;
+use crate::io::java::{JavaError, JavaKind};
 use crate::io::java::classpath::Classpath;
+use crate::net::download::Download;
 use crate::net::fabric_quilt::{FabricQuiltError, self};
+use crate::net::minecraft::VersionManifestError;
 use crate::net::{download, minecraft, paper};
 use crate::util::{json, print::ReplPrinter};
 
@@ -32,35 +36,54 @@ pub enum CreateError {
 	Paper(#[from] paper::PaperError),
 	#[error("Failed to install Fabric or Quilt:\n{}", .0)]
 	Fabric(#[from] FabricQuiltError),
+	#[error("Failed to download version manifest:\n{}", .0)]
+	Manifest(#[from] VersionManifestError)
 }
 
 impl Instance {
+	/// Get the requirements for this instance
+	pub fn get_requirements(&self) -> HashSet<UpdateRequirement> {
+		let mut out = HashSet::new();
+		out.insert(UpdateRequirement::VersionJson);
+
+		let java_kind = match &self.launch.java {
+			JavaKind::Adoptium(..) => JavaKind::Adoptium(None),
+			x => x.clone(),
+		};
+		out.insert(UpdateRequirement::Java(java_kind));
+		match &self.kind {
+			InstKind::Client => {
+				out.insert(UpdateRequirement::GameAssets);
+			}
+			InstKind::Server => {
+
+			}
+		}
+		out
+	}
+
 	// Create the data for the instance
 	pub async fn create(
 		&mut self,
-		version_manifest: &json::JsonObject,
+		manager: &UpdateManager,
 		paths: &Paths,
-		verbose: bool,
-		force: bool,
 	) -> Result<(), CreateError> {
 		match &self.kind {
 			InstKind::Client => {
-				if force {
+				if manager.force {
 					cprintln!("<s>Rebuilding client <y!>{}</y!>", self.id);
 				} else {
 					cprintln!("<s>Updating client <y!>{}</y!>", self.id);
 				}
-				self.create_client(version_manifest, paths, verbose, force)
-					.await?;
+				self.create_client(manager, paths).await?;
 			}
 			InstKind::Server => {
-				if force {
+				if manager.force {
 					cprintln!("<s>Rebuilding server <c!>{}</c!>", self.id);
 				} else {
 					cprintln!("<s>Updating server <c!>{}</c!>", self.id);
 				}
-				self.create_server(version_manifest, paths, verbose, force)
-					.await?
+				self.create_server(manager, paths).await?
 			}
 		}
 		Ok(())
@@ -68,10 +91,8 @@ impl Instance {
 
 	pub async fn create_client(
 		&mut self,
-		version_manifest: &json::JsonObject,
+		manager: &UpdateManager,
 		paths: &Paths,
-		verbose: bool,
-		force: bool,
 	) -> Result<(), CreateError> {
 		let dir = self.get_dir(paths);
 		files::create_leading_dirs(&dir)?;
@@ -80,22 +101,21 @@ impl Instance {
 		files::create_dir(&mc_dir)?;
 		let jar_path = dir.join("client.jar");
 
-		let (version_json, mut dwn) =
-			minecraft::get_version_json(&self.version, version_manifest, paths)?;
+		let version_json = manager.version_json.clone().expect("Version json missing");
+
+		let mut dwn = Download::new();
 
 		let mut classpath = Classpath::new();
-		classpath.extend(minecraft::get_libraries(&version_json, paths, &self.version, verbose, force)?);
-
-		minecraft::get_assets(&version_json, paths, &self.version, verbose, force).await?;
+		classpath.extend(minecraft::get_libraries(&version_json, paths, &self.version, manager)?);
 
 		let java_vers = json::access_i64(
 			json::access_object(&version_json, "javaVersion")?,
 			"majorVersion",
 		)?;
-		self.get_java(&java_vers.to_string(), paths, verbose, force)?;
+		self.add_java(&java_vers.to_string());
 
-		if !jar_path.exists() || force {
-			let mut printer = ReplPrinter::new(verbose);
+		if manager.should_update_file(&jar_path) {
+			let mut printer = ReplPrinter::new(manager.verbose);
 			printer.indent(1);
 			printer.print("Downloading client jar...");
 			dwn.reset();
@@ -116,7 +136,7 @@ impl Instance {
 			_ => None,
 		};
 		if let Some(mode) = fq_mode {
-			classpath.extend(self.get_fabric_quilt(mode, paths, verbose, force).await?);
+			classpath.extend(self.get_fabric_quilt(mode, paths, manager.verbose, manager.force).await?);
 		}
 
 		classpath.add_path(&jar_path);
@@ -129,10 +149,8 @@ impl Instance {
 
 	pub async fn create_server(
 		&mut self,
-		version_manifest: &json::JsonObject,
+		manager: &UpdateManager,
 		paths: &Paths,
-		verbose: bool,
-		force: bool,
 	) -> Result<(), CreateError> {
 		let dir = self.get_dir(paths);
 		files::create_leading_dirs(&dir)?;
@@ -141,17 +159,18 @@ impl Instance {
 		files::create_dir(&server_dir)?;
 		let jar_path = server_dir.join("server.jar");
 
-		let (version_json, mut dwn) =
-			minecraft::get_version_json(&self.version, version_manifest, paths)?;
+		let version_json = manager.version_json.clone().expect("Version json missing");
+
+		let mut dwn = Download::new();
 
 		let java_vers = json::access_i64(
 			json::access_object(&version_json, "javaVersion")?,
 			"majorVersion",
 		)?;
-		self.get_java(&java_vers.to_string(), paths, verbose, force)?;
+		self.add_java(&java_vers.to_string());
 
-		if !jar_path.exists() || force {
-			let mut printer = ReplPrinter::new(verbose);
+		if manager.should_update_file(&jar_path) {
+			let mut printer = ReplPrinter::new(manager.verbose);
 			printer.indent(1);
 			printer.print("Downloading server jar...");
 			dwn.reset();
@@ -164,8 +183,8 @@ impl Instance {
 		}
 
 		let classpath = match self.modloader {
-			Modloader::Fabric => Some(self.get_fabric_quilt(fabric_quilt::Mode::Fabric, paths, verbose, force).await?),
-			Modloader::Quilt => Some(self.get_fabric_quilt(fabric_quilt::Mode::Quilt, paths, verbose, force).await?),
+			Modloader::Fabric => Some(self.get_fabric_quilt(fabric_quilt::Mode::Fabric, paths, manager.verbose, manager.force).await?),
+			Modloader::Quilt => Some(self.get_fabric_quilt(fabric_quilt::Mode::Quilt, paths, manager.verbose, manager.force).await?),
 			_ => None,
 		};
 
@@ -174,7 +193,7 @@ impl Instance {
 		self.jar_path = Some(match self.plugin_loader {
 			PluginLoader::Vanilla => jar_path,
 			PluginLoader::Paper => {
-				let mut printer = ReplPrinter::new(verbose);
+				let mut printer = ReplPrinter::new(manager.verbose);
 				printer.indent(1);
 				printer.print("Checking for paper updates...");
 				let (build_num, ..) = paper::get_newest_build(&self.version).await?;

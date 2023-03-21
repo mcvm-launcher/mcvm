@@ -5,7 +5,7 @@ use self::create::CreateError;
 use self::launch::LaunchOptions;
 use crate::io::files;
 use crate::io::java::classpath::Classpath;
-use crate::io::java::{Java, JavaError, JavaKind};
+use crate::io::java::Java;
 use crate::net::fabric_quilt::{self, FabricQuiltError};
 use crate::util::json;
 use crate::Paths;
@@ -69,22 +69,26 @@ impl Instance {
 			main_class: None,
 		}
 	}
+	
+	pub fn get_dir(&self, paths: &Paths) -> PathBuf {
+		match &self.kind {
+			InstKind::Client => paths.project.data_dir().join("client").join(&self.id),
+			InstKind::Server => paths.project.data_dir().join("server").join(&self.id),
+		}
+	}
+	
+	pub fn get_subdir(&self, paths: &Paths) -> PathBuf {
+		self.get_dir(paths).join(match self.kind {
+			InstKind::Client => ".minecraft",
+			InstKind::Server => "server",
+		})
+	}
 
-	fn get_java(
-		&mut self,
-		version: &str,
-		paths: &Paths,
-		verbose: bool,
-		force: bool,
-	) -> Result<(), JavaError> {
-		let kind = match &self.launch.java {
-			JavaKind::Adoptium(..) => JavaKind::Adoptium(Some(version.to_owned())),
-			x => x.clone(),
-		};
-		let mut java = Java::new(kind);
-		java.install(paths, verbose, force)?;
+	/// Set the java installation for the instance
+	fn add_java(&mut self, version: &str) {
+		let mut java = Java::new(self.launch.java.clone());
+		java.add_version(version);
 		self.java = Some(java);
-		Ok(())
 	}
 
 	async fn get_fabric_quilt(
@@ -104,21 +108,7 @@ impl Instance {
 
 		Ok(classpath)
 	}
-
-	pub fn get_dir(&self, paths: &Paths) -> PathBuf {
-		match &self.kind {
-			InstKind::Client => paths.project.data_dir().join("client").join(&self.id),
-			InstKind::Server => paths.project.data_dir().join("server").join(&self.id),
-		}
-	}
-
-	pub fn get_subdir(&self, paths: &Paths) -> PathBuf {
-		self.get_dir(paths).join(match self.kind {
-			InstKind::Client => ".minecraft",
-			InstKind::Server => "server",
-		})
-	}
-
+	
 	pub fn get_linked_addon_path(&self, addon: &Addon, paths: &Paths) -> Option<PathBuf> {
 		let inst_dir = self.get_subdir(paths);
 		match addon.kind {

@@ -1,3 +1,4 @@
+use crate::data::profile::update::UpdateManager;
 use crate::io::files::{self, paths::Paths};
 use crate::io::java::classpath::Classpath;
 use crate::net::download::{Download, DownloadError};
@@ -192,8 +193,7 @@ pub fn get_libraries(
 	version_json: &json::JsonObject,
 	paths: &Paths,
 	version: &str,
-	verbose: bool,
-	force: bool,
+	manager: &UpdateManager,
 ) -> Result<Classpath, LibrariesError> {
 	let libraries_path = paths.internal.join("libraries");
 	files::create_dir(&libraries_path)?;
@@ -208,7 +208,7 @@ pub fn get_libraries(
 	let mut native_paths = Vec::new();
 	let mut classpath = Classpath::new();
 	let mut dwn = Download::new();
-	let mut printer = ReplPrinter::new(verbose);
+	let mut printer = ReplPrinter::new(manager.verbose);
 	printer.indent(1);
 
 	let libraries = json::access_array(version_json, "libraries")?;
@@ -234,7 +234,7 @@ pub fn get_libraries(
 			classpath.add_path(&path);
 
 			native_paths.push((path.clone(), name.to_owned()));
-			if !force && path.exists() {
+			if !manager.should_update_file(&path) {
 				continue;
 			}
 			printer.print(&cformat!("Downloading library <b!>{}</>...", name));
@@ -245,7 +245,7 @@ pub fn get_libraries(
 			let artifact = json::ensure_type(artifact_val.as_object(), JsonType::Obj)?;
 			let path = libraries_path.join(json::access_str(artifact, "path")?);
 			classpath.add_path(&path);
-			if !force && path.exists() {
+			if !manager.should_update_file(&path) {
 				continue;
 			}
 			printer.print(&cformat!("Downloading library <b>{}</>...", name));
@@ -294,8 +294,7 @@ pub async fn get_assets(
 	version_json: &json::JsonObject,
 	paths: &Paths,
 	version: &str,
-	verbose: bool,
-	force: bool,
+	manager: &UpdateManager,
 ) -> Result<(), AssetsError> {
 	let version_string = version.to_owned();
 	let indexes_dir = paths.assets.join("indexes");
@@ -307,7 +306,7 @@ pub async fn get_assets(
 	let objects_dir = paths.assets.join("objects");
 	files::create_dir(&objects_dir)?;
 	let virtual_dir = paths.assets.join("virtual");
-	if !force && virtual_dir.exists() && !virtual_dir.is_symlink() {
+	if !manager.force && virtual_dir.exists() && !virtual_dir.is_symlink() {
 		files::dir_symlink(&virtual_dir, &objects_dir)?;
 	}
 
@@ -326,9 +325,9 @@ pub async fn get_assets(
 
 	let client = Client::new();
 	let mut join = JoinSet::new();
-	let mut printer = ReplPrinter::new(verbose);
+	let mut printer = ReplPrinter::new(manager.verbose);
 	printer.indent(1);
-	if verbose {
+	if manager.verbose {
 		cprintln!("\tDownloading assets...");
 	}
 	// let mut count = 0;
@@ -342,7 +341,7 @@ pub async fn get_assets(
 		let url = "https://resources.download.minecraft.net/".to_owned() + &hash_path;
 
 		let path = objects_dir.join(&hash_path);
-		if !force && path.exists() {
+		if !manager.should_update_file(&path) {
 			continue;
 		}
 

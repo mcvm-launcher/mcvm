@@ -3,6 +3,7 @@ pub mod server;
 
 use color_print::cprintln;
 
+use crate::data::profile::update::UpdateManager;
 use crate::data::{instance::InstKind, user::Auth};
 use crate::io::files::paths::Paths;
 use crate::io::java::args::ArgsPreset;
@@ -30,22 +31,21 @@ impl Instance {
 	// Launch the instance
 	pub async fn launch(
 		&mut self,
-		version_manifest: &json::JsonObject,
 		paths: &Paths,
 		auth: &Auth,
 	) -> Result<(), LaunchError> {
 		cprintln!("Checking for updates...");
+		let mut manager = UpdateManager::new(false, false);
+		manager.add_requirements(self.get_requirements());
+		manager.fulfill_requirements(paths, &self.version).await?;
+		
+		self.create(&manager, paths).await?;
+		cprintln!("<g>Launching!");
 		match &self.kind {
 			InstKind::Client => {
-				self.create_client(version_manifest, paths, false, false)
-					.await?;
-				cprintln!("<g>Launching!");
 				self.launch_client(paths, auth)?;
 			}
 			InstKind::Server => {
-				self.create_server(version_manifest, paths, false, false)
-					.await?;
-				cprintln!("<g>Launching!");
 				self.launch_server(paths)?;
 			}
 		}

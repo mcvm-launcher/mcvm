@@ -30,7 +30,7 @@ pub fn help() {
 	cprintln!("{}<i,c>reinstall:</i,c> {}", HYPHEN_POINT, REINSTALL_HELP);
 }
 
-fn info(data: &mut CmdData, id: &String) -> Result<(), CmdError> {
+fn info(data: &mut CmdData, id: &str) -> Result<(), CmdError> {
 	data.ensure_paths()?;
 	data.ensure_config()?;
 
@@ -90,13 +90,14 @@ fn list(data: &mut CmdData) -> Result<(), CmdError> {
 	Ok(())
 }
 
-async fn profile_update(data: &mut CmdData, id: &String, force: bool) -> Result<(), CmdError> {
+async fn profile_update(data: &mut CmdData, id: &str, force: bool) -> Result<(), CmdError> {
 	data.ensure_paths()?;
 	data.ensure_config()?;
 
 	if let Some(config) = &mut data.config {
 		if let Some(paths) = &data.paths {
 			if let Some(profile) = config.profiles.get_mut(id) {
+				
 				let (paper_build_num, paper_file_name) =
 					if let PluginLoader::Paper = profile.plugin_loader {
 						let (build_num, ..) = paper::get_newest_build(&profile.version).await?;
@@ -106,15 +107,15 @@ async fn profile_update(data: &mut CmdData, id: &String, force: bool) -> Result<
 					} else {
 						(None, None)
 					};
-				let mut lock = Lockfile::open(paths)?;
-				if lock.update_profile_version(id, &profile.version) {
-					cprintln!("<s>Updating profile version...");
-					for inst in profile.instances.iter() {
-						if let Some(inst) = config.instances.get(inst) {
-							inst.teardown(paths, paper_file_name.clone())?;
+					let mut lock = Lockfile::open(paths)?;
+					if lock.update_profile_version(id, &profile.version) {
+						cprintln!("<s>Updating profile version...");
+						for inst in profile.instances.iter() {
+							if let Some(inst) = config.instances.get(inst) {
+								inst.teardown(paths, paper_file_name.clone())?;
+							}
 						}
 					}
-				}
 				if let Some(build_num) = paper_build_num {
 					if let Some(file_name) = paper_file_name {
 						if lock.update_profile_paper_build(id, build_num) {
@@ -126,82 +127,84 @@ async fn profile_update(data: &mut CmdData, id: &String, force: bool) -> Result<
 						}
 					}
 				}
-
+				
 				lock.finish(paths)?;
+				
+				if profile.instances.len() > 0 {
+					cprintln!("<s>Obtaining version index...");
+					let (version_manifest, ..) = get_version_manifest(paths)?;
+					profile
+						.create_instances(&mut config.instances, paths, true, force)
+						.await?;
 
-				cprintln!("<s>Obtaining version index...");
-				let (version_manifest, ..) = get_version_manifest(paths)?;
-				profile
-					.create_instances(&mut config.instances, &version_manifest, paths, true, force)
-					.await?;
-
-				cprintln!("<s>Updating packages");
-				let mut printer = ReplPrinter::new(true);
-				for pkg in profile.packages.iter() {
-					let version = config.packages.get_version(&pkg.req, paths)?;
-					printer.print(&cformat!("\t(<b!>{}</b!>) Installing...", pkg.req));
-					for instance_id in profile.instances.iter() {
-						if let Some(instance) = config.instances.get(instance_id) {
-							let constants = EvalConstants {
-								version: profile.version.clone(),
-								modloader: profile.modloader.clone(),
-								plugin_loader: profile.plugin_loader.clone(),
-								side: instance.kind.clone(),
-								features: pkg.features.clone(),
-								versions: make_version_list(&version_manifest)?,
-								perms: pkg.permissions.clone(),
-							};
-							let eval = config
-							.packages
-							.eval(&pkg.req, paths, Routine::Install, constants)
-							.await?;
-						for addon in eval.addon_reqs.iter() {
-							addon.acquire(paths).await?;
-								instance.create_addon(&addon.addon, paths)?;
-							}
-							let lockfile_addons = eval
-								.addon_reqs
-								.iter()
-								.map(|x| LockfileAddon::from_addon(&x.addon, paths))
-								.collect::<Vec<LockfileAddon>>();
-							let addons_to_remove = lock.update_package(
-								&pkg.req.name,
-								instance_id,
-								&version,
-								&lockfile_addons,
-							)?;
+					cprintln!("<s>Updating packages");
+					let mut printer = ReplPrinter::new(true);
+					for pkg in profile.packages.iter() {
+						let version = config.packages.get_version(&pkg.req, paths)?;
+						printer.print(&cformat!("\t(<b!>{}</b!>) Installing...", pkg.req));
+						for instance_id in profile.instances.iter() {
+							if let Some(instance) = config.instances.get(instance_id) {
+								let constants = EvalConstants {
+									version: profile.version.clone(),
+									modloader: profile.modloader.clone(),
+									plugin_loader: profile.plugin_loader.clone(),
+									side: instance.kind.clone(),
+									features: pkg.features.clone(),
+									versions: make_version_list(&version_manifest)?,
+									perms: pkg.permissions.clone(),
+								};
+								let eval = config
+								.packages
+								.eval(&pkg.req, paths, Routine::Install, constants)
+								.await?;
 							for addon in eval.addon_reqs.iter() {
-								if addons_to_remove.contains(&addon.addon.name) {
-									instance.remove_addon(&addon.addon, paths)?;
+								addon.acquire(paths).await?;
+									instance.create_addon(&addon.addon, paths)?;
+								}
+								let lockfile_addons = eval
+									.addon_reqs
+									.iter()
+									.map(|x| LockfileAddon::from_addon(&x.addon, paths))
+									.collect::<Vec<LockfileAddon>>();
+								let addons_to_remove = lock.update_package(
+									&pkg.req.name,
+									instance_id,
+									&version,
+									&lockfile_addons,
+								)?;
+								for addon in eval.addon_reqs.iter() {
+									if addons_to_remove.contains(&addon.addon.name) {
+										instance.remove_addon(&addon.addon, paths)?;
+									}
 								}
 							}
 						}
+						printer.print(&cformat!("\t(<b!>{}</b!>) <g>Installed.", pkg.req));
+						printer.newline();
 					}
-					printer.print(&cformat!("\t(<b!>{}</b!>) <g>Installed.", pkg.req));
-					printer.newline();
-				}
-
-				for instance_id in profile.instances.iter() {
-					if let Some(instance) = config.instances.get(instance_id) {
-						let addons_to_remove = lock.remove_unused_packages(
-							instance_id,
-							&profile
-								.packages
-								.iter()
-								.map(|x| x.req.name.clone())
-								.collect::<Vec<String>>(),
-						)?;
-
-						for addon in addons_to_remove {
-							instance.remove_addon(&addon, paths)?;
+	
+					for instance_id in profile.instances.iter() {
+						if let Some(instance) = config.instances.get(instance_id) {
+							let addons_to_remove = lock.remove_unused_packages(
+								instance_id,
+								&profile
+									.packages
+									.iter()
+									.map(|x| x.req.name.clone())
+									.collect::<Vec<String>>(),
+							)?;
+	
+							for addon in addons_to_remove {
+								instance.remove_addon(&addon, paths)?;
+							}
 						}
 					}
+					printer.print(&cformat!("\t<g>Finished installing packages."));
+					printer.finish();
 				}
 
 				lock.finish(paths)?;
 
-				printer.print(&cformat!("\t<g>Finished installing packages."));
-				printer.finish();
 			} else {
 				return Err(CmdError::Custom(format!("Unknown profile '{id}'")));
 			}

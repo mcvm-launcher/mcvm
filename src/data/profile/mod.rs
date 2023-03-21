@@ -1,7 +1,10 @@
+pub mod update;
+
 use crate::data::instance::Instance;
 use crate::package::PkgConfig;
-use crate::util::json;
 use crate::Paths;
+
+use self::update::UpdateManager;
 
 use super::addon::Modloader;
 use super::addon::PluginLoader;
@@ -43,15 +46,20 @@ impl Profile {
 	pub async fn create_instances(
 		&mut self,
 		reg: &mut InstanceRegistry,
-		version_manifest: &json::JsonObject,
 		paths: &Paths,
 		verbose: bool,
 		force: bool,
 	) -> Result<(), CreateError> {
+		let mut manager = UpdateManager::new(verbose, force);
+		for id in self.instances.iter_mut() {
+			let instance = reg.get_mut(id).expect("Profile has unknown instance");
+			manager.add_requirements(instance.get_requirements());
+		}
+		manager.fulfill_requirements(paths, &self.version).await?;
 		for id in self.instances.iter_mut() {
 			let instance = reg.get_mut(id).expect("Profile has unknown instance");
 			instance
-				.create(version_manifest, paths, verbose, force)
+				.create(&manager, paths)
 				.await?;
 		}
 		Ok(())
