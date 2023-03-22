@@ -149,6 +149,7 @@ impl PkgRegistry {
 	}
 
 	// Checks if a package is in the registry already
+	#[cfg(test)]
 	pub fn has_now(&self, req: &PkgRequest) -> bool {
 		self.packages.contains_key(req)
 	}
