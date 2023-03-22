@@ -1,5 +1,3 @@
-use std::fs;
-
 use color_print::cformat;
 use reqwest::Client;
 use serde::Deserialize;
@@ -139,9 +137,9 @@ async fn download_libraries(
 				continue;
 			}
 			let url = lib.url.clone() + &path;
-			let resp = client.get(url).send().await?.error_for_status()?.bytes().await?;
 			files::create_leading_dirs(&lib_path)?;
-			fs::write(&lib_path, resp)?;
+			let resp = client.get(url).send().await?.error_for_status()?.bytes().await?;
+			tokio::fs::write(&lib_path, resp).await?;
 		}
 	}
 
@@ -164,7 +162,7 @@ async fn download_main_library(
 	let client = Client::new();
 	let resp = client.get(url).send().await?.error_for_status()?.bytes().await?;
 	files::create_leading_dirs(&lib_path)?;
-	fs::write(&lib_path, resp)?;
+	tokio::fs::write(&lib_path, resp).await?;
 	Ok(lib_path_str)
 }
 

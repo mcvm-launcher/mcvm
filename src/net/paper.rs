@@ -1,4 +1,3 @@
-use std::fs;
 use std::path::{Path, PathBuf};
 
 use crate::util::json;
@@ -74,7 +73,7 @@ pub async fn download_server_jar(
 
 	let client = Client::new();
 	let bytes = client.get(url).send().await?.error_for_status()?.bytes().await?;
-	fs::write(&file_path, bytes)?;
+	tokio::fs::write(&file_path, bytes).await?;
 
 	Ok(file_path)
 }

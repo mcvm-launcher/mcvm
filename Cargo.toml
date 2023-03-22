@@ -25,6 +25,6 @@ serde_json = "1.0.91"
 shellexpand = { version = "3.0.0", features = ["path"] }
 tar = "0.4.38"
 thiserror = "1.0.38"
-tokio = { version = "1.25.0", features = ["macros"] }
+tokio = { version = "1.25.0", features = ["macros", "fs"] }
 trees = "0.4.2"
 zip = "0.6.4"

@@ -154,7 +154,7 @@ async fn download_library(
 ) -> Result<(), LibrariesError> {
 	files::create_leading_dirs(path)?;
 	let url = json::access_str(lib_download, "url")?;
-	fs::write(path, client.get(url).send().await?.bytes().await?)?;
+	tokio::fs::write(path, client.get(url).send().await?.error_for_status()?.bytes().await?).await?;
 
 	Ok(())
 }
@@ -306,7 +306,7 @@ pub async fn get_assets(
 		Ok(val) => val,
 		Err(err) => {
 			cprintln!(
-				"<r>Failed to obtain asset index:\n\t{}\nRedownloading...",
+				"<r>Failed to obtain asset index:\n{}\nRedownloading...",
 				err
 			);
 			download_asset_index(index_url, &index_path).await?
@@ -344,7 +344,7 @@ pub async fn get_assets(
 		let fut = async move {
 			let response = client.get(url).send();
 			let _permit = permit;
-			fs::write(&path, response.await?.error_for_status()?.bytes().await?)?;
+			tokio::fs::write(&path, response.await?.error_for_status()?.bytes().await?).await?;
 			Ok::<(), AssetsError>(())
 		};
 		join.spawn(fut);
