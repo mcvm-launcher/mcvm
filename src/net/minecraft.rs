@@ -13,6 +13,7 @@ use tokio::sync::Semaphore;
 use tokio::task::JoinSet;
 use zip::ZipArchive;
 
+use std::collections::HashSet;
 use std::fs::{self, File};
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
@@ -189,12 +190,15 @@ pub fn extract_native_library(path: &Path, natives_dir: &Path) -> Result<(), Lib
 	Ok(())
 }
 
+/// Downloads base client libraries.
+/// Returns both a classpath and a set of files to be added to the update manager.
 pub fn get_libraries(
 	version_json: &json::JsonObject,
 	paths: &Paths,
 	version: &str,
 	manager: &UpdateManager,
-) -> Result<Classpath, LibrariesError> {
+) -> Result<(Classpath, HashSet<PathBuf>), LibrariesError> {
+	let mut files = HashSet::new();
 	let libraries_path = paths.internal.join("libraries");
 	files::create_dir(&libraries_path)?;
 	let natives_path = paths
@@ -239,6 +243,7 @@ pub fn get_libraries(
 			}
 			printer.print(&cformat!("Downloading library <b!>{}</>...", name));
 			download_library(&mut dwn, classifier, &path)?;
+			files.insert(path);
 			continue;
 		}
 		if let Some(artifact_val) = downloads.get("artifact") {
@@ -250,6 +255,7 @@ pub fn get_libraries(
 			}
 			printer.print(&cformat!("Downloading library <b>{}</>...", name));
 			download_library(&mut dwn, artifact, &path)?;
+			files.insert(path);
 			continue;
 		}
 	}
@@ -262,7 +268,7 @@ pub fn get_libraries(
 	printer.print(&cformat!("<g>Libraries downloaded."));
 	printer.finish();
 
-	Ok(classpath)
+	Ok((classpath, files))
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -290,12 +296,14 @@ fn download_asset_index(url: &str, path: &Path) -> Result<Box<json::JsonObject>,
 	Ok(doc)
 }
 
+/// Download assets used by the client, such as game resources and icons.
 pub async fn get_assets(
 	version_json: &json::JsonObject,
 	paths: &Paths,
 	version: &str,
 	manager: &UpdateManager,
-) -> Result<(), AssetsError> {
+) -> Result<HashSet<PathBuf>, AssetsError> {
+	let mut out = HashSet::new();
 	let version_string = version.to_owned();
 	let indexes_dir = paths.assets.join("indexes");
 	files::create_dir(&indexes_dir)?;
@@ -326,9 +334,8 @@ pub async fn get_assets(
 	let client = Client::new();
 	let mut join = JoinSet::new();
 	let mut printer = ReplPrinter::new(manager.verbose);
-	printer.indent(1);
 	if manager.verbose {
-		cprintln!("\tDownloading assets...");
+		cprintln!("Downloading assets...");
 	}
 	// let mut count = 0;
 	// Used to limit the number of open file descriptors
@@ -344,14 +351,15 @@ pub async fn get_assets(
 		if !manager.should_update_file(&path) {
 			continue;
 		}
-
+		
+		out.insert(path.clone());
 		files::create_leading_dirs(&path)?;
 		let client = client.clone();
 		let permit = Arc::clone(&sem).acquire_owned().await;
 		let fut = async move {
 			let response = client.get(url).send();
 			let _permit = permit;
-			fs::write(path, response.await?.error_for_status()?.bytes().await?)?;
+			fs::write(&path, response.await?.error_for_status()?.bytes().await?)?;
 			Ok::<(), AssetsError>(())
 		};
 		join.spawn(fut);
@@ -381,5 +389,5 @@ pub async fn get_assets(
 	printer.print(&cformat!("<g>Assets downloaded."));
 	printer.finish();
 
-	Ok(())
+	Ok(out)
 }

@@ -1,5 +1,6 @@
 use std::collections::HashSet;
 use std::fs;
+use std::path::PathBuf;
 
 use color_print::{cformat, cprintln};
 
@@ -62,12 +63,13 @@ impl Instance {
 		out
 	}
 
-	// Create the data for the instance
+	/// Create the data for the instance.
+	/// Returns a list of files to be added to the update manager.
 	pub async fn create(
 		&mut self,
 		manager: &UpdateManager,
 		paths: &Paths,
-	) -> Result<(), CreateError> {
+	) -> Result<HashSet<PathBuf>, CreateError> {
 		match &self.kind {
 			InstKind::Client => {
 				if manager.force {
@@ -75,7 +77,8 @@ impl Instance {
 				} else {
 					cprintln!("<s>Updating client <y!>{}</y!>", self.id);
 				}
-				self.create_client(manager, paths).await?;
+				let files = self.create_client(manager, paths).await?;
+				Ok(files)
 			}
 			InstKind::Server => {
 				if manager.force {
@@ -83,17 +86,19 @@ impl Instance {
 				} else {
 					cprintln!("<s>Updating server <c!>{}</c!>", self.id);
 				}
-				self.create_server(manager, paths).await?
+				let files = self.create_server(manager, paths).await?;
+				Ok(files)
 			}
 		}
-		Ok(())
 	}
 
 	pub async fn create_client(
 		&mut self,
 		manager: &UpdateManager,
 		paths: &Paths,
-	) -> Result<(), CreateError> {
+	) -> Result<HashSet<PathBuf>, CreateError> {
+		let mut out = HashSet::new();
+		
 		let dir = self.get_dir(paths);
 		files::create_leading_dirs(&dir)?;
 		files::create_dir(&dir)?;
@@ -106,7 +111,9 @@ impl Instance {
 		let mut dwn = Download::new();
 
 		let mut classpath = Classpath::new();
-		classpath.extend(minecraft::get_libraries(&version_json, paths, &self.version, manager)?);
+		let (lib_classpath, files) = minecraft::get_libraries(&version_json, paths, &self.version, manager)?;
+		classpath.extend(lib_classpath);
+		out.extend(files);
 
 		let java_vers = json::access_i64(
 			json::access_object(&version_json, "javaVersion")?,
@@ -126,6 +133,7 @@ impl Instance {
 			dwn.perform()?;
 			printer.print(cformat!("<g>Client jar downloaded.").as_str());
 			printer.finish();
+			out.insert(jar_path.clone());
 		}
 
 		self.main_class = Some(json::access_str(&version_json, "mainClass")?.to_owned());
@@ -144,14 +152,16 @@ impl Instance {
 		self.classpath = Some(classpath);
 		self.version_json = Some(version_json);
 		self.jar_path = Some(jar_path);
-		Ok(())
+		Ok(out)
 	}
 
 	pub async fn create_server(
 		&mut self,
 		manager: &UpdateManager,
 		paths: &Paths,
-	) -> Result<(), CreateError> {
+	) -> Result<HashSet<PathBuf>, CreateError> {
+		let mut out = HashSet::new();
+		
 		let dir = self.get_dir(paths);
 		files::create_leading_dirs(&dir)?;
 		files::create_dir(&dir)?;
@@ -180,6 +190,8 @@ impl Instance {
 			dwn.url(json::access_str(client_download, "url")?)?;
 			dwn.perform()?;
 			printer.print(&cformat!("<g>Server jar downloaded."));
+
+			out.insert(jar_path.clone());
 		}
 
 		let classpath = match self.modloader {
@@ -213,6 +225,6 @@ impl Instance {
 
 		self.version_json = Some(version_json);
 		self.classpath = classpath;
-		Ok(())
+		Ok(out)
 	}
 }

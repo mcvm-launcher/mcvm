@@ -53,15 +53,16 @@ impl Profile {
 	) -> Result<Vec<String>, CreateError> {
 		let mut manager = UpdateManager::new(verbose, force);
 		for id in self.instances.iter_mut() {
-			let instance = reg.get_mut(id).expect("Profile has unknown instance");
+			let instance = reg.get(id).expect("Profile has unknown instance");
 			manager.add_requirements(instance.get_requirements());
 		}
 		let version_list = manager.fulfill_requirements(paths, &self.version).await?;
 		for id in self.instances.iter_mut() {
 			let instance = reg.get_mut(id).expect("Profile has unknown instance");
-			instance
+			let files = instance
 				.create(&manager, paths)
 				.await?;
+			manager.add_files(files);
 		}
 		Ok(version_list)
 	}

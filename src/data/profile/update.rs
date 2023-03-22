@@ -103,7 +103,8 @@ impl UpdateManager {
 
 		if self.has_requirement(UpdateRequirement::GameAssets) {
 			let version_json = self.version_json.as_ref().expect("Version json missing");
-			get_assets(&version_json, paths, version, &self).await?;
+			let files = get_assets(&version_json, paths, version, &self).await?;
+			self.add_files(files);
 		}
 
 		if java_required {
