@@ -102,7 +102,7 @@ impl Java {
 				}
 				out.insert(extracted_bin_dir.clone());
 
-				let tar_name = "adoptium".to_owned() + &major_version + ".tar.gz";
+				let tar_name = "adoptium".to_owned() + major_version + ".tar.gz";
 				let tar_path = out_dir.join(tar_name);
 
 				printer.print(&cformat!(

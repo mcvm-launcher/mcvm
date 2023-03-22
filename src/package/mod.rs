@@ -109,7 +109,7 @@ impl Package {
 					} else {
 						let url = url.as_ref().expect("URL for remote package missing");
 						let text = download_text(url).await?;
-						fs::write(&path, &text)?;
+						tokio::fs::write(&path, &text).await?;
 						self.data = Some(PkgData::new(&text));
 					}
 				}

@@ -80,9 +80,9 @@ struct LibraryParts {
 impl LibraryParts {
 	pub fn from_str(string: &str) -> Option<Self> {
 		let mut parts = string.split(':');
-		let orgs: Vec<String> = parts.nth(0)?.split('.').map(|x| x.to_owned()).collect();
-		let package = parts.nth(0)?.to_owned();
-		let version = parts.nth(0)?.to_owned();
+		let orgs: Vec<String> = parts.next()?.split('.').map(|x| x.to_owned()).collect();
+		let package = parts.next()?.to_owned();
+		let version = parts.next()?.to_owned();
 		Some(Self {
 			orgs,
 			package,
@@ -173,7 +173,7 @@ pub async fn download_files(
 	mode: Mode,
 	manager: &UpdateManager,
 ) -> Result<Classpath, FabricQuiltError> {
-	let force = manager.force.clone();
+	let force = manager.force;
 	let mut printer = ReplPrinter::from_options(manager.print.clone());
 	match mode {
 		Mode::Fabric => printer.print("Downloading Fabric..."),

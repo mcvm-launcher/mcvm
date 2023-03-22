@@ -102,13 +102,13 @@ impl UpdateManager {
 
 		if self.has_requirement(UpdateRequirement::GameAssets) {
 			let version_json = self.version_json.as_ref().expect("Version json missing");
-			let files = get_assets(&version_json, paths, version, &self).await?;
+			let files = get_assets(version_json, paths, version, self).await?;
 			self.add_files(files);
 		}
 		
 		if self.has_requirement(UpdateRequirement::GameLibraries) {
 			let version_json = self.version_json.as_ref().expect("Version json missing");
-			let (.., files) = get_libraries(&version_json, paths, version, &self).await?;
+			let (.., files) = get_libraries(version_json, paths, version, self).await?;
 			self.add_files(files);
 		}
 
@@ -124,7 +124,7 @@ impl UpdateManager {
 				if let UpdateRequirement::Java(kind) = req {
 					let mut java = Java::new(kind.clone());
 					java.add_version(&java_vers.to_string());
-					let files = java.install(paths, &self).await?;
+					let files = java.install(paths, self).await?;
 					java_files.extend(files);
 				}
 			}

@@ -124,7 +124,7 @@ impl Config {
 		// Users
 		let users = json::access_object(obj, "users")?;
 		for (user_id, user_val) in users.iter() {
-			if !validate_identifier(&user_id) {
+			if !validate_identifier(user_id) {
 				Err(ContentError::InvalidString(user_id.to_owned()))?
 			}
 			let user_obj = json::ensure_type(user_val.as_object(), JsonType::Obj)?;
@@ -166,7 +166,7 @@ impl Config {
 		// Profiles
 		let doc_profiles = json::access_object(obj, "profiles")?;
 		for (profile_id, profile_val) in doc_profiles {
-			if !validate_identifier(&profile_id) {
+			if !validate_identifier(profile_id) {
 				Err(ContentError::InvalidString(profile_id.to_owned()))?
 			}
 			let profile_obj = json::ensure_type(profile_val.as_object(), JsonType::Obj)?;
@@ -206,7 +206,7 @@ impl Config {
 			if let Some(instances_val) = profile_obj.get("instances") {
 				let doc_instances = json::ensure_type(instances_val.as_object(), JsonType::Obj)?;
 				for (instance_id, instance_val) in doc_instances {
-					if !validate_identifier(&instance_id) {
+					if !validate_identifier(instance_id) {
 						Err(ContentError::InvalidString(instance_id.to_owned()))?
 					}
 					if instances.contains_key(instance_id) {
@@ -228,7 +228,7 @@ impl Config {
 				for package_val in doc_packages {
 					if let Some(package_obj) = package_val.as_object() {
 						let package_id = json::access_str(package_obj, "id")?;
-						if !validate_identifier(&package_id) {
+						if !validate_identifier(package_id) {
 							Err(ContentError::InvalidString(package_id.to_owned()))?
 						}
 
@@ -274,7 +274,7 @@ impl Config {
 								for feature in features {
 									let feature =
 										json::ensure_type(feature.as_str(), JsonType::Str)?;
-									if !validate_identifier(&feature) {
+									if !validate_identifier(feature) {
 										Err(ContentError::InvalidString(feature.to_owned()))?
 									}
 									out.push(feature.to_owned());
@@ -300,7 +300,7 @@ impl Config {
 						};
 						profile.packages.push(pkg);
 					} else if let Some(package_id) = package_val.as_str() {
-						if !validate_identifier(&package_id) {
+						if !validate_identifier(package_id) {
 							Err(ContentError::InvalidString(package_id.to_owned()))?
 						}
 						let req = PkgRequest::new(package_id);

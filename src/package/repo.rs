@@ -64,7 +64,7 @@ impl PkgRepo {
 	// Update the currently cached index file
 	pub async fn sync(&mut self, paths: &Paths) -> Result<(), RepoError> {
 		let text = download_text(&self.index_url()).await?;
-		fs::write(&self.get_path(paths), &text)?;
+		tokio::fs::write(self.get_path(paths), &text).await?;
 		self.set_index(&text)?;
 
 		Ok(())

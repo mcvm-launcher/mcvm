@@ -128,7 +128,7 @@ async fn profile_update(data: &mut CmdData, id: &str, force: bool) -> Result<(),
 				
 				lock.finish(paths)?;
 				
-				if profile.instances.len() > 0 {
+				if !profile.instances.is_empty() {
 					let version_list = profile
 						.create_instances(&mut config.instances, paths, true, force)
 						.await?;

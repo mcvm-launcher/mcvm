@@ -31,7 +31,7 @@ impl Classpath {
 
 	/// Appends a string to the end of the classpath
 	pub fn add(&mut self, string: &str) {
-		if self.string.len() > 0 {
+		if !self.string.is_empty() {
 			self.add_sep();
 		}
 

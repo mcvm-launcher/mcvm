@@ -75,13 +75,13 @@ impl LaunchConfig {
 	pub fn to_options(&self) -> LaunchOptions {
 		let init_mem = match &self.memory {
 			LaunchMemory::None => None,
-			LaunchMemory::Single(string) => MemoryNum::from_str(&string),
-			LaunchMemory::Both { init, .. } => MemoryNum::from_str(&init),
+			LaunchMemory::Single(string) => MemoryNum::from_str(string),
+			LaunchMemory::Both { init, .. } => MemoryNum::from_str(init),
 		};
 		let max_mem = match &self.memory {
 			LaunchMemory::None => None,
-			LaunchMemory::Single(string) => MemoryNum::from_str(&string),
-			LaunchMemory::Both { max, .. } => MemoryNum::from_str(&max),
+			LaunchMemory::Single(string) => MemoryNum::from_str(string),
+			LaunchMemory::Both { max, .. } => MemoryNum::from_str(max),
 		};
 		LaunchOptions {
 			jvm_args: self.args.jvm.parse(),

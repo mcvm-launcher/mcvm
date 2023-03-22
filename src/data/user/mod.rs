@@ -62,7 +62,7 @@ impl Auth {
 pub fn validate_username(kind: UserKind, name: &str) -> bool {
 	match kind {
 		UserKind::Microsoft | UserKind::Demo => {
-			if name.len() < 1 || name.len() > 16 {
+			if name.is_empty() || name.len() > 16 {
 				return false;
 			}
 

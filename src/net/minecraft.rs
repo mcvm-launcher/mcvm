@@ -108,7 +108,7 @@ pub async fn get_version_json(
 	let version_folder = paths.internal.join("versions").join(version_string);
 	files::create_dir(&version_folder)?;
 	let text = download_text(version_url.expect("Version does not exist")).await?;
-	fs::write(&version_folder.join(version_json_name), &text)?;
+	tokio::fs::write(version_folder.join(version_json_name), &text).await?;
 
 	let version_doc = json::parse_object(&text)?;
 
@@ -353,7 +353,7 @@ pub async fn get_assets(
 	}
 
 	while let Some(asset) = join.join_next().await {
-		let () = match asset? {
+		match asset? {
 			Ok(name) => name,
 			Err(err) => {
 				cprintln!("<r>Failed to download asset, skipping...\n{}", err);
