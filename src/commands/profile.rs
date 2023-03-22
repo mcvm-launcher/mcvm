@@ -3,8 +3,6 @@ use crate::data::addon::PluginLoader;
 use crate::data::instance::InstKind;
 use crate::io::lock::Lockfile;
 use crate::io::lock::LockfileAddon;
-use crate::net::minecraft::get_version_manifest;
-use crate::net::minecraft::make_version_list;
 use crate::net::paper;
 use crate::package::eval::eval::EvalConstants;
 use crate::package::eval::eval::Routine;
@@ -131,9 +129,7 @@ async fn profile_update(data: &mut CmdData, id: &str, force: bool) -> Result<(),
 				lock.finish(paths)?;
 				
 				if profile.instances.len() > 0 {
-					cprintln!("<s>Obtaining version index...");
-					let (version_manifest, ..) = get_version_manifest(paths)?;
-					profile
+					let version_list = profile
 						.create_instances(&mut config.instances, paths, true, force)
 						.await?;
 
@@ -150,7 +146,7 @@ async fn profile_update(data: &mut CmdData, id: &str, force: bool) -> Result<(),
 									plugin_loader: profile.plugin_loader.clone(),
 									side: instance.kind.clone(),
 									features: pkg.features.clone(),
-									versions: make_version_list(&version_manifest)?,
+									versions: version_list.clone(),
 									perms: pkg.permissions.clone(),
 								};
 								let eval = config

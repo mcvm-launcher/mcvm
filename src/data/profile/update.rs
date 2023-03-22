@@ -1,5 +1,7 @@
 use std::{collections::HashSet, path::{PathBuf, Path}};
 
+use color_print::cprintln;
+
 use crate::{io::{java::{JavaKind, Java}, files::paths::Paths}, util::json, data::instance::create::CreateError, net::minecraft::{get_version_manifest, get_version_json, make_version_list, get_assets}};
 
 #[derive(Debug, thiserror::Error)]
@@ -90,6 +92,9 @@ impl UpdateManager {
 		}
 
 		if self.has_requirement(UpdateRequirement::VersionJson) {
+			if self.verbose {
+				cprintln!("<s>Obtaining version index...");
+			}
 			let (manifest, ..) = get_version_manifest(paths)?;
 			let (version_json, ..) = get_version_json(version, &manifest, paths)?;
 			self.version_json = Some(version_json);
