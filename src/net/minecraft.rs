@@ -318,13 +318,14 @@ pub async fn get_assets(
 	let client = Client::new();
 	let mut join = JoinSet::new();
 	let mut printer = ReplPrinter::from_options(manager.print.clone());
+	let count = assets.len();
 	if manager.print.verbose {
-		cprintln!("Downloading assets...");
+		cprintln!("Downloading <b>{}</> assets...", count);
 	}
-	// let mut count = 0;
+	let mut num_done = 0;
 	// Used to limit the number of open file descriptors
 	let sem = Arc::new(Semaphore::new(FD_SENSIBLE_LIMIT));
-	for (_key, asset_val) in assets {
+	for (key, asset_val) in assets {
 		let asset = json::ensure_type(asset_val.as_object(), JsonType::Obj)?;
 
 		let hash = json::access_str(asset, "hash")?.to_owned();
@@ -347,17 +348,11 @@ pub async fn get_assets(
 			Ok::<(), AssetsError>(())
 		};
 		join.spawn(fut);
-		// count += 1;
+		num_done += 1;
+		printer.print(&cformat!("(<b>{}</b><k!>/</k!><b>{}</b>) <k!>{}", num_done, count, key));
 	}
 
-	// if verbose {
-	// 	cprintln!("\tDownloading <b>{}</> assets...", count);
-	// }
-
-	// TODO: Bring back progress functionality
-	// let mut num_done = 0;
 	while let Some(asset) = join.join_next().await {
-		// num_done += 1;
 		let () = match asset? {
 			Ok(name) => name,
 			Err(err) => {
@@ -365,9 +360,6 @@ pub async fn get_assets(
 				continue;
 			}
 		};
-		// fs::write(path, bytes)?;
-		// bytes.p
-		// printer.print(&cformat!("(<b>{}</b><k!>/</k!><b>{}</b>) <k!>{}", num_done, count, name));
 	}
 
 	printer.print(&cformat!("<g>Assets downloaded."));
