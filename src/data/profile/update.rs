@@ -52,10 +52,6 @@ impl UpdateManager {
 		self.requirements.contains(&req)
 	}
 
-	pub fn add_file(&mut self, file: &Path) {
-		self.files.insert(file.to_owned());
-	}
-
 	pub fn add_files(&mut self, files: HashSet<PathBuf>) {
 		self.files.extend(files);
 	}
