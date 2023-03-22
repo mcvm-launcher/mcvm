@@ -61,7 +61,7 @@ impl UpdateManager {
 		if self.force {
 			!self.files.contains(file) || !file.exists()
 		} else {
-			file.exists()
+			!file.exists()
 		}
 	}
 
