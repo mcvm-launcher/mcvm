@@ -55,10 +55,9 @@ impl Instance {
 		match &self.kind {
 			InstKind::Client => {
 				out.insert(UpdateRequirement::GameAssets);
+				out.insert(UpdateRequirement::GameLibraries);
 			}
-			InstKind::Server => {
-
-			}
+			InstKind::Server => {}
 		}
 		out
 	}

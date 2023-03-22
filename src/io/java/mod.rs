@@ -106,18 +106,18 @@ impl Java {
 				let tar_path = out_dir.join(tar_name);
 
 				printer.print(&cformat!(
-					"\tDownloading Adoptium Temurin JRE <b>{}</b>...",
+					"Downloading Adoptium Temurin JRE <b>{}</b>...",
 					json::access_str(version, "release_name")?
 				));
 				fs::write(&tar_path, download_bytes(bin_url).await?)?;
 
 				// Extraction
-				printer.print(&cformat!("\tExtracting..."));
+				printer.print(&cformat!("Extracting JRE..."));
 				let data = fs::read(&tar_path)?;
 				let mut decoder = Decoder::new(data.as_slice())?;
 				let mut arc = Archive::new(&mut decoder);
 				arc.unpack(out_dir)?;
-				printer.print(&cformat!("\t<g>Java installation finished."));
+				printer.print(&cformat!("<g>Java installation finished."));
 			}
 			JavaKind::Custom(path) => {
 				self.path = Some(path.clone());
