@@ -5,6 +5,7 @@ use reqwest::Client;
 use serde::Deserialize;
 
 use crate::data::instance::InstKind;
+use crate::data::profile::update::UpdateManager;
 use crate::io::files;
 use crate::io::files::paths::Paths;
 use crate::io::java::classpath::Classpath;
@@ -172,11 +173,10 @@ pub async fn download_files(
 	paths: &Paths,
 	side: InstKind,
 	mode: Mode,
-	verbose: bool,
-	force: bool,
+	manager: &UpdateManager,
 ) -> Result<Classpath, FabricQuiltError> {
-	let mut printer = ReplPrinter::new(verbose);
-	printer.indent(1);
+	let force = manager.force.clone();
+	let mut printer = ReplPrinter::from_options(manager.print.clone());
 	match mode {
 		Mode::Fabric => printer.print("Downloading Fabric..."),
 		Mode::Quilt => printer.print("Downloading Quilt..."),

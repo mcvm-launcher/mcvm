@@ -1,6 +1,7 @@
 pub mod args;
 pub mod classpath;
 
+use crate::data::profile::update::UpdateManager;
 use crate::io::files::{self, paths::Paths};
 use crate::net::download::{Download, DownloadError};
 use crate::util::json::{self, JsonType};
@@ -11,6 +12,7 @@ use color_print::cformat;
 use libflate::gzip::Decoder;
 use tar::Archive;
 
+use std::collections::HashSet;
 use std::fs;
 use std::path::PathBuf;
 
@@ -60,11 +62,13 @@ impl Java {
 		};
 	}
 
-	pub fn install(&mut self, paths: &Paths, verbose: bool, force: bool) -> Result<(), JavaError> {
+	pub fn install(&mut self, paths: &Paths, manager: &UpdateManager)
+	-> Result<HashSet<PathBuf>, JavaError> {
+		let mut out = HashSet::new();
 		match &self.kind {
 			JavaKind::Adoptium(major_version) => {
 				let major_version = major_version.as_ref().expect("Major version should exist");
-				let mut printer = ReplPrinter::new(verbose);
+				let mut printer = ReplPrinter::from_options(manager.print.clone());
 
 				let out_dir = paths.java.join("adoptium");
 				files::create_dir(&out_dir)?;
@@ -98,9 +102,10 @@ impl Java {
 				let extracted_bin_dir = out_dir.join(&extracted_bin_name);
 
 				self.path = Some(extracted_bin_dir.clone());
-				if !force && extracted_bin_dir.exists() {
-					return Ok(());
+				if !manager.should_update_file(&extracted_bin_dir) {
+					return Ok(out);
 				}
+				out.insert(extracted_bin_dir.clone());
 
 				let tar_name = "adoptium".to_owned() + &major_version + ".tar.gz";
 				let tar_path = out_dir.join(tar_name);
@@ -124,13 +129,11 @@ impl Java {
 				let mut arc = Archive::new(&mut decoder);
 				arc.unpack(out_dir)?;
 				printer.print(&cformat!("\t<g>Java installation finished."));
-				Ok(())
 			}
 			JavaKind::Custom(path) => {
 				self.path = Some(path.clone());
-
-				Ok(())
 			}
 		}
+		Ok(out)
 	}
 }

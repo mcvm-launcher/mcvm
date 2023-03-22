@@ -11,6 +11,7 @@ use crate::util::json;
 use crate::Paths;
 
 use super::addon::{Addon, AddonKind, Modloader, PluginLoader};
+use super::profile::update::UpdateManager;
 
 use std::fs;
 use std::path::{Path, PathBuf};
@@ -95,12 +96,11 @@ impl Instance {
 		&mut self,
 		mode: fabric_quilt::Mode,
 		paths: &Paths,
-		verbose: bool,
-		force: bool,
+		manager: &UpdateManager,
 	) -> Result<Classpath, FabricQuiltError> {
 		let meta = fabric_quilt::get_meta(&self.version, &mode).await?;
 		let classpath =
-			fabric_quilt::download_files(&meta, paths, self.kind.clone(), mode, verbose, force).await?;
+			fabric_quilt::download_files(&meta, paths, self.kind.clone(), mode, manager).await?;
 		self.main_class = Some(match self.kind {
 			InstKind::Client => meta.launcher_meta.main_class.client,
 			InstKind::Server => meta.launcher_meta.main_class.server,

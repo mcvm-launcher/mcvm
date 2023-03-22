@@ -122,7 +122,7 @@ impl Instance {
 		self.add_java(&java_vers.to_string());
 
 		if manager.should_update_file(&jar_path) {
-			let mut printer = ReplPrinter::new(manager.verbose);
+			let mut printer = ReplPrinter::from_options(manager.print.clone());
 			printer.indent(1);
 			printer.print("Downloading client jar...");
 			dwn.reset();
@@ -144,7 +144,7 @@ impl Instance {
 			_ => None,
 		};
 		if let Some(mode) = fq_mode {
-			classpath.extend(self.get_fabric_quilt(mode, paths, manager.verbose, manager.force).await?);
+			classpath.extend(self.get_fabric_quilt(mode, paths, manager).await?);
 		}
 
 		classpath.add_path(&jar_path);
@@ -180,7 +180,7 @@ impl Instance {
 		self.add_java(&java_vers.to_string());
 
 		if manager.should_update_file(&jar_path) {
-			let mut printer = ReplPrinter::new(manager.verbose);
+			let mut printer = ReplPrinter::from_options(manager.print.clone());
 			printer.indent(1);
 			printer.print("Downloading server jar...");
 			dwn.reset();
@@ -195,8 +195,8 @@ impl Instance {
 		}
 
 		let classpath = match self.modloader {
-			Modloader::Fabric => Some(self.get_fabric_quilt(fabric_quilt::Mode::Fabric, paths, manager.verbose, manager.force).await?),
-			Modloader::Quilt => Some(self.get_fabric_quilt(fabric_quilt::Mode::Quilt, paths, manager.verbose, manager.force).await?),
+			Modloader::Fabric => Some(self.get_fabric_quilt(fabric_quilt::Mode::Fabric, paths, manager).await?),
+			Modloader::Quilt => Some(self.get_fabric_quilt(fabric_quilt::Mode::Quilt, paths, manager).await?),
 			_ => None,
 		};
 
@@ -205,7 +205,7 @@ impl Instance {
 		self.jar_path = Some(match self.plugin_loader {
 			PluginLoader::Vanilla => jar_path,
 			PluginLoader::Paper => {
-				let mut printer = ReplPrinter::new(manager.verbose);
+				let mut printer = ReplPrinter::from_options(manager.print.clone());
 				printer.indent(1);
 				printer.print("Checking for paper updates...");
 				let (build_num, ..) = paper::get_newest_build(&self.version).await?;

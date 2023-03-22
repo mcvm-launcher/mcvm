@@ -212,7 +212,7 @@ pub fn get_libraries(
 	let mut native_paths = Vec::new();
 	let mut classpath = Classpath::new();
 	let mut dwn = Download::new();
-	let mut printer = ReplPrinter::new(manager.verbose);
+	let mut printer = ReplPrinter::from_options(manager.print.clone());
 	printer.indent(1);
 
 	let libraries = json::access_array(version_json, "libraries")?;
@@ -333,8 +333,8 @@ pub async fn get_assets(
 
 	let client = Client::new();
 	let mut join = JoinSet::new();
-	let mut printer = ReplPrinter::new(manager.verbose);
-	if manager.verbose {
+	let mut printer = ReplPrinter::from_options(manager.print.clone());
+	if manager.print.verbose {
 		cprintln!("Downloading assets...");
 	}
 	// let mut count = 0;

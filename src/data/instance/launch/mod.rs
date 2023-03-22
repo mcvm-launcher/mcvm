@@ -12,6 +12,7 @@ use crate::io::java::{
 	JavaKind,
 };
 use crate::util::json;
+use crate::util::print::PrintOptions;
 
 use super::{create::CreateError, Instance};
 
@@ -35,7 +36,8 @@ impl Instance {
 		auth: &Auth,
 	) -> Result<(), LaunchError> {
 		cprintln!("Checking for updates...");
-		let mut manager = UpdateManager::new(false, false);
+		let options = PrintOptions::new(false, 0);
+		let mut manager = UpdateManager::new(options, false);
 		manager.add_requirements(self.get_requirements());
 		manager.fulfill_requirements(paths, &self.version).await?;
 		

@@ -3,6 +3,7 @@ pub mod update;
 use crate::data::instance::Instance;
 use crate::package::PkgConfig;
 use crate::Paths;
+use crate::util::print::PrintOptions;
 
 use self::update::UpdateManager;
 
@@ -51,7 +52,8 @@ impl Profile {
 		verbose: bool,
 		force: bool,
 	) -> Result<Vec<String>, CreateError> {
-		let mut manager = UpdateManager::new(verbose, force);
+		let options = PrintOptions::new(verbose, 0);
+		let mut manager = UpdateManager::new(options, force);
 		for id in self.instances.iter_mut() {
 			let instance = reg.get(id).expect("Profile has unknown instance");
 			manager.add_requirements(instance.get_requirements());

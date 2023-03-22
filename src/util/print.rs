@@ -2,29 +2,40 @@ use std::io::{Stdout, Write};
 
 use color_print::cstr;
 
+pub static HYPHEN_POINT: &str = cstr!("<k!> - </k!>");
+pub static INDENT_CHAR: &str = "\t";
+
 // Used to print text that is replaced
 #[derive(Debug)]
 pub struct ReplPrinter {
 	stdout: Stdout,
 	chars_written: usize,
 	finished: bool,
-	verbose: bool,
-	indent: usize,
+	options: PrintOptions,
 }
 
 impl ReplPrinter {
 	pub fn new(verbose: bool) -> Self {
-		ReplPrinter {
+		Self {
 			stdout: std::io::stdout(),
 			chars_written: 0,
 			finished: false,
-			verbose,
-			indent: 0,
+			options: PrintOptions::new(verbose, 0),
+		}
+	}
+
+	pub fn from_options(options: PrintOptions) -> Self {
+		Self {
+			stdout: std::io::stdout(),
+			chars_written: 0,
+			finished: false,
+			options
 		}
 	}
 
 	pub fn indent(&mut self, indent: usize) {
-		self.indent = indent;
+		self.options.indent += indent;
+		self.options.indent_str = make_indent(self.options.indent);
 	}
 
 	pub fn clearline(&mut self) {
@@ -41,13 +52,12 @@ impl ReplPrinter {
 	}
 
 	pub fn print(&mut self, text: &str) {
-		if !self.verbose {
+		if !self.options.verbose {
 			return;
 		}
 		self.clearline();
-		let indent_str = "\t".repeat(self.indent);
-		print!("\r{indent_str}{text}");
-		self.chars_written = text.len() + (indent_str.len() * 8);
+		print!("\r{}{text}", self.options.indent_str);
+		self.chars_written = text.len() + (self.options.indent_str.len() * 8);
 		self.stdout.flush().unwrap();
 	}
 
@@ -73,4 +83,36 @@ impl Drop for ReplPrinter {
 	}
 }
 
-pub static HYPHEN_POINT: &str = cstr!("<k!> - </k!>");
+/// Create the characters for an indent count
+pub fn make_indent(indent: usize) -> String {
+	INDENT_CHAR.repeat(indent)
+}
+
+/// Set of options for printing output
+#[derive(Debug, Clone)]
+pub struct PrintOptions {
+	/// Whether to print at all
+	pub verbose: bool,
+	/// Indent level
+	pub indent: usize,
+	/// Indent as a string
+	pub indent_str: String
+}
+
+impl PrintOptions {
+	pub fn new(verbose: bool, indent: usize) -> Self {
+		Self {
+			verbose,
+			indent,
+			indent_str: make_indent(indent),
+		}
+	}
+
+	pub fn increase_indent(opt: &Self) -> Self {
+		let mut out = opt.clone();
+		out.indent += 1;
+		out.indent_str = make_indent(out.indent);
+		out
+	}
+}
+

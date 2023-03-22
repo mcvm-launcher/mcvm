@@ -2,7 +2,7 @@ use std::{collections::HashSet, path::{PathBuf, Path}};
 
 use color_print::cprintln;
 
-use crate::{io::{java::{JavaKind, Java}, files::paths::Paths}, util::json, data::instance::create::CreateError, net::minecraft::{get_version_manifest, get_version_json, make_version_list, get_assets}};
+use crate::{io::{java::{JavaKind, Java}, files::paths::Paths}, util::{json, print::PrintOptions}, data::instance::create::CreateError, net::minecraft::{get_version_manifest, get_version_json, make_version_list, get_assets}};
 
 #[derive(Debug, thiserror::Error)]
 pub enum UpdateError {
@@ -21,7 +21,7 @@ pub enum UpdateRequirement {
 /// It will keep track of files we have already downloaded, manage task requirements, etc
 #[derive(Debug)]
 pub struct UpdateManager {
-	pub verbose: bool,
+	pub print: PrintOptions,
 	pub force: bool,
 	requirements: HashSet<UpdateRequirement>,
 	// File paths that are added when they have been updated by other functions
@@ -30,9 +30,9 @@ pub struct UpdateManager {
 }
 
 impl UpdateManager {
-	pub fn new(verbose: bool, force: bool) -> Self {
+	pub fn new(print: PrintOptions, force: bool) -> Self {
 		Self {
-			verbose,
+			print,
 			force,
 			requirements: HashSet::new(),
 			files: HashSet::new(),
@@ -92,7 +92,7 @@ impl UpdateManager {
 		}
 
 		if self.has_requirement(UpdateRequirement::VersionJson) {
-			if self.verbose {
+			if self.print.verbose {
 				cprintln!("<s>Obtaining version index...");
 			}
 			let (manifest, ..) = get_version_manifest(paths)?;
@@ -114,13 +114,17 @@ impl UpdateManager {
 				"majorVersion",
 			)?;
 
+			let mut java_files = HashSet::new();
 			for req in self.requirements.iter() {
 				if let UpdateRequirement::Java(kind) = req {
 					let mut java = Java::new(kind.clone());
 					java.add_version(&java_vers.to_string());
-					java.install(paths, self.verbose, self.force)?;
+					let files = java.install(paths, &self)?;
+					java_files.extend(files);
 				}
 			}
+			
+			self.add_files(java_files);
 		}
 
 		Ok(out)
