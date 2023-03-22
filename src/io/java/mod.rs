@@ -3,7 +3,7 @@ pub mod classpath;
 
 use crate::data::profile::update::UpdateManager;
 use crate::io::files::{self, paths::Paths};
-use crate::net::download::{Download, DownloadError};
+use crate::net::download::{download_text, download_bytes};
 use crate::util::json::{self, JsonType};
 use crate::util::mojang::{ARCH_STRING, OS_STRING};
 use crate::util::print::ReplPrinter;
@@ -36,7 +36,7 @@ pub enum JavaError {
 	#[error("File operation failed:\n{}", .0)]
 	Io(#[from] std::io::Error),
 	#[error("Failed to download file:\n{}", .0)]
-	Download(#[from] DownloadError),
+	Download(#[from] reqwest::Error),
 	#[error("Failed to parse json file:\n{}", .0)]
 	Json(#[from] json::JsonError),
 	#[error("No valid installation was found for your system")]
@@ -62,7 +62,7 @@ impl Java {
 		};
 	}
 
-	pub fn install(&mut self, paths: &Paths, manager: &UpdateManager)
+	pub async fn install(&mut self, paths: &Paths, manager: &UpdateManager)
 	-> Result<HashSet<PathBuf>, JavaError> {
 		let mut out = HashSet::new();
 		match &self.kind {
@@ -78,13 +78,8 @@ impl Java {
 					ARCH_STRING,
 					OS_STRING
 				);
-				let mut dwn = Download::new();
-				dwn.url(&url)?;
-				dwn.follow_redirects()?;
-				dwn.add_str();
-				dwn.perform()?;
 
-				let manifest_val = json::parse_json(&dwn.get_str()?)?;
+				let manifest_val = json::parse_json(&download_text(&url).await?)?;
 				let manifest = json::ensure_type(manifest_val.as_array(), JsonType::Arr)?;
 				let version = json::ensure_type(
 					manifest
@@ -110,17 +105,11 @@ impl Java {
 				let tar_name = "adoptium".to_owned() + &major_version + ".tar.gz";
 				let tar_path = out_dir.join(tar_name);
 
-				dwn.reset();
-				dwn.url(bin_url)?;
-				dwn.follow_redirects()?;
-				dwn.add_file(&tar_path)?;
 				printer.print(&cformat!(
 					"\tDownloading Adoptium Temurin JRE <b>{}</b>...",
 					json::access_str(version, "release_name")?
 				));
-				dwn.perform()?;
-				// Close the files
-				dwn.reset();
+				fs::write(&tar_path, download_bytes(bin_url).await?)?;
 
 				// Extraction
 				printer.print(&cformat!("\tExtracting..."));

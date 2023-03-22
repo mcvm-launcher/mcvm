@@ -28,7 +28,7 @@ pub fn help() {
 	cprintln!("{}<i,c>reinstall:</i,c> {}", HYPHEN_POINT, REINSTALL_HELP);
 }
 
-fn info(data: &mut CmdData, id: &str) -> Result<(), CmdError> {
+async fn info(data: &mut CmdData, id: &str) -> Result<(), CmdError> {
 	data.ensure_paths()?;
 	data.ensure_config()?;
 
@@ -56,7 +56,7 @@ fn info(data: &mut CmdData, id: &str) -> Result<(), CmdError> {
 					cprint!(
 						"<b!>{}:<g!>{}",
 						pkg.req.name,
-						config.packages.get_version(&pkg.req, paths)?
+						config.packages.get_version(&pkg.req, paths).await?
 					);
 					cprintln!();
 				}
@@ -136,7 +136,7 @@ async fn profile_update(data: &mut CmdData, id: &str, force: bool) -> Result<(),
 					cprintln!("<s>Updating packages");
 					let mut printer = ReplPrinter::new(true);
 					for pkg in profile.packages.iter() {
-						let version = config.packages.get_version(&pkg.req, paths)?;
+						let version = config.packages.get_version(&pkg.req, paths).await?;
 						printer.print(&cformat!("\t(<b!>{}</b!>) Installing...", pkg.req));
 						for instance_id in profile.instances.iter() {
 							if let Some(instance) = config.instances.get(instance_id) {
@@ -219,7 +219,7 @@ pub async fn run(argc: usize, argv: &[String], data: &mut CmdData) -> Result<(),
 		"list" | "ls" => list(data)?,
 		"info" => match argc {
 			1 => cprintln!("{}", INFO_HELP),
-			_ => info(data, &argv[1])?,
+			_ => info(data, &argv[1]).await?,
 		},
 		"update" => match argc {
 			1 => cprintln!("{}", UPDATE_HELP),

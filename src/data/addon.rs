@@ -1,11 +1,18 @@
 use crate::io::files::create_leading_dirs;
 use crate::io::files::paths::Paths;
-use crate::net::download::DownloadError;
 use crate::package::reg::PkgIdentifier;
 
 use std::fmt::Display;
 use std::fs;
 use std::path::PathBuf;
+
+#[derive(Debug, thiserror::Error)]
+pub enum AddonError {
+	#[error("Failed to download file:\n{}", .0)]
+	Download(#[from] reqwest::Error),
+	#[error("File operation failed:\n{}", .0)]
+	Io(#[from] std::io::Error)
+}
 
 #[derive(Debug, Clone)]
 pub enum AddonKind {
@@ -95,7 +102,7 @@ impl AddonRequest {
 		}
 	}
 
-	pub async fn acquire(&self, paths: &Paths) -> Result<(), DownloadError> {
+	pub async fn acquire(&self, paths: &Paths) -> Result<(), AddonError> {
 		let path = self.addon.get_path(paths);
 		if !self.force && path.exists() {
 			return Ok(());

@@ -1,9 +1,9 @@
+use crate::data::addon::AddonError;
 use crate::data::config::{Config, ConfigError};
 use crate::data::instance::create::CreateError;
 use crate::data::instance::launch::LaunchError;
 use crate::io::files::paths::{Paths, PathsError};
 use crate::io::lock::LockfileError;
-use crate::net::download::DownloadError;
 use crate::net::minecraft::VersionManifestError;
 use crate::net::paper::PaperError;
 use crate::package::reg::RegError;
@@ -59,8 +59,10 @@ pub enum CmdError {
 	Repo(#[from] RepoError),
 	#[error("Failed to access package from registry:\n{}", .0)]
 	Reg(#[from] RegError),
-	#[error("Download failed;\n{}", .0)]
-	Download(#[from] DownloadError),
+	#[error("Download failed:\n{}", .0)]
+	Download(#[from] reqwest::Error),
+	#[error("Failed to download addon:\n{}", .0)]
+	Addon(#[from] AddonError),
 	#[error("Failed to download version manifest:\n{}", .0)]
 	VersionManifest(#[from] VersionManifestError),
 	#[error("Failed to access lockfile:\n{}", .0)]

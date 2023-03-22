@@ -3,7 +3,7 @@ pub mod reg;
 pub mod repo;
 
 use crate::io::files::{self, paths::Paths};
-use crate::net::download::{Download, DownloadError};
+use crate::net::download::download_text;
 
 use std::fs;
 use std::path::PathBuf;
@@ -20,7 +20,7 @@ pub enum PkgError {
 	#[error("File operation failed:\n{}", .0)]
 	Io(#[from] std::io::Error),
 	#[error("Download failed:\n{}", .0)]
-	Download(#[from] DownloadError),
+	Download(#[from] reqwest::Error),
 	#[error("Error in repository:\n{}", .0)]
 	Repo(#[from] RepoError),
 	#[error("Failed to parse package:\n{}", .0)]
@@ -94,7 +94,7 @@ impl Package {
 	}
 
 	// Ensure the raw contents of the package
-	pub fn ensure_loaded(&mut self, paths: &Paths, force: bool) -> Result<(), PkgError> {
+	pub async fn ensure_loaded(&mut self, paths: &Paths, force: bool) -> Result<(), PkgError> {
 		if self.data.is_none() {
 			match &self.kind {
 				PkgKind::Local(path) => {
@@ -108,12 +108,9 @@ impl Package {
 						self.data = Some(PkgData::new(&fs::read_to_string(path)?));
 					} else {
 						let url = url.as_ref().expect("URL for remote package missing");
-						let mut dwn = Download::new();
-						dwn.url(url)?;
-						dwn.add_file(&path)?;
-						dwn.add_str();
-						dwn.perform()?;
-						self.data = Some(PkgData::new(&dwn.get_str()?));
+						let text = download_text(url).await?;
+						fs::write(&path, &text)?;
+						self.data = Some(PkgData::new(&text));
 					}
 				}
 			};

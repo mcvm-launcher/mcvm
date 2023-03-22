@@ -1,7 +1,6 @@
 use crate::data::profile::update::UpdateManager;
 use crate::io::files::{self, paths::Paths};
 use crate::io::java::classpath::Classpath;
-use crate::net::download::{Download, DownloadError};
 use crate::util::json::{self, JsonObject, JsonType};
 use crate::util::mojang;
 use crate::util::print::ReplPrinter;
@@ -18,12 +17,12 @@ use std::fs::{self, File};
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 
-use super::download::FD_SENSIBLE_LIMIT;
+use super::download::{FD_SENSIBLE_LIMIT, download_text};
 
 #[derive(Debug, thiserror::Error)]
 pub enum VersionManifestError {
-	#[error("Failed to download version manifest:\n{}", .0)]
-	Download(#[from] DownloadError),
+	#[error("Failed to download:\n{}", .0)]
+	Download(#[from] reqwest::Error),
 	#[error("Failed to evaluate json file:\n{}", .0)]
 	ParseError(#[from] json::JsonError),
 	#[error("File operation failed:\n{}", .0)]
@@ -31,34 +30,30 @@ pub enum VersionManifestError {
 }
 
 // So we can do this without a retry
-fn get_version_manifest_contents(paths: &Paths) -> Result<Box<Download>, VersionManifestError> {
+async fn get_version_manifest_contents(paths: &Paths) -> Result<String, VersionManifestError> {
 	let mut path = paths.internal.join("versions");
 	files::create_dir(&path)?;
 	path.push("manifest.json");
 
-	let mut download = Download::new();
-	download.url("https://piston-meta.mojang.com/mc/game/version_manifest_v2.json")?;
-	download.add_str();
-	download.add_file(path.as_path())?;
-	download.perform()?;
-	Ok(Box::new(download))
+	let text = download_text("https://piston-meta.mojang.com/mc/game/version_manifest_v2.json").await?;
+	fs::write(&path, &text)?;
+
+	Ok(text)
 }
 
-pub fn get_version_manifest(
+pub async fn get_version_manifest(
 	paths: &Paths,
-) -> Result<(Box<json::JsonObject>, Box<Download>), VersionManifestError> {
-	let mut download = get_version_manifest_contents(paths)?;
-	let mut manifest_contents = download.get_str()?;
+) -> Result<Box<json::JsonObject>, VersionManifestError> {
+	let mut manifest_contents = get_version_manifest_contents(paths).await?;
 	let manifest = match json::parse_object(&manifest_contents) {
 		Ok(manifest) => manifest,
 		Err(..) => {
 			cprintln!("<r>Failed to parse version manifest. Redownloading...");
-			download = get_version_manifest_contents(paths)?;
-			manifest_contents = download.get_str()?;
+			manifest_contents = get_version_manifest_contents(paths).await?;
 			json::parse_object(&manifest_contents)?
 		}
 	};
-	Ok((manifest, download))
+	Ok(manifest)
 }
 
 // Makes an ordered list of versions from the manifest to use for matching
@@ -83,20 +78,19 @@ pub enum VersionJsonError {
 	ParseError(#[from] json::JsonError),
 	#[error("{}", .0)]
 	VersionManifest(#[from] VersionManifestError),
-	#[error("Error when downloading version json:\n{}", .0)]
-	Download(#[from] DownloadError),
+	#[error("Error when downloading file:\n{}", .0)]
+	Download(#[from] reqwest::Error),
 	#[error("File operation failed:\n{}", .0)]
 	Io(#[from] std::io::Error),
 }
 
-pub fn get_version_json(
+pub async fn get_version_json(
 	version: &str,
 	version_manifest: &json::JsonObject,
 	paths: &Paths,
-) -> Result<(Box<json::JsonObject>, Box<Download>), VersionJsonError> {
+) -> Result<Box<json::JsonObject>, VersionJsonError> {
 	let version_string = version.to_owned();
 
-	let mut dwn = Download::new();
 	// Find the version out of all of them
 	let versions = json::access_array(version_manifest, "versions")?;
 	let mut version_url: Option<&str> = None;
@@ -113,15 +107,12 @@ pub fn get_version_json(
 	let version_json_name: String = version_string.clone() + ".json";
 	let version_folder = paths.internal.join("versions").join(version_string);
 	files::create_dir(&version_folder)?;
-	dwn.reset();
-	dwn.url(version_url.expect("Version does not exist"))?;
-	dwn.add_file(&version_folder.join(version_json_name))?;
-	dwn.add_str();
-	dwn.perform()?;
+	let text = download_text(version_url.expect("Version does not exist")).await?;
+	fs::write(&version_folder.join(version_json_name), &text)?;
 
-	let version_doc = json::parse_object(&dwn.get_str()?)?;
+	let version_doc = json::parse_object(&text)?;
 
-	Ok((version_doc, Box::new(dwn)))
+	Ok(version_doc)
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -129,7 +120,7 @@ pub enum LibrariesError {
 	#[error("Failed to evaluate json file:\n{}", .0)]
 	ParseError(#[from] json::JsonError),
 	#[error("Error when downloading library:\n{}", .0)]
-	Download(#[from] DownloadError),
+	Download(#[from] reqwest::Error),
 	#[error("File operation failed:\n{}", .0)]
 	Io(#[from] std::io::Error),
 	#[error("Failed to access zip file:\n{}", .0)]
@@ -156,17 +147,15 @@ fn is_library_allowed(lib: &JsonObject) -> Result<bool, LibrariesError> {
 }
 
 // Finishes up and downloads a library
-fn download_library(
-	dwn: &mut Download,
+async fn download_library(
+	client: &Client,
 	lib_download: &json::JsonObject,
 	path: &Path,
 ) -> Result<(), LibrariesError> {
 	files::create_leading_dirs(path)?;
 	let url = json::access_str(lib_download, "url")?;
-	dwn.reset();
-	dwn.url(url)?;
-	dwn.add_file(path)?;
-	dwn.perform()?;
+	fs::write(path, client.get(url).send().await?.bytes().await?)?;
+
 	Ok(())
 }
 
@@ -192,7 +181,7 @@ pub fn extract_native_library(path: &Path, natives_dir: &Path) -> Result<(), Lib
 
 /// Downloads base client libraries.
 /// Returns both a classpath and a set of files to be added to the update manager.
-pub fn get_libraries(
+pub async fn get_libraries(
 	version_json: &json::JsonObject,
 	paths: &Paths,
 	version: &str,
@@ -211,7 +200,7 @@ pub fn get_libraries(
 
 	let mut native_paths = Vec::new();
 	let mut classpath = Classpath::new();
-	let mut dwn = Download::new();
+	let client = Client::new();
 	let mut printer = ReplPrinter::from_options(manager.print.clone());
 	printer.indent(1);
 
@@ -242,7 +231,7 @@ pub fn get_libraries(
 				continue;
 			}
 			printer.print(&cformat!("Downloading library <b!>{}</>...", name));
-			download_library(&mut dwn, classifier, &path)?;
+			download_library(&client, classifier, &path).await?;
 			files.insert(path);
 			continue;
 		}
@@ -254,7 +243,7 @@ pub fn get_libraries(
 				continue;
 			}
 			printer.print(&cformat!("Downloading library <b>{}</>...", name));
-			download_library(&mut dwn, artifact, &path)?;
+			download_library(&client, artifact, &path).await?;
 			files.insert(path);
 			continue;
 		}
@@ -276,23 +265,18 @@ pub enum AssetsError {
 	#[error("Failed to evaluate json file: {}", .0)]
 	ParseError(#[from] json::JsonError),
 	#[error("Error when downloading asset:\n{}", .0)]
-	Download(#[from] DownloadError),
-	#[error("Error when downloading asset:\n{}", .0)]
-	MultiDownload(#[from] reqwest::Error),
+	Download(#[from] reqwest::Error),
 	#[error("File operation failed:\n{}", .0)]
 	Io(#[from] std::io::Error),
 	#[error("Failed to join tasks:\n{}", .0)]
 	Join(#[from] tokio::task::JoinError),
 }
 
-fn download_asset_index(url: &str, path: &Path) -> Result<Box<json::JsonObject>, AssetsError> {
-	let mut dwn = Download::new();
-	dwn.url(url)?;
-	dwn.add_file(path)?;
-	dwn.add_str();
-	dwn.perform()?;
+async fn download_asset_index(url: &str, path: &Path) -> Result<Box<json::JsonObject>, AssetsError> {
+	let text = download_text(url).await?;
+	fs::write(path, &text)?;
 
-	let doc = json::parse_object(&dwn.get_str()?)?;
+	let doc = json::parse_object(&text)?;
 	Ok(doc)
 }
 
@@ -318,14 +302,14 @@ pub async fn get_assets(
 		files::dir_symlink(&virtual_dir, &objects_dir)?;
 	}
 
-	let index = match download_asset_index(index_url, &index_path) {
+	let index = match download_asset_index(index_url, &index_path).await {
 		Ok(val) => val,
 		Err(err) => {
 			cprintln!(
 				"<r>Failed to obtain asset index:\n\t{}\nRedownloading...",
 				err
 			);
-			download_asset_index(index_url, &index_path)?
+			download_asset_index(index_url, &index_path).await?
 		}
 	};
 

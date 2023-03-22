@@ -20,7 +20,7 @@ pub fn help() {
 	cprintln!("{}<i,c>cat:</i,c> {}", HYPHEN_POINT, CAT_HELP);
 }
 
-fn list(data: &mut CmdData) -> Result<(), CmdError> {
+async fn list(data: &mut CmdData) -> Result<(), CmdError> {
 	data.ensure_paths()?;
 	data.ensure_config()?;
 
@@ -30,7 +30,7 @@ fn list(data: &mut CmdData) -> Result<(), CmdError> {
 			for (id, profile) in config.profiles.iter() {
 				if !profile.packages.is_empty() {
 					for pkg in profile.packages.iter() {
-						let version = config.packages.get_version(&pkg.req, paths)?;
+						let version = config.packages.get_version(&pkg.req, paths).await?;
 						found_pkgs
 							.entry(pkg.req.name.clone())
 							.or_insert((version, vec![]))
@@ -51,7 +51,7 @@ fn list(data: &mut CmdData) -> Result<(), CmdError> {
 	Ok(())
 }
 
-fn sync(data: &mut CmdData) -> Result<(), CmdError> {
+async fn sync(data: &mut CmdData) -> Result<(), CmdError> {
 	data.ensure_config()?;
 	data.ensure_paths()?;
 
@@ -60,7 +60,7 @@ fn sync(data: &mut CmdData) -> Result<(), CmdError> {
 			let mut printer = ReplPrinter::new(true);
 			for repo in config.packages.repos.iter_mut() {
 				printer.print(&cformat!("Syncing repository <b>{}</b>...", repo.id));
-				match repo.sync(paths) {
+				match repo.sync(paths).await {
 					Ok(..) => {}
 					Err(e) => {
 						printer.print(&cformat!("<r>{}", e));
@@ -74,7 +74,7 @@ fn sync(data: &mut CmdData) -> Result<(), CmdError> {
 			cprintln!("<s>Removing cached packages...");
 			for (_, profile) in config.profiles.iter() {
 				for pkg in profile.packages.iter() {
-					config.packages.remove_cached(&pkg.req, paths)?;
+					config.packages.remove_cached(&pkg.req, paths).await?;
 				}
 			}
 		}
@@ -90,7 +90,7 @@ async fn cat(data: &mut CmdData, name: &str) -> Result<(), CmdError> {
 	if let Some(config) = &mut data.config {
 		if let Some(paths) = &data.paths {
 			let req = PkgRequest::new(name);
-			let contents = config.packages.load(&req, false, paths)?;
+			let contents = config.packages.load(&req, false, paths).await?;
 			cprintln!("<s,b>Contents of package <g>{}</g>:</s,b>", req);
 			cprintln!("{}", contents);
 		}
@@ -106,8 +106,8 @@ pub async fn run(argc: usize, argv: &[String], data: &mut CmdData) -> Result<(),
 	}
 
 	match argv[0].as_str() {
-		"list" | "ls" => list(data)?,
-		"sync" => sync(data)?,
+		"list" | "ls" => list(data).await?,
+		"sync" => sync(data).await?,
 		"cat" => match argc {
 			2 => cat(data, &argv[1]).await?,
 			_ => cprintln!("{}", CAT_HELP),

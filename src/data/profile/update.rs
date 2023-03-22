@@ -91,8 +91,8 @@ impl UpdateManager {
 			if self.print.verbose {
 				cprintln!("<s>Obtaining version index...");
 			}
-			let (manifest, ..) = get_version_manifest(paths)?;
-			let (version_json, ..) = get_version_json(version, &manifest, paths)?;
+			let manifest = get_version_manifest(paths).await?;
+			let version_json= get_version_json(version, &manifest, paths).await?;
 			self.version_json = Some(version_json);
 			out = make_version_list(&manifest)?;
 		}
@@ -115,7 +115,7 @@ impl UpdateManager {
 				if let UpdateRequirement::Java(kind) = req {
 					let mut java = Java::new(kind.clone());
 					java.add_version(&java_vers.to_string());
-					let files = java.install(paths, &self)?;
+					let files = java.install(paths, &self).await?;
 					java_files.extend(files);
 				}
 			}

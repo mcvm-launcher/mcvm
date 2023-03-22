@@ -1,5 +1,5 @@
 use crate::io::files::paths::Paths;
-use crate::net::download::{Download, DownloadError};
+use crate::net::download::download_text;
 use crate::skip_fail;
 
 use serde::Deserialize;
@@ -15,7 +15,7 @@ pub enum RepoError {
 	#[error("Failed to parse json file:\n{}", .0)]
 	Parse(#[from] serde_json::Error),
 	#[error("Download failed:\n{}", .0)]
-	Download(#[from] DownloadError),
+	Download(#[from] reqwest::Error),
 }
 
 // An entry in the index that specifies what package versions are available
@@ -62,30 +62,28 @@ impl PkgRepo {
 	}
 
 	// Update the currently cached index file
-	pub fn sync(&mut self, paths: &Paths) -> Result<(), RepoError> {
-		let mut dwn = Download::new();
-		dwn.url(&self.index_url())?;
-		dwn.add_file(&self.get_path(paths))?;
-		dwn.add_str();
-		dwn.perform()?;
-		self.set_index(&dwn.get_str()?)?;
+	pub async fn sync(&mut self, paths: &Paths) -> Result<(), RepoError> {
+		let text = download_text(&self.index_url()).await?;
+		fs::write(&self.get_path(paths), &text)?;
+		self.set_index(&text)?;
+
 		Ok(())
 	}
 
 	// Make sure that the repository index is downloaded
-	pub fn ensure_index(&mut self, paths: &Paths) -> Result<(), RepoError> {
+	pub async fn ensure_index(&mut self, paths: &Paths) -> Result<(), RepoError> {
 		if self.index.is_none() {
 			let path = self.get_path(paths);
 			if path.exists() {
 				match self.set_index(&fs::read_to_string(&path)?) {
 					Ok(..) => {}
 					Err(..) => {
-						self.sync(paths)?;
+						self.sync(paths).await?;
 						self.set_index(&fs::read_to_string(&path)?)?;
 					}
 				};
 			} else {
-				self.sync(paths)?;
+				self.sync(paths).await?;
 			}
 		}
 		Ok(())
@@ -96,12 +94,12 @@ impl PkgRepo {
 	}
 
 	// Ask if the index has a package and return the url for that package if it exists
-	pub fn query(
+	pub async fn query(
 		&mut self,
 		id: &str,
 		paths: &Paths,
 	) -> Result<Option<(String, String)>, RepoError> {
-		self.ensure_index(paths)?;
+		self.ensure_index(paths).await?;
 		if let Some(index) = &self.index {
 			if let Some(entry) = index.packages.get(id) {
 				return Ok(Some((entry.url.clone(), entry.version.clone())));
@@ -112,13 +110,13 @@ impl PkgRepo {
 }
 
 // Query a list of repos
-pub fn query_all(
+pub async fn query_all(
 	repos: &mut [PkgRepo],
 	name: &str,
 	paths: &Paths,
 ) -> Result<Option<(String, String)>, RepoError> {
 	for repo in repos {
-		if let Some(result) = skip_fail!(repo.query(name, paths)) {
+		if let Some(result) = skip_fail!(repo.query(name, paths).await) {
 			return Ok(Some(result));
 		}
 	}

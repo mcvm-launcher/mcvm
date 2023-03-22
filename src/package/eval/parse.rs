@@ -177,8 +177,8 @@ impl ParseData {
 }
 
 impl Package {
-	pub fn parse(&mut self, paths: &Paths) -> Result<(), PkgError> {
-		self.ensure_loaded(paths, false)?;
+	pub async fn parse(&mut self, paths: &Paths) -> Result<(), PkgError> {
+		self.ensure_loaded(paths, false).await?;
 		if let Some(data) = &mut self.data {
 			if data.parsed.is_some() {
 				return Ok(());

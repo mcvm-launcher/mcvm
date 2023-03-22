@@ -3,16 +3,16 @@ use std::fs;
 use std::path::PathBuf;
 
 use color_print::{cformat, cprintln};
+use reqwest::Client;
 
 use crate::data::addon::{Modloader, PluginLoader};
 use crate::data::profile::update::{UpdateRequirement, UpdateManager};
 use crate::io::files::{self, paths::Paths};
 use crate::io::java::{JavaError, JavaKind};
 use crate::io::java::classpath::Classpath;
-use crate::net::download::Download;
 use crate::net::fabric_quilt::{FabricQuiltError, self};
 use crate::net::minecraft::VersionManifestError;
-use crate::net::{download, minecraft, paper};
+use crate::net::{minecraft, paper};
 use crate::util::{json, print::ReplPrinter};
 
 use super::{InstKind, Instance};
@@ -22,7 +22,7 @@ pub enum CreateError {
 	#[error("Failed to evaluate json file:\n{}", .0)]
 	Parse(#[from] json::JsonError),
 	#[error("Error when downloading file:\n{}", .0)]
-	Download(#[from] download::DownloadError),
+	Download(#[from] reqwest::Error),
 	#[error("Failed to process version json:\n{}", .0)]
 	VersionJson(#[from] minecraft::VersionJsonError),
 	#[error("Failed to install libraries:\n{}", .0)]
@@ -108,10 +108,10 @@ impl Instance {
 
 		let version_json = manager.version_json.clone().expect("Version json missing");
 
-		let mut dwn = Download::new();
+		let client = Client::new();
 
 		let mut classpath = Classpath::new();
-		let (lib_classpath, files) = minecraft::get_libraries(&version_json, paths, &self.version, manager)?;
+		let (lib_classpath, files) = minecraft::get_libraries(&version_json, paths, &self.version, manager).await?;
 		classpath.extend(lib_classpath);
 		out.extend(files);
 
@@ -125,12 +125,11 @@ impl Instance {
 			let mut printer = ReplPrinter::from_options(manager.print.clone());
 			printer.indent(1);
 			printer.print("Downloading client jar...");
-			dwn.reset();
-			dwn.add_file(&jar_path)?;
+
 			let client_download =
 				json::access_object(json::access_object(&version_json, "downloads")?, "client")?;
-			dwn.url(json::access_str(client_download, "url")?)?;
-			dwn.perform()?;
+			let url = json::access_str(client_download, "url")?;
+			fs::write(&jar_path, client.get(url).send().await?.bytes().await?)?;
 			printer.print(cformat!("<g>Client jar downloaded.").as_str());
 			printer.finish();
 			out.insert(jar_path.clone());
@@ -171,7 +170,7 @@ impl Instance {
 
 		let version_json = manager.version_json.clone().expect("Version json missing");
 
-		let mut dwn = Download::new();
+		let client = Client::new();
 
 		let java_vers = json::access_i64(
 			json::access_object(&version_json, "javaVersion")?,
@@ -183,12 +182,10 @@ impl Instance {
 			let mut printer = ReplPrinter::from_options(manager.print.clone());
 			printer.indent(1);
 			printer.print("Downloading server jar...");
-			dwn.reset();
-			dwn.add_file(&jar_path)?;
-			let client_download =
+			let server_download =
 				json::access_object(json::access_object(&version_json, "downloads")?, "server")?;
-			dwn.url(json::access_str(client_download, "url")?)?;
-			dwn.perform()?;
+			let url = json::access_str(server_download, "url")?;
+			fs::write(&jar_path, client.get(url).send().await?.bytes().await?)?;
 			printer.print(&cformat!("<g>Server jar downloaded."));
 
 			out.insert(jar_path.clone());

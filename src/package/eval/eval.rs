@@ -196,8 +196,8 @@ impl Package {
 		routine: Routine,
 		constants: EvalConstants,
 	) -> Result<EvalData, PkgError> {
-		self.ensure_loaded(paths, false)?;
-		self.parse(paths)?;
+		self.ensure_loaded(paths, false).await?;
+		self.parse(paths).await?;
 		if let Some(data) = &mut self.data {
 			if let Some(parsed) = &mut data.parsed {
 				let routine_name = routine.to_string();

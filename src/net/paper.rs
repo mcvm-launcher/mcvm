@@ -1,7 +1,6 @@
 use std::fs;
 use std::path::{Path, PathBuf};
 
-use super::download::DownloadError;
 use crate::util::json;
 
 use reqwest::Client;
@@ -10,9 +9,7 @@ use serde::Deserialize;
 #[derive(Debug, thiserror::Error)]
 pub enum PaperError {
 	#[error("Download failed:\n{}", .0)]
-	Download(#[from] DownloadError),
-	#[error("Download failed:\n{}", .0)]
-	Reqwest(#[from] reqwest::Error),
+	Download(#[from] reqwest::Error),
 	#[error("Failed to evaluate json file:\n{}", .0)]
 	ParseError(#[from] json::JsonError),
 	#[error("Json operation failed:\n{}", .0)]
