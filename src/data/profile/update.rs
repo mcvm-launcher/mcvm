@@ -1,13 +1,13 @@
-use std::{collections::HashSet, path::{PathBuf, Path}};
+use std::collections::HashSet;
+use std::path::{PathBuf, Path};
 
 use color_print::cprintln;
 
-use crate::{io::{java::{JavaKind, Java}, files::paths::Paths}, util::{json, print::PrintOptions}, data::instance::create::CreateError, net::minecraft::{get_version_manifest, get_version_json, make_version_list, get_assets}};
-
-#[derive(Debug, thiserror::Error)]
-pub enum UpdateError {
-
-}
+use crate::net::minecraft::{get_version_manifest, get_version_json, make_version_list, get_assets};
+use crate::data::instance::create::CreateError;
+use crate::util::{json, print::PrintOptions};
+use crate::io::files::paths::Paths;
+use crate::io::java::{JavaKind, Java};
 
 // Requirements for operations that may be shared by multiple instances in a profile
 #[derive(Debug, Hash, PartialEq, Eq)]
