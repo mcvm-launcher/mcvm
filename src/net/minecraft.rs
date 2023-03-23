@@ -203,10 +203,10 @@ pub async fn get_libraries(
 	let mut printer = ReplPrinter::from_options(manager.print.clone());
 
 	let libraries = json::access_array(version_json, "libraries")?;
-	printer.print(&cformat!(
+	cprintln!(
 		"Downloading <b>{}</> libraries...",
 		libraries.len()
-	));
+	);
 
 	for lib_val in libraries.iter() {
 		let lib = json::ensure_type(lib_val.as_object(), JsonType::Obj)?;
