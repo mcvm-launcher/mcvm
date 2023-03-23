@@ -181,6 +181,22 @@ fn extract_native_library(path: &Path, natives_dir: &Path) -> Result<(), Librari
 	Ok(())
 }
 
+/// Gets the list of allowed libraries from the version json
+pub fn get_lib_list<'a>(version_json: &'a json::JsonObject)
+-> Result<impl Iterator<Item = &'a JsonObject>, LibrariesError> {
+	let libraries = json::access_array(version_json, "libraries")?;
+	let libraries = libraries.iter().filter_map(|lib| {
+		let lib = json::ensure_type(lib.as_object(), JsonType::Obj).ok()?;
+		if !is_library_allowed(lib).ok()? {
+			None
+		} else {
+			Some(lib)
+		}
+	});
+
+	Ok(libraries)
+}
+
 /// Downloads base client libraries.
 /// Returns a set of files to be added to the update manager.
 pub async fn get_libraries(
@@ -210,15 +226,13 @@ pub async fn get_libraries(
 		libraries.len()
 	);
 
-	for lib_val in libraries.iter() {
-		let lib = json::ensure_type(lib_val.as_object(), JsonType::Obj)?;
-		if !is_library_allowed(lib)? {
-			continue;
-		}
+	let libraries = get_lib_list(version_json)?;
+
+	for lib in libraries {
 		let name = json::access_str(lib, "name")?;
 		let downloads = json::access_object(lib, "downloads")?;
-		if let Some(natives_val) = lib.get("natives") {
-			let natives = json::ensure_type(natives_val.as_object(), JsonType::Obj)?;
+		if let Some(natives) = lib.get("natives") {
+			let natives = json::ensure_type(natives.as_object(), JsonType::Obj)?;
 			let key = json::access_str(natives, mojang::OS_STRING)?;
 			let classifier =
 				json::access_object(json::access_object(downloads, "classifiers")?, key)?;
@@ -234,8 +248,8 @@ pub async fn get_libraries(
 			files.insert(path);
 			continue;
 		}
-		if let Some(artifact_val) = downloads.get("artifact") {
-			let artifact = json::ensure_type(artifact_val.as_object(), JsonType::Obj)?;
+		if let Some(artifact) = downloads.get("artifact") {
+			let artifact = json::ensure_type(artifact.as_object(), JsonType::Obj)?;
 			let path = libraries_path.join(json::access_str(artifact, "path")?);
 			if !manager.should_update_file(&path) {
 				continue;
@@ -267,15 +281,11 @@ pub fn get_lib_classpath(
 	let libraries_path = paths.internal.join("libraries");
 
 	let mut classpath = Classpath::new();
-	let libraries = json::access_array(version_json, "libraries")?;
-	for lib_val in libraries.iter() {
-		let lib = json::ensure_type(lib_val.as_object(), JsonType::Obj)?;
-		if !is_library_allowed(lib)? {
-			continue;
-		}
+	let libraries = get_lib_list(version_json)?;
+	for lib in libraries {
 		let downloads = json::access_object(lib, "downloads")?;
-		if let Some(natives_val) = lib.get("natives") {
-			let natives = json::ensure_type(natives_val.as_object(), JsonType::Obj)?;
+		if let Some(natives) = lib.get("natives") {
+			let natives = json::ensure_type(natives.as_object(), JsonType::Obj)?;
 			let key = json::access_str(natives, mojang::OS_STRING)?;
 			let classifier =
 				json::access_object(json::access_object(downloads, "classifiers")?, key)?;
@@ -285,8 +295,8 @@ pub fn get_lib_classpath(
 
 			continue;
 		}
-		if let Some(artifact_val) = downloads.get("artifact") {
-			let artifact = json::ensure_type(artifact_val.as_object(), JsonType::Obj)?;
+		if let Some(artifact) = downloads.get("artifact") {
+			let artifact = json::ensure_type(artifact.as_object(), JsonType::Obj)?;
 			let path = libraries_path.join(json::access_str(artifact, "path")?);
 			classpath.add_path(&path);
 			continue;
