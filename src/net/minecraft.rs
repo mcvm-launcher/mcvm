@@ -159,7 +159,7 @@ async fn download_library(
 	Ok(())
 }
 
-pub fn extract_native_library(path: &Path, natives_dir: &Path) -> Result<(), LibrariesError> {
+fn extract_native_library(path: &Path, natives_dir: &Path) -> Result<(), LibrariesError> {
 	let file = File::open(path)?;
 	let mut zip = ZipArchive::new(file)?;
 	for i in 0..zip.len() {
@@ -180,13 +180,13 @@ pub fn extract_native_library(path: &Path, natives_dir: &Path) -> Result<(), Lib
 }
 
 /// Downloads base client libraries.
-/// Returns both a classpath and a set of files to be added to the update manager.
+/// Returns a set of files to be added to the update manager.
 pub async fn get_libraries(
 	version_json: &json::JsonObject,
 	paths: &Paths,
 	version: &str,
 	manager: &UpdateManager,
-) -> Result<(Classpath, HashSet<PathBuf>), LibrariesError> {
+) -> Result<HashSet<PathBuf>, LibrariesError> {
 	let mut files = HashSet::new();
 	let libraries_path = paths.internal.join("libraries");
 	files::create_dir(&libraries_path)?;
@@ -199,10 +199,8 @@ pub async fn get_libraries(
 	let natives_jars_path = paths.internal.join("natives");
 
 	let mut native_paths = Vec::new();
-	let mut classpath = Classpath::new();
 	let client = Client::new();
 	let mut printer = ReplPrinter::from_options(manager.print.clone());
-	printer.indent(1);
 
 	let libraries = json::access_array(version_json, "libraries")?;
 	printer.print(&cformat!(
@@ -224,7 +222,6 @@ pub async fn get_libraries(
 				json::access_object(json::access_object(downloads, "classifiers")?, key)?;
 
 			let path = natives_jars_path.join(json::access_str(classifier, "path")?);
-			classpath.add_path(&path);
 
 			native_paths.push((path.clone(), name.to_owned()));
 			if !manager.should_update_file(&path) {
@@ -238,7 +235,6 @@ pub async fn get_libraries(
 		if let Some(artifact_val) = downloads.get("artifact") {
 			let artifact = json::ensure_type(artifact_val.as_object(), JsonType::Obj)?;
 			let path = libraries_path.join(json::access_str(artifact, "path")?);
-			classpath.add_path(&path);
 			if !manager.should_update_file(&path) {
 				continue;
 			}
@@ -257,7 +253,44 @@ pub async fn get_libraries(
 	printer.print(&cformat!("<g>Libraries downloaded."));
 	printer.finish();
 
-	Ok((classpath, files))
+	Ok(files)
+}
+
+/// Gets the classpath from Minecraft libraries
+pub fn get_lib_classpath(
+	version_json: &json::JsonObject,
+	paths: &Paths
+) -> Result<Classpath, LibrariesError> {
+	let natives_jars_path = paths.internal.join("natives");
+	let libraries_path = paths.internal.join("libraries");
+
+	let mut classpath = Classpath::new();
+	let libraries = json::access_array(version_json, "libraries")?;
+	for lib_val in libraries.iter() {
+		let lib = json::ensure_type(lib_val.as_object(), JsonType::Obj)?;
+		if !is_library_allowed(lib)? {
+			continue;
+		}
+		let downloads = json::access_object(lib, "downloads")?;
+		if let Some(natives_val) = lib.get("natives") {
+			let natives = json::ensure_type(natives_val.as_object(), JsonType::Obj)?;
+			let key = json::access_str(natives, mojang::OS_STRING)?;
+			let classifier =
+				json::access_object(json::access_object(downloads, "classifiers")?, key)?;
+
+			let path = natives_jars_path.join(json::access_str(classifier, "path")?);
+			classpath.add_path(&path);
+
+			continue;
+		}
+		if let Some(artifact_val) = downloads.get("artifact") {
+			let artifact = json::ensure_type(artifact_val.as_object(), JsonType::Obj)?;
+			let path = libraries_path.join(json::access_str(artifact, "path")?);
+			classpath.add_path(&path);
+			continue;
+		}
+	}
+	Ok(classpath)
 }
 
 #[derive(Debug, thiserror::Error)]

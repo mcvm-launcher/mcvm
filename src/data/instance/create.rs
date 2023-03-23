@@ -110,9 +110,8 @@ impl Instance {
 		let client = Client::new();
 
 		let mut classpath = Classpath::new();
-		let (lib_classpath, files) = minecraft::get_libraries(&version_json, paths, &self.version, manager).await?;
+		let lib_classpath = minecraft::get_lib_classpath(&version_json, paths)?;
 		classpath.extend(lib_classpath);
-		out.extend(files);
 
 		let java_vers = json::access_i64(
 			json::access_object(&version_json, "javaVersion")?,
