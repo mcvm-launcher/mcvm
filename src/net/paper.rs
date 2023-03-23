@@ -24,6 +24,7 @@ struct VersionInfoResponse {
 	builds: Vec<u16>,
 }
 
+/// Get the newest build number of Paper
 pub async fn get_newest_build(version: &str) -> Result<(u16, Client), PaperError> {
 	let url = format!("https://api.papermc.io/v2/projects/paper/versions/{version}");
 	let client = Client::new();
@@ -50,6 +51,7 @@ struct BuildInfoResponse {
 	downloads: BuildInfoDownloads,
 }
 
+/// Get the name of the Paper jar file
 pub async fn get_jar_file_name(version: &str, build_num: u16) -> Result<String, PaperError> {
 	let num_str = build_num.to_string();
 	let url =
@@ -61,6 +63,7 @@ pub async fn get_jar_file_name(version: &str, build_num: u16) -> Result<String, 
 	Ok(resp.downloads.application.name)
 }
 
+/// Download the Paper server jar
 pub async fn download_server_jar(
 	version: &str,
 	build_num: u16,

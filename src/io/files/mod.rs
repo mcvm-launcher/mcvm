@@ -3,7 +3,7 @@ pub mod paths;
 use std::fs;
 use std::path::Path;
 
-// Create a directory that may already exist
+/// Create a directory that may already exist without an error
 pub fn create_dir(path: &Path) -> std::io::Result<()> {
 	if path.exists() {
 		Ok(())
@@ -12,7 +12,7 @@ pub fn create_dir(path: &Path) -> std::io::Result<()> {
 	}
 }
 
-// Create all the directories leading up to a path
+/// Create all the directories leading up to a path
 pub fn create_leading_dirs(path: &Path) -> std::io::Result<()> {
 	if let Some(parent) = path.parent() {
 		fs::create_dir_all(parent)?;

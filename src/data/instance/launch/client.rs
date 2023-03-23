@@ -1,7 +1,7 @@
 use std::process::Command;
 
 use super::LaunchError;
-use crate::data::instance::Instance;
+use crate::data::instance::{Instance, InstKind};
 use crate::data::user::{Auth, UserKind};
 use crate::io::java::classpath::Classpath;
 use crate::util::json;
@@ -10,7 +10,9 @@ use crate::Paths;
 use crate::{skip_fail, skip_none};
 
 impl Instance {
+	/// Launch a client
 	pub fn launch_client(&mut self, paths: &Paths, auth: &Auth) -> Result<(), LaunchError> {
+		debug_assert!(self.kind == InstKind::Client);
 		match &self.java {
 			Some(java) => match &java.path {
 				Some(java_path) => {
@@ -93,6 +95,7 @@ impl Instance {
 	}
 }
 
+/// Replace tokens in a string argument from the version json
 pub fn process_string_arg(
 	instance: &Instance,
 	arg: &str,
@@ -166,7 +169,7 @@ pub fn process_string_arg(
 	Some(out)
 }
 
-// Process an argument for the client from the version json
+/// Process an argument for the client from the version json
 pub fn process_client_arg(
 	instance: &Instance,
 	arg: &serde_json::Value,

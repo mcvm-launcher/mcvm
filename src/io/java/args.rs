@@ -25,6 +25,7 @@ impl MemoryNum {
 		}
 	}
 
+	/// Converts into the equivalent amount in bytes
 	pub fn to_bytes(&self) -> u32 {
 		match self {
 			Self::B(n) => *n,
@@ -34,6 +35,7 @@ impl MemoryNum {
 		}
 	}
 
+	/// Averages two amounts of memory
 	pub fn avg(left: Self, right: Self) -> Self {
 		Self::B((left.to_bytes() + right.to_bytes()) / 2)
 	}

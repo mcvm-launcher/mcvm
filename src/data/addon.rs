@@ -68,10 +68,12 @@ impl Addon {
 		}
 	}
 
+	/// Get the addon directory where this addon is stored
 	pub fn get_dir(&self, paths: &Paths) -> PathBuf {
 		paths.addons.join(self.kind.to_plural_string())
 	}
 
+	/// Get the path to the addon
 	pub fn get_path(&self, paths: &Paths) -> PathBuf {
 		self.get_dir(paths)
 			.join(&self.id.name)
@@ -102,6 +104,7 @@ impl AddonRequest {
 		}
 	}
 
+	/// Get the addon and store it
 	pub async fn acquire(&self, paths: &Paths) -> Result<(), AddonError> {
 		let path = self.addon.get_path(paths);
 		if !self.force && path.exists() {
@@ -233,7 +236,7 @@ impl PluginLoaderMatch {
 	}
 }
 
-// Checks if the modloader and plugin loader are compatible with each other
+/// Checks if the modloader and plugin loader are compatible with each other
 pub fn game_modifications_compatible(modloader: &Modloader, plugin_loader: &PluginLoader) -> bool {
 	match (modloader, plugin_loader) {
 		(Modloader::Vanilla, _) => true,

@@ -31,7 +31,7 @@ pub enum VersionManifestError {
 	Io(#[from] std::io::Error),
 }
 
-// So we can do this without a retry
+/// Obtain the raw version manifest contents
 async fn get_version_manifest_contents(paths: &Paths) -> Result<String, VersionManifestError> {
 	let mut path = paths.internal.join("versions");
 	files::create_dir(&path)?;
@@ -43,6 +43,7 @@ async fn get_version_manifest_contents(paths: &Paths) -> Result<String, VersionM
 	Ok(text)
 }
 
+/// Get the version manifest as a JSON object
 pub async fn get_version_manifest(
 	paths: &Paths,
 ) -> Result<Box<json::JsonObject>, VersionManifestError> {
@@ -58,7 +59,7 @@ pub async fn get_version_manifest(
 	Ok(manifest)
 }
 
-// Makes an ordered list of versions from the manifest to use for matching
+/// Make an ordered list of versions from the manifest to use for matching
 pub fn make_version_list(
 	version_manifest: &json::JsonObject,
 ) -> Result<Vec<String>, VersionManifestError> {
@@ -86,6 +87,7 @@ pub enum VersionJsonError {
 	Io(#[from] std::io::Error),
 }
 
+/// Gets the specific version info JSON file for a Minecraft version
 pub async fn get_version_json(
 	version: &str,
 	version_manifest: &json::JsonObject,
@@ -93,13 +95,12 @@ pub async fn get_version_json(
 ) -> Result<Box<json::JsonObject>, VersionJsonError> {
 	let version_string = version.to_owned();
 
-	// Find the version out of all of them
 	let versions = json::access_array(version_manifest, "versions")?;
 	let mut version_url: Option<&str> = None;
 	for entry in versions.iter() {
-		let obj = json::ensure_type(entry.as_object(), JsonType::Obj)?;
-		if json::access_str(obj, "id")? == version_string {
-			version_url = Some(json::access_str(obj, "url")?);
+		let entry = json::ensure_type(entry.as_object(), JsonType::Obj)?;
+		if json::access_str(entry, "id")? == version_string {
+			version_url = Some(json::access_str(entry, "url")?);
 		}
 	}
 	if version_url.is_none() {
@@ -129,17 +130,18 @@ pub enum LibrariesError {
 	Zip(#[from] zip::result::ZipError),
 }
 
-// Checks the rules of a library to see if it should be installed
+/// Checks the rules of a game library to see if it should be installed
 fn is_library_allowed(lib: &JsonObject) -> Result<bool, LibrariesError> {
-	if let Some(rules_val) = lib.get("rules") {
-		let rules = json::ensure_type(rules_val.as_array(), JsonType::Arr)?;
-		for rule_val in rules.iter() {
-			let rule = json::ensure_type(rule_val.as_object(), JsonType::Obj)?;
+	if let Some(rules) = lib.get("rules") {
+		let rules = json::ensure_type(rules.as_array(), JsonType::Arr)?;
+		for rule in rules.iter() {
+			let rule = json::ensure_type(rule.as_object(), JsonType::Obj)?;
 			let action = json::access_str(rule, "action")?;
-			if let Some(os_val) = rule.get("os") {
-				let os = json::ensure_type(os_val.as_object(), JsonType::Obj)?;
+			if let Some(os) = rule.get("os") {
+				let os = json::ensure_type(os.as_object(), JsonType::Obj)?;
 				let os_name = json::access_str(os, "name")?;
-				if mojang::is_allowed(action) != (os_name == mojang::OS_STRING) {
+				let allowed = mojang::is_allowed(action);
+				if allowed != (os_name == mojang::OS_STRING) {
 					return Ok(false);
 				}
 			}
@@ -148,7 +150,7 @@ fn is_library_allowed(lib: &JsonObject) -> Result<bool, LibrariesError> {
 	Ok(true)
 }
 
-// Finishes up and downloads a library
+/// Downloads a library from the game library list
 async fn download_library(
 	client: &Client,
 	lib_download: &json::JsonObject,
@@ -161,6 +163,7 @@ async fn download_library(
 	Ok(())
 }
 
+/// Extract the files of a native library into the natives directory
 fn extract_native_library(path: &Path, natives_dir: &Path) -> Result<(), LibrariesError> {
 	let file = File::open(path)?;
 	let mut zip = ZipArchive::new(file)?;
@@ -342,6 +345,7 @@ pub async fn get_assets(
 
 	let objects_dir = paths.assets.join("objects");
 	files::create_dir(&objects_dir)?;
+	// Apparently this directory name is used for older game versions
 	let virtual_dir = paths.assets.join("virtual");
 	if !manager.force && virtual_dir.exists() && !virtual_dir.is_symlink() {
 		files::dir_symlink(&virtual_dir, &objects_dir)?;
@@ -370,12 +374,12 @@ pub async fn get_assets(
 	let mut num_done = 0;
 	// Used to limit the number of open file descriptors
 	let sem = Arc::new(Semaphore::new(FD_SENSIBLE_LIMIT));
-	for (key, asset_val) in assets {
-		let asset = json::ensure_type(asset_val.as_object(), JsonType::Obj)?;
+	for (key, asset) in assets {
+		let asset = json::ensure_type(asset.as_object(), JsonType::Obj)?;
 
 		let hash = json::access_str(asset, "hash")?.to_owned();
 		let hash_path = hash[..2].to_owned() + "/" + &hash;
-		let url = "https://resources.download.minecraft.net/".to_owned() + &hash_path;
+		let url = String::from("https://resources.download.minecraft.net/") + &hash_path;
 
 		let path = objects_dir.join(&hash_path);
 		if !manager.should_update_file(&path) {

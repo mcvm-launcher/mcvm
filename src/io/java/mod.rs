@@ -43,6 +43,7 @@ pub enum JavaError {
 	InstallationNotFound,
 }
 
+/// A Java installation used to launch the game
 #[derive(Debug, Clone)]
 pub struct Java {
 	kind: JavaKind,
@@ -54,7 +55,7 @@ impl Java {
 		Self { kind, path: None }
 	}
 
-	/// Add a version to an installation that supports it
+	/// Add a major version to a Java installation that supports it
 	pub fn add_version(&mut self, version: &str) {
 		match &mut self.kind {
 			JavaKind::Adoptium(vers) => *vers = Some(version.to_owned()),
@@ -62,6 +63,7 @@ impl Java {
 		};
 	}
 
+	/// Download / install all needed files
 	pub async fn install(&mut self, paths: &Paths, manager: &UpdateManager)
 	-> Result<HashSet<PathBuf>, JavaError> {
 		let mut out = HashSet::new();
@@ -79,8 +81,8 @@ impl Java {
 					OS_STRING
 				);
 
-				let manifest_val = json::parse_json(&download_text(&url).await?)?;
-				let manifest = json::ensure_type(manifest_val.as_array(), JsonType::Arr)?;
+				let manifest = json::parse_json(&download_text(&url).await?)?;
+				let manifest = json::ensure_type(manifest.as_array(), JsonType::Arr)?;
 				let version = json::ensure_type(
 					manifest
 						.get(0)

@@ -2,10 +2,12 @@ use std::io::{Stdout, Write};
 
 use color_print::cstr;
 
+/// A nice colored bullet point for terminal output
 pub static HYPHEN_POINT: &str = cstr!("<k!> - </k!>");
+/// String used program-wide for most indentation
 pub static INDENT_CHAR: &str = "\t";
 
-// Used to print text that is replaced
+/// Used to print text that is replaced
 #[derive(Debug)]
 pub struct ReplPrinter {
 	stdout: Stdout,
@@ -15,6 +17,8 @@ pub struct ReplPrinter {
 }
 
 impl ReplPrinter {
+	/// Make a new ReplPrinter with a verbosity option.
+	/// If that option is false, then nothing will be printed
 	pub fn new(verbose: bool) -> Self {
 		Self {
 			stdout: std::io::stdout(),
@@ -24,6 +28,7 @@ impl ReplPrinter {
 		}
 	}
 
+	/// Make a new ReplPrinter using a set of print options
 	pub fn from_options(options: PrintOptions) -> Self {
 		Self {
 			stdout: std::io::stdout(),
@@ -33,11 +38,13 @@ impl ReplPrinter {
 		}
 	}
 
+	/// Set the indent level of the printer
 	pub fn indent(&mut self, indent: usize) {
 		self.options.indent += indent;
 		self.options.indent_str = make_indent(self.options.indent);
 	}
 
+	/// Replace the current line with spaces
 	pub fn clearline(&mut self) {
 		if self.chars_written == 0 {
 			return;
@@ -51,6 +58,7 @@ impl ReplPrinter {
 		self.stdout.flush().unwrap();
 	}
 
+	/// Print text to the output
 	pub fn print(&mut self, text: &str) {
 		if !self.options.verbose {
 			return;
@@ -61,18 +69,20 @@ impl ReplPrinter {
 		self.stdout.flush().unwrap();
 	}
 
+	/// Finish printing and make a newline
 	pub fn finish(&mut self) {
 		if self.finished {
 			return;
 		}
 		if self.chars_written != 0 {
-			println!();
-			self.chars_written = 0;
+			self.newline();
 		}
 		self.finished = true;
 	}
 
-	pub fn newline(&self) {
+	/// Make a line break
+	pub fn newline(&mut self) {
+		self.chars_written = 0;
 		println!();
 	}
 }
@@ -115,4 +125,3 @@ impl PrintOptions {
 		out
 	}
 }
-

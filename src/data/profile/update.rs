@@ -10,7 +10,7 @@ use crate::util::{json, print::PrintOptions};
 use crate::io::files::paths::Paths;
 use crate::io::java::{JavaKind, Java};
 
-// Requirements for operations that may be shared by multiple instances in a profile
+/// Requirements for operations that may be shared by multiple instances in a profile
 #[derive(Debug, Hash, PartialEq, Eq)]
 pub enum UpdateRequirement {
 	VersionJson,
@@ -45,18 +45,22 @@ impl UpdateManager {
 		}
 	}
 
+	/// Add a single requirement
 	pub fn add_requirement(&mut self, req: UpdateRequirement) {
 		self.requirements.insert(req);
 	}
 
+	/// Add multiple requirements
 	pub fn add_requirements(&mut self, reqs: HashSet<UpdateRequirement>) {
 		self.requirements.extend(reqs);
 	}
 
+	/// Check if a requirement is held
 	pub fn has_requirement(&self, req: UpdateRequirement) -> bool {
 		self.requirements.contains(&req)
 	}
 
+	/// Add tracked files to the manager
 	pub fn add_files(&mut self, files: HashSet<PathBuf>) {
 		self.files.extend(files);
 	}

@@ -12,17 +12,28 @@ pub enum PathsError {
 	Base,
 }
 
+/// Store for all of the paths that are used throughout the application
 #[derive(Debug, Clone)]
 pub struct Paths {
+	/// System-wide directories
 	pub base: BaseDirs,
+	/// Project-specific directories
 	pub project: ProjectDirs,
+	/// Holds internal data
 	pub internal: PathBuf,
+	/// Holds game assets
 	pub assets: PathBuf,
+	/// Holds game libraries
 	pub libraries: PathBuf,
+	/// Holds Java installations
 	pub java: PathBuf,
+	/// Holds addons
 	pub addons: PathBuf,
+	/// Holds cached package scripts
 	pub pkg_cache: PathBuf,
+	/// Holds cached package repository indexes
 	pub pkg_index_cache: PathBuf,
+	/// Holds game jar files
 	pub jars: PathBuf,
 }
 

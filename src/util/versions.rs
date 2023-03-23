@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 #[derive(Debug, thiserror::Error)]
 #[error("Version not found: {}", .version)]
 pub struct VersionNotFoundError {
@@ -12,18 +14,23 @@ impl VersionNotFoundError {
 	}
 }
 
-// Pattern matching for the version of Minecraft or a package
+/// Pattern matching for the version of Minecraft, a package, etc.
 #[derive(Debug, Hash, Clone, PartialEq)]
 pub enum VersionPattern {
+	/// Matches a single version
 	Single(String),
+	/// Matches the latest version in the list
 	Latest(Option<String>),
+	/// Matches any version that is <= a version
 	Before(String),
+	/// Matches any version that is >= a version
 	After(String),
+	/// Matches any version
 	Any,
 }
 
 impl VersionPattern {
-	// Finds a match in a list of versions
+	/// Finds all match in a list of versions
 	pub fn get_matches(&self, versions: &[String]) -> Vec<String> {
 		match self {
 			Self::Single(version) => match versions.contains(version) {
@@ -49,7 +56,7 @@ impl VersionPattern {
 		}
 	}
 
-	// Finds the newest match in a list of versions
+	/// Finds the newest match in a list of versions
 	pub fn get_match(&self, versions: &[String]) -> Option<String> {
 		self.get_matches(versions).last().cloned()
 	}
@@ -96,7 +103,7 @@ impl VersionPattern {
 		}
 	}
 
-	// Returns the union of matches for multiple patterns
+	/// Returns the union of matches for multiple patterns
 	pub fn _match_union(&self, other: &Self, versions: &[String]) -> Vec<String> {
 		self.get_matches(versions)
 			.iter()
@@ -113,18 +120,7 @@ impl VersionPattern {
 			.collect()
 	}
 
-	// Converts to a string representation
-	pub fn _as_string(&self) -> String {
-		match self {
-			Self::Single(version) => version.to_owned(),
-			Self::Latest(..) => String::from("latest"),
-			Self::Before(version) => version.to_owned() + "-",
-			Self::After(version) => version.to_owned() + "+",
-			Self::Any => String::from("*"),
-		}
-	}
-
-	// Creates a version pattern by parsing a string
+	/// Creates a version pattern by parsing a string
 	pub fn from(text: &str) -> Self {
 		match text {
 			"latest" => Self::Latest(None),
@@ -142,7 +138,7 @@ impl VersionPattern {
 		}
 	}
 
-	// Checks that a string contains no pattern-special characters
+	/// Checks that a string contains no pattern-special characters
 	pub fn validate(text: &str) -> bool {
 		if text.contains('*') || text == "latest" {
 			return false;
@@ -153,6 +149,18 @@ impl VersionPattern {
 			}
 		}
 		true
+	}
+}
+
+impl Display for VersionPattern {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "{}", match self {
+			Self::Single(version) => version.to_owned(),
+			Self::Latest(..) => String::from("latest"),
+			Self::Before(version) => version.to_owned() + "-",
+			Self::After(version) => version.to_owned() + "+",
+			Self::Any => String::from("*"),
+		})
 	}
 }
 

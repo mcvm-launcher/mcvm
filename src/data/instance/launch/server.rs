@@ -1,12 +1,14 @@
 use std::process::Command;
 
-use crate::data::instance::Instance;
+use crate::data::instance::{Instance, InstKind};
 use crate::io::files::paths::Paths;
 
 use super::LaunchError;
 
 impl Instance {
+	/// Launch a server
 	pub fn launch_server(&mut self, paths: &Paths) -> Result<(), LaunchError> {
+		debug_assert!(self.kind == InstKind::Server);
 		match &self.java {
 			Some(java) => match &java.path {
 				Some(java_path) => {

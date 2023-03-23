@@ -66,6 +66,7 @@ pub struct LaunchOptions {
 }
 
 impl LaunchOptions {
+	/// Create the args for the JVM when launching the game
 	pub fn generate_jvm_args(&self) -> Vec<String> {
 		let mut out = self.jvm_args.clone();
 		if let Some(n) = &self.init_mem {

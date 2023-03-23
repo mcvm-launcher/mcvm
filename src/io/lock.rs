@@ -20,6 +20,7 @@ pub enum LockfileError {
 	AddonKind(String, String),
 }
 
+/// Format for an addon in the lockfile
 #[derive(Serialize, Deserialize, PartialEq, Clone)]
 pub struct LockfileAddon {
 	name: String,
@@ -28,7 +29,7 @@ pub struct LockfileAddon {
 }
 
 impl LockfileAddon {
-	// Converts an addon to the format used by the lockfile
+	/// Converts an addon to the format used by the lockfile
 	pub fn from_addon(addon: &Addon, paths: &Paths) -> Self {
 		Self {
 			name: addon.name.clone(),
@@ -41,6 +42,7 @@ impl LockfileAddon {
 		}
 	}
 
+	/// Converts this LockfileAddon to an Addon
 	pub fn to_addon(&self, id: PkgIdentifier) -> Result<Addon, LockfileError> {
 		Ok(Addon {
 			kind: AddonKind::from_str(&self.kind).ok_or(LockfileError::AddonKind(
@@ -85,12 +87,13 @@ struct LockfileContents {
 	profiles: HashMap<String, LockfileProfile>,
 }
 
-// A file that remembers what files and packages are currently installed
+/// A file that remembers important info like what files and packages are currently installed
 pub struct Lockfile {
 	contents: LockfileContents,
 }
 
 impl Lockfile {
+	/// Open the lockfile
 	pub fn open(paths: &Paths) -> Result<Self, LockfileError> {
 		let path = Self::get_path(paths);
 		let contents = if path.exists() {
@@ -104,11 +107,12 @@ impl Lockfile {
 		Ok(Self { contents })
 	}
 
+	/// Get the path to the lockfile
 	pub fn get_path(paths: &Paths) -> PathBuf {
 		paths.internal.join("lock.json")
 	}
 
-	// Finish using the lockfile and write to the disk
+	/// Finish using the lockfile and write to the disk
 	pub fn finish(&mut self, paths: &Paths) -> Result<(), LockfileError> {
 		let out = serde_json::to_string_pretty(&self.contents)?;
 		let mut file = File::create(Self::get_path(paths))?;
@@ -117,7 +121,7 @@ impl Lockfile {
 		Ok(())
 	}
 
-	// Updates a package with a new version
+	/// Updates a package with a new version
 	pub fn update_package(
 		&mut self,
 		name: &str,
@@ -159,7 +163,8 @@ impl Lockfile {
 		Ok(addons_to_remove)
 	}
 
-	// Remove any unused packages for an instance. Returns any addons that need to be removed from the instance
+	/// Remove any unused packages for an instance.
+	/// Returns any addons that need to be removed from the instance.
 	pub fn remove_unused_packages(
 		&mut self,
 		instance: &str,
@@ -192,7 +197,7 @@ impl Lockfile {
 		}
 	}
 
-	// Updates a profile in the lockfile. Returns true if the version has changed
+	/// Updates a profile in the lockfile. Returns true if the version has changed.
 	pub fn update_profile_version(&mut self, profile: &str, version: &str) -> bool {
 		if let Some(profile) = self.contents.profiles.get_mut(profile) {
 			if profile.version == version {
@@ -214,7 +219,7 @@ impl Lockfile {
 		}
 	}
 
-	// Updates a profile with a new paper build. Returns true if the version has changed
+	/// Updates a profile with a new paper build. Returns true if the version has changed.
 	pub fn update_profile_paper_build(&mut self, profile: &str, build_num: u16) -> bool {
 		if let Some(profile) = self.contents.profiles.get_mut(profile) {
 			if let Some(paper_build) = profile.paper_build.as_mut() {

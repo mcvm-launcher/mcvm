@@ -3,6 +3,7 @@ pub mod mojang;
 pub mod print;
 pub mod versions;
 
+/// Converts "yes" or "no" to a boolean
 pub fn yes_no(string: &str) -> Option<bool> {
 	match string {
 		"yes" => Some(true),
@@ -11,7 +12,7 @@ pub fn yes_no(string: &str) -> Option<bool> {
 	}
 }
 
-// Skip in a loop if a result fails
+/// Skip in a loop if a result fails
 #[macro_export]
 macro_rules! skip_fail {
 	($res:expr) => {
@@ -22,7 +23,7 @@ macro_rules! skip_fail {
 	};
 }
 
-// Skip in a loop if an option is none
+/// Skip in a loop if an option is none
 #[macro_export]
 macro_rules! skip_none {
 	($res:expr) => {
@@ -33,7 +34,7 @@ macro_rules! skip_none {
 	};
 }
 
-// Validates a simple string identifier
+/// Validates a simple string identifier
 pub fn validate_identifier(id: &str) -> bool {
 	for c in id.chars() {
 		if !c.is_ascii() {

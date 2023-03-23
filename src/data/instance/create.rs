@@ -3,7 +3,6 @@ use std::fs;
 use std::path::PathBuf;
 
 use color_print::{cformat, cprintln};
-use reqwest::Client;
 
 use crate::data::addon::{Modloader, PluginLoader};
 use crate::data::profile::update::{UpdateRequirement, UpdateManager};
@@ -92,11 +91,13 @@ impl Instance {
 		}
 	}
 
+	/// Create a client
 	pub async fn create_client(
 		&mut self,
 		manager: &UpdateManager,
 		paths: &Paths,
 	) -> Result<HashSet<PathBuf>, CreateError> {
+		debug_assert!(self.kind == InstKind::Client);
 		let out = HashSet::new();
 		
 		let dir = self.get_dir(paths);
@@ -137,11 +138,13 @@ impl Instance {
 		Ok(out)
 	}
 
+	/// Create a server
 	pub async fn create_server(
 		&mut self,
 		manager: &UpdateManager,
 		paths: &Paths,
 	) -> Result<HashSet<PathBuf>, CreateError> {
+		debug_assert!(self.kind == InstKind::Server);
 		let mut out = HashSet::new();
 		
 		let dir = self.get_dir(paths);
@@ -152,26 +155,12 @@ impl Instance {
 		let jar_path = server_dir.join("server.jar");
 		
 		let version_json = manager.version_json.clone().expect("Version json missing");
-
-		let client = Client::new();
 		
 		let java_vers = json::access_i64(
 			json::access_object(&version_json, "javaVersion")?,
 			"majorVersion",
 		)?;
 		self.add_java(&java_vers.to_string(), manager);
-
-		if manager.should_update_file(&jar_path) {
-			let mut printer = ReplPrinter::from_options(manager.print.clone());
-			printer.indent(1);
-			printer.print("Downloading server jar...");
-			let server_download =
-			json::access_object(json::access_object(&version_json, "downloads")?, "server")?;
-			let url = json::access_str(server_download, "url")?;
-			fs::write(&jar_path, client.get(url).send().await?.bytes().await?)?;
-			printer.print(&cformat!("<g>Server jar downloaded."));
-			
-		}
 		
 		let classpath = match self.modloader {
 			Modloader::Fabric => Some(self.get_fabric_quilt(fabric_quilt::Mode::Fabric, paths, manager).await?),

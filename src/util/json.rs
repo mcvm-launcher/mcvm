@@ -40,11 +40,13 @@ pub enum JsonError {
 	_Index(usize, usize),
 }
 
+/// Parse a string into a JSON value
 pub fn parse_json(contents: &str) -> Result<Box<Value>, JsonError> {
 	let doc: Value = serde_json::from_str(contents)?;
 	Ok(Box::new(doc))
 }
 
+/// Parse a string into a JSON object
 pub fn parse_object(contents: &str) -> Result<Box<JsonObject>, JsonError> {
 	let doc: Value = serde_json::from_str(contents)?;
 	let obj = ensure_type(doc.as_object(), JsonType::Obj)?;
@@ -111,7 +113,7 @@ pub fn access_object<'a>(obj: &'a JsonObject, key: &str) -> Result<&'a JsonObjec
 	}
 }
 
-// Used after getting a type to create an error if the type conversion failed
+/// Used after getting a type to create an error if the type conversion failed
 pub fn ensure_type<T>(value: Option<T>, typ: JsonType) -> Result<T, JsonError> {
 	match value {
 		Some(val) => Ok(val),

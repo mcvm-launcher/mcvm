@@ -10,6 +10,8 @@ use crate::io::java::classpath::Classpath;
 use crate::util::json::{self, JsonType};
 use crate::util::print::ReplPrinter;
 
+use super::download::download_text;
+
 pub enum Mode {
 	Fabric,
 	Quilt
@@ -70,6 +72,7 @@ pub struct FabricQuiltMeta {
 	pub intermediary: MainLibrary
 }
 
+/// Sections of a library string
 #[derive(Debug, PartialEq)]
 struct LibraryParts {
 	orgs: Vec<String>,
@@ -78,6 +81,7 @@ struct LibraryParts {
 }
 
 impl LibraryParts {
+	/// Extract the parts of a library string
 	pub fn from_str(string: &str) -> Option<Self> {
 		let mut parts = string.split(':');
 		let orgs: Vec<String> = parts.next()?.split('.').map(|x| x.to_owned()).collect();
@@ -91,13 +95,13 @@ impl LibraryParts {
 	}
 }
 
+/// Get the Fabric/Quilt metadata file
 pub async fn get_meta(version: &str, mode: &Mode) -> Result<FabricQuiltMeta, FabricQuiltError> {
 	let meta_url = match mode {
 		Mode::Fabric => format!("https://meta.fabricmc.net/v2/versions/loader/{version}"),
 		Mode::Quilt => format!("https://meta.quiltmc.org/v3/versions/loader/{version}"),
 	};
-	let client = Client::new();
-	let meta = client.get(&meta_url).send().await?.error_for_status()?.text().await?;
+	let meta = download_text(&meta_url).await?;
 	let meta = json::parse_json(&meta)?;
 	let meta = json::ensure_type(meta.as_array(), JsonType::Arr)?;
 	let meta = meta.first().ok_or(FabricQuiltError::NoneFound)?;
@@ -105,6 +109,7 @@ pub async fn get_meta(version: &str, mode: &Mode) -> Result<FabricQuiltMeta, Fab
 	Ok(serde_json::from_value(meta.clone())?)
 }
 
+/// Get the path to a library
 fn get_lib_path(name: &str) -> Option<String> {
 	let parts = LibraryParts::from_str(name)?;
 	let mut url = String::new();
@@ -121,6 +126,7 @@ fn get_lib_path(name: &str) -> Option<String> {
 	Some(url)
 }
 
+/// Download all Fabric/Quilt libraries. Returns the resulting classpath.
 async fn download_libraries(
 	libs: &[Library],
 	paths: &Paths,
@@ -146,6 +152,7 @@ async fn download_libraries(
 	Ok(classpath)
 }
 
+/// Download a main library from Fabric or Quilt, such as the loader or mappings
 async fn download_main_library(
 	lib: &MainLibrary,
 	url: &str,
@@ -166,6 +173,7 @@ async fn download_main_library(
 	Ok(lib_path_str)
 }
 
+/// Download all needed files for Quilt/Fabric
 pub async fn download_files(
 	meta: &FabricQuiltMeta,
 	paths: &Paths,
