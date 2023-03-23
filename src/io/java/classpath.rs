@@ -35,6 +35,12 @@ impl Classpath {
 			self.add_sep();
 		}
 
+		if let Some(c) = self.string.chars().last() {
+			if c == CLASSPATH_SEP {
+				return;
+			}
+		}
+
 		self.string.push_str(string);
 	}
 
