@@ -27,7 +27,8 @@ pub struct UpdateManager {
 	requirements: HashSet<UpdateRequirement>,
 	// File paths that are added when they have been updated by other functions
 	files: HashSet<PathBuf>,
-	pub version_json: Option<Box<json::JsonObject>>
+	pub version_json: Option<Box<json::JsonObject>>,
+	pub java: Option<Java>,
 }
 
 impl UpdateManager {
@@ -38,6 +39,7 @@ impl UpdateManager {
 			requirements: HashSet::new(),
 			files: HashSet::new(),
 			version_json: None,
+			java: None,
 		}
 	}
 
@@ -126,6 +128,7 @@ impl UpdateManager {
 					java.add_version(&java_vers.to_string());
 					let files = java.install(paths, self).await?;
 					java_files.extend(files);
+					self.java = Some(java);
 				}
 			}
 			

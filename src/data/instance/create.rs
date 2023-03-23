@@ -117,7 +117,7 @@ impl Instance {
 			json::access_object(&version_json, "javaVersion")?,
 			"majorVersion",
 		)?;
-		self.add_java(&java_vers.to_string());
+		self.add_java(&java_vers.to_string(), manager);
 
 		if manager.should_update_file(&jar_path) {
 			let mut printer = ReplPrinter::from_options(manager.print.clone());
@@ -174,7 +174,7 @@ impl Instance {
 			json::access_object(&version_json, "javaVersion")?,
 			"majorVersion",
 		)?;
-		self.add_java(&java_vers.to_string());
+		self.add_java(&java_vers.to_string(), manager);
 
 		if manager.should_update_file(&jar_path) {
 			let mut printer = ReplPrinter::from_options(manager.print.clone());

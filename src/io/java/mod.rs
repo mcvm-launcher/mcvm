@@ -43,7 +43,7 @@ pub enum JavaError {
 	InstallationNotFound,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Java {
 	kind: JavaKind,
 	pub path: Option<PathBuf>,

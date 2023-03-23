@@ -86,8 +86,8 @@ impl Instance {
 	}
 
 	/// Set the java installation for the instance
-	fn add_java(&mut self, version: &str) {
-		let mut java = Java::new(self.launch.java.clone());
+	fn add_java(&mut self, version: &str, manager: &UpdateManager) {
+		let mut java = manager.java.as_ref().expect("Update Manager Java is missing").clone();
 		java.add_version(version);
 		self.java = Some(java);
 	}
