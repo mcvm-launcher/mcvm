@@ -52,6 +52,7 @@ impl Instance {
 			x => x.clone(),
 		};
 		out.insert(UpdateRequirement::Java(java_kind));
+		out.insert(UpdateRequirement::GameJar(self.kind.clone()));
 		match &self.kind {
 			InstKind::Client => {
 				out.insert(UpdateRequirement::GameAssets);
@@ -96,18 +97,16 @@ impl Instance {
 		manager: &UpdateManager,
 		paths: &Paths,
 	) -> Result<HashSet<PathBuf>, CreateError> {
-		let mut out = HashSet::new();
+		let out = HashSet::new();
 		
 		let dir = self.get_dir(paths);
 		files::create_leading_dirs(&dir)?;
 		files::create_dir(&dir)?;
 		let mc_dir = self.get_subdir(paths);
 		files::create_dir(&mc_dir)?;
-		let jar_path = dir.join("client.jar");
+		let jar_path = minecraft::game_jar_path(&self.kind, &self.version, paths);
 
 		let version_json = manager.version_json.clone().expect("Version json missing");
-
-		let client = Client::new();
 
 		let mut classpath = Classpath::new();
 		let lib_classpath = minecraft::get_lib_classpath(&version_json, paths)?;
@@ -118,20 +117,6 @@ impl Instance {
 			"majorVersion",
 		)?;
 		self.add_java(&java_vers.to_string(), manager);
-
-		if manager.should_update_file(&jar_path) {
-			let mut printer = ReplPrinter::from_options(manager.print.clone());
-			printer.indent(1);
-			printer.print("Downloading client jar...");
-
-			let client_download =
-				json::access_object(json::access_object(&version_json, "downloads")?, "client")?;
-			let url = json::access_str(client_download, "url")?;
-			fs::write(&jar_path, client.get(url).send().await?.bytes().await?)?;
-			printer.print(cformat!("<g>Client jar downloaded.").as_str());
-			printer.finish();
-			out.insert(jar_path.clone());
-		}
 
 		self.main_class = Some(json::access_str(&version_json, "mainClass")?.to_owned());
 		
@@ -165,11 +150,11 @@ impl Instance {
 		let server_dir = self.get_subdir(paths);
 		files::create_dir(&server_dir)?;
 		let jar_path = server_dir.join("server.jar");
-
+		
 		let version_json = manager.version_json.clone().expect("Version json missing");
 
 		let client = Client::new();
-
+		
 		let java_vers = json::access_i64(
 			json::access_object(&version_json, "javaVersion")?,
 			"majorVersion",
@@ -181,24 +166,30 @@ impl Instance {
 			printer.indent(1);
 			printer.print("Downloading server jar...");
 			let server_download =
-				json::access_object(json::access_object(&version_json, "downloads")?, "server")?;
+			json::access_object(json::access_object(&version_json, "downloads")?, "server")?;
 			let url = json::access_str(server_download, "url")?;
 			fs::write(&jar_path, client.get(url).send().await?.bytes().await?)?;
 			printer.print(&cformat!("<g>Server jar downloaded."));
-
-			out.insert(jar_path.clone());
+			
 		}
-
+		
 		let classpath = match self.modloader {
 			Modloader::Fabric => Some(self.get_fabric_quilt(fabric_quilt::Mode::Fabric, paths, manager).await?),
 			Modloader::Quilt => Some(self.get_fabric_quilt(fabric_quilt::Mode::Quilt, paths, manager).await?),
 			_ => None,
 		};
-
+		
 		fs::write(server_dir.join("eula.txt"), "eula = true\n")?;
-
+		
 		self.jar_path = Some(match self.plugin_loader {
-			PluginLoader::Vanilla => jar_path,
+			PluginLoader::Vanilla => {
+				let extern_jar_path = minecraft::game_jar_path(&self.kind, &self.version, paths);
+				if manager.should_update_file(&jar_path) {
+					fs::hard_link(extern_jar_path, &jar_path)?;
+					out.insert(jar_path.clone());
+				} 
+				jar_path
+			}
 			PluginLoader::Paper => {
 				let mut printer = ReplPrinter::from_options(manager.print.clone());
 				printer.indent(1);
@@ -206,18 +197,19 @@ impl Instance {
 				let (build_num, ..) = paper::get_newest_build(&self.version).await?;
 				let file_name = paper::get_jar_file_name(&self.version, build_num).await?;
 				let paper_jar_path = server_dir.join(&file_name);
-				if paper_jar_path.exists() {
+				if !manager.should_update_file(&paper_jar_path) {
 					printer.print(&cformat!("<g>Paper is up to date."));
 				} else {
 					printer.print("Downloading Paper server...");
 					paper::download_server_jar(&self.version, build_num, &file_name, &server_dir)
-						.await?;
+					.await?;
 					printer.print(&cformat!("<g>Paper server downloaded."));
 				}
+				out.insert(paper_jar_path.clone());
 				paper_jar_path
 			}
 		});
-
+		
 		self.version_json = Some(version_json);
 		self.classpath = classpath;
 		Ok(out)

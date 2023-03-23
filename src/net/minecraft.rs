@@ -1,8 +1,10 @@
+use crate::data::instance::InstKind;
+use crate::data::instance::create::CreateError;
 use crate::data::profile::update::UpdateManager;
 use crate::io::files::{self, paths::Paths};
 use crate::io::java::classpath::Classpath;
 use crate::util::json::{self, JsonObject, JsonType};
-use crate::util::mojang;
+use crate::util::{mojang, cap_first_letter};
 use crate::util::print::ReplPrinter;
 use crate::util::versions::VersionNotFoundError;
 
@@ -17,7 +19,7 @@ use std::fs::{self, File};
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 
-use super::download::{FD_SENSIBLE_LIMIT, download_text};
+use super::download::{FD_SENSIBLE_LIMIT, download_text, download_bytes};
 
 #[derive(Debug, thiserror::Error)]
 pub enum VersionManifestError {
@@ -399,4 +401,35 @@ pub async fn get_assets(
 	printer.finish();
 
 	Ok(out)
+}
+
+/// Gets the path to a stored game jar file
+pub fn game_jar_path(kind: &InstKind, version: &str, paths: &Paths) -> PathBuf {
+	let side_str = kind.to_string();
+	paths.jars.join(format!("{version}_{side_str}.jar"))
+}
+
+/// Downloads the game jar file
+pub async fn get_game_jar(
+	kind: &InstKind,
+	version_json: &json::JsonObject,
+	version: &str,
+	paths: &Paths,
+	manager: &UpdateManager,
+) -> Result<(), CreateError> {
+	let side_str = kind.to_string();
+	let path = game_jar_path(kind, version, paths);
+	if !manager.should_update_file(&path) {
+		return Ok(());
+	}
+	let mut printer = ReplPrinter::from_options(manager.print.clone());
+	
+	printer.print(&format!("Downloading {side_str} jar..."));
+	let download =
+		json::access_object(json::access_object(&version_json, "downloads")?, &side_str)?;
+	let url = json::access_str(download, "url")?;
+	tokio::fs::write(&path, download_bytes(url).await?).await?;
+	printer.print(&cformat!("<g>{} jar downloaded.", cap_first_letter(&side_str)));
+	
+	Ok(())
 }

@@ -3,7 +3,8 @@ use std::path::{PathBuf, Path};
 
 use color_print::cprintln;
 
-use crate::net::minecraft::{get_version_manifest, get_version_json, make_version_list, get_assets, get_libraries};
+use crate::data::instance::InstKind;
+use crate::net::minecraft::{get_version_manifest, get_version_json, make_version_list, get_assets, get_libraries, get_game_jar};
 use crate::data::instance::create::CreateError;
 use crate::util::{json, print::PrintOptions};
 use crate::io::files::paths::Paths;
@@ -15,7 +16,8 @@ pub enum UpdateRequirement {
 	VersionJson,
 	GameAssets,
 	GameLibraries,
-	Java(JavaKind)
+	Java(JavaKind),
+	GameJar(InstKind)
 }
 
 /// Manager for when we are updating profile files.
@@ -82,11 +84,17 @@ impl UpdateManager {
 			Some(..)
 		);
 
+		let game_jar_required = matches!(
+			self.requirements.iter().find(|x| matches!(x, UpdateRequirement::GameJar(..))),
+			Some(..)
+		);
+
 		if java_required {
 			self.add_requirement(UpdateRequirement::VersionJson);
 		}
 
 		if java_required
+		|| game_jar_required
 		|| self.has_requirement(UpdateRequirement::GameAssets)
 		|| self.has_requirement(UpdateRequirement::GameLibraries) {
 			self.add_requirement(UpdateRequirement::VersionJson);
@@ -133,6 +141,15 @@ impl UpdateManager {
 			}
 			
 			self.add_files(java_files);
+		}
+
+		if game_jar_required {
+			let version_json = self.version_json.as_ref().expect("Version json missing");
+			for req in self.requirements.iter() {
+				if let UpdateRequirement::GameJar(kind) = req {
+					get_game_jar(kind, version_json, version, paths, self).await?;
+				}
+			}
 		}
 
 		Ok(out)

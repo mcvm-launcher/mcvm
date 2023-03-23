@@ -55,6 +55,15 @@ pub fn validate_identifier(id: &str) -> bool {
 	true
 }
 
+/// Capitalizes the first character of a string
+pub fn cap_first_letter(string: &str) -> String {
+	let mut c = string.chars();
+	match c.next() {
+		None => String::new(),
+		Some(f) => f.to_uppercase().chain(c).collect(),
+	}
+}
+
 #[cfg(test)]
 mod tests {
 	use super::*;

@@ -23,6 +23,7 @@ pub struct Paths {
 	pub addons: PathBuf,
 	pub pkg_cache: PathBuf,
 	pub pkg_index_cache: PathBuf,
+	pub jars: PathBuf,
 }
 
 impl Paths {
@@ -37,6 +38,7 @@ impl Paths {
 		let addons = internal.join("addons");
 		let pkg_cache = project.cache_dir().join("pkg");
 		let pkg_index_cache = pkg_cache.join("index");
+		let jars = internal.join("jars");
 
 		create_dir(project.data_dir())?;
 		create_dir(project.cache_dir())?;
@@ -48,6 +50,7 @@ impl Paths {
 		create_dir(&addons)?;
 		create_dir(&pkg_cache)?;
 		create_dir(&pkg_index_cache)?;
+		create_dir(&jars)?;
 
 		Ok(Paths {
 			base,
@@ -59,6 +62,7 @@ impl Paths {
 			addons,
 			pkg_cache,
 			pkg_index_cache,
+			jars,
 		})
 	}
 }

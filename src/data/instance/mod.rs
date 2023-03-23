@@ -13,10 +13,11 @@ use crate::Paths;
 use super::addon::{Addon, AddonKind, Modloader, PluginLoader};
 use super::profile::update::UpdateManager;
 
+use std::fmt::Display;
 use std::fs;
 use std::path::{Path, PathBuf};
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Hash, PartialEq, Eq)]
 pub enum InstKind {
 	Client,
 	Server,
@@ -29,6 +30,15 @@ impl InstKind {
 			"server" => Some(Self::Server),
 			_ => None,
 		}
+	}
+}
+
+impl Display for InstKind {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "{}", match self {
+			Self::Client => "client",
+			Self::Server => "server"
+		})
 	}
 }
 
