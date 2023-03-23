@@ -42,14 +42,14 @@ impl MemoryNum {
 }
 
 pub enum MemoryArg {
-	Init,
+	Min,
 	Max,
 }
 
 impl MemoryArg {
 	pub fn to_string(&self, n: MemoryNum) -> String {
 		let arg = match self {
-			Self::Init => String::from("-Xms"),
+			Self::Min => String::from("-Xms"),
 			Self::Max => String::from("-Xmx"),
 		};
 

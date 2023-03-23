@@ -60,7 +60,7 @@ pub struct LaunchOptions {
 	pub java: JavaKind,
 	pub jvm_args: Vec<String>,
 	pub game_args: Vec<String>,
-	pub init_mem: Option<MemoryNum>,
+	pub min_mem: Option<MemoryNum>,
 	pub max_mem: Option<MemoryNum>,
 	pub preset: ArgsPreset
 }
@@ -69,16 +69,16 @@ impl LaunchOptions {
 	/// Create the args for the JVM when launching the game
 	pub fn generate_jvm_args(&self) -> Vec<String> {
 		let mut out = self.jvm_args.clone();
-		if let Some(n) = &self.init_mem {
-			out.push(MemoryArg::Init.to_string(n.clone()));
+		if let Some(n) = &self.min_mem {
+			out.push(MemoryArg::Min.to_string(n.clone()));
 		}
 		if let Some(n) = &self.max_mem {
 			out.push(MemoryArg::Max.to_string(n.clone()));
 		}
 
-		let avg = match &self.init_mem {
-			Some(init) => match &self.max_mem {
-				Some(max) => Some(MemoryNum::avg(init.clone(), max.clone())),
+		let avg = match &self.min_mem {
+			Some(min) => match &self.max_mem {
+				Some(max) => Some(MemoryNum::avg(min.clone(), max.clone())),
 				None => None
 			}
 			None => None	

@@ -46,7 +46,7 @@ pub enum LaunchMemory {
 	None,
 	Single(String),
 	Both {
-		init: String,
+		min: String,
 		max: String,
 	},
 }
@@ -73,10 +73,10 @@ pub struct LaunchConfig {
 
 impl LaunchConfig {
 	pub fn to_options(&self) -> LaunchOptions {
-		let init_mem = match &self.memory {
+		let min_mem = match &self.memory {
 			LaunchMemory::None => None,
 			LaunchMemory::Single(string) => MemoryNum::from_str(string),
-			LaunchMemory::Both { init, .. } => MemoryNum::from_str(init),
+			LaunchMemory::Both { min, .. } => MemoryNum::from_str(min),
 		};
 		let max_mem = match &self.memory {
 			LaunchMemory::None => None,
@@ -86,7 +86,7 @@ impl LaunchConfig {
 		LaunchOptions {
 			jvm_args: self.args.jvm.parse(),
 			game_args: self.args.game.parse(),
-			init_mem,
+			min_mem,
 			max_mem,
 			java: JavaKind::from_str(&self.java),
 			preset: ArgsPreset::from_str(&self.preset),
