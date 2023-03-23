@@ -31,13 +31,9 @@ impl Classpath {
 
 	/// Appends a string to the end of the classpath
 	pub fn add(&mut self, string: &str) {
-		if !self.string.is_empty() {
-			self.add_sep();
-		}
-
-		if let Some(c) = self.string.chars().last() {
-			if c == CLASSPATH_SEP {
-				return;
+		if let Some(last_char) = self.string.chars().last() {
+			if last_char != CLASSPATH_SEP {
+				self.add_sep();
 			}
 		}
 
