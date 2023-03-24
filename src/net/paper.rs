@@ -1,23 +1,8 @@
 use std::path::{Path, PathBuf};
 
-use crate::util::json;
-
+use anyhow::anyhow;
 use reqwest::Client;
 use serde::Deserialize;
-
-#[derive(Debug, thiserror::Error)]
-pub enum PaperError {
-	#[error("Download failed:\n{}", .0)]
-	Download(#[from] reqwest::Error),
-	#[error("Failed to evaluate json file:\n{}", .0)]
-	ParseError(#[from] json::JsonError),
-	#[error("Json operation failed:\n{}", .0)]
-	SerdeJson(#[from] serde_json::Error),
-	#[error("Build not found")]
-	BuildNotFound,
-	#[error("Filesystem operation failed:\n{}", .0)]
-	Io(#[from] std::io::Error),
-}
 
 #[derive(Deserialize)]
 struct VersionInfoResponse {
@@ -25,13 +10,13 @@ struct VersionInfoResponse {
 }
 
 /// Get the newest build number of Paper
-pub async fn get_newest_build(version: &str) -> Result<(u16, Client), PaperError> {
+pub async fn get_newest_build(version: &str) -> anyhow::Result<(u16, Client)> {
 	let url = format!("https://api.papermc.io/v2/projects/paper/versions/{version}");
 	let client = Client::new();
 	let resp =
 		serde_json::from_str::<VersionInfoResponse>(&client.get(url).send().await?.text().await?)?;
 
-	let build = resp.builds.last().ok_or(PaperError::BuildNotFound)?;
+	let build = resp.builds.last().ok_or(anyhow!("Could not find a valid Paper version"))?;
 
 	Ok((*build, client))
 }
@@ -52,7 +37,7 @@ struct BuildInfoResponse {
 }
 
 /// Get the name of the Paper jar file
-pub async fn get_jar_file_name(version: &str, build_num: u16) -> Result<String, PaperError> {
+pub async fn get_jar_file_name(version: &str, build_num: u16) -> anyhow::Result<String> {
 	let num_str = build_num.to_string();
 	let url =
 		format!("https://api.papermc.io/v2/projects/paper/versions/{version}/builds/{num_str}");
@@ -69,7 +54,7 @@ pub async fn download_server_jar(
 	build_num: u16,
 	file_name: &str,
 	path: &Path,
-) -> Result<PathBuf, PaperError> {
+) -> anyhow::Result<PathBuf> {
 	let num_str = build_num.to_string();
 	let file_path = path.join(file_name);
 	let url = format!("https://api.papermc.io/v2/projects/paper/versions/{version}/builds/{num_str}/downloads/{file_name}");

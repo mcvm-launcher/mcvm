@@ -1,13 +1,13 @@
 use std::process::Command;
 
+use anyhow::{bail, Context};
+
 use crate::data::instance::{Instance, InstKind};
 use crate::io::files::paths::Paths;
 
-use super::LaunchError;
-
 impl Instance {
 	/// Launch a server
-	pub fn launch_server(&mut self, paths: &Paths) -> Result<(), LaunchError> {
+	pub fn launch_server(&mut self, paths: &Paths) -> anyhow::Result<()> {
 		debug_assert!(self.kind == InstKind::Server);
 		match &self.java {
 			Some(java) => match &java.path {
@@ -18,7 +18,7 @@ impl Instance {
 					let mut command = Command::new(
 						jre_path
 							.to_str()
-							.expect("Failed to convert java path to a string"),
+							.context("Failed to convert java path to a string")?,
 					);
 					command.current_dir(server_dir);
 					command.args(&self.launch.generate_jvm_args());
@@ -32,25 +32,22 @@ impl Instance {
 						.as_ref()
 						.expect("Jar path missing")
 						.to_str()
-						.expect("Failed to convert server.jar path to a string");
+						.context("Failed to convert server.jar path to a string")?;
 					command.arg(jar_path_str);
 					if let Some(main_class) = &self.main_class {
 						command.arg(main_class);
 					}
 					command.arg("nogui");
-					let mut child = match command.spawn() {
-						Ok(child) => child,
-						Err(err) => return Err(LaunchError::Command(err)),
-					};
+					let mut child = command.spawn().context("Failed to spawn child process")?;
 					command.args(&self.launch.game_args);
 
-					child.wait().expect("Child failed");
+					child.wait().context("Failed to wait for child process to spawn")?;
 
 					Ok(())
 				}
-				None => Err(LaunchError::Java),
+				None => bail!("Java path is missing"),
 			},
-			None => Err(LaunchError::Java),
+			None => bail!("Java installation missing"),
 		}
 	}
 }

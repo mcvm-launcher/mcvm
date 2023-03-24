@@ -2,6 +2,7 @@ pub mod instance;
 mod preferences;
 
 use self::instance::parse_instance_config;
+use anyhow::{bail, anyhow};
 use preferences::ConfigPreferences;
 
 use super::addon::{game_modifications_compatible, Modloader, PluginLoader};
@@ -49,46 +50,6 @@ fn default_config() -> serde_json::Value {
 	)
 }
 
-#[derive(Debug, thiserror::Error)]
-pub enum ConfigError {
-	#[error("{}", .0)]
-	File(#[from] std::io::Error),
-	#[error("Failed to parse json:\n{}", .0)]
-	Json(#[from] json::JsonError),
-	#[error("Json operation failed:\n{}", .0)]
-	SerdeJson(#[from] serde_json::Error),
-	#[error("Invalid config content:\n{}", .0)]
-	Content(#[from] ContentError),
-}
-
-#[derive(Debug, thiserror::Error)]
-pub enum ContentError {
-	#[error("Unknown type {} for user {}", .0, .1)]
-	UserType(String, String),
-	#[error("Unknown type {} for instance {}", .0, .1)]
-	InstType(String, String),
-	#[error("Unknown type {} for package {}", .0, .1)]
-	PkgType(String, String),
-	#[error("Unknown package permissions '{}'", .0)]
-	UnknownPkgPerms(String),
-	#[error("Unknown default user '{}'", .0)]
-	DefaultUserNotFound(String),
-	#[error("Duplicate instance '{}'", .0)]
-	DuplicateInstance(String),
-	#[error("Package '{}': Local packages must specify their exact version without special patterns", .0)]
-	LocalPackageVersion(String),
-	#[error("Duplicate package '{}' in profile '{}'", .0, .1)]
-	DuplicatePackage(String, String),
-	#[error("String '{}' is invalid", .0)]
-	InvalidString(String),
-	#[error("Unknown modloader '{}'", .0)]
-	UnknownModloader(String),
-	#[error("Unknown plugin_loader '{}'", .0)]
-	UnknownPluginLoader(String),
-	#[error("Modloader and plugin loader are incompatible for profile '{}'", .0)]
-	IncompatibleGameMods(String),
-}
-
 #[derive(Debug)]
 pub struct Config {
 	pub auth: Auth,
@@ -99,7 +60,7 @@ pub struct Config {
 }
 
 impl Config {
-	fn open(path: &PathBuf) -> Result<Box<json::JsonObject>, ConfigError> {
+	fn open(path: &PathBuf) -> anyhow::Result<Box<json::JsonObject>> {
 		if path.exists() {
 			let doc = json::parse_object(&fs::read_to_string(path)?)?;
 			Ok(doc)
@@ -112,7 +73,7 @@ impl Config {
 		}
 	}
 
-	fn load_from_obj(obj: &json::JsonObject) -> Result<Self, ConfigError> {
+	fn load_from_obj(obj: &json::JsonObject) -> anyhow::Result<Self> {
 		let mut auth = Auth::new();
 		let mut instances = InstanceRegistry::new();
 		let mut profiles = HashMap::new();
@@ -125,17 +86,17 @@ impl Config {
 		let users = json::access_object(obj, "users")?;
 		for (user_id, user_val) in users.iter() {
 			if !validate_identifier(user_id) {
-				Err(ContentError::InvalidString(user_id.to_owned()))?
+				bail!("Invalid string '{}'", user_id.to_owned());
 			}
 			let user_obj = json::ensure_type(user_val.as_object(), JsonType::Obj)?;
 			let kind = match json::access_str(user_obj, "type")? {
 				"microsoft" => Ok(UserKind::Microsoft),
 				"demo" => Ok(UserKind::Demo),
-				typ => Err(ContentError::UserType(typ.to_string(), user_id.to_string())),
+				typ => Err(anyhow!("Unknown user type '{typ}' on user '{user_id}'")),
 			}?;
 			let username = json::access_str(user_obj, "name")?;
 			if !validate_username(kind.clone(), username) {
-				Err(ContentError::InvalidString(username.to_owned()))?
+				bail!("Invalid string '{}'", username.to_owned());
 			}
 			let mut user = User::new(kind, user_id, username);
 
@@ -152,9 +113,7 @@ impl Config {
 			match auth.users.get(&user_id) {
 				Some(..) => auth.state = AuthState::Authed(user_id),
 				None => {
-					return Err(ConfigError::from(ContentError::DefaultUserNotFound(
-						user_id,
-					)))
+					bail!("Provided default user '{user_id}' does not exist");
 				}
 			}
 		} else if users.is_empty() {
@@ -167,12 +126,12 @@ impl Config {
 		let doc_profiles = json::access_object(obj, "profiles")?;
 		for (profile_id, profile_val) in doc_profiles {
 			if !validate_identifier(profile_id) {
-				Err(ContentError::InvalidString(profile_id.to_owned()))?
+				bail!("Invalid string '{}'", profile_id.to_owned());
 			}
 			let profile_obj = json::ensure_type(profile_val.as_object(), JsonType::Obj)?;
 			let version = json::access_str(profile_obj, "version")?;
 			if !VersionPattern::validate(version) {
-				Err(ContentError::InvalidString(version.to_owned()))?
+				bail!("Invalid string '{}'", version.to_owned());
 			}
 
 			let modloader = match profile_obj.get("modloader") {
@@ -180,19 +139,17 @@ impl Config {
 				None => Ok("vanilla"),
 			}?;
 			let modloader = Modloader::from_str(modloader)
-				.ok_or(ContentError::UnknownModloader(modloader.to_owned()))?;
+				.ok_or(anyhow!("Unknown modloader '{modloader}'"))?;
 
 			let plugin_loader = match profile_obj.get("plugin_loader") {
 				Some(loader) => json::ensure_type(loader.as_str(), JsonType::Str),
 				None => Ok("vanilla"),
 			}?;
 			let plugin_loader = PluginLoader::from_str(plugin_loader)
-				.ok_or(ContentError::UnknownPluginLoader(plugin_loader.to_owned()))?;
+				.ok_or(anyhow!("Unknown plugin loader '{plugin_loader}'"))?;
 
 			if !game_modifications_compatible(&modloader, &plugin_loader) {
-				return Err(ConfigError::Content(ContentError::IncompatibleGameMods(
-					profile_id.clone(),
-				)));
+				bail!("Game modifications for profile '{profile_id}' are incompatible");
 			}
 
 			let mut profile = Profile::new(
@@ -207,12 +164,10 @@ impl Config {
 				let doc_instances = json::ensure_type(instances_val.as_object(), JsonType::Obj)?;
 				for (instance_id, instance_val) in doc_instances {
 					if !validate_identifier(instance_id) {
-						Err(ContentError::InvalidString(instance_id.to_owned()))?
+						bail!("Invalid string '{}'", instance_id.to_owned());
 					}
 					if instances.contains_key(instance_id) {
-						return Err(ConfigError::from(ContentError::DuplicateInstance(
-							instance_id.to_string(),
-						)));
+						bail!("Duplicate instance '{instance_id}'");
 					}
 
 					let instance = parse_instance_config(instance_id, instance_val, &profile)?;
@@ -229,16 +184,13 @@ impl Config {
 					if let Some(package_obj) = package_val.as_object() {
 						let package_id = json::access_str(package_obj, "id")?;
 						if !validate_identifier(package_id) {
-							Err(ContentError::InvalidString(package_id.to_owned()))?
+							bail!("Invalid string '{}'", package_id.to_owned());
 						}
 
 						let req = PkgRequest::new(package_id);
 						for cfg in profile.packages.iter() {
 							if cfg.req == req {
-								Err(ContentError::DuplicatePackage(
-									req.name.clone(),
-									profile_id.clone(),
-								))?;
+								bail!("Duplicate package '{}' in profile '{profile_id}'", req.name);
 							}
 						}
 						if let Some(val) = package_obj.get("type") {
@@ -249,9 +201,7 @@ impl Config {
 									let package_version =
 										match json::access_str(package_obj, "version") {
 											Ok(version) => Ok(version),
-											Err(..) => Err(ContentError::LocalPackageVersion(
-												package_id.to_owned(),
-											)),
+											Err(..) => Err(anyhow!("Local packages must specify a version")),
 										}?;
 									packages.insert_local(
 										&req,
@@ -260,10 +210,7 @@ impl Config {
 									);
 								}
 								"remote" => {}
-								typ => Err(ContentError::PkgType(
-									typ.to_string(),
-									String::from("package"),
-								))?,
+								typ => bail!("Unknown package type '{typ}' for package '{package_id}'"),
 							}
 						}
 						let features = match package_obj.get("features") {
@@ -275,7 +222,7 @@ impl Config {
 									let feature =
 										json::ensure_type(feature.as_str(), JsonType::Str)?;
 									if !validate_identifier(feature) {
-										Err(ContentError::InvalidString(feature.to_owned()))?
+										bail!("Invalid string '{}'", feature.to_owned());
 									}
 									out.push(feature.to_owned());
 								}
@@ -288,7 +235,7 @@ impl Config {
 							Some(perms) => {
 								let perms = json::ensure_type(perms.as_str(), JsonType::Str)?;
 								EvalPermissions::from_str(perms)
-									.ok_or(ContentError::UnknownPkgPerms(perms.to_owned()))?
+									.ok_or(anyhow!("Unknown package permissions {perms}"))?
 							}
 							None => EvalPermissions::Standard,
 						};
@@ -301,7 +248,7 @@ impl Config {
 						profile.packages.push(pkg);
 					} else if let Some(package_id) = package_val.as_str() {
 						if !validate_identifier(package_id) {
-							Err(ContentError::InvalidString(package_id.to_owned()))?
+							bail!("Invalid string '{}'", package_id.to_owned());
 						}
 						let req = PkgRequest::new(package_id);
 						let pkg = PkgConfig {
@@ -311,10 +258,7 @@ impl Config {
 						};
 						profile.packages.push(pkg);
 					} else {
-						return Err(ConfigError::Json(json::JsonError::Type(vec![
-							JsonType::Obj,
-							JsonType::Str,
-						])));
+						bail!("Expected an Object or a String for a package in profile '{profile_id}'");
 					}
 				}
 			}
@@ -331,7 +275,7 @@ impl Config {
 		})
 	}
 
-	pub fn load(path: &PathBuf) -> Result<Self, ConfigError> {
+	pub fn load(path: &PathBuf) -> anyhow::Result<Self> {
 		let obj = Self::open(path)?;
 		Self::load_from_obj(&obj)
 	}

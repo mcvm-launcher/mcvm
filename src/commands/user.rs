@@ -1,4 +1,4 @@
-use super::lib::{CmdData, CmdError};
+use super::lib::CmdData;
 use crate::data::user::UserKind;
 use crate::util::print::HYPHEN_POINT;
 
@@ -16,7 +16,7 @@ pub fn help() {
 	cprintln!("{}<i,c>auth:</i,c> {}", HYPHEN_POINT, AUTH_HELP);
 }
 
-fn list(data: &mut CmdData) -> Result<(), CmdError> {
+fn list(data: &mut CmdData) -> anyhow::Result<()> {
 	data.ensure_config()?;
 
 	if let Some(config) = &data.config {
@@ -32,7 +32,7 @@ fn list(data: &mut CmdData) -> Result<(), CmdError> {
 	Ok(())
 }
 
-fn auth(data: &mut CmdData) -> Result<(), CmdError> {
+fn auth(data: &mut CmdData) -> anyhow::Result<()> {
 	data.ensure_config()?;
 
 	if let Some(config) = &data.config {
@@ -51,7 +51,7 @@ fn auth(data: &mut CmdData) -> Result<(), CmdError> {
 	Ok(())
 }
 
-pub fn run(argc: usize, argv: &[String], data: &mut CmdData) -> Result<(), CmdError> {
+pub fn run(argc: usize, argv: &[String], data: &mut CmdData) -> anyhow::Result<()> {
 	if argc == 0 {
 		help();
 		return Ok(());

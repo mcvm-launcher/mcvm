@@ -1,4 +1,4 @@
-use super::lib::{CmdData, CmdError};
+use super::lib::CmdData;
 use crate::util::print::HYPHEN_POINT;
 
 use color_print::cprintln;
@@ -15,7 +15,7 @@ pub fn help() {
 	cprintln!("{}<i,c>remove:</i,c> {}", HYPHEN_POINT, REMOVE_HELP);
 }
 
-pub fn remove(data: &mut CmdData) -> Result<(), CmdError> {
+pub fn remove(data: &mut CmdData) -> anyhow::Result<()> {
 	data.ensure_paths()?;
 	if let Some(paths) = &data.paths {
 		cprintln!("<g>Removing internal files...");
@@ -24,7 +24,7 @@ pub fn remove(data: &mut CmdData) -> Result<(), CmdError> {
 	Ok(())
 }
 
-pub fn run(argc: usize, argv: &[String], data: &mut CmdData) -> Result<(), CmdError> {
+pub fn run(argc: usize, argv: &[String], data: &mut CmdData) -> anyhow::Result<()> {
 	if argc == 0 {
 		help();
 		return Ok(());

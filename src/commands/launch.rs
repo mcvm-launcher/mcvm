@@ -1,5 +1,6 @@
-use super::lib::{CmdData, CmdError};
+use super::lib::CmdData;
 
+use anyhow::bail;
 use color_print::cprintln;
 
 pub fn help() {
@@ -7,7 +8,7 @@ pub fn help() {
 	cprintln!("<s>Usage:</s> mcvm launch <k!><<instance>></k!>");
 }
 
-pub async fn run(argc: usize, argv: &[String], data: &mut CmdData) -> Result<(), CmdError> {
+pub async fn run(argc: usize, argv: &[String], data: &mut CmdData) -> anyhow::Result<()> {
 	if argc == 0 {
 		help();
 		return Ok(());
@@ -23,7 +24,7 @@ pub async fn run(argc: usize, argv: &[String], data: &mut CmdData) -> Result<(),
 					.launch(paths, &config.auth)
 					.await?;
 			} else {
-				return Err(CmdError::Custom(format!("Unknown instance '{}'", &argv[0])));
+				bail!("Unknown instance '{}'", &argv[0]);
 			}
 		}
 	}

@@ -1,4 +1,4 @@
-use super::lib::{CmdData, CmdError};
+use super::lib::CmdData;
 use crate::data::addon::PluginLoader;
 use crate::data::instance::InstKind;
 use crate::io::lock::Lockfile;
@@ -9,6 +9,7 @@ use crate::package::eval::eval::Routine;
 use crate::util::print::ReplPrinter;
 use crate::util::print::HYPHEN_POINT;
 
+use anyhow::bail;
 use color_print::cformat;
 use color_print::{cprint, cprintln};
 
@@ -28,7 +29,7 @@ pub fn help() {
 	cprintln!("{}<i,c>reinstall:</i,c> {}", HYPHEN_POINT, REINSTALL_HELP);
 }
 
-async fn info(data: &mut CmdData, id: &str) -> Result<(), CmdError> {
+async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
 	data.ensure_paths()?;
 	data.ensure_config()?;
 
@@ -61,14 +62,14 @@ async fn info(data: &mut CmdData, id: &str) -> Result<(), CmdError> {
 					cprintln!();
 				}
 			} else {
-				return Err(CmdError::Custom(format!("Unknown profile '{id}'")));
+				bail!("Unknown profile '{id}'");
 			}
 		}
 	}
 	Ok(())
 }
 
-fn list(data: &mut CmdData) -> Result<(), CmdError> {
+fn list(data: &mut CmdData) -> anyhow::Result<()> {
 	data.ensure_config()?;
 
 	if let Some(config) = &data.config {
@@ -88,7 +89,7 @@ fn list(data: &mut CmdData) -> Result<(), CmdError> {
 	Ok(())
 }
 
-async fn profile_update(data: &mut CmdData, id: &str, force: bool) -> Result<(), CmdError> {
+async fn profile_update(data: &mut CmdData, id: &str, force: bool) -> anyhow::Result<()> {
 	data.ensure_paths()?;
 	data.ensure_config()?;
 
@@ -202,14 +203,14 @@ async fn profile_update(data: &mut CmdData, id: &str, force: bool) -> Result<(),
 				lock.finish(paths)?;
 
 			} else {
-				return Err(CmdError::Custom(format!("Unknown profile '{id}'")));
+				bail!("Unknown profile '{id}'");
 			}
 		}
 	}
 	Ok(())
 }
 
-pub async fn run(argc: usize, argv: &[String], data: &mut CmdData) -> Result<(), CmdError> {
+pub async fn run(argc: usize, argv: &[String], data: &mut CmdData) -> anyhow::Result<()> {
 	if argc == 0 {
 		help();
 		return Ok(());

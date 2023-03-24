@@ -2,43 +2,19 @@ use std::collections::HashSet;
 use std::fs;
 use std::path::PathBuf;
 
+use anyhow::Context;
 use color_print::{cformat, cprintln};
 
 use crate::data::addon::{Modloader, PluginLoader};
 use crate::data::profile::update::{UpdateRequirement, UpdateManager};
 use crate::io::files::{self, paths::Paths};
-use crate::io::java::{JavaError, JavaKind};
+use crate::io::java::JavaKind;
 use crate::io::java::classpath::Classpath;
-use crate::net::fabric_quilt::{FabricQuiltError, self};
-use crate::net::minecraft::VersionManifestError;
+use crate::net::fabric_quilt;
 use crate::net::{minecraft, paper};
 use crate::util::{json, print::ReplPrinter};
 
 use super::{InstKind, Instance};
-
-#[derive(Debug, thiserror::Error)]
-pub enum CreateError {
-	#[error("Failed to evaluate json file:\n{}", .0)]
-	Parse(#[from] json::JsonError),
-	#[error("Error when downloading file:\n{}", .0)]
-	Download(#[from] reqwest::Error),
-	#[error("Failed to process version json:\n{}", .0)]
-	VersionJson(#[from] minecraft::VersionJsonError),
-	#[error("Failed to install libraries:\n{}", .0)]
-	Libraries(#[from] minecraft::LibrariesError),
-	#[error("Failed to download assets:\n{}", .0)]
-	Assets(#[from] minecraft::AssetsError),
-	#[error("Error when accessing files:\n{}", .0)]
-	Io(#[from] std::io::Error),
-	#[error("Failed to install java for this instance:\n{}", .0)]
-	Java(#[from] JavaError),
-	#[error("Failed to install a Paper server:\n{}", .0)]
-	Paper(#[from] paper::PaperError),
-	#[error("Failed to install Fabric or Quilt:\n{}", .0)]
-	Fabric(#[from] FabricQuiltError),
-	#[error("Failed to download version manifest:\n{}", .0)]
-	Manifest(#[from] VersionManifestError)
-}
 
 impl Instance {
 	/// Get the requirements for this instance
@@ -68,7 +44,7 @@ impl Instance {
 		&mut self,
 		manager: &UpdateManager,
 		paths: &Paths,
-	) -> Result<HashSet<PathBuf>, CreateError> {
+	) -> anyhow::Result<HashSet<PathBuf>> {
 		match &self.kind {
 			InstKind::Client => {
 				if manager.force {
@@ -76,7 +52,8 @@ impl Instance {
 				} else {
 					cprintln!("<s>Updating client <y!>{}</y!>", self.id);
 				}
-				let files = self.create_client(manager, paths).await?;
+				let files = self.create_client(manager, paths).await
+					.context("Failed to create client")?;
 				Ok(files)
 			}
 			InstKind::Server => {
@@ -85,7 +62,8 @@ impl Instance {
 				} else {
 					cprintln!("<s>Updating server <c!>{}</c!>", self.id);
 				}
-				let files = self.create_server(manager, paths).await?;
+				let files = self.create_server(manager, paths).await
+					.context("Failed to create server")?;
 				Ok(files)
 			}
 		}
@@ -96,7 +74,7 @@ impl Instance {
 		&mut self,
 		manager: &UpdateManager,
 		paths: &Paths,
-	) -> Result<HashSet<PathBuf>, CreateError> {
+	) -> anyhow::Result<HashSet<PathBuf>> {
 		debug_assert!(self.kind == InstKind::Client);
 		let out = HashSet::new();
 		
@@ -110,7 +88,8 @@ impl Instance {
 		let version_json = manager.version_json.clone().expect("Version json missing");
 
 		let mut classpath = Classpath::new();
-		let lib_classpath = minecraft::get_lib_classpath(&version_json, paths)?;
+		let lib_classpath = minecraft::get_lib_classpath(&version_json, paths)
+			.context("Failed to extract classpath from game library list")?;
 		classpath.extend(lib_classpath);
 
 		let java_vers = json::access_i64(
@@ -127,7 +106,8 @@ impl Instance {
 			_ => None,
 		};
 		if let Some(mode) = fq_mode {
-			classpath.extend(self.get_fabric_quilt(mode, paths, manager).await?);
+			classpath.extend(self.get_fabric_quilt(mode, paths, manager).await
+				.context("Failed to install Fabric/Quilt")?);
 		}
 
 		classpath.add_path(&jar_path);
@@ -143,7 +123,7 @@ impl Instance {
 		&mut self,
 		manager: &UpdateManager,
 		paths: &Paths,
-	) -> Result<HashSet<PathBuf>, CreateError> {
+	) -> anyhow::Result<HashSet<PathBuf>> {
 		debug_assert!(self.kind == InstKind::Server);
 		let mut out = HashSet::new();
 		
@@ -174,7 +154,7 @@ impl Instance {
 			PluginLoader::Vanilla => {
 				let extern_jar_path = minecraft::game_jar_path(&self.kind, &self.version, paths);
 				if manager.should_update_file(&jar_path) {
-					fs::hard_link(extern_jar_path, &jar_path)?;
+					fs::hard_link(extern_jar_path, &jar_path).context("Failed to hardlink server.jar")?;
 					out.insert(jar_path.clone());
 				} 
 				jar_path
@@ -183,15 +163,17 @@ impl Instance {
 				let mut printer = ReplPrinter::from_options(manager.print.clone());
 				printer.indent(1);
 				printer.print("Checking for paper updates...");
-				let (build_num, ..) = paper::get_newest_build(&self.version).await?;
-				let file_name = paper::get_jar_file_name(&self.version, build_num).await?;
+				let (build_num, ..) = paper::get_newest_build(&self.version).await
+					.context("Failed to get the newest Paper version")?;
+				let file_name = paper::get_jar_file_name(&self.version, build_num).await
+					.context("Failed to get the Paper file name")?;
 				let paper_jar_path = server_dir.join(&file_name);
 				if !manager.should_update_file(&paper_jar_path) {
 					printer.print(&cformat!("<g>Paper is up to date."));
 				} else {
 					printer.print("Downloading Paper server...");
-					paper::download_server_jar(&self.version, build_num, &file_name, &server_dir)
-					.await?;
+					paper::download_server_jar(&self.version, build_num, &file_name, &server_dir).await
+						.context("Failed to download Paper server JAR")?;
 					printer.print(&cformat!("<g>Paper server downloaded."));
 				}
 				out.insert(paper_jar_path.clone());

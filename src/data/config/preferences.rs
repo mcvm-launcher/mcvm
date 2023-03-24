@@ -1,4 +1,3 @@
-use super::ConfigError;
 use crate::package::repo::PkgRepo;
 
 use serde::Deserialize;
@@ -27,7 +26,7 @@ struct PrefSerialize {
 pub struct ConfigPreferences {}
 
 impl ConfigPreferences {
-	pub fn read(obj: Option<&serde_json::Value>) -> Result<(Self, Vec<PkgRepo>), ConfigError> {
+	pub fn read(obj: Option<&serde_json::Value>) -> anyhow::Result<(Self, Vec<PkgRepo>)> {
 		match obj {
 			Some(obj) => {
 				let prefs = serde_json::from_value::<PrefSerialize>(obj.clone())?;

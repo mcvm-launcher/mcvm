@@ -1,11 +1,13 @@
+use anyhow::bail;
+
 use crate::data::addon::{ModloaderMatch, PluginLoaderMatch};
 use crate::data::instance::InstKind;
+use crate::unexpected_token;
 use crate::util::versions::VersionPattern;
 
-use super::eval::{EvalData, EvalError};
+use super::eval::EvalData;
 use super::instruction::parse_arg;
 use super::lex::{TextPos, Token};
-use super::parse::ParseError;
 use super::Value;
 
 #[derive(Debug, Clone)]
@@ -33,7 +35,7 @@ impl ConditionKind {
 		}
 	}
 
-	pub fn parse(&mut self, tok: &Token, pos: &TextPos) -> Result<(), ParseError> {
+	pub fn parse(&mut self, tok: &Token, pos: &TextPos) -> anyhow::Result<()> {
 		match self {
 			Self::Not(condition) => match condition {
 				Some(condition) => {
@@ -43,10 +45,10 @@ impl ConditionKind {
 					Token::Ident(name) => match Self::from_str(name) {
 						Some(nested_cond) => *condition = Some(Box::new(nested_cond)),
 						None => {
-							return Err(ParseError::UnknownCondition(name.clone(), pos.clone()))
+							bail!("Unknown condition '{}' {}", name.clone(), pos.clone());
 						}
 					},
-					_ => return Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone())),
+					_ => unexpected_token!(tok, pos),
 				},
 			},
 			Self::Version(val) | Self::Feature(val) => *val = parse_arg(tok, pos)?,
@@ -54,37 +56,28 @@ impl ConditionKind {
 				Token::Ident(name) => match InstKind::from_str(name) {
 					Some(kind) => *side = Some(kind),
 					None => {
-						return Err(ParseError::UnknownConditionArg(
-							name.to_owned(),
-							pos.clone(),
-						))
+						bail!("Unknown condition argument '{}' {}", name.to_owned(), pos.clone());
 					}
 				},
-				_ => return Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone())),
+				_ => unexpected_token!(tok, pos),
 			},
 			Self::Modloader(loader) => match tok {
 				Token::Ident(name) => match ModloaderMatch::from_str(name) {
 					Some(kind) => *loader = Some(kind),
 					None => {
-						return Err(ParseError::UnknownConditionArg(
-							name.to_owned(),
-							pos.clone(),
-						))
+						bail!("Unknown condition argument '{}' {}", name.to_owned(), pos.clone());
 					}
 				},
-				_ => return Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone())),
+				_ => unexpected_token!(tok, pos),
 			},
 			Self::PluginLoader(loader) => match tok {
 				Token::Ident(name) => match PluginLoaderMatch::from_str(name) {
 					Some(kind) => *loader = Some(kind),
 					None => {
-						return Err(ParseError::UnknownConditionArg(
-							name.to_owned(),
-							pos.clone(),
-						))
+						bail!("Unknown condition argument '{}' {}", name.to_owned(), pos.clone());
 					}
 				},
-				_ => return Err(ParseError::UnexpectedToken(tok.as_string(), pos.clone())),
+				_ => unexpected_token!(tok, pos),
 			},
 			Self::Value(left, right) => match left {
 				Value::None => *left = parse_arg(tok, pos)?,
@@ -94,7 +87,7 @@ impl ConditionKind {
 		Ok(())
 	}
 
-	pub fn eval(&self, eval: &EvalData) -> Result<bool, EvalError> {
+	pub fn eval(&self, eval: &EvalData) -> anyhow::Result<bool> {
 		match self {
 			Self::Not(condition) => condition
 				.as_ref()
@@ -135,7 +128,7 @@ impl Condition {
 		Self { kind }
 	}
 
-	pub fn parse(&mut self, tok: &Token, pos: &TextPos) -> Result<(), ParseError> {
+	pub fn parse(&mut self, tok: &Token, pos: &TextPos) -> anyhow::Result<()> {
 		self.kind.parse(tok, pos)?;
 		Ok(())
 	}

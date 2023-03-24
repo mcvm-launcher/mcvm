@@ -1,3 +1,5 @@
+use anyhow::Context;
+
 use crate::io::files::create_leading_dirs;
 use crate::io::files::paths::Paths;
 use crate::package::reg::PkgIdentifier;
@@ -5,14 +7,6 @@ use crate::package::reg::PkgIdentifier;
 use std::fmt::Display;
 use std::fs;
 use std::path::PathBuf;
-
-#[derive(Debug, thiserror::Error)]
-pub enum AddonError {
-	#[error("Failed to download file:\n{}", .0)]
-	Download(#[from] reqwest::Error),
-	#[error("File operation failed:\n{}", .0)]
-	Io(#[from] std::io::Error)
-}
 
 #[derive(Debug, Clone)]
 pub enum AddonKind {
@@ -105,7 +99,7 @@ impl AddonRequest {
 	}
 
 	/// Get the addon and store it
-	pub async fn acquire(&self, paths: &Paths) -> Result<(), AddonError> {
+	pub async fn acquire(&self, paths: &Paths) -> anyhow::Result<()> {
 		let path = self.addon.get_path(paths);
 		if !self.force && path.exists() {
 			return Ok(());
@@ -118,7 +112,7 @@ impl AddonRequest {
 				fs::write(path, response.await?.error_for_status()?.bytes().await?)?;
 			}
 			AddonLocation::Local(actual_path) => {
-				fs::hard_link(actual_path, path)?;
+				fs::hard_link(actual_path, path).context("Failed to hardlink local addon")?;
 			}
 		}
 		Ok(())

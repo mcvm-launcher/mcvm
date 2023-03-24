@@ -1,5 +1,8 @@
 use std::fmt::{Debug, Display};
 
+use crate::unexpected_token;
+use anyhow::bail;
+
 // Generic side for something like a bracket
 #[derive(Debug, PartialEq, Clone)]
 pub enum Side {
@@ -70,14 +73,6 @@ impl Display for TextPos {
 	}
 }
 
-#[derive(Debug, thiserror::Error)]
-pub enum LexError {
-	#[error("Unexpected character '{}' at {}", .0, .1)]
-	Unexpected(char, TextPos),
-	#[error("Invalid number '{}' '{}'", .0, .1)]
-	InvalidNumber(String, TextPos),
-}
-
 #[derive(Debug, PartialEq)]
 enum StrLexResult {
 	Append,
@@ -116,7 +111,7 @@ fn is_num(c: char, first: bool) -> bool {
 	}
 }
 
-pub fn lex(text: &str) -> Result<Vec<(Token, TextPos)>, LexError> {
+pub fn lex(text: &str) -> anyhow::Result<Vec<(Token, TextPos)>> {
 	let mut tokens: Vec<(Token, TextPos)> = Vec::new();
 
 	// Positional
@@ -199,7 +194,7 @@ pub fn lex(text: &str) -> Result<Vec<(Token, TextPos)>, LexError> {
 						num_str = String::from(c);
 					}
 					c if is_ident(c, true) => tok = Token::Ident(String::from(c)),
-					_ => return Err(LexError::Unexpected(c, pos)),
+					_ => unexpected_token!(tok, pos),
 				},
 				Token::Str(string) => match lex_string_char(c, escape) {
 					StrLexResult::Append => {
@@ -256,7 +251,7 @@ pub fn lex(text: &str) -> Result<Vec<(Token, TextPos)>, LexError> {
 					} else {
 						repeat = true;
 						if num_str == "-" {
-							Err(LexError::InvalidNumber(num_str.clone(), pos.clone()))?
+							bail!("Invalid number '{num_str}', {pos}");
 						}
 						*num = num_str.parse().expect("Number contains invalid characters");
 						tokens.push((tok, pos.clone()));

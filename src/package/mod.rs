@@ -8,26 +8,11 @@ use crate::net::download::download_text;
 use std::fs;
 use std::path::PathBuf;
 
-use self::eval::eval::{EvalError, EvalPermissions};
-use self::eval::parse::{ParseError, Parsed};
+use self::eval::eval::EvalPermissions;
+use self::eval::parse::Parsed;
 use self::reg::{PkgIdentifier, PkgRequest};
-use self::repo::RepoError;
 
 static PKG_EXTENSION: &str = ".pkg.txt";
-
-#[derive(Debug, thiserror::Error)]
-pub enum PkgError {
-	#[error("File operation failed:\n{}", .0)]
-	Io(#[from] std::io::Error),
-	#[error("Download failed:\n{}", .0)]
-	Download(#[from] reqwest::Error),
-	#[error("Error in repository:\n{}", .0)]
-	Repo(#[from] RepoError),
-	#[error("Failed to parse package:\n{}", .0)]
-	Parse(#[from] ParseError),
-	#[error("Failed to evaluate package:\n{}", .0)]
-	Eval(#[from] EvalError),
-}
 
 // Data pertaining to the contents of a package
 #[derive(Debug)]
@@ -85,7 +70,7 @@ impl Package {
 	}
 
 	// Remove the cached package file
-	pub fn remove_cached(&self, paths: &Paths) -> Result<(), PkgError> {
+	pub fn remove_cached(&self, paths: &Paths) -> anyhow::Result<()> {
 		let path = self.cached_path(paths);
 		if path.exists() {
 			fs::remove_file(path)?;
@@ -94,7 +79,7 @@ impl Package {
 	}
 
 	// Ensure the raw contents of the package
-	pub async fn ensure_loaded(&mut self, paths: &Paths, force: bool) -> Result<(), PkgError> {
+	pub async fn ensure_loaded(&mut self, paths: &Paths, force: bool) -> anyhow::Result<()> {
 		if self.data.is_none() {
 			match &self.kind {
 				PkgKind::Local(path) => {

@@ -1,6 +1,7 @@
 use std::process::Command;
 
-use super::LaunchError;
+use anyhow::{Context, bail};
+
 use crate::data::instance::{Instance, InstKind};
 use crate::data::user::{Auth, UserKind};
 use crate::io::java::classpath::Classpath;
@@ -11,7 +12,7 @@ use crate::{skip_fail, skip_none};
 
 impl Instance {
 	/// Launch a client
-	pub fn launch_client(&mut self, paths: &Paths, auth: &Auth) -> Result<(), LaunchError> {
+	pub fn launch_client(&mut self, paths: &Paths, auth: &Auth) -> anyhow::Result<()> {
 		debug_assert!(self.kind == InstKind::Client);
 		match &self.java {
 			Some(java) => match &java.path {
@@ -21,7 +22,7 @@ impl Instance {
 					let mut command = Command::new(
 						jre_path
 							.to_str()
-							.expect("Failed to convert java path to a string"),
+							.context("Failed to convert java path to a string")?,
 					);
 					command.current_dir(client_dir);
 
@@ -30,7 +31,7 @@ impl Instance {
 							let main_class = self
 								.main_class
 								.as_ref()
-								.expect("Main class is missing for client");
+								.context("Main class is missing for client")?;
 							if let Ok(args) = json::access_object(version_json, "arguments") {
 								for arg in json::access_array(args, "jvm")? {
 									for sub_arg in
@@ -64,7 +65,7 @@ impl Instance {
 										.join(&self.version)
 										.join("natives")
 										.to_str()
-										.expect("Failed to convert natives directory to a string")
+										.context("Failed to convert natives directory to a string")?
 								));
 								command.arg("-cp");
 								command.arg(classpath.get_str());
@@ -78,19 +79,16 @@ impl Instance {
 								}
 								command.args(&self.launch.game_args);
 							}
-							let mut child = match command.spawn() {
-								Ok(child) => child,
-								Err(err) => return Err(LaunchError::Command(err)),
-							};
+							let mut child = command.spawn().context("Failed to spawn child process")?;
 
-							child.wait().expect("Failed to wait for child process");
+							child.wait().context("Failed to wait for child process to spawn")?;
 						}
 					}
 					Ok(())
 				}
-				None => Err(LaunchError::Java),
+				None => bail!("Java path is missing"),
 			},
-			None => Err(LaunchError::Java),
+			None => bail!("Java installation missing"),
 		}
 	}
 }
@@ -113,8 +111,7 @@ pub fn process_string_arg(
 			.join("versions")
 			.join(&instance.version)
 			.join("natives")
-			.to_str()
-			.expect("Failed to convert natives directory to a string"),
+			.to_str()?,
 	);
 	out = out.replace("${version_name}", &instance.version);
 	out = out.replace("${version_type}", "mcvm");
@@ -122,15 +119,13 @@ pub fn process_string_arg(
 		"${game_directory}",
 		instance
 			.get_subdir(paths)
-			.to_str()
-			.expect("Failed to convert client directory to a string"),
+			.to_str()?,
 	);
 	out = out.replace(
 		"${assets_root}",
 		paths
 			.assets
-			.to_str()
-			.expect("Failed to convert assets directory to a string"),
+			.to_str()?,
 	);
 	out = out.replace("${assets_index_name}", &instance.version);
 	out = out.replace("${user_type}", "mojang");

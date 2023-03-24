@@ -1,3 +1,4 @@
+use anyhow::anyhow;
 use serde::Deserialize;
 use serde_json::Value;
 
@@ -6,8 +7,6 @@ use crate::data::instance::{InstKind, Instance};
 use crate::data::profile::Profile;
 use crate::io::java::args::{MemoryNum, ArgsPreset};
 use crate::io::java::JavaKind;
-
-use super::{ConfigError, ContentError};
 
 #[derive(Deserialize, Debug)]
 #[serde(untagged)]
@@ -120,12 +119,12 @@ pub fn parse_instance_config(
 	id: &str,
 	val: &Value,
 	profile: &Profile,
-) -> Result<Instance, ConfigError> {
+) -> anyhow::Result<Instance> {
 	let config = serde_json::from_value::<InstanceConfig>(val.clone())?;
 	let kind = match config.kind.as_str() {
 		"client" => Ok(InstKind::Client),
 		"server" => Ok(InstKind::Server),
-		typ => Err(ContentError::InstType(typ.to_string(), id.to_owned())),
+		typ => Err(anyhow!("Unknown instance type '{typ}' on instance '{id}'")),
 	}?;
 
 	let instance = Instance::new(

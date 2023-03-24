@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use super::lib::{CmdData, CmdError};
+use super::lib::CmdData;
 use crate::package::reg::PkgRequest;
 use crate::util::print::{ReplPrinter, HYPHEN_POINT};
 
@@ -20,7 +20,7 @@ pub fn help() {
 	cprintln!("{}<i,c>cat:</i,c> {}", HYPHEN_POINT, CAT_HELP);
 }
 
-async fn list(data: &mut CmdData) -> Result<(), CmdError> {
+async fn list(data: &mut CmdData) -> anyhow::Result<()> {
 	data.ensure_paths()?;
 	data.ensure_config()?;
 
@@ -51,7 +51,7 @@ async fn list(data: &mut CmdData) -> Result<(), CmdError> {
 	Ok(())
 }
 
-async fn sync(data: &mut CmdData) -> Result<(), CmdError> {
+async fn sync(data: &mut CmdData) -> anyhow::Result<()> {
 	data.ensure_config()?;
 	data.ensure_paths()?;
 
@@ -83,7 +83,7 @@ async fn sync(data: &mut CmdData) -> Result<(), CmdError> {
 	Ok(())
 }
 
-async fn cat(data: &mut CmdData, name: &str) -> Result<(), CmdError> {
+async fn cat(data: &mut CmdData, name: &str) -> anyhow::Result<()> {
 	data.ensure_config()?;
 	data.ensure_paths()?;
 
@@ -99,7 +99,7 @@ async fn cat(data: &mut CmdData, name: &str) -> Result<(), CmdError> {
 	Ok(())
 }
 
-pub async fn run(argc: usize, argv: &[String], data: &mut CmdData) -> Result<(), CmdError> {
+pub async fn run(argc: usize, argv: &[String], data: &mut CmdData) -> anyhow::Result<()> {
 	if argc == 0 {
 		help();
 		return Ok(());

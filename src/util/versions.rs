@@ -1,19 +1,5 @@
 use std::fmt::Display;
 
-#[derive(Debug, thiserror::Error)]
-#[error("Version not found: {}", .version)]
-pub struct VersionNotFoundError {
-	pub version: String,
-}
-
-impl VersionNotFoundError {
-	pub fn new(version: &str) -> VersionNotFoundError {
-		Self {
-			version: version.to_owned(),
-		}
-	}
-}
-
 /// Pattern matching for the version of Minecraft, a package, etc.
 #[derive(Debug, Hash, Clone, PartialEq)]
 pub enum VersionPattern {

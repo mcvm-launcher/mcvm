@@ -7,11 +7,11 @@ mod util;
 
 use std::env;
 
-use commands::{help, lib::CmdError, run_command};
+use commands::{help, run_command};
 use io::files::paths::Paths;
 
 #[tokio::main]
-async fn main() -> Result<(), CmdError> {
+async fn main() -> anyhow::Result<()> {
 	let argv: Vec<String> = env::args().collect();
 	let argc: usize = argv.len();
 	match argc {

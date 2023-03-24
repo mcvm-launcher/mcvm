@@ -8,16 +8,6 @@ use std::collections::HashMap;
 use std::fs;
 use std::path::PathBuf;
 
-#[derive(Debug, thiserror::Error)]
-pub enum RepoError {
-	#[error("File operation failed:\n{}", .0)]
-	Io(#[from] std::io::Error),
-	#[error("Failed to parse json file:\n{}", .0)]
-	Parse(#[from] serde_json::Error),
-	#[error("Download failed:\n{}", .0)]
-	Download(#[from] reqwest::Error),
-}
-
 // An entry in the index that specifies what package versions are available
 #[derive(Debug, Deserialize)]
 pub struct PkgEntry {
@@ -55,14 +45,14 @@ impl PkgRepo {
 	}
 
 	// Set the index to serialized json text
-	fn set_index(&mut self, index: &str) -> Result<(), RepoError> {
+	fn set_index(&mut self, index: &str) -> anyhow::Result<()> {
 		let parsed = serde_json::from_str::<RepoIndex>(index)?;
 		self.index = Some(parsed);
 		Ok(())
 	}
 
 	// Update the currently cached index file
-	pub async fn sync(&mut self, paths: &Paths) -> Result<(), RepoError> {
+	pub async fn sync(&mut self, paths: &Paths) -> anyhow::Result<()> {
 		let text = download_text(&self.index_url()).await?;
 		tokio::fs::write(self.get_path(paths), &text).await?;
 		self.set_index(&text)?;
@@ -71,7 +61,7 @@ impl PkgRepo {
 	}
 
 	// Make sure that the repository index is downloaded
-	pub async fn ensure_index(&mut self, paths: &Paths) -> Result<(), RepoError> {
+	pub async fn ensure_index(&mut self, paths: &Paths) -> anyhow::Result<()> {
 		if self.index.is_none() {
 			let path = self.get_path(paths);
 			if path.exists() {
@@ -98,7 +88,7 @@ impl PkgRepo {
 		&mut self,
 		id: &str,
 		paths: &Paths,
-	) -> Result<Option<(String, String)>, RepoError> {
+	) -> anyhow::Result<Option<(String, String)>> {
 		self.ensure_index(paths).await?;
 		if let Some(index) = &self.index {
 			if let Some(entry) = index.packages.get(id) {
@@ -114,7 +104,7 @@ pub async fn query_all(
 	repos: &mut [PkgRepo],
 	name: &str,
 	paths: &Paths,
-) -> Result<Option<(String, String)>, RepoError> {
+) -> anyhow::Result<Option<(String, String)>> {
 	for repo in repos {
 		if let Some(result) = skip_fail!(repo.query(name, paths).await) {
 			return Ok(Some(result));

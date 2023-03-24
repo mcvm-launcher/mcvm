@@ -1,6 +1,7 @@
 pub mod client;
 pub mod server;
 
+use anyhow::Context;
 use color_print::cprintln;
 
 use crate::data::profile::update::UpdateManager;
@@ -11,22 +12,9 @@ use crate::io::java::{
 	args::{MemoryArg, MemoryNum},
 	JavaKind,
 };
-use crate::util::json;
 use crate::util::print::PrintOptions;
 
-use super::{create::CreateError, Instance};
-
-#[derive(Debug, thiserror::Error)]
-pub enum LaunchError {
-	#[error("Failed to create instance:\n{}", .0)]
-	Create(#[from] CreateError),
-	#[error("Java is not installed")]
-	Java,
-	#[error("Game process failed:\n{}", .0)]
-	Command(std::io::Error),
-	#[error("Failed to evaluate json file:\n{}", .0)]
-	Json(#[from] json::JsonError),
-}
+use super::Instance;
 
 impl Instance {
 	// Launch the instance
@@ -34,21 +22,21 @@ impl Instance {
 		&mut self,
 		paths: &Paths,
 		auth: &Auth,
-	) -> Result<(), LaunchError> {
+	) -> anyhow::Result<()> {
 		cprintln!("Checking for updates...");
 		let options = PrintOptions::new(false, 0);
 		let mut manager = UpdateManager::new(options, false);
 		manager.add_requirements(self.get_requirements());
-		manager.fulfill_requirements(paths, &self.version).await?;
+		manager.fulfill_requirements(paths, &self.version).await.context("Update failed")?;
 		
-		self.create(&manager, paths).await?;
+		self.create(&manager, paths).await.context("Failed to update instance")?;
 		cprintln!("<g>Launching!");
 		match &self.kind {
 			InstKind::Client => {
-				self.launch_client(paths, auth)?;
+				self.launch_client(paths, auth).context("Failed to launch client")?;
 			}
 			InstKind::Server => {
-				self.launch_server(paths)?;
+				self.launch_server(paths).context("Failed to launch server")?;
 			}
 		}
 		Ok(())

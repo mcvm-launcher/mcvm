@@ -11,15 +11,13 @@ use lib::{CmdData, Command, COMMAND_MAP};
 
 use color_print::cprintln;
 
-use self::lib::CmdError;
-
 impl Command {
 	pub async fn run(
 		&self,
 		argc: usize,
 		argv: &[String],
 		data: &mut CmdData,
-	) -> Result<(), CmdError> {
+	) -> anyhow::Result<()> {
 		match self {
 			Self::Help => help::run(argc, argv, data),
 			Self::Profile => profile::run(argc, argv, data).await,

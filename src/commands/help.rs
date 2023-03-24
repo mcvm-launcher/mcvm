@@ -1,4 +1,4 @@
-use super::lib::{CmdData, CmdError, COMMAND_MAP};
+use super::lib::{CmdData, COMMAND_MAP};
 use crate::util::print::HYPHEN_POINT;
 
 use color_print::cprintln;
@@ -25,7 +25,7 @@ pub fn help() {
 	cprintln!("<s>Usage:</s> mcvm help <k!>[subcommand]</k!>");
 }
 
-pub fn run(argc: usize, argv: &[String], _data: &mut CmdData) -> Result<(), CmdError> {
+pub fn run(argc: usize, argv: &[String], _data: &mut CmdData) -> anyhow::Result<()> {
 	match argc {
 		0 => main_help(),
 		_ => {

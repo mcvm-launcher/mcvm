@@ -1,6 +1,7 @@
 use color_print::cformat;
 use reqwest::Client;
 use serde::Deserialize;
+use anyhow::{Context, anyhow};
 
 use crate::data::instance::InstKind;
 use crate::data::profile::update::UpdateManager;
@@ -15,22 +16,6 @@ use super::download::download_text;
 pub enum Mode {
 	Fabric,
 	Quilt
-}
-
-#[derive(Debug, thiserror::Error)]
-pub enum FabricQuiltError {
-	#[error("Failed to evaluate json file:\n{}", .0)]
-	ParseError(#[from] json::JsonError),
-	#[error("Failed to parse json file:\n{}", .0)]
-	Serde(#[from] serde_json::Error),
-	#[error("Error when downloading modloader:\n{}", .0)]
-	Download(#[from] reqwest::Error),
-	#[error("File operation failed:\n{}", .0)]
-	Io(#[from] std::io::Error),
-	#[error("Failed to join task:\n{}", .0)]
-	Join(#[from] tokio::task::JoinError),
-	#[error("No compatible modloader version found")]
-	NoneFound,
 }
 
 #[derive(Debug, Deserialize, Clone)]
@@ -96,15 +81,15 @@ impl LibraryParts {
 }
 
 /// Get the Fabric/Quilt metadata file
-pub async fn get_meta(version: &str, mode: &Mode) -> Result<FabricQuiltMeta, FabricQuiltError> {
+pub async fn get_meta(version: &str, mode: &Mode) -> anyhow::Result<FabricQuiltMeta> {
 	let meta_url = match mode {
 		Mode::Fabric => format!("https://meta.fabricmc.net/v2/versions/loader/{version}"),
 		Mode::Quilt => format!("https://meta.quiltmc.org/v3/versions/loader/{version}"),
 	};
-	let meta = download_text(&meta_url).await?;
-	let meta = json::parse_json(&meta)?;
+	let meta = download_text(&meta_url).await.context("Failed to download Fabric/Quilt metadata")?;
+	let meta = json::parse_json(&meta).context("Failed to parse Fabric/Quilt metadata")?;
 	let meta = json::ensure_type(meta.as_array(), JsonType::Arr)?;
-	let meta = meta.first().ok_or(FabricQuiltError::NoneFound)?;
+	let meta = meta.first().ok_or(anyhow!("Could not find a valid Fabric/Quilt version"))?;
 
 	Ok(serde_json::from_value(meta.clone())?)
 }
@@ -131,7 +116,7 @@ async fn download_libraries(
 	libs: &[Library],
 	paths: &Paths,
 	force: bool,
-) -> Result<Classpath, FabricQuiltError> {
+) -> anyhow::Result<Classpath> {
 	let mut classpath = Classpath::new();
 	let client = Client::new();
 	for lib in libs.iter() {
@@ -158,7 +143,7 @@ async fn download_main_library(
 	url: &str,
 	paths: &Paths,
 	force: bool
-) -> Result<String, FabricQuiltError> {
+) -> anyhow::Result<String> {
 	let path = get_lib_path(&lib.maven).expect("Expected a valid path");
 	let lib_path = paths.libraries.join(&path);
 	let lib_path_str = lib_path.to_str().expect("Failed to convert path to a string").to_owned();
@@ -180,7 +165,7 @@ pub async fn download_files(
 	side: InstKind,
 	mode: Mode,
 	manager: &UpdateManager,
-) -> Result<Classpath, FabricQuiltError> {
+) -> anyhow::Result<Classpath> {
 	let force = manager.force;
 	let mut printer = ReplPrinter::from_options(manager.print.clone());
 	match mode {
@@ -217,8 +202,8 @@ pub async fn download_files(
 		)
 	});
 
-	classpath.extend(common_task.await??);
-	classpath.extend(side_task.await??);
+	classpath.extend(common_task.await?.context("Failed to download Fabric/Quilt common libraries")?);
+	classpath.extend(side_task.await?.context("Failed to download Fabric/Quilt side-specific libraries")?);
 	let (loader_name, intermediary_name) = main_libs_task.await?;
 	classpath.add(&loader_name?);
 	classpath.add(&intermediary_name?);

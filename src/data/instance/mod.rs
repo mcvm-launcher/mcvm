@@ -1,12 +1,13 @@
 pub mod create;
 pub mod launch;
 
-use self::create::CreateError;
+use anyhow::Context;
+
 use self::launch::LaunchOptions;
 use crate::io::files;
 use crate::io::java::classpath::Classpath;
 use crate::io::java::Java;
-use crate::net::fabric_quilt::{self, FabricQuiltError};
+use crate::net::fabric_quilt;
 use crate::util::json;
 use crate::Paths;
 
@@ -107,10 +108,11 @@ impl Instance {
 		mode: fabric_quilt::Mode,
 		paths: &Paths,
 		manager: &UpdateManager,
-	) -> Result<Classpath, FabricQuiltError> {
+	) -> anyhow::Result<Classpath> {
 		let meta = fabric_quilt::get_meta(&self.version, &mode).await?;
 		let classpath =
-			fabric_quilt::download_files(&meta, paths, self.kind.clone(), mode, manager).await?;
+			fabric_quilt::download_files(&meta, paths, self.kind.clone(), mode, manager).await
+				.context("Failed to download Fabric/Quilt")?;
 		self.main_class = Some(match self.kind {
 			InstKind::Client => meta.launcher_meta.main_class.client,
 			InstKind::Server => meta.launcher_meta.main_class.server,
@@ -147,31 +149,33 @@ impl Instance {
 		}
 	}
 
-	fn link_addon(dir: &Path, addon: &Addon, paths: &Paths) -> Result<(), CreateError> {
+	fn link_addon(dir: &Path, addon: &Addon, paths: &Paths) -> anyhow::Result<()> {
 		files::create_dir(dir)?;
 		let link = dir.join(&addon.name);
 		if !link.exists() {
-			fs::hard_link(addon.get_path(paths), dir.join(&addon.name))?;
+			fs::hard_link(addon.get_path(paths), dir.join(&addon.name))
+				.context("Failed to create hard link")?;
 		}
 		Ok(())
 	}
 
-	pub fn create_addon(&self, addon: &Addon, paths: &Paths) -> Result<(), CreateError> {
+	pub fn create_addon(&self, addon: &Addon, paths: &Paths) -> anyhow::Result<()> {
 		let inst_dir = self.get_subdir(paths);
 		files::create_leading_dirs(&inst_dir)?;
 		files::create_dir(&inst_dir)?;
 		if let Some(path) = self.get_linked_addon_path(addon, paths) {
-			Self::link_addon(&path, addon, paths)?;
+			Self::link_addon(&path, addon, paths)
+				.with_context(|| format!("Failed to link addon {}", addon.name))?;
 		}
 
 		Ok(())
 	}
 
-	pub fn remove_addon(&self, addon: &Addon, paths: &Paths) -> Result<(), CreateError> {
+	pub fn remove_addon(&self, addon: &Addon, paths: &Paths) -> anyhow::Result<()> {
 		if let Some(path) = self.get_linked_addon_path(addon, paths) {
 			let path = path.join(&addon.name);
 			if path.exists() {
-				fs::remove_file(path)?;
+				fs::remove_file(&path).with_context(|| format!("Failed to remove addon at {}", path.display()))?;
 			}
 		}
 
@@ -179,11 +183,11 @@ impl Instance {
 	}
 
 	// Removes the paper server jar file from a server instance
-	pub fn remove_paper(&self, paths: &Paths, paper_file_name: String) -> Result<(), CreateError> {
+	pub fn remove_paper(&self, paths: &Paths, paper_file_name: String) -> anyhow::Result<()> {
 		let inst_dir = self.get_subdir(paths);
 		let paper_path = inst_dir.join(paper_file_name);
 		if paper_path.exists() {
-			fs::remove_file(paper_path)?;
+			fs::remove_file(paper_path).context("Failed to remove Paper jar")?;
 		}
 
 		Ok(())
@@ -194,24 +198,24 @@ impl Instance {
 		&self,
 		paths: &Paths,
 		paper_file_name: Option<String>,
-	) -> Result<(), CreateError> {
+	) -> anyhow::Result<()> {
 		match self.kind {
 			InstKind::Client => {
 				let inst_dir = self.get_dir(paths);
 				let jar_path = inst_dir.join("client.jar");
 				if jar_path.exists() {
-					fs::remove_file(jar_path)?;
+					fs::remove_file(jar_path).context("Failed to remove client.jar")?;
 				}
 			}
 			InstKind::Server => {
 				let inst_dir = self.get_subdir(paths);
 				let jar_path = inst_dir.join("server.jar");
 				if jar_path.exists() {
-					fs::remove_file(jar_path)?;
+					fs::remove_file(jar_path).context("Failed to remove server.jar")?;
 				}
 
 				if let Some(file_name) = paper_file_name {
-					self.remove_paper(paths, file_name)?;
+					self.remove_paper(paths, file_name).context("Failed to remove Paper")?;
 				}
 			}
 		}

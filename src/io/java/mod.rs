@@ -8,6 +8,7 @@ use crate::util::json::{self, JsonType};
 use crate::util::mojang::{ARCH_STRING, OS_STRING};
 use crate::util::print::ReplPrinter;
 
+use anyhow::anyhow;
 use color_print::cformat;
 use libflate::gzip::Decoder;
 use tar::Archive;
@@ -29,18 +30,6 @@ impl JavaKind {
 			path => Self::Custom(PathBuf::from(String::from(shellexpand::tilde(path)))),
 		}
 	}
-}
-
-#[derive(Debug, thiserror::Error)]
-pub enum JavaError {
-	#[error("File operation failed:\n{}", .0)]
-	Io(#[from] std::io::Error),
-	#[error("Failed to download file:\n{}", .0)]
-	Download(#[from] reqwest::Error),
-	#[error("Failed to parse json file:\n{}", .0)]
-	Json(#[from] json::JsonError),
-	#[error("No valid installation was found for your system")]
-	InstallationNotFound,
 }
 
 /// A Java installation used to launch the game
@@ -65,7 +54,7 @@ impl Java {
 
 	/// Download / install all needed files
 	pub async fn install(&mut self, paths: &Paths, manager: &UpdateManager)
-	-> Result<HashSet<PathBuf>, JavaError> {
+	-> anyhow::Result<HashSet<PathBuf>> {
 		let mut out = HashSet::new();
 		match &self.kind {
 			JavaKind::Adoptium(major_version) => {
@@ -86,7 +75,7 @@ impl Java {
 				let version = json::ensure_type(
 					manifest
 						.get(0)
-						.ok_or(JavaError::InstallationNotFound)?
+						.ok_or(anyhow!("Installation was not found"))?
 						.as_object(),
 					JsonType::Obj,
 				)?;

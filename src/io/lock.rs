@@ -4,21 +4,12 @@ use std::io::{Read, Write};
 use std::path::PathBuf;
 
 use serde::{Deserialize, Serialize};
+use anyhow::{anyhow, Context};
 
 use crate::data::addon::{Addon, AddonKind};
 use crate::package::reg::PkgIdentifier;
 
 use super::files::paths::Paths;
-
-#[derive(Debug, thiserror::Error)]
-pub enum LockfileError {
-	#[error("Error when accessing file:\n{}", .0)]
-	Io(#[from] std::io::Error),
-	#[error("Failed to parse json:\n{}", .0)]
-	SerdeJson(#[from] serde_json::Error),
-	#[error("Unknown addon kind '{}' in addon '{}'", .0, .1)]
-	AddonKind(String, String),
-}
 
 /// Format for an addon in the lockfile
 #[derive(Serialize, Deserialize, PartialEq, Clone)]
@@ -43,22 +34,19 @@ impl LockfileAddon {
 	}
 
 	/// Converts this LockfileAddon to an Addon
-	pub fn to_addon(&self, id: PkgIdentifier) -> Result<Addon, LockfileError> {
+	pub fn to_addon(&self, id: PkgIdentifier) -> anyhow::Result<Addon> {
 		Ok(Addon {
-			kind: AddonKind::from_str(&self.kind).ok_or(LockfileError::AddonKind(
-				self.kind.clone(),
-				self.name.clone(),
-			))?,
+			kind: AddonKind::from_str(&self.kind).ok_or(anyhow!("Invalid addon kind '{}'", self.kind))?,
 			name: self.name.clone(),
 			id,
 		})
 	}
 
-	pub fn _remove(&self) -> Result<(), LockfileError> {
+	pub fn _remove(&self) -> anyhow::Result<()> {
 		for file in self.files.iter() {
 			let path = PathBuf::from(file);
 			if path.exists() {
-				fs::remove_file(path)?;
+				fs::remove_file(path).context("Failed to remove addon")?;
 			}
 		}
 
@@ -94,13 +82,13 @@ pub struct Lockfile {
 
 impl Lockfile {
 	/// Open the lockfile
-	pub fn open(paths: &Paths) -> Result<Self, LockfileError> {
+	pub fn open(paths: &Paths) -> anyhow::Result<Self> {
 		let path = Self::get_path(paths);
 		let contents = if path.exists() {
-			let mut file = File::open(path)?;
+			let mut file = File::open(path).context("Failed to open lockfile")?;
 			let mut contents = String::new();
-			file.read_to_string(&mut contents)?;
-			serde_json::from_str(&contents)?
+			file.read_to_string(&mut contents).context("Failed to read lockfile")?;
+			serde_json::from_str(&contents).context("Failed to parse JSON")?
 		} else {
 			LockfileContents::default()
 		};
@@ -113,10 +101,12 @@ impl Lockfile {
 	}
 
 	/// Finish using the lockfile and write to the disk
-	pub fn finish(&mut self, paths: &Paths) -> Result<(), LockfileError> {
-		let out = serde_json::to_string_pretty(&self.contents)?;
-		let mut file = File::create(Self::get_path(paths))?;
-		file.write_all(out.as_bytes())?;
+	pub fn finish(&mut self, paths: &Paths) -> anyhow::Result<()> {
+		let out = serde_json::to_string_pretty(&self.contents)
+			.context("Failed to serialize lockfile contents")?;
+		let mut file = File::create(Self::get_path(paths))
+			.context("Failed to open lockfile for writing")?;
+		file.write_all(out.as_bytes()).context("Failed to write to lockfile")?;
 
 		Ok(())
 	}
@@ -128,7 +118,7 @@ impl Lockfile {
 		instance: &str,
 		version: &str,
 		addons: &[LockfileAddon],
-	) -> Result<Vec<String>, LockfileError> {
+	) -> anyhow::Result<Vec<String>> {
 		let mut addons_to_remove = Vec::new();
 		if let Some(instance) = self.contents.packages.get_mut(instance) {
 			if let Some(pkg) = instance.get_mut(name) {
@@ -169,7 +159,7 @@ impl Lockfile {
 		&mut self,
 		instance: &str,
 		used_packages: &[String],
-	) -> Result<Vec<Addon>, LockfileError> {
+	) -> anyhow::Result<Vec<Addon>> {
 		if let Some(inst) = self.contents.packages.get_mut(instance) {
 			let mut pkgs_to_remove = Vec::new();
 			for (pkg, ..) in inst.iter() {

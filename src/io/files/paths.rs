@@ -1,16 +1,9 @@
 use super::create_dir;
 
+use anyhow::anyhow;
 use directories::{BaseDirs, ProjectDirs};
 
 use std::path::PathBuf;
-
-#[derive(Debug, thiserror::Error)]
-pub enum PathsError {
-	#[error("IO operation failed:{}", .0)]
-	Io(#[from] std::io::Error),
-	#[error("Failed to find base directories")]
-	Base,
-}
 
 /// Store for all of the paths that are used throughout the application
 #[derive(Debug, Clone)]
@@ -38,9 +31,10 @@ pub struct Paths {
 }
 
 impl Paths {
-	pub fn new() -> Result<Paths, PathsError> {
-		let base = BaseDirs::new().ok_or(PathsError::Base)?;
-		let project = ProjectDirs::from("", "mcvm", "mcvm").ok_or(PathsError::Base)?;
+	pub fn new() -> anyhow::Result<Paths> {
+		let base = BaseDirs::new().ok_or(anyhow!("Base directories failed"))?;
+		let project = ProjectDirs::from("", "mcvm", "mcvm")
+			.ok_or(anyhow!("Base directories failed"))?;
 
 		let internal = project.data_dir().join("internal");
 		let assets = internal.join("assets");
@@ -54,7 +48,7 @@ impl Paths {
 		create_dir(project.data_dir())?;
 		create_dir(project.cache_dir())?;
 		create_dir(project.config_dir())?;
-		create_dir(project.runtime_dir().ok_or(PathsError::Base)?)?;
+		create_dir(project.runtime_dir().ok_or(anyhow!("Base directories failed"))?)?;
 		create_dir(&internal)?;
 		create_dir(&assets)?;
 		create_dir(&java)?;

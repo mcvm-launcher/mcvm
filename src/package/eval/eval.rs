@@ -1,4 +1,6 @@
-use super::super::{Package, PkgError};
+use anyhow::{anyhow, bail};
+
+use super::super::Package;
 use super::instruction::{InstrKind, Instruction};
 use super::parse::{Block, BlockId};
 use super::Value;
@@ -10,28 +12,6 @@ use crate::util::versions::VersionPattern;
 
 use std::collections::HashMap;
 use std::path::PathBuf;
-
-#[derive(Debug, thiserror::Error)]
-pub enum EvalError {
-	#[error("Evaluator failed to start")]
-	Start,
-	#[error("Package reported an error:\n{}", .0.to_string())]
-	Fail(FailReason),
-	#[error("Package is not authorized to perform this action:\n{}", .0)]
-	Permissions(#[from] PermissionsError),
-	#[error("Variable '{}' is not defined", .0)]
-	VarNotDefined(String),
-	#[error("Routine '{}' does not exist", .0)]
-	RoutineDoesNotExist(String),
-	#[error("Expected 'url' or 'path' key for addon '{}'", .0)]
-	NoAddonLocation(String),
-}
-
-#[derive(Debug, thiserror::Error)]
-pub enum PermissionsError {
-	#[error("Tried to access '{}' from the local filesystem", .0)]
-	LocalFile(String),
-}
 
 #[derive(Debug, Clone)]
 pub enum EvalLevel {
@@ -195,7 +175,7 @@ impl Package {
 		paths: &Paths,
 		routine: Routine,
 		constants: EvalConstants,
-	) -> Result<EvalData, PkgError> {
+	) -> anyhow::Result<EvalData> {
 		self.ensure_loaded(paths, false).await?;
 		self.parse(paths).await?;
 		if let Some(data) = &mut self.data {
@@ -204,11 +184,11 @@ impl Package {
 				let routine_id = parsed
 					.routines
 					.get(&routine_name)
-					.ok_or(EvalError::RoutineDoesNotExist(routine_name.clone()))?;
+					.ok_or(anyhow!("Routine {} does not exist", routine_name.clone()))?;
 				let block = parsed
 					.blocks
 					.get(routine_id)
-					.ok_or(EvalError::RoutineDoesNotExist(routine_name))?;
+					.ok_or(anyhow!("Routine {} does not exist", routine_name))?;
 
 				let mut eval = EvalData::new(constants, self.id.clone(), &routine);
 
@@ -231,7 +211,7 @@ impl Package {
 				return Ok(eval);
 			}
 		}
-		Err(PkgError::Eval(EvalError::Start))
+		bail!("Evaluator failed to start")
 	}
 }
 
@@ -239,7 +219,7 @@ fn eval_block(
 	block: &Block,
 	eval: &EvalData,
 	blocks: &HashMap<BlockId, Block>,
-) -> Result<EvalResult, EvalError> {
+) -> anyhow::Result<EvalResult> {
 	// We clone this so that state can be changed between each instruction
 	let mut eval_clone = eval.clone();
 	let mut out = EvalResult::new();
@@ -264,7 +244,7 @@ impl Instruction {
 		&self,
 		eval: &EvalData,
 		blocks: &HashMap<BlockId, Block>,
-	) -> Result<EvalResult, EvalError> {
+	) -> anyhow::Result<EvalResult> {
 		let mut out = EvalResult::new();
 		if eval.level.is_all() {
 			match &self.kind {
@@ -282,9 +262,8 @@ impl Instruction {
 				InstrKind::Finish() => out.finish = true,
 				InstrKind::Fail(reason) => {
 					out.finish = true;
-					return Err(EvalError::Fail(
-						reason.as_ref().unwrap_or(&FailReason::None).clone(),
-					));
+					let reason = reason.as_ref().unwrap_or(&FailReason::None).clone();
+					bail!("Package script failed with reason: {}", reason.to_string());
 				}
 				InstrKind::Addon {
 					name,
@@ -319,13 +298,11 @@ impl Instruction {
 									.push(AddonRequest::new(addon, location, *force));
 							}
 							_ => {
-								return Err(EvalError::Permissions(PermissionsError::LocalFile(
-									path,
-								)))
+								bail!("Insufficient permissions to add a local addon {name}");
 							}
 						}
 					} else {
-						return Err(EvalError::NoAddonLocation(name));
+						bail!("No location (url/path) was specified for addon {name}");
 					}
 				}
 				_ => {}

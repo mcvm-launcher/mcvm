@@ -1,8 +1,9 @@
+use anyhow::bail;
+
 use super::eval::eval::{EvalConstants, EvalData, Routine};
-use super::repo::{query_all, PkgRepo, RepoError};
-use super::{Package, PkgError, PkgKind};
+use super::repo::{query_all, PkgRepo};
+use super::{Package, PkgKind};
 use crate::io::files::paths::Paths;
-use crate::io::lock::LockfileError;
 
 use std::collections::HashMap;
 use std::fmt::Display;
@@ -44,18 +45,6 @@ impl PkgIdentifier {
 	}
 }
 
-#[derive(Debug, thiserror::Error)]
-pub enum RegError {
-	#[error("Repository operation failed:\n{}", .0)]
-	Repo(#[from] RepoError),
-	#[error("Package '{}' not found", .0)]
-	NotFound(String),
-	#[error("Error in package:\n{}", .0)]
-	Package(#[from] PkgError),
-	#[error("Failed to access lockfile:\n{}", .0)]
-	Lock(#[from] LockfileError),
-}
-
 #[derive(Debug)]
 pub struct PkgRegistry {
 	pub repos: Vec<PkgRepo>,
@@ -77,7 +66,7 @@ impl PkgRegistry {
 			.expect("Package was not inserted into map")
 	}
 
-	async fn query_insert(&mut self, req: &PkgRequest, paths: &Paths) -> Result<&mut Package, RegError> {
+	async fn query_insert(&mut self, req: &PkgRequest, paths: &Paths) -> anyhow::Result<&mut Package> {
 		let pkg_name = req.name.clone();
 
 		match query_all(&mut self.repos, &pkg_name, paths).await? {
@@ -85,11 +74,11 @@ impl PkgRegistry {
 				req,
 				Package::new(&pkg_name, &version, PkgKind::Remote(Some(url))),
 			)),
-			None => Err(RegError::NotFound(pkg_name)),
+			None => bail!("Package {pkg_name} was not found"),
 		}
 	}
 
-	async fn get(&mut self, req: &PkgRequest, paths: &Paths) -> Result<&mut Package, RegError> {
+	async fn get(&mut self, req: &PkgRequest, paths: &Paths) -> anyhow::Result<&mut Package> {
 		if self.packages.contains_key(req) {
 			Ok(self.packages.get_mut(req).expect("Package does not exist"))
 		} else {
@@ -98,7 +87,7 @@ impl PkgRegistry {
 	}
 
 	// Get the version of a package
-	pub async fn get_version(&mut self, req: &PkgRequest, paths: &Paths) -> Result<String, RegError> {
+	pub async fn get_version(&mut self, req: &PkgRequest, paths: &Paths) -> anyhow::Result<String> {
 		let pkg = self.get(req, paths).await?;
 		Ok(pkg.id.version.clone())
 	}
@@ -109,7 +98,7 @@ impl PkgRegistry {
 		req: &PkgRequest,
 		force: bool,
 		paths: &Paths,
-	) -> Result<String, RegError> {
+	) -> anyhow::Result<String> {
 		let pkg = self.get(req, paths).await?;
 		pkg.ensure_loaded(paths, force).await?;
 		let contents = pkg
@@ -127,14 +116,14 @@ impl PkgRegistry {
 		paths: &Paths,
 		routine: Routine,
 		constants: EvalConstants,
-	) -> Result<EvalData, RegError> {
+	) -> anyhow::Result<EvalData> {
 		let pkg = self.get(req, paths).await?;
 		let eval = pkg.eval(paths, routine, constants).await?;
 		Ok(eval)
 	}
 
 	// Remove a cached package
-	pub async fn remove_cached(&mut self, req: &PkgRequest, paths: &Paths) -> Result<(), RegError> {
+	pub async fn remove_cached(&mut self, req: &PkgRequest, paths: &Paths) -> anyhow::Result<()> {
 		let pkg = self.get(req, paths).await?;
 		pkg.remove_cached(paths)?;
 		Ok(())

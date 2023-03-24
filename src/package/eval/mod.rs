@@ -6,7 +6,7 @@ pub mod instruction;
 pub mod lex;
 pub mod parse;
 
-use eval::EvalError;
+use anyhow::{bail, anyhow};
 
 // Argument to a command that could be constant or a variable
 #[derive(Debug, Clone)]
@@ -17,14 +17,14 @@ pub enum Value {
 }
 
 impl Value {
-	pub fn get(&self, vars: &HashMap<String, String>) -> Result<String, EvalError> {
+	pub fn get(&self, vars: &HashMap<String, String>) -> anyhow::Result<String> {
 		match self {
-			Self::None => Err(EvalError::VarNotDefined(String::from(""))),
+			Self::None => bail!("Empty value"),
 			Self::Constant(val) => Ok(val.clone()),
 			Self::Var(name) => vars
 				.get(name)
 				.cloned()
-				.ok_or(EvalError::VarNotDefined(name.clone())),
+				.ok_or(anyhow!("Variable {name} is not defined")),
 		}
 	}
 }

@@ -9,7 +9,6 @@ use self::update::UpdateManager;
 
 use super::addon::Modloader;
 use super::addon::PluginLoader;
-use super::instance::create::CreateError;
 
 pub type InstanceRegistry = std::collections::HashMap<String, Instance>;
 
@@ -51,7 +50,7 @@ impl Profile {
 		paths: &Paths,
 		verbose: bool,
 		force: bool,
-	) -> Result<Vec<String>, CreateError> {
+	) -> anyhow::Result<Vec<String>> {
 		let options = PrintOptions::new(verbose, 0);
 		let mut manager = UpdateManager::new(options, force);
 		for id in self.instances.iter_mut() {

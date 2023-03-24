@@ -1,7 +1,9 @@
-use super::super::{Package, PkgError};
+use anyhow::bail;
+
+use super::super::Package;
 use super::conditions::Condition;
 use super::instruction::{parse_arg, InstrKind, Instruction};
-use super::lex::{lex, reduce_tokens, LexError, Side, TextPos, Token};
+use super::lex::{lex, reduce_tokens, Side, Token, TextPos};
 use super::Value;
 use crate::data::addon::AddonKind;
 use crate::io::files::paths::Paths;
@@ -11,28 +13,6 @@ use crate::util::yes_no;
 use std::collections::HashMap;
 
 static DEFAULT_ROUTINE: &str = "__default__";
-
-#[derive(Debug, thiserror::Error)]
-pub enum ParseError {
-	#[error("{}", .0)]
-	Lex(#[from] LexError),
-	#[error("Unexpected token '{}' {}", .0, .1)]
-	UnexpectedToken(String, TextPos),
-	#[error("Routines must be declared at the root scope {}", .0)]
-	UnexpectedRoutine(TextPos),
-	#[error("Unknown instruction '{}' {}", .0, .1)]
-	UnknownInstr(String, TextPos),
-	#[error("Unknown addon key '{}' {}", .0, .1)]
-	UnknownAddonKey(String, TextPos),
-	#[error("Expected 'yes' or 'no', but got {} {}", .0, .1)]
-	YesNo(String, TextPos),
-	#[error("Unknown reason '{}' {}", .0, .1)]
-	UnknownReason(String, TextPos),
-	#[error("Unknown condition '{}' {}", .0, .1)]
-	UnknownCondition(String, TextPos),
-	#[error("Unknown condition argument '{}' {}", .0, .1)]
-	UnknownConditionArg(String, TextPos),
-}
 
 pub type BlockId = u16;
 
@@ -131,10 +111,7 @@ enum ParseMode {
 #[macro_export]
 macro_rules! unexpected_token {
 	($tok:expr, $pos:expr) => {
-		return Err(PkgError::Parse(ParseError::UnexpectedToken(
-			$tok.as_string(),
-			$pos.clone(),
-		)))
+		bail!("Unexpected token {} {}", $tok.as_string(), $pos.clone())
 	};
 }
 
@@ -177,7 +154,7 @@ impl ParseData {
 }
 
 impl Package {
-	pub async fn parse(&mut self, paths: &Paths) -> Result<(), PkgError> {
+	pub async fn parse(&mut self, paths: &Paths) -> anyhow::Result<()> {
 		self.ensure_loaded(paths, false).await?;
 		if let Some(data) = &mut self.data {
 			if data.parsed.is_some() {
@@ -185,8 +162,8 @@ impl Package {
 			}
 
 			let tokens = match lex(&data.contents) {
-				Ok(tokens) => Ok(tokens),
-				Err(e) => Err(ParseError::from(e)),
+				Ok(tokens) => Ok::<Vec<(Token, TextPos)>, anyhow::Error>(tokens),
+				Err(..) => bail!("Failed to lex package"),
 			}?;
 			let tokens = reduce_tokens(&tokens);
 
@@ -207,9 +184,7 @@ impl Package {
 									.expect("Block does not exist")
 									.parent
 								{
-									return Err(PkgError::Parse(ParseError::UnexpectedRoutine(
-										pos.clone(),
-									)));
+									bail!("Unexpected routine {}", pos.clone());
 								}
 								prs.mode = ParseMode::Routine(None);
 							}
@@ -241,7 +216,7 @@ impl Package {
 							},
 							_ => {}
 						}
-						Ok::<(), PkgError>(())
+						Ok::<(), anyhow::Error>(())
 					}
 					ParseMode::Routine(name) => {
 						if let Some(name) = name {
@@ -287,12 +262,7 @@ impl Package {
 											*condition = Some(Condition::new(new_condition))
 										}
 										None => {
-											return Err(PkgError::Parse(
-												ParseError::UnknownCondition(
-													name.clone(),
-													pos.clone(),
-												),
-											))
+											bail!("Unknown condition {} {}", name.clone(), pos.clone());
 										}
 									},
 									_ => unexpected_token!(tok, pos),
@@ -339,12 +309,7 @@ impl Package {
 										"append" => *key = AddonKey::Append,
 										"path" => *key = AddonKey::Path,
 										_ => {
-											return Err(PkgError::Parse(
-												ParseError::UnknownAddonKey(
-													name.to_owned(),
-													pos.clone(),
-												),
-											))
+											bail!("Unknown addon key {} {}", name.to_owned(), pos.clone());
 										}
 									}
 									*mode = AddonMode::Colon;
@@ -362,10 +327,7 @@ impl Package {
 										AddonKey::Force => match yes_no(name) {
 											Some(value) => *force = value,
 											None => {
-												return Err(PkgError::Parse(ParseError::YesNo(
-													name.to_owned(),
-													pos.clone(),
-												)))
+												bail!("Expected 'yes' or 'no', but got '{}' {}", name.to_owned(), pos.clone());
 											}
 										},
 										_ => unexpected_token!(tok, pos),
