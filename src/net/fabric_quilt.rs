@@ -168,7 +168,7 @@ async fn download_main_library(
 	let url = url.to_owned() + &path;
 	let client = Client::new();
 	let resp = client.get(url).send().await?.error_for_status()?.bytes().await?;
-	files::create_leading_dirs(&lib_path)?;
+	files::create_leading_dirs_async(&lib_path).await?;
 	tokio::fs::write(&lib_path, resp).await?;
 	Ok(lib_path_str)
 }

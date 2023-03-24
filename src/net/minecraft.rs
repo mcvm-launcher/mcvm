@@ -34,7 +34,7 @@ pub enum VersionManifestError {
 /// Obtain the raw version manifest contents
 async fn get_version_manifest_contents(paths: &Paths) -> Result<String, VersionManifestError> {
 	let mut path = paths.internal.join("versions");
-	files::create_dir(&path)?;
+	files::create_dir_async(&path).await?;
 	path.push("manifest.json");
 
 	let text = download_text("https://piston-meta.mojang.com/mc/game/version_manifest_v2.json").await?;
@@ -109,7 +109,7 @@ pub async fn get_version_json(
 
 	let version_json_name: String = version_string.clone() + ".json";
 	let version_folder = paths.internal.join("versions").join(version_string);
-	files::create_dir(&version_folder)?;
+	files::create_dir_async(&version_folder).await?;
 	let text = download_text(version_url.expect("Version does not exist")).await?;
 	tokio::fs::write(version_folder.join(version_json_name), &text).await?;
 
@@ -156,7 +156,7 @@ async fn download_library(
 	lib_download: &json::JsonObject,
 	path: &Path,
 ) -> Result<(), LibrariesError> {
-	files::create_leading_dirs(path)?;
+	files::create_leading_dirs_async(path).await?;
 	let url = json::access_str(lib_download, "url")?;
 	tokio::fs::write(path, client.get(url).send().await?.error_for_status()?.bytes().await?).await?;
 
@@ -210,13 +210,13 @@ pub async fn get_libraries(
 ) -> Result<HashSet<PathBuf>, LibrariesError> {
 	let mut files = HashSet::new();
 	let libraries_path = paths.internal.join("libraries");
-	files::create_dir(&libraries_path)?;
+	files::create_dir_async(&libraries_path).await?;
 	let natives_path = paths
 		.internal
 		.join("versions")
 		.join(version)
 		.join("natives");
-	files::create_dir(&natives_path)?;
+	files::create_dir_async(&natives_path).await?;
 	let natives_jars_path = paths.internal.join("natives");
 
 	let mut native_paths = Vec::new();
@@ -322,7 +322,7 @@ pub enum AssetsError {
 
 async fn download_asset_index(url: &str, path: &Path) -> Result<Box<json::JsonObject>, AssetsError> {
 	let text = download_text(url).await?;
-	fs::write(path, &text)?;
+	tokio::fs::write(path, &text).await?;
 
 	let doc = json::parse_object(&text)?;
 	Ok(doc)
@@ -338,13 +338,13 @@ pub async fn get_assets(
 	let mut out = HashSet::new();
 	let version_string = version.to_owned();
 	let indexes_dir = paths.assets.join("indexes");
-	files::create_dir(&indexes_dir)?;
+	files::create_dir_async(&indexes_dir).await?;
 
 	let index_path = indexes_dir.join(version_string + ".json");
 	let index_url = json::access_str(json::access_object(version_json, "assetIndex")?, "url")?;
 
 	let objects_dir = paths.assets.join("objects");
-	files::create_dir(&objects_dir)?;
+	files::create_dir_async(&objects_dir).await?;
 	// Apparently this directory name is used for older game versions
 	let virtual_dir = paths.assets.join("virtual");
 	if !manager.force && virtual_dir.exists() && !virtual_dir.is_symlink() {
@@ -387,7 +387,7 @@ pub async fn get_assets(
 		}
 		
 		out.insert(path.clone());
-		files::create_leading_dirs(&path)?;
+		files::create_leading_dirs_async(&path).await?;
 		let client = client.clone();
 		let permit = Arc::clone(&sem).acquire_owned().await;
 		let fut = async move {
