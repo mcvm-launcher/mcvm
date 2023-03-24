@@ -106,15 +106,15 @@ async fn profile_update(data: &mut CmdData, id: &str, force: bool) -> anyhow::Re
 					} else {
 						(None, None)
 					};
-					let mut lock = Lockfile::open(paths)?;
-					if lock.update_profile_version(id, &profile.version) {
-						cprintln!("<s>Updating profile version...");
-						for inst in profile.instances.iter() {
-							if let Some(inst) = config.instances.get(inst) {
-								inst.teardown(paths, paper_file_name.clone())?;
-							}
+				let mut lock = Lockfile::open(paths).await?;
+				if lock.update_profile_version(id, &profile.version) {
+					cprintln!("<s>Updating profile version...");
+					for inst in profile.instances.iter() {
+						if let Some(inst) = config.instances.get(inst) {
+							inst.teardown(paths, paper_file_name.clone())?;
 						}
 					}
+				}
 				if let Some(build_num) = paper_build_num {
 					if let Some(file_name) = paper_file_name {
 						if lock.update_profile_paper_build(id, build_num) {
@@ -127,7 +127,7 @@ async fn profile_update(data: &mut CmdData, id: &str, force: bool) -> anyhow::Re
 					}
 				}
 				
-				lock.finish(paths)?;
+				lock.finish(paths).await?;
 				
 				if !profile.instances.is_empty() {
 					let version_list = profile
@@ -200,7 +200,7 @@ async fn profile_update(data: &mut CmdData, id: &str, force: bool) -> anyhow::Re
 					printer.finish();
 				}
 
-				lock.finish(paths)?;
+				lock.finish(paths).await?;
 
 			} else {
 				bail!("Unknown profile '{id}'");

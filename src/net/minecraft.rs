@@ -14,11 +14,11 @@ use tokio::task::JoinSet;
 use zip::ZipArchive;
 
 use std::collections::HashSet;
-use std::fs::{self, File};
+use std::fs::File;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 
-use super::download::{FD_SENSIBLE_LIMIT, download_text, download_bytes};
+use super::download::{FD_SENSIBLE_LIMIT, download_text, download_file};
 
 /// Obtain the raw version manifest contents
 async fn get_version_manifest_contents(paths: &Paths) -> anyhow::Result<String> {
@@ -28,7 +28,7 @@ async fn get_version_manifest_contents(paths: &Paths) -> anyhow::Result<String> 
 
 	let text = download_text("https://piston-meta.mojang.com/mc/game/version_manifest_v2.json").await
 		.context("Failed to download manifest")?;
-	fs::write(&path, &text).context("Failed to write manifest to a file")?;
+	tokio::fs::write(&path, &text).await.context("Failed to write manifest to a file")?;
 
 	Ok(text)
 }
@@ -409,8 +409,7 @@ pub async fn get_game_jar(
 	let download =
 		json::access_object(json::access_object(&version_json, "downloads")?, &side_str)?;
 	let url = json::access_str(download, "url")?;
-	tokio::fs::write(&path, download_bytes(url).await.context("Failed to download file")?).await
-		.context("Failed to write JAR to a file")?;
+	download_file(url, &path).await.context("Failed to download file")?;
 	printer.print(&cformat!("<g>{} jar downloaded.", cap_first_letter(&side_str)));
 	
 	Ok(())

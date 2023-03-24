@@ -1,6 +1,5 @@
 use std::collections::HashMap;
-use std::fs::{self, File};
-use std::io::{Read, Write};
+use std::fs;
 use std::path::PathBuf;
 
 use serde::{Deserialize, Serialize};
@@ -82,12 +81,11 @@ pub struct Lockfile {
 
 impl Lockfile {
 	/// Open the lockfile
-	pub fn open(paths: &Paths) -> anyhow::Result<Self> {
+	pub async fn open(paths: &Paths) -> anyhow::Result<Self> {
 		let path = Self::get_path(paths);
 		let contents = if path.exists() {
-			let mut file = File::open(path).context("Failed to open lockfile")?;
-			let mut contents = String::new();
-			file.read_to_string(&mut contents).context("Failed to read lockfile")?;
+			let contents = tokio::fs::read_to_string(path).await
+				.context("Failed to read lockfile")?;
 			serde_json::from_str(&contents).context("Failed to parse JSON")?
 		} else {
 			LockfileContents::default()
@@ -101,12 +99,11 @@ impl Lockfile {
 	}
 
 	/// Finish using the lockfile and write to the disk
-	pub fn finish(&mut self, paths: &Paths) -> anyhow::Result<()> {
+	pub async fn finish(&mut self, paths: &Paths) -> anyhow::Result<()> {
 		let out = serde_json::to_string_pretty(&self.contents)
 			.context("Failed to serialize lockfile contents")?;
-		let mut file = File::create(Self::get_path(paths))
-			.context("Failed to open lockfile for writing")?;
-		file.write_all(out.as_bytes()).context("Failed to write to lockfile")?;
+		tokio::fs::write(Self::get_path(paths), out).await
+			.context("Failed to write to lockfile")?;
 
 		Ok(())
 	}

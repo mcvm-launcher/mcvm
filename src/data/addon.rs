@@ -2,10 +2,10 @@ use anyhow::Context;
 
 use crate::io::files::create_leading_dirs;
 use crate::io::files::paths::Paths;
+use crate::net::download::download_file;
 use crate::package::reg::PkgIdentifier;
 
 use std::fmt::Display;
-use std::fs;
 use std::path::PathBuf;
 
 #[derive(Debug, Clone)]
@@ -107,12 +107,10 @@ impl AddonRequest {
 		create_leading_dirs(&path)?;
 		match &self.location {
 			AddonLocation::Remote(url) => {
-				let client = reqwest::Client::new();
-				let response = client.get(url).send();
-				fs::write(path, response.await?.error_for_status()?.bytes().await?)?;
+				download_file(url, &path).await.context("Failed to download addon")?;
 			}
 			AddonLocation::Local(actual_path) => {
-				fs::hard_link(actual_path, path).context("Failed to hardlink local addon")?;
+				tokio::fs::hard_link(actual_path, path).await.context("Failed to hardlink local addon")?;
 			}
 		}
 		Ok(())

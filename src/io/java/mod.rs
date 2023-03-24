@@ -3,12 +3,12 @@ pub mod classpath;
 
 use crate::data::profile::update::UpdateManager;
 use crate::io::files::{self, paths::Paths};
-use crate::net::download::{download_text, download_bytes};
+use crate::net::download::{download_text, download_file};
 use crate::util::json::{self, JsonType};
 use crate::util::mojang::{ARCH_STRING, OS_STRING};
 use crate::util::print::ReplPrinter;
 
-use anyhow::anyhow;
+use anyhow::{anyhow, Context};
 use color_print::cformat;
 use libflate::gzip::Decoder;
 use tar::Archive;
@@ -100,7 +100,7 @@ impl Java {
 					"Downloading Adoptium Temurin JRE <b>{}</b>...",
 					json::access_str(version, "release_name")?
 				));
-				fs::write(&tar_path, download_bytes(bin_url).await?)?;
+				download_file(bin_url, &tar_path).await.context("Failed to download JRE binaries")?;
 
 				// Extraction
 				printer.print(&cformat!("Extracting JRE..."));

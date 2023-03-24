@@ -2,7 +2,7 @@ pub mod eval;
 pub mod reg;
 pub mod repo;
 
-use crate::io::files::{self, paths::Paths};
+use crate::io::files::paths::Paths;
 use crate::net::download::download_text;
 
 use std::fs;
@@ -83,14 +83,12 @@ impl Package {
 		if self.data.is_none() {
 			match &self.kind {
 				PkgKind::Local(path) => {
-					self.data = Some(PkgData::new(&fs::read_to_string(path)?));
+					self.data = Some(PkgData::new(&tokio::fs::read_to_string(path).await?));
 				}
 				PkgKind::Remote(url) => {
-					let cache_dir = paths.project.cache_dir().join("pkg");
-					files::create_dir(&cache_dir)?;
 					let path = self.cached_path(paths);
 					if !force && path.exists() {
-						self.data = Some(PkgData::new(&fs::read_to_string(path)?));
+						self.data = Some(PkgData::new(&tokio::fs::read_to_string(path).await?));
 					} else {
 						let url = url.as_ref().expect("URL for remote package missing");
 						let text = download_text(url).await?;

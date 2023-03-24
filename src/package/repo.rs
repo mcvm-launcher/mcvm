@@ -5,7 +5,6 @@ use crate::skip_fail;
 use serde::Deserialize;
 
 use std::collections::HashMap;
-use std::fs;
 use std::path::PathBuf;
 
 // An entry in the index that specifies what package versions are available
@@ -65,11 +64,11 @@ impl PkgRepo {
 		if self.index.is_none() {
 			let path = self.get_path(paths);
 			if path.exists() {
-				match self.set_index(&fs::read_to_string(&path)?) {
+				match self.set_index(&tokio::fs::read_to_string(&path).await?) {
 					Ok(..) => {}
 					Err(..) => {
 						self.sync(paths).await?;
-						self.set_index(&fs::read_to_string(&path)?)?;
+						self.set_index(&tokio::fs::read_to_string(&path).await?)?;
 					}
 				};
 			} else {

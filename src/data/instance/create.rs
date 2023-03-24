@@ -148,7 +148,14 @@ impl Instance {
 			_ => None,
 		};
 		
-		fs::write(server_dir.join("eula.txt"), "eula = true\n")?;
+		let eula_path = server_dir.join("eula.txt");
+		let eula_task = tokio::spawn(async move {
+			if !eula_path.exists() {
+				tokio::fs::write(eula_path, "eula = true\n").await?;
+			}
+
+			Ok::<(), anyhow::Error>(())
+		});
 		
 		self.jar_path = Some(match self.plugin_loader {
 			PluginLoader::Vanilla => {
@@ -180,6 +187,8 @@ impl Instance {
 				paper_jar_path
 			}
 		});
+
+		eula_task.await?.context("Failed to create eula.txt")?;
 		
 		self.version_json = Some(version_json);
 		self.classpath = classpath;
