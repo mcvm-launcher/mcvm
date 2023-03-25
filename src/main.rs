@@ -7,6 +7,7 @@ mod util;
 
 use std::env;
 
+use color_print::cformat;
 use commands::{help, run_command};
 use io::files::paths::Paths;
 
@@ -21,8 +22,12 @@ async fn main() -> anyhow::Result<()> {
 			let mut data = commands::lib::CmdData::new();
 			let argv_slice = &argv[2..];
 			let argc_slice = argc - 2;
-			run_command(&argv[1], argc_slice, argv_slice, &mut data).await;
+			match run_command(&argv[1], argc_slice, argv_slice, &mut data).await {
+				Ok(()) => {},
+				Err(e) => eprintln!("{}", cformat!("<r>{:?}", e)),
+			}
 		}
 	}
+
 	Ok(())
 }

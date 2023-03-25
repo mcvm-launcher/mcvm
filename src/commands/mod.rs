@@ -7,9 +7,8 @@ mod profile;
 mod user;
 mod version;
 
+use anyhow::anyhow;
 use lib::{CmdData, Command, COMMAND_MAP};
-
-use color_print::cprintln;
 
 impl Command {
 	pub async fn run(
@@ -42,16 +41,15 @@ impl Command {
 	}
 }
 
-pub async fn run_command(command: &str, argc: usize, argv: &[String], data: &mut CmdData) {
-	let result = COMMAND_MAP.get(command);
-	match result {
-		Some(cmd) => match cmd.run(argc, argv, data).await {
-			Ok(..) => {}
-			Err(err) => cprintln!("<r>Error occurred in command:\n{}", err),
-		},
-		None => cprintln!(
-			"<r>Error: {} is not a valid command\nRun <b>mcvm help</b> for a list of commands.",
-			command
-		),
-	}
+pub async fn run_command(
+	command: &str,
+	argc: usize,
+	argv: &[String],
+	data: &mut CmdData
+) -> anyhow::Result<()> {
+	let command = COMMAND_MAP.get(command)
+		.ok_or(anyhow!("{} is not a valid command\nRun <b>mcvm help</b> for a list of commands.", command))?;
+	command.run(argc, argv, data).await?;
+
+	Ok(())
 }
