@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 use color_print::cformat;
 use reqwest::Client;
 use serde::Deserialize;
@@ -16,6 +18,15 @@ use super::download::download_text;
 pub enum Mode {
 	Fabric,
 	Quilt
+}
+
+impl Display for Mode {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "{}", match self {
+			Self::Fabric => "Fabric",
+			Self::Quilt => "Quilt"
+		})
+	}
 }
 
 #[derive(Debug, Deserialize, Clone)]
@@ -168,10 +179,7 @@ pub async fn download_files(
 ) -> anyhow::Result<Classpath> {
 	let force = manager.force;
 	let mut printer = ReplPrinter::from_options(manager.print.clone());
-	match mode {
-		Mode::Fabric => printer.print("Downloading Fabric..."),
-		Mode::Quilt => printer.print("Downloading Quilt..."),
-	}
+	printer.print(&format!("Downloading {mode}"));
 	let mut classpath = Classpath::new();
 	let libs = meta.launcher_meta.libraries.common.clone();
 	let paths_clone = paths.clone();
@@ -208,7 +216,7 @@ pub async fn download_files(
 	classpath.add(&loader_name?);
 	classpath.add(&intermediary_name?);
 
-	printer.print(&cformat!("<g>Quilt downloaded."));
+	printer.print(&cformat!("<g>{} downloaded.", mode));
 
 	Ok(classpath)
 }
