@@ -127,7 +127,8 @@ async fn download_library(
 ) -> anyhow::Result<()> {
 	files::create_leading_dirs_async(path).await?;
 	let url = json::access_str(lib_download, "url")?;
-	tokio::fs::write(path, client.get(url).send().await?.error_for_status()?.bytes().await?).await?;
+	let bytes = client.get(url).send().await?.error_for_status()?.bytes().await?;
+	tokio::fs::write(path, bytes).await?;
 
 	Ok(())
 }
