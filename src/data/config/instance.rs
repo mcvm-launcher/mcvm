@@ -1,8 +1,10 @@
+use std::collections::HashMap;
+
 use anyhow::anyhow;
 use serde::Deserialize;
 use serde_json::Value;
 
-use crate::data::instance::launch::LaunchOptions;
+use crate::io::launch::LaunchOptions;
 use crate::data::instance::{InstKind, Instance};
 use crate::data::profile::Profile;
 use crate::io::java::args::{MemoryNum, ArgsPreset};
@@ -68,6 +70,10 @@ pub struct LaunchConfig {
 	pub java: String,
 	#[serde(default = "default_flags_preset")]
 	pub preset: String,
+	#[serde(default)]
+	pub env: HashMap<String, String>,
+	#[serde(default)]
+	pub wrapper: Option<String>,
 }
 
 impl LaunchConfig {
@@ -89,6 +95,8 @@ impl LaunchConfig {
 			max_mem,
 			java: JavaKind::from_str(&self.java),
 			preset: ArgsPreset::from_str(&self.preset),
+			env: self.env.clone(),
+			wrapper: self.wrapper.clone(),
 		}
 	}
 }
@@ -103,6 +111,8 @@ impl Default for LaunchConfig {
 			memory: LaunchMemory::default(),
 			java: default_java(),
 			preset: default_flags_preset(),
+			env: HashMap::new(),
+			wrapper: None,
 		}
 	}
 }

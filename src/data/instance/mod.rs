@@ -3,7 +3,7 @@ pub mod launch;
 
 use anyhow::Context;
 
-use self::launch::LaunchOptions;
+use crate::io::launch::LaunchOptions;
 use crate::io::files;
 use crate::io::java::classpath::Classpath;
 use crate::io::java::Java;

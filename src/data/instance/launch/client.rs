@@ -1,10 +1,9 @@
-use std::process::Command;
-
 use anyhow::{Context, bail};
 
 use crate::data::instance::{Instance, InstKind};
 use crate::data::user::{Auth, UserKind};
 use crate::io::java::classpath::Classpath;
+use crate::io::launch::launch;
 use crate::util::json;
 use crate::util::mojang::{is_allowed, ARCH_STRING, OS_STRING};
 use crate::Paths;
@@ -19,12 +18,8 @@ impl Instance {
 				Some(java_path) => {
 					let jre_path = java_path.join("bin/java");
 					let client_dir = self.get_subdir(paths);
-					let mut command = Command::new(
-						jre_path
-							.to_str()
-							.context("Failed to convert java path to a string")?,
-					);
-					command.current_dir(client_dir);
+					let mut jvm_args = Vec::new();
+					let mut game_args = Vec::new();
 
 					if let Some(version_json) = &self.version_json {
 						if let Some(classpath) = &self.classpath {
@@ -37,27 +32,22 @@ impl Instance {
 									for sub_arg in
 										process_client_arg(self, arg, paths, auth, classpath)
 									{
-										command.arg(sub_arg);
+										jvm_args.push(sub_arg);
 									}
 								}
-								command.args(&self.launch.generate_jvm_args());
-
-								command.arg(main_class);
 
 								for arg in json::access_array(args, "game")? {
 									for sub_arg in
 										process_client_arg(self, arg, paths, auth, classpath)
 									{
-										command.arg(sub_arg);
+										game_args.push(sub_arg);
 									}
 								}
-								command.args(&self.launch.game_args);
 							} else {
 								// Behavior for versions prior to 1.12.2
 								let args = json::access_str(version_json, "minecraftArguments")?;
-								command.args(&self.launch.generate_jvm_args());
 
-								command.arg(format!(
+								jvm_args.push(format!(
 									"-Djava.library.path={}",
 									paths
 										.internal
@@ -67,21 +57,27 @@ impl Instance {
 										.to_str()
 										.context("Failed to convert natives directory to a string")?
 								));
-								command.arg("-cp");
-								command.arg(classpath.get_str());
-
-								command.arg(main_class);
+								jvm_args.push(String::from("-cp"));
+								jvm_args.push(classpath.get_str());
 
 								for arg in args.split(' ') {
-									command.arg(skip_none!(process_string_arg(
+									game_args.push(skip_none!(process_string_arg(
 										self, arg, paths, auth, classpath
 									)));
 								}
-								command.args(&self.launch.game_args);
 							}
-							let mut child = command.spawn().context("Failed to spawn child process")?;
-
-							child.wait().context("Failed to wait for child process to spawn")?;
+							
+							launch(
+								paths,
+								&self.id,
+								&self.launch,
+								false,
+								&client_dir,
+								jre_path.to_str().context("Failed to convert java path to a string")?,
+								&jvm_args,
+								Some(main_class),
+								&game_args
+							).context("Failed to run launch command")?;
 						}
 					}
 					Ok(())

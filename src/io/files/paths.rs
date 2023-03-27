@@ -12,6 +12,8 @@ pub struct Paths {
 	pub base: BaseDirs,
 	/// Project-specific directories
 	pub project: ProjectDirs,
+	/// Holds data
+	pub data: PathBuf,
 	/// Holds internal data
 	pub internal: PathBuf,
 	/// Holds game assets
@@ -28,6 +30,10 @@ pub struct Paths {
 	pub pkg_index_cache: PathBuf,
 	/// Holds game jar files
 	pub jars: PathBuf,
+	/// Holds log files
+	pub logs: PathBuf,
+	/// Holds launch log files
+	pub launch_logs: PathBuf,
 }
 
 impl Paths {
@@ -36,7 +42,8 @@ impl Paths {
 		let project = ProjectDirs::from("", "mcvm", "mcvm")
 			.ok_or(anyhow!("Base directories failed"))?;
 
-		let internal = project.data_dir().join("internal");
+		let data = project.data_dir().to_owned();
+		let internal = data.join("internal");
 		let assets = internal.join("assets");
 		let libraries = internal.join("libraries");
 		let java = internal.join("java");
@@ -44,8 +51,10 @@ impl Paths {
 		let pkg_cache = project.cache_dir().join("pkg");
 		let pkg_index_cache = pkg_cache.join("index");
 		let jars = internal.join("jars");
+		let logs = data.join("logs");
+		let launch_logs = logs.join("launch");
 
-		create_dir(project.data_dir())?;
+		create_dir(&data)?;
 		create_dir(project.cache_dir())?;
 		create_dir(project.config_dir())?;
 		create_dir(project.runtime_dir().ok_or(anyhow!("Base directories failed"))?)?;
@@ -56,10 +65,13 @@ impl Paths {
 		create_dir(&pkg_cache)?;
 		create_dir(&pkg_index_cache)?;
 		create_dir(&jars)?;
+		create_dir(&logs)?;
+		create_dir(&launch_logs)?;
 
 		Ok(Paths {
 			base,
 			project,
+			data,
 			internal,
 			assets,
 			libraries,
@@ -68,6 +80,8 @@ impl Paths {
 			pkg_cache,
 			pkg_index_cache,
 			jars,
+			logs,
+			launch_logs,
 		})
 	}
 }
