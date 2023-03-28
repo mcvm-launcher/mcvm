@@ -59,7 +59,7 @@ pub async fn download_server_jar(
 	let file_path = path.join(file_name);
 	let url = format!("https://api.papermc.io/v2/projects/paper/versions/{version}/builds/{num_str}/downloads/{file_name}");
 	
-	download_file(&url, path).await.context("Failed to download file")?;
+	download_file(&url, &file_path).await.context("Failed to download file")?;
 
 	Ok(file_path)
 }
