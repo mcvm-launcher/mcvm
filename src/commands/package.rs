@@ -9,9 +9,26 @@ use color_print::{cformat, cprintln};
 
 #[derive(Debug, Subcommand)]
 pub enum PackageSubcommand {
+	#[command(about = "List all installed packages across all profiles")]
 	List,
+	#[command(
+		about = "Sync package indexes with ones from package repositories",
+		long_about = "Sync all package indexes from remote repositories. They will be
+cached locally, but all currently cached package scripts will be removed",
+	)]
 	Sync,
-	Cat { pkg: String },
+	#[command(
+		about = "Print the contents of a package to standard out",
+		long_about = "Print the contents of any package to standard out.
+This package does not need to be installed, it just has to be in the index.",
+	)]
+	Cat {
+		/// Whether to remove custom formatting from the output
+		#[arg(short, long)]
+		raw: bool,
+		/// The package to print
+		package: String,
+	},
 }
 
 async fn list(data: &mut CmdData) -> anyhow::Result<()> {
@@ -77,7 +94,7 @@ async fn sync(data: &mut CmdData) -> anyhow::Result<()> {
 	Ok(())
 }
 
-async fn cat(data: &mut CmdData, name: &str) -> anyhow::Result<()> {
+async fn cat(data: &mut CmdData, name: &str, raw: bool) -> anyhow::Result<()> {
 	data.ensure_config()?;
 	data.ensure_paths()?;
 
@@ -85,7 +102,9 @@ async fn cat(data: &mut CmdData, name: &str) -> anyhow::Result<()> {
 		if let Some(paths) = &data.paths {
 			let req = PkgRequest::new(name);
 			let contents = config.packages.load(&req, false, paths).await?;
-			cprintln!("<s,b>Contents of package <g>{}</g>:</s,b>", req);
+			if !raw {
+				cprintln!("<s,b>Contents of package <g>{}</g>:</s,b>", req);
+			}
 			cprintln!("{}", contents);
 		}
 	}
@@ -97,6 +116,6 @@ pub async fn run(subcommand: PackageSubcommand, data: &mut CmdData) -> anyhow::R
 	match subcommand {
 		PackageSubcommand::List => list(data).await,
 		PackageSubcommand::Sync => sync(data).await,
-		PackageSubcommand::Cat { pkg } => cat(data, &pkg).await,
+		PackageSubcommand::Cat { raw, package } => cat(data, &package, raw).await,
 	}
 }

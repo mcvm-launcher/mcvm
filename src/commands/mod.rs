@@ -49,24 +49,32 @@ impl CmdData {
 
 #[derive(Debug, Subcommand)]
 pub enum Command {
+	#[command(about = "Manage profiles")]
 	Profile {
 		#[command(subcommand)]
 		command: ProfileSubcommand,
 	},
+	#[command(about = "Manage users and authentication")]
 	User {
 		#[command(subcommand)]
 		command: UserSubcommand,
 	},
+	#[command(about = "Launch instances to play the game")]
 	Launch {
+		/// Whether to print the command that was generated when launching
 		#[arg(short, long)]
 		debug: bool,
+		/// The instance to launch
 		instance: String,
 	},
+	#[command(about = "Print the mcvm version")]
 	Version,
+	#[command(about = "Deal with files created by mcvm")]
 	Files {
 		#[command(subcommand)]
 		command: FilesSubcommand,
 	},
+	#[command(about = "Manage packages",)]
 	Package {
 		#[command(subcommand)]
 		command: PackageSubcommand,

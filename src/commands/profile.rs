@@ -16,11 +16,19 @@ use color_print::{cprint, cprintln};
 
 #[derive(Debug, Subcommand)]
 pub enum ProfileSubcommand {
+	#[command(about = "Print useful information about a profile")]
 	Info { profile: String },
+	#[command(about = "List all profiles")]
 	List,
+	#[command(
+		about = "Update a profile",
+		long_about = "Update the game files, extensions, packages, and addons of a profile.",
+	)]
 	Update {
+		/// Whether to force update files that have already been downloaded
 		#[arg(short, long)]
 		force: bool,
+		/// The profile to update
 		profile: String,
 	},
 }
