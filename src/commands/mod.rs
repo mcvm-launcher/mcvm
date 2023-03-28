@@ -1,55 +1,92 @@
 mod files;
-pub mod help;
 mod launch;
-pub mod lib;
 pub mod package;
 mod profile;
 mod user;
-mod version;
 
-use anyhow::anyhow;
-use lib::{CmdData, Command, COMMAND_MAP};
+use clap::{Subcommand, Parser};
+use color_print::cprintln;
 
-impl Command {
-	pub async fn run(
-		&self,
-		argc: usize,
-		argv: &[String],
-		data: &mut CmdData,
-	) -> anyhow::Result<()> {
-		match self {
-			Self::Help => help::run(argc, argv, data),
-			Self::Profile => profile::run(argc, argv, data).await,
-			Self::User => user::run(argc, argv, data),
-			Self::Launch => launch::run(argc, argv, data).await,
-			Self::Version => version::run(argc, argv, data),
-			Self::Files => files::run(argc, argv, data),
-			Self::Package => package::run(argc, argv, data).await,
+use crate::data::config::Config;
+use crate::io::files::paths::Paths;
+
+use self::package::PackageSubcommand;
+use self::files::FilesSubcommand;
+use self::user::UserSubcommand;
+use self::profile::ProfileSubcommand;
+
+// Data passed to commands
+pub struct CmdData {
+	pub paths: Option<Paths>,
+	pub config: Option<Config>,
+}
+
+impl CmdData {
+	pub fn new() -> Self {
+		Self {
+			paths: None,
+			config: None,
 		}
 	}
 
-	pub fn help(&self) {
-		match self {
-			Self::Help => help::help(),
-			Self::Profile => profile::help(),
-			Self::User => user::help(),
-			Self::Launch => launch::help(),
-			Self::Version => version::help(),
-			Self::Files => files::help(),
-			Self::Package => package::help(),
+	pub fn ensure_paths(&mut self) -> anyhow::Result<()> {
+		if self.paths.is_none() {
+			self.paths = Some(Paths::new()?);
 		}
+		Ok(())
+	}
+
+	pub fn ensure_config(&mut self) -> anyhow::Result<()> {
+		if self.config.is_none() {
+			self.ensure_paths()?;
+			if let Some(paths) = &self.paths {
+				self.config = Some(Config::load(&paths.project.config_dir().join("mcvm.json"))?);
+			}
+		}
+		Ok(())
 	}
 }
 
-pub async fn run_command(
-	command: &str,
-	argc: usize,
-	argv: &[String],
-	data: &mut CmdData
-) -> anyhow::Result<()> {
-	let command = COMMAND_MAP.get(command)
-		.ok_or(anyhow!("{} is not a valid command\nRun <b>mcvm help</b> for a list of commands.", command))?;
-	command.run(argc, argv, data).await?;
+#[derive(Debug, Subcommand)]
+pub enum Command {
+	Profile {
+		#[command(subcommand)]
+		command: ProfileSubcommand,
+	},
+	User {
+		#[command(subcommand)]
+		command: UserSubcommand,
+	},
+	Launch {
+		#[arg(short, long)]
+		debug: bool,
+		instance: String,
+	},
+	Version,
+	Files {
+		#[command(subcommand)]
+		command: FilesSubcommand,
+	},
+	Package {
+		#[command(subcommand)]
+		command: PackageSubcommand,
+	},
+}
 
-	Ok(())
+#[derive(Debug, Parser)]
+pub struct Cli {
+	#[command(subcommand)]
+	command: Command,
+}
+
+pub async fn run_cli(data: &mut CmdData) -> anyhow::Result<()> {
+	let cli = Cli::try_parse()?;
+	match cli.command {
+		Command::Profile { command } => profile::run(command, data).await,
+		Command::User { command } => user::run(command, data),
+		Command::Launch { debug, instance } => launch::run(&instance, debug, data).await,
+		Command::Version => Ok(cprintln!("mcvm version <g>{}</g>", env!("CARGO_PKG_VERSION"))),
+		Command::Files { command } => files::run(command, data),
+		Command::Package { command } => package::run(command, data).await,
+	}
 }

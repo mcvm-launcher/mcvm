@@ -6,7 +6,7 @@ use crate::io::launch::launch;
 
 impl Instance {
 	/// Launch a server
-	pub fn launch_server(&mut self, paths: &Paths) -> anyhow::Result<()> {
+	pub fn launch_server(&mut self, paths: &Paths,debug: bool) -> anyhow::Result<()> {
 		debug_assert!(self.kind == InstKind::Server);
 		match &self.java {
 			Some(java) => match &java.path {
@@ -34,7 +34,7 @@ impl Instance {
 						paths,
 						&self.id,
 						&self.launch,
-						false,
+						debug,
 						&server_dir,
 						jre_path.to_str().context("Failed to convert java path to a string")?,
 						&jvm_args,

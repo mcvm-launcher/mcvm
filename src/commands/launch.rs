@@ -1,30 +1,19 @@
-use super::lib::CmdData;
+use super::CmdData;
 
 use anyhow::bail;
-use color_print::cprintln;
 
-pub fn help() {
-	cprintln!("<i>launch:</i> Launch instances to play the game");
-	cprintln!("<s>Usage:</s> mcvm launch <k!><<instance>></k!>");
-}
-
-pub async fn run(argc: usize, argv: &[String], data: &mut CmdData) -> anyhow::Result<()> {
-	if argc == 0 {
-		help();
-		return Ok(());
-	}
-
+pub async fn run(instance: &str, debug: bool, data: &mut CmdData) -> anyhow::Result<()> {
 	data.ensure_paths()?;
 	data.ensure_config()?;
 
 	if let Some(config) = &mut data.config {
 		if let Some(paths) = &data.paths {
-			if let Some(instance) = config.instances.get_mut(&argv[0]) {
+			if let Some(instance) = config.instances.get_mut(instance) {
 				instance
-					.launch(paths, &config.auth)
+					.launch(paths, &config.auth, debug)
 					.await?;
 			} else {
-				bail!("Unknown instance '{}'", &argv[0]);
+				bail!("Unknown instance '{}'", instance);
 			}
 		}
 	}

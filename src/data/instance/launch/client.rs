@@ -11,7 +11,7 @@ use crate::{skip_fail, skip_none};
 
 impl Instance {
 	/// Launch a client
-	pub fn launch_client(&mut self, paths: &Paths, auth: &Auth) -> anyhow::Result<()> {
+	pub fn launch_client(&mut self, paths: &Paths, auth: &Auth, debug: bool) -> anyhow::Result<()> {
 		debug_assert!(self.kind == InstKind::Client);
 		match &self.java {
 			Some(java) => match &java.path {
@@ -71,7 +71,7 @@ impl Instance {
 								paths,
 								&self.id,
 								&self.launch,
-								false,
+								debug,
 								&client_dir,
 								jre_path.to_str().context("Failed to convert java path to a string")?,
 								&jvm_args,

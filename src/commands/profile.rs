@@ -1,4 +1,4 @@
-use super::lib::CmdData;
+use super::CmdData;
 use crate::data::addon::PluginLoader;
 use crate::data::instance::InstKind;
 use crate::io::lock::Lockfile;
@@ -10,23 +10,19 @@ use crate::util::print::ReplPrinter;
 use crate::util::print::HYPHEN_POINT;
 
 use anyhow::bail;
+use clap::Subcommand;
 use color_print::cformat;
 use color_print::{cprint, cprintln};
 
-static INFO_HELP: &str = "View helpful information about a profile";
-static LIST_HELP: &str = "List all profiles and their instances";
-static UPDATE_HELP: &str = "Update the packages and instances of a profile";
-static REINSTALL_HELP: &str = "Force reinstall a profile and all its files";
-
-pub fn help() {
-	cprintln!("<i>profile:</i> Manage mcvm profiles");
-	cprintln!("<s>Usage:</s> mcvm profile <k!><<subcommand>> [options]</k!>");
-	cprintln!();
-	cprintln!("<s>Subcommands:");
-	cprintln!("{}<i,c>info:</i,c> {}", HYPHEN_POINT, INFO_HELP);
-	cprintln!("{}<i,c>list, ls:</i,c> {}", HYPHEN_POINT, LIST_HELP);
-	cprintln!("{}<i,c>update:</i,c> {}", HYPHEN_POINT, UPDATE_HELP);
-	cprintln!("{}<i,c>reinstall:</i,c> {}", HYPHEN_POINT, REINSTALL_HELP);
+#[derive(Debug, Subcommand)]
+pub enum ProfileSubcommand {
+	Info { profile: String },
+	List,
+	Update {
+		#[arg(short, long)]
+		force: bool,
+		profile: String,
+	},
 }
 
 async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
@@ -210,28 +206,36 @@ async fn profile_update(data: &mut CmdData, id: &str, force: bool) -> anyhow::Re
 	Ok(())
 }
 
-pub async fn run(argc: usize, argv: &[String], data: &mut CmdData) -> anyhow::Result<()> {
-	if argc == 0 {
-		help();
-		return Ok(());
+pub async fn run(subcommand: ProfileSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
+	match subcommand {
+		ProfileSubcommand::Info { profile } => info(data, &profile).await,
+		ProfileSubcommand::List => list(data),
+		ProfileSubcommand::Update { force, profile } => profile_update(data, &profile, force).await
 	}
-
-	match argv[0].as_str() {
-		"list" | "ls" => list(data)?,
-		"info" => match argc {
-			1 => cprintln!("{}", INFO_HELP),
-			_ => info(data, &argv[1]).await?,
-		},
-		"update" => match argc {
-			1 => cprintln!("{}", UPDATE_HELP),
-			_ => profile_update(data, &argv[1], false).await?,
-		},
-		"reinstall" => match argc {
-			1 => cprintln!("{}", REINSTALL_HELP),
-			_ => profile_update(data, &argv[1], true).await?,
-		},
-		cmd => cprintln!("<r>Unknown subcommand {}", cmd),
-	}
-
-	Ok(())
 }
+
+// pub async fn run(argc: usize, argv: &[String], data: &mut CmdData) -> anyhow::Result<()> {
+// 	if argc == 0 {
+// 		help();
+// 		return Ok(());
+// 	}
+
+// 	match argv[0].as_str() {
+// 		"list" | "ls" => list(data)?,
+// 		"info" => match argc {
+// 			1 => cprintln!("{}", INFO_HELP),
+// 			_ => info(data, &argv[1]).await?,
+// 		},
+// 		"update" => match argc {
+// 			1 => cprintln!("{}", UPDATE_HELP),
+// 			_ => profile_update(data, &argv[1], false).await?,
+// 		},
+// 		"reinstall" => match argc {
+// 			1 => cprintln!("{}", REINSTALL_HELP),
+// 			_ => profile_update(data, &argv[1], true).await?,
+// 		},
+// 		cmd => cprintln!("<r>Unknown subcommand {}", cmd),
+// 	}
+
+// 	Ok(())
+// }

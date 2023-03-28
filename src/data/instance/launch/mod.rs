@@ -17,6 +17,7 @@ impl Instance {
 		&mut self,
 		paths: &Paths,
 		auth: &Auth,
+		debug: bool,
 	) -> anyhow::Result<()> {
 		cprintln!("Checking for updates...");
 		let options = PrintOptions::new(false, 0);
@@ -28,10 +29,10 @@ impl Instance {
 		cprintln!("<g>Launching!");
 		match &self.kind {
 			InstKind::Client => {
-				self.launch_client(paths, auth).context("Failed to launch client")?;
+				self.launch_client(paths, auth, debug).context("Failed to launch client")?;
 			}
 			InstKind::Server => {
-				self.launch_server(paths).context("Failed to launch server")?;
+				self.launch_server(paths, debug).context("Failed to launch server")?;
 			}
 		}
 		Ok(())

@@ -1,23 +1,17 @@
 use std::collections::HashMap;
 
-use super::lib::CmdData;
+use super::CmdData;
 use crate::package::reg::PkgRequest;
 use crate::util::print::{ReplPrinter, HYPHEN_POINT};
 
+use clap::Subcommand;
 use color_print::{cformat, cprintln};
 
-static LIST_HELP: &str = "List all installed packages";
-static SYNC_HELP: &str = "Update all package indexes";
-static CAT_HELP: &str = "Print the contents of a package";
-
-pub fn help() {
-	cprintln!("<i>package:</i> Manage mcvm packages");
-	cprintln!("<s>Usage:</s> mcvm package <k!><<subcommand>> [options]</k!>");
-	cprintln!();
-	cprintln!("<s>Subcommands:");
-	cprintln!("{}<i,c>list, ls:</i,c> {}", HYPHEN_POINT, LIST_HELP);
-	cprintln!("{}<i,c>sync:</i,c> {}", HYPHEN_POINT, SYNC_HELP);
-	cprintln!("{}<i,c>cat:</i,c> {}", HYPHEN_POINT, CAT_HELP);
+#[derive(Debug, Subcommand)]
+pub enum PackageSubcommand {
+	List,
+	Sync,
+	Cat { pkg: String },
 }
 
 async fn list(data: &mut CmdData) -> anyhow::Result<()> {
@@ -99,21 +93,10 @@ async fn cat(data: &mut CmdData, name: &str) -> anyhow::Result<()> {
 	Ok(())
 }
 
-pub async fn run(argc: usize, argv: &[String], data: &mut CmdData) -> anyhow::Result<()> {
-	if argc == 0 {
-		help();
-		return Ok(());
+pub async fn run(subcommand: PackageSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
+	match subcommand {
+		PackageSubcommand::List => list(data).await,
+		PackageSubcommand::Sync => sync(data).await,
+		PackageSubcommand::Cat { pkg } => cat(data, &pkg).await,
 	}
-
-	match argv[0].as_str() {
-		"list" | "ls" => list(data).await?,
-		"sync" => sync(data).await?,
-		"cat" => match argc {
-			2 => cat(data, &argv[1]).await?,
-			_ => cprintln!("{}", CAT_HELP),
-		},
-		cmd => cprintln!("<r>Unknown subcommand {}", cmd),
-	}
-
-	Ok(())
 }
