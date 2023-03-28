@@ -86,8 +86,8 @@ pub fn launch(
 	cmd.current_dir(cwd);
 	cmd.envs(options.env.clone());
 	
-	cmd.args(jvm_args);
 	cmd.args(options.generate_jvm_args());
+	cmd.args(jvm_args);
 	if let Some(main_class) = main_class {
 		cmd.arg(main_class);
 	}
