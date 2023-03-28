@@ -9,6 +9,7 @@ use crate::package::eval::eval::Routine;
 use crate::util::print::ReplPrinter;
 use crate::util::print::HYPHEN_POINT;
 
+use anyhow::Context;
 use anyhow::bail;
 use clap::Subcommand;
 use color_print::cformat;
@@ -61,7 +62,8 @@ async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
 					cprint!(
 						"<b!>{}:<g!>{}",
 						pkg.req.name,
-						config.packages.get_version(&pkg.req, paths).await?
+						config.packages.get_version(&pkg.req, paths).await
+							.context("Failed to get package version")?
 					);
 					cprintln!();
 				}
@@ -103,19 +105,23 @@ async fn profile_update(data: &mut CmdData, id: &str, force: bool) -> anyhow::Re
 				
 				let (paper_build_num, paper_file_name) =
 					if let PluginLoader::Paper = profile.plugin_loader {
-						let (build_num, ..) = paper::get_newest_build(&profile.version).await?;
+						let (build_num, ..) = paper::get_newest_build(&profile.version).await
+							.context("Failed to get the newest Paper build number")?;
 						let paper_file_name =
-							paper::get_jar_file_name(&profile.version, build_num).await?;
+							paper::get_jar_file_name(&profile.version, build_num).await
+								.context("Failed to get the name of the Paper Jar file")?;
 						(Some(build_num), Some(paper_file_name))
 					} else {
 						(None, None)
 					};
-				let mut lock = Lockfile::open(paths).await?;
+				let mut lock = Lockfile::open(paths).await
+					.context("Failed to open lockfile")?;
 				if lock.update_profile_version(id, &profile.version) {
 					cprintln!("<s>Updating profile version...");
 					for inst in profile.instances.iter() {
 						if let Some(inst) = config.instances.get(inst) {
-							inst.teardown(paths, paper_file_name.clone())?;
+							inst.teardown(paths, paper_file_name.clone())
+								.context("Failed to remove old files when updating Minecraft version")?;
 						}
 					}
 				}
@@ -124,24 +130,28 @@ async fn profile_update(data: &mut CmdData, id: &str, force: bool) -> anyhow::Re
 						if lock.update_profile_paper_build(id, build_num) {
 							for inst in profile.instances.iter() {
 								if let Some(inst) = config.instances.get(inst) {
-									inst.remove_paper(paths, file_name.clone())?;
+									inst.remove_paper(paths, file_name.clone())
+										.context("Failed to remove Paper")?;
 								}
 							}
 						}
 					}
 				}
 				
-				lock.finish(paths).await?;
+				lock.finish(paths).await
+					.context("Failed to finish using lockfile")?;
 				
 				if !profile.instances.is_empty() {
 					let version_list = profile
 						.create_instances(&mut config.instances, paths, true, force)
-						.await?;
+						.await
+						.context("Failed to create profile instances")?;
 
 					cprintln!("<s>Updating packages");
 					let mut printer = ReplPrinter::new(true);
 					for pkg in profile.packages.iter() {
-						let version = config.packages.get_version(&pkg.req, paths).await?;
+						let version = config.packages.get_version(&pkg.req, paths).await
+							.context("Failed to get version for package")?;
 						printer.print(&cformat!("\t(<b!>{}</b!>) Installing...", pkg.req));
 						for instance_id in profile.instances.iter() {
 							if let Some(instance) = config.instances.get(instance_id) {
@@ -155,12 +165,15 @@ async fn profile_update(data: &mut CmdData, id: &str, force: bool) -> anyhow::Re
 									perms: pkg.permissions.clone(),
 								};
 								let eval = config
-								.packages
-								.eval(&pkg.req, paths, Routine::Install, constants)
-								.await?;
-							for addon in eval.addon_reqs.iter() {
-								addon.acquire(paths).await?;
-									instance.create_addon(&addon.addon, paths)?;
+									.packages
+									.eval(&pkg.req, paths, Routine::Install, constants)
+									.await
+									.with_context(|| format!("Failed to evaluate package {} for instance {}", pkg.req, instance_id))?;
+								for addon in eval.addon_reqs.iter() {
+									addon.acquire(paths).await
+										.with_context(|| format!("Failed to acquire addon {} for instance {}", addon.addon.name, instance_id))?;
+									instance.create_addon(&addon.addon, paths)
+										.with_context(|| format!("Failed to install addon {} for instance {}", addon.addon.name, instance_id))?;
 								}
 								let lockfile_addons = eval
 									.addon_reqs
@@ -172,10 +185,11 @@ async fn profile_update(data: &mut CmdData, id: &str, force: bool) -> anyhow::Re
 									instance_id,
 									&version,
 									&lockfile_addons,
-								)?;
+								).context("Failed to update package in lockfile")?;
 								for addon in eval.addon_reqs.iter() {
 									if addons_to_remove.contains(&addon.addon.name) {
-										instance.remove_addon(&addon.addon, paths)?;
+										instance.remove_addon(&addon.addon, paths)
+											.with_context(|| format!("Failed to remove addon {} for instance {}", addon.addon.name, instance_id))?;
 									}
 								}
 							}
@@ -193,10 +207,11 @@ async fn profile_update(data: &mut CmdData, id: &str, force: bool) -> anyhow::Re
 									.iter()
 									.map(|x| x.req.name.clone())
 									.collect::<Vec<String>>(),
-							)?;
+							).context("Failed to remove unused packages")?;
 	
 							for addon in addons_to_remove {
-								instance.remove_addon(&addon, paths)?;
+								instance.remove_addon(&addon, paths)
+									.with_context(|| format!("Failed to remove addon {} for instance {}", addon.name, instance_id))?;
 							}
 						}
 					}
@@ -204,7 +219,8 @@ async fn profile_update(data: &mut CmdData, id: &str, force: bool) -> anyhow::Re
 					printer.finish();
 				}
 
-				lock.finish(paths).await?;
+				lock.finish(paths).await
+					.context("Failed to finish using lockfile")?;
 
 			} else {
 				bail!("Unknown profile '{id}'");
@@ -221,29 +237,3 @@ pub async fn run(subcommand: ProfileSubcommand, data: &mut CmdData) -> anyhow::R
 		ProfileSubcommand::Update { force, profile } => profile_update(data, &profile, force).await
 	}
 }
-
-// pub async fn run(argc: usize, argv: &[String], data: &mut CmdData) -> anyhow::Result<()> {
-// 	if argc == 0 {
-// 		help();
-// 		return Ok(());
-// 	}
-
-// 	match argv[0].as_str() {
-// 		"list" | "ls" => list(data)?,
-// 		"info" => match argc {
-// 			1 => cprintln!("{}", INFO_HELP),
-// 			_ => info(data, &argv[1]).await?,
-// 		},
-// 		"update" => match argc {
-// 			1 => cprintln!("{}", UPDATE_HELP),
-// 			_ => profile_update(data, &argv[1], false).await?,
-// 		},
-// 		"reinstall" => match argc {
-// 			1 => cprintln!("{}", REINSTALL_HELP),
-// 			_ => profile_update(data, &argv[1], true).await?,
-// 		},
-// 		cmd => cprintln!("<r>Unknown subcommand {}", cmd),
-// 	}
-
-// 	Ok(())
-// }

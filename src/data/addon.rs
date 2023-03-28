@@ -110,7 +110,8 @@ impl AddonRequest {
 				download_file(url, &path).await.context("Failed to download addon")?;
 			}
 			AddonLocation::Local(actual_path) => {
-				tokio::fs::hard_link(actual_path, path).await.context("Failed to hardlink local addon")?;
+				tokio::fs::hard_link(actual_path, path).await
+					.context("Failed to hardlink local addon")?;
 			}
 		}
 		Ok(())

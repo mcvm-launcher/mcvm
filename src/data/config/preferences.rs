@@ -1,5 +1,6 @@
 use crate::package::repo::PkgRepo;
 
+use anyhow::Context;
 use serde::Deserialize;
 
 #[derive(Deserialize)]
@@ -29,7 +30,8 @@ impl ConfigPreferences {
 	pub fn read(obj: Option<&serde_json::Value>) -> anyhow::Result<(Self, Vec<PkgRepo>)> {
 		match obj {
 			Some(obj) => {
-				let prefs = serde_json::from_value::<PrefSerialize>(obj.clone())?;
+				let prefs = serde_json::from_value::<PrefSerialize>(obj.clone())
+					.context("Failed to parse preferences")?;
 				let mut repositories = Vec::new();
 				for repo in prefs.repositories.preferred {
 					repositories.push(PkgRepo::new(&repo.id, &repo.url));

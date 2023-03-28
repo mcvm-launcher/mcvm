@@ -4,6 +4,7 @@ use super::CmdData;
 use crate::package::reg::PkgRequest;
 use crate::util::print::{ReplPrinter, HYPHEN_POINT};
 
+use anyhow::Context;
 use clap::Subcommand;
 use color_print::{cformat, cprintln};
 
@@ -41,7 +42,8 @@ async fn list(data: &mut CmdData) -> anyhow::Result<()> {
 			for (id, profile) in config.profiles.iter() {
 				if !profile.packages.is_empty() {
 					for pkg in profile.packages.iter() {
-						let version = config.packages.get_version(&pkg.req, paths).await?;
+						let version = config.packages.get_version(&pkg.req, paths).await
+							.context("Failed to get version of package")?;
 						found_pkgs
 							.entry(pkg.req.name.clone())
 							.or_insert((version, vec![]))

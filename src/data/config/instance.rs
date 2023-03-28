@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use anyhow::anyhow;
+use anyhow::{anyhow, Context};
 use serde::Deserialize;
 use serde_json::Value;
 
@@ -130,7 +130,8 @@ pub fn parse_instance_config(
 	val: &Value,
 	profile: &Profile,
 ) -> anyhow::Result<Instance> {
-	let config = serde_json::from_value::<InstanceConfig>(val.clone())?;
+	let config = serde_json::from_value::<InstanceConfig>(val.clone())
+		.context("Failed to parse instance config")?;
 	let kind = match config.kind.as_str() {
 		"client" => Ok(InstKind::Client),
 		"server" => Ok(InstKind::Server),

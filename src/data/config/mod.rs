@@ -2,7 +2,7 @@ pub mod instance;
 mod preferences;
 
 use self::instance::parse_instance_config;
-use anyhow::{bail, anyhow};
+use anyhow::{bail, anyhow, Context};
 use preferences::ConfigPreferences;
 
 use super::addon::{game_modifications_compatible, Modloader, PluginLoader};
@@ -78,7 +78,8 @@ impl Config {
 		let mut instances = InstanceRegistry::new();
 		let mut profiles = HashMap::new();
 		// Preferences
-		let (prefs, repositories) = ConfigPreferences::read(obj.get("preferences"))?;
+		let (prefs, repositories) = ConfigPreferences::read(obj.get("preferences"))
+			.context("Failed to read preferences")?;
 
 		let mut packages = PkgRegistry::new(repositories);
 

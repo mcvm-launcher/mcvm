@@ -4,6 +4,7 @@ pub mod package;
 mod profile;
 mod user;
 
+use anyhow::Context;
 use clap::{Subcommand, Parser};
 use color_print::cprintln;
 
@@ -38,9 +39,12 @@ impl CmdData {
 
 	pub fn ensure_config(&mut self) -> anyhow::Result<()> {
 		if self.config.is_none() {
-			self.ensure_paths()?;
+			self.ensure_paths().context("Failed to set up directories")?;
 			if let Some(paths) = &self.paths {
-				self.config = Some(Config::load(&paths.project.config_dir().join("mcvm.json"))?);
+				self.config = Some(
+					Config::load(&paths.project.config_dir().join("mcvm.json"))
+						.context("Failed to load config")?
+				);
 			}
 		}
 		Ok(())

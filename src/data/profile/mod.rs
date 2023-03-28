@@ -1,5 +1,7 @@
 pub mod update;
 
+use anyhow::Context;
+
 use crate::data::instance::Instance;
 use crate::package::PkgConfig;
 use crate::Paths;
@@ -62,7 +64,8 @@ impl Profile {
 			let instance = reg.get_mut(id).expect("Profile has unknown instance");
 			let files = instance
 				.create(&manager, paths)
-				.await?;
+				.await
+				.with_context(|| format!("Failed to create instance {id}"))?;
 			manager.add_files(files);
 		}
 		Ok(version_list)
