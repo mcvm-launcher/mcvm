@@ -29,6 +29,15 @@ cfg_match! {
 	}
 }
 
+cfg_match! {
+	target_pointer_width = "64" => {
+		pub static TARGET_64_BIT: bool = true;
+	}
+	_ => {
+		pub static TARGET_64_BIT: bool = false;
+	}
+}
+
 // For checking rule actions in Mojang json files
 pub fn is_allowed(action: &str) -> bool {
 	action == "allow"
