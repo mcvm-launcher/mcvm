@@ -65,6 +65,10 @@ pub fn cap_first_letter(string: &str) -> String {
 	}
 }
 
+pub trait ToInt {
+	fn to_int(&self) -> i32;
+}
+
 #[cfg(test)]
 mod tests {
 	use super::*;

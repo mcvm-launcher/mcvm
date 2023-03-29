@@ -1,78 +1,80 @@
-use anyhow::Context;
-use serde::Deserialize;
+use std::fmt::Display;
 
-use crate::util::mojang::TARGET_64_BIT;
+use anyhow::Context;
+use serde::{Deserialize, Serialize};
+
+use crate::util::{mojang::TARGET_64_BIT, ToInt};
 
 #[derive(Deserialize)]
 pub struct KeyOptions {
 	#[serde(default = "default_key_attack")]
-	attack: String,
+	pub attack: String,
 	#[serde(default = "default_key_use")]
-	r#use: String,
+	pub r#use: String,
 	#[serde(default = "default_key_forward")]
-	forward: String,
+	pub forward: String,
 	#[serde(default = "default_key_left")]
-	left: String,
+	pub left: String,
 	#[serde(default = "default_key_back")]
-	back: String,
+	pub back: String,
 	#[serde(default = "default_key_right")]
-	right: String,
+	pub right: String,
 	#[serde(default = "default_key_jump")]
-	jump: String,
+	pub jump: String,
 	#[serde(default = "default_key_sneak")]
-	sneak: String,
+	pub sneak: String,
 	#[serde(default = "default_key_sprint")]
-	sprint: String,
+	pub sprint: String,
 	#[serde(default = "default_key_drop")]
-	drop: String,
+	pub drop: String,
 	#[serde(default = "default_key_inventory")]
-	inventory: String,
+	pub inventory: String,
 	#[serde(default = "default_key_chat")]
-	chat: String,
+	pub chat: String,
 	#[serde(default = "default_key_playerlist")]
-	playerlist: String,
+	pub playerlist: String,
 	#[serde(default = "default_key_pick_item")]
-	pick_item: String,
+	pub pick_item: String,
 	#[serde(default = "default_key_command")]
-	command: String,
+	pub command: String,
 	#[serde(default = "default_key_social_interactions")]
-	social_interactions: String,
+	pub social_interactions: String,
 	#[serde(default = "default_key_screenshot")]
-	screenshot: String,
+	pub screenshot: String,
 	#[serde(default = "default_key_toggle_perspective")]
-	toggle_perspective: String,
+	pub toggle_perspective: String,
 	#[serde(default = "default_key_smooth_camera")]
-	smooth_camera: String,
+	pub smooth_camera: String,
 	#[serde(default = "default_key_fullscreen")]
-	fullscreen: String,
+	pub fullscreen: String,
 	#[serde(default = "default_key_spectator_outlines")]
-	spectator_outlines: String,
+	pub spectator_outlines: String,
 	#[serde(default = "default_key_swap_offhand")]
-	swap_offhand: String,
+	pub swap_offhand: String,
 	#[serde(default = "default_key_save_toolbar")]
-	save_toolbar: String,
+	pub save_toolbar: String,
 	#[serde(default = "default_key_load_toolbar")]
-	load_toolbar: String,
+	pub load_toolbar: String,
 	#[serde(default = "default_key_advancements")]
-	advancements: String,
+	pub advancements: String,
 	#[serde(default = "default_key_hotbar_1")]
-	hotbar_1: String,
+	pub hotbar_1: String,
 	#[serde(default = "default_key_hotbar_2")]
-	hotbar_2: String,
+	pub hotbar_2: String,
 	#[serde(default = "default_key_hotbar_3")]
-	hotbar_3: String,
+	pub hotbar_3: String,
 	#[serde(default = "default_key_hotbar_4")]
-	hotbar_4: String,
+	pub hotbar_4: String,
 	#[serde(default = "default_key_hotbar_5")]
-	hotbar_5: String,
+	pub hotbar_5: String,
 	#[serde(default = "default_key_hotbar_6")]
-	hotbar_6: String,
+	pub hotbar_6: String,
 	#[serde(default = "default_key_hotbar_7")]
-	hotbar_7: String,
+	pub hotbar_7: String,
 	#[serde(default = "default_key_hotbar_8")]
-	hotbar_8: String,
+	pub hotbar_8: String,
 	#[serde(default = "default_key_hotbar_9")]
-	hotbar_9: String,
+	pub hotbar_9: String,
 }
 
 impl Default for KeyOptions {
@@ -119,25 +121,25 @@ impl Default for KeyOptions {
 #[derive(Deserialize)]
 pub struct ControlOptions {
 	#[serde(default)]
-	keys: KeyOptions,
+	pub keys: KeyOptions,
 	#[serde(default = "default_auto_jump")]
-	auto_jump: bool,
+	pub auto_jump: bool,
 	#[serde(default = "default_discrete_mouse_scroll")]
-	discrete_mouse_scroll: bool,
+	pub discrete_mouse_scroll: bool,
 	#[serde(default = "default_invert_mouse_y")]
-	invert_mouse_y: bool,
+	pub invert_mouse_y: bool,
 	#[serde(default = "default_enable_touchscreen")]
-	enable_touchscreen: bool,
+	pub enable_touchscreen: bool,
 	#[serde(default = "default_toggle_sprint")]
-	toggle_sprint: bool,
+	pub toggle_sprint: bool,
 	#[serde(default = "default_toggle_crouch")]
-	toggle_crouch: bool,
+	pub toggle_crouch: bool,
 	#[serde(default = "default_mouse_sensitivity")]
-	mouse_sensitivity: f32,
+	pub mouse_sensitivity: f32,
 	#[serde(default = "default_mouse_wheel_sensitivity")]
-	mouse_wheel_sensitivity: f32,
+	pub mouse_wheel_sensitivity: f32,
 	#[serde(default = "default_raw_mouse_input")]
-	raw_mouse_input: bool,
+	pub raw_mouse_input: bool,
 }
 
 impl Default for ControlOptions {
@@ -160,37 +162,37 @@ impl Default for ControlOptions {
 #[derive(Deserialize)]
 pub struct ChatOptions {
 	#[serde(default = "default_auto_command_suggestions")]
-	auto_command_suggestions: bool,
+	pub auto_command_suggestions: bool,
 	#[serde(default = "default_enable_chat_colors")]
-	enable_colors: bool,
+	pub enable_colors: bool,
 	#[serde(default = "default_enable_chat_links")]
-	enable_links: bool,
+	pub enable_links: bool,
 	#[serde(default = "default_prompt_links")]
-	prompt_links: bool,
+	pub prompt_links: bool,
 	#[serde(default = "default_force_unicode")]
-	force_unicode: bool,
+	pub force_unicode: bool,
 	#[serde(default = "default_chat_visibility")]
-	visibility: ChatVisibility,
+	pub visibility: OptionsEnum<ChatVisibility>,
 	#[serde(default = "default_chat_opacity")]
-	opacity: f32,
+	pub opacity: f32,
 	#[serde(default = "default_chat_line_spacing")]
-	line_spacing: f32,
+	pub line_spacing: f32,
 	#[serde(default = "default_text_background_opacity")]
-	background_opacity: f32,
+	pub background_opacity: f32,
 	#[serde(default = "default_background_for_chat_only")]
-	background_for_chat_only: bool,
+	pub background_for_chat_only: bool,
 	#[serde(default = "default_chat_focused_height")]
-	focused_height: f32,
+	pub focused_height: f32,
 	#[serde(default = "default_chat_unfocused_height")]
-	unfocused_height: f32,
+	pub unfocused_height: f32,
 	#[serde(default = "default_chat_delay")]
-	delay: f32,
+	pub delay: f32,
 	#[serde(default = "default_chat_scale")]
-	scale: f32,
+	pub scale: f32,
 	#[serde(default = "default_chat_width")]
-	width: f32,
+	pub width: f32,
 	#[serde(default = "default_narrator_mode")]
-	narrator_mode: OptionsEnum<NarratorMode>,
+	pub narrator_mode: OptionsEnum<NarratorMode>,
 }
 
 impl Default for ChatOptions {
@@ -219,59 +221,59 @@ impl Default for ChatOptions {
 #[derive(Deserialize)]
 pub struct VideoOptions {
 	#[serde(default = "default_vsync")]
-	vsync: bool,
+	pub vsync: bool,
 	#[serde(default = "default_entity_shadows")]
-	entity_shadows: bool,
+	pub entity_shadows: bool,
 	#[serde(default = "default_fullscreen")]
-	fullscreen: bool,
+	pub fullscreen: bool,
 	#[serde(default = "default_view_bobbing")]
-	view_bobbing: bool,
+	pub view_bobbing: bool,
 	#[serde(default = "default_dark_mojang_background")]
-	dark_mojang_background: bool,
+	pub dark_mojang_background: bool,
 	#[serde(default = "default_hide_lightning_flashes")]
-	hide_lightning_flashes: bool,
+	pub hide_lightning_flashes: bool,
 	#[serde(default = "default_fov")]
-	fov: u8,
+	pub fov: u8,
 	#[serde(default = "default_screen_effect_scale")]
-	screen_effect_scale: f32,
+	pub screen_effect_scale: f32,
 	#[serde(default = "default_fov_effect_scale")]
-	fov_effect_scale: f32,
+	pub fov_effect_scale: f32,
 	#[serde(default = "default_darkness_effect_scale")]
-	darkness_effect_scale: f32,
+	pub darkness_effect_scale: f32,
 	#[serde(default = "default_brightness")]
-	brightness: f32,
+	pub brightness: f32,
 	#[serde(default = "default_render_distance")]
-	render_distance: u8,
+	pub render_distance: u8,
 	#[serde(default = "default_simulation_distance")]
-	simulation_distance: u8,
+	pub simulation_distance: u8,
 	#[serde(default = "default_entity_distance_scaling")]
-	entity_distance_scaling: f32,
+	pub entity_distance_scaling: f32,
 	#[serde(default = "default_gui_scale")]
-	gui_scale: u8,
+	pub gui_scale: u8,
 	#[serde(default = "default_particles")]
-	particles: OptionsEnum<ParticlesMode>,
+	pub particles: OptionsEnum<ParticlesMode>,
 	#[serde(default = "default_max_fps")]
-	max_fps: u8,
+	pub max_fps: u8,
 	#[serde(default = "default_graphics_mode")]
-	graphics_mode: OptionsEnum<GraphicsMode>,
+	pub graphics_mode: OptionsEnum<GraphicsMode>,
 	#[serde(default = "default_smooth_lighting")]
-	smooth_lighting: bool,
+	pub smooth_lighting: bool,
 	#[serde(default = "default_chunk_updates_mode")]
-	chunk_updates_mode: OptionsEnum<ChunkUpdatesMode>,
+	pub chunk_updates_mode: OptionsEnum<ChunkUpdatesMode>,
 	#[serde(default = "default_biome_blend")]
-	biome_blend: u8,
+	pub biome_blend: u8,
 	#[serde(default = "default_clouds")]
-	clouds: CloudRenderMode,
+	pub clouds: CloudRenderMode,
 	#[serde(default = "default_mipmap_levels")]
-	mipmap_levels: u8,
+	pub mipmap_levels: u8,
 	#[serde(default = "default_window_width")]
-	window_width: u16,
+	pub window_width: u16,
 	#[serde(default = "default_window_height")]
-	window_height: u16,
+	pub window_height: u16,
 	#[serde(default = "default_attack_indicator")]
-	attack_indicator: OptionsEnum<AttackIndicatorMode>,
+	pub attack_indicator: OptionsEnum<AttackIndicatorMode>,
 	#[serde(default = "default_fullscreen_resolution")]
-	fullscreen_resolution: Option<FullscreenResolution>,
+	pub fullscreen_resolution: Option<FullscreenResolution>,
 }
 
 impl Default for VideoOptions {
@@ -311,25 +313,25 @@ impl Default for VideoOptions {
 #[derive(Deserialize)]
 pub struct VolumeOptions {
 	#[serde(default = "default_sound_volume")]
-	master: f32,
+	pub master: f32,
 	#[serde(default = "default_sound_volume")]
-	music: f32,
+	pub music: f32,
 	#[serde(default = "default_sound_volume")]
-	record: f32,
+	pub record: f32,
 	#[serde(default = "default_sound_volume")]
-	weather: f32,
+	pub weather: f32,
 	#[serde(default = "default_sound_volume")]
-	block: f32,
+	pub block: f32,
 	#[serde(default = "default_sound_volume")]
-	hostile: f32,
+	pub hostile: f32,
 	#[serde(default = "default_sound_volume")]
-	neutral: f32,
+	pub neutral: f32,
 	#[serde(default = "default_sound_volume")]
-	player: f32,
+	pub player: f32,
 	#[serde(default = "default_sound_volume")]
-	ambient: f32,
+	pub ambient: f32,
 	#[serde(default = "default_sound_volume")]
-	voice: f32,
+	pub voice: f32,
 }
 
 impl Default for VolumeOptions {
@@ -352,13 +354,13 @@ impl Default for VolumeOptions {
 #[derive(Deserialize)]
 pub struct SoundOptions {
 	#[serde(default)]
-	volume: VolumeOptions,
+	pub volume: VolumeOptions,
 	#[serde(default = "default_show_subtitles")]
-	show_subtitles: bool,
+	pub show_subtitles: bool,
 	#[serde(default = "default_directional_audio")]
-	directional_audio: bool,
+	pub directional_audio: bool,
 	#[serde(default = "default_sound_device")]
-	device: Option<String>,
+	pub device: Option<String>,
 }
 
 impl Default for SoundOptions {
@@ -375,19 +377,19 @@ impl Default for SoundOptions {
 #[derive(Deserialize)]
 pub struct SkinOptions {
 	#[serde(default = "default_skin_part")]
-	cape: bool,
+	pub cape: bool,
 	#[serde(default = "default_skin_part")]
-	jacket: bool,
+	pub jacket: bool,
 	#[serde(default = "default_skin_part")]
-	left_sleeve: bool,
+	pub left_sleeve: bool,
 	#[serde(default = "default_skin_part")]
-	right_sleeve: bool,
+	pub right_sleeve: bool,
 	#[serde(default = "default_skin_part")]
-	left_pants: bool,
+	pub left_pants: bool,
 	#[serde(default = "default_skin_part")]
-	right_pants: bool,
+	pub right_pants: bool,
 	#[serde(default = "default_skin_part")]
-	hat: bool,
+	pub hat: bool,
 }
 
 impl Default for SkinOptions {
@@ -407,59 +409,59 @@ impl Default for SkinOptions {
 #[derive(Deserialize)]
 pub struct ClientOptions {
 	#[serde(default = "default_data_version")]
-	data_version: i16,
+	pub data_version: i16,
 	#[serde(default)]
-	video: VideoOptions,
+	pub video: VideoOptions,
 	#[serde(default)]
-	control: ControlOptions,
+	pub control: ControlOptions,
 	#[serde(default)]
-	chat: ChatOptions,
+	pub chat: ChatOptions,
 	#[serde(default)]
-	sound: SoundOptions,
+	pub sound: SoundOptions,
 	#[serde(default)]
-	skin: SkinOptions,
+	pub skin: SkinOptions,
 	#[serde(default = "default_realms_notifications")]
-	realms_notifications: bool,
+	pub realms_notifications: bool,
 	#[serde(default = "default_reduced_debug_info")]
-	reduced_debug_info: bool,
+	pub reduced_debug_info: bool,
 	#[serde(default = "default_difficulty")]
-	difficulty: OptionsEnum<Difficulty>,
+	pub difficulty: OptionsEnum<Difficulty>,
 	#[serde(default = "default_resource_packs")]
-	resource_packs: Vec<String>,
+	pub resource_packs: Vec<String>,
 	#[serde(default = "default_language")]
-	language: String,
+	pub language: String,
 	#[serde(default = "default_tutorial_step")]
-	tutorial_step: TutorialStep,
+	pub tutorial_step: TutorialStep,
 	#[serde(default = "default_skip_multiplayer_warning")]
-	skip_multiplayer_warning: bool,
+	pub skip_multiplayer_warning: bool,
 	#[serde(default = "default_skip_realms_32_bit_warning")]
-	skip_realms_32_bit_warning: bool,
+	pub skip_realms_32_bit_warning: bool,
 	#[serde(default = "default_hide_bundle_tutorial")]
-	hide_bundle_tutorial: bool,
+	pub hide_bundle_tutorial: bool,
 	#[serde(default = "default_joined_server")]
-	joined_server: bool,
+	pub joined_server: bool,
 	#[serde(default = "default_sync_chunk_writes")]
-	sync_chunk_writes: bool,
+	pub sync_chunk_writes: bool,
 	#[serde(default = "default_use_native_transport")]
-	use_native_transport: bool,
+	pub use_native_transport: bool,
 	#[serde(default = "default_held_item_tooltips")]
-	held_item_tooltips: bool,
+	pub held_item_tooltips: bool,
 	#[serde(default = "default_advanced_item_tooltips")]
-	advanced_item_tooltips: bool,
+	pub advanced_item_tooltips: bool,
 	#[serde(default = "default_log_level")]
-	log_level: OptionsEnum<LogLevel>,
+	pub log_level: OptionsEnum<LogLevel>,
 	#[serde(default = "default_hide_matched_names")]
-	hide_matched_names: bool,
+	pub hide_matched_names: bool,
 	#[serde(default = "default_pause_on_lost_focus")]
-	pause_on_lost_focus: bool,
+	pub pause_on_lost_focus: bool,
 	#[serde(default = "default_main_hand")]
-	main_hand: MainHand,
+	pub main_hand: MainHand,
 	#[serde(default = "default_hide_server_address")]
-	hide_server_address: bool,
+	pub hide_server_address: bool,
 	#[serde(default = "default_show_autosave_indicator")]
-	show_autosave_indicator: bool,
+	pub show_autosave_indicator: bool,
 	#[serde(default = "default_allow_server_listing")]
-	allow_server_listing: bool,
+	pub allow_server_listing: bool,
 }
 
 impl Default for ClientOptions {
@@ -500,10 +502,10 @@ impl Default for ClientOptions {
 #[derive(Deserialize)]
 pub struct Options {
 	#[serde(default)]
-	client: ClientOptions,
+	pub client: ClientOptions,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Clone)]
 #[serde(rename_all = "snake_case")]
 pub enum GraphicsMode {
 	Fast,
@@ -511,7 +513,13 @@ pub enum GraphicsMode {
 	Fabulous,
 }
 
-#[derive(Deserialize)]
+impl ToInt for GraphicsMode {
+	fn to_int(&self) -> i32 {
+		self.clone() as i32
+	}
+}
+
+#[derive(Deserialize, PartialEq, Debug, Clone)]
 #[serde(rename_all = "snake_case")]
 pub enum ParticlesMode {
 	All,
@@ -519,7 +527,13 @@ pub enum ParticlesMode {
 	Minimal,
 }
 
-#[derive(Deserialize)]
+impl ToInt for ParticlesMode {
+	fn to_int(&self) -> i32 {
+		self.clone() as i32
+	}
+}
+
+#[derive(Deserialize, Clone)]
 #[serde(rename_all = "snake_case")]
 pub enum Difficulty {
 	Peaceful,
@@ -528,7 +542,13 @@ pub enum Difficulty {
 	Hard,
 }
 
-#[derive(Deserialize)]
+impl ToInt for Difficulty {
+	fn to_int(&self) -> i32 {
+		self.clone() as i32
+	}
+}
+
+#[derive(Deserialize, PartialEq, Debug, Clone)]
 #[serde(rename_all = "snake_case")]
 pub enum ChunkUpdatesMode {
 	Threaded,
@@ -536,7 +556,13 @@ pub enum ChunkUpdatesMode {
 	FullyBlocking,
 }
 
-#[derive(Deserialize)]
+impl ToInt for ChunkUpdatesMode {
+	fn to_int(&self) -> i32 {
+		self.clone() as i32
+	}
+}
+
+#[derive(Deserialize, Clone)]
 #[serde(rename_all = "snake_case")]
 pub enum CloudRenderMode {
 	Fancy,
@@ -544,12 +570,28 @@ pub enum CloudRenderMode {
 	Fast,
 }
 
-#[derive(Deserialize)]
+impl Display for CloudRenderMode {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "{}", match self {
+			Self::Fancy => "true",
+			Self::Off => "false",
+			Self::Fast => "fast",
+		})
+	}
+}
+
+#[derive(Deserialize, Clone)]
 #[serde(rename_all = "snake_case")]
 pub enum ChatVisibility {
 	Shown,
 	CommandsOnly,
 	Hidden,
+}
+
+impl ToInt for ChatVisibility {
+	fn to_int(&self) -> i32 {
+		self.clone() as i32
+	}
 }
 
 #[derive(Deserialize)]
@@ -559,7 +601,16 @@ pub enum MainHand {
 	Right,
 }
 
-#[derive(Deserialize)]
+impl Display for MainHand {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "{}", match self {
+			Self::Left => "left",
+			Self::Right => "right",
+		})
+	}
+}
+
+#[derive(Deserialize, Clone)]
 #[serde(rename_all = "snake_case")]
 pub enum AttackIndicatorMode {
 	Off,
@@ -567,13 +618,25 @@ pub enum AttackIndicatorMode {
 	Hotbar,
 }
 
-#[derive(Deserialize)]
+impl ToInt for AttackIndicatorMode {
+	fn to_int(&self) -> i32 {
+		self.clone() as i32
+	}
+}
+
+#[derive(Deserialize, Clone)]
 #[serde(rename_all = "snake_case")]
 pub enum NarratorMode {
 	Off,
 	All,
 	Chat,
 	System,
+}
+
+impl ToInt for NarratorMode {
+	fn to_int(&self) -> i32 {
+		self.clone() as i32
+	}
 }
 
 #[derive(Deserialize)]
@@ -587,7 +650,20 @@ pub enum TutorialStep {
 	None,
 }
 
-#[derive(Deserialize)]
+impl Display for TutorialStep {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "{}", match self {
+			Self::Movement => "movement",
+			Self::FindTree => "find_tree",
+			Self::PunchTree => "punch_tree",
+			Self::OpenInventory => "open_inventory",
+			Self::CraftPlanks => "craft_planks",
+			Self::None => "none",
+		})
+	}
+}
+
+#[derive(Deserialize, Clone)]
 #[serde(rename_all = "snake_case")]
 pub enum LogLevel {
 	None,
@@ -597,20 +673,35 @@ pub enum LogLevel {
 	Notification,
 }
 
+impl ToInt for LogLevel {
+	fn to_int(&self) -> i32 {
+		self.clone() as i32
+	}
+}
+
 #[derive(Deserialize)]
 pub struct FullscreenResolution {
-	width: u32,
-	height: u32,
-	refresh_rate: u32,
-	color_bits: u32,
+	pub width: u32,
+	pub height: u32,
+	pub refresh_rate: u32,
+	pub color_bits: u32,
 }
 
 /// Used for values that can be string representations or custom numbers
-#[derive(Deserialize)]
+#[derive(Deserialize, PartialEq, Debug)]
 #[serde(untagged)]
-pub enum OptionsEnum<T> {
+pub enum OptionsEnum<T: Clone + ToInt> {
 	Mode(T),
 	Number(i32),
+}
+
+impl<T: Clone + ToInt> ToInt for OptionsEnum<T> {
+	fn to_int(&self) -> i32 {
+		match self {
+			Self::Mode(mode) => mode.to_int(),
+			Self::Number(num) => *num,
+		}
+	}
 }
 
 fn default_data_version() -> i16 { 3337 }
@@ -662,7 +753,7 @@ fn default_clouds() -> CloudRenderMode { CloudRenderMode::Fancy }
 fn default_resource_packs() -> Vec<String> { vec![] }
 fn default_language() -> String { String::from("en_us") }
 fn default_sound_device() -> Option<String> { None }
-fn default_chat_visibility() -> ChatVisibility { ChatVisibility::Shown }
+fn default_chat_visibility() -> OptionsEnum<ChatVisibility> { OptionsEnum::Mode(ChatVisibility::Shown) }
 fn default_chat_opacity() -> f32 { 1.0 }
 fn default_chat_line_spacing() -> f32 { 0.0 }
 fn default_text_background_opacity() -> f32 { 0.5 }
@@ -752,5 +843,22 @@ mod tests {
 		let options = parse_options("{}").unwrap();
 
 		assert_eq!(options.client.data_version, default_data_version());
+	}
+
+	#[test]
+	fn test_options_enum() {
+		let options = parse_options(r#"
+			{
+				"client": {
+					"video": {
+						"chunk_updates_mode": "threaded",
+						"particles": 1
+					}
+				}
+			}
+		"#).unwrap();
+
+		assert_eq!(options.client.video.chunk_updates_mode, OptionsEnum::Mode(ChunkUpdatesMode::Threaded));
+		assert_eq!(options.client.video.particles, OptionsEnum::Number(1));
 	}
 }
