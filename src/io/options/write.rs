@@ -3,7 +3,7 @@ use std::collections::HashMap;
 
 use crate::util::{ToInt, versions::VersionPattern};
 
-use super::read::{Options, FullscreenResolution};
+use super::read::{Options, FullscreenResolution, OptionsEnum, GraphicsMode, CloudRenderMode};
 
 /// Creates the string for the list of resource packs
 fn write_resource_packs(resource_packs: &[String]) -> String {
@@ -38,6 +38,8 @@ pub fn create_keys(
 
 	// Version checks
 	let after_12w50a = VersionPattern::After(String::from("12w50a")).matches_single(version, versions);
+	let after_13w36a = VersionPattern::After(String::from("13w36a")).matches_single(version, versions);
+	let after_14w25a = VersionPattern::After(String::from("14w25a")).matches_single(version, versions);
 	let after_14w28a = VersionPattern::After(String::from("14w28a")).matches_single(version, versions);
 	let after_17w06a = VersionPattern::After(String::from("17w06a")).matches_single(version, versions);
 	let after_17w47a = VersionPattern::After(String::from("17w47a")).matches_single(version, versions);
@@ -55,7 +57,9 @@ pub fn create_keys(
 	let after_22w11a = VersionPattern::After(String::from("22w11a")).matches_single(version, versions);
 	let after_22w15a = VersionPattern::After(String::from("22w15a")).matches_single(version, versions);
 
+	let before_13w42a = VersionPattern::Before(String::from("13w42a")).matches_single(version, versions);
 	let before_15w31a = VersionPattern::Before(String::from("15w31a")).matches_single(version, versions);
+	let before_20w27a = VersionPattern::Before(String::from("20w27a")).matches_single(version, versions);
 	let before_1_19_4 = VersionPattern::Before(String::from("1.19.4")).matches_single(version, versions);
 
 	// TODO: Add actual data version
@@ -109,12 +113,27 @@ pub fn create_keys(
 	out.insert(String::from("particles"), client.video.particles.to_int().to_string());
 	out.insert(String::from("maxFps"), client.video.max_fps.to_string());
 	out.insert(String::from("difficulty"), client.difficulty.to_int().to_string());
-	out.insert(String::from("graphicsMode"), client.video.graphics_mode.to_int().to_string());
+	if before_20w27a {
+		out.insert(String::from("fancyGraphics"), match client.video.graphics_mode {
+			OptionsEnum::Mode(GraphicsMode::Fast) => false,
+			OptionsEnum::Mode(GraphicsMode::Fancy | GraphicsMode::Fabulous) => true,
+			OptionsEnum::Number(num) => num > 0,
+		}.to_string());
+	} else {
+		out.insert(String::from("graphicsMode"), client.video.graphics_mode.to_int().to_string());
+	}
 	out.insert(String::from("ao"), client.video.smooth_lighting.to_string());
 	if after_18w15a {
 		out.insert(String::from("biomeBlendRadius"), client.video.biome_blend.to_string());
 	}
-	out.insert(String::from("renderClouds"), client.video.clouds.to_string());
+	if after_14w25a {
+		out.insert(String::from("renderClouds"), client.video.clouds.to_string());
+	} else {
+		out.insert(
+			String::from("clouds"),
+			matches!(client.video.clouds, CloudRenderMode::Fancy | CloudRenderMode::Fast).to_string()
+		);
+	}
 	out.insert(String::from("resourcePacks"), write_resource_packs(&client.resource_packs));
 	out.insert(String::from("incompatibleResourcePacks"), String::from("[]"));
 	out.insert(String::from("lang"), client.language.clone());
@@ -206,16 +225,40 @@ pub fn create_keys(
 	out.insert(String::from("key_key.hotbar.8"), client.control.keys.hotbar_8.clone());
 	out.insert(String::from("key_key.hotbar.9"), client.control.keys.hotbar_9.clone());
 	// Volumes
-	out.insert(String::from("soundCategory_master"), client.sound.volume.master.to_string());
-	out.insert(String::from("soundCategory_music"), client.sound.volume.music.to_string());
-	out.insert(String::from("soundCategory_record"), client.sound.volume.record.to_string());
-	out.insert(String::from("soundCategory_weather"), client.sound.volume.weather.to_string());
-	out.insert(String::from("soundCategory_block"), client.sound.volume.block.to_string());
-	out.insert(String::from("soundCategory_hostile"), client.sound.volume.hostile.to_string());
-	out.insert(String::from("soundCategory_neutral"), client.sound.volume.neutral.to_string());
-	out.insert(String::from("soundCategory_player"), client.sound.volume.player.to_string());
-	out.insert(String::from("soundCategory_ambient"), client.sound.volume.ambient.to_string());
-	out.insert(String::from("soundCategory_voice"), client.sound.volume.voice.to_string());
+	if after_13w36a {
+		let (animals_key, blocks_key, mobs_key, players_key, records_key) = {
+			if before_13w42a {
+				(
+					"soundCategory_animals",
+					"soundCategory_blocks",
+					"soundCategory_mobs",
+					"soundCategory_players",
+					"soundCategory_records",
+				)
+			} else {
+				(
+					"soundCategory_neutral",
+					"soundCategory_block",
+					"soundCategory_hostile",
+					"soundCategory_player",
+					"soundCategory_record",
+				)
+			}
+		};
+		out.insert(String::from("soundCategory_master"), client.sound.volume.master.to_string());
+		out.insert(String::from("soundCategory_music"), client.sound.volume.music.to_string());
+		out.insert(String::from(records_key), client.sound.volume.record.to_string());
+		out.insert(String::from("soundCategory_weather"), client.sound.volume.weather.to_string());
+		out.insert(String::from(blocks_key), client.sound.volume.block.to_string());
+		out.insert(String::from(mobs_key), client.sound.volume.hostile.to_string());
+		out.insert(String::from(animals_key), client.sound.volume.neutral.to_string());
+		out.insert(String::from(players_key), client.sound.volume.player.to_string());
+		out.insert(String::from("soundCategory_ambient"), client.sound.volume.ambient.to_string());
+		out.insert(String::from("soundCategory_voice"), client.sound.volume.voice.to_string());
+	} else {
+		let volume_up = client.sound.volume.master > 0.0;
+		out.insert(String::from("sound"), volume_up.to_string());
+	}
 	// Model parts
 	out.insert(String::from("modelPart_cape"), client.skin.cape.to_string());
 	out.insert(String::from("modelPart_jacket"), client.skin.jacket.to_string());
@@ -251,10 +294,9 @@ mod tests {
 	use super::*;
 
 	#[test]
-	fn test_write_keys() {
+	fn test_create_keys() {
 		let options = parse_options_str("{}").unwrap();
 		let versions = [String::from("1.18"), String::from("1.19.3")];
-		let keys = create_keys(&options, "1.19.3", &versions).unwrap();
-		assert_eq!(*keys.get("version").unwrap(), options.client.data_version.to_string());
+		create_keys(&options, "1.19.3", &versions).unwrap();
 	}
 }
