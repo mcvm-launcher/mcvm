@@ -1,3 +1,4 @@
+use std::io::Write;
 use std::collections::HashMap;
 
 use crate::util::ToInt;
@@ -173,14 +174,21 @@ pub fn write_keys(
 	Ok(out)
 }
 
+/// Write an options key to a writer
+pub fn write_key<W: Write>(key: &str, value: &str, writer: &mut W) -> anyhow::Result<()> {
+	writeln!(writer, "{key}:{value}")?;
+	
+	Ok(())
+}
+
 #[cfg(test)]
 mod tests {
-	use crate::io::options::read::parse_options;
+	use crate::io::options::read::parse_options_str;
 	use super::*;
 
 	#[test]
 	fn test_write_keys() {
-		let options = parse_options("{}").unwrap();
+		let options = parse_options_str("{}").unwrap();
 		let versions = [String::from("1.18"), String::from("1.19.3")];
 		let keys = write_keys(&options, "1.19.3", &versions).unwrap();
 		assert_eq!(*keys.get("version").unwrap(), options.client.data_version.to_string());

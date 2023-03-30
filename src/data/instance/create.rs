@@ -10,6 +10,7 @@ use crate::data::profile::update::{UpdateRequirement, UpdateManager};
 use crate::io::files::{self, paths::Paths};
 use crate::io::java::JavaKind;
 use crate::io::java::classpath::Classpath;
+use crate::io::options::write_options_txt;
 use crate::net::fabric_quilt;
 use crate::net::{minecraft, paper};
 use crate::util::{json, print::ReplPrinter};
@@ -32,6 +33,7 @@ impl Instance {
 			InstKind::Client => {
 				out.insert(UpdateRequirement::GameAssets);
 				out.insert(UpdateRequirement::GameLibraries);
+				out.insert(UpdateRequirement::Options);
 			}
 			InstKind::Server => {}
 		}
@@ -111,6 +113,16 @@ impl Instance {
 		}
 
 		classpath.add_path(&jar_path);
+
+		if let Some(options) = &manager.options {
+			let options_path = mc_dir.join("options.txt");
+			write_options_txt(
+				options,
+				&options_path,
+				&self.version,
+				manager.version_list.as_ref().expect("Version list missing")
+			).context("Failed to write options.txt")?;
+		}
 
 		self.classpath = Some(classpath);
 		self.version_json = Some(version_json);

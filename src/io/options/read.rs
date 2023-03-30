@@ -1,11 +1,11 @@
-use std::fmt::Display;
+use std::{fmt::Display, io::Read};
 
 use anyhow::Context;
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 
 use crate::util::{mojang::TARGET_64_BIT, ToInt};
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct KeyOptions {
 	#[serde(default = "default_key_attack")]
 	pub attack: String,
@@ -118,7 +118,7 @@ impl Default for KeyOptions {
 	}
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct ControlOptions {
 	#[serde(default)]
 	pub keys: KeyOptions,
@@ -159,7 +159,7 @@ impl Default for ControlOptions {
 	}
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct ChatOptions {
 	#[serde(default = "default_auto_command_suggestions")]
 	pub auto_command_suggestions: bool,
@@ -218,7 +218,7 @@ impl Default for ChatOptions {
 	}
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct VideoOptions {
 	#[serde(default = "default_vsync")]
 	pub vsync: bool,
@@ -310,7 +310,7 @@ impl Default for VideoOptions {
 	}
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct VolumeOptions {
 	#[serde(default = "default_sound_volume")]
 	pub master: f32,
@@ -351,7 +351,7 @@ impl Default for VolumeOptions {
 	}
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct SoundOptions {
 	#[serde(default)]
 	pub volume: VolumeOptions,
@@ -374,7 +374,7 @@ impl Default for SoundOptions {
 	}
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct SkinOptions {
 	#[serde(default = "default_skin_part")]
 	pub cape: bool,
@@ -406,7 +406,7 @@ impl Default for SkinOptions {
 	}
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct ClientOptions {
 	#[serde(default = "default_data_version")]
 	pub data_version: i16,
@@ -499,13 +499,13 @@ impl Default for ClientOptions {
 }
 
 /// General options structure used to produce options for both client and server
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct Options {
 	#[serde(default)]
 	pub client: ClientOptions,
 }
 
-#[derive(Deserialize, Clone)]
+#[derive(Deserialize, Clone, Debug)]
 #[serde(rename_all = "snake_case")]
 pub enum GraphicsMode {
 	Fast,
@@ -533,7 +533,7 @@ impl ToInt for ParticlesMode {
 	}
 }
 
-#[derive(Deserialize, Clone)]
+#[derive(Deserialize, Clone, Debug)]
 #[serde(rename_all = "snake_case")]
 pub enum Difficulty {
 	Peaceful,
@@ -562,7 +562,7 @@ impl ToInt for ChunkUpdatesMode {
 	}
 }
 
-#[derive(Deserialize, Clone)]
+#[derive(Deserialize, Clone, Debug)]
 #[serde(rename_all = "snake_case")]
 pub enum CloudRenderMode {
 	Fancy,
@@ -580,7 +580,7 @@ impl Display for CloudRenderMode {
 	}
 }
 
-#[derive(Deserialize, Clone)]
+#[derive(Deserialize, Clone, Debug)]
 #[serde(rename_all = "snake_case")]
 pub enum ChatVisibility {
 	Shown,
@@ -594,7 +594,7 @@ impl ToInt for ChatVisibility {
 	}
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug, Clone)]
 #[serde(rename_all = "snake_case")]
 pub enum MainHand {
 	Left,
@@ -610,7 +610,7 @@ impl Display for MainHand {
 	}
 }
 
-#[derive(Deserialize, Clone)]
+#[derive(Deserialize, Clone, Debug)]
 #[serde(rename_all = "snake_case")]
 pub enum AttackIndicatorMode {
 	Off,
@@ -624,7 +624,7 @@ impl ToInt for AttackIndicatorMode {
 	}
 }
 
-#[derive(Deserialize, Clone)]
+#[derive(Deserialize, Clone, Debug)]
 #[serde(rename_all = "snake_case")]
 pub enum NarratorMode {
 	Off,
@@ -639,7 +639,7 @@ impl ToInt for NarratorMode {
 	}
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug, Clone)]
 #[serde(rename_all = "snake_case")]
 pub enum TutorialStep {
 	Movement,
@@ -663,7 +663,7 @@ impl Display for TutorialStep {
 	}
 }
 
-#[derive(Deserialize, Clone)]
+#[derive(Deserialize, Clone, Debug)]
 #[serde(rename_all = "snake_case")]
 pub enum LogLevel {
 	None,
@@ -679,7 +679,7 @@ impl ToInt for LogLevel {
 	}
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct FullscreenResolution {
 	pub width: u32,
 	pub height: u32,
@@ -688,7 +688,7 @@ pub struct FullscreenResolution {
 }
 
 /// Used for values that can be string representations or custom numbers
-#[derive(Deserialize, PartialEq, Debug)]
+#[derive(Deserialize, PartialEq, Debug, Clone)]
 #[serde(untagged)]
 pub enum OptionsEnum<T: Clone + ToInt> {
 	Mode(T),
@@ -830,7 +830,12 @@ fn default_key_hotbar_8() -> String { String::from("key.keyboard.8") }
 fn default_key_hotbar_9() -> String { String::from("key.keyboard.9") }
 fn default_skin_part() -> bool { true }
 
-pub fn parse_options(string: &str) -> anyhow::Result<Options> {
+pub fn parse_options<R: Read>(reader: &mut R) -> anyhow::Result<Options> {
+	serde_json::from_reader(reader).context("Failed to parse options")
+}
+
+#[cfg(test)]
+pub fn parse_options_str(string: &str) -> anyhow::Result<Options> {
 	serde_json::from_str(string).context("Failed to parse options")
 }
 
@@ -840,14 +845,14 @@ mod tests {
 
 	#[test]
 	fn test_default() {
-		let options = parse_options("{}").unwrap();
+		let options = parse_options_str("{}").unwrap();
 
 		assert_eq!(options.client.data_version, default_data_version());
 	}
 
 	#[test]
 	fn test_options_enum() {
-		let options = parse_options(r#"
+		let options = parse_options_str(r#"
 			{
 				"client": {
 					"video": {

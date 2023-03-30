@@ -59,7 +59,7 @@ impl Profile {
 			let instance = reg.get(id).expect("Profile has unknown instance");
 			manager.add_requirements(instance.get_requirements());
 		}
-		let version_list = manager.fulfill_requirements(paths, &self.version).await?;
+		manager.fulfill_requirements(paths, &self.version).await?;
 		for id in self.instances.iter_mut() {
 			let instance = reg.get_mut(id).expect("Profile has unknown instance");
 			let files = instance
@@ -68,6 +68,6 @@ impl Profile {
 				.with_context(|| format!("Failed to create instance {id}"))?;
 			manager.add_files(files);
 		}
-		Ok(version_list)
+		Ok(manager.version_list.expect("Version list missing"))
 	}
 }

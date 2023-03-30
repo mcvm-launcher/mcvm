@@ -5,6 +5,7 @@ use anyhow::Context;
 use color_print::cprintln;
 
 use crate::data::instance::InstKind;
+use crate::io::options::{Options, read_options};
 use crate::net::minecraft::{get_version_manifest, get_version_json, make_version_list, get_assets, get_libraries, get_game_jar};
 use crate::util::{json, print::PrintOptions};
 use crate::io::files::paths::Paths;
@@ -17,7 +18,8 @@ pub enum UpdateRequirement {
 	GameAssets,
 	GameLibraries,
 	Java(JavaKind),
-	GameJar(InstKind)
+	GameJar(InstKind),
+	Options,
 }
 
 /// Manager for when we are updating profile files.
@@ -31,6 +33,8 @@ pub struct UpdateManager {
 	files: HashSet<PathBuf>,
 	pub version_json: Option<Box<json::JsonObject>>,
 	pub java: Option<Java>,
+	pub options: Option<Options>,
+	pub version_list: Option<Vec<String>>,
 }
 
 impl UpdateManager {
@@ -42,6 +46,8 @@ impl UpdateManager {
 			files: HashSet::new(),
 			version_json: None,
 			java: None,
+			options: None,
+			version_list: None,
 		}
 	}
 
@@ -75,14 +81,11 @@ impl UpdateManager {
 	}
 
 	/// Run all of the operations that are part of the requirements.
-	/// Returns the version list
 	pub async fn fulfill_requirements(
 		&mut self,
 		paths: &Paths,
 		version: &str,
-	) -> anyhow::Result<Vec<String>> {
-		let mut out = Vec::new();
-
+	) -> anyhow::Result<()> {
 		let java_required = matches!(
 			self.requirements.iter().find(|x| matches!(x, UpdateRequirement::Java(..))),
 			Some(..)
@@ -113,7 +116,7 @@ impl UpdateManager {
 			let version_json= get_version_json(version, &manifest, paths).await
 				.context("Failed to get version json")?;
 			self.version_json = Some(version_json);
-			out = make_version_list(&manifest).context("Failed to compose a list of versions")?;
+			self.version_list = Some(make_version_list(&manifest).context("Failed to compose a list of versions")?);
 		}
 
 		if self.has_requirement(UpdateRequirement::GameAssets) {
@@ -162,6 +165,11 @@ impl UpdateManager {
 			}
 		}
 
-		Ok(out)
+		if self.has_requirement(UpdateRequirement::Options) {
+			let options = read_options(paths).await.context("Failed to read options.json")?;
+			self.options = options;
+		}
+
+		Ok(())
 	}
 }
