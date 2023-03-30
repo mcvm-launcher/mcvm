@@ -28,7 +28,7 @@ fn write_fullscreen_resolution(resolution: &FullscreenResolution) -> String {
 }
 
 /// Write options to a list of keys
-pub fn write_keys(
+pub fn create_keys(
 	options: &Options,
 	version: &str,
 	versions: &[String],
@@ -232,6 +232,9 @@ pub fn write_keys(
 		out.insert(String::from("fullscreenResolution"), write_fullscreen_resolution(resolution));
 	}
 
+	let custom_clone = client.custom.clone();
+	out.extend(custom_clone);
+
 	Ok(out)
 }
 
@@ -251,7 +254,7 @@ mod tests {
 	fn test_write_keys() {
 		let options = parse_options_str("{}").unwrap();
 		let versions = [String::from("1.18"), String::from("1.19.3")];
-		let keys = write_keys(&options, "1.19.3", &versions).unwrap();
+		let keys = create_keys(&options, "1.19.3", &versions).unwrap();
 		assert_eq!(*keys.get("version").unwrap(), options.client.data_version.to_string());
 	}
 }

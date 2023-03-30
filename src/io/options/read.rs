@@ -1,4 +1,4 @@
-use std::{fmt::Display, io::Read};
+use std::{fmt::Display, io::Read, collections::HashMap};
 
 use anyhow::Context;
 use serde::Deserialize;
@@ -423,6 +423,8 @@ pub struct ClientOptions {
 	pub sound: SoundOptions,
 	#[serde(default)]
 	pub skin: SkinOptions,
+	#[serde(default)]
+	pub custom: HashMap<String, String>,
 	#[serde(default = "default_realms_notifications")]
 	pub realms_notifications: bool,
 	#[serde(default = "default_reduced_debug_info")]
@@ -476,6 +478,7 @@ impl Default for ClientOptions {
 			chat: ChatOptions::default(),
 			sound: SoundOptions::default(),
 			skin: SkinOptions::default(),
+			custom: HashMap::default(),
 			realms_notifications: default_realms_notifications(),
 			reduced_debug_info: default_reduced_debug_info(),
 			difficulty: default_difficulty(),

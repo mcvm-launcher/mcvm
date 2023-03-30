@@ -9,7 +9,7 @@ use itertools::Itertools;
 
 pub use self::read::Options;
 use self::read::parse_options;
-use self::write::{write_keys, write_key};
+use self::write::{create_keys, write_key};
 
 use super::files::paths::Paths;
 
@@ -36,7 +36,7 @@ pub fn write_options_txt(
 	versions: &[String],
 ) -> anyhow::Result<()> {
 	let mut file = File::create(path).context("Failed to open file")?;
-	let keys = write_keys(options, version, versions)
+	let keys = create_keys(options, version, versions)
 		.context("Failed to create keys for options")?;
 	for (key, value) in keys.iter().sorted_by_key(|x| x.0) {
 		write_key(&key, &value, &mut file)
