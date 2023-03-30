@@ -274,6 +274,8 @@ pub struct VideoOptions {
 	pub attack_indicator: OptionsEnum<AttackIndicatorMode>,
 	#[serde(default = "default_fullscreen_resolution")]
 	pub fullscreen_resolution: Option<FullscreenResolution>,
+	#[serde(default = "default_allow_block_alternatives")]
+	pub allow_block_alternatives: bool,
 }
 
 impl Default for VideoOptions {
@@ -306,6 +308,7 @@ impl Default for VideoOptions {
 			window_height: default_window_height(),
 			attack_indicator: default_attack_indicator(),
 			fullscreen_resolution: default_fullscreen_resolution(),
+			allow_block_alternatives: default_allow_block_alternatives(),
 		}
 	}
 }
@@ -829,6 +832,7 @@ fn default_key_hotbar_7() -> String { String::from("key.keyboard.7") }
 fn default_key_hotbar_8() -> String { String::from("key.keyboard.8") }
 fn default_key_hotbar_9() -> String { String::from("key.keyboard.9") }
 fn default_skin_part() -> bool { true }
+fn default_allow_block_alternatives() -> bool { true }
 
 pub fn parse_options<R: Read>(reader: &mut R) -> anyhow::Result<Options> {
 	serde_json::from_reader(reader).context("Failed to parse options")
