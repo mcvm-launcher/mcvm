@@ -5,6 +5,8 @@ use serde::Deserialize;
 
 use crate::util::{json, ToInt, versions::VersionPattern};
 
+use super::read::{EnumOrNumber, EnumOrString};
+
 #[derive(Deserialize, Debug, Clone)]
 pub struct RconOptions {
 	#[serde(default = "default_rcon_enable")]
@@ -379,49 +381,6 @@ impl ToInt for NetworkCompression {
 	}
 }
 
-/// Used for both difficulty and gamemode to have compatability with different versions
-#[derive(Deserialize, Debug, Clone)]
-#[serde(untagged)]
-pub enum EnumOrNumber<T> {
-	Enum(T),
-	Num(i32),
-}
-
-impl <T: Display> Display for EnumOrNumber<T> {
-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		write!(f, "{}", match self {
-			Self::Enum(e) => e.to_string(),
-			Self::Num(num) => num.to_string(),
-		})
-	}
-}
-
-impl <T: ToInt> ToInt for EnumOrNumber<T> {
-	fn to_int(&self) -> i32 {
-		match self {
-			Self::Enum(e) => e.to_int(),
-			Self::Num(num) => *num,
-		}
-	}
-}
-
-/// Allow an enum or custom string
-#[derive(Deserialize, Debug, Clone)]
-#[serde(untagged)]
-pub enum EnumOrString<T> {
-	Enum(T),
-	String(String),
-}
-
-impl <T: Display> Display for EnumOrString<T> {
-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		write!(f, "{}", match self {
-			Self::Enum(e) => e.to_string(),
-			Self::String(string) => string.clone(),
-		})
-	}
-}
-
 fn default_allow_flight() -> bool { false }
 fn default_broadcast_console_to_ops() -> bool { true }
 fn default_broadcast_rcon_to_ops() -> bool { true }
@@ -487,7 +446,7 @@ fn write_datapacks(datapacks: &[String]) -> String {
 }
 
 /// Write server options to a list of keys
-pub fn create_server_keys(
+pub fn create_keys(
 	options: &ServerOptions,
 	version: &str,
 	versions: &[String],
@@ -577,6 +536,6 @@ mod tests {
 	fn test_create_keys() {
 		let options = parse_options_str(r#"{"client": {}, "server": {}}"#).unwrap();
 		let versions = [String::from("1.18"), String::from("1.19.3")];
-		create_server_keys(&options.server.unwrap(), "1.19.3", &versions).unwrap();
+		create_keys(&options.server.unwrap(), "1.19.3", &versions).unwrap();
 	}
 }

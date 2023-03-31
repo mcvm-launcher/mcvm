@@ -1,5 +1,4 @@
 mod read;
-mod write;
 mod client;
 mod server;
 
@@ -11,7 +10,6 @@ use itertools::Itertools;
 use serde::Deserialize;
 
 use self::read::parse_options;
-use self::write::{create_client_keys, write_client_key};
 use client::ClientOptions;
 use server::ServerOptions;
 use super::files::paths::Paths;
@@ -48,10 +46,10 @@ pub fn write_options_txt(
 	versions: &[String],
 ) -> anyhow::Result<()> {
 	let mut file = File::create(path).context("Failed to open file")?;
-	let keys = create_client_keys(options, version, versions)
+	let keys = client::create_keys(options, version, versions)
 		.context("Failed to create keys for options")?;
 	for (key, value) in keys.iter().sorted_by_key(|x| x.0) {
-		write_client_key(&key, &value, &mut file)
+		client::write_key(&key, &value, &mut file)
 			.with_context(|| format!("Failed to write line for option {key} with value {value}"))?;
 	}
 	
