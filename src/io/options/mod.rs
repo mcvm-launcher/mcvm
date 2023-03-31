@@ -8,12 +8,22 @@ use std::path::{PathBuf, Path};
 
 use anyhow::Context;
 use itertools::Itertools;
+use serde::Deserialize;
 
-pub use self::read::Options;
 use self::read::parse_options;
-use self::write::{create_keys, write_key};
-
+use self::write::{create_client_keys, write_key};
+use client::ClientOptions;
+use server::ServerOptions;
 use super::files::paths::Paths;
+
+/// General options structure used to produce options for both client and server
+#[derive(Deserialize, Debug, Clone)]
+pub struct Options {
+	#[serde(default)]
+	pub client: Option<ClientOptions>,
+	#[serde(default)]
+	pub server: Option<ServerOptions>,
+}
 
 /// Get the path to the options file
 pub fn get_path(paths: &Paths) -> PathBuf {
@@ -32,13 +42,13 @@ pub async fn read_options(paths: &Paths) -> anyhow::Result<Option<Options>> {
 
 /// Write options.txt to a file
 pub fn write_options_txt(
-	options: &Options,
+	options: &ClientOptions,
 	path: &Path,
 	version: &str,
 	versions: &[String],
 ) -> anyhow::Result<()> {
 	let mut file = File::create(path).context("Failed to open file")?;
-	let keys = create_keys(options, version, versions)
+	let keys = create_client_keys(options, version, versions)
 		.context("Failed to create keys for options")?;
 	for (key, value) in keys.iter().sorted_by_key(|x| x.0) {
 		write_key(&key, &value, &mut file)

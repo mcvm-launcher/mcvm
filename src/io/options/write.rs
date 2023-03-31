@@ -3,8 +3,8 @@ use std::collections::HashMap;
 
 use crate::util::{ToInt, versions::VersionPattern};
 
-use super::read::{Options, OptionsEnum};
-use super::client::{FullscreenResolution, GraphicsMode, CloudRenderMode};
+use super::read::OptionsEnum;
+use super::client::{FullscreenResolution, GraphicsMode, CloudRenderMode, ClientOptions};
 
 /// Creates the string for the list of resource packs
 fn write_resource_packs(resource_packs: &[String]) -> String {
@@ -28,14 +28,13 @@ fn write_fullscreen_resolution(resolution: &FullscreenResolution) -> String {
 	)
 }
 
-/// Write options to a list of keys
-pub fn create_keys(
-	options: &Options,
+/// Write client options to a list of keys
+pub fn create_client_keys(
+	client: &ClientOptions,
 	version: &str,
 	versions: &[String],
 ) -> anyhow::Result<HashMap<String, String>> {
 	let mut out = HashMap::new();
-	let client = &options.client;
 
 	// Version checks
 	let after_12w50a = VersionPattern::After(String::from("12w50a")).matches_single(version, versions);
@@ -295,9 +294,9 @@ mod tests {
 	use super::*;
 
 	#[test]
-	fn test_create_keys() {
-		let options = parse_options_str("{}").unwrap();
+	fn test_create_client_keys() {
+		let options = parse_options_str(r#"{"client": {}, "server": {}}"#).unwrap();
 		let versions = [String::from("1.18"), String::from("1.19.3")];
-		create_keys(&options, "1.19.3", &versions).unwrap();
+		create_client_keys(&options.client.unwrap(), "1.19.3", &versions).unwrap();
 	}
 }

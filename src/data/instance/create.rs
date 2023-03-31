@@ -115,13 +115,15 @@ impl Instance {
 		classpath.add_path(&jar_path);
 
 		if let Some(options) = &manager.options {
-			let options_path = mc_dir.join("options.txt");
-			write_options_txt(
-				options,
-				&options_path,
-				&self.version,
-				manager.version_list.as_ref().expect("Version list missing")
-			).context("Failed to write options.txt")?;
+			if let Some(client) = &options.client {
+				let options_path = mc_dir.join("options.txt");
+				write_options_txt(
+					client,
+					&options_path,
+					&self.version,
+					manager.version_list.as_ref().expect("Version list missing")
+				).context("Failed to write options.txt")?;
+			}
 		}
 
 		self.classpath = Some(classpath);

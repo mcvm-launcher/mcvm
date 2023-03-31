@@ -5,16 +5,7 @@ use serde::Deserialize;
 
 use crate::util::ToInt;
 
-use super::{client::ClientOptions, server::ServerOptions};
-
-/// General options structure used to produce options for both client and server
-#[derive(Deserialize, Debug, Clone)]
-pub struct Options {
-	#[serde(default)]
-	pub client: ClientOptions,
-	#[serde(default)]
-	pub server: ServerOptions,
-}
+use super::Options;
 
 /// Used for values that can be string representations or custom numbers
 #[derive(Deserialize, PartialEq, Debug, Clone)]
