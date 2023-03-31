@@ -281,8 +281,8 @@ pub fn create_client_keys(
 	Ok(out)
 }
 
-/// Write an options key to a writer
-pub fn write_key<W: Write>(key: &str, value: &str, writer: &mut W) -> anyhow::Result<()> {
+/// Write a client options key to a writer
+pub fn write_client_key<W: Write>(key: &str, value: &str, writer: &mut W) -> anyhow::Result<()> {
 	writeln!(writer, "{key}:{value}")?;
 	
 	Ok(())
@@ -294,7 +294,7 @@ mod tests {
 	use super::*;
 
 	#[test]
-	fn test_create_client_keys() {
+	fn test_create_keys() {
 		let options = parse_options_str(r#"{"client": {}, "server": {}}"#).unwrap();
 		let versions = [String::from("1.18"), String::from("1.19.3")];
 		create_client_keys(&options.client.unwrap(), "1.19.3", &versions).unwrap();
