@@ -10,7 +10,7 @@ use crate::data::profile::update::{UpdateRequirement, UpdateManager};
 use crate::io::files::{self, paths::Paths};
 use crate::io::java::JavaKind;
 use crate::io::java::classpath::Classpath;
-use crate::io::options::write_options_txt;
+use crate::io::options::{write_options_txt, write_server_properties};
 use crate::net::fabric_quilt;
 use crate::net::{minecraft, paper};
 use crate::util::{json, print::ReplPrinter};
@@ -29,11 +29,11 @@ impl Instance {
 		};
 		out.insert(UpdateRequirement::Java(java_kind));
 		out.insert(UpdateRequirement::GameJar(self.kind.clone()));
+		out.insert(UpdateRequirement::Options);
 		match &self.kind {
 			InstKind::Client => {
 				out.insert(UpdateRequirement::GameAssets);
 				out.insert(UpdateRequirement::GameLibraries);
-				out.insert(UpdateRequirement::Options);
 			}
 			InstKind::Server => {}
 		}
@@ -115,10 +115,10 @@ impl Instance {
 		classpath.add_path(&jar_path);
 
 		if let Some(options) = &manager.options {
-			if let Some(client) = &options.client {
+			if let Some(options) = &options.client {
 				let options_path = mc_dir.join("options.txt");
 				write_options_txt(
-					client,
+					options,
 					&options_path,
 					&self.version,
 					manager.version_list.as_ref().expect("Version list missing")
@@ -203,6 +203,18 @@ impl Instance {
 		});
 
 		eula_task.await?.context("Failed to create eula.txt")?;
+
+		if let Some(options) = &manager.options {
+			if let Some(options) = &options.server {
+				let options_path = server_dir.join("server.properties");
+				write_server_properties(
+					options,
+					&options_path,
+					&self.version,
+					manager.version_list.as_ref().expect("Version list missing")
+				).context("Failed to write server properties")?;
+			}
+		}
 		
 		self.version_json = Some(version_json);
 		self.classpath = classpath;

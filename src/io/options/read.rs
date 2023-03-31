@@ -7,24 +7,6 @@ use crate::util::ToInt;
 
 use super::Options;
 
-// /// Used for values that can be string representations or custom numbers
-// #[derive(Deserialize, PartialEq, Debug, Clone)]
-// #[serde(untagged)]
-// pub enum EnumOrNumber<T: Clone + ToInt> {
-// 	Mode(T),
-// 	Number(i32),
-// }
-
-// impl<T: Clone + ToInt> ToInt for EnumOrNumber<T> {
-// 	fn to_int(&self) -> i32 {
-// 		match self {
-// 			Self::Mode(mode) => mode.to_int(),
-// 			Self::Number(num) => *num,
-// 		}
-// 	}
-// }
-
-
 /// Used for both difficulty and gamemode to have compatability with different versions
 #[derive(Deserialize, Debug, Clone)]
 #[serde(untagged)]
@@ -84,5 +66,34 @@ mod tests {
 	#[test]
 	fn test_default() {
 		parse_options_str("{}").unwrap();
+	}
+
+	#[derive(Clone)]
+	enum TestEnum {
+		Foo,
+		Bar,
+	}
+
+	impl Display for TestEnum {
+		fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+			write!(f, "{}", match self {
+				Self::Foo => "foo",
+				Self::Bar => "bar",
+			})
+		}
+	}
+
+	impl ToInt for TestEnum {
+		fn to_int(&self) -> i32 {
+			self.clone() as i32
+		}
+	}
+
+	#[test]
+	fn test_enums() {
+		assert_eq!(EnumOrNumber::Enum(TestEnum::Foo).to_int(), 0);
+		assert_eq!(EnumOrNumber::Enum(TestEnum::Bar).to_string(), "bar");
+		assert_eq!(EnumOrNumber::Enum(TestEnum::Foo).to_int().to_string(), "0");
+		assert_eq!(EnumOrString::Enum(TestEnum::Bar).to_string(), "bar");
 	}
 }

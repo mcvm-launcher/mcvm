@@ -55,3 +55,21 @@ pub fn write_options_txt(
 	
 	Ok(())
 }
+
+/// Write server.properties to a file
+pub fn write_server_properties(
+	options: &ServerOptions,
+	path: &Path,
+	version: &str,
+	versions: &[String],
+) -> anyhow::Result<()> {
+	let mut file = File::create(path).context("Failed to open file")?;
+	let keys = server::create_keys(options, version, versions)
+		.context("Failed to create keys for options")?;
+	for (key, value) in keys.iter().sorted_by_key(|x| x.0) {
+		server::write_key(&key, &value, &mut file)
+			.with_context(|| format!("Failed to write line for option {key} with value {value}"))?;
+	}
+
+	Ok(())
+}

@@ -1,4 +1,4 @@
-use std::{collections::HashMap, fmt::Display};
+use std::{collections::HashMap, fmt::Display, io::Write};
 
 use anyhow::Context;
 use serde::Deserialize;
@@ -527,10 +527,31 @@ pub fn create_keys(
 	Ok(out)
 }
 
+/// Escape any unescaped colons. These will not work in the server.properties file
+fn escape_colons(string: &str) -> String {
+	// Remove any user-escaped colons
+	let out = string.replace("\\:", ":");
+	out.replace(":", "\\:")
+}
+
+/// Write a server options key to a writer
+pub fn write_key<W: Write>(key: &str, value: &str, writer: &mut W) -> anyhow::Result<()> {
+	writeln!(writer, "{key}={}", escape_colons(value))?;
+	
+	Ok(())
+}
+
 #[cfg(test)]
 mod tests {
 	use super::*;
 	use crate::io::options::read::parse_options_str;
+
+	#[test]
+	fn test_escape_colons() {
+		assert_eq!(escape_colons("hello"), "hello");
+		assert_eq!(escape_colons("minecraft:flat"), "minecraft\\:flat");
+		assert_eq!(escape_colons("one\\:two:three"), "one\\:two\\:three");
+	}
 
 	#[test]
 	fn test_create_keys() {
