@@ -3,7 +3,8 @@ use std::collections::HashMap;
 
 use crate::util::{ToInt, versions::VersionPattern};
 
-use super::read::{Options, FullscreenResolution, OptionsEnum, GraphicsMode, CloudRenderMode};
+use super::read::{Options, OptionsEnum};
+use super::client::{FullscreenResolution, GraphicsMode, CloudRenderMode};
 
 /// Creates the string for the list of resource packs
 fn write_resource_packs(resource_packs: &[String]) -> String {

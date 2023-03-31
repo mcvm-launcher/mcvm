@@ -1,5 +1,7 @@
 mod read;
 mod write;
+mod client;
+mod server;
 
 use std::fs::File;
 use std::path::{PathBuf, Path};
