@@ -873,6 +873,7 @@ pub fn create_keys(
 	// TODO: Add actual data version
 	// out.insert(String::from("version"), client.data_version.to_string());
 	out.insert(String::from("autoJump"), client.control.auto_jump.to_string());
+	out.insert(String::from("fullscreen"), client.video.fullscreen.to_string());
 	if after_17w47a {
 		out.insert(String::from("autoSuggestions"), client.chat.auto_command_suggestions.to_string());
 	}
