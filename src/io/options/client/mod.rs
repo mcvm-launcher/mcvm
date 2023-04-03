@@ -1,81 +1,85 @@
+mod keybinds;
+
 use std::{fmt::Display, collections::HashMap, io::Write};
 
 use serde::Deserialize;
 
 use crate::util::{mojang::TARGET_64_BIT, ToInt, versions::VersionPattern};
 
+use self::keybinds::Keybind;
+
 use super::read::EnumOrNumber;
 
 #[derive(Deserialize, Debug, Clone)]
 pub struct KeyOptions {
 	#[serde(default = "default_key_attack")]
-	pub attack: String,
+	pub attack: Keybind,
 	#[serde(default = "default_key_use")]
-	pub r#use: String,
+	pub r#use: Keybind,
 	#[serde(default = "default_key_forward")]
-	pub forward: String,
+	pub forward: Keybind,
 	#[serde(default = "default_key_left")]
-	pub left: String,
+	pub left: Keybind,
 	#[serde(default = "default_key_back")]
-	pub back: String,
+	pub back: Keybind,
 	#[serde(default = "default_key_right")]
-	pub right: String,
+	pub right: Keybind,
 	#[serde(default = "default_key_jump")]
-	pub jump: String,
+	pub jump: Keybind,
 	#[serde(default = "default_key_sneak")]
-	pub sneak: String,
+	pub sneak: Keybind,
 	#[serde(default = "default_key_sprint")]
-	pub sprint: String,
+	pub sprint: Keybind,
 	#[serde(default = "default_key_drop")]
-	pub drop: String,
+	pub drop: Keybind,
 	#[serde(default = "default_key_inventory")]
-	pub inventory: String,
+	pub inventory: Keybind,
 	#[serde(default = "default_key_chat")]
-	pub chat: String,
+	pub chat: Keybind,
 	#[serde(default = "default_key_playerlist")]
-	pub playerlist: String,
+	pub playerlist: Keybind,
 	#[serde(default = "default_key_pick_item")]
-	pub pick_item: String,
+	pub pick_item: Keybind,
 	#[serde(default = "default_key_command")]
-	pub command: String,
+	pub command: Keybind,
 	#[serde(default = "default_key_social_interactions")]
-	pub social_interactions: String,
+	pub social_interactions: Keybind,
 	#[serde(default = "default_key_screenshot")]
-	pub screenshot: String,
+	pub screenshot: Keybind,
 	#[serde(default = "default_key_toggle_perspective")]
-	pub toggle_perspective: String,
+	pub toggle_perspective: Keybind,
 	#[serde(default = "default_key_smooth_camera")]
-	pub smooth_camera: String,
+	pub smooth_camera: Keybind,
 	#[serde(default = "default_key_fullscreen")]
-	pub fullscreen: String,
+	pub fullscreen: Keybind,
 	#[serde(default = "default_key_spectator_outlines")]
-	pub spectator_outlines: String,
+	pub spectator_outlines: Keybind,
 	#[serde(default = "default_key_swap_offhand")]
-	pub swap_offhand: String,
+	pub swap_offhand: Keybind,
 	#[serde(default = "default_key_save_toolbar")]
-	pub save_toolbar: String,
+	pub save_toolbar: Keybind,
 	#[serde(default = "default_key_load_toolbar")]
-	pub load_toolbar: String,
+	pub load_toolbar: Keybind,
 	#[serde(default = "default_key_advancements")]
-	pub advancements: String,
+	pub advancements: Keybind,
 	#[serde(default = "default_key_hotbar_1")]
-	pub hotbar_1: String,
+	pub hotbar_1: Keybind,
 	#[serde(default = "default_key_hotbar_2")]
-	pub hotbar_2: String,
+	pub hotbar_2: Keybind,
 	#[serde(default = "default_key_hotbar_3")]
-	pub hotbar_3: String,
+	pub hotbar_3: Keybind,
 	#[serde(default = "default_key_hotbar_4")]
-	pub hotbar_4: String,
+	pub hotbar_4: Keybind,
 	#[serde(default = "default_key_hotbar_5")]
-	pub hotbar_5: String,
+	pub hotbar_5: Keybind,
 	#[serde(default = "default_key_hotbar_6")]
-	pub hotbar_6: String,
+	pub hotbar_6: Keybind,
 	#[serde(default = "default_key_hotbar_7")]
-	pub hotbar_7: String,
+	pub hotbar_7: Keybind,
 	#[serde(default = "default_key_hotbar_8")]
-	pub hotbar_8: String,
+	pub hotbar_8: Keybind,
 	#[serde(default = "default_key_hotbar_9")]
-	pub hotbar_9: String,
+	pub hotbar_9: Keybind,
 }
 
 impl Default for KeyOptions {
@@ -778,40 +782,40 @@ fn default_show_autosave_indicator() -> bool { true }
 fn default_allow_server_listing() -> bool { true }
 fn default_sound_volume() -> f32 { 1.0 }
 fn default_fullscreen_resolution() -> Option<FullscreenResolution> { None }
-fn default_key_attack() -> String { String::from("key.mouse.left") }
-fn default_key_use() -> String { String::from("key.mouse.right") }
-fn default_key_forward() -> String { String::from("key.keyboard.w") }
-fn default_key_left() -> String { String::from("key.keyboard.a") }
-fn default_key_back() -> String { String::from("key.keyboard.s") }
-fn default_key_right() -> String { String::from("key.keyboard.d") }
-fn default_key_jump() -> String { String::from("key.keyboard.space") }
-fn default_key_sneak() -> String { String::from("key.keyboard.left.control") }
-fn default_key_sprint() -> String { String::from("key.keyboard.left.shift") }
-fn default_key_drop() -> String { String::from("key.keyboard.q") }
-fn default_key_inventory() -> String { String::from("key.keyboard.e") }
-fn default_key_chat() -> String { String::from("key.keyboard.t") }
-fn default_key_playerlist() -> String { String::from("key.keyboard.tab") }
-fn default_key_pick_item() -> String { String::from("key.mouse.middle") }
-fn default_key_command() -> String { String::from("key.keyboard.slash") }
-fn default_key_social_interactions() -> String { String::from("key.keyboard.p") }
-fn default_key_screenshot() -> String { String::from("key.keyboard.f2") }
-fn default_key_toggle_perspective() -> String { String::from("key.keyboard.f5") }
-fn default_key_smooth_camera() -> String { String::from("key.keyboard.unknown") }
-fn default_key_fullscreen() -> String { String::from("key.keyboard.f11") }
-fn default_key_spectator_outlines() -> String { String::from("key.keyboard.unknown") }
-fn default_key_swap_offhand() -> String { String::from("key.keyboard.f") }
-fn default_key_save_toolbar() -> String { String::from("key.keyboard.c") }
-fn default_key_load_toolbar() -> String { String::from("key.keyboard.x") }
-fn default_key_advancements() -> String { String::from("key.keyboard.l") }
-fn default_key_hotbar_1() -> String { String::from("key.keyboard.1") }
-fn default_key_hotbar_2() -> String { String::from("key.keyboard.2") }
-fn default_key_hotbar_3() -> String { String::from("key.keyboard.3") }
-fn default_key_hotbar_4() -> String { String::from("key.keyboard.4") }
-fn default_key_hotbar_5() -> String { String::from("key.keyboard.5") }
-fn default_key_hotbar_6() -> String { String::from("key.keyboard.6") }
-fn default_key_hotbar_7() -> String { String::from("key.keyboard.7") }
-fn default_key_hotbar_8() -> String { String::from("key.keyboard.8") }
-fn default_key_hotbar_9() -> String { String::from("key.keyboard.9") }
+fn default_key_attack() -> Keybind { Keybind::MouseLeft }
+fn default_key_use() -> Keybind { Keybind::MouseRight }
+fn default_key_forward() -> Keybind { Keybind::W }
+fn default_key_left() -> Keybind { Keybind::A }
+fn default_key_back() -> Keybind { Keybind::S }
+fn default_key_right() -> Keybind { Keybind::D }
+fn default_key_jump() -> Keybind { Keybind::Space }
+fn default_key_sneak() -> Keybind { Keybind::LeftControl }
+fn default_key_sprint() -> Keybind { Keybind::LeftShift }
+fn default_key_drop() -> Keybind { Keybind::Q }
+fn default_key_inventory() -> Keybind { Keybind::E }
+fn default_key_chat() -> Keybind { Keybind::T }
+fn default_key_playerlist() -> Keybind { Keybind::Tab }
+fn default_key_pick_item() -> Keybind { Keybind::MouseMiddle }
+fn default_key_command() -> Keybind { Keybind::Slash }
+fn default_key_social_interactions() -> Keybind { Keybind::P }
+fn default_key_screenshot() -> Keybind { Keybind::F2 }
+fn default_key_toggle_perspective() -> Keybind { Keybind::F5 }
+fn default_key_smooth_camera() -> Keybind { Keybind::Unbound }
+fn default_key_fullscreen() -> Keybind { Keybind::F11 }
+fn default_key_spectator_outlines() -> Keybind { Keybind::Unbound }
+fn default_key_swap_offhand() -> Keybind { Keybind::F }
+fn default_key_save_toolbar() -> Keybind { Keybind::C }
+fn default_key_load_toolbar() -> Keybind { Keybind::X }
+fn default_key_advancements() -> Keybind { Keybind::L }
+fn default_key_hotbar_1() -> Keybind { Keybind::Num1 }
+fn default_key_hotbar_2() -> Keybind { Keybind::Num2 }
+fn default_key_hotbar_3() -> Keybind { Keybind::Num3 }
+fn default_key_hotbar_4() -> Keybind { Keybind::Num4 }
+fn default_key_hotbar_5() -> Keybind { Keybind::Num5 }
+fn default_key_hotbar_6() -> Keybind { Keybind::Num6 }
+fn default_key_hotbar_7() -> Keybind { Keybind::Num7 }
+fn default_key_hotbar_8() -> Keybind { Keybind::Num8 }
+fn default_key_hotbar_9() -> Keybind { Keybind::Num9 }
 fn default_skin_part() -> bool { true }
 fn default_allow_block_alternatives() -> bool { true }
 
@@ -876,6 +880,7 @@ pub fn create_keys(
 
 	let before_13w42a = VersionPattern::Before(String::from("13w42a")).matches_single(version, versions);
 	let before_15w31a = VersionPattern::Before(String::from("15w31a")).matches_single(version, versions);
+	let before_1_13 = VersionPattern::Before(String::from("1.13")).matches_single(version, versions);
 	let before_20w27a = VersionPattern::Before(String::from("20w27a")).matches_single(version, versions);
 	let before_1_19_4 = VersionPattern::Before(String::from("1.19.4")).matches_single(version, versions);
 
@@ -1006,42 +1011,42 @@ pub fn create_keys(
 		out.insert(String::from("allowServerListing"), client.allow_server_listing.to_string());
 	}
 	// Keybinds
-	out.insert(String::from("key_key.attack"), client.control.keys.attack.clone());
-	out.insert(String::from("key_key.use"), client.control.keys.r#use.clone());
-	out.insert(String::from("key_key.forward"), client.control.keys.forward.clone());
-	out.insert(String::from("key_key.left"), client.control.keys.left.clone());
-	out.insert(String::from("key_key.back"), client.control.keys.back.clone());
-	out.insert(String::from("key_key.right"), client.control.keys.right.clone());
-	out.insert(String::from("key_key.jump"), client.control.keys.jump.clone());
-	out.insert(String::from("key_key.sneak"), client.control.keys.sneak.clone());
-	out.insert(String::from("key_key.sprint"), client.control.keys.sprint.clone());
-	out.insert(String::from("key_key.drop"), client.control.keys.drop.clone());
-	out.insert(String::from("key_key.inventory"), client.control.keys.inventory.clone());
-	out.insert(String::from("key_key.chat"), client.control.keys.chat.clone());
-	out.insert(String::from("key_key.playerlist"), client.control.keys.playerlist.clone());
-	out.insert(String::from("key_key.pickItem"), client.control.keys.pick_item.clone());
-	out.insert(String::from("key_key.command"), client.control.keys.command.clone());
-	out.insert(String::from("key_key.socialInteractions"), client.control.keys.social_interactions.clone());
-	out.insert(String::from("key_key.screenshot"), client.control.keys.screenshot.clone());
-	out.insert(String::from("key_key.togglePerspective"), client.control.keys.toggle_perspective.clone());
-	out.insert(String::from("key_key.smoothCamera"), client.control.keys.smooth_camera.clone());
-	out.insert(String::from("key_key.fullscreen"), client.control.keys.fullscreen.clone());
-	out.insert(String::from("key_key.spectatorOutlines"), client.control.keys.spectator_outlines.clone());
-	out.insert(String::from("key_key.swapOffhand"), client.control.keys.swap_offhand.clone());
+	out.insert(String::from("key_key.attack"), client.control.keys.attack.get_keycode(before_1_13));
+	out.insert(String::from("key_key.use"), client.control.keys.r#use.get_keycode(before_1_13));
+	out.insert(String::from("key_key.forward"), client.control.keys.forward.get_keycode(before_1_13));
+	out.insert(String::from("key_key.left"), client.control.keys.left.get_keycode(before_1_13));
+	out.insert(String::from("key_key.back"), client.control.keys.back.get_keycode(before_1_13));
+	out.insert(String::from("key_key.right"), client.control.keys.right.get_keycode(before_1_13));
+	out.insert(String::from("key_key.jump"), client.control.keys.jump.get_keycode(before_1_13));
+	out.insert(String::from("key_key.sneak"), client.control.keys.sneak.get_keycode(before_1_13));
+	out.insert(String::from("key_key.sprint"), client.control.keys.sprint.get_keycode(before_1_13));
+	out.insert(String::from("key_key.drop"), client.control.keys.drop.get_keycode(before_1_13));
+	out.insert(String::from("key_key.inventory"), client.control.keys.inventory.get_keycode(before_1_13));
+	out.insert(String::from("key_key.chat"), client.control.keys.chat.get_keycode(before_1_13));
+	out.insert(String::from("key_key.playerlist"), client.control.keys.playerlist.get_keycode(before_1_13));
+	out.insert(String::from("key_key.pickItem"), client.control.keys.pick_item.get_keycode(before_1_13));
+	out.insert(String::from("key_key.command"), client.control.keys.command.get_keycode(before_1_13));
+	out.insert(String::from("key_key.socialInteractions"), client.control.keys.social_interactions.get_keycode(before_1_13));
+	out.insert(String::from("key_key.screenshot"), client.control.keys.screenshot.get_keycode(before_1_13));
+	out.insert(String::from("key_key.togglePerspective"), client.control.keys.toggle_perspective.get_keycode(before_1_13));
+	out.insert(String::from("key_key.smoothCamera"), client.control.keys.smooth_camera.get_keycode(before_1_13));
+	out.insert(String::from("key_key.fullscreen"), client.control.keys.fullscreen.get_keycode(before_1_13));
+	out.insert(String::from("key_key.spectatorOutlines"), client.control.keys.spectator_outlines.get_keycode(before_1_13));
+	out.insert(String::from("key_key.swapOffhand"), client.control.keys.swap_offhand.get_keycode(before_1_13));
 	if after_17w06a {
-		out.insert(String::from("key_key.saveToolbarActivator"), client.control.keys.save_toolbar.clone());
-		out.insert(String::from("key_key.loadToolbarActivator"), client.control.keys.load_toolbar.clone());
-		out.insert(String::from("key_key.advancements"), client.control.keys.advancements.clone());
+		out.insert(String::from("key_key.saveToolbarActivator"), client.control.keys.save_toolbar.get_keycode(before_1_13));
+		out.insert(String::from("key_key.loadToolbarActivator"), client.control.keys.load_toolbar.get_keycode(before_1_13));
+		out.insert(String::from("key_key.advancements"), client.control.keys.advancements.get_keycode(before_1_13));
 	}
-	out.insert(String::from("key_key.hotbar.1"), client.control.keys.hotbar_1.clone());
-	out.insert(String::from("key_key.hotbar.2"), client.control.keys.hotbar_2.clone());
-	out.insert(String::from("key_key.hotbar.3"), client.control.keys.hotbar_3.clone());
-	out.insert(String::from("key_key.hotbar.4"), client.control.keys.hotbar_4.clone());
-	out.insert(String::from("key_key.hotbar.5"), client.control.keys.hotbar_5.clone());
-	out.insert(String::from("key_key.hotbar.6"), client.control.keys.hotbar_6.clone());
-	out.insert(String::from("key_key.hotbar.7"), client.control.keys.hotbar_7.clone());
-	out.insert(String::from("key_key.hotbar.8"), client.control.keys.hotbar_8.clone());
-	out.insert(String::from("key_key.hotbar.9"), client.control.keys.hotbar_9.clone());
+	out.insert(String::from("key_key.hotbar.1"), client.control.keys.hotbar_1.get_keycode(before_1_13));
+	out.insert(String::from("key_key.hotbar.2"), client.control.keys.hotbar_2.get_keycode(before_1_13));
+	out.insert(String::from("key_key.hotbar.3"), client.control.keys.hotbar_3.get_keycode(before_1_13));
+	out.insert(String::from("key_key.hotbar.4"), client.control.keys.hotbar_4.get_keycode(before_1_13));
+	out.insert(String::from("key_key.hotbar.5"), client.control.keys.hotbar_5.get_keycode(before_1_13));
+	out.insert(String::from("key_key.hotbar.6"), client.control.keys.hotbar_6.get_keycode(before_1_13));
+	out.insert(String::from("key_key.hotbar.7"), client.control.keys.hotbar_7.get_keycode(before_1_13));
+	out.insert(String::from("key_key.hotbar.8"), client.control.keys.hotbar_8.get_keycode(before_1_13));
+	out.insert(String::from("key_key.hotbar.9"), client.control.keys.hotbar_9.get_keycode(before_1_13));
 	// Volumes
 	if after_13w36a {
 		let (animals_key, blocks_key, mobs_key, players_key, records_key) = {
