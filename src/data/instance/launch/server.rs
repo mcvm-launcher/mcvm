@@ -7,7 +7,7 @@ use crate::io::launch::launch;
 impl Instance {
 	/// Launch a server
 	pub fn launch_server(&mut self, paths: &Paths,debug: bool) -> anyhow::Result<()> {
-		debug_assert!(self.kind == InstKind::Server);
+		debug_assert!(matches!(self.kind, InstKind::Server{..}));
 		match &self.java {
 			Some(java) => match &java.path {
 				Some(java_path) => {

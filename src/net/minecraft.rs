@@ -1,4 +1,4 @@
-use crate::data::instance::InstKind;
+use crate::data::instance::Side;
 use crate::data::profile::update::UpdateManager;
 use crate::io::files::{self, paths::Paths};
 use crate::io::java::classpath::Classpath;
@@ -386,21 +386,21 @@ pub async fn get_assets(
 }
 
 /// Gets the path to a stored game jar file
-pub fn game_jar_path(kind: &InstKind, version: &str, paths: &Paths) -> PathBuf {
-	let side_str = kind.to_string();
+pub fn game_jar_path(side: Side, version: &str, paths: &Paths) -> PathBuf {
+	let side_str = side.to_string();
 	paths.jars.join(format!("{version}_{side_str}.jar"))
 }
 
 /// Downloads the game jar file
 pub async fn get_game_jar(
-	kind: &InstKind,
+	side: Side,
 	version_json: &json::JsonObject,
 	version: &str,
 	paths: &Paths,
 	manager: &UpdateManager,
 ) -> anyhow::Result<()> {
-	let side_str = kind.to_string();
-	let path = game_jar_path(kind, version, paths);
+	let side_str = side.to_string();
+	let path = game_jar_path(side, version, paths);
 	if !manager.should_update_file(&path) {
 		return Ok(());
 	}

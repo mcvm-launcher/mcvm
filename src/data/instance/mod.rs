@@ -7,6 +7,8 @@ use crate::io::launch::LaunchOptions;
 use crate::io::files;
 use crate::io::java::classpath::Classpath;
 use crate::io::java::Java;
+use crate::io::options::client::ClientOptions;
+use crate::io::options::server::ServerOptions;
 use crate::net::fabric_quilt;
 use crate::util::json;
 use crate::Paths;
@@ -18,13 +20,34 @@ use std::fmt::Display;
 use std::fs;
 use std::path::{Path, PathBuf};
 
-#[derive(Debug, Clone, Hash, PartialEq, Eq)]
+#[derive(Debug, Clone)]
 pub enum InstKind {
+	Client {
+		options: Option<ClientOptions>,
+	},
+	Server {
+		options: Option<ServerOptions>,
+	},
+}
+
+impl InstKind {
+	/// Convert to the Side enum
+	pub fn to_side(&self) -> Side {
+		match self {
+			Self::Client { .. } => Side::Client,
+			Self::Server { .. } => Side::Server,
+		}
+	}
+}
+
+/// Minecraft game side, client or server
+#[derive(Debug, Clone, Hash, PartialEq, Eq)]
+pub enum Side {
 	Client,
 	Server,
 }
 
-impl InstKind {
+impl Side {
 	pub fn from_str(string: &str) -> Option<Self> {
 		match string {
 			"client" => Some(Self::Client),
@@ -34,7 +57,7 @@ impl InstKind {
 	}
 }
 
-impl Display for InstKind {
+impl Display for Side {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		write!(f, "{}", match self {
 			Self::Client => "client",
@@ -84,15 +107,15 @@ impl Instance {
 	
 	pub fn get_dir(&self, paths: &Paths) -> PathBuf {
 		match &self.kind {
-			InstKind::Client => paths.project.data_dir().join("client").join(&self.id),
-			InstKind::Server => paths.project.data_dir().join("server").join(&self.id),
+			InstKind::Client{..} => paths.project.data_dir().join("client").join(&self.id),
+			InstKind::Server{..} => paths.project.data_dir().join("server").join(&self.id),
 		}
 	}
 	
 	pub fn get_subdir(&self, paths: &Paths) -> PathBuf {
 		self.get_dir(paths).join(match self.kind {
-			InstKind::Client => ".minecraft",
-			InstKind::Server => "server",
+			InstKind::Client{..} => ".minecraft",
+			InstKind::Server{..} => "server",
 		})
 	}
 
@@ -111,11 +134,11 @@ impl Instance {
 	) -> anyhow::Result<Classpath> {
 		let meta = fabric_quilt::get_meta(&self.version, &mode).await?;
 		let classpath =
-			fabric_quilt::download_files(&meta, paths, self.kind.clone(), mode, manager).await
+			fabric_quilt::download_files(&meta, paths, self.kind.to_side(), mode, manager).await
 				.context("Failed to download Fabric/Quilt")?;
 		self.main_class = Some(match self.kind {
-			InstKind::Client => meta.launcher_meta.main_class.client,
-			InstKind::Server => meta.launcher_meta.main_class.server,
+			InstKind::Client{..} => meta.launcher_meta.main_class.client,
+			InstKind::Server{..} => meta.launcher_meta.main_class.server,
 		});
 
 		Ok(classpath)
@@ -125,7 +148,7 @@ impl Instance {
 		let inst_dir = self.get_subdir(paths);
 		match addon.kind {
 			AddonKind::ResourcePack => {
-				if let InstKind::Client = self.kind {
+				if let InstKind::Client{..} = self.kind {
 					Some(inst_dir.join("resourcepacks"))
 				} else {
 					None
@@ -133,14 +156,14 @@ impl Instance {
 			}
 			AddonKind::Mod => Some(inst_dir.join("mods")),
 			AddonKind::Plugin => {
-				if let InstKind::Server = self.kind {
+				if let InstKind::Server{..} = self.kind {
 					Some(inst_dir.join("plugins"))
 				} else {
 					None
 				}
 			}
 			AddonKind::Shader => {
-				if let InstKind::Client = self.kind {
+				if let InstKind::Client{..} = self.kind {
 					Some(inst_dir.join("shaders"))
 				} else {
 					None
@@ -200,14 +223,14 @@ impl Instance {
 		paper_file_name: Option<String>,
 	) -> anyhow::Result<()> {
 		match self.kind {
-			InstKind::Client => {
+			InstKind::Client{..} => {
 				let inst_dir = self.get_dir(paths);
 				let jar_path = inst_dir.join("client.jar");
 				if jar_path.exists() {
 					fs::remove_file(jar_path).context("Failed to remove client.jar")?;
 				}
 			}
-			InstKind::Server => {
+			InstKind::Server{..} => {
 				let inst_dir = self.get_subdir(paths);
 				let jar_path = inst_dir.join("server.jar");
 				if jar_path.exists() {

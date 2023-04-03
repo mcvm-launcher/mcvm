@@ -1,4 +1,4 @@
-use std::collections::HashSet;
+use std::collections::{HashSet, HashMap};
 use std::fs;
 use std::path::PathBuf;
 
@@ -10,7 +10,7 @@ use crate::data::profile::update::{UpdateRequirement, UpdateManager};
 use crate::io::files::{self, paths::Paths};
 use crate::io::java::JavaKind;
 use crate::io::java::classpath::Classpath;
-use crate::io::options::{write_options_txt, write_server_properties};
+use crate::io::options::{self, write_options_txt, write_server_properties};
 use crate::net::fabric_quilt;
 use crate::net::{minecraft, paper};
 use crate::util::{json, print::ReplPrinter};
@@ -28,14 +28,14 @@ impl Instance {
 			x => x.clone(),
 		};
 		out.insert(UpdateRequirement::Java(java_kind));
-		out.insert(UpdateRequirement::GameJar(self.kind.clone()));
+		out.insert(UpdateRequirement::GameJar(self.kind.to_side()));
 		out.insert(UpdateRequirement::Options);
 		match &self.kind {
-			InstKind::Client => {
+			InstKind::Client{..} => {
 				out.insert(UpdateRequirement::GameAssets);
 				out.insert(UpdateRequirement::GameLibraries);
 			}
-			InstKind::Server => {}
+			InstKind::Server{..} => {}
 		}
 		out
 	}
@@ -48,7 +48,7 @@ impl Instance {
 		paths: &Paths,
 	) -> anyhow::Result<HashSet<PathBuf>> {
 		match &self.kind {
-			InstKind::Client => {
+			InstKind::Client{..} => {
 				if manager.force {
 					cprintln!("<s>Rebuilding client <y!>{}</y!>", self.id);
 				} else {
@@ -58,7 +58,7 @@ impl Instance {
 					.context("Failed to create client")?;
 				Ok(files)
 			}
-			InstKind::Server => {
+			InstKind::Server{..} => {
 				if manager.force {
 					cprintln!("<s>Rebuilding server <c!>{}</c!>", self.id);
 				} else {
@@ -77,15 +77,15 @@ impl Instance {
 		manager: &UpdateManager,
 		paths: &Paths,
 	) -> anyhow::Result<HashSet<PathBuf>> {
-		debug_assert!(self.kind == InstKind::Client);
-		let out = HashSet::new();
+		debug_assert!(matches!(self.kind, InstKind::Client{..}));
 		
+		let out = HashSet::new();
 		let dir = self.get_dir(paths);
 		files::create_leading_dirs(&dir)?;
 		files::create_dir(&dir)?;
 		let mc_dir = self.get_subdir(paths);
 		files::create_dir(&mc_dir)?;
-		let jar_path = minecraft::game_jar_path(&self.kind, &self.version, paths);
+		let jar_path = minecraft::game_jar_path(self.kind.to_side(), &self.version, paths);
 
 		let version_json = manager.version_json.clone().expect("Version json missing");
 
@@ -114,21 +114,37 @@ impl Instance {
 
 		classpath.add_path(&jar_path);
 
-		if let Some(options) = &manager.options {
-			if let Some(options) = &options.client {
-				let options_path = mc_dir.join("options.txt");
-				write_options_txt(
-					options,
-					&options_path,
+		let mut keys = HashMap::new();
+		let version_list = manager.version_list.as_ref().expect("Version list missing");
+		if let Some(global_options) = &manager.options {
+			if let Some(global_options) = &global_options.client {
+				let global_keys = options::client::create_keys(
+					global_options,
 					&self.version,
-					manager.version_list.as_ref().expect("Version list missing")
-				).context("Failed to write options.txt")?;
+					&version_list,
+				).context("Failed to create keys for global options")?;
+				keys.extend(global_keys);
 			}
+		}
+		if let InstKind::Client { options } = &self.kind {
+			if let Some(options) = options {
+				let override_keys = options::client::create_keys(
+					options,
+					&self.version,
+					&version_list,
+				).context("Failed to create keys for override options")?;
+				keys.extend(override_keys);
+			}
+		}
+		if !keys.is_empty() {
+			let options_path = mc_dir.join("options.txt");
+			write_options_txt(&keys, &options_path).context("Failed to write options.txt")?;
 		}
 
 		self.classpath = Some(classpath);
 		self.version_json = Some(version_json);
 		self.jar_path = Some(jar_path);
+
 		Ok(out)
 	}
 
@@ -138,9 +154,9 @@ impl Instance {
 		manager: &UpdateManager,
 		paths: &Paths,
 	) -> anyhow::Result<HashSet<PathBuf>> {
-		debug_assert!(self.kind == InstKind::Server);
-		let mut out = HashSet::new();
+		debug_assert!(matches!(self.kind, InstKind::Server{..}));
 		
+		let mut out = HashSet::new();
 		let dir = self.get_dir(paths);
 		files::create_leading_dirs(&dir)?;
 		files::create_dir(&dir)?;
@@ -173,7 +189,7 @@ impl Instance {
 		
 		self.jar_path = Some(match self.plugin_loader {
 			PluginLoader::Vanilla => {
-				let extern_jar_path = minecraft::game_jar_path(&self.kind, &self.version, paths);
+				let extern_jar_path = minecraft::game_jar_path(self.kind.to_side(), &self.version, paths);
 				if manager.should_update_file(&jar_path) {
 					fs::hard_link(extern_jar_path, &jar_path).context("Failed to hardlink server.jar")?;
 					out.insert(jar_path.clone());
@@ -204,20 +220,36 @@ impl Instance {
 
 		eula_task.await?.context("Failed to create eula.txt")?;
 
-		if let Some(options) = &manager.options {
-			if let Some(options) = &options.server {
-				let options_path = server_dir.join("server.properties");
-				write_server_properties(
-					options,
-					&options_path,
+		let mut keys = HashMap::new();
+		let version_list = manager.version_list.as_ref().expect("Version list missing");
+		if let Some(global_options) = &manager.options {
+			if let Some(global_options) = &global_options.server {
+				let global_keys = options::server::create_keys(
+					global_options,
 					&self.version,
-					manager.version_list.as_ref().expect("Version list missing")
-				).context("Failed to write server properties")?;
+					&version_list,
+				).context("Failed to create keys for global options")?;
+				keys.extend(global_keys);
 			}
+		}
+		if let InstKind::Server { options } = &self.kind {
+			if let Some(options) = options {
+				let override_keys = options::server::create_keys(
+					options,
+					&self.version,
+					&version_list,
+				).context("Failed to create keys for override options")?;
+				keys.extend(override_keys);
+			}
+		}
+		if !keys.is_empty() {
+			let options_path = server_dir.join("server.properties");
+			write_server_properties(&keys, &options_path).context("Failed to write server.properties")?;
 		}
 		
 		self.version_json = Some(version_json);
 		self.classpath = classpath;
+
 		Ok(out)
 	}
 }

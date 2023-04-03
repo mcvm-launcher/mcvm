@@ -5,7 +5,7 @@ use super::instruction::{InstrKind, Instruction};
 use super::parse::{Block, BlockId};
 use super::Value;
 use crate::data::addon::{Addon, AddonLocation, AddonRequest, Modloader, PluginLoader};
-use crate::data::instance::InstKind;
+use crate::data::instance::Side;
 use crate::io::files::paths::Paths;
 use crate::package::reg::PkgIdentifier;
 use crate::util::versions::VersionPattern;
@@ -115,7 +115,7 @@ pub struct EvalConstants {
 	pub version: String,
 	pub modloader: Modloader,
 	pub plugin_loader: PluginLoader,
-	pub side: InstKind,
+	pub side: Side,
 	pub features: Vec<String>,
 	pub versions: Vec<String>,
 	pub perms: EvalPermissions,

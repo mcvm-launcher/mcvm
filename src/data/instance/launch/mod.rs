@@ -28,10 +28,10 @@ impl Instance {
 		self.create(&manager, paths).await.context("Failed to update instance")?;
 		cprintln!("<g>Launching!");
 		match &self.kind {
-			InstKind::Client => {
+			InstKind::Client {..} => {
 				self.launch_client(paths, auth, debug).context("Failed to launch client")?;
 			}
-			InstKind::Server => {
+			InstKind::Server {..} => {
 				self.launch_server(paths, debug).context("Failed to launch server")?;
 			}
 		}

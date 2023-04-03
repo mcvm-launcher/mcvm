@@ -1,7 +1,7 @@
 use anyhow::bail;
 
 use crate::data::addon::{ModloaderMatch, PluginLoaderMatch};
-use crate::data::instance::InstKind;
+use crate::data::instance::Side;
 use crate::unexpected_token;
 use crate::util::versions::VersionPattern;
 
@@ -14,7 +14,7 @@ use super::Value;
 pub enum ConditionKind {
 	Not(Option<Box<ConditionKind>>),
 	Version(Value),
-	Side(Option<InstKind>),
+	Side(Option<Side>),
 	Modloader(Option<ModloaderMatch>),
 	PluginLoader(Option<PluginLoaderMatch>),
 	Feature(Value),
@@ -53,7 +53,7 @@ impl ConditionKind {
 			},
 			Self::Version(val) | Self::Feature(val) => *val = parse_arg(tok, pos)?,
 			Self::Side(side) => match tok {
-				Token::Ident(name) => match InstKind::from_str(name) {
+				Token::Ident(name) => match Side::from_str(name) {
 					Some(kind) => *side = Some(kind),
 					None => {
 						bail!("Unknown condition argument '{}' {}", name.to_owned(), pos.clone());

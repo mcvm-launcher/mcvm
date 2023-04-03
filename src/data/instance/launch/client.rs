@@ -12,7 +12,7 @@ use crate::{skip_fail, skip_none};
 impl Instance {
 	/// Launch a client
 	pub fn launch_client(&mut self, paths: &Paths, auth: &Auth, debug: bool) -> anyhow::Result<()> {
-		debug_assert!(self.kind == InstKind::Client);
+		debug_assert!(matches!(self.kind, InstKind::Client{..}));
 		match &self.java {
 			Some(java) => match &java.path {
 				Some(java_path) => {

@@ -4,7 +4,7 @@ use std::path::{PathBuf, Path};
 use anyhow::Context;
 use color_print::cprintln;
 
-use crate::data::instance::InstKind;
+use crate::data::instance::Side;
 use crate::io::options::{Options, read_options};
 use crate::net::minecraft::{get_version_manifest, get_version_json, make_version_list, get_assets, get_libraries, get_game_jar};
 use crate::util::{json, print::PrintOptions};
@@ -18,7 +18,7 @@ pub enum UpdateRequirement {
 	GameAssets,
 	GameLibraries,
 	Java(JavaKind),
-	GameJar(InstKind),
+	GameJar(Side),
 	Options,
 }
 
@@ -158,8 +158,8 @@ impl UpdateManager {
 		if game_jar_required {
 			let version_json = self.version_json.as_ref().expect("Version json missing");
 			for req in self.requirements.iter() {
-				if let UpdateRequirement::GameJar(kind) = req {
-					get_game_jar(kind, version_json, version, paths, self).await
+				if let UpdateRequirement::GameJar(side) = req {
+					get_game_jar(side.clone(), version_json, version, paths, self).await
 						.context("Failed to get the game JAR file")?;
 				}
 			}

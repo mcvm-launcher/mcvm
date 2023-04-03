@@ -5,7 +5,7 @@ use reqwest::Client;
 use serde::Deserialize;
 use anyhow::{Context, anyhow};
 
-use crate::data::instance::InstKind;
+use crate::data::instance::Side;
 use crate::data::profile::update::UpdateManager;
 use crate::io::files;
 use crate::io::files::paths::Paths;
@@ -173,7 +173,7 @@ async fn download_main_library(
 pub async fn download_files(
 	meta: &FabricQuiltMeta,
 	paths: &Paths,
-	side: InstKind,
+	side: Side,
 	mode: Mode,
 	manager: &UpdateManager,
 ) -> anyhow::Result<Classpath> {
@@ -188,8 +188,8 @@ pub async fn download_files(
 	);
 
 	let libs = match side {
-		InstKind::Client => meta.launcher_meta.libraries.client.clone(),
-		InstKind::Server => meta.launcher_meta.libraries.server.clone(),
+		Side::Client => meta.launcher_meta.libraries.client.clone(),
+		Side::Server => meta.launcher_meta.libraries.server.clone(),
 	};
 	let paths_clone = paths.clone();
 	let side_task = tokio::spawn(

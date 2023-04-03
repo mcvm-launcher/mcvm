@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use anyhow::{anyhow, Context};
+use anyhow::Context;
 use serde::Deserialize;
 use serde_json::Value;
 
@@ -9,6 +9,8 @@ use crate::data::instance::{InstKind, Instance};
 use crate::data::profile::Profile;
 use crate::io::java::args::{MemoryNum, ArgsPreset};
 use crate::io::java::JavaKind;
+use crate::io::options::client::ClientOptions;
+use crate::io::options::server::ServerOptions;
 
 #[derive(Deserialize, Debug)]
 #[serde(untagged)]
@@ -117,12 +119,30 @@ impl Default for LaunchConfig {
 	}
 }
 
+/// Enum for either type of options
+#[derive(Deserialize, Debug, Clone)]
+#[serde(untagged)]
+pub enum OptionsInstanceConfig {
+	Client(ClientOptions),
+	Server(ServerOptions),
+}
+
 #[derive(Deserialize)]
-struct InstanceConfig {
-	#[serde(rename = "type")]
-	kind: String,
-	#[serde(default)]
-	launch: LaunchConfig,
+#[serde(tag = "type")]
+#[serde(rename_all = "snake_case")]
+enum InstanceConfig {
+	Client {
+		#[serde(default)]
+		launch: LaunchConfig,
+		#[serde(default)]
+		options: Option<ClientOptions>,
+	},
+	Server {
+		#[serde(default)]
+		launch: LaunchConfig,
+		#[serde(default)]
+		options: Option<ServerOptions>,
+	},
 }
 
 pub fn parse_instance_config(
@@ -132,11 +152,14 @@ pub fn parse_instance_config(
 ) -> anyhow::Result<Instance> {
 	let config = serde_json::from_value::<InstanceConfig>(val.clone())
 		.context("Failed to parse instance config")?;
-	let kind = match config.kind.as_str() {
-		"client" => Ok(InstKind::Client),
-		"server" => Ok(InstKind::Server),
-		typ => Err(anyhow!("Unknown instance type '{typ}' on instance '{id}'")),
-	}?;
+	let (kind, launch) = match config {
+		InstanceConfig::Client { launch, options } => {
+			(InstKind::Client { options }, launch)
+		},
+		InstanceConfig::Server { launch, options } => {
+			(InstKind::Server { options }, launch)
+		},
+	};
 
 	let instance = Instance::new(
 		kind,
@@ -144,7 +167,7 @@ pub fn parse_instance_config(
 		&profile.version,
 		profile.modloader.clone(),
 		profile.plugin_loader.clone(),
-		config.launch.to_options(),
+		launch.to_options(),
 	);
 
 	Ok(instance)

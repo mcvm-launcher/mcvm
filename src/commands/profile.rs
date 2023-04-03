@@ -50,8 +50,8 @@ async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
 					if let Some(instance) = config.instances.get(inst_id) {
 						cprint!("   {}", HYPHEN_POINT);
 						match instance.kind {
-							InstKind::Client => cprint!("<y!>Client {}", inst_id),
-							InstKind::Server => cprint!("<c!>Server {}", inst_id),
+							InstKind::Client{..} => cprint!("<y!>Client {}", inst_id),
+							InstKind::Server{..} => cprint!("<c!>Server {}", inst_id),
 						}
 						cprintln!();
 					}
@@ -85,8 +85,8 @@ fn list(data: &mut CmdData) -> anyhow::Result<()> {
 			for inst_id in profile.instances.iter() {
 				if let Some(instance) = config.instances.get(inst_id) {
 					match instance.kind {
-						InstKind::Client => cprintln!("   {}<y!>{}", HYPHEN_POINT, inst_id),
-						InstKind::Server => cprintln!("   {}<c!>{}", HYPHEN_POINT, inst_id),
+						InstKind::Client{..} => cprintln!("   {}<y!>{}", HYPHEN_POINT, inst_id),
+						InstKind::Server{..} => cprintln!("   {}<c!>{}", HYPHEN_POINT, inst_id),
 					}
 				}
 			}
@@ -159,7 +159,7 @@ async fn profile_update(data: &mut CmdData, id: &str, force: bool) -> anyhow::Re
 									version: profile.version.clone(),
 									modloader: profile.modloader.clone(),
 									plugin_loader: profile.plugin_loader.clone(),
-									side: instance.kind.clone(),
+									side: instance.kind.to_side(),
 									features: pkg.features.clone(),
 									versions: version_list.clone(),
 									perms: pkg.permissions.clone(),
