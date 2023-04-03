@@ -11,7 +11,8 @@ pub async fn run(instance: &str, debug: bool, data: &mut CmdData) -> anyhow::Res
 			if let Some(instance) = config.instances.get_mut(instance) {
 				instance
 					.launch(paths, &config.auth, debug)
-					.await.context("Instance failed to launch")?;
+					.await
+					.context("Instance failed to launch")?;
 			} else {
 				bail!("Unknown instance '{}'", instance);
 			}

@@ -2,7 +2,7 @@ pub mod instance;
 mod preferences;
 
 use self::instance::parse_instance_config;
-use anyhow::{bail, anyhow, Context};
+use anyhow::{anyhow, bail, Context};
 use preferences::ConfigPreferences;
 
 use super::addon::{game_modifications_compatible, Modloader, PluginLoader};
@@ -139,8 +139,8 @@ impl Config {
 				Some(loader) => json::ensure_type(loader.as_str(), JsonType::Str),
 				None => Ok("vanilla"),
 			}?;
-			let modloader = Modloader::from_str(modloader)
-				.ok_or(anyhow!("Unknown modloader '{modloader}'"))?;
+			let modloader =
+				Modloader::from_str(modloader).ok_or(anyhow!("Unknown modloader '{modloader}'"))?;
 
 			let plugin_loader = match profile_obj.get("plugin_loader") {
 				Some(loader) => json::ensure_type(loader.as_str(), JsonType::Str),
@@ -202,7 +202,9 @@ impl Config {
 									let package_version =
 										match json::access_str(package_obj, "version") {
 											Ok(version) => Ok(version),
-											Err(..) => Err(anyhow!("Local packages must specify a version")),
+											Err(..) => Err(anyhow!(
+												"Local packages must specify a version"
+											)),
 										}?;
 									packages.insert_local(
 										&req,
@@ -211,7 +213,9 @@ impl Config {
 									);
 								}
 								"remote" => {}
-								typ => bail!("Unknown package type '{typ}' for package '{package_id}'"),
+								typ => {
+									bail!("Unknown package type '{typ}' for package '{package_id}'")
+								}
 							}
 						}
 						let features = match package_obj.get("features") {

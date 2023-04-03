@@ -4,8 +4,8 @@ use anyhow::Context;
 
 use crate::data::instance::Instance;
 use crate::package::PkgConfig;
-use crate::Paths;
 use crate::util::print::PrintOptions;
+use crate::Paths;
 
 use self::update::UpdateManager;
 

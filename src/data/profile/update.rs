@@ -1,15 +1,18 @@
 use std::collections::HashSet;
-use std::path::{PathBuf, Path};
+use std::path::{Path, PathBuf};
 
 use anyhow::Context;
 use color_print::cprintln;
 
 use crate::data::instance::Side;
-use crate::io::options::{Options, read_options};
-use crate::net::minecraft::{get_version_manifest, get_version_json, make_version_list, get_assets, get_libraries, get_game_jar};
-use crate::util::{json, print::PrintOptions};
 use crate::io::files::paths::Paths;
-use crate::io::java::{JavaKind, Java};
+use crate::io::java::{Java, JavaKind};
+use crate::io::options::{read_options, Options};
+use crate::net::minecraft::{
+	get_assets, get_game_jar, get_libraries, get_version_json, get_version_manifest,
+	make_version_list,
+};
+use crate::util::{json, print::PrintOptions};
 
 /// Requirements for operations that may be shared by multiple instances in a profile
 #[derive(Debug, Hash, PartialEq, Eq)]
@@ -87,12 +90,16 @@ impl UpdateManager {
 		version: &str,
 	) -> anyhow::Result<()> {
 		let java_required = matches!(
-			self.requirements.iter().find(|x| matches!(x, UpdateRequirement::Java(..))),
+			self.requirements
+				.iter()
+				.find(|x| matches!(x, UpdateRequirement::Java(..))),
 			Some(..)
 		);
 
 		let game_jar_required = matches!(
-			self.requirements.iter().find(|x| matches!(x, UpdateRequirement::GameJar(..))),
+			self.requirements
+				.iter()
+				.find(|x| matches!(x, UpdateRequirement::GameJar(..))),
 			Some(..)
 		);
 
@@ -101,9 +108,10 @@ impl UpdateManager {
 		}
 
 		if java_required
-		|| game_jar_required
-		|| self.has_requirement(UpdateRequirement::GameAssets)
-		|| self.has_requirement(UpdateRequirement::GameLibraries) {
+			|| game_jar_required
+			|| self.has_requirement(UpdateRequirement::GameAssets)
+			|| self.has_requirement(UpdateRequirement::GameLibraries)
+		{
 			self.add_requirement(UpdateRequirement::VersionJson);
 		}
 
@@ -111,24 +119,29 @@ impl UpdateManager {
 			if self.print.verbose {
 				cprintln!("<s>Obtaining version index...");
 			}
-			let manifest = get_version_manifest(paths).await
+			let manifest = get_version_manifest(paths)
+				.await
 				.context("Failed to get version manifest")?;
-			let version_json= get_version_json(version, &manifest, paths).await
+			let version_json = get_version_json(version, &manifest, paths)
+				.await
 				.context("Failed to get version json")?;
 			self.version_json = Some(version_json);
-			self.version_list = Some(make_version_list(&manifest).context("Failed to compose a list of versions")?);
+			self.version_list =
+				Some(make_version_list(&manifest).context("Failed to compose a list of versions")?);
 		}
 
 		if self.has_requirement(UpdateRequirement::GameAssets) {
 			let version_json = self.version_json.as_ref().expect("Version json missing");
-			let files = get_assets(version_json, paths, version, self).await
+			let files = get_assets(version_json, paths, version, self)
+				.await
 				.context("Failed to get game assets")?;
 			self.add_files(files);
 		}
-		
+
 		if self.has_requirement(UpdateRequirement::GameLibraries) {
 			let version_json = self.version_json.as_ref().expect("Version json missing");
-			let files = get_libraries(version_json, paths, version, self).await
+			let files = get_libraries(version_json, paths, version, self)
+				.await
 				.context("Failed to get game libraries")?;
 			self.add_files(files);
 		}
@@ -145,13 +158,15 @@ impl UpdateManager {
 				if let UpdateRequirement::Java(kind) = req {
 					let mut java = Java::new(kind.clone());
 					java.add_version(&java_vers.to_string());
-					let files = java.install(paths, self).await
+					let files = java
+						.install(paths, self)
+						.await
 						.context("Failed to install Java")?;
 					java_files.extend(files);
 					self.java = Some(java);
 				}
 			}
-			
+
 			self.add_files(java_files);
 		}
 
@@ -159,14 +174,17 @@ impl UpdateManager {
 			let version_json = self.version_json.as_ref().expect("Version json missing");
 			for req in self.requirements.iter() {
 				if let UpdateRequirement::GameJar(side) = req {
-					get_game_jar(side.clone(), version_json, version, paths, self).await
+					get_game_jar(side.clone(), version_json, version, paths, self)
+						.await
 						.context("Failed to get the game JAR file")?;
 				}
 			}
 		}
 
 		if self.has_requirement(UpdateRequirement::Options) {
-			let options = read_options(paths).await.context("Failed to read options.json")?;
+			let options = read_options(paths)
+				.await
+				.context("Failed to read options.json")?;
 			self.options = options;
 		}
 

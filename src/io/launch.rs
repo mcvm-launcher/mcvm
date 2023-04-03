@@ -42,9 +42,9 @@ impl LaunchOptions {
 		let avg = match &self.min_mem {
 			Some(min) => match &self.max_mem {
 				Some(max) => Some(MemoryNum::avg(min.clone(), max.clone())),
-				None => None
-			}
-			None => None	
+				None => None,
+			},
+			None => None,
 		};
 		out.extend(self.preset.generate_args(avg));
 
@@ -54,7 +54,10 @@ impl LaunchOptions {
 
 fn log_file_name(instance_name: &str) -> anyhow::Result<String> {
 	let now = SystemTime::now();
-	Ok(format!("{instance_name}-{}.txt", now.duration_since(UNIX_EPOCH)?.as_secs()))
+	Ok(format!(
+		"{instance_name}-{}.txt",
+		now.duration_since(UNIX_EPOCH)?.as_secs()
+	))
 }
 
 fn log_file_path(instance_name: &str, paths: &Paths) -> anyhow::Result<PathBuf> {
@@ -85,7 +88,7 @@ pub fn launch(
 	};
 	cmd.current_dir(cwd);
 	cmd.envs(options.env.clone());
-	
+
 	cmd.args(options.generate_jvm_args());
 	cmd.args(jvm_args);
 	if let Some(main_class) = main_class {
@@ -102,6 +105,6 @@ pub fn launch(
 
 	let mut child = cmd.spawn().context("Failed to spawn child process")?;
 	child.wait().context("Failed to wait for child process")?;
-	
+
 	Ok(())
 }

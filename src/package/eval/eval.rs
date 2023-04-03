@@ -105,11 +105,15 @@ impl FailReason {
 
 impl Display for FailReason {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		write!(f, "{}", match self {
-			Self::None => "",
-			Self::UnsupportedVersion => "Unsupported Minecraft version",
-			Self::UnsupportedModloader => "Unsupported modloader",
-		})
+		write!(
+			f,
+			"{}",
+			match self {
+				Self::None => "",
+				Self::UnsupportedVersion => "Unsupported Minecraft version",
+				Self::UnsupportedModloader => "Unsupported modloader",
+			}
+		)
 	}
 }
 

@@ -107,10 +107,13 @@ impl AddonRequest {
 		create_leading_dirs(&path)?;
 		match &self.location {
 			AddonLocation::Remote(url) => {
-				download_file(url, &path).await.context("Failed to download addon")?;
+				download_file(url, &path)
+					.await
+					.context("Failed to download addon")?;
 			}
 			AddonLocation::Local(actual_path) => {
-				tokio::fs::hard_link(actual_path, path).await
+				tokio::fs::hard_link(actual_path, path)
+					.await
 					.context("Failed to hardlink local addon")?;
 			}
 		}

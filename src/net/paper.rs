@@ -4,7 +4,7 @@ use anyhow::{anyhow, Context};
 use reqwest::Client;
 use serde::Deserialize;
 
-use super::download::{download_text, download_file};
+use super::download::{download_file, download_text};
 
 #[derive(Deserialize)]
 struct VersionInfoResponse {
@@ -18,7 +18,10 @@ pub async fn get_newest_build(version: &str) -> anyhow::Result<(u16, Client)> {
 	let resp =
 		serde_json::from_str::<VersionInfoResponse>(&client.get(url).send().await?.text().await?)?;
 
-	let build = resp.builds.last().ok_or(anyhow!("Could not find a valid Paper version"))?;
+	let build = resp
+		.builds
+		.last()
+		.ok_or(anyhow!("Could not find a valid Paper version"))?;
 
 	Ok((*build, client))
 }
@@ -58,8 +61,10 @@ pub async fn download_server_jar(
 	let num_str = build_num.to_string();
 	let file_path = path.join(file_name);
 	let url = format!("https://api.papermc.io/v2/projects/paper/versions/{version}/builds/{num_str}/downloads/{file_name}");
-	
-	download_file(&url, &file_path).await.context("Failed to download file")?;
+
+	download_file(&url, &file_path)
+		.await
+		.context("Failed to download file")?;
 
 	Ok(file_path)
 }

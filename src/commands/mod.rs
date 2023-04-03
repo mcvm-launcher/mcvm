@@ -5,16 +5,16 @@ mod profile;
 mod user;
 
 use anyhow::Context;
-use clap::{Subcommand, Parser};
+use clap::{Parser, Subcommand};
 use color_print::cprintln;
 
 use crate::data::config::Config;
 use crate::io::files::paths::Paths;
 
-use self::package::PackageSubcommand;
 use self::files::FilesSubcommand;
-use self::user::UserSubcommand;
+use self::package::PackageSubcommand;
 use self::profile::ProfileSubcommand;
+use self::user::UserSubcommand;
 
 // Data passed to commands
 pub struct CmdData {
@@ -39,11 +39,12 @@ impl CmdData {
 
 	pub fn ensure_config(&mut self) -> anyhow::Result<()> {
 		if self.config.is_none() {
-			self.ensure_paths().context("Failed to set up directories")?;
+			self.ensure_paths()
+				.context("Failed to set up directories")?;
 			if let Some(paths) = &self.paths {
 				self.config = Some(
 					Config::load(&paths.project.config_dir().join("mcvm.json"))
-						.context("Failed to load config")?
+						.context("Failed to load config")?,
 				);
 			}
 		}
@@ -78,7 +79,7 @@ pub enum Command {
 		#[command(subcommand)]
 		command: FilesSubcommand,
 	},
-	#[command(about = "Manage packages",)]
+	#[command(about = "Manage packages")]
 	Package {
 		#[command(subcommand)]
 		command: PackageSubcommand,
@@ -97,7 +98,10 @@ pub async fn run_cli(data: &mut CmdData) -> anyhow::Result<()> {
 		Command::Profile { command } => profile::run(command, data).await,
 		Command::User { command } => user::run(command, data),
 		Command::Launch { debug, instance } => launch::run(&instance, debug, data).await,
-		Command::Version => Ok(cprintln!("mcvm version <g>{}</g>", env!("CARGO_PKG_VERSION"))),
+		Command::Version => Ok(cprintln!(
+			"mcvm version <g>{}</g>",
+			env!("CARGO_PKG_VERSION")
+		)),
 		Command::Files { command } => files::run(command, data),
 		Command::Package { command } => package::run(command, data).await,
 	}

@@ -3,7 +3,7 @@ pub mod classpath;
 
 use crate::data::profile::update::UpdateManager;
 use crate::io::files::{self, paths::Paths};
-use crate::net::download::{download_text, download_file};
+use crate::net::download::{download_file, download_text};
 use crate::util::json::{self, JsonType};
 use crate::util::mojang::{ARCH_STRING, OS_STRING};
 use crate::util::print::ReplPrinter;
@@ -53,8 +53,11 @@ impl Java {
 	}
 
 	/// Download / install all needed files
-	pub async fn install(&mut self, paths: &Paths, manager: &UpdateManager)
-	-> anyhow::Result<HashSet<PathBuf>> {
+	pub async fn install(
+		&mut self,
+		paths: &Paths,
+		manager: &UpdateManager,
+	) -> anyhow::Result<HashSet<PathBuf>> {
 		let mut out = HashSet::new();
 		match &self.kind {
 			JavaKind::Adoptium(major_version) => {
@@ -100,7 +103,9 @@ impl Java {
 					"Downloading Adoptium Temurin JRE <b>{}</b>...",
 					json::access_str(version, "release_name")?
 				));
-				download_file(bin_url, &tar_path).await.context("Failed to download JRE binaries")?;
+				download_file(bin_url, &tar_path)
+					.await
+					.context("Failed to download JRE binaries")?;
 
 				// Extraction
 				printer.print(&cformat!("Extracting JRE..."));

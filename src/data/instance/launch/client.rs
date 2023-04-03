@@ -1,6 +1,6 @@
-use anyhow::{Context, bail};
+use anyhow::{bail, Context};
 
-use crate::data::instance::{Instance, InstKind};
+use crate::data::instance::{InstKind, Instance};
 use crate::data::user::{Auth, UserKind};
 use crate::io::java::classpath::Classpath;
 use crate::io::launch::launch;
@@ -12,7 +12,7 @@ use crate::{skip_fail, skip_none};
 impl Instance {
 	/// Launch a client
 	pub fn launch_client(&mut self, paths: &Paths, auth: &Auth, debug: bool) -> anyhow::Result<()> {
-		debug_assert!(matches!(self.kind, InstKind::Client{..}));
+		debug_assert!(matches!(self.kind, InstKind::Client { .. }));
 		match &self.java {
 			Some(java) => match &java.path {
 				Some(java_path) => {
@@ -55,7 +55,9 @@ impl Instance {
 										.join(&self.version)
 										.join("natives")
 										.to_str()
-										.context("Failed to convert natives directory to a string")?
+										.context(
+											"Failed to convert natives directory to a string"
+										)?
 								));
 								jvm_args.push(String::from("-cp"));
 								jvm_args.push(classpath.get_str());
@@ -66,18 +68,21 @@ impl Instance {
 									)));
 								}
 							}
-							
+
 							launch(
 								paths,
 								&self.id,
 								&self.launch,
 								debug,
 								&client_dir,
-								jre_path.to_str().context("Failed to convert java path to a string")?,
+								jre_path
+									.to_str()
+									.context("Failed to convert java path to a string")?,
 								&jvm_args,
 								Some(main_class),
-								&game_args
-							).context("Failed to run launch command")?;
+								&game_args,
+							)
+							.context("Failed to run launch command")?;
 						}
 					}
 					Ok(())
@@ -111,18 +116,8 @@ pub fn process_string_arg(
 	);
 	out = out.replace("${version_name}", &instance.version);
 	out = out.replace("${version_type}", "mcvm");
-	out = out.replace(
-		"${game_directory}",
-		instance
-			.get_subdir(paths)
-			.to_str()?,
-	);
-	out = out.replace(
-		"${assets_root}",
-		paths
-			.assets
-			.to_str()?,
-	);
+	out = out.replace("${game_directory}", instance.get_subdir(paths).to_str()?);
+	out = out.replace("${assets_root}", paths.assets.to_str()?);
 	out = out.replace("${assets_index_name}", &instance.version);
 	out = out.replace("${user_type}", "mojang");
 	out = out.replace("${clientid}", "mcvm");

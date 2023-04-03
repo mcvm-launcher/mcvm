@@ -1,4 +1,4 @@
-use std::{io::Read, fmt::Display};
+use std::{fmt::Display, io::Read};
 
 use anyhow::Context;
 use serde::Deserialize;
@@ -15,16 +15,20 @@ pub enum EnumOrNumber<T> {
 	Num(i32),
 }
 
-impl <T: Display> Display for EnumOrNumber<T> {
+impl<T: Display> Display for EnumOrNumber<T> {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		write!(f, "{}", match self {
-			Self::Enum(e) => e.to_string(),
-			Self::Num(num) => num.to_string(),
-		})
+		write!(
+			f,
+			"{}",
+			match self {
+				Self::Enum(e) => e.to_string(),
+				Self::Num(num) => num.to_string(),
+			}
+		)
 	}
 }
 
-impl <T: ToInt> ToInt for EnumOrNumber<T> {
+impl<T: ToInt> ToInt for EnumOrNumber<T> {
 	fn to_int(&self) -> i32 {
 		match self {
 			Self::Enum(e) => e.to_int(),
@@ -41,12 +45,16 @@ pub enum EnumOrString<T> {
 	String(String),
 }
 
-impl <T: Display> Display for EnumOrString<T> {
+impl<T: Display> Display for EnumOrString<T> {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		write!(f, "{}", match self {
-			Self::Enum(e) => e.to_string(),
-			Self::String(string) => string.clone(),
-		})
+		write!(
+			f,
+			"{}",
+			match self {
+				Self::Enum(e) => e.to_string(),
+				Self::String(string) => string.clone(),
+			}
+		)
 	}
 }
 
@@ -76,10 +84,14 @@ mod tests {
 
 	impl Display for TestEnum {
 		fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-			write!(f, "{}", match self {
-				Self::Foo => "foo",
-				Self::Bar => "bar",
-			})
+			write!(
+				f,
+				"{}",
+				match self {
+					Self::Foo => "foo",
+					Self::Bar => "bar",
+				}
+			)
 		}
 	}
 

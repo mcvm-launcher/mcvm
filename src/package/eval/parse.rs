@@ -3,7 +3,7 @@ use anyhow::bail;
 use super::super::Package;
 use super::conditions::Condition;
 use super::instruction::{parse_arg, InstrKind, Instruction};
-use super::lex::{lex, reduce_tokens, Side, Token, TextPos};
+use super::lex::{lex, reduce_tokens, Side, TextPos, Token};
 use super::Value;
 use crate::data::addon::AddonKind;
 use crate::io::files::paths::Paths;
@@ -262,7 +262,11 @@ impl Package {
 											*condition = Some(Condition::new(new_condition))
 										}
 										None => {
-											bail!("Unknown condition {} {}", name.clone(), pos.clone());
+											bail!(
+												"Unknown condition {} {}",
+												name.clone(),
+												pos.clone()
+											);
 										}
 									},
 									_ => unexpected_token!(tok, pos),
@@ -309,7 +313,11 @@ impl Package {
 										"append" => *key = AddonKey::Append,
 										"path" => *key = AddonKey::Path,
 										_ => {
-											bail!("Unknown addon key {} {}", name.to_owned(), pos.clone());
+											bail!(
+												"Unknown addon key {} {}",
+												name.to_owned(),
+												pos.clone()
+											);
 										}
 									}
 									*mode = AddonMode::Colon;
@@ -320,30 +328,34 @@ impl Package {
 								Token::Colon => *mode = AddonMode::Value,
 								_ => unexpected_token!(tok, pos),
 							},
-							AddonMode::Value => match tok {
-								Token::Ident(name) => {
-									match key {
-										AddonKey::Kind => *kind = AddonKind::from_str(name),
-										AddonKey::Force => match yes_no(name) {
-											Some(value) => *force = value,
-											None => {
-												bail!("Expected 'yes' or 'no', but got '{}' {}", name.to_owned(), pos.clone());
+							AddonMode::Value => {
+								match tok {
+									Token::Ident(name) => {
+										match key {
+											AddonKey::Kind => *kind = AddonKind::from_str(name),
+											AddonKey::Force => {
+												match yes_no(name) {
+													Some(value) => *force = value,
+													None => {
+														bail!("Expected 'yes' or 'no', but got '{}' {}", name.to_owned(), pos.clone());
+													}
+												}
 											}
-										},
-										_ => unexpected_token!(tok, pos),
+											_ => unexpected_token!(tok, pos),
+										}
+										*mode = AddonMode::Comma;
 									}
-									*mode = AddonMode::Comma;
-								}
-								_ => {
-									match key {
-										AddonKey::Url => *url = parse_arg(tok, pos)?,
-										AddonKey::Append => *append = parse_arg(tok, pos)?,
-										AddonKey::Path => *path = parse_arg(tok, pos)?,
-										_ => unexpected_token!(tok, pos),
+									_ => {
+										match key {
+											AddonKey::Url => *url = parse_arg(tok, pos)?,
+											AddonKey::Append => *append = parse_arg(tok, pos)?,
+											AddonKey::Path => *path = parse_arg(tok, pos)?,
+											_ => unexpected_token!(tok, pos),
+										}
+										*mode = AddonMode::Comma;
 									}
-									*mode = AddonMode::Comma;
 								}
-							},
+							}
 							AddonMode::Comma => match tok {
 								Token::Comma => *mode = AddonMode::Key,
 								Token::Paren(Side::Right) => {

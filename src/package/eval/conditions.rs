@@ -56,7 +56,11 @@ impl ConditionKind {
 				Token::Ident(name) => match Side::from_str(name) {
 					Some(kind) => *side = Some(kind),
 					None => {
-						bail!("Unknown condition argument '{}' {}", name.to_owned(), pos.clone());
+						bail!(
+							"Unknown condition argument '{}' {}",
+							name.to_owned(),
+							pos.clone()
+						);
 					}
 				},
 				_ => unexpected_token!(tok, pos),
@@ -65,7 +69,11 @@ impl ConditionKind {
 				Token::Ident(name) => match ModloaderMatch::from_str(name) {
 					Some(kind) => *loader = Some(kind),
 					None => {
-						bail!("Unknown condition argument '{}' {}", name.to_owned(), pos.clone());
+						bail!(
+							"Unknown condition argument '{}' {}",
+							name.to_owned(),
+							pos.clone()
+						);
 					}
 				},
 				_ => unexpected_token!(tok, pos),
@@ -74,7 +82,11 @@ impl ConditionKind {
 				Token::Ident(name) => match PluginLoaderMatch::from_str(name) {
 					Some(kind) => *loader = Some(kind),
 					None => {
-						bail!("Unknown condition argument '{}' {}", name.to_owned(), pos.clone());
+						bail!(
+							"Unknown condition argument '{}' {}",
+							name.to_owned(),
+							pos.clone()
+						);
 					}
 				},
 				_ => unexpected_token!(tok, pos),

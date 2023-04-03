@@ -140,13 +140,17 @@ impl VersionPattern {
 
 impl Display for VersionPattern {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		write!(f, "{}", match self {
-			Self::Single(version) => version.to_owned(),
-			Self::Latest(..) => String::from("latest"),
-			Self::Before(version) => version.to_owned() + "-",
-			Self::After(version) => version.to_owned() + "+",
-			Self::Any => String::from("*"),
-		})
+		write!(
+			f,
+			"{}",
+			match self {
+				Self::Single(version) => version.to_owned(),
+				Self::Latest(..) => String::from("latest"),
+				Self::Before(version) => version.to_owned() + "-",
+				Self::After(version) => version.to_owned() + "+",
+				Self::Any => String::from("*"),
+			}
+		)
 	}
 }
 

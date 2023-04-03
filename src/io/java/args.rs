@@ -24,7 +24,7 @@ impl MemoryNum {
 			Self::B(n) => *n,
 			Self::Kb(n) => *n * 1024,
 			Self::Mb(n) => *n * 1024 * 1024,
-			Self::Gb(n) => *n * 1024 * 1024 * 1024
+			Self::Gb(n) => *n * 1024 * 1024 * 1024,
 		}
 	}
 
@@ -36,12 +36,16 @@ impl MemoryNum {
 
 impl Display for MemoryNum {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		write!(f, "{}", match self {
-			Self::B(n) => n.to_string(),
-			Self::Kb(n) => n.to_string() + "k",
-			Self::Mb(n) => n.to_string() + "m",
-			Self::Gb(n) => n.to_string() + "g",
-		})
+		write!(
+			f,
+			"{}",
+			match self {
+				Self::B(n) => n.to_string(),
+				Self::Kb(n) => n.to_string() + "k",
+				Self::Mb(n) => n.to_string() + "m",
+				Self::Gb(n) => n.to_string() + "g",
+			}
+		)
 	}
 }
 
@@ -86,15 +90,15 @@ impl ArgsPreset {
 					max_new_size_percent,
 					heap_region_size,
 					reserve_percent,
-					ihop
+					ihop,
 				) = if let Some(avg) = mem_avg {
 					if avg.to_bytes() > MemoryNum::Gb(12).to_bytes() {
-						( "40", "50", "16M", "15", "20" )
+						("40", "50", "16M", "15", "20")
 					} else {
-						( "30", "40", "8M", "20", "15" )
+						("30", "40", "8M", "20", "15")
 					}
 				} else {
-					( "30", "40", "8M", "20", "15" )
+					("30", "40", "8M", "20", "15")
 				};
 				vec![
 					String::from("-XX:+UseG1GC"),
@@ -116,7 +120,7 @@ impl ArgsPreset {
 					String::from("-XX:+PerfDisableSharedMem"),
 					String::from("-XX:MaxTenuringThreshold=1"),
 					String::from("-Dusing.aikars.flags=https://mcflags.emc.gs"),
-					String::from("-Daikars.new.flags=true")
+					String::from("-Daikars.new.flags=true"),
 				]
 			}
 		}

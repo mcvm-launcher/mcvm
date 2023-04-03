@@ -15,13 +15,13 @@ pub enum PackageSubcommand {
 	#[command(
 		about = "Sync package indexes with ones from package repositories",
 		long_about = "Sync all package indexes from remote repositories. They will be
-cached locally, but all currently cached package scripts will be removed",
+cached locally, but all currently cached package scripts will be removed"
 	)]
 	Sync,
 	#[command(
 		about = "Print the contents of a package to standard out",
 		long_about = "Print the contents of any package to standard out.
-This package does not need to be installed, it just has to be in the index.",
+This package does not need to be installed, it just has to be in the index."
 	)]
 	Cat {
 		/// Whether to remove custom formatting from the output
@@ -42,7 +42,10 @@ async fn list(data: &mut CmdData) -> anyhow::Result<()> {
 			for (id, profile) in config.profiles.iter() {
 				if !profile.packages.is_empty() {
 					for pkg in profile.packages.iter() {
-						let version = config.packages.get_version(&pkg.req, paths).await
+						let version = config
+							.packages
+							.get_version(&pkg.req, paths)
+							.await
 							.context("Failed to get version of package")?;
 						found_pkgs
 							.entry(pkg.req.name.clone())

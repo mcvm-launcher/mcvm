@@ -2,8 +2,8 @@ use std::collections::HashMap;
 use std::fs;
 use std::path::PathBuf;
 
-use serde::{Deserialize, Serialize};
 use anyhow::{anyhow, Context};
+use serde::{Deserialize, Serialize};
 
 use crate::data::addon::{Addon, AddonKind};
 use crate::package::reg::PkgIdentifier;
@@ -35,7 +35,8 @@ impl LockfileAddon {
 	/// Converts this LockfileAddon to an Addon
 	pub fn to_addon(&self, id: PkgIdentifier) -> anyhow::Result<Addon> {
 		Ok(Addon {
-			kind: AddonKind::from_str(&self.kind).ok_or(anyhow!("Invalid addon kind '{}'", self.kind))?,
+			kind: AddonKind::from_str(&self.kind)
+				.ok_or(anyhow!("Invalid addon kind '{}'", self.kind))?,
 			name: self.name.clone(),
 			id,
 		})
@@ -84,7 +85,8 @@ impl Lockfile {
 	pub async fn open(paths: &Paths) -> anyhow::Result<Self> {
 		let path = Self::get_path(paths);
 		let contents = if path.exists() {
-			let contents = tokio::fs::read_to_string(path).await
+			let contents = tokio::fs::read_to_string(path)
+				.await
 				.context("Failed to read lockfile")?;
 			serde_json::from_str(&contents).context("Failed to parse JSON")?
 		} else {
@@ -102,7 +104,8 @@ impl Lockfile {
 	pub async fn finish(&mut self, paths: &Paths) -> anyhow::Result<()> {
 		let out = serde_json::to_string_pretty(&self.contents)
 			.context("Failed to serialize lockfile contents")?;
-		tokio::fs::write(Self::get_path(paths), out).await
+		tokio::fs::write(Self::get_path(paths), out)
+			.await
 			.context("Failed to write to lockfile")?;
 
 		Ok(())

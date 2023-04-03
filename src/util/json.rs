@@ -1,4 +1,4 @@
-use serde_json::{Value, json};
+use serde_json::{json, Value};
 
 pub type JsonObject = serde_json::Map<String, Value>;
 
@@ -123,7 +123,10 @@ pub fn ensure_type<T>(value: Option<T>, typ: JsonType) -> Result<T, JsonError> {
 
 /// Returns an empty json object
 pub fn empty_object() -> JsonObject {
-	json!({}).as_object().expect("Should be an empty object").clone()
+	json!({})
+		.as_object()
+		.expect("Should be an empty object")
+		.clone()
 }
 
 // Json access with an assertion

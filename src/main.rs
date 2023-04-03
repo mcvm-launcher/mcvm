@@ -13,7 +13,7 @@ use io::files::paths::Paths;
 async fn main() -> anyhow::Result<()> {
 	let mut data = commands::CmdData::new();
 	match run_cli(&mut data).await {
-		Ok(()) => {},
+		Ok(()) => {}
 		Err(e) => eprintln!("{}", cformat!("<r>{:?}", e)),
 	}
 

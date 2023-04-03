@@ -39,8 +39,8 @@ pub struct Paths {
 impl Paths {
 	pub fn new() -> anyhow::Result<Paths> {
 		let base = BaseDirs::new().ok_or(anyhow!("Base directories failed"))?;
-		let project = ProjectDirs::from("", "mcvm", "mcvm")
-			.ok_or(anyhow!("Base directories failed"))?;
+		let project =
+			ProjectDirs::from("", "mcvm", "mcvm").ok_or(anyhow!("Base directories failed"))?;
 
 		let data = project.data_dir().to_owned();
 		let internal = data.join("internal");
@@ -57,7 +57,11 @@ impl Paths {
 		create_dir(&data)?;
 		create_dir(project.cache_dir())?;
 		create_dir(project.config_dir())?;
-		create_dir(project.runtime_dir().ok_or(anyhow!("Base directories failed"))?)?;
+		create_dir(
+			project
+				.runtime_dir()
+				.ok_or(anyhow!("Base directories failed"))?,
+		)?;
 		create_dir(&internal)?;
 		create_dir(&assets)?;
 		create_dir(&java)?;

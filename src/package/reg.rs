@@ -66,7 +66,11 @@ impl PkgRegistry {
 			.expect("Package was not inserted into map")
 	}
 
-	async fn query_insert(&mut self, req: &PkgRequest, paths: &Paths) -> anyhow::Result<&mut Package> {
+	async fn query_insert(
+		&mut self,
+		req: &PkgRequest,
+		paths: &Paths,
+	) -> anyhow::Result<&mut Package> {
 		let pkg_name = req.name.clone();
 
 		match query_all(&mut self.repos, &pkg_name, paths).await? {

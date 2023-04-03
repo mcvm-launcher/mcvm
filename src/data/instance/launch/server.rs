@@ -1,13 +1,13 @@
 use anyhow::{bail, Context};
 
-use crate::data::instance::{Instance, InstKind};
+use crate::data::instance::{InstKind, Instance};
 use crate::io::files::paths::Paths;
 use crate::io::launch::launch;
 
 impl Instance {
 	/// Launch a server
-	pub fn launch_server(&mut self, paths: &Paths,debug: bool) -> anyhow::Result<()> {
-		debug_assert!(matches!(self.kind, InstKind::Server{..}));
+	pub fn launch_server(&mut self, paths: &Paths, debug: bool) -> anyhow::Result<()> {
+		debug_assert!(matches!(self.kind, InstKind::Server { .. }));
 		match &self.java {
 			Some(java) => match &java.path {
 				Some(java_path) => {
@@ -36,11 +36,14 @@ impl Instance {
 						&self.launch,
 						debug,
 						&server_dir,
-						jre_path.to_str().context("Failed to convert java path to a string")?,
+						jre_path
+							.to_str()
+							.context("Failed to convert java path to a string")?,
 						&jvm_args,
 						self.main_class.as_deref(),
-						&game_args
-					).context("Failed to run launch command")?;
+						&game_args,
+					)
+					.context("Failed to run launch command")?;
 
 					Ok(())
 				}

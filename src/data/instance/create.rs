@@ -1,4 +1,4 @@
-use std::collections::{HashSet, HashMap};
+use std::collections::{HashMap, HashSet};
 use std::fs;
 use std::path::PathBuf;
 
@@ -6,10 +6,10 @@ use anyhow::Context;
 use color_print::{cformat, cprintln};
 
 use crate::data::addon::{Modloader, PluginLoader};
-use crate::data::profile::update::{UpdateRequirement, UpdateManager};
+use crate::data::profile::update::{UpdateManager, UpdateRequirement};
 use crate::io::files::{self, paths::Paths};
-use crate::io::java::JavaKind;
 use crate::io::java::classpath::Classpath;
+use crate::io::java::JavaKind;
 use crate::io::options::{self, write_options_txt, write_server_properties};
 use crate::net::fabric_quilt;
 use crate::net::{minecraft, paper};
@@ -31,11 +31,11 @@ impl Instance {
 		out.insert(UpdateRequirement::GameJar(self.kind.to_side()));
 		out.insert(UpdateRequirement::Options);
 		match &self.kind {
-			InstKind::Client{..} => {
+			InstKind::Client { .. } => {
 				out.insert(UpdateRequirement::GameAssets);
 				out.insert(UpdateRequirement::GameLibraries);
 			}
-			InstKind::Server{..} => {}
+			InstKind::Server { .. } => {}
 		}
 		out
 	}
@@ -48,23 +48,27 @@ impl Instance {
 		paths: &Paths,
 	) -> anyhow::Result<HashSet<PathBuf>> {
 		match &self.kind {
-			InstKind::Client{..} => {
+			InstKind::Client { .. } => {
 				if manager.force {
 					cprintln!("<s>Rebuilding client <y!>{}</y!>", self.id);
 				} else {
 					cprintln!("<s>Updating client <y!>{}</y!>", self.id);
 				}
-				let files = self.create_client(manager, paths).await
+				let files = self
+					.create_client(manager, paths)
+					.await
 					.context("Failed to create client")?;
 				Ok(files)
 			}
-			InstKind::Server{..} => {
+			InstKind::Server { .. } => {
 				if manager.force {
 					cprintln!("<s>Rebuilding server <c!>{}</c!>", self.id);
 				} else {
 					cprintln!("<s>Updating server <c!>{}</c!>", self.id);
 				}
-				let files = self.create_server(manager, paths).await
+				let files = self
+					.create_server(manager, paths)
+					.await
 					.context("Failed to create server")?;
 				Ok(files)
 			}
@@ -77,8 +81,8 @@ impl Instance {
 		manager: &UpdateManager,
 		paths: &Paths,
 	) -> anyhow::Result<HashSet<PathBuf>> {
-		debug_assert!(matches!(self.kind, InstKind::Client{..}));
-		
+		debug_assert!(matches!(self.kind, InstKind::Client { .. }));
+
 		let out = HashSet::new();
 		let dir = self.get_dir(paths);
 		files::create_leading_dirs(&dir)?;
@@ -101,15 +105,18 @@ impl Instance {
 		self.add_java(&java_vers.to_string(), manager);
 
 		self.main_class = Some(json::access_str(&version_json, "mainClass")?.to_owned());
-		
+
 		let fq_mode = match self.modloader {
 			Modloader::Fabric => Some(fabric_quilt::Mode::Fabric),
 			Modloader::Quilt => Some(fabric_quilt::Mode::Quilt),
 			_ => None,
 		};
 		if let Some(mode) = fq_mode {
-			classpath.extend(self.get_fabric_quilt(mode, paths, manager).await
-				.context("Failed to install Fabric/Quilt")?);
+			classpath.extend(
+				self.get_fabric_quilt(mode, paths, manager)
+					.await
+					.context("Failed to install Fabric/Quilt")?,
+			);
 		}
 
 		classpath.add_path(&jar_path);
@@ -118,20 +125,18 @@ impl Instance {
 		let version_list = manager.version_list.as_ref().expect("Version list missing");
 		if let Some(global_options) = &manager.options {
 			if let Some(global_options) = &global_options.client {
-				let global_keys = options::client::create_keys(
-					global_options,
-					&self.version,
-					version_list,
-				).context("Failed to create keys for global options")?;
+				let global_keys =
+					options::client::create_keys(global_options, &self.version, version_list)
+						.context("Failed to create keys for global options")?;
 				keys.extend(global_keys);
 			}
 		}
-		if let InstKind::Client { options: Some(options) } = &self.kind {
-			let override_keys = options::client::create_keys(
-				options,
-				&self.version,
-				version_list,
-			).context("Failed to create keys for override options")?;
+		if let InstKind::Client {
+			options: Some(options),
+		} = &self.kind
+		{
+			let override_keys = options::client::create_keys(options, &self.version, version_list)
+				.context("Failed to create keys for override options")?;
 			keys.extend(override_keys);
 		}
 		if !keys.is_empty() {
@@ -152,8 +157,8 @@ impl Instance {
 		manager: &UpdateManager,
 		paths: &Paths,
 	) -> anyhow::Result<HashSet<PathBuf>> {
-		debug_assert!(matches!(self.kind, InstKind::Server{..}));
-		
+		debug_assert!(matches!(self.kind, InstKind::Server { .. }));
+
 		let mut out = HashSet::new();
 		let dir = self.get_dir(paths);
 		files::create_leading_dirs(&dir)?;
@@ -161,21 +166,27 @@ impl Instance {
 		let server_dir = self.get_subdir(paths);
 		files::create_dir(&server_dir)?;
 		let jar_path = server_dir.join("server.jar");
-		
+
 		let version_json = manager.version_json.clone().expect("Version json missing");
-		
+
 		let java_vers = json::access_i64(
 			json::access_object(&version_json, "javaVersion")?,
 			"majorVersion",
 		)?;
 		self.add_java(&java_vers.to_string(), manager);
-		
+
 		let classpath = match self.modloader {
-			Modloader::Fabric => Some(self.get_fabric_quilt(fabric_quilt::Mode::Fabric, paths, manager).await?),
-			Modloader::Quilt => Some(self.get_fabric_quilt(fabric_quilt::Mode::Quilt, paths, manager).await?),
+			Modloader::Fabric => Some(
+				self.get_fabric_quilt(fabric_quilt::Mode::Fabric, paths, manager)
+					.await?,
+			),
+			Modloader::Quilt => Some(
+				self.get_fabric_quilt(fabric_quilt::Mode::Quilt, paths, manager)
+					.await?,
+			),
 			_ => None,
 		};
-		
+
 		let eula_path = server_dir.join("eula.txt");
 		let eula_task = tokio::spawn(async move {
 			if !eula_path.exists() {
@@ -184,30 +195,35 @@ impl Instance {
 
 			Ok::<(), anyhow::Error>(())
 		});
-		
+
 		self.jar_path = Some(match self.plugin_loader {
 			PluginLoader::Vanilla => {
-				let extern_jar_path = minecraft::game_jar_path(self.kind.to_side(), &self.version, paths);
+				let extern_jar_path =
+					minecraft::game_jar_path(self.kind.to_side(), &self.version, paths);
 				if manager.should_update_file(&jar_path) {
-					fs::hard_link(extern_jar_path, &jar_path).context("Failed to hardlink server.jar")?;
+					fs::hard_link(extern_jar_path, &jar_path)
+						.context("Failed to hardlink server.jar")?;
 					out.insert(jar_path.clone());
-				} 
+				}
 				jar_path
 			}
 			PluginLoader::Paper => {
 				let mut printer = ReplPrinter::from_options(manager.print.clone());
 				printer.indent(1);
 				printer.print("Checking for paper updates...");
-				let (build_num, ..) = paper::get_newest_build(&self.version).await
+				let (build_num, ..) = paper::get_newest_build(&self.version)
+					.await
 					.context("Failed to get the newest Paper version")?;
-				let file_name = paper::get_jar_file_name(&self.version, build_num).await
+				let file_name = paper::get_jar_file_name(&self.version, build_num)
+					.await
 					.context("Failed to get the Paper file name")?;
 				let paper_jar_path = server_dir.join(&file_name);
 				if !manager.should_update_file(&paper_jar_path) {
 					printer.print(&cformat!("<g>Paper is up to date."));
 				} else {
 					printer.print("Downloading Paper server...");
-					paper::download_server_jar(&self.version, build_num, &file_name, &server_dir).await
+					paper::download_server_jar(&self.version, build_num, &file_name, &server_dir)
+						.await
 						.context("Failed to download Paper server JAR")?;
 					printer.print(&cformat!("<g>Paper server downloaded."));
 				}
@@ -222,27 +238,26 @@ impl Instance {
 		let version_list = manager.version_list.as_ref().expect("Version list missing");
 		if let Some(global_options) = &manager.options {
 			if let Some(global_options) = &global_options.server {
-				let global_keys = options::server::create_keys(
-					global_options,
-					&self.version,
-					version_list,
-				).context("Failed to create keys for global options")?;
+				let global_keys =
+					options::server::create_keys(global_options, &self.version, version_list)
+						.context("Failed to create keys for global options")?;
 				keys.extend(global_keys);
 			}
 		}
-		if let InstKind::Server { options: Some(options) } = &self.kind {
-			let override_keys = options::server::create_keys(
-				options,
-				&self.version,
-				version_list,
-			).context("Failed to create keys for override options")?;
+		if let InstKind::Server {
+			options: Some(options),
+		} = &self.kind
+		{
+			let override_keys = options::server::create_keys(options, &self.version, version_list)
+				.context("Failed to create keys for override options")?;
 			keys.extend(override_keys);
 		}
 		if !keys.is_empty() {
 			let options_path = server_dir.join("server.properties");
-			write_server_properties(&keys, &options_path).context("Failed to write server.properties")?;
+			write_server_properties(&keys, &options_path)
+				.context("Failed to write server.properties")?;
 		}
-		
+
 		self.version_json = Some(version_json);
 		self.classpath = classpath;
 

@@ -4,11 +4,11 @@ use anyhow::Context;
 use serde::Deserialize;
 use serde_json::Value;
 
-use crate::io::launch::LaunchOptions;
 use crate::data::instance::{InstKind, Instance};
 use crate::data::profile::Profile;
-use crate::io::java::args::{MemoryNum, ArgsPreset};
+use crate::io::java::args::{ArgsPreset, MemoryNum};
 use crate::io::java::JavaKind;
+use crate::io::launch::LaunchOptions;
 use crate::io::options::client::ClientOptions;
 use crate::io::options::server::ServerOptions;
 
@@ -137,20 +137,12 @@ enum InstanceConfig {
 	},
 }
 
-pub fn parse_instance_config(
-	id: &str,
-	val: &Value,
-	profile: &Profile,
-) -> anyhow::Result<Instance> {
+pub fn parse_instance_config(id: &str, val: &Value, profile: &Profile) -> anyhow::Result<Instance> {
 	let config = serde_json::from_value::<InstanceConfig>(val.clone())
 		.context("Failed to parse instance config")?;
 	let (kind, launch) = match config {
-		InstanceConfig::Client { launch, options } => {
-			(InstKind::Client { options }, launch)
-		},
-		InstanceConfig::Server { launch, options } => {
-			(InstKind::Server { options }, launch)
-		},
+		InstanceConfig::Client { launch, options } => (InstKind::Client { options }, launch),
+		InstanceConfig::Server { launch, options } => (InstKind::Server { options }, launch),
 	};
 
 	let instance = Instance::new(

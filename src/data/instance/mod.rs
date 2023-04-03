@@ -3,10 +3,10 @@ pub mod launch;
 
 use anyhow::Context;
 
-use crate::io::launch::LaunchOptions;
 use crate::io::files;
 use crate::io::java::classpath::Classpath;
 use crate::io::java::Java;
+use crate::io::launch::LaunchOptions;
 use crate::io::options::client::ClientOptions;
 use crate::io::options::server::ServerOptions;
 use crate::net::fabric_quilt;
@@ -22,12 +22,8 @@ use std::path::{Path, PathBuf};
 
 #[derive(Debug, Clone)]
 pub enum InstKind {
-	Client {
-		options: Option<Box<ClientOptions>>,
-	},
-	Server {
-		options: Option<Box<ServerOptions>>,
-	},
+	Client { options: Option<Box<ClientOptions>> },
+	Server { options: Option<Box<ServerOptions>> },
 }
 
 impl InstKind {
@@ -59,10 +55,14 @@ impl Side {
 
 impl Display for Side {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		write!(f, "{}", match self {
-			Self::Client => "client",
-			Self::Server => "server"
-		})
+		write!(
+			f,
+			"{}",
+			match self {
+				Self::Client => "client",
+				Self::Server => "server",
+			}
+		)
 	}
 }
 
@@ -104,24 +104,28 @@ impl Instance {
 			main_class: None,
 		}
 	}
-	
+
 	pub fn get_dir(&self, paths: &Paths) -> PathBuf {
 		match &self.kind {
-			InstKind::Client{..} => paths.project.data_dir().join("client").join(&self.id),
-			InstKind::Server{..} => paths.project.data_dir().join("server").join(&self.id),
+			InstKind::Client { .. } => paths.project.data_dir().join("client").join(&self.id),
+			InstKind::Server { .. } => paths.project.data_dir().join("server").join(&self.id),
 		}
 	}
-	
+
 	pub fn get_subdir(&self, paths: &Paths) -> PathBuf {
 		self.get_dir(paths).join(match self.kind {
-			InstKind::Client{..} => ".minecraft",
-			InstKind::Server{..} => "server",
+			InstKind::Client { .. } => ".minecraft",
+			InstKind::Server { .. } => "server",
 		})
 	}
 
 	/// Set the java installation for the instance
 	fn add_java(&mut self, version: &str, manager: &UpdateManager) {
-		let mut java = manager.java.as_ref().expect("Update Manager Java is missing").clone();
+		let mut java = manager
+			.java
+			.as_ref()
+			.expect("Update Manager Java is missing")
+			.clone();
 		java.add_version(version);
 		self.java = Some(java);
 	}
@@ -134,21 +138,22 @@ impl Instance {
 	) -> anyhow::Result<Classpath> {
 		let meta = fabric_quilt::get_meta(&self.version, &mode).await?;
 		let classpath =
-			fabric_quilt::download_files(&meta, paths, self.kind.to_side(), mode, manager).await
+			fabric_quilt::download_files(&meta, paths, self.kind.to_side(), mode, manager)
+				.await
 				.context("Failed to download Fabric/Quilt")?;
 		self.main_class = Some(match self.kind {
-			InstKind::Client{..} => meta.launcher_meta.main_class.client,
-			InstKind::Server{..} => meta.launcher_meta.main_class.server,
+			InstKind::Client { .. } => meta.launcher_meta.main_class.client,
+			InstKind::Server { .. } => meta.launcher_meta.main_class.server,
 		});
 
 		Ok(classpath)
 	}
-	
+
 	pub fn get_linked_addon_path(&self, addon: &Addon, paths: &Paths) -> Option<PathBuf> {
 		let inst_dir = self.get_subdir(paths);
 		match addon.kind {
 			AddonKind::ResourcePack => {
-				if let InstKind::Client{..} = self.kind {
+				if let InstKind::Client { .. } = self.kind {
 					Some(inst_dir.join("resourcepacks"))
 				} else {
 					None
@@ -156,14 +161,14 @@ impl Instance {
 			}
 			AddonKind::Mod => Some(inst_dir.join("mods")),
 			AddonKind::Plugin => {
-				if let InstKind::Server{..} = self.kind {
+				if let InstKind::Server { .. } = self.kind {
 					Some(inst_dir.join("plugins"))
 				} else {
 					None
 				}
 			}
 			AddonKind::Shader => {
-				if let InstKind::Client{..} = self.kind {
+				if let InstKind::Client { .. } = self.kind {
 					Some(inst_dir.join("shaders"))
 				} else {
 					None
@@ -198,7 +203,8 @@ impl Instance {
 		if let Some(path) = self.get_linked_addon_path(addon, paths) {
 			let path = path.join(&addon.name);
 			if path.exists() {
-				fs::remove_file(&path).with_context(|| format!("Failed to remove addon at {}", path.display()))?;
+				fs::remove_file(&path)
+					.with_context(|| format!("Failed to remove addon at {}", path.display()))?;
 			}
 		}
 
@@ -217,20 +223,16 @@ impl Instance {
 	}
 
 	// Removes files such as the game jar for when the profile version changes
-	pub fn teardown(
-		&self,
-		paths: &Paths,
-		paper_file_name: Option<String>,
-	) -> anyhow::Result<()> {
+	pub fn teardown(&self, paths: &Paths, paper_file_name: Option<String>) -> anyhow::Result<()> {
 		match self.kind {
-			InstKind::Client{..} => {
+			InstKind::Client { .. } => {
 				let inst_dir = self.get_dir(paths);
 				let jar_path = inst_dir.join("client.jar");
 				if jar_path.exists() {
 					fs::remove_file(jar_path).context("Failed to remove client.jar")?;
 				}
 			}
-			InstKind::Server{..} => {
+			InstKind::Server { .. } => {
 				let inst_dir = self.get_subdir(paths);
 				let jar_path = inst_dir.join("server.jar");
 				if jar_path.exists() {
@@ -238,7 +240,8 @@ impl Instance {
 				}
 
 				if let Some(file_name) = paper_file_name {
-					self.remove_paper(paths, file_name).context("Failed to remove Paper")?;
+					self.remove_paper(paths, file_name)
+						.context("Failed to remove Paper")?;
 				}
 			}
 		}

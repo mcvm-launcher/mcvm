@@ -6,7 +6,7 @@ pub mod instruction;
 pub mod lex;
 pub mod parse;
 
-use anyhow::{bail, anyhow};
+use anyhow::{anyhow, bail};
 
 // Argument to a command that could be constant or a variable
 #[derive(Debug, Clone)]

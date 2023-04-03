@@ -67,6 +67,9 @@ mod tests {
 		classpath.add("foo");
 		assert_eq!(classpath.get_str(), String::from("foo"));
 		classpath.add("bar");
-		assert_eq!(classpath.get_str(), String::from("foo") + &String::from(CLASSPATH_SEP) + "bar");
+		assert_eq!(
+			classpath.get_str(),
+			String::from("foo") + &String::from(CLASSPATH_SEP) + "bar"
+		);
 	}
 }

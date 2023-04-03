@@ -1,9 +1,9 @@
 use std::fmt::Display;
 
+use anyhow::{anyhow, Context};
 use color_print::cformat;
 use reqwest::Client;
 use serde::Deserialize;
-use anyhow::{Context, anyhow};
 
 use crate::data::instance::Side;
 use crate::data::profile::update::UpdateManager;
@@ -17,15 +17,19 @@ use super::download::download_text;
 
 pub enum Mode {
 	Fabric,
-	Quilt
+	Quilt,
 }
 
 impl Display for Mode {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		write!(f, "{}", match self {
-			Self::Fabric => "Fabric",
-			Self::Quilt => "Quilt"
-		})
+		write!(
+			f,
+			"{}",
+			match self {
+				Self::Fabric => "Fabric",
+				Self::Quilt => "Quilt",
+			}
+		)
 	}
 }
 
@@ -65,7 +69,7 @@ pub struct FabricQuiltMeta {
 	#[serde(rename = "launcherMeta")]
 	pub launcher_meta: LauncherMeta,
 	pub loader: MainLibrary,
-	pub intermediary: MainLibrary
+	pub intermediary: MainLibrary,
 }
 
 /// Sections of a library string
@@ -97,10 +101,14 @@ pub async fn get_meta(version: &str, mode: &Mode) -> anyhow::Result<FabricQuiltM
 		Mode::Fabric => format!("https://meta.fabricmc.net/v2/versions/loader/{version}"),
 		Mode::Quilt => format!("https://meta.quiltmc.org/v3/versions/loader/{version}"),
 	};
-	let meta = download_text(&meta_url).await.context("Failed to download Fabric/Quilt metadata")?;
+	let meta = download_text(&meta_url)
+		.await
+		.context("Failed to download Fabric/Quilt metadata")?;
 	let meta = json::parse_json(&meta).context("Failed to parse Fabric/Quilt metadata")?;
 	let meta = json::ensure_type(meta.as_array(), JsonType::Arr)?;
-	let meta = meta.first().ok_or(anyhow!("Could not find a valid Fabric/Quilt version"))?;
+	let meta = meta
+		.first()
+		.ok_or(anyhow!("Could not find a valid Fabric/Quilt version"))?;
 
 	Ok(serde_json::from_value(meta.clone())?)
 }
@@ -140,7 +148,13 @@ async fn download_libraries(
 			}
 			let url = lib.url.clone() + &path;
 			files::create_leading_dirs(&lib_path)?;
-			let resp = client.get(url).send().await?.error_for_status()?.bytes().await?;
+			let resp = client
+				.get(url)
+				.send()
+				.await?
+				.error_for_status()?
+				.bytes()
+				.await?;
 			tokio::fs::write(&lib_path, resp).await?;
 		}
 	}
@@ -153,17 +167,26 @@ async fn download_main_library(
 	lib: &MainLibrary,
 	url: &str,
 	paths: &Paths,
-	force: bool
+	force: bool,
 ) -> anyhow::Result<String> {
 	let path = get_lib_path(&lib.maven).expect("Expected a valid path");
 	let lib_path = paths.libraries.join(&path);
-	let lib_path_str = lib_path.to_str().expect("Failed to convert path to a string").to_owned();
+	let lib_path_str = lib_path
+		.to_str()
+		.expect("Failed to convert path to a string")
+		.to_owned();
 	if !force && lib_path.exists() {
 		return Ok(lib_path_str);
 	}
 	let url = url.to_owned() + &path;
 	let client = Client::new();
-	let resp = client.get(url).send().await?.error_for_status()?.bytes().await?;
+	let resp = client
+		.get(url)
+		.send()
+		.await?
+		.error_for_status()?
+		.bytes()
+		.await?;
 	files::create_leading_dirs_async(&lib_path).await?;
 	tokio::fs::write(&lib_path, resp).await?;
 	Ok(lib_path_str)
@@ -183,18 +206,16 @@ pub async fn download_files(
 	let mut classpath = Classpath::new();
 	let libs = meta.launcher_meta.libraries.common.clone();
 	let paths_clone = paths.clone();
-	let common_task = tokio::spawn(
-		async move { download_libraries(&libs, &paths_clone, force).await }
-	);
+	let common_task =
+		tokio::spawn(async move { download_libraries(&libs, &paths_clone, force).await });
 
 	let libs = match side {
 		Side::Client => meta.launcher_meta.libraries.client.clone(),
 		Side::Server => meta.launcher_meta.libraries.server.clone(),
 	};
 	let paths_clone = paths.clone();
-	let side_task = tokio::spawn(
-		async move { download_libraries(&libs, &paths_clone, force).await }
-	);
+	let side_task =
+		tokio::spawn(async move { download_libraries(&libs, &paths_clone, force).await });
 
 	let paths_clone = paths.clone();
 	let loader_clone = meta.loader.clone();
@@ -206,12 +227,26 @@ pub async fn download_files(
 	let main_libs_task = tokio::spawn(async move {
 		(
 			download_main_library(&loader_clone, loader_url, &paths_clone, force).await,
-			download_main_library(&intermediary_clone, "https://maven.fabricmc.net/", &paths_clone, force).await,
+			download_main_library(
+				&intermediary_clone,
+				"https://maven.fabricmc.net/",
+				&paths_clone,
+				force,
+			)
+			.await,
 		)
 	});
 
-	classpath.extend(common_task.await?.context("Failed to download Fabric/Quilt common libraries")?);
-	classpath.extend(side_task.await?.context("Failed to download Fabric/Quilt side-specific libraries")?);
+	classpath.extend(
+		common_task
+			.await?
+			.context("Failed to download Fabric/Quilt common libraries")?,
+	);
+	classpath.extend(
+		side_task
+			.await?
+			.context("Failed to download Fabric/Quilt side-specific libraries")?,
+	);
 	let (loader_name, intermediary_name) = main_libs_task.await?;
 	classpath.add(&loader_name?);
 	classpath.add(&intermediary_name?);

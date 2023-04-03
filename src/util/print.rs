@@ -34,7 +34,7 @@ impl ReplPrinter {
 			stdout: std::io::stdout(),
 			chars_written: 0,
 			finished: false,
-			options
+			options,
 		}
 	}
 
@@ -106,7 +106,7 @@ pub struct PrintOptions {
 	/// Indent level
 	pub indent: usize,
 	/// Indent as a string
-	pub indent_str: String
+	pub indent_str: String,
 }
 
 impl PrintOptions {
