@@ -837,6 +837,14 @@ fn write_fullscreen_resolution(resolution: &FullscreenResolution) -> String {
 	)
 }
 
+/// Converts Field of View from the integer used in game and the options
+/// to the format used in the options.txt. In-game the number is in degrees, but
+/// it is a number from -1 to 1 in the options.txt. According to the wiki, the formula is
+/// `degrees = 40 * value + 70`.
+fn convert_fov(fov: u8) -> f32 {
+	(fov as f32 - 70.0) / 40.0
+}
+
 /// Write client options to a list of keys
 pub fn create_keys(
 	client: &ClientOptions,
@@ -907,7 +915,7 @@ pub fn create_keys(
 		}
 	}
 	out.insert(String::from("mouseSensitivity"), client.control.mouse_sensitivity.to_string());
-	out.insert(String::from("fov"), client.video.fov.to_string());
+	out.insert(String::from("fov"), convert_fov(client.video.fov).to_string());
 	out.insert(String::from("screenEffectScale"), client.video.screen_effect_scale.to_string());
 	out.insert(String::from("fovEffectScale"), client.video.fov_effect_scale.to_string());
 	if after_22w15a {
