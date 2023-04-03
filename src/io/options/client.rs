@@ -679,6 +679,7 @@ impl ToInt for LogLevel {
 	}
 }
 
+// TODO: Add sensible defaults for resolution options
 #[derive(Deserialize, Debug, Clone)]
 pub struct FullscreenResolution {
 	pub width: u32,
