@@ -23,10 +23,10 @@ use std::path::{Path, PathBuf};
 #[derive(Debug, Clone)]
 pub enum InstKind {
 	Client {
-		options: Option<ClientOptions>,
+		options: Option<Box<ClientOptions>>,
 	},
 	Server {
-		options: Option<ServerOptions>,
+		options: Option<Box<ServerOptions>>,
 	},
 }
 

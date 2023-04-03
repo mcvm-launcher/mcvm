@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 #[derive(Debug, Clone, PartialEq)]
 pub enum MemoryNum {
 	B(u32),
@@ -16,15 +18,6 @@ impl MemoryNum {
 		})
 	}
 
-	pub fn to_string(&self) -> String {
-		match self {
-			Self::B(n) => n.to_string(),
-			Self::Kb(n) => n.to_string() + "k",
-			Self::Mb(n) => n.to_string() + "m",
-			Self::Gb(n) => n.to_string() + "g",
-		}
-	}
-
 	/// Converts into the equivalent amount in bytes
 	pub fn to_bytes(&self) -> u32 {
 		match self {
@@ -38,6 +31,17 @@ impl MemoryNum {
 	/// Averages two amounts of memory
 	pub fn avg(left: Self, right: Self) -> Self {
 		Self::B((left.to_bytes() + right.to_bytes()) / 2)
+	}
+}
+
+impl Display for MemoryNum {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "{}", match self {
+			Self::B(n) => n.to_string(),
+			Self::Kb(n) => n.to_string() + "k",
+			Self::Mb(n) => n.to_string() + "m",
+			Self::Gb(n) => n.to_string() + "g",
+		})
 	}
 }
 

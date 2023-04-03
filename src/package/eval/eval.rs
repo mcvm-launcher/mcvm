@@ -11,6 +11,7 @@ use crate::package::reg::PkgIdentifier;
 use crate::util::versions::VersionPattern;
 
 use std::collections::HashMap;
+use std::fmt::Display;
 use std::path::PathBuf;
 
 #[derive(Debug, Clone)]
@@ -70,7 +71,7 @@ pub enum Routine {
 }
 
 impl Routine {
-	pub fn to_string(&self) -> String {
+	pub fn get_routine_name(&self) -> String {
 		String::from(match self {
 			Self::Install => "install",
 			Self::Dependencies => "install",
@@ -100,13 +101,15 @@ impl FailReason {
 			_ => None,
 		}
 	}
+}
 
-	pub fn to_string(&self) -> String {
-		match self {
-			Self::None => String::from(""),
-			Self::UnsupportedVersion => String::from("Unsupported Minecraft version"),
-			Self::UnsupportedModloader => String::from("Unsupported modloader"),
-		}
+impl Display for FailReason {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "{}", match self {
+			Self::None => "",
+			Self::UnsupportedVersion => "Unsupported Minecraft version",
+			Self::UnsupportedModloader => "Unsupported modloader",
+		})
 	}
 }
 
@@ -180,7 +183,7 @@ impl Package {
 		self.parse(paths).await?;
 		if let Some(data) = &mut self.data {
 			if let Some(parsed) = &mut data.parsed {
-				let routine_name = routine.to_string();
+				let routine_name = routine.get_routine_name();
 				let routine_id = parsed
 					.routines
 					.get(&routine_name)

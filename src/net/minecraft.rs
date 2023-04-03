@@ -156,8 +156,8 @@ fn extract_native_library(path: &Path, natives_dir: &Path) -> anyhow::Result<()>
 }
 
 /// Gets the list of allowed libraries from the version json
-pub fn get_lib_list<'a>(version_json: &'a json::JsonObject)
--> anyhow::Result<impl Iterator<Item = &'a JsonObject>> {
+pub fn get_lib_list(version_json: &json::JsonObject)
+-> anyhow::Result<impl Iterator<Item = &JsonObject>> {
 	let libraries = json::access_array(version_json, "libraries")?;
 	let libraries = libraries.iter().filter_map(|lib| {
 		let lib = json::ensure_type(lib.as_object(), JsonType::Obj).ok()?;
@@ -408,7 +408,7 @@ pub async fn get_game_jar(
 	
 	printer.print(&format!("Downloading {side_str} jar..."));
 	let download =
-		json::access_object(json::access_object(&version_json, "downloads")?, &side_str)?;
+		json::access_object(json::access_object(version_json, "downloads")?, &side_str)?;
 	let url = json::access_str(download, "url")?;
 	download_file(url, &path).await.context("Failed to download file")?;
 	printer.print(&cformat!("<g>{} jar downloaded.", cap_first_letter(&side_str)));

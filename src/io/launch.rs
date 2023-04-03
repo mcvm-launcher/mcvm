@@ -94,7 +94,7 @@ pub fn launch(
 	cmd.args(game_args);
 	cmd.args(&options.game_args);
 
-	writeln!(log, "Launch command: {:#?}", cmd).context("Failed to write to launch log file")?;
+	writeln!(log, "Launch command: {cmd:#?}").context("Failed to write to launch log file")?;
 	if debug {
 		cprintln!("<s>Launch command:");
 		cprintln!("<k!>{:#?}", cmd);

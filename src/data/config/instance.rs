@@ -119,14 +119,6 @@ impl Default for LaunchConfig {
 	}
 }
 
-/// Enum for either type of options
-#[derive(Deserialize, Debug, Clone)]
-#[serde(untagged)]
-pub enum OptionsInstanceConfig {
-	Client(ClientOptions),
-	Server(ServerOptions),
-}
-
 #[derive(Deserialize)]
 #[serde(tag = "type")]
 #[serde(rename_all = "snake_case")]
@@ -135,13 +127,13 @@ enum InstanceConfig {
 		#[serde(default)]
 		launch: LaunchConfig,
 		#[serde(default)]
-		options: Option<ClientOptions>,
+		options: Option<Box<ClientOptions>>,
 	},
 	Server {
 		#[serde(default)]
 		launch: LaunchConfig,
 		#[serde(default)]
-		options: Option<ServerOptions>,
+		options: Option<Box<ServerOptions>>,
 	},
 }
 

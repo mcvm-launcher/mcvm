@@ -46,7 +46,7 @@ pub fn write_options_txt(
 ) -> anyhow::Result<()> {
 	let mut file = File::create(path).context("Failed to open file")?;
 	for (key, value) in options.iter().sorted_by_key(|x| x.0) {
-		client::write_key(&key, &value, &mut file)
+		client::write_key(key, value, &mut file)
 			.with_context(|| format!("Failed to write line for option {key} with value {value}"))?;
 	}
 	
@@ -60,7 +60,7 @@ pub fn write_server_properties(
 ) -> anyhow::Result<()> {
 	let mut file = File::create(path).context("Failed to open file")?;
 	for (key, value) in options.iter().sorted_by_key(|x| x.0) {
-		server::write_key(&key, &value, &mut file)
+		server::write_key(key, value, &mut file)
 			.with_context(|| format!("Failed to write line for option {key} with value {value}"))?;
 	}
 

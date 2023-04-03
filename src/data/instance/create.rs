@@ -121,20 +121,18 @@ impl Instance {
 				let global_keys = options::client::create_keys(
 					global_options,
 					&self.version,
-					&version_list,
+					version_list,
 				).context("Failed to create keys for global options")?;
 				keys.extend(global_keys);
 			}
 		}
-		if let InstKind::Client { options } = &self.kind {
-			if let Some(options) = options {
-				let override_keys = options::client::create_keys(
-					options,
-					&self.version,
-					&version_list,
-				).context("Failed to create keys for override options")?;
-				keys.extend(override_keys);
-			}
+		if let InstKind::Client { options: Some(options) } = &self.kind {
+			let override_keys = options::client::create_keys(
+				options,
+				&self.version,
+				version_list,
+			).context("Failed to create keys for override options")?;
+			keys.extend(override_keys);
 		}
 		if !keys.is_empty() {
 			let options_path = mc_dir.join("options.txt");
@@ -227,20 +225,18 @@ impl Instance {
 				let global_keys = options::server::create_keys(
 					global_options,
 					&self.version,
-					&version_list,
+					version_list,
 				).context("Failed to create keys for global options")?;
 				keys.extend(global_keys);
 			}
 		}
-		if let InstKind::Server { options } = &self.kind {
-			if let Some(options) = options {
-				let override_keys = options::server::create_keys(
-					options,
-					&self.version,
-					&version_list,
-				).context("Failed to create keys for override options")?;
-				keys.extend(override_keys);
-			}
+		if let InstKind::Server { options: Some(options) } = &self.kind {
+			let override_keys = options::server::create_keys(
+				options,
+				&self.version,
+				version_list,
+			).context("Failed to create keys for override options")?;
+			keys.extend(override_keys);
 		}
 		if !keys.is_empty() {
 			let options_path = server_dir.join("server.properties");

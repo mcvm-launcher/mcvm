@@ -772,11 +772,7 @@ fn default_hide_matched_names() -> bool { true }
 fn default_joined_server() -> bool { true }
 fn default_hide_bundle_tutorial() -> bool { true }
 fn default_sync_chunk_writes() -> bool {
-	if cfg!(target_os = "windows") {
-		false
-	} else {
-		true
-	}
+	!cfg!(target_os = "windows")
 }
 fn default_show_autosave_indicator() -> bool { true }
 fn default_allow_server_listing() -> bool { true }
