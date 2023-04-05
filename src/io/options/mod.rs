@@ -2,12 +2,10 @@ pub mod client;
 mod read;
 pub mod server;
 
-use std::collections::HashMap;
 use std::fs::File;
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 
 use anyhow::Context;
-use itertools::Itertools;
 use serde::Deserialize;
 
 use self::read::parse_options;
@@ -39,29 +37,4 @@ pub async fn read_options(paths: &Paths) -> anyhow::Result<Option<Options>> {
 	Ok(Some(
 		parse_options(&mut file).context("Failed to read options")?,
 	))
-}
-
-/// Write options.txt to a file
-pub fn write_options_txt(options: &HashMap<String, String>, path: &Path) -> anyhow::Result<()> {
-	let mut file = File::create(path).context("Failed to open file")?;
-	for (key, value) in options.iter().sorted_by_key(|x| x.0) {
-		client::write_key(key, value, &mut file)
-			.with_context(|| format!("Failed to write line for option {key} with value {value}"))?;
-	}
-
-	Ok(())
-}
-
-/// Write server.properties to a file
-pub fn write_server_properties(
-	options: &HashMap<String, String>,
-	path: &Path,
-) -> anyhow::Result<()> {
-	let mut file = File::create(path).context("Failed to open file")?;
-	for (key, value) in options.iter().sorted_by_key(|x| x.0) {
-		server::write_key(key, value, &mut file)
-			.with_context(|| format!("Failed to write line for option {key} with value {value}"))?;
-	}
-
-	Ok(())
 }

@@ -10,7 +10,7 @@ use crate::data::profile::update::{UpdateManager, UpdateRequirement};
 use crate::io::files::{self, paths::Paths};
 use crate::io::java::classpath::Classpath;
 use crate::io::java::JavaKind;
-use crate::io::options::{self, write_options_txt, write_server_properties};
+use crate::io::options::{self, client::write_options_txt, server::write_server_properties};
 use crate::net::fabric_quilt;
 use crate::net::{minecraft, paper};
 use crate::util::{json, print::ReplPrinter};
@@ -141,7 +141,8 @@ impl Instance {
 		}
 		if !keys.is_empty() {
 			let options_path = mc_dir.join("options.txt");
-			write_options_txt(&keys, &options_path).context("Failed to write options.txt")?;
+			write_options_txt(keys, &options_path).await
+				.context("Failed to write options.txt")?;
 		}
 
 		self.classpath = Some(classpath);
@@ -254,7 +255,7 @@ impl Instance {
 		}
 		if !keys.is_empty() {
 			let options_path = server_dir.join("server.properties");
-			write_server_properties(&keys, &options_path)
+			write_server_properties(keys, &options_path).await
 				.context("Failed to write server.properties")?;
 		}
 
