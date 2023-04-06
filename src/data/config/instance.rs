@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use anyhow::{Context, ensure};
+use anyhow::{ensure, Context};
 use serde::Deserialize;
 use serde_json::Value;
 
@@ -92,7 +92,10 @@ impl LaunchConfig {
 		};
 		if let Some(min_mem) = &min_mem {
 			if let Some(max_mem) = &max_mem {
-				ensure!(min_mem.to_bytes() <= max_mem.to_bytes(), "Minimum memory must be less than or equal to maximum memory");
+				ensure!(
+					min_mem.to_bytes() <= max_mem.to_bytes(),
+					"Minimum memory must be less than or equal to maximum memory"
+				);
 			}
 		}
 		Ok(LaunchOptions {

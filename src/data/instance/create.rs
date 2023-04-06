@@ -141,7 +141,8 @@ impl Instance {
 		}
 		if !keys.is_empty() {
 			let options_path = mc_dir.join("options.txt");
-			write_options_txt(keys, &options_path).await
+			write_options_txt(keys, &options_path)
+				.await
 				.context("Failed to write options.txt")?;
 		}
 
@@ -255,7 +256,8 @@ impl Instance {
 		}
 		if !keys.is_empty() {
 			let options_path = server_dir.join("server.properties");
-			write_server_properties(keys, &options_path).await
+			write_server_properties(keys, &options_path)
+				.await
 				.context("Failed to write server.properties")?;
 		}
 

@@ -1,5 +1,5 @@
-mod keybinds;
 mod file;
+mod keybinds;
 
 pub use file::create_keys;
 pub use file::write_options_txt;
