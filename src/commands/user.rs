@@ -13,8 +13,8 @@ pub enum UserSubcommand {
 	Auth,
 }
 
-fn list(data: &mut CmdData) -> anyhow::Result<()> {
-	data.ensure_config()?;
+async fn list(data: &mut CmdData) -> anyhow::Result<()> {
+	data.ensure_config().await?;
 
 	if let Some(config) = &data.config {
 		cprintln!("<s>Users:");
@@ -29,8 +29,8 @@ fn list(data: &mut CmdData) -> anyhow::Result<()> {
 	Ok(())
 }
 
-fn auth(data: &mut CmdData) -> anyhow::Result<()> {
-	data.ensure_config()?;
+async fn auth(data: &mut CmdData) -> anyhow::Result<()> {
+	data.ensure_config().await?;
 
 	if let Some(config) = &data.config {
 		match config.auth.get_user() {
@@ -48,9 +48,9 @@ fn auth(data: &mut CmdData) -> anyhow::Result<()> {
 	Ok(())
 }
 
-pub fn run(subcommand: UserSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
+pub async fn run(subcommand: UserSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
 	match subcommand {
-		UserSubcommand::List => list(data),
-		UserSubcommand::Auth => auth(data),
+		UserSubcommand::List => list(data).await,
+		UserSubcommand::Auth => auth(data).await,
 	}
 }

@@ -35,8 +35,8 @@ pub enum ProfileSubcommand {
 }
 
 async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
-	data.ensure_paths()?;
-	data.ensure_config()?;
+	data.ensure_paths().await?;
+	data.ensure_config().await?;
 
 	if let Some(config) = &mut data.config {
 		if let Some(paths) = &data.paths {
@@ -78,8 +78,8 @@ async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
 	Ok(())
 }
 
-fn list(data: &mut CmdData) -> anyhow::Result<()> {
-	data.ensure_config()?;
+async fn list(data: &mut CmdData) -> anyhow::Result<()> {
+	data.ensure_config().await?;
 
 	if let Some(config) = &data.config {
 		cprintln!("<s>Profiles:");
@@ -99,8 +99,8 @@ fn list(data: &mut CmdData) -> anyhow::Result<()> {
 }
 
 async fn profile_update(data: &mut CmdData, id: &str, force: bool) -> anyhow::Result<()> {
-	data.ensure_paths()?;
-	data.ensure_config()?;
+	data.ensure_paths().await?;
+	data.ensure_config().await?;
 
 	if let Some(config) = &mut data.config {
 		if let Some(paths) = &data.paths {
@@ -271,7 +271,7 @@ async fn profile_update(data: &mut CmdData, id: &str, force: bool) -> anyhow::Re
 pub async fn run(subcommand: ProfileSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
 	match subcommand {
 		ProfileSubcommand::Info { profile } => info(data, &profile).await,
-		ProfileSubcommand::List => list(data),
+		ProfileSubcommand::List => list(data).await,
 		ProfileSubcommand::Update { force, profile } => profile_update(data, &profile, force).await,
 	}
 }

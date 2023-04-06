@@ -16,8 +16,8 @@ files in your instances or any other user data. Don't do this unless something i
 	Remove,
 }
 
-pub fn remove(data: &mut CmdData) -> anyhow::Result<()> {
-	data.ensure_paths()?;
+pub async fn remove(data: &mut CmdData) -> anyhow::Result<()> {
+	data.ensure_paths().await?;
 	if let Some(paths) = &data.paths {
 		cprintln!("<g>Removing internal files...");
 		fs::remove_dir_all(&paths.internal).context("Failed to remove internal data directory")?;
@@ -25,8 +25,8 @@ pub fn remove(data: &mut CmdData) -> anyhow::Result<()> {
 	Ok(())
 }
 
-pub fn run(subcommand: FilesSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
+pub async fn run(subcommand: FilesSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
 	match subcommand {
-		FilesSubcommand::Remove => remove(data),
+		FilesSubcommand::Remove => remove(data).await,
 	}
 }

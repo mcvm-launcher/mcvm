@@ -3,8 +3,8 @@ use super::CmdData;
 use anyhow::{bail, Context};
 
 pub async fn run(instance: &str, debug: bool, data: &mut CmdData) -> anyhow::Result<()> {
-	data.ensure_paths()?;
-	data.ensure_config()?;
+	data.ensure_paths().await?;
+	data.ensure_config().await?;
 
 	if let Some(config) = &mut data.config {
 		if let Some(paths) = &data.paths {

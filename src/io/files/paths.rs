@@ -1,6 +1,6 @@
-use super::create_dir;
+use super::create_leading_dirs_async;
 
-use anyhow::anyhow;
+use anyhow::{anyhow, Context};
 use directories::{BaseDirs, ProjectDirs};
 
 use std::path::PathBuf;
@@ -37,7 +37,7 @@ pub struct Paths {
 }
 
 impl Paths {
-	pub fn new() -> anyhow::Result<Paths> {
+	pub async fn new() -> anyhow::Result<Paths> {
 		let base = BaseDirs::new().ok_or(anyhow!("Base directories failed"))?;
 		let project =
 			ProjectDirs::from("", "mcvm", "mcvm").ok_or(anyhow!("Base directories failed"))?;
@@ -54,23 +54,23 @@ impl Paths {
 		let logs = data.join("logs");
 		let launch_logs = logs.join("launch");
 
-		create_dir(&data)?;
-		create_dir(project.cache_dir())?;
-		create_dir(project.config_dir())?;
-		create_dir(
+		create_leading_dirs_async(&data).await?;
+		create_leading_dirs_async(project.cache_dir()).await?;
+		create_leading_dirs_async(project.config_dir()).await?;
+		create_leading_dirs_async(
 			project
 				.runtime_dir()
 				.ok_or(anyhow!("Base directories failed"))?,
-		)?;
-		create_dir(&internal)?;
-		create_dir(&assets)?;
-		create_dir(&java)?;
-		create_dir(&addons)?;
-		create_dir(&pkg_cache)?;
-		create_dir(&pkg_index_cache)?;
-		create_dir(&jars)?;
-		create_dir(&logs)?;
-		create_dir(&launch_logs)?;
+		).await.context("Failed to create run directory")?;
+		create_leading_dirs_async(&internal).await?;
+		create_leading_dirs_async(&assets).await?;
+		create_leading_dirs_async(&java).await?;
+		create_leading_dirs_async(&addons).await?;
+		create_leading_dirs_async(&pkg_cache).await?;
+		create_leading_dirs_async(&pkg_index_cache).await?;
+		create_leading_dirs_async(&jars).await?;
+		create_leading_dirs_async(&logs).await?;
+		create_leading_dirs_async(&launch_logs).await?;
 
 		Ok(Paths {
 			base,

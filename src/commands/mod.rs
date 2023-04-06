@@ -30,16 +30,16 @@ impl CmdData {
 		}
 	}
 
-	pub fn ensure_paths(&mut self) -> anyhow::Result<()> {
+	pub async fn ensure_paths(&mut self) -> anyhow::Result<()> {
 		if self.paths.is_none() {
-			self.paths = Some(Paths::new()?);
+			self.paths = Some(Paths::new().await?);
 		}
 		Ok(())
 	}
 
-	pub fn ensure_config(&mut self) -> anyhow::Result<()> {
+	pub async fn ensure_config(&mut self) -> anyhow::Result<()> {
 		if self.config.is_none() {
-			self.ensure_paths()
+			self.ensure_paths().await
 				.context("Failed to set up directories")?;
 			if let Some(paths) = &self.paths {
 				self.config = Some(
@@ -96,13 +96,13 @@ pub async fn run_cli(data: &mut CmdData) -> anyhow::Result<()> {
 	let cli = Cli::try_parse()?;
 	match cli.command {
 		Command::Profile { command } => profile::run(command, data).await,
-		Command::User { command } => user::run(command, data),
+		Command::User { command } => user::run(command, data).await,
 		Command::Launch { debug, instance } => launch::run(&instance, debug, data).await,
 		Command::Version => Ok(cprintln!(
 			"mcvm version <g>{}</g>",
 			env!("CARGO_PKG_VERSION")
 		)),
-		Command::Files { command } => files::run(command, data),
+		Command::Files { command } => files::run(command, data).await,
 		Command::Package { command } => package::run(command, data).await,
 	}
 }

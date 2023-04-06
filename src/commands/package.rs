@@ -33,8 +33,8 @@ This package does not need to be installed, it just has to be in the index."
 }
 
 async fn list(data: &mut CmdData) -> anyhow::Result<()> {
-	data.ensure_paths()?;
-	data.ensure_config()?;
+	data.ensure_paths().await?;
+	data.ensure_config().await?;
 
 	if let Some(config) = &mut data.config {
 		if let Some(paths) = &data.paths {
@@ -68,8 +68,8 @@ async fn list(data: &mut CmdData) -> anyhow::Result<()> {
 }
 
 async fn sync(data: &mut CmdData) -> anyhow::Result<()> {
-	data.ensure_config()?;
-	data.ensure_paths()?;
+	data.ensure_config().await?;
+	data.ensure_paths().await?;
 
 	if let Some(config) = &mut data.config {
 		if let Some(paths) = &data.paths {
@@ -100,8 +100,8 @@ async fn sync(data: &mut CmdData) -> anyhow::Result<()> {
 }
 
 async fn cat(data: &mut CmdData, name: &str, raw: bool) -> anyhow::Result<()> {
-	data.ensure_config()?;
-	data.ensure_paths()?;
+	data.ensure_config().await?;
+	data.ensure_paths().await?;
 
 	if let Some(config) = &mut data.config {
 		if let Some(paths) = &data.paths {
