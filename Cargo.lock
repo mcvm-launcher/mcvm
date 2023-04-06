@@ -809,6 +809,7 @@ dependencies = [
  "thiserror",
  "tokio",
  "zip",
+ "zip-extract",
 ]
 
 [[package]]
@@ -1790,6 +1791,17 @@ dependencies = [
  "sha1",
  "time",
  "zstd",
+]
+
+[[package]]
+name = "zip-extract"
+version = "0.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bb654964c003959ed64cbd0d7b329bcdcbd9690facd50c8617748d3622543972"
+dependencies = [
+ "log",
+ "thiserror",
+ "zip",
 ]
 
 [[package]]

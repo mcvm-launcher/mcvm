@@ -15,7 +15,8 @@ use tar::Archive;
 
 use std::collections::HashSet;
 use std::fs;
-use std::path::PathBuf;
+use std::io::Cursor;
+use std::path::{PathBuf, Path};
 
 #[derive(Debug, Clone, Hash, PartialEq, Eq)]
 pub enum JavaKind {
@@ -96,23 +97,26 @@ impl Java {
 				}
 				out.insert(extracted_bin_dir.clone());
 
-				let tar_name = "adoptium".to_owned() + major_version + ".tar.gz";
-				let tar_path = out_dir.join(tar_name);
+				let arc_extension = if cfg!(windows) {
+					".zip"
+				} else {
+					".tar.gz"
+				};
+				let arc_name = format!("adoptium{major_version}{arc_extension}");
+				let arc_path = out_dir.join(arc_name);
 
 				printer.print(&cformat!(
 					"Downloading Adoptium Temurin JRE <b>{}</b>...",
 					json::access_str(version, "release_name")?
 				));
-				download_file(bin_url, &tar_path)
+				download_file(bin_url, &arc_path)
 					.await
 					.context("Failed to download JRE binaries")?;
 
 				// Extraction
 				printer.print(&cformat!("Extracting JRE..."));
-				let data = fs::read(&tar_path)?;
-				let mut decoder = Decoder::new(data.as_slice())?;
-				let mut arc = Archive::new(&mut decoder);
-				arc.unpack(out_dir)?;
+				extract_adoptium_archive(&arc_path, &out_dir).context("Failed to extract")?;
+
 				printer.print(&cformat!("<g>Java installation finished."));
 			}
 			JavaKind::Custom(path) => {
@@ -121,4 +125,19 @@ impl Java {
 		}
 		Ok(out)
 	}
+}
+
+/// Extracts the Adoptium JRE archive (either a tar or a zip)
+fn extract_adoptium_archive(arc_path: &Path, out_dir: &Path) -> anyhow::Result<()> {
+	let data = fs::read(arc_path).context("Failed to read archive file")?;
+	if cfg!(windows) {
+		zip_extract::extract(Cursor::new(data), out_dir, false)
+			.context("Failed to extract zip file")?;
+	} else {
+		let mut decoder = Decoder::new(data.as_slice()).context("Failed to decode tar.gz")?;
+		let mut arc = Archive::new(&mut decoder);
+		arc.unpack(out_dir).context("Failed to unarchive tar")?;
+	}
+	
+	Ok(())
 }
