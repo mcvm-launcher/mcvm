@@ -32,6 +32,7 @@ fn default_config() -> serde_json::Value {
 					"name": "ExampleUser441"
 				}
 			},
+			"default_user": "example",
 			"profiles": {
 				"example": {
 					"version": "1.19.3",
