@@ -70,7 +70,8 @@ Instances are defined in the id-value format underneath the `instances` object o
 		},
 		"java": String,
 		"preset": String
-	}
+	},
+	"options": ClientOptions | ServerOptions
 }
 ```
 
@@ -82,6 +83,7 @@ Instances are defined in the id-value format underneath the `instances` object o
  * `launch.preset` (Optional): A preset that will automatically apply changes to your launch configuration to improve your experience.
    * `"none"`: The default. No changes will be applied.
    * `"aikars"`: A popular set of tuned arguments for better performance. This works better for servers that have a lot of available memory (8GB+) and is not recommended otherwise. See https://docs.papermc.io/paper/aikars-flags for more information.
+ * `options`: Options to apply to this instance specifically. They will override global options. They are in the format of either the client or server section depending on the instance type.
 
 ## Packages
 Packages are specified globally in the `packages` list or for a specific profile in its `packages` list. It has two valid forms:

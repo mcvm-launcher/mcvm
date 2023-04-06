@@ -18,6 +18,8 @@ Format:
 }
 ```
 
+Options that you do not change will not be changed in the output file. Options that mcvm does not know about will not be touched either.
+
 A description will not be provided for every option as they mirror the options in-game and inside the server.properties and should be somewhat self-explanatory. Any options that need an explanation will have a note.
 
 ## Client
