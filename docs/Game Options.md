@@ -351,6 +351,9 @@ A description will not be provided for every option as they mirror the options i
 		"sha1"?: String,
 		"required": bool
 	},
+	"custom": {
+		...
+	},
 	"allow_flight": bool,
 	"broadcast_console_to_ops": bool,
 	"broadcast_rcon_to_ops": bool,

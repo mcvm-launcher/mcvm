@@ -3,6 +3,7 @@ mod file;
 pub use file::create_keys;
 pub use file::write_server_properties;
 
+use std::collections::HashMap;
 use std::fmt::Display;
 
 use serde::Deserialize;
@@ -153,6 +154,7 @@ pub struct ServerOptions {
 	pub datapacks: DatapacksOptions,
 	pub world: WorldOptions,
 	pub resource_pack: ResourcePackOptions,
+	pub custom: HashMap<String, String>,
 	pub allow_flight: Option<bool>,
 	pub broadcast_console_to_ops: Option<bool>,
 	pub broadcast_rcon_to_ops: Option<bool>,
@@ -199,6 +201,7 @@ impl Default for ServerOptions {
 			datapacks: DatapacksOptions::default(),
 			world: WorldOptions::default(),
 			resource_pack: ResourcePackOptions::default(),
+			custom: HashMap::default(),
 			allow_flight: None,
 			broadcast_console_to_ops: None,
 			broadcast_rcon_to_ops: None,

@@ -385,6 +385,9 @@ pub fn create_keys(
 		);
 	}
 
+	let custom_clone = options.custom.clone();
+	out.extend(custom_clone);
+
 	Ok(out)
 }
 
