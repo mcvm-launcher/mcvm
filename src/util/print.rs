@@ -118,7 +118,7 @@ impl PrintOptions {
 		}
 	}
 
-	pub fn increase_indent(opt: &Self) -> Self {
+	pub fn _increase_indent(opt: &Self) -> Self {
 		let mut out = opt.clone();
 		out.indent += 1;
 		out.indent_str = make_indent(out.indent);

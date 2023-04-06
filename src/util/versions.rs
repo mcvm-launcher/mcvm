@@ -17,7 +17,7 @@ pub enum VersionPattern {
 
 impl VersionPattern {
 	/// Finds all match in a list of versions
-	pub fn get_matches(&self, versions: &[String]) -> Vec<String> {
+	pub fn _get_matches(&self, versions: &[String]) -> Vec<String> {
 		match self {
 			Self::Single(version) => match versions.contains(version) {
 				true => vec![version.to_string()],
@@ -43,8 +43,8 @@ impl VersionPattern {
 	}
 
 	/// Finds the newest match in a list of versions
-	pub fn get_match(&self, versions: &[String]) -> Option<String> {
-		self.get_matches(versions).last().cloned()
+	pub fn _get_match(&self, versions: &[String]) -> Option<String> {
+		self._get_matches(versions).last().cloned()
 	}
 
 	/// Compares this pattern to a single string.
@@ -91,9 +91,9 @@ impl VersionPattern {
 
 	/// Returns the union of matches for multiple patterns
 	pub fn _match_union(&self, other: &Self, versions: &[String]) -> Vec<String> {
-		self.get_matches(versions)
+		self._get_matches(versions)
 			.iter()
-			.zip(other.get_matches(versions))
+			.zip(other._get_matches(versions))
 			.filter_map(
 				|(left, right)| {
 					if *left == right {
@@ -168,32 +168,32 @@ mod tests {
 		];
 
 		assert_eq!(
-			VersionPattern::Single(String::from("1.19.3")).get_match(&versions),
+			VersionPattern::Single(String::from("1.19.3"))._get_match(&versions),
 			Some(String::from("1.19.3"))
 		);
 		assert_eq!(
-			VersionPattern::Single(String::from("1.18")).get_match(&versions),
+			VersionPattern::Single(String::from("1.18"))._get_match(&versions),
 			Some(String::from("1.18"))
 		);
 		assert_eq!(
-			VersionPattern::Single(String::from("")).get_match(&versions),
+			VersionPattern::Single(String::from(""))._get_match(&versions),
 			None
 		);
 		assert_eq!(
-			VersionPattern::Before(String::from("1.18")).get_match(&versions),
+			VersionPattern::Before(String::from("1.18"))._get_match(&versions),
 			Some(String::from("1.18"))
 		);
 		assert_eq!(
-			VersionPattern::After(String::from("1.16.5")).get_match(&versions),
+			VersionPattern::After(String::from("1.16.5"))._get_match(&versions),
 			Some(String::from("1.19.3"))
 		);
 
 		assert_eq!(
-			VersionPattern::Before(String::from("1.17")).get_matches(&versions),
+			VersionPattern::Before(String::from("1.17"))._get_matches(&versions),
 			vec![String::from("1.16.5"), String::from("1.17")]
 		);
 		assert_eq!(
-			VersionPattern::After(String::from("1.17")).get_matches(&versions),
+			VersionPattern::After(String::from("1.17"))._get_matches(&versions),
 			vec![
 				String::from("1.17"),
 				String::from("1.18"),
