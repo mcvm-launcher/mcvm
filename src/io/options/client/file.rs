@@ -965,7 +965,8 @@ mod tests {
 
 	#[test]
 	fn test_create_keys() {
-		let options = parse_options_str(r#"{"options": {}, "server": {}}"#).unwrap();
+		let options = parse_options_str(r#"{"client": {}, "server": {}}"#).unwrap();
+		dbg!(&options);
 		let versions = [String::from("1.18"), String::from("1.19.3")];
 		create_keys(&options.client.unwrap(), "1.19.3", &versions).unwrap();
 	}
