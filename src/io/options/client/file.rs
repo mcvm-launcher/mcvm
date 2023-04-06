@@ -139,478 +139,677 @@ pub fn create_keys(
 
 	// TODO: Add actual data version
 	// out.insert(String::from("version"), client.data_version.to_string());
-	out.insert(
-		String::from("autoJump"),
-		client.control.auto_jump.to_string(),
-	);
-	out.insert(
-		String::from("fullscreen"),
-		client.video.fullscreen.to_string(),
-	);
-	if after_17w47a {
+	if let Some(value) = client.control.auto_jump {
 		out.insert(
-			String::from("autoSuggestions"),
-			client.chat.auto_command_suggestions.to_string(),
+			String::from("autoJump"),
+			value.to_string(),
 		);
 	}
-	out.insert(
-		String::from("chatColors"),
-		client.chat.enable_colors.to_string(),
-	);
-	out.insert(
-		String::from("chatLinks"),
-		client.chat.enable_links.to_string(),
-	);
-	out.insert(
-		String::from("chatLinksPrompt"),
-		client.chat.prompt_links.to_string(),
-	);
-	out.insert(String::from("enableVsync"), client.video.vsync.to_string());
-	out.insert(
-		String::from("entityShadows"),
-		client.video.entity_shadows.to_string(),
-	);
-	out.insert(
-		String::from("forceUnicodeFont"),
-		client.chat.force_unicode.to_string(),
-	);
-	out.insert(
-		String::from("discrete_mouse_scroll"),
-		client.control.discrete_mouse_scroll.to_string(),
-	);
-	out.insert(
-		String::from("invertYMouse"),
-		client.control.invert_mouse_y.to_string(),
-	);
-	out.insert(
-		String::from("realmsNotifications"),
-		client.realms_notifications.to_string(),
-	);
-	out.insert(
-		String::from("reducedDebugInfo"),
-		client.reduced_debug_info.to_string(),
-	);
-	out.insert(
-		String::from("showSubtitles"),
-		client.sound.show_subtitles.to_string(),
-	);
-	if after_22w11a {
+	if let Some(value) = client.video.fullscreen {
 		out.insert(
-			String::from("directionalAudio"),
-			client.sound.directional_audio.to_string(),
+			String::from("fullscreen"),
+			value.to_string(),
 		);
 	}
-	out.insert(
-		String::from("touchscreen"),
-		client.control.enable_touchscreen.to_string(),
-	);
-	out.insert(
-		String::from("bobView"),
-		client.video.view_bobbing.to_string(),
-	);
-	out.insert(
-		String::from("toggleCrouch"),
-		client.control.toggle_crouch.to_string(),
-	);
-	out.insert(
-		String::from("toggleSprint"),
-		client.control.toggle_sprint.to_string(),
-	);
-	if after_21w13a {
+	if let Some(value) = client.chat.auto_command_suggestions {
+		if after_17w47a {
+			out.insert(
+				String::from("autoSuggestions"),
+				value.to_string(),
+			);
+		}
+	}
+	if let Some(value) = client.chat.enable_colors {
 		out.insert(
-			String::from("darkMojangStudiosBackground"),
-			client.video.dark_mojang_background.to_string(),
+			String::from("chatColors"),
+			value.to_string(),
 		);
+	}
+	if let Some(value) = client.chat.enable_links {
+		out.insert(
+			String::from("chatLinks"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = client.chat.prompt_links {
+		out.insert(
+			String::from("chatLinksPrompt"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = client.video.vsync {
+		out.insert(String::from("enableVsync"), value.to_string());
+	}
+	if let Some(value) = client.video.entity_shadows {
+		out.insert(
+			String::from("entityShadows"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = client.chat.force_unicode {
+		out.insert(
+			String::from("forceUnicodeFont"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = client.control.discrete_mouse_scroll {
+		out.insert(
+			String::from("discrete_mouse_scroll"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = client.control.invert_mouse_y {
+		out.insert(
+			String::from("invertYMouse"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = client.realms_notifications {
+		out.insert(
+			String::from("realmsNotifications"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = client.reduced_debug_info {
+		out.insert(
+			String::from("reducedDebugInfo"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = client.sound.show_subtitles {
+		out.insert(
+			String::from("showSubtitles"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = client.sound.directional_audio {
+		if after_22w11a {
+			out.insert(
+				String::from("directionalAudio"),
+				value.to_string(),
+			);
+		}
+	}
+	if let Some(value) = client.control.enable_touchscreen {
+		out.insert(
+			String::from("touchscreen"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = client.video.view_bobbing {
+		out.insert(
+			String::from("bobView"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = client.control.toggle_crouch {
+		out.insert(
+			String::from("toggleCrouch"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = client.control.toggle_sprint {
+		out.insert(
+			String::from("toggleSprint"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = client.video.dark_mojang_background {
+		if after_21w13a {
+			out.insert(
+				String::from("darkMojangStudiosBackground"),
+				value.to_string(),
+			);
+		}
 	}
 	if after_21w37a {
-		out.insert(
-			String::from("hideLightningFlashes"),
-			client.video.hide_lightning_flashes.to_string(),
-		);
-		out.insert(
-			String::from("prioritizeChunkUpdates"),
-			client.video.chunk_updates_mode.to_int().to_string(),
-		);
+		if let Some(value) = client.video.hide_lightning_flashes {
+			out.insert(
+				String::from("hideLightningFlashes"),
+				value.to_string(),
+			);
+		}
+		if let Some(value) = &client.video.chunk_updates_mode {
+			out.insert(
+				String::from("prioritizeChunkUpdates"),
+				value.to_int().to_string(),
+			);
+		}
 		if let Some(device) = &client.sound.device {
 			out.insert(String::from("soundDevice"), device.clone());
 		}
 	}
-	out.insert(
-		String::from("mouseSensitivity"),
-		client.control.mouse_sensitivity.to_string(),
-	);
-	out.insert(
-		String::from("fov"),
-		convert_fov(client.video.fov).to_string(),
-	);
-	out.insert(
-		String::from("screenEffectScale"),
-		client.video.screen_effect_scale.to_string(),
-	);
-	out.insert(
-		String::from("fovEffectScale"),
-		client.video.fov_effect_scale.to_string(),
-	);
-	if after_22w15a {
+	if let Some(value) = client.control.mouse_sensitivity {
 		out.insert(
-			String::from("darknessEffectScale"),
-			client.video.darkness_effect_scale.to_string(),
+			String::from("mouseSensitivity"),
+			value.to_string(),
 		);
 	}
-	out.insert(String::from("gamma"), client.video.brightness.to_string());
-	out.insert(
-		String::from("renderDistance"),
-		client.video.render_distance.to_string(),
-	);
-	if after_21w38a {
+	if let Some(value) = client.video.fov {
 		out.insert(
-			String::from("simulationDistance"),
-			client.video.simulation_distance.to_string(),
+			String::from("fov"),
+			convert_fov(value).to_string(),
 		);
 	}
-	out.insert(
-		String::from("entityDistanceScaling"),
-		client.video.entity_distance_scaling.to_string(),
-	);
-	out.insert(String::from("guiScale"), client.video.gui_scale.to_string());
-	out.insert(
-		String::from("particles"),
-		client.video.particles.to_int().to_string(),
-	);
-	out.insert(String::from("maxFps"), client.video.max_fps.to_string());
-	out.insert(
-		String::from("difficulty"),
-		client.difficulty.to_int().to_string(),
-	);
-	if before_20w27a {
+	if let Some(value) = client.video.screen_effect_scale {
 		out.insert(
-			String::from("fancyGraphics"),
-			match client.video.graphics_mode {
-				EnumOrNumber::Enum(GraphicsMode::Fast) => false,
-				EnumOrNumber::Enum(GraphicsMode::Fancy | GraphicsMode::Fabulous) => true,
-				EnumOrNumber::Num(num) => num > 0,
-			}
-			.to_string(),
-		);
-	} else {
-		out.insert(
-			String::from("graphicsMode"),
-			client.video.graphics_mode.to_int().to_string(),
+			String::from("screenEffectScale"),
+			value.to_string(),
 		);
 	}
-	out.insert(String::from("ao"), client.video.smooth_lighting.to_string());
-	if after_18w15a {
+	if let Some(value) = client.video.fov_effect_scale {
 		out.insert(
-			String::from("biomeBlendRadius"),
-			client.video.biome_blend.to_string(),
+			String::from("fovEffectScale"),
+			value.to_string(),
 		);
 	}
-	if after_14w25a {
+	if let Some(value) = client.video.darkness_effect_scale {
+		if after_22w15a {
+			out.insert(
+				String::from("darknessEffectScale"),
+				value.to_string(),
+			);
+		}
+	}
+	if let Some(value) = client.video.brightness {
+		out.insert(String::from("gamma"), value.to_string());
+	}
+	if let Some(value) = client.video.render_distance {
 		out.insert(
-			String::from("renderClouds"),
-			client.video.clouds.to_string(),
-		);
-	} else {
-		out.insert(
-			String::from("clouds"),
-			matches!(
-				client.video.clouds,
-				CloudRenderMode::Fancy | CloudRenderMode::Fast
-			)
-			.to_string(),
+			String::from("renderDistance"),
+			value.to_string(),
 		);
 	}
-	out.insert(
-		String::from("resourcePacks"),
-		write_resource_packs(&client.resource_packs),
-	);
-	out.insert(
-		String::from("incompatibleResourcePacks"),
-		String::from("[]"),
-	);
-	out.insert(String::from("lang"), client.language.clone());
-	out.insert(
-		String::from("chatVisibility"),
-		client.chat.visibility.to_int().to_string(),
-	);
-	out.insert(String::from("chatOpacity"), client.chat.opacity.to_string());
-	out.insert(
-		String::from("chatLineSpacing"),
-		client.chat.line_spacing.to_string(),
-	);
-	out.insert(
-		String::from("textBackgroundOpacity"),
-		client.chat.background_opacity.to_string(),
-	);
-	out.insert(
-		String::from("backgroundForChatOnly"),
-		client.chat.background_for_chat_only.to_string(),
-	);
-	out.insert(
-		String::from("hideServerAddress"),
-		client.hide_server_address.to_string(),
-	);
-	out.insert(
-		String::from("advancedItemTooltips"),
-		client.advanced_item_tooltips.to_string(),
-	);
-	out.insert(
-		String::from("pauseOnLostFocus"),
-		client.pause_on_lost_focus.to_string(),
-	);
-	out.insert(
-		String::from("overrideWidth"),
-		client.video.window_width.to_string(),
-	);
-	out.insert(
-		String::from("overrideHeight"),
-		client.video.window_height.to_string(),
-	);
-	if after_12w50a && before_1_19_4 {
+	if let Some(value) = client.video.simulation_distance {
+		if after_21w38a {
+			out.insert(
+				String::from("simulationDistance"),
+				value.to_string(),
+			);
+		}
+	}
+	if let Some(value) = client.video.entity_distance_scaling {
 		out.insert(
-			String::from("heldItemTooltips"),
-			client.held_item_tooltips.to_string(),
+			String::from("entityDistanceScaling"),
+			value.to_string(),
 		);
 	}
-	out.insert(
-		String::from("chatHeightFocused"),
-		client.chat.focused_height.to_string(),
-	);
-	out.insert(String::from("chatDelay"), client.chat.delay.to_string());
-	out.insert(
-		String::from("chatHeightUnfocused"),
-		client.chat.unfocused_height.to_string(),
-	);
-	out.insert(String::from("chatScale"), client.chat.scale.to_string());
-	out.insert(String::from("chatWidth"), client.chat.width.to_string());
-	out.insert(
-		String::from("mipmapLevels"),
-		client.video.mipmap_levels.to_string(),
-	);
-	out.insert(
-		String::from("useNativeTransport"),
-		client.use_native_transport.to_string(),
-	);
-	out.insert(String::from("mainHand"), client.main_hand.to_string());
+	if let Some(value) = client.video.gui_scale {
+		out.insert(String::from("guiScale"), value.to_string());
+	}
+	if let Some(value) = &client.video.particles {
+		out.insert(
+			String::from("particles"),
+			value.to_int().to_string(),
+		);
+	}
+	if let Some(value) = client.video.max_fps {
+		out.insert(String::from("maxFps"), value.to_string());
+	}
+	if let Some(value) = &client.difficulty {
+		out.insert(
+			String::from("difficulty"),
+			value.to_int().to_string(),
+		);
+	}
+	if let Some(value) = &client.video.graphics_mode {
+		if before_20w27a {
+			out.insert(
+				String::from("fancyGraphics"),
+				match value {
+					EnumOrNumber::Enum(GraphicsMode::Fast) => false,
+					EnumOrNumber::Enum(GraphicsMode::Fancy | GraphicsMode::Fabulous) => true,
+					EnumOrNumber::Num(num) => num > &0,
+				}
+				.to_string(),
+			);
+		} else {
+			out.insert(
+				String::from("graphicsMode"),
+				value.to_int().to_string(),
+			);
+		}
+	}
+	if let Some(value) = client.video.smooth_lighting {
+		out.insert(String::from("ao"), value.to_string());
+	}
+	if let Some(value) = client.video.biome_blend {
+		if after_18w15a {
+			out.insert(
+				String::from("biomeBlendRadius"),
+				value.to_string(),
+			);
+		}
+	}
+	if let Some(value) = &client.video.clouds {
+		if after_14w25a {
+			out.insert(
+				String::from("renderClouds"),
+				value.to_string(),
+			);
+		} else {
+			out.insert(
+				String::from("clouds"),
+				matches!(
+					value,
+					CloudRenderMode::Fancy | CloudRenderMode::Fast
+				)
+				.to_string(),
+			);
+		}
+	}
+	if let Some(value) = &client.resource_packs {
+		out.insert(
+			String::from("resourcePacks"),
+			write_resource_packs(&value),
+		);
+	}
+	if let Some(value) = &client.language {
+		out.insert(String::from("lang"), value.clone());
+	}
+	if let Some(value) = &client.chat.visibility {
+		out.insert(
+			String::from("chatVisibility"),
+			value.to_int().to_string(),
+		);
+	}
+	if let Some(value) = client.chat.opacity {
+		out.insert(String::from("chatOpacity"), value.to_string());
+	}
+	if let Some(value) = client.chat.line_spacing {
+		out.insert(
+			String::from("chatLineSpacing"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = client.chat.background_opacity {
+		out.insert(
+			String::from("textBackgroundOpacity"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = client.chat.background_for_chat_only {
+		out.insert(
+			String::from("backgroundForChatOnly"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = client.hide_server_address {
+		out.insert(
+			String::from("hideServerAddress"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = client.advanced_item_tooltips {
+		out.insert(
+			String::from("advancedItemTooltips"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = client.pause_on_lost_focus {
+		out.insert(
+			String::from("pauseOnLostFocus"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = client.video.window_width {
+		out.insert(
+			String::from("overrideWidth"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = client.video.window_height {
+		out.insert(
+			String::from("overrideHeight"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = client.held_item_tooltips {
+		if after_12w50a && before_1_19_4 {
+			out.insert(
+				String::from("heldItemTooltips"),
+				value.to_string(),
+			);
+		}
+	}
+	if let Some(value) = client.chat.focused_height {
+		out.insert(
+			String::from("chatHeightFocused"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = client.chat.delay {
+		out.insert(String::from("chatDelay"), value.to_string());
+	}
+	if let Some(value) = client.chat.unfocused_height {
+		out.insert(
+			String::from("chatHeightUnfocused"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = client.chat.scale {
+		out.insert(String::from("chatScale"), value.to_string());
+	}
+	if let Some(value) = client.chat.width {
+		out.insert(String::from("chatWidth"), value.to_string());
+	}
+	if let Some(value) = client.video.mipmap_levels {
+		out.insert(
+			String::from("mipmapLevels"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = client.use_native_transport {
+		out.insert(
+			String::from("useNativeTransport"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = &client.main_hand {
+		out.insert(String::from("mainHand"), value.to_string());
+	}
 	if after_17w06a {
+		if let Some(value) = &client.chat.narrator_mode {
+			out.insert(
+				String::from("narrator"),
+				value.to_int().to_string(),
+			);
+		}
+		if let Some(value) = &client.tutorial_step {
+			out.insert(
+				String::from("tutorialStep"),
+				value.to_string(),
+			);
+		}
+	}
+	if let Some(value) = client.control.mouse_wheel_sensitivity {
+		if after_18w21a {
+			out.insert(
+				String::from("mouseWheelSensitivity"),
+				value.to_string(),
+			);
+		}
+	}
+	if let Some(value) = client.control.raw_mouse_input {
 		out.insert(
-			String::from("narrator"),
-			client.chat.narrator_mode.to_int().to_string(),
-		);
-		out.insert(
-			String::from("tutorialStep"),
-			client.tutorial_step.to_string(),
+			String::from("rawMouseInput"),
+			value.to_string(),
 		);
 	}
-	if after_18w21a {
-		out.insert(
-			String::from("mouseWheelSensitivity"),
-			client.control.mouse_wheel_sensitivity.to_string(),
-		);
+	if let Some(value) = &client.log_level {
+		if after_1_13_pre2 {
+			out.insert(
+				String::from("glDebugVerbosity"),
+				value.to_int().to_string(),
+			);
+		}
 	}
-	out.insert(
-		String::from("rawMouseInput"),
-		client.control.raw_mouse_input.to_string(),
-	);
-	if after_1_13_pre2 {
-		out.insert(
-			String::from("glDebugVerbosity"),
-			client.log_level.to_int().to_string(),
-		);
+	if let Some(value) = client.skip_multiplayer_warning {
+		if after_1_15_2_pre1 {
+			out.insert(
+				String::from("skipMultiplayerWarning"),
+				value.to_string(),
+			);
+		}
 	}
-	if after_1_15_2_pre1 {
-		out.insert(
-			String::from("skipMultiplayerWarning"),
-			client.skip_multiplayer_warning.to_string(),
-		);
-	}
-	if after_1_18_2_pre1 {
-		out.insert(
-			String::from("skipRealms32bitWarning"),
-			client.skip_realms_32_bit_warning.to_string(),
-		);
+	if let Some(value) = client.skip_realms_32_bit_warning {
+		if after_1_18_2_pre1 {
+			out.insert(
+				String::from("skipRealms32bitWarning"),
+				value.to_string(),
+			);
+		}
 	}
 	if after_1_16_4_rc1 {
+		if let Some(value) = client.hide_matched_names {
+			out.insert(
+				String::from("hideMatchedNames"),
+				value.to_string(),
+			);
+		}
+		if let Some(value) = client.joined_server {
+			out.insert(
+				String::from("joinedFirstServer"),
+				value.to_string(),
+			);
+		}
+	}
+	if let Some(value) = client.hide_bundle_tutorial {
 		out.insert(
-			String::from("hideMatchedNames"),
-			client.hide_matched_names.to_string(),
-		);
-		out.insert(
-			String::from("joinedFirstServer"),
-			client.joined_server.to_string(),
+			String::from("hideBundleTutorial"),
+			value.to_string(),
 		);
 	}
-	out.insert(
-		String::from("hideBundleTutorial"),
-		client.hide_bundle_tutorial.to_string(),
-	);
-	out.insert(
-		String::from("syncChunkWrites"),
-		client.sync_chunk_writes.to_string(),
-	);
-	if after_21w42a {
+	if let Some(value) = client.sync_chunk_writes {
 		out.insert(
-			String::from("showAutosaveIndicator"),
-			client.show_autosave_indicator.to_string(),
+			String::from("syncChunkWrites"),
+			value.to_string(),
 		);
 	}
-	if after_1_18_pre2 {
-		out.insert(
-			String::from("allowServerListing"),
-			client.allow_server_listing.to_string(),
-		);
+	if let Some(value) = client.show_autosave_indicator {
+		if after_21w42a {
+			out.insert(
+				String::from("showAutosaveIndicator"),
+				value.to_string(),
+			);
+		}
+	}
+	if let Some(value) = client.allow_server_listing {
+		if after_1_18_pre2 {
+			out.insert(
+				String::from("allowServerListing"),
+				value.to_string(),
+			);
+		}
 	}
 	// Keybinds
-	out.insert(
-		String::from("key_key.attack"),
-		client.control.keys.attack.get_keycode(before_1_13),
-	);
-	out.insert(
-		String::from("key_key.use"),
-		client.control.keys.r#use.get_keycode(before_1_13),
-	);
-	out.insert(
-		String::from("key_key.forward"),
-		client.control.keys.forward.get_keycode(before_1_13),
-	);
-	out.insert(
-		String::from("key_key.left"),
-		client.control.keys.left.get_keycode(before_1_13),
-	);
-	out.insert(
-		String::from("key_key.back"),
-		client.control.keys.back.get_keycode(before_1_13),
-	);
-	out.insert(
-		String::from("key_key.right"),
-		client.control.keys.right.get_keycode(before_1_13),
-	);
-	out.insert(
-		String::from("key_key.jump"),
-		client.control.keys.jump.get_keycode(before_1_13),
-	);
-	out.insert(
-		String::from("key_key.sneak"),
-		client.control.keys.sneak.get_keycode(before_1_13),
-	);
-	out.insert(
-		String::from("key_key.sprint"),
-		client.control.keys.sprint.get_keycode(before_1_13),
-	);
-	out.insert(
-		String::from("key_key.drop"),
-		client.control.keys.drop.get_keycode(before_1_13),
-	);
-	out.insert(
-		String::from("key_key.inventory"),
-		client.control.keys.inventory.get_keycode(before_1_13),
-	);
-	out.insert(
-		String::from("key_key.chat"),
-		client.control.keys.chat.get_keycode(before_1_13),
-	);
-	out.insert(
-		String::from("key_key.playerlist"),
-		client.control.keys.playerlist.get_keycode(before_1_13),
-	);
-	out.insert(
-		String::from("key_key.pickItem"),
-		client.control.keys.pick_item.get_keycode(before_1_13),
-	);
-	out.insert(
-		String::from("key_key.command"),
-		client.control.keys.command.get_keycode(before_1_13),
-	);
-	out.insert(
-		String::from("key_key.socialInteractions"),
-		client
-			.control
-			.keys
-			.social_interactions
-			.get_keycode(before_1_13),
-	);
-	out.insert(
-		String::from("key_key.screenshot"),
-		client.control.keys.screenshot.get_keycode(before_1_13),
-	);
-	out.insert(
-		String::from("key_key.togglePerspective"),
-		client
-			.control
-			.keys
-			.toggle_perspective
-			.get_keycode(before_1_13),
-	);
-	out.insert(
-		String::from("key_key.smoothCamera"),
-		client.control.keys.smooth_camera.get_keycode(before_1_13),
-	);
-	out.insert(
-		String::from("key_key.fullscreen"),
-		client.control.keys.fullscreen.get_keycode(before_1_13),
-	);
-	out.insert(
-		String::from("key_key.spectatorOutlines"),
-		client
-			.control
-			.keys
-			.spectator_outlines
-			.get_keycode(before_1_13),
-	);
-	out.insert(
-		String::from("key_key.swapOffhand"),
-		client.control.keys.swap_offhand.get_keycode(before_1_13),
-	);
-	if after_17w06a {
+	if let Some(value) = &client.control.keys.attack {
 		out.insert(
-			String::from("key_key.saveToolbarActivator"),
-			client.control.keys.save_toolbar.get_keycode(before_1_13),
-		);
-		out.insert(
-			String::from("key_key.loadToolbarActivator"),
-			client.control.keys.load_toolbar.get_keycode(before_1_13),
-		);
-		out.insert(
-			String::from("key_key.advancements"),
-			client.control.keys.advancements.get_keycode(before_1_13),
+			String::from("key_key.attack"),
+			value.get_keycode(before_1_13),
 		);
 	}
-	out.insert(
-		String::from("key_key.hotbar.1"),
-		client.control.keys.hotbar_1.get_keycode(before_1_13),
-	);
-	out.insert(
-		String::from("key_key.hotbar.2"),
-		client.control.keys.hotbar_2.get_keycode(before_1_13),
-	);
-	out.insert(
-		String::from("key_key.hotbar.3"),
-		client.control.keys.hotbar_3.get_keycode(before_1_13),
-	);
-	out.insert(
-		String::from("key_key.hotbar.4"),
-		client.control.keys.hotbar_4.get_keycode(before_1_13),
-	);
-	out.insert(
-		String::from("key_key.hotbar.5"),
-		client.control.keys.hotbar_5.get_keycode(before_1_13),
-	);
-	out.insert(
-		String::from("key_key.hotbar.6"),
-		client.control.keys.hotbar_6.get_keycode(before_1_13),
-	);
-	out.insert(
-		String::from("key_key.hotbar.7"),
-		client.control.keys.hotbar_7.get_keycode(before_1_13),
-	);
-	out.insert(
-		String::from("key_key.hotbar.8"),
-		client.control.keys.hotbar_8.get_keycode(before_1_13),
-	);
-	out.insert(
-		String::from("key_key.hotbar.9"),
-		client.control.keys.hotbar_9.get_keycode(before_1_13),
-	);
+	if let Some(value) = &client.control.keys.r#use {
+		out.insert(
+			String::from("key_key.use"),
+			value.get_keycode(before_1_13),
+		);
+	}
+	if let Some(value) = &client.control.keys.forward {
+		out.insert(
+			String::from("key_key.forward"),
+			value.get_keycode(before_1_13),
+		);
+	}
+	if let Some(value) = &client.control.keys.left {
+		out.insert(
+			String::from("key_key.left"),
+			value.get_keycode(before_1_13),
+		);
+	}
+	if let Some(value) = &client.control.keys.back {
+		out.insert(
+			String::from("key_key.back"),
+			value.get_keycode(before_1_13),
+		);
+	}
+	if let Some(value) = &client.control.keys.right {
+		out.insert(
+			String::from("key_key.right"),
+			value.get_keycode(before_1_13),
+		);
+	}
+	if let Some(value) = &client.control.keys.jump {
+		out.insert(
+			String::from("key_key.jump"),
+			value.get_keycode(before_1_13),
+		);
+	}
+	if let Some(value) = &client.control.keys.sneak {
+		out.insert(
+			String::from("key_key.sneak"),
+			value.get_keycode(before_1_13),
+		);
+	}
+	if let Some(value) = &client.control.keys.sprint {
+		out.insert(
+			String::from("key_key.sprint"),
+			value.get_keycode(before_1_13),
+		);
+	}
+	if let Some(value) = &client.control.keys.drop {
+		out.insert(
+			String::from("key_key.drop"),
+			value.get_keycode(before_1_13),
+		);
+	}
+	if let Some(value) = &client.control.keys.inventory {
+		out.insert(
+			String::from("key_key.inventory"),
+			value.get_keycode(before_1_13),
+		);
+	}
+	if let Some(value) = &client.control.keys.chat {
+		out.insert(
+			String::from("key_key.chat"),
+			value.get_keycode(before_1_13),
+		);
+	}
+	if let Some(value) = &client.control.keys.playerlist {
+		out.insert(
+			String::from("key_key.playerlist"),
+			value.get_keycode(before_1_13),
+		);
+	}
+	if let Some(value) = &client.control.keys.pick_item {
+		out.insert(
+			String::from("key_key.pickItem"),
+			value.get_keycode(before_1_13),
+		);
+	}
+	if let Some(value) = &client.control.keys.command {
+		out.insert(
+			String::from("key_key.command"),
+			value.get_keycode(before_1_13),
+		);
+	}
+	if let Some(value) = &client.control.keys.social_interactions {
+		out.insert(
+			String::from("key_key.socialInteractions"),
+			value.get_keycode(before_1_13),
+		);
+	}
+	if let Some(value) = &client.control.keys.screenshot {
+		out.insert(
+			String::from("key_key.screenshot"),
+			value.get_keycode(before_1_13),
+		);
+	}
+	if let Some(value) = &client.control.keys.toggle_perspective {
+		out.insert(
+			String::from("key_key.togglePerspective"),
+			value.get_keycode(before_1_13),
+		);
+	}
+	if let Some(value) = &client.control.keys.smooth_camera {
+		out.insert(
+			String::from("key_key.smoothCamera"),
+			value.get_keycode(before_1_13),
+		);
+	}
+	if let Some(value) = &client.control.keys.fullscreen {
+		out.insert(
+			String::from("key_key.fullscreen"),
+			value.get_keycode(before_1_13),
+		);
+	}
+	if let Some(value) = &client.control.keys.spectator_outlines {
+		out.insert(
+			String::from("key_key.spectatorOutlines"),
+			value.get_keycode(before_1_13),
+		);
+	}
+	if let Some(value) = &client.control.keys.swap_offhand {
+		out.insert(
+			String::from("key_key.swapOffhand"),
+			value.get_keycode(before_1_13),
+		);
+	}
+	if after_17w06a {
+		if let Some(value) = &client.control.keys.save_toolbar {
+			out.insert(
+				String::from("key_key.saveToolbarActivator"),
+				value.get_keycode(before_1_13),
+			);
+		}
+		if let Some(value) = &client.control.keys.load_toolbar {
+			out.insert(
+				String::from("key_key.loadToolbarActivator"),
+				value.get_keycode(before_1_13),
+			);
+		}
+		if let Some(value) = &client.control.keys.advancements {
+			out.insert(
+				String::from("key_key.advancements"),
+				value.get_keycode(before_1_13),
+			);
+		}
+	}
+	if let Some(value) = &client.control.keys.hotbar_1 {
+		out.insert(
+			String::from("key_key.hotbar.1"),
+			value.get_keycode(before_1_13),
+		);
+	}
+	if let Some(value) = &client.control.keys.hotbar_2 {
+		out.insert(
+			String::from("key_key.hotbar.2"),
+			value.get_keycode(before_1_13),
+		);
+	}
+	if let Some(value) = &client.control.keys.hotbar_3 {
+		out.insert(
+			String::from("key_key.hotbar.3"),
+			value.get_keycode(before_1_13),
+		);
+	}
+	if let Some(value) = &client.control.keys.hotbar_4 {
+		out.insert(
+			String::from("key_key.hotbar.4"),
+			value.get_keycode(before_1_13),
+		);
+	}
+	if let Some(value) = &client.control.keys.hotbar_5 {
+		out.insert(
+			String::from("key_key.hotbar.5"),
+			value.get_keycode(before_1_13),
+		);
+	}
+	if let Some(value) = &client.control.keys.hotbar_6 {
+		out.insert(
+			String::from("key_key.hotbar.6"),
+			value.get_keycode(before_1_13),
+		);
+	}
+	if let Some(value) = &client.control.keys.hotbar_7 {
+		out.insert(
+			String::from("key_key.hotbar.7"),
+			value.get_keycode(before_1_13),
+		);
+	}
+	if let Some(value) = &client.control.keys.hotbar_8 {
+		out.insert(
+			String::from("key_key.hotbar.8"),
+			value.get_keycode(before_1_13),
+		);
+	}
+	if let Some(value) = &client.control.keys.hotbar_9 {
+		out.insert(
+			String::from("key_key.hotbar.9"),
+			value.get_keycode(before_1_13),
+		);
+	}
+
 	// Volumes
 	if after_13w36a {
 		let (animals_key, blocks_key, mobs_key, players_key, records_key) = {
@@ -632,78 +831,116 @@ pub fn create_keys(
 				)
 			}
 		};
-		out.insert(
-			String::from("soundCategory_master"),
-			client.sound.volume.master.to_string(),
-		);
-		out.insert(
-			String::from("soundCategory_music"),
-			client.sound.volume.music.to_string(),
-		);
-		out.insert(
-			String::from(records_key),
-			client.sound.volume.record.to_string(),
-		);
-		out.insert(
-			String::from("soundCategory_weather"),
-			client.sound.volume.weather.to_string(),
-		);
-		out.insert(
-			String::from(blocks_key),
-			client.sound.volume.block.to_string(),
-		);
-		out.insert(
-			String::from(mobs_key),
-			client.sound.volume.hostile.to_string(),
-		);
-		out.insert(
-			String::from(animals_key),
-			client.sound.volume.neutral.to_string(),
-		);
-		out.insert(
-			String::from(players_key),
-			client.sound.volume.player.to_string(),
-		);
-		out.insert(
-			String::from("soundCategory_ambient"),
-			client.sound.volume.ambient.to_string(),
-		);
-		out.insert(
-			String::from("soundCategory_voice"),
-			client.sound.volume.voice.to_string(),
-		);
+		if let Some(value) = client.sound.volume.master {
+			out.insert(
+				String::from("soundCategory_master"),
+				value.to_string(),
+			);
+		}
+		if let Some(value) = client.sound.volume.music {
+			out.insert(
+				String::from("soundCategory_music"),
+				value.to_string(),
+			);
+		}
+		if let Some(value) = client.sound.volume.record {
+			out.insert(
+				String::from(records_key),
+				value.to_string(),
+			);
+		}
+		if let Some(value) = client.sound.volume.weather {
+			out.insert(
+				String::from("soundCategory_weather"),
+				value.to_string(),
+			);
+		}
+		if let Some(value) = client.sound.volume.block {
+			out.insert(
+				String::from(blocks_key),
+				value.to_string(),
+			);
+		}
+		if let Some(value) = client.sound.volume.hostile {
+			out.insert(
+				String::from(mobs_key),
+				value.to_string(),
+			);
+		}
+		if let Some(value) = client.sound.volume.neutral {
+			out.insert(
+				String::from(animals_key),
+				value.to_string(),
+			);
+		}
+		if let Some(value) = client.sound.volume.player {
+			out.insert(
+				String::from(players_key),
+				value.to_string(),
+			);
+		}
+		if let Some(value) = client.sound.volume.ambient {
+			out.insert(
+				String::from("soundCategory_ambient"),
+				value.to_string(),
+			);
+		}
+		if let Some(value) = client.sound.volume.voice {
+			out.insert(
+				String::from("soundCategory_voice"),
+				value.to_string(),
+			);
+		}
 	} else {
-		let volume_up = client.sound.volume.master > 0.0;
-		out.insert(String::from("sound"), volume_up.to_string());
+		if let Some(value) = client.sound.volume.master {
+			let volume_up = value > 0.0;
+			out.insert(String::from("sound"), volume_up.to_string());
+		}
 	}
 	// Model parts
-	out.insert(String::from("modelPart_cape"), client.skin.cape.to_string());
-	out.insert(
-		String::from("modelPart_jacket"),
-		client.skin.jacket.to_string(),
-	);
-	out.insert(
-		String::from("modelPart_left_sleeve"),
-		client.skin.left_sleeve.to_string(),
-	);
-	out.insert(
-		String::from("modelPart_right_sleeve"),
-		client.skin.right_sleeve.to_string(),
-	);
-	out.insert(
-		String::from("modelPart_left_pants_leg"),
-		client.skin.left_pants.to_string(),
-	);
-	out.insert(
-		String::from("modelPart_right_pants_leg"),
-		client.skin.right_pants.to_string(),
-	);
-	out.insert(String::from("modelPart_hat"), client.skin.hat.to_string());
-	if after_14w28a && before_15w31a {
+	if let Some(value) = client.skin.cape {
+		out.insert(String::from("modelPart_cape"), value.to_string());
+	}
+	if let Some(value) = client.skin.jacket {
 		out.insert(
-			String::from("allowBlockAlternatives"),
-			client.video.allow_block_alternatives.to_string(),
+			String::from("modelPart_jacket"),
+			value.to_string(),
 		);
+	}
+	if let Some(value) = client.skin.left_sleeve {
+		out.insert(
+			String::from("modelPart_left_sleeve"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = client.skin.right_sleeve {
+		out.insert(
+			String::from("modelPart_right_sleeve"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = client.skin.left_pants {
+		out.insert(
+			String::from("modelPart_left_pants_leg"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = client.skin.right_pants {
+		out.insert(
+			String::from("modelPart_right_pants_leg"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = client.skin.hat {
+		out.insert(String::from("modelPart_hat"), value.to_string());
+	}
+	if let Some(value) = client.video.allow_block_alternatives {
+		if after_14w28a && before_15w31a {
+			out.insert(
+				String::from("allowBlockAlternatives"),
+				value.to_string(),
+			);
+		}
 	}
 
 	if let Some(resolution) = &client.video.fullscreen_resolution {

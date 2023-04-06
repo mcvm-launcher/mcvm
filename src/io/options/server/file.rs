@@ -75,203 +75,315 @@ pub fn create_keys(
 	let after_18w42a =
 		VersionPattern::After(String::from("18w42a")).matches_single(version, versions);
 
-	out.insert(
-		String::from("allow-flight"),
-		options.allow_flight.to_string(),
-	);
-	out.insert(
-		String::from("allow-nether"),
-		options.world.allow_nether.to_string(),
-	);
-	out.insert(
-		String::from("broadcast-console-to-ops"),
-		options.broadcast_console_to_ops.to_string(),
-	);
-	out.insert(
-		String::from("broadcast-rcon-to-ops"),
-		options.broadcast_rcon_to_ops.to_string(),
-	);
-	out.insert(
-		String::from("difficulty"),
-		if after_18w42a {
-			options.difficulty.to_string()
-		} else {
-			options.difficulty.to_int().to_string()
-		},
-	);
-	out.insert(
-		String::from("enable-command-block"),
-		options.allow_command_blocks.to_string(),
-	);
-	out.insert(
-		String::from("enable-jmx-monitoring"),
-		options.jmx_monitoring.to_string(),
-	);
-	out.insert(String::from("enable-rcon"), options.rcon.enable.to_string());
-	out.insert(
-		String::from("enable-status"),
-		options.enable_status.to_string(),
-	);
-	out.insert(
-		String::from("enable-query"),
-		options.query.enable.to_string(),
-	);
-	out.insert(
-		String::from("enforce-secure-profile"),
-		options.enforce_secure_profile.to_string(),
-	);
-	out.insert(
-		String::from("enforce-whitelist"),
-		options.whitelist.enforce.to_string(),
-	);
-	out.insert(
-		String::from("entity-broadcast-range-percentage"),
-		options.entity_broadcast_range.to_string(),
-	);
-	out.insert(
-		String::from("force-gamemode"),
-		options.gamemode.force.to_string(),
-	);
-	out.insert(
-		String::from("function-permission-level"),
-		options.datapacks.function_permission_level.to_string(),
-	);
-	out.insert(
-		String::from("gamemode"),
-		if after_18w42a {
-			options.gamemode.default.to_string()
-		} else {
-			options.gamemode.default.to_int().to_string()
-		},
-	);
-	out.insert(
-		String::from("generate-structures"),
-		options.world.structures.to_string(),
-	);
-	out.insert(
-		String::from("generator-settings"),
-		serde_json::to_string(&options.world.generator_settings)
-			.context("Failed to convert generator settings to a string")?,
-	);
-	out.insert(String::from("hardcore"), options.hardcore.to_string());
-	out.insert(
-		String::from("hide-online-players"),
-		options.hide_online_players.to_string(),
-	);
-	out.insert(
-		String::from("initial-disabled-packs"),
-		write_datapacks(&options.datapacks.initial_disabled),
-	);
-	out.insert(
-		String::from("initial-enabled-packs"),
-		write_datapacks(&options.datapacks.initial_enabled),
-	);
-	out.insert(String::from("level-name"), options.world.name.clone());
-	out.insert(
-		String::from("level-seed"),
-		options.world.seed.clone().unwrap_or_default(),
-	);
-	out.insert(String::from("level-type"), options.world.r#type.to_string());
-	out.insert(
-		String::from("max-chained-neighbor-updates"),
-		options.max_chained_neighbor_updates.to_string(),
-	);
-	out.insert(String::from("max-players"), options.max_players.to_string());
-	out.insert(
-		String::from("max-tick-time"),
-		options.max_tick_time.to_string(),
-	);
-	out.insert(
-		String::from("max-build-height"),
-		options.world.max_build_height.to_string(),
-	);
-	out.insert(
-		String::from("max-world-size"),
-		options.world.max_size.to_string(),
-	);
-	out.insert(String::from("motd"), options.motd.clone());
-	out.insert(
-		String::from("network-compression-threshold"),
-		options.network_compression_threshold.to_int().to_string(),
-	);
-	out.insert(
-		String::from("online-mode"),
-		(!options.offline_mode).to_string(),
-	);
-	out.insert(
-		String::from("op-permission-level"),
-		options.op_permission_level.to_string(),
-	);
-	out.insert(
-		String::from("player-idle-timeout"),
-		options.player_idle_timeout.to_string(),
-	);
-	out.insert(
-		String::from("prevent-proxy-connections"),
-		options.prevent_proxy_connections.to_string(),
-	);
-	out.insert(
-		String::from("previews-chat"),
-		options.enable_chat_preview.to_string(),
-	);
-	out.insert(String::from("pvp"), options.enable_pvp.to_string());
-	out.insert(String::from("query.port"), options.query.port.to_string());
-	out.insert(String::from("rate-limit"), options.rate_limit.to_string());
-	out.insert(
-		String::from("rcon.password"),
-		options.rcon.password.clone().unwrap_or_default(),
-	);
-	out.insert(String::from("rcon.port"), options.rcon.port.to_string());
-	out.insert(
-		String::from("resource-pack"),
-		options.resource_pack.uri.clone().unwrap_or_default(),
-	);
-	out.insert(
-		String::from("resource-pack-prompt"),
-		options.resource_pack.prompt.clone().unwrap_or_default(),
-	);
-	out.insert(
-		String::from("require-resource-pack"),
-		options.resource_pack.required.to_string(),
-	);
-	out.insert(
-		String::from("server-ip"),
-		options.ip.clone().unwrap_or_default(),
-	);
-	out.insert(String::from("server-port"), options.port.to_string());
-	out.insert(
-		String::from("simulation-distance"),
-		options.simulation_distance.to_string(),
-	);
-	out.insert(
-		String::from("snooper-enabled"),
-		options.enable_snooper.to_string(),
-	);
-	out.insert(
-		String::from("spawn-animals"),
-		options.spawn_animals.to_string(),
-	);
-	out.insert(
-		String::from("spawn-monsters"),
-		options.spawn_monsters.to_string(),
-	);
-	out.insert(String::from("spawn-npcs"), options.spawn_npcs.to_string());
-	out.insert(
-		String::from("spawn-protection"),
-		options.spawn_protection.to_string(),
-	);
-	out.insert(
-		String::from("use-native-transport"),
-		options.use_native_transport.to_string(),
-	);
-	out.insert(
-		String::from("view-distance"),
-		options.view_distance.to_string(),
-	);
-	out.insert(
-		String::from("white-list"),
-		options.whitelist.enable.to_string(),
-	);
+	if let Some(value) = options.allow_flight {
+		out.insert(
+			String::from("allow-flight"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = options.world.allow_nether {
+		out.insert(
+			String::from("allow-nether"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = options.broadcast_console_to_ops {
+		out.insert(
+			String::from("broadcast-console-to-ops"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = options.broadcast_rcon_to_ops {
+		out.insert(
+			String::from("broadcast-rcon-to-ops"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = &options.difficulty {
+		out.insert(
+			String::from("difficulty"),
+			if after_18w42a {
+				value.to_string()
+			} else {
+				value.to_int().to_string()
+			},
+		);
+	}
+	if let Some(value) = options.allow_command_blocks {
+		out.insert(
+			String::from("enable-command-block"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = options.jmx_monitoring {
+		out.insert(
+			String::from("enable-jmx-monitoring"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = options.rcon.enable {
+		out.insert(String::from("enable-rcon"), value.to_string());
+	}
+	if let Some(value) = options.enable_status {
+		out.insert(
+			String::from("enable-status"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = options.query.enable {
+		out.insert(
+			String::from("enable-query"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = options.enforce_secure_profile {
+		out.insert(
+			String::from("enforce-secure-profile"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = options.whitelist.enforce {
+		out.insert(
+			String::from("enforce-whitelist"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = options.entity_broadcast_range {
+		out.insert(
+			String::from("entity-broadcast-range-percentage"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = options.gamemode.force {
+		out.insert(
+			String::from("force-gamemode"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = options.datapacks.function_permission_level {
+		out.insert(
+			String::from("function-permission-level"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = &options.gamemode.default {
+		out.insert(
+			String::from("gamemode"),
+			if after_18w42a {
+				value.to_string()
+			} else {
+				value.to_int().to_string()
+			},
+		);
+	}
+	if let Some(value) = options.world.structures {
+		out.insert(
+			String::from("generate-structures"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = &options.world.generator_settings {
+		out.insert(
+			String::from("generator-settings"),
+			serde_json::to_string(&value)
+				.context("Failed to convert generator settings to a string")?,
+		);
+	}
+	if let Some(value) = options.hardcore {
+		out.insert(String::from("hardcore"), value.to_string());
+	}
+	if let Some(value) = options.hide_online_players {
+		out.insert(
+			String::from("hide-online-players"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = &options.datapacks.initial_disabled {
+		out.insert(
+			String::from("initial-disabled-packs"),
+			write_datapacks(&value),
+		);
+	}
+	if let Some(value) = &options.datapacks.initial_enabled {
+		out.insert(
+			String::from("initial-enabled-packs"),
+			write_datapacks(&value),
+		);
+	}
+	if let Some(value) = &options.world.name {
+		out.insert(String::from("level-name"), value.clone());
+	}
+	if let Some(value) = &options.world.seed {
+		out.insert(
+			String::from("level-seed"),
+			value.clone(),
+		);
+	}
+	if let Some(value) = &options.world.r#type {
+		out.insert(String::from("level-type"), value.to_string());
+	}
+	if let Some(value) = options.max_chained_neighbor_updates {
+		out.insert(
+			String::from("max-chained-neighbor-updates"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = options.max_players {
+		out.insert(String::from("max-players"), value.to_string());
+	}
+	if let Some(value) = options.max_tick_time {
+		out.insert(
+			String::from("max-tick-time"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = options.world.max_build_height {
+		out.insert(
+			String::from("max-build-height"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = options.world.max_size {
+		out.insert(
+			String::from("max-world-size"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = &options.motd {
+		out.insert(String::from("motd"), value.clone());
+	}
+	if let Some(value) = &options.network_compression_threshold {
+		out.insert(
+			String::from("network-compression-threshold"),
+			value.to_int().to_string(),
+		);
+	}
+	if let Some(value) = options.offline_mode {
+		out.insert(
+			String::from("online-mode"),
+			(!value).to_string(),
+		);
+	}
+	if let Some(value) = options.op_permission_level {
+		out.insert(
+			String::from("op-permission-level"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = options.player_idle_timeout {
+		out.insert(
+			String::from("player-idle-timeout"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = options.prevent_proxy_connections {
+		out.insert(
+			String::from("prevent-proxy-connections"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = options.enable_chat_preview {
+		out.insert(
+			String::from("previews-chat"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = options.enable_pvp {
+		out.insert(String::from("pvp"), value.to_string());
+	}
+	if let Some(value) = options.query.port {
+		out.insert(String::from("query.port"), value.to_string());
+	}
+	if let Some(value) = options.rate_limit {
+		out.insert(String::from("rate-limit"), value.to_string());
+	}
+	if let Some(value) = &options.rcon.password {
+		out.insert(
+			String::from("rcon.password"),
+			value.clone(),
+		);
+	}
+	if let Some(value) = options.rcon.port {
+		out.insert(String::from("rcon.port"), value.to_string());
+	}
+	if let Some(value) = &options.resource_pack.uri {
+		out.insert(
+			String::from("resource-pack"),
+			value.clone(),
+		);
+	}
+	if let Some(value) = &options.resource_pack.prompt {
+		out.insert(
+			String::from("resource-pack-prompt"),
+			value.clone(),
+		);
+	}
+	if let Some(value) = options.resource_pack.required {
+		out.insert(
+			String::from("require-resource-pack"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = &options.ip {
+		out.insert(
+			String::from("server-ip"),
+			value.clone(),
+		);
+	}
+	if let Some(value) = options.port {
+		out.insert(String::from("server-port"), value.to_string());
+	}
+	if let Some(value) = options.simulation_distance {
+		out.insert(
+			String::from("simulation-distance"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = options.enable_snooper {
+		out.insert(
+			String::from("snooper-enabled"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = options.spawn_animals {
+		out.insert(
+			String::from("spawn-animals"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = options.spawn_monsters {
+		out.insert(
+			String::from("spawn-monsters"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = options.spawn_npcs {
+		out.insert(String::from("spawn-npcs"), value.to_string());
+	}
+	if let Some(value) = options.spawn_protection {
+		out.insert(
+			String::from("spawn-protection"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = options.use_native_transport {
+		out.insert(
+			String::from("use-native-transport"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = options.view_distance {
+		out.insert(
+			String::from("view-distance"),
+			value.to_string(),
+		);
+	}
+	if let Some(value) = options.whitelist.enable {
+		out.insert(
+			String::from("white-list"),
+			value.to_string(),
+		);
+	}
 
 	Ok(out)
 }

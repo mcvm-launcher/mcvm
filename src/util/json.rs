@@ -122,7 +122,7 @@ pub fn ensure_type<T>(value: Option<T>, typ: JsonType) -> Result<T, JsonError> {
 }
 
 /// Returns an empty json object
-pub fn empty_object() -> JsonObject {
+pub fn _empty_object() -> JsonObject {
 	json!({})
 		.as_object()
 		.expect("Should be an empty object")
