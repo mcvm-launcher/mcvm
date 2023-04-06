@@ -1,5 +1,3 @@
-use super::create_leading_dirs_async;
-
 use anyhow::anyhow;
 use directories::{BaseDirs, ProjectDirs};
 
@@ -58,19 +56,19 @@ impl Paths {
 		let run = project.runtime_dir().map(|x| x.to_path_buf())
 			.unwrap_or(internal.join("run"));
 
-		create_leading_dirs_async(&data).await?;
-		create_leading_dirs_async(project.cache_dir()).await?;
-		create_leading_dirs_async(project.config_dir()).await?;
-		create_leading_dirs_async(&internal).await?;
-		create_leading_dirs_async(&assets).await?;
-		create_leading_dirs_async(&java).await?;
-		create_leading_dirs_async(&addons).await?;
-		create_leading_dirs_async(&pkg_cache).await?;
-		create_leading_dirs_async(&pkg_index_cache).await?;
-		create_leading_dirs_async(&jars).await?;
-		create_leading_dirs_async(&logs).await?;
-		create_leading_dirs_async(&launch_logs).await?;
-		create_leading_dirs_async(&run).await?;
+		tokio::fs::create_dir_all(&data).await?;
+		tokio::fs::create_dir_all(project.cache_dir()).await?;
+		tokio::fs::create_dir_all(project.config_dir()).await?;
+		tokio::fs::create_dir_all(&internal).await?;
+		tokio::fs::create_dir_all(&assets).await?;
+		tokio::fs::create_dir_all(&java).await?;
+		tokio::fs::create_dir_all(&addons).await?;
+		tokio::fs::create_dir_all(&pkg_cache).await?;
+		tokio::fs::create_dir_all(&pkg_index_cache).await?;
+		tokio::fs::create_dir_all(&jars).await?;
+		tokio::fs::create_dir_all(&logs).await?;
+		tokio::fs::create_dir_all(&launch_logs).await?;
+		tokio::fs::create_dir_all(&run).await?;
 
 		Ok(Paths {
 			base,
