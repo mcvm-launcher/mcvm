@@ -1,6 +1,6 @@
 use super::create_leading_dirs_async;
 
-use anyhow::{anyhow, Context};
+use anyhow::anyhow;
 use directories::{BaseDirs, ProjectDirs};
 
 use std::path::PathBuf;
@@ -34,6 +34,8 @@ pub struct Paths {
 	pub logs: PathBuf,
 	/// Holds launch log files
 	pub launch_logs: PathBuf,
+	/// Used for runtime info like PIDs
+	pub run: PathBuf,
 }
 
 impl Paths {
@@ -53,15 +55,12 @@ impl Paths {
 		let jars = internal.join("jars");
 		let logs = data.join("logs");
 		let launch_logs = logs.join("launch");
+		let run = project.runtime_dir().map(|x| x.to_path_buf())
+			.unwrap_or(internal.join("run"));
 
 		create_leading_dirs_async(&data).await?;
 		create_leading_dirs_async(project.cache_dir()).await?;
 		create_leading_dirs_async(project.config_dir()).await?;
-		create_leading_dirs_async(
-			project
-				.runtime_dir()
-				.ok_or(anyhow!("Base directories failed"))?,
-		).await.context("Failed to create run directory")?;
 		create_leading_dirs_async(&internal).await?;
 		create_leading_dirs_async(&assets).await?;
 		create_leading_dirs_async(&java).await?;
@@ -71,6 +70,7 @@ impl Paths {
 		create_leading_dirs_async(&jars).await?;
 		create_leading_dirs_async(&logs).await?;
 		create_leading_dirs_async(&launch_logs).await?;
+		create_leading_dirs_async(&run).await?;
 
 		Ok(Paths {
 			base,
@@ -86,6 +86,7 @@ impl Paths {
 			jars,
 			logs,
 			launch_logs,
+			run,
 		})
 	}
 }
