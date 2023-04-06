@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use anyhow::Context;
+use anyhow::{Context, ensure};
 use serde::Deserialize;
 use serde_json::Value;
 
@@ -79,7 +79,7 @@ pub struct LaunchConfig {
 }
 
 impl LaunchConfig {
-	pub fn to_options(&self) -> LaunchOptions {
+	pub fn to_options(&self) -> anyhow::Result<LaunchOptions> {
 		let min_mem = match &self.memory {
 			LaunchMemory::None => None,
 			LaunchMemory::Single(string) => MemoryNum::from_str(string),
@@ -90,7 +90,12 @@ impl LaunchConfig {
 			LaunchMemory::Single(string) => MemoryNum::from_str(string),
 			LaunchMemory::Both { max, .. } => MemoryNum::from_str(max),
 		};
-		LaunchOptions {
+		if let Some(min_mem) = &min_mem {
+			if let Some(max_mem) = &max_mem {
+				ensure!(min_mem.to_bytes() <= max_mem.to_bytes(), "Minimum memory must be less than or equal to maximum memory");
+			}
+		}
+		Ok(LaunchOptions {
 			jvm_args: self.args.jvm.parse(),
 			game_args: self.args.game.parse(),
 			min_mem,
@@ -99,7 +104,7 @@ impl LaunchConfig {
 			preset: ArgsPreset::from_str(&self.preset),
 			env: self.env.clone(),
 			wrapper: self.wrapper.clone(),
-		}
+		})
 	}
 }
 
@@ -151,7 +156,7 @@ pub fn parse_instance_config(id: &str, val: &Value, profile: &Profile) -> anyhow
 		&profile.version,
 		profile.modloader.clone(),
 		profile.plugin_loader.clone(),
-		launch.to_options(),
+		launch.to_options()?,
 	);
 
 	Ok(instance)
