@@ -31,10 +31,14 @@ pub async fn write_options_txt(
 
 /// Collect a hashmap from an existing options.txt file so we can compare with it
 pub async fn read_options_txt(path: &Path) -> anyhow::Result<HashMap<String, String>> {
-	let contents = tokio::fs::read_to_string(path)
-		.await
-		.context("Failed to read options.txt")?;
-	read_options_file(&contents, SEP).await
+	if path.exists() {
+		let contents = tokio::fs::read_to_string(path)
+			.await
+			.context("Failed to read options.txt")?;
+		read_options_file(&contents, SEP).await
+	} else {
+		Ok(HashMap::new())
+	}
 }
 
 /// Merge keys with an existing file
