@@ -29,6 +29,16 @@ cfg_match! {
 	}
 }
 
+cfg_match! {
+	target_pointer_width = "64" => {
+		pub static TARGET_BITS_STR: &str = "64";
+	}
+	_ => {
+		pub static TARGET_BITS_STR: &str = "32";
+	}
+}
+
+
 // For checking rule actions in Mojang json files
 pub fn is_allowed(action: &str) -> bool {
 	action == "allow"

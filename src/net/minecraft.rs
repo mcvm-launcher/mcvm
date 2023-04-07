@@ -217,7 +217,8 @@ pub async fn get_libraries(
 		let downloads = json::access_object(lib, "downloads")?;
 		if let Some(natives) = lib.get("natives") {
 			let natives = json::ensure_type(natives.as_object(), JsonType::Obj)?;
-			let key = json::access_str(natives, mojang::OS_STRING)?.replace("${arch}", mojang::ARCH_STRING);
+			let key = json::access_str(natives, mojang::OS_STRING)?
+				.replace("${arch}", mojang::TARGET_BITS_STR);
 			let classifier =
 				json::access_object(json::access_object(downloads, "classifiers")?, &key)?;
 
@@ -275,7 +276,8 @@ pub fn get_lib_classpath(
 		let downloads = json::access_object(lib, "downloads")?;
 		if let Some(natives) = lib.get("natives") {
 			let natives = json::ensure_type(natives.as_object(), JsonType::Obj)?;
-			let key = json::access_str(natives, mojang::OS_STRING)?.replace("${arch}", mojang::ARCH_STRING);
+			let key = json::access_str(natives, mojang::OS_STRING)?
+				.replace("${arch}", mojang::TARGET_BITS_STR);
 			let classifier =
 				json::access_object(json::access_object(downloads, "classifiers")?, &key)?;
 
