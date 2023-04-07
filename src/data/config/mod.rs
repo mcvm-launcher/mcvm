@@ -13,7 +13,7 @@ use crate::package::reg::{PkgRegistry, PkgRequest};
 use crate::package::PkgConfig;
 use crate::util::json::{self, JsonType};
 use crate::util::validate_identifier;
-use crate::util::versions::VersionPattern;
+use crate::util::versions::{VersionPattern, MinecraftVersion};
 
 use color_print::cprintln;
 use serde_json::json;
@@ -135,6 +135,11 @@ impl Config {
 			if !VersionPattern::validate(version) {
 				bail!("Invalid string '{}'", version.to_owned());
 			}
+			let version = match version {
+				"latest" => MinecraftVersion::Latest,
+				"latest_snapshot" => MinecraftVersion::LatestSnapshot,
+				version => MinecraftVersion::Version(String::from(version)),
+			};
 
 			let modloader = match profile_obj.get("modloader") {
 				Some(loader) => json::ensure_type(loader.as_str(), JsonType::Str),

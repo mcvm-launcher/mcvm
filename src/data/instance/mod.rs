@@ -70,7 +70,6 @@ impl Display for Side {
 pub struct Instance {
 	pub kind: InstKind,
 	pub id: String,
-	pub version: String,
 	modloader: Modloader,
 	plugin_loader: PluginLoader,
 	launch: LaunchOptions,
@@ -85,7 +84,6 @@ impl Instance {
 	pub fn new(
 		kind: InstKind,
 		id: &str,
-		version: &str,
 		modloader: Modloader,
 		plugin_loader: PluginLoader,
 		launch: LaunchOptions,
@@ -93,7 +91,6 @@ impl Instance {
 		Self {
 			kind,
 			id: id.to_owned(),
-			version: version.to_owned(),
 			modloader,
 			plugin_loader,
 			launch,
@@ -135,8 +132,9 @@ impl Instance {
 		mode: fabric_quilt::Mode,
 		paths: &Paths,
 		manager: &UpdateManager,
+		version: &str,
 	) -> anyhow::Result<Classpath> {
-		let meta = fabric_quilt::get_meta(&self.version, &mode).await?;
+		let meta = fabric_quilt::get_meta(version, &mode).await?;
 		let classpath =
 			fabric_quilt::download_files(&meta, paths, self.kind.to_side(), mode, manager)
 				.await

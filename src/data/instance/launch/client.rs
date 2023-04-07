@@ -11,7 +11,7 @@ use crate::{skip_fail, skip_none};
 
 impl Instance {
 	/// Launch a client
-	pub fn launch_client(&mut self, paths: &Paths, auth: &Auth, debug: bool) -> anyhow::Result<()> {
+	pub fn launch_client(&mut self, paths: &Paths, auth: &Auth, debug: bool, version: &str) -> anyhow::Result<()> {
 		debug_assert!(matches!(self.kind, InstKind::Client { .. }));
 		match &self.java {
 			Some(java) => match &java.path {
@@ -30,7 +30,7 @@ impl Instance {
 							if let Ok(args) = json::access_object(version_json, "arguments") {
 								for arg in json::access_array(args, "jvm")? {
 									for sub_arg in
-										process_client_arg(self, arg, paths, auth, classpath)
+										process_client_arg(self, arg, paths, auth, classpath, version)
 									{
 										jvm_args.push(sub_arg);
 									}
@@ -38,7 +38,7 @@ impl Instance {
 
 								for arg in json::access_array(args, "game")? {
 									for sub_arg in
-										process_client_arg(self, arg, paths, auth, classpath)
+										process_client_arg(self, arg, paths, auth, classpath, version)
 									{
 										game_args.push(sub_arg);
 									}
@@ -52,7 +52,7 @@ impl Instance {
 									paths
 										.internal
 										.join("versions")
-										.join(&self.version)
+										.join(version)
 										.join("natives")
 										.to_str()
 										.context(
@@ -64,7 +64,7 @@ impl Instance {
 
 								for arg in args.split(' ') {
 									game_args.push(skip_none!(process_string_arg(
-										self, arg, paths, auth, classpath
+										self, arg, paths, auth, classpath, version
 									)));
 								}
 							}
@@ -101,6 +101,7 @@ pub fn process_string_arg(
 	paths: &Paths,
 	auth: &Auth,
 	classpath: &Classpath,
+	version: &str,
 ) -> Option<String> {
 	let mut out = arg.replace("${launcher_name}", "mcvm");
 	out = out.replace("${launcher_version}", "alpha");
@@ -110,15 +111,15 @@ pub fn process_string_arg(
 		paths
 			.internal
 			.join("versions")
-			.join(&instance.version)
+			.join(version)
 			.join("natives")
 			.to_str()?,
 	);
-	out = out.replace("${version_name}", &instance.version);
+	out = out.replace("${version_name}", version);
 	out = out.replace("${version_type}", "mcvm");
 	out = out.replace("${game_directory}", instance.get_subdir(paths).to_str()?);
 	out = out.replace("${assets_root}", paths.assets.to_str()?);
-	out = out.replace("${assets_index_name}", &instance.version);
+	out = out.replace("${assets_index_name}", version);
 	out = out.replace("${user_type}", "mojang");
 	out = out.replace("${clientid}", "mcvm");
 	out = out.replace("${auth_xuid}", "mcvm");
@@ -162,10 +163,11 @@ pub fn process_client_arg(
 	paths: &Paths,
 	auth: &Auth,
 	classpath: &Classpath,
+	version: &str,
 ) -> Vec<String> {
 	let mut out = Vec::new();
 	if let Some(contents) = arg.as_str() {
-		let processed = process_string_arg(instance, contents, paths, auth, classpath);
+		let processed = process_string_arg(instance, contents, paths, auth, classpath, version);
 		if let Some(processed_arg) = processed {
 			out.push(processed_arg);
 		}
@@ -207,13 +209,13 @@ pub fn process_client_arg(
 			}
 		}
 		match arg.get("value") {
-			Some(value) => process_client_arg(instance, value, paths, auth, classpath),
+			Some(value) => process_client_arg(instance, value, paths, auth, classpath, version),
 			None => return vec![],
 		};
 	} else if let Some(contents) = arg.as_array() {
 		for val in contents {
 			out.push(
-				process_client_arg(instance, val, paths, auth, classpath)
+				process_client_arg(instance, val, paths, auth, classpath, version)
 					.get(0)
 					.expect("Expected an argument")
 					.to_string(),

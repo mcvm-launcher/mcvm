@@ -12,6 +12,7 @@ use crate::net::minecraft::{
 	get_assets, get_game_jar, get_libraries, get_version_json, get_version_manifest,
 	make_version_list,
 };
+use crate::util::versions::MinecraftVersion;
 use crate::util::{json, print::PrintOptions};
 
 /// Requirements for operations that may be shared by multiple instances in a profile
@@ -34,10 +35,12 @@ pub struct UpdateManager {
 	requirements: HashSet<UpdateRequirement>,
 	// File paths that are added when they have been updated by other functions
 	files: HashSet<PathBuf>,
+	version_manifest: Option<Box<json::JsonObject>>,
 	pub version_json: Option<Box<json::JsonObject>>,
 	pub java: Option<Java>,
 	pub options: Option<Options>,
 	pub version_list: Option<Vec<String>>,
+	pub found_version: Option<String>,
 }
 
 impl UpdateManager {
@@ -47,10 +50,12 @@ impl UpdateManager {
 			force,
 			requirements: HashSet::new(),
 			files: HashSet::new(),
+			version_manifest: None,
 			version_json: None,
 			java: None,
 			options: None,
 			version_list: None,
+			found_version: None,
 		}
 	}
 
@@ -83,11 +88,37 @@ impl UpdateManager {
 		}
 	}
 
+	/// Get the version manifest and fulfill the found version and version list fields.
+	/// Must be called before fulfill_requirements.
+	pub async fn fulfill_version_manifest(
+		&mut self,
+		paths: &Paths,
+		version: &MinecraftVersion,
+	) -> anyhow::Result<()> {
+		if self.print.verbose {
+			cprintln!("<s>Obtaining version index...");
+		}
+		let manifest = get_version_manifest(paths)
+			.await
+			.context("Failed to get version manifest")?;
+
+		
+		self.version_list =
+			Some(make_version_list(&manifest).context("Failed to compose a list of versions")?);
+		
+		let found_version = version.get_version(&manifest)
+			.context("Failed to find the requested Minecraft version")?;
+	
+		self.found_version = Some(found_version);
+		self.version_manifest = Some(manifest);
+
+		Ok(())
+	}
+
 	/// Run all of the operations that are part of the requirements.
 	pub async fn fulfill_requirements(
 		&mut self,
 		paths: &Paths,
-		version: &str,
 	) -> anyhow::Result<()> {
 		let java_required = matches!(
 			self.requirements
@@ -117,22 +148,19 @@ impl UpdateManager {
 
 		if self.has_requirement(UpdateRequirement::VersionJson) {
 			if self.print.verbose {
-				cprintln!("<s>Obtaining version index...");
+				cprintln!("<s>Obtaining version json...");
 			}
-			let manifest = get_version_manifest(paths)
-				.await
-				.context("Failed to get version manifest")?;
-			let version_json = get_version_json(version, &manifest, paths)
-				.await
-				.context("Failed to get version json")?;
+			let version_json = get_version_json(
+				self.found_version.as_ref().expect("Found version missing"),
+				self.version_manifest.as_ref().expect("Version manifest missing"),
+				paths,
+			).await.context("Failed to get version json")?;
 			self.version_json = Some(version_json);
-			self.version_list =
-				Some(make_version_list(&manifest).context("Failed to compose a list of versions")?);
 		}
 
 		if self.has_requirement(UpdateRequirement::GameAssets) {
 			let version_json = self.version_json.as_ref().expect("Version json missing");
-			let files = get_assets(version_json, paths, version, self)
+			let files = get_assets(version_json, paths, self.found_version.as_ref().expect("Found version missing"), self)
 				.await
 				.context("Failed to get game assets")?;
 			self.add_files(files);
@@ -140,7 +168,7 @@ impl UpdateManager {
 
 		if self.has_requirement(UpdateRequirement::GameLibraries) {
 			let version_json = self.version_json.as_ref().expect("Version json missing");
-			let files = get_libraries(version_json, paths, version, self)
+			let files = get_libraries(version_json, paths, self.found_version.as_ref().expect("Found version missing"), self)
 				.await
 				.context("Failed to get game libraries")?;
 			self.add_files(files);
@@ -174,7 +202,7 @@ impl UpdateManager {
 			let version_json = self.version_json.as_ref().expect("Version json missing");
 			for req in self.requirements.iter() {
 				if let UpdateRequirement::GameJar(side) = req {
-					get_game_jar(side.clone(), version_json, version, paths, self)
+					get_game_jar(side.clone(), version_json, self.found_version.as_ref().expect("Found version missing"), paths, self)
 						.await
 						.context("Failed to get the game JAR file")?;
 				}

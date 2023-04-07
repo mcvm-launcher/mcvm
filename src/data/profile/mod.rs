@@ -4,8 +4,8 @@ use anyhow::Context;
 
 use crate::data::instance::Instance;
 use crate::package::PkgConfig;
-use crate::util::print::PrintOptions;
 use crate::Paths;
+use crate::util::versions::MinecraftVersion;
 
 use self::update::UpdateManager;
 
@@ -17,7 +17,7 @@ pub type InstanceRegistry = std::collections::HashMap<String, Instance>;
 #[derive(Debug)]
 pub struct Profile {
 	pub name: String,
-	pub version: String,
+	pub version: MinecraftVersion,
 	pub instances: Vec<String>,
 	pub packages: Vec<PkgConfig>,
 	pub modloader: Modloader,
@@ -27,7 +27,7 @@ pub struct Profile {
 impl Profile {
 	pub fn new(
 		name: &str,
-		version: &str,
+		version: MinecraftVersion,
 		modloader: Modloader,
 		plugin_loader: PluginLoader,
 	) -> Self {
@@ -50,16 +50,13 @@ impl Profile {
 		&mut self,
 		reg: &mut InstanceRegistry,
 		paths: &Paths,
-		verbose: bool,
-		force: bool,
+		mut manager: UpdateManager,
 	) -> anyhow::Result<Vec<String>> {
-		let options = PrintOptions::new(verbose, 0);
-		let mut manager = UpdateManager::new(options, force);
 		for id in self.instances.iter_mut() {
 			let instance = reg.get(id).expect("Profile has unknown instance");
 			manager.add_requirements(instance.get_requirements());
 		}
-		manager.fulfill_requirements(paths, &self.version).await?;
+		manager.fulfill_requirements(paths).await?;
 		for id in self.instances.iter_mut() {
 			let instance = reg.get_mut(id).expect("Profile has unknown instance");
 			let files = instance

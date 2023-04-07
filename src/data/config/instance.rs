@@ -156,7 +156,6 @@ pub fn parse_instance_config(id: &str, val: &Value, profile: &Profile) -> anyhow
 	let instance = Instance::new(
 		kind,
 		id,
-		&profile.version,
 		profile.modloader.clone(),
 		profile.plugin_loader.clone(),
 		launch.to_options()?,

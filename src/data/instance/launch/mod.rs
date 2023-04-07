@@ -8,18 +8,20 @@ use crate::data::profile::update::UpdateManager;
 use crate::data::{instance::InstKind, user::Auth};
 use crate::io::files::paths::Paths;
 use crate::util::print::PrintOptions;
+use crate::util::versions::MinecraftVersion;
 
 use super::Instance;
 
 impl Instance {
 	// Launch the instance
-	pub async fn launch(&mut self, paths: &Paths, auth: &Auth, debug: bool) -> anyhow::Result<()> {
+	pub async fn launch(&mut self, paths: &Paths, auth: &Auth, debug: bool, version: &MinecraftVersion) -> anyhow::Result<()> {
 		cprintln!("Checking for updates...");
 		let options = PrintOptions::new(false, 0);
 		let mut manager = UpdateManager::new(options, false);
+		manager.fulfill_version_manifest(paths, version).await.context("Failed to get version data")?;
 		manager.add_requirements(self.get_requirements());
 		manager
-			.fulfill_requirements(paths, &self.version)
+			.fulfill_requirements(paths)
 			.await
 			.context("Update failed")?;
 
@@ -29,7 +31,7 @@ impl Instance {
 		cprintln!("<g>Launching!");
 		match &self.kind {
 			InstKind::Client { .. } => {
-				self.launch_client(paths, auth, debug)
+				self.launch_client(paths, auth, debug, manager.found_version.as_ref().expect("Found version missing"))
 					.context("Failed to launch client")?;
 			}
 			InstKind::Server { .. } => {

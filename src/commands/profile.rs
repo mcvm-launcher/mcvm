@@ -1,11 +1,13 @@
 use super::CmdData;
 use crate::data::addon::PluginLoader;
 use crate::data::instance::InstKind;
+use crate::data::profile::update::UpdateManager;
 use crate::io::lock::Lockfile;
 use crate::io::lock::LockfileAddon;
 use crate::net::paper;
 use crate::package::eval::eval::EvalConstants;
 use crate::package::eval::eval::Routine;
+use crate::util::print::PrintOptions;
 use crate::util::print::ReplPrinter;
 use crate::util::print::HYPHEN_POINT;
 
@@ -105,12 +107,18 @@ async fn profile_update(data: &mut CmdData, id: &str, force: bool) -> anyhow::Re
 	if let Some(config) = &mut data.config {
 		if let Some(paths) = &data.paths {
 			if let Some(profile) = config.profiles.get_mut(id) {
+				let print_options = PrintOptions::new(true, 0);
+				let mut manager = UpdateManager::new(print_options, force);
+				manager.fulfill_version_manifest(paths, &profile.version).await
+					.context("Failed to get version information")?;
+				let version = manager.found_version.as_ref().expect("Found version missing");
+				
 				let (paper_build_num, paper_file_name) =
 					if let PluginLoader::Paper = profile.plugin_loader {
-						let (build_num, ..) = paper::get_newest_build(&profile.version)
+						let (build_num, ..) = paper::get_newest_build(version)
 							.await
 							.context("Failed to get the newest Paper build number")?;
-						let paper_file_name = paper::get_jar_file_name(&profile.version, build_num)
+						let paper_file_name = paper::get_jar_file_name(version, build_num)
 							.await
 							.context("Failed to get the name of the Paper Jar file")?;
 						(Some(build_num), Some(paper_file_name))
@@ -120,7 +128,7 @@ async fn profile_update(data: &mut CmdData, id: &str, force: bool) -> anyhow::Re
 				let mut lock = Lockfile::open(paths)
 					.await
 					.context("Failed to open lockfile")?;
-				if lock.update_profile_version(id, &profile.version) {
+				if lock.update_profile_version(id, version) {
 					cprintln!("<s>Updating profile version...");
 					for inst in profile.instances.iter() {
 						if let Some(inst) = config.instances.get(inst) {
@@ -149,7 +157,7 @@ async fn profile_update(data: &mut CmdData, id: &str, force: bool) -> anyhow::Re
 
 				if !profile.instances.is_empty() {
 					let version_list = profile
-						.create_instances(&mut config.instances, paths, true, force)
+						.create_instances(&mut config.instances, paths, manager)
 						.await
 						.context("Failed to create profile instances")?;
 
@@ -165,7 +173,7 @@ async fn profile_update(data: &mut CmdData, id: &str, force: bool) -> anyhow::Re
 						for instance_id in profile.instances.iter() {
 							if let Some(instance) = config.instances.get(instance_id) {
 								let constants = EvalConstants {
-									version: profile.version.clone(),
+									version: version.clone(),
 									modloader: profile.modloader.clone(),
 									plugin_loader: profile.plugin_loader.clone(),
 									side: instance.kind.to_side(),

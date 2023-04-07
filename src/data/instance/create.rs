@@ -84,12 +84,13 @@ impl Instance {
 		debug_assert!(matches!(self.kind, InstKind::Client { .. }));
 
 		let out = HashSet::new();
+		let version = manager.found_version.as_ref().expect("Found version missing");
 		let dir = self.get_dir(paths);
 		files::create_leading_dirs(&dir)?;
 		files::create_dir(&dir)?;
 		let mc_dir = self.get_subdir(paths);
 		files::create_dir(&mc_dir)?;
-		let jar_path = minecraft::game_jar_path(self.kind.to_side(), &self.version, paths);
+		let jar_path = minecraft::game_jar_path(self.kind.to_side(), version, paths);
 
 		let version_json = manager.version_json.clone().expect("Version json missing");
 
@@ -113,7 +114,7 @@ impl Instance {
 		};
 		if let Some(mode) = fq_mode {
 			classpath.extend(
-				self.get_fabric_quilt(mode, paths, manager)
+				self.get_fabric_quilt(mode, paths, manager, version)
 					.await
 					.context("Failed to install Fabric/Quilt")?,
 			);
@@ -126,7 +127,7 @@ impl Instance {
 		if let Some(global_options) = &manager.options {
 			if let Some(global_options) = &global_options.client {
 				let global_keys =
-					options::client::create_keys(global_options, &self.version, version_list)
+					options::client::create_keys(global_options, version, version_list)
 						.context("Failed to create keys for global options")?;
 				keys.extend(global_keys);
 			}
@@ -135,7 +136,7 @@ impl Instance {
 			options: Some(options),
 		} = &self.kind
 		{
-			let override_keys = options::client::create_keys(options, &self.version, version_list)
+			let override_keys = options::client::create_keys(options, version, version_list)
 				.context("Failed to create keys for override options")?;
 			keys.extend(override_keys);
 		}
@@ -162,6 +163,7 @@ impl Instance {
 		debug_assert!(matches!(self.kind, InstKind::Server { .. }));
 
 		let mut out = HashSet::new();
+		let version = manager.found_version.as_ref().expect("Found version missing");
 		let dir = self.get_dir(paths);
 		files::create_leading_dirs(&dir)?;
 		files::create_dir(&dir)?;
@@ -179,11 +181,11 @@ impl Instance {
 
 		let classpath = match self.modloader {
 			Modloader::Fabric => Some(
-				self.get_fabric_quilt(fabric_quilt::Mode::Fabric, paths, manager)
+				self.get_fabric_quilt(fabric_quilt::Mode::Fabric, paths, manager, version)
 					.await?,
 			),
 			Modloader::Quilt => Some(
-				self.get_fabric_quilt(fabric_quilt::Mode::Quilt, paths, manager)
+				self.get_fabric_quilt(fabric_quilt::Mode::Quilt, paths, manager, version)
 					.await?,
 			),
 			_ => None,
@@ -201,7 +203,7 @@ impl Instance {
 		self.jar_path = Some(match self.plugin_loader {
 			PluginLoader::Vanilla => {
 				let extern_jar_path =
-					minecraft::game_jar_path(self.kind.to_side(), &self.version, paths);
+					minecraft::game_jar_path(self.kind.to_side(), version, paths);
 				if manager.should_update_file(&jar_path) {
 					fs::hard_link(extern_jar_path, &jar_path)
 						.context("Failed to hardlink server.jar")?;
@@ -213,10 +215,10 @@ impl Instance {
 				let mut printer = ReplPrinter::from_options(manager.print.clone());
 				printer.indent(1);
 				printer.print("Checking for paper updates...");
-				let (build_num, ..) = paper::get_newest_build(&self.version)
+				let (build_num, ..) = paper::get_newest_build(version)
 					.await
 					.context("Failed to get the newest Paper version")?;
-				let file_name = paper::get_jar_file_name(&self.version, build_num)
+				let file_name = paper::get_jar_file_name(version, build_num)
 					.await
 					.context("Failed to get the Paper file name")?;
 				let paper_jar_path = server_dir.join(&file_name);
@@ -224,7 +226,7 @@ impl Instance {
 					printer.print(&cformat!("<g>Paper is up to date."));
 				} else {
 					printer.print("Downloading Paper server...");
-					paper::download_server_jar(&self.version, build_num, &file_name, &server_dir)
+					paper::download_server_jar(version, build_num, &file_name, &server_dir)
 						.await
 						.context("Failed to download Paper server JAR")?;
 					printer.print(&cformat!("<g>Paper server downloaded."));
@@ -241,7 +243,7 @@ impl Instance {
 		if let Some(global_options) = &manager.options {
 			if let Some(global_options) = &global_options.server {
 				let global_keys =
-					options::server::create_keys(global_options, &self.version, version_list)
+					options::server::create_keys(global_options, version, version_list)
 						.context("Failed to create keys for global options")?;
 				keys.extend(global_keys);
 			}
@@ -250,7 +252,7 @@ impl Instance {
 			options: Some(options),
 		} = &self.kind
 		{
-			let override_keys = options::server::create_keys(options, &self.version, version_list)
+			let override_keys = options::server::create_keys(options, version, version_list)
 				.context("Failed to create keys for override options")?;
 			keys.extend(override_keys);
 		}
