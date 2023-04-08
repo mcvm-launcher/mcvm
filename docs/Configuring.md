@@ -69,7 +69,14 @@ Instances are defined in the id-value format underneath the `instances` object o
 			"max": String
 		},
 		"java": String,
-		"preset": String
+		"preset": String,
+		"quick_play": {
+			"type": "world" | "server" | "realm",
+			"world": String,
+			"server": String,
+			"port": String,
+			"realm": String
+		}
 	},
 	"options": ClientOptions | ServerOptions
 }
@@ -83,7 +90,8 @@ Instances are defined in the id-value format underneath the `instances` object o
  * `launch.preset` (Optional): A preset that will automatically apply changes to your launch configuration to improve your experience.
    * `"none"`: The default. No changes will be applied.
    * `"aikars"`: A popular set of tuned arguments for better performance. This works better for servers that have a lot of available memory (8GB+) and is not recommended otherwise. See https://docs.papermc.io/paper/aikars-flags for more information.
- * `options`: Options to apply to this instance specifically. They will override global options. They are in the format of either the client or server section depending on the instance type.
+ * `launch.quickplay` (Optional): Specify options for the Quick Play feature, which will automatically start the client in a world, server, or realm. The `type` field selects the kind of Quick Play that you want. Use the other fields to specify which world, server, server port, and realm you want to Quick Play into when launching. Server Quick Play will work on older versions but the other two types will not.
+ * `options` (Optional): Options to apply to this instance specifically. They will override global options. They are in the format of either the client or server section depending on the instance type.
 
 ## Packages
 Packages are specified globally in the `packages` list or for a specific profile in its `packages` list. It has two valid forms:

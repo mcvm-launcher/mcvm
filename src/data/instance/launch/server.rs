@@ -6,7 +6,13 @@ use crate::io::launch::launch;
 
 impl Instance {
 	/// Launch a server
-	pub fn launch_server(&mut self, paths: &Paths, debug: bool) -> anyhow::Result<()> {
+	pub fn launch_server(
+		&mut self,
+		paths: &Paths,
+		debug: bool,
+		version: &str,
+		version_list: &[String],
+	) -> anyhow::Result<()> {
 		debug_assert!(matches!(self.kind, InstKind::Server { .. }));
 		match &self.java {
 			Some(java) => match &java.path {
@@ -33,8 +39,11 @@ impl Instance {
 					launch(
 						paths,
 						&self.id,
+						self.kind.to_side(),
 						&self.launch,
 						debug,
+						version,
+						version_list,
 						&server_dir,
 						jre_path
 							.to_str()

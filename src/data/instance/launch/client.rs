@@ -11,7 +11,14 @@ use crate::{skip_fail, skip_none};
 
 impl Instance {
 	/// Launch a client
-	pub fn launch_client(&mut self, paths: &Paths, auth: &Auth, debug: bool, version: &str) -> anyhow::Result<()> {
+	pub fn launch_client(
+		&mut self,
+		paths: &Paths,
+		auth: &Auth,
+		debug: bool,
+		version: &str,
+		version_list: &[String],
+	) -> anyhow::Result<()> {
 		debug_assert!(matches!(self.kind, InstKind::Client { .. }));
 		match &self.java {
 			Some(java) => match &java.path {
@@ -72,8 +79,11 @@ impl Instance {
 							launch(
 								paths,
 								&self.id,
+								self.kind.to_side(),
 								&self.launch,
 								debug,
+								version,
+								version_list,
 								&client_dir,
 								jre_path
 									.to_str()

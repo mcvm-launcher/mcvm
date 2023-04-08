@@ -28,14 +28,16 @@ impl Instance {
 		self.create(&manager, paths)
 			.await
 			.context("Failed to update instance")?;
+		let version = manager.found_version.as_ref().expect("Found version missing");
+		let version_list = manager.version_list.as_ref().expect("Found version missing");
 		cprintln!("<g>Launching!");
 		match &self.kind {
 			InstKind::Client { .. } => {
-				self.launch_client(paths, auth, debug, manager.found_version.as_ref().expect("Found version missing"))
+				self.launch_client(paths, auth, debug, version, version_list)
 					.context("Failed to launch client")?;
 			}
 			InstKind::Server { .. } => {
-				self.launch_server(paths, debug)
+				self.launch_server(paths, debug, version, version_list)
 					.context("Failed to launch server")?;
 			}
 		}

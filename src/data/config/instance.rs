@@ -62,6 +62,20 @@ fn default_flags_preset() -> String {
 	String::from("none")
 }
 
+#[derive(Deserialize, Debug, PartialEq, Default, Clone)]
+#[serde(tag = "type")]
+#[serde(rename_all = "snake_case")]
+pub enum QuickPlay {
+	World { world: String },
+	Server {
+		server: String,
+		port: Option<u16>,
+	},
+	Realm { realm: String },
+	#[default]
+	None,
+}
+
 #[derive(Deserialize, Debug)]
 pub struct LaunchConfig {
 	#[serde(default)]
@@ -76,6 +90,8 @@ pub struct LaunchConfig {
 	pub env: HashMap<String, String>,
 	#[serde(default)]
 	pub wrapper: Option<String>,
+	#[serde(default)]
+	pub quick_play: QuickPlay,
 }
 
 impl LaunchConfig {
@@ -107,6 +123,7 @@ impl LaunchConfig {
 			preset: ArgsPreset::from_str(&self.preset),
 			env: self.env.clone(),
 			wrapper: self.wrapper.clone(),
+			quick_play: self.quick_play.clone(),
 		})
 	}
 }
@@ -123,6 +140,7 @@ impl Default for LaunchConfig {
 			preset: default_flags_preset(),
 			env: HashMap::new(),
 			wrapper: None,
+			quick_play: QuickPlay::default(),
 		}
 	}
 }
@@ -162,4 +180,34 @@ pub fn parse_instance_config(id: &str, val: &Value, profile: &Profile) -> anyhow
 	);
 
 	Ok(instance)
+}
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+
+	#[test]
+	fn test_quickplay_deser() {
+		#[derive(Deserialize)]
+		struct Test {
+			quick_play: QuickPlay,
+		}
+
+		let test = serde_json::from_str::<Test>(r#"{
+			"quick_play": {
+				"type": "server",
+				"server": "localhost",
+				"port": 25565,
+				"world": "test",
+				"realm": "my_realm"
+			}	
+		}"#).unwrap();
+		assert_eq!(
+			test.quick_play,
+			QuickPlay::Server {
+				server: String::from("localhost"),
+				port: Some(25565)
+			}
+		);
+	}
 }
