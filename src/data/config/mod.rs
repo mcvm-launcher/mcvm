@@ -45,8 +45,7 @@ fn default_config() -> serde_json::Value {
 						}
 					}
 				}
-			},
-			"packages": []
+			}
 		}
 	)
 }
