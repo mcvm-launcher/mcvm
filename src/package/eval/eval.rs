@@ -1,4 +1,5 @@
 use anyhow::{anyhow, bail};
+use serde::Deserialize;
 
 use super::super::Package;
 use super::instruction::{InstrKind, Instruction};
@@ -45,23 +46,14 @@ impl EvalLevel {
 	}
 }
 
-#[derive(Debug, Clone)]
 // Permissions level for an evaluation
+#[derive(Deserialize, Debug, Clone, Default)]
+#[serde(rename_all = "snake_case")]
 pub enum EvalPermissions {
 	Restricted,
+	#[default]
 	Standard,
 	Elevated,
-}
-
-impl EvalPermissions {
-	pub fn from_str(string: &str) -> Option<Self> {
-		match string {
-			"restricted" => Some(Self::Restricted),
-			"standard" => Some(Self::Standard),
-			"elevated" => Some(Self::Elevated),
-			_ => None,
-		}
-	}
 }
 
 // A routine that we will run

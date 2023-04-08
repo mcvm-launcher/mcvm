@@ -1,8 +1,7 @@
 use std::collections::HashMap;
 
-use anyhow::{ensure, Context};
+use anyhow::ensure;
 use serde::Deserialize;
-use serde_json::Value;
 
 use crate::data::instance::{InstKind, Instance};
 use crate::data::profile::Profile;
@@ -148,7 +147,7 @@ impl Default for LaunchConfig {
 #[derive(Deserialize)]
 #[serde(tag = "type")]
 #[serde(rename_all = "snake_case")]
-enum InstanceConfig {
+pub enum InstanceConfig {
 	Client {
 		#[serde(default)]
 		launch: LaunchConfig,
@@ -163,12 +162,10 @@ enum InstanceConfig {
 	},
 }
 
-pub fn parse_instance_config(id: &str, val: &Value, profile: &Profile) -> anyhow::Result<Instance> {
-	let config = serde_json::from_value::<InstanceConfig>(val.clone())
-		.context("Failed to parse instance config")?;
+pub fn read_instance_config(id: &str, config: &InstanceConfig, profile: &Profile) -> anyhow::Result<Instance> {
 	let (kind, launch) = match config {
-		InstanceConfig::Client { launch, options } => (InstKind::Client { options }, launch),
-		InstanceConfig::Server { launch, options } => (InstKind::Server { options }, launch),
+		InstanceConfig::Client { launch, options } => (InstKind::Client { options: options.clone() }, launch.clone()),
+		InstanceConfig::Server { launch, options } => (InstKind::Server { options: options.clone() }, launch.clone()),
 	};
 
 	let instance = Instance::new(

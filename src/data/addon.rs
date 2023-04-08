@@ -1,4 +1,5 @@
 use anyhow::Context;
+use serde::Deserialize;
 
 use crate::io::files::create_leading_dirs;
 use crate::io::files::paths::Paths;
@@ -121,24 +122,14 @@ impl AddonRequest {
 	}
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Deserialize, Debug, Clone, PartialEq, Default)]
+#[serde(rename_all = "snake_case")]
 pub enum Modloader {
+	#[default]
 	Vanilla,
 	Forge,
 	Fabric,
 	Quilt,
-}
-
-impl Modloader {
-	pub fn from_str(string: &str) -> Option<Self> {
-		match string {
-			"vanilla" => Some(Self::Vanilla),
-			"forge" => Some(Self::Forge),
-			"fabric" => Some(Self::Fabric),
-			"quilt" => Some(Self::Quilt),
-			_ => None,
-		}
-	}
 }
 
 impl Display for Modloader {
@@ -184,20 +175,12 @@ impl ModloaderMatch {
 	}
 }
 
-#[derive(Debug, Clone)]
+#[derive(Deserialize, Debug, Clone, Default)]
+#[serde(rename_all = "snake_case")]
 pub enum PluginLoader {
+	#[default]
 	Vanilla,
 	Paper,
-}
-
-impl PluginLoader {
-	pub fn from_str(string: &str) -> Option<Self> {
-		match string {
-			"vanilla" => Some(Self::Vanilla),
-			"paper" => Some(Self::Paper),
-			_ => None,
-		}
-	}
 }
 
 impl Display for PluginLoader {

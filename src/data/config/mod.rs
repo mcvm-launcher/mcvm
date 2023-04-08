@@ -1,19 +1,20 @@
 pub mod instance;
+pub mod profile;
+pub mod package;
 mod preferences;
 
-use self::instance::parse_instance_config;
+use self::instance::read_instance_config;
+use self::package::{read_package_config, PackageConfig, FullPackageConfig};
+use self::profile::parse_profile_config;
 use anyhow::{anyhow, bail, Context};
 use preferences::ConfigPreferences;
 
-use super::addon::{game_modifications_compatible, Modloader, PluginLoader};
+use super::addon::game_modifications_compatible;
 use super::profile::{InstanceRegistry, Profile};
 use super::user::{validate_username, Auth, AuthState, User, UserKind};
-use crate::package::eval::eval::EvalPermissions;
-use crate::package::reg::{PkgRegistry, PkgRequest};
-use crate::package::PkgConfig;
+use crate::package::reg::PkgRegistry;
 use crate::util::json::{self, JsonType};
 use crate::util::validate_identifier;
-use crate::util::versions::MinecraftVersion;
 
 use color_print::cprintln;
 use serde_json::json;
@@ -126,151 +127,66 @@ impl Config {
 		// Profiles
 		let doc_profiles = json::access_object(obj, "profiles")?;
 		for (profile_id, profile_val) in doc_profiles {
-			if !validate_identifier(profile_id) {
-				bail!("Invalid string '{}'", profile_id.to_owned());
+			let profile_config = parse_profile_config(profile_val)
+				.with_context(|| format!("Failed to parse profile {profile_id}"))?;
+			let mut profile = profile_config.to_profile(profile_id);
+
+			if !game_modifications_compatible(&profile_config.modloader, &profile_config.plugin_loader) {
+				bail!("Modloader and Plugin Loader are incompatible for profile {profile_id}");
 			}
-			let profile_obj = json::ensure_type(profile_val.as_object(), JsonType::Obj)?;
-			let version = json::access_str(profile_obj, "version")?;
-			let version = match version {
-				"latest" => MinecraftVersion::Latest,
-				"latest_snapshot" => MinecraftVersion::LatestSnapshot,
-				version => MinecraftVersion::Version(String::from(version)),
-			};
-
-			let modloader = match profile_obj.get("modloader") {
-				Some(loader) => json::ensure_type(loader.as_str(), JsonType::Str),
-				None => Ok("vanilla"),
-			}?;
-			let modloader =
-				Modloader::from_str(modloader).ok_or(anyhow!("Unknown modloader '{modloader}'"))?;
-
-			let plugin_loader = match profile_obj.get("plugin_loader") {
-				Some(loader) => json::ensure_type(loader.as_str(), JsonType::Str),
-				None => Ok("vanilla"),
-			}?;
-			let plugin_loader = PluginLoader::from_str(plugin_loader)
-				.ok_or(anyhow!("Unknown plugin loader '{plugin_loader}'"))?;
-
-			if !game_modifications_compatible(&modloader, &plugin_loader) {
-				bail!("Game modifications for profile '{profile_id}' are incompatible");
+			
+			for (instance_id, instance) in profile_config.instances {
+				if !validate_identifier(&instance_id) {
+					bail!("Invalid string '{}'", instance_id.to_owned());
+				}
+				if instances.contains_key(&instance_id) {
+					bail!("Duplicate instance '{instance_id}'");
+				}
+				let instance = read_instance_config(&instance_id, &instance, &profile)
+					.with_context(|| format!("Failed to configure instance '{instance_id}'"))?;
+				profile.add_instance(&instance_id);
+				instances.insert(instance_id.to_string(), instance);
 			}
 
-			let mut profile = Profile::new(
-				profile_id,
-				version,
-				modloader.clone(),
-				plugin_loader.clone(),
-			);
+			for package in profile_config.packages {
+				let config = read_package_config(&package)
+					.with_context(|| format!("Failed to configure package '{}'", package))?;
 
-			// Instances
-			if let Some(instances_val) = profile_obj.get("instances") {
-				let doc_instances = json::ensure_type(instances_val.as_object(), JsonType::Obj)?;
-				for (instance_id, instance_val) in doc_instances {
-					if !validate_identifier(instance_id) {
-						bail!("Invalid string '{}'", instance_id.to_owned());
+				if !validate_identifier(&config.req.name) {
+					bail!("Invalid package name '{package}'");
+				}
+
+				for cfg in profile.packages.iter() {
+					if cfg.req == config.req {
+						bail!("Duplicate package '{package}' in profile '{profile_id}'");
 					}
-					if instances.contains_key(instance_id) {
-						bail!("Duplicate instance '{instance_id}'");
+				}
+
+				for feature in config.features {
+					if !validate_identifier(&feature) {
+						bail!("Invalid string '{feature}'");
 					}
+				}
 
-					let instance = parse_instance_config(instance_id, instance_val, &profile)?;
-
-					profile.add_instance(instance_id);
-					instances.insert(instance_id.to_string(), instance);
+				match package {
+					PackageConfig::Full(FullPackageConfig::Local {
+						id: _,
+						version,
+						path,
+						.. 
+					}) => {
+						let path = shellexpand::tilde(&path);
+						packages.insert_local(
+							&config.req,
+							&version,
+							&PathBuf::from(path.to_string()),
+						);
+					}
+					_ => {}
 				}
 			}
 
-			// Packages
-			if let Some(packages_val) = profile_obj.get("packages") {
-				let doc_packages = json::ensure_type(packages_val.as_array(), JsonType::Arr)?;
-				for package_val in doc_packages {
-					if let Some(package_obj) = package_val.as_object() {
-						let package_id = json::access_str(package_obj, "id")?;
-						if !validate_identifier(package_id) {
-							bail!("Invalid string '{}'", package_id.to_owned());
-						}
-
-						let req = PkgRequest::new(package_id);
-						for cfg in profile.packages.iter() {
-							if cfg.req == req {
-								bail!("Duplicate package '{}' in profile '{profile_id}'", req.name);
-							}
-						}
-						if let Some(val) = package_obj.get("type") {
-							match json::ensure_type(val.as_str(), JsonType::Str)? {
-								"local" => {
-									let package_path = json::access_str(package_obj, "path")?;
-									let package_path = shellexpand::tilde(package_path);
-									let package_version =
-										match json::access_str(package_obj, "version") {
-											Ok(version) => Ok(version),
-											Err(..) => Err(anyhow!(
-												"Local packages must specify a version"
-											)),
-										}?;
-									packages.insert_local(
-										&req,
-										package_version,
-										&PathBuf::from(package_path.to_string()),
-									);
-								}
-								"remote" => {}
-								typ => {
-									bail!("Unknown package type '{typ}' for package '{package_id}'")
-								}
-							}
-						}
-						let features = match package_obj.get("features") {
-							Some(features) => {
-								let features =
-									json::ensure_type(features.as_array(), JsonType::Arr)?;
-								let mut out = Vec::new();
-								for feature in features {
-									let feature =
-										json::ensure_type(feature.as_str(), JsonType::Str)?;
-									if !validate_identifier(feature) {
-										bail!("Invalid string '{}'", feature.to_owned());
-									}
-									out.push(feature.to_owned());
-								}
-								out
-							}
-							None => Vec::new(),
-						};
-
-						let perms = match package_obj.get("permissions") {
-							Some(perms) => {
-								let perms = json::ensure_type(perms.as_str(), JsonType::Str)?;
-								EvalPermissions::from_str(perms)
-									.ok_or(anyhow!("Unknown package permissions {perms}"))?
-							}
-							None => EvalPermissions::Standard,
-						};
-
-						let pkg = PkgConfig {
-							req,
-							features,
-							permissions: perms,
-						};
-						profile.packages.push(pkg);
-					} else if let Some(package_id) = package_val.as_str() {
-						if !validate_identifier(package_id) {
-							bail!("Invalid string '{}'", package_id.to_owned());
-						}
-						let req = PkgRequest::new(package_id);
-						let pkg = PkgConfig {
-							req,
-							features: Vec::new(),
-							permissions: EvalPermissions::Standard,
-						};
-						profile.packages.push(pkg);
-					} else {
-						bail!("Expected an Object or a String for a package in profile '{profile_id}'");
-					}
-				}
-			}
-
-			profiles.insert(profile_id.to_string(), Box::new(profile));
+			profiles.insert(profile_id.clone(), Box::new(profile));
 		}
 
 		Ok(Self {

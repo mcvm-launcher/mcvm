@@ -3,7 +3,7 @@ pub mod update;
 use anyhow::Context;
 
 use crate::data::instance::Instance;
-use crate::package::PkgConfig;
+use crate::package::PkgProfileConfig;
 use crate::Paths;
 use crate::util::versions::MinecraftVersion;
 
@@ -19,7 +19,7 @@ pub struct Profile {
 	pub name: String,
 	pub version: MinecraftVersion,
 	pub instances: Vec<String>,
-	pub packages: Vec<PkgConfig>,
+	pub packages: Vec<PkgProfileConfig>,
 	pub modloader: Modloader,
 	pub plugin_loader: PluginLoader,
 }

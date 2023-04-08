@@ -122,9 +122,9 @@ mod tests {
 	}
 }
 
-// Config for a package, stored in a profile
+/// Evaluated configuration for a package, stored in a profile
 #[derive(Debug)]
-pub struct PkgConfig {
+pub struct PkgProfileConfig {
 	pub req: PkgRequest,
 	pub features: Vec<String>,
 	pub permissions: EvalPermissions,
