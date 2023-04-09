@@ -4,8 +4,8 @@ use anyhow::Context;
 
 use crate::data::instance::Instance;
 use crate::package::PkgProfileConfig;
-use crate::Paths;
 use crate::util::versions::MinecraftVersion;
+use crate::Paths;
 
 use self::update::UpdateManager;
 

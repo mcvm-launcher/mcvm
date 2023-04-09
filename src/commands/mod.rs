@@ -39,7 +39,8 @@ impl CmdData {
 
 	pub async fn ensure_config(&mut self) -> anyhow::Result<()> {
 		if self.config.is_none() {
-			self.ensure_paths().await
+			self.ensure_paths()
+				.await
 				.context("Failed to set up directories")?;
 			if let Some(paths) = &self.paths {
 				self.config = Some(

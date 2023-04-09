@@ -215,11 +215,15 @@ impl MinecraftVersion {
 
 impl Display for MinecraftVersion {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		write!(f, "{}", match self {
-			Self::Version(version) => version,
-			Self::Latest => "Latest",
-			Self::LatestSnapshot => "Latest Snaphot",
-		})
+		write!(
+			f,
+			"{}",
+			match self {
+				Self::Version(version) => version,
+				Self::Latest => "Latest",
+				Self::LatestSnapshot => "Latest Snaphot",
+			}
+		)
 	}
 }
 
@@ -309,17 +313,23 @@ mod tests {
 		}
 
 		assert_eq!(
-			serde_json::from_str::<Test>(r#"{"version": "1.19"}"#).unwrap().version,
+			serde_json::from_str::<Test>(r#"{"version": "1.19"}"#)
+				.unwrap()
+				.version,
 			MinecraftVersionDeser::Version(String::from("1.19"))
 		);
 
 		assert_eq!(
-			serde_json::from_str::<Test>(r#"{"version": "latest"}"#).unwrap().version,
+			serde_json::from_str::<Test>(r#"{"version": "latest"}"#)
+				.unwrap()
+				.version,
 			MinecraftVersionDeser::Latest(MinecraftLatestVersion::Release)
 		);
 
 		assert_eq!(
-			serde_json::from_str::<Test>(r#"{"version": "latest_snapshot"}"#).unwrap().version,
+			serde_json::from_str::<Test>(r#"{"version": "latest_snapshot"}"#)
+				.unwrap()
+				.version,
 			MinecraftVersionDeser::Latest(MinecraftLatestVersion::Snapshot)
 		);
 	}

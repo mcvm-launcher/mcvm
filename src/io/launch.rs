@@ -73,7 +73,7 @@ impl LaunchOptions {
 					out.push(String::from("--quickPlayPath"));
 					out.push(String::from("quickPlay/log.json"));
 					match &self.quick_play {
-						QuickPlay::None => {},
+						QuickPlay::None => {}
 						QuickPlay::World { world } => {
 							if after_23w14a {
 								out.push(String::from("--quickPlaySingleplayer"));

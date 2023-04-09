@@ -14,11 +14,20 @@ use super::Instance;
 
 impl Instance {
 	// Launch the instance
-	pub async fn launch(&mut self, paths: &Paths, auth: &Auth, debug: bool, version: &MinecraftVersion) -> anyhow::Result<()> {
+	pub async fn launch(
+		&mut self,
+		paths: &Paths,
+		auth: &Auth,
+		debug: bool,
+		version: &MinecraftVersion,
+	) -> anyhow::Result<()> {
 		cprintln!("Checking for updates...");
 		let options = PrintOptions::new(false, 0);
 		let mut manager = UpdateManager::new(options, false);
-		manager.fulfill_version_manifest(paths, version).await.context("Failed to get version data")?;
+		manager
+			.fulfill_version_manifest(paths, version)
+			.await
+			.context("Failed to get version data")?;
 		manager.add_requirements(self.get_requirements());
 		manager
 			.fulfill_requirements(paths)
@@ -28,8 +37,14 @@ impl Instance {
 		self.create(&manager, paths)
 			.await
 			.context("Failed to update instance")?;
-		let version = manager.found_version.as_ref().expect("Found version missing");
-		let version_list = manager.version_list.as_ref().expect("Found version missing");
+		let version = manager
+			.found_version
+			.as_ref()
+			.expect("Found version missing");
+		let version_list = manager
+			.version_list
+			.as_ref()
+			.expect("Found version missing");
 		cprintln!("<g>Launching!");
 		match &self.kind {
 			InstKind::Client { .. } => {

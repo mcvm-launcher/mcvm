@@ -16,7 +16,7 @@ use tar::Archive;
 use std::collections::HashSet;
 use std::fs;
 use std::io::Cursor;
-use std::path::{PathBuf, Path};
+use std::path::{Path, PathBuf};
 
 #[derive(Debug, Clone, Hash, PartialEq, Eq)]
 pub enum JavaKind {
@@ -97,11 +97,7 @@ impl Java {
 				}
 				out.insert(extracted_bin_dir.clone());
 
-				let arc_extension = if cfg!(windows) {
-					".zip"
-				} else {
-					".tar.gz"
-				};
+				let arc_extension = if cfg!(windows) { ".zip" } else { ".tar.gz" };
 				let arc_name = format!("adoptium{major_version}{arc_extension}");
 				let arc_path = out_dir.join(arc_name);
 
@@ -138,6 +134,6 @@ fn extract_adoptium_archive(arc_path: &Path, out_dir: &Path) -> anyhow::Result<(
 		let mut arc = Archive::new(&mut decoder);
 		arc.unpack(out_dir).context("Failed to unarchive tar")?;
 	}
-	
+
 	Ok(())
 }

@@ -53,7 +53,9 @@ impl Paths {
 		let jars = internal.join("jars");
 		let logs = data.join("logs");
 		let launch_logs = logs.join("launch");
-		let run = project.runtime_dir().map(|x| x.to_path_buf())
+		let run = project
+			.runtime_dir()
+			.map(|x| x.to_path_buf())
 			.unwrap_or(internal.join("run"));
 
 		tokio::fs::create_dir_all(&data).await?;

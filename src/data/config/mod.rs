@@ -1,10 +1,10 @@
 pub mod instance;
-pub mod profile;
 pub mod package;
 mod preferences;
+pub mod profile;
 
 use self::instance::read_instance_config;
-use self::package::{read_package_config, PackageConfig, FullPackageConfig};
+use self::package::{read_package_config, FullPackageConfig, PackageConfig};
 use self::profile::parse_profile_config;
 use anyhow::{anyhow, bail, Context};
 use preferences::ConfigPreferences;
@@ -131,10 +131,13 @@ impl Config {
 				.with_context(|| format!("Failed to parse profile {profile_id}"))?;
 			let mut profile = profile_config.to_profile(profile_id);
 
-			if !game_modifications_compatible(&profile_config.modloader, &profile_config.plugin_loader) {
+			if !game_modifications_compatible(
+				&profile_config.modloader,
+				&profile_config.plugin_loader,
+			) {
 				bail!("Modloader and Plugin Loader are incompatible for profile {profile_id}");
 			}
-			
+
 			for (instance_id, instance) in profile_config.instances {
 				if !validate_identifier(&instance_id) {
 					bail!("Invalid string '{}'", instance_id.to_owned());
@@ -173,7 +176,7 @@ impl Config {
 						id: _,
 						version,
 						path,
-						.. 
+						..
 					}) => {
 						let path = shellexpand::tilde(&path);
 						packages.insert_local(

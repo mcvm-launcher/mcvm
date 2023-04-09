@@ -38,7 +38,6 @@ cfg_match! {
 	}
 }
 
-
 // For checking rule actions in Mojang json files
 pub fn is_allowed(action: &str) -> bool {
 	action == "allow"

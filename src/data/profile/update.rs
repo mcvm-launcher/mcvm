@@ -102,13 +102,13 @@ impl UpdateManager {
 			.await
 			.context("Failed to get version manifest")?;
 
-		
 		self.version_list =
 			Some(make_version_list(&manifest).context("Failed to compose a list of versions")?);
-		
-		let found_version = version.get_version(&manifest)
+
+		let found_version = version
+			.get_version(&manifest)
 			.context("Failed to find the requested Minecraft version")?;
-	
+
 		self.found_version = Some(found_version);
 		self.version_manifest = Some(manifest);
 
@@ -116,10 +116,7 @@ impl UpdateManager {
 	}
 
 	/// Run all of the operations that are part of the requirements.
-	pub async fn fulfill_requirements(
-		&mut self,
-		paths: &Paths,
-	) -> anyhow::Result<()> {
+	pub async fn fulfill_requirements(&mut self, paths: &Paths) -> anyhow::Result<()> {
 		let java_required = matches!(
 			self.requirements
 				.iter()
@@ -152,25 +149,39 @@ impl UpdateManager {
 			}
 			let version_json = get_version_json(
 				self.found_version.as_ref().expect("Found version missing"),
-				self.version_manifest.as_ref().expect("Version manifest missing"),
+				self.version_manifest
+					.as_ref()
+					.expect("Version manifest missing"),
 				paths,
-			).await.context("Failed to get version json")?;
+			)
+			.await
+			.context("Failed to get version json")?;
 			self.version_json = Some(version_json);
 		}
 
 		if self.has_requirement(UpdateRequirement::GameAssets) {
 			let version_json = self.version_json.as_ref().expect("Version json missing");
-			let files = get_assets(version_json, paths, self.found_version.as_ref().expect("Found version missing"), self)
-				.await
-				.context("Failed to get game assets")?;
+			let files = get_assets(
+				version_json,
+				paths,
+				self.found_version.as_ref().expect("Found version missing"),
+				self,
+			)
+			.await
+			.context("Failed to get game assets")?;
 			self.add_files(files);
 		}
 
 		if self.has_requirement(UpdateRequirement::GameLibraries) {
 			let version_json = self.version_json.as_ref().expect("Version json missing");
-			let files = get_libraries(version_json, paths, self.found_version.as_ref().expect("Found version missing"), self)
-				.await
-				.context("Failed to get game libraries")?;
+			let files = get_libraries(
+				version_json,
+				paths,
+				self.found_version.as_ref().expect("Found version missing"),
+				self,
+			)
+			.await
+			.context("Failed to get game libraries")?;
 			self.add_files(files);
 		}
 
@@ -202,9 +213,15 @@ impl UpdateManager {
 			let version_json = self.version_json.as_ref().expect("Version json missing");
 			for req in self.requirements.iter() {
 				if let UpdateRequirement::GameJar(side) = req {
-					get_game_jar(side.clone(), version_json, self.found_version.as_ref().expect("Found version missing"), paths, self)
-						.await
-						.context("Failed to get the game JAR file")?;
+					get_game_jar(
+						side.clone(),
+						version_json,
+						self.found_version.as_ref().expect("Found version missing"),
+						paths,
+						self,
+					)
+					.await
+					.context("Failed to get the game JAR file")?;
 				}
 			}
 		}

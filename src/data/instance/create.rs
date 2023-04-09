@@ -84,7 +84,10 @@ impl Instance {
 		debug_assert!(matches!(self.kind, InstKind::Client { .. }));
 
 		let out = HashSet::new();
-		let version = manager.found_version.as_ref().expect("Found version missing");
+		let version = manager
+			.found_version
+			.as_ref()
+			.expect("Found version missing");
 		let dir = self.get_dir(paths);
 		files::create_leading_dirs(&dir)?;
 		files::create_dir(&dir)?;
@@ -163,7 +166,10 @@ impl Instance {
 		debug_assert!(matches!(self.kind, InstKind::Server { .. }));
 
 		let mut out = HashSet::new();
-		let version = manager.found_version.as_ref().expect("Found version missing");
+		let version = manager
+			.found_version
+			.as_ref()
+			.expect("Found version missing");
 		let dir = self.get_dir(paths);
 		files::create_leading_dirs(&dir)?;
 		files::create_dir(&dir)?;
@@ -202,8 +208,7 @@ impl Instance {
 
 		self.jar_path = Some(match self.plugin_loader {
 			PluginLoader::Vanilla => {
-				let extern_jar_path =
-					minecraft::game_jar_path(self.kind.to_side(), version, paths);
+				let extern_jar_path = minecraft::game_jar_path(self.kind.to_side(), version, paths);
 				if manager.should_update_file(&jar_path) {
 					fs::hard_link(extern_jar_path, &jar_path)
 						.context("Failed to hardlink server.jar")?;

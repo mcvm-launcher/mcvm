@@ -65,12 +65,16 @@ fn default_flags_preset() -> String {
 #[serde(tag = "type")]
 #[serde(rename_all = "snake_case")]
 pub enum QuickPlay {
-	World { world: String },
+	World {
+		world: String,
+	},
 	Server {
 		server: String,
 		port: Option<u16>,
 	},
-	Realm { realm: String },
+	Realm {
+		realm: String,
+	},
 	#[default]
 	None,
 }
@@ -162,10 +166,24 @@ pub enum InstanceConfig {
 	},
 }
 
-pub fn read_instance_config(id: &str, config: &InstanceConfig, profile: &Profile) -> anyhow::Result<Instance> {
+pub fn read_instance_config(
+	id: &str,
+	config: &InstanceConfig,
+	profile: &Profile,
+) -> anyhow::Result<Instance> {
 	let (kind, launch) = match config {
-		InstanceConfig::Client { launch, options } => (InstKind::Client { options: options.clone() }, launch.clone()),
-		InstanceConfig::Server { launch, options } => (InstKind::Server { options: options.clone() }, launch.clone()),
+		InstanceConfig::Client { launch, options } => (
+			InstKind::Client {
+				options: options.clone(),
+			},
+			launch.clone(),
+		),
+		InstanceConfig::Server { launch, options } => (
+			InstKind::Server {
+				options: options.clone(),
+			},
+			launch.clone(),
+		),
 	};
 
 	let instance = Instance::new(
@@ -190,7 +208,8 @@ mod tests {
 			quick_play: QuickPlay,
 		}
 
-		let test = serde_json::from_str::<Test>(r#"{
+		let test = serde_json::from_str::<Test>(
+			r#"{
 			"quick_play": {
 				"type": "server",
 				"server": "localhost",
@@ -198,7 +217,9 @@ mod tests {
 				"world": "test",
 				"realm": "my_realm"
 			}	
-		}"#).unwrap();
+		}"#,
+		)
+		.unwrap();
 		assert_eq!(
 			test.quick_play,
 			QuickPlay::Server {

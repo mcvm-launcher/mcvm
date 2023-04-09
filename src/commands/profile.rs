@@ -109,10 +109,15 @@ async fn profile_update(data: &mut CmdData, id: &str, force: bool) -> anyhow::Re
 			if let Some(profile) = config.profiles.get_mut(id) {
 				let print_options = PrintOptions::new(true, 0);
 				let mut manager = UpdateManager::new(print_options, force);
-				manager.fulfill_version_manifest(paths, &profile.version).await
+				manager
+					.fulfill_version_manifest(paths, &profile.version)
+					.await
 					.context("Failed to get version information")?;
-				let version = manager.found_version.as_ref().expect("Found version missing");
-				
+				let version = manager
+					.found_version
+					.as_ref()
+					.expect("Found version missing");
+
 				let (paper_build_num, paper_file_name) =
 					if let PluginLoader::Paper = profile.plugin_loader {
 						let (build_num, ..) = paper::get_newest_build(version)

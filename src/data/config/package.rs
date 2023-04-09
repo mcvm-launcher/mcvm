@@ -2,7 +2,7 @@ use std::fmt::Display;
 
 use serde::Deserialize;
 
-use crate::package::{eval::eval::EvalPermissions, PkgProfileConfig, reg::PkgRequest};
+use crate::package::{eval::eval::EvalPermissions, reg::PkgRequest, PkgProfileConfig};
 
 #[derive(Deserialize)]
 #[serde(tag = "type")]
@@ -36,11 +36,15 @@ pub enum PackageConfig {
 
 impl Display for PackageConfig {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		write!(f, "{}", match self {
-			Self::Basic(id) => id,
-			Self::Full(FullPackageConfig::Local { id, .. }) => id,
-			Self::Full(FullPackageConfig::Remote { id, .. }) => id,
-		})
+		write!(
+			f,
+			"{}",
+			match self {
+				Self::Basic(id) => id,
+				Self::Full(FullPackageConfig::Local { id, .. }) => id,
+				Self::Full(FullPackageConfig::Remote { id, .. }) => id,
+			}
+		)
 	}
 }
 
@@ -56,7 +60,7 @@ pub fn read_package_config(config: &PackageConfig) -> anyhow::Result<PkgProfileC
 			version: _,
 			path: _,
 			features,
-			permissions
+			permissions,
 		}) => PkgProfileConfig {
 			req: PkgRequest::new(id),
 			features: features.clone(),
@@ -66,12 +70,12 @@ pub fn read_package_config(config: &PackageConfig) -> anyhow::Result<PkgProfileC
 			id,
 			version: _,
 			features,
-			permissions
+			permissions,
 		}) => PkgProfileConfig {
 			req: PkgRequest::new(id),
 			features: features.clone(),
 			permissions: permissions.clone(),
-		}
+		},
 	};
 
 	Ok(package)

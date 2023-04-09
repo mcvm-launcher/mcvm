@@ -3,7 +3,13 @@ use std::collections::HashMap;
 use serde::Deserialize;
 use serde_json::Value;
 
-use crate::{util::versions::MinecraftVersionDeser, data::{profile::Profile, addon::{Modloader, PluginLoader}}};
+use crate::{
+	data::{
+		addon::{Modloader, PluginLoader},
+		profile::Profile,
+	},
+	util::versions::MinecraftVersionDeser,
+};
 
 use super::{instance::InstanceConfig, package::PackageConfig};
 
@@ -27,7 +33,7 @@ impl ProfileConfig {
 			self.modloader.clone(),
 			self.plugin_loader.clone(),
 		)
-	} 
+	}
 }
 
 pub fn parse_profile_config(val: &Value) -> anyhow::Result<ProfileConfig> {

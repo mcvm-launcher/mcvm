@@ -36,17 +36,17 @@ impl Instance {
 								.context("Main class is missing for client")?;
 							if let Ok(args) = json::access_object(version_json, "arguments") {
 								for arg in json::access_array(args, "jvm")? {
-									for sub_arg in
-										process_client_arg(self, arg, paths, auth, classpath, version)
-									{
+									for sub_arg in process_client_arg(
+										self, arg, paths, auth, classpath, version,
+									) {
 										jvm_args.push(sub_arg);
 									}
 								}
 
 								for arg in json::access_array(args, "game")? {
-									for sub_arg in
-										process_client_arg(self, arg, paths, auth, classpath, version)
-									{
+									for sub_arg in process_client_arg(
+										self, arg, paths, auth, classpath, version,
+									) {
 										game_args.push(sub_arg);
 									}
 								}
