@@ -232,16 +232,23 @@ pub async fn get_libraries(
 
 	let mut printer = ReplPrinter::from_options(manager.print.clone());
 
-	if manager.print.verbose && libs_to_download.len() > 0 {
-		cprintln!("Downloading <b>{}</> libraries...", libs_to_download.len());
+	let count = libs_to_download.len();
+	if manager.print.verbose && count > 0 {
+		cprintln!("Downloading <b>{}</> libraries...", count);
 	}
 
 	let client = Client::new();
 	let mut join = JoinSet::new();
+	let mut num_done = 0;
 	// Used to limit the number of open file descriptors
 	let sem = Arc::new(Semaphore::new(FD_SENSIBLE_LIMIT));
 	for (name, library, path) in libs_to_download {
-		printer.print(&cformat!("Downloading library <b!>{}</>...", name));
+		printer.print(&cformat!(
+			"(<b>{}</b><k!>/</k!><b>{}</b>) Downloading library <b!>{}</>...",
+			num_done,
+			count,
+			name
+		));
 		files::create_leading_dirs_async(&path).await?;
 		files.insert(path.clone());
 		let url = json::access_str(&library, "url")?.to_owned();
@@ -255,13 +262,14 @@ pub async fn get_libraries(
 			Ok::<(), anyhow::Error>(())
 		};
 		join.spawn(fut);
+		num_done += 1;
 	}
 
 	while let Some(lib) = join.join_next().await {
 		match lib? {
 			Ok(name) => name,
 			Err(err) => {
-				cprintln!("<r>Failed to download asset, skipping...\n{}", err);
+				cprintln!("<r>Failed to download library, skipping...\n{}", err);
 				continue;
 			}
 		};
