@@ -1,6 +1,7 @@
 use crate::package::repo::PkgRepo;
 
 use anyhow::Context;
+use reqwest::Url;
 use serde::Deserialize;
 
 #[derive(Deserialize)]
@@ -33,11 +34,16 @@ impl ConfigPreferences {
 				let prefs = serde_json::from_value::<PrefSerialize>(obj.clone())
 					.context("Failed to parse preferences")?;
 				let mut repositories = Vec::new();
-				for repo in prefs.repositories.preferred {
+				for repo in prefs.repositories.preferred.iter() {
 					repositories.push(PkgRepo::new(&repo.id, &repo.url));
 				}
-				for repo in prefs.repositories.backup {
+				for repo in prefs.repositories.backup.iter() {
 					repositories.push(PkgRepo::new(&repo.id, &repo.url));
+				}
+
+				for repo in prefs.repositories.preferred.iter().chain(prefs.repositories.backup.iter()) {
+					Url::parse(&repo.url)
+						.with_context(|| format!("Invalid url '{}' in package repository '{}'", repo.url, repo.id))?;
 				}
 
 				Ok((Self {}, repositories))
