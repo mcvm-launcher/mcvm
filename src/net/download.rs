@@ -1,10 +1,18 @@
 use std::path::Path;
 
 use anyhow::Context;
+use cfg_match::cfg_match;
 use reqwest::Client;
 
 // Sensible open file descriptor limit for asynchronous transfers
-pub static FD_SENSIBLE_LIMIT: usize = 15;
+cfg_match! {
+	target_os = "windows" => {
+		pub static FD_SENSIBLE_LIMIT: usize = 64;
+	}
+	_ => {
+		pub static FD_SENSIBLE_LIMIT: usize = 16;
+	}
+}
 
 /// Downloads a file
 pub async fn download(url: &str) -> anyhow::Result<reqwest::Response> {
