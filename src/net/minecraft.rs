@@ -4,7 +4,7 @@ use crate::io::files::{self, paths::Paths};
 use crate::io::java::classpath::Classpath;
 use crate::util::json::{self, JsonObject, JsonType};
 use crate::util::print::ReplPrinter;
-use crate::util::{cap_first_letter, mojang};
+use crate::util::{cap_first_letter, mojang, self};
 
 use anyhow::{bail, Context};
 use color_print::{cformat, cprintln};
@@ -112,7 +112,7 @@ fn is_library_allowed(lib: &JsonObject) -> anyhow::Result<bool> {
 				let os = json::ensure_type(os.as_object(), JsonType::Obj)?;
 				let os_name = json::access_str(os, "name")?;
 				let allowed = mojang::is_allowed(action);
-				if allowed != (os_name == mojang::OS_STRING) {
+				if allowed != (os_name == util::OS_STRING) {
 					return Ok(false);
 				}
 			}
@@ -194,8 +194,8 @@ pub async fn get_libraries(
 		let downloads = json::access_object(lib, "downloads")?;
 		if let Some(natives) = lib.get("natives") {
 			let natives = json::ensure_type(natives.as_object(), JsonType::Obj)?;
-			let key = json::access_str(natives, mojang::OS_STRING)?
-				.replace("${arch}", mojang::TARGET_BITS_STR);
+			let key = json::access_str(natives, util::OS_STRING)?
+				.replace("${arch}", util::TARGET_BITS_STR);
 			let classifier =
 				json::access_object(json::access_object(downloads, "classifiers")?, &key)?;
 
@@ -282,8 +282,8 @@ pub fn get_lib_classpath(
 		let downloads = json::access_object(lib, "downloads")?;
 		if let Some(natives) = lib.get("natives") {
 			let natives = json::ensure_type(natives.as_object(), JsonType::Obj)?;
-			let key = json::access_str(natives, mojang::OS_STRING)?
-				.replace("${arch}", mojang::TARGET_BITS_STR);
+			let key = json::access_str(natives, util::OS_STRING)?
+				.replace("${arch}", util::TARGET_BITS_STR);
 			let classifier =
 				json::access_object(json::access_object(downloads, "classifiers")?, &key)?;
 

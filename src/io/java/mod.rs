@@ -5,7 +5,7 @@ use crate::data::profile::update::UpdateManager;
 use crate::io::files::{self, paths::Paths};
 use crate::net::download::{download_file, download_text};
 use crate::util::json::{self, JsonType};
-use crate::util::mojang::{ARCH_STRING, OS_STRING};
+use crate::util::{ARCH_STRING, OS_STRING};
 use crate::util::print::ReplPrinter;
 
 use anyhow::{anyhow, Context};

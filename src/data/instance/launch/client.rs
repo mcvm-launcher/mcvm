@@ -5,7 +5,10 @@ use crate::data::user::{Auth, UserKind};
 use crate::io::java::classpath::Classpath;
 use crate::io::launch::launch;
 use crate::util::json;
-use crate::util::mojang::{is_allowed, ARCH_STRING, OS_STRING};
+use crate::util::{
+	mojang::is_allowed,
+	{ARCH_STRING, OS_STRING}
+};
 use crate::Paths;
 use crate::{skip_fail, skip_none};
 

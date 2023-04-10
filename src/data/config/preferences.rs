@@ -1,7 +1,6 @@
 use crate::{package::repo::PkgRepo, net::download::validate_url};
 
 use anyhow::Context;
-use reqwest::Url;
 use serde::Deserialize;
 
 #[derive(Deserialize)]
