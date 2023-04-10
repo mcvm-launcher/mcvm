@@ -23,14 +23,17 @@ When you first run a command that reads from the config, a default configuration
 Users are defined in the `users` object in the base of the config. User structure looks like this:
 ```json
 "id": {
-	"type": String,
+	"type": "microsoft" | "demo" | "unverified",
 	"name": String,
 	"uuid": String
 }
 ```
 
  * `id`: The unique identifier of the user that will be referenced in commands.
- * `type`: What type of user this is. Can either be `"microsoft"` for a normal Minecraft account or `"demo"` for a demo account.
+ * `type`: What type of user this is. Can be any of the following:
+   * `"microsoft"`: A normal Minecraft account
+	* `"demo"`: An account that owns a demo of the game
+	* `"unverified"`: An unverified or 'cracked` account
  * `name`: The username for this user.
  * `uuid` (Optional): The Universally Unique Identifier for this account. Some users may not use this field, but you may get a warning if you don't specify it in the config. This is to prevent username changes from invalidating your user.
 

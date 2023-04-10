@@ -4,6 +4,7 @@ use std::collections::HashMap;
 pub enum UserKind {
 	Microsoft,
 	Demo,
+	Unverified,
 }
 
 #[derive(Debug)]
@@ -61,7 +62,7 @@ impl Auth {
 
 pub fn validate_username(kind: UserKind, name: &str) -> bool {
 	match kind {
-		UserKind::Microsoft | UserKind::Demo => {
+		UserKind::Microsoft | UserKind::Demo | UserKind::Unverified => {
 			if name.is_empty() || name.len() > 16 {
 				return false;
 			}

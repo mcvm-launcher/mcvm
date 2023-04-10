@@ -94,17 +94,23 @@ impl Config {
 			let kind = match json::access_str(user_obj, "type")? {
 				"microsoft" => Ok(UserKind::Microsoft),
 				"demo" => Ok(UserKind::Demo),
+				"unverified" => Ok(UserKind::Unverified),
 				typ => Err(anyhow!("Unknown user type '{typ}' on user '{user_id}'")),
 			}?;
 			let username = json::access_str(user_obj, "name")?;
 			if !validate_username(kind.clone(), username) {
 				bail!("Invalid string '{}'", username.to_owned());
 			}
-			let mut user = User::new(kind, user_id, username);
+			let mut user = User::new(kind.clone(), user_id, username);
 
 			match user_obj.get("uuid") {
 				Some(uuid) => user.set_uuid(json::ensure_type(uuid.as_str(), JsonType::Str)?),
-				None => cprintln!("<y>Warning: It is recommended to have your uuid in the configuration for user {}", user_id)
+				None => match kind {
+					UserKind::Microsoft | UserKind::Demo => {
+						cprintln!("<y>Warning: It is recommended to have your uuid in the configuration for user {}", user_id);
+					}
+					UserKind::Unverified => {}
+				}
 			};
 
 			auth.users.insert(user_id.to_string(), user);
