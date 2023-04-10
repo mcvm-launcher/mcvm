@@ -170,7 +170,7 @@ fn extract_native_library(path: &Path, natives_dir: &Path) -> anyhow::Result<()>
 /// and also the number of libraries found.
 pub fn get_lib_list(
 	version_json: &json::JsonObject,
-) -> anyhow::Result<(impl Iterator<Item = &JsonObject>, usize)> {
+) -> anyhow::Result<impl Iterator<Item = &JsonObject>> {
 	let libraries = json::access_array(version_json, "libraries")?;
 	let libraries = libraries.iter().filter_map(|lib| {
 		let lib = json::ensure_type(lib.as_object(), JsonType::Obj).ok()?;
@@ -181,9 +181,7 @@ pub fn get_lib_list(
 		}
 	});
 
-	let count = libraries.clone().count();
-
-	Ok((libraries, count))
+	Ok(libraries)
 }
 
 /// Downloads base client libraries.
@@ -209,10 +207,9 @@ pub async fn get_libraries(
 	let client = Client::new();
 	let mut printer = ReplPrinter::from_options(manager.print.clone());
 		
-	let (libraries, library_count) = get_lib_list(version_json)?;
-	if library_count > 0 {
-		cprintln!("Downloading <b>{}</> libraries...", library_count);
-	}
+	let libraries = get_lib_list(version_json)?;
+
+	let mut libs_to_download = Vec::new();
 
 	for lib in libraries {
 		let name = json::access_str(lib, "name")?;
@@ -231,10 +228,7 @@ pub async fn get_libraries(
 				continue;
 			}
 			printer.print(&cformat!("Downloading library <b!>{}</>...", name));
-			download_library(&client, classifier, &path)
-				.await
-				.with_context(|| format!("Failed to download native library {name}"))?;
-			files.insert(path);
+			libs_to_download.push((name, classifier, path));
 			continue;
 		}
 		if let Some(artifact) = downloads.get("artifact") {
@@ -244,12 +238,20 @@ pub async fn get_libraries(
 				continue;
 			}
 			printer.print(&cformat!("Downloading library <b>{}</>...", name));
-			download_library(&client, artifact, &path)
-				.await
-				.with_context(|| format!("Failed to download library {name}"))?;
-			files.insert(path);
+			libs_to_download.push((name, artifact, path));
 			continue;
 		}
+	}
+
+	if libs_to_download.len() > 0 {
+		cprintln!("Downloading <b>{}</> libraries...", libs_to_download.len());
+	}
+
+	for (name, library, path) in libs_to_download {
+		download_library(&client, library, &path)
+			.await
+			.with_context(|| format!("Failed to download native library {name}"))?;
+		files.insert(path);
 	}
 
 	for (path, name) in native_paths {
@@ -273,7 +275,7 @@ pub fn get_lib_classpath(
 	let libraries_path = paths.internal.join("libraries");
 
 	let mut classpath = Classpath::new();
-	let (libraries, ..) = get_lib_list(version_json).context("Failed to get list of libraries")?;
+	let libraries = get_lib_list(version_json).context("Failed to get list of libraries")?;
 	for lib in libraries {
 		let downloads = json::access_object(lib, "downloads")?;
 		if let Some(natives) = lib.get("natives") {
