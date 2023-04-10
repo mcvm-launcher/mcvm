@@ -227,7 +227,6 @@ pub async fn get_libraries(
 			if !manager.should_update_file(&path) {
 				continue;
 			}
-			printer.print(&cformat!("Downloading library <b!>{}</>...", name));
 			libs_to_download.push((name, classifier, path));
 			continue;
 		}
@@ -237,17 +236,17 @@ pub async fn get_libraries(
 			if !manager.should_update_file(&path) {
 				continue;
 			}
-			printer.print(&cformat!("Downloading library <b>{}</>...", name));
 			libs_to_download.push((name, artifact, path));
 			continue;
 		}
 	}
 
-	if libs_to_download.len() > 0 {
+	if manager.print.verbose && libs_to_download.len() > 0 {
 		cprintln!("Downloading <b>{}</> libraries...", libs_to_download.len());
 	}
 
 	for (name, library, path) in libs_to_download {
+		printer.print(&cformat!("Downloading library <b!>{}</>...", name));
 		download_library(&client, library, &path)
 			.await
 			.with_context(|| format!("Failed to download native library {name}"))?;
