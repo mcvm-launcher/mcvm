@@ -5,10 +5,17 @@ use serde::Deserialize;
 use crate::package::{eval::eval::EvalPermissions, reg::PkgRequest, PkgProfileConfig};
 
 #[derive(Deserialize)]
-#[serde(tag = "type")]
+#[serde(rename_all = "snake_case")]
+pub enum PackageType {
+	Local,
+}
+
+#[derive(Deserialize)]
+#[serde(untagged)]
 #[serde(rename_all = "snake_case")]
 pub enum FullPackageConfig {
 	Local {
+		r#type: PackageType,
 		id: String,
 		version: String,
 		path: String,
@@ -56,6 +63,7 @@ pub fn read_package_config(config: &PackageConfig) -> anyhow::Result<PkgProfileC
 			permissions: EvalPermissions::Standard,
 		},
 		PackageConfig::Full(FullPackageConfig::Local {
+			r#type: _,
 			id,
 			version: _,
 			path: _,
