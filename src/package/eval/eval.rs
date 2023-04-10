@@ -19,7 +19,6 @@ use std::path::PathBuf;
 pub enum EvalLevel {
 	None,
 	Info,
-	Dependencies,
 	All,
 }
 
@@ -33,7 +32,7 @@ impl EvalLevel {
 
 	pub fn is_deps(&self) -> bool {
 		match self {
-			Self::Dependencies | Self::All => true,
+			Self::All => true,
 			_ => false,
 		}
 	}
@@ -59,21 +58,18 @@ pub enum EvalPermissions {
 // A routine that we will run
 pub enum Routine {
 	Install,
-	Dependencies,
 }
 
 impl Routine {
 	pub fn get_routine_name(&self) -> String {
 		String::from(match self {
 			Self::Install => "install",
-			Self::Dependencies => "install",
 		})
 	}
 
 	pub fn get_level(&self) -> EvalLevel {
 		match self {
 			Self::Install => EvalLevel::All,
-			Self::Dependencies => EvalLevel::Dependencies,
 		}
 	}
 }
@@ -192,7 +188,7 @@ impl Package {
 				let mut eval = EvalData::new(constants, self.id.clone(), &routine);
 
 				match eval.level {
-					EvalLevel::All | EvalLevel::Info | EvalLevel::Dependencies => {
+					EvalLevel::All | EvalLevel::Info => {
 						for instr in &block.contents {
 							let result = instr.eval(&eval, &parsed.blocks)?;
 							for (var, val) in result.vars_to_set {
