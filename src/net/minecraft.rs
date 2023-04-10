@@ -121,26 +121,6 @@ fn is_library_allowed(lib: &JsonObject) -> anyhow::Result<bool> {
 	Ok(true)
 }
 
-/// Downloads a library from the game library list
-async fn download_library(
-	client: &Client,
-	lib_download: &json::JsonObject,
-	path: &Path,
-) -> anyhow::Result<()> {
-	files::create_leading_dirs_async(path).await?;
-	let url = json::access_str(lib_download, "url")?;
-	let bytes = client
-		.get(url)
-		.send()
-		.await?
-		.error_for_status()?
-		.bytes()
-		.await?;
-	tokio::fs::write(path, bytes).await?;
-
-	Ok(())
-}
-
 /// Extract the files of a native library into the natives directory
 fn extract_native_library(path: &Path, natives_dir: &Path) -> anyhow::Result<()> {
 	let file = File::open(path)?;
@@ -225,7 +205,7 @@ pub async fn get_libraries(
 			if !manager.should_update_file(&path) {
 				continue;
 			}
-			libs_to_download.push((name, classifier, path));
+			libs_to_download.push((name, classifier.clone(), path));
 			continue;
 		}
 		if let Some(artifact) = downloads.get("artifact") {
@@ -234,24 +214,46 @@ pub async fn get_libraries(
 			if !manager.should_update_file(&path) {
 				continue;
 			}
-			libs_to_download.push((name, artifact, path));
+			libs_to_download.push((name, artifact.clone(), path));
 			continue;
 		}
 	}
 
-	let client = Client::new();
 	let mut printer = ReplPrinter::from_options(manager.print.clone());
 
 	if manager.print.verbose && libs_to_download.len() > 0 {
 		cprintln!("Downloading <b>{}</> libraries...", libs_to_download.len());
 	}
 
+	let client = Client::new();
+	let mut join = JoinSet::new();
+	// Used to limit the number of open file descriptors
+	let sem = Arc::new(Semaphore::new(FD_SENSIBLE_LIMIT));
 	for (name, library, path) in libs_to_download {
 		printer.print(&cformat!("Downloading library <b!>{}</>...", name));
-		download_library(&client, library, &path)
-			.await
-			.with_context(|| format!("Failed to download native library {name}"))?;
-		files.insert(path);
+		files::create_leading_dirs_async(&path).await?;
+		files.insert(path.clone());
+		let url = json::access_str(&library, "url")?.to_owned();
+
+		let client = client.clone();
+		let permit = Arc::clone(&sem).acquire_owned().await;
+		let fut = async move {
+			let response = client.get(url).send();
+			let _permit = permit;
+			tokio::fs::write(&path, response.await?.error_for_status()?.bytes().await?).await?;
+			Ok::<(), anyhow::Error>(())
+		};
+		join.spawn(fut);
+	}
+
+	while let Some(lib) = join.join_next().await {
+		match lib? {
+			Ok(name) => name,
+			Err(err) => {
+				cprintln!("<r>Failed to download asset, skipping...\n{}", err);
+				continue;
+			}
+		};
 	}
 
 	for (path, name) in native_paths {
