@@ -5,17 +5,22 @@ mod net;
 mod package;
 mod util;
 
+use std::process::ExitCode;
+
 use color_print::cformat;
 use commands::run_cli;
 use io::files::paths::Paths;
 
 #[tokio::main]
-async fn main() -> anyhow::Result<()> {
+async fn main() -> ExitCode {
 	let mut data = commands::CmdData::new();
 	match run_cli(&mut data).await {
 		Ok(()) => {}
-		Err(e) => eprintln!("{}", cformat!("<r>{:?}", e)),
+		Err(e) => {
+			eprintln!("{}", cformat!("<r>{:?}", e));
+			return ExitCode::FAILURE;
+		},
 	}
 
-	Ok(())
+	ExitCode::SUCCESS
 }
