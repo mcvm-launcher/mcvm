@@ -266,13 +266,7 @@ pub async fn get_libraries(
 	}
 
 	while let Some(lib) = join.join_next().await {
-		match lib? {
-			Ok(name) => name,
-			Err(err) => {
-				cprintln!("<r>Failed to download library, skipping...\n{}", err);
-				continue;
-			}
-		};
+		lib??;
 	}
 
 	for (path, name) in native_paths {
@@ -422,13 +416,7 @@ pub async fn get_assets(
 	}
 
 	while let Some(asset) = join.join_next().await {
-		match asset? {
-			Ok(name) => name,
-			Err(err) => {
-				cprintln!("<r>Failed to download asset, skipping...\n{}", err);
-				continue;
-			}
-		};
+		asset??;
 	}
 
 	printer.print(&cformat!("<g>Assets downloaded."));
