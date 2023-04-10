@@ -2,7 +2,7 @@ use std::path::Path;
 
 use anyhow::Context;
 use cfg_match::cfg_match;
-use reqwest::Client;
+use reqwest::{Client, Url};
 
 // Sensible open file descriptor limit for asynchronous transfers
 cfg_match! {
@@ -62,6 +62,14 @@ pub async fn download_file(url: &str, path: &Path) -> anyhow::Result<()> {
 			path.display()
 		)
 	})?;
+
+	Ok(())
+}
+
+/// Validates a URL with a helpful error message
+pub fn validate_url(url: &str) -> anyhow::Result<()> {
+	Url::parse(url)
+		.context("It may help to make sure that either http:// or https:// is before the domain name")?;
 
 	Ok(())
 }

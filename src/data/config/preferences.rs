@@ -1,4 +1,4 @@
-use crate::package::repo::PkgRepo;
+use crate::{package::repo::PkgRepo, net::download::validate_url};
 
 use anyhow::Context;
 use reqwest::Url;
@@ -42,7 +42,7 @@ impl ConfigPreferences {
 				}
 
 				for repo in prefs.repositories.preferred.iter().chain(prefs.repositories.backup.iter()) {
-					Url::parse(&repo.url)
+					validate_url(&repo.url)
 						.with_context(|| format!("Invalid url '{}' in package repository '{}'", repo.url, repo.id))?;
 				}
 
