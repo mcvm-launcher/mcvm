@@ -144,6 +144,10 @@ impl Config {
 				bail!("Modloader and Plugin Loader are incompatible for profile {profile_id}");
 			}
 
+			if profile_config.instances.is_empty() {
+				cprintln!("<y>Warning: Profile '{}' does not have any instances", profile_id);
+			}
+
 			for (instance_id, instance) in profile_config.instances {
 				if !validate_identifier(&instance_id) {
 					bail!("Invalid string '{}'", instance_id.to_owned());
