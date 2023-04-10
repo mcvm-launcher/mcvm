@@ -129,6 +129,7 @@ impl VersionPattern {
 	}
 
 	/// Checks that a string contains no pattern-special characters
+	#[cfg(test)]
 	pub fn validate(text: &str) -> bool {
 		if text.contains('*') || text == "latest" {
 			return false;
