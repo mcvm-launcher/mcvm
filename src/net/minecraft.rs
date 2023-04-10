@@ -121,8 +121,14 @@ fn is_library_allowed(lib: &JsonObject) -> anyhow::Result<bool> {
 	Ok(true)
 }
 
-/// Extract the files of a native library into the natives directory
-fn extract_native_library(path: &Path, natives_dir: &Path) -> anyhow::Result<()> {
+/// Extract the files of a native library into the natives directory.
+/// Returns a list of files to add to the update manager.
+fn extract_native_library(
+	path: &Path,
+	natives_dir: &Path,
+	manager: &UpdateManager,
+) -> anyhow::Result<HashSet<PathBuf>> {
+	let mut out = HashSet::new();
 	let file = File::open(path)?;
 	let mut zip = ZipArchive::new(file)?;
 	for i in 0..zip.len() {
@@ -134,7 +140,12 @@ fn extract_native_library(path: &Path, natives_dir: &Path) -> anyhow::Result<()>
 		if let Some(extension) = rel_path.extension() {
 			match extension.to_str() {
 				Some("so" | "dylib" | "dll") => {
-					let mut out_file = File::create(natives_dir.join(rel_path))?;
+					let out_path = natives_dir.join(rel_path);
+					if !manager.should_update_file(&out_path) {
+						continue;
+					}
+					let mut out_file = File::create(&out_path)?;
+					out.insert(out_path);
 					std::io::copy(&mut file, &mut out_file)
 						.context("Failed to copy compressed file")?;
 				}
@@ -143,7 +154,7 @@ fn extract_native_library(path: &Path, natives_dir: &Path) -> anyhow::Result<()>
 		}
 	}
 
-	Ok(())
+	Ok(out)
 }
 
 /// Gets the list of allowed libraries from the version json
@@ -258,8 +269,9 @@ pub async fn get_libraries(
 
 	for (path, name) in native_paths {
 		printer.print(&cformat!("Extracting library <b!>{}...", name));
-		extract_native_library(&path, &natives_path)
+		let native_files = extract_native_library(&path, &natives_path, manager)
 			.with_context(|| format!("Failed to extract native library {name}"))?;
+		files.extend(native_files);
 	}
 
 	printer.print(&cformat!("<g>Libraries downloaded."));
