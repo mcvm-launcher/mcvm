@@ -204,8 +204,6 @@ pub async fn get_libraries(
 	let natives_jars_path = paths.internal.join("natives");
 
 	let mut native_paths = Vec::new();
-	let client = Client::new();
-	let mut printer = ReplPrinter::from_options(manager.print.clone());
 		
 	let libraries = get_lib_list(version_json)?;
 
@@ -240,6 +238,9 @@ pub async fn get_libraries(
 			continue;
 		}
 	}
+
+	let client = Client::new();
+	let mut printer = ReplPrinter::from_options(manager.print.clone());
 
 	if manager.print.verbose && libs_to_download.len() > 0 {
 		cprintln!("Downloading <b>{}</> libraries...", libs_to_download.len());
@@ -355,8 +356,8 @@ pub async fn get_assets(
 		let asset = json::ensure_type(asset.as_object(), JsonType::Obj)?;
 
 		let hash = json::access_str(asset, "hash")?.to_owned();
-		let hash_path = hash[..2].to_owned() + "/" + &hash;
-		let url = String::from("https://resources.download.minecraft.net/") + &hash_path;
+		let hash_path = format!("{}/{hash}", hash[..2].to_owned());
+		let url = format!("https://resources.download.minecraft.net/{hash_path}");
 
 		let path = objects_dir.join(&hash_path);
 		if !manager.should_update_file(&path) {
