@@ -166,7 +166,9 @@ async fn profile_update(data: &mut CmdData, id: &str, force: bool) -> anyhow::Re
 						.await
 						.context("Failed to create profile instances")?;
 
-					cprintln!("<s>Updating packages");
+					if !profile.packages.is_empty() {
+						cprintln!("<s>Updating packages");
+					}
 					let mut printer = ReplPrinter::new(true);
 					for pkg in profile.packages.iter() {
 						let version = config
