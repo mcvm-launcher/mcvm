@@ -10,7 +10,7 @@ pub enum UserSubcommand {
 	#[command(about = "List all users")]
 	List,
 	#[command(about = "Get current authentication status")]
-	Auth,
+	Status,
 }
 
 async fn list(data: &mut CmdData) -> anyhow::Result<()> {
@@ -29,7 +29,7 @@ async fn list(data: &mut CmdData) -> anyhow::Result<()> {
 	Ok(())
 }
 
-async fn auth(data: &mut CmdData) -> anyhow::Result<()> {
+async fn status(data: &mut CmdData) -> anyhow::Result<()> {
 	data.ensure_config().await?;
 
 	if let Some(config) = &data.config {
@@ -51,6 +51,6 @@ async fn auth(data: &mut CmdData) -> anyhow::Result<()> {
 pub async fn run(subcommand: UserSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
 	match subcommand {
 		UserSubcommand::List => list(data).await,
-		UserSubcommand::Auth => auth(data).await,
+		UserSubcommand::Status => status(data).await,
 	}
 }
