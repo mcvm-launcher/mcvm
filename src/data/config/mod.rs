@@ -119,9 +119,9 @@ impl Config {
 				}
 			}
 		} else if users.is_empty() {
-			cprintln!("<y>Warning: Users are available but no default user is set. Starting in offline mode");
+			cprintln!("<y>Warning: Users are available but no default user is set.");
 		} else {
-			cprintln!("<y>Warning: No users are available. Starting in offline mode");
+			cprintln!("<y>Warning: No users are available.");
 		}
 
 		// Profiles

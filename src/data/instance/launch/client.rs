@@ -157,8 +157,10 @@ pub fn process_string_arg(
 			}
 		}
 		None => {
-			if out.contains("${auth_player_name}")
-				|| out.contains("${auth_access_token}")
+			if out.contains("${auth_player_name}") {
+				return Some(String::from("UnknownUser"));
+			}
+			if out.contains("${auth_access_token}")
 				|| out.contains("${auth_uuid}")
 			{
 				return Some(String::new());
