@@ -349,18 +349,9 @@ pub async fn get_assets(
 	};
 
 	let assets = json::access_object(&index, "objects")?.clone();
-
-	let client = Client::new();
-	let mut join = JoinSet::new();
-	let mut printer = ReplPrinter::from_options(manager.print.clone());
-	let count = assets.len();
-	if manager.print.verbose {
-		cprintln!("Downloading <b>{}</> assets...", count);
-	}
-	let mut num_done = 0;
-	// Used to limit the number of open file descriptors
-	let sem = Arc::new(Semaphore::new(FD_SENSIBLE_LIMIT));
-	for (key, asset) in assets {
+	
+	let mut assets_to_download = Vec::new();
+	for (name, asset) in assets {
 		let asset = json::ensure_type(asset.as_object(), JsonType::Obj)?;
 
 		let hash = json::access_str(asset, "hash")?.to_owned();
@@ -374,6 +365,21 @@ pub async fn get_assets(
 
 		out.insert(path.clone());
 		files::create_leading_dirs_async(&path).await?;
+		assets_to_download.push((name, url, path));
+	}
+
+	let mut printer = ReplPrinter::from_options(manager.print.clone());
+	let count = assets_to_download.len();
+	if manager.print.verbose && count > 0 {
+		cprintln!("Downloading <b>{}</> assets...", count);
+	}
+
+	let mut num_done = 0;
+	let client = Client::new();
+	let mut join = JoinSet::new();
+	// Used to limit the number of open file descriptors
+	let sem = Arc::new(Semaphore::new(FD_SENSIBLE_LIMIT));
+	for (name, url, path) in assets_to_download {
 		let client = client.clone();
 		let permit = Arc::clone(&sem).acquire_owned().await;
 		let fut = async move {
@@ -388,7 +394,7 @@ pub async fn get_assets(
 			"(<b>{}</b><k!>/</k!><b>{}</b>) <k!>{}",
 			num_done,
 			count,
-			key
+			name
 		));
 	}
 
