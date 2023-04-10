@@ -167,9 +167,10 @@ fn extract_native_library(path: &Path, natives_dir: &Path) -> anyhow::Result<()>
 }
 
 /// Gets the list of allowed libraries from the version json
+/// and also the number of libraries found.
 pub fn get_lib_list(
 	version_json: &json::JsonObject,
-) -> anyhow::Result<impl Iterator<Item = &JsonObject>> {
+) -> anyhow::Result<(impl Iterator<Item = &JsonObject>, usize)> {
 	let libraries = json::access_array(version_json, "libraries")?;
 	let libraries = libraries.iter().filter_map(|lib| {
 		let lib = json::ensure_type(lib.as_object(), JsonType::Obj).ok()?;
@@ -180,7 +181,9 @@ pub fn get_lib_list(
 		}
 	});
 
-	Ok(libraries)
+	let count = libraries.clone().count();
+
+	Ok((libraries, count))
 }
 
 /// Downloads base client libraries.
@@ -205,12 +208,11 @@ pub async fn get_libraries(
 	let mut native_paths = Vec::new();
 	let client = Client::new();
 	let mut printer = ReplPrinter::from_options(manager.print.clone());
-
-	let libraries =
-		json::access_array(version_json, "libraries").context("Failed to get list of libraries")?;
-	cprintln!("Downloading <b>{}</> libraries...", libraries.len());
-
-	let libraries = get_lib_list(version_json)?;
+		
+	let (libraries, library_count) = get_lib_list(version_json)?;
+	if library_count > 0 {
+		cprintln!("Downloading <b>{}</> libraries...", library_count);
+	}
 
 	for lib in libraries {
 		let name = json::access_str(lib, "name")?;
@@ -271,7 +273,7 @@ pub fn get_lib_classpath(
 	let libraries_path = paths.internal.join("libraries");
 
 	let mut classpath = Classpath::new();
-	let libraries = get_lib_list(version_json).context("Failed to get list of libraries")?;
+	let (libraries, ..) = get_lib_list(version_json).context("Failed to get list of libraries")?;
 	for lib in libraries {
 		let downloads = json::access_object(lib, "downloads")?;
 		if let Some(natives) = lib.get("natives") {
