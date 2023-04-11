@@ -112,7 +112,8 @@ impl Java {
 				// Extraction
 				printer.print(&cformat!("Extracting JRE..."));
 				extract_adoptium_archive(&arc_path, &out_dir).context("Failed to extract")?;
-
+				printer.print(&cformat!("Removing archive..."));
+				tokio::fs::remove_file(arc_path).await.context("Failed to remove archive")?;
 				printer.print(&cformat!("<g>Java installation finished."));
 			}
 			JavaKind::Custom(path) => {
