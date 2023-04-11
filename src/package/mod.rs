@@ -2,6 +2,7 @@ pub mod eval;
 pub mod reg;
 pub mod repo;
 
+use crate::io::Later;
 use crate::io::files::paths::Paths;
 use crate::net::download::download_text;
 
@@ -18,14 +19,14 @@ static PKG_EXTENSION: &str = ".pkg.txt";
 #[derive(Debug)]
 pub struct PkgData {
 	contents: String,
-	parsed: Option<Parsed>,
+	parsed: Later<Parsed>,
 }
 
 impl PkgData {
 	pub fn new(contents: &str) -> Self {
 		Self {
 			contents: contents.to_owned(),
-			parsed: None,
+			parsed: Later::new(),
 		}
 	}
 
@@ -46,7 +47,7 @@ pub enum PkgKind {
 pub struct Package {
 	pub id: PkgIdentifier,
 	pub kind: PkgKind,
-	pub data: Option<PkgData>,
+	pub data: Later<PkgData>,
 }
 
 impl Package {
@@ -54,7 +55,7 @@ impl Package {
 		Self {
 			id: PkgIdentifier::new(name, version),
 			kind,
-			data: None,
+			data: Later::new(),
 		}
 	}
 
@@ -80,20 +81,20 @@ impl Package {
 
 	/// Ensure the raw contents of the package
 	pub async fn ensure_loaded(&mut self, paths: &Paths, force: bool) -> anyhow::Result<()> {
-		if self.data.is_none() {
+		if self.data.is_empty() {
 			match &self.kind {
 				PkgKind::Local(path) => {
-					self.data = Some(PkgData::new(&tokio::fs::read_to_string(path).await?));
+					self.data.fill(PkgData::new(&tokio::fs::read_to_string(path).await?));
 				}
 				PkgKind::Remote(url) => {
 					let path = self.cached_path(paths);
 					if !force && path.exists() {
-						self.data = Some(PkgData::new(&tokio::fs::read_to_string(path).await?));
+						self.data.fill(PkgData::new(&tokio::fs::read_to_string(path).await?));
 					} else {
 						let url = url.as_ref().expect("URL for remote package missing");
 						let text = download_text(url).await?;
 						tokio::fs::write(&path, &text).await?;
-						self.data = Some(PkgData::new(&text));
+						self.data.fill(PkgData::new(&text));
 					}
 				}
 			};

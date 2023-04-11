@@ -160,245 +160,244 @@ impl Package {
 	/// Parse the contents of the package
 	pub async fn parse(&mut self, paths: &Paths) -> anyhow::Result<()> {
 		self.ensure_loaded(paths, false).await?;
-		if let Some(data) = &mut self.data {
-			if data.parsed.is_some() {
-				return Ok(());
-			}
+		let data = self.data.get_mut();
+		if !data.parsed.is_empty() {
+			return Ok(());
+		}
 
-			let tokens = match lex(&data.contents) {
-				Ok(tokens) => Ok::<Vec<(Token, TextPos)>, anyhow::Error>(tokens),
-				Err(..) => bail!("Failed to lex package"),
-			}?;
-			let tokens = reduce_tokens(&tokens);
+		let tokens = match lex(&data.contents) {
+			Ok(tokens) => Ok::<Vec<(Token, TextPos)>, anyhow::Error>(tokens),
+			Err(..) => bail!("Failed to lex package"),
+		}?;
+		let tokens = reduce_tokens(&tokens);
 
-			let mut prs = ParseData::new();
-			for (tok, pos) in tokens.iter() {
-				let mut instr_to_push = None;
-				let mut mode_to_set = None;
-				let mut block_to_set = None;
-				let mut block_finished = false;
-				match &mut prs.mode {
-					ParseMode::Root => {
-						match tok {
-							Token::At => {
-								if let Some(..) = prs
-									.parsed
-									.blocks
-									.get_mut(&prs.block)
-									.expect("Block does not exist")
-									.parent
-								{
-									bail!("Unexpected routine {}", pos.clone());
-								}
-								prs.mode = ParseMode::Routine(None);
+		let mut prs = ParseData::new();
+		for (tok, pos) in tokens.iter() {
+			let mut instr_to_push = None;
+			let mut mode_to_set = None;
+			let mut block_to_set = None;
+			let mut block_finished = false;
+			match &mut prs.mode {
+				ParseMode::Root => {
+					match tok {
+						Token::At => {
+							if let Some(..) = prs
+								.parsed
+								.blocks
+								.get_mut(&prs.block)
+								.expect("Block does not exist")
+								.parent
+							{
+								bail!("Unexpected routine {}", pos.clone());
 							}
-							Token::Ident(name) => match name.as_str() {
-								"if" => prs.mode = ParseMode::If(None),
-								"addon" => {
-									prs.mode = ParseMode::Addon {
-										mode: AddonMode::Opening,
-										key: AddonKey::None,
-										name: Value::None,
-										kind: None,
-										url: Value::None,
-										force: false,
-										append: Value::None,
-										path: Value::None,
-									};
-								}
-								name => {
-									prs.mode =
-										ParseMode::Instruction(Instruction::from_str(name, pos)?);
-								}
-							},
+							prs.mode = ParseMode::Routine(None);
+						}
+						Token::Ident(name) => match name.as_str() {
+							"if" => prs.mode = ParseMode::If(None),
+							"addon" => {
+								prs.mode = ParseMode::Addon {
+									mode: AddonMode::Opening,
+									key: AddonKey::None,
+									name: Value::None,
+									kind: None,
+									url: Value::None,
+									force: false,
+									append: Value::None,
+									path: Value::None,
+								};
+							}
+							name => {
+								prs.mode =
+									ParseMode::Instruction(Instruction::from_str(name, pos)?);
+							}
+						},
+						Token::Curly(side) => match side {
+							Side::Left => unexpected_token!(tok, pos),
+							Side::Right => {
+								block_finished = true;
+								prs.mode = ParseMode::Root;
+							}
+						},
+						_ => {}
+					}
+					Ok::<(), anyhow::Error>(())
+				}
+				ParseMode::Routine(name) => {
+					if let Some(name) = name {
+						match tok {
 							Token::Curly(side) => match side {
-								Side::Left => unexpected_token!(tok, pos),
-								Side::Right => {
-									block_finished = true;
+								Side::Left => {
+									prs.block = prs.parsed.new_routine(name);
 									prs.mode = ParseMode::Root;
 								}
+								Side::Right => unexpected_token!(tok, pos),
 							},
-							_ => {}
+							_ => unexpected_token!(tok, pos),
 						}
-						Ok::<(), anyhow::Error>(())
-					}
-					ParseMode::Routine(name) => {
-						if let Some(name) = name {
-							match tok {
-								Token::Curly(side) => match side {
-									Side::Left => {
-										prs.block = prs.parsed.new_routine(name);
-										prs.mode = ParseMode::Root;
-									}
-									Side::Right => unexpected_token!(tok, pos),
-								},
-								_ => unexpected_token!(tok, pos),
-							}
-						} else {
-							match tok {
-								Token::Ident(ident) => {
-									*name = Some(ident.to_string());
-								}
-								_ => unexpected_token!(tok, pos),
-							}
-						}
-						Ok(())
-					}
-					ParseMode::If(condition) => {
+					} else {
 						match tok {
-							Token::Curly(Side::Left) => {
-								if let Some(condition) = condition {
-									let block = prs.parsed.new_block(Some(prs.block));
-									block_to_set = Some(block);
-									instr_to_push = Some(Instruction::new(InstrKind::If(
-										condition.clone(),
-										block,
-									)));
-									prs.mode = ParseMode::Root;
-								}
+							Token::Ident(ident) => {
+								*name = Some(ident.to_string());
 							}
-							Token::Curly(Side::Right) => unexpected_token!(tok, pos),
-							_ => match condition {
-								Some(condition) => condition.parse(tok, pos)?,
-								None => match tok {
-									Token::Ident(name) => match ConditionKind::from_str(name) {
-										Some(new_condition) => {
-											*condition = Some(Condition::new(new_condition))
-										}
-										None => {
-											bail!(
-												"Unknown condition {} {}",
-												name.clone(),
-												pos.clone()
-											);
-										}
-									},
-									_ => unexpected_token!(tok, pos),
+							_ => unexpected_token!(tok, pos),
+						}
+					}
+					Ok(())
+				}
+				ParseMode::If(condition) => {
+					match tok {
+						Token::Curly(Side::Left) => {
+							if let Some(condition) = condition {
+								let block = prs.parsed.new_block(Some(prs.block));
+								block_to_set = Some(block);
+								instr_to_push = Some(Instruction::new(InstrKind::If(
+									condition.clone(),
+									block,
+								)));
+								prs.mode = ParseMode::Root;
+							}
+						}
+						Token::Curly(Side::Right) => unexpected_token!(tok, pos),
+						_ => match condition {
+							Some(condition) => condition.parse(tok, pos)?,
+							None => match tok {
+								Token::Ident(name) => match ConditionKind::from_str(name) {
+									Some(new_condition) => {
+										*condition = Some(Condition::new(new_condition))
+									}
+									None => {
+										bail!(
+											"Unknown condition {} {}",
+											name.clone(),
+											pos.clone()
+										);
+									}
 								},
+								_ => unexpected_token!(tok, pos),
 							},
-						}
-
-						Ok(())
+						},
 					}
-					ParseMode::Instruction(instr) => {
-						if instr.parse(tok, pos)? {
-							instr_to_push = Some(instr.clone());
-							mode_to_set = Some(ParseMode::Root);
-						}
 
-						Ok(())
+					Ok(())
+				}
+				ParseMode::Instruction(instr) => {
+					if instr.parse(tok, pos)? {
+						instr_to_push = Some(instr.clone());
+						mode_to_set = Some(ParseMode::Root);
 					}
-					ParseMode::Addon {
-						mode,
-						key,
-						name,
-						kind,
-						url,
-						force,
-						append,
-						path,
-					} => {
-						match mode {
-							AddonMode::Opening => match tok {
-								Token::Paren(Side::Left) => {
-									if let Value::None = name {
-										unexpected_token!(tok, pos)
-									}
-									*mode = AddonMode::Key;
+
+					Ok(())
+				}
+				ParseMode::Addon {
+					mode,
+					key,
+					name,
+					kind,
+					url,
+					force,
+					append,
+					path,
+				} => {
+					match mode {
+						AddonMode::Opening => match tok {
+							Token::Paren(Side::Left) => {
+								if let Value::None = name {
+									unexpected_token!(tok, pos)
 								}
-								_ => *name = parse_arg(tok, pos)?,
-							},
-							AddonMode::Key => match tok {
+								*mode = AddonMode::Key;
+							}
+							_ => *name = parse_arg(tok, pos)?,
+						},
+						AddonMode::Key => match tok {
+							Token::Ident(name) => {
+								match name.as_str() {
+									"kind" => *key = AddonKey::Kind,
+									"url" => *key = AddonKey::Url,
+									"force" => *key = AddonKey::Force,
+									"append" => *key = AddonKey::Append,
+									"path" => *key = AddonKey::Path,
+									_ => {
+										bail!(
+											"Unknown addon key {} {}",
+											name.to_owned(),
+											pos.clone()
+										);
+									}
+								}
+								*mode = AddonMode::Colon;
+							}
+							_ => unexpected_token!(tok, pos),
+						},
+						AddonMode::Colon => match tok {
+							Token::Colon => *mode = AddonMode::Value,
+							_ => unexpected_token!(tok, pos),
+						},
+						AddonMode::Value => {
+							match tok {
 								Token::Ident(name) => {
-									match name.as_str() {
-										"kind" => *key = AddonKey::Kind,
-										"url" => *key = AddonKey::Url,
-										"force" => *key = AddonKey::Force,
-										"append" => *key = AddonKey::Append,
-										"path" => *key = AddonKey::Path,
-										_ => {
-											bail!(
-												"Unknown addon key {} {}",
-												name.to_owned(),
-												pos.clone()
-											);
-										}
-									}
-									*mode = AddonMode::Colon;
-								}
-								_ => unexpected_token!(tok, pos),
-							},
-							AddonMode::Colon => match tok {
-								Token::Colon => *mode = AddonMode::Value,
-								_ => unexpected_token!(tok, pos),
-							},
-							AddonMode::Value => {
-								match tok {
-									Token::Ident(name) => {
-										match key {
-											AddonKey::Kind => *kind = AddonKind::from_str(name),
-											AddonKey::Force => {
-												match yes_no(name) {
-													Some(value) => *force = value,
-													None => {
-														bail!("Expected 'yes' or 'no', but got '{}' {}", name.to_owned(), pos.clone());
-													}
+									match key {
+										AddonKey::Kind => *kind = AddonKind::from_str(name),
+										AddonKey::Force => {
+											match yes_no(name) {
+												Some(value) => *force = value,
+												None => {
+													bail!("Expected 'yes' or 'no', but got '{}' {}", name.to_owned(), pos.clone());
 												}
 											}
-											_ => unexpected_token!(tok, pos),
 										}
-										*mode = AddonMode::Comma;
+										_ => unexpected_token!(tok, pos),
 									}
-									_ => {
-										match key {
-											AddonKey::Url => *url = parse_arg(tok, pos)?,
-											AddonKey::Append => *append = parse_arg(tok, pos)?,
-											AddonKey::Path => *path = parse_arg(tok, pos)?,
-											_ => unexpected_token!(tok, pos),
-										}
-										*mode = AddonMode::Comma;
+									*mode = AddonMode::Comma;
+								}
+								_ => {
+									match key {
+										AddonKey::Url => *url = parse_arg(tok, pos)?,
+										AddonKey::Append => *append = parse_arg(tok, pos)?,
+										AddonKey::Path => *path = parse_arg(tok, pos)?,
+										_ => unexpected_token!(tok, pos),
 									}
+									*mode = AddonMode::Comma;
 								}
 							}
-							AddonMode::Comma => match tok {
-								Token::Comma => *mode = AddonMode::Key,
-								Token::Paren(Side::Right) => {
-									instr_to_push = Some(Instruction::new(InstrKind::Addon {
-										name: name.clone(),
-										kind: kind.clone(),
-										url: url.clone(),
-										force: *force,
-										append: append.clone(),
-										path: path.clone(),
-									}));
-									prs.mode = ParseMode::Root;
-								}
-								_ => unexpected_token!(tok, pos),
-							},
 						}
-
-						Ok(())
+						AddonMode::Comma => match tok {
+							Token::Comma => *mode = AddonMode::Key,
+							Token::Paren(Side::Right) => {
+								instr_to_push = Some(Instruction::new(InstrKind::Addon {
+									name: name.clone(),
+									kind: kind.clone(),
+									url: url.clone(),
+									force: *force,
+									append: append.clone(),
+									path: path.clone(),
+								}));
+								prs.mode = ParseMode::Root;
+							}
+							_ => unexpected_token!(tok, pos),
+						},
 					}
-				}?;
 
-				if let Some(instr) = instr_to_push {
-					prs.new_instruction(instr);
+					Ok(())
 				}
+			}?;
 
-				if let Some(mode) = mode_to_set {
-					prs.mode = mode;
-				}
-
-				if let Some(block) = block_to_set {
-					prs.block = block;
-				}
-
-				if block_finished {
-					prs.new_block();
-				}
+			if let Some(instr) = instr_to_push {
+				prs.new_instruction(instr);
 			}
-			data.parsed = Some(prs.parsed);
+
+			if let Some(mode) = mode_to_set {
+				prs.mode = mode;
+			}
+
+			if let Some(block) = block_to_set {
+				prs.block = block;
+			}
+
+			if block_finished {
+				prs.new_block();
+			}
 		}
+		data.parsed.fill(prs.parsed);
 
 		Ok(())
 	}

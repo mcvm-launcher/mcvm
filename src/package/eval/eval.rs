@@ -180,40 +180,36 @@ impl Package {
 	) -> anyhow::Result<EvalData> {
 		self.ensure_loaded(paths, false).await?;
 		self.parse(paths).await?;
-		if let Some(data) = &mut self.data {
-			if let Some(parsed) = &mut data.parsed {
-				let routine_name = routine.get_routine_name();
-				let routine_id = parsed
-					.routines
-					.get(&routine_name)
-					.ok_or(anyhow!("Routine {} does not exist", routine_name.clone()))?;
-				let block = parsed
-					.blocks
-					.get(routine_id)
-					.ok_or(anyhow!("Routine {} does not exist", routine_name))?;
+		let parsed = self.data.get_mut().parsed.get_mut();
+		let routine_name = routine.get_routine_name();
+		let routine_id = parsed
+			.routines
+			.get(&routine_name)
+			.ok_or(anyhow!("Routine {} does not exist", routine_name.clone()))?;
+		let block = parsed
+			.blocks
+			.get(routine_id)
+			.ok_or(anyhow!("Routine {} does not exist", routine_name))?;
 
-				let mut eval = EvalData::new(constants, self.id.clone(), &routine);
+		let mut eval = EvalData::new(constants, self.id.clone(), &routine);
 
-				match eval.level {
-					EvalLevel::All | EvalLevel::Info => {
-						for instr in &block.contents {
-							let result = instr.eval(&eval, &parsed.blocks)?;
-							for (var, val) in result.vars_to_set {
-								eval.vars.insert(var, val);
-							}
-							eval.addon_reqs.extend(result.addon_reqs);
-							eval.deps.extend(result.deps);
-							if result.finish {
-								break;
-							}
-						}
+		match eval.level {
+			EvalLevel::All | EvalLevel::Info => {
+				for instr in &block.contents {
+					let result = instr.eval(&eval, &parsed.blocks)?;
+					for (var, val) in result.vars_to_set {
+						eval.vars.insert(var, val);
 					}
-					EvalLevel::None => {}
+					eval.addon_reqs.extend(result.addon_reqs);
+					eval.deps.extend(result.deps);
+					if result.finish {
+						break;
+					}
 				}
-				return Ok(eval);
 			}
+			EvalLevel::None => {}
 		}
-		bail!("Evaluator failed to start")
+		return Ok(eval);
 	}
 }
 

@@ -90,13 +90,13 @@ impl PkgRegistry {
 		}
 	}
 
-	// Get the version of a package
+	/// Get the version of a package
 	pub async fn get_version(&mut self, req: &PkgRequest, paths: &Paths) -> anyhow::Result<String> {
 		let pkg = self.get(req, paths).await?;
 		Ok(pkg.id.version.clone())
 	}
 
-	// Load a package
+	/// Load a package
 	pub async fn load(
 		&mut self,
 		req: &PkgRequest,
@@ -105,15 +105,11 @@ impl PkgRegistry {
 	) -> anyhow::Result<String> {
 		let pkg = self.get(req, paths).await?;
 		pkg.ensure_loaded(paths, force).await?;
-		let contents = pkg
-			.data
-			.as_ref()
-			.expect("Package data was not loaded")
-			.get_contents();
+		let contents = pkg.data.get().get_contents();
 		Ok(contents)
 	}
 
-	// Evaluate a package
+	/// Evaluate a package
 	pub async fn eval(
 		&mut self,
 		req: &PkgRequest,
@@ -126,14 +122,14 @@ impl PkgRegistry {
 		Ok(eval)
 	}
 
-	// Remove a cached package
+	/// Remove a cached package
 	pub async fn remove_cached(&mut self, req: &PkgRequest, paths: &Paths) -> anyhow::Result<()> {
 		let pkg = self.get(req, paths).await?;
 		pkg.remove_cached(paths)?;
 		Ok(())
 	}
 
-	// Insert a local package into the registry
+	/// Insert a local package into the registry
 	pub fn insert_local(&mut self, req: &PkgRequest, version: &str, path: &Path) {
 		self.insert(
 			req,
@@ -141,7 +137,7 @@ impl PkgRegistry {
 		);
 	}
 
-	// Checks if a package is in the registry already
+	/// Checks if a package is in the registry already
 	#[cfg(test)]
 	pub fn has_now(&self, req: &PkgRequest) -> bool {
 		self.packages.contains_key(req)
