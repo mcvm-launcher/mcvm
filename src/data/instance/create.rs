@@ -91,12 +91,12 @@ impl Instance {
 		files::create_dir(&dir)?;
 		let mc_dir = self.get_subdir(paths);
 		files::create_dir(&mc_dir)?;
-		let jar_path = minecraft::game_jar_path(self.kind.to_side(), version, paths);
+		let jar_path = minecraft::game_jar::get_path(self.kind.to_side(), version, paths);
 
 		let version_json = manager.version_json.get();
 
 		let mut classpath = Classpath::new();
-		let lib_classpath = minecraft::get_lib_classpath(version_json, paths)
+		let lib_classpath = minecraft::libraries::get_classpath(version_json, paths)
 			.context("Failed to extract classpath from game library list")?;
 		classpath.extend(lib_classpath);
 
@@ -203,7 +203,7 @@ impl Instance {
 
 		self.jar_path.fill(match self.plugin_loader {
 			PluginLoader::Vanilla => {
-				let extern_jar_path = minecraft::game_jar_path(self.kind.to_side(), version, paths);
+				let extern_jar_path = minecraft::game_jar::get_path(self.kind.to_side(), version, paths);
 				if manager.should_update_file(&jar_path) {
 					fs::hard_link(extern_jar_path, &jar_path)
 						.context("Failed to hardlink server.jar")?;

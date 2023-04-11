@@ -9,10 +9,7 @@ use crate::io::Later;
 use crate::io::files::paths::Paths;
 use crate::io::java::{Java, JavaKind};
 use crate::io::options::{read_options, Options};
-use crate::net::minecraft::{
-	get_assets, get_game_jar, get_libraries, get_version_json, get_version_manifest,
-	make_version_list,
-};
+use crate::net::minecraft::{libraries, assets, game_jar, version_manifest};
 use crate::util::versions::MinecraftVersion;
 use crate::util::{json, print::PrintOptions};
 
@@ -99,11 +96,12 @@ impl UpdateManager {
 		if self.print.verbose {
 			cprintln!("<s>Obtaining version index...");
 		}
-		let manifest = get_version_manifest(paths)
+		let manifest = version_manifest::get(paths)
 			.await
 			.context("Failed to get version manifest")?;
 
-		self.version_list.fill(make_version_list(&manifest).context("Failed to compose a list of versions")?);
+		self.version_list.fill(version_manifest::make_version_list(&manifest)
+			.context("Failed to compose a list of versions")?);
 
 		let found_version = version
 			.get_version(&manifest)
@@ -147,7 +145,7 @@ impl UpdateManager {
 			if self.print.verbose {
 				cprintln!("<s>Obtaining version json...");
 			}
-			let version_json = get_version_json(
+			let version_json = version_manifest::get_version_json(
 				self.found_version.get(),
 				self.version_manifest.get(),
 				paths,
@@ -158,7 +156,7 @@ impl UpdateManager {
 		}
 
 		if self.has_requirement(UpdateRequirement::GameAssets) {
-			let files = get_assets(
+			let files = assets::get(
 				self.version_json.get(),
 				paths,
 				self.found_version.get(),
@@ -171,7 +169,7 @@ impl UpdateManager {
 
 		if self.has_requirement(UpdateRequirement::GameLibraries) {
 			let version_json = self.version_json.get();
-			let files = get_libraries(
+			let files = libraries::get(
 				version_json,
 				paths,
 				self.found_version.get(),
@@ -209,7 +207,7 @@ impl UpdateManager {
 		if game_jar_required {
 			for req in self.requirements.iter() {
 				if let UpdateRequirement::GameJar(side) = req {
-					get_game_jar(
+					game_jar::get(
 						side.clone(),
 						self.version_json.get(),
 						self.found_version.get(),
