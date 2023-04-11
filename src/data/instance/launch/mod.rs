@@ -37,14 +37,8 @@ impl Instance {
 		self.create(&manager, paths)
 			.await
 			.context("Failed to update instance")?;
-		let version = manager
-			.found_version
-			.as_ref()
-			.expect("Found version missing");
-		let version_list = manager
-			.version_list
-			.as_ref()
-			.expect("Found version missing");
+		let version = manager.found_version.get();
+		let version_list = manager.version_list.get();
 		cprintln!("<g>Launching!");
 		match &self.kind {
 			InstKind::Client { .. } => {

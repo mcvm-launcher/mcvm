@@ -18,16 +18,18 @@ use std::fs;
 use std::io::Cursor;
 use std::path::{Path, PathBuf};
 
+use super::Later;
+
 #[derive(Debug, Clone, Hash, PartialEq, Eq)]
 pub enum JavaKind {
-	Adoptium(Option<String>),
+	Adoptium(Later<String>),
 	Custom(PathBuf),
 }
 
 impl JavaKind {
 	pub fn from_str(string: &str) -> Self {
 		match string {
-			"adoptium" => Self::Adoptium(None),
+			"adoptium" => Self::Adoptium(Later::Empty),
 			path => Self::Custom(PathBuf::from(String::from(shellexpand::tilde(path)))),
 		}
 	}
@@ -37,18 +39,18 @@ impl JavaKind {
 #[derive(Debug, Clone)]
 pub struct Java {
 	kind: JavaKind,
-	pub path: Option<PathBuf>,
+	pub path: Later<PathBuf>,
 }
 
 impl Java {
 	pub fn new(kind: JavaKind) -> Self {
-		Self { kind, path: None }
+		Self { kind, path: Later::Empty }
 	}
 
 	/// Add a major version to a Java installation that supports it
 	pub fn add_version(&mut self, version: &str) {
 		match &mut self.kind {
-			JavaKind::Adoptium(vers) => *vers = Some(version.to_owned()),
+			JavaKind::Adoptium(vers) => vers.fill(version.to_owned()),
 			JavaKind::Custom(..) => {}
 		};
 	}
@@ -62,14 +64,13 @@ impl Java {
 		let mut out = HashSet::new();
 		match &self.kind {
 			JavaKind::Adoptium(major_version) => {
-				let major_version = major_version.as_ref().expect("Major version should exist");
 				let mut printer = ReplPrinter::from_options(manager.print.clone());
 
 				let out_dir = paths.java.join("adoptium");
 				files::create_dir(&out_dir)?;
 				let url = format!(
 					"https://api.adoptium.net/v3/assets/latest/{}/hotspot?image_type=jre&vendor=eclipse&architecture={}&os={}",
-					major_version,
+					major_version.get(),
 					ARCH_STRING,
 					OS_STRING
 				);
@@ -91,14 +92,14 @@ impl Java {
 				extracted_bin_name.push_str("-jre");
 				let extracted_bin_dir = out_dir.join(&extracted_bin_name);
 
-				self.path = Some(extracted_bin_dir.clone());
+				self.path.fill(extracted_bin_dir.clone());
 				if !manager.should_update_file(&extracted_bin_dir) {
 					return Ok(out);
 				}
 				out.insert(extracted_bin_dir.clone());
 
 				let arc_extension = if cfg!(windows) { ".zip" } else { ".tar.gz" };
-				let arc_name = format!("adoptium{major_version}{arc_extension}");
+				let arc_name = format!("adoptium{}{arc_extension}", major_version.get());
 				let arc_path = out_dir.join(arc_name);
 
 				printer.print(&cformat!(
@@ -117,7 +118,7 @@ impl Java {
 				printer.print(&cformat!("<g>Java installation finished."));
 			}
 			JavaKind::Custom(path) => {
-				self.path = Some(path.clone());
+				self.path.fill(path.clone());
 			}
 		}
 		Ok(out)

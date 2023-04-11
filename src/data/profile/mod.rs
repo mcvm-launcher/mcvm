@@ -65,6 +65,6 @@ impl Profile {
 				.with_context(|| format!("Failed to create instance {id}"))?;
 			manager.add_files(files);
 		}
-		Ok(manager.version_list.expect("Version list missing"))
+		Ok(manager.version_list.get_val())
 	}
 }

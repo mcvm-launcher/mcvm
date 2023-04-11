@@ -7,6 +7,7 @@ use color_print::{cformat, cprintln};
 
 use crate::data::addon::{Modloader, PluginLoader};
 use crate::data::profile::update::{UpdateManager, UpdateRequirement};
+use crate::io::Later;
 use crate::io::files::{self, paths::Paths};
 use crate::io::java::classpath::Classpath;
 use crate::io::java::JavaKind;
@@ -24,7 +25,7 @@ impl Instance {
 		out.insert(UpdateRequirement::VersionJson);
 
 		let java_kind = match &self.launch.java {
-			JavaKind::Adoptium(..) => JavaKind::Adoptium(None),
+			JavaKind::Adoptium(..) => JavaKind::Adoptium(Later::Empty),
 			x => x.clone(),
 		};
 		out.insert(UpdateRequirement::Java(java_kind));
@@ -84,10 +85,7 @@ impl Instance {
 		debug_assert!(matches!(self.kind, InstKind::Client { .. }));
 
 		let out = HashSet::new();
-		let version = manager
-			.found_version
-			.as_ref()
-			.expect("Found version missing");
+		let version = manager.found_version.get();
 		let dir = self.get_dir(paths);
 		files::create_leading_dirs(&dir)?;
 		files::create_dir(&dir)?;
@@ -95,20 +93,20 @@ impl Instance {
 		files::create_dir(&mc_dir)?;
 		let jar_path = minecraft::game_jar_path(self.kind.to_side(), version, paths);
 
-		let version_json = manager.version_json.clone().expect("Version json missing");
+		let version_json = manager.version_json.get();
 
 		let mut classpath = Classpath::new();
-		let lib_classpath = minecraft::get_lib_classpath(&version_json, paths)
+		let lib_classpath = minecraft::get_lib_classpath(version_json, paths)
 			.context("Failed to extract classpath from game library list")?;
 		classpath.extend(lib_classpath);
 
 		let java_vers = json::access_i64(
-			json::access_object(&version_json, "javaVersion")?,
+			json::access_object(version_json, "javaVersion")?,
 			"majorVersion",
 		)?;
 		self.add_java(&java_vers.to_string(), manager);
 
-		self.main_class = Some(json::access_str(&version_json, "mainClass")?.to_owned());
+		self.main_class = Some(json::access_str(version_json, "mainClass")?.to_owned());
 
 		let fq_mode = match self.modloader {
 			Modloader::Fabric => Some(fabric_quilt::Mode::Fabric),
@@ -126,7 +124,7 @@ impl Instance {
 		classpath.add_path(&jar_path);
 
 		let mut keys = HashMap::new();
-		let version_list = manager.version_list.as_ref().expect("Version list missing");
+		let version_list = manager.version_list.get();
 		if let Some(global_options) = &manager.options {
 			if let Some(global_options) = &global_options.client {
 				let global_keys =
@@ -151,8 +149,8 @@ impl Instance {
 		}
 
 		self.classpath = Some(classpath);
-		self.version_json = Some(version_json);
-		self.jar_path = Some(jar_path);
+		self.version_json = manager.version_json.clone();
+		self.jar_path.fill(jar_path);
 
 		Ok(out)
 	}
@@ -166,10 +164,7 @@ impl Instance {
 		debug_assert!(matches!(self.kind, InstKind::Server { .. }));
 
 		let mut out = HashSet::new();
-		let version = manager
-			.found_version
-			.as_ref()
-			.expect("Found version missing");
+		let version = manager.found_version.get();
 		let dir = self.get_dir(paths);
 		files::create_leading_dirs(&dir)?;
 		files::create_dir(&dir)?;
@@ -177,7 +172,7 @@ impl Instance {
 		files::create_dir(&server_dir)?;
 		let jar_path = server_dir.join("server.jar");
 
-		let version_json = manager.version_json.clone().expect("Version json missing");
+		let version_json = manager.version_json.get();
 
 		let java_vers = json::access_i64(
 			json::access_object(&version_json, "javaVersion")?,
@@ -206,7 +201,7 @@ impl Instance {
 			Ok::<(), anyhow::Error>(())
 		});
 
-		self.jar_path = Some(match self.plugin_loader {
+		self.jar_path.fill(match self.plugin_loader {
 			PluginLoader::Vanilla => {
 				let extern_jar_path = minecraft::game_jar_path(self.kind.to_side(), version, paths);
 				if manager.should_update_file(&jar_path) {
@@ -244,7 +239,7 @@ impl Instance {
 		eula_task.await?.context("Failed to create eula.txt")?;
 
 		let mut keys = HashMap::new();
-		let version_list = manager.version_list.as_ref().expect("Version list missing");
+		let version_list = manager.version_list.get();
 		if let Some(global_options) = &manager.options {
 			if let Some(global_options) = &global_options.server {
 				let global_keys =
@@ -268,7 +263,7 @@ impl Instance {
 				.context("Failed to write server.properties")?;
 		}
 
-		self.version_json = Some(version_json);
+		self.version_json = manager.version_json.clone();
 		self.classpath = classpath;
 
 		Ok(out)

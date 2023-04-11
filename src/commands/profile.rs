@@ -114,10 +114,7 @@ async fn profile_update(data: &mut CmdData, id: &str, force: bool) -> anyhow::Re
 					.fulfill_version_manifest(paths, &profile.version)
 					.await
 					.context("Failed to get version information")?;
-				let version = manager
-					.found_version
-					.as_ref()
-					.expect("Found version missing");
+				let version = manager.found_version.get();
 
 				let (paper_build_num, paper_file_name) =
 					if let PluginLoader::Paper = profile.plugin_loader {

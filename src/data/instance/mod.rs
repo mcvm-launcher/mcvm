@@ -3,7 +3,7 @@ pub mod launch;
 
 use anyhow::Context;
 
-use crate::io::files;
+use crate::io::{files, Later};
 use crate::io::java::classpath::Classpath;
 use crate::io::java::Java;
 use crate::io::launch::LaunchOptions;
@@ -73,10 +73,10 @@ pub struct Instance {
 	modloader: Modloader,
 	plugin_loader: PluginLoader,
 	launch: LaunchOptions,
-	version_json: Option<Box<json::JsonObject>>,
-	java: Option<Java>,
+	version_json: Later<Box<json::JsonObject>>,
+	java: Later<Java>,
 	classpath: Option<Classpath>,
-	jar_path: Option<PathBuf>,
+	jar_path: Later<PathBuf>,
 	main_class: Option<String>,
 }
 
@@ -94,10 +94,10 @@ impl Instance {
 			modloader,
 			plugin_loader,
 			launch,
-			version_json: None,
-			java: None,
+			version_json: Later::new(),
+			java: Later::new(),
 			classpath: None,
-			jar_path: None,
+			jar_path: Later::new(),
 			main_class: None,
 		}
 	}
@@ -118,13 +118,9 @@ impl Instance {
 
 	/// Set the java installation for the instance
 	fn add_java(&mut self, version: &str, manager: &UpdateManager) {
-		let mut java = manager
-			.java
-			.as_ref()
-			.expect("Update Manager Java is missing")
-			.clone();
+		let mut java = manager.java.get().clone();
 		java.add_version(version);
-		self.java = Some(java);
+		self.java.fill(java);
 	}
 
 	async fn get_fabric_quilt(

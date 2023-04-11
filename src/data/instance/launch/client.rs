@@ -1,4 +1,4 @@
-use anyhow::{bail, Context};
+use anyhow::Context;
 
 use crate::data::instance::{InstKind, Instance};
 use crate::data::user::{Auth, UserKind};
@@ -23,87 +23,76 @@ impl Instance {
 		version_list: &[String],
 	) -> anyhow::Result<()> {
 		debug_assert!(matches!(self.kind, InstKind::Client { .. }));
-		match &self.java {
-			Some(java) => match &java.path {
-				Some(java_path) => {
-					let jre_path = java_path.join("bin/java");
-					let client_dir = self.get_subdir(paths);
-					let mut jvm_args = Vec::new();
-					let mut game_args = Vec::new();
-
-					if let Some(version_json) = &self.version_json {
-						if let Some(classpath) = &self.classpath {
-							let main_class = self
-								.main_class
-								.as_ref()
-								.context("Main class is missing for client")?;
-							if let Ok(args) = json::access_object(version_json, "arguments") {
-								for arg in json::access_array(args, "jvm")? {
-									for sub_arg in process_client_arg(
-										self, arg, paths, auth, classpath, version,
-									) {
-										jvm_args.push(sub_arg);
-									}
-								}
-
-								for arg in json::access_array(args, "game")? {
-									for sub_arg in process_client_arg(
-										self, arg, paths, auth, classpath, version,
-									) {
-										game_args.push(sub_arg);
-									}
-								}
-							} else {
-								// Behavior for versions prior to 1.12.2
-								let args = json::access_str(version_json, "minecraftArguments")?;
-
-								jvm_args.push(format!(
-									"-Djava.library.path={}",
-									paths
-										.internal
-										.join("versions")
-										.join(version)
-										.join("natives")
-										.to_str()
-										.context(
-											"Failed to convert natives directory to a string"
-										)?
-								));
-								jvm_args.push(String::from("-cp"));
-								jvm_args.push(classpath.get_str());
-
-								for arg in args.split(' ') {
-									game_args.push(skip_none!(process_string_arg(
-										self, arg, paths, auth, classpath, version
-									)));
-								}
-							}
-
-							launch(
-								paths,
-								&self.id,
-								self.kind.to_side(),
-								&self.launch,
-								debug,
-								version,
-								version_list,
-								&client_dir,
-								jre_path
-									.to_str()
-									.context("Failed to convert java path to a string")?,
-								&jvm_args,
-								Some(main_class),
-								&game_args,
-							)
-							.context("Failed to run launch command")?;
-						}
+		let java_path = self.java.get().path.get();
+		let jre_path = java_path.join("bin/java");
+		let client_dir = self.get_subdir(paths);
+		let mut jvm_args = Vec::new();
+		let mut game_args = Vec::new();
+		let version_json = self.version_json.get();
+		if let Some(classpath) = &self.classpath {
+			let main_class = self.main_class.as_ref().expect("Main class for client should exist");
+			if let Ok(args) = json::access_object(version_json, "arguments") {
+				for arg in json::access_array(args, "jvm")? {
+					for sub_arg in process_client_arg(
+						self, arg, paths, auth, classpath, version,
+					) {
+						jvm_args.push(sub_arg);
 					}
-					Ok(())
 				}
-				None => bail!("Java path is missing"),
-			},
-			None => bail!("Java installation missing"),
+
+				for arg in json::access_array(args, "game")? {
+					for sub_arg in process_client_arg(
+						self, arg, paths, auth, classpath, version,
+					) {
+						game_args.push(sub_arg);
+					}
+				}
+			} else {
+				// Behavior for versions prior to 1.12.2
+				let args = json::access_str(version_json, "minecraftArguments")?;
+
+				jvm_args.push(format!(
+					"-Djava.library.path={}",
+					paths
+						.internal
+						.join("versions")
+						.join(version)
+						.join("natives")
+						.to_str()
+						.context(
+							"Failed to convert natives directory to a string"
+						)?
+				));
+				jvm_args.push(String::from("-cp"));
+				jvm_args.push(classpath.get_str());
+
+				for arg in args.split(' ') {
+					game_args.push(skip_none!(process_string_arg(
+						self, arg, paths, auth, classpath, version
+					)));
+				}
+			}
+
+			launch(
+				paths,
+				&self.id,
+				self.kind.to_side(),
+				&self.launch,
+				debug,
+				version,
+				version_list,
+				&client_dir,
+				jre_path
+					.to_str()
+					.context("Failed to convert java path to a string")?,
+				&jvm_args,
+				Some(&main_class),
+				&game_args,
+			)
+			.context("Failed to run launch command")?;
 		}
+
+		Ok(())
 	}
 }
 

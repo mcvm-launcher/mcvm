@@ -6,7 +6,7 @@ pub mod options;
 
 /// An enum very similar to `Option<T>` that lets us access it with an easier assertion.
 /// It is meant for data that we know should already be full at some point.
-#[derive(Clone, Default)]
+#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 pub enum Later<T> {
 	#[default]
 	Empty,
@@ -33,8 +33,8 @@ impl <T> Later<T> {
 		}
 	}
 
-	/// Grab the value inside mutably and panic if it isn't there
-	pub fn get_mut(&mut self) -> &mut T {
+	/// Grab the value inside without a reference and panic if it isn't there
+	pub fn get_val(self) -> T {
 		if let Self::Full(value) = self {
 			value
 		} else {

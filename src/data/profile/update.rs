@@ -5,6 +5,7 @@ use anyhow::Context;
 use color_print::cprintln;
 
 use crate::data::instance::Side;
+use crate::io::Later;
 use crate::io::files::paths::Paths;
 use crate::io::java::{Java, JavaKind};
 use crate::io::options::{read_options, Options};
@@ -35,12 +36,12 @@ pub struct UpdateManager {
 	requirements: HashSet<UpdateRequirement>,
 	// File paths that are added when they have been updated by other functions
 	files: HashSet<PathBuf>,
-	version_manifest: Option<Box<json::JsonObject>>,
-	pub version_json: Option<Box<json::JsonObject>>,
-	pub java: Option<Java>,
+	version_manifest: Later<Box<json::JsonObject>>,
+	pub version_json: Later<Box<json::JsonObject>>,
+	pub java: Later<Java>,
 	pub options: Option<Options>,
-	pub version_list: Option<Vec<String>>,
-	pub found_version: Option<String>,
+	pub version_list: Later<Vec<String>>,
+	pub found_version: Later<String>,
 }
 
 impl UpdateManager {
@@ -50,12 +51,12 @@ impl UpdateManager {
 			force,
 			requirements: HashSet::new(),
 			files: HashSet::new(),
-			version_manifest: None,
-			version_json: None,
-			java: None,
+			version_manifest: Later::new(),
+			version_json: Later::new(),
+			java: Later::new(),
 			options: None,
-			version_list: None,
-			found_version: None,
+			version_list: Later::new(),
+			found_version: Later::new(),
 		}
 	}
 
@@ -102,15 +103,14 @@ impl UpdateManager {
 			.await
 			.context("Failed to get version manifest")?;
 
-		self.version_list =
-			Some(make_version_list(&manifest).context("Failed to compose a list of versions")?);
+		self.version_list.fill(make_version_list(&manifest).context("Failed to compose a list of versions")?);
 
 		let found_version = version
 			.get_version(&manifest)
 			.context("Failed to find the requested Minecraft version")?;
 
-		self.found_version = Some(found_version);
-		self.version_manifest = Some(manifest);
+		self.found_version.fill(found_version);
+		self.version_manifest.fill(manifest);
 
 		Ok(())
 	}
@@ -148,23 +148,20 @@ impl UpdateManager {
 				cprintln!("<s>Obtaining version json...");
 			}
 			let version_json = get_version_json(
-				self.found_version.as_ref().expect("Found version missing"),
-				self.version_manifest
-					.as_ref()
-					.expect("Version manifest missing"),
+				self.found_version.get(),
+				self.version_manifest.get(),
 				paths,
 			)
 			.await
 			.context("Failed to get version json")?;
-			self.version_json = Some(version_json);
+			self.version_json.fill(version_json);
 		}
 
 		if self.has_requirement(UpdateRequirement::GameAssets) {
-			let version_json = self.version_json.as_ref().expect("Version json missing");
 			let files = get_assets(
-				version_json,
+				self.version_json.get(),
 				paths,
-				self.found_version.as_ref().expect("Found version missing"),
+				self.found_version.get(),
 				self,
 			)
 			.await
@@ -173,11 +170,11 @@ impl UpdateManager {
 		}
 
 		if self.has_requirement(UpdateRequirement::GameLibraries) {
-			let version_json = self.version_json.as_ref().expect("Version json missing");
+			let version_json = self.version_json.get();
 			let files = get_libraries(
 				version_json,
 				paths,
-				self.found_version.as_ref().expect("Found version missing"),
+				self.found_version.get(),
 				self,
 			)
 			.await
@@ -186,7 +183,7 @@ impl UpdateManager {
 		}
 
 		if java_required {
-			let version_json = self.version_json.as_ref().expect("Version json missing");
+			let version_json = self.version_json.get();
 			let java_vers = json::access_i64(
 				json::access_object(version_json, "javaVersion")?,
 				"majorVersion",
@@ -202,7 +199,7 @@ impl UpdateManager {
 						.await
 						.context("Failed to install Java")?;
 					java_files.extend(files);
-					self.java = Some(java);
+					self.java.fill(java);
 				}
 			}
 
@@ -210,13 +207,12 @@ impl UpdateManager {
 		}
 
 		if game_jar_required {
-			let version_json = self.version_json.as_ref().expect("Version json missing");
 			for req in self.requirements.iter() {
 				if let UpdateRequirement::GameJar(side) = req {
 					get_game_jar(
 						side.clone(),
-						version_json,
-						self.found_version.as_ref().expect("Found version missing"),
+						self.version_json.get(),
+						self.found_version.get(),
 						paths,
 						self,
 					)
