@@ -16,38 +16,38 @@ pub enum UserSubcommand {
 
 async fn list(data: &mut CmdData) -> anyhow::Result<()> {
 	data.ensure_config().await?;
+	let config = data.config.get();
 
-	if let Some(config) = &data.config {
-		cprintln!("<s>Users:");
-		for (id, user) in config.auth.users.iter() {
-			cprint!("{}", HYPHEN_POINT);
-			match user.kind {
-				UserKind::Microsoft => cprintln!("<s><g>{}</g> <k!>({})</k!>", user.name, id),
-				UserKind::Demo => cprintln!("<s><c!>{}</c!> <k!>({})</k!>", user.name, id),
-				UserKind::Unverified => cprintln!("<s><k!>{}</k!> <k!>({})</k!>", user.name, id),
-			}
+	cprintln!("<s>Users:");
+	for (id, user) in config.auth.users.iter() {
+		cprint!("{}", HYPHEN_POINT);
+		match user.kind {
+			UserKind::Microsoft => cprintln!("<s><g>{}</g> <k!>({})</k!>", user.name, id),
+			UserKind::Demo => cprintln!("<s><c!>{}</c!> <k!>({})</k!>", user.name, id),
+			UserKind::Unverified => cprintln!("<s><k!>{}</k!> <k!>({})</k!>", user.name, id),
 		}
 	}
+
 	Ok(())
 }
 
 async fn status(data: &mut CmdData) -> anyhow::Result<()> {
 	data.ensure_config().await?;
+	let config = data.config.get();
 
-	if let Some(config) = &data.config {
-		match config.auth.get_user() {
-			Some(user) => {
-				cprint!("<g>Logged in as ");
-				match user.kind {
-					UserKind::Microsoft => cprint!("<s,g!>{}", &user.name),
-					UserKind::Demo => cprint!("<s,c!>{}", &user.name),
-					UserKind::Unverified => cprint!("<s,k!>{}", &user.name),
-				}
-				cprintln!(" <k!>({})</k!>", user.id);
+	match config.auth.get_user() {
+		Some(user) => {
+			cprint!("<g>Logged in as ");
+			match user.kind {
+				UserKind::Microsoft => cprint!("<s,g!>{}", &user.name),
+				UserKind::Demo => cprint!("<s,c!>{}", &user.name),
+				UserKind::Unverified => cprint!("<s,k!>{}", &user.name),
 			}
-			None => cprintln!("<r>Currently logged out"),
+			cprintln!(" <k!>({})</k!>", user.id);
 		}
+		None => cprintln!("<r>Currently logged out"),
 	}
+
 	Ok(())
 }
 

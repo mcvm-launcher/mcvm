@@ -24,8 +24,22 @@ impl <T> Later<T> {
 		*self = Self::Full(value);
 	}
 
+	/// Checks if the Later does not contain a value
+	pub fn is_empty(&self) -> bool {
+		matches!(self, Self::Empty)
+	}
+
 	/// Grab the value inside and panic if it isn't there
 	pub fn get(&self) -> &T {
+		if let Self::Full(value) = self {
+			value
+		} else {
+			self.fail();
+		}
+	}
+
+	/// Grab the value inside mutably and panic if it isn't there
+	pub fn get_mut(&mut self) -> &mut T {
 		if let Self::Full(value) = self {
 			value
 		} else {

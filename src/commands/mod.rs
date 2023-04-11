@@ -9,6 +9,7 @@ use clap::{Parser, Subcommand};
 use color_print::cprintln;
 
 use crate::data::config::Config;
+use crate::io::Later;
 use crate::io::files::paths::Paths;
 
 use self::files::FilesSubcommand;
@@ -18,37 +19,36 @@ use self::user::UserSubcommand;
 
 // Data passed to commands
 pub struct CmdData {
-	pub paths: Option<Paths>,
-	pub config: Option<Config>,
+	pub paths: Later<Paths>,
+	pub config: Later<Config>,
 }
 
 impl CmdData {
 	pub fn new() -> Self {
 		Self {
-			paths: None,
-			config: None,
+			paths: Later::new(),
+			config: Later::new(),
 		}
 	}
 
 	pub async fn ensure_paths(&mut self) -> anyhow::Result<()> {
-		if self.paths.is_none() {
-			self.paths = Some(Paths::new().await?);
+		if self.paths.is_empty() {
+			self.paths.fill(Paths::new().await?);
 		}
 		Ok(())
 	}
 
 	pub async fn ensure_config(&mut self) -> anyhow::Result<()> {
-		if self.config.is_none() {
+		if self.config.is_empty() {
 			self.ensure_paths()
 				.await
 				.context("Failed to set up directories")?;
-			if let Some(paths) = &self.paths {
-				self.config = Some(
-					Config::load(&paths.project.config_dir().join("mcvm.json"))
-						.context("Failed to load config")?,
-				);
-			}
+			self.config.fill(
+				Config::load(&self.paths.get().project.config_dir().join("mcvm.json"))
+					.context("Failed to load config")?,
+			);
 		}
+		
 		Ok(())
 	}
 }

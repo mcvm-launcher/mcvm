@@ -18,10 +18,10 @@ files in your instances or any other user data. Don't do this unless something i
 
 pub async fn remove(data: &mut CmdData) -> anyhow::Result<()> {
 	data.ensure_paths().await?;
-	if let Some(paths) = &data.paths {
-		cprintln!("<g>Removing internal files...");
-		fs::remove_dir_all(&paths.internal).context("Failed to remove internal data directory")?;
-	}
+	let paths = data.paths.get();
+	cprintln!("<g>Removing internal files...");
+	fs::remove_dir_all(&paths.internal).context("Failed to remove internal data directory")?;
+	
 	Ok(())
 }
 
