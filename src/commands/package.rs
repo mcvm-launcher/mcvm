@@ -6,7 +6,7 @@ use crate::util::print::{ReplPrinter, HYPHEN_POINT};
 
 use anyhow::Context;
 use clap::Subcommand;
-use color_print::{cformat, cprintln};
+use color_print::{cformat, cprintln, cprint};
 
 #[derive(Debug, Subcommand)]
 pub enum PackageSubcommand {
@@ -111,7 +111,7 @@ async fn cat(data: &mut CmdData, name: &str, raw: bool) -> anyhow::Result<()> {
 			if !raw {
 				cprintln!("<s,b>Contents of package <g>{}</g>:</s,b>", req);
 			}
-			cprintln!("{}", contents);
+			cprint!("{}", contents);
 		}
 	}
 
