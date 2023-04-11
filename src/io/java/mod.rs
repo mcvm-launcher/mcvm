@@ -3,12 +3,12 @@ pub mod classpath;
 
 use crate::data::profile::update::UpdateManager;
 use crate::io::files::{self, paths::Paths};
-use crate::net::download::{download_file, download_text};
-use crate::util::json::{self, JsonType};
-use crate::util::{ARCH_STRING, OS_STRING};
+use crate::net;
+use crate::net::download::download_file;
+use crate::util::json;
 use crate::util::print::ReplPrinter;
 
-use anyhow::{anyhow, Context};
+use anyhow::Context;
 use color_print::cformat;
 use libflate::gzip::Decoder;
 use tar::Archive;
@@ -68,27 +68,13 @@ impl Java {
 
 				let out_dir = paths.java.join("adoptium");
 				files::create_dir(&out_dir)?;
-				let url = format!(
-					"https://api.adoptium.net/v3/assets/latest/{}/hotspot?image_type=jre&vendor=eclipse&architecture={}&os={}",
-					major_version.get(),
-					ARCH_STRING,
-					OS_STRING
-				);
-
-				let manifest = json::parse_json(&download_text(&url).await?)?;
-				let manifest = json::ensure_type(manifest.as_array(), JsonType::Arr)?;
-				let version = json::ensure_type(
-					manifest
-						.get(0)
-						.ok_or(anyhow!("Installation was not found"))?
-						.as_object(),
-					JsonType::Obj,
-				)?;
+				let version = net::java::adoptium::get_latest(major_version.get())
+					.await.context("Failed to obtain Adoptium information")?;
 				let bin_url = json::access_str(
-					json::access_object(json::access_object(version, "binary")?, "package")?,
+					json::access_object(json::access_object(&version, "binary")?, "package")?,
 					"link",
 				)?;
-				let mut extracted_bin_name = json::access_str(version, "release_name")?.to_string();
+				let mut extracted_bin_name = json::access_str(&version, "release_name")?.to_string();
 				extracted_bin_name.push_str("-jre");
 				let extracted_bin_dir = out_dir.join(&extracted_bin_name);
 
@@ -104,7 +90,7 @@ impl Java {
 
 				printer.print(&cformat!(
 					"Downloading Adoptium Temurin JRE <b>{}</b>...",
-					json::access_str(version, "release_name")?
+					json::access_str(&version, "release_name")?
 				));
 				download_file(bin_url, &arc_path)
 					.await
