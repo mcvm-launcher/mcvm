@@ -176,7 +176,7 @@ impl Package {
 				match &mut prs.mode {
 					ParseMode::Root => {
 						match tok {
-							Token::Routine => {
+							Token::At => {
 								if let Some(..) = prs
 									.parsed
 									.blocks

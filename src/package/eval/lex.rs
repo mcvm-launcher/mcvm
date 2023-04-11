@@ -18,6 +18,7 @@ pub enum Token {
 	Colon,
 	Comma,
 	Pipe,
+	At,
 	Variable(String),
 	Curly(Side),
 	Square(Side),
@@ -26,7 +27,6 @@ pub enum Token {
 	Ident(String),
 	Num(i64),
 	Str(String),
-	Routine,
 }
 
 impl Token {
@@ -38,6 +38,7 @@ impl Token {
 			Token::Colon => String::from(":"),
 			Token::Comma => String::from(","),
 			Token::Pipe => String::from("|"),
+			Token::At => String::from("@"),
 			Token::Variable(name) => String::from("$") + name,
 			Token::Curly(Side::Left) => String::from("{"),
 			Token::Curly(Side::Right) => String::from("}"),
@@ -49,7 +50,6 @@ impl Token {
 			Token::Ident(name) => name.clone(),
 			Token::Num(num) => num.to_string(),
 			Token::Str(string) => format!("\"{string}\""),
-			Token::Routine => String::from("@"),
 		}
 	}
 }
@@ -182,7 +182,7 @@ pub fn lex(text: &str) -> anyhow::Result<Vec<(Token, TextPos)>> {
 						tok_finished = true;
 					}
 					'@' => {
-						tok = Token::Routine;
+						tok = Token::At;
 						tok_finished = true;
 					}
 					'"' => tok = Token::Str(String::new()),
@@ -400,7 +400,7 @@ mod tests {
 				Token::Ident(String::from("ident")),
 				Token::Curly(Side::Left),
 				Token::Curly(Side::Right),
-				Token::Routine,
+				Token::At,
 				Token::Ident(String::from("routine")),
 				Token::Square(Side::Left),
 				Token::Square(Side::Right),
