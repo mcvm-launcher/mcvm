@@ -11,6 +11,7 @@ use color_print::{cformat, cprintln};
 #[derive(Debug, Subcommand)]
 pub enum PackageSubcommand {
 	#[command(about = "List all installed packages across all profiles")]
+	#[clap(alias = "ls")]
 	List,
 	#[command(
 		about = "Sync package indexes with ones from package repositories",

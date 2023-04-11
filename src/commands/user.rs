@@ -8,6 +8,7 @@ use color_print::{cprint, cprintln};
 #[derive(Debug, Subcommand)]
 pub enum UserSubcommand {
 	#[command(about = "List all users")]
+	#[clap(alias = "ls")]
 	List,
 	#[command(about = "Get current authentication status")]
 	Status,

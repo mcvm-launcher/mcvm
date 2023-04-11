@@ -22,6 +22,7 @@ pub enum ProfileSubcommand {
 	#[command(about = "Print useful information about a profile")]
 	Info { profile: String },
 	#[command(about = "List all profiles")]
+	#[clap(alias = "ls")]
 	List,
 	#[command(
 		about = "Update a profile",
