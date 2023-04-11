@@ -8,7 +8,7 @@ pub mod parse;
 
 use anyhow::{anyhow, bail};
 
-// Argument to a command that could be constant or a variable
+/// Argument to a command that could be constant or a variable
 #[derive(Debug, Clone)]
 pub enum Value {
 	None,
@@ -17,6 +17,8 @@ pub enum Value {
 }
 
 impl Value {
+	/// Obtain the current String value of this Value.
+	/// Will fail if it is none or the variable is uninitialized.
 	pub fn get(&self, vars: &HashMap<String, String>) -> anyhow::Result<String> {
 		match self {
 			Self::None => bail!("Empty value"),

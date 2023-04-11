@@ -15,6 +15,7 @@ use std::collections::HashMap;
 use std::fmt::Display;
 use std::path::PathBuf;
 
+/// What instructions we are allowed to evaluate (depends on what routine we are running)
 #[derive(Debug, Clone)]
 pub enum EvalLevel {
 	None,
@@ -45,7 +46,7 @@ impl EvalLevel {
 	}
 }
 
-// Permissions level for an evaluation
+/// Permissions level for an evaluation
 #[derive(Deserialize, Debug, Clone, Default)]
 #[serde(rename_all = "snake_case")]
 pub enum EvalPermissions {
@@ -55,7 +56,7 @@ pub enum EvalPermissions {
 	Elevated,
 }
 
-// A routine that we will run
+/// A routine with a special meaning / purpose.
 pub enum Routine {
 	Install,
 }
@@ -74,6 +75,7 @@ impl Routine {
 	}
 }
 
+/// Reason why the package reported a failure
 #[derive(Debug, Clone)]
 pub enum FailReason {
 	None,
@@ -105,6 +107,7 @@ impl Display for FailReason {
 	}
 }
 
+/// Constants provided by the function calling eval
 #[derive(Debug, Clone)]
 pub struct EvalConstants {
 	pub version: String,
@@ -116,6 +119,7 @@ pub struct EvalConstants {
 	pub perms: EvalPermissions,
 }
 
+/// Persistent state for evaluation
 #[derive(Debug, Clone)]
 pub struct EvalData {
 	pub vars: HashMap<String, String>,
@@ -139,6 +143,7 @@ impl EvalData {
 	}
 }
 
+/// Result from an evaluation subfunction. We merge this with the main EvalData
 pub struct EvalResult {
 	vars_to_set: HashMap<String, String>,
 	finish: bool,
@@ -156,6 +161,7 @@ impl EvalResult {
 		}
 	}
 
+	/// Merge multiple EvalResults
 	pub fn merge(&mut self, other: EvalResult) {
 		self.vars_to_set.extend(other.vars_to_set);
 		self.finish = other.finish;
@@ -165,6 +171,7 @@ impl EvalResult {
 }
 
 impl Package {
+	/// Evaluate a routine on a package
 	pub async fn eval(
 		&mut self,
 		paths: &Paths,
@@ -210,6 +217,7 @@ impl Package {
 	}
 }
 
+/// Evaluate a block of instructions
 fn eval_block(
 	block: &Block,
 	eval: &EvalData,
@@ -235,6 +243,7 @@ fn eval_block(
 }
 
 impl Instruction {
+	/// Evaluate the instruction
 	pub fn eval(
 		&self,
 		eval: &EvalData,

@@ -35,6 +35,7 @@ impl ConditionKind {
 		}
 	}
 
+	/// Add arguments to the condition from tokens
 	pub fn parse(&mut self, tok: &Token, pos: &TextPos) -> anyhow::Result<()> {
 		match self {
 			Self::Not(condition) => match condition {

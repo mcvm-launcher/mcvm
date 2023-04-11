@@ -14,8 +14,10 @@ use std::collections::HashMap;
 
 static DEFAULT_ROUTINE: &str = "__default__";
 
+/// The type we use to index blocks in the hashmap
 pub type BlockId = u16;
 
+/// A list of instructions inside a routine or nested block (such as an if block)
 #[derive(Debug, Clone)]
 pub struct Block {
 	pub contents: Vec<Instruction>,
@@ -35,6 +37,7 @@ impl Block {
 	}
 }
 
+/// The final result of parsed data
 #[derive(Debug)]
 pub struct Parsed {
 	pub blocks: HashMap<BlockId, Block>,
@@ -53,14 +56,14 @@ impl Parsed {
 		out
 	}
 
-	// Creates a new block and returns its ID
+	/// Creates a new block and returns its ID
 	pub fn new_block(&mut self, parent: Option<BlockId>) -> BlockId {
 		self.id_count += 1;
 		self.blocks.insert(self.id_count, Block::new(parent));
 		self.id_count
 	}
 
-	// Creates a new routine and its associated block, then returns the block's ID
+	/// Creates a new routine and its associated block, then returns the block's ID
 	pub fn new_routine(&mut self, name: &str) -> BlockId {
 		self.new_block(None);
 		self.routines.insert(name.to_owned(), self.id_count);
@@ -68,7 +71,7 @@ impl Parsed {
 	}
 }
 
-// State of the addon parser
+/// State of the addon parser
 #[derive(Debug)]
 enum AddonMode {
 	Opening,
@@ -78,7 +81,7 @@ enum AddonMode {
 	Comma,
 }
 
-// Current key for the addon parser
+/// Current key for the addon parser
 #[derive(Debug)]
 enum AddonKey {
 	None,
@@ -89,7 +92,7 @@ enum AddonKey {
 	Path,
 }
 
-// Mode for what we are currently parsing
+/// Mode for what we are currently parsing
 #[derive(Debug)]
 enum ParseMode {
 	Root,
@@ -115,7 +118,7 @@ macro_rules! unexpected_token {
 	};
 }
 
-// Data used for parsing
+/// Data used for parsing
 #[derive(Debug)]
 pub struct ParseData {
 	parsed: Parsed,
@@ -134,7 +137,7 @@ impl ParseData {
 		}
 	}
 
-	// Push a new instruction to the block
+	/// Push a new instruction to the block
 	pub fn new_instruction(&mut self, instr: Instruction) {
 		self.instruction_n += 1;
 		if let Some(block) = self.parsed.blocks.get_mut(&self.block) {
@@ -143,7 +146,7 @@ impl ParseData {
 		self.mode = ParseMode::Root;
 	}
 
-	// Finish the current block
+	/// Finish the current block
 	pub fn new_block(&mut self) {
 		if let Some(block) = self.parsed.blocks.get_mut(&self.block) {
 			if let Some(parent) = block.parent {
@@ -154,6 +157,7 @@ impl ParseData {
 }
 
 impl Package {
+	/// Parse the contents of the package
 	pub async fn parse(&mut self, paths: &Paths) -> anyhow::Result<()> {
 		self.ensure_loaded(paths, false).await?;
 		if let Some(data) = &mut self.data {
@@ -395,6 +399,7 @@ impl Package {
 			}
 			data.parsed = Some(prs.parsed);
 		}
+
 		Ok(())
 	}
 }

@@ -3,13 +3,14 @@ use std::fmt::{Debug, Display};
 use crate::unexpected_token;
 use anyhow::bail;
 
-// Generic side for something like a bracket
+/// Generic side for something like a bracket
 #[derive(Debug, PartialEq, Clone)]
 pub enum Side {
 	Left,
 	Right,
 }
 
+/// A token that we derive from text
 #[derive(Debug, PartialEq, Clone)]
 pub enum Token {
 	None,
@@ -54,7 +55,7 @@ impl Token {
 	}
 }
 
-// Text positional information
+/// Text positional information
 #[derive(Clone)]
 pub struct TextPos {
 	pub row: usize,
@@ -73,6 +74,7 @@ impl Display for TextPos {
 	}
 }
 
+/// What action to perform after lexing a string character
 #[derive(Debug, PartialEq)]
 enum StrLexResult {
 	Append,
@@ -80,6 +82,7 @@ enum StrLexResult {
 	End,
 }
 
+/// Figure out what to do with a character of a string when lexing
 fn lex_string_char(c: char, escape: bool) -> StrLexResult {
 	if escape {
 		StrLexResult::Append
@@ -96,6 +99,7 @@ fn is_whitespace(c: char) -> bool {
 	c.is_whitespace()
 }
 
+/// Checks if a character is part of a valid identifier
 fn is_ident(c: char, first: bool) -> bool {
 	if first && c.is_numeric() {
 		return false;
@@ -103,6 +107,7 @@ fn is_ident(c: char, first: bool) -> bool {
 	c.is_alphanumeric() || c == '_'
 }
 
+/// Checks if a character is part of an integer
 fn is_num(c: char, first: bool) -> bool {
 	if first {
 		c.is_numeric() || c == '-'
@@ -111,6 +116,8 @@ fn is_num(c: char, first: bool) -> bool {
 	}
 }
 
+/// Create a list of tokens from package text contents that we will
+/// then use for parsing
 pub fn lex(text: &str) -> anyhow::Result<Vec<(Token, TextPos)>> {
 	let mut tokens: Vec<(Token, TextPos)> = Vec::new();
 
@@ -285,7 +292,7 @@ pub fn lex(text: &str) -> anyhow::Result<Vec<(Token, TextPos)>> {
 	Ok(tokens)
 }
 
-// Removes whitespace characters and comments from a list of tokens
+/// Removes whitespace characters and comments from a list of tokens
 pub fn reduce_tokens(tokens: &[(Token, TextPos)]) -> Vec<(Token, TextPos)> {
 	let mut out = Vec::new();
 	for (tok, pos) in tokens.iter().cloned() {

@@ -8,6 +8,7 @@ use super::Value;
 use crate::data::addon::AddonKind;
 use crate::unexpected_token;
 
+/// Type of an instruction
 #[derive(Debug, Clone)]
 pub enum InstrKind {
 	If(Condition, BlockId),
@@ -28,6 +29,7 @@ pub enum InstrKind {
 	Fail(Option<FailReason>),
 }
 
+/// A command / statement run in a package script
 #[derive(Debug, Clone)]
 pub struct Instruction {
 	pub kind: InstrKind,
@@ -38,6 +40,7 @@ impl Instruction {
 		Self { kind }
 	}
 
+	/// Starts an instruction from the provided string
 	pub fn from_str(string: &str, pos: &TextPos) -> anyhow::Result<Self> {
 		let kind = match string {
 			"name" => Ok::<InstrKind, anyhow::Error>(InstrKind::Name(Value::None)),
@@ -52,7 +55,7 @@ impl Instruction {
 		Ok(Instruction::new(kind))
 	}
 
-	// Parses a token and returns true if finished
+	/// Parses a token and returns true if finished
 	pub fn parse(&mut self, tok: &Token, pos: &TextPos) -> anyhow::Result<bool> {
 		if let Token::Semicolon = tok {
 			Ok(true)
@@ -115,7 +118,7 @@ impl Instruction {
 	}
 }
 
-// Parses a generic instruction argument
+/// Parses a generic instruction argument with variable support
 pub fn parse_arg(tok: &Token, pos: &TextPos) -> anyhow::Result<Value> {
 	match tok {
 		Token::Variable(name) => Ok(Value::Var(name.to_string())),
