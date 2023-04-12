@@ -4,22 +4,22 @@ use anyhow::Context;
 use serde::Deserialize;
 
 #[derive(Deserialize)]
-struct SerRepo {
+pub struct SerRepo {
 	id: String,
 	url: String,
 }
 
 #[derive(Deserialize, Default)]
-struct SerRepositories {
+pub struct SerRepositories {
 	#[serde(default)]
 	pub preferred: Vec<SerRepo>,
 	#[serde(default)]
 	pub backup: Vec<SerRepo>,
 }
 
-#[derive(Deserialize)]
-struct PrefSerialize {
-	#[serde(default)]
+#[derive(Deserialize, Default)]
+#[serde(default)]
+pub struct PrefDeser {
 	pub repositories: SerRepositories,
 }
 
@@ -27,11 +27,9 @@ struct PrefSerialize {
 pub struct ConfigPreferences {}
 
 impl ConfigPreferences {
-	pub fn read(obj: Option<&serde_json::Value>) -> anyhow::Result<(Self, Vec<PkgRepo>)> {
-		match obj {
-			Some(obj) => {
-				let prefs = serde_json::from_value::<PrefSerialize>(obj.clone())
-					.context("Failed to parse preferences")?;
+	pub fn read(prefs: &Option<PrefDeser>) -> anyhow::Result<(Self, Vec<PkgRepo>)> {
+		match prefs {
+			Some(prefs) => {
 				let mut repositories = Vec::new();
 				for repo in prefs.repositories.preferred.iter() {
 					repositories.push(PkgRepo::new(&repo.id, &repo.url));

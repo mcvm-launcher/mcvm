@@ -2,28 +2,31 @@ pub mod instance;
 pub mod package;
 mod preferences;
 pub mod profile;
+pub mod user;
 
 use self::instance::read_instance_config;
 use self::package::{read_package_config, FullPackageConfig, PackageConfig};
-use self::profile::parse_profile_config;
-use anyhow::{anyhow, bail, Context};
+use self::preferences::PrefDeser;
+use self::profile::ProfileConfig;
+use self::user::{read_user_config, UserConfig};
+use anyhow::{bail, Context};
 use preferences::ConfigPreferences;
+use serde::Deserialize;
 
 use super::addon::game_modifications_compatible;
 use super::profile::{InstanceRegistry, Profile};
-use super::user::{validate_username, Auth, AuthState, User, UserKind};
+use super::user::{validate_username, Auth, AuthState};
 use crate::package::reg::PkgRegistry;
-use crate::util::json::{self, JsonType};
 use crate::util::validate_identifier;
 
 use color_print::cprintln;
 use serde_json::json;
 
 use std::collections::HashMap;
-use std::fs;
-use std::path::PathBuf;
+use std::fs::File;
+use std::path::{PathBuf, Path};
 
-// Default program configuration
+/// Default program configuration
 fn default_config() -> serde_json::Value {
 	json!(
 		{
@@ -51,6 +54,18 @@ fn default_config() -> serde_json::Value {
 	)
 }
 
+#[derive(Deserialize)]
+pub struct ConfigDeser {
+	#[serde(default)]
+	users: HashMap<String, UserConfig>,
+	#[serde(default)]
+	default_user: Option<String>,
+	#[serde(default)]
+	profiles: HashMap<String, ProfileConfig>,
+	#[serde(default)]
+	preferences: Option<PrefDeser>,
+}
+
 #[derive(Debug)]
 pub struct Config {
 	pub auth: Auth,
@@ -61,81 +76,60 @@ pub struct Config {
 }
 
 impl Config {
-	fn open(path: &PathBuf) -> anyhow::Result<Box<json::JsonObject>> {
+	/// Open the config from a file
+	fn open(path: &Path) -> anyhow::Result<ConfigDeser> {
 		if path.exists() {
-			let doc = json::parse_object(&fs::read_to_string(path)?)?;
-			Ok(doc)
+			let mut file = File::open(path).context("Failed to open config file")?;
+			Ok(serde_json::from_reader(&mut file).context("Failed to parse config")?)
 		} else {
 			let doc = default_config();
-			fs::write(path, serde_json::to_string_pretty(&doc)?)?;
-			Ok(Box::new(
-				json::ensure_type(doc.as_object(), JsonType::Obj)?.clone(),
-			))
+			let mut file = File::open(path).context("Failed to open config file")?;
+			serde_json::to_writer_pretty(&mut file, &doc)
+				.context("Failed to write default configuration")?;
+			Ok(serde_json::from_value(doc).context("Failed to parse default configuration")?)
 		}
 	}
 
-	fn load_from_obj(obj: &json::JsonObject) -> anyhow::Result<Self> {
+	fn load_from_deser(config: ConfigDeser) -> anyhow::Result<Self> {
 		let mut auth = Auth::new();
 		let mut instances = InstanceRegistry::new();
 		let mut profiles = HashMap::new();
 		// Preferences
-		let (prefs, repositories) = ConfigPreferences::read(obj.get("preferences"))
+		let (prefs, repositories) = ConfigPreferences::read(&config.preferences)
 			.context("Failed to read preferences")?;
+
 
 		let mut packages = PkgRegistry::new(repositories);
 
 		// Users
-		let users = json::access_object(obj, "users")?;
-		for (user_id, user_val) in users.iter() {
+		for (user_id, user_val) in config.users.iter() {
 			if !validate_identifier(user_id) {
 				bail!("Invalid string '{}'", user_id.to_owned());
 			}
-			let user_obj = json::ensure_type(user_val.as_object(), JsonType::Obj)?;
-			let kind = match json::access_str(user_obj, "type")? {
-				"microsoft" => Ok(UserKind::Microsoft),
-				"demo" => Ok(UserKind::Demo),
-				"unverified" => Ok(UserKind::Unverified),
-				typ => Err(anyhow!("Unknown user type '{typ}' on user '{user_id}'")),
-			}?;
-			let username = json::access_str(user_obj, "name")?;
-			if !validate_username(kind.clone(), username) {
-				bail!("Invalid string '{}'", username.to_owned());
+			let user = read_user_config(user_id, user_val);
+			if !validate_username(user.kind, &user.name) {
+				bail!("Invalid string '{}'", user.name.to_owned());
 			}
-			let mut user = User::new(kind.clone(), user_id, username);
-
-			match user_obj.get("uuid") {
-				Some(uuid) => user.set_uuid(json::ensure_type(uuid.as_str(), JsonType::Str)?),
-				None => match kind {
-					UserKind::Microsoft | UserKind::Demo => {
-						cprintln!("<y>Warning: It is recommended to have your uuid in the configuration for user {}", user_id);
-					}
-					UserKind::Unverified => {}
-				}
-			};
 
 			auth.users.insert(user_id.to_string(), user);
 		}
 
-		if let Some(user_val) = obj.get("default_user") {
-			let user_id = json::ensure_type(user_val.as_str(), JsonType::Str)?.to_string();
-			match auth.users.get(&user_id) {
-				Some(..) => auth.state = AuthState::Authed(user_id),
+		if let Some(default_user_id) = &config.default_user {
+			match auth.users.get(default_user_id) {
+				Some(..) => auth.state = AuthState::Authed(default_user_id.clone()),
 				None => {
-					bail!("Provided default user '{user_id}' does not exist");
+					bail!("Provided default user '{default_user_id}' does not exist");
 				}
 			}
-		} else if users.is_empty() {
+		} else if config.users.is_empty() {
 			cprintln!("<y>Warning: Users are available but no default user is set.");
 		} else {
 			cprintln!("<y>Warning: No users are available.");
 		}
 
 		// Profiles
-		let doc_profiles = json::access_object(obj, "profiles")?;
-		for (profile_id, profile_val) in doc_profiles {
-			let profile_config = parse_profile_config(profile_val)
-				.with_context(|| format!("Failed to parse profile {profile_id}"))?;
-			let mut profile = profile_config.to_profile(profile_id);
+		for (profile_id, profile_config) in config.profiles {
+			let mut profile = profile_config.to_profile(&profile_id);
 
 			if !game_modifications_compatible(
 				&profile_config.modloader,
@@ -213,7 +207,7 @@ impl Config {
 
 	pub fn load(path: &PathBuf) -> anyhow::Result<Self> {
 		let obj = Self::open(path)?;
-		Self::load_from_obj(&obj)
+		Self::load_from_deser(obj)
 	}
 }
 
@@ -223,9 +217,7 @@ mod tests {
 
 	#[test]
 	fn test_default_config() {
-		let obj = json::ensure_type(default_config().as_object(), JsonType::Obj)
-			.unwrap()
-			.clone();
-		Config::load_from_obj(&obj).unwrap();
+		let deser = serde_json::from_value(default_config()).unwrap();
+		Config::load_from_deser(deser).unwrap();
 	}
 }

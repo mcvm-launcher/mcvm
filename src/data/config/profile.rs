@@ -1,7 +1,6 @@
 use std::collections::HashMap;
 
 use serde::Deserialize;
-use serde_json::Value;
 
 use crate::{
 	data::{
@@ -34,9 +33,4 @@ impl ProfileConfig {
 			self.plugin_loader.clone(),
 		)
 	}
-}
-
-pub fn parse_profile_config(val: &Value) -> anyhow::Result<ProfileConfig> {
-	let out = serde_json::from_value::<ProfileConfig>(val.clone())?;
-	Ok(out)
 }
