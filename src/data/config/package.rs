@@ -55,36 +55,40 @@ impl Display for PackageConfig {
 	}
 }
 
-pub fn read_package_config(config: &PackageConfig) -> anyhow::Result<PkgProfileConfig> {
-	let package = match config {
-		PackageConfig::Basic(id) => PkgProfileConfig {
-			req: PkgRequest::new(id),
-			features: vec![],
-			permissions: EvalPermissions::Standard,
-		},
-		PackageConfig::Full(FullPackageConfig::Local {
-			r#type: _,
-			id,
-			version: _,
-			path: _,
-			features,
-			permissions,
-		}) => PkgProfileConfig {
-			req: PkgRequest::new(id),
-			features: features.clone(),
-			permissions: permissions.clone(),
-		},
-		PackageConfig::Full(FullPackageConfig::Remote {
-			id,
-			version: _,
-			features,
-			permissions,
-		}) => PkgProfileConfig {
-			req: PkgRequest::new(id),
-			features: features.clone(),
-			permissions: permissions.clone(),
-		},
-	};
+impl PackageConfig {
+	/// Convert this package config into a PkgProfileConfig
+	pub fn to_profile_config(&self) -> anyhow::Result<PkgProfileConfig> {
+		let package = match self {
+			PackageConfig::Basic(id) => PkgProfileConfig {
+				req: PkgRequest::new(id),
+				features: vec![],
+				permissions: EvalPermissions::Standard,
+			},
+			PackageConfig::Full(FullPackageConfig::Local {
+				r#type: _,
+				id,
+				version: _,
+				path: _,
+				features,
+				permissions,
+			}) => PkgProfileConfig {
+				req: PkgRequest::new(id),
+				features: features.clone(),
+				permissions: permissions.clone(),
+			},
+			PackageConfig::Full(FullPackageConfig::Remote {
+				id,
+				version: _,
+				features,
+				permissions,
+			}) => PkgProfileConfig {
+				req: PkgRequest::new(id),
+				features: features.clone(),
+				permissions: permissions.clone(),
+			},
+		};
+	
+		Ok(package)
+	}
 
-	Ok(package)
 }

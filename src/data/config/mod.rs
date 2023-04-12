@@ -5,10 +5,10 @@ pub mod profile;
 pub mod user;
 
 use self::instance::read_instance_config;
-use self::package::{read_package_config, FullPackageConfig, PackageConfig};
+use self::package::{FullPackageConfig, PackageConfig};
 use self::preferences::PrefDeser;
 use self::profile::ProfileConfig;
-use self::user::{read_user_config, UserConfig};
+use self::user::UserConfig;
 use anyhow::{bail, Context};
 use preferences::ConfigPreferences;
 use serde::Deserialize;
@@ -90,6 +90,7 @@ impl Config {
 		}
 	}
 
+	/// Create the Config struct from deserialized config
 	fn load_from_deser(config: ConfigDeser) -> anyhow::Result<Self> {
 		let mut auth = Auth::new();
 		let mut instances = InstanceRegistry::new();
@@ -98,15 +99,14 @@ impl Config {
 		let (prefs, repositories) = ConfigPreferences::read(&config.preferences)
 			.context("Failed to read preferences")?;
 
-
 		let mut packages = PkgRegistry::new(repositories);
 
 		// Users
-		for (user_id, user_val) in config.users.iter() {
+		for (user_id, user_config) in config.users.iter() {
 			if !validate_identifier(user_id) {
 				bail!("Invalid string '{}'", user_id.to_owned());
 			}
-			let user = read_user_config(user_id, user_val);
+			let user = user_config.to_user(user_id);
 			if !validate_username(user.kind, &user.name) {
 				bail!("Invalid string '{}'", user.name.to_owned());
 			}
@@ -142,30 +142,30 @@ impl Config {
 				cprintln!("<y>Warning: Profile '{}' does not have any instances", profile_id);
 			}
 
-			for (instance_id, instance) in profile_config.instances {
+			for (instance_id, instance_config) in profile_config.instances {
 				if !validate_identifier(&instance_id) {
 					bail!("Invalid string '{}'", instance_id.to_owned());
 				}
 				if instances.contains_key(&instance_id) {
 					bail!("Duplicate instance '{instance_id}'");
 				}
-				let instance = read_instance_config(&instance_id, &instance, &profile)
+				let instance = read_instance_config(&instance_id, &instance_config, &profile)
 					.with_context(|| format!("Failed to configure instance '{instance_id}'"))?;
 				profile.add_instance(&instance_id);
 				instances.insert(instance_id.to_string(), instance);
 			}
 
-			for package in profile_config.packages {
-				let config = read_package_config(&package)
-					.with_context(|| format!("Failed to configure package '{}'", package))?;
+			for package_config in profile_config.packages {
+				let config = package_config.to_profile_config()
+					.with_context(|| format!("Failed to configure package '{}'", package_config))?;
 
 				if !validate_identifier(&config.req.name) {
-					bail!("Invalid package name '{package}'");
+					bail!("Invalid package name '{package_config}'");
 				}
 
 				for cfg in profile.packages.iter() {
 					if cfg.req == config.req {
-						bail!("Duplicate package '{package}' in profile '{profile_id}'");
+						bail!("Duplicate package '{package_config}' in profile '{profile_id}'");
 					}
 				}
 
@@ -175,7 +175,7 @@ impl Config {
 					}
 				}
 
-				match package {
+				match package_config {
 					PackageConfig::Full(FullPackageConfig::Local {
 						id: _,
 						version,

@@ -1,32 +1,35 @@
-use crate::{package::repo::PkgRepo, net::download::validate_url};
+use crate::net::download::validate_url;
+use crate::package::repo::PkgRepo;
 
 use anyhow::Context;
 use serde::Deserialize;
 
 #[derive(Deserialize)]
-pub struct SerRepo {
+pub struct RepoDeser {
 	id: String,
 	url: String,
 }
 
 #[derive(Deserialize, Default)]
-pub struct SerRepositories {
+pub struct RepositoriesDeser {
 	#[serde(default)]
-	pub preferred: Vec<SerRepo>,
+	preferred: Vec<RepoDeser>,
 	#[serde(default)]
-	pub backup: Vec<SerRepo>,
+	backup: Vec<RepoDeser>,
 }
 
 #[derive(Deserialize, Default)]
 #[serde(default)]
 pub struct PrefDeser {
-	pub repositories: SerRepositories,
+	repositories: RepositoriesDeser,
 }
 
 #[derive(Debug)]
 pub struct ConfigPreferences {}
 
 impl ConfigPreferences {
+	/// Convert deserialized preferences to the stored format and returns
+	/// a list of repositories to add.
 	pub fn read(prefs: &Option<PrefDeser>) -> anyhow::Result<(Self, Vec<PkgRepo>)> {
 		match prefs {
 			Some(prefs) => {

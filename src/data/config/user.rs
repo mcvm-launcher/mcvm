@@ -13,7 +13,7 @@ pub enum UserVariant {
 	Demo {
 		uuid: Option<String>,
 	},
-	Unverified {}
+	Unverified {},
 }
 
 impl UserVariant {
@@ -27,29 +27,33 @@ impl UserVariant {
 }
 
 #[derive(Deserialize)]
+/// Configuration for a user
 pub struct UserConfig {
 	pub name: String,
 	#[serde(flatten)]
 	pub variant: UserVariant,
 }
 
-pub fn read_user_config(id: &str, config: &UserConfig) -> User {
-	let mut user = User::new(
-		config.variant.to_user_kind(),
-		id,
-		&config.name
-	);
-	match &config.variant {
-		UserVariant::Microsoft { uuid } | UserVariant::Demo { uuid } => {
-			match uuid {
-				Some(uuid) => user.set_uuid(uuid),
-				None => {
-					cprintln!("<y>Warning: It is recommended to have your uuid in the configuration for user {}", id);
-				}
-			};
+impl UserConfig {
+	/// Creates a user from this user config
+	pub fn to_user(&self, id: &str) -> User {
+		let mut user = User::new(
+			self.variant.to_user_kind(),
+			id,
+			&self.name
+		);
+		match &self.variant {
+			UserVariant::Microsoft { uuid } | UserVariant::Demo { uuid } => {
+				match uuid {
+					Some(uuid) => user.set_uuid(uuid),
+					None => {
+						cprintln!("<y>Warning: It is recommended to have your uuid in the configuration for user {}", id);
+					}
+				};
+			}
+			_ => {}
 		}
-		_ => {}
+	
+		user
 	}
-
-	user
 }
