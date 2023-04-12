@@ -41,12 +41,16 @@ impl AddonKind {
 
 impl Display for AddonKind {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		write!(f, "{}", match self {
-			Self::ResourcePack => "resource_pack",
-			Self::Mod => "mod",
-			Self::Plugin => "plugin",
-			Self::Shader => "shader",
-		})
+		write!(
+			f,
+			"{}",
+			match self {
+				Self::ResourcePack => "resource_pack",
+				Self::Mod => "mod",
+				Self::Plugin => "plugin",
+				Self::Shader => "shader",
+			}
+		)
 	}
 }
 

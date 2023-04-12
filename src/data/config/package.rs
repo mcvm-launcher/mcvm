@@ -87,8 +87,7 @@ impl PackageConfig {
 				permissions: permissions.clone(),
 			},
 		};
-	
+
 		Ok(package)
 	}
-
 }

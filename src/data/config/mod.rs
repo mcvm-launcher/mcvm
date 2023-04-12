@@ -24,7 +24,7 @@ use serde_json::json;
 
 use std::collections::HashMap;
 use std::fs::File;
-use std::path::{PathBuf, Path};
+use std::path::{Path, PathBuf};
 
 /// Default program configuration
 fn default_config() -> serde_json::Value {
@@ -96,8 +96,8 @@ impl Config {
 		let mut instances = InstanceRegistry::new();
 		let mut profiles = HashMap::new();
 		// Preferences
-		let (prefs, repositories) = ConfigPreferences::read(&config.preferences)
-			.context("Failed to read preferences")?;
+		let (prefs, repositories) =
+			ConfigPreferences::read(&config.preferences).context("Failed to read preferences")?;
 
 		let mut packages = PkgRegistry::new(repositories);
 
@@ -139,7 +139,10 @@ impl Config {
 			}
 
 			if profile_config.instances.is_empty() {
-				cprintln!("<y>Warning: Profile '{}' does not have any instances", profile_id);
+				cprintln!(
+					"<y>Warning: Profile '{}' does not have any instances",
+					profile_id
+				);
 			}
 
 			for (instance_id, instance_config) in profile_config.instances {
@@ -156,7 +159,8 @@ impl Config {
 			}
 
 			for package_config in profile_config.packages {
-				let config = package_config.to_profile_config()
+				let config = package_config
+					.to_profile_config()
 					.with_context(|| format!("Failed to configure package '{package_config}'"))?;
 
 				if !validate_identifier(&config.req.name) {
@@ -180,13 +184,10 @@ impl Config {
 					version,
 					path,
 					..
-				}) = package_config {
+				}) = package_config
+				{
 					let path = shellexpand::tilde(&path);
-					packages.insert_local(
-						&config.req,
-						&version,
-						&PathBuf::from(path.to_string()),
-					);
+					packages.insert_local(&config.req, &version, &PathBuf::from(path.to_string()));
 				}
 			}
 

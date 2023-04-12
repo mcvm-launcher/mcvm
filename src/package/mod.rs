@@ -2,8 +2,8 @@ pub mod eval;
 pub mod reg;
 pub mod repo;
 
-use crate::io::Later;
 use crate::io::files::paths::Paths;
+use crate::io::Later;
 use crate::net::download::download_text;
 
 use std::fs;
@@ -84,12 +84,14 @@ impl Package {
 		if self.data.is_empty() {
 			match &self.kind {
 				PkgKind::Local(path) => {
-					self.data.fill(PkgData::new(&tokio::fs::read_to_string(path).await?));
+					self.data
+						.fill(PkgData::new(&tokio::fs::read_to_string(path).await?));
 				}
 				PkgKind::Remote(url) => {
 					let path = self.cached_path(paths);
 					if !force && path.exists() {
-						self.data.fill(PkgData::new(&tokio::fs::read_to_string(path).await?));
+						self.data
+							.fill(PkgData::new(&tokio::fs::read_to_string(path).await?));
 					} else {
 						let url = url.as_ref().expect("URL for remote package missing");
 						let text = download_text(url).await?;

@@ -25,7 +25,10 @@ impl Instance {
 			jvm_args.push(classpath.get_str());
 		}
 		jvm_args.push(String::from("-jar"));
-		let jar_path_str = self.jar_path.get().to_str()
+		let jar_path_str = self
+			.jar_path
+			.get()
+			.to_str()
 			.context("Failed to convert server.jar path to a string")?;
 		jvm_args.push(String::from(jar_path_str));
 		game_args.push(String::from("nogui"));
@@ -46,8 +49,7 @@ impl Instance {
 			game_args: &game_args,
 		};
 
-		launch(paths, &launch_args)
-		.context("Failed to run launch command")?;
+		launch(paths, &launch_args).context("Failed to run launch command")?;
 
 		Ok(())
 	}

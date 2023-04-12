@@ -9,8 +9,8 @@ use clap::{Parser, Subcommand};
 use color_print::cprintln;
 
 use crate::data::config::Config;
-use crate::io::Later;
 use crate::io::files::paths::Paths;
+use crate::io::Later;
 
 use self::files::FilesSubcommand;
 use self::package::PackageSubcommand;
@@ -48,7 +48,7 @@ impl CmdData {
 					.context("Failed to load config")?,
 			);
 		}
-		
+
 		Ok(())
 	}
 }

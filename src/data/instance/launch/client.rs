@@ -10,7 +10,7 @@ use crate::util::json;
 use crate::util::versions::VersionPattern;
 use crate::util::{
 	mojang::is_allowed,
-	{ARCH_STRING, OS_STRING}
+	{ARCH_STRING, OS_STRING},
 };
 use crate::Paths;
 use crate::{skip_fail, skip_none};
@@ -35,20 +35,19 @@ impl Instance {
 		let mut game_args = Vec::new();
 		let version_json = self.version_json.get();
 		if let Some(classpath) = &self.classpath {
-			let main_class = self.main_class.as_ref().expect("Main class for client should exist");
+			let main_class = self
+				.main_class
+				.as_ref()
+				.expect("Main class for client should exist");
 			if let Ok(args) = json::access_object(version_json, "arguments") {
 				for arg in json::access_array(args, "jvm")? {
-					for sub_arg in args::process_arg(
-						self, arg, paths, auth, classpath, version,
-					) {
+					for sub_arg in args::process_arg(self, arg, paths, auth, classpath, version) {
 						jvm_args.push(sub_arg);
 					}
 				}
 
 				for arg in json::access_array(args, "game")? {
-					for sub_arg in args::process_arg(
-						self, arg, paths, auth, classpath, version,
-					) {
+					for sub_arg in args::process_arg(self, arg, paths, auth, classpath, version) {
 						game_args.push(sub_arg);
 					}
 				}
@@ -64,9 +63,7 @@ impl Instance {
 						.join(version)
 						.join("natives")
 						.to_str()
-						.context(
-							"Failed to convert natives directory to a string"
-						)?
+						.context("Failed to convert natives directory to a string")?
 				));
 				jvm_args.push(String::from("-cp"));
 				jvm_args.push(classpath.get_str());
@@ -94,8 +91,7 @@ impl Instance {
 				game_args: &game_args,
 			};
 
-			launch(paths, &launch_argument)
-				.context("Failed to run launch command")?;
+			launch(paths, &launch_argument).context("Failed to run launch command")?;
 		}
 
 		Ok(())
@@ -104,7 +100,7 @@ impl Instance {
 
 mod args {
 	use super::*;
-		
+
 	/// Replace tokens in a string argument from the version json
 	pub fn replace_arg_tokens(
 		instance: &Instance,
@@ -158,9 +154,7 @@ mod args {
 				if out.contains("${auth_player_name}") {
 					return Some(String::from("UnknownUser"));
 				}
-				if out.contains("${auth_access_token}")
-					|| out.contains("${auth_uuid}")
-				{
+				if out.contains("${auth_access_token}") || out.contains("${auth_uuid}") {
 					return Some(String::new());
 				}
 			}
@@ -245,7 +239,7 @@ mod args {
 	pub fn create_quick_play_args(
 		quick_play: &QuickPlay,
 		version: &str,
-		version_list: &[String]
+		version_list: &[String],
 	) -> Vec<String> {
 		let mut out = Vec::new();
 
@@ -262,7 +256,9 @@ mod args {
 							out.push(String::from("--quickPlaySingleplayer"));
 							out.push(world.clone());
 						} else {
-							cprintln!("<y>Warning: World Quick Play has no effect before 23w14a (1.20)");
+							cprintln!(
+								"<y>Warning: World Quick Play has no effect before 23w14a (1.20)"
+							);
 						}
 					}
 					QuickPlay::Realm { realm } => {
@@ -270,7 +266,9 @@ mod args {
 							out.push(String::from("--quickPlayRealms"));
 							out.push(realm.clone());
 						} else {
-							cprintln!("<y>Warning: Realm Quick Play has no effect before 23w14a (1.20)");
+							cprintln!(
+								"<y>Warning: Realm Quick Play has no effect before 23w14a (1.20)"
+							);
 						}
 					}
 					QuickPlay::Server { server, port } => {
@@ -297,5 +295,4 @@ mod args {
 
 		out
 	}
-
 }

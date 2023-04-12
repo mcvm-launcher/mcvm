@@ -7,11 +7,11 @@ use color_print::{cformat, cprintln};
 
 use crate::data::addon::{Modloader, PluginLoader};
 use crate::data::profile::update::{UpdateManager, UpdateRequirement};
-use crate::io::Later;
 use crate::io::files::{self, paths::Paths};
 use crate::io::java::classpath::Classpath;
 use crate::io::java::JavaKind;
 use crate::io::options::{self, client::write_options_txt, server::write_server_properties};
+use crate::io::Later;
 use crate::net::fabric_quilt;
 use crate::net::{minecraft, paper};
 use crate::util::{json, print::ReplPrinter};
@@ -203,7 +203,8 @@ impl Instance {
 
 		self.jar_path.fill(match self.plugin_loader {
 			PluginLoader::Vanilla => {
-				let extern_jar_path = minecraft::game_jar::get_path(self.kind.to_side(), version, paths);
+				let extern_jar_path =
+					minecraft::game_jar::get_path(self.kind.to_side(), version, paths);
 				if manager.should_update_file(&jar_path) {
 					fs::hard_link(extern_jar_path, &jar_path)
 						.context("Failed to hardlink server.jar")?;

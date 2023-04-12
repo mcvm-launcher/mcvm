@@ -209,7 +209,7 @@ impl Package {
 			}
 			EvalLevel::None => {}
 		}
-		
+
 		Ok(eval)
 	}
 }

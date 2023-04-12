@@ -41,9 +41,18 @@ impl ConfigPreferences {
 					repositories.push(PkgRepo::new(&repo.id, &repo.url));
 				}
 
-				for repo in prefs.repositories.preferred.iter().chain(prefs.repositories.backup.iter()) {
-					validate_url(&repo.url)
-						.with_context(|| format!("Invalid url '{}' in package repository '{}'", repo.url, repo.id))?;
+				for repo in prefs
+					.repositories
+					.preferred
+					.iter()
+					.chain(prefs.repositories.backup.iter())
+				{
+					validate_url(&repo.url).with_context(|| {
+						format!(
+							"Invalid url '{}' in package repository '{}'",
+							repo.url, repo.id
+						)
+					})?;
 				}
 
 				Ok((Self {}, repositories))

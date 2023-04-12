@@ -75,10 +75,7 @@ fn write_resource_packs(resource_packs: &[String]) -> String {
 fn write_fullscreen_resolution(resolution: &FullscreenResolution) -> String {
 	format!(
 		"{}x{}@{}:{}",
-		resolution.width,
-		resolution.height,
-		resolution.refresh_rate,
-		resolution.color_bits,
+		resolution.width, resolution.height, resolution.refresh_rate, resolution.color_bits,
 	)
 }
 

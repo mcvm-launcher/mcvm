@@ -69,16 +69,19 @@ pub async fn download_file(url: &str, path: &Path) -> anyhow::Result<()> {
 
 /// Downloads and deserializes the contents into JSON
 pub async fn download_json<T: DeserializeOwned>(url: &str) -> anyhow::Result<T> {
-	download(url).await
+	download(url)
+		.await
 		.context("Failed to download JSON data")?
-		.json().await
+		.json()
+		.await
 		.context("Failed to parse JSON")
 }
 
 /// Validates a URL with a helpful error message
 pub fn validate_url(url: &str) -> anyhow::Result<()> {
-	Url::parse(url)
-		.context("It may help to make sure that either http:// or https:// is before the domain name")?;
+	Url::parse(url).context(
+		"It may help to make sure that either http:// or https:// is before the domain name",
+	)?;
 
 	Ok(())
 }

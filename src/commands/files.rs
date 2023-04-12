@@ -21,7 +21,7 @@ pub async fn remove(data: &mut CmdData) -> anyhow::Result<()> {
 	let paths = data.paths.get();
 	cprintln!("<g>Removing internal files...");
 	fs::remove_dir_all(&paths.internal).context("Failed to remove internal data directory")?;
-	
+
 	Ok(())
 }
 

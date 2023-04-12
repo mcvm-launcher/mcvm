@@ -43,7 +43,10 @@ pub struct Java {
 
 impl Java {
 	pub fn new(kind: JavaKind) -> Self {
-		Self { kind, path: Later::Empty }
+		Self {
+			kind,
+			path: Later::Empty,
+		}
 	}
 
 	/// Add a major version to a Java installation that supports it
@@ -68,12 +71,14 @@ impl Java {
 				let out_dir = paths.java.join("adoptium");
 				files::create_dir(&out_dir)?;
 				let version = net::java::adoptium::get_latest(major_version.get())
-					.await.context("Failed to obtain Adoptium information")?;
+					.await
+					.context("Failed to obtain Adoptium information")?;
 				let bin_url = json::access_str(
 					json::access_object(json::access_object(&version, "binary")?, "package")?,
 					"link",
 				)?;
-				let mut extracted_bin_name = json::access_str(&version, "release_name")?.to_string();
+				let mut extracted_bin_name =
+					json::access_str(&version, "release_name")?.to_string();
 				extracted_bin_name.push_str("-jre");
 				let extracted_bin_dir = out_dir.join(&extracted_bin_name);
 
@@ -99,7 +104,9 @@ impl Java {
 				printer.print(&cformat!("Extracting JRE..."));
 				extract_adoptium_archive(&arc_path, &out_dir).context("Failed to extract")?;
 				printer.print(&cformat!("Removing archive..."));
-				tokio::fs::remove_file(arc_path).await.context("Failed to remove archive")?;
+				tokio::fs::remove_file(arc_path)
+					.await
+					.context("Failed to remove archive")?;
 				printer.print(&cformat!("<g>Java installation finished."));
 			}
 			JavaKind::Custom(path) => {
@@ -114,8 +121,7 @@ impl Java {
 fn extract_adoptium_archive(arc_path: &Path, out_dir: &Path) -> anyhow::Result<()> {
 	let mut file = File::open(arc_path).context("Failed to read archive file")?;
 	if cfg!(windows) {
-		zip_extract::extract(&mut file, out_dir, false)
-			.context("Failed to extract zip file")?;
+		zip_extract::extract(&mut file, out_dir, false).context("Failed to extract zip file")?;
 	} else {
 		let mut decoder = Decoder::new(&mut file).context("Failed to decode tar.gz")?;
 		let mut arc = Archive::new(&mut decoder);

@@ -1,5 +1,5 @@
-use crate::io::Later;
 use crate::io::files::paths::Paths;
+use crate::io::Later;
 use crate::net::download::download_bytes;
 use crate::skip_fail;
 
@@ -56,13 +56,14 @@ impl PkgRepo {
 
 	/// Update the currently cached index file
 	pub async fn sync(&mut self, paths: &Paths) -> anyhow::Result<()> {
-		let bytes = download_bytes(&self.index_url()).await
+		let bytes = download_bytes(&self.index_url())
+			.await
 			.context("Failed to download index")?;
 		let mut cursor = Cursor::new(&bytes);
-		tokio::fs::write(self.get_path(paths), &bytes).await
+		tokio::fs::write(self.get_path(paths), &bytes)
+			.await
 			.context("Failed to write index to cached file")?;
-		self.set_index(&mut cursor)
-			.context("Failed to set index")?;
+		self.set_index(&mut cursor).context("Failed to set index")?;
 
 		Ok(())
 	}
@@ -76,13 +77,11 @@ impl PkgRepo {
 				match self.set_index(&mut file) {
 					Ok(..) => {}
 					Err(..) => {
-						self.sync(paths).await
-							.context("Failed to sync index")?;
+						self.sync(paths).await.context("Failed to sync index")?;
 					}
 				};
 			} else {
-				self.sync(paths).await
-					.context("Failed to sync index")?;
+				self.sync(paths).await.context("Failed to sync index")?;
 			}
 		}
 		Ok(())
@@ -103,7 +102,7 @@ impl PkgRepo {
 		if let Some(entry) = index.packages.get(id) {
 			return Ok(Some((entry.url.clone(), entry.version.clone())));
 		}
-		
+
 		Ok(None)
 	}
 }

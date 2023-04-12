@@ -7,7 +7,7 @@ pub async fn run(instance: &str, debug: bool, data: &mut CmdData) -> anyhow::Res
 	data.ensure_config().await?;
 	let paths = data.paths.get();
 	let config = data.config.get_mut();
-	
+
 	if let Some(instance) = config.instances.get_mut(instance) {
 		let (.., profile) = config
 			.profiles

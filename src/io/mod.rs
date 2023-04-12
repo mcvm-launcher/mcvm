@@ -13,7 +13,7 @@ pub enum Later<T> {
 	Full(T),
 }
 
-impl <T> Later<T> {
+impl<T> Later<T> {
 	/// Construct an empty Later
 	pub fn new() -> Self {
 		Self::Empty

@@ -5,11 +5,11 @@ use anyhow::Context;
 use color_print::cprintln;
 
 use crate::data::instance::Side;
-use crate::io::Later;
 use crate::io::files::paths::Paths;
 use crate::io::java::{Java, JavaKind};
 use crate::io::options::{read_options, Options};
-use crate::net::minecraft::{libraries, assets, game_jar, version_manifest};
+use crate::io::Later;
+use crate::net::minecraft::{assets, game_jar, libraries, version_manifest};
 use crate::util::versions::MinecraftVersion;
 use crate::util::{json, print::PrintOptions};
 
@@ -100,8 +100,10 @@ impl UpdateManager {
 			.await
 			.context("Failed to get version manifest")?;
 
-		self.version_list.fill(version_manifest::make_version_list(&manifest)
-			.context("Failed to compose a list of versions")?);
+		self.version_list.fill(
+			version_manifest::make_version_list(&manifest)
+				.context("Failed to compose a list of versions")?,
+		);
 
 		let found_version = version
 			.get_version(&manifest)
@@ -169,14 +171,9 @@ impl UpdateManager {
 
 		if self.has_requirement(UpdateRequirement::GameLibraries) {
 			let version_json = self.version_json.get();
-			let files = libraries::get(
-				version_json,
-				paths,
-				self.found_version.get(),
-				self,
-			)
-			.await
-			.context("Failed to get game libraries")?;
+			let files = libraries::get(version_json, paths, self.found_version.get(), self)
+				.await
+				.context("Failed to get game libraries")?;
 			self.add_files(files);
 		}
 

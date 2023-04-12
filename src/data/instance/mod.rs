@@ -3,12 +3,12 @@ pub mod launch;
 
 use anyhow::Context;
 
-use crate::io::{files, Later};
 use crate::io::java::classpath::Classpath;
 use crate::io::java::Java;
 use crate::io::launch::LaunchOptions;
 use crate::io::options::client::ClientOptions;
 use crate::io::options::server::ServerOptions;
+use crate::io::{files, Later};
 use crate::net::fabric_quilt;
 use crate::util::json;
 use crate::Paths;

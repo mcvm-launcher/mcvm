@@ -6,7 +6,7 @@ use crate::util::print::{ReplPrinter, HYPHEN_POINT};
 
 use anyhow::Context;
 use clap::Subcommand;
-use color_print::{cformat, cprintln, cprint};
+use color_print::{cformat, cprint, cprintln};
 
 #[derive(Debug, Subcommand)]
 pub enum PackageSubcommand {

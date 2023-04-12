@@ -19,7 +19,7 @@ async fn main() -> ExitCode {
 		Err(e) => {
 			eprintln!("{}", cformat!("<r>{:?}", e));
 			return ExitCode::FAILURE;
-		},
+		}
 	}
 
 	ExitCode::SUCCESS

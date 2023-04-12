@@ -9,8 +9,8 @@ use anyhow::Context;
 use color_print::cprintln;
 
 use crate::data::config::instance::QuickPlay;
-use crate::data::instance::Side;
 use crate::data::instance::launch::client::create_quick_play_args;
+use crate::data::instance::Side;
 use crate::io::java::args::ArgsPreset;
 use crate::io::java::{
 	args::{MemoryArg, MemoryNum},
@@ -67,7 +67,11 @@ impl LaunchOptions {
 		let mut out = self.game_args.clone();
 
 		if let Side::Client = side {
-			out.extend(create_quick_play_args(&self.quick_play, version, version_list));
+			out.extend(create_quick_play_args(
+				&self.quick_play,
+				version,
+				version_list,
+			));
 		}
 
 		out
@@ -104,10 +108,7 @@ pub struct LaunchArgument<'a> {
 }
 
 /// Launch the game
-pub fn launch(
-	paths: &Paths,
-	arg: &LaunchArgument
-) -> anyhow::Result<()> {
+pub fn launch(paths: &Paths, arg: &LaunchArgument) -> anyhow::Result<()> {
 	let mut log = File::create(log_file_path(arg.instance_name, paths)?)
 		.context("Failed to open launch log file")?;
 	let mut cmd = match &arg.options.wrapper {
@@ -127,7 +128,10 @@ pub fn launch(
 		cmd.arg(main_class);
 	}
 	cmd.args(arg.game_args);
-	cmd.args(arg.options.generate_game_args(arg.version, arg.version_list, arg.side));
+	cmd.args(
+		arg.options
+			.generate_game_args(arg.version, arg.version_list, arg.side),
+	);
 
 	writeln!(log, "Launch command: {cmd:#?}").context("Failed to write to launch log file")?;
 	if arg.debug {

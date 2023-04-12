@@ -250,10 +250,8 @@ impl Package {
 							if let Some(condition) = condition {
 								let block = prs.parsed.new_block(Some(prs.block));
 								block_to_set = Some(block);
-								instr_to_push = Some(Instruction::new(InstrKind::If(
-									condition.clone(),
-									block,
-								)));
+								instr_to_push =
+									Some(Instruction::new(InstrKind::If(condition.clone(), block)));
 								prs.mode = ParseMode::Root;
 							}
 						}
@@ -266,11 +264,7 @@ impl Package {
 										*condition = Some(Condition::new(new_condition))
 									}
 									None => {
-										bail!(
-											"Unknown condition {} {}",
-											name.clone(),
-											pos.clone()
-										);
+										bail!("Unknown condition {} {}", name.clone(), pos.clone());
 									}
 								},
 								_ => unexpected_token!(tok, pos),
@@ -332,34 +326,34 @@ impl Package {
 							Token::Colon => *mode = AddonMode::Value,
 							_ => unexpected_token!(tok, pos),
 						},
-						AddonMode::Value => {
-							match tok {
-								Token::Ident(name) => {
-									match key {
-										AddonKey::Kind => *kind = AddonKind::from_str(name),
-										AddonKey::Force => {
-											match yes_no(name) {
-												Some(value) => *force = value,
-												None => {
-													bail!("Expected 'yes' or 'no', but got '{}' {}", name.to_owned(), pos.clone());
-												}
-											}
+						AddonMode::Value => match tok {
+							Token::Ident(name) => {
+								match key {
+									AddonKey::Kind => *kind = AddonKind::from_str(name),
+									AddonKey::Force => match yes_no(name) {
+										Some(value) => *force = value,
+										None => {
+											bail!(
+												"Expected 'yes' or 'no', but got '{}' {}",
+												name.to_owned(),
+												pos.clone()
+											);
 										}
-										_ => unexpected_token!(tok, pos),
-									}
-									*mode = AddonMode::Comma;
+									},
+									_ => unexpected_token!(tok, pos),
 								}
-								_ => {
-									match key {
-										AddonKey::Url => *url = parse_arg(tok, pos)?,
-										AddonKey::Append => *append = parse_arg(tok, pos)?,
-										AddonKey::Path => *path = parse_arg(tok, pos)?,
-										_ => unexpected_token!(tok, pos),
-									}
-									*mode = AddonMode::Comma;
-								}
+								*mode = AddonMode::Comma;
 							}
-						}
+							_ => {
+								match key {
+									AddonKey::Url => *url = parse_arg(tok, pos)?,
+									AddonKey::Append => *append = parse_arg(tok, pos)?,
+									AddonKey::Path => *path = parse_arg(tok, pos)?,
+									_ => unexpected_token!(tok, pos),
+								}
+								*mode = AddonMode::Comma;
+							}
+						},
 						AddonMode::Comma => match tok {
 							Token::Comma => *mode = AddonMode::Key,
 							Token::Paren(Side::Right) => {

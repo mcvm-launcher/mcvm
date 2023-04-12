@@ -123,7 +123,7 @@ mod tests {
 				self.clone() as i32
 			}
 		}
-		
+
 		assert_eq!(EnumOrNumber::Enum(TestEnum::Foo).to_int(), 0);
 		assert_eq!(EnumOrNumber::Enum(TestEnum::Bar).to_string(), "bar");
 		assert_eq!(EnumOrNumber::Enum(TestEnum::Foo).to_int().to_string(), "0");

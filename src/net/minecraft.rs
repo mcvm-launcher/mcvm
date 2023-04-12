@@ -4,7 +4,7 @@ use crate::io::files::{self, paths::Paths};
 use crate::io::java::classpath::Classpath;
 use crate::util::json::{self, JsonObject, JsonType};
 use crate::util::print::ReplPrinter;
-use crate::util::{cap_first_letter, mojang, self};
+use crate::util::{self, cap_first_letter, mojang};
 
 use anyhow::{bail, Context};
 use color_print::{cformat, cprintln};
@@ -22,7 +22,7 @@ use super::download::{download_file, download_text, FD_SENSIBLE_LIMIT};
 
 pub mod version_manifest {
 	use super::*;
-	
+
 	/// Obtain the raw version manifest contents
 	async fn get_contents(paths: &Paths) -> anyhow::Result<String> {
 		let mut path = paths.internal.join("versions");
@@ -202,7 +202,7 @@ pub mod libraries {
 		let natives_jars_path = paths.internal.join("natives");
 
 		let mut native_paths = Vec::new();
-			
+
 		let libraries = get_list(version_json)?;
 
 		let mut libs_to_download = Vec::new();
@@ -326,7 +326,7 @@ pub mod libraries {
 
 pub mod assets {
 	use super::*;
-	
+
 	async fn download_index(url: &str, path: &Path) -> anyhow::Result<Box<json::JsonObject>> {
 		let text = download_text(url)
 			.await
@@ -334,7 +334,7 @@ pub mod assets {
 		tokio::fs::write(path, &text)
 			.await
 			.context("Failed to write index to a file")?;
-	
+
 		let doc = json::parse_object(&text).context("Failed to parse index")?;
 		Ok(doc)
 	}
@@ -342,7 +342,7 @@ pub mod assets {
 	/// Create the directories needed to store assets
 	async fn create_dirs(
 		paths: &Paths,
-		manager: &UpdateManager
+		manager: &UpdateManager,
 	) -> anyhow::Result<(PathBuf, PathBuf)> {
 		let objects_dir = paths.assets.join("objects");
 		files::create_dir_async(&objects_dir).await?;
@@ -371,7 +371,8 @@ pub mod assets {
 		let index_path = indexes_dir.join(version_string + ".json");
 		let index_url = json::access_str(json::access_object(version_json, "assetIndex")?, "url")?;
 
-		let (objects_dir, ..) = create_dirs(paths, manager).await
+		let (objects_dir, ..) = create_dirs(paths, manager)
+			.await
 			.context("Failed to create directories for assets")?;
 
 		let index = match download_index(index_url, &index_path).await {
@@ -388,7 +389,7 @@ pub mod assets {
 		};
 
 		let assets = json::access_object(&index, "objects")?.clone();
-		
+
 		let mut assets_to_download = Vec::new();
 		for (name, asset) in assets {
 			let asset = json::ensure_type(asset.as_object(), JsonType::Obj)?;
@@ -473,7 +474,8 @@ pub mod game_jar {
 		let mut printer = ReplPrinter::from_options(manager.print.clone());
 
 		printer.print(&format!("Downloading {side_str} jar..."));
-		let download = json::access_object(json::access_object(version_json, "downloads")?, &side_str)?;
+		let download =
+			json::access_object(json::access_object(version_json, "downloads")?, &side_str)?;
 		let url = json::access_str(download, "url")?;
 		download_file(url, &path)
 			.await
