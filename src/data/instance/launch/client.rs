@@ -90,7 +90,7 @@ impl Instance {
 					.to_str()
 					.context("Failed to convert java path to a string")?,
 				jvm_args: &jvm_args,
-				main_class: Some(&main_class),
+				main_class: Some(main_class),
 				game_args: &game_args,
 			};
 

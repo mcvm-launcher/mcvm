@@ -33,7 +33,7 @@ impl Profile {
 	) -> Self {
 		Profile {
 			name: name.to_owned(),
-			version: version.to_owned(),
+			version,
 			instances: Vec::new(),
 			packages: Vec::new(),
 			modloader,

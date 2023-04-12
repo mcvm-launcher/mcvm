@@ -104,11 +104,11 @@ impl Config {
 		// Users
 		for (user_id, user_config) in config.users.iter() {
 			if !validate_identifier(user_id) {
-				bail!("Invalid string '{}'", user_id.to_owned());
+				bail!("Invalid string '{user_id}'");
 			}
 			let user = user_config.to_user(user_id);
 			if !validate_username(user.kind, &user.name) {
-				bail!("Invalid string '{}'", user.name.to_owned());
+				bail!("Invalid string '{}'", user.name);
 			}
 
 			auth.users.insert(user_id.to_string(), user);
@@ -157,7 +157,7 @@ impl Config {
 
 			for package_config in profile_config.packages {
 				let config = package_config.to_profile_config()
-					.with_context(|| format!("Failed to configure package '{}'", package_config))?;
+					.with_context(|| format!("Failed to configure package '{package_config}'"))?;
 
 				if !validate_identifier(&config.req.name) {
 					bail!("Invalid package name '{package_config}'");
@@ -175,21 +175,18 @@ impl Config {
 					}
 				}
 
-				match package_config {
-					PackageConfig::Full(FullPackageConfig::Local {
-						id: _,
-						version,
-						path,
-						..
-					}) => {
-						let path = shellexpand::tilde(&path);
-						packages.insert_local(
-							&config.req,
-							&version,
-							&PathBuf::from(path.to_string()),
-						);
-					}
-					_ => {}
+				if let PackageConfig::Full(FullPackageConfig::Local {
+					id: _,
+					version,
+					path,
+					..
+				}) = package_config {
+					let path = shellexpand::tilde(&path);
+					packages.insert_local(
+						&config.req,
+						&version,
+						&PathBuf::from(path.to_string()),
+					);
 				}
 			}
 
@@ -205,7 +202,7 @@ impl Config {
 		})
 	}
 
-	pub fn load(path: &PathBuf) -> anyhow::Result<Self> {
+	pub fn load(path: &Path) -> anyhow::Result<Self> {
 		let obj = Self::open(path)?;
 		Self::load_from_deser(obj)
 	}

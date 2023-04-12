@@ -209,7 +209,8 @@ impl Package {
 			}
 			EvalLevel::None => {}
 		}
-		return Ok(eval);
+		
+		Ok(eval)
 	}
 }
 
@@ -278,7 +279,7 @@ impl Instruction {
 						_ => append.get(&eval.vars)? + "-" + &name.get(&eval.vars)?,
 					};
 					let addon = Addon::new(
-						kind.as_ref().expect("Addon kind missing").clone(),
+						*kind.as_ref().expect("Addon kind missing"),
 						&name,
 						eval.id.clone(),
 					);

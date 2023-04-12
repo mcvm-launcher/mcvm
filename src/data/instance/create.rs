@@ -175,7 +175,7 @@ impl Instance {
 		let version_json = manager.version_json.get();
 
 		let java_vers = json::access_i64(
-			json::access_object(&version_json, "javaVersion")?,
+			json::access_object(version_json, "javaVersion")?,
 			"majorVersion",
 		)?;
 		self.add_java(&java_vers.to_string(), manager);

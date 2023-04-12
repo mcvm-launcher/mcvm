@@ -104,9 +104,9 @@ pub struct LaunchArgument<'a> {
 }
 
 /// Launch the game
-pub fn launch<'a>(
+pub fn launch(
 	paths: &Paths,
-	arg: &LaunchArgument<'a>
+	arg: &LaunchArgument
 ) -> anyhow::Result<()> {
 	let mut log = File::create(log_file_path(arg.instance_name, paths)?)
 		.context("Failed to open launch log file")?;

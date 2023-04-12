@@ -176,13 +176,13 @@ pub fn read_instance_config(
 			InstKind::Client {
 				options: options.clone(),
 			},
-			launch.clone(),
+			launch,
 		),
 		InstanceConfig::Server { launch, options } => (
 			InstKind::Server {
 				options: options.clone(),
 			},
-			launch.clone(),
+			launch,
 		),
 	};
 

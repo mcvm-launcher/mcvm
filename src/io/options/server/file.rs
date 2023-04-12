@@ -56,7 +56,7 @@ async fn merge_server_properties(
 fn escape_colons(string: &str) -> String {
 	// Remove any user-escaped colons
 	let out = string.replace("\\:", ":");
-	out.replace(":", "\\:")
+	out.replace(':', "\\:")
 }
 
 /// Write a server options key to a writer
@@ -166,13 +166,13 @@ pub fn create_keys(
 	if let Some(value) = &options.datapacks.initial_disabled {
 		out.insert(
 			String::from("initial-disabled-packs"),
-			write_datapacks(&value),
+			write_datapacks(value),
 		);
 	}
 	if let Some(value) = &options.datapacks.initial_enabled {
 		out.insert(
 			String::from("initial-enabled-packs"),
-			write_datapacks(&value),
+			write_datapacks(value),
 		);
 	}
 	if let Some(value) = &options.world.name {

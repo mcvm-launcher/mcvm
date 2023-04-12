@@ -75,10 +75,10 @@ fn write_resource_packs(resource_packs: &[String]) -> String {
 fn write_fullscreen_resolution(resolution: &FullscreenResolution) -> String {
 	format!(
 		"{}x{}@{}:{}",
-		resolution.width.to_string(),
-		resolution.height.to_string(),
-		resolution.refresh_rate.to_string(),
-		resolution.color_bits.to_string()
+		resolution.width,
+		resolution.height,
+		resolution.refresh_rate,
+		resolution.color_bits,
 	)
 }
 
@@ -313,7 +313,7 @@ pub fn create_keys(
 		}
 	}
 	if let Some(value) = &options.resource_packs {
-		out.insert(String::from("resourcePacks"), write_resource_packs(&value));
+		out.insert(String::from("resourcePacks"), write_resource_packs(value));
 	}
 	if let Some(value) = &options.language {
 		out.insert(String::from("lang"), value.clone());

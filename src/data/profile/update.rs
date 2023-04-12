@@ -208,7 +208,7 @@ impl UpdateManager {
 			for req in self.requirements.iter() {
 				if let UpdateRequirement::GameJar(side) = req {
 					game_jar::get(
-						side.clone(),
+						*side,
 						self.version_json.get(),
 						self.found_version.get(),
 						paths,

@@ -365,7 +365,7 @@ impl Package {
 							Token::Paren(Side::Right) => {
 								instr_to_push = Some(Instruction::new(InstrKind::Addon {
 									name: name.clone(),
-									kind: kind.clone(),
+									kind: *kind,
 									url: url.clone(),
 									force: *force,
 									append: append.clone(),
