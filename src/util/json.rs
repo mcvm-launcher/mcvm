@@ -40,12 +40,6 @@ pub enum JsonError {
 	_Index(usize, usize),
 }
 
-/// Parse a string into a JSON value
-pub fn parse_json(contents: &str) -> Result<Box<Value>, JsonError> {
-	let doc: Value = serde_json::from_str(contents)?;
-	Ok(Box::new(doc))
-}
-
 /// Parse a string into a JSON object
 pub fn parse_object(contents: &str) -> Result<Box<JsonObject>, JsonError> {
 	let doc: Value = serde_json::from_str(contents)?;

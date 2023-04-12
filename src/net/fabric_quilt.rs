@@ -13,7 +13,7 @@ use crate::io::java::classpath::Classpath;
 use crate::util::json::{self, JsonType};
 use crate::util::print::ReplPrinter;
 
-use super::download::download_text;
+use super::download::download_json;
 
 pub enum Mode {
 	Fabric,
@@ -101,10 +101,9 @@ pub async fn get_meta(version: &str, mode: &Mode) -> anyhow::Result<FabricQuiltM
 		Mode::Fabric => format!("https://meta.fabricmc.net/v2/versions/loader/{version}"),
 		Mode::Quilt => format!("https://meta.quiltmc.org/v3/versions/loader/{version}"),
 	};
-	let meta = download_text(&meta_url)
+	let meta = download_json::<serde_json::Value>(&meta_url)
 		.await
 		.context("Failed to download Fabric/Quilt metadata")?;
-	let meta = json::parse_json(&meta).context("Failed to parse Fabric/Quilt metadata")?;
 	let meta = json::ensure_type(meta.as_array(), JsonType::Arr)?;
 	let meta = meta
 		.first()

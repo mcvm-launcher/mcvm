@@ -3,6 +3,7 @@ use std::path::Path;
 use anyhow::Context;
 use cfg_match::cfg_match;
 use reqwest::{Client, Url};
+use serde::de::DeserializeOwned;
 
 // Sensible open file descriptor limit for asynchronous transfers
 cfg_match! {
@@ -64,6 +65,14 @@ pub async fn download_file(url: &str, path: &Path) -> anyhow::Result<()> {
 	})?;
 
 	Ok(())
+}
+
+/// Downloads and deserializes the contents into JSON
+pub async fn download_json<T: DeserializeOwned>(url: &str) -> anyhow::Result<T> {
+	download(url).await
+		.context("Failed to download JSON data")?
+		.json().await
+		.context("Failed to parse JSON")
 }
 
 /// Validates a URL with a helpful error message
