@@ -1,32 +1,36 @@
+use crate::io::Later;
 use crate::io::files::paths::Paths;
-use crate::net::download::download_text;
+use crate::net::download::download_bytes;
 use crate::skip_fail;
 
+use anyhow::Context;
 use serde::Deserialize;
 
 use std::collections::HashMap;
+use std::fs::File;
+use std::io::Cursor;
 use std::path::PathBuf;
 
-// An entry in the index that specifies what package versions are available
+/// An entry in the index that specifies what package versions are available
 #[derive(Debug, Deserialize)]
 pub struct PkgEntry {
-	// The latest package version available from this repository.
+	/// The latest package version available from this repository.
 	version: String,
 	url: String,
 }
 
-// JSON format for a repository index
+/// JSON format for a repository index
 #[derive(Debug, Deserialize)]
 pub struct RepoIndex {
 	packages: HashMap<String, PkgEntry>,
 }
 
-// A remote source for mcvm packages
+/// A remote source for mcvm packages
 #[derive(Debug)]
 pub struct PkgRepo {
 	pub id: String,
 	url: String,
-	index: Option<RepoIndex>,
+	index: Later<RepoIndex>,
 }
 
 impl PkgRepo {
@@ -34,45 +38,51 @@ impl PkgRepo {
 		Self {
 			id: id.to_owned(),
 			url: url.to_owned(),
-			index: None,
+			index: Later::new(),
 		}
 	}
 
-	// The cached path of the index
+	/// The cached path of the index
 	pub fn get_path(&self, paths: &Paths) -> PathBuf {
 		paths.pkg_index_cache.join(&self.id)
 	}
 
-	// Set the index to serialized json text
-	fn set_index(&mut self, index: &str) -> anyhow::Result<()> {
-		let parsed = serde_json::from_str::<RepoIndex>(index)?;
-		self.index = Some(parsed);
+	/// Set the index to serialized json text
+	fn set_index(&mut self, index: &mut impl std::io::Read) -> anyhow::Result<()> {
+		let parsed = serde_json::from_reader(index)?;
+		self.index.fill(parsed);
 		Ok(())
 	}
 
-	// Update the currently cached index file
+	/// Update the currently cached index file
 	pub async fn sync(&mut self, paths: &Paths) -> anyhow::Result<()> {
-		let text = download_text(&self.index_url()).await?;
-		tokio::fs::write(self.get_path(paths), &text).await?;
-		self.set_index(&text)?;
+		let bytes = download_bytes(&self.index_url()).await
+			.context("Failed to download index")?;
+		let mut cursor = Cursor::new(&bytes);
+		tokio::fs::write(self.get_path(paths), &bytes).await
+			.context("Failed to write index to cached file")?;
+		self.set_index(&mut cursor)
+			.context("Failed to set index")?;
 
 		Ok(())
 	}
 
-	// Make sure that the repository index is downloaded
+	/// Make sure that the repository index is downloaded
 	pub async fn ensure_index(&mut self, paths: &Paths) -> anyhow::Result<()> {
-		if self.index.is_none() {
+		if self.index.is_empty() {
 			let path = self.get_path(paths);
 			if path.exists() {
-				match self.set_index(&tokio::fs::read_to_string(&path).await?) {
+				let mut file = File::open(&path).context("Failed to open cached index")?;
+				match self.set_index(&mut file) {
 					Ok(..) => {}
 					Err(..) => {
-						self.sync(paths).await?;
-						self.set_index(&tokio::fs::read_to_string(&path).await?)?;
+						self.sync(paths).await
+							.context("Failed to sync index")?;
 					}
 				};
 			} else {
-				self.sync(paths).await?;
+				self.sync(paths).await
+					.context("Failed to sync index")?;
 			}
 		}
 		Ok(())
@@ -82,23 +92,23 @@ impl PkgRepo {
 		self.url.clone() + "/api/mcvm/index.json"
 	}
 
-	// Ask if the index has a package and return the url for that package if it exists
+	/// Ask if the index has a package and return the url for that package if it exists
 	pub async fn query(
 		&mut self,
 		id: &str,
 		paths: &Paths,
 	) -> anyhow::Result<Option<(String, String)>> {
 		self.ensure_index(paths).await?;
-		if let Some(index) = &self.index {
-			if let Some(entry) = index.packages.get(id) {
-				return Ok(Some((entry.url.clone(), entry.version.clone())));
-			}
+		let index = self.index.get();
+		if let Some(entry) = index.packages.get(id) {
+			return Ok(Some((entry.url.clone(), entry.version.clone())));
 		}
+		
 		Ok(None)
 	}
 }
 
-// Query a list of repos
+/// Query a list of repos
 pub async fn query_all(
 	repos: &mut [PkgRepo],
 	name: &str,
