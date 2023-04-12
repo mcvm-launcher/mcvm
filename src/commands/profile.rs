@@ -127,9 +127,7 @@ async fn profile_update(data: &mut CmdData, id: &str, force: bool) -> anyhow::Re
 			} else {
 				(None, None)
 			};
-		let mut lock = Lockfile::open(paths)
-			.await
-			.context("Failed to open lockfile")?;
+		let mut lock = Lockfile::open(paths).context("Failed to open lockfile")?;
 		if lock.update_profile_version(id, version) {
 			cprintln!("<s>Updating profile version...");
 			for inst in profile.instances.iter() {

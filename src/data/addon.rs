@@ -9,7 +9,7 @@ use crate::package::reg::PkgIdentifier;
 use std::fmt::Display;
 use std::path::PathBuf;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy)]
 pub enum AddonKind {
 	ResourcePack,
 	Mod,
@@ -28,15 +28,7 @@ impl AddonKind {
 		}
 	}
 
-	pub fn to_string(&self) -> String {
-		match self {
-			Self::ResourcePack => String::from("resource_pack"),
-			Self::Mod => String::from("mod"),
-			Self::Plugin => String::from("plugin"),
-			Self::Shader => String::from("shader"),
-		}
-	}
-
+	/// Plural version of to_string
 	pub fn to_plural_string(&self) -> String {
 		match self {
 			Self::ResourcePack => String::from("resource_packs"),
@@ -44,6 +36,17 @@ impl AddonKind {
 			Self::Plugin => String::from("plugins"),
 			Self::Shader => String::from("shaders"),
 		}
+	}
+}
+
+impl Display for AddonKind {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "{}", match self {
+			Self::ResourcePack => "resource_pack",
+			Self::Mod => "mod",
+			Self::Plugin => "plugin",
+			Self::Shader => "shader",
+		})
 	}
 }
 

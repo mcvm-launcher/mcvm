@@ -14,8 +14,7 @@ use libflate::gzip::Decoder;
 use tar::Archive;
 
 use std::collections::HashSet;
-use std::fs;
-use std::io::Cursor;
+use std::fs::File;
 use std::path::{Path, PathBuf};
 
 use super::Later;
@@ -113,12 +112,12 @@ impl Java {
 
 /// Extracts the Adoptium JRE archive (either a tar or a zip)
 fn extract_adoptium_archive(arc_path: &Path, out_dir: &Path) -> anyhow::Result<()> {
-	let data = fs::read(arc_path).context("Failed to read archive file")?;
+	let mut file = File::open(arc_path).context("Failed to read archive file")?;
 	if cfg!(windows) {
-		zip_extract::extract(Cursor::new(data), out_dir, false)
+		zip_extract::extract(&mut file, out_dir, false)
 			.context("Failed to extract zip file")?;
 	} else {
-		let mut decoder = Decoder::new(data.as_slice()).context("Failed to decode tar.gz")?;
+		let mut decoder = Decoder::new(&mut file).context("Failed to decode tar.gz")?;
 		let mut arc = Archive::new(&mut decoder);
 		arc.unpack(out_dir).context("Failed to unarchive tar")?;
 	}

@@ -14,7 +14,7 @@ use self::keybinds::Keybind;
 
 use super::read::EnumOrNumber;
 
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone, Default)]
 #[serde(default)]
 pub struct KeyOptions {
 	pub attack: Option<Keybind>,
@@ -53,48 +53,7 @@ pub struct KeyOptions {
 	pub hotbar_9: Option<Keybind>,
 }
 
-impl Default for KeyOptions {
-	fn default() -> Self {
-		Self {
-			attack: None,
-			r#use: None,
-			forward: None,
-			left: None,
-			back: None,
-			right: None,
-			jump: None,
-			sneak: None,
-			sprint: None,
-			drop: None,
-			inventory: None,
-			chat: None,
-			playerlist: None,
-			pick_item: None,
-			command: None,
-			social_interactions: None,
-			screenshot: None,
-			toggle_perspective: None,
-			smooth_camera: None,
-			fullscreen: None,
-			spectator_outlines: None,
-			swap_offhand: None,
-			save_toolbar: None,
-			load_toolbar: None,
-			advancements: None,
-			hotbar_1: None,
-			hotbar_2: None,
-			hotbar_3: None,
-			hotbar_4: None,
-			hotbar_5: None,
-			hotbar_6: None,
-			hotbar_7: None,
-			hotbar_8: None,
-			hotbar_9: None,
-		}
-	}
-}
-
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone, Default)]
 #[serde(default)]
 pub struct ControlOptions {
 	pub keys: KeyOptions,
@@ -109,24 +68,7 @@ pub struct ControlOptions {
 	pub raw_mouse_input: Option<bool>,
 }
 
-impl Default for ControlOptions {
-	fn default() -> Self {
-		Self {
-			keys: KeyOptions::default(),
-			auto_jump: None,
-			discrete_mouse_scroll: None,
-			invert_mouse_y: None,
-			enable_touchscreen: None,
-			toggle_sprint: None,
-			toggle_crouch: None,
-			mouse_sensitivity: None,
-			mouse_wheel_sensitivity: None,
-			raw_mouse_input: None,
-		}
-	}
-}
-
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone, Default)]
 #[serde(default)]
 pub struct ChatOptions {
 	pub auto_command_suggestions: Option<bool>,
@@ -147,30 +89,7 @@ pub struct ChatOptions {
 	pub narrator_mode: Option<EnumOrNumber<NarratorMode>>,
 }
 
-impl Default for ChatOptions {
-	fn default() -> Self {
-		Self {
-			auto_command_suggestions: None,
-			enable_colors: None,
-			enable_links: None,
-			prompt_links: None,
-			force_unicode: None,
-			visibility: None,
-			opacity: None,
-			line_spacing: None,
-			background_opacity: None,
-			background_for_chat_only: None,
-			focused_height: None,
-			unfocused_height: None,
-			delay: None,
-			scale: None,
-			width: None,
-			narrator_mode: None,
-		}
-	}
-}
-
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone, Default)]
 #[serde(default)]
 pub struct VideoOptions {
 	pub vsync: Option<bool>,
@@ -203,42 +122,7 @@ pub struct VideoOptions {
 	pub allow_block_alternatives: Option<bool>,
 }
 
-impl Default for VideoOptions {
-	fn default() -> Self {
-		Self {
-			vsync: None,
-			entity_shadows: None,
-			fullscreen: None,
-			view_bobbing: None,
-			dark_mojang_background: None,
-			hide_lightning_flashes: None,
-			fov: None,
-			screen_effect_scale: None,
-			fov_effect_scale: None,
-			darkness_effect_scale: None,
-			brightness: None,
-			render_distance: None,
-			simulation_distance: None,
-			entity_distance_scaling: None,
-			gui_scale: None,
-			particles: None,
-			max_fps: None,
-			graphics_mode: None,
-			smooth_lighting: None,
-			chunk_updates_mode: None,
-			biome_blend: None,
-			clouds: None,
-			mipmap_levels: None,
-			window_width: None,
-			window_height: None,
-			attack_indicator: None,
-			fullscreen_resolution: None,
-			allow_block_alternatives: None,
-		}
-	}
-}
-
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone, Default)]
 #[serde(default)]
 pub struct VolumeOptions {
 	pub master: Option<f32>,
@@ -253,24 +137,7 @@ pub struct VolumeOptions {
 	pub voice: Option<f32>,
 }
 
-impl Default for VolumeOptions {
-	fn default() -> Self {
-		Self {
-			master: None,
-			music: None,
-			record: None,
-			weather: None,
-			block: None,
-			hostile: None,
-			neutral: None,
-			player: None,
-			ambient: None,
-			voice: None,
-		}
-	}
-}
-
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone, Default)]
 #[serde(default)]
 pub struct SoundOptions {
 	pub volume: VolumeOptions,
@@ -279,18 +146,7 @@ pub struct SoundOptions {
 	pub device: Option<String>,
 }
 
-impl Default for SoundOptions {
-	fn default() -> Self {
-		Self {
-			volume: VolumeOptions::default(),
-			show_subtitles: None,
-			directional_audio: None,
-			device: None,
-		}
-	}
-}
-
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone, Default)]
 #[serde(default)]
 pub struct SkinOptions {
 	pub cape: Option<bool>,
@@ -302,21 +158,7 @@ pub struct SkinOptions {
 	pub hat: Option<bool>,
 }
 
-impl Default for SkinOptions {
-	fn default() -> Self {
-		Self {
-			cape: None,
-			jacket: None,
-			left_sleeve: None,
-			right_sleeve: None,
-			left_pants: None,
-			right_pants: None,
-			hat: None,
-		}
-	}
-}
-
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone, Default)]
 #[serde(default)]
 pub struct ClientOptions {
 	pub data_version: Option<i16>,
@@ -347,41 +189,6 @@ pub struct ClientOptions {
 	pub hide_server_address: Option<bool>,
 	pub show_autosave_indicator: Option<bool>,
 	pub allow_server_listing: Option<bool>,
-}
-
-impl Default for ClientOptions {
-	fn default() -> Self {
-		Self {
-			data_version: None,
-			video: VideoOptions::default(),
-			control: ControlOptions::default(),
-			chat: ChatOptions::default(),
-			sound: SoundOptions::default(),
-			skin: SkinOptions::default(),
-			custom: HashMap::default(),
-			realms_notifications: None,
-			reduced_debug_info: None,
-			difficulty: None,
-			resource_packs: None,
-			language: None,
-			tutorial_step: None,
-			skip_multiplayer_warning: None,
-			skip_realms_32_bit_warning: None,
-			hide_bundle_tutorial: None,
-			joined_server: None,
-			sync_chunk_writes: None,
-			use_native_transport: None,
-			held_item_tooltips: None,
-			advanced_item_tooltips: None,
-			log_level: None,
-			hide_matched_names: None,
-			pause_on_lost_focus: None,
-			main_hand: None,
-			hide_server_address: None,
-			show_autosave_indicator: None,
-			allow_server_listing: None,
-		}
-	}
 }
 
 #[derive(Deserialize, Clone, Debug)]

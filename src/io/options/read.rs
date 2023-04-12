@@ -68,7 +68,7 @@ pub fn parse_options_str(string: &str) -> anyhow::Result<Options> {
 }
 
 /// Collect a hashmap from an existing options file so we can compare with it
-pub async fn read_options_file(
+pub fn read_options_file(
 	contents: &str,
 	separator: char,
 ) -> anyhow::Result<HashMap<String, String>> {
@@ -97,48 +97,48 @@ mod tests {
 		parse_options_str("{}").unwrap();
 	}
 
-	#[derive(Clone)]
-	enum TestEnum {
-		Foo,
-		Bar,
-	}
-
-	impl Display for TestEnum {
-		fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-			write!(
-				f,
-				"{}",
-				match self {
-					Self::Foo => "foo",
-					Self::Bar => "bar",
-				}
-			)
-		}
-	}
-
-	impl ToInt for TestEnum {
-		fn to_int(&self) -> i32 {
-			self.clone() as i32
-		}
-	}
-
 	#[test]
 	fn test_enums() {
+		#[derive(Clone)]
+		enum TestEnum {
+			Foo,
+			Bar,
+		}
+
+		impl Display for TestEnum {
+			fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+				write!(
+					f,
+					"{}",
+					match self {
+						Self::Foo => "foo",
+						Self::Bar => "bar",
+					}
+				)
+			}
+		}
+
+		impl ToInt for TestEnum {
+			fn to_int(&self) -> i32 {
+				self.clone() as i32
+			}
+		}
+		
 		assert_eq!(EnumOrNumber::Enum(TestEnum::Foo).to_int(), 0);
 		assert_eq!(EnumOrNumber::Enum(TestEnum::Bar).to_string(), "bar");
 		assert_eq!(EnumOrNumber::Enum(TestEnum::Foo).to_int().to_string(), "0");
 		assert_eq!(EnumOrString::Enum(TestEnum::Bar).to_string(), "bar");
 	}
 
-	#[tokio::test]
-	async fn test_read_options_file() -> anyhow::Result<()> {
+	#[test]
+	fn test_read_options_file() -> anyhow::Result<()> {
 		let text = r#"
 fov=12
 hello=world
 
 yes=false
 		"#;
-		let options = read_options_file(text, '=').await?;
+		let options = read_options_file(text, '=')?;
 
 		assert_eq!(options.get("fov").unwrap(), "12");
 		assert_eq!(options.get("hello").unwrap(), "world");

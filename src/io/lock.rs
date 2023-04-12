@@ -1,5 +1,5 @@
 use std::collections::HashMap;
-use std::fs;
+use std::fs::{self, File};
 use std::path::PathBuf;
 
 use anyhow::{anyhow, Context};
@@ -82,13 +82,11 @@ pub struct Lockfile {
 
 impl Lockfile {
 	/// Open the lockfile
-	pub async fn open(paths: &Paths) -> anyhow::Result<Self> {
+	pub fn open(paths: &Paths) -> anyhow::Result<Self> {
 		let path = Self::get_path(paths);
 		let contents = if path.exists() {
-			let contents = tokio::fs::read_to_string(path)
-				.await
-				.context("Failed to read lockfile")?;
-			serde_json::from_str(&contents).context("Failed to parse JSON")?
+			let mut file = File::open(&path).context("Failed to open lockfile")?;
+			serde_json::from_reader(&mut file).context("Failed to parse JSON")?
 		} else {
 			LockfileContents::default()
 		};

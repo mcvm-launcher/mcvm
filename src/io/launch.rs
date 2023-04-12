@@ -10,15 +10,16 @@ use color_print::cprintln;
 
 use crate::data::config::instance::QuickPlay;
 use crate::data::instance::Side;
+use crate::data::instance::launch::client::create_quick_play_args;
 use crate::io::java::args::ArgsPreset;
 use crate::io::java::{
 	args::{MemoryArg, MemoryNum},
 	JavaKind,
 };
-use crate::util::versions::VersionPattern;
 
 use super::files::paths::Paths;
 
+/// Options for launching after conversion from the deserialized version
 #[derive(Debug)]
 pub struct LaunchOptions {
 	pub java: JavaKind,
@@ -66,57 +67,14 @@ impl LaunchOptions {
 		let mut out = self.game_args.clone();
 
 		if let Side::Client = side {
-			match &self.quick_play {
-				QuickPlay::World { .. } | QuickPlay::Realm { .. } | QuickPlay::Server { .. } => {
-					let after_23w14a = VersionPattern::After(String::from("23w14a"))
-						.matches_single(version, version_list);
-					out.push(String::from("--quickPlayPath"));
-					out.push(String::from("quickPlay/log.json"));
-					match &self.quick_play {
-						QuickPlay::None => {}
-						QuickPlay::World { world } => {
-							if after_23w14a {
-								out.push(String::from("--quickPlaySingleplayer"));
-								out.push(world.clone());
-							} else {
-								cprintln!("<y>Warning: World Quick Play has no effect before 23w14a (1.20)");
-							}
-						}
-						QuickPlay::Realm { realm } => {
-							if after_23w14a {
-								out.push(String::from("--quickPlayRealms"));
-								out.push(realm.clone());
-							} else {
-								cprintln!("<y>Warning: Realm Quick Play has no effect before 23w14a (1.20)");
-							}
-						}
-						QuickPlay::Server { server, port } => {
-							if after_23w14a {
-								out.push(String::from("--quickPlayMultiplayer"));
-								if let Some(port) = port {
-									out.push(format!("{server}:{port}"));
-								} else {
-									out.push(server.clone());
-								}
-							} else {
-								out.push(String::from("--server"));
-								out.push(server.clone());
-								if let Some(port) = port {
-									out.push(String::from("--port"));
-									out.push(port.to_string());
-								}
-							}
-						}
-					}
-				}
-				_ => {}
-			}
+			out.extend(create_quick_play_args(&self.quick_play, version, version_list));
 		}
 
 		out
 	}
 }
 
+/// Get the name of the launch log file
 fn log_file_name(instance_name: &str) -> anyhow::Result<String> {
 	let now = SystemTime::now();
 	Ok(format!(
@@ -125,48 +83,54 @@ fn log_file_name(instance_name: &str) -> anyhow::Result<String> {
 	))
 }
 
+/// Get the path to the launch log file
 fn log_file_path(instance_name: &str, paths: &Paths) -> anyhow::Result<PathBuf> {
 	Ok(paths.launch_logs.join(log_file_name(instance_name)?))
 }
 
+/// Argument for the launch function
+pub struct LaunchArgument<'a> {
+	pub instance_name: &'a str,
+	pub side: Side,
+	pub options: &'a LaunchOptions,
+	pub debug: bool,
+	pub version: &'a str,
+	pub version_list: &'a [String],
+	pub cwd: &'a Path,
+	pub command: &'a str,
+	pub jvm_args: &'a [String],
+	pub main_class: Option<&'a str>,
+	pub game_args: &'a [String],
+}
+
 /// Launch the game
-pub fn launch(
+pub fn launch<'a>(
 	paths: &Paths,
-	instance_name: &str,
-	side: Side,
-	options: &LaunchOptions,
-	debug: bool,
-	version: &str,
-	version_list: &[String],
-	cwd: &Path,
-	command: &str,
-	jvm_args: &[String],
-	main_class: Option<&str>,
-	game_args: &[String],
+	arg: &LaunchArgument<'a>
 ) -> anyhow::Result<()> {
-	let mut log = File::create(log_file_path(instance_name, paths)?)
+	let mut log = File::create(log_file_path(arg.instance_name, paths)?)
 		.context("Failed to open launch log file")?;
-	let mut cmd = match &options.wrapper {
+	let mut cmd = match &arg.options.wrapper {
 		Some(wrapper) => {
 			let mut cmd = Command::new(wrapper);
-			cmd.arg(command);
+			cmd.arg(arg.command);
 			cmd
 		}
-		None => Command::new(command),
+		None => Command::new(arg.command),
 	};
-	cmd.current_dir(cwd);
-	cmd.envs(options.env.clone());
+	cmd.current_dir(arg.cwd);
+	cmd.envs(arg.options.env.clone());
 
-	cmd.args(options.generate_jvm_args());
-	cmd.args(jvm_args);
-	if let Some(main_class) = main_class {
+	cmd.args(arg.options.generate_jvm_args());
+	cmd.args(arg.jvm_args);
+	if let Some(main_class) = arg.main_class {
 		cmd.arg(main_class);
 	}
-	cmd.args(game_args);
-	cmd.args(options.generate_game_args(version, version_list, side));
+	cmd.args(arg.game_args);
+	cmd.args(arg.options.generate_game_args(arg.version, arg.version_list, arg.side));
 
 	writeln!(log, "Launch command: {cmd:#?}").context("Failed to write to launch log file")?;
-	if debug {
+	if arg.debug {
 		cprintln!("<s>Launch command:");
 		cprintln!("<k!>{:#?}", cmd);
 	}

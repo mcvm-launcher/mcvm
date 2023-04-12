@@ -37,7 +37,7 @@ impl InstKind {
 }
 
 /// Minecraft game side, client or server
-#[derive(Debug, Clone, Hash, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, Hash, PartialEq, Eq)]
 pub enum Side {
 	Client,
 	Server,

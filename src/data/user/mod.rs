@@ -7,6 +7,7 @@ pub enum UserKind {
 	Unverified,
 }
 
+/// A user account that can play the game
 #[derive(Debug)]
 pub struct User {
 	pub kind: UserKind,
@@ -32,12 +33,14 @@ impl User {
 	}
 }
 
+/// State of authentication
 #[derive(Debug)]
 pub enum AuthState {
 	Authed(String),
 	Offline,
 }
 
+/// List of users and AuthState
 #[derive(Debug)]
 pub struct Auth {
 	pub state: AuthState,
@@ -52,6 +55,7 @@ impl Auth {
 		}
 	}
 
+	/// Get the currently chosen user, if there is one
 	pub fn get_user(&self) -> Option<&User> {
 		match &self.state {
 			AuthState::Authed(user_id) => self.users.get(user_id),
@@ -60,6 +64,7 @@ impl Auth {
 	}
 }
 
+/// Validate a Minecraft username
 pub fn validate_username(kind: UserKind, name: &str) -> bool {
 	match kind {
 		UserKind::Microsoft | UserKind::Demo | UserKind::Unverified => {

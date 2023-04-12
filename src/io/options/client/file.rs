@@ -35,7 +35,7 @@ pub async fn read_options_txt(path: &Path) -> anyhow::Result<HashMap<String, Str
 		let contents = tokio::fs::read_to_string(path)
 			.await
 			.context("Failed to read options.txt")?;
-		read_options_file(&contents, SEP).await
+		read_options_file(&contents, SEP)
 	} else {
 		Ok(HashMap::new())
 	}

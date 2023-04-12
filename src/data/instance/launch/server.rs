@@ -2,7 +2,7 @@ use anyhow::Context;
 
 use crate::data::instance::{InstKind, Instance};
 use crate::io::files::paths::Paths;
-use crate::io::launch::launch;
+use crate::io::launch::{launch, LaunchArgument};
 
 impl Instance {
 	/// Launch a server
@@ -30,22 +30,23 @@ impl Instance {
 		jvm_args.push(String::from(jar_path_str));
 		game_args.push(String::from("nogui"));
 
-		launch(
-			paths,
-			&self.id,
-			self.kind.to_side(),
-			&self.launch,
+		let launch_args = LaunchArgument {
+			instance_name: &self.id,
+			side: self.kind.to_side(),
+			options: &self.launch,
 			debug,
 			version,
 			version_list,
-			&server_dir,
-			jre_path
+			cwd: &server_dir,
+			command: jre_path
 				.to_str()
 				.context("Failed to convert java path to a string")?,
-			&jvm_args,
-			self.main_class.as_deref(),
-			&game_args,
-		)
+			jvm_args: &jvm_args,
+			main_class: self.main_class.as_deref(),
+			game_args: &game_args,
+		};
+
+		launch(paths, &launch_args)
 		.context("Failed to run launch command")?;
 
 		Ok(())
