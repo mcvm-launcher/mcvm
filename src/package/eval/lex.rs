@@ -55,22 +55,19 @@ impl Token {
 	}
 }
 
-/// Text positional information
+/// Text positional information with row and column
 #[derive(Clone)]
-pub struct TextPos {
-	pub row: usize,
-	pub col: usize,
-}
+pub struct TextPos (usize, usize);
 
 impl Debug for TextPos {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		write!(f, "({}:{})", self.row, self.col)
+		write!(f, "({}:{})", self.0, self.1)
 	}
 }
 
 impl Display for TextPos {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		write!(f, "({}:{})", self.row, self.col)
+		write!(f, "({}:{})", self.0, self.1)
 	}
 }
 
@@ -134,10 +131,7 @@ pub fn lex(text: &str) -> anyhow::Result<Vec<(Token, TextPos)>> {
 	let mut num_str = String::new();
 
 	for (i, c) in text.chars().enumerate() {
-		let pos = TextPos {
-			row: line_n,
-			col: i - last_line_i,
-		};
+		let pos = TextPos(line_n, i - last_line_i);
 		if c == '\n' {
 			line_n += 1;
 			last_line_i = i;
@@ -277,10 +271,7 @@ pub fn lex(text: &str) -> anyhow::Result<Vec<(Token, TextPos)>> {
 			tok = Token::None;
 		}
 	}
-	let final_pos = TextPos {
-		row: line_n,
-		col: text.len() - last_line_i,
-	};
+	let final_pos = TextPos(line_n, text.len() - last_line_i);
 	match &mut tok {
 		Token::Num(num) => {
 			*num = num_str.parse().expect("Number contains invalid characters");
