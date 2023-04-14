@@ -2,7 +2,7 @@ use std::path::Path;
 
 use anyhow::Context;
 use cfg_match::cfg_match;
-use reqwest::{Client, Url};
+use reqwest::{Client, Url, IntoUrl};
 use serde::de::DeserializeOwned;
 
 // Sensible open file descriptor limit for asynchronous transfers
@@ -15,8 +15,8 @@ cfg_match! {
 	}
 }
 
-/// Downloads a file
-pub async fn download(url: &str) -> anyhow::Result<reqwest::Response> {
+/// Downloads data from a remote location
+pub async fn download(url: impl IntoUrl) -> anyhow::Result<reqwest::Response> {
 	let resp = Client::new()
 		.get(url)
 		.send()
@@ -29,7 +29,7 @@ pub async fn download(url: &str) -> anyhow::Result<reqwest::Response> {
 }
 
 /// Downloads and returns text
-pub async fn download_text(url: &str) -> anyhow::Result<String> {
+pub async fn text(url: impl IntoUrl) -> anyhow::Result<String> {
 	let text = download(url)
 		.await
 		.context("Failed to download")?
@@ -41,7 +41,7 @@ pub async fn download_text(url: &str) -> anyhow::Result<String> {
 }
 
 /// Downloads and returns bytes
-pub async fn download_bytes(url: &str) -> anyhow::Result<bytes::Bytes> {
+pub async fn bytes(url: impl IntoUrl) -> anyhow::Result<bytes::Bytes> {
 	let bytes = download(url)
 		.await
 		.context("Failed to download")?
@@ -53,8 +53,8 @@ pub async fn download_bytes(url: &str) -> anyhow::Result<bytes::Bytes> {
 }
 
 /// Downloads and puts the contents in a file
-pub async fn download_file(url: &str, path: &Path) -> anyhow::Result<()> {
-	let bytes = download_bytes(url)
+pub async fn file(url: impl IntoUrl, path: &Path) -> anyhow::Result<()> {
+	let bytes = bytes(url)
 		.await
 		.context("Failed to download data")?;
 	tokio::fs::write(path, bytes).await.with_context(|| {
@@ -68,7 +68,7 @@ pub async fn download_file(url: &str, path: &Path) -> anyhow::Result<()> {
 }
 
 /// Downloads and deserializes the contents into JSON
-pub async fn download_json<T: DeserializeOwned>(url: &str) -> anyhow::Result<T> {
+pub async fn json<T: DeserializeOwned>(url: impl IntoUrl) -> anyhow::Result<T> {
 	download(url)
 		.await
 		.context("Failed to download JSON data")?

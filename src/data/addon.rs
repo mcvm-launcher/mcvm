@@ -3,7 +3,7 @@ use serde::Deserialize;
 
 use crate::io::files::create_leading_dirs;
 use crate::io::files::paths::Paths;
-use crate::net::download::download_file;
+use crate::net::download;
 use crate::package::reg::PkgIdentifier;
 
 use std::fmt::Display;
@@ -115,7 +115,7 @@ impl AddonRequest {
 		create_leading_dirs(&path)?;
 		match &self.location {
 			AddonLocation::Remote(url) => {
-				download_file(url, &path)
+				download::file(url, &path)
 					.await
 					.context("Failed to download addon")?;
 			}

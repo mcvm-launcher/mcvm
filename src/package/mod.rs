@@ -4,7 +4,7 @@ pub mod repo;
 
 use crate::io::files::paths::Paths;
 use crate::io::Later;
-use crate::net::download::download_text;
+use crate::net::download;
 
 use std::fs;
 use std::path::PathBuf;
@@ -94,7 +94,7 @@ impl Package {
 							.fill(PkgData::new(&tokio::fs::read_to_string(path).await?));
 					} else {
 						let url = url.as_ref().expect("URL for remote package missing");
-						let text = download_text(url).await?;
+						let text = download::text(url).await?;
 						tokio::fs::write(&path, &text).await?;
 						self.data.fill(PkgData::new(&text));
 					}

@@ -4,7 +4,7 @@ pub mod classpath;
 use crate::data::profile::update::UpdateManager;
 use crate::io::files::{self, paths::Paths};
 use crate::net;
-use crate::net::download::download_file;
+use crate::net::download;
 use crate::util::json;
 use crate::util::print::ReplPrinter;
 
@@ -96,7 +96,7 @@ impl Java {
 					"Downloading Adoptium Temurin JRE <b>{}</b>...",
 					json::access_str(&version, "release_name")?
 				));
-				download_file(bin_url, &arc_path)
+				download::file(bin_url, &arc_path)
 					.await
 					.context("Failed to download JRE binaries")?;
 

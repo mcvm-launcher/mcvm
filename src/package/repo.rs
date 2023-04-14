@@ -1,6 +1,6 @@
 use crate::io::files::paths::Paths;
 use crate::io::Later;
-use crate::net::download::download_bytes;
+use crate::net::download;
 use crate::skip_fail;
 
 use anyhow::Context;
@@ -56,7 +56,7 @@ impl PkgRepo {
 
 	/// Update the currently cached index file
 	pub async fn sync(&mut self, paths: &Paths) -> anyhow::Result<()> {
-		let bytes = download_bytes(&self.index_url())
+		let bytes = download::bytes(&self.index_url())
 			.await
 			.context("Failed to download index")?;
 		let mut cursor = Cursor::new(&bytes);

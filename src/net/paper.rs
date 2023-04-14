@@ -4,7 +4,7 @@ use anyhow::{anyhow, Context};
 use reqwest::Client;
 use serde::Deserialize;
 
-use super::download::{download_file, download_text};
+use super::download;
 
 #[derive(Deserialize)]
 struct VersionInfoResponse {
@@ -46,7 +46,7 @@ pub async fn get_jar_file_name(version: &str, build_num: u16) -> anyhow::Result<
 	let num_str = build_num.to_string();
 	let url =
 		format!("https://api.papermc.io/v2/projects/paper/versions/{version}/builds/{num_str}");
-	let resp = serde_json::from_str::<BuildInfoResponse>(&download_text(&url).await?)?;
+	let resp = serde_json::from_str::<BuildInfoResponse>(&download::text(&url).await?)?;
 
 	Ok(resp.downloads.application.name)
 }
@@ -62,7 +62,7 @@ pub async fn download_server_jar(
 	let file_path = path.join(file_name);
 	let url = format!("https://api.papermc.io/v2/projects/paper/versions/{version}/builds/{num_str}/downloads/{file_name}");
 
-	download_file(&url, &file_path)
+	download::file(&url, &file_path)
 		.await
 		.context("Failed to download file")?;
 

@@ -18,7 +18,7 @@ use std::fs::File;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 
-use super::download::{download_file, download_text, FD_SENSIBLE_LIMIT};
+use super::download::{self, FD_SENSIBLE_LIMIT};
 
 pub mod version_manifest {
 	use super::*;
@@ -29,7 +29,7 @@ pub mod version_manifest {
 		files::create_dir_async(&path).await?;
 		path.push("manifest.json");
 
-		let text = download_text("https://piston-meta.mojang.com/mc/game/version_manifest_v2.json")
+		let text = download::text("https://piston-meta.mojang.com/mc/game/version_manifest_v2.json")
 			.await
 			.context("Failed to download manifest")?;
 		tokio::fs::write(&path, &text)
@@ -92,7 +92,7 @@ pub mod version_manifest {
 		let version_json_name: String = version_string.clone() + ".json";
 		let version_dir = paths.internal.join("versions").join(version_string);
 		files::create_dir_async(&version_dir).await?;
-		let text = download_text(version_url.expect("Version does not exist"))
+		let text = download::text(version_url.expect("Version does not exist"))
 			.await
 			.context("Failed to download version JSON")?;
 		tokio::fs::write(version_dir.join(version_json_name), &text)
@@ -328,7 +328,7 @@ pub mod assets {
 	use super::*;
 
 	async fn download_index(url: &str, path: &Path) -> anyhow::Result<Box<json::JsonObject>> {
-		let text = download_text(url)
+		let text = download::text(url)
 			.await
 			.context("Failed to download index")?;
 		tokio::fs::write(path, &text)
@@ -477,7 +477,7 @@ pub mod game_jar {
 		let download =
 			json::access_object(json::access_object(version_json, "downloads")?, &side_str)?;
 		let url = json::access_str(download, "url")?;
-		download_file(url, &path)
+		download::file(url, &path)
 			.await
 			.context("Failed to download file")?;
 		printer.print(&cformat!(
