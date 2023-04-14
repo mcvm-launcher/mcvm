@@ -311,7 +311,7 @@ impl Instruction {
 		}
 		if eval.level.is_deps() {
 			match &self.kind {
-				InstrKind::Rely(deps, ..) => {
+				InstrKind::Require(deps, ..) => {
 					for dep in deps {
 						let mut dep_to_push = Vec::new();
 						for dep in dep {

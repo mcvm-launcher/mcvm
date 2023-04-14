@@ -24,7 +24,7 @@ pub enum InstrKind {
 		path: Value,
 	},
 	Set(Option<String>, Value),
-	Rely(Vec<Vec<Value>>, Option<Vec<Value>>),
+	Require(Vec<Vec<Value>>, Option<Vec<Value>>),
 	Finish(),
 	Fail(Option<FailReason>),
 }
@@ -49,7 +49,7 @@ impl Instruction {
 			"set" => Ok(InstrKind::Set(None, Value::None)),
 			"finish" => Ok(InstrKind::Finish()),
 			"fail" => Ok(InstrKind::Fail(None)),
-			"rely" => Ok(InstrKind::Rely(Vec::new(), None)),
+			"require" => Ok(InstrKind::Require(Vec::new(), None)),
 			string => bail!("Unknown instruction '{string}' {}", pos),
 		}?;
 		Ok(Instruction::new(kind))
@@ -86,7 +86,7 @@ impl Instruction {
 					}
 					_ => unexpected_token!(tok, pos),
 				},
-				InstrKind::Rely(deps, dep) => match tok {
+				InstrKind::Require(deps, dep) => match tok {
 					Token::Paren(Side::Left) => match dep {
 						Some(..) => {
 							unexpected_token!(tok, pos);
