@@ -71,25 +71,40 @@ impl Parsed {
 	}
 }
 
-/// State of the addon parser
-#[derive(Debug)]
-enum AddonMode {
-	Opening,
-	Key,
-	Colon,
-	Value,
-	Comma,
-}
+mod addon {
+	use super::*;
 
-/// Current key for the addon parser
-#[derive(Debug)]
-enum AddonKey {
-	None,
-	Kind,
-	Url,
-	Force,
-	Append,
-	Path,
+	/// State of the addon parser
+	#[derive(Debug)]
+	pub enum Mode {
+		Opening,
+		Key,
+		Colon,
+		Value,
+		Comma,
+		Semicolon,
+	}
+	
+	/// Current key for the addon parser
+	#[derive(Debug)]
+	pub enum Key {
+		None,
+		Kind,
+		Url,
+		Force,
+		Append,
+		Path,
+	}
+
+	/// Keys that have been filled
+	#[derive(Debug)]
+	pub struct FilledKeys {
+		pub kind: Option<AddonKind>,
+		pub url: Value,
+		pub force: bool,
+		pub append: Value,
+		pub path: Value,
+	}
 }
 
 /// Mode for what we are currently parsing
@@ -100,14 +115,11 @@ enum ParseMode {
 	Instruction(Instruction),
 	If(Option<Condition>),
 	Addon {
-		mode: AddonMode,
-		key: AddonKey,
+		mode: addon::Mode,
+		/// The key we are currently parsing
+		key: addon::Key,
 		name: Value,
-		kind: Option<AddonKind>,
-		url: Value,
-		force: bool,
-		append: Value,
-		path: Value,
+		filled_keys: addon::FilledKeys,
 	},
 }
 
@@ -196,14 +208,16 @@ impl Package {
 							"if" => prs.mode = ParseMode::If(None),
 							"addon" => {
 								prs.mode = ParseMode::Addon {
-									mode: AddonMode::Opening,
-									key: AddonKey::None,
+									mode: addon::Mode::Opening,
+									key: addon::Key::None,
 									name: Value::None,
-									kind: None,
-									url: Value::None,
-									force: false,
-									append: Value::None,
-									path: Value::None,
+									filled_keys: addon::FilledKeys {
+										kind: None,
+										url: Value::None,
+										force: false,
+										append: Value::None,
+										path: Value::None,
+									},
 								};
 							}
 							name => {
@@ -286,52 +300,48 @@ impl Package {
 					mode,
 					key,
 					name,
-					kind,
-					url,
-					force,
-					append,
-					path,
+					filled_keys,
 				} => {
 					match mode {
-						AddonMode::Opening => match tok {
+						addon::Mode::Opening => match tok {
 							Token::Paren(Side::Left) => {
 								if let Value::None = name {
 									unexpected_token!(tok, pos)
 								}
-								*mode = AddonMode::Key;
+								*mode = addon::Mode::Key;
 							}
 							_ => *name = parse_arg(tok, pos)?,
 						},
-						AddonMode::Key => match tok {
+						addon::Mode::Key => match tok {
 							Token::Ident(name) => {
 								match name.as_str() {
-									"kind" => *key = AddonKey::Kind,
-									"url" => *key = AddonKey::Url,
-									"force" => *key = AddonKey::Force,
-									"append" => *key = AddonKey::Append,
-									"path" => *key = AddonKey::Path,
+									"kind" => *key = addon::Key::Kind,
+									"url" => *key = addon::Key::Url,
+									"force" => *key = addon::Key::Force,
+									"append" => *key = addon::Key::Append,
+									"path" => *key = addon::Key::Path,
 									_ => {
 										bail!(
-											"Unknown addon key {} {}",
+											"Unknown key {} for 'addon' instruction {}",
 											name.to_owned(),
 											pos.clone()
 										);
 									}
 								}
-								*mode = AddonMode::Colon;
+								*mode = addon::Mode::Colon;
 							}
 							_ => unexpected_token!(tok, pos),
 						},
-						AddonMode::Colon => match tok {
-							Token::Colon => *mode = AddonMode::Value,
+						addon::Mode::Colon => match tok {
+							Token::Colon => *mode = addon::Mode::Value,
 							_ => unexpected_token!(tok, pos),
 						},
-						AddonMode::Value => match tok {
+						addon::Mode::Value => match tok {
 							Token::Ident(name) => {
 								match key {
-									AddonKey::Kind => *kind = AddonKind::from_str(name),
-									AddonKey::Force => match yes_no(name) {
-										Some(value) => *force = value,
+									addon::Key::Kind => filled_keys.kind = AddonKind::from_str(name),
+									addon::Key::Force => match yes_no(name) {
+										Some(value) => filled_keys.force = value,
 										None => {
 											bail!(
 												"Expected 'yes' or 'no', but got '{}' {}",
@@ -342,28 +352,34 @@ impl Package {
 									},
 									_ => unexpected_token!(tok, pos),
 								}
-								*mode = AddonMode::Comma;
+								*mode = addon::Mode::Comma;
 							}
 							_ => {
 								match key {
-									AddonKey::Url => *url = parse_arg(tok, pos)?,
-									AddonKey::Append => *append = parse_arg(tok, pos)?,
-									AddonKey::Path => *path = parse_arg(tok, pos)?,
+									addon::Key::Url => filled_keys.url = parse_arg(tok, pos)?,
+									addon::Key::Append => filled_keys.append = parse_arg(tok, pos)?,
+									addon::Key::Path => filled_keys.path = parse_arg(tok, pos)?,
 									_ => unexpected_token!(tok, pos),
 								}
-								*mode = AddonMode::Comma;
+								*mode = addon::Mode::Comma;
 							}
 						},
-						AddonMode::Comma => match tok {
-							Token::Comma => *mode = AddonMode::Key,
+						addon::Mode::Comma => match tok {
+							Token::Comma => *mode = addon::Mode::Key,
 							Token::Paren(Side::Right) => {
+								*mode = addon::Mode::Semicolon;
+							}
+							_ => unexpected_token!(tok, pos),
+						},
+						addon::Mode::Semicolon => match tok {
+							Token::Semicolon => {
 								instr_to_push = Some(Instruction::new(InstrKind::Addon {
 									name: name.clone(),
-									kind: *kind,
-									url: url.clone(),
-									force: *force,
-									append: append.clone(),
-									path: path.clone(),
+									kind: filled_keys.kind,
+									url: filled_keys.url.clone(),
+									force: filled_keys.force,
+									append: filled_keys.append.clone(),
+									path: filled_keys.path.clone(),
 								}));
 								prs.mode = ParseMode::Root;
 							}
