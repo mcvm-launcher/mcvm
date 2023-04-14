@@ -77,7 +77,9 @@ mod addon {
 	/// State of the addon parser
 	#[derive(Debug)]
 	pub enum Mode {
-		Opening,
+		Id,
+		FileName,
+		OpenParen,
 		Key,
 		Colon,
 		Value,
@@ -118,7 +120,8 @@ enum ParseMode {
 		mode: addon::Mode,
 		/// The key we are currently parsing
 		key: addon::Key,
-		name: Value,
+		id: Value,
+		file_name: Value,
 		filled_keys: addon::FilledKeys,
 	},
 }
@@ -208,9 +211,10 @@ impl Package {
 							"if" => prs.mode = ParseMode::If(None),
 							"addon" => {
 								prs.mode = ParseMode::Addon {
-									mode: addon::Mode::Opening,
+									mode: addon::Mode::Id,
 									key: addon::Key::None,
-									name: Value::None,
+									id: Value::None,
+									file_name: Value::None,
 									filled_keys: addon::FilledKeys {
 										kind: None,
 										url: Value::None,
@@ -299,18 +303,27 @@ impl Package {
 				ParseMode::Addon {
 					mode,
 					key,
-					name,
+					id,
+					file_name,
 					filled_keys,
 				} => {
 					match mode {
-						addon::Mode::Opening => match tok {
+						addon::Mode::Id => {
+							*id = parse_arg(tok, pos)?;
+							*mode = addon::Mode::FileName;
+						},
+						addon::Mode::FileName => match tok {
 							Token::Paren(Side::Left) => {
-								if let Value::None = name {
-									unexpected_token!(tok, pos)
-								}
-								*mode = addon::Mode::Key;
-							}
-							_ => *name = parse_arg(tok, pos)?,
+								bail!("It is now required to have a filename field for addons");
+							},
+							_ => {
+								*file_name = parse_arg(tok, pos)?;
+								*mode = addon::Mode::OpenParen;
+							},
+						},
+						addon::Mode::OpenParen => match tok {
+							Token::Paren(Side::Left) => *mode = addon::Mode::Key,
+							_ => unexpected_token!(tok, pos),
 						},
 						addon::Mode::Key => match tok {
 							Token::Ident(name) => {
@@ -374,7 +387,8 @@ impl Package {
 						addon::Mode::Semicolon => match tok {
 							Token::Semicolon => {
 								instr_to_push = Some(Instruction::new(InstrKind::Addon {
-									name: name.clone(),
+									id: id.clone(),
+									file_name: file_name.clone(),
 									kind: filled_keys.kind,
 									url: filled_keys.url.clone(),
 									force: filled_keys.force,

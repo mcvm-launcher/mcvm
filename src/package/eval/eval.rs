@@ -267,20 +267,23 @@ impl Instruction {
 					bail!("Package script failed with reason: {}", reason.to_string());
 				}
 				InstrKind::Addon {
-					name,
+					id,
+					file_name,
 					kind,
 					url,
 					force,
 					append,
 					path,
 				} => {
-					let name = match append {
-						Value::None => name.get(&eval.vars)?,
-						_ => append.get(&eval.vars)? + "-" + &name.get(&eval.vars)?,
+					let id = id.get(&eval.vars)?;
+					let file_name = match append {
+						Value::None => file_name.get(&eval.vars)?,
+						_ => append.get(&eval.vars)? + "-" + &file_name.get(&eval.vars)?,
 					};
 					let addon = Addon::new(
 						*kind.as_ref().expect("Addon kind missing"),
-						&name,
+						&id,
+						&file_name,
 						eval.id.clone(),
 					);
 
@@ -299,11 +302,11 @@ impl Instruction {
 									.push(AddonRequest::new(addon, location, *force));
 							}
 							_ => {
-								bail!("Insufficient permissions to add a local addon {name}");
+								bail!("Insufficient permissions to add a local addon {id}");
 							}
 						}
 					} else {
-						bail!("No location (url/path) was specified for addon {name}");
+						bail!("No location (url/path) was specified for addon {id}");
 					}
 				}
 				_ => {}

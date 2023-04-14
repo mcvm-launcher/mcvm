@@ -173,9 +173,9 @@ impl Instance {
 
 	fn link_addon(dir: &Path, addon: &Addon, paths: &Paths) -> anyhow::Result<()> {
 		files::create_dir(dir)?;
-		let link = dir.join(&addon.name);
+		let link = dir.join(&addon.file_name);
 		if !link.exists() {
-			fs::hard_link(addon.get_path(paths), dir.join(&addon.name))
+			fs::hard_link(addon.get_path(paths), link)
 				.context("Failed to create hard link")?;
 		}
 		Ok(())
@@ -187,7 +187,7 @@ impl Instance {
 		files::create_dir(&inst_dir)?;
 		if let Some(path) = self.get_linked_addon_path(addon, paths) {
 			Self::link_addon(&path, addon, paths)
-				.with_context(|| format!("Failed to link addon {}", addon.name))?;
+				.with_context(|| format!("Failed to link addon {}", addon.id))?;
 		}
 
 		Ok(())
@@ -195,7 +195,7 @@ impl Instance {
 
 	pub fn remove_addon(&self, addon: &Addon, paths: &Paths) -> anyhow::Result<()> {
 		if let Some(path) = self.get_linked_addon_path(addon, paths) {
-			let path = path.join(&addon.name);
+			let path = path.join(&addon.file_name);
 			if path.exists() {
 				fs::remove_file(&path)
 					.with_context(|| format!("Failed to remove addon at {}", path.display()))?;

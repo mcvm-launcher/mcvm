@@ -196,7 +196,7 @@ async fn profile_update(data: &mut CmdData, id: &str, force: bool) -> anyhow::Re
 							addon.acquire(paths).await.with_context(|| {
 								format!(
 									"Failed to acquire addon {} for instance {}",
-									addon.addon.name, instance_id
+									addon.addon.id, instance_id
 								)
 							})?;
 							instance
@@ -204,7 +204,7 @@ async fn profile_update(data: &mut CmdData, id: &str, force: bool) -> anyhow::Re
 								.with_context(|| {
 									format!(
 										"Failed to install addon {} for instance {}",
-										addon.addon.name, instance_id
+										addon.addon.id, instance_id
 									)
 								})?;
 						}
@@ -217,13 +217,13 @@ async fn profile_update(data: &mut CmdData, id: &str, force: bool) -> anyhow::Re
 							.update_package(&pkg.req.name, instance_id, &version, &lockfile_addons)
 							.context("Failed to update package in lockfile")?;
 						for addon in eval.addon_reqs.iter() {
-							if addons_to_remove.contains(&addon.addon.name) {
+							if addons_to_remove.contains(&addon.addon.id) {
 								instance
 									.remove_addon(&addon.addon, paths)
 									.with_context(|| {
 										format!(
 											"Failed to remove addon {} for instance {}",
-											addon.addon.name, instance_id
+											addon.addon.id, instance_id
 										)
 									})?;
 							}
@@ -251,7 +251,7 @@ async fn profile_update(data: &mut CmdData, id: &str, force: bool) -> anyhow::Re
 						instance.remove_addon(&addon, paths).with_context(|| {
 							format!(
 								"Failed to remove addon {} for instance {}",
-								addon.name, instance_id
+								addon.id, instance_id
 							)
 						})?;
 					}

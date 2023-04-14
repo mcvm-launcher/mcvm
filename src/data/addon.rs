@@ -57,16 +57,18 @@ impl Display for AddonKind {
 #[derive(Debug, Clone)]
 pub struct Addon {
 	pub kind: AddonKind,
-	pub name: String,
-	pub id: PkgIdentifier,
+	pub id: String,
+	pub file_name: String,
+	pub pkg_id: PkgIdentifier,
 }
 
 impl Addon {
-	pub fn new(kind: AddonKind, name: &str, id: PkgIdentifier) -> Self {
+	pub fn new(kind: AddonKind, id: &str, file_name: &str, pkg_id: PkgIdentifier) -> Self {
 		Self {
 			kind,
-			name: name.to_owned(),
-			id,
+			id: id.to_owned(),
+			file_name: file_name.to_owned(),
+			pkg_id,
 		}
 	}
 
@@ -78,9 +80,9 @@ impl Addon {
 	/// Get the path to the addon
 	pub fn get_path(&self, paths: &Paths) -> PathBuf {
 		self.get_dir(paths)
-			.join(&self.id.name)
-			.join(&self.id.version)
-			.join(&self.name)
+			.join(&self.pkg_id.name)
+			.join(&self.pkg_id.version)
+			.join(&self.file_name)
 	}
 }
 

@@ -16,7 +16,8 @@ pub enum InstrKind {
 	Version(Value),
 	DefaultFeatures(Vec<Value>),
 	Addon {
-		name: Value,
+		id: Value,
+		file_name: Value,
 		kind: Option<AddonKind>,
 		url: Value,
 		force: bool,

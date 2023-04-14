@@ -13,7 +13,9 @@ use super::files::paths::Paths;
 /// Format for an addon in the lockfile
 #[derive(Serialize, Deserialize, PartialEq, Clone)]
 pub struct LockfileAddon {
-	name: String,
+	#[serde(alias = "name")]
+	id: String,
+	file_name: Option<String>,
 	files: Vec<String>,
 	kind: String,
 }
@@ -22,7 +24,8 @@ impl LockfileAddon {
 	/// Converts an addon to the format used by the lockfile
 	pub fn from_addon(addon: &Addon, paths: &Paths) -> Self {
 		Self {
-			name: addon.name.clone(),
+			id: addon.id.clone(),
+			file_name: Some(addon.file_name.clone()),
 			files: vec![addon
 				.get_path(paths)
 				.to_str()
@@ -33,12 +36,13 @@ impl LockfileAddon {
 	}
 
 	/// Converts this LockfileAddon to an Addon
-	pub fn to_addon(&self, id: PkgIdentifier) -> anyhow::Result<Addon> {
+	pub fn to_addon(&self, pkg_id: PkgIdentifier) -> anyhow::Result<Addon> {
 		Ok(Addon {
 			kind: AddonKind::from_str(&self.kind)
 				.ok_or(anyhow!("Invalid addon kind '{}'", self.kind))?,
-			name: self.name.clone(),
-			id,
+			id: self.id.clone(),
+			file_name: self.file_name.clone().expect("Filename should have been filled in or fixed"),
+			pkg_id,
 		})
 	}
 
@@ -75,6 +79,21 @@ struct LockfileContents {
 	profiles: HashMap<String, LockfileProfile>,
 }
 
+impl LockfileContents {
+	/// Fix changes in lockfile format
+	pub fn fix(&mut self) {
+		for (.., instance) in &mut self.packages {
+			for (.., package) in instance {
+				for addon in &mut package.addons {
+					if addon.file_name.is_none() {
+						addon.file_name = Some(addon.id.clone())
+					}
+				}
+			}
+		}
+	}
+}
+
 /// A file that remembers important info like what files and packages are currently installed
 pub struct Lockfile {
 	contents: LockfileContents,
@@ -84,12 +103,13 @@ impl Lockfile {
 	/// Open the lockfile
 	pub fn open(paths: &Paths) -> anyhow::Result<Self> {
 		let path = Self::get_path(paths);
-		let contents = if path.exists() {
+		let mut contents = if path.exists() {
 			let mut file = File::open(&path).context("Failed to open lockfile")?;
 			serde_json::from_reader(&mut file).context("Failed to parse JSON")?
 		} else {
 			LockfileContents::default()
 		};
+		contents.fix();
 		Ok(Self { contents })
 	}
 
@@ -125,7 +145,7 @@ impl Lockfile {
 				for (i, addon) in pkg.addons.iter().enumerate() {
 					if !addons.contains(addon) {
 						indices.push(i);
-						addons_to_remove.push(addon.name.clone());
+						addons_to_remove.push(addon.id.clone());
 					}
 				}
 				for i in indices {
