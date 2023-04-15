@@ -4,7 +4,7 @@ use crate::unexpected_token;
 use anyhow::bail;
 
 /// Generic side for something like a bracket
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, PartialEq, Copy, Clone)]
 pub enum Side {
 	Left,
 	Right,
@@ -70,6 +70,9 @@ impl Display for TextPos {
 		write!(f, "({}:{})", self.0, self.1)
 	}
 }
+
+/// Token and TextPos
+pub type TokenAndPos = (Token, TextPos);
 
 /// What action to perform after lexing a string character
 #[derive(Debug, PartialEq)]
@@ -283,16 +286,11 @@ pub fn lex(text: &str) -> anyhow::Result<Vec<(Token, TextPos)>> {
 	Ok(tokens)
 }
 
-/// Removes whitespace characters and comments from a list of tokens
-pub fn reduce_tokens(tokens: &[(Token, TextPos)]) -> Vec<(Token, TextPos)> {
-	let mut out = Vec::new();
-	for (tok, pos) in tokens.iter().cloned() {
-		match tok {
-			Token::Comment(..) | Token::Whitespace | Token::None => {}
-			_ => out.push((tok, pos.clone())),
-		}
-	}
-	out
+/// Removes whitespace characters and comments from an iterator of tokens
+pub fn reduce_tokens<'a, T: Iterator<Item = &'a TokenAndPos>>(tokens: T) -> impl Iterator<Item = &'a TokenAndPos> {
+	tokens.filter(|(tok, ..)| {
+		!matches!(tok, Token::Comment(..) | Token::Whitespace | Token::None)
+	})
 }
 
 #[cfg(test)]
