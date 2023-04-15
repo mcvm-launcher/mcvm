@@ -83,7 +83,7 @@ impl Config {
 			Ok(serde_json::from_reader(&mut file).context("Failed to parse config")?)
 		} else {
 			let doc = default_config();
-			let mut file = File::open(path).context("Failed to open config file")?;
+			let mut file = File::create(path).context("Failed to open config file")?;
 			serde_json::to_writer_pretty(&mut file, &doc)
 				.context("Failed to write default configuration")?;
 			Ok(serde_json::from_value(doc).context("Failed to parse default configuration")?)
