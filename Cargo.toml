@@ -15,6 +15,7 @@ clap = { version = "4.1.13", features = ["derive"]}
 color-print = "0.3.4"
 directories = "5.0.0"
 futures = "0.3.26"
+h2 = "0.3.17"
 itertools = "0.10.5"
 libflate = "1.2.0"
 openssl = "0.10.48"
