@@ -1,5 +1,4 @@
 use super::CmdData;
-use shared::modifications::PluginLoader;
 use crate::data::instance::InstKind;
 use crate::data::profile::update::UpdateManager;
 use crate::io::lock::Lockfile;
@@ -10,6 +9,7 @@ use crate::package::eval::Routine;
 use crate::util::print::PrintOptions;
 use crate::util::print::ReplPrinter;
 use crate::util::print::HYPHEN_POINT;
+use shared::modifications::PluginLoader;
 
 use anyhow::bail;
 use anyhow::Context;

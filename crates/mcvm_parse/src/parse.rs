@@ -1,11 +1,11 @@
 use anyhow::{bail, Context};
 
 use super::conditions::Condition;
+use super::conditions::ConditionKind;
 use super::instruction::{parse_arg, InstrKind, Instruction};
 use super::lex::{lex, reduce_tokens, Side, Token, TokenAndPos};
 use super::Value;
 use shared::addon::AddonKind;
-use super::conditions::ConditionKind;
 use shared::util::yes_no;
 
 use std::collections::HashMap;
@@ -84,7 +84,7 @@ mod addon {
 		Comma,
 		Semicolon,
 	}
-	
+
 	/// Current key for the addon parser
 	#[derive(Debug)]
 	pub enum Key {
@@ -170,11 +170,9 @@ impl ParseData {
 }
 
 /// Parse a list of tokens
-pub fn parse<'a>(
-	tokens: impl Iterator<Item = &'a TokenAndPos>,
-) -> anyhow::Result<Parsed> {
+pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Result<Parsed> {
 	let tokens = reduce_tokens(tokens);
-	
+
 	let mut prs = ParseData::new();
 	for (tok, pos) in tokens {
 		let mut instr_to_push = None;
@@ -214,8 +212,7 @@ pub fn parse<'a>(
 							};
 						}
 						name => {
-							prs.mode =
-								ParseMode::Instruction(Instruction::from_str(name, &pos)?);
+							prs.mode = ParseMode::Instruction(Instruction::from_str(name, &pos)?);
 						}
 					},
 					Token::Curly(side) => match side {
@@ -300,15 +297,15 @@ pub fn parse<'a>(
 					addon::Mode::Id => {
 						*id = parse_arg(&tok, &pos)?;
 						*mode = addon::Mode::FileName;
-					},
+					}
 					addon::Mode::FileName => match tok {
 						Token::Paren(Side::Left) => {
 							bail!("It is now required to have a filename field for addons");
-						},
+						}
 						_ => {
 							*file_name = parse_arg(&tok, &pos)?;
 							*mode = addon::Mode::OpenParen;
-						},
+						}
 					},
 					addon::Mode::OpenParen => match tok {
 						Token::Paren(Side::Left) => *mode = addon::Mode::Key,
@@ -410,7 +407,7 @@ pub fn parse<'a>(
 			prs.new_block();
 		}
 	}
-	
+
 	Ok(prs.parsed)
 }
 
@@ -428,8 +425,14 @@ mod tests {
 	fn test_routine_parse() {
 		let text = "@install {} @meta {} @foo {}";
 		let parsed = lex_and_parse(text).unwrap();
-		assert!(parsed.blocks.contains_key(parsed.routines.get("install").unwrap()));
-		assert!(parsed.blocks.contains_key(parsed.routines.get("meta").unwrap()));
-		assert!(parsed.blocks.contains_key(parsed.routines.get("foo").unwrap()));
+		assert!(parsed
+			.blocks
+			.contains_key(parsed.routines.get("install").unwrap()));
+		assert!(parsed
+			.blocks
+			.contains_key(parsed.routines.get("meta").unwrap()));
+		assert!(parsed
+			.blocks
+			.contains_key(parsed.routines.get("foo").unwrap()));
 	}
 }

@@ -2,10 +2,7 @@ use std::collections::HashMap;
 
 use serde::Deserialize;
 
-use crate::{
-	data::profile::Profile,
-	util::versions::MinecraftVersionDeser,
-};
+use crate::{data::profile::Profile, util::versions::MinecraftVersionDeser};
 
 use shared::modifications::{Modloader, PluginLoader};
 

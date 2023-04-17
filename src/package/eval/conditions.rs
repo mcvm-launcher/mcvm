@@ -5,13 +5,10 @@ use mcvm_parse::conditions::ConditionKind;
 
 pub fn eval_condition(condition: &ConditionKind, eval: &EvalData) -> anyhow::Result<bool> {
 	match condition {
-		ConditionKind::Not(condition) => eval_condition(
-			condition
-				.as_ref()
-				.expect("Not condition is missing"),
-			eval
-		)
-			.map(|op| !op),
+		ConditionKind::Not(condition) => {
+			eval_condition(condition.as_ref().expect("Not condition is missing"), eval)
+				.map(|op| !op)
+		}
 		ConditionKind::Version(version) => {
 			let version = version.get(&eval.vars)?;
 			let version = VersionPattern::from(&version);

@@ -8,15 +8,15 @@ use shared::addon::Addon;
 use self::conditions::eval_condition;
 
 use super::Package;
+use crate::data::addon::{AddonLocation, AddonRequest};
+use crate::io::files::paths::Paths;
 use mcvm_parse::instruction::{InstrKind, Instruction};
 use mcvm_parse::parse::{Block, BlockId};
-use crate::data::addon::{AddonLocation, AddonRequest};
-use shared::modifications::{Modloader, PluginLoader};
+use mcvm_parse::{FailReason, Value};
 use shared::instance::Side;
-use crate::io::files::paths::Paths;
+use shared::modifications::{Modloader, PluginLoader};
 use shared::pkg::PkgIdentifier;
 use shared::versions::VersionPattern;
-use mcvm_parse::{Value, FailReason};
 
 use std::collections::HashMap;
 use std::path::PathBuf;

@@ -10,8 +10,8 @@ use std::fs;
 use std::path::PathBuf;
 
 use self::eval::EvalPermissions;
-use mcvm_parse::parse::Parsed;
 use self::reg::PkgRequest;
+use mcvm_parse::parse::Parsed;
 use shared::pkg::PkgIdentifier;
 
 static PKG_EXTENSION: &str = ".pkg.txt";

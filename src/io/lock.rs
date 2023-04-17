@@ -28,8 +28,7 @@ impl LockfileAddon {
 		Self {
 			id: addon.id.clone(),
 			file_name: Some(addon.file_name.clone()),
-			files: vec![
-				get_addon_path(addon, paths)
+			files: vec![get_addon_path(addon, paths)
 				.to_str()
 				.expect("Failed to convert addon path to a string")
 				.to_owned()],
@@ -43,7 +42,10 @@ impl LockfileAddon {
 			kind: AddonKind::from_str(&self.kind)
 				.ok_or(anyhow!("Invalid addon kind '{}'", self.kind))?,
 			id: self.id.clone(),
-			file_name: self.file_name.clone().expect("Filename should have been filled in or fixed"),
+			file_name: self
+				.file_name
+				.clone()
+				.expect("Filename should have been filled in or fixed"),
 			pkg_id,
 		})
 	}

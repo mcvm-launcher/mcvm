@@ -1,8 +1,8 @@
 use anyhow::bail;
 
-use shared::modifications::{ModloaderMatch, PluginLoaderMatch};
-use shared::instance::Side;
 use crate::unexpected_token;
+use shared::instance::Side;
+use shared::modifications::{ModloaderMatch, PluginLoaderMatch};
 
 use super::instruction::parse_arg;
 use super::lex::{TextPos, Token};

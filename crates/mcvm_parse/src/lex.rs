@@ -57,7 +57,7 @@ impl Token {
 
 /// Text positional information with row and column
 #[derive(Clone)]
-pub struct TextPos (usize, usize);
+pub struct TextPos(usize, usize);
 
 impl Debug for TextPos {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -287,10 +287,10 @@ pub fn lex(text: &str) -> anyhow::Result<Vec<(Token, TextPos)>> {
 }
 
 /// Removes whitespace characters and comments from an iterator of tokens
-pub fn reduce_tokens<'a, T: Iterator<Item = &'a TokenAndPos>>(tokens: T) -> impl Iterator<Item = &'a TokenAndPos> {
-	tokens.filter(|(tok, ..)| {
-		!matches!(tok, Token::Comment(..) | Token::Whitespace | Token::None)
-	})
+pub fn reduce_tokens<'a, T: Iterator<Item = &'a TokenAndPos>>(
+	tokens: T,
+) -> impl Iterator<Item = &'a TokenAndPos> {
+	tokens.filter(|(tok, ..)| !matches!(tok, Token::Comment(..) | Token::Whitespace | Token::None))
 }
 
 #[cfg(test)]

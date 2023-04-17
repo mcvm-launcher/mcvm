@@ -1,12 +1,12 @@
 use anyhow::bail;
 
 use super::conditions::Condition;
-use super::FailReason;
 use super::lex::{Side, TextPos, Token};
 use super::parse::BlockId;
+use super::FailReason;
 use super::Value;
-use shared::addon::AddonKind;
 use crate::unexpected_token;
+use shared::addon::AddonKind;
 
 /// Type of an instruction
 #[derive(Debug, Clone)]

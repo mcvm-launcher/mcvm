@@ -2,7 +2,7 @@ use std::path::Path;
 
 use anyhow::Context;
 use cfg_match::cfg_match;
-use reqwest::{Client, Url, IntoUrl};
+use reqwest::{Client, IntoUrl, Url};
 use serde::de::DeserializeOwned;
 
 // Sensible open file descriptor limit for asynchronous transfers
@@ -54,9 +54,7 @@ pub async fn bytes(url: impl IntoUrl) -> anyhow::Result<bytes::Bytes> {
 
 /// Downloads and puts the contents in a file
 pub async fn file(url: impl IntoUrl, path: &Path) -> anyhow::Result<()> {
-	let bytes = bytes(url)
-		.await
-		.context("Failed to download data")?;
+	let bytes = bytes(url).await.context("Failed to download data")?;
 	tokio::fs::write(path, bytes).await.with_context(|| {
 		format!(
 			"Failed to write downloaded contents to path {}",

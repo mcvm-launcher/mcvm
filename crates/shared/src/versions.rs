@@ -159,7 +159,6 @@ impl Display for VersionPattern {
 mod tests {
 	use super::*;
 
-	
 	#[test]
 	fn test_version_pattern() {
 		let versions = vec![

@@ -14,10 +14,10 @@ use crate::net::fabric_quilt;
 use crate::util::json;
 use crate::Paths;
 
-use shared::addon::{Addon, AddonKind};
-use shared::modifications::{Modloader, PluginLoader};
 use super::addon::get_addon_path;
 use super::profile::update::UpdateManager;
+use shared::addon::{Addon, AddonKind};
+use shared::modifications::{Modloader, PluginLoader};
 
 use std::fs;
 use std::path::{Path, PathBuf};

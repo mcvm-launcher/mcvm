@@ -4,7 +4,6 @@ use std::path::{Path, PathBuf};
 use anyhow::Context;
 use color_print::cprintln;
 
-use shared::instance::Side;
 use crate::io::files::paths::Paths;
 use crate::io::java::{Java, JavaKind};
 use crate::io::options::{read_options, Options};
@@ -12,6 +11,7 @@ use crate::io::Later;
 use crate::net::minecraft::{assets, game_jar, libraries, version_manifest};
 use crate::util::versions::MinecraftVersion;
 use crate::util::{json, print::PrintOptions};
+use shared::instance::Side;
 
 /// Requirements for operations that may be shared by multiple instances in a profile
 #[derive(Debug, Hash, PartialEq, Eq)]

@@ -1,10 +1,10 @@
-use shared::instance::Side;
 use crate::data::profile::update::UpdateManager;
 use crate::io::files::{self, paths::Paths};
 use crate::io::java::classpath::Classpath;
 use crate::util::json::{self, JsonObject, JsonType};
 use crate::util::print::ReplPrinter;
 use crate::util::{self, cap_first_letter, mojang};
+use shared::instance::Side;
 
 use anyhow::{bail, Context};
 use color_print::{cformat, cprintln};
@@ -29,9 +29,10 @@ pub mod version_manifest {
 		files::create_dir_async(&path).await?;
 		path.push("manifest.json");
 
-		let text = download::text("https://piston-meta.mojang.com/mc/game/version_manifest_v2.json")
-			.await
-			.context("Failed to download manifest")?;
+		let text =
+			download::text("https://piston-meta.mojang.com/mc/game/version_manifest_v2.json")
+				.await
+				.context("Failed to download manifest")?;
 		tokio::fs::write(&path, &text)
 			.await
 			.context("Failed to write manifest to a file")?;

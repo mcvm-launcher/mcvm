@@ -10,12 +10,12 @@ use color_print::cprintln;
 
 use crate::data::config::instance::QuickPlay;
 use crate::data::instance::launch::client::create_quick_play_args;
-use shared::instance::Side;
 use crate::io::java::args::ArgsPreset;
 use crate::io::java::{
 	args::{MemoryArg, MemoryNum},
 	JavaKind,
 };
+use shared::instance::Side;
 
 use super::files::paths::Paths;
 

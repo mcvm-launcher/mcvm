@@ -5,13 +5,13 @@ use color_print::cformat;
 use reqwest::Client;
 use serde::Deserialize;
 
-use shared::instance::Side;
 use crate::data::profile::update::UpdateManager;
 use crate::io::files;
 use crate::io::files::paths::Paths;
 use crate::io::java::classpath::Classpath;
 use crate::util::json::{self, JsonType};
 use crate::util::print::ReplPrinter;
+use shared::instance::Side;
 
 use super::download;
 

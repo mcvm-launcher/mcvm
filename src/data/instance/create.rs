@@ -5,7 +5,6 @@ use std::path::PathBuf;
 use anyhow::Context;
 use color_print::{cformat, cprintln};
 
-use shared::modifications::{Modloader, PluginLoader};
 use crate::data::profile::update::{UpdateManager, UpdateRequirement};
 use crate::io::files::{self, paths::Paths};
 use crate::io::java::classpath::Classpath;
@@ -15,6 +14,7 @@ use crate::io::Later;
 use crate::net::fabric_quilt;
 use crate::net::{minecraft, paper};
 use crate::util::{json, print::ReplPrinter};
+use shared::modifications::{Modloader, PluginLoader};
 
 use super::{InstKind, Instance};
 

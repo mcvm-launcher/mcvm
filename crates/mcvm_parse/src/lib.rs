@@ -30,7 +30,6 @@ impl Value {
 	}
 }
 
-
 /// Reason why the package reported a failure
 #[derive(Debug, Clone)]
 pub enum FailReason {
