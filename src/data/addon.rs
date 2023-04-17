@@ -1,89 +1,24 @@
 use anyhow::Context;
-use serde::Deserialize;
+use shared::addon::Addon;
 
 use crate::io::files::create_leading_dirs;
 use crate::io::files::paths::Paths;
 use crate::net::download;
-use crate::package::reg::PkgIdentifier;
+use shared::modifications::{Modloader, PluginLoader};
 
-use std::fmt::Display;
 use std::path::PathBuf;
 
-#[derive(Debug, Clone, Copy)]
-pub enum AddonKind {
-	ResourcePack,
-	Mod,
-	Plugin,
-	Shader,
+/// Get the addon directory where an addon is stored
+pub fn get_addon_dir(addon: &Addon, paths: &Paths) -> PathBuf {
+	paths.addons.join(addon.kind.to_plural_string())
 }
 
-impl AddonKind {
-	pub fn from_str(string: &str) -> Option<Self> {
-		match string {
-			"resource_pack" => Some(Self::ResourcePack),
-			"mod" => Some(Self::Mod),
-			"plugin" => Some(Self::Plugin),
-			"shader" => Some(Self::Shader),
-			_ => None,
-		}
-	}
-
-	/// Plural version of to_string
-	pub fn to_plural_string(&self) -> String {
-		match self {
-			Self::ResourcePack => String::from("resource_packs"),
-			Self::Mod => String::from("mods"),
-			Self::Plugin => String::from("plugins"),
-			Self::Shader => String::from("shaders"),
-		}
-	}
-}
-
-impl Display for AddonKind {
-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		write!(
-			f,
-			"{}",
-			match self {
-				Self::ResourcePack => "resource_pack",
-				Self::Mod => "mod",
-				Self::Plugin => "plugin",
-				Self::Shader => "shader",
-			}
-		)
-	}
-}
-
-#[derive(Debug, Clone)]
-pub struct Addon {
-	pub kind: AddonKind,
-	pub id: String,
-	pub file_name: String,
-	pub pkg_id: PkgIdentifier,
-}
-
-impl Addon {
-	pub fn new(kind: AddonKind, id: &str, file_name: &str, pkg_id: PkgIdentifier) -> Self {
-		Self {
-			kind,
-			id: id.to_owned(),
-			file_name: file_name.to_owned(),
-			pkg_id,
-		}
-	}
-
-	/// Get the addon directory where this addon is stored
-	pub fn get_dir(&self, paths: &Paths) -> PathBuf {
-		paths.addons.join(self.kind.to_plural_string())
-	}
-
-	/// Get the path to the addon
-	pub fn get_path(&self, paths: &Paths) -> PathBuf {
-		self.get_dir(paths)
-			.join(&self.pkg_id.name)
-			.join(&self.pkg_id.version)
-			.join(&self.file_name)
-	}
+/// Get the path to an addon
+pub fn get_addon_path(addon: &Addon, paths: &Paths) -> PathBuf {
+	get_addon_dir(addon, paths)
+		.join(&addon.pkg_id.name)
+		.join(&addon.pkg_id.version)
+		.join(&addon.file_name)
 }
 
 #[derive(Debug, Clone)]
@@ -110,7 +45,7 @@ impl AddonRequest {
 
 	/// Get the addon and store it
 	pub async fn acquire(&self, paths: &Paths) -> anyhow::Result<()> {
-		let path = self.addon.get_path(paths);
+		let path = get_addon_path(&self.addon, paths);
 		if !self.force && path.exists() {
 			return Ok(());
 		}
@@ -128,99 +63,6 @@ impl AddonRequest {
 			}
 		}
 		Ok(())
-	}
-}
-
-#[derive(Deserialize, Debug, Clone, PartialEq, Default)]
-#[serde(rename_all = "snake_case")]
-pub enum Modloader {
-	#[default]
-	Vanilla,
-	Forge,
-	Fabric,
-	Quilt,
-}
-
-impl Display for Modloader {
-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		match self {
-			Self::Vanilla => write!(f, "None"),
-			Self::Forge => write!(f, "Forge"),
-			Self::Fabric => write!(f, "Fabric"),
-			Self::Quilt => write!(f, "Quilt"),
-		}
-	}
-}
-
-#[derive(Debug, Clone)]
-pub enum ModloaderMatch {
-	Vanilla,
-	Forge,
-	Fabric,
-	Quilt,
-	FabricLike,
-}
-
-impl ModloaderMatch {
-	pub fn from_str(string: &str) -> Option<Self> {
-		match string {
-			"vanilla" => Some(Self::Vanilla),
-			"forge" => Some(Self::Forge),
-			"fabric" => Some(Self::Fabric),
-			"quilt" => Some(Self::Quilt),
-			"fabriclike" => Some(Self::FabricLike),
-			_ => None,
-		}
-	}
-
-	pub fn matches(&self, other: &Modloader) -> bool {
-		match self {
-			Self::Vanilla => matches!(other, Modloader::Vanilla),
-			Self::Forge => matches!(other, Modloader::Forge),
-			Self::Fabric => matches!(other, Modloader::Fabric),
-			Self::Quilt => matches!(other, Modloader::Quilt),
-			Self::FabricLike => matches!(other, Modloader::Fabric | Modloader::Quilt),
-		}
-	}
-}
-
-#[derive(Deserialize, Debug, Clone, Default)]
-#[serde(rename_all = "snake_case")]
-pub enum PluginLoader {
-	#[default]
-	Vanilla,
-	Paper,
-}
-
-impl Display for PluginLoader {
-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		match self {
-			Self::Vanilla => write!(f, "None"),
-			Self::Paper => write!(f, "Paper"),
-		}
-	}
-}
-
-#[derive(Debug, Clone)]
-pub enum PluginLoaderMatch {
-	Vanilla,
-	BukkitLike,
-}
-
-impl PluginLoaderMatch {
-	pub fn from_str(string: &str) -> Option<Self> {
-		match string {
-			"vanilla" => Some(Self::Vanilla),
-			"bukkitlike" => Some(Self::BukkitLike),
-			_ => None,
-		}
-	}
-
-	pub fn matches(&self, other: &PluginLoader) -> bool {
-		match self {
-			Self::Vanilla => matches!(other, PluginLoader::Vanilla),
-			Self::BukkitLike => matches!(other, PluginLoader::Paper),
-		}
 	}
 }
 

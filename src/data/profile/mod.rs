@@ -9,8 +9,7 @@ use crate::Paths;
 
 use self::update::UpdateManager;
 
-use super::addon::Modloader;
-use super::addon::PluginLoader;
+use shared::modifications::{Modloader, PluginLoader};
 
 pub type InstanceRegistry = std::collections::HashMap<String, Instance>;
 

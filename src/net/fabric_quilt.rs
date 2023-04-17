@@ -5,7 +5,7 @@ use color_print::cformat;
 use reqwest::Client;
 use serde::Deserialize;
 
-use crate::data::instance::Side;
+use shared::instance::Side;
 use crate::data::profile::update::UpdateManager;
 use crate::io::files;
 use crate::io::files::paths::Paths;

@@ -2,7 +2,7 @@ use std::fmt::Display;
 
 use serde::Deserialize;
 
-use crate::package::{eval::eval::EvalPermissions, reg::PkgRequest, PkgProfileConfig};
+use crate::package::{eval::EvalPermissions, reg::PkgRequest, PkgProfileConfig};
 
 #[derive(Deserialize)]
 #[serde(rename_all = "snake_case")]

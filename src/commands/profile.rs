@@ -1,12 +1,12 @@
 use super::CmdData;
-use crate::data::addon::PluginLoader;
+use shared::modifications::PluginLoader;
 use crate::data::instance::InstKind;
 use crate::data::profile::update::UpdateManager;
 use crate::io::lock::Lockfile;
 use crate::io::lock::LockfileAddon;
 use crate::net::paper;
-use crate::package::eval::eval::EvalConstants;
-use crate::package::eval::eval::Routine;
+use crate::package::eval::EvalConstants;
+use crate::package::eval::Routine;
 use crate::util::print::PrintOptions;
 use crate::util::print::ReplPrinter;
 use crate::util::print::HYPHEN_POINT;

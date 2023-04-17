@@ -1,6 +1,6 @@
 use anyhow::bail;
 
-use super::eval::eval::{EvalConstants, EvalData, Routine};
+use super::eval::{EvalConstants, EvalData, Routine};
 use super::repo::{query_all, PkgRepo};
 use super::{Package, PkgKind};
 use crate::io::files::paths::Paths;
@@ -26,22 +26,6 @@ impl PkgRequest {
 impl Display for PkgRequest {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		write!(f, "{}", self.name)
-	}
-}
-
-// A known identifier for a package
-#[derive(Debug, Hash, Clone, PartialEq, Eq)]
-pub struct PkgIdentifier {
-	pub name: String,
-	pub version: String,
-}
-
-impl PkgIdentifier {
-	pub fn new(name: &str, version: &str) -> Self {
-		Self {
-			name: name.to_owned(),
-			version: version.to_owned(),
-		}
 	}
 }
 

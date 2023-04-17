@@ -5,8 +5,10 @@ use std::path::PathBuf;
 use anyhow::{anyhow, Context};
 use serde::{Deserialize, Serialize};
 
-use crate::data::addon::{Addon, AddonKind};
-use crate::package::reg::PkgIdentifier;
+use shared::addon::{Addon, AddonKind};
+use shared::pkg::PkgIdentifier;
+
+use crate::data::addon::get_addon_path;
 
 use super::files::paths::Paths;
 
@@ -26,8 +28,8 @@ impl LockfileAddon {
 		Self {
 			id: addon.id.clone(),
 			file_name: Some(addon.file_name.clone()),
-			files: vec![addon
-				.get_path(paths)
+			files: vec![
+				get_addon_path(addon, paths)
 				.to_str()
 				.expect("Failed to convert addon path to a string")
 				.to_owned()],

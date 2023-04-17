@@ -2,6 +2,7 @@ pub mod create;
 pub mod launch;
 
 use anyhow::Context;
+use shared::instance::Side;
 
 use crate::io::java::classpath::Classpath;
 use crate::io::java::Java;
@@ -13,10 +14,11 @@ use crate::net::fabric_quilt;
 use crate::util::json;
 use crate::Paths;
 
-use super::addon::{Addon, AddonKind, Modloader, PluginLoader};
+use shared::addon::{Addon, AddonKind};
+use shared::modifications::{Modloader, PluginLoader};
+use super::addon::get_addon_path;
 use super::profile::update::UpdateManager;
 
-use std::fmt::Display;
 use std::fs;
 use std::path::{Path, PathBuf};
 
@@ -33,36 +35,6 @@ impl InstKind {
 			Self::Client { .. } => Side::Client,
 			Self::Server { .. } => Side::Server,
 		}
-	}
-}
-
-/// Minecraft game side, client or server
-#[derive(Debug, Clone, Copy, Hash, PartialEq, Eq)]
-pub enum Side {
-	Client,
-	Server,
-}
-
-impl Side {
-	pub fn from_str(string: &str) -> Option<Self> {
-		match string {
-			"client" => Some(Self::Client),
-			"server" => Some(Self::Server),
-			_ => None,
-		}
-	}
-}
-
-impl Display for Side {
-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		write!(
-			f,
-			"{}",
-			match self {
-				Self::Client => "client",
-				Self::Server => "server",
-			}
-		)
 	}
 }
 
@@ -175,7 +147,7 @@ impl Instance {
 		files::create_dir(dir)?;
 		let link = dir.join(&addon.file_name);
 		if !link.exists() {
-			fs::hard_link(addon.get_path(paths), link)
+			fs::hard_link(get_addon_path(addon, paths), link)
 				.context("Failed to create hard link")?;
 		}
 		Ok(())

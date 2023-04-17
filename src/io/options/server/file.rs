@@ -5,7 +5,8 @@ use anyhow::Context;
 use itertools::Itertools;
 
 use crate::io::options::read::read_options_file;
-use crate::util::{versions::VersionPattern, ToInt};
+use crate::util::ToInt;
+use shared::versions::VersionPattern;
 
 use super::ServerOptions;
 

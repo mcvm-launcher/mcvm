@@ -1,11 +1,11 @@
 use anyhow::bail;
 
 use super::conditions::Condition;
-use super::eval::FailReason;
+use super::FailReason;
 use super::lex::{Side, TextPos, Token};
 use super::parse::BlockId;
 use super::Value;
-use crate::data::addon::AddonKind;
+use shared::addon::AddonKind;
 use crate::unexpected_token;
 
 /// Type of an instruction

@@ -7,7 +7,7 @@ use crate::data::user::{Auth, UserKind};
 use crate::io::java::classpath::Classpath;
 use crate::io::launch::{launch, LaunchArgument};
 use crate::util::json;
-use crate::util::versions::VersionPattern;
+use shared::versions::VersionPattern;
 use crate::util::{
 	mojang::is_allowed,
 	{ARCH_STRING, OS_STRING},

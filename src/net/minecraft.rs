@@ -1,4 +1,4 @@
-use crate::data::instance::Side;
+use shared::instance::Side;
 use crate::data::profile::update::UpdateManager;
 use crate::io::files::{self, paths::Paths};
 use crate::io::java::classpath::Classpath;

@@ -5,8 +5,10 @@ use itertools::Itertools;
 
 use crate::{
 	io::options::read::{read_options_file, EnumOrNumber},
-	util::{versions::VersionPattern, ToInt},
+	util::ToInt,
 };
+
+use shared::versions::VersionPattern;
 
 use super::{ClientOptions, CloudRenderMode, FullscreenResolution, GraphicsMode};
 

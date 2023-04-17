@@ -3,12 +3,11 @@ use std::collections::HashMap;
 use serde::Deserialize;
 
 use crate::{
-	data::{
-		addon::{Modloader, PluginLoader},
-		profile::Profile,
-	},
+	data::profile::Profile,
 	util::versions::MinecraftVersionDeser,
 };
+
+use shared::modifications::{Modloader, PluginLoader};
 
 use super::{instance::InstanceConfig, package::PackageConfig};
 

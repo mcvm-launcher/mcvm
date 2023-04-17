@@ -9,9 +9,10 @@ use crate::net::download;
 use std::fs;
 use std::path::PathBuf;
 
-use self::eval::eval::EvalPermissions;
-use self::eval::parse::Parsed;
-use self::reg::{PkgIdentifier, PkgRequest};
+use self::eval::EvalPermissions;
+use mcvm_parse::parse::Parsed;
+use self::reg::PkgRequest;
+use shared::pkg::PkgIdentifier;
 
 static PKG_EXTENSION: &str = ".pkg.txt";
 

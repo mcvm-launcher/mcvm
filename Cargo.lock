@@ -798,17 +798,28 @@ dependencies = [
  "h2",
  "itertools",
  "libflate",
+ "mcvm_parse",
  "openssl",
  "reqwest",
  "serde",
  "serde_json",
  "sha1",
+ "shared",
  "shellexpand",
  "tar",
  "thiserror",
  "tokio",
  "zip",
  "zip-extract",
+]
+
+[[package]]
+name = "mcvm_parse"
+version = "0.0.1"
+dependencies = [
+ "anyhow",
+ "color-print",
+ "shared",
 ]
 
 [[package]]
@@ -1209,6 +1220,15 @@ dependencies = [
  "cfg-if",
  "cpufeatures",
  "digest",
+]
+
+[[package]]
+name = "shared"
+version = "0.0.1"
+dependencies = [
+ "anyhow",
+ "color-print",
+ "serde",
 ]
 
 [[package]]

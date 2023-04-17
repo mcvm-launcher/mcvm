@@ -43,15 +43,6 @@ cfg_match! {
 	}
 }
 
-/// Converts "yes" or "no" to a boolean
-pub fn yes_no(string: &str) -> Option<bool> {
-	match string {
-		"yes" => Some(true),
-		"no" => Some(false),
-		_ => None,
-	}
-}
-
 /// Skip in a loop if a result fails
 #[macro_export]
 macro_rules! skip_fail {

@@ -5,7 +5,7 @@ use std::path::PathBuf;
 use anyhow::Context;
 use color_print::{cformat, cprintln};
 
-use crate::data::addon::{Modloader, PluginLoader};
+use shared::modifications::{Modloader, PluginLoader};
 use crate::data::profile::update::{UpdateManager, UpdateRequirement};
 use crate::io::files::{self, paths::Paths};
 use crate::io::java::classpath::Classpath;
