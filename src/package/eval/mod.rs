@@ -262,8 +262,8 @@ pub fn eval_instr(
 					bail!("No location (url/path) was specified for addon {id}");
 				}
 			}
-			_ => bail!("Instruction is not allowed in this routine context")
-		}
+			_ => bail!("Instruction is not allowed in this routine context"),
+		},
 		EvalLevel::Meta => {}
 	}
 

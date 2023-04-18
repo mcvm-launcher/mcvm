@@ -62,7 +62,11 @@ impl Package {
 
 	/// Get the cached file name of the package
 	pub fn filename(&self) -> String {
-		format!("{}_{}{PKG_EXTENSION}", self.id.name.clone(), self.id.version)
+		format!(
+			"{}_{}{PKG_EXTENSION}",
+			self.id.name.clone(),
+			self.id.version
+		)
 	}
 
 	/// Get the cached path of the package
@@ -121,10 +125,7 @@ mod tests {
 	#[test]
 	fn test_package_name() {
 		let package = Package::new("sodium", 2, PkgKind::Remote(None));
-		assert_eq!(
-			package.filename(),
-			"sodium_2".to_owned() + PKG_EXTENSION
-		);
+		assert_eq!(package.filename(), "sodium_2".to_owned() + PKG_EXTENSION);
 
 		let package = Package::new("fabriclike-api", 80, PkgKind::Remote(None));
 		assert_eq!(

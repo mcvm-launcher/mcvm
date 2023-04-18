@@ -214,7 +214,12 @@ async fn profile_update(data: &mut CmdData, id: &str, force: bool) -> anyhow::Re
 							.map(|x| LockfileAddon::from_addon(&x.addon, paths))
 							.collect::<Vec<LockfileAddon>>();
 						let addons_to_remove = lock
-							.update_package(&pkg.req.name, instance_id, pkg_version, &lockfile_addons)
+							.update_package(
+								&pkg.req.name,
+								instance_id,
+								pkg_version,
+								&lockfile_addons,
+							)
 							.context("Failed to update package in lockfile")?;
 						for addon in eval.addon_reqs.iter() {
 							if addons_to_remove.contains(&addon.addon.id) {

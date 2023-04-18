@@ -201,7 +201,7 @@ pub fn read_instance_config(
 				},
 				launch.clone(),
 			),
-		}
+		},
 	};
 
 	let instance = Instance::new(
@@ -219,8 +219,8 @@ pub fn read_instance_config(
 mod tests {
 	use super::*;
 
-	use shared::modifications::{Modloader, PluginLoader};
 	use crate::util::versions::MinecraftVersion;
+	use shared::modifications::{Modloader, PluginLoader};
 
 	#[test]
 	fn test_instance_deser() {
@@ -234,14 +234,15 @@ mod tests {
 			{
 				"instance": "client"
 			}
-			"#
-		).unwrap();
+			"#,
+		)
+		.unwrap();
 
 		let profile = Profile::new(
 			"foo",
 			MinecraftVersion::Latest,
 			Modloader::Vanilla,
-			PluginLoader::Vanilla
+			PluginLoader::Vanilla,
 		);
 
 		let instance = read_instance_config("foo", &test.instance, &profile).unwrap();

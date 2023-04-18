@@ -11,7 +11,7 @@ use crate::io::java::classpath::Classpath;
 use crate::io::java::JavaKind;
 use crate::io::options::{self, client::write_options_txt, server::write_server_properties};
 use crate::io::Later;
-use crate::net::{minecraft, paper, fabric_quilt};
+use crate::net::{fabric_quilt, minecraft, paper};
 use crate::util::{json, print::ReplPrinter};
 use shared::modifications::{Modloader, PluginLoader};
 
@@ -30,9 +30,15 @@ impl Instance {
 		out.insert(UpdateRequirement::Java(java_kind));
 		out.insert(UpdateRequirement::GameJar(self.kind.to_side()));
 		if let Modloader::Fabric = self.modloader {
-			out.insert(UpdateRequirement::FabricQuilt(fabric_quilt::Mode::Fabric, self.kind.to_side()));
+			out.insert(UpdateRequirement::FabricQuilt(
+				fabric_quilt::Mode::Fabric,
+				self.kind.to_side(),
+			));
 		} else if let Modloader::Quilt = self.modloader {
-			out.insert(UpdateRequirement::FabricQuilt(fabric_quilt::Mode::Quilt, self.kind.to_side()));
+			out.insert(UpdateRequirement::FabricQuilt(
+				fabric_quilt::Mode::Quilt,
+				self.kind.to_side(),
+			));
 		}
 		out.insert(UpdateRequirement::Options);
 		match &self.kind {
@@ -180,9 +186,7 @@ impl Instance {
 		self.add_java(&java_vers.to_string(), manager);
 
 		let classpath = if let Modloader::Fabric | Modloader::Quilt = self.modloader {
-			Some(
-				self.get_fabric_quilt(paths, manager).await?,
-			)
+			Some(self.get_fabric_quilt(paths, manager).await?)
 		} else {
 			None
 		};

@@ -27,7 +27,7 @@ pub mod version_manifest {
 	async fn get_contents(
 		paths: &Paths,
 		manager: &UpdateManager,
-		force: bool
+		force: bool,
 	) -> anyhow::Result<String> {
 		let mut path = paths.internal.join("versions");
 		files::create_dir_async(&path).await?;
@@ -35,7 +35,8 @@ pub mod version_manifest {
 
 		if manager.allow_offline && !force {
 			if manager.should_update_file(&path) {
-				return tokio::fs::read_to_string(path).await
+				return tokio::fs::read_to_string(path)
+					.await
 					.context("Failed to read manifest contents from file");
 			}
 		}
@@ -52,7 +53,10 @@ pub mod version_manifest {
 	}
 
 	/// Get the version manifest as a JSON object
-	pub async fn get(paths: &Paths, manager: &UpdateManager) -> anyhow::Result<Box<json::JsonObject>> {
+	pub async fn get(
+		paths: &Paths,
+		manager: &UpdateManager,
+	) -> anyhow::Result<Box<json::JsonObject>> {
 		let mut manifest_contents = get_contents(paths, manager, false)
 			.await
 			.context("Failed to get manifest contents")?;
@@ -107,7 +111,8 @@ pub mod version_manifest {
 		files::create_dir_async(&version_dir).await?;
 		let path = version_dir.join(version_json_name);
 		let text = if manager.allow_offline && manager.should_update_file(&path) {
-			tokio::fs::read_to_string(path).await
+			tokio::fs::read_to_string(path)
+				.await
 				.context("Failed to read version JSON from file")?
 		} else {
 			let text = download::text(version_url.expect("Version does not exist"))
@@ -355,7 +360,8 @@ pub mod assets {
 		force: bool,
 	) -> anyhow::Result<Box<json::JsonObject>> {
 		let text = if manager.allow_offline && !force && manager.should_update_file(&path) {
-			tokio::fs::read_to_string(path).await
+			tokio::fs::read_to_string(path)
+				.await
 				.context("Failed to read index contents from file")?
 		} else {
 			let text = download::text(url)

@@ -108,7 +108,7 @@ pub async fn get_meta(
 		Mode::Quilt => format!("https://meta.quiltmc.org/v3/versions/loader/{version}"),
 	};
 	let path = paths.internal.join(format!("fq_{mode}_meta.json"));
-	
+
 	let meta = if manager.allow_offline && manager.should_update_file(&path) {
 		let mut file = File::open(path).context("Failed to open {mode} meta file")?;
 		serde_json::from_reader(&mut file).context("Failed to parse {mode} meta from file")?
@@ -198,7 +198,7 @@ async fn download_main_library(
 		.await?;
 	files::create_leading_dirs_async(&lib_path).await?;
 	tokio::fs::write(&lib_path, resp).await?;
-	
+
 	Ok(())
 }
 
@@ -218,14 +218,13 @@ fn get_lib_list_classpath(libs: &[Library], paths: &Paths) -> Classpath {
 }
 
 /// Get the classpath for Quilt/Fabric
-pub fn get_classpath(
-	meta: &FabricQuiltMeta,
-	paths: &Paths,
-	side: Side,
-) -> Classpath {
+pub fn get_classpath(meta: &FabricQuiltMeta, paths: &Paths, side: Side) -> Classpath {
 	let mut out = Classpath::new();
 
-	out.extend(get_lib_list_classpath(&meta.launcher_meta.libraries.common, paths));
+	out.extend(get_lib_list_classpath(
+		&meta.launcher_meta.libraries.common,
+		paths,
+	));
 
 	let side_libs = match side {
 		Side::Client => &meta.launcher_meta.libraries.client,
@@ -239,7 +238,7 @@ pub fn get_classpath(
 
 	let path = get_lib_path(&meta.intermediary.maven).expect("Expected a valid path");
 	out.add_path(&paths.libraries.join(&path));
-	
+
 	out
 }
 
@@ -303,7 +302,7 @@ pub async fn download_side_specific_files(
 	};
 
 	download_libraries(&libs, &paths, manager.force).await?;
-	
+
 	Ok(())
 }
 
