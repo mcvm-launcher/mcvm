@@ -97,19 +97,14 @@ impl Instance {
 
 	async fn get_fabric_quilt(
 		&mut self,
-		mode: fabric_quilt::Mode,
 		paths: &Paths,
 		manager: &UpdateManager,
-		version: &str,
 	) -> anyhow::Result<Classpath> {
-		let meta = fabric_quilt::get_meta(version, &mode).await?;
-		let classpath =
-			fabric_quilt::download_files(&meta, paths, self.kind.to_side(), mode, manager)
-				.await
-				.context("Failed to download Fabric/Quilt")?;
+		let meta = manager.fq_meta.get();
+		let classpath = fabric_quilt::get_classpath(&meta, paths, self.kind.to_side());
 		self.main_class = Some(match self.kind {
-			InstKind::Client { .. } => meta.launcher_meta.main_class.client,
-			InstKind::Server { .. } => meta.launcher_meta.main_class.server,
+			InstKind::Client { .. } => meta.launcher_meta.main_class.client.clone(),
+			InstKind::Server { .. } => meta.launcher_meta.main_class.server.clone(),
 		});
 
 		Ok(classpath)

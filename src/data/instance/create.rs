@@ -11,8 +11,7 @@ use crate::io::java::classpath::Classpath;
 use crate::io::java::JavaKind;
 use crate::io::options::{self, client::write_options_txt, server::write_server_properties};
 use crate::io::Later;
-use crate::net::fabric_quilt;
-use crate::net::{minecraft, paper};
+use crate::net::{minecraft, paper, fabric_quilt};
 use crate::util::{json, print::ReplPrinter};
 use shared::modifications::{Modloader, PluginLoader};
 
@@ -30,6 +29,11 @@ impl Instance {
 		};
 		out.insert(UpdateRequirement::Java(java_kind));
 		out.insert(UpdateRequirement::GameJar(self.kind.to_side()));
+		if let Modloader::Fabric = self.modloader {
+			out.insert(UpdateRequirement::FabricQuilt(fabric_quilt::Mode::Fabric, self.kind.to_side()));
+		} else if let Modloader::Quilt = self.modloader {
+			out.insert(UpdateRequirement::FabricQuilt(fabric_quilt::Mode::Quilt, self.kind.to_side()));
+		}
 		out.insert(UpdateRequirement::Options);
 		match &self.kind {
 			InstKind::Client { .. } => {
@@ -108,14 +112,9 @@ impl Instance {
 
 		self.main_class = Some(json::access_str(version_json, "mainClass")?.to_owned());
 
-		let fq_mode = match self.modloader {
-			Modloader::Fabric => Some(fabric_quilt::Mode::Fabric),
-			Modloader::Quilt => Some(fabric_quilt::Mode::Quilt),
-			_ => None,
-		};
-		if let Some(mode) = fq_mode {
+		if let Modloader::Fabric | Modloader::Quilt = self.modloader {
 			classpath.extend(
-				self.get_fabric_quilt(mode, paths, manager, version)
+				self.get_fabric_quilt(paths, manager)
 					.await
 					.context("Failed to install Fabric/Quilt")?,
 			);
@@ -180,16 +179,12 @@ impl Instance {
 		)?;
 		self.add_java(&java_vers.to_string(), manager);
 
-		let classpath = match self.modloader {
-			Modloader::Fabric => Some(
-				self.get_fabric_quilt(fabric_quilt::Mode::Fabric, paths, manager, version)
-					.await?,
-			),
-			Modloader::Quilt => Some(
-				self.get_fabric_quilt(fabric_quilt::Mode::Quilt, paths, manager, version)
-					.await?,
-			),
-			_ => None,
+		let classpath = if let Modloader::Fabric | Modloader::Quilt = self.modloader {
+			Some(
+				self.get_fabric_quilt(paths, manager).await?,
+			)
+		} else {
+			None
 		};
 
 		let eula_path = server_dir.join("eula.txt");

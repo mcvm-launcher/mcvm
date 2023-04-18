@@ -15,6 +15,7 @@ use shared::instance::Side;
 
 use super::download;
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum Mode {
 	Fabric,
 	Quilt,
@@ -39,32 +40,32 @@ pub struct Library {
 	url: String,
 }
 
-#[derive(Deserialize, Clone)]
+#[derive(Deserialize, Clone, Debug)]
 pub struct MainLibrary {
 	maven: String,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct Libraries {
 	common: Vec<Library>,
 	client: Vec<Library>,
 	server: Vec<Library>,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct MainClass {
 	pub client: String,
 	pub server: String,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct LauncherMeta {
 	libraries: Libraries,
 	#[serde(rename = "mainClass")]
 	pub main_class: MainClass,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct FabricQuiltMeta {
 	#[serde(rename = "launcherMeta")]
 	pub launcher_meta: LauncherMeta,
@@ -167,15 +168,11 @@ async fn download_main_library(
 	url: &str,
 	paths: &Paths,
 	force: bool,
-) -> anyhow::Result<String> {
+) -> anyhow::Result<()> {
 	let path = get_lib_path(&lib.maven).expect("Expected a valid path");
 	let lib_path = paths.libraries.join(&path);
-	let lib_path_str = lib_path
-		.to_str()
-		.expect("Failed to convert path to a string")
-		.to_owned();
 	if !force && lib_path.exists() {
-		return Ok(lib_path_str);
+		return Ok(());
 	}
 	let url = url.to_owned() + &path;
 	let client = Client::new();
@@ -188,32 +185,64 @@ async fn download_main_library(
 		.await?;
 	files::create_leading_dirs_async(&lib_path).await?;
 	tokio::fs::write(&lib_path, resp).await?;
-	Ok(lib_path_str)
+	
+	Ok(())
 }
 
-/// Download all needed files for Quilt/Fabric
-pub async fn download_files(
+/// Get the classpath of a list of libraries
+fn get_lib_list_classpath(libs: &[Library], paths: &Paths) -> Classpath {
+	let mut out = Classpath::new();
+
+	for lib in libs.iter() {
+		let path = get_lib_path(&lib.name);
+		if let Some(path) = path {
+			let lib_path = paths.libraries.join(&path);
+			out.add_path(&lib_path);
+		}
+	}
+
+	out
+}
+
+/// Get the classpath for Quilt/Fabric
+pub fn get_classpath(
 	meta: &FabricQuiltMeta,
 	paths: &Paths,
 	side: Side,
+) -> Classpath {
+	let mut out = Classpath::new();
+
+	out.extend(get_lib_list_classpath(&meta.launcher_meta.libraries.common, paths));
+
+	let side_libs = match side {
+		Side::Client => &meta.launcher_meta.libraries.client,
+		Side::Server => &meta.launcher_meta.libraries.server,
+	};
+
+	out.extend(get_lib_list_classpath(side_libs, paths));
+
+	let path = get_lib_path(&meta.loader.maven).expect("Expected a valid path");
+	out.add_path(&paths.libraries.join(&path));
+
+	let path = get_lib_path(&meta.intermediary.maven).expect("Expected a valid path");
+	out.add_path(&paths.libraries.join(&path));
+	
+	out
+}
+
+/// Download files for Quilt/Fabric that are common for both client and server
+pub async fn download_files(
+	meta: &FabricQuiltMeta,
+	paths: &Paths,
 	mode: Mode,
 	manager: &UpdateManager,
-) -> anyhow::Result<Classpath> {
+) -> anyhow::Result<()> {
 	let force = manager.force;
 	let mut printer = ReplPrinter::from_options(manager.print.clone());
 	printer.print(&format!("Downloading {mode}"));
-	let mut classpath = Classpath::new();
 	let libs = meta.launcher_meta.libraries.common.clone();
 	let paths_clone = paths.clone();
 	let common_task =
-		tokio::spawn(async move { download_libraries(&libs, &paths_clone, force).await });
-
-	let libs = match side {
-		Side::Client => meta.launcher_meta.libraries.client.clone(),
-		Side::Server => meta.launcher_meta.libraries.server.clone(),
-	};
-	let paths_clone = paths.clone();
-	let side_task =
 		tokio::spawn(async move { download_libraries(&libs, &paths_clone, force).await });
 
 	let paths_clone = paths.clone();
@@ -224,35 +253,45 @@ pub async fn download_files(
 		Mode::Quilt => "https://maven.quiltmc.org/repository/release/",
 	};
 	let main_libs_task = tokio::spawn(async move {
-		(
-			download_main_library(&loader_clone, loader_url, &paths_clone, force).await,
-			download_main_library(
-				&intermediary_clone,
-				"https://maven.fabricmc.net/",
-				&paths_clone,
-				force,
-			)
-			.await,
+		download_main_library(&loader_clone, loader_url, &paths_clone, force).await?;
+		download_main_library(
+			&intermediary_clone,
+			"https://maven.fabricmc.net/",
+			&paths_clone,
+			force,
 		)
+		.await?;
+
+		Ok::<(), anyhow::Error>(())
 	});
 
-	classpath.extend(
-		common_task
-			.await?
-			.context("Failed to download Fabric/Quilt common libraries")?,
-	);
-	classpath.extend(
-		side_task
-			.await?
-			.context("Failed to download Fabric/Quilt side-specific libraries")?,
-	);
-	let (loader_name, intermediary_name) = main_libs_task.await?;
-	classpath.add(&loader_name?);
-	classpath.add(&intermediary_name?);
+	common_task
+		.await?
+		.context("Failed to download {mode} common libraries")?;
+	main_libs_task
+		.await?
+		.context("Failed to download {mode} main libraries")?;
 
 	printer.print(&cformat!("<g>{} downloaded.", mode));
 
-	Ok(classpath)
+	Ok(())
+}
+
+/// Download files for Quilt/Fabric that are side-specific
+pub async fn download_side_specific_files(
+	meta: &FabricQuiltMeta,
+	paths: &Paths,
+	side: Side,
+	manager: &UpdateManager,
+) -> anyhow::Result<()> {
+	let libs = match side {
+		Side::Client => meta.launcher_meta.libraries.client.clone(),
+		Side::Server => meta.launcher_meta.libraries.server.clone(),
+	};
+
+	download_libraries(&libs, &paths, manager.force).await?;
+	
+	Ok(())
 }
 
 #[cfg(test)]

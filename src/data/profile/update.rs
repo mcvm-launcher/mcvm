@@ -8,6 +8,7 @@ use crate::io::files::paths::Paths;
 use crate::io::java::{Java, JavaKind};
 use crate::io::options::{read_options, Options};
 use crate::io::Later;
+use crate::net::fabric_quilt::{FabricQuiltMeta, self};
 use crate::net::minecraft::{assets, game_jar, libraries, version_manifest};
 use crate::util::versions::MinecraftVersion;
 use crate::util::{json, print::PrintOptions};
@@ -22,6 +23,7 @@ pub enum UpdateRequirement {
 	Java(JavaKind),
 	GameJar(Side),
 	Options,
+	FabricQuilt(fabric_quilt::Mode, Side),
 }
 
 /// Manager for when we are updating profile files.
@@ -39,6 +41,7 @@ pub struct UpdateManager {
 	pub options: Option<Options>,
 	pub version_list: Later<Vec<String>>,
 	pub found_version: Later<String>,
+	pub fq_meta: Later<FabricQuiltMeta>,
 }
 
 impl UpdateManager {
@@ -54,6 +57,7 @@ impl UpdateManager {
 			options: None,
 			version_list: Later::new(),
 			found_version: Later::new(),
+			fq_meta: Later::new(),
 		}
 	}
 
@@ -131,9 +135,12 @@ impl UpdateManager {
 			Some(..)
 		);
 
-		if java_required {
-			self.add_requirement(UpdateRequirement::VersionJson);
-		}
+		let fq_required = matches!(
+			self.requirements
+				.iter()
+				.find(|x| matches!(x, UpdateRequirement::FabricQuilt(..))),
+			Some(..)
+		);
 
 		if java_required
 			|| game_jar_required
@@ -213,6 +220,29 @@ impl UpdateManager {
 					)
 					.await
 					.context("Failed to get the game JAR file")?;
+				}
+			}
+		}
+
+		if fq_required {
+			for req in self.requirements.iter() {
+				if let UpdateRequirement::FabricQuilt(mode, side) = req {
+					if self.fq_meta.is_empty() {
+						let meta = fabric_quilt::get_meta(self.found_version.get(), mode).await
+							.context("Failed to download Fabric/Quilt metadata")?;
+						fabric_quilt::download_files(&meta, paths, *mode, self).await
+							.context("Failed to download common Fabric/Quilt files")?;
+						self.fq_meta.fill(meta);
+					}
+
+					fabric_quilt::download_side_specific_files(
+						self.fq_meta.get(),
+						paths,
+						*side,
+						self,
+					)
+					.await
+					.context("Failed to download {mode} files for {side}")?;
 				}
 			}
 		}
