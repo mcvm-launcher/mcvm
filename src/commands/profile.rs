@@ -113,14 +113,14 @@ async fn profile_update(data: &mut CmdData, id: &str, force: bool) -> anyhow::Re
 			.fulfill_version_manifest(paths, &profile.version)
 			.await
 			.context("Failed to get version information")?;
-		let version = manager.found_version.get();
+		let version = manager.found_version.get().clone();
 
 		let (paper_build_num, paper_file_name) = if let PluginLoader::Paper = profile.plugin_loader
 		{
-			let (build_num, ..) = paper::get_newest_build(version)
+			let (build_num, ..) = paper::get_newest_build(&version)
 				.await
 				.context("Failed to get the newest Paper build number")?;
-			let paper_file_name = paper::get_jar_file_name(version, build_num)
+			let paper_file_name = paper::get_jar_file_name(&version, build_num)
 				.await
 				.context("Failed to get the name of the Paper Jar file")?;
 			(Some(build_num), Some(paper_file_name))
@@ -128,7 +128,7 @@ async fn profile_update(data: &mut CmdData, id: &str, force: bool) -> anyhow::Re
 			(None, None)
 		};
 		let mut lock = Lockfile::open(paths).context("Failed to open lockfile")?;
-		if lock.update_profile_version(id, version) {
+		if lock.update_profile_version(id, &version) {
 			cprintln!("<s>Updating profile version...");
 			for inst in profile.instances.iter() {
 				if let Some(inst) = config.instances.get(inst) {
@@ -165,7 +165,7 @@ async fn profile_update(data: &mut CmdData, id: &str, force: bool) -> anyhow::Re
 			}
 			let mut printer = ReplPrinter::new(true);
 			for pkg in profile.packages.iter() {
-				let version = config
+				let pkg_version = config
 					.packages
 					.get_version(&pkg.req, paths)
 					.await
@@ -214,7 +214,7 @@ async fn profile_update(data: &mut CmdData, id: &str, force: bool) -> anyhow::Re
 							.map(|x| LockfileAddon::from_addon(&x.addon, paths))
 							.collect::<Vec<LockfileAddon>>();
 						let addons_to_remove = lock
-							.update_package(&pkg.req.name, instance_id, &version, &lockfile_addons)
+							.update_package(&pkg.req.name, instance_id, pkg_version, &lockfile_addons)
 							.context("Failed to update package in lockfile")?;
 						for addon in eval.addon_reqs.iter() {
 							if addons_to_remove.contains(&addon.addon.id) {

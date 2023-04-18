@@ -187,7 +187,7 @@ impl Config {
 				}) = package_config
 				{
 					let path = shellexpand::tilde(&path);
-					packages.insert_local(&config.req, &version, &PathBuf::from(path.to_string()));
+					packages.insert_local(&config.req, version, &PathBuf::from(path.to_string()));
 				}
 			}
 

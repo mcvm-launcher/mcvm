@@ -15,7 +15,7 @@ use std::path::PathBuf;
 #[derive(Debug, Deserialize)]
 pub struct PkgEntry {
 	/// The latest package version available from this repository.
-	version: String,
+	version: u32,
 	url: String,
 }
 
@@ -96,7 +96,7 @@ impl PkgRepo {
 		&mut self,
 		id: &str,
 		paths: &Paths,
-	) -> anyhow::Result<Option<(String, String)>> {
+	) -> anyhow::Result<Option<(String, u32)>> {
 		self.ensure_index(paths).await?;
 		let index = self.index.get();
 		if let Some(entry) = index.packages.get(id) {
@@ -112,7 +112,7 @@ pub async fn query_all(
 	repos: &mut [PkgRepo],
 	name: &str,
 	paths: &Paths,
-) -> anyhow::Result<Option<(String, String)>> {
+) -> anyhow::Result<Option<(String, u32)>> {
 	for repo in repos {
 		if let Some(result) = skip_fail!(repo.query(name, paths).await) {
 			return Ok(Some(result));

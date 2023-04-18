@@ -64,7 +64,7 @@ impl LockfileAddon {
 
 #[derive(Serialize, Deserialize)]
 pub struct LockfilePackage {
-	version: String,
+	version: u32,
 	addons: Vec<LockfileAddon>,
 }
 
@@ -138,7 +138,7 @@ impl Lockfile {
 		&mut self,
 		name: &str,
 		instance: &str,
-		version: &str,
+		version: u32,
 		addons: &[LockfileAddon],
 	) -> anyhow::Result<Vec<String>> {
 		let mut addons_to_remove = Vec::new();

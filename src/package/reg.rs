@@ -60,7 +60,7 @@ impl PkgRegistry {
 		match query_all(&mut self.repos, &pkg_name, paths).await? {
 			Some((url, version)) => Ok(self.insert(
 				req,
-				Package::new(&pkg_name, &version, PkgKind::Remote(Some(url))),
+				Package::new(&pkg_name, version, PkgKind::Remote(Some(url))),
 			)),
 			None => bail!("Package {pkg_name} was not found"),
 		}
@@ -75,9 +75,9 @@ impl PkgRegistry {
 	}
 
 	/// Get the version of a package
-	pub async fn get_version(&mut self, req: &PkgRequest, paths: &Paths) -> anyhow::Result<String> {
+	pub async fn get_version(&mut self, req: &PkgRequest, paths: &Paths) -> anyhow::Result<u32> {
 		let pkg = self.get(req, paths).await?;
-		Ok(pkg.id.version.clone())
+		Ok(pkg.id.version)
 	}
 
 	/// Load a package
@@ -114,7 +114,7 @@ impl PkgRegistry {
 	}
 
 	/// Insert a local package into the registry
-	pub fn insert_local(&mut self, req: &PkgRequest, version: &str, path: &Path) {
+	pub fn insert_local(&mut self, req: &PkgRequest, version: u32, path: &Path) {
 		self.insert(
 			req,
 			Package::new(&req.name, version, PkgKind::Local(path.to_path_buf())),
@@ -136,7 +136,7 @@ mod tests {
 	#[test]
 	fn test_reg_insert() {
 		let mut reg = PkgRegistry::new(vec![]);
-		reg.insert_local(&PkgRequest::new("test"), "1.1", &PathBuf::from("./test"));
+		reg.insert_local(&PkgRequest::new("test"), 1, &PathBuf::from("./test"));
 		let req = PkgRequest::new("test");
 		assert!(reg.has_now(&req));
 		assert!(!reg.has_now(&PkgRequest::new("doesnotexist")));

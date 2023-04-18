@@ -39,7 +39,7 @@ async fn list(data: &mut CmdData) -> anyhow::Result<()> {
 	let paths = data.paths.get();
 	let config = data.config.get_mut();
 
-	let mut found_pkgs: HashMap<String, (String, Vec<String>)> = HashMap::new();
+	let mut found_pkgs: HashMap<String, (u32, Vec<String>)> = HashMap::new();
 	for (id, profile) in config.profiles.iter() {
 		if !profile.packages.is_empty() {
 			for pkg in profile.packages.iter() {

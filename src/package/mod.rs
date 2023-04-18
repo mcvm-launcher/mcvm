@@ -52,7 +52,7 @@ pub struct Package {
 }
 
 impl Package {
-	pub fn new(name: &str, version: &str, kind: PkgKind) -> Self {
+	pub fn new(name: &str, version: u32, kind: PkgKind) -> Self {
 		Self {
 			id: PkgIdentifier::new(name, version),
 			kind,
@@ -62,7 +62,7 @@ impl Package {
 
 	/// Get the cached file name of the package
 	pub fn filename(&self) -> String {
-		self.id.name.clone() + "_" + &self.id.version + PKG_EXTENSION
+		format!("{}_{}{PKG_EXTENSION}", self.id.name.clone(), self.id.version)
 	}
 
 	/// Get the cached path of the package
@@ -120,16 +120,16 @@ mod tests {
 
 	#[test]
 	fn test_package_name() {
-		let package = Package::new("sodium", "latest", PkgKind::Remote(None));
+		let package = Package::new("sodium", 2, PkgKind::Remote(None));
 		assert_eq!(
 			package.filename(),
-			"sodium_latest".to_owned() + PKG_EXTENSION
+			"sodium_2".to_owned() + PKG_EXTENSION
 		);
 
-		let package = Package::new("fabriclike-api", "1.3.2", PkgKind::Remote(None));
+		let package = Package::new("fabriclike-api", 80, PkgKind::Remote(None));
 		assert_eq!(
 			package.filename(),
-			"fabriclike-api_1.3.2".to_owned() + PKG_EXTENSION
+			"fabriclike-api_80".to_owned() + PKG_EXTENSION
 		);
 	}
 }

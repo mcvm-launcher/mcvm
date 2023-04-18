@@ -17,7 +17,7 @@ pub enum FullPackageConfig {
 	Local {
 		r#type: PackageType,
 		id: String,
-		version: String,
+		version: u32,
 		path: String,
 		#[serde(default)]
 		features: Vec<String>,
@@ -26,7 +26,7 @@ pub enum FullPackageConfig {
 	},
 	Remote {
 		id: String,
-		version: Option<String>,
+		version: Option<u32>,
 		#[serde(default)]
 		features: Vec<String>,
 		#[serde(default)]

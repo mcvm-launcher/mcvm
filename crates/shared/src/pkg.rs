@@ -2,14 +2,14 @@
 #[derive(Debug, Hash, Clone, PartialEq, Eq)]
 pub struct PkgIdentifier {
 	pub name: String,
-	pub version: String,
+	pub version: u32,
 }
 
 impl PkgIdentifier {
-	pub fn new(name: &str, version: &str) -> Self {
+	pub fn new(name: &str, version: u32) -> Self {
 		Self {
 			name: name.to_owned(),
-			version: version.to_owned(),
+			version,
 		}
 	}
 }
