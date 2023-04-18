@@ -75,14 +75,14 @@ impl Display for PluginLoader {
 #[derive(Debug, Clone)]
 pub enum PluginLoaderMatch {
 	Vanilla,
-	BukkitLike,
+	Bukkit,
 }
 
 impl PluginLoaderMatch {
 	pub fn from_str(string: &str) -> Option<Self> {
 		match string {
 			"vanilla" => Some(Self::Vanilla),
-			"bukkitlike" => Some(Self::BukkitLike),
+			"bukkit" => Some(Self::Bukkit),
 			_ => None,
 		}
 	}
@@ -90,7 +90,7 @@ impl PluginLoaderMatch {
 	pub fn matches(&self, other: &PluginLoader) -> bool {
 		match self {
 			Self::Vanilla => matches!(other, PluginLoader::Vanilla),
-			Self::BukkitLike => matches!(other, PluginLoader::Paper),
+			Self::Bukkit => matches!(other, PluginLoader::Paper),
 		}
 	}
 }
