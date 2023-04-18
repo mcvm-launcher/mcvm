@@ -101,7 +101,7 @@ impl Instance {
 		manager: &UpdateManager,
 	) -> anyhow::Result<Classpath> {
 		let meta = manager.fq_meta.get();
-		let classpath = fabric_quilt::get_classpath(&meta, paths, self.kind.to_side());
+		let classpath = fabric_quilt::get_classpath(meta, paths, self.kind.to_side());
 		self.main_class = Some(match self.kind {
 			InstKind::Client { .. } => meta.launcher_meta.main_class.client.clone(),
 			InstKind::Server { .. } => meta.launcher_meta.main_class.server.clone(),

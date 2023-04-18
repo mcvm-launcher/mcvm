@@ -10,10 +10,7 @@ pub mod adoptium {
 	/// Gets the URL to the JSON file for a major Java version
 	fn json_url(major_version: &str) -> String {
 		format!(
-			"https://api.adoptium.net/v3/assets/latest/{}/hotspot?image_type=jre&vendor=eclipse&architecture={}&os={}",
-			major_version,
-			ARCH_STRING,
-			OS_STRING
+			"https://api.adoptium.net/v3/assets/latest/{major_version}/hotspot?image_type=jre&vendor=eclipse&architecture={ARCH_STRING}&os={OS_STRING}"
 		)
 	}
 

@@ -100,7 +100,7 @@ impl PkgRepo {
 		self.ensure_index(paths).await?;
 		let index = self.index.get();
 		if let Some(entry) = index.packages.get(id) {
-			return Ok(Some((entry.url.clone(), entry.version.clone())));
+			return Ok(Some((entry.url.clone(), entry.version)));
 		}
 
 		Ok(None)

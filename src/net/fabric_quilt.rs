@@ -234,10 +234,10 @@ pub fn get_classpath(meta: &FabricQuiltMeta, paths: &Paths, side: Side) -> Class
 	out.extend(get_lib_list_classpath(side_libs, paths));
 
 	let path = get_lib_path(&meta.loader.maven).expect("Expected a valid path");
-	out.add_path(&paths.libraries.join(&path));
+	out.add_path(&paths.libraries.join(path));
 
 	let path = get_lib_path(&meta.intermediary.maven).expect("Expected a valid path");
-	out.add_path(&paths.libraries.join(&path));
+	out.add_path(&paths.libraries.join(path));
 
 	out
 }
@@ -301,7 +301,7 @@ pub async fn download_side_specific_files(
 		Side::Server => meta.launcher_meta.libraries.server.clone(),
 	};
 
-	download_libraries(&libs, &paths, manager.force).await?;
+	download_libraries(&libs, paths, manager.force).await?;
 
 	Ok(())
 }

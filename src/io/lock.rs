@@ -196,7 +196,7 @@ impl Lockfile {
 					for addon in pkg.addons {
 						let id = PkgIdentifier {
 							name: pkg_id.clone(),
-							version: pkg.version.clone(),
+							version: pkg.version,
 						};
 						addons_to_remove.push(addon.to_addon(id)?);
 					}

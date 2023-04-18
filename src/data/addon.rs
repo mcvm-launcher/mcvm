@@ -17,7 +17,7 @@ pub fn get_addon_dir(addon: &Addon, paths: &Paths) -> PathBuf {
 pub fn get_addon_path(addon: &Addon, paths: &Paths) -> PathBuf {
 	get_addon_dir(addon, paths)
 		.join(&addon.pkg_id.name)
-		.join(&addon.pkg_id.version.to_string())
+		.join(addon.pkg_id.version.to_string())
 		.join(&addon.file_name)
 }
 

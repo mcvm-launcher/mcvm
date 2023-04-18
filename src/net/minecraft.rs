@@ -33,12 +33,10 @@ pub mod version_manifest {
 		files::create_dir_async(&path).await?;
 		path.push("manifest.json");
 
-		if manager.allow_offline && !force {
-			if manager.should_update_file(&path) {
-				return tokio::fs::read_to_string(path)
-					.await
-					.context("Failed to read manifest contents from file");
-			}
+		if manager.allow_offline && !force && manager.should_update_file(&path) {
+			return tokio::fs::read_to_string(path)
+				.await
+				.context("Failed to read manifest contents from file");
 		}
 
 		let text =
@@ -359,7 +357,7 @@ pub mod assets {
 		manager: &UpdateManager,
 		force: bool,
 	) -> anyhow::Result<Box<json::JsonObject>> {
-		let text = if manager.allow_offline && !force && manager.should_update_file(&path) {
+		let text = if manager.allow_offline && !force && manager.should_update_file(path) {
 			tokio::fs::read_to_string(path)
 				.await
 				.context("Failed to read index contents from file")?

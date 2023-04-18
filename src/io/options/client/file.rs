@@ -672,11 +672,9 @@ pub fn create_keys(
 		if let Some(value) = options.sound.volume.voice {
 			out.insert(String::from("soundCategory_voice"), value.to_string());
 		}
-	} else {
-		if let Some(value) = options.sound.volume.master {
-			let volume_up = value > 0.0;
-			out.insert(String::from("sound"), volume_up.to_string());
-		}
+	} else if let Some(value) = options.sound.volume.master {
+		let volume_up = value > 0.0;
+		out.insert(String::from("sound"), volume_up.to_string());
 	}
 	// Model parts
 	if let Some(value) = options.skin.cape {
