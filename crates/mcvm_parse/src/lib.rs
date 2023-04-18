@@ -36,6 +36,7 @@ pub enum FailReason {
 	None,
 	UnsupportedVersion,
 	UnsupportedModloader,
+	UnsupportedPluginLoader,
 }
 
 impl FailReason {
@@ -43,6 +44,7 @@ impl FailReason {
 		match string {
 			"unsupported_version" => Some(Self::UnsupportedVersion),
 			"unsupported_modloader" => Some(Self::UnsupportedModloader),
+			"unsupported_plugin_loader" => Some(Self::UnsupportedPluginLoader),
 			_ => None,
 		}
 	}
@@ -57,6 +59,7 @@ impl Display for FailReason {
 				Self::None => "",
 				Self::UnsupportedVersion => "Unsupported Minecraft version",
 				Self::UnsupportedModloader => "Unsupported modloader",
+				Self::UnsupportedPluginLoader => "Unsupported plugin loader",
 			}
 		)
 	}
