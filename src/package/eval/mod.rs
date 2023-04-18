@@ -24,32 +24,8 @@ use std::path::PathBuf;
 /// What instructions we are allowed to evaluate (depends on what routine we are running)
 #[derive(Debug, Clone)]
 pub enum EvalLevel {
-	None,
-	Info,
-	All,
-}
-
-impl EvalLevel {
-	pub fn is_info(&self) -> bool {
-		match self {
-			Self::None => false,
-			_ => true,
-		}
-	}
-
-	pub fn is_deps(&self) -> bool {
-		match self {
-			Self::All => true,
-			_ => false,
-		}
-	}
-
-	pub fn is_all(&self) -> bool {
-		match self {
-			Self::All => true,
-			_ => false,
-		}
-	}
+	Meta,
+	Install,
 }
 
 /// Permissions level for an evaluation
@@ -76,7 +52,7 @@ impl Routine {
 
 	pub fn get_level(&self) -> EvalLevel {
 		match self {
-			Self::Install => EvalLevel::All,
+			Self::Install => EvalLevel::Install,
 		}
 	}
 }
@@ -167,21 +143,16 @@ impl Package {
 
 		let mut eval = EvalData::new(constants, self.id.clone(), &routine);
 
-		match eval.level {
-			EvalLevel::All | EvalLevel::Info => {
-				for instr in &block.contents {
-					let result = eval_instr(instr, &eval, &parsed.blocks)?;
-					for (var, val) in result.vars_to_set {
-						eval.vars.insert(var, val);
-					}
-					eval.addon_reqs.extend(result.addon_reqs);
-					eval.deps.extend(result.deps);
-					if result.finish {
-						break;
-					}
-				}
+		for instr in &block.contents {
+			let result = eval_instr(instr, &eval, &parsed.blocks)?;
+			for (var, val) in result.vars_to_set {
+				eval.vars.insert(var, val);
 			}
-			EvalLevel::None => {}
+			eval.addon_reqs.extend(result.addon_reqs);
+			eval.deps.extend(result.deps);
+			if result.finish {
+				break;
+			}
 		}
 
 		Ok(eval)
@@ -220,8 +191,8 @@ pub fn eval_instr(
 	blocks: &HashMap<BlockId, Block>,
 ) -> anyhow::Result<EvalResult> {
 	let mut out = EvalResult::new();
-	if eval.level.is_all() {
-		match &instr.kind {
+	match eval.level {
+		EvalLevel::Install => match &instr.kind {
 			InstrKind::If(condition, block) => {
 				if eval_condition(&condition.kind, eval)? {
 					let result =
@@ -238,6 +209,15 @@ pub fn eval_instr(
 				out.finish = true;
 				let reason = reason.as_ref().unwrap_or(&FailReason::None).clone();
 				bail!("Package script failed with reason: {}", reason.to_string());
+			}
+			InstrKind::Require(deps, ..) => {
+				for dep in deps {
+					let mut dep_to_push = Vec::new();
+					for dep in dep {
+						dep_to_push.push(VersionPattern::from(&dep.get(&eval.vars)?));
+					}
+					out.deps.push(dep_to_push);
+				}
 			}
 			InstrKind::Addon {
 				id,
@@ -282,27 +262,9 @@ pub fn eval_instr(
 					bail!("No location (url/path) was specified for addon {id}");
 				}
 			}
-			_ => {}
+			_ => bail!("Instruction is not allowed in this routine context")
 		}
-	}
-	if eval.level.is_deps() {
-		match &instr.kind {
-			InstrKind::Require(deps, ..) => {
-				for dep in deps {
-					let mut dep_to_push = Vec::new();
-					for dep in dep {
-						dep_to_push.push(VersionPattern::from(&dep.get(&eval.vars)?));
-					}
-					out.deps.push(dep_to_push);
-				}
-			}
-			_ => {}
-		}
-	}
-	if eval.level.is_info() {
-		match &instr.kind {
-			_ => {}
-		}
+		EvalLevel::Meta => {}
 	}
 
 	Ok(out)
