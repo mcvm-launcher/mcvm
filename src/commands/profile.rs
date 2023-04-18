@@ -108,7 +108,7 @@ async fn profile_update(data: &mut CmdData, id: &str, force: bool) -> anyhow::Re
 
 	if let Some(profile) = config.profiles.get_mut(id) {
 		let print_options = PrintOptions::new(true, 0);
-		let mut manager = UpdateManager::new(print_options, force);
+		let mut manager = UpdateManager::new(print_options, force, false);
 		manager
 			.fulfill_version_manifest(paths, &profile.version)
 			.await

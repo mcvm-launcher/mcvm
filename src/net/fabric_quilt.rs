@@ -1,4 +1,5 @@
 use std::fmt::Display;
+use std::fs::File;
 
 use anyhow::{anyhow, Context};
 use color_print::cformat;
@@ -9,7 +10,6 @@ use crate::data::profile::update::UpdateManager;
 use crate::io::files;
 use crate::io::files::paths::Paths;
 use crate::io::java::classpath::Classpath;
-use crate::util::json::{self, JsonType};
 use crate::util::print::ReplPrinter;
 use shared::instance::Side;
 
@@ -45,27 +45,27 @@ pub struct MainLibrary {
 	maven: String,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct Libraries {
 	common: Vec<Library>,
 	client: Vec<Library>,
 	server: Vec<Library>,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct MainClass {
 	pub client: String,
 	pub server: String,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct LauncherMeta {
 	libraries: Libraries,
 	#[serde(rename = "mainClass")]
 	pub main_class: MainClass,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct FabricQuiltMeta {
 	#[serde(rename = "launcherMeta")]
 	pub launcher_meta: LauncherMeta,
@@ -97,20 +97,33 @@ impl LibraryParts {
 }
 
 /// Get the Fabric/Quilt metadata file
-pub async fn get_meta(version: &str, mode: &Mode) -> anyhow::Result<FabricQuiltMeta> {
+pub async fn get_meta(
+	version: &str,
+	mode: &Mode,
+	paths: &Paths,
+	manager: &UpdateManager,
+) -> anyhow::Result<FabricQuiltMeta> {
 	let meta_url = match mode {
 		Mode::Fabric => format!("https://meta.fabricmc.net/v2/versions/loader/{version}"),
 		Mode::Quilt => format!("https://meta.quiltmc.org/v3/versions/loader/{version}"),
 	};
-	let meta = download::json::<serde_json::Value>(&meta_url)
-		.await
-		.context("Failed to download Fabric/Quilt metadata")?;
-	let meta = json::ensure_type(meta.as_array(), JsonType::Arr)?;
-	let meta = meta
-		.first()
-		.ok_or(anyhow!("Could not find a valid Fabric/Quilt version"))?;
+	let path = paths.internal.join(format!("fq_{mode}_meta.json"));
+	
+	let meta = if manager.allow_offline && manager.should_update_file(&path) {
+		let mut file = File::open(path).context("Failed to open {mode} meta file")?;
+		serde_json::from_reader(&mut file).context("Failed to parse {mode} meta from file")?
+	} else {
+		let meta = download::json::<Vec<FabricQuiltMeta>>(&meta_url)
+			.await
+			.context("Failed to download {mode} metadata")?;
+		let meta = meta
+			.first()
+			.ok_or(anyhow!("Could not find a valid {mode} version"))?;
 
-	Ok(serde_json::from_value(meta.clone())?)
+		meta.clone()
+	};
+
+	Ok(meta)
 }
 
 /// Get the path to a library

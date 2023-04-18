@@ -32,6 +32,8 @@ pub enum UpdateRequirement {
 pub struct UpdateManager {
 	pub print: PrintOptions,
 	pub force: bool,
+	/// Whether we will prioritize local files instead of remote ones
+	pub allow_offline: bool,
 	requirements: HashSet<UpdateRequirement>,
 	// File paths that are added when they have been updated by other functions
 	files: HashSet<PathBuf>,
@@ -45,10 +47,11 @@ pub struct UpdateManager {
 }
 
 impl UpdateManager {
-	pub fn new(print: PrintOptions, force: bool) -> Self {
+	pub fn new(print: PrintOptions, force: bool, allow_offline: bool) -> Self {
 		Self {
 			print,
 			force,
+			allow_offline,
 			requirements: HashSet::new(),
 			files: HashSet::new(),
 			version_manifest: Later::new(),
@@ -100,7 +103,7 @@ impl UpdateManager {
 		if self.print.verbose {
 			cprintln!("<s>Obtaining version index...");
 		}
-		let manifest = version_manifest::get(paths)
+		let manifest = version_manifest::get(paths, self)
 			.await
 			.context("Failed to get version manifest")?;
 
@@ -158,6 +161,7 @@ impl UpdateManager {
 				self.found_version.get(),
 				self.version_manifest.get(),
 				paths,
+				self
 			)
 			.await
 			.context("Failed to get version json")?;
@@ -228,7 +232,7 @@ impl UpdateManager {
 			for req in self.requirements.iter() {
 				if let UpdateRequirement::FabricQuilt(mode, side) = req {
 					if self.fq_meta.is_empty() {
-						let meta = fabric_quilt::get_meta(self.found_version.get(), mode).await
+						let meta = fabric_quilt::get_meta(self.found_version.get(), mode, paths, self).await
 							.context("Failed to download Fabric/Quilt metadata")?;
 						fabric_quilt::download_files(&meta, paths, *mode, self).await
 							.context("Failed to download common Fabric/Quilt files")?;

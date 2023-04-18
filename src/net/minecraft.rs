@@ -23,11 +23,22 @@ use super::download::{self, FD_SENSIBLE_LIMIT};
 pub mod version_manifest {
 	use super::*;
 
-	/// Obtain the raw version manifest contents
-	async fn get_contents(paths: &Paths) -> anyhow::Result<String> {
+	/// Obtain the version manifest contents
+	async fn get_contents(
+		paths: &Paths,
+		manager: &UpdateManager,
+		force: bool
+	) -> anyhow::Result<String> {
 		let mut path = paths.internal.join("versions");
 		files::create_dir_async(&path).await?;
 		path.push("manifest.json");
+
+		if manager.allow_offline && !force {
+			if manager.should_update_file(&path) {
+				return tokio::fs::read_to_string(path).await
+					.context("Failed to read manifest contents from file");
+			}
+		}
 
 		let text =
 			download::text("https://piston-meta.mojang.com/mc/game/version_manifest_v2.json")
@@ -41,15 +52,15 @@ pub mod version_manifest {
 	}
 
 	/// Get the version manifest as a JSON object
-	pub async fn get(paths: &Paths) -> anyhow::Result<Box<json::JsonObject>> {
-		let mut manifest_contents = get_contents(paths)
+	pub async fn get(paths: &Paths, manager: &UpdateManager) -> anyhow::Result<Box<json::JsonObject>> {
+		let mut manifest_contents = get_contents(paths, manager, false)
 			.await
-			.context("Failed to download manifest contents")?;
+			.context("Failed to get manifest contents")?;
 		let manifest = match json::parse_object(&manifest_contents) {
 			Ok(manifest) => manifest,
 			Err(..) => {
 				cprintln!("<r>Failed to parse version manifest. Redownloading...");
-				manifest_contents = get_contents(paths)
+				manifest_contents = get_contents(paths, manager, true)
 					.await
 					.context("Failed to donwload manifest contents")?;
 				json::parse_object(&manifest_contents)?
@@ -75,6 +86,7 @@ pub mod version_manifest {
 		version: &str,
 		version_manifest: &json::JsonObject,
 		paths: &Paths,
+		manager: &UpdateManager,
 	) -> anyhow::Result<Box<json::JsonObject>> {
 		let version_string = version.to_owned();
 
@@ -93,12 +105,20 @@ pub mod version_manifest {
 		let version_json_name: String = version_string.clone() + ".json";
 		let version_dir = paths.internal.join("versions").join(version_string);
 		files::create_dir_async(&version_dir).await?;
-		let text = download::text(version_url.expect("Version does not exist"))
-			.await
-			.context("Failed to download version JSON")?;
-		tokio::fs::write(version_dir.join(version_json_name), &text)
-			.await
-			.context("Failed to write version JSON to a file")?;
+		let path = version_dir.join(version_json_name);
+		let text = if manager.allow_offline && manager.should_update_file(&path) {
+			tokio::fs::read_to_string(path).await
+				.context("Failed to read version JSON from file")?
+		} else {
+			let text = download::text(version_url.expect("Version does not exist"))
+				.await
+				.context("Failed to download version JSON")?;
+			tokio::fs::write(path, &text)
+				.await
+				.context("Failed to write version JSON to a file")?;
+
+			text
+		};
 
 		let version_doc = json::parse_object(&text).context("Failed to parse version JSON")?;
 
@@ -328,13 +348,25 @@ pub mod libraries {
 pub mod assets {
 	use super::*;
 
-	async fn download_index(url: &str, path: &Path) -> anyhow::Result<Box<json::JsonObject>> {
-		let text = download::text(url)
-			.await
-			.context("Failed to download index")?;
-		tokio::fs::write(path, &text)
-			.await
-			.context("Failed to write index to a file")?;
+	async fn download_index(
+		url: &str,
+		path: &Path,
+		manager: &UpdateManager,
+		force: bool,
+	) -> anyhow::Result<Box<json::JsonObject>> {
+		let text = if manager.allow_offline && !force && manager.should_update_file(&path) {
+			tokio::fs::read_to_string(path).await
+				.context("Failed to read index contents from file")?
+		} else {
+			let text = download::text(url)
+				.await
+				.context("Failed to download index")?;
+			tokio::fs::write(path, &text)
+				.await
+				.context("Failed to write index to a file")?;
+
+			text
+		};
 
 		let doc = json::parse_object(&text).context("Failed to parse index")?;
 		Ok(doc)
@@ -376,14 +408,14 @@ pub mod assets {
 			.await
 			.context("Failed to create directories for assets")?;
 
-		let index = match download_index(index_url, &index_path).await {
+		let index = match download_index(index_url, &index_path, manager, false).await {
 			Ok(val) => val,
 			Err(err) => {
 				cprintln!(
 					"<r>Failed to obtain asset index:\n{}\nRedownloading...",
 					err
 				);
-				download_index(index_url, &index_path)
+				download_index(index_url, &index_path, manager, true)
 					.await
 					.context("Failed to obtain asset index")?
 			}

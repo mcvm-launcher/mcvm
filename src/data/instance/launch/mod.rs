@@ -23,7 +23,7 @@ impl Instance {
 	) -> anyhow::Result<()> {
 		cprintln!("Checking for updates...");
 		let options = PrintOptions::new(false, 0);
-		let mut manager = UpdateManager::new(options, false);
+		let mut manager = UpdateManager::new(options, false, true);
 		manager
 			.fulfill_version_manifest(paths, version)
 			.await
