@@ -2,6 +2,7 @@ use std::collections::HashMap;
 
 use anyhow::ensure;
 use serde::Deserialize;
+use shared::instance::Side;
 
 use crate::data::instance::{InstKind, Instance};
 use crate::data::profile::Profile;
@@ -11,7 +12,7 @@ use crate::io::launch::LaunchOptions;
 use crate::io::options::client::ClientOptions;
 use crate::io::options::server::ServerOptions;
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 #[serde(untagged)]
 pub enum Args {
 	List(Vec<String>),
@@ -33,7 +34,7 @@ impl Default for Args {
 	}
 }
 
-#[derive(Deserialize, Debug, Default)]
+#[derive(Deserialize, Debug, Default, Clone)]
 pub struct LaunchArgs {
 	#[serde(default)]
 	pub jvm: Args,
@@ -41,7 +42,7 @@ pub struct LaunchArgs {
 	pub game: Args,
 }
 
-#[derive(Deserialize, Debug, Default)]
+#[derive(Deserialize, Debug, Default, Clone)]
 #[serde(untagged)]
 pub enum LaunchMemory {
 	#[default]
@@ -79,7 +80,7 @@ pub enum QuickPlay {
 	None,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct LaunchConfig {
 	#[serde(default)]
 	pub args: LaunchArgs,
@@ -151,7 +152,7 @@ impl Default for LaunchConfig {
 #[derive(Deserialize)]
 #[serde(tag = "type")]
 #[serde(rename_all = "snake_case")]
-pub enum InstanceConfig {
+pub enum FullInstanceConfig {
 	Client {
 		#[serde(default)]
 		launch: LaunchConfig,
@@ -166,24 +167,41 @@ pub enum InstanceConfig {
 	},
 }
 
+#[derive(Deserialize)]
+#[serde(untagged)]
+#[serde(rename_all = "snake_case")]
+pub enum InstanceConfig {
+	Simple(Side),
+	Full(FullInstanceConfig),
+}
+
 pub fn read_instance_config(
 	id: &str,
 	config: &InstanceConfig,
 	profile: &Profile,
 ) -> anyhow::Result<Instance> {
 	let (kind, launch) = match config {
-		InstanceConfig::Client { launch, options } => (
-			InstKind::Client {
-				options: options.clone(),
+		InstanceConfig::Simple(side) => (
+			match side {
+				Side::Client => InstKind::Client { options: None },
+				Side::Server => InstKind::Server { options: None },
 			},
-			launch,
+			LaunchConfig::default(),
 		),
-		InstanceConfig::Server { launch, options } => (
-			InstKind::Server {
-				options: options.clone(),
-			},
-			launch,
-		),
+		InstanceConfig::Full(config) => match config {
+			FullInstanceConfig::Client { launch, options } => (
+				InstKind::Client {
+					options: options.clone(),
+				},
+				launch.clone(),
+			),
+			FullInstanceConfig::Server { launch, options } => (
+				InstKind::Server {
+					options: options.clone(),
+				},
+				launch.clone(),
+			),
+		}
 	};
 
 	let instance = Instance::new(
@@ -200,6 +218,36 @@ pub fn read_instance_config(
 #[cfg(test)]
 mod tests {
 	use super::*;
+
+	use shared::modifications::{Modloader, PluginLoader};
+	use crate::util::versions::MinecraftVersion;
+
+	#[test]
+	fn test_instance_deser() {
+		#[derive(Deserialize)]
+		struct Test {
+			instance: InstanceConfig,
+		}
+
+		let test = serde_json::from_str::<Test>(
+			r#"
+			{
+				"instance": "client"
+			}
+			"#
+		).unwrap();
+
+		let profile = Profile::new(
+			"foo",
+			MinecraftVersion::Latest,
+			Modloader::Vanilla,
+			PluginLoader::Vanilla
+		);
+
+		let instance = read_instance_config("foo", &test.instance, &profile).unwrap();
+		assert_eq!(instance.id, "foo");
+		assert!(matches!(instance.kind, InstKind::Client { .. }));
+	}
 
 	#[test]
 	fn test_quickplay_deser() {

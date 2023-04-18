@@ -1,7 +1,10 @@
 use std::fmt::Display;
 
+use serde::Deserialize;
+
 /// Minecraft game side, client or server
-#[derive(Debug, Clone, Copy, Hash, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, Hash, PartialEq, Eq, Deserialize)]
+#[serde(rename_all = "snake_case")]
 pub enum Side {
 	Client,
 	Server,
