@@ -25,7 +25,6 @@ use std::path::PathBuf;
 /// What instructions we are allowed to evaluate (depends on what routine we are running)
 #[derive(Debug, Clone)]
 pub enum EvalLevel {
-	Meta,
 	Install,
 }
 
@@ -277,7 +276,6 @@ pub fn eval_instr(
 			}
 			_ => bail!("Instruction is not allowed in this routine context"),
 		},
-		EvalLevel::Meta => {}
 	}
 
 	Ok(out)
