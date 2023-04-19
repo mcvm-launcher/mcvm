@@ -33,7 +33,7 @@ pub mod version_manifest {
 		files::create_dir_async(&path).await?;
 		path.push("manifest.json");
 
-		if manager.allow_offline && !force && manager.should_update_file(&path) {
+		if manager.allow_offline && !force && path.exists() {
 			return tokio::fs::read_to_string(path)
 				.await
 				.context("Failed to read manifest contents from file");
@@ -108,7 +108,7 @@ pub mod version_manifest {
 		let version_dir = paths.internal.join("versions").join(version_string);
 		files::create_dir_async(&version_dir).await?;
 		let path = version_dir.join(version_json_name);
-		let text = if manager.allow_offline && manager.should_update_file(&path) {
+		let text = if manager.allow_offline && path.exists() {
 			tokio::fs::read_to_string(path)
 				.await
 				.context("Failed to read version JSON from file")?
@@ -357,7 +357,7 @@ pub mod assets {
 		manager: &UpdateManager,
 		force: bool,
 	) -> anyhow::Result<Box<json::JsonObject>> {
-		let text = if manager.allow_offline && !force && manager.should_update_file(path) {
+		let text = if manager.allow_offline && !force && path.exists() {
 			tokio::fs::read_to_string(path)
 				.await
 				.context("Failed to read index contents from file")?

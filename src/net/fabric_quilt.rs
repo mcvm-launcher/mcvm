@@ -37,7 +37,13 @@ impl Display for Mode {
 #[derive(Debug, Deserialize, Clone)]
 pub struct Library {
 	name: String,
+	#[serde(default = "default_library_url")]
 	url: String,
+}
+
+/// Old format does not have a URL for the net.minecraft.launchwrapper for some reason
+fn default_library_url() -> String {
+	String::from("https://repo.papermc.io/repository/maven-public/")
 }
 
 #[derive(Deserialize, Clone, Debug)]
@@ -53,9 +59,25 @@ pub struct Libraries {
 }
 
 #[derive(Deserialize, Debug, Clone)]
-pub struct MainClass {
-	pub client: String,
-	pub server: String,
+#[serde(untagged)]
+pub enum MainClass {
+	New {
+		client: String,
+		server: String,
+	},
+	Old(String),
+}
+
+impl MainClass {
+	pub fn get_main_class_string(&self, side: Side) -> &str {
+		match self {
+			Self::New { client, server } => match side {
+				Side::Client => client,
+				Side::Server => server,
+			},
+			Self::Old(class) => class,
+		}
+	}
 }
 
 #[derive(Deserialize, Debug, Clone)]
@@ -109,21 +131,25 @@ pub async fn get_meta(
 	};
 	let path = paths.internal.join(format!("fq_{mode}_meta.json"));
 
-	let meta = if manager.allow_offline && manager.should_update_file(&path) {
-		let mut file = File::open(path).context("Failed to open {mode} meta file")?;
-		serde_json::from_reader(&mut file).context("Failed to parse {mode} meta from file")?
+	let meta = if manager.allow_offline && path.exists() {
+		let mut file = File::open(path).with_context(|| format!("Failed to open {mode} meta file"))?;
+		serde_json::from_reader(&mut file).with_context(|| format!("Failed to parse {mode} meta from file"))?
 	} else {
-		let meta = download::json::<Vec<FabricQuiltMeta>>(&meta_url)
+		let bytes = download::bytes(&meta_url)
 			.await
-			.context("Failed to download {mode} metadata")?;
-		let meta = meta
-			.first()
-			.ok_or(anyhow!("Could not find a valid {mode} version"))?;
+			.with_context(|| format!("Failed to download {mode} metadata file"))?;
+		tokio::fs::write(path, &bytes).await.context("Failed to write meta to a file")?;
+
+		let meta = serde_json::from_slice::<Vec<FabricQuiltMeta>>(&bytes).context("Failed to parse downloaded metadata")?;
 
 		meta.clone()
 	};
 
-	Ok(meta)
+	let meta = meta
+		.first()
+		.ok_or(anyhow!("Could not find a valid {mode} version"))?;
+
+	Ok(meta.clone())
 }
 
 /// Get the path to a library
@@ -279,10 +305,10 @@ pub async fn download_files(
 
 	common_task
 		.await?
-		.context("Failed to download {mode} common libraries")?;
+		.with_context(|| format!("Failed to download {mode} common libraries"))?;
 	main_libs_task
 		.await?
-		.context("Failed to download {mode} main libraries")?;
+		.with_context(|| format!("Failed to download {mode} main libraries"))?;
 
 	printer.print(&cformat!("<g>{} downloaded.", mode));
 
