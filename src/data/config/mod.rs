@@ -173,7 +173,7 @@ impl Config {
 					}
 				}
 
-				for feature in config.features {
+				for feature in &config.features {
 					if !validate_identifier(&feature) {
 						bail!("Invalid string '{feature}'");
 					}
@@ -189,6 +189,8 @@ impl Config {
 					let path = shellexpand::tilde(&path);
 					packages.insert_local(&config.req, version, &PathBuf::from(path.to_string()));
 				}
+
+				profile.packages.push(config);
 			}
 
 			profiles.insert(profile_id.clone(), Box::new(profile));
