@@ -35,6 +35,20 @@ cfg_match! {
 }
 
 cfg_match! {
+	target_os = "linux" => {
+		pub static PREFERRED_ARCHIVE: &str = "tar.gz";
+	}
+	_ => {
+		pub static PREFERRED_ARCHIVE: &str = "zip";
+	}
+}
+
+/// Adds a dot to the preferred archive name
+pub fn preferred_archive_extension() -> String {
+	format!(".{PREFERRED_ARCHIVE}")
+}
+
+cfg_match! {
 	target_pointer_width = "64" => {
 		pub static TARGET_BITS_STR: &str = "64";
 	}

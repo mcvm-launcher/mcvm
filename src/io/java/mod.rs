@@ -5,7 +5,7 @@ use crate::data::profile::update::UpdateManager;
 use crate::io::files::{self, paths::Paths};
 use crate::net;
 use crate::net::download;
-use crate::util::json;
+use crate::util::{json, preferred_archive_extension};
 use crate::util::print::ReplPrinter;
 
 use anyhow::Context;
@@ -22,6 +22,7 @@ use super::Later;
 #[derive(Debug, Clone, Hash, PartialEq, Eq)]
 pub enum JavaKind {
 	Adoptium(Later<String>),
+	Zulu(Later<String>),
 	Custom(PathBuf),
 }
 
@@ -29,6 +30,7 @@ impl JavaKind {
 	pub fn from_str(string: &str) -> Self {
 		match string {
 			"adoptium" => Self::Adoptium(Later::Empty),
+			"zulu" => Self::Zulu(Later::Empty),
 			path => Self::Custom(PathBuf::from(String::from(shellexpand::tilde(path)))),
 		}
 	}
@@ -52,7 +54,7 @@ impl Java {
 	/// Add a major version to a Java installation that supports it
 	pub fn add_version(&mut self, version: &str) {
 		match &mut self.kind {
-			JavaKind::Adoptium(vers) => vers.fill(version.to_owned()),
+			JavaKind::Adoptium(vers) | JavaKind::Zulu(vers) => vers.fill(version.to_owned()),
 			JavaKind::Custom(..) => {}
 		};
 	}
@@ -88,7 +90,7 @@ impl Java {
 				}
 				out.insert(extracted_bin_dir.clone());
 
-				let arc_extension = if cfg!(windows) { ".zip" } else { ".tar.gz" };
+				let arc_extension = preferred_archive_extension();
 				let arc_name = format!("adoptium{}{arc_extension}", major_version.get());
 				let arc_path = out_dir.join(arc_name);
 
@@ -102,7 +104,39 @@ impl Java {
 
 				// Extraction
 				printer.print(&cformat!("Extracting JRE..."));
-				extract_adoptium_archive(&arc_path, &out_dir).context("Failed to extract")?;
+				extract_archive(&arc_path, &out_dir).context("Failed to extract")?;
+				printer.print(&cformat!("Removing archive..."));
+				tokio::fs::remove_file(arc_path)
+					.await
+					.context("Failed to remove archive")?;
+				printer.print(&cformat!("<g>Java installation finished."));
+			}
+			JavaKind::Zulu(major_version) => {
+				let mut printer = ReplPrinter::from_options(manager.print.clone());
+
+				let out_dir = paths.java.join("zulu");
+				files::create_dir(&out_dir)?;
+
+				let package = net::java::zulu::get_latest(major_version.get())
+					.await
+					.context("Failed to get the latest Zulu version")?;
+
+				let arc_path = out_dir.join(&package.name);
+				let extracted_dir = out_dir.join(net::java::zulu::extract_dir_name(&package.name));
+
+				self.path.fill(extracted_dir.clone());
+				if !manager.should_update_file(&extracted_dir) {
+					return Ok(out);
+				}
+
+				printer.print(&cformat!("Downloading Azul Zulu JRE <b>{}</b>...", package.name));
+				download::file(&package.download_url, &arc_path)
+					.await
+					.context("Failed to download JRE binaries")?;
+				
+				// Extraction
+				printer.print(&cformat!("Extracting JRE..."));
+				extract_archive(&arc_path, &out_dir).context("Failed to extract")?;
 				printer.print(&cformat!("Removing archive..."));
 				tokio::fs::remove_file(arc_path)
 					.await
@@ -117,8 +151,8 @@ impl Java {
 	}
 }
 
-/// Extracts the Adoptium JRE archive (either a tar or a zip)
-fn extract_adoptium_archive(arc_path: &Path, out_dir: &Path) -> anyhow::Result<()> {
+/// Extracts the Adoptium/Zulu JRE archive (either a tar or a zip)
+fn extract_archive(arc_path: &Path, out_dir: &Path) -> anyhow::Result<()> {
 	let mut file = File::open(arc_path).context("Failed to read archive file")?;
 	if cfg!(windows) {
 		zip_extract::extract(&mut file, out_dir, false).context("Failed to extract zip file")?;
