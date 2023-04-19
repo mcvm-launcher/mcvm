@@ -3,13 +3,14 @@ pub mod parse;
 
 use anyhow::{anyhow, bail};
 use serde::Deserialize;
-use shared::addon::Addon;
+use shared::addon::{Addon, is_filename_valid};
 
 use self::conditions::eval_condition;
 
 use super::Package;
 use crate::data::addon::{AddonLocation, AddonRequest};
 use crate::io::files::paths::Paths;
+use crate::util::validate_identifier;
 use mcvm_parse::instruction::{InstrKind, Instruction};
 use mcvm_parse::parse::{Block, BlockId};
 use mcvm_parse::{FailReason, Value};
@@ -229,12 +230,24 @@ pub fn eval_instr(
 				path,
 			} => {
 				let id = id.get(&eval.vars)?;
+				if eval.addon_reqs.iter().find(|x| x.addon.id == id).is_some() {
+					bail!("Duplicate addon id '{id}'");
+				}
+				if !validate_identifier(&id) {
+					bail!("Invalid addon identifier '{id}'");
+				}
 				let file_name = match append {
 					Value::None => file_name.get(&eval.vars)?,
 					_ => append.get(&eval.vars)? + "-" + &file_name.get(&eval.vars)?,
 				};
+				let kind = kind.as_ref().expect("Addon kind missing");
+
+				if !is_filename_valid(*kind, &file_name) {
+					bail!("Invalid addon filename '{file_name}' in addon '{id}'");
+				}
+
 				let addon = Addon::new(
-					*kind.as_ref().expect("Addon kind missing"),
+					*kind,
 					&id,
 					&file_name,
 					eval.id.clone(),
@@ -255,11 +268,11 @@ pub fn eval_instr(
 								.push(AddonRequest::new(addon, location, *force));
 						}
 						_ => {
-							bail!("Insufficient permissions to add a local addon {id}");
+							bail!("Insufficient permissions to add a local addon '{id}'");
 						}
 					}
 				} else {
-					bail!("No location (url/path) was specified for addon {id}");
+					bail!("No location (url/path) was specified for addon '{id}'");
 				}
 			}
 			_ => bail!("Instruction is not allowed in this routine context"),

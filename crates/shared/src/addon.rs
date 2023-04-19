@@ -65,3 +65,11 @@ impl Addon {
 		}
 	}
 }
+
+/// Checks for a valid addon filename
+pub fn is_filename_valid(kind: AddonKind, filename: &str) -> bool {
+	match kind {
+		AddonKind::Mod | AddonKind::Plugin => filename.ends_with(".jar"),
+		AddonKind::ResourcePack | AddonKind::Shader => filename.ends_with(".zip"),
+	}
+}
