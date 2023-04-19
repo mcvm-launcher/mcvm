@@ -174,7 +174,7 @@ impl Config {
 				}
 
 				for feature in &config.features {
-					if !validate_identifier(&feature) {
+					if !validate_identifier(feature) {
 						bail!("Invalid string '{feature}'");
 					}
 				}

@@ -5,8 +5,8 @@ use crate::data::profile::update::UpdateManager;
 use crate::io::files::{self, paths::Paths};
 use crate::net;
 use crate::net::download;
-use crate::util::{json, preferred_archive_extension};
 use crate::util::print::ReplPrinter;
+use crate::util::{json, preferred_archive_extension};
 
 use anyhow::Context;
 use color_print::cformat;
@@ -129,11 +129,14 @@ impl Java {
 					return Ok(out);
 				}
 
-				printer.print(&cformat!("Downloading Azul Zulu JRE <b>{}</b>...", package.name));
+				printer.print(&cformat!(
+					"Downloading Azul Zulu JRE <b>{}</b>...",
+					package.name
+				));
 				download::file(&package.download_url, &arc_path)
 					.await
 					.context("Failed to download JRE binaries")?;
-				
+
 				// Extraction
 				printer.print(&cformat!("Extracting JRE..."));
 				extract_archive(&arc_path, &out_dir).context("Failed to extract")?;

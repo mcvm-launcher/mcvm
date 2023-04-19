@@ -61,10 +61,7 @@ pub struct Libraries {
 #[derive(Deserialize, Debug, Clone)]
 #[serde(untagged)]
 pub enum MainClass {
-	New {
-		client: String,
-		server: String,
-	},
+	New { client: String, server: String },
 	Old(String),
 }
 
@@ -132,17 +129,22 @@ pub async fn get_meta(
 	let path = paths.internal.join(format!("fq_{mode}_meta.json"));
 
 	let meta = if manager.allow_offline && path.exists() {
-		let mut file = File::open(path).with_context(|| format!("Failed to open {mode} meta file"))?;
-		serde_json::from_reader(&mut file).with_context(|| format!("Failed to parse {mode} meta from file"))?
+		let mut file =
+			File::open(path).with_context(|| format!("Failed to open {mode} meta file"))?;
+		serde_json::from_reader(&mut file)
+			.with_context(|| format!("Failed to parse {mode} meta from file"))?
 	} else {
 		let bytes = download::bytes(&meta_url)
 			.await
 			.with_context(|| format!("Failed to download {mode} metadata file"))?;
-		tokio::fs::write(path, &bytes).await.context("Failed to write meta to a file")?;
+		tokio::fs::write(path, &bytes)
+			.await
+			.context("Failed to write meta to a file")?;
 
-		let meta = serde_json::from_slice::<Vec<FabricQuiltMeta>>(&bytes).context("Failed to parse downloaded metadata")?;
+		let meta = serde_json::from_slice::<Vec<FabricQuiltMeta>>(&bytes)
+			.context("Failed to parse downloaded metadata")?;
 
-		meta.clone()
+		meta
 	};
 
 	let meta = meta

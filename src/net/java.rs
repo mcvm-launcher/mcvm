@@ -36,7 +36,7 @@ pub mod adoptium {
 
 pub mod zulu {
 	use super::*;
-	
+
 	use crate::util::preferred_archive_extension;
 	use serde::Deserialize;
 

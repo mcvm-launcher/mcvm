@@ -107,7 +107,7 @@ async fn profile_update(
 	data: &mut CmdData,
 	ids: &[String],
 	force: bool,
-	all: bool
+	all: bool,
 ) -> anyhow::Result<()> {
 	data.ensure_paths().await?;
 	data.ensure_config().await?;
@@ -123,7 +123,7 @@ async fn profile_update(
 	for id in &ids {
 		if let Some(profile) = config.profiles.get_mut(id) {
 			cprintln!("<s,g>Updating profile <b>{}</b>", id);
-			
+
 			let print_options = PrintOptions::new(true, 0);
 			let mut manager = UpdateManager::new(print_options, force, false);
 			manager
@@ -132,25 +132,26 @@ async fn profile_update(
 				.context("Failed to get version information")?;
 			let version = manager.found_version.get().clone();
 
-			let (paper_build_num, paper_file_name) = if let PluginLoader::Paper = profile.plugin_loader
-			{
-				let (build_num, ..) = paper::get_newest_build(&version)
-					.await
-					.context("Failed to get the newest Paper build number")?;
-				let paper_file_name = paper::get_jar_file_name(&version, build_num)
-					.await
-					.context("Failed to get the name of the Paper Jar file")?;
-				(Some(build_num), Some(paper_file_name))
-			} else {
-				(None, None)
-			};
+			let (paper_build_num, paper_file_name) =
+				if let PluginLoader::Paper = profile.plugin_loader {
+					let (build_num, ..) = paper::get_newest_build(&version)
+						.await
+						.context("Failed to get the newest Paper build number")?;
+					let paper_file_name = paper::get_jar_file_name(&version, build_num)
+						.await
+						.context("Failed to get the name of the Paper Jar file")?;
+					(Some(build_num), Some(paper_file_name))
+				} else {
+					(None, None)
+				};
 			let mut lock = Lockfile::open(paths).context("Failed to open lockfile")?;
 			if lock.update_profile_version(id, &version) {
 				cprintln!("<s>Updating profile version...");
 				for inst in profile.instances.iter() {
 					if let Some(inst) = config.instances.get(inst) {
-						inst.teardown(paths, paper_file_name.clone())
-							.context("Failed to remove old files when updating Minecraft version")?;
+						inst.teardown(paths, paper_file_name.clone()).context(
+							"Failed to remove old files when updating Minecraft version",
+						)?;
 					}
 				}
 			}
@@ -240,14 +241,14 @@ async fn profile_update(
 								.context("Failed to update package in lockfile")?;
 							for addon in eval.addon_reqs.iter() {
 								if addons_to_remove.contains(&addon.addon.id) {
-									instance
-										.remove_addon(&addon.addon, paths)
-										.with_context(|| {
+									instance.remove_addon(&addon.addon, paths).with_context(
+										|| {
 											format!(
 												"Failed to remove addon {} for instance {}",
 												addon.addon.id, instance_id
 											)
-										})?;
+										},
+									)?;
 								}
 							}
 						}
@@ -298,6 +299,10 @@ pub async fn run(subcommand: ProfileSubcommand, data: &mut CmdData) -> anyhow::R
 	match subcommand {
 		ProfileSubcommand::Info { profile } => info(data, &profile).await,
 		ProfileSubcommand::List => list(data).await,
-		ProfileSubcommand::Update { force, all, profiles } => profile_update(data, &profiles, force, all).await,
+		ProfileSubcommand::Update {
+			force,
+			all,
+			profiles,
+		} => profile_update(data, &profiles, force, all).await,
 	}
 }

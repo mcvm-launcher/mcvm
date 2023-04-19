@@ -102,7 +102,12 @@ impl Instance {
 	) -> anyhow::Result<Classpath> {
 		let meta = manager.fq_meta.get();
 		let classpath = fabric_quilt::get_classpath(meta, paths, self.kind.to_side());
-		self.main_class = Some(meta.launcher_meta.main_class.get_main_class_string(self.kind.to_side()).to_owned());
+		self.main_class = Some(
+			meta.launcher_meta
+				.main_class
+				.get_main_class_string(self.kind.to_side())
+				.to_owned(),
+		);
 
 		Ok(classpath)
 	}

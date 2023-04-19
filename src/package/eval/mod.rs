@@ -3,7 +3,7 @@ pub mod parse;
 
 use anyhow::{anyhow, bail};
 use serde::Deserialize;
-use shared::addon::{Addon, is_filename_valid};
+use shared::addon::{is_filename_valid, Addon};
 
 use self::conditions::eval_condition;
 
@@ -245,12 +245,7 @@ pub fn eval_instr(
 					bail!("Invalid addon filename '{file_name}' in addon '{id}'");
 				}
 
-				let addon = Addon::new(
-					*kind,
-					&id,
-					&file_name,
-					eval.id.clone(),
-				);
+				let addon = Addon::new(*kind, &id, &file_name, eval.id.clone());
 
 				if let Value::Constant(..) | Value::Var(..) = url {
 					let location = AddonLocation::Remote(url.get(&eval.vars)?);

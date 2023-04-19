@@ -127,7 +127,7 @@ impl ArgsPreset {
 					String::from("-Dusing.aikars.flags=https://mcflags.emc.gs"),
 					String::from("-Daikars.new.flags=true"),
 				]
-			},
+			}
 			Self::Krusic => vec![
 				String::from("-XX:+UnlockExperimentalVMOptions"),
 				String::from("-XX:+DisableExplicitGC"),
