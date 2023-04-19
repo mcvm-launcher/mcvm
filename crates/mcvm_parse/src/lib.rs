@@ -64,3 +64,8 @@ impl Display for FailReason {
 		)
 	}
 }
+
+/// Returns if a routine name is reserved for use by mcvm
+pub fn is_reserved_routine(routine: &str) -> bool {
+	matches!(routine, "meta" | "properties" | "install" | "uninstall")
+}
