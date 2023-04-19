@@ -58,10 +58,14 @@ Profiles are listed in the same id-value format as users under the `profiles` ob
  * `packages` (Optional): The list of packages installed for this profile.
 
 ## Instances
-Instances are defined in the id-value format underneath the `instances` object of a profile. They look like this:
+Instances are defined in the id-value format underneath the `instances` object of a profile. They have two formats:
+```json
+"id": "client" | "server"
+```
+or
 ```json
 "id": {
-	"type": String,
+	"type": "client" | "server",
 	"launch": {
 		"args": {
 			"jvm": Array | String,
@@ -71,8 +75,8 @@ Instances are defined in the id-value format underneath the `instances` object o
 			"init": String,
 			"max": String
 		},
-		"java": String,
-		"preset": String,
+		"java": "adoptium" | "zulu" | String,
+		"preset": "akairs" | "krusic" | "obydux",
 		"quick_play": {
 			"type": "world" | "server" | "realm",
 			"world": String,
@@ -85,6 +89,8 @@ Instances are defined in the id-value format underneath the `instances` object o
 }
 ```
 
+The first form just has the type of the instance.
+
  * `type`: The type of the instance, either `"client"` or `"server"`.
  * `launch` (Optional): Options that modify the game execution.
  * `launch.args` (Optional): Custom arguments that will be passed to the Java Virtual Machine and game. Each one is optional and can either be a string of arguments separated by spaces or a list.
@@ -93,6 +99,8 @@ Instances are defined in the id-value format underneath the `instances` object o
  * `launch.preset` (Optional): A preset that will automatically apply changes to your launch configuration to improve your experience.
    * `"none"`: The default. No changes will be applied.
    * `"aikars"`: A popular set of tuned arguments for better performance. This works better for servers that have a lot of available memory (8GB+) and is not recommended otherwise. See https://docs.papermc.io/paper/aikars-flags for more information.
+	* `"krusic"`: A supposedly faster preset that uses ZGC as opposed to G1GC.
+	* `"obydux"`: Performance arguments for GraalVM EE.
  * `launch.quickplay` (Optional): Specify options for the Quick Play feature, which will automatically start the client in a world, server, or realm. The `type` field selects the kind of Quick Play that you want. Use the other fields to specify which world, server, server port, and realm you want to Quick Play into when launching. Server Quick Play will work on older versions but the other two types will not.
  * `options` (Optional): Options to apply to this instance specifically. They will override global options. They are in the format of either the client or server section depending on the instance type.
 
@@ -106,10 +114,10 @@ or
 {
 	"id": String,
 	"type": String,
-	"version": String,
+	"version": Integer,
 	"path": String,
 	"features": [],
-	"permissions": String
+	"permissions": "restricted" | "standard" | "elevated"
 }
 ```
 
@@ -117,7 +125,7 @@ In most cases the first form is all you need. If you want more control over how 
 
  * `id`: The identifier for the package. It is very important that this field is correct for the package to work.
  * `type`: The type of the package, either a standard `"remote"` package or a `"local"` package.
- * `version` (Optional): The version string for the package. This is not needed for remote packages but *required* for local ones.
+ * `version` (Optional): The version number for the package. This is not needed for remote packages but *required* for local ones.
  * `path` (Optional): The path to a local package script. Only required for local packages.
  * `features` (Optional): A list of strings for package features that you would like to enable.
  * `permissions` (Optional): The amount of control you would like to give this package. Can be `"restricted"`, `"standard"`, or `"elevated"`. Packages you do not trust should be given the `"restricted"` level. Packages that you trust and want to provide access to special commands for can be given `"elevated"`. Defaults to `"standard"`.

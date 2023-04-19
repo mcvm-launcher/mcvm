@@ -7,7 +7,7 @@ A package repository is any server that provides an `index.json` of packages for
 {
 	"packages": {
 		"package-name": {
-			"version": String,
+			"version": Integer,
 			"url": String
 		}
 	}
@@ -34,19 +34,19 @@ Instructions are individual commands that are run inside routines for your packa
 	 * `value {x} {y}`: Check if two strings are the same. This is meant to be used to check the value of variables.
 	 * `version {pattern}`: Check that the Minecraft version of this instance matches a pattern.
 	 * `modloader {vanilla | fabric | forge | quilt | fabriclike}`: Checks if the modloader supports a mod type. The `fabriclike` option will match both Fabric and Quilt and should be used for most Fabric mods unless you know they don't play nice with Quilt.
-	 * `plugin_loader {vanilla | bukkitlike}`: Checks if the plugin loader supports a plugin type.
+	 * `plugin_loader {vanilla | bukkit}`: Checks if the plugin loader supports a plugin type.
 	 * `side {client | server}`: Check what instance type the package is being installed on.
 	 * `feature {name}`: Check if a feature is enabled for this package.
 	 * `not {condition}`: Inverts a condition. You can chain these, but why would you want to.
  * `set {variable} {value}`: Sets the value of a variable.
  * `finish`: Usually put in side checks, will silently end the evaluation of the routine.
- * `fail [unsupported_version | unsupported_modloader]`: End execution with an error.
- * `addon {name} (..)`: Add an addon to the instance. This is the main goal of a package. The name field is the filename of the addon. Keys and values are put inside the parentheses. You do not need a semicolon at the end, but this may change in the future.
+ * `fail [unsupported_version | unsupported_modloader | unsupported_plugin_loader]`: End execution with an error.
+ * `addon {id} {filename} (..)`: Add an addon to the instance. This is the main goal of a package. The name field is the filename of the addon. Keys and values are put inside the parentheses.
 
 ## The addon Instruction
 The `addon` instruction is a bit more complex. Inside the parentheses you put a set of keys and values to configure the addon and how it is installed. The full addon config looks like this:
 ```
-addon name (
+addon id filename (
 	kind: mod | resource_pack | shader | plugin,
 	url: String,
 	path: String,
@@ -55,6 +55,8 @@ addon name (
 )
 ```
 
+ * `id`: An identifier that the user will eventually be able to use to select specific addons from a package. Should be unique and if possible should not change between versions.
+ * `filename`: The name of the addon file, with the extension. The filename should be different whenever the contents of the addon are different so that mcvm knows when to update it.
  * `kind`: What type of addon this is.
  * `url` (Optional): The remote url to download the addon from.
  * `path` (Optional): The local path to link the addon from. Adding local files is a privilege that requires elevated permissions
@@ -85,10 +87,10 @@ Here is a simple example for a package that would install the *Sodium* mod. As t
 	if value $version "unset" {
 		fail unsupported_version;
 	}
-	addon "sodium2.jar" (
+	addon "sodium" "Sodium.jar" (
 		kind: mod,
 		url: $url,
 		append: $version
-	)
+	);
 }
 ```
