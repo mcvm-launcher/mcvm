@@ -32,8 +32,11 @@ pub enum ProfileSubcommand {
 		/// Whether to force update files that have already been downloaded
 		#[arg(short, long)]
 		force: bool,
-		/// The profile to update
-		profile: String,
+		/// Whether to update all profiles
+		#[arg(short, long)]
+		all: bool,
+		/// The profiles to update
+		profiles: Vec<String>,
 	},
 }
 
@@ -100,177 +103,192 @@ async fn list(data: &mut CmdData) -> anyhow::Result<()> {
 	Ok(())
 }
 
-async fn profile_update(data: &mut CmdData, id: &str, force: bool) -> anyhow::Result<()> {
+async fn profile_update(
+	data: &mut CmdData,
+	ids: &[String],
+	force: bool,
+	all: bool
+) -> anyhow::Result<()> {
 	data.ensure_paths().await?;
 	data.ensure_config().await?;
 	let paths = data.paths.get();
 	let config = data.config.get_mut();
 
-	if let Some(profile) = config.profiles.get_mut(id) {
-		let print_options = PrintOptions::new(true, 0);
-		let mut manager = UpdateManager::new(print_options, force, false);
-		manager
-			.fulfill_version_manifest(paths, &profile.version)
-			.await
-			.context("Failed to get version information")?;
-		let version = manager.found_version.get().clone();
+	let ids = if all {
+		config.profiles.keys().cloned().collect::<Vec<String>>()
+	} else {
+		ids.to_vec()
+	};
 
-		let (paper_build_num, paper_file_name) = if let PluginLoader::Paper = profile.plugin_loader
-		{
-			let (build_num, ..) = paper::get_newest_build(&version)
+	for id in &ids {
+		if let Some(profile) = config.profiles.get_mut(id) {
+			cprintln!("<s,g>Updating profile <b>{}</b>", id);
+			
+			let print_options = PrintOptions::new(true, 0);
+			let mut manager = UpdateManager::new(print_options, force, false);
+			manager
+				.fulfill_version_manifest(paths, &profile.version)
 				.await
-				.context("Failed to get the newest Paper build number")?;
-			let paper_file_name = paper::get_jar_file_name(&version, build_num)
-				.await
-				.context("Failed to get the name of the Paper Jar file")?;
-			(Some(build_num), Some(paper_file_name))
-		} else {
-			(None, None)
-		};
-		let mut lock = Lockfile::open(paths).context("Failed to open lockfile")?;
-		if lock.update_profile_version(id, &version) {
-			cprintln!("<s>Updating profile version...");
-			for inst in profile.instances.iter() {
-				if let Some(inst) = config.instances.get(inst) {
-					inst.teardown(paths, paper_file_name.clone())
-						.context("Failed to remove old files when updating Minecraft version")?;
-				}
-			}
-		}
-		if let Some(build_num) = paper_build_num {
-			if let Some(file_name) = paper_file_name {
-				if lock.update_profile_paper_build(id, build_num) {
-					for inst in profile.instances.iter() {
-						if let Some(inst) = config.instances.get(inst) {
-							inst.remove_paper(paths, file_name.clone())
-								.context("Failed to remove Paper")?;
-						}
+				.context("Failed to get version information")?;
+			let version = manager.found_version.get().clone();
+
+			let (paper_build_num, paper_file_name) = if let PluginLoader::Paper = profile.plugin_loader
+			{
+				let (build_num, ..) = paper::get_newest_build(&version)
+					.await
+					.context("Failed to get the newest Paper build number")?;
+				let paper_file_name = paper::get_jar_file_name(&version, build_num)
+					.await
+					.context("Failed to get the name of the Paper Jar file")?;
+				(Some(build_num), Some(paper_file_name))
+			} else {
+				(None, None)
+			};
+			let mut lock = Lockfile::open(paths).context("Failed to open lockfile")?;
+			if lock.update_profile_version(id, &version) {
+				cprintln!("<s>Updating profile version...");
+				for inst in profile.instances.iter() {
+					if let Some(inst) = config.instances.get(inst) {
+						inst.teardown(paths, paper_file_name.clone())
+							.context("Failed to remove old files when updating Minecraft version")?;
 					}
 				}
 			}
-		}
-
-		lock.finish(paths)
-			.await
-			.context("Failed to finish using lockfile")?;
-
-		if !profile.instances.is_empty() {
-			let version_list = profile
-				.create_instances(&mut config.instances, paths, manager)
-				.await
-				.context("Failed to create profile instances")?;
-
-			if !profile.packages.is_empty() {
-				cprintln!("<s>Updating packages");
-			}
-			let mut printer = ReplPrinter::new(true);
-			for pkg in profile.packages.iter() {
-				let pkg_version = config
-					.packages
-					.get_version(&pkg.req, paths)
-					.await
-					.context("Failed to get version for package")?;
-				printer.print(&cformat!("\t(<b!>{}</b!>) Installing...", pkg.req));
-				for instance_id in profile.instances.iter() {
-					if let Some(instance) = config.instances.get(instance_id) {
-						let constants = EvalConstants {
-							version: version.clone(),
-							modloader: profile.modloader.clone(),
-							plugin_loader: profile.plugin_loader.clone(),
-							side: instance.kind.to_side(),
-							features: pkg.features.clone(),
-							versions: version_list.clone(),
-							perms: pkg.permissions.clone(),
-						};
-						let eval = config
-							.packages
-							.eval(&pkg.req, paths, Routine::Install, constants)
-							.await
-							.with_context(|| {
-								format!(
-									"Failed to evaluate package {} for instance {}",
-									pkg.req, instance_id
-								)
-							})?;
-						for addon in eval.addon_reqs.iter() {
-							addon.acquire(paths).await.with_context(|| {
-								format!(
-									"Failed to acquire addon {} for instance {}",
-									addon.addon.id, instance_id
-								)
-							})?;
-							instance
-								.create_addon(&addon.addon, paths)
-								.with_context(|| {
-									format!(
-										"Failed to install addon {} for instance {}",
-										addon.addon.id, instance_id
-									)
-								})?;
-						}
-						let lockfile_addons = eval
-							.addon_reqs
-							.iter()
-							.map(|x| LockfileAddon::from_addon(&x.addon, paths))
-							.collect::<Vec<LockfileAddon>>();
-						let addons_to_remove = lock
-							.update_package(
-								&pkg.req.name,
-								instance_id,
-								pkg_version,
-								&lockfile_addons,
-							)
-							.context("Failed to update package in lockfile")?;
-						for addon in eval.addon_reqs.iter() {
-							if addons_to_remove.contains(&addon.addon.id) {
-								instance
-									.remove_addon(&addon.addon, paths)
-									.with_context(|| {
-										format!(
-											"Failed to remove addon {} for instance {}",
-											addon.addon.id, instance_id
-										)
-									})?;
+			if let Some(build_num) = paper_build_num {
+				if let Some(file_name) = paper_file_name {
+					if lock.update_profile_paper_build(id, build_num) {
+						for inst in profile.instances.iter() {
+							if let Some(inst) = config.instances.get(inst) {
+								inst.remove_paper(paths, file_name.clone())
+									.context("Failed to remove Paper")?;
 							}
 						}
 					}
 				}
-				printer.print(&cformat!("\t(<b!>{}</b!>) <g>Installed.", pkg.req));
-				printer.newline();
 			}
 
-			for instance_id in profile.instances.iter() {
-				if let Some(instance) = config.instances.get(instance_id) {
-					let addons_to_remove = lock
-						.remove_unused_packages(
-							instance_id,
-							&profile
-								.packages
-								.iter()
-								.map(|x| x.req.name.clone())
-								.collect::<Vec<String>>(),
-						)
-						.context("Failed to remove unused packages")?;
+			lock.finish(paths)
+				.await
+				.context("Failed to finish using lockfile")?;
 
-					for addon in addons_to_remove {
-						instance.remove_addon(&addon, paths).with_context(|| {
-							format!(
-								"Failed to remove addon {} for instance {}",
-								addon.id, instance_id
+			if !profile.instances.is_empty() {
+				let version_list = profile
+					.create_instances(&mut config.instances, paths, manager)
+					.await
+					.context("Failed to create profile instances")?;
+
+				if !profile.packages.is_empty() {
+					cprintln!("<s>Updating packages");
+				}
+				let mut printer = ReplPrinter::new(true);
+				for pkg in profile.packages.iter() {
+					let pkg_version = config
+						.packages
+						.get_version(&pkg.req, paths)
+						.await
+						.context("Failed to get version for package")?;
+					printer.print(&cformat!("\t(<b!>{}</b!>) Installing...", pkg.req));
+					for instance_id in profile.instances.iter() {
+						if let Some(instance) = config.instances.get(instance_id) {
+							let constants = EvalConstants {
+								version: version.clone(),
+								modloader: profile.modloader.clone(),
+								plugin_loader: profile.plugin_loader.clone(),
+								side: instance.kind.to_side(),
+								features: pkg.features.clone(),
+								versions: version_list.clone(),
+								perms: pkg.permissions.clone(),
+							};
+							let eval = config
+								.packages
+								.eval(&pkg.req, paths, Routine::Install, constants)
+								.await
+								.with_context(|| {
+									format!(
+										"Failed to evaluate package {} for instance {}",
+										pkg.req, instance_id
+									)
+								})?;
+							for addon in eval.addon_reqs.iter() {
+								addon.acquire(paths).await.with_context(|| {
+									format!(
+										"Failed to acquire addon {} for instance {}",
+										addon.addon.id, instance_id
+									)
+								})?;
+								instance
+									.create_addon(&addon.addon, paths)
+									.with_context(|| {
+										format!(
+											"Failed to install addon {} for instance {}",
+											addon.addon.id, instance_id
+										)
+									})?;
+							}
+							let lockfile_addons = eval
+								.addon_reqs
+								.iter()
+								.map(|x| LockfileAddon::from_addon(&x.addon, paths))
+								.collect::<Vec<LockfileAddon>>();
+							let addons_to_remove = lock
+								.update_package(
+									&pkg.req.name,
+									instance_id,
+									pkg_version,
+									&lockfile_addons,
+								)
+								.context("Failed to update package in lockfile")?;
+							for addon in eval.addon_reqs.iter() {
+								if addons_to_remove.contains(&addon.addon.id) {
+									instance
+										.remove_addon(&addon.addon, paths)
+										.with_context(|| {
+											format!(
+												"Failed to remove addon {} for instance {}",
+												addon.addon.id, instance_id
+											)
+										})?;
+								}
+							}
+						}
+					}
+					printer.print(&cformat!("\t(<b!>{}</b!>) <g>Installed.", pkg.req));
+					printer.newline();
+				}
+
+				for instance_id in profile.instances.iter() {
+					if let Some(instance) = config.instances.get(instance_id) {
+						let addons_to_remove = lock
+							.remove_unused_packages(
+								instance_id,
+								&profile
+									.packages
+									.iter()
+									.map(|x| x.req.name.clone())
+									.collect::<Vec<String>>(),
 							)
-						})?;
+							.context("Failed to remove unused packages")?;
+
+						for addon in addons_to_remove {
+							instance.remove_addon(&addon, paths).with_context(|| {
+								format!(
+									"Failed to remove addon {} for instance {}",
+									addon.id, instance_id
+								)
+							})?;
+						}
 					}
 				}
+				printer.print(&cformat!("\t<g>Finished installing packages."));
+				printer.finish();
 			}
-			printer.print(&cformat!("\t<g>Finished installing packages."));
-			printer.finish();
-		}
 
-		lock.finish(paths)
-			.await
-			.context("Failed to finish using lockfile")?;
-	} else {
-		bail!("Unknown profile '{id}'");
+			lock.finish(paths)
+				.await
+				.context("Failed to finish using lockfile")?;
+		} else {
+			bail!("Unknown profile '{id}'");
+		}
 	}
 
 	Ok(())
@@ -280,6 +298,6 @@ pub async fn run(subcommand: ProfileSubcommand, data: &mut CmdData) -> anyhow::R
 	match subcommand {
 		ProfileSubcommand::Info { profile } => info(data, &profile).await,
 		ProfileSubcommand::List => list(data).await,
-		ProfileSubcommand::Update { force, profile } => profile_update(data, &profile, force).await,
+		ProfileSubcommand::Update { force, all, profiles } => profile_update(data, &profiles, force, all).await,
 	}
 }
