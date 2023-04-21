@@ -50,12 +50,12 @@ impl ReplPrinter {
 			return;
 		}
 
-		print!("\r");
+		let _ = write!(self.stdout, "\r");
 		for _ in 0..self.chars_written {
-			print!(" ");
+			let _ = write!(self.stdout, " ");
 		}
 		self.chars_written = 0;
-		self.stdout.flush().unwrap();
+		let _ = self.stdout.flush();
 	}
 
 	/// Print text to the output
@@ -64,9 +64,9 @@ impl ReplPrinter {
 			return;
 		}
 		self.clearline();
-		print!("\r{}{text}", self.options.indent_str);
+		let _ = write!(self.stdout, "\r{}{text}", self.options.indent_str);
 		self.chars_written = text.len() + (self.options.indent_str.len() * 8);
-		self.stdout.flush().unwrap();
+		let _ = self.stdout.flush();
 	}
 
 	/// Finish printing and make a newline
@@ -83,7 +83,7 @@ impl ReplPrinter {
 	/// Make a line break
 	pub fn newline(&mut self) {
 		self.chars_written = 0;
-		println!();
+		let _ = writeln!(self.stdout);
 	}
 }
 
