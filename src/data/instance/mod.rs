@@ -4,6 +4,7 @@ pub mod launch;
 use anyhow::Context;
 use shared::instance::Side;
 
+use crate::io::files::update_hardlink;
 use crate::io::java::classpath::Classpath;
 use crate::io::java::Java;
 use crate::io::launch::LaunchOptions;
@@ -143,10 +144,8 @@ impl Instance {
 	fn link_addon(dir: &Path, addon: &Addon, paths: &Paths) -> anyhow::Result<()> {
 		files::create_dir(dir)?;
 		let link = dir.join(&addon.file_name);
-		if !link.exists() {
-			fs::hard_link(get_addon_path(addon, paths), link)
-				.context("Failed to create hard link")?;
-		}
+		update_hardlink(&get_addon_path(addon, paths), &link)
+			.context("Failed to create hard link")?;
 		Ok(())
 	}
 

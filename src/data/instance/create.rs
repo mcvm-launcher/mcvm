@@ -1,11 +1,11 @@
 use std::collections::{HashMap, HashSet};
-use std::fs;
 use std::path::PathBuf;
 
 use anyhow::Context;
 use color_print::{cformat, cprintln};
 
 use crate::data::profile::update::{UpdateManager, UpdateRequirement};
+use crate::io::files::update_hardlink;
 use crate::io::files::{self, paths::Paths};
 use crate::io::java::classpath::Classpath;
 use crate::io::java::JavaKind;
@@ -205,7 +205,7 @@ impl Instance {
 				let extern_jar_path =
 					minecraft::game_jar::get_path(self.kind.to_side(), version, paths);
 				if manager.should_update_file(&jar_path) {
-					fs::hard_link(extern_jar_path, &jar_path)
+					update_hardlink(&extern_jar_path, &jar_path)
 						.context("Failed to hardlink server.jar")?;
 					out.insert(jar_path.clone());
 				}

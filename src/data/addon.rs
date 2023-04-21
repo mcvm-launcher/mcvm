@@ -1,7 +1,7 @@
 use anyhow::Context;
 use shared::addon::Addon;
 
-use crate::io::files::create_leading_dirs;
+use crate::io::files::{create_leading_dirs, update_hardlink};
 use crate::io::files::paths::Paths;
 use crate::net::download;
 use shared::modifications::{Modloader, PluginLoader};
@@ -57,8 +57,7 @@ impl AddonRequest {
 					.context("Failed to download addon")?;
 			}
 			AddonLocation::Local(actual_path) => {
-				tokio::fs::hard_link(actual_path, path)
-					.await
+				update_hardlink(actual_path, &path)
 					.context("Failed to hardlink local addon")?;
 			}
 		}

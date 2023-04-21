@@ -39,6 +39,15 @@ pub async fn create_leading_dirs_async(path: &Path) -> std::io::Result<()> {
 	Ok(())
 }
 
+/// Creates a new hardlink if it does not exist
+pub fn update_hardlink(path: &Path, target: &Path) -> std::io::Result<()> {
+	if !target.exists() {
+		fs::hard_link(path, target)?;
+	}
+
+	Ok(())
+}
+
 // Cross platform - create a directory soft link
 #[cfg(target_os = "windows")]
 pub fn dir_symlink(path: &Path, target: &Path) -> std::io::Result<()> {
