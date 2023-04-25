@@ -13,7 +13,7 @@ use crate::util::{
 };
 use crate::Paths;
 use crate::{skip_fail, skip_none};
-use crate::data::config::instance::ClientWindowConfig;
+use crate::data::config::instance::{ClientWindowConfig, WindowResolution};
 use shared::versions::VersionPattern;
 
 pub use args::create_quick_play_args;
@@ -71,7 +71,7 @@ impl Instance {
 					jvm_args.push(classpath.get_str());
 
 					for arg in args.split(' ') {
-						game_args.push(skip_none!(args::replace_arg_tokens(
+						game_args.push(skip_none!(args::replace_arg_placeholders(
 							self, arg, paths, auth, classpath, version, window
 						)));
 					}
@@ -102,12 +102,17 @@ impl Instance {
 }
 
 mod args {
-	use crate::data::config::instance::WindowResolution;
+	use super::*;
 
-use super::*;
+	/// Get the string for a placeholder token in an argument
+	macro_rules! placeholder {
+		($name:expr) => {
+			concat!("${", $name, "}")
+		};
+	}
 
-	/// Replace tokens in a string argument from the version json
-	pub fn replace_arg_tokens(
+	/// Replace placeholders in a string argument from the version json
+	pub fn replace_arg_placeholders(
 		instance: &Instance,
 		arg: &str,
 		paths: &Paths,
@@ -116,11 +121,11 @@ use super::*;
 		version: &str,
 		window: &ClientWindowConfig,
 	) -> Option<String> {
-		let mut out = arg.replace("${launcher_name}", "mcvm");
-		out = out.replace("${launcher_version}", "alpha");
-		out = out.replace("${classpath}", &classpath.get_str());
+		let mut out = arg.replace(placeholder!("launcher_name"), "mcvm");
+		out = out.replace(placeholder!("launcher_version"), "alpha");
+		out = out.replace(placeholder!("classpath"), &classpath.get_str());
 		out = out.replace(
-			"${natives_directory}",
+			placeholder!("natives_directory"),
 			paths
 				.internal
 				.join("versions")
@@ -128,45 +133,45 @@ use super::*;
 				.join("natives")
 				.to_str()?,
 		);
-		out = out.replace("${version_name}", version);
-		out = out.replace("${version_type}", "mcvm");
-		out = out.replace("${game_directory}", instance.get_subdir(paths).to_str()?);
-		out = out.replace("${assets_root}", paths.assets.to_str()?);
-		out = out.replace("${assets_index_name}", version);
-		out = out.replace("${user_type}", "mojang");
-		out = out.replace("${clientid}", "mcvm");
-		out = out.replace("${auth_xuid}", "mcvm");
+		out = out.replace(placeholder!("version_name"), version);
+		out = out.replace(placeholder!("version_type"), "mcvm");
+		out = out.replace(placeholder!("game_directory"), instance.get_subdir(paths).to_str()?);
+		out = out.replace(placeholder!("assets_root"), paths.assets.to_str()?);
+		out = out.replace(placeholder!("assets_index_name"), version);
+		out = out.replace(placeholder!("user_type"), "mojang");
+		out = out.replace(placeholder!("clientid"), "mcvm");
+		out = out.replace(placeholder!("auth_xuid"), "mcvm");
 		// Apparently this is used for Twitch on older versions
-		out = out.replace("${user_properties}", "\"\"");
+		out = out.replace(placeholder!("user_properties"), "\"\"");
 
 		// Window resolution
 		if let Some(WindowResolution { width, height}) = window.resolution {
-			out = out.replace("${resolution_width}", &width.to_string());
-			out = out.replace("${resolution_height}", &height.to_string());
+			out = out.replace(placeholder!("resolution_width"), &width.to_string());
+			out = out.replace(placeholder!("resolution_height"), &height.to_string());
 		}
 
 		// User
 		match auth.get_user() {
 			Some(user) => {
-				out = out.replace("${auth_player_name}", &user.name);
+				out = out.replace(placeholder!("auth_player_name"), &user.name);
 				if let Some(uuid) = &user.uuid {
-					out = out.replace("${auth_uuid}", uuid);
+					out = out.replace(placeholder!("auth_uuid"), uuid);
 				}
 				if let Some(token) = &user.access_token {
-					out = out.replace("${auth_access_token}", token);
+					out = out.replace(placeholder!("auth_access_token"), token);
 				}
-				if out.contains("${auth_player_name}")
-					|| out.contains("${auth_access_token}")
-					|| out.contains("${auth_uuid}")
+				if out.contains(placeholder!("auth_player_name"))
+					|| out.contains(placeholder!("auth_access_token"))
+					|| out.contains(placeholder!("auth_uuid"))
 				{
 					return Some(String::new());
 				}
 			}
 			None => {
-				if out.contains("${auth_player_name}") {
+				if out.contains(placeholder!("auth_player_name")) {
 					return Some(String::from("UnknownUser"));
 				}
-				if out.contains("${auth_access_token}") || out.contains("${auth_uuid}") {
+				if out.contains(placeholder!("auth_access_token")) || out.contains(placeholder!("auth_uuid")) {
 					return Some(String::new());
 				}
 			}
@@ -187,7 +192,7 @@ use super::*;
 	) -> Vec<String> {
 		let mut out = Vec::new();
 		if let Some(contents) = arg.as_str() {
-			let processed = replace_arg_tokens(instance, contents, paths, auth, classpath, version, window);
+			let processed = replace_arg_placeholders(instance, contents, paths, auth, classpath, version, window);
 			if let Some(processed_arg) = processed {
 				out.push(processed_arg);
 			}
