@@ -16,6 +16,7 @@ use crate::util::json;
 use crate::Paths;
 
 use super::addon::get_addon_path;
+use super::config::instance::ClientWindowConfig;
 use super::profile::update::UpdateManager;
 use shared::addon::{Addon, AddonKind};
 use shared::modifications::{Modloader, PluginLoader};
@@ -25,7 +26,10 @@ use std::path::{Path, PathBuf};
 
 #[derive(Debug, Clone)]
 pub enum InstKind {
-	Client { options: Option<Box<ClientOptions>> },
+	Client {
+		options: Option<Box<ClientOptions>>,
+		window: ClientWindowConfig,
+	},
 	Server { options: Option<Box<ServerOptions>> },
 }
 

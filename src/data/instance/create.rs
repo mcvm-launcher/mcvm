@@ -140,6 +140,7 @@ impl Instance {
 		}
 		if let InstKind::Client {
 			options: Some(options),
+			..
 		} = &self.kind
 		{
 			let override_keys = options::client::create_keys(options, version, version_list)

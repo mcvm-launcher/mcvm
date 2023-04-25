@@ -149,6 +149,18 @@ impl Default for LaunchConfig {
 	}
 }
 
+#[derive(Deserialize, Clone, Debug)]
+pub struct WindowResolution {
+	pub width: u32,
+	pub height: u32,
+}
+
+#[derive(Deserialize, Default, Clone, Debug)]
+#[serde(default)]
+pub struct ClientWindowConfig {
+	pub resolution: Option<WindowResolution>,
+}
+
 #[derive(Deserialize)]
 #[serde(tag = "type")]
 #[serde(rename_all = "snake_case")]
@@ -158,6 +170,8 @@ pub enum FullInstanceConfig {
 		launch: LaunchConfig,
 		#[serde(default)]
 		options: Option<Box<ClientOptions>>,
+		#[serde(default)]
+		window: ClientWindowConfig,
 	},
 	Server {
 		#[serde(default)]
@@ -183,15 +197,19 @@ pub fn read_instance_config(
 	let (kind, launch) = match config {
 		InstanceConfig::Simple(side) => (
 			match side {
-				Side::Client => InstKind::Client { options: None },
+				Side::Client => InstKind::Client {
+					options: None,
+					window: ClientWindowConfig::default(),
+				},
 				Side::Server => InstKind::Server { options: None },
 			},
 			LaunchConfig::default(),
 		),
 		InstanceConfig::Full(config) => match config {
-			FullInstanceConfig::Client { launch, options } => (
+			FullInstanceConfig::Client { launch, options, window } => (
 				InstKind::Client {
 					options: options.clone(),
+					window: window.clone(),
 				},
 				launch.clone(),
 			),

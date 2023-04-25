@@ -13,6 +13,7 @@ use crate::util::{
 };
 use crate::Paths;
 use crate::{skip_fail, skip_none};
+use crate::data::config::instance::ClientWindowConfig;
 use shared::versions::VersionPattern;
 
 pub use args::create_quick_play_args;
@@ -39,39 +40,41 @@ impl Instance {
 				.main_class
 				.as_ref()
 				.expect("Main class for client should exist");
-			if let Ok(args) = json::access_object(version_json, "arguments") {
-				for arg in json::access_array(args, "jvm")? {
-					for sub_arg in args::process_arg(self, arg, paths, auth, classpath, version) {
-						jvm_args.push(sub_arg);
+			if let InstKind::Client { options: _, window } = &self.kind {
+				if let Ok(args) = json::access_object(version_json, "arguments") {
+					for arg in json::access_array(args, "jvm")? {
+						for sub_arg in args::process_arg(self, arg, paths, auth, classpath, version, window) {
+							jvm_args.push(sub_arg);
+						}
 					}
-				}
 
-				for arg in json::access_array(args, "game")? {
-					for sub_arg in args::process_arg(self, arg, paths, auth, classpath, version) {
-						game_args.push(sub_arg);
+					for arg in json::access_array(args, "game")? {
+						for sub_arg in args::process_arg(self, arg, paths, auth, classpath, version, window) {
+							game_args.push(sub_arg);
+						}
 					}
-				}
-			} else {
-				// Behavior for versions prior to 1.12.2
-				let args = json::access_str(version_json, "minecraftArguments")?;
+				} else {
+					// Behavior for versions prior to 1.12.2
+					let args = json::access_str(version_json, "minecraftArguments")?;
 
-				jvm_args.push(format!(
-					"-Djava.library.path={}",
-					paths
-						.internal
-						.join("versions")
-						.join(version)
-						.join("natives")
-						.to_str()
-						.context("Failed to convert natives directory to a string")?
-				));
-				jvm_args.push(String::from("-cp"));
-				jvm_args.push(classpath.get_str());
+					jvm_args.push(format!(
+						"-Djava.library.path={}",
+						paths
+							.internal
+							.join("versions")
+							.join(version)
+							.join("natives")
+							.to_str()
+							.context("Failed to convert natives directory to a string")?
+					));
+					jvm_args.push(String::from("-cp"));
+					jvm_args.push(classpath.get_str());
 
-				for arg in args.split(' ') {
-					game_args.push(skip_none!(args::replace_arg_tokens(
-						self, arg, paths, auth, classpath, version
-					)));
+					for arg in args.split(' ') {
+						game_args.push(skip_none!(args::replace_arg_tokens(
+							self, arg, paths, auth, classpath, version, window
+						)));
+					}
 				}
 			}
 
@@ -99,7 +102,9 @@ impl Instance {
 }
 
 mod args {
-	use super::*;
+	use crate::data::config::instance::WindowResolution;
+
+use super::*;
 
 	/// Replace tokens in a string argument from the version json
 	pub fn replace_arg_tokens(
@@ -109,6 +114,7 @@ mod args {
 		auth: &Auth,
 		classpath: &Classpath,
 		version: &str,
+		window: &ClientWindowConfig,
 	) -> Option<String> {
 		let mut out = arg.replace("${launcher_name}", "mcvm");
 		out = out.replace("${launcher_version}", "alpha");
@@ -132,6 +138,12 @@ mod args {
 		out = out.replace("${auth_xuid}", "mcvm");
 		// Apparently this is used for Twitch on older versions
 		out = out.replace("${user_properties}", "\"\"");
+
+		// Window resolution
+		if let Some(WindowResolution { width, height}) = window.resolution {
+			out = out.replace("${resolution_width}", &width.to_string());
+			out = out.replace("${resolution_height}", &height.to_string());
+		}
 
 		// User
 		match auth.get_user() {
@@ -171,10 +183,11 @@ mod args {
 		auth: &Auth,
 		classpath: &Classpath,
 		version: &str,
+		window: &ClientWindowConfig,
 	) -> Vec<String> {
 		let mut out = Vec::new();
 		if let Some(contents) = arg.as_str() {
-			let processed = replace_arg_tokens(instance, contents, paths, auth, classpath, version);
+			let processed = replace_arg_tokens(instance, contents, paths, auth, classpath, version, window);
 			if let Some(processed_arg) = processed {
 				out.push(processed_arg);
 			}
@@ -201,7 +214,7 @@ mod args {
 				}
 				if let Some(features_val) = rule.get("features") {
 					let features = skip_none!(features_val.as_object());
-					if features.get("has_custom_resolution").is_some() {
+					if features.get("has_custom_resolution").is_some() && window.resolution.is_none() {
 						return vec![];
 					}
 					if features.get("is_demo_user").is_some() {
@@ -216,13 +229,13 @@ mod args {
 				}
 			}
 			match arg.get("value") {
-				Some(value) => process_arg(instance, value, paths, auth, classpath, version),
+				Some(value) => process_arg(instance, value, paths, auth, classpath, version, window),
 				None => return vec![],
 			};
 		} else if let Some(contents) = arg.as_array() {
 			for val in contents {
 				out.push(
-					process_arg(instance, val, paths, auth, classpath, version)
+					process_arg(instance, val, paths, auth, classpath, version, window)
 						.get(0)
 						.expect("Expected an argument")
 						.to_string(),
