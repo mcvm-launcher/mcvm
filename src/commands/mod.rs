@@ -103,16 +103,19 @@ pub struct Cli {
 	command: Command,
 }
 
+/// Print the mcvm version
+fn print_version() {
+	let version = env!("CARGO_PKG_VERSION");
+	cprintln!("mcvm version <g>{}</g>", version);
+}
+
 pub async fn run_cli(data: &mut CmdData) -> anyhow::Result<()> {
 	let cli = Cli::try_parse()?;
 	match cli.command {
 		Command::Profile { command } => profile::run(command, data).await,
 		Command::User { command } => user::run(command, data).await,
 		Command::Launch { debug, token, instance } => launch::run(&instance, debug, token, data).await,
-		Command::Version => Ok(cprintln!(
-			"mcvm version <g>{}</g>",
-			env!("CARGO_PKG_VERSION")
-		)),
+		Command::Version => Ok(print_version()),
 		Command::Files { command } => files::run(command, data).await,
 		Command::Package { command } => package::run(command, data).await,
 		Command::Instance { command } => instance::run(command, data).await,

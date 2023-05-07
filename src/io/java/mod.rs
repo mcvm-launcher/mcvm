@@ -94,9 +94,10 @@ impl Java {
 				let arc_name = format!("adoptium{}{arc_extension}", major_version.get());
 				let arc_path = out_dir.join(arc_name);
 
+				let release_name = json::access_str(&version, "release_name")?;
 				printer.print(&cformat!(
 					"Downloading Adoptium Temurin JRE <b>{}</b>...",
-					json::access_str(&version, "release_name")?
+					release_name
 				));
 				download::file(bin_url, &arc_path)
 					.await

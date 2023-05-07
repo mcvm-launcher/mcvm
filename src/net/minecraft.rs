@@ -517,9 +517,10 @@ pub mod game_jar {
 		download::file(url, &path)
 			.await
 			.context("Failed to download file")?;
+		let side_str = cap_first_letter(&side_str);
 		printer.print(&cformat!(
 			"<g>{} jar downloaded.",
-			cap_first_letter(&side_str)
+			side_str
 		));
 
 		Ok(())

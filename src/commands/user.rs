@@ -38,10 +38,11 @@ async fn status(data: &mut CmdData) -> anyhow::Result<()> {
 	match config.auth.get_user() {
 		Some(user) => {
 			cprint!("<g>Logged in as ");
+			let user_name = &user.name;
 			match user.kind {
-				UserKind::Microsoft => cprint!("<s,g!>{}", &user.name),
-				UserKind::Demo => cprint!("<s,c!>{}", &user.name),
-				UserKind::Unverified => cprint!("<s,k!>{}", &user.name),
+				UserKind::Microsoft => cprint!("<s,g!>{}", user_name),
+				UserKind::Demo => cprint!("<s,c!>{}", user_name),
+				UserKind::Unverified => cprint!("<s,k!>{}", user_name),
 			}
 			cprintln!(" <k!>({})</k!>", user.id);
 		}

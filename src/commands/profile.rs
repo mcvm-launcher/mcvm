@@ -64,16 +64,13 @@ async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
 		}
 		cprintln!("   <s>Packages:");
 		for pkg in profile.packages.iter() {
+			let pkg_version = config
+				.packages
+				.get_version(&pkg.req, paths)
+				.await
+				.context("Failed to get package version")?;
 			cprint!("   {}", HYPHEN_POINT);
-			cprint!(
-				"<b!>{}:<g!>{}",
-				pkg.req.name,
-				config
-					.packages
-					.get_version(&pkg.req, paths)
-					.await
-					.context("Failed to get package version")?
-			);
+			cprint!("<b!>{}:<g!>{}", pkg.req.name, pkg_version);
 			cprintln!();
 		}
 	} else {
