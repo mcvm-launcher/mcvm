@@ -51,6 +51,9 @@ pub struct KeyOptions {
 	pub hotbar_7: Option<Keybind>,
 	pub hotbar_8: Option<Keybind>,
 	pub hotbar_9: Option<Keybind>,
+	pub boss_mode: Option<Keybind>,
+	pub decrease_view: Option<Keybind>,
+	pub increase_view: Option<Keybind>,
 }
 
 #[derive(Deserialize, Debug, Clone, Default)]
@@ -189,6 +192,7 @@ pub struct ClientOptions {
 	pub hide_server_address: Option<bool>,
 	pub show_autosave_indicator: Option<bool>,
 	pub allow_server_listing: Option<bool>,
+	pub snooper_enabled: Option<bool>,
 }
 
 #[derive(Deserialize, Clone, Debug)]

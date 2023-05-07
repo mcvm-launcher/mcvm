@@ -139,14 +139,21 @@ pub fn create_keys(
 
 	let before_13w42a =
 		VersionPattern::Before(String::from("13w42a")).matches_single(version, versions);
+	let before_14w03a =
+		VersionPattern::Before(String::from("14w03a")).matches_single(version, versions);
 	let before_15w31a =
 		VersionPattern::Before(String::from("15w31a")).matches_single(version, versions);
 	let before_1_13 =
 		VersionPattern::Before(String::from("1.13")).matches_single(version, versions);
 	let before_20w27a =
 		VersionPattern::Before(String::from("20w27a")).matches_single(version, versions);
+	let before_21w43a =
+		VersionPattern::Before(String::from("21w43a")).matches_single(version, versions);
 	let before_1_19_4 =
 		VersionPattern::Before(String::from("1.19.4")).matches_single(version, versions);
+
+	let is_3d_shareware =
+		VersionPattern::Single(String::from("3D Shareware v1.34")).matches_single(version, versions);
 
 	// TODO: Add actual data version
 	if let Some(value) = options.data_version {
@@ -431,6 +438,11 @@ pub fn create_keys(
 			out.insert(String::from("allowServerListing"), value.to_string());
 		}
 	}
+	if let Some(value) = options.snooper_enabled {
+		if before_21w43a {
+			out.insert(String::from("snooperEnabled"), value.to_string());
+		}
+	}
 	// Keybinds
 	if let Some(value) = &options.control.keys.attack {
 		out.insert(
@@ -541,8 +553,13 @@ pub fn create_keys(
 		);
 	}
 	if let Some(value) = &options.control.keys.swap_offhand {
+		let keybind = if before_20w27a {
+			"key_key.swapHands"
+		} else {
+			"key_key.swapOffhand"
+		};
 		out.insert(
-			String::from("key_key.swapOffhand"),
+			String::from(keybind),
 			value.get_keycode(before_1_13),
 		);
 	}
@@ -620,6 +637,26 @@ pub fn create_keys(
 			value.get_keycode(before_1_13),
 		);
 	}
+	if is_3d_shareware {
+		if let Some(value) = &options.control.keys.boss_mode {
+			out.insert(
+				String::from("key_key.boss_mode"),
+				value.get_keycode(before_1_13),
+			);
+		}
+		if let Some(value) = &options.control.keys.decrease_view {
+			out.insert(
+				String::from("key_key.decrease_view"),
+				value.get_keycode(before_1_13),
+			);
+		}
+		if let Some(value) = &options.control.keys.increase_view {
+			out.insert(
+				String::from("key_key.increase_view"),
+				value.get_keycode(before_1_13),
+			);
+		}
+	}
 
 	// Volumes
 	if after_13w36a {
@@ -678,7 +715,12 @@ pub fn create_keys(
 	}
 	// Model parts
 	if let Some(value) = options.skin.cape {
-		out.insert(String::from("modelPart_cape"), value.to_string());
+		let key = if before_14w03a {
+			"showCape"
+		} else {
+			"modelPart_cape"
+		};
+		out.insert(String::from(key), value.to_string());
 	}
 	if let Some(value) = options.skin.jacket {
 		out.insert(String::from("modelPart_jacket"), value.to_string());
