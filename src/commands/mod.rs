@@ -3,6 +3,7 @@ mod launch;
 pub mod package;
 mod profile;
 mod user;
+mod instance;
 
 use anyhow::Context;
 use clap::{Parser, Subcommand};
@@ -13,6 +14,7 @@ use crate::io::files::paths::Paths;
 use crate::io::Later;
 
 use self::files::FilesSubcommand;
+use self::instance::InstanceSubcommand;
 use self::package::PackageSubcommand;
 use self::profile::ProfileSubcommand;
 use self::user::UserSubcommand;
@@ -85,6 +87,11 @@ pub enum Command {
 		#[command(subcommand)]
 		command: PackageSubcommand,
 	},
+	#[command(about = "Manage instances")]
+	Instance {
+		#[command(subcommand)]
+		command: InstanceSubcommand,
+	}
 }
 
 #[derive(Debug, Parser)]
@@ -105,5 +112,6 @@ pub async fn run_cli(data: &mut CmdData) -> anyhow::Result<()> {
 		)),
 		Command::Files { command } => files::run(command, data).await,
 		Command::Package { command } => package::run(command, data).await,
+		Command::Instance { command } => instance::run(command, data).await,
 	}
 }
