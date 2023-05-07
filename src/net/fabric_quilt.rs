@@ -11,7 +11,7 @@ use crate::io::files;
 use crate::io::files::paths::Paths;
 use crate::io::java::classpath::Classpath;
 use crate::util::print::ReplPrinter;
-use shared::instance::Side;
+use mcvm_shared::instance::Side;
 
 use super::download;
 

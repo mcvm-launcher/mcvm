@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use anyhow::ensure;
 use serde::Deserialize;
-use shared::instance::Side;
+use mcvm_shared::instance::Side;
 
 use crate::data::instance::{InstKind, Instance};
 use crate::data::profile::Profile;
@@ -238,7 +238,7 @@ mod tests {
 	use super::*;
 
 	use crate::util::versions::MinecraftVersion;
-	use shared::modifications::{Modloader, PluginLoader};
+	use mcvm_shared::modifications::{Modloader, PluginLoader};
 
 	#[test]
 	fn test_instance_deser() {

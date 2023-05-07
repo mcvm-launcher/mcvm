@@ -6,4 +6,4 @@ edition = "2021"
 [dependencies]
 anyhow = "1.0.70"
 color-print = "0.3.4"
-shared = { path = "../shared" }
+mcvm_shared = { path = "../mcvm_shared", version = "0.0.1" }

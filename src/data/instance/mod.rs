@@ -2,7 +2,7 @@ pub mod create;
 pub mod launch;
 
 use anyhow::Context;
-use shared::instance::Side;
+use mcvm_shared::instance::Side;
 
 use crate::io::files::update_hardlink;
 use crate::io::java::classpath::Classpath;
@@ -18,8 +18,8 @@ use crate::Paths;
 use super::addon::get_addon_path;
 use super::config::instance::ClientWindowConfig;
 use super::profile::update::UpdateManager;
-use shared::addon::{Addon, AddonKind};
-use shared::modifications::{Modloader, PluginLoader};
+use mcvm_shared::addon::{Addon, AddonKind};
+use mcvm_shared::modifications::{Modloader, PluginLoader};
 
 use std::fs;
 use std::path::{Path, PathBuf};

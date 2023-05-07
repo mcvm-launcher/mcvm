@@ -8,7 +8,7 @@ use crate::{
 	util::ToInt,
 };
 
-use shared::versions::VersionPattern;
+use mcvm_shared::versions::VersionPattern;
 
 use super::{ClientOptions, CloudRenderMode, FullscreenResolution, GraphicsMode};
 

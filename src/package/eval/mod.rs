@@ -3,7 +3,7 @@ pub mod parse;
 
 use anyhow::{anyhow, bail};
 use serde::Deserialize;
-use shared::addon::{is_filename_valid, Addon};
+use mcvm_shared::addon::{is_filename_valid, Addon};
 
 use self::conditions::eval_condition;
 
@@ -14,10 +14,10 @@ use crate::util::validate_identifier;
 use mcvm_parse::instruction::{InstrKind, Instruction};
 use mcvm_parse::parse::{Block, BlockId};
 use mcvm_parse::{FailReason, Value};
-use shared::instance::Side;
-use shared::modifications::{Modloader, PluginLoader};
-use shared::pkg::PkgIdentifier;
-use shared::versions::VersionPattern;
+use mcvm_shared::instance::Side;
+use mcvm_shared::modifications::{Modloader, PluginLoader};
+use mcvm_shared::pkg::PkgIdentifier;
+use mcvm_shared::versions::VersionPattern;
 
 use std::collections::HashMap;
 use std::path::PathBuf;

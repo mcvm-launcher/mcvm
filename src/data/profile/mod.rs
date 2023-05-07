@@ -9,7 +9,7 @@ use crate::Paths;
 
 use self::update::UpdateManager;
 
-use shared::modifications::{Modloader, PluginLoader};
+use mcvm_shared::modifications::{Modloader, PluginLoader};
 
 pub type InstanceRegistry = std::collections::HashMap<String, Instance>;
 

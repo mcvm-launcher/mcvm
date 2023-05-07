@@ -799,12 +799,12 @@ dependencies = [
  "itertools",
  "libflate",
  "mcvm_parse",
+ "mcvm_shared",
  "openssl",
  "reqwest",
  "serde",
  "serde_json",
  "sha1",
- "shared",
  "shellexpand",
  "tar",
  "thiserror",
@@ -819,7 +819,16 @@ version = "0.0.3"
 dependencies = [
  "anyhow",
  "color-print",
- "shared",
+ "mcvm_shared",
+]
+
+[[package]]
+name = "mcvm_shared"
+version = "0.0.1"
+dependencies = [
+ "anyhow",
+ "color-print",
+ "serde",
 ]
 
 [[package]]
@@ -1220,15 +1229,6 @@ dependencies = [
  "cfg-if",
  "cpufeatures",
  "digest",
-]
-
-[[package]]
-name = "shared"
-version = "0.0.1"
-dependencies = [
- "anyhow",
- "color-print",
- "serde",
 ]
 
 [[package]]

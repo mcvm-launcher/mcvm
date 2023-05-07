@@ -12,7 +12,7 @@ use crate::net::fabric_quilt::{self, FabricQuiltMeta};
 use crate::net::minecraft::{assets, game_jar, libraries, version_manifest};
 use crate::util::versions::MinecraftVersion;
 use crate::util::{json, print::PrintOptions};
-use shared::instance::Side;
+use mcvm_shared::instance::Side;
 
 /// Requirements for operations that may be shared by multiple instances in a profile
 #[derive(Debug, Hash, PartialEq, Eq)]

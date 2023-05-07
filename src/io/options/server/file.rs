@@ -6,7 +6,7 @@ use itertools::Itertools;
 
 use crate::io::options::read::read_options_file;
 use crate::util::ToInt;
-use shared::versions::VersionPattern;
+use mcvm_shared::versions::VersionPattern;
 
 use super::ServerOptions;
 

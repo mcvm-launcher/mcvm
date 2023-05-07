@@ -6,7 +6,7 @@ use super::parse::BlockId;
 use super::FailReason;
 use super::Value;
 use crate::unexpected_token;
-use shared::addon::AddonKind;
+use mcvm_shared::addon::AddonKind;
 
 /// Type of an instruction
 #[derive(Debug, Clone)]

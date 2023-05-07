@@ -4,7 +4,7 @@ use serde::Deserialize;
 
 use crate::{data::profile::Profile, util::versions::MinecraftVersionDeser};
 
-use shared::modifications::{Modloader, PluginLoader};
+use mcvm_shared::modifications::{Modloader, PluginLoader};
 
 use super::{instance::InstanceConfig, package::PackageConfig};
 

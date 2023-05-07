@@ -15,7 +15,7 @@ use crate::io::java::{
 	args::{MemoryArg, MemoryNum},
 	JavaKind,
 };
-use shared::instance::Side;
+use mcvm_shared::instance::Side;
 
 use super::files::paths::Paths;
 

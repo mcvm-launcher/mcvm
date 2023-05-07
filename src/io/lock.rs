@@ -5,8 +5,8 @@ use std::path::PathBuf;
 use anyhow::{anyhow, Context};
 use serde::{Deserialize, Serialize};
 
-use shared::addon::{Addon, AddonKind};
-use shared::pkg::PkgIdentifier;
+use mcvm_shared::addon::{Addon, AddonKind};
+use mcvm_shared::pkg::PkgIdentifier;
 
 use crate::data::addon::get_addon_path;
 

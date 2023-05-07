@@ -1,8 +1,8 @@
 use anyhow::bail;
 
 use crate::unexpected_token;
-use shared::instance::Side;
-use shared::modifications::{ModloaderMatch, PluginLoaderMatch};
+use mcvm_shared::instance::Side;
+use mcvm_shared::modifications::{ModloaderMatch, PluginLoaderMatch};
 
 use super::instruction::parse_arg;
 use super::lex::{TextPos, Token};

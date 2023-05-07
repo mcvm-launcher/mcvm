@@ -14,7 +14,7 @@ use crate::util::{
 use crate::Paths;
 use crate::{skip_fail, skip_none};
 use crate::data::config::instance::{ClientWindowConfig, WindowResolution};
-use shared::versions::VersionPattern;
+use mcvm_shared::versions::VersionPattern;
 
 pub use args::create_quick_play_args;
 

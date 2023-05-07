@@ -4,7 +4,7 @@ use crate::io::java::classpath::Classpath;
 use crate::util::json::{self, JsonObject, JsonType};
 use crate::util::print::ReplPrinter;
 use crate::util::{self, cap_first_letter, mojang};
-use shared::instance::Side;
+use mcvm_shared::instance::Side;
 
 use anyhow::{bail, Context};
 use color_print::{cformat, cprintln};

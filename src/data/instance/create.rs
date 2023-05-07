@@ -13,7 +13,7 @@ use crate::io::options::{self, client::write_options_txt, server::write_server_p
 use crate::io::Later;
 use crate::net::{fabric_quilt, minecraft, paper};
 use crate::util::{json, print::ReplPrinter};
-use shared::modifications::{Modloader, PluginLoader};
+use mcvm_shared::modifications::{Modloader, PluginLoader};
 
 use super::{InstKind, Instance};
 

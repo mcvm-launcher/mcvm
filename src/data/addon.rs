@@ -1,10 +1,10 @@
 use anyhow::Context;
-use shared::addon::Addon;
+use mcvm_shared::addon::Addon;
 
 use crate::io::files::{create_leading_dirs, update_hardlink};
 use crate::io::files::paths::Paths;
 use crate::net::download;
-use shared::modifications::{Modloader, PluginLoader};
+use mcvm_shared::modifications::{Modloader, PluginLoader};
 
 use std::path::PathBuf;
 

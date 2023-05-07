@@ -9,7 +9,7 @@ use crate::package::eval::Routine;
 use crate::util::print::PrintOptions;
 use crate::util::print::ReplPrinter;
 use crate::util::print::HYPHEN_POINT;
-use shared::modifications::PluginLoader;
+use mcvm_shared::modifications::PluginLoader;
 
 use anyhow::bail;
 use anyhow::Context;

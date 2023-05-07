@@ -5,8 +5,8 @@ use super::conditions::ConditionKind;
 use super::instruction::{parse_arg, InstrKind, Instruction};
 use super::lex::{lex, reduce_tokens, Side, Token, TokenAndPos};
 use super::Value;
-use shared::addon::AddonKind;
-use shared::util::yes_no;
+use mcvm_shared::addon::AddonKind;
+use mcvm_shared::util::yes_no;
 
 use std::collections::HashMap;
 

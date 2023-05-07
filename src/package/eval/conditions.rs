@@ -1,4 +1,4 @@
-use shared::versions::VersionPattern;
+use mcvm_shared::versions::VersionPattern;
 
 use super::EvalData;
 use mcvm_parse::conditions::ConditionKind;
