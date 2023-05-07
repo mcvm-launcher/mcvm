@@ -19,6 +19,7 @@ impl Instance {
 		paths: &Paths,
 		auth: &Auth,
 		debug: bool,
+		token: Option<String>,
 		version: &MinecraftVersion,
 	) -> anyhow::Result<()> {
 		cprintln!("Checking for updates...");
@@ -42,10 +43,13 @@ impl Instance {
 		cprintln!("<g>Launching!");
 		match &self.kind {
 			InstKind::Client { .. } => {
-				self.launch_client(paths, auth, debug, version, version_list)
+				self.launch_client(paths, auth, debug, token, version, version_list)
 					.context("Failed to launch client")?;
 			}
 			InstKind::Server { .. } => {
+				if token.is_some() {
+					cprintln!("<y>Notice: Ignoring 'token' argument for server instance");
+				}
 				self.launch_server(paths, debug, version, version_list)
 					.context("Failed to launch server")?;
 			}

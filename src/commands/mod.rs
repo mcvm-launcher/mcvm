@@ -72,6 +72,9 @@ pub enum Command {
 		/// Whether to print the command that was generated when launching
 		#[arg(short, long)]
 		debug: bool,
+		/// An optional Minecraft session token to override with
+		#[arg(long)]
+		token: Option<String>,
 		/// The instance to launch
 		instance: String,
 	},
@@ -105,7 +108,7 @@ pub async fn run_cli(data: &mut CmdData) -> anyhow::Result<()> {
 	match cli.command {
 		Command::Profile { command } => profile::run(command, data).await,
 		Command::User { command } => user::run(command, data).await,
-		Command::Launch { debug, instance } => launch::run(&instance, debug, data).await,
+		Command::Launch { debug, token, instance } => launch::run(&instance, debug, token, data).await,
 		Command::Version => Ok(cprintln!(
 			"mcvm version <g>{}</g>",
 			env!("CARGO_PKG_VERSION")

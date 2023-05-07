@@ -2,7 +2,7 @@ use super::CmdData;
 
 use anyhow::{bail, Context};
 
-pub async fn run(instance: &str, debug: bool, data: &mut CmdData) -> anyhow::Result<()> {
+pub async fn run(instance: &str, debug: bool, token: Option<String>, data: &mut CmdData) -> anyhow::Result<()> {
 	data.ensure_paths().await?;
 	data.ensure_config().await?;
 	let paths = data.paths.get();
@@ -15,7 +15,7 @@ pub async fn run(instance: &str, debug: bool, data: &mut CmdData) -> anyhow::Res
 			.find(|(.., profile)| profile.instances.contains(&instance.id))
 			.expect("Instance does not belong to any profiles");
 		instance
-			.launch(paths, &config.auth, debug, &profile.version)
+			.launch(paths, &config.auth, debug, token, &profile.version)
 			.await
 			.context("Instance failed to launch")?;
 	} else {

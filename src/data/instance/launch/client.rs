@@ -25,6 +25,7 @@ impl Instance {
 		paths: &Paths,
 		auth: &Auth,
 		debug: bool,
+		token: Option<String>,
 		version: &str,
 		version_list: &[String],
 	) -> anyhow::Result<()> {
@@ -43,13 +44,13 @@ impl Instance {
 			if let InstKind::Client { options: _, window } = &self.kind {
 				if let Ok(args) = json::access_object(version_json, "arguments") {
 					for arg in json::access_array(args, "jvm")? {
-						for sub_arg in args::process_arg(self, arg, paths, auth, classpath, version, window) {
+						for sub_arg in args::process_arg(self, arg, paths, auth, classpath, version, window, &token) {
 							jvm_args.push(sub_arg);
 						}
 					}
 
 					for arg in json::access_array(args, "game")? {
-						for sub_arg in args::process_arg(self, arg, paths, auth, classpath, version, window) {
+						for sub_arg in args::process_arg(self, arg, paths, auth, classpath, version, window, &token) {
 							game_args.push(sub_arg);
 						}
 					}
@@ -72,7 +73,7 @@ impl Instance {
 
 					for arg in args.split(' ') {
 						game_args.push(skip_none!(args::replace_arg_placeholders(
-							self, arg, paths, auth, classpath, version, window
+							self, arg, paths, auth, classpath, version, window, &token
 						)));
 					}
 				}
@@ -120,6 +121,7 @@ mod args {
 		classpath: &Classpath,
 		version: &str,
 		window: &ClientWindowConfig,
+		token: &Option<String>,
 	) -> Option<String> {
 		let mut out = arg.replace(placeholder!("launcher_name"), "mcvm");
 		out = out.replace(placeholder!("launcher_version"), "alpha");
@@ -157,8 +159,10 @@ mod args {
 				if let Some(uuid) = &user.uuid {
 					out = out.replace(placeholder!("auth_uuid"), uuid);
 				}
-				if let Some(token) = &user.access_token {
+				if let Some(token) = token {
 					out = out.replace(placeholder!("auth_access_token"), token);
+				} else if let Some(access_token) = &user.access_token {
+					out = out.replace(placeholder!("auth_access_token"), access_token);
 				}
 				if out.contains(placeholder!("auth_player_name"))
 					|| out.contains(placeholder!("auth_access_token"))
@@ -189,10 +193,11 @@ mod args {
 		classpath: &Classpath,
 		version: &str,
 		window: &ClientWindowConfig,
+		token: &Option<String>,
 	) -> Vec<String> {
 		let mut out = Vec::new();
 		if let Some(contents) = arg.as_str() {
-			let processed = replace_arg_placeholders(instance, contents, paths, auth, classpath, version, window);
+			let processed = replace_arg_placeholders(instance, contents, paths, auth, classpath, version, window, token);
 			if let Some(processed_arg) = processed {
 				out.push(processed_arg);
 			}
@@ -234,13 +239,13 @@ mod args {
 				}
 			}
 			match arg.get("value") {
-				Some(value) => process_arg(instance, value, paths, auth, classpath, version, window),
+				Some(value) => process_arg(instance, value, paths, auth, classpath, version, window, token),
 				None => return vec![],
 			};
 		} else if let Some(contents) = arg.as_array() {
 			for val in contents {
 				out.push(
-					process_arg(instance, val, paths, auth, classpath, version, window)
+					process_arg(instance, val, paths, auth, classpath, version, window, token)
 						.get(0)
 						.expect("Expected an argument")
 						.to_string(),
