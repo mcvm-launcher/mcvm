@@ -3,6 +3,10 @@ name = "mcvm"
 version = "0.4.1"
 edition = "2021"
 
+[lib]
+name = "mcvm"
+path = "src/lib.rs"
+
 [workspace]
 members = [
 	"crates/mcvm_parse",

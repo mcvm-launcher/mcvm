@@ -11,7 +11,7 @@ use crate::util::{
 	mojang::is_allowed,
 	{ARCH_STRING, OS_STRING},
 };
-use crate::Paths;
+use crate::io::files::paths::Paths;
 use crate::{skip_fail, skip_none};
 use crate::data::config::instance::{ClientWindowConfig, WindowResolution};
 use mcvm_shared::versions::VersionPattern;

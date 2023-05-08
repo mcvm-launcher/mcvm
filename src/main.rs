@@ -9,7 +9,6 @@ use std::process::ExitCode;
 
 use color_print::cformat;
 use commands::run_cli;
-use io::files::paths::Paths;
 
 #[tokio::main]
 async fn main() -> ExitCode {

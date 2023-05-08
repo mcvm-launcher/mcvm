@@ -13,7 +13,7 @@ use crate::io::options::server::ServerOptions;
 use crate::io::{files, Later};
 use crate::net::fabric_quilt;
 use crate::util::json;
-use crate::Paths;
+use crate::io::files::paths::Paths;
 
 use super::addon::get_addon_path;
 use super::config::instance::ClientWindowConfig;
