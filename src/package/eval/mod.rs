@@ -229,7 +229,7 @@ pub fn eval_instr(
 				path,
 			} => {
 				let id = id.get(&eval.vars)?;
-				if eval.addon_reqs.iter().find(|x| x.addon.id == id).is_some() {
+				if eval.addon_reqs.iter().any(|x| x.addon.id == id) {
 					bail!("Duplicate addon id '{id}'");
 				}
 				if !validate_identifier(&id) {

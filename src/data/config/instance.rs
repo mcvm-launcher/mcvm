@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use std::str::FromStr;
 
 use anyhow::ensure;
 use serde::Deserialize;
@@ -124,7 +125,7 @@ impl LaunchConfig {
 			min_mem,
 			max_mem,
 			java: JavaKind::from_str(&self.java),
-			preset: ArgsPreset::from_str(&self.preset),
+			preset: ArgsPreset::from_str(&self.preset)?,
 			env: self.env.clone(),
 			wrapper: self.wrapper.clone(),
 			quick_play: self.quick_play.clone(),

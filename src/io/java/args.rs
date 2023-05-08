@@ -1,4 +1,6 @@
-use std::fmt::Display;
+use std::{fmt::Display, str::FromStr};
+
+use anyhow::bail;
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum MemoryNum {
@@ -74,17 +76,20 @@ pub enum ArgsPreset {
 	Obydux,
 }
 
-impl ArgsPreset {
-	pub fn from_str(string: &str) -> Self {
-		match string {
-			"aikars" => Self::Aikars,
-			"krusic" => Self::Krusic,
-			"obydux" => Self::Obydux,
-			"none" => Self::None,
-			_ => Self::None,
+impl FromStr for ArgsPreset {
+	type Err = anyhow::Error;
+	fn from_str(s: &str) -> Result<Self, Self::Err> {
+		match s {
+			"aikars" => Ok(Self::Aikars),
+			"krusic" => Ok(Self::Krusic),
+			"obydux" => Ok(Self::Obydux),
+			"none" => Ok(Self::None),
+			_ => bail!("Unknown argument preset '{s}'"),
 		}
 	}
+}
 
+impl ArgsPreset {
 	pub fn generate_args(&self, mem_avg: Option<MemoryNum>) -> Vec<String> {
 		match self {
 			Self::None => vec![],

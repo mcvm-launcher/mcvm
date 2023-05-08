@@ -141,10 +141,8 @@ pub async fn get_meta(
 			.await
 			.context("Failed to write meta to a file")?;
 
-		let meta = serde_json::from_slice::<Vec<FabricQuiltMeta>>(&bytes)
-			.context("Failed to parse downloaded metadata")?;
-
-		meta
+		serde_json::from_slice::<Vec<FabricQuiltMeta>>(&bytes)
+			.context("Failed to parse downloaded metadata")?
 	};
 
 	let meta = meta

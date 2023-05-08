@@ -122,7 +122,10 @@ pub async fn run_cli(data: &mut CmdData) -> anyhow::Result<()> {
 		Command::Profile { command } => profile::run(command, data).await,
 		Command::User { command } => user::run(command, data).await,
 		Command::Launch { debug, token, instance } => launch::run(&instance, debug, token, data).await,
-		Command::Version => Ok(print_version()),
+		Command::Version => {
+			print_version();
+			Ok(())
+		},
 		Command::Files { command } => files::run(command, data).await,
 		Command::Package { command } => package::run(command, data).await,
 		Command::Instance { command } => instance::run(command, data).await,
