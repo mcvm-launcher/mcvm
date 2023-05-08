@@ -110,7 +110,14 @@ fn print_version() {
 }
 
 pub async fn run_cli(data: &mut CmdData) -> anyhow::Result<()> {
-	let cli = Cli::try_parse()?;
+	let cli = Cli::try_parse();
+	if let Err(e) = &cli {
+		if let clap::error::ErrorKind::DisplayHelp = e.kind() {
+			println!("{e}");
+			return Ok(())
+		}
+	}
+	let cli = cli?;
 	match cli.command {
 		Command::Profile { command } => profile::run(command, data).await,
 		Command::User { command } => user::run(command, data).await,
