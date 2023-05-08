@@ -1,9 +1,9 @@
 [package]
 name = "mcvm_parse"
-version = "0.0.3"
+version = "0.0.4"
 edition = "2021"
 
 [dependencies]
 anyhow = "1.0.70"
 color-print = "0.3.4"
-mcvm_shared = { path = "../mcvm_shared", version = "0.0.1" }
+mcvm_shared = { path = "../mcvm_shared", version = "0.0.2" }
