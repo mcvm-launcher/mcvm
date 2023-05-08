@@ -2,7 +2,7 @@
 name = "mcvm_shared"
 version = "0.0.2"
 edition = "2021"
-license = "GPL"
+license = "GPL-3.0-or-later"
 description = "Shared libraries for mcvm"
 authors = ["CarbonSmasher"]
 keywords = ["minecraft", "launcher", "game", "mc"]
