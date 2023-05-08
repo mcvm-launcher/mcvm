@@ -2,6 +2,11 @@
 name = "mcvm_parse"
 version = "0.0.4"
 edition = "2021"
+license = "GPL"
+description = "Package script lexing and parsing for mcvm"
+authors = ["CarbonSmasher"]
+keywords = ["minecraft", "launcher", "game", "mc", "parse"]
+categories = ["games"]
 
 [dependencies]
 anyhow = "1.0.70"
