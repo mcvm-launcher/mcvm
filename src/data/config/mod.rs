@@ -1,8 +1,9 @@
 pub mod instance;
 pub mod package;
-mod preferences;
+pub mod preferences;
 pub mod profile;
 pub mod user;
+pub mod modifications;
 
 use self::instance::read_instance_config;
 use self::package::{FullPackageConfig, PackageConfig};
@@ -11,11 +12,12 @@ use self::profile::ProfileConfig;
 use self::user::UserConfig;
 use anyhow::{bail, Context};
 use preferences::ConfigPreferences;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use super::addon::game_modifications_compatible;
 use super::profile::{InstanceRegistry, Profile};
 use super::user::{validate_username, Auth, AuthState};
+use crate::io::files::paths::Paths;
 use crate::package::reg::PkgRegistry;
 use crate::util::validate_identifier;
 
@@ -54,7 +56,7 @@ fn default_config() -> serde_json::Value {
 	)
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Serialize)]
 pub struct ConfigDeser {
 	#[serde(default)]
 	users: HashMap<String, UserConfig>,
@@ -76,6 +78,11 @@ pub struct Config {
 }
 
 impl Config {
+	/// Get the config path
+	pub fn get_path(paths: &Paths) -> PathBuf {
+		paths.project.config_dir().join("mcvm.json")
+	}
+
 	/// Open the config from a file
 	fn open(path: &Path) -> anyhow::Result<ConfigDeser> {
 		if path.exists() {

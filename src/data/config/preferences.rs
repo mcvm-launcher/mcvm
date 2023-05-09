@@ -2,15 +2,15 @@ use crate::net::download::validate_url;
 use crate::package::repo::PkgRepo;
 
 use anyhow::Context;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Serialize)]
 pub struct RepoDeser {
 	id: String,
 	url: String,
 }
 
-#[derive(Deserialize, Default)]
+#[derive(Deserialize, Serialize, Default)]
 pub struct RepositoriesDeser {
 	#[serde(default)]
 	preferred: Vec<RepoDeser>,
@@ -18,7 +18,7 @@ pub struct RepositoriesDeser {
 	backup: Vec<RepoDeser>,
 }
 
-#[derive(Deserialize, Default)]
+#[derive(Deserialize, Serialize, Default)]
 #[serde(default)]
 pub struct PrefDeser {
 	repositories: RepositoriesDeser,

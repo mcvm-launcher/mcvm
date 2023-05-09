@@ -1,9 +1,9 @@
 use color_print::cprintln;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::data::user::{User, UserKind};
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Serialize, Clone)]
 #[serde(tag = "type")]
 #[serde(rename_all = "snake_case")]
 pub enum UserVariant {
@@ -22,7 +22,7 @@ impl UserVariant {
 	}
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Serialize, Clone)]
 /// Configuration for a user
 pub struct UserConfig {
 	pub name: String,

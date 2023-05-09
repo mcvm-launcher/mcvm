@@ -1,14 +1,14 @@
 use std::{collections::HashMap, fmt::Display, io::Read};
 
 use anyhow::{anyhow, Context};
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::util::ToInt;
 
 use super::Options;
 
 /// Used for both difficulty and gamemode to have compatability with different versions
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 #[serde(untagged)]
 pub enum EnumOrNumber<T> {
 	Enum(T),
@@ -38,7 +38,7 @@ impl<T: ToInt> ToInt for EnumOrNumber<T> {
 }
 
 /// Allow an enum or custom string
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 #[serde(untagged)]
 pub enum EnumOrString<T> {
 	Enum(T),

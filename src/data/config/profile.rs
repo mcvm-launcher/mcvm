@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::{data::profile::Profile, util::versions::MinecraftVersionDeser};
 
@@ -8,7 +8,7 @@ use mcvm_shared::modifications::{Modloader, PluginLoader};
 
 use super::{instance::InstanceConfig, package::PackageConfig};
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Serialize)]
 pub struct ProfileConfig {
 	version: MinecraftVersionDeser,
 	#[serde(default)]

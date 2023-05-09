@@ -6,13 +6,13 @@ pub use file::write_server_properties;
 use std::collections::HashMap;
 use std::fmt::Display;
 
-use serde::Deserialize;
+use serde::{Serialize, Deserialize};
 
 use crate::util::{json, ToInt};
 
 use super::read::{EnumOrNumber, EnumOrString};
 
-#[derive(Deserialize, Debug, Clone, Default)]
+#[derive(Deserialize, Serialize, Debug, Clone, Default)]
 #[serde(default)]
 pub struct RconOptions {
 	pub enable: Option<bool>,
@@ -20,28 +20,28 @@ pub struct RconOptions {
 	pub password: Option<String>,
 }
 
-#[derive(Deserialize, Debug, Clone, Default)]
+#[derive(Deserialize, Serialize, Debug, Clone, Default)]
 #[serde(default)]
 pub struct QueryOptions {
 	pub enable: Option<bool>,
 	pub port: Option<u16>,
 }
 
-#[derive(Deserialize, Debug, Clone, Default)]
+#[derive(Deserialize, Serialize, Debug, Clone, Default)]
 #[serde(default)]
 pub struct WhitelistOptions {
 	pub enable: Option<bool>,
 	pub enforce: Option<bool>,
 }
 
-#[derive(Deserialize, Debug, Clone, Default)]
+#[derive(Deserialize, Serialize, Debug, Clone, Default)]
 #[serde(default)]
 pub struct GamemodeOptions {
 	pub default: Option<EnumOrNumber<GameMode>>,
 	pub force: Option<bool>,
 }
 
-#[derive(Deserialize, Debug, Clone, Default)]
+#[derive(Deserialize, Serialize, Debug, Clone, Default)]
 #[serde(default)]
 pub struct DatapacksOptions {
 	pub function_permission_level: Option<u8>,
@@ -49,7 +49,7 @@ pub struct DatapacksOptions {
 	pub initial_disabled: Option<Vec<String>>,
 }
 
-#[derive(Deserialize, Debug, Clone, Default)]
+#[derive(Deserialize, Serialize, Debug, Clone, Default)]
 #[serde(default)]
 pub struct WorldOptions {
 	pub name: Option<String>,
@@ -62,7 +62,7 @@ pub struct WorldOptions {
 	pub allow_nether: Option<bool>,
 }
 
-#[derive(Deserialize, Debug, Clone, Default)]
+#[derive(Deserialize, Serialize, Debug, Clone, Default)]
 #[serde(default)]
 pub struct ResourcePackOptions {
 	pub uri: Option<String>,
@@ -71,7 +71,7 @@ pub struct ResourcePackOptions {
 	pub required: Option<bool>,
 }
 
-#[derive(Deserialize, Debug, Clone, Default)]
+#[derive(Deserialize, Serialize, Debug, Clone, Default)]
 #[serde(default)]
 pub struct ServerOptions {
 	pub rcon: RconOptions,
@@ -118,7 +118,7 @@ pub struct ServerOptions {
 	pub view_distance: Option<u8>,
 }
 
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 #[serde(rename_all = "snake_case")]
 pub enum Difficulty {
 	Peaceful,
@@ -148,7 +148,7 @@ impl ToInt for Difficulty {
 	}
 }
 
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 #[serde(rename_all = "snake_case")]
 pub enum GameMode {
 	Survival,
@@ -178,7 +178,7 @@ impl ToInt for GameMode {
 	}
 }
 
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 #[serde(rename_all = "snake_case")]
 pub enum WorldType {
 	Normal,
@@ -208,7 +208,7 @@ impl Display for WorldType {
 	}
 }
 
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 #[serde(rename_all = "snake_case")]
 pub enum NetworkCompression {
 	Disabled,

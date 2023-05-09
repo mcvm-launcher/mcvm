@@ -46,7 +46,7 @@ impl CmdData {
 				.await
 				.context("Failed to set up directories")?;
 			self.config.fill(
-				Config::load(&self.paths.get().project.config_dir().join("mcvm.json"))
+				Config::load(&Config::get_path(self.paths.get()))
 					.context("Failed to load config")?,
 			);
 		}

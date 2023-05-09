@@ -1,12 +1,12 @@
 use std::fmt::Display;
 
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use super::json;
 
 /// Matches for the latest Minecraft version.
 /// We have to separate this so that deserialization works
-#[derive(Deserialize, Debug, Clone, PartialEq)]
+#[derive(Deserialize, Serialize, Debug, Clone, PartialEq)]
 pub enum MinecraftLatestVersion {
 	#[serde(rename = "latest")]
 	Release,
@@ -14,7 +14,7 @@ pub enum MinecraftLatestVersion {
 	Snapshot,
 }
 
-#[derive(Deserialize, Debug, Clone, PartialEq)]
+#[derive(Deserialize, Serialize, Debug, Clone, PartialEq)]
 #[serde(rename_all = "snake_case")]
 #[serde(untagged)]
 /// Used for deserializing a Minecraft version

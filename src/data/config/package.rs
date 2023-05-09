@@ -1,16 +1,16 @@
 use std::fmt::Display;
 
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::package::{eval::EvalPermissions, reg::PkgRequest, PkgProfileConfig};
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum PackageType {
 	Local,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Serialize)]
 #[serde(untagged)]
 #[serde(rename_all = "snake_case")]
 pub enum FullPackageConfig {
@@ -34,7 +34,7 @@ pub enum FullPackageConfig {
 	},
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Serialize)]
 #[serde(untagged)]
 pub enum PackageConfig {
 	Basic(String),

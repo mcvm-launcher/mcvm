@@ -2,7 +2,7 @@ use std::collections::HashMap;
 use std::str::FromStr;
 
 use anyhow::ensure;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use mcvm_shared::instance::Side;
 
 use crate::data::instance::{InstKind, Instance};
@@ -13,7 +13,7 @@ use crate::io::launch::LaunchOptions;
 use crate::io::options::client::ClientOptions;
 use crate::io::options::server::ServerOptions;
 
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 #[serde(untagged)]
 pub enum Args {
 	List(Vec<String>),
@@ -35,7 +35,7 @@ impl Default for Args {
 	}
 }
 
-#[derive(Deserialize, Debug, Default, Clone)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone)]
 pub struct LaunchArgs {
 	#[serde(default)]
 	pub jvm: Args,
@@ -43,7 +43,7 @@ pub struct LaunchArgs {
 	pub game: Args,
 }
 
-#[derive(Deserialize, Debug, Default, Clone)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone)]
 #[serde(untagged)]
 pub enum LaunchMemory {
 	#[default]
@@ -63,7 +63,7 @@ fn default_flags_preset() -> String {
 	String::from("none")
 }
 
-#[derive(Deserialize, Debug, PartialEq, Default, Clone)]
+#[derive(Deserialize, Serialize, Debug, PartialEq, Default, Clone)]
 #[serde(tag = "type")]
 #[serde(rename_all = "snake_case")]
 pub enum QuickPlay {
@@ -81,7 +81,7 @@ pub enum QuickPlay {
 	None,
 }
 
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct LaunchConfig {
 	#[serde(default)]
 	pub args: LaunchArgs,
@@ -150,19 +150,19 @@ impl Default for LaunchConfig {
 	}
 }
 
-#[derive(Deserialize, Clone, Debug)]
+#[derive(Deserialize, Serialize, Clone, Debug)]
 pub struct WindowResolution {
 	pub width: u32,
 	pub height: u32,
 }
 
-#[derive(Deserialize, Default, Clone, Debug)]
+#[derive(Deserialize, Serialize, Default, Clone, Debug)]
 #[serde(default)]
 pub struct ClientWindowConfig {
 	pub resolution: Option<WindowResolution>,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Serialize)]
 #[serde(tag = "type")]
 #[serde(rename_all = "snake_case")]
 pub enum FullInstanceConfig {
@@ -182,7 +182,7 @@ pub enum FullInstanceConfig {
 	},
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Serialize)]
 #[serde(untagged)]
 #[serde(rename_all = "snake_case")]
 pub enum InstanceConfig {

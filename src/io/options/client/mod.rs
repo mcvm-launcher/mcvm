@@ -3,6 +3,7 @@ mod keybinds;
 
 pub use file::create_keys;
 pub use file::write_options_txt;
+use serde::Serialize;
 
 use std::{collections::HashMap, fmt::Display};
 
@@ -14,7 +15,7 @@ use self::keybinds::Keybind;
 
 use super::read::EnumOrNumber;
 
-#[derive(Deserialize, Debug, Clone, Default)]
+#[derive(Deserialize, Serialize, Debug, Clone, Default)]
 #[serde(default)]
 pub struct KeyOptions {
 	pub attack: Option<Keybind>,
@@ -56,7 +57,7 @@ pub struct KeyOptions {
 	pub increase_view: Option<Keybind>,
 }
 
-#[derive(Deserialize, Debug, Clone, Default)]
+#[derive(Deserialize, Serialize, Debug, Clone, Default)]
 #[serde(default)]
 pub struct ControlOptions {
 	pub keys: KeyOptions,
@@ -71,7 +72,7 @@ pub struct ControlOptions {
 	pub raw_mouse_input: Option<bool>,
 }
 
-#[derive(Deserialize, Debug, Clone, Default)]
+#[derive(Deserialize, Serialize, Debug, Clone, Default)]
 #[serde(default)]
 pub struct ChatOptions {
 	pub auto_command_suggestions: Option<bool>,
@@ -92,7 +93,7 @@ pub struct ChatOptions {
 	pub narrator_mode: Option<EnumOrNumber<NarratorMode>>,
 }
 
-#[derive(Deserialize, Debug, Clone, Default)]
+#[derive(Deserialize, Serialize, Debug, Clone, Default)]
 #[serde(default)]
 pub struct VideoOptions {
 	pub vsync: Option<bool>,
@@ -125,7 +126,7 @@ pub struct VideoOptions {
 	pub allow_block_alternatives: Option<bool>,
 }
 
-#[derive(Deserialize, Debug, Clone, Default)]
+#[derive(Deserialize, Serialize, Debug, Clone, Default)]
 #[serde(default)]
 pub struct VolumeOptions {
 	pub master: Option<f32>,
@@ -140,7 +141,7 @@ pub struct VolumeOptions {
 	pub voice: Option<f32>,
 }
 
-#[derive(Deserialize, Debug, Clone, Default)]
+#[derive(Deserialize, Serialize, Debug, Clone, Default)]
 #[serde(default)]
 pub struct SoundOptions {
 	pub volume: VolumeOptions,
@@ -149,7 +150,7 @@ pub struct SoundOptions {
 	pub device: Option<String>,
 }
 
-#[derive(Deserialize, Debug, Clone, Default)]
+#[derive(Deserialize, Serialize, Debug, Clone, Default)]
 #[serde(default)]
 pub struct SkinOptions {
 	pub cape: Option<bool>,
@@ -161,7 +162,7 @@ pub struct SkinOptions {
 	pub hat: Option<bool>,
 }
 
-#[derive(Deserialize, Debug, Clone, Default)]
+#[derive(Deserialize, Serialize, Debug, Clone, Default)]
 #[serde(default)]
 pub struct ClientOptions {
 	pub data_version: Option<i16>,
@@ -195,7 +196,7 @@ pub struct ClientOptions {
 	pub snooper_enabled: Option<bool>,
 }
 
-#[derive(Deserialize, Clone, Debug)]
+#[derive(Deserialize, Serialize, Clone, Debug)]
 #[serde(rename_all = "snake_case")]
 pub enum GraphicsMode {
 	Fast,
@@ -209,7 +210,7 @@ impl ToInt for GraphicsMode {
 	}
 }
 
-#[derive(Deserialize, PartialEq, Debug, Clone)]
+#[derive(Deserialize, Serialize, PartialEq, Debug, Clone)]
 #[serde(rename_all = "snake_case")]
 pub enum ParticlesMode {
 	All,
@@ -223,7 +224,7 @@ impl ToInt for ParticlesMode {
 	}
 }
 
-#[derive(Deserialize, Clone, Debug)]
+#[derive(Deserialize, Serialize, Clone, Debug)]
 #[serde(rename_all = "snake_case")]
 pub enum Difficulty {
 	Peaceful,
@@ -238,7 +239,7 @@ impl ToInt for Difficulty {
 	}
 }
 
-#[derive(Deserialize, PartialEq, Debug, Clone)]
+#[derive(Deserialize, Serialize, PartialEq, Debug, Clone)]
 #[serde(rename_all = "snake_case")]
 pub enum ChunkUpdatesMode {
 	Threaded,
@@ -252,7 +253,7 @@ impl ToInt for ChunkUpdatesMode {
 	}
 }
 
-#[derive(Deserialize, Clone, Debug)]
+#[derive(Deserialize, Serialize, Clone, Debug)]
 #[serde(rename_all = "snake_case")]
 pub enum CloudRenderMode {
 	Fancy,
@@ -274,7 +275,7 @@ impl Display for CloudRenderMode {
 	}
 }
 
-#[derive(Deserialize, Clone, Debug)]
+#[derive(Deserialize, Serialize, Clone, Debug)]
 #[serde(rename_all = "snake_case")]
 pub enum ChatVisibility {
 	Shown,
@@ -288,7 +289,7 @@ impl ToInt for ChatVisibility {
 	}
 }
 
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 #[serde(rename_all = "snake_case")]
 pub enum MainHand {
 	Left,
@@ -308,7 +309,7 @@ impl Display for MainHand {
 	}
 }
 
-#[derive(Deserialize, Clone, Debug)]
+#[derive(Deserialize, Serialize, Clone, Debug)]
 #[serde(rename_all = "snake_case")]
 pub enum AttackIndicatorMode {
 	Off,
@@ -322,7 +323,7 @@ impl ToInt for AttackIndicatorMode {
 	}
 }
 
-#[derive(Deserialize, Clone, Debug)]
+#[derive(Deserialize, Serialize, Clone, Debug)]
 #[serde(rename_all = "snake_case")]
 pub enum NarratorMode {
 	Off,
@@ -337,7 +338,7 @@ impl ToInt for NarratorMode {
 	}
 }
 
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 #[serde(rename_all = "snake_case")]
 pub enum TutorialStep {
 	Movement,
@@ -365,7 +366,7 @@ impl Display for TutorialStep {
 	}
 }
 
-#[derive(Deserialize, Clone, Debug)]
+#[derive(Deserialize, Serialize, Clone, Debug)]
 #[serde(rename_all = "snake_case")]
 pub enum LogLevel {
 	None,
@@ -382,7 +383,7 @@ impl ToInt for LogLevel {
 }
 
 // TODO: Add sensible defaults for resolution options
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct FullscreenResolution {
 	pub width: u32,
 	pub height: u32,

@@ -2,7 +2,7 @@ pub mod conditions;
 pub mod parse;
 
 use anyhow::{anyhow, bail};
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use mcvm_shared::addon::{is_filename_valid, Addon};
 
 use self::conditions::eval_condition;
@@ -29,7 +29,7 @@ pub enum EvalLevel {
 }
 
 /// Permissions level for an evaluation
-#[derive(Deserialize, Debug, Clone, Default)]
+#[derive(Deserialize, Serialize, Debug, Clone, Default)]
 #[serde(rename_all = "snake_case")]
 pub enum EvalPermissions {
 	Restricted,
