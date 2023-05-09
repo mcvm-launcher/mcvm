@@ -13,7 +13,7 @@ pub enum InstanceSubcommand {
 		/// Whether to remove formatting from the output
 		#[arg(short, long)]
 		raw: bool,
-	}
+	},
 }
 
 async fn list(data: &mut CmdData, raw: bool) -> anyhow::Result<()> {
@@ -35,6 +35,6 @@ async fn list(data: &mut CmdData, raw: bool) -> anyhow::Result<()> {
 
 pub async fn run(command: InstanceSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
 	match command {
-		InstanceSubcommand::List { raw } => list(data, raw).await
+		InstanceSubcommand::List { raw } => list(data, raw).await,
 	}
 }

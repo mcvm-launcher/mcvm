@@ -6,7 +6,7 @@ pub use file::write_server_properties;
 use std::collections::HashMap;
 use std::fmt::Display;
 
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 use crate::util::{json, ToInt};
 

@@ -518,10 +518,7 @@ pub mod game_jar {
 			.await
 			.context("Failed to download file")?;
 		let side_str = cap_first_letter(&side_str);
-		printer.print(&cformat!(
-			"<g>{} jar downloaded.",
-			side_str
-		));
+		printer.print(&cformat!("<g>{} jar downloaded.", side_str));
 
 		Ok(())
 	}

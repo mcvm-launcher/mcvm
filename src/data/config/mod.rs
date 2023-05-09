@@ -1,9 +1,9 @@
 pub mod instance;
+pub mod modifications;
 pub mod package;
 pub mod preferences;
 pub mod profile;
 pub mod user;
-pub mod modifications;
 
 use self::instance::read_instance_config;
 use self::package::{FullPackageConfig, PackageConfig};

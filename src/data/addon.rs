@@ -1,8 +1,8 @@
 use anyhow::Context;
 use mcvm_shared::addon::Addon;
 
-use crate::io::files::{create_leading_dirs, update_hardlink};
 use crate::io::files::paths::Paths;
+use crate::io::files::{create_leading_dirs, update_hardlink};
 use crate::net::download;
 use mcvm_shared::modifications::{Modloader, PluginLoader};
 
@@ -57,8 +57,7 @@ impl AddonRequest {
 					.context("Failed to download addon")?;
 			}
 			AddonLocation::Local(actual_path) => {
-				update_hardlink(actual_path, &path)
-					.context("Failed to hardlink local addon")?;
+				update_hardlink(actual_path, &path).context("Failed to hardlink local addon")?;
 			}
 		}
 		Ok(())

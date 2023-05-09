@@ -2,8 +2,10 @@ use anyhow::Context;
 use color_print::cprintln;
 
 use crate::data::config::instance::QuickPlay;
+use crate::data::config::instance::{ClientWindowConfig, WindowResolution};
 use crate::data::instance::{InstKind, Instance};
 use crate::data::user::{Auth, UserKind};
+use crate::io::files::paths::Paths;
 use crate::io::java::classpath::Classpath;
 use crate::io::launch::{launch, LaunchArgument};
 use crate::util::json;
@@ -11,9 +13,7 @@ use crate::util::{
 	mojang::is_allowed,
 	{ARCH_STRING, OS_STRING},
 };
-use crate::io::files::paths::Paths;
 use crate::{skip_fail, skip_none};
-use crate::data::config::instance::{ClientWindowConfig, WindowResolution};
 use mcvm_shared::versions::VersionPattern;
 
 pub use args::create_quick_play_args;
@@ -44,13 +44,17 @@ impl Instance {
 			if let InstKind::Client { options: _, window } = &self.kind {
 				if let Ok(args) = json::access_object(version_json, "arguments") {
 					for arg in json::access_array(args, "jvm")? {
-						for sub_arg in args::process_arg(self, arg, paths, auth, classpath, version, window, &token) {
+						for sub_arg in args::process_arg(
+							self, arg, paths, auth, classpath, version, window, &token,
+						) {
 							jvm_args.push(sub_arg);
 						}
 					}
 
 					for arg in json::access_array(args, "game")? {
-						for sub_arg in args::process_arg(self, arg, paths, auth, classpath, version, window, &token) {
+						for sub_arg in args::process_arg(
+							self, arg, paths, auth, classpath, version, window, &token,
+						) {
 							game_args.push(sub_arg);
 						}
 					}
@@ -137,7 +141,10 @@ mod args {
 		);
 		out = out.replace(placeholder!("version_name"), version);
 		out = out.replace(placeholder!("version_type"), "mcvm");
-		out = out.replace(placeholder!("game_directory"), instance.get_subdir(paths).to_str()?);
+		out = out.replace(
+			placeholder!("game_directory"),
+			instance.get_subdir(paths).to_str()?,
+		);
 		out = out.replace(placeholder!("assets_root"), paths.assets.to_str()?);
 		out = out.replace(placeholder!("assets_index_name"), version);
 		out = out.replace(placeholder!("user_type"), "mojang");
@@ -147,7 +154,7 @@ mod args {
 		out = out.replace(placeholder!("user_properties"), "\"\"");
 
 		// Window resolution
-		if let Some(WindowResolution { width, height}) = window.resolution {
+		if let Some(WindowResolution { width, height }) = window.resolution {
 			out = out.replace(placeholder!("resolution_width"), &width.to_string());
 			out = out.replace(placeholder!("resolution_height"), &height.to_string());
 		}
@@ -175,7 +182,9 @@ mod args {
 				if out.contains(placeholder!("auth_player_name")) {
 					return Some(String::from("UnknownUser"));
 				}
-				if out.contains(placeholder!("auth_access_token")) || out.contains(placeholder!("auth_uuid")) {
+				if out.contains(placeholder!("auth_access_token"))
+					|| out.contains(placeholder!("auth_uuid"))
+				{
 					return Some(String::new());
 				}
 			}
@@ -197,7 +206,9 @@ mod args {
 	) -> Vec<String> {
 		let mut out = Vec::new();
 		if let Some(contents) = arg.as_str() {
-			let processed = replace_arg_placeholders(instance, contents, paths, auth, classpath, version, window, token);
+			let processed = replace_arg_placeholders(
+				instance, contents, paths, auth, classpath, version, window, token,
+			);
 			if let Some(processed_arg) = processed {
 				out.push(processed_arg);
 			}
@@ -224,7 +235,9 @@ mod args {
 				}
 				if let Some(features_val) = rule.get("features") {
 					let features = skip_none!(features_val.as_object());
-					if features.get("has_custom_resolution").is_some() && window.resolution.is_none() {
+					if features.get("has_custom_resolution").is_some()
+						&& window.resolution.is_none()
+					{
 						return vec![];
 					}
 					if features.get("is_demo_user").is_some() {
@@ -239,16 +252,20 @@ mod args {
 				}
 			}
 			match arg.get("value") {
-				Some(value) => process_arg(instance, value, paths, auth, classpath, version, window, token),
+				Some(value) => process_arg(
+					instance, value, paths, auth, classpath, version, window, token,
+				),
 				None => return vec![],
 			};
 		} else if let Some(contents) = arg.as_array() {
 			for val in contents {
 				out.push(
-					process_arg(instance, val, paths, auth, classpath, version, window, token)
-						.get(0)
-						.expect("Expected an argument")
-						.to_string(),
+					process_arg(
+						instance, val, paths, auth, classpath, version, window, token,
+					)
+					.get(0)
+					.expect("Expected an argument")
+					.to_string(),
 				);
 			}
 		} else {

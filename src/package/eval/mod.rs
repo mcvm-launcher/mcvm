@@ -2,8 +2,8 @@ pub mod conditions;
 pub mod parse;
 
 use anyhow::{anyhow, bail};
-use serde::{Deserialize, Serialize};
 use mcvm_shared::addon::{is_filename_valid, Addon};
+use serde::{Deserialize, Serialize};
 
 use self::conditions::eval_condition;
 

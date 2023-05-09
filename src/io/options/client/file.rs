@@ -152,8 +152,8 @@ pub fn create_keys(
 	let before_1_19_4 =
 		VersionPattern::Before(String::from("1.19.4")).matches_single(version, versions);
 
-	let is_3d_shareware =
-		VersionPattern::Single(String::from("3D Shareware v1.34")).matches_single(version, versions);
+	let is_3d_shareware = VersionPattern::Single(String::from("3D Shareware v1.34"))
+		.matches_single(version, versions);
 
 	// TODO: Add actual data version
 	if let Some(value) = options.data_version {
@@ -558,10 +558,7 @@ pub fn create_keys(
 		} else {
 			"key_key.swapOffhand"
 		};
-		out.insert(
-			String::from(keybind),
-			value.get_keycode(before_1_13),
-		);
+		out.insert(String::from(keybind), value.get_keycode(before_1_13));
 	}
 	if after_17w06a {
 		if let Some(value) = &options.control.keys.save_toolbar {

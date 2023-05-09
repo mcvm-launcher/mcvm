@@ -3,9 +3,9 @@ pub mod update;
 use anyhow::Context;
 
 use crate::data::instance::Instance;
+use crate::io::files::paths::Paths;
 use crate::package::PkgProfileConfig;
 use crate::util::versions::MinecraftVersion;
-use crate::io::files::paths::Paths;
 
 use self::update::UpdateManager;
 

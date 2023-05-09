@@ -1,9 +1,9 @@
 mod files;
+mod instance;
 mod launch;
 pub mod package;
 mod profile;
 mod user;
-mod instance;
 
 use anyhow::Context;
 use clap::{Parser, Subcommand};
@@ -94,7 +94,7 @@ pub enum Command {
 	Instance {
 		#[command(subcommand)]
 		command: InstanceSubcommand,
-	}
+	},
 }
 
 #[derive(Debug, Parser)]
@@ -114,18 +114,22 @@ pub async fn run_cli(data: &mut CmdData) -> anyhow::Result<()> {
 	if let Err(e) = &cli {
 		if let clap::error::ErrorKind::DisplayHelp = e.kind() {
 			println!("{e}");
-			return Ok(())
+			return Ok(());
 		}
 	}
 	let cli = cli?;
 	match cli.command {
 		Command::Profile { command } => profile::run(command, data).await,
 		Command::User { command } => user::run(command, data).await,
-		Command::Launch { debug, token, instance } => launch::run(&instance, debug, token, data).await,
+		Command::Launch {
+			debug,
+			token,
+			instance,
+		} => launch::run(&instance, debug, token, data).await,
 		Command::Version => {
 			print_version();
 			Ok(())
-		},
+		}
 		Command::Files { command } => files::run(command, data).await,
 		Command::Package { command } => package::run(command, data).await,
 		Command::Instance { command } => instance::run(command, data).await,

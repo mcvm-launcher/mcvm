@@ -2,7 +2,12 @@ use super::CmdData;
 
 use anyhow::{bail, Context};
 
-pub async fn run(instance: &str, debug: bool, token: Option<String>, data: &mut CmdData) -> anyhow::Result<()> {
+pub async fn run(
+	instance: &str,
+	debug: bool,
+	token: Option<String>,
+	data: &mut CmdData,
+) -> anyhow::Result<()> {
 	data.ensure_paths().await?;
 	data.ensure_config().await?;
 	let paths = data.paths.get();

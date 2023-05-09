@@ -1,20 +1,20 @@
 use std::collections::HashSet;
 use std::path::{Path, PathBuf};
 
-use anyhow::{Context, bail};
-use color_print::{cprintln, cformat};
+use anyhow::{bail, Context};
+use color_print::{cformat, cprintln};
 use mcvm_shared::modifications::PluginLoader;
 
 use crate::data::config::Config;
 use crate::io::files::paths::Paths;
 use crate::io::java::{Java, JavaKind};
-use crate::io::lock::{LockfileAddon, Lockfile};
+use crate::io::lock::{Lockfile, LockfileAddon};
 use crate::io::options::{read_options, Options};
 use crate::io::Later;
 use crate::net::fabric_quilt::{self, FabricQuiltMeta};
 use crate::net::minecraft::{assets, game_jar, libraries, version_manifest};
 use crate::net::paper;
-use crate::package::eval::{Routine, EvalConstants};
+use crate::package::eval::{EvalConstants, Routine};
 use crate::util::print::ReplPrinter;
 use crate::util::versions::MinecraftVersion;
 use crate::util::{json, print::PrintOptions};
@@ -272,7 +272,12 @@ impl UpdateManager {
 }
 
 /// Update a list of profiles
-pub async fn update_profiles(paths: &Paths, config: &mut Config, ids: &[String], force: bool) -> anyhow::Result<()> {
+pub async fn update_profiles(
+	paths: &Paths,
+	config: &mut Config,
+	ids: &[String],
+	force: bool,
+) -> anyhow::Result<()> {
 	for id in ids {
 		if let Some(profile) = config.profiles.get_mut(id) {
 			cprintln!("<s,g>Updating profile <b>{}</b>", id);

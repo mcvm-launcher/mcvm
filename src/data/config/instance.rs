@@ -2,8 +2,8 @@ use std::collections::HashMap;
 use std::str::FromStr;
 
 use anyhow::ensure;
-use serde::{Deserialize, Serialize};
 use mcvm_shared::instance::Side;
+use serde::{Deserialize, Serialize};
 
 use crate::data::instance::{InstKind, Instance};
 use crate::data::profile::Profile;
@@ -207,7 +207,11 @@ pub fn read_instance_config(
 			LaunchConfig::default(),
 		),
 		InstanceConfig::Full(config) => match config {
-			FullInstanceConfig::Client { launch, options, window } => (
+			FullInstanceConfig::Client {
+				launch,
+				options,
+				window,
+			} => (
 				InstKind::Client {
 					options: options.clone(),
 					window: window.clone(),

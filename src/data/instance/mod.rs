@@ -4,6 +4,7 @@ pub mod launch;
 use anyhow::Context;
 use mcvm_shared::instance::Side;
 
+use crate::io::files::paths::Paths;
 use crate::io::files::update_hardlink;
 use crate::io::java::classpath::Classpath;
 use crate::io::java::Java;
@@ -13,7 +14,6 @@ use crate::io::options::server::ServerOptions;
 use crate::io::{files, Later};
 use crate::net::fabric_quilt;
 use crate::util::json;
-use crate::io::files::paths::Paths;
 
 use super::addon::get_addon_path;
 use super::config::instance::ClientWindowConfig;
@@ -30,7 +30,9 @@ pub enum InstKind {
 		options: Option<Box<ClientOptions>>,
 		window: ClientWindowConfig,
 	},
-	Server { options: Option<Box<ServerOptions>> },
+	Server {
+		options: Option<Box<ServerOptions>>,
+	},
 }
 
 impl InstKind {
