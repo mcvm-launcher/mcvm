@@ -1,7 +1,6 @@
 mod files;
 mod instance;
-mod launch;
-pub mod package;
+mod package;
 mod profile;
 mod user;
 
@@ -125,7 +124,7 @@ pub async fn run_cli(data: &mut CmdData) -> anyhow::Result<()> {
 			debug,
 			token,
 			instance,
-		} => launch::run(&instance, debug, token, data).await,
+		} => instance::launch(&instance, debug, token, data).await,
 		Command::Version => {
 			print_version();
 			Ok(())
