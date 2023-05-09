@@ -1,6 +1,7 @@
-use anyhow::{bail, Context};
+use anyhow::{Context, ensure, anyhow};
 use clap::Subcommand;
 use color_print::cprintln;
+use crate::data::user::AuthState;
 
 use crate::{data::instance::InstKind, util::print::HYPHEN_POINT};
 
@@ -20,6 +21,9 @@ pub enum InstanceSubcommand {
 		/// Whether to print the command that was generated when launching
 		#[arg(short, long)]
 		debug: bool,
+		/// An optional user to choose when launching
+		#[arg(short, long)]
+		user: Option<String>,
 		/// An optional Minecraft session token to override with
 		#[arg(long)]
 		token: Option<String>,
@@ -49,6 +53,7 @@ pub async fn launch(
 	instance: &str,
 	debug: bool,
 	token: Option<String>,
+	user: Option<String>,
 	data: &mut CmdData,
 ) -> anyhow::Result<()> {
 	data.ensure_paths().await?;
@@ -56,19 +61,21 @@ pub async fn launch(
 	let paths = data.paths.get();
 	let config = data.config.get_mut();
 
-	if let Some(instance) = config.instances.get_mut(instance) {
-		let (.., profile) = config
-			.profiles
-			.iter()
-			.find(|(.., profile)| profile.instances.contains(&instance.id))
-			.expect("Instance does not belong to any profiles");
-		instance
-			.launch(paths, &config.auth, debug, token, &profile.version)
-			.await
-			.context("Instance failed to launch")?;
-	} else {
-		bail!("Unknown instance '{}'", instance);
+	if let Some(user) = user {
+		ensure!(config.auth.users.contains_key(&user), "User '{user}' does not exist");
+		config.auth.state = AuthState::Authed(user);
 	}
+
+	let instance = config.instances.get_mut(instance).ok_or(anyhow!("Unknown instance '{instance}'"))?;
+	let (.., profile) = config
+		.profiles
+		.iter()
+		.find(|(.., profile)| profile.instances.contains(&instance.id))
+		.expect("Instance does not belong to any profiles");
+	instance
+		.launch(paths, &config.auth, debug, token, &profile.version)
+		.await
+		.context("Instance failed to launch")?;
 
 	Ok(())
 }
@@ -79,7 +86,8 @@ pub async fn run(command: InstanceSubcommand, data: &mut CmdData) -> anyhow::Res
 		InstanceSubcommand::Launch {
 			debug,
 			token,
+			user,
 			instance,
-		} => launch(&instance, debug, token, data).await,
+		} => launch(&instance, debug, token, user, data).await,
 	}
 }

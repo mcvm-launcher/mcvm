@@ -74,6 +74,9 @@ pub enum Command {
 		/// An optional Minecraft session token to override with
 		#[arg(long)]
 		token: Option<String>,
+		/// An optional user to choose when launching
+		#[arg(short, long)]
+		user: Option<String>,
 		/// The instance to launch
 		instance: String,
 	},
@@ -123,8 +126,9 @@ pub async fn run_cli(data: &mut CmdData) -> anyhow::Result<()> {
 		Command::Launch {
 			debug,
 			token,
+			user,
 			instance,
-		} => instance::launch(&instance, debug, token, data).await,
+		} => instance::launch(&instance, debug, token, user, data).await,
 		Command::Version => {
 			print_version();
 			Ok(())
