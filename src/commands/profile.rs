@@ -91,7 +91,7 @@ async fn list(data: &mut CmdData) -> anyhow::Result<()> {
 	Ok(())
 }
 
-async fn profile_update(
+async fn update(
 	data: &mut CmdData,
 	ids: &[String],
 	force: bool,
@@ -121,6 +121,6 @@ pub async fn run(subcommand: ProfileSubcommand, data: &mut CmdData) -> anyhow::R
 			force,
 			all,
 			profiles,
-		} => profile_update(data, &profiles, force, all).await,
+		} => update(data, &profiles, force, all).await,
 	}
 }
