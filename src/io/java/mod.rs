@@ -27,7 +27,7 @@ pub enum JavaKind {
 }
 
 impl JavaKind {
-	pub fn from_str(string: &str) -> Self {
+	pub fn parse(string: &str) -> Self {
 		match string {
 			"adoptium" => Self::Adoptium(Later::Empty),
 			"zulu" => Self::Zulu(Later::Empty),

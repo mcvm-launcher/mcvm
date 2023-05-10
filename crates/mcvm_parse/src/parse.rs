@@ -69,6 +69,12 @@ impl Parsed {
 	}
 }
 
+impl Default for Parsed {
+	fn default() -> Self {
+		Self::new()
+	}
+}
+
 mod addon {
 	use super::*;
 
@@ -212,7 +218,7 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 							};
 						}
 						name => {
-							prs.mode = ParseMode::Instruction(Instruction::from_str(name, &pos)?);
+							prs.mode = ParseMode::Instruction(Instruction::from_str(name, pos)?);
 						}
 					},
 					Token::Curly(side) => match side {
@@ -261,9 +267,9 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 					}
 					Token::Curly(Side::Right) => unexpected_token!(tok, pos),
 					_ => match condition {
-						Some(condition) => condition.parse(&tok, &pos)?,
+						Some(condition) => condition.parse(tok, pos)?,
 						None => match tok {
-							Token::Ident(name) => match ConditionKind::from_str(&name) {
+							Token::Ident(name) => match ConditionKind::from_str(name) {
 								Some(new_condition) => {
 									*condition = Some(Condition::new(new_condition))
 								}
@@ -279,7 +285,7 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 				Ok(())
 			}
 			ParseMode::Instruction(instr) => {
-				if instr.parse(&tok, &pos)? {
+				if instr.parse(tok, pos)? {
 					instr_to_push = Some(instr.clone());
 					mode_to_set = Some(ParseMode::Root);
 				}
@@ -295,7 +301,7 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 			} => {
 				match mode {
 					addon::Mode::Id => {
-						*id = parse_arg(&tok, &pos)?;
+						*id = parse_arg(tok, pos)?;
 						*mode = addon::Mode::FileName;
 					}
 					addon::Mode::FileName => match tok {
@@ -303,7 +309,7 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 							bail!("It is now required to have a filename field for addons");
 						}
 						_ => {
-							*file_name = parse_arg(&tok, &pos)?;
+							*file_name = parse_arg(tok, pos)?;
 							*mode = addon::Mode::OpenParen;
 						}
 					},
@@ -338,8 +344,8 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 					addon::Mode::Value => match tok {
 						Token::Ident(name) => {
 							match key {
-								addon::Key::Kind => filled_keys.kind = AddonKind::from_str(&name),
-								addon::Key::Force => match yes_no(&name) {
+								addon::Key::Kind => filled_keys.kind = AddonKind::from_str(name),
+								addon::Key::Force => match yes_no(name) {
 									Some(value) => filled_keys.force = value,
 									None => {
 										bail!(
@@ -355,9 +361,9 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 						}
 						_ => {
 							match key {
-								addon::Key::Url => filled_keys.url = parse_arg(&tok, &pos)?,
-								addon::Key::Append => filled_keys.append = parse_arg(&tok, &pos)?,
-								addon::Key::Path => filled_keys.path = parse_arg(&tok, &pos)?,
+								addon::Key::Url => filled_keys.url = parse_arg(tok, pos)?,
+								addon::Key::Append => filled_keys.append = parse_arg(tok, pos)?,
+								addon::Key::Path => filled_keys.path = parse_arg(tok, pos)?,
 								_ => unexpected_token!(tok, pos),
 							}
 							*mode = addon::Mode::Comma;

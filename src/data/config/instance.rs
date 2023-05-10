@@ -111,13 +111,13 @@ impl LaunchConfig {
 	pub fn to_options(&self) -> anyhow::Result<LaunchOptions> {
 		let min_mem = match &self.memory {
 			LaunchMemory::None => None,
-			LaunchMemory::Single(string) => MemoryNum::from_str(string),
-			LaunchMemory::Both { min, .. } => MemoryNum::from_str(min),
+			LaunchMemory::Single(string) => MemoryNum::parse(string),
+			LaunchMemory::Both { min, .. } => MemoryNum::parse(min),
 		};
 		let max_mem = match &self.memory {
 			LaunchMemory::None => None,
-			LaunchMemory::Single(string) => MemoryNum::from_str(string),
-			LaunchMemory::Both { max, .. } => MemoryNum::from_str(max),
+			LaunchMemory::Single(string) => MemoryNum::parse(string),
+			LaunchMemory::Both { max, .. } => MemoryNum::parse(max),
 		};
 		if let Some(min_mem) = &min_mem {
 			if let Some(max_mem) = &max_mem {
@@ -132,7 +132,7 @@ impl LaunchConfig {
 			game_args: self.args.game.parse(),
 			min_mem,
 			max_mem,
-			java: JavaKind::from_str(&self.java),
+			java: JavaKind::parse(&self.java),
 			preset: ArgsPreset::from_str(&self.preset)?,
 			env: self.env.clone(),
 			wrapper: self.wrapper.clone(),
@@ -372,18 +372,18 @@ pub fn read_instance_config(
 				..
 			} => (
 				InstKind::Client {
-					options: options.clone(),
-					window: window.clone(),
+					options,
+					window,
 				},
-				launch.clone(),
+				launch,
 			),
 			FullInstanceConfig::Server {
 				launch, options, ..
 			} => (
 				InstKind::Server {
-					options: options.clone(),
+					options,
 				},
-				launch.clone(),
+				launch,
 			),
 		},
 	};

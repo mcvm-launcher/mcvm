@@ -64,6 +64,12 @@ impl Auth {
 	}
 }
 
+impl Default for Auth {
+	fn default() -> Self {
+		Self::new()
+	}
+}
+
 /// Validate a Minecraft username
 pub fn validate_username(kind: UserKind, name: &str) -> bool {
 	match kind {

@@ -13,7 +13,7 @@ pub enum ConfigModification {
 }
 
 /// Applies modifications to the config
-pub fn apply_modifications<'a>(
+pub fn apply_modifications(
 	config: &mut ConfigDeser,
 	modifications: Vec<ConfigModification>,
 ) -> anyhow::Result<()> {
@@ -31,7 +31,7 @@ pub fn apply_modifications<'a>(
 }
 
 /// Applies modifications to the config and writes it to the config file
-pub fn apply_modifications_and_write<'a>(
+pub fn apply_modifications_and_write(
 	config: &mut ConfigDeser,
 	modifications: Vec<ConfigModification>,
 	paths: &Paths,

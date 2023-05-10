@@ -11,7 +11,7 @@ pub enum MemoryNum {
 }
 
 impl MemoryNum {
-	pub fn from_str(string: &str) -> Option<Self> {
+	pub fn parse(string: &str) -> Option<Self> {
 		Some(match string.chars().last()? {
 			'k' | 'K' => Self::Kb(string[..string.len() - 1].parse().ok()?),
 			'm' | 'M' => Self::Mb(string[..string.len() - 1].parse().ok()?),
@@ -226,11 +226,11 @@ mod tests {
 
 	#[test]
 	fn test_mem_parse() {
-		assert_eq!(MemoryNum::from_str("2358"), Some(MemoryNum::B(2358)));
-		assert_eq!(MemoryNum::from_str("0798m"), Some(MemoryNum::Mb(798)));
-		assert_eq!(MemoryNum::from_str("1G"), Some(MemoryNum::Gb(1)));
-		assert_eq!(MemoryNum::from_str("5a"), None);
-		assert_eq!(MemoryNum::from_str("fooG"), None);
-		assert_eq!(MemoryNum::from_str(""), None);
+		assert_eq!(MemoryNum::parse("2358"), Some(MemoryNum::B(2358)));
+		assert_eq!(MemoryNum::parse("0798m"), Some(MemoryNum::Mb(798)));
+		assert_eq!(MemoryNum::parse("1G"), Some(MemoryNum::Gb(1)));
+		assert_eq!(MemoryNum::parse("5a"), None);
+		assert_eq!(MemoryNum::parse("fooG"), None);
+		assert_eq!(MemoryNum::parse(""), None);
 	}
 }

@@ -120,6 +120,12 @@ impl EvalResult {
 	}
 }
 
+impl Default for EvalResult {
+	fn default() -> Self {
+		Self::new()
+	}
+}
+
 impl Package {
 	/// Evaluate a routine on a package
 	pub async fn eval(
