@@ -25,7 +25,7 @@ cached locally, but all currently cached package scripts will be removed"
 This package does not need to be installed, it just has to be in the index."
 	)]
 	Cat {
-		/// Whether to remove custom formatting from the output
+		/// Whether to remove formatting and warnings from the output
 		#[arg(short, long)]
 		raw: bool,
 		/// The package to print
@@ -35,7 +35,7 @@ This package does not need to be installed, it just has to be in the index."
 
 async fn list(data: &mut CmdData) -> anyhow::Result<()> {
 	data.ensure_paths().await?;
-	data.ensure_config().await?;
+	data.ensure_config(true).await?;
 	let paths = data.paths.get();
 	let config = data.config.get_mut();
 
@@ -68,7 +68,7 @@ async fn list(data: &mut CmdData) -> anyhow::Result<()> {
 }
 
 async fn sync(data: &mut CmdData) -> anyhow::Result<()> {
-	data.ensure_config().await?;
+	data.ensure_config(true).await?;
 	data.ensure_paths().await?;
 	let paths = data.paths.get();
 	let config = data.config.get_mut();
@@ -98,7 +98,7 @@ async fn sync(data: &mut CmdData) -> anyhow::Result<()> {
 }
 
 async fn cat(data: &mut CmdData, name: &str, raw: bool) -> anyhow::Result<()> {
-	data.ensure_config().await?;
+	data.ensure_config(!raw).await?;
 	data.ensure_paths().await?;
 	let paths = data.paths.get();
 	let config = data.config.get_mut();

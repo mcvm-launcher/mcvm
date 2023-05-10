@@ -12,7 +12,7 @@ pub enum InstanceSubcommand {
 	#[command(about = "List all instances in all profiles")]
 	#[clap(alias = "ls")]
 	List {
-		/// Whether to remove formatting from the output
+		/// Whether to remove formatting and warnings from the output
 		#[arg(short, long)]
 		raw: bool,
 	},
@@ -33,7 +33,7 @@ pub enum InstanceSubcommand {
 }
 
 async fn list(data: &mut CmdData, raw: bool) -> anyhow::Result<()> {
-	data.ensure_config().await?;
+	data.ensure_config(!raw).await?;
 	let config = data.config.get_mut();
 	for (id, instance) in config.instances.iter() {
 		if raw {
@@ -57,7 +57,7 @@ pub async fn launch(
 	data: &mut CmdData,
 ) -> anyhow::Result<()> {
 	data.ensure_paths().await?;
-	data.ensure_config().await?;
+	data.ensure_config(true).await?;
 	let paths = data.paths.get();
 	let config = data.config.get_mut();
 

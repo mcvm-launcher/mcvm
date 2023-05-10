@@ -100,7 +100,7 @@ impl Config {
 	}
 
 	/// Create the Config struct from deserialized config
-	fn load_from_deser(config: ConfigDeser) -> anyhow::Result<Self> {
+	fn load_from_deser(config: ConfigDeser, show_warnings: bool) -> anyhow::Result<Self> {
 		let mut auth = Auth::new();
 		let mut instances = InstanceRegistry::new();
 		let mut profiles = HashMap::new();
@@ -130,9 +130,9 @@ impl Config {
 					bail!("Provided default user '{default_user_id}' does not exist");
 				}
 			}
-		} else if config.users.is_empty() {
+		} else if config.users.is_empty() && show_warnings {
 			cprintln!("<y>Warning: Users are available but no default user is set.");
-		} else {
+		} else if show_warnings {
 			cprintln!("<y>Warning: No users are available.");
 		}
 
@@ -155,7 +155,7 @@ impl Config {
 				bail!("Modloader and Plugin Loader are incompatible for profile {profile_id}");
 			}
 
-			if profile_config.instances.is_empty() {
+			if profile_config.instances.is_empty() && show_warnings {
 				cprintln!(
 					"<y>Warning: Profile '{}' does not have any instances",
 					profile_id
@@ -227,9 +227,9 @@ impl Config {
 		})
 	}
 
-	pub fn load(path: &Path) -> anyhow::Result<Self> {
+	pub fn load(path: &Path, show_warnings: bool) -> anyhow::Result<Self> {
 		let obj = Self::open(path)?;
-		Self::load_from_deser(obj)
+		Self::load_from_deser(obj, show_warnings)
 	}
 }
 
@@ -240,6 +240,6 @@ mod tests {
 	#[test]
 	fn test_default_config() {
 		let deser = serde_json::from_value(default_config()).unwrap();
-		Config::load_from_deser(deser).unwrap();
+		Config::load_from_deser(deser, true).unwrap();
 	}
 }

@@ -14,7 +14,11 @@ pub enum ProfileSubcommand {
 	Info { profile: String },
 	#[command(about = "List all profiles")]
 	#[clap(alias = "ls")]
-	List,
+	List {
+		/// Whether to remove formatting and warnings from the output
+		#[arg(short, long)]
+		raw: bool,
+	},
 	#[command(
 		about = "Update a profile",
 		long_about = "Update the game files, extensions, packages, and addons of a profile."
@@ -33,7 +37,7 @@ pub enum ProfileSubcommand {
 
 async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
 	data.ensure_paths().await?;
-	data.ensure_config().await?;
+	data.ensure_config(true).await?;
 	let paths = data.paths.get();
 	let config = data.config.get_mut();
 
@@ -71,18 +75,24 @@ async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
 	Ok(())
 }
 
-async fn list(data: &mut CmdData) -> anyhow::Result<()> {
-	data.ensure_config().await?;
+async fn list(data: &mut CmdData, raw: bool) -> anyhow::Result<()> {
+	data.ensure_config(!raw).await?;
 	let config = data.config.get();
 
-	cprintln!("<s>Profiles:");
+	if !raw {
+		cprintln!("<s>Profiles:");
+	}
 	for (id, profile) in config.profiles.iter() {
-		cprintln!("<s><g>   {}", id);
-		for inst_id in profile.instances.iter() {
-			if let Some(instance) = config.instances.get(inst_id) {
-				match instance.kind {
-					InstKind::Client { .. } => cprintln!("   {}<y!>{}", HYPHEN_POINT, inst_id),
-					InstKind::Server { .. } => cprintln!("   {}<c!>{}", HYPHEN_POINT, inst_id),
+		if raw {
+			println!("{id}");
+		} else {
+			cprintln!("<s><g>   {}", id);
+			for inst_id in profile.instances.iter() {
+				if let Some(instance) = config.instances.get(inst_id) {
+					match instance.kind {
+						InstKind::Client { .. } => cprintln!("   {}<y!>{}", HYPHEN_POINT, inst_id),
+						InstKind::Server { .. } => cprintln!("   {}<c!>{}", HYPHEN_POINT, inst_id),
+					}
 				}
 			}
 		}
@@ -98,7 +108,7 @@ async fn update(
 	all: bool,
 ) -> anyhow::Result<()> {
 	data.ensure_paths().await?;
-	data.ensure_config().await?;
+	data.ensure_config(true).await?;
 	let paths = data.paths.get();
 	let config = data.config.get_mut();
 
@@ -116,7 +126,7 @@ async fn update(
 pub async fn run(subcommand: ProfileSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
 	match subcommand {
 		ProfileSubcommand::Info { profile } => info(data, &profile).await,
-		ProfileSubcommand::List => list(data).await,
+		ProfileSubcommand::List { raw } => list(data, raw).await,
 		ProfileSubcommand::Update {
 			force,
 			all,

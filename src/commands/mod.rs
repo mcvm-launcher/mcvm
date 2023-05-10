@@ -39,13 +39,13 @@ impl CmdData {
 		Ok(())
 	}
 
-	pub async fn ensure_config(&mut self) -> anyhow::Result<()> {
+	pub async fn ensure_config(&mut self, show_warnings: bool) -> anyhow::Result<()> {
 		if self.config.is_empty() {
 			self.ensure_paths()
 				.await
 				.context("Failed to set up directories")?;
 			self.config.fill(
-				Config::load(&Config::get_path(self.paths.get()))
+				Config::load(&Config::get_path(self.paths.get()), show_warnings)
 					.context("Failed to load config")?,
 			);
 		}

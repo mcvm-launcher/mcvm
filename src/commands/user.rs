@@ -9,22 +9,32 @@ use color_print::{cprint, cprintln};
 pub enum UserSubcommand {
 	#[command(about = "List all users")]
 	#[clap(alias = "ls")]
-	List,
+	List {
+		/// Whether to remove formatting and warnings from the output
+		#[arg(short, long)]
+		raw: bool,
+	},
 	#[command(about = "Get current authentication status")]
 	Status,
 }
 
-async fn list(data: &mut CmdData) -> anyhow::Result<()> {
-	data.ensure_config().await?;
+async fn list(data: &mut CmdData, raw: bool) -> anyhow::Result<()> {
+	data.ensure_config(!raw).await?;
 	let config = data.config.get();
 
-	cprintln!("<s>Users:");
+	if !raw {
+		cprintln!("<s>Users:");
+	}
 	for (id, user) in config.auth.users.iter() {
 		cprint!("{}", HYPHEN_POINT);
-		match user.kind {
-			UserKind::Microsoft => cprintln!("<s><g>{}</g> <k!>({})</k!>", user.name, id),
-			UserKind::Demo => cprintln!("<s><c!>{}</c!> <k!>({})</k!>", user.name, id),
-			UserKind::Unverified => cprintln!("<s><k!>{}</k!> <k!>({})</k!>", user.name, id),
+		if raw {
+			println!("{id}");
+		} else {
+			match user.kind {
+				UserKind::Microsoft => cprintln!("<s><g>{}</g> <k!>({})</k!>", user.name, id),
+				UserKind::Demo => cprintln!("<s><c!>{}</c!> <k!>({})</k!>", user.name, id),
+				UserKind::Unverified => cprintln!("<s><k!>{}</k!> <k!>({})</k!>", user.name, id),
+			}
 		}
 	}
 
@@ -32,7 +42,7 @@ async fn list(data: &mut CmdData) -> anyhow::Result<()> {
 }
 
 async fn status(data: &mut CmdData) -> anyhow::Result<()> {
-	data.ensure_config().await?;
+	data.ensure_config(true).await?;
 	let config = data.config.get();
 
 	match config.auth.get_user() {
@@ -54,7 +64,7 @@ async fn status(data: &mut CmdData) -> anyhow::Result<()> {
 
 pub async fn run(subcommand: UserSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
 	match subcommand {
-		UserSubcommand::List => list(data).await,
+		UserSubcommand::List { raw } => list(data, raw).await,
 		UserSubcommand::Status => status(data).await,
 	}
 }
