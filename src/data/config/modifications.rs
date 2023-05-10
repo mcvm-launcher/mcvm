@@ -5,21 +5,26 @@ use anyhow::Context;
 
 use crate::io::files::paths::Paths;
 
-use super::{user::UserConfig, Config, ConfigDeser};
+use super::{profile::ProfileConfig, user::UserConfig, Config, ConfigDeser};
 
-#[derive(Clone)]
 pub enum ConfigModification {
 	AddUser(String, UserConfig),
+	AddProfile(String, ProfileConfig),
 }
 
 /// Applies modifications to the config
 pub fn apply_modifications<'a>(
 	config: &mut ConfigDeser,
-	modifications: impl Iterator<Item = &'a ConfigModification>,
+	modifications: Vec<ConfigModification>,
 ) -> anyhow::Result<()> {
-	for modification in modifications.cloned() {
+	for modification in modifications {
 		match modification {
-			ConfigModification::AddUser(id, user) => config.users.insert(id, user),
+			ConfigModification::AddUser(id, user) => {
+				config.users.insert(id, user);
+			}
+			ConfigModification::AddProfile(id, profile) => {
+				config.profiles.insert(id, profile);
+			}
 		};
 	}
 	Ok(())
@@ -28,7 +33,7 @@ pub fn apply_modifications<'a>(
 /// Applies modifications to the config and writes it to the config file
 pub fn apply_modifications_and_write<'a>(
 	config: &mut ConfigDeser,
-	modifications: impl Iterator<Item = &'a ConfigModification>,
+	modifications: Vec<ConfigModification>,
 	paths: &Paths,
 ) -> anyhow::Result<()> {
 	apply_modifications(config, modifications)?;
@@ -67,7 +72,7 @@ mod tests {
 			user_config,
 		)];
 
-		apply_modifications(&mut config, modifications.iter()).unwrap();
+		apply_modifications(&mut config, modifications).unwrap();
 		assert!(config.users.contains_key(&String::from("bob")));
 	}
 }
