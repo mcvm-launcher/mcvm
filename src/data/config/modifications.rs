@@ -53,6 +53,7 @@ mod tests {
 			users: HashMap::new(),
 			default_user: None,
 			profiles: HashMap::new(),
+			instance_presets: HashMap::new(),
 			preferences: None,
 		};
 

@@ -15,6 +15,7 @@ When you first run a command that reads from the config, a default configuration
 	"packages": [
 		..
 	],
+	"instance_presets": { .. },
 	"preferences": { .. }
 }
 ```
@@ -91,7 +92,8 @@ or
 			"width": Integer,
 			"height": Integer
 		}
-	}
+	},
+	"preset": String
 }
 ```
 
@@ -110,6 +112,7 @@ The first form just has the type of the instance.
  * `launch.quickplay` (Optional): Specify options for the Quick Play feature, which will automatically start the client in a world, server, or realm. The `type` field selects the kind of Quick Play that you want. Use the other fields to specify which world, server, server port, and realm you want to Quick Play into when launching. Server Quick Play will work on older versions but the other two types will not.
  * `options` (Optional): Options to apply to this instance specifically. They will override global options. They are in the format of either the client or server section depending on the instance type.
  * `window.resolution` (Optional): Set a custom resolution for the game when launching. Only available for the client. Both width and height must be present if this option is used.
+ * `preset` (Optional): A preset from the `instance_presets` field to base this instance on.
 
 ## Packages
 Packages are specified globally in the `packages` list or for a specific profile in its `packages` list. It has two valid forms:

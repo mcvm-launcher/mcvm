@@ -5,12 +5,12 @@ pub mod preferences;
 pub mod profile;
 pub mod user;
 
-use self::instance::read_instance_config;
+use self::instance::{read_instance_config, InstanceConfig};
 use self::package::{FullPackageConfig, PackageConfig};
 use self::preferences::PrefDeser;
 use self::profile::ProfileConfig;
 use self::user::UserConfig;
-use anyhow::{bail, Context};
+use anyhow::{bail, ensure, Context};
 use preferences::ConfigPreferences;
 use serde::{Deserialize, Serialize};
 
@@ -64,6 +64,8 @@ pub struct ConfigDeser {
 	default_user: Option<String>,
 	#[serde(default)]
 	profiles: HashMap<String, ProfileConfig>,
+	#[serde(default)]
+	instance_presets: HashMap<String, InstanceConfig>,
 	#[serde(default)]
 	preferences: Option<PrefDeser>,
 }
@@ -134,6 +136,14 @@ impl Config {
 			cprintln!("<y>Warning: No users are available.");
 		}
 
+		// Validate instance presets
+		for (id, preset) in &config.instance_presets {
+			ensure!(
+				!preset.uses_preset(),
+				"Instance preset '{id}' cannot use another preset"
+			);
+		}
+
 		// Profiles
 		for (profile_id, profile_config) in config.profiles {
 			let mut profile = profile_config.to_profile(&profile_id);
@@ -159,8 +169,13 @@ impl Config {
 				if instances.contains_key(&instance_id) {
 					bail!("Duplicate instance '{instance_id}'");
 				}
-				let instance = read_instance_config(&instance_id, &instance_config, &profile)
-					.with_context(|| format!("Failed to configure instance '{instance_id}'"))?;
+				let instance = read_instance_config(
+					&instance_id,
+					&instance_config,
+					&profile,
+					&config.instance_presets,
+				)
+				.with_context(|| format!("Failed to configure instance '{instance_id}'"))?;
 				profile.add_instance(&instance_id);
 				instances.insert(instance_id.to_string(), instance);
 			}

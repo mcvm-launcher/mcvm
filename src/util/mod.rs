@@ -110,6 +110,40 @@ pub fn cap_first_letter(string: &str) -> String {
 	}
 }
 
+/// Merges two options together with the right one taking precedence
+/// 
+/// Right takes precedence when they are both some
+/// ```
+/// use mcvm::util::merge_options;
+/// 
+/// let x = Some(7);
+/// let y = Some(8);
+/// assert_eq!(merge_options(x, y), Some(8));
+/// ```
+/// Right is some so it overwrites none
+/// ```
+/// use mcvm::util::merge_options;
+/// 
+/// let x = None;
+/// let y = Some(12);
+/// assert_eq!(merge_options(x, y), Some(12));
+/// ```
+/// Uses left because right is none:
+/// ```
+/// use mcvm::util::merge_options;
+/// 
+/// let x = Some(5);
+/// let y = None;
+/// assert_eq!(merge_options(x, y), Some(5));
+/// ```
+pub fn merge_options<T>(left: Option<T>, right: Option<T>) -> Option<T> {
+	if right.is_some() {
+		right
+	} else {
+		left
+	}
+}
+
 pub trait ToInt {
 	fn to_int(&self) -> i32;
 }

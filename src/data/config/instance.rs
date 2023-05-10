@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use std::str::FromStr;
 
-use anyhow::ensure;
+use anyhow::{anyhow, bail, ensure, Context};
 use mcvm_shared::instance::Side;
 use serde::{Deserialize, Serialize};
 
@@ -12,6 +12,7 @@ use crate::io::java::JavaKind;
 use crate::io::launch::LaunchOptions;
 use crate::io::options::client::ClientOptions;
 use crate::io::options::server::ServerOptions;
+use crate::util::merge_options;
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
 #[serde(untagged)]
@@ -26,6 +27,13 @@ impl Args {
 			Self::List(vec) => vec.clone(),
 			Self::String(string) => string.split(' ').map(|string| string.to_owned()).collect(),
 		}
+	}
+
+	/// Merge Args
+	pub fn merge(&mut self, other: Self) {
+		let mut out = self.parse();
+		out.extend(other.parse());
+		*self = Self::List(out);
 	}
 }
 
@@ -150,7 +158,31 @@ impl Default for LaunchConfig {
 	}
 }
 
-#[derive(Deserialize, Serialize, Clone, Debug)]
+impl LaunchConfig {
+	/// Merge multiple LaunchConfigs
+	pub fn merge(&mut self, other: Self) -> &mut Self {
+		self.args.jvm.merge(other.args.jvm);
+		self.args.game.merge(other.args.game);
+		if !matches!(other.memory, LaunchMemory::None) {
+			self.memory = other.memory;
+		}
+		self.java = other.java;
+		if other.preset != "none" {
+			self.preset = other.preset;
+		}
+		self.env.extend(other.env);
+		if other.wrapper.is_some() {
+			self.wrapper = other.wrapper;
+		}
+		if !matches!(other.quick_play, QuickPlay::None) {
+			self.quick_play = other.quick_play;
+		}
+
+		self
+	}
+}
+
+#[derive(Deserialize, Serialize, Clone, Debug, Copy)]
 pub struct WindowResolution {
 	pub width: u32,
 	pub height: u32,
@@ -162,7 +194,15 @@ pub struct ClientWindowConfig {
 	pub resolution: Option<WindowResolution>,
 }
 
-#[derive(Deserialize, Serialize)]
+impl ClientWindowConfig {
+	/// Merge two ClientWindowConfigs
+	pub fn merge(&mut self, other: Self) -> &mut Self {
+		self.resolution = merge_options(self.resolution, other.resolution);
+		self
+	}
+}
+
+#[derive(Deserialize, Serialize, Clone)]
 #[serde(tag = "type")]
 #[serde(rename_all = "snake_case")]
 pub enum FullInstanceConfig {
@@ -173,16 +213,20 @@ pub enum FullInstanceConfig {
 		options: Option<Box<ClientOptions>>,
 		#[serde(default)]
 		window: ClientWindowConfig,
+		#[serde(default)]
+		preset: Option<String>,
 	},
 	Server {
 		#[serde(default)]
 		launch: LaunchConfig,
 		#[serde(default)]
 		options: Option<Box<ServerOptions>>,
+		#[serde(default)]
+		preset: Option<String>,
 	},
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Clone)]
 #[serde(untagged)]
 #[serde(rename_all = "snake_case")]
 pub enum InstanceConfig {
@@ -190,11 +234,125 @@ pub enum InstanceConfig {
 	Full(FullInstanceConfig),
 }
 
+impl InstanceConfig {
+	/// Converts simple config into full
+	pub fn make_full(&self) -> FullInstanceConfig {
+		match self {
+			Self::Full(config) => config.clone(),
+			Self::Simple(side) => match side {
+				Side::Client => FullInstanceConfig::Client {
+					launch: LaunchConfig::default(),
+					options: None,
+					window: ClientWindowConfig::default(),
+					preset: None,
+				},
+				Side::Server => FullInstanceConfig::Server {
+					launch: LaunchConfig::default(),
+					options: None,
+					preset: None,
+				},
+			},
+		}
+	}
+
+	/// Checks if this config has the preset field filled out
+	pub fn uses_preset(&self) -> bool {
+		matches!(
+			self,
+			Self::Full(
+				FullInstanceConfig::Client {
+					launch: _,
+					options: _,
+					window: _,
+					preset: Some(..)
+				} | FullInstanceConfig::Server {
+					launch: _,
+					options: _,
+					preset: Some(..)
+				}
+			)
+		)
+	}
+}
+
+/// Merge an InstanceConfig with a preset
+///
+/// Some values will be merged while others will have the right side take precendence
+pub fn merge_instance_configs(
+	preset: &InstanceConfig,
+	config: &InstanceConfig,
+) -> anyhow::Result<InstanceConfig> {
+	let mut out = preset.make_full();
+	let applied = config.make_full();
+	out = match (out, applied) {
+		(
+			FullInstanceConfig::Client {
+				mut launch,
+				options,
+				mut window,
+				..
+			},
+			FullInstanceConfig::Client {
+				launch: launch2,
+				options: options2,
+				window: window2,
+				..
+			},
+		) => Ok::<FullInstanceConfig, anyhow::Error>(FullInstanceConfig::Client {
+			launch: launch.merge(launch2).clone(),
+			options: merge_options(options, options2),
+			window: window.merge(window2).clone(),
+			preset: None,
+		}),
+		(
+			FullInstanceConfig::Server {
+				mut launch,
+				options,
+				..
+			},
+			FullInstanceConfig::Server {
+				launch: launch2,
+				options: options2,
+				..
+			},
+		) => Ok::<FullInstanceConfig, anyhow::Error>(FullInstanceConfig::Server {
+			launch: launch.merge(launch2).clone(),
+			options: merge_options(options, options2),
+			preset: None,
+		}),
+		_ => bail!("Instance types do not match"),
+	}?;
+
+	Ok(InstanceConfig::Full(out))
+}
+
 pub fn read_instance_config(
 	id: &str,
 	config: &InstanceConfig,
 	profile: &Profile,
+	presets: &HashMap<String, InstanceConfig>,
 ) -> anyhow::Result<Instance> {
+	let config = if let InstanceConfig::Full(
+		FullInstanceConfig::Client {
+			launch: _,
+			options: _,
+			window: _,
+			preset: Some(preset),
+		}
+		| FullInstanceConfig::Server {
+			launch: _,
+			options: _,
+			preset: Some(preset),
+		},
+	) = config
+	{
+		let preset = presets
+			.get(preset)
+			.ok_or(anyhow!("Preset '{preset}' does not exist"))?;
+		merge_instance_configs(preset, config).context("Failed to merge preset with instance")?
+	} else {
+		config.clone()
+	};
 	let (kind, launch) = match config {
 		InstanceConfig::Simple(side) => (
 			match side {
@@ -211,6 +369,7 @@ pub fn read_instance_config(
 				launch,
 				options,
 				window,
+				..
 			} => (
 				InstKind::Client {
 					options: options.clone(),
@@ -218,7 +377,9 @@ pub fn read_instance_config(
 				},
 				launch.clone(),
 			),
-			FullInstanceConfig::Server { launch, options } => (
+			FullInstanceConfig::Server {
+				launch, options, ..
+			} => (
 				InstKind::Server {
 					options: options.clone(),
 				},
@@ -268,9 +429,70 @@ mod tests {
 			PluginLoader::Vanilla,
 		);
 
-		let instance = read_instance_config("foo", &test.instance, &profile).unwrap();
+		let instance =
+			read_instance_config("foo", &test.instance, &profile, &HashMap::new()).unwrap();
 		assert_eq!(instance.id, "foo");
 		assert!(matches!(instance.kind, InstKind::Client { .. }));
+	}
+
+	#[test]
+	fn test_instance_config_merging() {
+		let presets = {
+			let mut presets = HashMap::new();
+			presets.insert(
+				String::from("hello"),
+				InstanceConfig::Full(FullInstanceConfig::Client {
+					launch: LaunchConfig::default(),
+					options: None,
+					window: ClientWindowConfig {
+						resolution: Some(WindowResolution {
+							width: 200,
+							height: 100,
+						}),
+					},
+					preset: None,
+				}),
+			);
+			presets
+		};
+
+		let profile = Profile::new(
+			"foo",
+			MinecraftVersion::Latest,
+			Modloader::Vanilla,
+			PluginLoader::Vanilla,
+		);
+
+		let config = InstanceConfig::Full(FullInstanceConfig::Client {
+			launch: LaunchConfig::default(),
+			options: None,
+			window: ClientWindowConfig::default(),
+			preset: Some(String::from("hello")),
+		});
+		let instance = read_instance_config("test", &config, &profile, &presets)
+			.expect("Failed to read instance config");
+		if !matches!(
+			instance.kind,
+			InstKind::Client {
+				options: None,
+				window: ClientWindowConfig {
+					resolution: Some(WindowResolution {
+						width: 200,
+						height: 100,
+					})
+				},
+			}
+		) {
+			panic!("Does not match: {:?}", instance.kind);
+		}
+
+		let config = InstanceConfig::Full(FullInstanceConfig::Server {
+			launch: LaunchConfig::default(),
+			options: None,
+			preset: Some(String::from("hello")),
+		});
+		read_instance_config("test", &config, &profile, &presets)
+			.expect_err("Instance kinds should be incompatible");
 	}
 
 	#[test]
