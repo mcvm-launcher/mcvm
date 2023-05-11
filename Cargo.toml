@@ -33,7 +33,7 @@ futures = "0.3.26"
 itertools = "0.10.5"
 libflate = "1.2.0"
 mcvm_parse = { path = "crates/mcvm_parse", version = "0.0.5" }
-reqwest = { version = "0.11.15", features = ["json"] }
+reqwest = { version = "0.11.15", features = ["json", "rustls-tls"] }
 serde = { version = "1.0.152", features = ["derive"] }
 serde_json = "1.0.91"
 mcvm_shared = { path = "crates/mcvm_shared", version = "0.0.3" }
