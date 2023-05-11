@@ -2,7 +2,7 @@ use std::fmt::Display;
 
 use serde::{Deserialize, Serialize};
 
-use crate::package::{eval::EvalPermissions, reg::PkgRequest, PkgProfileConfig};
+use crate::package::{eval::EvalPermissions, reg::{PkgRequest, PkgRequestSource}, PkgProfileConfig};
 
 #[derive(Deserialize, Serialize)]
 #[serde(rename_all = "snake_case")]
@@ -60,7 +60,7 @@ impl PackageConfig {
 	pub fn to_profile_config(&self) -> anyhow::Result<PkgProfileConfig> {
 		let package = match self {
 			PackageConfig::Basic(id) => PkgProfileConfig {
-				req: PkgRequest::new(id),
+				req: PkgRequest::new(id, PkgRequestSource::UserRequire),
 				features: vec![],
 				permissions: EvalPermissions::Standard,
 			},
@@ -72,7 +72,7 @@ impl PackageConfig {
 				features,
 				permissions,
 			}) => PkgProfileConfig {
-				req: PkgRequest::new(id),
+				req: PkgRequest::new(id, PkgRequestSource::UserRequire),
 				features: features.clone(),
 				permissions: permissions.clone(),
 			},
@@ -82,7 +82,7 @@ impl PackageConfig {
 				features,
 				permissions,
 			}) => PkgProfileConfig {
-				req: PkgRequest::new(id),
+				req: PkgRequest::new(id, PkgRequestSource::UserRequire),
 				features: features.clone(),
 				permissions: permissions.clone(),
 			},

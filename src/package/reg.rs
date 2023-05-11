@@ -9,16 +9,25 @@ use std::collections::HashMap;
 use std::fmt::Display;
 use std::path::Path;
 
-// Used to store a request for a package that will be fulfilled later
+/// Where a package was requested from
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub enum PkgRequestSource {
+	UserRequire,
+	Dependency,
+}
+
+/// Used to store a request for a package that will be fulfilled later
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct PkgRequest {
 	pub name: String,
+	pub source: PkgRequestSource,
 }
 
 impl PkgRequest {
-	pub fn new(name: &str) -> Self {
+	pub fn new(name: &str, source: PkgRequestSource) -> Self {
 		Self {
 			name: name.to_owned(),
+			source,
 		}
 	}
 }
@@ -99,7 +108,7 @@ impl PkgRegistry {
 		req: &PkgRequest,
 		paths: &Paths,
 		routine: Routine,
-		constants: EvalConstants,
+		constants: &EvalConstants,
 	) -> anyhow::Result<EvalData> {
 		let pkg = self.get(req, paths).await?;
 		let eval = pkg.eval(paths, routine, constants).await?;
@@ -121,6 +130,11 @@ impl PkgRegistry {
 		);
 	}
 
+	/// Iterator over all package requests in the registry
+	pub fn iter_requests(&self) -> impl Iterator<Item = &PkgRequest> {
+		self.packages.keys()
+	}
+
 	/// Checks if a package is in the registry already
 	#[cfg(test)]
 	pub fn has_now(&self, req: &PkgRequest) -> bool {
@@ -136,9 +150,9 @@ mod tests {
 	#[test]
 	fn test_reg_insert() {
 		let mut reg = PkgRegistry::new(vec![]);
-		reg.insert_local(&PkgRequest::new("test"), 1, &PathBuf::from("./test"));
-		let req = PkgRequest::new("test");
+		reg.insert_local(&PkgRequest::new("test", PkgRequestSource::UserRequire), 1, &PathBuf::from("./test"));
+		let req = PkgRequest::new("test", PkgRequestSource::UserRequire);
 		assert!(reg.has_now(&req));
-		assert!(!reg.has_now(&PkgRequest::new("doesnotexist")));
+		assert!(!reg.has_now(&PkgRequest::new("doesnotexist", PkgRequestSource::UserRequire)));
 	}
 }

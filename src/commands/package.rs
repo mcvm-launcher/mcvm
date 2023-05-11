@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use super::CmdData;
-use crate::package::reg::PkgRequest;
+use crate::package::reg::{PkgRequest, PkgRequestSource};
 use crate::util::print::{ReplPrinter, HYPHEN_POINT};
 
 use anyhow::Context;
@@ -103,7 +103,7 @@ async fn cat(data: &mut CmdData, name: &str, raw: bool) -> anyhow::Result<()> {
 	let paths = data.paths.get();
 	let config = data.config.get_mut();
 
-	let req = PkgRequest::new(name);
+	let req = PkgRequest::new(name, PkgRequestSource::UserRequire);
 	let contents = config.packages.load(&req, false, paths).await?;
 	if !raw {
 		cprintln!("<s,b>Contents of package <g>{}</g>:</s,b>", req);

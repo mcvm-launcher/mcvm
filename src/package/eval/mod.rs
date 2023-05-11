@@ -17,7 +17,6 @@ use mcvm_parse::{FailReason, Value};
 use mcvm_shared::instance::Side;
 use mcvm_shared::modifications::{Modloader, PluginLoader};
 use mcvm_shared::pkg::PkgIdentifier;
-use mcvm_shared::versions::VersionPattern;
 
 use std::collections::HashMap;
 use std::path::PathBuf;
@@ -77,7 +76,7 @@ pub struct EvalData {
 	pub constants: EvalConstants,
 	pub id: PkgIdentifier,
 	pub level: EvalLevel,
-	pub deps: Vec<Vec<VersionPattern>>,
+	pub deps: Vec<Vec<String>>,
 }
 
 impl EvalData {
@@ -98,7 +97,7 @@ pub struct EvalResult {
 	vars_to_set: HashMap<String, String>,
 	finish: bool,
 	addon_reqs: Vec<AddonRequest>,
-	deps: Vec<Vec<VersionPattern>>,
+	deps: Vec<Vec<String>>,
 }
 
 impl EvalResult {
@@ -132,7 +131,7 @@ impl Package {
 		&mut self,
 		paths: &Paths,
 		routine: Routine,
-		constants: EvalConstants,
+		constants: &EvalConstants,
 	) -> anyhow::Result<EvalData> {
 		self.ensure_loaded(paths, false).await?;
 		self.parse(paths).await?;
@@ -147,7 +146,7 @@ impl Package {
 			.get(routine_id)
 			.ok_or(anyhow!("Routine {} does not exist", routine_name))?;
 
-		let mut eval = EvalData::new(constants, self.id.clone(), &routine);
+		let mut eval = EvalData::new(constants.clone(), self.id.clone(), &routine);
 
 		for instr in &block.contents {
 			let result = eval_instr(instr, &eval, &parsed.blocks)?;
@@ -220,7 +219,7 @@ pub fn eval_instr(
 				for dep in deps {
 					let mut dep_to_push = Vec::new();
 					for dep in dep {
-						dep_to_push.push(VersionPattern::from(&dep.get(&eval.vars)?));
+						dep_to_push.push(dep.get(&eval.vars)?);
 					}
 					out.deps.push(dep_to_push);
 				}

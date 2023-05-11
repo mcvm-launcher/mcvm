@@ -360,7 +360,7 @@ pub async fn update_profiles(
 							};
 							let eval = config
 								.packages
-								.eval(&pkg.req, paths, Routine::Install, constants)
+								.eval(&pkg.req, paths, Routine::Install, &constants)
 								.await
 								.with_context(|| {
 									format!(
