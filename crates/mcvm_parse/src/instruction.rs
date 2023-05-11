@@ -26,6 +26,7 @@ pub enum InstrKind {
 	},
 	Set(Option<String>, Value),
 	Require(Vec<Vec<Value>>, Option<Vec<Value>>),
+	Refuse(Value),
 	Finish(),
 	Fail(Option<FailReason>),
 }
@@ -51,6 +52,7 @@ impl Instruction {
 			"finish" => Ok(InstrKind::Finish()),
 			"fail" => Ok(InstrKind::Fail(None)),
 			"require" => Ok(InstrKind::Require(Vec::new(), None)),
+			"refuse" => Ok(InstrKind::Refuse(Value::None)),
 			string => bail!("Unknown instruction '{string}' {}", pos),
 		}?;
 		Ok(Instruction::new(kind))
@@ -62,7 +64,7 @@ impl Instruction {
 			Ok(true)
 		} else {
 			match &mut self.kind {
-				InstrKind::Name(val) | InstrKind::Version(val) => *val = parse_arg(tok, pos)?,
+				InstrKind::Name(val) | InstrKind::Version(val) | InstrKind::Refuse(val) => *val = parse_arg(tok, pos)?,
 				InstrKind::DefaultFeatures(features) => features.push(parse_arg(tok, pos)?),
 				InstrKind::Set(var, val) => {
 					if var.is_some() {

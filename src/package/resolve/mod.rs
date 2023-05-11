@@ -48,6 +48,19 @@ struct Resolver {
 }
 
 impl Resolver {
+	///Whether a package has been required by an existing constraint
+	pub fn is_required(&self, req: &PkgRequest) -> bool {
+		self.constraints.iter().any(|x| {
+			matches!(
+				&x.kind,
+				ConstraintKind::Require {
+					source: _,
+					dest,
+				} if dest == req
+			)
+		})
+	}
+
 	/// Whether a package has been refused by an existing constraint
 	pub fn is_refused(&self, req: &PkgRequest) -> bool {
 		self.constraints.iter().any(|x| {
@@ -84,11 +97,18 @@ async fn resolve_task(
 	match task {
 		Task::EvalDeps { source, dest } => {
 			let result = reg.eval(&dest, paths, Routine::Install, constants).await?;
+			for conflict in result.conflicts {
+				let req = PkgRequest::new(&conflict, PkgRequestSource::Dependency);
+				if resolver.is_required(&req) {
+					bail!("Package '{req}' is incompatible with existing packages");
+				}
+				resolver.constraints.push(Constraint { kind: ConstraintKind::Refuse { source: Some(dest.clone()), dest: req } });
+			}
 			for dep in result.deps.iter().flatten() {
 				let req = PkgRequest::new(dep, PkgRequestSource::Dependency);
 				if resolver.is_refused(&req) {
 					bail!("Package '{req}' is incompatible with existing packages");
-				} else {
+				} else if !resolver.is_required(&req) {
 					resolver.constraints.push(Constraint {
 						kind: ConstraintKind::Require {
 							source: Some(dest.clone()),

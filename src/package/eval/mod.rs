@@ -77,6 +77,7 @@ pub struct EvalData {
 	pub id: PkgIdentifier,
 	pub level: EvalLevel,
 	pub deps: Vec<Vec<String>>,
+	pub conflicts: Vec<String>,
 }
 
 impl EvalData {
@@ -88,6 +89,7 @@ impl EvalData {
 			id,
 			level: routine.get_level(),
 			deps: Vec::new(),
+			conflicts: Vec::new(),
 		}
 	}
 }
@@ -98,6 +100,7 @@ pub struct EvalResult {
 	finish: bool,
 	addon_reqs: Vec<AddonRequest>,
 	deps: Vec<Vec<String>>,
+	pub conflicts: Vec<String>,
 }
 
 impl EvalResult {
@@ -107,6 +110,7 @@ impl EvalResult {
 			finish: false,
 			addon_reqs: Vec::new(),
 			deps: Vec::new(),
+			conflicts: Vec::new(),
 		}
 	}
 
@@ -223,6 +227,9 @@ pub fn eval_instr(
 					}
 					out.deps.push(dep_to_push);
 				}
+			}
+			InstrKind::Refuse(package) => {
+				out.conflicts.push(package.get(&eval.vars)?);
 			}
 			InstrKind::Addon {
 				id,
