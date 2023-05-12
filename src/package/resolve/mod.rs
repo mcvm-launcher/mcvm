@@ -48,30 +48,59 @@ struct Resolver {
 }
 
 impl Resolver {
-	///Whether a package has been required by an existing constraint
+	fn is_required_fn(constraint: &Constraint, req: &PkgRequest) -> bool {
+		matches!(
+			&constraint.kind,
+			ConstraintKind::Require {
+				source: _,
+				dest,
+			} if dest == req
+		)
+	}
+
+	/// Whether a package has been required by an existing constraint
 	pub fn is_required(&self, req: &PkgRequest) -> bool {
-		self.constraints.iter().any(|x| {
-			matches!(
-				&x.kind,
-				ConstraintKind::Require {
-					source: _,
-					dest,
-				} if dest == req
-			)
-		})
+		self.constraints
+			.iter()
+			.any(|x| Self::is_required_fn(x, req))
+	}
+
+	fn is_refused_fn(constraint: &Constraint, req: &PkgRequest) -> bool {
+		matches!(
+			&constraint.kind,
+			ConstraintKind::Refuse {
+				source: _,
+				dest,
+			} if dest == req
+		)
 	}
 
 	/// Whether a package has been refused by an existing constraint
 	pub fn is_refused(&self, req: &PkgRequest) -> bool {
-		self.constraints.iter().any(|x| {
-			matches!(
-				&x.kind,
-				ConstraintKind::Refuse {
-					source: _,
-					dest,
-				} if dest == req
-			)
-		})
+		self.constraints.iter().any(|x| Self::is_refused_fn(x, req))
+	}
+
+	/// Get all refusers of this package
+	pub fn get_refusers(&self, req: &PkgRequest) -> Vec<String> {
+		self.constraints
+			.iter()
+			.filter_map(|x| {
+				if let ConstraintKind::Refuse { source, dest } = &x.kind {
+					if dest == req {
+						Some(
+							source
+								.as_ref()
+								.map(|source| source.name.clone())
+								.unwrap_or(String::from("User-refused")),
+						)
+					} else {
+						None
+					}
+				} else {
+					None
+				}
+			})
+			.collect()
 	}
 
 	/// Collect all needed packages for final output
@@ -100,14 +129,23 @@ async fn resolve_task(
 			for conflict in result.conflicts {
 				let req = PkgRequest::new(&conflict, PkgRequestSource::Dependency);
 				if resolver.is_required(&req) {
-					bail!("Package '{req}' is incompatible with existing packages");
+					bail!("Package '{req}' is incompatible with existing package '{dest}'");
 				}
-				resolver.constraints.push(Constraint { kind: ConstraintKind::Refuse { source: Some(dest.clone()), dest: req } });
+				resolver.constraints.push(Constraint {
+					kind: ConstraintKind::Refuse {
+						source: Some(dest.clone()),
+						dest: req,
+					},
+				});
 			}
 			for dep in result.deps.iter().flatten() {
 				let req = PkgRequest::new(dep, PkgRequestSource::Dependency);
 				if resolver.is_refused(&req) {
-					bail!("Package '{req}' is incompatible with existing packages");
+					let refusers = resolver.get_refusers(&req);
+					bail!(
+						"Package '{req}' is incompatible with existing packages {}",
+						refusers.join(", ")
+					);
 				} else if !resolver.is_required(&req) {
 					resolver.constraints.push(Constraint {
 						kind: ConstraintKind::Require {
