@@ -13,7 +13,7 @@ use std::path::Path;
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum PkgRequestSource {
 	UserRequire,
-	Dependency,
+	Dependency(String),
 }
 
 /// Used to store a request for a package that will be fulfilled later
@@ -81,6 +81,13 @@ impl PkgRegistry {
 		} else {
 			self.query_insert(req, paths).await
 		}
+	}
+
+	/// Ensure that a package is in the registry
+	pub async fn ensure_package(&mut self, req: &PkgRequest, paths: &Paths) -> anyhow::Result<()> {
+		self.get(req, paths).await?;
+		
+		Ok(())
 	}
 
 	/// Get the version of a package

@@ -9,10 +9,13 @@ use crate::io::files::update_hardlink;
 use crate::io::java::classpath::Classpath;
 use crate::io::java::Java;
 use crate::io::launch::LaunchOptions;
+use crate::io::lock::{Lockfile, LockfileAddon};
 use crate::io::options::client::ClientOptions;
 use crate::io::options::server::ServerOptions;
 use crate::io::{files, Later};
 use crate::net::fabric_quilt;
+use crate::package::eval::{EvalConstants, Routine};
+use crate::package::reg::{PkgRegistry, PkgRequest};
 use crate::util::json;
 
 use super::addon::get_addon_path;
@@ -155,6 +158,7 @@ impl Instance {
 		Ok(())
 	}
 
+	/// Creates an addon on the instance
 	pub fn create_addon(&self, addon: &Addon, paths: &Paths) -> anyhow::Result<()> {
 		let inst_dir = self.get_subdir(paths);
 		files::create_leading_dirs(&inst_dir)?;
@@ -167,6 +171,7 @@ impl Instance {
 		Ok(())
 	}
 
+	/// Removes an addon from the instance
 	pub fn remove_addon(&self, addon: &Addon, paths: &Paths) -> anyhow::Result<()> {
 		if let Some(path) = self.get_linked_addon_path(addon, paths) {
 			let path = path.join(&addon.file_name);
@@ -179,7 +184,7 @@ impl Instance {
 		Ok(())
 	}
 
-	// Removes the paper server jar file from a server instance
+	/// Removes the paper server jar file from a server instance
 	pub fn remove_paper(&self, paths: &Paths, paper_file_name: String) -> anyhow::Result<()> {
 		let inst_dir = self.get_subdir(paths);
 		let paper_path = inst_dir.join(paper_file_name);
@@ -190,7 +195,7 @@ impl Instance {
 		Ok(())
 	}
 
-	// Removes files such as the game jar for when the profile version changes
+	/// Removes files such as the game jar for when the profile version changes
 	pub fn teardown(&self, paths: &Paths, paper_file_name: Option<String>) -> anyhow::Result<()> {
 		match self.kind {
 			InstKind::Client { .. } => {
@@ -211,6 +216,46 @@ impl Instance {
 					self.remove_paper(paths, file_name)
 						.context("Failed to remove Paper")?;
 				}
+			}
+		}
+
+		Ok(())
+	}
+
+	/// Installs a package on this instance
+	pub async fn install_package(
+		&self,
+		pkg: &PkgRequest,
+		pkg_version: u32,
+		constants: &EvalConstants,
+		reg: &mut PkgRegistry,
+		paths: &Paths,
+		lock: &mut Lockfile,
+	) -> anyhow::Result<()> {
+		let eval = reg
+			.eval(pkg, paths, Routine::Install, &constants)
+			.await
+			.with_context(|| format!("Failed to evaluate package '{}'", pkg))?;
+		for addon in eval.addon_reqs.iter() {
+			addon
+				.acquire(paths)
+				.await
+				.with_context(|| format!("Failed to acquire addon '{}'", addon.addon.id))?;
+			self.create_addon(&addon.addon, paths)
+				.with_context(|| format!("Failed to install addon '{}'", addon.addon.id))?;
+		}
+		let lockfile_addons = eval
+			.addon_reqs
+			.iter()
+			.map(|x| LockfileAddon::from_addon(&x.addon, paths))
+			.collect::<Vec<LockfileAddon>>();
+		let addons_to_remove = lock
+			.update_package(&pkg.name, &self.id, pkg_version, &lockfile_addons)
+			.context("Failed to update package in lockfile")?;
+		for addon in eval.addon_reqs.iter() {
+			if addons_to_remove.contains(&addon.addon.id) {
+				self.remove_addon(&addon.addon, paths)
+					.with_context(|| format!("Failed to remove addon '{}'", addon.addon.id))?;
 			}
 		}
 

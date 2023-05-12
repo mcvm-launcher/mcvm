@@ -21,10 +21,13 @@ use mcvm_shared::pkg::PkgIdentifier;
 use std::collections::HashMap;
 use std::path::PathBuf;
 
-/// What instructions we are allowed to evaluate (depends on what routine we are running)
+/// What instructions the evaluator will evaluate (depends on what routine we are running)
 #[derive(Debug, Clone)]
 pub enum EvalLevel {
+	/// When we are installing the addons of a package
 	Install,
+	/// When we are resolving package relationships
+	Resolve,
 }
 
 /// Permissions level for an evaluation
@@ -40,18 +43,22 @@ pub enum EvalPermissions {
 /// A routine with a special meaning / purpose.
 pub enum Routine {
 	Install,
+	/// Install routine, except for resolution
+	InstallResolve,
 }
 
 impl Routine {
 	pub fn get_routine_name(&self) -> String {
 		String::from(match self {
 			Self::Install => "install",
+			Self::InstallResolve => "install",
 		})
 	}
 
 	pub fn get_level(&self) -> EvalLevel {
 		match self {
 			Self::Install => EvalLevel::Install,
+			Self::InstallResolve => EvalLevel::Resolve,
 		}
 	}
 }
@@ -201,7 +208,7 @@ pub fn eval_instr(
 ) -> anyhow::Result<EvalResult> {
 	let mut out = EvalResult::new();
 	match eval.level {
-		EvalLevel::Install => match &instr.kind {
+		EvalLevel::Install | EvalLevel::Resolve => match &instr.kind {
 			InstrKind::If(condition, block) => {
 				if eval_condition(&condition.kind, eval)? {
 					let result =
@@ -219,7 +226,7 @@ pub fn eval_instr(
 				let reason = reason.as_ref().unwrap_or(&FailReason::None).clone();
 				bail!("Package script failed with reason: {}", reason.to_string());
 			}
-			InstrKind::Require(deps, ..) => {
+			InstrKind::Require(deps, ..) => if let EvalLevel::Resolve = eval.level {
 				for dep in deps {
 					let mut dep_to_push = Vec::new();
 					for dep in dep {
@@ -228,7 +235,7 @@ pub fn eval_instr(
 					out.deps.push(dep_to_push);
 				}
 			}
-			InstrKind::Refuse(package) => {
+			InstrKind::Refuse(package) => if let EvalLevel::Resolve = eval.level {
 				out.conflicts.push(package.get(&eval.vars)?);
 			}
 			InstrKind::Addon {
@@ -239,7 +246,7 @@ pub fn eval_instr(
 				force,
 				append,
 				path,
-			} => {
+			} => if let EvalLevel::Install = eval.level {
 				let id = id.get(&eval.vars)?;
 				if eval.addon_reqs.iter().any(|x| x.addon.id == id) {
 					bail!("Duplicate addon id '{id}'");

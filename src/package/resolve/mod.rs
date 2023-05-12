@@ -6,10 +6,14 @@ use crate::io::files::paths::Paths;
 
 use super::eval::{EvalConstants, Routine};
 use super::reg::{PkgRegistry, PkgRequest, PkgRequestSource};
+use super::PkgProfileConfig;
 
 enum ConstraintKind {
 	Require {
 		source: Option<PkgRequest>,
+		dest: PkgRequest,
+	},
+	UserRequire {
 		dest: PkgRequest,
 	},
 	Refuse {
@@ -23,7 +27,7 @@ impl ConstraintKind {
 	pub fn is_user_defined(&self) -> bool {
 		matches!(
 			self,
-			Self::Require { source: None, .. } | Self::Refuse { source: None, .. }
+			Self::UserRequire { .. } | Self::Refuse { source: None, .. }
 		)
 	}
 }
@@ -38,6 +42,7 @@ enum Task {
 	EvalDeps {
 		source: Option<PkgRequest>,
 		dest: PkgRequest,
+		constants: Option<EvalConstants>,
 	},
 }
 
@@ -53,6 +58,9 @@ impl Resolver {
 			&constraint.kind,
 			ConstraintKind::Require {
 				source: _,
+				dest,
+			}
+			| ConstraintKind::UserRequire {
 				dest,
 			} if dest == req
 		)
@@ -124,10 +132,25 @@ async fn resolve_task(
 	paths: &Paths,
 ) -> anyhow::Result<()> {
 	match task {
-		Task::EvalDeps { source, dest } => {
-			let result = reg.eval(&dest, paths, Routine::Install, constants).await?;
+		Task::EvalDeps {
+			source,
+			dest,
+			constants: user_constants,
+		} => {
+			// Pick which evaluation constants to use
+			let user_constants = &user_constants;
+			let constants = if let Some(constants) = user_constants {
+				constants
+			} else {
+				constants
+			};
+
+			let result = reg
+				.eval(&dest, paths, Routine::InstallResolve, constants)
+				.await?;
 			for conflict in result.conflicts {
-				let req = PkgRequest::new(&conflict, PkgRequestSource::Dependency);
+				let req =
+					PkgRequest::new(&conflict, PkgRequestSource::Dependency(dest.name.clone()));
 				if resolver.is_required(&req) {
 					bail!("Package '{req}' is incompatible with existing package '{dest}'");
 				}
@@ -139,7 +162,7 @@ async fn resolve_task(
 				});
 			}
 			for dep in result.deps.iter().flatten() {
-				let req = PkgRequest::new(dep, PkgRequestSource::Dependency);
+				let req = PkgRequest::new(dep, PkgRequestSource::Dependency(dest.name.clone()));
 				if resolver.is_refused(&req) {
 					let refusers = resolver.get_refusers(&req);
 					bail!(
@@ -156,6 +179,7 @@ async fn resolve_task(
 					resolver.tasks.push_back(Task::EvalDeps {
 						source: Some(dest.clone()),
 						dest: req,
+						constants: None,
 					});
 				}
 			}
@@ -170,6 +194,7 @@ async fn resolve_task(
 
 /// Find all package dependencies from a set of required packages
 pub async fn resolve(
+	packages: &[PkgProfileConfig],
 	constants: &EvalConstants,
 	paths: &Paths,
 	reg: &mut PkgRegistry,
@@ -180,17 +205,35 @@ pub async fn resolve(
 	};
 
 	// Create the initial EvalDeps from the installed packages
-	for req in reg.iter_requests() {
+	for config in packages {
+		let mut constants = constants.clone();
+		constants.features = config.features.clone();
+		constants.perms = config.permissions.clone();
 		resolver.constraints.push(Constraint {
-			kind: ConstraintKind::Require {
-				source: None,
-				dest: req.clone(),
+			kind: ConstraintKind::UserRequire {
+				dest: config.req.clone(),
 			},
 		});
 		resolver.tasks.push_back(Task::EvalDeps {
 			source: None,
-			dest: req.clone(),
+			dest: config.req.clone(),
+			constants: Some(constants),
 		});
+	}
+	for req in reg.iter_requests() {
+		if !resolver.is_required(req) {
+			resolver.constraints.push(Constraint {
+				kind: ConstraintKind::Require {
+					source: None,
+					dest: req.clone(),
+				},
+			});
+			resolver.tasks.push_back(Task::EvalDeps {
+				source: None,
+				dest: req.clone(),
+				constants: None,
+			});
+		}
 	}
 
 	while let Some(task) = resolver.tasks.pop_front() {
