@@ -1,5 +1,6 @@
 pub mod conditions;
 pub mod parse;
+pub mod resolve;
 
 use anyhow::{anyhow, bail};
 use mcvm_shared::addon::{is_filename_valid, Addon};

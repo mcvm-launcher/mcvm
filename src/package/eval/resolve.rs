@@ -4,9 +4,9 @@ use anyhow::{bail, Context};
 
 use crate::io::files::paths::Paths;
 
-use super::eval::{EvalConstants, Routine};
-use super::reg::{PkgRegistry, PkgRequest, PkgRequestSource};
-use super::PkgProfileConfig;
+use super::{EvalConstants, Routine};
+use crate::package::reg::{PkgRegistry, PkgRequest, PkgRequestSource};
+use crate::package::PkgProfileConfig;
 
 enum ConstraintKind {
 	Require {

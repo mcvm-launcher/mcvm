@@ -1,7 +1,6 @@
 pub mod eval;
 pub mod reg;
 pub mod repo;
-pub mod resolve;
 
 use crate::io::files::paths::Paths;
 use crate::io::Later;

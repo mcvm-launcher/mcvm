@@ -17,7 +17,7 @@ use crate::net::minecraft::{assets, game_jar, libraries, version_manifest};
 use crate::net::paper;
 use crate::package::eval::{EvalConstants, EvalPermissions};
 use crate::package::reg::PkgRequest;
-use crate::package::resolve::resolve;
+use crate::package::eval::resolve::resolve;
 use crate::util::print::ReplPrinter;
 use crate::util::versions::MinecraftVersion;
 use crate::util::{json, print::PrintOptions};
