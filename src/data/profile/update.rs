@@ -346,18 +346,19 @@ pub async fn update_profiles(
 						.get_version(&pkg.req, paths)
 						.await
 						.context("Failed to get version for package")?;
+					let mut constants = EvalConstants {
+						version: version.clone(),
+						modloader: profile.modloader.clone(),
+						plugin_loader: profile.plugin_loader.clone(),
+						side: Side::Client,
+						features: pkg.features.clone(),
+						versions: version_list.clone(),
+						perms: pkg.permissions.clone(),
+					};
 					printer.print(&cformat!("\t(<b!>{}</b!>) Installing...", pkg.req));
 					for instance_id in profile.instances.iter() {
 						if let Some(instance) = config.instances.get(instance_id) {
-							let constants = EvalConstants {
-								version: version.clone(),
-								modloader: profile.modloader.clone(),
-								plugin_loader: profile.plugin_loader.clone(),
-								side: instance.kind.to_side(),
-								features: pkg.features.clone(),
-								versions: version_list.clone(),
-								perms: pkg.permissions.clone(),
-							};
+							constants.side = instance.kind.to_side();
 							let eval = config
 								.packages
 								.eval(&pkg.req, paths, Routine::Install, &constants)
