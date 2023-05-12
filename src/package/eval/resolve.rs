@@ -9,27 +9,9 @@ use crate::package::reg::{PkgRegistry, PkgRequest, PkgRequestSource};
 use crate::package::PkgProfileConfig;
 
 enum ConstraintKind {
-	Require {
-		source: Option<PkgRequest>,
-		dest: PkgRequest,
-	},
-	UserRequire {
-		dest: PkgRequest,
-	},
-	Refuse {
-		source: Option<PkgRequest>,
-		dest: PkgRequest,
-	},
-}
-
-impl ConstraintKind {
-	/// Whether this constraint was imposed by the user instead of a package
-	pub fn is_user_defined(&self) -> bool {
-		matches!(
-			self,
-			Self::UserRequire { .. } | Self::Refuse { source: None, .. }
-		)
-	}
+	Require(PkgRequest),
+	UserRequire(PkgRequest),
+	Refuse(PkgRequest),
 }
 
 /// A requirement for the installation of the packages
@@ -40,7 +22,6 @@ struct Constraint {
 /// A task that needs to be completed for resolution
 enum Task {
 	EvalDeps {
-		source: Option<PkgRequest>,
 		dest: PkgRequest,
 		constants: Option<EvalConstants>,
 	},
@@ -56,13 +37,8 @@ impl Resolver {
 	fn is_required_fn(constraint: &Constraint, req: &PkgRequest) -> bool {
 		matches!(
 			&constraint.kind,
-			ConstraintKind::Require {
-				source: _,
-				dest,
-			}
-			| ConstraintKind::UserRequire {
-				dest,
-			} if dest == req
+			ConstraintKind::Require(dest)
+			| ConstraintKind::UserRequire(dest) if dest.same_as(req)
 		)
 	}
 
@@ -76,10 +52,7 @@ impl Resolver {
 	fn is_refused_fn(constraint: &Constraint, req: &PkgRequest) -> bool {
 		matches!(
 			&constraint.kind,
-			ConstraintKind::Refuse {
-				source: _,
-				dest,
-			} if dest == req
+			ConstraintKind::Refuse(dest) if dest.same_as(req)
 		)
 	}
 
@@ -93,11 +66,11 @@ impl Resolver {
 		self.constraints
 			.iter()
 			.filter_map(|x| {
-				if let ConstraintKind::Refuse { source, dest } = &x.kind {
-					if dest == req {
+				if let ConstraintKind::Refuse(dest) = &x.kind {
+					if dest.same_as(req) {
 						Some(
-							source
-								.as_ref()
+							dest.source
+								.get_source()
 								.map(|source| source.name.clone())
 								.unwrap_or(String::from("User-refused")),
 						)
@@ -116,7 +89,9 @@ impl Resolver {
 		self.constraints
 			.iter()
 			.filter_map(|x| match &x.kind {
-				ConstraintKind::Require { source: _, dest } => Some(dest.clone()),
+				ConstraintKind::Require(dest) | ConstraintKind::UserRequire(dest) => {
+					Some(dest.clone())
+				}
 				_ => None,
 			})
 			.collect()
@@ -133,7 +108,6 @@ async fn resolve_task(
 ) -> anyhow::Result<()> {
 	match task {
 		Task::EvalDeps {
-			source,
 			dest,
 			constants: user_constants,
 		} => {
@@ -149,20 +123,20 @@ async fn resolve_task(
 				.eval(&dest, paths, Routine::InstallResolve, constants)
 				.await?;
 			for conflict in result.conflicts {
-				let req =
-					PkgRequest::new(&conflict, PkgRequestSource::Dependency(dest.name.clone()));
+				let req = PkgRequest::new(
+					&conflict,
+					PkgRequestSource::Dependency(Box::new(dest.clone())),
+				);
 				if resolver.is_required(&req) {
 					bail!("Package '{req}' is incompatible with existing package '{dest}'");
 				}
 				resolver.constraints.push(Constraint {
-					kind: ConstraintKind::Refuse {
-						source: Some(dest.clone()),
-						dest: req,
-					},
+					kind: ConstraintKind::Refuse(req),
 				});
 			}
 			for dep in result.deps.iter().flatten() {
-				let req = PkgRequest::new(dep, PkgRequestSource::Dependency(dest.name.clone()));
+				let req =
+					PkgRequest::new(dep, PkgRequestSource::Dependency(Box::new(dest.clone())));
 				if resolver.is_refused(&req) {
 					let refusers = resolver.get_refusers(&req);
 					bail!(
@@ -171,13 +145,9 @@ async fn resolve_task(
 					);
 				} else if !resolver.is_required(&req) {
 					resolver.constraints.push(Constraint {
-						kind: ConstraintKind::Require {
-							source: Some(dest.clone()),
-							dest: req.clone(),
-						},
+						kind: ConstraintKind::Require(req.clone()),
 					});
 					resolver.tasks.push_back(Task::EvalDeps {
-						source: Some(dest.clone()),
 						dest: req,
 						constants: None,
 					});
@@ -186,7 +156,7 @@ async fn resolve_task(
 
 			Ok::<(), anyhow::Error>(())
 		}
-		.with_context(|| package_context_error_message(&source, &dest))?,
+		.with_context(|| package_context_error_message(dest.source.get_source(), &dest))?,
 	}
 
 	Ok(())
@@ -210,12 +180,9 @@ pub async fn resolve(
 		constants.features = config.features.clone();
 		constants.perms = config.permissions.clone();
 		resolver.constraints.push(Constraint {
-			kind: ConstraintKind::UserRequire {
-				dest: config.req.clone(),
-			},
+			kind: ConstraintKind::UserRequire(config.req.clone()),
 		});
 		resolver.tasks.push_back(Task::EvalDeps {
-			source: None,
 			dest: config.req.clone(),
 			constants: Some(constants),
 		});
@@ -223,13 +190,9 @@ pub async fn resolve(
 	for req in reg.iter_requests() {
 		if !resolver.is_required(req) {
 			resolver.constraints.push(Constraint {
-				kind: ConstraintKind::Require {
-					source: None,
-					dest: req.clone(),
-				},
+				kind: ConstraintKind::Require(req.clone()),
 			});
 			resolver.tasks.push_back(Task::EvalDeps {
-				source: None,
 				dest: req.clone(),
 				constants: None,
 			});
@@ -244,7 +207,7 @@ pub async fn resolve(
 }
 
 /// Creates the error message for package context
-fn package_context_error_message(source: &Option<PkgRequest>, dest: &PkgRequest) -> String {
+fn package_context_error_message(source: Option<&PkgRequest>, dest: &PkgRequest) -> String {
 	if let Some(req) = source {
 		format!("In package '{req}'")
 	} else {

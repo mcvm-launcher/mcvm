@@ -7,17 +7,28 @@ use crate::io::files::paths::Paths;
 
 use std::collections::HashMap;
 use std::fmt::Display;
+use std::hash::Hash;
 use std::path::Path;
 
 /// Where a package was requested from
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum PkgRequestSource {
 	UserRequire,
-	Dependency(String),
+	Dependency(Box<PkgRequest>),
+}
+
+impl PkgRequestSource {
+	/// Gets the source package of this package, if any
+	pub fn get_source<'a>(&'a self) -> Option<&'a PkgRequest> {
+		match self {
+			Self::Dependency(source) => Some(&source),
+			_ => None,
+		}
+	}
 }
 
 /// Used to store a request for a package that will be fulfilled later
-#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct PkgRequest {
 	pub name: String,
 	pub source: PkgRequestSource,
@@ -29,6 +40,17 @@ impl PkgRequest {
 			name: name.to_owned(),
 			source,
 		}
+	}
+
+	/// Checks if two PkgRequests request the same package
+	pub fn same_as(&self, other: &Self) -> bool {
+		self.name == other.name
+	}
+}
+
+impl Hash for PkgRequest {
+	fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+		self.name.hash(state);
 	}
 }
 

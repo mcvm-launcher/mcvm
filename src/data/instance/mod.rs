@@ -233,9 +233,9 @@ impl Instance {
 		lock: &mut Lockfile,
 	) -> anyhow::Result<()> {
 		let eval = reg
-			.eval(pkg, paths, Routine::Install, &constants)
+			.eval(pkg, paths, Routine::Install, constants)
 			.await
-			.with_context(|| format!("Failed to evaluate package '{}'", pkg))?;
+			.context("Failed to evaluate package")?;
 		for addon in eval.addon_reqs.iter() {
 			addon
 				.acquire(paths)
