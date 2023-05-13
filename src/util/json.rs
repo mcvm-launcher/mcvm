@@ -1,9 +1,9 @@
+#![allow(dead_code)]
 use serde_json::{json, Value};
 
 pub type JsonObject = serde_json::Map<String, Value>;
 
 #[derive(Debug)]
-#[allow(dead_code)]
 pub enum JsonType {
 	Int,
 	Float,
@@ -36,8 +36,6 @@ pub enum JsonError {
 	KeyType(String, JsonType),
 	#[error("Value was expected to be of type {:?}", .0)]
 	Type(Vec<JsonType>),
-	#[error("Array index [{}] out of range [{}]", .0, .1)]
-	_Index(usize, usize),
 }
 
 /// Parse a string into a JSON object
@@ -48,94 +46,56 @@ pub fn parse_object(contents: &str) -> Result<Box<JsonObject>, JsonError> {
 }
 
 pub fn access_i64(obj: &JsonObject, key: &str) -> Result<i64, JsonError> {
-	match obj.get(key) {
-		Some(val) => match val.as_i64() {
-			Some(val) => Ok(val),
-			None => Err(JsonError::KeyType(key.to_string(), JsonType::Int)),
-		},
-		None => Err(JsonError::Key(key.to_string())),
-	}
+	obj.get(key)
+		.ok_or(JsonError::Key(key.to_string()))?
+		.as_i64()
+		.ok_or(JsonError::KeyType(key.to_string(), JsonType::Int))
 }
 
-pub fn _access_f64(obj: &JsonObject, key: &str) -> Result<f64, JsonError> {
-	match obj.get(key) {
-		Some(val) => match val.as_f64() {
-			Some(val) => Ok(val),
-			None => Err(JsonError::KeyType(key.to_string(), JsonType::Float)),
-		},
-		None => Err(JsonError::Key(key.to_string())),
-	}
+pub fn access_f64(obj: &JsonObject, key: &str) -> Result<f64, JsonError> {
+	obj.get(key)
+		.ok_or(JsonError::Key(key.to_string()))?
+		.as_f64()
+		.ok_or(JsonError::KeyType(key.to_string(), JsonType::Float))
 }
 
-pub fn _access_bool(obj: &JsonObject, key: &str) -> Result<bool, JsonError> {
-	match obj.get(key) {
-		Some(val) => match val.as_bool() {
-			Some(val) => Ok(val),
-			None => Err(JsonError::KeyType(key.to_string(), JsonType::Bool)),
-		},
-		None => Err(JsonError::Key(key.to_string())),
-	}
+pub fn access_bool(obj: &JsonObject, key: &str) -> Result<bool, JsonError> {
+	obj.get(key)
+		.ok_or(JsonError::Key(key.to_string()))?
+		.as_bool()
+		.ok_or(JsonError::KeyType(key.to_string(), JsonType::Bool))
 }
 
 pub fn access_str<'a>(obj: &'a JsonObject, key: &str) -> Result<&'a str, JsonError> {
-	match obj.get(key) {
-		Some(val) => match val.as_str() {
-			Some(val) => Ok(val),
-			None => Err(JsonError::KeyType(key.to_string(), JsonType::Str)),
-		},
-		None => Err(JsonError::Key(key.to_string())),
-	}
+	obj.get(key)
+		.ok_or(JsonError::Key(key.to_string()))?
+		.as_str()
+		.ok_or(JsonError::KeyType(key.to_string(), JsonType::Str))
 }
 
 pub fn access_array<'a>(obj: &'a JsonObject, key: &str) -> Result<&'a Vec<Value>, JsonError> {
-	match obj.get(key) {
-		Some(val) => match val.as_array() {
-			Some(val) => Ok(val),
-			None => Err(JsonError::KeyType(key.to_string(), JsonType::Arr)),
-		},
-		None => Err(JsonError::Key(key.to_string())),
-	}
+	obj.get(key)
+		.ok_or(JsonError::Key(key.to_string()))?
+		.as_array()
+		.ok_or(JsonError::KeyType(key.to_string(), JsonType::Arr))
 }
 
 pub fn access_object<'a>(obj: &'a JsonObject, key: &str) -> Result<&'a JsonObject, JsonError> {
-	match obj.get(key) {
-		Some(val) => match val.as_object() {
-			Some(val) => Ok(val),
-			None => Err(JsonError::KeyType(key.to_string(), JsonType::Obj)),
-		},
-		None => Err(JsonError::Key(key.to_string())),
-	}
+	obj.get(key)
+		.ok_or(JsonError::Key(key.to_string()))?
+		.as_object()
+		.ok_or(JsonError::KeyType(key.to_string(), JsonType::Obj))
 }
 
 /// Used after getting a type to create an error if the type conversion failed
 pub fn ensure_type<T>(value: Option<T>, typ: JsonType) -> Result<T, JsonError> {
-	match value {
-		Some(val) => Ok(val),
-		None => Err(JsonError::Type(vec![typ])),
-	}
+	value.ok_or(JsonError::Type(vec![typ]))
 }
 
 /// Returns an empty json object
-pub fn _empty_object() -> JsonObject {
+pub fn empty_object() -> JsonObject {
 	json!({})
 		.as_object()
 		.expect("Should be an empty object")
 		.clone()
-}
-
-// Json access with an assertion
-#[cfg(debug_assertions)]
-#[macro_export]
-macro_rules! access {
-	($obj:expr, $key:expr, $typ:ident) => {
-		concat_idents!(access_, $typ)($obj, $key)?
-	};
-}
-
-#[cfg(not(debug_assertions))]
-#[macro_export]
-macro_rules! access {
-	($obj:expr, $key:expr, $typ:ident) => {
-		unsafe { concat_idents!(access_, $typ)($obj, $key).unwrap_unchecked() }
-	};
 }
