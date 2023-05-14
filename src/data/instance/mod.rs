@@ -142,7 +142,7 @@ impl Instance {
 			}
 			AddonKind::Shader => {
 				if let InstKind::Client { .. } = self.kind {
-					Some(inst_dir.join("shaders"))
+					Some(inst_dir.join("shaderpacks"))
 				} else {
 					None
 				}
