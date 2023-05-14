@@ -16,12 +16,14 @@ use crate::net::fabric_quilt::{self, FabricQuiltMeta};
 use crate::net::minecraft::{assets, game_jar, libraries, version_manifest};
 use crate::net::paper;
 use crate::package::eval::{EvalConstants, EvalPermissions};
-use crate::package::reg::PkgRequest;
+use crate::package::reg::{PkgRequest, PkgRegistry};
 use crate::package::eval::resolve::resolve;
 use crate::util::print::{ReplPrinter, HYPHEN_POINT};
 use crate::util::versions::MinecraftVersion;
 use crate::util::{json, print::PrintOptions};
 use mcvm_shared::instance::Side;
+
+use super::{InstanceRegistry, Profile};
 
 /// Requirements for operations that may be shared by multiple instances in a profile
 #[derive(Debug, Hash, PartialEq, Eq)]
@@ -274,6 +276,80 @@ impl UpdateManager {
 	}
 }
 
+/// Install packages on a profile
+async fn update_profile_packages(
+	profile: &Profile,
+	paths: &Paths,
+	reg: &mut PkgRegistry,
+	instances: &InstanceRegistry,
+	constants: &EvalConstants,
+	lock: &mut Lockfile,
+) -> anyhow::Result<()> {
+	let mut printer = ReplPrinter::new(true);
+	let resolved = resolve(&profile.packages, &constants, paths, reg)
+		.await
+		.context("Failed to resolve package dependencies")?;
+	for pkg in &resolved {
+		let pkg_version = reg
+			.get_version(&pkg, paths)
+			.await
+			.context("Failed to get version for package")?;
+		for instance_id in &profile.instances {
+			if let Some(instance) = instances.get(instance_id) {
+				if let InstKind::Client { .. } = instance.kind {
+					printer.print(&format_package_print(&pkg, Some(instance_id), "Installing..."));
+					instance
+						.install_package(
+							&pkg,
+							pkg_version,
+							&constants,
+							reg,
+							paths,
+							lock,
+						)
+						.await
+						.with_context(|| {
+							format!("Failed to install package '{pkg}' for instance '{instance_id}'")
+						})?;
+				}
+			}
+		}
+		printer.print(&format_package_print(&pkg, None, &cformat!("<g>Installed.")));
+		printer.newline();
+	}
+	for instance_id in profile.instances.iter() {
+		if let Some(instance) = instances.get(instance_id) {
+			let addons_to_remove = lock
+				.remove_unused_packages(
+					instance_id,
+					&resolved
+						.iter()
+						.map(|x| x.name.clone())
+						.collect::<Vec<String>>(),
+				)
+				.context("Failed to remove unused packages")?;
+			for addon in addons_to_remove {
+				instance.remove_addon(&addon, paths).with_context(|| {
+					format!(
+						"Failed to remove addon {} for instance {}",
+						addon.id, instance_id
+					)
+				})?;
+			}
+		}
+	}
+	Ok(())
+}
+
+/// Creates the print message for package installation when updating profiles
+fn format_package_print(pkg: &PkgRequest, instance: Option<&str>, message: &str) -> String {
+	if let Some(instance) = instance {
+		cformat!("{}[<c>{}</c>] (<b!>{}</b!>) {}", HYPHEN_POINT, pkg, instance, message)
+	} else {
+		cformat!("{}[<c>{}</c>] {}", HYPHEN_POINT, pkg, message)
+	}
+}
+
 /// Update a list of profiles
 pub async fn update_profiles(
 	paths: &Paths,
@@ -341,132 +417,26 @@ pub async fn update_profiles(
 
 				if !profile.packages.is_empty() {
 					cprintln!("<s>Updating packages");
-				}
-				let mut printer = ReplPrinter::new(true);
-				// Make sure all packages in the profile are in the registry first
-				for pkg in &profile.packages {
-					config.packages.ensure_package(&pkg.req, paths).await?;
-				}
-				// Resolve for both client and server
-				let mut constants = EvalConstants {
-					version: version.clone(),
-					modloader: profile.modloader.clone(),
-					plugin_loader: profile.plugin_loader.clone(),
-					side: Side::Client,
-					features: vec![],
-					versions: version_list.clone(),
-					perms: EvalPermissions::Standard,
-				};
-				let resolved = resolve(&profile.packages, &constants, paths, &mut config.packages)
-					.await
-					.context("Failed to resolve package dependencies")?;
-				for pkg in &resolved {
-					let pkg_version = config
-						.packages
-						.get_version(&pkg, paths)
-						.await
-						.context("Failed to get version for package")?;
-					for instance_id in &profile.instances {
-						if let Some(instance) = config.instances.get(instance_id) {
-							if let InstKind::Client { .. } = instance.kind {
-								printer.print(&format_package_print(&pkg, Some(instance_id), "Installing..."));
-								instance
-									.install_package(
-										&pkg,
-										pkg_version,
-										&constants,
-										&mut config.packages,
-										paths,
-										&mut lock,
-									)
-									.await
-									.with_context(|| {
-										format!("Failed to install package '{pkg}' for instance '{instance_id}'")
-									})?;
-							}
-						}
+					
+					// Make sure all packages in the profile are in the registry first
+					for pkg in &profile.packages {
+						config.packages.ensure_package(&pkg.req, paths).await?;
 					}
-					printer.print(&format_package_print(&pkg, None, &cformat!("<g>Installed.")));
-					printer.newline();
+					// Resolve for both client and server
+					let mut constants = EvalConstants {
+						version: version.clone(),
+						modloader: profile.modloader.clone(),
+						plugin_loader: profile.plugin_loader.clone(),
+						side: Side::Client,
+						features: vec![],
+						versions: version_list.clone(),
+						perms: EvalPermissions::Standard,
+					};
+					update_profile_packages(profile, paths, &mut config.packages, &config.instances, &constants, &mut lock).await?;
+					constants.side = Side::Server;
+					update_profile_packages(profile, paths, &mut config.packages, &config.instances, &constants, &mut lock).await?;
+					cprintln!("<g>All packages installed.");
 				}
-				for instance_id in profile.instances.iter() {
-					if let Some(instance) = config.instances.get(instance_id) {
-						let addons_to_remove = lock
-							.remove_unused_packages(
-								instance_id,
-								&resolved
-									.iter()
-									.map(|x| x.name.clone())
-									.collect::<Vec<String>>(),
-							)
-							.context("Failed to remove unused packages")?;
-						for addon in addons_to_remove {
-							instance.remove_addon(&addon, paths).with_context(|| {
-								format!(
-									"Failed to remove addon {} for instance {}",
-									addon.id, instance_id
-								)
-							})?;
-						}
-					}
-				}
-
-				constants.side = Side::Server;
-				let resolved = resolve(&profile.packages, &constants, paths, &mut config.packages)
-					.await
-					.context("Failed to resolve package dependencies")?;
-				for pkg in &resolved {
-					let pkg_version = config
-						.packages
-						.get_version(&pkg, paths)
-						.await
-						.context("Failed to get version for package")?;
-					for instance_id in &profile.instances {
-						if let Some(instance) = config.instances.get(instance_id) {
-							if let InstKind::Server { .. } = instance.kind {
-								printer.print(&format_package_print(&pkg, Some(instance_id), "Installing..."));
-								instance
-									.install_package(
-										&pkg,
-										pkg_version,
-										&constants,
-										&mut config.packages,
-										paths,
-										&mut lock,
-									)
-									.await
-									.with_context(|| {
-										format!("Failed to install package '{pkg}' for instance '{instance_id}'")
-									})?;
-							}
-						}
-					}
-					printer.print(&format_package_print(&pkg, None, &cformat!("<g>Installed.")));
-					printer.newline();
-				}
-				for instance_id in profile.instances.iter() {
-					if let Some(instance) = config.instances.get(instance_id) {
-						let addons_to_remove = lock
-							.remove_unused_packages(
-								instance_id,
-								&resolved
-									.iter()
-									.map(|x| x.name.clone())
-									.collect::<Vec<String>>(),
-							)
-							.context("Failed to remove unused packages")?;
-						for addon in addons_to_remove {
-							instance.remove_addon(&addon, paths).with_context(|| {
-								format!(
-									"Failed to remove addon {} for instance {}",
-									addon.id, instance_id
-								)
-							})?;
-						}
-					}
-				}
-				printer.print(&cformat!("<g>All packages installed."));
-				printer.finish();
 			}
 
 			lock.finish(paths)
@@ -478,13 +448,4 @@ pub async fn update_profiles(
 	}
 
 	Ok(())
-}
-
-/// Creates the print message for package installation when updating profiles
-fn format_package_print(pkg: &PkgRequest, instance: Option<&str>, message: &str) -> String {
-	if let Some(instance) = instance {
-		cformat!("{}[<c>{}</c>] (<b!>{}</b!>) {}", HYPHEN_POINT, pkg, instance, message)
-	} else {
-		cformat!("{}[<c>{}</c>] {}", HYPHEN_POINT, pkg, message)
-	}
 }
