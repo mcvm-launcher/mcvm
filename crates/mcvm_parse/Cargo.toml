@@ -1,6 +1,6 @@
 [package]
 name = "mcvm_parse"
-version = "0.0.5"
+version = "0.0.6"
 edition = "2021"
 license = "GPL-3.0-or-later"
 description = "Package script lexing and parsing for mcvm"
