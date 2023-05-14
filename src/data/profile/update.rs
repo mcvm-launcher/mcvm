@@ -18,7 +18,7 @@ use crate::net::paper;
 use crate::package::eval::{EvalConstants, EvalPermissions};
 use crate::package::reg::PkgRequest;
 use crate::package::eval::resolve::resolve;
-use crate::util::print::ReplPrinter;
+use crate::util::print::{ReplPrinter, HYPHEN_POINT};
 use crate::util::versions::MinecraftVersion;
 use crate::util::{json, print::PrintOptions};
 use mcvm_shared::instance::Side;
@@ -445,7 +445,7 @@ pub async fn update_profiles(
 						}
 					}
 				}
-				printer.print(&cformat!("\t<g>Finished installing packages."));
+				printer.print(&cformat!("<g>All packages installed."));
 				printer.finish();
 			}
 
@@ -463,8 +463,8 @@ pub async fn update_profiles(
 /// Creates the print message for package installation when updating profiles
 fn format_package_print(pkg: &PkgRequest, instance: Option<&str>, message: &str) -> String {
 	if let Some(instance) = instance {
-		cformat!("\t[<g>{}</g>] (<b!>{}</b!>) {}", pkg, instance, message)
+		cformat!("{}[<c>{}</c>] (<b!>{}</b!>) {}", HYPHEN_POINT, pkg, instance, message)
 	} else {
-		cformat!("\t[<g>{}</g>] {}", pkg, message)
+		cformat!("{}[<c>{}</c>] {}", HYPHEN_POINT, pkg, message)
 	}
 }
