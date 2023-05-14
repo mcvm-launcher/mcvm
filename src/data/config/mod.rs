@@ -116,7 +116,7 @@ impl Config {
 			if !validate_identifier(user_id) {
 				bail!("Invalid string '{user_id}'");
 			}
-			let user = user_config.to_user(user_id);
+			let user = user_config.to_user(user_id, show_warnings);
 			if !validate_username(user.kind, &user.name) {
 				bail!("Invalid string '{}'", user.name);
 			}
@@ -150,7 +150,9 @@ impl Config {
 			let mut profile = profile_config.to_profile(&profile_id);
 
 			if let Modloader::Forge = profile_config.modloader {
-				cprintln!("<y>Warning: Forge installation is currently unimplemented by mcvm. You will be expected to install it yourself for the time being.");
+				if show_warnings {
+					cprintln!("<y>Warning: Forge installation is currently unimplemented by mcvm. You will be expected to install it yourself for the time being.");
+				}
 			}
 
 			if !game_modifications_compatible(
