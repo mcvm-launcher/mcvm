@@ -40,9 +40,9 @@ pub async fn create_leading_dirs_async(path: &Path) -> std::io::Result<()> {
 }
 
 /// Creates a new hardlink if it does not exist
-pub fn update_hardlink(path: &Path, target: &Path) -> std::io::Result<()> {
-	if !target.exists() {
-		fs::hard_link(path, target)?;
+pub fn update_hardlink(path: &Path, link: &Path) -> std::io::Result<()> {
+	if !link.exists() {
+		fs::hard_link(path, link)?;
 	}
 
 	Ok(())

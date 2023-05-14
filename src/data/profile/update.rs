@@ -360,7 +360,7 @@ pub async fn update_profiles(
 				let resolved = resolve(&profile.packages, &constants, paths, &mut config.packages)
 					.await
 					.context("Failed to resolve package dependencies")?;
-				for pkg in resolved {
+				for pkg in &resolved {
 					let pkg_version = config
 						.packages
 						.get_version(&pkg, paths)
@@ -389,11 +389,33 @@ pub async fn update_profiles(
 					printer.print(&format_package_print(&pkg, None, &cformat!("<g>Installed.")));
 					printer.newline();
 				}
+				for instance_id in profile.instances.iter() {
+					if let Some(instance) = config.instances.get(instance_id) {
+						let addons_to_remove = lock
+							.remove_unused_packages(
+								instance_id,
+								&resolved
+									.iter()
+									.map(|x| x.name.clone())
+									.collect::<Vec<String>>(),
+							)
+							.context("Failed to remove unused packages")?;
+						for addon in addons_to_remove {
+							instance.remove_addon(&addon, paths).with_context(|| {
+								format!(
+									"Failed to remove addon {} for instance {}",
+									addon.id, instance_id
+								)
+							})?;
+						}
+					}
+				}
+
 				constants.side = Side::Server;
 				let resolved = resolve(&profile.packages, &constants, paths, &mut config.packages)
 					.await
 					.context("Failed to resolve package dependencies")?;
-				for pkg in resolved {
+				for pkg in &resolved {
 					let pkg_version = config
 						.packages
 						.get_version(&pkg, paths)
@@ -427,14 +449,12 @@ pub async fn update_profiles(
 						let addons_to_remove = lock
 							.remove_unused_packages(
 								instance_id,
-								&profile
-									.packages
+								&resolved
 									.iter()
-									.map(|x| x.req.name.clone())
+									.map(|x| x.name.clone())
 									.collect::<Vec<String>>(),
 							)
 							.context("Failed to remove unused packages")?;
-
 						for addon in addons_to_remove {
 							instance.remove_addon(&addon, paths).with_context(|| {
 								format!(
