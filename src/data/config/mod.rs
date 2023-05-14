@@ -11,6 +11,7 @@ use self::preferences::PrefDeser;
 use self::profile::ProfileConfig;
 use self::user::UserConfig;
 use anyhow::{bail, ensure, Context};
+use mcvm_shared::modifications::Modloader;
 use preferences::ConfigPreferences;
 use serde::{Deserialize, Serialize};
 
@@ -147,6 +148,10 @@ impl Config {
 		// Profiles
 		for (profile_id, profile_config) in config.profiles {
 			let mut profile = profile_config.to_profile(&profile_id);
+
+			if let Modloader::Forge = profile_config.modloader {
+				cprintln!("<y>Warning: Forge installation is currently unimplemented by mcvm. You will be expected to install it yourself for the time being.");
+			}
 
 			if !game_modifications_compatible(
 				&profile_config.modloader,
