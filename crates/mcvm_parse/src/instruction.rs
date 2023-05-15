@@ -18,7 +18,6 @@ pub enum InstrKind {
 	Authors(Vec<String>),
 	Website(Option<String>),
 	Support(Option<String>),
-	DefaultFeatures(Vec<Value>),
 	Addon {
 		id: Value,
 		file_name: Value,
@@ -58,7 +57,6 @@ impl Instruction {
 			"authors" => Ok(InstrKind::Authors(Vec::new())),
 			"website" => Ok(InstrKind::Website(None)),
 			"support" => Ok(InstrKind::Support(None)),
-			"default_features" => Ok(InstrKind::DefaultFeatures(Vec::new())),
 			"set" => Ok(InstrKind::Set(None, Value::None)),
 			"finish" => Ok(InstrKind::Finish()),
 			"fail" => Ok(InstrKind::Fail(None)),
@@ -105,7 +103,6 @@ impl Instruction {
 						unexpected_token!(tok, pos);
 					}
 				}
-				InstrKind::DefaultFeatures(features) => features.push(parse_arg(tok, pos)?),
 				InstrKind::Set(var, val) => {
 					if var.is_some() {
 						if let Value::None = val {
