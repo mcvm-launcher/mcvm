@@ -4,6 +4,7 @@ pub mod conditions;
 pub mod instruction;
 pub mod lex;
 pub mod parse;
+pub mod metadata;
 
 use anyhow::{anyhow, bail};
 

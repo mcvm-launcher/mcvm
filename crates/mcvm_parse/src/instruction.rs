@@ -12,8 +12,12 @@ use mcvm_shared::addon::AddonKind;
 #[derive(Debug, Clone)]
 pub enum InstrKind {
 	If(Condition, BlockId),
-	Name(Value),
-	Version(Value),
+	Name(Option<String>),
+	Description(Option<String>),
+	Version(Option<String>),
+	Authors(Vec<String>),
+	Website(Option<String>),
+	Support(Option<String>),
 	DefaultFeatures(Vec<Value>),
 	Addon {
 		id: Value,
@@ -48,8 +52,12 @@ impl Instruction {
 	/// Starts an instruction from the provided string
 	pub fn from_str(string: &str, pos: &TextPos) -> anyhow::Result<Self> {
 		let kind = match string {
-			"name" => Ok::<InstrKind, anyhow::Error>(InstrKind::Name(Value::None)),
-			"version" => Ok(InstrKind::Version(Value::None)),
+			"name" => Ok::<InstrKind, anyhow::Error>(InstrKind::Name(None)),
+			"description" => Ok(InstrKind::Description(None)),
+			"version" => Ok(InstrKind::Version(None)),
+			"authors" => Ok(InstrKind::Authors(Vec::new())),
+			"website" => Ok(InstrKind::Website(None)),
+			"support" => Ok(InstrKind::Support(None)),
 			"default_features" => Ok(InstrKind::DefaultFeatures(Vec::new())),
 			"set" => Ok(InstrKind::Set(None, Value::None)),
 			"finish" => Ok(InstrKind::Finish()),
@@ -69,38 +77,60 @@ impl Instruction {
 			Ok(true)
 		} else {
 			match &mut self.kind {
-				InstrKind::Name(val)
-				| InstrKind::Version(val)
-				| InstrKind::Refuse(val)
-				| InstrKind::Recommend(val)
-				| InstrKind::Bundle(val) => *val = parse_arg(tok, pos)?,
+				InstrKind::Name(text)
+				| InstrKind::Description(text)
+				| InstrKind::Version(text)
+				| InstrKind::Website(text)
+				| InstrKind::Support(text) => {
+					if text.is_none() {
+						*text = Some(parse_string(tok, pos)?);
+					} else {
+						unexpected_token!(tok, pos);
+					}
+				}
+				InstrKind::Refuse(val) | InstrKind::Recommend(val) | InstrKind::Bundle(val) => {
+					if let Value::None = val {
+						*val = parse_arg(tok, pos)?;
+					} else {
+						unexpected_token!(tok, pos);
+					}
+				}
+				InstrKind::Authors(authors) => authors.push(parse_string(tok, pos)?),
 				InstrKind::Compat(package, compat) => {
 					if let Value::None = package {
 						*package = parse_arg(tok, pos)?;
-					} else {
+					} else if let Value::None = compat {
 						*compat = parse_arg(tok, pos)?;
+					} else {
+						unexpected_token!(tok, pos);
 					}
 				}
 				InstrKind::DefaultFeatures(features) => features.push(parse_arg(tok, pos)?),
 				InstrKind::Set(var, val) => {
 					if var.is_some() {
-						*val = parse_arg(tok, pos)?;
+						if let Value::None = val {
+							*val = parse_arg(tok, pos)?;
+						} else {
+							unexpected_token!(tok, pos);
+						}
 					} else {
 						match tok {
 							Token::Ident(name) => *var = Some(name.clone()),
-							_ => {
-								unexpected_token!(tok, pos)
-							}
+							_ => unexpected_token!(tok, pos),
 						}
 					}
 				}
 				InstrKind::Fail(reason) => match tok {
 					Token::Ident(name) => {
-						*reason = match FailReason::from_string(name) {
-							Some(reason) => Some(reason),
-							None => {
-								bail!("Unknown fail reason '{}' {}", name.clone(), pos.clone());
+						if reason.is_none() {
+							*reason = match FailReason::from_string(name) {
+								Some(reason) => Some(reason),
+								None => {
+									bail!("Unknown fail reason '{}' {}", name.clone(), pos.clone());
+								}
 							}
+						} else {
+							unexpected_token!(tok, pos);
 						}
 					}
 					_ => unexpected_token!(tok, pos),
@@ -119,6 +149,14 @@ pub fn parse_arg(tok: &Token, pos: &TextPos) -> anyhow::Result<Value> {
 		Token::Variable(name) => Ok(Value::Var(name.to_string())),
 		Token::Str(text) => Ok(Value::Constant(text.clone())),
 		Token::Num(num) => Ok(Value::Constant(num.to_string())),
+		_ => unexpected_token!(tok, pos),
+	}
+}
+
+/// Parses a constant string argument
+pub fn parse_string(tok: &Token, pos: &TextPos) -> anyhow::Result<String> {
+	match tok {
+		Token::Str(text) => Ok(text.clone()),
 		_ => unexpected_token!(tok, pos),
 	}
 }
