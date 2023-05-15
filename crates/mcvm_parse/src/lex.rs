@@ -24,6 +24,7 @@ pub enum Token {
 	Curly(Side),
 	Square(Side),
 	Paren(Side),
+	Angle(Side),
 	Comment(String),
 	Ident(String),
 	Num(i64),
@@ -47,6 +48,8 @@ impl Token {
 			Token::Square(Side::Right) => String::from("]"),
 			Token::Paren(Side::Left) => String::from("("),
 			Token::Paren(Side::Right) => String::from(")"),
+			Token::Angle(Side::Left) => String::from("<"),
+			Token::Angle(Side::Right) => String::from(">"),
 			Token::Comment(text) => String::from("# ") + text,
 			Token::Ident(name) => name.clone(),
 			Token::Num(num) => num.to_string(),
@@ -183,6 +186,14 @@ pub fn lex(text: &str) -> anyhow::Result<Vec<(Token, TextPos)>> {
 					}
 					')' => {
 						tok = Token::Paren(Side::Right);
+						tok_finished = true;
+					}
+					'<' => {
+						tok = Token::Angle(Side::Left);
+						tok_finished = true;
+					}
+					'>' => {
+						tok = Token::Angle(Side::Right);
 						tok_finished = true;
 					}
 					'@' => {

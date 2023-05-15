@@ -49,6 +49,13 @@ impl Resolver {
 			.any(|x| Self::is_required_fn(x, req))
 	}
 
+	/// Whether a package has been required by the user
+	pub fn is_user_required(&self, req: &PkgRequest) -> bool {
+		self.constraints
+			.iter()
+			.any(|x| matches!(&x.kind, ConstraintKind::UserRequire(dest) if dest.same_as(req)))
+	}
+
 	fn is_refused_fn(constraint: &Constraint, req: &PkgRequest) -> bool {
 		matches!(
 			&constraint.kind,
@@ -136,7 +143,10 @@ async fn resolve_task(
 			}
 			for dep in result.deps.iter().flatten() {
 				let req =
-					PkgRequest::new(dep, PkgRequestSource::Dependency(Box::new(dest.clone())));
+					PkgRequest::new(&dep.value, PkgRequestSource::Dependency(Box::new(dest.clone())));
+				if dep.explicit && !resolver.is_user_required(&req) {
+					bail!("Package '{req}' has been explicitly required by package '{dest}'. This means it must be required by the user in their config.");
+				}
 				if resolver.is_refused(&req) {
 					let refusers = resolver.get_refusers(&req);
 					bail!(

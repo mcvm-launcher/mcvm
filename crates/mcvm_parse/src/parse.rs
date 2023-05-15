@@ -80,7 +80,7 @@ mod addon {
 
 	/// State of the addon parser
 	#[derive(Debug)]
-	pub enum Mode {
+	pub enum State {
 		Id,
 		FileName,
 		OpenParen,
@@ -113,6 +113,26 @@ mod addon {
 	}
 }
 
+pub mod require {
+	use super::*;
+
+	/// A single required package
+	#[derive(Debug, Clone)]
+	pub struct Package {
+		pub value: Value,
+		pub explicit: bool,
+	}
+
+	/// State of the require parser
+	#[derive(Debug)]
+	pub enum State {
+		/// Normal parsing state
+		Normal,
+		/// Looking for the end angle bracket for explicit require
+		LookingForRightAngle,
+	}
+}
+
 /// Mode for what we are currently parsing
 #[derive(Debug)]
 enum ParseMode {
@@ -121,12 +141,18 @@ enum ParseMode {
 	Instruction(Instruction),
 	If(Option<Condition>),
 	Addon {
-		mode: addon::Mode,
-		/// The key we are currently parsing
+		state: addon::State,
 		key: addon::Key,
 		id: Value,
 		file_name: Value,
 		filled_keys: addon::FilledKeys,
+	},
+	Require {
+		state: require::State,
+		package_groups: Vec<Vec<require::Package>>,
+		current_group: Option<Vec<require::Package>>,
+		current_package: Option<require::Package>,
+		explicit_has_been_closed: bool,
 	},
 }
 
@@ -204,7 +230,7 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 						"if" => prs.mode = ParseMode::If(None),
 						"addon" => {
 							prs.mode = ParseMode::Addon {
-								mode: addon::Mode::Id,
+								state: addon::State::Id,
 								key: addon::Key::None,
 								id: Value::None,
 								file_name: Value::None,
@@ -215,6 +241,15 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 									append: Value::None,
 									path: Value::None,
 								},
+							};
+						}
+						"require" => {
+							prs.mode = ParseMode::Require {
+								state: require::State::Normal,
+								package_groups: Vec::new(),
+								current_group: None,
+								current_package: None,
+								explicit_has_been_closed: true,
 							};
 						}
 						name => {
@@ -293,31 +328,31 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 				Ok(())
 			}
 			ParseMode::Addon {
-				mode,
+				state,
 				key,
 				id,
 				file_name,
 				filled_keys,
 			} => {
-				match mode {
-					addon::Mode::Id => {
+				match state {
+					addon::State::Id => {
 						*id = parse_arg(tok, pos)?;
-						*mode = addon::Mode::FileName;
+						*state = addon::State::FileName;
 					}
-					addon::Mode::FileName => match tok {
+					addon::State::FileName => match tok {
 						Token::Paren(Side::Left) => {
 							bail!("It is now required to have a filename field for addons");
 						}
 						_ => {
 							*file_name = parse_arg(tok, pos)?;
-							*mode = addon::Mode::OpenParen;
+							*state = addon::State::OpenParen;
 						}
 					},
-					addon::Mode::OpenParen => match tok {
-						Token::Paren(Side::Left) => *mode = addon::Mode::Key,
+					addon::State::OpenParen => match tok {
+						Token::Paren(Side::Left) => *state = addon::State::Key,
 						_ => unexpected_token!(tok, pos),
 					},
-					addon::Mode::Key => match tok {
+					addon::State::Key => match tok {
 						Token::Ident(name) => {
 							match name.as_str() {
 								"kind" => *key = addon::Key::Kind,
@@ -333,15 +368,15 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 									);
 								}
 							}
-							*mode = addon::Mode::Colon;
+							*state = addon::State::Colon;
 						}
 						_ => unexpected_token!(tok, pos),
 					},
-					addon::Mode::Colon => match tok {
-						Token::Colon => *mode = addon::Mode::Value,
+					addon::State::Colon => match tok {
+						Token::Colon => *state = addon::State::Value,
 						_ => unexpected_token!(tok, pos),
 					},
-					addon::Mode::Value => match tok {
+					addon::State::Value => match tok {
 						Token::Ident(name) => {
 							match key {
 								addon::Key::Kind => filled_keys.kind = AddonKind::from_str(name),
@@ -357,7 +392,7 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 								},
 								_ => unexpected_token!(tok, &pos),
 							}
-							*mode = addon::Mode::Comma;
+							*state = addon::State::Comma;
 						}
 						_ => {
 							match key {
@@ -366,17 +401,17 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 								addon::Key::Path => filled_keys.path = parse_arg(tok, pos)?,
 								_ => unexpected_token!(tok, pos),
 							}
-							*mode = addon::Mode::Comma;
+							*state = addon::State::Comma;
 						}
 					},
-					addon::Mode::Comma => match tok {
-						Token::Comma => *mode = addon::Mode::Key,
+					addon::State::Comma => match tok {
+						Token::Comma => *state = addon::State::Key,
 						Token::Paren(Side::Right) => {
-							*mode = addon::Mode::Semicolon;
+							*state = addon::State::Semicolon;
 						}
 						_ => unexpected_token!(tok, pos),
 					},
-					addon::Mode::Semicolon => match tok {
+					addon::State::Semicolon => match tok {
 						Token::Semicolon => {
 							instr_to_push = Some(Instruction::new(InstrKind::Addon {
 								id: id.clone(),
@@ -388,6 +423,74 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 								path: filled_keys.path.clone(),
 							}));
 							prs.mode = ParseMode::Root;
+						}
+						_ => unexpected_token!(tok, pos),
+					},
+				}
+
+				Ok(())
+			}
+			ParseMode::Require {
+				state,
+				package_groups,
+				current_group,
+				current_package,
+				explicit_has_been_closed,
+			} => {
+				match state {
+					require::State::Normal => match tok {
+						Token::Paren(Side::Left) => {
+							if current_group.is_some() {
+								unexpected_token!(tok, pos);
+							}
+							*current_group = Some(Vec::new());
+						}
+						Token::Paren(Side::Right) => {
+							if current_group.is_none() || !*explicit_has_been_closed {
+								unexpected_token!(tok, pos);
+							}
+							package_groups.extend(current_group.take());
+						}
+						Token::Angle(Side::Left) => {
+							*explicit_has_been_closed = false;
+							if current_package.is_some() {
+								unexpected_token!(tok, pos);
+							}
+							*current_package = Some(require::Package {
+								value: Value::None,
+								explicit: true,
+							});
+							*state = require::State::LookingForRightAngle;
+						}
+						Token::Semicolon => {
+							instr_to_push =
+								Some(Instruction::new(InstrKind::Require(package_groups.clone())));
+							prs.mode = ParseMode::Root;
+						}
+						_ => {
+							let package = parse_arg(tok, pos)?;
+							if let Some(current_package) = current_package {
+								current_package.value = package;
+							} else {
+								*current_package = Some(require::Package {
+									value: package,
+									explicit: false,
+								});
+							}
+							if let Some(group) = current_group {
+								group.extend(current_package.take());
+							} else {
+								let mut vec = Vec::new();
+								vec.extend(current_package.take());
+								package_groups.push(vec);
+							}
+							*explicit_has_been_closed = true;
+						}
+					},
+					require::State::LookingForRightAngle => match tok {
+						Token::Angle(Side::Right) => {
+							*state = require::State::Normal;
+							*explicit_has_been_closed = true;
 						}
 						_ => unexpected_token!(tok, pos),
 					},

@@ -1,7 +1,7 @@
 use anyhow::bail;
 
 use super::conditions::Condition;
-use super::lex::{Side, TextPos, Token};
+use super::lex::{TextPos, Token};
 use super::parse::BlockId;
 use super::FailReason;
 use super::Value;
@@ -25,7 +25,7 @@ pub enum InstrKind {
 		path: Value,
 	},
 	Set(Option<String>, Value),
-	Require(Vec<Vec<Value>>, Option<Vec<Value>>),
+	Require(Vec<Vec<super::parse::require::Package>>),
 	Refuse(Value),
 	Finish(),
 	Fail(Option<FailReason>),
@@ -51,7 +51,6 @@ impl Instruction {
 			"set" => Ok(InstrKind::Set(None, Value::None)),
 			"finish" => Ok(InstrKind::Finish()),
 			"fail" => Ok(InstrKind::Fail(None)),
-			"require" => Ok(InstrKind::Require(Vec::new(), None)),
 			"refuse" => Ok(InstrKind::Refuse(Value::None)),
 			string => bail!("Unknown instruction '{string}' {}", pos),
 		}?;
@@ -64,7 +63,9 @@ impl Instruction {
 			Ok(true)
 		} else {
 			match &mut self.kind {
-				InstrKind::Name(val) | InstrKind::Version(val) | InstrKind::Refuse(val) => *val = parse_arg(tok, pos)?,
+				InstrKind::Name(val) | InstrKind::Version(val) | InstrKind::Refuse(val) => {
+					*val = parse_arg(tok, pos)?
+				}
 				InstrKind::DefaultFeatures(features) => features.push(parse_arg(tok, pos)?),
 				InstrKind::Set(var, val) => {
 					if var.is_some() {
@@ -88,30 +89,6 @@ impl Instruction {
 						}
 					}
 					_ => unexpected_token!(tok, pos),
-				},
-				InstrKind::Require(deps, dep) => match tok {
-					Token::Paren(Side::Left) => match dep {
-						Some(..) => {
-							unexpected_token!(tok, pos);
-						}
-						None => *dep = Some(Vec::new()),
-					},
-					Token::Paren(Side::Right) => match dep {
-						Some(..) => deps.push(
-							dep.take()
-								.expect("Dependency in option missing when pushing"),
-						),
-						None => {
-							unexpected_token!(tok, pos);
-						}
-					},
-					_ => {
-						let val = parse_arg(tok, pos)?;
-						match dep {
-							Some(dep) => dep.push(val),
-							None => deps.push(vec![val]),
-						}
-					}
 				},
 				_ => {}
 			}

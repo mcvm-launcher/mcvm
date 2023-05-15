@@ -64,6 +64,13 @@ impl Routine {
 	}
 }
 
+/// A required package
+#[derive(Debug, Clone)]
+pub struct RequiredPackage {
+	value: String,
+	explicit: bool,
+}
+
 /// Constants provided by the function calling eval
 #[derive(Debug, Clone)]
 pub struct EvalConstants {
@@ -84,7 +91,7 @@ pub struct EvalData {
 	pub constants: EvalConstants,
 	pub id: PkgIdentifier,
 	pub level: EvalLevel,
-	pub deps: Vec<Vec<String>>,
+	pub deps: Vec<Vec<RequiredPackage>>,
 	pub conflicts: Vec<String>,
 }
 
@@ -107,7 +114,7 @@ pub struct EvalResult {
 	vars_to_set: HashMap<String, String>,
 	finish: bool,
 	addon_reqs: Vec<AddonRequest>,
-	deps: Vec<Vec<String>>,
+	deps: Vec<Vec<RequiredPackage>>,
 	pub conflicts: Vec<String>,
 }
 
@@ -227,17 +234,24 @@ pub fn eval_instr(
 				let reason = reason.as_ref().unwrap_or(&FailReason::None).clone();
 				bail!("Package script failed with reason: {}", reason.to_string());
 			}
-			InstrKind::Require(deps, ..) => if let EvalLevel::Resolve = eval.level {
-				for dep in deps {
-					let mut dep_to_push = Vec::new();
-					for dep in dep {
-						dep_to_push.push(dep.get(&eval.vars)?);
+			InstrKind::Require(deps) => {
+				if let EvalLevel::Resolve = eval.level {
+					for dep in deps {
+						let mut dep_to_push = Vec::new();
+						for dep in dep {
+							dep_to_push.push(RequiredPackage {
+								value: dep.value.get(&eval.vars)?,
+								explicit: dep.explicit,
+							});
+						}
+						out.deps.push(dep_to_push);
 					}
-					out.deps.push(dep_to_push);
 				}
 			}
-			InstrKind::Refuse(package) => if let EvalLevel::Resolve = eval.level {
-				out.conflicts.push(package.get(&eval.vars)?);
+			InstrKind::Refuse(package) => {
+				if let EvalLevel::Resolve = eval.level {
+					out.conflicts.push(package.get(&eval.vars)?);
+				}
 			}
 			InstrKind::Addon {
 				id,
@@ -247,46 +261,48 @@ pub fn eval_instr(
 				force,
 				append,
 				path,
-			} => if let EvalLevel::Install = eval.level {
-				let id = id.get(&eval.vars)?;
-				if eval.addon_reqs.iter().any(|x| x.addon.id == id) {
-					bail!("Duplicate addon id '{id}'");
-				}
-				if !validate_identifier(&id) {
-					bail!("Invalid addon identifier '{id}'");
-				}
-				let file_name = match append {
-					Value::None => file_name.get(&eval.vars)?,
-					_ => append.get(&eval.vars)? + "-" + &file_name.get(&eval.vars)?,
-				};
-				let kind = kind.as_ref().expect("Addon kind missing");
-
-				if !is_filename_valid(*kind, &file_name) {
-					bail!("Invalid addon filename '{file_name}' in addon '{id}'");
-				}
-
-				let addon = Addon::new(*kind, &id, &file_name, eval.id.clone());
-
-				if let Value::Constant(..) | Value::Var(..) = url {
-					let location = AddonLocation::Remote(url.get(&eval.vars)?);
-					out.addon_reqs
-						.push(AddonRequest::new(addon, location, *force));
-				} else if let Value::Constant(..) | Value::Var(..) = path {
-					let path = path.get(&eval.vars)?;
-					match eval.constants.perms {
-						EvalPermissions::Elevated => {
-							let path = String::from(shellexpand::tilde(&path));
-							let path = PathBuf::from(path);
-							let location = AddonLocation::Local(path);
-							out.addon_reqs
-								.push(AddonRequest::new(addon, location, *force));
-						}
-						_ => {
-							bail!("Insufficient permissions to add a local addon '{id}'");
-						}
+			} => {
+				if let EvalLevel::Install = eval.level {
+					let id = id.get(&eval.vars)?;
+					if eval.addon_reqs.iter().any(|x| x.addon.id == id) {
+						bail!("Duplicate addon id '{id}'");
 					}
-				} else {
-					bail!("No location (url/path) was specified for addon '{id}'");
+					if !validate_identifier(&id) {
+						bail!("Invalid addon identifier '{id}'");
+					}
+					let file_name = match append {
+						Value::None => file_name.get(&eval.vars)?,
+						_ => append.get(&eval.vars)? + "-" + &file_name.get(&eval.vars)?,
+					};
+					let kind = kind.as_ref().expect("Addon kind missing");
+
+					if !is_filename_valid(*kind, &file_name) {
+						bail!("Invalid addon filename '{file_name}' in addon '{id}'");
+					}
+
+					let addon = Addon::new(*kind, &id, &file_name, eval.id.clone());
+
+					if let Value::Constant(..) | Value::Var(..) = url {
+						let location = AddonLocation::Remote(url.get(&eval.vars)?);
+						out.addon_reqs
+							.push(AddonRequest::new(addon, location, *force));
+					} else if let Value::Constant(..) | Value::Var(..) = path {
+						let path = path.get(&eval.vars)?;
+						match eval.constants.perms {
+							EvalPermissions::Elevated => {
+								let path = String::from(shellexpand::tilde(&path));
+								let path = PathBuf::from(path);
+								let location = AddonLocation::Local(path);
+								out.addon_reqs
+									.push(AddonRequest::new(addon, location, *force));
+							}
+							_ => {
+								bail!("Insufficient permissions to add a local addon '{id}'");
+							}
+						}
+					} else {
+						bail!("No location (url/path) was specified for addon '{id}'");
+					}
 				}
 			}
 			_ => bail!("Instruction is not allowed in this routine context"),
