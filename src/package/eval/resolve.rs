@@ -91,6 +91,19 @@ impl Resolver {
 			.collect()
 	}
 
+	/// Creates an error if this package is disallowed in the constraints
+	pub fn check_constraints(&self, req: &PkgRequest) -> anyhow::Result<()> {
+		if self.is_refused(&req) {
+			let refusers = self.get_refusers(&req);
+			bail!(
+				"Package '{req}' is incompatible with existing packages {}",
+				refusers.join(", ")
+			);
+		}
+
+		Ok(())
+	}
+
 	/// Collect all needed packages for final output
 	pub fn collect_packages(self) -> Vec<PkgRequest> {
 		self.constraints
@@ -126,6 +139,9 @@ async fn resolve_task(
 				constants
 			};
 
+			// Make sure that this package fits the constraints as well
+			resolver.check_constraints(&dest)?;
+
 			let result = reg
 				.eval(&dest, paths, Routine::InstallResolve, constants)
 				.await?;
@@ -147,13 +163,8 @@ async fn resolve_task(
 				if dep.explicit && !resolver.is_user_required(&req) {
 					bail!("Package '{req}' has been explicitly required by package '{dest}'. This means it must be required by the user in their config.");
 				}
-				if resolver.is_refused(&req) {
-					let refusers = resolver.get_refusers(&req);
-					bail!(
-						"Package '{req}' is incompatible with existing packages {}",
-						refusers.join(", ")
-					);
-				} else if !resolver.is_required(&req) {
+				resolver.check_constraints(&req)?;
+				if !resolver.is_required(&req) {
 					resolver.constraints.push(Constraint {
 						kind: ConstraintKind::Require(req.clone()),
 					});
