@@ -93,6 +93,7 @@ pub struct EvalData {
 	pub level: EvalLevel,
 	pub deps: Vec<Vec<RequiredPackage>>,
 	pub conflicts: Vec<String>,
+	pub recommendations: Vec<String>,
 }
 
 impl EvalData {
@@ -105,6 +106,7 @@ impl EvalData {
 			level: routine.get_level(),
 			deps: Vec::new(),
 			conflicts: Vec::new(),
+			recommendations: Vec::new(),
 		}
 	}
 }
@@ -115,7 +117,8 @@ pub struct EvalResult {
 	finish: bool,
 	addon_reqs: Vec<AddonRequest>,
 	deps: Vec<Vec<RequiredPackage>>,
-	pub conflicts: Vec<String>,
+	conflicts: Vec<String>,
+	recommendations: Vec<String>,
 }
 
 impl EvalResult {
@@ -126,6 +129,7 @@ impl EvalResult {
 			addon_reqs: Vec::new(),
 			deps: Vec::new(),
 			conflicts: Vec::new(),
+			recommendations: Vec::new(),
 		}
 	}
 
@@ -135,6 +139,8 @@ impl EvalResult {
 		self.finish = other.finish;
 		self.addon_reqs.extend(other.addon_reqs);
 		self.deps.extend(other.deps);
+		self.conflicts.extend(other.conflicts);
+		self.recommendations.extend(other.recommendations);
 	}
 }
 
@@ -174,6 +180,8 @@ impl Package {
 			}
 			eval.addon_reqs.extend(result.addon_reqs);
 			eval.deps.extend(result.deps);
+			eval.conflicts.extend(result.conflicts);
+			eval.recommendations.extend(result.recommendations);
 			if result.finish {
 				break;
 			}
@@ -251,6 +259,11 @@ pub fn eval_instr(
 			InstrKind::Refuse(package) => {
 				if let EvalLevel::Resolve = eval.level {
 					out.conflicts.push(package.get(&eval.vars)?);
+				}
+			}
+			InstrKind::Recommend(package) => {
+				if let EvalLevel::Resolve = eval.level {
+					out.recommendations.push(package.get(&eval.vars)?);
 				}
 			}
 			InstrKind::Addon {

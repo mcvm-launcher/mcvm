@@ -1,6 +1,7 @@
 use std::collections::VecDeque;
 
 use anyhow::{bail, Context};
+use color_print::cprintln;
 
 use crate::io::files::paths::Paths;
 
@@ -12,6 +13,7 @@ enum ConstraintKind {
 	Require(PkgRequest),
 	UserRequire(PkgRequest),
 	Refuse(PkgRequest),
+	Recommend(PkgRequest),
 }
 
 /// A requirement for the installation of the packages
@@ -145,6 +147,7 @@ async fn resolve_task(
 			let result = reg
 				.eval(&dest, paths, Routine::InstallResolve, constants)
 				.await?;
+
 			for conflict in result.conflicts {
 				let req = PkgRequest::new(
 					&conflict,
@@ -157,6 +160,7 @@ async fn resolve_task(
 					kind: ConstraintKind::Refuse(req),
 				});
 			}
+
 			for dep in result.deps.iter().flatten() {
 				let req =
 					PkgRequest::new(&dep.value, PkgRequestSource::Dependency(Box::new(dest.clone())));
@@ -173,6 +177,11 @@ async fn resolve_task(
 						constants: None,
 					});
 				}
+			}
+
+			for recommendation in result.recommendations {
+				let req = PkgRequest::new(&recommendation, PkgRequestSource::Dependency(Box::new(dest.clone())));
+				resolver.constraints.push(Constraint { kind: ConstraintKind::Recommend(req) });
 			}
 
 			Ok::<(), anyhow::Error>(())
@@ -222,6 +231,14 @@ pub async fn resolve(
 
 	while let Some(task) = resolver.tasks.pop_front() {
 		resolve_task(task, &mut resolver, reg, constants, paths).await?;
+	}
+
+	for constraint in resolver.constraints.iter() {
+		if let ConstraintKind::Recommend(package) = &constraint.kind {
+			if !resolver.is_required(package) {
+				cprintln!("<y>Warning: A package recommends the use of the package '{}', which is not installed.", package);
+			}
+		}
 	}
 
 	Ok(resolver.collect_packages())
