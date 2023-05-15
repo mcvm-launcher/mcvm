@@ -28,6 +28,7 @@ pub enum InstrKind {
 	Require(Vec<Vec<super::parse::require::Package>>),
 	Refuse(Value),
 	Recommend(Value),
+	Bundle(Value),
 	Finish(),
 	Fail(Option<FailReason>),
 }
@@ -54,6 +55,7 @@ impl Instruction {
 			"fail" => Ok(InstrKind::Fail(None)),
 			"refuse" => Ok(InstrKind::Refuse(Value::None)),
 			"recommend" => Ok(InstrKind::Recommend(Value::None)),
+			"bundle" => Ok(InstrKind::Bundle(Value::None)),
 			string => bail!("Unknown instruction '{string}' {}", pos),
 		}?;
 		Ok(Instruction::new(kind))
@@ -68,7 +70,8 @@ impl Instruction {
 				InstrKind::Name(val)
 				| InstrKind::Version(val)
 				| InstrKind::Refuse(val)
-				| InstrKind::Recommend(val) => *val = parse_arg(tok, pos)?,
+				| InstrKind::Recommend(val)
+				| InstrKind::Bundle(val) => *val = parse_arg(tok, pos)?,
 				InstrKind::DefaultFeatures(features) => features.push(parse_arg(tok, pos)?),
 				InstrKind::Set(var, val) => {
 					if var.is_some() {

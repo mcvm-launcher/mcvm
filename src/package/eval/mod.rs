@@ -94,6 +94,7 @@ pub struct EvalData {
 	pub deps: Vec<Vec<RequiredPackage>>,
 	pub conflicts: Vec<String>,
 	pub recommendations: Vec<String>,
+	pub bundled: Vec<String>,
 }
 
 impl EvalData {
@@ -107,6 +108,7 @@ impl EvalData {
 			deps: Vec::new(),
 			conflicts: Vec::new(),
 			recommendations: Vec::new(),
+			bundled: Vec::new(),
 		}
 	}
 }
@@ -119,6 +121,7 @@ pub struct EvalResult {
 	deps: Vec<Vec<RequiredPackage>>,
 	conflicts: Vec<String>,
 	recommendations: Vec<String>,
+	bundled: Vec<String>,
 }
 
 impl EvalResult {
@@ -130,6 +133,7 @@ impl EvalResult {
 			deps: Vec::new(),
 			conflicts: Vec::new(),
 			recommendations: Vec::new(),
+			bundled: Vec::new(),
 		}
 	}
 
@@ -141,6 +145,7 @@ impl EvalResult {
 		self.deps.extend(other.deps);
 		self.conflicts.extend(other.conflicts);
 		self.recommendations.extend(other.recommendations);
+		self.bundled.extend(other.bundled);
 	}
 }
 
@@ -182,6 +187,7 @@ impl Package {
 			eval.deps.extend(result.deps);
 			eval.conflicts.extend(result.conflicts);
 			eval.recommendations.extend(result.recommendations);
+			eval.bundled.extend(result.bundled);
 			if result.finish {
 				break;
 			}
@@ -264,6 +270,11 @@ pub fn eval_instr(
 			InstrKind::Recommend(package) => {
 				if let EvalLevel::Resolve = eval.level {
 					out.recommendations.push(package.get(&eval.vars)?);
+				}
+			}
+			InstrKind::Bundle(package) => {
+				if let EvalLevel::Resolve = eval.level {
+					out.bundled.push(package.get(&eval.vars)?);
 				}
 			}
 			InstrKind::Addon {

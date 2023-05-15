@@ -14,6 +14,7 @@ enum ConstraintKind {
 	UserRequire(PkgRequest),
 	Refuse(PkgRequest),
 	Recommend(PkgRequest),
+	Bundle(PkgRequest),
 }
 
 /// A requirement for the installation of the packages
@@ -40,7 +41,8 @@ impl Resolver {
 		matches!(
 			&constraint.kind,
 			ConstraintKind::Require(dest)
-			| ConstraintKind::UserRequire(dest) if dest.same_as(req)
+			| ConstraintKind::UserRequire(dest)
+			| ConstraintKind::Bundle(dest) if dest.same_as(req)
 		)
 	}
 
@@ -56,6 +58,17 @@ impl Resolver {
 		self.constraints
 			.iter()
 			.any(|x| matches!(&x.kind, ConstraintKind::UserRequire(dest) if dest.same_as(req)))
+	}
+
+	/// Remove the require constraint of a package if it exists
+	pub fn remove_require_constraint(&mut self, req: &PkgRequest) {
+		let index = self
+			.constraints
+			.iter()
+			.position(|x| Self::is_required_fn(x, req));
+		if let Some(index) = index {
+			self.constraints.swap_remove(index);
+		}
 	}
 
 	fn is_refused_fn(constraint: &Constraint, req: &PkgRequest) -> bool {
@@ -111,9 +124,9 @@ impl Resolver {
 		self.constraints
 			.iter()
 			.filter_map(|x| match &x.kind {
-				ConstraintKind::Require(dest) | ConstraintKind::UserRequire(dest) => {
-					Some(dest.clone())
-				}
+				ConstraintKind::Require(dest)
+				| ConstraintKind::UserRequire(dest)
+				| ConstraintKind::Bundle(dest) => Some(dest.clone()),
 				_ => None,
 			})
 			.collect()
@@ -179,9 +192,26 @@ async fn resolve_task(
 				}
 			}
 
+			for pkg in result.bundled {
+				let req =
+					PkgRequest::new(&pkg, PkgRequestSource::Dependency(Box::new(dest.clone())));
+				resolver.check_constraints(&req)?;
+				resolver.remove_require_constraint(&req);
+				resolver.constraints.push(Constraint {
+					kind: ConstraintKind::Bundle(req.clone()),
+				});
+				resolver.tasks.push_back(Task::EvalDeps {
+					dest: req,
+					constants: None,
+				});
+			}
+
 			for recommendation in result.recommendations {
-				let req = PkgRequest::new(&recommendation, PkgRequestSource::Dependency(Box::new(dest.clone())));
-				resolver.constraints.push(Constraint { kind: ConstraintKind::Recommend(req) });
+				let req =
+					PkgRequest::new(&recommendation, PkgRequestSource::Dependency(Box::new(dest.clone())));
+				resolver.constraints.push(Constraint {
+					kind: ConstraintKind::Recommend(req),
+				});
 			}
 
 			Ok::<(), anyhow::Error>(())
