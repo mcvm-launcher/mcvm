@@ -4,7 +4,7 @@ use super::CmdData;
 use crate::package::reg::{PkgRequest, PkgRequestSource};
 use crate::util::print::{ReplPrinter, HYPHEN_POINT};
 
-use anyhow::Context;
+use anyhow::{bail, Context};
 use clap::Subcommand;
 use color_print::{cformat, cprint, cprintln};
 
@@ -12,7 +12,14 @@ use color_print::{cformat, cprint, cprintln};
 pub enum PackageSubcommand {
 	#[command(about = "List all installed packages across all profiles")]
 	#[clap(alias = "ls")]
-	List,
+	List {
+		/// Whether to remove formatting and warnings from the output
+		#[arg(short, long)]
+		raw: bool,
+		/// A profile to filter packages from
+		#[arg(short, long)]
+		profile: Option<String>,
+	},
 	#[command(
 		about = "Sync package indexes with ones from package repositories",
 		long_about = "Sync all package indexes from remote repositories. They will be
@@ -38,34 +45,66 @@ This package does not need to be installed, it just has to be in the index."
 	},
 }
 
-async fn list(data: &mut CmdData) -> anyhow::Result<()> {
+async fn list(data: &mut CmdData, raw: bool, profile: Option<String>) -> anyhow::Result<()> {
 	data.ensure_paths().await?;
-	data.ensure_config(true).await?;
+	data.ensure_config(!raw).await?;
 	let paths = data.paths.get();
 	let config = data.config.get_mut();
 
-	let mut found_pkgs: HashMap<String, (u32, Vec<String>)> = HashMap::new();
-	for (id, profile) in config.profiles.iter() {
-		if !profile.packages.is_empty() {
-			for pkg in profile.packages.iter() {
-				let version = config
-					.packages
-					.get_version(&pkg.req, paths)
-					.await
-					.context("Failed to get version of package")?;
-				found_pkgs
-					.entry(pkg.req.name.clone())
-					.or_insert((version, vec![]))
-					.1
-					.push(id.clone());
+	if let Some(profile_id) = profile {
+		if let Some(profile) = config.profiles.get(&profile_id) {
+			if raw {
+				for pkg in &profile.packages {
+					println!("{}", pkg.req);
+				}
+			} else {
+				if profile.packages.is_empty() {
+					cprintln!("<s>Profile <b>{}</b> has no packages installed", profile_id);
+				} else {
+					cprintln!("<s>Packages in profile <b>{}</b>:", profile_id);
+					for pkg in &profile.packages {
+						let version = config
+							.packages
+							.get_version(&pkg.req, paths)
+							.await
+							.context("Failed to get version of package")?;
+						cprintln!("{}<b!>{}</>:<b!>{}</>", HYPHEN_POINT, pkg.req, version);
+					}
+				}
+			}
+		} else {
+			bail!("Unknown profile '{profile_id}'");
+		}
+	} else {
+		let mut found_pkgs: HashMap<String, (u32, Vec<String>)> = HashMap::new();
+		for (id, profile) in config.profiles.iter() {
+			if !profile.packages.is_empty() {
+				for pkg in profile.packages.iter() {
+					let version = config
+						.packages
+						.get_version(&pkg.req, paths)
+						.await
+						.context("Failed to get version of package")?;
+					found_pkgs
+						.entry(pkg.req.name.clone())
+						.or_insert((version, vec![]))
+						.1
+						.push(id.clone());
+				}
 			}
 		}
-	}
-	cprintln!("<s>Packages:");
-	for (pkg, (version, profiles)) in found_pkgs {
-		cprintln!("<b!>{}:{}", pkg, version);
-		for profile in profiles {
-			cprintln!("{}<k!>{}", HYPHEN_POINT, profile);
+		if raw {
+			for (pkg, ..) in found_pkgs {
+				println!("{pkg}");
+			}
+		} else {
+			cprintln!("<s>Packages:");
+			for (pkg, (version, profiles)) in found_pkgs {
+				cprintln!("<b!>{}</>:<b!>{}</>", pkg, version);
+				for profile in profiles {
+					cprintln!("{}<k!>{}", HYPHEN_POINT, profile);
+				}
+			}
 		}
 	}
 
@@ -136,7 +175,11 @@ async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
 		.await
 		.context("Failed to get metadata from the registry")?;
 	if let Some(name) = &metadata.name {
-		cprintln!("<s><g>Package</g> <b>{}</b> <y>v{}</y>", name, package_version);
+		cprintln!(
+			"<s><g>Package</g> <b>{}</b> <y>v{}</y>",
+			name,
+			package_version
+		);
 	} else {
 		cprintln!("<s><g>Package</g> <b>{}</b>:<y>{}</y>", id, package_version);
 	}
@@ -162,7 +205,7 @@ async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
 
 pub async fn run(subcommand: PackageSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
 	match subcommand {
-		PackageSubcommand::List => list(data).await,
+		PackageSubcommand::List { raw, profile } => list(data, raw, profile).await,
 		PackageSubcommand::Sync => sync(data).await,
 		PackageSubcommand::Cat { raw, package } => cat(data, &package, raw).await,
 		PackageSubcommand::Info { package } => info(data, &package).await,
