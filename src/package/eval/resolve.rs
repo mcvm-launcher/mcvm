@@ -15,6 +15,7 @@ enum ConstraintKind {
 	Refuse(PkgRequest),
 	Recommend(PkgRequest),
 	Bundle(PkgRequest),
+	Compat(PkgRequest, PkgRequest),
 }
 
 /// A requirement for the installation of the packages
@@ -24,7 +25,8 @@ struct Constraint {
 
 /// A task that needs to be completed for resolution
 enum Task {
-	EvalDeps {
+	/// Evaluate a package and its relationships
+	EvalPackage {
 		dest: PkgRequest,
 		constants: Option<EvalConstants>,
 	},
@@ -106,6 +108,16 @@ impl Resolver {
 			.collect()
 	}
 
+	/// Whether a compat constraint exists
+	pub fn compat_exists(&self, package: &PkgRequest, compat_package: &PkgRequest) -> bool {
+		self.constraints.iter().any(|x| {
+			matches!(
+				&x.kind,
+				ConstraintKind::Compat(src, dest) if src.same_as(package) && dest.same_as(compat_package)
+			)
+		})
+	}
+
 	/// Creates an error if this package is disallowed in the constraints
 	pub fn check_constraints(&self, req: &PkgRequest) -> anyhow::Result<()> {
 		if self.is_refused(&req) {
@@ -117,6 +129,25 @@ impl Resolver {
 		}
 
 		Ok(())
+	}
+
+	/// Checks compat constraints to see if new constraints are needed
+	pub fn check_compats(&mut self) {
+		let mut constraints_to_add = Vec::new();
+		for constraint in &self.constraints {
+			if let ConstraintKind::Compat(package, compat_package) = &constraint.kind {
+				if self.is_required(package) && !self.is_required(compat_package) {
+					constraints_to_add.push(Constraint {
+						kind: ConstraintKind::Require(compat_package.clone()),
+					});
+					self.tasks.push_back(Task::EvalPackage {
+						dest: compat_package.clone(),
+						constants: None
+					});
+				}
+			}
+		}
+		self.constraints.extend(constraints_to_add);
 	}
 
 	/// Collect all needed packages for final output
@@ -142,7 +173,7 @@ async fn resolve_task(
 	paths: &Paths,
 ) -> anyhow::Result<()> {
 	match task {
-		Task::EvalDeps {
+		Task::EvalPackage {
 			dest,
 			constants: user_constants,
 		} => {
@@ -185,7 +216,7 @@ async fn resolve_task(
 					resolver.constraints.push(Constraint {
 						kind: ConstraintKind::Require(req.clone()),
 					});
-					resolver.tasks.push_back(Task::EvalDeps {
+					resolver.tasks.push_back(Task::EvalPackage {
 						dest: req,
 						constants: None,
 					});
@@ -200,10 +231,22 @@ async fn resolve_task(
 				resolver.constraints.push(Constraint {
 					kind: ConstraintKind::Bundle(req.clone()),
 				});
-				resolver.tasks.push_back(Task::EvalDeps {
+				resolver.tasks.push_back(Task::EvalPackage {
 					dest: req,
 					constants: None,
 				});
+			}
+
+			for (package, compat_package) in result.compats {
+				let package =
+					PkgRequest::new(&package, PkgRequestSource::Dependency(Box::new(dest.clone())));
+				let compat_package =
+					PkgRequest::new(&compat_package, PkgRequestSource::Dependency(Box::new(dest.clone())));
+				if !resolver.compat_exists(&package, &compat_package) {
+					resolver.constraints.push(Constraint {
+						kind: ConstraintKind::Compat(package, compat_package),
+					});
+				}
 			}
 
 			for recommendation in result.recommendations {
@@ -234,7 +277,7 @@ pub async fn resolve(
 		constraints: Vec::new(),
 	};
 
-	// Create the initial EvalDeps from the installed packages
+	// Create the initial EvalPackage from the installed packages
 	for config in packages {
 		let mut constants = constants.clone();
 		constants.features = config.features.clone();
@@ -242,7 +285,7 @@ pub async fn resolve(
 		resolver.constraints.push(Constraint {
 			kind: ConstraintKind::UserRequire(config.req.clone()),
 		});
-		resolver.tasks.push_back(Task::EvalDeps {
+		resolver.tasks.push_back(Task::EvalPackage {
 			dest: config.req.clone(),
 			constants: Some(constants),
 		});
@@ -252,7 +295,7 @@ pub async fn resolve(
 			resolver.constraints.push(Constraint {
 				kind: ConstraintKind::Require(req.clone()),
 			});
-			resolver.tasks.push_back(Task::EvalDeps {
+			resolver.tasks.push_back(Task::EvalPackage {
 				dest: req.clone(),
 				constants: None,
 			});
@@ -261,6 +304,7 @@ pub async fn resolve(
 
 	while let Some(task) = resolver.tasks.pop_front() {
 		resolve_task(task, &mut resolver, reg, constants, paths).await?;
+		resolver.check_compats();
 	}
 
 	for constraint in resolver.constraints.iter() {
