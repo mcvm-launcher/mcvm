@@ -1,4 +1,4 @@
-use crate::{instruction::InstrKind, parse::Parsed};
+use crate::{instruction::InstrKind, parse::Parsed, routine::METADATA_ROUTINE};
 use anyhow::bail;
 
 /// Package metadata derived from running the 'meta' routine
@@ -14,8 +14,7 @@ pub struct PackageMetadata {
 
 /// Collect the metadata from a package
 pub fn eval_metadata(parsed: &Parsed) -> anyhow::Result<PackageMetadata> {
-	let routine_name = "meta";
-	if let Some(routine_id) = parsed.routines.get(routine_name) {
+	if let Some(routine_id) = parsed.routines.get(METADATA_ROUTINE) {
 		if let Some(block) = parsed.blocks.get(routine_id) {
 			let mut out = PackageMetadata::default();
 

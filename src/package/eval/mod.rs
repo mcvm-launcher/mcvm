@@ -3,6 +3,7 @@ pub mod parse;
 pub mod resolve;
 
 use anyhow::{anyhow, bail};
+use mcvm_parse::routine::INSTALL_ROUTINE;
 use mcvm_shared::addon::{is_filename_valid, Addon};
 use serde::{Deserialize, Serialize};
 
@@ -51,8 +52,8 @@ pub enum Routine {
 impl Routine {
 	pub fn get_routine_name(&self) -> String {
 		String::from(match self {
-			Self::Install => "install",
-			Self::InstallResolve => "install",
+			Self::Install => INSTALL_ROUTINE,
+			Self::InstallResolve => INSTALL_ROUTINE,
 		})
 	}
 

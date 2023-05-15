@@ -5,6 +5,7 @@ pub mod instruction;
 pub mod lex;
 pub mod parse;
 pub mod metadata;
+pub mod routine;
 
 use anyhow::{anyhow, bail};
 
@@ -64,9 +65,4 @@ impl Display for FailReason {
 			}
 		)
 	}
-}
-
-/// Returns if a routine name is reserved for use by mcvm
-pub fn is_reserved_routine(routine: &str) -> bool {
-	matches!(routine, "meta" | "properties" | "install" | "uninstall")
 }
