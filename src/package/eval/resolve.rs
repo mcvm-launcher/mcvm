@@ -44,7 +44,7 @@ impl Resolver {
 			&constraint.kind,
 			ConstraintKind::Require(dest)
 			| ConstraintKind::UserRequire(dest)
-			| ConstraintKind::Bundle(dest) if dest.same_as(req)
+			| ConstraintKind::Bundle(dest) if dest == req
 		)
 	}
 
@@ -59,7 +59,7 @@ impl Resolver {
 	pub fn is_user_required(&self, req: &PkgRequest) -> bool {
 		self.constraints
 			.iter()
-			.any(|x| matches!(&x.kind, ConstraintKind::UserRequire(dest) if dest.same_as(req)))
+			.any(|x| matches!(&x.kind, ConstraintKind::UserRequire(dest) if dest == req))
 	}
 
 	/// Remove the require constraint of a package if it exists
@@ -76,7 +76,7 @@ impl Resolver {
 	fn is_refused_fn(constraint: &Constraint, req: &PkgRequest) -> bool {
 		matches!(
 			&constraint.kind,
-			ConstraintKind::Refuse(dest) if dest.same_as(req)
+			ConstraintKind::Refuse(dest) if dest == req
 		)
 	}
 
@@ -91,7 +91,7 @@ impl Resolver {
 			.iter()
 			.filter_map(|x| {
 				if let ConstraintKind::Refuse(dest) = &x.kind {
-					if dest.same_as(req) {
+					if dest == req {
 						Some(
 							dest.source
 								.get_source()
@@ -113,7 +113,7 @@ impl Resolver {
 		self.constraints.iter().any(|x| {
 			matches!(
 				&x.kind,
-				ConstraintKind::Compat(src, dest) if src.same_as(package) && dest.same_as(compat_package)
+				ConstraintKind::Compat(src, dest) if src == package && dest == compat_package
 			)
 		})
 	}

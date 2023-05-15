@@ -42,11 +42,6 @@ impl PkgRequest {
 			source,
 		}
 	}
-
-	/// Checks if two PkgRequests request the same package
-	pub fn same_as(&self, other: &Self) -> bool {
-		self.name == other.name
-	}
 }
 
 impl PartialEq for PkgRequest {
