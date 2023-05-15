@@ -1,6 +1,7 @@
 use std::io::{Stdout, Write};
+use std::fmt::Debug;
 
-use color_print::cstr;
+use color_print::{cstr, cformat};
 
 /// A nice colored bullet point for terminal output
 pub static HYPHEN_POINT: &str = cstr!("<k!> - </k!>");
@@ -124,4 +125,9 @@ impl PrintOptions {
 		out.indent_str = make_indent(out.indent);
 		out
 	}
+}
+
+/// Print out an error
+pub fn print_err(err: impl Debug) {
+	eprintln!("{}", cformat!("<r>{:?}", err));
 }

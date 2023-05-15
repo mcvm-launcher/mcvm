@@ -1,7 +1,7 @@
 use crate::io::files::paths::Paths;
 use crate::io::Later;
 use crate::net::download;
-use crate::skip_fail;
+use crate::util::print::print_err;
 
 use anyhow::Context;
 use serde::Deserialize;
@@ -114,8 +114,15 @@ pub async fn query_all(
 	paths: &Paths,
 ) -> anyhow::Result<Option<(String, u32)>> {
 	for repo in repos {
-		if let Some(result) = skip_fail!(repo.query(name, paths).await) {
-			return Ok(Some(result));
+		let query = match repo.query(name, paths).await {
+			Ok(val) => val,
+			Err(e) => {
+				print_err(e);
+				continue;
+			}
+		};
+		if query.is_some() {
+			return Ok(query);
 		}
 	}
 	Ok(None)
