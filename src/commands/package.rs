@@ -31,6 +31,11 @@ This package does not need to be installed, it just has to be in the index."
 		/// The package to print
 		package: String,
 	},
+	#[command(about = "Print information about a specific package")]
+	Info {
+		/// The package to get info about
+		package: String,
+	},
 }
 
 async fn list(data: &mut CmdData) -> anyhow::Result<()> {
@@ -113,10 +118,53 @@ async fn cat(data: &mut CmdData, name: &str, raw: bool) -> anyhow::Result<()> {
 	Ok(())
 }
 
+async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
+	data.ensure_paths().await?;
+	data.ensure_config(true).await?;
+	let paths = data.paths.get();
+	let config = data.config.get_mut();
+
+	let req = PkgRequest::new(id, PkgRequestSource::UserRequire);
+	let package_version = config
+		.packages
+		.get_version(&req, paths)
+		.await
+		.context("Failed to get package version from registry")?;
+	let metadata = config
+		.packages
+		.get_metadata(&req, paths)
+		.await
+		.context("Failed to get metadata from the registry")?;
+	if let Some(name) = &metadata.name {
+		cprintln!("<s><g>Package</g> <b>{}</b> <y>v{}</y>", name, package_version);
+	} else {
+		cprintln!("<s><g>Package</g> <b>{}</b>:<y>{}</y>", id, package_version);
+	}
+	if let Some(description) = &metadata.description {
+		cprintln!("   <k!>{}", description);
+	}
+	cprintln!("   <s>ID:</s> <g>{}", id);
+	if let Some(version) = &metadata.version {
+		cprintln!("   <s>Version:</s> <g>{}", version);
+	}
+	if let Some(authors) = &metadata.authors {
+		cprintln!("   <s>Authors:</s> <g>{}", authors.join(", "));
+	}
+	if let Some(website) = &metadata.website {
+		cprintln!("   <s>Website:</s> <b!>{}", website);
+	}
+	if let Some(support) = &metadata.support {
+		cprintln!("   <s>Support Link:</s> <b!>{}", support);
+	}
+
+	Ok(())
+}
+
 pub async fn run(subcommand: PackageSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
 	match subcommand {
 		PackageSubcommand::List => list(data).await,
 		PackageSubcommand::Sync => sync(data).await,
 		PackageSubcommand::Cat { raw, package } => cat(data, &package, raw).await,
+		PackageSubcommand::Info { package } => info(data, &package).await,
 	}
 }

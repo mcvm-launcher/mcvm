@@ -1,4 +1,5 @@
-use anyhow::bail;
+use anyhow::{bail, Context};
+use mcvm_parse::metadata::PackageMetadata;
 
 use super::eval::{EvalConstants, EvalData, Routine};
 use super::repo::{query_all, PkgRepo};
@@ -108,7 +109,7 @@ impl PkgRegistry {
 	/// Ensure that a package is in the registry
 	pub async fn ensure_package(&mut self, req: &PkgRequest, paths: &Paths) -> anyhow::Result<()> {
 		self.get(req, paths).await?;
-		
+
 		Ok(())
 	}
 
@@ -116,6 +117,19 @@ impl PkgRegistry {
 	pub async fn get_version(&mut self, req: &PkgRequest, paths: &Paths) -> anyhow::Result<u32> {
 		let pkg = self.get(req, paths).await?;
 		Ok(pkg.id.version)
+	}
+
+	/// Get the metadata of a package
+	pub async fn get_metadata<'a>(
+		&'a mut self,
+		req: &PkgRequest,
+		paths: &Paths,
+	) -> anyhow::Result<&'a PackageMetadata> {
+		let pkg = self.get(req, paths).await?;
+		Ok(pkg
+			.get_metadata(paths)
+			.await
+			.context("Failed to get metadata from package")?)
 	}
 
 	/// Load a package
@@ -179,9 +193,16 @@ mod tests {
 	#[test]
 	fn test_reg_insert() {
 		let mut reg = PkgRegistry::new(vec![]);
-		reg.insert_local(&PkgRequest::new("test", PkgRequestSource::UserRequire), 1, &PathBuf::from("./test"));
+		reg.insert_local(
+			&PkgRequest::new("test", PkgRequestSource::UserRequire),
+			1,
+			&PathBuf::from("./test"),
+		);
 		let req = PkgRequest::new("test", PkgRequestSource::UserRequire);
 		assert!(reg.has_now(&req));
-		assert!(!reg.has_now(&PkgRequest::new("doesnotexist", PkgRequestSource::UserRequire)));
+		assert!(!reg.has_now(&PkgRequest::new(
+			"doesnotexist",
+			PkgRequestSource::UserRequire
+		)));
 	}
 }

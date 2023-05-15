@@ -1,8 +1,8 @@
-use crate::{parse::Parsed, instruction::InstrKind};
-use anyhow::{anyhow, bail};
+use crate::{instruction::InstrKind, parse::Parsed};
+use anyhow::bail;
 
 /// Package metadata derived from running the 'meta' routine
-#[derive(Default)]
+#[derive(Default, Debug)]
 pub struct PackageMetadata {
 	pub name: Option<String>,
 	pub description: Option<String>,
@@ -13,30 +13,29 @@ pub struct PackageMetadata {
 }
 
 /// Collect the metadata from a package
-pub fn eval_metadata(parsed: &Parsed) -> anyhow::Result<Option<PackageMetadata>> {
+pub fn eval_metadata(parsed: &Parsed) -> anyhow::Result<PackageMetadata> {
 	let routine_name = "meta";
-	let routine_id = parsed
-		.routines
-		.get(routine_name)
-		.ok_or(anyhow!("Routine {} does not exist", routine_name))?;
-	let block = parsed
-		.blocks
-		.get(routine_id)
-		.ok_or(anyhow!("Routine {} does not exist", routine_name))?;
+	if let Some(routine_id) = parsed.routines.get(routine_name) {
+		if let Some(block) = parsed.blocks.get(routine_id) {
+			let mut out = PackageMetadata::default();
 
-	let mut out = PackageMetadata { ..Default::default() };
+			for instr in &block.contents {
+				match &instr.kind {
+					InstrKind::Name(val) => out.name = val.clone(),
+					InstrKind::Description(val) => out.description = val.clone(),
+					InstrKind::Version(val) => out.version = val.clone(),
+					InstrKind::Authors(val) => out.authors = Some(val.clone()),
+					InstrKind::Website(val) => out.website = val.clone(),
+					InstrKind::Support(val) => out.support = val.clone(),
+					_ => bail!("Instruction is not allowed in this context"),
+				}
+			}
 
-	for instr in &block.contents {
-		match &instr.kind {
-			InstrKind::Name(val) => out.name = val.clone(),
-			InstrKind::Description(val) => out.description = val.clone(),
-			InstrKind::Version(val) => out.version = val.clone(),
-			InstrKind::Authors(val) => out.authors = Some(val.clone()),
-			InstrKind::Website(val) => out.website = val.clone(),
-			InstrKind::Support(val) => out.support = val.clone(),
-			_ => bail!("Instruction is not allowed in this context"),
+			Ok(out)
+		} else {
+			Ok(PackageMetadata::default())
 		}
+	} else {
+		Ok(PackageMetadata::default())
 	}
-
-	Ok(Some(out))
 }

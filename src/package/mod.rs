@@ -11,6 +11,8 @@ use std::path::PathBuf;
 
 use self::eval::EvalPermissions;
 use self::reg::PkgRequest;
+use anyhow::Context;
+use mcvm_parse::metadata::{eval_metadata, PackageMetadata};
 use mcvm_parse::parse::Parsed;
 use mcvm_shared::pkg::PkgIdentifier;
 
@@ -21,6 +23,7 @@ static PKG_EXTENSION: &str = ".pkg.txt";
 pub struct PkgData {
 	contents: String,
 	parsed: Later<Parsed>,
+	metadata: Later<PackageMetadata>,
 }
 
 impl PkgData {
@@ -28,6 +31,7 @@ impl PkgData {
 		Self {
 			contents: contents.to_owned(),
 			parsed: Later::new(),
+			metadata: Later::new(),
 		}
 	}
 
@@ -107,6 +111,24 @@ impl Package {
 			};
 		}
 		Ok(())
+	}
+
+	/// Get the metadata of the package
+	pub async fn get_metadata<'a>(
+		&'a mut self,
+		paths: &Paths,
+	) -> anyhow::Result<&'a PackageMetadata> {
+		self.ensure_loaded(paths, false)
+			.await
+			.context("Failed to load package data")?;
+		self.parse(paths).await.context("Failed to parse")?;
+		let data = self.data.get_mut();
+		let parsed = data.parsed.get();
+		if data.metadata.is_empty() {
+			let metadata = eval_metadata(parsed).context("Failed to evaluate metadata")?;
+			data.metadata.fill(metadata);
+		}
+		Ok(data.metadata.get())
 	}
 }
 
