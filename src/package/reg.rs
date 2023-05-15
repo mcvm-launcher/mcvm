@@ -29,7 +29,7 @@ impl PkgRequestSource {
 }
 
 /// Used to store a request for a package that will be fulfilled later
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone)]
 pub struct PkgRequest {
 	pub name: String,
 	pub source: PkgRequestSource,
@@ -48,6 +48,14 @@ impl PkgRequest {
 		self.name == other.name
 	}
 }
+
+impl PartialEq for PkgRequest {
+	fn eq(&self, other: &Self) -> bool {
+		self.name == other.name
+	}
+}
+
+impl Eq for PkgRequest {}
 
 impl Hash for PkgRequest {
 	fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
@@ -82,6 +90,11 @@ impl PkgRegistry {
 			.expect("Package was not inserted into map")
 	}
 
+	/// Checks if a package is in the registry already
+	pub fn has_now(&self, req: &PkgRequest) -> bool {
+		self.packages.contains_key(req)
+	}
+
 	async fn query_insert(
 		&mut self,
 		req: &PkgRequest,
@@ -99,7 +112,7 @@ impl PkgRegistry {
 	}
 
 	async fn get(&mut self, req: &PkgRequest, paths: &Paths) -> anyhow::Result<&mut Package> {
-		if self.packages.contains_key(req) {
+		if self.has_now(req) {
 			Ok(self.packages.get_mut(req).expect("Package does not exist"))
 		} else {
 			self.query_insert(req, paths).await
@@ -177,12 +190,6 @@ impl PkgRegistry {
 	pub fn iter_requests(&self) -> impl Iterator<Item = &PkgRequest> {
 		self.packages.keys()
 	}
-
-	/// Checks if a package is in the registry already
-	#[cfg(test)]
-	pub fn has_now(&self, req: &PkgRequest) -> bool {
-		self.packages.contains_key(req)
-	}
 }
 
 #[cfg(test)]
@@ -198,7 +205,13 @@ mod tests {
 			1,
 			&PathBuf::from("./test"),
 		);
-		let req = PkgRequest::new("test", PkgRequestSource::UserRequire);
+		let req = PkgRequest::new(
+			"test",
+			PkgRequestSource::Dependency(Box::new(PkgRequest::new(
+				"hello",
+				PkgRequestSource::UserRequire,
+			))),
+		);
 		assert!(reg.has_now(&req));
 		assert!(!reg.has_now(&PkgRequest::new(
 			"doesnotexist",
