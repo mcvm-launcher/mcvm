@@ -13,7 +13,7 @@ use self::eval::EvalPermissions;
 use self::reg::PkgRequest;
 use anyhow::Context;
 use mcvm_parse::metadata::{eval_metadata, PackageMetadata};
-use mcvm_parse::parse::Parsed;
+use mcvm_parse::parse::{Parsed, lex_and_parse};
 use mcvm_shared::pkg::PkgIdentifier;
 
 static PKG_EXTENSION: &str = ".pkg.txt";
@@ -110,6 +110,21 @@ impl Package {
 				}
 			};
 		}
+		Ok(())
+	}
+
+	/// Parse the contents of the package
+	pub async fn parse(&mut self, paths: &Paths) -> anyhow::Result<()> {
+		self.ensure_loaded(paths, false).await?;
+		let data = self.data.get_mut();
+		if !data.parsed.is_empty() {
+			return Ok(());
+		}
+
+		let parsed = lex_and_parse(&data.contents)?;
+
+		data.parsed.fill(parsed);
+
 		Ok(())
 	}
 
