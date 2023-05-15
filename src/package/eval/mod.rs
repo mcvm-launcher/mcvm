@@ -118,40 +118,12 @@ impl EvalData {
 
 /// Result from an evaluation subfunction. We merge this with the main EvalData
 pub struct EvalResult {
-	vars_to_set: HashMap<String, String>,
 	finish: bool,
-	addon_reqs: Vec<AddonRequest>,
-	deps: Vec<Vec<RequiredPackage>>,
-	conflicts: Vec<String>,
-	recommendations: Vec<String>,
-	bundled: Vec<String>,
-	compats: Vec<(String, String)>,
 }
 
 impl EvalResult {
 	pub fn new() -> Self {
-		Self {
-			vars_to_set: HashMap::new(),
-			finish: false,
-			addon_reqs: Vec::new(),
-			deps: Vec::new(),
-			conflicts: Vec::new(),
-			recommendations: Vec::new(),
-			bundled: Vec::new(),
-			compats: Vec::new(),
-		}
-	}
-
-	/// Merge multiple EvalResults
-	pub fn merge(&mut self, other: EvalResult) {
-		self.vars_to_set.extend(other.vars_to_set);
-		self.finish = other.finish;
-		self.addon_reqs.extend(other.addon_reqs);
-		self.deps.extend(other.deps);
-		self.conflicts.extend(other.conflicts);
-		self.recommendations.extend(other.recommendations);
-		self.bundled.extend(other.bundled);
-		self.compats.extend(other.compats);
+		Self { finish: false }
 	}
 }
 
@@ -185,16 +157,7 @@ impl Package {
 		let mut eval = EvalData::new(constants.clone(), self.id.clone(), &routine);
 
 		for instr in &block.contents {
-			let result = eval_instr(instr, &eval, &parsed.blocks)?;
-			for (var, val) in result.vars_to_set {
-				eval.vars.insert(var, val);
-			}
-			eval.addon_reqs.extend(result.addon_reqs);
-			eval.deps.extend(result.deps);
-			eval.conflicts.extend(result.conflicts);
-			eval.recommendations.extend(result.recommendations);
-			eval.bundled.extend(result.bundled);
-			eval.compats.extend(result.compats);
+			let result = eval_instr(instr, &mut eval, &parsed.blocks)?;
 			if result.finish {
 				break;
 			}
@@ -207,23 +170,17 @@ impl Package {
 /// Evaluate a block of instructions
 fn eval_block(
 	block: &Block,
-	eval: &EvalData,
+	eval: &mut EvalData,
 	blocks: &HashMap<BlockId, Block>,
 ) -> anyhow::Result<EvalResult> {
-	// We clone this so that state can be changed between each instruction
-	let mut eval_clone = eval.clone();
 	let mut out = EvalResult::new();
 
 	for instr in &block.contents {
-		let result = eval_instr(instr, &eval_clone, blocks)?;
-		for (var, val) in result.vars_to_set.clone() {
-			eval_clone.vars.insert(var, val);
-		}
+		let result = eval_instr(instr, eval, blocks)?;
 		if result.finish {
 			out.finish = true;
 			break;
 		}
-		out.merge(result);
 	}
 
 	Ok(out)
@@ -232,7 +189,7 @@ fn eval_block(
 /// Evaluate an instruction
 pub fn eval_instr(
 	instr: &Instruction,
-	eval: &EvalData,
+	eval: &mut EvalData,
 	blocks: &HashMap<BlockId, Block>,
 ) -> anyhow::Result<EvalResult> {
 	let mut out = EvalResult::new();
@@ -240,14 +197,12 @@ pub fn eval_instr(
 		EvalLevel::Install | EvalLevel::Resolve => match &instr.kind {
 			InstrKind::If(condition, block) => {
 				if eval_condition(&condition.kind, eval)? {
-					let result =
-						eval_block(blocks.get(block).expect("If block missing"), eval, blocks)?;
-					out.merge(result);
+					eval_block(blocks.get(block).expect("If block missing"), eval, blocks)?;
 				}
 			}
 			InstrKind::Set(var, val) => {
 				let var = var.as_ref().expect("Set variable missing");
-				out.vars_to_set.insert(var.to_owned(), val.get(&eval.vars)?);
+				eval.vars.insert(var.to_owned(), val.get(&eval.vars)?);
 			}
 			InstrKind::Finish() => out.finish = true,
 			InstrKind::Fail(reason) => {
@@ -265,28 +220,28 @@ pub fn eval_instr(
 								explicit: dep.explicit,
 							});
 						}
-						out.deps.push(dep_to_push);
+						eval.deps.push(dep_to_push);
 					}
 				}
 			}
 			InstrKind::Refuse(package) => {
 				if let EvalLevel::Resolve = eval.level {
-					out.conflicts.push(package.get(&eval.vars)?);
+					eval.conflicts.push(package.get(&eval.vars)?);
 				}
 			}
 			InstrKind::Recommend(package) => {
 				if let EvalLevel::Resolve = eval.level {
-					out.recommendations.push(package.get(&eval.vars)?);
+					eval.recommendations.push(package.get(&eval.vars)?);
 				}
 			}
 			InstrKind::Bundle(package) => {
 				if let EvalLevel::Resolve = eval.level {
-					out.bundled.push(package.get(&eval.vars)?);
+					eval.bundled.push(package.get(&eval.vars)?);
 				}
 			}
 			InstrKind::Compat(package, compat) => {
 				if let EvalLevel::Resolve = eval.level {
-					out.compats
+					eval.compats
 						.push((package.get(&eval.vars)?, compat.get(&eval.vars)?));
 				}
 			}
@@ -321,7 +276,7 @@ pub fn eval_instr(
 
 					if let Value::Constant(..) | Value::Var(..) = url {
 						let location = AddonLocation::Remote(url.get(&eval.vars)?);
-						out.addon_reqs
+						eval.addon_reqs
 							.push(AddonRequest::new(addon, location, *force));
 					} else if let Value::Constant(..) | Value::Var(..) = path {
 						let path = path.get(&eval.vars)?;
@@ -330,7 +285,7 @@ pub fn eval_instr(
 								let path = String::from(shellexpand::tilde(&path));
 								let path = PathBuf::from(path);
 								let location = AddonLocation::Local(path);
-								out.addon_reqs
+								eval.addon_reqs
 									.push(AddonRequest::new(addon, location, *force));
 							}
 							_ => {
