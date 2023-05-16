@@ -1,5 +1,5 @@
 @meta {
-	name "CEM Support";
+	name "Custom Entity Models Support";
 	description "Installs mods to support Custom Entity Models in resource packs";
 	authors "CarbonSmasher";
 }
@@ -7,6 +7,10 @@
 @install {
 	if modloader forge {
 		require <"optifine">;
+		finish;
+	}
+	if modloader fabriclike {
+		require "custom-entity-models";
 		finish;
 	}
 	fail unsupported_modloader;

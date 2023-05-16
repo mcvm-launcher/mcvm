@@ -1,0 +1,28 @@
+@meta {
+	name "Optifine Resource Packs Support";
+	description "Bundles all the mods necessary to support features in Optifine resource packs";
+	authors "CarbonSmasher";
+}
+
+@install {
+	if modloader forge {
+		require <"optifine">;
+		finish;
+	}
+	if modloader fabriclike {
+		bundle "animated-textures-support";
+		bundle "cem-support";
+		bundle "cit-support";
+		bundle "ctm-support";
+		bundle "custom-colors-support";
+		bundle "custom-gui-support";
+		bundle "custom-sky-support";
+		bundle "emissive-blocks-support";
+		bundle "emissive-entities-support";
+		bundle "random-entities-support";
+		bundle "splash-screen-support";
+		
+		finish;
+	}
+	fail unsupported_modloader;
+}

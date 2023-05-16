@@ -1,6 +1,6 @@
 @meta {
-	name "Custom Item Textures Support";
-	description "Installs mods to support Custom Item Textures in resource packs";
+	name "Custom Skies Support";
+	description "Installs mods to support custom skies in resource packs";
 	authors "CarbonSmasher";
 }
 
@@ -10,7 +10,7 @@
 		finish;
 	}
 	if modloader fabriclike {
-		require "cit-resewn";
+		require "fabric-skyboxes" "fabric-skyboxes-interop";
 		finish;
 	}
 	fail unsupported_modloader;
