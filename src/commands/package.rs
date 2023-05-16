@@ -31,6 +31,7 @@ cached locally, but all currently cached package scripts will be removed"
 		long_about = "Print the contents of any package to standard out.
 This package does not need to be installed, it just has to be in the index."
 	)]
+	#[clap(alias = "print")]
 	Cat {
 		/// Whether to remove formatting and warnings from the output
 		#[arg(short, long)]

@@ -68,15 +68,6 @@ pub enum Command {
 	},
 	#[command(about = "Launch instances to play the game")]
 	Launch {
-		/// Whether to print the command that was generated when launching
-		#[arg(short, long)]
-		debug: bool,
-		/// An optional Minecraft session token to override with
-		#[arg(long)]
-		token: Option<String>,
-		/// An optional user to choose when launching
-		#[arg(short, long)]
-		user: Option<String>,
 		/// The instance to launch
 		instance: String,
 	},
@@ -123,12 +114,7 @@ pub async fn run_cli(data: &mut CmdData) -> anyhow::Result<()> {
 	match cli.command {
 		Command::Profile { command } => profile::run(command, data).await,
 		Command::User { command } => user::run(command, data).await,
-		Command::Launch {
-			debug,
-			token,
-			user,
-			instance,
-		} => instance::launch(&instance, debug, token, user, data).await,
+		Command::Launch { instance } => instance::launch(&instance, false, None, None, data).await,
 		Command::Version => {
 			print_version();
 			Ok(())
