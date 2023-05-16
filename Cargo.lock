@@ -850,7 +850,7 @@ dependencies = [
 
 [[package]]
 name = "mcvm"
-version = "0.4.5"
+version = "0.4.6"
 dependencies = [
  "anyhow",
  "bytes",
@@ -876,7 +876,7 @@ dependencies = [
 
 [[package]]
 name = "mcvm_parse"
-version = "0.0.6"
+version = "0.0.7"
 dependencies = [
  "anyhow",
  "color-print",
@@ -885,7 +885,7 @@ dependencies = [
 
 [[package]]
 name = "mcvm_shared"
-version = "0.0.3"
+version = "0.0.4"
 dependencies = [
  "anyhow",
  "serde",
