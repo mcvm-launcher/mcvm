@@ -1,4 +1,4 @@
-use anyhow::{bail, Context};
+use anyhow::{Context, anyhow};
 use mcvm_parse::metadata::PackageMetadata;
 use serde::{Deserialize, Serialize};
 
@@ -115,18 +115,19 @@ impl PkgRegistry {
 	) -> anyhow::Result<&mut Package> {
 		let pkg_name = req.name.clone();
 
-		// Check if it is a core package first
-		if get_core_package(&req.name).is_some() {
-			return Ok(self.insert(req, Package::new(&pkg_name, 1, PkgKind::Core)));
-		}
-
-		// Now check the remote repositories
-		match query_all(&mut self.repos, &pkg_name, paths).await? {
-			Some((url, version)) => Ok(self.insert(
+		// First check the remote repositories
+		if let Some((url, version)) = query_all(&mut self.repos, &pkg_name, paths).await? {
+			return Ok(self.insert(
 				req,
 				Package::new(&pkg_name, version, PkgKind::Remote(Some(url))),
-			)),
-			None => bail!("Package {pkg_name} was not found"),
+			));
+		}
+
+		// Now check if it exists as a core package
+		if get_core_package(&req.name).is_some() {
+			Ok(self.insert(req, Package::new(&pkg_name, 1, PkgKind::Core)))
+		} else {
+			Err(anyhow!("Package '{pkg_name}' does not exist"))
 		}
 	}
 
