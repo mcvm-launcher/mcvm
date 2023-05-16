@@ -69,7 +69,7 @@ impl Display for PkgRequest {
 
 /// What strategy to use for the local caching of package scripts
 #[derive(Debug, Clone, Deserialize, Serialize, Default)]
-#[serde(rename = "snake_case")]
+#[serde(rename_all = "snake_case")]
 pub enum CachingStrategy {
 	/// Don't cache any packages locally. Fetch them from the repository every time
 	None,
