@@ -1,15 +1,18 @@
 #![allow(dead_code)]
 use std::fs::File;
 
-use anyhow::Context;
+use anyhow::{anyhow, Context};
 
 use crate::io::files::paths::Paths;
 
-use super::{profile::ProfileConfig, user::UserConfig, Config, ConfigDeser};
+use super::{
+	package::PackageConfig, profile::ProfileConfig, user::UserConfig, Config, ConfigDeser,
+};
 
 pub enum ConfigModification {
 	AddUser(String, UserConfig),
 	AddProfile(String, ProfileConfig),
+	AddPackage(String, PackageConfig),
 }
 
 /// Applies modifications to the config
@@ -24,6 +27,13 @@ pub fn apply_modifications(
 			}
 			ConfigModification::AddProfile(id, profile) => {
 				config.profiles.insert(id, profile);
+			}
+			ConfigModification::AddPackage(id, package) => {
+				let profile = config
+					.profiles
+					.get_mut(&id)
+					.ok_or(anyhow!("Unknown profile '{id}'"))?;
+				profile.packages.push(package);
 			}
 		};
 	}
