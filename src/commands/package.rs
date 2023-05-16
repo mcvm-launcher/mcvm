@@ -57,19 +57,17 @@ async fn list(data: &mut CmdData, raw: bool, profile: Option<String>) -> anyhow:
 				for pkg in &profile.packages {
 					println!("{}", pkg.req);
 				}
+			} else if profile.packages.is_empty() {
+				cprintln!("<s>Profile <b>{}</b> has no packages installed", profile_id);
 			} else {
-				if profile.packages.is_empty() {
-					cprintln!("<s>Profile <b>{}</b> has no packages installed", profile_id);
-				} else {
-					cprintln!("<s>Packages in profile <b>{}</b>:", profile_id);
-					for pkg in &profile.packages {
-						let version = config
-							.packages
-							.get_version(&pkg.req, paths)
-							.await
-							.context("Failed to get version of package")?;
-						cprintln!("{}<b!>{}</>:<b!>{}</>", HYPHEN_POINT, pkg.req, version);
-					}
+				cprintln!("<s>Packages in profile <b>{}</b>:", profile_id);
+				for pkg in &profile.packages {
+					let version = config
+						.packages
+						.get_version(&pkg.req, paths)
+						.await
+						.context("Failed to get version of package")?;
+					cprintln!("{}<b!>{}</>:<b!>{}</>", HYPHEN_POINT, pkg.req, version);
 				}
 			}
 		} else {

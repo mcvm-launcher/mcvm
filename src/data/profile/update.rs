@@ -286,23 +286,23 @@ async fn update_profile_packages(
 	lock: &mut Lockfile,
 ) -> anyhow::Result<()> {
 	let mut printer = ReplPrinter::new(true);
-	let resolved = resolve(&profile.packages, &constants, paths, reg)
+	let resolved = resolve(&profile.packages, constants, paths, reg)
 		.await
 		.context("Failed to resolve package dependencies")?;
 	for pkg in &resolved {
 		let pkg_version = reg
-			.get_version(&pkg, paths)
+			.get_version(pkg, paths)
 			.await
 			.context("Failed to get version for package")?;
 		for instance_id in &profile.instances {
 			if let Some(instance) = instances.get(instance_id) {
 				if let InstKind::Client { .. } = instance.kind {
-					printer.print(&format_package_print(&pkg, Some(instance_id), "Installing..."));
+					printer.print(&format_package_print(pkg, Some(instance_id), "Installing..."));
 					instance
 						.install_package(
-							&pkg,
+							pkg,
 							pkg_version,
-							&constants,
+							constants,
 							reg,
 							paths,
 							lock,
@@ -314,7 +314,7 @@ async fn update_profile_packages(
 				}
 			}
 		}
-		printer.print(&format_package_print(&pkg, None, &cformat!("<g>Installed.")));
+		printer.print(&format_package_print(pkg, None, &cformat!("<g>Installed.")));
 		printer.newline();
 	}
 	for instance_id in profile.instances.iter() {

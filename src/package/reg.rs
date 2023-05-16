@@ -22,9 +22,9 @@ pub enum PkgRequestSource {
 
 impl PkgRequestSource {
 	/// Gets the source package of this package, if any
-	pub fn get_source<'a>(&'a self) -> Option<&'a PkgRequest> {
+	pub fn get_source(& self) -> Option<&PkgRequest> {
 		match self {
-			Self::Dependency(source) => Some(&source),
+			Self::Dependency(source) => Some(source),
 			_ => None,
 		}
 	}
@@ -163,10 +163,10 @@ impl PkgRegistry {
 		paths: &Paths,
 	) -> anyhow::Result<&'a PackageMetadata> {
 		let pkg = self.ensure_package_contents(req, paths).await?;
-		Ok(pkg
+		pkg
 			.get_metadata(paths)
 			.await
-			.context("Failed to get metadata from package")?)
+			.context("Failed to get metadata from package")
 	}
 
 	/// Load the contents of a package

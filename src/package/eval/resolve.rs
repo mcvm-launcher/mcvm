@@ -120,8 +120,8 @@ impl Resolver {
 
 	/// Creates an error if this package is disallowed in the constraints
 	pub fn check_constraints(&self, req: &PkgRequest) -> anyhow::Result<()> {
-		if self.is_refused(&req) {
-			let refusers = self.get_refusers(&req);
+		if self.is_refused(req) {
+			let refusers = self.get_refusers(req);
 			bail!(
 				"Package '{req}' is incompatible with existing packages {}",
 				refusers.join(", ")
