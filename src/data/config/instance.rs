@@ -370,21 +370,10 @@ pub fn read_instance_config(
 				options,
 				window,
 				..
-			} => (
-				InstKind::Client {
-					options,
-					window,
-				},
-				launch,
-			),
+			} => (InstKind::Client { options, window }, launch),
 			FullInstanceConfig::Server {
 				launch, options, ..
-			} => (
-				InstKind::Server {
-					options,
-				},
-				launch,
-			),
+			} => (InstKind::Server { options }, launch),
 		},
 	};
 

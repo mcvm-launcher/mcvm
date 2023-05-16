@@ -107,7 +107,10 @@ impl PkgRepo {
 	}
 
 	/// Get all packages from this repo
-	pub async fn get_all_packages(&mut self, paths: &Paths) -> anyhow::Result<Vec<(String, PkgEntry)>> {
+	pub async fn get_all_packages(
+		&mut self,
+		paths: &Paths,
+	) -> anyhow::Result<Vec<(String, PkgEntry)>> {
 		self.ensure_index(paths).await?;
 		let index = self.index.get();
 		Ok(index

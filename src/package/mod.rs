@@ -13,7 +13,7 @@ use self::eval::EvalPermissions;
 use self::reg::PkgRequest;
 use anyhow::Context;
 use mcvm_parse::metadata::{eval_metadata, PackageMetadata};
-use mcvm_parse::parse::{Parsed, lex_and_parse};
+use mcvm_parse::parse::{lex_and_parse, Parsed};
 use mcvm_shared::pkg::PkgIdentifier;
 
 static PKG_EXTENSION: &str = ".pkg.txt";

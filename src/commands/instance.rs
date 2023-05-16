@@ -1,4 +1,4 @@
-use anyhow::{Context, ensure, anyhow};
+use anyhow::{anyhow, ensure, Context};
 use clap::Subcommand;
 use color_print::cprintln;
 use mcvm::data::user::AuthState;
@@ -62,11 +62,17 @@ pub async fn launch(
 	let config = data.config.get_mut();
 
 	if let Some(user) = user {
-		ensure!(config.auth.users.contains_key(&user), "User '{user}' does not exist");
+		ensure!(
+			config.auth.users.contains_key(&user),
+			"User '{user}' does not exist"
+		);
 		config.auth.state = AuthState::Authed(user);
 	}
 
-	let instance = config.instances.get_mut(instance).ok_or(anyhow!("Unknown instance '{instance}'"))?;
+	let instance = config
+		.instances
+		.get_mut(instance)
+		.ok_or(anyhow!("Unknown instance '{instance}'"))?;
 	let (.., profile) = config
 		.profiles
 		.iter()

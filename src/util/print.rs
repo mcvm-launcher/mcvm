@@ -1,7 +1,7 @@
-use std::io::{Stdout, Write};
 use std::fmt::Debug;
+use std::io::{Stdout, Write};
 
-use color_print::{cstr, cformat};
+use color_print::{cformat, cstr};
 
 /// A nice colored bullet point for terminal output
 pub static HYPHEN_POINT: &str = cstr!("<k!> - </k!>");

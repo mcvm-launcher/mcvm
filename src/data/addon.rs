@@ -66,7 +66,10 @@ impl AddonRequest {
 
 /// Checks if the modloader and plugin loader are compatible with each other
 pub fn game_modifications_compatible(modloader: &Modloader, plugin_loader: &PluginLoader) -> bool {
-	matches!((modloader, plugin_loader), (Modloader::Vanilla, _) | (_, PluginLoader::Vanilla))
+	matches!(
+		(modloader, plugin_loader),
+		(Modloader::Vanilla, _) | (_, PluginLoader::Vanilla)
+	)
 }
 
 #[cfg(test)]

@@ -38,8 +38,10 @@ impl UserConfig {
 			UserVariant::Microsoft { uuid } | UserVariant::Demo { uuid } => {
 				match uuid {
 					Some(uuid) => user.set_uuid(uuid),
-					None => if show_warnings {
-						cprintln!("<y>Warning: It is recommended to have your uuid in the configuration for user {}", id);
+					None => {
+						if show_warnings {
+							cprintln!("<y>Warning: It is recommended to have your uuid in the configuration for user {}", id);
+						}
 					}
 				};
 			}

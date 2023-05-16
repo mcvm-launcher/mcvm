@@ -48,7 +48,7 @@ pub fn apply_modifications_and_write(
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use crate::data::config::{user::UserVariant, preferences::PrefDeser};
+	use crate::data::config::{preferences::PrefDeser, user::UserVariant};
 
 	use std::collections::HashMap;
 

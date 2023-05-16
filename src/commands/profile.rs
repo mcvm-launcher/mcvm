@@ -101,12 +101,7 @@ async fn list(data: &mut CmdData, raw: bool) -> anyhow::Result<()> {
 	Ok(())
 }
 
-async fn update(
-	data: &mut CmdData,
-	ids: &[String],
-	force: bool,
-	all: bool,
-) -> anyhow::Result<()> {
+async fn update(data: &mut CmdData, ids: &[String], force: bool, all: bool) -> anyhow::Result<()> {
 	data.ensure_paths().await?;
 	data.ensure_config(true).await?;
 	let paths = data.paths.get();

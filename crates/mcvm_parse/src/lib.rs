@@ -3,8 +3,8 @@ use std::{collections::HashMap, fmt::Display};
 pub mod conditions;
 pub mod instruction;
 pub mod lex;
-pub mod parse;
 pub mod metadata;
+pub mod parse;
 pub mod routine;
 
 use anyhow::{anyhow, bail};

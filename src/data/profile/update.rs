@@ -15,9 +15,9 @@ use crate::io::Later;
 use crate::net::fabric_quilt::{self, FabricQuiltMeta};
 use crate::net::minecraft::{assets, game_jar, libraries, version_manifest};
 use crate::net::paper;
-use crate::package::eval::{EvalConstants, EvalPermissions};
-use crate::package::reg::{PkgRequest, PkgRegistry};
 use crate::package::eval::resolve::resolve;
+use crate::package::eval::{EvalConstants, EvalPermissions};
+use crate::package::reg::{PkgRegistry, PkgRequest};
 use crate::util::print::{ReplPrinter, HYPHEN_POINT};
 use crate::util::versions::MinecraftVersion;
 use crate::util::{json, print::PrintOptions};
@@ -297,19 +297,18 @@ async fn update_profile_packages(
 		for instance_id in &profile.instances {
 			if let Some(instance) = instances.get(instance_id) {
 				if let InstKind::Client { .. } = instance.kind {
-					printer.print(&format_package_print(pkg, Some(instance_id), "Installing..."));
+					printer.print(&format_package_print(
+						pkg,
+						Some(instance_id),
+						"Installing...",
+					));
 					instance
-						.install_package(
-							pkg,
-							pkg_version,
-							constants,
-							reg,
-							paths,
-							lock,
-						)
+						.install_package(pkg, pkg_version, constants, reg, paths, lock)
 						.await
 						.with_context(|| {
-							format!("Failed to install package '{pkg}' for instance '{instance_id}'")
+							format!(
+								"Failed to install package '{pkg}' for instance '{instance_id}'"
+							)
 						})?;
 				}
 			}
@@ -344,7 +343,13 @@ async fn update_profile_packages(
 /// Creates the print message for package installation when updating profiles
 fn format_package_print(pkg: &PkgRequest, instance: Option<&str>, message: &str) -> String {
 	if let Some(instance) = instance {
-		cformat!("{}[<c>{}</c>] (<b!>{}</b!>) {}", HYPHEN_POINT, pkg, instance, message)
+		cformat!(
+			"{}[<c>{}</c>] (<b!>{}</b!>) {}",
+			HYPHEN_POINT,
+			pkg,
+			instance,
+			message
+		)
 	} else {
 		cformat!("{}[<c>{}</c>] {}", HYPHEN_POINT, pkg, message)
 	}
@@ -417,7 +422,7 @@ pub async fn update_profiles(
 
 				if !profile.packages.is_empty() {
 					cprintln!("<s>Updating packages");
-					
+
 					// Make sure all packages in the profile are in the registry first
 					for pkg in &profile.packages {
 						config.packages.ensure_package(&pkg.req, paths).await?;
@@ -432,9 +437,25 @@ pub async fn update_profiles(
 						versions: version_list.clone(),
 						perms: EvalPermissions::Standard,
 					};
-					update_profile_packages(profile, paths, &mut config.packages, &config.instances, &constants, &mut lock).await?;
+					update_profile_packages(
+						profile,
+						paths,
+						&mut config.packages,
+						&config.instances,
+						&constants,
+						&mut lock,
+					)
+					.await?;
 					constants.side = Side::Server;
-					update_profile_packages(profile, paths, &mut config.packages, &config.instances, &constants, &mut lock).await?;
+					update_profile_packages(
+						profile,
+						paths,
+						&mut config.packages,
+						&config.instances,
+						&constants,
+						&mut lock,
+					)
+					.await?;
 					cprintln!("<g>All packages installed.");
 				}
 			}

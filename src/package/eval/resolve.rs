@@ -142,7 +142,7 @@ impl Resolver {
 					});
 					self.tasks.push_back(Task::EvalPackage {
 						dest: compat_package.clone(),
-						constants: None
+						constants: None,
 					});
 				}
 			}
