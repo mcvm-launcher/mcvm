@@ -196,7 +196,7 @@ pub fn eval_instr(
 		EvalLevel::Install | EvalLevel::Resolve => match &instr.kind {
 			InstrKind::If(condition, block) => {
 				if eval_condition(&condition.kind, eval)? {
-					eval_block(blocks.get(block).expect("If block missing"), eval, blocks)?;
+					out = eval_block(blocks.get(block).expect("If block missing"), eval, blocks)?;
 				}
 			}
 			InstrKind::Set(var, val) => {
