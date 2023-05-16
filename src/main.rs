@@ -1,9 +1,4 @@
 mod commands;
-mod data;
-mod io;
-mod net;
-mod package;
-mod util;
 
 use std::process::ExitCode;
 

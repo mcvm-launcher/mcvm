@@ -1,7 +1,7 @@
 use super::CmdData;
-use crate::data::instance::InstKind;
-use crate::data::profile::update::update_profiles;
-use crate::util::print::HYPHEN_POINT;
+use mcvm::data::instance::InstKind;
+use mcvm::data::profile::update::update_profiles;
+use mcvm::util::print::HYPHEN_POINT;
 
 use anyhow::bail;
 use anyhow::Context;

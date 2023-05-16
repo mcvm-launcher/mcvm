@@ -1,6 +1,6 @@
 use super::CmdData;
-use crate::data::user::UserKind;
-use crate::util::print::HYPHEN_POINT;
+use mcvm::data::user::UserKind;
+use mcvm::util::print::HYPHEN_POINT;
 
 use clap::Subcommand;
 use color_print::{cprint, cprintln};

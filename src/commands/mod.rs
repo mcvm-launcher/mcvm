@@ -8,9 +8,9 @@ use anyhow::Context;
 use clap::{Parser, Subcommand};
 use color_print::cprintln;
 
-use crate::data::config::Config;
-use crate::io::files::paths::Paths;
-use crate::io::Later;
+use mcvm::data::config::Config;
+use mcvm::io::files::paths::Paths;
+use mcvm::io::Later;
 
 use self::files::FilesSubcommand;
 use self::instance::InstanceSubcommand;

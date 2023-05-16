@@ -1,9 +1,9 @@
 use anyhow::{Context, ensure, anyhow};
 use clap::Subcommand;
 use color_print::cprintln;
-use crate::data::user::AuthState;
+use mcvm::data::user::AuthState;
 
-use crate::{data::instance::InstKind, util::print::HYPHEN_POINT};
+use mcvm::{data::instance::InstKind, util::print::HYPHEN_POINT};
 
 use super::CmdData;
 

@@ -1,8 +1,8 @@
 use std::collections::HashMap;
 
 use super::CmdData;
-use crate::package::reg::{PkgRequest, PkgRequestSource};
-use crate::util::print::{ReplPrinter, HYPHEN_POINT};
+use mcvm::package::reg::{PkgRequest, PkgRequestSource};
+use mcvm::util::print::{ReplPrinter, HYPHEN_POINT};
 
 use anyhow::{bail, Context};
 use clap::Subcommand;
