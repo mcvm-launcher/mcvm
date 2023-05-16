@@ -9,5 +9,9 @@
 		require <"optifine">;
 		finish;
 	}
+	if modloader fabriclike {
+		require "continuity";
+		finish;
+	}
 	fail unsupported_modloader;
 }
