@@ -48,7 +48,7 @@ pub fn apply_modifications_and_write(
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use crate::data::config::user::UserVariant;
+	use crate::data::config::{user::UserVariant, preferences::PrefDeser};
 
 	use std::collections::HashMap;
 
@@ -59,7 +59,7 @@ mod tests {
 			default_user: None,
 			profiles: HashMap::new(),
 			instance_presets: HashMap::new(),
-			preferences: None,
+			preferences: PrefDeser::default(),
 		};
 
 		let user_config = UserConfig {

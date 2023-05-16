@@ -130,13 +130,12 @@ async fn sync(data: &mut CmdData) -> anyhow::Result<()> {
 		printer.print(&cformat!("<g>Synced repository <b!>{}</b!>", repo.id));
 		cprintln!();
 	}
-	printer.finish();
-	cprintln!("<s>Removing cached packages...");
-	for (_, profile) in config.profiles.iter() {
-		for pkg in profile.packages.iter() {
-			config.packages.remove_cached(&pkg.req, paths).await?;
-		}
-	}
+	printer.print(&cformat!("<s>Updating packages..."));
+	config
+		.packages
+		.update_cached_packages(paths)
+		.await
+		.context("Failed to update cached packages")?;
 
 	Ok(())
 }
@@ -148,7 +147,7 @@ async fn cat(data: &mut CmdData, name: &str, raw: bool) -> anyhow::Result<()> {
 	let config = data.config.get_mut();
 
 	let req = PkgRequest::new(name, PkgRequestSource::UserRequire);
-	let contents = config.packages.load(&req, false, paths).await?;
+	let contents = config.packages.load(&req, paths).await?;
 	if !raw {
 		cprintln!("<s,b>Contents of package <g>{}</g>:</s,b>", req);
 	}

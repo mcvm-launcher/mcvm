@@ -91,7 +91,7 @@ impl PkgRepo {
 		self.url.clone() + "/api/mcvm/index.json"
 	}
 
-	/// Ask if the index has a package and return the url for that package if it exists
+	/// Ask if the index has a package and return the url and version for that package if it exists
 	pub async fn query(
 		&mut self,
 		id: &str,
@@ -104,6 +104,17 @@ impl PkgRepo {
 		}
 
 		Ok(None)
+	}
+
+	/// Get all packages from this repo
+	pub async fn get_all_packages(&mut self, paths: &Paths) -> anyhow::Result<Vec<(String, u32)>> {
+		self.ensure_index(paths).await?;
+		let index = self.index.get();
+		Ok(index
+			.packages
+			.iter()
+			.map(|(_, x)| (x.url.clone(), x.version))
+			.collect())
 	}
 }
 
@@ -126,4 +137,22 @@ pub async fn query_all(
 		}
 	}
 	Ok(None)
+}
+
+/// Get all packages from a list of repositories with the normal priority order
+pub async fn get_all_packages(
+	repos: &mut [PkgRepo],
+	paths: &Paths,
+) -> anyhow::Result<Vec<(String, u32)>> {
+	// Iterate in reverse to make sure that repos at the beginning take precendence
+	let mut out = Vec::new();
+	for repo in repos.iter_mut().rev() {
+		let packages = repo
+			.get_all_packages(paths)
+			.await
+			.with_context(|| format!("Failed to get all packages from repository '{}'", repo.id))?;
+		out.extend(packages);
+	}
+
+	Ok(out)
 }

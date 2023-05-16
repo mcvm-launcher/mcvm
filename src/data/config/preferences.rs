@@ -1,5 +1,5 @@
-use crate::net::download::validate_url;
 use crate::package::repo::PkgRepo;
+use crate::{net::download::validate_url, package::reg::CachingStrategy};
 
 use anyhow::Context;
 use serde::{Deserialize, Serialize};
@@ -22,42 +22,45 @@ pub struct RepositoriesDeser {
 #[serde(default)]
 pub struct PrefDeser {
 	repositories: RepositoriesDeser,
+	package_caching_strategy: CachingStrategy,
 }
 
 #[derive(Debug)]
-pub struct ConfigPreferences {}
+pub struct ConfigPreferences {
+	pub package_caching_strategy: CachingStrategy,
+}
 
 impl ConfigPreferences {
 	/// Convert deserialized preferences to the stored format and returns
 	/// a list of repositories to add.
-	pub fn read(prefs: &Option<PrefDeser>) -> anyhow::Result<(Self, Vec<PkgRepo>)> {
-		match prefs {
-			Some(prefs) => {
-				let mut repositories = Vec::new();
-				for repo in prefs.repositories.preferred.iter() {
-					repositories.push(PkgRepo::new(&repo.id, &repo.url));
-				}
-				for repo in prefs.repositories.backup.iter() {
-					repositories.push(PkgRepo::new(&repo.id, &repo.url));
-				}
-
-				for repo in prefs
-					.repositories
-					.preferred
-					.iter()
-					.chain(prefs.repositories.backup.iter())
-				{
-					validate_url(&repo.url).with_context(|| {
-						format!(
-							"Invalid url '{}' in package repository '{}'",
-							repo.url, repo.id
-						)
-					})?;
-				}
-
-				Ok((Self {}, repositories))
-			}
-			None => Ok((Self {}, vec![])),
+	pub fn read(prefs: &PrefDeser) -> anyhow::Result<(Self, Vec<PkgRepo>)> {
+		let mut repositories = Vec::new();
+		for repo in prefs.repositories.preferred.iter() {
+			repositories.push(PkgRepo::new(&repo.id, &repo.url));
 		}
+		for repo in prefs.repositories.backup.iter() {
+			repositories.push(PkgRepo::new(&repo.id, &repo.url));
+		}
+
+		for repo in prefs
+			.repositories
+			.preferred
+			.iter()
+			.chain(prefs.repositories.backup.iter())
+		{
+			validate_url(&repo.url).with_context(|| {
+				format!(
+					"Invalid url '{}' in package repository '{}'",
+					repo.url, repo.id
+				)
+			})?;
+		}
+
+		Ok((
+			Self {
+				package_caching_strategy: prefs.package_caching_strategy.clone(),
+			},
+			repositories,
+		))
 	}
 }

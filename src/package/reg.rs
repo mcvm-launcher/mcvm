@@ -1,5 +1,6 @@
 use anyhow::{bail, Context};
 use mcvm_parse::metadata::PackageMetadata;
+use serde::{Deserialize, Serialize};
 
 use super::eval::{EvalConstants, EvalData, Routine};
 use super::repo::{query_all, PkgRepo};
@@ -16,6 +17,7 @@ use std::path::Path;
 pub enum PkgRequestSource {
 	UserRequire,
 	Dependency(Box<PkgRequest>),
+	Repository,
 }
 
 impl PkgRequestSource {
@@ -64,17 +66,32 @@ impl Display for PkgRequest {
 	}
 }
 
+/// What strategy to use for the local caching of package scripts
+#[derive(Debug, Clone, Deserialize, Serialize, Default)]
+#[serde(rename = "snake_case")]
+pub enum CachingStrategy {
+	/// Don't cache any packages locally. Fetch them from the repository every time
+	None,
+	/// Only cache packages when they are requested
+	#[default]
+	Lazy,
+	/// Cache all packages whenever syncing the repositories
+	All,
+}
+
 #[derive(Debug)]
 pub struct PkgRegistry {
 	pub repos: Vec<PkgRepo>,
 	packages: HashMap<PkgRequest, Package>,
+	caching_strategy: CachingStrategy,
 }
 
 impl PkgRegistry {
-	pub fn new(repos: Vec<PkgRepo>) -> Self {
+	pub fn new(repos: Vec<PkgRepo>, caching_strategy: CachingStrategy) -> Self {
 		Self {
 			repos,
 			packages: HashMap::new(),
+			caching_strategy,
 		}
 	}
 
@@ -114,6 +131,18 @@ impl PkgRegistry {
 		}
 	}
 
+	/// Ensure package contents while following the caching strategy
+	async fn ensure_package_contents(
+		&mut self,
+		req: &PkgRequest,
+		paths: &Paths,
+	) -> anyhow::Result<&mut Package> {
+		let force = matches!(self.caching_strategy, CachingStrategy::None);
+		let pkg = self.get(req, paths).await?;
+		pkg.ensure_loaded(paths, force).await?;
+		Ok(pkg)
+	}
+
 	/// Ensure that a package is in the registry
 	pub async fn ensure_package(&mut self, req: &PkgRequest, paths: &Paths) -> anyhow::Result<()> {
 		self.get(req, paths).await?;
@@ -133,22 +162,20 @@ impl PkgRegistry {
 		req: &PkgRequest,
 		paths: &Paths,
 	) -> anyhow::Result<&'a PackageMetadata> {
-		let pkg = self.get(req, paths).await?;
+		let pkg = self.ensure_package_contents(req, paths).await?;
 		Ok(pkg
 			.get_metadata(paths)
 			.await
 			.context("Failed to get metadata from package")?)
 	}
 
-	/// Load a package
+	/// Load the contents of a package
 	pub async fn load(
 		&mut self,
 		req: &PkgRequest,
-		force: bool,
 		paths: &Paths,
 	) -> anyhow::Result<String> {
-		let pkg = self.get(req, paths).await?;
-		pkg.ensure_loaded(paths, force).await?;
+		let pkg = self.ensure_package_contents(req, paths).await?;
 		let contents = pkg.data.get().get_contents();
 		Ok(contents)
 	}
@@ -161,7 +188,7 @@ impl PkgRegistry {
 		routine: Routine,
 		constants: &EvalConstants,
 	) -> anyhow::Result<EvalData> {
-		let pkg = self.get(req, paths).await?;
+		let pkg = self.ensure_package_contents(req, paths).await?;
 		let eval = pkg.eval(paths, routine, constants).await?;
 		Ok(eval)
 	}
@@ -185,6 +212,46 @@ impl PkgRegistry {
 	pub fn iter_requests(&self) -> impl Iterator<Item = &PkgRequest> {
 		self.packages.keys()
 	}
+
+	/// Remove cached packages
+	async fn remove_cached_packages(
+		&mut self,
+		packages: impl Iterator<Item = &PkgRequest>,
+		paths: &Paths,
+	) -> anyhow::Result<()> {
+		for package in packages {
+			self.remove_cached(package, paths)
+				.await
+				.with_context(|| format!("Failed to remove cached package '{package}'"))?;
+		}
+
+		Ok(())
+	}
+
+	/// Update cached package scripts based on the caching strategy
+	pub async fn update_cached_packages(&mut self, paths: &Paths) -> anyhow::Result<()> {
+		let packages = super::repo::get_all_packages(&mut self.repos, paths)
+			.await
+			.context("Failed to retrieve all packages from repos")?
+			.iter()
+			.map(|(name, ..)| PkgRequest::new(name, PkgRequestSource::Repository))
+			.collect::<Vec<_>>();
+		self.remove_cached_packages(packages.iter(), paths)
+			.await
+			.context("Failed to remove all cached packages")?;
+
+		if let CachingStrategy::All = self.caching_strategy {
+			for package in packages {
+				self.ensure_package(&package, paths)
+					.await
+					.with_context(|| {
+						format!("Failed to get cached contents of package '{package}'")
+					})?;
+			}
+		}
+
+		Ok(())
+	}
 }
 
 #[cfg(test)]
@@ -194,7 +261,7 @@ mod tests {
 
 	#[test]
 	fn test_reg_insert() {
-		let mut reg = PkgRegistry::new(vec![]);
+		let mut reg = PkgRegistry::new(vec![], CachingStrategy::Lazy);
 		reg.insert_local(
 			&PkgRequest::new("test", PkgRequestSource::UserRequire),
 			1,

@@ -57,18 +57,14 @@ fn default_config() -> serde_json::Value {
 	)
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Default)]
+#[serde(default)]
 pub struct ConfigDeser {
-	#[serde(default)]
 	users: HashMap<String, UserConfig>,
-	#[serde(default)]
 	default_user: Option<String>,
-	#[serde(default)]
 	profiles: HashMap<String, ProfileConfig>,
-	#[serde(default)]
 	instance_presets: HashMap<String, InstanceConfig>,
-	#[serde(default)]
-	preferences: Option<PrefDeser>,
+	preferences: PrefDeser,
 }
 
 #[derive(Debug)]
@@ -109,7 +105,7 @@ impl Config {
 		let (prefs, repositories) =
 			ConfigPreferences::read(&config.preferences).context("Failed to read preferences")?;
 
-		let mut packages = PkgRegistry::new(repositories);
+		let mut packages = PkgRegistry::new(repositories, prefs.package_caching_strategy.clone());
 
 		// Users
 		for (user_id, user_config) in config.users.iter() {
