@@ -2,6 +2,7 @@ use anyhow::{bail, Context};
 use mcvm_parse::metadata::PackageMetadata;
 use serde::{Deserialize, Serialize};
 
+use super::core::get_core_package;
 use super::eval::{EvalConstants, EvalData, Routine};
 use super::repo::{query_all, PkgRepo};
 use super::{Package, PkgKind};
@@ -114,6 +115,12 @@ impl PkgRegistry {
 	) -> anyhow::Result<&mut Package> {
 		let pkg_name = req.name.clone();
 
+		// Check if it is a core package first
+		if get_core_package(&req.name).is_some() {
+			return Ok(self.insert(req, Package::new(&pkg_name, 1, PkgKind::Core)));
+		}
+
+		// Now check the remote repositories
 		match query_all(&mut self.repos, &pkg_name, paths).await? {
 			Some((url, version)) => Ok(self.insert(
 				req,

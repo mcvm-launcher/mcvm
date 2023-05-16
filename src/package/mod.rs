@@ -1,7 +1,7 @@
+mod core;
 pub mod eval;
 pub mod reg;
 pub mod repo;
-mod core;
 
 use crate::io::files::paths::Paths;
 use crate::io::Later;
@@ -10,9 +10,10 @@ use crate::net::download;
 use std::fs;
 use std::path::PathBuf;
 
+use self::core::get_core_package;
 use self::eval::EvalPermissions;
 use self::reg::PkgRequest;
-use anyhow::Context;
+use anyhow::{anyhow, Context};
 use mcvm_parse::metadata::{eval_metadata, PackageMetadata};
 use mcvm_parse::parse::{lex_and_parse, Parsed};
 use mcvm_shared::pkg::PkgIdentifier;
@@ -46,6 +47,7 @@ impl PkgData {
 pub enum PkgKind {
 	Local(PathBuf),         // Contained on the local filesystem
 	Remote(Option<String>), // Contained on an external repository
+	Core,                   // Included in the binary
 }
 
 /// An installable package that loads content into your game
@@ -108,6 +110,11 @@ impl Package {
 						tokio::fs::write(&path, &text).await?;
 						self.data.fill(PkgData::new(&text));
 					}
+				}
+				PkgKind::Core => {
+					let contents = get_core_package(&self.id.name)
+						.ok_or(anyhow!("Package is not a core package"))?;
+					self.data.fill(PkgData::new(contents));
 				}
 			};
 		}
