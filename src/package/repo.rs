@@ -12,7 +12,7 @@ use std::io::Cursor;
 use std::path::PathBuf;
 
 /// An entry in the index that specifies what package versions are available
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 pub struct PkgEntry {
 	/// The latest package version available from this repository.
 	version: u32,
@@ -107,13 +107,13 @@ impl PkgRepo {
 	}
 
 	/// Get all packages from this repo
-	pub async fn get_all_packages(&mut self, paths: &Paths) -> anyhow::Result<Vec<(String, u32)>> {
+	pub async fn get_all_packages(&mut self, paths: &Paths) -> anyhow::Result<Vec<(String, PkgEntry)>> {
 		self.ensure_index(paths).await?;
 		let index = self.index.get();
 		Ok(index
 			.packages
 			.iter()
-			.map(|(_, x)| (x.url.clone(), x.version))
+			.map(|(name, entry)| (name.clone(), entry.clone()))
 			.collect())
 	}
 }
@@ -143,7 +143,7 @@ pub async fn query_all(
 pub async fn get_all_packages(
 	repos: &mut [PkgRepo],
 	paths: &Paths,
-) -> anyhow::Result<Vec<(String, u32)>> {
+) -> anyhow::Result<Vec<(String, PkgEntry)>> {
 	// Iterate in reverse to make sure that repos at the beginning take precendence
 	let mut out = Vec::new();
 	for repo in repos.iter_mut().rev() {
