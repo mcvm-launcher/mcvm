@@ -9,24 +9,33 @@ use std::fs;
 #[derive(Debug, Subcommand)]
 pub enum FilesSubcommand {
 	#[command(
-		about = "Remove all cached and downloaded files",
-		long_about = "Remove game files and cached files downloaded by mcvm. This does not include
-files in your instances or any other user data. Don't do this unless something isn't working."
+		about = "Remove cached files",
+		long_about = "Remove cached files downloaded by mcvm. This does not include
+files in your instances or any other user data."
 	)]
-	Remove,
+	Remove {
+		/// Whether to remove the internal data directory as well.
+		/// Don't do this unless something isn't working.
+		#[arg(short, long)]
+		data: bool,
+	},
 }
 
-pub async fn remove(data: &mut CmdData) -> anyhow::Result<()> {
+pub async fn remove(data: &mut CmdData, remove_data: bool) -> anyhow::Result<()> {
 	data.ensure_paths().await?;
 	let paths = data.paths.get();
-	cprintln!("<g>Removing internal files...");
-	fs::remove_dir_all(&paths.internal).context("Failed to remove internal data directory")?;
+	cprintln!("<g>Removing cached files...");
+	fs::remove_dir_all(paths.project.cache_dir()).context("Failed to remove cache directory")?;
+	if remove_data {
+		cprintln!("<g>Removing internal files...");
+		fs::remove_dir_all(&paths.internal).context("Failed to remove internal data directory")?;
+	}
 
 	Ok(())
 }
 
 pub async fn run(subcommand: FilesSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
 	match subcommand {
-		FilesSubcommand::Remove => remove(data).await,
+		FilesSubcommand::Remove { data: remove_data } => remove(data, remove_data).await,
 	}
 }
