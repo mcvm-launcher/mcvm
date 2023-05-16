@@ -18,12 +18,64 @@ pub enum Value {
 }
 
 impl Value {
+	/// Replace substitution tokens in a string with variable values
+	pub fn substitute_tokens(string: &str, vars: &HashMap<String, String>) -> String {
+		/// What the parser is looking for
+		enum State {
+			Escaped,
+			Dollar,
+			OpenBracket,
+			Name,
+		}
+		let mut state = State::Dollar;
+		let mut out = String::new();
+		let mut name = String::new();
+		for c in string.chars() {
+			state = match state {
+				State::Escaped => {
+					out.push(c);
+					State::Dollar
+				}
+				State::Dollar => match c {
+					'$' => State::OpenBracket,
+					'\\' => State::Escaped,
+					_ => {
+						out.push(c);
+						state
+					}
+				},
+				State::OpenBracket => {
+					if c == '{' {
+						State::Name
+					} else {
+						out.push(c);
+						State::Dollar
+					}
+				}
+				State::Name => {
+					if c == '}' {
+						if let Some(var) = vars.get(&name) {
+							out.push_str(var);
+						}
+						name.clear();
+						State::Dollar
+					} else {
+						name.push(c);
+						state
+					}
+				}
+			}
+		}
+
+		out
+	}
+
 	/// Obtain the current String value of this Value.
 	/// Will fail if it is none or the variable is uninitialized.
 	pub fn get(&self, vars: &HashMap<String, String>) -> anyhow::Result<String> {
 		match self {
 			Self::None => bail!("Empty value"),
-			Self::Constant(val) => Ok(val.clone()),
+			Self::Constant(val) => Ok(Self::substitute_tokens(val, vars)),
 			Self::Var(name) => vars
 				.get(name)
 				.cloned()
@@ -64,5 +116,24 @@ impl Display for FailReason {
 				Self::UnsupportedPluginLoader => "Unsupported plugin loader",
 			}
 		)
+	}
+}
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+
+	#[test]
+	fn test_value_substitution() {
+		let vars = {
+			let mut vars = HashMap::new();
+			vars.insert(String::from("bar"), String::from("foo"));
+			vars.insert(String::from("hello"), String::from("who"));
+			vars
+		};
+
+		let string = "One ${bar} skip a ${hello}";
+		let string = Value::substitute_tokens(string, &vars);
+		assert_eq!(string, "One foo skip a who");
 	}
 }
