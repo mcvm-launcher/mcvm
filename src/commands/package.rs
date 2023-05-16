@@ -181,20 +181,30 @@ async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
 		cprintln!("<s><g>Package</g> <b>{}</b>:<y>{}</y>", id, package_version);
 	}
 	if let Some(description) = &metadata.description {
-		cprintln!("   <k!>{}", description);
+		if !description.is_empty() {
+			cprintln!("   <k!>{}", description);
+		}
 	}
 	cprintln!("   <s>ID:</s> <g>{}", id);
 	if let Some(version) = &metadata.version {
-		cprintln!("   <s>Version:</s> <g>{}", version);
+		if !version.is_empty() {
+			cprintln!("   <s>Version:</s> <g>{}", version);
+		}
 	}
 	if let Some(authors) = &metadata.authors {
-		cprintln!("   <s>Authors:</s> <g>{}", authors.join(", "));
+		if !authors.is_empty() {
+			cprintln!("   <s>Authors:</s> <g>{}", authors.join(", "));
+		}
 	}
 	if let Some(website) = &metadata.website {
-		cprintln!("   <s>Website:</s> <b!>{}", website);
+		if !website.is_empty() {
+			cprintln!("   <s>Website:</s> <b!>{}", website);
+		}
 	}
 	if let Some(support) = &metadata.support {
-		cprintln!("   <s>Support Link:</s> <b!>{}", support);
+		if !support.is_empty() {
+			cprintln!("   <s>Support Link:</s> <b!>{}", support);
+		}
 	}
 
 	Ok(())
