@@ -1,0 +1,13 @@
+@meta {
+	name "Connected Textures Support";
+	description "Installs mods to support Connected Textures in resource packs";
+	authors "CarbonSmasher";
+}
+
+@install {
+	if modloader forge {
+		require <"optifine">;
+		finish;
+	}
+	fail unsupported_modloader;
+}

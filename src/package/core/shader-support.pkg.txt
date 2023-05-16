@@ -1,0 +1,17 @@
+@meta {
+	name "Shader Support";
+	description "Installs mods to allow the loading of shader packs";
+	authors "CarbonSmasher";
+}
+
+@install {
+	if modloader forge {
+		require <"optifine">;
+		finish;
+	}
+	if modloader fabric {
+		require <"iris">;
+		finish;
+	}
+	fail unsupported_modloader;
+}

@@ -1,0 +1,13 @@
+@meta {
+	name "CEM Support";
+	description "Installs mods to support Custom Entity Models in resource packs";
+	authors "CarbonSmasher";
+}
+
+@install {
+	if modloader forge {
+		require <"optifine">;
+		finish;
+	}
+	fail unsupported_modloader;
+}

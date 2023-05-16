@@ -1,0 +1,17 @@
+@meta {
+	name "CIT Support";
+	description "Installs mods to support Custom Item Textures in resource packs";
+	authors "CarbonSmasher";
+}
+
+@install {
+	if modloader forge {
+		require <"optifine">;
+		finish;
+	}
+	if modloader fabriclike {
+		require "cit-resewn";
+		finish;
+	}
+	fail unsupported_modloader;
+}
