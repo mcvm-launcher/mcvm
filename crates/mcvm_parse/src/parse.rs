@@ -128,8 +128,6 @@ pub mod require {
 	pub enum State {
 		/// Normal parsing state
 		Normal,
-		/// Looking for the end angle bracket for explicit require
-		LookingForRightAngle,
 	}
 }
 
@@ -460,7 +458,12 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 								value: Value::None,
 								explicit: true,
 							});
-							*state = require::State::LookingForRightAngle;
+						}
+						Token::Angle(Side::Right) => {
+							if !*explicit_has_been_closed {
+								unexpected_token!(tok, pos);
+							}
+							*explicit_has_been_closed = true;
 						}
 						Token::Semicolon => {
 							instr_to_push =
@@ -486,13 +489,6 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 							}
 							*explicit_has_been_closed = true;
 						}
-					},
-					require::State::LookingForRightAngle => match tok {
-						Token::Angle(Side::Right) => {
-							*state = require::State::Normal;
-							*explicit_has_been_closed = true;
-						}
-						_ => unexpected_token!(tok, pos),
 					},
 				}
 
@@ -529,6 +525,7 @@ pub fn lex_and_parse(text: &str) -> anyhow::Result<Parsed> {
 #[cfg(test)]
 mod tests {
 	use super::*;
+	use crate::routine::{INSTALL_ROUTINE, METADATA_ROUTINE};
 
 	#[test]
 	fn test_routine_parse() {
@@ -536,12 +533,37 @@ mod tests {
 		let parsed = lex_and_parse(text).unwrap();
 		assert!(parsed
 			.blocks
-			.contains_key(parsed.routines.get("install").unwrap()));
+			.contains_key(parsed.routines.get(INSTALL_ROUTINE).unwrap()));
 		assert!(parsed
 			.blocks
-			.contains_key(parsed.routines.get("meta").unwrap()));
+			.contains_key(parsed.routines.get(METADATA_ROUTINE).unwrap()));
 		assert!(parsed
 			.blocks
 			.contains_key(parsed.routines.get("foo").unwrap()));
+	}
+
+	#[test]
+	fn test_explicit_require_parse() {
+		let text = r#"@install { require <"optifine"> <"sodium"> "cit-support"; }"#;
+		let parsed = lex_and_parse(text).unwrap();
+		let block = parsed
+			.blocks
+			.get(parsed.routines.get(INSTALL_ROUTINE).unwrap())
+			.unwrap();
+		for instr in &block.contents {
+			if let InstrKind::Require(groups) = &instr.kind {
+				let package = groups.get(0).unwrap().get(0).unwrap();
+				assert!(matches!(&package.value, Value::Constant(name) if name == "optifine"));
+				assert!(package.explicit);
+
+				let package = groups.get(1).unwrap().get(0).unwrap();
+				assert!(matches!(&package.value, Value::Constant(name) if name == "sodium"));
+				assert!(package.explicit);
+
+				let package = groups.get(2).unwrap().get(0).unwrap();
+				assert!(matches!(&package.value, Value::Constant(name) if name == "cit-support"));
+				assert!(!package.explicit);
+			}
+		}
 	}
 }
