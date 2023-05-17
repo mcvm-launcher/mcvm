@@ -1,12 +1,11 @@
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 use std::path::{Path, PathBuf};
 
-use anyhow::{bail, Context};
+use anyhow::{anyhow, bail, Context};
 use color_print::{cformat, cprintln};
 use mcvm_shared::modifications::PluginLoader;
 
 use crate::data::config::Config;
-use crate::data::instance::InstKind;
 use crate::io::files::paths::Paths;
 use crate::io::java::{Java, JavaKind};
 use crate::io::lock::Lockfile;
@@ -277,52 +276,120 @@ impl UpdateManager {
 	}
 }
 
-/// Install packages on a profile
-async fn update_profile_packages(
+/// Resolve packages and create a mapping of packages to a list of instances.
+/// This allows us to update packages in a reasonable order to the user.
+/// It also returns a map of instances to packages so that unused packages can be removed
+async fn resolve_and_batch(
 	profile: &Profile,
+	mc_version: &str,
+	version_list: Vec<String>,
 	paths: &Paths,
 	reg: &mut PkgRegistry,
 	instances: &InstanceRegistry,
-	constants: &EvalConstants,
+) -> anyhow::Result<(
+	HashMap<PkgRequest, Vec<String>>,
+	HashMap<String, Vec<PkgRequest>>,
+)> {
+	let mut constants = EvalConstants {
+		version: mc_version.to_string(),
+		modloader: profile.modloader.clone(),
+		plugin_loader: profile.plugin_loader.clone(),
+		side: Side::Client,
+		features: vec![],
+		versions: version_list,
+		perms: EvalPermissions::Standard,
+	};
+
+	let mut batched: HashMap<PkgRequest, Vec<String>> = HashMap::new();
+	let mut resolved = HashMap::new();
+	for instance_id in &profile.instances {
+		let instance = instances.get(instance_id).ok_or(anyhow!(
+			"Instance '{instance_id}' does not exist in registry"
+		))?;
+		constants.side = instance.kind.to_side();
+		let instance_resolved = resolve(&profile.packages, &constants, paths, reg)
+			.await
+			.with_context(|| {
+				format!("Failed to resolve package dependencies for instance '{instance_id}'")
+			})?;
+		for package in &instance_resolved {
+			if let Some(entry) = batched.get_mut(package) {
+				entry.push(instance_id.clone());
+			} else {
+				batched.insert(package.clone(), vec![instance_id.clone()]);
+			}
+		}
+		resolved.insert(instance_id.clone(), instance_resolved);
+	}
+
+	Ok((batched, resolved))
+}
+
+/// Install packages on a profile
+async fn update_profile_packages(
+	profile: &Profile,
+	mc_version: &str,
+	version_list: Vec<String>,
+	paths: &Paths,
+	reg: &mut PkgRegistry,
+	instances: &InstanceRegistry,
 	lock: &mut Lockfile,
 ) -> anyhow::Result<()> {
 	let mut printer = ReplPrinter::new(true);
-	let resolved = resolve(&profile.packages, constants, paths, reg)
-		.await
-		.context("Failed to resolve package dependencies")?;
-	for pkg in &resolved {
+	let (batched, resolved) = resolve_and_batch(
+		profile,
+		mc_version,
+		version_list.clone(),
+		paths,
+		reg,
+		instances,
+	)
+	.await
+	.context("Failed to resolve dependencies for profile")?;
+	let mut constants = EvalConstants {
+		version: mc_version.to_string(),
+		modloader: profile.modloader.clone(),
+		plugin_loader: profile.plugin_loader.clone(),
+		side: Side::Client,
+		features: vec![],
+		versions: version_list,
+		perms: EvalPermissions::Standard,
+	};
+	for (package, package_instances) in batched {
 		let pkg_version = reg
-			.get_version(pkg, paths)
+			.get_version(&package, paths)
 			.await
 			.context("Failed to get version for package")?;
-		for instance_id in &profile.instances {
-			if let Some(instance) = instances.get(instance_id) {
-				if let InstKind::Client { .. } = instance.kind {
-					printer.print(&format_package_print(
-						pkg,
-						Some(instance_id),
-						"Installing...",
-					));
-					instance
-						.install_package(pkg, pkg_version, constants, reg, paths, lock)
-						.await
-						.with_context(|| {
-							format!(
-								"Failed to install package '{pkg}' for instance '{instance_id}'"
-							)
-						})?;
-				}
-			}
+		for instance_id in package_instances {
+			let instance = instances.get(&instance_id).ok_or(anyhow!(
+				"Instance '{instance_id}' does not exist in registry"
+			))?;
+			constants.side = instance.kind.to_side();
+			printer.print(&format_package_print(
+				&package,
+				Some(&instance_id),
+				"Installing...",
+			));
+			instance
+				.install_package(&package, pkg_version, &constants, reg, paths, lock)
+				.await
+				.with_context(|| {
+					format!("Failed to install package '{package}' for instance '{instance_id}'")
+				})?;
 		}
-		printer.print(&format_package_print(pkg, None, &cformat!("<g>Installed.")));
+		printer.print(&format_package_print(
+			&package,
+			None,
+			&cformat!("<g>Installed."),
+		));
 		printer.newline();
 	}
-	for instance_id in profile.instances.iter() {
-		if let Some(instance) = instances.get(instance_id) {
+	for (instance_id, packages) in resolved {
+		if let Some(instance) = instances.get(&instance_id) {
 			let addons_to_remove = lock
 				.remove_unused_packages(
-					instance_id,
-					&resolved
+					&instance_id,
+					&packages
 						.iter()
 						.map(|x| x.name.clone())
 						.collect::<Vec<String>>(),
@@ -338,6 +405,7 @@ async fn update_profile_packages(
 			}
 		}
 	}
+	
 	Ok(())
 }
 
@@ -428,32 +496,14 @@ pub async fn update_profiles(
 					for pkg in &profile.packages {
 						config.packages.ensure_package(&pkg.req, paths).await?;
 					}
-					// Resolve for both client and server
-					let mut constants = EvalConstants {
-						version: version.clone(),
-						modloader: profile.modloader.clone(),
-						plugin_loader: profile.plugin_loader.clone(),
-						side: Side::Client,
-						features: vec![],
-						versions: version_list.clone(),
-						perms: EvalPermissions::Standard,
-					};
+
 					update_profile_packages(
 						profile,
+						&version,
+						version_list,
 						paths,
 						&mut config.packages,
 						&config.instances,
-						&constants,
-						&mut lock,
-					)
-					.await?;
-					constants.side = Side::Server;
-					update_profile_packages(
-						profile,
-						paths,
-						&mut config.packages,
-						&config.instances,
-						&constants,
 						&mut lock,
 					)
 					.await?;
