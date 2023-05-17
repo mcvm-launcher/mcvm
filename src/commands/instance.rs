@@ -1,6 +1,7 @@
 use anyhow::{anyhow, ensure, Context};
 use clap::Subcommand;
 use color_print::cprintln;
+use itertools::Itertools;
 use mcvm::data::user::AuthState;
 
 use mcvm::{data::instance::InstKind, util::print::HYPHEN_POINT};
@@ -35,7 +36,7 @@ pub enum InstanceSubcommand {
 async fn list(data: &mut CmdData, raw: bool) -> anyhow::Result<()> {
 	data.ensure_config(!raw).await?;
 	let config = data.config.get_mut();
-	for (id, instance) in config.instances.iter() {
+	for (id, instance) in config.instances.iter().sorted_by_key(|x| x.0) {
 		if raw {
 			println!("{id}");
 		} else {

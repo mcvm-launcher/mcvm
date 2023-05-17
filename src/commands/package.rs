@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 
 use super::CmdData;
+use itertools::Itertools;
 use mcvm::package::reg::{PkgRequest, PkgRequestSource};
 use mcvm::util::print::{ReplPrinter, HYPHEN_POINT};
 
@@ -55,14 +56,14 @@ async fn list(data: &mut CmdData, raw: bool, profile: Option<String>) -> anyhow:
 	if let Some(profile_id) = profile {
 		if let Some(profile) = config.profiles.get(&profile_id) {
 			if raw {
-				for pkg in &profile.packages {
+				for pkg in profile.packages.iter().sorted_by_key(|x| &x.req.name) {
 					println!("{}", pkg.req);
 				}
 			} else if profile.packages.is_empty() {
 				cprintln!("<s>Profile <b>{}</b> has no packages installed", profile_id);
 			} else {
 				cprintln!("<s>Packages in profile <b>{}</b>:", profile_id);
-				for pkg in &profile.packages {
+				for pkg in profile.packages.iter().sorted_by_key(|x| &x.req.name) {
 					let version = config
 						.packages
 						.get_version(&pkg.req, paths)
@@ -93,14 +94,14 @@ async fn list(data: &mut CmdData, raw: bool, profile: Option<String>) -> anyhow:
 			}
 		}
 		if raw {
-			for (pkg, ..) in found_pkgs {
+			for (pkg, ..) in found_pkgs.iter().sorted_by_key(|x| x.0) {
 				println!("{pkg}");
 			}
 		} else {
 			cprintln!("<s>Packages:");
-			for (pkg, (version, profiles)) in found_pkgs {
+			for (pkg, (version, profiles)) in found_pkgs.iter().sorted_by_key(|x| x.0) {
 				cprintln!("<b!>{}</>:<b!>{}</>", pkg, version);
-				for profile in profiles {
+				for profile in profiles.iter().sorted() {
 					cprintln!("{}<k!>{}", HYPHEN_POINT, profile);
 				}
 			}

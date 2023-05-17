@@ -1,4 +1,5 @@
 use super::CmdData;
+use itertools::Itertools;
 use mcvm::data::user::UserKind;
 use mcvm::util::print::HYPHEN_POINT;
 
@@ -25,7 +26,7 @@ async fn list(data: &mut CmdData, raw: bool) -> anyhow::Result<()> {
 	if !raw {
 		cprintln!("<s>Users:");
 	}
-	for (id, user) in config.auth.users.iter() {
+	for (id, user) in config.auth.users.iter().sorted_by_key(|x| x.0) {
 		cprint!("{}", HYPHEN_POINT);
 		if raw {
 			println!("{id}");

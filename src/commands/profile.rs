@@ -1,4 +1,5 @@
 use super::CmdData;
+use itertools::Itertools;
 use mcvm::data::instance::InstKind;
 use mcvm::data::profile::update::update_profiles;
 use mcvm::util::print::HYPHEN_POINT;
@@ -82,7 +83,7 @@ async fn list(data: &mut CmdData, raw: bool) -> anyhow::Result<()> {
 	if !raw {
 		cprintln!("<s>Profiles:");
 	}
-	for (id, profile) in config.profiles.iter() {
+	for (id, profile) in config.profiles.iter().sorted_by_key(|x| x.0) {
 		if raw {
 			println!("{id}");
 		} else {
