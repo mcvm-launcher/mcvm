@@ -206,20 +206,21 @@ impl UpdateManager {
 				"majorVersion",
 			)?;
 
+			let mut lock = Lockfile::open(paths).context("Failed to open lockfile")?;
 			let mut java_files = HashSet::new();
 			for req in self.requirements.iter() {
 				if let UpdateRequirement::Java(kind) = req {
 					let mut java = Java::new(kind.clone());
 					java.add_version(&java_vers.to_string());
 					let files = java
-						.install(paths, self)
+						.install(paths, self, &mut lock)
 						.await
 						.context("Failed to install Java")?;
 					java_files.extend(files);
 					self.java.fill(java);
 				}
 			}
-
+			lock.finish(paths).await?;
 			self.add_files(java_files);
 		}
 
