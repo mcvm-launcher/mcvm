@@ -405,7 +405,7 @@ async fn update_profile_packages(
 			}
 		}
 	}
-	
+
 	Ok(())
 }
 
@@ -424,6 +424,69 @@ fn format_package_print(pkg: &PkgRequest, instance: Option<&str>, message: &str)
 	}
 }
 
+/// Update a profile when the Minecraft version has changed
+async fn check_profile_version_change(
+	profile: &Profile,
+	mc_version: &str,
+	paper_properties: Option<(u16, String)>,
+	instances: &InstanceRegistry,
+	paths: &Paths,
+	lock: &mut Lockfile,
+) -> anyhow::Result<()> {
+	if lock.update_profile_version(&profile.name, mc_version) {
+		cprintln!("<s>Updating profile version...");
+		for inst in profile.instances.iter() {
+			if let Some(inst) = instances.get(inst) {
+				inst.teardown(paths, paper_properties.clone())
+					.context("Failed to remove old files when updating Minecraft version")?;
+			}
+		}
+	}
+	Ok(())
+}
+
+/// Get the updated Paper file name and build number for a profile that uses it
+async fn get_paper_properties(
+	profile: &Profile,
+	mc_version: &str,
+) -> anyhow::Result<Option<(u16, String)>> {
+	let out = if let PluginLoader::Paper = profile.plugin_loader {
+		let (build_num, ..) = paper::get_newest_build(&mc_version)
+			.await
+			.context("Failed to get the newest Paper build number")?;
+		let paper_file_name = paper::get_jar_file_name(&mc_version, build_num)
+			.await
+			.context("Failed to get the name of the Paper Jar file")?;
+		Some((build_num, paper_file_name))
+	} else {
+		None
+	};
+
+	Ok(out)
+}
+
+/// Remove the old Paper files for a profile if they have updated
+async fn check_profile_paper_update(
+	profile: &Profile,
+	paper_properties: Option<(u16, String)>,
+	instances: &InstanceRegistry,
+	lock: &mut Lockfile,
+	paths: &Paths,
+) -> anyhow::Result<()> {
+	if let Some((build_num, file_name)) = paper_properties {
+		if lock.update_profile_paper_build(&profile.name, build_num) {
+			for inst in profile.instances.iter() {
+				if let Some(inst) = instances.get(inst) {
+					inst.remove_paper(paths, file_name.clone())
+						.context("Failed to remove Paper")?;
+				}
+			}
+		}
+	}
+
+	Ok(())
+}
+
 /// Update a list of profiles
 pub async fn update_profiles(
 	paths: &Paths,
@@ -434,6 +497,7 @@ pub async fn update_profiles(
 	for id in ids {
 		if let Some(profile) = config.profiles.get_mut(id) {
 			cprintln!("<s,g>Updating profile <b>{}</b>", id);
+			let mut lock = Lockfile::open(paths).context("Failed to open lockfile")?;
 
 			let print_options = PrintOptions::new(true, 0);
 			let mut manager = UpdateManager::new(print_options, force, false);
@@ -441,43 +505,32 @@ pub async fn update_profiles(
 				.fulfill_version_manifest(paths, &profile.version)
 				.await
 				.context("Failed to get version information")?;
-			let version = manager.found_version.get().clone();
+			let mc_version = manager.found_version.get().clone();
 
-			let (paper_build_num, paper_file_name) =
-				if let PluginLoader::Paper = profile.plugin_loader {
-					let (build_num, ..) = paper::get_newest_build(&version)
-						.await
-						.context("Failed to get the newest Paper build number")?;
-					let paper_file_name = paper::get_jar_file_name(&version, build_num)
-						.await
-						.context("Failed to get the name of the Paper Jar file")?;
-					(Some(build_num), Some(paper_file_name))
-				} else {
-					(None, None)
-				};
-			let mut lock = Lockfile::open(paths).context("Failed to open lockfile")?;
-			if lock.update_profile_version(id, &version) {
-				cprintln!("<s>Updating profile version...");
-				for inst in profile.instances.iter() {
-					if let Some(inst) = config.instances.get(inst) {
-						inst.teardown(paths, paper_file_name.clone()).context(
-							"Failed to remove old files when updating Minecraft version",
-						)?;
-					}
-				}
-			}
-			if let Some(build_num) = paper_build_num {
-				if let Some(file_name) = paper_file_name {
-					if lock.update_profile_paper_build(id, build_num) {
-						for inst in profile.instances.iter() {
-							if let Some(inst) = config.instances.get(inst) {
-								inst.remove_paper(paths, file_name.clone())
-									.context("Failed to remove Paper")?;
-							}
-						}
-					}
-				}
-			}
+			let paper_properties = get_paper_properties(profile, &mc_version)
+				.await
+				.context("Failed to get Paper build number and filename")?;
+
+			check_profile_version_change(
+				profile,
+				&mc_version,
+				paper_properties.clone(),
+				&config.instances,
+				paths,
+				&mut lock,
+			)
+			.await
+			.context("Failed to check for a profile version update")?;
+
+			check_profile_paper_update(
+				profile,
+				paper_properties,
+				&config.instances,
+				&mut lock,
+				paths,
+			)
+			.await
+			.context("Failed to check for Paper updates")?;
 
 			lock.finish(paths)
 				.await
@@ -499,7 +552,7 @@ pub async fn update_profiles(
 
 					update_profile_packages(
 						profile,
-						&version,
+						&mc_version,
 						version_list,
 						paths,
 						&mut config.packages,

@@ -196,7 +196,7 @@ impl Instance {
 	}
 
 	/// Removes files such as the game jar for when the profile version changes
-	pub fn teardown(&self, paths: &Paths, paper_file_name: Option<String>) -> anyhow::Result<()> {
+	pub fn teardown(&self, paths: &Paths, paper_properties: Option<(u16, String)>) -> anyhow::Result<()> {
 		match self.kind {
 			InstKind::Client { .. } => {
 				let inst_dir = self.get_dir(paths);
@@ -212,7 +212,7 @@ impl Instance {
 					fs::remove_file(jar_path).context("Failed to remove server.jar")?;
 				}
 
-				if let Some(file_name) = paper_file_name {
+				if let Some((_, file_name)) = paper_properties {
 					self.remove_paper(paths, file_name)
 						.context("Failed to remove Paper")?;
 				}
