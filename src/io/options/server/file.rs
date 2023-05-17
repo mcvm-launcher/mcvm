@@ -1,4 +1,5 @@
 use std::fs::File;
+use std::io::BufWriter;
 use std::{collections::HashMap, io::Write, path::Path};
 
 use anyhow::Context;
@@ -20,7 +21,8 @@ pub async fn write_server_properties(
 	let options = merge_server_properties(path, options)
 		.await
 		.context("Failed to merge properties")?;
-	let mut file = File::create(path).context("Failed to open file")?;
+	let file = File::create(path).context("Failed to open file")?;
+	let mut file = BufWriter::new(file);
 	for (key, value) in options.iter().sorted_by_key(|x| x.0) {
 		write_key(key, value, &mut file)
 			.with_context(|| format!("Failed to write line for option {key} with value {value}"))?;

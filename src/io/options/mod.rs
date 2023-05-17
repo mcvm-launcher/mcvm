@@ -3,6 +3,7 @@ mod read;
 pub mod server;
 
 use std::fs::File;
+use std::io::BufReader;
 use std::path::PathBuf;
 
 use anyhow::Context;
@@ -33,7 +34,8 @@ pub async fn read_options(paths: &Paths) -> anyhow::Result<Option<Options>> {
 	if !path.exists() {
 		return Ok(None);
 	}
-	let mut file = File::open(path).context("Failed to open options file")?;
+	let file = File::open(path).context("Failed to open options file")?;
+	let mut file = BufReader::new(file);
 	Ok(Some(
 		parse_options(&mut file).context("Failed to read options")?,
 	))

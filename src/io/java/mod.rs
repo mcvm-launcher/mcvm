@@ -15,6 +15,7 @@ use tar::Archive;
 
 use std::collections::HashSet;
 use std::fs::File;
+use std::io::BufReader;
 use std::path::{Path, PathBuf};
 
 use super::lock::{Lockfile, LockfileJavaInstallation};
@@ -229,7 +230,8 @@ async fn update_zulu(
 
 /// Extracts the Adoptium/Zulu JRE archive (either a tar or a zip)
 fn extract_archive(arc_path: &Path, out_dir: &Path) -> anyhow::Result<()> {
-	let mut file = File::open(arc_path).context("Failed to read archive file")?;
+	let file = File::open(arc_path).context("Failed to read archive file")?;
+	let mut file = BufReader::new(file);
 	if cfg!(windows) {
 		zip_extract::extract(&mut file, out_dir, false).context("Failed to extract zip file")?;
 	} else {

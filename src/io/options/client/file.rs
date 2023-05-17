@@ -1,4 +1,4 @@
-use std::{collections::HashMap, fs::File, io::Write, path::Path};
+use std::{collections::HashMap, fs::File, io::{Write, BufWriter}, path::Path};
 
 use anyhow::Context;
 use itertools::Itertools;
@@ -22,7 +22,8 @@ pub async fn write_options_txt(
 	let options = merge_options_txt(path, options)
 		.await
 		.context("Failed to merge with existing options.txt")?;
-	let mut file = File::create(path).context("Failed to open file")?;
+	let file = File::create(path).context("Failed to open file")?;
+	let mut file = BufWriter::new(file);
 	for (key, value) in options.iter().sorted_by_key(|x| x.0) {
 		write_key(key, value, &mut file)
 			.with_context(|| format!("Failed to write line for option {key} with value {value}"))?;
