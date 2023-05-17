@@ -323,17 +323,6 @@ pub async fn resolve(
 			constants: Some(constants),
 		});
 	}
-	for req in reg.iter_requests() {
-		if !resolver.is_required(req) {
-			resolver.constraints.push(Constraint {
-				kind: ConstraintKind::Require(req.clone()),
-			});
-			resolver.tasks.push_back(Task::EvalPackage {
-				dest: req.clone(),
-				constants: None,
-			});
-		}
-	}
 
 	while let Some(task) = resolver.tasks.pop_front() {
 		resolve_task(task, &mut resolver, reg, constants, paths).await?;
