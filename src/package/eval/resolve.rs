@@ -332,7 +332,19 @@ pub async fn resolve(
 	for constraint in resolver.constraints.iter() {
 		if let ConstraintKind::Recommend(package) = &constraint.kind {
 			if !resolver.is_required(package) {
-				cprintln!("<y>Warning: A package recommends the use of the package '{}', which is not installed.", package);
+				let source = package.source.get_source();
+				if let Some(source) = source {
+					cprintln!(
+						"<y>Warning: The package '{}' recommends the use of the package '{}', which is not installed.",
+						source.debug_sources(String::new()),
+						package
+					);
+				} else {
+					cprintln!(
+						"<y>Warning: A package recommends the use of the package '{}', which is not installed.",
+						package
+					);
+				}
 			}
 		}
 	}
