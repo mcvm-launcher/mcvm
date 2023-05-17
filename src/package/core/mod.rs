@@ -12,6 +12,7 @@ pub fn get_core_package(package: &str) -> Option<&'static str> {
 		"emissive-entities-support" => Some(include_str!("emissive-entities-support.pkg.txt")),
 		"fabric-rendering-api" => Some(include_str!("fabric-rendering-api.pkg.txt")),
 		"fabriclike-api" => Some(include_str!("fabriclike-api.pkg.txt")),
+		"kotlin-support" => Some(include_str!("kotlin-support.pkg.txt")),
 		"optifine-resource-packs" => Some(include_str!("optifine-resource-packs.pkg.txt")),
 		"random-entities-support" => Some(include_str!("random-entities-support.pkg.txt")),
 		"shader-support" => Some(include_str!("shader-support.pkg.txt")),
