@@ -1,7 +1,7 @@
 use std::collections::{HashMap, HashSet};
 use std::path::{Path, PathBuf};
 
-use anyhow::{anyhow, bail, Context};
+use anyhow::{anyhow, Context};
 use color_print::{cformat, cprintln};
 use mcvm_shared::modifications::PluginLoader;
 
@@ -304,7 +304,7 @@ async fn resolve_and_batch(
 	let mut resolved = HashMap::new();
 	for instance_id in &profile.instances {
 		let instance = instances.get(instance_id).ok_or(anyhow!(
-			"Instance '{instance_id}' does not exist in registry"
+			"Instance '{instance_id}' does not exist in the registry"
 		))?;
 		constants.side = instance.kind.to_side();
 		let instance_resolved = resolve(&profile.packages, &constants, paths, reg)
@@ -346,6 +346,7 @@ async fn update_profile_packages(
 	)
 	.await
 	.context("Failed to resolve dependencies for profile")?;
+
 	let mut constants = EvalConstants {
 		version: mc_version.to_string(),
 		modloader: profile.modloader.clone(),
@@ -355,6 +356,7 @@ async fn update_profile_packages(
 		versions: version_list,
 		perms: EvalPermissions::Standard,
 	};
+
 	for (package, package_instances) in batched {
 		let pkg_version = reg
 			.get_version(&package, paths)
@@ -362,7 +364,7 @@ async fn update_profile_packages(
 			.context("Failed to get version for package")?;
 		for instance_id in package_instances {
 			let instance = instances.get(&instance_id).ok_or(anyhow!(
-				"Instance '{instance_id}' does not exist in registry"
+				"Instance '{instance_id}' does not exist in the registry"
 			))?;
 			constants.side = instance.kind.to_side();
 			printer.print(&format_package_print(
@@ -385,24 +387,25 @@ async fn update_profile_packages(
 		printer.newline();
 	}
 	for (instance_id, packages) in resolved {
-		if let Some(instance) = instances.get(&instance_id) {
-			let addons_to_remove = lock
-				.remove_unused_packages(
-					&instance_id,
-					&packages
-						.iter()
-						.map(|x| x.name.clone())
-						.collect::<Vec<String>>(),
+		let instance = instances.get(&instance_id).ok_or(anyhow!(
+			"Instance '{instance_id}' does not exist in the registry"
+		))?;
+		let addons_to_remove = lock
+			.remove_unused_packages(
+				&instance_id,
+				&packages
+					.iter()
+					.map(|x| x.name.clone())
+					.collect::<Vec<String>>(),
+			)
+			.context("Failed to remove unused packages")?;
+		for addon in addons_to_remove {
+			instance.remove_addon(&addon, paths).with_context(|| {
+				format!(
+					"Failed to remove addon {} for instance {}",
+					addon.id, instance_id
 				)
-				.context("Failed to remove unused packages")?;
-			for addon in addons_to_remove {
-				instance.remove_addon(&addon, paths).with_context(|| {
-					format!(
-						"Failed to remove addon {} for instance {}",
-						addon.id, instance_id
-					)
-				})?;
-			}
+			})?;
 		}
 	}
 
@@ -435,11 +438,13 @@ async fn check_profile_version_change(
 ) -> anyhow::Result<()> {
 	if lock.update_profile_version(&profile.name, mc_version) {
 		cprintln!("<s>Updating profile version...");
-		for inst in profile.instances.iter() {
-			if let Some(inst) = instances.get(inst) {
-				inst.teardown(paths, paper_properties.clone())
-					.context("Failed to remove old files when updating Minecraft version")?;
-			}
+		for instance_id in profile.instances.iter() {
+			let instance = instances.get(instance_id).ok_or(anyhow!(
+				"Instance '{instance_id}' does not exist in the registry"
+			))?;
+			instance
+				.teardown(paths, paper_properties.clone())
+				.context("Failed to remove old files when updating Minecraft version")?;
 		}
 	}
 	Ok(())
@@ -495,81 +500,81 @@ pub async fn update_profiles(
 	force: bool,
 ) -> anyhow::Result<()> {
 	for id in ids {
-		if let Some(profile) = config.profiles.get_mut(id) {
-			cprintln!("<s,g>Updating profile <b>{}</b>", id);
-			let mut lock = Lockfile::open(paths).context("Failed to open lockfile")?;
+		let profile = config
+			.profiles
+			.get_mut(id)
+			.ok_or(anyhow!("Unknown profile '{id}'"))?;
+		cprintln!("<s,g>Updating profile <b>{}</b>", id);
+		let mut lock = Lockfile::open(paths).context("Failed to open lockfile")?;
 
-			let print_options = PrintOptions::new(true, 0);
-			let mut manager = UpdateManager::new(print_options, force, false);
-			manager
-				.fulfill_version_manifest(paths, &profile.version)
-				.await
-				.context("Failed to get version information")?;
-			let mc_version = manager.found_version.get().clone();
-
-			let paper_properties = get_paper_properties(profile, &mc_version)
-				.await
-				.context("Failed to get Paper build number and filename")?;
-
-			check_profile_version_change(
-				profile,
-				&mc_version,
-				paper_properties.clone(),
-				&config.instances,
-				paths,
-				&mut lock,
-			)
+		let print_options = PrintOptions::new(true, 0);
+		let mut manager = UpdateManager::new(print_options, force, false);
+		manager
+			.fulfill_version_manifest(paths, &profile.version)
 			.await
-			.context("Failed to check for a profile version update")?;
+			.context("Failed to get version information")?;
+		let mc_version = manager.found_version.get().clone();
 
-			check_profile_paper_update(
-				profile,
-				paper_properties,
-				&config.instances,
-				&mut lock,
-				paths,
-			)
+		let paper_properties = get_paper_properties(profile, &mc_version)
 			.await
-			.context("Failed to check for Paper updates")?;
+			.context("Failed to get Paper build number and filename")?;
 
-			lock.finish(paths)
+		check_profile_version_change(
+			profile,
+			&mc_version,
+			paper_properties.clone(),
+			&config.instances,
+			paths,
+			&mut lock,
+		)
+		.await
+		.context("Failed to check for a profile version update")?;
+
+		check_profile_paper_update(
+			profile,
+			paper_properties,
+			&config.instances,
+			&mut lock,
+			paths,
+		)
+		.await
+		.context("Failed to check for Paper updates")?;
+
+		lock.finish(paths)
+			.await
+			.context("Failed to finish using lockfile")?;
+
+		if !profile.instances.is_empty() {
+			let version_list = profile
+				.create_instances(&mut config.instances, paths, manager)
 				.await
-				.context("Failed to finish using lockfile")?;
+				.context("Failed to create profile instances")?;
 
-			if !profile.instances.is_empty() {
-				let version_list = profile
-					.create_instances(&mut config.instances, paths, manager)
-					.await
-					.context("Failed to create profile instances")?;
+			if !profile.packages.is_empty() {
+				cprintln!("<s>Updating packages");
 
-				if !profile.packages.is_empty() {
-					cprintln!("<s>Updating packages");
-
-					// Make sure all packages in the profile are in the registry first
-					for pkg in &profile.packages {
-						config.packages.ensure_package(&pkg.req, paths).await?;
-					}
-
-					update_profile_packages(
-						profile,
-						&mc_version,
-						version_list,
-						paths,
-						&mut config.packages,
-						&config.instances,
-						&mut lock,
-					)
-					.await?;
-					cprintln!("<g>All packages installed.");
+				// Make sure all packages in the profile are in the registry first
+				for pkg in &profile.packages {
+					config.packages.ensure_package(&pkg.req, paths).await?;
 				}
-			}
 
-			lock.finish(paths)
-				.await
-				.context("Failed to finish using lockfile")?;
-		} else {
-			bail!("Unknown profile '{id}'");
+				update_profile_packages(
+					profile,
+					&mc_version,
+					version_list,
+					paths,
+					&mut config.packages,
+					&config.instances,
+					&mut lock,
+				)
+				.await?;
+				cprintln!("<g>All packages installed.");
+			}
 		}
+
+		lock.finish(paths)
+			.await
+			.context("Failed to finish using lockfile")?;
 	}
 
 	Ok(())
