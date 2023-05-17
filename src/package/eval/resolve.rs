@@ -164,6 +164,111 @@ impl Resolver {
 	}
 }
 
+/// Resolve an EvalPackage task
+async fn resolve_eval_package(
+	package: PkgRequest,
+	constants: &EvalConstants,
+	user_constants: Option<EvalConstants>,
+	resolver: &mut Resolver,
+	reg: &mut PkgRegistry,
+	paths: &Paths,
+) -> anyhow::Result<()> {
+	// Pick which evaluation constants to use
+	let user_constants = &user_constants;
+	let constants = if let Some(constants) = user_constants {
+		constants
+	} else {
+		constants
+	};
+
+	// Make sure that this package fits the constraints as well
+	resolver
+		.check_constraints(&package)
+		.context("Package did not fit existing constraints")?;
+
+	let result = reg
+		.eval(&package, paths, Routine::InstallResolve, constants)
+		.await
+		.context("Failed to evaluate package")?;
+
+	for conflict in result.conflicts {
+		let req = PkgRequest::new(
+			&conflict,
+			PkgRequestSource::Dependency(Box::new(package.clone())),
+		);
+		if resolver.is_required(&req) {
+			bail!("Package '{req}' is incompatible with this package.");
+		}
+		resolver.constraints.push(Constraint {
+			kind: ConstraintKind::Refuse(req),
+		});
+	}
+
+	for dep in result.deps.iter().flatten() {
+		let req = PkgRequest::new(
+			&dep.value,
+			PkgRequestSource::Dependency(Box::new(package.clone())),
+		);
+		if dep.explicit && !resolver.is_user_required(&req) {
+			bail!("Package '{req}' has been explicitly required by package. This means it must be required by the user in their config.");
+		}
+		resolver.check_constraints(&req)?;
+		if !resolver.is_required(&req) {
+			resolver.constraints.push(Constraint {
+				kind: ConstraintKind::Require(req.clone()),
+			});
+			resolver.tasks.push_back(Task::EvalPackage {
+				dest: req,
+				constants: None,
+			});
+		}
+	}
+
+	for bundled in result.bundled {
+		let req = PkgRequest::new(
+			&bundled,
+			PkgRequestSource::Dependency(Box::new(package.clone())),
+		);
+		resolver.check_constraints(&req)?;
+		resolver.remove_require_constraint(&req);
+		resolver.constraints.push(Constraint {
+			kind: ConstraintKind::Bundle(req.clone()),
+		});
+		resolver.tasks.push_back(Task::EvalPackage {
+			dest: req,
+			constants: None,
+		});
+	}
+
+	for (check_package, compat_package) in result.compats {
+		let check_package = PkgRequest::new(
+			&check_package,
+			PkgRequestSource::Dependency(Box::new(package.clone())),
+		);
+		let compat_package = PkgRequest::new(
+			&compat_package,
+			PkgRequestSource::Dependency(Box::new(package.clone())),
+		);
+		if !resolver.compat_exists(&check_package, &compat_package) {
+			resolver.constraints.push(Constraint {
+				kind: ConstraintKind::Compat(check_package, compat_package),
+			});
+		}
+	}
+
+	for recommendation in result.recommendations {
+		let req = PkgRequest::new(
+			&recommendation,
+			PkgRequestSource::Dependency(Box::new(package.clone())),
+		);
+		resolver.constraints.push(Constraint {
+			kind: ConstraintKind::Recommend(req),
+		});
+	}
+
+	Ok(())
+}
+
 /// Resolve a single task
 async fn resolve_task(
 	task: Task,
@@ -177,89 +282,17 @@ async fn resolve_task(
 			dest,
 			constants: user_constants,
 		} => {
-			// Pick which evaluation constants to use
-			let user_constants = &user_constants;
-			let constants = if let Some(constants) = user_constants {
-				constants
-			} else {
-				constants
-			};
-
-			// Make sure that this package fits the constraints as well
-			resolver.check_constraints(&dest)?;
-
-			let result = reg
-				.eval(&dest, paths, Routine::InstallResolve, constants)
-				.await?;
-
-			for conflict in result.conflicts {
-				let req = PkgRequest::new(
-					&conflict,
-					PkgRequestSource::Dependency(Box::new(dest.clone())),
-				);
-				if resolver.is_required(&req) {
-					bail!("Package '{req}' is incompatible with existing package '{dest}'");
-				}
-				resolver.constraints.push(Constraint {
-					kind: ConstraintKind::Refuse(req),
-				});
-			}
-
-			for dep in result.deps.iter().flatten() {
-				let req =
-					PkgRequest::new(&dep.value, PkgRequestSource::Dependency(Box::new(dest.clone())));
-				if dep.explicit && !resolver.is_user_required(&req) {
-					bail!("Package '{req}' has been explicitly required by package '{dest}'. This means it must be required by the user in their config.");
-				}
-				resolver.check_constraints(&req)?;
-				if !resolver.is_required(&req) {
-					resolver.constraints.push(Constraint {
-						kind: ConstraintKind::Require(req.clone()),
-					});
-					resolver.tasks.push_back(Task::EvalPackage {
-						dest: req,
-						constants: None,
-					});
-				}
-			}
-
-			for pkg in result.bundled {
-				let req =
-					PkgRequest::new(&pkg, PkgRequestSource::Dependency(Box::new(dest.clone())));
-				resolver.check_constraints(&req)?;
-				resolver.remove_require_constraint(&req);
-				resolver.constraints.push(Constraint {
-					kind: ConstraintKind::Bundle(req.clone()),
-				});
-				resolver.tasks.push_back(Task::EvalPackage {
-					dest: req,
-					constants: None,
-				});
-			}
-
-			for (package, compat_package) in result.compats {
-				let package =
-					PkgRequest::new(&package, PkgRequestSource::Dependency(Box::new(dest.clone())));
-				let compat_package =
-					PkgRequest::new(&compat_package, PkgRequestSource::Dependency(Box::new(dest.clone())));
-				if !resolver.compat_exists(&package, &compat_package) {
-					resolver.constraints.push(Constraint {
-						kind: ConstraintKind::Compat(package, compat_package),
-					});
-				}
-			}
-
-			for recommendation in result.recommendations {
-				let req =
-					PkgRequest::new(&recommendation, PkgRequestSource::Dependency(Box::new(dest.clone())));
-				resolver.constraints.push(Constraint {
-					kind: ConstraintKind::Recommend(req),
-				});
-			}
-
-			Ok::<(), anyhow::Error>(())
+			resolve_eval_package(
+				dest.clone(),
+				constants,
+				user_constants,
+				resolver,
+				reg,
+				paths,
+			)
+			.await
+			.with_context(|| package_context_error_message(&dest))?;
 		}
-		.with_context(|| package_context_error_message(dest.source.get_source(), &dest))?,
 	}
 
 	Ok(())
@@ -319,10 +352,6 @@ pub async fn resolve(
 }
 
 /// Creates the error message for package context
-fn package_context_error_message(source: Option<&PkgRequest>, dest: &PkgRequest) -> String {
-	if let Some(req) = source {
-		format!("In package '{req}'")
-	} else {
-		format!("In user-required package '{dest}'")
-	}
+fn package_context_error_message(package: &PkgRequest) -> String {
+	format!("In package '{}'", package.debug_sources(String::new()))
 }

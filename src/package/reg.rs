@@ -1,4 +1,4 @@
-use anyhow::{Context, anyhow};
+use anyhow::{anyhow, Context};
 use mcvm_parse::metadata::PackageMetadata;
 use serde::{Deserialize, Serialize};
 
@@ -43,6 +43,17 @@ impl PkgRequest {
 		Self {
 			name: name.to_owned(),
 			source,
+		}
+	}
+
+	/// Create a dependency list for debugging. Recursive, so call with an empty string
+	pub fn debug_sources(&self, list: String) -> String {
+		match &self.source {
+			PkgRequestSource::UserRequire => format!("{}{list}", self.name),
+			PkgRequestSource::Dependency(dep) => {
+				format!("{}->{}", dep.debug_sources(list), self.name)
+			}
+			PkgRequestSource::Repository => format!("Repository->{}{list}", self.name),
 		}
 	}
 }
@@ -282,5 +293,21 @@ mod tests {
 			"doesnotexist",
 			PkgRequestSource::UserRequire
 		)));
+	}
+
+	#[test]
+	fn test_request_source_debug() {
+		let req = PkgRequest::new(
+			"foo",
+			PkgRequestSource::Dependency(Box::new(PkgRequest::new(
+				"bar",
+				PkgRequestSource::Dependency(Box::new(PkgRequest::new(
+					"baz",
+					PkgRequestSource::Repository,
+				))),
+			))),
+		);
+		let debug = req.debug_sources(String::new());
+		assert_eq!(debug, "Repository->baz->bar->foo");
 	}
 }
