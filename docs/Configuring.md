@@ -52,9 +52,10 @@ Profiles are listed in the same id-value format as users under the `profiles` ob
 }
 ```
 
- * `version`: The Minecraft version of the profile.
+ * `version`: The Minecraft version of the profile. Can use `"latest"` or `"latest_snapshot"` as special identifiers to get the latest version.
  * `modloader` (Optional): The modloader for the profile. Can be `"vanilla"`, `"fabric"`, `"forge"`, or `"quilt"`. Defaults to `"vanilla"`.
- * `plugin_loader` (Optional): The server plugin loader for the profile. Can be `"vanilla"` or `"paper"`. Defaults to `"vanilla"`.
+ * `client_type` (Optional): The modification type for the client. Can be `"vanilla"`, `"fabric"`, `"forge"`, or `"quilt"`. Defaults to using the `modloader` setting.
+ * `server_type` (Optional): The modification type for the server. Can be `"vanilla"`, `"paper"`, `"fabric"`, `"forge"`, or `"quilt"`. Defaults to using the `modloader` setting.
  * `instances`: The list of instances attached to this profile.
  * `packages` (Optional): The list of packages installed for this profile.
 
@@ -147,7 +148,8 @@ In this section you can set preferences for how the whole program will work. The
 	"repositories": {
 		"preferred": [],
 		"backup": []
-	}
+	},
+	"caching_strategy": "none" | "lazy" | "all"
 }
 ```
 
@@ -158,3 +160,4 @@ In this section you can set preferences for how the whole program will work. The
 	"url": String
  }
  ```
+ * `caching_strategy`: What strategy to use for locally caching package scripts. `"none"` will never cache any scripts, `"lazy"` will cache only when a package is requested, and `"all"` will cache all packages whenever you run the `package sync` command. The default option is `"lazy"`.

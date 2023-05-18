@@ -97,7 +97,10 @@ A description will not be provided for every option as they mirror the options i
 			"hotbar_6": Keybind,
 			"hotbar_7": Keybind,
 			"hotbar_8": Keybind,
-			"hotbar_9": Keybind
+			"hotbar_9": Keybind,
+			"boss_mode": Keybind,
+			"decrease_view": Keybind,
+			"increase_view": Keybind,
 		},
 		"auto_jump": bool,
 		"invert_mouse_y": bool,

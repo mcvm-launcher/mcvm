@@ -28,8 +28,19 @@ At the root level, a package is organized into **routines** which describe a lis
 The main routine that will be in every single package is the `@install` routine. This routine is run when the package is installed or updated in order to download files for your game.
 
 ## Instructions
-Instructions are individual commands that are run inside routines for your package script. Instructions are separated by semicolons. They often have arguments that can either be an identifier or a string. For any argument that takes a `"string"`, you can instead put `$variable` to substitute whatever the value of that variable is.
+Instructions are individual commands that are run inside routines for your package script. Instructions are separated by semicolons. They often have arguments that can either be an identifier or a string.
 
+### Variables
+Any instruction arguments that take a string can also take a variable, with the syntax `$variable_name`. You can also use string substitution to combine multiple variables, with the syntax `"Hello ${variable}!"`. This syntax can be escaped in the string using a backslash. Using a variable that is not defined directly will cause the routine to fail. Using a variable that is not defined in a substitution string will fill it with an empty string.
+
+### Routine Context
+Most instructions can only be run in certain routines or in routines called by those specific routines.
+
+Logic, relationships with other packages, and addons can only be used in the `@install` context.
+
+Metadata like `description` and `authors` can only be used in the `@meta` context.
+
+### List of Instructions
  * `if {condition} [arguments...] { ... }`: If instructions let you run instructions inside a block only if a condition is met at runtime. The valid conditions are:
 	 * `value {x} {y}`: Check if two strings are the same. This is meant to be used to check the value of variables.
 	 * `version {pattern}`: Check that the Minecraft version of this instance matches a pattern.
@@ -39,11 +50,22 @@ Instructions are individual commands that are run inside routines for your packa
 	 * `feature {name}`: Check if a feature is enabled for this package.
 	 * `not {condition}`: Inverts a condition. You can chain these, but why would you want to.
  * `set {variable} {value}`: Sets the value of a variable.
- * `finish`: Usually put in side checks, will silently end the evaluation of the routine.
+ * `finish`: Will silently end the routine.
  * `fail [unsupported_version | unsupported_modloader | unsupported_plugin_loader]`: End execution with an error.
  * `addon {id} {filename} (..)`: Add an addon to the instance. This is the main goal of a package. The name field is the filename of the addon. Keys and values are put inside the parentheses.
+ * `require {package1} {package2} ...`: Create a dependency on one or more packages. Use this for libraries that your package depends on. Check the core packages folder to see some standard packages that you can require.
+ * `refuse {package}`: Specifies that this package is incompatible with another. These packages will be unable to coexist together. Both packages do not need to refuse each other, just one refuse instruction in one package will suffice.
+ * `bundle {package}`: Bundle another package with this one. Useful for packages that group together multiple other packages, such as modpacks. Prefer using this over `require` when you aren't including a library as it has a different semantic meaning to mcvm.
+ * `recommend {package}`: Recommend to the user that they should use another package if it is not installed.
+ * `compat {package} {compat_package}`: Automatically install `compat_package` if `package` is present.
+ * `name {name}`: Set the display name of the package.
+ * `description {description}`: Set the description for this package.
+ * `version {version}`: Set the version of this package. This has no actual meaning to mcvm and should be used only for project versions.
+ * `authors {author1} {author2} ...`: Set a list of authors for this package. This should be the authors of the project itself, not the package script.
+ * `website {website}`: Set a primary website / repository link / project link / etc.
+ * `support {link}`: Set a support / donation link.
 
-## The addon Instruction
+### The `addon` Instruction
 The `addon` instruction is a bit more complex. Inside the parentheses you put a set of keys and values to configure the addon and how it is installed. The full addon config looks like this:
 ```
 addon id filename (
@@ -64,6 +86,11 @@ addon id filename (
  * `append` (Optional): A string to add to the name of the addon, usually a version of some sort. This is needed to differentiate addon files from the same package and same version. Defaults to nothing.
 
 Either `url` or `path` must be set, not both or neither.
+
+### The `require` Instruction
+The require instruction has a syntax of a list of package groups, which can either be multiple strings inside parentheses or a single string. In the future, these groups will be able to be chained in more complex expressions, but for now they have no purpose. Just put the packages in a list.
+
+Another part is the ability to make an explicit dependency using the `<"package-name">` syntax (Note that the brackets are outside of the string). This allows you to depend on another package, but not install it automatically. The user must specify that they want the package manually. Use this for packages that you require as a dependency, but may have gameplay changes or side effects that you want the user to be aware of.
 
 # Example
 Here is a simple example for a package that would install the *Sodium* mod. As this is an example, not all versions are covered.
