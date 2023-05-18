@@ -203,9 +203,9 @@ async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
 			cprintln!("   <s>Website:</s> <b!>{}", website);
 		}
 	}
-	if let Some(support) = &metadata.support {
-		if !support.is_empty() {
-			cprintln!("   <s>Support Link:</s> <b!>{}", support);
+	if let Some(support_link) = &metadata.support_link {
+		if !support_link.is_empty() {
+			cprintln!("   <s>Support Link:</s> <b!>{}", support_link);
 		}
 	}
 

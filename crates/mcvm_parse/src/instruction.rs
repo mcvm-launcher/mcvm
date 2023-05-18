@@ -17,7 +17,7 @@ pub enum InstrKind {
 	Version(Option<String>),
 	Authors(Vec<String>),
 	Website(Option<String>),
-	Support(Option<String>),
+	SupportLink(Option<String>),
 	Addon {
 		id: Value,
 		file_name: Value,
@@ -56,7 +56,7 @@ impl Instruction {
 			"version" => Ok(InstrKind::Version(None)),
 			"authors" => Ok(InstrKind::Authors(Vec::new())),
 			"website" => Ok(InstrKind::Website(None)),
-			"support" => Ok(InstrKind::Support(None)),
+			"support_link" => Ok(InstrKind::SupportLink(None)),
 			"set" => Ok(InstrKind::Set(None, Value::None)),
 			"finish" => Ok(InstrKind::Finish()),
 			"fail" => Ok(InstrKind::Fail(None)),
@@ -79,7 +79,7 @@ impl Instruction {
 				| InstrKind::Description(text)
 				| InstrKind::Version(text)
 				| InstrKind::Website(text)
-				| InstrKind::Support(text) => {
+				| InstrKind::SupportLink(text) => {
 					if text.is_none() {
 						*text = Some(parse_string(tok, pos)?);
 					} else {
