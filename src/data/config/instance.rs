@@ -380,8 +380,7 @@ pub fn read_instance_config(
 	let instance = Instance::new(
 		kind,
 		id,
-		profile.modloader.clone(),
-		profile.plugin_loader.clone(),
+		profile.modifications.clone(),
 		launch.to_options()?,
 	);
 
@@ -392,8 +391,8 @@ pub fn read_instance_config(
 mod tests {
 	use super::*;
 
-	use crate::util::versions::MinecraftVersion;
-	use mcvm_shared::modifications::{Modloader, PluginLoader};
+	use crate::{data::config::profile::GameModifications, util::versions::MinecraftVersion};
+	use mcvm_shared::modifications::{ClientType, Modloader, ServerType};
 
 	#[test]
 	fn test_instance_deser() {
@@ -414,8 +413,7 @@ mod tests {
 		let profile = Profile::new(
 			"foo",
 			MinecraftVersion::Latest,
-			Modloader::Vanilla,
-			PluginLoader::Vanilla,
+			GameModifications::new(Modloader::Vanilla, ClientType::Vanilla, ServerType::Vanilla),
 		);
 
 		let instance =
@@ -448,8 +446,7 @@ mod tests {
 		let profile = Profile::new(
 			"foo",
 			MinecraftVersion::Latest,
-			Modloader::Vanilla,
-			PluginLoader::Vanilla,
+			GameModifications::new(Modloader::Vanilla, ClientType::Vanilla, ServerType::Vanilla),
 		);
 
 		let config = InstanceConfig::Full(FullInstanceConfig::Client {

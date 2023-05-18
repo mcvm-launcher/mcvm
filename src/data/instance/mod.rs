@@ -20,9 +20,9 @@ use crate::util::json;
 
 use super::addon::get_addon_path;
 use super::config::instance::ClientWindowConfig;
+use super::config::profile::GameModifications;
 use super::profile::update::UpdateManager;
 use mcvm_shared::addon::{Addon, AddonKind};
-use mcvm_shared::modifications::{Modloader, PluginLoader};
 
 use std::fs;
 use std::path::{Path, PathBuf};
@@ -52,8 +52,7 @@ impl InstKind {
 pub struct Instance {
 	pub kind: InstKind,
 	pub id: String,
-	modloader: Modloader,
-	plugin_loader: PluginLoader,
+	modifications: GameModifications,
 	launch: LaunchOptions,
 	version_json: Later<Box<json::JsonObject>>,
 	java: Later<Java>,
@@ -66,15 +65,13 @@ impl Instance {
 	pub fn new(
 		kind: InstKind,
 		id: &str,
-		modloader: Modloader,
-		plugin_loader: PluginLoader,
+		modifications: GameModifications,
 		launch: LaunchOptions,
 	) -> Self {
 		Self {
 			kind,
 			id: id.to_owned(),
-			modloader,
-			plugin_loader,
+			modifications,
 			launch,
 			version_json: Later::new(),
 			java: Later::new(),

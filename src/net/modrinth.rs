@@ -1,5 +1,5 @@
 use anyhow::{anyhow, Context};
-use mcvm_shared::modifications::{Modloader, PluginLoader};
+use mcvm_shared::modifications::{Modloader, ServerType};
 use serde::Deserialize;
 
 use super::download;
@@ -76,9 +76,9 @@ impl Loader {
 	}
 
 	/// Checks if this loader matches an mcvm plugin loader
-	pub fn matches_plugin_loader(&self, plugin_loader: PluginLoader) -> bool {
+	pub fn matches_plugin_loader(&self, plugin_loader: ServerType) -> bool {
 		match plugin_loader {
-			PluginLoader::Paper => matches!(
+			ServerType::Paper => matches!(
 				self,
 				Self::Known(
 					KnownLoader::Paper

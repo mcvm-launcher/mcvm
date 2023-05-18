@@ -2,7 +2,7 @@ use std::fmt::Display;
 
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Default)]
+#[derive(Serialize, Deserialize, Debug, Copy, Clone, PartialEq, Eq, Default)]
 #[serde(rename_all = "snake_case")]
 pub enum Modloader {
 	#[default]
@@ -55,18 +55,26 @@ impl ModloaderMatch {
 	}
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone, Default)]
+#[derive(Serialize, Deserialize, Debug, Copy, Clone, Default)]
 #[serde(rename_all = "snake_case")]
-pub enum PluginLoader {
+pub enum ServerType {
 	#[default]
+	None,
 	Vanilla,
 	Paper,
+	Forge,
+	Fabric,
+	Quilt,
 }
 
-impl Display for PluginLoader {
+impl Display for ServerType {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		match self {
-			Self::Vanilla => write!(f, "None"),
+			Self::None => write!(f, "None"),
+			Self::Vanilla => write!(f, "Vanilla"),
+			Self::Forge => write!(f, "Forge"),
+			Self::Fabric => write!(f, "Fabric"),
+			Self::Quilt => write!(f, "Quilt"),
 			Self::Paper => write!(f, "Paper"),
 		}
 	}
@@ -87,10 +95,33 @@ impl PluginLoaderMatch {
 		}
 	}
 
-	pub fn matches(&self, other: &PluginLoader) -> bool {
+	pub fn matches(&self, other: &ServerType) -> bool {
 		match self {
-			Self::Vanilla => matches!(other, PluginLoader::Vanilla),
-			Self::Bukkit => matches!(other, PluginLoader::Paper),
+			Self::Vanilla => matches!(other, ServerType::Vanilla),
+			Self::Bukkit => matches!(other, ServerType::Paper),
+		}
+	}
+}
+
+#[derive(Serialize, Deserialize, Debug, Copy, Clone, Default)]
+#[serde(rename_all = "snake_case")]
+pub enum ClientType {
+	#[default]
+	None,
+	Vanilla,
+	Forge,
+	Fabric,
+	Quilt,
+}
+
+impl Display for ClientType {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::None => write!(f, "None"),
+			Self::Vanilla => write!(f, "Vanilla"),
+			Self::Forge => write!(f, "Forge"),
+			Self::Fabric => write!(f, "Fabric"),
+			Self::Quilt => write!(f, "Quilt"),
 		}
 	}
 }

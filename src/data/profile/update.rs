@@ -3,7 +3,7 @@ use std::path::{Path, PathBuf};
 
 use anyhow::{anyhow, Context};
 use color_print::{cformat, cprintln};
-use mcvm_shared::modifications::PluginLoader;
+use mcvm_shared::modifications::ServerType;
 
 use crate::data::config::Config;
 use crate::io::files::paths::Paths;
@@ -292,8 +292,7 @@ async fn resolve_and_batch(
 )> {
 	let mut constants = EvalConstants {
 		version: mc_version.to_string(),
-		modloader: profile.modloader.clone(),
-		plugin_loader: profile.plugin_loader.clone(),
+		modifications: profile.modifications.clone(),
 		side: Side::Client,
 		features: vec![],
 		versions: version_list,
@@ -349,8 +348,7 @@ async fn update_profile_packages(
 
 	let mut constants = EvalConstants {
 		version: mc_version.to_string(),
-		modloader: profile.modloader.clone(),
-		plugin_loader: profile.plugin_loader.clone(),
+		modifications: profile.modifications.clone(),
 		side: Side::Client,
 		features: vec![],
 		versions: version_list,
@@ -455,7 +453,7 @@ async fn get_paper_properties(
 	profile: &Profile,
 	mc_version: &str,
 ) -> anyhow::Result<Option<(u16, String)>> {
-	let out = if let PluginLoader::Paper = profile.plugin_loader {
+	let out = if let ServerType::Paper = profile.modifications.server_type {
 		let (build_num, ..) = paper::get_newest_build(&mc_version)
 			.await
 			.context("Failed to get the newest Paper build number")?;

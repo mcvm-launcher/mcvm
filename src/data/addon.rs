@@ -4,7 +4,7 @@ use mcvm_shared::addon::Addon;
 use crate::io::files::paths::Paths;
 use crate::io::files::{create_leading_dirs, update_hardlink};
 use crate::net::download;
-use mcvm_shared::modifications::{Modloader, PluginLoader};
+use mcvm_shared::modifications::{Modloader, ServerType};
 
 use std::path::PathBuf;
 
@@ -65,10 +65,10 @@ impl AddonRequest {
 }
 
 /// Checks if the modloader and plugin loader are compatible with each other
-pub fn game_modifications_compatible(modloader: &Modloader, plugin_loader: &PluginLoader) -> bool {
+pub fn game_modifications_compatible(modloader: &Modloader, plugin_loader: &ServerType) -> bool {
 	matches!(
 		(modloader, plugin_loader),
-		(Modloader::Vanilla, _) | (_, PluginLoader::Vanilla)
+		(Modloader::Vanilla, _) | (_, ServerType::Vanilla)
 	)
 }
 
@@ -80,15 +80,15 @@ mod tests {
 	fn test_game_mods_compat() {
 		assert!(game_modifications_compatible(
 			&Modloader::Fabric,
-			&PluginLoader::Vanilla
+			&ServerType::Vanilla
 		));
 		assert!(game_modifications_compatible(
 			&Modloader::Vanilla,
-			&PluginLoader::Vanilla
+			&ServerType::Vanilla
 		));
 		assert!(!game_modifications_compatible(
 			&Modloader::Forge,
-			&PluginLoader::Paper
+			&ServerType::Paper
 		));
 	}
 }

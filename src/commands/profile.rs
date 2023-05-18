@@ -8,6 +8,7 @@ use anyhow::bail;
 use anyhow::Context;
 use clap::Subcommand;
 use color_print::{cprint, cprintln};
+use mcvm_shared::instance::Side;
 
 #[derive(Debug, Subcommand)]
 pub enum ProfileSubcommand {
@@ -45,8 +46,14 @@ async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
 	if let Some(profile) = config.profiles.get(id) {
 		cprintln!("<s><g>Profile <b>{}", id);
 		cprintln!("   <s>Version:</s> <g>{}", profile.version);
-		cprintln!("   <s>Modloader:</s> <g>{}", profile.modloader);
-		cprintln!("   <s>Plugin Loader:</s> <g>{}", profile.plugin_loader);
+		
+		if profile.modifications.common_modloader() {
+			cprintln!("   <s>Modloader:</s> <g>{}", profile.modifications.get_modloader(Side::Client));
+		} else {
+			cprintln!("   <s>Client:</s> <g>{}", profile.modifications.client_type);
+			cprintln!("   <s>Server:</s> <g>{}", profile.modifications.server_type);
+		}
+
 		cprintln!("   <s>Instances:");
 		for inst_id in profile.instances.iter() {
 			if let Some(instance) = config.instances.get(inst_id) {

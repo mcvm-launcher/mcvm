@@ -13,7 +13,7 @@ use crate::io::options::{self, client::write_options_txt, server::write_server_p
 use crate::io::Later;
 use crate::net::{fabric_quilt, minecraft, paper};
 use crate::util::{json, print::ReplPrinter};
-use mcvm_shared::modifications::{Modloader, PluginLoader};
+use mcvm_shared::modifications::{Modloader, ServerType};
 
 use super::{InstKind, Instance};
 
@@ -29,17 +29,21 @@ impl Instance {
 		};
 		out.insert(UpdateRequirement::Java(java_kind));
 		out.insert(UpdateRequirement::GameJar(self.kind.to_side()));
-		if let Modloader::Fabric = self.modloader {
-			out.insert(UpdateRequirement::FabricQuilt(
-				fabric_quilt::Mode::Fabric,
-				self.kind.to_side(),
-			));
-		} else if let Modloader::Quilt = self.modloader {
-			out.insert(UpdateRequirement::FabricQuilt(
-				fabric_quilt::Mode::Quilt,
-				self.kind.to_side(),
-			));
-		}
+		match self.modifications.get_modloader(self.kind.to_side()) {
+			Modloader::Fabric => {
+				out.insert(UpdateRequirement::FabricQuilt(
+					fabric_quilt::Mode::Fabric,
+					self.kind.to_side(),
+				));
+			}
+			Modloader::Quilt => {
+				out.insert(UpdateRequirement::FabricQuilt(
+					fabric_quilt::Mode::Quilt,
+					self.kind.to_side(),
+				));
+			}
+			_ => {}
+		};
 		out.insert(UpdateRequirement::Options);
 		match &self.kind {
 			InstKind::Client { .. } => {
@@ -118,7 +122,9 @@ impl Instance {
 
 		self.main_class = Some(json::access_str(version_json, "mainClass")?.to_owned());
 
-		if let Modloader::Fabric | Modloader::Quilt = self.modloader {
+		if let Modloader::Fabric | Modloader::Quilt =
+			self.modifications.get_modloader(self.kind.to_side())
+		{
 			classpath.extend(
 				self.get_fabric_quilt(paths, manager)
 					.await
@@ -186,7 +192,9 @@ impl Instance {
 		)?;
 		self.add_java(&java_vers.to_string(), manager);
 
-		let classpath = if let Modloader::Fabric | Modloader::Quilt = self.modloader {
+		let classpath = if let Modloader::Fabric | Modloader::Quilt =
+			self.modifications.get_modloader(self.kind.to_side())
+		{
 			Some(self.get_fabric_quilt(paths, manager).await?)
 		} else {
 			None
@@ -201,8 +209,12 @@ impl Instance {
 			Ok::<(), anyhow::Error>(())
 		});
 
-		self.jar_path.fill(match self.plugin_loader {
-			PluginLoader::Vanilla => {
+		self.jar_path.fill(match self.modifications.server_type {
+			ServerType::None
+			| ServerType::Vanilla
+			| ServerType::Forge
+			| ServerType::Fabric
+			| ServerType::Quilt => {
 				let extern_jar_path =
 					minecraft::game_jar::get_path(self.kind.to_side(), version, paths);
 				if manager.should_update_file(&jar_path) {
@@ -212,7 +224,7 @@ impl Instance {
 				}
 				jar_path
 			}
-			PluginLoader::Paper => {
+			ServerType::Paper => {
 				let mut printer = ReplPrinter::from_options(manager.print.clone());
 				printer.indent(1);
 				printer.print("Checking for paper updates...");

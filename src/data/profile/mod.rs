@@ -9,7 +9,7 @@ use crate::util::versions::MinecraftVersion;
 
 use self::update::UpdateManager;
 
-use mcvm_shared::modifications::{Modloader, PluginLoader};
+use super::config::profile::GameModifications;
 
 pub type InstanceRegistry = std::collections::HashMap<String, Instance>;
 
@@ -19,24 +19,21 @@ pub struct Profile {
 	pub version: MinecraftVersion,
 	pub instances: Vec<String>,
 	pub packages: Vec<PkgProfileConfig>,
-	pub modloader: Modloader,
-	pub plugin_loader: PluginLoader,
+	pub modifications: GameModifications,
 }
 
 impl Profile {
 	pub fn new(
 		name: &str,
 		version: MinecraftVersion,
-		modloader: Modloader,
-		plugin_loader: PluginLoader,
+		modifications: GameModifications,
 	) -> Self {
 		Profile {
 			name: name.to_owned(),
 			version,
 			instances: Vec::new(),
 			packages: Vec::new(),
-			modloader,
-			plugin_loader,
+			modifications,
 		}
 	}
 

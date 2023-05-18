@@ -15,7 +15,6 @@ use mcvm_shared::modifications::Modloader;
 use preferences::ConfigPreferences;
 use serde::{Deserialize, Serialize};
 
-use super::addon::game_modifications_compatible;
 use super::profile::{InstanceRegistry, Profile};
 use super::user::{validate_username, Auth, AuthState};
 use crate::io::files::paths::Paths;
@@ -149,13 +148,6 @@ impl Config {
 				if show_warnings {
 					cprintln!("<y>Warning: Forge installation is currently unimplemented by mcvm. You will be expected to install it yourself for the time being.");
 				}
-			}
-
-			if !game_modifications_compatible(
-				&profile_config.modloader,
-				&profile_config.plugin_loader,
-			) {
-				bail!("Modloader and Plugin Loader are incompatible for profile {profile_id}");
 			}
 
 			if profile_config.instances.is_empty() && show_warnings {

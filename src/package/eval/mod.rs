@@ -10,13 +10,13 @@ use self::conditions::eval_condition;
 
 use super::Package;
 use crate::data::addon::{AddonLocation, AddonRequest};
+use crate::data::config::profile::GameModifications;
 use crate::io::files::paths::Paths;
 use crate::util::validate_identifier;
 use mcvm_parse::instruction::{InstrKind, Instruction};
 use mcvm_parse::parse::{Block, BlockId};
 use mcvm_parse::{FailReason, Value};
 use mcvm_shared::instance::Side;
-use mcvm_shared::modifications::{Modloader, PluginLoader};
 use mcvm_shared::pkg::PkgIdentifier;
 
 use std::collections::HashMap;
@@ -75,8 +75,7 @@ pub struct RequiredPackage {
 #[derive(Debug, Clone)]
 pub struct EvalConstants {
 	pub version: String,
-	pub modloader: Modloader,
-	pub plugin_loader: PluginLoader,
+	pub modifications: GameModifications,
 	pub side: Side,
 	pub features: Vec<String>,
 	pub versions: Vec<String>,

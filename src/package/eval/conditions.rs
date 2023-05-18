@@ -1,4 +1,4 @@
-use mcvm_shared::versions::VersionPattern;
+use mcvm_shared::{instance::Side, versions::VersionPattern};
 
 use super::EvalData;
 use mcvm_parse::conditions::ConditionKind;
@@ -17,14 +17,19 @@ pub fn eval_condition(condition: &ConditionKind, eval: &EvalData) -> anyhow::Res
 		ConditionKind::Side(side) => {
 			Ok(eval.constants.side == *side.as_ref().expect("If side is missing"))
 		}
-		ConditionKind::Modloader(loader) => Ok(loader
-			.as_ref()
-			.expect("If modloader is missing")
-			.matches(&eval.constants.modloader)),
+		ConditionKind::Modloader(loader) => {
+			Ok(loader.as_ref().expect("If modloader is missing").matches(
+				&eval
+					.constants
+					.modifications
+					.get_modloader(eval.constants.side),
+			))
+		}
 		ConditionKind::PluginLoader(loader) => Ok(loader
 			.as_ref()
 			.expect("If plugin_loader is missing")
-			.matches(&eval.constants.plugin_loader)),
+			.matches(&eval.constants.modifications.server_type)
+			&& matches!(eval.constants.side, Side::Server)),
 		ConditionKind::Feature(feature) => {
 			Ok(eval.constants.features.contains(&feature.get(&eval.vars)?))
 		}
