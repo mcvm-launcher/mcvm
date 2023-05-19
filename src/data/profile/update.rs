@@ -15,7 +15,7 @@ use crate::net::fabric_quilt::{self, FabricQuiltMeta};
 use crate::net::minecraft::{assets, game_jar, libraries, version_manifest};
 use crate::net::paper;
 use crate::package::eval::resolve::resolve;
-use crate::package::eval::{EvalConstants, EvalPermissions, EvalParameters};
+use crate::package::eval::{EvalConstants, EvalParameters, EvalPermissions};
 use crate::package::reg::{PkgRegistry, PkgRequest};
 use crate::util::print::{ReplPrinter, HYPHEN_POINT};
 use crate::util::versions::MinecraftVersion;
@@ -328,21 +328,16 @@ async fn update_profile_packages(
 	lock: &mut Lockfile,
 ) -> anyhow::Result<()> {
 	let mut printer = ReplPrinter::new(true);
-	let (batched, resolved) = resolve_and_batch(
-		profile,
-		constants,
-		paths,
-		reg,
-		instances,
-	)
-	.await
-	.context("Failed to resolve dependencies for profile")?;
+	let (batched, resolved) = resolve_and_batch(profile, constants, paths, reg, instances)
+		.await
+		.context("Failed to resolve dependencies for profile")?;
 
 	for (package, package_instances) in batched {
 		let pkg_version = reg
 			.get_version(&package, paths)
 			.await
 			.context("Failed to get version for package")?;
+		let mut notices = Vec::new();
 		for instance_id in package_instances {
 			let instance = instances.get(&instance_id).ok_or(anyhow!(
 				"Instance '{instance_id}' does not exist in the registry"
@@ -357,18 +352,31 @@ async fn update_profile_packages(
 				Some(&instance_id),
 				"Installing...",
 			));
-			instance
+			let result = instance
 				.install_package(&package, pkg_version, &constants, params, reg, paths, lock)
 				.await
 				.with_context(|| {
 					format!("Failed to install package '{package}' for instance '{instance_id}'")
 				})?;
+			notices.extend(
+				result
+					.notices
+					.iter()
+					.map(|x| (instance_id.clone(), x.to_owned())),
+			);
 		}
 		printer.print(&format_package_print(
 			&package,
 			None,
 			&cformat!("<g>Installed."),
 		));
+		for (instance, notice) in notices {
+			printer.print(&format_package_print(
+				&package,
+				Some(&instance),
+				&cformat!("<y>Notice: {}", notice),
+			));
+		}
 		printer.newline();
 	}
 	for (instance_id, packages) in resolved {

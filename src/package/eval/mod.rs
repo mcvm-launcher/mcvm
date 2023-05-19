@@ -22,6 +22,11 @@ use mcvm_shared::pkg::PkgIdentifier;
 use std::collections::HashMap;
 use std::path::PathBuf;
 
+/// Max notice instructions per package
+static MAX_NOTICE_INSTRUCTIONS: usize = 10;
+/// Max characters per notice instruction
+static MAX_NOTICE_CHARACTERS: usize = 128;
+
 /// What instructions the evaluator will evaluate (depends on what routine we are running)
 #[derive(Debug, Clone)]
 pub enum EvalLevel {
@@ -104,6 +109,7 @@ pub struct EvalData<'a> {
 	pub recommendations: Vec<String>,
 	pub bundled: Vec<String>,
 	pub compats: Vec<(String, String)>,
+	pub notices: Vec<String>,
 }
 
 impl<'a> EvalData<'a> {
@@ -120,6 +126,7 @@ impl<'a> EvalData<'a> {
 			recommendations: Vec::new(),
 			bundled: Vec::new(),
 			compats: Vec::new(),
+			notices: Vec::new(),
 		}
 	}
 }
@@ -253,6 +260,16 @@ pub fn eval_instr(
 					eval.compats
 						.push((package.get(&eval.vars)?, compat.get(&eval.vars)?));
 				}
+			}
+			InstrKind::Notice(notice) => {
+				if eval.notices.len() > MAX_NOTICE_INSTRUCTIONS {
+					bail!("Max number of notice instructions was exceded (>{MAX_NOTICE_INSTRUCTIONS})");
+				}
+				let notice = notice.get(&eval.vars)?;
+				if notice.len() > MAX_NOTICE_CHARACTERS {
+					bail!("Notice message is too long (>{MAX_NOTICE_CHARACTERS})");
+				}
+				eval.notices.push(notice);
 			}
 			InstrKind::Addon {
 				id,

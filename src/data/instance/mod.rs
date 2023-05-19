@@ -14,7 +14,7 @@ use crate::io::options::client::ClientOptions;
 use crate::io::options::server::ServerOptions;
 use crate::io::{files, Later};
 use crate::net::fabric_quilt;
-use crate::package::eval::{EvalConstants, Routine, EvalParameters};
+use crate::package::eval::{EvalConstants, Routine, EvalParameters, EvalData};
 use crate::package::reg::{PkgRegistry, PkgRequest};
 use crate::util::json;
 
@@ -220,16 +220,16 @@ impl Instance {
 	}
 
 	/// Installs a package on this instance
-	pub async fn install_package(
+	pub async fn install_package<'a>(
 		&self,
 		pkg: &PkgRequest,
 		pkg_version: u32,
-		constants: &EvalConstants,
+		constants: &'a EvalConstants,
 		params: EvalParameters,
 		reg: &mut PkgRegistry,
 		paths: &Paths,
 		lock: &mut Lockfile,
-	) -> anyhow::Result<()> {
+	) -> anyhow::Result<EvalData<'a>> {
 		let eval = reg
 			.eval(pkg, paths, Routine::Install, constants, params)
 			.await
@@ -257,6 +257,6 @@ impl Instance {
 			}
 		}
 
-		Ok(())
+		Ok(eval)
 	}
 }

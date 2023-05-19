@@ -36,6 +36,7 @@ pub enum InstrKind {
 	Compat(Value, Value),
 	Finish(),
 	Fail(Option<FailReason>),
+	Notice(Value),
 }
 
 /// A command / statement run in a package script
@@ -66,6 +67,7 @@ impl Instruction {
 			"recommend" => Ok(InstrKind::Recommend(Value::None)),
 			"bundle" => Ok(InstrKind::Bundle(Value::None)),
 			"compat" => Ok(InstrKind::Compat(Value::None, Value::None)),
+			"notice" => Ok(InstrKind::Notice(Value::None)),
 			string => bail!("Unknown instruction '{string}' {}", pos),
 		}?;
 		Ok(Instruction::new(kind))
@@ -88,7 +90,10 @@ impl Instruction {
 						unexpected_token!(tok, pos);
 					}
 				}
-				InstrKind::Refuse(val) | InstrKind::Recommend(val) | InstrKind::Bundle(val) => {
+				InstrKind::Refuse(val)
+				| InstrKind::Recommend(val)
+				| InstrKind::Bundle(val)
+				| InstrKind::Notice(val) => {
 					if let Value::None = val {
 						*val = parse_arg(tok, pos)?;
 					} else {

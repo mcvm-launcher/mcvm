@@ -58,6 +58,7 @@ Metadata like `description` and `authors` can only be used in the `@meta` contex
  * `bundle {package}`: Bundle another package with this one. Useful for packages that group together multiple other packages, such as modpacks. Prefer using this over `require` when you aren't including a library as it has a different semantic meaning to mcvm.
  * `recommend {package}`: Recommend to the user that they should use another package if it is not installed.
  * `compat {package} {compat_package}`: Automatically install `compat_package` if `package` is present.
+ * `notice {message}`: Display a warning or important information as a message to the user. Notice messages may not be more than 128 characters long, and there cannot be more than five of them that are displayed per package evaluation.
  * `name {name}`: Set the display name of the package.
  * `description {description}`: Set the description for this package.
  * `version {version}`: Set the version of this package. This has no actual meaning to mcvm and should be used only for project versions.
