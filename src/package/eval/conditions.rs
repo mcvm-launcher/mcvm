@@ -12,7 +12,7 @@ pub fn eval_condition(condition: &ConditionKind, eval: &EvalData) -> anyhow::Res
 		ConditionKind::Version(version) => {
 			let version = version.get(&eval.vars)?;
 			let version = VersionPattern::from(&version);
-			Ok(version.matches_single(&eval.constants.version, &eval.constants.versions))
+			Ok(version.matches_single(&eval.constants.version, &eval.constants.version_list))
 		}
 		ConditionKind::Side(side) => {
 			Ok(eval.constants.side == *side.as_ref().expect("If side is missing"))

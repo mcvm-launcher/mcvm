@@ -78,7 +78,7 @@ pub struct EvalConstants {
 	pub modifications: GameModifications,
 	pub side: Side,
 	pub features: Vec<String>,
-	pub versions: Vec<String>,
+	pub version_list: Vec<String>,
 	pub perms: EvalPermissions,
 }
 

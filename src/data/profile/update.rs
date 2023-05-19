@@ -548,7 +548,7 @@ pub async fn update_profiles(
 					modifications: profile.modifications.clone(),
 					side: Side::Client,
 					features: vec![],
-					versions: version_list.clone(),
+					version_list: version_list.clone(),
 					perms: EvalPermissions::Standard,
 				};
 
