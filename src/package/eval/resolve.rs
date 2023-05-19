@@ -5,7 +5,7 @@ use color_print::cprintln;
 
 use crate::io::files::paths::Paths;
 
-use super::{EvalConstants, Routine};
+use super::{EvalConstants, Routine, EvalParameters};
 use crate::package::reg::{PkgRegistry, PkgRequest, PkgRequestSource};
 use crate::package::PkgProfileConfig;
 
@@ -28,17 +28,19 @@ enum Task {
 	/// Evaluate a package and its relationships
 	EvalPackage {
 		dest: PkgRequest,
-		constants: Option<EvalConstants>,
+		params: Option<EvalParameters>,
 	},
 }
 
 /// State for resolution
-struct Resolver {
+struct Resolver<'a> {
 	tasks: VecDeque<Task>,
 	constraints: Vec<Constraint>,
+	constants: &'a EvalConstants,
+	default_params: EvalParameters,
 }
 
-impl Resolver {
+impl<'a> Resolver<'a> {
 	fn is_required_fn(constraint: &Constraint, req: &PkgRequest) -> bool {
 		matches!(
 			&constraint.kind,
@@ -142,7 +144,7 @@ impl Resolver {
 					});
 					self.tasks.push_back(Task::EvalPackage {
 						dest: compat_package.clone(),
-						constants: None,
+						params: None,
 					});
 				}
 			}
@@ -167,27 +169,19 @@ impl Resolver {
 /// Resolve an EvalPackage task
 async fn resolve_eval_package(
 	package: PkgRequest,
-	constants: &EvalConstants,
-	user_constants: Option<EvalConstants>,
-	resolver: &mut Resolver,
+	params: &Option<EvalParameters>,
+	resolver: &mut Resolver<'_>,
 	reg: &mut PkgRegistry,
 	paths: &Paths,
 ) -> anyhow::Result<()> {
-	// Pick which evaluation constants to use
-	let user_constants = &user_constants;
-	let constants = if let Some(constants) = user_constants {
-		constants
-	} else {
-		constants
-	};
-
+	let params = params.as_ref().unwrap_or(&resolver.default_params).clone();
 	// Make sure that this package fits the constraints as well
 	resolver
 		.check_constraints(&package)
 		.context("Package did not fit existing constraints")?;
 
 	let result = reg
-		.eval(&package, paths, Routine::InstallResolve, constants)
+		.eval(&package, paths, Routine::InstallResolve, resolver.constants, params)
 		.await
 		.context("Failed to evaluate package")?;
 
@@ -219,7 +213,7 @@ async fn resolve_eval_package(
 			});
 			resolver.tasks.push_back(Task::EvalPackage {
 				dest: req,
-				constants: None,
+				params: None,
 			});
 		}
 	}
@@ -236,7 +230,7 @@ async fn resolve_eval_package(
 		});
 		resolver.tasks.push_back(Task::EvalPackage {
 			dest: req,
-			constants: None,
+			params: None,
 		});
 	}
 
@@ -272,20 +266,18 @@ async fn resolve_eval_package(
 /// Resolve a single task
 async fn resolve_task(
 	task: Task,
-	resolver: &mut Resolver,
+	resolver: &mut Resolver<'_>,
 	reg: &mut PkgRegistry,
-	constants: &EvalConstants,
 	paths: &Paths,
 ) -> anyhow::Result<()> {
 	match task {
 		Task::EvalPackage {
 			dest,
-			constants: user_constants,
+			params,
 		} => {
 			resolve_eval_package(
 				dest.clone(),
-				constants,
-				user_constants,
+				&params,
 				resolver,
 				reg,
 				paths,
@@ -302,30 +294,35 @@ async fn resolve_task(
 pub async fn resolve(
 	packages: &[PkgProfileConfig],
 	constants: &EvalConstants,
+	default_params: EvalParameters,
 	paths: &Paths,
 	reg: &mut PkgRegistry,
 ) -> anyhow::Result<Vec<PkgRequest>> {
 	let mut resolver = Resolver {
 		tasks: VecDeque::new(),
 		constraints: Vec::new(),
+		constants,
+		default_params,
 	};
 
 	// Create the initial EvalPackage from the installed packages
 	for config in packages {
-		let mut constants = constants.clone();
-		constants.features = config.features.clone();
-		constants.perms = config.permissions.clone();
+		let params = EvalParameters {
+			side: resolver.default_params.side,
+			features: config.features.clone(),
+			perms: config.permissions.clone(),
+		};
 		resolver.constraints.push(Constraint {
 			kind: ConstraintKind::UserRequire(config.req.clone()),
 		});
 		resolver.tasks.push_back(Task::EvalPackage {
 			dest: config.req.clone(),
-			constants: Some(constants),
+			params: Some(params)
 		});
 	}
 
 	while let Some(task) = resolver.tasks.pop_front() {
-		resolve_task(task, &mut resolver, reg, constants, paths).await?;
+		resolve_task(task, &mut resolver, reg, paths).await?;
 		resolver.check_compats();
 	}
 

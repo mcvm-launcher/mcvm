@@ -71,7 +71,7 @@ pub struct RequiredPackage {
 	explicit: bool,
 }
 
-/// Constants provided by the function calling eval
+/// Constants for the evaluation that will be constant across every package
 #[derive(Debug, Clone)]
 pub struct EvalConstants {
 	pub version: String,
@@ -82,12 +82,21 @@ pub struct EvalConstants {
 	pub perms: EvalPermissions,
 }
 
+/// Constants for the evaluation that will be different for each package
+#[derive(Debug, Clone)]
+pub struct EvalParameters {
+	pub side: Side,
+	pub features: Vec<String>,
+	pub perms: EvalPermissions,
+}
+
 /// Persistent state for evaluation
 #[derive(Debug, Clone)]
-pub struct EvalData {
+pub struct EvalData<'a> {
 	pub vars: HashMap<String, String>,
 	pub addon_reqs: Vec<AddonRequest>,
-	pub constants: EvalConstants,
+	pub constants: &'a EvalConstants,
+	pub params: EvalParameters,
 	pub id: PkgIdentifier,
 	pub level: EvalLevel,
 	pub deps: Vec<Vec<RequiredPackage>>,
@@ -97,12 +106,13 @@ pub struct EvalData {
 	pub compats: Vec<(String, String)>,
 }
 
-impl EvalData {
-	pub fn new(constants: EvalConstants, id: PkgIdentifier, routine: &Routine) -> Self {
+impl<'a> EvalData<'a> {
+	pub fn new(constants: &'a EvalConstants, params: EvalParameters, id: PkgIdentifier, routine: &Routine) -> Self {
 		Self {
 			vars: HashMap::new(),
 			addon_reqs: Vec::new(),
 			constants,
+			params,
 			id,
 			level: routine.get_level(),
 			deps: Vec::new(),
@@ -133,12 +143,13 @@ impl Default for EvalResult {
 
 impl Package {
 	/// Evaluate a routine on a package
-	pub async fn eval(
+	pub async fn eval<'a>(
 		&mut self,
 		paths: &Paths,
 		routine: Routine,
-		constants: &EvalConstants,
-	) -> anyhow::Result<EvalData> {
+		constants: &'a EvalConstants,
+		params: EvalParameters,
+	) -> anyhow::Result<EvalData<'a>> {
 		self.ensure_loaded(paths, false).await?;
 		self.parse(paths).await?;
 		let parsed = self.data.get_mut().parsed.get_mut();
@@ -152,7 +163,7 @@ impl Package {
 			.get(routine_id)
 			.ok_or(anyhow!("Routine {} does not exist", routine_name))?;
 
-		let mut eval = EvalData::new(constants.clone(), self.id.clone(), &routine);
+		let mut eval = EvalData::new(constants, params, self.id.clone(), &routine);
 
 		for instr in &block.contents {
 			let result = eval_instr(instr, &mut eval, &parsed.blocks)?;

@@ -3,7 +3,7 @@ use mcvm_parse::metadata::PackageMetadata;
 use serde::{Deserialize, Serialize};
 
 use super::core::get_core_package;
-use super::eval::{EvalConstants, EvalData, Routine};
+use super::eval::{EvalConstants, EvalData, Routine, EvalParameters};
 use super::repo::{query_all, PkgRepo};
 use super::{Package, PkgKind};
 use crate::io::files::paths::Paths;
@@ -195,15 +195,16 @@ impl PkgRegistry {
 	}
 
 	/// Evaluate a package
-	pub async fn eval(
+	pub async fn eval<'a>(
 		&mut self,
 		req: &PkgRequest,
 		paths: &Paths,
 		routine: Routine,
-		constants: &EvalConstants,
-	) -> anyhow::Result<EvalData> {
+		constants: &'a EvalConstants,
+		params: EvalParameters,
+	) -> anyhow::Result<EvalData<'a>> {
 		let pkg = self.ensure_package_contents(req, paths).await?;
-		let eval = pkg.eval(paths, routine, constants).await?;
+		let eval = pkg.eval(paths, routine, constants, params).await?;
 		Ok(eval)
 	}
 

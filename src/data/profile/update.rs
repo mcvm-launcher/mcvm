@@ -15,7 +15,7 @@ use crate::net::fabric_quilt::{self, FabricQuiltMeta};
 use crate::net::minecraft::{assets, game_jar, libraries, version_manifest};
 use crate::net::paper;
 use crate::package::eval::resolve::resolve;
-use crate::package::eval::{EvalConstants, EvalPermissions};
+use crate::package::eval::{EvalConstants, EvalPermissions, EvalParameters};
 use crate::package::reg::{PkgRegistry, PkgRequest};
 use crate::util::print::{ReplPrinter, HYPHEN_POINT};
 use crate::util::versions::MinecraftVersion;
@@ -281,8 +281,7 @@ impl UpdateManager {
 /// It also returns a map of instances to packages so that unused packages can be removed
 async fn resolve_and_batch(
 	profile: &Profile,
-	mc_version: &str,
-	version_list: Vec<String>,
+	constants: &EvalConstants,
 	paths: &Paths,
 	reg: &mut PkgRegistry,
 	instances: &InstanceRegistry,
@@ -290,23 +289,18 @@ async fn resolve_and_batch(
 	HashMap<PkgRequest, Vec<String>>,
 	HashMap<String, Vec<PkgRequest>>,
 )> {
-	let mut constants = EvalConstants {
-		version: mc_version.to_string(),
-		modifications: profile.modifications.clone(),
-		side: Side::Client,
-		features: vec![],
-		versions: version_list,
-		perms: EvalPermissions::Standard,
-	};
-
 	let mut batched: HashMap<PkgRequest, Vec<String>> = HashMap::new();
 	let mut resolved = HashMap::new();
 	for instance_id in &profile.instances {
 		let instance = instances.get(instance_id).ok_or(anyhow!(
 			"Instance '{instance_id}' does not exist in the registry"
 		))?;
-		constants.side = instance.kind.to_side();
-		let instance_resolved = resolve(&profile.packages, &constants, paths, reg)
+		let params = EvalParameters {
+			side: instance.kind.to_side(),
+			features: Vec::new(),
+			perms: EvalPermissions::Standard,
+		};
+		let instance_resolved = resolve(&profile.packages, &constants, params, paths, reg)
 			.await
 			.with_context(|| {
 				format!("Failed to resolve package dependencies for instance '{instance_id}'")
@@ -327,8 +321,7 @@ async fn resolve_and_batch(
 /// Install packages on a profile
 async fn update_profile_packages(
 	profile: &Profile,
-	mc_version: &str,
-	version_list: Vec<String>,
+	constants: &EvalConstants,
 	paths: &Paths,
 	reg: &mut PkgRegistry,
 	instances: &InstanceRegistry,
@@ -337,23 +330,13 @@ async fn update_profile_packages(
 	let mut printer = ReplPrinter::new(true);
 	let (batched, resolved) = resolve_and_batch(
 		profile,
-		mc_version,
-		version_list.clone(),
+		constants,
 		paths,
 		reg,
 		instances,
 	)
 	.await
 	.context("Failed to resolve dependencies for profile")?;
-
-	let mut constants = EvalConstants {
-		version: mc_version.to_string(),
-		modifications: profile.modifications.clone(),
-		side: Side::Client,
-		features: vec![],
-		versions: version_list,
-		perms: EvalPermissions::Standard,
-	};
 
 	for (package, package_instances) in batched {
 		let pkg_version = reg
@@ -364,14 +347,18 @@ async fn update_profile_packages(
 			let instance = instances.get(&instance_id).ok_or(anyhow!(
 				"Instance '{instance_id}' does not exist in the registry"
 			))?;
-			constants.side = instance.kind.to_side();
+			let params = EvalParameters {
+				side: instance.kind.to_side(),
+				features: Vec::new(),
+				perms: EvalPermissions::Standard,
+			};
 			printer.print(&format_package_print(
 				&package,
 				Some(&instance_id),
 				"Installing...",
 			));
 			instance
-				.install_package(&package, pkg_version, &constants, reg, paths, lock)
+				.install_package(&package, pkg_version, &constants, params, reg, paths, lock)
 				.await
 				.with_context(|| {
 					format!("Failed to install package '{package}' for instance '{instance_id}'")
@@ -556,10 +543,18 @@ pub async fn update_profiles(
 					config.packages.ensure_package(&pkg.req, paths).await?;
 				}
 
+				let constants = EvalConstants {
+					version: mc_version.to_string(),
+					modifications: profile.modifications.clone(),
+					side: Side::Client,
+					features: vec![],
+					versions: version_list.clone(),
+					perms: EvalPermissions::Standard,
+				};
+
 				update_profile_packages(
 					profile,
-					&mc_version,
-					version_list,
+					&constants,
 					paths,
 					&mut config.packages,
 					&config.instances,
