@@ -1,4 +1,9 @@
-use std::{collections::HashMap, fs::File, io::{Write, BufWriter}, path::Path};
+use std::{
+	collections::HashMap,
+	fs::File,
+	io::{BufWriter, Write},
+	path::Path,
+};
 
 use anyhow::Context;
 use itertools::Itertools;
@@ -103,6 +108,8 @@ pub fn create_keys(
 		VersionPattern::After(String::from("12w50a")).matches_single(version, versions);
 	let after_13w36a =
 		VersionPattern::After(String::from("13w36a")).matches_single(version, versions);
+	let after_13w47a =
+		VersionPattern::After(String::from("13w47a")).matches_single(version, versions);
 	let after_14w25a =
 		VersionPattern::After(String::from("14w25a")).matches_single(version, versions);
 	let after_14w28a =
@@ -155,6 +162,8 @@ pub fn create_keys(
 
 	let is_3d_shareware = VersionPattern::Single(String::from("3D Shareware v1.34"))
 		.matches_single(version, versions);
+
+	let stream_options_enabled = after_13w47a && before_15w31a;
 
 	// TODO: Add actual data version
 	if let Some(value) = options.data_version {
@@ -444,6 +453,55 @@ pub fn create_keys(
 			out.insert(String::from("snooperEnabled"), value.to_string());
 		}
 	}
+	if stream_options_enabled {
+		if let Some(value) = options.stream.bytes_per_pixel {
+			out.insert(String::from("streamBytesPerPixel"), value.to_string());
+		}
+		if let Some(value) = options.stream.chat_enabled {
+			out.insert(
+				String::from("streamChatEnabled"),
+				(value as i32).to_string(),
+			);
+		}
+		if let Some(value) = options.stream.chat_filter {
+			out.insert(
+				String::from("streamChatUserFilter"),
+				(value as i32).to_string(),
+			);
+		}
+		if let Some(value) = options.stream.compression {
+			out.insert(
+				String::from("streamCompression"),
+				(value as i32).to_string(),
+			);
+		}
+		if let Some(value) = options.stream.fps {
+			out.insert(String::from("streamFps"), value.to_string());
+		}
+		if let Some(value) = options.stream.bitrate {
+			out.insert(String::from("streamKbps"), value.to_string());
+		}
+		if let Some(value) = options.stream.microphone_toggle_behavior {
+			out.insert(
+				String::from("streamMicToggleBehavior"),
+				(value as i32).to_string(),
+			);
+		}
+		if let Some(value) = options.stream.microphone_volume {
+			out.insert(String::from("streamMicVolume"), value.to_string());
+		}
+		if let Some(value) = &options.stream.preferred_server {
+			out.insert(String::from("streamKbps"), value.clone());
+		}
+		// No idea why this one is suddenly true/false instead of 1/0 but the wiki says so
+		if let Some(value) = options.stream.send_metadata {
+			out.insert(String::from("streamSendMetadata"), value.to_string());
+		}
+		if let Some(value) = options.stream.system_volume {
+			out.insert(String::from("streamSystemVolume"), value.to_string());
+		}
+	}
+
 	// Keybinds
 	if let Some(value) = &options.control.keys.attack {
 		out.insert(
@@ -651,6 +709,38 @@ pub fn create_keys(
 		if let Some(value) = &options.control.keys.increase_view {
 			out.insert(
 				String::from("key_key.increase_view"),
+				value.get_keycode(before_1_13),
+			);
+		}
+	}
+	if stream_options_enabled {
+		if let Some(value) = &options.control.keys.stream_commercial {
+			out.insert(
+				String::from("key_key.streamCommercial"),
+				value.get_keycode(before_1_13),
+			);
+		}
+		if let Some(value) = &options.control.keys.stream_pause_unpause {
+			out.insert(
+				String::from("key_key.streamPauseUnpause"),
+				value.get_keycode(before_1_13),
+			);
+		}
+		if let Some(value) = &options.control.keys.stream_start_stop {
+			out.insert(
+				String::from("key_key.streamStartStop"),
+				value.get_keycode(before_1_13),
+			);
+		}
+		if let Some(value) = &options.control.keys.stream_commercial {
+			out.insert(
+				String::from("key_key.streamCommercial"),
+				value.get_keycode(before_1_13),
+			);
+		}
+		if let Some(value) = &options.control.keys.stream_toggle_microphone {
+			out.insert(
+				String::from("key_key.streamToggleMic"),
 				value.get_keycode(before_1_13),
 			);
 		}
