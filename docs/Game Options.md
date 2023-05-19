@@ -101,6 +101,10 @@ A description will not be provided for every option as they mirror the options i
 			"boss_mode": Keybind,
 			"decrease_view": Keybind,
 			"increase_view": Keybind,
+			"stream_commercial": Keybind,
+			"stream_pause_unpause": Keybind,
+			"stream_start_stop": Keybind,
+			"stream_toggle_microphone": Keybind,
 		},
 		"auto_jump": bool,
 		"invert_mouse_y": bool,
@@ -154,6 +158,19 @@ A description will not be provided for every option as they mirror the options i
 		"left_pants": bool,
 		"right_pants": bool,
 		"hat": bool
+	},
+	"stream": {
+		"bytes_per_pixel": number,
+		"chat_enabled": bool,
+		"chat_filter": bool,
+		"compression": bool,
+		"fps": number,
+		"bitrate": number,
+		"microphone_toggle_behavior": bool,
+		"microphone_volume": number,
+		"preferred_server": string,
+		"send_metadata": bool,
+		"system_volume": number,
 	},
 	"custom": {
 		...
