@@ -62,6 +62,7 @@ Metadata like `description` and `authors` can only be used in the `@meta` contex
  * `description {description}`: Set the description for this package.
  * `version {version}`: Set the version of this package. This has no actual meaning to mcvm and should be used only for project versions.
  * `authors {author1} {author2} ...`: Set a list of authors for this package. This should be the authors of the project itself, not the package script.
+ * `package_maintainers {author1} {author2} ...`: Set a list of maintainers for this package. This should be the maintainers of the package script, not the project itself.
  * `website {website}`: Set a primary website / repository link / project link / etc.
  * `support_link {link}`: Set a support / donation link.
 

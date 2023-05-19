@@ -198,6 +198,11 @@ async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
 			cprintln!("   <s>Authors:</s> <g>{}", authors.join(", "));
 		}
 	}
+	if let Some(maintainers) = &metadata.package_maintainers {
+		if !maintainers.is_empty() {
+			cprintln!("   <s>Package Maintainers:</s> <g>{}", maintainers.join(", "));
+		}
+	}
 	if let Some(website) = &metadata.website {
 		if !website.is_empty() {
 			cprintln!("   <s>Website:</s> <b!>{}", website);

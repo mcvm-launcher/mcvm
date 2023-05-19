@@ -8,6 +8,7 @@ pub struct PackageMetadata {
 	pub description: Option<String>,
 	pub version: Option<String>,
 	pub authors: Option<Vec<String>>,
+	pub package_maintainers: Option<Vec<String>>,
 	pub website: Option<String>,
 	pub support_link: Option<String>,
 }
@@ -24,6 +25,7 @@ pub fn eval_metadata(parsed: &Parsed) -> anyhow::Result<PackageMetadata> {
 					InstrKind::Description(val) => out.description = val.clone(),
 					InstrKind::Version(val) => out.version = val.clone(),
 					InstrKind::Authors(val) => out.authors = Some(val.clone()),
+					InstrKind::PackageMaintainers(val) => out.package_maintainers = Some(val.clone()),
 					InstrKind::Website(val) => out.website = val.clone(),
 					InstrKind::SupportLink(val) => out.support_link = val.clone(),
 					_ => bail!("Instruction is not allowed in this context"),

@@ -16,6 +16,7 @@ pub enum InstrKind {
 	Description(Option<String>),
 	Version(Option<String>),
 	Authors(Vec<String>),
+	PackageMaintainers(Vec<String>),
 	Website(Option<String>),
 	SupportLink(Option<String>),
 	Addon {
@@ -55,6 +56,7 @@ impl Instruction {
 			"description" => Ok(InstrKind::Description(None)),
 			"version" => Ok(InstrKind::Version(None)),
 			"authors" => Ok(InstrKind::Authors(Vec::new())),
+			"package_maintainers" => Ok(InstrKind::PackageMaintainers(Vec::new())),
 			"website" => Ok(InstrKind::Website(None)),
 			"support_link" => Ok(InstrKind::SupportLink(None)),
 			"set" => Ok(InstrKind::Set(None, Value::None)),
@@ -93,7 +95,9 @@ impl Instruction {
 						unexpected_token!(tok, pos);
 					}
 				}
-				InstrKind::Authors(authors) => authors.push(parse_string(tok, pos)?),
+				InstrKind::Authors(people) | InstrKind::PackageMaintainers(people) => {
+					people.push(parse_string(tok, pos)?)
+				}
 				InstrKind::Compat(package, compat) => {
 					if let Value::None = package {
 						*package = parse_arg(tok, pos)?;
