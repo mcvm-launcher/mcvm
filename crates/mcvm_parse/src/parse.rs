@@ -291,6 +291,9 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 				match tok {
 					Token::Curly(Side::Left) => {
 						if let Some(condition) = condition {
+							if !condition.kind.is_finished_parsing() {
+								unexpected_token!(tok, pos);
+							}
 							let block = prs.parsed.new_block(Some(prs.block));
 							block_to_set = Some(block);
 							instr_to_push =
@@ -524,6 +527,8 @@ pub fn lex_and_parse(text: &str) -> anyhow::Result<Parsed> {
 
 #[cfg(test)]
 mod tests {
+	use mcvm_shared::modifications::ModloaderMatch;
+
 	use super::*;
 	use crate::routine::{INSTALL_ROUTINE, METADATA_ROUTINE};
 
@@ -563,6 +568,33 @@ mod tests {
 				let package = groups.get(2).unwrap().get(0).unwrap();
 				assert!(matches!(&package.value, Value::Constant(name) if name == "cit-support"));
 				assert!(!package.explicit);
+			}
+		}
+	}
+
+	#[test]
+	fn test_and_condition_parse() {
+		let text = r#"@install {
+			if not modloader fabric and modloader forge {}
+		}"#;
+		let parsed = lex_and_parse(text).unwrap();
+		let block = parsed
+			.blocks
+			.get(parsed.routines.get(INSTALL_ROUTINE).unwrap())
+			.unwrap();
+		for instr in &block.contents {
+			if let InstrKind::If(condition, _) = &instr.kind {
+				assert_eq!(
+					condition.kind,
+					ConditionKind::And(
+						Box::new(ConditionKind::Not(Some(Box::new(
+							ConditionKind::Modloader(Some(ModloaderMatch::Fabric))
+						)))),
+						Some(Box::new(ConditionKind::Modloader(Some(
+							ModloaderMatch::Forge
+						)))),
+					)
+				)
 			}
 		}
 	}

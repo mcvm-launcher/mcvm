@@ -8,15 +8,37 @@ use super::instruction::parse_arg;
 use super::lex::{TextPos, Token};
 use super::Value;
 
-#[derive(Debug, Clone)]
+/// Value for the OS condition
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum OsCondition {
+	Windows,
+	Linux,
+	Other,
+}
+
+impl OsCondition {
+	pub fn parse_from_str(string: &str) -> Option<Self> {
+		match string {
+			"windows" => Some(Self::Windows),
+			"linux" => Some(Self::Linux),
+			"other" => Some(Self::Other),
+			_ => None,
+		}
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum ConditionKind {
 	Not(Option<Box<ConditionKind>>),
+	And(Box<ConditionKind>, Option<Box<ConditionKind>>),
 	Version(Value),
 	Side(Option<Side>),
 	Modloader(Option<ModloaderMatch>),
 	PluginLoader(Option<PluginLoaderMatch>),
 	Feature(Value),
 	Value(Value, Value),
+	Defined(Value),
+	Os(Option<OsCondition>),
 }
 
 impl ConditionKind {
@@ -29,14 +51,49 @@ impl ConditionKind {
 			"plugin_loader" => Some(Self::PluginLoader(None)),
 			"feature" => Some(Self::Feature(Value::None)),
 			"value" => Some(Self::Value(Value::None, Value::None)),
+			"defined" => Some(Self::Defined(Value::None)),
+			"os" => Some(Self::Os(None)),
 			_ => None,
+		}
+	}
+
+	/// Checks whether this condition is finished parsing
+	pub fn is_finished_parsing(&self) -> bool {
+		match &self {
+			Self::Not(condition) => {
+				matches!(condition, Some(condition) if condition.is_finished_parsing())
+			}
+			Self::And(left, right) => {
+				left.is_finished_parsing()
+					&& matches!(right, Some(condition) if condition.is_finished_parsing())
+			}
+			Self::Version(val) | Self::Feature(val) | Self::Defined(val) => val.is_some(),
+			Self::Side(val) => val.is_some(),
+			Self::Modloader(val) => val.is_some(),
+			Self::PluginLoader(val) => val.is_some(),
+			Self::Os(val) => val.is_some(),
+			Self::Value(left, right) => left.is_some() && right.is_some(),
 		}
 	}
 
 	/// Add arguments to the condition from tokens
 	pub fn parse(&mut self, tok: &Token, pos: &TextPos) -> anyhow::Result<()> {
+		match tok {
+			Token::Ident(name) if name == "and" => {
+				if self.is_finished_parsing() {
+					let current = Box::new(self.clone());
+					*self = ConditionKind::And(current, None);
+					return Ok(());
+				}
+			}
+			_ => {
+				if self.is_finished_parsing() {
+					unexpected_token!(tok, pos);
+				}
+			}
+		}
 		match self {
-			Self::Not(condition) => match condition {
+			Self::Not(condition) | Self::And(_, condition) => match condition {
 				Some(condition) => {
 					return condition.parse(tok, pos);
 				}
@@ -50,7 +107,9 @@ impl ConditionKind {
 					_ => unexpected_token!(tok, pos),
 				},
 			},
-			Self::Version(val) | Self::Feature(val) => *val = parse_arg(tok, pos)?,
+			Self::Version(val) | Self::Feature(val) | Self::Defined(val) => {
+				*val = parse_arg(tok, pos)?;
+			}
 			Self::Side(side) => match tok {
 				Token::Ident(name) => match Side::from_str(name) {
 					Some(kind) => *side = Some(kind),
@@ -80,6 +139,19 @@ impl ConditionKind {
 			Self::PluginLoader(loader) => match tok {
 				Token::Ident(name) => match PluginLoaderMatch::from_str(name) {
 					Some(kind) => *loader = Some(kind),
+					None => {
+						bail!(
+							"Unknown condition argument '{}' {}",
+							name.to_owned(),
+							pos.clone()
+						);
+					}
+				},
+				_ => unexpected_token!(tok, pos),
+			},
+			Self::Os(os) => match tok {
+				Token::Ident(name) => match OsCondition::parse_from_str(name) {
+					Some(kind) => *os = Some(kind),
 					None => {
 						bail!(
 							"Unknown condition argument '{}' {}",

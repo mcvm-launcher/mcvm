@@ -23,7 +23,7 @@ impl Display for Modloader {
 	}
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum ModloaderMatch {
 	Vanilla,
 	Forge,
@@ -80,7 +80,7 @@ impl Display for ServerType {
 	}
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum PluginLoaderMatch {
 	Vanilla,
 	Bukkit,
