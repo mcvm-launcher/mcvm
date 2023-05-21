@@ -46,9 +46,6 @@ impl AddonRequest {
 	/// Get the addon and store it
 	pub async fn acquire(&self, paths: &Paths) -> anyhow::Result<()> {
 		let path = get_addon_path(&self.addon, paths);
-		if !self.force && path.exists() {
-			return Ok(());
-		}
 		create_leading_dirs(&path)?;
 		match &self.location {
 			AddonLocation::Remote(url) => {
