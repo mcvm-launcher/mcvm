@@ -211,6 +211,7 @@ impl Lockfile {
 				.packages
 				.insert(instance.to_owned(), HashMap::new());
 			self.update_package(name, instance, version, addons)?;
+			addons_to_update = addons.iter().map(|x| x.id.clone()).collect();
 		}
 
 		Ok((addons_to_update, addons_to_remove))
