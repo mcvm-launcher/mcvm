@@ -42,12 +42,7 @@ pub fn get_instance_filename(addon: &Addon) -> String {
 	if filename_important(addon) {
 		addon.file_name.clone()
 	} else {
-		if let Some(version) = &addon.version {
-			let (base, extension) = split_filename(addon);
-			format!("{base}_{}{extension}", version)
-		} else {
-			addon.file_name.clone()
-		}
+		addon.file_name.clone()
 	}
 }
 
