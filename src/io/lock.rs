@@ -8,7 +8,7 @@ use serde::{Deserialize, Serialize};
 use mcvm_shared::addon::{Addon, AddonKind};
 use mcvm_shared::pkg::PkgIdentifier;
 
-use crate::data::addon::get_addon_path;
+use crate::data::addon;
 
 use super::files::paths::Paths;
 
@@ -29,7 +29,7 @@ impl LockfileAddon {
 		Self {
 			id: addon.id.clone(),
 			file_name: Some(addon.file_name.clone()),
-			files: vec![get_addon_path(addon, paths)
+			files: vec![addon::get_path(addon, paths)
 				.to_str()
 				.expect("Failed to convert addon path to a string")
 				.to_owned()],

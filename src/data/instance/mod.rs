@@ -18,7 +18,7 @@ use crate::package::eval::{EvalConstants, EvalData, EvalParameters, Routine};
 use crate::package::reg::{PkgRegistry, PkgRequest};
 use crate::util::json;
 
-use super::addon::get_addon_path;
+use super::addon;
 use super::config::instance::ClientWindowConfig;
 use super::config::profile::GameModifications;
 use super::profile::update::UpdateManager;
@@ -149,8 +149,8 @@ impl Instance {
 
 	fn link_addon(dir: &Path, addon: &Addon, paths: &Paths) -> anyhow::Result<()> {
 		files::create_dir(dir)?;
-		let link = dir.join(&addon.file_name);
-		update_hardlink(&get_addon_path(addon, paths), &link)
+		let link = dir.join(addon::get_instance_filename(addon));
+		update_hardlink(&addon::get_path(addon, paths), &link)
 			.context("Failed to create hard link")?;
 		Ok(())
 	}
