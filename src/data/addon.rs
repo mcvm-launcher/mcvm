@@ -39,11 +39,7 @@ pub fn split_filename<'a>(addon: &'a Addon) -> (&'a str, &'a str) {
 
 /// Get the filename of the addon file stored in the instance
 pub fn get_instance_filename(addon: &Addon) -> String {
-	if filename_important(addon) {
-		addon.file_name.clone()
-	} else {
-		addon.file_name.clone()
-	}
+	addon.file_name.clone()
 }
 
 #[derive(Debug, Clone)]

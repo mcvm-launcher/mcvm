@@ -119,37 +119,44 @@ impl Instance {
 		Ok(classpath)
 	}
 
-	pub fn get_linked_addon_path(&self, addon: &Addon, paths: &Paths) -> Option<PathBuf> {
+	pub fn get_linked_addon_paths(&self, addon: &Addon, paths: &Paths) -> anyhow::Result<Vec<PathBuf>> {
 		let inst_dir = self.get_subdir(paths);
-		match addon.kind {
+		Ok(match addon.kind {
 			AddonKind::ResourcePack => {
 				if let InstKind::Client { .. } = self.kind {
-					Some(inst_dir.join("resourcepacks"))
+					vec![inst_dir.join("resourcepacks")]
 				} else {
-					None
+					vec![]
 				}
 			}
-			AddonKind::Mod => Some(inst_dir.join("mods")),
+			AddonKind::Mod => vec![inst_dir.join("mods")],
 			AddonKind::Plugin => {
 				if let InstKind::Server { .. } = self.kind {
-					Some(inst_dir.join("plugins"))
+					vec![inst_dir.join("plugins")]
 				} else {
-					None
+					vec![]
 				}
 			}
 			AddonKind::Shader => {
 				if let InstKind::Client { .. } = self.kind {
-					Some(inst_dir.join("shaderpacks"))
+					vec![inst_dir.join("shaderpacks")]
 				} else {
-					None
+					vec![]
 				}
 			}
-		}
+			AddonKind::Datapack => match self.kind {
+				InstKind::Client { .. } => inst_dir.join("saves").read_dir().context("Failed to read saves directory")?.filter_map(|world| {
+					world.map(|world| world.path().join("datapacks")).ok()
+				}).collect(),
+				// TODO: Different world paths in options
+				InstKind::Server { .. } => vec![inst_dir.join("world").join("datapacks")],
+			}
+		})
 	}
 
 	fn link_addon(dir: &Path, addon: &Addon, paths: &Paths) -> anyhow::Result<()> {
-		files::create_dir(dir)?;
 		let link = dir.join(addon::get_instance_filename(addon));
+		files::create_leading_dirs(&link)?;
 		update_hardlink(&addon::get_path(addon, paths), &link)
 			.context("Failed to create hard link")?;
 		Ok(())
@@ -160,7 +167,7 @@ impl Instance {
 		let inst_dir = self.get_subdir(paths);
 		files::create_leading_dirs(&inst_dir)?;
 		files::create_dir(&inst_dir)?;
-		if let Some(path) = self.get_linked_addon_path(addon, paths) {
+		for path in self.get_linked_addon_paths(addon, paths).context("Failed to get linked directory")? {
 			Self::link_addon(&path, addon, paths)
 				.with_context(|| format!("Failed to link addon {}", addon.id))?;
 		}
@@ -170,7 +177,7 @@ impl Instance {
 
 	/// Removes an addon from the instance
 	pub fn remove_addon(&self, addon: &Addon, paths: &Paths) -> anyhow::Result<()> {
-		if let Some(path) = self.get_linked_addon_path(addon, paths) {
+		for path in self.get_linked_addon_paths(addon, paths).context("Failed to get linked directory")? {
 			let path = path.join(&addon.file_name);
 			if path.exists() {
 				fs::remove_file(&path)
