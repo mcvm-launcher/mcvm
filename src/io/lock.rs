@@ -205,6 +205,7 @@ impl Lockfile {
 						addons: addons.to_vec(),
 					},
 				);
+				addons_to_update = addons.iter().map(|x| x.id.clone()).collect();
 			}
 		} else {
 			self.contents
