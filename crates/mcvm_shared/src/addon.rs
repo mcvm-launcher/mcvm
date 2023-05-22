@@ -53,15 +53,18 @@ pub struct Addon {
 	pub id: String,
 	pub file_name: String,
 	pub pkg_id: PkgIdentifier,
+	/// Version of the addon, used for caching
+	pub version: Option<String>,
 }
 
 impl Addon {
-	pub fn new(kind: AddonKind, id: &str, file_name: &str, pkg_id: PkgIdentifier) -> Self {
+	pub fn new(kind: AddonKind, id: &str, file_name: &str, pkg_id: PkgIdentifier, version: Option<String>,) -> Self {
 		Self {
 			kind,
 			id: id.to_owned(),
 			file_name: file_name.to_owned(),
 			pkg_id,
+			version,
 		}
 	}
 }

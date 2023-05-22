@@ -14,7 +14,7 @@ use crate::io::options::client::ClientOptions;
 use crate::io::options::server::ServerOptions;
 use crate::io::{files, Later};
 use crate::net::fabric_quilt;
-use crate::package::eval::{EvalConstants, Routine, EvalParameters, EvalData};
+use crate::package::eval::{EvalConstants, EvalData, EvalParameters, Routine};
 use crate::package::reg::{PkgRegistry, PkgRequest};
 use crate::util::json;
 
@@ -193,7 +193,11 @@ impl Instance {
 	}
 
 	/// Removes files such as the game jar for when the profile version changes
-	pub fn teardown(&self, paths: &Paths, paper_properties: Option<(u16, String)>) -> anyhow::Result<()> {
+	pub fn teardown(
+		&self,
+		paths: &Paths,
+		paper_properties: Option<(u16, String)>,
+	) -> anyhow::Result<()> {
 		match self.kind {
 			InstKind::Client { .. } => {
 				let inst_dir = self.get_dir(paths);
@@ -234,26 +238,27 @@ impl Instance {
 			.eval(pkg, paths, Routine::Install, constants, params)
 			.await
 			.context("Failed to evaluate package")?;
-		for addon in eval.addon_reqs.iter() {
-			addon
-				.acquire(paths)
-				.await
-				.with_context(|| format!("Failed to acquire addon '{}'", addon.addon.id))?;
-			self.create_addon(&addon.addon, paths)
-				.with_context(|| format!("Failed to install addon '{}'", addon.addon.id))?;
-		}
+
 		let lockfile_addons = eval
 			.addon_reqs
 			.iter()
 			.map(|x| LockfileAddon::from_addon(&x.addon, paths))
 			.collect::<Vec<LockfileAddon>>();
-		let addons_to_remove = lock
+		let (addons_to_update, addons_to_remove) = lock
 			.update_package(&pkg.name, &self.id, pkg_version, &lockfile_addons)
 			.context("Failed to update package in lockfile")?;
 		for addon in eval.addon_reqs.iter() {
 			if addons_to_remove.contains(&addon.addon.id) {
 				self.remove_addon(&addon.addon, paths)
 					.with_context(|| format!("Failed to remove addon '{}'", addon.addon.id))?;
+			}
+			if addons_to_update.contains(&addon.addon.id) {
+				addon
+					.acquire(paths)
+					.await
+					.with_context(|| format!("Failed to acquire addon '{}'", addon.addon.id))?;
+				self.create_addon(&addon.addon, paths)
+					.with_context(|| format!("Failed to install addon '{}'", addon.addon.id))?;
 			}
 		}
 

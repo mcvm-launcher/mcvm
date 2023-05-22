@@ -84,8 +84,7 @@ addon id filename (
  * `kind`: What type of addon this is.
  * `url` (Optional): The remote url to download the addon from.
  * `path` (Optional): The local path to link the addon from. Adding local files is a privilege that requires elevated permissions
- * `force` (Optional): Whether to force the redownload of the addon every time the package is installed. Defaults to `no`.
- * `append` (Optional): A string to add to the name of the addon, usually a version of some sort. This is needed to differentiate addon files from the same package and same version. Defaults to nothing.
+ * `version` (Optional): The version of this addon. This is important because it lets mcvm differentiate between different versions of the file for caching purposes. If this field is not present, the addon will never be cached and will be redownloaded every time.
 
 Either `url` or `path` must be set, not both or neither.
 

@@ -113,7 +113,12 @@ pub struct EvalData<'a> {
 }
 
 impl<'a> EvalData<'a> {
-	pub fn new(constants: &'a EvalConstants, params: EvalParameters, id: PkgIdentifier, routine: &Routine) -> Self {
+	pub fn new(
+		constants: &'a EvalConstants,
+		params: EvalParameters,
+		id: PkgIdentifier,
+		routine: &Routine,
+	) -> Self {
 		Self {
 			vars: HashMap::new(),
 			addon_reqs: Vec::new(),
@@ -276,9 +281,8 @@ pub fn eval_instr(
 				file_name,
 				kind,
 				url,
-				force,
-				append,
 				path,
+				version,
 			} => {
 				if let EvalLevel::Install = eval.level {
 					let id = id.get(&eval.vars)?;
@@ -288,22 +292,24 @@ pub fn eval_instr(
 					if !validate_identifier(&id) {
 						bail!("Invalid addon identifier '{id}'");
 					}
-					let file_name = match append {
-						Value::None => file_name.get(&eval.vars)?,
-						_ => append.get(&eval.vars)? + "-" + &file_name.get(&eval.vars)?,
-					};
+					let file_name = file_name.get(&eval.vars)?;
 					let kind = kind.as_ref().expect("Addon kind missing");
 
 					if !is_filename_valid(*kind, &file_name) {
 						bail!("Invalid addon filename '{file_name}' in addon '{id}'");
 					}
 
-					let addon = Addon::new(*kind, &id, &file_name, eval.id.clone());
+					let addon = Addon::new(
+						*kind,
+						&id,
+						&file_name,
+						eval.id.clone(),
+						version.get_as_option(&eval.vars)?,
+					);
 
 					if let Value::Constant(..) | Value::Var(..) = url {
 						let location = AddonLocation::Remote(url.get(&eval.vars)?);
-						eval.addon_reqs
-							.push(AddonRequest::new(addon, location, *force));
+						eval.addon_reqs.push(AddonRequest::new(addon, location));
 					} else if let Value::Constant(..) | Value::Var(..) = path {
 						let path = path.get(&eval.vars)?;
 						match eval.constants.perms {
@@ -311,8 +317,7 @@ pub fn eval_instr(
 								let path = String::from(shellexpand::tilde(&path));
 								let path = PathBuf::from(path);
 								let location = AddonLocation::Local(path);
-								eval.addon_reqs
-									.push(AddonRequest::new(addon, location, *force));
+								eval.addon_reqs.push(AddonRequest::new(addon, location));
 							}
 							_ => {
 								bail!("Insufficient permissions to add a local addon '{id}'");

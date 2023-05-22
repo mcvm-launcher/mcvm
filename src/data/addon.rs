@@ -31,15 +31,13 @@ pub enum AddonLocation {
 pub struct AddonRequest {
 	pub addon: Addon,
 	location: AddonLocation,
-	force: bool,
 }
 
 impl AddonRequest {
-	pub fn new(addon: Addon, location: AddonLocation, force: bool) -> Self {
+	pub fn new(addon: Addon, location: AddonLocation) -> Self {
 		Self {
 			addon,
 			location,
-			force,
 		}
 	}
 

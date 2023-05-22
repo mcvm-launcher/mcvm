@@ -87,6 +87,14 @@ impl Value {
 	pub fn is_some(&self) -> bool {
 		!matches!(self, Self::None)
 	}
+
+	/// Gets the current string value and converts to an option.
+	pub fn get_as_option(&self, vars: &HashMap<String, String>) -> anyhow::Result<Option<String>> {
+		match self {
+			Self::None => Ok(None),
+			_ => Ok(Some(self.get(vars)?)),
+		}
+	}
 }
 
 /// Reason why the package reported a failure

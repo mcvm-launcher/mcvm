@@ -20,6 +20,7 @@ pub struct LockfileAddon {
 	file_name: Option<String>,
 	files: Vec<String>,
 	kind: String,
+	version: Option<String>,
 }
 
 impl LockfileAddon {
@@ -33,6 +34,7 @@ impl LockfileAddon {
 				.expect("Failed to convert addon path to a string")
 				.to_owned()],
 			kind: addon.kind.to_string(),
+			version: addon.version.clone(),
 		}
 	}
 
@@ -47,6 +49,7 @@ impl LockfileAddon {
 				.clone()
 				.expect("Filename should have been filled in or fixed"),
 			pkg_id,
+			version: self.version.clone(),
 		})
 	}
 
@@ -152,27 +155,46 @@ impl Lockfile {
 		Ok(())
 	}
 
-	/// Updates a package with a new version
+	/// Updates a package with a new version.
+	/// Returns a list of addons that need updating and a list of addons that need to be removed
 	pub fn update_package(
 		&mut self,
 		name: &str,
 		instance: &str,
 		version: u32,
 		addons: &[LockfileAddon],
-	) -> anyhow::Result<Vec<String>> {
+	) -> anyhow::Result<(Vec<String>, Vec<String>)> {
+		let mut addons_to_update = Vec::new();
 		let mut addons_to_remove = Vec::new();
 		if let Some(instance) = self.contents.packages.get_mut(instance) {
 			if let Some(pkg) = instance.get_mut(name) {
 				pkg.version = version.to_owned();
 				let mut indices = Vec::new();
-				for (i, addon) in pkg.addons.iter().enumerate() {
-					if !addons.contains(addon) {
+				// Check for addons that need to be removed
+				for (i, current) in pkg.addons.iter().enumerate() {
+					if !addons.iter().any(|x| x.id == current.id) {
 						indices.push(i);
-						addons_to_remove.push(addon.id.clone());
+						addons_to_remove.push(current.id.clone());
 					}
 				}
 				for i in indices {
 					pkg.addons.remove(i);
+				}
+				// Check for addons that need to be updated
+				for requested in addons {
+					if let Some(current) = pkg.addons.iter().find(|x| x.id == requested.id) {
+						// Addons that have changed version should update
+						// Addons that don't have a version should update
+						// Addons with files that don't exist should update
+						if requested.version != current.version
+							|| requested.version.is_none()
+							|| current.files.iter().any(|x| !PathBuf::from(x).exists())
+						{
+							addons_to_update.push(requested.id.clone());
+						}
+					} else {
+						addons_to_update.push(requested.id.clone());
+					}
 				}
 				pkg.addons = addons.to_vec();
 			} else {
@@ -191,7 +213,7 @@ impl Lockfile {
 			self.update_package(name, instance, version, addons)?;
 		}
 
-		Ok(addons_to_remove)
+		Ok((addons_to_update, addons_to_remove))
 	}
 
 	/// Remove any unused packages for an instance.

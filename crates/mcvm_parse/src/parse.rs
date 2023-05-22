@@ -6,7 +6,6 @@ use super::instruction::{parse_arg, InstrKind, Instruction};
 use super::lex::{lex, reduce_tokens, Side, Token, TokenAndPos};
 use super::Value;
 use mcvm_shared::addon::AddonKind;
-use mcvm_shared::util::yes_no;
 
 use std::collections::HashMap;
 
@@ -97,9 +96,8 @@ mod addon {
 		None,
 		Kind,
 		Url,
-		Force,
-		Append,
 		Path,
+		Version,
 	}
 
 	/// Keys that have been filled
@@ -107,9 +105,8 @@ mod addon {
 	pub struct FilledKeys {
 		pub kind: Option<AddonKind>,
 		pub url: Value,
-		pub force: bool,
-		pub append: Value,
 		pub path: Value,
+		pub version: Value,
 	}
 }
 
@@ -235,9 +232,8 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 								filled_keys: addon::FilledKeys {
 									kind: None,
 									url: Value::None,
-									force: false,
-									append: Value::None,
 									path: Value::None,
+									version: Value::None,
 								},
 							};
 						}
@@ -358,9 +354,8 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 							match name.as_str() {
 								"kind" => *key = addon::Key::Kind,
 								"url" => *key = addon::Key::Url,
-								"force" => *key = addon::Key::Force,
-								"append" => *key = addon::Key::Append,
 								"path" => *key = addon::Key::Path,
+								"version" => *key = addon::Key::Version,
 								_ => {
 									bail!(
 										"Unknown key {} for 'addon' instruction {}",
@@ -381,16 +376,6 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 						Token::Ident(name) => {
 							match key {
 								addon::Key::Kind => filled_keys.kind = AddonKind::from_str(name),
-								addon::Key::Force => match yes_no(name) {
-									Some(value) => filled_keys.force = value,
-									None => {
-										bail!(
-											"Expected 'yes' or 'no', but got '{}' {}",
-											name.to_owned(),
-											pos.clone()
-										);
-									}
-								},
 								_ => unexpected_token!(tok, &pos),
 							}
 							*state = addon::State::Comma;
@@ -398,8 +383,8 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 						_ => {
 							match key {
 								addon::Key::Url => filled_keys.url = parse_arg(tok, pos)?,
-								addon::Key::Append => filled_keys.append = parse_arg(tok, pos)?,
 								addon::Key::Path => filled_keys.path = parse_arg(tok, pos)?,
+								addon::Key::Version => filled_keys.version = parse_arg(tok, pos)?,
 								_ => unexpected_token!(tok, pos),
 							}
 							*state = addon::State::Comma;
@@ -419,9 +404,8 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 								file_name: file_name.clone(),
 								kind: filled_keys.kind,
 								url: filled_keys.url.clone(),
-								force: filled_keys.force,
-								append: filled_keys.append.clone(),
 								path: filled_keys.path.clone(),
+								version: filled_keys.version.clone(),
 							}));
 							prs.mode = ParseMode::Root;
 						}
