@@ -49,6 +49,8 @@ Metadata like `description` and `authors` can only be used in the `@meta` contex
 	 * `side {client | server}`: Check what instance type the package is being installed on.
 	 * `feature {name}`: Check if a feature is enabled for this package.
 	 * `not {condition}`: Inverts a condition. You can chain these, but why would you want to.
+	 * `and {left} {right}`: Checks if both conditions are true.
+	 * `or {left} {right}`: Checks if either one of the conditions are true.
  * `set {variable} {value}`: Sets the value of a variable.
  * `finish`: Will silently end the routine.
  * `fail [unsupported_version | unsupported_modloader | unsupported_plugin_loader]`: End execution with an error.

@@ -15,6 +15,9 @@ pub fn eval_condition(condition: &ConditionKind, eval: &EvalData) -> anyhow::Res
 		ConditionKind::And(left, right) => {
 			Ok(eval_condition(left, eval)? && eval_condition(right.as_ref().expect("Right and condition is missing"), eval)?) 
 		}
+		ConditionKind::Or(left, right) => {
+			Ok(eval_condition(left, eval)? || eval_condition(right.as_ref().expect("Right or condition is missing"), eval)?) 
+		}
 		ConditionKind::Version(version) => {
 			let version = version.get(&eval.vars)?;
 			let version = VersionPattern::from(&version);

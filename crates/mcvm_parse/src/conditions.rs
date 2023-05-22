@@ -31,6 +31,7 @@ impl OsCondition {
 pub enum ConditionKind {
 	Not(Option<Box<ConditionKind>>),
 	And(Box<ConditionKind>, Option<Box<ConditionKind>>),
+	Or(Box<ConditionKind>, Option<Box<ConditionKind>>),
 	Version(Value),
 	Side(Option<Side>),
 	Modloader(Option<ModloaderMatch>),
@@ -63,7 +64,7 @@ impl ConditionKind {
 			Self::Not(condition) => {
 				matches!(condition, Some(condition) if condition.is_finished_parsing())
 			}
-			Self::And(left, right) => {
+			Self::And(left, right) | Self::Or(left, right) => {
 				left.is_finished_parsing()
 					&& matches!(right, Some(condition) if condition.is_finished_parsing())
 			}
@@ -93,20 +94,22 @@ impl ConditionKind {
 			}
 		}
 		match self {
-			Self::Not(condition) | Self::And(_, condition) => match condition {
-				Some(condition) => {
-					return condition.parse(tok, pos);
-				}
-				None => match tok {
-					Token::Ident(name) => match Self::from_str(name) {
-						Some(nested_cond) => *condition = Some(Box::new(nested_cond)),
-						None => {
-							bail!("Unknown condition '{}' {}", name.clone(), pos.clone());
-						}
+			Self::Not(condition) | Self::And(_, condition) | Self::Or(_, condition) => {
+				match condition {
+					Some(condition) => {
+						return condition.parse(tok, pos);
+					}
+					None => match tok {
+						Token::Ident(name) => match Self::from_str(name) {
+							Some(nested_cond) => *condition = Some(Box::new(nested_cond)),
+							None => {
+								bail!("Unknown condition '{}' {}", name.clone(), pos.clone());
+							}
+						},
+						_ => unexpected_token!(tok, pos),
 					},
-					_ => unexpected_token!(tok, pos),
-				},
-			},
+				}
+			}
 			Self::Version(val) | Self::Feature(val) | Self::Defined(val) => {
 				*val = parse_arg(tok, pos)?;
 			}
