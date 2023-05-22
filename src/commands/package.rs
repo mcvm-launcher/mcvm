@@ -213,6 +213,16 @@ async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
 			cprintln!("   <s>Support Link:</s> <b!>{}", support_link);
 		}
 	}
+	if let Some(documentation) = &metadata.documentation {
+		if !documentation.is_empty() {
+			cprintln!("   <s>Documentation:</s> <b!>{}", documentation);
+		}
+	}
+	if let Some(license) = &metadata.license {
+		if !license.is_empty() {
+			cprintln!("   <s>License:</s> <b!>{}", license);
+		}
+	}
 
 	Ok(())
 }

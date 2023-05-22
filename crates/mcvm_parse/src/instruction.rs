@@ -19,6 +19,8 @@ pub enum InstrKind {
 	PackageMaintainers(Vec<String>),
 	Website(Option<String>),
 	SupportLink(Option<String>),
+	Documentation(Option<String>),
+	License(Option<String>),
 	Addon {
 		id: Value,
 		file_name: Value,
@@ -59,6 +61,8 @@ impl Instruction {
 			"package_maintainers" => Ok(InstrKind::PackageMaintainers(Vec::new())),
 			"website" => Ok(InstrKind::Website(None)),
 			"support_link" => Ok(InstrKind::SupportLink(None)),
+			"documentation" => Ok(InstrKind::Documentation(None)),
+			"license" => Ok(InstrKind::License(None)),
 			"set" => Ok(InstrKind::Set(None, Value::None)),
 			"finish" => Ok(InstrKind::Finish()),
 			"fail" => Ok(InstrKind::Fail(None)),
@@ -82,7 +86,9 @@ impl Instruction {
 				| InstrKind::Description(text)
 				| InstrKind::Version(text)
 				| InstrKind::Website(text)
-				| InstrKind::SupportLink(text) => {
+				| InstrKind::SupportLink(text)
+				| InstrKind::Documentation(text)
+				| InstrKind::License(text) => {
 					if text.is_none() {
 						*text = Some(parse_string(tok, pos)?);
 					} else {

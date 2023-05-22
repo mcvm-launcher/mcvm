@@ -11,6 +11,8 @@ pub struct PackageMetadata {
 	pub package_maintainers: Option<Vec<String>>,
 	pub website: Option<String>,
 	pub support_link: Option<String>,
+	pub documentation: Option<String>,
+	pub license: Option<String>,
 }
 
 /// Collect the metadata from a package
@@ -28,6 +30,8 @@ pub fn eval_metadata(parsed: &Parsed) -> anyhow::Result<PackageMetadata> {
 					InstrKind::PackageMaintainers(val) => out.package_maintainers = Some(val.clone()),
 					InstrKind::Website(val) => out.website = val.clone(),
 					InstrKind::SupportLink(val) => out.support_link = val.clone(),
+					InstrKind::Documentation(val) => out.documentation = val.clone(),
+					InstrKind::License(val) => out.license = val.clone(),
 					_ => bail!("Instruction is not allowed in this context"),
 				}
 			}
