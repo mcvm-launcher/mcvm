@@ -3,6 +3,7 @@ use std::path::{Path, PathBuf};
 
 use anyhow::{anyhow, Context};
 use color_print::{cformat, cprintln};
+use itertools::Itertools;
 use mcvm_shared::modifications::ServerType;
 
 use crate::data::config::Config;
@@ -332,14 +333,14 @@ async fn update_profile_packages(
 		.await
 		.context("Failed to resolve dependencies for profile")?;
 
-	for (package, package_instances) in batched {
+	for (package, package_instances) in batched.iter().sorted_by_key(|x| x.0) {
 		let pkg_version = reg
 			.get_version(&package, paths)
 			.await
 			.context("Failed to get version for package")?;
 		let mut notices = Vec::new();
 		for instance_id in package_instances {
-			let instance = instances.get(&instance_id).ok_or(anyhow!(
+			let instance = instances.get(instance_id).ok_or(anyhow!(
 				"Instance '{instance_id}' does not exist in the registry"
 			))?;
 			let params = EvalParameters {
@@ -409,7 +410,7 @@ async fn update_profile_packages(
 fn format_package_print(pkg: &PkgRequest, instance: Option<&str>, message: &str) -> String {
 	if let Some(instance) = instance {
 		cformat!(
-			"{}[<c>{}</c>] (<b!>{}</b!>) {}",
+			"{}[{}] (<b!>{}</b!>) {}",
 			HYPHEN_POINT,
 			pkg,
 			instance,

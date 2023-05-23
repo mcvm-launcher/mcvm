@@ -1,4 +1,5 @@
 use anyhow::{anyhow, Context};
+use color_print::cformat;
 use mcvm_parse::metadata::PackageMetadata;
 use serde::{Deserialize, Serialize};
 
@@ -14,7 +15,7 @@ use std::hash::Hash;
 use std::path::Path;
 
 /// Where a package was requested from
-#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub enum PkgRequestSource {
 	UserRequire,
 	Dependency(Box<PkgRequest>),
@@ -32,10 +33,10 @@ impl PkgRequestSource {
 }
 
 /// Used to store a request for a package that will be fulfilled later
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialOrd, Ord)]
 pub struct PkgRequest {
-	pub name: String,
 	pub source: PkgRequestSource,
+	pub name: String,
 }
 
 impl PkgRequest {
@@ -74,7 +75,11 @@ impl Hash for PkgRequest {
 
 impl Display for PkgRequest {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		write!(f, "{}", self.name)
+		let name = match self.source {
+			PkgRequestSource::UserRequire => cformat!("<y>{}", self.name),
+			PkgRequestSource::Dependency(..) | PkgRequestSource::Repository => cformat!("<c>{}", self.name),
+		};
+		write!(f, "{name}")
 	}
 }
 
