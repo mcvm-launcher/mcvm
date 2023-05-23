@@ -327,6 +327,7 @@ async fn update_profile_packages(
 	reg: &mut PkgRegistry,
 	instances: &InstanceRegistry,
 	lock: &mut Lockfile,
+	force: bool,
 ) -> anyhow::Result<()> {
 	let mut printer = ReplPrinter::new(true);
 	let (batched, resolved) = resolve_and_batch(profile, constants, paths, reg, instances)
@@ -354,7 +355,16 @@ async fn update_profile_packages(
 				"Installing...",
 			));
 			let result = instance
-				.install_package(&package, pkg_version, &constants, params, reg, paths, lock)
+				.install_package(
+					&package,
+					pkg_version,
+					&constants,
+					params,
+					reg,
+					paths,
+					lock,
+					force,
+				)
 				.await
 				.with_context(|| {
 					format!("Failed to install package '{package}' for instance '{instance_id}'")
@@ -417,7 +427,12 @@ fn format_package_print(pkg: &PkgRequest, instance: Option<&str>, message: &str)
 			message
 		)
 	} else {
-		cformat!("{}[<c>{}</c>] {}", HYPHEN_POINT, pkg.disp_with_colors(), message)
+		cformat!(
+			"{}[<c>{}</c>] {}",
+			HYPHEN_POINT,
+			pkg.disp_with_colors(),
+			message
+		)
 	}
 }
 
@@ -567,6 +582,7 @@ pub async fn update_profiles(
 					&mut config.packages,
 					&config.instances,
 					&mut lock,
+					force,
 				)
 				.await?;
 				cprintln!("<g>All packages installed.");

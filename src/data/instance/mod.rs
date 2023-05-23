@@ -119,7 +119,11 @@ impl Instance {
 		Ok(classpath)
 	}
 
-	pub fn get_linked_addon_paths(&self, addon: &Addon, paths: &Paths) -> anyhow::Result<Vec<PathBuf>> {
+	pub fn get_linked_addon_paths(
+		&self,
+		addon: &Addon,
+		paths: &Paths,
+	) -> anyhow::Result<Vec<PathBuf>> {
 		let inst_dir = self.get_subdir(paths);
 		Ok(match addon.kind {
 			AddonKind::ResourcePack => {
@@ -145,12 +149,15 @@ impl Instance {
 				}
 			}
 			AddonKind::Datapack => match self.kind {
-				InstKind::Client { .. } => inst_dir.join("saves").read_dir().context("Failed to read saves directory")?.filter_map(|world| {
-					world.map(|world| world.path().join("datapacks")).ok()
-				}).collect(),
+				InstKind::Client { .. } => inst_dir
+					.join("saves")
+					.read_dir()
+					.context("Failed to read saves directory")?
+					.filter_map(|world| world.map(|world| world.path().join("datapacks")).ok())
+					.collect(),
 				// TODO: Different world paths in options
 				InstKind::Server { .. } => vec![inst_dir.join("world").join("datapacks")],
-			}
+			},
 		})
 	}
 
@@ -167,7 +174,10 @@ impl Instance {
 		let inst_dir = self.get_subdir(paths);
 		files::create_leading_dirs(&inst_dir)?;
 		files::create_dir(&inst_dir)?;
-		for path in self.get_linked_addon_paths(addon, paths).context("Failed to get linked directory")? {
+		for path in self
+			.get_linked_addon_paths(addon, paths)
+			.context("Failed to get linked directory")?
+		{
 			Self::link_addon(&path, addon, paths)
 				.with_context(|| format!("Failed to link addon {}", addon.id))?;
 		}
@@ -177,7 +187,10 @@ impl Instance {
 
 	/// Removes an addon from the instance
 	pub fn remove_addon(&self, addon: &Addon, paths: &Paths) -> anyhow::Result<()> {
-		for path in self.get_linked_addon_paths(addon, paths).context("Failed to get linked directory")? {
+		for path in self
+			.get_linked_addon_paths(addon, paths)
+			.context("Failed to get linked directory")?
+		{
 			let path = path.join(&addon.file_name);
 			if path.exists() {
 				fs::remove_file(&path)
@@ -240,6 +253,7 @@ impl Instance {
 		reg: &mut PkgRegistry,
 		paths: &Paths,
 		lock: &mut Lockfile,
+		force: bool,
 	) -> anyhow::Result<EvalData<'a>> {
 		let eval = reg
 			.eval(pkg, paths, Routine::Install, constants, params)
@@ -259,7 +273,7 @@ impl Instance {
 				self.remove_addon(&addon.addon, paths)
 					.with_context(|| format!("Failed to remove addon '{}'", addon.addon.id))?;
 			}
-			if addons_to_update.contains(&addon.addon.id) {
+			if addons_to_update.contains(&addon.addon.id) || force {
 				addon
 					.acquire(paths)
 					.await
