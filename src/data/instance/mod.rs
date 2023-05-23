@@ -264,9 +264,9 @@ impl Instance {
 					.acquire(paths)
 					.await
 					.with_context(|| format!("Failed to acquire addon '{}'", addon.addon.id))?;
-				self.create_addon(&addon.addon, paths)
-					.with_context(|| format!("Failed to install addon '{}'", addon.addon.id))?;
 			}
+			self.create_addon(&addon.addon, paths)
+				.with_context(|| format!("Failed to install addon '{}'", addon.addon.id))?;
 		}
 
 		Ok(eval)
