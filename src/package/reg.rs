@@ -57,6 +57,14 @@ impl PkgRequest {
 			PkgRequestSource::Repository => format!("Repository->{}{list}", self.name),
 		}
 	}
+
+	/// Print with color formatting
+	pub fn disp_with_colors(&self) -> String {
+		match self.source {
+			PkgRequestSource::UserRequire => cformat!("<y>{}", self.name),
+			PkgRequestSource::Dependency(..) | PkgRequestSource::Repository => cformat!("<c>{}", self.name),
+		}
+	}
 }
 
 impl PartialEq for PkgRequest {
@@ -75,11 +83,7 @@ impl Hash for PkgRequest {
 
 impl Display for PkgRequest {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		let name = match self.source {
-			PkgRequestSource::UserRequire => cformat!("<y>{}", self.name),
-			PkgRequestSource::Dependency(..) | PkgRequestSource::Repository => cformat!("<c>{}", self.name),
-		};
-		write!(f, "{name}")
+		write!(f, "{}", self.name)
 	}
 }
 

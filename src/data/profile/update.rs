@@ -412,12 +412,12 @@ fn format_package_print(pkg: &PkgRequest, instance: Option<&str>, message: &str)
 		cformat!(
 			"{}[{}] (<b!>{}</b!>) {}",
 			HYPHEN_POINT,
-			pkg,
+			pkg.disp_with_colors(),
 			instance,
 			message
 		)
 	} else {
-		cformat!("{}[<c>{}</c>] {}", HYPHEN_POINT, pkg, message)
+		cformat!("{}[<c>{}</c>] {}", HYPHEN_POINT, pkg.disp_with_colors(), message)
 	}
 }
 
