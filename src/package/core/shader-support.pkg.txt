@@ -9,7 +9,7 @@
 		require <"optifine">;
 		finish;
 	}
-	if modloader fabric {
+	if modloader fabriclike {
 		require <"iris">;
 		finish;
 	}
