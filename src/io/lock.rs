@@ -182,16 +182,7 @@ impl Lockfile {
 				}
 				// Check for addons that need to be updated
 				for requested in addons {
-					if let Some(current) = pkg.addons.iter().find(|x| x.id == requested.id) {
-						// Addons that have changed version should update
-						// Addons that don't have a version should update
-						// Addons with files that don't exist should update
-						if requested.version != current.version
-							|| requested.version.is_none()
-							|| current.files.iter().any(|x| !PathBuf::from(x).exists())
-						{
-							addons_to_update.push(requested.id.clone());
-						}
+					if pkg.addons.iter().any(|x| x.id == requested.id) {
 					} else {
 						addons_to_update.push(requested.id.clone());
 					}

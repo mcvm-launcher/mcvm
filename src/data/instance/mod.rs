@@ -1,7 +1,7 @@
 pub mod create;
 pub mod launch;
 
-use anyhow::Context;
+use anyhow::{Context, ensure};
 use mcvm_shared::instance::Side;
 
 use crate::io::files::paths::Paths;
@@ -163,8 +163,15 @@ impl Instance {
 
 	fn link_addon(dir: &Path, addon: &Addon, paths: &Paths) -> anyhow::Result<()> {
 		let link = dir.join(addon::get_instance_filename(addon));
+		let addon_path = addon::get_path(addon, paths);
 		files::create_leading_dirs(&link)?;
-		update_hardlink(&addon::get_path(addon, paths), &link)
+		// These checks are to make sure that we properly link the hardlink to the right location
+		// We have to remove the current link since it doesnt let us update it in place
+		ensure!(addon_path.exists(), "Addon path does not exist");
+		if link.exists() {
+			fs::remove_file(&link).context("Failed to remove instance addon file")?;
+		}
+		update_hardlink(&addon_path, &link)
 			.context("Failed to create hard link")?;
 		Ok(())
 	}
@@ -269,15 +276,15 @@ impl Instance {
 			.update_package(&pkg.name, &self.id, pkg_version, &lockfile_addons)
 			.context("Failed to update package in lockfile")?;
 		for addon in eval.addon_reqs.iter() {
+			if addon::should_update(&addon.addon, paths) || addons_to_update.contains(&addon.addon.id) || force {
+				addon
+				.acquire(paths)
+				.await
+				.with_context(|| format!("Failed to acquire addon '{}'", addon.addon.id))?;
+			}
 			if addons_to_remove.contains(&addon.addon.id) {
 				self.remove_addon(&addon.addon, paths)
 					.with_context(|| format!("Failed to remove addon '{}'", addon.addon.id))?;
-			}
-			if addons_to_update.contains(&addon.addon.id) || force {
-				addon
-					.acquire(paths)
-					.await
-					.with_context(|| format!("Failed to acquire addon '{}'", addon.addon.id))?;
 			}
 			self.create_addon(&addon.addon, paths)
 				.with_context(|| format!("Failed to install addon '{}'", addon.addon.id))?;

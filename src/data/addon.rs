@@ -42,6 +42,11 @@ pub fn get_instance_filename(addon: &Addon) -> String {
 	addon.file_name.clone()
 }
 
+/// Whether this addon should be updated
+pub fn should_update(addon: &Addon, paths: &Paths) -> bool {
+	addon.version.is_none() || !get_path(addon, paths).exists()
+}
+
 #[derive(Debug, Clone)]
 pub enum AddonLocation {
 	Remote(String),
