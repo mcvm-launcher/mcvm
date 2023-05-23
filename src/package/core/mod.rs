@@ -15,25 +15,6 @@ static RANDOM_ENTITIES_SUPPORT: &str = include_str!("random-entities-support.pkg
 static SHADER_SUPPORT: &str = include_str!("shader-support.pkg.txt");
 static SPLASH_SCREEN_SUPPORT: &str = include_str!("splash-screen-support.pkg.txt");
 
-static ALL_CORE_PACKAGES: [&str; 16] = [
-	ANIMATED_TEXTURES_SUPPORT,
-	CEM_SUPPORT,
-	CIT_SUPPORT,
-	CTM_SUPPORT,
-	CUSTOM_COLORS_SUPPORT,
-	CUSTOM_GUI_SUPPORT,
-	CUSTOM_SKY_SUPPORT,
-	EMISSIVE_BLOCKS_SUPPORT,
-	EMISSIVE_ENTITIES_SUPPORT,
-	FABRIC_RENDERING_API,
-	FABRICLIKE_API,
-	KOTLIN_SUPPORT,
-	OPTIFINE_RESOURCE_PACKS,
-	RANDOM_ENTITIES_SUPPORT,
-	SHADER_SUPPORT,
-	SPLASH_SCREEN_SUPPORT,
-];
-
 /// Gets a core package that is included with the binary
 pub fn get_core_package(package: &str) -> Option<&'static str> {
 	match package {
@@ -58,13 +39,32 @@ pub fn get_core_package(package: &str) -> Option<&'static str> {
 }
 
 pub fn is_core_package(package: &str) -> bool {
-	ALL_CORE_PACKAGES.contains(&package)
+	get_core_package(package).is_some()
 }
 
 #[cfg(test)]
 mod tests {
 	use super::*;
 	use mcvm_parse::parse::lex_and_parse;
+
+	static ALL_CORE_PACKAGES: [&str; 16] = [
+		ANIMATED_TEXTURES_SUPPORT,
+		CEM_SUPPORT,
+		CIT_SUPPORT,
+		CTM_SUPPORT,
+		CUSTOM_COLORS_SUPPORT,
+		CUSTOM_GUI_SUPPORT,
+		CUSTOM_SKY_SUPPORT,
+		EMISSIVE_BLOCKS_SUPPORT,
+		EMISSIVE_ENTITIES_SUPPORT,
+		FABRIC_RENDERING_API,
+		FABRICLIKE_API,
+		KOTLIN_SUPPORT,
+		OPTIFINE_RESOURCE_PACKS,
+		RANDOM_ENTITIES_SUPPORT,
+		SHADER_SUPPORT,
+		SPLASH_SCREEN_SUPPORT,
+	];
 
 	#[test]
 	fn test_core_package_parse() {
