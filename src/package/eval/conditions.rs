@@ -24,21 +24,21 @@ pub fn eval_condition(condition: &ConditionKind, eval: &EvalData) -> anyhow::Res
 			Ok(version.matches_single(&eval.constants.version, &eval.constants.version_list))
 		}
 		ConditionKind::Side(side) => {
-			Ok(eval.constants.side == *side.as_ref().expect("If side is missing"))
+			Ok(eval.params.side == *side.as_ref().expect("If side is missing"))
 		}
 		ConditionKind::Modloader(loader) => {
 			Ok(loader.as_ref().expect("If modloader is missing").matches(
 				&eval
 					.constants
 					.modifications
-					.get_modloader(eval.constants.side),
+					.get_modloader(eval.params.side),
 			))
 		}
 		ConditionKind::PluginLoader(loader) => Ok(loader
 			.as_ref()
 			.expect("If plugin_loader is missing")
 			.matches(&eval.constants.modifications.server_type)
-			&& matches!(eval.constants.side, Side::Server)),
+			&& matches!(eval.params.side, Side::Server)),
 		ConditionKind::Feature(feature) => {
 			Ok(eval.constants.features.contains(&feature.get(&eval.vars)?))
 		}
