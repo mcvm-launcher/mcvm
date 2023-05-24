@@ -4,7 +4,7 @@ use mcvm_parse::metadata::PackageMetadata;
 use serde::{Deserialize, Serialize};
 
 use super::core::is_core_package;
-use super::eval::{EvalConstants, EvalData, Routine, EvalParameters};
+use super::eval::{EvalConstants, EvalData, EvalParameters, Routine};
 use super::repo::{query_all, PkgRepo};
 use super::{Package, PkgKind};
 use crate::io::files::paths::Paths;
@@ -62,7 +62,9 @@ impl PkgRequest {
 	pub fn disp_with_colors(&self) -> String {
 		match self.source {
 			PkgRequestSource::UserRequire => cformat!("<y>{}", self.name),
-			PkgRequestSource::Dependency(..) | PkgRequestSource::Repository => cformat!("<c>{}", self.name),
+			PkgRequestSource::Dependency(..) | PkgRequestSource::Repository => {
+				cformat!("<c>{}", self.name)
+			}
 		}
 	}
 }

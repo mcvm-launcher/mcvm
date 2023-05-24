@@ -46,9 +46,12 @@ async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
 	if let Some(profile) = config.profiles.get(id) {
 		cprintln!("<s><g>Profile <b>{}", id);
 		cprintln!("   <s>Version:</s> <g>{}", profile.version);
-		
+
 		if profile.modifications.common_modloader() {
-			cprintln!("   <s>Modloader:</s> <g>{}", profile.modifications.get_modloader(Side::Client));
+			cprintln!(
+				"   <s>Modloader:</s> <g>{}",
+				profile.modifications.get_modloader(Side::Client)
+			);
 		} else {
 			cprintln!("   <s>Client:</s> <g>{}", profile.modifications.client_type);
 			cprintln!("   <s>Server:</s> <g>{}", profile.modifications.server_type);

@@ -62,7 +62,13 @@ pub struct Addon {
 }
 
 impl Addon {
-	pub fn new(kind: AddonKind, id: &str, file_name: &str, pkg_id: PkgIdentifier, version: Option<String>,) -> Self {
+	pub fn new(
+		kind: AddonKind,
+		id: &str,
+		file_name: &str,
+		pkg_id: PkgIdentifier,
+		version: Option<String>,
+	) -> Self {
 		Self {
 			kind,
 			id: id.to_owned(),
@@ -77,6 +83,8 @@ impl Addon {
 pub fn is_filename_valid(kind: AddonKind, filename: &str) -> bool {
 	match kind {
 		AddonKind::Mod | AddonKind::Plugin => filename.ends_with(".jar"),
-		AddonKind::ResourcePack | AddonKind::Shader | AddonKind::Datapack => filename.ends_with(".zip"),
+		AddonKind::ResourcePack | AddonKind::Shader | AddonKind::Datapack => {
+			filename.ends_with(".zip")
+		}
 	}
 }

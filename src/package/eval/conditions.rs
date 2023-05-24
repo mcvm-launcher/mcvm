@@ -12,12 +12,13 @@ pub fn eval_condition(condition: &ConditionKind, eval: &EvalData) -> anyhow::Res
 			eval_condition(condition.as_ref().expect("Not condition is missing"), eval)
 				.map(|op| !op)
 		}
-		ConditionKind::And(left, right) => {
-			Ok(eval_condition(left, eval)? && eval_condition(right.as_ref().expect("Right and condition is missing"), eval)?) 
-		}
-		ConditionKind::Or(left, right) => {
-			Ok(eval_condition(left, eval)? || eval_condition(right.as_ref().expect("Right or condition is missing"), eval)?) 
-		}
+		ConditionKind::And(left, right) => Ok(eval_condition(left, eval)?
+			&& eval_condition(
+				right.as_ref().expect("Right and condition is missing"),
+				eval,
+			)?),
+		ConditionKind::Or(left, right) => Ok(eval_condition(left, eval)?
+			|| eval_condition(right.as_ref().expect("Right or condition is missing"), eval)?),
 		ConditionKind::Version(version) => {
 			let version = version.get(&eval.vars)?;
 			let version = VersionPattern::from(&version);
@@ -26,14 +27,10 @@ pub fn eval_condition(condition: &ConditionKind, eval: &EvalData) -> anyhow::Res
 		ConditionKind::Side(side) => {
 			Ok(eval.params.side == *side.as_ref().expect("If side is missing"))
 		}
-		ConditionKind::Modloader(loader) => {
-			Ok(loader.as_ref().expect("If modloader is missing").matches(
-				&eval
-					.constants
-					.modifications
-					.get_modloader(eval.params.side),
-			))
-		}
+		ConditionKind::Modloader(loader) => Ok(loader
+			.as_ref()
+			.expect("If modloader is missing")
+			.matches(&eval.constants.modifications.get_modloader(eval.params.side))),
 		ConditionKind::PluginLoader(loader) => Ok(loader
 			.as_ref()
 			.expect("If plugin_loader is missing")

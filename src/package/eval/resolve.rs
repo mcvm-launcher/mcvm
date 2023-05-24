@@ -5,7 +5,7 @@ use color_print::cprintln;
 
 use crate::io::files::paths::Paths;
 
-use super::{EvalConstants, Routine, EvalParameters};
+use super::{EvalConstants, EvalParameters, Routine};
 use crate::package::reg::{PkgRegistry, PkgRequest, PkgRequestSource};
 use crate::package::PkgProfileConfig;
 
@@ -181,7 +181,13 @@ async fn resolve_eval_package(
 		.context("Package did not fit existing constraints")?;
 
 	let result = reg
-		.eval(&package, paths, Routine::InstallResolve, resolver.constants, params)
+		.eval(
+			&package,
+			paths,
+			Routine::InstallResolve,
+			resolver.constants,
+			params,
+		)
 		.await
 		.context("Failed to evaluate package")?;
 
@@ -271,19 +277,10 @@ async fn resolve_task(
 	paths: &Paths,
 ) -> anyhow::Result<()> {
 	match task {
-		Task::EvalPackage {
-			dest,
-			params,
-		} => {
-			resolve_eval_package(
-				dest.clone(),
-				&params,
-				resolver,
-				reg,
-				paths,
-			)
-			.await
-			.with_context(|| package_context_error_message(&dest))?;
+		Task::EvalPackage { dest, params } => {
+			resolve_eval_package(dest.clone(), &params, resolver, reg, paths)
+				.await
+				.with_context(|| package_context_error_message(&dest))?;
 		}
 	}
 
@@ -317,7 +314,7 @@ pub async fn resolve(
 		});
 		resolver.tasks.push_back(Task::EvalPackage {
 			dest: config.req.clone(),
-			params: Some(params)
+			params: Some(params),
 		});
 	}
 
