@@ -136,7 +136,7 @@ async fn sync(data: &mut CmdData) -> anyhow::Result<()> {
 		.update_cached_packages(paths)
 		.await
 		.context("Failed to update cached packages")?;
-	printer.print(&cformat!("<s>Validating packages..."));
+	printer.println(&cformat!("<s>Validating packages..."));
 	for package in config.packages.get_all_packages() {
 		match config.packages.parse(&package, paths).await {
 			Ok(..) => {}
