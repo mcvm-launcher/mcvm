@@ -150,7 +150,7 @@ async fn update_adoptium(
 	}
 
 	let arc_extension = preferred_archive_extension();
-	let arc_name = format!("adoptium{}{arc_extension}", major_version);
+	let arc_name = format!("adoptium{major_version}{arc_extension}");
 	let arc_path = out_dir.join(arc_name);
 
 	let bin_url = json::access_str(

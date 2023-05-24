@@ -301,7 +301,7 @@ async fn resolve_and_batch(
 			features: Vec::new(),
 			perms: EvalPermissions::Standard,
 		};
-		let instance_resolved = resolve(&profile.packages, &constants, params, paths, reg)
+		let instance_resolved = resolve(&profile.packages, constants, params, paths, reg)
 			.await
 			.with_context(|| {
 				format!("Failed to resolve package dependencies for instance '{instance_id}'")
@@ -336,7 +336,7 @@ async fn update_profile_packages(
 
 	for (package, package_instances) in batched.iter().sorted_by_key(|x| x.0) {
 		let pkg_version = reg
-			.get_version(&package, paths)
+			.get_version(package, paths)
 			.await
 			.context("Failed to get version for package")?;
 		let mut notices = Vec::new();
@@ -350,15 +350,15 @@ async fn update_profile_packages(
 				perms: EvalPermissions::Standard,
 			};
 			printer.print(&format_package_print(
-				&package,
-				Some(&instance_id),
+				package,
+				Some(instance_id),
 				"Installing...",
 			));
 			let result = instance
 				.install_package(
-					&package,
+					package,
 					pkg_version,
-					&constants,
+					constants,
 					params,
 					reg,
 					paths,
@@ -377,13 +377,13 @@ async fn update_profile_packages(
 			);
 		}
 		printer.print(&format_package_print(
-			&package,
+			package,
 			None,
 			&cformat!("<g>Installed."),
 		));
 		for (instance, notice) in notices {
 			printer.print(&format_package_print(
-				&package,
+				package,
 				Some(&instance),
 				&cformat!("<y>Notice: {}", notice),
 			));
@@ -465,10 +465,10 @@ async fn get_paper_properties(
 	mc_version: &str,
 ) -> anyhow::Result<Option<(u16, String)>> {
 	let out = if let ServerType::Paper = profile.modifications.server_type {
-		let (build_num, ..) = paper::get_newest_build(&mc_version)
+		let (build_num, ..) = paper::get_newest_build(mc_version)
 			.await
 			.context("Failed to get the newest Paper build number")?;
-		let paper_file_name = paper::get_jar_file_name(&mc_version, build_num)
+		let paper_file_name = paper::get_jar_file_name(mc_version, build_num)
 			.await
 			.context("Failed to get the name of the Paper Jar file")?;
 		Some((build_num, paper_file_name))
