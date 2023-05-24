@@ -227,7 +227,7 @@ async fn resolve_eval_package(
 	for bundled in result.bundled {
 		let req = PkgRequest::new(
 			&bundled,
-			PkgRequestSource::Dependency(Box::new(package.clone())),
+			PkgRequestSource::Bundled(Box::new(package.clone())),
 		);
 		resolver.check_constraints(&req)?;
 		resolver.remove_require_constraint(&req);

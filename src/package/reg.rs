@@ -18,6 +18,7 @@ use std::path::Path;
 #[derive(Debug, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub enum PkgRequestSource {
 	UserRequire,
+	Bundled(Box<PkgRequest>),
 	Dependency(Box<PkgRequest>),
 	Repository,
 }
@@ -26,7 +27,7 @@ impl PkgRequestSource {
 	/// Gets the source package of this package, if any
 	pub fn get_source(&self) -> Option<&PkgRequest> {
 		match self {
-			Self::Dependency(source) => Some(source),
+			Self::Dependency(source) | Self::Bundled(source) => Some(source),
 			_ => None,
 		}
 	}
@@ -51,8 +52,11 @@ impl PkgRequest {
 	pub fn debug_sources(&self, list: String) -> String {
 		match &self.source {
 			PkgRequestSource::UserRequire => format!("{}{list}", self.name),
-			PkgRequestSource::Dependency(dep) => {
-				format!("{}->{}", dep.debug_sources(list), self.name)
+			PkgRequestSource::Dependency(source) => {
+				format!("{}->{}", source.debug_sources(list), self.name)
+			}
+			PkgRequestSource::Bundled(bundler) => {
+				format!("{}=>{}", bundler.debug_sources(list), self.name)
 			}
 			PkgRequestSource::Repository => format!("Repository->{}{list}", self.name),
 		}
@@ -62,6 +66,7 @@ impl PkgRequest {
 	pub fn disp_with_colors(&self) -> String {
 		match self.source {
 			PkgRequestSource::UserRequire => cformat!("<y>{}", self.name),
+			PkgRequestSource::Bundled(..) => cformat!("<b>{}", self.name),
 			PkgRequestSource::Dependency(..) | PkgRequestSource::Repository => {
 				cformat!("<c>{}", self.name)
 			}
