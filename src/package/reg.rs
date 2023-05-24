@@ -1,6 +1,7 @@
 use anyhow::{anyhow, Context};
 use color_print::cformat;
 use mcvm_parse::metadata::PackageMetadata;
+use mcvm_parse::parse::Parsed;
 use serde::{Deserialize, Serialize};
 
 use super::core::is_core_package;
@@ -216,6 +217,17 @@ impl PkgRegistry {
 		Ok(contents)
 	}
 
+	/// Parse a package
+	pub async fn parse<'a>(
+		&'a mut self,
+		req: &PkgRequest,
+		paths: &Paths,
+	) -> anyhow::Result<&'a Parsed> {
+		let pkg = self.ensure_package_contents(req, paths).await?;
+		pkg.parse(paths).await.context("Failed to parse package")?;
+		Ok(pkg.data.get().parsed.get())
+	}
+
 	/// Evaluate a package
 	pub async fn eval<'a>(
 		&mut self,
@@ -248,6 +260,11 @@ impl PkgRegistry {
 	/// Iterator over all package requests in the registry
 	pub fn iter_requests(&self) -> impl Iterator<Item = &PkgRequest> {
 		self.packages.keys()
+	}
+
+	/// Get all of the package requests in the registry in an owned manner
+	pub fn get_all_packages(&self) -> Vec<PkgRequest> {
+		self.iter_requests().cloned().collect()
 	}
 
 	/// Remove cached packages
