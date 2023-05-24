@@ -161,9 +161,9 @@ impl Instance {
 		})
 	}
 
-	fn link_addon(dir: &Path, addon: &Addon, paths: &Paths) -> anyhow::Result<()> {
+	fn link_addon(dir: &Path, addon: &Addon, paths: &Paths, instance_id: &str) -> anyhow::Result<()> {
 		let link = dir.join(addon::get_instance_filename(addon));
-		let addon_path = addon::get_path(addon, paths);
+		let addon_path = addon::get_path(addon, paths, instance_id);
 		files::create_leading_dirs(&link)?;
 		// These checks are to make sure that we properly link the hardlink to the right location
 		// We have to remove the current link since it doesnt let us update it in place
@@ -184,7 +184,7 @@ impl Instance {
 			.get_linked_addon_paths(addon, paths)
 			.context("Failed to get linked directory")?
 		{
-			Self::link_addon(&path, addon, paths)
+			Self::link_addon(&path, addon, paths, &self.id)
 				.with_context(|| format!("Failed to link addon {}", addon.id))?;
 		}
 
@@ -269,18 +269,18 @@ impl Instance {
 		let lockfile_addons = eval
 			.addon_reqs
 			.iter()
-			.map(|x| LockfileAddon::from_addon(&x.addon, paths))
+			.map(|x| LockfileAddon::from_addon(&x.addon, paths, &self.id))
 			.collect::<Vec<LockfileAddon>>();
 		let (addons_to_update, addons_to_remove) = lock
 			.update_package(&pkg.name, &self.id, pkg_version, &lockfile_addons)
 			.context("Failed to update package in lockfile")?;
 		for addon in eval.addon_reqs.iter() {
-			if addon::should_update(&addon.addon, paths)
+			if addon::should_update(&addon.addon, paths, &self.id)
 				|| addons_to_update.contains(&addon.addon.id)
 				|| force
 			{
 				addon
-					.acquire(paths)
+					.acquire(paths, &self.id)
 					.await
 					.with_context(|| format!("Failed to acquire addon '{}'", addon.addon.id))?;
 			}

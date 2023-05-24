@@ -14,12 +14,12 @@ pub fn get_dir(addon: &Addon, paths: &Paths) -> PathBuf {
 }
 
 /// Get the path to an addon stored in the internal addons folder
-pub fn get_path(addon: &Addon, paths: &Paths) -> PathBuf {
+pub fn get_path(addon: &Addon, paths: &Paths, instance_id: &str) -> PathBuf {
 	let pkg_dir = get_dir(addon, paths).join(&addon.pkg_id.name);
 	if let Some(version) = &addon.version {
 		pkg_dir.join(addon.id.clone()).join(version)
 	} else {
-		pkg_dir.join(format!("{}_unknown", addon.id))
+		pkg_dir.join(format!("{}_{instance_id}", addon.id))
 	}
 }
 
@@ -43,8 +43,8 @@ pub fn get_instance_filename(addon: &Addon) -> String {
 }
 
 /// Whether this addon should be updated
-pub fn should_update(addon: &Addon, paths: &Paths) -> bool {
-	addon.version.is_none() || !get_path(addon, paths).exists()
+pub fn should_update(addon: &Addon, paths: &Paths, instance_id: &str) -> bool {
+	addon.version.is_none() || !get_path(addon, paths, instance_id).exists()
 }
 
 #[derive(Debug, Clone)]
@@ -65,8 +65,8 @@ impl AddonRequest {
 	}
 
 	/// Get the addon and store it
-	pub async fn acquire(&self, paths: &Paths) -> anyhow::Result<()> {
-		let path = get_path(&self.addon, paths);
+	pub async fn acquire(&self, paths: &Paths, instance_id: &str) -> anyhow::Result<()> {
+		let path = get_path(&self.addon, paths, instance_id);
 		create_leading_dirs(&path)?;
 		match &self.location {
 			AddonLocation::Remote(url) => {

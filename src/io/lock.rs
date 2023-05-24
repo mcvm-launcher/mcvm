@@ -25,11 +25,11 @@ pub struct LockfileAddon {
 
 impl LockfileAddon {
 	/// Converts an addon to the format used by the lockfile
-	pub fn from_addon(addon: &Addon, paths: &Paths) -> Self {
+	pub fn from_addon(addon: &Addon, paths: &Paths, instance_id: &str) -> Self {
 		Self {
 			id: addon.id.clone(),
 			file_name: Some(addon.file_name.clone()),
-			files: vec![addon::get_path(addon, paths)
+			files: vec![addon::get_path(addon, paths, instance_id)
 				.to_str()
 				.expect("Failed to convert addon path to a string")
 				.to_owned()],
