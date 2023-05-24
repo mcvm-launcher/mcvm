@@ -35,6 +35,7 @@ pub enum InstrKind {
 	Recommend(Value),
 	Bundle(Value),
 	Compat(Value, Value),
+	Extend(Value),
 	Finish(),
 	Fail(Option<FailReason>),
 	Notice(Value),
@@ -70,6 +71,7 @@ impl Instruction {
 			"recommend" => Ok(InstrKind::Recommend(Value::None)),
 			"bundle" => Ok(InstrKind::Bundle(Value::None)),
 			"compat" => Ok(InstrKind::Compat(Value::None, Value::None)),
+			"extend" => Ok(InstrKind::Extend(Value::None)),
 			"notice" => Ok(InstrKind::Notice(Value::None)),
 			string => bail!("Unknown instruction '{string}' {}", pos),
 		}?;
@@ -98,7 +100,8 @@ impl Instruction {
 				InstrKind::Refuse(val)
 				| InstrKind::Recommend(val)
 				| InstrKind::Bundle(val)
-				| InstrKind::Notice(val) => {
+				| InstrKind::Notice(val)
+				| InstrKind::Extend(val) => {
 					if let Value::None = val {
 						*val = parse_arg(tok, pos)?;
 					} else {

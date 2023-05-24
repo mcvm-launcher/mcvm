@@ -108,6 +108,7 @@ pub struct EvalData<'a> {
 	pub recommendations: Vec<String>,
 	pub bundled: Vec<String>,
 	pub compats: Vec<(String, String)>,
+	pub extensions: Vec<String>,
 	pub notices: Vec<String>,
 }
 
@@ -130,6 +131,7 @@ impl<'a> EvalData<'a> {
 			recommendations: Vec::new(),
 			bundled: Vec::new(),
 			compats: Vec::new(),
+			extensions: Vec::new(),
 			notices: Vec::new(),
 		}
 	}
@@ -263,6 +265,11 @@ pub fn eval_instr(
 				if let EvalLevel::Resolve = eval.level {
 					eval.compats
 						.push((package.get(&eval.vars)?, compat.get(&eval.vars)?));
+				}
+			}
+			InstrKind::Extend(package) => {
+				if let EvalLevel::Resolve = eval.level {
+					eval.extensions.push(package.get(&eval.vars)?);
 				}
 			}
 			InstrKind::Notice(notice) => {

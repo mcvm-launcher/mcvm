@@ -16,6 +16,7 @@ enum ConstraintKind {
 	Recommend(PkgRequest),
 	Bundle(PkgRequest),
 	Compat(PkgRequest, PkgRequest),
+	Extend(PkgRequest),
 }
 
 /// A requirement for the installation of the packages
@@ -257,6 +258,16 @@ async fn resolve_eval_package(
 		}
 	}
 
+	for extension in result.extensions {
+		let req = PkgRequest::new(
+			&extension,
+			PkgRequestSource::Dependency(Box::new(package.clone())),
+		);
+		resolver.constraints.push(Constraint {
+			kind: ConstraintKind::Extend(req),
+		});
+	}
+
 	for recommendation in result.recommendations {
 		let req = PkgRequest::new(
 			&recommendation,
@@ -325,22 +336,42 @@ pub async fn resolve(
 	}
 
 	for constraint in resolver.constraints.iter() {
-		if let ConstraintKind::Recommend(package) = &constraint.kind {
-			if !resolver.is_required(package) {
-				let source = package.source.get_source();
-				if let Some(source) = source {
-					cprintln!(
-						"<y>Warning: The package '{}' recommends the use of the package '{}', which is not installed.",
-						source.debug_sources(String::new()),
-						package
-					);
-				} else {
-					cprintln!(
-						"<y>Warning: A package recommends the use of the package '{}', which is not installed.",
-						package
-					);
+		match &constraint.kind {
+			ConstraintKind::Recommend(package) => {
+				if !resolver.is_required(package) {
+					let source = package.source.get_source();
+					if let Some(source) = source {
+						cprintln!(
+							"<y>Warning: The package '{}' recommends the use of the package '{}', which is not installed.",
+							source.debug_sources(String::new()),
+							package
+						);
+					} else {
+						cprintln!(
+							"<y>Warning: A package recommends the use of the package '{}', which is not installed.",
+							package
+						);
+					}
 				}
 			}
+			ConstraintKind::Extend(package) => {
+				if !resolver.is_required(package) {
+					let source = package.source.get_source();
+					if let Some(source) = source {
+						bail!(
+							"The package '{}' extends the functionality of the package '{}', which is not installed.",
+							source.debug_sources(String::new()),
+							package
+						);
+					} else {
+						bail!(
+							"A package extends the functionality of the package '{}', which is not installed.",
+							package
+						);
+					}
+				}
+			}
+			_ => {}
 		}
 	}
 
