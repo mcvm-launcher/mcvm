@@ -73,7 +73,7 @@ impl ReplPrinter {
 	/// Print text on a new line
 	pub fn println(&mut self, text: &str) {
 		self.chars_written = 0;
-		let _ = writeln!(self.stdout, "{text}");
+		let _ = writeln!(self.stdout, "\n{text}");
 	}
 
 	/// Finish printing and make a newline
