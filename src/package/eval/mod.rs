@@ -305,13 +305,10 @@ pub fn eval_instr(
 						bail!("Invalid addon filename '{file_name}' in addon '{id}'");
 					}
 
-					let addon = Addon::new(
-						*kind,
-						&id,
-						&file_name,
-						eval.id.clone(),
-						version.get_as_option(&eval.vars)?,
-					);
+					// Empty strings will break the filename so we convert them to none
+					let version = version.get_as_option(&eval.vars)?.filter(|x| !x.is_empty());
+
+					let addon = Addon::new(*kind, &id, &file_name, eval.id.clone(), version);
 
 					if let Value::Constant(..) | Value::Var(..) = url {
 						let location = AddonLocation::Remote(url.get(&eval.vars)?);
