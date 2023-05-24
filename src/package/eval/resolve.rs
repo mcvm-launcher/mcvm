@@ -59,9 +59,10 @@ impl<'a> Resolver<'a> {
 
 	/// Whether a package has been required by the user
 	pub fn is_user_required(&self, req: &PkgRequest) -> bool {
-		self.constraints
-			.iter()
-			.any(|x| matches!(&x.kind, ConstraintKind::UserRequire(dest) if dest == req))
+		self.constraints.iter().any(|x| {
+			matches!(&x.kind, ConstraintKind::UserRequire(dest) if dest == req)
+				|| matches!(&x.kind, ConstraintKind::Bundle(dest) if dest.source.is_user_bundled())
+		})
 	}
 
 	/// Remove the require constraint of a package if it exists

@@ -31,6 +31,12 @@ impl PkgRequestSource {
 			_ => None,
 		}
 	}
+
+	/// Gets whether this source list is only bundles that lead up to a UserRequire
+	pub fn is_user_bundled(&self) -> bool {
+		matches!(self, Self::Bundled(source) if source.source.is_user_bundled())
+			|| matches!(self, Self::UserRequire)
+	}
 }
 
 /// Used to store a request for a package that will be fulfilled later
