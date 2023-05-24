@@ -22,6 +22,11 @@ use mcvm_shared::pkg::PkgIdentifier;
 use std::collections::HashMap;
 use std::path::PathBuf;
 
+/// Max notice instructions per package
+static MAX_NOTICE_INSTRUCTIONS: usize = 10;
+/// Max characters per notice instruction
+static MAX_NOTICE_CHARACTERS: usize = 128;
+
 /// What instructions the evaluator will evaluate (depends on what routine we are running)
 #[derive(Debug, Clone)]
 pub enum EvalLevel {
@@ -76,9 +81,8 @@ pub struct RequiredPackage {
 pub struct EvalConstants {
 	pub version: String,
 	pub modifications: GameModifications,
-	pub side: Side,
 	pub features: Vec<String>,
-	pub versions: Vec<String>,
+	pub version_list: Vec<String>,
 	pub perms: EvalPermissions,
 }
 
@@ -104,10 +108,16 @@ pub struct EvalData<'a> {
 	pub recommendations: Vec<String>,
 	pub bundled: Vec<String>,
 	pub compats: Vec<(String, String)>,
+	pub notices: Vec<String>,
 }
 
 impl<'a> EvalData<'a> {
-	pub fn new(constants: &'a EvalConstants, params: EvalParameters, id: PkgIdentifier, routine: &Routine) -> Self {
+	pub fn new(
+		constants: &'a EvalConstants,
+		params: EvalParameters,
+		id: PkgIdentifier,
+		routine: &Routine,
+	) -> Self {
 		Self {
 			vars: HashMap::new(),
 			addon_reqs: Vec::new(),
@@ -120,6 +130,7 @@ impl<'a> EvalData<'a> {
 			recommendations: Vec::new(),
 			bundled: Vec::new(),
 			compats: Vec::new(),
+			notices: Vec::new(),
 		}
 	}
 }
@@ -254,14 +265,23 @@ pub fn eval_instr(
 						.push((package.get(&eval.vars)?, compat.get(&eval.vars)?));
 				}
 			}
+			InstrKind::Notice(notice) => {
+				if eval.notices.len() > MAX_NOTICE_INSTRUCTIONS {
+					bail!("Max number of notice instructions was exceded (>{MAX_NOTICE_INSTRUCTIONS})");
+				}
+				let notice = notice.get(&eval.vars)?;
+				if notice.len() > MAX_NOTICE_CHARACTERS {
+					bail!("Notice message is too long (>{MAX_NOTICE_CHARACTERS})");
+				}
+				eval.notices.push(notice);
+			}
 			InstrKind::Addon {
 				id,
 				file_name,
 				kind,
 				url,
-				force,
-				append,
 				path,
+				version,
 			} => {
 				if let EvalLevel::Install = eval.level {
 					let id = id.get(&eval.vars)?;
@@ -271,22 +291,24 @@ pub fn eval_instr(
 					if !validate_identifier(&id) {
 						bail!("Invalid addon identifier '{id}'");
 					}
-					let file_name = match append {
-						Value::None => file_name.get(&eval.vars)?,
-						_ => append.get(&eval.vars)? + "-" + &file_name.get(&eval.vars)?,
-					};
+					let file_name = file_name.get(&eval.vars)?;
 					let kind = kind.as_ref().expect("Addon kind missing");
 
 					if !is_filename_valid(*kind, &file_name) {
 						bail!("Invalid addon filename '{file_name}' in addon '{id}'");
 					}
 
-					let addon = Addon::new(*kind, &id, &file_name, eval.id.clone());
+					let addon = Addon::new(
+						*kind,
+						&id,
+						&file_name,
+						eval.id.clone(),
+						version.get_as_option(&eval.vars)?,
+					);
 
 					if let Value::Constant(..) | Value::Var(..) = url {
 						let location = AddonLocation::Remote(url.get(&eval.vars)?);
-						eval.addon_reqs
-							.push(AddonRequest::new(addon, location, *force));
+						eval.addon_reqs.push(AddonRequest::new(addon, location));
 					} else if let Value::Constant(..) | Value::Var(..) = path {
 						let path = path.get(&eval.vars)?;
 						match eval.constants.perms {
@@ -294,8 +316,7 @@ pub fn eval_instr(
 								let path = String::from(shellexpand::tilde(&path));
 								let path = PathBuf::from(path);
 								let location = AddonLocation::Local(path);
-								eval.addon_reqs
-									.push(AddonRequest::new(addon, location, *force));
+								eval.addon_reqs.push(AddonRequest::new(addon, location));
 							}
 							_ => {
 								bail!("Insufficient permissions to add a local addon '{id}'");

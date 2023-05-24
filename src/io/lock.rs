@@ -8,7 +8,7 @@ use serde::{Deserialize, Serialize};
 use mcvm_shared::addon::{Addon, AddonKind};
 use mcvm_shared::pkg::PkgIdentifier;
 
-use crate::data::addon::get_addon_path;
+use crate::data::addon;
 
 use super::files::paths::Paths;
 
@@ -20,6 +20,7 @@ pub struct LockfileAddon {
 	file_name: Option<String>,
 	files: Vec<String>,
 	kind: String,
+	version: Option<String>,
 }
 
 impl LockfileAddon {
@@ -28,11 +29,12 @@ impl LockfileAddon {
 		Self {
 			id: addon.id.clone(),
 			file_name: Some(addon.file_name.clone()),
-			files: vec![get_addon_path(addon, paths)
+			files: vec![addon::get_path(addon, paths)
 				.to_str()
 				.expect("Failed to convert addon path to a string")
 				.to_owned()],
 			kind: addon.kind.to_string(),
+			version: addon.version.clone(),
 		}
 	}
 
@@ -47,6 +49,7 @@ impl LockfileAddon {
 				.clone()
 				.expect("Filename should have been filled in or fixed"),
 			pkg_id,
+			version: self.version.clone(),
 		})
 	}
 
@@ -152,27 +155,37 @@ impl Lockfile {
 		Ok(())
 	}
 
-	/// Updates a package with a new version
+	/// Updates a package with a new version.
+	/// Returns a list of addons that need updating and a list of addons that need to be removed
 	pub fn update_package(
 		&mut self,
 		name: &str,
 		instance: &str,
 		version: u32,
 		addons: &[LockfileAddon],
-	) -> anyhow::Result<Vec<String>> {
+	) -> anyhow::Result<(Vec<String>, Vec<String>)> {
+		let mut addons_to_update = Vec::new();
 		let mut addons_to_remove = Vec::new();
 		if let Some(instance) = self.contents.packages.get_mut(instance) {
 			if let Some(pkg) = instance.get_mut(name) {
 				pkg.version = version.to_owned();
 				let mut indices = Vec::new();
-				for (i, addon) in pkg.addons.iter().enumerate() {
-					if !addons.contains(addon) {
+				// Check for addons that need to be removed
+				for (i, current) in pkg.addons.iter().enumerate() {
+					if !addons.iter().any(|x| x.id == current.id) {
 						indices.push(i);
-						addons_to_remove.push(addon.id.clone());
+						addons_to_remove.push(current.id.clone());
 					}
 				}
 				for i in indices {
 					pkg.addons.remove(i);
+				}
+				// Check for addons that need to be updated
+				for requested in addons {
+					if pkg.addons.iter().any(|x| x.id == requested.id) {
+					} else {
+						addons_to_update.push(requested.id.clone());
+					}
 				}
 				pkg.addons = addons.to_vec();
 			} else {
@@ -183,15 +196,17 @@ impl Lockfile {
 						addons: addons.to_vec(),
 					},
 				);
+				addons_to_update = addons.iter().map(|x| x.id.clone()).collect();
 			}
 		} else {
 			self.contents
 				.packages
 				.insert(instance.to_owned(), HashMap::new());
 			self.update_package(name, instance, version, addons)?;
+			addons_to_update = addons.iter().map(|x| x.id.clone()).collect();
 		}
 
-		Ok(addons_to_remove)
+		Ok((addons_to_update, addons_to_remove))
 	}
 
 	/// Remove any unused packages for an instance.

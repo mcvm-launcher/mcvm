@@ -16,16 +16,18 @@ pub enum InstrKind {
 	Description(Option<String>),
 	Version(Option<String>),
 	Authors(Vec<String>),
+	PackageMaintainers(Vec<String>),
 	Website(Option<String>),
 	SupportLink(Option<String>),
+	Documentation(Option<String>),
+	License(Option<String>),
 	Addon {
 		id: Value,
 		file_name: Value,
 		kind: Option<AddonKind>,
 		url: Value,
-		force: bool,
-		append: Value,
 		path: Value,
+		version: Value,
 	},
 	Set(Option<String>, Value),
 	Require(Vec<Vec<super::parse::require::Package>>),
@@ -35,6 +37,7 @@ pub enum InstrKind {
 	Compat(Value, Value),
 	Finish(),
 	Fail(Option<FailReason>),
+	Notice(Value),
 }
 
 /// A command / statement run in a package script
@@ -55,8 +58,11 @@ impl Instruction {
 			"description" => Ok(InstrKind::Description(None)),
 			"version" => Ok(InstrKind::Version(None)),
 			"authors" => Ok(InstrKind::Authors(Vec::new())),
+			"package_maintainers" => Ok(InstrKind::PackageMaintainers(Vec::new())),
 			"website" => Ok(InstrKind::Website(None)),
 			"support_link" => Ok(InstrKind::SupportLink(None)),
+			"documentation" => Ok(InstrKind::Documentation(None)),
+			"license" => Ok(InstrKind::License(None)),
 			"set" => Ok(InstrKind::Set(None, Value::None)),
 			"finish" => Ok(InstrKind::Finish()),
 			"fail" => Ok(InstrKind::Fail(None)),
@@ -64,6 +70,7 @@ impl Instruction {
 			"recommend" => Ok(InstrKind::Recommend(Value::None)),
 			"bundle" => Ok(InstrKind::Bundle(Value::None)),
 			"compat" => Ok(InstrKind::Compat(Value::None, Value::None)),
+			"notice" => Ok(InstrKind::Notice(Value::None)),
 			string => bail!("Unknown instruction '{string}' {}", pos),
 		}?;
 		Ok(Instruction::new(kind))
@@ -79,21 +86,28 @@ impl Instruction {
 				| InstrKind::Description(text)
 				| InstrKind::Version(text)
 				| InstrKind::Website(text)
-				| InstrKind::SupportLink(text) => {
+				| InstrKind::SupportLink(text)
+				| InstrKind::Documentation(text)
+				| InstrKind::License(text) => {
 					if text.is_none() {
 						*text = Some(parse_string(tok, pos)?);
 					} else {
 						unexpected_token!(tok, pos);
 					}
 				}
-				InstrKind::Refuse(val) | InstrKind::Recommend(val) | InstrKind::Bundle(val) => {
+				InstrKind::Refuse(val)
+				| InstrKind::Recommend(val)
+				| InstrKind::Bundle(val)
+				| InstrKind::Notice(val) => {
 					if let Value::None = val {
 						*val = parse_arg(tok, pos)?;
 					} else {
 						unexpected_token!(tok, pos);
 					}
 				}
-				InstrKind::Authors(authors) => authors.push(parse_string(tok, pos)?),
+				InstrKind::Authors(people) | InstrKind::PackageMaintainers(people) => {
+					people.push(parse_string(tok, pos)?)
+				}
 				InstrKind::Compat(package, compat) => {
 					if let Value::None = package {
 						*package = parse_arg(tok, pos)?;

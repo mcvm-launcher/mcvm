@@ -1,7 +1,7 @@
 pub mod create;
 pub mod launch;
 
-use anyhow::Context;
+use anyhow::{ensure, Context};
 use mcvm_shared::instance::Side;
 
 use crate::io::files::paths::Paths;
@@ -14,11 +14,11 @@ use crate::io::options::client::ClientOptions;
 use crate::io::options::server::ServerOptions;
 use crate::io::{files, Later};
 use crate::net::fabric_quilt;
-use crate::package::eval::{EvalConstants, Routine, EvalParameters};
+use crate::package::eval::{EvalConstants, EvalData, EvalParameters, Routine};
 use crate::package::reg::{PkgRegistry, PkgRequest};
 use crate::util::json;
 
-use super::addon::get_addon_path;
+use super::addon;
 use super::config::instance::ClientWindowConfig;
 use super::config::profile::GameModifications;
 use super::profile::update::UpdateManager;
@@ -119,39 +119,59 @@ impl Instance {
 		Ok(classpath)
 	}
 
-	pub fn get_linked_addon_path(&self, addon: &Addon, paths: &Paths) -> Option<PathBuf> {
+	pub fn get_linked_addon_paths(
+		&self,
+		addon: &Addon,
+		paths: &Paths,
+	) -> anyhow::Result<Vec<PathBuf>> {
 		let inst_dir = self.get_subdir(paths);
-		match addon.kind {
+		Ok(match addon.kind {
 			AddonKind::ResourcePack => {
 				if let InstKind::Client { .. } = self.kind {
-					Some(inst_dir.join("resourcepacks"))
+					vec![inst_dir.join("resourcepacks")]
 				} else {
-					None
+					vec![]
 				}
 			}
-			AddonKind::Mod => Some(inst_dir.join("mods")),
+			AddonKind::Mod => vec![inst_dir.join("mods")],
 			AddonKind::Plugin => {
 				if let InstKind::Server { .. } = self.kind {
-					Some(inst_dir.join("plugins"))
+					vec![inst_dir.join("plugins")]
 				} else {
-					None
+					vec![]
 				}
 			}
 			AddonKind::Shader => {
 				if let InstKind::Client { .. } = self.kind {
-					Some(inst_dir.join("shaderpacks"))
+					vec![inst_dir.join("shaderpacks")]
 				} else {
-					None
+					vec![]
 				}
 			}
-		}
+			AddonKind::Datapack => match self.kind {
+				InstKind::Client { .. } => inst_dir
+					.join("saves")
+					.read_dir()
+					.context("Failed to read saves directory")?
+					.filter_map(|world| world.map(|world| world.path().join("datapacks")).ok())
+					.collect(),
+				// TODO: Different world paths in options
+				InstKind::Server { .. } => vec![inst_dir.join("world").join("datapacks")],
+			},
+		})
 	}
 
 	fn link_addon(dir: &Path, addon: &Addon, paths: &Paths) -> anyhow::Result<()> {
-		files::create_dir(dir)?;
-		let link = dir.join(&addon.file_name);
-		update_hardlink(&get_addon_path(addon, paths), &link)
-			.context("Failed to create hard link")?;
+		let link = dir.join(addon::get_instance_filename(addon));
+		let addon_path = addon::get_path(addon, paths);
+		files::create_leading_dirs(&link)?;
+		// These checks are to make sure that we properly link the hardlink to the right location
+		// We have to remove the current link since it doesnt let us update it in place
+		ensure!(addon_path.exists(), "Addon path does not exist");
+		if link.exists() {
+			fs::remove_file(&link).context("Failed to remove instance addon file")?;
+		}
+		update_hardlink(&addon_path, &link).context("Failed to create hard link")?;
 		Ok(())
 	}
 
@@ -160,7 +180,10 @@ impl Instance {
 		let inst_dir = self.get_subdir(paths);
 		files::create_leading_dirs(&inst_dir)?;
 		files::create_dir(&inst_dir)?;
-		if let Some(path) = self.get_linked_addon_path(addon, paths) {
+		for path in self
+			.get_linked_addon_paths(addon, paths)
+			.context("Failed to get linked directory")?
+		{
 			Self::link_addon(&path, addon, paths)
 				.with_context(|| format!("Failed to link addon {}", addon.id))?;
 		}
@@ -170,7 +193,10 @@ impl Instance {
 
 	/// Removes an addon from the instance
 	pub fn remove_addon(&self, addon: &Addon, paths: &Paths) -> anyhow::Result<()> {
-		if let Some(path) = self.get_linked_addon_path(addon, paths) {
+		for path in self
+			.get_linked_addon_paths(addon, paths)
+			.context("Failed to get linked directory")?
+		{
 			let path = path.join(&addon.file_name);
 			if path.exists() {
 				fs::remove_file(&path)
@@ -193,7 +219,11 @@ impl Instance {
 	}
 
 	/// Removes files such as the game jar for when the profile version changes
-	pub fn teardown(&self, paths: &Paths, paper_properties: Option<(u16, String)>) -> anyhow::Result<()> {
+	pub fn teardown(
+		&self,
+		paths: &Paths,
+		paper_properties: Option<(u16, String)>,
+	) -> anyhow::Result<()> {
 		match self.kind {
 			InstKind::Client { .. } => {
 				let inst_dir = self.get_dir(paths);
@@ -220,43 +250,48 @@ impl Instance {
 	}
 
 	/// Installs a package on this instance
-	pub async fn install_package(
+	pub async fn install_package<'a>(
 		&self,
 		pkg: &PkgRequest,
 		pkg_version: u32,
-		constants: &EvalConstants,
+		constants: &'a EvalConstants,
 		params: EvalParameters,
 		reg: &mut PkgRegistry,
 		paths: &Paths,
 		lock: &mut Lockfile,
-	) -> anyhow::Result<()> {
+		force: bool,
+	) -> anyhow::Result<EvalData<'a>> {
 		let eval = reg
 			.eval(pkg, paths, Routine::Install, constants, params)
 			.await
 			.context("Failed to evaluate package")?;
-		for addon in eval.addon_reqs.iter() {
-			addon
-				.acquire(paths)
-				.await
-				.with_context(|| format!("Failed to acquire addon '{}'", addon.addon.id))?;
-			self.create_addon(&addon.addon, paths)
-				.with_context(|| format!("Failed to install addon '{}'", addon.addon.id))?;
-		}
+
 		let lockfile_addons = eval
 			.addon_reqs
 			.iter()
 			.map(|x| LockfileAddon::from_addon(&x.addon, paths))
 			.collect::<Vec<LockfileAddon>>();
-		let addons_to_remove = lock
+		let (addons_to_update, addons_to_remove) = lock
 			.update_package(&pkg.name, &self.id, pkg_version, &lockfile_addons)
 			.context("Failed to update package in lockfile")?;
 		for addon in eval.addon_reqs.iter() {
+			if addon::should_update(&addon.addon, paths)
+				|| addons_to_update.contains(&addon.addon.id)
+				|| force
+			{
+				addon
+					.acquire(paths)
+					.await
+					.with_context(|| format!("Failed to acquire addon '{}'", addon.addon.id))?;
+			}
 			if addons_to_remove.contains(&addon.addon.id) {
 				self.remove_addon(&addon.addon, paths)
 					.with_context(|| format!("Failed to remove addon '{}'", addon.addon.id))?;
 			}
+			self.create_addon(&addon.addon, paths)
+				.with_context(|| format!("Failed to install addon '{}'", addon.addon.id))?;
 		}
 
-		Ok(())
+		Ok(eval)
 	}
 }

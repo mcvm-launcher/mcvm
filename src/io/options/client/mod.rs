@@ -55,6 +55,10 @@ pub struct KeyOptions {
 	pub boss_mode: Option<Keybind>,
 	pub decrease_view: Option<Keybind>,
 	pub increase_view: Option<Keybind>,
+	pub stream_commercial: Option<Keybind>,
+	pub stream_pause_unpause: Option<Keybind>,
+	pub stream_start_stop: Option<Keybind>,
+	pub stream_toggle_microphone: Option<Keybind>,
 }
 
 #[derive(Deserialize, Serialize, Debug, Clone, Default)]
@@ -164,6 +168,22 @@ pub struct SkinOptions {
 
 #[derive(Deserialize, Serialize, Debug, Clone, Default)]
 #[serde(default)]
+pub struct StreamOptions {
+	pub bytes_per_pixel: Option<f32>,
+	pub chat_enabled: Option<bool>,
+	pub chat_filter: Option<bool>,
+	pub compression: Option<bool>,
+	pub fps: Option<f32>,
+	pub bitrate: Option<f32>,
+	pub microphone_toggle_behavior: Option<bool>,
+	pub microphone_volume: Option<f32>,
+	pub preferred_server: Option<String>,
+	pub send_metadata: Option<bool>,
+	pub system_volume: Option<f32>,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone, Default)]
+#[serde(default)]
 pub struct ClientOptions {
 	pub data_version: Option<i16>,
 	pub video: VideoOptions,
@@ -171,6 +191,7 @@ pub struct ClientOptions {
 	pub chat: ChatOptions,
 	pub sound: SoundOptions,
 	pub skin: SkinOptions,
+	pub stream: StreamOptions,
 	pub custom: HashMap<String, String>,
 	pub realms_notifications: Option<bool>,
 	pub reduced_debug_info: Option<bool>,

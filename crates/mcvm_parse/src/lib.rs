@@ -10,7 +10,7 @@ pub mod routine;
 use anyhow::{anyhow, bail};
 
 /// Argument to a command that could be constant or a variable
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Value {
 	None,
 	Constant(String),
@@ -80,6 +80,19 @@ impl Value {
 				.get(name)
 				.cloned()
 				.ok_or(anyhow!("Variable {name} is not defined")),
+		}
+	}
+
+	/// Returns whether this value is not none
+	pub fn is_some(&self) -> bool {
+		!matches!(self, Self::None)
+	}
+
+	/// Gets the current string value and converts to an option.
+	pub fn get_as_option(&self, vars: &HashMap<String, String>) -> anyhow::Result<Option<String>> {
+		match self {
+			Self::None => Ok(None),
+			_ => Ok(Some(self.get(vars)?)),
 		}
 	}
 }

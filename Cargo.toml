@@ -1,6 +1,6 @@
 [package]
 name = "mcvm"
-version = "0.5.0"
+version = "0.5.1"
 edition = "2021"
 license = "GPL-3.0-or-later"
 description = "A command-line Minecraft launcher for the future"
@@ -32,11 +32,11 @@ directories = "5.0.0"
 futures = "0.3.26"
 itertools = "0.10.5"
 libflate = "1.2.0"
-mcvm_parse = { path = "crates/mcvm_parse", version = "0.0.8" }
+mcvm_parse = { path = "crates/mcvm_parse", version = "0.0.9" }
 reqwest = { version = "0.11.15", features = ["json", "rustls-tls"] }
 serde = { version = "1.0.152", features = ["derive"] }
 serde_json = "1.0.91"
-mcvm_shared = { path = "crates/mcvm_shared", version = "0.0.5" }
+mcvm_shared = { path = "crates/mcvm_shared", version = "0.0.6" }
 shellexpand = { version = "3.0.0", features = ["path"] }
 tar = "0.4.38"
 thiserror = "1.0.38"

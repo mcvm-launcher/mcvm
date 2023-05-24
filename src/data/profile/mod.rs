@@ -23,11 +23,7 @@ pub struct Profile {
 }
 
 impl Profile {
-	pub fn new(
-		name: &str,
-		version: MinecraftVersion,
-		modifications: GameModifications,
-	) -> Self {
+	pub fn new(name: &str, version: MinecraftVersion, modifications: GameModifications) -> Self {
 		Profile {
 			name: name.to_owned(),
 			version,

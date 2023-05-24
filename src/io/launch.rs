@@ -46,10 +46,10 @@ impl LaunchOptions {
 		}
 
 		let avg = match &self.min_mem {
-			Some(min) => match &self.max_mem {
-				Some(max) => Some(MemoryNum::avg(min.clone(), max.clone())),
-				None => None,
-			},
+			Some(min) => self
+				.max_mem
+				.as_ref()
+				.map(|max| MemoryNum::avg(min.clone(), max.clone())),
 			None => None,
 		};
 		out.extend(self.preset.generate_args(avg));

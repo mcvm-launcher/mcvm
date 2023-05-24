@@ -170,12 +170,12 @@ mod tests {
 	#[test]
 	fn test_package_name() {
 		let package = Package::new("sodium", 2, PkgKind::Remote(None));
-		assert_eq!(package.filename(), "sodium_2".to_owned() + PKG_EXTENSION);
+		assert_eq!(package.filename(), String::from("sodium_2") + PKG_EXTENSION);
 
 		let package = Package::new("fabriclike-api", 80, PkgKind::Remote(None));
 		assert_eq!(
 			package.filename(),
-			"fabriclike-api_80".to_owned() + PKG_EXTENSION
+			String::from("fabriclike-api_80") + PKG_EXTENSION
 		);
 	}
 }

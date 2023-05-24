@@ -3,6 +3,7 @@ use std::path::{Path, PathBuf};
 
 use anyhow::{anyhow, Context};
 use color_print::{cformat, cprintln};
+use itertools::Itertools;
 use mcvm_shared::modifications::ServerType;
 
 use crate::data::config::Config;
@@ -15,7 +16,7 @@ use crate::net::fabric_quilt::{self, FabricQuiltMeta};
 use crate::net::minecraft::{assets, game_jar, libraries, version_manifest};
 use crate::net::paper;
 use crate::package::eval::resolve::resolve;
-use crate::package::eval::{EvalConstants, EvalPermissions, EvalParameters};
+use crate::package::eval::{EvalConstants, EvalParameters, EvalPermissions};
 use crate::package::reg::{PkgRegistry, PkgRequest};
 use crate::util::print::{ReplPrinter, HYPHEN_POINT};
 use crate::util::versions::MinecraftVersion;
@@ -300,7 +301,7 @@ async fn resolve_and_batch(
 			features: Vec::new(),
 			perms: EvalPermissions::Standard,
 		};
-		let instance_resolved = resolve(&profile.packages, &constants, params, paths, reg)
+		let instance_resolved = resolve(&profile.packages, constants, params, paths, reg)
 			.await
 			.with_context(|| {
 				format!("Failed to resolve package dependencies for instance '{instance_id}'")
@@ -326,25 +327,21 @@ async fn update_profile_packages(
 	reg: &mut PkgRegistry,
 	instances: &InstanceRegistry,
 	lock: &mut Lockfile,
+	force: bool,
 ) -> anyhow::Result<()> {
 	let mut printer = ReplPrinter::new(true);
-	let (batched, resolved) = resolve_and_batch(
-		profile,
-		constants,
-		paths,
-		reg,
-		instances,
-	)
-	.await
-	.context("Failed to resolve dependencies for profile")?;
+	let (batched, resolved) = resolve_and_batch(profile, constants, paths, reg, instances)
+		.await
+		.context("Failed to resolve dependencies for profile")?;
 
-	for (package, package_instances) in batched {
+	for (package, package_instances) in batched.iter().sorted_by_key(|x| x.0) {
 		let pkg_version = reg
-			.get_version(&package, paths)
+			.get_version(package, paths)
 			.await
 			.context("Failed to get version for package")?;
+		let mut notices = Vec::new();
 		for instance_id in package_instances {
-			let instance = instances.get(&instance_id).ok_or(anyhow!(
+			let instance = instances.get(instance_id).ok_or(anyhow!(
 				"Instance '{instance_id}' does not exist in the registry"
 			))?;
 			let params = EvalParameters {
@@ -353,22 +350,44 @@ async fn update_profile_packages(
 				perms: EvalPermissions::Standard,
 			};
 			printer.print(&format_package_print(
-				&package,
-				Some(&instance_id),
+				package,
+				Some(instance_id),
 				"Installing...",
 			));
-			instance
-				.install_package(&package, pkg_version, &constants, params, reg, paths, lock)
+			let result = instance
+				.install_package(
+					package,
+					pkg_version,
+					constants,
+					params,
+					reg,
+					paths,
+					lock,
+					force,
+				)
 				.await
 				.with_context(|| {
 					format!("Failed to install package '{package}' for instance '{instance_id}'")
 				})?;
+			notices.extend(
+				result
+					.notices
+					.iter()
+					.map(|x| (instance_id.clone(), x.to_owned())),
+			);
 		}
 		printer.print(&format_package_print(
-			&package,
+			package,
 			None,
 			&cformat!("<g>Installed."),
 		));
+		for (instance, notice) in notices {
+			printer.print(&format_package_print(
+				package,
+				Some(&instance),
+				&cformat!("<y>Notice: {}", notice),
+			));
+		}
 		printer.newline();
 	}
 	for (instance_id, packages) in resolved {
@@ -401,14 +420,19 @@ async fn update_profile_packages(
 fn format_package_print(pkg: &PkgRequest, instance: Option<&str>, message: &str) -> String {
 	if let Some(instance) = instance {
 		cformat!(
-			"{}[<c>{}</c>] (<b!>{}</b!>) {}",
+			"{}[{}] (<b!>{}</b!>) {}",
 			HYPHEN_POINT,
-			pkg,
+			pkg.disp_with_colors(),
 			instance,
 			message
 		)
 	} else {
-		cformat!("{}[<c>{}</c>] {}", HYPHEN_POINT, pkg, message)
+		cformat!(
+			"{}[<c>{}</c>] {}",
+			HYPHEN_POINT,
+			pkg.disp_with_colors(),
+			message
+		)
 	}
 }
 
@@ -441,10 +465,10 @@ async fn get_paper_properties(
 	mc_version: &str,
 ) -> anyhow::Result<Option<(u16, String)>> {
 	let out = if let ServerType::Paper = profile.modifications.server_type {
-		let (build_num, ..) = paper::get_newest_build(&mc_version)
+		let (build_num, ..) = paper::get_newest_build(mc_version)
 			.await
 			.context("Failed to get the newest Paper build number")?;
-		let paper_file_name = paper::get_jar_file_name(&mc_version, build_num)
+		let paper_file_name = paper::get_jar_file_name(mc_version, build_num)
 			.await
 			.context("Failed to get the name of the Paper Jar file")?;
 		Some((build_num, paper_file_name))
@@ -546,9 +570,8 @@ pub async fn update_profiles(
 				let constants = EvalConstants {
 					version: mc_version.to_string(),
 					modifications: profile.modifications.clone(),
-					side: Side::Client,
 					features: vec![],
-					versions: version_list.clone(),
+					version_list: version_list.clone(),
 					perms: EvalPermissions::Standard,
 				};
 
@@ -559,6 +582,7 @@ pub async fn update_profiles(
 					&mut config.packages,
 					&config.instances,
 					&mut lock,
+					force,
 				)
 				.await?;
 				cprintln!("<g>All packages installed.");

@@ -1,9 +1,10 @@
 use anyhow::{anyhow, Context};
+use color_print::cformat;
 use mcvm_parse::metadata::PackageMetadata;
 use serde::{Deserialize, Serialize};
 
-use super::core::get_core_package;
-use super::eval::{EvalConstants, EvalData, Routine, EvalParameters};
+use super::core::is_core_package;
+use super::eval::{EvalConstants, EvalData, EvalParameters, Routine};
 use super::repo::{query_all, PkgRepo};
 use super::{Package, PkgKind};
 use crate::io::files::paths::Paths;
@@ -14,7 +15,7 @@ use std::hash::Hash;
 use std::path::Path;
 
 /// Where a package was requested from
-#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub enum PkgRequestSource {
 	UserRequire,
 	Dependency(Box<PkgRequest>),
@@ -32,10 +33,10 @@ impl PkgRequestSource {
 }
 
 /// Used to store a request for a package that will be fulfilled later
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialOrd, Ord)]
 pub struct PkgRequest {
-	pub name: String,
 	pub source: PkgRequestSource,
+	pub name: String,
 }
 
 impl PkgRequest {
@@ -54,6 +55,16 @@ impl PkgRequest {
 				format!("{}->{}", dep.debug_sources(list), self.name)
 			}
 			PkgRequestSource::Repository => format!("Repository->{}{list}", self.name),
+		}
+	}
+
+	/// Print with color formatting
+	pub fn disp_with_colors(&self) -> String {
+		match self.source {
+			PkgRequestSource::UserRequire => cformat!("<y>{}", self.name),
+			PkgRequestSource::Dependency(..) | PkgRequestSource::Repository => {
+				cformat!("<c>{}", self.name)
+			}
 		}
 	}
 }
@@ -135,7 +146,7 @@ impl PkgRegistry {
 		}
 
 		// Now check if it exists as a core package
-		if get_core_package(&req.name).is_some() {
+		if is_core_package(&req.name) {
 			Ok(self.insert(req, Package::new(&pkg_name, 1, PkgKind::Core)))
 		} else {
 			Err(anyhow!("Package '{pkg_name}' does not exist"))

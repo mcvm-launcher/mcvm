@@ -105,7 +105,7 @@ impl Version {
 	pub fn get_primary_download(&self) -> anyhow::Result<&Download> {
 		let primary = self.downloads.iter().find(|x| x.primary);
 		if let Some(primary) = primary {
-			return Ok(primary);
+			Ok(primary)
 		} else {
 			self.downloads
 				.first()

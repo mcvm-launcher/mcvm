@@ -49,6 +49,8 @@ Metadata like `description` and `authors` can only be used in the `@meta` contex
 	 * `side {client | server}`: Check what instance type the package is being installed on.
 	 * `feature {name}`: Check if a feature is enabled for this package.
 	 * `not {condition}`: Inverts a condition. You can chain these, but why would you want to.
+	 * `and {left} {right}`: Checks if both conditions are true.
+	 * `or {left} {right}`: Checks if either one of the conditions are true.
  * `set {variable} {value}`: Sets the value of a variable.
  * `finish`: Will silently end the routine.
  * `fail [unsupported_version | unsupported_modloader | unsupported_plugin_loader]`: End execution with an error.
@@ -58,10 +60,12 @@ Metadata like `description` and `authors` can only be used in the `@meta` contex
  * `bundle {package}`: Bundle another package with this one. Useful for packages that group together multiple other packages, such as modpacks. Prefer using this over `require` when you aren't including a library as it has a different semantic meaning to mcvm.
  * `recommend {package}`: Recommend to the user that they should use another package if it is not installed.
  * `compat {package} {compat_package}`: Automatically install `compat_package` if `package` is present.
+ * `notice {message}`: Display a warning or important information as a message to the user. Notice messages may not be more than 128 characters long, and there cannot be more than five of them that are displayed per package evaluation.
  * `name {name}`: Set the display name of the package.
  * `description {description}`: Set the description for this package.
  * `version {version}`: Set the version of this package. This has no actual meaning to mcvm and should be used only for project versions.
  * `authors {author1} {author2} ...`: Set a list of authors for this package. This should be the authors of the project itself, not the package script.
+ * `package_maintainers {author1} {author2} ...`: Set a list of maintainers for this package. This should be the maintainers of the package script, not the project itself.
  * `website {website}`: Set a primary website / repository link / project link / etc.
  * `support_link {link}`: Set a support / donation link.
 
@@ -82,8 +86,7 @@ addon id filename (
  * `kind`: What type of addon this is.
  * `url` (Optional): The remote url to download the addon from.
  * `path` (Optional): The local path to link the addon from. Adding local files is a privilege that requires elevated permissions
- * `force` (Optional): Whether to force the redownload of the addon every time the package is installed. Defaults to `no`.
- * `append` (Optional): A string to add to the name of the addon, usually a version of some sort. This is needed to differentiate addon files from the same package and same version. Defaults to nothing.
+ * `version` (Optional): The version of this addon. This is important because it lets mcvm differentiate between different versions of the file for caching purposes. If this field is not present, the addon will never be cached and will be redownloaded every time.
 
 Either `url` or `path` must be set, not both or neither.
 
@@ -102,7 +105,6 @@ Here is a simple example for a package that would install the *Sodium* mod. As t
 	if not modloader fabriclike {
 		fail unsupported_modloader;
 	}
-	set version "unset";
 	if version "1.18+" {
 		set url "https://cdn.modrinth.com/data/AANobbMI/versions/mc1.18.2-0.4.1/sodium-fabric-mc1.18.2-0.4.1%2Bbuild.15.jar";
 		set version "1.18";
@@ -111,13 +113,13 @@ Here is a simple example for a package that would install the *Sodium* mod. As t
 		set url "https://cdn.modrinth.com/data/AANobbMI/versions/oYfJQ6lR/sodium-fabric-mc1.19.3-0.4.8%2Bbuild.22.jar";
 		set version "1.19";
 	}
-	if value $version "unset" {
+	if not defined $version {
 		fail unsupported_version;
 	}
 	addon "sodium" "Sodium.jar" (
 		kind: mod,
 		url: $url,
-		append: $version
+		version: $version
 	);
 }
 ```

@@ -70,6 +70,12 @@ impl ReplPrinter {
 		let _ = self.stdout.flush();
 	}
 
+	/// Print text on a new line
+	pub fn println(&mut self, text: &str) {
+		self.chars_written = 0;
+		let _ = writeln!(self.stdout, "{text}");
+	}
+
 	/// Finish printing and make a newline
 	pub fn finish(&mut self) {
 		if self.finished {
@@ -83,8 +89,7 @@ impl ReplPrinter {
 
 	/// Make a line break
 	pub fn newline(&mut self) {
-		self.chars_written = 0;
-		let _ = writeln!(self.stdout);
+		self.println("");
 	}
 }
 

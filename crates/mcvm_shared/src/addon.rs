@@ -8,6 +8,7 @@ pub enum AddonKind {
 	Mod,
 	Plugin,
 	Shader,
+	Datapack,
 }
 
 impl AddonKind {
@@ -17,6 +18,7 @@ impl AddonKind {
 			"mod" => Some(Self::Mod),
 			"plugin" => Some(Self::Plugin),
 			"shader" => Some(Self::Shader),
+			"datapack" => Some(Self::Datapack),
 			_ => None,
 		}
 	}
@@ -28,6 +30,7 @@ impl AddonKind {
 			Self::Mod => String::from("mods"),
 			Self::Plugin => String::from("plugins"),
 			Self::Shader => String::from("shaders"),
+			Self::Datapack => String::from("datapacks"),
 		}
 	}
 }
@@ -42,6 +45,7 @@ impl Display for AddonKind {
 				Self::Mod => "mod",
 				Self::Plugin => "plugin",
 				Self::Shader => "shader",
+				Self::Datapack => "datapack",
 			}
 		)
 	}
@@ -53,15 +57,24 @@ pub struct Addon {
 	pub id: String,
 	pub file_name: String,
 	pub pkg_id: PkgIdentifier,
+	/// Version of the addon, used for caching
+	pub version: Option<String>,
 }
 
 impl Addon {
-	pub fn new(kind: AddonKind, id: &str, file_name: &str, pkg_id: PkgIdentifier) -> Self {
+	pub fn new(
+		kind: AddonKind,
+		id: &str,
+		file_name: &str,
+		pkg_id: PkgIdentifier,
+		version: Option<String>,
+	) -> Self {
 		Self {
 			kind,
 			id: id.to_owned(),
 			file_name: file_name.to_owned(),
 			pkg_id,
+			version,
 		}
 	}
 }
@@ -70,6 +83,8 @@ impl Addon {
 pub fn is_filename_valid(kind: AddonKind, filename: &str) -> bool {
 	match kind {
 		AddonKind::Mod | AddonKind::Plugin => filename.ends_with(".jar"),
-		AddonKind::ResourcePack | AddonKind::Shader => filename.ends_with(".zip"),
+		AddonKind::ResourcePack | AddonKind::Shader | AddonKind::Datapack => {
+			filename.ends_with(".zip")
+		}
 	}
 }
