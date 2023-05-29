@@ -11,6 +11,8 @@ static FABRIC_RENDERING_API: &str = include_str!("fabric-rendering-api.pkg.txt")
 static FABRICLIKE_API: &str = include_str!("fabriclike-api.pkg.txt");
 static KOTLIN_SUPPORT: &str = include_str!("kotlin-support.pkg.txt");
 static OPTIFINE_RESOURCE_PACKS: &str = include_str!("optifine-resource-packs.pkg.txt");
+static QUILTED_FABRIC_API: &str = include_str!("quilted-fabric-api.pkg.txt");
+static QUILT_STANDARD_LIBRARIES: &str = include_str!("quilt-standard-libraries.pkg.txt");
 static RANDOM_ENTITIES_SUPPORT: &str = include_str!("random-entities-support.pkg.txt");
 static SHADER_SUPPORT: &str = include_str!("shader-support.pkg.txt");
 static SPLASH_SCREEN_SUPPORT: &str = include_str!("splash-screen-support.pkg.txt");
@@ -31,6 +33,8 @@ pub fn get_core_package(package: &str) -> Option<&'static str> {
 		"fabriclike-api" => Some(FABRICLIKE_API),
 		"kotlin-support" => Some(KOTLIN_SUPPORT),
 		"optifine-resource-packs" => Some(OPTIFINE_RESOURCE_PACKS),
+		"quilted-fabric-api" => Some(QUILTED_FABRIC_API),
+		"quilt-standard-libraries" => Some(QUILT_STANDARD_LIBRARIES),
 		"random-entities-support" => Some(RANDOM_ENTITIES_SUPPORT),
 		"shader-support" => Some(SHADER_SUPPORT),
 		"splash-screen-support" => Some(SPLASH_SCREEN_SUPPORT),
@@ -47,7 +51,7 @@ mod tests {
 	use super::*;
 	use mcvm_parse::parse::lex_and_parse;
 
-	static ALL_CORE_PACKAGES: [&str; 16] = [
+	static ALL_CORE_PACKAGES: [&str; 18] = [
 		ANIMATED_TEXTURES_SUPPORT,
 		CEM_SUPPORT,
 		CIT_SUPPORT,
@@ -61,6 +65,8 @@ mod tests {
 		FABRICLIKE_API,
 		KOTLIN_SUPPORT,
 		OPTIFINE_RESOURCE_PACKS,
+		QUILTED_FABRIC_API,
+		QUILT_STANDARD_LIBRARIES,
 		RANDOM_ENTITIES_SUPPORT,
 		SHADER_SUPPORT,
 		SPLASH_SCREEN_SUPPORT,
