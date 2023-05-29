@@ -9,8 +9,12 @@
 		require "kotlin-for-forge";
 		finish;
 	}
-	if modloader fabriclike {
+	if modloader fabric {
 		require "fabric-language-kotlin";
+		finish;
+	}
+	if modloader quilt {
+		require "quilt-kotlin-libraries";
 		finish;
 	}
 	fail unsupported_modloader;

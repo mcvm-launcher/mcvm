@@ -1,0 +1,13 @@
+@meta {
+	name "Quilted Fabric API";
+	description "Ensures support for the Quilted Fabric API";
+	authors "CarbonSmasher";
+}
+
+@install {
+	if not modloader quilt {
+		fail unsupported_modloader;
+	}
+	
+	require "qfapi-qsl";
+}
