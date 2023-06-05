@@ -83,7 +83,7 @@ pub mod version_manifest {
 		Ok(out)
 	}
 
-	/// Gets the specific version info JSON file for a Minecraft version
+	/// Gets the specific client info JSON file for a Minecraft version
 	pub async fn get_client_json(
 		version: &str,
 		version_manifest: &json::JsonObject,
@@ -489,12 +489,6 @@ pub mod assets {
 pub mod game_jar {
 	use super::*;
 
-	/// Gets the path to a stored game jar file
-	pub fn get_path(side: Side, version: &str, paths: &Paths) -> PathBuf {
-		let side_str = side.to_string();
-		paths.jars.join(format!("{version}_{side_str}.jar"))
-	}
-
 	/// Downloads the game jar file
 	pub async fn get(
 		side: Side,
@@ -504,7 +498,7 @@ pub mod game_jar {
 		manager: &UpdateManager,
 	) -> anyhow::Result<()> {
 		let side_str = side.to_string();
-		let path = get_path(side, version, paths);
+		let path = crate::io::minecraft::game_jar::get_path(side, version, paths);
 		if !manager.should_update_file(&path) {
 			return Ok(());
 		}

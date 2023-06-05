@@ -23,10 +23,13 @@ static SEP: char = ':';
 pub async fn write_options_txt(
 	options: HashMap<String, String>,
 	path: &Path,
+	data_version: &Option<i32>,
 ) -> anyhow::Result<()> {
-	let options = merge_options_txt(path, options)
+	let mut options = merge_options_txt(path, options)
 		.await
 		.context("Failed to merge with existing options.txt")?;
+	// Write the data version so that the game recognizes the options file correctly on first run
+	add_data_version_field(&mut options, data_version);
 	let file = File::create(path).context("Failed to open file")?;
 	let mut file = BufWriter::new(file);
 	for (key, value) in options.iter().sorted_by_key(|x| x.0) {
@@ -66,6 +69,16 @@ pub fn write_key<W: Write>(key: &str, value: &str, writer: &mut W) -> anyhow::Re
 	writeln!(writer, "{key}:{value}")?;
 
 	Ok(())
+}
+
+/// Adds the data version to the options HashMap. Does not overwrite it if it already exists
+fn add_data_version_field(options: &mut HashMap<String, String>, data_version: &Option<i32>) {
+	if options.contains_key("version") {
+		return;
+	}
+	if let Some(data_version) = data_version {
+		options.insert(String::from("version"), data_version.to_string());
+	}
 }
 
 /// Creates the string for the list of resource packs
@@ -165,7 +178,6 @@ pub fn create_keys(
 
 	let stream_options_enabled = after_13w47a && before_15w31a;
 
-	// TODO: Add actual data version
 	if let Some(value) = options.data_version {
 		out.insert(String::from("version"), value.to_string());
 	}
