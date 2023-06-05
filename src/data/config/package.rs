@@ -1,11 +1,15 @@
 use std::fmt::Display;
 
+use mcvm_shared::pkg::PackageStability;
 use serde::{Deserialize, Serialize};
 
-use crate::package::{
-	eval::EvalPermissions,
-	reg::{PkgRequest, PkgRequestSource},
-	PkgProfileConfig,
+use crate::{
+	package::{
+		eval::EvalPermissions,
+		reg::{PkgRequest, PkgRequestSource},
+		PkgProfileConfig,
+	},
+	util::merge_options,
 };
 
 #[derive(Deserialize, Serialize)]
@@ -27,6 +31,8 @@ pub enum FullPackageConfig {
 		features: Vec<String>,
 		#[serde(default)]
 		permissions: EvalPermissions,
+		#[serde(default)]
+		stability: Option<PackageStability>,
 	},
 	Remote {
 		id: String,
@@ -35,6 +41,8 @@ pub enum FullPackageConfig {
 		features: Vec<String>,
 		#[serde(default)]
 		permissions: EvalPermissions,
+		#[serde(default)]
+		stability: Option<PackageStability>,
 	},
 }
 
@@ -61,12 +69,16 @@ impl Display for PackageConfig {
 
 impl PackageConfig {
 	/// Convert this package config into a PkgProfileConfig
-	pub fn to_profile_config(&self) -> anyhow::Result<PkgProfileConfig> {
+	pub fn to_profile_config(
+		&self,
+		profile_stability: PackageStability,
+	) -> anyhow::Result<PkgProfileConfig> {
 		let package = match self {
 			PackageConfig::Basic(id) => PkgProfileConfig {
 				req: PkgRequest::new(id, PkgRequestSource::UserRequire),
 				features: vec![],
 				permissions: EvalPermissions::Standard,
+				stability: profile_stability,
 			},
 			PackageConfig::Full(FullPackageConfig::Local {
 				r#type: _,
@@ -75,20 +87,24 @@ impl PackageConfig {
 				path: _,
 				features,
 				permissions,
+				stability,
 			}) => PkgProfileConfig {
 				req: PkgRequest::new(id, PkgRequestSource::UserRequire),
 				features: features.clone(),
 				permissions: permissions.clone(),
+				stability: merge_options(Some(profile_stability), stability.to_owned()).unwrap(),
 			},
 			PackageConfig::Full(FullPackageConfig::Remote {
 				id,
 				version: _,
 				features,
 				permissions,
+				stability,
 			}) => PkgProfileConfig {
 				req: PkgRequest::new(id, PkgRequestSource::UserRequire),
 				features: features.clone(),
 				permissions: permissions.clone(),
+				stability: merge_options(Some(profile_stability), stability.to_owned()).unwrap(),
 			},
 		};
 

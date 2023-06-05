@@ -48,7 +48,8 @@ Profiles are listed in the same id-value format as users under the `profiles` ob
 	"modloader": String,
 	"plugin_loader": String,
 	"instances": { .. },
-	"packages": [ .. ]
+	"packages": [ .. ],
+	"package_stability": "stable" | "latest"
 }
 ```
 
@@ -58,6 +59,7 @@ Profiles are listed in the same id-value format as users under the `profiles` ob
  * `server_type` (Optional): The modification type for the server. Can be `"vanilla"`, `"paper"`, `"fabric"`, `"forge"`, or `"quilt"`. Defaults to using the `modloader` setting.
  * `instances`: The list of instances attached to this profile.
  * `packages` (Optional): The list of packages installed for this profile.
+ * `stability` (Optional): Global stability setting for all packages in this profile. Defaults to `"stable"`.
 
 ## Instances
 Instances are defined in the id-value format underneath the `instances` object of a profile. They have two formats:
@@ -128,7 +130,8 @@ or
 	"version": Integer,
 	"path": String,
 	"features": [],
-	"permissions": "restricted" | "standard" | "elevated"
+	"permissions": "restricted" | "standard" | "elevated",
+	"stability": "stable" | "latest"
 }
 ```
 
@@ -140,6 +143,7 @@ In most cases the first form is all you need. If you want more control over how 
  * `path` (Optional): The path to a local package script. Only required for local packages.
  * `features` (Optional): A list of strings for package features that you would like to enable.
  * `permissions` (Optional): The amount of control you would like to give this package. Can be `"restricted"`, `"standard"`, or `"elevated"`. Packages you do not trust should be given the `"restricted"` level. Packages that you trust and want to provide access to special commands for can be given `"elevated"`. Defaults to `"standard"`.
+ * `stability` (Optional): Specify whether you want this package to use development versions of addons or not. Defaults to using the `package_stability` setting from the profile.
 
 ## Preferences
 In this section you can set preferences for how the whole program will work. The format looks like this, and all fields are optional:

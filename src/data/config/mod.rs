@@ -177,7 +177,7 @@ impl Config {
 
 			for package_config in profile_config.packages {
 				let config = package_config
-					.to_profile_config()
+					.to_profile_config(profile_config.package_stability)
 					.with_context(|| format!("Failed to configure package '{package_config}'"))?;
 
 				if !validate_identifier(&config.req.name) {

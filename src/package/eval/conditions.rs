@@ -44,6 +44,7 @@ pub fn eval_condition(condition: &ConditionKind, eval: &EvalData) -> anyhow::Res
 			OsCondition::Linux => cfg!(linux),
 			OsCondition::Other => !(cfg!(windows) || cfg!(linux)),
 		}),
+		ConditionKind::Stability(stability) => Ok(eval.params.stability == stability.expect("If stability is missing")),
 		ConditionKind::Value(left, right) => Ok(left.get(&eval.vars)? == right.get(&eval.vars)?),
 		ConditionKind::Defined(value) => Ok(match value {
 			Value::None => false,

@@ -5,6 +5,7 @@ use anyhow::{anyhow, Context};
 use color_print::{cformat, cprintln};
 use itertools::Itertools;
 use mcvm_shared::modifications::ServerType;
+use mcvm_shared::pkg::PackageStability;
 
 use crate::data::config::Config;
 use crate::io::files::paths::Paths;
@@ -300,6 +301,7 @@ async fn resolve_and_batch(
 			side: instance.kind.to_side(),
 			features: Vec::new(),
 			perms: EvalPermissions::Standard,
+			stability: PackageStability::Stable,
 		};
 		let instance_resolved = resolve(&profile.packages, constants, params, paths, reg)
 			.await
@@ -348,6 +350,7 @@ async fn update_profile_packages(
 				side: instance.kind.to_side(),
 				features: Vec::new(),
 				perms: EvalPermissions::Standard,
+				stability: PackageStability::Stable,
 			};
 			printer.print(&format_package_print(
 				package,

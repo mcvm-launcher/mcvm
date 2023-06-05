@@ -17,7 +17,7 @@ use mcvm_parse::instruction::{InstrKind, Instruction};
 use mcvm_parse::parse::{Block, BlockId};
 use mcvm_parse::{FailReason, Value};
 use mcvm_shared::instance::Side;
-use mcvm_shared::pkg::PkgIdentifier;
+use mcvm_shared::pkg::{PkgIdentifier, PackageStability};
 
 use std::collections::HashMap;
 use std::path::PathBuf;
@@ -92,6 +92,7 @@ pub struct EvalParameters {
 	pub side: Side,
 	pub features: Vec<String>,
 	pub perms: EvalPermissions,
+	pub stability: PackageStability,
 }
 
 /// Persistent state for evaluation

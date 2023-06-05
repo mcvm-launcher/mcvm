@@ -48,6 +48,9 @@ Metadata like `description` and `authors` can only be used in the `@meta` contex
 	 * `plugin_loader {vanilla | bukkit}`: Checks if the plugin loader supports a plugin type.
 	 * `side {client | server}`: Check what instance type the package is being installed on.
 	 * `feature {name}`: Check if a feature is enabled for this package.
+	 * `os {windows | linux}`: Check if the user is using a certain operating system.
+	 * `defined ${variable_name}`: Check if a variable has been defined. The dollar sign is required, but not for long.
+	 * `stability {stable | latest}`: Check for the configured stability of the package. You should check this and only install release versions of addons if `stable` is selected.
 	 * `not {condition}`: Inverts a condition. You can chain these, but why would you want to.
 	 * `and {left} {right}`: Checks if both conditions are true.
 	 * `or {left} {right}`: Checks if either one of the conditions are true.

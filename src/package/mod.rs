@@ -16,7 +16,7 @@ use self::reg::PkgRequest;
 use anyhow::{anyhow, Context};
 use mcvm_parse::metadata::{eval_metadata, PackageMetadata};
 use mcvm_parse::parse::{lex_and_parse, Parsed};
-use mcvm_shared::pkg::PkgIdentifier;
+use mcvm_shared::pkg::{PkgIdentifier, PackageStability};
 
 static PKG_EXTENSION: &str = ".pkg.txt";
 
@@ -161,6 +161,7 @@ pub struct PkgProfileConfig {
 	pub req: PkgRequest,
 	pub features: Vec<String>,
 	pub permissions: EvalPermissions,
+	pub stability: PackageStability,
 }
 
 #[cfg(test)]

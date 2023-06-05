@@ -320,6 +320,7 @@ pub async fn resolve(
 			side: resolver.default_params.side,
 			features: config.features.clone(),
 			perms: config.permissions.clone(),
+			stability: config.stability,
 		};
 		resolver.constraints.push(Constraint {
 			kind: ConstraintKind::UserRequire(config.req.clone()),

@@ -1,4 +1,5 @@
 use anyhow::bail;
+use mcvm_shared::pkg::PackageStability;
 
 use crate::unexpected_token;
 use mcvm_shared::instance::Side;
@@ -40,6 +41,7 @@ pub enum ConditionKind {
 	Value(Value, Value),
 	Defined(Value),
 	Os(Option<OsCondition>),
+	Stability(Option<PackageStability>)
 }
 
 impl ConditionKind {
@@ -54,6 +56,7 @@ impl ConditionKind {
 			"value" => Some(Self::Value(Value::None, Value::None)),
 			"defined" => Some(Self::Defined(Value::None)),
 			"os" => Some(Self::Os(None)),
+			"stability" => Some(Self::Stability(None)),
 			_ => None,
 		}
 	}
@@ -73,6 +76,7 @@ impl ConditionKind {
 			Self::Modloader(val) => val.is_some(),
 			Self::PluginLoader(val) => val.is_some(),
 			Self::Os(val) => val.is_some(),
+			Self::Stability(val) => val.is_some(),
 			Self::Value(left, right) => left.is_some() && right.is_some(),
 		}
 	}
@@ -154,6 +158,19 @@ impl ConditionKind {
 			},
 			Self::Os(os) => match tok {
 				Token::Ident(name) => match OsCondition::parse_from_str(name) {
+					Some(kind) => *os = Some(kind),
+					None => {
+						bail!(
+							"Unknown condition argument '{}' {}",
+							name.to_owned(),
+							pos.clone()
+						);
+					}
+				},
+				_ => unexpected_token!(tok, pos),
+			},
+			Self::Stability(os) => match tok {
+				Token::Ident(name) => match PackageStability::parse_from_str(name) {
 					Some(kind) => *os = Some(kind),
 					None => {
 						bail!(
