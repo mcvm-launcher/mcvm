@@ -84,7 +84,7 @@ pub mod version_manifest {
 	}
 
 	/// Gets the specific version info JSON file for a Minecraft version
-	pub async fn get_version_json(
+	pub async fn get_client_json(
 		version: &str,
 		version_manifest: &json::JsonObject,
 		paths: &Paths,
@@ -104,26 +104,26 @@ pub mod version_manifest {
 			bail!("Minecraft version does not exist or was not found in the manifest");
 		}
 
-		let version_json_name: String = version_string.clone() + ".json";
+		let client_json_name: String = version_string.clone() + ".json";
 		let version_dir = paths.internal.join("versions").join(version_string);
 		files::create_dir_async(&version_dir).await?;
-		let path = version_dir.join(version_json_name);
+		let path = version_dir.join(client_json_name);
 		let text = if manager.allow_offline && path.exists() {
 			tokio::fs::read_to_string(path)
 				.await
-				.context("Failed to read version JSON from file")?
+				.context("Failed to read client JSON from file")?
 		} else {
 			let text = download::text(version_url.expect("Version does not exist"))
 				.await
-				.context("Failed to download version JSON")?;
+				.context("Failed to download client JSON")?;
 			tokio::fs::write(path, &text)
 				.await
-				.context("Failed to write version JSON to a file")?;
+				.context("Failed to write client JSON to a file")?;
 
 			text
 		};
 
-		let version_doc = json::parse_object(&text).context("Failed to parse version JSON")?;
+		let version_doc = json::parse_object(&text).context("Failed to parse client JSON")?;
 
 		Ok(version_doc)
 	}
@@ -188,12 +188,12 @@ pub mod libraries {
 		Ok(out)
 	}
 
-	/// Gets the list of allowed libraries from the version json
+	/// Gets the list of allowed libraries from the client JSON
 	/// and also the number of libraries found.
 	pub fn get_list(
-		version_json: &json::JsonObject,
+		client_json: &json::JsonObject,
 	) -> anyhow::Result<impl Iterator<Item = &JsonObject>> {
-		let libraries = json::access_array(version_json, "libraries")?;
+		let libraries = json::access_array(client_json, "libraries")?;
 		let libraries = libraries.iter().filter_map(|lib| {
 			let lib = json::ensure_type(lib.as_object(), JsonType::Obj).ok()?;
 			if !is_allowed(lib).ok()? {
@@ -209,7 +209,7 @@ pub mod libraries {
 	/// Downloads base client libraries.
 	/// Returns a set of files to be added to the update manager.
 	pub async fn get(
-		version_json: &json::JsonObject,
+		client_json: &json::JsonObject,
 		paths: &Paths,
 		version: &str,
 		manager: &UpdateManager,
@@ -227,7 +227,7 @@ pub mod libraries {
 
 		let mut native_paths = Vec::new();
 
-		let libraries = get_list(version_json)?;
+		let libraries = get_list(client_json)?;
 
 		let mut libs_to_download = Vec::new();
 
@@ -315,14 +315,14 @@ pub mod libraries {
 
 	/// Gets the classpath from Minecraft libraries
 	pub fn get_classpath(
-		version_json: &json::JsonObject,
+		client_json: &json::JsonObject,
 		paths: &Paths,
 	) -> anyhow::Result<Classpath> {
 		let natives_jars_path = paths.internal.join("natives");
 		let libraries_path = paths.internal.join("libraries");
 
 		let mut classpath = Classpath::new();
-		let libraries = get_list(version_json).context("Failed to get list of libraries")?;
+		let libraries = get_list(client_json).context("Failed to get list of libraries")?;
 		for lib in libraries {
 			let downloads = json::access_object(lib, "downloads")?;
 			if let Some(natives) = lib.get("natives") {
@@ -395,7 +395,7 @@ pub mod assets {
 
 	/// Download assets used by the client, such as game resources and icons.
 	pub async fn get(
-		version_json: &json::JsonObject,
+		client_json: &json::JsonObject,
 		paths: &Paths,
 		version: &str,
 		manager: &UpdateManager,
@@ -406,7 +406,7 @@ pub mod assets {
 		files::create_dir_async(&indexes_dir).await?;
 
 		let index_path = indexes_dir.join(version_string + ".json");
-		let index_url = json::access_str(json::access_object(version_json, "assetIndex")?, "url")?;
+		let index_url = json::access_str(json::access_object(client_json, "assetIndex")?, "url")?;
 
 		let (objects_dir, ..) = create_dirs(paths, manager)
 			.await
@@ -498,7 +498,7 @@ pub mod game_jar {
 	/// Downloads the game jar file
 	pub async fn get(
 		side: Side,
-		version_json: &json::JsonObject,
+		client_json: &json::JsonObject,
 		version: &str,
 		paths: &Paths,
 		manager: &UpdateManager,
@@ -512,7 +512,7 @@ pub mod game_jar {
 
 		printer.print(&format!("Downloading {side_str} jar..."));
 		let download =
-			json::access_object(json::access_object(version_json, "downloads")?, &side_str)?;
+			json::access_object(json::access_object(client_json, "downloads")?, &side_str)?;
 		let url = json::access_str(download, "url")?;
 		download::file(url, &path)
 			.await

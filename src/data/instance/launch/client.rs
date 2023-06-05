@@ -35,14 +35,14 @@ impl Instance {
 		let client_dir = self.get_subdir(paths);
 		let mut jvm_args = Vec::new();
 		let mut game_args = Vec::new();
-		let version_json = self.version_json.get();
+		let client_json = self.client_json.get();
 		if let Some(classpath) = &self.classpath {
 			let main_class = self
 				.main_class
 				.as_ref()
 				.expect("Main class for client should exist");
 			if let InstKind::Client { options: _, window } = &self.kind {
-				if let Ok(args) = json::access_object(version_json, "arguments") {
+				if let Ok(args) = json::access_object(client_json, "arguments") {
 					for arg in json::access_array(args, "jvm")? {
 						for sub_arg in args::process_arg(
 							self, arg, paths, auth, classpath, version, window, &token,
@@ -60,7 +60,7 @@ impl Instance {
 					}
 				} else {
 					// Behavior for versions prior to 1.12.2
-					let args = json::access_str(version_json, "minecraftArguments")?;
+					let args = json::access_str(client_json, "minecraftArguments")?;
 
 					jvm_args.push(format!(
 						"-Djava.library.path={}",
@@ -116,7 +116,7 @@ mod args {
 		};
 	}
 
-	/// Replace placeholders in a string argument from the version json
+	/// Replace placeholders in a string argument from the client JSON
 	pub fn replace_arg_placeholders(
 		instance: &Instance,
 		arg: &str,
@@ -193,7 +193,7 @@ mod args {
 		Some(out)
 	}
 
-	/// Process an argument for the client from the version json
+	/// Process an argument for the client from the client JSON
 	pub fn process_arg(
 		instance: &Instance,
 		arg: &serde_json::Value,

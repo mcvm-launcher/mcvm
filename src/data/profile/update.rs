@@ -28,7 +28,7 @@ use super::{InstanceRegistry, Profile};
 /// Requirements for operations that may be shared by multiple instances in a profile
 #[derive(Debug, Hash, PartialEq, Eq)]
 pub enum UpdateRequirement {
-	VersionJson,
+	ClientJson,
 	GameAssets,
 	GameLibraries,
 	Java(JavaKind),
@@ -49,7 +49,7 @@ pub struct UpdateManager {
 	// File paths that are added when they have been updated by other functions
 	files: HashSet<PathBuf>,
 	version_manifest: Later<Box<json::JsonObject>>,
-	pub version_json: Later<Box<json::JsonObject>>,
+	pub client_json: Later<Box<json::JsonObject>>,
 	pub java: Later<Java>,
 	pub options: Option<Options>,
 	pub version_list: Later<Vec<String>>,
@@ -66,7 +66,7 @@ impl UpdateManager {
 			requirements: HashSet::new(),
 			files: HashSet::new(),
 			version_manifest: Later::new(),
-			version_json: Later::new(),
+			client_json: Later::new(),
 			java: Later::new(),
 			options: None,
 			version_list: Later::new(),
@@ -161,27 +161,27 @@ impl UpdateManager {
 			|| self.has_requirement(UpdateRequirement::GameAssets)
 			|| self.has_requirement(UpdateRequirement::GameLibraries)
 		{
-			self.add_requirement(UpdateRequirement::VersionJson);
+			self.add_requirement(UpdateRequirement::ClientJson);
 		}
 
-		if self.has_requirement(UpdateRequirement::VersionJson) {
+		if self.has_requirement(UpdateRequirement::ClientJson) {
 			if self.print.verbose {
-				cprintln!("<s>Obtaining version json...");
+				cprintln!("<s>Obtaining client JSON data...");
 			}
-			let version_json = version_manifest::get_version_json(
+			let client_json = version_manifest::get_client_json(
 				self.found_version.get(),
 				self.version_manifest.get(),
 				paths,
 				self,
 			)
 			.await
-			.context("Failed to get version json")?;
-			self.version_json.fill(version_json);
+			.context("Failed to get client JSON")?;
+			self.client_json.fill(client_json);
 		}
 
 		if self.has_requirement(UpdateRequirement::GameAssets) {
 			let files = assets::get(
-				self.version_json.get(),
+				self.client_json.get(),
 				paths,
 				self.found_version.get(),
 				self,
@@ -192,17 +192,17 @@ impl UpdateManager {
 		}
 
 		if self.has_requirement(UpdateRequirement::GameLibraries) {
-			let version_json = self.version_json.get();
-			let files = libraries::get(version_json, paths, self.found_version.get(), self)
+			let client_json = self.client_json.get();
+			let files = libraries::get(client_json, paths, self.found_version.get(), self)
 				.await
 				.context("Failed to get game libraries")?;
 			self.add_files(files);
 		}
 
 		if java_required {
-			let version_json = self.version_json.get();
+			let client_json = self.client_json.get();
 			let java_vers = json::access_i64(
-				json::access_object(version_json, "javaVersion")?,
+				json::access_object(client_json, "javaVersion")?,
 				"majorVersion",
 			)?;
 
@@ -229,7 +229,7 @@ impl UpdateManager {
 				if let UpdateRequirement::GameJar(side) = req {
 					game_jar::get(
 						*side,
-						self.version_json.get(),
+						self.client_json.get(),
 						self.found_version.get(),
 						paths,
 						self,

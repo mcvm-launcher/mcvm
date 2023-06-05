@@ -21,7 +21,7 @@ impl Instance {
 	/// Get the requirements for this instance
 	pub fn get_requirements(&self) -> HashSet<UpdateRequirement> {
 		let mut out = HashSet::new();
-		out.insert(UpdateRequirement::VersionJson);
+		out.insert(UpdateRequirement::ClientJson);
 
 		let java_kind = match &self.launch.java {
 			JavaKind::Adoptium(..) => JavaKind::Adoptium(Later::Empty),
@@ -107,20 +107,20 @@ impl Instance {
 		files::create_dir(&mc_dir)?;
 		let jar_path = minecraft::game_jar::get_path(self.kind.to_side(), version, paths);
 
-		let version_json = manager.version_json.get();
+		let client_json = manager.client_json.get();
 
 		let mut classpath = Classpath::new();
-		let lib_classpath = minecraft::libraries::get_classpath(version_json, paths)
+		let lib_classpath = minecraft::libraries::get_classpath(client_json, paths)
 			.context("Failed to extract classpath from game library list")?;
 		classpath.extend(lib_classpath);
 
 		let java_vers = json::access_i64(
-			json::access_object(version_json, "javaVersion")?,
+			json::access_object(client_json, "javaVersion")?,
 			"majorVersion",
 		)?;
 		self.add_java(&java_vers.to_string(), manager);
 
-		self.main_class = Some(json::access_str(version_json, "mainClass")?.to_owned());
+		self.main_class = Some(json::access_str(client_json, "mainClass")?.to_owned());
 
 		if let Modloader::Fabric | Modloader::Quilt =
 			self.modifications.get_modloader(self.kind.to_side())
@@ -161,7 +161,7 @@ impl Instance {
 		}
 
 		self.classpath = Some(classpath);
-		self.version_json = manager.version_json.clone();
+		self.client_json = manager.client_json.clone();
 		self.jar_path.fill(jar_path);
 
 		Ok(out)
@@ -184,10 +184,10 @@ impl Instance {
 		files::create_dir(&server_dir)?;
 		let jar_path = server_dir.join("server.jar");
 
-		let version_json = manager.version_json.get();
+		let client_json = manager.client_json.get();
 
 		let java_vers = json::access_i64(
-			json::access_object(version_json, "javaVersion")?,
+			json::access_object(client_json, "javaVersion")?,
 			"majorVersion",
 		)?;
 		self.add_java(&java_vers.to_string(), manager);
@@ -276,7 +276,7 @@ impl Instance {
 				.context("Failed to write server.properties")?;
 		}
 
-		self.version_json = manager.version_json.clone();
+		self.client_json = manager.client_json.clone();
 		self.classpath = classpath;
 
 		Ok(out)
