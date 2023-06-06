@@ -121,81 +121,47 @@ impl ConditionKind {
 				*val = parse_arg(tok, pos)?;
 			}
 			Self::Side(side) => match tok {
-				Token::Ident(name) => match Side::from_str(name) {
-					Some(kind) => *side = Some(kind),
-					None => {
-						bail!(
-							"Unknown condition argument '{}' {}",
-							name.to_owned(),
-							pos.clone()
-						);
-					}
-				},
+				Token::Ident(name) => {
+					*side = check_enum_condition_argument(Side::from_str(name), name, pos)?
+				}
 				_ => unexpected_token!(tok, pos),
 			},
 			Self::Modloader(loader) => match tok {
-				Token::Ident(name) => match ModloaderMatch::from_str(name) {
-					Some(kind) => *loader = Some(kind),
-					None => {
-						bail!(
-							"Unknown condition argument '{}' {}",
-							name.to_owned(),
-							pos.clone()
-						);
-					}
-				},
+				Token::Ident(name) => {
+					*loader =
+						check_enum_condition_argument(ModloaderMatch::from_str(name), name, pos)?
+				}
 				_ => unexpected_token!(tok, pos),
 			},
 			Self::PluginLoader(loader) => match tok {
-				Token::Ident(name) => match PluginLoaderMatch::from_str(name) {
-					Some(kind) => *loader = Some(kind),
-					None => {
-						bail!(
-							"Unknown condition argument '{}' {}",
-							name.to_owned(),
-							pos.clone()
-						);
-					}
-				},
+				Token::Ident(name) => {
+					*loader =
+						check_enum_condition_argument(PluginLoaderMatch::from_str(name), name, pos)?
+				}
 				_ => unexpected_token!(tok, pos),
 			},
 			Self::Os(os) => match tok {
-				Token::Ident(name) => match OsCondition::parse_from_str(name) {
-					Some(kind) => *os = Some(kind),
-					None => {
-						bail!(
-							"Unknown condition argument '{}' {}",
-							name.to_owned(),
-							pos.clone()
-						);
-					}
-				},
+				Token::Ident(name) => {
+					*os =
+						check_enum_condition_argument(OsCondition::parse_from_str(name), name, pos)?
+				}
 				_ => unexpected_token!(tok, pos),
 			},
 			Self::Stability(stability) => match tok {
-				Token::Ident(name) => match PackageStability::parse_from_str(name) {
-					Some(kind) => *stability = Some(kind),
-					None => {
-						bail!(
-							"Unknown condition argument '{}' {}",
-							name.to_owned(),
-							pos.clone()
-						);
-					}
-				},
+				Token::Ident(name) => {
+					*stability = check_enum_condition_argument(
+						PackageStability::parse_from_str(name),
+						name,
+						pos,
+					)?
+				}
 				_ => unexpected_token!(tok, pos),
 			},
 			Self::Language(lang) => match tok {
-				Token::Ident(name) => match Language::parse_from_str(name) {
-					Some(kind) => *lang = Some(kind),
-					None => {
-						bail!(
-							"Unknown condition argument '{}' {}",
-							name.to_owned(),
-							pos.clone()
-						);
-					}
-				},
+				Token::Ident(name) => {
+					*lang =
+						check_enum_condition_argument(Language::parse_from_str(name), name, pos)?
+				}
 				_ => unexpected_token!(tok, pos),
 			},
 			Self::Value(left, right) => match left {
@@ -204,6 +170,24 @@ impl ConditionKind {
 			},
 		}
 		Ok(())
+	}
+}
+
+/// Check the parsing of a condition argument
+fn check_enum_condition_argument<T>(
+	arg: Option<T>,
+	ident: &str,
+	pos: &TextPos,
+) -> anyhow::Result<Option<T>> {
+	match arg {
+		Some(val) => Ok(Some(val)),
+		None => {
+			bail!(
+				"Unknown condition argument '{}' {}",
+				ident.to_owned(),
+				pos.clone()
+			);
+		}
 	}
 }
 
