@@ -22,6 +22,7 @@ pub enum PkgRequestSource {
 	UserRequire,
 	Bundled(Box<PkgRequest>),
 	Dependency(Box<PkgRequest>),
+	Refused(Box<PkgRequest>),
 	Repository,
 }
 
@@ -63,6 +64,9 @@ impl PkgRequest {
 			PkgRequestSource::Dependency(source) => {
 				format!("{}->{}", source.debug_sources(list), self.name)
 			}
+			PkgRequestSource::Refused(source) => {
+				format!("{}-x->{}", source.debug_sources(list), self.name)
+			}
 			PkgRequestSource::Bundled(bundler) => {
 				format!("{}=>{}", bundler.debug_sources(list), self.name)
 			}
@@ -75,6 +79,7 @@ impl PkgRequest {
 		match self.source {
 			PkgRequestSource::UserRequire => cformat!("<y>{}", self.name),
 			PkgRequestSource::Bundled(..) => cformat!("<b>{}", self.name),
+			PkgRequestSource::Refused(..) => cformat!("<r>{}", self.name),
 			PkgRequestSource::Dependency(..) | PkgRequestSource::Repository => {
 				cformat!("<c>{}", self.name)
 			}

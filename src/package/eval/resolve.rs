@@ -199,7 +199,7 @@ async fn resolve_eval_package(
 	for conflict in result.conflicts {
 		let req = PkgRequest::new(
 			&conflict,
-			PkgRequestSource::Dependency(Box::new(package.clone())),
+			PkgRequestSource::Refused(Box::new(package.clone())),
 		);
 		if resolver.is_required(&req) {
 			bail!("Package '{req}' is incompatible with this package.");
