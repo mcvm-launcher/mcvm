@@ -1,5 +1,6 @@
 use anyhow::Context;
 use mcvm_shared::addon::{Addon, AddonKind};
+use reqwest::Client;
 
 use crate::io::files::paths::Paths;
 use crate::io::files::{create_leading_dirs, update_hardlink};
@@ -70,7 +71,7 @@ impl AddonRequest {
 		create_leading_dirs(&path)?;
 		match &self.location {
 			AddonLocation::Remote(url) => {
-				download::file(url, &path)
+				download::file(url, &path, &Client::new())
 					.await
 					.context("Failed to download addon")?;
 			}

@@ -3,6 +3,7 @@ use crate::util::json::{self, JsonType};
 use crate::util::{ARCH_STRING, OS_STRING, PREFERRED_ARCHIVE};
 
 use anyhow::{anyhow, Context};
+use reqwest::Client;
 
 pub mod adoptium {
 	use super::*;
@@ -17,7 +18,7 @@ pub mod adoptium {
 	/// Gets the newest Adoptium binaries download for a major Java version
 	pub async fn get_latest(major_version: &str) -> anyhow::Result<json::JsonObject> {
 		let url = json_url(major_version);
-		let manifest = download::json::<Vec<serde_json::Value>>(&url)
+		let manifest = download::json::<Vec<serde_json::Value>>(&url, &Client::new())
 			.await
 			.context("Failed to download manifest of Adoptium versions")?;
 		let version = json::ensure_type(
@@ -55,7 +56,7 @@ pub mod zulu {
 	/// Gets the newest Zulu package for a major Java version
 	pub async fn get_latest(major_version: &str) -> anyhow::Result<PackageFormat> {
 		let url = json_url(major_version);
-		let manifest = download::json::<Vec<PackageFormat>>(&url)
+		let manifest = download::json::<Vec<PackageFormat>>(&url, &Client::new())
 			.await
 			.context("Failed to download manifest of Zulu versions")?;
 		let package = manifest

@@ -11,6 +11,7 @@ use crate::util::{json, preferred_archive_extension};
 use anyhow::Context;
 use color_print::cformat;
 use libflate::gzip::Decoder;
+use reqwest::Client;
 use tar::Archive;
 
 use std::collections::HashSet;
@@ -162,7 +163,7 @@ async fn update_adoptium(
 		"Downloading Adoptium Temurin JRE <b>{}</b>...",
 		release_name
 	));
-	download::file(bin_url, &arc_path)
+	download::file(bin_url, &arc_path, &Client::new())
 		.await
 		.context("Failed to download JRE binaries")?;
 
@@ -212,7 +213,7 @@ async fn update_zulu(
 		"Downloading Azul Zulu JRE <b>{}</b>...",
 		package.name
 	));
-	download::file(&package.download_url, &arc_path)
+	download::file(&package.download_url, &arc_path, &Client::new())
 		.await
 		.context("Failed to download JRE binaries")?;
 

@@ -40,7 +40,7 @@ pub mod version_manifest {
 		}
 
 		let text =
-			download::text("https://piston-meta.mojang.com/mc/game/version_manifest_v2.json")
+			download::text("https://piston-meta.mojang.com/mc/game/version_manifest_v2.json", &Client::new())
 				.await
 				.context("Failed to download manifest")?;
 		tokio::fs::write(&path, &text)
@@ -113,7 +113,7 @@ pub mod version_manifest {
 				.await
 				.context("Failed to read client JSON from file")?
 		} else {
-			let text = download::text(version_url.expect("Version does not exist"))
+			let text = download::text(version_url.expect("Version does not exist"), &Client::new())
 				.await
 				.context("Failed to download client JSON")?;
 			tokio::fs::write(path, &text)
@@ -362,7 +362,7 @@ pub mod assets {
 				.await
 				.context("Failed to read index contents from file")?
 		} else {
-			let text = download::text(url)
+			let text = download::text(url, &Client::new())
 				.await
 				.context("Failed to download index")?;
 			tokio::fs::write(path, &text)
@@ -508,7 +508,7 @@ pub mod game_jar {
 		let download =
 			json::access_object(json::access_object(client_json, "downloads")?, &side_str)?;
 		let url = json::access_str(download, "url")?;
-		download::file(url, &path)
+		download::file(url, &path, &Client::new())
 			.await
 			.context("Failed to download file")?;
 		let side_str = cap_first_letter(&side_str);

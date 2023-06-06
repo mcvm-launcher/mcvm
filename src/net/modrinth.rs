@@ -1,5 +1,6 @@
 use anyhow::{anyhow, Context};
 use mcvm_shared::modifications::{Modloader, ServerType};
+use reqwest::Client;
 use serde::Deserialize;
 
 use super::download;
@@ -26,7 +27,7 @@ pub struct Project {
 /// Get a project from the API
 pub async fn get_project(project_id: &str) -> anyhow::Result<Project> {
 	let url = format!("https://api.modrinth.com/v2/project/{project_id}");
-	let out = download::json(url)
+	let out = download::json(url, &Client::new())
 		.await
 		.context("Failed to download Modrinth project")?;
 	Ok(out)
@@ -117,7 +118,7 @@ impl Version {
 /// Get a Modrinth project version
 pub async fn get_version(version_id: &str) -> anyhow::Result<Version> {
 	let url = format!("https://api.modrinth.com/v2/version/{version_id}");
-	let out = download::json(url)
+	let out = download::json(url, &Client::new())
 		.await
 		.context("Failed to download Modrinth version")?;
 	Ok(out)

@@ -17,6 +17,7 @@ use anyhow::{anyhow, Context};
 use mcvm_parse::metadata::{eval_metadata, PackageMetadata};
 use mcvm_parse::parse::{lex_and_parse, Parsed};
 use mcvm_shared::pkg::{PkgIdentifier, PackageStability};
+use reqwest::Client;
 
 static PKG_EXTENSION: &str = ".pkg.txt";
 
@@ -106,7 +107,7 @@ impl Package {
 							.fill(PkgData::new(&tokio::fs::read_to_string(path).await?));
 					} else {
 						let url = url.as_ref().expect("URL for remote package missing");
-						let text = download::text(url).await?;
+						let text = download::text(url, &Client::new()).await?;
 						tokio::fs::write(&path, &text).await?;
 						self.data.fill(PkgData::new(&text));
 					}

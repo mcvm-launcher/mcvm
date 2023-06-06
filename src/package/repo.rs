@@ -4,6 +4,7 @@ use crate::net::download;
 use crate::util::print::print_err;
 
 use anyhow::Context;
+use reqwest::Client;
 use serde::Deserialize;
 
 use std::collections::HashMap;
@@ -56,7 +57,7 @@ impl PkgRepo {
 
 	/// Update the currently cached index file
 	pub async fn sync(&mut self, paths: &Paths) -> anyhow::Result<()> {
-		let bytes = download::bytes(&self.index_url())
+		let bytes = download::bytes(&self.index_url(), &Client::new())
 			.await
 			.context("Failed to download index")?;
 		let mut cursor = Cursor::new(&bytes);

@@ -134,7 +134,7 @@ pub async fn get_meta(
 		serde_json::from_reader(&mut file)
 			.with_context(|| format!("Failed to parse {mode} meta from file"))?
 	} else {
-		let bytes = download::bytes(&meta_url)
+		let bytes = download::bytes(&meta_url, &Client::new())
 			.await
 			.with_context(|| format!("Failed to download {mode} metadata file"))?;
 		tokio::fs::write(path, &bytes)
