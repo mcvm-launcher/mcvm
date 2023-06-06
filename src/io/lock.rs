@@ -2,7 +2,7 @@ use std::collections::HashMap;
 use std::fs::{self, File};
 use std::path::{Path, PathBuf};
 
-use anyhow::{anyhow, Context};
+use anyhow::{anyhow, bail, Context};
 use serde::{Deserialize, Serialize};
 
 use mcvm_shared::addon::{Addon, AddonKind};
@@ -169,6 +169,7 @@ impl Lockfile {
 	) -> anyhow::Result<(Vec<String>, Vec<PathBuf>)> {
 		let mut addons_to_update = Vec::new();
 		let mut files_to_remove = Vec::new();
+		let mut new_files = Vec::new();
 		if let Some(instance) = self.contents.packages.get_mut(instance) {
 			if let Some(pkg) = instance.get_mut(name) {
 				pkg.version = version.to_owned();
@@ -185,11 +186,20 @@ impl Lockfile {
 				}
 				// Check for addons that need to be updated
 				for requested in addons {
-					if pkg.addons.iter().any(|x| x.id == requested.id) {
+					if let Some(current) = pkg.addons.iter().find(|x| x.id == requested.id) {
+						new_files.extend(
+							requested
+								.files
+								.iter()
+								.filter(|x| !current.files.contains(x))
+								.cloned(),
+						);
 					} else {
 						addons_to_update.push(requested.id.clone());
-					}
+						new_files.extend(requested.files.clone());
+					};
 				}
+
 				pkg.addons = addons.to_vec();
 			} else {
 				instance.insert(
@@ -200,13 +210,19 @@ impl Lockfile {
 					},
 				);
 				addons_to_update = addons.iter().map(|x| x.id.clone()).collect();
+				new_files.extend(addons.iter().flat_map(|x| x.files.clone()));
 			}
 		} else {
 			self.contents
 				.packages
 				.insert(instance.to_owned(), HashMap::new());
 			self.update_package(name, instance, version, addons)?;
-			addons_to_update = addons.iter().map(|x| x.id.clone()).collect();
+		}
+
+		for file in &new_files {
+			if PathBuf::from(file).exists() {
+				bail!("File '{file}' would be overwritten by an addon");
+			}
 		}
 
 		Ok((addons_to_update, files_to_remove))
