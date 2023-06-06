@@ -168,7 +168,7 @@ impl Instance {
 		paths: &Paths,
 		instance_id: &str,
 	) -> anyhow::Result<()> {
-		let link = dir.join(addon::get_instance_filename(addon));
+		let link = dir.join(addon.file_name.clone());
 		let addon_path = addon::get_path(addon, paths, instance_id);
 		files::create_leading_dirs(&link)?;
 		// These checks are to make sure that we properly link the hardlink to the right location
@@ -276,7 +276,7 @@ impl Instance {
 					&x.addon,
 					self.get_linked_addon_paths(&x.addon, paths)?
 						.iter()
-						.map(|y| y.join(addon::get_instance_filename(&x.addon)))
+						.map(|y| y.join(x.addon.file_name.clone()))
 						.collect(),
 				))
 			})

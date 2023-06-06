@@ -29,6 +29,15 @@ pub fn filename_important(addon: &Addon) -> bool {
 	matches!(addon.kind, AddonKind::ResourcePack)
 }
 
+/// Gets the formulaic filename for an addon in the instance, meant to reduce name clashes
+pub fn get_addon_instance_filename(id: &str, version: &Option<String>, kind: &AddonKind) -> String {
+	if let Some(version) = version {
+		format!("mcvm_{id}_{version}{}", kind.get_extension())
+	} else {
+		format!("mcvm_{id}{}", kind.get_extension())
+	}
+}
+
 /// Split an addon filename into base and extension
 pub fn split_filename<'a>(addon: &'a Addon) -> (&'a str, &'a str) {
 	if let Some(index) = addon.file_name.find('.') {
@@ -36,11 +45,6 @@ pub fn split_filename<'a>(addon: &'a Addon) -> (&'a str, &'a str) {
 	} else {
 		(&addon.file_name, "")
 	}
-}
-
-/// Get the filename of the addon file stored in the instance
-pub fn get_instance_filename(addon: &Addon) -> String {
-	addon.file_name.clone()
 }
 
 /// Whether this addon should be updated

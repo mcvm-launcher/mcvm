@@ -33,6 +33,14 @@ impl AddonKind {
 			Self::Datapack => String::from("datapacks"),
 		}
 	}
+
+	/// Gets the file extension for this addon kind
+	pub fn get_extension(&self) -> &str {
+		match self {
+			AddonKind::Mod | AddonKind::Plugin => ".jar",
+			AddonKind::ResourcePack | AddonKind::Shader | AddonKind::Datapack => ".zip",
+		}
+	}
 }
 
 impl Display for AddonKind {
@@ -81,10 +89,5 @@ impl Addon {
 
 /// Checks for a valid addon filename
 pub fn is_filename_valid(kind: AddonKind, filename: &str) -> bool {
-	match kind {
-		AddonKind::Mod | AddonKind::Plugin => filename.ends_with(".jar"),
-		AddonKind::ResourcePack | AddonKind::Shader | AddonKind::Datapack => {
-			filename.ends_with(".zip")
-		}
-	}
+	filename.ends_with(kind.get_extension())
 }

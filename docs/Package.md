@@ -58,7 +58,7 @@ Metadata like `description` and `authors` can only be used in the `@meta` contex
  * `set {variable} {value}`: Sets the value of a variable.
  * `finish`: Will silently end the routine.
  * `fail [unsupported_version | unsupported_modloader | unsupported_plugin_loader]`: End execution with an error.
- * `addon {id} {filename} (..)`: Add an addon to the instance. This is the main goal of a package. The name field is the filename of the addon. Keys and values are put inside the parentheses.
+ * `addon {id} [filename] (..)`: Add an addon to the instance. This is the main goal of most packages. Keys and values are put inside the parentheses.
  * `require {package1} {package2} ...`: Create a dependency on one or more packages. Use this for libraries that your package depends on. Check the core packages folder to see some standard packages that you can require.
  * `refuse {package}`: Specifies that this package is incompatible with another. These packages will be unable to coexist together. Both packages do not need to refuse each other, just one refuse instruction in one package will suffice.
  * `bundle {package}`: Bundle another package with this one. Useful for packages that group together multiple other packages, such as modpacks. Prefer using this over `require` when you aren't including a library as it has a different semantic meaning to mcvm.
@@ -81,13 +81,12 @@ addon id filename (
 	kind: mod | resource_pack | shader | plugin,
 	url: String,
 	path: String,
-	force: yes | no,
-	append: String
+	version: String
 )
 ```
 
- * `id`: An identifier that the user will eventually be able to use to select specific addons from a package. Should be unique and if possible should not change between versions.
- * `filename`: The name of the addon file, with the extension. The filename should be different whenever the contents of the addon are different so that mcvm knows when to update it.
+ * `id`: An identifier that the user will eventually be able to use to select specific addons from a package. Should be unique and if possible should not change between versions since it can be used by users to modify specific addons.
+ * `filename` (Optional): The name of the addon file, with the extension.
  * `kind`: What type of addon this is.
  * `url` (Optional): The remote url to download the addon from.
  * `path` (Optional): The local path to link the addon from. Adding local files is a privilege that requires elevated permissions

@@ -337,9 +337,7 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 						*state = addon::State::FileName;
 					}
 					addon::State::FileName => match tok {
-						Token::Paren(Side::Left) => {
-							bail!("It is now required to have a filename field for addons");
-						}
+						Token::Paren(Side::Left) => *state = addon::State::Key,
 						_ => {
 							*file_name = parse_arg(tok, pos)?;
 							*state = addon::State::OpenParen;
@@ -581,5 +579,11 @@ mod tests {
 				)
 			}
 		}
+	}
+
+	#[test]
+	fn test_addon_parse() {
+		let text = r#"@install { addon "mod" "H.jar" (kind: mod); addon "pack" (kind: mod); }"#;
+		lex_and_parse(text).unwrap();
 	}
 }

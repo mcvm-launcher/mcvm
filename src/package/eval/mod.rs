@@ -11,7 +11,7 @@ use serde::{Deserialize, Serialize};
 use self::conditions::eval_condition;
 
 use super::Package;
-use crate::data::addon::{AddonLocation, AddonRequest};
+use crate::data::addon::{self, AddonLocation, AddonRequest};
 use crate::data::config::profile::GameModifications;
 use crate::io::files::paths::Paths;
 use crate::util::validate_identifier;
@@ -302,15 +302,23 @@ pub fn eval_instr(
 					if !validate_identifier(&id) {
 						bail!("Invalid addon identifier '{id}'");
 					}
-					let file_name = file_name.get(&eval.vars)?;
+
+					// Empty strings will break the filename so we convert them to none
+					let version = version.get_as_option(&eval.vars)?.filter(|x| !x.is_empty());
+
 					let kind = kind.as_ref().expect("Addon kind missing");
+
+					let file_name = if file_name.is_some() {
+						file_name.get(&eval.vars)?
+					} else {
+						addon::get_addon_instance_filename(&id, &version, kind)
+					};
+
 
 					if !is_filename_valid(*kind, &file_name) {
 						bail!("Invalid addon filename '{file_name}' in addon '{id}'");
 					}
 
-					// Empty strings will break the filename so we convert them to none
-					let version = version.get_as_option(&eval.vars)?.filter(|x| !x.is_empty());
 
 					let addon = Addon::new(*kind, &id, &file_name, eval.id.clone(), version);
 
