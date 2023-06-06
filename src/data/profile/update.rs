@@ -6,6 +6,7 @@ use color_print::{cformat, cprintln};
 use itertools::Itertools;
 use mcvm_shared::modifications::ServerType;
 use mcvm_shared::pkg::PackageStability;
+use reqwest::Client;
 
 use crate::data::config::Config;
 use crate::io::files::paths::Paths;
@@ -330,6 +331,7 @@ async fn update_profile_packages(
 	instances: &InstanceRegistry,
 	lock: &mut Lockfile,
 	force: bool,
+	client: &Client,
 ) -> anyhow::Result<()> {
 	let mut printer = ReplPrinter::new(true);
 	let (batched, resolved) = resolve_and_batch(profile, constants, paths, reg, instances)
@@ -367,6 +369,7 @@ async fn update_profile_packages(
 					paths,
 					lock,
 					force,
+					client,
 				)
 				.await
 				.with_context(|| {
@@ -519,6 +522,8 @@ pub async fn update_profiles(
 		cprintln!("<s,g>Updating profile <b>{}</b>", id);
 		let mut lock = Lockfile::open(paths).context("Failed to open lockfile")?;
 
+		let client = Client::new();
+
 		let print_options = PrintOptions::new(true, 0);
 		let mut manager = UpdateManager::new(print_options, force, false);
 		manager
@@ -587,6 +592,7 @@ pub async fn update_profiles(
 					&config.instances,
 					&mut lock,
 					force,
+					&client,
 				)
 				.await?;
 				cprintln!("<g>All packages installed.");

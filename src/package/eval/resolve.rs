@@ -2,6 +2,7 @@ use std::collections::VecDeque;
 
 use anyhow::{bail, Context};
 use color_print::cprintln;
+use reqwest::Client;
 
 use crate::io::files::paths::Paths;
 
@@ -175,6 +176,7 @@ async fn resolve_eval_package(
 	resolver: &mut Resolver<'_>,
 	reg: &mut PkgRegistry,
 	paths: &Paths,
+	client: &Client,
 ) -> anyhow::Result<()> {
 	let params = params.as_ref().unwrap_or(&resolver.default_params).clone();
 	// Make sure that this package fits the constraints as well
@@ -189,6 +191,7 @@ async fn resolve_eval_package(
 			Routine::InstallResolve,
 			resolver.constants,
 			params,
+			client,
 		)
 		.await
 		.context("Failed to evaluate package")?;
@@ -287,10 +290,11 @@ async fn resolve_task(
 	resolver: &mut Resolver<'_>,
 	reg: &mut PkgRegistry,
 	paths: &Paths,
+	client: &Client,
 ) -> anyhow::Result<()> {
 	match task {
 		Task::EvalPackage { dest, params } => {
-			resolve_eval_package(dest.clone(), &params, resolver, reg, paths)
+			resolve_eval_package(dest.clone(), &params, resolver, reg, paths, client)
 				.await
 				.with_context(|| package_context_error_message(&dest))?;
 		}
@@ -331,8 +335,10 @@ pub async fn resolve(
 		});
 	}
 
+	let client = Client::new();
+
 	while let Some(task) = resolver.tasks.pop_front() {
-		resolve_task(task, &mut resolver, reg, paths).await?;
+		resolve_task(task, &mut resolver, reg, paths, &client).await?;
 		resolver.check_compats();
 	}
 

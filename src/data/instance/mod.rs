@@ -3,6 +3,7 @@ pub mod launch;
 
 use anyhow::{ensure, Context};
 use mcvm_shared::instance::Side;
+use reqwest::Client;
 
 use crate::io::files::paths::Paths;
 use crate::io::files::update_hardlink;
@@ -161,7 +162,12 @@ impl Instance {
 		})
 	}
 
-	fn link_addon(dir: &Path, addon: &Addon, paths: &Paths, instance_id: &str) -> anyhow::Result<()> {
+	fn link_addon(
+		dir: &Path,
+		addon: &Addon,
+		paths: &Paths,
+		instance_id: &str,
+	) -> anyhow::Result<()> {
 		let link = dir.join(addon::get_instance_filename(addon));
 		let addon_path = addon::get_path(addon, paths, instance_id);
 		files::create_leading_dirs(&link)?;
@@ -260,9 +266,10 @@ impl Instance {
 		paths: &Paths,
 		lock: &mut Lockfile,
 		force: bool,
+		client: &Client,
 	) -> anyhow::Result<EvalData<'a>> {
 		let eval = reg
-			.eval(pkg, paths, Routine::Install, constants, params)
+			.eval(pkg, paths, Routine::Install, constants, params, client)
 			.await
 			.context("Failed to evaluate package")?;
 
@@ -280,7 +287,7 @@ impl Instance {
 				|| force
 			{
 				addon
-					.acquire(paths, &self.id)
+					.acquire(paths, &self.id, client)
 					.await
 					.with_context(|| format!("Failed to acquire addon '{}'", addon.addon.id))?;
 			}

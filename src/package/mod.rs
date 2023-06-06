@@ -16,7 +16,7 @@ use self::reg::PkgRequest;
 use anyhow::{anyhow, Context};
 use mcvm_parse::metadata::{eval_metadata, PackageMetadata};
 use mcvm_parse::parse::{lex_and_parse, Parsed};
-use mcvm_shared::pkg::{PkgIdentifier, PackageStability};
+use mcvm_shared::pkg::{PackageStability, PkgIdentifier};
 use reqwest::Client;
 
 static PKG_EXTENSION: &str = ".pkg.txt";
@@ -93,7 +93,12 @@ impl Package {
 	}
 
 	/// Ensure the raw contents of the package
-	pub async fn ensure_loaded(&mut self, paths: &Paths, force: bool) -> anyhow::Result<()> {
+	pub async fn ensure_loaded(
+		&mut self,
+		paths: &Paths,
+		force: bool,
+		client: &Client,
+	) -> anyhow::Result<()> {
 		if self.data.is_empty() {
 			match &self.kind {
 				PkgKind::Local(path) => {
@@ -107,7 +112,7 @@ impl Package {
 							.fill(PkgData::new(&tokio::fs::read_to_string(path).await?));
 					} else {
 						let url = url.as_ref().expect("URL for remote package missing");
-						let text = download::text(url, &Client::new()).await?;
+						let text = download::text(url, client).await?;
 						tokio::fs::write(&path, &text).await?;
 						self.data.fill(PkgData::new(&text));
 					}
@@ -123,8 +128,8 @@ impl Package {
 	}
 
 	/// Parse the contents of the package
-	pub async fn parse(&mut self, paths: &Paths) -> anyhow::Result<()> {
-		self.ensure_loaded(paths, false).await?;
+	pub async fn parse(&mut self, paths: &Paths, client: &Client) -> anyhow::Result<()> {
+		self.ensure_loaded(paths, false, client).await?;
 		let data = self.data.get_mut();
 		if !data.parsed.is_empty() {
 			return Ok(());
@@ -141,11 +146,9 @@ impl Package {
 	pub async fn get_metadata<'a>(
 		&'a mut self,
 		paths: &Paths,
+		client: &Client,
 	) -> anyhow::Result<&'a PackageMetadata> {
-		self.ensure_loaded(paths, false)
-			.await
-			.context("Failed to load package data")?;
-		self.parse(paths).await.context("Failed to parse")?;
+		self.parse(paths, client).await.context("Failed to parse")?;
 		let data = self.data.get_mut();
 		let parsed = data.parsed.get();
 		if data.metadata.is_empty() {

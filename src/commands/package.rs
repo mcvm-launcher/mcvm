@@ -8,6 +8,7 @@ use mcvm::util::print::{ReplPrinter, HYPHEN_POINT};
 use anyhow::{bail, Context};
 use clap::Subcommand;
 use color_print::{cformat, cprint, cprintln};
+use reqwest::Client;
 
 #[derive(Debug, Subcommand)]
 pub enum PackageSubcommand {
@@ -137,8 +138,9 @@ async fn sync(data: &mut CmdData) -> anyhow::Result<()> {
 		.await
 		.context("Failed to update cached packages")?;
 	printer.println(&cformat!("<s>Validating packages..."));
+	let client = Client::new();
 	for package in config.packages.get_all_packages() {
-		match config.packages.parse(&package, paths).await {
+		match config.packages.parse(&package, paths, &client).await {
 			Ok(..) => {}
 			Err(e) => printer.println(&cformat!(
 				"<y>Warning: Package '{}' failed to parse:\n{:?}",
@@ -158,7 +160,7 @@ async fn cat(data: &mut CmdData, name: &str, raw: bool) -> anyhow::Result<()> {
 	let config = data.config.get_mut();
 
 	let req = PkgRequest::new(name, PkgRequestSource::UserRequire);
-	let contents = config.packages.load(&req, paths).await?;
+	let contents = config.packages.load(&req, paths, &Client::new()).await?;
 	if !raw {
 		cprintln!("<s,b>Contents of package <g>{}</g>:</s,b>", req);
 	}
@@ -181,7 +183,7 @@ async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
 		.context("Failed to get package version from registry")?;
 	let metadata = config
 		.packages
-		.get_metadata(&req, paths)
+		.get_metadata(&req, paths, &Client::new())
 		.await
 		.context("Failed to get metadata from the registry")?;
 	if let Some(name) = &metadata.name {

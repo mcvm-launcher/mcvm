@@ -5,6 +5,7 @@ use anyhow::{anyhow, bail};
 use mcvm_parse::routine::INSTALL_ROUTINE;
 use mcvm_shared::addon::{is_filename_valid, Addon};
 use mcvm_shared::lang::Language;
+use reqwest::Client;
 use serde::{Deserialize, Serialize};
 
 use self::conditions::eval_condition;
@@ -18,7 +19,7 @@ use mcvm_parse::instruction::{InstrKind, Instruction};
 use mcvm_parse::parse::{Block, BlockId};
 use mcvm_parse::{FailReason, Value};
 use mcvm_shared::instance::Side;
-use mcvm_shared::pkg::{PkgIdentifier, PackageStability};
+use mcvm_shared::pkg::{PackageStability, PkgIdentifier};
 
 use std::collections::HashMap;
 use std::path::PathBuf;
@@ -165,9 +166,9 @@ impl Package {
 		routine: Routine,
 		constants: &'a EvalConstants,
 		params: EvalParameters,
+		client: &Client,
 	) -> anyhow::Result<EvalData<'a>> {
-		self.ensure_loaded(paths, false).await?;
-		self.parse(paths).await?;
+		self.parse(paths, client).await?;
 		let parsed = self.data.get_mut().parsed.get_mut();
 		let routine_name = routine.get_routine_name();
 		let routine_id = parsed

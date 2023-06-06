@@ -2,6 +2,7 @@ use anyhow::{anyhow, Context};
 use color_print::cformat;
 use mcvm_parse::metadata::PackageMetadata;
 use mcvm_parse::parse::Parsed;
+use reqwest::Client;
 use serde::{Deserialize, Serialize};
 
 use super::core::is_core_package;
@@ -178,10 +179,11 @@ impl PkgRegistry {
 		&mut self,
 		req: &PkgRequest,
 		paths: &Paths,
+		client: &Client,
 	) -> anyhow::Result<&mut Package> {
 		let force = matches!(self.caching_strategy, CachingStrategy::None);
 		let pkg = self.get(req, paths).await?;
-		pkg.ensure_loaded(paths, force).await?;
+		pkg.ensure_loaded(paths, force, client).await?;
 		Ok(pkg)
 	}
 
@@ -203,16 +205,22 @@ impl PkgRegistry {
 		&'a mut self,
 		req: &PkgRequest,
 		paths: &Paths,
+		client: &Client,
 	) -> anyhow::Result<&'a PackageMetadata> {
-		let pkg = self.ensure_package_contents(req, paths).await?;
-		pkg.get_metadata(paths)
+		let pkg = self.ensure_package_contents(req, paths, client).await?;
+		pkg.get_metadata(paths, client)
 			.await
 			.context("Failed to get metadata from package")
 	}
 
 	/// Load the contents of a package
-	pub async fn load(&mut self, req: &PkgRequest, paths: &Paths) -> anyhow::Result<String> {
-		let pkg = self.ensure_package_contents(req, paths).await?;
+	pub async fn load(
+		&mut self,
+		req: &PkgRequest,
+		paths: &Paths,
+		client: &Client,
+	) -> anyhow::Result<String> {
+		let pkg = self.ensure_package_contents(req, paths, client).await?;
 		let contents = pkg.data.get().get_contents();
 		Ok(contents)
 	}
@@ -222,9 +230,12 @@ impl PkgRegistry {
 		&'a mut self,
 		req: &PkgRequest,
 		paths: &Paths,
+		client: &Client,
 	) -> anyhow::Result<&'a Parsed> {
-		let pkg = self.ensure_package_contents(req, paths).await?;
-		pkg.parse(paths).await.context("Failed to parse package")?;
+		let pkg = self.ensure_package_contents(req, paths, client).await?;
+		pkg.parse(paths, client)
+			.await
+			.context("Failed to parse package")?;
 		Ok(pkg.data.get().parsed.get())
 	}
 
@@ -236,9 +247,10 @@ impl PkgRegistry {
 		routine: Routine,
 		constants: &'a EvalConstants,
 		params: EvalParameters,
+		client: &Client,
 	) -> anyhow::Result<EvalData<'a>> {
-		let pkg = self.ensure_package_contents(req, paths).await?;
-		let eval = pkg.eval(paths, routine, constants, params).await?;
+		let pkg = self.ensure_package_contents(req, paths, client).await?;
+		let eval = pkg.eval(paths, routine, constants, params, client).await?;
 		Ok(eval)
 	}
 

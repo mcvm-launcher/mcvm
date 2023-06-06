@@ -66,12 +66,12 @@ impl AddonRequest {
 	}
 
 	/// Get the addon and store it
-	pub async fn acquire(&self, paths: &Paths, instance_id: &str) -> anyhow::Result<()> {
+	pub async fn acquire(&self, paths: &Paths, instance_id: &str, client: &Client) -> anyhow::Result<()> {
 		let path = get_path(&self.addon, paths, instance_id);
 		create_leading_dirs(&path)?;
 		match &self.location {
 			AddonLocation::Remote(url) => {
-				download::file(url, &path, &Client::new())
+				download::file(url, &path, client)
 					.await
 					.context("Failed to download addon")?;
 			}
