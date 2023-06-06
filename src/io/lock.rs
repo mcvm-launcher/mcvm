@@ -8,8 +8,6 @@ use serde::{Deserialize, Serialize};
 use mcvm_shared::addon::{Addon, AddonKind};
 use mcvm_shared::pkg::PkgIdentifier;
 
-use crate::data::addon;
-
 use super::files::paths::Paths;
 
 /// Format for an addon in the lockfile
@@ -24,15 +22,20 @@ pub struct LockfileAddon {
 }
 
 impl LockfileAddon {
-	/// Converts an addon to the format used by the lockfile
-	pub fn from_addon(addon: &Addon, paths: &Paths, instance_id: &str) -> Self {
+	/// Converts an addon to the format used by the lockfile.
+	/// Paths is the list of paths for the addon in the instance
+	pub fn from_addon(addon: &Addon, paths: Vec<PathBuf>) -> Self {
 		Self {
 			id: addon.id.clone(),
 			file_name: Some(addon.file_name.clone()),
-			files: vec![addon::get_path(addon, paths, instance_id)
-				.to_str()
-				.expect("Failed to convert addon path to a string")
-				.to_owned()],
+			files: paths
+				.iter()
+				.map(|x| {
+					x.to_str()
+						.expect("Failed to convert addon path to a string")
+						.to_owned()
+				})
+				.collect(),
 			kind: addon.kind.to_string(),
 			version: addon.version.clone(),
 		}
@@ -156,16 +159,16 @@ impl Lockfile {
 	}
 
 	/// Updates a package with a new version.
-	/// Returns a list of addons that need updating and a list of addons that need to be removed
+	/// Returns a list of addons that need updating and a list of addon files to be removed
 	pub fn update_package(
 		&mut self,
 		name: &str,
 		instance: &str,
 		version: u32,
 		addons: &[LockfileAddon],
-	) -> anyhow::Result<(Vec<String>, Vec<String>)> {
+	) -> anyhow::Result<(Vec<String>, Vec<PathBuf>)> {
 		let mut addons_to_update = Vec::new();
-		let mut addons_to_remove = Vec::new();
+		let mut files_to_remove = Vec::new();
 		if let Some(instance) = self.contents.packages.get_mut(instance) {
 			if let Some(pkg) = instance.get_mut(name) {
 				pkg.version = version.to_owned();
@@ -174,7 +177,7 @@ impl Lockfile {
 				for (i, current) in pkg.addons.iter().enumerate() {
 					if !addons.iter().any(|x| x.id == current.id) {
 						indices.push(i);
-						addons_to_remove.push(current.id.clone());
+						files_to_remove.extend(current.files.iter().map(PathBuf::from));
 					}
 				}
 				for i in indices {
@@ -206,16 +209,16 @@ impl Lockfile {
 			addons_to_update = addons.iter().map(|x| x.id.clone()).collect();
 		}
 
-		Ok((addons_to_update, addons_to_remove))
+		Ok((addons_to_update, files_to_remove))
 	}
 
 	/// Remove any unused packages for an instance.
-	/// Returns any addons that need to be removed from the instance.
+	/// Returns any addon files that need to be removed from the instance.
 	pub fn remove_unused_packages(
 		&mut self,
 		instance: &str,
 		used_packages: &[String],
-	) -> anyhow::Result<Vec<Addon>> {
+	) -> anyhow::Result<Vec<PathBuf>> {
 		if let Some(inst) = self.contents.packages.get_mut(instance) {
 			let mut pkgs_to_remove = Vec::new();
 			for (pkg, ..) in inst.iter() {
@@ -224,20 +227,16 @@ impl Lockfile {
 				}
 			}
 
-			let mut addons_to_remove = Vec::new();
+			let mut files_to_remove = Vec::new();
 			for pkg_id in pkgs_to_remove {
 				if let Some(pkg) = inst.remove(&pkg_id) {
 					for addon in pkg.addons {
-						let id = PkgIdentifier {
-							name: pkg_id.clone(),
-							version: pkg.version,
-						};
-						addons_to_remove.push(addon.to_addon(id)?);
+						files_to_remove.extend(addon.files.iter().map(PathBuf::from));
 					}
 				}
 			}
 
-			Ok(addons_to_remove)
+			Ok(files_to_remove)
 		} else {
 			Ok(vec![])
 		}

@@ -197,17 +197,12 @@ impl Instance {
 		Ok(())
 	}
 
-	/// Removes an addon from the instance
-	pub fn remove_addon(&self, addon: &Addon, paths: &Paths) -> anyhow::Result<()> {
-		for path in self
-			.get_linked_addon_paths(addon, paths)
-			.context("Failed to get linked directory")?
-		{
-			let path = path.join(&addon.file_name);
-			if path.exists() {
-				fs::remove_file(&path)
-					.with_context(|| format!("Failed to remove addon at {}", path.display()))?;
-			}
+	/// Removes an addon file from this instance
+	pub fn remove_addon_file(&self, path: &Path, paths: &Paths) -> anyhow::Result<()> {
+		// We check if it is a stored addon path due to the old behavior to put that path in the lockfile.
+		// Also some other sanity checks
+		if path.exists() && !addon::is_stored_addon_path(path, paths) && !path.is_dir() {
+			fs::remove_file(&path).context("Failed to remove instance addon file")?;
 		}
 
 		Ok(())
@@ -276,11 +271,22 @@ impl Instance {
 		let lockfile_addons = eval
 			.addon_reqs
 			.iter()
-			.map(|x| LockfileAddon::from_addon(&x.addon, paths, &self.id))
-			.collect::<Vec<LockfileAddon>>();
-		let (addons_to_update, addons_to_remove) = lock
+			.map(|x| {
+				Ok(LockfileAddon::from_addon(
+					&x.addon,
+					self.get_linked_addon_paths(&x.addon, paths)?
+						.iter()
+						.map(|y| y.join(addon::get_instance_filename(&x.addon)))
+						.collect(),
+				))
+			})
+			.collect::<anyhow::Result<Vec<LockfileAddon>>>()
+			.context("Failed to convert addons to the lockfile format")?;
+
+		let (addons_to_update, files_to_remove) = lock
 			.update_package(&pkg.name, &self.id, pkg_version, &lockfile_addons)
 			.context("Failed to update package in lockfile")?;
+
 		for addon in eval.addon_reqs.iter() {
 			if addon::should_update(&addon.addon, paths, &self.id)
 				|| addons_to_update.contains(&addon.addon.id)
@@ -291,12 +297,13 @@ impl Instance {
 					.await
 					.with_context(|| format!("Failed to acquire addon '{}'", addon.addon.id))?;
 			}
-			if addons_to_remove.contains(&addon.addon.id) {
-				self.remove_addon(&addon.addon, paths)
-					.with_context(|| format!("Failed to remove addon '{}'", addon.addon.id))?;
-			}
 			self.create_addon(&addon.addon, paths)
 				.with_context(|| format!("Failed to install addon '{}'", addon.addon.id))?;
+		}
+
+		for path in files_to_remove {
+			self.remove_addon_file(&path, paths)
+				.context("Failed to remove addon file from instance")?;
 		}
 
 		Ok(eval)

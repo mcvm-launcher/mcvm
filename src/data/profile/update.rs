@@ -400,7 +400,7 @@ async fn update_profile_packages(
 		let instance = instances.get(&instance_id).ok_or(anyhow!(
 			"Instance '{instance_id}' does not exist in the registry"
 		))?;
-		let addons_to_remove = lock
+		let files_to_remove = lock
 			.remove_unused_packages(
 				&instance_id,
 				&packages
@@ -409,11 +409,11 @@ async fn update_profile_packages(
 					.collect::<Vec<String>>(),
 			)
 			.context("Failed to remove unused packages")?;
-		for addon in addons_to_remove {
-			instance.remove_addon(&addon, paths).with_context(|| {
+		for file in files_to_remove {
+			instance.remove_addon_file(&file, paths).with_context(|| {
 				format!(
-					"Failed to remove addon {} for instance {}",
-					addon.id, instance_id
+					"Failed to remove addon file {} for instance {}",
+					file.display(), instance_id
 				)
 			})?;
 		}

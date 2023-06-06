@@ -7,7 +7,7 @@ use crate::io::files::{create_leading_dirs, update_hardlink};
 use crate::net::download;
 use mcvm_shared::modifications::{Modloader, ServerType};
 
-use std::path::PathBuf;
+use std::path::{PathBuf, Path};
 
 /// Get the addon directory where an addon is stored
 pub fn get_dir(addon: &Addon, paths: &Paths) -> PathBuf {
@@ -46,6 +46,11 @@ pub fn get_instance_filename(addon: &Addon) -> String {
 /// Whether this addon should be updated
 pub fn should_update(addon: &Addon, paths: &Paths, instance_id: &str) -> bool {
 	addon.version.is_none() || !get_path(addon, paths, instance_id).exists()
+}
+
+/// Checks if this path is in the stored addons directory
+pub fn is_stored_addon_path(path: &Path, paths: &Paths) -> bool {
+	path.starts_with(&paths.addons)
 }
 
 #[derive(Debug, Clone)]
