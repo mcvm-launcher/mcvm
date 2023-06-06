@@ -72,7 +72,7 @@ impl Routine {
 }
 
 /// A required package
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialOrd, Ord, PartialEq, Eq)]
 pub struct RequiredPackage {
 	value: String,
 	explicit: bool,

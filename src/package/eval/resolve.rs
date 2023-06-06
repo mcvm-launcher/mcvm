@@ -2,6 +2,7 @@ use std::collections::VecDeque;
 
 use anyhow::{bail, Context};
 use color_print::cprintln;
+use itertools::Itertools;
 use reqwest::Client;
 
 use crate::io::files::paths::Paths;
@@ -196,7 +197,7 @@ async fn resolve_eval_package(
 		.await
 		.context("Failed to evaluate package")?;
 
-	for conflict in result.conflicts {
+	for conflict in result.conflicts.iter().sorted() {
 		let req = PkgRequest::new(
 			&conflict,
 			PkgRequestSource::Refused(Box::new(package.clone())),
@@ -212,7 +213,7 @@ async fn resolve_eval_package(
 		});
 	}
 
-	for dep in result.deps.iter().flatten() {
+	for dep in result.deps.iter().flatten().sorted() {
 		let req = PkgRequest::new(
 			&dep.value,
 			PkgRequestSource::Dependency(Box::new(package.clone())),
@@ -232,7 +233,7 @@ async fn resolve_eval_package(
 		}
 	}
 
-	for bundled in result.bundled {
+	for bundled in result.bundled.iter().sorted() {
 		let req = PkgRequest::new(
 			&bundled,
 			PkgRequestSource::Bundled(Box::new(package.clone())),
@@ -248,7 +249,7 @@ async fn resolve_eval_package(
 		});
 	}
 
-	for (check_package, compat_package) in result.compats {
+	for (check_package, compat_package) in result.compats.iter().sorted() {
 		let check_package = PkgRequest::new(
 			&check_package,
 			PkgRequestSource::Dependency(Box::new(package.clone())),
@@ -264,7 +265,7 @@ async fn resolve_eval_package(
 		}
 	}
 
-	for extension in result.extensions {
+	for extension in result.extensions.iter().sorted() {
 		let req = PkgRequest::new(
 			&extension,
 			PkgRequestSource::Dependency(Box::new(package.clone())),
@@ -274,7 +275,7 @@ async fn resolve_eval_package(
 		});
 	}
 
-	for recommendation in result.recommendations {
+	for recommendation in result.recommendations.iter().sorted() {
 		let req = PkgRequest::new(
 			&recommendation,
 			PkgRequestSource::Dependency(Box::new(package.clone())),
@@ -322,7 +323,7 @@ pub async fn resolve(
 	};
 
 	// Create the initial EvalPackage from the installed packages
-	for config in packages {
+	for config in packages.iter().sorted_by_key(|x| &x.req) {
 		let params = EvalParameters {
 			side: resolver.default_params.side,
 			features: config.features.clone(),
