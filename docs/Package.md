@@ -51,6 +51,7 @@ Metadata like `description` and `authors` can only be used in the `@meta` contex
 	 * `os {windows | linux}`: Check if the user is using a certain operating system.
 	 * `defined ${variable_name}`: Check if a variable has been defined. The dollar sign is required, but not for long.
 	 * `stability {stable | latest}`: Check for the configured stability of the package. You should check this and only install release versions of addons if `stable` is selected.
+	 * `language {language}`: Check the user's configured language.
 	 * `not {condition}`: Inverts a condition. You can chain these, but why would you want to.
 	 * `and {left} {right}`: Checks if both conditions are true.
 	 * `or {left} {right}`: Checks if either one of the conditions are true.

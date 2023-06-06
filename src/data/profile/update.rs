@@ -576,6 +576,7 @@ pub async fn update_profiles(
 					features: vec![],
 					version_list: version_list.clone(),
 					perms: EvalPermissions::Standard,
+					language: config.prefs.language,
 				};
 
 				update_profile_packages(

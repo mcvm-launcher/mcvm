@@ -10,4 +10,5 @@ categories = ["games"]
 
 [dependencies]
 anyhow = "1.0.70"
+current_locale = "0.1.1"
 serde = { version = "1.0.152", features = ["derive"] }

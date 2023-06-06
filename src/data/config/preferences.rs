@@ -2,6 +2,7 @@ use crate::package::repo::PkgRepo;
 use crate::{net::download::validate_url, package::reg::CachingStrategy};
 
 use anyhow::Context;
+use mcvm_shared::lang::Language;
 use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize)]
@@ -23,11 +24,13 @@ pub struct RepositoriesDeser {
 pub struct PrefDeser {
 	repositories: RepositoriesDeser,
 	package_caching_strategy: CachingStrategy,
+	language: Language,
 }
 
 #[derive(Debug)]
 pub struct ConfigPreferences {
 	pub package_caching_strategy: CachingStrategy,
+	pub language: Language,
 }
 
 impl ConfigPreferences {
@@ -59,6 +62,7 @@ impl ConfigPreferences {
 		Ok((
 			Self {
 				package_caching_strategy: prefs.package_caching_strategy.clone(),
+				language: prefs.language.clone(),
 			},
 			repositories,
 		))

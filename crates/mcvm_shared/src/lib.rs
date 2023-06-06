@@ -3,6 +3,7 @@ pub mod instance;
 pub mod modifications;
 pub mod pkg;
 pub mod versions;
+pub mod lang;
 
 pub mod util {
 	/// Converts "yes" or "no" to a boolean

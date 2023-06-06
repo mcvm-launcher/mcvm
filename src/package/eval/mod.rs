@@ -4,6 +4,7 @@ pub mod resolve;
 use anyhow::{anyhow, bail};
 use mcvm_parse::routine::INSTALL_ROUTINE;
 use mcvm_shared::addon::{is_filename_valid, Addon};
+use mcvm_shared::lang::Language;
 use serde::{Deserialize, Serialize};
 
 use self::conditions::eval_condition;
@@ -76,7 +77,7 @@ pub struct RequiredPackage {
 	explicit: bool,
 }
 
-/// Constants for the evaluation that will be constant across every package
+/// Constants for the evaluation that will be the same across every package
 #[derive(Debug, Clone)]
 pub struct EvalConstants {
 	pub version: String,
@@ -84,9 +85,10 @@ pub struct EvalConstants {
 	pub features: Vec<String>,
 	pub version_list: Vec<String>,
 	pub perms: EvalPermissions,
+	pub language: Language,
 }
 
-/// Constants for the evaluation that will be different for each package
+/// Constants for the evaluation that may be different for each package
 #[derive(Debug, Clone)]
 pub struct EvalParameters {
 	pub side: Side,

@@ -1,4 +1,5 @@
 use anyhow::bail;
+use mcvm_shared::lang::Language;
 use mcvm_shared::pkg::PackageStability;
 
 use crate::unexpected_token;
@@ -41,7 +42,8 @@ pub enum ConditionKind {
 	Value(Value, Value),
 	Defined(Value),
 	Os(Option<OsCondition>),
-	Stability(Option<PackageStability>)
+	Stability(Option<PackageStability>),
+	Language(Option<Language>),
 }
 
 impl ConditionKind {
@@ -77,6 +79,7 @@ impl ConditionKind {
 			Self::PluginLoader(val) => val.is_some(),
 			Self::Os(val) => val.is_some(),
 			Self::Stability(val) => val.is_some(),
+			Self::Language(val) => val.is_some(),
 			Self::Value(left, right) => left.is_some() && right.is_some(),
 		}
 	}
@@ -169,9 +172,22 @@ impl ConditionKind {
 				},
 				_ => unexpected_token!(tok, pos),
 			},
-			Self::Stability(os) => match tok {
+			Self::Stability(stability) => match tok {
 				Token::Ident(name) => match PackageStability::parse_from_str(name) {
-					Some(kind) => *os = Some(kind),
+					Some(kind) => *stability = Some(kind),
+					None => {
+						bail!(
+							"Unknown condition argument '{}' {}",
+							name.to_owned(),
+							pos.clone()
+						);
+					}
+				},
+				_ => unexpected_token!(tok, pos),
+			},
+			Self::Language(lang) => match tok {
+				Token::Ident(name) => match Language::parse_from_str(name) {
+					Some(kind) => *lang = Some(kind),
 					None => {
 						bail!(
 							"Unknown condition argument '{}' {}",
