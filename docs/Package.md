@@ -110,17 +110,17 @@ Here is a simple example for a package that would install the *Sodium* mod. As t
 		fail unsupported_modloader;
 	}
 	if version "1.18+" {
-		set url "https://cdn.modrinth.com/data/AANobbMI/versions/mc1.18.2-0.4.1/sodium-fabric-mc1.18.2-0.4.1%2Bbuild.15.jar";
+		set url "https://cdn.modrinth.com/data/AANobbMI/versions/mc1.18.2-0.4.1/sodium-fabric-mc1. "Sodium.jar"18.2-0.4.1%2Bbuild.15.jar";
 		set version "1.18";
 	}
 	if version "1.19+" {
 		set url "https://cdn.modrinth.com/data/AANobbMI/versions/oYfJQ6lR/sodium-fabric-mc1.19.3-0.4.8%2Bbuild.22.jar";
 		set version "1.19";
 	}
-	if not defined $version {
+	if not defined version {
 		fail unsupported_version;
 	}
-	addon "sodium" "Sodium.jar" (
+	addon "mod" (
 		kind: mod,
 		url: $url,
 		version: $version
