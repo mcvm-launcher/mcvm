@@ -1,10 +1,7 @@
 use mcvm_shared::{instance::Side, versions::VersionPattern};
 
 use super::EvalData;
-use mcvm_parse::{
-	conditions::{ConditionKind, OsCondition},
-	Value,
-};
+use mcvm_parse::conditions::{ConditionKind, OsCondition};
 
 pub fn eval_condition(condition: &ConditionKind, eval: &EvalData) -> anyhow::Result<bool> {
 	match condition {
@@ -44,13 +41,15 @@ pub fn eval_condition(condition: &ConditionKind, eval: &EvalData) -> anyhow::Res
 			OsCondition::Linux => cfg!(linux),
 			OsCondition::Other => !(cfg!(windows) || cfg!(linux)),
 		}),
-		ConditionKind::Stability(stability) => Ok(eval.params.stability == stability.expect("If stability is missing")),
-		ConditionKind::Language(lang) => Ok(eval.constants.language == lang.expect("If language is missing")),
+		ConditionKind::Stability(stability) => {
+			Ok(eval.params.stability == stability.expect("If stability is missing"))
+		}
+		ConditionKind::Language(lang) => {
+			Ok(eval.constants.language == lang.expect("If language is missing"))
+		}
 		ConditionKind::Value(left, right) => Ok(left.get(&eval.vars)? == right.get(&eval.vars)?),
-		ConditionKind::Defined(value) => Ok(match value {
-			Value::None => false,
-			Value::Constant(..) => true,
-			Value::Var(var) => eval.vars.contains_key(var),
-		}),
+		ConditionKind::Defined(var) => Ok(eval
+			.vars
+			.contains_key(var.as_ref().expect("If defined is missing"))),
 	}
 }

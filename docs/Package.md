@@ -49,7 +49,7 @@ Metadata like `description` and `authors` can only be used in the `@meta` contex
 	 * `side {client | server}`: Check what instance type the package is being installed on.
 	 * `feature {name}`: Check if a feature is enabled for this package.
 	 * `os {windows | linux}`: Check if the user is using a certain operating system.
-	 * `defined ${variable_name}`: Check if a variable has been defined. The dollar sign is required, but not for long.
+	 * `defined {variable_name}`: Check if a variable has been defined.
 	 * `stability {stable | latest}`: Check for the configured stability of the package. You should check this and only install release versions of addons if `stable` is selected.
 	 * `language {language}`: Check the user's configured language.
 	 * `not {condition}`: Inverts a condition. You can chain these, but why would you want to.

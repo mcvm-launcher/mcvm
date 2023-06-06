@@ -40,7 +40,7 @@ pub enum ConditionKind {
 	PluginLoader(Option<PluginLoaderMatch>),
 	Feature(Value),
 	Value(Value, Value),
-	Defined(Value),
+	Defined(Option<String>),
 	Os(Option<OsCondition>),
 	Stability(Option<PackageStability>),
 	Language(Option<Language>),
@@ -56,7 +56,7 @@ impl ConditionKind {
 			"plugin_loader" => Some(Self::PluginLoader(None)),
 			"feature" => Some(Self::Feature(Value::None)),
 			"value" => Some(Self::Value(Value::None, Value::None)),
-			"defined" => Some(Self::Defined(Value::None)),
+			"defined" => Some(Self::Defined(None)),
 			"os" => Some(Self::Os(None)),
 			"stability" => Some(Self::Stability(None)),
 			_ => None,
@@ -73,10 +73,11 @@ impl ConditionKind {
 				left.is_finished_parsing()
 					&& matches!(right, Some(condition) if condition.is_finished_parsing())
 			}
-			Self::Version(val) | Self::Feature(val) | Self::Defined(val) => val.is_some(),
+			Self::Version(val) | Self::Feature(val) => val.is_some(),
 			Self::Side(val) => val.is_some(),
 			Self::Modloader(val) => val.is_some(),
 			Self::PluginLoader(val) => val.is_some(),
+			Self::Defined(val) => val.is_some(),
 			Self::Os(val) => val.is_some(),
 			Self::Stability(val) => val.is_some(),
 			Self::Language(val) => val.is_some(),
@@ -117,8 +118,12 @@ impl ConditionKind {
 					},
 				}
 			}
-			Self::Version(val) | Self::Feature(val) | Self::Defined(val) => {
+			Self::Version(val) | Self::Feature(val) => {
 				*val = parse_arg(tok, pos)?;
+			}
+			Self::Defined(var) => match tok {
+				Token::Ident(name) => *var = Some(name.clone()),
+				_ => unexpected_token!(tok, pos),
 			}
 			Self::Side(side) => match tok {
 				Token::Ident(name) => {
