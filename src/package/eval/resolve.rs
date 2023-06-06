@@ -202,7 +202,10 @@ async fn resolve_eval_package(
 			PkgRequestSource::Refused(Box::new(package.clone())),
 		);
 		if resolver.is_required(&req) {
-			bail!("Package '{req}' is incompatible with this package.");
+			bail!(
+				"Package '{}' is incompatible with this package.",
+				req.debug_sources(String::new())
+			);
 		}
 		resolver.constraints.push(Constraint {
 			kind: ConstraintKind::Refuse(req),
@@ -215,7 +218,7 @@ async fn resolve_eval_package(
 			PkgRequestSource::Dependency(Box::new(package.clone())),
 		);
 		if dep.explicit && !resolver.is_user_required(&req) {
-			bail!("Package '{req}' has been explicitly required by package. This means it must be required by the user in their config.");
+			bail!("Package '{req}' has been explicitly required by this package. This means it must be required by the user in their config.");
 		}
 		resolver.check_constraints(&req)?;
 		if !resolver.is_required(&req) {

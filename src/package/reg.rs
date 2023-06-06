@@ -65,7 +65,7 @@ impl PkgRequest {
 				format!("{}->{}", source.debug_sources(list), self.name)
 			}
 			PkgRequestSource::Refused(source) => {
-				format!("{}-x->{}", source.debug_sources(list), self.name)
+				format!("{}=X=>{}", source.debug_sources(list), self.name)
 			}
 			PkgRequestSource::Bundled(bundler) => {
 				format!("{}=>{}", bundler.debug_sources(list), self.name)
