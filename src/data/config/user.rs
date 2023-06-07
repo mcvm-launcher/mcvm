@@ -1,4 +1,3 @@
-use color_print::cprintln;
 use serde::{Deserialize, Serialize};
 
 use crate::data::user::{User, UserKind};
@@ -32,18 +31,13 @@ pub struct UserConfig {
 
 impl UserConfig {
 	/// Creates a user from this user config
-	pub fn to_user(&self, id: &str, show_warnings: bool) -> User {
+	pub fn to_user(&self, id: &str) -> User {
 		let mut user = User::new(self.variant.to_user_kind(), id, &self.name);
 		match &self.variant {
 			UserVariant::Microsoft { uuid } | UserVariant::Demo { uuid } => {
-				match uuid {
-					Some(uuid) => user.set_uuid(uuid),
-					None => {
-						if show_warnings {
-							cprintln!("<y>Warning: It is recommended to have your uuid in the configuration for user {}", id);
-						}
-					}
-				};
+				if let Some(uuid) = uuid {
+					user.set_uuid(uuid);
+				}
 			}
 			_ => {}
 		}

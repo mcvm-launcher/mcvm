@@ -111,7 +111,7 @@ impl Config {
 			if !validate_identifier(user_id) {
 				bail!("Invalid string '{user_id}'");
 			}
-			let user = user_config.to_user(user_id, show_warnings);
+			let user = user_config.to_user(user_id);
 			if !validate_username(user.kind, &user.name) {
 				bail!("Invalid string '{}'", user.name);
 			}
