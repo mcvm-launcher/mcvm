@@ -39,7 +39,7 @@ pub fn get_addon_instance_filename(id: &str, version: &Option<String>, kind: &Ad
 }
 
 /// Split an addon filename into base and extension
-pub fn split_filename<'a>(addon: &'a Addon) -> (&'a str, &'a str) {
+pub fn split_filename(addon: &Addon) -> (&str, &str) {
 	if let Some(index) = addon.file_name.find('.') {
 		addon.file_name.split_at(index)
 	} else {

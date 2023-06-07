@@ -199,7 +199,7 @@ async fn resolve_eval_package(
 
 	for conflict in result.conflicts.iter().sorted() {
 		let req = PkgRequest::new(
-			&conflict,
+			conflict,
 			PkgRequestSource::Refused(Box::new(package.clone())),
 		);
 		if resolver.is_required(&req) {
@@ -235,7 +235,7 @@ async fn resolve_eval_package(
 
 	for bundled in result.bundled.iter().sorted() {
 		let req = PkgRequest::new(
-			&bundled,
+			bundled,
 			PkgRequestSource::Bundled(Box::new(package.clone())),
 		);
 		resolver.check_constraints(&req)?;
@@ -251,11 +251,11 @@ async fn resolve_eval_package(
 
 	for (check_package, compat_package) in result.compats.iter().sorted() {
 		let check_package = PkgRequest::new(
-			&check_package,
+			check_package,
 			PkgRequestSource::Dependency(Box::new(package.clone())),
 		);
 		let compat_package = PkgRequest::new(
-			&compat_package,
+			compat_package,
 			PkgRequestSource::Dependency(Box::new(package.clone())),
 		);
 		if !resolver.compat_exists(&check_package, &compat_package) {
@@ -267,7 +267,7 @@ async fn resolve_eval_package(
 
 	for extension in result.extensions.iter().sorted() {
 		let req = PkgRequest::new(
-			&extension,
+			extension,
 			PkgRequestSource::Dependency(Box::new(package.clone())),
 		);
 		resolver.constraints.push(Constraint {
@@ -277,7 +277,7 @@ async fn resolve_eval_package(
 
 	for recommendation in result.recommendations.iter().sorted() {
 		let req = PkgRequest::new(
-			&recommendation,
+			recommendation,
 			PkgRequestSource::Dependency(Box::new(package.clone())),
 		);
 		resolver.constraints.push(Constraint {

@@ -202,7 +202,7 @@ impl Instance {
 		// We check if it is a stored addon path due to the old behavior to put that path in the lockfile.
 		// Also some other sanity checks
 		if path.exists() && !addon::is_stored_addon_path(path, paths) && !path.is_dir() {
-			fs::remove_file(&path).context("Failed to remove instance addon file")?;
+			fs::remove_file(path).context("Failed to remove instance addon file")?;
 		}
 
 		Ok(())

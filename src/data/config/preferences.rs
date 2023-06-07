@@ -62,7 +62,7 @@ impl ConfigPreferences {
 		Ok((
 			Self {
 				package_caching_strategy: prefs.package_caching_strategy.clone(),
-				language: prefs.language.clone(),
+				language: prefs.language,
 			},
 			repositories,
 		))

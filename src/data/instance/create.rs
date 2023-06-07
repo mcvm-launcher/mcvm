@@ -155,7 +155,7 @@ impl Instance {
 		}
 		if !keys.is_empty() {
 			let options_path = mc_dir.join("options.txt");
-			let data_version = crate::io::minecraft::get_data_version(version, &version_list, paths).context("Failed to obtain data version")?;
+			let data_version = crate::io::minecraft::get_data_version(version, version_list, paths).context("Failed to obtain data version")?;
 			write_options_txt(keys, &options_path, &data_version)
 				.await
 				.context("Failed to write options.txt")?;
