@@ -186,6 +186,13 @@ impl Lockfile {
 				// Check for addons that need to be updated
 				for requested in addons {
 					if let Some(current) = pkg.addons.iter().find(|x| x.id == requested.id) {
+						files_to_remove.extend(
+							current
+								.files
+								.iter()
+								.filter(|x| !requested.files.contains(x))
+								.map(PathBuf::from),
+						);
 						new_files.extend(
 							requested
 								.files

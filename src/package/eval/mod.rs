@@ -311,7 +311,7 @@ pub fn eval_instr(
 					let file_name = if file_name.is_some() {
 						file_name.get(&eval.vars)?
 					} else {
-						addon::get_addon_instance_filename(&id, &version, kind)
+						addon::get_addon_instance_filename(&eval.id.name, &id, kind)
 					};
 
 					if !is_filename_valid(*kind, &file_name) {
