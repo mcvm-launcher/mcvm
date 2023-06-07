@@ -159,15 +159,14 @@ impl Lockfile {
 	}
 
 	/// Updates a package with a new version.
-	/// Returns a list of addons that need updating and a list of addon files to be removed
+	/// Returns a list of addon files to be removed
 	pub fn update_package(
 		&mut self,
 		name: &str,
 		instance: &str,
 		version: u32,
 		addons: &[LockfileAddon],
-	) -> anyhow::Result<(Vec<String>, Vec<PathBuf>)> {
-		let mut addons_to_update = Vec::new();
+	) -> anyhow::Result<Vec<PathBuf>> {
 		let mut files_to_remove = Vec::new();
 		let mut new_files = Vec::new();
 		if let Some(instance) = self.contents.packages.get_mut(instance) {
@@ -208,7 +207,6 @@ impl Lockfile {
 						addons: addons.to_vec(),
 					},
 				);
-				addons_to_update = addons.iter().map(|x| x.id.clone()).collect();
 				new_files.extend(addons.iter().flat_map(|x| x.files.clone()));
 			}
 		} else {
@@ -224,7 +222,7 @@ impl Lockfile {
 			}
 		}
 
-		Ok((addons_to_update, files_to_remove))
+		Ok(files_to_remove)
 	}
 
 	/// Remove any unused packages for an instance.

@@ -283,15 +283,12 @@ impl Instance {
 			.collect::<anyhow::Result<Vec<LockfileAddon>>>()
 			.context("Failed to convert addons to the lockfile format")?;
 
-		let (addons_to_update, files_to_remove) = lock
+		let files_to_remove = lock
 			.update_package(&pkg.name, &self.id, pkg_version, &lockfile_addons)
 			.context("Failed to update package in lockfile")?;
 
 		for addon in eval.addon_reqs.iter() {
-			if addon::should_update(&addon.addon, paths, &self.id)
-				|| addons_to_update.contains(&addon.addon.id)
-				|| force
-			{
+			if addon::should_update(&addon.addon, paths, &self.id) || force {
 				addon
 					.acquire(paths, &self.id, client)
 					.await
