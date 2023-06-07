@@ -5,6 +5,7 @@ edition = "2021"
 license = "GPL-3.0-or-later"
 description = "Shared libraries for mcvm"
 authors = ["CarbonSmasher"]
+repository = "https://github.com/CarbonSmasher/mcvm"
 keywords = ["minecraft", "launcher", "game", "mc"]
 categories = ["games"]
 
