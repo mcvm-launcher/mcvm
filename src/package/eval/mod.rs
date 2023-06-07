@@ -314,11 +314,9 @@ pub fn eval_instr(
 						addon::get_addon_instance_filename(&id, &version, kind)
 					};
 
-
 					if !is_filename_valid(*kind, &file_name) {
 						bail!("Invalid addon filename '{file_name}' in addon '{id}'");
 					}
-
 
 					let addon = Addon::new(*kind, &id, &file_name, eval.id.clone(), version);
 

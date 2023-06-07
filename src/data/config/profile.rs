@@ -2,13 +2,12 @@ use std::collections::HashMap;
 
 use serde::{Deserialize, Serialize};
 
-use crate::{
-	data::profile::Profile, util::versions::MinecraftVersionDeser,
-};
+use crate::{data::profile::Profile, util::versions::MinecraftVersionDeser};
 
 use mcvm_shared::{
 	instance::Side,
-	modifications::{ClientType, Modloader, ServerType}, pkg::PackageStability,
+	modifications::{ClientType, Modloader, ServerType},
+	pkg::PackageStability,
 };
 
 use super::{instance::InstanceConfig, package::PackageConfig};

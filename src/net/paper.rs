@@ -46,7 +46,8 @@ pub async fn get_jar_file_name(version: &str, build_num: u16) -> anyhow::Result<
 	let num_str = build_num.to_string();
 	let url =
 		format!("https://api.papermc.io/v2/projects/paper/versions/{version}/builds/{num_str}");
-	let resp = serde_json::from_str::<BuildInfoResponse>(&download::text(&url, &Client::new()).await?)?;
+	let resp =
+		serde_json::from_str::<BuildInfoResponse>(&download::text(&url, &Client::new()).await?)?;
 
 	Ok(resp.downloads.application.name)
 }

@@ -7,7 +7,7 @@ use crate::io::files::{create_leading_dirs, update_hardlink};
 use crate::net::download;
 use mcvm_shared::modifications::{Modloader, ServerType};
 
-use std::path::{PathBuf, Path};
+use std::path::{Path, PathBuf};
 
 /// Get the addon directory where an addon is stored
 pub fn get_dir(addon: &Addon, paths: &Paths) -> PathBuf {
@@ -75,7 +75,12 @@ impl AddonRequest {
 	}
 
 	/// Get the addon and store it
-	pub async fn acquire(&self, paths: &Paths, instance_id: &str, client: &Client) -> anyhow::Result<()> {
+	pub async fn acquire(
+		&self,
+		paths: &Paths,
+		instance_id: &str,
+		client: &Client,
+	) -> anyhow::Result<()> {
 		let path = get_path(&self.addon, paths, instance_id);
 		create_leading_dirs(&path)?;
 		match &self.location {

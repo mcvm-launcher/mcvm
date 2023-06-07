@@ -124,7 +124,7 @@ impl ConditionKind {
 			Self::Defined(var) => match tok {
 				Token::Ident(name) => *var = Some(name.clone()),
 				_ => unexpected_token!(tok, pos),
-			}
+			},
 			Self::Side(side) => match tok {
 				Token::Ident(name) => {
 					*side = check_enum_condition_argument(Side::from_str(name), name, pos)?

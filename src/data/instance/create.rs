@@ -105,7 +105,8 @@ impl Instance {
 		files::create_dir(&dir)?;
 		let mc_dir = self.get_subdir(paths);
 		files::create_dir(&mc_dir)?;
-		let jar_path = crate::io::minecraft::game_jar::get_path(self.kind.to_side(), version, paths);
+		let jar_path =
+			crate::io::minecraft::game_jar::get_path(self.kind.to_side(), version, paths);
 
 		let client_json = manager.client_json.get();
 
@@ -155,7 +156,8 @@ impl Instance {
 		}
 		if !keys.is_empty() {
 			let options_path = mc_dir.join("options.txt");
-			let data_version = crate::io::minecraft::get_data_version(version, version_list, paths).context("Failed to obtain data version")?;
+			let data_version = crate::io::minecraft::get_data_version(version, version_list, paths)
+				.context("Failed to obtain data version")?;
 			write_options_txt(keys, &options_path, &data_version)
 				.await
 				.context("Failed to write options.txt")?;

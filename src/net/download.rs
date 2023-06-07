@@ -54,7 +54,9 @@ pub async fn bytes(url: impl IntoUrl, client: &Client) -> anyhow::Result<bytes::
 
 /// Downloads and puts the contents in a file
 pub async fn file(url: impl IntoUrl, path: &Path, client: &Client) -> anyhow::Result<()> {
-	let bytes = bytes(url, client).await.context("Failed to download data")?;
+	let bytes = bytes(url, client)
+		.await
+		.context("Failed to download data")?;
 	tokio::fs::write(path, bytes).await.with_context(|| {
 		format!(
 			"Failed to write downloaded contents to path {}",

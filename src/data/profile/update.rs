@@ -413,7 +413,8 @@ async fn update_profile_packages(
 			instance.remove_addon_file(&file, paths).with_context(|| {
 				format!(
 					"Failed to remove addon file {} for instance {}",
-					file.display(), instance_id
+					file.display(),
+					instance_id
 				)
 			})?;
 		}

@@ -39,10 +39,12 @@ pub mod version_manifest {
 				.context("Failed to read manifest contents from file");
 		}
 
-		let text =
-			download::text("https://piston-meta.mojang.com/mc/game/version_manifest_v2.json", &Client::new())
-				.await
-				.context("Failed to download manifest")?;
+		let text = download::text(
+			"https://piston-meta.mojang.com/mc/game/version_manifest_v2.json",
+			&Client::new(),
+		)
+		.await
+		.context("Failed to download manifest")?;
 		tokio::fs::write(&path, &text)
 			.await
 			.context("Failed to write manifest to a file")?;
