@@ -195,7 +195,6 @@ impl Lockfile {
 								.cloned(),
 						);
 					} else {
-						addons_to_update.push(requested.id.clone());
 						new_files.extend(requested.files.clone());
 					};
 				}
