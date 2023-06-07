@@ -883,7 +883,7 @@ dependencies = [
 
 [[package]]
 name = "mcvm"
-version = "0.5.1"
+version = "0.6.0"
 dependencies = [
  "anyhow",
  "bytes",
@@ -909,7 +909,7 @@ dependencies = [
 
 [[package]]
 name = "mcvm_parse"
-version = "0.0.9"
+version = "0.1.0"
 dependencies = [
  "anyhow",
  "color-print",
@@ -918,7 +918,7 @@ dependencies = [
 
 [[package]]
 name = "mcvm_shared"
-version = "0.0.6"
+version = "0.1.0"
 dependencies = [
  "anyhow",
  "current_locale",
