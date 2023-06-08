@@ -45,7 +45,7 @@ impl PkgRepo {
 
 	/// The cached path of the index
 	pub fn get_path(&self, paths: &Paths) -> PathBuf {
-		paths.pkg_index_cache.join(&self.id)
+		paths.pkg_index_cache.join(format!("{}.json", &self.id))
 	}
 
 	/// Set the index to serialized json text
