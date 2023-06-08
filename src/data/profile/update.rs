@@ -570,34 +570,34 @@ pub async fn update_profiles(
 
 			if !profile.packages.is_empty() {
 				cprintln!("<s>Updating packages");
-
-				// Make sure all packages in the profile are in the registry first
-				for pkg in &profile.packages {
-					config.packages.ensure_package(&pkg.req, paths).await?;
-				}
-
-				let constants = EvalConstants {
-					version: mc_version.to_string(),
-					modifications: profile.modifications.clone(),
-					features: vec![],
-					version_list: version_list.clone(),
-					perms: EvalPermissions::Standard,
-					language: config.prefs.language,
-				};
-
-				update_profile_packages(
-					profile,
-					&constants,
-					paths,
-					&mut config.packages,
-					&config.instances,
-					&mut lock,
-					force,
-					&client,
-				)
-				.await?;
-				cprintln!("<g>All packages installed.");
 			}
+
+			// Make sure all packages in the profile are in the registry first
+			for pkg in &profile.packages {
+				config.packages.ensure_package(&pkg.req, paths).await?;
+			}
+
+			let constants = EvalConstants {
+				version: mc_version.to_string(),
+				modifications: profile.modifications.clone(),
+				features: vec![],
+				version_list: version_list.clone(),
+				perms: EvalPermissions::Standard,
+				language: config.prefs.language,
+			};
+
+			update_profile_packages(
+				profile,
+				&constants,
+				paths,
+				&mut config.packages,
+				&config.instances,
+				&mut lock,
+				force,
+				&client,
+			)
+			.await?;
+			cprintln!("<g>All packages installed.");
 		}
 
 		lock.finish(paths)
