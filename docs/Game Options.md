@@ -111,7 +111,7 @@ A description will not be provided for every option as they mirror the options i
 		"enable_touchscreen": bool,
 		"toggle_sprint": bool,
 		"toggle_crouch": bool,
-		"mouse_sensitivity": number,
+		"mouse_sensitivity": integer,
 		"mouse_wheel_sensitivity": number,
 		"raw_mouse_input": bool
 	},

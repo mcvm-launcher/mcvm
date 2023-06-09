@@ -73,7 +73,7 @@ pub struct ControlOptions {
 	pub enable_touchscreen: Option<bool>,
 	pub toggle_sprint: Option<bool>,
 	pub toggle_crouch: Option<bool>,
-	pub mouse_sensitivity: Option<f32>,
+	pub mouse_sensitivity: Option<i16>,
 	pub mouse_wheel_sensitivity: Option<f32>,
 	pub raw_mouse_input: Option<bool>,
 }

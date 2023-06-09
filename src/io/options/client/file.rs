@@ -108,6 +108,11 @@ fn convert_fov(fov: u8) -> f32 {
 	(fov as f32 - 70.0) / 40.0
 }
 
+/// Converts mouse sensitivity from the 0-200% integer value to 0-1
+fn convert_mouse_sensitivity(sensitivity: i16) -> f32 {
+	(sensitivity as f32) / 2.0 / 100.0
+}
+
 /// Write options options to a list of keys
 pub fn create_keys(
 	options: &ClientOptions,
@@ -265,7 +270,10 @@ pub fn create_keys(
 		}
 	}
 	if let Some(value) = options.control.mouse_sensitivity {
-		out.insert(String::from("mouseSensitivity"), value.to_string());
+		out.insert(
+			String::from("mouseSensitivity"),
+			convert_mouse_sensitivity(value).to_string(),
+		);
 	}
 	if let Some(value) = options.video.fov {
 		out.insert(String::from("fov"), convert_fov(value).to_string());
