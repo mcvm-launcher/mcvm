@@ -414,3 +414,6 @@ A description will not be provided for every option as they mirror the options i
 ### Notes:
  1. `offline_mode` is the opposite of the usual server.properties option `online_mode`
  2. Remember to inclue `"vanilla"` in the `datapacks.initial_enabled` key if you change it
+
+### Notes for both client and server:
+ 1. The `custom` field is an object with a mapping between keys and values. This allows you to specify custom fields in the respective config file.

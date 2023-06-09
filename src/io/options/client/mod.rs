@@ -17,6 +17,7 @@ use super::read::EnumOrNumber;
 
 #[derive(Deserialize, Serialize, Debug, Clone, Default)]
 #[serde(default)]
+#[serde(deny_unknown_fields)]
 pub struct KeyOptions {
 	pub attack: Option<Keybind>,
 	pub r#use: Option<Keybind>,
@@ -63,6 +64,7 @@ pub struct KeyOptions {
 
 #[derive(Deserialize, Serialize, Debug, Clone, Default)]
 #[serde(default)]
+#[serde(deny_unknown_fields)]
 pub struct ControlOptions {
 	pub keys: KeyOptions,
 	pub auto_jump: Option<bool>,
@@ -78,6 +80,7 @@ pub struct ControlOptions {
 
 #[derive(Deserialize, Serialize, Debug, Clone, Default)]
 #[serde(default)]
+#[serde(deny_unknown_fields)]
 pub struct ChatOptions {
 	pub auto_command_suggestions: Option<bool>,
 	pub enable_colors: Option<bool>,
@@ -99,6 +102,7 @@ pub struct ChatOptions {
 
 #[derive(Deserialize, Serialize, Debug, Clone, Default)]
 #[serde(default)]
+#[serde(deny_unknown_fields)]
 pub struct VideoOptions {
 	pub vsync: Option<bool>,
 	pub entity_shadows: Option<bool>,
@@ -132,6 +136,7 @@ pub struct VideoOptions {
 
 #[derive(Deserialize, Serialize, Debug, Clone, Default)]
 #[serde(default)]
+#[serde(deny_unknown_fields)]
 pub struct VolumeOptions {
 	pub master: Option<f32>,
 	pub music: Option<f32>,
@@ -147,6 +152,7 @@ pub struct VolumeOptions {
 
 #[derive(Deserialize, Serialize, Debug, Clone, Default)]
 #[serde(default)]
+#[serde(deny_unknown_fields)]
 pub struct SoundOptions {
 	pub volume: VolumeOptions,
 	pub show_subtitles: Option<bool>,
@@ -156,6 +162,7 @@ pub struct SoundOptions {
 
 #[derive(Deserialize, Serialize, Debug, Clone, Default)]
 #[serde(default)]
+#[serde(deny_unknown_fields)]
 pub struct SkinOptions {
 	pub cape: Option<bool>,
 	pub jacket: Option<bool>,
@@ -168,6 +175,7 @@ pub struct SkinOptions {
 
 #[derive(Deserialize, Serialize, Debug, Clone, Default)]
 #[serde(default)]
+#[serde(deny_unknown_fields)]
 pub struct StreamOptions {
 	pub bytes_per_pixel: Option<f32>,
 	pub chat_enabled: Option<bool>,
@@ -184,6 +192,7 @@ pub struct StreamOptions {
 
 #[derive(Deserialize, Serialize, Debug, Clone, Default)]
 #[serde(default)]
+#[serde(deny_unknown_fields)]
 pub struct ClientOptions {
 	pub data_version: Option<i16>,
 	pub video: VideoOptions,
