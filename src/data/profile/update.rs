@@ -21,6 +21,7 @@ use crate::package::eval::resolve::resolve;
 use crate::package::eval::{EvalConstants, EvalParameters, EvalPermissions};
 use crate::package::reg::{PkgRegistry, PkgRequest};
 use crate::util::print::{ReplPrinter, HYPHEN_POINT};
+use crate::util::select_random_n_items_from_list;
 use crate::util::versions::MinecraftVersion;
 use crate::util::{json, print::PrintOptions};
 use mcvm_shared::instance::Side;
@@ -322,7 +323,7 @@ async fn resolve_and_batch(
 	Ok((batched, resolved))
 }
 
-/// Install packages on a profile
+/// Install packages on a profile. Returns a set of all unique packages
 async fn update_profile_packages(
 	profile: &Profile,
 	constants: &EvalConstants,
@@ -332,7 +333,7 @@ async fn update_profile_packages(
 	lock: &mut Lockfile,
 	force: bool,
 	client: &Client,
-) -> anyhow::Result<()> {
+) -> anyhow::Result<HashSet<PkgRequest>> {
 	let mut printer = ReplPrinter::new(true);
 	let (batched, resolved) = resolve_and_batch(profile, constants, paths, reg, instances)
 		.await
@@ -420,7 +421,10 @@ async fn update_profile_packages(
 		}
 	}
 
-	Ok(())
+	let mut out = HashSet::new();
+	out.extend(batched.keys().cloned());
+
+	Ok(out)
 }
 
 /// Creates the print message for package installation when updating profiles
@@ -441,6 +445,39 @@ fn format_package_print(pkg: &PkgRequest, instance: Option<&str>, message: &str)
 			message
 		)
 	}
+}
+
+/// Prints support messages about installed packages when updating
+pub async fn print_package_support_messages(
+	packages: &[PkgRequest],
+	reg: &mut PkgRegistry,
+	client: &Client,
+	paths: &Paths,
+) -> anyhow::Result<()> {
+	let package_count = 5;
+	let packages = select_random_n_items_from_list(packages, package_count);
+	let mut links = Vec::new();
+	for package in packages {
+		if let Some(link) = reg
+			.get_metadata(&package, paths, client)
+			.await?
+			.support_link
+			.clone()
+		{
+			links.push((package, link))
+		}
+	}
+	if !links.is_empty() {
+		cprintln!("<s>Packages to consider supporting:");
+		for (req, link) in links {
+			println!(
+				"{}",
+				&format_package_print(req, None, &cformat!("<m> {}", link),)
+			);
+		}
+	}
+
+	Ok(())
 }
 
 /// Update a profile when the Minecraft version has changed
@@ -515,6 +552,9 @@ pub async fn update_profiles(
 	ids: &[String],
 	force: bool,
 ) -> anyhow::Result<()> {
+	let mut all_packages = HashSet::new();
+	let client = Client::new();
+
 	for id in ids {
 		let profile = config
 			.profiles
@@ -522,8 +562,6 @@ pub async fn update_profiles(
 			.ok_or(anyhow!("Unknown profile '{id}'"))?;
 		cprintln!("<s,g>Updating profile <b>{}</b>", id);
 		let mut lock = Lockfile::open(paths).context("Failed to open lockfile")?;
-
-		let client = Client::new();
 
 		let print_options = PrintOptions::new(true, 0);
 		let mut manager = UpdateManager::new(print_options, force, false);
@@ -586,7 +624,7 @@ pub async fn update_profiles(
 				language: config.prefs.language,
 			};
 
-			update_profile_packages(
+			let packages = update_profile_packages(
 				profile,
 				&constants,
 				paths,
@@ -598,12 +636,18 @@ pub async fn update_profiles(
 			)
 			.await?;
 			cprintln!("<g>All packages installed.");
+			all_packages.extend(packages);
 		}
 
 		lock.finish(paths)
 			.await
 			.context("Failed to finish using lockfile")?;
 	}
+
+	let all_packages = Vec::from_iter(all_packages);
+	print_package_support_messages(&all_packages, &mut config.packages, &client, paths)
+		.await
+		.context("Failed to print support messages")?;
 
 	Ok(())
 }

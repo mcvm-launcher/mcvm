@@ -4,6 +4,7 @@ pub mod print;
 pub mod versions;
 
 use cfg_match::cfg_match;
+use rand::Rng;
 
 cfg_match! {
 	target_os = "linux" => {
@@ -142,6 +143,24 @@ pub fn merge_options<T>(left: Option<T>, right: Option<T>) -> Option<T> {
 	} else {
 		left
 	}
+}
+
+/// Selects a random set of n elements from a list. The return slice will not necessarily be of n length
+pub fn select_random_n_items_from_list<'a, T>(list: &'a [T], n: usize) -> Vec<&'a T> {
+	let mut indices: Vec<usize> = (0..list.len()).collect();
+	let mut rng = rand::thread_rng();
+	let mut chosen = Vec::new();
+	for _ in 0..n {
+		if indices.is_empty() {
+			break;
+		}
+
+		let index = rng.gen_range(0..indices.len());
+		let index = indices.remove(index);
+		chosen.push(&list[index]);
+	}
+
+	chosen
 }
 
 pub trait ToInt {
