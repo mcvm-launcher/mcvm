@@ -88,10 +88,14 @@ impl ConditionKind {
 	/// Add arguments to the condition from tokens
 	pub fn parse(&mut self, tok: &Token, pos: &TextPos) -> anyhow::Result<()> {
 		match tok {
-			Token::Ident(name) if name == "and" => {
+			Token::Ident(name) => {
 				if self.is_finished_parsing() {
 					let current = Box::new(self.clone());
-					*self = ConditionKind::And(current, None);
+					match name.as_str() {
+						"and" => *self = ConditionKind::And(current, None),
+						"or" => *self = ConditionKind::Or(current, None),
+						_ => bail!("Unknown condition combinator '{name}'"),
+					}
 					return Ok(());
 				}
 			}
