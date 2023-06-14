@@ -17,13 +17,19 @@ use std::hash::Hash;
 use std::path::Path;
 
 /// Where a package was requested from
-#[derive(Debug, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Ord)]
 pub enum PkgRequestSource {
 	UserRequire,
 	Bundled(Box<PkgRequest>),
 	Dependency(Box<PkgRequest>),
 	Refused(Box<PkgRequest>),
 	Repository,
+}
+
+impl PartialOrd for PkgRequestSource {
+	fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+		Some(self.to_num().cmp(&other.to_num()))
+	}
 }
 
 impl PkgRequestSource {
@@ -39,6 +45,17 @@ impl PkgRequestSource {
 	pub fn is_user_bundled(&self) -> bool {
 		matches!(self, Self::Bundled(source) if source.source.is_user_bundled())
 			|| matches!(self, Self::UserRequire)
+	}
+
+	/// Converts to a number, used for ordering
+	fn to_num(&self) -> u8 {
+		match self {
+			Self::UserRequire => 0,
+			Self::Bundled(..) => 1,
+			Self::Dependency(..) => 2,
+			Self::Refused(..) => 3,
+			Self::Repository => 4,
+		}
 	}
 }
 
