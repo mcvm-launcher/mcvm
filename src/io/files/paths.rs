@@ -34,6 +34,8 @@ pub struct Paths {
 	pub launch_logs: PathBuf,
 	/// Used for runtime info like PIDs
 	pub run: PathBuf,
+	/// Storing instance snapshots
+	pub snapshots: PathBuf,
 }
 
 impl Paths {
@@ -57,6 +59,7 @@ impl Paths {
 			.runtime_dir()
 			.map(|x| x.to_path_buf())
 			.unwrap_or(internal.join("run"));
+		let snapshots = internal.join("snapshots");
 
 		tokio::fs::create_dir_all(&data).await?;
 		tokio::fs::create_dir_all(project.cache_dir()).await?;
@@ -71,6 +74,7 @@ impl Paths {
 		tokio::fs::create_dir_all(&logs).await?;
 		tokio::fs::create_dir_all(&launch_logs).await?;
 		tokio::fs::create_dir_all(&run).await?;
+		tokio::fs::create_dir_all(&snapshots).await?;
 
 		Ok(Paths {
 			base,
@@ -87,6 +91,7 @@ impl Paths {
 			logs,
 			launch_logs,
 			run,
+			snapshots,
 		})
 	}
 }

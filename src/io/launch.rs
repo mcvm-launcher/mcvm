@@ -3,7 +3,6 @@ use std::fs::File;
 use std::io::Write;
 use std::path::{Path, PathBuf};
 use std::process::Command;
-use std::time::{SystemTime, UNIX_EPOCH};
 
 use anyhow::Context;
 use color_print::cprintln;
@@ -15,6 +14,7 @@ use crate::io::java::{
 	args::{MemoryArg, MemoryNum},
 	JavaKind,
 };
+use crate::util::utc_timestamp;
 use mcvm_shared::instance::Side;
 
 use super::files::paths::Paths;
@@ -80,10 +80,9 @@ impl LaunchOptions {
 
 /// Get the name of the launch log file
 fn log_file_name(instance_name: &str) -> anyhow::Result<String> {
-	let now = SystemTime::now();
 	Ok(format!(
 		"{instance_name}-{}.txt",
-		now.duration_since(UNIX_EPOCH)?.as_secs()
+		utc_timestamp()?
 	))
 }
 

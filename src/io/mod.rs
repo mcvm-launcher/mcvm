@@ -4,6 +4,7 @@ pub mod launch;
 pub mod lock;
 pub mod minecraft;
 pub mod options;
+pub mod snapshot;
 
 /// An enum very similar to `Option<T>` that lets us access it with an easier assertion.
 /// It is meant for data that we know should already be full at some point.

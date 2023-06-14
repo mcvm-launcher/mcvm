@@ -3,6 +3,8 @@ pub mod mojang;
 pub mod print;
 pub mod versions;
 
+use std::time::{SystemTime, UNIX_EPOCH};
+
 use cfg_match::cfg_match;
 use rand::Rng;
 
@@ -161,6 +163,11 @@ pub fn select_random_n_items_from_list<'a, T>(list: &'a [T], n: usize) -> Vec<&'
 	}
 
 	chosen
+}
+
+/// Gets the current UTC timestamp
+pub fn utc_timestamp() -> anyhow::Result<u64> {
+	Ok(SystemTime::now().duration_since(UNIX_EPOCH)?.as_secs())
 }
 
 pub trait ToInt {

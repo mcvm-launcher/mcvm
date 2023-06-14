@@ -3,6 +3,8 @@ pub mod paths;
 use std::fs;
 use std::path::Path;
 
+use anyhow::ensure;
+
 /// Create a directory that may already exist without an error
 pub fn create_dir(path: &Path) -> std::io::Result<()> {
 	if path.exists() {
@@ -58,5 +60,26 @@ pub fn dir_symlink(path: &Path, target: &Path) -> std::io::Result<()> {
 #[cfg(target_os = "linux")]
 pub fn dir_symlink(path: &Path, target: &Path) -> std::io::Result<()> {
 	std::os::unix::fs::symlink(path, target)?;
+	Ok(())
+}
+
+/// Copy the contents of a directory recursively to another directory.
+/// Identical files will be overwritten
+pub async fn copy_dir_contents_async(src: &Path, dest: &Path) -> anyhow::Result<()> {
+	ensure!(src.is_dir());
+	ensure!(dest.is_dir());
+
+	for file in fs::read_dir(src)? {
+		let file = file?;
+		let src_path = file.path();
+		let rel = src_path.strip_prefix(src)?;
+		let dest_path = dest.join(rel);
+
+		let mut src_file = tokio::io::BufReader::new(tokio::fs::File::open(src_path).await?);
+		let mut dest_file = tokio::io::BufWriter::new(tokio::fs::File::create(dest_path).await?);
+
+		tokio::io::copy(&mut src_file, &mut dest_file).await?;
+	}
+
 	Ok(())
 }
