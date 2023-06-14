@@ -60,6 +60,7 @@ pub struct Instance {
 	classpath: Option<Classpath>,
 	jar_path: Later<PathBuf>,
 	main_class: Option<String>,
+	datapack_folder: Option<String>,
 }
 
 impl Instance {
@@ -68,6 +69,7 @@ impl Instance {
 		id: &str,
 		modifications: GameModifications,
 		launch: LaunchOptions,
+		datapack_folder: Option<String>,
 	) -> Self {
 		Self {
 			kind,
@@ -79,6 +81,7 @@ impl Instance {
 			classpath: None,
 			jar_path: Later::new(),
 			main_class: None,
+			datapack_folder,
 		}
 	}
 
@@ -149,16 +152,24 @@ impl Instance {
 					vec![]
 				}
 			}
-			AddonKind::Datapack => match self.kind {
-				InstKind::Client { .. } => inst_dir
-					.join("saves")
-					.read_dir()
-					.context("Failed to read saves directory")?
-					.filter_map(|world| world.map(|world| world.path().join("datapacks")).ok())
-					.collect(),
-				// TODO: Different world paths in options
-				InstKind::Server { .. } => vec![inst_dir.join("world").join("datapacks")],
-			},
+			AddonKind::Datapack => {
+				if let Some(datapack_folder) = &self.datapack_folder {
+					vec![inst_dir.join(datapack_folder)]
+				} else {
+					match self.kind {
+						InstKind::Client { .. } => inst_dir
+							.join("saves")
+							.read_dir()
+							.context("Failed to read saves directory")?
+							.filter_map(|world| {
+								world.map(|world| world.path().join("datapacks")).ok()
+							})
+							.collect(),
+						// TODO: Different world paths in options
+						InstKind::Server { .. } => vec![inst_dir.join("world").join("datapacks")],
+					}
+				}
+			}
 		})
 	}
 

@@ -215,6 +215,8 @@ pub enum FullInstanceConfig {
 		window: ClientWindowConfig,
 		#[serde(default)]
 		preset: Option<String>,
+		#[serde(default)]
+		datapack_folder: Option<String>,
 	},
 	Server {
 		#[serde(default)]
@@ -223,6 +225,8 @@ pub enum FullInstanceConfig {
 		options: Option<Box<ServerOptions>>,
 		#[serde(default)]
 		preset: Option<String>,
+		#[serde(default)]
+		datapack_folder: Option<String>,
 	},
 }
 
@@ -245,11 +249,13 @@ impl InstanceConfig {
 					options: None,
 					window: ClientWindowConfig::default(),
 					preset: None,
+					datapack_folder: None,
 				},
 				Side::Server => FullInstanceConfig::Server {
 					launch: LaunchConfig::default(),
 					options: None,
 					preset: None,
+					datapack_folder: None,
 				},
 			},
 		}
@@ -261,14 +267,11 @@ impl InstanceConfig {
 			self,
 			Self::Full(
 				FullInstanceConfig::Client {
-					launch: _,
-					options: _,
-					window: _,
-					preset: Some(..)
+					preset: Some(..),
+					..
 				} | FullInstanceConfig::Server {
-					launch: _,
-					options: _,
-					preset: Some(..)
+					preset: Some(..),
+					..
 				}
 			)
 		)
@@ -290,12 +293,14 @@ pub fn merge_instance_configs(
 				mut launch,
 				options,
 				mut window,
+				datapack_folder,
 				..
 			},
 			FullInstanceConfig::Client {
 				launch: launch2,
 				options: options2,
 				window: window2,
+				datapack_folder: datapack_folder2,
 				..
 			},
 		) => Ok::<FullInstanceConfig, anyhow::Error>(FullInstanceConfig::Client {
@@ -303,22 +308,26 @@ pub fn merge_instance_configs(
 			options: merge_options(options, options2),
 			window: window.merge(window2).clone(),
 			preset: None,
+			datapack_folder: merge_options(datapack_folder, datapack_folder2),
 		}),
 		(
 			FullInstanceConfig::Server {
 				mut launch,
 				options,
+				datapack_folder,
 				..
 			},
 			FullInstanceConfig::Server {
 				launch: launch2,
 				options: options2,
+				datapack_folder: datapack_folder2,
 				..
 			},
 		) => Ok::<FullInstanceConfig, anyhow::Error>(FullInstanceConfig::Server {
 			launch: launch.merge(launch2).clone(),
 			options: merge_options(options, options2),
 			preset: None,
+			datapack_folder: merge_options(datapack_folder, datapack_folder2),
 		}),
 		_ => bail!("Instance types do not match"),
 	}?;
@@ -334,15 +343,12 @@ pub fn read_instance_config(
 ) -> anyhow::Result<Instance> {
 	let config = if let InstanceConfig::Full(
 		FullInstanceConfig::Client {
-			launch: _,
-			options: _,
-			window: _,
 			preset: Some(preset),
+			..
 		}
 		| FullInstanceConfig::Server {
-			launch: _,
-			options: _,
 			preset: Some(preset),
+			..
 		},
 	) = config
 	{
@@ -353,7 +359,7 @@ pub fn read_instance_config(
 	} else {
 		config.clone()
 	};
-	let (kind, launch) = match config {
+	let (kind, launch, datapack_folder) = match config {
 		InstanceConfig::Simple(side) => (
 			match side {
 				Side::Client => InstKind::Client {
@@ -363,17 +369,26 @@ pub fn read_instance_config(
 				Side::Server => InstKind::Server { options: None },
 			},
 			LaunchConfig::default(),
+			None,
 		),
 		InstanceConfig::Full(config) => match config {
 			FullInstanceConfig::Client {
 				launch,
 				options,
 				window,
+				datapack_folder,
 				..
-			} => (InstKind::Client { options, window }, launch),
+			} => (
+				InstKind::Client { options, window },
+				launch,
+				datapack_folder,
+			),
 			FullInstanceConfig::Server {
-				launch, options, ..
-			} => (InstKind::Server { options }, launch),
+				launch,
+				options,
+				datapack_folder,
+				..
+			} => (InstKind::Server { options }, launch, datapack_folder),
 		},
 	};
 
@@ -382,6 +397,7 @@ pub fn read_instance_config(
 		id,
 		profile.modifications.clone(),
 		launch.to_options()?,
+		datapack_folder.clone(),
 	);
 
 	Ok(instance)
@@ -438,6 +454,7 @@ mod tests {
 						}),
 					},
 					preset: None,
+					datapack_folder: None,
 				}),
 			);
 			presets
@@ -454,6 +471,7 @@ mod tests {
 			options: None,
 			window: ClientWindowConfig::default(),
 			preset: Some(String::from("hello")),
+			datapack_folder: None,
 		});
 		let instance = read_instance_config("test", &config, &profile, &presets)
 			.expect("Failed to read instance config");
@@ -476,6 +494,7 @@ mod tests {
 			launch: LaunchConfig::default(),
 			options: None,
 			preset: Some(String::from("hello")),
+			datapack_folder: None,
 		});
 		read_instance_config("test", &config, &profile, &presets)
 			.expect_err("Instance kinds should be incompatible");
