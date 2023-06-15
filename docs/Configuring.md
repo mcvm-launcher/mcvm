@@ -97,27 +97,36 @@ or
 		}
 	},
 	"datapack_folder": String,
+	"snapshots": {
+		"paths": [String],
+		"max_count": Integer,
+		"storage_type": "folder" | "archive
+	},
 	"preset": String
 }
 ```
 
 The first form just has the type of the instance.
 
- * `type`: The type of the instance, either `"client"` or `"server"`.
- * `launch` (Optional): Options that modify the game execution.
- * `launch.args` (Optional): Custom arguments that will be passed to the Java Virtual Machine and game. Each one is optional and can either be a string of arguments separated by spaces or a list.
- * `launch.memory` (Optional): Memory sizes for the Java heap initial and maximum space. Use a string to set both (recommended), or set them individually using an object. These follow the same format as the Java arguments (e.g. `1024M` or `10G`) and should be preferred to using custom arguments as it allows MCVM to do some extra things.
- * `launch.java` (Optional): The Java installation you would like to use. Can be either `"adoptium"` or a path to a custom Java executable. Defaults to `"adoptium"`.
- * `launch.preset` (Optional): A preset that will automatically apply changes to your launch configuration to improve your experience.
+ * `type` (Required): The type of the instance, either `"client"` or `"server"`.
+ * `launch`: Options that modify the game execution.
+ * `launch.args`: Custom arguments that will be passed to the Java Virtual Machine and game. Each one is optional and can either be a string of arguments separated by spaces or a list.
+ * `launch.memory`: Memory sizes for the Java heap initial and maximum space. Use a string to set both (recommended), or set them individually using an object. These follow the same format as the Java arguments (e.g. `1024M` or `10G`) and should be preferred to using custom arguments as it allows MCVM to do some extra things.
+ * `launch.java`: The Java installation you would like to use. Can be either `"adoptium"` or a path to a custom Java executable. Defaults to `"adoptium"`.
+ * `launch.preset`: A preset that will automatically apply changes to your launch configuration to improve your experience.
    * `"none"`: The default. No changes will be applied.
    * `"aikars"`: A popular set of tuned arguments for better performance. This works better for servers that have a lot of available memory (8GB+) and is not recommended otherwise. See https://docs.papermc.io/paper/aikars-flags for more information.
 	* `"krusic"`: A supposedly faster preset that uses ZGC as opposed to G1GC.
 	* `"obydux"`: Performance arguments for GraalVM EE.
- * `launch.quickplay` (Optional): Specify options for the Quick Play feature, which will automatically start the client in a world, server, or realm. The `type` field selects the kind of Quick Play that you want. Use the other fields to specify which world, server, server port, and realm you want to Quick Play into when launching. Server Quick Play will work on older versions but the other two types will not.
+ * `launch.quickplay`: Specify options for the Quick Play feature, which will automatically start the client in a world, server, or realm. The `type` field selects the kind of Quick Play that you want. Use the other fields to specify which world, server, server port, and realm you want to Quick Play into when launching. Server Quick Play will work on older versions but the other two types will not.
  * `options` (Optional): Options to apply to this instance specifically. They will override global options. They are in the format of either the client or server section depending on the instance type.
- * `window.resolution` (Optional): Set a custom resolution for the game when launching. Only available for the client. Both width and height must be present if this option is used.
- * `datapack_folder` (Optional): Make mcvm install datapack type addons to this folder instead of every existing world. This provides better behavior than the default one, but requires a modification of some sort that enables global datapacks. This path is relative to the game directory of the instance (`.minecraft` or the folder where the server.properties is).
- * `preset` (Optional): A preset from the `instance_presets` field to base this instance on.
+ * `window.resolution`: Set a custom resolution for the game when launching. Only available for the client. Both width and height must be present if this option is used.
+ * `datapack_folder`: Make mcvm install datapack type addons to this folder instead of every existing world. This provides better behavior than the default one, but requires a modification of some sort that enables global datapacks. This path is relative to the game directory of the instance (`.minecraft` or the folder where the server.properties is).
+ * `snapshots`: Options for snapshots, which allow you to create backups of the files in an instance.
+ * `snapshots.paths`: The relative paths from the instance directory to store when making snapshots. By default, no files will be backed up.
+ * `snapshots.max_count`: The maximum number of snapshots to keep before automatically deleting the oldest ones. By default, there is no limit.
+ * `snapshots.storage_type`: What format snapshots should be stored in. Defaults to `"archive"`.
+ * `preset`: A preset from the `instance_presets` field to base this instance on.
 
 ## Packages
 Packages are specified globally in the `packages` list or for a specific profile in its `packages` list. It has two valid forms:
