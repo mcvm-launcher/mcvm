@@ -341,7 +341,7 @@ impl Instance {
 			id,
 			&self.snapshot_config,
 			&self.id,
-			&self.get_dir(paths),
+			&self.get_subdir(paths),
 			paths,
 		)?;
 
@@ -364,7 +364,7 @@ impl Instance {
 		let (snapshot_dir, index) = self.open_snapshot_index(paths)?;
 
 		index
-			.restore_snapshot(id, &self.id, &self.get_dir(paths), paths)
+			.restore_snapshot(id, &self.id, &self.get_subdir(paths), paths)
 			.await?;
 
 		index.finish(&snapshot_dir)?;
