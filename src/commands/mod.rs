@@ -3,6 +3,7 @@ mod instance;
 mod package;
 mod profile;
 mod user;
+mod snapshot;
 
 use anyhow::Context;
 use clap::{Parser, Subcommand};
@@ -16,6 +17,7 @@ use self::files::FilesSubcommand;
 use self::instance::InstanceSubcommand;
 use self::package::PackageSubcommand;
 use self::profile::ProfileSubcommand;
+use self::snapshot::SnapshotSubcommand;
 use self::user::UserSubcommand;
 
 // Data passed to commands
@@ -88,6 +90,11 @@ pub enum Command {
 		#[command(subcommand)]
 		command: InstanceSubcommand,
 	},
+	#[command(about = "Manage snapshots for instances")]
+	Snapshot {
+		#[command(subcommand)]
+		command: SnapshotSubcommand,
+	}
 }
 
 #[derive(Debug, Parser)]
@@ -122,5 +129,6 @@ pub async fn run_cli(data: &mut CmdData) -> anyhow::Result<()> {
 		Command::Files { command } => files::run(command, data).await,
 		Command::Package { command } => package::run(command, data).await,
 		Command::Instance { command } => instance::run(command, data).await,
+		Command::Snapshot { command } => snapshot::run(command, data).await,
 	}
 }

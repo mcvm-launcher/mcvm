@@ -13,7 +13,7 @@ use crate::io::launch::LaunchOptions;
 use crate::io::lock::{Lockfile, LockfileAddon};
 use crate::io::options::client::ClientOptions;
 use crate::io::options::server::ServerOptions;
-use crate::io::{files, Later};
+use crate::io::{files, snapshot, Later};
 use crate::net::fabric_quilt;
 use crate::package::eval::{EvalConstants, EvalData, EvalParameters, Routine};
 use crate::package::reg::{PkgRegistry, PkgRequest};
@@ -61,6 +61,7 @@ pub struct Instance {
 	jar_path: Later<PathBuf>,
 	main_class: Option<String>,
 	datapack_folder: Option<String>,
+	snapshot_config: snapshot::Config,
 }
 
 impl Instance {
@@ -70,6 +71,7 @@ impl Instance {
 		modifications: GameModifications,
 		launch: LaunchOptions,
 		datapack_folder: Option<String>,
+		snapshot_config: snapshot::Config,
 	) -> Self {
 		Self {
 			kind,
@@ -82,6 +84,7 @@ impl Instance {
 			jar_path: Later::new(),
 			main_class: None,
 			datapack_folder,
+			snapshot_config,
 		}
 	}
 
@@ -315,5 +318,56 @@ impl Instance {
 		}
 
 		Ok(eval)
+	}
+
+	/// Starts snapshot interactions by generating the path and opening the index
+	pub fn open_snapshot_index(&self, paths: &Paths) -> anyhow::Result<(PathBuf, snapshot::Index)> {
+		let snapshot_dir = snapshot::get_snapshot_directory(&self.id, paths);
+		let index = snapshot::Index::open(&snapshot_dir)?;
+		Ok((snapshot_dir, index))
+	}
+
+	/// Creates a new snapshot for this instance
+	pub fn create_snapshot(
+		&self,
+		id: String,
+		kind: snapshot::SnapshotKind,
+		paths: &Paths,
+	) -> anyhow::Result<()> {
+		let (snapshot_dir, mut index) = self.open_snapshot_index(paths)?;
+
+		index.create_snapshot(
+			kind,
+			id,
+			&self.snapshot_config,
+			&self.id,
+			&self.get_dir(paths),
+			paths,
+		)?;
+
+		index.finish(&snapshot_dir)?;
+		Ok(())
+	}
+
+	/// Removes a snapshot from this instance
+	pub fn remove_snapshot(&self, id: &str, paths: &Paths) -> anyhow::Result<()> {
+		let (snapshot_dir, mut index) = self.open_snapshot_index(paths)?;
+
+		index.remove_snapshot(id, &self.id, paths)?;
+
+		index.finish(&snapshot_dir)?;
+		Ok(())
+	}
+
+	/// Restores a snapshot for this instance
+	pub async fn restore_snapshot(&self, id: &str, paths: &Paths) -> anyhow::Result<()> {
+		let (snapshot_dir, index) = self.open_snapshot_index(paths)?;
+
+		index
+			.restore_snapshot(id, &self.id, &self.get_dir(paths), paths)
+			.await?;
+
+		index.finish(&snapshot_dir)?;
+		Ok(())
 	}
 }

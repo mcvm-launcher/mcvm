@@ -12,6 +12,7 @@ use crate::io::java::JavaKind;
 use crate::io::launch::LaunchOptions;
 use crate::io::options::client::ClientOptions;
 use crate::io::options::server::ServerOptions;
+use crate::io::snapshot;
 use crate::util::merge_options;
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
@@ -217,6 +218,8 @@ pub enum FullInstanceConfig {
 		preset: Option<String>,
 		#[serde(default)]
 		datapack_folder: Option<String>,
+		#[serde(default)]
+		snapshots: Option<snapshot::Config>,
 	},
 	Server {
 		#[serde(default)]
@@ -227,6 +230,8 @@ pub enum FullInstanceConfig {
 		preset: Option<String>,
 		#[serde(default)]
 		datapack_folder: Option<String>,
+		#[serde(default)]
+		snapshots: Option<snapshot::Config>,
 	},
 }
 
@@ -250,12 +255,14 @@ impl InstanceConfig {
 					window: ClientWindowConfig::default(),
 					preset: None,
 					datapack_folder: None,
+					snapshots: None,
 				},
 				Side::Server => FullInstanceConfig::Server {
 					launch: LaunchConfig::default(),
 					options: None,
 					preset: None,
 					datapack_folder: None,
+					snapshots: None,
 				},
 			},
 		}
@@ -294,6 +301,7 @@ pub fn merge_instance_configs(
 				options,
 				mut window,
 				datapack_folder,
+				snapshots,
 				..
 			},
 			FullInstanceConfig::Client {
@@ -301,6 +309,7 @@ pub fn merge_instance_configs(
 				options: options2,
 				window: window2,
 				datapack_folder: datapack_folder2,
+				snapshots: snapshots2,
 				..
 			},
 		) => Ok::<FullInstanceConfig, anyhow::Error>(FullInstanceConfig::Client {
@@ -309,18 +318,21 @@ pub fn merge_instance_configs(
 			window: window.merge(window2).clone(),
 			preset: None,
 			datapack_folder: merge_options(datapack_folder, datapack_folder2),
+			snapshots: merge_options(snapshots, snapshots2),
 		}),
 		(
 			FullInstanceConfig::Server {
 				mut launch,
 				options,
 				datapack_folder,
+				snapshots,
 				..
 			},
 			FullInstanceConfig::Server {
 				launch: launch2,
 				options: options2,
 				datapack_folder: datapack_folder2,
+				snapshots: snapshots2,
 				..
 			},
 		) => Ok::<FullInstanceConfig, anyhow::Error>(FullInstanceConfig::Server {
@@ -328,6 +340,7 @@ pub fn merge_instance_configs(
 			options: merge_options(options, options2),
 			preset: None,
 			datapack_folder: merge_options(datapack_folder, datapack_folder2),
+			snapshots: merge_options(snapshots, snapshots2),
 		}),
 		_ => bail!("Instance types do not match"),
 	}?;
@@ -359,7 +372,7 @@ pub fn read_instance_config(
 	} else {
 		config.clone()
 	};
-	let (kind, launch, datapack_folder) = match config {
+	let (kind, launch, datapack_folder, snapshot_config) = match config {
 		InstanceConfig::Simple(side) => (
 			match side {
 				Side::Client => InstKind::Client {
@@ -370,6 +383,7 @@ pub fn read_instance_config(
 			},
 			LaunchConfig::default(),
 			None,
+			None,
 		),
 		InstanceConfig::Full(config) => match config {
 			FullInstanceConfig::Client {
@@ -377,18 +391,26 @@ pub fn read_instance_config(
 				options,
 				window,
 				datapack_folder,
+				snapshots,
 				..
 			} => (
 				InstKind::Client { options, window },
 				launch,
 				datapack_folder,
+				snapshots,
 			),
 			FullInstanceConfig::Server {
 				launch,
 				options,
 				datapack_folder,
+				snapshots,
 				..
-			} => (InstKind::Server { options }, launch, datapack_folder),
+			} => (
+				InstKind::Server { options },
+				launch,
+				datapack_folder,
+				snapshots,
+			),
 		},
 	};
 
@@ -398,6 +420,7 @@ pub fn read_instance_config(
 		profile.modifications.clone(),
 		launch.to_options()?,
 		datapack_folder.clone(),
+		snapshot_config.unwrap_or_default(),
 	);
 
 	Ok(instance)
@@ -455,6 +478,7 @@ mod tests {
 					},
 					preset: None,
 					datapack_folder: None,
+					snapshots: None,
 				}),
 			);
 			presets
@@ -472,6 +496,7 @@ mod tests {
 			window: ClientWindowConfig::default(),
 			preset: Some(String::from("hello")),
 			datapack_folder: None,
+			snapshots: None,
 		});
 		let instance = read_instance_config("test", &config, &profile, &presets)
 			.expect("Failed to read instance config");
@@ -495,6 +520,7 @@ mod tests {
 			options: None,
 			preset: Some(String::from("hello")),
 			datapack_folder: None,
+			snapshots: None,
 		});
 		read_instance_config("test", &config, &profile, &presets)
 			.expect_err("Instance kinds should be incompatible");

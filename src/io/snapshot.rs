@@ -66,7 +66,7 @@ impl Index {
 	}
 
 	/// Create a new snapshot
-	pub fn create(
+	pub fn create_snapshot(
 		&mut self,
 		kind: SnapshotKind,
 		snapshot_id: String,
@@ -174,7 +174,7 @@ impl Index {
 }
 
 /// Format for stored snapshots
-#[derive(Serialize, Deserialize, Default, Copy, Clone)]
+#[derive(Serialize, Deserialize, Default, Copy, Clone, Debug)]
 #[serde(rename_all = "snake_case")]
 pub enum StorageType {
 	Folder,
@@ -183,7 +183,7 @@ pub enum StorageType {
 }
 
 /// Settings for snapshots
-#[derive(Serialize, Deserialize, Default)]
+#[derive(Serialize, Deserialize, Default, Clone, Debug)]
 #[serde(default)]
 pub struct Config {
 	pub max_count: Option<u32>,
