@@ -93,7 +93,8 @@ impl Index {
 
 		let mut readers = Vec::new();
 		for path in &config.paths {
-			let paths = get_instance_file_paths(path, instance_dir)?;
+			let paths = get_instance_file_paths(path, instance_dir)
+				.context("Failed to get recursive file paths")?;
 			for path in paths {
 				readers.push((path.clone(), File::open(instance_dir.join(path))?));
 			}
@@ -237,14 +238,23 @@ fn get_instance_file_paths(path: &str, instance_dir: &Path) -> anyhow::Result<Ve
 	if instance_path.is_file() {
 		Ok(vec![path.to_owned()])
 	} else {
-		fs::read_dir(&instance_path)?
-			.map(|file| {
-				let file = file?;
-				let sub_path = file.path();
-				let rel = sub_path.strip_prefix(&instance_path)?;
-				Ok(rel.to_string_lossy().to_string())
-			})
-			.collect()
+		let mut paths = Vec::new();
+		for entry in fs::read_dir(&instance_path)? {
+			let entry = entry?;
+			let sub_path = entry.path();
+			let rel = sub_path.strip_prefix(&instance_dir)?;
+			let rel_str = rel.to_string_lossy().to_string();
+			if sub_path.is_dir() {
+				dbg!(&rel_str);
+				let recursive_paths = get_instance_file_paths(&rel_str, instance_dir)
+					.context("Failed to read subdirectory")?;
+				paths.extend(recursive_paths);
+			} else {
+				paths.push(rel_str);
+			}
+		}
+
+		Ok(paths)
 	}
 }
 
