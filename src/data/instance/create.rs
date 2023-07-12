@@ -17,6 +17,8 @@ use mcvm_shared::modifications::{Modloader, ServerType};
 
 use super::{InstKind, Instance};
 
+pub static DEFAULT_SERVER_MAIN_CLASS: &str = "net.minecraft.server.Main";
+
 impl Instance {
 	/// Get the requirements for this instance
 	pub fn get_requirements(&self) -> HashSet<UpdateRequirement> {
@@ -179,6 +181,7 @@ impl Instance {
 		debug_assert!(matches!(self.kind, InstKind::Server { .. }));
 
 		let mut out = HashSet::new();
+
 		let version = manager.found_version.get();
 		let dir = self.get_dir(paths);
 		files::create_leading_dirs(&dir)?;
@@ -186,6 +189,7 @@ impl Instance {
 		let server_dir = self.get_subdir(paths);
 		files::create_dir(&server_dir)?;
 		let jar_path = server_dir.join("server.jar");
+		self.main_class = Some(DEFAULT_SERVER_MAIN_CLASS.to_string());
 
 		let client_json = manager.client_json.get();
 
@@ -195,7 +199,7 @@ impl Instance {
 		)?;
 		self.add_java(&java_vers.to_string(), manager);
 
-		let classpath = if let Modloader::Fabric | Modloader::Quilt =
+		let mut classpath = if let Modloader::Fabric | Modloader::Quilt =
 			self.modifications.get_modloader(self.kind.to_side())
 		{
 			Some(self.get_fabric_quilt(paths, manager).await?)
@@ -251,6 +255,10 @@ impl Instance {
 				paper_jar_path
 			}
 		});
+
+		if let Some(classpath) = &mut classpath {
+			classpath.add_path(self.jar_path.get());
+		}
 
 		eula_task.await?.context("Failed to create eula.txt")?;
 

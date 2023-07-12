@@ -24,13 +24,6 @@ impl Instance {
 			jvm_args.push(String::from("-cp"));
 			jvm_args.push(classpath.get_str());
 		}
-		jvm_args.push(String::from("-jar"));
-		let jar_path_str = self
-			.jar_path
-			.get()
-			.to_str()
-			.context("Failed to convert server.jar path to a string")?;
-		jvm_args.push(String::from(jar_path_str));
 		game_args.push(String::from("nogui"));
 
 		let launch_args = LaunchArgument {
