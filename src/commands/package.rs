@@ -197,7 +197,12 @@ async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
 	}
 	if let Some(description) = &metadata.description {
 		if !description.is_empty() {
-			cprintln!("   <k!>{}", description);
+			cprintln!("   <s>{}", description);
+		}
+	}
+	if let Some(long_description) = &metadata.long_description {
+		if !long_description.is_empty() {
+			cprintln!("   {}", long_description);
 		}
 	}
 	cprintln!("   <s>ID:</s> <g>{}", id);
@@ -232,6 +237,21 @@ async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
 	if let Some(documentation) = &metadata.documentation {
 		if !documentation.is_empty() {
 			cprintln!("   <s>Documentation:</s> <b!>{}", documentation);
+		}
+	}
+	if let Some(source) = &metadata.source {
+		if !source.is_empty() {
+			cprintln!("   <s>Source:</s> <b!>{}", source);
+		}
+	}
+	if let Some(issues) = &metadata.issues {
+		if !issues.is_empty() {
+			cprintln!("   <s>Issue Tracker:</s> <b!>{}", issues);
+		}
+	}
+	if let Some(community) = &metadata.community {
+		if !community.is_empty() {
+			cprintln!("   <s>Community Link:</s> <b!>{}", community);
 		}
 	}
 	if let Some(license) = &metadata.license {

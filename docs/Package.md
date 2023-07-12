@@ -41,6 +41,7 @@ Logic, relationships with other packages, and addons can only be used in the `@i
 Metadata like `description` and `authors` can only be used in the `@meta` context.
 
 ### List of Instructions
+#### Installation Instructions
  * `if {condition} [arguments...] { ... }`: If instructions let you run instructions inside a block only if a condition is met at runtime. The valid conditions are:
 	 * `value {x} {y}`: Check if two strings are the same. This is meant to be used to check the value of variables.
 	 * `version {pattern}`: Check that the Minecraft version of this instance matches a pattern.
@@ -66,13 +67,21 @@ Metadata like `description` and `authors` can only be used in the `@meta` contex
  * `compat {package} {compat_package}`: Automatically install `compat_package` if `package` is present.
  * `extend {package}`: Specify that this package extends the functionality of another. An error will be created if the package is not present.
  * `notice {message}`: Display a warning or important information as a message to the user. Notice messages may not be more than 128 characters long, and there cannot be more than five of them that are displayed per package evaluation.
+#### Metadata Instructions
  * `name {name}`: Set the display name of the package.
- * `description {description}`: Set the description for this package.
+ * `description {description}`: Set a short description for this package. Should be 1-2 sentences max.
+ * `long_description {description}`: Set a long description for this package.
  * `version {version}`: Set the version of this package. This has no actual meaning to mcvm and should be used only for project versions.
  * `authors {author1} {author2} ...`: Set a list of authors for this package. This should be the authors of the project itself, not the package script.
  * `package_maintainers {author1} {author2} ...`: Set a list of maintainers for this package. This should be the maintainers of the package script, not the project itself.
- * `website {website}`: Set a primary website / repository link / project link / etc.
+ * `website {website}`: Set a primary website / project link / etc.
  * `support_link {link}`: Set a support / donation link.
+ * `documentation {link}`: Set a wiki / documentation link.
+ * `source {link}`: Set a source / repository link.
+ * `issues {link}`: Set an issue tracker link.
+ * `community {link}`: Set a Discord / forum link.
+ * `icon {link}`: Set a link to a small square icon image.
+ * `banner {link}`: Set a link to a large background / banner image.
 
 ### The `addon` Instruction
 The `addon` instruction is a bit more complex. Inside the parentheses you put a set of keys and values to configure the addon and how it is installed. The full addon config looks like this:

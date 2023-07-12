@@ -14,12 +14,18 @@ pub enum InstrKind {
 	If(Condition, BlockId),
 	Name(Option<String>),
 	Description(Option<String>),
+	LongDescription(Option<String>),
 	Version(Option<String>),
 	Authors(Vec<String>),
 	PackageMaintainers(Vec<String>),
 	Website(Option<String>),
 	SupportLink(Option<String>),
 	Documentation(Option<String>),
+	Source(Option<String>),
+	Issues(Option<String>),
+	Community(Option<String>),
+	Icon(Option<String>),
+	Banner(Option<String>),
 	License(Option<String>),
 	Addon {
 		id: Value,
@@ -57,12 +63,18 @@ impl Instruction {
 		let kind = match string {
 			"name" => Ok::<InstrKind, anyhow::Error>(InstrKind::Name(None)),
 			"description" => Ok(InstrKind::Description(None)),
+			"long_description" => Ok(InstrKind::LongDescription(None)),
 			"version" => Ok(InstrKind::Version(None)),
 			"authors" => Ok(InstrKind::Authors(Vec::new())),
 			"package_maintainers" => Ok(InstrKind::PackageMaintainers(Vec::new())),
 			"website" => Ok(InstrKind::Website(None)),
 			"support_link" => Ok(InstrKind::SupportLink(None)),
 			"documentation" => Ok(InstrKind::Documentation(None)),
+			"source" => Ok(InstrKind::Source(None)),
+			"issues" => Ok(InstrKind::Issues(None)),
+			"community" => Ok(InstrKind::Community(None)),
+			"icon" => Ok(InstrKind::Icon(None)),
+			"banner" => Ok(InstrKind::Banner(None)),
 			"license" => Ok(InstrKind::License(None)),
 			"set" => Ok(InstrKind::Set(None, Value::None)),
 			"finish" => Ok(InstrKind::Finish()),
@@ -86,10 +98,16 @@ impl Instruction {
 			match &mut self.kind {
 				InstrKind::Name(text)
 				| InstrKind::Description(text)
+				| InstrKind::LongDescription(text)
 				| InstrKind::Version(text)
 				| InstrKind::Website(text)
 				| InstrKind::SupportLink(text)
 				| InstrKind::Documentation(text)
+				| InstrKind::Source(text)
+				| InstrKind::Issues(text)
+				| InstrKind::Community(text)
+				| InstrKind::Icon(text)
+				| InstrKind::Banner(text)
 				| InstrKind::License(text) => {
 					if text.is_none() {
 						*text = Some(parse_string(tok, pos)?);
