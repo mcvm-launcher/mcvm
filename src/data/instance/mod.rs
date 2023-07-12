@@ -323,7 +323,8 @@ impl Instance {
 	/// Starts snapshot interactions by generating the path and opening the index
 	pub fn open_snapshot_index(&self, paths: &Paths) -> anyhow::Result<(PathBuf, snapshot::Index)> {
 		let snapshot_dir = snapshot::get_snapshot_directory(&self.id, paths);
-		let index = snapshot::Index::open(&snapshot_dir)?;
+		let index =
+			snapshot::Index::open(&snapshot_dir).context("Failed to open snapshot index")?;
 		Ok((snapshot_dir, index))
 	}
 

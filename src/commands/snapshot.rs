@@ -80,7 +80,16 @@ async fn create(data: &mut CmdData, instance: &str, snapshot: &str) -> anyhow::R
 		.instances
 		.get(instance)
 		.ok_or(anyhow!("Instance does not exist"))?;
+
+	let (snapshot_dir, index) = instance.open_snapshot_index(paths)?;
+	if index.snapshot_exists(snapshot) {
+		cprintln!("<y>Warning: Overwriting existing snapshot with same ID");
+	}
+	index.finish(&snapshot_dir)?;
+
 	instance.create_snapshot(snapshot.to_owned(), SnapshotKind::User, paths)?;
+
+	cprintln!("<g>Snapshot created.");
 
 	Ok(())
 }
@@ -97,6 +106,8 @@ async fn remove(data: &mut CmdData, instance: &str, snapshot: &str) -> anyhow::R
 		.ok_or(anyhow!("Instance does not exist"))?;
 	instance.remove_snapshot(snapshot, paths)?;
 
+	cprintln!("<g>Snapshot removed.");
+
 	Ok(())
 }
 
@@ -111,6 +122,8 @@ async fn restore(data: &mut CmdData, instance: &str, snapshot: &str) -> anyhow::
 		.get(instance)
 		.ok_or(anyhow!("Instance does not exist"))?;
 	instance.restore_snapshot(snapshot, paths).await?;
+
+	cprintln!("<g>Snapshot restored.");
 
 	Ok(())
 }

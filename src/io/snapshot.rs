@@ -45,6 +45,7 @@ impl Index {
 
 	/// Open the index
 	pub fn open(snapshot_directory: &Path) -> anyhow::Result<Self> {
+		fs::create_dir_all(snapshot_directory)?;
 		let path = Self::get_path(snapshot_directory);
 		let contents = if path.exists() {
 			let mut file = File::open(&path).context("Failed to open snapshot index")?;
@@ -65,6 +66,11 @@ impl Index {
 		Ok(())
 	}
 
+	/// Checks if a snapshot with an ID exists already
+	pub fn snapshot_exists(&self, snapshot_id: &str) -> bool {
+		self.snapshots.iter().any(|x| x.id == snapshot_id)
+	}
+
 	/// Create a new snapshot
 	pub fn create_snapshot(
 		&mut self,
@@ -75,15 +81,23 @@ impl Index {
 		instance_dir: &Path,
 		paths: &Paths,
 	) -> anyhow::Result<()> {
+		// Remove the snapshot if it exists already
+		if self.snapshot_exists(&snapshot_id) {
+			self.remove_snapshot(&snapshot_id, instance_id, paths)
+				.context("Failed to remove existing snapshot with same ID")?;
+		}
+
 		let snapshot_dir = get_snapshot_directory(instance_id, paths);
 
 		let snapshot_path = get_snapshot_path(&snapshot_dir, &snapshot_id, config.storage_type);
-		let readers: Result<Vec<_>, anyhow::Error> = config
-			.paths
-			.iter()
-			.map(|x| Ok((x.as_str(), File::open(instance_dir.join(x))?)))
-			.collect();
-		let readers = readers?;
+
+		let mut readers = Vec::new();
+		for path in &config.paths {
+			let paths = get_instance_file_paths(path, instance_dir)?;
+			for path in paths {
+				readers.push((path.clone(), File::open(instance_dir.join(path))?));
+			}
+		}
 		write_snapshot_files(&snapshot_path, config, readers)?;
 
 		let now = utc_timestamp()?;
@@ -217,12 +231,29 @@ pub fn generate_random_id() -> String {
 	format!("{num:x}")
 }
 
+/// Gets all file paths from a user-provided path recursively
+fn get_instance_file_paths(path: &str, instance_dir: &Path) -> anyhow::Result<Vec<String>> {
+	let instance_path = instance_dir.join(path);
+	if instance_path.is_file() {
+		Ok(vec![path.to_owned()])
+	} else {
+		fs::read_dir(&instance_path)?
+			.map(|file| {
+				let file = file?;
+				let sub_path = file.path();
+				let rel = sub_path.strip_prefix(&instance_path)?;
+				Ok(rel.to_string_lossy().to_string())
+			})
+			.collect()
+	}
+}
+
 /// Writes snapshot files to the stored format. Takes the path to the snapshot file / directory.
 /// Readers are pairs of relative file paths and readers for files.
-fn write_snapshot_files<'a, R: Read>(
+fn write_snapshot_files<R: Read>(
 	snapshot_path: &Path,
 	config: &Config,
-	readers: Vec<(&'a str, R)>,
+	readers: Vec<(String, R)>,
 ) -> anyhow::Result<()> {
 	match &config.storage_type {
 		StorageType::Archive => {
