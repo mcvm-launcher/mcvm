@@ -187,13 +187,7 @@ async fn download_libraries(
 			}
 			let url = lib.url.clone() + &path;
 			files::create_leading_dirs(&lib_path)?;
-			let resp = client
-				.get(url)
-				.send()
-				.await?
-				.error_for_status()?
-				.bytes()
-				.await?;
+			let resp = download::bytes(url, &client).await?;
 			tokio::fs::write(&lib_path, resp).await?;
 		}
 	}
@@ -214,14 +208,8 @@ async fn download_main_library(
 		return Ok(());
 	}
 	let url = url.to_owned() + &path;
-	let client = Client::new();
-	let resp = client
-		.get(url)
-		.send()
-		.await?
-		.error_for_status()?
-		.bytes()
-		.await?;
+	let resp = download::bytes(url, &Client::new()).await?;
+
 	files::create_leading_dirs_async(&lib_path).await?;
 	tokio::fs::write(&lib_path, resp).await?;
 
