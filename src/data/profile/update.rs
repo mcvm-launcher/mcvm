@@ -551,6 +551,7 @@ pub async fn update_profiles(
 	config: &mut Config,
 	ids: &[String],
 	force: bool,
+	update_packages: bool,
 ) -> anyhow::Result<()> {
 	let mut all_packages = HashSet::new();
 	let client = Client::new();
@@ -599,6 +600,10 @@ pub async fn update_profiles(
 		lock.finish(paths)
 			.await
 			.context("Failed to finish using lockfile")?;
+
+		if !update_packages {
+			return Ok(());
+		}
 
 		if !profile.instances.is_empty() {
 			let version_list = profile

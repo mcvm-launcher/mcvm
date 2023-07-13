@@ -32,6 +32,9 @@ pub enum ProfileSubcommand {
 		/// Whether to update all profiles
 		#[arg(short, long)]
 		all: bool,
+		/// Whether to skip updating packages
+		#[arg(short = 'P', long)]
+		skip_packages: bool,
 		/// The profiles to update
 		profiles: Vec<String>,
 	},
@@ -112,7 +115,13 @@ async fn list(data: &mut CmdData, raw: bool) -> anyhow::Result<()> {
 	Ok(())
 }
 
-async fn update(data: &mut CmdData, ids: &[String], force: bool, all: bool) -> anyhow::Result<()> {
+async fn update(
+	data: &mut CmdData,
+	ids: &[String],
+	force: bool,
+	all: bool,
+	skip_packages: bool,
+) -> anyhow::Result<()> {
 	data.ensure_paths().await?;
 	data.ensure_config(true).await?;
 	let paths = data.paths.get();
@@ -124,7 +133,7 @@ async fn update(data: &mut CmdData, ids: &[String], force: bool, all: bool) -> a
 		ids.to_vec()
 	};
 
-	update_profiles(paths, config, &ids, force).await?;
+	update_profiles(paths, config, &ids, force, !skip_packages).await?;
 
 	Ok(())
 }
@@ -137,6 +146,7 @@ pub async fn run(subcommand: ProfileSubcommand, data: &mut CmdData) -> anyhow::R
 			force,
 			all,
 			profiles,
-		} => update(data, &profiles, force, all).await,
+			skip_packages,
+		} => update(data, &profiles, force, all, skip_packages).await,
 	}
 }
