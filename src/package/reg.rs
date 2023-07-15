@@ -87,7 +87,7 @@ impl PkgRequest {
 			PkgRequestSource::Bundled(bundler) => {
 				format!("{} => {}", bundler.debug_sources(list), self.name)
 			}
-			PkgRequestSource::Repository => format!("Repository->{}{list}", self.name),
+			PkgRequestSource::Repository => format!("Repository -> {}{list}", self.name),
 		}
 	}
 
@@ -382,6 +382,6 @@ mod tests {
 			))),
 		);
 		let debug = req.debug_sources(String::new());
-		assert_eq!(debug, "Repository->baz->bar->foo");
+		assert_eq!(debug, "Repository -> baz -> bar -> foo");
 	}
 }
