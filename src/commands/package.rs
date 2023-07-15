@@ -51,7 +51,6 @@ This package does not need to be installed, it just has to be in the index."
 async fn list(data: &mut CmdData, raw: bool, profile: Option<String>) -> anyhow::Result<()> {
 	data.ensure_paths().await?;
 	data.ensure_config(!raw).await?;
-	let paths = data.paths.get();
 	let config = data.config.get_mut();
 
 	if let Some(profile_id) = profile {
@@ -65,31 +64,20 @@ async fn list(data: &mut CmdData, raw: bool, profile: Option<String>) -> anyhow:
 			} else {
 				cprintln!("<s>Packages in profile <b>{}</b>:", profile_id);
 				for pkg in profile.packages.iter().sorted_by_key(|x| &x.req.name) {
-					let version = config
-						.packages
-						.get_version(&pkg.req, paths)
-						.await
-						.context("Failed to get version of package")?;
-					cprintln!("{}<b!>{}</>:<b!>{}</>", HYPHEN_POINT, pkg.req, version);
+					cprintln!("{}<b!>{}</>", HYPHEN_POINT, pkg.req);
 				}
 			}
 		} else {
 			bail!("Unknown profile '{profile_id}'");
 		}
 	} else {
-		let mut found_pkgs: HashMap<String, (u32, Vec<String>)> = HashMap::new();
+		let mut found_pkgs: HashMap<String, Vec<String>> = HashMap::new();
 		for (id, profile) in config.profiles.iter() {
 			if !profile.packages.is_empty() {
 				for pkg in profile.packages.iter() {
-					let version = config
-						.packages
-						.get_version(&pkg.req, paths)
-						.await
-						.context("Failed to get version of package")?;
 					found_pkgs
 						.entry(pkg.req.name.clone())
-						.or_insert((version, vec![]))
-						.1
+						.or_insert(vec![])
 						.push(id.clone());
 				}
 			}
@@ -100,8 +88,8 @@ async fn list(data: &mut CmdData, raw: bool, profile: Option<String>) -> anyhow:
 			}
 		} else {
 			cprintln!("<s>Packages:");
-			for (pkg, (version, profiles)) in found_pkgs.iter().sorted_by_key(|x| x.0) {
-				cprintln!("<b!>{}</>:<b!>{}</>", pkg, version);
+			for (pkg, profiles) in found_pkgs.iter().sorted_by_key(|x| x.0) {
+				cprintln!("<b!>{}</>", pkg);
 				for profile in profiles.iter().sorted() {
 					cprintln!("{}<k!>{}", HYPHEN_POINT, profile);
 				}
