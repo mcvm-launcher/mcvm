@@ -11,6 +11,7 @@ use super::{EvalConstants, EvalParameters, Routine};
 use crate::package::reg::{PkgRegistry, PkgRequest, PkgRequestSource};
 use crate::package::PkgProfileConfig;
 
+#[derive(Debug)]
 enum ConstraintKind {
 	Require(PkgRequest),
 	UserRequire(PkgRequest),
@@ -22,6 +23,7 @@ enum ConstraintKind {
 }
 
 /// A requirement for the installation of the packages
+#[derive(Debug)]
 struct Constraint {
 	kind: ConstraintKind,
 }
@@ -64,7 +66,7 @@ impl<'a> Resolver<'a> {
 	pub fn is_user_required(&self, req: &PkgRequest) -> bool {
 		self.constraints.iter().any(|x| {
 			matches!(&x.kind, ConstraintKind::UserRequire(dest) if dest == req)
-				|| matches!(&x.kind, ConstraintKind::Bundle(dest) if dest.source.is_user_bundled())
+				|| matches!(&x.kind, ConstraintKind::Bundle(dest) if dest == req && dest.source.is_user_bundled())
 		})
 	}
 
