@@ -79,13 +79,13 @@ impl PkgRequest {
 		match &self.source {
 			PkgRequestSource::UserRequire => format!("{}{list}", self.name),
 			PkgRequestSource::Dependency(source) => {
-				format!("{}->{}", source.debug_sources(list), self.name)
+				format!("{} -> {}", source.debug_sources(list), self.name)
 			}
 			PkgRequestSource::Refused(source) => {
-				format!("{}=X=>{}", source.debug_sources(list), self.name)
+				format!("{} =X=> {}", source.debug_sources(list), self.name)
 			}
 			PkgRequestSource::Bundled(bundler) => {
-				format!("{}=>{}", bundler.debug_sources(list), self.name)
+				format!("{} => {}", bundler.debug_sources(list), self.name)
 			}
 			PkgRequestSource::Repository => format!("Repository->{}{list}", self.name),
 		}
