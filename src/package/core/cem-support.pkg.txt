@@ -10,7 +10,7 @@
 		finish;
 	}
 	if modloader fabriclike {
-		require "custom-entity-models";
+		require "entity-model-features";
 		finish;
 	}
 	fail unsupported_modloader;
