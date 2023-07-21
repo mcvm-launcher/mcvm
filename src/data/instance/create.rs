@@ -209,9 +209,9 @@ impl Instance {
 		let mut classpath = if let Modloader::Fabric | Modloader::Quilt =
 			self.modifications.get_modloader(self.kind.to_side())
 		{
-			Some(self.get_fabric_quilt(paths, manager).await?)
+			self.get_fabric_quilt(paths, manager).await?
 		} else {
-			None
+			Classpath::new()
 		};
 
 		let eula_path = server_dir.join("eula.txt");
@@ -263,9 +263,7 @@ impl Instance {
 			}
 		});
 
-		if let Some(classpath) = &mut classpath {
-			classpath.add_path(self.jar_path.get());
-		}
+		classpath.add_path(self.jar_path.get());
 
 		eula_task.await?.context("Failed to create eula.txt")?;
 
@@ -295,7 +293,7 @@ impl Instance {
 		}
 
 		self.client_json = manager.client_json.clone();
-		self.classpath = classpath;
+		self.classpath = Some(classpath);
 
 		Ok(out)
 	}
