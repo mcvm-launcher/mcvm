@@ -18,6 +18,7 @@ use mcvm_shared::modifications::{Modloader, ServerType};
 use super::{InstKind, Instance};
 
 pub static DEFAULT_SERVER_MAIN_CLASS: &str = "net.minecraft.server.Main";
+pub static PAPER_SERVER_MAIN_CLASS: &str = "io.papermc.paperclip.Main";
 
 impl Instance {
 	/// Get the requirements for this instance
@@ -189,7 +190,13 @@ impl Instance {
 		let server_dir = self.get_subdir(paths);
 		files::create_dir(&server_dir)?;
 		let jar_path = server_dir.join("server.jar");
-		self.main_class = Some(DEFAULT_SERVER_MAIN_CLASS.to_string());
+
+		// Set the main class
+		if let ServerType::Paper = self.modifications.server_type {
+			self.main_class = Some(PAPER_SERVER_MAIN_CLASS.to_string());
+		} else {
+			self.main_class = Some(DEFAULT_SERVER_MAIN_CLASS.to_string());
+		}
 
 		let client_json = manager.client_json.get();
 
