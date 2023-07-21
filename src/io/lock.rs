@@ -320,13 +320,13 @@ impl Lockfile {
 			if current_version.version == version {
 				Ok(false)
 			} else {
-				current_version.version = version.to_string();
 				// Remove the old installation, if it exists
 				let current_version_path = PathBuf::from(&current_version.path);
 				if current_version_path.exists() {
 					fs::remove_dir_all(current_version_path)
 						.context("Failed to remove old Java installation")?;
 				}
+				current_version.version = version.to_string();
 				current_version.path = path_str;
 				Ok(true)
 			}

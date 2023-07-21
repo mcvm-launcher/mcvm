@@ -149,6 +149,8 @@ async fn update_adoptium(
 	{
 		return Ok(extracted_bin_dir);
 	}
+	
+	lock.finish(paths).await?;
 
 	let arc_extension = preferred_archive_extension();
 	let arc_name = format!("adoptium{major_version}{arc_extension}");
@@ -206,6 +208,8 @@ async fn update_zulu(
 	{
 		return Ok(extracted_dir);
 	}
+
+	lock.finish(paths).await?;
 
 	let arc_path = out_dir.join(&package.name);
 
