@@ -137,7 +137,11 @@ impl UpdateManager {
 	}
 
 	/// Run all of the operations that are part of the requirements.
-	pub async fn fulfill_requirements(&mut self, paths: &Paths) -> anyhow::Result<()> {
+	pub async fn fulfill_requirements(
+		&mut self,
+		paths: &Paths,
+		lock: &mut Lockfile,
+	) -> anyhow::Result<()> {
 		let java_required = matches!(
 			self.requirements
 				.iter()
@@ -209,14 +213,13 @@ impl UpdateManager {
 				"majorVersion",
 			)?;
 
-			let mut lock = Lockfile::open(paths).context("Failed to open lockfile")?;
 			let mut java_files = HashSet::new();
 			for req in self.requirements.iter() {
 				if let UpdateRequirement::Java(kind) = req {
 					let mut java = Java::new(kind.clone());
 					java.add_version(&java_vers.to_string());
 					let files = java
-						.install(paths, self, &mut lock)
+						.install(paths, self, lock)
 						.await
 						.context("Failed to install Java")?;
 					java_files.extend(files);
@@ -607,7 +610,7 @@ pub async fn update_profiles(
 
 		if !profile.instances.is_empty() {
 			let version_list = profile
-				.create_instances(&mut config.instances, paths, manager)
+				.create_instances(&mut config.instances, paths, manager, &mut lock)
 				.await
 				.context("Failed to create profile instances")?;
 

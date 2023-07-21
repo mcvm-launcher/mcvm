@@ -4,6 +4,7 @@ use anyhow::Context;
 
 use crate::data::instance::Instance;
 use crate::io::files::paths::Paths;
+use crate::io::lock::Lockfile;
 use crate::package::PkgProfileConfig;
 use crate::util::versions::MinecraftVersion;
 
@@ -43,12 +44,13 @@ impl Profile {
 		reg: &mut InstanceRegistry,
 		paths: &Paths,
 		mut manager: UpdateManager,
+		lock: &mut Lockfile,
 	) -> anyhow::Result<Vec<String>> {
 		for id in self.instances.iter_mut() {
 			let instance = reg.get(id).expect("Profile has unknown instance");
 			manager.add_requirements(instance.get_requirements());
 		}
-		manager.fulfill_requirements(paths).await?;
+		manager.fulfill_requirements(paths, lock).await?;
 		for id in self.instances.iter_mut() {
 			let instance = reg.get_mut(id).expect("Profile has unknown instance");
 			let files = instance

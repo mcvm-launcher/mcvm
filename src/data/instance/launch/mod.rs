@@ -7,6 +7,7 @@ use color_print::cprintln;
 use crate::data::profile::update::UpdateManager;
 use crate::data::{instance::InstKind, user::Auth};
 use crate::io::files::paths::Paths;
+use crate::io::lock::Lockfile;
 use crate::util::print::PrintOptions;
 use crate::util::versions::MinecraftVersion;
 
@@ -17,6 +18,7 @@ impl Instance {
 	pub async fn launch(
 		&mut self,
 		paths: &Paths,
+		lock: &mut Lockfile,
 		auth: &Auth,
 		debug: bool,
 		token: Option<String>,
@@ -31,7 +33,7 @@ impl Instance {
 			.context("Failed to get version data")?;
 		manager.add_requirements(self.get_requirements());
 		manager
-			.fulfill_requirements(paths)
+			.fulfill_requirements(paths, lock)
 			.await
 			.context("Update failed")?;
 

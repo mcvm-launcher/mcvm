@@ -4,6 +4,7 @@ use color_print::cprintln;
 use itertools::Itertools;
 use mcvm::data::user::AuthState;
 
+use mcvm::io::lock::Lockfile;
 use mcvm::{data::instance::InstKind, util::print::HYPHEN_POINT};
 
 use super::CmdData;
@@ -79,8 +80,11 @@ pub async fn launch(
 		.iter()
 		.find(|(.., profile)| profile.instances.contains(&instance.id))
 		.expect("Instance does not belong to any profiles");
+
+	let mut lock = Lockfile::open(paths)?;
+
 	instance
-		.launch(paths, &config.auth, debug, token, &profile.version)
+		.launch(paths, &mut lock, &config.auth, debug, token, &profile.version)
 		.await
 		.context("Instance failed to launch")?;
 

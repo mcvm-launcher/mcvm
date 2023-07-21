@@ -11,7 +11,7 @@ use mcvm_shared::pkg::PkgIdentifier;
 use super::files::paths::Paths;
 
 /// Format for an addon in the lockfile
-#[derive(Serialize, Deserialize, PartialEq, Clone)]
+#[derive(Serialize, Deserialize, PartialEq, Clone, Debug)]
 pub struct LockfileAddon {
 	#[serde(alias = "name")]
 	id: String,
@@ -68,26 +68,26 @@ impl LockfileAddon {
 	}
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct LockfilePackage {
 	version: u32,
 	addons: Vec<LockfileAddon>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 struct LockfileProfile {
 	version: String,
 	paper_build: Option<u16>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 struct LockfileJavaVersion {
 	version: String,
 	path: String,
 }
 
 /// Contains maps of major versions to information about installations
-#[derive(Serialize, Deserialize, Default)]
+#[derive(Serialize, Deserialize, Default, Debug)]
 #[serde(default)]
 struct LockfileJava {
 	adoptium: HashMap<String, LockfileJavaVersion>,
@@ -100,7 +100,7 @@ pub enum LockfileJavaInstallation {
 	Zulu,
 }
 
-#[derive(Serialize, Deserialize, Default)]
+#[derive(Serialize, Deserialize, Default, Debug)]
 #[serde(default)]
 struct LockfileContents {
 	packages: HashMap<String, HashMap<String, LockfilePackage>>,
@@ -124,6 +124,7 @@ impl LockfileContents {
 }
 
 /// A file that remembers important info like what files and packages are currently installed
+#[derive(Debug)]
 pub struct Lockfile {
 	contents: LockfileContents,
 }
