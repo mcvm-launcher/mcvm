@@ -149,7 +149,7 @@ async fn update_adoptium(
 	{
 		return Ok(extracted_bin_dir);
 	}
-	
+
 	lock.finish(paths).await?;
 
 	let arc_extension = preferred_archive_extension();

@@ -84,7 +84,14 @@ pub async fn launch(
 	let mut lock = Lockfile::open(paths)?;
 
 	instance
-		.launch(paths, &mut lock, &config.auth, debug, token, &profile.version)
+		.launch(
+			paths,
+			&mut lock,
+			&config.auth,
+			debug,
+			token,
+			&profile.version,
+		)
 		.await
 		.context("Instance failed to launch")?;
 

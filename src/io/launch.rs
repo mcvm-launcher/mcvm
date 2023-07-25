@@ -80,10 +80,7 @@ impl LaunchOptions {
 
 /// Get the name of the launch log file
 fn log_file_name(instance_name: &str) -> anyhow::Result<String> {
-	Ok(format!(
-		"{instance_name}-{}.txt",
-		utc_timestamp()?
-	))
+	Ok(format!("{instance_name}-{}.txt", utc_timestamp()?))
 }
 
 /// Get the path to the launch log file

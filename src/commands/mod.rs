@@ -2,8 +2,8 @@ mod files;
 mod instance;
 mod package;
 mod profile;
-mod user;
 mod snapshot;
+mod user;
 
 use anyhow::Context;
 use clap::{Parser, Subcommand};
@@ -94,7 +94,7 @@ pub enum Command {
 	Snapshot {
 		#[command(subcommand)]
 		command: SnapshotSubcommand,
-	}
+	},
 }
 
 #[derive(Debug, Parser)]

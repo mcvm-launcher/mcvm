@@ -1,7 +1,7 @@
 use anyhow::anyhow;
 use clap::Subcommand;
 use color_print::cprintln;
-use mcvm::{util::print::HYPHEN_POINT, io::snapshot::SnapshotKind};
+use mcvm::{io::snapshot::SnapshotKind, util::print::HYPHEN_POINT};
 
 use super::CmdData;
 
@@ -146,7 +146,11 @@ async fn info(data: &mut CmdData, instance_id: &str, snapshot_id: &str) -> anyho
 		.find(|x| x.id == snapshot_id)
 		.ok_or(anyhow!("Snapshot does not exist"))?;
 
-	cprintln!("<s>Snapshot <b>{}</b> in instance <g>{}</g>:", snapshot_id, instance_id);
+	cprintln!(
+		"<s>Snapshot <b>{}</b> in instance <g>{}</g>:",
+		snapshot_id,
+		instance_id
+	);
 	cprintln!("{} Date created: <c>{}", HYPHEN_POINT, snapshot.date);
 
 	index.finish(&snapshot_dir)?;
