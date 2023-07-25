@@ -106,7 +106,7 @@ impl Index {
 			id: snapshot_id,
 			date: now,
 			kind,
-			storage_type: config.storage_type.clone(),
+			storage_type: config.storage_type,
 		});
 
 		self.remove_old_snapshots(config, instance_id, paths)?;
@@ -129,7 +129,7 @@ impl Index {
 		let snapshot = &mut self.snapshots[index];
 
 		let snapshot_dir = get_snapshot_directory(instance_id, paths);
-		let snapshot_path = get_snapshot_path(&snapshot_dir, &snapshot_id, snapshot.storage_type);
+		let snapshot_path = get_snapshot_path(&snapshot_dir, snapshot_id, snapshot.storage_type);
 		if snapshot_path.exists() {
 			match snapshot.storage_type {
 				StorageType::Archive => fs::remove_file(snapshot_path)?,
@@ -181,7 +181,7 @@ impl Index {
 			.ok_or(anyhow!("Snapshot with ID was not found"))?;
 
 		let snapshot_dir = get_snapshot_directory(instance_id, paths);
-		let snapshot_path = get_snapshot_path(&snapshot_dir, &snapshot_id, snapshot.storage_type);
+		let snapshot_path = get_snapshot_path(&snapshot_dir, snapshot_id, snapshot.storage_type);
 		restore_snapshot_files(&snapshot_path, snapshot.storage_type, instance_dir).await?;
 
 		Ok(())
@@ -242,7 +242,7 @@ fn get_instance_file_paths(path: &str, instance_dir: &Path) -> anyhow::Result<Ve
 		for entry in fs::read_dir(&instance_path)? {
 			let entry = entry?;
 			let sub_path = entry.path();
-			let rel = sub_path.strip_prefix(&instance_dir)?;
+			let rel = sub_path.strip_prefix(instance_dir)?;
 			let rel_str = rel.to_string_lossy().to_string();
 			if sub_path.is_dir() {
 				dbg!(&rel_str);

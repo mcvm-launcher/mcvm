@@ -419,7 +419,7 @@ pub fn read_instance_config(
 		id,
 		profile.modifications.clone(),
 		launch.to_options()?,
-		datapack_folder.clone(),
+		datapack_folder,
 		snapshot_config.unwrap_or_default(),
 	);
 

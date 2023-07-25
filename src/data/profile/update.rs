@@ -462,7 +462,7 @@ pub async fn print_package_support_messages(
 	let mut links = Vec::new();
 	for package in packages {
 		if let Some(link) = reg
-			.get_metadata(&package, paths, client)
+			.get_metadata(package, paths, client)
 			.await?
 			.support_link
 			.clone()
