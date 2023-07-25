@@ -6,6 +6,7 @@ pub mod lex;
 pub mod metadata;
 pub mod parse;
 pub mod routine;
+pub mod properties;
 
 use anyhow::{anyhow, bail};
 

@@ -26,6 +26,8 @@ At the root level, a package is organized into **routines** which describe a lis
 ```
 
 The main routine that will be in every single package is the `@install` routine. This routine is run when the package is installed or updated in order to download files for your game.
+The `@meta` routine contains instructions that set optional metadata for the package such as display name, license, authors, etc.
+The `@properties` routine can be used to set certain properties for the package, such as default features.
 
 ## Instructions
 Instructions are individual commands that are run inside routines for your package script. Instructions are separated by semicolons. They often have arguments that can either be an identifier or a string.
