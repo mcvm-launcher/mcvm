@@ -7,6 +7,8 @@ use crate::{instruction::InstrKind, parse::Parsed, routine::PROPERTIES_ROUTINE};
 pub struct PackageProperties {
 	pub features: Option<Vec<String>>,
 	pub default_features: Option<Vec<String>>,
+	pub modrinth_id: Option<String>,
+	pub curseforge_id: Option<String>,
 }
 
 /// Collect the properties from a package
@@ -19,6 +21,8 @@ pub fn eval_properties(parsed: &Parsed) -> anyhow::Result<PackageProperties> {
 				match &instr.kind {
 					InstrKind::Features(list) => out.features = Some(list.clone()),
 					InstrKind::DefaultFeatures(list) => out.default_features = Some(list.clone()),
+					InstrKind::ModrinthID(id) => out.modrinth_id = id.clone(),
+					InstrKind::CurseForgeID(id) => out.curseforge_id = id.clone(),
 					_ => bail!("Instruction is not allowed in this context"),
 				}
 			}

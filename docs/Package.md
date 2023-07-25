@@ -87,6 +87,8 @@ Metadata like `description` and `authors` can only be used in the `@meta` contex
 #### Properties Instructions
  * `features {feature1} {feature2} ...`: Set the allowed features for this package.
  * `default_features {feature1} {feature2} ...`: Set the features enabled by default for this package.
+ * `modrinth_id {id}`: If this package has an addon that is hosted on Modrinth, set this to the Modrinth project ID. This should be set even if the addon is not downloaded from Modrinth.
+ * `curseforge_id {id}`: If this package has an addon that is hosted on CurseForge, set this to the CurseForge project ID. This should be set even if the addon is not downloaded from CurseForge.
 
 ### The `addon` Instruction
 The `addon` instruction is a bit more complex. Inside the parentheses you put a set of keys and values to configure the addon and how it is installed. The full addon config looks like this:

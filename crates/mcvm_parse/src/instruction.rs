@@ -29,6 +29,8 @@ pub enum InstrKind {
 	License(Option<String>),
 	Features(Vec<String>),
 	DefaultFeatures(Vec<String>),
+	ModrinthID(Option<String>),
+	CurseForgeID(Option<String>),
 	Addon {
 		id: Value,
 		file_name: Value,
@@ -80,6 +82,8 @@ impl Instruction {
 			"license" => Ok(InstrKind::License(None)),
 			"features" => Ok(InstrKind::Features(Vec::new())),
 			"default_features" => Ok(InstrKind::DefaultFeatures(Vec::new())),
+			"modrinth_id" => Ok(InstrKind::ModrinthID(None)),
+			"curseforge_id" => Ok(InstrKind::CurseForgeID(None)),
 			"set" => Ok(InstrKind::Set(None, Value::None)),
 			"finish" => Ok(InstrKind::Finish()),
 			"fail" => Ok(InstrKind::Fail(None)),
@@ -112,7 +116,9 @@ impl Instruction {
 				| InstrKind::Community(text)
 				| InstrKind::Icon(text)
 				| InstrKind::Banner(text)
-				| InstrKind::License(text) => {
+				| InstrKind::License(text)
+				| InstrKind::ModrinthID(text)
+				| InstrKind::CurseForgeID(text) => {
 					if text.is_none() {
 						*text = Some(parse_string(tok, pos)?);
 					} else {
