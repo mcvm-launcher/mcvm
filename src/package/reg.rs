@@ -2,6 +2,7 @@ use anyhow::{anyhow, Context};
 use color_print::cformat;
 use mcvm_parse::metadata::PackageMetadata;
 use mcvm_parse::parse::Parsed;
+use mcvm_parse::properties::PackageProperties;
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 
@@ -233,6 +234,19 @@ impl PkgRegistry {
 		pkg.get_metadata(paths, client)
 			.await
 			.context("Failed to get metadata from package")
+	}
+
+	/// Get the properties of a package
+	pub async fn get_properties<'a>(
+		&'a mut self,
+		req: &PkgRequest,
+		paths: &Paths,
+		client: &Client,
+	) -> anyhow::Result<&'a PackageProperties> {
+		let pkg = self.ensure_package_contents(req, paths, client).await?;
+		pkg.get_properties(paths, client)
+			.await
+			.context("Failed to get properties from package")
 	}
 
 	/// Load the contents of a package

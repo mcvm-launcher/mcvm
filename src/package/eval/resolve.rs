@@ -9,7 +9,7 @@ use crate::io::files::paths::Paths;
 
 use super::{EvalConstants, EvalParameters, Routine};
 use crate::package::reg::{PkgRegistry, PkgRequest, PkgRequestSource};
-use crate::package::PkgProfileConfig;
+use crate::package::{calculate_features, PkgProfileConfig};
 
 #[derive(Debug)]
 enum ConstraintKind {
@@ -324,11 +324,20 @@ pub async fn resolve(
 		default_params,
 	};
 
+	let client = Client::new();
+
 	// Create the initial EvalPackage from the installed packages
 	for config in packages.iter().sorted_by_key(|x| &x.req) {
+		let properties = reg
+			.get_properties(&config.req, paths, &client)
+			.await
+			.context("Failed to get package properties for features")?;
+		let features = calculate_features(config, properties).with_context(|| {
+			format!("Failed to calculate features for package '{}'", config.req)
+		})?;
 		let params = EvalParameters {
 			side: resolver.default_params.side,
-			features: config.features.clone(),
+			features,
 			perms: config.permissions.clone(),
 			stability: config.stability,
 		};
@@ -340,8 +349,6 @@ pub async fn resolve(
 			params: Some(params),
 		});
 	}
-
-	let client = Client::new();
 
 	while let Some(task) = resolver.tasks.pop_front() {
 		resolve_task(task, &mut resolver, reg, paths, &client).await?;

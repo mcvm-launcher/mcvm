@@ -27,6 +27,8 @@ pub enum InstrKind {
 	Icon(Option<String>),
 	Banner(Option<String>),
 	License(Option<String>),
+	Features(Vec<String>),
+	DefaultFeatures(Vec<String>),
 	Addon {
 		id: Value,
 		file_name: Value,
@@ -76,6 +78,8 @@ impl Instruction {
 			"icon" => Ok(InstrKind::Icon(None)),
 			"banner" => Ok(InstrKind::Banner(None)),
 			"license" => Ok(InstrKind::License(None)),
+			"features" => Ok(InstrKind::Features(Vec::new())),
+			"default_features" => Ok(InstrKind::DefaultFeatures(Vec::new())),
 			"set" => Ok(InstrKind::Set(None, Value::None)),
 			"finish" => Ok(InstrKind::Finish()),
 			"fail" => Ok(InstrKind::Fail(None)),
@@ -126,9 +130,10 @@ impl Instruction {
 						unexpected_token!(tok, pos);
 					}
 				}
-				InstrKind::Authors(people) | InstrKind::PackageMaintainers(people) => {
-					people.push(parse_string(tok, pos)?)
-				}
+				InstrKind::Authors(list)
+				| InstrKind::PackageMaintainers(list)
+				| InstrKind::Features(list)
+				| InstrKind::DefaultFeatures(list) => list.push(parse_string(tok, pos)?),
 				InstrKind::Compat(package, compat) => {
 					if let Value::None = package {
 						*package = parse_arg(tok, pos)?;

@@ -1,22 +1,37 @@
-use anyhow::bail;
+use anyhow::{bail, ensure};
 
-use crate::{routine::PROPERTIES_ROUTINE, parse::Parsed};
+use crate::{instruction::InstrKind, parse::Parsed, routine::PROPERTIES_ROUTINE};
 
 /// Package properties derived from running the 'properties' routine
 #[derive(Default, Debug)]
 pub struct PackageProperties {
-	
+	pub features: Option<Vec<String>>,
+	pub default_features: Option<Vec<String>>,
 }
 
 /// Collect the properties from a package
 pub fn eval_properties(parsed: &Parsed) -> anyhow::Result<PackageProperties> {
 	if let Some(routine_id) = parsed.routines.get(PROPERTIES_ROUTINE) {
 		if let Some(block) = parsed.blocks.get(routine_id) {
-			let out = PackageProperties::default();
+			let mut out = PackageProperties::default();
 
 			for instr in &block.contents {
 				match &instr.kind {
+					InstrKind::Features(list) => out.features = Some(list.clone()),
+					InstrKind::DefaultFeatures(list) => out.default_features = Some(list.clone()),
 					_ => bail!("Instruction is not allowed in this context"),
+				}
+			}
+
+			// Validate features
+			if let Some(default_features) = &out.default_features {
+				if let Some(features) = &out.features {
+					for feature in default_features {
+						ensure!(
+							features.contains(feature),
+							"Default feature '{feature}' does not exist"
+						);
+					}
 				}
 			}
 

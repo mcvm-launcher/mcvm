@@ -29,6 +29,8 @@ pub enum FullPackageConfig {
 		path: String,
 		#[serde(default)]
 		features: Vec<String>,
+		#[serde(default = "use_default_features_default")]
+		use_default_features: bool,
 		#[serde(default)]
 		permissions: EvalPermissions,
 		#[serde(default)]
@@ -39,11 +41,18 @@ pub enum FullPackageConfig {
 		version: Option<u32>,
 		#[serde(default)]
 		features: Vec<String>,
+		#[serde(default = "use_default_features_default")]
+		use_default_features: bool,
 		#[serde(default)]
 		permissions: EvalPermissions,
 		#[serde(default)]
 		stability: Option<PackageStability>,
 	},
+}
+
+/// Default value for use_default_features
+fn use_default_features_default() -> bool {
+	true
 }
 
 #[derive(Deserialize, Serialize)]
@@ -77,6 +86,7 @@ impl PackageConfig {
 			PackageConfig::Basic(id) => PkgProfileConfig {
 				req: PkgRequest::new(id, PkgRequestSource::UserRequire),
 				features: vec![],
+				use_default_features: true,
 				permissions: EvalPermissions::Standard,
 				stability: profile_stability,
 			},
@@ -86,11 +96,13 @@ impl PackageConfig {
 				version: _,
 				path: _,
 				features,
+				use_default_features,
 				permissions,
 				stability,
 			}) => PkgProfileConfig {
 				req: PkgRequest::new(id, PkgRequestSource::UserRequire),
 				features: features.clone(),
+				use_default_features: *use_default_features,
 				permissions: permissions.clone(),
 				stability: merge_options(Some(profile_stability), stability.to_owned()).unwrap(),
 			},
@@ -98,11 +110,13 @@ impl PackageConfig {
 				id,
 				version: _,
 				features,
+				use_default_features,
 				permissions,
 				stability,
 			}) => PkgProfileConfig {
 				req: PkgRequest::new(id, PkgRequestSource::UserRequire),
 				features: features.clone(),
+				use_default_features: *use_default_features,
 				permissions: permissions.clone(),
 				stability: merge_options(Some(profile_stability), stability.to_owned()).unwrap(),
 			},

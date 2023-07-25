@@ -141,6 +141,7 @@ or
 	"version": Integer,
 	"path": String,
 	"features": [],
+	"use_default_features": Bool,
 	"permissions": "restricted" | "standard" | "elevated",
 	"stability": "stable" | "latest"
 }
@@ -153,6 +154,7 @@ In most cases the first form is all you need. If you want more control over how 
  * `version` (Optional): The version number for the package. This is not needed for remote packages but *required* for local ones.
  * `path` (Optional): The path to a local package script. Only required for local packages.
  * `features` (Optional): A list of strings for package features that you would like to enable.
+ * `use_default_features` (Optional): Whether or not to use the default features of this package. `true` by default.
  * `permissions` (Optional): The amount of control you would like to give this package. Can be `"restricted"`, `"standard"`, or `"elevated"`. Packages you do not trust should be given the `"restricted"` level. Packages that you trust and want to provide access to special commands for can be given `"elevated"`. Defaults to `"standard"`.
  * `stability` (Optional): Specify whether you want this package to use development versions of addons or not. Defaults to using the `package_stability` setting from the profile.
 

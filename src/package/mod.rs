@@ -13,9 +13,10 @@ use std::path::PathBuf;
 use self::core::get_core_package;
 use self::eval::EvalPermissions;
 use self::reg::PkgRequest;
-use anyhow::{anyhow, Context};
+use anyhow::{anyhow, ensure, Context};
 use mcvm_parse::metadata::{eval_metadata, PackageMetadata};
 use mcvm_parse::parse::{lex_and_parse, Parsed};
+use mcvm_parse::properties::{eval_properties, PackageProperties};
 use mcvm_shared::pkg::{PackageStability, PkgIdentifier};
 use reqwest::Client;
 
@@ -27,6 +28,7 @@ pub struct PkgData {
 	contents: String,
 	parsed: Later<Parsed>,
 	metadata: Later<PackageMetadata>,
+	properties: Later<PackageProperties>,
 }
 
 impl PkgData {
@@ -35,6 +37,7 @@ impl PkgData {
 			contents: contents.to_owned(),
 			parsed: Later::new(),
 			metadata: Later::new(),
+			properties: Later::new(),
 		}
 	}
 
@@ -157,6 +160,22 @@ impl Package {
 		}
 		Ok(data.metadata.get())
 	}
+
+	/// Get the properties of the package
+	pub async fn get_properties<'a>(
+		&'a mut self,
+		paths: &Paths,
+		client: &Client,
+	) -> anyhow::Result<&'a PackageProperties> {
+		self.parse(paths, client).await.context("Failed to parse")?;
+		let data = self.data.get_mut();
+		let parsed = data.parsed.get();
+		if data.properties.is_empty() {
+			let properties = eval_properties(parsed).context("Failed to evaluate properties")?;
+			data.properties.fill(properties);
+		}
+		Ok(data.properties.get())
+	}
 }
 
 /// Evaluated configuration for a package, stored in a profile
@@ -164,8 +183,33 @@ impl Package {
 pub struct PkgProfileConfig {
 	pub req: PkgRequest,
 	pub features: Vec<String>,
+	pub use_default_features: bool,
 	pub permissions: EvalPermissions,
 	pub stability: PackageStability,
+}
+
+/// Collect the final set of features for a package
+pub fn calculate_features(
+	config: &PkgProfileConfig,
+	properties: &PackageProperties,
+) -> anyhow::Result<Vec<String>> {
+	let allowed_features = properties.features.clone().unwrap_or_default();
+	let default_features = properties.default_features.clone().unwrap_or_default();
+
+	for feature in &config.features {
+		ensure!(
+			allowed_features.contains(feature),
+			"Configured feature '{feature}' does not exist"
+		);
+	}
+
+	let mut out = Vec::new();
+	if config.use_default_features {
+		out.extend(default_features);
+	}
+	out.extend(config.features.clone());
+
+	Ok(out)
 }
 
 #[cfg(test)]

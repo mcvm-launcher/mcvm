@@ -84,6 +84,9 @@ Metadata like `description` and `authors` can only be used in the `@meta` contex
  * `community {link}`: Set a Discord / forum link.
  * `icon {link}`: Set a link to a small square icon image.
  * `banner {link}`: Set a link to a large background / banner image.
+#### Properties Instructions
+ * `features {feature1} {feature2} ...`: Set the allowed features for this package.
+ * `default_features {feature1} {feature2} ...`: Set the features enabled by default for this package.
 
 ### The `addon` Instruction
 The `addon` instruction is a bit more complex. Inside the parentheses you put a set of keys and values to configure the addon and how it is installed. The full addon config looks like this:
