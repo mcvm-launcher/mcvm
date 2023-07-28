@@ -15,7 +15,7 @@ use crate::io::options::client::ClientOptions;
 use crate::io::options::server::ServerOptions;
 use crate::io::{files, snapshot, Later};
 use crate::net::fabric_quilt;
-use crate::package::eval::{EvalConstants, EvalData, EvalParameters, Routine};
+use crate::package::eval::{EvalData, Routine, EvalInput};
 use crate::package::reg::{PkgRegistry, PkgRequest};
 use crate::util::json;
 
@@ -269,8 +269,7 @@ impl Instance {
 		&self,
 		pkg: &PkgRequest,
 		pkg_version: u32,
-		constants: &'a EvalConstants,
-		params: EvalParameters,
+		eval_input: EvalInput<'a>,
 		reg: &mut PkgRegistry,
 		paths: &Paths,
 		lock: &mut Lockfile,
@@ -278,7 +277,7 @@ impl Instance {
 		client: &Client,
 	) -> anyhow::Result<EvalData<'a>> {
 		let eval = reg
-			.eval(pkg, paths, Routine::Install, constants, params, client)
+			.eval(pkg, paths, Routine::Install, eval_input, client)
 			.await
 			.context("Failed to evaluate package")?;
 

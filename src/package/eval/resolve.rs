@@ -7,7 +7,7 @@ use reqwest::Client;
 
 use crate::io::files::paths::Paths;
 
-use super::{EvalConstants, EvalParameters, Routine};
+use super::{EvalConstants, EvalParameters, Routine, EvalInput};
 use crate::package::reg::{PkgRegistry, PkgRequest, PkgRequestSource};
 use crate::package::{calculate_features, PkgProfileConfig};
 
@@ -187,13 +187,16 @@ async fn resolve_eval_package(
 		.check_constraints(&package)
 		.context("Package did not fit existing constraints")?;
 
+	let input = EvalInput {
+		constants: resolver.constants,
+		params,
+	};
 	let result = reg
 		.eval(
 			&package,
 			paths,
 			Routine::InstallResolve,
-			resolver.constants,
-			params,
+			input,
 			client,
 		)
 		.await

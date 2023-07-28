@@ -7,7 +7,7 @@ use reqwest::Client;
 use serde::{Deserialize, Serialize};
 
 use super::core::is_core_package;
-use super::eval::{EvalConstants, EvalData, EvalParameters, Routine};
+use super::eval::{EvalData, Routine, EvalInput};
 use super::repo::{query_all, PkgRepo};
 use super::{Package, PkgKind};
 use crate::io::files::paths::Paths;
@@ -281,12 +281,11 @@ impl PkgRegistry {
 		req: &PkgRequest,
 		paths: &Paths,
 		routine: Routine,
-		constants: &'a EvalConstants,
-		params: EvalParameters,
+		input: EvalInput<'a>,
 		client: &Client,
 	) -> anyhow::Result<EvalData<'a>> {
 		let pkg = self.ensure_package_contents(req, paths, client).await?;
-		let eval = pkg.eval(paths, routine, constants, params, client).await?;
+		let eval = pkg.eval(paths, routine, input, client).await?;
 		Ok(eval)
 	}
 

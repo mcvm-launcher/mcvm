@@ -19,22 +19,22 @@ pub fn eval_condition(condition: &ConditionKind, eval: &EvalData) -> anyhow::Res
 		ConditionKind::Version(version) => {
 			let version = version.get(&eval.vars)?;
 			let version = VersionPattern::from(&version);
-			Ok(version.matches_single(&eval.constants.version, &eval.constants.version_list))
+			Ok(version.matches_single(&eval.input.constants.version, &eval.input.constants.version_list))
 		}
 		ConditionKind::Side(side) => {
-			Ok(eval.params.side == *side.as_ref().expect("If side is missing"))
+			Ok(eval.input.params.side == *side.as_ref().expect("If side is missing"))
 		}
 		ConditionKind::Modloader(loader) => Ok(loader
 			.as_ref()
 			.expect("If modloader is missing")
-			.matches(&eval.constants.modifications.get_modloader(eval.params.side))),
+			.matches(&eval.input.constants.modifications.get_modloader(eval.input.params.side))),
 		ConditionKind::PluginLoader(loader) => Ok(loader
 			.as_ref()
 			.expect("If plugin_loader is missing")
-			.matches(&eval.constants.modifications.server_type)
-			&& matches!(eval.params.side, Side::Server)),
+			.matches(&eval.input.constants.modifications.server_type)
+			&& matches!(eval.input.params.side, Side::Server)),
 		ConditionKind::Feature(feature) => {
-			Ok(eval.constants.features.contains(&feature.get(&eval.vars)?))
+			Ok(eval.input.constants.features.contains(&feature.get(&eval.vars)?))
 		}
 		ConditionKind::Os(os) => Ok(match os.as_ref().expect("If OS is missing") {
 			OsCondition::Windows => cfg!(windows),
@@ -42,10 +42,10 @@ pub fn eval_condition(condition: &ConditionKind, eval: &EvalData) -> anyhow::Res
 			OsCondition::Other => !(cfg!(windows) || cfg!(linux)),
 		}),
 		ConditionKind::Stability(stability) => {
-			Ok(eval.params.stability == stability.expect("If stability is missing"))
+			Ok(eval.input.params.stability == stability.expect("If stability is missing"))
 		}
 		ConditionKind::Language(lang) => {
-			Ok(eval.constants.language == lang.expect("If language is missing"))
+			Ok(eval.input.constants.language == lang.expect("If language is missing"))
 		}
 		ConditionKind::Value(left, right) => Ok(left.get(&eval.vars)? == right.get(&eval.vars)?),
 		ConditionKind::Defined(var) => Ok(eval

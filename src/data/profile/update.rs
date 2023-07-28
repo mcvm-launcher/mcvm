@@ -18,7 +18,7 @@ use crate::net::fabric_quilt::{self, FabricQuiltMeta};
 use crate::net::minecraft::{assets, game_jar, libraries, version_manifest};
 use crate::net::paper;
 use crate::package::eval::resolve::resolve;
-use crate::package::eval::{EvalConstants, EvalParameters, EvalPermissions};
+use crate::package::eval::{EvalConstants, EvalParameters, EvalPermissions, EvalInput};
 use crate::package::reg::{PkgRegistry, PkgRequest};
 use crate::util::print::{ReplPrinter, HYPHEN_POINT};
 use crate::util::select_random_n_items_from_list;
@@ -363,12 +363,15 @@ async fn update_profile_packages(
 				Some(instance_id),
 				"Installing...",
 			));
+			let input = EvalInput {
+				constants,
+				params,
+			};
 			let result = instance
 				.install_package(
 					package,
 					pkg_version,
-					constants,
-					params,
+					input,
 					reg,
 					paths,
 					lock,

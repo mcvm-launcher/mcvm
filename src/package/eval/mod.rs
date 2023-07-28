@@ -98,13 +98,19 @@ pub struct EvalParameters {
 	pub stability: PackageStability,
 }
 
+/// Combination of both EvalConstants and EvalParameters
+#[derive(Debug, Clone)]
+pub struct EvalInput<'a> {
+	pub constants: &'a EvalConstants,
+	pub params: EvalParameters,
+}
+
 /// Persistent state for evaluation
 #[derive(Debug, Clone)]
 pub struct EvalData<'a> {
+	pub input: EvalInput<'a>,
 	pub vars: HashMap<String, String>,
 	pub addon_reqs: Vec<AddonRequest>,
-	pub constants: &'a EvalConstants,
-	pub params: EvalParameters,
 	pub id: PkgIdentifier,
 	pub level: EvalLevel,
 	pub deps: Vec<Vec<RequiredPackage>>,
@@ -118,16 +124,14 @@ pub struct EvalData<'a> {
 
 impl<'a> EvalData<'a> {
 	pub fn new(
-		constants: &'a EvalConstants,
-		params: EvalParameters,
+		input: EvalInput<'a>,
 		id: PkgIdentifier,
 		routine: &Routine,
 	) -> Self {
 		Self {
+			input,
 			vars: HashMap::new(),
 			addon_reqs: Vec::new(),
-			constants,
-			params,
 			id,
 			level: routine.get_level(),
 			deps: Vec::new(),
@@ -164,8 +168,7 @@ impl Package {
 		&mut self,
 		paths: &Paths,
 		routine: Routine,
-		constants: &'a EvalConstants,
-		params: EvalParameters,
+		input: EvalInput<'a>,
 		client: &Client,
 	) -> anyhow::Result<EvalData<'a>> {
 		self.parse(paths, client).await?;
@@ -180,7 +183,7 @@ impl Package {
 			.get(routine_id)
 			.ok_or(anyhow!("Routine {} does not exist", routine_name))?;
 
-		let mut eval = EvalData::new(constants, params, self.id.clone(), &routine);
+		let mut eval = EvalData::new(input, self.id.clone(), &routine);
 
 		for instr in &block.contents {
 			let result = eval_instr(instr, &mut eval, &parsed.blocks)?;
@@ -325,7 +328,7 @@ pub fn eval_instr(
 						eval.addon_reqs.push(AddonRequest::new(addon, location));
 					} else if let Value::Constant(..) | Value::Var(..) = path {
 						let path = path.get(&eval.vars)?;
-						match eval.constants.perms {
+						match eval.input.constants.perms {
 							EvalPermissions::Elevated => {
 								let path = String::from(shellexpand::tilde(&path));
 								let path = PathBuf::from(path);
