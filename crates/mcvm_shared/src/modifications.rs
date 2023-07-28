@@ -33,7 +33,7 @@ pub enum ModloaderMatch {
 }
 
 impl ModloaderMatch {
-	pub fn from_str(string: &str) -> Option<Self> {
+	pub fn parse_from_str(string: &str) -> Option<Self> {
 		match string {
 			"vanilla" => Some(Self::Vanilla),
 			"forge" => Some(Self::Forge),
@@ -87,7 +87,7 @@ pub enum PluginLoaderMatch {
 }
 
 impl PluginLoaderMatch {
-	pub fn from_str(string: &str) -> Option<Self> {
+	pub fn parse_from_str(string: &str) -> Option<Self> {
 		match string {
 			"vanilla" => Some(Self::Vanilla),
 			"bukkit" => Some(Self::Bukkit),

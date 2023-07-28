@@ -11,7 +11,7 @@ pub enum Side {
 }
 
 impl Side {
-	pub fn from_str(string: &str) -> Option<Self> {
+	pub fn parse_from_str(string: &str) -> Option<Self> {
 		match string {
 			"client" => Some(Self::Client),
 			"server" => Some(Self::Server),

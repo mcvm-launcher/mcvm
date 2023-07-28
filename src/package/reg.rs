@@ -18,7 +18,7 @@ use std::hash::Hash;
 use std::path::Path;
 
 /// Where a package was requested from
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Ord)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum PkgRequestSource {
 	UserRequire,
 	Bundled(Box<PkgRequest>),
@@ -27,9 +27,15 @@ pub enum PkgRequestSource {
 	Repository,
 }
 
+impl Ord for PkgRequestSource {
+	fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+		self.to_num().cmp(&other.to_num())
+	}
+}
+
 impl PartialOrd for PkgRequestSource {
 	fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
-		Some(self.to_num().cmp(&other.to_num()))
+		Some(self.cmp(other))
 	}
 }
 

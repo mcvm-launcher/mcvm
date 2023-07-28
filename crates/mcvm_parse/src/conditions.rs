@@ -131,21 +131,21 @@ impl ConditionKind {
 			},
 			Self::Side(side) => match tok {
 				Token::Ident(name) => {
-					*side = check_enum_condition_argument(Side::from_str(name), name, pos)?
+					*side = check_enum_condition_argument(Side::parse_from_str(name), name, pos)?
 				}
 				_ => unexpected_token!(tok, pos),
 			},
 			Self::Modloader(loader) => match tok {
 				Token::Ident(name) => {
 					*loader =
-						check_enum_condition_argument(ModloaderMatch::from_str(name), name, pos)?
+						check_enum_condition_argument(ModloaderMatch::parse_from_str(name), name, pos)?
 				}
 				_ => unexpected_token!(tok, pos),
 			},
 			Self::PluginLoader(loader) => match tok {
 				Token::Ident(name) => {
 					*loader =
-						check_enum_condition_argument(PluginLoaderMatch::from_str(name), name, pos)?
+						check_enum_condition_argument(PluginLoaderMatch::parse_from_str(name), name, pos)?
 				}
 				_ => unexpected_token!(tok, pos),
 			},

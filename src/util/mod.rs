@@ -148,7 +148,7 @@ pub fn merge_options<T>(left: Option<T>, right: Option<T>) -> Option<T> {
 }
 
 /// Selects a random set of n elements from a list. The return slice will not necessarily be of n length
-pub fn select_random_n_items_from_list<'a, T>(list: &'a [T], n: usize) -> Vec<&'a T> {
+pub fn select_random_n_items_from_list<T>(list: &[T], n: usize) -> Vec<&T> {
 	let mut indices: Vec<usize> = (0..list.len()).collect();
 	let mut rng = rand::thread_rng();
 	let mut chosen = Vec::new();

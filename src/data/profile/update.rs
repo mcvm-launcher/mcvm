@@ -18,7 +18,7 @@ use crate::net::fabric_quilt::{self, FabricQuiltMeta};
 use crate::net::minecraft::{assets, game_jar, libraries, version_manifest};
 use crate::net::paper;
 use crate::package::eval::resolve::resolve;
-use crate::package::eval::{EvalConstants, EvalParameters, EvalPermissions, EvalInput};
+use crate::package::eval::{EvalConstants, EvalInput, EvalParameters, EvalPermissions};
 use crate::package::reg::{PkgRegistry, PkgRequest};
 use crate::util::print::{ReplPrinter, HYPHEN_POINT};
 use crate::util::select_random_n_items_from_list;
@@ -283,15 +283,22 @@ impl UpdateManager {
 	}
 }
 
+/// Shared objects for profile updating functions
+pub struct ProfileUpdateContext<'a> {
+	pub packages: &'a mut PkgRegistry,
+	pub instances: &'a mut InstanceRegistry,
+	pub paths: &'a Paths,
+	pub lock: &'a mut Lockfile,
+	pub client: &'a Client,
+}
+
 /// Resolve packages and create a mapping of packages to a list of instances.
 /// This allows us to update packages in a reasonable order to the user.
 /// It also returns a map of instances to packages so that unused packages can be removed
-async fn resolve_and_batch(
+async fn resolve_and_batch<'a>(
 	profile: &Profile,
 	constants: &EvalConstants,
-	paths: &Paths,
-	reg: &mut PkgRegistry,
-	instances: &InstanceRegistry,
+	ctx: &mut ProfileUpdateContext<'a>,
 ) -> anyhow::Result<(
 	HashMap<PkgRequest, Vec<String>>,
 	HashMap<String, Vec<PkgRequest>>,
@@ -299,7 +306,7 @@ async fn resolve_and_batch(
 	let mut batched: HashMap<PkgRequest, Vec<String>> = HashMap::new();
 	let mut resolved = HashMap::new();
 	for instance_id in &profile.instances {
-		let instance = instances.get(instance_id).ok_or(anyhow!(
+		let instance = ctx.instances.get(instance_id).ok_or(anyhow!(
 			"Instance '{instance_id}' does not exist in the registry"
 		))?;
 		let params = EvalParameters {
@@ -308,7 +315,7 @@ async fn resolve_and_batch(
 			perms: EvalPermissions::Standard,
 			stability: PackageStability::Stable,
 		};
-		let instance_resolved = resolve(&profile.packages, constants, params, paths, reg)
+		let instance_resolved = resolve(&profile.packages, constants, params, ctx.paths, ctx.packages)
 			.await
 			.with_context(|| {
 				format!("Failed to resolve package dependencies for instance '{instance_id}'")
@@ -327,29 +334,26 @@ async fn resolve_and_batch(
 }
 
 /// Install packages on a profile. Returns a set of all unique packages
-async fn update_profile_packages(
+async fn update_profile_packages<'a>(
 	profile: &Profile,
 	constants: &EvalConstants,
-	paths: &Paths,
-	reg: &mut PkgRegistry,
-	instances: &InstanceRegistry,
-	lock: &mut Lockfile,
+	ctx: &mut ProfileUpdateContext<'a>,
 	force: bool,
-	client: &Client,
 ) -> anyhow::Result<HashSet<PkgRequest>> {
 	let mut printer = ReplPrinter::new(true);
-	let (batched, resolved) = resolve_and_batch(profile, constants, paths, reg, instances)
+	let (batched, resolved) = resolve_and_batch(profile, constants, ctx)
 		.await
 		.context("Failed to resolve dependencies for profile")?;
 
 	for (package, package_instances) in batched.iter().sorted_by_key(|x| x.0) {
-		let pkg_version = reg
-			.get_version(package, paths)
+		let pkg_version = ctx
+			.packages
+			.get_version(package, ctx.paths)
 			.await
 			.context("Failed to get version for package")?;
 		let mut notices = Vec::new();
 		for instance_id in package_instances {
-			let instance = instances.get(instance_id).ok_or(anyhow!(
+			let instance = ctx.instances.get(instance_id).ok_or(anyhow!(
 				"Instance '{instance_id}' does not exist in the registry"
 			))?;
 			let params = EvalParameters {
@@ -363,21 +367,9 @@ async fn update_profile_packages(
 				Some(instance_id),
 				"Installing...",
 			));
-			let input = EvalInput {
-				constants,
-				params,
-			};
+			let input = EvalInput { constants, params };
 			let result = instance
-				.install_package(
-					package,
-					pkg_version,
-					input,
-					reg,
-					paths,
-					lock,
-					force,
-					client,
-				)
+				.install_package(package, pkg_version, input, ctx.packages, ctx.paths, ctx.lock, force, ctx.client)
 				.await
 				.with_context(|| {
 					format!("Failed to install package '{package}' for instance '{instance_id}'")
@@ -404,10 +396,11 @@ async fn update_profile_packages(
 		printer.newline();
 	}
 	for (instance_id, packages) in resolved {
-		let instance = instances.get(&instance_id).ok_or(anyhow!(
+		let instance = ctx.instances.get(&instance_id).ok_or(anyhow!(
 			"Instance '{instance_id}' does not exist in the registry"
 		))?;
-		let files_to_remove = lock
+		let files_to_remove = ctx
+			.lock
 			.remove_unused_packages(
 				&instance_id,
 				&packages
@@ -417,7 +410,7 @@ async fn update_profile_packages(
 			)
 			.context("Failed to remove unused packages")?;
 		for file in files_to_remove {
-			instance.remove_addon_file(&file, paths).with_context(|| {
+			instance.remove_addon_file(&file, ctx.paths).with_context(|| {
 				format!(
 					"Failed to remove addon file {} for instance {}",
 					file.display(),
@@ -487,22 +480,20 @@ pub async fn print_package_support_messages(
 }
 
 /// Update a profile when the Minecraft version has changed
-async fn check_profile_version_change(
+async fn check_profile_version_change<'a>(
 	profile: &Profile,
 	mc_version: &str,
 	paper_properties: Option<(u16, String)>,
-	instances: &InstanceRegistry,
-	paths: &Paths,
-	lock: &mut Lockfile,
+	ctx: &mut ProfileUpdateContext<'a>,
 ) -> anyhow::Result<()> {
-	if lock.update_profile_version(&profile.name, mc_version) {
+	if ctx.lock.update_profile_version(&profile.name, mc_version) {
 		cprintln!("<s>Updating profile version...");
 		for instance_id in profile.instances.iter() {
-			let instance = instances.get(instance_id).ok_or(anyhow!(
+			let instance = ctx.instances.get(instance_id).ok_or(anyhow!(
 				"Instance '{instance_id}' does not exist in the registry"
 			))?;
 			instance
-				.teardown(paths, paper_properties.clone())
+				.teardown(ctx.paths, paper_properties.clone())
 				.context("Failed to remove old files when updating Minecraft version")?;
 		}
 	}
@@ -530,18 +521,19 @@ async fn get_paper_properties(
 }
 
 /// Remove the old Paper files for a profile if they have updated
-async fn check_profile_paper_update(
+async fn check_profile_paper_update<'a>(
 	profile: &Profile,
 	paper_properties: Option<(u16, String)>,
-	instances: &InstanceRegistry,
-	lock: &mut Lockfile,
-	paths: &Paths,
+	ctx: &mut ProfileUpdateContext<'a>,
 ) -> anyhow::Result<()> {
 	if let Some((build_num, file_name)) = paper_properties {
-		if lock.update_profile_paper_build(&profile.name, build_num) {
+		if ctx
+			.lock
+			.update_profile_paper_build(&profile.name, build_num)
+		{
 			for inst in profile.instances.iter() {
-				if let Some(inst) = instances.get(inst) {
-					inst.remove_paper(paths, file_name.clone())
+				if let Some(inst) = ctx.instances.get(inst) {
+					inst.remove_paper(ctx.paths, file_name.clone())
 						.context("Failed to remove Paper")?;
 				}
 			}
@@ -561,6 +553,15 @@ pub async fn update_profiles(
 ) -> anyhow::Result<()> {
 	let mut all_packages = HashSet::new();
 	let client = Client::new();
+	let mut lock = Lockfile::open(paths).context("Failed to open lockfile")?;
+
+	let mut ctx = ProfileUpdateContext {
+		packages: &mut config.packages,
+		instances: &mut config.instances,
+		paths,
+		lock: &mut lock,
+		client: &client,
+	};
 
 	for id in ids {
 		let profile = config
@@ -568,7 +569,6 @@ pub async fn update_profiles(
 			.get_mut(id)
 			.ok_or(anyhow!("Unknown profile '{id}'"))?;
 		cprintln!("<s,g>Updating profile <b>{}</b>", id);
-		let mut lock = Lockfile::open(paths).context("Failed to open lockfile")?;
 
 		let print_options = PrintOptions::new(true, 0);
 		let mut manager = UpdateManager::new(print_options, force, false);
@@ -582,28 +582,16 @@ pub async fn update_profiles(
 			.await
 			.context("Failed to get Paper build number and filename")?;
 
-		check_profile_version_change(
-			profile,
-			&mc_version,
-			paper_properties.clone(),
-			&config.instances,
-			paths,
-			&mut lock,
-		)
-		.await
-		.context("Failed to check for a profile version update")?;
+		check_profile_version_change(profile, &mc_version, paper_properties.clone(), &mut ctx)
+			.await
+			.context("Failed to check for a profile version update")?;
 
-		check_profile_paper_update(
-			profile,
-			paper_properties,
-			&config.instances,
-			&mut lock,
-			paths,
-		)
-		.await
-		.context("Failed to check for Paper updates")?;
+		check_profile_paper_update(profile, paper_properties, &mut ctx)
+			.await
+			.context("Failed to check for Paper updates")?;
 
-		lock.finish(paths)
+		ctx.lock
+			.finish(paths)
 			.await
 			.context("Failed to finish using lockfile")?;
 
@@ -613,7 +601,7 @@ pub async fn update_profiles(
 
 		if !profile.instances.is_empty() {
 			let version_list = profile
-				.create_instances(&mut config.instances, paths, manager, &mut lock)
+				.create_instances(ctx.instances, paths, manager, ctx.lock)
 				.await
 				.context("Failed to create profile instances")?;
 
@@ -623,7 +611,7 @@ pub async fn update_profiles(
 
 			// Make sure all packages in the profile are in the registry first
 			for pkg in &profile.packages {
-				config.packages.ensure_package(&pkg.req, paths).await?;
+				ctx.packages.ensure_package(&pkg.req, paths).await?;
 			}
 
 			let constants = EvalConstants {
@@ -635,22 +623,13 @@ pub async fn update_profiles(
 				language: config.prefs.language,
 			};
 
-			let packages = update_profile_packages(
-				profile,
-				&constants,
-				paths,
-				&mut config.packages,
-				&config.instances,
-				&mut lock,
-				force,
-				&client,
-			)
-			.await?;
+			let packages = update_profile_packages(profile, &constants, &mut ctx, force).await?;
 			cprintln!("<g>All packages installed.");
 			all_packages.extend(packages);
 		}
 
-		lock.finish(paths)
+		ctx.lock
+			.finish(paths)
 			.await
 			.context("Failed to finish using lockfile")?;
 	}
