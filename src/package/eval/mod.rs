@@ -3,8 +3,9 @@ pub mod resolve;
 
 use anyhow::{anyhow, bail};
 use mcvm_parse::routine::INSTALL_ROUTINE;
-use mcvm_shared::addon::{is_filename_valid, Addon};
+use mcvm_shared::addon::{is_filename_valid, Addon, is_addon_version_valid};
 use mcvm_shared::lang::Language;
+use mcvm_shared::util::is_valid_identifier;
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 
@@ -14,7 +15,6 @@ use super::Package;
 use crate::data::addon::{self, AddonLocation, AddonRequest};
 use crate::data::config::profile::GameModifications;
 use crate::io::files::paths::Paths;
-use crate::util::validate_identifier;
 use mcvm_parse::instruction::{InstrKind, Instruction};
 use mcvm_parse::parse::{Block, BlockId};
 use mcvm_parse::{FailReason, Value};
@@ -302,12 +302,17 @@ pub fn eval_instr(
 					if eval.addon_reqs.iter().any(|x| x.addon.id == id) {
 						bail!("Duplicate addon id '{id}'");
 					}
-					if !validate_identifier(&id) {
+					if !is_valid_identifier(&id) {
 						bail!("Invalid addon identifier '{id}'");
 					}
 
 					// Empty strings will break the filename so we convert them to none
 					let version = version.get_as_option(&eval.vars)?.filter(|x| !x.is_empty());
+					if let Some(version) = &version {
+						if !is_addon_version_valid(version) {
+							bail!("Invalid addon version identifier '{version}' for addon '{id}'");
+						}
+					}
 
 					let kind = kind.as_ref().expect("Addon kind missing");
 

@@ -87,6 +87,21 @@ impl Addon {
 	}
 }
 
+/// Checks for a valid addon version identifier that is compatible with all systems
+pub fn is_addon_version_valid(version: &str) -> bool {
+	if !version.is_ascii() {
+		return false;
+	}
+
+	for c in version.chars() {
+		if !c.is_ascii_alphanumeric() {
+			return false;
+		}
+	}
+
+	true
+}
+
 /// Checks for a valid addon filename
 pub fn is_filename_valid(kind: AddonKind, filename: &str) -> bool {
 	filename.ends_with(kind.get_extension())

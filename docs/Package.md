@@ -1,5 +1,5 @@
 # Packages
-An MCVM package is simply a script that is run to install files and dependencies. The file usually follows the format of `package-name.pkg.txt`. Package names may contain only letters, numbers, and hyphens (`-`).
+An MCVM package is simply a script that is run to install files and dependencies. The file usually follows the format of `package-name.pkg.txt`. Package names may contain only letters, numbers, and hyphens (`-`). They cannot be longer than 32 characters.
 
 # Repository
 A package repository is any server that provides an `index.json` of packages for the user to source. All that is required to run a repository yourself is to make this `index.json` under `https://example.com/api/mcvm/index.json`. An index follows this format:
@@ -106,7 +106,7 @@ addon id filename (
  * `kind`: What type of addon this is.
  * `url` (Optional): The remote url to download the addon from.
  * `path` (Optional): The local path to link the addon from. Adding local files is a privilege that requires elevated permissions
- * `version` (Optional): The version of this addon. This is important because it lets mcvm differentiate between different versions of the file for caching purposes. If this field is not present, the addon will never be cached and will be redownloaded every time.
+ * `version` (Optional): The version of this addon. This is important because it lets mcvm differentiate between different versions of the file for caching purposes. If this field is not present, the addon will never be cached and will be redownloaded every time. This ID should not contain any special characters.
 
 Either `url` or `path` must be set, not both or neither.
 

@@ -12,6 +12,8 @@ use self::profile::ProfileConfig;
 use self::user::UserConfig;
 use anyhow::{bail, ensure, Context};
 use mcvm_shared::modifications::Modloader;
+use mcvm_shared::pkg::is_valid_package_id;
+use mcvm_shared::util::is_valid_identifier;
 use preferences::ConfigPreferences;
 use serde::{Deserialize, Serialize};
 
@@ -19,7 +21,6 @@ use super::profile::{InstanceRegistry, Profile};
 use super::user::{validate_username, Auth, AuthState};
 use crate::io::files::paths::Paths;
 use crate::package::reg::PkgRegistry;
-use crate::util::validate_identifier;
 
 use color_print::cprintln;
 use serde_json::json;
@@ -108,7 +109,7 @@ impl Config {
 
 		// Users
 		for (user_id, user_config) in config.users.iter() {
-			if !validate_identifier(user_id) {
+			if !is_valid_identifier(user_id) {
 				bail!("Invalid string '{user_id}'");
 			}
 			let user = user_config.to_user(user_id);
@@ -158,7 +159,7 @@ impl Config {
 			}
 
 			for (instance_id, instance_config) in profile_config.instances {
-				if !validate_identifier(&instance_id) {
+				if !is_valid_identifier(&instance_id) {
 					bail!("Invalid string '{}'", instance_id.to_owned());
 				}
 				if instances.contains_key(&instance_id) {
@@ -180,8 +181,8 @@ impl Config {
 					.to_profile_config(profile_config.package_stability)
 					.with_context(|| format!("Failed to configure package '{package_config}'"))?;
 
-				if !validate_identifier(&config.req.name) {
-					bail!("Invalid package name '{package_config}'");
+				if !is_valid_package_id(&config.req.name) {
+					bail!("Invalid package ID '{package_config}'");
 				}
 
 				for cfg in profile.packages.iter() {
@@ -191,7 +192,7 @@ impl Config {
 				}
 
 				for feature in &config.features {
-					if !validate_identifier(feature) {
+					if !is_valid_identifier(feature) { 
 						bail!("Invalid string '{feature}'");
 					}
 				}

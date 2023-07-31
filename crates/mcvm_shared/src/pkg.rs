@@ -1,5 +1,7 @@
 use serde::{Deserialize, Serialize};
 
+use crate::util::is_valid_identifier;
+
 /// A known identifier for a package
 #[derive(Debug, Hash, Clone, PartialEq, Eq)]
 pub struct PkgIdentifier {
@@ -31,5 +33,47 @@ impl PackageStability {
 			"latest" => Some(Self::Latest),
 			_ => None,
 		}
+	}
+}
+
+pub static MAX_PACKAGE_ID_LENGTH: usize = 32;
+
+/// Checks if a package identifier is valid
+pub fn is_valid_package_id(id: &str) -> bool {
+	if !is_valid_identifier(id) {
+		return false;
+	}
+
+	if id.contains('_') {
+		return false;
+	}
+
+	for c in id.chars() {
+		if c.is_ascii_uppercase() {
+			return false;
+		}
+	}
+
+	if id.len() > MAX_PACKAGE_ID_LENGTH {
+		return false;
+	}
+
+	true
+}
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+
+	#[test]
+	fn test_package_id_validation() {
+		assert!(is_valid_package_id("hello"));
+		assert!(is_valid_package_id("32"));
+		assert!(is_valid_package_id("hello-world"));
+		assert!(!is_valid_package_id("hello_world"));
+		assert!(!is_valid_package_id("\\"));
+		assert!(!is_valid_package_id(
+			"very-very-long-long-long-package-name-thats-too-long"
+		));
 	}
 }
