@@ -14,7 +14,6 @@ use super::read::{EnumOrNumber, EnumOrString};
 
 #[derive(Deserialize, Serialize, Debug, Clone, Default)]
 #[serde(default)]
-#[serde(deny_unknown_fields)]
 pub struct RconOptions {
 	pub enable: Option<bool>,
 	pub port: Option<u16>,
@@ -23,7 +22,6 @@ pub struct RconOptions {
 
 #[derive(Deserialize, Serialize, Debug, Clone, Default)]
 #[serde(default)]
-#[serde(deny_unknown_fields)]
 pub struct QueryOptions {
 	pub enable: Option<bool>,
 	pub port: Option<u16>,
@@ -31,7 +29,6 @@ pub struct QueryOptions {
 
 #[derive(Deserialize, Serialize, Debug, Clone, Default)]
 #[serde(default)]
-#[serde(deny_unknown_fields)]
 pub struct WhitelistOptions {
 	pub enable: Option<bool>,
 	pub enforce: Option<bool>,
@@ -39,7 +36,6 @@ pub struct WhitelistOptions {
 
 #[derive(Deserialize, Serialize, Debug, Clone, Default)]
 #[serde(default)]
-#[serde(deny_unknown_fields)]
 pub struct GamemodeOptions {
 	pub default: Option<EnumOrNumber<GameMode>>,
 	pub force: Option<bool>,
@@ -47,7 +43,6 @@ pub struct GamemodeOptions {
 
 #[derive(Deserialize, Serialize, Debug, Clone, Default)]
 #[serde(default)]
-#[serde(deny_unknown_fields)]
 pub struct DatapacksOptions {
 	pub function_permission_level: Option<u8>,
 	pub initial_enabled: Option<Vec<String>>,
@@ -56,7 +51,6 @@ pub struct DatapacksOptions {
 
 #[derive(Deserialize, Serialize, Debug, Clone, Default)]
 #[serde(default)]
-#[serde(deny_unknown_fields)]
 pub struct WorldOptions {
 	pub name: Option<String>,
 	pub seed: Option<String>,
@@ -70,7 +64,6 @@ pub struct WorldOptions {
 
 #[derive(Deserialize, Serialize, Debug, Clone, Default)]
 #[serde(default)]
-#[serde(deny_unknown_fields)]
 pub struct ResourcePackOptions {
 	pub uri: Option<String>,
 	pub prompt: Option<String>,
@@ -80,7 +73,6 @@ pub struct ResourcePackOptions {
 
 #[derive(Deserialize, Serialize, Debug, Clone, Default)]
 #[serde(default)]
-#[serde(deny_unknown_fields)]
 pub struct ServerOptions {
 	pub rcon: RconOptions,
 	pub query: QueryOptions,
