@@ -226,7 +226,8 @@ impl Lockfile {
 
 		for file in &new_files {
 			if PathBuf::from(file).exists() {
-				bail!("File '{file}' would be overwritten by an addon");
+				// Uncomment to enable addon overwrite checks
+				// bail!("File '{file}' would be overwritten by an addon");
 			}
 		}
 
