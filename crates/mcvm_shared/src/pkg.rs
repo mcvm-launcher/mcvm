@@ -44,12 +44,11 @@ pub fn is_valid_package_id(id: &str) -> bool {
 		return false;
 	}
 
-	if id.contains('_') {
-		return false;
-	}
-
 	for c in id.chars() {
 		if c.is_ascii_uppercase() {
+			return false;
+		}
+		if c == '_' || c == '.' {
 			return false;
 		}
 	}
@@ -71,6 +70,7 @@ mod tests {
 		assert!(is_valid_package_id("32"));
 		assert!(is_valid_package_id("hello-world"));
 		assert!(!is_valid_package_id("hello_world"));
+		assert!(!is_valid_package_id("hello.world"));
 		assert!(!is_valid_package_id("\\"));
 		assert!(!is_valid_package_id(
 			"very-very-long-long-long-package-name-thats-too-long"

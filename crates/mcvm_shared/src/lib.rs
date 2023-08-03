@@ -24,7 +24,7 @@ pub mod util {
 
 			if c.is_ascii_punctuation() {
 				match c {
-					'_' | '-' => {}
+					'_' | '-' | '.' => {}
 					_ => return false,
 				}
 			}
@@ -48,7 +48,7 @@ pub mod util {
 			assert!(is_valid_identifier("H3110"));
 			assert!(is_valid_identifier("hello-world"));
 			assert!(is_valid_identifier("hello_world"));
-			assert!(!is_valid_identifier("hello.world"));
+			assert!(is_valid_identifier("hello.world"));
 			assert!(!is_valid_identifier("hello*world"));
 			assert!(!is_valid_identifier("hello\nworld"));
 			assert!(!is_valid_identifier("hello world"));
