@@ -341,10 +341,12 @@ async fn update_profile_packages<'a>(
 	force: bool,
 ) -> anyhow::Result<HashSet<PkgRequest>> {
 	let mut printer = ReplPrinter::new(true);
+	cprintln!("<s>Collecting package dependencies...");
 	let (batched, resolved) = resolve_and_batch(profile, constants, ctx)
 		.await
 		.context("Failed to resolve dependencies for profile")?;
 
+	cprintln!("<s>Installing packages...");
 	for (package, package_instances) in batched.iter().sorted_by_key(|x| x.0) {
 		let pkg_version = ctx
 			.packages
