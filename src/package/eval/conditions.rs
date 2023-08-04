@@ -6,16 +6,16 @@ use mcvm_parse::conditions::{ConditionKind, OSCondition};
 pub fn eval_condition(condition: &ConditionKind, eval: &EvalData) -> anyhow::Result<bool> {
 	match condition {
 		ConditionKind::Not(condition) => {
-			eval_condition(condition.as_ref().expect("Not condition is missing"), eval)
+			eval_condition(condition.get(), eval)
 				.map(|op| !op)
 		}
 		ConditionKind::And(left, right) => Ok(eval_condition(left, eval)?
 			&& eval_condition(
-				right.as_ref().expect("Right and condition is missing"),
+				right.get(),
 				eval,
 			)?),
 		ConditionKind::Or(left, right) => Ok(eval_condition(left, eval)?
-			|| eval_condition(right.as_ref().expect("Right or condition is missing"), eval)?),
+			|| eval_condition(right.get(), eval)?),
 		ConditionKind::Version(version) => {
 			let version = version.get(&eval.vars)?;
 			let version = VersionPattern::from(&version);
@@ -25,10 +25,10 @@ pub fn eval_condition(condition: &ConditionKind, eval: &EvalData) -> anyhow::Res
 			))
 		}
 		ConditionKind::Side(side) => {
-			Ok(eval.input.params.side == *side.as_ref().expect("If side is missing"))
+			Ok(eval.input.params.side == *side.get())
 		}
 		ConditionKind::Modloader(loader) => {
-			Ok(loader.as_ref().expect("If modloader is missing").matches(
+			Ok(loader.get().matches(
 				&eval
 					.input
 					.constants
@@ -37,8 +37,7 @@ pub fn eval_condition(condition: &ConditionKind, eval: &EvalData) -> anyhow::Res
 			))
 		}
 		ConditionKind::PluginLoader(loader) => Ok(loader
-			.as_ref()
-			.expect("If plugin_loader is missing")
+			.get()
 			.matches(&eval.input.constants.modifications.server_type)
 			&& matches!(eval.input.params.side, Side::Server)),
 		ConditionKind::Feature(feature) => Ok(eval
@@ -46,7 +45,7 @@ pub fn eval_condition(condition: &ConditionKind, eval: &EvalData) -> anyhow::Res
 			.constants
 			.features
 			.contains(&feature.get(&eval.vars)?)),
-		ConditionKind::OS(os) => Ok(match os.as_ref().expect("If OS is missing") {
+		ConditionKind::OS(os) => Ok(match os.get() {
 			OSCondition::Windows => cfg!(target_os = "windows"),
 			OSCondition::Linux => cfg!(target_os = "linux"),
 			OSCondition::MacOS => cfg!(target_os = "macos"),
@@ -57,14 +56,14 @@ pub fn eval_condition(condition: &ConditionKind, eval: &EvalData) -> anyhow::Res
 			}
 		}),
 		ConditionKind::Stability(stability) => {
-			Ok(eval.input.params.stability == stability.expect("If stability is missing"))
+			Ok(eval.input.params.stability == *stability.get())
 		}
 		ConditionKind::Language(lang) => {
-			Ok(eval.input.constants.language == lang.expect("If language is missing"))
+			Ok(eval.input.constants.language == *lang.get())
 		}
 		ConditionKind::Value(left, right) => Ok(left.get(&eval.vars)? == right.get(&eval.vars)?),
 		ConditionKind::Defined(var) => Ok(eval
 			.vars
-			.contains_key(var.as_ref().expect("If defined is missing"))),
+			.contains_key(var.get())),
 	}
 }

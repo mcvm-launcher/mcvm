@@ -1,5 +1,6 @@
 use anyhow::bail;
 use mcvm_shared::lang::Language;
+use mcvm_shared::later::Later;
 use mcvm_shared::pkg::PackageStability;
 
 use crate::unexpected_token;
@@ -33,34 +34,34 @@ impl OSCondition {
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum ConditionKind {
-	Not(Option<Box<ConditionKind>>),
-	And(Box<ConditionKind>, Option<Box<ConditionKind>>),
-	Or(Box<ConditionKind>, Option<Box<ConditionKind>>),
+	Not(Later<Box<ConditionKind>>),
+	And(Box<ConditionKind>, Later<Box<ConditionKind>>),
+	Or(Box<ConditionKind>, Later<Box<ConditionKind>>),
 	Version(Value),
-	Side(Option<Side>),
-	Modloader(Option<ModloaderMatch>),
-	PluginLoader(Option<PluginLoaderMatch>),
+	Side(Later<Side>),
+	Modloader(Later<ModloaderMatch>),
+	PluginLoader(Later<PluginLoaderMatch>),
 	Feature(Value),
 	Value(Value, Value),
-	Defined(Option<String>),
-	OS(Option<OSCondition>),
-	Stability(Option<PackageStability>),
-	Language(Option<Language>),
+	Defined(Later<String>),
+	OS(Later<OSCondition>),
+	Stability(Later<PackageStability>),
+	Language(Later<Language>),
 }
 
 impl ConditionKind {
 	pub fn from_str(string: &str) -> Option<Self> {
 		match string {
-			"not" => Some(Self::Not(None)),
+			"not" => Some(Self::Not(Later::Empty)),
 			"version" => Some(Self::Version(Value::None)),
-			"side" => Some(Self::Side(None)),
-			"modloader" => Some(Self::Modloader(None)),
-			"plugin_loader" => Some(Self::PluginLoader(None)),
+			"side" => Some(Self::Side(Later::Empty)),
+			"modloader" => Some(Self::Modloader(Later::Empty)),
+			"plugin_loader" => Some(Self::PluginLoader(Later::Empty)),
 			"feature" => Some(Self::Feature(Value::None)),
 			"value" => Some(Self::Value(Value::None, Value::None)),
-			"defined" => Some(Self::Defined(None)),
-			"os" => Some(Self::OS(None)),
-			"stability" => Some(Self::Stability(None)),
+			"defined" => Some(Self::Defined(Later::Empty)),
+			"os" => Some(Self::OS(Later::Empty)),
+			"stability" => Some(Self::Stability(Later::Empty)),
 			_ => None,
 		}
 	}
@@ -69,20 +70,20 @@ impl ConditionKind {
 	pub fn is_finished_parsing(&self) -> bool {
 		match &self {
 			Self::Not(condition) => {
-				matches!(condition, Some(condition) if condition.is_finished_parsing())
+				matches!(condition, Later::Full(condition) if condition.is_finished_parsing())
 			}
 			Self::And(left, right) | Self::Or(left, right) => {
 				left.is_finished_parsing()
-					&& matches!(right, Some(condition) if condition.is_finished_parsing())
+					&& matches!(right, Later::Full(condition) if condition.is_finished_parsing())
 			}
 			Self::Version(val) | Self::Feature(val) => val.is_some(),
-			Self::Side(val) => val.is_some(),
-			Self::Modloader(val) => val.is_some(),
-			Self::PluginLoader(val) => val.is_some(),
-			Self::Defined(val) => val.is_some(),
-			Self::OS(val) => val.is_some(),
-			Self::Stability(val) => val.is_some(),
-			Self::Language(val) => val.is_some(),
+			Self::Side(val) => val.is_full(),
+			Self::Modloader(val) => val.is_full(),
+			Self::PluginLoader(val) => val.is_full(),
+			Self::Defined(val) => val.is_full(),
+			Self::OS(val) => val.is_full(),
+			Self::Stability(val) => val.is_full(),
+			Self::Language(val) => val.is_full(),
 			Self::Value(left, right) => left.is_some() && right.is_some(),
 		}
 	}
@@ -94,8 +95,8 @@ impl ConditionKind {
 				if self.is_finished_parsing() {
 					let current = Box::new(self.clone());
 					match name.as_str() {
-						"and" => *self = ConditionKind::And(current, None),
-						"or" => *self = ConditionKind::Or(current, None),
+						"and" => *self = ConditionKind::And(current, Later::Empty),
+						"or" => *self = ConditionKind::Or(current, Later::Empty),
 						_ => bail!("Unknown condition combinator '{name}'"),
 					}
 					return Ok(());
@@ -110,12 +111,12 @@ impl ConditionKind {
 		match self {
 			Self::Not(condition) | Self::And(_, condition) | Self::Or(_, condition) => {
 				match condition {
-					Some(condition) => {
+					Later::Full(condition) => {
 						return condition.parse(tok, pos);
 					}
-					None => match tok {
+					Later::Empty => match tok {
 						Token::Ident(name) => match Self::from_str(name) {
-							Some(nested_cond) => *condition = Some(Box::new(nested_cond)),
+							Some(nested_cond) => condition.fill(Box::new(nested_cond)),
 							None => {
 								bail!("Unknown condition '{}' {}", name.clone(), pos.clone());
 							}
@@ -128,51 +129,55 @@ impl ConditionKind {
 				*val = parse_arg(tok, pos)?;
 			}
 			Self::Defined(var) => match tok {
-				Token::Ident(name) => *var = Some(name.clone()),
+				Token::Ident(name) => var.fill(name.clone()),
 				_ => unexpected_token!(tok, pos),
 			},
 			Self::Side(side) => match tok {
-				Token::Ident(name) => {
-					*side = check_enum_condition_argument(Side::parse_from_str(name), name, pos)?
-				}
+				Token::Ident(name) => side.fill(check_enum_condition_argument(
+					Side::parse_from_str(name),
+					name,
+					pos,
+				)?),
 				_ => unexpected_token!(tok, pos),
 			},
 			Self::Modloader(loader) => match tok {
-				Token::Ident(name) => {
-					*loader =
-						check_enum_condition_argument(ModloaderMatch::parse_from_str(name), name, pos)?
-				}
+				Token::Ident(name) => loader.fill(check_enum_condition_argument(
+					ModloaderMatch::parse_from_str(name),
+					name,
+					pos,
+				)?),
 				_ => unexpected_token!(tok, pos),
 			},
 			Self::PluginLoader(loader) => match tok {
-				Token::Ident(name) => {
-					*loader =
-						check_enum_condition_argument(PluginLoaderMatch::parse_from_str(name), name, pos)?
-				}
+				Token::Ident(name) => loader.fill(check_enum_condition_argument(
+					PluginLoaderMatch::parse_from_str(name),
+					name,
+					pos,
+				)?),
 				_ => unexpected_token!(tok, pos),
 			},
 			Self::OS(os) => match tok {
-				Token::Ident(name) => {
-					*os =
-						check_enum_condition_argument(OSCondition::parse_from_str(name), name, pos)?
-				}
+				Token::Ident(name) => os.fill(check_enum_condition_argument(
+					OSCondition::parse_from_str(name),
+					name,
+					pos,
+				)?),
 				_ => unexpected_token!(tok, pos),
 			},
 			Self::Stability(stability) => match tok {
-				Token::Ident(name) => {
-					*stability = check_enum_condition_argument(
-						PackageStability::parse_from_str(name),
-						name,
-						pos,
-					)?
-				}
+				Token::Ident(name) => stability.fill(check_enum_condition_argument(
+					PackageStability::parse_from_str(name),
+					name,
+					pos,
+				)?),
 				_ => unexpected_token!(tok, pos),
 			},
 			Self::Language(lang) => match tok {
-				Token::Ident(name) => {
-					*lang =
-						check_enum_condition_argument(Language::parse_from_str(name), name, pos)?
-				}
+				Token::Ident(name) => lang.fill(check_enum_condition_argument(
+					Language::parse_from_str(name),
+					name,
+					pos,
+				)?),
 				_ => unexpected_token!(tok, pos),
 			},
 			Self::Value(left, right) => match left {
@@ -189,9 +194,9 @@ fn check_enum_condition_argument<T>(
 	arg: Option<T>,
 	ident: &str,
 	pos: &TextPos,
-) -> anyhow::Result<Option<T>> {
+) -> anyhow::Result<T> {
 	match arg {
-		Some(val) => Ok(Some(val)),
+		Some(val) => Ok(val),
 		None => {
 			bail!(
 				"Unknown condition argument '{}' {}",

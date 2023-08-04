@@ -509,7 +509,7 @@ pub fn lex_and_parse(text: &str) -> anyhow::Result<Parsed> {
 
 #[cfg(test)]
 mod tests {
-	use mcvm_shared::modifications::ModloaderMatch;
+	use mcvm_shared::{later::Later, modifications::ModloaderMatch};
 
 	use super::*;
 	use crate::routine::{INSTALL_ROUTINE, METADATA_ROUTINE};
@@ -569,10 +569,10 @@ mod tests {
 				assert_eq!(
 					condition.kind,
 					ConditionKind::And(
-						Box::new(ConditionKind::Not(Some(Box::new(
-							ConditionKind::Modloader(Some(ModloaderMatch::Fabric))
+						Box::new(ConditionKind::Not(Later::Full(Box::new(
+							ConditionKind::Modloader(Later::Full(ModloaderMatch::Fabric))
 						)))),
-						Some(Box::new(ConditionKind::Modloader(Some(
+						Later::Full(Box::new(ConditionKind::Modloader(Later::Full(
 							ModloaderMatch::Forge
 						)))),
 					)

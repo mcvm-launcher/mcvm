@@ -83,6 +83,11 @@ pub mod later {
 			matches!(self, Self::Empty)
 		}
 
+		/// Checks if the Later does contain a value
+		pub fn is_full(&self) -> bool {
+			matches!(self, Self::Full(..))
+		}
+
 		/// Grab the value inside and panic if it isn't there
 		pub fn get(&self) -> &T {
 			if let Self::Full(value) = self {
