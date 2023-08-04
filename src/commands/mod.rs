@@ -11,7 +11,7 @@ use color_print::cprintln;
 
 use mcvm::data::config::Config;
 use mcvm::io::files::paths::Paths;
-use mcvm::io::Later;
+use mcvm_shared::later::Later;
 
 use self::files::FilesSubcommand;
 use self::instance::InstanceSubcommand;

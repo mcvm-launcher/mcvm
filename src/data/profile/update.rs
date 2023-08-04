@@ -13,7 +13,7 @@ use crate::io::files::paths::Paths;
 use crate::io::java::{Java, JavaKind};
 use crate::io::lock::Lockfile;
 use crate::io::options::{read_options, Options};
-use crate::io::Later;
+use mcvm_shared::later::Later;
 use crate::net::fabric_quilt::{self, FabricQuiltMeta};
 use crate::net::minecraft::{assets, game_jar, libraries, version_manifest};
 use crate::net::paper;

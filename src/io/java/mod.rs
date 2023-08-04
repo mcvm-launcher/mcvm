@@ -20,7 +20,7 @@ use std::io::BufReader;
 use std::path::{Path, PathBuf};
 
 use super::lock::{Lockfile, LockfileJavaInstallation};
-use super::Later;
+use mcvm_shared::later::Later;
 
 #[derive(Debug, Clone, Hash, PartialEq, Eq)]
 pub enum JavaKind {

@@ -10,9 +10,9 @@ use crate::io::files::{self, paths::Paths};
 use crate::io::java::classpath::Classpath;
 use crate::io::java::JavaKind;
 use crate::io::options::{self, client::write_options_txt, server::write_server_properties};
-use crate::io::Later;
 use crate::net::{fabric_quilt, minecraft, paper};
 use crate::util::{json, print::ReplPrinter};
+use mcvm_shared::later::Later;
 use mcvm_shared::modifications::{Modloader, ServerType};
 
 use super::{InstKind, Instance};
