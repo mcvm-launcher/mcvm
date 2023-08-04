@@ -12,17 +12,19 @@ use super::Value;
 
 /// Value for the OS condition
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub enum OsCondition {
+pub enum OSCondition {
 	Windows,
 	Linux,
+	MacOS,
 	Other,
 }
 
-impl OsCondition {
+impl OSCondition {
 	pub fn parse_from_str(string: &str) -> Option<Self> {
 		match string {
 			"windows" => Some(Self::Windows),
 			"linux" => Some(Self::Linux),
+			"macos" => Some(Self::MacOS),
 			"other" => Some(Self::Other),
 			_ => None,
 		}
@@ -41,7 +43,7 @@ pub enum ConditionKind {
 	Feature(Value),
 	Value(Value, Value),
 	Defined(Option<String>),
-	Os(Option<OsCondition>),
+	OS(Option<OSCondition>),
 	Stability(Option<PackageStability>),
 	Language(Option<Language>),
 }
@@ -57,7 +59,7 @@ impl ConditionKind {
 			"feature" => Some(Self::Feature(Value::None)),
 			"value" => Some(Self::Value(Value::None, Value::None)),
 			"defined" => Some(Self::Defined(None)),
-			"os" => Some(Self::Os(None)),
+			"os" => Some(Self::OS(None)),
 			"stability" => Some(Self::Stability(None)),
 			_ => None,
 		}
@@ -78,7 +80,7 @@ impl ConditionKind {
 			Self::Modloader(val) => val.is_some(),
 			Self::PluginLoader(val) => val.is_some(),
 			Self::Defined(val) => val.is_some(),
-			Self::Os(val) => val.is_some(),
+			Self::OS(val) => val.is_some(),
 			Self::Stability(val) => val.is_some(),
 			Self::Language(val) => val.is_some(),
 			Self::Value(left, right) => left.is_some() && right.is_some(),
@@ -149,10 +151,10 @@ impl ConditionKind {
 				}
 				_ => unexpected_token!(tok, pos),
 			},
-			Self::Os(os) => match tok {
+			Self::OS(os) => match tok {
 				Token::Ident(name) => {
 					*os =
-						check_enum_condition_argument(OsCondition::parse_from_str(name), name, pos)?
+						check_enum_condition_argument(OSCondition::parse_from_str(name), name, pos)?
 				}
 				_ => unexpected_token!(tok, pos),
 			},

@@ -15,6 +15,9 @@ cfg_match! {
 	target_os = "windows" => {
 		pub static OS_STRING: &str = "windows";
 	}
+	target_os = "macos" => {
+		pub static OS_STRING: &str = "windows";
+	}
 	_ => {
 		pub static OS_STRING: &str = "";
 		compile_error!("Target operating system is unsupported")
