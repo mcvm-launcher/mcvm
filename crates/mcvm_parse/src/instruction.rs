@@ -98,9 +98,50 @@ impl Instruction {
 		Ok(Instruction::new(kind))
 	}
 
-	/// Parses a token and returns true if finished
+	/// Checks if this instruction is finished parsing
+	/// Only works for simple instructions. Will panic for instructions with special parse modes
+	pub fn is_finished_parsing(&self) -> bool {
+		match &self.kind {
+			InstrKind::Name(val)
+			| InstrKind::Description(val)
+			| InstrKind::LongDescription(val)
+			| InstrKind::Version(val)
+			| InstrKind::SupportLink(val)
+			| InstrKind::Documentation(val)
+			| InstrKind::Source(val)
+			| InstrKind::Issues(val)
+			| InstrKind::Community(val)
+			| InstrKind::Icon(val)
+			| InstrKind::Banner(val)
+			| InstrKind::License(val)
+			| InstrKind::ModrinthID(val)
+			| InstrKind::CurseForgeID(val)
+			| InstrKind::Website(val) => val.is_some(),
+			InstrKind::Features(val)
+			| InstrKind::Authors(val)
+			| InstrKind::PackageMaintainers(val)
+			| InstrKind::DefaultFeatures(val) => !val.is_empty(),
+			InstrKind::Refuse(val)
+			| InstrKind::Recommend(val)
+			| InstrKind::Bundle(val)
+			| InstrKind::Extend(val)
+			| InstrKind::Notice(val) => val.is_some(),
+			InstrKind::Compat(val1, val2) => val1.is_some() && val2.is_some(),
+			InstrKind::Set(var, val) => var.is_some() && val.is_some(),
+			InstrKind::Finish() => true,
+			InstrKind::Fail(val) => val.is_some(),
+			InstrKind::If(..) | InstrKind::Addon { .. } | InstrKind::Require(..) => {
+				unimplemented!()
+			}
+		}
+	}
+
+	/// Parses a token and returns true if finished.
 	pub fn parse(&mut self, tok: &Token, pos: &TextPos) -> anyhow::Result<bool> {
 		if let Token::Semicolon = tok {
+			if !self.is_finished_parsing() {
+				bail!("Instruction was incomplete {pos}");
+			}
 			Ok(true)
 		} else {
 			match &mut self.kind {
