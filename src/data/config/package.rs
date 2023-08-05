@@ -12,6 +12,7 @@ use crate::{
 	util::merge_options,
 };
 
+/// Trick enum used to make deserialization work in the way we want
 #[derive(Deserialize, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum PackageType {
@@ -36,7 +37,7 @@ pub enum FullPackageConfig {
 		#[serde(default)]
 		stability: Option<PackageStability>,
 	},
-	Remote {
+	Repository {
 		id: String,
 		version: Option<u32>,
 		#[serde(default)]
@@ -70,7 +71,7 @@ impl Display for PackageConfig {
 			match self {
 				Self::Basic(id) => id,
 				Self::Full(FullPackageConfig::Local { id, .. }) => id,
-				Self::Full(FullPackageConfig::Remote { id, .. }) => id,
+				Self::Full(FullPackageConfig::Repository { id, .. }) => id,
 			}
 		)
 	}
@@ -106,7 +107,7 @@ impl PackageConfig {
 				permissions: permissions.clone(),
 				stability: merge_options(Some(profile_stability), stability.to_owned()).unwrap(),
 			},
-			PackageConfig::Full(FullPackageConfig::Remote {
+			PackageConfig::Full(FullPackageConfig::Repository {
 				id,
 				version: _,
 				features,
