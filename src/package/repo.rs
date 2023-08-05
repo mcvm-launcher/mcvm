@@ -1,37 +1,22 @@
 use crate::io::files::paths::Paths;
-use mcvm_shared::later::Later;
 use crate::net::download;
 use crate::util::print::print_err;
+use mcvm_pkg::repo::{RepoPkgEntry, RepoPkgIndex};
+use mcvm_shared::later::Later;
 
 use anyhow::Context;
 use reqwest::Client;
-use serde::Deserialize;
 
-use std::collections::HashMap;
 use std::fs::File;
 use std::io::Cursor;
 use std::path::PathBuf;
-
-/// An entry in the index that specifies what package versions are available
-#[derive(Debug, Deserialize, Clone)]
-pub struct PkgEntry {
-	/// The latest package version available from this repository.
-	version: u32,
-	url: String,
-}
-
-/// JSON format for a repository index
-#[derive(Debug, Deserialize)]
-pub struct RepoIndex {
-	packages: HashMap<String, PkgEntry>,
-}
 
 /// A remote source for mcvm packages
 #[derive(Debug)]
 pub struct PkgRepo {
 	pub id: String,
 	url: String,
-	index: Later<RepoIndex>,
+	index: Later<RepoPkgIndex>,
 }
 
 impl PkgRepo {
@@ -111,7 +96,7 @@ impl PkgRepo {
 	pub async fn get_all_packages(
 		&mut self,
 		paths: &Paths,
-	) -> anyhow::Result<Vec<(String, PkgEntry)>> {
+	) -> anyhow::Result<Vec<(String, RepoPkgEntry)>> {
 		self.ensure_index(paths).await?;
 		let index = self.index.get();
 		Ok(index
@@ -147,7 +132,7 @@ pub async fn query_all(
 pub async fn get_all_packages(
 	repos: &mut [PkgRepo],
 	paths: &Paths,
-) -> anyhow::Result<Vec<(String, PkgEntry)>> {
+) -> anyhow::Result<Vec<(String, RepoPkgEntry)>> {
 	// Iterate in reverse to make sure that repos at the beginning take precendence
 	let mut out = Vec::new();
 	for repo in repos.iter_mut().rev() {

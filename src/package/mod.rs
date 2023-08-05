@@ -1,5 +1,4 @@
 mod core;
-pub mod declarative;
 pub mod eval;
 pub mod reg;
 pub mod repo;

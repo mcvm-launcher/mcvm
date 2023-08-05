@@ -841,6 +841,7 @@ dependencies = [
  "itertools",
  "libflate",
  "mcvm_parse",
+ "mcvm_pkg",
  "mcvm_shared",
  "rand",
  "reqwest",
@@ -860,6 +861,16 @@ version = "0.1.1"
 dependencies = [
  "anyhow",
  "color-print",
+ "mcvm_shared",
+ "serde",
+]
+
+[[package]]
+name = "mcvm_pkg"
+version = "0.0.1"
+dependencies = [
+ "anyhow",
+ "mcvm_parse",
  "mcvm_shared",
  "serde",
 ]
