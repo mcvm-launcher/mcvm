@@ -2,6 +2,7 @@ use anyhow::{anyhow, Context};
 use color_print::cformat;
 use mcvm_parse::metadata::PackageMetadata;
 use mcvm_parse::parse::Parsed;
+use mcvm_parse::parse_and_validate;
 use mcvm_parse::properties::PackageProperties;
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
@@ -265,6 +266,21 @@ impl PkgRegistry {
 		let pkg = self.ensure_package_contents(req, paths, client).await?;
 		let contents = pkg.data.get().get_contents();
 		Ok(contents)
+	}
+
+	/// Parse and validate a package
+	pub async fn parse_and_validate(
+		&mut self,
+		req: &PkgRequest,
+		paths: &Paths,
+		client: &Client,
+	) -> anyhow::Result<()> {
+		let pkg = self.ensure_package_contents(req, paths, client).await?;
+		let contents = &pkg.data.get().contents;
+
+		parse_and_validate(contents)?;
+
+		Ok(())
 	}
 
 	/// Parse a package

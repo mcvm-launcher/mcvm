@@ -128,10 +128,14 @@ async fn sync(data: &mut CmdData) -> anyhow::Result<()> {
 	printer.println(&cformat!("<s>Validating packages..."));
 	let client = Client::new();
 	for package in config.packages.get_all_packages() {
-		match config.packages.parse(&package, paths, &client).await {
+		match config
+			.packages
+			.parse_and_validate(&package, paths, &client)
+			.await
+		{
 			Ok(..) => {}
 			Err(e) => printer.println(&cformat!(
-				"<y>Warning: Package '{}' failed to parse:\n{:?}",
+				"<y>Warning: Package '{}' was invalid:\n{:?}",
 				package,
 				e
 			)),

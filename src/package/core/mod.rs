@@ -49,7 +49,7 @@ pub fn is_core_package(package: &str) -> bool {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use mcvm_parse::parse::lex_and_parse;
+	use mcvm_parse::parse_and_validate;
 
 	static ALL_CORE_PACKAGES: [&str; 18] = [
 		ANIMATED_TEXTURES_SUPPORT,
@@ -75,7 +75,7 @@ mod tests {
 	#[test]
 	fn test_core_package_parse() {
 		for package in ALL_CORE_PACKAGES {
-			lex_and_parse(package).unwrap();
+			parse_and_validate(package).unwrap();
 		}
 	}
 }

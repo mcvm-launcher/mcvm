@@ -133,6 +133,15 @@ impl Display for FailReason {
 	}
 }
 
+/// Parses and validates a package
+pub fn parse_and_validate(contents: &str) -> anyhow::Result<()> {
+	let parsed = parse::lex_and_parse(contents)?;
+	metadata::eval_metadata(&parsed)?;
+	properties::eval_properties(&parsed)?;
+	
+	Ok(())
+}
+
 #[cfg(test)]
 mod tests {
 	use super::*;
