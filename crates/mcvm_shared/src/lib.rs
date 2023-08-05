@@ -120,6 +120,17 @@ pub mod later {
 		}
 	}
 
+	impl<T: Clone> Later<T> {
+		/// Grab the value by cloning and panic if it isn't there
+		pub fn get_clone(&self) -> T {
+			if let Self::Full(value) = self {
+				value.clone()
+			} else {
+				self.fail();
+			}
+		}
+	}
+
 	#[cfg(test)]
 	mod tests {
 		use super::*;

@@ -1,4 +1,5 @@
 use anyhow::bail;
+use mcvm_shared::later::Later;
 
 use super::conditions::Condition;
 use super::lex::{TextPos, Token};
@@ -12,25 +13,25 @@ use mcvm_shared::addon::AddonKind;
 #[derive(Debug, Clone)]
 pub enum InstrKind {
 	If(Condition, BlockId),
-	Name(Option<String>),
-	Description(Option<String>),
-	LongDescription(Option<String>),
-	Version(Option<String>),
+	Name(Later<String>),
+	Description(Later<String>),
+	LongDescription(Later<String>),
+	Version(Later<String>),
 	Authors(Vec<String>),
 	PackageMaintainers(Vec<String>),
-	Website(Option<String>),
-	SupportLink(Option<String>),
-	Documentation(Option<String>),
-	Source(Option<String>),
-	Issues(Option<String>),
-	Community(Option<String>),
-	Icon(Option<String>),
-	Banner(Option<String>),
-	License(Option<String>),
+	Website(Later<String>),
+	SupportLink(Later<String>),
+	Documentation(Later<String>),
+	Source(Later<String>),
+	Issues(Later<String>),
+	Community(Later<String>),
+	Icon(Later<String>),
+	Banner(Later<String>),
+	License(Later<String>),
 	Features(Vec<String>),
 	DefaultFeatures(Vec<String>),
-	ModrinthID(Option<String>),
-	CurseForgeID(Option<String>),
+	ModrinthID(Later<String>),
+	CurseForgeID(Later<String>),
 	Addon {
 		id: Value,
 		file_name: Value,
@@ -39,7 +40,7 @@ pub enum InstrKind {
 		path: Value,
 		version: Value,
 	},
-	Set(Option<String>, Value),
+	Set(Later<String>, Value),
 	Require(Vec<Vec<super::parse::require::Package>>),
 	Refuse(Value),
 	Recommend(Value),
@@ -65,26 +66,26 @@ impl Instruction {
 	/// Starts an instruction from the provided string
 	pub fn from_str(string: &str, pos: &TextPos) -> anyhow::Result<Self> {
 		let kind = match string {
-			"name" => Ok::<InstrKind, anyhow::Error>(InstrKind::Name(None)),
-			"description" => Ok(InstrKind::Description(None)),
-			"long_description" => Ok(InstrKind::LongDescription(None)),
-			"version" => Ok(InstrKind::Version(None)),
+			"name" => Ok::<InstrKind, anyhow::Error>(InstrKind::Name(Later::Empty)),
+			"description" => Ok(InstrKind::Description(Later::Empty)),
+			"long_description" => Ok(InstrKind::LongDescription(Later::Empty)),
+			"version" => Ok(InstrKind::Version(Later::Empty)),
 			"authors" => Ok(InstrKind::Authors(Vec::new())),
 			"package_maintainers" => Ok(InstrKind::PackageMaintainers(Vec::new())),
-			"website" => Ok(InstrKind::Website(None)),
-			"support_link" => Ok(InstrKind::SupportLink(None)),
-			"documentation" => Ok(InstrKind::Documentation(None)),
-			"source" => Ok(InstrKind::Source(None)),
-			"issues" => Ok(InstrKind::Issues(None)),
-			"community" => Ok(InstrKind::Community(None)),
-			"icon" => Ok(InstrKind::Icon(None)),
-			"banner" => Ok(InstrKind::Banner(None)),
-			"license" => Ok(InstrKind::License(None)),
+			"website" => Ok(InstrKind::Website(Later::Empty)),
+			"support_link" => Ok(InstrKind::SupportLink(Later::Empty)),
+			"documentation" => Ok(InstrKind::Documentation(Later::Empty)),
+			"source" => Ok(InstrKind::Source(Later::Empty)),
+			"issues" => Ok(InstrKind::Issues(Later::Empty)),
+			"community" => Ok(InstrKind::Community(Later::Empty)),
+			"icon" => Ok(InstrKind::Icon(Later::Empty)),
+			"banner" => Ok(InstrKind::Banner(Later::Empty)),
+			"license" => Ok(InstrKind::License(Later::Empty)),
 			"features" => Ok(InstrKind::Features(Vec::new())),
 			"default_features" => Ok(InstrKind::DefaultFeatures(Vec::new())),
-			"modrinth_id" => Ok(InstrKind::ModrinthID(None)),
-			"curseforge_id" => Ok(InstrKind::CurseForgeID(None)),
-			"set" => Ok(InstrKind::Set(None, Value::None)),
+			"modrinth_id" => Ok(InstrKind::ModrinthID(Later::Empty)),
+			"curseforge_id" => Ok(InstrKind::CurseForgeID(Later::Empty)),
+			"set" => Ok(InstrKind::Set(Later::Empty, Value::None)),
 			"finish" => Ok(InstrKind::Finish()),
 			"fail" => Ok(InstrKind::Fail(None)),
 			"refuse" => Ok(InstrKind::Refuse(Value::None)),
@@ -116,7 +117,7 @@ impl Instruction {
 			| InstrKind::License(val)
 			| InstrKind::ModrinthID(val)
 			| InstrKind::CurseForgeID(val)
-			| InstrKind::Website(val) => val.is_some(),
+			| InstrKind::Website(val) => val.is_full(),
 			InstrKind::Features(val)
 			| InstrKind::Authors(val)
 			| InstrKind::PackageMaintainers(val)
@@ -127,9 +128,8 @@ impl Instruction {
 			| InstrKind::Extend(val)
 			| InstrKind::Notice(val) => val.is_some(),
 			InstrKind::Compat(val1, val2) => val1.is_some() && val2.is_some(),
-			InstrKind::Set(var, val) => var.is_some() && val.is_some(),
-			InstrKind::Finish() => true,
-			InstrKind::Fail(val) => val.is_some(),
+			InstrKind::Set(var, val) => var.is_full() && val.is_some(),
+			InstrKind::Fail(..) | InstrKind::Finish() => true,
 			InstrKind::If(..) | InstrKind::Addon { .. } | InstrKind::Require(..) => {
 				unimplemented!()
 			}
@@ -160,8 +160,8 @@ impl Instruction {
 				| InstrKind::License(text)
 				| InstrKind::ModrinthID(text)
 				| InstrKind::CurseForgeID(text) => {
-					if text.is_none() {
-						*text = Some(parse_string(tok, pos)?);
+					if text.is_empty() {
+						text.fill(parse_string(tok, pos)?);
 					} else {
 						unexpected_token!(tok, pos);
 					}
@@ -191,7 +191,7 @@ impl Instruction {
 					}
 				}
 				InstrKind::Set(var, val) => {
-					if var.is_some() {
+					if var.is_full() {
 						if let Value::None = val {
 							*val = parse_arg(tok, pos)?;
 						} else {
@@ -199,7 +199,7 @@ impl Instruction {
 						}
 					} else {
 						match tok {
-							Token::Ident(name) => *var = Some(name.clone()),
+							Token::Ident(name) => var.fill(name.clone()),
 							_ => unexpected_token!(tok, pos),
 						}
 					}

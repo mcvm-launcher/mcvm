@@ -29,23 +29,23 @@ pub fn eval_metadata(parsed: &Parsed) -> anyhow::Result<PackageMetadata> {
 
 			for instr in &block.contents {
 				match &instr.kind {
-					InstrKind::Name(val) => out.name = val.clone(),
-					InstrKind::Description(val) => out.description = val.clone(),
-					InstrKind::LongDescription(val) => out.long_description = val.clone(),
-					InstrKind::Version(val) => out.version = val.clone(),
+					InstrKind::Name(val) => out.name = Some(val.get_clone()),
+					InstrKind::Description(val) => out.description = Some(val.get_clone()),
+					InstrKind::LongDescription(val) => out.long_description = Some(val.get_clone()),
+					InstrKind::Version(val) => out.version = Some(val.get_clone()),
 					InstrKind::Authors(val) => out.authors = Some(val.clone()),
 					InstrKind::PackageMaintainers(val) => {
 						out.package_maintainers = Some(val.clone())
 					}
-					InstrKind::Website(val) => out.website = val.clone(),
-					InstrKind::SupportLink(val) => out.support_link = val.clone(),
-					InstrKind::Documentation(val) => out.documentation = val.clone(),
-					InstrKind::Source(val) => out.source = val.clone(),
-					InstrKind::Issues(val) => out.issues = val.clone(),
-					InstrKind::Community(val) => out.community = val.clone(),
-					InstrKind::Icon(val) => out.icon = val.clone(),
-					InstrKind::Banner(val) => out.banner = val.clone(),
-					InstrKind::License(val) => out.license = val.clone(),
+					InstrKind::Website(val) => out.website = Some(val.get_clone()),
+					InstrKind::SupportLink(val) => out.support_link = Some(val.get_clone()),
+					InstrKind::Documentation(val) => out.documentation = Some(val.get_clone()),
+					InstrKind::Source(val) => out.source = Some(val.get_clone()),
+					InstrKind::Issues(val) => out.issues = Some(val.get_clone()),
+					InstrKind::Community(val) => out.community = Some(val.get_clone()),
+					InstrKind::Icon(val) => out.icon = Some(val.get_clone()),
+					InstrKind::Banner(val) => out.banner = Some(val.get_clone()),
+					InstrKind::License(val) => out.license = Some(val.get_clone()),
 					_ => bail!("Instruction is not allowed in this context"),
 				}
 			}

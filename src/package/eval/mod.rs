@@ -230,7 +230,7 @@ pub fn eval_instr(
 				}
 			}
 			InstrKind::Set(var, val) => {
-				let var = var.as_ref().expect("Set variable missing");
+				let var = var.get();
 				eval.vars.insert(var.to_owned(), val.get(&eval.vars)?);
 			}
 			InstrKind::Finish() => out.finish = true,

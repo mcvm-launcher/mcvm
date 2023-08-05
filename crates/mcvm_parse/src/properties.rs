@@ -21,8 +21,8 @@ pub fn eval_properties(parsed: &Parsed) -> anyhow::Result<PackageProperties> {
 				match &instr.kind {
 					InstrKind::Features(list) => out.features = Some(list.clone()),
 					InstrKind::DefaultFeatures(list) => out.default_features = Some(list.clone()),
-					InstrKind::ModrinthID(id) => out.modrinth_id = id.clone(),
-					InstrKind::CurseForgeID(id) => out.curseforge_id = id.clone(),
+					InstrKind::ModrinthID(id) => out.modrinth_id = Some(id.get_clone()),
+					InstrKind::CurseForgeID(id) => out.curseforge_id = Some(id.get_clone()),
 					_ => bail!("Instruction is not allowed in this context"),
 				}
 			}
