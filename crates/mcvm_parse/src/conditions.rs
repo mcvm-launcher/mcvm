@@ -2,6 +2,7 @@ use anyhow::bail;
 use mcvm_shared::lang::Language;
 use mcvm_shared::later::Later;
 use mcvm_shared::pkg::PackageStability;
+use serde::Deserialize;
 
 use crate::unexpected_token;
 use mcvm_shared::instance::Side;
@@ -12,7 +13,8 @@ use super::lex::{TextPos, Token};
 use super::Value;
 
 /// Value for the OS condition
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
+#[serde(rename_all = "snake_case")]
 pub enum OSCondition {
 	Windows,
 	Linux,

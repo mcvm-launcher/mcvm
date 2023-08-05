@@ -1,5 +1,7 @@
 use std::fmt::Display;
 
+use serde::Deserialize;
+
 /// Pattern matching for the version of Minecraft, a package, etc.
 #[derive(Debug, Hash, Clone, PartialEq)]
 pub enum VersionPattern {
@@ -152,6 +154,16 @@ impl Display for VersionPattern {
 				Self::Any => String::from("*"),
 			}
 		)
+	}
+}
+
+impl<'de> Deserialize<'de> for VersionPattern {
+	fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+	where
+		D: serde::Deserializer<'de>,
+	{
+		let string = String::deserialize(deserializer)?;
+		Ok(Self::from(&string))
 	}
 }
 

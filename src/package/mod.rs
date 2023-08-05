@@ -1,11 +1,12 @@
 mod core;
+pub mod declarative;
 pub mod eval;
 pub mod reg;
 pub mod repo;
 
 use crate::io::files::paths::Paths;
-use mcvm_shared::later::Later;
 use crate::net::download;
+use mcvm_shared::later::Later;
 
 use std::fs;
 use std::path::PathBuf;

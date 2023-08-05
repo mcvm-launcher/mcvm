@@ -861,6 +861,7 @@ dependencies = [
  "anyhow",
  "color-print",
  "mcvm_shared",
+ "serde",
 ]
 
 [[package]]

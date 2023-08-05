@@ -13,3 +13,4 @@ categories = ["games"]
 anyhow = "1.0.70"
 color-print = "0.3.4"
 mcvm_shared = { path = "../mcvm_shared", version = "0.1.1" }
+serde = { version = "1.0.152", features = ["derive"] }

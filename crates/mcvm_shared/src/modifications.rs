@@ -23,7 +23,8 @@ impl Display for Modloader {
 	}
 }
 
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
+#[serde(rename_all = "snake_case")]
 pub enum ModloaderMatch {
 	Vanilla,
 	Forge,
@@ -80,7 +81,8 @@ impl Display for ServerType {
 	}
 }
 
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
+#[serde(rename_all = "snake_case")]
 pub enum PluginLoaderMatch {
 	Vanilla,
 	Bukkit,
