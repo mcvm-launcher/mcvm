@@ -317,7 +317,10 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 				Ok(())
 			}
 			ParseMode::Instruction(instr) => {
-				if instr.parse(tok, pos)? {
+				if instr
+					.parse(tok, pos)
+					.with_context(|| format!("Failed to parse instruction {instr} {pos}"))?
+				{
 					instr_to_push = Some(instr.clone());
 					mode_to_set = Some(ParseMode::Root);
 				}

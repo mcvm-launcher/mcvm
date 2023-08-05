@@ -5,10 +5,10 @@ pub mod instruction;
 pub mod lex;
 pub mod metadata;
 pub mod parse;
-pub mod routine;
 pub mod properties;
+pub mod routine;
 
-use anyhow::{anyhow, bail};
+use anyhow::{anyhow, bail, Context};
 
 /// Argument to a command that could be constant or a variable
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -135,10 +135,10 @@ impl Display for FailReason {
 
 /// Parses and validates a package
 pub fn parse_and_validate(contents: &str) -> anyhow::Result<()> {
-	let parsed = parse::lex_and_parse(contents)?;
-	metadata::eval_metadata(&parsed)?;
-	properties::eval_properties(&parsed)?;
-	
+	let parsed = parse::lex_and_parse(contents).context("Parsing failed")?;
+	metadata::eval_metadata(&parsed).context("Metadata evaluation failed")?;
+	properties::eval_properties(&parsed).context("Properties evaluation failed")?;
+
 	Ok(())
 }
 

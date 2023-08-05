@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 use anyhow::bail;
 use mcvm_shared::later::Later;
 
@@ -50,6 +52,48 @@ pub enum InstrKind {
 	Finish(),
 	Fail(Option<FailReason>),
 	Notice(Value),
+}
+
+impl Display for InstrKind {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(
+			f,
+			"{}",
+			match self {
+				Self::If(..) => "if",
+				Self::Name(..) => "name",
+				Self::Description(..) => "description",
+				Self::LongDescription(..) => "long_description",
+				Self::Version(..) => "version",
+				Self::Authors(..) => "authors",
+				Self::PackageMaintainers(..) => "package_maintainers",
+				Self::Website(..) => "website",
+				Self::SupportLink(..) => "support_link",
+				Self::Documentation(..) => "documentation",
+				Self::Source(..) => "source",
+				Self::Issues(..) => "issues",
+				Self::Community(..) => "community",
+				Self::Icon(..) => "icon",
+				Self::Banner(..) => "banner",
+				Self::License(..) => "license",
+				Self::Features(..) => "features",
+				Self::DefaultFeatures(..) => "default_features",
+				Self::ModrinthID(..) => "modrinth_id",
+				Self::CurseForgeID(..) => "curseforge_id",
+				Self::Addon { .. } => "addon",
+				Self::Set(..) => "set",
+				Self::Require(..) => "require",
+				Self::Refuse(..) => "refuse",
+				Self::Recommend(..) => "recommend",
+				Self::Bundle(..) => "bundle",
+				Self::Compat(..) => "compat",
+				Self::Extend(..) => "extend",
+				Self::Finish() => "finish",
+				Self::Fail(..) => "fail",
+				Self::Notice(..) => "notice",
+			}
+		)
+	}
 }
 
 /// A command / statement run in a package script
@@ -224,6 +268,12 @@ impl Instruction {
 
 			Ok(false)
 		}
+	}
+}
+
+impl Display for Instruction {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "{}", self.kind)
 	}
 }
 

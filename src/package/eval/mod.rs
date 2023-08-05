@@ -3,7 +3,7 @@ pub mod resolve;
 
 use anyhow::{anyhow, bail};
 use mcvm_parse::routine::INSTALL_ROUTINE;
-use mcvm_shared::addon::{is_filename_valid, Addon, is_addon_version_valid};
+use mcvm_shared::addon::{is_addon_version_valid, is_filename_valid, Addon};
 use mcvm_shared::lang::Language;
 use mcvm_shared::util::is_valid_identifier;
 use reqwest::Client;
@@ -123,11 +123,7 @@ pub struct EvalData<'a> {
 }
 
 impl<'a> EvalData<'a> {
-	pub fn new(
-		input: EvalInput<'a>,
-		id: PkgIdentifier,
-		routine: &Routine,
-	) -> Self {
+	pub fn new(input: EvalInput<'a>, id: PkgIdentifier, routine: &Routine) -> Self {
 		Self {
 			input,
 			vars: HashMap::new(),
@@ -237,7 +233,10 @@ pub fn eval_instr(
 			InstrKind::Fail(reason) => {
 				out.finish = true;
 				let reason = reason.as_ref().unwrap_or(&FailReason::None).clone();
-				bail!("Package script failed with reason: {}", reason.to_string());
+				bail!(
+					"Package script failed explicitly with reason: {}",
+					reason.to_string()
+				);
 			}
 			InstrKind::Require(deps) => {
 				if let EvalLevel::Resolve = eval.level {
