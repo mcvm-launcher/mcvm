@@ -115,6 +115,14 @@ pub mod later {
 			}
 		}
 
+		/// Converts to an Option<T>
+		pub fn into_option(self) -> Option<T> {
+			match self {
+				Self::Empty => None,
+				Self::Full(val) => Some(val)
+			}
+		}
+
 		fn fail(&self) -> ! {
 			panic!("Value in Later<T> does not exist");
 		}
