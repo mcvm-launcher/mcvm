@@ -14,3 +14,4 @@ anyhow = "1.0.70"
 mcvm_parse = { path = "../mcvm_parse", version = "0.2.0" }
 mcvm_shared = { path = "../mcvm_shared", version = "0.2.0" }
 serde = { version = "1.0.152", features = ["derive"] }
+serde_json = "1.0.91"

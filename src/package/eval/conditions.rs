@@ -3,6 +3,19 @@ use mcvm_shared::{instance::Side, versions::VersionPattern};
 use super::EvalData;
 use mcvm_parse::conditions::{ConditionKind, OSCondition};
 
+pub const fn check_os_condition(condition: &OSCondition) -> bool {
+	match condition {
+		OSCondition::Windows => cfg!(target_os = "windows"),
+		OSCondition::Linux => cfg!(target_os = "linux"),
+		OSCondition::MacOS => cfg!(target_os = "macos"),
+		OSCondition::Other => {
+			!(cfg!(target_os = "windows")
+				|| cfg!(target_os = "linux")
+				|| cfg!(target_os = "macos"))
+		}
+	}
+}
+
 pub fn eval_condition(condition: &ConditionKind, eval: &EvalData) -> anyhow::Result<bool> {
 	match condition {
 		ConditionKind::Not(condition) => {
@@ -45,16 +58,7 @@ pub fn eval_condition(condition: &ConditionKind, eval: &EvalData) -> anyhow::Res
 			.constants
 			.features
 			.contains(&feature.get(&eval.vars)?)),
-		ConditionKind::OS(os) => Ok(match os.get() {
-			OSCondition::Windows => cfg!(target_os = "windows"),
-			OSCondition::Linux => cfg!(target_os = "linux"),
-			OSCondition::MacOS => cfg!(target_os = "macos"),
-			OSCondition::Other => {
-				!(cfg!(target_os = "windows")
-					|| cfg!(target_os = "linux")
-					|| cfg!(target_os = "macos"))
-			}
-		}),
+		ConditionKind::OS(os) => Ok(check_os_condition(os.get())),
 		ConditionKind::Stability(stability) => {
 			Ok(eval.input.params.stability == *stability.get())
 		}

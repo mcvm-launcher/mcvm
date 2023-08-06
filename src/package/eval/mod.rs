@@ -1,9 +1,11 @@
 pub mod conditions;
+/// Used for evaluating declarative packages
+pub mod declarative;
 pub mod resolve;
 
 use anyhow::{anyhow, bail};
 use mcvm_parse::routine::INSTALL_ROUTINE;
-use mcvm_shared::addon::{is_addon_version_valid, is_filename_valid, Addon};
+use mcvm_shared::addon::{is_addon_version_valid, is_filename_valid, Addon, AddonKind};
 use mcvm_shared::lang::Language;
 use mcvm_shared::util::is_valid_identifier;
 use reqwest::Client;
@@ -17,7 +19,7 @@ use crate::data::config::profile::GameModifications;
 use crate::io::files::paths::Paths;
 use mcvm_parse::instruction::{InstrKind, Instruction};
 use mcvm_parse::parse::{Block, BlockId};
-use mcvm_parse::{FailReason, Value};
+use mcvm_parse::FailReason;
 use mcvm_shared::instance::Side;
 use mcvm_shared::pkg::{PackageStability, PkgIdentifier};
 
@@ -141,7 +143,7 @@ impl<'a> EvalData<'a> {
 	}
 }
 
-/// Result from an evaluation subfunction. We merge this with the main EvalData
+/// Result from an evaluation subfunction
 pub struct EvalResult {
 	finish: bool,
 }
@@ -301,51 +303,19 @@ pub fn eval_instr(
 					if eval.addon_reqs.iter().any(|x| x.addon.id == id) {
 						bail!("Duplicate addon id '{id}'");
 					}
-					if !is_valid_identifier(&id) {
-						bail!("Invalid addon identifier '{id}'");
-					}
-
-					// Empty strings will break the filename so we convert them to none
-					let version = version.get_as_option(&eval.vars)?.filter(|x| !x.is_empty());
-					if let Some(version) = &version {
-						if !is_addon_version_valid(version) {
-							bail!("Invalid addon version identifier '{version}' for addon '{id}'");
-						}
-					}
 
 					let kind = kind.as_ref().expect("Addon kind missing");
-
-					let file_name = if file_name.is_some() {
-						file_name.get(&eval.vars)?
-					} else {
-						addon::get_addon_instance_filename(&eval.id.name, &id, kind)
-					};
-
-					if !is_filename_valid(*kind, &file_name) {
-						bail!("Invalid addon filename '{file_name}' in addon '{id}'");
-					}
-
-					let addon = Addon::new(*kind, &id, &file_name, eval.id.clone(), version);
-
-					if let Value::Constant(..) | Value::Var(..) = url {
-						let location = AddonLocation::Remote(url.get(&eval.vars)?);
-						eval.addon_reqs.push(AddonRequest::new(addon, location));
-					} else if let Value::Constant(..) | Value::Var(..) = path {
-						let path = path.get(&eval.vars)?;
-						match eval.input.constants.perms {
-							EvalPermissions::Elevated => {
-								let path = String::from(shellexpand::tilde(&path));
-								let path = PathBuf::from(path);
-								let location = AddonLocation::Local(path);
-								eval.addon_reqs.push(AddonRequest::new(addon, location));
-							}
-							_ => {
-								bail!("Insufficient permissions to add a local addon '{id}'");
-							}
-						}
-					} else {
-						bail!("No location (url/path) was specified for addon '{id}'");
-					}
+					let addon_req = create_valid_addon_request(
+						id,
+						url.get_as_option(&eval.vars)?,
+						path.get_as_option(&eval.vars)?,
+						*kind,
+						file_name.get_as_option(&eval.vars)?,
+						eval.id.clone(),
+						version.get_as_option(&eval.vars)?,
+						&eval.input.params.perms,
+					)?;
+					eval.addon_reqs.push(addon_req);
 				}
 			}
 			_ => bail!("Instruction is not allowed in this routine context"),
@@ -353,4 +323,56 @@ pub fn eval_instr(
 	}
 
 	Ok(out)
+}
+
+/// Utility for evaluation that validates addon arguments and creates a request
+pub fn create_valid_addon_request(
+	id: String,
+	url: Option<String>,
+	path: Option<String>,
+	kind: AddonKind,
+	file_name: Option<String>,
+	pkg_id: PkgIdentifier,
+	version: Option<String>,
+	perms: &EvalPermissions,
+) -> anyhow::Result<AddonRequest> {
+	if !is_valid_identifier(&id) {
+		bail!("Invalid addon identifier '{id}'");
+	}
+
+	// Empty strings will break the filename so we convert them to none
+	let version = version.filter(|x| !x.is_empty());
+	if let Some(version) = &version {
+		if !is_addon_version_valid(version) {
+			bail!("Invalid addon version identifier '{version}' for addon '{id}'");
+		}
+	}
+
+	let file_name =
+		file_name.unwrap_or(addon::get_addon_instance_filename(&pkg_id.name, &id, &kind));
+
+	if !is_filename_valid(kind, &file_name) {
+		bail!("Invalid addon filename '{file_name}' in addon '{id}'");
+	}
+
+	let addon = Addon::new(kind, &id, &file_name, pkg_id, version);
+
+	if let Some(url) = url {
+		let location = AddonLocation::Remote(url);
+		Ok(AddonRequest::new(addon, location))
+	} else if let Some(path) = path {
+		match perms {
+			EvalPermissions::Elevated => {
+				let path = String::from(shellexpand::tilde(&path));
+				let path = PathBuf::from(path);
+				let location = AddonLocation::Local(path);
+				Ok(AddonRequest::new(addon, location))
+			}
+			_ => {
+				bail!("Insufficient permissions to add a local addon '{id}'");
+			}
+		}
+	} else {
+		bail!("No location (url/path) was specified for addon '{id}'");
+	}
 }

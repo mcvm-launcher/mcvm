@@ -3,7 +3,7 @@ use anyhow::bail;
 use serde::Deserialize;
 
 /// Package metadata derived from running the 'meta' routine
-#[derive(Default, Debug, Deserialize)]
+#[derive(Default, Debug, Deserialize, Clone)]
 pub struct PackageMetadata {
 	pub name: Option<String>,
 	pub description: Option<String>,

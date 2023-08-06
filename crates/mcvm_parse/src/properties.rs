@@ -4,7 +4,7 @@ use serde::Deserialize;
 use crate::{instruction::InstrKind, parse::Parsed, routine::PROPERTIES_ROUTINE};
 
 /// Package properties derived from running the 'properties' routine
-#[derive(Default, Debug, Deserialize)]
+#[derive(Default, Debug, Deserialize, Clone)]
 pub struct PackageProperties {
 	pub features: Option<Vec<String>>,
 	pub default_features: Option<Vec<String>>,

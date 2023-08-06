@@ -873,6 +873,7 @@ dependencies = [
  "mcvm_parse",
  "mcvm_shared",
  "serde",
+ "serde_json",
 ]
 
 [[package]]

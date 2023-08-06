@@ -30,6 +30,7 @@ pub enum ModloaderMatch {
 	Forge,
 	Fabric,
 	Quilt,
+	#[serde(rename = "fabriclike")]
 	FabricLike,
 }
 
