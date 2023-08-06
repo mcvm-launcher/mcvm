@@ -1,7 +1,9 @@
 use std::fmt::Display;
 
 use anyhow::bail;
+use mcvm_shared::instance::Side;
 use mcvm_shared::later::Later;
+use mcvm_shared::modifications::{ModloaderMatch, PluginLoaderMatch};
 
 use super::conditions::Condition;
 use super::lex::{TextPos, Token};
@@ -34,6 +36,9 @@ pub enum InstrKind {
 	DefaultFeatures(Vec<String>),
 	ModrinthID(Later<String>),
 	CurseForgeID(Later<String>),
+	SupportedModloaders(Vec<ModloaderMatch>),
+	SupportedPluginLoaders(Vec<PluginLoaderMatch>),
+	SupportedSides(Vec<Side>),
 	Addon {
 		id: Value,
 		file_name: Value,
@@ -80,6 +85,9 @@ impl Display for InstrKind {
 				Self::DefaultFeatures(..) => "default_features",
 				Self::ModrinthID(..) => "modrinth_id",
 				Self::CurseForgeID(..) => "curseforge_id",
+				Self::SupportedModloaders(..) => "supported_modloaders",
+				Self::SupportedPluginLoaders(..) => "supported_plugin_loaders",
+				Self::SupportedSides(..) => "supported_sides",
 				Self::Addon { .. } => "addon",
 				Self::Set(..) => "set",
 				Self::Require(..) => "require",
@@ -129,6 +137,9 @@ impl Instruction {
 			"default_features" => Ok(InstrKind::DefaultFeatures(Vec::new())),
 			"modrinth_id" => Ok(InstrKind::ModrinthID(Later::Empty)),
 			"curseforge_id" => Ok(InstrKind::CurseForgeID(Later::Empty)),
+			"supported_modloaders" => Ok(InstrKind::SupportedModloaders(Vec::new())),
+			"supported_plugin_loaders" => Ok(InstrKind::SupportedPluginLoaders(Vec::new())),
+			"supported_sides" => Ok(InstrKind::SupportedSides(Vec::new())),
 			"set" => Ok(InstrKind::Set(Later::Empty, Value::None)),
 			"finish" => Ok(InstrKind::Finish()),
 			"fail" => Ok(InstrKind::Fail(None)),
@@ -171,6 +182,9 @@ impl Instruction {
 			| InstrKind::Bundle(val)
 			| InstrKind::Extend(val)
 			| InstrKind::Notice(val) => val.is_some(),
+			InstrKind::SupportedModloaders(val) => !val.is_empty(),
+			InstrKind::SupportedPluginLoaders(val) => !val.is_empty(),
+			InstrKind::SupportedSides(val) => !val.is_empty(),
 			InstrKind::Compat(val1, val2) => val1.is_some() && val2.is_some(),
 			InstrKind::Set(var, val) => var.is_full() && val.is_some(),
 			InstrKind::Fail(..) | InstrKind::Finish() => true,
@@ -225,6 +239,36 @@ impl Instruction {
 				| InstrKind::PackageMaintainers(list)
 				| InstrKind::Features(list)
 				| InstrKind::DefaultFeatures(list) => list.push(parse_string(tok, pos)?),
+				InstrKind::SupportedModloaders(list) => match tok {
+					Token::Ident(name) => {
+						if let Some(val) = ModloaderMatch::parse_from_str(name) {
+							list.push(val);
+						} else {
+							bail!("Value is not a valid modloader match argument")
+						}
+					}
+					_ => unexpected_token!(tok, pos),
+				},
+				InstrKind::SupportedPluginLoaders(list) => match tok {
+					Token::Ident(name) => {
+						if let Some(val) = PluginLoaderMatch::parse_from_str(name) {
+							list.push(val);
+						} else {
+							bail!("Value is not a valid plugin loader match argument")
+						}
+					}
+					_ => unexpected_token!(tok, pos),
+				},
+				InstrKind::SupportedSides(list) => match tok {
+					Token::Ident(name) => {
+						if let Some(val) = Side::parse_from_str(name) {
+							list.push(val);
+						} else {
+							bail!("Value is not a valid side argument")
+						}
+					}
+					_ => unexpected_token!(tok, pos),
+				},
 				InstrKind::Compat(package, compat) => {
 					if let Value::None = package {
 						*package = parse_arg(tok, pos)?;

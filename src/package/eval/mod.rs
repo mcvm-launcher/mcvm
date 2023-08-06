@@ -4,6 +4,7 @@ pub mod declarative;
 pub mod resolve;
 
 use anyhow::{anyhow, bail};
+use mcvm_parse::properties::PackageProperties;
 use mcvm_parse::routine::INSTALL_ROUTINE;
 use mcvm_pkg::PackageContentType;
 use mcvm_shared::addon::{is_addon_version_valid, is_filename_valid, Addon, AddonKind};
@@ -172,12 +173,19 @@ impl Package {
 		client: &Client,
 	) -> anyhow::Result<EvalData<'a>> {
 		self.parse(paths, client).await?;
+
+		// Check properties
+		let properties = self.get_properties(paths, client).await?;
+		if eval_check_properties(&input, properties)? {
+			return Ok(EvalData::new(input, self.id.clone(), &routine));
+		}
+
 		match self.content_type {
 			PackageContentType::Script => {
 				let parsed = self.data.get_mut().contents.get_mut().get_script_contents();
 				let eval = eval_script_package(self.id.clone(), parsed, routine, input).await?;
 				Ok(eval)
-			},
+			}
 			PackageContentType::Declarative => {
 				let contents = self.data.get().contents.get().get_declarative_contents();
 				let eval = eval_declarative_package(self.id.clone(), contents, input, routine)?;
@@ -185,6 +193,41 @@ impl Package {
 			}
 		}
 	}
+}
+
+/// Check properties when evaluating. Returns true if the package should finish evaluating with no error
+pub fn eval_check_properties<'a>(
+	input: &EvalInput<'a>,
+	properties: &PackageProperties,
+) -> anyhow::Result<bool> {
+	if let Some(supported_modloaders) = &properties.supported_modloaders {
+		if !supported_modloaders.iter().any(|x| {
+			x.matches(
+				&input
+					.constants
+					.modifications
+					.get_modloader(input.params.side),
+			)
+		}) {
+			bail!("Package does not support this modloader");
+		}
+	}
+	if let Some(supported_plugin_loaders) = &properties.supported_plugin_loaders {
+		if !supported_plugin_loaders
+			.iter()
+			.any(|x| x.matches(&&input.constants.modifications.server_type))
+		{
+			bail!("Package does not support this plugin loader");
+		}
+	}
+
+	if let Some(supported_sides) = &properties.supported_sides {
+		if !supported_sides.contains(&input.params.side) {
+			return Ok(true);
+		}
+	}
+
+	Ok(false)
 }
 
 /// Evaluate a script package

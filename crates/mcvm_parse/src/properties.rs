@@ -1,4 +1,8 @@
 use anyhow::{bail, ensure};
+use mcvm_shared::{
+	instance::Side,
+	modifications::{ModloaderMatch, PluginLoaderMatch},
+};
 use serde::Deserialize;
 
 use crate::{instruction::InstrKind, parse::Parsed, routine::PROPERTIES_ROUTINE};
@@ -10,6 +14,9 @@ pub struct PackageProperties {
 	pub default_features: Option<Vec<String>>,
 	pub modrinth_id: Option<String>,
 	pub curseforge_id: Option<String>,
+	pub supported_modloaders: Option<Vec<ModloaderMatch>>,
+	pub supported_plugin_loaders: Option<Vec<PluginLoaderMatch>>,
+	pub supported_sides: Option<Vec<Side>>,
 }
 
 impl PackageProperties {
@@ -43,6 +50,13 @@ pub fn eval_properties(parsed: &Parsed) -> anyhow::Result<PackageProperties> {
 					InstrKind::DefaultFeatures(list) => out.default_features = Some(list.clone()),
 					InstrKind::ModrinthID(id) => out.modrinth_id = Some(id.get_clone()),
 					InstrKind::CurseForgeID(id) => out.curseforge_id = Some(id.get_clone()),
+					InstrKind::SupportedModloaders(list) => {
+						out.supported_modloaders = Some(list.clone())
+					}
+					InstrKind::SupportedPluginLoaders(list) => {
+						out.supported_plugin_loaders = Some(list.clone())
+					}
+					InstrKind::SupportedSides(list) => out.supported_sides = Some(list.clone()),
 					_ => bail!("Instruction is not allowed in this context"),
 				}
 			}
