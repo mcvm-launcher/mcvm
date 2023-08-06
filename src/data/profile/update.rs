@@ -619,9 +619,7 @@ pub async fn update_profiles(
 			let constants = EvalConstants {
 				version: mc_version.to_string(),
 				modifications: profile.modifications.clone(),
-				features: vec![],
 				version_list: version_list.clone(),
-				perms: EvalPermissions::Standard,
 				language: config.prefs.language,
 			};
 

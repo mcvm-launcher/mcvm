@@ -262,8 +262,6 @@ mod tests {
 				ClientType::Fabric,
 				ServerType::Fabric,
 			),
-			features: vec![],
-			perms: EvalPermissions::Standard,
 			language: Language::AmericanEnglish,
 		};
 		let input = EvalInput {

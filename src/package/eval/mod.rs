@@ -88,9 +88,7 @@ pub struct RequiredPackage {
 pub struct EvalConstants {
 	pub version: String,
 	pub modifications: GameModifications,
-	pub features: Vec<String>,
 	pub version_list: Vec<String>,
-	pub perms: EvalPermissions,
 	pub language: Language,
 }
 

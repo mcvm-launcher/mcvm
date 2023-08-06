@@ -55,7 +55,7 @@ pub fn eval_condition(condition: &ConditionKind, eval: &EvalData) -> anyhow::Res
 			&& matches!(eval.input.params.side, Side::Server)),
 		ConditionKind::Feature(feature) => Ok(eval
 			.input
-			.constants
+			.params
 			.features
 			.contains(&feature.get(&eval.vars)?)),
 		ConditionKind::OS(os) => Ok(check_os_condition(os.get())),
