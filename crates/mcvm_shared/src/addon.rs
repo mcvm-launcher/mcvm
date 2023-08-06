@@ -94,7 +94,7 @@ pub fn is_addon_version_valid(version: &str) -> bool {
 	}
 
 	for c in version.chars() {
-		if !c.is_ascii_alphanumeric() {
+		if !c.is_ascii_alphanumeric() && c != '-' {
 			return false;
 		}
 	}
