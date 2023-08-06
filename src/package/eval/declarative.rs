@@ -1,6 +1,6 @@
 use anyhow::anyhow;
 use mcvm_pkg::declarative::{
-	DeclarativeAddonConditionSet, DeclarativeAddonVersion, DeclarativePackage,
+	DeclarativeConditionSet, DeclarativeAddonVersion, DeclarativePackage,
 };
 use mcvm_shared::pkg::PkgIdentifier;
 
@@ -100,7 +100,7 @@ pub fn pick_best_addon_version<'a>(
 
 /// Check multiple setso f addon version conditions
 fn check_multiple_condition_sets<'a>(
-	conditions: &[DeclarativeAddonConditionSet],
+	conditions: &[DeclarativeConditionSet],
 	input: &'a EvalInput<'a>,
 ) -> bool {
 	conditions.iter().all(|x| check_condition_set(x, input))
@@ -108,7 +108,7 @@ fn check_multiple_condition_sets<'a>(
 
 /// Filtering function for addon version picking and rule checking
 fn check_condition_set<'a>(
-	conditions: &DeclarativeAddonConditionSet,
+	conditions: &DeclarativeConditionSet,
 	input: &'a EvalInput<'a>,
 ) -> bool {
 	if let Some(minecraft_versions) = &conditions.minecraft_versions {

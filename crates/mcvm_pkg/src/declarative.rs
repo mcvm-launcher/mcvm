@@ -44,7 +44,7 @@ impl DeclarativePackageRelations {
 /// from a declarative package and conditional rules
 #[derive(Deserialize, Debug, Default, Clone)]
 #[serde(default)]
-pub struct DeclarativeAddonConditionSet {
+pub struct DeclarativeConditionSet {
 	pub minecraft_versions: Option<Vec<VersionPattern>>,
 	pub side: Option<Side>,
 	pub modloaders: Option<Vec<ModloaderMatch>>,
@@ -74,7 +74,7 @@ pub struct DeclarativeConditionalRuleProperties {
 #[derive(Deserialize, Debug, Default, Clone)]
 #[serde(default)]
 pub struct DeclarativeConditionalRule {
-	pub conditions: Vec<DeclarativeAddonConditionSet>,
+	pub conditions: Vec<DeclarativeConditionSet>,
 	pub properties: DeclarativeConditionalRuleProperties,
 }
 
@@ -82,7 +82,7 @@ pub struct DeclarativeConditionalRule {
 #[derive(Deserialize, Debug, Clone)]
 pub struct DeclarativeAddonVersion {
 	#[serde(flatten)]
-	pub conditional_properties: DeclarativeAddonConditionSet,
+	pub conditional_properties: DeclarativeConditionSet,
 	#[serde(default)]
 	pub relations: DeclarativePackageRelations,
 	#[serde(default)]
@@ -101,7 +101,7 @@ pub struct DeclarativeAddon {
 	pub kind: AddonKind,
 	pub versions: Vec<DeclarativeAddonVersion>,
 	#[serde(default)]
-	pub conditions: Vec<DeclarativeAddonConditionSet>,
+	pub conditions: Vec<DeclarativeConditionSet>,
 }
 
 /// Structure for a declarative / JSON package
