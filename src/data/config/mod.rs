@@ -192,7 +192,7 @@ impl Config {
 				}
 
 				for feature in &config.features {
-					if !is_valid_identifier(feature) { 
+					if !is_valid_identifier(feature) {
 						bail!("Invalid string '{feature}'");
 					}
 				}
@@ -201,11 +201,17 @@ impl Config {
 					id: _,
 					version,
 					path,
+					content_type,
 					..
 				}) = package_config
 				{
 					let path = shellexpand::tilde(&path);
-					packages.insert_local(&config.req, version, &PathBuf::from(path.to_string()));
+					packages.insert_local(
+						&config.req,
+						version,
+						&PathBuf::from(path.to_string()),
+						content_type,
+					);
 				}
 
 				profile.packages.push(config);

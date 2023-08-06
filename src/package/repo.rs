@@ -2,6 +2,7 @@ use crate::io::files::paths::Paths;
 use crate::net::download;
 use crate::util::print::print_err;
 use mcvm_pkg::repo::{RepoPkgEntry, RepoPkgIndex};
+use mcvm_pkg::PackageContentType;
 use mcvm_shared::later::Later;
 
 use anyhow::Context;
@@ -82,11 +83,15 @@ impl PkgRepo {
 		&mut self,
 		id: &str,
 		paths: &Paths,
-	) -> anyhow::Result<Option<(String, u32)>> {
+	) -> anyhow::Result<Option<RepoQueryResult>> {
 		self.ensure_index(paths).await?;
 		let index = self.index.get();
 		if let Some(entry) = index.packages.get(id) {
-			return Ok(Some((entry.url.clone(), entry.version)));
+			return Ok(Some(RepoQueryResult {
+				url: entry.url.clone(),
+				version: entry.version,
+				content_type: get_content_type(entry).await,
+			}));
 		}
 
 		Ok(None)
@@ -107,12 +112,28 @@ impl PkgRepo {
 	}
 }
 
+/// Result from repository querying
+pub struct RepoQueryResult {
+	pub url: String,
+	pub version: u32,
+	pub content_type: PackageContentType,
+}
+
+/// Get the content type of a package from the repository
+pub async fn get_content_type(entry: &RepoPkgEntry) -> PackageContentType {
+	if let Some(content_type) = &entry.content_type {
+		content_type.clone()
+	} else {
+		PackageContentType::Script
+	}
+}
+
 /// Query a list of repos
 pub async fn query_all(
 	repos: &mut [PkgRepo],
 	name: &str,
 	paths: &Paths,
-) -> anyhow::Result<Option<(String, u32)>> {
+) -> anyhow::Result<Option<RepoQueryResult>> {
 	for repo in repos {
 		let query = match repo.query(name, paths).await {
 			Ok(val) => val,

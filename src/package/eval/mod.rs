@@ -5,6 +5,7 @@ pub mod resolve;
 
 use anyhow::{anyhow, bail};
 use mcvm_parse::routine::INSTALL_ROUTINE;
+use mcvm_pkg::PackageContentType;
 use mcvm_shared::addon::{is_addon_version_valid, is_filename_valid, Addon, AddonKind};
 use mcvm_shared::lang::Language;
 use mcvm_shared::util::is_valid_identifier;
@@ -18,7 +19,7 @@ use crate::data::addon::{self, AddonLocation, AddonRequest};
 use crate::data::config::profile::GameModifications;
 use crate::io::files::paths::Paths;
 use mcvm_parse::instruction::{InstrKind, Instruction};
-use mcvm_parse::parse::{Block, BlockId};
+use mcvm_parse::parse::{Block, BlockId, Parsed};
 use mcvm_parse::FailReason;
 use mcvm_shared::instance::Side;
 use mcvm_shared::pkg::{PackageStability, PkgIdentifier};
@@ -170,28 +171,43 @@ impl Package {
 		client: &Client,
 	) -> anyhow::Result<EvalData<'a>> {
 		self.parse(paths, client).await?;
-		let parsed = self.data.get_mut().parsed.get_mut();
-		let routine_name = routine.get_routine_name();
-		let routine_id = parsed
-			.routines
-			.get(&routine_name)
-			.ok_or(anyhow!("Routine {} does not exist", routine_name.clone()))?;
-		let block = parsed
-			.blocks
-			.get(routine_id)
-			.ok_or(anyhow!("Routine {} does not exist", routine_name))?;
-
-		let mut eval = EvalData::new(input, self.id.clone(), &routine);
-
-		for instr in &block.contents {
-			let result = eval_instr(instr, &mut eval, &parsed.blocks)?;
-			if result.finish {
-				break;
+		match self.content_type {
+			PackageContentType::Script => {
+				let parsed = self.data.get_mut().contents.get_mut().get_script_contents();
+				let eval = eval_script_package(self.id.clone(), parsed, routine, input).await?;
+				Ok(eval)
 			}
 		}
-
-		Ok(eval)
 	}
+}
+
+/// Evaluate a script package
+pub async fn eval_script_package<'a>(
+	pkg_id: PkgIdentifier,
+	parsed: &Parsed,
+	routine: Routine,
+	input: EvalInput<'a>,
+) -> anyhow::Result<EvalData<'a>> {
+	let routine_name = routine.get_routine_name();
+	let routine_id = parsed
+		.routines
+		.get(&routine_name)
+		.ok_or(anyhow!("Routine {} does not exist", routine_name.clone()))?;
+	let block = parsed
+		.blocks
+		.get(routine_id)
+		.ok_or(anyhow!("Routine {} does not exist", routine_name))?;
+
+	let mut eval = EvalData::new(input, pkg_id, &routine);
+
+	for instr in &block.contents {
+		let result = eval_instr(instr, &mut eval, &parsed.blocks)?;
+		if result.finish {
+			break;
+		}
+	}
+
+	Ok(eval)
 }
 
 /// Evaluate a block of instructions

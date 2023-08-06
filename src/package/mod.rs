@@ -5,6 +5,7 @@ pub mod repo;
 
 use crate::io::files::paths::Paths;
 use crate::net::download;
+use mcvm_pkg::PackageContentType;
 use mcvm_shared::later::Later;
 
 use std::fs;
@@ -22,27 +23,44 @@ use reqwest::Client;
 
 static PKG_EXTENSION: &str = ".pkg.txt";
 
+/// Type of data inside a package
+#[derive(Debug)]
+pub enum PkgContents {
+	Script(Parsed),
+}
+
+impl PkgContents {
+	/// Get the contents with an assertion that it is a script package
+	pub fn get_script_contents(&self) -> &Parsed {
+		if let Self::Script(parsed) = &self {
+			parsed
+		} else {
+			panic!("Attempted to get script package contents from a non-script package");
+		}
+	}
+}
+
 /// Data pertaining to the contents of a package
 #[derive(Debug)]
 pub struct PkgData {
-	contents: String,
-	parsed: Later<Parsed>,
+	text: String,
+	contents: Later<PkgContents>,
 	metadata: Later<PackageMetadata>,
 	properties: Later<PackageProperties>,
 }
 
 impl PkgData {
-	pub fn new(contents: &str) -> Self {
+	pub fn new(text: &str) -> Self {
 		Self {
-			contents: contents.to_owned(),
-			parsed: Later::new(),
+			text: text.to_owned(),
+			contents: Later::new(),
 			metadata: Later::new(),
 			properties: Later::new(),
 		}
 	}
 
-	pub fn get_contents(&self) -> String {
-		self.contents.clone()
+	pub fn get_text(&self) -> String {
+		self.text.clone()
 	}
 }
 
@@ -59,15 +77,22 @@ pub enum PkgLocation {
 pub struct Package {
 	pub id: PkgIdentifier,
 	pub location: PkgLocation,
+	pub content_type: PackageContentType,
 	pub data: Later<PkgData>,
 }
 
 impl Package {
-	pub fn new(name: &str, version: u32, location: PkgLocation) -> Self {
+	pub fn new(
+		name: &str,
+		version: u32,
+		location: PkgLocation,
+		content_type: PackageContentType,
+	) -> Self {
 		Self {
 			id: PkgIdentifier::new(name, version),
 			location,
 			data: Later::new(),
+			content_type,
 		}
 	}
 
@@ -134,13 +159,16 @@ impl Package {
 	pub async fn parse(&mut self, paths: &Paths, client: &Client) -> anyhow::Result<()> {
 		self.ensure_loaded(paths, false, client).await?;
 		let data = self.data.get_mut();
-		if !data.parsed.is_empty() {
+		if data.contents.is_full() {
 			return Ok(());
 		}
 
-		let parsed = lex_and_parse(&data.contents)?;
-
-		data.parsed.fill(parsed);
+		match self.content_type {
+			PackageContentType::Script => {
+				let parsed = lex_and_parse(&data.get_text())?;
+				data.contents.fill(PkgContents::Script(parsed));
+			}
+		}
 
 		Ok(())
 	}
@@ -153,12 +181,16 @@ impl Package {
 	) -> anyhow::Result<&'a PackageMetadata> {
 		self.parse(paths, client).await.context("Failed to parse")?;
 		let data = self.data.get_mut();
-		let parsed = data.parsed.get();
-		if data.metadata.is_empty() {
-			let metadata = eval_metadata(parsed).context("Failed to evaluate metadata")?;
-			data.metadata.fill(metadata);
+		match self.content_type {
+			PackageContentType::Script => {
+				let parsed = data.contents.get().get_script_contents();
+				if data.metadata.is_empty() {
+					let metadata = eval_metadata(parsed).context("Failed to evaluate metadata")?;
+					data.metadata.fill(metadata);
+				}
+				Ok(data.metadata.get())
+			}
 		}
-		Ok(data.metadata.get())
 	}
 
 	/// Get the properties of the package
@@ -169,12 +201,17 @@ impl Package {
 	) -> anyhow::Result<&'a PackageProperties> {
 		self.parse(paths, client).await.context("Failed to parse")?;
 		let data = self.data.get_mut();
-		let parsed = data.parsed.get();
-		if data.properties.is_empty() {
-			let properties = eval_properties(parsed).context("Failed to evaluate properties")?;
-			data.properties.fill(properties);
+		match self.content_type {
+			PackageContentType::Script => {
+				let parsed = data.contents.get().get_script_contents();
+				if data.properties.is_empty() {
+					let properties =
+						eval_properties(parsed).context("Failed to evaluate properties")?;
+					data.properties.fill(properties);
+				}
+				Ok(data.properties.get())
+			}
 		}
-		Ok(data.properties.get())
 	}
 }
 
@@ -218,10 +255,20 @@ mod tests {
 
 	#[test]
 	fn test_package_name() {
-		let package = Package::new("sodium", 2, PkgLocation::Remote(None));
+		let package = Package::new(
+			"sodium",
+			2,
+			PkgLocation::Remote(None),
+			PackageContentType::Script,
+		);
 		assert_eq!(package.filename(), String::from("sodium_2") + PKG_EXTENSION);
 
-		let package = Package::new("fabriclike-api", 80, PkgLocation::Remote(None));
+		let package = Package::new(
+			"fabriclike-api",
+			80,
+			PkgLocation::Remote(None),
+			PackageContentType::Script,
+		);
 		assert_eq!(
 			package.filename(),
 			String::from("fabriclike-api_80") + PKG_EXTENSION

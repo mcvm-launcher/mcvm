@@ -1,16 +1,16 @@
 use anyhow::{anyhow, Context};
 use color_print::cformat;
 use mcvm_parse::metadata::PackageMetadata;
-use mcvm_parse::parse::Parsed;
 use mcvm_parse::parse_and_validate;
 use mcvm_parse::properties::PackageProperties;
+use mcvm_pkg::PackageContentType;
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 
-use super::core::is_core_package;
-use super::eval::{EvalData, Routine, EvalInput};
+use super::core::{get_core_package_content_type, is_core_package};
+use super::eval::{EvalData, EvalInput, Routine};
 use super::repo::{query_all, PkgRepo};
-use super::{Package, PkgLocation};
+use super::{Package, PkgContents, PkgLocation};
 use crate::io::files::paths::Paths;
 
 use std::collections::HashMap;
@@ -181,16 +181,29 @@ impl PkgRegistry {
 		let pkg_name = req.name.clone();
 
 		// First check the remote repositories
-		if let Some((url, version)) = query_all(&mut self.repos, &pkg_name, paths).await? {
+		if let Some(result) = query_all(&mut self.repos, &pkg_name, paths).await? {
 			return Ok(self.insert(
 				req,
-				Package::new(&pkg_name, version, PkgLocation::Remote(Some(url))),
+				Package::new(
+					&pkg_name,
+					result.version,
+					PkgLocation::Remote(Some(result.url)),
+					result.content_type,
+				),
 			));
 		}
 
 		// Now check if it exists as a core package
 		if is_core_package(&req.name) {
-			Ok(self.insert(req, Package::new(&pkg_name, 1, PkgLocation::Core)))
+			Ok(self.insert(
+				req,
+				Package::new(
+					&pkg_name,
+					1,
+					PkgLocation::Core,
+					get_core_package_content_type(&pkg_name).expect("Core package should exist"),
+				),
+			))
 		} else {
 			Err(anyhow!("Package '{pkg_name}' does not exist"))
 		}
@@ -264,7 +277,7 @@ impl PkgRegistry {
 		client: &Client,
 	) -> anyhow::Result<String> {
 		let pkg = self.ensure_package_contents(req, paths, client).await?;
-		let contents = pkg.data.get().get_contents();
+		let contents = pkg.data.get().get_text();
 		Ok(contents)
 	}
 
@@ -276,25 +289,25 @@ impl PkgRegistry {
 		client: &Client,
 	) -> anyhow::Result<()> {
 		let pkg = self.ensure_package_contents(req, paths, client).await?;
-		let contents = &pkg.data.get().contents;
+		let contents = &pkg.data.get().get_text();
 
 		parse_and_validate(contents)?;
 
 		Ok(())
 	}
 
-	/// Parse a package
+	/// Parse a package and get the contents
 	pub async fn parse<'a>(
 		&'a mut self,
 		req: &PkgRequest,
 		paths: &Paths,
 		client: &Client,
-	) -> anyhow::Result<&'a Parsed> {
+	) -> anyhow::Result<&'a PkgContents> {
 		let pkg = self.ensure_package_contents(req, paths, client).await?;
 		pkg.parse(paths, client)
 			.await
 			.context("Failed to parse package")?;
-		Ok(pkg.data.get().parsed.get())
+		Ok(pkg.data.get().contents.get())
 	}
 
 	/// Evaluate a package
@@ -319,10 +332,21 @@ impl PkgRegistry {
 	}
 
 	/// Insert a local package into the registry
-	pub fn insert_local(&mut self, req: &PkgRequest, version: u32, path: &Path) {
+	pub fn insert_local(
+		&mut self,
+		req: &PkgRequest,
+		version: u32,
+		path: &Path,
+		content_type: PackageContentType,
+	) {
 		self.insert(
 			req,
-			Package::new(&req.name, version, PkgLocation::Local(path.to_path_buf())),
+			Package::new(
+				&req.name,
+				version,
+				PkgLocation::Local(path.to_path_buf()),
+				content_type,
+			),
 		);
 	}
 
@@ -389,6 +413,7 @@ mod tests {
 			&PkgRequest::new("test", PkgRequestSource::UserRequire),
 			1,
 			&PathBuf::from("./test"),
+			PackageContentType::Script,
 		);
 		let req = PkgRequest::new(
 			"test",

@@ -1,5 +1,6 @@
 use std::fmt::Display;
 
+use mcvm_pkg::PackageContentType;
 use mcvm_shared::pkg::PackageStability;
 use serde::{Deserialize, Serialize};
 
@@ -27,6 +28,8 @@ pub enum FullPackageConfig {
 		r#type: PackageType,
 		id: String,
 		version: u32,
+		#[serde(default)]
+		content_type: PackageContentType,
 		path: String,
 		#[serde(default)]
 		features: Vec<String>,
@@ -96,6 +99,7 @@ impl PackageConfig {
 				id,
 				version: _,
 				path: _,
+				content_type: _,
 				features,
 				use_default_features,
 				permissions,

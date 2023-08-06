@@ -1,3 +1,5 @@
+use mcvm_pkg::PackageContentType;
+
 static ANIMATED_TEXTURES_SUPPORT: &str = include_str!("animated-textures-support.pkg.txt");
 static CEM_SUPPORT: &str = include_str!("cem-support.pkg.txt");
 static CIT_SUPPORT: &str = include_str!("cit-support.pkg.txt");
@@ -38,6 +40,31 @@ pub fn get_core_package(package: &str) -> Option<&'static str> {
 		"random-entities-support" => Some(RANDOM_ENTITIES_SUPPORT),
 		"shader-support" => Some(SHADER_SUPPORT),
 		"splash-screen-support" => Some(SPLASH_SCREEN_SUPPORT),
+		_ => None,
+	}
+}
+
+/// Gets the content type of a core package
+pub fn get_core_package_content_type(package: &str) -> Option<PackageContentType> {
+	match package {
+		"animated-textures-support" => Some(PackageContentType::Script),
+		"cem-support" => Some(PackageContentType::Script),
+		"cit-support" => Some(PackageContentType::Script),
+		"ctm-support" => Some(PackageContentType::Script),
+		"custom-colors-support" => Some(PackageContentType::Script),
+		"custom-gui-support" => Some(PackageContentType::Script),
+		"custom-sky-support" => Some(PackageContentType::Script),
+		"emissive-blocks-support" => Some(PackageContentType::Script),
+		"emissive-entities-support" => Some(PackageContentType::Script),
+		"fabric-rendering-api" => Some(PackageContentType::Script),
+		"fabriclike-api" => Some(PackageContentType::Script),
+		"kotlin-support" => Some(PackageContentType::Script),
+		"optifine-resource-packs" => Some(PackageContentType::Script),
+		"quilted-fabric-api" => Some(PackageContentType::Script),
+		"quilt-standard-libraries" => Some(PackageContentType::Script),
+		"random-entities-support" => Some(PackageContentType::Script),
+		"shader-support" => Some(PackageContentType::Script),
+		"splash-screen-support" => Some(PackageContentType::Script),
 		_ => None,
 	}
 }
