@@ -9,7 +9,7 @@ static CUSTOM_GUI_SUPPORT: &str = include_str!("custom-gui-support.pkg.txt");
 static CUSTOM_SKY_SUPPORT: &str = include_str!("custom-sky-support.pkg.txt");
 static EMISSIVE_BLOCKS_SUPPORT: &str = include_str!("emissive-blocks-support.pkg.txt");
 static EMISSIVE_ENTITIES_SUPPORT: &str = include_str!("emissive-entities-support.pkg.txt");
-static FABRIC_RENDERING_API: &str = include_str!("fabric-rendering-api.pkg.txt");
+static FABRIC_RENDERING_API: &str = include_str!("fabric-rendering-api.json");
 static FABRICLIKE_API: &str = include_str!("fabriclike-api.pkg.txt");
 static KOTLIN_SUPPORT: &str = include_str!("kotlin-support.pkg.txt");
 static OPTIFINE_RESOURCE_PACKS: &str = include_str!("optifine-resource-packs.pkg.txt");
@@ -56,7 +56,7 @@ pub fn get_core_package_content_type(package: &str) -> Option<PackageContentType
 		"custom-sky-support" => Some(PackageContentType::Script),
 		"emissive-blocks-support" => Some(PackageContentType::Script),
 		"emissive-entities-support" => Some(PackageContentType::Script),
-		"fabric-rendering-api" => Some(PackageContentType::Script),
+		"fabric-rendering-api" => Some(PackageContentType::Declarative),
 		"fabriclike-api" => Some(PackageContentType::Script),
 		"kotlin-support" => Some(PackageContentType::Script),
 		"optifine-resource-packs" => Some(PackageContentType::Script),

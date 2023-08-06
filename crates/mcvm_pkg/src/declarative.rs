@@ -104,15 +104,12 @@ pub struct DeclarativeAddon {
 
 /// Structure for a declarative / JSON package
 #[derive(Deserialize, Debug, Default, Clone)]
+#[serde(default)]
 pub struct DeclarativePackage {
-	#[serde(default)]
 	pub meta: PackageMetadata,
-	#[serde(default)]
 	pub properties: PackageProperties,
 	pub addons: HashMap<String, DeclarativeAddon>,
-	#[serde(default)]
 	pub relations: DeclarativePackageRelations,
-	#[serde(default)]
 	pub conditional_rules: Vec<DeclarativeConditionalRule>,
 }
 

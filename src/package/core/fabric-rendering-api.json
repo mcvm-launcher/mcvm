@@ -1,0 +1,19 @@
+{
+	"meta": {
+		"name": "Ensures compatability with mods that use the Fabric Rendering API",
+		"authors": [
+			"CarbonSmasher"
+		]
+	},
+	"relations": {
+		"dependencies": [
+			"fabriclike-api"
+		],
+		"compats": [
+			[
+				"sodium",
+				"indium"
+			]
+		]
+	}
+}
