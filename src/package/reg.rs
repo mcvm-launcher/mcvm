@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize};
 use super::core::is_core_package;
 use super::eval::{EvalData, Routine, EvalInput};
 use super::repo::{query_all, PkgRepo};
-use super::{Package, PkgKind};
+use super::{Package, PkgLocation};
 use crate::io::files::paths::Paths;
 
 use std::collections::HashMap;
@@ -184,13 +184,13 @@ impl PkgRegistry {
 		if let Some((url, version)) = query_all(&mut self.repos, &pkg_name, paths).await? {
 			return Ok(self.insert(
 				req,
-				Package::new(&pkg_name, version, PkgKind::Remote(Some(url))),
+				Package::new(&pkg_name, version, PkgLocation::Remote(Some(url))),
 			));
 		}
 
 		// Now check if it exists as a core package
 		if is_core_package(&req.name) {
-			Ok(self.insert(req, Package::new(&pkg_name, 1, PkgKind::Core)))
+			Ok(self.insert(req, Package::new(&pkg_name, 1, PkgLocation::Core)))
 		} else {
 			Err(anyhow!("Package '{pkg_name}' does not exist"))
 		}
@@ -322,7 +322,7 @@ impl PkgRegistry {
 	pub fn insert_local(&mut self, req: &PkgRequest, version: u32, path: &Path) {
 		self.insert(
 			req,
-			Package::new(&req.name, version, PkgKind::Local(path.to_path_buf())),
+			Package::new(&req.name, version, PkgLocation::Local(path.to_path_buf())),
 		);
 	}
 

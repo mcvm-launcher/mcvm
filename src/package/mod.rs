@@ -46,9 +46,9 @@ impl PkgData {
 	}
 }
 
-/// Type of a package
+/// Location of a package
 #[derive(Debug, Clone)]
-pub enum PkgKind {
+pub enum PkgLocation {
 	Local(PathBuf),         // Contained on the local filesystem
 	Remote(Option<String>), // Contained on an external repository
 	Core,                   // Included in the binary
@@ -58,15 +58,15 @@ pub enum PkgKind {
 #[derive(Debug)]
 pub struct Package {
 	pub id: PkgIdentifier,
-	pub kind: PkgKind,
+	pub location: PkgLocation,
 	pub data: Later<PkgData>,
 }
 
 impl Package {
-	pub fn new(name: &str, version: u32, kind: PkgKind) -> Self {
+	pub fn new(name: &str, version: u32, location: PkgLocation) -> Self {
 		Self {
 			id: PkgIdentifier::new(name, version),
-			kind,
+			location,
 			data: Later::new(),
 		}
 	}
@@ -103,12 +103,12 @@ impl Package {
 		client: &Client,
 	) -> anyhow::Result<()> {
 		if self.data.is_empty() {
-			match &self.kind {
-				PkgKind::Local(path) => {
+			match &self.location {
+				PkgLocation::Local(path) => {
 					self.data
 						.fill(PkgData::new(&tokio::fs::read_to_string(path).await?));
 				}
-				PkgKind::Remote(url) => {
+				PkgLocation::Remote(url) => {
 					let path = self.cached_path(paths);
 					if !force && path.exists() {
 						self.data
@@ -120,7 +120,7 @@ impl Package {
 						self.data.fill(PkgData::new(&text));
 					}
 				}
-				PkgKind::Core => {
+				PkgLocation::Core => {
 					let contents = get_core_package(&self.id.name)
 						.ok_or(anyhow!("Package is not a core package"))?;
 					self.data.fill(PkgData::new(contents));
@@ -218,10 +218,10 @@ mod tests {
 
 	#[test]
 	fn test_package_name() {
-		let package = Package::new("sodium", 2, PkgKind::Remote(None));
+		let package = Package::new("sodium", 2, PkgLocation::Remote(None));
 		assert_eq!(package.filename(), String::from("sodium_2") + PKG_EXTENSION);
 
-		let package = Package::new("fabriclike-api", 80, PkgKind::Remote(None));
+		let package = Package::new("fabriclike-api", 80, PkgLocation::Remote(None));
 		assert_eq!(
 			package.filename(),
 			String::from("fabriclike-api_80") + PKG_EXTENSION
