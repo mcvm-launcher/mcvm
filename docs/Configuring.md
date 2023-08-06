@@ -140,6 +140,7 @@ or
 	"type": String,
 	"version": Integer,
 	"path": String,
+	"content_type": "script" | "declarative",
 	"features": [],
 	"use_default_features": Bool,
 	"permissions": "restricted" | "standard" | "elevated",
@@ -150,9 +151,10 @@ or
 In most cases the first form is all you need. If you want more control over how the package works or need to add a local package, use the second form.
 
  * `id`: The identifier for the package. It is very important that this field is correct for the package to work.
- * `type`: The type of the package, either a standard `"remote"` package or a `"local"` package.
+ * `type`: The type of the package, either a standard `"repository"` package or a `"local"` package.
  * `version` (Optional): The version number for the package. This is not needed for remote packages but *required* for local ones.
  * `path` (Optional): The path to a local package script. Only required for local packages.
+ * `content_type` (Optional): The content type of this package. Only required for local packages, but will still default to `"script"`.
  * `features` (Optional): A list of strings for package features that you would like to enable.
  * `use_default_features` (Optional): Whether or not to use the default features of this package. `true` by default.
  * `permissions` (Optional): The amount of control you would like to give this package. Can be `"restricted"`, `"standard"`, or `"elevated"`. Packages you do not trust should be given the `"restricted"` level. Packages that you trust and want to provide access to special commands for can be given `"elevated"`. Defaults to `"standard"`.

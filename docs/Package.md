@@ -1,145 +1,235 @@
 # Packages
-An MCVM package is simply a script that is run to install files and dependencies. The file usually follows the format of `package-name.pkg.txt`. Package names may contain only letters, numbers, and hyphens (`-`). They cannot be longer than 32 characters.
+
+An MCVM package is simply a file that is evaluated to install files and dependencies. They can be either declarative JSON files or custom scripts. Scripts usually follow the format of `package-id.pkg.txt`. Declarative packages should be named `package-id.json`. Package IDs may contain only letters, numbers, and hyphens (`-`). They cannot be longer than 32 characters.
 
 # Repository
+
 A package repository is any server that provides an `index.json` of packages for the user to source. All that is required to run a repository yourself is to make this `index.json` under `https://example.com/api/mcvm/index.json`. An index follows this format:
+
 ```json
 {
 	"packages": {
-		"package-name": {
+		"package-id": {
 			"version": Integer,
-			"url": String
+			"url": String,
+			"content_type": "script" | "declarative"
 		}
 	}
 }
 ```
- * `package-name`: The name of the package.
- * `version`: The package version known by the repository.
- * `url`: The URL to the `package.pkg.txt` file.
 
-# Syntax
-At the root level, a package is organized into **routines** which describe a list of instructions to be run to perform some action. Routines can have any name, but some have special meaning.
-```
-@routine_name {
-	...
+- `package-id`: The ID of the package.
+- `version`: The package version known by the repository.
+- `url`: The URL to the `package.pkg.txt` file.
+- `content_type`: What type of package this is. Defaults to `"script"`.
+
+# Declarative format
+
+```json
+{
+	"meta": Metadata,
+	"properties": Properties,
+	"relations": Relations,
+	"addons": {
+		...
+	},
+	"conditional_rules": [
+		...
+	]
 }
 ```
 
-The main routine that will be in every single package is the `@install` routine. This routine is run when the package is installed or updated in order to download files for your game.
-The `@meta` routine contains instructions that set optional metadata for the package such as display name, license, authors, etc.
-The `@properties` routine can be used to set certain properties for the package, such as default features.
+- `meta`: Set package metadata. See the metadata section.
+- `properties`: Set package properties. See the properties section.
+- `relations`: Specify relationships with other packages. See the relations section.
+- `addons`: Install addons using this package. See the addons section.
+- `conditional_rules`: Apply changes to this packages depending on conditions. See the conditional rules section.
 
-## Instructions
-Instructions are individual commands that are run inside routines for your package script. Instructions are separated by semicolons. They often have arguments that can either be an identifier or a string.
+## Metadata
 
-### Variables
-Any instruction arguments that take a string can also take a variable, with the syntax `$variable_name`. You can also use string substitution to combine multiple variables, with the syntax `"Hello ${variable}!"`. This syntax can be escaped in the string using a backslash. Using a variable that is not defined directly will cause the routine to fail. Using a variable that is not defined in a substitution string will fill it with an empty string.
+Metadata for a package is extra information about a package such as its display name and authors. All fields are optional.
 
-### Routine Context
-Most instructions can only be run in certain routines or in routines called by those specific routines.
-
-Logic, relationships with other packages, and addons can only be used in the `@install` context.
-
-Metadata like `description` and `authors` can only be used in the `@meta` context.
-
-### List of Instructions
-#### Installation Instructions
- * `if {condition} [arguments...] { ... }`: If instructions let you run instructions inside a block only if a condition is met at runtime. The valid conditions are:
-	 * `value {x} {y}`: Check if two strings are the same. This is meant to be used to check the value of variables.
-	 * `version {pattern}`: Check that the Minecraft version of this instance matches a pattern.
-	 * `modloader {vanilla | fabric | forge | quilt | fabriclike}`: Checks if the modloader supports a mod type. The `fabriclike` option will match both Fabric and Quilt and should be used for most Fabric mods unless you know they don't play nice with Quilt.
-	 * `plugin_loader {vanilla | bukkit}`: Checks if the plugin loader supports a plugin type.
-	 * `side {client | server}`: Check what instance type the package is being installed on.
-	 * `feature {name}`: Check if a feature is enabled for this package.
-	 * `os {windows | linux}`: Check if the user is using a certain operating system.
-	 * `defined {variable_name}`: Check if a variable has been defined.
-	 * `stability {stable | latest}`: Check for the configured stability of the package. You should check this and only install release versions of addons if `stable` is selected.
-	 * `language {language}`: Check the user's configured language.
-	 * `not {condition}`: Inverts a condition. You can chain these, but why would you want to.
-	 * `and {left} {right}`: Checks if both conditions are true.
-	 * `or {left} {right}`: Checks if either one of the conditions are true.
- * `set {variable} {value}`: Sets the value of a variable.
- * `finish`: Will silently end the routine.
- * `fail [unsupported_version | unsupported_modloader | unsupported_plugin_loader]`: End execution with an error.
- * `addon {id} [filename] (..)`: Add an addon to the instance. This is the main goal of most packages. Keys and values are put inside the parentheses.
- * `require {package1} {package2} ...`: Create a dependency on one or more packages. Use this for libraries that your package depends on. Check the core packages folder to see some standard packages that you can require.
- * `refuse {package}`: Specifies that this package is incompatible with another. These packages will be unable to coexist together. Both packages do not need to refuse each other, just one refuse instruction in one package will suffice.
- * `bundle {package}`: Bundle another package with this one. Useful for packages that group together multiple other packages, such as modpacks. Prefer using this over `require` when you aren't including a library as it has a different semantic meaning to mcvm.
- * `recommend {package}`: Recommend to the user that they should use another package if it is not installed.
- * `compat {package} {compat_package}`: Automatically install `compat_package` if `package` is present.
- * `extend {package}`: Specify that this package extends the functionality of another. An error will be created if the package is not present.
- * `notice {message}`: Display a warning or important information as a message to the user. Notice messages may not be more than 128 characters long, and there cannot be more than five of them that are displayed per package evaluation.
-#### Metadata Instructions
- * `name {name}`: Set the display name of the package.
- * `description {description}`: Set a short description for this package. Should be 1-2 sentences max.
- * `long_description {description}`: Set a long description for this package.
- * `version {version}`: Set the version of this package. This has no actual meaning to mcvm and should be used only for project versions.
- * `authors {author1} {author2} ...`: Set a list of authors for this package. This should be the authors of the project itself, not the package script.
- * `package_maintainers {author1} {author2} ...`: Set a list of maintainers for this package. This should be the maintainers of the package script, not the project itself.
- * `website {website}`: Set a primary website / project link / etc.
- * `support_link {link}`: Set a support / donation link.
- * `documentation {link}`: Set a wiki / documentation link.
- * `source {link}`: Set a source / repository link.
- * `issues {link}`: Set an issue tracker link.
- * `community {link}`: Set a Discord / forum link.
- * `icon {link}`: Set a link to a small square icon image.
- * `banner {link}`: Set a link to a large background / banner image.
-#### Properties Instructions
- * `features {feature1} {feature2} ...`: Set the allowed features for this package.
- * `default_features {feature1} {feature2} ...`: Set the features enabled by default for this package.
- * `modrinth_id {id}`: If this package has an addon that is hosted on Modrinth, set this to the Modrinth project ID. This should be set even if the addon is not downloaded from Modrinth.
- * `curseforge_id {id}`: If this package has an addon that is hosted on CurseForge, set this to the CurseForge project ID. This should be set even if the addon is not downloaded from CurseForge.
-
-### The `addon` Instruction
-The `addon` instruction is a bit more complex. Inside the parentheses you put a set of keys and values to configure the addon and how it is installed. The full addon config looks like this:
-```
-addon id filename (
-	kind: mod | resource_pack | shader | plugin,
-	url: String,
-	path: String,
-	version: String
-)
+```json
+{
+	"name": String,
+	"description": String,
+	"long_description": String,
+	"version": String,
+	"authors": [String],
+	"package_maintainers": [String],
+	"website": String,
+	"support_link": String,
+	"documentation": String,
+	"source": String,
+	"issues": String,
+	"community": String,
+	"icon": String,
+	"banner": String,
+	"license": String
+}
 ```
 
- * `id`: An identifier that the user will eventually be able to use to select specific addons from a package. Should be unique and if possible should not change between versions since it can be used by users to modify specific addons.
- * `filename` (Optional): The name of the addon file, with the extension.
- * `kind`: What type of addon this is.
- * `url` (Optional): The remote url to download the addon from.
- * `path` (Optional): The local path to link the addon from. Adding local files is a privilege that requires elevated permissions
- * `version` (Optional): The version of this addon. This is important because it lets mcvm differentiate between different versions of the file for caching purposes. If this field is not present, the addon will never be cached and will be redownloaded every time. This ID should not contain any special characters.
+- `name`: Display name of the package.
+- `description`: A short description of the package. Should be 1-2 sentences max.
+- `long_description`: A longer description of the package.
+- `version`: A project version. Has no meaning.
+- `authors`: A list of authors for this package. This should be the authors of the project / addons itself, not the mcvm package file.
+- `package_maintainers`: A list of maintainers for this package. This should be the maintainers of the mcvm package file, not the project itself
+- `website`: Primary website / project link / etc.
+- `support_link`: Support / donation / sponsored link.
+- `documentation`: Wiki / documentation link.
+- `source`: Source / repository link.
+- `issues`: Issue tracker link.
+- `community`: Discord / chat / forum link.
+- `icon`: Link to a small square icon image.
+- `banner`: Link to a large background / banner image.
+- `license`: The project license.
+
+## Properties
+
+Properties for the package that do have a meaning to mcvm and other package hosts / installers. All fields are optional.
+
+```json
+{
+	"features": [String],
+	"default_features": [String],
+	"modrinth_id": String,
+	"curseforge_id": String,
+	"supported_modloaders": ["vanilla" | "fabric" | "forge" | "quilt" | "fabriclike"],
+	"supported_plugin_loaders": ["vanilla" | "bukkit"],
+	"supported_sides": ["client" | "server"]
+}
+```
+
+- `features`: A list of available features for this package. Features can be enabled or disabled by the user to configure how the package is installed.
+- `default_features`: The features that will be enabled by default.
+- `modrinth_id`: ID of the project for this package on Modrinth, if applicable. See "The purpose of host ID instructions".
+- `curseforge_id`: ID of the project for this package on CurseForge, if applicable. See "The purpose of host ID instructions".
+- `supported_modloaders`: Modloaders supported by this package. Defaults to all of them.
+- `supported_plugin_loaders`: Plugin loaders supported by this package. Defaults to all of them.
+- `supported_sides`: Game sides supported by this package. Defaults to both of them.
+
+## Relations
+
+Relations are dependencies / conflicts / etc. with other packages. All fields are optional.
+
+```json
+{
+	"dependencies": [String],
+	"explicit_dependencies": [String],
+	"conflicts": [String],
+	"extensions": [String],
+	"bundled": [String],
+	"compats": [[String, String]],
+	"recommendations": [String]
+}
+```
+
+- `dependencies`: Library packages that your package depends on. Check the core packages folder to see some standard packages that you can require.
+- `explicit_dependencies`: The same as dependencies. However, these libraries also change the behavior of the game enough that it would be good for the user to know about them. These packages must be required by the user in their config as well.
+- `conflicts`: Packages that this package is incompatible with.
+- `extensions`: Packages that this package extends the functionality of. For example, if this package was an addon mod for the Create mod, then it would extend the `create` package. Will cause an error if the other package does not exist.
+- `bundled`: Packages included with this one. Useful for packages that group together multiple other packages, such as modpacks. Prefer using this over `dependencies` when you aren't including a library as it has a different semantic meaning to mcvm.
+- `compats`: A list of lists with two values, a source package and destination package. If the source package exists, the destination package will be automatically installed.
+- `recommendations`: Packages that will be recommended to the user if they are not installed.
+
+## Version Patterns
+
+Version patterns are strings that can be used to match against one or more version of something, often Minecraft. There are a couple variants:
+
+- `single` (Example "1.19.2"): Match a single version.
+- `latest` ("latest"): Matches only the latest version.
+- `before` (Example "1.19.2-"): Matches a version and all versions before it (inclusive).
+- `after` (Example "1.19.2+"): Matches a version and all versions after it (inclusive).
+
+## Conditions
+
+Condition sets are used in multiple parts of declarative packages to check properties of the installation environment. All fields are optional, and will not contribute to the condition if left empty.
+
+```json
+{
+	"minecraft_versions": [VersionPattern],
+	"side": "client" | "server",
+	"modloaders": [String],
+	"plugin_loaders": [String],
+	"stability": "stable" | "latest",
+	"features": [String],
+	"os": "windows" | "mac" | "linux",
+	"language": Language
+}
+```
+
+- `minecraft_versions`: Check if any one of the version patterns in the list matches the used Minecraft version.
+- `side`: Check whether this package is being installed on client or server.
+- `modloaders`: Check if any of these modloaders matches the users's modloader. Same options as the `supported_modloaders` property.
+- `plugin_loaders`: Check if any of these plugin loaders matches the user's plugin loader. Same options as the `supported_plugin_loaders` property.
+- `stability`: Check for the configured stability of the package.
+- `features`: Check if all of the listed features are enabled for this package.
+- `os`: Check the operating system this package is being installed on.
+- `language`: Check the user's configured language.
+
+## Addons
+
+Addons are the actual files that are installed to a user's game. They are specified in a map.
+
+```json
+{
+	"addon-id": {
+		"kind": "mod" | "resource_pack" | "shader" | "plugin",
+		"versions": [
+			...
+		],
+		"conditions": [ConditionSet]
+	}
+}
+```
+
+- `addon-id`: The ID of the addon. This lets mcvm differentiate between addons from the same package and allows the user to modify specific addons from a package. Thus, try not to change it between updates of your package.
+- `kind`: What type of addon / modification this is.
+- `versions`: A list of versions for this addon. See the addon versions section.
+- `conditions` (Optional): A list of conditions for the installation of this addon. If any of these conditions fails, the addon will not be installed, but no errors will be shown. Thus, it is better to use the `supported_...` properties for this purpose.
+
+## Addon Versions
+
+Addon versions are different files and versions of an addon
+
+```json
+{
+	ConditionSet...,
+	"url": String,
+	"path": String,
+	"version": String,
+	"relations": Relations,
+	"filename": String
+}
+```
+
+- ConditionSet: Addon versions contain all the fields of a ConditionSet. These conditions are used to filter down and find the version that satisfies all the requirements. If multiple versions satisfy the requirements, the one that comes first in the list is chosen.
+- `url`: A URL to the file for this version. Not required if `path` is specified.
+- `path`: A local filesystem path to the addon file. Not required if `url` is specified. Requires elevated permissions.
+- `version` (Optional): The unique version identifier of this addon. This is important because it lets mcvm differentiate between different versions of the file for caching purposes. If this field is not present, the addon will never be cached and will be redownloaded every time. This ID should not contain any special characters.
+- `relations` (Optional): Extra package relations to apply if this addon version is chosen.
+- `filename` (Optional): The name of the addon file in the instance, with the extension. This is not required and is not recommended most of the time as mcvm will already generate a unique filename for it that does not clash with other files.
 
 Either `url` or `path` must be set, not both or neither.
 
-### The `require` Instruction
-The require instruction has a syntax of a list of package groups, which can either be multiple strings inside parentheses or a single string. In the future, these groups will be able to be chained in more complex expressions, but for now they have no purpose. Just put the packages in a list.
+## Conditional Rules
 
-Another part is the ability to make an explicit dependency using the `<"package-name">` syntax (Note that the brackets are outside of the string). This allows you to depend on another package, but not install it automatically. The user must specify that they want the package manually. Use this for packages that you require as a dependency, but may have gameplay changes or side effects that you want the user to be aware of.
+Conditional rules let you change the package based on ConditionSets. Each rule will apply the properties only if all of the conditions are satisfied.
 
-# Example
-Here is a simple example for a package that would install the *Sodium* mod. As this is an example, not all versions are covered.
-```
-@install {
-	if not side client {
-		finish;
+```json
+{
+	"conditions": [ConditionSet],
+	"properties": {
+		"relations": Relations
 	}
-	if not modloader fabriclike {
-		fail unsupported_modloader;
-	}
-	if version "1.18+" {
-		set url "https://cdn.modrinth.com/data/AANobbMI/versions/mc1.18.2-0.4.1/sodium-fabric-mc1. "Sodium.jar"18.2-0.4.1%2Bbuild.15.jar";
-		set version "1.18";
-	}
-	if version "1.19+" {
-		set url "https://cdn.modrinth.com/data/AANobbMI/versions/oYfJQ6lR/sodium-fabric-mc1.19.3-0.4.8%2Bbuild.22.jar";
-		set version "1.19";
-	}
-	if not defined version {
-		fail unsupported_version;
-	}
-	addon "mod" (
-		kind: mod,
-		url: $url,
-		version: $version
-	);
 }
 ```
+
+- `conditions`: A list of condition sets to check.
+- `properties`: The changes to apply if the conditions are satisfied.
+- `properties.relations`: Package relations to include. These are appended to the other relations
+
+# The purpose of host ID instructions
+
+These should be set even if the addons for the package are not downloaded from that website. These will allow mcvm to make smart decisions in the future and automatically replace files downloaded from these sites with the correct packages and prevent file duplication.
