@@ -12,7 +12,26 @@ pub struct PackageProperties {
 	pub curseforge_id: Option<String>,
 }
 
-/// Collect the properties from a package
+impl PackageProperties {
+	/// Check the validity of the properties
+	pub fn check_validity(&self) -> anyhow::Result<()> {
+		// Validate features
+		if let Some(default_features) = &self.default_features {
+			if let Some(features) = &self.features {
+				for feature in default_features {
+					ensure!(
+						features.contains(feature),
+						"Default feature '{feature}' does not exist"
+					);
+				}
+			}
+		}
+
+		Ok(())
+	}
+}
+
+/// Collect the properties from a package script
 pub fn eval_properties(parsed: &Parsed) -> anyhow::Result<PackageProperties> {
 	if let Some(routine_id) = parsed.routines.get(PROPERTIES_ROUTINE) {
 		if let Some(block) = parsed.blocks.get(routine_id) {
@@ -28,17 +47,7 @@ pub fn eval_properties(parsed: &Parsed) -> anyhow::Result<PackageProperties> {
 				}
 			}
 
-			// Validate features
-			if let Some(default_features) = &out.default_features {
-				if let Some(features) = &out.features {
-					for feature in default_features {
-						ensure!(
-							features.contains(feature),
-							"Default feature '{feature}' does not exist"
-						);
-					}
-				}
-			}
+			out.check_validity()?;
 
 			Ok(out)
 		} else {

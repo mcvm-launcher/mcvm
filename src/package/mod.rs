@@ -5,6 +5,7 @@ pub mod repo;
 
 use crate::io::files::paths::Paths;
 use crate::net::download;
+use mcvm_pkg::declarative::{deserialize_declarative_package, DeclarativePackage};
 use mcvm_pkg::PackageContentType;
 use mcvm_shared::later::Later;
 
@@ -27,6 +28,7 @@ static PKG_EXTENSION: &str = ".pkg.txt";
 #[derive(Debug)]
 pub enum PkgContents {
 	Script(Parsed),
+	Declarative(DeclarativePackage),
 }
 
 impl PkgContents {
@@ -36,6 +38,15 @@ impl PkgContents {
 			parsed
 		} else {
 			panic!("Attempted to get script package contents from a non-script package");
+		}
+	}
+
+	/// Get the contents with an assertion that it is a declarative package
+	pub fn get_declarative_contents(&self) -> &DeclarativePackage {
+		if let Self::Declarative(contents) = &self {
+			contents
+		} else {
+			panic!("Attempted to get declarative package contents from a non-declarative package");
 		}
 	}
 }
@@ -168,6 +179,11 @@ impl Package {
 				let parsed = lex_and_parse(&data.get_text())?;
 				data.contents.fill(PkgContents::Script(parsed));
 			}
+			PackageContentType::Declarative => {
+				let contents = deserialize_declarative_package(&data.get_text())
+					.context("Failed to deserialize declarative package")?;
+				data.contents.fill(PkgContents::Declarative(contents));
+			}
 		}
 
 		Ok(())
@@ -189,6 +205,10 @@ impl Package {
 					data.metadata.fill(metadata);
 				}
 				Ok(data.metadata.get())
+			},
+			PackageContentType::Declarative => {
+				let contents = data.contents.get().get_declarative_contents();
+				Ok(&contents.meta)
 			}
 		}
 	}
@@ -210,6 +230,10 @@ impl Package {
 					data.properties.fill(properties);
 				}
 				Ok(data.properties.get())
+			},
+			PackageContentType::Declarative => {
+				let contents = data.contents.get().get_declarative_contents();
+				Ok(&contents.properties)
 			}
 		}
 	}

@@ -1,7 +1,7 @@
 use anyhow::{anyhow, Context};
 use color_print::cformat;
 use mcvm_parse::metadata::PackageMetadata;
-use mcvm_parse::parse_and_validate;
+use mcvm_pkg::parse_and_validate;
 use mcvm_parse::properties::PackageProperties;
 use mcvm_pkg::PackageContentType;
 use reqwest::Client;
@@ -291,7 +291,7 @@ impl PkgRegistry {
 		let pkg = self.ensure_package_contents(req, paths, client).await?;
 		let contents = &pkg.data.get().get_text();
 
-		parse_and_validate(contents)?;
+		parse_and_validate(contents, pkg.content_type)?;
 
 		Ok(())
 	}

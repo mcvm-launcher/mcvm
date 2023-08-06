@@ -13,6 +13,7 @@ use reqwest::Client;
 use serde::{Deserialize, Serialize};
 
 use self::conditions::eval_condition;
+use self::declarative::eval_declarative_package;
 
 use super::Package;
 use crate::data::addon::{self, AddonLocation, AddonRequest};
@@ -175,6 +176,11 @@ impl Package {
 			PackageContentType::Script => {
 				let parsed = self.data.get_mut().contents.get_mut().get_script_contents();
 				let eval = eval_script_package(self.id.clone(), parsed, routine, input).await?;
+				Ok(eval)
+			},
+			PackageContentType::Declarative => {
+				let contents = self.data.get().contents.get().get_declarative_contents();
+				let eval = eval_declarative_package(self.id.clone(), contents, input, routine)?;
 				Ok(eval)
 			}
 		}

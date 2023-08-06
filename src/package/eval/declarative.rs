@@ -11,7 +11,7 @@ use super::{
 /// Evaluate a declarative package
 pub fn eval_declarative_package<'a>(
 	id: PkgIdentifier,
-	contents: DeclarativePackage,
+	contents: &DeclarativePackage,
 	input: EvalInput<'a>,
 	routine: Routine,
 ) -> anyhow::Result<EvalData<'a>> {
@@ -264,7 +264,7 @@ mod tests {
 		};
 
 		let eval =
-			eval_declarative_package(PkgIdentifier::new("foo", 1), pkg, input, Routine::Install)
+			eval_declarative_package(PkgIdentifier::new("foo", 1), &pkg, input, Routine::Install)
 				.unwrap();
 
 		let addon = eval.addon_reqs.first().unwrap();

@@ -76,33 +76,35 @@ pub fn is_core_package(package: &str) -> bool {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use mcvm_parse::parse_and_validate;
+	use mcvm_pkg::parse_and_validate;
 
-	static ALL_CORE_PACKAGES: [&str; 18] = [
-		ANIMATED_TEXTURES_SUPPORT,
-		CEM_SUPPORT,
-		CIT_SUPPORT,
-		CTM_SUPPORT,
-		CUSTOM_COLORS_SUPPORT,
-		CUSTOM_GUI_SUPPORT,
-		CUSTOM_SKY_SUPPORT,
-		EMISSIVE_BLOCKS_SUPPORT,
-		EMISSIVE_ENTITIES_SUPPORT,
-		FABRIC_RENDERING_API,
-		FABRICLIKE_API,
-		KOTLIN_SUPPORT,
-		OPTIFINE_RESOURCE_PACKS,
-		QUILTED_FABRIC_API,
-		QUILT_STANDARD_LIBRARIES,
-		RANDOM_ENTITIES_SUPPORT,
-		SHADER_SUPPORT,
-		SPLASH_SCREEN_SUPPORT,
+	static ALL_CORE_PACKAGE_IDS: [&str; 18] = [
+		"animated-textures-support",
+		"cem-support",
+		"cit-support",
+		"ctm-support",
+		"custom-colors-support",
+		"custom-gui-support",
+		"custom-sky-support",
+		"emissive-blocks-support",
+		"emissive-entities-support",
+		"fabric-rendering-api",
+		"fabriclike-api",
+		"kotlin-support",
+		"optifine-resource-packs",
+		"quilted-fabric-api",
+		"quilt-standard-libraries",
+		"random-entities-support",
+		"shader-support",
+		"splash-screen-support",
 	];
 
 	#[test]
 	fn test_core_package_parse() {
-		for package in ALL_CORE_PACKAGES {
-			parse_and_validate(package).unwrap();
+		for package in ALL_CORE_PACKAGE_IDS {
+			let contents = get_core_package(package).unwrap();
+			let content_type = get_core_package_content_type(package).unwrap();
+			parse_and_validate(contents, content_type).unwrap();
 		}
 	}
 }

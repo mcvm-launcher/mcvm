@@ -22,7 +22,14 @@ pub struct PackageMetadata {
 	pub license: Option<String>,
 }
 
-/// Collect the metadata from a package
+impl PackageMetadata {
+	/// Check the validity of the metadata
+	pub fn check_validity(&self) -> anyhow::Result<()> {
+		Ok(())
+	}
+}
+
+/// Collect the metadata from a package script
 pub fn eval_metadata(parsed: &Parsed) -> anyhow::Result<PackageMetadata> {
 	if let Some(routine_id) = parsed.routines.get(METADATA_ROUTINE) {
 		if let Some(block) = parsed.blocks.get(routine_id) {
@@ -50,6 +57,8 @@ pub fn eval_metadata(parsed: &Parsed) -> anyhow::Result<PackageMetadata> {
 					_ => bail!("Instruction is not allowed in this context"),
 				}
 			}
+
+			out.check_validity()?;
 
 			Ok(out)
 		} else {
