@@ -4,11 +4,12 @@ use mcvm_parse::{
 	conditions::OSCondition, metadata::PackageMetadata, properties::PackageProperties,
 };
 use mcvm_shared::{
+	addon::AddonKind,
 	instance::Side,
 	lang::Language,
 	modifications::{ModloaderMatch, PluginLoaderMatch},
 	pkg::PackageStability,
-	versions::VersionPattern, addon::AddonKind,
+	versions::VersionPattern,
 };
 use serde::Deserialize;
 
@@ -39,10 +40,11 @@ impl DeclarativePackageRelations {
 	}
 }
 
-/// Properties that are used for choosing the best addon version from a declarative package
+/// Properties that are used for choosing the best addon version
+/// from a declarative package and conditional rules
 #[derive(Deserialize, Debug, Default, Clone)]
 #[serde(default)]
-pub struct DeclarativeAddonVersionProperties {
+pub struct DeclarativeAddonConditionSet {
 	pub minecraft_versions: Option<Vec<VersionPattern>>,
 	pub side: Option<Side>,
 	pub modloaders: Option<Vec<ModloaderMatch>>,
@@ -64,7 +66,7 @@ pub struct DeclarativeAddonVersionPatchProperties {
 /// Properties that can be applied conditionally
 #[derive(Deserialize, Debug, Default, Clone)]
 #[serde(default)]
-pub struct DeclarativeConditionalProperties {
+pub struct DeclarativeConditionalRuleProperties {
 	pub relations: DeclarativePackageRelations,
 }
 
@@ -72,15 +74,15 @@ pub struct DeclarativeConditionalProperties {
 #[derive(Deserialize, Debug, Default, Clone)]
 #[serde(default)]
 pub struct DeclarativeConditionalRule {
-	pub conditions: Vec<DeclarativeAddonVersionProperties>,
-	pub properties: DeclarativeConditionalProperties,
+	pub conditions: Vec<DeclarativeAddonConditionSet>,
+	pub properties: DeclarativeConditionalRuleProperties,
 }
 
 /// Version for an addon in a declarative package
 #[derive(Deserialize, Debug, Clone)]
 pub struct DeclarativeAddonVersion {
 	#[serde(flatten)]
-	pub properties: DeclarativeAddonVersionProperties,
+	pub conditional_properties: DeclarativeAddonConditionSet,
 	#[serde(default)]
 	pub relations: DeclarativePackageRelations,
 	#[serde(default)]
@@ -99,7 +101,7 @@ pub struct DeclarativeAddon {
 	pub kind: AddonKind,
 	pub versions: Vec<DeclarativeAddonVersion>,
 	#[serde(default)]
-	pub conditions: Vec<DeclarativeAddonVersionProperties>,
+	pub conditions: Vec<DeclarativeAddonConditionSet>,
 }
 
 /// Structure for a declarative / JSON package
@@ -122,7 +124,7 @@ pub fn deserialize_declarative_package(text: &str) -> anyhow::Result<Declarative
 #[cfg(test)]
 mod tests {
 	use super::*;
-	
+
 	#[test]
 	fn test_declarative_package_deser() {
 		let contents = r#"

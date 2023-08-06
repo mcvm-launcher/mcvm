@@ -1,11 +1,12 @@
 use anyhow::anyhow;
 use mcvm_pkg::declarative::{
-	DeclarativeAddonVersion, DeclarativeAddonVersionProperties, DeclarativePackage,
+	DeclarativeAddonConditionSet, DeclarativeAddonVersion, DeclarativePackage,
 };
 use mcvm_shared::pkg::PkgIdentifier;
 
 use super::{
-	conditions::check_os_condition, create_valid_addon_request, EvalData, EvalInput, Routine, RequiredPackage,
+	conditions::check_os_condition, create_valid_addon_request, EvalData, EvalInput,
+	RequiredPackage, Routine,
 };
 
 /// Evaluate a declarative package
@@ -51,7 +52,7 @@ pub fn eval_declarative_package<'a>(
 	// Apply conditional rules
 	for rule in &contents.conditional_rules {
 		for condition in &rule.conditions {
-			if !check_addon_version_conditions(condition, &eval_data.input) {
+			if !check_condition_set(condition, &eval_data.input) {
 				continue;
 			}
 		}
@@ -59,8 +60,22 @@ pub fn eval_declarative_package<'a>(
 		relations.merge(rule.properties.relations.clone());
 	}
 
-	eval_data.deps.extend(relations.dependencies.iter().map(|x| vec![RequiredPackage { value: x.clone(), explicit: false }]));
-	eval_data.deps.extend(relations.explicit_dependencies.iter().map(|x| vec![RequiredPackage { value: x.clone(), explicit: true }]));
+	eval_data
+		.deps
+		.extend(relations.dependencies.iter().map(|x| {
+			vec![RequiredPackage {
+				value: x.clone(),
+				explicit: false,
+			}]
+		}));
+	eval_data
+		.deps
+		.extend(relations.explicit_dependencies.iter().map(|x| {
+			vec![RequiredPackage {
+				value: x.clone(),
+				explicit: true,
+			}]
+		}));
 	eval_data.conflicts.extend(relations.conflicts);
 	eval_data.extensions.extend(relations.extensions);
 	eval_data.bundled.extend(relations.bundled);
@@ -78,24 +93,22 @@ pub fn pick_best_addon_version<'a>(
 	// Filter versions that are not allowed
 	let mut versions = versions
 		.iter()
-		.filter(|x| check_addon_version_conditions(&x.properties, input));
+		.filter(|x| check_condition_set(&x.conditional_properties, input));
 
 	versions.nth(0)
 }
 
 /// Check multiple setso f addon version conditions
 fn check_multiple_condition_sets<'a>(
-	conditions: &[DeclarativeAddonVersionProperties],
+	conditions: &[DeclarativeAddonConditionSet],
 	input: &'a EvalInput<'a>,
 ) -> bool {
-	conditions
-		.iter()
-		.all(|x| check_addon_version_conditions(x, input))
+	conditions.iter().all(|x| check_condition_set(x, input))
 }
 
 /// Filtering function for addon version picking and rule checking
-fn check_addon_version_conditions<'a>(
-	conditions: &DeclarativeAddonVersionProperties,
+fn check_condition_set<'a>(
+	conditions: &DeclarativeAddonConditionSet,
 	input: &'a EvalInput<'a>,
 ) -> bool {
 	if let Some(minecraft_versions) = &conditions.minecraft_versions {
@@ -270,8 +283,17 @@ mod tests {
 		let addon = eval.addon_reqs.first().unwrap();
 		assert_eq!(addon.addon.version, Some(String::from("2")));
 
-		assert!(eval.deps.contains(&vec![RequiredPackage { value: String::from("foo"), explicit: false }]));
-		assert!(eval.deps.contains(&vec![RequiredPackage { value: String::from("bar"), explicit: false }]));
-		assert!(eval.deps.contains(&vec![RequiredPackage { value: String::from("baz"), explicit: false }]));
+		assert!(eval.deps.contains(&vec![RequiredPackage {
+			value: String::from("foo"),
+			explicit: false
+		}]));
+		assert!(eval.deps.contains(&vec![RequiredPackage {
+			value: String::from("bar"),
+			explicit: false
+		}]));
+		assert!(eval.deps.contains(&vec![RequiredPackage {
+			value: String::from("baz"),
+			explicit: false
+		}]));
 	}
 }
