@@ -117,6 +117,12 @@ Another part is the ability to make an explicit dependency using the `<"package-
 Here is a simple example for a package that would install the _Sodium_ mod. As this is an example, not all versions are covered.
 
 ```
+@meta {
+	name "Sodium";
+}
+@properties {
+	modrinth_id "AANobbMI";
+}
 @install {
 	if not side client {
 		finish;
@@ -124,13 +130,13 @@ Here is a simple example for a package that would install the _Sodium_ mod. As t
 	if not modloader fabriclike {
 		fail unsupported_modloader;
 	}
-	if version "1.18+" {
-		set url "https://cdn.modrinth.com/data/AANobbMI/versions/mc1.18.2-0.4.1/sodium-fabric-mc1. "Sodium.jar"18.2-0.4.1%2Bbuild.15.jar";
-		set version "1.18";
+	if version "1.18" {
+		set url "https://cdn.modrinth.com/data/AANobbMI/versions/mc1.18.2-0.4.1/sodium-fabric-mc1.18.2-0.4.1%2Bbuild.15.jar";
+		set version "74Y5Z8fo";
 	}
-	if version "1.19+" {
+	if version "1.19" {
 		set url "https://cdn.modrinth.com/data/AANobbMI/versions/oYfJQ6lR/sodium-fabric-mc1.19.3-0.4.8%2Bbuild.22.jar";
-		set version "1.19";
+		set version "oYfJQ6lR";
 	}
 	if not defined version {
 		fail unsupported_version;
