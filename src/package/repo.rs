@@ -12,19 +12,26 @@ use std::fs::File;
 use std::io::Cursor;
 use std::path::PathBuf;
 
+/// Location for a PkgRepo
+#[derive(Debug)]
+pub enum PkgRepoLocation {
+	Remote(String),
+	Local(PathBuf),
+}
+
 /// A remote source for mcvm packages
 #[derive(Debug)]
 pub struct PkgRepo {
 	pub id: String,
-	url: String,
+	location: PkgRepoLocation,
 	index: Later<RepoPkgIndex>,
 }
 
 impl PkgRepo {
-	pub fn new(id: &str, url: &str) -> Self {
+	pub fn new(id: &str, location: PkgRepoLocation) -> Self {
 		Self {
 			id: id.to_owned(),
-			url: url.to_owned(),
+			location,
 			index: Later::new(),
 		}
 	}
@@ -43,14 +50,24 @@ impl PkgRepo {
 
 	/// Update the currently cached index file
 	pub async fn sync(&mut self, paths: &Paths) -> anyhow::Result<()> {
-		let bytes = download::bytes(&self.index_url(), &Client::new())
-			.await
-			.context("Failed to download index")?;
-		let mut cursor = Cursor::new(&bytes);
-		tokio::fs::write(self.get_path(paths), &bytes)
-			.await
-			.context("Failed to write index to cached file")?;
-		self.set_index(&mut cursor).context("Failed to set index")?;
+		match &self.location {
+			PkgRepoLocation::Local(path) => {
+				let bytes = tokio::fs::read(path).await?;
+				tokio::fs::write(self.get_path(paths), &bytes).await?;
+				let mut cursor = Cursor::new(&bytes);
+				self.set_index(&mut cursor).context("Failed to set index")?;
+			}
+			PkgRepoLocation::Remote(url) => {
+				let bytes = download::bytes(get_package_index_url(url), &Client::new())
+					.await
+					.context("Failed to download index")?;
+				tokio::fs::write(self.get_path(paths), &bytes)
+					.await
+					.context("Failed to write index to cached file")?;
+				let mut cursor = Cursor::new(&bytes);
+				self.set_index(&mut cursor).context("Failed to set index")?;
+			}
+		}
 
 		Ok(())
 	}
@@ -72,10 +89,6 @@ impl PkgRepo {
 			}
 		}
 		Ok(())
-	}
-
-	fn index_url(&self) -> String {
-		self.url.clone() + "/api/mcvm/index.json"
 	}
 
 	/// Ask if the index has a package and return the url and version for that package if it exists
@@ -110,6 +123,11 @@ impl PkgRepo {
 			.map(|(name, entry)| (name.clone(), entry.clone()))
 			.collect())
 	}
+}
+
+/// Get the URL of the package index file
+pub fn get_package_index_url(base: &str) -> String {
+	base.to_owned() + "/api/mcvm/index.json"
 }
 
 /// Result from repository querying

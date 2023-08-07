@@ -1,14 +1,17 @@
-use crate::package::repo::PkgRepo;
+use std::path::PathBuf;
+
+use crate::package::repo::{PkgRepo, PkgRepoLocation};
 use crate::{net::download::validate_url, package::reg::CachingStrategy};
 
-use anyhow::Context;
+use anyhow::{Context, bail};
 use mcvm_shared::lang::Language;
 use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize)]
 pub struct RepoDeser {
 	id: String,
-	url: String,
+	url: Option<String>,
+	path: Option<String>,
 }
 
 #[derive(Deserialize, Serialize, Default)]
@@ -39,24 +42,10 @@ impl ConfigPreferences {
 	pub fn read(prefs: &PrefDeser) -> anyhow::Result<(Self, Vec<PkgRepo>)> {
 		let mut repositories = Vec::new();
 		for repo in prefs.repositories.preferred.iter() {
-			repositories.push(PkgRepo::new(&repo.id, &repo.url));
+			add_repo(&mut repositories, repo)?;
 		}
 		for repo in prefs.repositories.backup.iter() {
-			repositories.push(PkgRepo::new(&repo.id, &repo.url));
-		}
-
-		for repo in prefs
-			.repositories
-			.preferred
-			.iter()
-			.chain(prefs.repositories.backup.iter())
-		{
-			validate_url(&repo.url).with_context(|| {
-				format!(
-					"Invalid url '{}' in package repository '{}'",
-					repo.url, repo.id
-				)
-			})?;
+			add_repo(&mut repositories, repo)?;
 		}
 
 		Ok((
@@ -67,4 +56,23 @@ impl ConfigPreferences {
 			repositories,
 		))
 	}
+}
+
+/// Add a repo to the list
+fn add_repo(repos: &mut Vec<PkgRepo>, repo: &RepoDeser) -> anyhow::Result<()> {
+	let location = if let Some(url) = &repo.url {
+		validate_url(url).with_context(|| {
+			format!(
+				"Invalid url '{}' in package repository '{}'",
+				url, repo.id
+			)
+		})?;
+		PkgRepoLocation::Remote(url.clone())
+	} else if let Some(path) = &repo.path {
+		PkgRepoLocation::Local(PathBuf::from(path))
+	} else {
+		bail!("Nether path nor URL was set for repository {}", repo.id);
+	};
+	repos.push(PkgRepo::new(&repo.id, location));
+	Ok(())
 }
