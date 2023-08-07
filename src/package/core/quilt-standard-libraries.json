@@ -1,0 +1,13 @@
+{
+	"meta": {
+		"name": "Quilt Standard Libraries",
+		"description": "Ensures support for the Quilt Standard Libraries",
+		"package_maintainers": [ "CarbonSmasher" ]
+	},
+	"properties": {
+		"supported_modloaders": "quilt"
+	},
+	"relations": {
+		"dependencies": [ "qfapi-qsl" ]
+	}
+}
