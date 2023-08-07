@@ -57,6 +57,7 @@ pub enum InstrKind {
 	Finish(),
 	Fail(Option<FailReason>),
 	Notice(Value),
+	Cmd(Vec<Value>),
 }
 
 impl Display for InstrKind {
@@ -99,6 +100,7 @@ impl Display for InstrKind {
 				Self::Finish() => "finish",
 				Self::Fail(..) => "fail",
 				Self::Notice(..) => "notice",
+				Self::Cmd(..) => "cmd",
 			}
 		)
 	}
@@ -187,6 +189,7 @@ impl Instruction {
 			InstrKind::SupportedSides(val) => !val.is_empty(),
 			InstrKind::Compat(val1, val2) => val1.is_some() && val2.is_some(),
 			InstrKind::Set(var, val) => var.is_full() && val.is_some(),
+			InstrKind::Cmd(list) => !list.is_empty(),
 			InstrKind::Fail(..) | InstrKind::Finish() => true,
 			InstrKind::If(..) | InstrKind::Addon { .. } | InstrKind::Require(..) => {
 				unimplemented!()
@@ -239,6 +242,7 @@ impl Instruction {
 				| InstrKind::PackageMaintainers(list)
 				| InstrKind::Features(list)
 				| InstrKind::DefaultFeatures(list) => list.push(parse_string(tok, pos)?),
+				InstrKind::Cmd(list) => list.push(parse_arg(tok, pos)?),
 				InstrKind::SupportedModloaders(list) => match tok {
 					Token::Ident(name) => {
 						if let Some(val) = ModloaderMatch::parse_from_str(name) {

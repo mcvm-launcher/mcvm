@@ -1,7 +1,8 @@
 pub mod create;
 pub mod launch;
 
-use anyhow::{ensure, Context};
+use anyhow::{ensure, Context, bail};
+use color_print::cprintln;
 use mcvm_shared::instance::Side;
 use reqwest::Client;
 
@@ -281,6 +282,23 @@ impl Instance {
 			.eval(pkg, paths, Routine::Install, eval_input, client)
 			.await
 			.context("Failed to evaluate package")?;
+
+		// Run commands
+		if !eval.commands.is_empty() {
+			cprintln!("<s>Running commands...");
+		}
+		for command_and_args in &eval.commands {
+			let program = command_and_args
+				.first()
+				.expect("Command should contain at least the program");
+			let mut command = std::process::Command::new(program);
+			command.args(&command_and_args[1..]);
+			let mut child = command.spawn().context("Failed to spawn command {program}")?;
+			let result = child.wait()?;
+			if !result.success() {
+				bail!("Command {program} returned a non-zero exit code");
+			}
+		}
 
 		let lockfile_addons = eval
 			.addon_reqs

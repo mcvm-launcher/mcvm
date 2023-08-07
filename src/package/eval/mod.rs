@@ -112,10 +112,10 @@ pub struct EvalInput<'a> {
 #[derive(Debug, Clone)]
 pub struct EvalData<'a> {
 	pub input: EvalInput<'a>,
-	pub vars: HashMap<String, String>,
-	pub addon_reqs: Vec<AddonRequest>,
 	pub id: PkgIdentifier,
 	pub level: EvalLevel,
+	pub vars: HashMap<String, String>,
+	pub addon_reqs: Vec<AddonRequest>,
 	pub deps: Vec<Vec<RequiredPackage>>,
 	pub conflicts: Vec<String>,
 	pub recommendations: Vec<String>,
@@ -123,16 +123,17 @@ pub struct EvalData<'a> {
 	pub compats: Vec<(String, String)>,
 	pub extensions: Vec<String>,
 	pub notices: Vec<String>,
+	pub commands: Vec<Vec<String>>,
 }
 
 impl<'a> EvalData<'a> {
 	pub fn new(input: EvalInput<'a>, id: PkgIdentifier, routine: &Routine) -> Self {
 		Self {
 			input,
-			vars: HashMap::new(),
-			addon_reqs: Vec::new(),
 			id,
 			level: routine.get_level(),
+			vars: HashMap::new(),
+			addon_reqs: Vec::new(),
 			deps: Vec::new(),
 			conflicts: Vec::new(),
 			recommendations: Vec::new(),
@@ -140,6 +141,7 @@ impl<'a> EvalData<'a> {
 			compats: Vec::new(),
 			extensions: Vec::new(),
 			notices: Vec::new(),
+			commands: Vec::new(),
 		}
 	}
 }

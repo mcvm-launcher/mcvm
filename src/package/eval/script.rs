@@ -4,13 +4,13 @@ use anyhow::{anyhow, bail};
 use mcvm_parse::{
 	instruction::{InstrKind, Instruction},
 	parse::{Block, BlockId, Parsed},
-	FailReason,
+	FailReason, Value,
 };
 use mcvm_shared::pkg::PkgIdentifier;
 
 use super::{
 	conditions::eval_condition, create_valid_addon_request, EvalData, EvalInput, EvalLevel,
-	RequiredPackage, Routine, MAX_NOTICE_CHARACTERS, MAX_NOTICE_INSTRUCTIONS,
+	EvalPermissions, RequiredPackage, Routine, MAX_NOTICE_CHARACTERS, MAX_NOTICE_INSTRUCTIONS,
 };
 
 /// Result from an evaluation subfunction
@@ -155,6 +155,17 @@ pub fn eval_instr(
 				}
 				eval.notices.push(notice);
 			}
+			InstrKind::Cmd(command) => {
+				match eval.input.params.perms {
+					EvalPermissions::Elevated => {}
+					_ => bail!("Insufficient permissions to run the 'cmd' instruction"),
+				}
+				if let EvalLevel::Install = eval.level {
+					let command = get_value_vec(command, &eval.vars)?;
+
+					eval.commands.push(command);
+				}
+			}
 			InstrKind::Addon {
 				id,
 				file_name,
@@ -187,5 +198,12 @@ pub fn eval_instr(
 		},
 	}
 
+	Ok(out)
+}
+
+/// Utility function to convert a vec of values to a vec of strings
+fn get_value_vec(vec: &Vec<Value>, vars: &HashMap<String, String>) -> anyhow::Result<Vec<String>> {
+	let out = vec.iter().map(|x| x.get(vars));
+	let out = out.collect::<anyhow::Result<_>>()?;
 	Ok(out)
 }
