@@ -59,7 +59,7 @@ impl Token {
 }
 
 /// Text positional information with row and column
-#[derive(Clone)]
+#[derive(Clone, PartialEq, Eq)]
 pub struct TextPos(usize, usize);
 
 impl Debug for TextPos {
@@ -451,5 +451,29 @@ mod tests {
 				Token::Num(-10)
 			]
 		);
+	}
+
+	macro_rules! _assert_token_positions {
+		($text:literal, $positions:expr) => {
+			assert_token_positions!(lex($text), $positions)
+		};
+
+		($toks:expr, $positions:expr) => {
+			match $toks {
+				Ok(toks) => {
+					dbg!(&toks, $positions);
+					assert_eq!(toks.len(), $positions.len());
+					for (i, ((_, tok_pos), expected_pos)) in
+						toks.iter().zip($positions.iter()).enumerate()
+					{
+						assert_eq!(tok_pos, expected_pos, "Index: {i}");
+					}
+				}
+				Err(e) => {
+					cprintln!("<r>{}", e);
+					panic!();
+				}
+			}
+		};
 	}
 }
