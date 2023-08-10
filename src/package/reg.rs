@@ -1,8 +1,8 @@
 use anyhow::{anyhow, Context};
 use color_print::cformat;
 use mcvm_parse::metadata::PackageMetadata;
-use mcvm_pkg::parse_and_validate;
 use mcvm_parse::properties::PackageProperties;
+use mcvm_pkg::parse_and_validate;
 use mcvm_pkg::PackageContentType;
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
@@ -225,21 +225,29 @@ impl PkgRegistry {
 		client: &Client,
 	) -> anyhow::Result<&mut Package> {
 		let force = matches!(self.caching_strategy, CachingStrategy::None);
-		let pkg = self.get(req, paths).await?;
+		let pkg = self
+			.get(req, paths)
+			.await
+			.with_context(|| format!("Failed to get package {req}"))?;
 		pkg.ensure_loaded(paths, force, client).await?;
 		Ok(pkg)
 	}
 
 	/// Ensure that a package is in the registry
 	pub async fn ensure_package(&mut self, req: &PkgRequest, paths: &Paths) -> anyhow::Result<()> {
-		self.get(req, paths).await?;
+		self.get(req, paths)
+			.await
+			.with_context(|| format!("Failed to get package {req}"))?;
 
 		Ok(())
 	}
 
 	/// Get the version of a package
 	pub async fn get_version(&mut self, req: &PkgRequest, paths: &Paths) -> anyhow::Result<u32> {
-		let pkg = self.get(req, paths).await?;
+		let pkg = self
+			.get(req, paths)
+			.await
+			.with_context(|| format!("Failed to get package {req}"))?;
 		Ok(pkg.id.version)
 	}
 
@@ -326,7 +334,10 @@ impl PkgRegistry {
 
 	/// Remove a cached package
 	pub async fn remove_cached(&mut self, req: &PkgRequest, paths: &Paths) -> anyhow::Result<()> {
-		let pkg = self.get(req, paths).await?;
+		let pkg = self
+			.get(req, paths)
+			.await
+			.with_context(|| format!("Failed to get package {req}"))?;
 		pkg.remove_cached(paths)?;
 		Ok(())
 	}
