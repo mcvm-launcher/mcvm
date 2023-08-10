@@ -15,7 +15,7 @@ use std::path::PathBuf;
 use self::core::get_core_package;
 use self::eval::EvalPermissions;
 use self::reg::PkgRequest;
-use anyhow::{anyhow, ensure, Context};
+use anyhow::{anyhow, ensure, Context, bail};
 use mcvm_parse::metadata::{eval_metadata, PackageMetadata};
 use mcvm_parse::parse::{lex_and_parse, Parsed};
 use mcvm_parse::properties::{eval_properties, PackageProperties};
@@ -141,6 +141,9 @@ impl Package {
 		if self.data.is_empty() {
 			match &self.location {
 				PkgLocation::Local(path) => {
+					if !path.exists() {
+						bail!("Local package path does not exist");
+					}
 					self.data
 						.fill(PkgData::new(&tokio::fs::read_to_string(path).await?));
 				}

@@ -229,7 +229,9 @@ impl PkgRegistry {
 			.get(req, paths)
 			.await
 			.with_context(|| format!("Failed to get package {req}"))?;
-		pkg.ensure_loaded(paths, force, client).await?;
+		pkg.ensure_loaded(paths, force, client)
+			.await
+			.with_context(|| format!("Failed to load package {req}"))?;
 		Ok(pkg)
 	}
 
