@@ -9,6 +9,7 @@ use mcvm_shared::{
 	lang::Language,
 	modifications::{ModloaderMatch, PluginLoaderMatch},
 	pkg::PackageStability,
+	util::DeserListOrSingle,
 	versions::VersionPattern,
 };
 use serde::Deserialize;
@@ -17,26 +18,26 @@ use serde::Deserialize;
 #[derive(Deserialize, Debug, Default, Clone)]
 #[serde(default)]
 pub struct DeclarativePackageRelations {
-	pub dependencies: Vec<String>,
-	pub explicit_dependencies: Vec<String>,
-	pub conflicts: Vec<String>,
-	pub extensions: Vec<String>,
-	pub bundled: Vec<String>,
-	pub compats: Vec<(String, String)>,
-	pub recommendations: Vec<String>,
+	pub dependencies: DeserListOrSingle<String>,
+	pub explicit_dependencies: DeserListOrSingle<String>,
+	pub conflicts: DeserListOrSingle<String>,
+	pub extensions: DeserListOrSingle<String>,
+	pub bundled: DeserListOrSingle<String>,
+	pub compats: DeserListOrSingle<(String, String)>,
+	pub recommendations: DeserListOrSingle<String>,
 }
 
 impl DeclarativePackageRelations {
 	/// Merges this struct and another struct's relations
 	pub fn merge(&mut self, other: Self) {
-		self.dependencies.extend(other.dependencies);
+		self.dependencies.merge(other.dependencies);
 		self.explicit_dependencies
-			.extend(other.explicit_dependencies);
-		self.conflicts.extend(other.conflicts);
-		self.extensions.extend(other.extensions);
-		self.bundled.extend(other.bundled);
-		self.compats.extend(other.compats);
-		self.recommendations.extend(other.recommendations);
+			.merge(other.explicit_dependencies);
+		self.conflicts.merge(other.conflicts);
+		self.extensions.merge(other.extensions);
+		self.bundled.merge(other.bundled);
+		self.compats.merge(other.compats);
+		self.recommendations.merge(other.recommendations);
 	}
 }
 
@@ -45,12 +46,12 @@ impl DeclarativePackageRelations {
 #[derive(Deserialize, Debug, Default, Clone)]
 #[serde(default)]
 pub struct DeclarativeConditionSet {
-	pub minecraft_versions: Option<Vec<VersionPattern>>,
+	pub minecraft_versions: Option<DeserListOrSingle<VersionPattern>>,
 	pub side: Option<Side>,
-	pub modloaders: Option<Vec<ModloaderMatch>>,
-	pub plugin_loaders: Option<Vec<PluginLoaderMatch>>,
+	pub modloaders: Option<DeserListOrSingle<ModloaderMatch>>,
+	pub plugin_loaders: Option<DeserListOrSingle<PluginLoaderMatch>>,
 	pub stability: Option<PackageStability>,
-	pub features: Option<Vec<String>>,
+	pub features: Option<DeserListOrSingle<String>>,
 	pub os: Option<OSCondition>,
 	pub language: Option<Language>,
 }

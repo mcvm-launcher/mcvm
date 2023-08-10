@@ -1,7 +1,5 @@
 use anyhow::anyhow;
-use mcvm_pkg::declarative::{
-	DeclarativeConditionSet, DeclarativeAddonVersion, DeclarativePackage,
-};
+use mcvm_pkg::declarative::{DeclarativeAddonVersion, DeclarativeConditionSet, DeclarativePackage};
 use mcvm_shared::pkg::PkgIdentifier;
 
 use super::{
@@ -62,7 +60,7 @@ pub fn eval_declarative_package<'a>(
 
 	eval_data
 		.deps
-		.extend(relations.dependencies.iter().map(|x| {
+		.extend(relations.dependencies.get_vec().iter().map(|x| {
 			vec![RequiredPackage {
 				value: x.clone(),
 				explicit: false,
@@ -70,17 +68,19 @@ pub fn eval_declarative_package<'a>(
 		}));
 	eval_data
 		.deps
-		.extend(relations.explicit_dependencies.iter().map(|x| {
+		.extend(relations.explicit_dependencies.get_vec().iter().map(|x| {
 			vec![RequiredPackage {
 				value: x.clone(),
 				explicit: true,
 			}]
 		}));
-	eval_data.conflicts.extend(relations.conflicts);
-	eval_data.extensions.extend(relations.extensions);
-	eval_data.bundled.extend(relations.bundled);
-	eval_data.compats.extend(relations.compats);
-	eval_data.recommendations.extend(relations.recommendations);
+	eval_data.conflicts.extend(relations.conflicts.get_vec());
+	eval_data.extensions.extend(relations.extensions.get_vec());
+	eval_data.bundled.extend(relations.bundled.get_vec());
+	eval_data.compats.extend(relations.compats.get_vec());
+	eval_data
+		.recommendations
+		.extend(relations.recommendations.get_vec());
 
 	Ok(eval_data)
 }
@@ -107,12 +107,10 @@ fn check_multiple_condition_sets<'a>(
 }
 
 /// Filtering function for addon version picking and rule checking
-fn check_condition_set<'a>(
-	conditions: &DeclarativeConditionSet,
-	input: &'a EvalInput<'a>,
-) -> bool {
+fn check_condition_set<'a>(conditions: &DeclarativeConditionSet, input: &'a EvalInput<'a>) -> bool {
 	if let Some(minecraft_versions) = &conditions.minecraft_versions {
 		if !minecraft_versions
+			.get_vec()
 			.iter()
 			.any(|x| x.matches_single(&input.constants.version, &input.constants.version_list))
 		{
@@ -127,7 +125,7 @@ fn check_condition_set<'a>(
 	}
 
 	if let Some(modloaders) = &conditions.modloaders {
-		if !modloaders.iter().any(|x| {
+		if !modloaders.get_vec().iter().any(|x| {
 			x.matches(
 				&input
 					.constants
@@ -141,6 +139,7 @@ fn check_condition_set<'a>(
 
 	if let Some(plugin_loaders) = &conditions.plugin_loaders {
 		if !plugin_loaders
+			.get_vec()
 			.iter()
 			.any(|x| x.matches(&input.constants.modifications.server_type))
 		{
@@ -155,8 +154,8 @@ fn check_condition_set<'a>(
 	}
 
 	if let Some(features) = &conditions.features {
-		for feature in features {
-			if !input.params.features.contains(feature) {
+		for feature in features.get_vec() {
+			if !input.params.features.contains(&feature) {
 				return false;
 			}
 		}

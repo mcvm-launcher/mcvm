@@ -6,6 +6,8 @@ pub mod pkg;
 pub mod versions;
 
 pub mod util {
+	use serde::Deserialize;
+
 	/// Converts "yes" or "no" to a boolean
 	pub fn yes_no(string: &str) -> Option<bool> {
 		match string {
@@ -52,6 +54,37 @@ pub mod util {
 			assert!(!is_valid_identifier("hello*world"));
 			assert!(!is_valid_identifier("hello\nworld"));
 			assert!(!is_valid_identifier("hello world"));
+		}
+	}
+
+	/// Utility enum for deserialization that lets you do a list that can be one item
+	#[derive(Deserialize, Debug, Clone)]
+	#[serde(untagged)]
+	pub enum DeserListOrSingle<T> {
+		Single(T),
+		List(Vec<T>),
+	}
+
+	impl<T> Default for DeserListOrSingle<T> {
+		fn default() -> Self {
+			Self::List(Vec::default())
+		}
+	}
+
+	impl<T: Clone> DeserListOrSingle<T> {
+		/// Get the contained value as a Vec
+		pub fn get_vec(&self) -> Vec<T> {
+			match &self {
+				Self::Single(val) => vec![val.clone()],
+				Self::List(list) => list.clone(),
+			}
+		}
+
+		/// Merges this enum with another
+		pub fn merge(&mut self, other: Self) {
+			let mut self_vec = self.get_vec();
+			self_vec.extend(other.get_vec());
+			*self = Self::List(self_vec);
 		}
 	}
 }
@@ -119,7 +152,7 @@ pub mod later {
 		pub fn into_option(self) -> Option<T> {
 			match self {
 				Self::Empty => None,
-				Self::Full(val) => Some(val)
+				Self::Full(val) => Some(val),
 			}
 		}
 

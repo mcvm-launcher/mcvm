@@ -5,7 +5,7 @@
 		"package_maintainers": [ "CarbonSmasher" ]
 	},
 	"properties": {
-		"supported_modloaders": "quilt"
+		"supported_modloaders": [ "quilt" ]
 	},
 	"relations": {
 		"dependencies": [ "qfapi-qsl" ]
