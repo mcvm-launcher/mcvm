@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+use anyhow::Context;
 use mcvm_parse::{
 	conditions::OSCondition, metadata::PackageMetadata, properties::PackageProperties,
 };
@@ -69,6 +70,7 @@ pub struct DeclarativeAddonVersionPatchProperties {
 #[serde(default)]
 pub struct DeclarativeConditionalRuleProperties {
 	pub relations: DeclarativePackageRelations,
+	pub notices: DeserListOrSingle<String>,
 }
 
 /// Conditional rule to apply changes to a declarative package
@@ -80,19 +82,16 @@ pub struct DeclarativeConditionalRule {
 }
 
 /// Version for an addon in a declarative package
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone, Default)]
+#[serde(default)]
 pub struct DeclarativeAddonVersion {
 	#[serde(flatten)]
 	pub conditional_properties: DeclarativeConditionSet,
-	#[serde(default)]
 	pub relations: DeclarativePackageRelations,
-	#[serde(default)]
+	pub notices: DeserListOrSingle<String>,
 	pub filename: Option<String>,
-	#[serde(default)]
 	pub path: Option<String>,
-	#[serde(default)]
 	pub url: Option<String>,
-	#[serde(default)]
 	pub version: Option<String>,
 }
 
@@ -120,6 +119,16 @@ pub struct DeclarativePackage {
 pub fn deserialize_declarative_package(text: &str) -> anyhow::Result<DeclarativePackage> {
 	let out = serde_json::from_str(text)?;
 	Ok(out)
+}
+
+/// Validate a declarative package
+pub fn validate_declarative_package(pkg: &DeclarativePackage) -> anyhow::Result<()> {
+	pkg.meta.check_validity().context("Metadata was invalid")?;
+	pkg.properties
+		.check_validity()
+		.context("Properties were invalid")?;
+		
+	Ok(())
 }
 
 #[cfg(test)]

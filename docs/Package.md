@@ -201,6 +201,7 @@ Addon versions are different files and versions of an addon
 	"version": String,
 	"relations": Relations,
 	"filename": String
+	"notices": [String],
 }
 ```
 
@@ -208,8 +209,9 @@ Addon versions are different files and versions of an addon
 - `url`: A URL to the file for this version. Not required if `path` is specified.
 - `path`: A local filesystem path to the addon file. Not required if `url` is specified. Requires elevated permissions.
 - `version` (Optional): The unique version identifier of this addon. This is important because it lets mcvm differentiate between different versions of the file for caching purposes. If this field is not present, the addon will never be cached and will be redownloaded every time. This ID should not contain any special characters.
-- `relations` (Optional): Extra package relations to apply if this addon version is chosen.
 - `filename` (Optional): The name of the addon file in the instance, with the extension. This is not required and is not recommended most of the time as mcvm will already generate a unique filename for it that does not clash with other files.
+- `relations` (Optional): Extra package relations to apply if this addon version is chosen.
+- `notices` (Optional): A list of messages to display to the user if this version is chosen.
 
 Either `url` or `path` must be set, not both or neither.
 
@@ -229,6 +231,7 @@ Conditional rules let you change the package based on ConditionSets. Each rule w
 - `conditions`: A list of condition sets to check.
 - `properties`: The changes to apply if the conditions are satisfied.
 - `properties.relations`: Package relations to include. These are appended to the other relations
+- `properties.notices`: A list of messages to display to the user.
 
 # The purpose of host ID instructions
 

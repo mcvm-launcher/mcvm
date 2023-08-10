@@ -18,7 +18,9 @@ pub fn eval_declarative_package<'a>(
 
 	let mut eval_data = EvalData::new(input, pkg_id.clone(), &routine);
 
+	// Vars for the EvalData that are modified by conditions / versions
 	let mut relations = contents.relations.clone();
+	let mut notices = Vec::new();
 
 	// Select addon versions
 	for (addon_id, addon) in &contents.addons {
@@ -45,6 +47,7 @@ pub fn eval_declarative_package<'a>(
 		eval_data.addon_reqs.push(addon_req);
 
 		relations.merge(version.relations.clone());
+		notices.extend(version.notices.get_vec());
 	}
 
 	// Apply conditional rules
@@ -56,6 +59,7 @@ pub fn eval_declarative_package<'a>(
 		}
 
 		relations.merge(rule.properties.relations.clone());
+		notices.extend(rule.properties.notices.get_vec());
 	}
 
 	eval_data
@@ -81,6 +85,8 @@ pub fn eval_declarative_package<'a>(
 	eval_data
 		.recommendations
 		.extend(relations.recommendations.get_vec());
+
+	eval_data.notices.extend(notices);
 
 	Ok(eval_data)
 }
