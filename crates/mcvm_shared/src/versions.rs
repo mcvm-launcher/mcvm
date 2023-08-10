@@ -13,6 +13,8 @@ pub enum VersionPattern {
 	Before(String),
 	/// Matches any version that is >= a version
 	After(String),
+	/// Matches any versions between an inclusive range
+	Range(String, String),
 	/// Matches any version
 	Any,
 }
@@ -33,11 +35,18 @@ impl VersionPattern {
 				},
 			},
 			Self::Before(version) => match versions.iter().position(|e| e == version) {
-				Some(pos) => versions[..pos + 1].to_vec(),
+				Some(pos) => versions[..=pos].to_vec(),
 				None => vec![],
 			},
 			Self::After(version) => match versions.iter().position(|e| e == version) {
 				Some(pos) => versions[pos..].to_vec(),
+				None => vec![],
+			},
+			Self::Range(start, end) => match versions.iter().position(|e| e == start) {
+				Some(start_pos) => match versions.iter().position(|e| e == end) {
+					Some(end_pos) => versions[start_pos..=end_pos].to_vec(),
+					None => vec![],
+				},
 				None => vec![],
 			},
 			Self::Any => versions.to_vec(),
@@ -87,6 +96,21 @@ impl VersionPattern {
 					false
 				}
 			}
+			Self::Range(start, end) => {
+				if let Some(start_pos) = versions.iter().position(|x| x == start) {
+					if let Some(end_pos) = versions.iter().position(|x| x == end) {
+						if let Some(version_pos) = versions.iter().position(|x| x == version) {
+							(version_pos >= start_pos) && (version_pos <= end_pos)
+						} else {
+							false
+						}
+					} else {
+						false
+					}
+				} else {
+					false
+				}
+			}
 			Self::Any => versions.contains(&version.to_owned()),
 		}
 	}
@@ -121,6 +145,18 @@ impl VersionPattern {
 						_ => {}
 					}
 				}
+
+				let range_split: Vec<_> = text.split("..").collect();
+				if range_split.len() == 2 {
+					let start = range_split
+						.get(0)
+						.expect("First element in range split should exist");
+					let end = range_split
+						.get(1)
+						.expect("Second element in range split should exist");
+					return Self::Range(start.to_string(), end.to_string());
+				}
+
 				Self::Single(text.to_owned())
 			}
 		}
@@ -129,7 +165,7 @@ impl VersionPattern {
 	/// Checks that a string contains no pattern-special characters
 	#[cfg(test)]
 	pub fn validate(text: &str) -> bool {
-		if text.contains('*') || text == "latest" {
+		if text.contains('*') || text.contains("..") || text == "latest" {
 			return false;
 		}
 		if let Some(last) = text.chars().last() {
@@ -151,6 +187,7 @@ impl Display for VersionPattern {
 				Self::Latest(..) => String::from("latest"),
 				Self::Before(version) => version.to_owned() + "-",
 				Self::After(version) => version.to_owned() + "+",
+				Self::Range(start, end) => start.to_owned() + ".." + end,
 				Self::Any => String::from("*"),
 			}
 		)
@@ -213,6 +250,15 @@ mod tests {
 				String::from("1.19.3")
 			]
 		);
+		assert_eq!(
+			VersionPattern::Range(String::from("1.16.5"), String::from("1.18"))
+				.get_matches(&versions),
+			vec![
+				String::from("1.16.5"),
+				String::from("1.17"),
+				String::from("1.18"),
+			]
+		);
 
 		assert!(VersionPattern::Before(String::from("1.18")).matches_single("1.16.5", &versions));
 		assert!(VersionPattern::After(String::from("1.18")).matches_single("1.19.3", &versions));
@@ -234,6 +280,10 @@ mod tests {
 			VersionPattern::from("1.19.5+"),
 			VersionPattern::After(String::from("1.19.5"))
 		);
+		assert_eq!(
+			VersionPattern::from("1.17.1..1.19.3"),
+			VersionPattern::Range(String::from("1.17.1"), String::from("1.19.3"))
+		);
 	}
 
 	#[test]
@@ -243,5 +293,6 @@ mod tests {
 		assert!(!VersionPattern::validate("foo-"));
 		assert!(!VersionPattern::validate("foo+"));
 		assert!(!VersionPattern::validate("f*o"));
+		assert!(!VersionPattern::validate("f..o"));
 	}
 }

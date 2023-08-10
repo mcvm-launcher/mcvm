@@ -138,9 +138,11 @@ Relations are dependencies / conflicts / etc. with other packages. All fields ar
 Version patterns are strings that can be used to match against one or more version of something, often Minecraft. There are a couple variants:
 
 - `single` (Example "1.19.2"): Match a single version.
-- `latest` ("latest"): Matches only the latest version.
 - `before` (Example "1.19.2-"): Matches a version and all versions before it (inclusive).
 - `after` (Example "1.19.2+"): Matches a version and all versions after it (inclusive).
+- `range` (Example "1.19.1..1.20.1"): Matches versions in a range (inclusive).
+- `latest` ("latest"): Matches only the latest version.
+- `any` ("*"): Matches any version.
 
 ## Conditions
 
