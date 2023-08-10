@@ -1,5 +1,6 @@
-use std::fmt::Display;
+use std::{fmt::Display, str::FromStr};
 
+use anyhow::anyhow;
 use serde::{Deserialize, Serialize};
 
 /// Minecraft game side, client or server
@@ -17,6 +18,14 @@ impl Side {
 			"server" => Some(Self::Server),
 			_ => None,
 		}
+	}
+}
+
+impl FromStr for Side {
+	type Err = anyhow::Error;
+
+	fn from_str(s: &str) -> Result<Self, Self::Err> {
+		Self::parse_from_str(s).ok_or(anyhow!("Not a valid side"))
 	}
 }
 

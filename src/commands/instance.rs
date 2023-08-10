@@ -6,6 +6,7 @@ use mcvm::data::user::AuthState;
 
 use mcvm::io::lock::Lockfile;
 use mcvm::{data::instance::InstKind, util::print::HYPHEN_POINT};
+use mcvm_shared::instance::Side;
 
 use super::CmdData;
 
@@ -17,6 +18,12 @@ pub enum InstanceSubcommand {
 		/// Whether to remove formatting and warnings from the output
 		#[arg(short, long)]
 		raw: bool,
+		/// Filter by instance side
+		#[arg(short, long)]
+		side: Option<Side>,
+		/// Filter by profile
+		#[arg(short, long)]
+		profile: Option<String>,
 	},
 	#[command(about = "Launch instances to play the game")]
 	Launch {
@@ -34,10 +41,39 @@ pub enum InstanceSubcommand {
 	},
 }
 
-async fn list(data: &mut CmdData, raw: bool) -> anyhow::Result<()> {
+async fn list(
+	data: &mut CmdData,
+	raw: bool,
+	side: Option<Side>,
+	profile: Option<String>,
+) -> anyhow::Result<()> {
 	data.ensure_config(!raw).await?;
 	let config = data.config.get_mut();
+
+	let profile = if let Some(profile) = profile {
+		Some(
+			config
+				.profiles
+				.get(&profile)
+				.ok_or(anyhow!("Profile '{profile}' does not exist"))?,
+		)
+	} else {
+		None
+	};
+
 	for (id, instance) in config.instances.iter().sorted_by_key(|x| x.0) {
+		if let Some(side) = side {
+			if instance.kind.to_side() != side {
+				continue;
+			}
+		}
+
+		if let Some(profile) = profile {
+			if !profile.instances.contains(id) {
+				continue;
+			}
+		}
+
 		if raw {
 			println!("{id}");
 		} else {
@@ -100,7 +136,7 @@ pub async fn launch(
 
 pub async fn run(command: InstanceSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
 	match command {
-		InstanceSubcommand::List { raw } => list(data, raw).await,
+		InstanceSubcommand::List { raw, side, profile } => list(data, raw, side, profile).await,
 		InstanceSubcommand::Launch {
 			debug,
 			token,
