@@ -1,3 +1,5 @@
+pub mod auth;
+
 use std::collections::HashMap;
 
 #[derive(Debug, Copy, Clone)]

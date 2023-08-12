@@ -2,6 +2,7 @@ use super::CmdData;
 use itertools::Itertools;
 use mcvm::data::user::UserKind;
 use mcvm::util::print::HYPHEN_POINT;
+use mcvm::data::user;
 
 use clap::Subcommand;
 use color_print::{cprint, cprintln};
@@ -17,6 +18,8 @@ pub enum UserSubcommand {
 	},
 	#[command(about = "Get current authentication status")]
 	Status,
+	#[command(about = "Authenticate a user")]
+	Auth,
 }
 
 async fn list(data: &mut CmdData, raw: bool) -> anyhow::Result<()> {
@@ -63,9 +66,16 @@ async fn status(data: &mut CmdData) -> anyhow::Result<()> {
 	Ok(())
 }
 
+async fn auth(_data: &mut CmdData) -> anyhow::Result<()> {
+	user::auth::authenticate().await?;
+
+	Ok(())
+}
+
 pub async fn run(subcommand: UserSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
 	match subcommand {
 		UserSubcommand::List { raw } => list(data, raw).await,
 		UserSubcommand::Status => status(data).await,
+		UserSubcommand::Auth => auth(data).await,
 	}
 }
