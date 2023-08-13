@@ -6,7 +6,11 @@ use crate::net::microsoft::auth;
 
 /// Present the login page and secret code to the user
 pub fn present_login_page_and_code(url: &str, code: &str) {
-	cprintln!("<s>Open this link in your web browser: <b>{url}");
+	let result = open::that_detached("url");
+	if result.is_err() {
+		cprintln!("<r>Failed to open link in browser");
+	}
+	cprintln!("<s>Open this link in your web browser if it has not opened already: <b>{url}");
 	cprintln!("<s>and enter the code: <b>{code}");
 }
 
