@@ -210,12 +210,13 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 			ParseMode::Root => {
 				match tok {
 					Token::At => {
-						if let Some(..) = prs
+						if prs
 							.parsed
 							.blocks
 							.get_mut(&prs.block)
 							.expect("Block does not exist")
 							.parent
+							.is_some()
 						{
 							bail!("Unexpected routine {}", pos.clone());
 						}
@@ -301,7 +302,7 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 					_ => match condition {
 						Some(condition) => condition.parse(tok, pos)?,
 						None => match tok {
-							Token::Ident(name) => match ConditionKind::from_str(name) {
+							Token::Ident(name) => match ConditionKind::parse_from_str(name) {
 								Some(new_condition) => {
 									*condition = Some(Condition::new(new_condition))
 								}
@@ -376,7 +377,7 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 					addon::State::Value => match tok {
 						Token::Ident(name) => {
 							match key {
-								addon::Key::Kind => filled_keys.kind = AddonKind::from_str(name),
+								addon::Key::Kind => filled_keys.kind = AddonKind::parse_from_str(name),
 								_ => unexpected_token!(tok, &pos),
 							}
 							*state = addon::State::Comma;

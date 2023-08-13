@@ -179,8 +179,8 @@ impl Package {
 }
 
 /// Check properties when evaluating. Returns true if the package should finish evaluating with no error
-pub fn eval_check_properties<'a>(
-	input: &EvalInput<'a>,
+pub fn eval_check_properties(
+	input: &EvalInput,
 	properties: &PackageProperties,
 ) -> anyhow::Result<bool> {
 	if let Some(supported_modloaders) = &properties.supported_modloaders {
@@ -198,7 +198,7 @@ pub fn eval_check_properties<'a>(
 	if let Some(supported_plugin_loaders) = &properties.supported_plugin_loaders {
 		if !supported_plugin_loaders
 			.iter()
-			.any(|x| x.matches(&&input.constants.modifications.server_type))
+			.any(|x| x.matches(&input.constants.modifications.server_type))
 		{
 			bail!("Package does not support this plugin loader");
 		}

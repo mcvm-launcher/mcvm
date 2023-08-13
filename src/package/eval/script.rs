@@ -202,7 +202,7 @@ pub fn eval_instr(
 }
 
 /// Utility function to convert a vec of values to a vec of strings
-fn get_value_vec(vec: &Vec<Value>, vars: &HashMap<String, String>) -> anyhow::Result<Vec<String>> {
+fn get_value_vec(vec: &[Value], vars: &HashMap<String, String>) -> anyhow::Result<Vec<String>> {
 	let out = vec.iter().map(|x| x.get(vars));
 	let out = out.collect::<anyhow::Result<_>>()?;
 	Ok(out)

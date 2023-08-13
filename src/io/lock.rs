@@ -44,7 +44,7 @@ impl LockfileAddon {
 	/// Converts this LockfileAddon to an Addon
 	pub fn to_addon(&self, pkg_id: PkgIdentifier) -> anyhow::Result<Addon> {
 		Ok(Addon {
-			kind: AddonKind::from_str(&self.kind)
+			kind: AddonKind::parse_from_str(&self.kind)
 				.ok_or(anyhow!("Invalid addon kind '{}'", self.kind))?,
 			id: self.id.clone(),
 			file_name: self

@@ -15,7 +15,7 @@ pub enum AddonKind {
 }
 
 impl AddonKind {
-	pub fn from_str(string: &str) -> Option<Self> {
+	pub fn parse_from_str(string: &str) -> Option<Self> {
 		match string {
 			"resource_pack" => Some(Self::ResourcePack),
 			"mod" => Some(Self::Mod),

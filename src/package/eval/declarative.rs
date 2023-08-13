@@ -101,7 +101,7 @@ pub fn pick_best_addon_version<'a>(
 		.iter()
 		.filter(|x| check_condition_set(&x.conditional_properties, input));
 
-	versions.nth(0)
+	versions.next()
 }
 
 /// Check multiple setso f addon version conditions

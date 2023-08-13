@@ -149,7 +149,7 @@ impl VersionPattern {
 				let range_split: Vec<_> = text.split("..").collect();
 				if range_split.len() == 2 {
 					let start = range_split
-						.get(0)
+						.first()
 						.expect("First element in range split should exist");
 					let end = range_split
 						.get(1)

@@ -140,7 +140,7 @@ pub struct RepoQueryResult {
 /// Get the content type of a package from the repository
 pub async fn get_content_type(entry: &RepoPkgEntry) -> PackageContentType {
 	if let Some(content_type) = &entry.content_type {
-		content_type.clone()
+		*content_type
 	} else {
 		PackageContentType::Script
 	}

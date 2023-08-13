@@ -15,7 +15,7 @@ use std::path::PathBuf;
 use self::core::get_core_package;
 use self::eval::EvalPermissions;
 use self::reg::PkgRequest;
-use anyhow::{anyhow, ensure, Context, bail};
+use anyhow::{anyhow, bail, ensure, Context};
 use mcvm_parse::metadata::{eval_metadata, PackageMetadata};
 use mcvm_parse::parse::{lex_and_parse, Parsed};
 use mcvm_parse::properties::{eval_properties, PackageProperties};
@@ -28,7 +28,7 @@ static PKG_EXTENSION: &str = ".pkg.txt";
 #[derive(Debug)]
 pub enum PkgContents {
 	Script(Parsed),
-	Declarative(DeclarativePackage),
+	Declarative(Box<DeclarativePackage>),
 }
 
 impl PkgContents {
@@ -185,7 +185,8 @@ impl Package {
 			PackageContentType::Declarative => {
 				let contents = deserialize_declarative_package(&data.get_text())
 					.context("Failed to deserialize declarative package")?;
-				data.contents.fill(PkgContents::Declarative(contents));
+				data.contents
+					.fill(PkgContents::Declarative(Box::new(contents)));
 			}
 		}
 
@@ -208,7 +209,7 @@ impl Package {
 					data.metadata.fill(metadata);
 				}
 				Ok(data.metadata.get())
-			},
+			}
 			PackageContentType::Declarative => {
 				let contents = data.contents.get().get_declarative_contents();
 				Ok(&contents.meta)
@@ -233,7 +234,7 @@ impl Package {
 					data.properties.fill(properties);
 				}
 				Ok(data.properties.get())
-			},
+			}
 			PackageContentType::Declarative => {
 				let contents = data.contents.get().get_declarative_contents();
 				Ok(&contents.properties)

@@ -52,7 +52,7 @@ pub enum ConditionKind {
 }
 
 impl ConditionKind {
-	pub fn from_str(string: &str) -> Option<Self> {
+	pub fn parse_from_str(string: &str) -> Option<Self> {
 		match string {
 			"not" => Some(Self::Not(Later::Empty)),
 			"version" => Some(Self::Version(Value::None)),
@@ -117,7 +117,7 @@ impl ConditionKind {
 						return condition.parse(tok, pos);
 					}
 					Later::Empty => match tok {
-						Token::Ident(name) => match Self::from_str(name) {
+						Token::Ident(name) => match Self::parse_from_str(name) {
 							Some(nested_cond) => condition.fill(Box::new(nested_cond)),
 							None => {
 								bail!("Unknown condition '{}' {}", name.clone(), pos.clone());
