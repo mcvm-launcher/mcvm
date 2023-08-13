@@ -13,7 +13,6 @@ use crate::io::files::paths::Paths;
 use crate::io::java::{Java, JavaKind};
 use crate::io::lock::Lockfile;
 use crate::io::options::{read_options, Options};
-use mcvm_shared::later::Later;
 use crate::net::fabric_quilt::{self, FabricQuiltMeta};
 use crate::net::minecraft::{assets, game_jar, libraries, version_manifest};
 use crate::net::paper;
@@ -25,6 +24,7 @@ use crate::util::select_random_n_items_from_list;
 use crate::util::versions::MinecraftVersion;
 use crate::util::{json, print::PrintOptions};
 use mcvm_shared::instance::Side;
+use mcvm_shared::later::Later;
 
 use super::{InstanceRegistry, Profile};
 
@@ -315,11 +315,17 @@ async fn resolve_and_batch<'a>(
 			perms: EvalPermissions::Standard,
 			stability: PackageStability::Stable,
 		};
-		let instance_resolved = resolve(&profile.packages, constants, params, ctx.paths, ctx.packages)
-			.await
-			.with_context(|| {
-				format!("Failed to resolve package dependencies for instance '{instance_id}'")
-			})?;
+		let instance_resolved = resolve(
+			&profile.packages,
+			constants,
+			params,
+			ctx.paths,
+			ctx.packages,
+		)
+		.await
+		.with_context(|| {
+			format!("Failed to resolve package dependencies for instance '{instance_id}'")
+		})?;
 		for package in &instance_resolved {
 			if let Some(entry) = batched.get_mut(package) {
 				entry.push(instance_id.clone());
@@ -371,7 +377,16 @@ async fn update_profile_packages<'a>(
 			));
 			let input = EvalInput { constants, params };
 			let result = instance
-				.install_package(package, pkg_version, input, ctx.packages, ctx.paths, ctx.lock, force, ctx.client)
+				.install_package(
+					package,
+					pkg_version,
+					input,
+					ctx.packages,
+					ctx.paths,
+					ctx.lock,
+					force,
+					ctx.client,
+				)
 				.await
 				.with_context(|| {
 					format!("Failed to install package '{package}' for instance '{instance_id}'")
@@ -412,13 +427,15 @@ async fn update_profile_packages<'a>(
 			)
 			.context("Failed to remove unused packages")?;
 		for file in files_to_remove {
-			instance.remove_addon_file(&file, ctx.paths).with_context(|| {
-				format!(
-					"Failed to remove addon file {} for instance {}",
-					file.display(),
-					instance_id
-				)
-			})?;
+			instance
+				.remove_addon_file(&file, ctx.paths)
+				.with_context(|| {
+					format!(
+						"Failed to remove addon file {} for instance {}",
+						file.display(),
+						instance_id
+					)
+				})?;
 		}
 	}
 

@@ -1,8 +1,8 @@
 use super::CmdData;
 use itertools::Itertools;
+use mcvm::data::user;
 use mcvm::data::user::UserKind;
 use mcvm::util::print::HYPHEN_POINT;
-use mcvm::data::user;
 
 use clap::Subcommand;
 use color_print::{cprint, cprintln};

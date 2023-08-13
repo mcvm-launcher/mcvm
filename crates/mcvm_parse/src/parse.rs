@@ -377,7 +377,9 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 					addon::State::Value => match tok {
 						Token::Ident(name) => {
 							match key {
-								addon::Key::Kind => filled_keys.kind = AddonKind::parse_from_str(name),
+								addon::Key::Kind => {
+									filled_keys.kind = AddonKind::parse_from_str(name)
+								}
 								_ => unexpected_token!(tok, &pos),
 							}
 							*state = addon::State::Comma;

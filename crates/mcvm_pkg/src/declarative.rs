@@ -127,7 +127,7 @@ pub fn validate_declarative_package(pkg: &DeclarativePackage) -> anyhow::Result<
 	pkg.properties
 		.check_validity()
 		.context("Properties were invalid")?;
-		
+
 	Ok(())
 }
 

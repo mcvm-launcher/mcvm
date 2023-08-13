@@ -7,7 +7,7 @@ use reqwest::Client;
 
 use crate::io::files::paths::Paths;
 
-use super::{EvalConstants, EvalParameters, Routine, EvalInput};
+use super::{EvalConstants, EvalInput, EvalParameters, Routine};
 use crate::package::reg::{PkgRegistry, PkgRequest, PkgRequestSource};
 use crate::package::{calculate_features, PkgProfileConfig};
 
@@ -192,13 +192,7 @@ async fn resolve_eval_package(
 		params,
 	};
 	let result = reg
-		.eval(
-			&package,
-			paths,
-			Routine::InstallResolve,
-			input,
-			client,
-		)
+		.eval(&package, paths, Routine::InstallResolve, input, client)
 		.await
 		.context("Failed to evaluate package")?;
 

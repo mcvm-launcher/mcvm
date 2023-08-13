@@ -3,7 +3,7 @@ use std::path::PathBuf;
 use crate::package::repo::{PkgRepo, PkgRepoLocation};
 use crate::{net::download::validate_url, package::reg::CachingStrategy};
 
-use anyhow::{Context, bail};
+use anyhow::{bail, Context};
 use mcvm_shared::lang::Language;
 use serde::{Deserialize, Serialize};
 
@@ -62,10 +62,7 @@ impl ConfigPreferences {
 fn add_repo(repos: &mut Vec<PkgRepo>, repo: &RepoDeser) -> anyhow::Result<()> {
 	let location = if let Some(url) = &repo.url {
 		validate_url(url).with_context(|| {
-			format!(
-				"Invalid url '{}' in package repository '{}'",
-				url, repo.id
-			)
+			format!("Invalid url '{}' in package repository '{}'", url, repo.id)
 		})?;
 		PkgRepoLocation::Remote(url.clone())
 	} else if let Some(path) = &repo.path {

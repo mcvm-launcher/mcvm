@@ -1,7 +1,7 @@
 pub mod create;
 pub mod launch;
 
-use anyhow::{ensure, Context, bail};
+use anyhow::{bail, ensure, Context};
 use color_print::cprintln;
 use mcvm_shared::instance::Side;
 use reqwest::Client;
@@ -293,7 +293,9 @@ impl Instance {
 				.expect("Command should contain at least the program");
 			let mut command = std::process::Command::new(program);
 			command.args(&command_and_args[1..]);
-			let mut child = command.spawn().context("Failed to spawn command {program}")?;
+			let mut child = command
+				.spawn()
+				.context("Failed to spawn command {program}")?;
 			let result = child.wait()?;
 			if !result.success() {
 				bail!("Command {program} returned a non-zero exit code");
