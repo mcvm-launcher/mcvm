@@ -1,3 +1,4 @@
+pub mod hash;
 pub mod json;
 pub mod mojang;
 pub mod print;
