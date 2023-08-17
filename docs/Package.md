@@ -202,8 +202,12 @@ Addon versions are different files and versions of an addon
 	"path": String,
 	"version": String,
 	"relations": Relations,
-	"filename": String
+	"filename": String,
 	"notices": [String],
+	"hashes": {
+		"sha256": String,
+		"sha512": String
+	}
 }
 ```
 
@@ -214,6 +218,7 @@ Addon versions are different files and versions of an addon
 - `filename` (Optional): The name of the addon file in the instance, with the extension. This is not required and is not recommended most of the time as mcvm will already generate a unique filename for it that does not clash with other files.
 - `relations` (Optional): Extra package relations to apply if this addon version is chosen.
 - `notices` (Optional): A list of messages to display to the user if this version is chosen.
+- `hashes` (Optional): Different fields for hashes of this version file. Allows MCVM to check for valid files when downloading them.
 
 Either `url` or `path` must be set, not both or neither.
 

@@ -6,7 +6,7 @@ use mcvm_parse::{
 	parse::{Block, BlockId, Parsed},
 	FailReason, Value,
 };
-use mcvm_shared::pkg::PkgIdentifier;
+use mcvm_shared::pkg::{PkgIdentifier, PackageAddonOptionalHashes};
 
 use super::{
 	conditions::eval_condition, create_valid_addon_request, EvalData, EvalInput, EvalLevel,
@@ -173,6 +173,7 @@ pub fn eval_instr(
 				url,
 				path,
 				version,
+				hashes,
 			} => {
 				if let EvalLevel::Install = eval.level {
 					let id = id.get(&eval.vars)?;
@@ -181,15 +182,20 @@ pub fn eval_instr(
 					}
 
 					let kind = kind.as_ref().expect("Addon kind missing");
+					let hashes = PackageAddonOptionalHashes {
+						sha256: hashes.sha256.get_as_option(&eval.vars)?,
+						sha512: hashes.sha512.get_as_option(&eval.vars)?,
+					};
 					let addon_req = create_valid_addon_request(
 						id,
 						url.get_as_option(&eval.vars)?,
 						path.get_as_option(&eval.vars)?,
 						*kind,
 						file_name.get_as_option(&eval.vars)?,
-						eval.id.clone(),
 						version.get_as_option(&eval.vars)?,
-						&eval.input.params.perms,
+						eval.id.clone(),
+						hashes,
+						&eval.input,
 					)?;
 					eval.addon_reqs.push(addon_req);
 				}

@@ -100,7 +100,9 @@ addon id filename (
 	kind: mod | resource_pack | shader | plugin,
 	url: String,
 	path: String,
-	version: String
+	version: String,
+	hash_sha256: String,
+	hash_sha512: String
 )
 ```
 

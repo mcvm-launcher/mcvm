@@ -60,6 +60,16 @@ pub fn is_valid_package_id(id: &str) -> bool {
 	true
 }
 
+/// Hashes used for package addons
+#[derive(Deserialize, Serialize, PartialEq, Debug, Clone, Default)]
+#[serde(default)]
+pub struct PackageAddonHashes<T> {
+	pub sha256: T,
+	pub sha512: T,
+}
+
+pub type PackageAddonOptionalHashes = PackageAddonHashes<Option<String>>;
+
 #[cfg(test)]
 mod tests {
 	use super::*;

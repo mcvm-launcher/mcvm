@@ -23,8 +23,11 @@ use super::Package;
 use crate::data::addon::{self, AddonLocation, AddonRequest};
 use crate::data::config::profile::GameModifications;
 use crate::io::files::paths::Paths;
+use crate::util::hash::{
+	get_hash_str_as_hex, HASH_SHA256_RESULT_LENGTH, HASH_SHA512_RESULT_LENGTH,
+};
 use mcvm_shared::instance::Side;
-use mcvm_shared::pkg::{PackageStability, PkgIdentifier};
+use mcvm_shared::pkg::{PackageAddonOptionalHashes, PackageStability, PkgIdentifier};
 
 use std::collections::HashMap;
 use std::path::PathBuf;
@@ -220,9 +223,10 @@ pub fn create_valid_addon_request(
 	path: Option<String>,
 	kind: AddonKind,
 	file_name: Option<String>,
-	pkg_id: PkgIdentifier,
 	version: Option<String>,
-	perms: &EvalPermissions,
+	pkg_id: PkgIdentifier,
+	hashes: PackageAddonOptionalHashes,
+	eval_input: &EvalInput,
 ) -> anyhow::Result<AddonRequest> {
 	if !is_valid_identifier(&id) {
 		bail!("Invalid addon identifier '{id}'");
@@ -243,13 +247,35 @@ pub fn create_valid_addon_request(
 		bail!("Invalid addon filename '{file_name}' in addon '{id}'");
 	}
 
-	let addon = Addon::new(kind, &id, &file_name, pkg_id, version);
+	// Check hashes
+	if let Some(hash) = &hashes.sha256 {
+		let hex = get_hash_str_as_hex(hash);
+		if hex.len() > HASH_SHA256_RESULT_LENGTH {
+			bail!("SHA-256 hash for addon '{id}' is longer than {HASH_SHA256_RESULT_LENGTH} characters");
+		}
+	}
+
+	if let Some(hash) = &hashes.sha512 {
+		let hex = get_hash_str_as_hex(hash);
+		if hex.len() > HASH_SHA512_RESULT_LENGTH {
+			bail!("SHA-512 hash for addon '{id}' is longer than {HASH_SHA512_RESULT_LENGTH} characters");
+		}
+	}
+
+	let addon = Addon {
+		kind,
+		id: id.clone(),
+		file_name,
+		pkg_id,
+		version,
+		hashes,
+	};
 
 	if let Some(url) = url {
 		let location = AddonLocation::Remote(url);
 		Ok(AddonRequest::new(addon, location))
 	} else if let Some(path) = path {
-		match perms {
+		match eval_input.params.perms {
 			EvalPermissions::Elevated => {
 				let path = String::from(shellexpand::tilde(&path));
 				let path = PathBuf::from(path);

@@ -39,9 +39,10 @@ pub fn eval_declarative_package<'a>(
 			version.path.clone(),
 			addon.kind,
 			version.filename.clone(),
-			pkg_id.clone(),
 			version.version.clone(),
-			&eval_data.input.params.perms,
+			pkg_id.clone(),
+			version.hashes.clone(),
+			&eval_data.input,
 		)?;
 
 		eval_data.addon_reqs.push(addon_req);

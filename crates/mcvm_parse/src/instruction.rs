@@ -4,6 +4,7 @@ use anyhow::bail;
 use mcvm_shared::instance::Side;
 use mcvm_shared::later::Later;
 use mcvm_shared::modifications::{ModloaderMatch, PluginLoaderMatch};
+use mcvm_shared::pkg::PackageAddonHashes;
 
 use super::conditions::Condition;
 use super::lex::{TextPos, Token};
@@ -46,6 +47,7 @@ pub enum InstrKind {
 		url: Value,
 		path: Value,
 		version: Value,
+		hashes: PackageAddonHashes<Value>,
 	},
 	Set(Later<String>, Value),
 	Require(Vec<Vec<super::parse::require::Package>>),

@@ -6,7 +6,7 @@ use anyhow::{anyhow, Context};
 use serde::{Deserialize, Serialize};
 
 use mcvm_shared::addon::{Addon, AddonKind};
-use mcvm_shared::pkg::PkgIdentifier;
+use mcvm_shared::pkg::{PkgIdentifier, PackageAddonOptionalHashes};
 
 use super::files::paths::Paths;
 
@@ -19,6 +19,7 @@ pub struct LockfileAddon {
 	files: Vec<String>,
 	kind: String,
 	version: Option<String>,
+	hashes: PackageAddonOptionalHashes,
 }
 
 impl LockfileAddon {
@@ -38,6 +39,7 @@ impl LockfileAddon {
 				.collect(),
 			kind: addon.kind.to_string(),
 			version: addon.version.clone(),
+			hashes: addon.hashes.clone(),
 		}
 	}
 
@@ -53,6 +55,7 @@ impl LockfileAddon {
 				.expect("Filename should have been filled in or fixed"),
 			pkg_id,
 			version: self.version.clone(),
+			hashes: self.hashes.clone(),
 		})
 	}
 

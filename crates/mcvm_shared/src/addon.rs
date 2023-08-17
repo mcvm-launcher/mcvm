@@ -2,7 +2,7 @@ use std::fmt::Display;
 
 use serde::Deserialize;
 
-use crate::pkg::PkgIdentifier;
+use crate::pkg::{PkgIdentifier, PackageAddonOptionalHashes};
 
 #[derive(Debug, Clone, Copy, Deserialize)]
 #[serde(rename_all = "snake_case")]
@@ -70,24 +70,8 @@ pub struct Addon {
 	pub pkg_id: PkgIdentifier,
 	/// Version of the addon, used for caching
 	pub version: Option<String>,
-}
-
-impl Addon {
-	pub fn new(
-		kind: AddonKind,
-		id: &str,
-		file_name: &str,
-		pkg_id: PkgIdentifier,
-		version: Option<String>,
-	) -> Self {
-		Self {
-			kind,
-			id: id.to_owned(),
-			file_name: file_name.to_owned(),
-			pkg_id,
-			version,
-		}
-	}
+	/// Hashes of the addon
+	pub hashes: PackageAddonOptionalHashes,
 }
 
 /// Checks for a valid addon version identifier that is compatible with all systems

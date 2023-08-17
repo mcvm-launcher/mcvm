@@ -1,10 +1,11 @@
-use anyhow::Context;
+use anyhow::{Context, bail};
 use mcvm_shared::addon::{Addon, AddonKind};
 use reqwest::Client;
 
 use crate::io::files::paths::Paths;
 use crate::io::files::{create_leading_dirs, update_hardlink};
 use crate::net::download;
+use crate::util::hash::{get_best_hash, hash_file_with_best_hash};
 use mcvm_shared::modifications::{Modloader, ServerType};
 
 use std::path::{Path, PathBuf};
@@ -89,6 +90,17 @@ impl AddonRequest {
 				update_hardlink(actual_path, &path).context("Failed to hardlink local addon")?;
 			}
 		}
+		// Check hashes
+		let best_hash = get_best_hash(&self.addon.hashes);
+		if let Some(best_hash) = best_hash {
+			let matches =
+				hash_file_with_best_hash(&path, best_hash).context("Failed to checksum addon file")?;
+
+			if !matches {
+				bail!("Checksum for addon file does not match");
+			}
+		}
+
 		Ok(())
 	}
 }
@@ -103,7 +115,7 @@ pub fn game_modifications_compatible(modloader: &Modloader, plugin_loader: &Serv
 
 #[cfg(test)]
 mod tests {
-	use mcvm_shared::pkg::PkgIdentifier;
+	use mcvm_shared::pkg::{PackageAddonOptionalHashes, PkgIdentifier};
 
 	use super::*;
 
@@ -125,13 +137,14 @@ mod tests {
 
 	#[test]
 	fn test_addon_split_filename() {
-		let addon = Addon::new(
-			AddonKind::Mod,
-			"foo",
-			"FooBar.baz.jar",
-			PkgIdentifier::new("package", 10),
-			None,
-		);
+		let addon = Addon {
+			kind: AddonKind::Mod,
+			id: String::from("foo"),
+			file_name: String::from("FooBar.baz.jar"),
+			pkg_id: PkgIdentifier::new("package", 10),
+			version: None,
+			hashes: PackageAddonOptionalHashes::default(),
+		};
 		assert_eq!(split_filename(&addon), ("FooBar", ".baz.jar"));
 	}
 }

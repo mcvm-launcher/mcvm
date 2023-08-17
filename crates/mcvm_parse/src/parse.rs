@@ -1,4 +1,5 @@
 use anyhow::{bail, Context};
+use mcvm_shared::pkg::PackageAddonHashes;
 
 use super::conditions::Condition;
 use super::conditions::ConditionKind;
@@ -75,6 +76,8 @@ impl Default for Parsed {
 }
 
 mod addon {
+	use mcvm_shared::pkg::PackageAddonHashes;
+
 	use super::*;
 
 	/// State of the addon parser
@@ -98,6 +101,8 @@ mod addon {
 		Url,
 		Path,
 		Version,
+		HashSHA256,
+		HashSHA512,
 	}
 
 	/// Keys that have been filled
@@ -107,6 +112,7 @@ mod addon {
 		pub url: Value,
 		pub path: Value,
 		pub version: Value,
+		pub hashes: PackageAddonHashes<Value>,
 	}
 }
 
@@ -235,6 +241,10 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 									url: Value::None,
 									path: Value::None,
 									version: Value::None,
+									hashes: PackageAddonHashes {
+										sha256: Value::None,
+										sha512: Value::None,
+									},
 								},
 							};
 						}
@@ -358,6 +368,8 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 								"url" => *key = addon::Key::Url,
 								"path" => *key = addon::Key::Path,
 								"version" => *key = addon::Key::Version,
+								"hash_sha256" => *key = addon::Key::HashSHA256,
+								"hash_sha512" => *key = addon::Key::HashSHA512,
 								_ => {
 									bail!(
 										"Unknown key {} for 'addon' instruction {}",
@@ -385,10 +397,13 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 							*state = addon::State::Comma;
 						}
 						_ => {
+							let arg = parse_arg(tok, pos)?;
 							match key {
-								addon::Key::Url => filled_keys.url = parse_arg(tok, pos)?,
-								addon::Key::Path => filled_keys.path = parse_arg(tok, pos)?,
-								addon::Key::Version => filled_keys.version = parse_arg(tok, pos)?,
+								addon::Key::Url => filled_keys.url = arg,
+								addon::Key::Path => filled_keys.path = arg,
+								addon::Key::Version => filled_keys.version = arg,
+								addon::Key::HashSHA256 => filled_keys.hashes.sha256 = arg,
+								addon::Key::HashSHA512 => filled_keys.hashes.sha512 = arg,
 								_ => unexpected_token!(tok, pos),
 							}
 							*state = addon::State::Comma;
@@ -410,6 +425,7 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 								url: filled_keys.url.clone(),
 								path: filled_keys.path.clone(),
 								version: filled_keys.version.clone(),
+								hashes: filled_keys.hashes.clone(),
 							}));
 							prs.mode = ParseMode::Root;
 						}

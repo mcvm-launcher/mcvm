@@ -9,7 +9,7 @@ use mcvm_shared::{
 	instance::Side,
 	lang::Language,
 	modifications::{ModloaderMatch, PluginLoaderMatch},
-	pkg::PackageStability,
+	pkg::{PackageStability, PackageAddonOptionalHashes},
 	util::DeserListOrSingle,
 	versions::VersionPattern,
 };
@@ -93,6 +93,7 @@ pub struct DeclarativeAddonVersion {
 	pub path: Option<String>,
 	pub url: Option<String>,
 	pub version: Option<String>,
+	pub hashes: PackageAddonOptionalHashes,
 }
 
 /// Addon in a declarative package
