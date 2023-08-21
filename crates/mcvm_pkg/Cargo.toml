@@ -10,7 +10,9 @@ keywords = ["minecraft", "launcher", "game", "mc"]
 categories = ["games"]
 
 [dependencies]
+async-trait = "0.1.73"
 anyhow = "1.0.70"
+itertools = "0.10.5"
 mcvm_parse = { path = "../mcvm_parse", version = "0.3.0" }
 mcvm_shared = { path = "../mcvm_shared", version = "0.3.0" }
 serde = { version = "1.0.152", features = ["derive"] }

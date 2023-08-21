@@ -7,11 +7,11 @@ use serde::{Deserialize, Serialize};
 use crate::{
 	package::{
 		eval::EvalPermissions,
-		reg::{PkgRequest, PkgRequestSource},
 		PkgProfileConfig,
 	},
 	util::merge_options,
 };
+use mcvm_pkg::{PkgRequest, PkgRequestSource};
 
 /// Trick enum used to make deserialization work in the way we want
 #[derive(Deserialize, Serialize)]
@@ -108,7 +108,7 @@ impl PackageConfig {
 				req: PkgRequest::new(id, PkgRequestSource::UserRequire),
 				features: features.clone(),
 				use_default_features: *use_default_features,
-				permissions: permissions.clone(),
+				permissions: *permissions,
 				stability: merge_options(Some(profile_stability), stability.to_owned()).unwrap(),
 			},
 			PackageConfig::Full(FullPackageConfig::Repository {
@@ -122,7 +122,7 @@ impl PackageConfig {
 				req: PkgRequest::new(id, PkgRequestSource::UserRequire),
 				features: features.clone(),
 				use_default_features: *use_default_features,
-				permissions: permissions.clone(),
+				permissions: *permissions,
 				stability: merge_options(Some(profile_stability), stability.to_owned()).unwrap(),
 			},
 		};

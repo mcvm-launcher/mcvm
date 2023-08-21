@@ -1,10 +1,12 @@
 use anyhow::anyhow;
-use mcvm_pkg::declarative::{DeclarativeAddonVersion, DeclarativeConditionSet, DeclarativePackage};
+use mcvm_pkg::{
+	declarative::{DeclarativeAddonVersion, DeclarativeConditionSet, DeclarativePackage},
+	RequiredPackage,
+};
 use mcvm_shared::pkg::PkgIdentifier;
 
 use super::{
-	conditions::check_os_condition, create_valid_addon_request, EvalData, EvalInput,
-	RequiredPackage, Routine,
+	conditions::check_os_condition, create_valid_addon_request, EvalData, EvalInput, Routine,
 };
 
 /// Evaluate a declarative package

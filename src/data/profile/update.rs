@@ -16,13 +16,14 @@ use crate::io::options::{read_options, Options};
 use crate::net::fabric_quilt::{self, FabricQuiltMeta};
 use crate::net::minecraft::{assets, game_jar, libraries, version_manifest};
 use crate::net::paper;
-use crate::package::eval::resolve::resolve;
+use crate::package::eval::resolve;
 use crate::package::eval::{EvalConstants, EvalInput, EvalParameters, EvalPermissions};
-use crate::package::reg::{PkgRegistry, PkgRequest};
+use crate::package::reg::{disp_pkg_request_with_colors, PkgRegistry};
 use crate::util::print::{ReplPrinter, HYPHEN_POINT};
 use crate::util::select_random_n_items_from_list;
 use crate::util::versions::MinecraftVersion;
 use crate::util::{json, print::PrintOptions};
+use mcvm_pkg::PkgRequest;
 use mcvm_shared::instance::Side;
 use mcvm_shared::later::Later;
 
@@ -326,14 +327,14 @@ async fn resolve_and_batch<'a>(
 		.with_context(|| {
 			format!("Failed to resolve package dependencies for instance '{instance_id}'")
 		})?;
-		for package in &instance_resolved {
+		for package in &instance_resolved.packages {
 			if let Some(entry) = batched.get_mut(package) {
 				entry.push(instance_id.clone());
 			} else {
 				batched.insert(package.clone(), vec![instance_id.clone()]);
 			}
 		}
-		resolved.insert(instance_id.clone(), instance_resolved);
+		resolved.insert(instance_id.clone(), instance_resolved.packages);
 	}
 
 	Ok((batched, resolved))
@@ -451,7 +452,7 @@ fn format_package_print(pkg: &PkgRequest, instance: Option<&str>, message: &str)
 		cformat!(
 			"{}[{}] (<b!>{}</b!>) {}",
 			HYPHEN_POINT,
-			pkg.disp_with_colors(),
+			disp_pkg_request_with_colors(pkg),
 			instance,
 			message
 		)
@@ -459,7 +460,7 @@ fn format_package_print(pkg: &PkgRequest, instance: Option<&str>, message: &str)
 		cformat!(
 			"{}[<c>{}</c>] {}",
 			HYPHEN_POINT,
-			pkg.disp_with_colors(),
+			disp_pkg_request_with_colors(pkg),
 			message
 		)
 	}

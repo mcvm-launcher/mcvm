@@ -14,11 +14,11 @@ use std::path::PathBuf;
 
 use self::core::get_core_package;
 use self::eval::EvalPermissions;
-use self::reg::PkgRequest;
 use anyhow::{anyhow, bail, ensure, Context};
 use mcvm_parse::metadata::{eval_metadata, PackageMetadata};
 use mcvm_parse::parse::{lex_and_parse, Parsed};
 use mcvm_parse::properties::{eval_properties, PackageProperties};
+use mcvm_pkg::PkgRequest;
 use mcvm_shared::pkg::{PackageStability, PkgIdentifier};
 use reqwest::Client;
 
@@ -244,7 +244,7 @@ impl Package {
 }
 
 /// Evaluated configuration for a package, stored in a profile
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct PkgProfileConfig {
 	pub req: PkgRequest,
 	pub features: Vec<String>,

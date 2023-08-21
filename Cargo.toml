@@ -26,6 +26,7 @@ strip = true
 
 [dependencies]
 anyhow = "1.0.70"
+async-trait = "0.1.73"
 bytes = "1.4.0"
 cfg-match = "0.2.1"
 clap = { version = "4.1.13", features = ["derive"]}

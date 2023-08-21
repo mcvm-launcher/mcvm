@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use super::CmdData;
 use itertools::Itertools;
-use mcvm::package::reg::{PkgRequest, PkgRequestSource};
+use mcvm_pkg::{PkgRequest, PkgRequestSource};
 use mcvm::util::print::{ReplPrinter, HYPHEN_POINT};
 
 use anyhow::{bail, Context};

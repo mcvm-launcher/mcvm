@@ -17,7 +17,8 @@ use crate::io::options::server::ServerOptions;
 use crate::io::{files, snapshot};
 use crate::net::fabric_quilt;
 use crate::package::eval::{EvalData, EvalInput, Routine};
-use crate::package::reg::{PkgRegistry, PkgRequest};
+use crate::package::reg::PkgRegistry;
+use mcvm_pkg::PkgRequest;
 use crate::util::json;
 use mcvm_shared::later::Later;
 
