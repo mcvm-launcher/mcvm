@@ -43,13 +43,12 @@ fn default_config() -> serde_json::Value {
 			"profiles": {
 				"example": {
 					"version": "1.19.3",
+					"server_type": "paper",
 					"instances": {
 						"example-client": {
 							"type": "client"
 						},
-						"example-server": {
-							"type": "server"
-						}
+						"example-server": "server"
 					}
 				}
 			}
