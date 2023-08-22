@@ -254,14 +254,14 @@ pub fn create_valid_addon_request(
 
 	// Check hashes
 	if let Some(hash) = &hashes.sha256 {
-		let hex = get_hash_str_as_hex(hash);
+		let hex = get_hash_str_as_hex(hash).context("Failed to parse hash string")?;
 		if hex.len() > HASH_SHA256_RESULT_LENGTH {
 			bail!("SHA-256 hash for addon '{id}' is longer than {HASH_SHA256_RESULT_LENGTH} characters");
 		}
 	}
 
 	if let Some(hash) = &hashes.sha512 {
-		let hex = get_hash_str_as_hex(hash);
+		let hex = get_hash_str_as_hex(hash).context("Failed to parse hash string")?;
 		if hex.len() > HASH_SHA512_RESULT_LENGTH {
 			bail!("SHA-512 hash for addon '{id}' is longer than {HASH_SHA512_RESULT_LENGTH} characters");
 		}
