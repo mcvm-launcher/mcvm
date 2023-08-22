@@ -52,7 +52,7 @@ Properties like `features` and `modrinth_id` can only be used in the `@propertie
   - `or {left} {right}`: Checks if either one of the conditions are true.
 - `set {variable} {value}`: Sets the value of a variable.
 - `finish`: Will silently end the routine.
-- `fail [unsupported_version | unsupported_modloader | unsupported_plugin_loader]`: End execution with an error.
+- `fail [unsupported_version | unsupported_modloader | unsupported_plugin_loader | unsupported_features | unsupported_operating_system]`: End execution with an error.
 - `addon {id} [filename] (..)`: Add an addon to the instance. Keys and values are put inside the parentheses.
 - `require {package1} {package2} ...`: Create a dependency on one or more packages.
 - `refuse {package}`: Specifies that this package is incompatible with another.
