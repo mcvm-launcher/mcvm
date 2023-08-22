@@ -8,6 +8,7 @@ use anyhow::bail;
 use anyhow::Context;
 use async_trait::async_trait;
 use color_print::cprintln;
+use mcvm_parse::HashMapVariableStore;
 use mcvm_parse::properties::PackageProperties;
 use mcvm_parse::routine::INSTALL_ROUTINE;
 use mcvm_pkg::resolve::ResolutionResult;
@@ -41,7 +42,6 @@ use crate::util::hash::{
 use mcvm_shared::instance::Side;
 use mcvm_shared::pkg::{PackageAddonOptionalHashes, PackageStability, PkgIdentifier};
 
-use std::collections::HashMap;
 use std::path::PathBuf;
 
 /// Max notice instructions per package
@@ -122,7 +122,7 @@ pub struct EvalData<'a> {
 	pub input: EvalInput<'a>,
 	pub id: PkgIdentifier,
 	pub level: EvalLevel,
-	pub vars: HashMap<String, String>,
+	pub vars: HashMapVariableStore,
 	pub addon_reqs: Vec<AddonRequest>,
 	pub deps: Vec<Vec<RequiredPackage>>,
 	pub conflicts: Vec<String>,
@@ -140,7 +140,7 @@ impl<'a> EvalData<'a> {
 			input,
 			id,
 			level: routine.get_level(),
-			vars: HashMap::new(),
+			vars: HashMapVariableStore::default(),
 			addon_reqs: Vec::new(),
 			deps: Vec::new(),
 			conflicts: Vec::new(),

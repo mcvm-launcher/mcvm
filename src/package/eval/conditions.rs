@@ -1,7 +1,7 @@
 use mcvm_shared::{instance::Side, versions::VersionPattern};
 
 use super::EvalData;
-use mcvm_parse::conditions::{ConditionKind, OSCondition};
+use mcvm_parse::{conditions::{ConditionKind, OSCondition}, VariableStore};
 
 pub const fn check_os_condition(condition: &OSCondition) -> bool {
 	match condition {
@@ -52,6 +52,6 @@ pub fn eval_condition(condition: &ConditionKind, eval: &EvalData) -> anyhow::Res
 		ConditionKind::Stability(stability) => Ok(eval.input.params.stability == *stability.get()),
 		ConditionKind::Language(lang) => Ok(eval.input.constants.language == *lang.get()),
 		ConditionKind::Value(left, right) => Ok(left.get(&eval.vars)? == right.get(&eval.vars)?),
-		ConditionKind::Defined(var) => Ok(eval.vars.contains_key(var.get())),
+		ConditionKind::Defined(var) => Ok(eval.vars.var_exists(var.get())),
 	}
 }

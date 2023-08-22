@@ -4,7 +4,7 @@ use anyhow::{anyhow, bail};
 use mcvm_parse::{
 	instruction::{InstrKind, Instruction},
 	parse::{Block, BlockId, Parsed},
-	FailReason, Value,
+	FailReason, Value, VariableStore,
 };
 use mcvm_shared::pkg::{PkgIdentifier, PackageAddonOptionalHashes};
 
@@ -94,7 +94,7 @@ pub fn eval_instr(
 			}
 			InstrKind::Set(var, val) => {
 				let var = var.get();
-				eval.vars.insert(var.to_owned(), val.get(&eval.vars)?);
+				eval.vars.set_var(var.to_owned(), val.get(&eval.vars)?);
 			}
 			InstrKind::Finish() => out.finish = true,
 			InstrKind::Fail(reason) => {
@@ -208,7 +208,7 @@ pub fn eval_instr(
 }
 
 /// Utility function to convert a vec of values to a vec of strings
-fn get_value_vec(vec: &[Value], vars: &HashMap<String, String>) -> anyhow::Result<Vec<String>> {
+fn get_value_vec(vec: &[Value], vars: &impl VariableStore) -> anyhow::Result<Vec<String>> {
 	let out = vec.iter().map(|x| x.get(vars));
 	let out = out.collect::<anyhow::Result<_>>()?;
 	Ok(out)

@@ -18,9 +18,45 @@ pub enum Value {
 	Var(String),
 }
 
+/// An trait that can be used to get and set variables used in script evaluation
+pub trait VariableStore {
+	/// Set the value of a variable in the store
+	fn get_var(&self, var: &str) -> Option<&str>;
+	/// Get the value of a variable in the store
+	fn set_var(&mut self, var: String, val: String);
+	/// Check if the store contains a value
+	fn var_exists(&self, var: &str) -> bool {
+		self.get_var(var).is_some()
+	}
+}
+
+/// HashMap implementation of a VariableStore
+#[derive(Debug, Default, Clone)]
+pub struct HashMapVariableStore(HashMap<String, String>);
+
+impl HashMapVariableStore {
+	pub fn new() -> Self {
+		Self(HashMap::new())
+	}
+}
+
+impl VariableStore for HashMapVariableStore {
+	fn get_var(&self, var: &str) -> Option<&str> {
+		self.0.get(var).map(String::as_str)
+	}
+
+	fn set_var(&mut self, var: String, val: String) {
+		self.0.insert(var, val);
+	}
+
+	fn var_exists(&self, var: &str) -> bool {
+		self.0.contains_key(var)
+	}
+}
+
 impl Value {
 	/// Replace substitution tokens in a string with variable values
-	pub fn substitute_tokens(string: &str, vars: &HashMap<String, String>) -> String {
+	pub fn substitute_tokens(string: &str, vars: &impl VariableStore) -> String {
 		/// What the parser is looking for
 		enum State {
 			Escaped,
@@ -55,7 +91,7 @@ impl Value {
 				}
 				State::Name => {
 					if c == '}' {
-						if let Some(var) = vars.get(&name) {
+						if let Some(var) = vars.get_var(&name) {
 							out.push_str(var);
 						}
 						name.clear();
@@ -73,13 +109,13 @@ impl Value {
 
 	/// Obtain the current String value of this Value.
 	/// Will fail if it is none or the variable is uninitialized.
-	pub fn get(&self, vars: &HashMap<String, String>) -> anyhow::Result<String> {
+	pub fn get(&self, vars: &impl VariableStore) -> anyhow::Result<String> {
 		match self {
 			Self::None => bail!("Empty value"),
 			Self::Constant(val) => Ok(Self::substitute_tokens(val, vars)),
 			Self::Var(name) => vars
-				.get(name)
-				.cloned()
+				.get_var(name)
+				.map(str::to_string)
 				.ok_or(anyhow!("Variable {name} is not defined")),
 		}
 	}
@@ -90,7 +126,7 @@ impl Value {
 	}
 
 	/// Gets the current string value and converts to an option.
-	pub fn get_as_option(&self, vars: &HashMap<String, String>) -> anyhow::Result<Option<String>> {
+	pub fn get_as_option(&self, vars: &impl VariableStore) -> anyhow::Result<Option<String>> {
 		match self {
 			Self::None => Ok(None),
 			_ => Ok(Some(self.get(vars)?)),
@@ -140,9 +176,9 @@ mod tests {
 	#[test]
 	fn test_value_substitution() {
 		let vars = {
-			let mut vars = HashMap::new();
-			vars.insert(String::from("bar"), String::from("foo"));
-			vars.insert(String::from("hello"), String::from("who"));
+			let mut vars = HashMapVariableStore::new();
+			vars.set_var(String::from("bar"), String::from("foo"));
+			vars.set_var(String::from("hello"), String::from("who"));
 			vars
 		};
 
