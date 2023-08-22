@@ -19,6 +19,7 @@ pub struct LockfileAddon {
 	files: Vec<String>,
 	kind: String,
 	version: Option<String>,
+	#[serde(default)]
 	hashes: PackageAddonOptionalHashes,
 }
 
