@@ -1,5 +1,6 @@
 use std::fmt::Display;
 use std::fs::File;
+use std::io::BufReader;
 
 use anyhow::{anyhow, Context};
 use color_print::cformat;
@@ -129,8 +130,9 @@ pub async fn get_meta(
 	let path = paths.internal.join(format!("fq_{mode}_meta.json"));
 
 	let meta = if manager.allow_offline && path.exists() {
-		let mut file =
+		let file =
 			File::open(path).with_context(|| format!("Failed to open {mode} meta file"))?;
+		let mut file = BufReader::new(file);
 		serde_json::from_reader(&mut file)
 			.with_context(|| format!("Failed to parse {mode} meta from file"))?
 	} else {

@@ -27,6 +27,7 @@ use serde_json::json;
 
 use std::collections::HashMap;
 use std::fs::File;
+use std::io::BufReader;
 use std::path::{Path, PathBuf};
 
 /// Default program configuration
@@ -84,7 +85,8 @@ impl Config {
 	/// Open the config from a file
 	fn open(path: &Path) -> anyhow::Result<ConfigDeser> {
 		if path.exists() {
-			let mut file = File::open(path).context("Failed to open config file")?;
+			let file = File::open(path).context("Failed to open config file")?;
+			let mut file = BufReader::new(file);
 			Ok(serde_json::from_reader(&mut file).context("Failed to parse config")?)
 		} else {
 			let doc = default_config();

@@ -8,6 +8,8 @@ use zip::ZipArchive;
 use super::files::paths::Paths;
 
 pub mod game_jar {
+	use std::io::BufReader;
+
 	use mcvm_shared::versions::VersionPattern;
 
 	use super::*;
@@ -24,8 +26,9 @@ pub mod game_jar {
 	pub fn extract_version_json(mc_version: &str, paths: &Paths) -> anyhow::Result<VersionJson> {
 		let path = get_existing_path(mc_version, paths)
 			.context("Failed to get a game jar to extract the version.json file from")?;
-		let mut zip = ZipArchive::new(File::open(path).context("Failed to open game jar file")?)
-			.context("Failed to create zip archive")?;
+		let file = File::open(path).context("Failed to open game jar file")?;
+		let file = BufReader::new(file);
+		let mut zip = ZipArchive::new(file).context("Failed to create zip archive")?;
 		let file = zip
 			.by_name("version.json")
 			.context("Failed to find file in game jar")?;

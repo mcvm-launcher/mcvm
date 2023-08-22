@@ -96,7 +96,10 @@ impl Index {
 			let paths = get_instance_file_paths(path, instance_dir)
 				.context("Failed to get recursive file paths")?;
 			for path in paths {
-				readers.push((path.clone(), File::open(instance_dir.join(path))?));
+				let file = File::open(instance_dir.join(&path))
+					.with_context(|| format!("Failed to open snapshotted file with path {path}"))?;
+				let file = BufReader::new(file);
+				readers.push((path.clone(), file));
 			}
 		}
 		write_snapshot_files(&snapshot_path, config, readers)?;

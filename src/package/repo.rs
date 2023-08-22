@@ -9,7 +9,7 @@ use anyhow::Context;
 use reqwest::Client;
 
 use std::fs::File;
-use std::io::Cursor;
+use std::io::{Cursor, BufReader};
 use std::path::PathBuf;
 
 /// Location for a PkgRepo
@@ -77,7 +77,8 @@ impl PkgRepo {
 		if self.index.is_empty() {
 			let path = self.get_path(paths);
 			if path.exists() {
-				let mut file = File::open(&path).context("Failed to open cached index")?;
+				let file = File::open(&path).context("Failed to open cached index")?;
+				let mut file = BufReader::new(file);
 				match self.set_index(&mut file) {
 					Ok(..) => {}
 					Err(..) => {
