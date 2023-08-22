@@ -24,7 +24,7 @@ A description will not be provided for every option as they mirror the options i
 
 ## Client
 
-```json
+```
 {
 	"data_version": integer,
 	"video": {
@@ -333,7 +333,7 @@ A description will not be provided for every option as they mirror the options i
 
 ## Server
 
-```json
+```
 {
 	"rcon": {
 		"enable": bool,
@@ -354,8 +354,8 @@ A description will not be provided for every option as they mirror the options i
 	},
 	"datapacks": {
 		"function_permission_level": integer,
-		"initial_enabled": [String],
-		"initial_disabled": [String]
+		"initial_enabled": [string],
+		"initial_disabled": [string]
 	},
 	"world": {
 		"name": string,
@@ -368,9 +368,9 @@ A description will not be provided for every option as they mirror the options i
 		"allow_nether": bool
 	},
 	"resource_pack": {
-		"uri"?: String,
-		"prompt"?: String,
-		"sha1"?: String,
+		"uri"?: string,
+		"prompt"?: string,
+		"sha1"?: string,
 		"required": bool
 	},
 	"custom": {

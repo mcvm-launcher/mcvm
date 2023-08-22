@@ -6,12 +6,12 @@ An MCVM package is simply a file that is evaluated to install files and dependen
 
 A package repository is any server that provides an `index.json` of packages for the user to source. All that is required to run a repository yourself is to make this `index.json` under `https://example.com/api/mcvm/index.json`. An index follows this format:
 
-```json
+```
 {
 	"packages": {
 		"package-id": {
 			"version": Integer,
-			"url": String,
+			"url": string,
 			"content_type": "script" | "declarative"
 		}
 	}
@@ -25,7 +25,7 @@ A package repository is any server that provides an `index.json` of packages for
 
 # Declarative format
 
-```json
+```
 {
 	"meta": Metadata,
 	"properties": Properties,
@@ -49,23 +49,23 @@ A package repository is any server that provides an `index.json` of packages for
 
 Metadata for a package is extra information about a package such as its display name and authors. All fields are optional.
 
-```json
+```
 {
-	"name": String,
-	"description": String,
-	"long_description": String,
-	"version": String,
-	"authors": [String],
-	"package_maintainers": [String],
-	"website": String,
-	"support_link": String,
-	"documentation": String,
-	"source": String,
-	"issues": String,
-	"community": String,
-	"icon": String,
-	"banner": String,
-	"license": String
+	"name": string,
+	"description": string,
+	"long_description": string,
+	"version": string,
+	"authors": [string],
+	"package_maintainers": [string],
+	"website": string,
+	"support_link": string,
+	"documentation": string,
+	"source": string,
+	"issues": string,
+	"community": string,
+	"icon": string,
+	"banner": string,
+	"license": string
 }
 ```
 
@@ -83,18 +83,18 @@ Metadata for a package is extra information about a package such as its display 
 - `community`: Discord / chat / forum link.
 - `icon`: Link to a small square icon image.
 - `banner`: Link to a large background / banner image.
-- `license`: The project license.
+- `license`: The project license. Should be the short / abbreviated version. If a longer license is needed, provide a link to the license file in this field.
 
 ## Properties
 
 Properties for the package that do have a meaning to mcvm and other package hosts / installers. All fields are optional.
 
-```json
+```
 {
-	"features": [String],
-	"default_features": [String],
-	"modrinth_id": String,
-	"curseforge_id": String,
+	"features": [string],
+	"default_features": [string],
+	"modrinth_id": string,
+	"curseforge_id": string,
 	"supported_modloaders": ["vanilla" | "fabric" | "forge" | "quilt" | "fabriclike"],
 	"supported_plugin_loaders": ["vanilla" | "bukkit"],
 	"supported_sides": ["client" | "server"]
@@ -113,15 +113,15 @@ Properties for the package that do have a meaning to mcvm and other package host
 
 Relations are dependencies / conflicts / etc. with other packages. All fields are optional.
 
-```json
+```
 {
-	"dependencies": [String],
-	"explicit_dependencies": [String],
-	"conflicts": [String],
-	"extensions": [String],
-	"bundled": [String],
-	"compats": [[String, String]],
-	"recommendations": [String]
+	"dependencies": [string],
+	"explicit_dependencies": [string],
+	"conflicts": [string],
+	"extensions": [string],
+	"bundled": [string],
+	"compats": [[string, string]],
+	"recommendations": [string]
 }
 ```
 
@@ -148,14 +148,14 @@ Version patterns are strings that can be used to match against one or more versi
 
 Condition sets are used in multiple parts of declarative packages to check properties of the installation environment. All fields are optional, and will not contribute to the condition if left empty.
 
-```json
+```
 {
 	"minecraft_versions": [VersionPattern],
 	"side": "client" | "server",
-	"modloaders": [String],
-	"plugin_loaders": [String],
+	"modloaders": [string],
+	"plugin_loaders": [string],
 	"stability": "stable" | "latest",
-	"features": [String],
+	"features": [string],
 	"os": "windows" | "mac" | "linux",
 	"language": Language
 }
@@ -174,7 +174,7 @@ Condition sets are used in multiple parts of declarative packages to check prope
 
 Addons are the actual files that are installed to a user's game. They are specified in a map.
 
-```json
+```
 {
 	"addon-id": {
 		"kind": "mod" | "resource_pack" | "shader" | "plugin",
@@ -195,18 +195,18 @@ Addons are the actual files that are installed to a user's game. They are specif
 
 Addon versions are different files and versions of an addon
 
-```json
+```
 {
 	ConditionSet...,
-	"url": String,
-	"path": String,
-	"version": String,
+	"url": string,
+	"path": string,
+	"version": string,
 	"relations": Relations,
-	"filename": String,
-	"notices": [String],
+	"filename": string,
+	"notices": [string],
 	"hashes": {
-		"sha256": String,
-		"sha512": String
+		"sha256": string,
+		"sha512": string
 	}
 }
 ```
@@ -226,7 +226,7 @@ Either `url` or `path` must be set, not both or neither.
 
 Conditional rules let you change the package based on ConditionSets. Each rule will apply the properties only if all of the conditions are satisfied.
 
-```json
+```
 {
 	"conditions": [ConditionSet],
 	"properties": {

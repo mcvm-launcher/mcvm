@@ -6,7 +6,7 @@ MCVM can be configured by editing the `mcvm.json` file in your config directory.
 
 When you first run a command that reads from the config, a default configuration file will be created. The general structure of the config file looks like this:
 
-```json
+```
 {
 	"users": {
 		"user": { .. }
@@ -30,8 +30,8 @@ Users are defined in the `users` object in the base of the config. User structur
 ```json
 "id": {
 	"type": "microsoft" | "demo" | "unverified",
-	"name": String,
-	"uuid": String
+	"name": string,
+	"uuid": string
 }
 ```
 
@@ -49,11 +49,11 @@ There is a field called `default_user` where you should specify which user you a
 
 Profiles are listed in the same id-value format as users under the `profiles` object. They look like this:
 
-```json
+```
 "id": {
-	"version": String,
-	"modloader": String,
-	"plugin_loader": String,
+	"version": string,
+	"modloader": string,
+	"plugin_loader": string,
 	"instances": { .. },
 	"packages": [ .. ],
 	"package_stability": "stable" | "latest"
@@ -78,42 +78,42 @@ Instances are defined in the id-value format underneath the `instances` object o
 
 or
 
-```json
+```
 "id": {
 	"type": "client" | "server",
 	"launch": {
 		"args": {
-			"jvm": Array | String,
-			"game": Array | String
+			"jvm": Array | string,
+			"game": Array | string
 		},
-		"memory": String | {
-			"init": String,
-			"max": String
+		"memory": string | {
+			"init": string,
+			"max": string
 		},
-		"java": "adoptium" | "zulu" | String,
+		"java": "adoptium" | "zulu" | string,
 		"preset": "akairs" | "krusic" | "obydux",
 		"quick_play": {
 			"type": "world" | "server" | "realm",
-			"world": String,
-			"server": String,
-			"port": String,
-			"realm": String
+			"world": string,
+			"server": string,
+			"port": string,
+			"realm": string
 		}
 	},
 	"options": ClientOptions | ServerOptions,
 	"window": {
 		"resolution": {
-			"width": Integer,
-			"height": Integer
+			"width": integer,
+			"height": integer
 		}
 	},
-	"datapack_folder": String,
+	"datapack_folder": string,
 	"snapshots": {
-		"paths": [String],
-		"max_count": Integer,
+		"paths": [string],
+		"max_count": integer,
 		"storage_type": "folder" | "archive
 	},
-	"preset": String
+	"preset": string
 }
 ```
 
@@ -139,21 +139,21 @@ The first form just has the type of the instance.
 
 Packages are specified globally in the `packages` list or for a specific profile in its `packages` list. It has two valid forms:
 
-```json
+```
 "id"
 ```
 
 or
 
-```json
+```
 {
-	"id": String,
-	"type": String,
-	"version": Integer,
-	"path": String,
+	"id": string,
+	"type": string,
+	"version": integer,
+	"path": string,
 	"content_type": "script" | "declarative",
 	"features": [],
-	"use_default_features": Bool,
+	"use_default_features": bool,
 	"permissions": "restricted" | "standard" | "elevated",
 	"stability": "stable" | "latest"
 }
@@ -175,7 +175,7 @@ In most cases the first form is all you need. If you want more control over how 
 
 In this section you can set preferences for how the whole program will work. The format looks like this, and all fields are optional:
 
-```json
+```
 {
 	"repositories": {
 		"preferred": [],
@@ -187,11 +187,11 @@ In this section you can set preferences for how the whole program will work. The
 
 - `repositories`: Add custom package repositories other than the default ones. Repositories in `preferred` are placed before the default ones and repositories in `backup` are placed after. A repository is specified like this:
 
-```json
+```
 {
-	"id": String,
-	"url": String,
-	"path": String
+	"id": string,
+	"url": string,
+	"path": string
 }
 ```
 
