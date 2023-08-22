@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 use std::fs::{self, File};
+use std::io::BufReader;
 use std::path::{Path, PathBuf};
 
 use anyhow::{anyhow, Context};
@@ -138,7 +139,8 @@ impl Lockfile {
 	pub fn open(paths: &Paths) -> anyhow::Result<Self> {
 		let path = Self::get_path(paths);
 		let mut contents = if path.exists() {
-			let mut file = File::open(&path).context("Failed to open lockfile")?;
+			let file = File::open(&path).context("Failed to open lockfile")?;
+			let mut file = BufReader::new(file);
 			serde_json::from_reader(&mut file).context("Failed to parse JSON")?
 		} else {
 			LockfileContents::default()
