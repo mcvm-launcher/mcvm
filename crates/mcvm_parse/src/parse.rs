@@ -67,6 +67,11 @@ impl Parsed {
 		self.routines.insert(name.to_owned(), self.id_count);
 		self.id_count
 	}
+
+	/// Checks if a routine exists
+	pub fn routine_exists(&self, name: &str) -> bool {
+		self.routines.contains_key(name)
+	}
 }
 
 impl Default for Parsed {
@@ -277,6 +282,9 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 					match tok {
 						Token::Curly(side) => match side {
 							Side::Left => {
+								if prs.parsed.routine_exists(name) {
+									bail!("Redefinition of routine '{name}' {pos}");
+								}
 								prs.block = prs.parsed.new_routine(name);
 								prs.mode = ParseMode::Root;
 							}
@@ -601,6 +609,13 @@ mod tests {
 				)
 			}
 		}
+	}
+
+	#[test]
+	#[should_panic]
+	fn test_no_duplicate_routines() {
+		let text = r#"@install {} @install {}"#;
+		lex_and_parse(text).unwrap();
 	}
 
 	#[test]
