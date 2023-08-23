@@ -1,12 +1,10 @@
-use std::collections::HashMap;
-
 use anyhow::{anyhow, bail};
 use mcvm_parse::{
 	instruction::{InstrKind, Instruction},
-	parse::{Block, BlockId, Parsed},
+	parse::{Block, Parsed},
 	FailReason, Value, VariableStore,
 };
-use mcvm_shared::pkg::{PkgIdentifier, PackageAddonOptionalHashes};
+use mcvm_shared::pkg::{PackageAddonOptionalHashes, PkgIdentifier};
 
 use super::{
 	conditions::eval_condition, create_valid_addon_request, EvalData, EvalInput, EvalLevel,
@@ -50,7 +48,7 @@ pub fn eval_script_package<'a>(
 	let mut eval = EvalData::new(input, pkg_id, &routine);
 
 	for instr in &block.contents {
-		let result = eval_instr(instr, &mut eval, &parsed.blocks)?;
+		let result = eval_instr(instr, &mut eval, parsed)?;
 		if result.finish {
 			break;
 		}
@@ -60,15 +58,11 @@ pub fn eval_script_package<'a>(
 }
 
 /// Evaluate a block of instructions
-fn eval_block(
-	block: &Block,
-	eval: &mut EvalData,
-	blocks: &HashMap<BlockId, Block>,
-) -> anyhow::Result<EvalResult> {
+fn eval_block(block: &Block, eval: &mut EvalData, parsed: &Parsed) -> anyhow::Result<EvalResult> {
 	let mut out = EvalResult::new();
 
 	for instr in &block.contents {
-		let result = eval_instr(instr, eval, blocks)?;
+		let result = eval_instr(instr, eval, parsed)?;
 		if result.finish {
 			out.finish = true;
 			break;
@@ -82,15 +76,25 @@ fn eval_block(
 pub fn eval_instr(
 	instr: &Instruction,
 	eval: &mut EvalData,
-	blocks: &HashMap<BlockId, Block>,
+	parsed: &Parsed,
 ) -> anyhow::Result<EvalResult> {
 	let mut out = EvalResult::new();
 	match eval.level {
 		EvalLevel::Install | EvalLevel::Resolve => match &instr.kind {
 			InstrKind::If(condition, block) => {
 				if eval_condition(&condition.kind, eval)? {
-					out = eval_block(blocks.get(block).expect("If block missing"), eval, blocks)?;
+					let block = parsed.blocks.get(block).expect("If block missing");
+					out = eval_block(block, eval, parsed)?;
 				}
+			}
+			InstrKind::Call(routine) => {
+				let routine = routine.get();
+				let routine = parsed
+					.routines
+					.get(routine)
+					.ok_or(anyhow!("Routine '{routine}' does not exist"))?;
+				let block = parsed.blocks.get(routine).expect("Block does not exist");
+				out = eval_block(block, eval, parsed)?;
 			}
 			InstrKind::Set(var, val) => {
 				let var = var.get();

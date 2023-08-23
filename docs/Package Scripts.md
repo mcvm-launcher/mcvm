@@ -53,6 +53,7 @@ Properties like `features` and `modrinth_id` can only be used in the `@propertie
 - `set {variable} {value}`: Sets the value of a variable.
 - `finish`: Will silently end the routine.
 - `fail [unsupported_version | unsupported_modloader | unsupported_plugin_loader | unsupported_features | unsupported_operating_system]`: End execution with an error.
+- `call {routine}`: Runs the contents of another routine. The called routine cannot be reserved by MCVM. Possibly recursive structures are also not allowed. MCVM will reject them.
 - `addon {id} [filename] (..)`: Add an addon to the instance. Keys and values are put inside the parentheses.
 - `require {package1} {package2} ...`: Create a dependency on one or more packages.
 - `refuse {package}`: Specifies that this package is incompatible with another.

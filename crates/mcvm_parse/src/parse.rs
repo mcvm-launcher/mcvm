@@ -1,5 +1,9 @@
+use anyhow::anyhow;
 use anyhow::{bail, Context};
 use mcvm_shared::pkg::PackageAddonHashes;
+
+use crate::routine::can_call_routines;
+use crate::routine::RESERVED_ROUTINES;
 
 use super::conditions::Condition;
 use super::conditions::ConditionKind;
@@ -8,7 +12,7 @@ use super::lex::{lex, reduce_tokens, Side, Token, TokenAndPos};
 use super::Value;
 use mcvm_shared::addon::AddonKind;
 
-use std::collections::HashMap;
+use std::collections::{HashMap, VecDeque};
 
 static DEFAULT_ROUTINE: &str = "__default__";
 
@@ -528,7 +532,75 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 		}
 	}
 
+	// Check for recursion
+	check_recursion(&prs.parsed)?;
+
 	Ok(prs.parsed)
+}
+
+/// Checks a Parsed for recursion
+fn check_recursion(parsed: &Parsed) -> anyhow::Result<()> {
+	/// Recursive function to check a routine for recursion
+	fn check_routine(
+		parsed: &Parsed,
+		routine: &str,
+		stack: &mut VecDeque<String>,
+	) -> anyhow::Result<()> {
+		let routine_id = parsed
+			.routines
+			.get(routine)
+			.ok_or(anyhow!("Routine '{routine}' does not exist"))?;
+		let block = parsed.blocks.get(routine_id).expect("Block does not exist");
+		check_block(parsed, routine, block, stack)?;
+
+		Ok(())
+	}
+
+	// Check a block. Separated out due to if blocks and such
+	fn check_block(
+		parsed: &Parsed,
+		parent_routine: &str,
+		block: &Block,
+		stack: &mut VecDeque<String>,
+	) -> anyhow::Result<()> {
+		for instr in &block.contents {
+			match &instr.kind {
+				InstrKind::Call(target) => {
+					let target = target.get();
+					if stack.contains(target) {
+						bail!("Recursion detected calling routine '{target}'");
+					}
+
+					stack.push_back(parent_routine.to_string());
+
+					check_routine(parsed, target, stack)
+						.with_context(|| format!("From routine '{parent_routine}'"))?;
+
+					let popped = stack.pop_back();
+					assert_eq!(popped, Some(parent_routine.to_string()));
+				}
+				InstrKind::If(_, if_block_id) => {
+					let if_block = parsed
+						.blocks
+						.get(if_block_id)
+						.expect("If block does not exist");
+					check_block(parsed, parent_routine, if_block, stack)?;
+				}
+				_ => {}
+			}
+		}
+
+		Ok(())
+	}
+
+	for reserved_routine in RESERVED_ROUTINES {
+		if can_call_routines(reserved_routine) && parsed.routine_exists(reserved_routine) {
+			let mut stack = VecDeque::new();
+			check_routine(parsed, reserved_routine, &mut stack)?;
+		}
+	}
+
+	Ok(())
 }
 
 pub fn lex_and_parse(text: &str) -> anyhow::Result<Parsed> {
@@ -615,6 +687,32 @@ mod tests {
 	#[should_panic]
 	fn test_no_duplicate_routines() {
 		let text = r#"@install {} @install {}"#;
+		lex_and_parse(text).unwrap();
+	}
+
+	#[test]
+	#[should_panic]
+	fn test_recursion_checking() {
+		let text = r#"
+			@a {
+				call c;
+			}
+			@b {
+				if defined foo {
+					call a;
+				}
+			}
+			@c {
+				call b;
+			}
+			@d {}
+
+			@install {
+				call d;
+				call c;
+			}
+		"#;
+
 		lex_and_parse(text).unwrap();
 	}
 

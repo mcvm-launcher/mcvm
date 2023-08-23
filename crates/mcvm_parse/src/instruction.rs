@@ -60,6 +60,7 @@ pub enum InstrKind {
 	Fail(Option<FailReason>),
 	Notice(Value),
 	Cmd(Vec<Value>),
+	Call(Later<String>),
 }
 
 impl Display for InstrKind {
@@ -103,6 +104,7 @@ impl Display for InstrKind {
 				Self::Fail(..) => "fail",
 				Self::Notice(..) => "notice",
 				Self::Cmd(..) => "cmd",
+				Self::Call(..) => "call",
 			}
 		)
 	}
@@ -153,6 +155,7 @@ impl Instruction {
 			"compat" => Ok(InstrKind::Compat(Value::None, Value::None)),
 			"extend" => Ok(InstrKind::Extend(Value::None)),
 			"notice" => Ok(InstrKind::Notice(Value::None)),
+			"call" => Ok(InstrKind::Call(Later::Empty)),
 			string => bail!("Unknown instruction '{string}' {}", pos),
 		}?;
 		Ok(Instruction::new(kind))
@@ -176,7 +179,8 @@ impl Instruction {
 			| InstrKind::License(val)
 			| InstrKind::ModrinthID(val)
 			| InstrKind::CurseForgeID(val)
-			| InstrKind::Website(val) => val.is_full(),
+			| InstrKind::Website(val)
+			| InstrKind::Call(val) => val.is_full(),
 			InstrKind::Features(val)
 			| InstrKind::Authors(val)
 			| InstrKind::PackageMaintainers(val)
@@ -313,6 +317,17 @@ impl Instruction {
 					}
 					_ => unexpected_token!(tok, pos),
 				},
+				InstrKind::Call(routine) => {
+					match tok {
+						Token::Ident(name) => {
+							if crate::routine::is_reserved(name) {
+								bail!("Cannot use reserved routine name '{name}' in call instruction {}", pos.clone());
+							}
+							routine.fill(name.clone())
+						}
+						_ => unexpected_token!(tok, pos),
+					}
+				}
 				_ => {}
 			}
 
