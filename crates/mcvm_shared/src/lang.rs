@@ -274,16 +274,139 @@ impl Language {
 
 /// Extract a `Language` value from a locale. Not all locales and languages are supported
 pub fn extract_locale_language(locale: &str) -> Option<Language> {
-	let stripped = strip_locale(locale);
-	match stripped {
-		"en-US" | "C" => Some(Language::AmericanEnglish),
-		_ => None,
+	let locale = canonicalize_locale(locale);
+	match locale.as_str() {
+		"de_AT" => Some(Language::AustrianGerman),
+		"de_CH" => Some(Language::SwissGerman),
+		"en_AU" => Some(Language::AustralianEnglish),
+		"en_CA" => Some(Language::CanadianEnglish),
+		"en_GB" => Some(Language::BritishEnglish),
+		"en_NZ" => Some(Language::NewZealandEnglish),
+		"en_US" | "C" | "POSIX" => Some(Language::AmericanEnglish),
+		"es_AR" => Some(Language::ArgentinianSpanish),
+		"es_CL" => Some(Language::ChileanSpanish),
+		"es_EC" => Some(Language::EcuadorianSpanish),
+		"es_ES" => Some(Language::EuropeanSpanish),
+		"es_MX" => Some(Language::MexicanSpanish),
+		"es_UY" => Some(Language::UruguayanSpanish),
+		"es_VE" => Some(Language::VenezuelanSpanish),
+		"fr_CA" => Some(Language::CanadianFrench),
+		"fr_FR" => Some(Language::EuropeanFrench),
+		"nl_BE" => Some(Language::DutchFlemish),
+		"nl_NL" => Some(Language::Dutch),
+		"pt_BR" => Some(Language::BrazilianPortuguese),
+		"pt_PT" => Some(Language::EuropeanPortuguese),
+		"zh_CN" => Some(Language::ChineseSimplified),
+		"zh_HK" => Some(Language::ChineseTraditionalHongKong),
+		"zh_TW" => Some(Language::ChineseTraditionalTaiwan),
+		// Use only the language if the region is unknown
+		other => {
+			let first_part = extract_locale_first_part(other);
+			match first_part {
+				"af" => Some(Language::Afrikaans),
+				"ar" => Some(Language::Arabic),
+				"az" => Some(Language::Azerbaijani),
+				"be" => Some(Language::Belarusian),
+				"bg" => Some(Language::Bulgarian),
+				"bs" => Some(Language::Bosnian),
+				"ca" => Some(Language::Catalan),
+				"cs" => Some(Language::Czech),
+				"da" => Some(Language::Danish),
+				"de" => Some(Language::German),
+				"el" => Some(Language::Greek),
+				"en" => Some(Language::AmericanEnglish),
+				"es" => Some(Language::EuropeanSpanish),
+				"et" => Some(Language::Estonian),
+				"fi" => Some(Language::Finnish),
+				"fr" => Some(Language::EuropeanFrench),
+				"he" => Some(Language::Hebrew),
+				"hi" => Some(Language::Hindi),
+				"hr" => Some(Language::Croatian),
+				"hu" => Some(Language::Hungarian),
+				"hy" => Some(Language::Armenian),
+				"id" => Some(Language::Indonesian),
+				"is" => Some(Language::Icelandic),
+				"it" => Some(Language::Italian),
+				"ja" => Some(Language::Japanese),
+				"ka" => Some(Language::Georgian),
+				"kk" => Some(Language::Kazakh),
+				"kn" => Some(Language::Kannada),
+				"ko" => Some(Language::Korean),
+				"lt" => Some(Language::Lithuanian),
+				"lv" => Some(Language::Latvian),
+				"mk" => Some(Language::Macedonian),
+				"ms" => Some(Language::Malay),
+				"mt" => Some(Language::Maltese),
+				"nb" => Some(Language::NorwegianBokmal),
+				"nl" => Some(Language::Dutch),
+				"nn" => Some(Language::NorwegianNynorsk),
+				"pl" => Some(Language::Polish),
+				"pt" => Some(Language::EuropeanPortuguese),
+				"ro" => Some(Language::Romanian),
+				"ru" => Some(Language::Russian),
+				"sk" => Some(Language::Slovak),
+				"sl" => Some(Language::Slovenian),
+				"sq" => Some(Language::Albanian),
+				"sr" => Some(Language::Serbian),
+				"sv" => Some(Language::Swedish),
+				"ta" => Some(Language::Tamil),
+				"th" => Some(Language::Thai),
+				"tr" => Some(Language::Turkish),
+				"uk" => Some(Language::Ukrainian),
+				"vi" => Some(Language::Vietnamese),
+				"zh" => Some(Language::ChineseSimplified),
+				_ => None,
+			}
+		}
 	}
+}
+
+/// Extract the first part, the language, from the language tag.
+/// Should be canonicalized first to use an underscore
+pub fn extract_locale_first_part(locale: &str) -> &str {
+	if let Some(underscore_location) = locale.find('_') {
+		locale
+			.split_at(underscore_location)
+			.0
+	} else {
+		locale
+	}
+}
+
+/// Canonicalize a language tag
+pub fn canonicalize_locale(locale: &str) -> String {
+	let mut locale = strip_locale(locale).to_string();
+	locale = locale.replace('-', "_");
+	locale
 }
 
 /// Strip extensions and other stuff from an IETF language tag
 pub fn strip_locale(locale: &str) -> &str {
-	locale
-		.split_at(locale.find('.').unwrap_or(locale.len() - 1))
-		.0
+	if let Some(dot_location) = locale.find('.') {
+		locale
+			.split_at(dot_location)
+			.0
+	} else {
+		locale
+	}
+}
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+
+	#[test]
+	fn test_locale_canonicalization() {
+		assert_eq!(canonicalize_locale("az"), String::from("az"));
+		assert_eq!(canonicalize_locale("az-ZA"), String::from("az_ZA"));
+		assert_eq!(canonicalize_locale("az-ZA.UTF-8"), String::from("az_ZA"));
+	}
+
+	#[test]
+	fn test_language_extraction() {
+		assert_eq!(extract_locale_language("C"), Some(Language::AmericanEnglish));
+		assert_eq!(extract_locale_language("af-ZA"), Some(Language::Afrikaans));
+		assert_eq!(extract_locale_language("de-CH"), Some(Language::SwissGerman));
+		assert_eq!(extract_locale_language("de_FOO"), Some(Language::German));
+	}
 }
