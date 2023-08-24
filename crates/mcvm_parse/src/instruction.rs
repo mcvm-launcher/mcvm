@@ -52,7 +52,7 @@ pub enum InstrKind {
 	Set(Later<String>, Value),
 	Require(Vec<Vec<super::parse::require::Package>>),
 	Refuse(Value),
-	Recommend(Value),
+	Recommend(bool, Value),
 	Bundle(Value),
 	Compat(Value, Value),
 	Extend(Value),
@@ -150,7 +150,7 @@ impl Instruction {
 			"finish" => Ok(InstrKind::Finish()),
 			"fail" => Ok(InstrKind::Fail(None)),
 			"refuse" => Ok(InstrKind::Refuse(Value::None)),
-			"recommend" => Ok(InstrKind::Recommend(Value::None)),
+			"recommend" => Ok(InstrKind::Recommend(false, Value::None)),
 			"bundle" => Ok(InstrKind::Bundle(Value::None)),
 			"compat" => Ok(InstrKind::Compat(Value::None, Value::None)),
 			"extend" => Ok(InstrKind::Extend(Value::None)),
@@ -186,7 +186,7 @@ impl Instruction {
 			| InstrKind::PackageMaintainers(val)
 			| InstrKind::DefaultFeatures(val) => !val.is_empty(),
 			InstrKind::Refuse(val)
-			| InstrKind::Recommend(val)
+			| InstrKind::Recommend(_, val)
 			| InstrKind::Bundle(val)
 			| InstrKind::Extend(val)
 			| InstrKind::Notice(val) => val.is_some(),
@@ -234,7 +234,6 @@ impl Instruction {
 					}
 				}
 				InstrKind::Refuse(val)
-				| InstrKind::Recommend(val)
 				| InstrKind::Bundle(val)
 				| InstrKind::Notice(val)
 				| InstrKind::Extend(val) => {
@@ -249,6 +248,22 @@ impl Instruction {
 				| InstrKind::Features(list)
 				| InstrKind::DefaultFeatures(list) => list.push(parse_string(tok, pos)?),
 				InstrKind::Cmd(list) => list.push(parse_arg(tok, pos)?),
+				InstrKind::Recommend(inverted, val) => match tok {
+					Token::Bang => {
+						if *inverted || val.is_some() {
+							unexpected_token!(tok, pos);
+						}
+
+						*inverted = true;
+					}
+					_ => {
+						if let Value::None = val {
+							*val = parse_arg(tok, pos)?;
+						} else {
+							unexpected_token!(tok, pos);
+						}
+					}
+				},
 				InstrKind::SupportedModloaders(list) => match tok {
 					Token::Ident(name) => {
 						if let Some(val) = ModloaderMatch::parse_from_str(name) {

@@ -149,6 +149,15 @@ pub struct RequiredPackage {
 	pub explicit: bool,
 }
 
+/// A recommended package
+#[derive(Debug, Clone, PartialOrd, Ord, PartialEq, Eq, Deserialize)]
+pub struct RecommendedPackage {
+	/// The package id that is required
+	pub value: String,
+	/// Whether to invert this recommendation
+	pub invert: bool,
+}
+
 /// Trait for a user-configured package
 pub trait ConfiguredPackage: Clone {
 	type EvalInput<'a>: Clone;
@@ -168,7 +177,7 @@ pub trait ConfiguredPackage: Clone {
 pub trait PackageEvalRelationsResult {
 	fn get_deps(&self) -> Vec<Vec<RequiredPackage>>;
 	fn get_conflicts(&self) -> Vec<String>;
-	fn get_recommendations(&self) -> Vec<String>;
+	fn get_recommendations(&self) -> Vec<RecommendedPackage>;
 	fn get_bundled(&self) -> Vec<String>;
 	fn get_compats(&self) -> Vec<(String, String)>;
 	fn get_extensions(&self) -> Vec<String>;

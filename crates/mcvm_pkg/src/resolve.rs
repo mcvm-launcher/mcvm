@@ -13,7 +13,7 @@ enum ConstraintKind {
 	Require(PkgRequest),
 	UserRequire(PkgRequest),
 	Refuse(PkgRequest),
-	Recommend(PkgRequest),
+	Recommend(PkgRequest, bool),
 	Bundle(PkgRequest),
 	Compat(PkgRequest, PkgRequest),
 	Extend(PkgRequest),
@@ -294,11 +294,11 @@ async fn resolve_eval_package<'a, E: PackageEvaluator<'a>>(
 
 	for recommendation in result.get_recommendations().iter().sorted() {
 		let req = PkgRequest::new(
-			recommendation,
+			&recommendation.value,
 			PkgRequestSource::Dependency(Box::new(package.clone())),
 		);
 		resolver.constraints.push(Constraint {
-			kind: ConstraintKind::Recommend(req),
+			kind: ConstraintKind::Recommend(req, recommendation.invert),
 		});
 	}
 
@@ -329,12 +329,18 @@ async fn resolve_task<'a, E: PackageEvaluator<'a>>(
 	Ok(())
 }
 
+/// Recommended package that has a PkgRequest instead of a String
+pub struct RecommendedPackage {
+	pub req: PkgRequest,
+	pub invert: bool,
+}
+
 /// Result from package resolution
 pub struct ResolutionResult {
 	/// The list of packages to install
 	pub packages: Vec<PkgRequest>,
 	/// Package recommendations that were not satisfied
-	pub unfulfilled_recommendations: Vec<PkgRequest>,
+	pub unfulfilled_recommendations: Vec<RecommendedPackage>,
 }
 
 /// Find all package dependencies from a set of required packages
@@ -372,9 +378,21 @@ pub async fn resolve<'a, E: PackageEvaluator<'a>>(
 
 	for constraint in resolver.constraints.iter() {
 		match &constraint.kind {
-			ConstraintKind::Recommend(package) => {
-				if !resolver.is_required(package) {
-					unfulfilled_recommendations.push(package.clone());
+			ConstraintKind::Recommend(package, invert) => {
+				if *invert {
+					if resolver.is_required(package) {
+						unfulfilled_recommendations.push(RecommendedPackage {
+							req: package.clone(),
+							invert: true,
+						});
+					}
+				} else {
+					if !resolver.is_required(package) {
+						unfulfilled_recommendations.push(RecommendedPackage {
+							req: package.clone(),
+							invert: false,
+						});
+					}
 				}
 			}
 			ConstraintKind::Extend(package) => {

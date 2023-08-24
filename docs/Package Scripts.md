@@ -58,7 +58,7 @@ Properties like `features` and `modrinth_id` can only be used in the `@propertie
 - `require {package1} {package2} ...`: Create a dependency on one or more packages.
 - `refuse {package}`: Specifies that this package is incompatible with another.
 - `bundle {package}`: Bundle another package with this one.
-- `recommend {package}`: Recommend to the user that they should use another package if it is not installed.
+- `recommend {package}`: Recommend to the user that they should use another package if it is not installed. Putting an exclamation point before the package string (e.g. `recommend !"pkg";`) will invert the recommendation.
 - `compat {package} {compat_package}`: Make a compat with other packages.
 - `extend {package}`: Extend another package.
 - `notice {message}`: Display a warning or important information as a message to the user. Notice messages may not be more than 128 characters long, and there cannot be more than five of them that are displayed per package evaluation.

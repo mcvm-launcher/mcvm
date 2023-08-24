@@ -9,11 +9,13 @@ use mcvm_shared::{
 	instance::Side,
 	lang::Language,
 	modifications::{ModloaderMatch, PluginLoaderMatch},
-	pkg::{PackageStability, PackageAddonOptionalHashes},
+	pkg::{PackageAddonOptionalHashes, PackageStability},
 	util::DeserListOrSingle,
 	versions::VersionPattern,
 };
 use serde::Deserialize;
+
+use crate::RecommendedPackage;
 
 /// Package relationships for declarative packages
 #[derive(Deserialize, Debug, Default, Clone)]
@@ -25,7 +27,7 @@ pub struct DeclarativePackageRelations {
 	pub extensions: DeserListOrSingle<String>,
 	pub bundled: DeserListOrSingle<String>,
 	pub compats: DeserListOrSingle<(String, String)>,
-	pub recommendations: DeserListOrSingle<String>,
+	pub recommendations: DeserListOrSingle<RecommendedPackage>,
 }
 
 impl DeclarativePackageRelations {

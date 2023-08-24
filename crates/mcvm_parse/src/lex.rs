@@ -20,6 +20,7 @@ pub enum Token {
 	Comma,
 	Pipe,
 	At,
+	Bang,
 	Variable(String),
 	Curly(Side),
 	Square(Side),
@@ -41,6 +42,7 @@ impl Token {
 			Token::Comma => String::from(","),
 			Token::Pipe => String::from("|"),
 			Token::At => String::from("@"),
+			Token::Bang => String::from("!"),
 			Token::Variable(name) => String::from("$") + name,
 			Token::Curly(Side::Left) => String::from("{"),
 			Token::Curly(Side::Right) => String::from("}"),
@@ -198,6 +200,10 @@ pub fn lex(text: &str) -> anyhow::Result<Vec<(Token, TextPos)>> {
 					}
 					'@' => {
 						tok = Token::At;
+						tok_finished = true;
+					}
+					'!' => {
+						tok = Token::Bang;
 						tok_finished = true;
 					}
 					'"' => tok = Token::Str(String::new()),

@@ -4,6 +4,7 @@ use mcvm_parse::{
 	parse::{Block, Parsed},
 	FailReason, Value, VariableStore,
 };
+use mcvm_pkg::RecommendedPackage;
 use mcvm_shared::pkg::{PackageAddonOptionalHashes, PkgIdentifier};
 
 use super::{
@@ -128,9 +129,13 @@ pub fn eval_instr(
 					eval.conflicts.push(package.get(&eval.vars)?);
 				}
 			}
-			InstrKind::Recommend(package) => {
+			InstrKind::Recommend(invert, package) => {
 				if let EvalLevel::Resolve = eval.level {
-					eval.recommendations.push(package.get(&eval.vars)?);
+					let recommendation = RecommendedPackage {
+						value: package.get(&eval.vars)?,
+						invert: *invert,
+					};
+					eval.recommendations.push(recommendation);
 				}
 			}
 			InstrKind::Bundle(package) => {

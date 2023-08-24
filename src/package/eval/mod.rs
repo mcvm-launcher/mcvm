@@ -8,13 +8,14 @@ use anyhow::bail;
 use anyhow::Context;
 use async_trait::async_trait;
 use color_print::cprintln;
-use mcvm_parse::HashMapVariableStore;
 use mcvm_parse::properties::PackageProperties;
 use mcvm_parse::routine::INSTALL_ROUTINE;
+use mcvm_parse::HashMapVariableStore;
 use mcvm_pkg::resolve::ResolutionResult;
 use mcvm_pkg::ConfiguredPackage;
 use mcvm_pkg::PackageContentType;
 use mcvm_pkg::PkgRequest;
+use mcvm_pkg::RecommendedPackage;
 use mcvm_pkg::RequiredPackage;
 use mcvm_pkg::{
 	PackageEvalRelationsResult as EvalRelationsResultTrait,
@@ -126,7 +127,7 @@ pub struct EvalData<'a> {
 	pub addon_reqs: Vec<AddonRequest>,
 	pub deps: Vec<Vec<RequiredPackage>>,
 	pub conflicts: Vec<String>,
-	pub recommendations: Vec<String>,
+	pub recommendations: Vec<RecommendedPackage>,
 	pub bundled: Vec<String>,
 	pub compats: Vec<(String, String)>,
 	pub extensions: Vec<String>,
@@ -337,7 +338,7 @@ impl ConfiguredPackage for PackageConfig {
 struct EvalRelationsResult {
 	pub deps: Vec<Vec<RequiredPackage>>,
 	pub conflicts: Vec<String>,
-	pub recommendations: Vec<String>,
+	pub recommendations: Vec<mcvm_pkg::RecommendedPackage>,
 	pub bundled: Vec<String>,
 	pub compats: Vec<(String, String)>,
 	pub extensions: Vec<String>,
@@ -363,7 +364,7 @@ impl EvalRelationsResultTrait for EvalRelationsResult {
 		self.extensions.clone()
 	}
 
-	fn get_recommendations(&self) -> Vec<String> {
+	fn get_recommendations(&self) -> Vec<mcvm_pkg::RecommendedPackage> {
 		self.recommendations.clone()
 	}
 }
@@ -447,20 +448,40 @@ pub async fn resolve(
 	let result = mcvm_pkg::resolve::resolve(&packages, evaluator, input, &common_input).await?;
 
 	for package in &result.unfulfilled_recommendations {
-		let source = package.source.get_source();
+		print_recommendation_warning(package);
+	}
+
+	Ok(result)
+}
+
+/// Prints an unfulfilled recommendation warning
+fn print_recommendation_warning(package: &mcvm_pkg::resolve::RecommendedPackage) {
+	let source = package.req.source.get_source();
+	if package.invert {
+		if let Some(source) = source {
+			cprintln!(
+				"<y>Warning: The package '{}' recommends <s>against</s> the use of the package '{}', which is installed.",
+				source.debug_sources(String::new()),
+				package.req
+			);
+		} else {
+			cprintln!(
+				"<y>Warning: A package recommends <s>against</s> the use of the package '{}', which is installed.",
+				package.req
+			);
+		}
+	} else {
 		if let Some(source) = source {
 			cprintln!(
 				"<y>Warning: The package '{}' recommends the use of the package '{}', which is not installed.",
 				source.debug_sources(String::new()),
-				package
+				package.req
 			);
 		} else {
 			cprintln!(
 				"<y>Warning: A package recommends the use of the package '{}', which is not installed.",
-				package
+				package.req
 			);
 		}
 	}
-
-	Ok(result)
 }

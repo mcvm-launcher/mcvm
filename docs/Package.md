@@ -111,7 +111,7 @@ Properties for the package that do have a meaning to mcvm and other package host
 
 ## Relations
 
-Relations are dependencies / conflicts / etc. with other packages. All fields are optional.
+Relations are dependencies / conflicts / etc. with other packages. All fields are optional unless stated otherwise.
 
 ```
 {
@@ -121,7 +121,10 @@ Relations are dependencies / conflicts / etc. with other packages. All fields ar
 	"extensions": [string],
 	"bundled": [string],
 	"compats": [[string, string]],
-	"recommendations": [string]
+	"recommendations": [{
+		"value" (Required): string,
+		"invert": bool
+	}]
 }
 ```
 
@@ -131,7 +134,7 @@ Relations are dependencies / conflicts / etc. with other packages. All fields ar
 - `extensions`: Packages that this package extends the functionality of. For example, if this package was an addon mod for the Create mod, then it would extend the `create` package. Will cause an error if the other package does not exist.
 - `bundled`: Packages included with this one. Useful for packages that group together multiple other packages, such as modpacks. Prefer using this over `dependencies` when you aren't including a library as it has a different semantic meaning to mcvm.
 - `compats`: A list of lists with two values, a source package and destination package. If the source package exists, the destination package will be automatically installed.
-- `recommendations`: Packages that will be recommended to the user if they are not installed.
+- `recommendations`: Packages that will be recommended to the user if they are not installed. `value` is the package to be recommended. Setting `invert` to true will instead recommend *against* the use of the package.
 
 ## Version Patterns
 
