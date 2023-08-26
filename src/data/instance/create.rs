@@ -17,8 +17,8 @@ use mcvm_shared::modifications::{Modloader, ServerType};
 
 use super::{InstKind, Instance};
 
-pub static DEFAULT_SERVER_MAIN_CLASS: &str = "net.minecraft.server.Main";
-pub static PAPER_SERVER_MAIN_CLASS: &str = "io.papermc.paperclip.Main";
+pub const DEFAULT_SERVER_MAIN_CLASS: &str = "net.minecraft.server.Main";
+pub const PAPER_SERVER_MAIN_CLASS: &str = "io.papermc.paperclip.Main";
 
 impl Instance {
 	/// Get the requirements for this instance

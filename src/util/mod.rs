@@ -11,42 +11,42 @@ use rand::Rng;
 
 cfg_match! {
 	target_os = "linux" => {
-		pub static OS_STRING: &str = "linux";
+		pub const OS_STRING: &str = "linux";
 	}
 	target_os = "windows" => {
-		pub static OS_STRING: &str = "windows";
+		pub const OS_STRING: &str = "windows";
 	}
 	target_os = "macos" => {
-		pub static OS_STRING: &str = "windows";
+		pub const OS_STRING: &str = "windows";
 	}
 	_ => {
-		pub static OS_STRING: &str = "";
+		pub const OS_STRING: &str = "";
 		compile_error!("Target operating system is unsupported")
 	}
 }
 
 cfg_match! {
 	target_arch = "x86" => {
-		pub static ARCH_STRING: &str = "x86";
+		pub const ARCH_STRING: &str = "x86";
 	}
 	target_arch = "x86_64" => {
-		pub static ARCH_STRING: &str = "x64";
+		pub const ARCH_STRING: &str = "x64";
 	}
 	target_arch = "arm" => {
-		pub static ARCH_STRING: &str = "arm";
+		pub const ARCH_STRING: &str = "arm";
 	}
 	_ => {
-		pub static ARCH_STRING: &str = "";
+		pub const ARCH_STRING: &str = "";
 		compile_error!("Target architecture is unsupported")
 	}
 }
 
 cfg_match! {
 	target_os = "linux" => {
-		pub static PREFERRED_ARCHIVE: &str = "tar.gz";
+		pub const PREFERRED_ARCHIVE: &str = "tar.gz";
 	}
 	_ => {
-		pub static PREFERRED_ARCHIVE: &str = "zip";
+		pub const PREFERRED_ARCHIVE: &str = "zip";
 	}
 }
 
@@ -57,10 +57,10 @@ pub fn preferred_archive_extension() -> String {
 
 cfg_match! {
 	target_pointer_width = "64" => {
-		pub static TARGET_BITS_STR: &str = "64";
+		pub const TARGET_BITS_STR: &str = "64";
 	}
 	_ => {
-		pub static TARGET_BITS_STR: &str = "32";
+		pub const TARGET_BITS_STR: &str = "32";
 	}
 }
 

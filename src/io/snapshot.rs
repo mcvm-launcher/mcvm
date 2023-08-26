@@ -12,7 +12,7 @@ use crate::util::utc_timestamp;
 use super::files;
 use super::files::paths::Paths;
 
-pub static INDEX_NAME: &str = "index.json";
+pub const INDEX_NAME: &str = "index.json";
 
 /// Type of a snapshot
 #[derive(Serialize, Deserialize)]

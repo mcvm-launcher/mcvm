@@ -4,10 +4,10 @@ use cfg_match::cfg_match;
 
 cfg_match! {
 	target_os = "linux" => {
-		pub static CLASSPATH_SEP: char = ':';
+		pub const CLASSPATH_SEP: char = ':';
 	}
 	target_os = "windows" => {
-		pub static CLASSPATH_SEP: char = ';';
+		pub const CLASSPATH_SEP: char = ';';
 	}
 }
 

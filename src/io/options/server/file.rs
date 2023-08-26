@@ -11,7 +11,7 @@ use mcvm_shared::versions::VersionPattern;
 
 use super::ServerOptions;
 
-static SEP: char = '=';
+const SEP: char = '=';
 
 /// Write server.properties to a file
 pub async fn write_server_properties(

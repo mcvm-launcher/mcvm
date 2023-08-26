@@ -4,9 +4,9 @@ use std::io::{Stdout, Write};
 use color_print::{cformat, cstr};
 
 /// A nice colored bullet point for terminal output
-pub static HYPHEN_POINT: &str = cstr!("<k!> - </k!>");
+pub const HYPHEN_POINT: &str = cstr!("<k!> - </k!>");
 /// String used program-wide for most indentation
-pub static INDENT_CHAR: &str = "\t";
+pub const INDENT_CHAR: &str = "\t";
 
 /// Used to print text that is replaced
 #[derive(Debug)]

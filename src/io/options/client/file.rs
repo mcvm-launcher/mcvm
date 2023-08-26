@@ -17,7 +17,7 @@ use mcvm_shared::versions::VersionPattern;
 
 use super::{ClientOptions, CloudRenderMode, FullscreenResolution, GraphicsMode};
 
-static SEP: char = ':';
+const SEP: char = ':';
 
 /// Write options.txt to a file
 pub async fn write_options_txt(

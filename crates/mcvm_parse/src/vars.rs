@@ -3,9 +3,9 @@ use std::collections::HashMap;
 use anyhow::{anyhow, bail};
 
 /// Constant var for the Minecraft version
-pub static CONSTANT_VAR_MC_VERSION: &str = "MINECRAFT_VERSION";
+pub const CONSTANT_VAR_MC_VERSION: &str = "MINECRAFT_VERSION";
 /// Constant variables that are reserved by mcvm
-pub static RESERVED_CONSTANT_VARS: [&str; 1] = [CONSTANT_VAR_MC_VERSION];
+pub const RESERVED_CONSTANT_VARS: [&str; 1] = [CONSTANT_VAR_MC_VERSION];
 
 /// Check if a variable identifier is a reserved constant variable
 pub fn is_reserved_constant_var(var: &str) -> bool {

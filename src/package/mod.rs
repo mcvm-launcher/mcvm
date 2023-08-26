@@ -22,7 +22,7 @@ use mcvm_pkg::PkgRequest;
 use mcvm_shared::pkg::{PackageStability, PkgIdentifier};
 use reqwest::Client;
 
-static PKG_EXTENSION: &str = ".pkg.txt";
+const PKG_EXTENSION: &str = ".pkg.txt";
 
 /// Type of data inside a package
 #[derive(Debug)]

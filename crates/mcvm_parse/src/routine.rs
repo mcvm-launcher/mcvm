@@ -1,10 +1,10 @@
-pub static METADATA_ROUTINE: &str = "meta";
-pub static PROPERTIES_ROUTINE: &str = "properties";
-pub static INSTALL_ROUTINE: &str = "install";
-pub static UNINSTALL_ROUTINE: &str = "uninstall";
+pub const METADATA_ROUTINE: &str = "meta";
+pub const PROPERTIES_ROUTINE: &str = "properties";
+pub const INSTALL_ROUTINE: &str = "install";
+pub const UNINSTALL_ROUTINE: &str = "uninstall";
 
 /// The list of reserved routines
-pub static RESERVED_ROUTINES: [&str; 4] = [
+pub const RESERVED_ROUTINES: [&str; 4] = [
 	METADATA_ROUTINE,
 	PROPERTIES_ROUTINE,
 	INSTALL_ROUTINE,

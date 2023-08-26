@@ -36,7 +36,7 @@ impl PackageStability {
 	}
 }
 
-pub static MAX_PACKAGE_ID_LENGTH: usize = 32;
+pub const MAX_PACKAGE_ID_LENGTH: usize = 32;
 
 /// Checks if a package identifier is valid
 pub fn is_valid_package_id(id: &str) -> bool {

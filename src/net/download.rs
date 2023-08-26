@@ -8,10 +8,10 @@ use serde::de::DeserializeOwned;
 // Sensible open file descriptor limit for asynchronous transfers
 cfg_match! {
 	target_os = "windows" => {
-		pub static FD_SENSIBLE_LIMIT: usize = 64;
+		pub const FD_SENSIBLE_LIMIT: usize = 64;
 	}
 	_ => {
-		pub static FD_SENSIBLE_LIMIT: usize = 16;
+		pub const FD_SENSIBLE_LIMIT: usize = 16;
 	}
 }
 

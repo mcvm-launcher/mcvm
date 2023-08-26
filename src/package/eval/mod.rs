@@ -46,9 +46,9 @@ use mcvm_shared::pkg::{PackageAddonOptionalHashes, PackageStability, PkgIdentifi
 use std::path::PathBuf;
 
 /// Max notice instructions per package
-static MAX_NOTICE_INSTRUCTIONS: usize = 10;
+const MAX_NOTICE_INSTRUCTIONS: usize = 10;
 /// Max characters per notice instruction
-static MAX_NOTICE_CHARACTERS: usize = 128;
+const MAX_NOTICE_CHARACTERS: usize = 128;
 
 /// What instructions the evaluator will evaluate (depends on what routine we are running)
 #[derive(Debug, Clone)]

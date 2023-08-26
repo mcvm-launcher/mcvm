@@ -14,7 +14,7 @@ use mcvm_shared::addon::AddonKind;
 
 use std::collections::{HashMap, VecDeque};
 
-static DEFAULT_ROUTINE: &str = "__default__";
+const DEFAULT_ROUTINE: &str = "__default__";
 
 /// The type we use to index blocks in the hashmap
 pub type BlockId = u16;
