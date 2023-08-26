@@ -275,6 +275,8 @@ pub mod libraries {
 		let mut num_done = 0;
 		// Used to limit the number of open file descriptors
 		let sem = Arc::new(Semaphore::new(FD_SENSIBLE_LIMIT));
+		// Clippy complains about num_done, but if we iter().enumerate() the compiler complains
+		#[allow(clippy::explicit_counter_loop)]
 		for (name, library, path) in libs_to_download {
 			printer.print(&cformat!(
 				"(<b>{}</b><k!>/</k!><b>{}</b>) Downloading library <b!>{}</>...",

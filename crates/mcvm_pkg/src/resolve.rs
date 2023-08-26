@@ -386,13 +386,11 @@ pub async fn resolve<'a, E: PackageEvaluator<'a>>(
 							invert: true,
 						});
 					}
-				} else {
-					if !resolver.is_required(package) {
-						unfulfilled_recommendations.push(RecommendedPackage {
-							req: package.clone(),
-							invert: false,
-						});
-					}
+				} else if !resolver.is_required(package) {
+					unfulfilled_recommendations.push(RecommendedPackage {
+						req: package.clone(),
+						invert: false,
+					});
 				}
 			}
 			ConstraintKind::Extend(package) => {

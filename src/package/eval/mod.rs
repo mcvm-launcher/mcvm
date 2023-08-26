@@ -470,18 +470,16 @@ fn print_recommendation_warning(package: &mcvm_pkg::resolve::RecommendedPackage)
 				package.req
 			);
 		}
-	} else {
-		if let Some(source) = source {
-			cprintln!(
+	} else if let Some(source) = source {
+		cprintln!(
 				"<y>Warning: The package '{}' recommends the use of the package '{}', which is not installed.",
 				source.debug_sources(String::new()),
 				package.req
 			);
-		} else {
-			cprintln!(
-				"<y>Warning: A package recommends the use of the package '{}', which is not installed.",
-				package.req
-			);
-		}
+	} else {
+		cprintln!(
+			"<y>Warning: A package recommends the use of the package '{}', which is not installed.",
+			package.req
+		);
 	}
 }
