@@ -2,7 +2,7 @@ use std::fmt::Display;
 
 use serde::Deserialize;
 
-use crate::pkg::{PkgIdentifier, PackageAddonOptionalHashes};
+use crate::pkg::{PackageAddonOptionalHashes, PkgIdentifier};
 
 #[derive(Debug, Clone, Copy, Deserialize)]
 #[serde(rename_all = "snake_case")]

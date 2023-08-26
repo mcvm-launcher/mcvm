@@ -2,10 +2,10 @@ use anyhow::{anyhow, Context};
 use color_print::cformat;
 use mcvm_parse::metadata::PackageMetadata;
 use mcvm_parse::properties::PackageProperties;
-use mcvm_pkg::PkgRequest;
-use mcvm_pkg::PkgRequestSource;
 use mcvm_pkg::parse_and_validate;
 use mcvm_pkg::PackageContentType;
+use mcvm_pkg::PkgRequest;
+use mcvm_pkg::PkgRequestSource;
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 

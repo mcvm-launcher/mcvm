@@ -9,7 +9,7 @@ use anyhow::Context;
 use reqwest::Client;
 
 use std::fs::File;
-use std::io::{Cursor, BufReader};
+use std::io::{BufReader, Cursor};
 use std::path::PathBuf;
 
 /// Location for a PkgRepo

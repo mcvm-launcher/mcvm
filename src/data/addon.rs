@@ -1,4 +1,4 @@
-use anyhow::{Context, bail};
+use anyhow::{bail, Context};
 use mcvm_shared::addon::{Addon, AddonKind};
 use reqwest::Client;
 
@@ -93,8 +93,8 @@ impl AddonRequest {
 		// Check hashes
 		let best_hash = get_best_hash(&self.addon.hashes);
 		if let Some(best_hash) = best_hash {
-			let matches =
-				hash_file_with_best_hash(&path, best_hash).context("Failed to checksum addon file")?;
+			let matches = hash_file_with_best_hash(&path, best_hash)
+				.context("Failed to checksum addon file")?;
 
 			if !matches {
 				bail!("Checksum for addon file does not match");

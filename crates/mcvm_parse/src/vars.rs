@@ -29,7 +29,7 @@ pub enum Value {
 pub trait VariableStore {
 	/// Set the value of a variable in the store
 	fn get_var(&self, var: &str) -> Option<&str>;
-	
+
 	/// Get the value of a variable in the store
 	fn set_var(&mut self, var: String, val: String);
 

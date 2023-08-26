@@ -365,9 +365,7 @@ pub fn extract_locale_language(locale: &str) -> Option<Language> {
 /// Should be canonicalized first to use an underscore
 pub fn extract_locale_first_part(locale: &str) -> &str {
 	if let Some(underscore_location) = locale.find('_') {
-		locale
-			.split_at(underscore_location)
-			.0
+		locale.split_at(underscore_location).0
 	} else {
 		locale
 	}
@@ -383,9 +381,7 @@ pub fn canonicalize_locale(locale: &str) -> String {
 /// Strip extensions and other stuff from an IETF language tag
 pub fn strip_locale(locale: &str) -> &str {
 	if let Some(dot_location) = locale.find('.') {
-		locale
-			.split_at(dot_location)
-			.0
+		locale.split_at(dot_location).0
 	} else {
 		locale
 	}
@@ -404,9 +400,15 @@ mod tests {
 
 	#[test]
 	fn test_language_extraction() {
-		assert_eq!(extract_locale_language("C"), Some(Language::AmericanEnglish));
+		assert_eq!(
+			extract_locale_language("C"),
+			Some(Language::AmericanEnglish)
+		);
 		assert_eq!(extract_locale_language("af-ZA"), Some(Language::Afrikaans));
-		assert_eq!(extract_locale_language("de-CH"), Some(Language::SwissGerman));
+		assert_eq!(
+			extract_locale_language("de-CH"),
+			Some(Language::SwissGerman)
+		);
 		assert_eq!(extract_locale_language("de_FOO"), Some(Language::German));
 	}
 }

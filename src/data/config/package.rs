@@ -5,10 +5,7 @@ use mcvm_shared::pkg::PackageStability;
 use serde::{Deserialize, Serialize};
 
 use crate::{
-	package::{
-		eval::EvalPermissions,
-		PkgProfileConfig,
-	},
+	package::{eval::EvalPermissions, PkgProfileConfig},
 	util::merge_options,
 };
 use mcvm_pkg::{PkgRequest, PkgRequestSource};

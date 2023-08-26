@@ -2,7 +2,7 @@ use anyhow::{anyhow, bail, Context};
 use mcvm_parse::{
 	instruction::{InstrKind, Instruction},
 	parse::{Block, Parsed},
-	vars::{Value, VariableStore, ReservedConstantVariables},
+	vars::{ReservedConstantVariables, Value, VariableStore},
 	FailReason,
 };
 use mcvm_pkg::RecommendedPackage;

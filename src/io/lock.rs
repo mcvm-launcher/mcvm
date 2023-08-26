@@ -7,7 +7,7 @@ use anyhow::{anyhow, Context};
 use serde::{Deserialize, Serialize};
 
 use mcvm_shared::addon::{Addon, AddonKind};
-use mcvm_shared::pkg::{PkgIdentifier, PackageAddonOptionalHashes};
+use mcvm_shared::pkg::{PackageAddonOptionalHashes, PkgIdentifier};
 
 use super::files::paths::Paths;
 

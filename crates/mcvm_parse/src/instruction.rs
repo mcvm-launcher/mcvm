@@ -9,8 +9,8 @@ use mcvm_shared::pkg::PackageAddonHashes;
 use super::conditions::Condition;
 use super::lex::{TextPos, Token};
 use super::parse::BlockId;
-use super::FailReason;
 use super::vars::Value;
+use super::FailReason;
 use crate::unexpected_token;
 use mcvm_shared::addon::AddonKind;
 

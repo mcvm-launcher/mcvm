@@ -2,8 +2,8 @@ use std::collections::HashMap;
 
 use super::CmdData;
 use itertools::Itertools;
-use mcvm_pkg::{PkgRequest, PkgRequestSource};
 use mcvm::util::print::{ReplPrinter, HYPHEN_POINT};
+use mcvm_pkg::{PkgRequest, PkgRequestSource};
 
 use anyhow::{bail, Context};
 use clap::Subcommand;
