@@ -22,6 +22,12 @@ Instructions are individual commands that are run inside routines for your packa
 
 Any instruction arguments that take a string can also take a variable, with the syntax `$variable_name`. You can also use string substitution to combine multiple variables, with the syntax `"Hello ${variable}!"`. This syntax can be escaped in the string using a backslash. Using a variable that is not defined directly will cause the routine to fail. Using a variable that is not defined in a substitution string will fill it with an empty string.
 
+#### Special Constants
+
+Certain special variables will be defined when you run your script. These cannot be modified by scripts. Not all implementations will define all variables. If one is marked as optional, you should check that it is defined before using it.
+
+- `$MINECRAFT_VERSION`: The Minecraft version you are installing for.
+
 ### Routine Context
 
 Most instructions can only be run in certain routines or in routines called by those specific routines.

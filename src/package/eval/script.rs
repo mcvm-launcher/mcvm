@@ -1,8 +1,9 @@
-use anyhow::{anyhow, bail};
+use anyhow::{anyhow, bail, Context};
 use mcvm_parse::{
 	instruction::{InstrKind, Instruction},
 	parse::{Block, Parsed},
-	FailReason, Value, VariableStore,
+	vars::{Value, VariableStore, ReservedConstantVariables},
+	FailReason,
 };
 use mcvm_pkg::RecommendedPackage;
 use mcvm_shared::pkg::{PackageAddonOptionalHashes, PkgIdentifier};
@@ -47,6 +48,9 @@ pub fn eval_script_package<'a>(
 		.ok_or(anyhow!("Routine {} does not exist", routine_name))?;
 
 	let mut eval = EvalData::new(input, pkg_id, &routine);
+	eval.vars.set_reserved_constants(ReservedConstantVariables {
+		mc_version: &eval.input.constants.version,
+	});
 
 	for instr in &block.contents {
 		let result = eval_instr(instr, &mut eval, parsed)?;
@@ -99,7 +103,9 @@ pub fn eval_instr(
 			}
 			InstrKind::Set(var, val) => {
 				let var = var.get();
-				eval.vars.set_var(var.to_owned(), val.get(&eval.vars)?);
+				eval.vars
+					.try_set_var(var.to_owned(), val.get(&eval.vars)?)
+					.context("Failed to set variable")?;
 			}
 			InstrKind::Finish() => out.finish = true,
 			InstrKind::Fail(reason) => {

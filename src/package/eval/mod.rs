@@ -10,7 +10,7 @@ use async_trait::async_trait;
 use color_print::cprintln;
 use mcvm_parse::properties::PackageProperties;
 use mcvm_parse::routine::INSTALL_ROUTINE;
-use mcvm_parse::HashMapVariableStore;
+use mcvm_parse::vars::HashMapVariableStore;
 use mcvm_pkg::resolve::ResolutionResult;
 use mcvm_pkg::ConfiguredPackage;
 use mcvm_pkg::PackageContentType;

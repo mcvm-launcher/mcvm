@@ -9,7 +9,7 @@ use super::conditions::Condition;
 use super::conditions::ConditionKind;
 use super::instruction::{parse_arg, InstrKind, Instruction};
 use super::lex::{lex, reduce_tokens, Side, Token, TokenAndPos};
-use super::Value;
+use super::vars::Value;
 use mcvm_shared::addon::AddonKind;
 
 use std::collections::{HashMap, VecDeque};

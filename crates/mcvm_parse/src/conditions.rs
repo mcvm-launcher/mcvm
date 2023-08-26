@@ -10,7 +10,7 @@ use mcvm_shared::modifications::{ModloaderMatch, PluginLoaderMatch};
 
 use super::instruction::parse_arg;
 use super::lex::{TextPos, Token};
-use super::Value;
+use super::vars::Value;
 
 /// Value for the OS condition
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize)]

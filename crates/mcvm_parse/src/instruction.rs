@@ -10,7 +10,7 @@ use super::conditions::Condition;
 use super::lex::{TextPos, Token};
 use super::parse::BlockId;
 use super::FailReason;
-use super::Value;
+use super::vars::Value;
 use crate::unexpected_token;
 use mcvm_shared::addon::AddonKind;
 

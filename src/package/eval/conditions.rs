@@ -1,7 +1,10 @@
 use mcvm_shared::{instance::Side, versions::VersionPattern};
 
 use super::EvalData;
-use mcvm_parse::{conditions::{ConditionKind, OSCondition}, VariableStore};
+use mcvm_parse::{
+	conditions::{ConditionKind, OSCondition},
+	vars::VariableStore,
+};
 
 pub const fn check_os_condition(condition: &OSCondition) -> bool {
 	match condition {
