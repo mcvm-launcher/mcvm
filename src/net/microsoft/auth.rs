@@ -1,5 +1,7 @@
 use anyhow::{anyhow, Context};
-use minecraft_msa_auth::{MinecraftAuthenticationResponse, MinecraftAuthorizationFlow};
+use minecraft_msa_auth::{
+	MinecraftAccessToken, MinecraftAuthenticationResponse, MinecraftAuthorizationFlow,
+};
 use oauth2::{
 	basic::{BasicClient, BasicTokenType},
 	reqwest::async_http_client,
@@ -81,6 +83,14 @@ pub async fn auth_minecraft(
 		.await?;
 
 	Ok(mc_token)
+}
+
+/// Shouldn't have to do this, but I couldn't find any other way to convert this to a string
+pub fn mc_access_token_to_string(token: &MinecraftAccessToken) -> anyhow::Result<String> {
+	let serialized = serde_json::to_string(token)?;
+	// Now we have to remove the quotes
+	let out = serialized[1..serialized.len() - 1].to_string();
+	Ok(out)
 }
 
 /// Decorates a RequestTokenError

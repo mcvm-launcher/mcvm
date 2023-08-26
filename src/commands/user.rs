@@ -7,6 +7,7 @@ use mcvm::util::print::HYPHEN_POINT;
 use clap::Subcommand;
 use color_print::{cprint, cprintln};
 use oauth2::ClientId;
+use reqwest::Client;
 
 const fn get_raw_ms_client_id() -> &'static str {
 	if let Some(id) = option_env!("MCVM_MS_CLIENT_ID") {
@@ -82,8 +83,7 @@ async fn status(data: &mut CmdData) -> anyhow::Result<()> {
 }
 
 async fn auth(_data: &mut CmdData) -> anyhow::Result<()> {
-	println!("Client ID: {}", get_raw_ms_client_id());
-	user::auth::authenticate(get_ms_client_id()).await?;
+	user::auth::authenticate(get_ms_client_id(), &Client::new()).await?;
 
 	Ok(())
 }
