@@ -12,13 +12,6 @@ const DEVICE_CODE_URL: &str = "https://login.microsoftonline.com/consumers/oauth
 const MSA_AUTHORIZE_URL: &str = "https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize";
 const MSA_TOKEN_URL: &str = "https://login.microsoftonline.com/common/oauth2/v2.0/token";
 
-const MS_CLIENT_ID: &str = "402abc71-43fb-45c1-b230-e7fc9d4485fe";
-
-/// Get the Microsoft client ID
-fn get_ms_client_id() -> ClientId {
-	ClientId::new(MS_CLIENT_ID.to_string())
-}
-
 /// Get the auth URL
 fn get_auth_url() -> anyhow::Result<AuthUrl> {
 	Ok(AuthUrl::new(MSA_AUTHORIZE_URL.to_string())?)
@@ -34,10 +27,10 @@ fn get_device_code_url() -> anyhow::Result<DeviceAuthorizationUrl> {
 	Ok(DeviceAuthorizationUrl::new(DEVICE_CODE_URL.to_string())?)
 }
 
-/// Create the OAuth client that will be used
-pub fn create_client() -> anyhow::Result<BasicClient> {
+/// Create the OAuth client that will be used. You will have to supply your own ClientID.
+pub fn create_client(client_id: ClientId) -> anyhow::Result<BasicClient> {
 	let client = BasicClient::new(
-		get_ms_client_id(),
+		client_id,
 		None,
 		get_auth_url().context("Failed to get authorization URL")?,
 		Some(get_token_url().context("Failed to get token URL")?),
@@ -77,8 +70,8 @@ pub async fn get_microsoft_token(
 	out.map_err(decorate_request_token_error)
 }
 
-/// Authenticates with Minecraft / XBox Live using a Microsoft OAuth token
-pub async fn auth_microsoft(
+/// Authenticates with Minecraft using a Microsoft OAuth token
+pub async fn auth_minecraft(
 	token: MicrosoftToken,
 	client: reqwest::Client,
 ) -> anyhow::Result<MinecraftAuthenticationResponse> {

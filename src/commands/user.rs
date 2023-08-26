@@ -6,6 +6,21 @@ use mcvm::util::print::HYPHEN_POINT;
 
 use clap::Subcommand;
 use color_print::{cprint, cprintln};
+use oauth2::ClientId;
+
+const fn get_raw_ms_client_id() -> &'static str {
+	if let Some(id) = option_env!("MCVM_MS_CLIENT_ID") {
+		id
+	} else {
+		// Please don't use my client ID :)
+		"402abc71-43fb-45c1-b230-e7fc9d4485fe"
+	}
+}
+
+/// Get the Microsoft client ID
+fn get_ms_client_id() -> ClientId {
+	ClientId::new(get_raw_ms_client_id().to_string())
+}
 
 #[derive(Debug, Subcommand)]
 pub enum UserSubcommand {
@@ -67,7 +82,8 @@ async fn status(data: &mut CmdData) -> anyhow::Result<()> {
 }
 
 async fn auth(_data: &mut CmdData) -> anyhow::Result<()> {
-	user::auth::authenticate().await?;
+	println!("Client ID: {}", get_raw_ms_client_id());
+	user::auth::authenticate(get_ms_client_id()).await?;
 
 	Ok(())
 }

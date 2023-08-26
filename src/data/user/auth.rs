@@ -1,5 +1,6 @@
 use anyhow::Context;
 use color_print::cprintln;
+use oauth2::ClientId;
 use reqwest::Client;
 
 use crate::net::microsoft::auth;
@@ -15,9 +16,9 @@ pub fn present_login_page_and_code(url: &str, code: &str) {
 }
 
 /// Authenticate the user
-pub async fn authenticate() -> anyhow::Result<()> {
+pub async fn authenticate(client_id: ClientId) -> anyhow::Result<()> {
 	cprintln!("<y>Note: This authentication is not complete and is for debug purposes only");
-	let client = auth::create_client().context("Failed to create OAuth client")?;
+	let client = auth::create_client(client_id).context("Failed to create OAuth client")?;
 	let response = auth::generate_login_page(&client)
 		.await
 		.context("Failed to execute authorization and generate login page")?;
@@ -30,7 +31,7 @@ pub async fn authenticate() -> anyhow::Result<()> {
 
 	cprintln!("Microsoft token: {token:?}");
 
-	let mc_token = auth::auth_microsoft(token, Client::new())
+	let mc_token = auth::auth_minecraft(token, Client::new())
 		.await
 		.context("Failed to get Minecraft token")?;
 
