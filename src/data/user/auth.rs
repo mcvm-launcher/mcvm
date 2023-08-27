@@ -48,6 +48,8 @@ pub async fn authenticate(
 		.await
 		.context("Failed to get user profile")?;
 
+	cprintln!("<g>Authentication successful!");
+
 	let out = AuthResult {
 		access_token,
 		profile,
