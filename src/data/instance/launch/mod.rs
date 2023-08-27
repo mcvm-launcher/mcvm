@@ -37,7 +37,7 @@ impl Instance {
 			.await
 			.context("Update failed")?;
 
-		self.create(&manager, paths)
+		self.create(&manager, paths, auth)
 			.await
 			.context("Failed to update instance")?;
 		let version = manager.found_version.get();

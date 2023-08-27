@@ -126,14 +126,20 @@ pub async fn launch(
 				.get_mut(user)
 				.expect("User in AuthState does not exist");
 			if let UserKind::Microsoft = &user.kind {
-				let auth_result =
-					mcvm::data::user::auth::authenticate(get_ms_client_id(), &Client::new()).await?;
+				let client = Client::new();
+				let auth_result = mcvm::data::user::auth::authenticate(get_ms_client_id(), &client)
+					.await
+					.context("Failed to authenticate user")?;
+				let certificate =
+					mcvm::net::microsoft::get_user_certificate(&auth_result.access_token, &client)
+						.await
+						.context("Failed to get user certificate")?;
 				user.access_token = Some(auth_result.access_token);
-				user.uuid = Some(auth_result.profile.uuid)
+				user.uuid = Some(auth_result.profile.uuid);
+				user.keypair = Some(certificate.key_pair);
 			}
 		}
 	}
-
 
 	let mut lock = Lockfile::open(paths)?;
 

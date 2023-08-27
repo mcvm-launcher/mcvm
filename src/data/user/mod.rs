@@ -1,6 +1,9 @@
 pub mod auth;
+pub mod uuid;
 
 use std::collections::HashMap;
+
+use crate::net::microsoft::Keypair;
 
 #[derive(Debug, Copy, Clone)]
 pub enum UserKind {
@@ -17,6 +20,7 @@ pub struct User {
 	pub name: String,
 	pub uuid: Option<String>,
 	pub access_token: Option<String>,
+	pub keypair: Option<Keypair>,
 }
 
 impl User {
@@ -27,6 +31,7 @@ impl User {
 			name: name.to_owned(),
 			uuid: None,
 			access_token: None,
+			keypair: None,
 		}
 	}
 

@@ -1,10 +1,13 @@
 use std::collections::{HashMap, HashSet};
+use std::fs::File;
 use std::path::PathBuf;
 
 use anyhow::Context;
 use color_print::{cformat, cprintln};
 
 use crate::data::profile::update::{UpdateManager, UpdateRequirement};
+use crate::data::user::uuid::hyphenate_uuid;
+use crate::data::user::{Auth, AuthState, User};
 use crate::io::files::update_hardlink;
 use crate::io::files::{self, paths::Paths};
 use crate::io::java::classpath::Classpath;
@@ -64,6 +67,7 @@ impl Instance {
 		&mut self,
 		manager: &UpdateManager,
 		paths: &Paths,
+		auth: &Auth,
 	) -> anyhow::Result<HashSet<PathBuf>> {
 		match &self.kind {
 			InstKind::Client { .. } => {
@@ -73,7 +77,7 @@ impl Instance {
 					cprintln!("<s>Updating client <y!>{}</y!>", self.id);
 				}
 				let files = self
-					.create_client(manager, paths)
+					.create_client(manager, paths, auth)
 					.await
 					.context("Failed to create client")?;
 				Ok(files)
@@ -98,6 +102,7 @@ impl Instance {
 		&mut self,
 		manager: &UpdateManager,
 		paths: &Paths,
+		auth: &Auth,
 	) -> anyhow::Result<HashSet<PathBuf>> {
 		debug_assert!(matches!(self.kind, InstKind::Client { .. }));
 
@@ -138,6 +143,7 @@ impl Instance {
 
 		classpath.add_path(&jar_path);
 
+		// Options
 		let mut keys = HashMap::new();
 		let version_list = manager.version_list.get();
 		if let Some(global_options) = &manager.options {
@@ -164,6 +170,13 @@ impl Instance {
 			write_options_txt(keys, &options_path, &data_version)
 				.await
 				.context("Failed to write options.txt")?;
+		}
+
+		// Create keypair file
+		if let AuthState::Authed(user) = &auth.state {
+			let user = auth.users.get(user).expect("Authed user does not exist");
+			self.create_keypair(user, paths)
+				.context("Failed to create user keypair")?;
 		}
 
 		self.classpath = Some(classpath);
@@ -296,5 +309,24 @@ impl Instance {
 		self.classpath = Some(classpath);
 
 		Ok(out)
+	}
+
+	/// Create a keypair file in the instance
+	pub fn create_keypair(&self, user: &User, paths: &Paths) -> anyhow::Result<()> {
+		if let Some(uuid) = &user.uuid {
+			if let Some(keypair) = &user.keypair {
+				let mc_dir = self.get_subdir(paths);
+				let keys_dir = mc_dir.join("profilekeys");
+				let hyphenated_uuid = hyphenate_uuid(uuid).context("Failed to hyphenate UUID")?;
+				let path = keys_dir.join(format!("{hyphenated_uuid}.json"));
+				files::create_leading_dirs(&path)?;
+
+				let mut file = File::create(path).context("Failed to create keypair file")?;
+				serde_json::to_writer(&mut file, keypair)
+					.context("Failed to write keypair to file")?;
+			}
+		}
+
+		Ok(())
 	}
 }
