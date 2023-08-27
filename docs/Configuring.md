@@ -90,6 +90,8 @@ or
 			"init": string,
 			"max": string
 		},
+		"env": { .. },
+		"wrapper": "",
 		"java": "adoptium" | "zulu" | string,
 		"preset": "akairs" | "krusic" | "obydux",
 		"quick_play": {
@@ -117,12 +119,14 @@ or
 }
 ```
 
-The first form just has the type of the instance.
+The first form just has the type of the instance. All fields are optional unless stated otherwise.
 
 - `type` (Required): The type of the instance, either `"client"` or `"server"`.
 - `launch`: Options that modify the game execution.
 - `launch.args`: Custom arguments that will be passed to the Java Virtual Machine and game. Each one is optional and can either be a string of arguments separated by spaces or a list.
 - `launch.memory`: Memory sizes for the Java heap initial and maximum space. Use a string to set both (recommended), or set them individually using an object. These follow the same format as the Java arguments (e.g. `1024M` or `10G`) and should be preferred to using custom arguments as it allows MCVM to do some extra things.
+- `launch.env`: A map of strings to strings that let you set environment variables for the game program.
+- `launch.wrapper`: A command to wrap the launch command in.
 - `launch.java`: The Java installation you would like to use. Can be either `"adoptium"` or a path to a custom Java executable. Defaults to `"adoptium"`.
 - `launch.preset`: A preset that will automatically apply changes to your launch configuration to improve your experience.
   - `"none"`: The default. No changes will be applied.
