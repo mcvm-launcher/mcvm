@@ -118,19 +118,22 @@ pub async fn launch(
 		config.auth.state = AuthState::Authed(user);
 	}
 
-	if let AuthState::Authed(user) = &config.auth.state {
-		let user = config
-			.auth
-			.users
-			.get_mut(user)
-			.expect("User in AuthState does not exist");
-		if let UserKind::Microsoft = &user.kind {
-			let auth_result =
-				mcvm::data::user::auth::authenticate(get_ms_client_id(), &Client::new()).await?;
-			user.access_token = Some(auth_result.access_token);
-			user.uuid = Some(auth_result.profile.uuid)
+	if let InstKind::Client { .. } = &instance.kind {
+		if let AuthState::Authed(user) = &config.auth.state {
+			let user = config
+				.auth
+				.users
+				.get_mut(user)
+				.expect("User in AuthState does not exist");
+			if let UserKind::Microsoft = &user.kind {
+				let auth_result =
+					mcvm::data::user::auth::authenticate(get_ms_client_id(), &Client::new()).await?;
+				user.access_token = Some(auth_result.access_token);
+				user.uuid = Some(auth_result.profile.uuid)
+			}
 		}
 	}
+
 
 	let mut lock = Lockfile::open(paths)?;
 
