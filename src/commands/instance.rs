@@ -1,13 +1,15 @@
-use anyhow::{anyhow, ensure, Context};
+use anyhow::{anyhow, bail, Context};
 use clap::Subcommand;
 use color_print::cprintln;
 use itertools::Itertools;
-use mcvm::data::user::AuthState;
+use mcvm::data::user::{AuthState, UserKind};
 
 use mcvm::io::lock::Lockfile;
 use mcvm::{data::instance::InstKind, util::print::HYPHEN_POINT};
 use mcvm_shared::instance::Side;
+use reqwest::Client;
 
+use super::user::get_ms_client_id;
 use super::CmdData;
 
 #[derive(Debug, Subcommand)]
@@ -99,14 +101,6 @@ pub async fn launch(
 	let paths = data.paths.get();
 	let config = data.config.get_mut();
 
-	if let Some(user) = user {
-		ensure!(
-			config.auth.users.contains_key(&user),
-			"User '{user}' does not exist"
-		);
-		config.auth.state = AuthState::Authed(user);
-	}
-
 	let instance = config
 		.instances
 		.get_mut(instance)
@@ -116,6 +110,27 @@ pub async fn launch(
 		.iter()
 		.find(|(.., profile)| profile.instances.contains(&instance.id))
 		.expect("Instance does not belong to any profiles");
+
+	if let Some(user) = user {
+		if !config.auth.users.contains_key(&user) {
+			bail!("User '{user}' does not exist");
+		}
+		config.auth.state = AuthState::Authed(user);
+	}
+
+	if let AuthState::Authed(user) = &config.auth.state {
+		let user = config
+			.auth
+			.users
+			.get_mut(user)
+			.expect("User in AuthState does not exist");
+		if let UserKind::Microsoft = &user.kind {
+			let auth_result =
+				mcvm::data::user::auth::authenticate(get_ms_client_id(), &Client::new()).await?;
+			user.access_token = Some(auth_result.access_token);
+			user.uuid = Some(auth_result.profile.uuid)
+		}
+	}
 
 	let mut lock = Lockfile::open(paths)?;
 

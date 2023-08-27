@@ -19,7 +19,7 @@ const fn get_raw_ms_client_id() -> &'static str {
 }
 
 /// Get the Microsoft client ID
-fn get_ms_client_id() -> ClientId {
+pub fn get_ms_client_id() -> ClientId {
 	ClientId::new(get_raw_ms_client_id().to_string())
 }
 
