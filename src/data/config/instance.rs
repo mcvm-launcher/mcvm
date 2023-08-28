@@ -5,11 +5,11 @@ use anyhow::{anyhow, bail, ensure, Context};
 use mcvm_shared::instance::Side;
 use serde::{Deserialize, Serialize};
 
+use crate::data::instance::launch::LaunchOptions;
 use crate::data::instance::{InstKind, Instance};
 use crate::data::profile::Profile;
 use crate::io::java::args::{ArgsPreset, MemoryNum};
 use crate::io::java::JavaKind;
-use crate::io::launch::LaunchOptions;
 use crate::io::options::client::ClientOptions;
 use crate::io::options::server::ServerOptions;
 use crate::io::snapshot;

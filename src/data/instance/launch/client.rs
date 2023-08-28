@@ -5,11 +5,11 @@ use color_print::cprintln;
 
 use crate::data::config::instance::QuickPlay;
 use crate::data::config::instance::{ClientWindowConfig, WindowResolution};
+use crate::data::instance::launch::LaunchProcessProperties;
 use crate::data::instance::{InstKind, Instance};
 use crate::data::user::{UserKind, UserManager};
 use crate::io::files::paths::Paths;
 use crate::io::java::classpath::Classpath;
-use crate::io::launch::{launch, LaunchArgument};
 use crate::util::json;
 use crate::util::{
 	mojang::is_allowed,
@@ -115,12 +115,7 @@ impl Instance {
 				}
 			}
 
-			let launch_argument = LaunchArgument {
-				instance_name: &self.id,
-				side: self.kind.to_side(),
-				options: &self.launch,
-				debug,
-				version_info,
+			let launch_properties = LaunchProcessProperties {
 				cwd: &client_dir,
 				command: jre_path
 					.to_str()
@@ -131,7 +126,8 @@ impl Instance {
 				additional_env_vars: &env_vars,
 			};
 
-			launch(paths, &launch_argument).context("Failed to run launch command")?;
+			self.launch_game_process(launch_properties, debug, version_info, paths)
+				.context("Failed to launch game process")?;
 		}
 
 		Ok(())

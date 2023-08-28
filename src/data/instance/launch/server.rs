@@ -2,9 +2,9 @@ use std::collections::HashMap;
 
 use anyhow::Context;
 
+use crate::data::instance::launch::LaunchProcessProperties;
 use crate::data::instance::{InstKind, Instance};
 use crate::io::files::paths::Paths;
-use crate::io::launch::{launch, LaunchArgument};
 use mcvm_shared::versions::VersionInfo;
 
 impl Instance {
@@ -28,12 +28,7 @@ impl Instance {
 		}
 		game_args.push(String::from("nogui"));
 
-		let launch_args = LaunchArgument {
-			instance_name: &self.id,
-			side: self.kind.to_side(),
-			options: &self.launch,
-			debug,
-			version_info,
+		let launch_properties = LaunchProcessProperties {
 			cwd: &server_dir,
 			command: jre_path
 				.to_str()
@@ -44,7 +39,8 @@ impl Instance {
 			additional_env_vars: &HashMap::new(),
 		};
 
-		launch(paths, &launch_args).context("Failed to run launch command")?;
+		self.launch_game_process(launch_properties, debug, version_info, paths)
+			.context("Failed to launch game process")?;
 
 		Ok(())
 	}

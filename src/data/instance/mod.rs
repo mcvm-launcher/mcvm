@@ -10,7 +10,6 @@ use crate::io::files::paths::Paths;
 use crate::io::files::update_hardlink;
 use crate::io::java::classpath::Classpath;
 use crate::io::java::Java;
-use crate::io::launch::LaunchOptions;
 use crate::io::lock::{Lockfile, LockfileAddon};
 use crate::io::options::client::ClientOptions;
 use crate::io::options::server::ServerOptions;
@@ -21,6 +20,8 @@ use crate::package::reg::PkgRegistry;
 use crate::util::json;
 use mcvm_pkg::PkgRequest;
 use mcvm_shared::later::Later;
+
+use self::launch::LaunchOptions;
 
 use super::addon;
 use super::config::instance::ClientWindowConfig;
