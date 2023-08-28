@@ -1,7 +1,7 @@
 use std::{fs::File, path::PathBuf};
 
 use anyhow::{bail, Context};
-use mcvm_shared::instance::Side;
+use mcvm_shared::{instance::Side, versions::VersionInfo};
 use serde::Deserialize;
 use zip::ZipArchive;
 
@@ -37,12 +37,11 @@ pub mod game_jar {
 
 	/// Extract the version.json file optionally, only if the version has the file in there
 	pub fn extract_version_json_optional(
-		mc_version: &str,
-		mc_versions: &[String],
+		version_info: &VersionInfo,
 		paths: &Paths,
 	) -> anyhow::Result<Option<VersionJson>> {
-		if VersionPattern::After(String::from("18w47b")).matches_single(mc_version, mc_versions) {
-			Ok(Some(extract_version_json(mc_version, paths)?))
+		if VersionPattern::After(String::from("18w47b")).matches_info(version_info) {
+			Ok(Some(extract_version_json(&version_info.version, paths)?))
 		} else {
 			Ok(None)
 		}
@@ -70,18 +69,13 @@ pub mod game_jar {
 }
 
 /// Get the game data version either from the game jar or the known map
-pub fn get_data_version(
-	mc_version: &str,
-	mc_versions: &[String],
-	paths: &Paths,
-) -> anyhow::Result<Option<i32>> {
-	if let Some(version_json) =
-		game_jar::extract_version_json_optional(mc_version, mc_versions, paths)
-			.context("Failed to extract version.json")?
+pub fn get_data_version(version_info: &VersionInfo, paths: &Paths) -> anyhow::Result<Option<i32>> {
+	if let Some(version_json) = game_jar::extract_version_json_optional(version_info, paths)
+		.context("Failed to extract version.json")?
 	{
 		Ok(Some(version_json.data_version))
 	} else {
-		Ok(get_old_data_version(mc_version))
+		Ok(get_old_data_version(&version_info.version))
 	}
 }
 

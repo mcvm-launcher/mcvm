@@ -5,6 +5,7 @@ use anyhow::Context;
 use crate::data::instance::{InstKind, Instance};
 use crate::io::files::paths::Paths;
 use crate::io::launch::{launch, LaunchArgument};
+use mcvm_shared::versions::VersionInfo;
 
 impl Instance {
 	/// Launch a server
@@ -12,8 +13,7 @@ impl Instance {
 		&mut self,
 		paths: &Paths,
 		debug: bool,
-		version: &str,
-		version_list: &[String],
+		version_info: &VersionInfo,
 	) -> anyhow::Result<()> {
 		debug_assert!(matches!(self.kind, InstKind::Server { .. }));
 		let java_path = self.java.get().path.get();
@@ -33,8 +33,7 @@ impl Instance {
 			side: self.kind.to_side(),
 			options: &self.launch,
 			debug,
-			version,
-			version_list,
+			version_info,
 			cwd: &server_dir,
 			command: jre_path
 				.to_str()

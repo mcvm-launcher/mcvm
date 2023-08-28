@@ -16,6 +16,7 @@ use crate::io::java::{
 };
 use crate::util::utc_timestamp;
 use mcvm_shared::instance::Side;
+use mcvm_shared::versions::VersionInfo;
 
 use super::files::paths::Paths;
 
@@ -58,20 +59,11 @@ impl LaunchOptions {
 	}
 
 	/// Create the args for the game when launching
-	pub fn generate_game_args(
-		&self,
-		version: &str,
-		version_list: &[String],
-		side: Side,
-	) -> Vec<String> {
+	pub fn generate_game_args(&self, version_info: &VersionInfo, side: Side) -> Vec<String> {
 		let mut out = self.game_args.clone();
 
 		if let Side::Client = side {
-			out.extend(create_quick_play_args(
-				&self.quick_play,
-				version,
-				version_list,
-			));
+			out.extend(create_quick_play_args(&self.quick_play, version_info));
 		}
 
 		out
@@ -94,8 +86,7 @@ pub struct LaunchArgument<'a> {
 	pub side: Side,
 	pub options: &'a LaunchOptions,
 	pub debug: bool,
-	pub version: &'a str,
-	pub version_list: &'a [String],
+	pub version_info: &'a VersionInfo,
 	pub cwd: &'a Path,
 	pub command: &'a str,
 	pub jvm_args: &'a [String],
@@ -126,10 +117,7 @@ pub fn launch(paths: &Paths, arg: &LaunchArgument) -> anyhow::Result<()> {
 		cmd.arg(main_class);
 	}
 	cmd.args(arg.game_args);
-	cmd.args(
-		arg.options
-			.generate_game_args(arg.version, arg.version_list, arg.side),
-	);
+	cmd.args(arg.options.generate_game_args(arg.version_info, arg.side));
 
 	writeln!(log, "Launch command: {cmd:#?}").context("Failed to write to launch log file")?;
 	if arg.debug {

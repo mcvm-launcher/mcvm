@@ -6,6 +6,7 @@ use color_print::{cformat, cprintln};
 use itertools::Itertools;
 use mcvm_shared::modifications::ServerType;
 use mcvm_shared::pkg::PackageStability;
+use mcvm_shared::versions::VersionInfo;
 use reqwest::Client;
 
 use crate::data::config::Config;
@@ -56,8 +57,7 @@ pub struct UpdateManager {
 	pub client_json: Later<Box<json::JsonObject>>,
 	pub java: Later<Java>,
 	pub options: Option<Options>,
-	pub version_list: Later<Vec<String>>,
-	pub found_version: Later<String>,
+	pub version_info: Later<VersionInfo>,
 	pub fq_meta: Later<FabricQuiltMeta>,
 }
 
@@ -73,8 +73,7 @@ impl UpdateManager {
 			client_json: Later::new(),
 			java: Later::new(),
 			options: None,
-			version_list: Later::new(),
-			found_version: Later::new(),
+			version_info: Later::Empty,
 			fq_meta: Later::new(),
 		}
 	}
@@ -122,16 +121,17 @@ impl UpdateManager {
 			.await
 			.context("Failed to get version manifest")?;
 
-		self.version_list.fill(
-			version_manifest::make_version_list(&manifest)
-				.context("Failed to compose a list of versions")?,
-		);
+		let version_list = version_manifest::make_version_list(&manifest)
+			.context("Failed to compose a list of versions")?;
 
 		let found_version = version
 			.get_version(&manifest)
 			.context("Failed to find the requested Minecraft version")?;
 
-		self.found_version.fill(found_version);
+		self.version_info.fill(VersionInfo {
+			version: found_version,
+			versions: version_list,
+		});
 		self.version_manifest.fill(manifest);
 
 		Ok(())
@@ -177,7 +177,7 @@ impl UpdateManager {
 				cprintln!("<s>Obtaining client JSON data...");
 			}
 			let client_json = version_manifest::get_client_json(
-				self.found_version.get(),
+				&self.version_info.get().version,
 				self.version_manifest.get(),
 				paths,
 				self,
@@ -191,7 +191,7 @@ impl UpdateManager {
 			let files = assets::get(
 				self.client_json.get(),
 				paths,
-				self.found_version.get(),
+				&self.version_info.get().version,
 				self,
 			)
 			.await
@@ -201,7 +201,7 @@ impl UpdateManager {
 
 		if self.has_requirement(UpdateRequirement::GameLibraries) {
 			let client_json = self.client_json.get();
-			let files = libraries::get(client_json, paths, self.found_version.get(), self)
+			let files = libraries::get(client_json, paths, &self.version_info.get().version, self)
 				.await
 				.context("Failed to get game libraries")?;
 			self.add_files(files);
@@ -237,7 +237,7 @@ impl UpdateManager {
 					game_jar::get(
 						*side,
 						self.client_json.get(),
-						self.found_version.get(),
+						&self.version_info.get().version,
 						paths,
 						self,
 					)
@@ -251,10 +251,14 @@ impl UpdateManager {
 			for req in self.requirements.iter() {
 				if let UpdateRequirement::FabricQuilt(mode, side) = req {
 					if self.fq_meta.is_empty() {
-						let meta =
-							fabric_quilt::get_meta(self.found_version.get(), mode, paths, self)
-								.await
-								.context("Failed to download Fabric/Quilt metadata")?;
+						let meta = fabric_quilt::get_meta(
+							&self.version_info.get().version,
+							mode,
+							paths,
+							self,
+						)
+						.await
+						.context("Failed to download Fabric/Quilt metadata")?;
 						fabric_quilt::download_files(&meta, paths, *mode, self)
 							.await
 							.context("Failed to download common Fabric/Quilt files")?;
@@ -596,7 +600,7 @@ pub async fn update_profiles(
 			.fulfill_version_manifest(paths, &profile.version)
 			.await
 			.context("Failed to get version information")?;
-		let mc_version = manager.found_version.get().clone();
+		let mc_version = manager.version_info.get().version.clone();
 
 		let paper_properties = get_paper_properties(profile, &mc_version)
 			.await

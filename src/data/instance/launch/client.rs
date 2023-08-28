@@ -16,6 +16,7 @@ use crate::util::{
 	{ARCH_STRING, OS_STRING},
 };
 use crate::{skip_fail, skip_none};
+use mcvm_shared::versions::VersionInfo;
 use mcvm_shared::versions::VersionPattern;
 
 pub use args::create_quick_play_args;
@@ -28,8 +29,7 @@ impl Instance {
 		auth: &Auth,
 		debug: bool,
 		token: Option<String>,
-		version: &str,
-		version_list: &[String],
+		version_info: &VersionInfo,
 	) -> anyhow::Result<()> {
 		debug_assert!(matches!(self.kind, InstKind::Client { .. }));
 		let java_path = self.java.get().path.get();
@@ -47,7 +47,14 @@ impl Instance {
 				if let Ok(args) = json::access_object(client_json, "arguments") {
 					for arg in json::access_array(args, "jvm")? {
 						for sub_arg in args::process_arg(
-							self, arg, paths, auth, classpath, version, window, &token,
+							self,
+							arg,
+							paths,
+							auth,
+							classpath,
+							&version_info.version,
+							window,
+							&token,
 						) {
 							jvm_args.push(sub_arg);
 						}
@@ -55,7 +62,14 @@ impl Instance {
 
 					for arg in json::access_array(args, "game")? {
 						for sub_arg in args::process_arg(
-							self, arg, paths, auth, classpath, version, window, &token,
+							self,
+							arg,
+							paths,
+							auth,
+							classpath,
+							&version_info.version,
+							window,
+							&token,
 						) {
 							game_args.push(sub_arg);
 						}
@@ -69,7 +83,7 @@ impl Instance {
 						paths
 							.internal
 							.join("versions")
-							.join(version)
+							.join(&version_info.version)
 							.join("natives")
 							.to_str()
 							.context("Failed to convert natives directory to a string")?
@@ -79,7 +93,14 @@ impl Instance {
 
 					for arg in args.split(' ') {
 						game_args.push(skip_none!(args::replace_arg_placeholders(
-							self, arg, paths, auth, classpath, version, window, &token
+							self,
+							arg,
+							paths,
+							auth,
+							classpath,
+							&version_info.version,
+							window,
+							&token
 						)));
 					}
 				}
@@ -89,7 +110,7 @@ impl Instance {
 			// Compatability env var for old versions on Linux to prevent graphical issues
 			#[cfg(target_os = "linux")]
 			{
-				if VersionPattern::from("1.8.9-").matches_single(version, version_list) {
+				if VersionPattern::from("1.8.9-").matches_info(version_info) {
 					env_vars.insert("__GL_THREADED_OPTIMIZATIONS".to_string(), "0".to_string());
 				}
 			}
@@ -99,8 +120,7 @@ impl Instance {
 				side: self.kind.to_side(),
 				options: &self.launch,
 				debug,
-				version,
-				version_list,
+				version_info,
 				cwd: &client_dir,
 				command: jre_path
 					.to_str()
@@ -290,15 +310,14 @@ mod args {
 	/// Create the game arguments for Quick Play
 	pub fn create_quick_play_args(
 		quick_play: &QuickPlay,
-		version: &str,
-		version_list: &[String],
+		version_info: &VersionInfo,
 	) -> Vec<String> {
 		let mut out = Vec::new();
 
 		match quick_play {
 			QuickPlay::World { .. } | QuickPlay::Realm { .. } | QuickPlay::Server { .. } => {
-				let after_23w14a = VersionPattern::After(String::from("23w14a"))
-					.matches_single(version, version_list);
+				let after_23w14a =
+					VersionPattern::After(String::from("23w14a")).matches_info(version_info);
 				out.push(String::from("--quickPlayPath"));
 				out.push(String::from("quickPlay/log.json"));
 				match quick_play {

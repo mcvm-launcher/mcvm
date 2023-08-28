@@ -13,7 +13,7 @@ use crate::{
 	util::ToInt,
 };
 
-use mcvm_shared::versions::VersionPattern;
+use mcvm_shared::versions::{VersionInfo, VersionPattern};
 
 use super::{ClientOptions, CloudRenderMode, FullscreenResolution, GraphicsMode};
 
@@ -116,70 +116,47 @@ fn convert_mouse_sensitivity(sensitivity: i16) -> f32 {
 /// Write options options to a list of keys
 pub fn create_keys(
 	options: &ClientOptions,
-	version: &str,
-	versions: &[String],
+	version_info: &VersionInfo,
 ) -> anyhow::Result<HashMap<String, String>> {
 	let mut out = HashMap::new();
 
 	// Version checks
-	let after_12w50a =
-		VersionPattern::After(String::from("12w50a")).matches_single(version, versions);
-	let after_13w36a =
-		VersionPattern::After(String::from("13w36a")).matches_single(version, versions);
-	let after_13w47a =
-		VersionPattern::After(String::from("13w47a")).matches_single(version, versions);
-	let after_14w25a =
-		VersionPattern::After(String::from("14w25a")).matches_single(version, versions);
-	let after_14w28a =
-		VersionPattern::After(String::from("14w28a")).matches_single(version, versions);
-	let after_17w06a =
-		VersionPattern::After(String::from("17w06a")).matches_single(version, versions);
-	let after_17w47a =
-		VersionPattern::After(String::from("17w47a")).matches_single(version, versions);
-	let after_18w15a =
-		VersionPattern::After(String::from("18w15a")).matches_single(version, versions);
-	let after_18w21a =
-		VersionPattern::After(String::from("18w21a")).matches_single(version, versions);
+	let after_12w50a = VersionPattern::After(String::from("12w50a")).matches_info(version_info);
+	let after_13w36a = VersionPattern::After(String::from("13w36a")).matches_info(version_info);
+	let after_13w47a = VersionPattern::After(String::from("13w47a")).matches_info(version_info);
+	let after_14w25a = VersionPattern::After(String::from("14w25a")).matches_info(version_info);
+	let after_14w28a = VersionPattern::After(String::from("14w28a")).matches_info(version_info);
+	let after_17w06a = VersionPattern::After(String::from("17w06a")).matches_info(version_info);
+	let after_17w47a = VersionPattern::After(String::from("17w47a")).matches_info(version_info);
+	let after_18w15a = VersionPattern::After(String::from("18w15a")).matches_info(version_info);
+	let after_18w21a = VersionPattern::After(String::from("18w21a")).matches_info(version_info);
 	let after_1_13_pre2 =
-		VersionPattern::After(String::from("1.13-pre2")).matches_single(version, versions);
+		VersionPattern::After(String::from("1.13-pre2")).matches_info(version_info);
 	let after_1_15_2_pre1 =
-		VersionPattern::After(String::from("1.15.2-pre1")).matches_single(version, versions);
+		VersionPattern::After(String::from("1.15.2-pre1")).matches_info(version_info);
 	let after_1_16_4_rc1 =
-		VersionPattern::After(String::from("1.16.4-rc1")).matches_single(version, versions);
-	let after_21w13a =
-		VersionPattern::After(String::from("21w13a")).matches_single(version, versions);
-	let after_21w37a =
-		VersionPattern::After(String::from("21w37a")).matches_single(version, versions);
-	let after_21w38a =
-		VersionPattern::After(String::from("21w38a")).matches_single(version, versions);
-	let after_21w42a =
-		VersionPattern::After(String::from("21w42a")).matches_single(version, versions);
+		VersionPattern::After(String::from("1.16.4-rc1")).matches_info(version_info);
+	let after_21w13a = VersionPattern::After(String::from("21w13a")).matches_info(version_info);
+	let after_21w37a = VersionPattern::After(String::from("21w37a")).matches_info(version_info);
+	let after_21w38a = VersionPattern::After(String::from("21w38a")).matches_info(version_info);
+	let after_21w42a = VersionPattern::After(String::from("21w42a")).matches_info(version_info);
 	let after_1_18_pre2 =
-		VersionPattern::After(String::from("1.18-pre2")).matches_single(version, versions);
+		VersionPattern::After(String::from("1.18-pre2")).matches_info(version_info);
 	let after_1_18_2_pre1 =
-		VersionPattern::After(String::from("1.18.2-pre1")).matches_single(version, versions);
-	let after_22w11a =
-		VersionPattern::After(String::from("22w11a")).matches_single(version, versions);
-	let after_22w15a =
-		VersionPattern::After(String::from("22w15a")).matches_single(version, versions);
+		VersionPattern::After(String::from("1.18.2-pre1")).matches_info(version_info);
+	let after_22w11a = VersionPattern::After(String::from("22w11a")).matches_info(version_info);
+	let after_22w15a = VersionPattern::After(String::from("22w15a")).matches_info(version_info);
 
-	let before_13w42a =
-		VersionPattern::Before(String::from("13w42a")).matches_single(version, versions);
-	let before_14w03a =
-		VersionPattern::Before(String::from("14w03a")).matches_single(version, versions);
-	let before_15w31a =
-		VersionPattern::Before(String::from("15w31a")).matches_single(version, versions);
-	let before_1_13 =
-		VersionPattern::Before(String::from("1.13")).matches_single(version, versions);
-	let before_20w27a =
-		VersionPattern::Before(String::from("20w27a")).matches_single(version, versions);
-	let before_21w43a =
-		VersionPattern::Before(String::from("21w43a")).matches_single(version, versions);
-	let before_1_19_4 =
-		VersionPattern::Before(String::from("1.19.4")).matches_single(version, versions);
+	let before_13w42a = VersionPattern::Before(String::from("13w42a")).matches_info(version_info);
+	let before_14w03a = VersionPattern::Before(String::from("14w03a")).matches_info(version_info);
+	let before_15w31a = VersionPattern::Before(String::from("15w31a")).matches_info(version_info);
+	let before_1_13 = VersionPattern::Before(String::from("1.13")).matches_info(version_info);
+	let before_20w27a = VersionPattern::Before(String::from("20w27a")).matches_info(version_info);
+	let before_21w43a = VersionPattern::Before(String::from("21w43a")).matches_info(version_info);
+	let before_1_19_4 = VersionPattern::Before(String::from("1.19.4")).matches_info(version_info);
 
-	let is_3d_shareware = VersionPattern::Single(String::from("3D Shareware v1.34"))
-		.matches_single(version, versions);
+	let is_3d_shareware =
+		VersionPattern::Single(String::from("3D Shareware v1.34")).matches_info(version_info);
 
 	let stream_options_enabled = after_13w47a && before_15w31a;
 
@@ -876,7 +853,11 @@ mod tests {
 	fn test_create_keys() {
 		let options = parse_options_str(r#"{"client": {}, "server": {}}"#).unwrap();
 		dbg!(&options);
-		let versions = [String::from("1.18"), String::from("1.19.3")];
-		create_keys(&options.client.unwrap(), "1.19.3", &versions).unwrap();
+		let versions = vec![String::from("1.18"), String::from("1.19.3")];
+		let info = VersionInfo {
+			version: "1.19.3".to_string(),
+			versions,
+		};
+		create_keys(&options.client.unwrap(), &info).unwrap();
 	}
 }

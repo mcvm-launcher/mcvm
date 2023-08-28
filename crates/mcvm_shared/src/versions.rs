@@ -115,6 +115,11 @@ impl VersionPattern {
 		}
 	}
 
+	/// Compares this pattern to a version supplied in a VersionInfo
+	pub fn matches_info(&self, version_info: &VersionInfo) -> bool {
+		self.matches_single(&version_info.version, &version_info.versions)
+	}
+
 	/// Returns the union of matches for multiple patterns
 	pub fn match_union(&self, other: &Self, versions: &[String]) -> Vec<String> {
 		self.get_matches(versions)
@@ -202,6 +207,14 @@ impl<'de> Deserialize<'de> for VersionPattern {
 		let string = String::deserialize(deserializer)?;
 		Ok(Self::from(&string))
 	}
+}
+
+
+/// Utility struct that contains the version and version list
+#[derive(Debug)]
+pub struct VersionInfo {
+	pub version: String,
+	pub versions: Vec<String>,
 }
 
 #[cfg(test)]

@@ -40,19 +40,18 @@ impl Instance {
 		self.create(&manager, paths, auth)
 			.await
 			.context("Failed to update instance")?;
-		let version = manager.found_version.get();
-		let version_list = manager.version_list.get();
+		let version_info = manager.version_info.get();
 		cprintln!("<g>Launching!");
 		match &self.kind {
 			InstKind::Client { .. } => {
-				self.launch_client(paths, auth, debug, token, version, version_list)
+				self.launch_client(paths, auth, debug, token, version_info)
 					.context("Failed to launch client")?;
 			}
 			InstKind::Server { .. } => {
 				if token.is_some() {
 					cprintln!("<y>Notice: Ignoring 'token' argument for server instance");
 				}
-				self.launch_server(paths, debug, version, version_list)
+				self.launch_server(paths, debug, version_info)
 					.context("Failed to launch server")?;
 			}
 		}

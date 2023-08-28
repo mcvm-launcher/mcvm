@@ -107,7 +107,7 @@ impl Instance {
 		debug_assert!(matches!(self.kind, InstKind::Client { .. }));
 
 		let out = HashSet::new();
-		let version = manager.found_version.get();
+		let version = &manager.version_info.get().version;
 		let dir = self.get_dir(paths);
 		files::create_leading_dirs(&dir)?;
 		files::create_dir(&dir)?;
@@ -145,12 +145,11 @@ impl Instance {
 
 		// Options
 		let mut keys = HashMap::new();
-		let version_list = manager.version_list.get();
+		let version_info = &manager.version_info.get();
 		if let Some(global_options) = &manager.options {
 			if let Some(global_options) = &global_options.client {
-				let global_keys =
-					options::client::create_keys(global_options, version, version_list)
-						.context("Failed to create keys for global options")?;
+				let global_keys = options::client::create_keys(global_options, version_info)
+					.context("Failed to create keys for global options")?;
 				keys.extend(global_keys);
 			}
 		}
@@ -159,13 +158,13 @@ impl Instance {
 			..
 		} = &self.kind
 		{
-			let override_keys = options::client::create_keys(options, version, version_list)
+			let override_keys = options::client::create_keys(options, version_info)
 				.context("Failed to create keys for override options")?;
 			keys.extend(override_keys);
 		}
 		if !keys.is_empty() {
 			let options_path = mc_dir.join("options.txt");
-			let data_version = crate::io::minecraft::get_data_version(version, version_list, paths)
+			let data_version = crate::io::minecraft::get_data_version(version_info, paths)
 				.context("Failed to obtain data version")?;
 			write_options_txt(keys, &options_path, &data_version)
 				.await
@@ -196,7 +195,7 @@ impl Instance {
 
 		let mut out = HashSet::new();
 
-		let version = manager.found_version.get();
+		let version = &manager.version_info.get().version;
 		let dir = self.get_dir(paths);
 		files::create_leading_dirs(&dir)?;
 		files::create_dir(&dir)?;
@@ -281,12 +280,11 @@ impl Instance {
 		eula_task.await?.context("Failed to create eula.txt")?;
 
 		let mut keys = HashMap::new();
-		let version_list = manager.version_list.get();
+		let version_info = manager.version_info.get();
 		if let Some(global_options) = &manager.options {
 			if let Some(global_options) = &global_options.server {
-				let global_keys =
-					options::server::create_keys(global_options, version, version_list)
-						.context("Failed to create keys for global options")?;
+				let global_keys = options::server::create_keys(global_options, version_info)
+					.context("Failed to create keys for global options")?;
 				keys.extend(global_keys);
 			}
 		}
@@ -294,7 +292,7 @@ impl Instance {
 			options: Some(options),
 		} = &self.kind
 		{
-			let override_keys = options::server::create_keys(options, version, version_list)
+			let override_keys = options::server::create_keys(options, version_info)
 				.context("Failed to create keys for override options")?;
 			keys.extend(override_keys);
 		}

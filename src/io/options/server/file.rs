@@ -7,7 +7,7 @@ use itertools::Itertools;
 
 use crate::io::options::read::read_options_file;
 use crate::util::ToInt;
-use mcvm_shared::versions::VersionPattern;
+use mcvm_shared::versions::{VersionInfo, VersionPattern};
 
 use super::ServerOptions;
 
@@ -77,13 +77,11 @@ fn write_datapacks(datapacks: &[String]) -> String {
 /// Write server options to a list of keys
 pub fn create_keys(
 	options: &ServerOptions,
-	version: &str,
-	versions: &[String],
+	version_info: &VersionInfo,
 ) -> anyhow::Result<HashMap<String, String>> {
 	let mut out = HashMap::new();
 
-	let after_18w42a =
-		VersionPattern::After(String::from("18w42a")).matches_single(version, versions);
+	let after_18w42a = VersionPattern::After(String::from("18w42a")).matches_info(version_info);
 
 	if let Some(value) = options.allow_flight {
 		out.insert(String::from("allow-flight"), value.to_string());
@@ -308,7 +306,11 @@ mod tests {
 	#[test]
 	fn test_create_keys() {
 		let options = parse_options_str(r#"{"client": {}, "server": {}}"#).unwrap();
-		let versions = [String::from("1.18"), String::from("1.19.3")];
-		create_keys(&options.server.unwrap(), "1.19.3", &versions).unwrap();
+		let versions = vec![String::from("1.18"), String::from("1.19.3")];
+		let info = VersionInfo {
+			version: "1.19.3".to_string(),
+			versions,
+		};
+		create_keys(&options.server.unwrap(), &info).unwrap();
 	}
 }
