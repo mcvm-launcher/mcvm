@@ -18,7 +18,7 @@ use preferences::ConfigPreferences;
 use serde::{Deserialize, Serialize};
 
 use super::profile::{InstanceRegistry, Profile};
-use super::user::{validate_username, Auth, AuthState};
+use super::user::{validate_username, AuthState, UserManager};
 use crate::io::files::paths::Paths;
 use crate::package::reg::PkgRegistry;
 
@@ -69,7 +69,7 @@ pub struct ConfigDeser {
 
 #[derive(Debug)]
 pub struct Config {
-	pub auth: Auth,
+	pub users: UserManager,
 	pub instances: InstanceRegistry,
 	pub profiles: HashMap<String, Box<Profile>>,
 	pub packages: PkgRegistry,
@@ -99,7 +99,7 @@ impl Config {
 
 	/// Create the Config struct from deserialized config
 	fn load_from_deser(config: ConfigDeser, show_warnings: bool) -> anyhow::Result<Self> {
-		let mut auth = Auth::new();
+		let mut users = UserManager::new();
 		let mut instances = InstanceRegistry::new();
 		let mut profiles = HashMap::new();
 		// Preferences
@@ -118,12 +118,12 @@ impl Config {
 				bail!("Invalid string '{}'", user.name);
 			}
 
-			auth.users.insert(user_id.to_string(), user);
+			users.users.insert(user_id.to_string(), user);
 		}
 
 		if let Some(default_user_id) = &config.default_user {
-			match auth.users.get(default_user_id) {
-				Some(..) => auth.state = AuthState::Authed(default_user_id.clone()),
+			match users.users.get(default_user_id) {
+				Some(..) => users.state = AuthState::UserChosen(default_user_id.clone()),
 				None => {
 					bail!("Provided default user '{default_user_id}' does not exist");
 				}
@@ -222,7 +222,7 @@ impl Config {
 		}
 
 		Ok(Self {
-			auth,
+			users,
 			instances,
 			profiles,
 			packages,

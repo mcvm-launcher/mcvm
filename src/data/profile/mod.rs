@@ -11,7 +11,7 @@ use crate::util::versions::MinecraftVersion;
 use self::update::UpdateManager;
 
 use super::config::profile::GameModifications;
-use super::user::Auth;
+use super::user::UserManager;
 
 pub type InstanceRegistry = std::collections::HashMap<String, Instance>;
 
@@ -46,7 +46,7 @@ impl Profile {
 		paths: &Paths,
 		mut manager: UpdateManager,
 		lock: &mut Lockfile,
-		auth: &Auth,
+		users: &UserManager,
 	) -> anyhow::Result<Vec<String>> {
 		for id in self.instances.iter_mut() {
 			let instance = reg.get(id).expect("Profile has unknown instance");
@@ -56,7 +56,7 @@ impl Profile {
 		for id in self.instances.iter_mut() {
 			let instance = reg.get_mut(id).expect("Profile has unknown instance");
 			let files = instance
-				.create(&manager, paths, auth)
+				.create(&manager, paths, users)
 				.await
 				.with_context(|| format!("Failed to create instance {id}"))?;
 			manager.add_files(files);

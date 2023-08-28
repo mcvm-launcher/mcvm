@@ -6,7 +6,7 @@ use color_print::cprintln;
 use crate::data::config::instance::QuickPlay;
 use crate::data::config::instance::{ClientWindowConfig, WindowResolution};
 use crate::data::instance::{InstKind, Instance};
-use crate::data::user::{Auth, UserKind};
+use crate::data::user::{UserKind, UserManager};
 use crate::io::files::paths::Paths;
 use crate::io::java::classpath::Classpath;
 use crate::io::launch::{launch, LaunchArgument};
@@ -26,7 +26,7 @@ impl Instance {
 	pub fn launch_client(
 		&mut self,
 		paths: &Paths,
-		auth: &Auth,
+		users: &UserManager,
 		debug: bool,
 		token: Option<String>,
 		version_info: &VersionInfo,
@@ -50,7 +50,7 @@ impl Instance {
 							self,
 							arg,
 							paths,
-							auth,
+							users,
 							classpath,
 							&version_info.version,
 							window,
@@ -65,7 +65,7 @@ impl Instance {
 							self,
 							arg,
 							paths,
-							auth,
+							users,
 							classpath,
 							&version_info.version,
 							window,
@@ -96,7 +96,7 @@ impl Instance {
 							self,
 							arg,
 							paths,
-							auth,
+							users,
 							classpath,
 							&version_info.version,
 							window,
@@ -153,7 +153,7 @@ mod args {
 		instance: &Instance,
 		arg: &str,
 		paths: &Paths,
-		auth: &Auth,
+		users: &UserManager,
 		classpath: &Classpath,
 		version: &str,
 		window: &ClientWindowConfig,
@@ -191,7 +191,7 @@ mod args {
 		}
 
 		// User
-		match auth.get_user() {
+		match users.get_user() {
 			Some(user) => {
 				out = out.replace(placeholder!("auth_player_name"), &user.name);
 				if let Some(uuid) = &user.uuid {
@@ -234,7 +234,7 @@ mod args {
 		instance: &Instance,
 		arg: &serde_json::Value,
 		paths: &Paths,
-		auth: &Auth,
+		users: &UserManager,
 		classpath: &Classpath,
 		version: &str,
 		window: &ClientWindowConfig,
@@ -243,7 +243,7 @@ mod args {
 		let mut out = Vec::new();
 		if let Some(contents) = arg.as_str() {
 			let processed = replace_arg_placeholders(
-				instance, contents, paths, auth, classpath, version, window, token,
+				instance, contents, paths, users, classpath, version, window, token,
 			);
 			if let Some(processed_arg) = processed {
 				out.push(processed_arg);
@@ -277,7 +277,7 @@ mod args {
 						return vec![];
 					}
 					if features.get("is_demo_user").is_some() {
-						let fail = match auth.get_user() {
+						let fail = match users.get_user() {
 							Some(user) => matches!(user.kind, UserKind::Demo),
 							None => false,
 						};
@@ -289,7 +289,7 @@ mod args {
 			}
 			match arg.get("value") {
 				Some(value) => process_arg(
-					instance, value, paths, auth, classpath, version, window, token,
+					instance, value, paths, users, classpath, version, window, token,
 				),
 				None => return vec![],
 			};
@@ -297,7 +297,7 @@ mod args {
 			for val in contents {
 				out.push(
 					process_arg(
-						instance, val, paths, auth, classpath, version, window, token,
+						instance, val, paths, users, classpath, version, window, token,
 					)
 					.get(0)
 					.expect("Expected an argument")

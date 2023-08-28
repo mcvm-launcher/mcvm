@@ -7,7 +7,7 @@ use color_print::{cformat, cprintln};
 
 use crate::data::profile::update::{UpdateManager, UpdateRequirement};
 use crate::data::user::uuid::hyphenate_uuid;
-use crate::data::user::{Auth, AuthState, User};
+use crate::data::user::{AuthState, User, UserManager};
 use crate::io::files::update_hardlink;
 use crate::io::files::{self, paths::Paths};
 use crate::io::java::classpath::Classpath;
@@ -67,7 +67,7 @@ impl Instance {
 		&mut self,
 		manager: &UpdateManager,
 		paths: &Paths,
-		auth: &Auth,
+		users: &UserManager,
 	) -> anyhow::Result<HashSet<PathBuf>> {
 		match &self.kind {
 			InstKind::Client { .. } => {
@@ -77,7 +77,7 @@ impl Instance {
 					cprintln!("<s>Updating client <y!>{}</y!>", self.id);
 				}
 				let files = self
-					.create_client(manager, paths, auth)
+					.create_client(manager, paths, users)
 					.await
 					.context("Failed to create client")?;
 				Ok(files)
@@ -102,7 +102,7 @@ impl Instance {
 		&mut self,
 		manager: &UpdateManager,
 		paths: &Paths,
-		auth: &Auth,
+		users: &UserManager,
 	) -> anyhow::Result<HashSet<PathBuf>> {
 		debug_assert!(matches!(self.kind, InstKind::Client { .. }));
 
@@ -172,8 +172,8 @@ impl Instance {
 		}
 
 		// Create keypair file
-		if let AuthState::Authed(user) = &auth.state {
-			let user = auth.users.get(user).expect("Authed user does not exist");
+		if let AuthState::Authed(user) = &users.state {
+			let user = users.users.get(user).expect("Authed user does not exist");
 			self.create_keypair(user, paths)
 				.context("Failed to create user keypair")?;
 		}

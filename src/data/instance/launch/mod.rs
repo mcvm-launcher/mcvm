@@ -4,8 +4,9 @@ pub mod server;
 use anyhow::Context;
 use color_print::cprintln;
 
+use crate::data::instance::InstKind;
 use crate::data::profile::update::UpdateManager;
-use crate::data::{instance::InstKind, user::Auth};
+use crate::data::user::UserManager;
 use crate::io::files::paths::Paths;
 use crate::io::lock::Lockfile;
 use crate::util::print::PrintOptions;
@@ -19,7 +20,7 @@ impl Instance {
 		&mut self,
 		paths: &Paths,
 		lock: &mut Lockfile,
-		auth: &Auth,
+		users: &UserManager,
 		debug: bool,
 		token: Option<String>,
 		version: &MinecraftVersion,
@@ -37,14 +38,14 @@ impl Instance {
 			.await
 			.context("Update failed")?;
 
-		self.create(&manager, paths, auth)
+		self.create(&manager, paths, users)
 			.await
 			.context("Failed to update instance")?;
 		let version_info = manager.version_info.get();
 		cprintln!("<g>Launching!");
 		match &self.kind {
 			InstKind::Client { .. } => {
-				self.launch_client(paths, auth, debug, token, version_info)
+				self.launch_client(paths, users, debug, token, version_info)
 					.context("Failed to launch client")?;
 			}
 			InstKind::Server { .. } => {

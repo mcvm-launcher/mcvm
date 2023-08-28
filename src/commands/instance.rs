@@ -2,12 +2,11 @@ use anyhow::{anyhow, bail, Context};
 use clap::Subcommand;
 use color_print::cprintln;
 use itertools::Itertools;
-use mcvm::data::user::{AuthState, UserKind};
+use mcvm::data::user::AuthState;
 
 use mcvm::io::lock::Lockfile;
 use mcvm::{data::instance::InstKind, util::print::HYPHEN_POINT};
 use mcvm_shared::instance::Side;
-use reqwest::Client;
 
 use super::user::get_ms_client_id;
 use super::CmdData;
@@ -112,34 +111,18 @@ pub async fn launch(
 		.expect("Instance does not belong to any profiles");
 
 	if let Some(user) = user {
-		if !config.auth.users.contains_key(&user) {
+		if !config.users.users.contains_key(&user) {
 			bail!("User '{user}' does not exist");
 		}
-		config.auth.state = AuthState::Authed(user);
+		config.users.state = AuthState::UserChosen(user);
 	}
 
 	if let InstKind::Client { .. } = &instance.kind {
-		if let AuthState::Authed(user) = &config.auth.state {
-			let user = config
-				.auth
-				.users
-				.get_mut(user)
-				.expect("User in AuthState does not exist");
-			if let UserKind::Microsoft = &user.kind {
-				let client = Client::new();
-				let auth_result = mcvm::data::user::auth::authenticate(get_ms_client_id(), &client)
-					.await
-					.context("Failed to authenticate user")?;
-				let certificate =
-					mcvm::net::microsoft::get_user_certificate(&auth_result.access_token, &client)
-						.await
-						.context("Failed to get user certificate")?;
-				user.access_token = Some(auth_result.access_token);
-				user.uuid = Some(auth_result.profile.uuid);
-				user.keypair = Some(certificate.key_pair);
-				user.xbox_uid = Some(auth_result.xbox_uid);
-			}
-		}
+		config
+			.users
+			.ensure_authenticated(get_ms_client_id())
+			.await
+			.context("Failed to authenticate user")?;
 	}
 
 	let mut lock = Lockfile::open(paths)?;
@@ -148,7 +131,7 @@ pub async fn launch(
 		.launch(
 			paths,
 			&mut lock,
-			&config.auth,
+			&config.users,
 			debug,
 			token,
 			&profile.version,
