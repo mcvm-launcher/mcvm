@@ -137,6 +137,7 @@ pub async fn launch(
 				user.access_token = Some(auth_result.access_token);
 				user.uuid = Some(auth_result.profile.uuid);
 				user.keypair = Some(certificate.key_pair);
+				user.xbox_uid = Some(auth_result.xbox_uid);
 			}
 		}
 	}

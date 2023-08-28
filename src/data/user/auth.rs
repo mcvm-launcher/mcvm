@@ -22,6 +22,7 @@ pub fn present_login_page_and_code(url: &str, code: &str) {
 pub struct AuthResult {
 	pub access_token: String,
 	pub profile: MinecraftUserProfile,
+	pub xbox_uid: String,
 }
 
 /// Authenticate the user
@@ -53,6 +54,7 @@ pub async fn authenticate(
 	let out = AuthResult {
 		access_token,
 		profile,
+		xbox_uid: mc_token.username().clone(),
 	};
 
 	Ok(out)

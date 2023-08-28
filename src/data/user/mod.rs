@@ -21,6 +21,7 @@ pub struct User {
 	pub uuid: Option<String>,
 	pub access_token: Option<String>,
 	pub keypair: Option<Keypair>,
+	pub xbox_uid: Option<String>,
 }
 
 impl User {
@@ -32,6 +33,7 @@ impl User {
 			uuid: None,
 			access_token: None,
 			keypair: None,
+			xbox_uid: None,
 		}
 	}
 

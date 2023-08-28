@@ -181,7 +181,6 @@ mod args {
 		out = out.replace(placeholder!("assets_index_name"), version);
 		out = out.replace(placeholder!("user_type"), "mojang");
 		out = out.replace(placeholder!("clientid"), "mcvm");
-		out = out.replace(placeholder!("auth_xuid"), "mcvm");
 		// Apparently this is used for Twitch on older versions
 		out = out.replace(placeholder!("user_properties"), "\"\"");
 
@@ -203,6 +202,11 @@ mod args {
 				} else if let Some(access_token) = &user.access_token {
 					out = out.replace(placeholder!("auth_access_token"), access_token);
 				}
+				if let Some(xbox_uid) = &user.xbox_uid {
+					out = out.replace(placeholder!("auth_xuid"), &xbox_uid);
+				}
+
+				// Blank any args we don't replace since the game will complain if we don't
 				if out.contains(placeholder!("auth_player_name"))
 					|| out.contains(placeholder!("auth_access_token"))
 					|| out.contains(placeholder!("auth_uuid"))
