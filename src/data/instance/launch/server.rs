@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use anyhow::Context;
 
 use crate::data::instance::{InstKind, Instance};
@@ -40,6 +42,7 @@ impl Instance {
 			jvm_args: &jvm_args,
 			main_class: self.main_class.as_deref(),
 			game_args: &game_args,
+			additional_env_vars: &HashMap::new(),
 		};
 
 		launch(paths, &launch_args).context("Failed to run launch command")?;

@@ -101,6 +101,7 @@ pub struct LaunchArgument<'a> {
 	pub jvm_args: &'a [String],
 	pub main_class: Option<&'a str>,
 	pub game_args: &'a [String],
+	pub additional_env_vars: &'a HashMap<String, String>,
 }
 
 /// Launch the game
@@ -117,6 +118,7 @@ pub fn launch(paths: &Paths, arg: &LaunchArgument) -> anyhow::Result<()> {
 	};
 	cmd.current_dir(arg.cwd);
 	cmd.envs(arg.options.env.clone());
+	cmd.envs(arg.additional_env_vars);
 
 	cmd.args(arg.options.generate_jvm_args());
 	cmd.args(arg.jvm_args);

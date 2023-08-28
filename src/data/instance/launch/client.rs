@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use anyhow::Context;
 use color_print::cprintln;
 
@@ -83,6 +85,15 @@ impl Instance {
 				}
 			}
 
+			let mut env_vars = HashMap::new();
+			// Compatability env var for old versions on Linux to prevent graphical issues
+			#[cfg(target_os = "linux")]
+			{
+				if VersionPattern::from("1.8.9-").matches_single(version, version_list) {
+					env_vars.insert("__GL_THREADED_OPTIMIZATIONS".to_string(), "0".to_string());
+				}
+			}
+
 			let launch_argument = LaunchArgument {
 				instance_name: &self.id,
 				side: self.kind.to_side(),
@@ -97,6 +108,7 @@ impl Instance {
 				jvm_args: &jvm_args,
 				main_class: Some(main_class),
 				game_args: &game_args,
+				additional_env_vars: &env_vars,
 			};
 
 			launch(paths, &launch_argument).context("Failed to run launch command")?;
