@@ -15,7 +15,7 @@ use crate::io::java::{Java, JavaKind};
 use crate::io::lock::Lockfile;
 use crate::io::options::{read_options, Options};
 use crate::net::fabric_quilt::{self, FabricQuiltMeta};
-use crate::net::minecraft::{assets, game_jar, libraries, version_manifest};
+use crate::net::game_files::{assets, game_jar, libraries, version_manifest};
 use crate::net::paper;
 use crate::package::eval::resolve;
 use crate::package::eval::{EvalConstants, EvalInput, EvalParameters, EvalPermissions};

@@ -13,7 +13,7 @@ use crate::io::files::{self, paths::Paths};
 use crate::io::java::classpath::Classpath;
 use crate::io::java::JavaKind;
 use crate::io::options::{self, client::write_options_txt, server::write_server_properties};
-use crate::net::{fabric_quilt, minecraft, paper};
+use crate::net::{fabric_quilt, game_files, paper};
 use crate::util::{json, print::ReplPrinter};
 use mcvm_shared::later::Later;
 use mcvm_shared::modifications::{Modloader, ServerType};
@@ -119,7 +119,7 @@ impl Instance {
 		let client_json = manager.client_json.get();
 
 		let mut classpath = Classpath::new();
-		let lib_classpath = minecraft::libraries::get_classpath(client_json, paths)
+		let lib_classpath = game_files::libraries::get_classpath(client_json, paths)
 			.context("Failed to extract classpath from game library list")?;
 		classpath.extend(lib_classpath);
 
