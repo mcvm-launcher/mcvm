@@ -1,4 +1,6 @@
+/// Authentication for different types of user accounts
 pub mod auth;
+/// Tools for working with UUIDs
 pub mod uuid;
 
 use std::collections::HashMap;

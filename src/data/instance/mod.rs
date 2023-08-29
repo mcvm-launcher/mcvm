@@ -1,4 +1,6 @@
+/// Creation of instance contents
 pub mod create;
+/// Launching an instance
 pub mod launch;
 
 use anyhow::{bail, ensure, Context};

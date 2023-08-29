@@ -1,3 +1,4 @@
+/// Evaluating script package conditions
 pub mod conditions;
 /// Evaluating declarative packages
 pub mod declarative;

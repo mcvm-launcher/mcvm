@@ -1,4 +1,6 @@
+/// Launching the client
 pub mod client;
+/// Launching the server
 pub mod server;
 
 use std::collections::HashMap;

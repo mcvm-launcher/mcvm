@@ -1,4 +1,6 @@
+/// Operating Java memory arguments
 pub mod args;
+/// Use of Java's classpath format
 pub mod classpath;
 
 use crate::data::profile::update::UpdateManager;

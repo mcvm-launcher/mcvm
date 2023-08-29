@@ -1,4 +1,6 @@
+/// Writing to the options.txt file
 mod file;
+/// Dealing with configured keybinds
 mod keybinds;
 
 pub use file::create_keys;

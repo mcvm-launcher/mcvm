@@ -1,10 +1,17 @@
+/// Common addon constructs
 pub mod addon;
+/// Common instance constructs
 pub mod instance;
+/// Tools for languages and language detection
 pub mod lang;
+/// Enums for modifications to the game
 pub mod modifications;
+/// Common package constructs
 pub mod pkg;
+/// Tools for dealing with version patterns
 pub mod versions;
 
+/// Common utilities
 pub mod util {
 	use serde::Deserialize;
 

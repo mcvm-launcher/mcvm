@@ -1,6 +1,10 @@
+/// Core packages that are built into the binary
 mod core;
+/// Package evaluation functions
 pub mod eval;
+/// Registry used to store packages
 pub mod reg;
+/// Interacting with package repositories
 pub mod repo;
 
 use crate::io::files::paths::Paths;

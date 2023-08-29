@@ -1,3 +1,4 @@
+/// Microsoft and Minecraft OAuth flow
 pub mod auth;
 
 use reqwest::Client;

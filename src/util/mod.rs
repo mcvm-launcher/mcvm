@@ -1,7 +1,12 @@
+/// Utilities for working with hashes and checksums
 pub mod hash;
+/// Utilities for working with serde_json values
 pub mod json;
+/// Utilities for certain mojang formats
 pub mod mojang;
+/// Printing and output utilities
 pub mod print;
+/// Utilities for game versions
 pub mod versions;
 
 use std::time::{SystemTime, UNIX_EPOCH};

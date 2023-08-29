@@ -1,3 +1,4 @@
+/// Functions for updating profiles
 pub mod update;
 
 use anyhow::Context;

@@ -1,5 +1,8 @@
+/// Downloading game assets
 pub mod assets;
+/// Downloading game Java libraries
 pub mod libraries;
+/// Downloading and using the version manifest and version JSONs
 pub mod version_manifest;
 
 use crate::data::profile::update::UpdateManager;
@@ -15,10 +18,11 @@ use reqwest::Client;
 
 use super::download;
 
+/// Downloading the game JAR file
 pub mod game_jar {
 	use super::*;
 
-	/// Downloads the game jar file
+	/// Downloads the game JAR file
 	pub async fn get(
 		side: Side,
 		client_json: &json::JsonObject,

@@ -1,5 +1,8 @@
+/// Standard declarative package format
 pub mod declarative;
+/// Standard repository format
 pub mod repo;
+/// Standardized package dependency resolution
 pub mod resolve;
 
 use std::{fmt::Display, hash::Hash};

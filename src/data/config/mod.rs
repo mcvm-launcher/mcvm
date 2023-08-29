@@ -1,8 +1,14 @@
+/// Configuring instances
 pub mod instance;
+/// Configuring profile modifications
 pub mod modifications;
+/// Configuring packages
 pub mod package;
+/// Configuring global preferences
 pub mod preferences;
+/// Configuring profiles
 pub mod profile;
+/// Configuring users
 pub mod user;
 
 use self::instance::{read_instance_config, InstanceConfig};

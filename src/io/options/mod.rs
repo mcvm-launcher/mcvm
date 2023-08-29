@@ -1,5 +1,8 @@
+/// Options management for the client
 pub mod client;
+/// Common utilties for reading and parsing options-related files
 mod read;
+/// Options management for the server
 pub mod server;
 
 use std::fs::File;

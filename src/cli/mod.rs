@@ -1,3 +1,4 @@
+/// CLI commands
 pub mod commands;
 
 use oauth2::ClientId;
