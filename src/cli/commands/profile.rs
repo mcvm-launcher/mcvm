@@ -79,7 +79,7 @@ async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
 				.await
 				.context("Failed to get package version")?;
 			cprint!("   {}", HYPHEN_POINT);
-			cprint!("<b!>{}:<g!>{}", pkg.req.name, pkg_version);
+			cprint!("<b!>{}:<g!>{}", pkg.req.id, pkg_version);
 			cprintln!();
 		}
 	} else {

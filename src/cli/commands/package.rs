@@ -56,14 +56,14 @@ async fn list(data: &mut CmdData, raw: bool, profile: Option<String>) -> anyhow:
 	if let Some(profile_id) = profile {
 		if let Some(profile) = config.profiles.get(&profile_id) {
 			if raw {
-				for pkg in profile.packages.iter().sorted_by_key(|x| &x.req.name) {
+				for pkg in profile.packages.iter().sorted_by_key(|x| &x.req.id) {
 					println!("{}", pkg.req);
 				}
 			} else if profile.packages.is_empty() {
 				cprintln!("<s>Profile <b>{}</b> has no packages installed", profile_id);
 			} else {
 				cprintln!("<s>Packages in profile <b>{}</b>:", profile_id);
-				for pkg in profile.packages.iter().sorted_by_key(|x| &x.req.name) {
+				for pkg in profile.packages.iter().sorted_by_key(|x| &x.req.id) {
 					cprintln!("{}<b!>{}</>", HYPHEN_POINT, pkg.req);
 				}
 			}
@@ -76,7 +76,7 @@ async fn list(data: &mut CmdData, raw: bool, profile: Option<String>) -> anyhow:
 			if !profile.packages.is_empty() {
 				for pkg in profile.packages.iter() {
 					found_pkgs
-						.entry(pkg.req.name.clone())
+						.entry(pkg.req.id.clone())
 						.or_insert(vec![])
 						.push(id.clone());
 				}

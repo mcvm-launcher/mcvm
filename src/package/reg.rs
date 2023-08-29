@@ -21,11 +21,11 @@ use std::path::Path;
 /// Format a PkgRequest with colors
 pub fn disp_pkg_request_with_colors(req: &PkgRequest) -> String {
 	match req.source {
-		PkgRequestSource::UserRequire => cformat!("<y>{}", req.name),
-		PkgRequestSource::Bundled(..) => cformat!("<b>{}", req.name),
-		PkgRequestSource::Refused(..) => cformat!("<r>{}", req.name),
+		PkgRequestSource::UserRequire => cformat!("<y>{}", req.id),
+		PkgRequestSource::Bundled(..) => cformat!("<b>{}", req.id),
+		PkgRequestSource::Refused(..) => cformat!("<r>{}", req.id),
 		PkgRequestSource::Dependency(..) | PkgRequestSource::Repository => {
-			cformat!("<c>{}", req.name)
+			cformat!("<c>{}", req.id)
 		}
 	}
 }
@@ -76,7 +76,7 @@ impl PkgRegistry {
 		req: &PkgRequest,
 		paths: &Paths,
 	) -> anyhow::Result<&mut Package> {
-		let pkg_name = req.name.clone();
+		let pkg_name = req.id.clone();
 
 		// First check the remote repositories
 		if let Some(result) = query_all(&mut self.repos, &pkg_name, paths).await? {
@@ -92,7 +92,7 @@ impl PkgRegistry {
 		}
 
 		// Now check if it exists as a core package
-		if is_core_package(&req.name) {
+		if is_core_package(&req.id) {
 			Ok(self.insert(
 				req,
 				Package::new(
@@ -253,7 +253,7 @@ impl PkgRegistry {
 		self.insert(
 			req,
 			Package::new(
-				&req.name,
+				&req.id,
 				version,
 				PkgLocation::Local(path.to_path_buf()),
 				content_type,

@@ -103,7 +103,7 @@ where
 						Some(
 							dest.source
 								.get_source()
-								.map(|source| source.name.clone())
+								.map(|source| source.id.clone())
 								.unwrap_or(String::from("User-refused")),
 						)
 					} else {

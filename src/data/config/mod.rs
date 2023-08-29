@@ -182,7 +182,7 @@ impl Config {
 					.to_profile_config(profile_config.package_stability)
 					.with_context(|| format!("Failed to configure package '{package_config}'"))?;
 
-				if !is_valid_package_id(&config.req.name) {
+				if !is_valid_package_id(&config.req.id) {
 					bail!("Invalid package ID '{package_config}'");
 				}
 

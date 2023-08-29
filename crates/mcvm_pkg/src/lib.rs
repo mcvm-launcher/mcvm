@@ -91,13 +91,13 @@ impl PkgRequestSource {
 #[derive(Debug, Clone, PartialOrd, Ord)]
 pub struct PkgRequest {
 	pub source: PkgRequestSource,
-	pub name: String,
+	pub id: String,
 }
 
 impl PkgRequest {
-	pub fn new(name: &str, source: PkgRequestSource) -> Self {
+	pub fn new(id: &str, source: PkgRequestSource) -> Self {
 		Self {
-			name: name.to_owned(),
+			id: id.to_owned(),
 			source,
 		}
 	}
@@ -105,24 +105,24 @@ impl PkgRequest {
 	/// Create a dependency list for debugging. Recursive, so call with an empty string
 	pub fn debug_sources(&self, list: String) -> String {
 		match &self.source {
-			PkgRequestSource::UserRequire => format!("{}{list}", self.name),
+			PkgRequestSource::UserRequire => format!("{}{list}", self.id),
 			PkgRequestSource::Dependency(source) => {
-				format!("{} -> {}", source.debug_sources(list), self.name)
+				format!("{} -> {}", source.debug_sources(list), self.id)
 			}
 			PkgRequestSource::Refused(source) => {
-				format!("{} =X=> {}", source.debug_sources(list), self.name)
+				format!("{} =X=> {}", source.debug_sources(list), self.id)
 			}
 			PkgRequestSource::Bundled(bundler) => {
-				format!("{} => {}", bundler.debug_sources(list), self.name)
+				format!("{} => {}", bundler.debug_sources(list), self.id)
 			}
-			PkgRequestSource::Repository => format!("Repository -> {}{list}", self.name),
+			PkgRequestSource::Repository => format!("Repository -> {}{list}", self.id),
 		}
 	}
 }
 
 impl PartialEq for PkgRequest {
 	fn eq(&self, other: &Self) -> bool {
-		self.name == other.name
+		self.id == other.id
 	}
 }
 
@@ -130,13 +130,13 @@ impl Eq for PkgRequest {}
 
 impl Hash for PkgRequest {
 	fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
-		self.name.hash(state);
+		self.id.hash(state);
 	}
 }
 
 impl Display for PkgRequest {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		write!(f, "{}", self.name)
+		write!(f, "{}", self.id)
 	}
 }
 

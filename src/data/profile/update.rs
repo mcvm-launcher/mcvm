@@ -427,7 +427,7 @@ async fn update_profile_packages<'a>(
 				&instance_id,
 				&packages
 					.iter()
-					.map(|x| x.name.clone())
+					.map(|x| x.id.clone())
 					.collect::<Vec<String>>(),
 			)
 			.context("Failed to remove unused packages")?;
