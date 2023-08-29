@@ -191,7 +191,7 @@ impl UpdateManager {
 			let files = assets::get(
 				self.client_json.get(),
 				paths,
-				&self.version_info.get().version,
+				&self.version_info.get(),
 				self,
 			)
 			.await
@@ -551,10 +551,7 @@ async fn check_profile_paper_update<'a>(
 	ctx: &mut ProfileUpdateContext<'a>,
 ) -> anyhow::Result<()> {
 	if let Some((build_num, file_name)) = paper_properties {
-		if ctx
-			.lock
-			.update_profile_paper_build(&profile.id, build_num)
-		{
+		if ctx.lock.update_profile_paper_build(&profile.id, build_num) {
 			for inst in profile.instances.iter() {
 				if let Some(inst) = ctx.instances.get(inst) {
 					inst.remove_paper(ctx.paths, file_name.clone())

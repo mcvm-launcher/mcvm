@@ -8,6 +8,7 @@ use crate::{
 		user::{UserKind, UserManager},
 	},
 	io::{files::paths::Paths, java::classpath::Classpath},
+	net::game_files::assets::get_virtual_dir_path,
 	skip_fail, skip_none,
 	util::{json, mojang::is_allowed, ARCH_STRING, OS_STRING},
 };
@@ -49,6 +50,10 @@ pub fn replace_arg_placeholders(
 	);
 	out = out.replace(placeholder!("assets_root"), paths.assets.to_str()?);
 	out = out.replace(placeholder!("assets_index_name"), version);
+	out = out.replace(
+		placeholder!("game_assets"),
+		get_virtual_dir_path(paths).to_str()?,
+	);
 	out = out.replace(placeholder!("user_type"), "msa");
 	out = out.replace(placeholder!("clientid"), "mcvm");
 	// Apparently this is used for Twitch on older versions

@@ -6,6 +6,7 @@ use std::{
 
 use anyhow::Context;
 use color_print::{cformat, cprintln};
+use mcvm_shared::versions::{VersionInfo, VersionPattern};
 use reqwest::Client;
 use tokio::{sync::Semaphore, task::JoinSet};
 
@@ -44,17 +45,25 @@ async fn download_index(
 	Ok(doc)
 }
 
+/// Get the virtual assets directory path
+pub fn get_virtual_dir_path(paths: &Paths) -> PathBuf {
+	paths.assets.join("virtual").join("legacy")
+}
+
 /// Create the directories needed to store assets
-async fn create_dirs(paths: &Paths, manager: &UpdateManager) -> anyhow::Result<(PathBuf, PathBuf)> {
+async fn create_dirs(
+	paths: &Paths,
+	version_info: &VersionInfo,
+) -> anyhow::Result<(PathBuf, Option<PathBuf>)> {
 	let objects_dir = paths.assets.join("objects");
 	files::create_dir_async(&objects_dir).await?;
 	// Apparently this directory name is used for older game versions
-	let virtual_dir = paths.assets.join("virtual");
-	if !manager.force && virtual_dir.exists() && !virtual_dir.is_symlink() {
-		files::dir_symlink(&virtual_dir, &objects_dir)
-			.context("Failed to symlink virtual assets")?;
-	}
-
+	if VersionPattern::Before(String::from("13w48b")).matches_info(version_info) {}
+	let virtual_dir = if VersionPattern::Before(String::from("13w48b")).matches_info(version_info) {
+		Some(get_virtual_dir_path(paths))
+	} else {
+		None
+	};
 	Ok((objects_dir, virtual_dir))
 }
 
@@ -62,18 +71,18 @@ async fn create_dirs(paths: &Paths, manager: &UpdateManager) -> anyhow::Result<(
 pub async fn get(
 	client_json: &json::JsonObject,
 	paths: &Paths,
-	version: &str,
+	version_info: &VersionInfo,
 	manager: &UpdateManager,
 ) -> anyhow::Result<HashSet<PathBuf>> {
 	let mut out = HashSet::new();
-	let version_string = version.to_owned();
+	let version_string = version_info.version.clone();
 	let indexes_dir = paths.assets.join("indexes");
 	files::create_dir_async(&indexes_dir).await?;
 
 	let index_path = indexes_dir.join(version_string + ".json");
 	let index_url = json::access_str(json::access_object(client_json, "assetIndex")?, "url")?;
 
-	let (objects_dir, ..) = create_dirs(paths, manager)
+	let (objects_dir, virtual_dir) = create_dirs(paths, version_info)
 		.await
 		.context("Failed to create directories for assets")?;
 
@@ -101,13 +110,23 @@ pub async fn get(
 		let url = format!("https://resources.download.minecraft.net/{hash_path}");
 
 		let path = objects_dir.join(&hash_path);
+		let virtual_path = virtual_dir.as_ref().map(|x| x.join(&hash_path));
 		if !manager.should_update_file(&path) {
-			continue;
+			if let Some(virtual_path) = &virtual_path {
+				if !manager.should_update_file(virtual_path) {
+					continue;
+				}
+			} else {
+				continue;
+			}
 		}
 
 		out.insert(path.clone());
 		files::create_leading_dirs_async(&path).await?;
-		assets_to_download.push((name, url, path));
+		if let Some(virtual_path) = &virtual_path {
+			files::create_leading_dirs_async(virtual_path).await?;
+		}
+		assets_to_download.push((name, url, path, virtual_path));
 	}
 
 	let mut printer = ReplPrinter::from_options(manager.print.clone());
@@ -121,13 +140,17 @@ pub async fn get(
 	let mut join = JoinSet::new();
 	// Used to limit the number of open file descriptors
 	let sem = Arc::new(Semaphore::new(FD_SENSIBLE_LIMIT));
-	for (name, url, path) in assets_to_download {
+	for (name, url, path, virtual_path) in assets_to_download {
 		let client = client.clone();
 		let permit = Arc::clone(&sem).acquire_owned().await;
 		let fut = async move {
 			let response = client.get(url).send();
 			let _permit = permit;
 			tokio::fs::write(&path, response.await?.error_for_status()?.bytes().await?).await?;
+			if let Some(virtual_path) = virtual_path {
+				files::update_hardlink(&path, &virtual_path)
+					.context("Failed to hardlink virtual asset")?;
+			}
 			Ok::<(), anyhow::Error>(())
 		};
 		join.spawn(fut);
