@@ -119,7 +119,7 @@ Either `url` or `path` must be set, not both or neither.
 
 The require instruction has a syntax of a list of package groups, which can either be multiple strings inside parentheses or a single string. In the future, these groups will be able to be chained in more complex expressions, but for now they have no purpose. Just put the packages in a list.
 
-Another part is the ability to make an explicit dependency using the `<"package-name">` syntax (Note that the brackets are outside of the string).
+Another part is the ability to make an explicit dependency using the `<"package-id">` syntax (Note that the brackets are outside of the string).
 
 # Example
 

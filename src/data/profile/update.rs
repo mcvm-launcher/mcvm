@@ -510,7 +510,7 @@ async fn check_profile_version_change<'a>(
 	paper_properties: Option<(u16, String)>,
 	ctx: &mut ProfileUpdateContext<'a>,
 ) -> anyhow::Result<()> {
-	if ctx.lock.update_profile_version(&profile.name, mc_version) {
+	if ctx.lock.update_profile_version(&profile.id, mc_version) {
 		cprintln!("<s>Updating profile version...");
 		for instance_id in profile.instances.iter() {
 			let instance = ctx.instances.get(instance_id).ok_or(anyhow!(
@@ -553,7 +553,7 @@ async fn check_profile_paper_update<'a>(
 	if let Some((build_num, file_name)) = paper_properties {
 		if ctx
 			.lock
-			.update_profile_paper_build(&profile.name, build_num)
+			.update_profile_paper_build(&profile.id, build_num)
 		{
 			for inst in profile.instances.iter() {
 				if let Some(inst) = ctx.instances.get(inst) {

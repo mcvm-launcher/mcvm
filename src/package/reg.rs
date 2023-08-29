@@ -76,14 +76,14 @@ impl PkgRegistry {
 		req: &PkgRequest,
 		paths: &Paths,
 	) -> anyhow::Result<&mut Package> {
-		let pkg_name = req.id.clone();
+		let pkg_id = req.id.clone();
 
 		// First check the remote repositories
-		if let Some(result) = query_all(&mut self.repos, &pkg_name, paths).await? {
+		if let Some(result) = query_all(&mut self.repos, &pkg_id, paths).await? {
 			return Ok(self.insert(
 				req,
 				Package::new(
-					&pkg_name,
+					&pkg_id,
 					result.version,
 					PkgLocation::Remote(Some(result.url)),
 					result.content_type,
@@ -96,14 +96,14 @@ impl PkgRegistry {
 			Ok(self.insert(
 				req,
 				Package::new(
-					&pkg_name,
+					&pkg_id,
 					1,
 					PkgLocation::Core,
-					get_core_package_content_type(&pkg_name).expect("Core package should exist"),
+					get_core_package_content_type(&pkg_id).expect("Core package should exist"),
 				),
 			))
 		} else {
-			Err(anyhow!("Package '{pkg_name}' does not exist"))
+			Err(anyhow!("Package '{pkg_id}' does not exist"))
 		}
 	}
 
@@ -292,7 +292,7 @@ impl PkgRegistry {
 			.await
 			.context("Failed to retrieve all packages from repos")?
 			.iter()
-			.map(|(name, ..)| PkgRequest::new(name, PkgRequestSource::Repository))
+			.map(|(id, ..)| PkgRequest::new(id, PkgRequestSource::Repository))
 			.collect::<Vec<_>>();
 		self.remove_cached_packages(packages.iter(), paths)
 			.await

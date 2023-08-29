@@ -5,14 +5,14 @@ use crate::util::is_valid_identifier;
 /// A known identifier for a package
 #[derive(Debug, Hash, Clone, PartialEq, Eq)]
 pub struct PkgIdentifier {
-	pub name: String,
+	pub id: String,
 	pub version: u32,
 }
 
 impl PkgIdentifier {
-	pub fn new(name: &str, version: u32) -> Self {
+	pub fn new(id: &str, version: u32) -> Self {
 		Self {
-			name: name.to_owned(),
+			id: id.to_owned(),
 			version,
 		}
 	}

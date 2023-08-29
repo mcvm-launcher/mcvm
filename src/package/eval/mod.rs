@@ -247,7 +247,7 @@ pub fn create_valid_addon_request(
 	}
 
 	let file_name =
-		file_name.unwrap_or(addon::get_addon_instance_filename(&pkg_id.name, &id, &kind));
+		file_name.unwrap_or(addon::get_addon_instance_filename(&pkg_id.id, &id, &kind));
 
 	if !is_filename_valid(kind, &file_name) {
 		bail!("Invalid addon filename '{file_name}' in addon '{id}'");

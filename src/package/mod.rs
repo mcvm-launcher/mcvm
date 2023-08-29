@@ -94,13 +94,13 @@ pub struct Package {
 
 impl Package {
 	pub fn new(
-		name: &str,
+		id: &str,
 		version: u32,
 		location: PkgLocation,
 		content_type: PackageContentType,
 	) -> Self {
 		Self {
-			id: PkgIdentifier::new(name, version),
+			id: PkgIdentifier::new(id, version),
 			location,
 			data: Later::new(),
 			content_type,
@@ -109,11 +109,7 @@ impl Package {
 
 	/// Get the cached file name of the package
 	pub fn filename(&self) -> String {
-		format!(
-			"{}_{}{PKG_EXTENSION}",
-			self.id.name.clone(),
-			self.id.version
-		)
+		format!("{}_{}{PKG_EXTENSION}", self.id.id.clone(), self.id.version)
 	}
 
 	/// Get the cached path of the package
@@ -160,7 +156,7 @@ impl Package {
 					}
 				}
 				PkgLocation::Core => {
-					let contents = get_core_package(&self.id.name)
+					let contents = get_core_package(&self.id.id)
 						.ok_or(anyhow!("Package is not a core package"))?;
 					self.data.fill(PkgData::new(contents));
 				}
@@ -282,7 +278,7 @@ mod tests {
 	use super::*;
 
 	#[test]
-	fn test_package_name() {
+	fn test_package_id() {
 		let package = Package::new(
 			"sodium",
 			2,

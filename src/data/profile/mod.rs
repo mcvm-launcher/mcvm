@@ -17,7 +17,7 @@ pub type InstanceRegistry = std::collections::HashMap<String, Instance>;
 
 #[derive(Debug)]
 pub struct Profile {
-	pub name: String,
+	pub id: String,
 	pub version: MinecraftVersion,
 	pub instances: Vec<String>,
 	pub packages: Vec<PkgProfileConfig>,
@@ -25,9 +25,9 @@ pub struct Profile {
 }
 
 impl Profile {
-	pub fn new(name: &str, version: MinecraftVersion, modifications: GameModifications) -> Self {
+	pub fn new(id: &str, version: MinecraftVersion, modifications: GameModifications) -> Self {
 		Profile {
-			name: name.to_owned(),
+			id: id.to_owned(),
 			version,
 			instances: Vec::new(),
 			packages: Vec::new(),

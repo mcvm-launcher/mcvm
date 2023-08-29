@@ -145,13 +145,13 @@ async fn sync(data: &mut CmdData) -> anyhow::Result<()> {
 	Ok(())
 }
 
-async fn cat(data: &mut CmdData, name: &str, raw: bool) -> anyhow::Result<()> {
+async fn cat(data: &mut CmdData, id: &str, raw: bool) -> anyhow::Result<()> {
 	data.ensure_config(!raw).await?;
 	data.ensure_paths().await?;
 	let paths = data.paths.get();
 	let config = data.config.get_mut();
 
-	let req = PkgRequest::new(name, PkgRequestSource::UserRequire);
+	let req = PkgRequest::new(id, PkgRequestSource::UserRequire);
 	let contents = config.packages.load(&req, paths, &Client::new()).await?;
 	if !raw {
 		cprintln!("<s,b>Contents of package <g>{}</g>:</s,b>", req);

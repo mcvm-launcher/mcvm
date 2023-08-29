@@ -169,7 +169,7 @@ impl Lockfile {
 	/// Returns a list of addon files to be removed
 	pub fn update_package(
 		&mut self,
-		name: &str,
+		id: &str,
 		instance: &str,
 		version: u32,
 		addons: &[LockfileAddon],
@@ -177,7 +177,7 @@ impl Lockfile {
 		let mut files_to_remove = Vec::new();
 		let mut new_files = Vec::new();
 		if let Some(instance) = self.contents.packages.get_mut(instance) {
-			if let Some(pkg) = instance.get_mut(name) {
+			if let Some(pkg) = instance.get_mut(id) {
 				pkg.version = version.to_owned();
 				let mut indices = Vec::new();
 				// Check for addons that need to be removed
@@ -215,7 +215,7 @@ impl Lockfile {
 				pkg.addons = addons.to_vec();
 			} else {
 				instance.insert(
-					name.to_owned(),
+					id.to_owned(),
 					LockfilePackage {
 						version: version.to_owned(),
 						addons: addons.to_vec(),
@@ -227,7 +227,7 @@ impl Lockfile {
 			self.contents
 				.packages
 				.insert(instance.to_owned(), HashMap::new());
-			self.update_package(name, instance, version, addons)?;
+			self.update_package(id, instance, version, addons)?;
 		}
 
 		for file in &new_files {

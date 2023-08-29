@@ -17,7 +17,7 @@ pub fn get_dir(addon: &Addon, paths: &Paths) -> PathBuf {
 
 /// Get the path to an addon stored in the internal addons folder
 pub fn get_path(addon: &Addon, paths: &Paths, instance_id: &str) -> PathBuf {
-	let pkg_dir = get_dir(addon, paths).join(&addon.pkg_id.name);
+	let pkg_dir = get_dir(addon, paths).join(&addon.pkg_id.id);
 	if let Some(version) = &addon.version {
 		pkg_dir.join(addon.id.clone()).join(version)
 	} else {

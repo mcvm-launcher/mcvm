@@ -176,11 +176,11 @@ impl LaunchOptions {
 }
 
 /// Get the name of the launch log file
-fn log_file_name(instance_name: &str) -> anyhow::Result<String> {
-	Ok(format!("{instance_name}-{}.txt", utc_timestamp()?))
+fn log_file_name(instance_id: &str) -> anyhow::Result<String> {
+	Ok(format!("{instance_id}-{}.txt", utc_timestamp()?))
 }
 
 /// Get the path to the launch log file
-fn log_file_path(instance_name: &str, paths: &Paths) -> anyhow::Result<PathBuf> {
-	Ok(paths.launch_logs.join(log_file_name(instance_name)?))
+fn log_file_path(instance_id: &str, paths: &Paths) -> anyhow::Result<PathBuf> {
+	Ok(paths.launch_logs.join(log_file_name(instance_id)?))
 }

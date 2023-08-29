@@ -121,7 +121,7 @@ impl PkgRepo {
 		Ok(index
 			.packages
 			.iter()
-			.map(|(name, entry)| (name.clone(), entry.clone()))
+			.map(|(id, entry)| (id.clone(), entry.clone()))
 			.collect())
 	}
 }
@@ -150,11 +150,11 @@ pub async fn get_content_type(entry: &RepoPkgEntry) -> PackageContentType {
 /// Query a list of repos
 pub async fn query_all(
 	repos: &mut [PkgRepo],
-	name: &str,
+	id: &str,
 	paths: &Paths,
 ) -> anyhow::Result<Option<RepoQueryResult>> {
 	for repo in repos {
-		let query = match repo.query(name, paths).await {
+		let query = match repo.query(id, paths).await {
 			Ok(val) => val,
 			Err(e) => {
 				print_err(e);
