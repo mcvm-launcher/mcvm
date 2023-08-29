@@ -49,7 +49,7 @@ pub fn replace_arg_placeholders(
 	);
 	out = out.replace(placeholder!("assets_root"), paths.assets.to_str()?);
 	out = out.replace(placeholder!("assets_index_name"), version);
-	out = out.replace(placeholder!("user_type"), "mojang");
+	out = out.replace(placeholder!("user_type"), "msa");
 	out = out.replace(placeholder!("clientid"), "mcvm");
 	// Apparently this is used for Twitch on older versions
 	out = out.replace(placeholder!("user_properties"), "\"\"");
