@@ -124,7 +124,7 @@ pub async fn run_cli(data: &mut CmdData) -> anyhow::Result<()> {
 	match cli.command {
 		Command::Profile { command } => profile::run(command, data).await,
 		Command::User { command } => user::run(command, data).await,
-		Command::Launch { instance } => instance::launch(&instance, false, None, None, data).await,
+		Command::Launch { instance } => instance::launch(&instance, false, None, data).await,
 		Command::Version => {
 			print_version();
 			Ok(())

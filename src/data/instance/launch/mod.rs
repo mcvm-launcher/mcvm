@@ -36,7 +36,6 @@ impl Instance {
 		lock: &mut Lockfile,
 		users: &UserManager,
 		debug: bool,
-		token: Option<String>,
 		version: &MinecraftVersion,
 	) -> anyhow::Result<()> {
 		cprintln!("Checking for updates...");
@@ -59,13 +58,10 @@ impl Instance {
 		cprintln!("<g>Launching!");
 		match &self.kind {
 			InstKind::Client { .. } => {
-				self.launch_client(paths, users, debug, token, version_info)
+				self.launch_client(paths, users, debug, version_info)
 					.context("Failed to launch client")?;
 			}
 			InstKind::Server { .. } => {
-				if token.is_some() {
-					cprintln!("<y>Notice: Ignoring 'token' argument for server instance");
-				}
 				self.launch_server(paths, debug, version_info)
 					.context("Failed to launch server")?;
 			}

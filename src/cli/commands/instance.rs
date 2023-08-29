@@ -34,9 +34,6 @@ pub enum InstanceSubcommand {
 		/// An optional user to choose when launching
 		#[arg(short, long)]
 		user: Option<String>,
-		/// An optional Minecraft session token to override with
-		#[arg(long)]
-		token: Option<String>,
 		/// The instance to launch
 		instance: String,
 	},
@@ -91,7 +88,6 @@ async fn list(
 pub async fn launch(
 	instance: &str,
 	debug: bool,
-	token: Option<String>,
 	user: Option<String>,
 	data: &mut CmdData,
 ) -> anyhow::Result<()> {
@@ -133,7 +129,6 @@ pub async fn launch(
 			&mut lock,
 			&config.users,
 			debug,
-			token,
 			&profile.version,
 		)
 		.await
@@ -147,9 +142,8 @@ pub async fn run(command: InstanceSubcommand, data: &mut CmdData) -> anyhow::Res
 		InstanceSubcommand::List { raw, side, profile } => list(data, raw, side, profile).await,
 		InstanceSubcommand::Launch {
 			debug,
-			token,
 			user,
 			instance,
-		} => launch(&instance, debug, token, user, data).await,
+		} => launch(&instance, debug, user, data).await,
 	}
 }

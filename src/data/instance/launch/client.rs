@@ -28,7 +28,6 @@ impl Instance {
 		paths: &Paths,
 		users: &UserManager,
 		debug: bool,
-		token: Option<String>,
 		version_info: &VersionInfo,
 	) -> anyhow::Result<()> {
 		debug_assert!(matches!(self.kind, InstKind::Client { .. }));
@@ -54,7 +53,6 @@ impl Instance {
 							classpath,
 							&version_info.version,
 							window,
-							&token,
 						) {
 							jvm_args.push(sub_arg);
 						}
@@ -69,7 +67,6 @@ impl Instance {
 							classpath,
 							&version_info.version,
 							window,
-							&token,
 						) {
 							game_args.push(sub_arg);
 						}
@@ -100,7 +97,6 @@ impl Instance {
 							classpath,
 							&version_info.version,
 							window,
-							&token
 						)));
 					}
 				}
@@ -153,7 +149,6 @@ mod args {
 		classpath: &Classpath,
 		version: &str,
 		window: &ClientWindowConfig,
-		token: &Option<String>,
 	) -> Option<String> {
 		let mut out = arg.replace(placeholder!("launcher_name"), "mcvm");
 		out = out.replace(placeholder!("launcher_version"), "alpha");
@@ -193,9 +188,7 @@ mod args {
 				if let Some(uuid) = &user.uuid {
 					out = out.replace(placeholder!("auth_uuid"), uuid);
 				}
-				if let Some(token) = token {
-					out = out.replace(placeholder!("auth_access_token"), token);
-				} else if let Some(access_token) = &user.access_token {
+				if let Some(access_token) = &user.access_token {
 					out = out.replace(placeholder!("auth_access_token"), access_token);
 				}
 				if let Some(xbox_uid) = &user.xbox_uid {
@@ -234,12 +227,11 @@ mod args {
 		classpath: &Classpath,
 		version: &str,
 		window: &ClientWindowConfig,
-		token: &Option<String>,
 	) -> Vec<String> {
 		let mut out = Vec::new();
 		if let Some(contents) = arg.as_str() {
 			let processed = replace_arg_placeholders(
-				instance, contents, paths, users, classpath, version, window, token,
+				instance, contents, paths, users, classpath, version, window,
 			);
 			if let Some(processed_arg) = processed {
 				out.push(processed_arg);
@@ -284,20 +276,18 @@ mod args {
 				}
 			}
 			match arg.get("value") {
-				Some(value) => process_arg(
-					instance, value, paths, users, classpath, version, window, token,
-				),
+				Some(value) => {
+					process_arg(instance, value, paths, users, classpath, version, window)
+				}
 				None => return vec![],
 			};
 		} else if let Some(contents) = arg.as_array() {
 			for val in contents {
 				out.push(
-					process_arg(
-						instance, val, paths, users, classpath, version, window, token,
-					)
-					.get(0)
-					.expect("Expected an argument")
-					.to_string(),
+					process_arg(instance, val, paths, users, classpath, version, window)
+						.get(0)
+						.expect("Expected an argument")
+						.to_string(),
 				);
 			}
 		} else {
