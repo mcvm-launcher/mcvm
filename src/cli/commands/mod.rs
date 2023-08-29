@@ -20,7 +20,7 @@ use self::profile::ProfileSubcommand;
 use self::snapshot::SnapshotSubcommand;
 use self::user::UserSubcommand;
 
-// Data passed to commands
+/// Data passed to commands
 pub struct CmdData {
 	pub paths: Later<Paths>,
 	pub config: Later<Config>,
@@ -34,6 +34,7 @@ impl CmdData {
 		}
 	}
 
+	/// Ensure that the paths are loaded
 	pub async fn ensure_paths(&mut self) -> anyhow::Result<()> {
 		if self.paths.is_empty() {
 			self.paths.fill(Paths::new().await?);
@@ -41,6 +42,7 @@ impl CmdData {
 		Ok(())
 	}
 
+	/// Ensure that the config is loaded
 	pub async fn ensure_config(&mut self, show_warnings: bool) -> anyhow::Result<()> {
 		if self.config.is_empty() {
 			self.ensure_paths()
@@ -109,6 +111,7 @@ fn print_version() {
 	cprintln!("mcvm version <g>{}</g>", version);
 }
 
+/// Run the command line interface
 pub async fn run_cli(data: &mut CmdData) -> anyhow::Result<()> {
 	let cli = Cli::try_parse();
 	if let Err(e) = &cli {

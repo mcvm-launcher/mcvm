@@ -8,8 +8,8 @@ use mcvm::io::lock::Lockfile;
 use mcvm::{data::instance::InstKind, util::print::HYPHEN_POINT};
 use mcvm_shared::instance::Side;
 
-use super::user::get_ms_client_id;
 use super::CmdData;
+use crate::cli::get_ms_client_id;
 
 #[derive(Debug, Subcommand)]
 pub enum InstanceSubcommand {
