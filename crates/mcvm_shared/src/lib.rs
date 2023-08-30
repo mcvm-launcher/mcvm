@@ -6,6 +6,8 @@ pub mod instance;
 pub mod lang;
 /// Enums for modifications to the game
 pub mod modifications;
+/// MCVM output
+pub mod output;
 /// Common package constructs
 pub mod pkg;
 /// Tools for dealing with version patterns
