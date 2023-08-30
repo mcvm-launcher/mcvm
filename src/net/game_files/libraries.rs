@@ -1,5 +1,4 @@
 use std::{
-	collections::HashSet,
 	fs::File,
 	path::{Path, PathBuf},
 	sync::Arc,
@@ -12,7 +11,7 @@ use tokio::{sync::Semaphore, task::JoinSet};
 use zip::ZipArchive;
 
 use crate::{
-	data::profile::update::UpdateManager,
+	data::profile::update::{UpdateManager, UpdateMethodResult},
 	io::{
 		files::{self, paths::Paths},
 		java::classpath::Classpath,
@@ -47,13 +46,12 @@ fn is_allowed(lib: &JsonObject) -> anyhow::Result<bool> {
 }
 
 /// Extract the files of a native library into the natives directory.
-/// Returns a list of files to add to the update manager.
 fn extract_native(
 	path: &Path,
 	natives_dir: &Path,
 	manager: &UpdateManager,
-) -> anyhow::Result<HashSet<PathBuf>> {
-	let mut out = HashSet::new();
+) -> anyhow::Result<UpdateMethodResult> {
+	let mut out = UpdateMethodResult::new();
 	let file = File::open(path)?;
 	let mut zip = ZipArchive::new(file)?;
 	for i in 0..zip.len() {
@@ -70,7 +68,7 @@ fn extract_native(
 						continue;
 					}
 					let mut out_file = File::create(&out_path)?;
-					out.insert(out_path);
+					out.files_updated.insert(out_path);
 					std::io::copy(&mut file, &mut out_file)
 						.context("Failed to copy compressed file")?;
 				}
@@ -107,8 +105,8 @@ pub async fn get(
 	paths: &Paths,
 	version: &str,
 	manager: &UpdateManager,
-) -> anyhow::Result<HashSet<PathBuf>> {
-	let mut files = HashSet::new();
+) -> anyhow::Result<UpdateMethodResult> {
+	let mut out = UpdateMethodResult::new();
 	let libraries_path = paths.internal.join("libraries");
 	files::create_dir_async(&libraries_path).await?;
 	let natives_path = paths
@@ -177,7 +175,7 @@ pub async fn get(
 			name
 		));
 		files::create_leading_dirs_async(&path).await?;
-		files.insert(path.clone());
+		out.files_updated.insert(path.clone());
 		let url = json::access_str(&library, "url")?.to_owned();
 
 		let client = client.clone();
@@ -198,15 +196,15 @@ pub async fn get(
 
 	for (path, name) in native_paths {
 		printer.print(&cformat!("Extracting library <b!>{}...", name));
-		let native_files = extract_native(&path, &natives_path, manager)
+		let natives_result = extract_native(&path, &natives_path, manager)
 			.with_context(|| format!("Failed to extract native library {name}"))?;
-		files.extend(native_files);
+		out.merge(natives_result);
 	}
 
 	printer.print(&cformat!("<g>Libraries downloaded."));
 	printer.finish();
 
-	Ok(files)
+	Ok(out)
 }
 
 /// Gets the classpath from Minecraft libraries

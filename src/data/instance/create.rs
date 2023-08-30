@@ -1,11 +1,10 @@
 use std::collections::{HashMap, HashSet};
 use std::fs::File;
-use std::path::PathBuf;
 
 use anyhow::Context;
 use color_print::{cformat, cprintln};
 
-use crate::data::profile::update::{UpdateManager, UpdateRequirement};
+use crate::data::profile::update::{UpdateManager, UpdateRequirement, UpdateMethodResult};
 use crate::data::user::uuid::hyphenate_uuid;
 use crate::data::user::{AuthState, User, UserManager};
 use crate::io::files::update_hardlink;
@@ -62,13 +61,12 @@ impl Instance {
 	}
 
 	/// Create the data for the instance.
-	/// Returns a list of files to be added to the update manager.
 	pub async fn create(
 		&mut self,
 		manager: &UpdateManager,
 		paths: &Paths,
 		users: &UserManager,
-	) -> anyhow::Result<HashSet<PathBuf>> {
+	) -> anyhow::Result<UpdateMethodResult> {
 		match &self.kind {
 			InstKind::Client { .. } => {
 				if manager.force {
@@ -76,11 +74,11 @@ impl Instance {
 				} else {
 					cprintln!("<s>Updating client <y!>{}</y!>", self.id);
 				}
-				let files = self
+				let result = self
 					.create_client(manager, paths, users)
 					.await
 					.context("Failed to create client")?;
-				Ok(files)
+				Ok(result)
 			}
 			InstKind::Server { .. } => {
 				if manager.force {
@@ -88,11 +86,11 @@ impl Instance {
 				} else {
 					cprintln!("<s>Updating server <c!>{}</c!>", self.id);
 				}
-				let files = self
+				let result = self
 					.create_server(manager, paths)
 					.await
 					.context("Failed to create server")?;
-				Ok(files)
+				Ok(result)
 			}
 		}
 	}
@@ -103,10 +101,10 @@ impl Instance {
 		manager: &UpdateManager,
 		paths: &Paths,
 		users: &UserManager,
-	) -> anyhow::Result<HashSet<PathBuf>> {
+	) -> anyhow::Result<UpdateMethodResult> {
 		debug_assert!(matches!(self.kind, InstKind::Client { .. }));
 
-		let out = HashSet::new();
+		let out = UpdateMethodResult::new();
 		let version = &manager.version_info.get().version;
 		let dir = self.get_dir(paths);
 		files::create_leading_dirs(&dir)?;
@@ -190,10 +188,10 @@ impl Instance {
 		&mut self,
 		manager: &UpdateManager,
 		paths: &Paths,
-	) -> anyhow::Result<HashSet<PathBuf>> {
+	) -> anyhow::Result<UpdateMethodResult> {
 		debug_assert!(matches!(self.kind, InstKind::Server { .. }));
 
-		let mut out = HashSet::new();
+		let mut out = UpdateMethodResult::new();
 
 		let version = &manager.version_info.get().version;
 		let dir = self.get_dir(paths);
@@ -246,7 +244,7 @@ impl Instance {
 				if manager.should_update_file(&jar_path) {
 					update_hardlink(&extern_jar_path, &jar_path)
 						.context("Failed to hardlink server.jar")?;
-					out.insert(jar_path.clone());
+					out.files_updated.insert(jar_path.clone());
 				}
 				jar_path
 			}
@@ -270,7 +268,7 @@ impl Instance {
 						.context("Failed to download Paper server JAR")?;
 					printer.print(&cformat!("<g>Paper server downloaded."));
 				}
-				out.insert(paper_jar_path.clone());
+				out.files_updated.insert(paper_jar_path.clone());
 				paper_jar_path
 			}
 		});

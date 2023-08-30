@@ -3,7 +3,7 @@ pub mod args;
 /// Use of Java's classpath format
 pub mod classpath;
 
-use crate::data::profile::update::UpdateManager;
+use crate::data::profile::update::{UpdateManager, UpdateMethodResult};
 use crate::io::files::{self, paths::Paths};
 use crate::net;
 use crate::net::download;
@@ -16,7 +16,6 @@ use libflate::gzip::Decoder;
 use reqwest::Client;
 use tar::Archive;
 
-use std::collections::HashSet;
 use std::fs::File;
 use std::io::BufReader;
 use std::path::{Path, PathBuf};
@@ -70,8 +69,8 @@ impl Java {
 		paths: &Paths,
 		manager: &UpdateManager,
 		lock: &mut Lockfile,
-	) -> anyhow::Result<HashSet<PathBuf>> {
-		let out = HashSet::new();
+	) -> anyhow::Result<UpdateMethodResult> {
+		let out = UpdateMethodResult::new();
 		let mut printer = ReplPrinter::from_options(manager.print.clone());
 		printer.print("Checking for Java updates...");
 		match &self.kind {

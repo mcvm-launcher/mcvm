@@ -98,6 +98,11 @@ impl UpdateManager {
 		self.files.extend(files);
 	}
 
+	/// Adds an UpdateMethodResult to the UpdateManager
+	pub fn add_result(&mut self, result: UpdateMethodResult) {
+		self.add_files(result.files_updated);
+	}
+
 	/// Whether a file needs to be updated
 	pub fn should_update_file(&self, file: &Path) -> bool {
 		if self.force {
@@ -188,7 +193,7 @@ impl UpdateManager {
 		}
 
 		if self.has_requirement(UpdateRequirement::GameAssets) {
-			let files = assets::get(
+			let result = assets::get(
 				self.client_json.get(),
 				paths,
 				&self.version_info.get(),
@@ -196,15 +201,15 @@ impl UpdateManager {
 			)
 			.await
 			.context("Failed to get game assets")?;
-			self.add_files(files);
+			self.add_result(result);
 		}
 
 		if self.has_requirement(UpdateRequirement::GameLibraries) {
 			let client_json = self.client_json.get();
-			let files = libraries::get(client_json, paths, &self.version_info.get().version, self)
+			let result = libraries::get(client_json, paths, &self.version_info.get().version, self)
 				.await
 				.context("Failed to get game libraries")?;
-			self.add_files(files);
+			self.add_result(result);
 		}
 
 		if java_required {
@@ -214,21 +219,21 @@ impl UpdateManager {
 				"majorVersion",
 			)?;
 
-			let mut java_files = HashSet::new();
+			let mut java_result = UpdateMethodResult::new();
 			for req in self.requirements.iter() {
 				if let UpdateRequirement::Java(kind) = req {
 					let mut java = Java::new(kind.clone());
 					java.add_version(&java_vers.to_string());
-					let files = java
+					let result = java
 						.install(paths, self, lock)
 						.await
 						.context("Failed to install Java")?;
-					java_files.extend(files);
+					java_result.merge(result);
 					self.java.fill(java);
 				}
 			}
 			lock.finish(paths).await?;
-			self.add_files(java_files);
+			self.add_result(java_result);
 		}
 
 		if game_jar_required {
@@ -285,6 +290,23 @@ impl UpdateManager {
 		}
 
 		Ok(())
+	}
+}
+
+/// Struct returned by updating functions, with data like changed files
+#[derive(Default)]
+pub struct UpdateMethodResult {
+	pub files_updated: HashSet<PathBuf>,
+}
+
+impl UpdateMethodResult {
+	pub fn new() -> Self {
+		Self::default()
+	}
+
+	/// Merges this result with another one
+	pub fn merge(&mut self, other: Self) {
+		self.files_updated.extend(other.files_updated);
 	}
 }
 

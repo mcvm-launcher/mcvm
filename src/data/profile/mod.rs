@@ -56,11 +56,11 @@ impl Profile {
 		manager.fulfill_requirements(paths, lock).await?;
 		for id in self.instances.iter_mut() {
 			let instance = reg.get_mut(id).expect("Profile has unknown instance");
-			let files = instance
+			let result = instance
 				.create(&manager, paths, users)
 				.await
 				.with_context(|| format!("Failed to create instance {id}"))?;
-			manager.add_files(files);
+			manager.add_result(result);
 		}
 		Ok(manager.version_info.get_val().versions)
 	}

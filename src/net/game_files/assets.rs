@@ -1,5 +1,4 @@
 use std::{
-	collections::HashSet,
 	path::{Path, PathBuf},
 	sync::Arc,
 };
@@ -11,7 +10,7 @@ use reqwest::Client;
 use tokio::{sync::Semaphore, task::JoinSet};
 
 use crate::{
-	data::profile::update::UpdateManager,
+	data::profile::update::{UpdateManager, UpdateMethodResult},
 	io::files::{self, paths::Paths},
 	net::download::{self, FD_SENSIBLE_LIMIT},
 	util::{
@@ -73,8 +72,8 @@ pub async fn get(
 	paths: &Paths,
 	version_info: &VersionInfo,
 	manager: &UpdateManager,
-) -> anyhow::Result<HashSet<PathBuf>> {
-	let mut out = HashSet::new();
+) -> anyhow::Result<UpdateMethodResult> {
+	let mut out = UpdateMethodResult::new();
 	let version_string = version_info.version.clone();
 	let indexes_dir = paths.assets.join("indexes");
 	files::create_dir_async(&indexes_dir).await?;
@@ -121,7 +120,7 @@ pub async fn get(
 			}
 		}
 
-		out.insert(path.clone());
+		out.files_updated.insert(path.clone());
 		files::create_leading_dirs_async(&path).await?;
 		if let Some(virtual_path) = &virtual_path {
 			files::create_leading_dirs_async(virtual_path).await?;
