@@ -36,7 +36,9 @@ async fn list(data: &mut CmdData, raw: bool) -> anyhow::Result<()> {
 			println!("{id}");
 		} else {
 			match user.kind {
-				UserKind::Microsoft { .. } => cprintln!("<s><g>{}</g> <k!>({})</k!>", user.name, id),
+				UserKind::Microsoft { .. } => {
+					cprintln!("<s><g>{}</g> <k!>({})</k!>", user.name, id)
+				}
 				UserKind::Demo => cprintln!("<s><c!>{}</c!> <k!>({})</k!>", user.name, id),
 				UserKind::Unverified => cprintln!("<s><k!>{}</k!> <k!>({})</k!>", user.name, id),
 			}
@@ -69,7 +71,8 @@ async fn status(data: &mut CmdData) -> anyhow::Result<()> {
 
 async fn auth(_data: &mut CmdData) -> anyhow::Result<()> {
 	let client = Client::new();
-	let result = user::auth::authenticate(crate::cli::get_ms_client_id(), &client).await?;
+	let result =
+		user::auth::authenticate_microsoft_user(crate::cli::get_ms_client_id(), &client).await?;
 	println!("{}", result.access_token);
 	let cert = mcvm::net::microsoft::get_user_certificate(&result.access_token, &client).await?;
 	dbg!(cert);

@@ -5,7 +5,6 @@ pub mod uuid;
 
 use std::collections::HashMap;
 
-use anyhow::Context;
 use oauth2::ClientId;
 use reqwest::Client;
 
@@ -85,20 +84,8 @@ impl UserManager {
 				.users
 				.get_mut(user)
 				.expect("User in AuthState does not exist");
-			if let UserKind::Microsoft { xbox_uid } = &mut user.kind {
-				let client = Client::new();
-				let auth_result = crate::data::user::auth::authenticate(client_id, &client)
-					.await
-					.context("Failed to authenticate user")?;
-				let certificate =
-					crate::net::microsoft::get_user_certificate(&auth_result.access_token, &client)
-						.await
-						.context("Failed to get user certificate")?;
-				user.access_token = Some(auth_result.access_token);
-				user.uuid = Some(auth_result.profile.uuid);
-				user.keypair = Some(certificate.key_pair);
-				*xbox_uid = Some(auth_result.xbox_uid);
-			}
+			let client = Client::new();
+			user.authenticate(client_id, &client).await?;
 		}
 
 		Ok(())

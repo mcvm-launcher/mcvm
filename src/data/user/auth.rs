@@ -8,6 +8,8 @@ use crate::net::microsoft::{
 	MinecraftUserProfile,
 };
 
+use super::{User, UserKind};
+
 /// Present the login page and secret code to the user
 pub fn present_login_page_and_code(url: &str, code: &str) {
 	let result = open::that_detached("url");
@@ -18,18 +20,45 @@ pub fn present_login_page_and_code(url: &str, code: &str) {
 	cprintln!("<s>and enter the code: <b>{code}");
 }
 
-/// Result from the authentication function
-pub struct AuthResult {
+impl User {
+	/// Authenticate the user
+	pub async fn authenticate(
+		&mut self,
+		client_id: ClientId,
+		client: &reqwest::Client,
+	) -> anyhow::Result<()> {
+		match &mut self.kind {
+			UserKind::Microsoft { xbox_uid } => {
+				let auth_result = authenticate_microsoft_user(client_id, &client)
+					.await
+					.context("Failed to authenticate user")?;
+				let certificate =
+					crate::net::microsoft::get_user_certificate(&auth_result.access_token, &client)
+						.await
+						.context("Failed to get user certificate")?;
+				self.access_token = Some(auth_result.access_token);
+				self.uuid = Some(auth_result.profile.uuid);
+				self.keypair = Some(certificate.key_pair);
+				*xbox_uid = Some(auth_result.xbox_uid);
+			}
+			UserKind::Demo | UserKind::Unverified => {}
+		}
+
+		Ok(())
+	}
+}
+
+/// Result from the Microsoft authentication function
+pub struct MicrosoftAuthResult {
 	pub access_token: String,
 	pub profile: MinecraftUserProfile,
 	pub xbox_uid: String,
 }
 
-/// Authenticate the user
-pub async fn authenticate(
+pub async fn authenticate_microsoft_user(
 	client_id: ClientId,
 	client: &reqwest::Client,
-) -> anyhow::Result<AuthResult> {
+) -> anyhow::Result<MicrosoftAuthResult> {
 	let oauth_client = auth::create_client(client_id).context("Failed to create OAuth client")?;
 	let response = auth::generate_login_page(&oauth_client)
 		.await
@@ -51,7 +80,7 @@ pub async fn authenticate(
 
 	cprintln!("<g>Authentication successful!");
 
-	let out = AuthResult {
+	let out = MicrosoftAuthResult {
 		access_token,
 		profile,
 		xbox_uid: mc_token.username().clone(),
