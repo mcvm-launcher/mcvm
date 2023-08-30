@@ -18,6 +18,7 @@ use self::profile::ProfileConfig;
 use self::user::UserConfig;
 use anyhow::{bail, ensure, Context};
 use mcvm_shared::modifications::Modloader;
+use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::pkg::is_valid_package_id;
 use mcvm_shared::util::is_valid_identifier;
 use preferences::ConfigPreferences;
@@ -28,7 +29,6 @@ use super::user::{validate_username, AuthState, UserManager};
 use crate::io::files::paths::Paths;
 use crate::package::reg::PkgRegistry;
 
-use color_print::cprintln;
 use serde_json::json;
 
 use std::collections::HashMap;
@@ -104,7 +104,11 @@ impl Config {
 	}
 
 	/// Create the Config struct from deserialized config
-	fn load_from_deser(config: ConfigDeser, show_warnings: bool) -> anyhow::Result<Self> {
+	fn load_from_deser(
+		config: ConfigDeser,
+		show_warnings: bool,
+		o: &mut impl MCVMOutput,
+	) -> anyhow::Result<Self> {
 		let mut users = UserManager::new();
 		let mut instances = InstanceRegistry::new();
 		let mut profiles = HashMap::new();
@@ -135,9 +139,17 @@ impl Config {
 				}
 			}
 		} else if config.users.is_empty() && show_warnings {
-			cprintln!("<y>Warning: Users are available but no default user is set.");
+			o.display(
+				MessageContents::Warning(
+					"Users are available but no default user is set".to_string(),
+				),
+				MessageLevel::Important,
+			);
 		} else if show_warnings {
-			cprintln!("<y>Warning: No users are available.");
+			o.display(
+				MessageContents::Warning("No users are available".to_string()),
+				MessageLevel::Important,
+			);
 		}
 
 		// Validate instance presets
@@ -154,14 +166,21 @@ impl Config {
 
 			if let Modloader::Forge = profile_config.modloader {
 				if show_warnings {
-					cprintln!("<y>Warning: Forge installation is currently unimplemented by mcvm. You will be expected to install it yourself for the time being.");
+					o.display(
+						MessageContents::Warning(
+							"Forge installation is currently unimplemented by mcvm. You will be expected to install it yourself for the time being".to_string(),
+						),
+						MessageLevel::Important,
+					);
 				}
 			}
 
 			if profile_config.instances.is_empty() && show_warnings {
-				cprintln!(
-					"<y>Warning: Profile '{}' does not have any instances",
-					profile_id
+				o.display(
+					MessageContents::Warning(format!(
+						"Profile '{profile_id}' does not have any instances"
+					)),
+					MessageLevel::Important,
 				);
 			}
 
@@ -236,9 +255,9 @@ impl Config {
 		})
 	}
 
-	pub fn load(path: &Path, show_warnings: bool) -> anyhow::Result<Self> {
+	pub fn load(path: &Path, show_warnings: bool, o: &mut impl MCVMOutput) -> anyhow::Result<Self> {
 		let obj = Self::open(path)?;
-		Self::load_from_deser(obj, show_warnings)
+		Self::load_from_deser(obj, show_warnings, o)
 	}
 }
 
@@ -246,9 +265,16 @@ impl Config {
 mod tests {
 	use super::*;
 
+	use mcvm_shared::output;
+
 	#[test]
 	fn test_default_config() {
 		let deser = serde_json::from_value(default_config()).unwrap();
-		Config::load_from_deser(deser, true).unwrap();
+		Config::load_from_deser(
+			deser,
+			true,
+			&mut output::Simple(output::MessageLevel::Debug),
+		)
+		.unwrap();
 	}
 }

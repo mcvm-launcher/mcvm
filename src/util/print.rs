@@ -59,7 +59,7 @@ impl ReplPrinter {
 		let _ = self.stdout.flush();
 	}
 
-	/// Print text to the output
+	/// Print text to the output, replacing the current line
 	pub fn print(&mut self, text: &str) {
 		if !self.options.verbose {
 			return;

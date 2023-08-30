@@ -20,10 +20,13 @@ use self::profile::ProfileSubcommand;
 use self::snapshot::SnapshotSubcommand;
 use self::user::UserSubcommand;
 
+use super::output::TerminalOutput;
+
 /// Data passed to commands
 pub struct CmdData {
 	pub paths: Later<Paths>,
 	pub config: Later<Config>,
+	pub output: TerminalOutput,
 }
 
 impl CmdData {
@@ -31,6 +34,7 @@ impl CmdData {
 		Self {
 			paths: Later::new(),
 			config: Later::new(),
+			output: TerminalOutput::new(),
 		}
 	}
 
@@ -49,8 +53,12 @@ impl CmdData {
 				.await
 				.context("Failed to set up directories")?;
 			self.config.fill(
-				Config::load(&Config::get_path(self.paths.get()), show_warnings)
-					.context("Failed to load config")?,
+				Config::load(
+					&Config::get_path(self.paths.get()),
+					show_warnings,
+					&mut self.output,
+				)
+				.context("Failed to load config")?,
 			);
 		}
 

@@ -20,6 +20,18 @@ pub trait MCVMOutput {
 			}
 		}
 	}
+
+	/// Convenience function to remove the need to construct a message
+	fn display(&mut self, contents: MessageContents, level: MessageLevel) {
+		self.display_message(Message { contents, level })
+	}
+
+	/// Start a process of multiple messages. Implementations can use this to replace a line
+	/// multiple times
+	fn start_process(&mut self) {}
+
+	/// End an existing process
+	fn end_process(&mut self) {}
 }
 
 /// A message supplied to the output
@@ -53,4 +65,47 @@ pub enum MessageLevel {
 	Extra,
 	/// Debug-level messages. Good for logging but should not be displayed to the user
 	Debug,
+}
+
+impl MessageLevel {
+	/// Checks if this level is at least another level
+	pub fn at_least(&self, other: &Self) -> bool {
+		match &self {
+			Self::Important => matches!(other, Self::Important | Self::Extra | Self::Debug),
+			Self::Extra => matches!(other, Self::Extra | Self::Debug),
+			Self::Debug => matches!(other, Self::Debug),
+		}
+	}
+}
+
+/// Dummy MCVMOutput that doesn't print anything
+pub struct NoOp;
+
+impl MCVMOutput for NoOp {
+	fn display_text(&mut self, _text: String, _level: MessageLevel) {}
+}
+
+/// MCVMOutput with simple terminal printing
+pub struct Simple(pub MessageLevel);
+
+impl MCVMOutput for Simple {
+	fn display_text(&mut self, text: String, level: MessageLevel) {
+		if !level.at_least(&self.0) {
+			return;
+		}
+
+		println!("{text}");
+	}
+}
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+
+	#[test]
+	fn test_level_is_at_least() {
+		assert!(MessageLevel::Extra.at_least(&MessageLevel::Debug));
+		assert!(MessageLevel::Debug.at_least(&MessageLevel::Debug));
+		assert!(!MessageLevel::Debug.at_least(&MessageLevel::Extra));
+	}
 }
