@@ -11,9 +11,9 @@ use reqwest::Client;
 
 use crate::net::microsoft::Keypair;
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Clone)]
 pub enum UserKind {
-	Microsoft,
+	Microsoft { xbox_uid: Option<String> },
 	Demo,
 	Unverified,
 }
@@ -27,7 +27,6 @@ pub struct User {
 	pub uuid: Option<String>,
 	pub access_token: Option<String>,
 	pub keypair: Option<Keypair>,
-	pub xbox_uid: Option<String>,
 }
 
 impl User {
@@ -39,7 +38,6 @@ impl User {
 			uuid: None,
 			access_token: None,
 			keypair: None,
-			xbox_uid: None,
 		}
 	}
 
@@ -87,7 +85,7 @@ impl UserManager {
 				.users
 				.get_mut(user)
 				.expect("User in AuthState does not exist");
-			if let UserKind::Microsoft = &user.kind {
+			if let UserKind::Microsoft { xbox_uid } = &mut user.kind {
 				let client = Client::new();
 				let auth_result = crate::data::user::auth::authenticate(client_id, &client)
 					.await
@@ -99,7 +97,7 @@ impl UserManager {
 				user.access_token = Some(auth_result.access_token);
 				user.uuid = Some(auth_result.profile.uuid);
 				user.keypair = Some(certificate.key_pair);
-				user.xbox_uid = Some(auth_result.xbox_uid);
+				*xbox_uid = Some(auth_result.xbox_uid);
 			}
 		}
 
@@ -114,18 +112,14 @@ impl Default for UserManager {
 }
 
 /// Validate a Minecraft username
-pub fn validate_username(kind: UserKind, name: &str) -> bool {
-	match kind {
-		UserKind::Microsoft | UserKind::Demo | UserKind::Unverified => {
-			if name.is_empty() || name.len() > 16 {
-				return false;
-			}
+pub fn validate_username(_kind: &UserKind, name: &str) -> bool {
+	if name.is_empty() || name.len() > 16 {
+		return false;
+	}
 
-			for c in name.chars() {
-				if !c.is_ascii_alphanumeric() && c != '_' {
-					return false;
-				}
-			}
+	for c in name.chars() {
+		if !c.is_ascii_alphanumeric() && c != '_' {
+			return false;
 		}
 	}
 
@@ -138,14 +132,26 @@ mod tests {
 
 	#[test]
 	fn test_username_validation() {
-		assert!(validate_username(UserKind::Microsoft, "CarbonSmasher"));
-		assert!(validate_username(UserKind::Demo, "12345"));
-		assert!(validate_username(UserKind::Microsoft, "Foo_Bar888"));
-		assert!(!validate_username(UserKind::Microsoft, ""));
+		assert!(validate_username(
+			&UserKind::Microsoft { xbox_uid: None },
+			"CarbonSmasher"
+		));
+		assert!(validate_username(&UserKind::Demo, "12345"));
+		assert!(validate_username(
+			&UserKind::Microsoft { xbox_uid: None },
+			"Foo_Bar888"
+		));
 		assert!(!validate_username(
-			UserKind::Microsoft,
+			&UserKind::Microsoft { xbox_uid: None },
+			""
+		));
+		assert!(!validate_username(
+			&UserKind::Microsoft { xbox_uid: None },
 			"ABCDEFGHIJKLMNOPQRS"
 		));
-		assert!(!validate_username(UserKind::Microsoft, "+++"));
+		assert!(!validate_username(
+			&UserKind::Microsoft { xbox_uid: None },
+			"+++"
+		));
 	}
 }

@@ -14,7 +14,7 @@ pub enum UserVariant {
 impl UserVariant {
 	fn to_user_kind(&self) -> UserKind {
 		match self {
-			Self::Microsoft { .. } => UserKind::Microsoft,
+			Self::Microsoft { .. } => UserKind::Microsoft { xbox_uid: None },
 			Self::Demo { .. } => UserKind::Demo,
 			Self::Unverified {} => UserKind::Unverified,
 		}

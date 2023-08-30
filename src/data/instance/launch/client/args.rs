@@ -75,8 +75,10 @@ pub fn replace_arg_placeholders(
 			if let Some(access_token) = &user.access_token {
 				out = out.replace(placeholder!("auth_access_token"), access_token);
 			}
-			if let Some(xbox_uid) = &user.xbox_uid {
-				out = out.replace(placeholder!("auth_xuid"), &xbox_uid);
+			if let UserKind::Microsoft { xbox_uid } = &user.kind {
+				if let Some(xbox_uid) = xbox_uid {
+					out = out.replace(placeholder!("auth_xuid"), &xbox_uid);
+				}
 			}
 
 			// Blank any args we don't replace since the game will complain if we don't
