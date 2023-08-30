@@ -1025,7 +1025,6 @@ name = "mcvm_parse"
 version = "0.4.0"
 dependencies = [
  "anyhow",
- "color-print",
  "mcvm_shared",
  "serde",
 ]

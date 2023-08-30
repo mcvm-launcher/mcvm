@@ -313,7 +313,6 @@ pub fn reduce_tokens<'a, T: Iterator<Item = &'a TokenAndPos>>(
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use color_print::cprintln;
 
 	macro_rules! assert_tokens {
 		($text:literal, $toks:expr) => {
@@ -329,7 +328,7 @@ mod tests {
 					}
 				}
 				Err(e) => {
-					cprintln!("<r>{}", e);
+					println!("{e}");
 					panic!();
 				}
 			};
@@ -476,7 +475,7 @@ mod tests {
 					}
 				}
 				Err(e) => {
-					cprintln!("<r>{}", e);
+					println!("{e}");
 					panic!();
 				}
 			}
