@@ -5,6 +5,7 @@ use anyhow::{anyhow, Context};
 use color_print::{cformat, cprintln};
 use itertools::Itertools;
 use mcvm_shared::modifications::ServerType;
+use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::pkg::PackageStability;
 use mcvm_shared::versions::VersionInfo;
 use reqwest::Client;
@@ -311,21 +312,22 @@ impl UpdateMethodResult {
 }
 
 /// Shared objects for profile updating functions
-pub struct ProfileUpdateContext<'a> {
+pub struct ProfileUpdateContext<'a, O: MCVMOutput> {
 	pub packages: &'a mut PkgRegistry,
 	pub instances: &'a mut InstanceRegistry,
 	pub paths: &'a Paths,
 	pub lock: &'a mut Lockfile,
 	pub client: &'a Client,
+	pub output: &'a mut O,
 }
 
 /// Resolve packages and create a mapping of packages to a list of instances.
 /// This allows us to update packages in a reasonable order to the user.
 /// It also returns a map of instances to packages so that unused packages can be removed
-async fn resolve_and_batch<'a>(
+async fn resolve_and_batch<'a, O: MCVMOutput>(
 	profile: &Profile,
 	constants: &EvalConstants,
-	ctx: &mut ProfileUpdateContext<'a>,
+	ctx: &mut ProfileUpdateContext<'a, O>,
 ) -> anyhow::Result<(
 	HashMap<PkgRequest, Vec<String>>,
 	HashMap<String, Vec<PkgRequest>>,
@@ -367,10 +369,10 @@ async fn resolve_and_batch<'a>(
 }
 
 /// Install packages on a profile. Returns a set of all unique packages
-async fn update_profile_packages<'a>(
+async fn update_profile_packages<'a, O: MCVMOutput>(
 	profile: &Profile,
 	constants: &EvalConstants,
-	ctx: &mut ProfileUpdateContext<'a>,
+	ctx: &mut ProfileUpdateContext<'a, O>,
 	force: bool,
 ) -> anyhow::Result<HashSet<PkgRequest>> {
 	let mut printer = ReplPrinter::new(true);
@@ -413,6 +415,7 @@ async fn update_profile_packages<'a>(
 					ctx.lock,
 					force,
 					ctx.client,
+					ctx.output,
 				)
 				.await
 				.with_context(|| {
@@ -526,11 +529,11 @@ pub async fn print_package_support_messages(
 }
 
 /// Update a profile when the Minecraft version has changed
-async fn check_profile_version_change<'a>(
+async fn check_profile_version_change<'a, O: MCVMOutput>(
 	profile: &Profile,
 	mc_version: &str,
 	paper_properties: Option<(u16, String)>,
-	ctx: &mut ProfileUpdateContext<'a>,
+	ctx: &mut ProfileUpdateContext<'a, O>,
 ) -> anyhow::Result<()> {
 	if ctx.lock.update_profile_version(&profile.id, mc_version) {
 		cprintln!("<s>Updating profile version...");
@@ -567,10 +570,10 @@ async fn get_paper_properties(
 }
 
 /// Remove the old Paper files for a profile if they have updated
-async fn check_profile_paper_update<'a>(
+async fn check_profile_paper_update<'a, O: MCVMOutput>(
 	profile: &Profile,
 	paper_properties: Option<(u16, String)>,
-	ctx: &mut ProfileUpdateContext<'a>,
+	ctx: &mut ProfileUpdateContext<'a, O>,
 ) -> anyhow::Result<()> {
 	if let Some((build_num, file_name)) = paper_properties {
 		if ctx.lock.update_profile_paper_build(&profile.id, build_num) {
@@ -593,6 +596,7 @@ pub async fn update_profiles(
 	ids: &[String],
 	force: bool,
 	update_packages: bool,
+	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<()> {
 	let mut all_packages = HashSet::new();
 	let client = Client::new();
@@ -604,6 +608,7 @@ pub async fn update_profiles(
 		paths,
 		lock: &mut lock,
 		client: &client,
+		output: o,
 	};
 
 	for id in ids {
@@ -611,7 +616,11 @@ pub async fn update_profiles(
 			.profiles
 			.get_mut(id)
 			.ok_or(anyhow!("Unknown profile '{id}'"))?;
-		cprintln!("<s,g>Updating profile <b>{}</b>", id);
+
+		ctx.output.display(
+			MessageContents::Header(format!("Updating profile {id}")),
+			MessageLevel::Important,
+		);
 
 		let print_options = PrintOptions::new(true, 0);
 		let mut manager = UpdateManager::new(print_options, force, false);
@@ -644,12 +653,22 @@ pub async fn update_profiles(
 
 		if !profile.instances.is_empty() {
 			let version_list = profile
-				.create_instances(ctx.instances, paths, manager, ctx.lock, &config.users)
+				.create_instances(
+					ctx.instances,
+					paths,
+					manager,
+					ctx.lock,
+					&config.users,
+					ctx.output,
+				)
 				.await
 				.context("Failed to create profile instances")?;
 
 			if !profile.packages.is_empty() {
-				cprintln!("<s>Updating packages");
+				ctx.output.display(
+					MessageContents::Header("Updating packages".to_string()),
+					MessageLevel::Important,
+				);
 			}
 
 			// Make sure all packages in the profile are in the registry first
@@ -665,7 +684,12 @@ pub async fn update_profiles(
 			};
 
 			let packages = update_profile_packages(profile, &constants, &mut ctx, force).await?;
-			cprintln!("<g>All packages installed.");
+
+			ctx.output.display(
+				MessageContents::Success("All packages installed".to_string()),
+				MessageLevel::Important,
+			);
+
 			all_packages.extend(packages);
 		}
 

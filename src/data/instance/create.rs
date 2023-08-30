@@ -2,9 +2,9 @@ use std::collections::{HashMap, HashSet};
 use std::fs::File;
 
 use anyhow::Context;
-use color_print::{cformat, cprintln};
+use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 
-use crate::data::profile::update::{UpdateManager, UpdateRequirement, UpdateMethodResult};
+use crate::data::profile::update::{UpdateManager, UpdateMethodResult, UpdateRequirement};
 use crate::data::user::uuid::hyphenate_uuid;
 use crate::data::user::{AuthState, User, UserManager};
 use crate::io::files::update_hardlink;
@@ -13,7 +13,7 @@ use crate::io::java::classpath::Classpath;
 use crate::io::java::JavaKind;
 use crate::io::options::{self, client::write_options_txt, server::write_server_properties};
 use crate::net::{fabric_quilt, game_files, paper};
-use crate::util::{json, print::ReplPrinter};
+use crate::util::json;
 use mcvm_shared::later::Later;
 use mcvm_shared::modifications::{Modloader, ServerType};
 
@@ -66,30 +66,33 @@ impl Instance {
 		manager: &UpdateManager,
 		paths: &Paths,
 		users: &UserManager,
+		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<UpdateMethodResult> {
 		match &self.kind {
 			InstKind::Client { .. } => {
-				if manager.force {
-					cprintln!("<s>Rebuilding client <y!>{}</y!>", self.id);
-				} else {
-					cprintln!("<s>Updating client <y!>{}</y!>", self.id);
-				}
+				o.display(
+					MessageContents::Header(format!("Updating client {}", self.id)),
+					MessageLevel::Important,
+				);
+				o.start_section();
 				let result = self
 					.create_client(manager, paths, users)
 					.await
 					.context("Failed to create client")?;
+				o.end_section();
 				Ok(result)
 			}
 			InstKind::Server { .. } => {
-				if manager.force {
-					cprintln!("<s>Rebuilding server <c!>{}</c!>", self.id);
-				} else {
-					cprintln!("<s>Updating server <c!>{}</c!>", self.id);
-				}
+				o.display(
+					MessageContents::Header(format!("Updating server {}", self.id)),
+					MessageLevel::Important,
+				);
+				o.start_section();
 				let result = self
-					.create_server(manager, paths)
+					.create_server(manager, paths, o)
 					.await
 					.context("Failed to create server")?;
+				o.end_section();
 				Ok(result)
 			}
 		}
@@ -188,6 +191,7 @@ impl Instance {
 		&mut self,
 		manager: &UpdateManager,
 		paths: &Paths,
+		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<UpdateMethodResult> {
 		debug_assert!(matches!(self.kind, InstKind::Server { .. }));
 
@@ -249,9 +253,12 @@ impl Instance {
 				jar_path
 			}
 			ServerType::Paper => {
-				let mut printer = ReplPrinter::from_options(manager.print.clone());
-				printer.indent(1);
-				printer.print("Checking for paper updates...");
+				o.start_process();
+				o.display(
+					MessageContents::StartProcess("Checking for paper updates".to_string()),
+					MessageLevel::Important,
+				);
+
 				let (build_num, ..) = paper::get_newest_build(version)
 					.await
 					.context("Failed to get the newest Paper version")?;
@@ -260,14 +267,26 @@ impl Instance {
 					.context("Failed to get the Paper file name")?;
 				let paper_jar_path = server_dir.join(&file_name);
 				if !manager.should_update_file(&paper_jar_path) {
-					printer.print(&cformat!("<g>Paper is up to date."));
+					o.display(
+						MessageContents::Success("Paper is up to date".to_string()),
+						MessageLevel::Important,
+					);
 				} else {
-					printer.print("Downloading Paper server...");
+					o.display(
+						MessageContents::StartProcess("Downloading Paper server".to_string()),
+						MessageLevel::Important,
+					);
 					paper::download_server_jar(version, build_num, &file_name, &server_dir)
 						.await
 						.context("Failed to download Paper server JAR")?;
-					printer.print(&cformat!("<g>Paper server downloaded."));
+					o.display(
+						MessageContents::Success("Paper server downloaded".to_string()),
+						MessageLevel::Important,
+					);
 				}
+
+				o.end_process();
+				
 				out.files_updated.insert(paper_jar_path.clone());
 				paper_jar_path
 			}

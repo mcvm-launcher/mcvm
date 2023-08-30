@@ -7,6 +7,7 @@ use mcvm::data::user::AuthState;
 use mcvm::io::lock::Lockfile;
 use mcvm::{data::instance::InstKind, util::print::HYPHEN_POINT};
 use mcvm_shared::instance::Side;
+use mcvm_shared::output::MessageLevel;
 
 use super::CmdData;
 use crate::cli::get_ms_client_id;
@@ -96,6 +97,10 @@ pub async fn launch(
 	let paths = data.paths.get();
 	let config = data.config.get_mut();
 
+	if debug {
+		data.output.level = MessageLevel::Debug;
+	}
+
 	let instance = config
 		.instances
 		.get_mut(instance)
@@ -128,8 +133,8 @@ pub async fn launch(
 			paths,
 			&mut lock,
 			&config.users,
-			debug,
 			&profile.version,
+			&mut data.output,
 		)
 		.await
 		.context("Instance failed to launch")?;

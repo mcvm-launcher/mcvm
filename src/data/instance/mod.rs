@@ -4,8 +4,8 @@ pub mod create;
 pub mod launch;
 
 use anyhow::{bail, ensure, Context};
-use color_print::cprintln;
 use mcvm_shared::instance::Side;
+use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use reqwest::Client;
 
 use crate::io::files::paths::Paths;
@@ -281,6 +281,7 @@ impl Instance {
 		lock: &mut Lockfile,
 		force: bool,
 		client: &Client,
+		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<EvalData<'a>> {
 		let eval = reg
 			.eval(pkg, paths, Routine::Install, eval_input, client)
@@ -289,7 +290,10 @@ impl Instance {
 
 		// Run commands
 		if !eval.commands.is_empty() {
-			cprintln!("<s>Running commands...");
+			o.display(
+				MessageContents::StartProcess("Running commands".to_string()),
+				MessageLevel::Important,
+			);
 		}
 		for command_and_args in &eval.commands {
 			let program = command_and_args

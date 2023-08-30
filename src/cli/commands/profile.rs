@@ -133,7 +133,7 @@ async fn update(
 		ids.to_vec()
 	};
 
-	update_profiles(paths, config, &ids, force, !skip_packages).await?;
+	update_profiles(paths, config, &ids, force, !skip_packages, &mut data.output).await?;
 
 	Ok(())
 }

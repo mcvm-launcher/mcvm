@@ -2,6 +2,7 @@
 pub mod update;
 
 use anyhow::Context;
+use mcvm_shared::output::MCVMOutput;
 
 use crate::data::instance::Instance;
 use crate::io::files::paths::Paths;
@@ -48,6 +49,7 @@ impl Profile {
 		mut manager: UpdateManager,
 		lock: &mut Lockfile,
 		users: &UserManager,
+		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Vec<String>> {
 		for id in self.instances.iter_mut() {
 			let instance = reg.get(id).expect("Profile has unknown instance");
@@ -57,7 +59,7 @@ impl Profile {
 		for id in self.instances.iter_mut() {
 			let instance = reg.get_mut(id).expect("Profile has unknown instance");
 			let result = instance
-				.create(&manager, paths, users)
+				.create(&manager, paths, users, o)
 				.await
 				.with_context(|| format!("Failed to create instance {id}"))?;
 			manager.add_result(result);

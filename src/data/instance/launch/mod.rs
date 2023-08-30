@@ -10,8 +10,8 @@ use std::path::{Path, PathBuf};
 use std::process::Command;
 
 use anyhow::Context;
-use color_print::cprintln;
 use mcvm_shared::instance::Side;
+use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::versions::VersionInfo;
 
 use crate::data::config::instance::QuickPlay;
@@ -37,10 +37,13 @@ impl Instance {
 		paths: &Paths,
 		lock: &mut Lockfile,
 		users: &UserManager,
-		debug: bool,
 		version: &MinecraftVersion,
+		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
-		cprintln!("Checking for updates...");
+		o.display(
+			MessageContents::StartProcess("Checking for updates".to_string()),
+			MessageLevel::Important,
+		);
 		let options = PrintOptions::new(false, 0);
 		let mut manager = UpdateManager::new(options, false, true);
 		manager
@@ -53,18 +56,21 @@ impl Instance {
 			.await
 			.context("Update failed")?;
 
-		self.create(&manager, paths, users)
+		self.create(&manager, paths, users, o)
 			.await
 			.context("Failed to update instance")?;
 		let version_info = manager.version_info.get();
-		cprintln!("<g>Launching!");
+		o.display(
+			MessageContents::Success("Launching!".to_string()),
+			MessageLevel::Important,
+		);
 		match &self.kind {
 			InstKind::Client { .. } => {
-				self.launch_client(paths, users, debug, version_info)
+				self.launch_client(paths, users, version_info, o)
 					.context("Failed to launch client")?;
 			}
 			InstKind::Server { .. } => {
-				self.launch_server(paths, debug, version_info)
+				self.launch_server(paths, version_info, o)
 					.context("Failed to launch server")?;
 			}
 		}
@@ -75,9 +81,9 @@ impl Instance {
 	fn launch_game_process(
 		&self,
 		properties: LaunchProcessProperties,
-		debug: bool,
 		version_info: &VersionInfo,
 		paths: &Paths,
+		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
 		let mut log = File::create(log_file_path(&self.id, paths)?)
 			.context("Failed to open launch log file")?;
@@ -105,10 +111,10 @@ impl Instance {
 		);
 
 		writeln!(log, "Launch command: {cmd:#?}").context("Failed to write to launch log file")?;
-		if debug {
-			cprintln!("<s>Launch command:");
-			cprintln!("<k!>{:#?}", cmd);
-		}
+		o.display(
+			MessageContents::Property("Launch command".to_string(), format!("{cmd:#?}")),
+			MessageLevel::Debug,
+		);
 
 		let mut child = cmd.spawn().context("Failed to spawn child process")?;
 		child.wait().context("Failed to wait for child process")?;

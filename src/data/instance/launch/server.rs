@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 
 use anyhow::Context;
+use mcvm_shared::output::MCVMOutput;
 
 use crate::data::instance::launch::LaunchProcessProperties;
 use crate::data::instance::{InstKind, Instance};
@@ -12,8 +13,8 @@ impl Instance {
 	pub fn launch_server(
 		&mut self,
 		paths: &Paths,
-		debug: bool,
 		version_info: &VersionInfo,
+		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
 		debug_assert!(matches!(self.kind, InstKind::Server { .. }));
 		let java_path = self.java.get().path.get();
@@ -39,7 +40,7 @@ impl Instance {
 			additional_env_vars: &HashMap::new(),
 		};
 
-		self.launch_game_process(launch_properties, debug, version_info, paths)
+		self.launch_game_process(launch_properties, version_info, paths, o)
 			.context("Failed to launch game process")?;
 
 		Ok(())

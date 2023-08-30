@@ -18,6 +18,10 @@ pub trait MCVMOutput {
 			MessageContents::Property(key, value) => {
 				self.display_text(format!("{key}: {value}"), message.level)
 			}
+			MessageContents::Header(text) => self.display_text(text.to_uppercase(), message.level),
+			MessageContents::StartProcess(text) => {
+				self.display_text(format!("{text}..."), message.level)
+			}
 		}
 	}
 
@@ -32,12 +36,20 @@ pub trait MCVMOutput {
 
 	/// End an existing process
 	fn end_process(&mut self) {}
+
+	/// Start a new section / level of hierarchy. Implementations can use this to set the indent level
+	fn start_section(&mut self) {}
+
+	/// End the current section and go down a level of hierarchy
+	fn end_section(&mut self) {}
 }
 
 /// A message supplied to the output
 #[derive(Clone, Debug)]
 pub struct Message {
+	/// The contents of the message
 	pub contents: MessageContents,
+	/// The printing level of the message
 	pub level: MessageLevel,
 }
 
@@ -54,6 +66,10 @@ pub enum MessageContents {
 	Success(String),
 	/// A key-value property
 	Property(String, String),
+	/// A header / big message
+	Header(String),
+	/// An start of some long running process. Usually ends with ...
+	StartProcess(String),
 }
 
 /// The level of logging that a message has
