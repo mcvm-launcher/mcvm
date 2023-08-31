@@ -22,13 +22,13 @@ files in your instances or any other user data."
 }
 
 pub async fn remove(data: &mut CmdData, remove_data: bool) -> anyhow::Result<()> {
-	data.ensure_paths().await?;
-	let paths = data.paths.get();
 	cprintln!("<g>Removing cached files...");
-	fs::remove_dir_all(paths.project.cache_dir()).context("Failed to remove cache directory")?;
+	fs::remove_dir_all(data.paths.project.cache_dir())
+		.context("Failed to remove cache directory")?;
 	if remove_data {
 		cprintln!("<g>Removing internal files...");
-		fs::remove_dir_all(&paths.internal).context("Failed to remove internal data directory")?;
+		fs::remove_dir_all(&data.paths.internal)
+			.context("Failed to remove internal data directory")?;
 	}
 
 	Ok(())

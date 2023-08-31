@@ -24,37 +24,26 @@ use super::output::TerminalOutput;
 
 /// Data passed to commands
 pub struct CmdData {
-	pub paths: Later<Paths>,
+	pub paths: Paths,
 	pub config: Later<Config>,
 	pub output: TerminalOutput,
 }
 
 impl CmdData {
-	pub fn new() -> Self {
-		Self {
-			paths: Later::new(),
+	pub async fn new() -> anyhow::Result<Self> {
+		Ok(Self {
+			paths: Paths::new().await?,
 			config: Later::new(),
 			output: TerminalOutput::new(),
-		}
-	}
-
-	/// Ensure that the paths are loaded
-	pub async fn ensure_paths(&mut self) -> anyhow::Result<()> {
-		if self.paths.is_empty() {
-			self.paths.fill(Paths::new().await?);
-		}
-		Ok(())
+		})
 	}
 
 	/// Ensure that the config is loaded
 	pub async fn ensure_config(&mut self, show_warnings: bool) -> anyhow::Result<()> {
 		if self.config.is_empty() {
-			self.ensure_paths()
-				.await
-				.context("Failed to set up directories")?;
 			self.config.fill(
 				Config::load(
-					&Config::get_path(self.paths.get()),
+					&Config::get_path(&self.paths),
 					show_warnings,
 					&mut self.output,
 				)

@@ -92,9 +92,7 @@ pub async fn launch(
 	user: Option<String>,
 	data: &mut CmdData,
 ) -> anyhow::Result<()> {
-	data.ensure_paths().await?;
 	data.ensure_config(true).await?;
-	let paths = data.paths.get();
 	let config = data.config.get_mut();
 
 	if debug {
@@ -126,11 +124,11 @@ pub async fn launch(
 			.context("Failed to authenticate user")?;
 	}
 
-	let mut lock = Lockfile::open(paths)?;
+	let mut lock = Lockfile::open(&data.paths)?;
 
 	instance
 		.launch(
-			paths,
+			&data.paths,
 			&mut lock,
 			&config.users,
 			&profile.version,

@@ -49,7 +49,6 @@ This package does not need to be installed, it just has to be in the index."
 }
 
 async fn list(data: &mut CmdData, raw: bool, profile: Option<String>) -> anyhow::Result<()> {
-	data.ensure_paths().await?;
 	data.ensure_config(!raw).await?;
 	let config = data.config.get_mut();
 
@@ -102,14 +101,12 @@ async fn list(data: &mut CmdData, raw: bool, profile: Option<String>) -> anyhow:
 
 async fn sync(data: &mut CmdData) -> anyhow::Result<()> {
 	data.ensure_config(true).await?;
-	data.ensure_paths().await?;
-	let paths = data.paths.get();
 	let config = data.config.get_mut();
 
 	let mut printer = ReplPrinter::new(true);
 	for repo in config.packages.repos.iter_mut() {
 		printer.print(&cformat!("Syncing repository <b>{}</b>...", repo.id));
-		match repo.sync(paths).await {
+		match repo.sync(&data.paths).await {
 			Ok(..) => {}
 			Err(e) => {
 				printer.print(&cformat!("<r>{}", e));
@@ -122,7 +119,7 @@ async fn sync(data: &mut CmdData) -> anyhow::Result<()> {
 	printer.print(&cformat!("<s>Updating packages..."));
 	config
 		.packages
-		.update_cached_packages(paths)
+		.update_cached_packages(&data.paths)
 		.await
 		.context("Failed to update cached packages")?;
 	printer.println(&cformat!("<s>Validating packages..."));
@@ -130,7 +127,7 @@ async fn sync(data: &mut CmdData) -> anyhow::Result<()> {
 	for package in config.packages.get_all_packages() {
 		match config
 			.packages
-			.parse_and_validate(&package, paths, &client)
+			.parse_and_validate(&package, &data.paths, &client)
 			.await
 		{
 			Ok(..) => {}
@@ -147,12 +144,10 @@ async fn sync(data: &mut CmdData) -> anyhow::Result<()> {
 
 async fn cat(data: &mut CmdData, id: &str, raw: bool) -> anyhow::Result<()> {
 	data.ensure_config(!raw).await?;
-	data.ensure_paths().await?;
-	let paths = data.paths.get();
 	let config = data.config.get_mut();
 
 	let req = PkgRequest::new(id, PkgRequestSource::UserRequire);
-	let contents = config.packages.load(&req, paths, &Client::new()).await?;
+	let contents = config.packages.load(&req, &data.paths, &Client::new()).await?;
 	if !raw {
 		cprintln!("<s,b>Contents of package <g>{}</g>:</s,b>", req);
 	}
@@ -162,20 +157,18 @@ async fn cat(data: &mut CmdData, id: &str, raw: bool) -> anyhow::Result<()> {
 }
 
 async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
-	data.ensure_paths().await?;
 	data.ensure_config(true).await?;
-	let paths = data.paths.get();
 	let config = data.config.get_mut();
 
 	let req = PkgRequest::new(id, PkgRequestSource::UserRequire);
 	let package_version = config
 		.packages
-		.get_version(&req, paths)
+		.get_version(&req, &data.paths)
 		.await
 		.context("Failed to get package version from registry")?;
 	let metadata = config
 		.packages
-		.get_metadata(&req, paths, &Client::new())
+		.get_metadata(&req, &data.paths, &Client::new())
 		.await
 		.context("Failed to get metadata from the registry")?;
 	if let Some(name) = &metadata.name {

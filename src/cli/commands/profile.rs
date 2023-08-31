@@ -41,9 +41,7 @@ pub enum ProfileSubcommand {
 }
 
 async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
-	data.ensure_paths().await?;
 	data.ensure_config(true).await?;
-	let paths = data.paths.get();
 	let config = data.config.get_mut();
 
 	if let Some(profile) = config.profiles.get(id) {
@@ -75,7 +73,7 @@ async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
 		for pkg in profile.packages.iter() {
 			let pkg_version = config
 				.packages
-				.get_version(&pkg.req, paths)
+				.get_version(&pkg.req, &data.paths)
 				.await
 				.context("Failed to get package version")?;
 			cprint!("   {}", HYPHEN_POINT);
@@ -122,9 +120,7 @@ async fn update(
 	all: bool,
 	skip_packages: bool,
 ) -> anyhow::Result<()> {
-	data.ensure_paths().await?;
 	data.ensure_config(true).await?;
-	let paths = data.paths.get();
 	let config = data.config.get_mut();
 
 	let ids = if all {
@@ -133,7 +129,15 @@ async fn update(
 		ids.to_vec()
 	};
 
-	update_profiles(paths, config, &ids, force, !skip_packages, &mut data.output).await?;
+	update_profiles(
+		&data.paths,
+		config,
+		&ids,
+		force,
+		!skip_packages,
+		&mut data.output,
+	)
+	.await?;
 
 	Ok(())
 }

@@ -47,16 +47,14 @@ pub enum SnapshotSubcommand {
 }
 
 async fn list(data: &mut CmdData, raw: bool, instance: &str) -> anyhow::Result<()> {
-	data.ensure_paths().await?;
 	data.ensure_config(true).await?;
-	let paths = data.paths.get();
 	let config = data.config.get_mut();
 
 	let instance = config
 		.instances
 		.get(instance)
 		.ok_or(anyhow!("Instance does not exist"))?;
-	let (snapshot_dir, index) = instance.open_snapshot_index(paths)?;
+	let (snapshot_dir, index) = instance.open_snapshot_index(&data.paths)?;
 
 	for snapshot in &index.snapshots {
 		if raw {
@@ -71,9 +69,7 @@ async fn list(data: &mut CmdData, raw: bool, instance: &str) -> anyhow::Result<(
 }
 
 async fn create(data: &mut CmdData, instance: &str, snapshot: &str) -> anyhow::Result<()> {
-	data.ensure_paths().await?;
 	data.ensure_config(true).await?;
-	let paths = data.paths.get();
 	let config = data.config.get_mut();
 
 	let instance = config
@@ -81,13 +77,13 @@ async fn create(data: &mut CmdData, instance: &str, snapshot: &str) -> anyhow::R
 		.get(instance)
 		.ok_or(anyhow!("Instance does not exist"))?;
 
-	let (snapshot_dir, index) = instance.open_snapshot_index(paths)?;
+	let (snapshot_dir, index) = instance.open_snapshot_index(&data.paths)?;
 	if index.snapshot_exists(snapshot) {
 		cprintln!("<y>Warning: Overwriting existing snapshot with same ID");
 	}
 	index.finish(&snapshot_dir)?;
 
-	instance.create_snapshot(snapshot.to_owned(), SnapshotKind::User, paths)?;
+	instance.create_snapshot(snapshot.to_owned(), SnapshotKind::User, &data.paths)?;
 
 	cprintln!("<g>Snapshot created.");
 
@@ -95,16 +91,14 @@ async fn create(data: &mut CmdData, instance: &str, snapshot: &str) -> anyhow::R
 }
 
 async fn remove(data: &mut CmdData, instance: &str, snapshot: &str) -> anyhow::Result<()> {
-	data.ensure_paths().await?;
 	data.ensure_config(true).await?;
-	let paths = data.paths.get();
 	let config = data.config.get_mut();
 
 	let instance = config
 		.instances
 		.get(instance)
 		.ok_or(anyhow!("Instance does not exist"))?;
-	instance.remove_snapshot(snapshot, paths)?;
+	instance.remove_snapshot(snapshot, &data.paths)?;
 
 	cprintln!("<g>Snapshot removed.");
 
@@ -112,16 +106,14 @@ async fn remove(data: &mut CmdData, instance: &str, snapshot: &str) -> anyhow::R
 }
 
 async fn restore(data: &mut CmdData, instance: &str, snapshot: &str) -> anyhow::Result<()> {
-	data.ensure_paths().await?;
 	data.ensure_config(true).await?;
-	let paths = data.paths.get();
 	let config = data.config.get_mut();
 
 	let instance = config
 		.instances
 		.get(instance)
 		.ok_or(anyhow!("Instance does not exist"))?;
-	instance.restore_snapshot(snapshot, paths).await?;
+	instance.restore_snapshot(snapshot, &data.paths).await?;
 
 	cprintln!("<g>Snapshot restored.");
 
@@ -129,16 +121,14 @@ async fn restore(data: &mut CmdData, instance: &str, snapshot: &str) -> anyhow::
 }
 
 async fn info(data: &mut CmdData, instance_id: &str, snapshot_id: &str) -> anyhow::Result<()> {
-	data.ensure_paths().await?;
 	data.ensure_config(true).await?;
-	let paths = data.paths.get();
 	let config = data.config.get_mut();
 
 	let instance = config
 		.instances
 		.get(instance_id)
 		.ok_or(anyhow!("Instance does not exist"))?;
-	let (snapshot_dir, index) = instance.open_snapshot_index(paths)?;
+	let (snapshot_dir, index) = instance.open_snapshot_index(&data.paths)?;
 
 	let snapshot = index
 		.snapshots
