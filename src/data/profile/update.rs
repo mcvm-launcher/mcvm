@@ -2,7 +2,6 @@ use std::collections::{HashMap, HashSet};
 use std::path::{Path, PathBuf};
 
 use anyhow::{anyhow, Context};
-use color_print::{cformat, cprintln};
 use itertools::Itertools;
 use mcvm_shared::modifications::ServerType;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
@@ -20,8 +19,7 @@ use crate::net::game_files::{assets, game_jar, libraries, version_manifest};
 use crate::net::paper;
 use crate::package::eval::resolve;
 use crate::package::eval::{EvalConstants, EvalInput, EvalParameters, EvalPermissions};
-use crate::package::reg::{disp_pkg_request_with_colors, PkgRegistry};
-use crate::util::print::{ReplPrinter, HYPHEN_POINT};
+use crate::package::reg::PkgRegistry;
 use crate::util::select_random_n_items_from_list;
 use crate::util::versions::MinecraftVersion;
 use crate::util::{json, print::PrintOptions};
@@ -117,13 +115,17 @@ impl UpdateManager {
 	/// Must be called before fulfill_requirements.
 	pub async fn fulfill_version_manifest(
 		&mut self,
-		paths: &Paths,
 		version: &MinecraftVersion,
+		paths: &Paths,
+		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
-		if self.print.verbose {
-			cprintln!("<s>Obtaining version index...");
-		}
-		let manifest = version_manifest::get(paths, self)
+		o.start_process();
+		o.display(
+			MessageContents::StartProcess("Obtaining version index".to_string()),
+			MessageLevel::Important,
+		);
+
+		let manifest = version_manifest::get(paths, self, o)
 			.await
 			.context("Failed to get version manifest")?;
 
@@ -140,6 +142,12 @@ impl UpdateManager {
 		});
 		self.version_manifest.fill(manifest);
 
+		o.display(
+			MessageContents::Success("Version index obtained".to_string()),
+			MessageLevel::Important,
+		);
+		o.end_process();
+
 		Ok(())
 	}
 
@@ -148,6 +156,7 @@ impl UpdateManager {
 		&mut self,
 		paths: &Paths,
 		lock: &mut Lockfile,
+		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
 		let java_required = matches!(
 			self.requirements
@@ -179,9 +188,12 @@ impl UpdateManager {
 		}
 
 		if self.has_requirement(UpdateRequirement::ClientJson) {
-			if self.print.verbose {
-				cprintln!("<s>Obtaining client JSON data...");
-			}
+			o.start_process();
+			o.display(
+				MessageContents::StartProcess("Obtaining client JSON data".to_string()),
+				MessageLevel::Important,
+			);
+
 			let client_json = version_manifest::get_client_json(
 				&self.version_info.get().version,
 				self.version_manifest.get(),
@@ -191,6 +203,12 @@ impl UpdateManager {
 			.await
 			.context("Failed to get client JSON")?;
 			self.client_json.fill(client_json);
+
+			o.display(
+				MessageContents::Success("Client JSON obtained".to_string()),
+				MessageLevel::Important,
+			);
+			o.end_process();
 		}
 
 		if self.has_requirement(UpdateRequirement::GameAssets) {
@@ -199,6 +217,7 @@ impl UpdateManager {
 				paths,
 				&self.version_info.get(),
 				self,
+				o,
 			)
 			.await
 			.context("Failed to get game assets")?;
@@ -207,9 +226,15 @@ impl UpdateManager {
 
 		if self.has_requirement(UpdateRequirement::GameLibraries) {
 			let client_json = self.client_json.get();
-			let result = libraries::get(client_json, paths, &self.version_info.get().version, self)
-				.await
-				.context("Failed to get game libraries")?;
+			let result = libraries::get(
+				client_json,
+				paths,
+				&self.version_info.get().version,
+				self,
+				o,
+			)
+			.await
+			.context("Failed to get game libraries")?;
 			self.add_result(result);
 		}
 
@@ -226,7 +251,7 @@ impl UpdateManager {
 					let mut java = Java::new(kind.clone());
 					java.add_version(&java_vers.to_string());
 					let result = java
-						.install(paths, self, lock)
+						.install(paths, self, lock, o)
 						.await
 						.context("Failed to install Java")?;
 					java_result.merge(result);
@@ -246,6 +271,7 @@ impl UpdateManager {
 						&self.version_info.get().version,
 						paths,
 						self,
+						o,
 					)
 					.await
 					.context("Failed to get the game JAR file")?;
@@ -265,7 +291,7 @@ impl UpdateManager {
 						)
 						.await
 						.context("Failed to download Fabric/Quilt metadata")?;
-						fabric_quilt::download_files(&meta, paths, *mode, self)
+						fabric_quilt::download_files(&meta, paths, *mode, self, o)
 							.await
 							.context("Failed to download common Fabric/Quilt files")?;
 						self.fq_meta.fill(meta);
@@ -350,6 +376,7 @@ async fn resolve_and_batch<'a, O: MCVMOutput>(
 			params,
 			ctx.paths,
 			ctx.packages,
+			ctx.output,
 		)
 		.await
 		.with_context(|| {
@@ -375,14 +402,21 @@ async fn update_profile_packages<'a, O: MCVMOutput>(
 	ctx: &mut ProfileUpdateContext<'a, O>,
 	force: bool,
 ) -> anyhow::Result<HashSet<PkgRequest>> {
-	let mut printer = ReplPrinter::new(true);
-	cprintln!("<s>Collecting package dependencies...");
+	ctx.output.display(
+		MessageContents::StartProcess("Resolving package dependencies".to_string()),
+		MessageLevel::Important,
+	);
 	let (batched, resolved) = resolve_and_batch(profile, constants, ctx)
 		.await
 		.context("Failed to resolve dependencies for profile")?;
 
-	cprintln!("<s>Installing packages...");
+	ctx.output.display(
+		MessageContents::StartProcess("Installing packages".to_string()),
+		MessageLevel::Important,
+	);
 	for (package, package_instances) in batched.iter().sorted_by_key(|x| x.0) {
+		ctx.output.start_process();
+
 		let pkg_version = ctx
 			.packages
 			.get_version(package, ctx.paths)
@@ -399,11 +433,14 @@ async fn update_profile_packages<'a, O: MCVMOutput>(
 				perms: EvalPermissions::Standard,
 				stability: PackageStability::Stable,
 			};
-			printer.print(&format_package_print(
-				package,
-				Some(instance_id),
-				"Installing...",
-			));
+			ctx.output.display(
+				format_package_update_message(
+					package,
+					Some(instance_id),
+					MessageContents::StartProcess("Installing".to_string()),
+				),
+				MessageLevel::Important,
+			);
 			let input = EvalInput { constants, params };
 			let result = instance
 				.install_package(
@@ -428,19 +465,26 @@ async fn update_profile_packages<'a, O: MCVMOutput>(
 					.map(|x| (instance_id.clone(), x.to_owned())),
 			);
 		}
-		printer.print(&format_package_print(
-			package,
-			None,
-			&cformat!("<g>Installed."),
-		));
-		for (instance, notice) in notices {
-			printer.print(&format_package_print(
+		ctx.output.display(
+			format_package_update_message(
 				package,
-				Some(&instance),
-				&cformat!("<y>Notice: {}", notice),
-			));
+				None,
+				MessageContents::Success("Installed".to_string()),
+			),
+			MessageLevel::Important,
+		);
+		ctx.output.end_process();
+
+		for (instance, notice) in notices {
+			ctx.output.display(
+				format_package_update_message(
+					package,
+					Some(&instance),
+					MessageContents::Notice(notice),
+				),
+				MessageLevel::Important,
+			);
 		}
-		printer.newline();
 	}
 	for (instance_id, packages) in resolved {
 		let instance = ctx.instances.get(&instance_id).ok_or(anyhow!(
@@ -475,39 +519,39 @@ async fn update_profile_packages<'a, O: MCVMOutput>(
 	Ok(out)
 }
 
-/// Creates the print message for package installation when updating profiles
-fn format_package_print(pkg: &PkgRequest, instance: Option<&str>, message: &str) -> String {
-	if let Some(instance) = instance {
-		cformat!(
-			"{}[{}] (<b!>{}</b!>) {}",
-			HYPHEN_POINT,
-			disp_pkg_request_with_colors(pkg),
-			instance,
-			message
+/// Creates the output message for package installation when updating profiles
+fn format_package_update_message(
+	pkg: &PkgRequest,
+	instance: Option<&str>,
+	message: MessageContents,
+) -> MessageContents {
+	let msg = if let Some(instance) = instance {
+		MessageContents::Package(
+			pkg.to_owned(),
+			Box::new(MessageContents::Associated(
+				instance.to_string(),
+				Box::new(message),
+			)),
 		)
 	} else {
-		cformat!(
-			"{}[<c>{}</c>] {}",
-			HYPHEN_POINT,
-			disp_pkg_request_with_colors(pkg),
-			message
-		)
-	}
+		MessageContents::Package(pkg.to_owned(), Box::new(message))
+	};
+
+	MessageContents::ListItem(Box::new(msg))
 }
 
 /// Prints support messages about installed packages when updating
-pub async fn print_package_support_messages(
+pub async fn print_package_support_messages<'a, O: MCVMOutput>(
 	packages: &[PkgRequest],
-	reg: &mut PkgRegistry,
-	client: &Client,
-	paths: &Paths,
+	ctx: &mut ProfileUpdateContext<'a, O>,
 ) -> anyhow::Result<()> {
 	let package_count = 5;
 	let packages = select_random_n_items_from_list(packages, package_count);
 	let mut links = Vec::new();
 	for package in packages {
-		if let Some(link) = reg
-			.get_metadata(package, paths, client)
+		if let Some(link) = ctx
+			.packages
+			.get_metadata(package, ctx.paths, ctx.client)
 			.await?
 			.support_link
 			.clone()
@@ -516,12 +560,13 @@ pub async fn print_package_support_messages(
 		}
 	}
 	if !links.is_empty() {
-		cprintln!("<s>Packages to consider supporting:");
+		ctx.output.display(
+			MessageContents::Header("Packages to consider supporting:".to_string()),
+			MessageLevel::Important,
+		);
 		for (req, link) in links {
-			println!(
-				"{}",
-				&format_package_print(req, None, &cformat!("<m> {}", link),)
-			);
+			let msg = format_package_update_message(req, None, MessageContents::Hyperlink(link));
+			ctx.output.display(msg, MessageLevel::Important);
 		}
 	}
 
@@ -536,7 +581,12 @@ async fn check_profile_version_change<'a, O: MCVMOutput>(
 	ctx: &mut ProfileUpdateContext<'a, O>,
 ) -> anyhow::Result<()> {
 	if ctx.lock.update_profile_version(&profile.id, mc_version) {
-		cprintln!("<s>Updating profile version...");
+		ctx.output.start_process();
+		ctx.output.display(
+			MessageContents::StartProcess("Updating profile version".to_string()),
+			MessageLevel::Important,
+		);
+
 		for instance_id in profile.instances.iter() {
 			let instance = ctx.instances.get(instance_id).ok_or(anyhow!(
 				"Instance '{instance_id}' does not exist in the registry"
@@ -545,6 +595,12 @@ async fn check_profile_version_change<'a, O: MCVMOutput>(
 				.teardown(ctx.paths, paper_properties.clone())
 				.context("Failed to remove old files when updating Minecraft version")?;
 		}
+
+		ctx.output.display(
+			MessageContents::Success("Profile version changed".to_string()),
+			MessageLevel::Important,
+		);
+		ctx.output.end_process();
 	}
 	Ok(())
 }
@@ -625,7 +681,7 @@ pub async fn update_profiles(
 		let print_options = PrintOptions::new(true, 0);
 		let mut manager = UpdateManager::new(print_options, force, false);
 		manager
-			.fulfill_version_manifest(paths, &profile.version)
+			.fulfill_version_manifest(&profile.version, paths, ctx.output)
 			.await
 			.context("Failed to get version information")?;
 		let mc_version = manager.version_info.get().version.clone();
@@ -700,7 +756,7 @@ pub async fn update_profiles(
 	}
 
 	let all_packages = Vec::from_iter(all_packages);
-	print_package_support_messages(&all_packages, &mut config.packages, &client, paths)
+	print_package_support_messages(&all_packages, &mut ctx)
 		.await
 		.context("Failed to print support messages")?;
 

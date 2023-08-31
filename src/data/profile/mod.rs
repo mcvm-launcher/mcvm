@@ -55,7 +55,7 @@ impl Profile {
 			let instance = reg.get(id).expect("Profile has unknown instance");
 			manager.add_requirements(instance.get_requirements());
 		}
-		manager.fulfill_requirements(paths, lock).await?;
+		manager.fulfill_requirements(paths, lock, o).await?;
 		for id in self.instances.iter_mut() {
 			let instance = reg.get_mut(id).expect("Profile has unknown instance");
 			let result = instance

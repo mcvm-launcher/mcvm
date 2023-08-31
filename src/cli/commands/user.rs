@@ -69,10 +69,14 @@ async fn status(data: &mut CmdData) -> anyhow::Result<()> {
 	Ok(())
 }
 
-async fn auth(_data: &mut CmdData) -> anyhow::Result<()> {
+async fn auth(data: &mut CmdData) -> anyhow::Result<()> {
 	let client = Client::new();
-	let result =
-		user::auth::authenticate_microsoft_user(crate::cli::get_ms_client_id(), &client).await?;
+	let result = user::auth::authenticate_microsoft_user(
+		crate::cli::get_ms_client_id(),
+		&client,
+		&mut data.output,
+	)
+	.await?;
 	println!("{}", result.access_token);
 	let cert = mcvm::net::microsoft::get_user_certificate(&result.access_token, &client).await?;
 	dbg!(cert);

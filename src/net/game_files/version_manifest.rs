@@ -1,5 +1,5 @@
 use anyhow::{bail, Context};
-use color_print::cprintln;
+use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use reqwest::Client;
 
 use crate::{
@@ -39,14 +39,29 @@ async fn get_contents(
 }
 
 /// Get the version manifest as a JSON object
-pub async fn get(paths: &Paths, manager: &UpdateManager) -> anyhow::Result<Box<json::JsonObject>> {
+pub async fn get(
+	paths: &Paths,
+	manager: &UpdateManager,
+	o: &mut impl MCVMOutput,
+) -> anyhow::Result<Box<json::JsonObject>> {
 	let mut manifest_contents = get_contents(paths, manager, false)
 		.await
 		.context("Failed to get manifest contents")?;
 	let manifest = match json::parse_object(&manifest_contents) {
 		Ok(manifest) => manifest,
-		Err(..) => {
-			cprintln!("<r>Failed to parse version manifest. Redownloading...");
+		Err(err) => {
+			o.display(
+				MessageContents::Error("Failed to obtain version manifest".to_string()),
+				MessageLevel::Important,
+			);
+			o.display(
+				MessageContents::Error(format!("{}", err)),
+				MessageLevel::Important,
+			);
+			o.display(
+				MessageContents::StartProcess("Redownloading".to_string()),
+				MessageLevel::Important,
+			);
 			manifest_contents = get_contents(paths, manager, true)
 				.await
 				.context("Failed to donwload manifest contents")?;

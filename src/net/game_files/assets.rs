@@ -4,8 +4,10 @@ use std::{
 };
 
 use anyhow::Context;
-use color_print::{cformat, cprintln};
-use mcvm_shared::versions::{VersionInfo, VersionPattern};
+use mcvm_shared::{
+	output::{MCVMOutput, MessageContents, MessageLevel},
+	versions::{VersionInfo, VersionPattern},
+};
 use reqwest::Client;
 use tokio::{sync::Semaphore, task::JoinSet};
 
@@ -13,10 +15,7 @@ use crate::{
 	data::profile::update::{UpdateManager, UpdateMethodResult},
 	io::files::{self, paths::Paths},
 	net::download::{self, FD_SENSIBLE_LIMIT},
-	util::{
-		json::{self, JsonType},
-		print::ReplPrinter,
-	},
+	util::json::{self, JsonType},
 };
 
 async fn download_index(
@@ -72,6 +71,7 @@ pub async fn get(
 	paths: &Paths,
 	version_info: &VersionInfo,
 	manager: &UpdateManager,
+	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<UpdateMethodResult> {
 	let mut out = UpdateMethodResult::new();
 	let version_string = version_info.version.clone();
@@ -88,9 +88,17 @@ pub async fn get(
 	let index = match download_index(index_url, &index_path, manager, false).await {
 		Ok(val) => val,
 		Err(err) => {
-			cprintln!(
-				"<r>Failed to obtain asset index:\n{}\nRedownloading...",
-				err
+			o.display(
+				MessageContents::Error("Failed to obtain asset index".to_string()),
+				MessageLevel::Important,
+			);
+			o.display(
+				MessageContents::Error(format!("{}", err)),
+				MessageLevel::Important,
+			);
+			o.display(
+				MessageContents::StartProcess("Redownloading".to_string()),
+				MessageLevel::Important,
 			);
 			download_index(index_url, &index_path, manager, true)
 				.await
@@ -128,10 +136,14 @@ pub async fn get(
 		assets_to_download.push((name, url, path, virtual_path));
 	}
 
-	let mut printer = ReplPrinter::from_options(manager.print.clone());
 	let count = assets_to_download.len();
 	if manager.print.verbose && count > 0 {
-		cprintln!("Downloading <b>{}</> assets...", count);
+		o.display(
+			MessageContents::StartProcess(format!("Downloading {count} assets")),
+			MessageLevel::Important,
+		);
+
+		o.start_process();
 	}
 
 	let mut num_done = 0;
@@ -154,20 +166,25 @@ pub async fn get(
 		};
 		join.spawn(fut);
 		num_done += 1;
-		printer.print(&cformat!(
-			"(<b>{}</b><k!>/</k!><b>{}</b>) <k!>{}",
-			num_done,
-			count,
-			name
-		));
+
+		o.display(
+			MessageContents::Associated(
+				format!("{num_done}/{count}"),
+				Box::new(MessageContents::Simple(name)),
+			),
+			MessageLevel::Important,
+		);
 	}
 
 	while let Some(asset) = join.join_next().await {
 		asset??;
 	}
 
-	printer.print(&cformat!("<g>Assets downloaded."));
-	printer.finish();
+	o.display(
+		MessageContents::Success("Assets downloaded".to_string()),
+		MessageLevel::Important,
+	);
+	o.end_process();
 
 	Ok(out)
 }

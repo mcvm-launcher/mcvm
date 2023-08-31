@@ -8,7 +8,6 @@ pub mod script;
 use anyhow::bail;
 use anyhow::Context;
 use async_trait::async_trait;
-use color_print::cprintln;
 use mcvm_parse::properties::PackageProperties;
 use mcvm_parse::routine::INSTALL_ROUTINE;
 use mcvm_parse::vars::HashMapVariableStore;
@@ -24,6 +23,9 @@ use mcvm_pkg::{
 };
 use mcvm_shared::addon::{is_addon_version_valid, is_filename_valid, Addon, AddonKind};
 use mcvm_shared::lang::Language;
+use mcvm_shared::output::MCVMOutput;
+use mcvm_shared::output::MessageContents;
+use mcvm_shared::output::MessageLevel;
 use mcvm_shared::util::is_valid_identifier;
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
@@ -247,8 +249,7 @@ pub fn create_valid_addon_request(
 		}
 	}
 
-	let file_name =
-		file_name.unwrap_or(addon::get_addon_instance_filename(&pkg_id.id, &id, &kind));
+	let file_name = file_name.unwrap_or(addon::get_addon_instance_filename(&pkg_id.id, &id, &kind));
 
 	if !is_filename_valid(kind, &file_name) {
 		bail!("Invalid addon filename '{file_name}' in addon '{id}'");
@@ -427,6 +428,7 @@ pub async fn resolve(
 	default_params: EvalParameters,
 	paths: &Paths,
 	reg: &mut PkgRegistry,
+	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<ResolutionResult> {
 	let evaluator = PackageEvaluator { reg };
 
@@ -449,38 +451,39 @@ pub async fn resolve(
 	let result = mcvm_pkg::resolve::resolve(&packages, evaluator, input, &common_input).await?;
 
 	for package in &result.unfulfilled_recommendations {
-		print_recommendation_warning(package);
+		print_recommendation_warning(package, o);
 	}
 
 	Ok(result)
 }
 
 /// Prints an unfulfilled recommendation warning
-fn print_recommendation_warning(package: &mcvm_pkg::resolve::RecommendedPackage) {
+fn print_recommendation_warning(
+	package: &mcvm_pkg::resolve::RecommendedPackage,
+	o: &mut impl MCVMOutput,
+) {
 	let source = package.req.source.get_source();
-	if package.invert {
+	let message = if package.invert {
 		if let Some(source) = source {
-			cprintln!(
-				"<y>Warning: The package '{}' recommends <s>against</s> the use of the package '{}', which is installed.",
-				source.debug_sources(String::new()),
-				package.req
-			);
+			MessageContents::Warning(format!("The package '{}' recommends against the use of the package '{}', which is installed", source.debug_sources(String::new()), package.req))
 		} else {
-			cprintln!(
-				"<y>Warning: A package recommends <s>against</s> the use of the package '{}', which is installed.",
+			MessageContents::Warning(format!(
+				"A package recommends against the use of the package '{}', which is installed",
 				package.req
-			);
+			))
 		}
 	} else if let Some(source) = source {
-		cprintln!(
-				"<y>Warning: The package '{}' recommends the use of the package '{}', which is not installed.",
-				source.debug_sources(String::new()),
-				package.req
-			);
-	} else {
-		cprintln!(
-			"<y>Warning: A package recommends the use of the package '{}', which is not installed.",
+		MessageContents::Warning(format!(
+			"The package '{}' recommends the use of the package '{}', which is not installed",
+			source.debug_sources(String::new()),
 			package.req
-		);
-	}
+		))
+	} else {
+		MessageContents::Warning(format!(
+			"A package recommends the use of the package '{}', which is not installed",
+			package.req
+		))
+	};
+
+	o.display(message, MessageLevel::Important);
 }

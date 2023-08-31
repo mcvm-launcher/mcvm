@@ -1,3 +1,5 @@
+use crate::pkg::PkgRequest;
+
 /// Trait for a type that can output information about MCVM processes
 pub trait MCVMOutput {
 	/// Base function for a simple message. Used as a fallback
@@ -5,24 +7,7 @@ pub trait MCVMOutput {
 
 	/// Function to display a message to the user
 	fn display_message(&mut self, message: Message) {
-		match message.contents {
-			MessageContents::Simple(text) | MessageContents::Success(text) => {
-				self.display_text(text, message.level)
-			}
-			MessageContents::Warning(text) => {
-				self.display_text(format!("Warning: {text}"), message.level)
-			}
-			MessageContents::Error(text) => {
-				self.display_text(format!("Error: {text}"), message.level)
-			}
-			MessageContents::Property(key, value) => {
-				self.display_text(format!("{key}: {value}"), message.level)
-			}
-			MessageContents::Header(text) => self.display_text(text.to_uppercase(), message.level),
-			MessageContents::StartProcess(text) => {
-				self.display_text(format!("{text}..."), message.level)
-			}
-		}
+		self.display_text(default_format_message(message.contents), message.level);
 	}
 
 	/// Convenience function to remove the need to construct a message
@@ -44,6 +29,31 @@ pub trait MCVMOutput {
 	fn end_section(&mut self) {}
 }
 
+/// Message formatting for the default implementation
+fn default_format_message(contents: MessageContents) -> String {
+	match contents {
+		MessageContents::Simple(text)
+		| MessageContents::Success(text)
+		| MessageContents::Hyperlink(text)
+		| MessageContents::Copyable(text) => text,
+		MessageContents::Notice(text) => format!("Notice: {text}"),
+		MessageContents::Warning(text) => format!("Warning: {text}"),
+		MessageContents::Error(text) => format!("Error: {text}"),
+		MessageContents::Property(key, value) => {
+			format!("{key}: {}", default_format_message(*value))
+		}
+		MessageContents::Header(text) => text.to_uppercase(),
+		MessageContents::StartProcess(text) => format!("{text}..."),
+		MessageContents::Associated(item, message) => {
+			format!("[{item}] {}", default_format_message(*message))
+		}
+		MessageContents::Package(pkg, message) => {
+			format!("[{pkg}] {}", default_format_message(*message))
+		}
+		MessageContents::ListItem(item) => format!(" - {}", default_format_message(*item)),
+	}
+}
+
 /// A message supplied to the output
 #[derive(Clone, Debug)]
 pub struct Message {
@@ -58,6 +68,8 @@ pub struct Message {
 pub enum MessageContents {
 	/// Simple message with no formatting
 	Simple(String),
+	/// An important notice to the user
+	Notice(String),
 	/// A warning to the user
 	Warning(String),
 	/// An error
@@ -65,11 +77,21 @@ pub enum MessageContents {
 	/// A success / finish message
 	Success(String),
 	/// A key-value property
-	Property(String, String),
+	Property(String, Box<MessageContents>),
 	/// A header / big message
 	Header(String),
 	/// An start of some long running process. Usually ends with ...
 	StartProcess(String),
+	/// A message with an associated value displayed along with it.
+	Associated(String, Box<MessageContents>),
+	/// Message with an associated package
+	Package(PkgRequest, Box<MessageContents>),
+	/// A hyperlink
+	Hyperlink(String),
+	/// An item in an unordered list
+	ListItem(Box<MessageContents>),
+	/// Text that can be copied, such as a verification code
+	Copyable(String),
 }
 
 /// The level of logging that a message has

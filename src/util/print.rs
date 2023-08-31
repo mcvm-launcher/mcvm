@@ -41,7 +41,7 @@ impl ReplPrinter {
 
 	/// Set the indent level of the printer
 	pub fn indent(&mut self, indent: usize) {
-		self.options.indent += indent;
+		self.options.indent = indent;
 		self.options.indent_str = make_indent(self.options.indent);
 	}
 

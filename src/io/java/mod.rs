@@ -7,12 +7,11 @@ use crate::data::profile::update::{UpdateManager, UpdateMethodResult};
 use crate::io::files::{self, paths::Paths};
 use crate::net;
 use crate::net::download;
-use crate::util::print::ReplPrinter;
 use crate::util::{json, preferred_archive_extension};
 
 use anyhow::Context;
-use color_print::cformat;
 use libflate::gzip::Decoder;
+use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use reqwest::Client;
 use tar::Archive;
 
@@ -69,25 +68,30 @@ impl Java {
 		paths: &Paths,
 		manager: &UpdateManager,
 		lock: &mut Lockfile,
+		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<UpdateMethodResult> {
 		let out = UpdateMethodResult::new();
-		let mut printer = ReplPrinter::from_options(manager.print.clone());
-		printer.print("Checking for Java updates...");
+
+		o.start_process();
+		o.display(
+			MessageContents::StartProcess("Checking for Java updates".to_string()),
+			MessageLevel::Important,
+		);
+
 		match &self.kind {
 			JavaKind::Adoptium(major_version) => {
-				printer.print("Checking for Java updates...");
 				let directory = if manager.allow_offline {
 					if let Some(directory) =
 						lock.get_java_path(LockfileJavaInstallation::Adoptium, major_version.get())
 					{
 						Ok(directory)
 					} else {
-						update_adoptium(major_version.get(), lock, paths, &mut printer)
+						update_adoptium(major_version.get(), lock, paths, o)
 							.await
 							.context("Failed to update Adoptium Java")
 					}
 				} else {
-					update_adoptium(major_version.get(), lock, paths, &mut printer)
+					update_adoptium(major_version.get(), lock, paths, o)
 						.await
 						.context("Failed to update Adoptium Java")
 				}?;
@@ -100,12 +104,12 @@ impl Java {
 					{
 						Ok(directory)
 					} else {
-						update_zulu(major_version.get(), lock, paths, &mut printer)
+						update_zulu(major_version.get(), lock, paths, o)
 							.await
 							.context("Failed to update Zulu Java")
 					}
 				} else {
-					update_zulu(major_version.get(), lock, paths, &mut printer)
+					update_zulu(major_version.get(), lock, paths, o)
 						.await
 						.context("Failed to update Zulu Java")
 				}?;
@@ -115,7 +119,11 @@ impl Java {
 				self.path.fill(path.clone());
 			}
 		}
-		printer.print(&cformat!("<g>Java updated."));
+		o.display(
+			MessageContents::Success("Java updated".to_string()),
+			MessageLevel::Important,
+		);
+
 		Ok(out)
 	}
 }
@@ -125,7 +133,7 @@ async fn update_adoptium(
 	major_version: &str,
 	lock: &mut Lockfile,
 	paths: &Paths,
-	printer: &mut ReplPrinter,
+	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<PathBuf> {
 	let out_dir = paths.java.join("adoptium");
 	files::create_dir(&out_dir)?;
@@ -162,22 +170,35 @@ async fn update_adoptium(
 		"link",
 	)?;
 
-	printer.print(&cformat!(
-		"Downloading Adoptium Temurin JRE <b>{}</b>...",
-		release_name
-	));
+	o.display(
+		MessageContents::StartProcess(format!(
+			"Downloading Adoptium Temurin JRE version {release_name}"
+		)),
+		MessageLevel::Important,
+	);
 	download::file(bin_url, &arc_path, &Client::new())
 		.await
 		.context("Failed to download JRE binaries")?;
 
 	// Extraction
-	printer.print(&cformat!("Extracting JRE..."));
+	o.display(
+		MessageContents::StartProcess("Extracting JRE".to_string()),
+		MessageLevel::Important,
+	);
 	extract_archive(&arc_path, &out_dir).context("Failed to extract")?;
-	printer.print(&cformat!("Removing archive..."));
+	o.display(
+		MessageContents::StartProcess("Removing archive".to_string()),
+		MessageLevel::Important,
+	);
 	tokio::fs::remove_file(arc_path)
 		.await
 		.context("Failed to remove archive")?;
-	printer.print(&cformat!("<g>Java installation finished."));
+
+	o.display(
+		MessageContents::Success("Java installation finished".to_string()),
+		MessageLevel::Important,
+	);
+	o.end_process();
 
 	Ok(extracted_bin_dir)
 }
@@ -187,7 +208,7 @@ async fn update_zulu(
 	major_version: &str,
 	lock: &mut Lockfile,
 	paths: &Paths,
-	printer: &mut ReplPrinter,
+	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<PathBuf> {
 	let out_dir = paths.java.join("zulu");
 	files::create_dir(&out_dir)?;
@@ -214,22 +235,36 @@ async fn update_zulu(
 
 	let arc_path = out_dir.join(&package.name);
 
-	printer.print(&cformat!(
-		"Downloading Azul Zulu JRE <b>{}</b>...",
-		package.name
-	));
+	o.display(
+		MessageContents::StartProcess(format!(
+			"Downloading Azul Zulu JRE version {}",
+			package.name
+		)),
+		MessageLevel::Important,
+	);
 	download::file(&package.download_url, &arc_path, &Client::new())
 		.await
 		.context("Failed to download JRE binaries")?;
 
 	// Extraction
-	printer.print("Extracting JRE...");
+	o.display(
+		MessageContents::StartProcess("Extracting JRE".to_string()),
+		MessageLevel::Important,
+	);
 	extract_archive(&arc_path, &out_dir).context("Failed to extract")?;
-	printer.print("Removing archive...");
+	o.display(
+		MessageContents::StartProcess("Removing archive".to_string()),
+		MessageLevel::Important,
+	);
 	tokio::fs::remove_file(arc_path)
 		.await
 		.context("Failed to remove archive")?;
-	printer.print(&cformat!("<g>Java installation finished."));
+
+	o.display(
+		MessageContents::Success("Java installation finished".to_string()),
+		MessageLevel::Important,
+	);
+	o.end_process();
 
 	Ok(extracted_dir)
 }

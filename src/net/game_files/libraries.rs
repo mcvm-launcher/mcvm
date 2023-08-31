@@ -5,7 +5,7 @@ use std::{
 };
 
 use anyhow::Context;
-use color_print::{cformat, cprintln};
+use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use reqwest::Client;
 use tokio::{sync::Semaphore, task::JoinSet};
 use zip::ZipArchive;
@@ -21,7 +21,6 @@ use crate::{
 		self,
 		json::{self, JsonObject, JsonType},
 		mojang,
-		print::ReplPrinter,
 	},
 };
 
@@ -105,6 +104,7 @@ pub async fn get(
 	paths: &Paths,
 	version: &str,
 	manager: &UpdateManager,
+	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<UpdateMethodResult> {
 	let mut out = UpdateMethodResult::new();
 	let libraries_path = paths.internal.join("libraries");
@@ -153,11 +153,14 @@ pub async fn get(
 		}
 	}
 
-	let mut printer = ReplPrinter::from_options(manager.print.clone());
-
 	let count = libs_to_download.len();
 	if manager.print.verbose && count > 0 {
-		cprintln!("Downloading <b>{}</> libraries...", count);
+		o.display(
+			MessageContents::StartProcess(format!("Downloading {count} libraries")),
+			MessageLevel::Important,
+		);
+
+		o.start_process();
 	}
 
 	let client = Client::new();
@@ -168,12 +171,16 @@ pub async fn get(
 	// Clippy complains about num_done, but if we iter().enumerate() the compiler complains
 	#[allow(clippy::explicit_counter_loop)]
 	for (name, library, path) in libs_to_download {
-		printer.print(&cformat!(
-			"(<b>{}</b><k!>/</k!><b>{}</b>) Downloading library <b!>{}</>...",
-			num_done,
-			count,
-			name
-		));
+		o.display(
+			MessageContents::Associated(
+				format!("{num_done}/{count}"),
+				Box::new(MessageContents::StartProcess(format!(
+					"Downloading library {name}"
+				))),
+			),
+			MessageLevel::Important,
+		);
+
 		files::create_leading_dirs_async(&path).await?;
 		out.files_updated.insert(path.clone());
 		let url = json::access_str(&library, "url")?.to_owned();
@@ -195,14 +202,20 @@ pub async fn get(
 	}
 
 	for (path, name) in native_paths {
-		printer.print(&cformat!("Extracting library <b!>{}...", name));
+		o.display(
+			MessageContents::StartProcess(format!("Extracting native library {name}")),
+			MessageLevel::Important,
+		);
 		let natives_result = extract_native(&path, &natives_path, manager)
 			.with_context(|| format!("Failed to extract native library {name}"))?;
 		out.merge(natives_result);
 	}
 
-	printer.print(&cformat!("<g>Libraries downloaded."));
-	printer.finish();
+	o.display(
+		MessageContents::Success("Libraries downloaded".to_string()),
+		MessageLevel::Important,
+	);
+	o.end_process();
 
 	Ok(out)
 }

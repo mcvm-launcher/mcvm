@@ -47,12 +47,12 @@ impl Instance {
 		let options = PrintOptions::new(false, 0);
 		let mut manager = UpdateManager::new(options, false, true);
 		manager
-			.fulfill_version_manifest(paths, version)
+			.fulfill_version_manifest(version, paths, o)
 			.await
 			.context("Failed to get version data")?;
 		manager.add_requirements(self.get_requirements());
 		manager
-			.fulfill_requirements(paths, lock)
+			.fulfill_requirements(paths, lock, o)
 			.await
 			.context("Update failed")?;
 
@@ -107,12 +107,15 @@ impl Instance {
 		cmd.args(properties.game_args);
 		cmd.args(
 			self.launch
-				.generate_game_args(version_info, self.kind.to_side()),
+				.generate_game_args(version_info, self.kind.to_side(), o),
 		);
 
 		writeln!(log, "Launch command: {cmd:#?}").context("Failed to write to launch log file")?;
 		o.display(
-			MessageContents::Property("Launch command".to_string(), format!("{cmd:#?}")),
+			MessageContents::Property(
+				"Launch command".to_string(),
+				Box::new(MessageContents::Simple(format!("{cmd:#?}"))),
+			),
 			MessageLevel::Debug,
 		);
 
@@ -172,11 +175,16 @@ impl LaunchOptions {
 	}
 
 	/// Create the args for the game when launching
-	pub fn generate_game_args(&self, version_info: &VersionInfo, side: Side) -> Vec<String> {
+	pub fn generate_game_args(
+		&self,
+		version_info: &VersionInfo,
+		side: Side,
+		o: &mut impl MCVMOutput,
+	) -> Vec<String> {
 		let mut out = self.game_args.clone();
 
 		if let Side::Client = side {
-			out.extend(create_quick_play_args(&self.quick_play, version_info));
+			out.extend(create_quick_play_args(&self.quick_play, version_info, o));
 		}
 
 		out

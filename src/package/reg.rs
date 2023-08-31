@@ -1,5 +1,4 @@
 use anyhow::{anyhow, Context};
-use color_print::cformat;
 use mcvm_parse::metadata::PackageMetadata;
 use mcvm_parse::properties::PackageProperties;
 use mcvm_pkg::parse_and_validate;
@@ -17,18 +16,6 @@ use crate::io::files::paths::Paths;
 
 use std::collections::HashMap;
 use std::path::Path;
-
-/// Format a PkgRequest with colors
-pub fn disp_pkg_request_with_colors(req: &PkgRequest) -> String {
-	match req.source {
-		PkgRequestSource::UserRequire => cformat!("<y>{}", req.id),
-		PkgRequestSource::Bundled(..) => cformat!("<b>{}", req.id),
-		PkgRequestSource::Refused(..) => cformat!("<r>{}", req.id),
-		PkgRequestSource::Dependency(..) | PkgRequestSource::Repository => {
-			cformat!("<c>{}", req.id)
-		}
-	}
-}
 
 /// What strategy to use for the local caching of package scripts
 #[derive(Debug, Clone, Deserialize, Serialize, Default)]

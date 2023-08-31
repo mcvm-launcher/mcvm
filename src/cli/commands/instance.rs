@@ -121,7 +121,7 @@ pub async fn launch(
 	if let InstKind::Client { .. } = &instance.kind {
 		config
 			.users
-			.ensure_authenticated(get_ms_client_id())
+			.ensure_authenticated(get_ms_client_id(), &mut data.output)
 			.await
 			.context("Failed to authenticate user")?;
 	}

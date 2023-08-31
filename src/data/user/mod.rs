@@ -5,6 +5,7 @@ pub mod uuid;
 
 use std::collections::HashMap;
 
+use mcvm_shared::output::MCVMOutput;
 use oauth2::ClientId;
 use reqwest::Client;
 
@@ -78,14 +79,18 @@ impl UserManager {
 	}
 
 	/// Ensures that the currently chosen user is authenticated
-	pub async fn ensure_authenticated(&mut self, client_id: ClientId) -> anyhow::Result<()> {
+	pub async fn ensure_authenticated(
+		&mut self,
+		client_id: ClientId,
+		o: &mut impl MCVMOutput,
+	) -> anyhow::Result<()> {
 		if let AuthState::UserChosen(user) = &self.state {
 			let user = self
 				.users
 				.get_mut(user)
 				.expect("User in AuthState does not exist");
 			let client = Client::new();
-			user.authenticate(client_id, &client).await?;
+			user.authenticate(client_id, &client, o).await?;
 		}
 
 		Ok(())

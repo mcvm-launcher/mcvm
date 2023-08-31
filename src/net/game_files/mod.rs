@@ -9,17 +9,17 @@ use crate::data::profile::update::UpdateManager;
 use crate::io::files::paths::Paths;
 use crate::util::cap_first_letter;
 use crate::util::json;
-use crate::util::print::ReplPrinter;
 use mcvm_shared::instance::Side;
 
 use anyhow::Context;
-use color_print::cformat;
 use reqwest::Client;
 
 use super::download;
 
 /// Downloading the game JAR file
 pub mod game_jar {
+	use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
+
 	use super::*;
 
 	/// Downloads the game JAR file
@@ -29,15 +29,20 @@ pub mod game_jar {
 		version: &str,
 		paths: &Paths,
 		manager: &UpdateManager,
+		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
 		let side_str = side.to_string();
 		let path = crate::io::minecraft::game_jar::get_path(side, version, paths);
 		if !manager.should_update_file(&path) {
 			return Ok(());
 		}
-		let mut printer = ReplPrinter::from_options(manager.print.clone());
 
-		printer.print(&format!("Downloading {side_str} jar..."));
+		o.start_process();
+		o.display(
+			MessageContents::StartProcess(format!("Downloading {side_str} jar")),
+			MessageLevel::Important,
+		);
+
 		let download =
 			json::access_object(json::access_object(client_json, "downloads")?, &side_str)?;
 		let url = json::access_str(download, "url")?;
@@ -45,7 +50,12 @@ pub mod game_jar {
 			.await
 			.context("Failed to download file")?;
 		let side_str = cap_first_letter(&side_str);
-		printer.print(&cformat!("<g>{} jar downloaded.", side_str));
+
+		o.display(
+			MessageContents::Success(format!("{side_str} jar downloaded")),
+			MessageLevel::Important,
+		);
+		o.end_process();
 
 		Ok(())
 	}

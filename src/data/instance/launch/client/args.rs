@@ -1,5 +1,7 @@
-use color_print::cprintln;
-use mcvm_shared::versions::{VersionInfo, VersionPattern};
+use mcvm_shared::{
+	output::{MCVMOutput, MessageContents, MessageLevel},
+	versions::{VersionInfo, VersionPattern},
+};
 
 use crate::{
 	data::{
@@ -179,7 +181,11 @@ pub fn process_arg(
 }
 
 /// Create the game arguments for Quick Play
-pub fn create_quick_play_args(quick_play: &QuickPlay, version_info: &VersionInfo) -> Vec<String> {
+pub fn create_quick_play_args(
+	quick_play: &QuickPlay,
+	version_info: &VersionInfo,
+	o: &mut impl MCVMOutput,
+) -> Vec<String> {
 	let mut out = Vec::new();
 
 	match quick_play {
@@ -195,8 +201,11 @@ pub fn create_quick_play_args(quick_play: &QuickPlay, version_info: &VersionInfo
 						out.push(String::from("--quickPlaySingleplayer"));
 						out.push(world.clone());
 					} else {
-						cprintln!(
-							"<y>Warning: World Quick Play has no effect before 23w14a (1.20)"
+						o.display(
+							MessageContents::Warning(
+								"World Quick Play has no effect before 23w14a (1.20)".to_string(),
+							),
+							MessageLevel::Important,
 						);
 					}
 				}
@@ -205,8 +214,11 @@ pub fn create_quick_play_args(quick_play: &QuickPlay, version_info: &VersionInfo
 						out.push(String::from("--quickPlayRealms"));
 						out.push(realm.clone());
 					} else {
-						cprintln!(
-							"<y>Warning: Realm Quick Play has no effect before 23w14a (1.20)"
+						o.display(
+							MessageContents::Warning(
+								"Realm Quick Play has no effect before 23w14a (1.20)".to_string(),
+							),
+							MessageLevel::Important,
 						);
 					}
 				}

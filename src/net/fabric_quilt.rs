@@ -3,7 +3,7 @@ use std::fs::File;
 use std::io::BufReader;
 
 use anyhow::{anyhow, Context};
-use color_print::cformat;
+use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use reqwest::Client;
 use serde::Deserialize;
 
@@ -11,7 +11,6 @@ use crate::data::profile::update::UpdateManager;
 use crate::io::files;
 use crate::io::files::paths::Paths;
 use crate::io::java::classpath::Classpath;
-use crate::util::print::ReplPrinter;
 use mcvm_shared::instance::Side;
 
 use super::download;
@@ -263,10 +262,16 @@ pub async fn download_files(
 	paths: &Paths,
 	mode: Mode,
 	manager: &UpdateManager,
+	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<()> {
 	let force = manager.force;
-	let mut printer = ReplPrinter::from_options(manager.print.clone());
-	printer.print(&format!("Downloading {mode}"));
+
+	o.start_process();
+	o.display(
+		MessageContents::StartProcess(format!("Downloading {mode}")),
+		MessageLevel::Important,
+	);
+
 	let libs = meta.launcher_meta.libraries.common.clone();
 	let paths_clone = paths.clone();
 	let common_task =
@@ -299,7 +304,11 @@ pub async fn download_files(
 		.await?
 		.with_context(|| format!("Failed to download {mode} main libraries"))?;
 
-	printer.print(&cformat!("<g>{} downloaded.", mode));
+	o.display(
+		MessageContents::Success(format!("{mode} downloaded")),
+		MessageLevel::Important,
+	);
+	o.end_process();
 
 	Ok(())
 }
