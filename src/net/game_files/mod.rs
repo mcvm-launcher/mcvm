@@ -18,7 +18,7 @@ use super::download;
 
 /// Downloading the game JAR file
 pub mod game_jar {
-	use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
+	use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel, OutputProcess};
 
 	use super::*;
 
@@ -37,8 +37,8 @@ pub mod game_jar {
 			return Ok(());
 		}
 
-		o.start_process();
-		o.display(
+		let process = OutputProcess::new(o);
+		process.0.display(
 			MessageContents::StartProcess(format!("Downloading {side_str} jar")),
 			MessageLevel::Important,
 		);
@@ -51,11 +51,10 @@ pub mod game_jar {
 			.context("Failed to download file")?;
 		let side_str = cap_first_letter(&side_str);
 
-		o.display(
+		process.0.display(
 			MessageContents::Success(format!("{side_str} jar downloaded")),
 			MessageLevel::Important,
 		);
-		o.end_process();
 
 		Ok(())
 	}

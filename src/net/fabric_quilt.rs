@@ -3,7 +3,7 @@ use std::fs::File;
 use std::io::BufReader;
 
 use anyhow::{anyhow, Context};
-use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
+use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel, OutputProcess};
 use reqwest::Client;
 use serde::Deserialize;
 
@@ -266,8 +266,8 @@ pub async fn download_files(
 ) -> anyhow::Result<()> {
 	let force = manager.force;
 
-	o.start_process();
-	o.display(
+	let process = OutputProcess::new(o);
+	process.0.display(
 		MessageContents::StartProcess(format!("Downloading {mode}")),
 		MessageLevel::Important,
 	);
@@ -304,11 +304,10 @@ pub async fn download_files(
 		.await?
 		.with_context(|| format!("Failed to download {mode} main libraries"))?;
 
-	o.display(
+	process.0.display(
 		MessageContents::Success(format!("{mode} downloaded")),
 		MessageLevel::Important,
 	);
-	o.end_process();
 
 	Ok(())
 }

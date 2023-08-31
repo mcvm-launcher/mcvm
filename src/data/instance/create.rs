@@ -2,7 +2,7 @@ use std::collections::{HashMap, HashSet};
 use std::fs::File;
 
 use anyhow::Context;
-use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
+use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel, OutputProcess};
 
 use crate::data::profile::update::{UpdateManager, UpdateMethodResult, UpdateRequirement};
 use crate::data::user::uuid::hyphenate_uuid;
@@ -253,8 +253,8 @@ impl Instance {
 				jar_path
 			}
 			ServerType::Paper => {
-				o.start_process();
-				o.display(
+				let process = OutputProcess::new(o);
+				process.0.display(
 					MessageContents::StartProcess("Checking for paper updates".to_string()),
 					MessageLevel::Important,
 				);
@@ -267,25 +267,23 @@ impl Instance {
 					.context("Failed to get the Paper file name")?;
 				let paper_jar_path = server_dir.join(&file_name);
 				if !manager.should_update_file(&paper_jar_path) {
-					o.display(
+					process.0.display(
 						MessageContents::Success("Paper is up to date".to_string()),
 						MessageLevel::Important,
 					);
 				} else {
-					o.display(
+					process.0.display(
 						MessageContents::StartProcess("Downloading Paper server".to_string()),
 						MessageLevel::Important,
 					);
 					paper::download_server_jar(version, build_num, &file_name, &server_dir)
 						.await
 						.context("Failed to download Paper server JAR")?;
-					o.display(
+					process.0.display(
 						MessageContents::Success("Paper server downloaded".to_string()),
 						MessageLevel::Important,
 					);
 				}
-
-				o.end_process();
 				
 				out.files_updated.insert(paper_jar_path.clone());
 				paper_jar_path

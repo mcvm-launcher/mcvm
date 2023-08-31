@@ -143,6 +143,28 @@ impl MCVMOutput for Simple {
 	}
 }
 
+/// RAII struct that opens and closes an output process
+pub struct OutputProcess<'a, O: MCVMOutput>(pub &'a mut O);
+
+impl<'a, O> OutputProcess<'a, O>
+where
+	O: MCVMOutput,
+{
+	pub fn new(o: &'a mut O) -> Self {
+		o.start_process();
+		Self(o)
+	}
+}
+
+impl<'a, O> Drop for OutputProcess<'a, O>
+where
+	O: MCVMOutput,
+{
+	fn drop(&mut self) {
+		self.0.end_process();
+	}
+}
+
 #[cfg(test)]
 mod tests {
 	use super::*;
