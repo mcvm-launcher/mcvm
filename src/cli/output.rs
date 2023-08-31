@@ -1,4 +1,6 @@
+use anyhow::Context;
 use color_print::cformat;
+use inquire::Confirm;
 use mcvm::util::print::{ReplPrinter, HYPHEN_POINT};
 use mcvm_pkg::{PkgRequest, PkgRequestSource};
 use mcvm_shared::output::{MCVMOutput, Message, MessageContents, MessageLevel};
@@ -54,6 +56,15 @@ impl MCVMOutput for TerminalOutput {
 			self.indent_level -= 1;
 			self.printer.indent(self.indent_level.into());
 		}
+	}
+
+	fn prompt_yes_no(&mut self, default: bool, message: MessageContents) -> anyhow::Result<bool> {
+		let ans = Confirm::new(&Self::format_message(message))
+			.with_default(default)
+			.prompt()
+			.context("Inquire prompt failed")?;
+
+		Ok(ans)
 	}
 }
 

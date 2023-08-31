@@ -27,6 +27,13 @@ pub trait MCVMOutput {
 
 	/// End the current section and go down a level of hierarchy
 	fn end_section(&mut self) {}
+
+	/// Offer a confirmation / yes no prompt to the user.
+	/// The default is the default value of the prompt.
+	fn prompt_yes_no(&mut self, default: bool, message: MessageContents) -> anyhow::Result<bool> {
+		let _message = message;
+		Ok(default)
+	}
 }
 
 /// Message formatting for the default implementation
