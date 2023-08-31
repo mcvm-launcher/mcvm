@@ -1,7 +1,16 @@
+use std::io::Write;
+use std::{fs::File, path::PathBuf};
+
 use anyhow::Context;
 use color_print::cformat;
 use inquire::Confirm;
-use mcvm::util::print::{ReplPrinter, HYPHEN_POINT};
+use mcvm::{
+	io::files::paths::Paths,
+	util::{
+		print::{ReplPrinter, HYPHEN_POINT},
+		utc_timestamp,
+	},
+};
 use mcvm_pkg::{PkgRequest, PkgRequestSource};
 use mcvm_shared::output::{MCVMOutput, Message, MessageContents, MessageLevel};
 
@@ -11,6 +20,7 @@ pub struct TerminalOutput {
 	pub level: MessageLevel,
 	in_process: bool,
 	indent_level: u8,
+	log_file: File,
 }
 
 impl MCVMOutput for TerminalOutput {
@@ -25,6 +35,8 @@ impl MCVMOutput for TerminalOutput {
 			self.printer.print(&text);
 			self.printer.println("");
 		}
+
+		let _ = self.log_message(&text);
 	}
 
 	fn display_message(&mut self, message: Message) {
@@ -69,13 +81,16 @@ impl MCVMOutput for TerminalOutput {
 }
 
 impl TerminalOutput {
-	pub fn new() -> Self {
-		Self {
+	pub fn new(paths: &Paths) -> anyhow::Result<Self> {
+		let path = get_log_file_path(paths).context("Failed to get log file path")?;
+		let file = File::create(path).context("Failed to open log file")?;
+		Ok(Self {
 			printer: ReplPrinter::new(true),
 			level: MessageLevel::Important,
 			in_process: false,
 			indent_level: 0,
-		}
+			log_file: file,
+		})
 	}
 
 	/// Formatting for messages
@@ -105,6 +120,13 @@ impl TerminalOutput {
 			MessageContents::Copyable(text) => cformat!("<u>{}", text),
 		}
 	}
+
+	/// Log a message to the log file
+	fn log_message(&mut self, text: &str) -> anyhow::Result<()> {
+		writeln!(self.log_file, "{text}")?;
+
+		Ok(())
+	}
 }
 
 /// Format a PkgRequest with colors
@@ -117,4 +139,9 @@ fn disp_pkg_request_with_colors(req: PkgRequest) -> String {
 			cformat!("<c>{}", req.id)
 		}
 	}
+}
+
+/// Get the path to a log file
+fn get_log_file_path(paths: &Paths) -> anyhow::Result<PathBuf> {
+	Ok(paths.logs.join(format!("log-{}.txt", utc_timestamp()?)))
 }

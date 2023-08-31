@@ -31,10 +31,14 @@ pub struct CmdData {
 
 impl CmdData {
 	pub async fn new() -> anyhow::Result<Self> {
+		let paths = Paths::new()
+			.await
+			.context("Failed to set up system paths")?;
+		let output = TerminalOutput::new(&paths).context("Failed to set up output")?;
 		Ok(Self {
-			paths: Paths::new().await?,
+			paths,
 			config: Later::new(),
-			output: TerminalOutput::new(),
+			output,
 		})
 	}
 
