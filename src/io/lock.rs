@@ -3,7 +3,8 @@ use std::fs::{self, File};
 use std::io::BufReader;
 use std::path::{Path, PathBuf};
 
-use anyhow::{anyhow, Context};
+use anyhow::{anyhow, bail, Context};
+use mcvm_shared::output::{MCVMOutput, MessageContents};
 use serde::{Deserialize, Serialize};
 
 use mcvm_shared::addon::{Addon, AddonKind};
@@ -173,6 +174,7 @@ impl Lockfile {
 		instance: &str,
 		version: u32,
 		addons: &[LockfileAddon],
+		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Vec<PathBuf>> {
 		let mut files_to_remove = Vec::new();
 		let mut new_files = Vec::new();
@@ -227,13 +229,19 @@ impl Lockfile {
 			self.contents
 				.packages
 				.insert(instance.to_owned(), HashMap::new());
-			self.update_package(id, instance, version, addons)?;
+			self.update_package(id, instance, version, addons, o)?;
 		}
 
 		for file in &new_files {
 			if PathBuf::from(file).exists() {
-				// Uncomment to enable addon overwrite checks
-				// bail!("File '{file}' would be overwritten by an addon");
+				let allow = o.prompt_yes_no(false, MessageContents::Warning(
+					format!("The existing file '{file}' has the same path as an addon. Overwrite it?")
+				))
+				.context("Prompt failed")?;
+			
+				if !allow {
+					bail!("File '{file}' would be overwritten by an addon");
+				}
 			}
 		}
 
