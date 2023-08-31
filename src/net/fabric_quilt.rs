@@ -7,7 +7,7 @@ use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel, OutputProce
 use reqwest::Client;
 use serde::Deserialize;
 
-use crate::data::profile::update::UpdateManager;
+use crate::data::profile::update::manager::UpdateManager;
 use crate::io::files;
 use crate::io::files::paths::Paths;
 use crate::io::java::classpath::Classpath;

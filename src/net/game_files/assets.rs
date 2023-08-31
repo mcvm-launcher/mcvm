@@ -12,7 +12,7 @@ use reqwest::Client;
 use tokio::{sync::Semaphore, task::JoinSet};
 
 use crate::{
-	data::profile::update::{UpdateManager, UpdateMethodResult},
+	data::profile::update::manager::{UpdateManager, UpdateMethodResult},
 	io::files::{self, paths::Paths},
 	net::download::{self, FD_SENSIBLE_LIMIT},
 	util::json::{self, JsonType},

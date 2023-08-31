@@ -11,7 +11,7 @@ use tokio::{sync::Semaphore, task::JoinSet};
 use zip::ZipArchive;
 
 use crate::{
-	data::profile::update::{UpdateManager, UpdateMethodResult},
+	data::profile::update::manager::{UpdateManager, UpdateMethodResult},
 	io::{
 		files::{self, paths::Paths},
 		java::classpath::Classpath,

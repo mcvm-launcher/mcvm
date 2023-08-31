@@ -5,7 +5,7 @@ pub mod libraries;
 /// Downloading and using the version manifest and version JSONs
 pub mod version_manifest;
 
-use crate::data::profile::update::UpdateManager;
+use crate::data::profile::update::manager::UpdateManager;
 use crate::io::files::paths::Paths;
 use crate::util::cap_first_letter;
 use crate::util::json;

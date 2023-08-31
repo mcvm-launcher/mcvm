@@ -4,7 +4,7 @@ use std::fs::File;
 use anyhow::Context;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel, OutputProcess};
 
-use crate::data::profile::update::{UpdateManager, UpdateMethodResult, UpdateRequirement};
+use crate::data::profile::update::manager::{UpdateManager, UpdateMethodResult, UpdateRequirement};
 use crate::data::user::uuid::hyphenate_uuid;
 use crate::data::user::{AuthState, User, UserManager};
 use crate::io::files::update_hardlink;
@@ -284,7 +284,7 @@ impl Instance {
 						MessageLevel::Important,
 					);
 				}
-				
+
 				out.files_updated.insert(paper_jar_path.clone());
 				paper_jar_path
 			}

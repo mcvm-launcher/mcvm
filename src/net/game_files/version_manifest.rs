@@ -3,7 +3,7 @@ use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use reqwest::Client;
 
 use crate::{
-	data::profile::update::UpdateManager,
+	data::profile::update::manager::UpdateManager,
 	io::files::{self, paths::Paths},
 	net::download,
 	util::json::{self, JsonType},

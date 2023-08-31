@@ -28,7 +28,7 @@ use self::launch::LaunchOptions;
 use super::addon;
 use super::config::instance::ClientWindowConfig;
 use super::config::profile::GameModifications;
-use super::profile::update::UpdateManager;
+use super::profile::update::manager::UpdateManager;
 use mcvm_shared::addon::{Addon, AddonKind};
 
 use std::fs;

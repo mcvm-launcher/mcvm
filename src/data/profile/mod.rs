@@ -10,7 +10,7 @@ use crate::io::lock::Lockfile;
 use crate::package::PkgProfileConfig;
 use crate::util::versions::MinecraftVersion;
 
-use self::update::UpdateManager;
+use self::update::manager::UpdateManager;
 
 use super::config::profile::GameModifications;
 use super::user::UserManager;

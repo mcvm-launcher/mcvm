@@ -3,7 +3,7 @@ pub mod args;
 /// Use of Java's classpath format
 pub mod classpath;
 
-use crate::data::profile::update::{UpdateManager, UpdateMethodResult};
+use crate::data::profile::update::manager::{UpdateManager, UpdateMethodResult};
 use crate::io::files::{self, paths::Paths};
 use crate::net;
 use crate::net::download;

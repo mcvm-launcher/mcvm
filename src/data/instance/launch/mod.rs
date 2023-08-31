@@ -17,7 +17,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::data::config::instance::QuickPlay;
 use crate::data::instance::InstKind;
-use crate::data::profile::update::UpdateManager;
+use crate::data::profile::update::manager::UpdateManager;
 use crate::data::user::UserManager;
 use crate::io::files::paths::Paths;
 use crate::io::java::args::{ArgsPreset, MemoryArg, MemoryNum};
