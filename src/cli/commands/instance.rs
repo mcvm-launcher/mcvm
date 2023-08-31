@@ -1,7 +1,9 @@
 use anyhow::{anyhow, bail, Context};
 use clap::Subcommand;
 use color_print::cprintln;
+use inquire::Select;
 use itertools::Itertools;
+use mcvm::data::config::Config;
 use mcvm::data::user::AuthState;
 
 use mcvm::io::lock::Lockfile;
@@ -36,7 +38,7 @@ pub enum InstanceSubcommand {
 		#[arg(short, long)]
 		user: Option<String>,
 		/// The instance to launch
-		instance: String,
+		instance: Option<String>,
 	},
 }
 
@@ -87,7 +89,7 @@ async fn list(
 }
 
 pub async fn launch(
-	instance: &str,
+	instance: Option<String>,
 	debug: bool,
 	user: Option<String>,
 	data: &mut CmdData,
@@ -99,9 +101,11 @@ pub async fn launch(
 		data.output.level = MessageLevel::Debug;
 	}
 
+	let instance = pick_instance(instance, config).context("Failed to pick instance")?;
+
 	let instance = config
 		.instances
-		.get_mut(instance)
+		.get_mut(&instance)
 		.ok_or(anyhow!("Unknown instance '{instance}'"))?;
 	let (.., profile) = config
 		.profiles
@@ -140,6 +144,20 @@ pub async fn launch(
 	Ok(())
 }
 
+/// Pick which instance to launch
+fn pick_instance(instance: Option<String>, config: &Config) -> anyhow::Result<String> {
+	if let Some(instance) = instance {
+		Ok(instance)
+	} else {
+		let options: Vec<String> = config.instances.keys().cloned().collect();
+		let selection = Select::new("Choose an instance to launch", options)
+			.prompt()
+			.context("Prompt failed")?;
+
+		Ok(selection)
+	}
+}
+
 pub async fn run(command: InstanceSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
 	match command {
 		InstanceSubcommand::List { raw, side, profile } => list(data, raw, side, profile).await,
@@ -147,6 +165,6 @@ pub async fn run(command: InstanceSubcommand, data: &mut CmdData) -> anyhow::Res
 			debug,
 			user,
 			instance,
-		} => launch(&instance, debug, user, data).await,
+		} => launch(instance, debug, user, data).await,
 	}
 }
