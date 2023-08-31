@@ -27,7 +27,7 @@ When you first run a command that reads from the config, a default configuration
 
 Users are defined in the `users` object in the base of the config. User structure looks like this:
 
-```json
+```
 "id": {
 	"type": "microsoft" | "demo" | "unverified",
 	"name": string,
@@ -83,15 +83,18 @@ or
 	"type": "client" | "server",
 	"launch": {
 		"args": {
-			"jvm": Array | string,
-			"game": Array | string
+			"jvm": [string] | string,
+			"game": [string] | string
 		},
 		"memory": string | {
 			"init": string,
 			"max": string
 		},
 		"env": { .. },
-		"wrapper": "",
+		"wrapper": {
+			"cmd": string,
+			"args": [string]
+		},
 		"java": "adoptium" | "zulu" | string,
 		"preset": "akairs" | "krusic" | "obydux",
 		"quick_play": {
@@ -126,7 +129,7 @@ The first form just has the type of the instance. All fields are optional unless
 - `launch.args`: Custom arguments that will be passed to the Java Virtual Machine and game. Each one is optional and can either be a string of arguments separated by spaces or a list.
 - `launch.memory`: Memory sizes for the Java heap initial and maximum space. Use a string to set both (recommended), or set them individually using an object. These follow the same format as the Java arguments (e.g. `1024M` or `10G`) and should be preferred to using custom arguments as it allows MCVM to do some extra things.
 - `launch.env`: A map of strings to strings that let you set environment variables for the game program.
-- `launch.wrapper`: A command to wrap the launch command in.
+- `launch.wrapper`: A command to wrap the launch command in. Set the command and its arguments.
 - `launch.java`: The Java installation you would like to use. Can be either `"adoptium"` or a path to a custom Java executable. Defaults to `"adoptium"`.
 - `launch.preset`: A preset that will automatically apply changes to your launch configuration to improve your experience.
   - `"none"`: The default. No changes will be applied.
@@ -156,7 +159,7 @@ or
 	"version": integer,
 	"path": string,
 	"content_type": "script" | "declarative",
-	"features": [],
+	"features": [string],
 	"use_default_features": bool,
 	"permissions": "restricted" | "standard" | "elevated",
 	"stability": "stable" | "latest"

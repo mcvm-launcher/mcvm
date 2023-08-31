@@ -13,6 +13,7 @@ use anyhow::Context;
 use mcvm_shared::instance::Side;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::versions::VersionInfo;
+use serde::{Deserialize, Serialize};
 
 use crate::data::config::instance::QuickPlay;
 use crate::data::instance::InstKind;
@@ -89,7 +90,8 @@ impl Instance {
 			.context("Failed to open launch log file")?;
 		let mut cmd = match &self.launch.wrapper {
 			Some(wrapper) => {
-				let mut cmd = Command::new(wrapper);
+				let mut cmd = Command::new(&wrapper.cmd);
+				cmd.args(&wrapper.args);
 				cmd.arg(properties.command);
 				cmd
 			}
@@ -146,7 +148,7 @@ pub struct LaunchOptions {
 	pub max_mem: Option<MemoryNum>,
 	pub preset: ArgsPreset,
 	pub env: HashMap<String, String>,
-	pub wrapper: Option<String>,
+	pub wrapper: Option<WrapperCommand>,
 	pub quick_play: QuickPlay,
 }
 
@@ -189,6 +191,13 @@ impl LaunchOptions {
 
 		out
 	}
+}
+
+/// A wrapper command
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct WrapperCommand {
+	pub cmd: String,
+	pub args: Vec<String>,
 }
 
 /// Get the name of the launch log file

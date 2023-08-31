@@ -5,7 +5,7 @@ use anyhow::{anyhow, bail, ensure, Context};
 use mcvm_shared::instance::Side;
 use serde::{Deserialize, Serialize};
 
-use crate::data::instance::launch::LaunchOptions;
+use crate::data::instance::launch::{LaunchOptions, WrapperCommand};
 use crate::data::instance::{InstKind, Instance};
 use crate::data::profile::Profile;
 use crate::io::java::args::{ArgsPreset, MemoryNum};
@@ -103,7 +103,7 @@ pub struct LaunchConfig {
 	#[serde(default)]
 	pub env: HashMap<String, String>,
 	#[serde(default)]
-	pub wrapper: Option<String>,
+	pub wrapper: Option<WrapperCommand>,
 	#[serde(default)]
 	pub quick_play: QuickPlay,
 }
