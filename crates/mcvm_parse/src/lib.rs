@@ -1,12 +1,20 @@
 use std::fmt::Display;
 
+/// Parsing for conditions, used in if instructions
 pub mod conditions;
+/// Parsing for most instructions, with the exception of a few complex ones
 pub mod instruction;
+/// Token generation from a string, which is passed into the parser
 pub mod lex;
+/// Package metadata
 pub mod metadata;
+/// General parsing
 pub mod parse;
+/// Package properties
 pub mod properties;
+/// Things related to package script routines
 pub mod routine;
+/// Things related to script variables
 pub mod vars;
 
 /// Reason why the package reported a failure
