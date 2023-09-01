@@ -209,7 +209,7 @@ impl UpdateManager {
 			let result = assets::get(
 				self.client_json.get(),
 				paths,
-				&self.version_info.get(),
+				self.version_info.get(),
 				self,
 				o,
 			)

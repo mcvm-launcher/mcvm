@@ -47,11 +47,11 @@ impl User {
 	) -> anyhow::Result<()> {
 		match &mut self.kind {
 			UserKind::Microsoft { xbox_uid } => {
-				let auth_result = authenticate_microsoft_user(client_id, &client, o)
+				let auth_result = authenticate_microsoft_user(client_id, client, o)
 					.await
 					.context("Failed to authenticate user")?;
 				let certificate =
-					crate::net::microsoft::get_user_certificate(&auth_result.access_token, &client)
+					crate::net::microsoft::get_user_certificate(&auth_result.access_token, client)
 						.await
 						.context("Failed to get user certificate")?;
 				self.access_token = Some(auth_result.access_token);

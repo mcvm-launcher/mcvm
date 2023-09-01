@@ -79,7 +79,7 @@ pub fn replace_arg_placeholders(
 			}
 			if let UserKind::Microsoft { xbox_uid } = &user.kind {
 				if let Some(xbox_uid) = xbox_uid {
-					out = out.replace(placeholder!("auth_xuid"), &xbox_uid);
+					out = out.replace(placeholder!("auth_xuid"), xbox_uid);
 				}
 			}
 
