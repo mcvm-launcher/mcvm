@@ -1,6 +1,6 @@
 [package]
 name = "mcvm_parse"
-version = "0.4.0"
+version = "0.5.0"
 edition = "2021"
 license = "GPL-3.0-or-later"
 description = "Package script lexing, parsing, and basic evaluation for mcvm"
@@ -11,5 +11,5 @@ categories = ["games"]
 
 [dependencies]
 anyhow = "1.0.70"
-mcvm_shared = { path = "../mcvm_shared", version = "0.4.0" }
+mcvm_shared = { path = "../mcvm_shared", version = "0.5.0" }
 serde = { version = "1.0.152", features = ["derive"] }
