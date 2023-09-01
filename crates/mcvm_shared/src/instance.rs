@@ -7,11 +7,14 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Clone, Copy, Hash, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum Side {
+	/// The default game
 	Client,
+	/// A dedicated server
 	Server,
 }
 
 impl Side {
+	/// Parse a Side from a string
 	pub fn parse_from_str(string: &str) -> Option<Self> {
 		match string {
 			"client" => Some(Self::Client),

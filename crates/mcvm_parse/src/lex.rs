@@ -6,33 +6,54 @@ use anyhow::bail;
 /// Generic side for something like a bracket
 #[derive(Debug, PartialEq, Copy, Clone)]
 pub enum Side {
+	/// Something on the left side (e.g. [)
 	Left,
+	/// Something on the right side (e.g. ])
 	Right,
 }
 
 /// A token that we derive from text
 #[derive(Debug, PartialEq, Clone)]
 pub enum Token {
+	/// An empty token with no meaning. These technically shouldn't appear in the output,
+	/// but just skip over them.
 	None,
+	/// Any whitespace, such as tabs and newlines
 	Whitespace,
+	/// A semicolon (;)
 	Semicolon,
+	/// A colon (:)
 	Colon,
+	/// A comma (,)
 	Comma,
+	/// A pipe / bar (|)
 	Pipe,
+	/// An at symbol (@)
 	At,
+	/// An exclamation point (!)
 	Bang,
+	/// A variable ($var_name)
 	Variable(String),
+	/// A curly brace ({ / })
 	Curly(Side),
+	/// A square bracket ([ / ])
 	Square(Side),
+	/// A parenthese (( / ))
 	Paren(Side),
+	/// An angle bracket (< / >)
 	Angle(Side),
+	/// A comment
 	Comment(String),
+	/// An identifier (foo)
 	Ident(String),
+	/// An integer number (-12, 6, 128, etc.)
 	Num(i64),
+	/// A string literal ("'hello' there")
 	Str(String),
 }
 
 impl Token {
+	/// Print this token as a string
 	pub fn as_string(&self) -> String {
 		match self {
 			Token::None => String::from("none"),

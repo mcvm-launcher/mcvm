@@ -150,6 +150,7 @@ impl<'a, O> OutputProcess<'a, O>
 where
 	O: MCVMOutput,
 {
+	/// Create a new OutputProcess from an MCVMOutput
 	pub fn new(o: &'a mut O) -> Self {
 		o.start_process();
 		Self(o)

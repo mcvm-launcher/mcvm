@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 /// A language supported by mcvm. Includes all languages in Minecraft.
+#[allow(missing_docs)]
 #[derive(Deserialize, Serialize, Copy, Clone, Eq, PartialEq, Debug)]
 pub enum Language {
 	Afrikaans,
@@ -140,6 +141,7 @@ impl Default for Language {
 }
 
 impl Language {
+	/// Parse a Language from a string
 	pub fn parse_from_str(string: &str) -> Option<Self> {
 		match string {
 			"afrikaans" => Some(Self::Afrikaans),

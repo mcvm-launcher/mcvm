@@ -14,14 +14,18 @@ pub fn is_reserved_constant_var(var: &str) -> bool {
 
 /// Struct for reserved constant variables
 pub struct ReservedConstantVariables<'a> {
+	/// The Minecraft version
 	pub mc_version: &'a str,
 }
 
 /// Argument to a command that could be a literal or a variable
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Value {
+	/// This value has not been filled and has no data
 	None,
+	/// A constant string literal
 	Constant(String),
+	/// The value of a variable
 	Var(String),
 }
 
@@ -64,6 +68,7 @@ pub trait VariableStore {
 pub struct HashMapVariableStore(HashMap<String, String>);
 
 impl HashMapVariableStore {
+	/// Create a new HashMapVariableStore
 	pub fn new() -> Self {
 		Self(HashMap::new())
 	}

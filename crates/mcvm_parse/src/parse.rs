@@ -22,11 +22,13 @@ pub type BlockId = u16;
 /// A list of instructions inside a routine or nested block (such as an if block)
 #[derive(Debug, Clone)]
 pub struct Block {
+	/// The instructions contained in the block, in order
 	pub contents: Vec<Instruction>,
 	parent: Option<BlockId>,
 }
 
 impl Block {
+	/// Create a new block with an optional parent block that is used to return context when parsing
 	pub fn new(parent: Option<BlockId>) -> Self {
 		Self {
 			contents: Vec::new(),
@@ -34,6 +36,7 @@ impl Block {
 		}
 	}
 
+	/// Add an instruction to the block
 	pub fn push(&mut self, instr: Instruction) {
 		self.contents.push(instr);
 	}
@@ -42,12 +45,15 @@ impl Block {
 /// The final result of parsed data
 #[derive(Debug)]
 pub struct Parsed {
+	/// The blocks of instructions that have been parsed
 	pub blocks: HashMap<BlockId, Block>,
+	/// A map of routine names to the blocks they contain
 	pub routines: HashMap<String, BlockId>,
 	id_count: BlockId,
 }
 
 impl Parsed {
+	/// Create a new Parsed
 	pub fn new() -> Self {
 		let mut out = Self {
 			blocks: HashMap::new(),
@@ -125,13 +131,16 @@ mod addon {
 	}
 }
 
+/// Data for parsing the require instruction
 pub mod require {
 	use super::*;
 
 	/// A single required package
 	#[derive(Debug, Clone)]
 	pub struct Package {
+		/// The package ID that is required
 		pub value: Value,
+		/// Whether or not this is an explicit dependency
 		pub explicit: bool,
 	}
 
@@ -166,6 +175,7 @@ enum ParseMode {
 	},
 }
 
+/// Throw an anyhow error about an unexpected token at a position
 #[macro_export]
 macro_rules! unexpected_token {
 	($tok:expr, $pos:expr) => {
@@ -603,6 +613,7 @@ fn check_recursion(parsed: &Parsed) -> anyhow::Result<()> {
 	Ok(())
 }
 
+/// Lex text into tokens and then parse the result
 pub fn lex_and_parse(text: &str) -> anyhow::Result<Parsed> {
 	let tokens = lex(text).context("Lexing failed")?;
 	let parsed = parse(tokens.iter()).context("Parsing failed")?;

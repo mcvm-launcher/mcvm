@@ -212,7 +212,9 @@ impl<'de> Deserialize<'de> for VersionPattern {
 /// Utility struct that contains the version and version list
 #[derive(Debug)]
 pub struct VersionInfo {
+	/// The version
 	pub version: String,
+	/// The list of available versions to use for comparisons
 	pub versions: Vec<String>,
 }
 

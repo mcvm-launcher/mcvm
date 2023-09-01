@@ -4,17 +4,24 @@ use serde::Deserialize;
 
 use crate::pkg::{PackageAddonOptionalHashes, PkgIdentifier};
 
+/// Different kinds of addons
 #[derive(Debug, Clone, Copy, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum AddonKind {
+	/// A Minecraft resource pack
 	ResourcePack,
+	/// A game modification that needs to be loaded by a custom loader
 	Mod,
+	/// A server plugin that modifies game behavior
 	Plugin,
+	/// A graphics shader that needs to be loaded by a shader modification
 	Shader,
+	/// A Minecraft datapack
 	Datapack,
 }
 
 impl AddonKind {
+	/// Parse an AddonKind from a string
 	pub fn parse_from_str(string: &str) -> Option<Self> {
 		match string {
 			"resource_pack" => Some(Self::ResourcePack),
@@ -62,11 +69,16 @@ impl Display for AddonKind {
 	}
 }
 
+/// Some content that is installed on Minecraft
 #[derive(Debug, Clone)]
 pub struct Addon {
+	/// What type of addon this is
 	pub kind: AddonKind,
+	/// The ID of this addon, unique among a package
 	pub id: String,
+	/// The addon's file name
 	pub file_name: String,
+	/// The ID of the package that installed this addon
 	pub pkg_id: PkgIdentifier,
 	/// Version of the addon, used for caching
 	pub version: Option<String>,

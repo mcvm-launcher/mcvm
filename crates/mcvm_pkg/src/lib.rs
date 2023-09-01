@@ -1,3 +1,7 @@
+#![warn(missing_docs)]
+
+//! mcvm_pkg is a library for dealing with MCVM packages
+
 /// Standard declarative package format
 pub mod declarative;
 /// Standard repository format
@@ -19,8 +23,10 @@ pub use mcvm_shared::pkg::{PkgRequest, PkgRequestSource};
 #[derive(Deserialize, Serialize, Debug, Copy, Clone, Default)]
 #[serde(rename_all = "snake_case")]
 pub enum PackageContentType {
+	/// A package script
 	#[default]
 	Script,
+	/// A declarative / JSON package
 	Declarative,
 }
 
@@ -61,6 +67,7 @@ pub struct RecommendedPackage {
 
 /// Trait for a user-configured package
 pub trait ConfiguredPackage: Clone {
+	/// Type passed to your evaluation functions
 	type EvalInput<'a>: Clone;
 
 	/// Get the package ID
@@ -76,11 +83,17 @@ pub trait ConfiguredPackage: Clone {
 
 /// Trait for the result from evaluating a package, used for resolution
 pub trait PackageEvalRelationsResult {
+	/// Get the evaluated dependencies
 	fn get_deps(&self) -> Vec<Vec<RequiredPackage>>;
+	/// Get the evaluated conflicts
 	fn get_conflicts(&self) -> Vec<String>;
+	/// Get the evaluated recommendations
 	fn get_recommendations(&self) -> Vec<RecommendedPackage>;
+	/// Get the evaluated bundled packages
 	fn get_bundled(&self) -> Vec<String>;
+	/// Get the evaluated compats
 	fn get_compats(&self) -> Vec<(String, String)>;
+	/// Get the evaluated extensions
 	fn get_extensions(&self) -> Vec<String>;
 }
 
@@ -104,6 +117,7 @@ pub trait PackageEvaluator<'a> {
 		common_input: &Self::CommonInput,
 	) -> anyhow::Result<Self::EvalRelationsResult<'a>>;
 
+	/// Get the properties of a package
 	async fn get_package_properties<'b>(
 		&'b mut self,
 		pkg: &PkgRequest,

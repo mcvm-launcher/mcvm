@@ -1,4 +1,6 @@
-use std::fmt::Display;
+#![warn(missing_docs)]
+
+//! This library is used for parsing MCVM package scripts
 
 /// Parsing for conditions, used in if instructions
 pub mod conditions;
@@ -17,18 +19,27 @@ pub mod routine;
 /// Things related to script variables
 pub mod vars;
 
+use std::fmt::Display;
+
 /// Reason why the package reported a failure
 #[derive(Debug, Clone)]
 pub enum FailReason {
+	/// No fail reason is provided
 	None,
+	/// The version is unsupported
 	UnsupportedVersion,
+	/// The modloader is unsupported
 	UnsupportedModloader,
+	/// The plugin loader is unsupported
 	UnsupportedPluginLoader,
+	/// The configured set of features is unsupported
 	UnsupportedFeatures,
+	/// The operating system is unsupported
 	UnsupportedOperatingSystem,
 }
 
 impl FailReason {
+	/// Parse a FailReason from a string
 	pub fn from_string(string: &str) -> Option<Self> {
 		match string {
 			"unsupported_version" => Some(Self::UnsupportedVersion),

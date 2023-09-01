@@ -16,13 +16,18 @@ use super::vars::Value;
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum OSCondition {
+	/// Windows
 	Windows,
+	/// Linux
 	Linux,
+	/// MacOS
 	MacOS,
+	/// Any other operating system
 	Other,
 }
 
 impl OSCondition {
+	/// Parse a string into an OSCondition
 	pub fn parse_from_str(string: &str) -> Option<Self> {
 		match string {
 			"windows" => Some(Self::Windows),
@@ -34,24 +39,39 @@ impl OSCondition {
 	}
 }
 
+/// Different types of conditions
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum ConditionKind {
+	/// An inverting not
 	Not(Later<Box<ConditionKind>>),
+	/// AND of multiple conditions
 	And(Box<ConditionKind>, Later<Box<ConditionKind>>),
+	/// OR of multiple conditions
 	Or(Box<ConditionKind>, Later<Box<ConditionKind>>),
+	/// Check the Minecraft version
 	Version(Value),
+	/// Check the side
 	Side(Later<Side>),
+	/// Check the modloader
 	Modloader(Later<ModloaderMatch>),
+	/// Check the plugin loader
 	PluginLoader(Later<PluginLoaderMatch>),
+	/// Check a configured feature
 	Feature(Value),
+	/// Check a variable
 	Value(Value, Value),
+	/// Check if a variable is defined
 	Defined(Later<String>),
+	/// Check the operating system
 	OS(Later<OSCondition>),
+	/// Check the requested package stability
 	Stability(Later<PackageStability>),
+	/// Check the user's language
 	Language(Later<Language>),
 }
 
 impl ConditionKind {
+	/// Parse a ConditionKind from a string
 	pub fn parse_from_str(string: &str) -> Option<Self> {
 		match string {
 			"not" => Some(Self::Not(Later::Empty)),
@@ -209,16 +229,20 @@ fn check_enum_condition_argument<T>(
 	}
 }
 
+/// A condition that checks some property to create a boolean answer
 #[derive(Debug, Clone)]
 pub struct Condition {
+	/// What kind of condition this is
 	pub kind: ConditionKind,
 }
 
 impl Condition {
+	/// Create a new Condition
 	pub fn new(kind: ConditionKind) -> Self {
 		Self { kind }
 	}
 
+	/// Parse a condition from a token
 	pub fn parse(&mut self, tok: &Token, pos: &TextPos) -> anyhow::Result<()> {
 		self.kind.parse(tok, pos)?;
 		Ok(())

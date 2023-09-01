@@ -1,3 +1,7 @@
+#![warn(missing_docs)]
+
+//! This crate contains shared data for the other MCVM crates
+
 /// Common addon constructs
 pub mod addon;
 /// Common instance constructs
@@ -67,10 +71,13 @@ pub mod util {
 	}
 
 	/// Utility enum for deserialization that lets you do a list that can be one item
+	/// without the braces
 	#[derive(Deserialize, Debug, Clone)]
 	#[serde(untagged)]
 	pub enum DeserListOrSingle<T> {
+		/// Only one item, specified without braces
 		Single(T),
+		/// A list of items, specified with braces
 		List(Vec<T>),
 	}
 
@@ -98,14 +105,16 @@ pub mod util {
 	}
 }
 
+/// The Later<T> enum
 pub mod later {
-
 	/// An enum very similar to `Option<T>` that lets us access it with an easier assertion.
 	/// It is meant for data that we know should already be full at some point.
 	#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 	pub enum Later<T> {
+		/// The Later does not contain a value
 		#[default]
 		Empty,
+		/// The later does contain a value
 		Full(T),
 	}
 

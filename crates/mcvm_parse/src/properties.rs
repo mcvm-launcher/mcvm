@@ -10,12 +10,19 @@ use crate::{instruction::InstrKind, parse::Parsed, routine::PROPERTIES_ROUTINE};
 /// Package properties derived from running the 'properties' routine
 #[derive(Default, Debug, Deserialize, Clone)]
 pub struct PackageProperties {
+	/// Available features that can be configured for the package
 	pub features: Option<Vec<String>>,
+	/// Features enabled by default
 	pub default_features: Option<Vec<String>>,
+	/// The package's Modrinth ID
 	pub modrinth_id: Option<String>,
+	/// The package's CurseForge ID
 	pub curseforge_id: Option<String>,
+	/// The package's supported modloaders
 	pub supported_modloaders: Option<Vec<ModloaderMatch>>,
+	/// The package's supported plugin loaders
 	pub supported_plugin_loaders: Option<Vec<PluginLoaderMatch>>,
+	/// The package's supported sides
 	pub supported_sides: Option<Vec<Side>>,
 }
 

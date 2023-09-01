@@ -2,13 +2,18 @@ use std::fmt::Display;
 
 use serde::{Deserialize, Serialize};
 
+/// A loader for Minecraft mods
 #[derive(Serialize, Deserialize, Debug, Copy, Clone, PartialEq, Eq, Default)]
 #[serde(rename_all = "snake_case")]
 pub enum Modloader {
+	/// No loader, just the default game
 	#[default]
 	Vanilla,
+	/// MinecraftForge
 	Forge,
+	/// Fabric Loader
 	Fabric,
+	/// Quilt Loader
 	Quilt,
 }
 
@@ -23,18 +28,25 @@ impl Display for Modloader {
 	}
 }
 
+/// Matcher for different types of loader
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum ModloaderMatch {
+	/// Matches vanilla
 	Vanilla,
+	/// Matches MinecraftForge
 	Forge,
+	/// Matches Fabric Loader
 	Fabric,
+	/// Matches Quilt Loader
 	Quilt,
+	/// Matches any loader that supports loading Fabric mods
 	#[serde(rename = "fabriclike")]
 	FabricLike,
 }
 
 impl ModloaderMatch {
+	/// Parse a ModloaderMatch from a string
 	pub fn parse_from_str(string: &str) -> Option<Self> {
 		match string {
 			"vanilla" => Some(Self::Vanilla),
@@ -46,6 +58,7 @@ impl ModloaderMatch {
 		}
 	}
 
+	/// Checks if a modloader matches
 	pub fn matches(&self, other: &Modloader) -> bool {
 		match self {
 			Self::Vanilla => matches!(other, Modloader::Vanilla),
@@ -57,15 +70,22 @@ impl ModloaderMatch {
 	}
 }
 
+/// Different types of server changes. These are mostly mutually exclusive.
 #[derive(Serialize, Deserialize, Debug, Copy, Clone, Default)]
 #[serde(rename_all = "snake_case")]
 pub enum ServerType {
+	/// Unspecified. Usually inherits from something else
 	#[default]
 	None,
+	/// No modifications, just the default game
 	Vanilla,
+	/// Paper server
 	Paper,
+	/// MinecraftForge
 	Forge,
+	/// Fabric Loader
 	Fabric,
+	/// Quilt Loader
 	Quilt,
 }
 
@@ -82,14 +102,18 @@ impl Display for ServerType {
 	}
 }
 
+/// Matcher for different types of server plugin loaders
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum PluginLoaderMatch {
+	/// The default game with no plugin support
 	Vanilla,
+	/// Matches any server that can load Bukkit plugins
 	Bukkit,
 }
 
 impl PluginLoaderMatch {
+	/// Parse a PluginLoaderMatch from a string
 	pub fn parse_from_str(string: &str) -> Option<Self> {
 		match string {
 			"vanilla" => Some(Self::Vanilla),
@@ -98,6 +122,7 @@ impl PluginLoaderMatch {
 		}
 	}
 
+	/// Checks if a plugin loader matches
 	pub fn matches(&self, other: &ServerType) -> bool {
 		match self {
 			Self::Vanilla => matches!(other, ServerType::Vanilla),
@@ -106,14 +131,20 @@ impl PluginLoaderMatch {
 	}
 }
 
+/// Different modifications for the client. Mostly mututally exclusive
 #[derive(Serialize, Deserialize, Debug, Copy, Clone, Default)]
 #[serde(rename_all = "snake_case")]
 pub enum ClientType {
+	/// Unspecified. Usually inherits from something else
 	#[default]
 	None,
+	/// No modifications, just the default game
 	Vanilla,
+	/// MinecraftForge
 	Forge,
+	/// Fabric Loader
 	Fabric,
+	/// Quilt Loader
 	Quilt,
 }
 

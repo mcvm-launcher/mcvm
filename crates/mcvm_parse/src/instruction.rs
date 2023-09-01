@@ -17,49 +17,92 @@ use mcvm_shared::addon::AddonKind;
 /// Type of an instruction
 #[derive(Debug, Clone)]
 pub enum InstrKind {
+	/// Check conditions
 	If(Condition, BlockId),
+	/// Set the package name metadata
 	Name(Later<String>),
+	/// Set the package description metadata
 	Description(Later<String>),
+	/// Set the package long description metadata
 	LongDescription(Later<String>),
+	/// Set the package version metadata
 	Version(Later<String>),
+	/// Set the package authors metadata
 	Authors(Vec<String>),
+	/// Set the package maintainers metadata
 	PackageMaintainers(Vec<String>),
+	/// Set the package website metadata
 	Website(Later<String>),
+	/// Set the package support link metadata
 	SupportLink(Later<String>),
+	/// Set the package documentation metadata
 	Documentation(Later<String>),
+	/// Set the package source metadata
 	Source(Later<String>),
+	/// Set the package issues metadata
 	Issues(Later<String>),
+	/// Set the package community metadata
 	Community(Later<String>),
+	/// Set the package icon metadata
 	Icon(Later<String>),
+	/// Set the package banner metadata
 	Banner(Later<String>),
+	/// Set the package license metadata
 	License(Later<String>),
+	/// Set the package features property
 	Features(Vec<String>),
+	/// Set the package default features property
 	DefaultFeatures(Vec<String>),
+	/// Set the package Modrinth ID property
 	ModrinthID(Later<String>),
+	/// Set the package CurseForge ID property
 	CurseForgeID(Later<String>),
+	/// Set the package supported modloaders property
 	SupportedModloaders(Vec<ModloaderMatch>),
+	/// Set the package supported plugin loaders property
 	SupportedPluginLoaders(Vec<PluginLoaderMatch>),
+	/// Set the package supported sides property
 	SupportedSides(Vec<Side>),
+	/// Install an addon
 	Addon {
+		/// The ID of the addon
 		id: Value,
+		/// The filename of the addon
 		file_name: Value,
+		/// What kind of addon this is
 		kind: Option<AddonKind>,
+		/// The URL to the addon file; may not exist
 		url: Value,
+		/// The path to the addon file; may not exist
 		path: Value,
+		/// The version of the addon
 		version: Value,
+		/// The addon's hashes
 		hashes: PackageAddonHashes<Value>,
 	},
+	/// Set a variable to a value
 	Set(Later<String>, Value),
+	/// Require a package
 	Require(Vec<Vec<super::parse::require::Package>>),
+	/// Refuse a package
 	Refuse(Value),
+	/// Recommend a package
 	Recommend(bool, Value),
+	/// Bundle a package
 	Bundle(Value),
+	/// Compat with a package
 	Compat(Value, Value),
+	/// Extend a package
 	Extend(Value),
+	/// Finish evaluation early
 	Finish(),
+	/// Fail evaluation
 	Fail(Option<FailReason>),
+	/// Present a notice to the user
 	Notice(Value),
+	/// Run a command
 	Cmd(Vec<Value>),
+	/// Call another routine
 	Call(Later<String>),
 }
 
@@ -113,10 +156,12 @@ impl Display for InstrKind {
 /// A command / statement run in a package script
 #[derive(Debug, Clone)]
 pub struct Instruction {
+	/// What type of instruction this is
 	pub kind: InstrKind,
 }
 
 impl Instruction {
+	/// Create a new instruction
 	pub fn new(kind: InstrKind) -> Self {
 		Self { kind }
 	}

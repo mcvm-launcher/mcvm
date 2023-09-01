@@ -21,12 +21,19 @@ use crate::RecommendedPackage;
 #[derive(Deserialize, Debug, Default, Clone)]
 #[serde(default)]
 pub struct DeclarativePackageRelations {
+	/// Package dependencies
 	pub dependencies: DeserListOrSingle<String>,
+	/// Explicit dependencies
 	pub explicit_dependencies: DeserListOrSingle<String>,
+	/// Package conflicts
 	pub conflicts: DeserListOrSingle<String>,
+	/// Package extensions
 	pub extensions: DeserListOrSingle<String>,
+	/// Bundled packages
 	pub bundled: DeserListOrSingle<String>,
+	/// Package compats
 	pub compats: DeserListOrSingle<(String, String)>,
+	/// Package recommendations
 	pub recommendations: DeserListOrSingle<RecommendedPackage>,
 }
 
@@ -49,13 +56,21 @@ impl DeclarativePackageRelations {
 #[derive(Deserialize, Debug, Default, Clone)]
 #[serde(default)]
 pub struct DeclarativeConditionSet {
+	/// Minecraft versions to allow
 	pub minecraft_versions: Option<DeserListOrSingle<VersionPattern>>,
+	/// What side to allow
 	pub side: Option<Side>,
+	/// What modloaders to allow
 	pub modloaders: Option<DeserListOrSingle<ModloaderMatch>>,
+	/// What plugin loaders to allow
 	pub plugin_loaders: Option<DeserListOrSingle<PluginLoaderMatch>>,
+	/// What stability setting to allow
 	pub stability: Option<PackageStability>,
+	/// What features to allow
 	pub features: Option<DeserListOrSingle<String>>,
+	/// What operating system to allow
 	pub os: Option<OSCondition>,
+	/// What language to allow
 	pub language: Option<Language>,
 }
 
@@ -63,7 +78,10 @@ pub struct DeclarativeConditionSet {
 #[derive(Deserialize, Debug, Default, Clone)]
 #[serde(default)]
 pub struct DeclarativeAddonVersionPatchProperties {
+	/// Relations to append
 	pub relations: DeclarativePackageRelations,
+	// TODO: This should be an option
+	/// A filename to change
 	pub filename: String,
 }
 
@@ -71,7 +89,9 @@ pub struct DeclarativeAddonVersionPatchProperties {
 #[derive(Deserialize, Debug, Default, Clone)]
 #[serde(default)]
 pub struct DeclarativeConditionalRuleProperties {
+	/// Relations to append
 	pub relations: DeclarativePackageRelations,
+	/// Notices to raise
 	pub notices: DeserListOrSingle<String>,
 }
 
@@ -79,7 +99,9 @@ pub struct DeclarativeConditionalRuleProperties {
 #[derive(Deserialize, Debug, Default, Clone)]
 #[serde(default)]
 pub struct DeclarativeConditionalRule {
+	/// Conditions for this rule
 	pub conditions: Vec<DeclarativeConditionSet>,
+	/// Properties to apply if this rule succeeds
 	pub properties: DeclarativeConditionalRuleProperties,
 }
 
@@ -87,22 +109,33 @@ pub struct DeclarativeConditionalRule {
 #[derive(Deserialize, Debug, Clone, Default)]
 #[serde(default)]
 pub struct DeclarativeAddonVersion {
+	/// Conditional properties for this version
 	#[serde(flatten)]
 	pub conditional_properties: DeclarativeConditionSet,
+	/// Additional relations that this version imposes
 	pub relations: DeclarativePackageRelations,
+	/// Notices that this version raises
 	pub notices: DeserListOrSingle<String>,
+	/// Filename for the addon file
 	pub filename: Option<String>,
+	/// Path to the version file
 	pub path: Option<String>,
+	/// URL to the version file
 	pub url: Option<String>,
+	/// Version identifier for this version
 	pub version: Option<String>,
+	/// Hashes for this version file
 	pub hashes: PackageAddonOptionalHashes,
 }
 
 /// Addon in a declarative package
 #[derive(Deserialize, Debug, Clone)]
 pub struct DeclarativeAddon {
+	/// What kind of addon this is
 	pub kind: AddonKind,
+	/// The available versions of this addon
 	pub versions: Vec<DeclarativeAddonVersion>,
+	/// Conditions for this addon to be considered
 	#[serde(default)]
 	pub conditions: Vec<DeclarativeConditionSet>,
 }
@@ -111,10 +144,15 @@ pub struct DeclarativeAddon {
 #[derive(Deserialize, Debug, Default, Clone)]
 #[serde(default)]
 pub struct DeclarativePackage {
+	/// Metadata for the package
 	pub meta: PackageMetadata,
+	/// Properties for the package
 	pub properties: PackageProperties,
+	/// Addons that the package installs
 	pub addons: HashMap<String, DeclarativeAddon>,
+	/// Relationships with other packages
 	pub relations: DeclarativePackageRelations,
+	/// Changes to conditionally apply to the package
 	pub conditional_rules: Vec<DeclarativeConditionalRule>,
 }
 

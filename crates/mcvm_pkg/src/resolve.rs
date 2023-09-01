@@ -331,7 +331,9 @@ async fn resolve_task<'a, E: PackageEvaluator<'a>>(
 
 /// Recommended package that has a PkgRequest instead of a String
 pub struct RecommendedPackage {
+	/// Package to recommend
 	pub req: PkgRequest,
+	/// Whether to invert this recommendation to recommend against a package
 	pub invert: bool,
 }
 

@@ -5,20 +5,35 @@ use serde::Deserialize;
 /// Package metadata derived from running the 'meta' routine
 #[derive(Default, Debug, Deserialize, Clone)]
 pub struct PackageMetadata {
+	/// The name of the package
 	pub name: Option<String>,
+	/// The short description of the package
 	pub description: Option<String>,
+	/// The long description of the package
 	pub long_description: Option<String>,
+	/// The display version of the package
 	pub version: Option<String>,
+	/// The authors of the package content
 	pub authors: Option<Vec<String>>,
+	/// The maintainers of the package file
 	pub package_maintainers: Option<Vec<String>>,
+	/// The package's website
 	pub website: Option<String>,
+	/// The package's support page
 	pub support_link: Option<String>,
+	/// The package's documentation link
 	pub documentation: Option<String>,
+	/// The package's source repository
 	pub source: Option<String>,
+	/// The package's issues tracker
 	pub issues: Option<String>,
+	/// The package's online community
 	pub community: Option<String>,
+	/// A link to the package's icon
 	pub icon: Option<String>,
+	/// A link to the package's banner
 	pub banner: Option<String>,
+	/// The license of the package
 	pub license: Option<String>,
 }
 

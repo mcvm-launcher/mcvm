@@ -7,11 +7,14 @@ use crate::util::is_valid_identifier;
 /// A known identifier for a package
 #[derive(Debug, Hash, Clone, PartialEq, Eq)]
 pub struct PkgIdentifier {
+	/// The string identifier of this package
 	pub id: String,
+	/// The version of this package
 	pub version: u32,
 }
 
 impl PkgIdentifier {
+	/// Create new new PkgIdentifier
 	pub fn new(id: &str, version: u32) -> Self {
 		Self {
 			id: id.to_owned(),
@@ -23,10 +26,15 @@ impl PkgIdentifier {
 /// Where a package was requested from
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum PkgRequestSource {
+	/// This package was required by the user
 	UserRequire,
+	/// This package was bundled by another package
 	Bundled(Box<PkgRequest>),
+	/// This package was depended on by another package
 	Dependency(Box<PkgRequest>),
+	/// This package was refused by another package
 	Refused(Box<PkgRequest>),
+	/// This package was requested by some automatic system
 	Repository,
 }
 
@@ -72,11 +80,15 @@ impl PkgRequestSource {
 /// Used to store a request for a package that will be fulfilled later
 #[derive(Debug, Clone, PartialOrd, Ord)]
 pub struct PkgRequest {
+	/// The source of this request.
+	/// Could be a dependent, a recommender, or anything else.
 	pub source: PkgRequestSource,
+	/// The ID of the package to request
 	pub id: String,
 }
 
 impl PkgRequest {
+	/// Create a new PkgRequest
 	pub fn new(id: &str, source: PkgRequestSource) -> Self {
 		Self {
 			id: id.to_owned(),
@@ -125,12 +137,15 @@ impl Display for PkgRequest {
 /// Stability setting for a package
 #[derive(Deserialize, Serialize, Default, Debug, Copy, Clone, PartialEq, Eq)]
 pub enum PackageStability {
+	/// Whatever the latest stable version is
 	#[default]
 	Stable,
+	/// Whatever the latest version is
 	Latest,
 }
 
 impl PackageStability {
+	/// Parse a PackageStability from a string
 	pub fn parse_from_str(string: &str) -> Option<Self> {
 		match string {
 			"stable" => Some(Self::Stable),
@@ -140,6 +155,7 @@ impl PackageStability {
 	}
 }
 
+/// The maximum length for a package identifier
 pub const MAX_PACKAGE_ID_LENGTH: usize = 32;
 
 /// Checks if a package identifier is valid
@@ -168,10 +184,13 @@ pub fn is_valid_package_id(id: &str) -> bool {
 #[derive(Deserialize, Serialize, PartialEq, Debug, Clone, Default)]
 #[serde(default)]
 pub struct PackageAddonHashes<T> {
+	/// The SHA-256 hash of this addon file
 	pub sha256: T,
+	/// The SHA-512 hash of this addon file
 	pub sha512: T,
 }
 
+/// Optional PackageAddonHashes
 pub type PackageAddonOptionalHashes = PackageAddonHashes<Option<String>>;
 
 #[cfg(test)]
