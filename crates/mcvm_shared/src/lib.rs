@@ -157,7 +157,7 @@ pub mod later {
 			}
 		}
 
-		/// Converts to an Option<T>
+		/// Converts to an `Option<T>`
 		pub fn into_option(self) -> Option<T> {
 			match self {
 				Self::Empty => None,
