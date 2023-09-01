@@ -21,7 +21,7 @@ pub type InstanceRegistry = std::collections::HashMap<String, Instance>;
 /// A user profile which applies many settings to contained instances
 #[derive(Debug)]
 pub struct Profile {
-	/// The ID of this profile 
+	/// The ID of this profile
 	pub id: String,
 	/// The Minecraft version of this profile
 	pub version: MinecraftVersion,

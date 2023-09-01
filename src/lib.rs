@@ -4,8 +4,8 @@
 //! CLI uses.
 
 pub use mcvm_parse as parse;
-pub use mcvm_shared as shared;
 pub use mcvm_pkg as pkg;
+pub use mcvm_shared as shared;
 
 /// Dealing with MCVM's data constructs, like instances and profiles
 pub mod data;

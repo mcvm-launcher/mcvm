@@ -147,7 +147,10 @@ async fn cat(data: &mut CmdData, id: &str, raw: bool) -> anyhow::Result<()> {
 	let config = data.config.get_mut();
 
 	let req = PkgRequest::new(id, PkgRequestSource::UserRequire);
-	let contents = config.packages.load(&req, &data.paths, &Client::new()).await?;
+	let contents = config
+		.packages
+		.load(&req, &data.paths, &Client::new())
+		.await?;
 	if !raw {
 		cprintln!("<s,b>Contents of package <g>{}</g>:</s,b>", req);
 	}

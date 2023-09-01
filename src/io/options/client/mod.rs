@@ -22,7 +22,7 @@ pub use deser::*;
 #[allow(missing_docs)]
 pub mod deser {
 	use super::*;
-	
+
 	#[derive(Deserialize, Serialize, Debug, Clone, Default)]
 	#[serde(default)]
 	pub struct KeyOptions {
