@@ -9,18 +9,26 @@ use super::download;
 #[derive(Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum ProjectType {
+	/// A mod project
 	Mod,
+	/// A modpack project
 	Modpack,
+	/// A resource pack project
 	ResourcePack,
+	/// A shader project
 	Shader,
+	/// A datapack project
 	Datapack,
+	/// A plugin project
 	Plugin,
 }
 
 /// A Modrinth project (mod, resource pack, etc.)
 #[derive(Deserialize)]
 pub struct Project {
+	/// The type of this project and its files
 	pub project_type: ProjectType,
+	/// The ID's of the available project versions
 	pub versions: Vec<String>,
 }
 
@@ -37,23 +45,35 @@ pub async fn get_project(project_id: &str) -> anyhow::Result<Project> {
 #[derive(Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum ReleaseChannel {
+	/// A finished release version
 	Release,
+	/// An unfinished beta version
 	Beta,
+	/// An unfinished alpha version
 	Alpha,
 }
 
-/// Known Modrinth loader
+/// A known plugin / mod loader that Modrinth supports
 #[derive(Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum KnownLoader {
+	/// MinecraftForge
 	Forge,
+	/// Fabric loader
 	Fabric,
+	/// Quilt loader
 	Quilt,
+	/// Bukkit loaders
 	Bukkit,
+	/// Spigot server
 	Spigot,
+	/// Paper server
 	Paper,
+	/// Sponge server
 	Sponge,
+	/// Purpur server
 	Purpur,
+	/// Folia server
 	Folia,
 }
 
@@ -61,7 +81,9 @@ pub enum KnownLoader {
 #[derive(Deserialize)]
 #[serde(untagged)]
 pub enum Loader {
+	/// A loader that is known
 	Known(KnownLoader),
+	/// A loader that we do not know about
 	Unknown(String),
 }
 
@@ -95,9 +117,13 @@ impl Loader {
 /// A Modrinth project version
 #[derive(Deserialize)]
 pub struct Version {
+	/// The name of this version
 	pub name: String,
+	/// The version number of this version
 	pub version_number: String,
+	/// The loaders that this version supports
 	pub loaders: Vec<Loader>,
+	/// The list of downloads for this version
 	pub downloads: Vec<Download>,
 }
 
@@ -140,7 +166,10 @@ pub async fn get_multiple_versions(versions: &[String]) -> anyhow::Result<Vec<Ve
 /// A file download from the Modrinth API
 #[derive(Deserialize)]
 pub struct Download {
+	/// The URL to the file download
 	pub url: String,
+	/// The name of the file
 	pub filename: String,
+	/// Whether or not this is the primary file for this version
 	pub primary: bool,
 }

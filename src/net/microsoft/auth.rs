@@ -56,6 +56,7 @@ pub async fn generate_login_page(
 	out.map_err(decorate_request_token_error)
 }
 
+/// A TokenResponse from Microsoft OAuth
 pub type MicrosoftToken = StandardTokenResponse<EmptyExtraTokenFields, BasicTokenType>;
 
 /// Get the Microsoft token. Will wait indefinitely until the user has signed in to

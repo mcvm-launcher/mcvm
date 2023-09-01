@@ -66,20 +66,25 @@ pub enum EvalLevel {
 #[derive(Deserialize, Serialize, Debug, Copy, Clone, Default)]
 #[serde(rename_all = "snake_case")]
 pub enum EvalPermissions {
+	/// Restricts certain operations that would normally be allowed
 	Restricted,
+	/// Standard permissions. Allow all common operations
 	#[default]
 	Standard,
+	/// Allow execution of things that could compromise security
 	Elevated,
 }
 
 /// Context / purpose for when we are evaluating
 pub enum Routine {
+	/// Install the package
 	Install,
 	/// Install routine, except for resolution
 	InstallResolve,
 }
 
 impl Routine {
+	/// Get the routine name of this routine
 	pub fn get_routine_name(&self) -> String {
 		String::from(match self {
 			Self::Install => INSTALL_ROUTINE,
@@ -87,6 +92,7 @@ impl Routine {
 		})
 	}
 
+	/// Get the EvalLevel of this routine
 	pub fn get_level(&self) -> EvalLevel {
 		match self {
 			Self::Install => EvalLevel::Install,
@@ -98,47 +104,71 @@ impl Routine {
 /// Constants for the evaluation that will be the same across every package
 #[derive(Debug, Clone)]
 pub struct EvalConstants {
+	/// The Minecraft version
 	pub version: String,
+	/// The modifications to the game
 	pub modifications: GameModifications,
+	/// The list of available Minecraft versions
 	pub version_list: Vec<String>,
+	/// The user's configured language
 	pub language: Language,
 }
 
 /// Constants for the evaluation that may be different for each package
 #[derive(Debug, Clone)]
 pub struct EvalParameters {
+	/// The side (client/server) we are installing the package on
 	pub side: Side,
+	/// Features enabled for the package
 	pub features: Vec<String>,
+	/// Permissions for the package
 	pub perms: EvalPermissions,
+	/// Requested stability of the package's contents
 	pub stability: PackageStability,
 }
 
 /// Combination of both EvalConstants and EvalParameters
 #[derive(Debug, Clone)]
 pub struct EvalInput<'a> {
+	/// Constant values
 	pub constants: &'a EvalConstants,
+	/// Changing values
 	pub params: EvalParameters,
 }
 
 /// Persistent state for evaluation
 #[derive(Debug, Clone)]
 pub struct EvalData<'a> {
+	/// Input to the evaluator
 	pub input: EvalInput<'a>,
+	/// ID of the package we are evaluating
 	pub id: PkgIdentifier,
+	/// Level of evaluation
 	pub level: EvalLevel,
+	/// Variables, used for script evaluation
 	pub vars: HashMapVariableStore,
+	/// The output of addon requests
 	pub addon_reqs: Vec<AddonRequest>,
+	/// The output dependencies
 	pub deps: Vec<Vec<RequiredPackage>>,
+	/// The output conflicts
 	pub conflicts: Vec<String>,
+	/// The output recommendations
 	pub recommendations: Vec<RecommendedPackage>,
+	/// The output bundled packages
 	pub bundled: Vec<String>,
+	/// The output compats
 	pub compats: Vec<(String, String)>,
+	/// The output package extensions
 	pub extensions: Vec<String>,
+	/// The output notices
 	pub notices: Vec<String>,
+	/// The output commands
 	pub commands: Vec<Vec<String>>,
 }
 
 impl<'a> EvalData<'a> {
+	/// Create a new EvalData
 	pub fn new(input: EvalInput<'a>, id: PkgIdentifier, routine: &Routine) -> Self {
 		Self {
 			input,

@@ -68,11 +68,15 @@ impl User {
 
 /// Result from the Microsoft authentication function
 pub struct MicrosoftAuthResult {
+	/// The access token for logging into the game and other API services
 	pub access_token: String,
+	/// The user's Minecraft profile
 	pub profile: MinecraftUserProfile,
+	/// The XBox UID of the user
 	pub xbox_uid: String,
 }
 
+/// Authenticate a Microsoft user using Microsoft OAuth
 pub async fn authenticate_microsoft_user(
 	client_id: ClientId,
 	client: &reqwest::Client,

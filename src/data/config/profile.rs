@@ -16,11 +16,14 @@ use super::{instance::InstanceConfig, package::PackageConfig};
 #[derive(Clone, Debug)]
 pub struct GameModifications {
 	modloader: Modloader,
+	/// Type of the client
 	pub client_type: ClientType,
+	/// Type of the server
 	pub server_type: ServerType,
 }
 
 impl GameModifications {
+	/// Create a new GameModifications
 	pub fn new(modloader: Modloader, client_type: ClientType, server_type: ServerType) -> Self {
 		Self {
 			modloader,
@@ -63,23 +66,31 @@ impl GameModifications {
 	}
 }
 
+/// Configuration for a profile
 #[derive(Deserialize, Serialize)]
 pub struct ProfileConfig {
 	version: MinecraftVersionDeser,
+	/// Configured modloader
 	#[serde(default)]
 	pub modloader: Modloader,
+	/// Configured client type
 	#[serde(default)]
 	pub client_type: ClientType,
+	/// Configured server type
 	#[serde(default)]
 	pub server_type: ServerType,
+	/// Configured list of instances in this profile
 	pub instances: HashMap<String, InstanceConfig>,
+	/// Packages on this profile
 	#[serde(default)]
 	pub packages: Vec<PackageConfig>,
+	/// Default stability setting of packages on this profile
 	#[serde(default)]
 	pub package_stability: PackageStability,
 }
 
 impl ProfileConfig {
+	/// Creates a profile from this profile configuration
 	pub fn to_profile(&self, profile_id: &str) -> Profile {
 		Profile::new(
 			profile_id,

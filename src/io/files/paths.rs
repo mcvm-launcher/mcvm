@@ -39,6 +39,7 @@ pub struct Paths {
 }
 
 impl Paths {
+	/// Create a new Paths object
 	pub async fn new() -> anyhow::Result<Paths> {
 		let base = BaseDirs::new().ok_or(anyhow!("Base directories failed"))?;
 		let project =

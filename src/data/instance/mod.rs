@@ -34,13 +34,19 @@ use mcvm_shared::addon::{Addon, AddonKind};
 use std::fs;
 use std::path::{Path, PathBuf};
 
+/// Different kinds of instances and their associated data
 #[derive(Debug, Clone)]
 pub enum InstKind {
+	/// A client instance
 	Client {
+		/// Options for the client
 		options: Option<Box<ClientOptions>>,
+		/// Configuration for the client window
 		window: ClientWindowConfig,
 	},
+	/// A server instance
 	Server {
+		/// Options for the server
 		options: Option<Box<ServerOptions>>,
 	},
 }
@@ -55,9 +61,12 @@ impl InstKind {
 	}
 }
 
+/// An instance of the game on a profile
 #[derive(Debug)]
 pub struct Instance {
+	/// What type of instance this is
 	pub kind: InstKind,
+	/// The ID of this instance
 	pub id: String,
 	modifications: GameModifications,
 	launch: LaunchOptions,
@@ -71,6 +80,7 @@ pub struct Instance {
 }
 
 impl Instance {
+	/// Create a new instance
 	pub fn new(
 		kind: InstKind,
 		id: &str,
@@ -94,6 +104,7 @@ impl Instance {
 		}
 	}
 
+	/// Get the directory where data for this instance is stored
 	pub fn get_dir(&self, paths: &Paths) -> PathBuf {
 		match &self.kind {
 			InstKind::Client { .. } => paths.project.data_dir().join("client").join(&self.id),
@@ -101,6 +112,7 @@ impl Instance {
 		}
 	}
 
+	/// The subdirectory of this instance where actual game files are stored
 	pub fn get_subdir(&self, paths: &Paths) -> PathBuf {
 		self.get_dir(paths).join(match self.kind {
 			InstKind::Client { .. } => ".minecraft",
@@ -132,6 +144,7 @@ impl Instance {
 		Ok(classpath)
 	}
 
+	/// Get the paths on this instance to hardlink an addon to
 	pub fn get_linked_addon_paths(
 		&self,
 		addon: &Addon,

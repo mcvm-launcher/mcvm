@@ -14,38 +14,57 @@ use mcvm_pkg::{PkgRequest, PkgRequestSource};
 #[derive(Deserialize, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum PackageType {
+	/// Yeah this is kinda stupid
 	Local,
 }
 
+/// Full configuration for a package
 #[derive(Deserialize, Serialize)]
 #[serde(untagged)]
 #[serde(rename_all = "snake_case")]
 pub enum FullPackageConfig {
+	/// Config for a local package
 	Local {
+		/// The type of the package
 		r#type: PackageType,
+		/// The ID of the pcakage
 		id: String,
+		/// The package version number
 		version: u32,
+		/// The package's content type
 		#[serde(default)]
 		content_type: PackageContentType,
+		/// The path to the local package
 		path: String,
+		/// The package's enabled features
 		#[serde(default)]
 		features: Vec<String>,
+		/// Whether or not to use the package's default features
 		#[serde(default = "use_default_features_default")]
 		use_default_features: bool,
+		/// Permissions for the package
 		#[serde(default)]
 		permissions: EvalPermissions,
+		/// Expected stability for the package
 		#[serde(default)]
 		stability: Option<PackageStability>,
 	},
+	/// Config for a repository package
 	Repository {
+		/// The ID of the pcakage
 		id: String,
+		/// The package version number
 		version: Option<u32>,
 		#[serde(default)]
+		/// The package's enabled features
 		features: Vec<String>,
+		/// Whether or not to use the package's default features
 		#[serde(default = "use_default_features_default")]
 		use_default_features: bool,
+		/// Permissions for the package
 		#[serde(default)]
 		permissions: EvalPermissions,
+		/// Expected stability for the package
 		#[serde(default)]
 		stability: Option<PackageStability>,
 	},
@@ -56,10 +75,13 @@ fn use_default_features_default() -> bool {
 	true
 }
 
+/// Different representations for the configuration of a package
 #[derive(Deserialize, Serialize)]
 #[serde(untagged)]
 pub enum PackageConfig {
+	/// Basic configuration for a repository package with just the package ID
 	Basic(String),
+	/// Full configuration for a package
 	Full(FullPackageConfig),
 }
 

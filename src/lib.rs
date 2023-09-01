@@ -1,3 +1,8 @@
+#![warn(missing_docs)]
+
+//! This is the library for MCVM and pretty much all of the features that the
+//! CLI uses.
+
 pub use mcvm_parse as parse;
 pub use mcvm_shared as shared;
 pub use mcvm_pkg as pkg;

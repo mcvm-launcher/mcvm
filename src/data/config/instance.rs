@@ -15,14 +15,18 @@ use crate::io::options::server::ServerOptions;
 use crate::io::snapshot;
 use crate::util::merge_options;
 
+/// Different representations for JVM / game arguments
 #[derive(Deserialize, Serialize, Debug, Clone)]
 #[serde(untagged)]
 pub enum Args {
+	/// A list of separate arguments
 	List(Vec<String>),
+	/// A single string of arguments
 	String(String),
 }
 
 impl Args {
+	/// Parse the arguments into a vector
 	pub fn parse(&self) -> Vec<String> {
 		match self {
 			Self::List(vec) => vec.clone(),
@@ -44,22 +48,31 @@ impl Default for Args {
 	}
 }
 
+/// Arguments for the process when launching
 #[derive(Deserialize, Serialize, Debug, Default, Clone)]
 pub struct LaunchArgs {
+	/// Arguments for the JVM
 	#[serde(default)]
 	pub jvm: Args,
+	/// Arguments for the game
 	#[serde(default)]
 	pub game: Args,
 }
 
+/// Different representations of both memory arguments for the JVM
 #[derive(Deserialize, Serialize, Debug, Default, Clone)]
 #[serde(untagged)]
 pub enum LaunchMemory {
+	/// No memory arguments
 	#[default]
 	None,
+	/// A single memory argument shared for both
 	Single(String),
+	/// Different memory arguments for both
 	Both {
+		/// The minimum memory
 		min: String,
+		/// The maximum memory
 		max: String,
 	},
 }
@@ -72,43 +85,61 @@ fn default_flags_preset() -> String {
 	String::from("none")
 }
 
+/// Options for the Minecraft QuickPlay feature
 #[derive(Deserialize, Serialize, Debug, PartialEq, Default, Clone)]
 #[serde(tag = "type")]
 #[serde(rename_all = "snake_case")]
 pub enum QuickPlay {
+	/// QuickPlay a world
 	World {
+		/// The world to play
 		world: String,
 	},
+	/// QuickPlay a server
 	Server {
+		/// The server address to join
 		server: String,
+		/// The port for the server to connect to
 		port: Option<u16>,
 	},
+	/// QuickPlay a realm
 	Realm {
+		/// The realm name to join
 		realm: String,
 	},
+	/// Don't do any QuickPlay
 	#[default]
 	None,
 }
 
+/// Configuration for the launching of the game
 #[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct LaunchConfig {
+	/// The arguments for the process
 	#[serde(default)]
 	pub args: LaunchArgs,
+	/// JVM memory options
 	#[serde(default)]
 	pub memory: LaunchMemory,
+	/// The java installation to use
 	#[serde(default = "default_java")]
 	pub java: String,
+	/// The preset for flags
 	#[serde(default = "default_flags_preset")]
 	pub preset: String,
+	/// Environment variables
 	#[serde(default)]
 	pub env: HashMap<String, String>,
+	/// A wrapper command
 	#[serde(default)]
 	pub wrapper: Option<WrapperCommand>,
+	/// QuickPlay options
 	#[serde(default)]
 	pub quick_play: QuickPlay,
 }
 
 impl LaunchConfig {
+	/// Parse and finalize this LaunchConfig into LaunchOptions
 	pub fn to_options(&self) -> anyhow::Result<LaunchOptions> {
 		let min_mem = match &self.memory {
 			LaunchMemory::None => None,
@@ -183,15 +214,20 @@ impl LaunchConfig {
 	}
 }
 
+/// Resolution for a client window
 #[derive(Deserialize, Serialize, Clone, Debug, Copy)]
 pub struct WindowResolution {
+	/// The width of the window
 	pub width: u32,
+	/// The height of the window
 	pub height: u32,
 }
 
+/// Configuration for the client window
 #[derive(Deserialize, Serialize, Default, Clone, Debug)]
 #[serde(default)]
 pub struct ClientWindowConfig {
+	/// The resolution of the window
 	pub resolution: Option<WindowResolution>,
 }
 
@@ -203,43 +239,60 @@ impl ClientWindowConfig {
 	}
 }
 
+/// The full representation of instance config
 #[derive(Deserialize, Serialize, Clone)]
 #[serde(tag = "type")]
 #[serde(rename_all = "snake_case")]
 pub enum FullInstanceConfig {
+	/// Config for the client
 	Client {
+		/// Launch configuration
 		#[serde(default)]
 		launch: LaunchConfig,
+		/// Game options
 		#[serde(default)]
 		options: Option<Box<ClientOptions>>,
+		/// Window configuration
 		#[serde(default)]
 		window: ClientWindowConfig,
+		/// An instance preset to use
 		#[serde(default)]
 		preset: Option<String>,
+		/// The folder for global datapacks to be installed to
 		#[serde(default)]
 		datapack_folder: Option<String>,
+		/// Options for snapshot config
 		#[serde(default)]
 		snapshots: Option<snapshot::Config>,
 	},
+	/// Config for the server
 	Server {
+		/// Launch configuration
 		#[serde(default)]
 		launch: LaunchConfig,
+		/// Game options
 		#[serde(default)]
 		options: Option<Box<ServerOptions>>,
+		/// An instance preset to use
 		#[serde(default)]
 		preset: Option<String>,
+		/// The folder for global datapacks to be installed to
 		#[serde(default)]
 		datapack_folder: Option<String>,
+		/// Options for snapshot config
 		#[serde(default)]
 		snapshots: Option<snapshot::Config>,
 	},
 }
 
+/// Different representations of configuration for an instance
 #[derive(Deserialize, Serialize, Clone)]
 #[serde(untagged)]
 #[serde(rename_all = "snake_case")]
 pub enum InstanceConfig {
+	/// Simple configuration with just a side
 	Simple(Side),
+	/// Full configuration with all options available
 	Full(FullInstanceConfig),
 }
 
@@ -348,6 +401,7 @@ pub fn merge_instance_configs(
 	Ok(InstanceConfig::Full(out))
 }
 
+/// Read the config for an instance to create the instance
 pub fn read_instance_config(
 	id: &str,
 	config: &InstanceConfig,

@@ -26,12 +26,19 @@ use crate::util::{json, print::PrintOptions, versions::MinecraftVersion};
 /// Requirements for operations that may be shared by multiple instances in a profile
 #[derive(Debug, Hash, PartialEq, Eq)]
 pub enum UpdateRequirement {
+	/// The client JSON metadata file
 	ClientJson,
+	/// Assets for the client
 	GameAssets,
+	/// Libraries for the client
 	GameLibraries,
+	/// A Java installation
 	Java(JavaKind),
+	/// The game JAR for a specific side
 	GameJar(Side),
+	/// Game options
 	Options,
+	/// Fabric and Quilt
 	FabricQuilt(fabric_quilt::Mode, Side),
 }
 
@@ -39,22 +46,31 @@ pub enum UpdateRequirement {
 /// It will keep track of files we have already downloaded, manage task requirements, etc
 #[derive(Debug)]
 pub struct UpdateManager {
+	/// Options for printing / output
 	pub print: PrintOptions,
+	/// Whether to force file updates
 	pub force: bool,
 	/// Whether we will prioritize local files instead of remote ones
 	pub allow_offline: bool,
 	requirements: HashSet<UpdateRequirement>,
-	// File paths that are added when they have been updated by other functions
+	/// File paths that are added when they have been updated by other functions
 	files: HashSet<PathBuf>,
+	/// The version manifest to be fulfilled later
 	version_manifest: Later<Box<json::JsonObject>>,
+	/// The client JSON to be fulfilled later
 	pub client_json: Later<Box<json::JsonObject>>,
+	/// The Java installation to be fulfilled later
 	pub java: Later<Java>,
+	/// The game options to be fulfilled later
 	pub options: Option<Options>,
+	/// The version info to be fulfilled later
 	pub version_info: Later<VersionInfo>,
+	/// The Fabric/Quilt metadata to be fulfilled later
 	pub fq_meta: Later<FabricQuiltMeta>,
 }
 
 impl UpdateManager {
+	/// Create a new UpdateManager
 	pub fn new(print: PrintOptions, force: bool, allow_offline: bool) -> Self {
 		Self {
 			print,
@@ -317,10 +333,12 @@ impl UpdateManager {
 /// Struct returned by updating functions, with data like changed files
 #[derive(Default)]
 pub struct UpdateMethodResult {
+	/// The files that this function has updated
 	pub files_updated: HashSet<PathBuf>,
 }
 
 impl UpdateMethodResult {
+	/// Create a new UpdateMethodResult
 	pub fn new() -> Self {
 		Self::default()
 	}

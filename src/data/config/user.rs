@@ -2,12 +2,22 @@ use serde::{Deserialize, Serialize};
 
 use crate::data::user::{User, UserKind};
 
+/// Different variants of users for configuration
 #[derive(Deserialize, Serialize, Clone)]
 #[serde(tag = "type")]
 #[serde(rename_all = "snake_case")]
 pub enum UserVariant {
-	Microsoft { uuid: Option<String> },
-	Demo { uuid: Option<String> },
+	/// A Microsoft user
+	Microsoft {
+		/// The UUID of the user
+		uuid: Option<String>,
+	},
+	/// A demo user
+	Demo {
+		/// The UUID of the user
+		uuid: Option<String>,
+	},
+	/// An unverified user
 	Unverified {},
 }
 
@@ -24,7 +34,9 @@ impl UserVariant {
 #[derive(Deserialize, Serialize, Clone)]
 /// Configuration for a user
 pub struct UserConfig {
+	/// The username of the user
 	pub name: String,
+	/// Configuration for the different user variants
 	#[serde(flatten)]
 	pub variant: UserVariant,
 }

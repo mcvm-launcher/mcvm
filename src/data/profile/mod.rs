@@ -15,18 +15,26 @@ use self::update::manager::UpdateManager;
 use super::config::profile::GameModifications;
 use super::user::UserManager;
 
+/// A hashmap of Strings to Instances
 pub type InstanceRegistry = std::collections::HashMap<String, Instance>;
 
+/// A user profile which applies many settings to contained instances
 #[derive(Debug)]
 pub struct Profile {
+	/// The ID of this profile 
 	pub id: String,
+	/// The Minecraft version of this profile
 	pub version: MinecraftVersion,
+	/// The instances that are contained in this profile
 	pub instances: Vec<String>,
+	/// The packages that are selected for this profile
 	pub packages: Vec<PkgProfileConfig>,
+	/// Modifications applied to instances in this profile
 	pub modifications: GameModifications,
 }
 
 impl Profile {
+	/// Create a new profile
 	pub fn new(id: &str, version: MinecraftVersion, modifications: GameModifications) -> Self {
 		Profile {
 			id: id.to_owned(),
@@ -37,6 +45,7 @@ impl Profile {
 		}
 	}
 
+	/// Add a new instance to this profile
 	pub fn add_instance(&mut self, instance: &str) {
 		self.instances.push(instance.to_owned());
 	}

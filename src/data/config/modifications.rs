@@ -9,9 +9,13 @@ use super::{
 	package::PackageConfig, profile::ProfileConfig, user::UserConfig, Config, ConfigDeser,
 };
 
+/// A modification operation that can be applied to the config
 pub enum ConfigModification {
+	/// Adds a new user
 	AddUser(String, UserConfig),
+	/// Adds a new profile
 	AddProfile(String, ProfileConfig),
+	/// Adds a new package to a profile
 	AddPackage(String, PackageConfig),
 }
 

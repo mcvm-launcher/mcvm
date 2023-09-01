@@ -5,12 +5,13 @@ use cfg_match::cfg_match;
 use reqwest::{Client, IntoUrl, Url};
 use serde::de::DeserializeOwned;
 
-// Sensible open file descriptor limit for asynchronous transfers
 cfg_match! {
 	target_os = "windows" => {
+		/// Sensible open file descriptor limit for asynchronous transfers
 		pub const FD_SENSIBLE_LIMIT: usize = 64;
 	}
 	_ => {
+		/// Sensible open file descriptor limit for asynchronous transfers
 		pub const FD_SENSIBLE_LIMIT: usize = 16;
 	}
 }

@@ -7,6 +7,7 @@ use anyhow::{bail, Context};
 use mcvm_shared::lang::Language;
 use serde::{Deserialize, Serialize};
 
+/// Deserialization struct for a package repo
 #[derive(Deserialize, Serialize)]
 pub struct RepoDeser {
 	id: String,
@@ -14,6 +15,7 @@ pub struct RepoDeser {
 	path: Option<String>,
 }
 
+/// Deserialization struct for all configured package repositories
 #[derive(Deserialize, Serialize, Default)]
 pub struct RepositoriesDeser {
 	#[serde(default)]
@@ -22,6 +24,7 @@ pub struct RepositoriesDeser {
 	backup: Vec<RepoDeser>,
 }
 
+/// Deserialization struct for user preferences
 #[derive(Deserialize, Serialize, Default)]
 #[serde(default)]
 pub struct PrefDeser {
@@ -30,9 +33,12 @@ pub struct PrefDeser {
 	language: Language,
 }
 
+/// Configured user preferences
 #[derive(Debug)]
 pub struct ConfigPreferences {
+	/// Caching strategy for packages
 	pub package_caching_strategy: CachingStrategy,
+	/// The global language
 	pub language: Language,
 }
 

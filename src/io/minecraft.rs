@@ -7,6 +7,7 @@ use zip::ZipArchive;
 
 use super::files::paths::Paths;
 
+/// Interacting with the game JAR file
 pub mod game_jar {
 	use std::io::BufReader;
 

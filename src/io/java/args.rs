@@ -2,15 +2,21 @@ use std::{fmt::Display, str::FromStr};
 
 use anyhow::bail;
 
+/// An amount of memory, used for Java memory arguments
 #[derive(Debug, Clone, PartialEq)]
 pub enum MemoryNum {
+	/// Bytes
 	B(u32),
+	/// Kilobytes
 	Kb(u32),
+	/// Megabytes
 	Mb(u32),
+	/// Gigabytes
 	Gb(u32),
 }
 
 impl MemoryNum {
+	/// Parse a string into a MemoryNum
 	pub fn parse(string: &str) -> Option<Self> {
 		Some(match string.chars().last()? {
 			'k' | 'K' => Self::Kb(string[..string.len() - 1].parse().ok()?),
@@ -51,12 +57,16 @@ impl Display for MemoryNum {
 	}
 }
 
+/// Different types of Java memory arguments
 pub enum MemoryArg {
+	/// Minimum heap size
 	Min,
+	/// Maximum heap size
 	Max,
 }
 
 impl MemoryArg {
+	/// Convert this memory arg to an argument string with a memory num
 	pub fn to_string(&self, n: MemoryNum) -> String {
 		let arg = match self {
 			Self::Min => String::from("-Xms"),
@@ -70,9 +80,13 @@ impl MemoryArg {
 /// Preset for generating game arguments (Usually for optimization)
 #[derive(Debug)]
 pub enum ArgsPreset {
+	/// No preset
 	None,
+	/// Aikar's args
 	Aikars,
+	/// Krusic's args
 	Krusic,
+	/// Obydux's args
 	Obydux,
 }
 
@@ -90,6 +104,7 @@ impl FromStr for ArgsPreset {
 }
 
 impl ArgsPreset {
+	/// Generate the JVM arguments for this arguments preset
 	pub fn generate_args(&self, mem_avg: Option<MemoryNum>) -> Vec<String> {
 		match self {
 			Self::None => vec![],

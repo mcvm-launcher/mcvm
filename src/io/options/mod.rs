@@ -20,8 +20,10 @@ use server::ServerOptions;
 /// General options structure used to produce options for both client and server
 #[derive(Deserialize, Debug, Clone)]
 pub struct Options {
+	/// Options for the client
 	#[serde(default)]
 	pub client: Option<ClientOptions>,
+	/// Options for the server
 	#[serde(default)]
 	pub server: Option<ServerOptions>,
 }

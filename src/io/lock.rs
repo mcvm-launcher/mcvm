@@ -62,7 +62,8 @@ impl LockfileAddon {
 		})
 	}
 
-	pub fn _remove(&self) -> anyhow::Result<()> {
+	/// Remove this addon
+	pub fn remove(&self) -> anyhow::Result<()> {
 		for file in self.files.iter() {
 			let path = PathBuf::from(file);
 			if path.exists() {
@@ -74,6 +75,7 @@ impl LockfileAddon {
 	}
 }
 
+/// Package stored in the lockfile
 #[derive(Serialize, Deserialize, Debug)]
 pub struct LockfilePackage {
 	version: u32,
@@ -102,7 +104,9 @@ struct LockfileJava {
 
 /// Used as a function argument
 pub enum LockfileJavaInstallation {
+	/// Adoptium Java
 	Adoptium,
+	/// Zulu Java
 	Zulu,
 }
 
@@ -238,7 +242,7 @@ impl Lockfile {
 					format!("The existing file '{file}' has the same path as an addon. Overwrite it?")
 				))
 				.context("Prompt failed")?;
-			
+
 				if !allow {
 					bail!("File '{file}' would be overwritten by an addon");
 				}

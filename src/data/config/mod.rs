@@ -63,6 +63,7 @@ fn default_config() -> serde_json::Value {
 	)
 }
 
+/// Deserialization struct for user configuration
 #[derive(Deserialize, Serialize, Default)]
 #[serde(default)]
 pub struct ConfigDeser {
@@ -73,12 +74,19 @@ pub struct ConfigDeser {
 	preferences: PrefDeser,
 }
 
+/// The data resulting from reading configuration.
+/// Represents all of the configured data that MCVM will use
 #[derive(Debug)]
 pub struct Config {
+	/// The user manager
 	pub users: UserManager,
+	/// The available instances
 	pub instances: InstanceRegistry,
+	/// The available profiles
 	pub profiles: HashMap<String, Box<Profile>>,
+	/// The registry of packages. Will include packages that are configured when created this way
 	pub packages: PkgRegistry,
+	/// Global user preferences
 	pub prefs: ConfigPreferences,
 }
 
@@ -255,6 +263,7 @@ impl Config {
 		})
 	}
 
+	/// Load the configuration from the config file
 	pub fn load(path: &Path, show_warnings: bool, o: &mut impl MCVMOutput) -> anyhow::Result<Self> {
 		let obj = Self::open(path)?;
 		Self::load_from_deser(obj, show_warnings, o)

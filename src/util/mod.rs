@@ -16,28 +16,34 @@ use rand::Rng;
 
 cfg_match! {
 	target_os = "linux" => {
+		/// String representing the current operating system
 		pub const OS_STRING: &str = "linux";
 	}
 	target_os = "windows" => {
+		/// String representing the current operating system
 		pub const OS_STRING: &str = "windows";
 	}
 	target_os = "macos" => {
-		pub const OS_STRING: &str = "windows";
+		/// String representing the current operating system
+		pub const OS_STRING: &str = "macos";
 	}
 	_ => {
-		pub const OS_STRING: &str = "";
 		compile_error!("Target operating system is unsupported")
+		pub const OS_STRING: &str = "";
 	}
 }
 
 cfg_match! {
 	target_arch = "x86" => {
+		/// String representing the current architecture
 		pub const ARCH_STRING: &str = "x86";
 	}
 	target_arch = "x86_64" => {
+		/// String representing the current architecture
 		pub const ARCH_STRING: &str = "x64";
 	}
 	target_arch = "arm" => {
+		/// String representing the current architecture
 		pub const ARCH_STRING: &str = "arm";
 	}
 	_ => {
@@ -48,9 +54,11 @@ cfg_match! {
 
 cfg_match! {
 	target_os = "linux" => {
+		/// String of the preferred archive file extension
 		pub const PREFERRED_ARCHIVE: &str = "tar.gz";
 	}
 	_ => {
+		/// String of the preferred archive file extension
 		pub const PREFERRED_ARCHIVE: &str = "zip";
 	}
 }
@@ -62,9 +70,11 @@ pub fn preferred_archive_extension() -> String {
 
 cfg_match! {
 	target_pointer_width = "64" => {
+		/// String representing the current pointer width
 		pub const TARGET_BITS_STR: &str = "64";
 	}
 	_ => {
+		/// String representing the current pointer width
 		pub const TARGET_BITS_STR: &str = "32";
 	}
 }
@@ -157,6 +167,8 @@ pub fn utc_timestamp() -> anyhow::Result<u64> {
 	Ok(SystemTime::now().duration_since(UNIX_EPOCH)?.as_secs())
 }
 
+/// Trait for a value that can be converted to an integer
 pub trait ToInt {
+	/// Get this value as an i32
 	fn to_int(&self) -> i32;
 }

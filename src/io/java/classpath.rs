@@ -4,9 +4,11 @@ use cfg_match::cfg_match;
 
 cfg_match! {
 	target_os = "linux" => {
+		/// The separator for entries in the classpath
 		pub const CLASSPATH_SEP: char = ':';
 	}
 	target_os = "windows" => {
+		/// The separator for entries in the classpath
 		pub const CLASSPATH_SEP: char = ';';
 	}
 }
@@ -18,6 +20,7 @@ pub struct Classpath {
 }
 
 impl Classpath {
+	/// Create a new empty classpath
 	pub fn new() -> Self {
 		Self {
 			string: String::new(),

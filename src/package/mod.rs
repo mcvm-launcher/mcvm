@@ -31,7 +31,9 @@ const PKG_EXTENSION: &str = ".pkg.txt";
 /// Type of data inside a package
 #[derive(Debug)]
 pub enum PkgContents {
+	/// A package script
 	Script(Parsed),
+	/// A declarative package
 	Declarative(Box<DeclarativePackage>),
 }
 
@@ -65,6 +67,7 @@ pub struct PkgData {
 }
 
 impl PkgData {
+	/// Create a new PkgData
 	pub fn new(text: &str) -> Self {
 		Self {
 			text: text.to_owned(),
@@ -74,6 +77,7 @@ impl PkgData {
 		}
 	}
 
+	/// Get the text content of the PkgData
 	pub fn get_text(&self) -> String {
 		self.text.clone()
 	}
@@ -82,21 +86,29 @@ impl PkgData {
 /// Location of a package
 #[derive(Debug, Clone)]
 pub enum PkgLocation {
-	Local(PathBuf),         // Contained on the local filesystem
-	Remote(Option<String>), // Contained on an external repository
-	Core,                   // Included in the binary
+	/// Contained on the local filesystem
+	Local(PathBuf),
+	/// Contained on an external repository
+	Remote(Option<String>),
+	/// Included in the binary
+	Core,
 }
 
 /// An installable package that loads content into your game
 #[derive(Debug)]
 pub struct Package {
+	/// The package ID
 	pub id: PkgIdentifier,
+	/// Where the package is being retrieved from
 	pub location: PkgLocation,
+	/// Type of the content in the package
 	pub content_type: PackageContentType,
+	/// The data of the package
 	pub data: Later<PkgData>,
 }
 
 impl Package {
+	/// Create a new Package
 	pub fn new(
 		id: &str,
 		version: u32,
@@ -246,10 +258,15 @@ impl Package {
 /// Evaluated configuration for a package, stored in a profile
 #[derive(Debug, Clone)]
 pub struct PkgProfileConfig {
+	/// The ID of the package
 	pub req: PkgRequest,
+	/// The list of features to apply to the package
 	pub features: Vec<String>,
+	/// Whether or not to use the package's default features
 	pub use_default_features: bool,
+	/// The permissions of the package
 	pub permissions: EvalPermissions,
+	/// The stability setting for the package
 	pub stability: PackageStability,
 }
 

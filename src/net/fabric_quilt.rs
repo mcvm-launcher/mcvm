@@ -15,9 +15,14 @@ use mcvm_shared::instance::Side;
 
 use super::download;
 
+/// Mode we are in (Fabric / Quilt)
+/// This way we don't have to duplicate a lot of functions since these both
+/// have very similar download steps
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum Mode {
+	/// Fabric loader
 	Fabric,
+	/// Quilt loader
 	Quilt,
 }
 
@@ -34,6 +39,7 @@ impl Display for Mode {
 	}
 }
 
+/// A library in the Fabric/Quilt meta
 #[derive(Debug, Deserialize, Clone)]
 pub struct Library {
 	name: String,
@@ -46,11 +52,13 @@ fn default_library_url() -> String {
 	String::from("https://repo.papermc.io/repository/maven-public/")
 }
 
+/// An important library in the Fabric/Quilt meta
 #[derive(Deserialize, Clone, Debug)]
 pub struct MainLibrary {
 	maven: String,
 }
 
+/// The struct of libraries for different sides
 #[derive(Deserialize, Debug, Clone)]
 pub struct Libraries {
 	common: Vec<Library>,
@@ -58,14 +66,23 @@ pub struct Libraries {
 	server: Vec<Library>,
 }
 
+/// A Java main class override provided by the meta
 #[derive(Deserialize, Debug, Clone)]
 #[serde(untagged)]
 pub enum MainClass {
-	New { client: String, server: String },
+	/// The new format with a different string for client and server
+	New {
+		/// Main class for the client
+		client: String,
+		/// Main class for the server
+		server: String,
+	},
+	/// The old format with the same main class for both sides
 	Old(String),
 }
 
 impl MainClass {
+	/// Get the main class as a string
 	pub fn get_main_class_string(&self, side: Side) -> &str {
 		match self {
 			Self::New { client, server } => match side {
@@ -77,18 +94,24 @@ impl MainClass {
 	}
 }
 
+/// Metadata for the launcher
 #[derive(Deserialize, Debug, Clone)]
 pub struct LauncherMeta {
 	libraries: Libraries,
+	/// The main class to override with when launching
 	#[serde(rename = "mainClass")]
 	pub main_class: MainClass,
 }
 
+/// Metadata for Fabric or Quilt
 #[derive(Deserialize, Debug, Clone)]
 pub struct FabricQuiltMeta {
+	/// Metadata for the launcher
 	#[serde(rename = "launcherMeta")]
 	pub launcher_meta: LauncherMeta,
+	/// The main library to use for the loader
 	pub loader: MainLibrary,
+	/// The main library to use for intermediary mappings
 	pub intermediary: MainLibrary,
 }
 

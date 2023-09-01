@@ -15,19 +15,23 @@ use std::path::PathBuf;
 /// Location for a PkgRepo
 #[derive(Debug)]
 pub enum PkgRepoLocation {
+	/// A repository on a remote device
 	Remote(String),
+	/// A repository on the local filesystem
 	Local(PathBuf),
 }
 
 /// A remote source for mcvm packages
 #[derive(Debug)]
 pub struct PkgRepo {
+	/// The identifier for the repository
 	pub id: String,
 	location: PkgRepoLocation,
 	index: Later<RepoPkgIndex>,
 }
 
 impl PkgRepo {
+	/// Create a new PkgRepo
 	pub fn new(id: &str, location: PkgRepoLocation) -> Self {
 		Self {
 			id: id.to_owned(),
@@ -131,10 +135,14 @@ pub fn get_package_index_url(base: &str) -> String {
 	base.to_owned() + "/api/mcvm/index.json"
 }
 
-/// Result from repository querying
+/// Result from repository querying. This represents an entry
+/// for a package that can be accessed
 pub struct RepoQueryResult {
+	/// The URL to download the package from
 	pub url: String,
+	/// The version number of the package
 	pub version: u32,
+	/// The content type of the package
 	pub content_type: PackageContentType,
 }
 

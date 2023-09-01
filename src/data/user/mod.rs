@@ -11,25 +11,39 @@ use reqwest::Client;
 
 use crate::net::microsoft::Keypair;
 
+/// Type of a user
 #[derive(Debug, Clone)]
 pub enum UserKind {
-	Microsoft { xbox_uid: Option<String> },
+	/// A new Microsoft user, the standard account
+	Microsoft {
+		/// The XBox UID of the user
+		xbox_uid: Option<String>,
+	},
+	/// A demo user
 	Demo,
+	/// An unverified / not logged in user
 	Unverified,
 }
 
 /// A user account that can play the game
 #[derive(Debug)]
 pub struct User {
+	/// Type of this user
 	pub kind: UserKind,
+	/// This user's ID
 	pub id: String,
+	/// The user's username
 	pub name: String,
+	/// The user's UUID
 	pub uuid: Option<String>,
+	/// The user's access token
 	pub access_token: Option<String>,
+	/// The user's public / private key pair
 	pub keypair: Option<Keypair>,
 }
 
 impl User {
+	/// Create a new user
 	pub fn new(kind: UserKind, id: &str, name: &str) -> Self {
 		Self {
 			kind,
@@ -41,6 +55,7 @@ impl User {
 		}
 	}
 
+	/// Set this user's UUID
 	pub fn set_uuid(&mut self, uuid: &str) {
 		self.uuid = Some(uuid.to_string());
 	}
@@ -49,19 +64,25 @@ impl User {
 /// State of authentication
 #[derive(Debug)]
 pub enum AuthState {
+	/// No user is picked / MCVM is offline
 	Offline,
+	/// A user has been selected but not authenticated
 	UserChosen(String),
+	/// The user is authenticated
 	Authed(String),
 }
 
 /// List of users and AuthState
 #[derive(Debug)]
 pub struct UserManager {
+	/// The current state of authentication
 	pub state: AuthState,
+	/// All configured / available users
 	pub users: HashMap<String, User>,
 }
 
 impl UserManager {
+	/// Create a new UserManager
 	pub fn new() -> Self {
 		Self {
 			state: AuthState::Offline,

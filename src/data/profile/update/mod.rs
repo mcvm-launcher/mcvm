@@ -25,11 +25,17 @@ use super::{InstanceRegistry, Profile};
 
 /// Shared objects for profile updating functions
 pub struct ProfileUpdateContext<'a, O: MCVMOutput> {
+	/// The package registry
 	pub packages: &'a mut PkgRegistry,
+	/// The instance registry
 	pub instances: &'a mut InstanceRegistry,
+	/// The shared paths
 	pub paths: &'a Paths,
+	/// The lockfile
 	pub lock: &'a mut Lockfile,
+	/// The reqwest client
 	pub client: &'a Client,
+	/// The output object
 	pub output: &'a mut O,
 }
 

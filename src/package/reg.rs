@@ -30,14 +30,19 @@ pub enum CachingStrategy {
 	All,
 }
 
+/// An object used to store and cache all of the packages that we are working with.
+/// It queries repositories automatically when asking for a package that isn't in the
+/// registry, and prevents having a bunch of copies of packages everywhere.
 #[derive(Debug)]
 pub struct PkgRegistry {
+	/// The package repositories that the user has configured
 	pub repos: Vec<PkgRepo>,
 	packages: HashMap<PkgRequest, Package>,
 	caching_strategy: CachingStrategy,
 }
 
 impl PkgRegistry {
+	/// Create a new PkgRegistry
 	pub fn new(repos: Vec<PkgRepo>, caching_strategy: CachingStrategy) -> Self {
 		Self {
 			repos,

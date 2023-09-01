@@ -37,7 +37,9 @@ pub fn get_hash_str_as_hex(hash: &str) -> anyhow::Result<Vec<u8>> {
 /// The different hash types used by addons
 #[derive(Copy, Clone)]
 pub enum AddonHashType {
+	/// SHA-256 hash
 	SHA256,
+	/// SHA-512 hash
 	SHA512,
 }
 

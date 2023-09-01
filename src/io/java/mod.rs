@@ -22,14 +22,19 @@ use std::path::{Path, PathBuf};
 use super::lock::{Lockfile, LockfileJavaInstallation};
 use mcvm_shared::later::Later;
 
+/// Type of Java installation
 #[derive(Debug, Clone, Hash, PartialEq, Eq)]
 pub enum JavaKind {
+	/// Adoptium
 	Adoptium(Later<String>),
+	/// Azul Zulu
 	Zulu(Later<String>),
+	/// A user-specified installation
 	Custom(PathBuf),
 }
 
 impl JavaKind {
+	/// Parse a string into a JavaKind
 	pub fn parse(string: &str) -> Self {
 		match string {
 			"adoptium" => Self::Adoptium(Later::Empty),
@@ -43,10 +48,12 @@ impl JavaKind {
 #[derive(Debug, Clone)]
 pub struct Java {
 	kind: JavaKind,
+	/// The path to the JVM which will be filled when it is installed
 	pub path: Later<PathBuf>,
 }
 
 impl Java {
+	/// Create a new Java
 	pub fn new(kind: JavaKind) -> Self {
 		Self {
 			kind,

@@ -9,8 +9,10 @@ use super::json;
 #[derive(Deserialize, Serialize, Debug, Clone, PartialEq)]
 pub enum MinecraftLatestVersion {
 	#[serde(rename = "latest")]
+	/// A release version of Minecraft
 	Release,
 	#[serde(rename = "latest_snapshot")]
+	/// A snapshot version of Minecraft
 	Snapshot,
 }
 
@@ -19,7 +21,9 @@ pub enum MinecraftLatestVersion {
 #[serde(untagged)]
 /// Used for deserializing a Minecraft version
 pub enum MinecraftVersionDeser {
+	/// One of the latest version matchers
 	Latest(MinecraftLatestVersion),
+	/// A generic version
 	Version(String),
 }
 
@@ -37,8 +41,11 @@ impl MinecraftVersionDeser {
 /// User-supplied Minecraft version pattern
 #[derive(Debug, Clone)]
 pub enum MinecraftVersion {
+	/// A generic version
 	Version(String),
+	/// The latest release version available
 	Latest,
+	/// The latest release or development version available
 	LatestSnapshot,
 }
 

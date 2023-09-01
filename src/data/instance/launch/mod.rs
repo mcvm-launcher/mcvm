@@ -32,7 +32,7 @@ use self::client::create_quick_play_args;
 use super::Instance;
 
 impl Instance {
-	// Launch the instance
+	/// Launch the instance process
 	pub async fn launch(
 		&mut self,
 		paths: &Paths,
@@ -130,25 +130,40 @@ impl Instance {
 
 /// Argument for the launch_game_process command that includes properties about the launch command
 pub struct LaunchProcessProperties<'a> {
+	/// The current working directory, usually the instance subdir
 	pub cwd: &'a Path,
+	/// The base command to run, usually the path to the JVM
 	pub command: &'a str,
+	/// Arguments for the JVM
 	pub jvm_args: &'a [String],
+	/// The Java main class to run
 	pub main_class: Option<&'a str>,
+	/// Arguments for the game
 	pub game_args: &'a [String],
+	/// Additional environment variables to add to the launch command
 	pub additional_env_vars: &'a HashMap<String, String>,
 }
 
 /// Options for launching after conversion from the deserialized version
 #[derive(Debug)]
 pub struct LaunchOptions {
+	/// Java kind
 	pub java: JavaKind,
+	/// JVM arguments
 	pub jvm_args: Vec<String>,
+	/// Game arguments
 	pub game_args: Vec<String>,
+	/// Minimum JVM memory
 	pub min_mem: Option<MemoryNum>,
+	/// Maximum JVM memory
 	pub max_mem: Option<MemoryNum>,
+	/// Java arguments preset
 	pub preset: ArgsPreset,
+	/// Environment variables
 	pub env: HashMap<String, String>,
+	/// Wrapper command
 	pub wrapper: Option<WrapperCommand>,
+	/// Quick Play options
 	pub quick_play: QuickPlay,
 }
 
@@ -196,7 +211,9 @@ impl LaunchOptions {
 /// A wrapper command
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct WrapperCommand {
+	/// The command to run
 	pub cmd: String,
+	/// The command's arguments
 	pub args: Vec<String>,
 }
 

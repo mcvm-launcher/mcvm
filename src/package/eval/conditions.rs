@@ -6,6 +6,7 @@ use mcvm_parse::{
 	vars::VariableStore,
 };
 
+/// Checks an OS condition to see if it matches the current operating system
 pub const fn check_os_condition(condition: &OSCondition) -> bool {
 	match condition {
 		OSCondition::Windows => cfg!(target_os = "windows"),
@@ -17,6 +18,7 @@ pub const fn check_os_condition(condition: &OSCondition) -> bool {
 	}
 }
 
+/// Evaluates a script condition to a boolean
 pub fn eval_condition(condition: &ConditionKind, eval: &EvalData) -> anyhow::Result<bool> {
 	match condition {
 		ConditionKind::Not(condition) => eval_condition(condition.get(), eval).map(|op| !op),

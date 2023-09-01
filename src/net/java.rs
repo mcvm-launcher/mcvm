@@ -5,6 +5,7 @@ use crate::util::{ARCH_STRING, OS_STRING, PREFERRED_ARCHIVE};
 use anyhow::{anyhow, Context};
 use reqwest::Client;
 
+/// Downloading Adoptium JDK
 pub mod adoptium {
 	use super::*;
 
@@ -33,6 +34,7 @@ pub mod adoptium {
 	}
 }
 
+/// Downloading Azul Zulu
 pub mod zulu {
 	use super::*;
 
@@ -49,7 +51,9 @@ pub mod zulu {
 	/// Format of the metadata JSON with download info for Zulu
 	#[derive(Deserialize, Clone)]
 	pub struct PackageFormat {
+		/// Name of the Zulu version
 		pub name: String,
+		/// Download URL for the package
 		pub download_url: String,
 	}
 

@@ -117,6 +117,7 @@ pub struct PrintOptions {
 }
 
 impl PrintOptions {
+	/// Create a new PrintOptions with verbosity and indent level settings
 	pub fn new(verbose: bool, indent: usize) -> Self {
 		Self {
 			verbose,
@@ -125,7 +126,8 @@ impl PrintOptions {
 		}
 	}
 
-	pub fn _increase_indent(opt: &Self) -> Self {
+	/// Increase the indent of the PrintOptions
+	pub fn increase_indent(opt: &Self) -> Self {
 		let mut out = opt.clone();
 		out.indent += 1;
 		out.indent_str = make_indent(out.indent);

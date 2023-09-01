@@ -13,12 +13,14 @@ use super::{
 	EvalPermissions, RequiredPackage, Routine, MAX_NOTICE_CHARACTERS, MAX_NOTICE_INSTRUCTIONS,
 };
 
-/// Result from an evaluation subfunction
+/// Result from an evaluation subfunction. Mostly used to know when to end
+/// evaluation early.
 pub struct EvalResult {
 	finish: bool,
 }
 
 impl EvalResult {
+	/// Creates a new EvalResult
 	pub fn new() -> Self {
 		Self { finish: false }
 	}

@@ -19,7 +19,9 @@ use mcvm_shared::modifications::{Modloader, ServerType};
 
 use super::{InstKind, Instance};
 
+/// The default main class for the server
 pub const DEFAULT_SERVER_MAIN_CLASS: &str = "net.minecraft.server.Main";
+/// The main class for a Paper server
 pub const PAPER_SERVER_MAIN_CLASS: &str = "io.papermc.paperclip.Main";
 
 impl Instance {

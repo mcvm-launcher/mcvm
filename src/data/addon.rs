@@ -54,19 +54,26 @@ pub fn is_stored_addon_path(path: &Path, paths: &Paths) -> bool {
 	path.starts_with(&paths.addons)
 }
 
+/// The location of an addon
 #[derive(Debug, Clone)]
 pub enum AddonLocation {
+	/// Located at a remote URL
 	Remote(String),
+	/// Located on the local filesystem
 	Local(PathBuf),
 }
 
+/// A request for an addon file that will be fulfilled later
 #[derive(Debug, Clone)]
 pub struct AddonRequest {
+	/// The addon that will be retrieved
 	pub addon: Addon,
+	/// Where the addon is located
 	location: AddonLocation,
 }
 
 impl AddonRequest {
+	/// Create a new AddonRequest from an addon and location
 	pub fn new(addon: Addon, location: AddonLocation) -> Self {
 		Self { addon, location }
 	}
