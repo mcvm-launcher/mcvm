@@ -200,7 +200,9 @@ pub async fn get(
 	while let Some(lib) = join.join_next().await {
 		lib??;
 	}
+	o.end_process();
 
+	o.start_process();
 	for (path, name) in native_paths {
 		o.display(
 			MessageContents::StartProcess(format!("Extracting native library {name}")),
