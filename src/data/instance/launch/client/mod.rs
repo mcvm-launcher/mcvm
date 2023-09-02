@@ -13,6 +13,9 @@ use crate::io::files::paths::Paths;
 use crate::skip_none;
 use crate::util::json;
 use mcvm_shared::versions::VersionInfo;
+
+// Used for Linux env vars
+#[cfg(target_os = "linux")]
 use mcvm_shared::versions::VersionPattern;
 
 pub use args::create_quick_play_args;
@@ -98,7 +101,11 @@ impl Instance {
 				}
 			}
 
+			#[cfg(target_os = "linux")]
 			let mut env_vars = HashMap::new();
+			#[cfg(not(target_os = "linux"))]
+			let env_vars = HashMap::new();
+			
 			// Compatability env var for old versions on Linux to prevent graphical issues
 			#[cfg(target_os = "linux")]
 			{
