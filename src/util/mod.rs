@@ -9,7 +9,10 @@ pub mod print;
 /// Utilities for game versions
 pub mod versions;
 
-use std::time::{SystemTime, UNIX_EPOCH};
+use std::{
+	process::Command,
+	time::{SystemTime, UNIX_EPOCH},
+};
 
 use cfg_match::cfg_match;
 use rand::Rng;
@@ -171,4 +174,27 @@ pub fn utc_timestamp() -> anyhow::Result<u64> {
 pub trait ToInt {
 	/// Get this value as an i32
 	fn to_int(&self) -> i32;
+}
+
+// Command for opening links
+cfg_match! {
+	target_os = "linux" => {
+		const URL_OPEN_CMD: &str = "xdg-open";
+	}
+	target_os = "windows" => {
+		const URL_OPEN_CMD: &str = "start";
+	}
+	target_os = "macos" => {
+		const URL_OPEN_CMD: &str = "open";
+	}
+	_ => {
+		compile_error!("Target operating system is unsupported")
+	}
+}
+
+/// Attempt to open a link on the user's computer
+pub fn open_link(link: &str) -> anyhow::Result<()> {
+	Command::new(URL_OPEN_CMD).arg(link).spawn()?;
+
+	Ok(())
 }

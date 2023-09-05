@@ -11,32 +11,6 @@ use crate::net::microsoft::{
 
 use super::{User, UserKind};
 
-/// Present the login page and secret code to the user
-pub fn present_login_page_and_code(url: &str, code: &str, o: &mut impl MCVMOutput) {
-	let result = open::that_detached("url");
-	if result.is_err() {
-		o.display(
-			MessageContents::Error("Failed to open link in browser".to_string()),
-			MessageLevel::Important,
-		);
-	}
-
-	o.display(
-		MessageContents::Property(
-			"Open this link in your web browser if it has not opened already".to_string(),
-			Box::new(MessageContents::Hyperlink(url.to_string())),
-		),
-		MessageLevel::Important,
-	);
-	o.display(
-		MessageContents::Property(
-			"and enter the code".to_string(),
-			Box::new(MessageContents::Copyable(code.to_string())),
-		),
-		MessageLevel::Important,
-	);
-}
-
 impl User {
 	/// Authenticate the user
 	pub async fn authenticate(
@@ -87,11 +61,7 @@ pub async fn authenticate_microsoft_user(
 		.await
 		.context("Failed to execute authorization and generate login page")?;
 
-	present_login_page_and_code(
-		response.verification_uri(),
-		response.user_code().secret(),
-		o,
-	);
+	o.display_special_ms_auth(response.verification_uri(), response.user_code().secret());
 
 	let token = auth::get_microsoft_token(&oauth_client, response)
 		.await
@@ -132,11 +102,7 @@ pub async fn debug_authenticate(
 		.await
 		.context("Failed to execute authorization and generate login page")?;
 
-	present_login_page_and_code(
-		response.verification_uri(),
-		response.user_code().secret(),
-		o,
-	);
+	o.display_special_ms_auth(response.verification_uri(), response.user_code().secret());
 
 	let token = auth::get_microsoft_token(&client, response)
 		.await

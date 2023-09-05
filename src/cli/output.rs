@@ -12,7 +12,7 @@ use mcvm::{
 	},
 };
 use mcvm_pkg::{PkgRequest, PkgRequestSource};
-use mcvm_shared::output::{MCVMOutput, Message, MessageContents, MessageLevel};
+use mcvm_shared::output::{MCVMOutput, Message, MessageContents, MessageLevel, default_special_ms_auth};
 
 /// Terminal MCVMOutput
 pub struct TerminalOutput {
@@ -77,6 +77,11 @@ impl MCVMOutput for TerminalOutput {
 			.context("Inquire prompt failed")?;
 
 		Ok(ans)
+	}
+
+	fn display_special_ms_auth(&mut self, url: &str, code: &str) {
+		let _ = mcvm::util::open_link(url);
+		default_special_ms_auth(self, url, code);
 	}
 }
 

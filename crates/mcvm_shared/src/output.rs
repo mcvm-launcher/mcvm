@@ -34,6 +34,14 @@ pub trait MCVMOutput {
 		let _message = message;
 		Ok(default)
 	}
+
+	// Specialized implementations for certain combinations of messages.
+	// These all have default impls which you can override for more specific behavior
+
+	/// Specialized implementation for details given to the user for Microsoft authentication
+	fn display_special_ms_auth(&mut self, url: &str, code: &str) {
+		default_special_ms_auth(self, url, code);
+	}
 }
 
 /// Message formatting for the default implementation
@@ -59,6 +67,24 @@ fn default_format_message(contents: MessageContents) -> String {
 		}
 		MessageContents::ListItem(item) => format!(" - {}", default_format_message(*item)),
 	}
+}
+
+/// Displays the default Microsoft authentication messages
+pub fn default_special_ms_auth(o: &mut (impl MCVMOutput + ?Sized), url: &str, code: &str) {
+	o.display(
+		MessageContents::Property(
+			"Open this link in your web browser if it has not opened already".to_string(),
+			Box::new(MessageContents::Hyperlink(url.to_string())),
+		),
+		MessageLevel::Important,
+	);
+	o.display(
+		MessageContents::Property(
+			"and enter the code".to_string(),
+			Box::new(MessageContents::Copyable(code.to_string())),
+		),
+		MessageLevel::Important,
+	);
 }
 
 /// A message supplied to the output
