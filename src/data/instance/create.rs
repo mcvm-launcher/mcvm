@@ -10,7 +10,7 @@ use crate::data::user::{AuthState, User, UserManager};
 use crate::io::files::update_hardlink;
 use crate::io::files::{self, paths::Paths};
 use crate::io::java::classpath::Classpath;
-use crate::io::java::JavaKind;
+use crate::io::java::install::JavaInstallationKind;
 use crate::io::options::{self, client::write_options_txt, server::write_server_properties};
 use crate::net::{fabric_quilt, game_files, paper};
 use mcvm_shared::later::Later;
@@ -30,7 +30,8 @@ impl Instance {
 		out.insert(UpdateRequirement::ClientJson);
 
 		let java_kind = match &self.launch.java {
-			JavaKind::Adoptium(..) => JavaKind::Adoptium(Later::Empty),
+			JavaInstallationKind::Adoptium(..) => JavaInstallationKind::Adoptium(Later::Empty),
+			JavaInstallationKind::Zulu(..) => JavaInstallationKind::Zulu(Later::Empty),
 			x => x.clone(),
 		};
 		out.insert(UpdateRequirement::Java(java_kind));
@@ -126,7 +127,7 @@ impl Instance {
 		classpath.extend(lib_classpath);
 
 		let java_vers = client_meta.java_info.major_version;
-		self.add_java(&java_vers.to_string(), manager);
+		self.add_java(&java_vers.0.to_string(), manager);
 
 		self.main_class = Some(client_meta.main_class.clone());
 
@@ -213,7 +214,7 @@ impl Instance {
 		let client_meta = manager.client_meta.get();
 
 		let java_vers = client_meta.java_info.major_version;
-		self.add_java(&java_vers.to_string(), manager);
+		self.add_java(&java_vers.0.to_string(), manager);
 
 		let mut classpath = if let Modloader::Fabric | Modloader::Quilt =
 			self.modifications.get_modloader(self.kind.to_side())

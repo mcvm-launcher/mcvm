@@ -1,34 +1,22 @@
-use std::{
-	collections::HashSet,
-	path::{Path, PathBuf},
-	rc::Rc,
-};
+use std::collections::HashSet;
+use std::path::{Path, PathBuf};
+use std::rc::Rc;
 
 use anyhow::Context;
-use mcvm_shared::{
-	instance::Side,
-	later::Later,
-	output::{MCVMOutput, MessageContents, MessageLevel},
-	versions::VersionInfo,
-};
+use mcvm_shared::instance::Side;
+use mcvm_shared::later::Later;
+use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
+use mcvm_shared::versions::VersionInfo;
 
-use crate::net::{
-	fabric_quilt::{self, FabricQuiltMeta},
-	game_files::{assets, game_jar, libraries, version_manifest},
-};
+use crate::io::files::paths::Paths;
+use crate::io::java::install::{JavaInstallation, JavaInstallationKind};
+use crate::io::lock::Lockfile;
+use crate::io::options::{read_options, Options};
+use crate::net::fabric_quilt::{self, FabricQuiltMeta};
+use crate::net::game_files::client_meta::{self, ClientMeta};
+use crate::net::game_files::version_manifest::VersionManifest;
+use crate::net::game_files::{assets, game_jar, libraries, version_manifest};
 use crate::util::{print::PrintOptions, versions::MinecraftVersion};
-use crate::{
-	io::{
-		files::paths::Paths,
-		java::{Java, JavaKind},
-		lock::Lockfile,
-		options::{read_options, Options},
-	},
-	net::game_files::{
-		client_meta::{self, ClientMeta},
-		version_manifest::VersionManifest,
-	},
-};
 
 /// Requirements for operations that may be shared by multiple instances in a profile
 #[derive(Debug, Hash, PartialEq, Eq)]
@@ -40,7 +28,7 @@ pub enum UpdateRequirement {
 	/// Libraries for the client
 	GameLibraries,
 	/// A Java installation
-	Java(JavaKind),
+	Java(JavaInstallationKind),
 	/// The game JAR for a specific side
 	GameJar(Side),
 	/// Game options
@@ -67,7 +55,7 @@ pub struct UpdateManager {
 	/// The client meta to be fulfilled later
 	pub client_meta: Later<Rc<ClientMeta>>,
 	/// The Java installation to be fulfilled later
-	pub java: Later<Java>,
+	pub java: Later<JavaInstallation>,
 	/// The game options to be fulfilled later
 	pub options: Option<Options>,
 	/// The version info to be fulfilled later
@@ -262,8 +250,8 @@ impl UpdateManager {
 			let mut java_result = UpdateMethodResult::new();
 			for req in self.requirements.iter() {
 				if let UpdateRequirement::Java(kind) = req {
-					let mut java = Java::new(kind.clone());
-					java.add_version(&java_vers.to_string());
+					let mut java = JavaInstallation::new(kind.clone());
+					java.add_version(&java_vers.0.to_string());
 					let result = java
 						.install(paths, self, lock, o)
 						.await

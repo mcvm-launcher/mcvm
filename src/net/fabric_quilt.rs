@@ -11,6 +11,7 @@ use crate::data::profile::update::manager::UpdateManager;
 use crate::io::files;
 use crate::io::files::paths::Paths;
 use crate::io::java::classpath::Classpath;
+use crate::io::java::maven::MavenLibraryParts;
 use mcvm_shared::instance::Side;
 
 use super::download;
@@ -115,29 +116,6 @@ pub struct FabricQuiltMeta {
 	pub intermediary: MainLibrary,
 }
 
-/// Sections of a library string
-#[derive(Debug, PartialEq)]
-struct LibraryParts {
-	orgs: Vec<String>,
-	package: String,
-	version: String,
-}
-
-impl LibraryParts {
-	/// Extract the parts of a library string
-	pub fn from_str(string: &str) -> Option<Self> {
-		let mut parts = string.split(':');
-		let orgs: Vec<String> = parts.next()?.split('.').map(|x| x.to_owned()).collect();
-		let package = parts.next()?.to_owned();
-		let version = parts.next()?.to_owned();
-		Some(Self {
-			orgs,
-			package,
-			version,
-		})
-	}
-}
-
 /// Get the Fabric/Quilt metadata file
 pub async fn get_meta(
 	version: &str,
@@ -177,7 +155,7 @@ pub async fn get_meta(
 
 /// Get the path to a library
 fn get_lib_path(name: &str) -> Option<String> {
-	let parts = LibraryParts::from_str(name)?;
+	let parts = MavenLibraryParts::from_str(name)?;
 	let mut url = String::new();
 	for org in parts.orgs {
 		url.push_str(&org);
@@ -350,26 +328,4 @@ pub async fn download_side_specific_files(
 	download_libraries(&libs, paths, manager.force).await?;
 
 	Ok(())
-}
-
-#[cfg(test)]
-mod tests {
-	use super::*;
-
-	#[test]
-	fn test_library_destructuring() {
-		assert_eq!(
-			LibraryParts::from_str("foo.bar.baz:hel.lo:wo.rld")
-				.expect("Parts did not parse correctly"),
-			LibraryParts {
-				orgs: vec![
-					String::from("foo"),
-					String::from("bar"),
-					String::from("baz")
-				],
-				package: String::from("hel.lo"),
-				version: String::from("wo.rld")
-			}
-		)
-	}
 }

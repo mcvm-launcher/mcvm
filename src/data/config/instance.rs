@@ -9,7 +9,7 @@ use crate::data::instance::launch::{LaunchOptions, WrapperCommand};
 use crate::data::instance::{InstKind, Instance};
 use crate::data::profile::Profile;
 use crate::io::java::args::{ArgsPreset, MemoryNum};
-use crate::io::java::JavaKind;
+use crate::io::java::install::JavaInstallationKind;
 use crate::io::options::client::ClientOptions;
 use crate::io::options::server::ServerOptions;
 use crate::io::snapshot;
@@ -164,7 +164,7 @@ impl LaunchConfig {
 			game_args: self.args.game.parse(),
 			min_mem,
 			max_mem,
-			java: JavaKind::parse(&self.java),
+			java: JavaInstallationKind::parse(&self.java),
 			preset: ArgsPreset::from_str(&self.preset)?,
 			env: self.env.clone(),
 			wrapper: self.wrapper.clone(),

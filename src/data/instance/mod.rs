@@ -11,7 +11,7 @@ use reqwest::Client;
 use crate::io::files::paths::Paths;
 use crate::io::files::update_hardlink;
 use crate::io::java::classpath::Classpath;
-use crate::io::java::Java;
+use crate::io::java::install::JavaInstallation;
 use crate::io::lock::{Lockfile, LockfileAddon};
 use crate::io::options::client::ClientOptions;
 use crate::io::options::server::ServerOptions;
@@ -72,7 +72,7 @@ pub struct Instance {
 	modifications: GameModifications,
 	launch: LaunchOptions,
 	client_meta: Later<Rc<ClientMeta>>,
-	java: Later<Java>,
+	java: Later<JavaInstallation>,
 	classpath: Option<Classpath>,
 	jar_path: Later<PathBuf>,
 	main_class: Option<String>,

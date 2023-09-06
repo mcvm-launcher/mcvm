@@ -21,7 +21,7 @@ use crate::data::profile::update::manager::UpdateManager;
 use crate::data::user::UserManager;
 use crate::io::files::paths::Paths;
 use crate::io::java::args::{ArgsPreset, MemoryArg, MemoryNum};
-use crate::io::java::JavaKind;
+use crate::io::java::install::JavaInstallationKind;
 use crate::io::lock::Lockfile;
 use crate::util::print::PrintOptions;
 use crate::util::utc_timestamp;
@@ -148,7 +148,7 @@ pub struct LaunchProcessProperties<'a> {
 #[derive(Debug)]
 pub struct LaunchOptions {
 	/// Java kind
-	pub java: JavaKind,
+	pub java: JavaInstallationKind,
 	/// JVM arguments
 	pub jvm_args: Vec<String>,
 	/// Game arguments

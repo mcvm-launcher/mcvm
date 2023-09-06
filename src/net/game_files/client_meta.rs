@@ -5,7 +5,7 @@ use serde::Deserialize;
 
 use crate::{
 	data::profile::update::manager::UpdateManager,
-	io::files::{self, paths::Paths},
+	io::{files::{self, paths::Paths}, java::JavaMajorVersion},
 	net::download,
 };
 
@@ -65,7 +65,7 @@ pub struct DownloadInfo {
 pub struct JavaInfo {
 	/// The Java major version to use
 	#[serde(rename = "majorVersion")]
-	pub major_version: u16,
+	pub major_version: JavaMajorVersion,
 }
 
 /// Game arguments in the client meta
