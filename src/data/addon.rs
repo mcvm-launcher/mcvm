@@ -97,10 +97,22 @@ impl AddonRequest {
 				update_hardlink(actual_path, &path).context("Failed to hardlink local addon")?;
 			}
 		}
-		// Check hashes
+
+		let result = self.check_hashes(&path);
+		// Remove the addon file if it fails the checksum
+		if let Err(..) = result {
+			std::fs::remove_file(path).context("Failed to remove stored addon file")?;
+		}
+		result?;
+
+		Ok(())
+	}
+
+	/// Check the addon's hashes. The stored addon file must exist at this time
+	fn check_hashes(&self, path: &Path) -> anyhow::Result<()> {
 		let best_hash = get_best_hash(&self.addon.hashes);
 		if let Some(best_hash) = best_hash {
-			let matches = hash_file_with_best_hash(&path, best_hash)
+			let matches = hash_file_with_best_hash(path, best_hash)
 				.context("Failed to checksum addon file")?;
 
 			if !matches {
