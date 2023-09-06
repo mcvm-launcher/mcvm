@@ -1,5 +1,4 @@
 use crate::net::download;
-use crate::util::json::{self, JsonType};
 use crate::util::{ARCH_STRING, OS_STRING, PREFERRED_ARCHIVE};
 
 use anyhow::{anyhow, Context};
@@ -7,6 +6,9 @@ use reqwest::Client;
 
 /// Downloading Adoptium JDK
 pub mod adoptium {
+	use anyhow::bail;
+	use serde::Deserialize;
+
 	use super::*;
 
 	/// Gets the URL to the JSON file for a major Java version
@@ -16,21 +18,41 @@ pub mod adoptium {
 		)
 	}
 
+	/// A single package info for Adoptium
+	#[derive(Deserialize, Debug)]
+	pub struct PackageFormat {
+		/// Information about the binary
+		pub binary: Binary,
+		/// Name of the Java release
+		pub release_name: String,
+	}
+
+	/// Binary for an Adoptium package
+	#[derive(Deserialize, Debug)]
+	pub struct Binary {
+		/// Package field that contains the download link
+		pub package: BinaryPackage,
+	}
+
+	/// Package field inside the binary struct
+	#[derive(Deserialize, Debug)]
+	pub struct BinaryPackage {
+		/// Link to the JRE download
+		pub link: String,
+	}
+
 	/// Gets the newest Adoptium binaries download for a major Java version
-	pub async fn get_latest(major_version: &str) -> anyhow::Result<json::JsonObject> {
+	pub async fn get_latest(major_version: &str) -> anyhow::Result<PackageFormat> {
 		let url = json_url(major_version);
-		let manifest = download::json::<Vec<serde_json::Value>>(&url, &Client::new())
+		let mut manifest = download::json::<Vec<PackageFormat>>(&url, &Client::new())
 			.await
 			.context("Failed to download manifest of Adoptium versions")?;
-		let version = json::ensure_type(
-			manifest
-				.get(0)
-				.ok_or(anyhow!("A valid installation was not found"))?
-				.as_object(),
-			JsonType::Obj,
-		)?;
+		if manifest.is_empty() {
+			bail!("A valid installation was not found");
+		}
+		let version = manifest.swap_remove(0);
 
-		Ok(version.to_owned())
+		Ok(version)
 	}
 }
 

@@ -7,7 +7,7 @@ use crate::data::profile::update::manager::{UpdateManager, UpdateMethodResult};
 use crate::io::files::{self, paths::Paths};
 use crate::net;
 use crate::net::download;
-use crate::util::{json, preferred_archive_extension};
+use crate::util::preferred_archive_extension;
 
 use anyhow::Context;
 use libflate::gzip::Decoder;
@@ -148,9 +148,8 @@ async fn update_adoptium(
 		.await
 		.context("Failed to obtain Adoptium information")?;
 
-	let release_name = json::access_str(&version, "release_name")?;
-
-	let mut extracted_bin_name = json::access_str(&version, "release_name")?.to_string();
+	let release_name = version.release_name.clone();
+	let mut extracted_bin_name = release_name.clone();
 	extracted_bin_name.push_str("-jre");
 	let extracted_bin_dir = out_dir.join(&extracted_bin_name);
 
@@ -158,7 +157,7 @@ async fn update_adoptium(
 		.update_java_installation(
 			LockfileJavaInstallation::Adoptium,
 			major_version,
-			release_name,
+			&release_name,
 			&extracted_bin_dir,
 		)
 		.context("Failed to update Java in lockfile")?
@@ -172,10 +171,7 @@ async fn update_adoptium(
 	let arc_name = format!("adoptium{major_version}{arc_extension}");
 	let arc_path = out_dir.join(arc_name);
 
-	let bin_url = json::access_str(
-		json::access_object(json::access_object(&version, "binary")?, "package")?,
-		"link",
-	)?;
+	let bin_url = version.binary.package.link;
 
 	o.display(
 		MessageContents::StartProcess(format!(
