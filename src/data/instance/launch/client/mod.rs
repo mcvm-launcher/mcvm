@@ -35,14 +35,14 @@ impl Instance {
 		let client_dir = self.get_subdir(paths);
 		let mut jvm_args = Vec::new();
 		let mut game_args = Vec::new();
-		let client_json = self.client_json.get();
+		let client_meta = self.client_meta.get();
 		if let Some(classpath) = &self.classpath {
 			let main_class = self
 				.main_class
 				.as_ref()
 				.expect("Main class for client should exist");
 			if let InstKind::Client { options: _, window } = &self.kind {
-				match &client_json.arguments {
+				match &client_meta.arguments {
 					Arguments::New(args) => {
 						for arg in &args.jvm {
 							for sub_arg in args::process_arg(

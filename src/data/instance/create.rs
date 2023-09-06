@@ -118,17 +118,17 @@ impl Instance {
 		let jar_path =
 			crate::io::minecraft::game_jar::get_path(self.kind.to_side(), version, paths);
 
-		let client_json = manager.client_json.get();
+		let client_meta = manager.client_meta.get();
 
 		let mut classpath = Classpath::new();
-		let lib_classpath = game_files::libraries::get_classpath(client_json, paths)
+		let lib_classpath = game_files::libraries::get_classpath(client_meta, paths)
 			.context("Failed to extract classpath from game library list")?;
 		classpath.extend(lib_classpath);
 
-		let java_vers = client_json.java_info.major_version;
+		let java_vers = client_meta.java_info.major_version;
 		self.add_java(&java_vers.to_string(), manager);
 
-		self.main_class = Some(client_json.main_class.clone());
+		self.main_class = Some(client_meta.main_class.clone());
 
 		if let Modloader::Fabric | Modloader::Quilt =
 			self.modifications.get_modloader(self.kind.to_side())
@@ -178,7 +178,7 @@ impl Instance {
 		}
 
 		self.classpath = Some(classpath);
-		self.client_json = manager.client_json.clone();
+		self.client_meta = manager.client_meta.clone();
 		self.jar_path.fill(jar_path);
 
 		Ok(out)
@@ -210,9 +210,9 @@ impl Instance {
 			self.main_class = Some(DEFAULT_SERVER_MAIN_CLASS.to_string());
 		}
 
-		let client_json = manager.client_json.get();
+		let client_meta = manager.client_meta.get();
 
-		let java_vers = client_json.java_info.major_version;
+		let java_vers = client_meta.java_info.major_version;
 		self.add_java(&java_vers.to_string(), manager);
 
 		let mut classpath = if let Modloader::Fabric | Modloader::Quilt =
@@ -313,7 +313,7 @@ impl Instance {
 				.context("Failed to write server.properties")?;
 		}
 
-		self.client_json = manager.client_json.clone();
+		self.client_meta = manager.client_meta.clone();
 		self.classpath = Some(classpath);
 
 		Ok(out)

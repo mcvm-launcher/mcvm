@@ -288,26 +288,26 @@ pub async fn get(
 		bail!("Minecraft version does not exist or was not found in the manifest");
 	}
 
-	let client_json_name: String = version_string.clone() + ".json";
+	let client_meta_name: String = version_string.clone() + ".json";
 	let version_dir = paths.internal.join("versions").join(version_string);
 	files::create_dir_async(&version_dir).await?;
-	let path = version_dir.join(client_json_name);
+	let path = version_dir.join(client_meta_name);
 	let text = if manager.allow_offline && path.exists() {
 		tokio::fs::read_to_string(path)
 			.await
-			.context("Failed to read client JSON from file")?
+			.context("Failed to read client meta from file")?
 	} else {
 		let text = download::text(version_url.expect("Version does not exist"), &Client::new())
 			.await
-			.context("Failed to download client JSON")?;
+			.context("Failed to download client meta")?;
 		tokio::fs::write(path, &text)
 			.await
-			.context("Failed to write client JSON to a file")?;
+			.context("Failed to write client meta to a file")?;
 
 		text
 	};
 
-	let version_doc = serde_json::from_str(&text).context("Failed to parse client JSON")?;
+	let version_doc = serde_json::from_str(&text).context("Failed to parse client meta")?;
 
 	Ok(version_doc)
 }

@@ -21,7 +21,7 @@ macro_rules! placeholder {
 	};
 }
 
-/// Replace placeholders in a string argument from the client JSON
+/// Replace placeholders in a string argument from the client meta
 pub fn replace_arg_placeholders(
 	instance: &Instance,
 	arg: &str,
@@ -106,7 +106,7 @@ pub fn replace_arg_placeholders(
 	Some(out)
 }
 
-/// Process an argument for the client from the client JSON
+/// Process an argument for the client from the client meta
 pub fn process_arg(
 	instance: &Instance,
 	arg: &ArgumentItem,

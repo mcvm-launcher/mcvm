@@ -26,7 +26,7 @@ pub mod game_jar {
 	/// Downloads the game JAR file
 	pub async fn get(
 		side: Side,
-		client_json: &ClientMeta,
+		client_meta: &ClientMeta,
 		version: &str,
 		paths: &Paths,
 		manager: &UpdateManager,
@@ -45,8 +45,8 @@ pub mod game_jar {
 		);
 
 		let download = match side {
-			Side::Client => &client_json.downloads.client,
-			Side::Server => &client_json.downloads.server,
+			Side::Client => &client_meta.downloads.client,
+			Side::Server => &client_meta.downloads.server,
 		};
 
 		download::file(&download.url, &path, &Client::new())

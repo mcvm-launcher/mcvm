@@ -78,10 +78,10 @@ fn extract_native(
 	Ok(out)
 }
 
-/// Gets the list of allowed libraries from the client JSON
+/// Gets the list of allowed libraries from the client meta
 /// and also the number of libraries found.
-pub fn get_list(client_json: &ClientMeta) -> anyhow::Result<impl Iterator<Item = &Library>> {
-	let libraries = client_json.libraries.iter().filter_map(|lib| {
+pub fn get_list(client_meta: &ClientMeta) -> anyhow::Result<impl Iterator<Item = &Library>> {
+	let libraries = client_meta.libraries.iter().filter_map(|lib| {
 		if !is_allowed(lib).ok()? {
 			None
 		} else {
@@ -95,7 +95,7 @@ pub fn get_list(client_json: &ClientMeta) -> anyhow::Result<impl Iterator<Item =
 /// Downloads base client libraries.
 /// Returns a set of files to be added to the update manager.
 pub async fn get(
-	client_json: &ClientMeta,
+	client_meta: &ClientMeta,
 	paths: &Paths,
 	version: &str,
 	manager: &UpdateManager,
@@ -114,7 +114,7 @@ pub async fn get(
 
 	let mut native_paths = Vec::new();
 
-	let libraries = get_list(client_json)?;
+	let libraries = get_list(client_meta)?;
 
 	let mut libs_to_download = Vec::new();
 
@@ -216,12 +216,12 @@ pub async fn get(
 }
 
 /// Gets the classpath from Minecraft libraries
-pub fn get_classpath(client_json: &ClientMeta, paths: &Paths) -> anyhow::Result<Classpath> {
+pub fn get_classpath(client_meta: &ClientMeta, paths: &Paths) -> anyhow::Result<Classpath> {
 	let natives_jars_path = paths.internal.join("natives");
 	let libraries_path = paths.internal.join("libraries");
 
 	let mut classpath = Classpath::new();
-	let libraries = get_list(client_json).context("Failed to get list of libraries")?;
+	let libraries = get_list(client_meta).context("Failed to get list of libraries")?;
 	for lib in libraries {
 		if !lib.natives.is_empty() {
 			let key = skip_none!(get_natives_classifier_key(&lib.natives));

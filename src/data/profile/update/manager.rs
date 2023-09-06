@@ -26,7 +26,7 @@ use crate::util::{print::PrintOptions, versions::MinecraftVersion};
 /// Requirements for operations that may be shared by multiple instances in a profile
 #[derive(Debug, Hash, PartialEq, Eq)]
 pub enum UpdateRequirement {
-	/// The client JSON metadata file
+	/// The client meta metadata file
 	ClientJson,
 	/// Assets for the client
 	GameAssets,
@@ -57,8 +57,8 @@ pub struct UpdateManager {
 	files: HashSet<PathBuf>,
 	/// The version manifest to be fulfilled later
 	version_manifest: Later<VersionManifest>,
-	/// The client JSON to be fulfilled later
-	pub client_json: Later<ClientMeta>,
+	/// The client meta to be fulfilled later
+	pub client_meta: Later<ClientMeta>,
 	/// The Java installation to be fulfilled later
 	pub java: Later<Java>,
 	/// The game options to be fulfilled later
@@ -79,7 +79,7 @@ impl UpdateManager {
 			requirements: HashSet::new(),
 			files: HashSet::new(),
 			version_manifest: Later::new(),
-			client_json: Later::new(),
+			client_meta: Later::new(),
 			java: Later::new(),
 			options: None,
 			version_info: Later::Empty,
@@ -200,22 +200,22 @@ impl UpdateManager {
 		if self.has_requirement(UpdateRequirement::ClientJson) {
 			o.start_process();
 			o.display(
-				MessageContents::StartProcess("Obtaining client JSON data".to_string()),
+				MessageContents::StartProcess("Obtaining client meta data".to_string()),
 				MessageLevel::Important,
 			);
 
-			let client_json = client_meta::get(
+			let client_meta = client_meta::get(
 				&self.version_info.get().version,
 				self.version_manifest.get(),
 				paths,
 				self,
 			)
 			.await
-			.context("Failed to get client JSON")?;
-			self.client_json.fill(client_json);
+			.context("Failed to get client meta")?;
+			self.client_meta.fill(client_meta);
 
 			o.display(
-				MessageContents::Success("Client JSON obtained".to_string()),
+				MessageContents::Success("client meta obtained".to_string()),
 				MessageLevel::Important,
 			);
 			o.end_process();
@@ -223,7 +223,7 @@ impl UpdateManager {
 
 		if self.has_requirement(UpdateRequirement::GameAssets) {
 			let result = assets::get(
-				self.client_json.get(),
+				self.client_meta.get(),
 				paths,
 				self.version_info.get(),
 				self,
@@ -235,9 +235,9 @@ impl UpdateManager {
 		}
 
 		if self.has_requirement(UpdateRequirement::GameLibraries) {
-			let client_json = self.client_json.get();
+			let client_meta = self.client_meta.get();
 			let result = libraries::get(
-				client_json,
+				client_meta,
 				paths,
 				&self.version_info.get().version,
 				self,
@@ -249,8 +249,8 @@ impl UpdateManager {
 		}
 
 		if java_required {
-			let client_json = self.client_json.get();
-			let java_vers = client_json.java_info.major_version;
+			let client_meta = self.client_meta.get();
+			let java_vers = client_meta.java_info.major_version;
 
 			let mut java_result = UpdateMethodResult::new();
 			for req in self.requirements.iter() {
@@ -274,7 +274,7 @@ impl UpdateManager {
 				if let UpdateRequirement::GameJar(side) = req {
 					game_jar::get(
 						*side,
-						self.client_json.get(),
+						self.client_meta.get(),
 						&self.version_info.get().version,
 						paths,
 						self,

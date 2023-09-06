@@ -84,7 +84,7 @@ async fn create_dirs(
 
 /// Download assets used by the client, such as game resources and icons.
 pub async fn get(
-	client_json: &ClientMeta,
+	client_meta: &ClientMeta,
 	paths: &Paths,
 	version_info: &VersionInfo,
 	manager: &UpdateManager,
@@ -96,7 +96,7 @@ pub async fn get(
 	files::create_dir_async(&indexes_dir).await?;
 
 	let index_path = indexes_dir.join(version_string + ".json");
-	let index_url = &client_json.asset_index.url;
+	let index_url = &client_meta.asset_index.url;
 
 	let (objects_dir, virtual_dir) = create_dirs(paths, version_info)
 		.await
