@@ -2,7 +2,7 @@ use std::fmt::Display;
 
 use serde::{Deserialize, Serialize};
 
-use super::json;
+use crate::net::game_files::version_manifest::VersionManifest;
 
 /// Matches for the latest Minecraft version.
 /// We have to separate this so that deserialization works
@@ -51,17 +51,11 @@ pub enum MinecraftVersion {
 
 impl MinecraftVersion {
 	/// Get the correct version from the version manifest
-	pub fn get_version(&self, manifest: &json::JsonObject) -> anyhow::Result<String> {
+	pub fn get_version(&self, manifest: &VersionManifest) -> anyhow::Result<String> {
 		match self {
 			Self::Version(version) => Ok(version.clone()),
-			Self::Latest => {
-				let latest = json::access_object(manifest, "latest")?;
-				Ok(String::from(json::access_str(latest, "release")?))
-			}
-			Self::LatestSnapshot => {
-				let latest = json::access_object(manifest, "latest")?;
-				Ok(String::from(json::access_str(latest, "snapshot")?))
-			}
+			Self::Latest => Ok(manifest.latest.release.clone()),
+			Self::LatestSnapshot => Ok(manifest.latest.snapshot.clone()),
 		}
 	}
 }

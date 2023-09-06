@@ -11,12 +11,12 @@ use mcvm_shared::{
 	versions::VersionInfo,
 };
 
-use crate::io::{
+use crate::{io::{
 	files::paths::Paths,
 	java::{Java, JavaKind},
 	lock::Lockfile,
 	options::{read_options, Options},
-};
+}, net::game_files::version_manifest::VersionManifest};
 use crate::net::{
 	fabric_quilt::{self, FabricQuiltMeta},
 	game_files::{assets, game_jar, libraries, version_manifest},
@@ -56,7 +56,7 @@ pub struct UpdateManager {
 	/// File paths that are added when they have been updated by other functions
 	files: HashSet<PathBuf>,
 	/// The version manifest to be fulfilled later
-	version_manifest: Later<Box<json::JsonObject>>,
+	version_manifest: Later<VersionManifest>,
 	/// The client JSON to be fulfilled later
 	pub client_json: Later<Box<json::JsonObject>>,
 	/// The Java installation to be fulfilled later

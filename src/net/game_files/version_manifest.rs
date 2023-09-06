@@ -1,13 +1,58 @@
 use anyhow::{bail, Context};
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use reqwest::Client;
+use serde::Deserialize;
 
 use crate::{
 	data::profile::update::manager::UpdateManager,
 	io::files::{self, paths::Paths},
 	net::download,
-	util::json::{self, JsonType},
+	util::json,
 };
+
+/// Latest available Minecraft versions in the version manifest
+#[derive(Deserialize, Debug)]
+pub struct LatestVersions {
+	/// The latest release version
+	pub release: String,
+	/// The latest snapshot version
+	pub snapshot: String,
+}
+
+/// Type of a version in the version manifest
+#[derive(Deserialize, Debug)]
+#[serde(rename_all = "snake_case")]
+pub enum VersionType {
+	/// A release version
+	Release,
+	/// A snapshot / development version
+	Snapshot,
+	/// An old alpha version
+	OldAlpha,
+	/// An old beta version
+	OldBeta,
+}
+
+/// Entry for a version in the version manifest
+#[derive(Deserialize, Debug)]
+pub struct VersionEntry {
+	/// The identifier for the version (e.g. "1.19.2" or "22w13a")
+	pub id: String,
+	/// What type of version this is
+	#[serde(rename = "type")]
+	pub ty: VersionType,
+	/// The URL to the client version meta for this version
+	pub url: String,
+}
+
+/// JSON format for the version manifest that contains all available Minecraft versions
+#[derive(Deserialize, Debug)]
+pub struct VersionManifest {
+	/// The latest available versions
+	pub latest: LatestVersions,
+	/// The list of available versions, from newest to oldest
+	pub versions: Vec<VersionEntry>,
+}
 
 /// Obtain the version manifest contents
 async fn get_contents(
@@ -43,11 +88,11 @@ pub async fn get(
 	paths: &Paths,
 	manager: &UpdateManager,
 	o: &mut impl MCVMOutput,
-) -> anyhow::Result<Box<json::JsonObject>> {
+) -> anyhow::Result<VersionManifest> {
 	let mut manifest_contents = get_contents(paths, manager, false)
 		.await
 		.context("Failed to get manifest contents")?;
-	let manifest = match json::parse_object(&manifest_contents) {
+	let manifest = match serde_json::from_str(&manifest_contents) {
 		Ok(manifest) => manifest,
 		Err(err) => {
 			o.display(
@@ -65,39 +110,37 @@ pub async fn get(
 			manifest_contents = get_contents(paths, manager, true)
 				.await
 				.context("Failed to donwload manifest contents")?;
-			json::parse_object(&manifest_contents)?
+			serde_json::from_str(&manifest_contents)?
 		}
 	};
 	Ok(manifest)
 }
 
 /// Make an ordered list of versions from the manifest to use for matching
-pub fn make_version_list(version_manifest: &json::JsonObject) -> anyhow::Result<Vec<String>> {
-	let versions = json::access_array(version_manifest, "versions")?;
+pub fn make_version_list(version_manifest: &VersionManifest) -> anyhow::Result<Vec<String>> {
 	let mut out = Vec::new();
-	for entry in versions {
-		let entry_obj = json::ensure_type(entry.as_object(), JsonType::Obj)?;
-		out.push(json::access_str(entry_obj, "id")?.to_owned());
+	for entry in &version_manifest.versions {
+		out.push(entry.id.clone());
 	}
+	// We have to reverse since the version list expects oldest to newest
 	out.reverse();
+
 	Ok(out)
 }
 
 /// Gets the specific client info JSON file for a Minecraft version
 pub async fn get_client_json(
 	version: &str,
-	version_manifest: &json::JsonObject,
+	version_manifest: &VersionManifest,
 	paths: &Paths,
 	manager: &UpdateManager,
 ) -> anyhow::Result<Box<json::JsonObject>> {
 	let version_string = version.to_owned();
 
-	let versions = json::access_array(version_manifest, "versions")?;
-	let mut version_url: Option<&str> = None;
-	for entry in versions.iter() {
-		let entry = json::ensure_type(entry.as_object(), JsonType::Obj)?;
-		if json::access_str(entry, "id")? == version_string {
-			version_url = Some(json::access_str(entry, "url")?);
+	let mut version_url = None;
+	for entry in &version_manifest.versions {
+		if entry.id == version_string {
+			version_url = Some(entry.url.clone());
 		}
 	}
 	if version_url.is_none() {
