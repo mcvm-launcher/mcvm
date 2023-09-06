@@ -110,7 +110,7 @@ impl TerminalOutput {
 				cformat!("<s>{}:</> {}", key, Self::format_message(*value))
 			}
 			MessageContents::Header(text) => cformat!("<s>{}", text),
-			MessageContents::StartProcess(text) => cformat!("<i>{text}..."),
+			MessageContents::StartProcess(text) => cformat!("{text}..."),
 			MessageContents::Associated(item, message) => {
 				cformat!("(<b!>{}</b!>) {}", item, Self::format_message(*message))
 			}

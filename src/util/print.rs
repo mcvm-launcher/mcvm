@@ -6,7 +6,7 @@ use color_print::{cformat, cstr};
 /// A nice colored bullet point for terminal output
 pub const HYPHEN_POINT: &str = cstr!("<k!> - </k!>");
 /// String used program-wide for most indentation
-pub const INDENT_CHAR: &str = "\t";
+pub const INDENT_STR: &str = "  ";
 
 /// Used to print text that is replaced
 #[derive(Debug)]
@@ -102,7 +102,7 @@ impl Drop for ReplPrinter {
 
 /// Create the characters for an indent count
 pub fn make_indent(indent: usize) -> String {
-	INDENT_CHAR.repeat(indent)
+	INDENT_STR.repeat(indent)
 }
 
 /// Set of options for printing output
