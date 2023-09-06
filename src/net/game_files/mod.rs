@@ -30,6 +30,7 @@ pub mod game_jar {
 		version: &str,
 		paths: &Paths,
 		manager: &UpdateManager,
+		client: &Client,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
 		let side_str = side.to_string();
@@ -49,7 +50,7 @@ pub mod game_jar {
 			Side::Server => &client_meta.downloads.server,
 		};
 
-		download::file(&download.url, &path, &Client::new())
+		download::file(&download.url, &path, client)
 			.await
 			.context("Failed to download file")?;
 		let side_str = cap_first_letter(&side_str);

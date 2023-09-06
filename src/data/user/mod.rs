@@ -103,6 +103,7 @@ impl UserManager {
 	pub async fn ensure_authenticated(
 		&mut self,
 		client_id: ClientId,
+		client: &Client,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
 		if let AuthState::UserChosen(user) = &self.state {
@@ -110,8 +111,7 @@ impl UserManager {
 				.users
 				.get_mut(user)
 				.expect("User in AuthState does not exist");
-			let client = Client::new();
-			user.authenticate(client_id, &client, o).await?;
+			user.authenticate(client_id, client, o).await?;
 		}
 
 		Ok(())

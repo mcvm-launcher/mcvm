@@ -3,6 +3,7 @@ pub mod update;
 
 use anyhow::Context;
 use mcvm_shared::output::MCVMOutput;
+use reqwest::Client;
 
 use crate::data::instance::Instance;
 use crate::io::files::paths::Paths;
@@ -64,11 +65,14 @@ impl Profile {
 			let instance = reg.get(id).expect("Profile has unknown instance");
 			manager.add_requirements(instance.get_requirements());
 		}
-		manager.fulfill_requirements(paths, lock, o).await?;
+		let client = Client::new();
+		manager
+			.fulfill_requirements(paths, lock, &client, o)
+			.await?;
 		for id in self.instances.iter_mut() {
 			let instance = reg.get_mut(id).expect("Profile has unknown instance");
 			let result = instance
-				.create(&manager, paths, users, o)
+				.create(&manager, paths, users, &client, o)
 				.await
 				.with_context(|| format!("Failed to create instance {id}"))?;
 			manager.add_result(result);

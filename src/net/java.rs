@@ -42,9 +42,9 @@ pub mod adoptium {
 	}
 
 	/// Gets the newest Adoptium binaries download for a major Java version
-	pub async fn get_latest(major_version: &str) -> anyhow::Result<PackageFormat> {
+	pub async fn get_latest(major_version: &str, client: &Client) -> anyhow::Result<PackageFormat> {
 		let url = json_url(major_version);
-		let mut manifest = download::json::<Vec<PackageFormat>>(&url, &Client::new())
+		let mut manifest = download::json::<Vec<PackageFormat>>(&url, client)
 			.await
 			.context("Failed to download manifest of Adoptium versions")?;
 		if manifest.is_empty() {
@@ -80,9 +80,9 @@ pub mod zulu {
 	}
 
 	/// Gets the newest Zulu package for a major Java version
-	pub async fn get_latest(major_version: &str) -> anyhow::Result<PackageFormat> {
+	pub async fn get_latest(major_version: &str, client: &Client) -> anyhow::Result<PackageFormat> {
 		let url = json_url(major_version);
-		let manifest = download::json::<Vec<PackageFormat>>(&url, &Client::new())
+		let manifest = download::json::<Vec<PackageFormat>>(&url, client)
 			.await
 			.context("Failed to download manifest of Zulu versions")?;
 		let package = manifest

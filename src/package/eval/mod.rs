@@ -458,6 +458,7 @@ pub async fn resolve(
 	default_params: EvalParameters,
 	paths: &Paths,
 	reg: &mut PkgRegistry,
+	client: &Client,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<ResolutionResult> {
 	let evaluator = PackageEvaluator { reg };
@@ -467,9 +468,8 @@ pub async fn resolve(
 		params: default_params,
 	};
 
-	let client = Client::new();
 	let common_input = EvaluatorCommonInput {
-		client: &client,
+		client,
 		paths,
 	};
 

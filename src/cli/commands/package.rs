@@ -104,9 +104,10 @@ async fn sync(data: &mut CmdData) -> anyhow::Result<()> {
 	let config = data.config.get_mut();
 
 	let mut printer = ReplPrinter::new(true);
+	let client = Client::new();
 	for repo in config.packages.repos.iter_mut() {
 		printer.print(&cformat!("Syncing repository <b>{}</b>...", repo.id));
-		match repo.sync(&data.paths).await {
+		match repo.sync(&data.paths, &client).await {
 			Ok(..) => {}
 			Err(e) => {
 				printer.print(&cformat!("<r>{}", e));
@@ -119,7 +120,7 @@ async fn sync(data: &mut CmdData) -> anyhow::Result<()> {
 	printer.print(&cformat!("<s>Updating packages..."));
 	config
 		.packages
-		.update_cached_packages(&data.paths)
+		.update_cached_packages(&data.paths, &client)
 		.await
 		.context("Failed to update cached packages")?;
 	printer.println(&cformat!("<s>Validating packages..."));
@@ -163,15 +164,17 @@ async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
 	data.ensure_config(true).await?;
 	let config = data.config.get_mut();
 
+	let client = Client::new();
+
 	let req = PkgRequest::new(id, PkgRequestSource::UserRequire);
 	let package_version = config
 		.packages
-		.get_version(&req, &data.paths)
+		.get_version(&req, &data.paths, &client)
 		.await
 		.context("Failed to get package version from registry")?;
 	let metadata = config
 		.packages
-		.get_metadata(&req, &data.paths, &Client::new())
+		.get_metadata(&req, &data.paths, &client)
 		.await
 		.context("Failed to get metadata from the registry")?;
 	if let Some(name) = &metadata.name {

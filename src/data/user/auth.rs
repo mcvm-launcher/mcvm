@@ -66,7 +66,7 @@ pub async fn authenticate_microsoft_user(
 	let token = auth::get_microsoft_token(&oauth_client, response)
 		.await
 		.context("Failed to get Microsoft token")?;
-	let mc_token = auth::auth_minecraft(token, reqwest::Client::new())
+	let mc_token = auth::auth_minecraft(token, client)
 		.await
 		.context("Failed to get Minecraft token")?;
 	let access_token = mc_access_token_to_string(mc_token.access_token())?;
@@ -110,7 +110,7 @@ pub async fn debug_authenticate(
 
 	cprintln!("Microsoft token: <b>{token:?}");
 
-	let mc_token = auth::auth_minecraft(token, reqwest::Client::new())
+	let mc_token = auth::auth_minecraft(token, &req_client)
 		.await
 		.context("Failed to get Minecraft token")?;
 

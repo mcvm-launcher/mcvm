@@ -5,7 +5,10 @@ use serde::Deserialize;
 
 use crate::{
 	data::profile::update::manager::UpdateManager,
-	io::{files::{self, paths::Paths}, java::JavaMajorVersion},
+	io::{
+		files::{self, paths::Paths},
+		java::JavaMajorVersion,
+	},
 	net::download,
 };
 
@@ -275,6 +278,7 @@ pub async fn get(
 	version_manifest: &VersionManifest,
 	paths: &Paths,
 	manager: &UpdateManager,
+	client: &Client,
 ) -> anyhow::Result<ClientMeta> {
 	let version_string = version.to_owned();
 
@@ -297,7 +301,7 @@ pub async fn get(
 			.await
 			.context("Failed to read client meta from file")?
 	} else {
-		let text = download::text(version_url.expect("Version does not exist"), &Client::new())
+		let text = download::text(version_url.expect("Version does not exist"), client)
 			.await
 			.context("Failed to download client meta")?;
 		tokio::fs::write(path, &text)

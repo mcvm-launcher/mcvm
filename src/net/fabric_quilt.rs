@@ -122,6 +122,7 @@ pub async fn get_meta(
 	mode: &Mode,
 	paths: &Paths,
 	manager: &UpdateManager,
+	client: &Client,
 ) -> anyhow::Result<FabricQuiltMeta> {
 	let meta_url = match mode {
 		Mode::Fabric => format!("https://meta.fabricmc.net/v2/versions/loader/{version}"),
@@ -135,7 +136,7 @@ pub async fn get_meta(
 		serde_json::from_reader(&mut file)
 			.with_context(|| format!("Failed to parse {mode} meta from file"))?
 	} else {
-		let bytes = download::bytes(&meta_url, &Client::new())
+		let bytes = download::bytes(&meta_url, client)
 			.await
 			.with_context(|| format!("Failed to download {mode} metadata file"))?;
 		tokio::fs::write(path, &bytes)
@@ -174,10 +175,10 @@ fn get_lib_path(name: &str) -> Option<String> {
 async fn download_libraries(
 	libs: &[Library],
 	paths: &Paths,
+	client: &Client,
 	force: bool,
 ) -> anyhow::Result<Classpath> {
 	let mut classpath = Classpath::new();
-	let client = Client::new();
 	for lib in libs.iter() {
 		let path = get_lib_path(&lib.name);
 		if let Some(path) = path {
@@ -201,6 +202,7 @@ async fn download_main_library(
 	lib: &MainLibrary,
 	url: &str,
 	paths: &Paths,
+	client: &Client,
 	force: bool,
 ) -> anyhow::Result<()> {
 	let path = get_lib_path(&lib.maven).expect("Expected a valid path");
@@ -209,7 +211,7 @@ async fn download_main_library(
 		return Ok(());
 	}
 	let url = url.to_owned() + &path;
-	let resp = download::bytes(url, &Client::new()).await?;
+	let resp = download::bytes(url, client).await?;
 
 	files::create_leading_dirs_async(&lib_path).await?;
 	tokio::fs::write(&lib_path, resp).await?;
@@ -263,6 +265,7 @@ pub async fn download_files(
 	paths: &Paths,
 	mode: Mode,
 	manager: &UpdateManager,
+	client: &Client,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<()> {
 	let force = manager.force;
@@ -275,8 +278,12 @@ pub async fn download_files(
 
 	let libs = meta.launcher_meta.libraries.common.clone();
 	let paths_clone = paths.clone();
+
+	let client_clone = client.clone();
 	let common_task =
-		tokio::spawn(async move { download_libraries(&libs, &paths_clone, force).await });
+		tokio::spawn(
+			async move { download_libraries(&libs, &paths_clone, &client_clone, force).await },
+		);
 
 	let paths_clone = paths.clone();
 	let loader_clone = meta.loader.clone();
@@ -285,12 +292,22 @@ pub async fn download_files(
 		Mode::Fabric => "https://maven.fabricmc.net/",
 		Mode::Quilt => "https://maven.quiltmc.org/repository/release/",
 	};
+
+	let client_clone = client.clone();
 	let main_libs_task = tokio::spawn(async move {
-		download_main_library(&loader_clone, loader_url, &paths_clone, force).await?;
+		download_main_library(
+			&loader_clone,
+			loader_url,
+			&paths_clone,
+			&client_clone,
+			force,
+		)
+		.await?;
 		download_main_library(
 			&intermediary_clone,
 			"https://maven.fabricmc.net/",
 			&paths_clone,
+			&client_clone,
 			force,
 		)
 		.await?;
@@ -319,13 +336,14 @@ pub async fn download_side_specific_files(
 	paths: &Paths,
 	side: Side,
 	manager: &UpdateManager,
+	client: &Client,
 ) -> anyhow::Result<()> {
 	let libs = match side {
 		Side::Client => meta.launcher_meta.libraries.client.clone(),
 		Side::Server => meta.launcher_meta.libraries.server.clone(),
 	};
 
-	download_libraries(&libs, paths, manager.force).await?;
+	download_libraries(&libs, paths, client, manager.force).await?;
 
 	Ok(())
 }

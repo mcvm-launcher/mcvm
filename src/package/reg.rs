@@ -67,11 +67,12 @@ impl PkgRegistry {
 		&mut self,
 		req: &PkgRequest,
 		paths: &Paths,
+		client: &Client,
 	) -> anyhow::Result<&mut Package> {
 		let pkg_id = req.id.clone();
 
 		// First check the remote repositories
-		if let Some(result) = query_all(&mut self.repos, &pkg_id, paths).await? {
+		if let Some(result) = query_all(&mut self.repos, &pkg_id, paths, client).await? {
 			return Ok(self.insert(
 				req,
 				Package::new(
@@ -99,11 +100,16 @@ impl PkgRegistry {
 		}
 	}
 
-	async fn get(&mut self, req: &PkgRequest, paths: &Paths) -> anyhow::Result<&mut Package> {
+	async fn get(
+		&mut self,
+		req: &PkgRequest,
+		paths: &Paths,
+		client: &Client,
+	) -> anyhow::Result<&mut Package> {
 		if self.has_now(req) {
 			Ok(self.packages.get_mut(req).expect("Package does not exist"))
 		} else {
-			self.query_insert(req, paths).await
+			self.query_insert(req, paths, client).await
 		}
 	}
 
@@ -116,7 +122,7 @@ impl PkgRegistry {
 	) -> anyhow::Result<&mut Package> {
 		let force = matches!(self.caching_strategy, CachingStrategy::None);
 		let pkg = self
-			.get(req, paths)
+			.get(req, paths, client)
 			.await
 			.with_context(|| format!("Failed to get package {req}"))?;
 		pkg.ensure_loaded(paths, force, client)
@@ -126,8 +132,13 @@ impl PkgRegistry {
 	}
 
 	/// Ensure that a package is in the registry
-	pub async fn ensure_package(&mut self, req: &PkgRequest, paths: &Paths) -> anyhow::Result<()> {
-		self.get(req, paths)
+	pub async fn ensure_package(
+		&mut self,
+		req: &PkgRequest,
+		paths: &Paths,
+		client: &Client,
+	) -> anyhow::Result<()> {
+		self.get(req, paths, client)
 			.await
 			.with_context(|| format!("Failed to get package {req}"))?;
 
@@ -135,9 +146,14 @@ impl PkgRegistry {
 	}
 
 	/// Get the version of a package
-	pub async fn get_version(&mut self, req: &PkgRequest, paths: &Paths) -> anyhow::Result<u32> {
+	pub async fn get_version(
+		&mut self,
+		req: &PkgRequest,
+		paths: &Paths,
+		client: &Client,
+	) -> anyhow::Result<u32> {
 		let pkg = self
-			.get(req, paths)
+			.get(req, paths, client)
 			.await
 			.with_context(|| format!("Failed to get package {req}"))?;
 		Ok(pkg.id.version)
@@ -225,9 +241,14 @@ impl PkgRegistry {
 	}
 
 	/// Remove a cached package
-	pub async fn remove_cached(&mut self, req: &PkgRequest, paths: &Paths) -> anyhow::Result<()> {
+	pub async fn remove_cached(
+		&mut self,
+		req: &PkgRequest,
+		paths: &Paths,
+		client: &Client,
+	) -> anyhow::Result<()> {
 		let pkg = self
-			.get(req, paths)
+			.get(req, paths, client)
 			.await
 			.with_context(|| format!("Failed to get package {req}"))?;
 		pkg.remove_cached(paths)?;
@@ -268,9 +289,10 @@ impl PkgRegistry {
 		&mut self,
 		packages: impl Iterator<Item = &PkgRequest>,
 		paths: &Paths,
+		client: &Client,
 	) -> anyhow::Result<()> {
 		for package in packages {
-			self.remove_cached(package, paths)
+			self.remove_cached(package, paths, client)
 				.await
 				.with_context(|| format!("Failed to remove cached package '{package}'"))?;
 		}
@@ -279,20 +301,24 @@ impl PkgRegistry {
 	}
 
 	/// Update cached package scripts based on the caching strategy
-	pub async fn update_cached_packages(&mut self, paths: &Paths) -> anyhow::Result<()> {
-		let packages = super::repo::get_all_packages(&mut self.repos, paths)
+	pub async fn update_cached_packages(
+		&mut self,
+		paths: &Paths,
+		client: &Client,
+	) -> anyhow::Result<()> {
+		let packages = super::repo::get_all_packages(&mut self.repos, paths, client)
 			.await
 			.context("Failed to retrieve all packages from repos")?
 			.iter()
 			.map(|(id, ..)| PkgRequest::new(id, PkgRequestSource::Repository))
 			.collect::<Vec<_>>();
-		self.remove_cached_packages(packages.iter(), paths)
+		self.remove_cached_packages(packages.iter(), paths, client)
 			.await
 			.context("Failed to remove all cached packages")?;
 
 		if let CachingStrategy::All = self.caching_strategy {
 			for package in packages {
-				self.ensure_package(&package, paths)
+				self.ensure_package(&package, paths, client)
 					.await
 					.with_context(|| {
 						format!("Failed to get cached contents of package '{package}'")

@@ -6,7 +6,7 @@ use serde::Deserialize;
 use crate::{
 	data::profile::update::manager::UpdateManager,
 	io::files::{self, paths::Paths},
-	net::download
+	net::download,
 };
 
 /// Latest available Minecraft versions in the version manifest
@@ -57,6 +57,7 @@ pub struct VersionManifest {
 async fn get_contents(
 	paths: &Paths,
 	manager: &UpdateManager,
+	client: &Client,
 	force: bool,
 ) -> anyhow::Result<String> {
 	let mut path = paths.internal.join("versions");
@@ -71,7 +72,7 @@ async fn get_contents(
 
 	let text = download::text(
 		"https://piston-meta.mojang.com/mc/game/version_manifest_v2.json",
-		&Client::new(),
+		client,
 	)
 	.await
 	.context("Failed to download manifest")?;
@@ -86,9 +87,10 @@ async fn get_contents(
 pub async fn get(
 	paths: &Paths,
 	manager: &UpdateManager,
+	client: &Client,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<VersionManifest> {
-	let mut manifest_contents = get_contents(paths, manager, false)
+	let mut manifest_contents = get_contents(paths, manager, client, false)
 		.await
 		.context("Failed to get manifest contents")?;
 	let manifest = match serde_json::from_str(&manifest_contents) {
@@ -106,7 +108,7 @@ pub async fn get(
 				MessageContents::StartProcess("Redownloading".to_string()),
 				MessageLevel::Important,
 			);
-			manifest_contents = get_contents(paths, manager, true)
+			manifest_contents = get_contents(paths, manager, client, true)
 				.await
 				.context("Failed to donwload manifest contents")?;
 			serde_json::from_str(&manifest_contents)?

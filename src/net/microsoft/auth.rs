@@ -76,9 +76,9 @@ pub async fn get_microsoft_token(
 /// Authenticates with Minecraft using a Microsoft OAuth token
 pub async fn auth_minecraft(
 	token: MicrosoftToken,
-	client: reqwest::Client,
+	client: &reqwest::Client,
 ) -> anyhow::Result<MinecraftAuthenticationResponse> {
-	let mc_flow = MinecraftAuthorizationFlow::new(client);
+	let mc_flow = MinecraftAuthorizationFlow::new(client.clone());
 	let mc_token = mc_flow
 		.exchange_microsoft_token(token.access_token().secret())
 		.await?;

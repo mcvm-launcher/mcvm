@@ -7,6 +7,7 @@ use mcvm_shared::instance::Side;
 use mcvm_shared::later::Later;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::versions::VersionInfo;
+use reqwest::Client;
 
 use crate::io::files::paths::Paths;
 use crate::io::java::install::{JavaInstallation, JavaInstallationKind};
@@ -122,6 +123,7 @@ impl UpdateManager {
 		&mut self,
 		version: &MinecraftVersion,
 		paths: &Paths,
+		client: &Client,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
 		o.start_process();
@@ -130,7 +132,7 @@ impl UpdateManager {
 			MessageLevel::Important,
 		);
 
-		let manifest = version_manifest::get(paths, self, o)
+		let manifest = version_manifest::get(paths, self, client, o)
 			.await
 			.context("Failed to get version manifest")?;
 
@@ -161,6 +163,7 @@ impl UpdateManager {
 		&mut self,
 		paths: &Paths,
 		lock: &mut Lockfile,
+		client: &Client,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
 		let java_required = matches!(
@@ -204,6 +207,7 @@ impl UpdateManager {
 				self.version_manifest.get(),
 				paths,
 				self,
+				client,
 			)
 			.await
 			.context("Failed to get client meta")?;
@@ -222,6 +226,7 @@ impl UpdateManager {
 				paths,
 				self.version_info.get(),
 				self,
+				client,
 				o,
 			)
 			.await
@@ -236,6 +241,7 @@ impl UpdateManager {
 				paths,
 				&self.version_info.get().version,
 				self,
+				client,
 				o,
 			)
 			.await
@@ -253,7 +259,7 @@ impl UpdateManager {
 					let mut java = JavaInstallation::new(kind.clone());
 					java.add_version(&java_vers.0.to_string());
 					let result = java
-						.install(paths, self, lock, o)
+						.install(paths, self, lock, client, o)
 						.await
 						.context("Failed to install Java")?;
 					java_result.merge(result);
@@ -273,6 +279,7 @@ impl UpdateManager {
 						&self.version_info.get().version,
 						paths,
 						self,
+						client,
 						o,
 					)
 					.await
@@ -290,10 +297,11 @@ impl UpdateManager {
 							mode,
 							paths,
 							self,
+							client,
 						)
 						.await
 						.context("Failed to download Fabric/Quilt metadata")?;
-						fabric_quilt::download_files(&meta, paths, *mode, self, o)
+						fabric_quilt::download_files(&meta, paths, *mode, self, client, o)
 							.await
 							.context("Failed to download common Fabric/Quilt files")?;
 						self.fq_meta.fill(meta);
@@ -304,6 +312,7 @@ impl UpdateManager {
 						paths,
 						*side,
 						self,
+						client,
 					)
 					.await
 					.context("Failed to download {mode} files for {side}")?;

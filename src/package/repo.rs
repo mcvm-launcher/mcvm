@@ -53,7 +53,7 @@ impl PkgRepo {
 	}
 
 	/// Update the currently cached index file
-	pub async fn sync(&mut self, paths: &Paths) -> anyhow::Result<()> {
+	pub async fn sync(&mut self, paths: &Paths, client: &Client) -> anyhow::Result<()> {
 		match &self.location {
 			PkgRepoLocation::Local(path) => {
 				let bytes = tokio::fs::read(path).await?;
@@ -62,7 +62,7 @@ impl PkgRepo {
 				self.set_index(&mut cursor).context("Failed to set index")?;
 			}
 			PkgRepoLocation::Remote(url) => {
-				let bytes = download::bytes(get_package_index_url(url), &Client::new())
+				let bytes = download::bytes(get_package_index_url(url), client)
 					.await
 					.context("Failed to download index")?;
 				tokio::fs::write(self.get_path(paths), &bytes)
@@ -77,7 +77,7 @@ impl PkgRepo {
 	}
 
 	/// Make sure that the repository index is downloaded
-	pub async fn ensure_index(&mut self, paths: &Paths) -> anyhow::Result<()> {
+	pub async fn ensure_index(&mut self, paths: &Paths, client: &Client) -> anyhow::Result<()> {
 		if self.index.is_empty() {
 			let path = self.get_path(paths);
 			if path.exists() {
@@ -86,11 +86,15 @@ impl PkgRepo {
 				match self.set_index(&mut file) {
 					Ok(..) => {}
 					Err(..) => {
-						self.sync(paths).await.context("Failed to sync index")?;
+						self.sync(paths, client)
+							.await
+							.context("Failed to sync index")?;
 					}
 				};
 			} else {
-				self.sync(paths).await.context("Failed to sync index")?;
+				self.sync(paths, client)
+					.await
+					.context("Failed to sync index")?;
 			}
 		}
 		Ok(())
@@ -101,8 +105,9 @@ impl PkgRepo {
 		&mut self,
 		id: &str,
 		paths: &Paths,
+		client: &Client,
 	) -> anyhow::Result<Option<RepoQueryResult>> {
-		self.ensure_index(paths).await?;
+		self.ensure_index(paths, client).await?;
 		let index = self.index.get();
 		if let Some(entry) = index.packages.get(id) {
 			return Ok(Some(RepoQueryResult {
@@ -119,8 +124,9 @@ impl PkgRepo {
 	pub async fn get_all_packages(
 		&mut self,
 		paths: &Paths,
+		client: &Client,
 	) -> anyhow::Result<Vec<(String, RepoPkgEntry)>> {
-		self.ensure_index(paths).await?;
+		self.ensure_index(paths, client).await?;
 		let index = self.index.get();
 		Ok(index
 			.packages
@@ -160,9 +166,10 @@ pub async fn query_all(
 	repos: &mut [PkgRepo],
 	id: &str,
 	paths: &Paths,
+	client: &Client,
 ) -> anyhow::Result<Option<RepoQueryResult>> {
 	for repo in repos {
-		let query = match repo.query(id, paths).await {
+		let query = match repo.query(id, paths, client).await {
 			Ok(val) => val,
 			Err(e) => {
 				print_err(e);
@@ -180,12 +187,13 @@ pub async fn query_all(
 pub async fn get_all_packages(
 	repos: &mut [PkgRepo],
 	paths: &Paths,
+	client: &Client,
 ) -> anyhow::Result<Vec<(String, RepoPkgEntry)>> {
 	// Iterate in reverse to make sure that repos at the beginning take precendence
 	let mut out = Vec::new();
 	for repo in repos.iter_mut().rev() {
 		let packages = repo
-			.get_all_packages(paths)
+			.get_all_packages(paths, client)
 			.await
 			.with_context(|| format!("Failed to get all packages from repository '{}'", repo.id))?;
 		out.extend(packages);

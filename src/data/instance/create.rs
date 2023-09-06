@@ -3,6 +3,7 @@ use std::fs::File;
 
 use anyhow::Context;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel, OutputProcess};
+use reqwest::Client;
 
 use crate::data::profile::update::manager::{UpdateManager, UpdateMethodResult, UpdateRequirement};
 use crate::data::user::uuid::hyphenate_uuid;
@@ -68,6 +69,7 @@ impl Instance {
 		manager: &UpdateManager,
 		paths: &Paths,
 		users: &UserManager,
+		client: &Client,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<UpdateMethodResult> {
 		match &self.kind {
@@ -91,7 +93,7 @@ impl Instance {
 				);
 				o.start_section();
 				let result = self
-					.create_server(manager, paths, o)
+					.create_server(manager, paths, client, o)
 					.await
 					.context("Failed to create server")?;
 				o.end_section();
@@ -190,6 +192,7 @@ impl Instance {
 		&mut self,
 		manager: &UpdateManager,
 		paths: &Paths,
+		client: &Client,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<UpdateMethodResult> {
 		debug_assert!(matches!(self.kind, InstKind::Server { .. }));
@@ -255,10 +258,10 @@ impl Instance {
 					MessageLevel::Important,
 				);
 
-				let (build_num, ..) = paper::get_newest_build(version)
+				let build_num = paper::get_newest_build(version, client)
 					.await
 					.context("Failed to get the newest Paper version")?;
-				let file_name = paper::get_jar_file_name(version, build_num)
+				let file_name = paper::get_jar_file_name(version, build_num, client)
 					.await
 					.context("Failed to get the Paper file name")?;
 				let paper_jar_path = server_dir.join(&file_name);
@@ -272,7 +275,7 @@ impl Instance {
 						MessageContents::StartProcess("Downloading Paper server".to_string()),
 						MessageLevel::Important,
 					);
-					paper::download_server_jar(version, build_num, &file_name, &server_dir)
+					paper::download_server_jar(version, build_num, &file_name, &server_dir, client)
 						.await
 						.context("Failed to download Paper server JAR")?;
 					process.0.display(

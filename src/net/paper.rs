@@ -12,9 +12,8 @@ struct VersionInfoResponse {
 }
 
 /// Get the newest build number of Paper
-pub async fn get_newest_build(version: &str) -> anyhow::Result<(u16, Client)> {
+pub async fn get_newest_build(version: &str, client: &Client) -> anyhow::Result<u16> {
 	let url = format!("https://api.papermc.io/v2/projects/paper/versions/{version}");
-	let client = Client::new();
 	let resp =
 		serde_json::from_str::<VersionInfoResponse>(&client.get(url).send().await?.text().await?)?;
 
@@ -23,7 +22,7 @@ pub async fn get_newest_build(version: &str) -> anyhow::Result<(u16, Client)> {
 		.last()
 		.ok_or(anyhow!("Could not find a valid Paper version"))?;
 
-	Ok((*build, client))
+	Ok(*build)
 }
 
 #[derive(Deserialize)]
@@ -42,12 +41,15 @@ struct BuildInfoResponse {
 }
 
 /// Get the name of the Paper jar file
-pub async fn get_jar_file_name(version: &str, build_num: u16) -> anyhow::Result<String> {
+pub async fn get_jar_file_name(
+	version: &str,
+	build_num: u16,
+	client: &Client,
+) -> anyhow::Result<String> {
 	let num_str = build_num.to_string();
 	let url =
 		format!("https://api.papermc.io/v2/projects/paper/versions/{version}/builds/{num_str}");
-	let resp =
-		serde_json::from_str::<BuildInfoResponse>(&download::text(&url, &Client::new()).await?)?;
+	let resp = serde_json::from_str::<BuildInfoResponse>(&download::text(&url, client).await?)?;
 
 	Ok(resp.downloads.application.name)
 }
@@ -58,12 +60,13 @@ pub async fn download_server_jar(
 	build_num: u16,
 	file_name: &str,
 	path: &Path,
+	client: &Client,
 ) -> anyhow::Result<PathBuf> {
 	let num_str = build_num.to_string();
 	let file_path = path.join(file_name);
 	let url = format!("https://api.papermc.io/v2/projects/paper/versions/{version}/builds/{num_str}/downloads/{file_name}");
 
-	download::file(&url, &file_path, &Client::new())
+	download::file(&url, &file_path, client)
 		.await
 		.context("Failed to download file")?;
 

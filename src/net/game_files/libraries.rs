@@ -99,6 +99,7 @@ pub async fn get(
 	paths: &Paths,
 	version: &str,
 	manager: &UpdateManager,
+	client: &Client,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<UpdateMethodResult> {
 	let mut out = UpdateMethodResult::new();
@@ -157,7 +158,6 @@ pub async fn get(
 		o.start_process();
 	}
 
-	let client = Arc::new(Client::new());
 	let mut join = JoinSet::new();
 	let mut num_done = 0;
 	// Used to limit the number of open file descriptors

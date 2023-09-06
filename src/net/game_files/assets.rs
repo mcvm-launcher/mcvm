@@ -39,6 +39,7 @@ async fn download_index(
 	url: &str,
 	path: &Path,
 	manager: &UpdateManager,
+	client: &Client,
 	force: bool,
 ) -> anyhow::Result<AssetIndex> {
 	let text = if manager.allow_offline && !force && path.exists() {
@@ -46,7 +47,7 @@ async fn download_index(
 			.await
 			.context("Failed to read index contents from file")?
 	} else {
-		let text = download::text(url, &Client::new())
+		let text = download::text(url, client)
 			.await
 			.context("Failed to download index")?;
 		tokio::fs::write(path, &text)
@@ -88,6 +89,7 @@ pub async fn get(
 	paths: &Paths,
 	version_info: &VersionInfo,
 	manager: &UpdateManager,
+	client: &Client,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<UpdateMethodResult> {
 	let mut out = UpdateMethodResult::new();
@@ -102,7 +104,7 @@ pub async fn get(
 		.await
 		.context("Failed to create directories for assets")?;
 
-	let index = match download_index(index_url, &index_path, manager, false).await {
+	let index = match download_index(index_url, &index_path, manager, client, false).await {
 		Ok(val) => val,
 		Err(err) => {
 			o.display(
@@ -117,7 +119,7 @@ pub async fn get(
 				MessageContents::StartProcess("Redownloading".to_string()),
 				MessageLevel::Important,
 			);
-			download_index(index_url, &index_path, manager, true)
+			download_index(index_url, &index_path, manager, client, true)
 				.await
 				.context("Failed to obtain asset index")?
 		}
@@ -160,7 +162,6 @@ pub async fn get(
 	}
 
 	let mut num_done = 0;
-	let client = Arc::new(Client::new());
 	let mut join = JoinSet::new();
 	// Used to limit the number of open file descriptors
 	let sem = Arc::new(Semaphore::new(FD_SENSIBLE_LIMIT));

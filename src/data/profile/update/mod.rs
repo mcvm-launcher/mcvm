@@ -75,12 +75,12 @@ pub async fn update_profiles(
 		let print_options = PrintOptions::new(true, 0);
 		let mut manager = UpdateManager::new(print_options, force, false);
 		manager
-			.fulfill_version_manifest(&profile.version, paths, ctx.output)
+			.fulfill_version_manifest(&profile.version, paths, &client, ctx.output)
 			.await
 			.context("Failed to get version information")?;
 		let mc_version = manager.version_info.get().version.clone();
 
-		let paper_properties = get_paper_properties(profile, &mc_version)
+		let paper_properties = get_paper_properties(profile, &mc_version, &mut ctx)
 			.await
 			.context("Failed to get Paper build number and filename")?;
 
@@ -123,7 +123,9 @@ pub async fn update_profiles(
 
 			// Make sure all packages in the profile are in the registry first
 			for pkg in &profile.packages {
-				ctx.packages.ensure_package(&pkg.req, paths).await?;
+				ctx.packages
+					.ensure_package(&pkg.req, paths, ctx.client)
+					.await?;
 			}
 
 			let constants = EvalConstants {
@@ -190,15 +192,16 @@ async fn check_profile_version_change<'a, O: MCVMOutput>(
 }
 
 /// Get the updated Paper file name and build number for a profile that uses it
-async fn get_paper_properties(
+async fn get_paper_properties<'a, O: MCVMOutput>(
 	profile: &Profile,
 	mc_version: &str,
+	ctx: &mut ProfileUpdateContext<'a, O>,
 ) -> anyhow::Result<Option<(u16, String)>> {
 	let out = if let ServerType::Paper = profile.modifications.server_type {
-		let (build_num, ..) = paper::get_newest_build(mc_version)
+		let build_num = paper::get_newest_build(mc_version, ctx.client)
 			.await
 			.context("Failed to get the newest Paper build number")?;
-		let paper_file_name = paper::get_jar_file_name(mc_version, build_num)
+		let paper_file_name = paper::get_jar_file_name(mc_version, build_num, ctx.client)
 			.await
 			.context("Failed to get the name of the Paper Jar file")?;
 		Some((build_num, paper_file_name))

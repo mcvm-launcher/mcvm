@@ -33,9 +33,9 @@ pub struct Project {
 }
 
 /// Get a project from the API
-pub async fn get_project(project_id: &str) -> anyhow::Result<Project> {
+pub async fn get_project(project_id: &str, client: &Client) -> anyhow::Result<Project> {
 	let url = format!("https://api.modrinth.com/v2/project/{project_id}");
-	let out = download::json(url, &Client::new())
+	let out = download::json(url, client)
 		.await
 		.context("Failed to download Modrinth project")?;
 	Ok(out)
@@ -142,20 +142,23 @@ impl Version {
 }
 
 /// Get a Modrinth project version
-pub async fn get_version(version_id: &str) -> anyhow::Result<Version> {
+pub async fn get_version(version_id: &str, client: &Client) -> anyhow::Result<Version> {
 	let url = format!("https://api.modrinth.com/v2/version/{version_id}");
-	let out = download::json(url, &Client::new())
+	let out = download::json(url, client)
 		.await
 		.context("Failed to download Modrinth version")?;
 	Ok(out)
 }
 
 /// Get multiple Modrinth project versions
-pub async fn get_multiple_versions(versions: &[String]) -> anyhow::Result<Vec<Version>> {
+pub async fn get_multiple_versions(
+	versions: &[String],
+	client: &Client,
+) -> anyhow::Result<Vec<Version>> {
 	let mut out = Vec::new();
 	for version in versions {
 		out.push(
-			get_version(version)
+			get_version(version, client)
 				.await
 				.with_context(|| format!("Failed to get version '{version}'"))?,
 		);

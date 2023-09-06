@@ -10,6 +10,7 @@ use mcvm::io::lock::Lockfile;
 use mcvm::{data::instance::InstKind, util::print::HYPHEN_POINT};
 use mcvm_shared::instance::Side;
 use mcvm_shared::output::MessageLevel;
+use reqwest::Client;
 
 use super::CmdData;
 use crate::cli::get_ms_client_id;
@@ -123,7 +124,7 @@ pub async fn launch(
 	if let InstKind::Client { .. } = &instance.kind {
 		config
 			.users
-			.ensure_authenticated(get_ms_client_id(), &mut data.output)
+			.ensure_authenticated(get_ms_client_id(), &Client::new(), &mut data.output)
 			.await
 			.context("Failed to authenticate user")?;
 	}

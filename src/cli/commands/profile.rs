@@ -9,6 +9,7 @@ use anyhow::Context;
 use clap::Subcommand;
 use color_print::{cprint, cprintln};
 use mcvm_shared::instance::Side;
+use reqwest::Client;
 
 #[derive(Debug, Subcommand)]
 pub enum ProfileSubcommand {
@@ -73,7 +74,7 @@ async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
 		for pkg in profile.packages.iter() {
 			let pkg_version = config
 				.packages
-				.get_version(&pkg.req, &data.paths)
+				.get_version(&pkg.req, &data.paths, &Client::new())
 				.await
 				.context("Failed to get package version")?;
 			cprint!("   {}", HYPHEN_POINT);

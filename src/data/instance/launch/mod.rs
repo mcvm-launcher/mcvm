@@ -13,6 +13,7 @@ use anyhow::Context;
 use mcvm_shared::instance::Side;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::versions::VersionInfo;
+use reqwest::Client;
 use serde::{Deserialize, Serialize};
 
 use crate::data::config::instance::QuickPlay;
@@ -47,17 +48,18 @@ impl Instance {
 		);
 		let options = PrintOptions::new(false, 0);
 		let mut manager = UpdateManager::new(options, false, true);
+		let client = Client::new();
 		manager
-			.fulfill_version_manifest(version, paths, o)
+			.fulfill_version_manifest(version, paths, &client, o)
 			.await
 			.context("Failed to get version data")?;
 		manager.add_requirements(self.get_requirements());
 		manager
-			.fulfill_requirements(paths, lock, o)
+			.fulfill_requirements(paths, lock, &client, o)
 			.await
 			.context("Update failed")?;
 
-		self.create(&manager, paths, users, o)
+		self.create(&manager, paths, users, &client, o)
 			.await
 			.context("Failed to update instance")?;
 		let version_info = manager.version_info.get();

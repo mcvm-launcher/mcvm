@@ -69,6 +69,7 @@ impl JavaInstallation {
 		paths: &Paths,
 		manager: &UpdateManager,
 		lock: &mut Lockfile,
+		client: &Client,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<UpdateMethodResult> {
 		let out = UpdateMethodResult::new();
@@ -87,12 +88,12 @@ impl JavaInstallation {
 					{
 						Ok(directory)
 					} else {
-						update_adoptium(major_version.get(), lock, paths, o)
+						update_adoptium(major_version.get(), lock, paths, client, o)
 							.await
 							.context("Failed to update Adoptium Java")
 					}
 				} else {
-					update_adoptium(major_version.get(), lock, paths, o)
+					update_adoptium(major_version.get(), lock, paths, client, o)
 						.await
 						.context("Failed to update Adoptium Java")
 				}?;
@@ -105,12 +106,12 @@ impl JavaInstallation {
 					{
 						Ok(directory)
 					} else {
-						update_zulu(major_version.get(), lock, paths, o)
+						update_zulu(major_version.get(), lock, paths, client, o)
 							.await
 							.context("Failed to update Zulu Java")
 					}
 				} else {
-					update_zulu(major_version.get(), lock, paths, o)
+					update_zulu(major_version.get(), lock, paths, client, o)
 						.await
 						.context("Failed to update Zulu Java")
 				}?;
@@ -134,11 +135,12 @@ async fn update_adoptium(
 	major_version: &str,
 	lock: &mut Lockfile,
 	paths: &Paths,
+	client: &Client,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<PathBuf> {
 	let out_dir = paths.java.join("adoptium");
 	files::create_dir(&out_dir)?;
-	let version = net::java::adoptium::get_latest(major_version)
+	let version = net::java::adoptium::get_latest(major_version, client)
 		.await
 		.context("Failed to obtain Adoptium information")?;
 
@@ -173,7 +175,7 @@ async fn update_adoptium(
 		)),
 		MessageLevel::Important,
 	);
-	download::file(bin_url, &arc_path, &Client::new())
+	download::file(bin_url, &arc_path, client)
 		.await
 		.context("Failed to download JRE binaries")?;
 
@@ -205,12 +207,13 @@ async fn update_zulu(
 	major_version: &str,
 	lock: &mut Lockfile,
 	paths: &Paths,
+	client: &Client,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<PathBuf> {
 	let out_dir = paths.java.join("zulu");
 	files::create_dir(&out_dir)?;
 
-	let package = net::java::zulu::get_latest(major_version)
+	let package = net::java::zulu::get_latest(major_version, client)
 		.await
 		.context("Failed to get the latest Zulu version")?;
 
@@ -239,7 +242,7 @@ async fn update_zulu(
 		)),
 		MessageLevel::Important,
 	);
-	download::file(&package.download_url, &arc_path, &Client::new())
+	download::file(&package.download_url, &arc_path, client)
 		.await
 		.context("Failed to download JRE binaries")?;
 

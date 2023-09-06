@@ -41,7 +41,7 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 
 		let pkg_version = ctx
 			.packages
-			.get_version(package, ctx.paths)
+			.get_version(package, ctx.paths, ctx.client)
 			.await
 			.context("Failed to get version for package")?;
 		let mut notices = Vec::new();
@@ -170,6 +170,7 @@ async fn resolve_and_batch<'a, O: MCVMOutput>(
 			params,
 			ctx.paths,
 			ctx.packages,
+			ctx.client,
 			ctx.output,
 		)
 		.await
