@@ -7,7 +7,7 @@ pub trait MCVMOutput {
 
 	/// Function to display a message to the user
 	fn display_message(&mut self, message: Message) {
-		self.display_text(default_format_message(message.contents), message.level);
+		self.display_text(message.contents.default_format(), message.level);
 	}
 
 	/// Convenience function to remove the need to construct a message
@@ -44,31 +44,6 @@ pub trait MCVMOutput {
 	}
 }
 
-/// Message formatting for the default implementation
-fn default_format_message(contents: MessageContents) -> String {
-	match contents {
-		MessageContents::Simple(text)
-		| MessageContents::Success(text)
-		| MessageContents::Hyperlink(text)
-		| MessageContents::Copyable(text) => text,
-		MessageContents::Notice(text) => format!("Notice: {text}"),
-		MessageContents::Warning(text) => format!("Warning: {text}"),
-		MessageContents::Error(text) => format!("Error: {text}"),
-		MessageContents::Property(key, value) => {
-			format!("{key}: {}", default_format_message(*value))
-		}
-		MessageContents::Header(text) => text.to_uppercase(),
-		MessageContents::StartProcess(text) => format!("{text}..."),
-		MessageContents::Associated(item, message) => {
-			format!("[{item}] {}", default_format_message(*message))
-		}
-		MessageContents::Package(pkg, message) => {
-			format!("[{pkg}] {}", default_format_message(*message))
-		}
-		MessageContents::ListItem(item) => format!(" - {}", default_format_message(*item)),
-	}
-}
-
 /// Displays the default Microsoft authentication messages
 pub fn default_special_ms_auth(o: &mut (impl MCVMOutput + ?Sized), url: &str, code: &str) {
 	o.display(
@@ -97,6 +72,7 @@ pub struct Message {
 }
 
 /// Contents of a message. Different types represent different formatting
+#[non_exhaustive]
 #[derive(Clone, Debug)]
 pub enum MessageContents {
 	/// Simple message with no formatting
@@ -125,6 +101,33 @@ pub enum MessageContents {
 	ListItem(Box<MessageContents>),
 	/// Text that can be copied, such as a verification code
 	Copyable(String),
+}
+
+impl MessageContents {
+	/// Message formatting for the default implementation
+	pub fn default_format(self) -> String {
+		match self {
+			MessageContents::Simple(text)
+			| MessageContents::Success(text)
+			| MessageContents::Hyperlink(text)
+			| MessageContents::Copyable(text) => text,
+			MessageContents::Notice(text) => format!("Notice: {text}"),
+			MessageContents::Warning(text) => format!("Warning: {text}"),
+			MessageContents::Error(text) => format!("Error: {text}"),
+			MessageContents::Property(key, value) => {
+				format!("{key}: {}", value.default_format())
+			}
+			MessageContents::Header(text) => text.to_uppercase(),
+			MessageContents::StartProcess(text) => format!("{text}..."),
+			MessageContents::Associated(item, message) => {
+				format!("[{item}] {}", message.default_format())
+			}
+			MessageContents::Package(pkg, message) => {
+				format!("[{pkg}] {}", message.default_format())
+			}
+			MessageContents::ListItem(item) => format!(" - {}", item.default_format()),
+		}
+	}
 }
 
 /// The level of logging that a message has

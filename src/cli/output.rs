@@ -12,7 +12,9 @@ use mcvm::{
 	},
 };
 use mcvm_pkg::{PkgRequest, PkgRequestSource};
-use mcvm_shared::output::{MCVMOutput, Message, MessageContents, MessageLevel, default_special_ms_auth};
+use mcvm_shared::output::{
+	default_special_ms_auth, MCVMOutput, Message, MessageContents, MessageLevel,
+};
 
 /// Terminal MCVMOutput
 pub struct TerminalOutput {
@@ -123,6 +125,7 @@ impl TerminalOutput {
 				HYPHEN_POINT.to_string() + &Self::format_message(*item)
 			}
 			MessageContents::Copyable(text) => cformat!("<u>{}", text),
+			contents => contents.default_format(),
 		}
 	}
 
