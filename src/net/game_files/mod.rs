@@ -1,14 +1,15 @@
 /// Downloading game assets
 pub mod assets;
+/// Structure for the client metadata file
+pub mod client_meta;
 /// Downloading game Java libraries
 pub mod libraries;
-/// Downloading and using the version manifest and version JSONs
+/// Downloading and using the version manifest
 pub mod version_manifest;
 
 use crate::data::profile::update::manager::UpdateManager;
 use crate::io::files::paths::Paths;
 use crate::util::cap_first_letter;
-use crate::util::json;
 use mcvm_shared::instance::Side;
 
 use anyhow::Context;
@@ -20,12 +21,12 @@ use super::download;
 pub mod game_jar {
 	use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel, OutputProcess};
 
-	use super::*;
+	use super::{client_meta::ClientMeta, *};
 
 	/// Downloads the game JAR file
 	pub async fn get(
 		side: Side,
-		client_json: &json::JsonObject,
+		client_json: &ClientMeta,
 		version: &str,
 		paths: &Paths,
 		manager: &UpdateManager,
@@ -43,10 +44,12 @@ pub mod game_jar {
 			MessageLevel::Important,
 		);
 
-		let download =
-			json::access_object(json::access_object(client_json, "downloads")?, &side_str)?;
-		let url = json::access_str(download, "url")?;
-		download::file(url, &path, &Client::new())
+		let download = match side {
+			Side::Client => &client_json.downloads.client,
+			Side::Server => &client_json.downloads.server,
+		};
+
+		download::file(&download.url, &path, &Client::new())
 			.await
 			.context("Failed to download file")?;
 		let side_str = cap_first_letter(&side_str);

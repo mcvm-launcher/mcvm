@@ -17,8 +17,9 @@ use crate::{
 	data::profile::update::manager::{UpdateManager, UpdateMethodResult},
 	io::files::{self, paths::Paths},
 	net::download::{self, FD_SENSIBLE_LIMIT},
-	util::json,
 };
+
+use super::client_meta::ClientMeta;
 
 /// A single asset in the index
 #[derive(Deserialize)]
@@ -83,7 +84,7 @@ async fn create_dirs(
 
 /// Download assets used by the client, such as game resources and icons.
 pub async fn get(
-	client_json: &json::JsonObject,
+	client_json: &ClientMeta,
 	paths: &Paths,
 	version_info: &VersionInfo,
 	manager: &UpdateManager,
@@ -95,7 +96,7 @@ pub async fn get(
 	files::create_dir_async(&indexes_dir).await?;
 
 	let index_path = indexes_dir.join(version_string + ".json");
-	let index_url = json::access_str(json::access_object(client_json, "assetIndex")?, "url")?;
+	let index_url = &client_json.asset_index.url;
 
 	let (objects_dir, virtual_dir) = create_dirs(paths, version_info)
 		.await

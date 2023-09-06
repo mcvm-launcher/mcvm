@@ -1,4 +1,4 @@
-use anyhow::{bail, Context};
+use anyhow::Context;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use reqwest::Client;
 use serde::Deserialize;
@@ -6,8 +6,7 @@ use serde::Deserialize;
 use crate::{
 	data::profile::update::manager::UpdateManager,
 	io::files::{self, paths::Paths},
-	net::download,
-	util::json,
+	net::download
 };
 
 /// Latest available Minecraft versions in the version manifest
@@ -126,47 +125,4 @@ pub fn make_version_list(version_manifest: &VersionManifest) -> anyhow::Result<V
 	out.reverse();
 
 	Ok(out)
-}
-
-/// Gets the specific client info JSON file for a Minecraft version
-pub async fn get_client_json(
-	version: &str,
-	version_manifest: &VersionManifest,
-	paths: &Paths,
-	manager: &UpdateManager,
-) -> anyhow::Result<Box<json::JsonObject>> {
-	let version_string = version.to_owned();
-
-	let mut version_url = None;
-	for entry in &version_manifest.versions {
-		if entry.id == version_string {
-			version_url = Some(entry.url.clone());
-		}
-	}
-	if version_url.is_none() {
-		bail!("Minecraft version does not exist or was not found in the manifest");
-	}
-
-	let client_json_name: String = version_string.clone() + ".json";
-	let version_dir = paths.internal.join("versions").join(version_string);
-	files::create_dir_async(&version_dir).await?;
-	let path = version_dir.join(client_json_name);
-	let text = if manager.allow_offline && path.exists() {
-		tokio::fs::read_to_string(path)
-			.await
-			.context("Failed to read client JSON from file")?
-	} else {
-		let text = download::text(version_url.expect("Version does not exist"), &Client::new())
-			.await
-			.context("Failed to download client JSON")?;
-		tokio::fs::write(path, &text)
-			.await
-			.context("Failed to write client JSON to a file")?;
-
-		text
-	};
-
-	let version_doc = json::parse_object(&text).context("Failed to parse client JSON")?;
-
-	Ok(version_doc)
 }

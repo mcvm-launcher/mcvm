@@ -17,9 +17,9 @@ use crate::io::options::client::ClientOptions;
 use crate::io::options::server::ServerOptions;
 use crate::io::{files, snapshot};
 use crate::net::fabric_quilt;
+use crate::net::game_files::client_meta::ClientMeta;
 use crate::package::eval::{EvalData, EvalInput, Routine};
 use crate::package::reg::PkgRegistry;
-use crate::util::json;
 use mcvm_pkg::PkgRequest;
 use mcvm_shared::later::Later;
 
@@ -70,7 +70,7 @@ pub struct Instance {
 	pub id: String,
 	modifications: GameModifications,
 	launch: LaunchOptions,
-	client_json: Later<Box<json::JsonObject>>,
+	client_json: Later<ClientMeta>,
 	java: Later<Java>,
 	classpath: Option<Classpath>,
 	jar_path: Later<PathBuf>,

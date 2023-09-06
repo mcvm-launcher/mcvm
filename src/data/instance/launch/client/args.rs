@@ -10,9 +10,8 @@ use crate::{
 		user::{UserKind, UserManager},
 	},
 	io::{files::paths::Paths, java::classpath::Classpath},
-	net::game_files::assets::get_virtual_dir_path,
-	skip_fail, skip_none,
-	util::{json, mojang::is_allowed, ARCH_STRING, OS_STRING},
+	net::game_files::{assets::get_virtual_dir_path, client_meta::args::ArgumentItem},
+	util::{mojang::is_allowed, ARCH_STRING, OS_STRING},
 };
 
 /// Get the string for a placeholder token in an argument
@@ -110,7 +109,7 @@ pub fn replace_arg_placeholders(
 /// Process an argument for the client from the client JSON
 pub fn process_arg(
 	instance: &Instance,
-	arg: &serde_json::Value,
+	arg: &ArgumentItem,
 	paths: &Paths,
 	users: &UserManager,
 	classpath: &Classpath,
@@ -118,67 +117,70 @@ pub fn process_arg(
 	window: &ClientWindowConfig,
 ) -> Vec<String> {
 	let mut out = Vec::new();
-	if let Some(contents) = arg.as_str() {
-		let processed =
-			replace_arg_placeholders(instance, contents, paths, users, classpath, version, window);
-		if let Some(processed_arg) = processed {
-			out.push(processed_arg);
+	match arg {
+		ArgumentItem::Simple(arg) => {
+			let arg = process_simple_arg(arg, instance, paths, users, classpath, version, window);
+			if let Some(arg) = arg {
+				out.push(arg);
+			}
 		}
-	} else if let Some(contents) = arg.as_object() {
-		let rules = match json::access_array(contents, "rules") {
-			Ok(rules) => rules,
-			Err(..) => return vec![],
-		};
-		for rule_val in rules.iter() {
-			let rule = skip_none!(rule_val.as_object());
-			let allowed = is_allowed(skip_fail!(json::access_str(rule, "action")));
-			if let Some(os_val) = rule.get("os") {
-				let os = skip_none!(os_val.as_object());
-				if let Some(os_name) = os.get("name") {
-					if allowed != (OS_STRING == skip_none!(os_name.as_str())) {
+		ArgumentItem::Conditional(arg) => {
+			for rule in &arg.rules {
+				let allowed = is_allowed(&rule.action.to_string());
+
+				if let Some(os_name) = &rule.os.name {
+					if allowed != (OS_STRING == os_name.to_string()) {
 						return vec![];
 					}
 				}
-				if let Some(os_arch) = os.get("arch") {
-					if allowed != (ARCH_STRING == skip_none!(os_arch.as_str())) {
+				if let Some(os_arch) = &rule.os.arch {
+					if allowed != (ARCH_STRING == os_arch.to_string()) {
 						return vec![];
+					}
+				}
+
+				if let Some(has_custom_resolution) = &rule.features.has_custom_resolution {
+					if *has_custom_resolution && window.resolution.is_none() {
+						return vec![];
+					}
+				}
+				if let Some(is_demo_user) = &rule.features.is_demo_user {
+					if *is_demo_user {
+						let fail = match users.get_user() {
+							Some(user) => matches!(user.kind, UserKind::Demo),
+							None => false,
+						};
+						if fail {
+							return vec![];
+						}
 					}
 				}
 			}
-			if let Some(features_val) = rule.get("features") {
-				let features = skip_none!(features_val.as_object());
-				if features.get("has_custom_resolution").is_some() && window.resolution.is_none() {
-					return vec![];
-				}
-				if features.get("is_demo_user").is_some() {
-					let fail = match users.get_user() {
-						Some(user) => matches!(user.kind, UserKind::Demo),
-						None => false,
-					};
-					if fail {
-						return vec![];
-					}
-				}
+			let args = arg.value.get_vec();
+			for arg in args {
+				out.extend(process_simple_arg(
+					&arg, instance, paths, users, classpath, version, window,
+				));
 			}
 		}
-		match arg.get("value") {
-			Some(value) => process_arg(instance, value, paths, users, classpath, version, window),
-			None => return vec![],
-		};
-	} else if let Some(contents) = arg.as_array() {
-		for val in contents {
-			out.push(
-				process_arg(instance, val, paths, users, classpath, version, window)
-					.get(0)
-					.expect("Expected an argument")
-					.to_string(),
-			);
-		}
-	} else {
-		return vec![];
-	}
+	};
 
 	out
+}
+
+/// Process a simple string argument
+pub fn process_simple_arg(
+	arg: &str,
+	instance: &Instance,
+	paths: &Paths,
+	users: &UserManager,
+	classpath: &Classpath,
+	version: &str,
+	window: &ClientWindowConfig,
+) -> Option<String> {
+	let processed =
+		replace_arg_placeholders(instance, arg, paths, users, classpath, version, window);
+	processed
 }
 
 /// Create the game arguments for Quick Play

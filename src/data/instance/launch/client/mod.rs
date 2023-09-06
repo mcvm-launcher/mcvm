@@ -10,8 +10,8 @@ use crate::data::instance::launch::LaunchProcessProperties;
 use crate::data::instance::{InstKind, Instance};
 use crate::data::user::UserManager;
 use crate::io::files::paths::Paths;
+use crate::net::game_files::client_meta::args::Arguments;
 use crate::skip_none;
-use crate::util::json;
 use mcvm_shared::versions::VersionInfo;
 
 // Used for Linux env vars
@@ -42,61 +42,61 @@ impl Instance {
 				.as_ref()
 				.expect("Main class for client should exist");
 			if let InstKind::Client { options: _, window } = &self.kind {
-				if let Ok(args) = json::access_object(client_json, "arguments") {
-					for arg in json::access_array(args, "jvm")? {
-						for sub_arg in args::process_arg(
-							self,
-							arg,
-							paths,
-							users,
-							classpath,
-							&version_info.version,
-							window,
-						) {
-							jvm_args.push(sub_arg);
+				match &client_json.arguments {
+					Arguments::New(args) => {
+						for arg in &args.jvm {
+							for sub_arg in args::process_arg(
+								self,
+								arg,
+								paths,
+								users,
+								classpath,
+								&version_info.version,
+								window,
+							) {
+								jvm_args.push(sub_arg);
+							}
+						}
+	
+						for arg in &args.game {
+							for sub_arg in args::process_arg(
+								self,
+								arg,
+								paths,
+								users,
+								classpath,
+								&version_info.version,
+								window,
+							) {
+								game_args.push(sub_arg);
+							}
 						}
 					}
-
-					for arg in json::access_array(args, "game")? {
-						for sub_arg in args::process_arg(
-							self,
-							arg,
-							paths,
-							users,
-							classpath,
-							&version_info.version,
-							window,
-						) {
-							game_args.push(sub_arg);
+					Arguments::Old(args) => {
+						jvm_args.push(format!(
+							"-Djava.library.path={}",
+							paths
+								.internal
+								.join("versions")
+								.join(&version_info.version)
+								.join("natives")
+								.to_str()
+								.context("Failed to convert natives directory to a string")?
+						));
+						jvm_args.push(String::from("-cp"));
+						jvm_args.push(classpath.get_str());
+	
+						for arg in args.split(' ') {
+							game_args.push(skip_none!(args::replace_arg_placeholders(
+								self,
+								arg,
+								paths,
+								users,
+								classpath,
+								&version_info.version,
+								window,
+							)));
 						}
-					}
-				} else {
-					// Behavior for versions prior to 1.12.2
-					let args = json::access_str(client_json, "minecraftArguments")?;
-
-					jvm_args.push(format!(
-						"-Djava.library.path={}",
-						paths
-							.internal
-							.join("versions")
-							.join(&version_info.version)
-							.join("natives")
-							.to_str()
-							.context("Failed to convert natives directory to a string")?
-					));
-					jvm_args.push(String::from("-cp"));
-					jvm_args.push(classpath.get_str());
-
-					for arg in args.split(' ') {
-						game_args.push(skip_none!(args::replace_arg_placeholders(
-							self,
-							arg,
-							paths,
-							users,
-							classpath,
-							&version_info.version,
-							window,
-						)));
 					}
 				}
 			}

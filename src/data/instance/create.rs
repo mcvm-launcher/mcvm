@@ -13,7 +13,6 @@ use crate::io::java::classpath::Classpath;
 use crate::io::java::JavaKind;
 use crate::io::options::{self, client::write_options_txt, server::write_server_properties};
 use crate::net::{fabric_quilt, game_files, paper};
-use crate::util::json;
 use mcvm_shared::later::Later;
 use mcvm_shared::modifications::{Modloader, ServerType};
 
@@ -126,13 +125,10 @@ impl Instance {
 			.context("Failed to extract classpath from game library list")?;
 		classpath.extend(lib_classpath);
 
-		let java_vers = json::access_i64(
-			json::access_object(client_json, "javaVersion")?,
-			"majorVersion",
-		)?;
+		let java_vers = client_json.java_info.major_version;
 		self.add_java(&java_vers.to_string(), manager);
 
-		self.main_class = Some(json::access_str(client_json, "mainClass")?.to_owned());
+		self.main_class = Some(client_json.main_class.clone());
 
 		if let Modloader::Fabric | Modloader::Quilt =
 			self.modifications.get_modloader(self.kind.to_side())
@@ -216,10 +212,7 @@ impl Instance {
 
 		let client_json = manager.client_json.get();
 
-		let java_vers = json::access_i64(
-			json::access_object(client_json, "javaVersion")?,
-			"majorVersion",
-		)?;
+		let java_vers = client_json.java_info.major_version;
 		self.add_java(&java_vers.to_string(), manager);
 
 		let mut classpath = if let Modloader::Fabric | Modloader::Quilt =

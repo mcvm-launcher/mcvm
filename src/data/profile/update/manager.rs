@@ -16,12 +16,12 @@ use crate::{io::{
 	java::{Java, JavaKind},
 	lock::Lockfile,
 	options::{read_options, Options},
-}, net::game_files::version_manifest::VersionManifest};
+}, net::game_files::{version_manifest::VersionManifest, client_meta::{self, ClientMeta}}};
 use crate::net::{
 	fabric_quilt::{self, FabricQuiltMeta},
 	game_files::{assets, game_jar, libraries, version_manifest},
 };
-use crate::util::{json, print::PrintOptions, versions::MinecraftVersion};
+use crate::util::{print::PrintOptions, versions::MinecraftVersion};
 
 /// Requirements for operations that may be shared by multiple instances in a profile
 #[derive(Debug, Hash, PartialEq, Eq)]
@@ -58,7 +58,7 @@ pub struct UpdateManager {
 	/// The version manifest to be fulfilled later
 	version_manifest: Later<VersionManifest>,
 	/// The client JSON to be fulfilled later
-	pub client_json: Later<Box<json::JsonObject>>,
+	pub client_json: Later<ClientMeta>,
 	/// The Java installation to be fulfilled later
 	pub java: Later<Java>,
 	/// The game options to be fulfilled later
@@ -204,7 +204,7 @@ impl UpdateManager {
 				MessageLevel::Important,
 			);
 
-			let client_json = version_manifest::get_client_json(
+			let client_json = client_meta::get(
 				&self.version_info.get().version,
 				self.version_manifest.get(),
 				paths,
@@ -250,10 +250,7 @@ impl UpdateManager {
 
 		if java_required {
 			let client_json = self.client_json.get();
-			let java_vers = json::access_i64(
-				json::access_object(client_json, "javaVersion")?,
-				"majorVersion",
-			)?;
+			let java_vers = client_json.java_info.major_version;
 
 			let mut java_result = UpdateMethodResult::new();
 			for req in self.requirements.iter() {

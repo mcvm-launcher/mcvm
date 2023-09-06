@@ -1,10 +1,11 @@
 use std::{
+	collections::HashMap,
 	fs::File,
 	path::{Path, PathBuf},
 	sync::Arc,
 };
 
-use anyhow::Context;
+use anyhow::{anyhow, Context};
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use reqwest::Client;
 use tokio::{sync::Semaphore, task::JoinSet};
@@ -17,30 +18,28 @@ use crate::{
 		java::classpath::Classpath,
 	},
 	net::download::FD_SENSIBLE_LIMIT,
-	util::{
-		self,
-		json::{self, JsonObject, JsonType},
-		mojang,
-	},
+	skip_none,
+	util::{self, mojang},
 };
 
+use super::client_meta::{libraries::Library, ClientMeta};
+
 /// Checks the rules of a game library to see if it should be installed
-fn is_allowed(lib: &JsonObject) -> anyhow::Result<bool> {
-	if let Some(rules) = lib.get("rules") {
-		let rules = json::ensure_type(rules.as_array(), JsonType::Arr)?;
-		for rule in rules.iter() {
-			let rule = json::ensure_type(rule.as_object(), JsonType::Obj)?;
-			let action = json::access_str(rule, "action")?;
-			if let Some(os) = rule.get("os") {
-				let os = json::ensure_type(os.as_object(), JsonType::Obj)?;
-				let os_name = json::access_str(os, "name")?;
-				let allowed = mojang::is_allowed(action);
-				if allowed != (os_name == util::OS_STRING) {
-					return Ok(false);
-				}
+fn is_allowed(lib: &Library) -> anyhow::Result<bool> {
+	for rule in &lib.rules {
+		let allowed = mojang::is_allowed(&rule.action.to_string());
+		if let Some(os_name) = &rule.os.name {
+			if allowed != (os_name.to_string() == util::OS_STRING) {
+				return Ok(false);
+			}
+		}
+		if let Some(os_arch) = &rule.os.arch {
+			if allowed != (os_arch.to_string() == util::ARCH_STRING) {
+				return Ok(false);
 			}
 		}
 	}
+
 	Ok(true)
 }
 
@@ -81,12 +80,8 @@ fn extract_native(
 
 /// Gets the list of allowed libraries from the client JSON
 /// and also the number of libraries found.
-pub fn get_list(
-	client_json: &json::JsonObject,
-) -> anyhow::Result<impl Iterator<Item = &JsonObject>> {
-	let libraries = json::access_array(client_json, "libraries")?;
-	let libraries = libraries.iter().filter_map(|lib| {
-		let lib = json::ensure_type(lib.as_object(), JsonType::Obj).ok()?;
+pub fn get_list(client_json: &ClientMeta) -> anyhow::Result<impl Iterator<Item = &Library>> {
+	let libraries = client_json.libraries.iter().filter_map(|lib| {
 		if !is_allowed(lib).ok()? {
 			None
 		} else {
@@ -100,7 +95,7 @@ pub fn get_list(
 /// Downloads base client libraries.
 /// Returns a set of files to be added to the update manager.
 pub async fn get(
-	client_json: &json::JsonObject,
+	client_json: &ClientMeta,
 	paths: &Paths,
 	version: &str,
 	manager: &UpdateManager,
@@ -124,31 +119,30 @@ pub async fn get(
 	let mut libs_to_download = Vec::new();
 
 	for lib in libraries {
-		let name = json::access_str(lib, "name")?;
-		let downloads = json::access_object(lib, "downloads")?;
-		if let Some(natives) = lib.get("natives") {
-			let natives = json::ensure_type(natives.as_object(), JsonType::Obj)?;
-			let key = json::access_str(natives, util::OS_STRING)?
-				.replace("${arch}", util::TARGET_BITS_STR);
-			let classifier =
-				json::access_object(json::access_object(downloads, "classifiers")?, &key)?;
+		if !lib.natives.is_empty() {
+			let key = skip_none!(get_natives_classifier_key(&lib.natives));
 
-			let path = natives_jars_path.join(json::access_str(classifier, "path")?);
+			let classifier = lib
+				.downloads
+				.native_classifiers
+				.get(&key)
+				.ok_or(anyhow!("Native lib artifact does not exist"))?;
 
-			native_paths.push((path.clone(), name.to_owned()));
+			let path = natives_jars_path.join(classifier.path.clone());
+
+			native_paths.push((path.clone(), lib.name.clone()));
 			if !manager.should_update_file(&path) {
 				continue;
 			}
-			libs_to_download.push((name, classifier.clone(), path));
+			libs_to_download.push((lib.name.clone(), classifier.clone(), path));
 			continue;
 		}
-		if let Some(artifact) = downloads.get("artifact") {
-			let artifact = json::ensure_type(artifact.as_object(), JsonType::Obj)?;
-			let path = libraries_path.join(json::access_str(artifact, "path")?);
+		if let Some(artifact) = &lib.downloads.artifact {
+			let path = libraries_path.join(artifact.path.clone());
 			if !manager.should_update_file(&path) {
 				continue;
 			}
-			libs_to_download.push((name, artifact.clone(), path));
+			libs_to_download.push((lib.name.clone(), artifact.clone(), path));
 			continue;
 		}
 	}
@@ -183,12 +177,11 @@ pub async fn get(
 
 		files::create_leading_dirs_async(&path).await?;
 		out.files_updated.insert(path.clone());
-		let url = json::access_str(&library, "url")?.to_owned();
 
 		let client = client.clone();
 		let permit = Arc::clone(&sem).acquire_owned().await;
 		let fut = async move {
-			let response = client.get(url).send();
+			let response = client.get(library.url).send();
 			let _permit = permit;
 			tokio::fs::write(&path, response.await?.error_for_status()?.bytes().await?).await?;
 			Ok::<(), anyhow::Error>(())
@@ -223,32 +216,42 @@ pub async fn get(
 }
 
 /// Gets the classpath from Minecraft libraries
-pub fn get_classpath(client_json: &json::JsonObject, paths: &Paths) -> anyhow::Result<Classpath> {
+pub fn get_classpath(client_json: &ClientMeta, paths: &Paths) -> anyhow::Result<Classpath> {
 	let natives_jars_path = paths.internal.join("natives");
 	let libraries_path = paths.internal.join("libraries");
 
 	let mut classpath = Classpath::new();
 	let libraries = get_list(client_json).context("Failed to get list of libraries")?;
 	for lib in libraries {
-		let downloads = json::access_object(lib, "downloads")?;
-		if let Some(natives) = lib.get("natives") {
-			let natives = json::ensure_type(natives.as_object(), JsonType::Obj)?;
-			let key = json::access_str(natives, util::OS_STRING)?
-				.replace("${arch}", util::TARGET_BITS_STR);
-			let classifier =
-				json::access_object(json::access_object(downloads, "classifiers")?, &key)?;
+		if !lib.natives.is_empty() {
+			let key = skip_none!(get_natives_classifier_key(&lib.natives));
 
-			let path = natives_jars_path.join(json::access_str(classifier, "path")?);
+			let classifier = lib
+				.downloads
+				.native_classifiers
+				.get(&key)
+				.ok_or(anyhow!("Native lib artifact does not exist"))?;
+
+			let path = natives_jars_path.join(classifier.path.clone());
 			classpath.add_path(&path);
 
 			continue;
 		}
-		if let Some(artifact) = downloads.get("artifact") {
-			let artifact = json::ensure_type(artifact.as_object(), JsonType::Obj)?;
-			let path = libraries_path.join(json::access_str(artifact, "path")?);
+		if let Some(artifact) = &lib.downloads.artifact {
+			let path = libraries_path.join(artifact.path.clone());
 			classpath.add_path(&path);
 			continue;
 		}
 	}
 	Ok(classpath)
+}
+
+/// Get the key for the natives classifier
+fn get_natives_classifier_key(classifiers: &HashMap<String, String>) -> Option<String> {
+	let key = classifiers
+		.get(&format!("natives-{}", util::OS_STRING))
+		.unwrap_or(classifiers.get(util::OS_STRING)?);
+	let key = key.replace("${arch}", util::TARGET_BITS_STR);
+
+	Some(key)
 }
