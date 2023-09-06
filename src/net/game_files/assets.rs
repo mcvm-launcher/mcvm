@@ -1,4 +1,5 @@
 use std::{
+	collections::HashMap,
 	path::{Path, PathBuf},
 	sync::Arc,
 };
@@ -9,21 +10,36 @@ use mcvm_shared::{
 	versions::{VersionInfo, VersionPattern},
 };
 use reqwest::Client;
+use serde::Deserialize;
 use tokio::{sync::Semaphore, task::JoinSet};
 
 use crate::{
 	data::profile::update::manager::{UpdateManager, UpdateMethodResult},
 	io::files::{self, paths::Paths},
 	net::download::{self, FD_SENSIBLE_LIMIT},
-	util::json::{self, JsonType},
+	util::json,
 };
+
+/// A single asset in the index
+#[derive(Deserialize)]
+pub struct IndexEntry {
+	/// The hash of the index file
+	pub hash: String,
+}
+
+/// Structure for the assets index
+#[derive(Deserialize)]
+pub struct AssetIndex {
+	/// The map of asset resource locations to index entries
+	pub objects: HashMap<String, IndexEntry>,
+}
 
 async fn download_index(
 	url: &str,
 	path: &Path,
 	manager: &UpdateManager,
 	force: bool,
-) -> anyhow::Result<Box<json::JsonObject>> {
+) -> anyhow::Result<AssetIndex> {
 	let text = if manager.allow_offline && !force && path.exists() {
 		tokio::fs::read_to_string(path)
 			.await
@@ -39,8 +55,8 @@ async fn download_index(
 		text
 	};
 
-	let doc = json::parse_object(&text).context("Failed to parse index")?;
-	Ok(doc)
+	let index = serde_json::from_str(&text).context("Failed to parse index")?;
+	Ok(index)
 }
 
 /// Get the virtual assets directory path
@@ -106,13 +122,9 @@ pub async fn get(
 		}
 	};
 
-	let assets = json::access_object(&index, "objects")?.clone();
-
 	let mut assets_to_download = Vec::new();
-	for (name, asset) in assets {
-		let asset = json::ensure_type(asset.as_object(), JsonType::Obj)?;
-
-		let hash = json::access_str(asset, "hash")?.to_owned();
+	for (name, asset) in index.objects {
+		let hash = asset.hash;
 		let hash_path = format!("{}/{hash}", hash[..2].to_owned());
 		let url = format!("https://resources.download.minecraft.net/{hash_path}");
 
