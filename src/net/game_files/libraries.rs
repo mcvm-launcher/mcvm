@@ -157,7 +157,7 @@ pub async fn get(
 		o.start_process();
 	}
 
-	let client = Client::new();
+	let client = Arc::new(Client::new());
 	let mut join = JoinSet::new();
 	let mut num_done = 0;
 	// Used to limit the number of open file descriptors
@@ -176,17 +176,22 @@ pub async fn get(
 		);
 
 		files::create_leading_dirs_async(&path).await?;
-		out.files_updated.insert(path.clone());
 
 		let client = client.clone();
-		let permit = Arc::clone(&sem).acquire_owned().await;
+		let permit = sem.clone().acquire_owned().await;
+		let path_clone = path.clone();
 		let fut = async move {
 			let response = client.get(library.url).send();
 			let _permit = permit;
-			tokio::fs::write(&path, response.await?.error_for_status()?.bytes().await?).await?;
+			tokio::fs::write(
+				&path_clone,
+				response.await?.error_for_status()?.bytes().await?,
+			)
+			.await?;
 			Ok::<(), anyhow::Error>(())
 		};
 		join.spawn(fut);
+		out.files_updated.insert(path.clone());
 		num_done += 1;
 	}
 

@@ -50,7 +50,7 @@ pub fn eval_declarative_package<'a>(
 		eval_data.addon_reqs.push(addon_req);
 
 		relations.merge(version.relations.clone());
-		notices.extend(version.notices.get_vec());
+		notices.extend(version.notices.iter().cloned());
 	}
 
 	// Apply conditional rules
@@ -62,12 +62,12 @@ pub fn eval_declarative_package<'a>(
 		}
 
 		relations.merge(rule.properties.relations.clone());
-		notices.extend(rule.properties.notices.get_vec());
+		notices.extend(rule.properties.notices.iter().cloned());
 	}
 
 	eval_data
 		.deps
-		.extend(relations.dependencies.get_vec().iter().map(|x| {
+		.extend(relations.dependencies.iter().map(|x| {
 			vec![RequiredPackage {
 				value: x.clone(),
 				explicit: false,
@@ -75,19 +75,23 @@ pub fn eval_declarative_package<'a>(
 		}));
 	eval_data
 		.deps
-		.extend(relations.explicit_dependencies.get_vec().iter().map(|x| {
+		.extend(relations.explicit_dependencies.iter().map(|x| {
 			vec![RequiredPackage {
 				value: x.clone(),
 				explicit: true,
 			}]
 		}));
-	eval_data.conflicts.extend(relations.conflicts.get_vec());
-	eval_data.extensions.extend(relations.extensions.get_vec());
-	eval_data.bundled.extend(relations.bundled.get_vec());
-	eval_data.compats.extend(relations.compats.get_vec());
+	eval_data
+		.conflicts
+		.extend(relations.conflicts.iter().cloned());
+	eval_data
+		.extensions
+		.extend(relations.extensions.iter().cloned());
+	eval_data.bundled.extend(relations.bundled.iter().cloned());
+	eval_data.compats.extend(relations.compats.iter().cloned());
 	eval_data
 		.recommendations
-		.extend(relations.recommendations.get_vec());
+		.extend(relations.recommendations.iter().cloned());
 
 	eval_data.notices.extend(notices);
 
@@ -119,7 +123,6 @@ fn check_multiple_condition_sets<'a>(
 fn check_condition_set<'a>(conditions: &DeclarativeConditionSet, input: &'a EvalInput<'a>) -> bool {
 	if let Some(minecraft_versions) = &conditions.minecraft_versions {
 		if !minecraft_versions
-			.get_vec()
 			.iter()
 			.any(|x| x.matches_single(&input.constants.version, &input.constants.version_list))
 		{
@@ -134,7 +137,7 @@ fn check_condition_set<'a>(conditions: &DeclarativeConditionSet, input: &'a Eval
 	}
 
 	if let Some(modloaders) = &conditions.modloaders {
-		if !modloaders.get_vec().iter().any(|x| {
+		if !modloaders.iter().any(|x| {
 			x.matches(
 				&input
 					.constants
@@ -148,7 +151,6 @@ fn check_condition_set<'a>(conditions: &DeclarativeConditionSet, input: &'a Eval
 
 	if let Some(plugin_loaders) = &conditions.plugin_loaders {
 		if !plugin_loaders
-			.get_vec()
 			.iter()
 			.any(|x| x.matches(&input.constants.modifications.server_type))
 		{
@@ -163,8 +165,8 @@ fn check_condition_set<'a>(conditions: &DeclarativeConditionSet, input: &'a Eval
 	}
 
 	if let Some(features) = &conditions.features {
-		for feature in features.get_vec() {
-			if !input.params.features.contains(&feature) {
+		for feature in features.iter() {
+			if !input.params.features.contains(feature) {
 				return false;
 			}
 		}

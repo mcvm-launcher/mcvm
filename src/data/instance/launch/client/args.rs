@@ -156,10 +156,10 @@ pub fn process_arg(
 					}
 				}
 			}
-			let args = arg.value.get_vec();
-			for arg in args {
+
+			for arg in arg.value.iter() {
 				out.extend(process_simple_arg(
-					&arg, instance, paths, users, classpath, version, window,
+					arg, instance, paths, users, classpath, version, window,
 				));
 			}
 		}
@@ -178,9 +178,7 @@ pub fn process_simple_arg(
 	version: &str,
 	window: &ClientWindowConfig,
 ) -> Option<String> {
-	let processed =
-		replace_arg_placeholders(instance, arg, paths, users, classpath, version, window);
-	processed
+	replace_arg_placeholders(instance, arg, paths, users, classpath, version, window)
 }
 
 /// Create the game arguments for Quick Play

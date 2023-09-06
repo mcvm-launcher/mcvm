@@ -160,13 +160,13 @@ pub async fn get(
 	}
 
 	let mut num_done = 0;
-	let client = Client::new();
+	let client = Arc::new(Client::new());
 	let mut join = JoinSet::new();
 	// Used to limit the number of open file descriptors
 	let sem = Arc::new(Semaphore::new(FD_SENSIBLE_LIMIT));
 	for (name, url, path, virtual_path) in assets_to_download {
 		let client = client.clone();
-		let permit = Arc::clone(&sem).acquire_owned().await;
+		let permit = sem.clone().acquire_owned().await;
 		let fut = async move {
 			let response = client.get(url).send();
 			let _permit = permit;

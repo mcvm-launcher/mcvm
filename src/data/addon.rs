@@ -100,7 +100,7 @@ impl AddonRequest {
 
 		let result = self.check_hashes(&path);
 		// Remove the addon file if it fails the checksum
-		if let Err(..) = result {
+		if result.is_err() {
 			std::fs::remove_file(path).context("Failed to remove stored addon file")?;
 		}
 		result?;

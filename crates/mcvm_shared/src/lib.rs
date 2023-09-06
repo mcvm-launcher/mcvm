@@ -52,24 +52,6 @@ pub mod util {
 		true
 	}
 
-	#[cfg(test)]
-	mod tests {
-		use super::*;
-
-		#[test]
-		fn test_id_validation() {
-			assert!(is_valid_identifier("hello"));
-			assert!(is_valid_identifier("Hello"));
-			assert!(is_valid_identifier("H3110"));
-			assert!(is_valid_identifier("hello-world"));
-			assert!(is_valid_identifier("hello_world"));
-			assert!(is_valid_identifier("hello.world"));
-			assert!(!is_valid_identifier("hello*world"));
-			assert!(!is_valid_identifier("hello\nworld"));
-			assert!(!is_valid_identifier("hello world"));
-		}
-	}
-
 	/// Utility enum for deserialization that lets you do a list that can be one item
 	/// without the braces
 	#[derive(Deserialize, Debug, Clone)]
@@ -99,8 +81,70 @@ pub mod util {
 		/// Merges this enum with another
 		pub fn merge(&mut self, other: Self) {
 			let mut self_vec = self.get_vec();
-			self_vec.extend(other.get_vec());
+			self_vec.extend(other.iter().cloned());
 			*self = Self::List(self_vec);
+		}
+
+		/// Iterates over this DeserListOrSingle
+		pub fn iter(&self) -> DeserListOrSingleIter<'_, T> {
+			match &self {
+				Self::Single(val) => {
+					DeserListOrSingleIter(DeserListOrSingleIterState::Single(Some(val)))
+				}
+				Self::List(list) => {
+					DeserListOrSingleIter(DeserListOrSingleIterState::List(list.iter()))
+				}
+			}
+		}
+	}
+
+	/// Iterator over DeserListOrSingle
+	pub struct DeserListOrSingleIter<'a, T>(DeserListOrSingleIterState<'a, T>);
+
+	/// State for a DeserListOrSingleIter
+	enum DeserListOrSingleIterState<'a, T> {
+		Single(Option<&'a T>),
+		List(std::slice::Iter<'a, T>),
+	}
+
+	impl<'a, T> Iterator for DeserListOrSingleIter<'a, T> {
+		type Item = &'a T;
+
+		fn next(&mut self) -> Option<Self::Item> {
+			match &mut self.0 {
+				DeserListOrSingleIterState::Single(val) => val.take(),
+				DeserListOrSingleIterState::List(slice_iter) => slice_iter.next(),
+			}
+		}
+	}
+
+	#[cfg(test)]
+	mod tests {
+		use super::*;
+
+		#[test]
+		fn test_id_validation() {
+			assert!(is_valid_identifier("hello"));
+			assert!(is_valid_identifier("Hello"));
+			assert!(is_valid_identifier("H3110"));
+			assert!(is_valid_identifier("hello-world"));
+			assert!(is_valid_identifier("hello_world"));
+			assert!(is_valid_identifier("hello.world"));
+			assert!(!is_valid_identifier("hello*world"));
+			assert!(!is_valid_identifier("hello\nworld"));
+			assert!(!is_valid_identifier("hello world"));
+		}
+
+		#[test]
+		fn test_deser_list_or_single_iter() {
+			let item = DeserListOrSingle::Single(7);
+			assert_eq!(item.iter().next(), Some(&7));
+
+			let item = DeserListOrSingle::List(vec![1, 2, 3]);
+			let mut iter = item.iter();
+			assert_eq!(iter.next(), Some(&1));
+			assert_eq!(iter.next(), Some(&2));
+			assert_eq!(iter.next(), Some(&3));
 		}
 	}
 }

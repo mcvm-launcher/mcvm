@@ -33,6 +33,7 @@ use mcvm_shared::addon::{Addon, AddonKind};
 
 use std::fs;
 use std::path::{Path, PathBuf};
+use std::rc::Rc;
 
 /// Different kinds of instances and their associated data
 #[derive(Debug, Clone)]
@@ -70,7 +71,7 @@ pub struct Instance {
 	pub id: String,
 	modifications: GameModifications,
 	launch: LaunchOptions,
-	client_meta: Later<ClientMeta>,
+	client_meta: Later<Rc<ClientMeta>>,
 	java: Later<Java>,
 	classpath: Option<Classpath>,
 	jar_path: Later<PathBuf>,

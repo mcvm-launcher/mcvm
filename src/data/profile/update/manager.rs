@@ -1,6 +1,7 @@
 use std::{
 	collections::HashSet,
 	path::{Path, PathBuf},
+	rc::Rc,
 };
 
 use anyhow::Context;
@@ -11,17 +12,23 @@ use mcvm_shared::{
 	versions::VersionInfo,
 };
 
-use crate::{io::{
-	files::paths::Paths,
-	java::{Java, JavaKind},
-	lock::Lockfile,
-	options::{read_options, Options},
-}, net::game_files::{version_manifest::VersionManifest, client_meta::{self, ClientMeta}}};
 use crate::net::{
 	fabric_quilt::{self, FabricQuiltMeta},
 	game_files::{assets, game_jar, libraries, version_manifest},
 };
 use crate::util::{print::PrintOptions, versions::MinecraftVersion};
+use crate::{
+	io::{
+		files::paths::Paths,
+		java::{Java, JavaKind},
+		lock::Lockfile,
+		options::{read_options, Options},
+	},
+	net::game_files::{
+		client_meta::{self, ClientMeta},
+		version_manifest::VersionManifest,
+	},
+};
 
 /// Requirements for operations that may be shared by multiple instances in a profile
 #[derive(Debug, Hash, PartialEq, Eq)]
@@ -58,7 +65,7 @@ pub struct UpdateManager {
 	/// The version manifest to be fulfilled later
 	version_manifest: Later<VersionManifest>,
 	/// The client meta to be fulfilled later
-	pub client_meta: Later<ClientMeta>,
+	pub client_meta: Later<Rc<ClientMeta>>,
 	/// The Java installation to be fulfilled later
 	pub java: Later<Java>,
 	/// The game options to be fulfilled later
@@ -200,7 +207,7 @@ impl UpdateManager {
 		if self.has_requirement(UpdateRequirement::ClientJson) {
 			o.start_process();
 			o.display(
-				MessageContents::StartProcess("Obtaining client meta data".to_string()),
+				MessageContents::StartProcess("Obtaining client metadata".to_string()),
 				MessageLevel::Important,
 			);
 
@@ -212,7 +219,7 @@ impl UpdateManager {
 			)
 			.await
 			.context("Failed to get client meta")?;
-			self.client_meta.fill(client_meta);
+			self.client_meta.fill(Rc::new(client_meta));
 
 			o.display(
 				MessageContents::Success("client meta obtained".to_string()),
