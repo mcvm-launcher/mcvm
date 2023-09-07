@@ -82,7 +82,7 @@ pub fn read_options_file(
 			.find(separator)
 			.ok_or(anyhow!("Options line {i} does not have a colon separator!"))?;
 		let (key, value) = line.split_at(index);
-		out.insert(String::from(key), String::from(&value[1..]));
+		out.insert(key.to_string(), String::from(&value[1..]));
 	}
 
 	Ok(out)

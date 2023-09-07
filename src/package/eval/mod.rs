@@ -86,10 +86,11 @@ pub enum Routine {
 impl Routine {
 	/// Get the routine name of this routine
 	pub fn get_routine_name(&self) -> String {
-		String::from(match self {
+		match self {
 			Self::Install => INSTALL_ROUTINE,
 			Self::InstallResolve => INSTALL_ROUTINE,
-		})
+		}
+		.into()
 	}
 
 	/// Get the EvalLevel of this routine
@@ -315,7 +316,7 @@ pub fn create_valid_addon_request(
 	} else if let Some(path) = path {
 		match eval_input.params.perms {
 			EvalPermissions::Elevated => {
-				let path = String::from(shellexpand::tilde(&path));
+				let path = shellexpand::tilde(&path).to_string();
 				let path = PathBuf::from(path);
 				let location = AddonLocation::Local(path);
 				Ok(AddonRequest::new(addon, location))
@@ -468,10 +469,7 @@ pub async fn resolve(
 		params: default_params,
 	};
 
-	let common_input = EvaluatorCommonInput {
-		client,
-		paths,
-	};
+	let common_input = EvaluatorCommonInput { client, paths };
 
 	let packages = packages
 		.iter()

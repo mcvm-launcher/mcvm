@@ -49,7 +49,7 @@ pub async fn generate_login_page(
 	let out = client
 		.exchange_device_code()
 		.context("Failed to exchange device code")?
-		.add_scope(Scope::new(String::from("XboxLive.signin offline_access")))
+		.add_scope(Scope::new("XboxLive.signin offline_access".into()))
 		.request_async(async_http_client)
 		.await;
 

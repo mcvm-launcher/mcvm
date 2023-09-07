@@ -38,7 +38,7 @@ impl Profile {
 	/// Create a new profile
 	pub fn new(id: &str, version: MinecraftVersion, modifications: GameModifications) -> Self {
 		Profile {
-			id: id.to_owned(),
+			id: id.to_string(),
 			version,
 			instances: Vec::new(),
 			packages: Vec::new(),
@@ -48,7 +48,7 @@ impl Profile {
 
 	/// Add a new instance to this profile
 	pub fn add_instance(&mut self, instance: &str) {
-		self.instances.push(instance.to_owned());
+		self.instances.push(instance.to_string());
 	}
 
 	/// Create all the instances in this profile. Returns the version list.

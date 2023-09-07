@@ -43,7 +43,7 @@ impl Instance {
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
 		o.display(
-			MessageContents::StartProcess("Checking for updates".to_string()),
+			MessageContents::StartProcess("Checking for updates".into()),
 			MessageLevel::Important,
 		);
 		let options = PrintOptions::new(false, 0);
@@ -64,7 +64,7 @@ impl Instance {
 			.context("Failed to update instance")?;
 		let version_info = manager.version_info.get();
 		o.display(
-			MessageContents::Success("Launching!".to_string()),
+			MessageContents::Success("Launching!".into()),
 			MessageLevel::Important,
 		);
 		match &self.kind {
@@ -117,7 +117,7 @@ impl Instance {
 		writeln!(log, "Launch command: {cmd:#?}").context("Failed to write to launch log file")?;
 		o.display(
 			MessageContents::Property(
-				"Launch command".to_string(),
+				"Launch command".into(),
 				Box::new(MessageContents::Simple(format!("{cmd:#?}"))),
 			),
 			MessageLevel::Debug,

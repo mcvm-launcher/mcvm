@@ -81,23 +81,23 @@ pub fn create_keys(
 ) -> anyhow::Result<HashMap<String, String>> {
 	let mut out = HashMap::new();
 
-	let after_18w42a = VersionPattern::After(String::from("18w42a")).matches_info(version_info);
+	let after_18w42a = VersionPattern::After("18w42a".into()).matches_info(version_info);
 
 	if let Some(value) = options.allow_flight {
-		out.insert(String::from("allow-flight"), value.to_string());
+		out.insert("allow-flight".into(), value.to_string());
 	}
 	if let Some(value) = options.world.allow_nether {
-		out.insert(String::from("allow-nether"), value.to_string());
+		out.insert("allow-nether".into(), value.to_string());
 	}
 	if let Some(value) = options.broadcast_console_to_ops {
-		out.insert(String::from("broadcast-console-to-ops"), value.to_string());
+		out.insert("broadcast-console-to-ops".into(), value.to_string());
 	}
 	if let Some(value) = options.broadcast_rcon_to_ops {
-		out.insert(String::from("broadcast-rcon-to-ops"), value.to_string());
+		out.insert("broadcast-rcon-to-ops".into(), value.to_string());
 	}
 	if let Some(value) = &options.difficulty {
 		out.insert(
-			String::from("difficulty"),
+			"difficulty".into(),
 			if after_18w42a {
 				value.to_string()
 			} else {
@@ -106,41 +106,41 @@ pub fn create_keys(
 		);
 	}
 	if let Some(value) = options.allow_command_blocks {
-		out.insert(String::from("enable-command-block"), value.to_string());
+		out.insert("enable-command-block".into(), value.to_string());
 	}
 	if let Some(value) = options.jmx_monitoring {
-		out.insert(String::from("enable-jmx-monitoring"), value.to_string());
+		out.insert("enable-jmx-monitoring".into(), value.to_string());
 	}
 	if let Some(value) = options.rcon.enable {
-		out.insert(String::from("enable-rcon"), value.to_string());
+		out.insert("enable-rcon".into(), value.to_string());
 	}
 	if let Some(value) = options.enable_status {
-		out.insert(String::from("enable-status"), value.to_string());
+		out.insert("enable-status".into(), value.to_string());
 	}
 	if let Some(value) = options.query.enable {
-		out.insert(String::from("enable-query"), value.to_string());
+		out.insert("enable-query".into(), value.to_string());
 	}
 	if let Some(value) = options.enforce_secure_profile {
-		out.insert(String::from("enforce-secure-profile"), value.to_string());
+		out.insert("enforce-secure-profile".into(), value.to_string());
 	}
 	if let Some(value) = options.whitelist.enforce {
-		out.insert(String::from("enforce-whitelist"), value.to_string());
+		out.insert("enforce-whitelist".into(), value.to_string());
 	}
 	if let Some(value) = options.entity_broadcast_range {
 		out.insert(
-			String::from("entity-broadcast-range-percentage"),
+			"entity-broadcast-range-percentage".into(),
 			value.to_string(),
 		);
 	}
 	if let Some(value) = options.gamemode.force {
-		out.insert(String::from("force-gamemode"), value.to_string());
+		out.insert("force-gamemode".into(), value.to_string());
 	}
 	if let Some(value) = options.datapacks.function_permission_level {
-		out.insert(String::from("function-permission-level"), value.to_string());
+		out.insert("function-permission-level".into(), value.to_string());
 	}
 	if let Some(value) = &options.gamemode.default {
 		out.insert(
-			String::from("gamemode"),
+			"gamemode".into(),
 			if after_18w42a {
 				value.to_string()
 			} else {
@@ -149,140 +149,131 @@ pub fn create_keys(
 		);
 	}
 	if let Some(value) = options.world.structures {
-		out.insert(String::from("generate-structures"), value.to_string());
+		out.insert("generate-structures".into(), value.to_string());
 	}
 	if let Some(value) = &options.world.generator_settings {
 		out.insert(
-			String::from("generator-settings"),
+			"generator-settings".into(),
 			serde_json::to_string(&value)
 				.context("Failed to convert generator settings to a string")?,
 		);
 	}
 	if let Some(value) = options.hardcore {
-		out.insert(String::from("hardcore"), value.to_string());
+		out.insert("hardcore".into(), value.to_string());
 	}
 	if let Some(value) = options.hide_online_players {
-		out.insert(String::from("hide-online-players"), value.to_string());
+		out.insert("hide-online-players".into(), value.to_string());
 	}
 	if let Some(value) = &options.datapacks.initial_disabled {
-		out.insert(
-			String::from("initial-disabled-packs"),
-			write_datapacks(value),
-		);
+		out.insert("initial-disabled-packs".into(), write_datapacks(value));
 	}
 	if let Some(value) = &options.datapacks.initial_enabled {
-		out.insert(
-			String::from("initial-enabled-packs"),
-			write_datapacks(value),
-		);
+		out.insert("initial-enabled-packs".into(), write_datapacks(value));
 	}
 	if let Some(value) = &options.world.name {
-		out.insert(String::from("level-name"), value.clone());
+		out.insert("level-name".into(), value.clone());
 	}
 	if let Some(value) = &options.world.seed {
-		out.insert(String::from("level-seed"), value.clone());
+		out.insert("level-seed".into(), value.clone());
 	}
 	if let Some(value) = &options.world.r#type {
-		out.insert(String::from("level-type"), value.to_string());
+		out.insert("level-type".into(), value.to_string());
 	}
 	if let Some(value) = options.max_chained_neighbor_updates {
-		out.insert(
-			String::from("max-chained-neighbor-updates"),
-			value.to_string(),
-		);
+		out.insert("max-chained-neighbor-updates".into(), value.to_string());
 	}
 	if let Some(value) = options.max_players {
-		out.insert(String::from("max-players"), value.to_string());
+		out.insert("max-players".into(), value.to_string());
 	}
 	if let Some(value) = options.max_tick_time {
-		out.insert(String::from("max-tick-time"), value.to_string());
+		out.insert("max-tick-time".into(), value.to_string());
 	}
 	if let Some(value) = options.world.max_build_height {
-		out.insert(String::from("max-build-height"), value.to_string());
+		out.insert("max-build-height".into(), value.to_string());
 	}
 	if let Some(value) = options.world.max_size {
-		out.insert(String::from("max-world-size"), value.to_string());
+		out.insert("max-world-size".into(), value.to_string());
 	}
 	if let Some(value) = &options.motd {
-		out.insert(String::from("motd"), value.clone());
+		out.insert("motd".into(), value.clone());
 	}
 	if let Some(value) = &options.network_compression_threshold {
 		out.insert(
-			String::from("network-compression-threshold"),
+			"network-compression-threshold".into(),
 			value.to_int().to_string(),
 		);
 	}
 	if let Some(value) = options.offline_mode {
-		out.insert(String::from("online-mode"), (!value).to_string());
+		out.insert("online-mode".into(), (!value).to_string());
 	}
 	if let Some(value) = options.op_permission_level {
-		out.insert(String::from("op-permission-level"), value.to_string());
+		out.insert("op-permission-level".into(), value.to_string());
 	}
 	if let Some(value) = options.player_idle_timeout {
-		out.insert(String::from("player-idle-timeout"), value.to_string());
+		out.insert("player-idle-timeout".into(), value.to_string());
 	}
 	if let Some(value) = options.prevent_proxy_connections {
-		out.insert(String::from("prevent-proxy-connections"), value.to_string());
+		out.insert("prevent-proxy-connections".into(), value.to_string());
 	}
 	if let Some(value) = options.enable_chat_preview {
-		out.insert(String::from("previews-chat"), value.to_string());
+		out.insert("previews-chat".into(), value.to_string());
 	}
 	if let Some(value) = options.enable_pvp {
-		out.insert(String::from("pvp"), value.to_string());
+		out.insert("pvp".into(), value.to_string());
 	}
 	if let Some(value) = options.query.port {
-		out.insert(String::from("query.port"), value.to_string());
+		out.insert("query.port".into(), value.to_string());
 	}
 	if let Some(value) = options.rate_limit {
-		out.insert(String::from("rate-limit"), value.to_string());
+		out.insert("rate-limit".into(), value.to_string());
 	}
 	if let Some(value) = &options.rcon.password {
-		out.insert(String::from("rcon.password"), value.clone());
+		out.insert("rcon.password".into(), value.clone());
 	}
 	if let Some(value) = options.rcon.port {
-		out.insert(String::from("rcon.port"), value.to_string());
+		out.insert("rcon.port".into(), value.to_string());
 	}
 	if let Some(value) = &options.resource_pack.uri {
-		out.insert(String::from("resource-pack"), value.clone());
+		out.insert("resource-pack".into(), value.clone());
 	}
 	if let Some(value) = &options.resource_pack.prompt {
-		out.insert(String::from("resource-pack-prompt"), value.clone());
+		out.insert("resource-pack-prompt".into(), value.clone());
 	}
 	if let Some(value) = options.resource_pack.required {
-		out.insert(String::from("require-resource-pack"), value.to_string());
+		out.insert("require-resource-pack".into(), value.to_string());
 	}
 	if let Some(value) = &options.ip {
-		out.insert(String::from("server-ip"), value.clone());
+		out.insert("server-ip".into(), value.clone());
 	}
 	if let Some(value) = options.port {
-		out.insert(String::from("server-port"), value.to_string());
+		out.insert("server-port".into(), value.to_string());
 	}
 	if let Some(value) = options.simulation_distance {
-		out.insert(String::from("simulation-distance"), value.to_string());
+		out.insert("simulation-distance".into(), value.to_string());
 	}
 	if let Some(value) = options.enable_snooper {
-		out.insert(String::from("snooper-enabled"), value.to_string());
+		out.insert("snooper-enabled".into(), value.to_string());
 	}
 	if let Some(value) = options.spawn_animals {
-		out.insert(String::from("spawn-animals"), value.to_string());
+		out.insert("spawn-animals".into(), value.to_string());
 	}
 	if let Some(value) = options.spawn_monsters {
-		out.insert(String::from("spawn-monsters"), value.to_string());
+		out.insert("spawn-monsters".into(), value.to_string());
 	}
 	if let Some(value) = options.spawn_npcs {
-		out.insert(String::from("spawn-npcs"), value.to_string());
+		out.insert("spawn-npcs".into(), value.to_string());
 	}
 	if let Some(value) = options.spawn_protection {
-		out.insert(String::from("spawn-protection"), value.to_string());
+		out.insert("spawn-protection".into(), value.to_string());
 	}
 	if let Some(value) = options.use_native_transport {
-		out.insert(String::from("use-native-transport"), value.to_string());
+		out.insert("use-native-transport".into(), value.to_string());
 	}
 	if let Some(value) = options.view_distance {
-		out.insert(String::from("view-distance"), value.to_string());
+		out.insert("view-distance".into(), value.to_string());
 	}
 	if let Some(value) = options.whitelist.enable {
-		out.insert(String::from("white-list"), value.to_string());
+		out.insert("white-list".into(), value.to_string());
 	}
 
 	let custom_clone = options.custom.clone();
@@ -306,7 +297,7 @@ mod tests {
 	#[test]
 	fn test_create_keys() {
 		let options = parse_options_str(r#"{"client": {}, "server": {}}"#).unwrap();
-		let versions = vec![String::from("1.18"), String::from("1.19.3")];
+		let versions = vec!["1.18".to_string(), "1.19.3".to_string()];
 		let info = VersionInfo {
 			version: "1.19.3".to_string(),
 			versions,

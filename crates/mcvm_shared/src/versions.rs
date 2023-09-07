@@ -111,7 +111,7 @@ impl VersionPattern {
 					false
 				}
 			}
-			Self::Any => versions.contains(&version.to_owned()),
+			Self::Any => versions.contains(&version.to_string()),
 		}
 	}
 
@@ -162,7 +162,7 @@ impl VersionPattern {
 					return Self::Range(start.to_string(), end.to_string());
 				}
 
-				Self::Single(text.to_owned())
+				Self::Single(text.to_string())
 			}
 		}
 	}
@@ -188,12 +188,12 @@ impl Display for VersionPattern {
 			f,
 			"{}",
 			match self {
-				Self::Single(version) => version.to_owned(),
-				Self::Latest(..) => String::from("latest"),
-				Self::Before(version) => version.to_owned() + "-",
-				Self::After(version) => version.to_owned() + "+",
-				Self::Range(start, end) => start.to_owned() + ".." + end,
-				Self::Any => String::from("*"),
+				Self::Single(version) => version.to_string(),
+				Self::Latest(..) => "latest".into(),
+				Self::Before(version) => version.to_string() + "-",
+				Self::After(version) => version.to_string() + "+",
+				Self::Range(start, end) => start.to_string() + ".." + end,
+				Self::Any => "*".into(),
 			}
 		)
 	}
@@ -225,57 +225,48 @@ mod tests {
 	#[test]
 	fn test_version_pattern() {
 		let versions = vec![
-			String::from("1.16.5"),
-			String::from("1.17"),
-			String::from("1.18"),
-			String::from("1.19.3"),
+			"1.16.5".to_string(),
+			"1.17".to_string(),
+			"1.18".to_string(),
+			"1.19.3".to_string(),
 		];
 
 		assert_eq!(
-			VersionPattern::Single(String::from("1.19.3")).get_match(&versions),
-			Some(String::from("1.19.3"))
+			VersionPattern::Single("1.19.3".into()).get_match(&versions),
+			Some("1.19.3".into())
 		);
 		assert_eq!(
-			VersionPattern::Single(String::from("1.18")).get_match(&versions),
-			Some(String::from("1.18"))
+			VersionPattern::Single("1.18".into()).get_match(&versions),
+			Some("1.18".into())
 		);
 		assert_eq!(
-			VersionPattern::Single(String::from("")).get_match(&versions),
+			VersionPattern::Single(String::new()).get_match(&versions),
 			None
 		);
 		assert_eq!(
-			VersionPattern::Before(String::from("1.18")).get_match(&versions),
-			Some(String::from("1.18"))
+			VersionPattern::Before("1.18".into()).get_match(&versions),
+			Some("1.18".into())
 		);
 		assert_eq!(
-			VersionPattern::After(String::from("1.16.5")).get_match(&versions),
-			Some(String::from("1.19.3"))
+			VersionPattern::After("1.16.5".into()).get_match(&versions),
+			Some("1.19.3".into())
 		);
 
 		assert_eq!(
-			VersionPattern::Before(String::from("1.17")).get_matches(&versions),
-			vec![String::from("1.16.5"), String::from("1.17")]
+			VersionPattern::Before("1.17".into()).get_matches(&versions),
+			vec!["1.16.5".to_string(), "1.17".to_string()]
 		);
 		assert_eq!(
-			VersionPattern::After(String::from("1.17")).get_matches(&versions),
-			vec![
-				String::from("1.17"),
-				String::from("1.18"),
-				String::from("1.19.3")
-			]
+			VersionPattern::After("1.17".into()).get_matches(&versions),
+			vec!["1.17".to_string(), "1.18".to_string(), "1.19.3".to_string()]
 		);
 		assert_eq!(
-			VersionPattern::Range(String::from("1.16.5"), String::from("1.18"))
-				.get_matches(&versions),
-			vec![
-				String::from("1.16.5"),
-				String::from("1.17"),
-				String::from("1.18"),
-			]
+			VersionPattern::Range("1.16.5".into(), "1.18".into()).get_matches(&versions),
+			vec!["1.16.5".to_string(), "1.17".to_string(), "1.18".to_string()]
 		);
 
-		assert!(VersionPattern::Before(String::from("1.18")).matches_single("1.16.5", &versions));
-		assert!(VersionPattern::After(String::from("1.18")).matches_single("1.19.3", &versions));
+		assert!(VersionPattern::Before("1.18".into()).matches_single("1.16.5", &versions));
+		assert!(VersionPattern::After("1.18".into()).matches_single("1.19.3", &versions));
 		assert!(VersionPattern::Latest(None).matches_single("1.19.3", &versions));
 	}
 
@@ -283,20 +274,20 @@ mod tests {
 	fn test_version_pattern_parse() {
 		assert_eq!(
 			VersionPattern::from("+1.19.5"),
-			VersionPattern::Single(String::from("+1.19.5"))
+			VersionPattern::Single("+1.19.5".into())
 		);
 		assert_eq!(VersionPattern::from("latest"), VersionPattern::Latest(None));
 		assert_eq!(
 			VersionPattern::from("1.19.5-"),
-			VersionPattern::Before(String::from("1.19.5"))
+			VersionPattern::Before("1.19.5".into())
 		);
 		assert_eq!(
 			VersionPattern::from("1.19.5+"),
-			VersionPattern::After(String::from("1.19.5"))
+			VersionPattern::After("1.19.5".into())
 		);
 		assert_eq!(
 			VersionPattern::from("1.17.1..1.19.3"),
-			VersionPattern::Range(String::from("1.17.1"), String::from("1.19.3"))
+			VersionPattern::Range("1.17.1".into(), "1.19.3".into())
 		);
 	}
 

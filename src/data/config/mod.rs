@@ -148,14 +148,12 @@ impl Config {
 			}
 		} else if config.users.is_empty() && show_warnings {
 			o.display(
-				MessageContents::Warning(
-					"Users are available but no default user is set".to_string(),
-				),
+				MessageContents::Warning("Users are available but no default user is set".into()),
 				MessageLevel::Important,
 			);
 		} else if show_warnings {
 			o.display(
-				MessageContents::Warning("No users are available".to_string()),
+				MessageContents::Warning("No users are available".into()),
 				MessageLevel::Important,
 			);
 		}
@@ -176,7 +174,7 @@ impl Config {
 				if show_warnings {
 					o.display(
 						MessageContents::Warning(
-							"Forge installation is currently unimplemented by mcvm. You will be expected to install it yourself for the time being".to_string(),
+							"Forge installation is currently unimplemented by mcvm. You will be expected to install it yourself for the time being".into(),
 						),
 						MessageLevel::Important,
 					);
@@ -194,7 +192,7 @@ impl Config {
 
 			for (instance_id, instance_config) in profile_config.instances {
 				if !is_valid_identifier(&instance_id) {
-					bail!("Invalid string '{}'", instance_id.to_owned());
+					bail!("Invalid string '{}'", instance_id.to_string());
 				}
 				if instances.contains_key(&instance_id) {
 					bail!("Duplicate instance '{instance_id}'");

@@ -77,7 +77,7 @@ fn add_data_version_field(options: &mut HashMap<String, String>, data_version: &
 		return;
 	}
 	if let Some(data_version) = data_version {
-		options.insert(String::from("version"), data_version.to_string());
+		options.insert("version".into(), data_version.to_string());
 	}
 }
 
@@ -121,181 +121,170 @@ pub fn create_keys(
 	let mut out = HashMap::new();
 
 	// Version checks
-	let after_12w50a = VersionPattern::After(String::from("12w50a")).matches_info(version_info);
-	let after_13w36a = VersionPattern::After(String::from("13w36a")).matches_info(version_info);
-	let after_13w47a = VersionPattern::After(String::from("13w47a")).matches_info(version_info);
-	let after_14w25a = VersionPattern::After(String::from("14w25a")).matches_info(version_info);
-	let after_14w28a = VersionPattern::After(String::from("14w28a")).matches_info(version_info);
-	let after_17w06a = VersionPattern::After(String::from("17w06a")).matches_info(version_info);
-	let after_17w47a = VersionPattern::After(String::from("17w47a")).matches_info(version_info);
-	let after_18w15a = VersionPattern::After(String::from("18w15a")).matches_info(version_info);
-	let after_18w21a = VersionPattern::After(String::from("18w21a")).matches_info(version_info);
-	let after_1_13_pre2 =
-		VersionPattern::After(String::from("1.13-pre2")).matches_info(version_info);
-	let after_1_15_2_pre1 =
-		VersionPattern::After(String::from("1.15.2-pre1")).matches_info(version_info);
-	let after_1_16_4_rc1 =
-		VersionPattern::After(String::from("1.16.4-rc1")).matches_info(version_info);
-	let after_21w13a = VersionPattern::After(String::from("21w13a")).matches_info(version_info);
-	let after_21w37a = VersionPattern::After(String::from("21w37a")).matches_info(version_info);
-	let after_21w38a = VersionPattern::After(String::from("21w38a")).matches_info(version_info);
-	let after_21w42a = VersionPattern::After(String::from("21w42a")).matches_info(version_info);
-	let after_1_18_pre2 =
-		VersionPattern::After(String::from("1.18-pre2")).matches_info(version_info);
-	let after_1_18_2_pre1 =
-		VersionPattern::After(String::from("1.18.2-pre1")).matches_info(version_info);
-	let after_22w11a = VersionPattern::After(String::from("22w11a")).matches_info(version_info);
-	let after_22w15a = VersionPattern::After(String::from("22w15a")).matches_info(version_info);
+	let after_12w50a = VersionPattern::After("12w50a".into()).matches_info(version_info);
+	let after_13w36a = VersionPattern::After("13w36a".into()).matches_info(version_info);
+	let after_13w47a = VersionPattern::After("13w47a".into()).matches_info(version_info);
+	let after_14w25a = VersionPattern::After("14w25a".into()).matches_info(version_info);
+	let after_14w28a = VersionPattern::After("14w28a".into()).matches_info(version_info);
+	let after_17w06a = VersionPattern::After("17w06a".into()).matches_info(version_info);
+	let after_17w47a = VersionPattern::After("17w47a".into()).matches_info(version_info);
+	let after_18w15a = VersionPattern::After("18w15a".into()).matches_info(version_info);
+	let after_18w21a = VersionPattern::After("18w21a".into()).matches_info(version_info);
+	let after_1_13_pre2 = VersionPattern::After("1.13-pre2".into()).matches_info(version_info);
+	let after_1_15_2_pre1 = VersionPattern::After("1.15.2-pre1".into()).matches_info(version_info);
+	let after_1_16_4_rc1 = VersionPattern::After("1.16.4-rc1".into()).matches_info(version_info);
+	let after_21w13a = VersionPattern::After("21w13a".into()).matches_info(version_info);
+	let after_21w37a = VersionPattern::After("21w37a".into()).matches_info(version_info);
+	let after_21w38a = VersionPattern::After("21w38a".into()).matches_info(version_info);
+	let after_21w42a = VersionPattern::After("21w42a".into()).matches_info(version_info);
+	let after_1_18_pre2 = VersionPattern::After("1.18-pre2".into()).matches_info(version_info);
+	let after_1_18_2_pre1 = VersionPattern::After("1.18.2-pre1".into()).matches_info(version_info);
+	let after_22w11a = VersionPattern::After("22w11a".into()).matches_info(version_info);
+	let after_22w15a = VersionPattern::After("22w15a".into()).matches_info(version_info);
 
-	let before_13w42a = VersionPattern::Before(String::from("13w42a")).matches_info(version_info);
-	let before_14w03a = VersionPattern::Before(String::from("14w03a")).matches_info(version_info);
-	let before_15w31a = VersionPattern::Before(String::from("15w31a")).matches_info(version_info);
-	let before_1_13 = VersionPattern::Before(String::from("1.13")).matches_info(version_info);
-	let before_20w27a = VersionPattern::Before(String::from("20w27a")).matches_info(version_info);
-	let before_21w43a = VersionPattern::Before(String::from("21w43a")).matches_info(version_info);
-	let before_1_19_4 = VersionPattern::Before(String::from("1.19.4")).matches_info(version_info);
+	let before_13w42a = VersionPattern::Before("13w42a".into()).matches_info(version_info);
+	let before_14w03a = VersionPattern::Before("14w03a".into()).matches_info(version_info);
+	let before_15w31a = VersionPattern::Before("15w31a".into()).matches_info(version_info);
+	let before_1_13 = VersionPattern::Before("1.13".into()).matches_info(version_info);
+	let before_20w27a = VersionPattern::Before("20w27a".into()).matches_info(version_info);
+	let before_21w43a = VersionPattern::Before("21w43a".into()).matches_info(version_info);
+	let before_1_19_4 = VersionPattern::Before("1.19.4".into()).matches_info(version_info);
 
 	let is_3d_shareware =
-		VersionPattern::Single(String::from("3D Shareware v1.34")).matches_info(version_info);
+		VersionPattern::Single("3D Shareware v1.34".into()).matches_info(version_info);
 
 	let stream_options_enabled = after_13w47a && before_15w31a;
 
 	if let Some(value) = options.data_version {
-		out.insert(String::from("version"), value.to_string());
+		out.insert("version".into(), value.to_string());
 	}
 	if let Some(value) = options.control.auto_jump {
-		out.insert(String::from("autoJump"), value.to_string());
+		out.insert("autoJump".into(), value.to_string());
 	}
 	if let Some(value) = options.video.fullscreen {
-		out.insert(String::from("fullscreen"), value.to_string());
+		out.insert("fullscreen".into(), value.to_string());
 	}
 	if let Some(value) = options.chat.auto_command_suggestions {
 		if after_17w47a {
-			out.insert(String::from("autoSuggestions"), value.to_string());
+			out.insert("autoSuggestions".into(), value.to_string());
 		}
 	}
 	if let Some(value) = options.chat.enable_colors {
-		out.insert(String::from("chatColors"), value.to_string());
+		out.insert("chatColors".into(), value.to_string());
 	}
 	if let Some(value) = options.chat.enable_links {
-		out.insert(String::from("chatLinks"), value.to_string());
+		out.insert("chatLinks".into(), value.to_string());
 	}
 	if let Some(value) = options.chat.prompt_links {
-		out.insert(String::from("chatLinksPrompt"), value.to_string());
+		out.insert("chatLinksPrompt".into(), value.to_string());
 	}
 	if let Some(value) = options.video.vsync {
-		out.insert(String::from("enableVsync"), value.to_string());
+		out.insert("enableVsync".into(), value.to_string());
 	}
 	if let Some(value) = options.video.entity_shadows {
-		out.insert(String::from("entityShadows"), value.to_string());
+		out.insert("entityShadows".into(), value.to_string());
 	}
 	if let Some(value) = options.chat.force_unicode {
-		out.insert(String::from("forceUnicodeFont"), value.to_string());
+		out.insert("forceUnicodeFont".into(), value.to_string());
 	}
 	if let Some(value) = options.control.discrete_mouse_scroll {
-		out.insert(String::from("discrete_mouse_scroll"), value.to_string());
+		out.insert("discrete_mouse_scroll".into(), value.to_string());
 	}
 	if let Some(value) = options.control.invert_mouse_y {
-		out.insert(String::from("invertYMouse"), value.to_string());
+		out.insert("invertYMouse".into(), value.to_string());
 	}
 	if let Some(value) = options.realms_notifications {
-		out.insert(String::from("realmsNotifications"), value.to_string());
+		out.insert("realmsNotifications".into(), value.to_string());
 	}
 	if let Some(value) = options.reduced_debug_info {
-		out.insert(String::from("reducedDebugInfo"), value.to_string());
+		out.insert("reducedDebugInfo".into(), value.to_string());
 	}
 	if let Some(value) = options.sound.show_subtitles {
-		out.insert(String::from("showSubtitles"), value.to_string());
+		out.insert("showSubtitles".into(), value.to_string());
 	}
 	if let Some(value) = options.sound.directional_audio {
 		if after_22w11a {
-			out.insert(String::from("directionalAudio"), value.to_string());
+			out.insert("directionalAudio".into(), value.to_string());
 		}
 	}
 	if let Some(value) = options.control.enable_touchscreen {
-		out.insert(String::from("touchscreen"), value.to_string());
+		out.insert("touchscreen".into(), value.to_string());
 	}
 	if let Some(value) = options.video.view_bobbing {
-		out.insert(String::from("bobView"), value.to_string());
+		out.insert("bobView".into(), value.to_string());
 	}
 	if let Some(value) = options.control.toggle_crouch {
-		out.insert(String::from("toggleCrouch"), value.to_string());
+		out.insert("toggleCrouch".into(), value.to_string());
 	}
 	if let Some(value) = options.control.toggle_sprint {
-		out.insert(String::from("toggleSprint"), value.to_string());
+		out.insert("toggleSprint".into(), value.to_string());
 	}
 	if let Some(value) = options.video.dark_mojang_background {
 		if after_21w13a {
-			out.insert(
-				String::from("darkMojangStudiosBackground"),
-				value.to_string(),
-			);
+			out.insert("darkMojangStudiosBackground".into(), value.to_string());
 		}
 	}
 	if after_21w37a {
 		if let Some(value) = options.video.hide_lightning_flashes {
-			out.insert(String::from("hideLightningFlashes"), value.to_string());
+			out.insert("hideLightningFlashes".into(), value.to_string());
 		}
 		if let Some(value) = &options.video.chunk_updates_mode {
-			out.insert(
-				String::from("prioritizeChunkUpdates"),
-				value.to_int().to_string(),
-			);
+			out.insert("prioritizeChunkUpdates".into(), value.to_int().to_string());
 		}
 		if let Some(device) = &options.sound.device {
-			out.insert(String::from("soundDevice"), device.clone());
+			out.insert("soundDevice".into(), device.clone());
 		}
 	}
 	if let Some(value) = options.control.mouse_sensitivity {
 		out.insert(
-			String::from("mouseSensitivity"),
+			"mouseSensitivity".into(),
 			convert_mouse_sensitivity(value).to_string(),
 		);
 	}
 	if let Some(value) = options.video.fov {
-		out.insert(String::from("fov"), convert_fov(value).to_string());
+		out.insert("fov".into(), convert_fov(value).to_string());
 	}
 	if let Some(value) = options.video.screen_effect_scale {
-		out.insert(String::from("screenEffectScale"), value.to_string());
+		out.insert("screenEffectScale".into(), value.to_string());
 	}
 	if let Some(value) = options.video.fov_effect_scale {
-		out.insert(String::from("fovEffectScale"), value.to_string());
+		out.insert("fovEffectScale".into(), value.to_string());
 	}
 	if let Some(value) = options.video.darkness_effect_scale {
 		if after_22w15a {
-			out.insert(String::from("darknessEffectScale"), value.to_string());
+			out.insert("darknessEffectScale".into(), value.to_string());
 		}
 	}
 	if let Some(value) = options.video.brightness {
-		out.insert(String::from("gamma"), value.to_string());
+		out.insert("gamma".into(), value.to_string());
 	}
 	if let Some(value) = options.video.render_distance {
-		out.insert(String::from("renderDistance"), value.to_string());
+		out.insert("renderDistance".into(), value.to_string());
 	}
 	if let Some(value) = options.video.simulation_distance {
 		if after_21w38a {
-			out.insert(String::from("simulationDistance"), value.to_string());
+			out.insert("simulationDistance".into(), value.to_string());
 		}
 	}
 	if let Some(value) = options.video.entity_distance_scaling {
-		out.insert(String::from("entityDistanceScaling"), value.to_string());
+		out.insert("entityDistanceScaling".into(), value.to_string());
 	}
 	if let Some(value) = options.video.gui_scale {
-		out.insert(String::from("guiScale"), value.to_string());
+		out.insert("guiScale".into(), value.to_string());
 	}
 	if let Some(value) = &options.video.particles {
-		out.insert(String::from("particles"), value.to_int().to_string());
+		out.insert("particles".into(), value.to_int().to_string());
 	}
 	if let Some(value) = options.video.max_fps {
-		out.insert(String::from("maxFps"), value.to_string());
+		out.insert("maxFps".into(), value.to_string());
 	}
 	if let Some(value) = &options.difficulty {
-		out.insert(String::from("difficulty"), value.to_int().to_string());
+		out.insert("difficulty".into(), value.to_int().to_string());
 	}
 	if let Some(value) = &options.video.graphics_mode {
 		if before_20w27a {
 			out.insert(
-				String::from("fancyGraphics"),
+				"fancyGraphics".into(),
 				match value {
 					EnumOrNumber::Enum(GraphicsMode::Fast) => false,
 					EnumOrNumber::Enum(GraphicsMode::Fancy | GraphicsMode::Fabulous) => true,
@@ -304,307 +293,262 @@ pub fn create_keys(
 				.to_string(),
 			);
 		} else {
-			out.insert(String::from("graphicsMode"), value.to_int().to_string());
+			out.insert("graphicsMode".into(), value.to_int().to_string());
 		}
 	}
 	if let Some(value) = options.video.smooth_lighting {
-		out.insert(String::from("ao"), value.to_string());
+		out.insert("ao".into(), value.to_string());
 	}
 	if let Some(value) = options.video.biome_blend {
 		if after_18w15a {
-			out.insert(String::from("biomeBlendRadius"), value.to_string());
+			out.insert("biomeBlendRadius".into(), value.to_string());
 		}
 	}
 	if let Some(value) = &options.video.clouds {
 		if after_14w25a {
-			out.insert(String::from("renderClouds"), value.to_string());
+			out.insert("renderClouds".into(), value.to_string());
 		} else {
 			out.insert(
-				String::from("clouds"),
+				"clouds".into(),
 				matches!(value, CloudRenderMode::Fancy | CloudRenderMode::Fast).to_string(),
 			);
 		}
 	}
 	if let Some(value) = &options.resource_packs {
-		out.insert(String::from("resourcePacks"), write_resource_packs(value));
+		out.insert("resourcePacks".into(), write_resource_packs(value));
 	}
 	if let Some(value) = &options.language {
-		out.insert(String::from("lang"), value.clone());
+		out.insert("lang".into(), value.clone());
 	}
 	if let Some(value) = &options.chat.visibility {
-		out.insert(String::from("chatVisibility"), value.to_int().to_string());
+		out.insert("chatVisibility".into(), value.to_int().to_string());
 	}
 	if let Some(value) = options.chat.opacity {
-		out.insert(String::from("chatOpacity"), value.to_string());
+		out.insert("chatOpacity".into(), value.to_string());
 	}
 	if let Some(value) = options.chat.line_spacing {
-		out.insert(String::from("chatLineSpacing"), value.to_string());
+		out.insert("chatLineSpacing".into(), value.to_string());
 	}
 	if let Some(value) = options.chat.background_opacity {
-		out.insert(String::from("textBackgroundOpacity"), value.to_string());
+		out.insert("textBackgroundOpacity".into(), value.to_string());
 	}
 	if let Some(value) = options.chat.background_for_chat_only {
-		out.insert(String::from("backgroundForChatOnly"), value.to_string());
+		out.insert("backgroundForChatOnly".into(), value.to_string());
 	}
 	if let Some(value) = options.hide_server_address {
-		out.insert(String::from("hideServerAddress"), value.to_string());
+		out.insert("hideServerAddress".into(), value.to_string());
 	}
 	if let Some(value) = options.advanced_item_tooltips {
-		out.insert(String::from("advancedItemTooltips"), value.to_string());
+		out.insert("advancedItemTooltips".into(), value.to_string());
 	}
 	if let Some(value) = options.pause_on_lost_focus {
-		out.insert(String::from("pauseOnLostFocus"), value.to_string());
+		out.insert("pauseOnLostFocus".into(), value.to_string());
 	}
 	if let Some(value) = options.video.window_width {
-		out.insert(String::from("overrideWidth"), value.to_string());
+		out.insert("overrideWidth".into(), value.to_string());
 	}
 	if let Some(value) = options.video.window_height {
-		out.insert(String::from("overrideHeight"), value.to_string());
+		out.insert("overrideHeight".into(), value.to_string());
 	}
 	if let Some(value) = options.held_item_tooltips {
 		if after_12w50a && before_1_19_4 {
-			out.insert(String::from("heldItemTooltips"), value.to_string());
+			out.insert("heldItemTooltips".into(), value.to_string());
 		}
 	}
 	if let Some(value) = options.chat.focused_height {
-		out.insert(String::from("chatHeightFocused"), value.to_string());
+		out.insert("chatHeightFocused".into(), value.to_string());
 	}
 	if let Some(value) = options.chat.delay {
-		out.insert(String::from("chatDelay"), value.to_string());
+		out.insert("chatDelay".into(), value.to_string());
 	}
 	if let Some(value) = options.chat.unfocused_height {
-		out.insert(String::from("chatHeightUnfocused"), value.to_string());
+		out.insert("chatHeightUnfocused".into(), value.to_string());
 	}
 	if let Some(value) = options.chat.scale {
-		out.insert(String::from("chatScale"), value.to_string());
+		out.insert("chatScale".into(), value.to_string());
 	}
 	if let Some(value) = options.chat.width {
-		out.insert(String::from("chatWidth"), value.to_string());
+		out.insert("chatWidth".into(), value.to_string());
 	}
 	if let Some(value) = options.video.mipmap_levels {
-		out.insert(String::from("mipmapLevels"), value.to_string());
+		out.insert("mipmapLevels".into(), value.to_string());
 	}
 	if let Some(value) = options.use_native_transport {
-		out.insert(String::from("useNativeTransport"), value.to_string());
+		out.insert("useNativeTransport".into(), value.to_string());
 	}
 	if let Some(value) = &options.main_hand {
-		out.insert(String::from("mainHand"), value.to_string());
+		out.insert("mainHand".into(), value.to_string());
 	}
 	if after_17w06a {
 		if let Some(value) = &options.chat.narrator_mode {
-			out.insert(String::from("narrator"), value.to_int().to_string());
+			out.insert("narrator".into(), value.to_int().to_string());
 		}
 		if let Some(value) = &options.tutorial_step {
-			out.insert(String::from("tutorialStep"), value.to_string());
+			out.insert("tutorialStep".into(), value.to_string());
 		}
 	}
 	if let Some(value) = options.control.mouse_wheel_sensitivity {
 		if after_18w21a {
-			out.insert(String::from("mouseWheelSensitivity"), value.to_string());
+			out.insert("mouseWheelSensitivity".into(), value.to_string());
 		}
 	}
 	if let Some(value) = options.control.raw_mouse_input {
-		out.insert(String::from("rawMouseInput"), value.to_string());
+		out.insert("rawMouseInput".into(), value.to_string());
 	}
 	if let Some(value) = &options.log_level {
 		if after_1_13_pre2 {
-			out.insert(String::from("glDebugVerbosity"), value.to_int().to_string());
+			out.insert("glDebugVerbosity".into(), value.to_int().to_string());
 		}
 	}
 	if let Some(value) = options.skip_multiplayer_warning {
 		if after_1_15_2_pre1 {
-			out.insert(String::from("skipMultiplayerWarning"), value.to_string());
+			out.insert("skipMultiplayerWarning".into(), value.to_string());
 		}
 	}
 	if let Some(value) = options.skip_realms_32_bit_warning {
 		if after_1_18_2_pre1 {
-			out.insert(String::from("skipRealms32bitWarning"), value.to_string());
+			out.insert("skipRealms32bitWarning".into(), value.to_string());
 		}
 	}
 	if after_1_16_4_rc1 {
 		if let Some(value) = options.hide_matched_names {
-			out.insert(String::from("hideMatchedNames"), value.to_string());
+			out.insert("hideMatchedNames".into(), value.to_string());
 		}
 		if let Some(value) = options.joined_server {
-			out.insert(String::from("joinedFirstServer"), value.to_string());
+			out.insert("joinedFirstServer".into(), value.to_string());
 		}
 	}
 	if let Some(value) = options.hide_bundle_tutorial {
-		out.insert(String::from("hideBundleTutorial"), value.to_string());
+		out.insert("hideBundleTutorial".into(), value.to_string());
 	}
 	if let Some(value) = options.sync_chunk_writes {
-		out.insert(String::from("syncChunkWrites"), value.to_string());
+		out.insert("syncChunkWrites".into(), value.to_string());
 	}
 	if let Some(value) = options.show_autosave_indicator {
 		if after_21w42a {
-			out.insert(String::from("showAutosaveIndicator"), value.to_string());
+			out.insert("showAutosaveIndicator".into(), value.to_string());
 		}
 	}
 	if let Some(value) = options.allow_server_listing {
 		if after_1_18_pre2 {
-			out.insert(String::from("allowServerListing"), value.to_string());
+			out.insert("allowServerListing".into(), value.to_string());
 		}
 	}
 	if let Some(value) = options.snooper_enabled {
 		if before_21w43a {
-			out.insert(String::from("snooperEnabled"), value.to_string());
+			out.insert("snooperEnabled".into(), value.to_string());
 		}
 	}
 	if stream_options_enabled {
 		if let Some(value) = options.stream.bytes_per_pixel {
-			out.insert(String::from("streamBytesPerPixel"), value.to_string());
+			out.insert("streamBytesPerPixel".into(), value.to_string());
 		}
 		if let Some(value) = options.stream.chat_enabled {
-			out.insert(
-				String::from("streamChatEnabled"),
-				(value as i32).to_string(),
-			);
+			out.insert("streamChatEnabled".into(), (value as i32).to_string());
 		}
 		if let Some(value) = options.stream.chat_filter {
-			out.insert(
-				String::from("streamChatUserFilter"),
-				(value as i32).to_string(),
-			);
+			out.insert("streamChatUserFilter".into(), (value as i32).to_string());
 		}
 		if let Some(value) = options.stream.compression {
-			out.insert(
-				String::from("streamCompression"),
-				(value as i32).to_string(),
-			);
+			out.insert("streamCompression".into(), (value as i32).to_string());
 		}
 		if let Some(value) = options.stream.fps {
-			out.insert(String::from("streamFps"), value.to_string());
+			out.insert("streamFps".into(), value.to_string());
 		}
 		if let Some(value) = options.stream.bitrate {
-			out.insert(String::from("streamKbps"), value.to_string());
+			out.insert("streamKbps".into(), value.to_string());
 		}
 		if let Some(value) = options.stream.microphone_toggle_behavior {
-			out.insert(
-				String::from("streamMicToggleBehavior"),
-				(value as i32).to_string(),
-			);
+			out.insert("streamMicToggleBehavior".into(), (value as i32).to_string());
 		}
 		if let Some(value) = options.stream.microphone_volume {
-			out.insert(String::from("streamMicVolume"), value.to_string());
+			out.insert("streamMicVolume".into(), value.to_string());
 		}
 		if let Some(value) = &options.stream.preferred_server {
-			out.insert(String::from("streamKbps"), value.clone());
+			out.insert("streamKbps".into(), value.clone());
 		}
 		// No idea why this one is suddenly true/false instead of 1/0 but the wiki says so
 		if let Some(value) = options.stream.send_metadata {
-			out.insert(String::from("streamSendMetadata"), value.to_string());
+			out.insert("streamSendMetadata".into(), value.to_string());
 		}
 		if let Some(value) = options.stream.system_volume {
-			out.insert(String::from("streamSystemVolume"), value.to_string());
+			out.insert("streamSystemVolume".into(), value.to_string());
 		}
 	}
 
 	// Keybinds
 	if let Some(value) = &options.control.keys.attack {
-		out.insert(
-			String::from("key_key.attack"),
-			value.get_keycode(before_1_13),
-		);
+		out.insert("key_key.attack".into(), value.get_keycode(before_1_13));
 	}
 	if let Some(value) = &options.control.keys.r#use {
-		out.insert(String::from("key_key.use"), value.get_keycode(before_1_13));
+		out.insert("key_key.use".into(), value.get_keycode(before_1_13));
 	}
 	if let Some(value) = &options.control.keys.forward {
-		out.insert(
-			String::from("key_key.forward"),
-			value.get_keycode(before_1_13),
-		);
+		out.insert("key_key.forward".into(), value.get_keycode(before_1_13));
 	}
 	if let Some(value) = &options.control.keys.left {
-		out.insert(String::from("key_key.left"), value.get_keycode(before_1_13));
+		out.insert("key_key.left".into(), value.get_keycode(before_1_13));
 	}
 	if let Some(value) = &options.control.keys.back {
-		out.insert(String::from("key_key.back"), value.get_keycode(before_1_13));
+		out.insert("key_key.back".into(), value.get_keycode(before_1_13));
 	}
 	if let Some(value) = &options.control.keys.right {
-		out.insert(
-			String::from("key_key.right"),
-			value.get_keycode(before_1_13),
-		);
+		out.insert("key_key.right".into(), value.get_keycode(before_1_13));
 	}
 	if let Some(value) = &options.control.keys.jump {
-		out.insert(String::from("key_key.jump"), value.get_keycode(before_1_13));
+		out.insert("key_key.jump".into(), value.get_keycode(before_1_13));
 	}
 	if let Some(value) = &options.control.keys.sneak {
-		out.insert(
-			String::from("key_key.sneak"),
-			value.get_keycode(before_1_13),
-		);
+		out.insert("key_key.sneak".into(), value.get_keycode(before_1_13));
 	}
 	if let Some(value) = &options.control.keys.sprint {
-		out.insert(
-			String::from("key_key.sprint"),
-			value.get_keycode(before_1_13),
-		);
+		out.insert("key_key.sprint".into(), value.get_keycode(before_1_13));
 	}
 	if let Some(value) = &options.control.keys.drop {
-		out.insert(String::from("key_key.drop"), value.get_keycode(before_1_13));
+		out.insert("key_key.drop".into(), value.get_keycode(before_1_13));
 	}
 	if let Some(value) = &options.control.keys.inventory {
-		out.insert(
-			String::from("key_key.inventory"),
-			value.get_keycode(before_1_13),
-		);
+		out.insert("key_key.inventory".into(), value.get_keycode(before_1_13));
 	}
 	if let Some(value) = &options.control.keys.chat {
-		out.insert(String::from("key_key.chat"), value.get_keycode(before_1_13));
+		out.insert("key_key.chat".into(), value.get_keycode(before_1_13));
 	}
 	if let Some(value) = &options.control.keys.playerlist {
-		out.insert(
-			String::from("key_key.playerlist"),
-			value.get_keycode(before_1_13),
-		);
+		out.insert("key_key.playerlist".into(), value.get_keycode(before_1_13));
 	}
 	if let Some(value) = &options.control.keys.pick_item {
-		out.insert(
-			String::from("key_key.pickItem"),
-			value.get_keycode(before_1_13),
-		);
+		out.insert("key_key.pickItem".into(), value.get_keycode(before_1_13));
 	}
 	if let Some(value) = &options.control.keys.command {
-		out.insert(
-			String::from("key_key.command"),
-			value.get_keycode(before_1_13),
-		);
+		out.insert("key_key.command".into(), value.get_keycode(before_1_13));
 	}
 	if let Some(value) = &options.control.keys.social_interactions {
 		out.insert(
-			String::from("key_key.socialInteractions"),
+			"key_key.socialInteractions".into(),
 			value.get_keycode(before_1_13),
 		);
 	}
 	if let Some(value) = &options.control.keys.screenshot {
-		out.insert(
-			String::from("key_key.screenshot"),
-			value.get_keycode(before_1_13),
-		);
+		out.insert("key_key.screenshot".into(), value.get_keycode(before_1_13));
 	}
 	if let Some(value) = &options.control.keys.toggle_perspective {
 		out.insert(
-			String::from("key_key.togglePerspective"),
+			"key_key.togglePerspective".into(),
 			value.get_keycode(before_1_13),
 		);
 	}
 	if let Some(value) = &options.control.keys.smooth_camera {
 		out.insert(
-			String::from("key_key.smoothCamera"),
+			"key_key.smoothCamera".into(),
 			value.get_keycode(before_1_13),
 		);
 	}
 	if let Some(value) = &options.control.keys.fullscreen {
-		out.insert(
-			String::from("key_key.fullscreen"),
-			value.get_keycode(before_1_13),
-		);
+		out.insert("key_key.fullscreen".into(), value.get_keycode(before_1_13));
 	}
 	if let Some(value) = &options.control.keys.spectator_outlines {
 		out.insert(
-			String::from("key_key.spectatorOutlines"),
+			"key_key.spectatorOutlines".into(),
 			value.get_keycode(before_1_13),
 		);
 	}
@@ -614,98 +558,68 @@ pub fn create_keys(
 		} else {
 			"key_key.swapOffhand"
 		};
-		out.insert(String::from(keybind), value.get_keycode(before_1_13));
+		out.insert(keybind.to_string(), value.get_keycode(before_1_13));
 	}
 	if after_17w06a {
 		if let Some(value) = &options.control.keys.save_toolbar {
 			out.insert(
-				String::from("key_key.saveToolbarActivator"),
+				"key_key.saveToolbarActivator".into(),
 				value.get_keycode(before_1_13),
 			);
 		}
 		if let Some(value) = &options.control.keys.load_toolbar {
 			out.insert(
-				String::from("key_key.loadToolbarActivator"),
+				"key_key.loadToolbarActivator".into(),
 				value.get_keycode(before_1_13),
 			);
 		}
 		if let Some(value) = &options.control.keys.advancements {
 			out.insert(
-				String::from("key_key.advancements"),
+				"key_key.advancements".into(),
 				value.get_keycode(before_1_13),
 			);
 		}
 	}
 	if let Some(value) = &options.control.keys.hotbar_1 {
-		out.insert(
-			String::from("key_key.hotbar.1"),
-			value.get_keycode(before_1_13),
-		);
+		out.insert("key_key.hotbar.1".into(), value.get_keycode(before_1_13));
 	}
 	if let Some(value) = &options.control.keys.hotbar_2 {
-		out.insert(
-			String::from("key_key.hotbar.2"),
-			value.get_keycode(before_1_13),
-		);
+		out.insert("key_key.hotbar.2".into(), value.get_keycode(before_1_13));
 	}
 	if let Some(value) = &options.control.keys.hotbar_3 {
-		out.insert(
-			String::from("key_key.hotbar.3"),
-			value.get_keycode(before_1_13),
-		);
+		out.insert("key_key.hotbar.3".into(), value.get_keycode(before_1_13));
 	}
 	if let Some(value) = &options.control.keys.hotbar_4 {
-		out.insert(
-			String::from("key_key.hotbar.4"),
-			value.get_keycode(before_1_13),
-		);
+		out.insert("key_key.hotbar.4".into(), value.get_keycode(before_1_13));
 	}
 	if let Some(value) = &options.control.keys.hotbar_5 {
-		out.insert(
-			String::from("key_key.hotbar.5"),
-			value.get_keycode(before_1_13),
-		);
+		out.insert("key_key.hotbar.5".into(), value.get_keycode(before_1_13));
 	}
 	if let Some(value) = &options.control.keys.hotbar_6 {
-		out.insert(
-			String::from("key_key.hotbar.6"),
-			value.get_keycode(before_1_13),
-		);
+		out.insert("key_key.hotbar.6".into(), value.get_keycode(before_1_13));
 	}
 	if let Some(value) = &options.control.keys.hotbar_7 {
-		out.insert(
-			String::from("key_key.hotbar.7"),
-			value.get_keycode(before_1_13),
-		);
+		out.insert("key_key.hotbar.7".into(), value.get_keycode(before_1_13));
 	}
 	if let Some(value) = &options.control.keys.hotbar_8 {
-		out.insert(
-			String::from("key_key.hotbar.8"),
-			value.get_keycode(before_1_13),
-		);
+		out.insert("key_key.hotbar.8".into(), value.get_keycode(before_1_13));
 	}
 	if let Some(value) = &options.control.keys.hotbar_9 {
-		out.insert(
-			String::from("key_key.hotbar.9"),
-			value.get_keycode(before_1_13),
-		);
+		out.insert("key_key.hotbar.9".into(), value.get_keycode(before_1_13));
 	}
 	if is_3d_shareware {
 		if let Some(value) = &options.control.keys.boss_mode {
-			out.insert(
-				String::from("key_key.boss_mode"),
-				value.get_keycode(before_1_13),
-			);
+			out.insert("key_key.boss_mode".into(), value.get_keycode(before_1_13));
 		}
 		if let Some(value) = &options.control.keys.decrease_view {
 			out.insert(
-				String::from("key_key.decrease_view"),
+				"key_key.decrease_view".into(),
 				value.get_keycode(before_1_13),
 			);
 		}
 		if let Some(value) = &options.control.keys.increase_view {
 			out.insert(
-				String::from("key_key.increase_view"),
+				"key_key.increase_view".into(),
 				value.get_keycode(before_1_13),
 			);
 		}
@@ -713,31 +627,32 @@ pub fn create_keys(
 	if stream_options_enabled {
 		if let Some(value) = &options.control.keys.stream_commercial {
 			out.insert(
-				String::from("key_key.streamCommercial"),
+				"key_key.streamCommercial".into(),
 				value.get_keycode(before_1_13),
 			);
 		}
 		if let Some(value) = &options.control.keys.stream_pause_unpause {
 			out.insert(
-				String::from("key_key.streamPauseUnpause"),
+				"key_key.streamPauseUnpause".into(),
 				value.get_keycode(before_1_13),
 			);
 		}
 		if let Some(value) = &options.control.keys.stream_start_stop {
 			out.insert(
-				String::from("key_key.streamStartStop"),
+				"key_key.streamStartStop".into(),
 				value.get_keycode(before_1_13),
 			);
 		}
+		// FIXME: Duplicated key
 		if let Some(value) = &options.control.keys.stream_commercial {
 			out.insert(
-				String::from("key_key.streamCommercial"),
+				"key_key.streamCommercial".into(),
 				value.get_keycode(before_1_13),
 			);
 		}
 		if let Some(value) = &options.control.keys.stream_toggle_microphone {
 			out.insert(
-				String::from("key_key.streamToggleMic"),
+				"key_key.streamToggleMic".into(),
 				value.get_keycode(before_1_13),
 			);
 		}
@@ -765,38 +680,38 @@ pub fn create_keys(
 			}
 		};
 		if let Some(value) = options.sound.volume.master {
-			out.insert(String::from("soundCategory_master"), value.to_string());
+			out.insert("soundCategory_master".into(), value.to_string());
 		}
 		if let Some(value) = options.sound.volume.music {
-			out.insert(String::from("soundCategory_music"), value.to_string());
+			out.insert("soundCategory_music".into(), value.to_string());
 		}
 		if let Some(value) = options.sound.volume.record {
-			out.insert(String::from(records_key), value.to_string());
+			out.insert(records_key.to_string(), value.to_string());
 		}
 		if let Some(value) = options.sound.volume.weather {
-			out.insert(String::from("soundCategory_weather"), value.to_string());
+			out.insert("soundCategory_weather".into(), value.to_string());
 		}
 		if let Some(value) = options.sound.volume.block {
-			out.insert(String::from(blocks_key), value.to_string());
+			out.insert(blocks_key.to_string(), value.to_string());
 		}
 		if let Some(value) = options.sound.volume.hostile {
-			out.insert(String::from(mobs_key), value.to_string());
+			out.insert(mobs_key.to_string(), value.to_string());
 		}
 		if let Some(value) = options.sound.volume.neutral {
-			out.insert(String::from(animals_key), value.to_string());
+			out.insert(animals_key.to_string(), value.to_string());
 		}
 		if let Some(value) = options.sound.volume.player {
-			out.insert(String::from(players_key), value.to_string());
+			out.insert(players_key.to_string(), value.to_string());
 		}
 		if let Some(value) = options.sound.volume.ambient {
-			out.insert(String::from("soundCategory_ambient"), value.to_string());
+			out.insert("soundCategory_ambient".into(), value.to_string());
 		}
 		if let Some(value) = options.sound.volume.voice {
-			out.insert(String::from("soundCategory_voice"), value.to_string());
+			out.insert("soundCategory_voice".into(), value.to_string());
 		}
 	} else if let Some(value) = options.sound.volume.master {
 		let volume_up = value > 0.0;
-		out.insert(String::from("sound"), volume_up.to_string());
+		out.insert("sound".into(), volume_up.to_string());
 	}
 	// Model parts
 	if let Some(value) = options.skin.cape {
@@ -805,35 +720,35 @@ pub fn create_keys(
 		} else {
 			"modelPart_cape"
 		};
-		out.insert(String::from(key), value.to_string());
+		out.insert(key.to_string(), value.to_string());
 	}
 	if let Some(value) = options.skin.jacket {
-		out.insert(String::from("modelPart_jacket"), value.to_string());
+		out.insert("modelPart_jacket".into(), value.to_string());
 	}
 	if let Some(value) = options.skin.left_sleeve {
-		out.insert(String::from("modelPart_left_sleeve"), value.to_string());
+		out.insert("modelPart_left_sleeve".into(), value.to_string());
 	}
 	if let Some(value) = options.skin.right_sleeve {
-		out.insert(String::from("modelPart_right_sleeve"), value.to_string());
+		out.insert("modelPart_right_sleeve".into(), value.to_string());
 	}
 	if let Some(value) = options.skin.left_pants {
-		out.insert(String::from("modelPart_left_pants_leg"), value.to_string());
+		out.insert("modelPart_left_pants_leg".into(), value.to_string());
 	}
 	if let Some(value) = options.skin.right_pants {
-		out.insert(String::from("modelPart_right_pants_leg"), value.to_string());
+		out.insert("modelPart_right_pants_leg".into(), value.to_string());
 	}
 	if let Some(value) = options.skin.hat {
-		out.insert(String::from("modelPart_hat"), value.to_string());
+		out.insert("modelPart_hat".into(), value.to_string());
 	}
 	if let Some(value) = options.video.allow_block_alternatives {
 		if after_14w28a && before_15w31a {
-			out.insert(String::from("allowBlockAlternatives"), value.to_string());
+			out.insert("allowBlockAlternatives".into(), value.to_string());
 		}
 	}
 
 	if let Some(resolution) = &options.video.fullscreen_resolution {
 		out.insert(
-			String::from("fullscreenResolution"),
+			"fullscreenResolution".into(),
 			write_fullscreen_resolution(resolution),
 		);
 	}
@@ -853,7 +768,7 @@ mod tests {
 	fn test_create_keys() {
 		let options = parse_options_str(r#"{"client": {}, "server": {}}"#).unwrap();
 		dbg!(&options);
-		let versions = vec![String::from("1.18"), String::from("1.19.3")];
+		let versions = vec!["1.18".to_string(), "1.19.3".to_string()];
 		let info = VersionInfo {
 			version: "1.19.3".to_string(),
 			versions,

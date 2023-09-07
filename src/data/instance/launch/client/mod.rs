@@ -83,7 +83,7 @@ impl Instance {
 								.to_str()
 								.context("Failed to convert natives directory to a string")?
 						));
-						jvm_args.push(String::from("-cp"));
+						jvm_args.push("-cp".into());
 						jvm_args.push(classpath.get_str());
 	
 						for arg in args.split(' ') {

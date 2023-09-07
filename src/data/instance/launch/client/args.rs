@@ -93,7 +93,7 @@ pub fn replace_arg_placeholders(
 		}
 		None => {
 			if out.contains(placeholder!("auth_player_name")) {
-				return Some(String::from("UnknownUser"));
+				return Some("UnknownUser".into());
 			}
 			if out.contains(placeholder!("auth_access_token"))
 				|| out.contains(placeholder!("auth_uuid"))
@@ -191,20 +191,19 @@ pub fn create_quick_play_args(
 
 	match quick_play {
 		QuickPlay::World { .. } | QuickPlay::Realm { .. } | QuickPlay::Server { .. } => {
-			let after_23w14a =
-				VersionPattern::After(String::from("23w14a")).matches_info(version_info);
-			out.push(String::from("--quickPlayPath"));
-			out.push(String::from("quickPlay/log.json"));
+			let after_23w14a = VersionPattern::After("23w14a".into()).matches_info(version_info);
+			out.push("--quickPlayPath".into());
+			out.push("quickPlay/log.json".into());
 			match quick_play {
 				QuickPlay::None => {}
 				QuickPlay::World { world } => {
 					if after_23w14a {
-						out.push(String::from("--quickPlaySingleplayer"));
+						out.push("--quickPlaySingleplayer".into());
 						out.push(world.clone());
 					} else {
 						o.display(
 							MessageContents::Warning(
-								"World Quick Play has no effect before 23w14a (1.20)".to_string(),
+								"World Quick Play has no effect before 23w14a (1.20)".into(),
 							),
 							MessageLevel::Important,
 						);
@@ -212,12 +211,12 @@ pub fn create_quick_play_args(
 				}
 				QuickPlay::Realm { realm } => {
 					if after_23w14a {
-						out.push(String::from("--quickPlayRealms"));
+						out.push("--quickPlayRealms".into());
 						out.push(realm.clone());
 					} else {
 						o.display(
 							MessageContents::Warning(
-								"Realm Quick Play has no effect before 23w14a (1.20)".to_string(),
+								"Realm Quick Play has no effect before 23w14a (1.20)".into(),
 							),
 							MessageLevel::Important,
 						);
@@ -225,17 +224,17 @@ pub fn create_quick_play_args(
 				}
 				QuickPlay::Server { server, port } => {
 					if after_23w14a {
-						out.push(String::from("--quickPlayMultiplayer"));
+						out.push("--quickPlayMultiplayer".into());
 						if let Some(port) = port {
 							out.push(format!("{server}:{port}"));
 						} else {
 							out.push(server.clone());
 						}
 					} else {
-						out.push(String::from("--server"));
+						out.push("--server".into());
 						out.push(server.clone());
 						if let Some(port) = port {
-							out.push(String::from("--port"));
+							out.push("--port".into());
 							out.push(port.to_string());
 						}
 					}

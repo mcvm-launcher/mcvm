@@ -47,8 +47,8 @@ impl User {
 	pub fn new(kind: UserKind, id: &str, name: &str) -> Self {
 		Self {
 			kind,
-			id: id.to_owned(),
-			name: name.to_owned(),
+			id: id.to_string(),
+			name: name.to_string(),
 			uuid: None,
 			access_token: None,
 			keypair: None,

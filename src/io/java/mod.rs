@@ -50,12 +50,12 @@ pub mod maven {
 					.expect("Parts did not parse correctly"),
 				MavenLibraryParts {
 					orgs: vec![
-						String::from("foo"),
-						String::from("bar"),
-						String::from("baz")
+						"foo".to_string(),
+						"bar".to_string(),
+						"baz".to_string()
 					],
-					package: String::from("hel.lo"),
-					version: String::from("wo.rld")
+					package: "hel.lo".into(),
+					version: "wo.rld".into()
 				}
 			)
 		}

@@ -116,7 +116,7 @@ pub async fn update_profiles(
 
 			if !profile.packages.is_empty() {
 				ctx.output.display(
-					MessageContents::Header("Updating packages".to_string()),
+					MessageContents::Header("Updating packages".into()),
 					MessageLevel::Important,
 				);
 			}
@@ -138,7 +138,7 @@ pub async fn update_profiles(
 			let packages = update_profile_packages(profile, &constants, &mut ctx, force).await?;
 
 			ctx.output.display(
-				MessageContents::Success("All packages installed".to_string()),
+				MessageContents::Success("All packages installed".into()),
 				MessageLevel::Important,
 			);
 
@@ -169,7 +169,7 @@ async fn check_profile_version_change<'a, O: MCVMOutput>(
 	if ctx.lock.update_profile_version(&profile.id, mc_version) {
 		ctx.output.start_process();
 		ctx.output.display(
-			MessageContents::StartProcess("Updating profile version".to_string()),
+			MessageContents::StartProcess("Updating profile version".into()),
 			MessageLevel::Important,
 		);
 
@@ -183,7 +183,7 @@ async fn check_profile_version_change<'a, O: MCVMOutput>(
 		}
 
 		ctx.output.display(
-			MessageContents::Success("Profile version changed".to_string()),
+			MessageContents::Success("Profile version changed".into()),
 			MessageLevel::Important,
 		);
 		ctx.output.end_process();

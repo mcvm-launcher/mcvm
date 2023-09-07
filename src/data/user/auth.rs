@@ -76,7 +76,7 @@ pub async fn authenticate_microsoft_user(
 		.context("Failed to get user profile")?;
 
 	o.display(
-		MessageContents::Success("Authentication successful".to_string()),
+		MessageContents::Success("Authentication successful".into()),
 		MessageLevel::Important,
 	);
 

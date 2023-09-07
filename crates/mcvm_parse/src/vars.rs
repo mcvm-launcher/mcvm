@@ -176,8 +176,8 @@ mod tests {
 	fn test_value_substitution() {
 		let vars = {
 			let mut vars = HashMapVariableStore::new();
-			vars.set_var(String::from("bar"), String::from("foo"));
-			vars.set_var(String::from("hello"), String::from("who"));
+			vars.set_var("bar".into(), "foo".into());
+			vars.set_var("hello".into(), "who".into());
 			vars
 		};
 

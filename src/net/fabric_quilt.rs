@@ -50,7 +50,7 @@ pub struct Library {
 
 /// Old format does not have a URL for the net.minecraft.launchwrapper for some reason
 fn default_library_url() -> String {
-	String::from("https://repo.papermc.io/repository/maven-public/")
+	"https://repo.papermc.io/repository/maven-public/".into()
 }
 
 /// An important library in the Fabric/Quilt meta

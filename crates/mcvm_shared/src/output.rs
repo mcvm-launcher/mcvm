@@ -48,15 +48,15 @@ pub trait MCVMOutput {
 pub fn default_special_ms_auth(o: &mut (impl MCVMOutput + ?Sized), url: &str, code: &str) {
 	o.display(
 		MessageContents::Property(
-			"Open this link in your web browser if it has not opened already".to_string(),
-			Box::new(MessageContents::Hyperlink(url.to_string())),
+			"Open this link in your web browser if it has not opened already".into(),
+			Box::new(MessageContents::Hyperlink(url.into())),
 		),
 		MessageLevel::Important,
 	);
 	o.display(
 		MessageContents::Property(
-			"and enter the code".to_string(),
-			Box::new(MessageContents::Copyable(code.to_string())),
+			"and enter the code".into(),
+			Box::new(MessageContents::Copyable(code.into())),
 		),
 		MessageLevel::Important,
 	);

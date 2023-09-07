@@ -158,8 +158,8 @@ mod tests {
 	fn test_addon_split_filename() {
 		let addon = Addon {
 			kind: AddonKind::Mod,
-			id: String::from("foo"),
-			file_name: String::from("FooBar.baz.jar"),
+			id: "foo".into(),
+			file_name: "FooBar.baz.jar".into(),
 			pkg_id: PkgIdentifier::new("package", 10),
 			version: None,
 			hashes: PackageAddonOptionalHashes::default(),

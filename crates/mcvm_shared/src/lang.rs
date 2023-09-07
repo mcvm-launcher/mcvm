@@ -395,9 +395,9 @@ mod tests {
 
 	#[test]
 	fn test_locale_canonicalization() {
-		assert_eq!(canonicalize_locale("az"), String::from("az"));
-		assert_eq!(canonicalize_locale("az-ZA"), String::from("az_ZA"));
-		assert_eq!(canonicalize_locale("az-ZA.UTF-8"), String::from("az_ZA"));
+		assert_eq!(canonicalize_locale("az"), "az".to_string());
+		assert_eq!(canonicalize_locale("az-ZA"), "az_ZA".to_string());
+		assert_eq!(canonicalize_locale("az-ZA.UTF-8"), "az_ZA".to_string());
 	}
 
 	#[test]

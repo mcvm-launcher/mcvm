@@ -89,7 +89,7 @@ mod tests {
 			serde_json::from_str::<Test>(r#"{"version": "1.19"}"#)
 				.unwrap()
 				.version,
-			MinecraftVersionDeser::Version(String::from("1.19"))
+			MinecraftVersionDeser::Version("1.19".into())
 		);
 
 		assert_eq!(

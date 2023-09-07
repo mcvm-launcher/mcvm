@@ -212,7 +212,7 @@ pub async fn get(
 	}
 
 	o.display(
-		MessageContents::Success("Libraries downloaded".to_string()),
+		MessageContents::Success("Libraries downloaded".into()),
 		MessageLevel::Important,
 	);
 	o.end_process();

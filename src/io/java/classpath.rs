@@ -68,11 +68,11 @@ mod tests {
 		let mut classpath = Classpath::new();
 		assert_eq!(classpath.get_str(), String::new());
 		classpath.add("foo");
-		assert_eq!(classpath.get_str(), String::from("foo"));
+		assert_eq!(classpath.get_str(), "foo".to_string());
 		classpath.add("bar");
 		assert_eq!(
 			classpath.get_str(),
-			String::from("foo") + &String::from(CLASSPATH_SEP) + "bar"
+			"foo".to_string() + &CLASSPATH_SEP.to_string() + "bar"
 		);
 	}
 }

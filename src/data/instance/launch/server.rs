@@ -24,10 +24,10 @@ impl Instance {
 		let mut jvm_args = Vec::new();
 		let mut game_args = Vec::new();
 		if let Some(classpath) = &self.classpath {
-			jvm_args.push(String::from("-cp"));
+			jvm_args.push("-cp".into());
 			jvm_args.push(classpath.get_str());
 		}
-		game_args.push(String::from("nogui"));
+		game_args.push("nogui".into());
 
 		let launch_properties = LaunchProcessProperties {
 			cwd: &server_dir,

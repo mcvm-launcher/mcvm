@@ -128,7 +128,7 @@ impl UpdateManager {
 	) -> anyhow::Result<()> {
 		o.start_process();
 		o.display(
-			MessageContents::StartProcess("Obtaining version index".to_string()),
+			MessageContents::StartProcess("Obtaining version index".into()),
 			MessageLevel::Important,
 		);
 
@@ -150,7 +150,7 @@ impl UpdateManager {
 		self.version_manifest.fill(manifest);
 
 		o.display(
-			MessageContents::Success("Version index obtained".to_string()),
+			MessageContents::Success("Version index obtained".into()),
 			MessageLevel::Important,
 		);
 		o.end_process();
@@ -198,7 +198,7 @@ impl UpdateManager {
 		if self.has_requirement(UpdateRequirement::ClientJson) {
 			o.start_process();
 			o.display(
-				MessageContents::StartProcess("Obtaining client metadata".to_string()),
+				MessageContents::StartProcess("Obtaining client metadata".into()),
 				MessageLevel::Important,
 			);
 
@@ -214,7 +214,7 @@ impl UpdateManager {
 			self.client_meta.fill(Rc::new(client_meta));
 
 			o.display(
-				MessageContents::Success("client meta obtained".to_string()),
+				MessageContents::Success("client meta obtained".into()),
 				MessageLevel::Important,
 			);
 			o.end_process();

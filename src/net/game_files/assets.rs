@@ -74,8 +74,7 @@ async fn create_dirs(
 	let objects_dir = paths.assets.join("objects");
 	files::create_dir_async(&objects_dir).await?;
 	// Apparently this directory name is used for older game versions
-	if VersionPattern::Before(String::from("13w48b")).matches_info(version_info) {}
-	let virtual_dir = if VersionPattern::Before(String::from("13w48b")).matches_info(version_info) {
+	let virtual_dir = if VersionPattern::Before("13w48b".into()).matches_info(version_info) {
 		Some(get_virtual_dir_path(paths))
 	} else {
 		None
@@ -108,7 +107,7 @@ pub async fn get(
 		Ok(val) => val,
 		Err(err) => {
 			o.display(
-				MessageContents::Error("Failed to obtain asset index".to_string()),
+				MessageContents::Error("Failed to obtain asset index".into()),
 				MessageLevel::Important,
 			);
 			o.display(
@@ -116,7 +115,7 @@ pub async fn get(
 				MessageLevel::Important,
 			);
 			o.display(
-				MessageContents::StartProcess("Redownloading".to_string()),
+				MessageContents::StartProcess("Redownloading".into()),
 				MessageLevel::Important,
 			);
 			download_index(index_url, &index_path, manager, client, true)
@@ -195,7 +194,7 @@ pub async fn get(
 	}
 
 	o.display(
-		MessageContents::Success("Assets downloaded".to_string()),
+		MessageContents::Success("Assets downloaded".into()),
 		MessageLevel::Important,
 	);
 	o.end_process();

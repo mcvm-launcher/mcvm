@@ -25,7 +25,7 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 	force: bool,
 ) -> anyhow::Result<HashSet<PkgRequest>> {
 	ctx.output.display(
-		MessageContents::StartProcess("Resolving package dependencies".to_string()),
+		MessageContents::StartProcess("Resolving package dependencies".into()),
 		MessageLevel::Important,
 	);
 	let (batched, resolved) = resolve_and_batch(profile, constants, ctx)
@@ -33,7 +33,7 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 		.context("Failed to resolve dependencies for profile")?;
 
 	ctx.output.display(
-		MessageContents::StartProcess("Installing packages".to_string()),
+		MessageContents::StartProcess("Installing packages".into()),
 		MessageLevel::Important,
 	);
 	for (package, package_instances) in batched.iter().sorted_by_key(|x| x.0) {
@@ -59,7 +59,7 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 				format_package_update_message(
 					package,
 					Some(instance_id),
-					MessageContents::StartProcess("Installing".to_string()),
+					MessageContents::StartProcess("Installing".into()),
 				),
 				MessageLevel::Important,
 			);
@@ -91,7 +91,7 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 			format_package_update_message(
 				package,
 				None,
-				MessageContents::Success("Installed".to_string()),
+				MessageContents::Success("Installed".into()),
 			),
 			MessageLevel::Important,
 		);
@@ -211,7 +211,7 @@ pub async fn print_package_support_messages<'a, O: MCVMOutput>(
 	}
 	if !links.is_empty() {
 		ctx.output.display(
-			MessageContents::Header("Packages to consider supporting:".to_string()),
+			MessageContents::Header("Packages to consider supporting:".into()),
 			MessageLevel::Important,
 		);
 		for (req, link) in links {

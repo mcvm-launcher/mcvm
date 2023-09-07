@@ -97,7 +97,7 @@ pub async fn get(
 		Ok(manifest) => manifest,
 		Err(err) => {
 			o.display(
-				MessageContents::Error("Failed to obtain version manifest".to_string()),
+				MessageContents::Error("Failed to obtain version manifest".into()),
 				MessageLevel::Important,
 			);
 			o.display(
@@ -105,7 +105,7 @@ pub async fn get(
 				MessageLevel::Important,
 			);
 			o.display(
-				MessageContents::StartProcess("Redownloading".to_string()),
+				MessageContents::StartProcess("Redownloading".into()),
 				MessageLevel::Important,
 			);
 			manifest_contents = get_contents(paths, manager, client, true)

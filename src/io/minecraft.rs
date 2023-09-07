@@ -41,7 +41,7 @@ pub mod game_jar {
 		version_info: &VersionInfo,
 		paths: &Paths,
 	) -> anyhow::Result<Option<VersionJson>> {
-		if VersionPattern::After(String::from("18w47b")).matches_info(version_info) {
+		if VersionPattern::After("18w47b".into()).matches_info(version_info) {
 			Ok(Some(extract_version_json(&version_info.version, paths)?))
 		} else {
 			Ok(None)

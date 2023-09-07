@@ -30,7 +30,7 @@ impl Args {
 	pub fn parse(&self) -> Vec<String> {
 		match self {
 			Self::List(vec) => vec.clone(),
-			Self::String(string) => string.split(' ').map(|string| string.to_owned()).collect(),
+			Self::String(string) => string.split(' ').map(|string| string.to_string()).collect(),
 		}
 	}
 
@@ -78,11 +78,11 @@ pub enum LaunchMemory {
 }
 
 fn default_java() -> String {
-	String::from("adoptium")
+	"adoptium".into()
 }
 
 fn default_flags_preset() -> String {
-	String::from("none")
+	"none".into()
 }
 
 /// Options for the Minecraft QuickPlay feature
@@ -520,7 +520,7 @@ mod tests {
 		let presets = {
 			let mut presets = HashMap::new();
 			presets.insert(
-				String::from("hello"),
+				"hello".into(),
 				InstanceConfig::Full(FullInstanceConfig::Client {
 					launch: LaunchConfig::default(),
 					options: None,
@@ -548,7 +548,7 @@ mod tests {
 			launch: LaunchConfig::default(),
 			options: None,
 			window: ClientWindowConfig::default(),
-			preset: Some(String::from("hello")),
+			preset: Some("hello".into()),
 			datapack_folder: None,
 			snapshots: None,
 		});
@@ -572,7 +572,7 @@ mod tests {
 		let config = InstanceConfig::Full(FullInstanceConfig::Server {
 			launch: LaunchConfig::default(),
 			options: None,
-			preset: Some(String::from("hello")),
+			preset: Some("hello".into()),
 			datapack_folder: None,
 			snapshots: None,
 		});
@@ -602,7 +602,7 @@ mod tests {
 		assert_eq!(
 			test.quick_play,
 			QuickPlay::Server {
-				server: String::from("localhost"),
+				server: "localhost".into(),
 				port: Some(25565)
 			}
 		);

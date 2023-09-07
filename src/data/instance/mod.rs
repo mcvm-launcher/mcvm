@@ -92,7 +92,7 @@ impl Instance {
 	) -> Self {
 		Self {
 			kind,
-			id: id.to_owned(),
+			id: id.to_string(),
 			modifications,
 			launch,
 			client_meta: Later::new(),
@@ -139,7 +139,7 @@ impl Instance {
 			meta.launcher_meta
 				.main_class
 				.get_main_class_string(self.kind.to_side())
-				.to_owned(),
+				.to_string(),
 		);
 
 		Ok(classpath)
@@ -305,7 +305,7 @@ impl Instance {
 		// Run commands
 		if !eval.commands.is_empty() {
 			o.display(
-				MessageContents::StartProcess("Running commands".to_string()),
+				MessageContents::StartProcess("Running commands".into()),
 				MessageLevel::Important,
 			);
 		}

@@ -254,7 +254,7 @@ impl Instance {
 			ServerType::Paper => {
 				let process = OutputProcess::new(o);
 				process.0.display(
-					MessageContents::StartProcess("Checking for paper updates".to_string()),
+					MessageContents::StartProcess("Checking for paper updates".into()),
 					MessageLevel::Important,
 				);
 
@@ -267,19 +267,19 @@ impl Instance {
 				let paper_jar_path = server_dir.join(&file_name);
 				if !manager.should_update_file(&paper_jar_path) {
 					process.0.display(
-						MessageContents::Success("Paper is up to date".to_string()),
+						MessageContents::Success("Paper is up to date".into()),
 						MessageLevel::Important,
 					);
 				} else {
 					process.0.display(
-						MessageContents::StartProcess("Downloading Paper server".to_string()),
+						MessageContents::StartProcess("Downloading Paper server".into()),
 						MessageLevel::Important,
 					);
 					paper::download_server_jar(version, build_num, &file_name, &server_dir, client)
 						.await
 						.context("Failed to download Paper server JAR")?;
 					process.0.display(
-						MessageContents::Success("Paper server downloaded".to_string()),
+						MessageContents::Success("Paper server downloaded".into()),
 						MessageLevel::Important,
 					);
 				}

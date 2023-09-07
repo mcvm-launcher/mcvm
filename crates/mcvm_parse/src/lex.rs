@@ -56,24 +56,24 @@ impl Token {
 	/// Print this token as a string
 	pub fn as_string(&self) -> String {
 		match self {
-			Token::None => String::from("none"),
-			Token::Whitespace => String::from(" "),
-			Token::Semicolon => String::from(";"),
-			Token::Colon => String::from(":"),
-			Token::Comma => String::from(","),
-			Token::Pipe => String::from("|"),
-			Token::At => String::from("@"),
-			Token::Bang => String::from("!"),
-			Token::Variable(name) => String::from("$") + name,
-			Token::Curly(Side::Left) => String::from("{"),
-			Token::Curly(Side::Right) => String::from("}"),
-			Token::Square(Side::Left) => String::from("["),
-			Token::Square(Side::Right) => String::from("]"),
-			Token::Paren(Side::Left) => String::from("("),
-			Token::Paren(Side::Right) => String::from(")"),
-			Token::Angle(Side::Left) => String::from("<"),
-			Token::Angle(Side::Right) => String::from(">"),
-			Token::Comment(text) => String::from("# ") + text,
+			Token::None => "none".into(),
+			Token::Whitespace => " ".into(),
+			Token::Semicolon => ";".into(),
+			Token::Colon => ":".into(),
+			Token::Comma => ",".into(),
+			Token::Pipe => "|".into(),
+			Token::At => "@".into(),
+			Token::Bang => "!".into(),
+			Token::Variable(name) => "$".to_string() + name,
+			Token::Curly(Side::Left) => "{".into(),
+			Token::Curly(Side::Right) => "}".into(),
+			Token::Square(Side::Left) => "[".into(),
+			Token::Square(Side::Right) => "]".into(),
+			Token::Paren(Side::Left) => "(".into(),
+			Token::Paren(Side::Right) => ")".into(),
+			Token::Angle(Side::Left) => "<".into(),
+			Token::Angle(Side::Right) => ">".into(),
+			Token::Comment(text) => "# ".to_string() + text,
 			Token::Ident(name) => name.clone(),
 			Token::Num(num) => num.to_string(),
 			Token::Str(string) => format!("\"{string}\""),
@@ -233,9 +233,9 @@ pub fn lex(text: &str) -> anyhow::Result<Vec<(Token, TextPos)>> {
 					c if is_whitespace(c) => tok = Token::Whitespace,
 					c if is_num(c, true) => {
 						tok = Token::Num(0);
-						num_str = String::from(c);
+						num_str = c.to_string();
 					}
-					c if is_ident(c, true) => tok = Token::Ident(String::from(c)),
+					c if is_ident(c, true) => tok = Token::Ident(c.into()),
 					_ => unexpected_token!(tok, pos),
 				},
 				Token::Str(string) => match lex_string_char(c, escape) {
@@ -400,7 +400,7 @@ mod tests {
 
 	#[test]
 	fn test_string() {
-		assert_tokens!("\"Hello\"", vec![Token::Str(String::from("Hello"))]);
+		assert_tokens!("\"Hello\"", vec![Token::Str("Hello".into())]);
 	}
 
 	#[test]
@@ -408,16 +408,16 @@ mod tests {
 		assert_tokens!(
 			"\"Uno\"; \"Dos\"; \"Tres\"; Identifier",
 			vec![
-				Token::Str(String::from("Uno")),
+				Token::Str("Uno".into()),
 				Token::Semicolon,
 				Token::Whitespace,
-				Token::Str(String::from("Dos")),
+				Token::Str("Dos".into()),
 				Token::Semicolon,
 				Token::Whitespace,
-				Token::Str(String::from("Tres")),
+				Token::Str("Tres".into()),
 				Token::Semicolon,
 				Token::Whitespace,
-				Token::Ident(String::from("Identifier"))
+				Token::Ident("Identifier".into())
 			]
 		);
 	}
@@ -427,24 +427,24 @@ mod tests {
 		assert_tokens!(
 			"\"Hello\"; ident{}@routine[]$var():-1000,|# comment",
 			vec![
-				Token::Str(String::from("Hello")),
+				Token::Str("Hello".into()),
 				Token::Semicolon,
 				Token::Whitespace,
-				Token::Ident(String::from("ident")),
+				Token::Ident("ident".into()),
 				Token::Curly(Side::Left),
 				Token::Curly(Side::Right),
 				Token::At,
-				Token::Ident(String::from("routine")),
+				Token::Ident("routine".into()),
 				Token::Square(Side::Left),
 				Token::Square(Side::Right),
-				Token::Variable(String::from("var")),
+				Token::Variable("var".into()),
 				Token::Paren(Side::Left),
 				Token::Paren(Side::Right),
 				Token::Colon,
 				Token::Num(-1000),
 				Token::Comma,
 				Token::Pipe,
-				Token::Comment(String::from(" comment"))
+				Token::Comment(" comment".into())
 			]
 		);
 	}
@@ -454,11 +454,11 @@ mod tests {
 		assert_tokens!(
 			"\"Foo\" # Comment\n \"Bar\"",
 			vec![
-				Token::Str(String::from("Foo")),
+				Token::Str("Foo".into()),
 				Token::Whitespace,
-				Token::Comment(String::from(" Comment")),
+				Token::Comment(" Comment".into()),
 				Token::Whitespace,
-				Token::Str(String::from("Bar"))
+				Token::Str("Bar".into())
 			]
 		);
 	}

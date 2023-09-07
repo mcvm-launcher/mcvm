@@ -306,7 +306,7 @@ mod tests {
 			PkgLocation::Remote(None),
 			PackageContentType::Script,
 		);
-		assert_eq!(package.filename(), String::from("sodium_2") + PKG_EXTENSION);
+		assert_eq!(package.filename(), "sodium_2".to_string() + PKG_EXTENSION);
 
 		let package = Package::new(
 			"fabriclike-api",
@@ -316,7 +316,7 @@ mod tests {
 		);
 		assert_eq!(
 			package.filename(),
-			String::from("fabriclike-api_80") + PKG_EXTENSION
+			"fabriclike-api_80".to_string() + PKG_EXTENSION
 		);
 	}
 }

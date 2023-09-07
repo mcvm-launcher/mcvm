@@ -31,7 +31,7 @@ impl JavaInstallationKind {
 		match string {
 			"adoptium" => Self::Adoptium(Later::Empty),
 			"zulu" => Self::Zulu(Later::Empty),
-			path => Self::Custom(PathBuf::from(String::from(shellexpand::tilde(path)))),
+			path => Self::Custom(PathBuf::from(shellexpand::tilde(path).to_string())),
 		}
 	}
 }
@@ -76,7 +76,7 @@ impl JavaInstallation {
 
 		o.start_process();
 		o.display(
-			MessageContents::StartProcess("Checking for Java updates".to_string()),
+			MessageContents::StartProcess("Checking for Java updates".into()),
 			MessageLevel::Important,
 		);
 
@@ -122,7 +122,7 @@ impl JavaInstallation {
 			}
 		}
 		o.display(
-			MessageContents::Success("Java updated".to_string()),
+			MessageContents::Success("Java updated".into()),
 			MessageLevel::Important,
 		);
 
@@ -181,12 +181,12 @@ async fn update_adoptium(
 
 	// Extraction
 	o.display(
-		MessageContents::StartProcess("Extracting JRE".to_string()),
+		MessageContents::StartProcess("Extracting JRE".into()),
 		MessageLevel::Important,
 	);
 	extract_archive(&arc_path, &out_dir).context("Failed to extract")?;
 	o.display(
-		MessageContents::StartProcess("Removing archive".to_string()),
+		MessageContents::StartProcess("Removing archive".into()),
 		MessageLevel::Important,
 	);
 	tokio::fs::remove_file(arc_path)
@@ -194,7 +194,7 @@ async fn update_adoptium(
 		.context("Failed to remove archive")?;
 
 	o.display(
-		MessageContents::Success("Java installation finished".to_string()),
+		MessageContents::Success("Java installation finished".into()),
 		MessageLevel::Important,
 	);
 	o.end_process();
@@ -248,12 +248,12 @@ async fn update_zulu(
 
 	// Extraction
 	o.display(
-		MessageContents::StartProcess("Extracting JRE".to_string()),
+		MessageContents::StartProcess("Extracting JRE".into()),
 		MessageLevel::Important,
 	);
 	extract_archive(&arc_path, &out_dir).context("Failed to extract")?;
 	o.display(
-		MessageContents::StartProcess("Removing archive".to_string()),
+		MessageContents::StartProcess("Removing archive".into()),
 		MessageLevel::Important,
 	);
 	tokio::fs::remove_file(arc_path)
@@ -261,7 +261,7 @@ async fn update_zulu(
 		.context("Failed to remove archive")?;
 
 	o.display(
-		MessageContents::Success("Java installation finished".to_string()),
+		MessageContents::Success("Java installation finished".into()),
 		MessageLevel::Important,
 	);
 	o.end_process();

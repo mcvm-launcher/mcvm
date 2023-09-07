@@ -138,7 +138,7 @@ impl PkgRepo {
 
 /// Get the URL of the package index file
 pub fn get_package_index_url(base: &str) -> String {
-	base.to_owned() + "/api/mcvm/index.json"
+	base.to_string() + "/api/mcvm/index.json"
 }
 
 /// Result from repository querying. This represents an entry

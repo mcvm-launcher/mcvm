@@ -222,7 +222,7 @@ fn check_enum_condition_argument<T>(
 		None => {
 			bail!(
 				"Unknown condition argument '{}' {}",
-				ident.to_owned(),
+				ident.to_string(),
 				pos.clone()
 			);
 		}

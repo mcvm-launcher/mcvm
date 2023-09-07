@@ -83,7 +83,7 @@ async fn create(data: &mut CmdData, instance: &str, snapshot: &str) -> anyhow::R
 	}
 	index.finish(&snapshot_dir)?;
 
-	instance.create_snapshot(snapshot.to_owned(), SnapshotKind::User, &data.paths)?;
+	instance.create_snapshot(snapshot.to_string(), SnapshotKind::User, &data.paths)?;
 
 	cprintln!("<g>Snapshot created.");
 

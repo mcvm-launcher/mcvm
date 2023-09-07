@@ -60,7 +60,7 @@ impl Parsed {
 			routines: HashMap::new(),
 			id_count: 0,
 		};
-		out.routines = HashMap::from([(String::from(DEFAULT_ROUTINE), out.new_block(None))]);
+		out.routines = HashMap::from([(DEFAULT_ROUTINE.into(), out.new_block(None))]);
 		out
 	}
 
@@ -74,7 +74,7 @@ impl Parsed {
 	/// Creates a new routine and its associated block, then returns the block's ID
 	pub fn new_routine(&mut self, name: &str) -> BlockId {
 		self.new_block(None);
-		self.routines.insert(name.to_owned(), self.id_count);
+		self.routines.insert(name.to_string(), self.id_count);
 		self.id_count
 	}
 
@@ -395,7 +395,7 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 								_ => {
 									bail!(
 										"Unknown key {} for 'addon' instruction {}",
-										name.to_owned(),
+										name.to_string(),
 										pos.clone()
 									);
 								}

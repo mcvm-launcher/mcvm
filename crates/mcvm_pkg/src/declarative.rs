@@ -205,6 +205,6 @@ mod tests {
 
 		let pkg = deserialize_declarative_package(contents).unwrap();
 
-		assert_eq!(pkg.meta.name, Some(String::from("Test Package")));
+		assert_eq!(pkg.meta.name, Some("Test Package".into()));
 	}
 }

@@ -77,16 +77,13 @@ mod tests {
 		};
 
 		let user_config = UserConfig {
-			name: String::from("Bob"),
+			name: "Bob".into(),
 			variant: UserVariant::Unverified {},
 		};
 
-		let modifications = vec![ConfigModification::AddUser(
-			String::from("bob"),
-			user_config,
-		)];
+		let modifications = vec![ConfigModification::AddUser("bob".into(), user_config)];
 
 		apply_modifications(&mut config, modifications).unwrap();
-		assert!(config.users.contains_key(&String::from("bob")));
+		assert!(config.users.contains_key("bob"));
 	}
 }

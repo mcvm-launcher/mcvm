@@ -265,7 +265,7 @@ mod tests {
 		let pkg = deserialize_declarative_package(contents).unwrap();
 
 		let constants = EvalConstants {
-			version: String::from("1.19.2"),
+			version: "1.19.2".into(),
 			version_list: vec!["1.19.2".to_string(), "1.19.3".to_string()],
 			modifications: GameModifications::new(
 				Modloader::Fabric,
@@ -289,18 +289,18 @@ mod tests {
 				.unwrap();
 
 		let addon = eval.addon_reqs.first().unwrap();
-		assert_eq!(addon.addon.version, Some(String::from("2")));
+		assert_eq!(addon.addon.version, Some("2".into()));
 
 		assert!(eval.deps.contains(&vec![RequiredPackage {
-			value: String::from("foo"),
+			value: "foo".into(),
 			explicit: false
 		}]));
 		assert!(eval.deps.contains(&vec![RequiredPackage {
-			value: String::from("bar"),
+			value: "bar".into(),
 			explicit: false
 		}]));
 		assert!(eval.deps.contains(&vec![RequiredPackage {
-			value: String::from("baz"),
+			value: "baz".into(),
 			explicit: false
 		}]));
 	}

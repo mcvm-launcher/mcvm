@@ -36,11 +36,11 @@ impl AddonKind {
 	/// Plural version of to_string
 	pub fn to_plural_string(&self) -> String {
 		match self {
-			Self::ResourcePack => String::from("resource_packs"),
-			Self::Mod => String::from("mods"),
-			Self::Plugin => String::from("plugins"),
-			Self::Shader => String::from("shaders"),
-			Self::Datapack => String::from("datapacks"),
+			Self::ResourcePack => "resource_packs".into(),
+			Self::Mod => "mods".into(),
+			Self::Plugin => "plugins".into(),
+			Self::Shader => "shaders".into(),
+			Self::Datapack => "datapacks".into(),
 		}
 	}
 

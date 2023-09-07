@@ -17,7 +17,7 @@ impl PkgIdentifier {
 	/// Create new new PkgIdentifier
 	pub fn new(id: &str, version: u32) -> Self {
 		Self {
-			id: id.to_owned(),
+			id: id.to_string(),
 			version,
 		}
 	}
@@ -91,7 +91,7 @@ impl PkgRequest {
 	/// Create a new PkgRequest
 	pub fn new(id: &str, source: PkgRequestSource) -> Self {
 		Self {
-			id: id.to_owned(),
+			id: id.to_string(),
 			source,
 		}
 	}
