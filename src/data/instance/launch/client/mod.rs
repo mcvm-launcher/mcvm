@@ -33,7 +33,7 @@ impl Instance {
 		ms_client_id: ClientId,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
-		debug_assert!(matches!(self.kind, InstKind::Client { .. }));
+		assert!(matches!(self.kind, InstKind::Client { .. }));
 		let java_path = self.java.get().path.get();
 		let jre_path = java_path.join("bin/java");
 		let client_dir = self.get_subdir(paths);

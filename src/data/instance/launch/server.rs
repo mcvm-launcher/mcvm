@@ -16,7 +16,7 @@ impl Instance {
 		version_info: &VersionInfo,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
-		debug_assert!(matches!(self.kind, InstKind::Server { .. }));
+		assert!(matches!(self.kind, InstKind::Server { .. }));
 		let java_path = self.java.get().path.get();
 		let jre_path = java_path.join("bin/java");
 		let server_dir = self.get_subdir(paths);
