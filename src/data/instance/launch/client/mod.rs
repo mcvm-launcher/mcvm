@@ -5,6 +5,8 @@ use std::collections::HashMap;
 
 use anyhow::Context;
 use mcvm_shared::output::MCVMOutput;
+use oauth2::ClientId;
+use reqwest::Client;
 
 use crate::data::instance::launch::LaunchProcessProperties;
 use crate::data::instance::{InstKind, Instance};
@@ -22,11 +24,13 @@ pub use args::create_quick_play_args;
 
 impl Instance {
 	/// Launch a client
-	pub fn launch_client(
+	pub async fn launch_client(
 		&mut self,
 		paths: &Paths,
-		users: &UserManager,
+		users: &mut UserManager,
 		version_info: &VersionInfo,
+		client: &Client,
+		ms_client_id: ClientId,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
 		debug_assert!(matches!(self.kind, InstKind::Client { .. }));
@@ -36,6 +40,12 @@ impl Instance {
 		let mut jvm_args = Vec::new();
 		let mut game_args = Vec::new();
 		let client_meta = self.client_meta.get();
+
+		users
+			.ensure_authenticated(ms_client_id, client, o)
+			.await
+			.context("Failed to authenticate user")?;
+
 		if let Some(classpath) = &self.classpath {
 			let main_class = self
 				.main_class

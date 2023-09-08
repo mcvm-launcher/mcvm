@@ -10,7 +10,6 @@ use mcvm::io::lock::Lockfile;
 use mcvm::{data::instance::InstKind, util::print::HYPHEN_POINT};
 use mcvm_shared::instance::Side;
 use mcvm_shared::output::MessageLevel;
-use reqwest::Client;
 
 use super::CmdData;
 use crate::cli::get_ms_client_id;
@@ -121,22 +120,15 @@ pub async fn launch(
 		config.users.state = AuthState::UserChosen(user);
 	}
 
-	if let InstKind::Client { .. } = &instance.kind {
-		config
-			.users
-			.ensure_authenticated(get_ms_client_id(), &Client::new(), &mut data.output)
-			.await
-			.context("Failed to authenticate user")?;
-	}
-
 	let mut lock = Lockfile::open(&data.paths)?;
 
 	instance
 		.launch(
 			&data.paths,
 			&mut lock,
-			&config.users,
+			&mut config.users,
 			&profile.version,
+			get_ms_client_id(),
 			&mut data.output,
 		)
 		.await

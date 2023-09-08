@@ -13,6 +13,7 @@ use anyhow::Context;
 use mcvm_shared::instance::Side;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::versions::VersionInfo;
+use oauth2::ClientId;
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 
@@ -38,8 +39,9 @@ impl Instance {
 		&mut self,
 		paths: &Paths,
 		lock: &mut Lockfile,
-		users: &UserManager,
+		users: &mut UserManager,
 		version: &MinecraftVersion,
+		ms_client_id: ClientId,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
 		o.display(
@@ -69,7 +71,8 @@ impl Instance {
 		);
 		match &self.kind {
 			InstKind::Client { .. } => {
-				self.launch_client(paths, users, version_info, o)
+				self.launch_client(paths, users, version_info, &client, ms_client_id, o)
+					.await
 					.context("Failed to launch client")?;
 			}
 			InstKind::Server { .. } => {
