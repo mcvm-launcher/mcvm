@@ -4,6 +4,7 @@ use color_print::cprintln;
 use inquire::Select;
 use itertools::Itertools;
 use mcvm::data::config::Config;
+use mcvm::data::id::{ProfileID, InstanceID};
 use mcvm::data::user::AuthState;
 
 use mcvm::io::lock::Lockfile;
@@ -52,6 +53,7 @@ async fn list(
 	let config = data.config.get_mut();
 
 	let profile = if let Some(profile) = profile {
+		let profile = ProfileID::from(profile);
 		Some(
 			config
 				.profiles
@@ -138,11 +140,11 @@ pub async fn launch(
 }
 
 /// Pick which instance to launch
-fn pick_instance(instance: Option<String>, config: &Config) -> anyhow::Result<String> {
+fn pick_instance(instance: Option<String>, config: &Config) -> anyhow::Result<InstanceID> {
 	if let Some(instance) = instance {
-		Ok(instance)
+		Ok(InstanceID::from(instance))
 	} else {
-		let options: Vec<String> = config.instances.keys().cloned().collect();
+		let options: Vec<InstanceID> = config.instances.keys().cloned().collect();
 		let selection = Select::new("Choose an instance to launch", options)
 			.prompt()
 			.context("Prompt failed")?;

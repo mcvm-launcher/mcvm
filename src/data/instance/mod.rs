@@ -28,6 +28,7 @@ use self::launch::LaunchOptions;
 use super::addon;
 use super::config::instance::ClientWindowConfig;
 use super::config::profile::GameModifications;
+use super::id::InstanceID;
 use super::profile::update::manager::UpdateManager;
 use mcvm_shared::addon::{Addon, AddonKind};
 
@@ -68,7 +69,7 @@ pub struct Instance {
 	/// What type of instance this is
 	pub kind: InstKind,
 	/// The ID of this instance
-	pub id: String,
+	pub id: InstanceID,
 	modifications: GameModifications,
 	launch: LaunchOptions,
 	client_meta: Later<Rc<ClientMeta>>,
@@ -84,7 +85,7 @@ impl Instance {
 	/// Create a new instance
 	pub fn new(
 		kind: InstKind,
-		id: &str,
+		id: InstanceID,
 		modifications: GameModifications,
 		launch: LaunchOptions,
 		datapack_folder: Option<String>,
@@ -92,7 +93,7 @@ impl Instance {
 	) -> Self {
 		Self {
 			kind,
-			id: id.to_string(),
+			id,
 			modifications,
 			launch,
 			client_meta: Later::new(),
@@ -108,8 +109,16 @@ impl Instance {
 	/// Get the directory where data for this instance is stored
 	pub fn get_dir(&self, paths: &Paths) -> PathBuf {
 		match &self.kind {
-			InstKind::Client { .. } => paths.project.data_dir().join("client").join(&self.id),
-			InstKind::Server { .. } => paths.project.data_dir().join("server").join(&self.id),
+			InstKind::Client { .. } => paths
+				.project
+				.data_dir()
+				.join("client")
+				.join(&self.id.to_string()),
+			InstKind::Server { .. } => paths
+				.project
+				.data_dir()
+				.join("server")
+				.join(&self.id.to_string()),
 		}
 	}
 

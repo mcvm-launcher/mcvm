@@ -2,7 +2,13 @@ use std::collections::HashMap;
 
 use serde::{Deserialize, Serialize};
 
-use crate::{data::profile::Profile, util::versions::MinecraftVersionDeser};
+use crate::{
+	data::{
+		id::{InstanceID, ProfileID},
+		profile::Profile,
+	},
+	util::versions::MinecraftVersionDeser,
+};
 
 use mcvm_shared::{
 	instance::Side,
@@ -80,7 +86,7 @@ pub struct ProfileConfig {
 	#[serde(default)]
 	pub server_type: ServerType,
 	/// Configured list of instances in this profile
-	pub instances: HashMap<String, InstanceConfig>,
+	pub instances: HashMap<InstanceID, InstanceConfig>,
 	/// Packages on this profile
 	#[serde(default)]
 	pub packages: Vec<PackageConfig>,
@@ -91,7 +97,7 @@ pub struct ProfileConfig {
 
 impl ProfileConfig {
 	/// Creates a profile from this profile configuration
-	pub fn to_profile(&self, profile_id: &str) -> Profile {
+	pub fn to_profile(&self, profile_id: ProfileID) -> Profile {
 		Profile::new(
 			profile_id,
 			self.version.to_mc_version(),

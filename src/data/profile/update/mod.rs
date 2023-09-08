@@ -11,6 +11,7 @@ use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use reqwest::Client;
 
 use crate::data::config::Config;
+use crate::data::id::ProfileID;
 use crate::io::files::paths::Paths;
 use crate::io::lock::Lockfile;
 use crate::net::paper;
@@ -43,7 +44,7 @@ pub struct ProfileUpdateContext<'a, O: MCVMOutput> {
 pub async fn update_profiles(
 	paths: &Paths,
 	config: &mut Config,
-	ids: &[String],
+	ids: &[ProfileID],
 	force: bool,
 	update_packages: bool,
 	o: &mut impl MCVMOutput,
@@ -64,7 +65,7 @@ pub async fn update_profiles(
 	for id in ids {
 		let profile = config
 			.profiles
-			.get_mut(id)
+			.get_mut(&ProfileID::from(id.clone()))
 			.ok_or(anyhow!("Unknown profile '{id}'"))?;
 
 		ctx.output.display(

@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use super::CmdData;
 use itertools::Itertools;
-use mcvm::util::print::{ReplPrinter, HYPHEN_POINT};
+use mcvm::{util::print::{ReplPrinter, HYPHEN_POINT}, data::id::ProfileID};
 use mcvm_pkg::{PkgRequest, PkgRequestSource};
 
 use anyhow::{bail, Context};
@@ -53,6 +53,7 @@ async fn list(data: &mut CmdData, raw: bool, profile: Option<String>) -> anyhow:
 	let config = data.config.get_mut();
 
 	if let Some(profile_id) = profile {
+		let profile_id = ProfileID::from(profile_id);
 		if let Some(profile) = config.profiles.get(&profile_id) {
 			if raw {
 				for pkg in profile.packages.iter().sorted_by_key(|x| &x.req.id) {
@@ -70,7 +71,7 @@ async fn list(data: &mut CmdData, raw: bool, profile: Option<String>) -> anyhow:
 			bail!("Unknown profile '{profile_id}'");
 		}
 	} else {
-		let mut found_pkgs: HashMap<String, Vec<String>> = HashMap::new();
+		let mut found_pkgs: HashMap<String, Vec<ProfileID>> = HashMap::new();
 		for (id, profile) in config.profiles.iter() {
 			if !profile.packages.is_empty() {
 				for pkg in profile.packages.iter() {

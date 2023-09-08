@@ -1,5 +1,6 @@
 use super::CmdData;
 use itertools::Itertools;
+use mcvm::data::id::ProfileID;
 use mcvm::data::instance::InstKind;
 use mcvm::data::profile::update::update_profiles;
 use mcvm::util::print::HYPHEN_POINT;
@@ -124,10 +125,10 @@ async fn update(
 	data.ensure_config(true).await?;
 	let config = data.config.get_mut();
 
-	let ids = if all {
-		config.profiles.keys().cloned().collect::<Vec<String>>()
+	let ids: Vec<ProfileID> = if all {
+		config.profiles.keys().cloned().collect()
 	} else {
-		ids.to_vec()
+		ids.iter().cloned().map(ProfileID::from).collect()
 	};
 
 	update_profiles(

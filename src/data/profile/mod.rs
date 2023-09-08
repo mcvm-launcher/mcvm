@@ -14,20 +14,21 @@ use crate::util::versions::MinecraftVersion;
 use self::update::manager::UpdateManager;
 
 use super::config::profile::GameModifications;
+use super::id::{InstanceID, ProfileID};
 use super::user::UserManager;
 
-/// A hashmap of Strings to Instances
-pub type InstanceRegistry = std::collections::HashMap<String, Instance>;
+/// A hashmap of InstanceIDs to Instances
+pub type InstanceRegistry = std::collections::HashMap<InstanceID, Instance>;
 
 /// A user profile which applies many settings to contained instances
 #[derive(Debug)]
 pub struct Profile {
 	/// The ID of this profile
-	pub id: String,
+	pub id: ProfileID,
 	/// The Minecraft version of this profile
 	pub version: MinecraftVersion,
 	/// The instances that are contained in this profile
-	pub instances: Vec<String>,
+	pub instances: Vec<InstanceID>,
 	/// The packages that are selected for this profile
 	pub packages: Vec<PkgProfileConfig>,
 	/// Modifications applied to instances in this profile
@@ -36,9 +37,9 @@ pub struct Profile {
 
 impl Profile {
 	/// Create a new profile
-	pub fn new(id: &str, version: MinecraftVersion, modifications: GameModifications) -> Self {
+	pub fn new(id: ProfileID, version: MinecraftVersion, modifications: GameModifications) -> Self {
 		Profile {
-			id: id.to_string(),
+			id,
 			version,
 			instances: Vec::new(),
 			packages: Vec::new(),
@@ -47,8 +48,8 @@ impl Profile {
 	}
 
 	/// Add a new instance to this profile
-	pub fn add_instance(&mut self, instance: &str) {
-		self.instances.push(instance.to_string());
+	pub fn add_instance(&mut self, instance: InstanceID) {
+		self.instances.push(instance);
 	}
 
 	/// Create all the instances in this profile. Returns the version list.

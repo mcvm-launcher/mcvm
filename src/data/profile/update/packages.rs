@@ -5,6 +5,7 @@ use mcvm_pkg::PkgRequest;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::pkg::PackageStability;
 
+use crate::data::id::InstanceID;
 use crate::data::profile::Profile;
 use crate::package::eval::{resolve, EvalConstants, EvalInput, EvalParameters, EvalPermissions};
 use crate::util::select_random_n_items_from_list;
@@ -145,10 +146,10 @@ async fn resolve_and_batch<'a, O: MCVMOutput>(
 	constants: &EvalConstants,
 	ctx: &mut ProfileUpdateContext<'a, O>,
 ) -> anyhow::Result<(
-	HashMap<PkgRequest, Vec<String>>,
-	HashMap<String, Vec<PkgRequest>>,
+	HashMap<PkgRequest, Vec<InstanceID>>,
+	HashMap<InstanceID, Vec<PkgRequest>>,
 )> {
-	let mut batched: HashMap<PkgRequest, Vec<String>> = HashMap::new();
+	let mut batched: HashMap<PkgRequest, Vec<InstanceID>> = HashMap::new();
 	let mut resolved = HashMap::new();
 	for instance_id in &profile.instances {
 		let instance = ctx.instances.get(instance_id).ok_or(anyhow!(

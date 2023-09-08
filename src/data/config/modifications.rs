@@ -3,7 +3,7 @@ use std::fs::File;
 
 use anyhow::{anyhow, Context};
 
-use crate::io::files::paths::Paths;
+use crate::{data::id::ProfileID, io::files::paths::Paths};
 
 use super::{
 	package::PackageConfig, profile::ProfileConfig, user::UserConfig, Config, ConfigDeser,
@@ -14,9 +14,9 @@ pub enum ConfigModification {
 	/// Adds a new user
 	AddUser(String, UserConfig),
 	/// Adds a new profile
-	AddProfile(String, ProfileConfig),
+	AddProfile(ProfileID, ProfileConfig),
 	/// Adds a new package to a profile
-	AddPackage(String, PackageConfig),
+	AddPackage(ProfileID, PackageConfig),
 }
 
 /// Applies modifications to the config

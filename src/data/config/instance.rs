@@ -5,6 +5,7 @@ use anyhow::{anyhow, bail, ensure, Context};
 use mcvm_shared::instance::Side;
 use serde::{Deserialize, Serialize};
 
+use crate::data::id::InstanceID;
 use crate::data::instance::launch::{LaunchOptions, WrapperCommand};
 use crate::data::instance::{InstKind, Instance};
 use crate::data::profile::Profile;
@@ -403,7 +404,7 @@ pub fn merge_instance_configs(
 
 /// Read the config for an instance to create the instance
 pub fn read_instance_config(
-	id: &str,
+	id: InstanceID,
 	config: &InstanceConfig,
 	profile: &Profile,
 	presets: &HashMap<String, InstanceConfig>,
@@ -484,7 +485,10 @@ pub fn read_instance_config(
 mod tests {
 	use super::*;
 
-	use crate::{data::config::profile::GameModifications, util::versions::MinecraftVersion};
+	use crate::{
+		data::{config::profile::GameModifications, id::ProfileID},
+		util::versions::MinecraftVersion,
+	};
 	use mcvm_shared::modifications::{ClientType, Modloader, ServerType};
 
 	#[test]
@@ -504,14 +508,19 @@ mod tests {
 		.unwrap();
 
 		let profile = Profile::new(
-			"foo",
+			ProfileID::from("foo"),
 			MinecraftVersion::Latest,
 			GameModifications::new(Modloader::Vanilla, ClientType::Vanilla, ServerType::Vanilla),
 		);
 
-		let instance =
-			read_instance_config("foo", &test.instance, &profile, &HashMap::new()).unwrap();
-		assert_eq!(instance.id, "foo");
+		let instance = read_instance_config(
+			InstanceID::from("foo"),
+			&test.instance,
+			&profile,
+			&HashMap::new(),
+		)
+		.unwrap();
+		assert_eq!(instance.id, InstanceID::from("foo"));
 		assert!(matches!(instance.kind, InstKind::Client { .. }));
 	}
 
@@ -539,7 +548,7 @@ mod tests {
 		};
 
 		let profile = Profile::new(
-			"foo",
+			ProfileID::from("foo"),
 			MinecraftVersion::Latest,
 			GameModifications::new(Modloader::Vanilla, ClientType::Vanilla, ServerType::Vanilla),
 		);
@@ -552,7 +561,7 @@ mod tests {
 			datapack_folder: None,
 			snapshots: None,
 		});
-		let instance = read_instance_config("test", &config, &profile, &presets)
+		let instance = read_instance_config(InstanceID::from("test"), &config, &profile, &presets)
 			.expect("Failed to read instance config");
 		if !matches!(
 			instance.kind,
@@ -576,7 +585,7 @@ mod tests {
 			datapack_folder: None,
 			snapshots: None,
 		});
-		read_instance_config("test", &config, &profile, &presets)
+		read_instance_config(InstanceID::from("test"), &config, &profile, &presets)
 			.expect_err("Instance kinds should be incompatible");
 	}
 

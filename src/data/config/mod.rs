@@ -24,6 +24,7 @@ use mcvm_shared::util::is_valid_identifier;
 use preferences::ConfigPreferences;
 use serde::{Deserialize, Serialize};
 
+use super::id::ProfileID;
 use super::profile::{InstanceRegistry, Profile};
 use super::user::{validate_username, AuthState, UserManager};
 use crate::io::files::paths::Paths;
@@ -69,7 +70,7 @@ fn default_config() -> serde_json::Value {
 pub struct ConfigDeser {
 	users: HashMap<String, UserConfig>,
 	default_user: Option<String>,
-	profiles: HashMap<String, ProfileConfig>,
+	profiles: HashMap<ProfileID, ProfileConfig>,
 	instance_presets: HashMap<String, InstanceConfig>,
 	preferences: PrefDeser,
 }
@@ -83,7 +84,7 @@ pub struct Config {
 	/// The available instances
 	pub instances: InstanceRegistry,
 	/// The available profiles
-	pub profiles: HashMap<String, Box<Profile>>,
+	pub profiles: HashMap<ProfileID, Box<Profile>>,
 	/// The registry of packages. Will include packages that are configured when created this way
 	pub packages: PkgRegistry,
 	/// Global user preferences
@@ -168,7 +169,7 @@ impl Config {
 
 		// Profiles
 		for (profile_id, profile_config) in config.profiles {
-			let mut profile = profile_config.to_profile(&profile_id);
+			let mut profile = profile_config.to_profile(profile_id.clone());
 
 			if let Modloader::Forge = profile_config.modloader {
 				if show_warnings {
@@ -198,14 +199,14 @@ impl Config {
 					bail!("Duplicate instance '{instance_id}'");
 				}
 				let instance = read_instance_config(
-					&instance_id,
+					instance_id.clone(),
 					&instance_config,
 					&profile,
 					&config.instance_presets,
 				)
 				.with_context(|| format!("Failed to configure instance '{instance_id}'"))?;
-				profile.add_instance(&instance_id);
-				instances.insert(instance_id.to_string(), instance);
+				profile.add_instance(instance_id.clone());
+				instances.insert(instance_id, instance);
 			}
 
 			for package_config in profile_config.packages {

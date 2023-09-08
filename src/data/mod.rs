@@ -8,3 +8,14 @@ pub mod instance;
 pub mod profile;
 /// Operating on users
 pub mod user;
+
+/// Types for IDs of things
+pub mod id {
+	use std::rc::Rc;
+
+	/// The ID for an instance
+	pub type InstanceID = Rc<str>;
+
+	/// The ID for a profile
+	pub type ProfileID = Rc<str>;
+}
