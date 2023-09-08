@@ -15,7 +15,7 @@ use mcvm_shared::output::{
 /// Terminal MCVMOutput
 pub struct TerminalOutput {
 	printer: ReplPrinter,
-	pub level: MessageLevel,
+	level: MessageLevel,
 	in_process: bool,
 	indent_level: u8,
 	log_file: File,
@@ -23,22 +23,13 @@ pub struct TerminalOutput {
 
 impl MCVMOutput for TerminalOutput {
 	fn display_text(&mut self, text: String, level: MessageLevel) {
-		if !level.at_least(&self.level) {
-			return;
-		}
-
-		if self.in_process {
-			self.printer.print(&text);
-		} else {
-			self.printer.print(&text);
-			self.printer.println("");
-		}
-
 		let _ = self.log_message(&text);
+		self.display_text_impl(text, level);
 	}
 
 	fn display_message(&mut self, message: Message) {
-		self.display_text(Self::format_message(message.contents), message.level);
+		let _ = self.log_message(&Self::format_message_log(message.contents.clone()));
+		self.display_text_impl(Self::format_message(message.contents), message.level);
 	}
 
 	fn start_process(&mut self) {
@@ -96,6 +87,20 @@ impl TerminalOutput {
 		})
 	}
 
+	/// Display text
+	fn display_text_impl(&mut self, text: String, level: MessageLevel) {
+		if !level.at_least(&self.level) {
+			return;
+		}
+
+		if self.in_process {
+			self.printer.print(&text);
+		} else {
+			self.printer.print(&text);
+			self.printer.println("");
+		}
+	}
+
 	/// Formatting for messages
 	fn format_message(contents: MessageContents) -> String {
 		match contents {
@@ -125,11 +130,43 @@ impl TerminalOutput {
 		}
 	}
 
+	/// Formatting for messages in the log file
+	fn format_message_log(contents: MessageContents) -> String {
+		match contents {
+			MessageContents::Simple(text) => text,
+			MessageContents::Notice(text) => format!("[NOTICE] {}", text),
+			MessageContents::Warning(text) => format!("[WARN] {}", text),
+			MessageContents::Error(text) => format!("[ERR] {}", text),
+			MessageContents::Success(text) => format!("[SUCCESS] {}", text),
+			MessageContents::Property(key, value) => {
+				format!("{}: {}", key, Self::format_message_log(*value))
+			}
+			MessageContents::Header(text) => format!("### {} ###", text),
+			MessageContents::StartProcess(text) => format!("{text}..."),
+			MessageContents::Associated(item, message) => {
+				format!("({}) {}", item, Self::format_message_log(*message))
+			}
+			MessageContents::Package(pkg, message) => {
+				let pkg_disp = pkg.debug_sources(String::new());
+				format!("[{}] {}", pkg_disp, Self::format_message_log(*message))
+			}
+			MessageContents::Hyperlink(url) => url,
+			MessageContents::ListItem(item) => " - ".to_string() + &Self::format_message_log(*item),
+			MessageContents::Copyable(text) => text,
+			contents => contents.default_format(),
+		}
+	}
+
 	/// Log a message to the log file
-	fn log_message(&mut self, text: &str) -> anyhow::Result<()> {
+	pub fn log_message(&mut self, text: &str) -> anyhow::Result<()> {
 		writeln!(self.log_file, "{text}")?;
 
 		Ok(())
+	}
+
+	/// Set the log level of the output
+	pub fn set_log_level(&mut self, level: MessageLevel) {
+		self.level = level;
 	}
 }
 

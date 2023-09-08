@@ -12,6 +12,7 @@ use color_print::cprintln;
 use mcvm::data::config::Config;
 use mcvm::io::files::paths::Paths;
 use mcvm_shared::later::Later;
+use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 
 use self::files::FilesSubcommand;
 use self::instance::InstanceSubcommand;
@@ -122,7 +123,7 @@ pub async fn run_cli(data: &mut CmdData) -> anyhow::Result<()> {
 		}
 	}
 	let cli = cli?;
-	match cli.command {
+	let res = match cli.command {
 		Command::Profile { command } => profile::run(command, data).await,
 		Command::User { command } => user::run(command, data).await,
 		Command::Launch { instance } => instance::launch(instance, false, None, data).await,
@@ -134,5 +135,14 @@ pub async fn run_cli(data: &mut CmdData) -> anyhow::Result<()> {
 		Command::Package { command } => package::run(command, data).await,
 		Command::Instance { command } => instance::run(command, data).await,
 		Command::Snapshot { command } => snapshot::run(command, data).await,
+	};
+
+	if let Err(e) = &res {
+		data.output.display(
+			MessageContents::Error(format!("{e:?}")),
+			MessageLevel::Important,
+		);
 	}
+
+	res
 }

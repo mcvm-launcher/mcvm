@@ -99,7 +99,7 @@ pub async fn launch(
 	let config = data.config.get_mut();
 
 	if debug {
-		data.output.level = MessageLevel::Debug;
+		data.output.set_log_level(MessageLevel::Debug);
 	}
 
 	let instance = pick_instance(instance, config).context("Failed to pick instance")?;
