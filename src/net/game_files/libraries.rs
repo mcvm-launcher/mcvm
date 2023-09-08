@@ -1,9 +1,7 @@
-use std::{
-	collections::HashMap,
-	fs::File,
-	path::{Path, PathBuf},
-	sync::Arc,
-};
+use std::collections::HashMap;
+use std::fs::File;
+use std::path::{Path, PathBuf};
+use std::sync::Arc;
 
 use anyhow::{anyhow, Context};
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
@@ -11,16 +9,12 @@ use reqwest::Client;
 use tokio::{sync::Semaphore, task::JoinSet};
 use zip::ZipArchive;
 
-use crate::{
-	data::profile::update::manager::{UpdateManager, UpdateMethodResult},
-	io::{
-		files::{self, paths::Paths},
-		java::classpath::Classpath,
-	},
-	net::download::FD_SENSIBLE_LIMIT,
-	skip_none,
-	util::{self, mojang},
-};
+use crate::data::profile::update::manager::{UpdateManager, UpdateMethodResult};
+use crate::io::files::{self, paths::Paths};
+use crate::io::java::classpath::Classpath;
+use crate::net::download::FD_SENSIBLE_LIMIT;
+use crate::skip_none;
+use crate::util::{self, mojang};
 
 use super::client_meta::{libraries::Library, ClientMeta};
 

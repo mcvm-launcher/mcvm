@@ -3,11 +3,9 @@ use color_print::cprintln;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use oauth2::ClientId;
 
-use crate::net::microsoft::{
-	self,
-	auth::{self, mc_access_token_to_string},
-	MinecraftUserProfile,
-};
+use crate::net::microsoft;
+use crate::net::microsoft::auth::{self, mc_access_token_to_string};
+use crate::net::microsoft::MinecraftUserProfile;
 
 use super::{User, UserKind};
 

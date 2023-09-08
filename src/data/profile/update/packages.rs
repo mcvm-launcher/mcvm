@@ -2,16 +2,12 @@ use std::collections::{HashMap, HashSet};
 
 use itertools::Itertools;
 use mcvm_pkg::PkgRequest;
-use mcvm_shared::{
-	output::{MCVMOutput, MessageContents, MessageLevel},
-	pkg::PackageStability,
-};
+use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
+use mcvm_shared::pkg::PackageStability;
 
-use crate::{
-	data::profile::Profile,
-	package::eval::{resolve, EvalConstants, EvalInput, EvalParameters, EvalPermissions},
-	util::select_random_n_items_from_list,
-};
+use crate::data::profile::Profile;
+use crate::package::eval::{resolve, EvalConstants, EvalInput, EvalParameters, EvalPermissions};
+use crate::util::select_random_n_items_from_list;
 
 use super::ProfileUpdateContext;
 

@@ -2,9 +2,9 @@ use anyhow::{anyhow, Context};
 use minecraft_msa_auth::{
 	MinecraftAccessToken, MinecraftAuthenticationResponse, MinecraftAuthorizationFlow,
 };
+use oauth2::basic::{BasicClient, BasicTokenType};
+use oauth2::reqwest::async_http_client;
 use oauth2::{
-	basic::{BasicClient, BasicTokenType},
-	reqwest::async_http_client,
 	AuthUrl, ClientId, DeviceAuthorizationUrl, EmptyExtraTokenFields, ErrorResponse,
 	RequestTokenError, Scope, StandardDeviceAuthorizationResponse, StandardTokenResponse,
 	TokenResponse, TokenUrl,

@@ -49,11 +49,7 @@ pub mod maven {
 				MavenLibraryParts::from_str("foo.bar.baz:hel.lo:wo.rld")
 					.expect("Parts did not parse correctly"),
 				MavenLibraryParts {
-					orgs: vec![
-						"foo".to_string(),
-						"bar".to_string(),
-						"baz".to_string()
-					],
+					orgs: vec!["foo".to_string(), "bar".to_string(), "baz".to_string()],
 					package: "hel.lo".into(),
 					version: "wo.rld".into()
 				}

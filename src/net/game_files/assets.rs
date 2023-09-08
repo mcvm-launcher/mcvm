@@ -1,23 +1,17 @@
-use std::{
-	collections::HashMap,
-	path::{Path, PathBuf},
-	sync::Arc,
-};
+use std::collections::HashMap;
+use std::path::{Path, PathBuf};
+use std::sync::Arc;
 
 use anyhow::Context;
-use mcvm_shared::{
-	output::{MCVMOutput, MessageContents, MessageLevel},
-	versions::{VersionInfo, VersionPattern},
-};
+use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
+use mcvm_shared::versions::{VersionInfo, VersionPattern};
 use reqwest::Client;
 use serde::Deserialize;
 use tokio::{sync::Semaphore, task::JoinSet};
 
-use crate::{
-	data::profile::update::manager::{UpdateManager, UpdateMethodResult},
-	io::files::{self, paths::Paths},
-	net::download::{self, FD_SENSIBLE_LIMIT},
-};
+use crate::data::profile::update::manager::{UpdateManager, UpdateMethodResult};
+use crate::io::files::{self, paths::Paths};
+use crate::net::download::{self, FD_SENSIBLE_LIMIT};
 
 use super::client_meta::ClientMeta;
 

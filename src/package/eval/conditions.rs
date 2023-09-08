@@ -1,10 +1,9 @@
-use mcvm_shared::{instance::Side, versions::VersionPattern};
+use mcvm_shared::instance::Side;
+use mcvm_shared::versions::VersionPattern;
 
 use super::EvalData;
-use mcvm_parse::{
-	conditions::{ConditionKind, OSCondition},
-	vars::VariableStore,
-};
+use mcvm_parse::conditions::{ConditionKind, OSCondition};
+use mcvm_parse::vars::VariableStore;
 
 /// Checks an OS condition to see if it matches the current operating system
 pub const fn check_os_condition(condition: &OSCondition) -> bool {

@@ -3,14 +3,10 @@ use mcvm_shared::util::DeserListOrSingle;
 use reqwest::Client;
 use serde::Deserialize;
 
-use crate::{
-	data::profile::update::manager::UpdateManager,
-	io::{
-		files::{self, paths::Paths},
-		java::JavaMajorVersion,
-	},
-	net::download,
-};
+use crate::data::profile::update::manager::UpdateManager;
+use crate::io::files::{self, paths::Paths};
+use crate::io::java::JavaMajorVersion;
+use crate::net::download;
 
 use super::version_manifest::VersionManifest;
 

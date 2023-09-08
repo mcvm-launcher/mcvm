@@ -1,18 +1,15 @@
-use mcvm_shared::{
-	output::{MCVMOutput, MessageContents, MessageLevel},
-	versions::{VersionInfo, VersionPattern},
-};
+use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
+use mcvm_shared::versions::{VersionInfo, VersionPattern};
 
-use crate::{
-	data::{
-		config::instance::{ClientWindowConfig, QuickPlay, WindowResolution},
-		instance::Instance,
-		user::{UserKind, UserManager},
-	},
-	io::{files::paths::Paths, java::classpath::Classpath},
-	net::game_files::{assets::get_virtual_dir_path, client_meta::args::ArgumentItem},
-	util::{mojang::is_allowed, ARCH_STRING, OS_STRING},
-};
+use crate::data::config::instance::{ClientWindowConfig, QuickPlay, WindowResolution};
+use crate::data::instance::Instance;
+use crate::data::user::{UserKind, UserManager};
+use crate::io::files::paths::Paths;
+use crate::io::java::classpath::Classpath;
+use crate::net::game_files::assets::get_virtual_dir_path;
+use crate::net::game_files::client_meta::args::ArgumentItem;
+use crate::util::mojang::is_allowed;
+use crate::util::{ARCH_STRING, OS_STRING};
 
 /// Get the string for a placeholder token in an argument
 macro_rules! placeholder {

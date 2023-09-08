@@ -57,7 +57,7 @@ impl Instance {
 								jvm_args.push(sub_arg);
 							}
 						}
-	
+
 						for arg in &args.game {
 							for sub_arg in args::process_arg(
 								self,
@@ -85,7 +85,7 @@ impl Instance {
 						));
 						jvm_args.push("-cp".into());
 						jvm_args.push(classpath.get_str());
-	
+
 						for arg in args.split(' ') {
 							game_args.push(skip_none!(args::replace_arg_placeholders(
 								self,
@@ -105,7 +105,7 @@ impl Instance {
 			let mut env_vars = HashMap::new();
 			#[cfg(not(target_os = "linux"))]
 			let env_vars = HashMap::new();
-			
+
 			// Compatability env var for old versions on Linux to prevent graphical issues
 			#[cfg(target_os = "linux")]
 			{

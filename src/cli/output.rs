@@ -4,13 +4,9 @@ use std::{fs::File, path::PathBuf};
 use anyhow::Context;
 use color_print::cformat;
 use inquire::Confirm;
-use mcvm::{
-	io::files::paths::Paths,
-	util::{
-		print::{ReplPrinter, HYPHEN_POINT},
-		utc_timestamp,
-	},
-};
+use mcvm::io::files::paths::Paths;
+use mcvm::util::print::{ReplPrinter, HYPHEN_POINT};
+use mcvm::util::utc_timestamp;
 use mcvm_pkg::{PkgRequest, PkgRequestSource};
 use mcvm_shared::output::{
 	default_special_ms_auth, MCVMOutput, Message, MessageContents, MessageLevel,
