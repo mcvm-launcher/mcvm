@@ -28,7 +28,9 @@ impl Instance {
 	/// Get the requirements for this instance
 	pub fn get_requirements(&self) -> HashSet<UpdateRequirement> {
 		let mut out = HashSet::new();
-		out.insert(UpdateRequirement::ClientJson);
+		// Even though it is client meta it also contains the server download link
+		// so we need it for both.
+		out.insert(UpdateRequirement::ClientMeta);
 
 		let java_kind = match &self.launch.java {
 			JavaInstallationKind::Adoptium(..) => JavaInstallationKind::Adoptium(Later::Empty),
@@ -55,8 +57,8 @@ impl Instance {
 		out.insert(UpdateRequirement::Options);
 		match &self.kind {
 			InstKind::Client { .. } => {
-				out.insert(UpdateRequirement::GameAssets);
-				out.insert(UpdateRequirement::GameLibraries);
+				out.insert(UpdateRequirement::ClientAssets);
+				out.insert(UpdateRequirement::ClientLibraries);
 				if self.launch.use_log4j_config {
 					out.insert(UpdateRequirement::ClientLoggingConfig);
 				}

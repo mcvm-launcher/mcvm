@@ -22,12 +22,12 @@ use crate::util::{print::PrintOptions, versions::MinecraftVersion};
 /// Requirements for operations that may be shared by multiple instances in a profile
 #[derive(Debug, Hash, PartialEq, Eq)]
 pub enum UpdateRequirement {
-	/// The client meta metadata file
-	ClientJson,
+	/// The client metadata file
+	ClientMeta,
 	/// Assets for the client
-	GameAssets,
+	ClientAssets,
 	/// Libraries for the client
-	GameLibraries,
+	ClientLibraries,
 	/// A Java installation
 	Java(JavaInstallationKind),
 	/// The game JAR for a specific side
@@ -191,13 +191,13 @@ impl UpdateManager {
 
 		if java_required
 			|| game_jar_required
-			|| self.has_requirement(UpdateRequirement::GameAssets)
-			|| self.has_requirement(UpdateRequirement::GameLibraries)
+			|| self.has_requirement(UpdateRequirement::ClientAssets)
+			|| self.has_requirement(UpdateRequirement::ClientLibraries)
 		{
-			self.add_requirement(UpdateRequirement::ClientJson);
+			self.add_requirement(UpdateRequirement::ClientMeta);
 		}
 
-		if self.has_requirement(UpdateRequirement::ClientJson) {
+		if self.has_requirement(UpdateRequirement::ClientMeta) {
 			o.start_process();
 			o.display(
 				MessageContents::StartProcess("Obtaining client metadata".into()),
@@ -222,7 +222,7 @@ impl UpdateManager {
 			o.end_process();
 		}
 
-		if self.has_requirement(UpdateRequirement::GameAssets) {
+		if self.has_requirement(UpdateRequirement::ClientAssets) {
 			let result = assets::get(
 				self.client_meta.get(),
 				paths,
@@ -236,7 +236,7 @@ impl UpdateManager {
 			self.add_result(result);
 		}
 
-		if self.has_requirement(UpdateRequirement::GameLibraries) {
+		if self.has_requirement(UpdateRequirement::ClientLibraries) {
 			let client_meta = self.client_meta.get();
 			let result = libraries::get(
 				client_meta,

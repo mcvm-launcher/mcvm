@@ -3,9 +3,9 @@ use color_print::cprintln;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use oauth2::ClientId;
 
-use crate::net::microsoft;
-use crate::net::microsoft::auth::{self, mc_access_token_to_string};
-use crate::net::microsoft::MinecraftUserProfile;
+use crate::net::minecraft;
+use crate::net::minecraft::auth::{self, mc_access_token_to_string};
+use crate::net::minecraft::MinecraftUserProfile;
 
 use super::{User, UserKind};
 
@@ -23,7 +23,7 @@ impl User {
 					.await
 					.context("Failed to authenticate user")?;
 				let certificate =
-					crate::net::microsoft::get_user_certificate(&auth_result.access_token, client)
+					crate::net::minecraft::get_user_certificate(&auth_result.access_token, client)
 						.await
 						.context("Failed to get user certificate")?;
 				self.access_token = Some(auth_result.access_token);
@@ -69,7 +69,7 @@ pub async fn authenticate_microsoft_user(
 		.context("Failed to get Minecraft token")?;
 	let access_token = mc_access_token_to_string(mc_token.access_token())?;
 
-	let profile = microsoft::get_user_profile(&access_token, client)
+	let profile = minecraft::get_user_profile(&access_token, client)
 		.await
 		.context("Failed to get user profile")?;
 
@@ -117,7 +117,7 @@ pub async fn debug_authenticate(
 	let access_token = mc_access_token_to_string(mc_token.access_token())?;
 	cprintln!("Minecraft Access Token: <b>{access_token}");
 
-	let profile = microsoft::get_user_profile(&access_token, &req_client)
+	let profile = minecraft::get_user_profile(&access_token, &req_client)
 		.await
 		.context("Failed to get user profile")?;
 	cprintln!("Profile: <b>{profile:?}");

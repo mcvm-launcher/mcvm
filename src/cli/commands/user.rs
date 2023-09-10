@@ -78,7 +78,7 @@ async fn auth(data: &mut CmdData) -> anyhow::Result<()> {
 	)
 	.await?;
 	println!("{}", result.access_token);
-	let cert = mcvm::net::microsoft::get_user_certificate(&result.access_token, &client).await?;
+	let cert = mcvm::net::minecraft::get_user_certificate(&result.access_token, &client).await?;
 	dbg!(cert);
 
 	Ok(())

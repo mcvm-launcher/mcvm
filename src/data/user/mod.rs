@@ -9,7 +9,7 @@ use mcvm_shared::output::MCVMOutput;
 use oauth2::ClientId;
 use reqwest::Client;
 
-use crate::net::microsoft::Keypair;
+use crate::net::minecraft::Keypair;
 
 /// Type of a user
 #[derive(Debug, Clone)]
