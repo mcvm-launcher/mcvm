@@ -34,6 +34,8 @@ pub struct ClientMeta {
 	/// Java main class for the client
 	#[serde(rename = "mainClass")]
 	pub main_class: String,
+	/// Logging information
+	pub logging: LogInfo,
 }
 
 /// Information in the meta about the assets index
@@ -65,6 +67,24 @@ pub struct JavaInfo {
 	/// The Java major version to use
 	#[serde(rename = "majorVersion")]
 	pub major_version: JavaMajorVersion,
+}
+
+/// Information about logging for this version
+#[derive(Deserialize, Debug, Clone)]
+pub struct LogInfo {
+	/// Client logging
+	pub client: ClientLogInfo,
+}
+
+/// Information about logging for the client
+#[derive(Deserialize, Debug, Clone)]
+pub struct ClientLogInfo {
+	/// The JVM argument to use for specifying the path of the log.
+	/// It contains a token '${file}' that should be replaced with the path
+	/// to the file.
+	pub argument: String,
+	/// Download for the logging configuration file
+	pub file: DownloadInfo,
 }
 
 /// Game arguments in the client meta

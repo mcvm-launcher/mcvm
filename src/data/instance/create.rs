@@ -57,6 +57,9 @@ impl Instance {
 			InstKind::Client { .. } => {
 				out.insert(UpdateRequirement::GameAssets);
 				out.insert(UpdateRequirement::GameLibraries);
+				if self.launch.use_log4j_config {
+					out.insert(UpdateRequirement::ClientLoggingConfig);
+				}
 			}
 			InstKind::Server { .. } => {}
 		}

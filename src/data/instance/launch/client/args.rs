@@ -243,3 +243,9 @@ pub fn create_quick_play_args(
 
 	out
 }
+
+/// Fill the logging path argument with the correct path
+pub fn fill_logging_path_arg(arg: String, version: &str, paths: &Paths) -> Option<String> {
+	let path = crate::net::game_files::log_config::get_path(version, paths);
+	Some(arg.replace(placeholder!("path"), path.to_str()?))
+}

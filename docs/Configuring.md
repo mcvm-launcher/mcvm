@@ -103,7 +103,8 @@ or
 			"server": string,
 			"port": string,
 			"realm": string
-		}
+		},
+		"use_log4j_config": bool
 	},
 	"options": ClientOptions | ServerOptions,
 	"window": {
@@ -134,6 +135,7 @@ The first form just has the type of the instance. All fields are optional unless
 - `launch.preset`: A preset that will automatically apply changes to your launch configuration to improve your experience.
   - `"none"`: The default. No changes will be applied.
   - `"aikars"`: A popular set of tuned arguments for better performance. This works better for servers that have a lot of available memory (8GB+) and is not recommended otherwise. See https://docs.papermc.io/paper/aikars-flags for more information.				self.set_index(&mut cursor).context("Failed to set index")?;
+- `launch.use_log4j_config`: Whether to use Mojang's config for Log4J on the client. Defaults to false.
 
 - `datapack_folder`: Make mcvm install datapack type addons to this folder instead of every existing world. This provides better behavior than the default one, but requires a modification of some sort that enables global datapacks. This path is relative to the game directory of the instance (`.minecraft` or the folder where the server.properties is).
 - `snapshots`: Options for snapshots, which allow you to create backups of the files in an instance.

@@ -3,7 +3,7 @@ mod args;
 
 use std::collections::HashMap;
 
-use anyhow::Context;
+use anyhow::{anyhow, Context};
 use mcvm_shared::output::MCVMOutput;
 use oauth2::ClientId;
 use reqwest::Client;
@@ -37,14 +37,22 @@ impl Instance {
 		let java_path = self.java.get().path.get();
 		let jre_path = java_path.join("bin/java");
 		let client_dir = self.get_subdir(paths);
+		let client_meta = self.client_meta.get();
+
 		let mut jvm_args = Vec::new();
 		let mut game_args = Vec::new();
-		let client_meta = self.client_meta.get();
 
 		users
 			.ensure_authenticated(ms_client_id, client, o)
 			.await
 			.context("Failed to authenticate user")?;
+
+		if self.launch.use_log4j_config {
+			let logging_arg = client_meta.logging.client.argument.clone();
+			let logging_arg = args::fill_logging_path_arg(logging_arg, &version_info.version, paths)
+				.ok_or(anyhow!("Failed to convert logging path to a string"))?;
+			jvm_args.push(logging_arg);
+		}
 
 		if let Some(classpath) = &self.classpath {
 			let main_class = self

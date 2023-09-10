@@ -16,7 +16,7 @@ use crate::io::options::{read_options, Options};
 use crate::net::fabric_quilt::{self, FabricQuiltMeta};
 use crate::net::game_files::client_meta::{self, ClientMeta};
 use crate::net::game_files::version_manifest::VersionManifest;
-use crate::net::game_files::{assets, game_jar, libraries, version_manifest};
+use crate::net::game_files::{assets, game_jar, libraries, log_config, version_manifest};
 use crate::util::{print::PrintOptions, versions::MinecraftVersion};
 
 /// Requirements for operations that may be shared by multiple instances in a profile
@@ -36,6 +36,8 @@ pub enum UpdateRequirement {
 	Options,
 	/// Fabric and Quilt
 	FabricQuilt(fabric_quilt::Mode, Side),
+	/// Client logging configuration
+	ClientLoggingConfig,
 }
 
 /// Manager for when we are updating profile files.
@@ -325,6 +327,18 @@ impl UpdateManager {
 				.await
 				.context("Failed to read options.json")?;
 			self.options = options;
+		}
+
+		if self.has_requirement(UpdateRequirement::ClientLoggingConfig) {
+			log_config::get(
+				self.client_meta.get(),
+				&self.version_info.get().version,
+				paths,
+				self,
+				client,
+			)
+			.await
+			.context("Failed to get client logging config")?;
 		}
 
 		Ok(())

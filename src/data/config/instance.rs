@@ -137,6 +137,9 @@ pub struct LaunchConfig {
 	/// QuickPlay options
 	#[serde(default)]
 	pub quick_play: QuickPlay,
+	/// Whether or not to use the Log4J configuration
+	#[serde(default)]
+	pub use_log4j_config: bool,
 }
 
 impl LaunchConfig {
@@ -170,6 +173,7 @@ impl LaunchConfig {
 			env: self.env.clone(),
 			wrapper: self.wrapper.clone(),
 			quick_play: self.quick_play.clone(),
+			use_log4j_config: self.use_log4j_config,
 		})
 	}
 }
@@ -187,6 +191,7 @@ impl Default for LaunchConfig {
 			env: HashMap::new(),
 			wrapper: None,
 			quick_play: QuickPlay::default(),
+			use_log4j_config: false,
 		}
 	}
 }

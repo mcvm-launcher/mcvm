@@ -63,3 +63,36 @@ pub mod game_jar {
 		Ok(())
 	}
 }
+
+/// Downloading and using the logging config file
+pub mod log_config {
+	use std::path::PathBuf;
+
+	use super::{client_meta::ClientMeta, *};
+
+	/// Get the logging configuration file and returns the path to it
+	pub async fn get(
+		client_meta: &ClientMeta,
+		version: &str,
+		paths: &Paths,
+		manager: &UpdateManager,
+		client: &Client,
+	) -> anyhow::Result<()> {
+		let path = get_path(version, paths);
+
+		if !manager.should_update_file(&path) {
+			return Ok(());
+		}
+
+		let url = &client_meta.logging.client.file.url;
+		download::file(url, &path, client).await?;
+
+		Ok(())
+	}
+
+	/// Get the path to the logging config file
+	pub fn get_path(version: &str, paths: &Paths) -> PathBuf {
+		let version_dir = paths.internal.join("versions").join(version);
+		version_dir.join("logging.xml")
+	}
+}

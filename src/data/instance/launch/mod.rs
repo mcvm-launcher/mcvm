@@ -170,6 +170,8 @@ pub struct LaunchOptions {
 	pub wrapper: Option<WrapperCommand>,
 	/// Quick Play options
 	pub quick_play: QuickPlay,
+	/// Whether or not to use the Log4J configuration
+	pub use_log4j_config: bool,
 }
 
 impl LaunchOptions {
