@@ -10,7 +10,7 @@ pub mod print;
 pub mod versions;
 
 use std::{
-	process::Command,
+	process::{Command, Stdio},
 	time::{SystemTime, UNIX_EPOCH},
 };
 
@@ -194,7 +194,10 @@ cfg_match! {
 
 /// Attempt to open a link on the user's computer
 pub fn open_link(link: &str) -> anyhow::Result<()> {
-	Command::new(URL_OPEN_CMD).arg(link).spawn()?;
+	Command::new(URL_OPEN_CMD)
+		.arg(link)
+		.stdout(Stdio::null())
+		.spawn()?;
 
 	Ok(())
 }
