@@ -45,16 +45,22 @@ impl GameModifications {
 				ClientType::None => self.modloader,
 				ClientType::Vanilla => Modloader::Vanilla,
 				ClientType::Forge => Modloader::Forge,
+				ClientType::NeoForged => Modloader::NeoForged,
 				ClientType::Fabric => Modloader::Fabric,
 				ClientType::Quilt => Modloader::Quilt,
+				ClientType::LiteLoader => Modloader::LiteLoader,
+				ClientType::Risugamis => Modloader::Risugamis,
+				ClientType::Rift => Modloader::Rift,
 			},
 			Side::Server => match self.server_type {
 				ServerType::None => self.modloader,
-				ServerType::Vanilla => Modloader::Vanilla,
-				ServerType::Paper => Modloader::Vanilla,
-				ServerType::Forge => Modloader::Forge,
+				ServerType::Forge | ServerType::SpongeForge => Modloader::Forge,
+				ServerType::NeoForged => Modloader::NeoForged,
 				ServerType::Fabric => Modloader::Fabric,
 				ServerType::Quilt => Modloader::Quilt,
+				ServerType::Risugamis => Modloader::Risugamis,
+				ServerType::Rift => Modloader::Rift,
+				_ => Modloader::Vanilla,
 			},
 		}
 	}
@@ -66,8 +72,11 @@ impl GameModifications {
 			(ClientType::None, ServerType::None)
 				| (ClientType::Vanilla, ServerType::Vanilla)
 				| (ClientType::Forge, ServerType::Forge)
+				| (ClientType::NeoForged, ServerType::NeoForged)
 				| (ClientType::Fabric, ServerType::Fabric)
 				| (ClientType::Quilt, ServerType::Quilt)
+				| (ClientType::Risugamis, ServerType::Risugamis)
+				| (ClientType::Rift, ServerType::Rift)
 		)
 	}
 }
@@ -104,4 +113,24 @@ impl ProfileConfig {
 			GameModifications::new(self.modloader, self.client_type, self.server_type),
 		)
 	}
+}
+
+/// Check if a client type can be installed by MCVM
+pub fn can_install_client_type(client_type: ClientType) -> bool {
+	matches!(
+		client_type,
+		ClientType::None | ClientType::Vanilla | ClientType::Fabric | ClientType::Quilt
+	)
+}
+
+/// Check if a server type can be installed by MCVM
+pub fn can_install_server_type(server_type: ServerType) -> bool {
+	matches!(
+		server_type,
+		ServerType::None
+			| ServerType::Vanilla
+			| ServerType::Paper
+			| ServerType::Fabric
+			| ServerType::Quilt
+	)
 }

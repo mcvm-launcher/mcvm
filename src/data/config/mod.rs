@@ -17,7 +17,6 @@ use self::preferences::PrefDeser;
 use self::profile::ProfileConfig;
 use self::user::UserConfig;
 use anyhow::{bail, ensure, Context};
-use mcvm_shared::modifications::Modloader;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::pkg::is_valid_package_id;
 use mcvm_shared::util::is_valid_identifier;
@@ -171,15 +170,22 @@ impl Config {
 		for (profile_id, profile_config) in config.profiles {
 			let mut profile = profile_config.to_profile(profile_id.clone());
 
-			if let Modloader::Forge = profile_config.modloader {
-				if show_warnings {
-					o.display(
-						MessageContents::Warning(
-							"Forge installation is currently unimplemented by mcvm. You will be expected to install it yourself for the time being".into(),
-						),
-						MessageLevel::Important,
-					);
-				}
+			if show_warnings && !profile::can_install_client_type(profile.modifications.client_type) {
+				o.display(
+					MessageContents::Warning(
+						format!("{} installation on the client is currently unimplemented by mcvm. You will be expected to install it yourself for the time being", profile.modifications.client_type),
+					),
+					MessageLevel::Important,
+				);
+			}
+
+			if show_warnings && !profile::can_install_server_type(profile.modifications.server_type) {
+				o.display(
+					MessageContents::Warning(
+						format!("{} installation on the server is currently unimplemented by mcvm. You will be expected to install it yourself for the time being", profile.modifications.client_type),
+					),
+					MessageLevel::Important,
+				);
 			}
 
 			if profile_config.instances.is_empty() && show_warnings {

@@ -242,20 +242,6 @@ impl Instance {
 		});
 
 		self.jar_path.fill(match self.modifications.server_type {
-			ServerType::None
-			| ServerType::Vanilla
-			| ServerType::Forge
-			| ServerType::Fabric
-			| ServerType::Quilt => {
-				let extern_jar_path =
-					crate::io::minecraft::game_jar::get_path(self.kind.to_side(), version, paths);
-				if manager.should_update_file(&jar_path) {
-					update_hardlink(&extern_jar_path, &jar_path)
-						.context("Failed to hardlink server.jar")?;
-					out.files_updated.insert(jar_path.clone());
-				}
-				jar_path
-			}
 			ServerType::Paper => {
 				let process = OutputProcess::new(o);
 				process.0.display(
@@ -291,6 +277,16 @@ impl Instance {
 
 				out.files_updated.insert(paper_jar_path.clone());
 				paper_jar_path
+			}
+			_ => {
+				let extern_jar_path =
+					crate::io::minecraft::game_jar::get_path(self.kind.to_side(), version, paths);
+				if manager.should_update_file(&jar_path) {
+					update_hardlink(&extern_jar_path, &jar_path)
+						.context("Failed to hardlink server.jar")?;
+					out.files_updated.insert(jar_path.clone());
+				}
+				jar_path
 			}
 		});
 

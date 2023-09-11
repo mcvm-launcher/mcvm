@@ -52,8 +52,9 @@ Profiles are listed in the same id-value format as users under the `profiles` ob
 ```
 "id": {
 	"version": string,
-	"modloader": string,
-	"plugin_loader": string,
+	"modloader": modloader,
+	"client_type": client_type,
+	"server_type": client_type,
 	"instances": { .. },
 	"packages": [ .. ],
 	"package_stability": "stable" | "latest"
@@ -61,9 +62,9 @@ Profiles are listed in the same id-value format as users under the `profiles` ob
 ```
 
 - `version`: The Minecraft version of the profile. Can use `"latest"` or `"latest_snapshot"` as special identifiers to get the latest version.
-- `modloader` (Optional): The modloader for the profile. Can be `"vanilla"`, `"fabric"`, `"forge"`, or `"quilt"`. Defaults to `"vanilla"`.
-- `client_type` (Optional): The modification type for the client. Can be `"vanilla"`, `"fabric"`, `"forge"`, or `"quilt"`. Defaults to using the `modloader` setting.
-- `server_type` (Optional): The modification type for the server. Can be `"vanilla"`, `"paper"`, `"fabric"`, `"forge"`, or `"quilt"`. Defaults to using the `modloader` setting.
+- `modloader` (Optional): The modloader for the profile.
+- `client_type` (Optional): The modification type for the client. Defaults to using the `modloader` setting.
+- `server_type` (Optional): The modification type for the server. Defaults to using the `modloader` setting.
 - `instances`: The list of instances attached to this profile.
 - `packages` (Optional): The list of packages installed for this profile.
 - `stability` (Optional): Global stability setting for all packages in this profile. Defaults to `"stable"`.

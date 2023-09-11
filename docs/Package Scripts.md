@@ -45,8 +45,8 @@ Properties like `features` and `modrinth_id` can only be used in the `@propertie
 - `if {condition} [arguments...] { ... }`: If instructions let you run instructions inside a block only if a condition is met at runtime. The valid conditions are:
   - `value {x} {y}`: Check if two strings are the same. This is meant to be used to check the value of variables.
   - `version {pattern}`: Check that the Minecraft version of this instance matches a pattern.
-  - `modloader {vanilla | fabric | forge | quilt | fabriclike}`: Checks if the modloader supports a mod type. The `fabriclike` option will match both Fabric and Quilt and should be used for most Fabric mods unless you know they don't play nice with Quilt.
-  - `plugin_loader {vanilla | bukkit}`: Checks if the plugin loader supports a plugin type.
+  - `modloader {modloader_match}`: Checks if the modloader matches a `modloader_match`.
+  - `plugin_loader {plugin_loader_match}`: Checks if the plugin loader matches a `modloader_match`.
   - `side {client | server}`: Check what instance type the package is being installed on.
   - `feature {name}`: Check if a feature is enabled for this package.
   - `os {windows | mac | linux}`: Check if the user is using a certain operating system.

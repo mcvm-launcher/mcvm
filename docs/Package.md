@@ -159,8 +159,8 @@ Condition sets are used in multiple parts of declarative packages to check prope
 {
 	"minecraft_versions": [VersionPattern],
 	"side": "client" | "server",
-	"modloaders": [string],
-	"plugin_loaders": [string],
+	"modloaders": [modloader_match],
+	"plugin_loaders": [plugin_loader_match],
 	"stability": "stable" | "latest",
 	"features": [string],
 	"os": "windows" | "mac" | "linux",
@@ -170,8 +170,8 @@ Condition sets are used in multiple parts of declarative packages to check prope
 
 - `minecraft_versions`: Check if any one of the version patterns in the list matches the used Minecraft version.
 - `side`: Check whether this package is being installed on client or server.
-- `modloaders`: Check if any of these modloaders matches the users's modloader. Same options as the `supported_modloaders` property.
-- `plugin_loaders`: Check if any of these plugin loaders matches the user's plugin loader. Same options as the `supported_plugin_loaders` property.
+- `modloaders`: Check if the users's modloader matches any of the `modloader_match`'s.
+- `plugin_loaders`: Check if the users's plugin loader matches any of the `plugin_loader_match`'s.
 - `stability`: Check for the configured stability of the package.
 - `features`: Check if all of the listed features are enabled for this package.
 - `os`: Check the operating system this package is being installed on.
