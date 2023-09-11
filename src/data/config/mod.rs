@@ -232,7 +232,6 @@ impl Config {
 
 				if let PackageConfig::Full(FullPackageConfig::Local {
 					id: _,
-					version,
 					path,
 					content_type,
 					..
@@ -241,7 +240,6 @@ impl Config {
 					let path = shellexpand::tilde(&path);
 					packages.insert_local(
 						&config.req,
-						version,
 						&PathBuf::from(path.to_string()),
 						content_type,
 					);

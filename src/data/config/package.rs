@@ -29,8 +29,6 @@ pub enum FullPackageConfig {
 		r#type: PackageType,
 		/// The ID of the pcakage
 		id: String,
-		/// The package version number
-		version: u32,
 		/// The package's content type
 		#[serde(default)]
 		content_type: PackageContentType,
@@ -53,8 +51,6 @@ pub enum FullPackageConfig {
 	Repository {
 		/// The ID of the pcakage
 		id: String,
-		/// The package version number
-		version: Option<u32>,
 		#[serde(default)]
 		/// The package's enabled features
 		features: Vec<String>,
@@ -116,7 +112,6 @@ impl PackageConfig {
 			PackageConfig::Full(FullPackageConfig::Local {
 				r#type: _,
 				id,
-				version: _,
 				path: _,
 				content_type: _,
 				features,
@@ -132,7 +127,6 @@ impl PackageConfig {
 			},
 			PackageConfig::Full(FullPackageConfig::Repository {
 				id,
-				version: _,
 				features,
 				use_default_features,
 				permissions,

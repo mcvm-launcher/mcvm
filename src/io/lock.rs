@@ -8,7 +8,7 @@ use mcvm_shared::output::{MCVMOutput, MessageContents};
 use serde::{Deserialize, Serialize};
 
 use mcvm_shared::addon::{Addon, AddonKind};
-use mcvm_shared::pkg::{PackageAddonOptionalHashes, PackageID, PkgIdentifier};
+use mcvm_shared::pkg::{PackageAddonOptionalHashes, PackageID};
 
 use super::files::paths::Paths;
 
@@ -47,7 +47,7 @@ impl LockfileAddon {
 	}
 
 	/// Converts this LockfileAddon to an Addon
-	pub fn to_addon(&self, pkg_id: PkgIdentifier) -> anyhow::Result<Addon> {
+	pub fn to_addon(&self, pkg_id: PackageID) -> anyhow::Result<Addon> {
 		Ok(Addon {
 			kind: AddonKind::parse_from_str(&self.kind)
 				.ok_or(anyhow!("Invalid addon kind '{}'", self.kind))?,
@@ -78,7 +78,6 @@ impl LockfileAddon {
 /// Package stored in the lockfile
 #[derive(Serialize, Deserialize, Debug)]
 pub struct LockfilePackage {
-	version: u32,
 	addons: Vec<LockfileAddon>,
 }
 
@@ -176,7 +175,6 @@ impl Lockfile {
 		&mut self,
 		id: &str,
 		instance: &str,
-		version: u32,
 		addons: &[LockfileAddon],
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Vec<PathBuf>> {
@@ -184,7 +182,6 @@ impl Lockfile {
 		let mut new_files = Vec::new();
 		if let Some(instance) = self.contents.packages.get_mut(instance) {
 			if let Some(pkg) = instance.get_mut(id) {
-				pkg.version = version.to_owned();
 				let mut indices = Vec::new();
 				// Check for addons that need to be removed
 				for (i, current) in pkg.addons.iter().enumerate() {
@@ -223,7 +220,6 @@ impl Lockfile {
 				instance.insert(
 					id.to_owned(),
 					LockfilePackage {
-						version: version.to_owned(),
 						addons: addons.to_vec(),
 					},
 				);
@@ -233,7 +229,7 @@ impl Lockfile {
 			self.contents
 				.packages
 				.insert(instance.to_owned(), HashMap::new());
-			self.update_package(id, instance, version, addons, o)?;
+			self.update_package(id, instance, addons, o)?;
 		}
 
 		for file in &new_files {

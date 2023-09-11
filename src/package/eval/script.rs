@@ -4,7 +4,7 @@ use mcvm_parse::parse::{Block, Parsed};
 use mcvm_parse::vars::{ReservedConstantVariables, Value, VariableStore};
 use mcvm_parse::FailReason;
 use mcvm_pkg::RecommendedPackage;
-use mcvm_shared::pkg::{PackageAddonOptionalHashes, PkgIdentifier};
+use mcvm_shared::pkg::{PackageAddonOptionalHashes, PackageID};
 
 use super::conditions::eval_condition;
 use super::{
@@ -33,7 +33,7 @@ impl Default for EvalResult {
 
 /// Evaluate a script package
 pub fn eval_script_package<'a>(
-	pkg_id: PkgIdentifier,
+	pkg_id: PackageID,
 	parsed: &Parsed,
 	routine: Routine,
 	input: EvalInput<'a>,

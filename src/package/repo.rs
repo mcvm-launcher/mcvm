@@ -112,7 +112,6 @@ impl PkgRepo {
 		if let Some(entry) = index.packages.get(id) {
 			return Ok(Some(RepoQueryResult {
 				url: entry.url.clone(),
-				version: entry.version,
 				content_type: get_content_type(entry).await,
 			}));
 		}
@@ -146,8 +145,6 @@ pub fn get_package_index_url(base: &str) -> String {
 pub struct RepoQueryResult {
 	/// The URL to download the package from
 	pub url: String,
-	/// The version number of the package
-	pub version: u32,
 	/// The content type of the package
 	pub content_type: PackageContentType,
 }

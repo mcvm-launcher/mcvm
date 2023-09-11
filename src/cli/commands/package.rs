@@ -172,24 +172,15 @@ async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
 	let client = Client::new();
 
 	let req = PkgRequest::new(id, PkgRequestSource::UserRequire);
-	let package_version = config
-		.packages
-		.get_version(&req, &data.paths, &client)
-		.await
-		.context("Failed to get package version from registry")?;
 	let metadata = config
 		.packages
 		.get_metadata(&req, &data.paths, &client)
 		.await
 		.context("Failed to get metadata from the registry")?;
 	if let Some(name) = &metadata.name {
-		cprintln!(
-			"<s><g>Package</g> <b>{}</b> <y>v{}</y>",
-			name,
-			package_version
-		);
+		cprintln!("<s><g>Package</g> <b>{}</b>", name);
 	} else {
-		cprintln!("<s><g>Package</g> <b>{}</b>:<y>{}</y>", id, package_version);
+		cprintln!("<s><g>Package</g> <b>{}</b>", id);
 	}
 	if let Some(description) = &metadata.description {
 		if !description.is_empty() {

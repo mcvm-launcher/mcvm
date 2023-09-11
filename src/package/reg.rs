@@ -76,8 +76,7 @@ impl PkgRegistry {
 			return Ok(self.insert(
 				req,
 				Package::new(
-					&pkg_id,
-					result.version,
+					pkg_id,
 					PkgLocation::Remote(Some(result.url)),
 					result.content_type,
 				),
@@ -86,15 +85,9 @@ impl PkgRegistry {
 
 		// Now check if it exists as a core package
 		if is_core_package(&req.id) {
-			Ok(self.insert(
-				req,
-				Package::new(
-					&pkg_id,
-					1,
-					PkgLocation::Core,
-					get_core_package_content_type(&pkg_id).expect("Core package should exist"),
-				),
-			))
+			let content_type =
+				get_core_package_content_type(&pkg_id).expect("Core package should exist");
+			Ok(self.insert(req, Package::new(pkg_id, PkgLocation::Core, content_type)))
 		} else {
 			Err(anyhow!("Package '{pkg_id}' does not exist"))
 		}
@@ -143,20 +136,6 @@ impl PkgRegistry {
 			.with_context(|| format!("Failed to get package {req}"))?;
 
 		Ok(())
-	}
-
-	/// Get the version of a package
-	pub async fn get_version(
-		&mut self,
-		req: &PkgRequest,
-		paths: &Paths,
-		client: &Client,
-	) -> anyhow::Result<u32> {
-		let pkg = self
-			.get(req, paths, client)
-			.await
-			.with_context(|| format!("Failed to get package {req}"))?;
-		Ok(pkg.id.version)
 	}
 
 	/// Get the metadata of a package
@@ -259,15 +238,13 @@ impl PkgRegistry {
 	pub fn insert_local(
 		&mut self,
 		req: &PkgRequest,
-		version: u32,
 		path: &Path,
 		content_type: PackageContentType,
 	) {
 		self.insert(
 			req,
 			Package::new(
-				&req.id,
-				version,
+				req.id.clone(),
 				PkgLocation::Local(path.to_path_buf()),
 				content_type,
 			),
@@ -340,7 +317,6 @@ mod tests {
 		let mut reg = PkgRegistry::new(vec![], CachingStrategy::Lazy);
 		reg.insert_local(
 			&PkgRequest::new("test", PkgRequestSource::UserRequire),
-			1,
 			&PathBuf::from("./test"),
 			PackageContentType::Script,
 		);

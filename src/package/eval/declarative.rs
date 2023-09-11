@@ -1,14 +1,14 @@
 use anyhow::anyhow;
 use mcvm_pkg::declarative::{DeclarativeAddonVersion, DeclarativeConditionSet, DeclarativePackage};
 use mcvm_pkg::RequiredPackage;
-use mcvm_shared::pkg::{PackageID, PkgIdentifier};
+use mcvm_shared::pkg::PackageID;
 
 use super::conditions::check_os_condition;
 use super::{create_valid_addon_request, EvalData, EvalInput, Routine};
 
 /// Evaluate a declarative package
 pub fn eval_declarative_package<'a>(
-	id: PkgIdentifier,
+	id: PackageID,
 	contents: &DeclarativePackage,
 	input: EvalInput<'a>,
 	routine: Routine,
@@ -289,9 +289,8 @@ mod tests {
 			},
 		};
 
-		let eval =
-			eval_declarative_package(PkgIdentifier::new("foo", 1), &pkg, input, Routine::Install)
-				.unwrap();
+		let eval = eval_declarative_package(PackageID::from("foo"), &pkg, input, Routine::Install)
+			.unwrap();
 
 		let addon = eval.addon_reqs.first().unwrap();
 		assert_eq!(addon.addon.version, Some("2".into()));

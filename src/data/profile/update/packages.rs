@@ -36,11 +36,6 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 	for (package, package_instances) in batched.iter().sorted_by_key(|x| x.0) {
 		ctx.output.start_process();
 
-		let pkg_version = ctx
-			.packages
-			.get_version(package, ctx.paths, ctx.client)
-			.await
-			.context("Failed to get version for package")?;
 		let mut notices = Vec::new();
 		for instance_id in package_instances {
 			let instance = ctx.instances.get(instance_id).ok_or(anyhow!(
@@ -64,7 +59,6 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 			let result = instance
 				.install_package(
 					package,
-					pkg_version,
 					input,
 					ctx.packages,
 					ctx.paths,

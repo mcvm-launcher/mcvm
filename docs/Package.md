@@ -10,7 +10,6 @@ A package repository is any server that provides an `index.json` of packages for
 {
 	"packages": {
 		"package-id": {
-			"version": Integer,
 			"url": string,
 			"content_type": "script" | "declarative"
 		}
@@ -19,7 +18,6 @@ A package repository is any server that provides an `index.json` of packages for
 ```
 
 - `package-id`: The ID of the package.
-- `version`: The package version known by the repository.
 - `url`: The URL to the `package.pkg.txt` file.
 - `content_type`: What type of package this is. Defaults to `"script"`.
 

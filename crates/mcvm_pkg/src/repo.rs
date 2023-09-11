@@ -7,8 +7,6 @@ use crate::PackageContentType;
 /// An entry in the repository package index that specifies what package versions are available
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct RepoPkgEntry {
-	/// The latest package version available from this repository.
-	pub version: u32,
 	/// The URL to the package file
 	pub url: String,
 	/// Override for the content type of this package

@@ -5,25 +5,6 @@ use std::sync::Arc;
 
 use crate::util::is_valid_identifier;
 
-/// A known identifier for a package
-#[derive(Debug, Hash, Clone, PartialEq, Eq)]
-pub struct PkgIdentifier {
-	/// The string identifier of this package
-	pub id: String,
-	/// The version of this package
-	pub version: u32,
-}
-
-impl PkgIdentifier {
-	/// Create new new PkgIdentifier
-	pub fn new(id: &str, version: u32) -> Self {
-		Self {
-			id: id.to_string(),
-			version,
-		}
-	}
-}
-
 /// Where a package was requested from
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum PkgRequestSource {

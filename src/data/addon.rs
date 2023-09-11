@@ -17,7 +17,7 @@ pub fn get_dir(addon: &Addon, paths: &Paths) -> PathBuf {
 
 /// Get the path to an addon stored in the internal addons folder
 pub fn get_path(addon: &Addon, paths: &Paths, instance_id: &str) -> PathBuf {
-	let pkg_dir = get_dir(addon, paths).join(&addon.pkg_id.id);
+	let pkg_dir = get_dir(addon, paths).join(addon.pkg_id.to_string());
 	if let Some(version) = &addon.version {
 		pkg_dir.join(addon.id.clone()).join(version)
 	} else {
@@ -134,7 +134,7 @@ pub fn game_modifications_compatible(modloader: &Modloader, plugin_loader: &Serv
 
 #[cfg(test)]
 mod tests {
-	use mcvm_shared::pkg::{PackageAddonOptionalHashes, PkgIdentifier};
+	use mcvm_shared::pkg::{PackageAddonOptionalHashes, PackageID};
 
 	use super::*;
 
@@ -160,7 +160,7 @@ mod tests {
 			kind: AddonKind::Mod,
 			id: "foo".into(),
 			file_name: "FooBar.baz.jar".into(),
-			pkg_id: PkgIdentifier::new("package", 10),
+			pkg_id: PackageID::from("package"),
 			version: None,
 			hashes: PackageAddonOptionalHashes::default(),
 		};

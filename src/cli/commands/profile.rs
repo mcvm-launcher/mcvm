@@ -6,11 +6,9 @@ use mcvm::data::profile::update::update_profiles;
 use mcvm::util::print::HYPHEN_POINT;
 
 use anyhow::bail;
-use anyhow::Context;
 use clap::Subcommand;
 use color_print::{cprint, cprintln};
 use mcvm_shared::instance::Side;
-use reqwest::Client;
 
 #[derive(Debug, Subcommand)]
 pub enum ProfileSubcommand {
@@ -73,13 +71,8 @@ async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
 		}
 		cprintln!("   <s>Packages:");
 		for pkg in profile.packages.iter() {
-			let pkg_version = config
-				.packages
-				.get_version(&pkg.req, &data.paths, &Client::new())
-				.await
-				.context("Failed to get package version")?;
 			cprint!("   {}", HYPHEN_POINT);
-			cprint!("<b!>{}:<g!>{}", pkg.req.id, pkg_version);
+			cprint!("<b!>{}<g!>", pkg.req.id);
 			cprintln!();
 		}
 	} else {

@@ -45,7 +45,7 @@ use crate::util::hash::{
 	get_hash_str_as_hex, HASH_SHA256_RESULT_LENGTH, HASH_SHA512_RESULT_LENGTH,
 };
 use mcvm_shared::instance::Side;
-use mcvm_shared::pkg::{PackageAddonOptionalHashes, PackageStability, PkgIdentifier};
+use mcvm_shared::pkg::{PackageAddonOptionalHashes, PackageStability};
 
 use std::path::PathBuf;
 
@@ -144,7 +144,7 @@ pub struct EvalData<'a> {
 	/// Input to the evaluator
 	pub input: EvalInput<'a>,
 	/// ID of the package we are evaluating
-	pub id: PkgIdentifier,
+	pub id: PackageID,
 	/// Level of evaluation
 	pub level: EvalLevel,
 	/// Variables, used for script evaluation
@@ -171,7 +171,7 @@ pub struct EvalData<'a> {
 
 impl<'a> EvalData<'a> {
 	/// Create a new EvalData
-	pub fn new(input: EvalInput<'a>, id: PkgIdentifier, routine: &Routine) -> Self {
+	pub fn new(input: EvalInput<'a>, id: PackageID, routine: &Routine) -> Self {
 		Self {
 			input,
 			id,
@@ -265,7 +265,7 @@ pub fn create_valid_addon_request(
 	kind: AddonKind,
 	file_name: Option<String>,
 	version: Option<String>,
-	pkg_id: PkgIdentifier,
+	pkg_id: PackageID,
 	hashes: PackageAddonOptionalHashes,
 	eval_input: &EvalInput,
 ) -> anyhow::Result<AddonRequest> {
@@ -281,7 +281,7 @@ pub fn create_valid_addon_request(
 		}
 	}
 
-	let file_name = file_name.unwrap_or(addon::get_addon_instance_filename(&pkg_id.id, &id, &kind));
+	let file_name = file_name.unwrap_or(addon::get_addon_instance_filename(&pkg_id, &id, &kind));
 
 	if !is_filename_valid(kind, &file_name) {
 		bail!("Invalid addon filename '{file_name}' in addon '{id}'");

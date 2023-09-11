@@ -297,7 +297,6 @@ impl Instance {
 	pub async fn install_package<'a>(
 		&self,
 		pkg: &PkgRequest,
-		pkg_version: u32,
 		eval_input: EvalInput<'a>,
 		reg: &mut PkgRegistry,
 		paths: &Paths,
@@ -349,7 +348,7 @@ impl Instance {
 			.context("Failed to convert addons to the lockfile format")?;
 
 		let files_to_remove = lock
-			.update_package(&pkg.id, &self.id, pkg_version, &lockfile_addons, o)
+			.update_package(&pkg.id, &self.id, &lockfile_addons, o)
 			.context("Failed to update package in lockfile")?;
 
 		for addon in eval.addon_reqs.iter() {

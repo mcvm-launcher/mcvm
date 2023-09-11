@@ -23,7 +23,7 @@ use mcvm_parse::metadata::{eval_metadata, PackageMetadata};
 use mcvm_parse::parse::{lex_and_parse, Parsed};
 use mcvm_parse::properties::{eval_properties, PackageProperties};
 use mcvm_pkg::PkgRequest;
-use mcvm_shared::pkg::{PackageStability, PkgIdentifier};
+use mcvm_shared::pkg::{PackageID, PackageStability};
 use reqwest::Client;
 
 const PKG_EXTENSION: &str = ".pkg.txt";
@@ -98,7 +98,7 @@ pub enum PkgLocation {
 #[derive(Debug)]
 pub struct Package {
 	/// The package ID
-	pub id: PkgIdentifier,
+	pub id: PackageID,
 	/// Where the package is being retrieved from
 	pub location: PkgLocation,
 	/// Type of the content in the package
@@ -109,14 +109,9 @@ pub struct Package {
 
 impl Package {
 	/// Create a new Package
-	pub fn new(
-		id: &str,
-		version: u32,
-		location: PkgLocation,
-		content_type: PackageContentType,
-	) -> Self {
+	pub fn new(id: PackageID, location: PkgLocation, content_type: PackageContentType) -> Self {
 		Self {
-			id: PkgIdentifier::new(id, version),
+			id,
 			location,
 			data: Later::new(),
 			content_type,
@@ -125,7 +120,7 @@ impl Package {
 
 	/// Get the cached file name of the package
 	pub fn filename(&self) -> String {
-		format!("{}_{}{PKG_EXTENSION}", self.id.id.clone(), self.id.version)
+		format!("{}{PKG_EXTENSION}", self.id)
 	}
 
 	/// Get the cached path of the package
@@ -172,7 +167,7 @@ impl Package {
 					}
 				}
 				PkgLocation::Core => {
-					let contents = get_core_package(&self.id.id)
+					let contents = get_core_package(&self.id)
 						.ok_or(anyhow!("Package is not a core package"))?;
 					self.data.fill(PkgData::new(contents));
 				}
@@ -301,16 +296,14 @@ mod tests {
 	#[test]
 	fn test_package_id() {
 		let package = Package::new(
-			"sodium",
-			2,
+			PackageID::from("sodium"),
 			PkgLocation::Remote(None),
 			PackageContentType::Script,
 		);
 		assert_eq!(package.filename(), "sodium_2".to_string() + PKG_EXTENSION);
 
 		let package = Package::new(
-			"fabriclike-api",
-			80,
+			PackageID::from("fabriclike-api"),
 			PkgLocation::Remote(None),
 			PackageContentType::Script,
 		);

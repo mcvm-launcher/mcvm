@@ -2,7 +2,7 @@ use std::fmt::Display;
 
 use serde::Deserialize;
 
-use crate::pkg::{PackageAddonOptionalHashes, PkgIdentifier};
+use crate::pkg::{PackageAddonOptionalHashes, PackageID};
 
 /// Different kinds of addons
 #[derive(Debug, Clone, Copy, Deserialize)]
@@ -79,7 +79,7 @@ pub struct Addon {
 	/// The addon's file name
 	pub file_name: String,
 	/// The ID of the package that installed this addon
-	pub pkg_id: PkgIdentifier,
+	pub pkg_id: PackageID,
 	/// Version of the addon, used for caching
 	pub version: Option<String>,
 	/// Hashes of the addon
