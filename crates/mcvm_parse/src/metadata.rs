@@ -11,8 +11,6 @@ pub struct PackageMetadata {
 	pub description: Option<String>,
 	/// The long description of the package
 	pub long_description: Option<String>,
-	/// The display version of the package
-	pub version: Option<String>,
 	/// The authors of the package content
 	pub authors: Option<Vec<String>>,
 	/// The maintainers of the package file
@@ -61,7 +59,6 @@ pub fn eval_metadata(parsed: &Parsed) -> anyhow::Result<PackageMetadata> {
 					InstrKind::Name(val) => out.name = Some(val.get_clone()),
 					InstrKind::Description(val) => out.description = Some(val.get_clone()),
 					InstrKind::LongDescription(val) => out.long_description = Some(val.get_clone()),
-					InstrKind::Version(val) => out.version = Some(val.get_clone()),
 					InstrKind::Authors(val) => out.authors = Some(val.clone()),
 					InstrKind::PackageMaintainers(val) => {
 						out.package_maintainers = Some(val.clone())

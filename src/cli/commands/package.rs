@@ -202,11 +202,6 @@ async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
 		}
 	}
 	cprintln!("   <s>ID:</s> <g>{}", id);
-	if let Some(version) = &metadata.version {
-		if !version.is_empty() {
-			cprintln!("   <s>Version:</s> <g>{}", version);
-		}
-	}
 	if let Some(authors) = &metadata.authors {
 		if !authors.is_empty() {
 			cprintln!("   <s>Authors:</s> <g>{}", authors.join(", "));

@@ -25,8 +25,6 @@ pub enum InstrKind {
 	Description(Later<String>),
 	/// Set the package long description metadata
 	LongDescription(Later<String>),
-	/// Set the package version metadata
-	Version(Later<String>),
 	/// Set the package authors metadata
 	Authors(Vec<String>),
 	/// Set the package maintainers metadata
@@ -124,7 +122,6 @@ impl Display for InstrKind {
 				Self::Name(..) => "name",
 				Self::Description(..) => "description",
 				Self::LongDescription(..) => "long_description",
-				Self::Version(..) => "version",
 				Self::Authors(..) => "authors",
 				Self::PackageMaintainers(..) => "package_maintainers",
 				Self::Website(..) => "website",
@@ -184,7 +181,6 @@ impl Instruction {
 			"name" => Ok::<InstrKind, anyhow::Error>(InstrKind::Name(Later::Empty)),
 			"description" => Ok(InstrKind::Description(Later::Empty)),
 			"long_description" => Ok(InstrKind::LongDescription(Later::Empty)),
-			"version" => Ok(InstrKind::Version(Later::Empty)),
 			"authors" => Ok(InstrKind::Authors(Vec::new())),
 			"package_maintainers" => Ok(InstrKind::PackageMaintainers(Vec::new())),
 			"website" => Ok(InstrKind::Website(Later::Empty)),
@@ -225,7 +221,6 @@ impl Instruction {
 			InstrKind::Name(val)
 			| InstrKind::Description(val)
 			| InstrKind::LongDescription(val)
-			| InstrKind::Version(val)
 			| InstrKind::SupportLink(val)
 			| InstrKind::Documentation(val)
 			| InstrKind::Source(val)
@@ -276,7 +271,6 @@ impl Instruction {
 				InstrKind::Name(text)
 				| InstrKind::Description(text)
 				| InstrKind::LongDescription(text)
-				| InstrKind::Version(text)
 				| InstrKind::Website(text)
 				| InstrKind::SupportLink(text)
 				| InstrKind::Documentation(text)

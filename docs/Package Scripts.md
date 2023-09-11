@@ -75,7 +75,6 @@ Properties like `features` and `modrinth_id` can only be used in the `@propertie
 - `name {name}`: Set the display name of the package.
 - `description {description}`: Set a short description for this package.
 - `long_description {description}`: Set a long description for this package.
-- `version {version}`: Set the display version of this package.
 - `authors {author1} {author2} ...`: Set the list of authors for this package.
 - `package_maintainers {author1} {author2} ...`: Set the list of maintainers for this package.
 - `website {website}`: Set a primary website / project link / etc.

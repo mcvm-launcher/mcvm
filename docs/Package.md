@@ -54,7 +54,6 @@ Metadata for a package is extra information about a package such as its display 
 	"name": string,
 	"description": string,
 	"long_description": string,
-	"version": string,
 	"authors": [string],
 	"package_maintainers": [string],
 	"website": string,
@@ -75,7 +74,6 @@ Metadata for a package is extra information about a package such as its display 
 - `name`: Display name of the package.
 - `description`: A short description of the package. Should be 1-2 sentences max.
 - `long_description`: A longer description of the package.
-- `version`: A project version. Has no meaning.
 - `authors`: A list of authors for this package. This should be the authors of the project / addons itself, not the mcvm package file.
 - `package_maintainers`: A list of maintainers for this package. This should be the maintainers of the mcvm package file, not the project itself
 - `website`: Primary website / project link / etc.
