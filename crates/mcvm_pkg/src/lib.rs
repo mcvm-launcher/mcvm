@@ -12,6 +12,7 @@ pub mod resolve;
 use anyhow::Context;
 use async_trait::async_trait;
 use declarative::{deserialize_declarative_package, validate_declarative_package};
+use mcvm_shared::pkg::PackageID;
 use parse::properties::PackageProperties;
 use serde::{Deserialize, Serialize};
 
@@ -51,7 +52,7 @@ pub fn parse_and_validate(contents: &str, content_type: PackageContentType) -> a
 #[derive(Debug, Clone, PartialOrd, Ord, PartialEq, Eq)]
 pub struct RequiredPackage {
 	/// The package id that is required
-	pub value: String,
+	pub value: PackageID,
 	/// Whether this is an explicit dependency
 	pub explicit: bool,
 }
@@ -60,7 +61,7 @@ pub struct RequiredPackage {
 #[derive(Debug, Clone, PartialOrd, Ord, PartialEq, Eq, Deserialize)]
 pub struct RecommendedPackage {
 	/// The package id that is required
-	pub value: String,
+	pub value: PackageID,
 	/// Whether to invert this recommendation
 	pub invert: bool,
 }
@@ -86,15 +87,15 @@ pub trait PackageEvalRelationsResult {
 	/// Get the evaluated dependencies
 	fn get_deps(&self) -> Vec<Vec<RequiredPackage>>;
 	/// Get the evaluated conflicts
-	fn get_conflicts(&self) -> Vec<String>;
+	fn get_conflicts(&self) -> Vec<PackageID>;
 	/// Get the evaluated recommendations
 	fn get_recommendations(&self) -> Vec<RecommendedPackage>;
 	/// Get the evaluated bundled packages
-	fn get_bundled(&self) -> Vec<String>;
+	fn get_bundled(&self) -> Vec<PackageID>;
 	/// Get the evaluated compats
-	fn get_compats(&self) -> Vec<(String, String)>;
+	fn get_compats(&self) -> Vec<(PackageID, PackageID)>;
 	/// Get the evaluated extensions
-	fn get_extensions(&self) -> Vec<String>;
+	fn get_extensions(&self) -> Vec<PackageID>;
 }
 
 /// Trait for a central package registry that can evaluate packages

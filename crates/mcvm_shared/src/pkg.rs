@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 use std::fmt::Display;
 use std::hash::Hash;
+use std::sync::Arc;
 
 use crate::util::is_valid_identifier;
 
@@ -77,6 +78,9 @@ impl PkgRequestSource {
 	}
 }
 
+/// Type for the ID of a package
+pub type PackageID = Arc<str>;
+
 /// Used to store a request for a package that will be fulfilled later
 #[derive(Debug, Clone, PartialOrd, Ord)]
 pub struct PkgRequest {
@@ -84,14 +88,14 @@ pub struct PkgRequest {
 	/// Could be a dependent, a recommender, or anything else.
 	pub source: PkgRequestSource,
 	/// The ID of the package to request
-	pub id: String,
+	pub id: PackageID,
 }
 
 impl PkgRequest {
 	/// Create a new PkgRequest
-	pub fn new(id: &str, source: PkgRequestSource) -> Self {
+	pub fn new(id: impl Into<PackageID>, source: PkgRequestSource) -> Self {
 		Self {
-			id: id.to_string(),
+			id: id.into(),
 			source,
 		}
 	}

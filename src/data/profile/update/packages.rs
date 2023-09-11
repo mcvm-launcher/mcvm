@@ -3,7 +3,7 @@ use std::collections::{HashMap, HashSet};
 use itertools::Itertools;
 use mcvm_pkg::PkgRequest;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
-use mcvm_shared::pkg::PackageStability;
+use mcvm_shared::pkg::{PackageID, PackageStability};
 
 use crate::data::id::InstanceID;
 use crate::data::profile::Profile;
@@ -116,7 +116,7 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 				&packages
 					.iter()
 					.map(|x| x.id.clone())
-					.collect::<Vec<String>>(),
+					.collect::<Vec<PackageID>>(),
 			)
 			.context("Failed to remove unused packages")?;
 		for file in files_to_remove {

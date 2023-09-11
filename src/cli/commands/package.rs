@@ -2,12 +2,16 @@ use std::collections::HashMap;
 
 use super::CmdData;
 use itertools::Itertools;
-use mcvm::{util::print::{ReplPrinter, HYPHEN_POINT}, data::id::ProfileID};
+use mcvm::{
+	data::id::ProfileID,
+	util::print::{ReplPrinter, HYPHEN_POINT},
+};
 use mcvm_pkg::{PkgRequest, PkgRequestSource};
 
 use anyhow::{bail, Context};
 use clap::Subcommand;
 use color_print::{cformat, cprint, cprintln};
+use mcvm_shared::pkg::PackageID;
 use reqwest::Client;
 
 #[derive(Debug, Subcommand)]
@@ -71,7 +75,7 @@ async fn list(data: &mut CmdData, raw: bool, profile: Option<String>) -> anyhow:
 			bail!("Unknown profile '{profile_id}'");
 		}
 	} else {
-		let mut found_pkgs: HashMap<String, Vec<ProfileID>> = HashMap::new();
+		let mut found_pkgs: HashMap<PackageID, Vec<ProfileID>> = HashMap::new();
 		for (id, profile) in config.profiles.iter() {
 			if !profile.packages.is_empty() {
 				for pkg in profile.packages.iter() {

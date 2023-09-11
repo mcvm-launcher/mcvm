@@ -123,7 +123,7 @@ pub fn eval_instr(
 						let mut dep_to_push = Vec::new();
 						for dep in dep {
 							dep_to_push.push(RequiredPackage {
-								value: dep.value.get(&eval.vars)?,
+								value: dep.value.get(&eval.vars)?.into(),
 								explicit: dep.explicit,
 							});
 						}
@@ -133,13 +133,13 @@ pub fn eval_instr(
 			}
 			InstrKind::Refuse(package) => {
 				if let EvalLevel::Resolve = eval.level {
-					eval.conflicts.push(package.get(&eval.vars)?);
+					eval.conflicts.push(package.get(&eval.vars)?.into());
 				}
 			}
 			InstrKind::Recommend(invert, package) => {
 				if let EvalLevel::Resolve = eval.level {
 					let recommendation = RecommendedPackage {
-						value: package.get(&eval.vars)?,
+						value: package.get(&eval.vars)?.into(),
 						invert: *invert,
 					};
 					eval.recommendations.push(recommendation);
@@ -147,18 +147,20 @@ pub fn eval_instr(
 			}
 			InstrKind::Bundle(package) => {
 				if let EvalLevel::Resolve = eval.level {
-					eval.bundled.push(package.get(&eval.vars)?);
+					eval.bundled.push(package.get(&eval.vars)?.into());
 				}
 			}
 			InstrKind::Compat(package, compat) => {
 				if let EvalLevel::Resolve = eval.level {
-					eval.compats
-						.push((package.get(&eval.vars)?, compat.get(&eval.vars)?));
+					eval.compats.push((
+						package.get(&eval.vars)?.into(),
+						compat.get(&eval.vars)?.into(),
+					));
 				}
 			}
 			InstrKind::Extend(package) => {
 				if let EvalLevel::Resolve = eval.level {
-					eval.extensions.push(package.get(&eval.vars)?);
+					eval.extensions.push(package.get(&eval.vars)?.into());
 				}
 			}
 			InstrKind::Notice(notice) => {

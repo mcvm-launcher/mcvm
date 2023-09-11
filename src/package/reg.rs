@@ -310,7 +310,7 @@ impl PkgRegistry {
 			.await
 			.context("Failed to retrieve all packages from repos")?
 			.iter()
-			.map(|(id, ..)| PkgRequest::new(id, PkgRequestSource::Repository))
+			.map(|(id, ..)| PkgRequest::new(id.clone(), PkgRequestSource::Repository))
 			.collect::<Vec<_>>();
 		self.remove_cached_packages(packages.iter(), paths, client)
 			.await

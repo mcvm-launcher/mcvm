@@ -8,7 +8,7 @@ use mcvm_shared::output::{MCVMOutput, MessageContents};
 use serde::{Deserialize, Serialize};
 
 use mcvm_shared::addon::{Addon, AddonKind};
-use mcvm_shared::pkg::{PackageAddonOptionalHashes, PkgIdentifier};
+use mcvm_shared::pkg::{PackageAddonOptionalHashes, PackageID, PkgIdentifier};
 
 use super::files::paths::Paths;
 
@@ -257,12 +257,12 @@ impl Lockfile {
 	pub fn remove_unused_packages(
 		&mut self,
 		instance: &str,
-		used_packages: &[String],
+		used_packages: &[PackageID],
 	) -> anyhow::Result<Vec<PathBuf>> {
 		if let Some(inst) = self.contents.packages.get_mut(instance) {
 			let mut pkgs_to_remove = Vec::new();
 			for (pkg, ..) in inst.iter() {
-				if !used_packages.contains(pkg) {
+				if !used_packages.contains(&PackageID::from(pkg.clone())) {
 					pkgs_to_remove.push(pkg.clone());
 				}
 			}

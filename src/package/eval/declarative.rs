@@ -1,7 +1,7 @@
 use anyhow::anyhow;
 use mcvm_pkg::declarative::{DeclarativeAddonVersion, DeclarativeConditionSet, DeclarativePackage};
 use mcvm_pkg::RequiredPackage;
-use mcvm_shared::pkg::PkgIdentifier;
+use mcvm_shared::pkg::{PackageID, PkgIdentifier};
 
 use super::conditions::check_os_condition;
 use super::{create_valid_addon_request, EvalData, EvalInput, Routine};
@@ -66,7 +66,7 @@ pub fn eval_declarative_package<'a>(
 		.deps
 		.extend(relations.dependencies.iter().map(|x| {
 			vec![RequiredPackage {
-				value: x.clone(),
+				value: x.clone().into(),
 				explicit: false,
 			}]
 		}));
@@ -74,18 +74,26 @@ pub fn eval_declarative_package<'a>(
 		.deps
 		.extend(relations.explicit_dependencies.iter().map(|x| {
 			vec![RequiredPackage {
-				value: x.clone(),
+				value: x.clone().into(),
 				explicit: true,
 			}]
 		}));
 	eval_data
 		.conflicts
-		.extend(relations.conflicts.iter().cloned());
+		.extend(relations.conflicts.iter().cloned().map(PackageID::from));
 	eval_data
 		.extensions
-		.extend(relations.extensions.iter().cloned());
-	eval_data.bundled.extend(relations.bundled.iter().cloned());
-	eval_data.compats.extend(relations.compats.iter().cloned());
+		.extend(relations.extensions.iter().cloned().map(PackageID::from));
+	eval_data
+		.bundled
+		.extend(relations.bundled.iter().cloned().map(PackageID::from));
+	eval_data.compats.extend(
+		relations
+			.compats
+			.iter()
+			.cloned()
+			.map(|(a, b)| (a.into(), b.into())),
+	);
 	eval_data
 		.recommendations
 		.extend(relations.recommendations.iter().cloned());

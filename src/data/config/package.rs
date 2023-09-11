@@ -107,7 +107,7 @@ impl PackageConfig {
 	) -> anyhow::Result<PkgProfileConfig> {
 		let package = match self {
 			PackageConfig::Basic(id) => PkgProfileConfig {
-				req: PkgRequest::new(id, PkgRequestSource::UserRequire),
+				req: PkgRequest::new(id.clone(), PkgRequestSource::UserRequire),
 				features: vec![],
 				use_default_features: true,
 				permissions: EvalPermissions::Standard,
@@ -124,7 +124,7 @@ impl PackageConfig {
 				permissions,
 				stability,
 			}) => PkgProfileConfig {
-				req: PkgRequest::new(id, PkgRequestSource::UserRequire),
+				req: PkgRequest::new(id.clone(), PkgRequestSource::UserRequire),
 				features: features.clone(),
 				use_default_features: *use_default_features,
 				permissions: *permissions,
@@ -138,7 +138,7 @@ impl PackageConfig {
 				permissions,
 				stability,
 			}) => PkgProfileConfig {
-				req: PkgRequest::new(id, PkgRequestSource::UserRequire),
+				req: PkgRequest::new(id.clone(), PkgRequestSource::UserRequire),
 				features: features.clone(),
 				use_default_features: *use_default_features,
 				permissions: *permissions,

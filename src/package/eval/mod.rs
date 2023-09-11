@@ -26,6 +26,7 @@ use mcvm_shared::lang::Language;
 use mcvm_shared::output::MCVMOutput;
 use mcvm_shared::output::MessageContents;
 use mcvm_shared::output::MessageLevel;
+use mcvm_shared::pkg::PackageID;
 use mcvm_shared::util::is_valid_identifier;
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
@@ -153,15 +154,15 @@ pub struct EvalData<'a> {
 	/// The output dependencies
 	pub deps: Vec<Vec<RequiredPackage>>,
 	/// The output conflicts
-	pub conflicts: Vec<String>,
+	pub conflicts: Vec<PackageID>,
 	/// The output recommendations
 	pub recommendations: Vec<RecommendedPackage>,
 	/// The output bundled packages
-	pub bundled: Vec<String>,
+	pub bundled: Vec<PackageID>,
 	/// The output compats
-	pub compats: Vec<(String, String)>,
+	pub compats: Vec<(PackageID, PackageID)>,
 	/// The output package extensions
-	pub extensions: Vec<String>,
+	pub extensions: Vec<PackageID>,
 	/// The output notices
 	pub notices: Vec<String>,
 	/// The output commands
@@ -370,30 +371,30 @@ impl ConfiguredPackage for PackageConfig {
 
 struct EvalRelationsResult {
 	pub deps: Vec<Vec<RequiredPackage>>,
-	pub conflicts: Vec<String>,
+	pub conflicts: Vec<PackageID>,
 	pub recommendations: Vec<mcvm_pkg::RecommendedPackage>,
-	pub bundled: Vec<String>,
-	pub compats: Vec<(String, String)>,
-	pub extensions: Vec<String>,
+	pub bundled: Vec<PackageID>,
+	pub compats: Vec<(PackageID, PackageID)>,
+	pub extensions: Vec<PackageID>,
 }
 
 impl EvalRelationsResultTrait for EvalRelationsResult {
-	fn get_bundled(&self) -> Vec<String> {
+	fn get_bundled(&self) -> Vec<PackageID> {
 		self.bundled.clone()
 	}
 
-	fn get_compats(&self) -> Vec<(String, String)> {
+	fn get_compats(&self) -> Vec<(PackageID, PackageID)> {
 		self.compats.clone()
 	}
 
-	fn get_conflicts(&self) -> Vec<String> {
+	fn get_conflicts(&self) -> Vec<PackageID> {
 		self.conflicts.clone()
 	}
 
 	fn get_deps(&self) -> Vec<Vec<RequiredPackage>> {
 		self.deps.clone()
 	}
-	fn get_extensions(&self) -> Vec<String> {
+	fn get_extensions(&self) -> Vec<PackageID> {
 		self.extensions.clone()
 	}
 

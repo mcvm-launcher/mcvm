@@ -3,6 +3,7 @@ use std::collections::VecDeque;
 use anyhow::{bail, Context};
 use itertools::Itertools;
 use mcvm_parse::properties::PackageProperties;
+use mcvm_shared::pkg::PackageID;
 
 use crate::{ConfiguredPackage, PackageEvalRelationsResult, PackageEvaluator};
 
@@ -94,7 +95,7 @@ where
 	}
 
 	/// Get all refusers of this package
-	pub fn get_refusers(&self, req: &PkgRequest) -> Vec<String> {
+	pub fn get_refusers(&self, req: &PkgRequest) -> Vec<PackageID> {
 		self.constraints
 			.iter()
 			.filter_map(|x| {
@@ -216,7 +217,7 @@ async fn resolve_eval_package<'a, E: PackageEvaluator<'a>>(
 
 	for conflict in result.get_conflicts().iter().sorted() {
 		let req = PkgRequest::new(
-			conflict,
+			conflict.clone(),
 			PkgRequestSource::Refused(Box::new(package.clone())),
 		);
 		if resolver.is_required(&req) {
@@ -232,7 +233,7 @@ async fn resolve_eval_package<'a, E: PackageEvaluator<'a>>(
 
 	for dep in result.get_deps().iter().flatten().sorted() {
 		let req = PkgRequest::new(
-			&dep.value,
+			dep.value.clone(),
 			PkgRequestSource::Dependency(Box::new(package.clone())),
 		);
 		if dep.explicit && !resolver.is_user_required(&req) {
@@ -252,7 +253,7 @@ async fn resolve_eval_package<'a, E: PackageEvaluator<'a>>(
 
 	for bundled in result.get_bundled().iter().sorted() {
 		let req = PkgRequest::new(
-			bundled,
+			bundled.clone(),
 			PkgRequestSource::Bundled(Box::new(package.clone())),
 		);
 		resolver.check_constraints(&req)?;
@@ -268,11 +269,11 @@ async fn resolve_eval_package<'a, E: PackageEvaluator<'a>>(
 
 	for (check_package, compat_package) in result.get_compats().iter().sorted() {
 		let check_package = PkgRequest::new(
-			check_package,
+			check_package.clone(),
 			PkgRequestSource::Dependency(Box::new(package.clone())),
 		);
 		let compat_package = PkgRequest::new(
-			compat_package,
+			compat_package.clone(),
 			PkgRequestSource::Dependency(Box::new(package.clone())),
 		);
 		if !resolver.compat_exists(&check_package, &compat_package) {
@@ -284,7 +285,7 @@ async fn resolve_eval_package<'a, E: PackageEvaluator<'a>>(
 
 	for extension in result.get_extensions().iter().sorted() {
 		let req = PkgRequest::new(
-			extension,
+			extension.clone(),
 			PkgRequestSource::Dependency(Box::new(package.clone())),
 		);
 		resolver.constraints.push(Constraint {
@@ -294,7 +295,7 @@ async fn resolve_eval_package<'a, E: PackageEvaluator<'a>>(
 
 	for recommendation in result.get_recommendations().iter().sorted() {
 		let req = PkgRequest::new(
-			&recommendation.value,
+			recommendation.value.clone(),
 			PkgRequestSource::Dependency(Box::new(package.clone())),
 		);
 		resolver.constraints.push(Constraint {
