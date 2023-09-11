@@ -49,6 +49,10 @@ pub enum InstrKind {
 	Banner(Later<String>),
 	/// Set the package license metadata
 	License(Later<String>),
+	/// Set the package keywords metadata
+	Keywords(Vec<String>),
+	/// Set the package categories metadata
+	Categories(Vec<String>),
 	/// Set the package features property
 	Features(Vec<String>),
 	/// Set the package default features property
@@ -63,6 +67,8 @@ pub enum InstrKind {
 	SupportedPluginLoaders(Vec<PluginLoaderMatch>),
 	/// Set the package supported sides property
 	SupportedSides(Vec<Side>),
+	/// Set the package tags property
+	Tags(Vec<String>),
 	/// Install an addon
 	Addon {
 		/// The ID of the addon
@@ -128,6 +134,8 @@ impl Display for InstrKind {
 				Self::Icon(..) => "icon",
 				Self::Banner(..) => "banner",
 				Self::License(..) => "license",
+				Self::Keywords(..) => "keywords",
+				Self::Categories(..) => "categories",
 				Self::Features(..) => "features",
 				Self::DefaultFeatures(..) => "default_features",
 				Self::ModrinthID(..) => "modrinth_id",
@@ -135,6 +143,7 @@ impl Display for InstrKind {
 				Self::SupportedModloaders(..) => "supported_modloaders",
 				Self::SupportedPluginLoaders(..) => "supported_plugin_loaders",
 				Self::SupportedSides(..) => "supported_sides",
+				Self::Tags(..) => "tags",
 				Self::Addon { .. } => "addon",
 				Self::Set(..) => "set",
 				Self::Require(..) => "require",
@@ -229,7 +238,10 @@ impl Instruction {
 			InstrKind::Features(val)
 			| InstrKind::Authors(val)
 			| InstrKind::PackageMaintainers(val)
-			| InstrKind::DefaultFeatures(val) => !val.is_empty(),
+			| InstrKind::DefaultFeatures(val)
+			| InstrKind::Keywords(val)
+			| InstrKind::Categories(val)
+			| InstrKind::Tags(val) => !val.is_empty(),
 			InstrKind::Refuse(val)
 			| InstrKind::Recommend(_, val)
 			| InstrKind::Bundle(val)
@@ -291,7 +303,10 @@ impl Instruction {
 				InstrKind::Authors(list)
 				| InstrKind::PackageMaintainers(list)
 				| InstrKind::Features(list)
-				| InstrKind::DefaultFeatures(list) => list.push(parse_string(tok, pos)?),
+				| InstrKind::DefaultFeatures(list)
+				| InstrKind::Keywords(list)
+				| InstrKind::Categories(list)
+				| InstrKind::Tags(list) => list.push(parse_string(tok, pos)?),
 				InstrKind::Cmd(list) => list.push(parse_arg(tok, pos)?),
 				InstrKind::Recommend(inverted, val) => match tok {
 					Token::Bang => {

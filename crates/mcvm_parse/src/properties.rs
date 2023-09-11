@@ -24,6 +24,8 @@ pub struct PackageProperties {
 	pub supported_plugin_loaders: Option<Vec<PluginLoaderMatch>>,
 	/// The package's supported sides
 	pub supported_sides: Option<Vec<Side>>,
+	/// The package's semantic tags
+	pub tags: Option<Vec<String>>,
 }
 
 impl PackageProperties {
@@ -64,6 +66,7 @@ pub fn eval_properties(parsed: &Parsed) -> anyhow::Result<PackageProperties> {
 						out.supported_plugin_loaders = Some(list.clone())
 					}
 					InstrKind::SupportedSides(list) => out.supported_sides = Some(list.clone()),
+					InstrKind::Tags(list) => out.tags = Some(list.clone()),
 					_ => bail!("Instruction is not allowed in this context"),
 				}
 			}

@@ -87,6 +87,8 @@ Properties like `features` and `modrinth_id` can only be used in the `@propertie
 - `icon {link}`: Set a link to a small square icon image.
 - `banner {link}`: Set a link to a large background / banner image.
 - `license {license}`: Set the project license.
+- `keywords {keyword1} {keyword2} ...`: Set the package keywords.
+- `categories {category1} {category2} ...`: Set the package categories.
 
 #### Properties Instructions
 
@@ -97,6 +99,7 @@ Properties like `features` and `modrinth_id` can only be used in the `@propertie
 - `supported_modloaders`: Set the supported modloaders.
 - `supported_plugin_loaders`: Set the supported plugin loaders.
 - `supported_sides`: Set the supported sides.
+- `tags {tag1} {tag2} ...`: Set the package tags.
 
 ### The `addon` Instruction
 

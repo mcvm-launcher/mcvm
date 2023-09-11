@@ -65,7 +65,9 @@ Metadata for a package is extra information about a package such as its display 
 	"community": string,
 	"icon": string,
 	"banner": string,
-	"license": string
+	"license": string,
+	"keywords": [string],
+	"categories": [string]
 }
 ```
 
@@ -84,6 +86,8 @@ Metadata for a package is extra information about a package such as its display 
 - `icon`: Link to a small square icon image.
 - `banner`: Link to a large background / banner image.
 - `license`: The project license. Should be the short / abbreviated version. If a longer license is needed, provide a link to the license file in this field.
+- `keywords`: Search term keywords for this package. Keep them short and sweet.
+- `categories`: Categories your package is in, such as library or adventure.
 
 ## Properties
 
@@ -97,7 +101,8 @@ Properties for the package that do have a meaning to mcvm and other package host
 	"curseforge_id": string,
 	"supported_modloaders": ["vanilla" | "fabric" | "forge" | "quilt" | "fabriclike"],
 	"supported_plugin_loaders": ["vanilla" | "bukkit"],
-	"supported_sides": ["client" | "server"]
+	"supported_sides": ["client" | "server"],
+	"tags": [string]
 }
 ```
 
@@ -108,6 +113,7 @@ Properties for the package that do have a meaning to mcvm and other package host
 - `supported_modloaders`: Modloaders supported by this package. Defaults to all of them.
 - `supported_plugin_loaders`: Plugin loaders supported by this package. Defaults to all of them.
 - `supported_sides`: Game sides supported by this package. Defaults to both of them.
+- `tags`: Similar to categories and keywords, but with actual meaning. Packages will be able to use tags in the future to depend on any package with a tag, or refuse it.
 
 ## Relations
 

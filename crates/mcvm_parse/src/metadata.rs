@@ -35,6 +35,10 @@ pub struct PackageMetadata {
 	pub banner: Option<String>,
 	/// The license of the package
 	pub license: Option<String>,
+	/// The keywords for the package
+	pub keywords: Option<Vec<String>>,
+	/// The categories for the package
+	pub categories: Option<Vec<String>>,
 }
 
 impl PackageMetadata {
@@ -69,6 +73,8 @@ pub fn eval_metadata(parsed: &Parsed) -> anyhow::Result<PackageMetadata> {
 					InstrKind::Icon(val) => out.icon = Some(val.get_clone()),
 					InstrKind::Banner(val) => out.banner = Some(val.get_clone()),
 					InstrKind::License(val) => out.license = Some(val.get_clone()),
+					InstrKind::Keywords(val) => out.keywords = Some(val.clone()),
+					InstrKind::Categories(val) => out.categories = Some(val.clone()),
 					_ => bail!("Instruction is not allowed in this context"),
 				}
 			}
