@@ -33,6 +33,8 @@ pub struct PackageMetadata {
 	pub icon: Option<String>,
 	/// A link to the package's banner
 	pub banner: Option<String>,
+	/// Links to gallery images for the package
+	pub gallery: Option<Vec<String>>,
 	/// The license of the package
 	pub license: Option<String>,
 	/// The keywords for the package

@@ -47,6 +47,8 @@ pub enum InstrKind {
 	Icon(Later<String>),
 	/// Set the package banner metadata
 	Banner(Later<String>),
+	/// Set the package gallery metadata
+	Gallery(Vec<String>),
 	/// Set the package license metadata
 	License(Later<String>),
 	/// Set the package keywords metadata
@@ -133,6 +135,7 @@ impl Display for InstrKind {
 				Self::Community(..) => "community",
 				Self::Icon(..) => "icon",
 				Self::Banner(..) => "banner",
+				Self::Gallery(..) => "gallery",
 				Self::License(..) => "license",
 				Self::Keywords(..) => "keywords",
 				Self::Categories(..) => "categories",
@@ -241,7 +244,8 @@ impl Instruction {
 			| InstrKind::DefaultFeatures(val)
 			| InstrKind::Keywords(val)
 			| InstrKind::Categories(val)
-			| InstrKind::Tags(val) => !val.is_empty(),
+			| InstrKind::Tags(val)
+			| InstrKind::Gallery(val) => !val.is_empty(),
 			InstrKind::Refuse(val)
 			| InstrKind::Recommend(_, val)
 			| InstrKind::Bundle(val)
@@ -306,7 +310,8 @@ impl Instruction {
 				| InstrKind::DefaultFeatures(list)
 				| InstrKind::Keywords(list)
 				| InstrKind::Categories(list)
-				| InstrKind::Tags(list) => list.push(parse_string(tok, pos)?),
+				| InstrKind::Tags(list)
+				| InstrKind::Gallery(list) => list.push(parse_string(tok, pos)?),
 				InstrKind::Cmd(list) => list.push(parse_arg(tok, pos)?),
 				InstrKind::Recommend(inverted, val) => match tok {
 					Token::Bang => {

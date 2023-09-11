@@ -65,6 +65,7 @@ Metadata for a package is extra information about a package such as its display 
 	"community": string,
 	"icon": string,
 	"banner": string,
+	"gallery": string,
 	"license": string,
 	"keywords": [string],
 	"categories": [string]
@@ -85,6 +86,7 @@ Metadata for a package is extra information about a package such as its display 
 - `community`: Discord / chat / forum link.
 - `icon`: Link to a small square icon image.
 - `banner`: Link to a large background / banner image.
+- `gallery`: Links to gallery images.
 - `license`: The project license. Should be the short / abbreviated version. If a longer license is needed, provide a link to the license file in this field.
 - `keywords`: Search term keywords for this package. Keep them short and sweet.
 - `categories`: Categories your package is in, such as library or adventure.
