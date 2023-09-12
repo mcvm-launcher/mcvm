@@ -10,7 +10,6 @@ use mcvm::data::user::AuthState;
 use mcvm::io::lock::Lockfile;
 use mcvm::{data::instance::InstKind, util::print::HYPHEN_POINT};
 use mcvm_shared::Side;
-use mcvm_shared::output::MessageLevel;
 
 use super::CmdData;
 use crate::cli::get_ms_client_id;
@@ -32,9 +31,6 @@ pub enum InstanceSubcommand {
 	},
 	#[command(about = "Launch instances to play the game")]
 	Launch {
-		/// Whether to print the command that was generated when launching
-		#[arg(short, long)]
-		debug: bool,
 		/// An optional user to choose when launching
 		#[arg(short, long)]
 		user: Option<String>,
@@ -92,16 +88,11 @@ async fn list(
 
 pub async fn launch(
 	instance: Option<String>,
-	debug: bool,
 	user: Option<String>,
 	data: &mut CmdData,
 ) -> anyhow::Result<()> {
 	data.ensure_config(true).await?;
 	let config = data.config.get_mut();
-
-	if debug {
-		data.output.set_log_level(MessageLevel::Debug);
-	}
 
 	let instance = pick_instance(instance, config).context("Failed to pick instance")?;
 
@@ -157,9 +148,8 @@ pub async fn run(command: InstanceSubcommand, data: &mut CmdData) -> anyhow::Res
 	match command {
 		InstanceSubcommand::List { raw, side, profile } => list(data, raw, side, profile).await,
 		InstanceSubcommand::Launch {
-			debug,
 			user,
 			instance,
-		} => launch(instance, debug, user, data).await,
+		} => launch(instance, user, data).await,
 	}
 }

@@ -105,16 +105,15 @@ pub enum Command {
 pub struct Cli {
 	#[command(subcommand)]
 	command: Command,
-}
-
-/// Print the mcvm version
-fn print_version() {
-	let version = env!("CARGO_PKG_VERSION");
-	cprintln!("mcvm version <g>{}</g>", version);
+	#[arg(short, long)]
+	debug: bool,
+	#[arg(short = 'D', long)]
+	trace: bool,
 }
 
 /// Run the command line interface
-pub async fn run_cli(data: &mut CmdData) -> anyhow::Result<()> {
+pub async fn run_cli() -> anyhow::Result<()> {
+	// Parse the CLI
 	let cli = Cli::try_parse();
 	if let Err(e) = &cli {
 		if let clap::error::ErrorKind::DisplayHelp = e.kind() {
@@ -123,18 +122,24 @@ pub async fn run_cli(data: &mut CmdData) -> anyhow::Result<()> {
 		}
 	}
 	let cli = cli?;
+
+	// Prepare the command data
+	let mut data = CmdData::new().await?;
+	let log_level = get_log_level(&cli);
+	data.output.set_log_level(log_level);
+
 	let res = match cli.command {
-		Command::Profile { command } => profile::run(command, data).await,
-		Command::User { command } => user::run(command, data).await,
-		Command::Launch { instance } => instance::launch(instance, false, None, data).await,
+		Command::Profile { command } => profile::run(command, &mut data).await,
+		Command::User { command } => user::run(command, &mut data).await,
+		Command::Launch { instance } => instance::launch(instance, None, &mut data).await,
 		Command::Version => {
 			print_version();
 			Ok(())
 		}
-		Command::Files { command } => files::run(command, data).await,
-		Command::Package { command } => package::run(command, data).await,
-		Command::Instance { command } => instance::run(command, data).await,
-		Command::Snapshot { command } => snapshot::run(command, data).await,
+		Command::Files { command } => files::run(command, &mut data).await,
+		Command::Package { command } => package::run(command, &mut data).await,
+		Command::Instance { command } => instance::run(command, &mut data).await,
+		Command::Snapshot { command } => snapshot::run(command, &mut data).await,
 	};
 
 	if let Err(e) = &res {
@@ -145,4 +150,21 @@ pub async fn run_cli(data: &mut CmdData) -> anyhow::Result<()> {
 	}
 
 	res
+}
+
+/// Get the log level based on the debug options
+fn get_log_level(cli: &Cli) -> MessageLevel {
+	if cli.trace {
+		MessageLevel::Trace
+	} else if cli.debug {
+		MessageLevel::Debug
+	} else {
+		MessageLevel::Important
+	}
+}
+
+/// Print the mcvm version
+fn print_version() {
+	let version = env!("CARGO_PKG_VERSION");
+	cprintln!("mcvm version <g>{}</g>", version);
 }
