@@ -1,12 +1,13 @@
 @meta {
 	name "Optifine Resource Packs Support";
 	description "Bundles all the mods necessary to support features in Optifine resource packs";
+	long_description "It is better to require the specific support packages you need for your resource pack than all of them";
 	authors "CarbonSmasher";
 }
 
 @install {
 	if modloader forge {
-		require <"optifine">;
+		require "optifine-support";
 		finish;
 	}
 	if modloader fabriclike {
@@ -19,6 +20,8 @@
 		bundle "custom-sky-support";
 		bundle "emissive-blocks-support";
 		bundle "emissive-entities-support";
+		bundle "hd-fonts-support";
+		bundle "natural-textures-support";
 		bundle "random-entities-support";
 		bundle "splash-screen-support";
 		

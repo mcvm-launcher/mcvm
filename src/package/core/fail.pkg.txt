@@ -1,0 +1,9 @@
+@meta {
+	name "Fail";
+	description "Automatically fails when this package is installed. Used for testing";
+	authors "CarbonSmasher";
+}
+
+@install {
+	fail;
+}

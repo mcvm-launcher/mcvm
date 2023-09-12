@@ -11,8 +11,14 @@ const EMISSIVE_BLOCKS_SUPPORT: &str = include_str!("emissive-blocks-support.pkg.
 const EMISSIVE_ENTITIES_SUPPORT: &str = include_str!("emissive-entities-support.pkg.txt");
 const FABRIC_RENDERING_API: &str = include_str!("fabric-rendering-api.json");
 const FABRICLIKE_API: &str = include_str!("fabriclike-api.pkg.txt");
+const FAIL: &str = include_str!("fail.pkg.txt");
+const HD_FONTS_SUPPORT: &str = include_str!("hd-fonts-support.pkg.txt");
 const KOTLIN_SUPPORT: &str = include_str!("kotlin-support.pkg.txt");
+const KOTLIN_SUPPORT_FORGELIN: &str = include_str!("kotlin-support-forgelin.pkg.txt");
+const NATURAL_TEXTURES_SUPPORT: &str = include_str!("natural-textures-support.pkg.txt");
+const NONE: &str = include_str!("none.pkg.txt");
 const OPTIFINE_RESOURCE_PACKS: &str = include_str!("optifine-resource-packs.pkg.txt");
+const OPTIFINE_SUPPORT: &str = include_str!("optifine-support.pkg.txt");
 const QUILTED_FABRIC_API: &str = include_str!("quilted-fabric-api.json");
 const QUILT_STANDARD_LIBRARIES: &str = include_str!("quilt-standard-libraries.json");
 const RANDOM_ENTITIES_SUPPORT: &str = include_str!("random-entities-support.pkg.txt");
@@ -33,8 +39,14 @@ pub fn get_core_package(package: &str) -> Option<&'static str> {
 		"emissive-entities-support" => Some(EMISSIVE_ENTITIES_SUPPORT),
 		"fabric-rendering-api" => Some(FABRIC_RENDERING_API),
 		"fabriclike-api" => Some(FABRICLIKE_API),
+		"fail" => Some(FAIL),
+		"hd-fonts-support" => Some(HD_FONTS_SUPPORT),
 		"kotlin-support" => Some(KOTLIN_SUPPORT),
+		"kotlin-support-forgelin" => Some(KOTLIN_SUPPORT_FORGELIN),
+		"natural-textures-support" => Some(NATURAL_TEXTURES_SUPPORT),
+		"none" => Some(NONE),
 		"optifine-resource-packs" => Some(OPTIFINE_RESOURCE_PACKS),
+		"optifine-support" => Some(OPTIFINE_SUPPORT),
 		"quilted-fabric-api" => Some(QUILTED_FABRIC_API),
 		"quilt-standard-libraries" => Some(QUILT_STANDARD_LIBRARIES),
 		"random-entities-support" => Some(RANDOM_ENTITIES_SUPPORT),
@@ -58,8 +70,14 @@ pub fn get_core_package_content_type(package: &str) -> Option<PackageContentType
 		"emissive-entities-support" => Some(PackageContentType::Script),
 		"fabric-rendering-api" => Some(PackageContentType::Declarative),
 		"fabriclike-api" => Some(PackageContentType::Script),
+		"fail" => Some(PackageContentType::Script),
+		"hd-fonts-support" => Some(PackageContentType::Script),
 		"kotlin-support" => Some(PackageContentType::Script),
+		"kotlin-support-forgelin" => Some(PackageContentType::Script),
+		"natural-textures-support" => Some(PackageContentType::Script),
+		"none" => Some(PackageContentType::Script),
 		"optifine-resource-packs" => Some(PackageContentType::Script),
+		"optifine-support" => Some(PackageContentType::Script),
 		"quilted-fabric-api" => Some(PackageContentType::Declarative),
 		"quilt-standard-libraries" => Some(PackageContentType::Declarative),
 		"random-entities-support" => Some(PackageContentType::Script),
@@ -78,7 +96,7 @@ mod tests {
 	use super::*;
 	use mcvm_pkg::parse_and_validate;
 
-	const ALL_CORE_PACKAGE_IDS: [&str; 18] = [
+	const ALL_CORE_PACKAGE_IDS: [&str; 24] = [
 		"animated-textures-support",
 		"cem-support",
 		"cit-support",
@@ -90,8 +108,14 @@ mod tests {
 		"emissive-entities-support",
 		"fabric-rendering-api",
 		"fabriclike-api",
+		"fail",
+		"hd-fonts-support",
 		"kotlin-support",
+		"kotlin-support-forgelin",
+		"natural-textures-support",
+		"none",
 		"optifine-resource-packs",
+		"optifine-support",
 		"quilted-fabric-api",
 		"quilt-standard-libraries",
 		"random-entities-support",

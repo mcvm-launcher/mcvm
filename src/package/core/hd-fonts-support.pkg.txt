@@ -1,0 +1,17 @@
+@meta {
+	name "HD Fonts Support";
+	description "Installs mods to ensure support for HD fonts in resource packs";
+	authors "CarbonSmasher";
+}
+
+@install {
+	# HD fonts are now supported in newer versions of Minecraft
+	if version "1.13+" {
+		finish;
+	}
+
+	if modloader forge {
+		require "optifine-support";
+	}
+	fail unsupported_modloader;
+}

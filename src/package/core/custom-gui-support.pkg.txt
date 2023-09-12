@@ -6,7 +6,7 @@
 
 @install {
 	if modloader forge {
-		require <"optifine">;
+		require "optifine-support";
 		finish;
 	}
 	if modloader fabriclike {
