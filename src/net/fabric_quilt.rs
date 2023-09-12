@@ -12,7 +12,7 @@ use crate::io::files;
 use crate::io::files::paths::Paths;
 use crate::io::java::classpath::Classpath;
 use crate::io::java::maven::MavenLibraryParts;
-use mcvm_shared::instance::Side;
+use mcvm_shared::Side;
 
 use super::download;
 

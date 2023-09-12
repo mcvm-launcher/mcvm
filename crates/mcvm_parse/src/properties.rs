@@ -1,7 +1,7 @@
 use anyhow::{bail, ensure};
 use mcvm_shared::{
-	instance::Side,
 	modifications::{ModloaderMatch, PluginLoaderMatch},
+	Side,
 };
 use serde::Deserialize;
 

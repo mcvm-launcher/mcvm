@@ -11,7 +11,7 @@ use crate::{
 };
 
 use mcvm_shared::{
-	instance::Side,
+	Side,
 	modifications::{ClientType, Modloader, ServerType},
 	pkg::PackageStability,
 };

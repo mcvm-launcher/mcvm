@@ -1,10 +1,10 @@
 use std::fmt::Display;
 
 use anyhow::bail;
-use mcvm_shared::instance::Side;
 use mcvm_shared::later::Later;
 use mcvm_shared::modifications::{ModloaderMatch, PluginLoaderMatch};
 use mcvm_shared::pkg::PackageAddonHashes;
+use mcvm_shared::Side;
 
 use super::conditions::Condition;
 use super::lex::{TextPos, Token};

@@ -2,7 +2,7 @@ use std::collections::HashMap;
 use std::str::FromStr;
 
 use anyhow::{anyhow, bail, ensure, Context};
-use mcvm_shared::instance::Side;
+use mcvm_shared::Side;
 use serde::{Deserialize, Serialize};
 
 use crate::data::id::InstanceID;

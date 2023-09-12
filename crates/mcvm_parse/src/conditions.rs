@@ -5,8 +5,8 @@ use mcvm_shared::pkg::PackageStability;
 use serde::Deserialize;
 
 use crate::unexpected_token;
-use mcvm_shared::instance::Side;
 use mcvm_shared::modifications::{ModloaderMatch, PluginLoaderMatch};
+use mcvm_shared::Side;
 
 use super::instruction::parse_arg;
 use super::lex::{TextPos, Token};

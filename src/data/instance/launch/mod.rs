@@ -10,7 +10,7 @@ use std::path::{Path, PathBuf};
 use std::process::Command;
 
 use anyhow::Context;
-use mcvm_shared::instance::Side;
+use mcvm_shared::Side;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::versions::VersionInfo;
 use oauth2::ClientId;

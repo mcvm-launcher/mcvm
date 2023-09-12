@@ -9,7 +9,7 @@ use mcvm::data::user::AuthState;
 
 use mcvm::io::lock::Lockfile;
 use mcvm::{data::instance::InstKind, util::print::HYPHEN_POINT};
-use mcvm_shared::instance::Side;
+use mcvm_shared::Side;
 use mcvm_shared::output::MessageLevel;
 
 use super::CmdData;

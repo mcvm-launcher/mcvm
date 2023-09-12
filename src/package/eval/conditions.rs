@@ -1,4 +1,4 @@
-use mcvm_shared::instance::Side;
+use mcvm_shared::Side;
 use mcvm_shared::versions::VersionPattern;
 
 use super::EvalData;

@@ -4,7 +4,7 @@ pub mod create;
 pub mod launch;
 
 use anyhow::{bail, ensure, Context};
-use mcvm_shared::instance::Side;
+use mcvm_shared::Side;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use reqwest::Client;
 

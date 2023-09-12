@@ -8,7 +8,7 @@ use mcvm::util::print::HYPHEN_POINT;
 use anyhow::bail;
 use clap::Subcommand;
 use color_print::{cprint, cprintln};
-use mcvm_shared::instance::Side;
+use mcvm_shared::Side;
 
 #[derive(Debug, Subcommand)]
 pub enum ProfileSubcommand {

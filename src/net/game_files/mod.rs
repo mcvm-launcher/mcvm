@@ -10,7 +10,7 @@ pub mod version_manifest;
 use crate::data::profile::update::manager::UpdateManager;
 use crate::io::files::paths::Paths;
 use crate::util::cap_first_letter;
-use mcvm_shared::instance::Side;
+use mcvm_shared::Side;
 
 use anyhow::Context;
 use reqwest::Client;

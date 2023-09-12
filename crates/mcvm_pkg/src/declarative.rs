@@ -6,12 +6,12 @@ use mcvm_parse::{
 };
 use mcvm_shared::{
 	addon::AddonKind,
-	instance::Side,
 	lang::Language,
 	modifications::{ModloaderMatch, PluginLoaderMatch},
 	pkg::{PackageAddonOptionalHashes, PackageStability},
 	util::DeserListOrSingle,
 	versions::VersionPattern,
+	Side,
 };
 use serde::Deserialize;
 

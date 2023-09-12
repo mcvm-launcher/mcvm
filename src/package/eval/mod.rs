@@ -44,7 +44,7 @@ use crate::io::files::paths::Paths;
 use crate::util::hash::{
 	get_hash_str_as_hex, HASH_SHA256_RESULT_LENGTH, HASH_SHA512_RESULT_LENGTH,
 };
-use mcvm_shared::instance::Side;
+use mcvm_shared::Side;
 use mcvm_shared::pkg::{PackageAddonOptionalHashes, PackageStability};
 
 use std::path::PathBuf;
