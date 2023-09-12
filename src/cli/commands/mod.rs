@@ -3,6 +3,7 @@ mod instance;
 mod package;
 mod profile;
 mod snapshot;
+mod tool;
 mod user;
 
 use anyhow::Context;
@@ -19,6 +20,7 @@ use self::instance::InstanceSubcommand;
 use self::package::PackageSubcommand;
 use self::profile::ProfileSubcommand;
 use self::snapshot::SnapshotSubcommand;
+use self::tool::ToolSubcommand;
 use self::user::UserSubcommand;
 
 use super::output::TerminalOutput;
@@ -99,6 +101,11 @@ pub enum Command {
 		#[command(subcommand)]
 		command: SnapshotSubcommand,
 	},
+	#[command(about = "Access different tools and tests included with mcvm")]
+	Tool {
+		#[command(subcommand)]
+		command: ToolSubcommand,
+	}
 }
 
 #[derive(Debug, Parser)]
@@ -140,6 +147,7 @@ pub async fn run_cli() -> anyhow::Result<()> {
 		Command::Package { command } => package::run(command, &mut data).await,
 		Command::Instance { command } => instance::run(command, &mut data).await,
 		Command::Snapshot { command } => snapshot::run(command, &mut data).await,
+		Command::Tool { command } => tool::run(command, &mut data).await,
 	};
 
 	if let Err(e) = &res {

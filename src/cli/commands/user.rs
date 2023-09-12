@@ -1,12 +1,10 @@
 use super::CmdData;
 use itertools::Itertools;
-use mcvm::data::user;
 use mcvm::data::user::UserKind;
 use mcvm::util::print::HYPHEN_POINT;
 
 use clap::Subcommand;
 use color_print::{cprint, cprintln};
-use reqwest::Client;
 
 #[derive(Debug, Subcommand)]
 pub enum UserSubcommand {
@@ -19,8 +17,6 @@ pub enum UserSubcommand {
 	},
 	#[command(about = "Get current authentication status")]
 	Status,
-	#[command(about = "Authenticate a user")]
-	Auth,
 }
 
 async fn list(data: &mut CmdData, raw: bool) -> anyhow::Result<()> {
@@ -69,25 +65,9 @@ async fn status(data: &mut CmdData) -> anyhow::Result<()> {
 	Ok(())
 }
 
-async fn auth(data: &mut CmdData) -> anyhow::Result<()> {
-	let client = Client::new();
-	let result = user::auth::authenticate_microsoft_user(
-		crate::cli::get_ms_client_id(),
-		&client,
-		&mut data.output,
-	)
-	.await?;
-	println!("{}", result.access_token);
-	let cert = mcvm::net::minecraft::get_user_certificate(&result.access_token, &client).await?;
-	dbg!(cert);
-
-	Ok(())
-}
-
 pub async fn run(subcommand: UserSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
 	match subcommand {
 		UserSubcommand::List { raw } => list(data, raw).await,
 		UserSubcommand::Status => status(data).await,
-		UserSubcommand::Auth => auth(data).await,
 	}
 }
