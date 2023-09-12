@@ -196,6 +196,7 @@ cfg_match! {
 pub fn open_link(link: &str) -> anyhow::Result<()> {
 	Command::new(URL_OPEN_CMD)
 		.arg(link)
+		.stderr(Stdio::null())
 		.stdout(Stdio::null())
 		.spawn()?;
 
