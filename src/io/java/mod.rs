@@ -26,7 +26,7 @@ pub mod maven {
 
 	impl MavenLibraryParts {
 		/// Extract the parts of a library string
-		pub fn from_str(string: &str) -> Option<Self> {
+		pub fn parse_from_str(string: &str) -> Option<Self> {
 			let mut parts = string.split(':');
 			let orgs: Vec<String> = parts.next()?.split('.').map(|x| x.to_owned()).collect();
 			let package = parts.next()?.to_owned();
@@ -46,7 +46,7 @@ pub mod maven {
 		#[test]
 		fn test_maven_library_destructuring() {
 			assert_eq!(
-				MavenLibraryParts::from_str("foo.bar.baz:hel.lo:wo.rld")
+				MavenLibraryParts::parse_from_str("foo.bar.baz:hel.lo:wo.rld")
 					.expect("Parts did not parse correctly"),
 				MavenLibraryParts {
 					orgs: vec!["foo".to_string(), "bar".to_string(), "baz".to_string()],

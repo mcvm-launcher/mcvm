@@ -156,7 +156,7 @@ pub async fn get_meta(
 
 /// Get the path to a library
 fn get_lib_path(name: &str) -> Option<String> {
-	let parts = MavenLibraryParts::from_str(name)?;
+	let parts = MavenLibraryParts::parse_from_str(name)?;
 	let mut url = String::new();
 	for org in parts.orgs {
 		url.push_str(&org);
@@ -189,7 +189,7 @@ async fn download_libraries(
 			}
 			let url = lib.url.clone() + &path;
 			files::create_leading_dirs(&lib_path)?;
-			let resp = download::bytes(url, &client).await?;
+			let resp = download::bytes(url, client).await?;
 			tokio::fs::write(&lib_path, resp).await?;
 		}
 	}

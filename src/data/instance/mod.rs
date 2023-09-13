@@ -113,12 +113,12 @@ impl Instance {
 				.project
 				.data_dir()
 				.join("client")
-				.join(&self.id.to_string()),
+				.join(self.id.to_string()),
 			InstKind::Server { .. } => paths
 				.project
 				.data_dir()
 				.join("server")
-				.join(&self.id.to_string()),
+				.join(self.id.to_string()),
 		}
 	}
 
