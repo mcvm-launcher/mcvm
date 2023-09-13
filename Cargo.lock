@@ -1032,7 +1032,7 @@ dependencies = [
 
 [[package]]
 name = "mcvm"
-version = "0.10.1"
+version = "0.11.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -1066,7 +1066,7 @@ dependencies = [
 
 [[package]]
 name = "mcvm_parse"
-version = "0.5.1"
+version = "0.6.0"
 dependencies = [
  "anyhow",
  "mcvm_shared",
@@ -1075,7 +1075,7 @@ dependencies = [
 
 [[package]]
 name = "mcvm_pkg"
-version = "0.3.1"
+version = "0.4.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -1088,7 +1088,7 @@ dependencies = [
 
 [[package]]
 name = "mcvm_shared"
-version = "0.5.1"
+version = "0.6.0"
 dependencies = [
  "anyhow",
  "current_locale",
