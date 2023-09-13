@@ -49,8 +49,9 @@ impl Instance {
 
 		if self.launch.use_log4j_config {
 			let logging_arg = client_meta.logging.client.argument.clone();
-			let logging_arg = args::fill_logging_path_arg(logging_arg, &version_info.version, paths)
-				.ok_or(anyhow!("Failed to convert logging path to a string"))?;
+			let logging_arg =
+				args::fill_logging_path_arg(logging_arg, &version_info.version, paths)
+					.ok_or(anyhow!("Failed to convert logging path to a string"))?;
 			jvm_args.push(logging_arg);
 		}
 

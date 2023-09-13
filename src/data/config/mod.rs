@@ -170,7 +170,8 @@ impl Config {
 		for (profile_id, profile_config) in config.profiles {
 			let mut profile = profile_config.to_profile(profile_id.clone());
 
-			if show_warnings && !profile::can_install_client_type(profile.modifications.client_type) {
+			if show_warnings && !profile::can_install_client_type(profile.modifications.client_type)
+			{
 				o.display(
 					MessageContents::Warning(
 						format!("{} installation on the client is currently unimplemented by mcvm. You will be expected to install it yourself for the time being", profile.modifications.client_type),
@@ -179,7 +180,8 @@ impl Config {
 				);
 			}
 
-			if show_warnings && !profile::can_install_server_type(profile.modifications.server_type) {
+			if show_warnings && !profile::can_install_server_type(profile.modifications.server_type)
+			{
 				o.display(
 					MessageContents::Warning(
 						format!("{} installation on the server is currently unimplemented by mcvm. You will be expected to install it yourself for the time being", profile.modifications.client_type),

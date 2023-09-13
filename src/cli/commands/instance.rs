@@ -4,7 +4,7 @@ use color_print::cprintln;
 use inquire::Select;
 use itertools::Itertools;
 use mcvm::data::config::Config;
-use mcvm::data::id::{ProfileID, InstanceID};
+use mcvm::data::id::{InstanceID, ProfileID};
 use mcvm::data::user::AuthState;
 
 use mcvm::io::lock::Lockfile;
@@ -147,9 +147,6 @@ fn pick_instance(instance: Option<String>, config: &Config) -> anyhow::Result<In
 pub async fn run(command: InstanceSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
 	match command {
 		InstanceSubcommand::List { raw, side, profile } => list(data, raw, side, profile).await,
-		InstanceSubcommand::Launch {
-			user,
-			instance,
-		} => launch(instance, user, data).await,
+		InstanceSubcommand::Launch { user, instance } => launch(instance, user, data).await,
 	}
 }

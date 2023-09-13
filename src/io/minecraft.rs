@@ -1,7 +1,7 @@
 use std::{fs::File, path::PathBuf};
 
 use anyhow::{bail, Context};
-use mcvm_shared::{Side, versions::VersionInfo};
+use mcvm_shared::{versions::VersionInfo, Side};
 use serde::Deserialize;
 use zip::ZipArchive;
 

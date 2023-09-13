@@ -1,5 +1,5 @@
-use mcvm_shared::Side;
 use mcvm_shared::versions::VersionPattern;
+use mcvm_shared::Side;
 
 use super::EvalData;
 use mcvm_parse::conditions::{ConditionKind, OSCondition};

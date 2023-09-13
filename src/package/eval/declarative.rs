@@ -196,10 +196,10 @@ fn check_condition_set<'a>(conditions: &DeclarativeConditionSet, input: &'a Eval
 mod tests {
 	use mcvm_pkg::declarative::deserialize_declarative_package;
 	use mcvm_shared::{
-		Side,
 		lang::Language,
 		modifications::{ClientType, Modloader, ServerType},
 		pkg::PackageStability,
+		Side,
 	};
 
 	use crate::{

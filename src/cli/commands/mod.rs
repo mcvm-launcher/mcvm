@@ -105,7 +105,7 @@ pub enum Command {
 	Tool {
 		#[command(subcommand)]
 		command: ToolSubcommand,
-	}
+	},
 }
 
 #[derive(Debug, Parser)]

@@ -4,8 +4,8 @@ pub mod create;
 pub mod launch;
 
 use anyhow::{bail, ensure, Context};
-use mcvm_shared::Side;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
+use mcvm_shared::Side;
 use reqwest::Client;
 
 use crate::io::files::paths::Paths;

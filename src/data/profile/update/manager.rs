@@ -3,10 +3,10 @@ use std::path::{Path, PathBuf};
 use std::rc::Rc;
 
 use anyhow::Context;
-use mcvm_shared::Side;
 use mcvm_shared::later::Later;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::versions::VersionInfo;
+use mcvm_shared::Side;
 use reqwest::Client;
 
 use crate::io::files::paths::Paths;

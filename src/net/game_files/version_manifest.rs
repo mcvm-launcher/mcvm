@@ -3,9 +3,9 @@ use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use reqwest::Client;
 use serde::Deserialize;
 
-use crate::net::download;
-use crate::io::files::{self, paths::Paths};
 use crate::data::profile::update::manager::UpdateManager;
+use crate::io::files::{self, paths::Paths};
+use crate::net::download;
 
 /// Latest available Minecraft versions in the version manifest
 #[derive(Deserialize, Debug)]

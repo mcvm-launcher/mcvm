@@ -298,4 +298,3 @@ impl Display for Side {
 		)
 	}
 }
-

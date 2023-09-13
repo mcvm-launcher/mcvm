@@ -137,7 +137,7 @@ pub enum MessageLevel {
 	Important,
 	/// Messages that can be displayed but are not required
 	Extra,
-	/// Debug-level messages. Good for logging but should not be displayed to 
+	/// Debug-level messages. Good for logging but should not be displayed to
 	/// the user unless they ask
 	Debug,
 	/// Very Debug-level messages. Should only be used for logging
@@ -148,7 +148,10 @@ impl MessageLevel {
 	/// Checks if this level is at least another level
 	pub fn at_least(&self, other: &Self) -> bool {
 		match &self {
-			Self::Important => matches!(other, Self::Important | Self::Extra | Self::Debug | Self::Trace),
+			Self::Important => matches!(
+				other,
+				Self::Important | Self::Extra | Self::Debug | Self::Trace
+			),
 			Self::Extra => matches!(other, Self::Extra | Self::Debug | Self::Trace),
 			Self::Debug => matches!(other, Self::Debug | Self::Trace),
 			Self::Trace => matches!(other, Self::Trace),
