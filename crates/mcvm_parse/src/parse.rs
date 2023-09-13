@@ -653,15 +653,15 @@ mod tests {
 		for instr in &block.contents {
 			if let InstrKind::Require(groups) = &instr.kind {
 				let package = groups.get(0).unwrap().get(0).unwrap();
-				assert!(matches!(&package.value, Value::Constant(name) if name == "optifine"));
+				assert!(matches!(&package.value, Value::Literal(name) if name == "optifine"));
 				assert!(package.explicit);
 
 				let package = groups.get(1).unwrap().get(0).unwrap();
-				assert!(matches!(&package.value, Value::Constant(name) if name == "sodium"));
+				assert!(matches!(&package.value, Value::Literal(name) if name == "sodium"));
 				assert!(package.explicit);
 
 				let package = groups.get(2).unwrap().get(0).unwrap();
-				assert!(matches!(&package.value, Value::Constant(name) if name == "cit-support"));
+				assert!(matches!(&package.value, Value::Literal(name) if name == "cit-support"));
 				assert!(!package.explicit);
 			}
 		}

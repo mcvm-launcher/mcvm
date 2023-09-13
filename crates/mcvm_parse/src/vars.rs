@@ -24,7 +24,7 @@ pub enum Value {
 	/// This value has not been filled and has no data
 	None,
 	/// A constant string literal
-	Constant(String),
+	Literal(String),
 	/// The value of a variable
 	Var(String),
 }
@@ -146,7 +146,7 @@ impl Value {
 	pub fn get(&self, vars: &impl VariableStore) -> anyhow::Result<String> {
 		match self {
 			Self::None => bail!("Empty value"),
-			Self::Constant(val) => Ok(Self::substitute_tokens(val, vars)),
+			Self::Literal(val) => Ok(Self::substitute_tokens(val, vars)),
 			Self::Var(name) => vars
 				.get_var(name)
 				.map(str::to_string)
