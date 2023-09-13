@@ -1,12 +1,12 @@
 use anyhow::{anyhow, Context};
 use mcvm_shared::modifications::{Modloader, ServerType};
 use reqwest::Client;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use super::download;
 
 /// The type of a Modrinth project
-#[derive(Deserialize)]
+#[derive(Deserialize, Serialize)]
 #[serde(rename_all = "lowercase")]
 pub enum ProjectType {
 	/// A mod project
@@ -24,7 +24,7 @@ pub enum ProjectType {
 }
 
 /// A Modrinth project (mod, resource pack, etc.)
-#[derive(Deserialize)]
+#[derive(Deserialize, Serialize)]
 pub struct Project {
 	/// The type of this project and its files
 	pub project_type: ProjectType,
@@ -34,11 +34,25 @@ pub struct Project {
 
 /// Get a project from the API
 pub async fn get_project(project_id: &str, client: &Client) -> anyhow::Result<Project> {
-	let url = format!("https://api.modrinth.com/v2/project/{project_id}");
+	let url = format_get_project_url(project_id);
 	let out = download::json(url, client)
 		.await
 		.context("Failed to download Modrinth project")?;
 	Ok(out)
+}
+
+/// Get the raw response of a project from the API
+pub async fn get_project_raw(project_id: &str, client: &Client) -> anyhow::Result<String> {
+	let url = format_get_project_url(project_id);
+	let out = download::text(url, client)
+		.await
+		.context("Failed to download Modrinth project")?;
+	Ok(out)
+}
+
+/// Format the URL for the get_project API
+fn format_get_project_url(project_id: &str) -> String {
+	format!("https://api.modrinth.com/v2/project/{project_id}")
 }
 
 /// Release channel for a Modrinth project version
@@ -54,7 +68,7 @@ pub enum ReleaseChannel {
 }
 
 /// A known plugin / mod loader that Modrinth supports
-#[derive(Deserialize)]
+#[derive(Deserialize, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum KnownLoader {
 	/// MinecraftForge
@@ -78,7 +92,7 @@ pub enum KnownLoader {
 }
 
 /// Loader for a Modrinth project version
-#[derive(Deserialize)]
+#[derive(Deserialize, Serialize)]
 #[serde(untagged)]
 pub enum Loader {
 	/// A loader that is known
@@ -115,7 +129,7 @@ impl Loader {
 }
 
 /// A Modrinth project version
-#[derive(Deserialize)]
+#[derive(Deserialize, Serialize)]
 pub struct Version {
 	/// The name of this version
 	pub name: String,
@@ -143,11 +157,25 @@ impl Version {
 
 /// Get a Modrinth project version
 pub async fn get_version(version_id: &str, client: &Client) -> anyhow::Result<Version> {
-	let url = format!("https://api.modrinth.com/v2/version/{version_id}");
+	let url = format_get_version_url(version_id);
 	let out = download::json(url, client)
 		.await
 		.context("Failed to download Modrinth version")?;
 	Ok(out)
+}
+
+/// Get the raw response of a version from the API
+pub async fn get_version_raw(version_id: &str, client: &Client) -> anyhow::Result<String> {
+	let url = format_get_version_url(version_id);
+	let out = download::text(url, client)
+		.await
+		.context("Failed to download Modrinth version")?;
+	Ok(out)
+}
+
+/// Format the URL for the get_version API
+fn format_get_version_url(version_id: &str) -> String {
+	format!("https://api.modrinth.com/v2/version/{version_id}")
 }
 
 /// Get multiple Modrinth project versions
@@ -167,7 +195,7 @@ pub async fn get_multiple_versions(
 }
 
 /// A file download from the Modrinth API
-#[derive(Deserialize)]
+#[derive(Deserialize, Serialize)]
 pub struct Download {
 	/// The URL to the file download
 	pub url: String,

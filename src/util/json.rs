@@ -118,3 +118,10 @@ pub fn empty_object() -> JsonObject {
 		.expect("Should be an empty object")
 		.clone()
 }
+
+/// Formats a JSON string to a pretty JSON string
+pub fn format_json(text: &str) -> Result<String, serde_json::Error> {
+	let into: Value = serde_json::from_str(text)?;
+	let out = serde_json::to_string_pretty(&into)?;
+	Ok(out)
+}
