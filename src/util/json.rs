@@ -1,4 +1,3 @@
-#![allow(dead_code)]
 use serde_json::{json, Value};
 
 /// A JSON map of strings to values
