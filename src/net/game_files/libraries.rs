@@ -42,6 +42,7 @@ fn extract_native(
 	path: &Path,
 	natives_dir: &Path,
 	manager: &UpdateManager,
+	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<UpdateMethodResult> {
 	let mut out = UpdateMethodResult::new();
 	let file = File::open(path)?;
@@ -60,9 +61,16 @@ fn extract_native(
 						continue;
 					}
 					let mut out_file = File::create(&out_path)?;
-					out.files_updated.insert(out_path);
 					std::io::copy(&mut file, &mut out_file)
 						.context("Failed to copy compressed file")?;
+					o.display(
+						MessageContents::Simple(format!(
+							"Extracted native file {}",
+							out_path.to_string_lossy()
+						)),
+						MessageLevel::Debug,
+					);
+					out.files_updated.insert(out_path);
 				}
 				_ => continue,
 			}
@@ -200,7 +208,7 @@ pub async fn get(
 			MessageContents::StartProcess(format!("Extracting native library {name}")),
 			MessageLevel::Important,
 		);
-		let natives_result = extract_native(&path, &natives_path, manager)
+		let natives_result = extract_native(&path, &natives_path, manager, o)
 			.with_context(|| format!("Failed to extract native library {name}"))?;
 		out.merge(natives_result);
 	}
