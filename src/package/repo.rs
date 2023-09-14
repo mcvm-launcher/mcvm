@@ -12,15 +12,6 @@ use std::fs::File;
 use std::io::{BufReader, Cursor};
 use std::path::PathBuf;
 
-/// Location for a PkgRepo
-#[derive(Debug)]
-pub enum PkgRepoLocation {
-	/// A repository on a remote device
-	Remote(String),
-	/// A repository on the local filesystem
-	Local(PathBuf),
-}
-
 /// A remote source for mcvm packages
 #[derive(Debug)]
 pub struct PkgRepo {
@@ -28,6 +19,15 @@ pub struct PkgRepo {
 	pub id: String,
 	location: PkgRepoLocation,
 	index: Later<RepoPkgIndex>,
+}
+
+/// Location for a PkgRepo
+#[derive(Debug)]
+pub enum PkgRepoLocation {
+	/// A repository on a remote device
+	Remote(String),
+	/// A repository on the local filesystem
+	Local(PathBuf),
 }
 
 impl PkgRepo {
@@ -135,29 +135,6 @@ impl PkgRepo {
 	}
 }
 
-/// Get the URL of the package index file
-pub fn get_package_index_url(base: &str) -> String {
-	base.to_string() + "/api/mcvm/index.json"
-}
-
-/// Result from repository querying. This represents an entry
-/// for a package that can be accessed
-pub struct RepoQueryResult {
-	/// The URL to download the package from
-	pub url: String,
-	/// The content type of the package
-	pub content_type: PackageContentType,
-}
-
-/// Get the content type of a package from the repository
-pub async fn get_content_type(entry: &RepoPkgEntry) -> PackageContentType {
-	if let Some(content_type) = &entry.content_type {
-		*content_type
-	} else {
-		PackageContentType::Script
-	}
-}
-
 /// Query a list of repos
 pub async fn query_all(
 	repos: &mut [PkgRepo],
@@ -197,4 +174,27 @@ pub async fn get_all_packages(
 	}
 
 	Ok(out)
+}
+
+/// Get the URL of the package index file
+pub fn get_package_index_url(base: &str) -> String {
+	base.to_string() + "/api/mcvm/index.json"
+}
+
+/// Result from repository querying. This represents an entry
+/// for a package that can be accessed
+pub struct RepoQueryResult {
+	/// The URL to download the package from
+	pub url: String,
+	/// The content type of the package
+	pub content_type: PackageContentType,
+}
+
+/// Get the content type of a package from the repository
+pub async fn get_content_type(entry: &RepoPkgEntry) -> PackageContentType {
+	if let Some(content_type) = &entry.content_type {
+		*content_type
+	} else {
+		PackageContentType::Script
+	}
 }

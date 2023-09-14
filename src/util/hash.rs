@@ -1,8 +1,6 @@
-use std::{
-	fs::File,
-	io::{BufReader, Read},
-	path::Path,
-};
+use std::fs::File;
+use std::io::{BufReader, Read};
+use std::path::Path;
 
 use anyhow::Context;
 use mcvm_shared::pkg::PackageAddonOptionalHashes;

@@ -40,6 +40,27 @@ impl Display for Mode {
 	}
 }
 
+/// Metadata for Fabric or Quilt
+#[derive(Deserialize, Debug, Clone)]
+pub struct FabricQuiltMeta {
+	/// Metadata for the launcher
+	#[serde(rename = "launcherMeta")]
+	pub launcher_meta: LauncherMeta,
+	/// The main library to use for the loader
+	pub loader: MainLibrary,
+	/// The main library to use for intermediary mappings
+	pub intermediary: MainLibrary,
+}
+
+/// Metadata for the launcher
+#[derive(Deserialize, Debug, Clone)]
+pub struct LauncherMeta {
+	libraries: Libraries,
+	/// The main class to override with when launching
+	#[serde(rename = "mainClass")]
+	pub main_class: MainClass,
+}
+
 /// A library in the Fabric/Quilt meta
 #[derive(Debug, Deserialize, Clone)]
 pub struct Library {
@@ -95,27 +116,6 @@ impl MainClass {
 	}
 }
 
-/// Metadata for the launcher
-#[derive(Deserialize, Debug, Clone)]
-pub struct LauncherMeta {
-	libraries: Libraries,
-	/// The main class to override with when launching
-	#[serde(rename = "mainClass")]
-	pub main_class: MainClass,
-}
-
-/// Metadata for Fabric or Quilt
-#[derive(Deserialize, Debug, Clone)]
-pub struct FabricQuiltMeta {
-	/// Metadata for the launcher
-	#[serde(rename = "launcherMeta")]
-	pub launcher_meta: LauncherMeta,
-	/// The main library to use for the loader
-	pub loader: MainLibrary,
-	/// The main library to use for intermediary mappings
-	pub intermediary: MainLibrary,
-}
-
 /// Get the Fabric/Quilt metadata file
 pub async fn get_meta(
 	version: &str,
@@ -152,6 +152,95 @@ pub async fn get_meta(
 		.ok_or(anyhow!("Could not find a valid {mode} version"))?;
 
 	Ok(meta.clone())
+}
+
+/// Download files for Quilt/Fabric that are common for both client and server
+pub async fn download_files(
+	meta: &FabricQuiltMeta,
+	paths: &Paths,
+	mode: Mode,
+	manager: &UpdateManager,
+	client: &Client,
+	o: &mut impl MCVMOutput,
+) -> anyhow::Result<()> {
+	let force = manager.force;
+
+	let process = OutputProcess::new(o);
+	process.0.display(
+		MessageContents::StartProcess(format!("Downloading {mode}")),
+		MessageLevel::Important,
+	);
+
+	let libs = meta.launcher_meta.libraries.common.clone();
+	let paths_clone = paths.clone();
+
+	let client_clone = client.clone();
+	let common_task =
+		tokio::spawn(
+			async move { download_libraries(&libs, &paths_clone, &client_clone, force).await },
+		);
+
+	let paths_clone = paths.clone();
+	let loader_clone = meta.loader.clone();
+	let intermediary_clone = meta.intermediary.clone();
+	let loader_url = match mode {
+		Mode::Fabric => "https://maven.fabricmc.net/",
+		Mode::Quilt => "https://maven.quiltmc.org/repository/release/",
+	};
+
+	let client_clone = client.clone();
+	let main_libs_task = tokio::spawn(async move {
+		download_main_library(
+			&loader_clone,
+			loader_url,
+			&paths_clone,
+			&client_clone,
+			force,
+		)
+		.await?;
+		download_main_library(
+			&intermediary_clone,
+			"https://maven.fabricmc.net/",
+			&paths_clone,
+			&client_clone,
+			force,
+		)
+		.await?;
+
+		Ok::<(), anyhow::Error>(())
+	});
+
+	common_task
+		.await?
+		.with_context(|| format!("Failed to download {mode} common libraries"))?;
+	main_libs_task
+		.await?
+		.with_context(|| format!("Failed to download {mode} main libraries"))?;
+
+	process.0.display(
+		MessageContents::Success(format!("{mode} downloaded")),
+		MessageLevel::Important,
+	);
+
+	Ok(())
+}
+
+/// Download files for Quilt/Fabric that are side-specific
+pub async fn download_side_specific_files(
+	meta: &FabricQuiltMeta,
+	paths: &Paths,
+	side: Side,
+	manager: &UpdateManager,
+	client: &Client,
+) -> anyhow::Result<()> {
+	let libs = match side {
+		Side::Client => meta.launcher_meta.libraries.client.clone(),
+		Side::Server => meta.launcher_meta.libraries.server.clone(),
+	};
+
+	download_libraries(&libs, paths, client, manager.force).await?;
+
+	Ok(())
 }
 
 /// Get the path to a library
@@ -257,93 +346,4 @@ pub fn get_classpath(meta: &FabricQuiltMeta, paths: &Paths, side: Side) -> Class
 	out.add_path(&paths.libraries.join(path));
 
 	out
-}
-
-/// Download files for Quilt/Fabric that are common for both client and server
-pub async fn download_files(
-	meta: &FabricQuiltMeta,
-	paths: &Paths,
-	mode: Mode,
-	manager: &UpdateManager,
-	client: &Client,
-	o: &mut impl MCVMOutput,
-) -> anyhow::Result<()> {
-	let force = manager.force;
-
-	let process = OutputProcess::new(o);
-	process.0.display(
-		MessageContents::StartProcess(format!("Downloading {mode}")),
-		MessageLevel::Important,
-	);
-
-	let libs = meta.launcher_meta.libraries.common.clone();
-	let paths_clone = paths.clone();
-
-	let client_clone = client.clone();
-	let common_task =
-		tokio::spawn(
-			async move { download_libraries(&libs, &paths_clone, &client_clone, force).await },
-		);
-
-	let paths_clone = paths.clone();
-	let loader_clone = meta.loader.clone();
-	let intermediary_clone = meta.intermediary.clone();
-	let loader_url = match mode {
-		Mode::Fabric => "https://maven.fabricmc.net/",
-		Mode::Quilt => "https://maven.quiltmc.org/repository/release/",
-	};
-
-	let client_clone = client.clone();
-	let main_libs_task = tokio::spawn(async move {
-		download_main_library(
-			&loader_clone,
-			loader_url,
-			&paths_clone,
-			&client_clone,
-			force,
-		)
-		.await?;
-		download_main_library(
-			&intermediary_clone,
-			"https://maven.fabricmc.net/",
-			&paths_clone,
-			&client_clone,
-			force,
-		)
-		.await?;
-
-		Ok::<(), anyhow::Error>(())
-	});
-
-	common_task
-		.await?
-		.with_context(|| format!("Failed to download {mode} common libraries"))?;
-	main_libs_task
-		.await?
-		.with_context(|| format!("Failed to download {mode} main libraries"))?;
-
-	process.0.display(
-		MessageContents::Success(format!("{mode} downloaded")),
-		MessageLevel::Important,
-	);
-
-	Ok(())
-}
-
-/// Download files for Quilt/Fabric that are side-specific
-pub async fn download_side_specific_files(
-	meta: &FabricQuiltMeta,
-	paths: &Paths,
-	side: Side,
-	manager: &UpdateManager,
-	client: &Client,
-) -> anyhow::Result<()> {
-	let libs = match side {
-		Side::Client => meta.launcher_meta.libraries.client.clone(),
-		Side::Server => meta.launcher_meta.libraries.server.clone(),
-	};
-
-	download_libraries(&libs, paths, client, manager.force).await?;
-
-	Ok(())
 }

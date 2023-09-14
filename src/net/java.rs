@@ -11,6 +11,20 @@ pub mod adoptium {
 
 	use super::*;
 
+	/// Gets the newest Adoptium binaries download for a major Java version
+	pub async fn get_latest(major_version: &str, client: &Client) -> anyhow::Result<PackageFormat> {
+		let url = json_url(major_version);
+		let mut manifest = download::json::<Vec<PackageFormat>>(&url, client)
+			.await
+			.context("Failed to download manifest of Adoptium versions")?;
+		if manifest.is_empty() {
+			bail!("A valid installation was not found");
+		}
+		let version = manifest.swap_remove(0);
+
+		Ok(version)
+	}
+
 	/// Gets the URL to the JSON file for a major Java version
 	fn json_url(major_version: &str) -> String {
 		format!(
@@ -40,20 +54,6 @@ pub mod adoptium {
 		/// Link to the JRE download
 		pub link: String,
 	}
-
-	/// Gets the newest Adoptium binaries download for a major Java version
-	pub async fn get_latest(major_version: &str, client: &Client) -> anyhow::Result<PackageFormat> {
-		let url = json_url(major_version);
-		let mut manifest = download::json::<Vec<PackageFormat>>(&url, client)
-			.await
-			.context("Failed to download manifest of Adoptium versions")?;
-		if manifest.is_empty() {
-			bail!("A valid installation was not found");
-		}
-		let version = manifest.swap_remove(0);
-
-		Ok(version)
-	}
 }
 
 /// Downloading Azul Zulu
@@ -62,6 +62,19 @@ pub mod zulu {
 
 	use crate::util::preferred_archive_extension;
 	use serde::Deserialize;
+
+	/// Gets the newest Zulu package for a major Java version
+	pub async fn get_latest(major_version: &str, client: &Client) -> anyhow::Result<PackageFormat> {
+		let url = json_url(major_version);
+		let manifest = download::json::<Vec<PackageFormat>>(&url, client)
+			.await
+			.context("Failed to download manifest of Zulu versions")?;
+		let package = manifest
+			.get(0)
+			.ok_or(anyhow!("A valid installation was not found"))?;
+
+		Ok(package.to_owned())
+	}
 
 	/// Gets the URL to the JSON file for a major Java version
 	fn json_url(major_version: &str) -> String {
@@ -77,19 +90,6 @@ pub mod zulu {
 		pub name: String,
 		/// Download URL for the package
 		pub download_url: String,
-	}
-
-	/// Gets the newest Zulu package for a major Java version
-	pub async fn get_latest(major_version: &str, client: &Client) -> anyhow::Result<PackageFormat> {
-		let url = json_url(major_version);
-		let manifest = download::json::<Vec<PackageFormat>>(&url, client)
-			.await
-			.context("Failed to download manifest of Zulu versions")?;
-		let package = manifest
-			.get(0)
-			.ok_or(anyhow!("A valid installation was not found"))?;
-
-		Ok(package.to_owned())
 	}
 
 	/// Gets the name of the extracted directory by removing the archive file extension

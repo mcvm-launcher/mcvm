@@ -12,25 +12,6 @@ use super::{
 	Routine, MAX_NOTICE_CHARACTERS, MAX_NOTICE_INSTRUCTIONS,
 };
 
-/// Result from an evaluation subfunction. Mostly used to know when to end
-/// evaluation early.
-pub struct EvalResult {
-	finish: bool,
-}
-
-impl EvalResult {
-	/// Creates a new EvalResult
-	pub fn new() -> Self {
-		Self { finish: false }
-	}
-}
-
-impl Default for EvalResult {
-	fn default() -> Self {
-		Self::new()
-	}
-}
-
 /// Evaluate a script package
 pub fn eval_script_package<'a>(
 	pkg_id: PackageID,
@@ -223,6 +204,25 @@ pub fn eval_instr(
 	}
 
 	Ok(out)
+}
+
+/// Result from an evaluation subfunction. Mostly used to know when to end
+/// evaluation early.
+pub struct EvalResult {
+	finish: bool,
+}
+
+impl EvalResult {
+	/// Creates a new EvalResult
+	pub fn new() -> Self {
+		Self { finish: false }
+	}
+}
+
+impl Default for EvalResult {
+	fn default() -> Self {
+		Self::new()
+	}
 }
 
 /// Utility function to convert a vec of values to a vec of strings

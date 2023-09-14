@@ -5,18 +5,6 @@ use super::EvalData;
 use mcvm_parse::conditions::{ConditionKind, OSCondition};
 use mcvm_parse::vars::VariableStore;
 
-/// Checks an OS condition to see if it matches the current operating system
-pub const fn check_os_condition(condition: &OSCondition) -> bool {
-	match condition {
-		OSCondition::Windows => cfg!(target_os = "windows"),
-		OSCondition::Linux => cfg!(target_os = "linux"),
-		OSCondition::MacOS => cfg!(target_os = "macos"),
-		OSCondition::Other => {
-			!(cfg!(target_os = "windows") || cfg!(target_os = "linux") || cfg!(target_os = "macos"))
-		}
-	}
-}
-
 /// Evaluates a script condition to a boolean
 pub fn eval_condition(condition: &ConditionKind, eval: &EvalData) -> anyhow::Result<bool> {
 	match condition {
@@ -57,5 +45,17 @@ pub fn eval_condition(condition: &ConditionKind, eval: &EvalData) -> anyhow::Res
 		ConditionKind::Language(lang) => Ok(eval.input.constants.language == *lang.get()),
 		ConditionKind::Value(left, right) => Ok(left.get(&eval.vars)? == right.get(&eval.vars)?),
 		ConditionKind::Defined(var) => Ok(eval.vars.var_exists(var.get())),
+	}
+}
+
+/// Checks an OS condition to see if it matches the current operating system
+pub const fn check_os_condition(condition: &OSCondition) -> bool {
+	match condition {
+		OSCondition::Windows => cfg!(target_os = "windows"),
+		OSCondition::Linux => cfg!(target_os = "linux"),
+		OSCondition::MacOS => cfg!(target_os = "macos"),
+		OSCondition::Other => {
+			!(cfg!(target_os = "windows") || cfg!(target_os = "linux") || cfg!(target_os = "macos"))
+		}
 	}
 }

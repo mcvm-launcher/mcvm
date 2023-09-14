@@ -103,6 +103,15 @@ impl Routine {
 	}
 }
 
+/// Combination of both EvalConstants and EvalParameters
+#[derive(Debug, Clone)]
+pub struct EvalInput<'a> {
+	/// Constant values
+	pub constants: &'a EvalConstants,
+	/// Changing values
+	pub params: EvalParameters,
+}
+
 /// Constants for the evaluation that will be the same across every package
 #[derive(Debug, Clone)]
 pub struct EvalConstants {
@@ -127,15 +136,6 @@ pub struct EvalParameters {
 	pub perms: EvalPermissions,
 	/// Requested stability of the package's contents
 	pub stability: PackageStability,
-}
-
-/// Combination of both EvalConstants and EvalParameters
-#[derive(Debug, Clone)]
-pub struct EvalInput<'a> {
-	/// Constant values
-	pub constants: &'a EvalConstants,
-	/// Changing values
-	pub params: EvalParameters,
 }
 
 /// Persistent state for evaluation

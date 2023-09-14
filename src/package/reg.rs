@@ -17,19 +17,6 @@ use crate::io::files::paths::Paths;
 use std::collections::HashMap;
 use std::path::Path;
 
-/// What strategy to use for the local caching of package scripts
-#[derive(Debug, Clone, Deserialize, Serialize, Default)]
-#[serde(rename_all = "snake_case")]
-pub enum CachingStrategy {
-	/// Don't cache any packages locally. Fetch them from the repository every time
-	None,
-	/// Only cache packages when they are requested
-	#[default]
-	Lazy,
-	/// Cache all packages whenever syncing the repositories
-	All,
-}
-
 /// An object used to store and cache all of the packages that we are working with.
 /// It queries repositories automatically when asking for a package that isn't in the
 /// registry, and prevents having a bunch of copies of packages everywhere.
@@ -305,6 +292,19 @@ impl PkgRegistry {
 
 		Ok(())
 	}
+}
+
+/// What strategy to use for the local caching of package scripts
+#[derive(Debug, Clone, Deserialize, Serialize, Default)]
+#[serde(rename_all = "snake_case")]
+pub enum CachingStrategy {
+	/// Don't cache any packages locally. Fetch them from the repository every time
+	None,
+	/// Only cache packages when they are requested
+	#[default]
+	Lazy,
+	/// Cache all packages whenever syncing the repositories
+	All,
 }
 
 #[cfg(test)]

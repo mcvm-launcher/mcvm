@@ -5,6 +5,15 @@ use serde::{Deserialize, Serialize};
 
 use super::download;
 
+/// A Modrinth project (mod, resource pack, etc.)
+#[derive(Deserialize, Serialize)]
+pub struct Project {
+	/// The type of this project and its files
+	pub project_type: ProjectType,
+	/// The ID's of the available project versions
+	pub versions: Vec<String>,
+}
+
 /// The type of a Modrinth project
 #[derive(Deserialize, Serialize)]
 #[serde(rename_all = "lowercase")]
@@ -21,15 +30,6 @@ pub enum ProjectType {
 	Datapack,
 	/// A plugin project
 	Plugin,
-}
-
-/// A Modrinth project (mod, resource pack, etc.)
-#[derive(Deserialize, Serialize)]
-pub struct Project {
-	/// The type of this project and its files
-	pub project_type: ProjectType,
-	/// The ID's of the available project versions
-	pub versions: Vec<String>,
 }
 
 /// Get a project from the API
@@ -67,6 +67,29 @@ pub enum ReleaseChannel {
 	Alpha,
 }
 
+/// A Modrinth project version
+#[derive(Deserialize, Serialize)]
+pub struct Version {
+	/// The name of this version
+	pub name: String,
+	/// The version number of this version
+	pub version_number: String,
+	/// The loaders that this version supports
+	pub loaders: Vec<Loader>,
+	/// The list of downloads for this version
+	pub downloads: Vec<Download>,
+}
+
+/// Loader for a Modrinth project version
+#[derive(Deserialize, Serialize)]
+#[serde(untagged)]
+pub enum Loader {
+	/// A loader that is known
+	Known(KnownLoader),
+	/// A loader that we do not know about
+	Unknown(String),
+}
+
 /// A known plugin / mod loader that Modrinth supports
 #[derive(Deserialize, Serialize)]
 #[serde(rename_all = "snake_case")]
@@ -89,16 +112,6 @@ pub enum KnownLoader {
 	Purpur,
 	/// Folia server
 	Folia,
-}
-
-/// Loader for a Modrinth project version
-#[derive(Deserialize, Serialize)]
-#[serde(untagged)]
-pub enum Loader {
-	/// A loader that is known
-	Known(KnownLoader),
-	/// A loader that we do not know about
-	Unknown(String),
 }
 
 impl Loader {
@@ -126,19 +139,6 @@ impl Loader {
 			_ => true,
 		}
 	}
-}
-
-/// A Modrinth project version
-#[derive(Deserialize, Serialize)]
-pub struct Version {
-	/// The name of this version
-	pub name: String,
-	/// The version number of this version
-	pub version_number: String,
-	/// The loaders that this version supports
-	pub loaders: Vec<Loader>,
-	/// The list of downloads for this version
-	pub downloads: Vec<Download>,
 }
 
 impl Version {

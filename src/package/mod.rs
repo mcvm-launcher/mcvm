@@ -28,33 +28,28 @@ use reqwest::Client;
 
 const PKG_EXTENSION: &str = ".pkg.txt";
 
-/// Type of data inside a package
+/// An installable package that loads content into your game
 #[derive(Debug)]
-pub enum PkgContents {
-	/// A package script
-	Script(Parsed),
-	/// A declarative package
-	Declarative(Box<DeclarativePackage>),
+pub struct Package {
+	/// The package ID
+	pub id: PackageID,
+	/// Where the package is being retrieved from
+	pub location: PkgLocation,
+	/// Type of the content in the package
+	pub content_type: PackageContentType,
+	/// The data of the package
+	pub data: Later<PkgData>,
 }
 
-impl PkgContents {
-	/// Get the contents with an assertion that it is a script package
-	pub fn get_script_contents(&self) -> &Parsed {
-		if let Self::Script(parsed) = &self {
-			parsed
-		} else {
-			panic!("Attempted to get script package contents from a non-script package");
-		}
-	}
-
-	/// Get the contents with an assertion that it is a declarative package
-	pub fn get_declarative_contents(&self) -> &DeclarativePackage {
-		if let Self::Declarative(contents) = &self {
-			contents
-		} else {
-			panic!("Attempted to get declarative package contents from a non-declarative package");
-		}
-	}
+/// Location of a package
+#[derive(Debug, Clone)]
+pub enum PkgLocation {
+	/// Contained on the local filesystem
+	Local(PathBuf),
+	/// Contained on an external repository
+	Remote(Option<String>),
+	/// Included in the binary
+	Core,
 }
 
 /// Data pertaining to the contents of a package
@@ -83,28 +78,33 @@ impl PkgData {
 	}
 }
 
-/// Location of a package
-#[derive(Debug, Clone)]
-pub enum PkgLocation {
-	/// Contained on the local filesystem
-	Local(PathBuf),
-	/// Contained on an external repository
-	Remote(Option<String>),
-	/// Included in the binary
-	Core,
+/// Type of data inside a package
+#[derive(Debug)]
+pub enum PkgContents {
+	/// A package script
+	Script(Parsed),
+	/// A declarative package
+	Declarative(Box<DeclarativePackage>),
 }
 
-/// An installable package that loads content into your game
-#[derive(Debug)]
-pub struct Package {
-	/// The package ID
-	pub id: PackageID,
-	/// Where the package is being retrieved from
-	pub location: PkgLocation,
-	/// Type of the content in the package
-	pub content_type: PackageContentType,
-	/// The data of the package
-	pub data: Later<PkgData>,
+impl PkgContents {
+	/// Get the contents with an assertion that it is a script package
+	pub fn get_script_contents(&self) -> &Parsed {
+		if let Self::Script(parsed) = &self {
+			parsed
+		} else {
+			panic!("Attempted to get script package contents from a non-script package");
+		}
+	}
+
+	/// Get the contents with an assertion that it is a declarative package
+	pub fn get_declarative_contents(&self) -> &DeclarativePackage {
+		if let Self::Declarative(contents) = &self {
+			contents
+		} else {
+			panic!("Attempted to get declarative package contents from a non-declarative package");
+		}
+	}
 }
 
 impl Package {

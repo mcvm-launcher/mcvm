@@ -6,11 +6,6 @@ use serde::Deserialize;
 
 use super::download;
 
-#[derive(Deserialize)]
-struct VersionInfoResponse {
-	builds: Vec<u16>,
-}
-
 /// Get the newest build number of Paper
 pub async fn get_newest_build(version: &str, client: &Client) -> anyhow::Result<u16> {
 	let url = format!("https://api.papermc.io/v2/projects/paper/versions/{version}");
@@ -26,18 +21,8 @@ pub async fn get_newest_build(version: &str, client: &Client) -> anyhow::Result<
 }
 
 #[derive(Deserialize)]
-struct BuildInfoApplication {
-	name: String,
-}
-
-#[derive(Deserialize)]
-struct BuildInfoDownloads {
-	application: BuildInfoApplication,
-}
-
-#[derive(Deserialize)]
-struct BuildInfoResponse {
-	downloads: BuildInfoDownloads,
+struct VersionInfoResponse {
+	builds: Vec<u16>,
 }
 
 /// Get the name of the Paper jar file
@@ -52,6 +37,21 @@ pub async fn get_jar_file_name(
 	let resp = serde_json::from_str::<BuildInfoResponse>(&download::text(&url, client).await?)?;
 
 	Ok(resp.downloads.application.name)
+}
+
+#[derive(Deserialize)]
+struct BuildInfoResponse {
+	downloads: BuildInfoDownloads,
+}
+
+#[derive(Deserialize)]
+struct BuildInfoDownloads {
+	application: BuildInfoApplication,
+}
+
+#[derive(Deserialize)]
+struct BuildInfoApplication {
+	name: String,
 }
 
 /// Download the Paper server jar
