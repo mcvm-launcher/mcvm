@@ -14,14 +14,14 @@ use crate::io::files::{self, paths::Paths};
 use crate::io::java::classpath::Classpath;
 use crate::net::download::FD_SENSIBLE_LIMIT;
 use crate::skip_none;
-use crate::util::{self, mojang};
+use crate::util;
 
 use super::client_meta::{libraries::Library, ClientMeta};
 
 /// Checks the rules of a game library to see if it should be installed
 fn is_allowed(lib: &Library) -> anyhow::Result<bool> {
 	for rule in &lib.rules {
-		let allowed = mojang::is_allowed(&rule.action.to_string());
+		let allowed = rule.action.is_allowed();
 		if let Some(os_name) = &rule.os.name {
 			if allowed != (os_name.to_string() == util::OS_STRING) {
 				return Ok(false);

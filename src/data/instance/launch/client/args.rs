@@ -8,7 +8,6 @@ use crate::io::files::paths::Paths;
 use crate::io::java::classpath::Classpath;
 use crate::net::game_files::assets::get_virtual_dir_path;
 use crate::net::game_files::client_meta::args::ArgumentItem;
-use crate::util::mojang::is_allowed;
 use crate::util::{ARCH_STRING, OS_STRING};
 
 /// Get the string for a placeholder token in an argument
@@ -123,7 +122,7 @@ pub fn process_arg(
 		}
 		ArgumentItem::Conditional(arg) => {
 			for rule in &arg.rules {
-				let allowed = is_allowed(&rule.action.to_string());
+				let allowed = rule.action.is_allowed();
 
 				if let Some(os_name) = &rule.os.name {
 					if allowed != (OS_STRING == os_name.to_string()) {

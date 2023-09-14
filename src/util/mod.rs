@@ -2,8 +2,6 @@
 pub mod hash;
 /// Utilities for working with serde_json values
 pub mod json;
-/// Utilities for certain mojang formats
-pub mod mojang;
 /// Printing and output utilities
 pub mod print;
 /// Utilities for game versions

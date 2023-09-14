@@ -203,16 +203,17 @@ pub mod conditions {
 		Disallow,
 	}
 
-	impl Display for RuleAction {
-		fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-			write!(
-				f,
-				"{}",
-				match self {
-					Self::Allow => "allow",
-					Self::Disallow => "disallow",
-				}
-			)
+	impl RuleAction {
+		/// Check if this rule is allowed
+		pub fn is_allowed(&self) -> bool {
+			matches!(&self, Self::Allow)
+		}
+
+		/// Check if the allowance of this rule matches a condition.
+		/// If the rule is allowed, but the condition fails, then the return is false.
+		/// If the rule is not allowed, but the condition succeeds, then the return is also false.
+		pub fn is_allowed_with_condition(&self, condition: bool) -> bool {
+			self.is_allowed() == condition
 		}
 	}
 
