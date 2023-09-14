@@ -5,6 +5,19 @@ use std::sync::Arc;
 
 use crate::util::is_valid_identifier;
 
+/// Type for the ID of a package
+pub type PackageID = Arc<str>;
+
+/// Used to store a request for a package that will be fulfilled later
+#[derive(Debug, Clone, PartialOrd, Ord)]
+pub struct PkgRequest {
+	/// The source of this request.
+	/// Could be a dependent, a recommender, or anything else.
+	pub source: PkgRequestSource,
+	/// The ID of the package to request
+	pub id: PackageID,
+}
+
 /// Where a package was requested from
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum PkgRequestSource {
@@ -57,19 +70,6 @@ impl PkgRequestSource {
 			Self::Repository => 4,
 		}
 	}
-}
-
-/// Type for the ID of a package
-pub type PackageID = Arc<str>;
-
-/// Used to store a request for a package that will be fulfilled later
-#[derive(Debug, Clone, PartialOrd, Ord)]
-pub struct PkgRequest {
-	/// The source of this request.
-	/// Could be a dependent, a recommender, or anything else.
-	pub source: PkgRequestSource,
-	/// The ID of the package to request
-	pub id: PackageID,
 }
 
 impl PkgRequest {

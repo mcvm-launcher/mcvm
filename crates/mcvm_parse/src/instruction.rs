@@ -14,6 +14,13 @@ use super::FailReason;
 use crate::unexpected_token;
 use mcvm_shared::addon::AddonKind;
 
+/// A command / statement run in a package script
+#[derive(Debug, Clone)]
+pub struct Instruction {
+	/// What type of instruction this is
+	pub kind: InstrKind,
+}
+
 /// Type of an instruction
 #[derive(Debug, Clone)]
 pub enum InstrKind {
@@ -160,13 +167,6 @@ impl Display for InstrKind {
 			}
 		)
 	}
-}
-
-/// A command / statement run in a package script
-#[derive(Debug, Clone)]
-pub struct Instruction {
-	/// What type of instruction this is
-	pub kind: InstrKind,
 }
 
 impl Instruction {

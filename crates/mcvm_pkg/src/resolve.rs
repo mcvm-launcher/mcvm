@@ -9,31 +9,256 @@ use crate::{ConfiguredPackage, PackageEvalRelationsResult, PackageEvaluator};
 
 use crate::{PkgRequest, PkgRequestSource};
 
-#[derive(Debug)]
-enum ConstraintKind {
-	Require(PkgRequest),
-	UserRequire(PkgRequest),
-	Refuse(PkgRequest),
-	Recommend(PkgRequest, bool),
-	Bundle(PkgRequest),
-	Compat(PkgRequest, PkgRequest),
-	Extend(PkgRequest),
+/// Find all package dependencies from a set of required packages
+pub async fn resolve<'a, E: PackageEvaluator<'a>>(
+	packages: &[E::ConfiguredPackage],
+	mut evaluator: E,
+	constant_eval_input: E::EvalInput<'a>,
+	common_input: &E::CommonInput,
+) -> anyhow::Result<ResolutionResult> {
+	let mut resolver = Resolver {
+		tasks: VecDeque::new(),
+		constraints: Vec::new(),
+		constant_input: constant_eval_input,
+	};
+
+	// Create the initial EvalPackage from the installed packages
+	for config in packages.iter().sorted_by_key(|x| x.get_package()) {
+		let req = config.get_package();
+
+		resolver.constraints.push(Constraint {
+			kind: ConstraintKind::UserRequire(req.clone()),
+		});
+		resolver.tasks.push_back(Task::EvalPackage {
+			dest: req.clone(),
+			config: Some(config.clone()),
+		});
+	}
+
+	while let Some(task) = resolver.tasks.pop_front() {
+		resolve_task(task, common_input, &mut evaluator, &mut resolver).await?;
+		resolver.check_compats();
+	}
+
+	let mut unfulfilled_recommendations = Vec::new();
+
+	for constraint in resolver.constraints.iter() {
+		match &constraint.kind {
+			ConstraintKind::Recommend(package, invert) => {
+				if *invert {
+					if resolver.is_required(package) {
+						unfulfilled_recommendations.push(RecommendedPackage {
+							req: package.clone(),
+							invert: true,
+						});
+					}
+				} else if !resolver.is_required(package) {
+					unfulfilled_recommendations.push(RecommendedPackage {
+						req: package.clone(),
+						invert: false,
+					});
+				}
+			}
+			ConstraintKind::Extend(package) => {
+				if !resolver.is_required(package) {
+					let source = package.source.get_source();
+					if let Some(source) = source {
+						bail!(
+							"The package '{}' extends the functionality of the package '{}', which is not installed.",
+							source.debug_sources(String::new()),
+							package
+						);
+					} else {
+						bail!(
+							"A package extends the functionality of the package '{}', which is not installed.",
+							package
+						);
+					}
+				}
+			}
+			_ => {}
+		}
+	}
+
+	let out = ResolutionResult {
+		packages: resolver.collect_packages(),
+		unfulfilled_recommendations,
+	};
+
+	Ok(out)
 }
 
-/// A requirement for the installation of the packages
-#[derive(Debug)]
-struct Constraint {
-	kind: ConstraintKind,
+/// Result from package resolution
+pub struct ResolutionResult {
+	/// The list of packages to install
+	pub packages: Vec<PkgRequest>,
+	/// Package recommendations that were not satisfied
+	pub unfulfilled_recommendations: Vec<RecommendedPackage>,
 }
 
-/// A task that needs to be completed for resolution
-enum Task<'a, E: PackageEvaluator<'a>> {
-	/// Evaluate a package and its relationships
-	EvalPackage {
-		dest: PkgRequest,
-		/// For packages with a config
-		config: Option<E::ConfiguredPackage>,
-	},
+/// Recommended package that has a PkgRequest instead of a String
+pub struct RecommendedPackage {
+	/// Package to recommend
+	pub req: PkgRequest,
+	/// Whether to invert this recommendation to recommend against a package
+	pub invert: bool,
+}
+
+/// Resolve a single task
+async fn resolve_task<'a, E: PackageEvaluator<'a>>(
+	task: Task<'a, E>,
+	common_input: &E::CommonInput,
+	evaluator: &mut E,
+	resolver: &mut Resolver<'a, E>,
+) -> anyhow::Result<()> {
+	match task {
+		Task::EvalPackage { dest, config } => {
+			resolve_eval_package(
+				dest.clone(),
+				config.as_ref(),
+				common_input,
+				evaluator,
+				resolver,
+			)
+			.await
+			.with_context(|| package_context_error_message(&dest))?;
+		}
+	}
+
+	Ok(())
+}
+
+/// Resolve an EvalPackage task
+async fn resolve_eval_package<'a, E: PackageEvaluator<'a>>(
+	package: PkgRequest,
+	config: Option<&E::ConfiguredPackage>,
+	common_input: &E::CommonInput,
+	evaluator: &mut E,
+	resolver: &mut Resolver<'a, E>,
+) -> anyhow::Result<()> {
+	// Make sure that this package fits the constraints as well
+	resolver
+		.check_constraints(&package)
+		.context("Package did not fit existing constraints")?;
+
+	// Get the correct EvalInput
+	let properties = evaluator
+		.get_package_properties(&package, common_input)
+		.await
+		.context("Failed to get package properties")?;
+	let input = override_eval_input::<E>(properties, &resolver.constant_input, config)?;
+
+	let result = evaluator
+		.eval_package_relations(&package, &input, common_input)
+		.await
+		.context("Failed to evaluate package")?;
+
+	for conflict in result.get_conflicts().iter().sorted() {
+		let req = PkgRequest::new(
+			conflict.clone(),
+			PkgRequestSource::Refused(Box::new(package.clone())),
+		);
+		if resolver.is_required(&req) {
+			bail!(
+				"Package '{}' is incompatible with this package.",
+				req.debug_sources(String::new())
+			);
+		}
+		resolver.constraints.push(Constraint {
+			kind: ConstraintKind::Refuse(req),
+		});
+	}
+
+	for dep in result.get_deps().iter().flatten().sorted() {
+		let req = PkgRequest::new(
+			dep.value.clone(),
+			PkgRequestSource::Dependency(Box::new(package.clone())),
+		);
+		if dep.explicit && !resolver.is_user_required(&req) {
+			bail!("Package '{req}' has been explicitly required by this package. This means it must be required by the user in their config.");
+		}
+		resolver.check_constraints(&req)?;
+		if !resolver.is_required(&req) {
+			resolver.constraints.push(Constraint {
+				kind: ConstraintKind::Require(req.clone()),
+			});
+			resolver.tasks.push_back(Task::EvalPackage {
+				dest: req,
+				config: None,
+			});
+		}
+	}
+
+	for bundled in result.get_bundled().iter().sorted() {
+		let req = PkgRequest::new(
+			bundled.clone(),
+			PkgRequestSource::Bundled(Box::new(package.clone())),
+		);
+		resolver.check_constraints(&req)?;
+		resolver.remove_require_constraint(&req);
+		resolver.constraints.push(Constraint {
+			kind: ConstraintKind::Bundle(req.clone()),
+		});
+		resolver.tasks.push_back(Task::EvalPackage {
+			dest: req,
+			config: None,
+		});
+	}
+
+	for (check_package, compat_package) in result.get_compats().iter().sorted() {
+		let check_package = PkgRequest::new(
+			check_package.clone(),
+			PkgRequestSource::Dependency(Box::new(package.clone())),
+		);
+		let compat_package = PkgRequest::new(
+			compat_package.clone(),
+			PkgRequestSource::Dependency(Box::new(package.clone())),
+		);
+		if !resolver.compat_exists(&check_package, &compat_package) {
+			resolver.constraints.push(Constraint {
+				kind: ConstraintKind::Compat(check_package, compat_package),
+			});
+		}
+	}
+
+	for extension in result.get_extensions().iter().sorted() {
+		let req = PkgRequest::new(
+			extension.clone(),
+			PkgRequestSource::Dependency(Box::new(package.clone())),
+		);
+		resolver.constraints.push(Constraint {
+			kind: ConstraintKind::Extend(req),
+		});
+	}
+
+	for recommendation in result.get_recommendations().iter().sorted() {
+		let req = PkgRequest::new(
+			recommendation.value.clone(),
+			PkgRequestSource::Dependency(Box::new(package.clone())),
+		);
+		resolver.constraints.push(Constraint {
+			kind: ConstraintKind::Recommend(req, recommendation.invert),
+		});
+	}
+
+	Ok(())
+}
+
+/// Overrides the EvalInput for a package with config
+fn override_eval_input<'a, E: PackageEvaluator<'a>>(
+	properties: &PackageProperties,
+	constant_eval_input: &E::EvalInput<'a>,
+	config: Option<&E::ConfiguredPackage>,
+) -> anyhow::Result<E::EvalInput<'a>> {
+	let input = {
+		let mut constant_eval_input = constant_eval_input.clone();
+		if let Some(config) = config {
+			config.override_configured_package_input(properties, &mut constant_eval_input)?;
+		}
+		constant_eval_input
+	};
+
+	Ok(input)
 }
 
 /// State for resolution
@@ -173,256 +398,31 @@ where
 	}
 }
 
-/// Overrides the EvalInput for a package with config
-fn override_eval_input<'a, E: PackageEvaluator<'a>>(
-	properties: &PackageProperties,
-	constant_eval_input: &E::EvalInput<'a>,
-	config: Option<&E::ConfiguredPackage>,
-) -> anyhow::Result<E::EvalInput<'a>> {
-	let input = {
-		let mut constant_eval_input = constant_eval_input.clone();
-		if let Some(config) = config {
-			config.override_configured_package_input(properties, &mut constant_eval_input)?;
-		}
-		constant_eval_input
-	};
-
-	Ok(input)
+/// A requirement for the installation of the packages
+#[derive(Debug)]
+struct Constraint {
+	kind: ConstraintKind,
 }
 
-/// Resolve an EvalPackage task
-async fn resolve_eval_package<'a, E: PackageEvaluator<'a>>(
-	package: PkgRequest,
-	config: Option<&E::ConfiguredPackage>,
-	common_input: &E::CommonInput,
-	evaluator: &mut E,
-	resolver: &mut Resolver<'a, E>,
-) -> anyhow::Result<()> {
-	// Make sure that this package fits the constraints as well
-	resolver
-		.check_constraints(&package)
-		.context("Package did not fit existing constraints")?;
-
-	// Get the correct EvalInput
-	let properties = evaluator
-		.get_package_properties(&package, common_input)
-		.await
-		.context("Failed to get package properties")?;
-	let input = override_eval_input::<E>(properties, &resolver.constant_input, config)?;
-
-	let result = evaluator
-		.eval_package_relations(&package, &input, common_input)
-		.await
-		.context("Failed to evaluate package")?;
-
-	for conflict in result.get_conflicts().iter().sorted() {
-		let req = PkgRequest::new(
-			conflict.clone(),
-			PkgRequestSource::Refused(Box::new(package.clone())),
-		);
-		if resolver.is_required(&req) {
-			bail!(
-				"Package '{}' is incompatible with this package.",
-				req.debug_sources(String::new())
-			);
-		}
-		resolver.constraints.push(Constraint {
-			kind: ConstraintKind::Refuse(req),
-		});
-	}
-
-	for dep in result.get_deps().iter().flatten().sorted() {
-		let req = PkgRequest::new(
-			dep.value.clone(),
-			PkgRequestSource::Dependency(Box::new(package.clone())),
-		);
-		if dep.explicit && !resolver.is_user_required(&req) {
-			bail!("Package '{req}' has been explicitly required by this package. This means it must be required by the user in their config.");
-		}
-		resolver.check_constraints(&req)?;
-		if !resolver.is_required(&req) {
-			resolver.constraints.push(Constraint {
-				kind: ConstraintKind::Require(req.clone()),
-			});
-			resolver.tasks.push_back(Task::EvalPackage {
-				dest: req,
-				config: None,
-			});
-		}
-	}
-
-	for bundled in result.get_bundled().iter().sorted() {
-		let req = PkgRequest::new(
-			bundled.clone(),
-			PkgRequestSource::Bundled(Box::new(package.clone())),
-		);
-		resolver.check_constraints(&req)?;
-		resolver.remove_require_constraint(&req);
-		resolver.constraints.push(Constraint {
-			kind: ConstraintKind::Bundle(req.clone()),
-		});
-		resolver.tasks.push_back(Task::EvalPackage {
-			dest: req,
-			config: None,
-		});
-	}
-
-	for (check_package, compat_package) in result.get_compats().iter().sorted() {
-		let check_package = PkgRequest::new(
-			check_package.clone(),
-			PkgRequestSource::Dependency(Box::new(package.clone())),
-		);
-		let compat_package = PkgRequest::new(
-			compat_package.clone(),
-			PkgRequestSource::Dependency(Box::new(package.clone())),
-		);
-		if !resolver.compat_exists(&check_package, &compat_package) {
-			resolver.constraints.push(Constraint {
-				kind: ConstraintKind::Compat(check_package, compat_package),
-			});
-		}
-	}
-
-	for extension in result.get_extensions().iter().sorted() {
-		let req = PkgRequest::new(
-			extension.clone(),
-			PkgRequestSource::Dependency(Box::new(package.clone())),
-		);
-		resolver.constraints.push(Constraint {
-			kind: ConstraintKind::Extend(req),
-		});
-	}
-
-	for recommendation in result.get_recommendations().iter().sorted() {
-		let req = PkgRequest::new(
-			recommendation.value.clone(),
-			PkgRequestSource::Dependency(Box::new(package.clone())),
-		);
-		resolver.constraints.push(Constraint {
-			kind: ConstraintKind::Recommend(req, recommendation.invert),
-		});
-	}
-
-	Ok(())
+#[derive(Debug)]
+enum ConstraintKind {
+	Require(PkgRequest),
+	UserRequire(PkgRequest),
+	Refuse(PkgRequest),
+	Recommend(PkgRequest, bool),
+	Bundle(PkgRequest),
+	Compat(PkgRequest, PkgRequest),
+	Extend(PkgRequest),
 }
 
-/// Resolve a single task
-async fn resolve_task<'a, E: PackageEvaluator<'a>>(
-	task: Task<'a, E>,
-	common_input: &E::CommonInput,
-	evaluator: &mut E,
-	resolver: &mut Resolver<'a, E>,
-) -> anyhow::Result<()> {
-	match task {
-		Task::EvalPackage { dest, config } => {
-			resolve_eval_package(
-				dest.clone(),
-				config.as_ref(),
-				common_input,
-				evaluator,
-				resolver,
-			)
-			.await
-			.with_context(|| package_context_error_message(&dest))?;
-		}
-	}
-
-	Ok(())
-}
-
-/// Recommended package that has a PkgRequest instead of a String
-pub struct RecommendedPackage {
-	/// Package to recommend
-	pub req: PkgRequest,
-	/// Whether to invert this recommendation to recommend against a package
-	pub invert: bool,
-}
-
-/// Result from package resolution
-pub struct ResolutionResult {
-	/// The list of packages to install
-	pub packages: Vec<PkgRequest>,
-	/// Package recommendations that were not satisfied
-	pub unfulfilled_recommendations: Vec<RecommendedPackage>,
-}
-
-/// Find all package dependencies from a set of required packages
-pub async fn resolve<'a, E: PackageEvaluator<'a>>(
-	packages: &[E::ConfiguredPackage],
-	mut evaluator: E,
-	constant_eval_input: E::EvalInput<'a>,
-	common_input: &E::CommonInput,
-) -> anyhow::Result<ResolutionResult> {
-	let mut resolver = Resolver {
-		tasks: VecDeque::new(),
-		constraints: Vec::new(),
-		constant_input: constant_eval_input,
-	};
-
-	// Create the initial EvalPackage from the installed packages
-	for config in packages.iter().sorted_by_key(|x| x.get_package()) {
-		let req = config.get_package();
-
-		resolver.constraints.push(Constraint {
-			kind: ConstraintKind::UserRequire(req.clone()),
-		});
-		resolver.tasks.push_back(Task::EvalPackage {
-			dest: req.clone(),
-			config: Some(config.clone()),
-		});
-	}
-
-	while let Some(task) = resolver.tasks.pop_front() {
-		resolve_task(task, common_input, &mut evaluator, &mut resolver).await?;
-		resolver.check_compats();
-	}
-
-	let mut unfulfilled_recommendations = Vec::new();
-
-	for constraint in resolver.constraints.iter() {
-		match &constraint.kind {
-			ConstraintKind::Recommend(package, invert) => {
-				if *invert {
-					if resolver.is_required(package) {
-						unfulfilled_recommendations.push(RecommendedPackage {
-							req: package.clone(),
-							invert: true,
-						});
-					}
-				} else if !resolver.is_required(package) {
-					unfulfilled_recommendations.push(RecommendedPackage {
-						req: package.clone(),
-						invert: false,
-					});
-				}
-			}
-			ConstraintKind::Extend(package) => {
-				if !resolver.is_required(package) {
-					let source = package.source.get_source();
-					if let Some(source) = source {
-						bail!(
-							"The package '{}' extends the functionality of the package '{}', which is not installed.",
-							source.debug_sources(String::new()),
-							package
-						);
-					} else {
-						bail!(
-							"A package extends the functionality of the package '{}', which is not installed.",
-							package
-						);
-					}
-				}
-			}
-			_ => {}
-		}
-	}
-
-	let out = ResolutionResult {
-		packages: resolver.collect_packages(),
-		unfulfilled_recommendations,
-	};
-
-	Ok(out)
+/// A task that needs to be completed for resolution
+enum Task<'a, E: PackageEvaluator<'a>> {
+	/// Evaluate a package and its relationships
+	EvalPackage {
+		dest: PkgRequest,
+		/// For packages with a config
+		config: Option<E::ConfiguredPackage>,
+	},
 }
 
 /// Creates the error message for package context

@@ -2,22 +2,6 @@ use std::collections::HashMap;
 
 use anyhow::{anyhow, bail};
 
-/// Constant var for the Minecraft version
-pub const CONSTANT_VAR_MC_VERSION: &str = "MINECRAFT_VERSION";
-/// Constant variables that are reserved by mcvm
-pub const RESERVED_CONSTANT_VARS: [&str; 1] = [CONSTANT_VAR_MC_VERSION];
-
-/// Check if a variable identifier is a reserved constant variable
-pub fn is_reserved_constant_var(var: &str) -> bool {
-	RESERVED_CONSTANT_VARS.contains(&var)
-}
-
-/// Struct for reserved constant variables
-pub struct ReservedConstantVariables<'a> {
-	/// The Minecraft version
-	pub mc_version: &'a str,
-}
-
 /// Argument to a command that could be a literal or a variable
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Value {
@@ -27,65 +11,6 @@ pub enum Value {
 	Literal(String),
 	/// The value of a variable
 	Var(String),
-}
-
-/// An trait that can be used to get and set variables used in script evaluation
-pub trait VariableStore {
-	/// Set the value of a variable in the store
-	fn get_var(&self, var: &str) -> Option<&str>;
-
-	/// Get the value of a variable in the store
-	fn set_var(&mut self, var: String, val: String);
-
-	/// Tries to set a variable, but checks if the variable is a constant variable.
-	/// This should be used for your 'set' instruction evaluation
-	fn try_set_var(&mut self, var: String, val: String) -> anyhow::Result<()> {
-		if is_reserved_constant_var(&var) {
-			bail!("Tried to set the value of a reserved constant variable");
-		}
-
-		self.set_var(var, val);
-
-		Ok(())
-	}
-
-	/// Set the values of the reserved constants. Should be run before evaluation
-	fn set_reserved_constants(&mut self, constants: ReservedConstantVariables) {
-		self.set_var(
-			CONSTANT_VAR_MC_VERSION.to_string(),
-			constants.mc_version.to_string(),
-		);
-	}
-
-	/// Check if the store contains a value
-	fn var_exists(&self, var: &str) -> bool {
-		self.get_var(var).is_some()
-	}
-}
-
-/// HashMap implementation of a VariableStore
-#[derive(Debug, Default, Clone)]
-pub struct HashMapVariableStore(HashMap<String, String>);
-
-impl HashMapVariableStore {
-	/// Create a new HashMapVariableStore
-	pub fn new() -> Self {
-		Self(HashMap::new())
-	}
-}
-
-impl VariableStore for HashMapVariableStore {
-	fn get_var(&self, var: &str) -> Option<&str> {
-		self.0.get(var).map(String::as_str)
-	}
-
-	fn set_var(&mut self, var: String, val: String) {
-		self.0.insert(var, val);
-	}
-
-	fn var_exists(&self, var: &str) -> bool {
-		self.0.contains_key(var)
-	}
 }
 
 impl Value {
@@ -166,6 +91,81 @@ impl Value {
 			_ => Ok(Some(self.get(vars)?)),
 		}
 	}
+}
+
+/// An trait that can be used to get and set variables used in script evaluation
+pub trait VariableStore {
+	/// Set the value of a variable in the store
+	fn get_var(&self, var: &str) -> Option<&str>;
+
+	/// Get the value of a variable in the store
+	fn set_var(&mut self, var: String, val: String);
+
+	/// Tries to set a variable, but checks if the variable is a constant variable.
+	/// This should be used for your 'set' instruction evaluation
+	fn try_set_var(&mut self, var: String, val: String) -> anyhow::Result<()> {
+		if is_reserved_constant_var(&var) {
+			bail!("Tried to set the value of a reserved constant variable");
+		}
+
+		self.set_var(var, val);
+
+		Ok(())
+	}
+
+	/// Set the values of the reserved constants. Should be run before evaluation
+	fn set_reserved_constants(&mut self, constants: ReservedConstantVariables) {
+		self.set_var(
+			CONSTANT_VAR_MC_VERSION.to_string(),
+			constants.mc_version.to_string(),
+		);
+	}
+
+	/// Check if the store contains a value
+	fn var_exists(&self, var: &str) -> bool {
+		self.get_var(var).is_some()
+	}
+}
+
+/// HashMap implementation of a VariableStore
+#[derive(Debug, Default, Clone)]
+pub struct HashMapVariableStore(HashMap<String, String>);
+
+impl HashMapVariableStore {
+	/// Create a new HashMapVariableStore
+	pub fn new() -> Self {
+		Self(HashMap::new())
+	}
+}
+
+impl VariableStore for HashMapVariableStore {
+	fn get_var(&self, var: &str) -> Option<&str> {
+		self.0.get(var).map(String::as_str)
+	}
+
+	fn set_var(&mut self, var: String, val: String) {
+		self.0.insert(var, val);
+	}
+
+	fn var_exists(&self, var: &str) -> bool {
+		self.0.contains_key(var)
+	}
+}
+
+/// Constant var for the Minecraft version
+pub const CONSTANT_VAR_MC_VERSION: &str = "MINECRAFT_VERSION";
+/// Constant variables that are reserved by mcvm
+pub const RESERVED_CONSTANT_VARS: [&str; 1] = [CONSTANT_VAR_MC_VERSION];
+
+/// Check if a variable identifier is a reserved constant variable
+pub fn is_reserved_constant_var(var: &str) -> bool {
+	RESERVED_CONSTANT_VARS.contains(&var)
+}
+
+/// Struct for reserved constant variables
+pub struct ReservedConstantVariables<'a> {
+	/// The Minecraft version
+	pub mc_version: &'a str,
 }
 
 #[cfg(test)]

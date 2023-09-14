@@ -4,6 +4,23 @@ use serde::Deserialize;
 
 use crate::pkg::{PackageAddonOptionalHashes, PackageID};
 
+/// Some content that is installed on Minecraft
+#[derive(Debug, Clone)]
+pub struct Addon {
+	/// What type of addon this is
+	pub kind: AddonKind,
+	/// The ID of this addon, unique among a package
+	pub id: String,
+	/// The addon's file name
+	pub file_name: String,
+	/// The ID of the package that installed this addon
+	pub pkg_id: PackageID,
+	/// Version of the addon, used for caching
+	pub version: Option<String>,
+	/// Hashes of the addon
+	pub hashes: PackageAddonOptionalHashes,
+}
+
 /// Different kinds of addons
 #[derive(Debug, Clone, Copy, Deserialize)]
 #[serde(rename_all = "snake_case")]
@@ -67,23 +84,6 @@ impl Display for AddonKind {
 			}
 		)
 	}
-}
-
-/// Some content that is installed on Minecraft
-#[derive(Debug, Clone)]
-pub struct Addon {
-	/// What type of addon this is
-	pub kind: AddonKind,
-	/// The ID of this addon, unique among a package
-	pub id: String,
-	/// The addon's file name
-	pub file_name: String,
-	/// The ID of the package that installed this addon
-	pub pkg_id: PackageID,
-	/// Version of the addon, used for caching
-	pub version: Option<String>,
-	/// Hashes of the addon
-	pub hashes: PackageAddonOptionalHashes,
 }
 
 /// Checks for a valid addon version identifier that is compatible with all systems

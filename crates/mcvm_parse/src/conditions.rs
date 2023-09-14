@@ -12,30 +12,23 @@ use super::instruction::parse_arg;
 use super::lex::{TextPos, Token};
 use super::vars::Value;
 
-/// Value for the OS condition
-#[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
-#[serde(rename_all = "snake_case")]
-pub enum OSCondition {
-	/// Windows
-	Windows,
-	/// Linux
-	Linux,
-	/// MacOS
-	MacOS,
-	/// Any other operating system
-	Other,
+/// A condition that checks some property to create a boolean answer
+#[derive(Debug, Clone)]
+pub struct Condition {
+	/// What kind of condition this is
+	pub kind: ConditionKind,
 }
 
-impl OSCondition {
-	/// Parse a string into an OSCondition
-	pub fn parse_from_str(string: &str) -> Option<Self> {
-		match string {
-			"windows" => Some(Self::Windows),
-			"linux" => Some(Self::Linux),
-			"macos" => Some(Self::MacOS),
-			"other" => Some(Self::Other),
-			_ => None,
-		}
+impl Condition {
+	/// Create a new Condition
+	pub fn new(kind: ConditionKind) -> Self {
+		Self { kind }
+	}
+
+	/// Parse a condition from a token
+	pub fn parse(&mut self, tok: &Token, pos: &TextPos) -> anyhow::Result<()> {
+		self.kind.parse(tok, pos)?;
+		Ok(())
 	}
 }
 
@@ -68,6 +61,33 @@ pub enum ConditionKind {
 	Stability(Later<PackageStability>),
 	/// Check the user's language
 	Language(Later<Language>),
+}
+
+/// Value for the OS condition
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum OSCondition {
+	/// Windows
+	Windows,
+	/// Linux
+	Linux,
+	/// MacOS
+	MacOS,
+	/// Any other operating system
+	Other,
+}
+
+impl OSCondition {
+	/// Parse a string into an OSCondition
+	pub fn parse_from_str(string: &str) -> Option<Self> {
+		match string {
+			"windows" => Some(Self::Windows),
+			"linux" => Some(Self::Linux),
+			"macos" => Some(Self::MacOS),
+			"other" => Some(Self::Other),
+			_ => None,
+		}
+	}
 }
 
 impl ConditionKind {
@@ -226,25 +246,5 @@ fn check_enum_condition_argument<T>(
 				pos.clone()
 			);
 		}
-	}
-}
-
-/// A condition that checks some property to create a boolean answer
-#[derive(Debug, Clone)]
-pub struct Condition {
-	/// What kind of condition this is
-	pub kind: ConditionKind,
-}
-
-impl Condition {
-	/// Create a new Condition
-	pub fn new(kind: ConditionKind) -> Self {
-		Self { kind }
-	}
-
-	/// Parse a condition from a token
-	pub fn parse(&mut self, tok: &Token, pos: &TextPos) -> anyhow::Result<()> {
-		self.kind.parse(tok, pos)?;
-		Ok(())
 	}
 }

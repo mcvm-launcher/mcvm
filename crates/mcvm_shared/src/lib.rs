@@ -15,6 +15,11 @@ pub mod pkg;
 /// Tools for dealing with version patterns
 pub mod versions;
 
+use std::{fmt::Display, str::FromStr};
+
+use anyhow::anyhow;
+use serde::{Deserialize, Serialize};
+
 /// Common utilities
 pub mod util {
 	use serde::Deserialize;
@@ -251,11 +256,6 @@ pub mod later {
 		}
 	}
 }
-
-use std::{fmt::Display, str::FromStr};
-
-use anyhow::anyhow;
-use serde::{Deserialize, Serialize};
 
 /// Minecraft game side, client or server
 #[derive(Debug, Clone, Copy, Hash, PartialEq, Eq, Deserialize, Serialize)]

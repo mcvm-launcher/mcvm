@@ -1,21 +1,35 @@
 use std::collections::HashMap;
 
 use anyhow::Context;
-use mcvm_parse::{
-	conditions::OSCondition, metadata::PackageMetadata, properties::PackageProperties,
-};
-use mcvm_shared::{
-	addon::AddonKind,
-	lang::Language,
-	modifications::{ModloaderMatch, PluginLoaderMatch},
-	pkg::{PackageAddonOptionalHashes, PackageStability},
-	util::DeserListOrSingle,
-	versions::VersionPattern,
-	Side,
-};
+use mcvm_parse::conditions::OSCondition;
+use mcvm_parse::metadata::PackageMetadata;
+use mcvm_parse::properties::PackageProperties;
+use mcvm_shared::addon::AddonKind;
+use mcvm_shared::lang::Language;
+use mcvm_shared::modifications::{ModloaderMatch, PluginLoaderMatch};
+use mcvm_shared::pkg::{PackageAddonOptionalHashes, PackageStability};
+use mcvm_shared::util::DeserListOrSingle;
+use mcvm_shared::versions::VersionPattern;
+use mcvm_shared::Side;
 use serde::Deserialize;
 
 use crate::RecommendedPackage;
+
+/// Structure for a declarative / JSON package
+#[derive(Deserialize, Debug, Default, Clone)]
+#[serde(default)]
+pub struct DeclarativePackage {
+	/// Metadata for the package
+	pub meta: PackageMetadata,
+	/// Properties for the package
+	pub properties: PackageProperties,
+	/// Addons that the package installs
+	pub addons: HashMap<String, DeclarativeAddon>,
+	/// Relationships with other packages
+	pub relations: DeclarativePackageRelations,
+	/// Changes to conditionally apply to the package
+	pub conditional_rules: Vec<DeclarativeConditionalRule>,
+}
 
 /// Package relationships for declarative packages
 #[derive(Deserialize, Debug, Default, Clone)]
@@ -74,15 +88,14 @@ pub struct DeclarativeConditionSet {
 	pub language: Option<Language>,
 }
 
-/// Properties for declarative addon versions that can be changed with patches
+/// Conditional rule to apply changes to a declarative package
 #[derive(Deserialize, Debug, Default, Clone)]
 #[serde(default)]
-pub struct DeclarativeAddonVersionPatchProperties {
-	/// Relations to append
-	pub relations: DeclarativePackageRelations,
-	// TODO: This should be an option
-	/// A filename to change
-	pub filename: String,
+pub struct DeclarativeConditionalRule {
+	/// Conditions for this rule
+	pub conditions: Vec<DeclarativeConditionSet>,
+	/// Properties to apply if this rule succeeds
+	pub properties: DeclarativeConditionalRuleProperties,
 }
 
 /// Properties that can be applied conditionally
@@ -95,14 +108,16 @@ pub struct DeclarativeConditionalRuleProperties {
 	pub notices: DeserListOrSingle<String>,
 }
 
-/// Conditional rule to apply changes to a declarative package
-#[derive(Deserialize, Debug, Default, Clone)]
-#[serde(default)]
-pub struct DeclarativeConditionalRule {
-	/// Conditions for this rule
+/// Addon in a declarative package
+#[derive(Deserialize, Debug, Clone)]
+pub struct DeclarativeAddon {
+	/// What kind of addon this is
+	pub kind: AddonKind,
+	/// The available versions of this addon
+	pub versions: Vec<DeclarativeAddonVersion>,
+	/// Conditions for this addon to be considered
+	#[serde(default)]
 	pub conditions: Vec<DeclarativeConditionSet>,
-	/// Properties to apply if this rule succeeds
-	pub properties: DeclarativeConditionalRuleProperties,
 }
 
 /// Version for an addon in a declarative package
@@ -128,32 +143,15 @@ pub struct DeclarativeAddonVersion {
 	pub hashes: PackageAddonOptionalHashes,
 }
 
-/// Addon in a declarative package
-#[derive(Deserialize, Debug, Clone)]
-pub struct DeclarativeAddon {
-	/// What kind of addon this is
-	pub kind: AddonKind,
-	/// The available versions of this addon
-	pub versions: Vec<DeclarativeAddonVersion>,
-	/// Conditions for this addon to be considered
-	#[serde(default)]
-	pub conditions: Vec<DeclarativeConditionSet>,
-}
-
-/// Structure for a declarative / JSON package
+/// Properties for declarative addon versions that can be changed with patches
 #[derive(Deserialize, Debug, Default, Clone)]
 #[serde(default)]
-pub struct DeclarativePackage {
-	/// Metadata for the package
-	pub meta: PackageMetadata,
-	/// Properties for the package
-	pub properties: PackageProperties,
-	/// Addons that the package installs
-	pub addons: HashMap<String, DeclarativeAddon>,
-	/// Relationships with other packages
+pub struct DeclarativeAddonVersionPatchProperties {
+	/// Relations to append
 	pub relations: DeclarativePackageRelations,
-	/// Changes to conditionally apply to the package
-	pub conditional_rules: Vec<DeclarativeConditionalRule>,
+	// TODO: This should be an option
+	/// A filename to change
+	pub filename: String,
 }
 
 /// Deserialize a declarative package

@@ -16,209 +16,12 @@ use std::collections::{HashMap, VecDeque};
 
 const DEFAULT_ROUTINE: &str = "__default__";
 
-/// The type we use to index blocks in the hashmap
-pub type BlockId = u16;
-
-/// A list of instructions inside a routine or nested block (such as an if block)
-#[derive(Debug, Clone)]
-pub struct Block {
-	/// The instructions contained in the block, in order
-	pub contents: Vec<Instruction>,
-	parent: Option<BlockId>,
-}
-
-impl Block {
-	/// Create a new block with an optional parent block that is used to return context when parsing
-	pub fn new(parent: Option<BlockId>) -> Self {
-		Self {
-			contents: Vec::new(),
-			parent,
-		}
-	}
-
-	/// Add an instruction to the block
-	pub fn push(&mut self, instr: Instruction) {
-		self.contents.push(instr);
-	}
-}
-
-/// The final result of parsed data
-#[derive(Debug)]
-pub struct Parsed {
-	/// The blocks of instructions that have been parsed
-	pub blocks: HashMap<BlockId, Block>,
-	/// A map of routine names to the blocks they contain
-	pub routines: HashMap<String, BlockId>,
-	id_count: BlockId,
-}
-
-impl Parsed {
-	/// Create a new Parsed
-	pub fn new() -> Self {
-		let mut out = Self {
-			blocks: HashMap::new(),
-			routines: HashMap::new(),
-			id_count: 0,
-		};
-		out.routines = HashMap::from([(DEFAULT_ROUTINE.into(), out.new_block(None))]);
-		out
-	}
-
-	/// Creates a new block and returns its ID
-	pub fn new_block(&mut self, parent: Option<BlockId>) -> BlockId {
-		self.id_count += 1;
-		self.blocks.insert(self.id_count, Block::new(parent));
-		self.id_count
-	}
-
-	/// Creates a new routine and its associated block, then returns the block's ID
-	pub fn new_routine(&mut self, name: &str) -> BlockId {
-		self.new_block(None);
-		self.routines.insert(name.to_string(), self.id_count);
-		self.id_count
-	}
-
-	/// Checks if a routine exists
-	pub fn routine_exists(&self, name: &str) -> bool {
-		self.routines.contains_key(name)
-	}
-}
-
-impl Default for Parsed {
-	fn default() -> Self {
-		Self::new()
-	}
-}
-
-mod addon {
-	use mcvm_shared::pkg::PackageAddonHashes;
-
-	use super::*;
-
-	/// State of the addon parser
-	#[derive(Debug)]
-	pub enum State {
-		Id,
-		FileName,
-		OpenParen,
-		Key,
-		Colon,
-		Value,
-		Comma,
-		Semicolon,
-	}
-
-	/// Current key for the addon parser
-	#[derive(Debug)]
-	pub enum Key {
-		None,
-		Kind,
-		Url,
-		Path,
-		Version,
-		HashSHA256,
-		HashSHA512,
-	}
-
-	/// Keys that have been filled
-	#[derive(Debug)]
-	pub struct FilledKeys {
-		pub kind: Option<AddonKind>,
-		pub url: Value,
-		pub path: Value,
-		pub version: Value,
-		pub hashes: PackageAddonHashes<Value>,
-	}
-}
-
-/// Data for parsing the require instruction
-pub mod require {
-	use super::*;
-
-	/// A single required package
-	#[derive(Debug, Clone)]
-	pub struct Package {
-		/// The package ID that is required
-		pub value: Value,
-		/// Whether or not this is an explicit dependency
-		pub explicit: bool,
-	}
-
-	/// State of the require parser
-	#[derive(Debug)]
-	pub enum State {
-		/// Normal parsing state
-		Normal,
-	}
-}
-
-/// Mode for what we are currently parsing
-#[derive(Debug)]
-enum ParseMode {
-	Root,
-	Routine(Option<String>),
-	Instruction(Instruction),
-	If(Option<Condition>),
-	Addon {
-		state: addon::State,
-		key: addon::Key,
-		id: Value,
-		file_name: Value,
-		filled_keys: addon::FilledKeys,
-	},
-	Require {
-		state: require::State,
-		package_groups: Vec<Vec<require::Package>>,
-		current_group: Option<Vec<require::Package>>,
-		current_package: Option<require::Package>,
-		explicit_has_been_closed: bool,
-	},
-}
-
 /// Throw an anyhow error about an unexpected token at a position
 #[macro_export]
 macro_rules! unexpected_token {
 	($tok:expr, $pos:expr) => {
 		bail!("Unexpected token {} {}", $tok.as_string(), $pos.clone())
 	};
-}
-
-/// Data used for parsing
-#[derive(Debug)]
-struct ParseData {
-	parsed: Parsed,
-	instruction_n: u32,
-	block: BlockId,
-	mode: ParseMode,
-}
-
-impl ParseData {
-	pub fn new() -> Self {
-		Self {
-			parsed: Parsed::new(),
-			instruction_n: 0,
-			block: 1,
-			mode: ParseMode::Root,
-		}
-	}
-
-	/// Push a new instruction to the block
-	pub fn new_instruction(&mut self, instr: Instruction) {
-		self.instruction_n += 1;
-		if let Some(block) = self.parsed.blocks.get_mut(&self.block) {
-			block.push(instr);
-		}
-		self.mode = ParseMode::Root;
-	}
-
-	/// Finish the current block
-	pub fn new_block(&mut self) {
-		if let Some(block) = self.parsed.blocks.get_mut(&self.block) {
-			if let Some(parent) = block.parent {
-				self.block = parent;
-			}
-		}
-	}
 }
 
 /// Parse a list of tokens
@@ -546,6 +349,203 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 	check_recursion(&prs.parsed)?;
 
 	Ok(prs.parsed)
+}
+
+mod addon {
+	use mcvm_shared::pkg::PackageAddonHashes;
+
+	use super::*;
+
+	/// State of the addon parser
+	#[derive(Debug)]
+	pub enum State {
+		Id,
+		FileName,
+		OpenParen,
+		Key,
+		Colon,
+		Value,
+		Comma,
+		Semicolon,
+	}
+
+	/// Current key for the addon parser
+	#[derive(Debug)]
+	pub enum Key {
+		None,
+		Kind,
+		Url,
+		Path,
+		Version,
+		HashSHA256,
+		HashSHA512,
+	}
+
+	/// Keys that have been filled
+	#[derive(Debug)]
+	pub struct FilledKeys {
+		pub kind: Option<AddonKind>,
+		pub url: Value,
+		pub path: Value,
+		pub version: Value,
+		pub hashes: PackageAddonHashes<Value>,
+	}
+}
+
+/// Data for parsing the require instruction
+pub mod require {
+	use super::*;
+
+	/// A single required package
+	#[derive(Debug, Clone)]
+	pub struct Package {
+		/// The package ID that is required
+		pub value: Value,
+		/// Whether or not this is an explicit dependency
+		pub explicit: bool,
+	}
+
+	/// State of the require parser
+	#[derive(Debug)]
+	pub enum State {
+		/// Normal parsing state
+		Normal,
+	}
+}
+
+/// Mode for what we are currently parsing
+#[derive(Debug)]
+enum ParseMode {
+	Root,
+	Routine(Option<String>),
+	Instruction(Instruction),
+	If(Option<Condition>),
+	Addon {
+		state: addon::State,
+		key: addon::Key,
+		id: Value,
+		file_name: Value,
+		filled_keys: addon::FilledKeys,
+	},
+	Require {
+		state: require::State,
+		package_groups: Vec<Vec<require::Package>>,
+		current_group: Option<Vec<require::Package>>,
+		current_package: Option<require::Package>,
+		explicit_has_been_closed: bool,
+	},
+}
+
+/// Data used for parsing
+#[derive(Debug)]
+struct ParseData {
+	parsed: Parsed,
+	instruction_n: u32,
+	block: BlockId,
+	mode: ParseMode,
+}
+
+impl ParseData {
+	pub fn new() -> Self {
+		Self {
+			parsed: Parsed::new(),
+			instruction_n: 0,
+			block: 1,
+			mode: ParseMode::Root,
+		}
+	}
+
+	/// Push a new instruction to the block
+	pub fn new_instruction(&mut self, instr: Instruction) {
+		self.instruction_n += 1;
+		if let Some(block) = self.parsed.blocks.get_mut(&self.block) {
+			block.push(instr);
+		}
+		self.mode = ParseMode::Root;
+	}
+
+	/// Finish the current block
+	pub fn new_block(&mut self) {
+		if let Some(block) = self.parsed.blocks.get_mut(&self.block) {
+			if let Some(parent) = block.parent {
+				self.block = parent;
+			}
+		}
+	}
+}
+
+/// The final result of parsed data
+#[derive(Debug)]
+pub struct Parsed {
+	/// The blocks of instructions that have been parsed
+	pub blocks: HashMap<BlockId, Block>,
+	/// A map of routine names to the blocks they contain
+	pub routines: HashMap<String, BlockId>,
+	id_count: BlockId,
+}
+
+impl Parsed {
+	/// Create a new Parsed
+	pub fn new() -> Self {
+		let mut out = Self {
+			blocks: HashMap::new(),
+			routines: HashMap::new(),
+			id_count: 0,
+		};
+		out.routines = HashMap::from([(DEFAULT_ROUTINE.into(), out.new_block(None))]);
+		out
+	}
+
+	/// Creates a new block and returns its ID
+	pub fn new_block(&mut self, parent: Option<BlockId>) -> BlockId {
+		self.id_count += 1;
+		self.blocks.insert(self.id_count, Block::new(parent));
+		self.id_count
+	}
+
+	/// Creates a new routine and its associated block, then returns the block's ID
+	pub fn new_routine(&mut self, name: &str) -> BlockId {
+		self.new_block(None);
+		self.routines.insert(name.to_string(), self.id_count);
+		self.id_count
+	}
+
+	/// Checks if a routine exists
+	pub fn routine_exists(&self, name: &str) -> bool {
+		self.routines.contains_key(name)
+	}
+}
+
+impl Default for Parsed {
+	fn default() -> Self {
+		Self::new()
+	}
+}
+
+/// The type we use to index blocks in the hashmap
+pub type BlockId = u16;
+
+/// A list of instructions inside a routine or nested block (such as an if block)
+#[derive(Debug, Clone)]
+pub struct Block {
+	/// The instructions contained in the block, in order
+	pub contents: Vec<Instruction>,
+	parent: Option<BlockId>,
+}
+
+impl Block {
+	/// Create a new block with an optional parent block that is used to return context when parsing
+	pub fn new(parent: Option<BlockId>) -> Self {
+		Self {
+			contents: Vec::new(),
+			parent,
+		}
+	}
+
+	/// Add an instruction to the block
+	pub fn push(&mut self, instr: Instruction) {
+		self.contents.push(instr);
+	}
 }
 
 /// Checks a Parsed for recursion
