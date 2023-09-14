@@ -1,11 +1,9 @@
 use anyhow::{bail, ensure};
-use mcvm_shared::{
-	modifications::{ModloaderMatch, PluginLoaderMatch},
-	Side,
-};
+use mcvm_shared::modifications::{ModloaderMatch, PluginLoaderMatch};
+use mcvm_shared::Side;
 use serde::Deserialize;
 
-use crate::{instruction::InstrKind, parse::Parsed, routine::PROPERTIES_ROUTINE};
+use crate::parse::{instruction::InstrKind, parse::Parsed, routine::PROPERTIES_ROUTINE};
 
 /// Package properties derived from running the 'properties' routine
 #[derive(Default, Debug, Deserialize, Clone)]

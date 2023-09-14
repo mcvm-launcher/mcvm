@@ -1,4 +1,4 @@
-use crate::{instruction::InstrKind, parse::Parsed, routine::METADATA_ROUTINE};
+use crate::parse::{instruction::InstrKind, parse::Parsed, routine::METADATA_ROUTINE};
 use anyhow::bail;
 use serde::Deserialize;
 

@@ -2,8 +2,6 @@ use std::collections::HashMap;
 
 use anyhow::Context;
 use mcvm_parse::conditions::OSCondition;
-use mcvm_parse::metadata::PackageMetadata;
-use mcvm_parse::properties::PackageProperties;
 use mcvm_shared::addon::AddonKind;
 use mcvm_shared::lang::Language;
 use mcvm_shared::modifications::{ModloaderMatch, PluginLoaderMatch};
@@ -13,6 +11,8 @@ use mcvm_shared::versions::VersionPattern;
 use mcvm_shared::Side;
 use serde::Deserialize;
 
+use crate::metadata::PackageMetadata;
+use crate::properties::PackageProperties;
 use crate::RecommendedPackage;
 
 /// Structure for a declarative / JSON package

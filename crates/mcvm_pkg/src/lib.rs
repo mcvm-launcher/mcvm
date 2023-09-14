@@ -4,6 +4,10 @@
 
 /// Standard declarative package format
 pub mod declarative;
+/// Package metadata
+pub mod metadata;
+/// Package properties
+pub mod properties;
 /// Standard repository format
 pub mod repo;
 /// Standardized package dependency resolution
@@ -13,7 +17,7 @@ use anyhow::Context;
 use async_trait::async_trait;
 use declarative::{deserialize_declarative_package, validate_declarative_package};
 use mcvm_shared::pkg::PackageID;
-use parse::properties::PackageProperties;
+use properties::PackageProperties;
 use serde::{Deserialize, Serialize};
 
 // Re-export
@@ -25,8 +29,8 @@ pub fn parse_and_validate(contents: &str, content_type: PackageContentType) -> a
 	match content_type {
 		PackageContentType::Script => {
 			let parsed = parse::parse::lex_and_parse(contents).context("Parsing failed")?;
-			parse::metadata::eval_metadata(&parsed).context("Metadata evaluation failed")?;
-			parse::properties::eval_properties(&parsed).context("Properties evaluation failed")?;
+			metadata::eval_metadata(&parsed).context("Metadata evaluation failed")?;
+			properties::eval_properties(&parsed).context("Properties evaluation failed")?;
 		}
 		PackageContentType::Declarative => {
 			let contents = deserialize_declarative_package(contents).context("Parsing failed")?;

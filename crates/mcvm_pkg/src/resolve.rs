@@ -2,9 +2,9 @@ use std::collections::VecDeque;
 
 use anyhow::{bail, Context};
 use itertools::Itertools;
-use mcvm_parse::properties::PackageProperties;
 use mcvm_shared::pkg::PackageID;
 
+use crate::properties::PackageProperties;
 use crate::{ConfiguredPackage, PackageEvalRelationsResult, PackageEvaluator};
 
 use crate::{PkgRequest, PkgRequestSource};

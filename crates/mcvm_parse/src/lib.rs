@@ -8,12 +8,8 @@ pub mod conditions;
 pub mod instruction;
 /// Token generation from a string, which is passed into the parser
 pub mod lex;
-/// Package metadata
-pub mod metadata;
 /// General parsing
 pub mod parse;
-/// Package properties
-pub mod properties;
 /// Things related to package script routines
 pub mod routine;
 /// Things related to script variables

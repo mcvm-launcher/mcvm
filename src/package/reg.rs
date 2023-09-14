@@ -1,7 +1,7 @@
 use anyhow::{anyhow, Context};
-use mcvm_parse::metadata::PackageMetadata;
-use mcvm_parse::properties::PackageProperties;
+use mcvm_pkg::metadata::PackageMetadata;
 use mcvm_pkg::parse_and_validate;
+use mcvm_pkg::properties::PackageProperties;
 use mcvm_pkg::PackageContentType;
 use mcvm_pkg::PkgRequest;
 use mcvm_pkg::PkgRequestSource;
