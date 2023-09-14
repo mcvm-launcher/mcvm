@@ -16,6 +16,105 @@ use crate::io::options::server::ServerOptions;
 use crate::io::snapshot;
 use crate::util::merge_options;
 
+/// Different representations of configuration for an instance
+#[derive(Deserialize, Serialize, Clone)]
+#[serde(untagged)]
+#[serde(rename_all = "snake_case")]
+pub enum InstanceConfig {
+	/// Simple configuration with just a side
+	Simple(Side),
+	/// Full configuration with all options available
+	Full(FullInstanceConfig),
+}
+
+impl InstanceConfig {
+	/// Converts simple config into full
+	pub fn make_full(&self) -> FullInstanceConfig {
+		match self {
+			Self::Full(config) => config.clone(),
+			Self::Simple(side) => match side {
+				Side::Client => FullInstanceConfig::Client {
+					launch: LaunchConfig::default(),
+					options: None,
+					window: ClientWindowConfig::default(),
+					preset: None,
+					datapack_folder: None,
+					snapshots: None,
+				},
+				Side::Server => FullInstanceConfig::Server {
+					launch: LaunchConfig::default(),
+					options: None,
+					preset: None,
+					datapack_folder: None,
+					snapshots: None,
+				},
+			},
+		}
+	}
+
+	/// Checks if this config has the preset field filled out
+	pub fn uses_preset(&self) -> bool {
+		matches!(
+			self,
+			Self::Full(
+				FullInstanceConfig::Client {
+					preset: Some(..),
+					..
+				} | FullInstanceConfig::Server {
+					preset: Some(..),
+					..
+				}
+			)
+		)
+	}
+}
+
+/// The full representation of instance config
+#[derive(Deserialize, Serialize, Clone)]
+#[serde(tag = "type")]
+#[serde(rename_all = "snake_case")]
+pub enum FullInstanceConfig {
+	/// Config for the client
+	Client {
+		/// Launch configuration
+		#[serde(default)]
+		launch: LaunchConfig,
+		/// Game options
+		#[serde(default)]
+		options: Option<Box<ClientOptions>>,
+		/// Window configuration
+		#[serde(default)]
+		window: ClientWindowConfig,
+		/// An instance preset to use
+		#[serde(default)]
+		preset: Option<String>,
+		/// The folder for global datapacks to be installed to
+		#[serde(default)]
+		datapack_folder: Option<String>,
+		/// Options for snapshot config
+		#[serde(default)]
+		snapshots: Option<snapshot::Config>,
+	},
+	/// Config for the server
+	Server {
+		/// Launch configuration
+		#[serde(default)]
+		launch: LaunchConfig,
+		/// Game options
+		#[serde(default)]
+		options: Option<Box<ServerOptions>>,
+		/// An instance preset to use
+		#[serde(default)]
+		preset: Option<String>,
+		/// The folder for global datapacks to be installed to
+		#[serde(default)]
+		datapack_folder: Option<String>,
+		/// Options for snapshot config
+		#[serde(default)]
+		snapshots: Option<snapshot::Config>,
+	},
+}
+
 /// Different representations for JVM / game arguments
 #[derive(Deserialize, Serialize, Debug, Clone)]
 #[serde(untagged)]
@@ -176,27 +275,7 @@ impl LaunchConfig {
 			use_log4j_config: self.use_log4j_config,
 		})
 	}
-}
 
-impl Default for LaunchConfig {
-	fn default() -> Self {
-		Self {
-			args: LaunchArgs {
-				jvm: Args::default(),
-				game: Args::default(),
-			},
-			memory: LaunchMemory::default(),
-			java: default_java(),
-			preset: default_flags_preset(),
-			env: HashMap::new(),
-			wrapper: None,
-			quick_play: QuickPlay::default(),
-			use_log4j_config: false,
-		}
-	}
-}
-
-impl LaunchConfig {
 	/// Merge multiple LaunchConfigs
 	pub fn merge(&mut self, other: Self) -> &mut Self {
 		self.args.jvm.merge(other.args.jvm);
@@ -217,6 +296,24 @@ impl LaunchConfig {
 		}
 
 		self
+	}
+}
+
+impl Default for LaunchConfig {
+	fn default() -> Self {
+		Self {
+			args: LaunchArgs {
+				jvm: Args::default(),
+				game: Args::default(),
+			},
+			memory: LaunchMemory::default(),
+			java: default_java(),
+			preset: default_flags_preset(),
+			env: HashMap::new(),
+			wrapper: None,
+			quick_play: QuickPlay::default(),
+			use_log4j_config: false,
+		}
 	}
 }
 
@@ -242,105 +339,6 @@ impl ClientWindowConfig {
 	pub fn merge(&mut self, other: Self) -> &mut Self {
 		self.resolution = merge_options(self.resolution, other.resolution);
 		self
-	}
-}
-
-/// The full representation of instance config
-#[derive(Deserialize, Serialize, Clone)]
-#[serde(tag = "type")]
-#[serde(rename_all = "snake_case")]
-pub enum FullInstanceConfig {
-	/// Config for the client
-	Client {
-		/// Launch configuration
-		#[serde(default)]
-		launch: LaunchConfig,
-		/// Game options
-		#[serde(default)]
-		options: Option<Box<ClientOptions>>,
-		/// Window configuration
-		#[serde(default)]
-		window: ClientWindowConfig,
-		/// An instance preset to use
-		#[serde(default)]
-		preset: Option<String>,
-		/// The folder for global datapacks to be installed to
-		#[serde(default)]
-		datapack_folder: Option<String>,
-		/// Options for snapshot config
-		#[serde(default)]
-		snapshots: Option<snapshot::Config>,
-	},
-	/// Config for the server
-	Server {
-		/// Launch configuration
-		#[serde(default)]
-		launch: LaunchConfig,
-		/// Game options
-		#[serde(default)]
-		options: Option<Box<ServerOptions>>,
-		/// An instance preset to use
-		#[serde(default)]
-		preset: Option<String>,
-		/// The folder for global datapacks to be installed to
-		#[serde(default)]
-		datapack_folder: Option<String>,
-		/// Options for snapshot config
-		#[serde(default)]
-		snapshots: Option<snapshot::Config>,
-	},
-}
-
-/// Different representations of configuration for an instance
-#[derive(Deserialize, Serialize, Clone)]
-#[serde(untagged)]
-#[serde(rename_all = "snake_case")]
-pub enum InstanceConfig {
-	/// Simple configuration with just a side
-	Simple(Side),
-	/// Full configuration with all options available
-	Full(FullInstanceConfig),
-}
-
-impl InstanceConfig {
-	/// Converts simple config into full
-	pub fn make_full(&self) -> FullInstanceConfig {
-		match self {
-			Self::Full(config) => config.clone(),
-			Self::Simple(side) => match side {
-				Side::Client => FullInstanceConfig::Client {
-					launch: LaunchConfig::default(),
-					options: None,
-					window: ClientWindowConfig::default(),
-					preset: None,
-					datapack_folder: None,
-					snapshots: None,
-				},
-				Side::Server => FullInstanceConfig::Server {
-					launch: LaunchConfig::default(),
-					options: None,
-					preset: None,
-					datapack_folder: None,
-					snapshots: None,
-				},
-			},
-		}
-	}
-
-	/// Checks if this config has the preset field filled out
-	pub fn uses_preset(&self) -> bool {
-		matches!(
-			self,
-			Self::Full(
-				FullInstanceConfig::Client {
-					preset: Some(..),
-					..
-				} | FullInstanceConfig::Server {
-					preset: Some(..),
-					..
-				}
-			)
-		)
 	}
 }
 
@@ -490,10 +488,8 @@ pub fn read_instance_config(
 mod tests {
 	use super::*;
 
-	use crate::{
-		data::{config::profile::GameModifications, id::ProfileID},
-		util::versions::MinecraftVersion,
-	};
+	use crate::data::{config::modifications::GameModifications, id::ProfileID};
+	use crate::util::versions::MinecraftVersion;
 	use mcvm_shared::modifications::{ClientType, Modloader, ServerType};
 
 	#[test]

@@ -52,6 +52,15 @@ This package does not need to be installed, it just has to be in the index."
 	},
 }
 
+pub async fn run(subcommand: PackageSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
+	match subcommand {
+		PackageSubcommand::List { raw, profile } => list(data, raw, profile).await,
+		PackageSubcommand::Sync => sync(data).await,
+		PackageSubcommand::Cat { raw, package } => cat(data, &package, raw).await,
+		PackageSubcommand::Info { package } => info(data, &package).await,
+	}
+}
+
 async fn list(data: &mut CmdData, raw: bool, profile: Option<String>) -> anyhow::Result<()> {
 	data.ensure_config(!raw).await?;
 	let config = data.config.get_mut();
@@ -243,13 +252,4 @@ async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
 	}
 
 	Ok(())
-}
-
-pub async fn run(subcommand: PackageSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
-	match subcommand {
-		PackageSubcommand::List { raw, profile } => list(data, raw, profile).await,
-		PackageSubcommand::Sync => sync(data).await,
-		PackageSubcommand::Cat { raw, package } => cat(data, &package, raw).await,
-		PackageSubcommand::Info { package } => info(data, &package).await,
-	}
 }

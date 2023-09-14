@@ -7,6 +7,36 @@ use crate::util::ToInt;
 
 use super::Options;
 
+pub fn parse_options<R: Read>(reader: &mut R) -> anyhow::Result<Options> {
+	serde_json::from_reader(reader).context("Failed to parse options")
+}
+
+#[cfg(test)]
+pub fn parse_options_str(string: &str) -> anyhow::Result<Options> {
+	serde_json::from_str(string).context("Failed to parse options")
+}
+
+/// Collect a hashmap from an existing options file so we can compare with it
+pub fn read_options_file(
+	contents: &str,
+	separator: char,
+) -> anyhow::Result<HashMap<String, String>> {
+	// TODO: Make this more robust to formatting differences and whitespace
+	let mut out = HashMap::new();
+	for (i, line) in contents.lines().enumerate() {
+		if !line.contains(separator) {
+			continue;
+		}
+		let index = line
+			.find(separator)
+			.ok_or(anyhow!("Options line {i} does not have a colon separator!"))?;
+		let (key, value) = line.split_at(index);
+		out.insert(key.to_string(), String::from(&value[1..]));
+	}
+
+	Ok(out)
+}
+
 /// Used for both difficulty and gamemode to have compatability with different versions
 #[derive(Deserialize, Serialize, Debug, Clone)]
 #[serde(untagged)]
@@ -56,36 +86,6 @@ impl<T: Display> Display for EnumOrString<T> {
 			}
 		)
 	}
-}
-
-pub fn parse_options<R: Read>(reader: &mut R) -> anyhow::Result<Options> {
-	serde_json::from_reader(reader).context("Failed to parse options")
-}
-
-#[cfg(test)]
-pub fn parse_options_str(string: &str) -> anyhow::Result<Options> {
-	serde_json::from_str(string).context("Failed to parse options")
-}
-
-/// Collect a hashmap from an existing options file so we can compare with it
-pub fn read_options_file(
-	contents: &str,
-	separator: char,
-) -> anyhow::Result<HashMap<String, String>> {
-	// TODO: Make this more robust to formatting differences and whitespace
-	let mut out = HashMap::new();
-	for (i, line) in contents.lines().enumerate() {
-		if !line.contains(separator) {
-			continue;
-		}
-		let index = line
-			.find(separator)
-			.ok_or(anyhow!("Options line {i} does not have a colon separator!"))?;
-		let (key, value) = line.split_at(index);
-		out.insert(key.to_string(), String::from(&value[1..]));
-	}
-
-	Ok(out)
 }
 
 #[cfg(test)]

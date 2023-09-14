@@ -29,6 +29,16 @@ pub enum ModrinthSubcommand {
 	},
 }
 
+pub async fn run(subcommand: ToolSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
+	match subcommand {
+		ToolSubcommand::AuthTest => auth_test(data).await,
+		ToolSubcommand::Modrinth { command } => match command {
+			ModrinthSubcommand::GetProject { project } => get_modrinth_project(data, project).await,
+			ModrinthSubcommand::GetVersion { version } => get_modrinth_version(data, version).await,
+		},
+	}
+}
+
 async fn auth_test(data: &mut CmdData) -> anyhow::Result<()> {
 	let client = Client::new();
 	let result = mcvm::data::user::auth::authenticate_microsoft_user(
@@ -80,14 +90,4 @@ async fn get_modrinth_version(_data: &mut CmdData, version: String) -> anyhow::R
 	println!("{out}");
 
 	Ok(())
-}
-
-pub async fn run(subcommand: ToolSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
-	match subcommand {
-		ToolSubcommand::AuthTest => auth_test(data).await,
-		ToolSubcommand::Modrinth { command } => match command {
-			ModrinthSubcommand::GetProject { project } => get_modrinth_project(data, project).await,
-			ModrinthSubcommand::GetVersion { version } => get_modrinth_version(data, version).await,
-		},
-	}
 }

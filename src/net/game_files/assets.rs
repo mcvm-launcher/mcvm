@@ -15,13 +15,6 @@ use crate::net::download::{self, FD_SENSIBLE_LIMIT};
 
 use super::client_meta::ClientMeta;
 
-/// A single asset in the index
-#[derive(Deserialize)]
-pub struct IndexEntry {
-	/// The hash of the index file
-	pub hash: String,
-}
-
 /// Structure for the assets index
 #[derive(Deserialize)]
 pub struct AssetIndex {
@@ -29,51 +22,11 @@ pub struct AssetIndex {
 	pub objects: HashMap<String, IndexEntry>,
 }
 
-async fn download_index(
-	url: &str,
-	path: &Path,
-	manager: &UpdateManager,
-	client: &Client,
-	force: bool,
-) -> anyhow::Result<AssetIndex> {
-	let text = if manager.allow_offline && !force && path.exists() {
-		tokio::fs::read_to_string(path)
-			.await
-			.context("Failed to read index contents from file")?
-	} else {
-		let text = download::text(url, client)
-			.await
-			.context("Failed to download index")?;
-		tokio::fs::write(path, &text)
-			.await
-			.context("Failed to write index to a file")?;
-
-		text
-	};
-
-	let index = serde_json::from_str(&text).context("Failed to parse index")?;
-	Ok(index)
-}
-
-/// Get the virtual assets directory path
-pub fn get_virtual_dir_path(paths: &Paths) -> PathBuf {
-	paths.assets.join("virtual").join("legacy")
-}
-
-/// Create the directories needed to store assets
-async fn create_dirs(
-	paths: &Paths,
-	version_info: &VersionInfo,
-) -> anyhow::Result<(PathBuf, Option<PathBuf>)> {
-	let objects_dir = paths.assets.join("objects");
-	files::create_dir_async(&objects_dir).await?;
-	// Apparently this directory name is used for older game versions
-	let virtual_dir = if VersionPattern::Before("13w48b".into()).matches_info(version_info) {
-		Some(get_virtual_dir_path(paths))
-	} else {
-		None
-	};
-	Ok((objects_dir, virtual_dir))
+/// A single asset in the index
+#[derive(Deserialize)]
+pub struct IndexEntry {
+	/// The hash of the index file
+	pub hash: String,
 }
 
 /// Download assets used by the client, such as game resources and icons.
@@ -194,4 +147,51 @@ pub async fn get(
 	o.end_process();
 
 	Ok(out)
+}
+
+async fn download_index(
+	url: &str,
+	path: &Path,
+	manager: &UpdateManager,
+	client: &Client,
+	force: bool,
+) -> anyhow::Result<AssetIndex> {
+	let text = if manager.allow_offline && !force && path.exists() {
+		tokio::fs::read_to_string(path)
+			.await
+			.context("Failed to read index contents from file")?
+	} else {
+		let text = download::text(url, client)
+			.await
+			.context("Failed to download index")?;
+		tokio::fs::write(path, &text)
+			.await
+			.context("Failed to write index to a file")?;
+
+		text
+	};
+
+	let index = serde_json::from_str(&text).context("Failed to parse index")?;
+	Ok(index)
+}
+
+/// Create the directories needed to store assets
+async fn create_dirs(
+	paths: &Paths,
+	version_info: &VersionInfo,
+) -> anyhow::Result<(PathBuf, Option<PathBuf>)> {
+	let objects_dir = paths.assets.join("objects");
+	files::create_dir_async(&objects_dir).await?;
+	// Apparently this directory name is used for older game versions
+	let virtual_dir = if VersionPattern::Before("13w48b".into()).matches_info(version_info) {
+		Some(get_virtual_dir_path(paths))
+	} else {
+		None
+	};
+	Ok((objects_dir, virtual_dir))
+}
+
+/// Get the virtual assets directory path
+pub fn get_virtual_dir_path(paths: &Paths) -> PathBuf {
+	paths.assets.join("virtual").join("legacy")
 }

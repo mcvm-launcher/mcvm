@@ -13,7 +13,7 @@ use crate::util::versions::MinecraftVersion;
 
 use self::update::manager::UpdateManager;
 
-use super::config::profile::GameModifications;
+use super::config::modifications::GameModifications;
 use super::id::{InstanceID, ProfileID};
 use super::user::UserManager;
 

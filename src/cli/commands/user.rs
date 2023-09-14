@@ -19,6 +19,13 @@ pub enum UserSubcommand {
 	Status,
 }
 
+pub async fn run(subcommand: UserSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
+	match subcommand {
+		UserSubcommand::List { raw } => list(data, raw).await,
+		UserSubcommand::Status => status(data).await,
+	}
+}
+
 async fn list(data: &mut CmdData, raw: bool) -> anyhow::Result<()> {
 	data.ensure_config(!raw).await?;
 	let config = data.config.get();
@@ -63,11 +70,4 @@ async fn status(data: &mut CmdData) -> anyhow::Result<()> {
 	}
 
 	Ok(())
-}
-
-pub async fn run(subcommand: UserSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
-	match subcommand {
-		UserSubcommand::List { raw } => list(data, raw).await,
-		UserSubcommand::Status => status(data).await,
-	}
 }

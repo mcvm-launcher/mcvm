@@ -12,6 +12,46 @@ use mcvm_shared::pkg::{PackageAddonOptionalHashes, PackageID};
 
 use super::files::paths::Paths;
 
+/// A file that remembers important info like what files and packages are currently installed
+#[derive(Debug)]
+pub struct Lockfile {
+	contents: LockfileContents,
+}
+
+#[derive(Serialize, Deserialize, Default, Debug)]
+#[serde(default)]
+struct LockfileContents {
+	packages: HashMap<String, HashMap<String, LockfilePackage>>,
+	profiles: HashMap<String, LockfileProfile>,
+	java: LockfileJava,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+struct LockfileProfile {
+	version: String,
+	paper_build: Option<u16>,
+}
+
+/// Package stored in the lockfile
+#[derive(Serialize, Deserialize, Debug)]
+pub struct LockfilePackage {
+	addons: Vec<LockfileAddon>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+struct LockfileJavaVersion {
+	version: String,
+	path: String,
+}
+
+/// Contains maps of major versions to information about installations
+#[derive(Serialize, Deserialize, Default, Debug)]
+#[serde(default)]
+struct LockfileJava {
+	adoptium: HashMap<String, LockfileJavaVersion>,
+	zulu: HashMap<String, LockfileJavaVersion>,
+}
+
 /// Format for an addon in the lockfile
 #[derive(Serialize, Deserialize, PartialEq, Clone, Debug)]
 pub struct LockfileAddon {
@@ -75,46 +115,12 @@ impl LockfileAddon {
 	}
 }
 
-/// Package stored in the lockfile
-#[derive(Serialize, Deserialize, Debug)]
-pub struct LockfilePackage {
-	addons: Vec<LockfileAddon>,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-struct LockfileProfile {
-	version: String,
-	paper_build: Option<u16>,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-struct LockfileJavaVersion {
-	version: String,
-	path: String,
-}
-
-/// Contains maps of major versions to information about installations
-#[derive(Serialize, Deserialize, Default, Debug)]
-#[serde(default)]
-struct LockfileJava {
-	adoptium: HashMap<String, LockfileJavaVersion>,
-	zulu: HashMap<String, LockfileJavaVersion>,
-}
-
 /// Used as a function argument
 pub enum LockfileJavaInstallation {
 	/// Adoptium Java
 	Adoptium,
 	/// Zulu Java
 	Zulu,
-}
-
-#[derive(Serialize, Deserialize, Default, Debug)]
-#[serde(default)]
-struct LockfileContents {
-	packages: HashMap<String, HashMap<String, LockfilePackage>>,
-	profiles: HashMap<String, LockfileProfile>,
-	java: LockfileJava,
 }
 
 impl LockfileContents {
@@ -130,12 +136,6 @@ impl LockfileContents {
 			}
 		}
 	}
-}
-
-/// A file that remembers important info like what files and packages are currently installed
-#[derive(Debug)]
-pub struct Lockfile {
-	contents: LockfileContents,
 }
 
 impl Lockfile {

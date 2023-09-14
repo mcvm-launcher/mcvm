@@ -39,6 +39,13 @@ pub enum InstanceSubcommand {
 	},
 }
 
+pub async fn run(command: InstanceSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
+	match command {
+		InstanceSubcommand::List { raw, side, profile } => list(data, raw, side, profile).await,
+		InstanceSubcommand::Launch { user, instance } => launch(instance, user, data).await,
+	}
+}
+
 async fn list(
 	data: &mut CmdData,
 	raw: bool,
@@ -141,12 +148,5 @@ fn pick_instance(instance: Option<String>, config: &Config) -> anyhow::Result<In
 			.context("Prompt failed")?;
 
 		Ok(selection)
-	}
-}
-
-pub async fn run(command: InstanceSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
-	match command {
-		InstanceSubcommand::List { raw, side, profile } => list(data, raw, side, profile).await,
-		InstanceSubcommand::Launch { user, instance } => launch(instance, user, data).await,
 	}
 }

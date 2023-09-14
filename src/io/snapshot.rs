@@ -15,24 +15,15 @@ use super::files::paths::Paths;
 /// Name of the snapshot index file
 pub const INDEX_NAME: &str = "index.json";
 
-/// Type of a snapshot
-#[derive(Serialize, Deserialize)]
-#[serde(rename_all = "snake_case")]
-pub enum SnapshotKind {
-	/// A snapshot created by the user
-	User,
-}
-
-/// Entry for a snapshot in the snapshot index
-#[derive(Serialize, Deserialize)]
-pub struct Entry {
-	/// The ID of the snapshot
-	pub id: String,
-	/// The timestamp when the snapshot was created
-	pub date: u64,
-	/// What kind of snapshot this is
-	pub kind: SnapshotKind,
-	/// How the snapshot is stored on the filesystem
+/// Settings for snapshots
+#[derive(Serialize, Deserialize, Default, Clone, Debug)]
+#[serde(default)]
+pub struct Config {
+	/// The max number of snapshots for an instance
+	pub max_count: Option<u32>,
+	/// The files and directories to include in the snapshot
+	pub paths: Vec<String>,
+	/// How the snapshot should be stored
 	pub storage_type: StorageType,
 }
 
@@ -198,6 +189,27 @@ impl Index {
 	}
 }
 
+/// Entry for a snapshot in the snapshot index
+#[derive(Serialize, Deserialize)]
+pub struct Entry {
+	/// The ID of the snapshot
+	pub id: String,
+	/// The timestamp when the snapshot was created
+	pub date: u64,
+	/// What kind of snapshot this is
+	pub kind: SnapshotKind,
+	/// How the snapshot is stored on the filesystem
+	pub storage_type: StorageType,
+}
+
+/// Type of a snapshot
+#[derive(Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum SnapshotKind {
+	/// A snapshot created by the user
+	User,
+}
+
 /// Format for stored snapshots
 #[derive(Serialize, Deserialize, Default, Copy, Clone, Debug)]
 #[serde(rename_all = "snake_case")]
@@ -207,18 +219,6 @@ pub enum StorageType {
 	/// Packed into an archive format to save space
 	#[default]
 	Archive,
-}
-
-/// Settings for snapshots
-#[derive(Serialize, Deserialize, Default, Clone, Debug)]
-#[serde(default)]
-pub struct Config {
-	/// The max number of snapshots for an instance
-	pub max_count: Option<u32>,
-	/// The files and directories to include in the snapshot
-	pub paths: Vec<String>,
-	/// How the snapshot should be stored
-	pub storage_type: StorageType,
 }
 
 /// Get the snapshot directory for an instance

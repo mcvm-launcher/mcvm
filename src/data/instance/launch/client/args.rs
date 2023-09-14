@@ -10,6 +10,81 @@ use crate::net::game_files::assets::get_virtual_dir_path;
 use crate::net::game_files::client_meta::args::ArgumentItem;
 use crate::util::{ARCH_STRING, OS_STRING};
 
+/// Process an argument for the client from the client meta
+pub fn process_arg(
+	instance: &Instance,
+	arg: &ArgumentItem,
+	paths: &Paths,
+	users: &UserManager,
+	classpath: &Classpath,
+	version: &str,
+	window: &ClientWindowConfig,
+) -> Vec<String> {
+	let mut out = Vec::new();
+	match arg {
+		ArgumentItem::Simple(arg) => {
+			let arg = process_simple_arg(arg, instance, paths, users, classpath, version, window);
+			if let Some(arg) = arg {
+				out.push(arg);
+			}
+		}
+		ArgumentItem::Conditional(arg) => {
+			for rule in &arg.rules {
+				let allowed = rule.action.is_allowed();
+
+				if let Some(os_name) = &rule.os.name {
+					if allowed != (OS_STRING == os_name.to_string()) {
+						return vec![];
+					}
+				}
+				if let Some(os_arch) = &rule.os.arch {
+					if allowed != (ARCH_STRING == os_arch.to_string()) {
+						return vec![];
+					}
+				}
+
+				if let Some(has_custom_resolution) = &rule.features.has_custom_resolution {
+					if *has_custom_resolution && window.resolution.is_none() {
+						return vec![];
+					}
+				}
+				if let Some(is_demo_user) = &rule.features.is_demo_user {
+					if *is_demo_user {
+						let fail = match users.get_user() {
+							Some(user) => matches!(user.kind, UserKind::Demo),
+							None => false,
+						};
+						if fail {
+							return vec![];
+						}
+					}
+				}
+			}
+
+			for arg in arg.value.iter() {
+				out.extend(process_simple_arg(
+					arg, instance, paths, users, classpath, version, window,
+				));
+			}
+		}
+	};
+
+	out
+}
+
+/// Process a simple string argument
+pub fn process_simple_arg(
+	arg: &str,
+	instance: &Instance,
+	paths: &Paths,
+	users: &UserManager,
+	classpath: &Classpath,
+	version: &str,
+	window: &ClientWindowConfig,
+) -> Option<String> {
+	replace_arg_placeholders(instance, arg, paths, users, classpath, version, window)
+}
+
 /// Get the string for a placeholder token in an argument
 macro_rules! placeholder {
 	($name:expr) => {
@@ -100,81 +175,6 @@ pub fn replace_arg_placeholders(
 	}
 
 	Some(out)
-}
-
-/// Process an argument for the client from the client meta
-pub fn process_arg(
-	instance: &Instance,
-	arg: &ArgumentItem,
-	paths: &Paths,
-	users: &UserManager,
-	classpath: &Classpath,
-	version: &str,
-	window: &ClientWindowConfig,
-) -> Vec<String> {
-	let mut out = Vec::new();
-	match arg {
-		ArgumentItem::Simple(arg) => {
-			let arg = process_simple_arg(arg, instance, paths, users, classpath, version, window);
-			if let Some(arg) = arg {
-				out.push(arg);
-			}
-		}
-		ArgumentItem::Conditional(arg) => {
-			for rule in &arg.rules {
-				let allowed = rule.action.is_allowed();
-
-				if let Some(os_name) = &rule.os.name {
-					if allowed != (OS_STRING == os_name.to_string()) {
-						return vec![];
-					}
-				}
-				if let Some(os_arch) = &rule.os.arch {
-					if allowed != (ARCH_STRING == os_arch.to_string()) {
-						return vec![];
-					}
-				}
-
-				if let Some(has_custom_resolution) = &rule.features.has_custom_resolution {
-					if *has_custom_resolution && window.resolution.is_none() {
-						return vec![];
-					}
-				}
-				if let Some(is_demo_user) = &rule.features.is_demo_user {
-					if *is_demo_user {
-						let fail = match users.get_user() {
-							Some(user) => matches!(user.kind, UserKind::Demo),
-							None => false,
-						};
-						if fail {
-							return vec![];
-						}
-					}
-				}
-			}
-
-			for arg in arg.value.iter() {
-				out.extend(process_simple_arg(
-					arg, instance, paths, users, classpath, version, window,
-				));
-			}
-		}
-	};
-
-	out
-}
-
-/// Process a simple string argument
-pub fn process_simple_arg(
-	arg: &str,
-	instance: &Instance,
-	paths: &Paths,
-	users: &UserManager,
-	classpath: &Classpath,
-	version: &str,
-	window: &ClientWindowConfig,
-) -> Option<String> {
-	replace_arg_placeholders(instance, arg, paths, users, classpath, version, window)
 }
 
 /// Create the game arguments for Quick Play

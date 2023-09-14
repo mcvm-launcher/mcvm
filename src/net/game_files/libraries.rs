@@ -18,82 +18,6 @@ use crate::util;
 
 use super::client_meta::{libraries::Library, ClientMeta};
 
-/// Checks the rules of a game library to see if it should be installed
-fn is_allowed(lib: &Library) -> anyhow::Result<bool> {
-	for rule in &lib.rules {
-		let allowed = rule.action.is_allowed();
-		if let Some(os_name) = &rule.os.name {
-			if allowed != (os_name.to_string() == util::OS_STRING) {
-				return Ok(false);
-			}
-		}
-		if let Some(os_arch) = &rule.os.arch {
-			if allowed != (os_arch.to_string() == util::ARCH_STRING) {
-				return Ok(false);
-			}
-		}
-	}
-
-	Ok(true)
-}
-
-/// Extract the files of a native library into the natives directory.
-fn extract_native(
-	path: &Path,
-	natives_dir: &Path,
-	manager: &UpdateManager,
-	o: &mut impl MCVMOutput,
-) -> anyhow::Result<UpdateMethodResult> {
-	let mut out = UpdateMethodResult::new();
-	let file = File::open(path)?;
-	let mut zip = ZipArchive::new(file)?;
-	for i in 0..zip.len() {
-		let mut file = zip.by_index(i)?;
-		let rel_path = PathBuf::from(
-			file.enclosed_name()
-				.context("Invalid compressed file path")?,
-		);
-		if let Some(extension) = rel_path.extension() {
-			match extension.to_str() {
-				Some("so" | "dylib" | "dll") => {
-					let out_path = natives_dir.join(rel_path);
-					if !manager.should_update_file(&out_path) {
-						continue;
-					}
-					let mut out_file = File::create(&out_path)?;
-					std::io::copy(&mut file, &mut out_file)
-						.context("Failed to copy compressed file")?;
-					o.display(
-						MessageContents::Simple(format!(
-							"Extracted native file {}",
-							out_path.to_string_lossy()
-						)),
-						MessageLevel::Debug,
-					);
-					out.files_updated.insert(out_path);
-				}
-				_ => continue,
-			}
-		}
-	}
-
-	Ok(out)
-}
-
-/// Gets the list of allowed libraries from the client meta
-/// and also the number of libraries found.
-pub fn get_list(client_meta: &ClientMeta) -> anyhow::Result<impl Iterator<Item = &Library>> {
-	let libraries = client_meta.libraries.iter().filter_map(|lib| {
-		if !is_allowed(lib).ok()? {
-			None
-		} else {
-			Some(lib)
-		}
-	});
-
-	Ok(libraries)
-}
-
 /// Downloads base client libraries.
 /// Returns a set of files to be added to the update manager.
 pub async fn get(
@@ -261,4 +185,80 @@ fn get_natives_classifier_key(classifiers: &HashMap<String, String>) -> Option<S
 	let key = key.replace("${arch}", util::TARGET_BITS_STR);
 
 	Some(key)
+}
+
+/// Checks the rules of a game library to see if it should be installed
+fn is_allowed(lib: &Library) -> anyhow::Result<bool> {
+	for rule in &lib.rules {
+		let allowed = rule.action.is_allowed();
+		if let Some(os_name) = &rule.os.name {
+			if allowed != (os_name.to_string() == util::OS_STRING) {
+				return Ok(false);
+			}
+		}
+		if let Some(os_arch) = &rule.os.arch {
+			if allowed != (os_arch.to_string() == util::ARCH_STRING) {
+				return Ok(false);
+			}
+		}
+	}
+
+	Ok(true)
+}
+
+/// Extract the files of a native library into the natives directory.
+fn extract_native(
+	path: &Path,
+	natives_dir: &Path,
+	manager: &UpdateManager,
+	o: &mut impl MCVMOutput,
+) -> anyhow::Result<UpdateMethodResult> {
+	let mut out = UpdateMethodResult::new();
+	let file = File::open(path)?;
+	let mut zip = ZipArchive::new(file)?;
+	for i in 0..zip.len() {
+		let mut file = zip.by_index(i)?;
+		let rel_path = PathBuf::from(
+			file.enclosed_name()
+				.context("Invalid compressed file path")?,
+		);
+		if let Some(extension) = rel_path.extension() {
+			match extension.to_str() {
+				Some("so" | "dylib" | "dll") => {
+					let out_path = natives_dir.join(rel_path);
+					if !manager.should_update_file(&out_path) {
+						continue;
+					}
+					let mut out_file = File::create(&out_path)?;
+					std::io::copy(&mut file, &mut out_file)
+						.context("Failed to copy compressed file")?;
+					o.display(
+						MessageContents::Simple(format!(
+							"Extracted native file {}",
+							out_path.to_string_lossy()
+						)),
+						MessageLevel::Debug,
+					);
+					out.files_updated.insert(out_path);
+				}
+				_ => continue,
+			}
+		}
+	}
+
+	Ok(out)
+}
+
+/// Gets the list of allowed libraries from the client meta
+/// and also the number of libraries found.
+pub fn get_list(client_meta: &ClientMeta) -> anyhow::Result<impl Iterator<Item = &Library>> {
+	let libraries = client_meta.libraries.iter().filter_map(|lib| {
+		if !is_allowed(lib).ok()? {
+			None
+		} else {
+			Some(lib)
+		}
+	});
+
+	Ok(libraries)
 }

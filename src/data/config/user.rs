@@ -2,6 +2,16 @@ use serde::{Deserialize, Serialize};
 
 use crate::data::user::{User, UserKind};
 
+#[derive(Deserialize, Serialize, Clone)]
+/// Configuration for a user
+pub struct UserConfig {
+	/// The username of the user
+	pub name: String,
+	/// Configuration for the different user variants
+	#[serde(flatten)]
+	pub variant: UserVariant,
+}
+
 /// Different variants of users for configuration
 #[derive(Deserialize, Serialize, Clone)]
 #[serde(tag = "type")]
@@ -29,16 +39,6 @@ impl UserVariant {
 			Self::Unverified {} => UserKind::Unverified,
 		}
 	}
-}
-
-#[derive(Deserialize, Serialize, Clone)]
-/// Configuration for a user
-pub struct UserConfig {
-	/// The username of the user
-	pub name: String,
-	/// Configuration for the different user variants
-	#[serde(flatten)]
-	pub variant: UserVariant,
 }
 
 impl UserConfig {

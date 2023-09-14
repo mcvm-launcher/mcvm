@@ -7,13 +7,25 @@ use crate::data::profile::update::manager::UpdateManager;
 use crate::io::files::{self, paths::Paths};
 use crate::net::download;
 
-/// Latest available Minecraft versions in the version manifest
+/// JSON format for the version manifest that contains all available Minecraft versions
 #[derive(Deserialize, Debug)]
-pub struct LatestVersions {
-	/// The latest release version
-	pub release: String,
-	/// The latest snapshot version
-	pub snapshot: String,
+pub struct VersionManifest {
+	/// The latest available versions
+	pub latest: LatestVersions,
+	/// The list of available versions, from newest to oldest
+	pub versions: Vec<VersionEntry>,
+}
+
+/// Entry for a version in the version manifest
+#[derive(Deserialize, Debug)]
+pub struct VersionEntry {
+	/// The identifier for the version (e.g. "1.19.2" or "22w13a")
+	pub id: String,
+	/// What type of version this is
+	#[serde(rename = "type")]
+	pub ty: VersionType,
+	/// The URL to the client version meta for this version
+	pub url: String,
 }
 
 /// Type of a version in the version manifest
@@ -30,55 +42,13 @@ pub enum VersionType {
 	OldBeta,
 }
 
-/// Entry for a version in the version manifest
+/// Latest available Minecraft versions in the version manifest
 #[derive(Deserialize, Debug)]
-pub struct VersionEntry {
-	/// The identifier for the version (e.g. "1.19.2" or "22w13a")
-	pub id: String,
-	/// What type of version this is
-	#[serde(rename = "type")]
-	pub ty: VersionType,
-	/// The URL to the client version meta for this version
-	pub url: String,
-}
-
-/// JSON format for the version manifest that contains all available Minecraft versions
-#[derive(Deserialize, Debug)]
-pub struct VersionManifest {
-	/// The latest available versions
-	pub latest: LatestVersions,
-	/// The list of available versions, from newest to oldest
-	pub versions: Vec<VersionEntry>,
-}
-
-/// Obtain the version manifest contents
-async fn get_contents(
-	paths: &Paths,
-	manager: &UpdateManager,
-	client: &Client,
-	force: bool,
-) -> anyhow::Result<String> {
-	let mut path = paths.internal.join("versions");
-	files::create_dir_async(&path).await?;
-	path.push("manifest.json");
-
-	if manager.allow_offline && !force && path.exists() {
-		return tokio::fs::read_to_string(path)
-			.await
-			.context("Failed to read manifest contents from file");
-	}
-
-	let text = download::text(
-		"https://piston-meta.mojang.com/mc/game/version_manifest_v2.json",
-		client,
-	)
-	.await
-	.context("Failed to download manifest")?;
-	tokio::fs::write(&path, &text)
-		.await
-		.context("Failed to write manifest to a file")?;
-
-	Ok(text)
+pub struct LatestVersions {
+	/// The latest release version
+	pub release: String,
+	/// The latest snapshot version
+	pub snapshot: String,
 }
 
 /// Get the version manifest as a JSON object
@@ -125,4 +95,34 @@ pub fn make_version_list(version_manifest: &VersionManifest) -> anyhow::Result<V
 	out.reverse();
 
 	Ok(out)
+}
+
+/// Obtain the version manifest contents
+async fn get_contents(
+	paths: &Paths,
+	manager: &UpdateManager,
+	client: &Client,
+	force: bool,
+) -> anyhow::Result<String> {
+	let mut path = paths.internal.join("versions");
+	files::create_dir_async(&path).await?;
+	path.push("manifest.json");
+
+	if manager.allow_offline && !force && path.exists() {
+		return tokio::fs::read_to_string(path)
+			.await
+			.context("Failed to read manifest contents from file");
+	}
+
+	let text = download::text(
+		"https://piston-meta.mojang.com/mc/game/version_manifest_v2.json",
+		client,
+	)
+	.await
+	.context("Failed to download manifest")?;
+	tokio::fs::write(&path, &text)
+		.await
+		.context("Failed to write manifest to a file")?;
+
+	Ok(text)
 }

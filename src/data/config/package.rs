@@ -4,18 +4,18 @@ use mcvm_pkg::PackageContentType;
 use mcvm_shared::pkg::PackageStability;
 use serde::{Deserialize, Serialize};
 
-use crate::{
-	package::{eval::EvalPermissions, PkgProfileConfig},
-	util::merge_options,
-};
+use crate::package::{eval::EvalPermissions, PkgProfileConfig};
+use crate::util::merge_options;
 use mcvm_pkg::{PkgRequest, PkgRequestSource};
 
-/// Trick enum used to make deserialization work in the way we want
+/// Different representations for the configuration of a package
 #[derive(Deserialize, Serialize)]
-#[serde(rename_all = "snake_case")]
-pub enum PackageType {
-	/// Yeah this is kinda stupid
-	Local,
+#[serde(untagged)]
+pub enum PackageConfig {
+	/// Basic configuration for a repository package with just the package ID
+	Basic(String),
+	/// Full configuration for a package
+	Full(FullPackageConfig),
 }
 
 /// Full configuration for a package
@@ -66,19 +66,17 @@ pub enum FullPackageConfig {
 	},
 }
 
+/// Trick enum used to make deserialization work in the way we want
+#[derive(Deserialize, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum PackageType {
+	/// Yeah this is kinda stupid
+	Local,
+}
+
 /// Default value for use_default_features
 fn use_default_features_default() -> bool {
 	true
-}
-
-/// Different representations for the configuration of a package
-#[derive(Deserialize, Serialize)]
-#[serde(untagged)]
-pub enum PackageConfig {
-	/// Basic configuration for a repository package with just the package ID
-	Basic(String),
-	/// Full configuration for a package
-	Full(FullPackageConfig),
 }
 
 impl Display for PackageConfig {

@@ -36,44 +36,6 @@ use std::fs::File;
 use std::io::BufReader;
 use std::path::{Path, PathBuf};
 
-/// Default program configuration
-fn default_config() -> serde_json::Value {
-	json!(
-		{
-			"users": {
-				"example": {
-					"type": "microsoft",
-					"name": "ExampleUser441"
-				}
-			},
-			"default_user": "example",
-			"profiles": {
-				"example": {
-					"version": "1.19.3",
-					"server_type": "paper",
-					"instances": {
-						"example-client": {
-							"type": "client"
-						},
-						"example-server": "server"
-					}
-				}
-			}
-		}
-	)
-}
-
-/// Deserialization struct for user configuration
-#[derive(Deserialize, Serialize, Default)]
-#[serde(default)]
-pub struct ConfigDeser {
-	users: HashMap<String, UserConfig>,
-	default_user: Option<String>,
-	profiles: HashMap<ProfileID, ProfileConfig>,
-	instance_presets: HashMap<String, InstanceConfig>,
-	preferences: PrefDeser,
-}
-
 /// The data resulting from reading configuration.
 /// Represents all of the configured data that MCVM will use
 #[derive(Debug)]
@@ -88,6 +50,17 @@ pub struct Config {
 	pub packages: PkgRegistry,
 	/// Global user preferences
 	pub prefs: ConfigPreferences,
+}
+
+/// Deserialization struct for user configuration
+#[derive(Deserialize, Serialize, Default)]
+#[serde(default)]
+pub struct ConfigDeser {
+	users: HashMap<String, UserConfig>,
+	default_user: Option<String>,
+	profiles: HashMap<ProfileID, ProfileConfig>,
+	instance_presets: HashMap<String, InstanceConfig>,
+	preferences: PrefDeser,
 }
 
 impl Config {
@@ -273,6 +246,33 @@ impl Config {
 		let obj = Self::open(path)?;
 		Self::load_from_deser(obj, show_warnings, o)
 	}
+}
+
+/// Default program configuration
+fn default_config() -> serde_json::Value {
+	json!(
+		{
+			"users": {
+				"example": {
+					"type": "microsoft",
+					"name": "ExampleUser441"
+				}
+			},
+			"default_user": "example",
+			"profiles": {
+				"example": {
+					"version": "1.19.3",
+					"server_type": "paper",
+					"instances": {
+						"example-client": {
+							"type": "client"
+						},
+						"example-server": "server"
+					}
+				}
+			}
+		}
+	)
 }
 
 #[cfg(test)]

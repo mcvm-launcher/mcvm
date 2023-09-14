@@ -46,6 +46,22 @@ pub enum SnapshotSubcommand {
 	},
 }
 
+pub async fn run(subcommand: SnapshotSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
+	match subcommand {
+		SnapshotSubcommand::List { raw, instance } => list(data, raw, &instance).await,
+		SnapshotSubcommand::Create { instance, snapshot } => {
+			create(data, &instance, &snapshot).await
+		}
+		SnapshotSubcommand::Remove { instance, snapshot } => {
+			remove(data, &instance, &snapshot).await
+		}
+		SnapshotSubcommand::Restore { instance, snapshot } => {
+			restore(data, &instance, &snapshot).await
+		}
+		SnapshotSubcommand::Info { instance, snapshot } => info(data, &instance, &snapshot).await,
+	}
+}
+
 async fn list(data: &mut CmdData, raw: bool, instance: &str) -> anyhow::Result<()> {
 	data.ensure_config(true).await?;
 	let config = data.config.get_mut();
@@ -145,20 +161,4 @@ async fn info(data: &mut CmdData, instance_id: &str, snapshot_id: &str) -> anyho
 
 	index.finish(&snapshot_dir)?;
 	Ok(())
-}
-
-pub async fn run(subcommand: SnapshotSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
-	match subcommand {
-		SnapshotSubcommand::List { raw, instance } => list(data, raw, &instance).await,
-		SnapshotSubcommand::Create { instance, snapshot } => {
-			create(data, &instance, &snapshot).await
-		}
-		SnapshotSubcommand::Remove { instance, snapshot } => {
-			remove(data, &instance, &snapshot).await
-		}
-		SnapshotSubcommand::Restore { instance, snapshot } => {
-			restore(data, &instance, &snapshot).await
-		}
-		SnapshotSubcommand::Info { instance, snapshot } => info(data, &instance, &snapshot).await,
-	}
 }

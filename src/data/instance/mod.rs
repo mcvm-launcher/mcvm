@@ -27,7 +27,7 @@ use self::launch::LaunchOptions;
 
 use super::addon;
 use super::config::instance::ClientWindowConfig;
-use super::config::profile::GameModifications;
+use super::config::modifications::GameModifications;
 use super::id::InstanceID;
 use super::profile::update::manager::UpdateManager;
 use mcvm_shared::addon::{Addon, AddonKind};
@@ -35,6 +35,24 @@ use mcvm_shared::addon::{Addon, AddonKind};
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::rc::Rc;
+
+/// An instance of the game on a profile
+#[derive(Debug)]
+pub struct Instance {
+	/// What type of instance this is
+	pub kind: InstKind,
+	/// The ID of this instance
+	pub id: InstanceID,
+	modifications: GameModifications,
+	launch: LaunchOptions,
+	client_meta: Later<Rc<ClientMeta>>,
+	java: Later<JavaInstallation>,
+	classpath: Option<Classpath>,
+	jar_path: Later<PathBuf>,
+	main_class: Option<String>,
+	datapack_folder: Option<String>,
+	snapshot_config: snapshot::Config,
+}
 
 /// Different kinds of instances and their associated data
 #[derive(Debug, Clone)]
@@ -61,24 +79,6 @@ impl InstKind {
 			Self::Server { .. } => Side::Server,
 		}
 	}
-}
-
-/// An instance of the game on a profile
-#[derive(Debug)]
-pub struct Instance {
-	/// What type of instance this is
-	pub kind: InstKind,
-	/// The ID of this instance
-	pub id: InstanceID,
-	modifications: GameModifications,
-	launch: LaunchOptions,
-	client_meta: Later<Rc<ClientMeta>>,
-	java: Later<JavaInstallation>,
-	classpath: Option<Classpath>,
-	jar_path: Later<PathBuf>,
-	main_class: Option<String>,
-	datapack_folder: Option<String>,
-	snapshot_config: snapshot::Config,
 }
 
 impl Instance {

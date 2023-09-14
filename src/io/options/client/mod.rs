@@ -25,6 +25,56 @@ pub mod deser {
 
 	#[derive(Deserialize, Serialize, Debug, Clone, Default)]
 	#[serde(default)]
+	pub struct ClientOptions {
+		pub data_version: Option<i16>,
+		pub video: VideoOptions,
+		pub control: ControlOptions,
+		pub chat: ChatOptions,
+		pub sound: SoundOptions,
+		pub skin: SkinOptions,
+		pub stream: StreamOptions,
+		pub custom: HashMap<String, String>,
+		pub realms_notifications: Option<bool>,
+		pub reduced_debug_info: Option<bool>,
+		pub difficulty: Option<EnumOrNumber<Difficulty>>,
+		pub resource_packs: Option<Vec<String>>,
+		pub language: Option<String>,
+		pub tutorial_step: Option<TutorialStep>,
+		pub skip_multiplayer_warning: Option<bool>,
+		pub skip_realms_32_bit_warning: Option<bool>,
+		pub hide_bundle_tutorial: Option<bool>,
+		pub joined_server: Option<bool>,
+		pub sync_chunk_writes: Option<bool>,
+		pub use_native_transport: Option<bool>,
+		pub held_item_tooltips: Option<bool>,
+		pub advanced_item_tooltips: Option<bool>,
+		pub log_level: Option<EnumOrNumber<LogLevel>>,
+		pub hide_matched_names: Option<bool>,
+		pub pause_on_lost_focus: Option<bool>,
+		pub main_hand: Option<MainHand>,
+		pub hide_server_address: Option<bool>,
+		pub show_autosave_indicator: Option<bool>,
+		pub allow_server_listing: Option<bool>,
+		pub snooper_enabled: Option<bool>,
+	}
+
+	#[derive(Deserialize, Serialize, Debug, Clone, Default)]
+	#[serde(default)]
+	pub struct ControlOptions {
+		pub keys: KeyOptions,
+		pub auto_jump: Option<bool>,
+		pub discrete_mouse_scroll: Option<bool>,
+		pub invert_mouse_y: Option<bool>,
+		pub enable_touchscreen: Option<bool>,
+		pub toggle_sprint: Option<bool>,
+		pub toggle_crouch: Option<bool>,
+		pub mouse_sensitivity: Option<i16>,
+		pub mouse_wheel_sensitivity: Option<f32>,
+		pub raw_mouse_input: Option<bool>,
+	}
+
+	#[derive(Deserialize, Serialize, Debug, Clone, Default)]
+	#[serde(default)]
 	pub struct KeyOptions {
 		pub attack: Option<Keybind>,
 		pub r#use: Option<Keybind>,
@@ -67,21 +117,6 @@ pub mod deser {
 		pub stream_pause_unpause: Option<Keybind>,
 		pub stream_start_stop: Option<Keybind>,
 		pub stream_toggle_microphone: Option<Keybind>,
-	}
-
-	#[derive(Deserialize, Serialize, Debug, Clone, Default)]
-	#[serde(default)]
-	pub struct ControlOptions {
-		pub keys: KeyOptions,
-		pub auto_jump: Option<bool>,
-		pub discrete_mouse_scroll: Option<bool>,
-		pub invert_mouse_y: Option<bool>,
-		pub enable_touchscreen: Option<bool>,
-		pub toggle_sprint: Option<bool>,
-		pub toggle_crouch: Option<bool>,
-		pub mouse_sensitivity: Option<i16>,
-		pub mouse_wheel_sensitivity: Option<f32>,
-		pub raw_mouse_input: Option<bool>,
 	}
 
 	#[derive(Deserialize, Serialize, Debug, Clone, Default)]
@@ -188,41 +223,6 @@ pub mod deser {
 		pub preferred_server: Option<String>,
 		pub send_metadata: Option<bool>,
 		pub system_volume: Option<f32>,
-	}
-
-	#[derive(Deserialize, Serialize, Debug, Clone, Default)]
-	#[serde(default)]
-	pub struct ClientOptions {
-		pub data_version: Option<i16>,
-		pub video: VideoOptions,
-		pub control: ControlOptions,
-		pub chat: ChatOptions,
-		pub sound: SoundOptions,
-		pub skin: SkinOptions,
-		pub stream: StreamOptions,
-		pub custom: HashMap<String, String>,
-		pub realms_notifications: Option<bool>,
-		pub reduced_debug_info: Option<bool>,
-		pub difficulty: Option<EnumOrNumber<Difficulty>>,
-		pub resource_packs: Option<Vec<String>>,
-		pub language: Option<String>,
-		pub tutorial_step: Option<TutorialStep>,
-		pub skip_multiplayer_warning: Option<bool>,
-		pub skip_realms_32_bit_warning: Option<bool>,
-		pub hide_bundle_tutorial: Option<bool>,
-		pub joined_server: Option<bool>,
-		pub sync_chunk_writes: Option<bool>,
-		pub use_native_transport: Option<bool>,
-		pub held_item_tooltips: Option<bool>,
-		pub advanced_item_tooltips: Option<bool>,
-		pub log_level: Option<EnumOrNumber<LogLevel>>,
-		pub hide_matched_names: Option<bool>,
-		pub pause_on_lost_focus: Option<bool>,
-		pub main_hand: Option<MainHand>,
-		pub hide_server_address: Option<bool>,
-		pub show_autosave_indicator: Option<bool>,
-		pub allow_server_listing: Option<bool>,
-		pub snooper_enabled: Option<bool>,
 	}
 
 	#[derive(Deserialize, Serialize, Clone, Debug)]

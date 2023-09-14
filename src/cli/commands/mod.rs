@@ -25,43 +25,6 @@ use self::user::UserSubcommand;
 
 use super::output::TerminalOutput;
 
-/// Data passed to commands
-pub struct CmdData {
-	pub paths: Paths,
-	pub config: Later<Config>,
-	pub output: TerminalOutput,
-}
-
-impl CmdData {
-	pub async fn new() -> anyhow::Result<Self> {
-		let paths = Paths::new()
-			.await
-			.context("Failed to set up system paths")?;
-		let output = TerminalOutput::new(&paths).context("Failed to set up output")?;
-		Ok(Self {
-			paths,
-			config: Later::new(),
-			output,
-		})
-	}
-
-	/// Ensure that the config is loaded
-	pub async fn ensure_config(&mut self, show_warnings: bool) -> anyhow::Result<()> {
-		if self.config.is_empty() {
-			self.config.fill(
-				Config::load(
-					&Config::get_path(&self.paths),
-					show_warnings,
-					&mut self.output,
-				)
-				.context("Failed to load config")?,
-			);
-		}
-
-		Ok(())
-	}
-}
-
 #[derive(Debug, Subcommand)]
 pub enum Command {
 	#[command(about = "Manage profiles")]
@@ -168,6 +131,43 @@ fn get_log_level(cli: &Cli) -> MessageLevel {
 		MessageLevel::Debug
 	} else {
 		MessageLevel::Important
+	}
+}
+
+/// Data passed to commands
+pub struct CmdData {
+	pub paths: Paths,
+	pub config: Later<Config>,
+	pub output: TerminalOutput,
+}
+
+impl CmdData {
+	pub async fn new() -> anyhow::Result<Self> {
+		let paths = Paths::new()
+			.await
+			.context("Failed to set up system paths")?;
+		let output = TerminalOutput::new(&paths).context("Failed to set up output")?;
+		Ok(Self {
+			paths,
+			config: Later::new(),
+			output,
+		})
+	}
+
+	/// Ensure that the config is loaded
+	pub async fn ensure_config(&mut self, show_warnings: bool) -> anyhow::Result<()> {
+		if self.config.is_empty() {
+			self.config.fill(
+				Config::load(
+					&Config::get_path(&self.paths),
+					show_warnings,
+					&mut self.output,
+				)
+				.context("Failed to load config")?,
+			);
+		}
+
+		Ok(())
 	}
 }
 

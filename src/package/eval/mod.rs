@@ -39,7 +39,7 @@ use super::reg::PkgRegistry;
 use super::Package;
 use super::PkgProfileConfig;
 use crate::data::addon::{self, AddonLocation, AddonRequest};
-use crate::data::config::profile::GameModifications;
+use crate::data::config::modifications::GameModifications;
 use crate::io::files::paths::Paths;
 use crate::util::hash::{
 	get_hash_str_as_hex, HASH_SHA256_RESULT_LENGTH, HASH_SHA512_RESULT_LENGTH,

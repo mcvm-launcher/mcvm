@@ -40,6 +40,19 @@ pub enum ProfileSubcommand {
 	},
 }
 
+pub async fn run(subcommand: ProfileSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
+	match subcommand {
+		ProfileSubcommand::Info { profile } => info(data, &profile).await,
+		ProfileSubcommand::List { raw } => list(data, raw).await,
+		ProfileSubcommand::Update {
+			force,
+			all,
+			profiles,
+			skip_packages,
+		} => update(data, &profiles, force, all, skip_packages).await,
+	}
+}
+
 async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
 	data.ensure_config(true).await?;
 	let config = data.config.get_mut();
@@ -135,17 +148,4 @@ async fn update(
 	.await?;
 
 	Ok(())
-}
-
-pub async fn run(subcommand: ProfileSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
-	match subcommand {
-		ProfileSubcommand::Info { profile } => info(data, &profile).await,
-		ProfileSubcommand::List { raw } => list(data, raw).await,
-		ProfileSubcommand::Update {
-			force,
-			all,
-			profiles,
-			skip_packages,
-		} => update(data, &profiles, force, all, skip_packages).await,
-	}
 }

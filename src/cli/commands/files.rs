@@ -21,6 +21,12 @@ files in your instances or any other user data."
 	},
 }
 
+pub async fn run(subcommand: FilesSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
+	match subcommand {
+		FilesSubcommand::Remove { data: remove_data } => remove(data, remove_data).await,
+	}
+}
+
 pub async fn remove(data: &mut CmdData, remove_data: bool) -> anyhow::Result<()> {
 	cprintln!("<g>Removing cached files...");
 	fs::remove_dir_all(data.paths.project.cache_dir())
@@ -32,10 +38,4 @@ pub async fn remove(data: &mut CmdData, remove_data: bool) -> anyhow::Result<()>
 	}
 
 	Ok(())
-}
-
-pub async fn run(subcommand: FilesSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
-	match subcommand {
-		FilesSubcommand::Remove { data: remove_data } => remove(data, remove_data).await,
-	}
 }

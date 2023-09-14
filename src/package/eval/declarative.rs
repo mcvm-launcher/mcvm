@@ -195,17 +195,13 @@ fn check_condition_set<'a>(conditions: &DeclarativeConditionSet, input: &'a Eval
 #[cfg(test)]
 mod tests {
 	use mcvm_pkg::declarative::deserialize_declarative_package;
-	use mcvm_shared::{
-		lang::Language,
-		modifications::{ClientType, Modloader, ServerType},
-		pkg::PackageStability,
-		Side,
-	};
+	use mcvm_shared::lang::Language;
+	use mcvm_shared::modifications::{ClientType, Modloader, ServerType};
+	use mcvm_shared::pkg::PackageStability;
+	use mcvm_shared::Side;
 
-	use crate::{
-		data::config::profile::GameModifications,
-		package::eval::{EvalConstants, EvalParameters, EvalPermissions, RequiredPackage},
-	};
+	use crate::data::config::modifications::GameModifications;
+	use crate::package::eval::{EvalConstants, EvalParameters, EvalPermissions, RequiredPackage};
 
 	use super::*;
 

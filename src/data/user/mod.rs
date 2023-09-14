@@ -11,20 +11,6 @@ use reqwest::Client;
 
 use crate::net::minecraft::Keypair;
 
-/// Type of a user
-#[derive(Debug, Clone)]
-pub enum UserKind {
-	/// A new Microsoft user, the standard account
-	Microsoft {
-		/// The XBox UID of the user
-		xbox_uid: Option<String>,
-	},
-	/// A demo user
-	Demo,
-	/// An unverified / not logged in user
-	Unverified,
-}
-
 /// A user account that can play the game
 #[derive(Debug)]
 pub struct User {
@@ -40,6 +26,20 @@ pub struct User {
 	pub access_token: Option<String>,
 	/// The user's public / private key pair
 	pub keypair: Option<Keypair>,
+}
+
+/// Type of a user
+#[derive(Debug, Clone)]
+pub enum UserKind {
+	/// A new Microsoft user, the standard account
+	Microsoft {
+		/// The XBox UID of the user
+		xbox_uid: Option<String>,
+	},
+	/// A demo user
+	Demo,
+	/// An unverified / not logged in user
+	Unverified,
 }
 
 impl User {
@@ -61,6 +61,15 @@ impl User {
 	}
 }
 
+/// List of users and AuthState
+#[derive(Debug)]
+pub struct UserManager {
+	/// The current state of authentication
+	pub state: AuthState,
+	/// All configured / available users
+	pub users: HashMap<String, User>,
+}
+
 /// State of authentication
 #[derive(Debug)]
 pub enum AuthState {
@@ -70,15 +79,6 @@ pub enum AuthState {
 	UserChosen(String),
 	/// The user is authenticated
 	Authed(String),
-}
-
-/// List of users and AuthState
-#[derive(Debug)]
-pub struct UserManager {
-	/// The current state of authentication
-	pub state: AuthState,
-	/// All configured / available users
-	pub users: HashMap<String, User>,
 }
 
 impl UserManager {
