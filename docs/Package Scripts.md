@@ -56,6 +56,7 @@ Properties like `features` and `modrinth_id` can only be used in the `@propertie
   - `not {condition}`: Inverts a condition. You can chain these, but why would you want to.
   - `and {left} {right}`: Checks if both conditions are true.
   - `or {left} {right}`: Checks if either one of the conditions are true.
+- `else [if {condition}] { ... }`: Can be used after an if block or another else block to run a block only if the if condition or previous else condition failed. These can be chained and work how you would expect in other languages.
 - `set {variable} {value}`: Sets the value of a variable.
 - `finish`: Will silently end the routine.
 - `fail [unsupported_version | unsupported_modloader | unsupported_plugin_loader | unsupported_features | unsupported_operating_system]`: End execution with an error.

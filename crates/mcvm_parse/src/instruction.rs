@@ -25,7 +25,14 @@ pub struct Instruction {
 #[derive(Debug, Clone)]
 pub enum InstrKind {
 	/// Check conditions
-	If(Condition, BlockId),
+	If {
+		/// The condition to check
+		condition: Condition,
+		/// The block to run if the condition succeeds
+		if_block: BlockId,
+		/// The chain of else blocks to run if the initial condition fails
+		else_blocks: Vec<ElseBlock>,
+	},
 	/// Set the package name metadata
 	Name(Later<String>),
 	/// Set the package description metadata
@@ -119,13 +126,22 @@ pub enum InstrKind {
 	Call(Later<String>),
 }
 
+/// A non-nested else / else if block connected to an if
+#[derive(Debug, Clone)]
+pub struct ElseBlock {
+	/// The block to run if this else succeeds
+	pub block: BlockId,
+	/// An additional condition that might need to be satisfied, used for else if.
+	pub condition: Option<Condition>,
+}
+
 impl Display for InstrKind {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		write!(
 			f,
 			"{}",
 			match self {
-				Self::If(..) => "if",
+				Self::If { .. } => "if",
 				Self::Name(..) => "name",
 				Self::Description(..) => "description",
 				Self::LongDescription(..) => "long_description",
@@ -253,7 +269,7 @@ impl Instruction {
 			InstrKind::Set(var, val) => var.is_full() && val.is_some(),
 			InstrKind::Cmd(list) => !list.is_empty(),
 			InstrKind::Fail(..) | InstrKind::Finish() => true,
-			InstrKind::If(..) | InstrKind::Addon { .. } | InstrKind::Require(..) => {
+			InstrKind::If { .. } | InstrKind::Addon { .. } | InstrKind::Require(..) => {
 				unimplemented!()
 			}
 		}

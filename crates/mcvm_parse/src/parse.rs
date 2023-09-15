@@ -2,6 +2,7 @@ use anyhow::anyhow;
 use anyhow::{bail, Context};
 use mcvm_shared::pkg::PackageAddonHashes;
 
+use crate::instruction::ElseBlock;
 use crate::routine::can_call_routines;
 use crate::routine::RESERVED_ROUTINES;
 
@@ -29,11 +30,14 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 	let tokens = reduce_tokens(tokens);
 
 	let mut prs = ParseData::new();
+	// Whether or not a block just ended
+	let mut block_just_ended = false;
 	for (tok, pos) in tokens {
 		let mut instr_to_push = None;
 		let mut mode_to_set = None;
 		let mut block_to_set = None;
 		let mut block_finished = false;
+		let mut else_to_append = None;
 		match &mut prs.mode {
 			ParseMode::Root => {
 				match tok {
@@ -51,7 +55,20 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 						prs.mode = ParseMode::Routine(None);
 					}
 					Token::Ident(name) => match name.as_str() {
-						"if" => prs.mode = ParseMode::If(None),
+						"if" => {
+							prs.mode = ParseMode::If {
+								condition: None,
+								is_if_else: false,
+							};
+							block_just_ended = false;
+						}
+						"else" => {
+							if !block_just_ended {
+								bail!("'else' used without if block {}", pos.clone());
+							}
+							prs.mode = ParseMode::CheckForElseIf;
+							block_just_ended = false;
+						}
 						"addon" => {
 							prs.mode = ParseMode::Addon {
 								state: addon::State::Id,
@@ -69,6 +86,7 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 									},
 								},
 							};
+							block_just_ended = false;
 						}
 						"require" => {
 							prs.mode = ParseMode::Require {
@@ -78,15 +96,18 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 								current_package: None,
 								explicit_has_been_closed: true,
 							};
+							block_just_ended = false;
 						}
 						name => {
 							prs.mode = ParseMode::Instruction(Instruction::from_str(name, pos)?);
+							block_just_ended = false;
 						}
 					},
 					Token::Curly(side) => match side {
 						Side::Left => unexpected_token!(tok, pos),
 						Side::Right => {
 							block_finished = true;
+							block_just_ended = true;
 							prs.mode = ParseMode::Root;
 						}
 					},
@@ -119,7 +140,10 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 				}
 				Ok(())
 			}
-			ParseMode::If(condition) => {
+			ParseMode::If {
+				condition,
+				is_if_else,
+			} => {
 				match tok {
 					Token::Curly(Side::Left) => {
 						if let Some(condition) = condition {
@@ -127,10 +151,22 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 								unexpected_token!(tok, pos);
 							}
 							let block = prs.parsed.new_block(Some(prs.block));
-							block_to_set = Some(block);
-							instr_to_push =
-								Some(Instruction::new(InstrKind::If(condition.clone(), block)));
+							if *is_if_else {
+								else_to_append = Some(ElseBlock {
+									block,
+									condition: Some(condition.clone()),
+								});
+							} else {
+								block_to_set = Some(block);
+								instr_to_push = Some(Instruction::new(InstrKind::If {
+									condition: condition.clone(),
+									if_block: block,
+									else_blocks: Vec::new(),
+								}));
+							}
 							prs.mode = ParseMode::Root;
+						} else {
+							unexpected_token!(tok, pos);
 						}
 					}
 					Token::Curly(Side::Right) => unexpected_token!(tok, pos),
@@ -148,6 +184,32 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 							_ => unexpected_token!(tok, pos),
 						},
 					},
+				}
+
+				Ok(())
+			}
+			ParseMode::CheckForElseIf => {
+				match tok {
+					Token::Ident(name) => match name.as_str() {
+						// Start an else if
+						"if" => {
+							prs.mode = ParseMode::If {
+								condition: None,
+								is_if_else: true,
+							};
+						}
+						_ => unexpected_token!(tok, pos),
+					},
+					// No condition, just append the else block
+					Token::Curly(Side::Left) => {
+						let block = prs.parsed.new_block(Some(prs.block));
+						else_to_append = Some(ElseBlock {
+							block,
+							condition: None,
+						});
+						prs.mode = ParseMode::Root;
+					}
+					_ => unexpected_token!(tok, pos),
 				}
 
 				Ok(())
@@ -336,12 +398,27 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 			prs.mode = mode;
 		}
 
+		if let Some(else_to_append) = else_to_append {
+			let block = else_to_append.block;
+			// We append this to the last instruction, which we assume is an if
+			let last_instr = prs
+				.last_instruction()
+				.ok_or(anyhow!("Else was not used after if block {}", pos))?;
+			if let InstrKind::If { else_blocks, .. } = &mut last_instr.kind {
+				else_blocks.push(else_to_append);
+			} else {
+				bail!("Else was not used after if block {}", pos);
+			}
+
+			block_to_set = Some(block);
+		}
+
 		if let Some(block) = block_to_set {
 			prs.block = block;
 		}
 
 		if block_finished {
-			prs.new_block();
+			prs.finish_block();
 		}
 	}
 
@@ -413,13 +490,26 @@ pub mod require {
 	}
 }
 
+/// Data used for parsing
+#[derive(Debug)]
+struct ParseData {
+	parsed: Parsed,
+	instruction_n: u32,
+	block: BlockId,
+	mode: ParseMode,
+}
+
 /// Mode for what we are currently parsing
 #[derive(Debug)]
 enum ParseMode {
 	Root,
 	Routine(Option<String>),
 	Instruction(Instruction),
-	If(Option<Condition>),
+	If {
+		condition: Option<Condition>,
+		is_if_else: bool,
+	},
+	CheckForElseIf,
 	Addon {
 		state: addon::State,
 		key: addon::Key,
@@ -434,15 +524,6 @@ enum ParseMode {
 		current_package: Option<require::Package>,
 		explicit_has_been_closed: bool,
 	},
-}
-
-/// Data used for parsing
-#[derive(Debug)]
-struct ParseData {
-	parsed: Parsed,
-	instruction_n: u32,
-	block: BlockId,
-	mode: ParseMode,
 }
 
 impl ParseData {
@@ -465,12 +546,18 @@ impl ParseData {
 	}
 
 	/// Finish the current block
-	pub fn new_block(&mut self) {
+	pub fn finish_block(&mut self) {
 		if let Some(block) = self.parsed.blocks.get_mut(&self.block) {
 			if let Some(parent) = block.parent {
 				self.block = parent;
 			}
 		}
+	}
+
+	/// Get the last instruction in the current block
+	pub fn last_instruction(&mut self) -> Option<&mut Instruction> {
+		let block = self.parsed.blocks.get_mut(&self.block)?;
+		block.contents.last_mut()
 	}
 }
 
@@ -589,12 +676,23 @@ fn check_recursion(parsed: &Parsed) -> anyhow::Result<()> {
 					let popped = stack.pop_back();
 					assert_eq!(popped, Some(parent_routine.to_string()));
 				}
-				InstrKind::If(_, if_block_id) => {
+				InstrKind::If {
+					if_block,
+					else_blocks,
+					..
+				} => {
 					let if_block = parsed
 						.blocks
-						.get(if_block_id)
+						.get(if_block)
 						.expect("If block does not exist");
 					check_block(parsed, parent_routine, if_block, stack)?;
+					for else_block in else_blocks {
+						let else_block = parsed
+							.blocks
+							.get(&else_block.block)
+							.expect("If else block does not exist");
+						check_block(parsed, parent_routine, else_block, stack)?;
+					}
 				}
 				_ => {}
 			}
@@ -678,7 +776,7 @@ mod tests {
 			.get(parsed.routines.get(INSTALL_ROUTINE).unwrap())
 			.unwrap();
 		for instr in &block.contents {
-			if let InstrKind::If(condition, _) = &instr.kind {
+			if let InstrKind::If { condition, .. } = &instr.kind {
 				assert_eq!(
 					condition.kind,
 					ConditionKind::And(
@@ -690,6 +788,51 @@ mod tests {
 						)))),
 					)
 				)
+			}
+		}
+	}
+
+	#[test]
+	fn test_if_else() {
+		let text = r#"@install {
+			if value "" "" {
+				finish;
+			} else if value "foo" "bar" {
+				set x "";
+			} else {
+				set y "";
+			}
+			set z "";
+		}"#;
+		let parsed = lex_and_parse(text).unwrap();
+		let block = parsed
+			.blocks
+			.get(parsed.routines.get(INSTALL_ROUTINE).unwrap())
+			.unwrap();
+		for instr in &block.contents {
+			if let InstrKind::If {
+				condition,
+				else_blocks,
+				..
+			} = &instr.kind
+			{
+				assert_eq!(
+					condition.kind,
+					ConditionKind::Value(
+						Value::Literal(String::new()),
+						Value::Literal(String::new())
+					)
+				);
+				let else_block = else_blocks.get(0).unwrap();
+				assert_eq!(
+					else_block.condition.clone().unwrap().kind,
+					ConditionKind::Value(
+						Value::Literal("foo".into()),
+						Value::Literal("bar".into())
+					)
+				);
+				let else_block = else_blocks.get(1).unwrap();
+				assert!(else_block.condition.is_none());
 			}
 		}
 	}

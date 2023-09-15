@@ -68,10 +68,28 @@ pub fn eval_instr(
 	let mut out = EvalResult::new();
 	match eval.level {
 		EvalLevel::Install | EvalLevel::Resolve => match &instr.kind {
-			InstrKind::If(condition, block) => {
+			InstrKind::If {
+				condition,
+				if_block,
+				else_blocks,
+			} => {
 				if eval_condition(&condition.kind, eval)? {
-					let block = parsed.blocks.get(block).expect("If block missing");
+					let block = parsed.blocks.get(if_block).expect("If block missing");
 					out = eval_block(block, eval, parsed)?;
+				} else {
+					// Eval the else block chain
+					for else_block in else_blocks {
+						if let Some(condition) = &else_block.condition {
+							if !eval_condition(&condition.kind, eval)? {
+								continue;
+							}
+						}
+						let block = parsed
+							.blocks
+							.get(&else_block.block)
+							.expect("If else block missing");
+						out = eval_block(block, eval, parsed)?;
+					}
 				}
 			}
 			InstrKind::Call(routine) => {
