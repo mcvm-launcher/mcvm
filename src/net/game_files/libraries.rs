@@ -192,12 +192,12 @@ fn is_allowed(lib: &Library) -> anyhow::Result<bool> {
 	for rule in &lib.rules {
 		let allowed = rule.action.is_allowed();
 		if let Some(os_name) = &rule.os.name {
-			if allowed != (os_name.to_string() == util::OS_STRING) {
+			if allowed == (os_name.to_string() == util::OS_STRING) {
 				return Ok(false);
 			}
 		}
 		if let Some(os_arch) = &rule.os.arch {
-			if allowed != (os_arch.to_string() == util::ARCH_STRING) {
+			if allowed == (os_arch.to_string() == util::ARCH_STRING) {
 				return Ok(false);
 			}
 		}

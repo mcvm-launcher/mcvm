@@ -33,12 +33,12 @@ pub fn process_arg(
 				let allowed = rule.action.is_allowed();
 
 				if let Some(os_name) = &rule.os.name {
-					if allowed != (OS_STRING == os_name.to_string()) {
+					if allowed == (OS_STRING == os_name.to_string()) {
 						return vec![];
 					}
 				}
 				if let Some(os_arch) = &rule.os.arch {
-					if allowed != (ARCH_STRING == os_arch.to_string()) {
+					if allowed == (ARCH_STRING == os_arch.to_string()) {
 						return vec![];
 					}
 				}
