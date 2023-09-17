@@ -12,6 +12,8 @@ pub mod properties;
 pub mod repo;
 /// Standardized package dependency resolution
 pub mod resolve;
+/// Framework for evaluating script packages
+pub mod script_eval;
 
 use anyhow::Context;
 use async_trait::async_trait;

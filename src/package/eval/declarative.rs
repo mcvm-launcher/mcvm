@@ -1,5 +1,6 @@
 use anyhow::anyhow;
 use mcvm_pkg::declarative::{DeclarativeAddonVersion, DeclarativeConditionSet, DeclarativePackage};
+use mcvm_pkg::script_eval::AddonInstructionData;
 use mcvm_pkg::RequiredPackage;
 use mcvm_shared::pkg::PackageID;
 
@@ -32,17 +33,17 @@ pub fn eval_declarative_package<'a>(
 		let version = pick_best_addon_version(&addon.versions, &eval_data.input);
 		let version = version.ok_or(anyhow!("No valid addon version found"))?;
 
-		let addon_req = create_valid_addon_request(
-			addon_id.clone(),
-			version.url.clone(),
-			version.path.clone(),
-			addon.kind,
-			version.filename.clone(),
-			version.version.clone(),
-			pkg_id.clone(),
-			version.hashes.clone(),
-			&eval_data.input,
-		)?;
+		let data = AddonInstructionData {
+			id: addon_id.clone(),
+			url: version.url.clone(),
+			path: version.path.clone(),
+			kind: addon.kind,
+			file_name: version.filename.clone(),
+			version: version.version.clone(),
+			hashes: version.hashes.clone(),
+		};
+
+		let addon_req = create_valid_addon_request(data, pkg_id.clone(), &eval_data.input)?;
 
 		eval_data.addon_reqs.push(addon_req);
 

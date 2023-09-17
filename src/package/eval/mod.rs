@@ -12,6 +12,8 @@ use mcvm_parse::routine::INSTALL_ROUTINE;
 use mcvm_parse::vars::HashMapVariableStore;
 use mcvm_pkg::properties::PackageProperties;
 use mcvm_pkg::resolve::ResolutionResult;
+use mcvm_pkg::script_eval::AddonInstructionData;
+use mcvm_pkg::script_eval::EvalReason;
 use mcvm_pkg::ConfiguredPackage;
 use mcvm_pkg::PackageContentType;
 use mcvm_pkg::PkgRequest;
@@ -21,7 +23,7 @@ use mcvm_pkg::{
 	PackageEvalRelationsResult as EvalRelationsResultTrait,
 	PackageEvaluator as PackageEvaluatorTrait,
 };
-use mcvm_shared::addon::{is_addon_version_valid, is_filename_valid, Addon, AddonKind};
+use mcvm_shared::addon::{is_addon_version_valid, is_filename_valid, Addon};
 use mcvm_shared::lang::Language;
 use mcvm_shared::output::MCVMOutput;
 use mcvm_shared::output::MessageContents;
@@ -45,7 +47,7 @@ use crate::io::files::paths::Paths;
 use crate::util::hash::{
 	get_hash_str_as_hex, HASH_SHA256_RESULT_LENGTH, HASH_SHA512_RESULT_LENGTH,
 };
-use mcvm_shared::pkg::{PackageAddonOptionalHashes, PackageStability};
+use mcvm_shared::pkg::PackageStability;
 use mcvm_shared::Side;
 
 use std::path::PathBuf;
@@ -54,15 +56,6 @@ use std::path::PathBuf;
 const MAX_NOTICE_INSTRUCTIONS: usize = 10;
 /// Max characters per notice instruction
 const MAX_NOTICE_CHARACTERS: usize = 128;
-
-/// What instructions the evaluator will evaluate (depends on what routine we are running)
-#[derive(Debug, Clone)]
-pub enum EvalLevel {
-	/// When we are installing the addons of a package
-	Install,
-	/// When we are resolving package relationships
-	Resolve,
-}
 
 /// Permissions level for an evaluation
 #[derive(Deserialize, Serialize, Debug, Copy, Clone, Default)]
@@ -95,11 +88,11 @@ impl Routine {
 		.into()
 	}
 
-	/// Get the EvalLevel of this routine
-	pub fn get_level(&self) -> EvalLevel {
+	/// Get the EvalReason of this routine
+	pub fn get_reason(&self) -> EvalReason {
 		match self {
-			Self::Install => EvalLevel::Install,
-			Self::InstallResolve => EvalLevel::Resolve,
+			Self::Install => EvalReason::Install,
+			Self::InstallResolve => EvalReason::Resolve,
 		}
 	}
 }
@@ -149,7 +142,7 @@ pub struct EvalData<'a> {
 	/// ID of the package we are evaluating
 	pub id: PackageID,
 	/// Level of evaluation
-	pub level: EvalLevel,
+	pub reason: EvalReason,
 	/// Variables, used for script evaluation
 	pub vars: HashMapVariableStore,
 	/// The output of addon requests
@@ -178,7 +171,7 @@ impl<'a> EvalData<'a> {
 		Self {
 			input,
 			id,
-			level: routine.get_level(),
+			reason: routine.get_reason(),
 			vars: HashMapVariableStore::default(),
 			addon_reqs: Vec::new(),
 			deps: Vec::new(),
@@ -290,62 +283,70 @@ pub fn eval_check_properties(
 
 /// Utility for evaluation that validates addon arguments and creates a request
 pub fn create_valid_addon_request(
-	id: String,
-	url: Option<String>,
-	path: Option<String>,
-	kind: AddonKind,
-	file_name: Option<String>,
-	version: Option<String>,
+	data: AddonInstructionData,
 	pkg_id: PackageID,
-	hashes: PackageAddonOptionalHashes,
 	eval_input: &EvalInput,
 ) -> anyhow::Result<AddonRequest> {
-	if !is_valid_identifier(&id) {
-		bail!("Invalid addon identifier '{id}'");
+	if !is_valid_identifier(&data.id) {
+		bail!("Invalid addon identifier '{}'", data.id);
 	}
 
 	// Empty strings will break the filename so we convert them to none
-	let version = version.filter(|x| !x.is_empty());
+	let version = data.version.filter(|x| !x.is_empty());
 	if let Some(version) = &version {
 		if !is_addon_version_valid(version) {
-			bail!("Invalid addon version identifier '{version}' for addon '{id}'");
+			bail!(
+				"Invalid addon version identifier '{version}' for addon '{}'",
+				data.id
+			);
 		}
 	}
 
-	let file_name = file_name.unwrap_or(addon::get_addon_instance_filename(&pkg_id, &id, &kind));
+	let file_name = data.file_name.unwrap_or(addon::get_addon_instance_filename(
+		&pkg_id, &data.id, &data.kind,
+	));
 
-	if !is_filename_valid(kind, &file_name) {
-		bail!("Invalid addon filename '{file_name}' in addon '{id}'");
+	if !is_filename_valid(data.kind, &file_name) {
+		bail!(
+			"Invalid addon filename '{file_name}' in addon '{}'",
+			data.id
+		);
 	}
 
 	// Check hashes
-	if let Some(hash) = &hashes.sha256 {
+	if let Some(hash) = &data.hashes.sha256 {
 		let hex = get_hash_str_as_hex(hash).context("Failed to parse hash string")?;
 		if hex.len() > HASH_SHA256_RESULT_LENGTH {
-			bail!("SHA-256 hash for addon '{id}' is longer than {HASH_SHA256_RESULT_LENGTH} characters");
+			bail!(
+				"SHA-256 hash for addon '{}' is longer than {HASH_SHA256_RESULT_LENGTH} characters",
+				data.id
+			);
 		}
 	}
 
-	if let Some(hash) = &hashes.sha512 {
+	if let Some(hash) = &data.hashes.sha512 {
 		let hex = get_hash_str_as_hex(hash).context("Failed to parse hash string")?;
 		if hex.len() > HASH_SHA512_RESULT_LENGTH {
-			bail!("SHA-512 hash for addon '{id}' is longer than {HASH_SHA512_RESULT_LENGTH} characters");
+			bail!(
+				"SHA-512 hash for addon '{}' is longer than {HASH_SHA512_RESULT_LENGTH} characters",
+				data.id
+			);
 		}
 	}
 
 	let addon = Addon {
-		kind,
-		id: id.clone(),
+		kind: data.kind,
+		id: data.id.clone(),
 		file_name,
 		pkg_id,
 		version,
-		hashes,
+		hashes: data.hashes,
 	};
 
-	if let Some(url) = url {
+	if let Some(url) = data.url {
 		let location = AddonLocation::Remote(url);
 		Ok(AddonRequest::new(addon, location))
-	} else if let Some(path) = path {
+	} else if let Some(path) = data.path {
 		match eval_input.params.perms {
 			EvalPermissions::Elevated => {
 				let path = shellexpand::tilde(&path).to_string();
@@ -354,11 +355,17 @@ pub fn create_valid_addon_request(
 				Ok(AddonRequest::new(addon, location))
 			}
 			_ => {
-				bail!("Insufficient permissions to add a local addon '{id}'");
+				bail!(
+					"Insufficient permissions to add a local addon '{}'",
+					data.id
+				);
 			}
 		}
 	} else {
-		bail!("No location (url/path) was specified for addon '{id}'");
+		bail!(
+			"No location (url/path) was specified for addon '{}'",
+			data.id
+		);
 	}
 }
 

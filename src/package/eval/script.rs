@@ -1,15 +1,17 @@
-use anyhow::{anyhow, bail, Context};
-use mcvm_parse::instruction::{InstrKind, Instruction};
-use mcvm_parse::parse::{Block, Parsed};
-use mcvm_parse::vars::{ReservedConstantVariables, Value, VariableStore};
-use mcvm_parse::FailReason;
+use anyhow::bail;
+use mcvm_parse::conditions::ConditionKind;
+use mcvm_parse::parse::Parsed;
+use mcvm_parse::vars::HashMapVariableStore;
+use mcvm_pkg::script_eval::{
+	AddonInstructionData, ScriptEvalConfig, ScriptEvaluator as ScriptEvaluatorTrait,
+};
 use mcvm_pkg::RecommendedPackage;
-use mcvm_shared::pkg::{PackageAddonOptionalHashes, PackageID};
+use mcvm_shared::pkg::PackageID;
 
 use super::conditions::eval_condition;
 use super::{
-	create_valid_addon_request, EvalData, EvalInput, EvalLevel, EvalPermissions, RequiredPackage,
-	Routine, MAX_NOTICE_CHARACTERS, MAX_NOTICE_INSTRUCTIONS,
+	create_valid_addon_request, EvalData, EvalInput, EvalPermissions, RequiredPackage, Routine,
+	MAX_NOTICE_CHARACTERS, MAX_NOTICE_INSTRUCTIONS,
 };
 
 /// Evaluate a script package
@@ -19,238 +21,127 @@ pub fn eval_script_package<'a>(
 	routine: Routine,
 	input: EvalInput<'a>,
 ) -> anyhow::Result<EvalData<'a>> {
-	let routine_name = routine.get_routine_name();
-	let routine_id = parsed
-		.routines
-		.get(&routine_name)
-		.ok_or(anyhow!("Routine {} does not exist", routine_name.clone()))?;
-	let block = parsed
-		.blocks
-		.get(routine_id)
-		.ok_or(anyhow!("Routine {} does not exist", routine_name))?;
-
 	let mut eval = EvalData::new(input, pkg_id, &routine);
-	eval.vars.set_reserved_constants(ReservedConstantVariables {
-		mc_version: &eval.input.constants.version,
-	});
 
-	for instr in &block.contents {
-		let result = eval_instr(instr, &mut eval, parsed)?;
-		if result.finish {
-			break;
-		}
-	}
+	let reason = eval.reason;
+
+	mcvm_pkg::script_eval::eval_script_package(
+		parsed,
+		&mut ScriptEvaluator,
+		&mut eval,
+		&ScriptEvalConfig { reason },
+	)?;
 
 	Ok(eval)
 }
 
-/// Evaluate a block of instructions
-fn eval_block(block: &Block, eval: &mut EvalData, parsed: &Parsed) -> anyhow::Result<EvalResult> {
-	let mut out = EvalResult::new();
+struct ScriptEvaluator;
 
-	for instr in &block.contents {
-		let result = eval_instr(instr, eval, parsed)?;
-		if result.finish {
-			out.finish = true;
-			break;
+impl ScriptEvaluatorTrait for ScriptEvaluator {
+	type Shared<'a> = EvalData<'a>;
+	type VariableStore = HashMapVariableStore;
+
+	fn get_variable_store<'a>(
+		&self,
+		shared: &'a mut Self::Shared<'_>,
+	) -> &'a mut Self::VariableStore {
+		&mut shared.vars
+	}
+
+	fn eval_condition(
+		&mut self,
+		shared: &mut Self::Shared<'_>,
+		condition: &ConditionKind,
+	) -> anyhow::Result<bool> {
+		eval_condition(condition, shared)
+	}
+
+	fn add_addon(
+		&mut self,
+		shared: &mut Self::Shared<'_>,
+		addon: AddonInstructionData,
+	) -> anyhow::Result<()> {
+		if shared.addon_reqs.iter().any(|x| x.addon.id == addon.id) {
+			bail!("Duplicate addon id '{}'", addon.id);
 		}
+
+		let addon_req = create_valid_addon_request(addon, shared.id.clone(), &shared.input)?;
+		shared.addon_reqs.push(addon_req);
+
+		Ok(())
 	}
 
-	Ok(out)
-}
+	fn add_bundled(&mut self, shared: &mut Self::Shared<'_>, pkg: PackageID) -> anyhow::Result<()> {
+		shared.bundled.push(pkg);
+		Ok(())
+	}
 
-/// Evaluate an instruction
-pub fn eval_instr(
-	instr: &Instruction,
-	eval: &mut EvalData,
-	parsed: &Parsed,
-) -> anyhow::Result<EvalResult> {
-	let mut out = EvalResult::new();
-	// Used to put a nice anyhow context on all of them
-	let result = {
-		match eval.level {
-			EvalLevel::Install | EvalLevel::Resolve => match &instr.kind {
-				InstrKind::If {
-					condition,
-					if_block,
-					else_blocks,
-				} => {
-					if eval_condition(&condition.kind, eval)? {
-						let block = parsed.blocks.get(if_block).expect("If block missing");
-						out = eval_block(block, eval, parsed)?;
-					} else {
-						// Eval the else block chain
-						for else_block in else_blocks {
-							if let Some(condition) = &else_block.condition {
-								if !eval_condition(&condition.kind, eval)? {
-									continue;
-								}
-							}
-							let block = parsed
-								.blocks
-								.get(&else_block.block)
-								.expect("If else block missing");
-							out = eval_block(block, eval, parsed)?;
-						}
-					}
-				}
-				InstrKind::Call(routine) => {
-					let routine = routine.get();
-					let routine = parsed.routines.get(routine).ok_or(anyhow!(
-						"Call instruction routine '{routine}' does not exist"
-					))?;
-					let block = parsed.blocks.get(routine).expect("Block does not exist");
-					out = eval_block(block, eval, parsed)?;
-				}
-				InstrKind::Set(var, val) => {
-					let var = var.get();
-					eval.vars
-						.try_set_var(var.to_owned(), val.get(&eval.vars)?)
-						.with_context(|| format!("Failed to set variable"))?;
-				}
-				InstrKind::Finish() => out.finish = true,
-				InstrKind::Fail(reason) => {
-					out.finish = true;
-					let reason = reason.as_ref().unwrap_or(&FailReason::None).clone();
-					bail!(
-						"Package script failed explicitly with reason: {}",
-						reason.to_string(),
-					);
-				}
-				InstrKind::Require(deps) => {
-					if let EvalLevel::Resolve = eval.level {
-						for dep in deps {
-							let mut dep_to_push = Vec::new();
-							for dep in dep {
-								dep_to_push.push(RequiredPackage {
-									value: dep.value.get(&eval.vars)?.into(),
-									explicit: dep.explicit,
-								});
-							}
-							eval.deps.push(dep_to_push);
-						}
-					}
-				}
-				InstrKind::Refuse(package) => {
-					if let EvalLevel::Resolve = eval.level {
-						eval.conflicts.push(package.get(&eval.vars)?.into());
-					}
-				}
-				InstrKind::Recommend(invert, package) => {
-					if let EvalLevel::Resolve = eval.level {
-						let recommendation = RecommendedPackage {
-							value: package.get(&eval.vars)?.into(),
-							invert: *invert,
-						};
-						eval.recommendations.push(recommendation);
-					}
-				}
-				InstrKind::Bundle(package) => {
-					if let EvalLevel::Resolve = eval.level {
-						eval.bundled.push(package.get(&eval.vars)?.into());
-					}
-				}
-				InstrKind::Compat(package, compat) => {
-					if let EvalLevel::Resolve = eval.level {
-						eval.compats.push((
-							package.get(&eval.vars)?.into(),
-							compat.get(&eval.vars)?.into(),
-						));
-					}
-				}
-				InstrKind::Extend(package) => {
-					if let EvalLevel::Resolve = eval.level {
-						eval.extensions.push(package.get(&eval.vars)?.into());
-					}
-				}
-				InstrKind::Notice(notice) => {
-					if eval.notices.len() > MAX_NOTICE_INSTRUCTIONS {
-						bail!("Max number of notice instructions was exceded (>{MAX_NOTICE_INSTRUCTIONS})");
-					}
-					let notice = notice.get(&eval.vars)?;
-					if notice.len() > MAX_NOTICE_CHARACTERS {
-						bail!("Notice message is too long (>{MAX_NOTICE_CHARACTERS})");
-					}
-					eval.notices.push(notice);
-				}
-				InstrKind::Cmd(command) => {
-					match eval.input.params.perms {
-						EvalPermissions::Elevated => {}
-						_ => bail!("Insufficient permissions to run the 'cmd' instruction"),
-					}
-					if let EvalLevel::Install = eval.level {
-						let command = get_value_vec(command, &eval.vars)?;
-
-						eval.commands.push(command);
-					}
-				}
-				InstrKind::Addon {
-					id,
-					file_name,
-					kind,
-					url,
-					path,
-					version,
-					hashes,
-				} => {
-					if let EvalLevel::Install = eval.level {
-						let id = id.get(&eval.vars)?;
-						if eval.addon_reqs.iter().any(|x| x.addon.id == id) {
-							bail!("Duplicate addon id '{id}'");
-						}
-
-						let kind = kind.as_ref().expect("Addon kind missing");
-						let hashes = PackageAddonOptionalHashes {
-							sha256: hashes.sha256.get_as_option(&eval.vars)?,
-							sha512: hashes.sha512.get_as_option(&eval.vars)?,
-						};
-						let addon_req = create_valid_addon_request(
-							id,
-							url.get_as_option(&eval.vars)?,
-							path.get_as_option(&eval.vars)?,
-							*kind,
-							file_name.get_as_option(&eval.vars)?,
-							version.get_as_option(&eval.vars)?,
-							eval.id.clone(),
-							hashes,
-							&eval.input,
-						)?;
-						eval.addon_reqs.push(addon_req);
-					}
-				}
-				_ => bail!("Instruction is not allowed in this routine context"),
-			},
+	fn add_command(
+		&mut self,
+		shared: &mut Self::Shared<'_>,
+		command: Vec<String>,
+	) -> anyhow::Result<()> {
+		match shared.input.params.perms {
+			EvalPermissions::Elevated => {}
+			_ => bail!("Insufficient permissions to run the 'cmd' instruction"),
 		}
-		Ok::<(), anyhow::Error>(())
-	};
-
-	result.with_context(|| format!("In {} instruction at {}", instr, instr.pos))?;
-
-	Ok(out)
-}
-
-/// Result from an evaluation subfunction. Mostly used to know when to end
-/// evaluation early.
-pub struct EvalResult {
-	finish: bool,
-}
-
-impl EvalResult {
-	/// Creates a new EvalResult
-	pub fn new() -> Self {
-		Self { finish: false }
+		shared.commands.push(command);
+		Ok(())
 	}
-}
 
-impl Default for EvalResult {
-	fn default() -> Self {
-		Self::new()
+	fn add_compat(
+		&mut self,
+		shared: &mut Self::Shared<'_>,
+		compat: (PackageID, PackageID),
+	) -> anyhow::Result<()> {
+		shared.compats.push(compat);
+		Ok(())
 	}
-}
 
-/// Utility function to convert a vec of values to a vec of strings
-fn get_value_vec(vec: &[Value], vars: &impl VariableStore) -> anyhow::Result<Vec<String>> {
-	let out = vec.iter().map(|x| x.get(vars));
-	let out = out.collect::<anyhow::Result<_>>()?;
-	Ok(out)
+	fn add_conflict(
+		&mut self,
+		shared: &mut Self::Shared<'_>,
+		pkg: PackageID,
+	) -> anyhow::Result<()> {
+		shared.conflicts.push(pkg);
+		Ok(())
+	}
+
+	fn add_dependency(
+		&mut self,
+		shared: &mut Self::Shared<'_>,
+		dep: Vec<RequiredPackage>,
+	) -> anyhow::Result<()> {
+		shared.deps.push(dep);
+		Ok(())
+	}
+
+	fn add_extension(
+		&mut self,
+		shared: &mut Self::Shared<'_>,
+		pkg: PackageID,
+	) -> anyhow::Result<()> {
+		shared.extensions.push(pkg);
+		Ok(())
+	}
+
+	fn add_notice(&mut self, shared: &mut Self::Shared<'_>, notice: String) -> anyhow::Result<()> {
+		if shared.notices.len() > MAX_NOTICE_INSTRUCTIONS {
+			bail!("Max number of notice instructions was exceded (>{MAX_NOTICE_INSTRUCTIONS})");
+		}
+		if notice.len() > MAX_NOTICE_CHARACTERS {
+			bail!("Notice message is too long (>{MAX_NOTICE_CHARACTERS})");
+		}
+		shared.notices.push(notice);
+		Ok(())
+	}
+
+	fn add_recommendation(
+		&mut self,
+		shared: &mut Self::Shared<'_>,
+		pkg: RecommendedPackage,
+	) -> anyhow::Result<()> {
+		shared.recommendations.push(pkg);
+		Ok(())
+	}
 }
