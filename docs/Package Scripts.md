@@ -49,7 +49,8 @@ Properties like `features` and `modrinth_id` can only be used in the `@propertie
   - `plugin_loader {plugin_loader_match}`: Checks if the plugin loader matches a `modloader_match`.
   - `side {client | server}`: Check what instance type the package is being installed on.
   - `feature {name}`: Check if a feature is enabled for this package.
-  - `os {windows | mac | linux}`: Check if the user is using a certain operating system.
+  - `os {windows | mac | linux | other}`: Check if the user is using a certain operating system.
+  - `arch {x86 | x86_64 | arm | other}`: Check if the user is using a certain system architecture.
   - `defined {variable_name}`: Check if a variable has been defined.
   - `stability {stable | latest}`: Check for the configured stability of the package. You should check this and only install release versions of addons if `stable` is selected.
   - `language {language}`: Check the user's configured language.
@@ -98,9 +99,12 @@ Properties like `features` and `modrinth_id` can only be used in the `@propertie
 - `modrinth_id {id}`: Set the Modrinth ID.
 - `curseforge_id {id}`: Set the CurseForge ID.
 - `smithed_id {id}`: Set the Smithed ID.
+- `supported_versions`: Set the supported versions.
 - `supported_modloaders`: Set the supported modloaders.
 - `supported_plugin_loaders`: Set the supported plugin loaders.
 - `supported_sides`: Set the supported sides.
+- `supported_operating_systems`: Set the supported operating systems.
+- `supported_architectures`: Set the supported architectures.
 - `tags {tag1} {tag2} ...`: Set the package tags.
 
 ### The `addon` Instruction

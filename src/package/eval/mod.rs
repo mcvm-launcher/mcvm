@@ -31,14 +31,16 @@ use mcvm_shared::util::is_valid_identifier;
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 
+use self::conditions::check_arch_condition;
+use self::conditions::check_os_condition;
 use self::declarative::eval_declarative_package;
 use self::script::eval_script_package;
 
 use super::reg::PkgRegistry;
 use super::Package;
 use crate::data::addon::{self, AddonLocation, AddonRequest};
-use crate::data::config::profile::GameModifications;
 use crate::data::config::package::PackageConfig;
+use crate::data::config::profile::GameModifications;
 use crate::io::files::paths::Paths;
 use crate::util::hash::{
 	get_hash_str_as_hex, HASH_SHA256_RESULT_LENGTH, HASH_SHA512_RESULT_LENGTH,
@@ -228,6 +230,15 @@ pub fn eval_check_properties(
 	input: &EvalInput,
 	properties: &PackageProperties,
 ) -> anyhow::Result<bool> {
+	if let Some(supported_versions) = &properties.supported_versions {
+		if !supported_versions
+			.iter()
+			.any(|x| x.matches_single(&input.constants.version, &input.constants.version_list))
+		{
+			bail!("Package does not support this Minecraft version");
+		}
+	}
+
 	if let Some(supported_modloaders) = &properties.supported_modloaders {
 		if !supported_modloaders.iter().any(|x| {
 			x.matches(
@@ -240,6 +251,7 @@ pub fn eval_check_properties(
 			bail!("Package does not support this modloader");
 		}
 	}
+
 	if let Some(supported_plugin_loaders) = &properties.supported_plugin_loaders {
 		if !supported_plugin_loaders
 			.iter()
@@ -252,6 +264,24 @@ pub fn eval_check_properties(
 	if let Some(supported_sides) = &properties.supported_sides {
 		if !supported_sides.contains(&input.params.side) {
 			return Ok(true);
+		}
+	}
+
+	if let Some(supported_operating_systems) = &properties.supported_operating_systems {
+		if !supported_operating_systems
+			.iter()
+			.any(|x| check_os_condition(x))
+		{
+			bail!("Package does not support your operating system");
+		}
+	}
+
+	if let Some(supported_architectures) = &properties.supported_architectures {
+		if !supported_architectures
+			.iter()
+			.any(|x| check_arch_condition(x))
+		{
+			bail!("Package does not support your system architecture");
 		}
 	}
 

@@ -5,12 +5,14 @@ use mcvm_shared::later::Later;
 use mcvm_shared::modifications::{ModloaderMatch, PluginLoaderMatch};
 use mcvm_shared::pkg::PackageAddonHashes;
 use mcvm_shared::Side;
+use mcvm_shared::versions::VersionPattern;
 
 use super::conditions::Condition;
 use super::lex::{TextPos, Token};
 use super::parse::BlockId;
 use super::vars::Value;
 use super::FailReason;
+use crate::conditions::{OSCondition, ArchCondition};
 use crate::unexpected_token;
 use mcvm_shared::addon::AddonKind;
 
@@ -79,12 +81,18 @@ pub enum InstrKind {
 	CurseForgeID(Later<String>),
 	/// Set the package Smithed ID property
 	SmithedID(Later<String>),
+	/// Set the package supported versions property
+	SupportedVersions(Vec<VersionPattern>),
 	/// Set the package supported modloaders property
 	SupportedModloaders(Vec<ModloaderMatch>),
 	/// Set the package supported plugin loaders property
 	SupportedPluginLoaders(Vec<PluginLoaderMatch>),
 	/// Set the package supported sides property
 	SupportedSides(Vec<Side>),
+	/// Set the package supported operating systems property
+	SupportedOperatingSystems(Vec<OSCondition>),
+	/// Set the package supported architectures property
+	SupportedArchitectures(Vec<ArchCondition>),
 	/// Set the package tags property
 	Tags(Vec<String>),
 	/// Install an addon
@@ -168,9 +176,12 @@ impl Display for InstrKind {
 				Self::ModrinthID(..) => "modrinth_id",
 				Self::CurseForgeID(..) => "curseforge_id",
 				Self::SmithedID(..) => "smithed_id",
+				Self::SupportedVersions(..) => "supported_versions",
 				Self::SupportedModloaders(..) => "supported_modloaders",
 				Self::SupportedPluginLoaders(..) => "supported_plugin_loaders",
 				Self::SupportedSides(..) => "supported_sides",
+				Self::SupportedOperatingSystems(..) => "supported_operating_systems",
+				Self::SupportedArchitectures(..) => "supported_architectures",
 				Self::Tags(..) => "tags",
 				Self::Addon { .. } => "addon",
 				Self::Set(..) => "set",
@@ -217,9 +228,12 @@ impl Instruction {
 			"default_features" => Ok(InstrKind::DefaultFeatures(Vec::new())),
 			"modrinth_id" => Ok(InstrKind::ModrinthID(Later::Empty)),
 			"curseforge_id" => Ok(InstrKind::CurseForgeID(Later::Empty)),
+			"supported_versions" => Ok(InstrKind::SupportedVersions(Vec::new())),
 			"supported_modloaders" => Ok(InstrKind::SupportedModloaders(Vec::new())),
 			"supported_plugin_loaders" => Ok(InstrKind::SupportedPluginLoaders(Vec::new())),
 			"supported_sides" => Ok(InstrKind::SupportedSides(Vec::new())),
+			"supported_operating_systems" => Ok(InstrKind::SupportedOperatingSystems(Vec::new())),
+			"supported_architectures" => Ok(InstrKind::SupportedArchitectures(Vec::new())),
 			"set" => Ok(InstrKind::Set(Later::Empty, Value::None)),
 			"finish" => Ok(InstrKind::Finish()),
 			"fail" => Ok(InstrKind::Fail(None)),
@@ -269,9 +283,12 @@ impl Instruction {
 			| InstrKind::Bundle(val)
 			| InstrKind::Extend(val)
 			| InstrKind::Notice(val) => val.is_some(),
+			InstrKind::SupportedVersions(val) => !val.is_empty(),
 			InstrKind::SupportedModloaders(val) => !val.is_empty(),
 			InstrKind::SupportedPluginLoaders(val) => !val.is_empty(),
 			InstrKind::SupportedSides(val) => !val.is_empty(),
+			InstrKind::SupportedOperatingSystems(val) => !val.is_empty(),
+			InstrKind::SupportedArchitectures(val) => !val.is_empty(),
 			InstrKind::Compat(val1, val2) => val1.is_some() && val2.is_some(),
 			InstrKind::Set(var, val) => var.is_full() && val.is_some(),
 			InstrKind::Cmd(list) => !list.is_empty(),

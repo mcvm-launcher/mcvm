@@ -97,9 +97,12 @@ Properties for the package that do have a meaning to mcvm and other package host
 	"default_features": [string],
 	"modrinth_id": string,
 	"curseforge_id": string,
+	"supported_versions": [VersionPattern],
 	"supported_modloaders": ["vanilla" | "fabric" | "forge" | "quilt" | "fabriclike"],
 	"supported_plugin_loaders": ["vanilla" | "bukkit"],
 	"supported_sides": ["client" | "server"],
+	"supported_operating_systems": ["windows" | "linux" | "macos" | "other"],
+	"supported_architectures": ["x86" | "x86_64" | "arm" | "other"],
 	"tags": [string]
 }
 ```
@@ -109,9 +112,12 @@ Properties for the package that do have a meaning to mcvm and other package host
 - `modrinth_id`: ID of the project for this package on Modrinth, if applicable. See "The purpose of host ID instructions".
 - `curseforge_id`: ID of the project for this package on CurseForge, if applicable. See "The purpose of host ID instructions".
 - `smithed_id`: ID of the project for this package on Smithed, if applicable. See "The purpose of host ID instructions".
+- `supported_versions`: Minecraft versions supported by this package. Defaults to all of them.
 - `supported_modloaders`: Modloaders supported by this package. Defaults to all of them.
 - `supported_plugin_loaders`: Plugin loaders supported by this package. Defaults to all of them.
 - `supported_sides`: Game sides supported by this package. Defaults to both of them.
+- `supported_operating_systems`: Operating systems supported by this package. Defaults to all of them.
+- `supported_architectures`: System architectures supported by this package. Defaults to all of them.
 - `tags`: Similar to categories and keywords, but with actual meaning. Packages will be able to use tags in the future to depend on any package with a tag, or refuse it.
 
 ## Relations
@@ -164,8 +170,9 @@ Condition sets are used in multiple parts of declarative packages to check prope
 	"plugin_loaders": [plugin_loader_match],
 	"stability": "stable" | "latest",
 	"features": [string],
-	"os": "windows" | "mac" | "linux",
-	"language": Language
+	"operating_systems": [operating_system],
+	"architectures": [architecture],
+	"languages": [Language]
 }
 ```
 
@@ -175,8 +182,9 @@ Condition sets are used in multiple parts of declarative packages to check prope
 - `plugin_loaders`: Check if the users's plugin loader matches any of the `plugin_loader_match`'s.
 - `stability`: Check for the configured stability of the package.
 - `features`: Check if all of the listed features are enabled for this package.
-- `os`: Check the operating system this package is being installed on.
-- `language`: Check the user's configured language.
+- `operating_systems`: Check the operating system this package is being installed on.
+- `architectures`: Check the system architecture this package is being installed on.
+- `languages`: Check the user's configured language matches one of the listed ones.
 
 ## Addons
 

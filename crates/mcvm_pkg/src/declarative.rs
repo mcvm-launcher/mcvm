@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use anyhow::Context;
-use mcvm_parse::conditions::OSCondition;
+use mcvm_parse::conditions::{OSCondition, ArchCondition};
 use mcvm_shared::addon::AddonKind;
 use mcvm_shared::lang::Language;
 use mcvm_shared::modifications::{ModloaderMatch, PluginLoaderMatch};
@@ -82,10 +82,12 @@ pub struct DeclarativeConditionSet {
 	pub stability: Option<PackageStability>,
 	/// What features to allow
 	pub features: Option<DeserListOrSingle<String>>,
-	/// What operating system to allow
-	pub os: Option<OSCondition>,
-	/// What language to allow
-	pub language: Option<Language>,
+	/// What operating systems to allow
+	pub operating_systems: Option<DeserListOrSingle<OSCondition>>,
+	/// What system architectures to allow
+	pub architectures: Option<DeserListOrSingle<ArchCondition>>,
+	/// What languages to allow
+	pub languages: Option<DeserListOrSingle<Language>>,
 }
 
 /// Conditional rule to apply changes to a declarative package

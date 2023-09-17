@@ -47,6 +47,34 @@ cfg_match! {
 		/// String representing the current architecture
 		pub const ARCH_STRING: &str = "arm";
 	}
+	target_arch = "aarch64" => {
+		/// String representing the current architecture
+		pub const ARCH_STRING: &str = "aarch64";
+	}
+	target_arch = "riscv32" => {
+		/// String representing the current architecture
+		pub const ARCH_STRING: &str = "riscv32";
+	}
+	target_arch = "riscv64" => {
+		/// String representing the current architecture
+		pub const ARCH_STRING: &str = "riscv64";
+	}
+	target_arch = "mips" => {
+		/// String representing the current architecture
+		pub const ARCH_STRING: &str = "mips";
+	}
+	target_arch = "mips64" => {
+		/// String representing the current architecture
+		pub const ARCH_STRING: &str = "mips64";
+	}
+	target_arch = "powerpc" => {
+		/// String representing the current architecture
+		pub const ARCH_STRING: &str = "powerpc";
+	}
+	target_arch = "powerpc64" => {
+		/// String representing the current architecture
+		pub const ARCH_STRING: &str = "powerpc64";
+	}
 	_ => {
 		pub const ARCH_STRING: &str = "";
 		compile_error!("Target architecture is unsupported")

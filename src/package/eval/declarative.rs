@@ -3,7 +3,7 @@ use mcvm_pkg::declarative::{DeclarativeAddonVersion, DeclarativeConditionSet, De
 use mcvm_pkg::RequiredPackage;
 use mcvm_shared::pkg::PackageID;
 
-use super::conditions::check_os_condition;
+use super::conditions::{check_arch_condition, check_os_condition};
 use super::{create_valid_addon_request, EvalData, EvalInput, Routine};
 
 /// Evaluate a declarative package
@@ -177,14 +177,20 @@ fn check_condition_set<'a>(conditions: &DeclarativeConditionSet, input: &'a Eval
 		}
 	}
 
-	if let Some(os) = &conditions.os {
-		if !check_os_condition(os) {
+	if let Some(operating_systems) = &conditions.operating_systems {
+		if !operating_systems.iter().any(|x| check_os_condition(x)) {
 			return false;
 		}
 	}
 
-	if let Some(language) = &conditions.language {
-		if language != &input.constants.language {
+	if let Some(architectures) = &conditions.architectures {
+		if !architectures.iter().any(|x| check_arch_condition(x)) {
+			return false;
+		}
+	}
+
+	if let Some(languages) = &conditions.languages {
+		if !languages.iter().any(|x| x == &input.constants.language) {
 			return false;
 		}
 	}

@@ -57,6 +57,8 @@ pub enum ConditionKind {
 	Defined(Later<String>),
 	/// Check the operating system
 	OS(Later<OSCondition>),
+	/// Check the system architecture
+	Arch(Later<ArchCondition>),
 	/// Check the requested package stability
 	Stability(Later<PackageStability>),
 	/// Check the user's language
@@ -84,6 +86,33 @@ impl OSCondition {
 			"windows" => Some(Self::Windows),
 			"linux" => Some(Self::Linux),
 			"macos" => Some(Self::MacOS),
+			"other" => Some(Self::Other),
+			_ => None,
+		}
+	}
+}
+
+/// Value for the arch condition
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum ArchCondition {
+	/// x86
+	X86,
+	/// x86_64
+	X86_64,
+	/// ARM
+	Arm,
+	/// Any other architecture
+	Other,
+}
+
+impl ArchCondition {
+	/// Parse a string into an OSCondition
+	pub fn parse_from_str(string: &str) -> Option<Self> {
+		match string {
+			"x86" => Some(Self::X86),
+			"x86_64" => Some(Self::X86_64),
+			"arm" => Some(Self::Arm),
 			"other" => Some(Self::Other),
 			_ => None,
 		}
@@ -124,6 +153,7 @@ impl ConditionKind {
 			Self::PluginLoader(val) => val.is_full(),
 			Self::Defined(val) => val.is_full(),
 			Self::OS(val) => val.is_full(),
+			Self::Arch(val) => val.is_full(),
 			Self::Stability(val) => val.is_full(),
 			Self::Language(val) => val.is_full(),
 			Self::Value(left, right) => left.is_some() && right.is_some(),
@@ -201,6 +231,14 @@ impl ConditionKind {
 			Self::OS(os) => match tok {
 				Token::Ident(name) => os.fill(check_enum_condition_argument(
 					OSCondition::parse_from_str(name),
+					name,
+					pos,
+				)?),
+				_ => unexpected_token!(tok, pos),
+			},
+			Self::Arch(arch) => match tok {
+				Token::Ident(name) => arch.fill(check_enum_condition_argument(
+					ArchCondition::parse_from_str(name),
 					name,
 					pos,
 				)?),

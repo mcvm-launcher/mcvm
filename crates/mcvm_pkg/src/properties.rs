@@ -1,5 +1,7 @@
 use anyhow::{bail, ensure};
+use mcvm_parse::conditions::{ArchCondition, OSCondition};
 use mcvm_shared::modifications::{ModloaderMatch, PluginLoaderMatch};
+use mcvm_shared::versions::VersionPattern;
 use mcvm_shared::Side;
 use serde::Deserialize;
 
@@ -18,12 +20,18 @@ pub struct PackageProperties {
 	pub curseforge_id: Option<String>,
 	/// The package's Smithed ID
 	pub smithed_id: Option<String>,
+	/// The package's supported Minecraft versions
+	pub supported_versions: Option<Vec<VersionPattern>>,
 	/// The package's supported modloaders
 	pub supported_modloaders: Option<Vec<ModloaderMatch>>,
 	/// The package's supported plugin loaders
 	pub supported_plugin_loaders: Option<Vec<PluginLoaderMatch>>,
 	/// The package's supported sides
 	pub supported_sides: Option<Vec<Side>>,
+	/// The package's supported operating systems
+	pub supported_operating_systems: Option<Vec<OSCondition>>,
+	/// The package's supported architectures
+	pub supported_architectures: Option<Vec<ArchCondition>>,
 	/// The package's semantic tags
 	pub tags: Option<Vec<String>>,
 }
@@ -60,6 +68,9 @@ pub fn eval_properties(parsed: &Parsed) -> anyhow::Result<PackageProperties> {
 					InstrKind::ModrinthID(id) => out.modrinth_id = Some(id.get_clone()),
 					InstrKind::CurseForgeID(id) => out.curseforge_id = Some(id.get_clone()),
 					InstrKind::SmithedID(id) => out.smithed_id = Some(id.get_clone()),
+					InstrKind::SupportedVersions(list) => {
+						out.supported_versions = Some(list.clone())
+					}
 					InstrKind::SupportedModloaders(list) => {
 						out.supported_modloaders = Some(list.clone())
 					}
@@ -67,6 +78,12 @@ pub fn eval_properties(parsed: &Parsed) -> anyhow::Result<PackageProperties> {
 						out.supported_plugin_loaders = Some(list.clone())
 					}
 					InstrKind::SupportedSides(list) => out.supported_sides = Some(list.clone()),
+					InstrKind::SupportedOperatingSystems(list) => {
+						out.supported_operating_systems = Some(list.clone())
+					}
+					InstrKind::SupportedArchitectures(list) => {
+						out.supported_architectures = Some(list.clone())
+					}
 					InstrKind::Tags(list) => out.tags = Some(list.clone()),
 					_ => bail!("Instruction is not allowed in this context"),
 				}

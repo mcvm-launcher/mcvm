@@ -2,7 +2,7 @@ use mcvm_shared::versions::VersionPattern;
 use mcvm_shared::Side;
 
 use super::EvalData;
-use mcvm_parse::conditions::{ConditionKind, OSCondition};
+use mcvm_parse::conditions::{ArchCondition, ConditionKind, OSCondition};
 use mcvm_parse::vars::VariableStore;
 
 /// Evaluates a script condition to a boolean
@@ -41,6 +41,7 @@ pub fn eval_condition(condition: &ConditionKind, eval: &EvalData) -> anyhow::Res
 			.features
 			.contains(&feature.get(&eval.vars)?)),
 		ConditionKind::OS(os) => Ok(check_os_condition(os.get())),
+		ConditionKind::Arch(arch) => Ok(check_arch_condition(arch.get())),
 		ConditionKind::Stability(stability) => Ok(eval.input.params.stability == *stability.get()),
 		ConditionKind::Language(lang) => Ok(eval.input.constants.language == *lang.get()),
 		ConditionKind::Value(left, right) => Ok(left.get(&eval.vars)? == right.get(&eval.vars)?),
@@ -56,6 +57,21 @@ pub const fn check_os_condition(condition: &OSCondition) -> bool {
 		OSCondition::MacOS => cfg!(target_os = "macos"),
 		OSCondition::Other => {
 			!(cfg!(target_os = "windows") || cfg!(target_os = "linux") || cfg!(target_os = "macos"))
+		}
+	}
+}
+
+/// Checks an arch condition to see if it matches the current system architecture
+pub const fn check_arch_condition(condition: &ArchCondition) -> bool {
+	match condition {
+		ArchCondition::X86 => cfg!(target_arch = "x86"),
+		ArchCondition::X86_64 => cfg!(target_arch = "x86_64"),
+		ArchCondition::Arm => cfg!(target_arch = "arm"),
+		ArchCondition::Other => {
+			!(cfg!(target_arch = "x86")
+				|| cfg!(target_arch = "x86_64")
+				|| cfg!(target_arch = "arm")
+				|| cfg!(target_arch = "loongarch"))
 		}
 	}
 }

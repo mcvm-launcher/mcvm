@@ -32,6 +32,8 @@ pub enum FailReason {
 	UnsupportedFeatures,
 	/// The operating system is unsupported
 	UnsupportedOperatingSystem,
+	/// The architecture is unsupported
+	UnsupportedArchitecture,
 }
 
 impl FailReason {
@@ -43,6 +45,7 @@ impl FailReason {
 			"unsupported_plugin_loader" => Some(Self::UnsupportedPluginLoader),
 			"unsupported_features" => Some(Self::UnsupportedFeatures),
 			"unsupported_operating_system" => Some(Self::UnsupportedFeatures),
+			"unsupported_architecture" => Some(Self::UnsupportedArchitecture),
 			_ => None,
 		}
 	}
@@ -60,6 +63,7 @@ impl Display for FailReason {
 				Self::UnsupportedPluginLoader => "Unsupported plugin loader",
 				Self::UnsupportedFeatures => "Unsupported feature set",
 				Self::UnsupportedOperatingSystem => "Unsupported operating system",
+				Self::UnsupportedArchitecture => "Unsupported system architecture",
 			}
 		)
 	}
