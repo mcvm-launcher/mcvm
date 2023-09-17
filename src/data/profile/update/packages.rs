@@ -5,6 +5,7 @@ use mcvm_pkg::PkgRequest;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::pkg::{PackageID, PackageStability};
 
+use crate::data::config::package::PackageConfig;
 use crate::data::id::InstanceID;
 use crate::data::profile::Profile;
 use crate::package::eval::{resolve, EvalConstants, EvalInput, EvalParameters, EvalPermissions};
@@ -17,6 +18,7 @@ use anyhow::{anyhow, Context};
 /// Install packages on a profile. Returns a set of all unique packages
 pub async fn update_profile_packages<'a, O: MCVMOutput>(
 	profile: &Profile,
+	global_packages: &[PackageConfig],
 	constants: &EvalConstants,
 	ctx: &mut ProfileUpdateContext<'a, O>,
 	force: bool,
@@ -25,7 +27,7 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 		MessageContents::StartProcess("Resolving package dependencies".into()),
 		MessageLevel::Important,
 	);
-	let (batched, resolved) = resolve_and_batch(profile, constants, ctx)
+	let (batched, resolved) = resolve_and_batch(profile, global_packages, constants, ctx)
 		.await
 		.context("Failed to resolve dependencies for profile")?;
 
@@ -137,6 +139,7 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 /// It also returns a map of instances to packages so that unused packages can be removed
 async fn resolve_and_batch<'a, O: MCVMOutput>(
 	profile: &Profile,
+	global_packages: &[PackageConfig],
 	constants: &EvalConstants,
 	ctx: &mut ProfileUpdateContext<'a, O>,
 ) -> anyhow::Result<(
@@ -155,8 +158,9 @@ async fn resolve_and_batch<'a, O: MCVMOutput>(
 			perms: EvalPermissions::Standard,
 			stability: PackageStability::Stable,
 		};
+		let instance_pkgs = instance.get_configured_packages(global_packages, &profile.packages);
 		let instance_resolved = resolve(
-			&profile.packages,
+			&instance_pkgs,
 			constants,
 			params,
 			ctx.paths,

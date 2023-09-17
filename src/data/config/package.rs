@@ -1,25 +1,27 @@
 use std::fmt::Display;
 
+use anyhow::{bail, ensure};
+use mcvm_pkg::properties::PackageProperties;
 use mcvm_pkg::PackageContentType;
-use mcvm_shared::pkg::PackageStability;
+use mcvm_shared::pkg::{is_valid_package_id, PackageID, PackageStability};
+use mcvm_shared::util::is_valid_identifier;
 use serde::{Deserialize, Serialize};
 
-use crate::package::{eval::EvalPermissions, PkgProfileConfig};
-use crate::util::merge_options;
+use crate::package::eval::EvalPermissions;
 use mcvm_pkg::{PkgRequest, PkgRequestSource};
 
 /// Different representations for the configuration of a package
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Clone, Debug)]
 #[serde(untagged)]
 pub enum PackageConfig {
 	/// Basic configuration for a repository package with just the package ID
-	Basic(String),
+	Basic(PackageID),
 	/// Full configuration for a package
 	Full(FullPackageConfig),
 }
 
 /// Full configuration for a package
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Clone, Debug)]
 #[serde(untagged)]
 #[serde(rename_all = "snake_case")]
 pub enum FullPackageConfig {
@@ -28,7 +30,7 @@ pub enum FullPackageConfig {
 		/// The type of the package
 		r#type: PackageType,
 		/// The ID of the pcakage
-		id: String,
+		id: PackageID,
 		/// The package's content type
 		#[serde(default)]
 		content_type: PackageContentType,
@@ -50,7 +52,7 @@ pub enum FullPackageConfig {
 	/// Config for a repository package
 	Repository {
 		/// The ID of the pcakage
-		id: String,
+		id: PackageID,
 		#[serde(default)]
 		/// The package's enabled features
 		features: Vec<String>,
@@ -67,7 +69,7 @@ pub enum FullPackageConfig {
 }
 
 /// Trick enum used to make deserialization work in the way we want
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Clone, Debug)]
 #[serde(rename_all = "snake_case")]
 pub enum PackageType {
 	/// Yeah this is kinda stupid
@@ -94,50 +96,115 @@ impl Display for PackageConfig {
 }
 
 impl PackageConfig {
-	/// Convert this package config into a PkgProfileConfig
-	pub fn to_profile_config(
-		&self,
-		profile_stability: PackageStability,
-	) -> anyhow::Result<PkgProfileConfig> {
-		let package = match self {
-			PackageConfig::Basic(id) => PkgProfileConfig {
-				req: PkgRequest::new(id.clone(), PkgRequestSource::UserRequire),
-				features: vec![],
-				use_default_features: true,
-				permissions: EvalPermissions::Standard,
-				stability: profile_stability,
+	/// Get the package ID of the config
+	pub fn get_pkg_id(&self) -> PackageID {
+		match &self {
+			Self::Basic(id) => id.clone(),
+			Self::Full(cfg) => match cfg {
+				FullPackageConfig::Local { id, .. } => id.clone(),
+				FullPackageConfig::Repository { id, .. } => id.clone(),
 			},
-			PackageConfig::Full(FullPackageConfig::Local {
-				r#type: _,
-				id,
-				path: _,
-				content_type: _,
-				features,
-				use_default_features,
-				permissions,
-				stability,
-			}) => PkgProfileConfig {
-				req: PkgRequest::new(id.clone(), PkgRequestSource::UserRequire),
-				features: features.clone(),
-				use_default_features: *use_default_features,
-				permissions: *permissions,
-				stability: merge_options(Some(profile_stability), stability.to_owned()).unwrap(),
-			},
-			PackageConfig::Full(FullPackageConfig::Repository {
-				id,
-				features,
-				use_default_features,
-				permissions,
-				stability,
-			}) => PkgProfileConfig {
-				req: PkgRequest::new(id.clone(), PkgRequestSource::UserRequire),
-				features: features.clone(),
-				use_default_features: *use_default_features,
-				permissions: *permissions,
-				stability: merge_options(Some(profile_stability), stability.to_owned()).unwrap(),
-			},
-		};
+		}
+	}
 
-		Ok(package)
+	/// Get the request of the config
+	pub fn get_request(&self) -> PkgRequest {
+		let id = self.get_pkg_id();
+		PkgRequest::new(id.clone(), PkgRequestSource::UserRequire)
+	}
+
+	/// Get the features of the config
+	pub fn get_features(&self) -> Vec<String> {
+		match &self {
+			Self::Basic(..) => Vec::new(),
+			Self::Full(cfg) => match cfg {
+				FullPackageConfig::Local { features, .. } => features.clone(),
+				FullPackageConfig::Repository { features, .. } => features.clone(),
+			},
+		}
+	}
+
+	/// Get the use_default_features option of the config
+	pub fn get_use_default_features(&self) -> bool {
+		match &self {
+			Self::Basic(..) => use_default_features_default(),
+			Self::Full(cfg) => match cfg {
+				FullPackageConfig::Local {
+					use_default_features,
+					..
+				} => *use_default_features,
+				FullPackageConfig::Repository {
+					use_default_features,
+					..
+				} => *use_default_features,
+			},
+		}
+	}
+
+	/// Get the permissions of the config
+	pub fn get_permissions(&self) -> EvalPermissions {
+		match &self {
+			Self::Basic(..) => EvalPermissions::Standard,
+			Self::Full(cfg) => match cfg {
+				FullPackageConfig::Local { permissions, .. } => *permissions,
+				FullPackageConfig::Repository { permissions, .. } => *permissions,
+			},
+		}
+	}
+
+	/// Get the stability of the config
+	pub fn get_stability(&self, profile_stability: PackageStability) -> PackageStability {
+		match &self {
+			Self::Basic(..) => profile_stability,
+			Self::Full(cfg) => match cfg {
+				FullPackageConfig::Local { stability, .. } => {
+					stability.unwrap_or(profile_stability)
+				}
+				FullPackageConfig::Repository { stability, .. } => {
+					stability.unwrap_or(profile_stability)
+				}
+			},
+		}
+	}
+
+	/// Calculate the features of the config
+	pub fn calculate_features(
+		&self,
+		properties: &PackageProperties,
+	) -> anyhow::Result<Vec<String>> {
+		let allowed_features = properties.features.clone().unwrap_or_default();
+		let default_features = properties.default_features.clone().unwrap_or_default();
+
+		let features = self.get_features();
+		for feature in &features {
+			ensure!(
+				allowed_features.contains(feature),
+				"Configured feature '{feature}' does not exist"
+			);
+		}
+
+		let mut out = Vec::new();
+		if self.get_use_default_features() {
+			out.extend(default_features);
+		}
+		out.extend(features);
+
+		Ok(out)
+	}
+
+	/// Validate this config
+	pub fn validate(&self) -> anyhow::Result<()> {
+		let id = self.get_pkg_id();
+		if !is_valid_package_id(&id) {
+			bail!("Invalid package ID '{id}'");
+		}
+
+		for feature in self.get_features() {
+			if !is_valid_identifier(&feature) {
+				bail!("Invalid string '{feature}'");
+			}
+		}
+
+		Ok(())
 	}
 }

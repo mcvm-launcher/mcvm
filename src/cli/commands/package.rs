@@ -69,15 +69,21 @@ async fn list(data: &mut CmdData, raw: bool, profile: Option<String>) -> anyhow:
 		let profile_id = ProfileID::from(profile_id);
 		if let Some(profile) = config.profiles.get(&profile_id) {
 			if raw {
-				for pkg in profile.packages.iter().sorted_by_key(|x| &x.req.id) {
-					println!("{}", pkg.req);
+				for pkg in profile
+					.packages
+					.iter_global()
+					.sorted_by_key(|x| x.get_pkg_id())
+				{
+					println!("{}", pkg);
 				}
-			} else if profile.packages.is_empty() {
-				cprintln!("<s>Profile <b>{}</b> has no packages installed", profile_id);
 			} else {
 				cprintln!("<s>Packages in profile <b>{}</b>:", profile_id);
-				for pkg in profile.packages.iter().sorted_by_key(|x| &x.req.id) {
-					cprintln!("{}<b!>{}</>", HYPHEN_POINT, pkg.req);
+				for pkg in profile
+					.packages
+					.iter_global()
+					.sorted_by_key(|x| x.get_pkg_id())
+				{
+					cprintln!("{}<b!>{}</>", HYPHEN_POINT, pkg);
 				}
 			}
 		} else {
@@ -86,13 +92,11 @@ async fn list(data: &mut CmdData, raw: bool, profile: Option<String>) -> anyhow:
 	} else {
 		let mut found_pkgs: HashMap<PackageID, Vec<ProfileID>> = HashMap::new();
 		for (id, profile) in config.profiles.iter() {
-			if !profile.packages.is_empty() {
-				for pkg in profile.packages.iter() {
-					found_pkgs
-						.entry(pkg.req.id.clone())
-						.or_insert(vec![])
-						.push(id.clone());
-				}
+			for pkg in profile.packages.iter_global() {
+				found_pkgs
+					.entry(pkg.get_pkg_id().clone())
+					.or_insert(vec![])
+					.push(id.clone());
 			}
 		}
 		if raw {

@@ -23,6 +23,8 @@ When you first run a command that reads from the config, a default configuration
 }
 ```
 
+- `packages`: Packages that will be applied to every profile. Can be overridden by profiles.
+
 ## Users
 
 Users are defined in the `users` object in the base of the config. User structure looks like this:
@@ -56,7 +58,11 @@ Profiles are listed in the same id-value format as users under the `profiles` ob
 	"client_type": client_type,
 	"server_type": client_type,
 	"instances": { .. },
-	"packages": [ .. ],
+	"packages": [ .. ] | {
+		"global": [ .. ],
+		"client": [ .. ],
+		"server": [ .. ]
+	},
 	"package_stability": "stable" | "latest"
 }
 ```
@@ -66,7 +72,7 @@ Profiles are listed in the same id-value format as users under the `profiles` ob
 - `client_type` (Optional): The modification type for the client. Defaults to using the `modloader` setting.
 - `server_type` (Optional): The modification type for the server. Defaults to using the `modloader` setting.
 - `instances`: The list of instances attached to this profile.
-- `packages` (Optional): The list of packages installed for this profile.
+- `packages` (Optional): Can either be a list of packages to apply to every instance in the profile, or an object of multiple lists with a different set of packages for each type of instance. The `global` key will apply to every instance. These override packages installed globally, but can be overridden by instances.
 - `stability` (Optional): Global stability setting for all packages in this profile. Defaults to `"stable"`.
 
 ## Instances
@@ -120,6 +126,7 @@ or
 		"max_count": integer,
 		"storage_type": "folder" | "archive
 	},
+	"packages": [ .. ],
 	"preset": string
 }
 ```
@@ -143,6 +150,7 @@ The first form just has the type of the instance. All fields are optional unless
 - `snapshots.paths`: The relative paths from the instance directory to store when making snapshots. By default, no files will be backed up.
 - `snapshots.max_count`: The maximum number of snapshots to keep before automatically deleting the oldest ones. By default, there is no limit.
 - `snapshots.storage_type`: What format snapshots should be stored in. Defaults to `"archive"`.
+- `packages`: Packages to install on this instance specifically. Overrides packages installed globally and on the profile.
 - `preset`: A preset from the `instance_presets` field to base this instance on.
 
 ## Packages

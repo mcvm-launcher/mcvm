@@ -16,6 +16,8 @@ use crate::io::options::server::ServerOptions;
 use crate::io::snapshot;
 use crate::util::merge_options;
 
+use super::package::PackageConfig;
+
 /// Different representations of configuration for an instance
 #[derive(Deserialize, Serialize, Clone)]
 #[serde(untagged)]
@@ -40,6 +42,7 @@ impl InstanceConfig {
 					preset: None,
 					datapack_folder: None,
 					snapshots: None,
+					packages: Vec::new(),
 				},
 				Side::Server => FullInstanceConfig::Server {
 					launch: LaunchConfig::default(),
@@ -47,6 +50,7 @@ impl InstanceConfig {
 					preset: None,
 					datapack_folder: None,
 					snapshots: None,
+					packages: Vec::new(),
 				},
 			},
 		}
@@ -94,6 +98,9 @@ pub enum FullInstanceConfig {
 		/// Options for snapshot config
 		#[serde(default)]
 		snapshots: Option<snapshot::Config>,
+		/// Packages for this instance
+		#[serde(default)]
+		packages: Vec<PackageConfig>,
 	},
 	/// Config for the server
 	Server {
@@ -112,6 +119,9 @@ pub enum FullInstanceConfig {
 		/// Options for snapshot config
 		#[serde(default)]
 		snapshots: Option<snapshot::Config>,
+		/// Packages for this instance
+		#[serde(default)]
+		packages: Vec<PackageConfig>,
 	},
 }
 
@@ -183,6 +193,12 @@ fn default_java() -> String {
 
 fn default_flags_preset() -> String {
 	"none".into()
+}
+
+/// Merges two lists of instance packages
+fn merge_package_lists(mut a: Vec<PackageConfig>, b: Vec<PackageConfig>) -> Vec<PackageConfig> {
+	a.extend(b);
+	a
 }
 
 /// Options for the Minecraft QuickPlay feature
@@ -359,6 +375,7 @@ pub fn merge_instance_configs(
 				mut window,
 				datapack_folder,
 				snapshots,
+				packages,
 				..
 			},
 			FullInstanceConfig::Client {
@@ -367,6 +384,7 @@ pub fn merge_instance_configs(
 				window: window2,
 				datapack_folder: datapack_folder2,
 				snapshots: snapshots2,
+				packages: packages2,
 				..
 			},
 		) => Ok::<FullInstanceConfig, anyhow::Error>(FullInstanceConfig::Client {
@@ -376,6 +394,7 @@ pub fn merge_instance_configs(
 			preset: None,
 			datapack_folder: merge_options(datapack_folder, datapack_folder2),
 			snapshots: merge_options(snapshots, snapshots2),
+			packages: merge_package_lists(packages, packages2),
 		}),
 		(
 			FullInstanceConfig::Server {
@@ -383,6 +402,7 @@ pub fn merge_instance_configs(
 				options,
 				datapack_folder,
 				snapshots,
+				packages,
 				..
 			},
 			FullInstanceConfig::Server {
@@ -390,6 +410,7 @@ pub fn merge_instance_configs(
 				options: options2,
 				datapack_folder: datapack_folder2,
 				snapshots: snapshots2,
+				packages: packages2,
 				..
 			},
 		) => Ok::<FullInstanceConfig, anyhow::Error>(FullInstanceConfig::Server {
@@ -398,6 +419,7 @@ pub fn merge_instance_configs(
 			preset: None,
 			datapack_folder: merge_options(datapack_folder, datapack_folder2),
 			snapshots: merge_options(snapshots, snapshots2),
+			packages: merge_package_lists(packages, packages2),
 		}),
 		_ => bail!("Instance types do not match"),
 	}?;
@@ -430,7 +452,7 @@ pub fn read_instance_config(
 	} else {
 		config.clone()
 	};
-	let (kind, launch, datapack_folder, snapshot_config) = match config {
+	let (kind, launch, datapack_folder, snapshot_config, packages) = match config {
 		InstanceConfig::Simple(side) => (
 			match side {
 				Side::Client => InstKind::Client {
@@ -442,6 +464,7 @@ pub fn read_instance_config(
 			LaunchConfig::default(),
 			None,
 			None,
+			Vec::new(),
 		),
 		InstanceConfig::Full(config) => match config {
 			FullInstanceConfig::Client {
@@ -450,24 +473,28 @@ pub fn read_instance_config(
 				window,
 				datapack_folder,
 				snapshots,
+				packages,
 				..
 			} => (
 				InstKind::Client { options, window },
 				launch,
 				datapack_folder,
 				snapshots,
+				packages,
 			),
 			FullInstanceConfig::Server {
 				launch,
 				options,
 				datapack_folder,
 				snapshots,
+				packages,
 				..
 			} => (
 				InstKind::Server { options },
 				launch,
 				datapack_folder,
 				snapshots,
+				packages,
 			),
 		},
 	};
@@ -479,6 +506,7 @@ pub fn read_instance_config(
 		launch.to_options()?,
 		datapack_folder,
 		snapshot_config.unwrap_or_default(),
+		packages,
 	);
 
 	Ok(instance)
@@ -488,9 +516,11 @@ pub fn read_instance_config(
 mod tests {
 	use super::*;
 
+	use crate::data::config::profile::ProfilePackageConfiguration;
 	use crate::data::{config::modifications::GameModifications, id::ProfileID};
 	use crate::util::versions::MinecraftVersion;
 	use mcvm_shared::modifications::{ClientType, Modloader, ServerType};
+	use mcvm_shared::pkg::PackageStability;
 
 	#[test]
 	fn test_instance_deser() {
@@ -512,6 +542,8 @@ mod tests {
 			ProfileID::from("foo"),
 			MinecraftVersion::Latest,
 			GameModifications::new(Modloader::Vanilla, ClientType::Vanilla, ServerType::Vanilla),
+			ProfilePackageConfiguration::default(),
+			PackageStability::Latest,
 		);
 
 		let instance = read_instance_config(
@@ -543,6 +575,7 @@ mod tests {
 					preset: None,
 					datapack_folder: None,
 					snapshots: None,
+					packages: Vec::new(),
 				}),
 			);
 			presets
@@ -552,6 +585,8 @@ mod tests {
 			ProfileID::from("foo"),
 			MinecraftVersion::Latest,
 			GameModifications::new(Modloader::Vanilla, ClientType::Vanilla, ServerType::Vanilla),
+			ProfilePackageConfiguration::default(),
+			PackageStability::Latest,
 		);
 
 		let config = InstanceConfig::Full(FullInstanceConfig::Client {
@@ -561,6 +596,7 @@ mod tests {
 			preset: Some("hello".into()),
 			datapack_folder: None,
 			snapshots: None,
+			packages: Vec::new(),
 		});
 		let instance = read_instance_config(InstanceID::from("test"), &config, &profile, &presets)
 			.expect("Failed to read instance config");
@@ -585,6 +621,7 @@ mod tests {
 			preset: Some("hello".into()),
 			datapack_folder: None,
 			snapshots: None,
+			packages: Vec::new(),
 		});
 		read_instance_config(InstanceID::from("test"), &config, &profile, &presets)
 			.expect_err("Instance kinds should be incompatible");

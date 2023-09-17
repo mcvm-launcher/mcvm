@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+use mcvm_shared::Side;
 use serde::{Deserialize, Serialize};
 
 use crate::data::id::{InstanceID, ProfileID};
@@ -29,10 +30,100 @@ pub struct ProfileConfig {
 	pub instances: HashMap<InstanceID, InstanceConfig>,
 	/// Packages on this profile
 	#[serde(default)]
-	pub packages: Vec<PackageConfig>,
+	pub packages: ProfilePackageConfiguration,
 	/// Default stability setting of packages on this profile
 	#[serde(default)]
 	pub package_stability: PackageStability,
+}
+
+/// Different representations of package configuration on a profile
+#[derive(Deserialize, Serialize, Debug, Clone)]
+#[serde(untagged)]
+pub enum ProfilePackageConfiguration {
+	/// Is just a list of packages for every instance
+	Simple(Vec<PackageConfig>),
+	/// Full configuration
+	Full {
+		/// Packages to apply to every instance
+		#[serde(default)]
+		global: Vec<PackageConfig>,
+		/// Packages to apply to only clients
+		#[serde(default)]
+		client: Vec<PackageConfig>,
+		/// Packages to apply to only servers
+		#[serde(default)]
+		server: Vec<PackageConfig>,
+	},
+}
+
+impl Default for ProfilePackageConfiguration {
+	fn default() -> Self {
+		Self::Simple(Vec::new())
+	}
+}
+
+impl ProfilePackageConfiguration {
+	/// Validate all the configured packages
+	pub fn validate(&self) -> anyhow::Result<()> {
+		match &self {
+			Self::Simple(global) => {
+				for pkg in global {
+					pkg.validate()?;
+				}
+			}
+			Self::Full {
+				global,
+				client,
+				server,
+			} => {
+				for pkg in global.iter().chain(client.iter()).chain(server.iter()) {
+					pkg.validate()?;
+				}
+			}
+		}
+
+		Ok(())
+	}
+
+	/// Iterate over all of the packages
+	pub fn iter<'a>(&'a self) -> Box<dyn Iterator<Item = &'a PackageConfig> + 'a> {
+		match &self {
+			Self::Simple(global) => Box::new(global.iter()),
+			Self::Full {
+				global,
+				client,
+				server,
+			} => Box::new(global.iter().chain(client.iter()).chain(server.iter())),
+		}
+	}
+
+	/// Iterate over the global package list
+	pub fn iter_global(&self) -> impl Iterator<Item = &PackageConfig> {
+		match &self {
+			Self::Simple(global) => global,
+			Self::Full { global, .. } => global,
+		}
+		.iter()
+	}
+
+	/// Iterate over the package list for a specific side
+	pub fn iter_side(&self, side: Side) -> impl Iterator<Item = &PackageConfig> {
+		match &self {
+			Self::Simple(..) => [].iter(),
+			Self::Full { client, server, .. } => match side {
+				Side::Client => client.iter(),
+				Side::Server => server.iter(),
+			},
+		}
+	}
+
+	/// Adds a package to the global list
+	pub fn add_global_package(&mut self, pkg: PackageConfig) {
+		match self {
+			Self::Simple(global) => global.push(pkg),
+			Self::Full { global, .. } => global.push(pkg),
+		}
+	}
 }
 
 impl ProfileConfig {
@@ -42,6 +133,8 @@ impl ProfileConfig {
 			profile_id,
 			self.version.to_mc_version(),
 			GameModifications::new(self.modloader, self.client_type, self.server_type),
+			self.packages.clone(),
+			self.package_stability,
 		)
 	}
 }

@@ -3,17 +3,18 @@ pub mod update;
 
 use anyhow::Context;
 use mcvm_shared::output::MCVMOutput;
+use mcvm_shared::pkg::PackageStability;
 use reqwest::Client;
 
 use crate::data::instance::Instance;
 use crate::io::files::paths::Paths;
 use crate::io::lock::Lockfile;
-use crate::package::PkgProfileConfig;
 use crate::util::versions::MinecraftVersion;
 
 use self::update::manager::UpdateManager;
 
 use super::config::modifications::GameModifications;
+use super::config::profile::ProfilePackageConfiguration;
 use super::id::{InstanceID, ProfileID};
 use super::user::UserManager;
 
@@ -30,20 +31,29 @@ pub struct Profile {
 	/// The instances that are contained in this profile
 	pub instances: Vec<InstanceID>,
 	/// The packages that are selected for this profile
-	pub packages: Vec<PkgProfileConfig>,
+	pub packages: ProfilePackageConfiguration,
 	/// Modifications applied to instances in this profile
 	pub modifications: GameModifications,
+	/// The default stability for packages in this profile
+	pub default_stability: PackageStability,
 }
 
 impl Profile {
 	/// Create a new profile
-	pub fn new(id: ProfileID, version: MinecraftVersion, modifications: GameModifications) -> Self {
+	pub fn new(
+		id: ProfileID,
+		version: MinecraftVersion,
+		modifications: GameModifications,
+		packages: ProfilePackageConfiguration,
+		default_stability: PackageStability,
+	) -> Self {
 		Profile {
 			id,
 			version,
 			instances: Vec::new(),
-			packages: Vec::new(),
+			packages,
 			modifications,
+			default_stability,
 		}
 	}
 

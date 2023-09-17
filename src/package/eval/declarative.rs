@@ -274,6 +274,7 @@ mod tests {
 				ServerType::Fabric,
 			),
 			language: Language::AmericanEnglish,
+			profile_stability: PackageStability::Latest,
 		};
 		let input = EvalInput {
 			constants: &constants,

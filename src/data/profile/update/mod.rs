@@ -115,28 +115,27 @@ pub async fn update_profiles(
 				.await
 				.context("Failed to create profile instances")?;
 
-			if !profile.packages.is_empty() {
-				ctx.output.display(
-					MessageContents::Header("Updating packages".into()),
-					MessageLevel::Important,
-				);
-			}
-
-			// Make sure all packages in the profile are in the registry first
-			for pkg in &profile.packages {
-				ctx.packages
-					.ensure_package(&pkg.req, paths, ctx.client)
-					.await?;
-			}
+			ctx.output.display(
+				MessageContents::Header("Updating packages".into()),
+				MessageLevel::Important,
+			);
 
 			let constants = EvalConstants {
 				version: mc_version.to_string(),
 				modifications: profile.modifications.clone(),
 				version_list: version_list.clone(),
 				language: config.prefs.language,
+				profile_stability: profile.default_stability,
 			};
 
-			let packages = update_profile_packages(profile, &constants, &mut ctx, force).await?;
+			let packages = update_profile_packages(
+				profile,
+				&config.global_packages,
+				&constants,
+				&mut ctx,
+				force,
+			)
+			.await?;
 
 			ctx.output.display(
 				MessageContents::Success("All packages installed".into()),

@@ -18,7 +18,6 @@ use self::profile::ProfileConfig;
 use self::user::UserConfig;
 use anyhow::{bail, ensure, Context};
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
-use mcvm_shared::pkg::is_valid_package_id;
 use mcvm_shared::util::is_valid_identifier;
 use preferences::ConfigPreferences;
 use serde::{Deserialize, Serialize};
@@ -48,6 +47,8 @@ pub struct Config {
 	pub profiles: HashMap<ProfileID, Box<Profile>>,
 	/// The registry of packages. Will include packages that are configured when created this way
 	pub packages: PkgRegistry,
+	/// Globally configured packages to include in every profile
+	pub global_packages: Vec<PackageConfig>,
 	/// Global user preferences
 	pub prefs: ConfigPreferences,
 }
@@ -60,6 +61,7 @@ pub struct ConfigDeser {
 	default_user: Option<String>,
 	profiles: HashMap<ProfileID, ProfileConfig>,
 	instance_presets: HashMap<String, InstanceConfig>,
+	packages: Vec<PackageConfig>,
 	preferences: PrefDeser,
 }
 
@@ -190,27 +192,10 @@ impl Config {
 				instances.insert(instance_id, instance);
 			}
 
-			for package_config in profile_config.packages {
-				let config = package_config
-					.to_profile_config(profile_config.package_stability)
-					.with_context(|| format!("Failed to configure package '{package_config}'"))?;
+			profile_config.packages.validate()?;
 
-				if !is_valid_package_id(&config.req.id) {
-					bail!("Invalid package ID '{package_config}'");
-				}
-
-				for cfg in profile.packages.iter() {
-					if cfg.req == config.req {
-						bail!("Duplicate package '{package_config}' in profile '{profile_id}'");
-					}
-				}
-
-				for feature in &config.features {
-					if !is_valid_identifier(feature) {
-						bail!("Invalid string '{feature}'");
-					}
-				}
-
+			// Insert local packages
+			for package_config in profile_config.packages.iter() {
 				if let PackageConfig::Full(FullPackageConfig::Local {
 					id: _,
 					path,
@@ -220,13 +205,11 @@ impl Config {
 				{
 					let path = shellexpand::tilde(&path);
 					packages.insert_local(
-						&config.req,
+						&package_config.get_request(),
 						&PathBuf::from(path.to_string()),
-						content_type,
+						*content_type,
 					);
 				}
-
-				profile.packages.push(config);
 			}
 
 			profiles.insert(profile_id.clone(), Box::new(profile));
@@ -237,6 +220,7 @@ impl Config {
 			instances,
 			profiles,
 			packages,
+			global_packages: config.packages,
 			prefs,
 		})
 	}

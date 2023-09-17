@@ -34,12 +34,11 @@ use serde::{Deserialize, Serialize};
 use self::declarative::eval_declarative_package;
 use self::script::eval_script_package;
 
-use super::calculate_features;
 use super::reg::PkgRegistry;
 use super::Package;
-use super::PkgProfileConfig;
 use crate::data::addon::{self, AddonLocation, AddonRequest};
 use crate::data::config::modifications::GameModifications;
+use crate::data::config::package::PackageConfig;
 use crate::io::files::paths::Paths;
 use crate::util::hash::{
 	get_hash_str_as_hex, HASH_SHA256_RESULT_LENGTH, HASH_SHA512_RESULT_LENGTH,
@@ -123,6 +122,8 @@ pub struct EvalConstants {
 	pub version_list: Vec<String>,
 	/// The user's configured language
 	pub language: Language,
+	/// The configured default stability for the profile
+	pub profile_stability: PackageStability,
 }
 
 /// Constants for the evaluation that may be different for each package
@@ -342,15 +343,15 @@ struct EvaluatorCommonInput<'a> {
 	client: &'a Client,
 }
 
-/// Newtype for PkgProfileConfig
+/// Newtype for PkgInstanceConfig
 #[derive(Clone)]
-struct PackageConfig(PkgProfileConfig);
+struct EvalPackageConfig(PackageConfig, PkgRequest);
 
-impl ConfiguredPackage for PackageConfig {
+impl ConfiguredPackage for EvalPackageConfig {
 	type EvalInput<'a> = EvalInput<'a>;
 
 	fn get_package(&self) -> &PkgRequest {
-		&self.0.req
+		&self.1
 	}
 
 	fn override_configured_package_input(
@@ -358,12 +359,14 @@ impl ConfiguredPackage for PackageConfig {
 		properties: &PackageProperties,
 		input: &mut Self::EvalInput<'_>,
 	) -> anyhow::Result<()> {
-		let features =
-			calculate_features(&self.0, properties).context("Failed to calculate features")?;
+		let features = self
+			.0
+			.calculate_features(properties)
+			.context("Failed to calculate features")?;
 
 		input.params.features = features;
-		input.params.perms = self.0.permissions;
-		input.params.stability = self.0.stability;
+		input.params.perms = self.0.get_permissions();
+		input.params.stability = self.0.get_stability(input.constants.profile_stability);
 
 		Ok(())
 	}
@@ -406,7 +409,7 @@ impl EvalRelationsResultTrait for EvalRelationsResult {
 #[async_trait]
 impl<'a> PackageEvaluatorTrait<'a> for PackageEvaluator<'a> {
 	type CommonInput = EvaluatorCommonInput<'a>;
-	type ConfiguredPackage = PackageConfig;
+	type ConfiguredPackage = EvalPackageConfig;
 	type EvalInput<'b> = EvalInput<'b>;
 	type EvalRelationsResult<'b> = EvalRelationsResult;
 
@@ -455,7 +458,7 @@ impl<'a> PackageEvaluatorTrait<'a> for PackageEvaluator<'a> {
 
 /// Resolve package dependencies
 pub async fn resolve(
-	packages: &[PkgProfileConfig],
+	packages: &[&PackageConfig],
 	constants: &EvalConstants,
 	default_params: EvalParameters,
 	paths: &Paths,
@@ -474,7 +477,7 @@ pub async fn resolve(
 
 	let packages = packages
 		.iter()
-		.map(|x| PackageConfig(x.clone()))
+		.map(|x| EvalPackageConfig((*x).clone(), x.get_request()))
 		.collect::<Vec<_>>();
 
 	let result = mcvm_pkg::resolve::resolve(&packages, evaluator, input, &common_input).await?;

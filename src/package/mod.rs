@@ -17,13 +17,11 @@ use std::fs;
 use std::path::PathBuf;
 
 use self::core::get_core_package;
-use self::eval::EvalPermissions;
-use anyhow::{anyhow, bail, ensure, Context};
+use anyhow::{anyhow, bail, Context};
 use mcvm_parse::parse::{lex_and_parse, Parsed};
 use mcvm_pkg::metadata::{eval_metadata, PackageMetadata};
 use mcvm_pkg::properties::{eval_properties, PackageProperties};
-use mcvm_pkg::PkgRequest;
-use mcvm_shared::pkg::{PackageID, PackageStability};
+use mcvm_shared::pkg::PackageID;
 use reqwest::Client;
 
 const PKG_EXTENSION: &str = ".pkg.txt";
@@ -248,45 +246,6 @@ impl Package {
 			}
 		}
 	}
-}
-
-/// Evaluated configuration for a package, stored in a profile
-#[derive(Debug, Clone)]
-pub struct PkgProfileConfig {
-	/// The ID of the package
-	pub req: PkgRequest,
-	/// The list of features to apply to the package
-	pub features: Vec<String>,
-	/// Whether or not to use the package's default features
-	pub use_default_features: bool,
-	/// The permissions of the package
-	pub permissions: EvalPermissions,
-	/// The stability setting for the package
-	pub stability: PackageStability,
-}
-
-/// Collect the final set of features for a package
-pub fn calculate_features(
-	config: &PkgProfileConfig,
-	properties: &PackageProperties,
-) -> anyhow::Result<Vec<String>> {
-	let allowed_features = properties.features.clone().unwrap_or_default();
-	let default_features = properties.default_features.clone().unwrap_or_default();
-
-	for feature in &config.features {
-		ensure!(
-			allowed_features.contains(feature),
-			"Configured feature '{feature}' does not exist"
-		);
-	}
-
-	let mut out = Vec::new();
-	if config.use_default_features {
-		out.extend(default_features);
-	}
-	out.extend(config.features.clone());
-
-	Ok(out)
 }
 
 #[cfg(test)]

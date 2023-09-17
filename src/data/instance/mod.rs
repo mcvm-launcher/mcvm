@@ -28,10 +28,13 @@ use self::launch::LaunchOptions;
 use super::addon;
 use super::config::instance::ClientWindowConfig;
 use super::config::modifications::GameModifications;
+use super::config::package::PackageConfig;
+use super::config::profile::ProfilePackageConfiguration;
 use super::id::InstanceID;
 use super::profile::update::manager::UpdateManager;
 use mcvm_shared::addon::{Addon, AddonKind};
 
+use std::collections::HashMap;
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::rc::Rc;
@@ -45,13 +48,14 @@ pub struct Instance {
 	pub id: InstanceID,
 	modifications: GameModifications,
 	launch: LaunchOptions,
+	datapack_folder: Option<String>,
+	snapshot_config: snapshot::Config,
+	packages: Vec<PackageConfig>,
 	client_meta: Later<Rc<ClientMeta>>,
 	java: Later<JavaInstallation>,
 	classpath: Option<Classpath>,
 	jar_path: Later<PathBuf>,
 	main_class: Option<String>,
-	datapack_folder: Option<String>,
-	snapshot_config: snapshot::Config,
 }
 
 /// Different kinds of instances and their associated data
@@ -90,19 +94,21 @@ impl Instance {
 		launch: LaunchOptions,
 		datapack_folder: Option<String>,
 		snapshot_config: snapshot::Config,
+		packages: Vec<PackageConfig>,
 	) -> Self {
 		Self {
 			kind,
 			id,
 			modifications,
 			launch,
+			datapack_folder,
+			snapshot_config,
+			packages,
 			client_meta: Later::new(),
 			java: Later::new(),
 			classpath: None,
 			jar_path: Later::new(),
 			main_class: None,
-			datapack_folder,
-			snapshot_config,
 		}
 	}
 
@@ -368,6 +374,36 @@ impl Instance {
 		}
 
 		Ok(eval)
+	}
+
+	/// Collects all the configured packages for this instance
+	pub fn get_configured_packages<'a>(
+		&'a self,
+		global: &'a [PackageConfig],
+		profile: &'a ProfilePackageConfiguration,
+	) -> Vec<&'a PackageConfig> {
+		// We use a map so that we can override packages from more general sources
+		// with those from more specific ones
+		let mut map = HashMap::new();
+		for pkg in global {
+			map.insert(pkg.get_pkg_id(), pkg);
+		}
+		for pkg in profile.iter_global() {
+			map.insert(pkg.get_pkg_id(), pkg);
+		}
+		for pkg in profile.iter_side(self.kind.to_side()) {
+			map.insert(pkg.get_pkg_id(), pkg);
+		}
+		for pkg in &self.packages {
+			map.insert(pkg.get_pkg_id(), pkg);
+		}
+
+		let mut out = Vec::new();
+		for pkg in map.values() {
+			out.push(*pkg);
+		}
+
+		out
 	}
 
 	/// Starts snapshot interactions by generating the path and opening the index

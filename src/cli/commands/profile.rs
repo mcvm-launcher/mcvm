@@ -83,9 +83,9 @@ async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
 			}
 		}
 		cprintln!("   <s>Packages:");
-		for pkg in profile.packages.iter() {
+		for pkg in profile.packages.iter_global() {
 			cprint!("   {}", HYPHEN_POINT);
-			cprint!("<b!>{}<g!>", pkg.req.id);
+			cprint!("<b!>{}<g!>", pkg);
 			cprintln!();
 		}
 	} else {

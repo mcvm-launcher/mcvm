@@ -103,7 +103,7 @@ pub fn apply_modifications(
 					.profiles
 					.get_mut(&id)
 					.ok_or(anyhow!("Unknown profile '{id}'"))?;
-				profile.packages.push(package);
+				profile.packages.add_global_package(package);
 			}
 		};
 	}
@@ -128,19 +128,11 @@ pub fn apply_modifications_and_write(
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use crate::data::config::{preferences::PrefDeser, user::UserVariant};
-
-	use std::collections::HashMap;
+	use crate::data::config::user::UserVariant;
 
 	#[test]
 	fn test_user_add_modification() {
-		let mut config = ConfigDeser {
-			users: HashMap::new(),
-			default_user: None,
-			profiles: HashMap::new(),
-			instance_presets: HashMap::new(),
-			preferences: PrefDeser::default(),
-		};
+		let mut config = ConfigDeser::default();
 
 		let user_config = UserConfig {
 			name: "Bob".into(),
