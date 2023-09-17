@@ -129,7 +129,10 @@ pub async fn get(
 
 		o.display(
 			MessageContents::Associated(
-				format!("{num_done}/{count}"),
+				Box::new(MessageContents::Progress {
+					current: num_done,
+					total: count as u32,
+				}),
 				Box::new(MessageContents::Simple(name)),
 			),
 			MessageLevel::Important,

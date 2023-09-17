@@ -228,7 +228,7 @@ fn format_package_update_message(
 		MessageContents::Package(
 			pkg.to_owned(),
 			Box::new(MessageContents::Associated(
-				instance.to_string(),
+				Box::new(MessageContents::Simple(instance.to_string())),
 				Box::new(message),
 			)),
 		)

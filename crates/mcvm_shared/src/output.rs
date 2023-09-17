@@ -92,7 +92,7 @@ pub enum MessageContents {
 	/// An start of some long running process. Usually ends with ...
 	StartProcess(String),
 	/// A message with an associated value displayed along with it.
-	Associated(String, Box<MessageContents>),
+	Associated(Box<MessageContents>, Box<MessageContents>),
 	/// Message with an associated package
 	Package(PkgRequest, Box<MessageContents>),
 	/// A hyperlink
@@ -101,6 +101,13 @@ pub enum MessageContents {
 	ListItem(Box<MessageContents>),
 	/// Text that can be copied, such as a verification code
 	Copyable(String),
+	/// A progress indicator
+	Progress {
+		/// The current amount completed
+		current: u32,
+		/// The total amount that needs to be completed
+		total: u32,
+	},
 }
 
 impl MessageContents {
@@ -120,12 +127,13 @@ impl MessageContents {
 			MessageContents::Header(text) => text.to_uppercase(),
 			MessageContents::StartProcess(text) => format!("{text}..."),
 			MessageContents::Associated(item, message) => {
-				format!("[{item}] {}", message.default_format())
+				format!("[{}] {}", item.default_format(), message.default_format())
 			}
 			MessageContents::Package(pkg, message) => {
 				format!("[{pkg}] {}", message.default_format())
 			}
 			MessageContents::ListItem(item) => format!(" - {}", item.default_format()),
+			MessageContents::Progress { current, total } => format!("{current}/{total}"),
 		}
 	}
 }

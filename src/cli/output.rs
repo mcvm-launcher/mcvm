@@ -119,7 +119,11 @@ impl TerminalOutput {
 			MessageContents::Header(text) => cformat!("<s>{}", text),
 			MessageContents::StartProcess(text) => cformat!("{text}..."),
 			MessageContents::Associated(item, message) => {
-				cformat!("(<b!>{}</b!>) {}", item, Self::format_message(*message))
+				cformat!(
+					"({}) {}",
+					Self::format_message(*item),
+					Self::format_message(*message)
+				)
 			}
 			MessageContents::Package(pkg, message) => {
 				let pkg_disp = disp_pkg_request_with_colors(pkg);
@@ -130,6 +134,18 @@ impl TerminalOutput {
 				HYPHEN_POINT.to_string() + &Self::format_message(*item)
 			}
 			MessageContents::Copyable(text) => cformat!("<u>{}", text),
+			MessageContents::Progress { current, total } => {
+				let (full, empty) = progress_bar_parts(
+					current,
+					total,
+					ProgressBarSettings {
+						len: 8,
+						full: "=",
+						empty: "-",
+					},
+				);
+				cformat!("[<b>{}</>{}]", full, empty)
+			}
 			contents => contents.default_format(),
 		}
 	}
@@ -148,7 +164,11 @@ impl TerminalOutput {
 			MessageContents::Header(text) => format!("### {} ###", text),
 			MessageContents::StartProcess(text) => format!("{text}..."),
 			MessageContents::Associated(item, message) => {
-				format!("({}) {}", item, Self::format_message_log(*message))
+				format!(
+					"({}) {}",
+					Self::format_message_log(*item),
+					Self::format_message_log(*message)
+				)
 			}
 			MessageContents::Package(pkg, message) => {
 				let pkg_disp = pkg.debug_sources(String::new());
@@ -157,6 +177,7 @@ impl TerminalOutput {
 			MessageContents::Hyperlink(url) => url,
 			MessageContents::ListItem(item) => " - ".to_string() + &Self::format_message_log(*item),
 			MessageContents::Copyable(text) => text,
+			MessageContents::Progress { current, total } => format!("{current}/{total}"),
 			contents => contents.default_format(),
 		}
 	}
@@ -195,4 +216,24 @@ fn get_log_file_path(paths: &Paths) -> anyhow::Result<PathBuf> {
 /// Get the path to the latest log file
 fn get_latest_log_file_path(paths: &Paths) -> PathBuf {
 	paths.logs.join("latest.txt")
+}
+
+/// Settings for progress bar formatting
+struct ProgressBarSettings {
+	/// The length of the bar
+	len: u8,
+	/// The string to use for full
+	full: &'static str,
+	/// The string to use for empty
+	empty: &'static str,
+}
+
+/// Creates a nice looking progress bar and returns the full and empty parts
+fn progress_bar_parts(current: u32, total: u32, settings: ProgressBarSettings) -> (String, String) {
+	let progress = (current as f32) / (total as f32);
+	let full_count = (progress * (settings.len as f32)) as u8;
+	let empty_count = settings.len - full_count;
+	let full_bar = settings.full.repeat(full_count.into());
+	let empty_bar = settings.empty.repeat(empty_count.into());
+	(full_bar, empty_bar)
 }

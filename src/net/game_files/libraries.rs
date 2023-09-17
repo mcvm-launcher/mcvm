@@ -94,7 +94,10 @@ pub async fn get(
 	for (name, library, path) in libs_to_download {
 		o.display(
 			MessageContents::Associated(
-				format!("{num_done}/{count}"),
+				Box::new(MessageContents::Progress {
+					current: num_done,
+					total: count as u32,
+				}),
 				Box::new(MessageContents::StartProcess(format!(
 					"Downloading library {name}"
 				))),
@@ -125,9 +128,7 @@ pub async fn get(
 	while let Some(lib) = join.join_next().await {
 		lib??;
 	}
-	o.end_process();
-
-	o.start_process();
+	
 	for (path, name, extract) in natives {
 		o.display(
 			MessageContents::StartProcess(format!("Extracting native library {name}")),
