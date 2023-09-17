@@ -99,7 +99,8 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 							block_just_ended = false;
 						}
 						name => {
-							prs.mode = ParseMode::Instruction(Instruction::from_str(name, pos)?);
+							prs.mode =
+								ParseMode::Instruction(Instruction::from_str(name, pos.clone())?);
 							block_just_ended = false;
 						}
 					},
@@ -158,11 +159,14 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 								});
 							} else {
 								block_to_set = Some(block);
-								instr_to_push = Some(Instruction::new(InstrKind::If {
-									condition: condition.clone(),
-									if_block: block,
-									else_blocks: Vec::new(),
-								}));
+								instr_to_push = Some(Instruction::new(
+									InstrKind::If {
+										condition: condition.clone(),
+										if_block: block,
+										else_blocks: Vec::new(),
+									},
+									pos.clone(),
+								));
 							}
 							prs.mode = ParseMode::Root;
 						} else {
@@ -305,15 +309,18 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 					},
 					addon::State::Semicolon => match tok {
 						Token::Semicolon => {
-							instr_to_push = Some(Instruction::new(InstrKind::Addon {
-								id: id.clone(),
-								file_name: file_name.clone(),
-								kind: filled_keys.kind,
-								url: filled_keys.url.clone(),
-								path: filled_keys.path.clone(),
-								version: filled_keys.version.clone(),
-								hashes: filled_keys.hashes.clone(),
-							}));
+							instr_to_push = Some(Instruction::new(
+								InstrKind::Addon {
+									id: id.clone(),
+									file_name: file_name.clone(),
+									kind: filled_keys.kind,
+									url: filled_keys.url.clone(),
+									path: filled_keys.path.clone(),
+									version: filled_keys.version.clone(),
+									hashes: filled_keys.hashes.clone(),
+								},
+								pos.clone(),
+							));
 							prs.mode = ParseMode::Root;
 						}
 						_ => unexpected_token!(tok, pos),
@@ -360,8 +367,10 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 							*explicit_has_been_closed = true;
 						}
 						Token::Semicolon => {
-							instr_to_push =
-								Some(Instruction::new(InstrKind::Require(package_groups.clone())));
+							instr_to_push = Some(Instruction::new(
+								InstrKind::Require(package_groups.clone()),
+								pos.clone(),
+							));
 							prs.mode = ParseMode::Root;
 						}
 						_ => {

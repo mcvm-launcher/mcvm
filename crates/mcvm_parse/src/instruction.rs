@@ -19,6 +19,8 @@ use mcvm_shared::addon::AddonKind;
 pub struct Instruction {
 	/// What type of instruction this is
 	pub kind: InstrKind,
+	/// The textual position of the instruction
+	pub pos: TextPos,
 }
 
 /// Type of an instruction
@@ -187,12 +189,12 @@ impl Display for InstrKind {
 
 impl Instruction {
 	/// Create a new instruction
-	pub fn new(kind: InstrKind) -> Self {
-		Self { kind }
+	pub fn new(kind: InstrKind, pos: TextPos) -> Self {
+		Self { kind, pos }
 	}
 
 	/// Starts an instruction from the provided string
-	pub fn from_str(string: &str, pos: &TextPos) -> anyhow::Result<Self> {
+	pub fn from_str(string: &str, pos: TextPos) -> anyhow::Result<Self> {
 		let kind = match string {
 			"name" => Ok::<InstrKind, anyhow::Error>(InstrKind::Name(Later::Empty)),
 			"description" => Ok(InstrKind::Description(Later::Empty)),
@@ -227,7 +229,8 @@ impl Instruction {
 			"call" => Ok(InstrKind::Call(Later::Empty)),
 			string => bail!("Unknown instruction '{string}' {}", pos),
 		}?;
-		Ok(Instruction::new(kind))
+		
+		Ok(Instruction::new(kind, pos))
 	}
 
 	/// Checks if this instruction is finished parsing

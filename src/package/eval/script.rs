@@ -66,160 +66,165 @@ pub fn eval_instr(
 	parsed: &Parsed,
 ) -> anyhow::Result<EvalResult> {
 	let mut out = EvalResult::new();
-	match eval.level {
-		EvalLevel::Install | EvalLevel::Resolve => match &instr.kind {
-			InstrKind::If {
-				condition,
-				if_block,
-				else_blocks,
-			} => {
-				if eval_condition(&condition.kind, eval)? {
-					let block = parsed.blocks.get(if_block).expect("If block missing");
-					out = eval_block(block, eval, parsed)?;
-				} else {
-					// Eval the else block chain
-					for else_block in else_blocks {
-						if let Some(condition) = &else_block.condition {
-							if !eval_condition(&condition.kind, eval)? {
-								continue;
-							}
-						}
-						let block = parsed
-							.blocks
-							.get(&else_block.block)
-							.expect("If else block missing");
+	// Used to put a nice anyhow context on all of them
+	let result = {
+		match eval.level {
+			EvalLevel::Install | EvalLevel::Resolve => match &instr.kind {
+				InstrKind::If {
+					condition,
+					if_block,
+					else_blocks,
+				} => {
+					if eval_condition(&condition.kind, eval)? {
+						let block = parsed.blocks.get(if_block).expect("If block missing");
 						out = eval_block(block, eval, parsed)?;
-					}
-				}
-			}
-			InstrKind::Call(routine) => {
-				let routine = routine.get();
-				let routine = parsed
-					.routines
-					.get(routine)
-					.ok_or(anyhow!("Routine '{routine}' does not exist"))?;
-				let block = parsed.blocks.get(routine).expect("Block does not exist");
-				out = eval_block(block, eval, parsed)?;
-			}
-			InstrKind::Set(var, val) => {
-				let var = var.get();
-				eval.vars
-					.try_set_var(var.to_owned(), val.get(&eval.vars)?)
-					.context("Failed to set variable")?;
-			}
-			InstrKind::Finish() => out.finish = true,
-			InstrKind::Fail(reason) => {
-				out.finish = true;
-				let reason = reason.as_ref().unwrap_or(&FailReason::None).clone();
-				bail!(
-					"Package script failed explicitly with reason: {}",
-					reason.to_string()
-				);
-			}
-			InstrKind::Require(deps) => {
-				if let EvalLevel::Resolve = eval.level {
-					for dep in deps {
-						let mut dep_to_push = Vec::new();
-						for dep in dep {
-							dep_to_push.push(RequiredPackage {
-								value: dep.value.get(&eval.vars)?.into(),
-								explicit: dep.explicit,
-							});
+					} else {
+						// Eval the else block chain
+						for else_block in else_blocks {
+							if let Some(condition) = &else_block.condition {
+								if !eval_condition(&condition.kind, eval)? {
+									continue;
+								}
+							}
+							let block = parsed
+								.blocks
+								.get(&else_block.block)
+								.expect("If else block missing");
+							out = eval_block(block, eval, parsed)?;
 						}
-						eval.deps.push(dep_to_push);
 					}
 				}
-			}
-			InstrKind::Refuse(package) => {
-				if let EvalLevel::Resolve = eval.level {
-					eval.conflicts.push(package.get(&eval.vars)?.into());
+				InstrKind::Call(routine) => {
+					let routine = routine.get();
+					let routine = parsed.routines.get(routine).ok_or(anyhow!(
+						"Call instruction routine '{routine}' does not exist"
+					))?;
+					let block = parsed.blocks.get(routine).expect("Block does not exist");
+					out = eval_block(block, eval, parsed)?;
 				}
-			}
-			InstrKind::Recommend(invert, package) => {
-				if let EvalLevel::Resolve = eval.level {
-					let recommendation = RecommendedPackage {
-						value: package.get(&eval.vars)?.into(),
-						invert: *invert,
-					};
-					eval.recommendations.push(recommendation);
+				InstrKind::Set(var, val) => {
+					let var = var.get();
+					eval.vars
+						.try_set_var(var.to_owned(), val.get(&eval.vars)?)
+						.with_context(|| format!("Failed to set variable"))?;
 				}
-			}
-			InstrKind::Bundle(package) => {
-				if let EvalLevel::Resolve = eval.level {
-					eval.bundled.push(package.get(&eval.vars)?.into());
+				InstrKind::Finish() => out.finish = true,
+				InstrKind::Fail(reason) => {
+					out.finish = true;
+					let reason = reason.as_ref().unwrap_or(&FailReason::None).clone();
+					bail!(
+						"Package script failed explicitly with reason: {}",
+						reason.to_string(),
+					);
 				}
-			}
-			InstrKind::Compat(package, compat) => {
-				if let EvalLevel::Resolve = eval.level {
-					eval.compats.push((
-						package.get(&eval.vars)?.into(),
-						compat.get(&eval.vars)?.into(),
-					));
-				}
-			}
-			InstrKind::Extend(package) => {
-				if let EvalLevel::Resolve = eval.level {
-					eval.extensions.push(package.get(&eval.vars)?.into());
-				}
-			}
-			InstrKind::Notice(notice) => {
-				if eval.notices.len() > MAX_NOTICE_INSTRUCTIONS {
-					bail!("Max number of notice instructions was exceded (>{MAX_NOTICE_INSTRUCTIONS})");
-				}
-				let notice = notice.get(&eval.vars)?;
-				if notice.len() > MAX_NOTICE_CHARACTERS {
-					bail!("Notice message is too long (>{MAX_NOTICE_CHARACTERS})");
-				}
-				eval.notices.push(notice);
-			}
-			InstrKind::Cmd(command) => {
-				match eval.input.params.perms {
-					EvalPermissions::Elevated => {}
-					_ => bail!("Insufficient permissions to run the 'cmd' instruction"),
-				}
-				if let EvalLevel::Install = eval.level {
-					let command = get_value_vec(command, &eval.vars)?;
-
-					eval.commands.push(command);
-				}
-			}
-			InstrKind::Addon {
-				id,
-				file_name,
-				kind,
-				url,
-				path,
-				version,
-				hashes,
-			} => {
-				if let EvalLevel::Install = eval.level {
-					let id = id.get(&eval.vars)?;
-					if eval.addon_reqs.iter().any(|x| x.addon.id == id) {
-						bail!("Duplicate addon id '{id}'");
+				InstrKind::Require(deps) => {
+					if let EvalLevel::Resolve = eval.level {
+						for dep in deps {
+							let mut dep_to_push = Vec::new();
+							for dep in dep {
+								dep_to_push.push(RequiredPackage {
+									value: dep.value.get(&eval.vars)?.into(),
+									explicit: dep.explicit,
+								});
+							}
+							eval.deps.push(dep_to_push);
+						}
 					}
-
-					let kind = kind.as_ref().expect("Addon kind missing");
-					let hashes = PackageAddonOptionalHashes {
-						sha256: hashes.sha256.get_as_option(&eval.vars)?,
-						sha512: hashes.sha512.get_as_option(&eval.vars)?,
-					};
-					let addon_req = create_valid_addon_request(
-						id,
-						url.get_as_option(&eval.vars)?,
-						path.get_as_option(&eval.vars)?,
-						*kind,
-						file_name.get_as_option(&eval.vars)?,
-						version.get_as_option(&eval.vars)?,
-						eval.id.clone(),
-						hashes,
-						&eval.input,
-					)?;
-					eval.addon_reqs.push(addon_req);
 				}
-			}
-			_ => bail!("Instruction is not allowed in this routine context"),
-		},
-	}
+				InstrKind::Refuse(package) => {
+					if let EvalLevel::Resolve = eval.level {
+						eval.conflicts.push(package.get(&eval.vars)?.into());
+					}
+				}
+				InstrKind::Recommend(invert, package) => {
+					if let EvalLevel::Resolve = eval.level {
+						let recommendation = RecommendedPackage {
+							value: package.get(&eval.vars)?.into(),
+							invert: *invert,
+						};
+						eval.recommendations.push(recommendation);
+					}
+				}
+				InstrKind::Bundle(package) => {
+					if let EvalLevel::Resolve = eval.level {
+						eval.bundled.push(package.get(&eval.vars)?.into());
+					}
+				}
+				InstrKind::Compat(package, compat) => {
+					if let EvalLevel::Resolve = eval.level {
+						eval.compats.push((
+							package.get(&eval.vars)?.into(),
+							compat.get(&eval.vars)?.into(),
+						));
+					}
+				}
+				InstrKind::Extend(package) => {
+					if let EvalLevel::Resolve = eval.level {
+						eval.extensions.push(package.get(&eval.vars)?.into());
+					}
+				}
+				InstrKind::Notice(notice) => {
+					if eval.notices.len() > MAX_NOTICE_INSTRUCTIONS {
+						bail!("Max number of notice instructions was exceded (>{MAX_NOTICE_INSTRUCTIONS})");
+					}
+					let notice = notice.get(&eval.vars)?;
+					if notice.len() > MAX_NOTICE_CHARACTERS {
+						bail!("Notice message is too long (>{MAX_NOTICE_CHARACTERS})");
+					}
+					eval.notices.push(notice);
+				}
+				InstrKind::Cmd(command) => {
+					match eval.input.params.perms {
+						EvalPermissions::Elevated => {}
+						_ => bail!("Insufficient permissions to run the 'cmd' instruction"),
+					}
+					if let EvalLevel::Install = eval.level {
+						let command = get_value_vec(command, &eval.vars)?;
+
+						eval.commands.push(command);
+					}
+				}
+				InstrKind::Addon {
+					id,
+					file_name,
+					kind,
+					url,
+					path,
+					version,
+					hashes,
+				} => {
+					if let EvalLevel::Install = eval.level {
+						let id = id.get(&eval.vars)?;
+						if eval.addon_reqs.iter().any(|x| x.addon.id == id) {
+							bail!("Duplicate addon id '{id}'");
+						}
+
+						let kind = kind.as_ref().expect("Addon kind missing");
+						let hashes = PackageAddonOptionalHashes {
+							sha256: hashes.sha256.get_as_option(&eval.vars)?,
+							sha512: hashes.sha512.get_as_option(&eval.vars)?,
+						};
+						let addon_req = create_valid_addon_request(
+							id,
+							url.get_as_option(&eval.vars)?,
+							path.get_as_option(&eval.vars)?,
+							*kind,
+							file_name.get_as_option(&eval.vars)?,
+							version.get_as_option(&eval.vars)?,
+							eval.id.clone(),
+							hashes,
+							&eval.input,
+						)?;
+						eval.addon_reqs.push(addon_req);
+					}
+				}
+				_ => bail!("Instruction is not allowed in this routine context"),
+			},
+		}
+		Ok::<(), anyhow::Error>(())
+	};
+
+	result.with_context(|| format!("In {} instruction at {}", instr, instr.pos))?;
 
 	Ok(out)
 }
