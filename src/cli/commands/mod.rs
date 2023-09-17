@@ -6,9 +6,9 @@ mod snapshot;
 mod tool;
 mod user;
 
-use anyhow::Context;
+use anyhow::{bail, Context};
 use clap::{Parser, Subcommand};
-use color_print::cprintln;
+use color_print::{cformat, cprintln};
 
 use mcvm::data::config::Config;
 use mcvm::io::files::paths::Paths;
@@ -89,6 +89,9 @@ pub async fn run_cli() -> anyhow::Result<()> {
 		if let clap::error::ErrorKind::DisplayHelp = e.kind() {
 			println!("{e}");
 			return Ok(());
+		} else {
+			eprintln!("{}", cformat!("<r>{e}"));
+			bail!("");
 		}
 	}
 	let cli = cli?;
