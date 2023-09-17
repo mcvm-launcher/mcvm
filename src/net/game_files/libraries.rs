@@ -16,6 +16,7 @@ use crate::net::download::FD_SENSIBLE_LIMIT;
 use crate::skip_none;
 use crate::util;
 
+use super::client_meta::libraries::ExtractionRules;
 use super::client_meta::{libraries::Library, ClientMeta};
 
 /// Downloads base client libraries.
@@ -39,7 +40,7 @@ pub async fn get(
 	files::create_dir_async(&natives_path).await?;
 	let natives_jars_path = paths.internal.join("natives");
 
-	let mut native_paths = Vec::new();
+	let mut natives = Vec::new();
 
 	let libraries = get_list(client_meta);
 
@@ -57,7 +58,7 @@ pub async fn get(
 
 			let path = natives_jars_path.join(classifier.path.clone());
 
-			native_paths.push((path.clone(), lib.name.clone()));
+			natives.push((path.clone(), &lib.name, &lib.extract));
 			if !manager.should_update_file(&path) {
 				continue;
 			}
@@ -127,12 +128,12 @@ pub async fn get(
 	o.end_process();
 
 	o.start_process();
-	for (path, name) in native_paths {
+	for (path, name, extract) in natives {
 		o.display(
 			MessageContents::StartProcess(format!("Extracting native library {name}")),
 			MessageLevel::Important,
 		);
-		let natives_result = extract_native(&path, &natives_path, manager, o)
+		let natives_result = extract_native(&path, &natives_path, extract, manager, o)
 			.with_context(|| format!("Failed to extract native library {name}"))?;
 		out.merge(natives_result);
 	}
@@ -210,6 +211,7 @@ fn is_allowed(lib: &Library) -> bool {
 fn extract_native(
 	path: &Path,
 	natives_dir: &Path,
+	extraction_rules: &ExtractionRules,
 	manager: &UpdateManager,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<UpdateMethodResult> {
@@ -222,6 +224,11 @@ fn extract_native(
 			file.enclosed_name()
 				.context("Invalid compressed file path")?,
 		);
+		if let Some(rel_path_str) = rel_path.to_str() {
+			if extraction_rules.exclude.iter().any(|x| x == rel_path_str) {
+				continue;
+			}
+		}
 		if let Some(extension) = rel_path.extension() {
 			match extension.to_str() {
 				Some("so" | "dylib" | "dll") => {

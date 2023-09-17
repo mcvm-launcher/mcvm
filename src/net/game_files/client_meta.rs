@@ -150,6 +150,9 @@ pub mod libraries {
 		/// Rules to check for this library to be downloaded
 		#[serde(default)]
 		pub rules: Vec<conditions::Rule>,
+		/// Rules for extraction
+		#[serde(default)]
+		pub extract: ExtractionRules,
 	}
 
 	/// Downloads for a library
@@ -171,6 +174,14 @@ pub mod libraries {
 		pub path: String,
 		/// URL to download the artifact from
 		pub url: String,
+	}
+
+	/// Extraction rules for a library
+	#[derive(Deserialize, Debug, Clone, Default)]
+	#[serde(default)]
+	pub struct ExtractionRules {
+		/// Files to exclude from the extraction
+		pub exclude: Vec<String>,
 	}
 }
 
