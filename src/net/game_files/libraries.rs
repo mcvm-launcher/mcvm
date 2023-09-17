@@ -41,7 +41,7 @@ pub async fn get(
 
 	let mut native_paths = Vec::new();
 
-	let libraries = get_list(client_meta)?;
+	let libraries = get_list(client_meta);
 
 	let mut libs_to_download = Vec::new();
 
@@ -152,7 +152,7 @@ pub fn get_classpath(client_meta: &ClientMeta, paths: &Paths) -> anyhow::Result<
 	let libraries_path = paths.internal.join("libraries");
 
 	let mut classpath = Classpath::new();
-	let libraries = get_list(client_meta).context("Failed to get list of libraries")?;
+	let libraries = get_list(client_meta);
 	for lib in libraries {
 		if !lib.natives.is_empty() {
 			let key = skip_none!(get_natives_classifier_key(&lib.natives));
@@ -188,22 +188,22 @@ fn get_natives_classifier_key(classifiers: &HashMap<String, String>) -> Option<S
 }
 
 /// Checks the rules of a game library to see if it should be installed
-fn is_allowed(lib: &Library) -> anyhow::Result<bool> {
+fn is_allowed(lib: &Library) -> bool {
 	for rule in &lib.rules {
 		let allowed = rule.action.is_allowed();
 		if let Some(os_name) = &rule.os.name {
-			if allowed == (os_name.to_string() == util::OS_STRING) {
-				return Ok(false);
+			if allowed != (os_name.to_string() == util::OS_STRING) {
+				return false;
 			}
 		}
 		if let Some(os_arch) = &rule.os.arch {
-			if allowed == (os_arch.to_string() == util::ARCH_STRING) {
-				return Ok(false);
+			if allowed != (os_arch.to_string() == util::ARCH_STRING) {
+				return false;
 			}
 		}
 	}
 
-	Ok(true)
+	true
 }
 
 /// Extract the files of a native library into the natives directory.
@@ -250,15 +250,17 @@ fn extract_native(
 }
 
 /// Gets the list of allowed libraries from the client meta
-/// and also the number of libraries found.
-pub fn get_list(client_meta: &ClientMeta) -> anyhow::Result<impl Iterator<Item = &Library>> {
-	let libraries = client_meta.libraries.iter().filter_map(|lib| {
-		if !is_allowed(lib).ok()? {
-			None
-		} else {
-			Some(lib)
-		}
-	});
+pub fn get_list(client_meta: &ClientMeta) -> impl Iterator<Item = &Library> {
+	let libraries =
+		client_meta.libraries.iter().filter_map(
+			|lib| {
+				if !is_allowed(lib) {
+					None
+				} else {
+					Some(lib)
+				}
+			},
+		);
 
-	Ok(libraries)
+	libraries
 }

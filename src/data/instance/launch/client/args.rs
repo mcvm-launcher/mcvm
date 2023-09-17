@@ -33,12 +33,12 @@ pub fn process_arg(
 				let allowed = rule.action.is_allowed();
 
 				if let Some(os_name) = &rule.os.name {
-					if allowed == (OS_STRING == os_name.to_string()) {
+					if allowed != (OS_STRING == os_name.to_string()) {
 						return vec![];
 					}
 				}
 				if let Some(os_arch) = &rule.os.arch {
-					if allowed == (ARCH_STRING == os_arch.to_string()) {
+					if allowed != (ARCH_STRING == os_arch.to_string()) {
 						return vec![];
 					}
 				}
@@ -50,11 +50,11 @@ pub fn process_arg(
 				}
 				if let Some(is_demo_user) = &rule.features.is_demo_user {
 					if *is_demo_user {
-						let fail = match users.get_user() {
+						let use_demo = match users.get_user() {
 							Some(user) => matches!(user.kind, UserKind::Demo),
 							None => false,
 						};
-						if fail {
+						if !use_demo {
 							return vec![];
 						}
 					}
