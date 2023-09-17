@@ -200,7 +200,7 @@ mod tests {
 	use mcvm_shared::pkg::PackageStability;
 	use mcvm_shared::Side;
 
-	use crate::data::config::modifications::GameModifications;
+	use crate::data::config::profile::GameModifications;
 	use crate::package::eval::{EvalConstants, EvalParameters, EvalPermissions, RequiredPackage};
 
 	use super::*;

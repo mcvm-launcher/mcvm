@@ -37,7 +37,7 @@ use self::script::eval_script_package;
 use super::reg::PkgRegistry;
 use super::Package;
 use crate::data::addon::{self, AddonLocation, AddonRequest};
-use crate::data::config::modifications::GameModifications;
+use crate::data::config::profile::GameModifications;
 use crate::data::config::package::PackageConfig;
 use crate::io::files::paths::Paths;
 use crate::util::hash::{

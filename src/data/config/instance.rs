@@ -517,7 +517,7 @@ mod tests {
 	use super::*;
 
 	use crate::data::config::profile::ProfilePackageConfiguration;
-	use crate::data::{config::modifications::GameModifications, id::ProfileID};
+	use crate::data::{config::profile::GameModifications, id::ProfileID};
 	use crate::util::versions::MinecraftVersion;
 	use mcvm_shared::modifications::{ClientType, Modloader, ServerType};
 	use mcvm_shared::pkg::PackageStability;

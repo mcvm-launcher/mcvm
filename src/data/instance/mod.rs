@@ -27,7 +27,7 @@ use self::launch::LaunchOptions;
 
 use super::addon;
 use super::config::instance::ClientWindowConfig;
-use super::config::modifications::GameModifications;
+use super::config::profile::GameModifications;
 use super::config::package::PackageConfig;
 use super::config::profile::ProfilePackageConfiguration;
 use super::id::InstanceID;
