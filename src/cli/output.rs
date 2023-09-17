@@ -115,7 +115,7 @@ impl TerminalOutput {
 			MessageContents::Notice(text) => cformat!("<y>Notice: {}", text),
 			MessageContents::Warning(text) => cformat!("<y>Warning: {}", text),
 			MessageContents::Error(text) => cformat!("<r>Error: {}", text),
-			MessageContents::Success(text) => cformat!("<g>{}", text),
+			MessageContents::Success(text) => cformat!("<g>{}", add_period(text)),
 			MessageContents::Property(key, value) => {
 				cformat!("<s>{}:</> {}", key, Self::format_message(*value))
 			}
@@ -160,7 +160,7 @@ impl TerminalOutput {
 			MessageContents::Notice(text) => format!("[NOTICE] {}", text),
 			MessageContents::Warning(text) => format!("[WARN] {}", text),
 			MessageContents::Error(text) => format!("[ERR] {}", text),
-			MessageContents::Success(text) => format!("[SUCCESS] {}", text),
+			MessageContents::Success(text) => format!("[SUCCESS] {}", add_period(text)),
 			MessageContents::Property(key, value) => {
 				format!("{}: {}", key, Self::format_message_log(*value))
 			}
@@ -245,4 +245,13 @@ fn progress_bar_parts(current: u32, total: u32, settings: ProgressBarSettings) -
 	let full_bar = settings.full.repeat(full_count.into());
 	let empty_bar = settings.empty.repeat(empty_count.into());
 	(full_bar, empty_bar)
+}
+
+/// Adds a period to the end of a string if it isn't punctuated already
+fn add_period(string: String) -> String {
+	if string.ends_with(['.', ',', ';', ':', '!', '?']) {
+		string
+	} else {
+		string + "."
+	}
 }
