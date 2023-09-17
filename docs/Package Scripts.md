@@ -97,6 +97,7 @@ Properties like `features` and `modrinth_id` can only be used in the `@propertie
 - `default_features {feature1} {feature2} ...`: Set the features enabled by default for this package.
 - `modrinth_id {id}`: Set the Modrinth ID.
 - `curseforge_id {id}`: Set the CurseForge ID.
+- `smithed_id {id}`: Set the Smithed ID.
 - `supported_modloaders`: Set the supported modloaders.
 - `supported_plugin_loaders`: Set the supported plugin loaders.
 - `supported_sides`: Set the supported sides.

@@ -16,6 +16,8 @@ pub struct PackageProperties {
 	pub modrinth_id: Option<String>,
 	/// The package's CurseForge ID
 	pub curseforge_id: Option<String>,
+	/// The package's Smithed ID
+	pub smithed_id: Option<String>,
 	/// The package's supported modloaders
 	pub supported_modloaders: Option<Vec<ModloaderMatch>>,
 	/// The package's supported plugin loaders
@@ -57,6 +59,7 @@ pub fn eval_properties(parsed: &Parsed) -> anyhow::Result<PackageProperties> {
 					InstrKind::DefaultFeatures(list) => out.default_features = Some(list.clone()),
 					InstrKind::ModrinthID(id) => out.modrinth_id = Some(id.get_clone()),
 					InstrKind::CurseForgeID(id) => out.curseforge_id = Some(id.get_clone()),
+					InstrKind::SmithedID(id) => out.smithed_id = Some(id.get_clone()),
 					InstrKind::SupportedModloaders(list) => {
 						out.supported_modloaders = Some(list.clone())
 					}

@@ -22,7 +22,7 @@ use std::fmt::Display;
 pub enum FailReason {
 	/// No fail reason is provided
 	None,
-	/// The version is unsupported
+	/// The Minecraft version is unsupported
 	UnsupportedVersion,
 	/// The modloader is unsupported
 	UnsupportedModloader,

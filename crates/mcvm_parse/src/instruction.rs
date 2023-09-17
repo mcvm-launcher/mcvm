@@ -77,6 +77,8 @@ pub enum InstrKind {
 	ModrinthID(Later<String>),
 	/// Set the package CurseForge ID property
 	CurseForgeID(Later<String>),
+	/// Set the package Smithed ID property
+	SmithedID(Later<String>),
 	/// Set the package supported modloaders property
 	SupportedModloaders(Vec<ModloaderMatch>),
 	/// Set the package supported plugin loaders property
@@ -165,6 +167,7 @@ impl Display for InstrKind {
 				Self::DefaultFeatures(..) => "default_features",
 				Self::ModrinthID(..) => "modrinth_id",
 				Self::CurseForgeID(..) => "curseforge_id",
+				Self::SmithedID(..) => "smithed_id",
 				Self::SupportedModloaders(..) => "supported_modloaders",
 				Self::SupportedPluginLoaders(..) => "supported_plugin_loaders",
 				Self::SupportedSides(..) => "supported_sides",
@@ -229,7 +232,7 @@ impl Instruction {
 			"call" => Ok(InstrKind::Call(Later::Empty)),
 			string => bail!("Unknown instruction '{string}' {}", pos),
 		}?;
-		
+
 		Ok(Instruction::new(kind, pos))
 	}
 
@@ -250,6 +253,7 @@ impl Instruction {
 			| InstrKind::License(val)
 			| InstrKind::ModrinthID(val)
 			| InstrKind::CurseForgeID(val)
+			| InstrKind::SmithedID(val)
 			| InstrKind::Website(val)
 			| InstrKind::Call(val) => val.is_full(),
 			InstrKind::Features(val)

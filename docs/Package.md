@@ -108,6 +108,7 @@ Properties for the package that do have a meaning to mcvm and other package host
 - `default_features`: The features that will be enabled by default.
 - `modrinth_id`: ID of the project for this package on Modrinth, if applicable. See "The purpose of host ID instructions".
 - `curseforge_id`: ID of the project for this package on CurseForge, if applicable. See "The purpose of host ID instructions".
+- `smithed_id`: ID of the project for this package on Smithed, if applicable. See "The purpose of host ID instructions".
 - `supported_modloaders`: Modloaders supported by this package. Defaults to all of them.
 - `supported_plugin_loaders`: Plugin loaders supported by this package. Defaults to all of them.
 - `supported_sides`: Game sides supported by this package. Defaults to both of them.
