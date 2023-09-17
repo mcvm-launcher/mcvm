@@ -24,12 +24,15 @@ pub struct TerminalOutput {
 
 impl MCVMOutput for TerminalOutput {
 	fn display_text(&mut self, text: String, level: MessageLevel) {
-		let _ = self.log_message(&text);
+		let _ = self.log_message(&text, level);
 		self.display_text_impl(text, level);
 	}
 
 	fn display_message(&mut self, message: Message) {
-		let _ = self.log_message(&Self::format_message_log(message.contents.clone()));
+		let _ = self.log_message(
+			&Self::format_message_log(message.contents.clone()),
+			message.level,
+		);
 		self.display_text_impl(Self::format_message(message.contents), message.level);
 	}
 
@@ -183,9 +186,15 @@ impl TerminalOutput {
 	}
 
 	/// Log a message to the log file
-	pub fn log_message(&mut self, text: &str) -> anyhow::Result<()> {
-		writeln!(self.log_file, "{text}")?;
-		writeln!(self.latest_log_file, "{text}")?;
+	pub fn log_message(&mut self, text: &str, level: MessageLevel) -> anyhow::Result<()> {
+		let level_indicator = match level {
+			MessageLevel::Important => "I",
+			MessageLevel::Extra => "E",
+			MessageLevel::Debug => "D",
+			MessageLevel::Trace => "T",
+		};
+		writeln!(self.log_file, "[{level_indicator}] {text}")?;
+		writeln!(self.latest_log_file, "[{level_indicator}] {text}")?;
 
 		Ok(())
 	}
