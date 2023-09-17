@@ -19,6 +19,7 @@ pub struct TerminalOutput {
 	in_process: bool,
 	indent_level: u8,
 	log_file: File,
+	latest_log_file: File,
 }
 
 impl MCVMOutput for TerminalOutput {
@@ -78,12 +79,15 @@ impl TerminalOutput {
 	pub fn new(paths: &Paths) -> anyhow::Result<Self> {
 		let path = get_log_file_path(paths).context("Failed to get log file path")?;
 		let file = File::create(path).context("Failed to open log file")?;
+		let latest_file = File::create(get_latest_log_file_path(paths))
+			.context("Failed to open latest.txt log file")?;
 		Ok(Self {
 			printer: ReplPrinter::new(true),
 			level: MessageLevel::Important,
 			in_process: false,
 			indent_level: 0,
 			log_file: file,
+			latest_log_file: latest_file,
 		})
 	}
 
@@ -160,6 +164,7 @@ impl TerminalOutput {
 	/// Log a message to the log file
 	pub fn log_message(&mut self, text: &str) -> anyhow::Result<()> {
 		writeln!(self.log_file, "{text}")?;
+		writeln!(self.latest_log_file, "{text}")?;
 
 		Ok(())
 	}
@@ -185,4 +190,9 @@ fn disp_pkg_request_with_colors(req: PkgRequest) -> String {
 /// Get the path to a log file
 fn get_log_file_path(paths: &Paths) -> anyhow::Result<PathBuf> {
 	Ok(paths.logs.join(format!("log-{}.txt", utc_timestamp()?)))
+}
+
+/// Get the path to the latest log file
+fn get_latest_log_file_path(paths: &Paths) -> PathBuf {
+	paths.logs.join("latest.txt")
 }
