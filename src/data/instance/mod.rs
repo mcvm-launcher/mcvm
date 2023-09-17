@@ -322,20 +322,26 @@ impl Instance {
 				MessageContents::StartProcess("Running commands".into()),
 				MessageLevel::Important,
 			);
-		}
-		for command_and_args in &eval.commands {
-			let program = command_and_args
-				.first()
-				.expect("Command should contain at least the program");
-			let mut command = std::process::Command::new(program);
-			command.args(&command_and_args[1..]);
-			let mut child = command
-				.spawn()
-				.context("Failed to spawn command {program}")?;
-			let result = child.wait()?;
-			if !result.success() {
-				bail!("Command {program} returned a non-zero exit code");
+
+			for command_and_args in &eval.commands {
+				let program = command_and_args
+					.first()
+					.expect("Command should contain at least the program");
+				let mut command = std::process::Command::new(program);
+				command.args(&command_and_args[1..]);
+				let mut child = command
+					.spawn()
+					.context("Failed to spawn command {program}")?;
+				let result = child.wait()?;
+				if !result.success() {
+					bail!("Command {program} returned a non-zero exit code");
+				}
 			}
+
+			o.display(
+				MessageContents::Success("Finished running commands".into()),
+				MessageLevel::Important,
+			);
 		}
 
 		let lockfile_addons = eval
