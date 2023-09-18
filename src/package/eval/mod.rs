@@ -264,19 +264,13 @@ pub fn eval_check_properties(
 	}
 
 	if let Some(supported_operating_systems) = &properties.supported_operating_systems {
-		if !supported_operating_systems
-			.iter()
-			.any(check_os_condition)
-		{
+		if !supported_operating_systems.iter().any(check_os_condition) {
 			bail!("Package does not support your operating system");
 		}
 	}
 
 	if let Some(supported_architectures) = &properties.supported_architectures {
-		if !supported_architectures
-			.iter()
-			.any(check_arch_condition)
-		{
+		if !supported_architectures.iter().any(check_arch_condition) {
 			bail!("Package does not support your system architecture");
 		}
 	}

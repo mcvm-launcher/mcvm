@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use anyhow::Context;
-use mcvm_parse::conditions::{OSCondition, ArchCondition};
+use mcvm_parse::conditions::{ArchCondition, OSCondition};
 use mcvm_shared::addon::AddonKind;
 use mcvm_shared::lang::Language;
 use mcvm_shared::modifications::{ModloaderMatch, PluginLoaderMatch};
