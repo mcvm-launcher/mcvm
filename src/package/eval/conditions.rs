@@ -46,6 +46,7 @@ pub fn eval_condition(condition: &ConditionKind, eval: &EvalData) -> anyhow::Res
 		ConditionKind::Language(lang) => Ok(eval.input.constants.language == *lang.get()),
 		ConditionKind::Value(left, right) => Ok(left.get(&eval.vars)? == right.get(&eval.vars)?),
 		ConditionKind::Defined(var) => Ok(eval.vars.var_exists(var.get())),
+		ConditionKind::Const(val) => Ok(val.get_clone()),
 	}
 }
 

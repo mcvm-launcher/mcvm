@@ -44,6 +44,7 @@ Properties like `features` and `modrinth_id` can only be used in the `@propertie
 
 - `if {condition} [arguments...] { ... }`: If instructions let you run instructions inside a block only if a condition is met at runtime. The valid conditions are:
   - `value {x} {y}`: Check if two strings are the same. This is meant to be used to check the value of variables.
+  - `const {true | false}`: Check a constant boolean. Used for testing purposes.
   - `version {pattern}`: Check that the Minecraft version of this instance matches a pattern.
   - `modloader {modloader_match}`: Checks if the modloader matches a `modloader_match`.
   - `plugin_loader {plugin_loader_match}`: Checks if the plugin loader matches a `modloader_match`.

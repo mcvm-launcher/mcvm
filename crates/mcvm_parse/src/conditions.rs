@@ -55,6 +55,8 @@ pub enum ConditionKind {
 	Value(Value, Value),
 	/// Check if a variable is defined
 	Defined(Later<String>),
+	/// Check a constant boolean, used for testing
+	Const(Later<bool>),
 	/// Check the operating system
 	OS(Later<OSCondition>),
 	/// Check the system architecture
@@ -152,6 +154,7 @@ impl ConditionKind {
 			Self::Modloader(val) => val.is_full(),
 			Self::PluginLoader(val) => val.is_full(),
 			Self::Defined(val) => val.is_full(),
+			Self::Const(val) => val.is_full(),
 			Self::OS(val) => val.is_full(),
 			Self::Arch(val) => val.is_full(),
 			Self::Stability(val) => val.is_full(),
@@ -263,6 +266,18 @@ impl ConditionKind {
 			Self::Value(left, right) => match left {
 				Value::None => *left = parse_arg(tok, pos)?,
 				_ => *right = parse_arg(tok, pos)?,
+			},
+			Self::Const(val) => match tok {
+				Token::Ident(name) => val.fill(check_enum_condition_argument(
+					match name.as_str() {
+						"true" => Some(true),
+						"false" => Some(false),
+						_ => None,
+					},
+					name,
+					pos,
+				)?),
+				_ => unexpected_token!(tok, pos),
 			},
 		}
 		Ok(())
