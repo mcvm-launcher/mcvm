@@ -108,6 +108,7 @@ Properties like `features` and `modrinth_id` can only be used in the `@propertie
 - `supported_operating_systems`: Set the supported operating systems.
 - `supported_architectures`: Set the supported architectures.
 - `tags {tag1} {tag2} ...`: Set the package tags.
+- `open_source {yes | no}`: Set the open source property.
 
 ### The `addon` Instruction
 

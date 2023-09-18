@@ -4,6 +4,7 @@ use anyhow::bail;
 use mcvm_shared::later::Later;
 use mcvm_shared::modifications::{ModloaderMatch, PluginLoaderMatch};
 use mcvm_shared::pkg::PackageAddonHashes;
+use mcvm_shared::util::yes_no;
 use mcvm_shared::versions::VersionPattern;
 use mcvm_shared::Side;
 
@@ -95,6 +96,8 @@ pub enum InstrKind {
 	SupportedArchitectures(Vec<ArchCondition>),
 	/// Set the package tags property
 	Tags(Vec<String>),
+	/// Set the open source property
+	OpenSource(Later<bool>),
 	/// Install an addon
 	Addon {
 		/// The ID of the addon
@@ -185,6 +188,7 @@ impl Display for InstrKind {
 				Self::SupportedOperatingSystems(..) => "supported_operating_systems",
 				Self::SupportedArchitectures(..) => "supported_architectures",
 				Self::Tags(..) => "tags",
+				Self::OpenSource(..) => "open_source",
 				Self::Addon { .. } => "addon",
 				Self::Set(..) => "set",
 				Self::Require(..) => "require",
@@ -227,6 +231,8 @@ impl Instruction {
 			"icon" => Ok(InstrKind::Icon(Later::Empty)),
 			"banner" => Ok(InstrKind::Banner(Later::Empty)),
 			"license" => Ok(InstrKind::License(Later::Empty)),
+			"keywords" => Ok(InstrKind::Keywords(Vec::new())),
+			"categories" => Ok(InstrKind::Categories(Vec::new())),
 			"features" => Ok(InstrKind::Features(Vec::new())),
 			"default_features" => Ok(InstrKind::DefaultFeatures(Vec::new())),
 			"modrinth_id" => Ok(InstrKind::ModrinthID(Later::Empty)),
@@ -237,6 +243,8 @@ impl Instruction {
 			"supported_sides" => Ok(InstrKind::SupportedSides(Vec::new())),
 			"supported_operating_systems" => Ok(InstrKind::SupportedOperatingSystems(Vec::new())),
 			"supported_architectures" => Ok(InstrKind::SupportedArchitectures(Vec::new())),
+			"tags" => Ok(InstrKind::Tags(Vec::new())),
+			"open_source" => Ok(InstrKind::OpenSource(Later::Empty)),
 			"set" => Ok(InstrKind::Set(Later::Empty, Value::None)),
 			"finish" => Ok(InstrKind::Finish()),
 			"fail" => Ok(InstrKind::Fail(None)),
@@ -294,6 +302,7 @@ impl Instruction {
 			InstrKind::SupportedSides(val) => !val.is_empty(),
 			InstrKind::SupportedOperatingSystems(val) => !val.is_empty(),
 			InstrKind::SupportedArchitectures(val) => !val.is_empty(),
+			InstrKind::OpenSource(val) => val.is_full(),
 			InstrKind::Compat(val1, val2) => val1.is_some() && val2.is_some(),
 			InstrKind::Set(var, val) => var.is_full() && val.is_some(),
 			InstrKind::Cmd(list) => !list.is_empty(),
@@ -397,6 +406,13 @@ impl Instruction {
 							bail!("Value is not a valid side argument")
 						}
 					}
+					_ => unexpected_token!(tok, pos),
+				},
+				InstrKind::OpenSource(val) => match tok {
+					Token::Ident(name) => match yes_no(name) {
+						Some(yes_no) => val.fill(yes_no),
+						None => bail!("Value is not a valid open_source argument"),
+					},
 					_ => unexpected_token!(tok, pos),
 				},
 				InstrKind::Compat(package, compat) => {

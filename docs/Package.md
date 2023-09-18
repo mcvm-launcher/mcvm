@@ -103,7 +103,8 @@ Properties for the package that do have a meaning to mcvm and other package host
 	"supported_sides": ["client" | "server"],
 	"supported_operating_systems": ["windows" | "linux" | "macos" | "other"],
 	"supported_architectures": ["x86" | "x86_64" | "arm" | "other"],
-	"tags": [string]
+	"tags": [string],
+	"open_source": bool
 }
 ```
 
@@ -119,6 +120,7 @@ Properties for the package that do have a meaning to mcvm and other package host
 - `supported_operating_systems`: Operating systems supported by this package. Defaults to all of them.
 - `supported_architectures`: System architectures supported by this package. Defaults to all of them.
 - `tags`: Similar to categories and keywords, but with actual meaning. Packages will be able to use tags in the future to depend on any package with a tag, or refuse it.
+- `open_source`: Say if this package is open source. If this property is not set, the open source status will be inferred from the license string.
 
 ## Relations
 

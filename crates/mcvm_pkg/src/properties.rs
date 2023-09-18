@@ -34,6 +34,8 @@ pub struct PackageProperties {
 	pub supported_architectures: Option<Vec<ArchCondition>>,
 	/// The package's semantic tags
 	pub tags: Option<Vec<String>>,
+	/// Whether the package is open source
+	pub open_source: Option<bool>,
 }
 
 impl PackageProperties {
@@ -85,6 +87,7 @@ pub fn eval_properties(parsed: &Parsed) -> anyhow::Result<PackageProperties> {
 						out.supported_architectures = Some(list.clone())
 					}
 					InstrKind::Tags(list) => out.tags = Some(list.clone()),
+					InstrKind::OpenSource(val) => out.open_source = Some(val.get_clone()),
 					_ => bail!("Instruction is not allowed in this context"),
 				}
 			}

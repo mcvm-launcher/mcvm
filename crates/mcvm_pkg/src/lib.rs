@@ -19,6 +19,7 @@ use anyhow::Context;
 use async_trait::async_trait;
 use declarative::{deserialize_declarative_package, validate_declarative_package};
 use mcvm_shared::pkg::{ArcPkgReq, PackageID};
+use metadata::PackageMetadata;
 use properties::PackageProperties;
 use serde::{Deserialize, Serialize};
 
@@ -130,4 +131,21 @@ pub trait PackageEvalRelationsResult {
 	fn get_compats(&self) -> Vec<(PackageID, PackageID)>;
 	/// Get the evaluated extensions
 	fn get_extensions(&self) -> Vec<PackageID>;
+}
+
+/// Checks if a package is open source
+pub fn is_open_source(meta: &PackageMetadata, properties: &PackageProperties) -> bool {
+	// The property always takes precedence
+	if let Some(open_source) = &properties.open_source {
+		return *open_source;
+	}
+
+	// Infer from the license
+	if let Some(license) = &meta.license {
+		if let "ARR" | "All Rights Reserved" = license.as_str() {
+			return false;
+		}
+	}
+
+	true
 }
