@@ -33,7 +33,7 @@ impl Instance {
 		game_args.push("nogui".into());
 
 		let launch_properties = LaunchProcessProperties {
-			cwd: &server_dir,
+			cwd: server_dir,
 			command: jre_path
 				.to_str()
 				.context("Failed to convert java path to a string")?,

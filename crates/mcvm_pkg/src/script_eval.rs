@@ -200,7 +200,7 @@ pub fn eval_instr<E: ScriptEvaluator>(
 					let val = val.get(e.get_variable_store(shared))?;
 					e.get_variable_store(shared)
 						.try_set_var(var.to_owned(), val)
-						.with_context(|| format!("Failed to set variable"))?;
+						.with_context(|| "Failed to set variable".to_string())?;
 				}
 				InstrKind::Finish() => out.finish = true,
 				InstrKind::Fail(reason) => {

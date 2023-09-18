@@ -128,7 +128,7 @@ pub async fn get(
 	while let Some(lib) = join.join_next().await {
 		lib??;
 	}
-	
+
 	for (path, name, extract) in natives {
 		o.display(
 			MessageContents::StartProcess(format!("Extracting native library {name}")),
@@ -259,16 +259,7 @@ fn extract_native(
 
 /// Gets the list of allowed libraries from the client meta
 pub fn get_list(client_meta: &ClientMeta) -> impl Iterator<Item = &Library> {
-	let libraries =
-		client_meta.libraries.iter().filter_map(
-			|lib| {
-				if !is_allowed(lib) {
-					None
-				} else {
-					Some(lib)
-				}
-			},
-		);
+	let libraries = client_meta.libraries.iter().filter(|lib| is_allowed(lib));
 
 	libraries
 }

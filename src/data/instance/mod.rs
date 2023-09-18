@@ -108,8 +108,8 @@ impl InstanceDirs {
 	/// Create a new InstanceDirs
 	pub fn new(paths: &Paths, id: &str, side: &Side) -> Self {
 		let inst_dir = match side {
-			Side::Client { .. } => paths.project.data_dir().join("client").join(id.to_string()),
-			Side::Server { .. } => paths.project.data_dir().join("server").join(id.to_string()),
+			Side::Client { .. } => paths.project.data_dir().join("client").join(id),
+			Side::Server { .. } => paths.project.data_dir().join("server").join(id),
 		};
 
 		let game_dir = inst_dir.join(match side {

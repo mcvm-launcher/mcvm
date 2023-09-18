@@ -126,7 +126,7 @@ impl Instance {
 			let env_vars = get_additional_environment_variables(version_info);
 
 			let launch_properties = LaunchProcessProperties {
-				cwd: &client_dir,
+				cwd: client_dir,
 				command: jre_path
 					.to_str()
 					.context("Failed to convert java path to a string")?,

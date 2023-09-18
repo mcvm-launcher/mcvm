@@ -266,7 +266,7 @@ pub fn eval_check_properties(
 	if let Some(supported_operating_systems) = &properties.supported_operating_systems {
 		if !supported_operating_systems
 			.iter()
-			.any(|x| check_os_condition(x))
+			.any(check_os_condition)
 		{
 			bail!("Package does not support your operating system");
 		}
@@ -275,7 +275,7 @@ pub fn eval_check_properties(
 	if let Some(supported_architectures) = &properties.supported_architectures {
 		if !supported_architectures
 			.iter()
-			.any(|x| check_arch_condition(x))
+			.any(check_arch_condition)
 		{
 			bail!("Package does not support your system architecture");
 		}
@@ -517,7 +517,7 @@ pub async fn resolve(
 
 	let packages = packages
 		.iter()
-		.map(|x| EvalPackageConfig((*x).clone(), x.get_request().into()))
+		.map(|x| EvalPackageConfig((*x).clone(), x.get_request()))
 		.collect::<Vec<_>>();
 
 	let result = mcvm_pkg::resolve::resolve(&packages, evaluator, input, &common_input).await?;

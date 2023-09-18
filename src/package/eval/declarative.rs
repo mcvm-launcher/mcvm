@@ -179,13 +179,13 @@ fn check_condition_set<'a>(conditions: &DeclarativeConditionSet, input: &'a Eval
 	}
 
 	if let Some(operating_systems) = &conditions.operating_systems {
-		if !operating_systems.iter().any(|x| check_os_condition(x)) {
+		if !operating_systems.iter().any(check_os_condition) {
 			return false;
 		}
 	}
 
 	if let Some(architectures) = &conditions.architectures {
-		if !architectures.iter().any(|x| check_arch_condition(x)) {
+		if !architectures.iter().any(check_arch_condition) {
 			return false;
 		}
 	}
