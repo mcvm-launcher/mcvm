@@ -18,7 +18,6 @@ use crate::io::options::client::ClientOptions;
 use crate::io::options::server::ServerOptions;
 use crate::io::{files, snapshot};
 use crate::net::fabric_quilt;
-use crate::net::game_files::client_meta::ClientMeta;
 use crate::package::eval::{EvalData, EvalInput, Routine};
 use crate::package::reg::PkgRegistry;
 use mcvm_shared::later::Later;
@@ -37,7 +36,6 @@ use mcvm_shared::addon::{Addon, AddonKind};
 use std::collections::HashMap;
 use std::fs;
 use std::path::{Path, PathBuf};
-use std::rc::Rc;
 
 /// An instance of the game on a profile
 #[derive(Debug)]
@@ -46,12 +44,9 @@ pub struct Instance {
 	pub kind: InstKind,
 	/// The ID of this instance
 	pub id: InstanceID,
-	modifications: GameModifications,
-	launch: LaunchOptions,
-	datapack_folder: Option<String>,
-	snapshot_config: snapshot::Config,
-	packages: Vec<PackageConfig>,
-	client_meta: Later<Rc<ClientMeta>>,
+	config: InstanceStoredConfig,
+	/// Directories of the instance
+	pub dirs: Later<InstanceDirs>,
 	java: Later<JavaInstallation>,
 	classpath: Option<Classpath>,
 	jar_path: Later<PathBuf>,
@@ -85,26 +80,63 @@ impl InstKind {
 	}
 }
 
+/// The stored configuration on an instance
+#[derive(Debug)]
+pub struct InstanceStoredConfig {
+	/// Modifications to the instance
+	pub modifications: GameModifications,
+	/// Launch options for the instance
+	pub launch: LaunchOptions,
+	/// The instance's global datapack folder
+	pub datapack_folder: Option<String>,
+	/// The instance's snapshot configuration
+	pub snapshot_config: snapshot::Config,
+	/// The packages on the instance
+	pub packages: Vec<PackageConfig>,
+}
+
+/// Directories that an instance uses
+#[derive(Debug)]
+pub struct InstanceDirs {
+	/// The base instance directory
+	pub inst_dir: PathBuf,
+	/// The game directory, such as .minecraft, relative to the instance directory
+	pub game_dir: PathBuf,
+}
+
+impl InstanceDirs {
+	/// Create a new InstanceDirs
+	pub fn new(paths: &Paths, id: &str, side: &Side) -> Self {
+		let inst_dir = match side {
+			Side::Client { .. } => paths.project.data_dir().join("client").join(id.to_string()),
+			Side::Server { .. } => paths.project.data_dir().join("server").join(id.to_string()),
+		};
+
+		let game_dir = inst_dir.join(match side {
+			Side::Client { .. } => ".minecraft",
+			Side::Server { .. } => "server",
+		});
+
+		Self { inst_dir, game_dir }
+	}
+
+	/// Make sure the directories exist
+	pub fn ensure_exist(&self) -> anyhow::Result<()> {
+		files::create_leading_dirs(&self.inst_dir)?;
+		files::create_dir(&self.inst_dir).context("Failed to create instance directory")?;
+		files::create_dir(&self.game_dir).context("Failed to create game directory")?;
+		Ok(())
+	}
+}
+
 impl Instance {
 	/// Create a new instance
-	pub fn new(
-		kind: InstKind,
-		id: InstanceID,
-		modifications: GameModifications,
-		launch: LaunchOptions,
-		datapack_folder: Option<String>,
-		snapshot_config: snapshot::Config,
-		packages: Vec<PackageConfig>,
-	) -> Self {
+	pub fn new(kind: InstKind, id: InstanceID, config: InstanceStoredConfig) -> Self {
 		Self {
 			kind,
 			id,
-			modifications,
-			launch,
-			datapack_folder,
-			snapshot_config,
-			packages,
-			client_meta: Later::new(),
+			config,
+			dirs: Later::Empty,
 			java: Later::new(),
 			classpath: None,
 			jar_path: Later::new(),
@@ -112,28 +144,10 @@ impl Instance {
 		}
 	}
 
-	/// Get the directory where data for this instance is stored
-	pub fn get_dir(&self, paths: &Paths) -> PathBuf {
-		match &self.kind {
-			InstKind::Client { .. } => paths
-				.project
-				.data_dir()
-				.join("client")
-				.join(self.id.to_string()),
-			InstKind::Server { .. } => paths
-				.project
-				.data_dir()
-				.join("server")
-				.join(self.id.to_string()),
-		}
-	}
-
-	/// The subdirectory of this instance where actual game files are stored
-	pub fn get_subdir(&self, paths: &Paths) -> PathBuf {
-		self.get_dir(paths).join(match self.kind {
-			InstKind::Client { .. } => ".minecraft",
-			InstKind::Server { .. } => "server",
-		})
+	/// Ensure the directories are set
+	fn ensure_dirs(&mut self, paths: &Paths) {
+		self.dirs
+			.ensure_full(|| InstanceDirs::new(paths, &self.id, &self.kind.to_side()));
 	}
 
 	/// Set the java installation for the instance
@@ -162,11 +176,12 @@ impl Instance {
 
 	/// Get the paths on this instance to hardlink an addon to
 	pub fn get_linked_addon_paths(
-		&self,
+		&mut self,
 		addon: &Addon,
 		paths: &Paths,
 	) -> anyhow::Result<Vec<PathBuf>> {
-		let inst_dir = self.get_subdir(paths);
+		self.ensure_dirs(paths);
+		let inst_dir = &self.dirs.get().inst_dir;
 		Ok(match addon.kind {
 			AddonKind::ResourcePack => {
 				if let InstKind::Client { .. } = self.kind {
@@ -191,7 +206,7 @@ impl Instance {
 				}
 			}
 			AddonKind::Datapack => {
-				if let Some(datapack_folder) = &self.datapack_folder {
+				if let Some(datapack_folder) = &self.config.datapack_folder {
 					vec![inst_dir.join(datapack_folder)]
 				} else {
 					match self.kind {
@@ -231,10 +246,11 @@ impl Instance {
 	}
 
 	/// Creates an addon on the instance
-	pub fn create_addon(&self, addon: &Addon, paths: &Paths) -> anyhow::Result<()> {
-		let inst_dir = self.get_subdir(paths);
-		files::create_leading_dirs(&inst_dir)?;
-		files::create_dir(&inst_dir)?;
+	pub fn create_addon(&mut self, addon: &Addon, paths: &Paths) -> anyhow::Result<()> {
+		self.ensure_dirs(paths);
+		let game_dir = &self.dirs.get().game_dir;
+		files::create_leading_dirs(game_dir)?;
+		files::create_dir(game_dir)?;
 		for path in self
 			.get_linked_addon_paths(addon, paths)
 			.context("Failed to get linked directory")?
@@ -258,9 +274,10 @@ impl Instance {
 	}
 
 	/// Removes the paper server jar file from a server instance
-	pub fn remove_paper(&self, paths: &Paths, paper_file_name: String) -> anyhow::Result<()> {
-		let inst_dir = self.get_subdir(paths);
-		let paper_path = inst_dir.join(paper_file_name);
+	pub fn remove_paper(&mut self, paths: &Paths, paper_file_name: String) -> anyhow::Result<()> {
+		self.ensure_dirs(paths);
+		let game_dir = &self.dirs.get().game_dir;
+		let paper_path = game_dir.join(paper_file_name);
 		if paper_path.exists() {
 			fs::remove_file(paper_path).context("Failed to remove Paper jar")?;
 		}
@@ -270,21 +287,22 @@ impl Instance {
 
 	/// Removes files such as the game jar for when the profile version changes
 	pub fn teardown(
-		&self,
+		&mut self,
 		paths: &Paths,
 		paper_properties: Option<(u16, String)>,
 	) -> anyhow::Result<()> {
+		self.ensure_dirs(paths);
 		match self.kind {
 			InstKind::Client { .. } => {
-				let inst_dir = self.get_dir(paths);
+				let inst_dir = &self.dirs.get().inst_dir;
 				let jar_path = inst_dir.join("client.jar");
 				if jar_path.exists() {
 					fs::remove_file(jar_path).context("Failed to remove client.jar")?;
 				}
 			}
 			InstKind::Server { .. } => {
-				let inst_dir = self.get_subdir(paths);
-				let jar_path = inst_dir.join("server.jar");
+				let game_dir = &self.dirs.get().game_dir;
+				let jar_path = game_dir.join("server.jar");
 				if jar_path.exists() {
 					fs::remove_file(jar_path).context("Failed to remove server.jar")?;
 				}
@@ -301,7 +319,7 @@ impl Instance {
 
 	/// Installs a package on this instance
 	pub async fn install_package<'a>(
-		&self,
+		&mut self,
 		pkg: &ArcPkgReq,
 		eval_input: EvalInput<'a>,
 		reg: &mut PkgRegistry,
@@ -400,7 +418,7 @@ impl Instance {
 		for pkg in profile.iter_side(self.kind.to_side()) {
 			map.insert(pkg.get_pkg_id(), pkg);
 		}
-		for pkg in &self.packages {
+		for pkg in &self.config.packages {
 			map.insert(pkg.get_pkg_id(), pkg);
 		}
 
@@ -422,19 +440,20 @@ impl Instance {
 
 	/// Creates a new snapshot for this instance
 	pub fn create_snapshot(
-		&self,
+		&mut self,
 		id: String,
 		kind: snapshot::SnapshotKind,
 		paths: &Paths,
 	) -> anyhow::Result<()> {
+		self.ensure_dirs(paths);
 		let (snapshot_dir, mut index) = self.open_snapshot_index(paths)?;
 
 		index.create_snapshot(
 			kind,
 			id,
-			&self.snapshot_config,
+			&self.config.snapshot_config,
 			&self.id,
-			&self.get_subdir(paths),
+			&self.dirs.get().game_dir,
 			paths,
 		)?;
 
@@ -453,11 +472,12 @@ impl Instance {
 	}
 
 	/// Restores a snapshot for this instance
-	pub async fn restore_snapshot(&self, id: &str, paths: &Paths) -> anyhow::Result<()> {
+	pub async fn restore_snapshot(&mut self, id: &str, paths: &Paths) -> anyhow::Result<()> {
+		self.ensure_dirs(paths);
 		let (snapshot_dir, index) = self.open_snapshot_index(paths)?;
 
 		index
-			.restore_snapshot(id, &self.id, &self.get_subdir(paths), paths)
+			.restore_snapshot(id, &self.id, &self.dirs.get().game_dir, paths)
 			.await?;
 
 		index.finish(&snapshot_dir)?;

@@ -40,7 +40,7 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 
 		let mut notices = Vec::new();
 		for instance_id in package_instances {
-			let instance = ctx.instances.get(instance_id).ok_or(anyhow!(
+			let instance = ctx.instances.get_mut(instance_id).ok_or(anyhow!(
 				"Instance '{instance_id}' does not exist in the registry"
 			))?;
 			let params = EvalParameters {

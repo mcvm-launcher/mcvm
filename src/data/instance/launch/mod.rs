@@ -71,12 +71,20 @@ impl Instance {
 		);
 		match &self.kind {
 			InstKind::Client { .. } => {
-				self.launch_client(paths, users, version_info, &client, ms_client_id, o)
-					.await
-					.context("Failed to launch client")?;
+				self.launch_client(
+					paths,
+					users,
+					version_info,
+					&client,
+					ms_client_id,
+					&manager,
+					o,
+				)
+				.await
+				.context("Failed to launch client")?;
 			}
 			InstKind::Server { .. } => {
-				self.launch_server(paths, version_info, o)
+				self.launch_server(paths, version_info, &manager, o)
 					.context("Failed to launch server")?;
 			}
 		}
@@ -93,7 +101,7 @@ impl Instance {
 	) -> anyhow::Result<()> {
 		let mut log = File::create(log_file_path(&self.id, paths)?)
 			.context("Failed to open launch log file")?;
-		let mut cmd = match &self.launch.wrapper {
+		let mut cmd = match &self.config.launch.wrapper {
 			Some(wrapper) => {
 				let mut cmd = Command::new(&wrapper.cmd);
 				cmd.args(&wrapper.args);
@@ -103,17 +111,18 @@ impl Instance {
 			None => Command::new(properties.command),
 		};
 		cmd.current_dir(properties.cwd);
-		cmd.envs(self.launch.env.clone());
+		cmd.envs(self.config.launch.env.clone());
 		cmd.envs(properties.additional_env_vars);
 
-		cmd.args(self.launch.generate_jvm_args());
+		cmd.args(self.config.launch.generate_jvm_args());
 		cmd.args(properties.jvm_args);
 		if let Some(main_class) = properties.main_class {
 			cmd.arg(main_class);
 		}
 		cmd.args(properties.game_args);
 		cmd.args(
-			self.launch
+			self.config
+				.launch
 				.generate_game_args(version_info, self.kind.to_side(), o),
 		);
 

@@ -7,7 +7,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::data::id::InstanceID;
 use crate::data::instance::launch::{LaunchOptions, WrapperCommand};
-use crate::data::instance::{InstKind, Instance};
+use crate::data::instance::{InstKind, Instance, InstanceStoredConfig};
 use crate::data::profile::Profile;
 use crate::io::java::args::{ArgsPreset, MemoryNum};
 use crate::io::java::install::JavaInstallationKind;
@@ -502,11 +502,13 @@ pub fn read_instance_config(
 	let instance = Instance::new(
 		kind,
 		id,
-		profile.modifications.clone(),
-		launch.to_options()?,
-		datapack_folder,
-		snapshot_config.unwrap_or_default(),
-		packages,
+		InstanceStoredConfig {
+			modifications: profile.modifications.clone(),
+			launch: launch.to_options()?,
+			datapack_folder,
+			snapshot_config: snapshot_config.unwrap_or_default(),
+			packages,
+		},
 	);
 
 	Ok(instance)

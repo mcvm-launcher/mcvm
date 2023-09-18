@@ -5,6 +5,7 @@ use mcvm_shared::output::MCVMOutput;
 
 use crate::data::instance::launch::LaunchProcessProperties;
 use crate::data::instance::{InstKind, Instance};
+use crate::data::profile::update::manager::UpdateManager;
 use crate::io::files::paths::Paths;
 use mcvm_shared::versions::VersionInfo;
 
@@ -14,12 +15,14 @@ impl Instance {
 		&mut self,
 		paths: &Paths,
 		version_info: &VersionInfo,
+		_manager: &UpdateManager,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
 		assert!(matches!(self.kind, InstKind::Server { .. }));
 		let java_path = self.java.get().path.get();
 		let jre_path = java_path.join("bin/java");
-		let server_dir = self.get_subdir(paths);
+		self.ensure_dirs(paths);
+		let server_dir = &self.dirs.get().game_dir;
 
 		let mut jvm_args = Vec::new();
 		let mut game_args = Vec::new();

@@ -90,7 +90,7 @@ async fn create(data: &mut CmdData, instance: &str, snapshot: &str) -> anyhow::R
 
 	let instance = config
 		.instances
-		.get(instance)
+		.get_mut(instance)
 		.ok_or(anyhow!("Instance does not exist"))?;
 
 	let (snapshot_dir, index) = instance.open_snapshot_index(&data.paths)?;
@@ -127,7 +127,7 @@ async fn restore(data: &mut CmdData, instance: &str, snapshot: &str) -> anyhow::
 
 	let instance = config
 		.instances
-		.get(instance)
+		.get_mut(instance)
 		.ok_or(anyhow!("Instance does not exist"))?;
 	instance.restore_snapshot(snapshot, &data.paths).await?;
 

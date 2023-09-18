@@ -10,6 +10,7 @@ use reqwest::Client;
 
 use crate::data::instance::launch::LaunchProcessProperties;
 use crate::data::instance::{InstKind, Instance};
+use crate::data::profile::update::manager::UpdateManager;
 use crate::data::user::UserManager;
 use crate::io::files::paths::Paths;
 use crate::net::game_files::client_meta::args::Arguments;
@@ -31,13 +32,15 @@ impl Instance {
 		version_info: &VersionInfo,
 		client: &Client,
 		ms_client_id: ClientId,
+		manager: &UpdateManager,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
 		assert!(matches!(self.kind, InstKind::Client { .. }));
 		let java_path = self.java.get().path.get();
 		let jre_path = java_path.join("bin/java");
-		let client_dir = self.get_subdir(paths);
-		let client_meta = self.client_meta.get();
+		self.ensure_dirs(paths);
+		let client_dir = &self.dirs.get().game_dir;
+		let client_meta = manager.client_meta.get();
 
 		let mut jvm_args = Vec::new();
 		let mut game_args = Vec::new();
@@ -47,7 +50,7 @@ impl Instance {
 			.await
 			.context("Failed to authenticate user")?;
 
-		if self.launch.use_log4j_config {
+		if self.config.launch.use_log4j_config {
 			let logging_arg = client_meta.logging.client.argument.clone();
 			let logging_arg =
 				args::fill_logging_path_arg(logging_arg, &version_info.version, paths)
@@ -120,18 +123,7 @@ impl Instance {
 				}
 			}
 
-			#[cfg(target_os = "linux")]
-			let mut env_vars = HashMap::new();
-			#[cfg(not(target_os = "linux"))]
-			let env_vars = HashMap::new();
-
-			// Compatability env var for old versions on Linux to prevent graphical issues
-			#[cfg(target_os = "linux")]
-			{
-				if VersionPattern::from("1.8.9-").matches_info(version_info) {
-					env_vars.insert("__GL_THREADED_OPTIMIZATIONS".to_string(), "0".to_string());
-				}
-			}
+			let env_vars = get_additional_environment_variables(version_info);
 
 			let launch_properties = LaunchProcessProperties {
 				cwd: &client_dir,
@@ -150,4 +142,22 @@ impl Instance {
 
 		Ok(())
 	}
+}
+
+/// Get additional environment variables for the client
+fn get_additional_environment_variables(version_info: &VersionInfo) -> HashMap<String, String> {
+	#[cfg(target_os = "linux")]
+	let mut env_vars = HashMap::new();
+	#[cfg(not(target_os = "linux"))]
+	let env_vars = HashMap::new();
+
+	// Compatability env var for old versions on Linux to prevent graphical issues
+	#[cfg(target_os = "linux")]
+	{
+		if VersionPattern::from("1.8.9-").matches_info(version_info) {
+			env_vars.insert("__GL_THREADED_OPTIMIZATIONS".to_string(), "0".to_string());
+		}
+	}
+
+	env_vars
 }

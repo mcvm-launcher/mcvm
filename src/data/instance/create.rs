@@ -32,14 +32,14 @@ impl Instance {
 		// so we need it for both.
 		out.insert(UpdateRequirement::ClientMeta);
 
-		let java_kind = match &self.launch.java {
+		let java_kind = match &self.config.launch.java {
 			JavaInstallationKind::Adoptium(..) => JavaInstallationKind::Adoptium(Later::Empty),
 			JavaInstallationKind::Zulu(..) => JavaInstallationKind::Zulu(Later::Empty),
 			x => x.clone(),
 		};
 		out.insert(UpdateRequirement::Java(java_kind));
 		out.insert(UpdateRequirement::GameJar(self.kind.to_side()));
-		match self.modifications.get_modloader(self.kind.to_side()) {
+		match self.config.modifications.get_modloader(self.kind.to_side()) {
 			Modloader::Fabric => {
 				out.insert(UpdateRequirement::FabricQuilt(
 					fabric_quilt::Mode::Fabric,
@@ -59,7 +59,7 @@ impl Instance {
 			InstKind::Client { .. } => {
 				out.insert(UpdateRequirement::ClientAssets);
 				out.insert(UpdateRequirement::ClientLibraries);
-				if self.launch.use_log4j_config {
+				if self.config.launch.use_log4j_config {
 					out.insert(UpdateRequirement::ClientLoggingConfig);
 				}
 			}
@@ -118,11 +118,7 @@ impl Instance {
 
 		let out = UpdateMethodResult::new();
 		let version = &manager.version_info.get().version;
-		let dir = self.get_dir(paths);
-		files::create_leading_dirs(&dir)?;
-		files::create_dir(&dir)?;
-		let mc_dir = self.get_subdir(paths);
-		files::create_dir(&mc_dir)?;
+		self.ensure_dirs(paths);
 		let jar_path =
 			crate::io::minecraft::game_jar::get_path(self.kind.to_side(), version, paths);
 
@@ -139,7 +135,7 @@ impl Instance {
 		self.main_class = Some(client_meta.main_class.clone());
 
 		if let Modloader::Fabric | Modloader::Quilt =
-			self.modifications.get_modloader(self.kind.to_side())
+			self.config.modifications.get_modloader(self.kind.to_side())
 		{
 			classpath.extend(
 				self.get_fabric_quilt(paths, manager)
@@ -170,7 +166,7 @@ impl Instance {
 			keys.extend(override_keys);
 		}
 		if !keys.is_empty() {
-			let options_path = mc_dir.join("options.txt");
+			let options_path = self.dirs.get().game_dir.join("options.txt");
 			let data_version = crate::io::minecraft::get_data_version(version_info, paths)
 				.context("Failed to obtain data version")?;
 			write_options_txt(keys, &options_path, &data_version)
@@ -186,7 +182,6 @@ impl Instance {
 		}
 
 		self.classpath = Some(classpath);
-		self.client_meta = manager.client_meta.clone();
 		self.jar_path.fill(jar_path);
 
 		Ok(out)
@@ -205,15 +200,11 @@ impl Instance {
 		let mut out = UpdateMethodResult::new();
 
 		let version = &manager.version_info.get().version;
-		let dir = self.get_dir(paths);
-		files::create_leading_dirs(&dir)?;
-		files::create_dir(&dir)?;
-		let server_dir = self.get_subdir(paths);
-		files::create_dir(&server_dir)?;
-		let jar_path = server_dir.join("server.jar");
+		self.ensure_dirs(paths);
+		let jar_path = self.dirs.get().game_dir.join("server.jar");
 
 		// Set the main class
-		if let ServerType::Paper = self.modifications.server_type {
+		if let ServerType::Paper = self.config.modifications.server_type {
 			self.main_class = Some(PAPER_SERVER_MAIN_CLASS.to_string());
 		} else {
 			self.main_class = Some(DEFAULT_SERVER_MAIN_CLASS.to_string());
@@ -225,14 +216,14 @@ impl Instance {
 		self.add_java(&java_vers.0.to_string(), manager);
 
 		let mut classpath = if let Modloader::Fabric | Modloader::Quilt =
-			self.modifications.get_modloader(self.kind.to_side())
+			self.config.modifications.get_modloader(self.kind.to_side())
 		{
 			self.get_fabric_quilt(paths, manager).await?
 		} else {
 			Classpath::new()
 		};
 
-		let eula_path = server_dir.join("eula.txt");
+		let eula_path = self.dirs.get().game_dir.join("eula.txt");
 		let eula_task = tokio::spawn(async move {
 			if !eula_path.exists() {
 				tokio::fs::write(eula_path, "eula = true\n").await?;
@@ -241,54 +232,64 @@ impl Instance {
 			Ok::<(), anyhow::Error>(())
 		});
 
-		self.jar_path.fill(match self.modifications.server_type {
-			ServerType::Paper => {
-				let process = OutputProcess::new(o);
-				process.0.display(
-					MessageContents::StartProcess("Checking for paper updates".into()),
-					MessageLevel::Important,
-				);
+		self.jar_path
+			.fill(match self.config.modifications.server_type {
+				ServerType::Paper => {
+					let process = OutputProcess::new(o);
+					process.0.display(
+						MessageContents::StartProcess("Checking for paper updates".into()),
+						MessageLevel::Important,
+					);
 
-				let build_num = paper::get_newest_build(version, client)
-					.await
-					.context("Failed to get the newest Paper version")?;
-				let file_name = paper::get_jar_file_name(version, build_num, client)
-					.await
-					.context("Failed to get the Paper file name")?;
-				let paper_jar_path = server_dir.join(&file_name);
-				if !manager.should_update_file(&paper_jar_path) {
-					process.0.display(
-						MessageContents::Success("Paper is up to date".into()),
-						MessageLevel::Important,
-					);
-				} else {
-					process.0.display(
-						MessageContents::StartProcess("Downloading Paper server".into()),
-						MessageLevel::Important,
-					);
-					paper::download_server_jar(version, build_num, &file_name, &server_dir, client)
+					let build_num = paper::get_newest_build(version, client)
+						.await
+						.context("Failed to get the newest Paper version")?;
+					let file_name = paper::get_jar_file_name(version, build_num, client)
+						.await
+						.context("Failed to get the Paper file name")?;
+					let paper_jar_path = self.dirs.get().game_dir.join(&file_name);
+					if !manager.should_update_file(&paper_jar_path) {
+						process.0.display(
+							MessageContents::Success("Paper is up to date".into()),
+							MessageLevel::Important,
+						);
+					} else {
+						process.0.display(
+							MessageContents::StartProcess("Downloading Paper server".into()),
+							MessageLevel::Important,
+						);
+						paper::download_server_jar(
+							version,
+							build_num,
+							&file_name,
+							&self.dirs.get().game_dir,
+							client,
+						)
 						.await
 						.context("Failed to download Paper server JAR")?;
-					process.0.display(
-						MessageContents::Success("Paper server downloaded".into()),
-						MessageLevel::Important,
-					);
-				}
+						process.0.display(
+							MessageContents::Success("Paper server downloaded".into()),
+							MessageLevel::Important,
+						);
+					}
 
-				out.files_updated.insert(paper_jar_path.clone());
-				paper_jar_path
-			}
-			_ => {
-				let extern_jar_path =
-					crate::io::minecraft::game_jar::get_path(self.kind.to_side(), version, paths);
-				if manager.should_update_file(&jar_path) {
-					update_hardlink(&extern_jar_path, &jar_path)
-						.context("Failed to hardlink server.jar")?;
-					out.files_updated.insert(jar_path.clone());
+					out.files_updated.insert(paper_jar_path.clone());
+					paper_jar_path
 				}
-				jar_path
-			}
-		});
+				_ => {
+					let extern_jar_path = crate::io::minecraft::game_jar::get_path(
+						self.kind.to_side(),
+						version,
+						paths,
+					);
+					if manager.should_update_file(&jar_path) {
+						update_hardlink(&extern_jar_path, &jar_path)
+							.context("Failed to hardlink server.jar")?;
+						out.files_updated.insert(jar_path.clone());
+					}
+					jar_path
+				}
+			});
 
 		classpath.add_path(self.jar_path.get());
 
@@ -312,24 +313,23 @@ impl Instance {
 			keys.extend(override_keys);
 		}
 		if !keys.is_empty() {
-			let options_path = server_dir.join("server.properties");
+			let options_path = self.dirs.get().game_dir.join("server.properties");
 			write_server_properties(keys, &options_path)
 				.await
 				.context("Failed to write server.properties")?;
 		}
 
-		self.client_meta = manager.client_meta.clone();
 		self.classpath = Some(classpath);
 
 		Ok(out)
 	}
 
 	/// Create a keypair file in the instance
-	pub fn create_keypair(&self, user: &User, paths: &Paths) -> anyhow::Result<()> {
+	pub fn create_keypair(&mut self, user: &User, paths: &Paths) -> anyhow::Result<()> {
 		if let Some(uuid) = &user.uuid {
 			if let Some(keypair) = &user.keypair {
-				let mc_dir = self.get_subdir(paths);
-				let keys_dir = mc_dir.join("profilekeys");
+				self.ensure_dirs(paths);
+				let keys_dir = self.dirs.get().game_dir.join("profilekeys");
 				let hyphenated_uuid = hyphenate_uuid(uuid).context("Failed to hyphenate UUID")?;
 				let path = keys_dir.join(format!("{hyphenated_uuid}.json"));
 				files::create_leading_dirs(&path)?;

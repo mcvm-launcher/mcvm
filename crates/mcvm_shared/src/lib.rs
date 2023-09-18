@@ -176,6 +176,13 @@ pub mod later {
 			*self = Self::Full(value);
 		}
 
+		/// Fill the Later with a function if it is not full already
+		pub fn ensure_full(&mut self, f: impl Fn() -> T) {
+			if self.is_empty() {
+				self.fill(f());
+			}
+		}
+
 		/// Checks if the Later does not contain a value
 		pub fn is_empty(&self) -> bool {
 			matches!(self, Self::Empty)

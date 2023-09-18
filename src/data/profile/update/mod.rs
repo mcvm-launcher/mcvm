@@ -174,7 +174,7 @@ async fn check_profile_version_change<'a, O: MCVMOutput>(
 		);
 
 		for instance_id in profile.instances.iter() {
-			let instance = ctx.instances.get(instance_id).ok_or(anyhow!(
+			let instance = ctx.instances.get_mut(instance_id).ok_or(anyhow!(
 				"Instance '{instance_id}' does not exist in the registry"
 			))?;
 			instance
@@ -221,7 +221,7 @@ async fn check_profile_paper_update<'a, O: MCVMOutput>(
 	if let Some((build_num, file_name)) = paper_properties {
 		if ctx.lock.update_profile_paper_build(&profile.id, build_num) {
 			for inst in profile.instances.iter() {
-				if let Some(inst) = ctx.instances.get(inst) {
+				if let Some(inst) = ctx.instances.get_mut(inst) {
 					inst.remove_paper(ctx.paths, file_name.clone())
 						.context("Failed to remove Paper")?;
 				}

@@ -118,7 +118,7 @@ pub fn replace_arg_placeholders(
 	out = out.replace(placeholder!("version_type"), "mcvm");
 	out = out.replace(
 		placeholder!("game_directory"),
-		instance.get_subdir(paths).to_str()?,
+		instance.dirs.get().game_dir.to_str()?,
 	);
 	out = out.replace(placeholder!("assets_root"), paths.assets.to_str()?);
 	out = out.replace(placeholder!("assets_index_name"), version);
