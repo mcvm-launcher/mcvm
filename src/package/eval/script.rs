@@ -22,7 +22,7 @@ pub fn eval_script_package<'a>(
 	input: EvalInput<'a>,
 ) -> anyhow::Result<EvalData<'a>> {
 	let mut eval = EvalData::new(input, pkg_id, &routine);
-	
+
 	eval.vars.set_reserved_constants(ReservedConstantVariables {
 		mc_version: &eval.input.constants.version,
 	});
@@ -146,6 +146,11 @@ impl ScriptEvaluatorTrait for ScriptEvaluator {
 		pkg: RecommendedPackage,
 	) -> anyhow::Result<()> {
 		shared.recommendations.push(pkg);
+		Ok(())
+	}
+
+	fn run_custom(&mut self, shared: &mut Self::Shared<'_>, _custom: String) -> anyhow::Result<()> {
+		shared.uses_custom_instructions = true;
 		Ok(())
 	}
 }

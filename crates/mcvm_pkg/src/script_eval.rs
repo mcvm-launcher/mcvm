@@ -82,6 +82,9 @@ pub trait ScriptEvaluator {
 		shared: &mut Self::Shared<'_>,
 		addon: AddonInstructionData,
 	) -> anyhow::Result<()>;
+
+	/// Run a custom instruction
+	fn run_custom(&mut self, shared: &mut Self::Shared<'_>, custom: String) -> anyhow::Result<()>;
 }
 
 /// Configuration for script evaluation

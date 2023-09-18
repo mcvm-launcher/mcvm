@@ -4,15 +4,15 @@ use anyhow::bail;
 use mcvm_shared::later::Later;
 use mcvm_shared::modifications::{ModloaderMatch, PluginLoaderMatch};
 use mcvm_shared::pkg::PackageAddonHashes;
-use mcvm_shared::Side;
 use mcvm_shared::versions::VersionPattern;
+use mcvm_shared::Side;
 
 use super::conditions::Condition;
 use super::lex::{TextPos, Token};
 use super::parse::BlockId;
 use super::vars::Value;
 use super::FailReason;
-use crate::conditions::{OSCondition, ArchCondition};
+use crate::conditions::{ArchCondition, OSCondition};
 use crate::unexpected_token;
 use mcvm_shared::addon::AddonKind;
 
@@ -136,6 +136,8 @@ pub enum InstrKind {
 	Cmd(Vec<Value>),
 	/// Call another routine
 	Call(Later<String>),
+	/// Custom implementation-specific instruction
+	Custom(Later<String>),
 }
 
 /// A non-nested else / else if block connected to an if
@@ -196,6 +198,7 @@ impl Display for InstrKind {
 				Self::Notice(..) => "notice",
 				Self::Cmd(..) => "cmd",
 				Self::Call(..) => "call",
+				Self::Custom(..) => "custom",
 			}
 		)
 	}
@@ -244,6 +247,7 @@ impl Instruction {
 			"extend" => Ok(InstrKind::Extend(Value::None)),
 			"notice" => Ok(InstrKind::Notice(Value::None)),
 			"call" => Ok(InstrKind::Call(Later::Empty)),
+			"custom" => Ok(InstrKind::Custom(Later::Empty)),
 			string => bail!("Unknown instruction '{string}' {}", pos),
 		}?;
 
@@ -269,7 +273,8 @@ impl Instruction {
 			| InstrKind::CurseForgeID(val)
 			| InstrKind::SmithedID(val)
 			| InstrKind::Website(val)
-			| InstrKind::Call(val) => val.is_full(),
+			| InstrKind::Call(val)
+			| InstrKind::Custom(val) => val.is_full(),
 			InstrKind::Features(val)
 			| InstrKind::Authors(val)
 			| InstrKind::PackageMaintainers(val)
@@ -321,7 +326,8 @@ impl Instruction {
 				| InstrKind::Banner(text)
 				| InstrKind::License(text)
 				| InstrKind::ModrinthID(text)
-				| InstrKind::CurseForgeID(text) => {
+				| InstrKind::CurseForgeID(text)
+				| InstrKind::Custom(text) => {
 					if text.is_empty() {
 						text.fill(parse_string(tok, pos)?);
 					} else {

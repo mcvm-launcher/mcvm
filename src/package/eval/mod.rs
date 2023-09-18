@@ -163,6 +163,8 @@ pub struct EvalData<'a> {
 	pub notices: Vec<String>,
 	/// The output commands
 	pub commands: Vec<Vec<String>>,
+	/// Whether the package uses custom instructions
+	pub uses_custom_instructions: bool,
 }
 
 impl<'a> EvalData<'a> {
@@ -182,6 +184,7 @@ impl<'a> EvalData<'a> {
 			extensions: Vec::new(),
 			notices: Vec::new(),
 			commands: Vec::new(),
+			uses_custom_instructions: false,
 		}
 	}
 }

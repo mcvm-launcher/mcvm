@@ -71,6 +71,7 @@ Properties like `features` and `modrinth_id` can only be used in the `@propertie
 - `extend {package}`: Extend another package.
 - `notice {message}`: Display a warning or important information as a message to the user. Notice messages may not be more than 128 characters long, and there cannot be more than five of them that are displayed per package evaluation.
 - `cmd {command} {arg1} {arg2} ...`: Run a command on the system. Requires elevated permissions. Only runs during the install stage, not when resolving dependencies. If the command returns a non-zero exit code, the install process will fail. Context such as current working directory is not persisted across commands.
+- `custom {data}`: Run custom implementation-specific functionality. This allows different users of the packaging standard to do other things with MCVM packages, but MCVM itself does not recognize them. You can put whatever you want in the `data` field.
 
 #### Metadata Instructions
 

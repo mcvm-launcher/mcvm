@@ -334,6 +334,15 @@ impl Instance {
 			.await
 			.context("Failed to evaluate package")?;
 
+		if eval.uses_custom_instructions {
+			o.display(
+				MessageContents::Warning(
+					"Package uses custom instructions that MCVM does not recognize".into(),
+				),
+				MessageLevel::Important,
+			);
+		}
+
 		// Run commands
 		if !eval.commands.is_empty() {
 			o.display(
