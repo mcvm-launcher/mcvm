@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 use std::path::{Path, PathBuf};
-use std::rc::Rc;
+use std::sync::Arc;
 
 use anyhow::Context;
 use mcvm_shared::later::Later;
@@ -56,7 +56,7 @@ pub struct UpdateManager {
 	/// The version manifest to be fulfilled later
 	version_manifest: Later<VersionManifest>,
 	/// The client meta to be fulfilled later
-	pub client_meta: Later<Rc<ClientMeta>>,
+	pub client_meta: Later<Arc<ClientMeta>>,
 	/// The Java installation to be fulfilled later
 	pub java: Later<JavaInstallation>,
 	/// The game options to be fulfilled later
@@ -213,7 +213,7 @@ impl UpdateManager {
 			)
 			.await
 			.context("Failed to get client meta")?;
-			self.client_meta.fill(Rc::new(client_meta));
+			self.client_meta.fill(Arc::new(client_meta));
 
 			o.display(
 				MessageContents::Success("client meta obtained".into()),
