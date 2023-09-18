@@ -1,9 +1,10 @@
 use std::fmt::Display;
+use std::sync::Arc;
 
 use anyhow::{bail, ensure};
 use mcvm_pkg::properties::PackageProperties;
 use mcvm_pkg::PackageContentType;
-use mcvm_shared::pkg::{is_valid_package_id, PackageID, PackageStability};
+use mcvm_shared::pkg::{is_valid_package_id, ArcPkgReq, PackageID, PackageStability};
 use mcvm_shared::util::is_valid_identifier;
 use serde::{Deserialize, Serialize};
 
@@ -108,9 +109,9 @@ impl PackageConfig {
 	}
 
 	/// Get the request of the config
-	pub fn get_request(&self) -> PkgRequest {
+	pub fn get_request(&self) -> ArcPkgReq {
 		let id = self.get_pkg_id();
-		PkgRequest::new(id.clone(), PkgRequestSource::UserRequire)
+		Arc::new(PkgRequest::new(id.clone(), PkgRequestSource::UserRequire))
 	}
 
 	/// Get the features of the config

@@ -3,7 +3,7 @@ use std::collections::{HashMap, HashSet};
 use itertools::Itertools;
 use mcvm_pkg::PkgRequest;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
-use mcvm_shared::pkg::{PackageID, PackageStability};
+use mcvm_shared::pkg::{ArcPkgReq, PackageID, PackageStability};
 
 use crate::data::config::package::PackageConfig;
 use crate::data::id::InstanceID;
@@ -22,7 +22,7 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 	constants: &EvalConstants,
 	ctx: &mut ProfileUpdateContext<'a, O>,
 	force: bool,
-) -> anyhow::Result<HashSet<PkgRequest>> {
+) -> anyhow::Result<HashSet<ArcPkgReq>> {
 	ctx.output.display(
 		MessageContents::StartProcess("Resolving package dependencies".into()),
 		MessageLevel::Important,
@@ -143,10 +143,10 @@ async fn resolve_and_batch<'a, O: MCVMOutput>(
 	constants: &EvalConstants,
 	ctx: &mut ProfileUpdateContext<'a, O>,
 ) -> anyhow::Result<(
-	HashMap<PkgRequest, Vec<InstanceID>>,
-	HashMap<InstanceID, Vec<PkgRequest>>,
+	HashMap<ArcPkgReq, Vec<InstanceID>>,
+	HashMap<InstanceID, Vec<ArcPkgReq>>,
 )> {
-	let mut batched: HashMap<PkgRequest, Vec<InstanceID>> = HashMap::new();
+	let mut batched: HashMap<ArcPkgReq, Vec<InstanceID>> = HashMap::new();
 	let mut resolved = HashMap::new();
 	for instance_id in &profile.instances {
 		let instance = ctx.instances.get(instance_id).ok_or(anyhow!(
@@ -187,7 +187,7 @@ async fn resolve_and_batch<'a, O: MCVMOutput>(
 
 /// Prints support messages about installed packages when updating
 pub async fn print_package_support_messages<'a, O: MCVMOutput>(
-	packages: &[PkgRequest],
+	packages: &[ArcPkgReq],
 	ctx: &mut ProfileUpdateContext<'a, O>,
 ) -> anyhow::Result<()> {
 	let package_count = 5;

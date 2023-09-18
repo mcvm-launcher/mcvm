@@ -5,6 +5,7 @@ pub mod launch;
 
 use anyhow::{bail, ensure, Context};
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
+use mcvm_shared::pkg::ArcPkgReq;
 use mcvm_shared::Side;
 use reqwest::Client;
 
@@ -20,15 +21,14 @@ use crate::net::fabric_quilt;
 use crate::net::game_files::client_meta::ClientMeta;
 use crate::package::eval::{EvalData, EvalInput, Routine};
 use crate::package::reg::PkgRegistry;
-use mcvm_pkg::PkgRequest;
 use mcvm_shared::later::Later;
 
 use self::launch::LaunchOptions;
 
 use super::addon;
 use super::config::instance::ClientWindowConfig;
-use super::config::profile::GameModifications;
 use super::config::package::PackageConfig;
+use super::config::profile::GameModifications;
 use super::config::profile::ProfilePackageConfiguration;
 use super::id::InstanceID;
 use super::profile::update::manager::UpdateManager;
@@ -302,7 +302,7 @@ impl Instance {
 	/// Installs a package on this instance
 	pub async fn install_package<'a>(
 		&self,
-		pkg: &PkgRequest,
+		pkg: &ArcPkgReq,
 		eval_input: EvalInput<'a>,
 		reg: &mut PkgRegistry,
 		paths: &Paths,

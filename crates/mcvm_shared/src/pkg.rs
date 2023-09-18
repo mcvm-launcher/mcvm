@@ -24,11 +24,11 @@ pub enum PkgRequestSource {
 	/// This package was required by the user
 	UserRequire,
 	/// This package was bundled by another package
-	Bundled(Box<PkgRequest>),
+	Bundled(ArcPkgReq),
 	/// This package was depended on by another package
-	Dependency(Box<PkgRequest>),
+	Dependency(ArcPkgReq),
 	/// This package was refused by another package
-	Refused(Box<PkgRequest>),
+	Refused(ArcPkgReq),
 	/// This package was requested by some automatic system
 	Repository,
 }
@@ -47,9 +47,9 @@ impl PartialOrd for PkgRequestSource {
 
 impl PkgRequestSource {
 	/// Gets the source package of this package, if any
-	pub fn get_source(&self) -> Option<&PkgRequest> {
+	pub fn get_source(&self) -> Option<ArcPkgReq> {
 		match self {
-			Self::Dependency(source) | Self::Bundled(source) => Some(source),
+			Self::Dependency(source) | Self::Bundled(source) => Some(source.clone()),
 			_ => None,
 		}
 	}
@@ -118,6 +118,9 @@ impl Display for PkgRequest {
 		write!(f, "{}", self.id)
 	}
 }
+
+/// A PkgRequest wrapped in an Arc
+pub type ArcPkgReq = Arc<PkgRequest>;
 
 /// Stability setting for a package
 #[derive(Deserialize, Serialize, Default, Debug, Copy, Clone, PartialEq, Eq)]

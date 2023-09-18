@@ -1,8 +1,9 @@
 use std::collections::VecDeque;
+use std::sync::Arc;
 
 use anyhow::{bail, Context};
 use itertools::Itertools;
-use mcvm_shared::pkg::PackageID;
+use mcvm_shared::pkg::{ArcPkgReq, PackageID};
 
 use crate::properties::PackageProperties;
 use crate::{ConfiguredPackage, PackageEvalRelationsResult, PackageEvaluator};
@@ -91,7 +92,7 @@ pub async fn resolve<'a, E: PackageEvaluator<'a>>(
 /// Result from package resolution
 pub struct ResolutionResult {
 	/// The list of packages to install
-	pub packages: Vec<PkgRequest>,
+	pub packages: Vec<ArcPkgReq>,
 	/// Package recommendations that were not satisfied
 	pub unfulfilled_recommendations: Vec<RecommendedPackage>,
 }
@@ -99,7 +100,7 @@ pub struct ResolutionResult {
 /// Recommended package that has a PkgRequest instead of a String
 pub struct RecommendedPackage {
 	/// Package to recommend
-	pub req: PkgRequest,
+	pub req: ArcPkgReq,
 	/// Whether to invert this recommendation to recommend against a package
 	pub invert: bool,
 }
@@ -130,7 +131,7 @@ async fn resolve_task<'a, E: PackageEvaluator<'a>>(
 
 /// Resolve an EvalPackage task
 async fn resolve_eval_package<'a, E: PackageEvaluator<'a>>(
-	package: PkgRequest,
+	package: ArcPkgReq,
 	config: Option<&E::ConfiguredPackage>,
 	common_input: &E::CommonInput,
 	evaluator: &mut E,
@@ -154,10 +155,10 @@ async fn resolve_eval_package<'a, E: PackageEvaluator<'a>>(
 		.context("Failed to evaluate package")?;
 
 	for conflict in result.get_conflicts().iter().sorted() {
-		let req = PkgRequest::new(
+		let req = Arc::new(PkgRequest::new(
 			conflict.clone(),
-			PkgRequestSource::Refused(Box::new(package.clone())),
-		);
+			PkgRequestSource::Refused(package.clone()),
+		));
 		if resolver.is_required(&req) {
 			bail!(
 				"Package '{}' is incompatible with this package.",
@@ -170,10 +171,10 @@ async fn resolve_eval_package<'a, E: PackageEvaluator<'a>>(
 	}
 
 	for dep in result.get_deps().iter().flatten().sorted() {
-		let req = PkgRequest::new(
+		let req = Arc::new(PkgRequest::new(
 			dep.value.clone(),
-			PkgRequestSource::Dependency(Box::new(package.clone())),
-		);
+			PkgRequestSource::Dependency(package.clone()),
+		));
 		if dep.explicit && !resolver.is_user_required(&req) {
 			bail!("Package '{req}' has been explicitly required by this package. This means it must be required by the user in their config.");
 		}
@@ -190,10 +191,10 @@ async fn resolve_eval_package<'a, E: PackageEvaluator<'a>>(
 	}
 
 	for bundled in result.get_bundled().iter().sorted() {
-		let req = PkgRequest::new(
+		let req = Arc::new(PkgRequest::new(
 			bundled.clone(),
-			PkgRequestSource::Bundled(Box::new(package.clone())),
-		);
+			PkgRequestSource::Bundled(package.clone()),
+		));
 		resolver.check_constraints(&req)?;
 		resolver.remove_require_constraint(&req);
 		resolver.constraints.push(Constraint {
@@ -206,15 +207,15 @@ async fn resolve_eval_package<'a, E: PackageEvaluator<'a>>(
 	}
 
 	for (check_package, compat_package) in result.get_compats().iter().sorted() {
-		let check_package = PkgRequest::new(
+		let check_package = Arc::new(PkgRequest::new(
 			check_package.clone(),
-			PkgRequestSource::Dependency(Box::new(package.clone())),
-		);
-		let compat_package = PkgRequest::new(
+			PkgRequestSource::Dependency(package.clone()),
+		));
+		let compat_package = Arc::new(PkgRequest::new(
 			compat_package.clone(),
-			PkgRequestSource::Dependency(Box::new(package.clone())),
-		);
-		if !resolver.compat_exists(&check_package, &compat_package) {
+			PkgRequestSource::Dependency(package.clone()),
+		));
+		if !resolver.compat_exists(check_package.clone(), compat_package.clone()) {
 			resolver.constraints.push(Constraint {
 				kind: ConstraintKind::Compat(check_package, compat_package),
 			});
@@ -222,20 +223,20 @@ async fn resolve_eval_package<'a, E: PackageEvaluator<'a>>(
 	}
 
 	for extension in result.get_extensions().iter().sorted() {
-		let req = PkgRequest::new(
+		let req = Arc::new(PkgRequest::new(
 			extension.clone(),
-			PkgRequestSource::Dependency(Box::new(package.clone())),
-		);
+			PkgRequestSource::Dependency(package.clone()),
+		));
 		resolver.constraints.push(Constraint {
 			kind: ConstraintKind::Extend(req),
 		});
 	}
 
 	for recommendation in result.get_recommendations().iter().sorted() {
-		let req = PkgRequest::new(
+		let req = Arc::new(PkgRequest::new(
 			recommendation.value.clone(),
-			PkgRequestSource::Dependency(Box::new(package.clone())),
-		);
+			PkgRequestSource::Dependency(package.clone()),
+		));
 		resolver.constraints.push(Constraint {
 			kind: ConstraintKind::Recommend(req, recommendation.invert),
 		});
@@ -272,7 +273,7 @@ impl<'a, E> Resolver<'a, E>
 where
 	E: PackageEvaluator<'a>,
 {
-	fn is_required_fn(constraint: &Constraint, req: &PkgRequest) -> bool {
+	fn is_required_fn(constraint: &Constraint, req: &ArcPkgReq) -> bool {
 		matches!(
 			&constraint.kind,
 			ConstraintKind::Require(dest)
@@ -282,14 +283,14 @@ where
 	}
 
 	/// Whether a package has been required by an existing constraint
-	pub fn is_required(&self, req: &PkgRequest) -> bool {
+	pub fn is_required(&self, req: &ArcPkgReq) -> bool {
 		self.constraints
 			.iter()
 			.any(|x| Self::is_required_fn(x, req))
 	}
 
 	/// Whether a package has been required by the user
-	pub fn is_user_required(&self, req: &PkgRequest) -> bool {
+	pub fn is_user_required(&self, req: &ArcPkgReq) -> bool {
 		self.constraints.iter().any(|x| {
 			matches!(&x.kind, ConstraintKind::UserRequire(dest) if dest == req)
 				|| matches!(&x.kind, ConstraintKind::Bundle(dest) if dest == req && dest.source.is_user_bundled())
@@ -297,7 +298,7 @@ where
 	}
 
 	/// Remove the require constraint of a package if it exists
-	pub fn remove_require_constraint(&mut self, req: &PkgRequest) {
+	pub fn remove_require_constraint(&mut self, req: &ArcPkgReq) {
 		let index = self
 			.constraints
 			.iter()
@@ -307,20 +308,22 @@ where
 		}
 	}
 
-	fn is_refused_fn(constraint: &Constraint, req: &PkgRequest) -> bool {
+	fn is_refused_fn(constraint: &Constraint, req: ArcPkgReq) -> bool {
 		matches!(
 			&constraint.kind,
-			ConstraintKind::Refuse(dest) if dest == req
+			ConstraintKind::Refuse(dest) if *dest == req
 		)
 	}
 
 	/// Whether a package has been refused by an existing constraint
-	pub fn is_refused(&self, req: &PkgRequest) -> bool {
-		self.constraints.iter().any(|x| Self::is_refused_fn(x, req))
+	pub fn is_refused(&self, req: &ArcPkgReq) -> bool {
+		self.constraints
+			.iter()
+			.any(|x| Self::is_refused_fn(x, req.clone()))
 	}
 
 	/// Get all refusers of this package
-	pub fn get_refusers(&self, req: &PkgRequest) -> Vec<PackageID> {
+	pub fn get_refusers(&self, req: &ArcPkgReq) -> Vec<PackageID> {
 		self.constraints
 			.iter()
 			.filter_map(|x| {
@@ -343,17 +346,17 @@ where
 	}
 
 	/// Whether a compat constraint exists
-	pub fn compat_exists(&self, package: &PkgRequest, compat_package: &PkgRequest) -> bool {
+	pub fn compat_exists(&self, package: ArcPkgReq, compat_package: ArcPkgReq) -> bool {
 		self.constraints.iter().any(|x| {
 			matches!(
 				&x.kind,
-				ConstraintKind::Compat(src, dest) if src == package && dest == compat_package
+				ConstraintKind::Compat(src, dest) if *src == package && *dest == compat_package
 			)
 		})
 	}
 
 	/// Creates an error if this package is disallowed in the constraints
-	pub fn check_constraints(&self, req: &PkgRequest) -> anyhow::Result<()> {
+	pub fn check_constraints(&self, req: &ArcPkgReq) -> anyhow::Result<()> {
 		if self.is_refused(req) {
 			let refusers = self.get_refusers(req);
 			bail!(
@@ -385,7 +388,7 @@ where
 	}
 
 	/// Collect all needed packages for final output
-	pub fn collect_packages(self) -> Vec<PkgRequest> {
+	pub fn collect_packages(self) -> Vec<ArcPkgReq> {
 		self.constraints
 			.iter()
 			.filter_map(|x| match &x.kind {
@@ -406,20 +409,20 @@ struct Constraint {
 
 #[derive(Debug)]
 enum ConstraintKind {
-	Require(PkgRequest),
-	UserRequire(PkgRequest),
-	Refuse(PkgRequest),
-	Recommend(PkgRequest, bool),
-	Bundle(PkgRequest),
-	Compat(PkgRequest, PkgRequest),
-	Extend(PkgRequest),
+	Require(ArcPkgReq),
+	UserRequire(ArcPkgReq),
+	Refuse(ArcPkgReq),
+	Recommend(ArcPkgReq, bool),
+	Bundle(ArcPkgReq),
+	Compat(ArcPkgReq, ArcPkgReq),
+	Extend(ArcPkgReq),
 }
 
 /// A task that needs to be completed for resolution
 enum Task<'a, E: PackageEvaluator<'a>> {
 	/// Evaluate a package and its relationships
 	EvalPackage {
-		dest: PkgRequest,
+		dest: Arc<PkgRequest>,
 		/// For packages with a config
 		config: Option<E::ConfiguredPackage>,
 	},

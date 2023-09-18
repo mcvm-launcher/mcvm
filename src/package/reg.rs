@@ -5,6 +5,7 @@ use mcvm_pkg::properties::PackageProperties;
 use mcvm_pkg::PackageContentType;
 use mcvm_pkg::PkgRequest;
 use mcvm_pkg::PkgRequestSource;
+use mcvm_shared::pkg::ArcPkgReq;
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 
@@ -16,6 +17,7 @@ use crate::io::files::paths::Paths;
 
 use std::collections::HashMap;
 use std::path::Path;
+use std::sync::Arc;
 
 /// An object used to store and cache all of the packages that we are working with.
 /// It queries repositories automatically when asking for a package that isn't in the
@@ -24,7 +26,7 @@ use std::path::Path;
 pub struct PkgRegistry {
 	/// The package repositories that the user has configured
 	pub repos: Vec<PkgRepo>,
-	packages: HashMap<PkgRequest, Package>,
+	packages: HashMap<ArcPkgReq, Package>,
 	caching_strategy: CachingStrategy,
 }
 
@@ -38,10 +40,10 @@ impl PkgRegistry {
 		}
 	}
 
-	fn insert(&mut self, req: &PkgRequest, pkg: Package) -> &mut Package {
+	fn insert(&mut self, req: ArcPkgReq, pkg: Package) -> &mut Package {
 		self.packages.insert(req.clone(), pkg);
 		self.packages
-			.get_mut(req)
+			.get_mut(&req)
 			.expect("Package was not inserted into map")
 	}
 
@@ -52,7 +54,7 @@ impl PkgRegistry {
 
 	async fn query_insert(
 		&mut self,
-		req: &PkgRequest,
+		req: &ArcPkgReq,
 		paths: &Paths,
 		client: &Client,
 	) -> anyhow::Result<&mut Package> {
@@ -61,7 +63,7 @@ impl PkgRegistry {
 		// First check the remote repositories
 		if let Some(result) = query_all(&mut self.repos, &pkg_id, paths, client).await? {
 			return Ok(self.insert(
-				req,
+				req.clone(),
 				Package::new(
 					pkg_id,
 					PkgLocation::Remote(Some(result.url)),
@@ -74,7 +76,10 @@ impl PkgRegistry {
 		if is_core_package(&req.id) {
 			let content_type =
 				get_core_package_content_type(&pkg_id).expect("Core package should exist");
-			Ok(self.insert(req, Package::new(pkg_id, PkgLocation::Core, content_type)))
+			Ok(self.insert(
+				req.clone(),
+				Package::new(pkg_id, PkgLocation::Core, content_type),
+			))
 		} else {
 			Err(anyhow!("Package '{pkg_id}' does not exist"))
 		}
@@ -82,7 +87,7 @@ impl PkgRegistry {
 
 	async fn get(
 		&mut self,
-		req: &PkgRequest,
+		req: &ArcPkgReq,
 		paths: &Paths,
 		client: &Client,
 	) -> anyhow::Result<&mut Package> {
@@ -96,7 +101,7 @@ impl PkgRegistry {
 	/// Ensure package contents while following the caching strategy
 	async fn ensure_package_contents(
 		&mut self,
-		req: &PkgRequest,
+		req: &ArcPkgReq,
 		paths: &Paths,
 		client: &Client,
 	) -> anyhow::Result<&mut Package> {
@@ -114,7 +119,7 @@ impl PkgRegistry {
 	/// Ensure that a package is in the registry
 	pub async fn ensure_package(
 		&mut self,
-		req: &PkgRequest,
+		req: &ArcPkgReq,
 		paths: &Paths,
 		client: &Client,
 	) -> anyhow::Result<()> {
@@ -128,7 +133,7 @@ impl PkgRegistry {
 	/// Get the metadata of a package
 	pub async fn get_metadata<'a>(
 		&'a mut self,
-		req: &PkgRequest,
+		req: &ArcPkgReq,
 		paths: &Paths,
 		client: &Client,
 	) -> anyhow::Result<&'a PackageMetadata> {
@@ -141,7 +146,7 @@ impl PkgRegistry {
 	/// Get the properties of a package
 	pub async fn get_properties<'a>(
 		&'a mut self,
-		req: &PkgRequest,
+		req: &ArcPkgReq,
 		paths: &Paths,
 		client: &Client,
 	) -> anyhow::Result<&'a PackageProperties> {
@@ -154,7 +159,7 @@ impl PkgRegistry {
 	/// Load the contents of a package
 	pub async fn load(
 		&mut self,
-		req: &PkgRequest,
+		req: &ArcPkgReq,
 		paths: &Paths,
 		client: &Client,
 	) -> anyhow::Result<String> {
@@ -166,7 +171,7 @@ impl PkgRegistry {
 	/// Parse and validate a package
 	pub async fn parse_and_validate(
 		&mut self,
-		req: &PkgRequest,
+		req: &ArcPkgReq,
 		paths: &Paths,
 		client: &Client,
 	) -> anyhow::Result<()> {
@@ -181,7 +186,7 @@ impl PkgRegistry {
 	/// Parse a package and get the contents
 	pub async fn parse<'a>(
 		&'a mut self,
-		req: &PkgRequest,
+		req: &ArcPkgReq,
 		paths: &Paths,
 		client: &Client,
 	) -> anyhow::Result<&'a PkgContents> {
@@ -195,7 +200,7 @@ impl PkgRegistry {
 	/// Evaluate a package
 	pub async fn eval<'a>(
 		&mut self,
-		req: &PkgRequest,
+		req: &ArcPkgReq,
 		paths: &Paths,
 		routine: Routine,
 		input: EvalInput<'a>,
@@ -209,7 +214,7 @@ impl PkgRegistry {
 	/// Remove a cached package
 	pub async fn remove_cached(
 		&mut self,
-		req: &PkgRequest,
+		req: &ArcPkgReq,
 		paths: &Paths,
 		client: &Client,
 	) -> anyhow::Result<()> {
@@ -222,14 +227,9 @@ impl PkgRegistry {
 	}
 
 	/// Insert a local package into the registry
-	pub fn insert_local(
-		&mut self,
-		req: &PkgRequest,
-		path: &Path,
-		content_type: PackageContentType,
-	) {
+	pub fn insert_local(&mut self, req: &ArcPkgReq, path: &Path, content_type: PackageContentType) {
 		self.insert(
-			req,
+			req.clone(),
 			Package::new(
 				req.id.clone(),
 				PkgLocation::Local(path.to_path_buf()),
@@ -239,19 +239,19 @@ impl PkgRegistry {
 	}
 
 	/// Iterator over all package requests in the registry
-	pub fn iter_requests(&self) -> impl Iterator<Item = &PkgRequest> {
+	pub fn iter_requests(&self) -> impl Iterator<Item = &ArcPkgReq> {
 		self.packages.keys()
 	}
 
 	/// Get all of the package requests in the registry in an owned manner
-	pub fn get_all_packages(&self) -> Vec<PkgRequest> {
+	pub fn get_all_packages(&self) -> Vec<ArcPkgReq> {
 		self.iter_requests().cloned().collect()
 	}
 
 	/// Remove cached packages
 	async fn remove_cached_packages(
 		&mut self,
-		packages: impl Iterator<Item = &PkgRequest>,
+		packages: impl Iterator<Item = &ArcPkgReq>,
 		paths: &Paths,
 		client: &Client,
 	) -> anyhow::Result<()> {
@@ -274,7 +274,7 @@ impl PkgRegistry {
 			.await
 			.context("Failed to retrieve all packages from repos")?
 			.iter()
-			.map(|(id, ..)| PkgRequest::new(id.clone(), PkgRequestSource::Repository))
+			.map(|(id, ..)| Arc::new(PkgRequest::new(id.clone(), PkgRequestSource::Repository)))
 			.collect::<Vec<_>>();
 		self.remove_cached_packages(packages.iter(), paths, client)
 			.await
@@ -310,19 +310,19 @@ pub enum CachingStrategy {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use std::path::PathBuf;
+	use std::{path::PathBuf, sync::Arc};
 
 	#[test]
 	fn test_reg_insert() {
 		let mut reg = PkgRegistry::new(vec![], CachingStrategy::Lazy);
 		reg.insert_local(
-			&PkgRequest::new("test", PkgRequestSource::UserRequire),
+			&Arc::new(PkgRequest::new("test", PkgRequestSource::UserRequire)),
 			&PathBuf::from("./test"),
 			PackageContentType::Script,
 		);
 		let req = PkgRequest::new(
 			"test",
-			PkgRequestSource::Dependency(Box::new(PkgRequest::new(
+			PkgRequestSource::Dependency(Arc::new(PkgRequest::new(
 				"hello",
 				PkgRequestSource::UserRequire,
 			))),
@@ -338,9 +338,9 @@ mod tests {
 	fn test_request_source_debug() {
 		let req = PkgRequest::new(
 			"foo",
-			PkgRequestSource::Dependency(Box::new(PkgRequest::new(
+			PkgRequestSource::Dependency(Arc::new(PkgRequest::new(
 				"bar",
-				PkgRequestSource::Dependency(Box::new(PkgRequest::new(
+				PkgRequestSource::Dependency(Arc::new(PkgRequest::new(
 					"baz",
 					PkgRequestSource::Repository,
 				))),

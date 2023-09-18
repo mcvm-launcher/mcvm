@@ -16,7 +16,6 @@ use mcvm_pkg::script_eval::AddonInstructionData;
 use mcvm_pkg::script_eval::EvalReason;
 use mcvm_pkg::ConfiguredPackage;
 use mcvm_pkg::PackageContentType;
-use mcvm_pkg::PkgRequest;
 use mcvm_pkg::RecommendedPackage;
 use mcvm_pkg::RequiredPackage;
 use mcvm_pkg::{
@@ -28,6 +27,7 @@ use mcvm_shared::lang::Language;
 use mcvm_shared::output::MCVMOutput;
 use mcvm_shared::output::MessageContents;
 use mcvm_shared::output::MessageLevel;
+use mcvm_shared::pkg::ArcPkgReq;
 use mcvm_shared::pkg::PackageID;
 use mcvm_shared::util::is_valid_identifier;
 use reqwest::Client;
@@ -382,13 +382,13 @@ struct EvaluatorCommonInput<'a> {
 
 /// Newtype for PkgInstanceConfig
 #[derive(Clone)]
-struct EvalPackageConfig(PackageConfig, PkgRequest);
+struct EvalPackageConfig(PackageConfig, ArcPkgReq);
 
 impl ConfiguredPackage for EvalPackageConfig {
 	type EvalInput<'a> = EvalInput<'a>;
 
-	fn get_package(&self) -> &PkgRequest {
-		&self.1
+	fn get_package(&self) -> ArcPkgReq {
+		self.1.clone()
 	}
 
 	fn override_configured_package_input(
@@ -452,7 +452,7 @@ impl<'a> PackageEvaluatorTrait<'a> for PackageEvaluator<'a> {
 
 	async fn eval_package_relations(
 		&mut self,
-		pkg: &PkgRequest,
+		pkg: &ArcPkgReq,
 		input: &Self::EvalInput<'a>,
 		common_input: &Self::CommonInput,
 	) -> anyhow::Result<Self::EvalRelationsResult<'a>> {
@@ -482,7 +482,7 @@ impl<'a> PackageEvaluatorTrait<'a> for PackageEvaluator<'a> {
 
 	async fn get_package_properties<'b>(
 		&'b mut self,
-		pkg: &PkgRequest,
+		pkg: &ArcPkgReq,
 		common_input: &Self::CommonInput,
 	) -> anyhow::Result<&'b PackageProperties> {
 		let properties = self
@@ -514,7 +514,7 @@ pub async fn resolve(
 
 	let packages = packages
 		.iter()
-		.map(|x| EvalPackageConfig((*x).clone(), x.get_request()))
+		.map(|x| EvalPackageConfig((*x).clone(), x.get_request().into()))
 		.collect::<Vec<_>>();
 
 	let result = mcvm_pkg::resolve::resolve(&packages, evaluator, input, &common_input).await?;

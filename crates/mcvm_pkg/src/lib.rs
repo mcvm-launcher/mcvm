@@ -18,7 +18,7 @@ pub mod script_eval;
 use anyhow::Context;
 use async_trait::async_trait;
 use declarative::{deserialize_declarative_package, validate_declarative_package};
-use mcvm_shared::pkg::PackageID;
+use mcvm_shared::pkg::{ArcPkgReq, PackageID};
 use properties::PackageProperties;
 use serde::{Deserialize, Serialize};
 
@@ -87,7 +87,7 @@ pub trait PackageEvaluator<'a> {
 	/// Evaluate the relationships of a package
 	async fn eval_package_relations(
 		&mut self,
-		pkg: &PkgRequest,
+		pkg: &ArcPkgReq,
 		input: &Self::EvalInput<'a>,
 		common_input: &Self::CommonInput,
 	) -> anyhow::Result<Self::EvalRelationsResult<'a>>;
@@ -95,7 +95,7 @@ pub trait PackageEvaluator<'a> {
 	/// Get the properties of a package
 	async fn get_package_properties<'b>(
 		&'b mut self,
-		pkg: &PkgRequest,
+		pkg: &ArcPkgReq,
 		common_input: &Self::CommonInput,
 	) -> anyhow::Result<&'b PackageProperties>;
 }
@@ -106,7 +106,7 @@ pub trait ConfiguredPackage: Clone {
 	type EvalInput<'a>: Clone;
 
 	/// Get the package ID
-	fn get_package(&self) -> &PkgRequest;
+	fn get_package(&self) -> ArcPkgReq;
 
 	/// Override the EvalInput for this package based on configuration
 	fn override_configured_package_input(

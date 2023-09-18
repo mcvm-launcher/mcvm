@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, sync::Arc};
 
 use super::CmdData;
 use itertools::Itertools;
@@ -165,7 +165,7 @@ async fn cat(data: &mut CmdData, id: &str, raw: bool) -> anyhow::Result<()> {
 	data.ensure_config(!raw).await?;
 	let config = data.config.get_mut();
 
-	let req = PkgRequest::new(id, PkgRequestSource::UserRequire);
+	let req = Arc::new(PkgRequest::new(id, PkgRequestSource::UserRequire));
 	let contents = config
 		.packages
 		.load(&req, &data.paths, &Client::new())
@@ -184,7 +184,7 @@ async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
 
 	let client = Client::new();
 
-	let req = PkgRequest::new(id, PkgRequestSource::UserRequire);
+	let req = Arc::new(PkgRequest::new(id, PkgRequestSource::UserRequire));
 	let metadata = config
 		.packages
 		.get_metadata(&req, &data.paths, &client)
