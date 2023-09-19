@@ -11,11 +11,11 @@ pub mod user;
 
 /// Types for IDs of things
 pub mod id {
-	use std::sync::Arc;
+	use crate::RcType;
 
 	/// The ID for an instance
-	pub type InstanceID = Arc<str>;
+	pub type InstanceID = RcType<str>;
 
 	/// The ID for a profile
-	pub type ProfileID = Arc<str>;
+	pub type ProfileID = RcType<str>;
 }

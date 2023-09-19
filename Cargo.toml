@@ -20,6 +20,9 @@ members = ["crates/mcvm_cli", "crates/mcvm_parse", "crates/mcvm_pkg", "crates/mc
 lto = "thin"
 strip = true
 
+[features]
+arc = []
+
 [dependencies]
 anyhow = "1.0.70"
 async-trait = "0.1.73"

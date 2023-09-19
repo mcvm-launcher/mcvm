@@ -1,6 +1,5 @@
 use std::collections::HashSet;
 use std::path::{Path, PathBuf};
-use std::sync::Arc;
 
 use anyhow::Context;
 use mcvm_shared::later::Later;
@@ -18,6 +17,7 @@ use crate::net::game_files::client_meta::{self, ClientMeta};
 use crate::net::game_files::version_manifest::VersionManifest;
 use crate::net::game_files::{assets, game_jar, libraries, log_config, version_manifest};
 use crate::util::{print::PrintOptions, versions::MinecraftVersion};
+use crate::RcType;
 
 /// Requirements for operations that may be shared by multiple instances in a profile
 #[derive(Debug, Hash, PartialEq, Eq)]
@@ -56,7 +56,7 @@ pub struct UpdateManager {
 	/// The version manifest to be fulfilled later
 	version_manifest: Later<VersionManifest>,
 	/// The client meta to be fulfilled later
-	pub client_meta: Later<Arc<ClientMeta>>,
+	pub client_meta: Later<RcType<ClientMeta>>,
 	/// The Java installation to be fulfilled later
 	pub java: Later<JavaInstallation>,
 	/// The game options to be fulfilled later
@@ -213,7 +213,7 @@ impl UpdateManager {
 			)
 			.await
 			.context("Failed to get client meta")?;
-			self.client_meta.fill(Arc::new(client_meta));
+			self.client_meta.fill(RcType::new(client_meta));
 
 			o.display(
 				MessageContents::Success("client meta obtained".into()),
