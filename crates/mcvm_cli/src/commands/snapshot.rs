@@ -1,9 +1,10 @@
 use anyhow::anyhow;
 use clap::Subcommand;
 use color_print::cprintln;
-use mcvm::{io::snapshot::SnapshotKind, util::print::HYPHEN_POINT};
+use mcvm::io::snapshot::SnapshotKind;
 
 use super::CmdData;
+use crate::output::HYPHEN_POINT;
 
 #[derive(Debug, Subcommand)]
 pub enum SnapshotSubcommand {

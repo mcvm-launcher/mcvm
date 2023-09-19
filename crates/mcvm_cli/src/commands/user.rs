@@ -1,7 +1,7 @@
 use super::CmdData;
+use crate::output::HYPHEN_POINT;
 use itertools::Itertools;
 use mcvm::data::user::UserKind;
-use mcvm::util::print::HYPHEN_POINT;
 
 use clap::Subcommand;
 use color_print::{cprint, cprintln};

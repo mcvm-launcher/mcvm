@@ -2,17 +2,17 @@ use std::{collections::HashMap, sync::Arc};
 
 use super::CmdData;
 use itertools::Itertools;
-use mcvm::{
-	data::id::ProfileID,
-	util::print::{ReplPrinter, HYPHEN_POINT},
-};
-use mcvm_pkg::{PkgRequest, PkgRequestSource};
+use mcvm::data::id::ProfileID;
+use mcvm::pkg_crate::{PkgRequest, PkgRequestSource};
+use mcvm::util::print::ReplPrinter;
 
 use anyhow::{bail, Context};
 use clap::Subcommand;
 use color_print::{cformat, cprint, cprintln};
-use mcvm_shared::pkg::PackageID;
+use mcvm::shared::pkg::PackageID;
 use reqwest::Client;
+
+use crate::output::HYPHEN_POINT;
 
 #[derive(Debug, Subcommand)]
 pub enum PackageSubcommand {
@@ -138,7 +138,7 @@ async fn sync(data: &mut CmdData) -> anyhow::Result<()> {
 	printer.print(&cformat!("<s>Updating packages..."));
 	config
 		.packages
-		.update_cached_packages(&data.paths, &client)
+		.update_cached_packages(&data.paths, &client, &mut data.output)
 		.await
 		.context("Failed to update cached packages")?;
 	printer.println(&cformat!("<s>Validating packages..."));
@@ -146,7 +146,7 @@ async fn sync(data: &mut CmdData) -> anyhow::Result<()> {
 	for package in config.packages.get_all_packages() {
 		match config
 			.packages
-			.parse_and_validate(&package, &data.paths, &client)
+			.parse_and_validate(&package, &data.paths, &client, &mut data.output)
 			.await
 		{
 			Ok(..) => {}
@@ -168,7 +168,7 @@ async fn cat(data: &mut CmdData, id: &str, raw: bool) -> anyhow::Result<()> {
 	let req = Arc::new(PkgRequest::new(id, PkgRequestSource::UserRequire));
 	let contents = config
 		.packages
-		.load(&req, &data.paths, &Client::new())
+		.load(&req, &data.paths, &Client::new(), &mut data.output)
 		.await?;
 	if !raw {
 		cprintln!("<s,b>Contents of package <g>{}</g>:</s,b>", req);
@@ -187,7 +187,7 @@ async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
 	let req = Arc::new(PkgRequest::new(id, PkgRequestSource::UserRequire));
 	let metadata = config
 		.packages
-		.get_metadata(&req, &data.paths, &client)
+		.get_metadata(&req, &data.paths, &client, &mut data.output)
 		.await
 		.context("Failed to get metadata from the registry")?;
 	if let Some(name) = &metadata.name {

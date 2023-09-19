@@ -1038,12 +1038,9 @@ dependencies = [
  "async-trait",
  "bytes",
  "cfg-match",
- "clap",
- "color-print",
  "directories",
  "futures",
  "hex",
- "inquire",
  "itertools",
  "libflate",
  "mcvm_parse",
@@ -1062,6 +1059,23 @@ dependencies = [
  "tokio",
  "zip",
  "zip-extract",
+]
+
+[[package]]
+name = "mcvm_cli"
+version = "0.5.0"
+dependencies = [
+ "anyhow",
+ "clap",
+ "color-print",
+ "inquire",
+ "itertools",
+ "mcvm",
+ "oauth2",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "tokio",
 ]
 
 [[package]]

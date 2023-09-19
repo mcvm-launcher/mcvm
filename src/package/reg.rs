@@ -5,6 +5,7 @@ use mcvm_pkg::properties::PackageProperties;
 use mcvm_pkg::PackageContentType;
 use mcvm_pkg::PkgRequest;
 use mcvm_pkg::PkgRequestSource;
+use mcvm_shared::output::MCVMOutput;
 use mcvm_shared::pkg::ArcPkgReq;
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
@@ -57,11 +58,12 @@ impl PkgRegistry {
 		req: &ArcPkgReq,
 		paths: &Paths,
 		client: &Client,
+		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<&mut Package> {
 		let pkg_id = req.id.clone();
 
 		// First check the remote repositories
-		if let Some(result) = query_all(&mut self.repos, &pkg_id, paths, client).await? {
+		if let Some(result) = query_all(&mut self.repos, &pkg_id, paths, client, o).await? {
 			return Ok(self.insert(
 				req.clone(),
 				Package::new(
@@ -90,11 +92,12 @@ impl PkgRegistry {
 		req: &ArcPkgReq,
 		paths: &Paths,
 		client: &Client,
+		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<&mut Package> {
 		if self.has_now(req) {
 			Ok(self.packages.get_mut(req).expect("Package does not exist"))
 		} else {
-			self.query_insert(req, paths, client).await
+			self.query_insert(req, paths, client, o).await
 		}
 	}
 
@@ -104,10 +107,11 @@ impl PkgRegistry {
 		req: &ArcPkgReq,
 		paths: &Paths,
 		client: &Client,
+		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<&mut Package> {
 		let force = matches!(self.caching_strategy, CachingStrategy::None);
 		let pkg = self
-			.get(req, paths, client)
+			.get(req, paths, client, o)
 			.await
 			.with_context(|| format!("Failed to get package {req}"))?;
 		pkg.ensure_loaded(paths, force, client)
@@ -122,8 +126,9 @@ impl PkgRegistry {
 		req: &ArcPkgReq,
 		paths: &Paths,
 		client: &Client,
+		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
-		self.get(req, paths, client)
+		self.get(req, paths, client, o)
 			.await
 			.with_context(|| format!("Failed to get package {req}"))?;
 
@@ -136,8 +141,9 @@ impl PkgRegistry {
 		req: &ArcPkgReq,
 		paths: &Paths,
 		client: &Client,
+		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<&'a PackageMetadata> {
-		let pkg = self.ensure_package_contents(req, paths, client).await?;
+		let pkg = self.ensure_package_contents(req, paths, client, o).await?;
 		pkg.get_metadata(paths, client)
 			.await
 			.context("Failed to get metadata from package")
@@ -149,8 +155,9 @@ impl PkgRegistry {
 		req: &ArcPkgReq,
 		paths: &Paths,
 		client: &Client,
+		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<&'a PackageProperties> {
-		let pkg = self.ensure_package_contents(req, paths, client).await?;
+		let pkg = self.ensure_package_contents(req, paths, client, o).await?;
 		pkg.get_properties(paths, client)
 			.await
 			.context("Failed to get properties from package")
@@ -162,8 +169,9 @@ impl PkgRegistry {
 		req: &ArcPkgReq,
 		paths: &Paths,
 		client: &Client,
+		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<String> {
-		let pkg = self.ensure_package_contents(req, paths, client).await?;
+		let pkg = self.ensure_package_contents(req, paths, client, o).await?;
 		let contents = pkg.data.get().get_text();
 		Ok(contents)
 	}
@@ -174,8 +182,9 @@ impl PkgRegistry {
 		req: &ArcPkgReq,
 		paths: &Paths,
 		client: &Client,
+		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
-		let pkg = self.ensure_package_contents(req, paths, client).await?;
+		let pkg = self.ensure_package_contents(req, paths, client, o).await?;
 		let contents = &pkg.data.get().get_text();
 
 		parse_and_validate(contents, pkg.content_type)?;
@@ -189,8 +198,9 @@ impl PkgRegistry {
 		req: &ArcPkgReq,
 		paths: &Paths,
 		client: &Client,
+		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<&'a PkgContents> {
-		let pkg = self.ensure_package_contents(req, paths, client).await?;
+		let pkg = self.ensure_package_contents(req, paths, client, o).await?;
 		pkg.parse(paths, client)
 			.await
 			.context("Failed to parse package")?;
@@ -205,8 +215,9 @@ impl PkgRegistry {
 		routine: Routine,
 		input: EvalInput<'a>,
 		client: &Client,
+		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<EvalData<'a>> {
-		let pkg = self.ensure_package_contents(req, paths, client).await?;
+		let pkg = self.ensure_package_contents(req, paths, client, o).await?;
 		let eval = pkg.eval(paths, routine, input, client).await?;
 		Ok(eval)
 	}
@@ -217,9 +228,10 @@ impl PkgRegistry {
 		req: &ArcPkgReq,
 		paths: &Paths,
 		client: &Client,
+		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
 		let pkg = self
-			.get(req, paths, client)
+			.get(req, paths, client, o)
 			.await
 			.with_context(|| format!("Failed to get package {req}"))?;
 		pkg.remove_cached(paths)?;
@@ -254,9 +266,10 @@ impl PkgRegistry {
 		packages: impl Iterator<Item = &ArcPkgReq>,
 		paths: &Paths,
 		client: &Client,
+		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
 		for package in packages {
-			self.remove_cached(package, paths, client)
+			self.remove_cached(package, paths, client, o)
 				.await
 				.with_context(|| format!("Failed to remove cached package '{package}'"))?;
 		}
@@ -269,6 +282,7 @@ impl PkgRegistry {
 		&mut self,
 		paths: &Paths,
 		client: &Client,
+		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
 		let packages = super::repo::get_all_packages(&mut self.repos, paths, client)
 			.await
@@ -276,13 +290,13 @@ impl PkgRegistry {
 			.iter()
 			.map(|(id, ..)| Arc::new(PkgRequest::new(id.clone(), PkgRequestSource::Repository)))
 			.collect::<Vec<_>>();
-		self.remove_cached_packages(packages.iter(), paths, client)
+		self.remove_cached_packages(packages.iter(), paths, client, o)
 			.await
 			.context("Failed to remove all cached packages")?;
 
 		if let CachingStrategy::All = self.caching_strategy {
 			for package in packages {
-				self.ensure_package(&package, paths, client)
+				self.ensure_package(&package, paths, client, o)
 					.await
 					.with_context(|| {
 						format!("Failed to get cached contents of package '{package}'")

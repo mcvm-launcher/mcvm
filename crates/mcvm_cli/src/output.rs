@@ -2,15 +2,18 @@ use std::io::Write;
 use std::{fs::File, path::PathBuf};
 
 use anyhow::Context;
-use color_print::cformat;
+use color_print::{cformat, cstr};
 use inquire::Confirm;
 use mcvm::io::files::paths::Paths;
-use mcvm::util::print::{ReplPrinter, HYPHEN_POINT};
-use mcvm::util::utc_timestamp;
-use mcvm_pkg::{PkgRequest, PkgRequestSource};
-use mcvm_shared::output::{
+use mcvm::pkg_crate::{PkgRequest, PkgRequestSource};
+use mcvm::shared::output::{
 	default_special_ms_auth, MCVMOutput, Message, MessageContents, MessageLevel,
 };
+use mcvm::util::print::ReplPrinter;
+use mcvm::util::utc_timestamp;
+
+/// A nice colored bullet point for terminal output
+pub const HYPHEN_POINT: &str = cstr!("<k!> - </k!>");
 
 /// Terminal MCVMOutput
 pub struct TerminalOutput {
@@ -254,4 +257,9 @@ fn add_period(string: String) -> String {
 	} else {
 		string + "."
 	}
+}
+
+/// Print out an error
+pub fn print_err(err: impl std::fmt::Debug) {
+	eprintln!("{}", cformat!("<r>{:?}", err));
 }

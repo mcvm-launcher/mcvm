@@ -1,5 +1,4 @@
 use anyhow::Context;
-use color_print::cprintln;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use oauth2::ClientId;
 
@@ -92,7 +91,7 @@ pub async fn debug_authenticate(
 	client_id: ClientId,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<()> {
-	cprintln!("<y>Note: This authentication is not complete and is for debug purposes only");
+	println!("Note: This authentication is not complete and is for debug purposes only");
 	println!("Client ID: {}", client_id.as_str());
 	let client = auth::create_client(client_id).context("Failed to create OAuth client")?;
 	let req_client = reqwest::Client::new();
@@ -106,21 +105,21 @@ pub async fn debug_authenticate(
 		.await
 		.context("Failed to get Microsoft token")?;
 
-	cprintln!("Microsoft token: <b>{token:?}");
+	println!("Microsoft token: {token:?}");
 
 	let mc_token = auth::auth_minecraft(token, &req_client)
 		.await
 		.context("Failed to get Minecraft token")?;
 
-	cprintln!("Minecraft token: <b>{mc_token:?}");
+	println!("Minecraft token: {mc_token:?}");
 
 	let access_token = mc_access_token_to_string(mc_token.access_token())?;
-	cprintln!("Minecraft Access Token: <b>{access_token}");
+	println!("Minecraft Access Token: {access_token}");
 
 	let profile = minecraft::get_user_profile(&access_token, &req_client)
 		.await
 		.context("Failed to get user profile")?;
-	cprintln!("Profile: <b>{profile:?}");
+	println!("Profile: {profile:?}");
 
 	Ok(())
 }

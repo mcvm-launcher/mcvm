@@ -1,8 +1,3 @@
-/// CLI commands
-pub mod commands;
-/// Terminal implementation of MCVMOutput
-pub mod output;
-
 use oauth2::ClientId;
 
 /// Get the Microsoft client ID

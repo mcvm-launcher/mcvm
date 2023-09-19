@@ -333,7 +333,7 @@ impl Instance {
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<EvalData<'a>> {
 		let eval = reg
-			.eval(pkg, paths, Routine::Install, eval_input, client)
+			.eval(pkg, paths, Routine::Install, eval_input, client, o)
 			.await
 			.context("Failed to evaluate package")?;
 

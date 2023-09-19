@@ -3,12 +3,13 @@ use itertools::Itertools;
 use mcvm::data::id::ProfileID;
 use mcvm::data::instance::InstKind;
 use mcvm::data::profile::update::update_profiles;
-use mcvm::util::print::HYPHEN_POINT;
 
 use anyhow::bail;
 use clap::Subcommand;
 use color_print::{cprint, cprintln};
-use mcvm_shared::Side;
+use mcvm::shared::Side;
+
+use crate::output::HYPHEN_POINT;
 
 #[derive(Debug, Subcommand)]
 pub enum ProfileSubcommand {

@@ -1,10 +1,9 @@
 use std::fmt::Debug;
 use std::io::{Stdout, Write};
 
-use color_print::{cformat, cstr};
+// use color_print::{cformat, cstr};
 
-/// A nice colored bullet point for terminal output
-pub const HYPHEN_POINT: &str = cstr!("<k!> - </k!>");
+
 /// String used program-wide for most indentation
 pub const INDENT_STR: &str = "  ";
 
@@ -133,9 +132,4 @@ impl PrintOptions {
 		out.indent_str = make_indent(out.indent);
 		out
 	}
-}
-
-/// Print out an error
-pub fn print_err(err: impl Debug) {
-	eprintln!("{}", cformat!("<r>{:?}", err));
 }

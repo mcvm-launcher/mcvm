@@ -42,7 +42,7 @@ pub async fn run(subcommand: ToolSubcommand, data: &mut CmdData) -> anyhow::Resu
 async fn auth_test(data: &mut CmdData) -> anyhow::Result<()> {
 	let client = Client::new();
 	let result = mcvm::data::user::auth::authenticate_microsoft_user(
-		crate::cli::get_ms_client_id(),
+		crate::secrets::get_ms_client_id(),
 		&client,
 		&mut data.output,
 	)

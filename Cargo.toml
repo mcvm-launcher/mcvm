@@ -14,7 +14,7 @@ name = "mcvm"
 path = "src/lib.rs"
 
 [workspace]
-members = ["crates/mcvm_parse", "crates/mcvm_pkg", "crates/mcvm_shared"]
+members = ["crates/mcvm_cli", "crates/mcvm_parse", "crates/mcvm_pkg", "crates/mcvm_shared"]
 
 [profile.release]
 lto = "thin"
@@ -25,12 +25,9 @@ anyhow = "1.0.70"
 async-trait = "0.1.73"
 bytes = "1.4.0"
 cfg-match = "0.2.1"
-clap = { version = "4.1.13", features = ["derive"] }
-color-print = "0.3.4"
 directories = "5.0.0"
 futures = "0.3.26"
 hex = "0.4.3"
-inquire = "0.6.2"
 itertools = "0.11.0"
 libflate = "2.0.0"
 oauth2 = "4.4.1"

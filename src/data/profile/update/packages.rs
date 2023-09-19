@@ -196,7 +196,7 @@ pub async fn print_package_support_messages<'a, O: MCVMOutput>(
 	for package in packages {
 		if let Some(link) = ctx
 			.packages
-			.get_metadata(package, ctx.paths, ctx.client)
+			.get_metadata(package, ctx.paths, ctx.client, ctx.output)
 			.await?
 			.support_link
 			.clone()

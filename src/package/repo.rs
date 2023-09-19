@@ -1,11 +1,11 @@
 use crate::io::files::paths::Paths;
 use crate::net::download;
-use crate::util::print::print_err;
 use mcvm_pkg::repo::{RepoPkgEntry, RepoPkgIndex};
 use mcvm_pkg::PackageContentType;
 use mcvm_shared::later::Later;
 
 use anyhow::Context;
+use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use reqwest::Client;
 
 use std::fs::File;
@@ -141,12 +141,16 @@ pub async fn query_all(
 	id: &str,
 	paths: &Paths,
 	client: &Client,
+	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<Option<RepoQueryResult>> {
 	for repo in repos {
 		let query = match repo.query(id, paths, client).await {
 			Ok(val) => val,
 			Err(e) => {
-				print_err(e);
+				o.display(
+					MessageContents::Error(e.to_string()),
+					MessageLevel::Important,
+				);
 				continue;
 			}
 		};

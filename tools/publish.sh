@@ -17,3 +17,8 @@ cd ..
 
 cd ..
 cargo publish
+
+cd crates/mcvm_cli
+cargo publish
+
+cd ../..

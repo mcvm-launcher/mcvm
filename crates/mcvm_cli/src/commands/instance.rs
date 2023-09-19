@@ -7,12 +7,13 @@ use mcvm::data::config::Config;
 use mcvm::data::id::{InstanceID, ProfileID};
 use mcvm::data::user::AuthState;
 
+use mcvm::data::instance::InstKind;
 use mcvm::io::lock::Lockfile;
-use mcvm::{data::instance::InstKind, util::print::HYPHEN_POINT};
-use mcvm_shared::Side;
+use mcvm::shared::Side;
 
 use super::CmdData;
-use crate::cli::get_ms_client_id;
+use crate::output::HYPHEN_POINT;
+use crate::secrets::get_ms_client_id;
 
 #[derive(Debug, Subcommand)]
 pub enum InstanceSubcommand {

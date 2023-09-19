@@ -24,6 +24,7 @@ use mcvm_pkg::{
 };
 use mcvm_shared::addon::{is_addon_version_valid, is_filename_valid, Addon};
 use mcvm_shared::lang::Language;
+use mcvm_shared::output;
 use mcvm_shared::output::MCVMOutput;
 use mcvm_shared::output::MessageContents;
 use mcvm_shared::output::MessageLevel;
@@ -461,6 +462,7 @@ impl<'a> PackageEvaluatorTrait<'a> for PackageEvaluator<'a> {
 				Routine::InstallResolve,
 				input.clone(),
 				common_input.client,
+				&mut output::NoOp,
 			)
 			.await
 			.context("Failed to evaluate dependencies for package")?;
@@ -484,7 +486,12 @@ impl<'a> PackageEvaluatorTrait<'a> for PackageEvaluator<'a> {
 	) -> anyhow::Result<&'b PackageProperties> {
 		let properties = self
 			.reg
-			.get_properties(pkg, common_input.paths, common_input.client)
+			.get_properties(
+				pkg,
+				common_input.paths,
+				common_input.client,
+				&mut output::NoOp,
+			)
 			.await?;
 		Ok(properties)
 	}
