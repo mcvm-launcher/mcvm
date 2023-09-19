@@ -15,7 +15,8 @@ use super::{instance::InstanceConfig, package::PackageConfig};
 /// Configuration for a profile
 #[derive(Deserialize, Serialize)]
 pub struct ProfileConfig {
-	version: MinecraftVersionDeser,
+	/// The Minecraft version of this profile
+	pub version: MinecraftVersionDeser,
 	/// Configured modloader
 	#[serde(default)]
 	pub modloader: Modloader,
