@@ -1,27 +1,4 @@
-# Packages
-
-An MCVM package is simply a file that is evaluated to install files and dependencies. They can be either declarative JSON files or custom scripts. Scripts usually follow the format of `package-id.pkg.txt`. Declarative packages should be named `package-id.json`. Package IDs may contain only letters, numbers, and hyphens (`-`). They cannot be longer than 32 characters.
-
-# Repository
-
-A package repository is any server that provides an `index.json` of packages for the user to source. All that is required to run a repository yourself is to make this `index.json` under `https://example.com/api/mcvm/index.json`. An index follows this format:
-
-```
-{
-	"packages": {
-		"package-id": {
-			"url": string,
-			"content_type": "script" | "declarative"
-		}
-	}
-}
-```
-
-- `package-id`: The ID of the package.
-- `url`: The URL to the `package.pkg.txt` file.
-- `content_type`: What type of package this is. Defaults to `"script"`.
-
-# Declarative format
+This is the format for declarative packages
 
 ```
 {
@@ -72,8 +49,8 @@ Metadata for a package is extra information about a package such as its display 
 - `name`: Display name of the package.
 - `description`: A short description of the package. Should be 1-2 sentences max.
 - `long_description`: A longer description of the package.
-- `authors`: A list of authors for this package. This should be the authors of the project / addons itself, not the mcvm package file.
-- `package_maintainers`: A list of maintainers for this package. This should be the maintainers of the mcvm package file, not the project itself
+- `authors`: A list of authors for this package. This should be the authors of the project / addons themselves, not the MCVM package file.
+- `package_maintainers`: A list of maintainers for this package. This should be the maintainers of the MCVM package file, not the project itself
 - `website`: Primary website / project link / etc.
 - `support_link`: Support / donation / sponsored link.
 - `documentation`: Wiki / documentation link.
@@ -89,7 +66,7 @@ Metadata for a package is extra information about a package such as its display 
 
 ## Properties
 
-Properties for the package that do have a meaning to mcvm and other package hosts / installers. All fields are optional.
+Properties for the package that do have a meaning to MCVM and other package hosts / installers. All fields are optional.
 
 ```
 {
@@ -110,9 +87,9 @@ Properties for the package that do have a meaning to mcvm and other package host
 
 - `features`: A list of available features for this package. Features can be enabled or disabled by the user to configure how the package is installed.
 - `default_features`: The features that will be enabled by default.
-- `modrinth_id`: ID of the project for this package on Modrinth, if applicable. See "The purpose of host ID instructions".
-- `curseforge_id`: ID of the project for this package on CurseForge, if applicable. See "The purpose of host ID instructions".
-- `smithed_id`: ID of the project for this package on Smithed, if applicable. See "The purpose of host ID instructions".
+- `modrinth_id`: ID of the project for this package on Modrinth, if applicable. See [the purpose of host ID instructions](Packages.md#the-purpose-of-host-id-instructions).
+- `curseforge_id`: ID of the project for this package on CurseForge, if applicable. See [the purpose of host ID instructions](Packages.md#the-purpose-of-host-id-instructions).
+- `smithed_id`: ID of the project for this package on Smithed, if applicable. See [the purpose of host ID instructions](Packages.md#the-purpose-of-host-id-instructions).
 - `supported_versions`: Minecraft versions supported by this package. Defaults to all of them.
 - `supported_modloaders`: Modloaders supported by this package. Defaults to all of them.
 - `supported_plugin_loaders`: Plugin loaders supported by this package. Defaults to all of them.
@@ -145,20 +122,9 @@ Relations are dependencies / conflicts / etc. with other packages. All fields ar
 - `explicit_dependencies`: The same as dependencies. However, these libraries also change the behavior of the game enough that it would be good for the user to know about them. These packages must be required by the user in their config as well.
 - `conflicts`: Packages that this package is incompatible with.
 - `extensions`: Packages that this package extends the functionality of. For example, if this package was an addon mod for the Create mod, then it would extend the `create` package. Will cause an error if the other package does not exist.
-- `bundled`: Packages included with this one. Useful for packages that group together multiple other packages, such as modpacks. Prefer using this over `dependencies` when you aren't including a library as it has a different semantic meaning to mcvm.
+- `bundled`: Packages included with this one. Useful for packages that group together multiple other packages, such as modpacks. Prefer using this over `dependencies` when you aren't including a library as it has a different semantic meaning to MCVM.
 - `compats`: A list of lists with two values, a source package and destination package. If the source package exists, the destination package will be automatically installed.
 - `recommendations`: Packages that will be recommended to the user if they are not installed. `value` is the package to be recommended. Setting `invert` to true will instead recommend *against* the use of the package.
-
-## Version Patterns
-
-Version patterns are strings that can be used to match against one or more version of something, often Minecraft. There are a couple variants:
-
-- `single` (Example "1.19.2"): Match a single version.
-- `before` (Example "1.19.2-"): Matches a version and all versions before it (inclusive).
-- `after` (Example "1.19.2+"): Matches a version and all versions after it (inclusive).
-- `range` (Example "1.19.1..1.20.1"): Matches versions in a range (inclusive).
-- `latest` ("latest"): Matches only the latest version.
-- `any` ("*"): Matches any version.
 
 ## Conditions
 
@@ -204,7 +170,7 @@ Addons are the actual files that are installed to a user's game. They are specif
 }
 ```
 
-- `addon-id`: The ID of the addon. This lets mcvm differentiate between addons from the same package and allows the user to modify specific addons from a package. Thus, try not to change it between updates of your package.
+- `addon-id`: The ID of the addon. This lets MCVM differentiate between addons from the same package and allows the user to modify specific addons from a package. Thus, try not to change it between updates of your package.
 - `kind`: What type of addon / modification this is.
 - `versions`: A list of versions for this addon. See the addon versions section.
 - `conditions` (Optional): A list of conditions for the installation of this addon. If any of these conditions fails, the addon will not be installed, but no errors will be shown. Thus, it is better to use the `supported_...` properties for this purpose.
@@ -232,8 +198,8 @@ Addon versions are different files and versions of an addon
 - ConditionSet: Addon versions contain all the fields of a ConditionSet. These conditions are used to filter down and find the version that satisfies all the requirements. If multiple versions satisfy the requirements, the one that comes first in the list is chosen.
 - `url`: A URL to the file for this version. Not required if `path` is specified.
 - `path`: A local filesystem path to the addon file. Not required if `url` is specified. Requires elevated permissions.
-- `version` (Optional): The unique version identifier of this addon. This is important because it lets mcvm differentiate between different versions of the file for caching purposes. If this field is not present, the addon will never be cached and will be redownloaded every time. This ID should not contain any special characters.
-- `filename` (Optional): The name of the addon file in the instance, with the extension. This is not required and is not recommended most of the time as mcvm will already generate a unique filename for it that does not clash with other files.
+- `version` (Optional): The unique version identifier of this addon. This is important because it lets MCVM differentiate between different versions of the file for caching purposes. If this field is not present, the addon will never be cached and will be redownloaded every time. This ID should not contain any special characters.
+- `filename` (Optional): The name of the addon file in the instance, with the extension. This is not required and is not recommended most of the time as MCVM will already generate a unique filename for it that does not clash with other files.
 - `relations` (Optional): Extra package relations to apply if this addon version is chosen.
 - `notices` (Optional): A list of messages to display to the user if this version is chosen.
 - `hashes` (Optional): Different fields for hashes of this version file. Allows MCVM to check for valid files when downloading them.
@@ -257,7 +223,3 @@ Conditional rules let you change the package based on ConditionSets. Each rule w
 - `properties`: The changes to apply if the conditions are satisfied.
 - `properties.relations`: Package relations to include. These are appended to the other relations
 - `properties.notices`: A list of messages to display to the user.
-
-# The purpose of host ID instructions
-
-These should be set even if the addons for the package are not downloaded from that website. These will allow mcvm to make smart decisions in the future and automatically replace files downloaded from these sites with the correct packages and prevent file duplication.

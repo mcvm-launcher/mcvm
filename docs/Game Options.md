@@ -1,6 +1,6 @@
 # Game Options
 
-mcvm is capable of applying global options for both client and server
+MCVM is capable of applying global options for both client and server
 that are inherited across all of your profiles. The options are agnostic
 to the Minecraft version and automatically converted to the correct format. Options are supplied in a JSON
 format in the file `options.json` in your config directory. This file may not exist so you might
@@ -18,7 +18,7 @@ Format:
 }
 ```
 
-Options that you do not change will not be changed in the output file. Options that mcvm does not know about will not be touched either.
+Options that you do not change will not be changed in the output file. Options that MCVM does not know about will not be touched either.
 
 A description will not be provided for every option as they mirror the options in-game and inside the server.properties and should be somewhat self-explanatory. Any options that need an explanation will have a note.
 
