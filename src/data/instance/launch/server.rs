@@ -21,7 +21,7 @@ impl Instance {
 		assert!(matches!(self.kind, InstKind::Server { .. }));
 		let java_path = self.java.get().path.get();
 		let jre_path = java_path.join("bin/java");
-		self.ensure_dirs(paths);
+		self.ensure_dirs(paths)?;
 		let server_dir = &self.dirs.get().game_dir;
 
 		let mut jvm_args = Vec::new();

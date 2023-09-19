@@ -144,10 +144,13 @@ impl Instance {
 		}
 	}
 
-	/// Ensure the directories are set
-	fn ensure_dirs(&mut self, paths: &Paths) {
+	/// Ensure the directories are set and exist
+	fn ensure_dirs(&mut self, paths: &Paths) -> anyhow::Result<()> {
 		self.dirs
 			.ensure_full(|| InstanceDirs::new(paths, &self.id, &self.kind.to_side()));
+		self.dirs.get().ensure_exist()?;
+
+		Ok(())
 	}
 
 	/// Set the java installation for the instance
@@ -180,7 +183,7 @@ impl Instance {
 		addon: &Addon,
 		paths: &Paths,
 	) -> anyhow::Result<Vec<PathBuf>> {
-		self.ensure_dirs(paths);
+		self.ensure_dirs(paths)?;
 		let inst_dir = &self.dirs.get().inst_dir;
 		Ok(match addon.kind {
 			AddonKind::ResourcePack => {
@@ -247,7 +250,7 @@ impl Instance {
 
 	/// Creates an addon on the instance
 	pub fn create_addon(&mut self, addon: &Addon, paths: &Paths) -> anyhow::Result<()> {
-		self.ensure_dirs(paths);
+		self.ensure_dirs(paths)?;
 		let game_dir = &self.dirs.get().game_dir;
 		files::create_leading_dirs(game_dir)?;
 		files::create_dir(game_dir)?;
@@ -275,7 +278,7 @@ impl Instance {
 
 	/// Removes the paper server jar file from a server instance
 	pub fn remove_paper(&mut self, paths: &Paths, paper_file_name: String) -> anyhow::Result<()> {
-		self.ensure_dirs(paths);
+		self.ensure_dirs(paths)?;
 		let game_dir = &self.dirs.get().game_dir;
 		let paper_path = game_dir.join(paper_file_name);
 		if paper_path.exists() {
@@ -291,7 +294,7 @@ impl Instance {
 		paths: &Paths,
 		paper_properties: Option<(u16, String)>,
 	) -> anyhow::Result<()> {
-		self.ensure_dirs(paths);
+		self.ensure_dirs(paths)?;
 		match self.kind {
 			InstKind::Client { .. } => {
 				let inst_dir = &self.dirs.get().inst_dir;
@@ -454,7 +457,7 @@ impl Instance {
 		kind: snapshot::SnapshotKind,
 		paths: &Paths,
 	) -> anyhow::Result<()> {
-		self.ensure_dirs(paths);
+		self.ensure_dirs(paths)?;
 		let (snapshot_dir, mut index) = self.open_snapshot_index(paths)?;
 
 		index.create_snapshot(
@@ -482,7 +485,7 @@ impl Instance {
 
 	/// Restores a snapshot for this instance
 	pub async fn restore_snapshot(&mut self, id: &str, paths: &Paths) -> anyhow::Result<()> {
-		self.ensure_dirs(paths);
+		self.ensure_dirs(paths)?;
 		let (snapshot_dir, index) = self.open_snapshot_index(paths)?;
 
 		index

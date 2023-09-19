@@ -38,7 +38,7 @@ impl Instance {
 		assert!(matches!(self.kind, InstKind::Client { .. }));
 		let java_path = self.java.get().path.get();
 		let jre_path = java_path.join("bin/java");
-		self.ensure_dirs(paths);
+		self.ensure_dirs(paths)?;
 		let client_dir = &self.dirs.get().game_dir;
 		let client_meta = manager.client_meta.get();
 

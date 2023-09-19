@@ -118,7 +118,7 @@ impl Instance {
 
 		let out = UpdateMethodResult::new();
 		let version = &manager.version_info.get().version;
-		self.ensure_dirs(paths);
+		self.ensure_dirs(paths)?;
 		let jar_path =
 			crate::io::minecraft::game_jar::get_path(self.kind.to_side(), version, paths);
 
@@ -200,7 +200,7 @@ impl Instance {
 		let mut out = UpdateMethodResult::new();
 
 		let version = &manager.version_info.get().version;
-		self.ensure_dirs(paths);
+		self.ensure_dirs(paths)?;
 		let jar_path = self.dirs.get().game_dir.join("server.jar");
 
 		// Set the main class
@@ -328,7 +328,7 @@ impl Instance {
 	pub fn create_keypair(&mut self, user: &User, paths: &Paths) -> anyhow::Result<()> {
 		if let Some(uuid) = &user.uuid {
 			if let Some(keypair) = &user.keypair {
-				self.ensure_dirs(paths);
+				self.ensure_dirs(paths)?;
 				let keys_dir = self.dirs.get().game_dir.join("profilekeys");
 				let hyphenated_uuid = hyphenate_uuid(uuid).context("Failed to hyphenate UUID")?;
 				let path = keys_dir.join(format!("{hyphenated_uuid}.json"));
