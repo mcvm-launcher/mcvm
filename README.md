@@ -4,7 +4,8 @@ MCVM is a lightweight Minecraft launcher meant to provide a better interface wit
 
 In the official launcher, you have to waste time moving files in and out of folders, downloading mods from sketchy websites, setting up servers, and sharing your config to play with friends. MCVM hopes to alleviate some of these pains with its smart systems for configuration sharing and package management.
 
-[Documentation](docs/README.md)
+- [Documentation](docs/README.md)
+- [Contributing](CONTRIBUTING.md)
 
 ## Profiles
 **_Profiles_** in MCVM are groups of settings, modloaders, and the such with a game version. They are shared config for versions of the game which you then attach instances to. **_Instances_** are programs such as a client or server which have a parent profile and are the thing you actually run.
