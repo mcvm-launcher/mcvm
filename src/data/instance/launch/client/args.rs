@@ -19,11 +19,14 @@ pub fn process_arg(
 	classpath: &Classpath,
 	version: &str,
 	window: &ClientWindowConfig,
+	quick_play: &QuickPlay,
 ) -> Vec<String> {
 	let mut out = Vec::new();
 	match arg {
 		ArgumentItem::Simple(arg) => {
-			let arg = process_simple_arg(arg, instance, paths, users, classpath, version, window);
+			let arg = process_simple_arg(
+				arg, instance, paths, users, classpath, version, window, quick_play,
+			);
 			if let Some(arg) = arg {
 				out.push(arg);
 			}
@@ -59,11 +62,43 @@ pub fn process_arg(
 						}
 					}
 				}
+				if let Some(quick_play_support) = &rule.features.has_quick_play_support {
+					if *quick_play_support {
+						let uses_quick_play = !matches!(quick_play, QuickPlay::None);
+						if !uses_quick_play {
+							return vec![];
+						}
+					}
+				}
+				if let Some(quick_play_singleplayer) = &rule.features.is_quick_play_singleplayer {
+					if *quick_play_singleplayer {
+						let uses_quick_play = !matches!(quick_play, QuickPlay::World { .. });
+						if !uses_quick_play {
+							return vec![];
+						}
+					}
+				}
+				if let Some(quick_play_multiplayer) = &rule.features.is_quick_play_multiplayer {
+					if *quick_play_multiplayer {
+						let uses_quick_play = !matches!(quick_play, QuickPlay::Server { .. });
+						if !uses_quick_play {
+							return vec![];
+						}
+					}
+				}
+				if let Some(quick_play_realms) = &rule.features.is_quick_play_realms {
+					if *quick_play_realms {
+						let uses_quick_play = !matches!(quick_play, QuickPlay::Realm { .. });
+						if !uses_quick_play {
+							return vec![];
+						}
+					}
+				}
 			}
 
 			for arg in arg.value.iter() {
 				out.extend(process_simple_arg(
-					arg, instance, paths, users, classpath, version, window,
+					arg, instance, paths, users, classpath, version, window, quick_play,
 				));
 			}
 		}
@@ -81,8 +116,11 @@ pub fn process_simple_arg(
 	classpath: &Classpath,
 	version: &str,
 	window: &ClientWindowConfig,
+	quick_play: &QuickPlay,
 ) -> Option<String> {
-	replace_arg_placeholders(instance, arg, paths, users, classpath, version, window)
+	replace_arg_placeholders(
+		instance, arg, paths, users, classpath, version, window, quick_play,
+	)
 }
 
 /// Get the string for a placeholder token in an argument
@@ -101,6 +139,7 @@ pub fn replace_arg_placeholders(
 	classpath: &Classpath,
 	version: &str,
 	window: &ClientWindowConfig,
+	quick_play: &QuickPlay,
 ) -> Option<String> {
 	let mut out = arg.replace(placeholder!("launcher_name"), "mcvm");
 	out = out.replace(placeholder!("launcher_version"), "alpha");
@@ -136,6 +175,37 @@ pub fn replace_arg_placeholders(
 		out = out.replace(placeholder!("resolution_width"), &width.to_string());
 		out = out.replace(placeholder!("resolution_height"), &height.to_string());
 	}
+
+	// QuickPlay
+	out = out.replace(placeholder!("quickPlayPath"), "quickPlay/log.json");
+	out = out.replace(
+		placeholder!("quickPlaySingleplayer"),
+		if let QuickPlay::World { world } = &quick_play {
+			world
+		} else {
+			""
+		},
+	);
+	out = out.replace(
+		placeholder!("quickPlayMultiplayer"),
+		&if let QuickPlay::Server { server, port } = &quick_play {
+			if let Some(port) = port {
+				format!("{server}:{port}")
+			} else {
+				server.clone()
+			}
+		} else {
+			String::new()
+		},
+	);
+	out = out.replace(
+		placeholder!("quickPlayRealms"),
+		if let QuickPlay::Realm { realm } = &quick_play {
+			realm
+		} else {
+			""
+		},
+	);
 
 	// User
 	match users.get_user() {
@@ -177,7 +247,7 @@ pub fn replace_arg_placeholders(
 	Some(out)
 }
 
-/// Create the game arguments for Quick Play
+/// Create the additional game arguments for Quick Play
 pub fn create_quick_play_args(
 	quick_play: &QuickPlay,
 	version_info: &VersionInfo,
@@ -187,16 +257,11 @@ pub fn create_quick_play_args(
 
 	match quick_play {
 		QuickPlay::World { .. } | QuickPlay::Realm { .. } | QuickPlay::Server { .. } => {
-			let after_23w14a = VersionPattern::After("23w14a".into()).matches_info(version_info);
-			out.push("--quickPlayPath".into());
-			out.push("quickPlay/log.json".into());
+			let before_23w14a = VersionPattern::Before("23w13a".into()).matches_info(version_info);
 			match quick_play {
 				QuickPlay::None => {}
-				QuickPlay::World { world } => {
-					if after_23w14a {
-						out.push("--quickPlaySingleplayer".into());
-						out.push(world.clone());
-					} else {
+				QuickPlay::World { .. } => {
+					if before_23w14a {
 						o.display(
 							MessageContents::Warning(
 								"World Quick Play has no effect before 23w14a (1.20)".into(),
@@ -205,11 +270,8 @@ pub fn create_quick_play_args(
 						);
 					}
 				}
-				QuickPlay::Realm { realm } => {
-					if after_23w14a {
-						out.push("--quickPlayRealms".into());
-						out.push(realm.clone());
-					} else {
+				QuickPlay::Realm { .. } => {
+					if before_23w14a {
 						o.display(
 							MessageContents::Warning(
 								"Realm Quick Play has no effect before 23w14a (1.20)".into(),
@@ -219,14 +281,7 @@ pub fn create_quick_play_args(
 					}
 				}
 				QuickPlay::Server { server, port } => {
-					if after_23w14a {
-						out.push("--quickPlayMultiplayer".into());
-						if let Some(port) = port {
-							out.push(format!("{server}:{port}"));
-						} else {
-							out.push(server.clone());
-						}
-					} else {
+					if before_23w14a {
 						out.push("--server".into());
 						out.push(server.clone());
 						if let Some(port) = port {

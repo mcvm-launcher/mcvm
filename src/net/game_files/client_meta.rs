@@ -235,6 +235,15 @@ pub mod conditions {
 		pub is_demo_user: Option<bool>,
 		/// Feature for if a custom window resolution is set. Should be checked if present
 		pub has_custom_resolution: Option<bool>,
+		/// Feature for if QuickPlay is enabled. Should be checked if present
+		#[serde(alias = "has_quick_plays_support")]
+		pub has_quick_play_support: Option<bool>,
+		/// Feature for if QuickPlay singleplayer is enabled. Should be checked if present
+		pub is_quick_play_singleplayer: Option<bool>,
+		/// Feature for if QuickPlay multiplayer is enabled. Should be checked if present
+		pub is_quick_play_multiplayer: Option<bool>,
+		/// Feature for if QuickPlay Realms is enabled. Should be checked if present
+		pub is_quick_play_realms: Option<bool>,
 	}
 
 	/// Operating-system related conditions for argument rules

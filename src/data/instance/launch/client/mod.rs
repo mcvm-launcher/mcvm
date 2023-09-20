@@ -75,6 +75,7 @@ impl Instance {
 								classpath,
 								&version_info.version,
 								window,
+								&self.config.launch.quick_play,
 							) {
 								jvm_args.push(sub_arg);
 							}
@@ -89,6 +90,7 @@ impl Instance {
 								classpath,
 								&version_info.version,
 								window,
+								&self.config.launch.quick_play,
 							) {
 								game_args.push(sub_arg);
 							}
@@ -117,6 +119,7 @@ impl Instance {
 								classpath,
 								&version_info.version,
 								window,
+								&self.config.launch.quick_play,
 							)));
 						}
 					}
