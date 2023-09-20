@@ -15,6 +15,7 @@ const FAIL: &str = include_str!("fail.pkg.txt");
 const HD_FONTS_SUPPORT: &str = include_str!("hd-fonts-support.pkg.txt");
 const KOTLIN_SUPPORT: &str = include_str!("kotlin-support.pkg.txt");
 const KOTLIN_SUPPORT_FORGELIN: &str = include_str!("kotlin-support-forgelin.pkg.txt");
+const KUBEJS_SCRIPT_SUPPORT: &str = include_str!("kubejs-script-support.pkg.txt");
 const NATURAL_TEXTURES_SUPPORT: &str = include_str!("natural-textures-support.pkg.txt");
 const NONE: &str = include_str!("none.pkg.txt");
 const OPTIFINE_RESOURCE_PACKS: &str = include_str!("optifine-resource-packs.pkg.txt");
@@ -43,6 +44,7 @@ pub fn get_core_package(package: &str) -> Option<&'static str> {
 		"hd-fonts-support" => Some(HD_FONTS_SUPPORT),
 		"kotlin-support" => Some(KOTLIN_SUPPORT),
 		"kotlin-support-forgelin" => Some(KOTLIN_SUPPORT_FORGELIN),
+		"kubejs-script-support" => Some(KUBEJS_SCRIPT_SUPPORT),
 		"natural-textures-support" => Some(NATURAL_TEXTURES_SUPPORT),
 		"none" => Some(NONE),
 		"optifine-resource-packs" => Some(OPTIFINE_RESOURCE_PACKS),
@@ -74,6 +76,7 @@ pub fn get_core_package_content_type(package: &str) -> Option<PackageContentType
 		"hd-fonts-support" => Some(PackageContentType::Script),
 		"kotlin-support" => Some(PackageContentType::Script),
 		"kotlin-support-forgelin" => Some(PackageContentType::Script),
+		"kubejs-script-support" => Some(PackageContentType::Script),
 		"natural-textures-support" => Some(PackageContentType::Script),
 		"none" => Some(PackageContentType::Script),
 		"optifine-resource-packs" => Some(PackageContentType::Script),
@@ -96,7 +99,7 @@ mod tests {
 	use super::*;
 	use mcvm_pkg::parse_and_validate;
 
-	const ALL_CORE_PACKAGE_IDS: [&str; 24] = [
+	const ALL_CORE_PACKAGE_IDS: [&str; 25] = [
 		"animated-textures-support",
 		"cem-support",
 		"cit-support",
@@ -112,6 +115,7 @@ mod tests {
 		"hd-fonts-support",
 		"kotlin-support",
 		"kotlin-support-forgelin",
+		"kubejs-script-support",
 		"natural-textures-support",
 		"none",
 		"optifine-resource-packs",
