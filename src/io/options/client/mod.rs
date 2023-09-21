@@ -23,7 +23,7 @@ pub use deser::*;
 pub mod deser {
 	use schemars::JsonSchema;
 
-use super::*;
+	use super::*;
 
 	#[derive(Deserialize, Serialize, Debug, Clone, Default, JsonSchema)]
 	#[serde(default)]

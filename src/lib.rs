@@ -2,9 +2,9 @@
 
 //! This is the library for MCVM and pretty much all of the features that the
 //! CLI uses.
-//! 
+//!
 //! # Features
-//! 
+//!
 //! - `arc`: MCVM uses Rc's in a couple places. Although these are more performant than Arc's, they
 //! may not be compatible with some async runtimes. With this feature enabled, these Rc's will be replaced with
 //! Arc's where possible.
