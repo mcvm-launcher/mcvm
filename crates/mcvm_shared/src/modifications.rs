@@ -103,7 +103,7 @@ impl ModloaderMatch {
 }
 
 /// Different types of server changes. These are mostly mutually exclusive.
-#[derive(Serialize, Deserialize, Debug, Copy, Clone, Default, JsonSchema)]
+#[derive(Serialize, Deserialize, Debug, Copy, Clone, Default, JsonSchema, PartialEq, Eq)]
 #[serde(rename_all = "lowercase")]
 pub enum ServerType {
 	/// Unspecified. Usually inherits from something else
@@ -236,7 +236,7 @@ impl PluginLoaderMatch {
 }
 
 /// Different modifications for the client. Mostly mututally exclusive
-#[derive(Serialize, Deserialize, Debug, Copy, Clone, Default, JsonSchema)]
+#[derive(Serialize, Deserialize, Debug, Copy, Clone, Default, JsonSchema, PartialEq, Eq)]
 #[serde(rename_all = "lowercase")]
 pub enum ClientType {
 	/// Unspecified. Usually inherits from something else

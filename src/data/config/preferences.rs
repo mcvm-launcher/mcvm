@@ -21,26 +21,34 @@ pub struct ConfigPreferences {
 #[derive(Deserialize, Serialize, Default, JsonSchema)]
 #[serde(default)]
 pub struct PrefDeser {
-	repositories: RepositoriesDeser,
-	package_caching_strategy: CachingStrategy,
-	language: Language,
+	/// The user's configured repositories
+	pub repositories: RepositoriesDeser,
+	/// The user's configured strategy for package caching
+	pub package_caching_strategy: CachingStrategy,
+	/// The user's configured language
+	pub language: Language,
 }
 
 /// Deserialization struct for a package repo
 #[derive(Deserialize, Serialize, JsonSchema)]
 pub struct RepoDeser {
-	id: String,
-	url: Option<String>,
-	path: Option<String>,
+	/// The ID of the repository
+	pub id: String,
+	/// The URL to the repository, which may not exist
+	pub url: Option<String>,
+	/// The Path to the repository, which may not exist
+	pub path: Option<String>,
 }
 
 /// Deserialization struct for all configured package repositories
 #[derive(Deserialize, Serialize, Default, JsonSchema)]
 pub struct RepositoriesDeser {
+	/// The preferred repositories over the default ones
 	#[serde(default)]
-	preferred: Vec<RepoDeser>,
+	pub preferred: Vec<RepoDeser>,
+	/// The backup repositories included after the default ones
 	#[serde(default)]
-	backup: Vec<RepoDeser>,
+	pub backup: Vec<RepoDeser>,
 }
 
 impl ConfigPreferences {

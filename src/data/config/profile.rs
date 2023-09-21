@@ -125,6 +125,34 @@ impl ProfilePackageConfiguration {
 			Self::Full { global, .. } => global.push(pkg),
 		}
 	}
+
+	/// Adds a package to the client list
+	pub fn add_client_package(&mut self, pkg: PackageConfig) {
+		match self {
+			Self::Simple(global) => {
+				*self = Self::Full {
+					global: global.clone(),
+					client: vec![pkg],
+					server: Vec::new(),
+				}
+			}
+			Self::Full { client, .. } => client.push(pkg),
+		}
+	}
+
+	/// Adds a package to the server list
+	pub fn add_server_package(&mut self, pkg: PackageConfig) {
+		match self {
+			Self::Simple(global) => {
+				*self = Self::Full {
+					global: global.clone(),
+					client: Vec::new(),
+					server: vec![pkg],
+				}
+			}
+			Self::Full { server, .. } => server.push(pkg),
+		}
+	}
 }
 
 impl ProfileConfig {

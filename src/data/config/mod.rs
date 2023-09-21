@@ -1,3 +1,5 @@
+/// Easy creation of config
+pub mod builder;
 /// Configuring instances
 pub mod instance;
 /// Configuring profile modifications
