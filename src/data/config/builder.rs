@@ -73,10 +73,10 @@ impl ConfigBuilder {
 	}
 
 	/// Create a PackageBuilder
-	pub fn package<'this>(
-		&'this mut self,
+	pub fn package(
+		&mut self,
 		data: InitialPackageData,
-	) -> PackageBuilder<PackageBuilderConfigParent<'this>> {
+	) -> PackageBuilder<PackageBuilderConfigParent<'_>> {
 		let parent = PackageBuilderConfigParent(self);
 		PackageBuilder::with_parent(data, parent)
 	}
