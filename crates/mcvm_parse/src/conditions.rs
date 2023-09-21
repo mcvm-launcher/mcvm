@@ -2,6 +2,7 @@ use anyhow::bail;
 use mcvm_shared::lang::Language;
 use mcvm_shared::later::Later;
 use mcvm_shared::pkg::PackageStability;
+use schemars::JsonSchema;
 use serde::Deserialize;
 
 use crate::unexpected_token;
@@ -68,7 +69,7 @@ pub enum ConditionKind {
 }
 
 /// Value for the OS condition
-#[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum OSCondition {
 	/// Windows
@@ -95,7 +96,7 @@ impl OSCondition {
 }
 
 /// Value for the arch condition
-#[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum ArchCondition {
 	/// x86

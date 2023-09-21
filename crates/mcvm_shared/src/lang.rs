@@ -1,8 +1,9 @@
+use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 /// A language supported by mcvm. Includes all languages in Minecraft.
 #[allow(missing_docs)]
-#[derive(Deserialize, Serialize, Copy, Clone, Eq, PartialEq, Debug)]
+#[derive(Deserialize, Serialize, Copy, Clone, Eq, PartialEq, Debug, JsonSchema)]
 pub enum Language {
 	Afrikaans,
 	Arabic,

@@ -20,6 +20,7 @@ use anyhow::{bail, ensure, Context};
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::util::is_valid_identifier;
 use preferences::ConfigPreferences;
+use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 use super::id::ProfileID;
@@ -54,7 +55,7 @@ pub struct Config {
 }
 
 /// Deserialization struct for user configuration
-#[derive(Deserialize, Serialize, Default)]
+#[derive(Deserialize, Serialize, Default, JsonSchema)]
 #[serde(default)]
 pub struct ConfigDeser {
 	users: HashMap<String, UserConfig>,

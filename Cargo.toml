@@ -14,7 +14,13 @@ name = "mcvm"
 path = "src/lib.rs"
 
 [workspace]
-members = ["crates/mcvm_cli", "crates/mcvm_parse", "crates/mcvm_pkg", "crates/mcvm_shared"]
+members = [
+	"crates/mcvm_cli",
+	"crates/mcvm_parse",
+	"crates/mcvm_pkg",
+	"crates/mcvm_schema",
+	"crates/mcvm_shared",
+]
 
 [profile.release]
 lto = "thin"
@@ -39,6 +45,7 @@ reqwest = { version = "0.11.15", default_features = false, features = [
 	"json",
 	"rustls-tls",
 ] }
+schemars = "0.8.15"
 serde = { version = "1.0.152", features = ["derive", "rc"] }
 serde_json = "1.0.91"
 sha2 = "0.10.7"

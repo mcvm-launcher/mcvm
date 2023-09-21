@@ -1050,6 +1050,7 @@ dependencies = [
  "oauth2",
  "rand",
  "reqwest",
+ "schemars",
  "serde",
  "serde_json",
  "sha2",
@@ -1084,6 +1085,7 @@ version = "0.7.0"
 dependencies = [
  "anyhow",
  "mcvm_shared",
+ "schemars",
  "serde",
 ]
 
@@ -1096,6 +1098,19 @@ dependencies = [
  "itertools",
  "mcvm_parse",
  "mcvm_shared",
+ "schemars",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "mcvm_schema"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "itertools",
+ "mcvm",
+ "schemars",
  "serde",
  "serde_json",
 ]
@@ -1106,6 +1121,7 @@ version = "0.7.0"
 dependencies = [
  "anyhow",
  "current_locale",
+ "schemars",
  "serde",
 ]
 
@@ -1599,6 +1615,30 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1ad4cc8da4ef723ed60bced201181d83791ad433213d8c24efffda1eec85d741"
 
 [[package]]
+name = "schemars"
+version = "0.8.15"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1f7b0ce13155372a76ee2e1c5ffba1fe61ede73fbea5630d61eee6fac4929c0c"
+dependencies = [
+ "dyn-clone",
+ "schemars_derive",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "schemars_derive"
+version = "0.8.15"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e85e2a16b12bdb763244c69ab79363d71db2b4b918a2def53f80b02e0574b13c"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "serde_derive_internals",
+ "syn 1.0.109",
+]
+
+[[package]]
 name = "scopeguard"
 version = "1.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1632,6 +1672,17 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 2.0.29",
+]
+
+[[package]]
+name = "serde_derive_internals"
+version = "0.26.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "85bf8229e7920a9f636479437026331ce11aa132b4dde37d121944a44d6e5f3c"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 1.0.109",
 ]
 
 [[package]]

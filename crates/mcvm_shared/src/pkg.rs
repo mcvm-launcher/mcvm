@@ -1,3 +1,4 @@
+use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use std::fmt::Display;
 use std::hash::Hash;
@@ -123,7 +124,7 @@ impl Display for PkgRequest {
 pub type ArcPkgReq = Arc<PkgRequest>;
 
 /// Stability setting for a package
-#[derive(Deserialize, Serialize, Default, Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Deserialize, Serialize, Default, Debug, Copy, Clone, PartialEq, Eq, JsonSchema)]
 pub enum PackageStability {
 	/// Whatever the latest stable version is
 	#[default]
@@ -169,9 +170,9 @@ pub fn is_valid_package_id(id: &str) -> bool {
 }
 
 /// Hashes used for package addons
-#[derive(Deserialize, Serialize, PartialEq, Debug, Clone, Default)]
+#[derive(Deserialize, Serialize, PartialEq, Debug, Clone, Default, JsonSchema)]
 #[serde(default)]
-pub struct PackageAddonHashes<T> {
+pub struct PackageAddonHashes<T: Default> {
 	/// The SHA-256 hash of this addon file
 	pub sha256: T,
 	/// The SHA-512 hash of this addon file

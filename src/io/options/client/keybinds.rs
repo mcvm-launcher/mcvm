@@ -1,11 +1,12 @@
 use std::fmt::Display;
 
+use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 use crate::util::ToInt;
 
 /// Version-agnostic keybinds
-#[derive(Deserialize, Serialize, Debug, Clone)]
+#[derive(Deserialize, Serialize, Debug, Clone, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum Keybind {
 	Unbound,

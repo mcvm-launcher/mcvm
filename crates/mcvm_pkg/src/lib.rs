@@ -21,6 +21,7 @@ use declarative::{deserialize_declarative_package, validate_declarative_package}
 use mcvm_shared::pkg::{ArcPkgReq, PackageID};
 use metadata::PackageMetadata;
 use properties::PackageProperties;
+use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 // Re-export
@@ -45,7 +46,7 @@ pub fn parse_and_validate(contents: &str, content_type: PackageContentType) -> a
 }
 
 /// Content type of a package
-#[derive(Deserialize, Serialize, Debug, Copy, Clone, Default)]
+#[derive(Deserialize, Serialize, Debug, Copy, Clone, Default, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum PackageContentType {
 	/// A package script
@@ -65,7 +66,7 @@ pub struct RequiredPackage {
 }
 
 /// A recommended package
-#[derive(Debug, Clone, PartialOrd, Ord, PartialEq, Eq, Deserialize)]
+#[derive(Debug, Clone, PartialOrd, Ord, PartialEq, Eq, Deserialize, JsonSchema)]
 pub struct RecommendedPackage {
 	/// The package id that is required
 	pub value: PackageID,

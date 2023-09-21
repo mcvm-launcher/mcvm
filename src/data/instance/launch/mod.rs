@@ -15,6 +15,7 @@ use mcvm_shared::versions::VersionInfo;
 use mcvm_shared::Side;
 use oauth2::ClientId;
 use reqwest::Client;
+use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 use crate::data::config::instance::QuickPlay;
@@ -225,7 +226,7 @@ impl LaunchOptions {
 }
 
 /// A wrapper command
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, JsonSchema)]
 pub struct WrapperCommand {
 	/// The command to run
 	pub cmd: String,

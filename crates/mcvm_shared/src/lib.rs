@@ -18,10 +18,12 @@ pub mod versions;
 use std::{fmt::Display, str::FromStr};
 
 use anyhow::anyhow;
+use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 /// Common utilities
 pub mod util {
+	use schemars::JsonSchema;
 	use serde::Deserialize;
 
 	/// Converts "yes" or "no" to a boolean
@@ -57,7 +59,7 @@ pub mod util {
 
 	/// Utility enum for deserialization that lets you do a list that can be one item
 	/// without the braces
-	#[derive(Deserialize, Debug, Clone)]
+	#[derive(Deserialize, Debug, Clone, JsonSchema)]
 	#[serde(untagged)]
 	pub enum DeserListOrSingle<T> {
 		/// Only one item, specified without braces
@@ -265,7 +267,7 @@ pub mod later {
 }
 
 /// Minecraft game side, client or server
-#[derive(Debug, Clone, Copy, Hash, PartialEq, Eq, Deserialize, Serialize)]
+#[derive(Debug, Clone, Copy, Hash, PartialEq, Eq, Deserialize, Serialize, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum Side {
 	/// The default game

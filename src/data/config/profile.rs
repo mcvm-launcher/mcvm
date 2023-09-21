@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 
 use mcvm_shared::Side;
+use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 use crate::data::id::{InstanceID, ProfileID};
@@ -13,7 +14,7 @@ use mcvm_shared::pkg::PackageStability;
 use super::{instance::InstanceConfig, package::PackageConfig};
 
 /// Configuration for a profile
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, JsonSchema)]
 pub struct ProfileConfig {
 	/// The Minecraft version of this profile
 	pub version: MinecraftVersionDeser,
@@ -37,7 +38,7 @@ pub struct ProfileConfig {
 }
 
 /// Different representations of package configuration on a profile
-#[derive(Deserialize, Serialize, Debug, Clone)]
+#[derive(Deserialize, Serialize, Debug, Clone, JsonSchema)]
 #[serde(untagged)]
 pub enum ProfilePackageConfiguration {
 	/// Is just a list of packages for every instance

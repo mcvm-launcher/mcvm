@@ -4,6 +4,7 @@ use std::path::{Path, PathBuf};
 
 use anyhow::{anyhow, Context};
 use rand::Rng;
+use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use zip::{ZipArchive, ZipWriter};
 
@@ -16,7 +17,7 @@ use super::files::paths::Paths;
 pub const INDEX_NAME: &str = "index.json";
 
 /// Settings for snapshots
-#[derive(Serialize, Deserialize, Default, Clone, Debug)]
+#[derive(Serialize, Deserialize, Default, Clone, Debug, JsonSchema)]
 #[serde(default)]
 pub struct Config {
 	/// The max number of snapshots for an instance
@@ -211,7 +212,7 @@ pub enum SnapshotKind {
 }
 
 /// Format for stored snapshots
-#[derive(Serialize, Deserialize, Default, Copy, Clone, Debug)]
+#[derive(Serialize, Deserialize, Default, Copy, Clone, Debug, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum StorageType {
 	/// Stored as normal in a new directory

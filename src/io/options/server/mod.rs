@@ -17,9 +17,11 @@ use super::read::{EnumOrNumber, EnumOrString};
 pub use deser::*;
 #[allow(missing_docs)]
 pub mod deser {
+	use schemars::JsonSchema;
+
 	use super::*;
 
-	#[derive(Deserialize, Serialize, Debug, Clone, Default)]
+	#[derive(Deserialize, Serialize, Debug, Clone, Default, JsonSchema)]
 	#[serde(default)]
 	pub struct ServerOptions {
 		pub rcon: RconOptions,
@@ -66,7 +68,7 @@ pub mod deser {
 		pub view_distance: Option<u8>,
 	}
 
-	#[derive(Deserialize, Serialize, Debug, Clone, Default)]
+	#[derive(Deserialize, Serialize, Debug, Clone, Default, JsonSchema)]
 	#[serde(default)]
 	pub struct RconOptions {
 		pub enable: Option<bool>,
@@ -74,28 +76,28 @@ pub mod deser {
 		pub password: Option<String>,
 	}
 
-	#[derive(Deserialize, Serialize, Debug, Clone, Default)]
+	#[derive(Deserialize, Serialize, Debug, Clone, Default, JsonSchema)]
 	#[serde(default)]
 	pub struct QueryOptions {
 		pub enable: Option<bool>,
 		pub port: Option<u16>,
 	}
 
-	#[derive(Deserialize, Serialize, Debug, Clone, Default)]
+	#[derive(Deserialize, Serialize, Debug, Clone, Default, JsonSchema)]
 	#[serde(default)]
 	pub struct WhitelistOptions {
 		pub enable: Option<bool>,
 		pub enforce: Option<bool>,
 	}
 
-	#[derive(Deserialize, Serialize, Debug, Clone, Default)]
+	#[derive(Deserialize, Serialize, Debug, Clone, Default, JsonSchema)]
 	#[serde(default)]
 	pub struct GamemodeOptions {
 		pub default: Option<EnumOrNumber<GameMode>>,
 		pub force: Option<bool>,
 	}
 
-	#[derive(Deserialize, Serialize, Debug, Clone, Default)]
+	#[derive(Deserialize, Serialize, Debug, Clone, Default, JsonSchema)]
 	#[serde(default)]
 	pub struct DatapacksOptions {
 		pub function_permission_level: Option<u8>,
@@ -103,7 +105,7 @@ pub mod deser {
 		pub initial_disabled: Option<Vec<String>>,
 	}
 
-	#[derive(Deserialize, Serialize, Debug, Clone, Default)]
+	#[derive(Deserialize, Serialize, Debug, Clone, Default, JsonSchema)]
 	#[serde(default)]
 	pub struct WorldOptions {
 		pub name: Option<String>,
@@ -116,7 +118,7 @@ pub mod deser {
 		pub allow_nether: Option<bool>,
 	}
 
-	#[derive(Deserialize, Serialize, Debug, Clone, Default)]
+	#[derive(Deserialize, Serialize, Debug, Clone, Default, JsonSchema)]
 	#[serde(default)]
 	pub struct ResourcePackOptions {
 		pub uri: Option<String>,
@@ -125,7 +127,7 @@ pub mod deser {
 		pub required: Option<bool>,
 	}
 
-	#[derive(Deserialize, Serialize, Debug, Clone)]
+	#[derive(Deserialize, Serialize, Debug, Clone, JsonSchema)]
 	#[serde(rename_all = "snake_case")]
 	pub enum Difficulty {
 		Peaceful,
@@ -155,7 +157,7 @@ pub mod deser {
 		}
 	}
 
-	#[derive(Deserialize, Serialize, Debug, Clone)]
+	#[derive(Deserialize, Serialize, Debug, Clone, JsonSchema)]
 	#[serde(rename_all = "snake_case")]
 	pub enum GameMode {
 		Survival,
@@ -185,7 +187,7 @@ pub mod deser {
 		}
 	}
 
-	#[derive(Deserialize, Serialize, Debug, Clone)]
+	#[derive(Deserialize, Serialize, Debug, Clone, JsonSchema)]
 	#[serde(rename_all = "snake_case")]
 	pub enum WorldType {
 		Normal,
@@ -215,7 +217,7 @@ pub mod deser {
 		}
 	}
 
-	#[derive(Deserialize, Serialize, Debug, Clone)]
+	#[derive(Deserialize, Serialize, Debug, Clone, JsonSchema)]
 	#[serde(rename_all = "snake_case")]
 	pub enum NetworkCompression {
 		Disabled,

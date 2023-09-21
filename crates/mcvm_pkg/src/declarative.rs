@@ -9,6 +9,7 @@ use mcvm_shared::pkg::{PackageAddonOptionalHashes, PackageStability};
 use mcvm_shared::util::DeserListOrSingle;
 use mcvm_shared::versions::VersionPattern;
 use mcvm_shared::Side;
+use schemars::JsonSchema;
 use serde::Deserialize;
 
 use crate::metadata::PackageMetadata;
@@ -16,7 +17,7 @@ use crate::properties::PackageProperties;
 use crate::RecommendedPackage;
 
 /// Structure for a declarative / JSON package
-#[derive(Deserialize, Debug, Default, Clone)]
+#[derive(Deserialize, Debug, Default, Clone, JsonSchema)]
 #[serde(default)]
 pub struct DeclarativePackage {
 	/// Metadata for the package
@@ -32,7 +33,7 @@ pub struct DeclarativePackage {
 }
 
 /// Package relationships for declarative packages
-#[derive(Deserialize, Debug, Default, Clone)]
+#[derive(Deserialize, Debug, Default, Clone, JsonSchema)]
 #[serde(default)]
 pub struct DeclarativePackageRelations {
 	/// Package dependencies
@@ -67,7 +68,7 @@ impl DeclarativePackageRelations {
 
 /// Properties that are used for choosing the best addon version
 /// from a declarative package and conditional rules
-#[derive(Deserialize, Debug, Default, Clone)]
+#[derive(Deserialize, Debug, Default, Clone, JsonSchema)]
 #[serde(default)]
 pub struct DeclarativeConditionSet {
 	/// Minecraft versions to allow
@@ -91,7 +92,7 @@ pub struct DeclarativeConditionSet {
 }
 
 /// Conditional rule to apply changes to a declarative package
-#[derive(Deserialize, Debug, Default, Clone)]
+#[derive(Deserialize, Debug, Default, Clone, JsonSchema)]
 #[serde(default)]
 pub struct DeclarativeConditionalRule {
 	/// Conditions for this rule
@@ -101,7 +102,7 @@ pub struct DeclarativeConditionalRule {
 }
 
 /// Properties that can be applied conditionally
-#[derive(Deserialize, Debug, Default, Clone)]
+#[derive(Deserialize, Debug, Default, Clone, JsonSchema)]
 #[serde(default)]
 pub struct DeclarativeConditionalRuleProperties {
 	/// Relations to append
@@ -111,7 +112,7 @@ pub struct DeclarativeConditionalRuleProperties {
 }
 
 /// Addon in a declarative package
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone, JsonSchema)]
 pub struct DeclarativeAddon {
 	/// What kind of addon this is
 	pub kind: AddonKind,
@@ -123,7 +124,7 @@ pub struct DeclarativeAddon {
 }
 
 /// Version for an addon in a declarative package
-#[derive(Deserialize, Debug, Clone, Default)]
+#[derive(Deserialize, Debug, Clone, Default, JsonSchema)]
 #[serde(default)]
 pub struct DeclarativeAddonVersion {
 	/// Conditional properties for this version
@@ -146,7 +147,7 @@ pub struct DeclarativeAddonVersion {
 }
 
 /// Properties for declarative addon versions that can be changed with patches
-#[derive(Deserialize, Debug, Default, Clone)]
+#[derive(Deserialize, Debug, Default, Clone, JsonSchema)]
 #[serde(default)]
 pub struct DeclarativeAddonVersionPatchProperties {
 	/// Relations to append

@@ -12,4 +12,5 @@ categories = ["games"]
 [dependencies]
 anyhow = "1.0.70"
 mcvm_shared = { path = "../mcvm_shared", version = "0.7.0" }
+schemars = "0.8.15"
 serde = { version = "1.0.152", features = ["derive"] }

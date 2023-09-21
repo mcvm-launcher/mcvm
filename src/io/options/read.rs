@@ -1,6 +1,7 @@
 use std::{collections::HashMap, fmt::Display, io::Read};
 
 use anyhow::{anyhow, Context};
+use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 use crate::util::ToInt;
@@ -38,7 +39,7 @@ pub fn read_options_file(
 }
 
 /// Used for both difficulty and gamemode to have compatability with different versions
-#[derive(Deserialize, Serialize, Debug, Clone)]
+#[derive(Deserialize, Serialize, Debug, Clone, JsonSchema)]
 #[serde(untagged)]
 pub enum EnumOrNumber<T> {
 	Enum(T),
@@ -68,7 +69,7 @@ impl<T: ToInt> ToInt for EnumOrNumber<T> {
 }
 
 /// Allow an enum or custom string
-#[derive(Deserialize, Serialize, Debug, Clone)]
+#[derive(Deserialize, Serialize, Debug, Clone, JsonSchema)]
 #[serde(untagged)]
 pub enum EnumOrString<T> {
 	Enum(T),

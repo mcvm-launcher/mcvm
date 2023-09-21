@@ -1,9 +1,10 @@
 use std::fmt::Display;
 
+use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 /// A loader for Minecraft mods
-#[derive(Serialize, Deserialize, Debug, Copy, Clone, PartialEq, Eq, Default)]
+#[derive(Serialize, Deserialize, Debug, Copy, Clone, PartialEq, Eq, Default, JsonSchema)]
 #[serde(rename_all = "lowercase")]
 pub enum Modloader {
 	/// No loader, just the default game
@@ -41,7 +42,7 @@ impl Display for Modloader {
 }
 
 /// Matcher for different types of loader
-#[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize, JsonSchema)]
 #[serde(rename_all = "lowercase")]
 pub enum ModloaderMatch {
 	/// Matches vanilla
@@ -102,7 +103,7 @@ impl ModloaderMatch {
 }
 
 /// Different types of server changes. These are mostly mutually exclusive.
-#[derive(Serialize, Deserialize, Debug, Copy, Clone, Default)]
+#[derive(Serialize, Deserialize, Debug, Copy, Clone, Default, JsonSchema)]
 #[serde(rename_all = "lowercase")]
 pub enum ServerType {
 	/// Unspecified. Usually inherits from something else
@@ -167,7 +168,7 @@ impl Display for ServerType {
 }
 
 /// Matcher for different types of server plugin loaders
-#[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize, JsonSchema)]
 #[serde(rename_all = "lowercase")]
 pub enum PluginLoaderMatch {
 	/// The default game with no plugin support
@@ -235,7 +236,7 @@ impl PluginLoaderMatch {
 }
 
 /// Different modifications for the client. Mostly mututally exclusive
-#[derive(Serialize, Deserialize, Debug, Copy, Clone, Default)]
+#[derive(Serialize, Deserialize, Debug, Copy, Clone, Default, JsonSchema)]
 #[serde(rename_all = "lowercase")]
 pub enum ClientType {
 	/// Unspecified. Usually inherits from something else

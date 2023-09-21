@@ -3,9 +3,10 @@ use std::collections::HashMap;
 use anyhow::{anyhow, bail};
 
 /// Argument to a command that could be a literal or a variable
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub enum Value {
 	/// This value has not been filled and has no data
+	#[default]
 	None,
 	/// A constant string literal
 	Literal(String),

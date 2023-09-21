@@ -1,9 +1,10 @@
 use crate::parse::{instruction::InstrKind, parse::Parsed, routine::METADATA_ROUTINE};
 use anyhow::bail;
+use schemars::JsonSchema;
 use serde::Deserialize;
 
 /// Package metadata derived from running the 'meta' routine
-#[derive(Default, Debug, Deserialize, Clone)]
+#[derive(Default, Debug, Deserialize, Clone, JsonSchema)]
 pub struct PackageMetadata {
 	/// The name of the package
 	pub name: Option<String>,

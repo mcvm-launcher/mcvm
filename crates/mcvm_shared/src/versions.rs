@@ -1,9 +1,10 @@
 use std::fmt::Display;
 
+use schemars::JsonSchema;
 use serde::Deserialize;
 
 /// Pattern matching for the version of Minecraft, a package, etc.
-#[derive(Debug, Hash, Clone, PartialEq)]
+#[derive(Debug, Hash, Clone, PartialEq, JsonSchema)]
 pub enum VersionPattern {
 	/// Matches a single version
 	Single(String),

@@ -10,6 +10,7 @@ use std::io::BufReader;
 use std::path::PathBuf;
 
 use anyhow::Context;
+use schemars::JsonSchema;
 use serde::Deserialize;
 
 use self::read::parse_options;
@@ -18,7 +19,7 @@ use client::ClientOptions;
 use server::ServerOptions;
 
 /// General options structure used to produce options for both client and server
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone, JsonSchema)]
 pub struct Options {
 	/// Options for the client
 	#[serde(default)]

@@ -1,8 +1,9 @@
+use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 use crate::data::user::{User, UserKind};
 
-#[derive(Deserialize, Serialize, Clone)]
+#[derive(Deserialize, Serialize, Clone, JsonSchema)]
 /// Configuration for a user
 pub struct UserConfig {
 	/// The username of the user
@@ -13,7 +14,7 @@ pub struct UserConfig {
 }
 
 /// Different variants of users for configuration
-#[derive(Deserialize, Serialize, Clone)]
+#[derive(Deserialize, Serialize, Clone, JsonSchema)]
 #[serde(tag = "type")]
 #[serde(rename_all = "snake_case")]
 pub enum UserVariant {

@@ -1,5 +1,6 @@
 use std::fmt::Display;
 
+use schemars::JsonSchema;
 use serde::Deserialize;
 
 use crate::pkg::{PackageAddonOptionalHashes, PackageID};
@@ -22,7 +23,7 @@ pub struct Addon {
 }
 
 /// Different kinds of addons
-#[derive(Debug, Clone, Copy, Deserialize)]
+#[derive(Debug, Clone, Copy, Deserialize, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum AddonKind {
 	/// A Minecraft resource pack

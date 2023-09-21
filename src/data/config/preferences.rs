@@ -5,6 +5,7 @@ use crate::{net::download::validate_url, package::reg::CachingStrategy};
 
 use anyhow::{bail, Context};
 use mcvm_shared::lang::Language;
+use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 /// Configured user preferences
@@ -17,7 +18,7 @@ pub struct ConfigPreferences {
 }
 
 /// Deserialization struct for user preferences
-#[derive(Deserialize, Serialize, Default)]
+#[derive(Deserialize, Serialize, Default, JsonSchema)]
 #[serde(default)]
 pub struct PrefDeser {
 	repositories: RepositoriesDeser,
@@ -26,7 +27,7 @@ pub struct PrefDeser {
 }
 
 /// Deserialization struct for a package repo
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, JsonSchema)]
 pub struct RepoDeser {
 	id: String,
 	url: Option<String>,
@@ -34,7 +35,7 @@ pub struct RepoDeser {
 }
 
 /// Deserialization struct for all configured package repositories
-#[derive(Deserialize, Serialize, Default)]
+#[derive(Deserialize, Serialize, Default, JsonSchema)]
 pub struct RepositoriesDeser {
 	#[serde(default)]
 	preferred: Vec<RepoDeser>,
