@@ -7,6 +7,8 @@ use serde::{de::DeserializeOwned, Deserialize, Serialize};
 /// Struct for a Minecraft Profile from the Minecraft Services API
 #[derive(Deserialize, Debug)]
 pub struct MinecraftUserProfile {
+	/// The username of this user
+	pub name: String,
 	/// The UUID of this user
 	#[serde(rename = "id")]
 	pub uuid: String,

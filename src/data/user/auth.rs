@@ -26,6 +26,7 @@ impl User {
 						.await
 						.context("Failed to get user certificate")?;
 				self.access_token = Some(auth_result.access_token);
+				self.name = auth_result.profile.name;
 				self.uuid = Some(auth_result.profile.uuid);
 				self.keypair = Some(certificate.key_pair);
 				*xbox_uid = Some(auth_result.xbox_uid);
