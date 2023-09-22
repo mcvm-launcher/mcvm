@@ -145,7 +145,7 @@ impl Instance {
 	}
 
 	/// Ensure the directories are set and exist
-	fn ensure_dirs(&mut self, paths: &Paths) -> anyhow::Result<()> {
+	pub fn ensure_dirs(&mut self, paths: &Paths) -> anyhow::Result<()> {
 		self.dirs
 			.ensure_full(|| InstanceDirs::new(paths, &self.id, &self.kind.to_side()));
 		self.dirs.get().ensure_exist()?;
