@@ -91,7 +91,7 @@ pub struct MinecraftUserCertificate {
 }
 
 /// Keypair in player certificate
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Keypair {
 	/// Private key
 	// Yes this is stupid

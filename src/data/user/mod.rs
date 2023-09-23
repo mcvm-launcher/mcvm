@@ -12,7 +12,7 @@ use reqwest::Client;
 use crate::net::minecraft::Keypair;
 
 /// A user account that can play the game
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct User {
 	/// Type of this user
 	pub kind: UserKind,
@@ -62,7 +62,7 @@ impl User {
 }
 
 /// List of users and AuthState
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct UserManager {
 	/// The current state of authentication
 	pub state: AuthState,
@@ -71,7 +71,7 @@ pub struct UserManager {
 }
 
 /// State of authentication
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum AuthState {
 	/// No user is picked / MCVM is offline
 	Offline,
