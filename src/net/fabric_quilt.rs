@@ -128,7 +128,10 @@ pub async fn get_meta(
 		Mode::Fabric => format!("https://meta.fabricmc.net/v2/versions/loader/{version}"),
 		Mode::Quilt => format!("https://meta.quiltmc.org/v3/versions/loader/{version}"),
 	};
-	let path = paths.internal.join(format!("fq_{mode}_meta.json"));
+	let mode_lowercase = mode.to_string().to_lowercase();
+	let path = paths
+		.fabric_quilt
+		.join(format!("meta_{mode_lowercase}_{version}.json"));
 
 	let meta = if manager.allow_offline && path.exists() {
 		let file = File::open(path).with_context(|| format!("Failed to open {mode} meta file"))?;
