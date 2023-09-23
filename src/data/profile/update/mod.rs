@@ -3,6 +3,11 @@ pub mod manager;
 /// Updating packages on a profile
 pub mod packages;
 
+#[cfg(not(feature = "disable_profile_update_packages"))]
+use crate::package::eval::EvalConstants;
+#[cfg(not(feature = "disable_profile_update_packages"))]
+use packages::{print_package_support_messages, update_profile_packages};
+#[cfg(not(feature = "disable_profile_update_packages"))]
 use std::collections::HashSet;
 
 use anyhow::{anyhow, Context};
@@ -15,12 +20,10 @@ use crate::data::id::ProfileID;
 use crate::io::files::paths::Paths;
 use crate::io::lock::Lockfile;
 use crate::net::paper;
-use crate::package::eval::EvalConstants;
 use crate::package::reg::PkgRegistry;
 use crate::util::print::PrintOptions;
 
 use manager::UpdateManager;
-use packages::{print_package_support_messages, update_profile_packages};
 
 use super::{InstanceRegistry, Profile};
 
@@ -49,7 +52,9 @@ pub async fn update_profiles(
 	update_packages: bool,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<()> {
-	let mut all_packages = HashSet::new();
+	#[cfg(feature = "disable_profile_update_packages")]
+	let _update_packages = update_packages;
+
 	let client = Client::new();
 	let mut lock = Lockfile::open(paths).context("Failed to open lockfile")?;
 
@@ -99,62 +104,67 @@ pub async fn update_profiles(
 			.context("Failed to finish using lockfile")?;
 
 		if !update_packages {
-			return Ok(());
+			continue;
 		}
 
-		if !profile.instances.is_empty() {
-			let version_list = profile
-				.create_instances(
-					ctx.instances,
-					paths,
-					manager,
-					ctx.lock,
-					&config.users,
-					ctx.output,
+		#[cfg(not(feature = "disable_profile_update_packages"))]
+		{
+			let mut all_packages = HashSet::new();
+
+			if !profile.instances.is_empty() {
+				let version_list = profile
+					.create_instances(
+						ctx.instances,
+						paths,
+						manager,
+						ctx.lock,
+						&config.users,
+						ctx.output,
+					)
+					.await
+					.context("Failed to create profile instances")?;
+
+				ctx.output.display(
+					MessageContents::Header("Updating packages".into()),
+					MessageLevel::Important,
+				);
+
+				let constants = EvalConstants {
+					version: mc_version.to_string(),
+					modifications: profile.modifications.clone(),
+					version_list: version_list.clone(),
+					language: config.prefs.language,
+					profile_stability: profile.default_stability,
+				};
+
+				let packages = update_profile_packages(
+					profile,
+					&config.global_packages,
+					&constants,
+					&mut ctx,
+					force,
 				)
+				.await?;
+
+				ctx.output.display(
+					MessageContents::Success("All packages installed".into()),
+					MessageLevel::Important,
+				);
+
+				all_packages.extend(packages);
+			}
+
+			ctx.lock
+				.finish(paths)
 				.await
-				.context("Failed to create profile instances")?;
+				.context("Failed to finish using lockfile")?;
 
-			ctx.output.display(
-				MessageContents::Header("Updating packages".into()),
-				MessageLevel::Important,
-			);
-
-			let constants = EvalConstants {
-				version: mc_version.to_string(),
-				modifications: profile.modifications.clone(),
-				version_list: version_list.clone(),
-				language: config.prefs.language,
-				profile_stability: profile.default_stability,
-			};
-
-			let packages = update_profile_packages(
-				profile,
-				&config.global_packages,
-				&constants,
-				&mut ctx,
-				force,
-			)
-			.await?;
-
-			ctx.output.display(
-				MessageContents::Success("All packages installed".into()),
-				MessageLevel::Important,
-			);
-
-			all_packages.extend(packages);
+			let all_packages = Vec::from_iter(all_packages);
+			print_package_support_messages(&all_packages, &mut ctx)
+				.await
+				.context("Failed to print support messages")?;
 		}
-
-		ctx.lock
-			.finish(paths)
-			.await
-			.context("Failed to finish using lockfile")?;
 	}
-
-	let all_packages = Vec::from_iter(all_packages);
-	print_package_support_messages(&all_packages, &mut ctx)
-		.await
-		.context("Failed to print support messages")?;
 
 	Ok(())
 }

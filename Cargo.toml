@@ -28,6 +28,7 @@ strip = true
 
 [features]
 arc = []
+disable_profile_update_packages = []
 
 [dependencies]
 anyhow = "1.0.70"
