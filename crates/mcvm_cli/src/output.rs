@@ -258,8 +258,3 @@ fn add_period(string: String) -> String {
 		string + "."
 	}
 }
-
-/// Print out an error
-pub fn print_err(err: impl std::fmt::Debug) {
-	eprintln!("{}", cformat!("<r>{:?}", err));
-}

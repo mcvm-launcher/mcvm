@@ -8,14 +8,12 @@ mod user;
 
 use anyhow::{bail, Context};
 use clap::{Parser, Subcommand};
-use color_print::cprintln;
+use color_print::{cprintln, cformat};
 
 use mcvm::data::config::Config;
 use mcvm::io::files::paths::Paths;
 use mcvm::shared::later::Later;
 use mcvm::shared::output::{MCVMOutput, MessageContents, MessageLevel};
-
-use crate::output::print_err;
 
 use self::files::FilesSubcommand;
 use self::instance::InstanceSubcommand;
@@ -92,7 +90,7 @@ pub async fn run_cli() -> anyhow::Result<()> {
 			println!("{e}");
 			return Ok(());
 		} else {
-			print_err(e);
+			eprintln!("{}", cformat!("<r>{e}"));
 			bail!("");
 		}
 	}
