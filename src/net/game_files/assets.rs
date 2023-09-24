@@ -111,6 +111,7 @@ pub async fn get(
 	let mut join = JoinSet::new();
 	// Used to limit the number of open file descriptors
 	let sem = Arc::new(Semaphore::new(FD_SENSIBLE_LIMIT));
+	#[allow(clippy::explicit_counter_loop)]
 	for (name, url, path, virtual_path) in assets_to_download {
 		let client = client.clone();
 		let permit = sem.clone().acquire_owned().await;
