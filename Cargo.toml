@@ -22,10 +22,6 @@ members = [
 	"crates/mcvm_shared",
 ]
 
-[profile.release]
-lto = "thin"
-strip = true
-
 [features]
 arc = []
 disable_profile_update_packages = []
