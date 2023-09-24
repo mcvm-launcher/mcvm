@@ -29,7 +29,7 @@ use super::Config;
 pub struct ConfigBuilder {
 	users: UserManager,
 	instances: InstanceRegistry,
-	profiles: HashMap<ProfileID, Box<Profile>>,
+	profiles: HashMap<ProfileID, Profile>,
 	packages: PkgRegistry,
 	preferences: ConfigPreferences,
 	global_packages: Vec<PackageConfig>,
@@ -69,7 +69,7 @@ impl ConfigBuilder {
 	/// Finish a ProfileBuilder
 	fn build_profile(&mut self, id: ProfileID, profile: Profile, instances: InstanceRegistry) {
 		self.instances.extend(instances);
-		self.profiles.insert(id, Box::new(profile));
+		self.profiles.insert(id, profile);
 	}
 
 	/// Create a PackageBuilder

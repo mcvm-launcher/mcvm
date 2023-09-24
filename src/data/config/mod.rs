@@ -47,7 +47,7 @@ pub struct Config {
 	/// The available instances
 	pub instances: InstanceRegistry,
 	/// The available profiles
-	pub profiles: HashMap<ProfileID, Box<Profile>>,
+	pub profiles: HashMap<ProfileID, Profile>,
 	/// The registry of packages. Will include packages that are configured when created this way
 	pub packages: PkgRegistry,
 	/// Globally configured packages to include in every profile
@@ -215,7 +215,7 @@ impl Config {
 				}
 			}
 
-			profiles.insert(profile_id.clone(), Box::new(profile));
+			profiles.insert(profile_id.clone(), profile);
 		}
 
 		Ok(Self {
