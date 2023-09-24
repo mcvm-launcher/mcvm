@@ -179,5 +179,7 @@ impl CmdData {
 /// Print the mcvm version
 fn print_version() {
 	let version = env!("CARGO_PKG_VERSION");
-	cprintln!("mcvm version <g>{}</g>", version);
+	let mcvm_version = mcvm::VERSION;
+	cprintln!("CLI version: <g>{}</g>", version);
+	cprintln!("MCVM version: <g>{}</g>", mcvm_version);
 }
