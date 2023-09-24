@@ -8,7 +8,7 @@ mod user;
 
 use anyhow::{bail, Context};
 use clap::{Parser, Subcommand};
-use color_print::{cprintln, cformat};
+use color_print::{cformat, cprintln};
 
 use mcvm::data::config::Config;
 use mcvm::io::files::paths::Paths;
