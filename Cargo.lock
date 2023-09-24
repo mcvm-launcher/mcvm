@@ -988,7 +988,7 @@ dependencies = [
 
 [[package]]
 name = "mcvm"
-version = "0.13.1"
+version = "0.14.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -1020,7 +1020,7 @@ dependencies = [
 
 [[package]]
 name = "mcvm_cli"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "anyhow",
  "clap",
@@ -1064,7 +1064,6 @@ name = "mcvm_schema"
 version = "0.1.0"
 dependencies = [
  "anyhow",
- "itertools",
  "mcvm",
  "schemars",
  "serde",
