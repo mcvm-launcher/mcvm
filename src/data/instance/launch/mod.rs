@@ -7,7 +7,7 @@ use std::collections::HashMap;
 use std::fs::File;
 use std::io::Write;
 use std::path::{Path, PathBuf};
-use std::process::Command;
+use std::process::{Child, Command};
 
 use anyhow::Context;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
@@ -44,7 +44,7 @@ impl Instance {
 		version: &MinecraftVersion,
 		ms_client_id: ClientId,
 		o: &mut impl MCVMOutput,
-	) -> anyhow::Result<()> {
+	) -> anyhow::Result<InstanceHandle> {
 		o.display(
 			MessageContents::StartProcess("Checking for updates".into()),
 			MessageLevel::Important,
@@ -70,26 +70,30 @@ impl Instance {
 			MessageContents::Success("Launching!".into()),
 			MessageLevel::Important,
 		);
-		match &self.kind {
+		let handle = match &self.kind {
 			InstKind::Client { .. } => {
-				self.launch_client(
-					paths,
-					users,
-					version_info,
-					&client,
-					ms_client_id,
-					&manager,
-					o,
-				)
-				.await
-				.context("Failed to launch client")?;
+				let handle = self
+					.launch_client(
+						paths,
+						users,
+						version_info,
+						&client,
+						ms_client_id,
+						&manager,
+						o,
+					)
+					.await
+					.context("Failed to launch client")?;
+				handle
 			}
 			InstKind::Server { .. } => {
-				self.launch_server(paths, version_info, &manager, o)
+				let handle = self.launch_server(paths, version_info, &manager, o)
 					.context("Failed to launch server")?;
+				handle
 			}
-		}
-		Ok(())
+		};
+
+		Ok(handle)
 	}
 
 	/// Actually launch the game
@@ -99,7 +103,7 @@ impl Instance {
 		version_info: &VersionInfo,
 		paths: &Paths,
 		o: &mut impl MCVMOutput,
-	) -> anyhow::Result<()> {
+	) -> anyhow::Result<InstanceHandle> {
 		let mut log = File::create(log_file_path(&self.id, paths)?)
 			.context("Failed to open launch log file")?;
 		let mut cmd = match &self.config.launch.wrapper {
@@ -136,10 +140,9 @@ impl Instance {
 			MessageLevel::Debug,
 		);
 
-		let mut child = cmd.spawn().context("Failed to spawn child process")?;
-		child.wait().context("Failed to wait for child process")?;
+		let child = cmd.spawn().context("Failed to spawn child process")?;
 
-		Ok(())
+		Ok(InstanceHandle { process: child })
 	}
 }
 
@@ -157,6 +160,14 @@ pub struct LaunchProcessProperties<'a> {
 	pub game_args: &'a [String],
 	/// Additional environment variables to add to the launch command
 	pub additional_env_vars: &'a HashMap<String, String>,
+}
+
+/// Handle for an instance after launching it. You must make sure to use
+/// .wait() on the child process as it is not done for you.
+#[derive(Debug)]
+pub struct InstanceHandle {
+	/// The child process that is the launched instance
+	pub process: Child,
 }
 
 /// Options for launching after conversion from the deserialized version

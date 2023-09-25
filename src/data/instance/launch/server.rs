@@ -9,6 +9,8 @@ use crate::data::profile::update::manager::UpdateManager;
 use crate::io::files::paths::Paths;
 use mcvm_shared::versions::VersionInfo;
 
+use super::InstanceHandle;
+
 impl Instance {
 	/// Launch a server
 	pub fn launch_server(
@@ -17,7 +19,7 @@ impl Instance {
 		version_info: &VersionInfo,
 		_manager: &UpdateManager,
 		o: &mut impl MCVMOutput,
-	) -> anyhow::Result<()> {
+	) -> anyhow::Result<InstanceHandle> {
 		assert!(matches!(self.kind, InstKind::Server { .. }));
 		let java_path = self.java.get().path.get();
 		let jre_path = java_path.join("bin/java");
@@ -43,9 +45,10 @@ impl Instance {
 			additional_env_vars: &HashMap::new(),
 		};
 
-		self.launch_game_process(launch_properties, version_info, paths, o)
+		let handle = self
+			.launch_game_process(launch_properties, version_info, paths, o)
 			.context("Failed to launch game process")?;
 
-		Ok(())
+		Ok(handle)
 	}
 }

@@ -3,7 +3,7 @@ mod args;
 
 use std::collections::HashMap;
 
-use anyhow::{anyhow, Context};
+use anyhow::{anyhow, bail, Context};
 use mcvm_shared::output::MCVMOutput;
 use oauth2::ClientId;
 use reqwest::Client;
@@ -23,6 +23,8 @@ use mcvm_shared::versions::VersionPattern;
 
 pub use args::create_quick_play_args;
 
+use super::InstanceHandle;
+
 impl Instance {
 	/// Launch a client
 	pub async fn launch_client(
@@ -34,7 +36,7 @@ impl Instance {
 		ms_client_id: ClientId,
 		manager: &UpdateManager,
 		o: &mut impl MCVMOutput,
-	) -> anyhow::Result<()> {
+	) -> anyhow::Result<InstanceHandle> {
 		assert!(matches!(self.kind, InstKind::Client { .. }));
 		let java_path = self.java.get().path.get();
 		let jre_path = java_path.join("bin/java");
@@ -139,11 +141,13 @@ impl Instance {
 				additional_env_vars: &env_vars,
 			};
 
-			self.launch_game_process(launch_properties, version_info, paths, o)
+			let handle = self
+				.launch_game_process(launch_properties, version_info, paths, o)
 				.context("Failed to launch game process")?;
+			Ok(handle)
+		} else {
+			bail!("Classpath is empty");
 		}
-
-		Ok(())
 	}
 }
 

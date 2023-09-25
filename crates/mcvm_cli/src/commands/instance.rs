@@ -123,7 +123,7 @@ pub async fn launch(
 
 	let mut lock = Lockfile::open(&data.paths)?;
 
-	instance
+	let mut handle = instance
 		.launch(
 			&data.paths,
 			&mut lock,
@@ -134,6 +134,11 @@ pub async fn launch(
 		)
 		.await
 		.context("Instance failed to launch")?;
+
+	handle
+		.process
+		.wait()
+		.context("Failed to wait for child process")?;
 
 	Ok(())
 }
