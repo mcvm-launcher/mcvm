@@ -11,6 +11,7 @@ pub fn lex(text: &str) -> anyhow::Result<Vec<(Token, TextPos)>> {
 	// Positional
 	let mut line_n: usize = 1;
 	let mut last_line_i: usize = 0;
+	let mut tok_start_pos = TextPos(line_n, 0);
 
 	// Current token
 	let mut tok: Token = Token::None;
@@ -24,7 +25,8 @@ pub fn lex(text: &str) -> anyhow::Result<Vec<(Token, TextPos)>> {
 		let pos = TextPos(line_n, i - last_line_i);
 		if c == '\n' {
 			line_n += 1;
-			last_line_i = i;
+			// We add one since otherwise the next line starts at column 1 instead of 0
+			last_line_i = i + 1;
 		}
 
 		// Using this loop as a goto
@@ -118,24 +120,21 @@ pub fn lex(text: &str) -> anyhow::Result<Vec<(Token, TextPos)>> {
 					}
 				}
 				Token::Variable(name) => {
-					let allowed = if name.is_empty() {
-						is_ident(c, true)
-					} else {
-						is_ident(c, false)
-					};
+					let allowed = is_ident(c, name.is_empty());
 
 					if allowed {
 						name.push(c);
 					} else {
 						repeat = true;
-						tokens.push((tok, pos.clone()));
+						tokens.push((tok, tok_start_pos.clone()));
 						tok = Token::None;
 					}
 				}
 				Token::Whitespace => {
 					if !is_whitespace(c) {
 						repeat = true;
-						tokens.push((tok, pos.clone()));
+						tokens.push((tok, tok_start_pos.clone()));
+						tok_start_pos = pos.clone();
 						tok = Token::None;
 					}
 				}
@@ -144,7 +143,8 @@ pub fn lex(text: &str) -> anyhow::Result<Vec<(Token, TextPos)>> {
 						name.push(c);
 					} else {
 						repeat = true;
-						tokens.push((tok, pos.clone()));
+						tokens.push((tok, tok_start_pos.clone()));
+						tok_start_pos = pos.clone();
 						tok = Token::None;
 					}
 				}
@@ -157,7 +157,8 @@ pub fn lex(text: &str) -> anyhow::Result<Vec<(Token, TextPos)>> {
 							bail!("Invalid number '{num_str}', {pos}");
 						}
 						*num = num_str.parse().expect("Number contains invalid characters");
-						tokens.push((tok, pos.clone()));
+						tokens.push((tok, tok_start_pos.clone()));
+						tok_start_pos = pos.clone();
 						tok = Token::None;
 					}
 				}
@@ -169,18 +170,21 @@ pub fn lex(text: &str) -> anyhow::Result<Vec<(Token, TextPos)>> {
 		}
 		if tok_finished {
 			tok_finished = false;
-			tokens.push((tok, pos));
+			tokens.push((tok, tok_start_pos));
+			tok_start_pos = pos.clone();
+			// Since these are not greedy we need to increase the col by 1
+			tok_start_pos.1 += 1;
 			tok = Token::None;
 		}
 	}
-	let final_pos = TextPos(line_n, text.len() - last_line_i);
+
 	match &mut tok {
 		Token::Num(num) => {
 			*num = num_str.parse().expect("Number contains invalid characters");
-			tokens.push((tok, final_pos));
+			tokens.push((tok, tok_start_pos.clone()));
 		}
 		Token::None => {}
-		_ => tokens.push((tok, final_pos)),
+		_ => tokens.push((tok, tok_start_pos.clone())),
 	}
 	Ok(tokens)
 }
@@ -479,7 +483,7 @@ mod tests {
 		);
 	}
 
-	macro_rules! _assert_token_positions {
+	macro_rules! assert_token_positions {
 		($text:literal, $positions:expr) => {
 			assert_token_positions!(lex($text), $positions)
 		};
@@ -489,10 +493,11 @@ mod tests {
 				Ok(toks) => {
 					dbg!(&toks, $positions);
 					assert_eq!(toks.len(), $positions.len());
-					for (i, ((_, tok_pos), expected_pos)) in
+					for (i, ((_, tok_pos), (expected_row, expected_col))) in
 						toks.iter().zip($positions.iter()).enumerate()
 					{
-						assert_eq!(tok_pos, expected_pos, "Index: {i}");
+						let expected_pos = TextPos(*expected_row, *expected_col);
+						assert_eq!(tok_pos, &expected_pos, "Index: {i}");
 					}
 				}
 				Err(e) => {
@@ -501,5 +506,23 @@ mod tests {
 				}
 			}
 		};
+	}
+
+	#[test]
+	fn test_token_pos_simple() {
+		assert_token_positions!(
+			"hello;world!!\nwhy\nwhere",
+			[
+				(1, 0),
+				(1, 5),
+				(1, 6),
+				(1, 11),
+				(1, 12),
+				(1, 13),
+				(2, 0),
+				(2, 3),
+				(3, 0)
+			]
+		);
 	}
 }
