@@ -3,12 +3,13 @@ use std::{collections::HashMap, sync::Arc};
 use super::CmdData;
 use itertools::Itertools;
 use mcvm::data::id::ProfileID;
-use mcvm::pkg_crate::{PkgRequest, PkgRequestSource};
+use mcvm::parse::lex::Token;
+use mcvm::pkg_crate::{PkgRequest, PkgRequestSource, PackageContentType};
 use mcvm::util::print::ReplPrinter;
 
 use anyhow::{bail, Context};
 use clap::Subcommand;
-use color_print::{cformat, cprint, cprintln};
+use color_print::{cformat, cprintln};
 use mcvm::shared::pkg::PackageID;
 use reqwest::Client;
 
@@ -165,15 +166,108 @@ async fn cat(data: &mut CmdData, id: &str, raw: bool) -> anyhow::Result<()> {
 	data.ensure_config(!raw).await?;
 	let config = data.config.get_mut();
 
+	let client = Client::new();
+
 	let req = Arc::new(PkgRequest::new(id, PkgRequestSource::UserRequire));
 	let contents = config
 		.packages
-		.load(&req, &data.paths, &Client::new(), &mut data.output)
+		.load(&req, &data.paths, &client, &mut data.output)
 		.await?;
 	if !raw {
 		cprintln!("<s,b>Contents of package <g>{}</g>:</s,b>", req);
 	}
-	cprint!("{}", contents);
+
+	if raw {
+		print!("{contents}");
+	} else {
+		let content_type = config
+			.packages
+			.content_type(&req, &data.paths, &client, &mut data.output)
+			.await?;
+		if let PackageContentType::Script = content_type {
+			pretty_print_package_script(&contents)?;
+		} else {
+			print!("{contents}");
+		}
+	}
+
+	Ok(())
+}
+
+/// Pretty-print a package script
+fn pretty_print_package_script(contents: &str) -> anyhow::Result<()> {
+	let mut lexed = mcvm::parse::lex::lex(contents)?;
+
+	// Since the windows iterator won't go to the end with the last token on the left
+	// side of the window, because it always makes sure the array is at least 2 elements long,
+	// we pad the end with a none token
+	if let Some(last) = lexed.last().cloned() {
+		lexed.push((Token::None, last.1));
+	}
+	dbg!(&lexed, contents.len());
+
+	let mut last_tok_was_at = false;
+	let mut last_tok_was_curly_or_semi = false;
+	for elem in lexed.windows(2) {
+		if let Some(left) = elem.get(0) {
+			// If the right does not exist, set it to the end of the string
+			let right_pos = elem
+				.get(1)
+				.map(|x| *x.1.absolute())
+				.unwrap_or(contents.len() - 1);
+
+			let left_pos = *left.1.absolute();
+			if left_pos >= contents.len() || right_pos >= contents.len() {
+				continue;
+			}
+			// A range thing
+			let text = if left_pos == contents.len() - 1 && contents.len() > 0 {
+				&contents[left_pos..]
+			} else {
+				&contents[left_pos..right_pos]
+			};
+			let text = match left.0 {
+				Token::None => String::new(),
+				Token::Whitespace => text.to_string(),
+				Token::Semicolon
+				| Token::Colon
+				| Token::Comma
+				| Token::Pipe
+				| Token::Bang
+				| Token::Square(..)
+				| Token::Paren(..)
+				| Token::Angle(..)
+				| Token::Curly(..) => text.to_string(),
+				Token::At => cformat!("<m><s>{text}"),
+				Token::Variable(..) => cformat!("<c>{text}"),
+				Token::Comment(..) => cformat!("<k!>{text}"),
+				Token::Ident(..) => {
+					if last_tok_was_at {
+						cformat!("<m><s>{text}")
+					} else if last_tok_was_curly_or_semi {
+						cformat!("<b!>{text}")
+					} else {
+						text.to_string()
+					}
+				}
+				Token::Num(..) => cformat!("<y>{text}"),
+				Token::Str(..) => cformat!("<g>{text}"),
+			};
+			print!("{text}");
+
+			// Whitespace can split these tokens apart so we need to make sure it doesn't
+			if !left.0.is_ignored() {
+				last_tok_was_at = false;
+				last_tok_was_curly_or_semi = false;
+			}
+			if let Token::At = left.0 {
+				last_tok_was_at = true;
+			}
+			if let Token::Curly(..) | Token::Semicolon = left.0 {
+				last_tok_was_curly_or_semi = true;
+			}
+		}
+	}
 
 	Ok(())
 }

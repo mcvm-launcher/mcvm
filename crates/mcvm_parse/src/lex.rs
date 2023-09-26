@@ -11,7 +11,7 @@ pub fn lex(text: &str) -> anyhow::Result<Vec<(Token, TextPos)>> {
 	// Positional
 	let mut line_n: usize = 1;
 	let mut last_line_i: usize = 0;
-	let mut tok_start_pos = TextPos(line_n, 0);
+	let mut tok_start_pos = TextPos(line_n, 0, 0);
 
 	// Current token
 	let mut tok: Token = Token::None;
@@ -22,7 +22,7 @@ pub fn lex(text: &str) -> anyhow::Result<Vec<(Token, TextPos)>> {
 	let mut num_str = String::new();
 
 	for (i, c) in text.chars().enumerate() {
-		let pos = TextPos(line_n, i - last_line_i);
+		let pos = TextPos(line_n, i - last_line_i, i);
 		if c == '\n' {
 			line_n += 1;
 			// We add one since otherwise the next line starts at column 1 instead of 0
@@ -108,8 +108,8 @@ pub fn lex(text: &str) -> anyhow::Result<Vec<(Token, TextPos)>> {
 					}
 					StrLexResult::Escape => escape = true,
 					StrLexResult::End => {
-						tok_finished = true;
 						escape = false;
+						tok_finished = true;
 					}
 				},
 				Token::Comment(string) => {
@@ -173,7 +173,7 @@ pub fn lex(text: &str) -> anyhow::Result<Vec<(Token, TextPos)>> {
 			tokens.push((tok, tok_start_pos));
 			tok_start_pos = pos.clone();
 			// Since these are not greedy we need to increase the col by 1
-			tok_start_pos.1 += 1;
+			tok_start_pos.increase_col(1);
 			tok = Token::None;
 		}
 	}
@@ -256,6 +256,11 @@ impl Token {
 			Token::Str(string) => format!("\"{string}\""),
 		}
 	}
+
+	/// Checks if this token is a useless character with no meaning
+	pub fn is_ignored(&self) -> bool {
+		matches!(self, Token::None | Token::Comment(..) | Token::Whitespace)
+	}
 }
 
 /// Generic side for something like a bracket
@@ -267,19 +272,47 @@ pub enum Side {
 	Right,
 }
 
-/// Text positional information with row and column
+/// Text positional information with row, column, and absolute index
 #[derive(Clone, PartialEq, Eq)]
-pub struct TextPos(usize, usize);
+pub struct TextPos(usize, usize, usize);
 
 impl Debug for TextPos {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		write!(f, "({}:{})", self.0, self.1)
+		write!(f, "({}:{}:{})", self.0, self.1, self.2)
 	}
 }
 
 impl Display for TextPos {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		write!(f, "({}:{})", self.0, self.1)
+	}
+}
+
+impl TextPos {
+	/// Create a new TextPos
+	pub fn new(row: usize, col: usize, abs: usize) -> Self {
+		Self(row, col, abs)
+	}
+
+	/// Get the row
+	pub fn row(&self) -> &usize {
+		&self.0
+	}
+
+	/// Get the column
+	pub fn col(&self) -> &usize {
+		&self.1
+	}
+
+	/// Get the absolute index
+	pub fn absolute(&self) -> &usize {
+		&self.2
+	}
+
+	/// Increase the col of the pos
+	pub fn increase_col(&mut self, amt: usize) {
+		self.1 += amt;
+		self.2 += amt;
 	}
 }
 
@@ -332,7 +365,7 @@ fn is_num(c: char, first: bool) -> bool {
 pub fn reduce_tokens<'a, T: Iterator<Item = &'a TokenAndPos>>(
 	tokens: T,
 ) -> impl Iterator<Item = &'a TokenAndPos> {
-	tokens.filter(|(tok, ..)| !matches!(tok, Token::Comment(..) | Token::Whitespace | Token::None))
+	tokens.filter(|(tok, ..)| !tok.is_ignored())
 }
 
 #[cfg(test)]
@@ -496,8 +529,9 @@ mod tests {
 					for (i, ((_, tok_pos), (expected_row, expected_col))) in
 						toks.iter().zip($positions.iter()).enumerate()
 					{
-						let expected_pos = TextPos(*expected_row, *expected_col);
-						assert_eq!(tok_pos, &expected_pos, "Index: {i}");
+						// let expected_pos = TextPos(*expected_row, *expected_col);
+						assert_eq!(tok_pos.0, *expected_row as usize, "Index: {i}");
+						assert_eq!(tok_pos.1, *expected_col as usize, "Index: {i}");
 					}
 				}
 				Err(e) => {
@@ -511,7 +545,7 @@ mod tests {
 	#[test]
 	fn test_token_pos_simple() {
 		assert_token_positions!(
-			"hello;world!!\nwhy\nwhere",
+			"hello;world!!\nwhy\n\"where\";",
 			[
 				(1, 0),
 				(1, 5),
@@ -521,7 +555,8 @@ mod tests {
 				(1, 13),
 				(2, 0),
 				(2, 3),
-				(3, 0)
+				(3, 0),
+				(3, 7),
 			]
 		);
 	}
