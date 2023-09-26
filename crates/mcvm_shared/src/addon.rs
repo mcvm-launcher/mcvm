@@ -1,5 +1,6 @@
 use std::fmt::Display;
 
+#[cfg(feature = "schema")]
 use schemars::JsonSchema;
 use serde::Deserialize;
 
@@ -23,7 +24,8 @@ pub struct Addon {
 }
 
 /// Different kinds of addons
-#[derive(Debug, Clone, Copy, Deserialize, JsonSchema)]
+#[derive(Debug, Clone, Copy, Deserialize)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(rename_all = "snake_case")]
 pub enum AddonKind {
 	/// A Minecraft resource pack

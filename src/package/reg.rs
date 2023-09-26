@@ -8,6 +8,7 @@ use mcvm_pkg::PkgRequestSource;
 use mcvm_shared::output::MCVMOutput;
 use mcvm_shared::pkg::ArcPkgReq;
 use reqwest::Client;
+#[cfg(feature = "schema")]
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
@@ -322,7 +323,8 @@ impl PkgRegistry {
 }
 
 /// What strategy to use for the local caching of package scripts
-#[derive(Debug, Clone, Deserialize, Serialize, Default, JsonSchema)]
+#[derive(Debug, Clone, Deserialize, Serialize, Default)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(rename_all = "snake_case")]
 pub enum CachingStrategy {
 	/// Don't cache any packages locally. Fetch them from the repository every time

@@ -1,3 +1,4 @@
+#[cfg(feature = "schema")]
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use std::fmt::Display;
@@ -124,7 +125,8 @@ impl Display for PkgRequest {
 pub type ArcPkgReq = Arc<PkgRequest>;
 
 /// Stability setting for a package
-#[derive(Deserialize, Serialize, Default, Debug, Copy, Clone, PartialEq, Eq, JsonSchema)]
+#[derive(Deserialize, Serialize, Default, Debug, Copy, Clone, PartialEq, Eq)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
 pub enum PackageStability {
 	/// Whatever the latest stable version is
 	#[default]
@@ -170,7 +172,8 @@ pub fn is_valid_package_id(id: &str) -> bool {
 }
 
 /// Hashes used for package addons
-#[derive(Deserialize, Serialize, PartialEq, Debug, Clone, Default, JsonSchema)]
+#[derive(Deserialize, Serialize, PartialEq, Debug, Clone, Default)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(default)]
 pub struct PackageAddonHashes<T: Default> {
 	/// The SHA-256 hash of this addon file

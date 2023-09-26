@@ -32,6 +32,7 @@ use mcvm_shared::pkg::ArcPkgReq;
 use mcvm_shared::pkg::PackageID;
 use mcvm_shared::util::is_valid_identifier;
 use reqwest::Client;
+#[cfg(feature = "schema")]
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
@@ -60,7 +61,8 @@ const MAX_NOTICE_INSTRUCTIONS: usize = 10;
 const MAX_NOTICE_CHARACTERS: usize = 128;
 
 /// Permissions level for an evaluation
-#[derive(Deserialize, Serialize, Debug, Copy, Clone, Default, JsonSchema)]
+#[derive(Deserialize, Serialize, Debug, Copy, Clone, Default)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(rename_all = "snake_case")]
 pub enum EvalPermissions {
 	/// Restricts certain operations that would normally be allowed

@@ -6,6 +6,7 @@ use mcvm_pkg::properties::PackageProperties;
 use mcvm_pkg::PackageContentType;
 use mcvm_shared::pkg::{is_valid_package_id, ArcPkgReq, PackageID, PackageStability};
 use mcvm_shared::util::is_valid_identifier;
+#[cfg(feature = "schema")]
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
@@ -13,7 +14,8 @@ use crate::package::eval::EvalPermissions;
 use mcvm_pkg::{PkgRequest, PkgRequestSource};
 
 /// Different representations for the configuration of a package
-#[derive(Deserialize, Serialize, Clone, Debug, JsonSchema)]
+#[derive(Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(untagged)]
 pub enum PackageConfig {
 	/// Basic configuration for a repository package with just the package ID
@@ -23,7 +25,8 @@ pub enum PackageConfig {
 }
 
 /// Full configuration for a package
-#[derive(Deserialize, Serialize, Clone, Debug, JsonSchema)]
+#[derive(Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(untagged)]
 #[serde(rename_all = "snake_case")]
 pub enum FullPackageConfig {
@@ -71,7 +74,8 @@ pub enum FullPackageConfig {
 }
 
 /// Trick enum used to make deserialization work in the way we want
-#[derive(Deserialize, Serialize, Clone, Debug, JsonSchema)]
+#[derive(Deserialize, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(rename_all = "snake_case")]
 pub enum PackageType {
 	/// Yeah this is kinda stupid

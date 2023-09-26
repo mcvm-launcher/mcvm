@@ -3,13 +3,15 @@ use mcvm_parse::conditions::{ArchCondition, OSCondition};
 use mcvm_shared::modifications::{ModloaderMatch, PluginLoaderMatch};
 use mcvm_shared::versions::VersionPattern;
 use mcvm_shared::Side;
+#[cfg(feature = "schema")]
 use schemars::JsonSchema;
 use serde::Deserialize;
 
 use crate::parse::{instruction::InstrKind, parse::Parsed, routine::PROPERTIES_ROUTINE};
 
 /// Package properties derived from running the 'properties' routine
-#[derive(Default, Debug, Deserialize, Clone, JsonSchema)]
+#[derive(Default, Debug, Deserialize, Clone)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
 pub struct PackageProperties {
 	/// Available features that can be configured for the package
 	pub features: Option<Vec<String>>,

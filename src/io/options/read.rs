@@ -1,6 +1,7 @@
 use std::{collections::HashMap, fmt::Display, io::Read};
 
 use anyhow::{anyhow, Context};
+#[cfg(feature = "schema")]
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
@@ -39,7 +40,8 @@ pub fn read_options_file(
 }
 
 /// Used for both difficulty and gamemode to have compatability with different versions
-#[derive(Deserialize, Serialize, Debug, Clone, JsonSchema)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(untagged)]
 pub enum EnumOrNumber<T> {
 	Enum(T),
@@ -69,7 +71,8 @@ impl<T: ToInt> ToInt for EnumOrNumber<T> {
 }
 
 /// Allow an enum or custom string
-#[derive(Deserialize, Serialize, Debug, Clone, JsonSchema)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(untagged)]
 pub enum EnumOrString<T> {
 	Enum(T),

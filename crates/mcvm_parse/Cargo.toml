@@ -9,8 +9,11 @@ repository = "https://github.com/CarbonSmasher/mcvm"
 keywords = ["minecraft", "launcher", "game", "mc", "parse"]
 categories = ["games"]
 
+[features]
+schema = ["dep:schemars", "mcvm_shared/schema"]
+
 [dependencies]
 anyhow = "1.0.70"
 mcvm_shared = { path = "../mcvm_shared", version = "0.8.0" }
-schemars = "0.8.15"
+schemars = { version = "0.8.15", optional = true }
 serde = { version = "1.0.152", features = ["derive"] }

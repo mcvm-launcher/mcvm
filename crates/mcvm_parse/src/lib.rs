@@ -1,6 +1,10 @@
 #![warn(missing_docs)]
 
 //! This library is used for parsing MCVM package scripts
+//!
+//! # Features:
+//!
+//! - `schema`: Enable generation of JSON schemas using the `schemars` crate
 
 /// Parsing for conditions, used in if instructions
 pub mod conditions;

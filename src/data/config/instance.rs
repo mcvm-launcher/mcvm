@@ -3,6 +3,7 @@ use std::str::FromStr;
 
 use anyhow::{anyhow, bail, ensure, Context};
 use mcvm_shared::Side;
+#[cfg(feature = "schema")]
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
@@ -20,7 +21,8 @@ use crate::util::merge_options;
 use super::package::PackageConfig;
 
 /// Different representations of configuration for an instance
-#[derive(Deserialize, Serialize, Clone, JsonSchema)]
+#[derive(Deserialize, Serialize, Clone)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(untagged)]
 #[serde(rename_all = "snake_case")]
 pub enum InstanceConfig {
@@ -75,7 +77,8 @@ impl InstanceConfig {
 }
 
 /// The full representation of instance config
-#[derive(Deserialize, Serialize, Clone, JsonSchema)]
+#[derive(Deserialize, Serialize, Clone)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(tag = "type")]
 #[serde(rename_all = "snake_case")]
 pub enum FullInstanceConfig {
@@ -127,7 +130,8 @@ pub enum FullInstanceConfig {
 }
 
 /// Different representations for JVM / game arguments
-#[derive(Deserialize, Serialize, Debug, Clone, JsonSchema)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(untagged)]
 pub enum Args {
 	/// A list of separate arguments
@@ -160,7 +164,8 @@ impl Default for Args {
 }
 
 /// Arguments for the process when launching
-#[derive(Deserialize, Serialize, Debug, Default, Clone, JsonSchema)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
 pub struct LaunchArgs {
 	/// Arguments for the JVM
 	#[serde(default)]
@@ -171,7 +176,8 @@ pub struct LaunchArgs {
 }
 
 /// Different representations of both memory arguments for the JVM
-#[derive(Deserialize, Serialize, Debug, Default, Clone, JsonSchema)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(untagged)]
 pub enum LaunchMemory {
 	/// No memory arguments
@@ -203,7 +209,8 @@ fn merge_package_lists(mut a: Vec<PackageConfig>, b: Vec<PackageConfig>) -> Vec<
 }
 
 /// Options for the Minecraft QuickPlay feature
-#[derive(Deserialize, Serialize, Debug, PartialEq, Default, Clone, JsonSchema)]
+#[derive(Deserialize, Serialize, Debug, PartialEq, Default, Clone)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(tag = "type")]
 #[serde(rename_all = "snake_case")]
 pub enum QuickPlay {
@@ -230,7 +237,8 @@ pub enum QuickPlay {
 }
 
 /// Configuration for the launching of the game
-#[derive(Deserialize, Serialize, Debug, Clone, JsonSchema)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
 pub struct LaunchConfig {
 	/// The arguments for the process
 	#[serde(default)]
@@ -335,7 +343,8 @@ impl Default for LaunchConfig {
 }
 
 /// Resolution for a client window
-#[derive(Deserialize, Serialize, Clone, Debug, Copy, JsonSchema)]
+#[derive(Deserialize, Serialize, Clone, Debug, Copy)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
 pub struct WindowResolution {
 	/// The width of the window
 	pub width: u32,
@@ -344,7 +353,8 @@ pub struct WindowResolution {
 }
 
 /// Configuration for the client window
-#[derive(Deserialize, Serialize, Default, Clone, Debug, JsonSchema)]
+#[derive(Deserialize, Serialize, Default, Clone, Debug)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(default)]
 pub struct ClientWindowConfig {
 	/// The resolution of the window

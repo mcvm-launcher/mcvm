@@ -10,6 +10,7 @@ use std::io::BufReader;
 use std::path::PathBuf;
 
 use anyhow::Context;
+#[cfg(feature = "schema")]
 use schemars::JsonSchema;
 use serde::Deserialize;
 
@@ -19,7 +20,8 @@ use client::ClientOptions;
 use server::ServerOptions;
 
 /// General options structure used to produce options for both client and server
-#[derive(Deserialize, Debug, Clone, JsonSchema)]
+#[derive(Deserialize, Debug, Clone)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
 pub struct Options {
 	/// Options for the client
 	#[serde(default)]

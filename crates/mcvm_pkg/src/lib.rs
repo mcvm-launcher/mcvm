@@ -1,6 +1,10 @@
 #![warn(missing_docs)]
 
 //! mcvm_pkg is a library for dealing with MCVM packages
+//!
+//! # Features:
+//!
+//! - `schema`: Enable generation of JSON schemas using the `schemars` crate
 
 /// Standard declarative package format
 pub mod declarative;
@@ -21,6 +25,7 @@ use declarative::{deserialize_declarative_package, validate_declarative_package}
 use mcvm_shared::pkg::{ArcPkgReq, PackageID};
 use metadata::PackageMetadata;
 use properties::PackageProperties;
+#[cfg(feature = "schema")]
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
@@ -46,7 +51,8 @@ pub fn parse_and_validate(contents: &str, content_type: PackageContentType) -> a
 }
 
 /// Content type of a package
-#[derive(Deserialize, Serialize, Debug, Copy, Clone, Default, JsonSchema)]
+#[derive(Deserialize, Serialize, Debug, Copy, Clone, Default)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(rename_all = "snake_case")]
 pub enum PackageContentType {
 	/// A package script
@@ -66,7 +72,8 @@ pub struct RequiredPackage {
 }
 
 /// A recommended package
-#[derive(Debug, Clone, PartialOrd, Ord, PartialEq, Eq, Deserialize, JsonSchema)]
+#[derive(Debug, Clone, PartialOrd, Ord, PartialEq, Eq, Deserialize)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
 pub struct RecommendedPackage {
 	/// The package id that is required
 	pub value: PackageID,

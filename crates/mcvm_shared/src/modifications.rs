@@ -1,10 +1,12 @@
 use std::fmt::Display;
 
+#[cfg(feature = "schema")]
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 /// A loader for Minecraft mods
-#[derive(Serialize, Deserialize, Debug, Copy, Clone, PartialEq, Eq, Default, JsonSchema)]
+#[derive(Serialize, Deserialize, Debug, Copy, Clone, PartialEq, Eq, Default)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(rename_all = "lowercase")]
 pub enum Modloader {
 	/// No loader, just the default game
@@ -42,7 +44,8 @@ impl Display for Modloader {
 }
 
 /// Matcher for different types of loader
-#[derive(Debug, Clone, PartialEq, Eq, Deserialize, JsonSchema)]
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(rename_all = "lowercase")]
 pub enum ModloaderMatch {
 	/// Matches vanilla
@@ -103,7 +106,8 @@ impl ModloaderMatch {
 }
 
 /// Different types of server changes. These are mostly mutually exclusive.
-#[derive(Serialize, Deserialize, Debug, Copy, Clone, Default, JsonSchema, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, Copy, Clone, Default, PartialEq, Eq)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(rename_all = "lowercase")]
 pub enum ServerType {
 	/// Unspecified. Usually inherits from something else
@@ -168,7 +172,8 @@ impl Display for ServerType {
 }
 
 /// Matcher for different types of server plugin loaders
-#[derive(Debug, Clone, PartialEq, Eq, Deserialize, JsonSchema)]
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(rename_all = "lowercase")]
 pub enum PluginLoaderMatch {
 	/// The default game with no plugin support
@@ -236,7 +241,8 @@ impl PluginLoaderMatch {
 }
 
 /// Different modifications for the client. Mostly mututally exclusive
-#[derive(Serialize, Deserialize, Debug, Copy, Clone, Default, JsonSchema, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, Copy, Clone, Default, PartialEq, Eq)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(rename_all = "lowercase")]
 pub enum ClientType {
 	/// Unspecified. Usually inherits from something else

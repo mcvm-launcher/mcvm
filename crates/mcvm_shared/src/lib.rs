@@ -1,6 +1,10 @@
 #![warn(missing_docs)]
 
 //! This crate contains shared data for the other MCVM crates
+//!
+//! # Features:
+//!
+//! - `schema`: Enable generation of JSON schemas using the `schemars` crate
 
 /// Common addon constructs
 pub mod addon;
@@ -18,11 +22,13 @@ pub mod versions;
 use std::{fmt::Display, str::FromStr};
 
 use anyhow::anyhow;
+#[cfg(feature = "schema")]
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 /// Common utilities
 pub mod util {
+	#[cfg(feature = "schema")]
 	use schemars::JsonSchema;
 	use serde::Deserialize;
 
@@ -59,7 +65,8 @@ pub mod util {
 
 	/// Utility enum for deserialization that lets you do a list that can be one item
 	/// without the braces
-	#[derive(Deserialize, Debug, Clone, JsonSchema)]
+	#[derive(Deserialize, Debug, Clone)]
+	#[cfg_attr(feature = "schema", derive(JsonSchema))]
 	#[serde(untagged)]
 	pub enum DeserListOrSingle<T> {
 		/// Only one item, specified without braces
@@ -267,7 +274,8 @@ pub mod later {
 }
 
 /// Minecraft game side, client or server
-#[derive(Debug, Clone, Copy, Hash, PartialEq, Eq, Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Clone, Copy, Hash, PartialEq, Eq, Deserialize, Serialize)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(rename_all = "snake_case")]
 pub enum Side {
 	/// The default game

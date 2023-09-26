@@ -2,6 +2,7 @@ use anyhow::bail;
 use mcvm_shared::lang::Language;
 use mcvm_shared::later::Later;
 use mcvm_shared::pkg::PackageStability;
+#[cfg(feature = "schema")]
 use schemars::JsonSchema;
 use serde::Deserialize;
 
@@ -69,7 +70,8 @@ pub enum ConditionKind {
 }
 
 /// Value for the OS condition
-#[derive(Debug, Clone, PartialEq, Eq, Deserialize, JsonSchema)]
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(rename_all = "snake_case")]
 pub enum OSCondition {
 	/// Windows
@@ -96,7 +98,8 @@ impl OSCondition {
 }
 
 /// Value for the arch condition
-#[derive(Debug, Clone, PartialEq, Eq, Deserialize, JsonSchema)]
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(rename_all = "snake_case")]
 pub enum ArchCondition {
 	/// x86

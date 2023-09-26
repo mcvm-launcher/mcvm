@@ -1,10 +1,12 @@
 use std::fmt::Display;
 
+#[cfg(feature = "schema")]
 use schemars::JsonSchema;
 use serde::Deserialize;
 
 /// Pattern matching for the version of Minecraft, a package, etc.
-#[derive(Debug, Hash, Clone, PartialEq, JsonSchema)]
+#[derive(Debug, Hash, Clone, PartialEq)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
 pub enum VersionPattern {
 	/// Matches a single version
 	Single(String),

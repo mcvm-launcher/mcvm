@@ -9,8 +9,11 @@ repository = "https://github.com/CarbonSmasher/mcvm"
 keywords = ["minecraft", "launcher", "game", "mc"]
 categories = ["games"]
 
+[features]
+schema = ["dep:schemars"]
+
 [dependencies]
 anyhow = "1.0.70"
 current_locale = "0.1.1"
-schemars = "0.8.15"
+schemars = { version = "0.8.15", optional = true }
 serde = { version = "1.0.152", features = ["derive", "rc"] }

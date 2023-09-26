@@ -11,6 +11,7 @@
 //! - `disable_profile_update_packages`: A workaround for `https://github.com/rust-lang/rust/issues/102211`. If you are
 //! getting higher-ranked lifetime errors when running the update_profiles function, try enabling this. When enabled, the
 //! update_profiles function will no longer update packages at all.
+//! - `schema`: Enable generation of JSON schemas using the `schemars` crate
 
 pub use mcvm_parse as parse;
 pub use mcvm_pkg as pkg_crate;

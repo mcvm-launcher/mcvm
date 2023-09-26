@@ -15,6 +15,7 @@ use mcvm_shared::versions::VersionInfo;
 use mcvm_shared::Side;
 use oauth2::ClientId;
 use reqwest::Client;
+#[cfg(feature = "schema")]
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
@@ -237,7 +238,8 @@ impl LaunchOptions {
 }
 
 /// A wrapper command
-#[derive(Serialize, Deserialize, Debug, Clone, JsonSchema)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
 pub struct WrapperCommand {
 	/// The command to run
 	pub cmd: String,

@@ -21,11 +21,13 @@ use super::read::EnumOrNumber;
 pub use deser::*;
 #[allow(missing_docs)]
 pub mod deser {
+	#[cfg(feature = "schema")]
 	use schemars::JsonSchema;
 
 	use super::*;
 
-	#[derive(Deserialize, Serialize, Debug, Clone, Default, JsonSchema)]
+	#[derive(Deserialize, Serialize, Debug, Clone, Default)]
+	#[cfg_attr(feature = "schema", derive(JsonSchema))]
 	#[serde(default)]
 	pub struct ClientOptions {
 		pub data_version: Option<i16>,
@@ -60,7 +62,8 @@ pub mod deser {
 		pub snooper_enabled: Option<bool>,
 	}
 
-	#[derive(Deserialize, Serialize, Debug, Clone, Default, JsonSchema)]
+	#[derive(Deserialize, Serialize, Debug, Clone, Default)]
+	#[cfg_attr(feature = "schema", derive(JsonSchema))]
 	#[serde(default)]
 	pub struct ControlOptions {
 		pub keys: KeyOptions,
@@ -75,7 +78,8 @@ pub mod deser {
 		pub raw_mouse_input: Option<bool>,
 	}
 
-	#[derive(Deserialize, Serialize, Debug, Clone, Default, JsonSchema)]
+	#[derive(Deserialize, Serialize, Debug, Clone, Default)]
+	#[cfg_attr(feature = "schema", derive(JsonSchema))]
 	#[serde(default)]
 	pub struct KeyOptions {
 		pub attack: Option<Keybind>,
@@ -121,7 +125,8 @@ pub mod deser {
 		pub stream_toggle_microphone: Option<Keybind>,
 	}
 
-	#[derive(Deserialize, Serialize, Debug, Clone, Default, JsonSchema)]
+	#[derive(Deserialize, Serialize, Debug, Clone, Default)]
+	#[cfg_attr(feature = "schema", derive(JsonSchema))]
 	#[serde(default)]
 	pub struct ChatOptions {
 		pub auto_command_suggestions: Option<bool>,
@@ -142,7 +147,8 @@ pub mod deser {
 		pub narrator_mode: Option<EnumOrNumber<NarratorMode>>,
 	}
 
-	#[derive(Deserialize, Serialize, Debug, Clone, Default, JsonSchema)]
+	#[derive(Deserialize, Serialize, Debug, Clone, Default)]
+	#[cfg_attr(feature = "schema", derive(JsonSchema))]
 	#[serde(default)]
 	pub struct VideoOptions {
 		pub vsync: Option<bool>,
@@ -175,7 +181,8 @@ pub mod deser {
 		pub allow_block_alternatives: Option<bool>,
 	}
 
-	#[derive(Deserialize, Serialize, Debug, Clone, Default, JsonSchema)]
+	#[derive(Deserialize, Serialize, Debug, Clone, Default)]
+	#[cfg_attr(feature = "schema", derive(JsonSchema))]
 	#[serde(default)]
 	pub struct VolumeOptions {
 		pub master: Option<f32>,
@@ -190,7 +197,8 @@ pub mod deser {
 		pub voice: Option<f32>,
 	}
 
-	#[derive(Deserialize, Serialize, Debug, Clone, Default, JsonSchema)]
+	#[derive(Deserialize, Serialize, Debug, Clone, Default)]
+	#[cfg_attr(feature = "schema", derive(JsonSchema))]
 	#[serde(default)]
 	pub struct SoundOptions {
 		pub volume: VolumeOptions,
@@ -199,7 +207,8 @@ pub mod deser {
 		pub device: Option<String>,
 	}
 
-	#[derive(Deserialize, Serialize, Debug, Clone, Default, JsonSchema)]
+	#[derive(Deserialize, Serialize, Debug, Clone, Default)]
+	#[cfg_attr(feature = "schema", derive(JsonSchema))]
 	#[serde(default)]
 	pub struct SkinOptions {
 		pub cape: Option<bool>,
@@ -211,7 +220,8 @@ pub mod deser {
 		pub hat: Option<bool>,
 	}
 
-	#[derive(Deserialize, Serialize, Debug, Clone, Default, JsonSchema)]
+	#[derive(Deserialize, Serialize, Debug, Clone, Default)]
+	#[cfg_attr(feature = "schema", derive(JsonSchema))]
 	#[serde(default)]
 	pub struct StreamOptions {
 		pub bytes_per_pixel: Option<f32>,
@@ -227,7 +237,8 @@ pub mod deser {
 		pub system_volume: Option<f32>,
 	}
 
-	#[derive(Deserialize, Serialize, Clone, Debug, JsonSchema)]
+	#[derive(Deserialize, Serialize, Clone, Debug)]
+	#[cfg_attr(feature = "schema", derive(JsonSchema))]
 	#[serde(rename_all = "snake_case")]
 	pub enum GraphicsMode {
 		Fast,
@@ -241,7 +252,8 @@ pub mod deser {
 		}
 	}
 
-	#[derive(Deserialize, Serialize, PartialEq, Debug, Clone, JsonSchema)]
+	#[derive(Deserialize, Serialize, PartialEq, Debug, Clone)]
+	#[cfg_attr(feature = "schema", derive(JsonSchema))]
 	#[serde(rename_all = "snake_case")]
 	pub enum ParticlesMode {
 		All,
@@ -255,7 +267,8 @@ pub mod deser {
 		}
 	}
 
-	#[derive(Deserialize, Serialize, Clone, Debug, JsonSchema)]
+	#[derive(Deserialize, Serialize, Clone, Debug)]
+	#[cfg_attr(feature = "schema", derive(JsonSchema))]
 	#[serde(rename_all = "snake_case")]
 	pub enum Difficulty {
 		Peaceful,
@@ -270,7 +283,8 @@ pub mod deser {
 		}
 	}
 
-	#[derive(Deserialize, Serialize, PartialEq, Debug, Clone, JsonSchema)]
+	#[derive(Deserialize, Serialize, PartialEq, Debug, Clone)]
+	#[cfg_attr(feature = "schema", derive(JsonSchema))]
 	#[serde(rename_all = "snake_case")]
 	pub enum ChunkUpdatesMode {
 		Threaded,
@@ -284,7 +298,8 @@ pub mod deser {
 		}
 	}
 
-	#[derive(Deserialize, Serialize, Clone, Debug, JsonSchema)]
+	#[derive(Deserialize, Serialize, Clone, Debug)]
+	#[cfg_attr(feature = "schema", derive(JsonSchema))]
 	#[serde(rename_all = "snake_case")]
 	pub enum CloudRenderMode {
 		Fancy,
@@ -306,7 +321,8 @@ pub mod deser {
 		}
 	}
 
-	#[derive(Deserialize, Serialize, Clone, Debug, JsonSchema)]
+	#[derive(Deserialize, Serialize, Clone, Debug)]
+	#[cfg_attr(feature = "schema", derive(JsonSchema))]
 	#[serde(rename_all = "snake_case")]
 	pub enum ChatVisibility {
 		Shown,
@@ -320,7 +336,8 @@ pub mod deser {
 		}
 	}
 
-	#[derive(Deserialize, Serialize, Debug, Clone, JsonSchema)]
+	#[derive(Deserialize, Serialize, Debug, Clone)]
+	#[cfg_attr(feature = "schema", derive(JsonSchema))]
 	#[serde(rename_all = "snake_case")]
 	pub enum MainHand {
 		Left,
@@ -340,7 +357,8 @@ pub mod deser {
 		}
 	}
 
-	#[derive(Deserialize, Serialize, Clone, Debug, JsonSchema)]
+	#[derive(Deserialize, Serialize, Clone, Debug)]
+	#[cfg_attr(feature = "schema", derive(JsonSchema))]
 	#[serde(rename_all = "snake_case")]
 	pub enum AttackIndicatorMode {
 		Off,
@@ -354,7 +372,8 @@ pub mod deser {
 		}
 	}
 
-	#[derive(Deserialize, Serialize, Clone, Debug, JsonSchema)]
+	#[derive(Deserialize, Serialize, Clone, Debug)]
+	#[cfg_attr(feature = "schema", derive(JsonSchema))]
 	#[serde(rename_all = "snake_case")]
 	pub enum NarratorMode {
 		Off,
@@ -369,7 +388,8 @@ pub mod deser {
 		}
 	}
 
-	#[derive(Deserialize, Serialize, Debug, Clone, JsonSchema)]
+	#[derive(Deserialize, Serialize, Debug, Clone)]
+	#[cfg_attr(feature = "schema", derive(JsonSchema))]
 	#[serde(rename_all = "snake_case")]
 	pub enum TutorialStep {
 		Movement,
@@ -397,7 +417,8 @@ pub mod deser {
 		}
 	}
 
-	#[derive(Deserialize, Serialize, Clone, Debug, JsonSchema)]
+	#[derive(Deserialize, Serialize, Clone, Debug)]
+	#[cfg_attr(feature = "schema", derive(JsonSchema))]
 	#[serde(rename_all = "snake_case")]
 	pub enum LogLevel {
 		None,
@@ -414,7 +435,8 @@ pub mod deser {
 	}
 
 	// TODO: Add sensible defaults for resolution options
-	#[derive(Deserialize, Serialize, Debug, Clone, JsonSchema)]
+	#[derive(Deserialize, Serialize, Debug, Clone)]
+	#[cfg_attr(feature = "schema", derive(JsonSchema))]
 	pub struct FullscreenResolution {
 		pub width: u32,
 		pub height: u32,
