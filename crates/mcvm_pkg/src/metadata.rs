@@ -4,7 +4,7 @@ use anyhow::bail;
 use schemars::JsonSchema;
 use serde::Deserialize;
 
-/// Package metadata derived from running the 'meta' routine
+/// Nonessential display information about a package
 #[derive(Default, Debug, Deserialize, Clone)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 pub struct PackageMetadata {

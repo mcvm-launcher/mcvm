@@ -9,7 +9,7 @@ use serde::Deserialize;
 
 use crate::parse::{instruction::InstrKind, parse::Parsed, routine::PROPERTIES_ROUTINE};
 
-/// Package properties derived from running the 'properties' routine
+/// Semantic properties and attributes of a package
 #[derive(Default, Debug, Deserialize, Clone)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 pub struct PackageProperties {
