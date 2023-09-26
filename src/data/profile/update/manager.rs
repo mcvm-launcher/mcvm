@@ -216,7 +216,7 @@ impl UpdateManager {
 			self.client_meta.fill(RcType::new(client_meta));
 
 			o.display(
-				MessageContents::Success("client meta obtained".into()),
+				MessageContents::Success("Client meta obtained".into()),
 				MessageLevel::Important,
 			);
 			o.end_process();
