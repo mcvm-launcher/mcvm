@@ -2,7 +2,7 @@ use std::fmt::Display;
 
 #[cfg(feature = "schema")]
 use schemars::JsonSchema;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::pkg::{PackageAddonOptionalHashes, PackageID};
 
@@ -24,7 +24,7 @@ pub struct Addon {
 }
 
 /// Different kinds of addons
-#[derive(Debug, Clone, Copy, Deserialize)]
+#[derive(Debug, Clone, Copy, Deserialize, Serialize)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(rename_all = "snake_case")]
 pub enum AddonKind {

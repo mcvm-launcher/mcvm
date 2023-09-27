@@ -72,7 +72,7 @@ pub struct RequiredPackage {
 }
 
 /// A recommended package
-#[derive(Debug, Clone, PartialOrd, Ord, PartialEq, Eq, Deserialize)]
+#[derive(Debug, Clone, PartialOrd, Ord, PartialEq, Eq, Deserialize, Serialize)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 pub struct RecommendedPackage {
 	/// The package id that is required

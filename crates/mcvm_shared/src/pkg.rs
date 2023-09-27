@@ -182,6 +182,13 @@ pub struct PackageAddonHashes<T: Default> {
 	pub sha512: T,
 }
 
+impl PackageAddonOptionalHashes {
+	/// Checks if this set of optional hashes is empty
+	pub fn is_empty(&self) -> bool {
+		self.sha256.is_none() && self.sha512.is_none()
+	}
+}
+
 /// Optional PackageAddonHashes
 pub type PackageAddonOptionalHashes = PackageAddonHashes<Option<String>>;
 

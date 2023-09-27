@@ -2,7 +2,7 @@ use std::fmt::Display;
 
 #[cfg(feature = "schema")]
 use schemars::JsonSchema;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 /// Pattern matching for the version of Minecraft, a package, etc.
 #[derive(Debug, Hash, Clone, PartialEq)]
@@ -209,6 +209,16 @@ impl<'de> Deserialize<'de> for VersionPattern {
 	{
 		let string = String::deserialize(deserializer)?;
 		Ok(Self::from(&string))
+	}
+}
+
+impl Serialize for VersionPattern {
+	fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+	where
+		S: serde::Serializer,
+	{
+		let ser = self.to_string().serialize(serializer)?;
+		Ok(ser)
 	}
 }
 

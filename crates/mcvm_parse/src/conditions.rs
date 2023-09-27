@@ -4,7 +4,7 @@ use mcvm_shared::later::Later;
 use mcvm_shared::pkg::PackageStability;
 #[cfg(feature = "schema")]
 use schemars::JsonSchema;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::unexpected_token;
 use mcvm_shared::modifications::{ModloaderMatch, PluginLoaderMatch};
@@ -70,7 +70,7 @@ pub enum ConditionKind {
 }
 
 /// Value for the OS condition
-#[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(rename_all = "snake_case")]
 pub enum OSCondition {
@@ -98,7 +98,7 @@ impl OSCondition {
 }
 
 /// Value for the arch condition
-#[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(rename_all = "snake_case")]
 pub enum ArchCondition {

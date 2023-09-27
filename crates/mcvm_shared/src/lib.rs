@@ -30,7 +30,7 @@ use serde::{Deserialize, Serialize};
 pub mod util {
 	#[cfg(feature = "schema")]
 	use schemars::JsonSchema;
-	use serde::Deserialize;
+	use serde::{Deserialize, Serialize};
 
 	/// Converts "yes" or "no" to a boolean
 	pub fn yes_no(string: &str) -> Option<bool> {
@@ -81,6 +81,43 @@ pub mod util {
 		}
 	}
 
+	impl<T: Serialize> Serialize for DeserListOrSingle<T> {
+		fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+		where
+			S: serde::Serializer,
+		{
+			match self {
+				Self::List(list) => {
+					if list.len() == 1 {
+						list[0].serialize(serializer)
+					} else {
+						list.serialize(serializer)
+					}
+				}
+				Self::Single(val) => val.serialize(serializer),
+			}
+		}
+	}
+
+	impl<T> DeserListOrSingle<T> {
+		/// Checks if this value is empty
+		pub fn is_empty(&self) -> bool {
+			matches!(self, Self::List(list) if list.is_empty())
+		}
+
+		/// Iterates over this DeserListOrSingle
+		pub fn iter(&self) -> DeserListOrSingleIter<'_, T> {
+			match &self {
+				Self::Single(val) => {
+					DeserListOrSingleIter(DeserListOrSingleIterState::Single(Some(val)))
+				}
+				Self::List(list) => {
+					DeserListOrSingleIter(DeserListOrSingleIterState::List(list.iter()))
+				}
+			}
+		}
+	}
+
 	impl<T: Clone> DeserListOrSingle<T> {
 		/// Get the contained value as a Vec
 		pub fn get_vec(&self) -> Vec<T> {
@@ -95,18 +132,6 @@ pub mod util {
 			let mut self_vec = self.get_vec();
 			self_vec.extend(other.iter().cloned());
 			*self = Self::List(self_vec);
-		}
-
-		/// Iterates over this DeserListOrSingle
-		pub fn iter(&self) -> DeserListOrSingleIter<'_, T> {
-			match &self {
-				Self::Single(val) => {
-					DeserListOrSingleIter(DeserListOrSingleIterState::Single(Some(val)))
-				}
-				Self::List(list) => {
-					DeserListOrSingleIter(DeserListOrSingleIterState::List(list.iter()))
-				}
-			}
 		}
 	}
 

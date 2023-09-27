@@ -11,47 +11,59 @@ use mcvm_shared::versions::VersionPattern;
 use mcvm_shared::Side;
 #[cfg(feature = "schema")]
 use schemars::JsonSchema;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::metadata::PackageMetadata;
 use crate::properties::PackageProperties;
 use crate::RecommendedPackage;
 
 /// Structure for a declarative / JSON package
-#[derive(Deserialize, Debug, Default, Clone)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(default)]
 pub struct DeclarativePackage {
 	/// Metadata for the package
+	#[serde(skip_serializing_if = "PackageMetadata::is_empty")]
 	pub meta: PackageMetadata,
 	/// Properties for the package
+	#[serde(skip_serializing_if = "PackageProperties::is_empty")]
 	pub properties: PackageProperties,
 	/// Addons that the package installs
+	#[serde(skip_serializing_if = "HashMap::is_empty")]
 	pub addons: HashMap<String, DeclarativeAddon>,
 	/// Relationships with other packages
+	#[serde(skip_serializing_if = "DeclarativePackageRelations::is_empty")]
 	pub relations: DeclarativePackageRelations,
 	/// Changes to conditionally apply to the package
+	#[serde(skip_serializing_if = "Vec::is_empty")]
 	pub conditional_rules: Vec<DeclarativeConditionalRule>,
 }
 
 /// Package relationships for declarative packages
-#[derive(Deserialize, Debug, Default, Clone)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(default)]
 pub struct DeclarativePackageRelations {
 	/// Package dependencies
+	#[serde(skip_serializing_if = "DeserListOrSingle::is_empty")]
 	pub dependencies: DeserListOrSingle<String>,
 	/// Explicit dependencies
+	#[serde(skip_serializing_if = "DeserListOrSingle::is_empty")]
 	pub explicit_dependencies: DeserListOrSingle<String>,
 	/// Package conflicts
+	#[serde(skip_serializing_if = "DeserListOrSingle::is_empty")]
 	pub conflicts: DeserListOrSingle<String>,
 	/// Package extensions
+	#[serde(skip_serializing_if = "DeserListOrSingle::is_empty")]
 	pub extensions: DeserListOrSingle<String>,
 	/// Bundled packages
+	#[serde(skip_serializing_if = "DeserListOrSingle::is_empty")]
 	pub bundled: DeserListOrSingle<String>,
 	/// Package compats
+	#[serde(skip_serializing_if = "DeserListOrSingle::is_empty")]
 	pub compats: DeserListOrSingle<(String, String)>,
 	/// Package recommendations
+	#[serde(skip_serializing_if = "DeserListOrSingle::is_empty")]
 	pub recommendations: DeserListOrSingle<RecommendedPackage>,
 }
 
@@ -67,71 +79,96 @@ impl DeclarativePackageRelations {
 		self.compats.merge(other.compats);
 		self.recommendations.merge(other.recommendations);
 	}
+
+	/// Checks if the relations are empty
+	pub fn is_empty(&self) -> bool {
+		self.dependencies.is_empty()
+			&& self.explicit_dependencies.is_empty()
+			&& self.conflicts.is_empty()
+			&& self.extensions.is_empty()
+			&& self.bundled.is_empty()
+			&& self.compats.is_empty()
+			&& self.recommendations.is_empty()
+	}
 }
 
 /// Properties that are used for choosing the best addon version
 /// from a declarative package and conditional rules
-#[derive(Deserialize, Debug, Default, Clone)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(default)]
 pub struct DeclarativeConditionSet {
 	/// Minecraft versions to allow
+	#[serde(skip_serializing_if = "Option::is_none")]
 	pub minecraft_versions: Option<DeserListOrSingle<VersionPattern>>,
 	/// What side to allow
+	#[serde(skip_serializing_if = "Option::is_none")]
 	pub side: Option<Side>,
 	/// What modloaders to allow
+	#[serde(skip_serializing_if = "Option::is_none")]
 	pub modloaders: Option<DeserListOrSingle<ModloaderMatch>>,
 	/// What plugin loaders to allow
+	#[serde(skip_serializing_if = "Option::is_none")]
 	pub plugin_loaders: Option<DeserListOrSingle<PluginLoaderMatch>>,
 	/// What stability setting to allow
+	#[serde(skip_serializing_if = "Option::is_none")]
 	pub stability: Option<PackageStability>,
 	/// What features to allow
+	#[serde(skip_serializing_if = "Option::is_none")]
 	pub features: Option<DeserListOrSingle<String>>,
 	/// What operating systems to allow
+	#[serde(skip_serializing_if = "Option::is_none")]
 	pub operating_systems: Option<DeserListOrSingle<OSCondition>>,
 	/// What system architectures to allow
+	#[serde(skip_serializing_if = "Option::is_none")]
 	pub architectures: Option<DeserListOrSingle<ArchCondition>>,
 	/// What languages to allow
+	#[serde(skip_serializing_if = "Option::is_none")]
 	pub languages: Option<DeserListOrSingle<Language>>,
 }
 
 /// Conditional rule to apply changes to a declarative package
-#[derive(Deserialize, Debug, Default, Clone)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(default)]
 pub struct DeclarativeConditionalRule {
 	/// Conditions for this rule
+	#[serde(skip_serializing_if = "Vec::is_empty")]
 	pub conditions: Vec<DeclarativeConditionSet>,
 	/// Properties to apply if this rule succeeds
 	pub properties: DeclarativeConditionalRuleProperties,
 }
 
 /// Properties that can be applied conditionally
-#[derive(Deserialize, Debug, Default, Clone)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(default)]
 pub struct DeclarativeConditionalRuleProperties {
 	/// Relations to append
+	#[serde(skip_serializing_if = "DeclarativePackageRelations::is_empty")]
 	pub relations: DeclarativePackageRelations,
 	/// Notices to raise
+	#[serde(skip_serializing_if = "DeserListOrSingle::is_empty")]
 	pub notices: DeserListOrSingle<String>,
 }
 
 /// Addon in a declarative package
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 pub struct DeclarativeAddon {
 	/// What kind of addon this is
 	pub kind: AddonKind,
 	/// The available versions of this addon
+	#[serde(skip_serializing_if = "Vec::is_empty")]
 	pub versions: Vec<DeclarativeAddonVersion>,
 	/// Conditions for this addon to be considered
 	#[serde(default)]
+	#[serde(skip_serializing_if = "Vec::is_empty")]
 	pub conditions: Vec<DeclarativeConditionSet>,
 }
 
 /// Version for an addon in a declarative package
-#[derive(Deserialize, Debug, Clone, Default)]
+#[derive(Deserialize, Serialize, Debug, Clone, Default)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(default)]
 pub struct DeclarativeAddonVersion {
@@ -139,27 +176,35 @@ pub struct DeclarativeAddonVersion {
 	#[serde(flatten)]
 	pub conditional_properties: DeclarativeConditionSet,
 	/// Additional relations that this version imposes
+	#[serde(skip_serializing_if = "DeclarativePackageRelations::is_empty")]
 	pub relations: DeclarativePackageRelations,
 	/// Notices that this version raises
+	#[serde(skip_serializing_if = "DeserListOrSingle::is_empty")]
 	pub notices: DeserListOrSingle<String>,
 	/// Filename for the addon file
+	#[serde(skip_serializing_if = "Option::is_none")]
 	pub filename: Option<String>,
 	/// Path to the version file
+	#[serde(skip_serializing_if = "Option::is_none")]
 	pub path: Option<String>,
 	/// URL to the version file
+	#[serde(skip_serializing_if = "Option::is_none")]
 	pub url: Option<String>,
 	/// Version identifier for this version
+	#[serde(skip_serializing_if = "Option::is_none")]
 	pub version: Option<String>,
 	/// Hashes for this version file
+	#[serde(skip_serializing_if = "PackageAddonOptionalHashes::is_empty")]
 	pub hashes: PackageAddonOptionalHashes,
 }
 
 /// Properties for declarative addon versions that can be changed with patches
-#[derive(Deserialize, Debug, Default, Clone)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(default)]
 pub struct DeclarativeAddonVersionPatchProperties {
 	/// Relations to append
+	#[serde(skip_serializing_if = "DeclarativePackageRelations::is_empty")]
 	pub relations: DeclarativePackageRelations,
 	// TODO: This should be an option
 	/// A filename to change

@@ -5,39 +5,52 @@ use mcvm_shared::versions::VersionPattern;
 use mcvm_shared::Side;
 #[cfg(feature = "schema")]
 use schemars::JsonSchema;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::parse::{instruction::InstrKind, parse::Parsed, routine::PROPERTIES_ROUTINE};
 
 /// Semantic properties and attributes of a package
-#[derive(Default, Debug, Deserialize, Clone)]
+#[derive(Default, Debug, Deserialize, Serialize, Clone)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 pub struct PackageProperties {
 	/// Available features that can be configured for the package
+	#[serde(skip_serializing_if = "Option::is_none")]
 	pub features: Option<Vec<String>>,
 	/// Features enabled by default
+	#[serde(skip_serializing_if = "Option::is_none")]
 	pub default_features: Option<Vec<String>>,
 	/// The package's Modrinth ID
+	#[serde(skip_serializing_if = "Option::is_none")]
 	pub modrinth_id: Option<String>,
 	/// The package's CurseForge ID
+	#[serde(skip_serializing_if = "Option::is_none")]
 	pub curseforge_id: Option<String>,
 	/// The package's Smithed ID
+	#[serde(skip_serializing_if = "Option::is_none")]
 	pub smithed_id: Option<String>,
 	/// The package's supported Minecraft versions
+	#[serde(skip_serializing_if = "Option::is_none")]
 	pub supported_versions: Option<Vec<VersionPattern>>,
 	/// The package's supported modloaders
+	#[serde(skip_serializing_if = "Option::is_none")]
 	pub supported_modloaders: Option<Vec<ModloaderMatch>>,
 	/// The package's supported plugin loaders
+	#[serde(skip_serializing_if = "Option::is_none")]
 	pub supported_plugin_loaders: Option<Vec<PluginLoaderMatch>>,
 	/// The package's supported sides
+	#[serde(skip_serializing_if = "Option::is_none")]
 	pub supported_sides: Option<Vec<Side>>,
 	/// The package's supported operating systems
+	#[serde(skip_serializing_if = "Option::is_none")]
 	pub supported_operating_systems: Option<Vec<OSCondition>>,
 	/// The package's supported architectures
+	#[serde(skip_serializing_if = "Option::is_none")]
 	pub supported_architectures: Option<Vec<ArchCondition>>,
 	/// The package's semantic tags
+	#[serde(skip_serializing_if = "Option::is_none")]
 	pub tags: Option<Vec<String>>,
 	/// Whether the package is open source
+	#[serde(skip_serializing_if = "Option::is_none")]
 	pub open_source: Option<bool>,
 }
 
@@ -57,6 +70,23 @@ impl PackageProperties {
 		}
 
 		Ok(())
+	}
+
+	/// Check if all properties are empty
+	pub fn is_empty(&self) -> bool {
+		self.features.is_none()
+			&& self.default_features.is_none()
+			&& self.modrinth_id.is_none()
+			&& self.curseforge_id.is_none()
+			&& self.smithed_id.is_none()
+			&& self.supported_versions.is_none()
+			&& self.supported_modloaders.is_none()
+			&& self.supported_plugin_loaders.is_none()
+			&& self.supported_sides.is_none()
+			&& self.supported_operating_systems.is_none()
+			&& self.supported_architectures.is_none()
+			&& self.tags.is_none()
+			&& self.open_source.is_none()
 	}
 }
 

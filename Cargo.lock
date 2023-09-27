@@ -1074,10 +1074,13 @@ name = "mcvm_tools"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "clap",
  "mcvm",
+ "reqwest",
  "schemars",
  "serde",
  "serde_json",
+ "tokio",
 ]
 
 [[package]]
