@@ -1060,17 +1060,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "mcvm_schema"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "mcvm",
- "schemars",
- "serde",
- "serde_json",
-]
-
-[[package]]
 name = "mcvm_shared"
 version = "0.8.0"
 dependencies = [
@@ -1078,6 +1067,17 @@ dependencies = [
  "current_locale",
  "schemars",
  "serde",
+]
+
+[[package]]
+name = "mcvm_tools"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "mcvm",
+ "schemars",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]

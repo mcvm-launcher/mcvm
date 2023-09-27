@@ -18,8 +18,8 @@ members = [
 	"crates/mcvm_cli",
 	"crates/mcvm_parse",
 	"crates/mcvm_pkg",
-	"crates/mcvm_schema",
 	"crates/mcvm_shared",
+	"crates/mcvm_tools",
 ]
 
 [features]

@@ -1,9 +1,9 @@
 [package]
-name = "mcvm_schema"
+name = "mcvm_tools"
 version = "0.1.0"
 edition = "2021"
 license = "GPL-3.0-or-later"
-description = "Simple JSON schema generation for mcvm"
+description = "Utilities for MCVM"
 authors = ["CarbonSmasher"]
 repository = "https://github.com/CarbonSmasher/mcvm"
 keywords = ["minecraft", "launcher", "game", "mc"]
