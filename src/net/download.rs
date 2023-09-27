@@ -2,8 +2,11 @@ use std::path::Path;
 
 use anyhow::Context;
 use cfg_match::cfg_match;
-use reqwest::{Client, IntoUrl, Url};
+use reqwest::{IntoUrl, Url};
 use serde::de::DeserializeOwned;
+
+/// Re-export of reqwest::Client for users of this download module
+pub use reqwest::Client;
 
 cfg_match! {
 	target_os = "windows" => {
