@@ -7,8 +7,11 @@ In the official launcher, you have to waste time moving files in and out of fold
 - [Documentation](docs/README.md)
 - [Contributing](CONTRIBUTING.md)
 
+## Instances
+You have probably heard of instances before from other launchers like MultiMC. They are separate installations of the game that are kept isolated from each other to prevent your data from combining in strange ways. MCVM supports both client and server instances and makes the management of both trivial.
+
 ## Profiles
-**_Profiles_** in MCVM are groups of settings, modloaders, and the such with a game version. They are shared config for versions of the game which you then attach instances to. **_Instances_** are programs such as a client or server which have a parent profile and are the thing you actually run.
+**_Profiles_** in MCVM are shared configuration for multiple instances which are attached to them. Profiles apply their settings, such as the game version and modloader, to all of the instances that they contain. This lets you update multiple instances simulataneously and sync data between them.
 
 ## Packages
 **_Packages_** are the big selling point of MCVM. They are simple files which are configured on profiles and instances and obtain the correct content files for your game. The `sodium` package, for example, when installed on a profile, will add the Sodium jar file to your mods folder only on client instances.
@@ -23,10 +26,10 @@ MCVM's packaging format provides the ability to model complex relationships betw
 Packages can be more than just an index of files. They can be scripts which run simple logic to determine dependencies and addon files depending on the conditions of the environment.
 
 ### Safety
-You don't have to worry about your security when using packages. Even though they have scripting capabilities, they are in a controlled environment with no uneeded access to the system. Public repositories will be screened often to ensure quality.
+Packages are made to be as secure as possible. Even though they have scripting capabilities, they are in a controlled environment with no uneeded access to the system or ability to run arbitrary code. Public repositories will be screened often to ensure quality.
 
 ### Control
-You don't have to just use the packages from the official repositories. You can use whatever local or remote package repository you please with whatever priority, as long as they match the API standard. The syncing of package files from repositories is a separate process that only happens when you explicitly say so. No worrying about unknown changes from the repositories breaking your game.
+You don't have to just use the packages from the official repositories. You can use whatever local or remote package repository you please with whatever priority, as long as they match the API standard. The syncing of package files from repositories is a separate process that only happens when you explicitly say so. Changes to packages will never break your game without your knowledge.
 
 ## Automatic installation of modifications
 Although there is currently only support for a few modifications, such as Fabric, Quilt, and Paper, we hope to eventually install every popular modloader and server implementation automatically.
@@ -40,7 +43,7 @@ Global options for your clients and servers can be defined in simple files that 
 Easily create named backups of the files you want to, and not the ones you don't.
 
 ## Support for many types of users
-You can log in with XBox Live, as a demo user, or not at all. Support for alternative authentication and skin servers will come in the future.
+You can log in with Microsoft, as a demo user, or not at all. You don't need to have an internet connection to play. Support for alternative authentication and skin servers will come in the future.
 
 ## Presets and sensible defaults
 There are many available presets for popular sets of game options that optimize servers, such as Aikar's or Krusic's. Although you can configure a lot, you don't have to to get a great experience.
@@ -49,7 +52,7 @@ There are many available presets for popular sets of game options that optimize 
 MCVM does a lot of work in parallel and is shipped as a single binary without the need for any runtime. The linked instances data model MCVM uses allows separation of data while still sharing large files using hardlinks. Optimizing disk use is a big focus.
 
 ## Extremely configurable and modular
-MCVM has a deep amount of configuration for pretty much every part of the application. Its availablity as a library, integrations, and flexible command-line interface allow scripting any parts you want. With your permission, packages can access the local filesystem and run commands to fit your needs.
+MCVM has a deep amount of configuration for pretty much every part of the application. Its availablity as a library, integrations, and flexible command-line interface allow scripting many different parts. With your permission, packages can access the local filesystem and run commands to fit your needs.
 
 ## Compatability and stability as a feature
 Where others may take shortcuts, MCVM strives for perfect compatability with Mojang's formats.
