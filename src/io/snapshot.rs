@@ -264,7 +264,6 @@ fn get_instance_file_paths(path: &str, instance_dir: &Path) -> anyhow::Result<Ve
 			let rel = sub_path.strip_prefix(instance_dir)?;
 			let rel_str = rel.to_string_lossy().to_string();
 			if sub_path.is_dir() {
-				dbg!(&rel_str);
 				let recursive_paths = get_instance_file_paths(&rel_str, instance_dir)
 					.context("Failed to read subdirectory")?;
 				paths.extend(recursive_paths);
