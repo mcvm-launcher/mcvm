@@ -1,17 +1,14 @@
 use std::path::Path;
 
-use cfg_match::cfg_match;
-
-cfg_match! {
-	target_os = "linux" => {
-		/// The separator for entries in the classpath
-		pub const CLASSPATH_SEP: char = ':';
-	}
-	target_os = "windows" => {
-		/// The separator for entries in the classpath
-		pub const CLASSPATH_SEP: char = ';';
-	}
-}
+/// The separator for entries in the classpath
+#[cfg(target_os = "linux")]
+pub const CLASSPATH_SEP: char = ':';
+#[cfg(target_os = "macos")]
+/// The separator for entries in the classpath
+pub const CLASSPATH_SEP: char = ':';
+#[cfg(target_os = "windows")]
+/// The separator for entries in the classpath
+pub const CLASSPATH_SEP: char = ';';
 
 /// A utility for working with Java classpaths
 #[derive(Debug, Clone, PartialEq, Default)]
