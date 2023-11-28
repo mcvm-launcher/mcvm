@@ -8,7 +8,7 @@ pub mod reg;
 pub mod repo;
 
 use crate::io::files::paths::Paths;
-use crate::net::download;
+use mcvm_core::net::download;
 use mcvm_pkg::declarative::{deserialize_declarative_package, DeclarativePackage};
 use mcvm_pkg::PackageContentType;
 use mcvm_shared::later::Later;

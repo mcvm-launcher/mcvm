@@ -23,13 +23,17 @@ pub mod util;
 pub mod version;
 
 use anyhow::Context;
-pub use config::Configuration;
-use io::{files::paths::Paths, persistent::PersistentData, update::UpdateManager};
+use io::{persistent::PersistentData, update::UpdateManager};
 use mcvm_shared::{later::Later, output::MCVMOutput, util::print::PrintOptions};
 use net::game_files::version_manifest::{self, VersionManifest, VersionManifestAndList};
 use user::UserManager;
 use util::versions::MinecraftVersion;
 use version::{InstalledVersion, LoadVersionParameters, VersionParameters, VersionRegistry};
+
+pub use config::{Configuration, ConfigBuilder};
+pub use instance::{ClientWindowConfig, Instance, InstanceConfiguration, InstanceKind};
+pub use io::files::paths::Paths;
+pub use launch::{InstanceHandle, WrapperCommand, QuickPlayType};
 
 /// Wrapper around all usage of `mcvm_core`
 pub struct MCVMCore {

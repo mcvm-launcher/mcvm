@@ -5,10 +5,9 @@ use inquire::Select;
 use itertools::Itertools;
 use mcvm::data::config::Config;
 use mcvm::data::id::{InstanceID, ProfileID};
-use mcvm::data::user::AuthState;
+use mcvm::core::user::AuthState;
 
 use mcvm::data::instance::InstKind;
-use mcvm::io::lock::Lockfile;
 use mcvm::shared::Side;
 
 use super::CmdData;
@@ -121,12 +120,9 @@ pub async fn launch(
 		config.users.state = AuthState::UserChosen(user);
 	}
 
-	let mut lock = Lockfile::open(&data.paths)?;
-
 	let mut handle = instance
 		.launch(
 			&data.paths,
-			&mut lock,
 			&mut config.users,
 			&profile.version,
 			get_ms_client_id(),
@@ -136,7 +132,6 @@ pub async fn launch(
 		.context("Instance failed to launch")?;
 
 	handle
-		.process
 		.wait()
 		.context("Failed to wait for child process")?;
 

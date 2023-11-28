@@ -18,6 +18,7 @@ use crate::net::game_files::{game_jar, libraries};
 use crate::user::UserManager;
 use crate::util::versions::VersionName;
 use crate::version::{ClientAssetsAndLibraries, ClientAssetsAndLibsParameters};
+use crate::InstanceHandle;
 
 /// The default main class for the server
 pub const DEFAULT_SERVER_MAIN_CLASS: &str = "net.minecraft.server.Main";
@@ -153,6 +154,16 @@ impl<'params> Instance<'params> {
 
 	/// Launch the instance and block until the process is finished
 	pub async fn launch(&mut self, o: &mut impl MCVMOutput) -> anyhow::Result<()> {
+		let mut handle = self.launch_with_handle(o).await?;
+		handle.wait().context("Failed to wait instance process")?;
+		Ok(())
+	}
+
+	/// Launch the instance and get the handle
+	pub async fn launch_with_handle(
+		&mut self,
+		o: &mut impl MCVMOutput,
+	) -> anyhow::Result<InstanceHandle> {
 		let params = LaunchParameters {
 			version: self.params.version,
 			version_manifest: self.params.version_manifest,
@@ -167,11 +178,10 @@ impl<'params> Instance<'params> {
 			client_meta: self.params.client_meta,
 			users: self.params.users,
 		};
-		let mut handle = crate::launch::launch(params, o)
+		let handle = crate::launch::launch(params, o)
 			.await
 			.context("Failed to run launch routine")?;
-		handle.wait().context("Failed to wait instance process")?;
-		Ok(())
+		Ok(handle)
 	}
 
 	/// Get the JAR path of the instance
@@ -192,6 +202,10 @@ pub struct InstanceConfiguration {
 	pub jar_path: Option<PathBuf>,
 	/// Java main class override
 	pub main_class: Option<String>,
+	/// Additional libraries to add to the classpath.
+	/// These must be absolute paths to Java libraries already installed on the
+	/// system, and will not be installed automatically
+	pub additional_libs: Vec<PathBuf>,
 }
 
 /// Configuration for what side an instance is, along with configuration

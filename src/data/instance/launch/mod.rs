@@ -1,18 +1,13 @@
-/// Launching the client
-pub mod client;
-/// Launching the server
-pub mod server;
-
 use std::collections::HashMap;
-use std::fs::File;
-use std::io::Write;
-use std::path::{Path, PathBuf};
-use std::process::{Child, Command};
+use std::path::Path;
 
 use anyhow::Context;
+use mcvm_core::io::java::args::{ArgsPreset, MemoryNum};
+use mcvm_core::io::java::install::JavaInstallationKind;
+use mcvm_core::user::UserManager;
+use mcvm_core::util::versions::MinecraftVersion;
+use mcvm_core::{InstanceHandle, MCVMCore};
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
-use mcvm_shared::versions::VersionInfo;
-use mcvm_shared::Side;
 use oauth2::ClientId;
 use reqwest::Client;
 #[cfg(feature = "schema")]
@@ -20,18 +15,9 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 use crate::data::config::instance::QuickPlay;
-use crate::data::instance::InstKind;
 use crate::data::profile::update::manager::UpdateManager;
-use crate::data::user::UserManager;
 use crate::io::files::paths::Paths;
-use crate::io::java::args::{ArgsPreset, MemoryArg, MemoryNum};
-use crate::io::java::install::JavaInstallationKind;
-use crate::io::lock::Lockfile;
 use crate::util::print::PrintOptions;
-use crate::util::utc_timestamp;
-use crate::util::versions::MinecraftVersion;
-
-use self::client::create_quick_play_args;
 
 use super::Instance;
 
@@ -40,7 +26,6 @@ impl Instance {
 	pub async fn launch(
 		&mut self,
 		paths: &Paths,
-		lock: &mut Lockfile,
 		users: &mut UserManager,
 		version: &MinecraftVersion,
 		ms_client_id: ClientId,
@@ -50,100 +35,42 @@ impl Instance {
 			MessageContents::StartProcess("Checking for updates".into()),
 			MessageLevel::Important,
 		);
+		let core_config = mcvm_core::ConfigBuilder::new()
+			.ms_client_id(ms_client_id)
+			.build();
+		let mut core = MCVMCore::with_config(core_config).context("Failed to initialize core")?;
+		*core.get_users() = users.clone();
+		let mut installed_version = core
+			.get_version(version, o)
+			.await
+			.context("Failed to get version")?;
+
 		let options = PrintOptions::new(false, 0);
 		let mut manager = UpdateManager::new(options, false, true);
 		let client = Client::new();
-		manager
-			.fulfill_version_manifest(version, paths, &client, o)
-			.await
-			.context("Failed to get version data")?;
+		manager.set_version(version);
 		manager.add_requirements(self.get_requirements());
 		manager
-			.fulfill_requirements(paths, lock, &client, o)
+			.fulfill_requirements(paths, &client, o)
 			.await
 			.context("Update failed")?;
 
-		self.create(&manager, paths, users, &client, o)
+		let (result, mut instance) = self
+			.create(&mut installed_version, &manager, paths, users, &client, o)
 			.await
 			.context("Failed to update instance")?;
-		let version_info = manager.version_info.get();
+		manager.add_result(result);
 		o.display(
 			MessageContents::Success("Launching!".into()),
 			MessageLevel::Important,
 		);
-		let handle = match &self.kind {
-			InstKind::Client { .. } => {
-				let handle = self
-					.launch_client(
-						paths,
-						users,
-						version_info,
-						&client,
-						ms_client_id,
-						&manager,
-						o,
-					)
-					.await
-					.context("Failed to launch client")?;
-				handle
-			}
-			InstKind::Server { .. } => {
-				let handle = self.launch_server(paths, version_info, &manager, o)
-					.context("Failed to launch server")?;
-				handle
-			}
-		};
+		// Launch the instance using core
+		let handle = instance
+			.launch_with_handle(o)
+			.await
+			.context("Failed to launch core instance")?;
 
 		Ok(handle)
-	}
-
-	/// Actually launch the game
-	fn launch_game_process(
-		&self,
-		properties: LaunchProcessProperties,
-		version_info: &VersionInfo,
-		paths: &Paths,
-		o: &mut impl MCVMOutput,
-	) -> anyhow::Result<InstanceHandle> {
-		let mut log = File::create(log_file_path(&self.id, paths)?)
-			.context("Failed to open launch log file")?;
-		let mut cmd = match &self.config.launch.wrapper {
-			Some(wrapper) => {
-				let mut cmd = Command::new(&wrapper.cmd);
-				cmd.args(&wrapper.args);
-				cmd.arg(properties.command);
-				cmd
-			}
-			None => Command::new(properties.command),
-		};
-		cmd.current_dir(properties.cwd);
-		cmd.envs(self.config.launch.env.clone());
-		cmd.envs(properties.additional_env_vars);
-
-		cmd.args(self.config.launch.generate_jvm_args());
-		cmd.args(properties.jvm_args);
-		if let Some(main_class) = properties.main_class {
-			cmd.arg(main_class);
-		}
-		cmd.args(properties.game_args);
-		cmd.args(
-			self.config
-				.launch
-				.generate_game_args(version_info, self.kind.to_side(), o),
-		);
-
-		writeln!(log, "Launch command: {cmd:#?}").context("Failed to write to launch log file")?;
-		o.display(
-			MessageContents::Property(
-				"Launch command".into(),
-				Box::new(MessageContents::Simple(format!("{cmd:#?}"))),
-			),
-			MessageLevel::Debug,
-		);
-
-		let child = cmd.spawn().context("Failed to spawn child process")?;
-
-		Ok(InstanceHandle { process: child })
 	}
 }
 
@@ -161,14 +88,6 @@ pub struct LaunchProcessProperties<'a> {
 	pub game_args: &'a [String],
 	/// Additional environment variables to add to the launch command
 	pub additional_env_vars: &'a HashMap<String, String>,
-}
-
-/// Handle for an instance after launching it. You must make sure to use
-/// .wait() on the child process as it is not done for you.
-#[derive(Debug)]
-pub struct InstanceHandle {
-	/// The child process that is the launched instance
-	pub process: Child,
 }
 
 /// Options for launching after conversion from the deserialized version
@@ -196,47 +115,6 @@ pub struct LaunchOptions {
 	pub use_log4j_config: bool,
 }
 
-impl LaunchOptions {
-	/// Create the args for the JVM when launching the game
-	pub fn generate_jvm_args(&self) -> Vec<String> {
-		let mut out = self.jvm_args.clone();
-
-		if let Some(n) = &self.min_mem {
-			out.push(MemoryArg::Min.to_string(n.clone()));
-		}
-		if let Some(n) = &self.max_mem {
-			out.push(MemoryArg::Max.to_string(n.clone()));
-		}
-
-		let avg = match &self.min_mem {
-			Some(min) => self
-				.max_mem
-				.as_ref()
-				.map(|max| MemoryNum::avg(min.clone(), max.clone())),
-			None => None,
-		};
-		out.extend(self.preset.generate_args(avg));
-
-		out
-	}
-
-	/// Create the args for the game when launching
-	pub fn generate_game_args(
-		&self,
-		version_info: &VersionInfo,
-		side: Side,
-		o: &mut impl MCVMOutput,
-	) -> Vec<String> {
-		let mut out = self.game_args.clone();
-
-		if let Side::Client = side {
-			out.extend(create_quick_play_args(&self.quick_play, version_info, o));
-		}
-
-		out
-	}
-}
-
 /// A wrapper command
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
@@ -247,12 +125,12 @@ pub struct WrapperCommand {
 	pub args: Vec<String>,
 }
 
-/// Get the name of the launch log file
-fn log_file_name(instance_id: &str) -> anyhow::Result<String> {
-	Ok(format!("{instance_id}-{}.txt", utc_timestamp()?))
-}
+// /// Get the name of the launch log file
+// fn log_file_name(instance_id: &str) -> anyhow::Result<String> {
+// 	Ok(format!("{instance_id}-{}.txt", utc_timestamp()?))
+// }
 
-/// Get the path to the launch log file
-fn log_file_path(instance_id: &str, paths: &Paths) -> anyhow::Result<PathBuf> {
-	Ok(paths.launch_logs.join(log_file_name(instance_id)?))
-}
+// /// Get the path to the launch log file
+// fn log_file_path(instance_id: &str, paths: &Paths) -> anyhow::Result<PathBuf> {
+// 	Ok(paths.launch_logs.join(log_file_name(instance_id)?))
+// }

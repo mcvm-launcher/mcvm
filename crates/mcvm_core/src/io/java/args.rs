@@ -78,7 +78,7 @@ impl MemoryArg {
 }
 
 /// Preset for generating game arguments (Usually for optimization)
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub enum ArgsPreset {
 	/// No preset
 	None,

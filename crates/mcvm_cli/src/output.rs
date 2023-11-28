@@ -9,8 +9,8 @@ use mcvm::pkg_crate::{PkgRequest, PkgRequestSource};
 use mcvm::shared::output::{
 	default_special_ms_auth, MCVMOutput, Message, MessageContents, MessageLevel,
 };
+use mcvm::shared::util::utc_timestamp;
 use mcvm::util::print::ReplPrinter;
-use mcvm::util::utc_timestamp;
 
 /// A nice colored bullet point for terminal output
 pub const HYPHEN_POINT: &str = cstr!("<k!> - </k!>");
@@ -76,7 +76,7 @@ impl MCVMOutput for TerminalOutput {
 	}
 
 	fn display_special_ms_auth(&mut self, url: &str, code: &str) {
-		let _ = mcvm::util::open_link(url);
+		let _ = mcvm::shared::util::open_link(url);
 		default_special_ms_auth(self, url, code);
 	}
 }

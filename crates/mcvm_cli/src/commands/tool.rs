@@ -41,14 +41,15 @@ pub async fn run(subcommand: ToolSubcommand, data: &mut CmdData) -> anyhow::Resu
 
 async fn auth_test(data: &mut CmdData) -> anyhow::Result<()> {
 	let client = Client::new();
-	let result = mcvm::data::user::auth::authenticate_microsoft_user(
+	let result = mcvm::core::user::auth::authenticate_microsoft_user(
 		crate::secrets::get_ms_client_id(),
 		&client,
 		&mut data.output,
 	)
 	.await?;
 	println!("{}", result.access_token);
-	let cert = mcvm::net::minecraft::get_user_certificate(&result.access_token, &client).await?;
+	let cert =
+		mcvm::core::net::minecraft::get_user_certificate(&result.access_token, &client).await?;
 	dbg!(cert);
 
 	Ok(())

@@ -1,4 +1,4 @@
-use anyhow::anyhow;
+use anyhow::{anyhow, Context};
 use directories::{BaseDirs, ProjectDirs};
 
 use std::path::PathBuf;
@@ -10,6 +10,8 @@ pub struct Paths {
 	pub base: BaseDirs,
 	/// Project-specific directories
 	pub project: ProjectDirs,
+	/// Paths object from core
+	pub core: mcvm_core::Paths,
 	/// Holds data
 	pub data: PathBuf,
 	/// Holds internal data
@@ -84,6 +86,7 @@ impl Paths {
 		Ok(Paths {
 			base,
 			project,
+			core: mcvm_core::Paths::new().context("Failed to create core paths")?,
 			data,
 			internal,
 			assets,

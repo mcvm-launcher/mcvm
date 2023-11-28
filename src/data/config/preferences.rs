@@ -1,7 +1,8 @@
 use std::path::PathBuf;
 
+use mcvm_core::net::download::validate_url;
+use crate::package::reg::CachingStrategy;
 use crate::package::repo::{PkgRepo, PkgRepoLocation};
-use crate::{net::download::validate_url, package::reg::CachingStrategy};
 
 use anyhow::{bail, Context};
 use mcvm_shared::lang::Language;

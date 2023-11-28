@@ -2,21 +2,21 @@
 pub mod update;
 
 use anyhow::Context;
+use mcvm_core::MCVMCore;
 use mcvm_shared::output::MCVMOutput;
 use mcvm_shared::pkg::PackageStability;
 use reqwest::Client;
 
 use crate::data::instance::Instance;
 use crate::io::files::paths::Paths;
-use crate::io::lock::Lockfile;
-use crate::util::versions::MinecraftVersion;
+use mcvm_core::util::versions::MinecraftVersion;
 
 use self::update::manager::UpdateManager;
 
 use super::config::profile::GameModifications;
 use super::config::profile::ProfilePackageConfiguration;
 use super::id::{InstanceID, ProfileID};
-use super::user::UserManager;
+use mcvm_core::user::UserManager;
 
 /// A hashmap of InstanceIDs to Instances
 pub type InstanceRegistry = std::collections::HashMap<InstanceID, Instance>;
@@ -68,7 +68,6 @@ impl Profile {
 		reg: &mut InstanceRegistry,
 		paths: &Paths,
 		mut manager: UpdateManager,
-		lock: &mut Lockfile,
 		users: &UserManager,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Vec<String>> {
@@ -78,15 +77,23 @@ impl Profile {
 		}
 		let client = Client::new();
 		manager
-			.fulfill_requirements(paths, lock, &client, o)
+			.fulfill_requirements(paths, &client, o)
 			.await?;
 		for id in self.instances.iter_mut() {
-			let instance = reg.get_mut(id).expect("Profile has unknown instance");
-			let result = instance
-				.create(&manager, paths, users, &client, o)
+			// FIXME: This sucks
+			let mut core = MCVMCore::new().context("Failed to initialize core")?;
+			*core.get_users() = users.clone();
+			let mut installed_version = core
+				.get_version(&self.version, o)
 				.await
-				.with_context(|| format!("Failed to create instance {id}"))?;
-			manager.add_result(result);
+				.context("Failed to get version")?;
+			let instance = reg.get_mut(id).expect("Profile has unknown instance");
+			{
+				instance
+					.create(&mut installed_version, &manager, paths, users, &client, o)
+					.await
+					.with_context(|| format!("Failed to create instance {id}"))?;
+			}
 		}
 		Ok(manager.version_info.get_val().versions)
 	}

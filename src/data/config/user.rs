@@ -2,7 +2,7 @@
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
-use crate::data::user::{User, UserKind};
+use mcvm_core::user::{User, UserKind};
 
 #[derive(Deserialize, Serialize, Clone)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]

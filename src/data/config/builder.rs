@@ -1,20 +1,21 @@
 use std::collections::HashMap;
 
 use anyhow::bail;
+use mcvm_core::user::{AuthState, User, UserManager};
+use mcvm_core::util::versions::MinecraftVersionDeser;
 use mcvm_pkg::PackageContentType;
 use mcvm_shared::modifications::{ClientType, Modloader, ServerType};
 use mcvm_shared::pkg::{PackageID, PackageStability};
 use mcvm_shared::Side;
+use oauth2::ClientId;
 
 use crate::data::id::{InstanceID, ProfileID};
 use crate::data::instance::Instance;
 use crate::data::profile::{InstanceRegistry, Profile};
-use crate::data::user::{AuthState, User, UserManager};
 use crate::io::snapshot;
 use crate::package::eval::EvalPermissions;
 use crate::package::reg::PkgRegistry;
 use crate::package::repo::PkgRepo;
-use crate::util::versions::MinecraftVersionDeser;
 
 use super::instance::{
 	read_instance_config, ClientWindowConfig, FullInstanceConfig, InstanceConfig, LaunchConfig,
@@ -41,7 +42,7 @@ impl ConfigBuilder {
 	pub fn new(prefs: ConfigPreferences, repos: Vec<PkgRepo>) -> Self {
 		let packages = PkgRegistry::new(repos, prefs.package_caching_strategy.clone());
 		Self {
-			users: UserManager::new(),
+			users: UserManager::new(ClientId::new("".into())),
 			instances: InstanceRegistry::new(),
 			profiles: HashMap::new(),
 			packages,

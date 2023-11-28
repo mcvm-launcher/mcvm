@@ -1,4 +1,4 @@
-use mcvm::net::download;
+use mcvm::core::net::download;
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 

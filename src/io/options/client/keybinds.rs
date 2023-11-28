@@ -1,10 +1,9 @@
 use std::fmt::Display;
 
+use mcvm_shared::util::ToInt;
 #[cfg(feature = "schema")]
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
-
-use crate::util::ToInt;
 
 /// Version-agnostic keybinds
 #[derive(Deserialize, Serialize, Debug, Clone)]

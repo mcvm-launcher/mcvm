@@ -19,8 +19,10 @@ use self::preferences::PrefDeser;
 use self::profile::ProfileConfig;
 use self::user::UserConfig;
 use anyhow::{bail, ensure, Context};
+use mcvm_core::user::{validate_username, AuthState, UserManager};
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::util::is_valid_identifier;
+use oauth2::ClientId;
 use preferences::ConfigPreferences;
 #[cfg(feature = "schema")]
 use schemars::JsonSchema;
@@ -28,7 +30,6 @@ use serde::{Deserialize, Serialize};
 
 use super::id::ProfileID;
 use super::profile::{InstanceRegistry, Profile};
-use super::user::{validate_username, AuthState, UserManager};
 use crate::io::files::paths::Paths;
 use crate::package::reg::PkgRegistry;
 
@@ -97,7 +98,7 @@ impl Config {
 		show_warnings: bool,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Self> {
-		let mut users = UserManager::new();
+		let mut users = UserManager::new(ClientId::new("".into()));
 		let mut instances = InstanceRegistry::new();
 		let mut profiles = HashMap::new();
 		// Preferences

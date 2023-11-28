@@ -1,5 +1,5 @@
 use crate::io::files::paths::Paths;
-use crate::net::download;
+use mcvm_core::net::download;
 use mcvm_pkg::repo::{RepoPkgEntry, RepoPkgIndex};
 use mcvm_pkg::PackageContentType;
 use mcvm_shared::later::Later;

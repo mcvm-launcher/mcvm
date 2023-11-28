@@ -16,6 +16,7 @@
 pub use mcvm_parse as parse;
 pub use mcvm_pkg as pkg_crate;
 pub use mcvm_shared as shared;
+pub use mcvm_core as core;
 
 /// Dealing with MCVM's data constructs, like instances and profiles
 pub mod data;

@@ -2,20 +2,20 @@ use std::collections::{HashMap, HashSet};
 use std::fs::File;
 
 use anyhow::Context;
+use mcvm_core::io::java::classpath::Classpath;
+use mcvm_core::io::java::install::JavaInstallationKind;
+use mcvm_core::user::uuid::hyphenate_uuid;
+use mcvm_core::user::{AuthState, User, UserManager};
+use mcvm_core::version::InstalledVersion;
+use mcvm_shared::later::Later;
+use mcvm_shared::modifications::{Modloader, ServerType};
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel, OutputProcess};
 use reqwest::Client;
 
 use crate::data::profile::update::manager::{UpdateManager, UpdateMethodResult, UpdateRequirement};
-use crate::data::user::uuid::hyphenate_uuid;
-use crate::data::user::{AuthState, User, UserManager};
-use crate::io::files::update_hardlink;
 use crate::io::files::{self, paths::Paths};
-use crate::io::java::classpath::Classpath;
-use crate::io::java::install::JavaInstallationKind;
 use crate::io::options::{self, client::write_options_txt, server::write_server_properties};
-use crate::net::{fabric_quilt, game_files, paper};
-use mcvm_shared::later::Later;
-use mcvm_shared::modifications::{Modloader, ServerType};
+use crate::net::{fabric_quilt, paper};
 
 use super::{InstKind, Instance};
 
@@ -69,15 +69,17 @@ impl Instance {
 	}
 
 	/// Create the data for the instance.
-	pub async fn create(
+	pub async fn create<'core>(
 		&mut self,
+		version: &'core mut InstalledVersion<'core, 'core>,
 		manager: &UpdateManager,
 		paths: &Paths,
 		users: &UserManager,
 		client: &Client,
 		o: &mut impl MCVMOutput,
-	) -> anyhow::Result<UpdateMethodResult> {
-		match &self.kind {
+	) -> anyhow::Result<(UpdateMethodResult, mcvm_core::Instance<'core>)> {
+		// Start by setting up custom changes
+		let result = match &self.kind {
 			InstKind::Client { .. } => {
 				o.display(
 					MessageContents::Header(format!("Updating client {}", self.id)),
@@ -88,8 +90,7 @@ impl Instance {
 					.create_client(manager, paths, users)
 					.await
 					.context("Failed to create client")?;
-				o.end_section();
-				Ok(result)
+				Ok::<_, anyhow::Error>(result)
 			}
 			InstKind::Server { .. } => {
 				o.display(
@@ -101,10 +102,17 @@ impl Instance {
 					.create_server(manager, paths, client, o)
 					.await
 					.context("Failed to create server")?;
-				o.end_section();
 				Ok(result)
 			}
-		}
+		}?;
+		// Make the core instance
+		let inst = self
+			.create_core_instance(version, paths, o)
+			.await
+			.context("Failed to create core instance")?;
+		o.end_section();
+
+		Ok((result, inst))
 	}
 
 	/// Create a client
@@ -117,22 +125,9 @@ impl Instance {
 		debug_assert!(matches!(self.kind, InstKind::Client { .. }));
 
 		let out = UpdateMethodResult::new();
-		let version = &manager.version_info.get().version;
 		self.ensure_dirs(paths)?;
-		let jar_path =
-			crate::io::minecraft::game_jar::get_path(self.kind.to_side(), version, paths);
-
-		let client_meta = manager.client_meta.get();
 
 		let mut classpath = Classpath::new();
-		let lib_classpath = game_files::libraries::get_classpath(client_meta, paths)
-			.context("Failed to extract classpath from game library list")?;
-		classpath.extend(lib_classpath);
-
-		let java_vers = client_meta.java_info.major_version;
-		self.add_java(&java_vers.0.to_string(), manager);
-
-		self.main_class = Some(client_meta.main_class.clone());
 
 		if let Modloader::Fabric | Modloader::Quilt =
 			self.config.modifications.get_modloader(self.kind.to_side())
@@ -143,8 +138,6 @@ impl Instance {
 					.context("Failed to install Fabric/Quilt")?,
 			);
 		}
-
-		classpath.add_path(&jar_path);
 
 		// Options
 		let mut keys = HashMap::new();
@@ -181,8 +174,7 @@ impl Instance {
 				.context("Failed to create user keypair")?;
 		}
 
-		self.classpath = Some(classpath);
-		self.jar_path.fill(jar_path);
+		self.classpath_extension = classpath;
 
 		Ok(out)
 	}
@@ -201,21 +193,8 @@ impl Instance {
 
 		let version = &manager.version_info.get().version;
 		self.ensure_dirs(paths)?;
-		let jar_path = self.dirs.get().game_dir.join("server.jar");
 
-		// Set the main class
-		if let ServerType::Paper = self.config.modifications.server_type {
-			self.main_class = Some(PAPER_SERVER_MAIN_CLASS.to_string());
-		} else {
-			self.main_class = Some(DEFAULT_SERVER_MAIN_CLASS.to_string());
-		}
-
-		let client_meta = manager.client_meta.get();
-
-		let java_vers = client_meta.java_info.major_version;
-		self.add_java(&java_vers.0.to_string(), manager);
-
-		let mut classpath = if let Modloader::Fabric | Modloader::Quilt =
+		let classpath = if let Modloader::Fabric | Modloader::Quilt =
 			self.config.modifications.get_modloader(self.kind.to_side())
 		{
 			self.get_fabric_quilt(paths, manager).await?
@@ -223,77 +202,51 @@ impl Instance {
 			Classpath::new()
 		};
 
-		let eula_path = self.dirs.get().game_dir.join("eula.txt");
-		let eula_task = tokio::spawn(async move {
-			if !eula_path.exists() {
-				tokio::fs::write(eula_path, "eula = true\n").await?;
-			}
+		match self.config.modifications.server_type {
+			ServerType::Paper => {
+				let process = OutputProcess::new(o);
+				process.0.display(
+					MessageContents::StartProcess("Checking for paper updates".into()),
+					MessageLevel::Important,
+				);
 
-			Ok::<(), anyhow::Error>(())
-		});
-
-		self.jar_path
-			.fill(match self.config.modifications.server_type {
-				ServerType::Paper => {
-					let process = OutputProcess::new(o);
+				let build_num = paper::get_newest_build(version, client)
+					.await
+					.context("Failed to get the newest Paper version")?;
+				let file_name = paper::get_jar_file_name(version, build_num, client)
+					.await
+					.context("Failed to get the Paper file name")?;
+				let paper_jar_path = self.dirs.get().game_dir.join(&file_name);
+				if !manager.should_update_file(&paper_jar_path) {
 					process.0.display(
-						MessageContents::StartProcess("Checking for paper updates".into()),
+						MessageContents::Success("Paper is up to date".into()),
 						MessageLevel::Important,
 					);
-
-					let build_num = paper::get_newest_build(version, client)
-						.await
-						.context("Failed to get the newest Paper version")?;
-					let file_name = paper::get_jar_file_name(version, build_num, client)
-						.await
-						.context("Failed to get the Paper file name")?;
-					let paper_jar_path = self.dirs.get().game_dir.join(&file_name);
-					if !manager.should_update_file(&paper_jar_path) {
-						process.0.display(
-							MessageContents::Success("Paper is up to date".into()),
-							MessageLevel::Important,
-						);
-					} else {
-						process.0.display(
-							MessageContents::StartProcess("Downloading Paper server".into()),
-							MessageLevel::Important,
-						);
-						paper::download_server_jar(
-							version,
-							build_num,
-							&file_name,
-							&self.dirs.get().game_dir,
-							client,
-						)
-						.await
-						.context("Failed to download Paper server JAR")?;
-						process.0.display(
-							MessageContents::Success("Paper server downloaded".into()),
-							MessageLevel::Important,
-						);
-					}
-
-					out.files_updated.insert(paper_jar_path.clone());
-					paper_jar_path
-				}
-				_ => {
-					let extern_jar_path = crate::io::minecraft::game_jar::get_path(
-						self.kind.to_side(),
-						version,
-						paths,
+				} else {
+					process.0.display(
+						MessageContents::StartProcess("Downloading Paper server".into()),
+						MessageLevel::Important,
 					);
-					if manager.should_update_file(&jar_path) {
-						update_hardlink(&extern_jar_path, &jar_path)
-							.context("Failed to hardlink server.jar")?;
-						out.files_updated.insert(jar_path.clone());
-					}
-					jar_path
+					paper::download_server_jar(
+						version,
+						build_num,
+						&file_name,
+						&self.dirs.get().game_dir,
+						client,
+					)
+					.await
+					.context("Failed to download Paper server JAR")?;
+					process.0.display(
+						MessageContents::Success("Paper server downloaded".into()),
+						MessageLevel::Important,
+					);
 				}
-			});
 
-		classpath.add_path(self.jar_path.get());
-
-		eula_task.await?.context("Failed to create eula.txt")?;
+				out.files_updated.insert(paper_jar_path.clone());
+				self.jar_path_override = Some(paper_jar_path);
+			}
+			_ => {}
+		}
 
 		let mut keys = HashMap::new();
 		let version_info = manager.version_info.get();
@@ -319,7 +272,7 @@ impl Instance {
 				.context("Failed to write server.properties")?;
 		}
 
-		self.classpath = Some(classpath);
+		self.classpath_extension = classpath;
 
 		Ok(out)
 	}

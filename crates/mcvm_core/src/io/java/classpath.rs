@@ -1,4 +1,4 @@
-use std::path::Path;
+use std::path::{Path, PathBuf};
 
 /// The separator for entries in the classpath
 #[cfg(target_os = "linux")]
@@ -54,6 +54,14 @@ impl Classpath {
 	pub fn get_str(&self) -> String {
 		self.string.clone()
 	}
+
+	/// Split the classpath into a vector of paths
+	pub fn get_paths(&self) -> Vec<PathBuf> {
+		self.string
+			.split(CLASSPATH_SEP)
+			.map(PathBuf::from)
+			.collect()
+	}
 }
 
 #[cfg(test)]
@@ -70,6 +78,22 @@ mod tests {
 		assert_eq!(
 			classpath.get_str(),
 			"foo".to_string() + &CLASSPATH_SEP.to_string() + "bar"
+		);
+	}
+
+	#[test]
+	fn test_classpath_extension() {
+		let mut classpath = Classpath::new();
+		classpath.add("foo");
+		classpath.add("bar");
+		classpath.add("baz");
+		let mut classpath2 = Classpath::new();
+		classpath2.add("hello");
+		classpath2.add("world");
+		classpath.extend(classpath2);
+		assert_eq!(
+			classpath.get_str(),
+			format!("foo{0}bar{0}baz{0}hello{0}world", CLASSPATH_SEP)
 		);
 	}
 }

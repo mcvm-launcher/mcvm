@@ -1,17 +1,13 @@
-use std::{
-	collections::HashMap,
-	fs::File,
-	io::{BufWriter, Write},
-	path::Path,
-};
+use std::collections::HashMap;
+use std::fs::File;
+use std::io::{BufWriter, Write};
+use std::path::Path;
 
 use anyhow::Context;
 use itertools::Itertools;
 
-use crate::{
-	io::options::read::{read_options_file, EnumOrNumber},
-	util::ToInt,
-};
+use crate::io::options::read::{read_options_file, EnumOrNumber};
+use mcvm_shared::util::ToInt;
 
 use mcvm_shared::versions::{VersionInfo, VersionPattern};
 

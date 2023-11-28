@@ -10,6 +10,7 @@ use crate::io::persistent::PersistentData;
 use crate::io::update::UpdateManager;
 use crate::net::game_files::client_meta::{self, ClientMeta};
 use crate::net::game_files::version_manifest::VersionManifestAndList;
+use crate::net::game_files::{assets, libraries};
 use crate::user::UserManager;
 use crate::util::versions::VersionName;
 
@@ -53,6 +54,25 @@ impl<'inner, 'params> InstalledVersion<'inner, 'params> {
 			.await
 			.context("Failed to load instance")?;
 		Ok(instance)
+	}
+
+	/// Ensure that assets and libraries for the client are
+	/// installed for this version. You shouldn't need to call this
+	/// as these files will be automatically installed when creating a client
+	/// instance
+	pub async fn ensure_client_assets_and_libs(
+		&mut self,
+		o: &mut impl MCVMOutput,
+	) -> anyhow::Result<()> {
+		let params = ClientAssetsAndLibsParameters {
+			client_meta: &self.inner.client_meta,
+			version: &self.inner.version,
+			paths: self.params.paths,
+			req_client: self.params.req_client,
+			version_manifest: self.params.version_manifest,
+			update_manager: self.params.update_manager,
+		};
+		self.inner.client_assets_and_libs.load(params, o).await
 	}
 }
 
@@ -168,7 +188,7 @@ impl ClientAssetsAndLibraries {
 		if self.loaded {
 			return Ok(());
 		}
-		let result = crate::net::game_files::assets::get(
+		let result = assets::get(
 			params.client_meta,
 			params.paths,
 			params.version,
@@ -181,7 +201,7 @@ impl ClientAssetsAndLibraries {
 		.context("Failed to get game assets")?;
 		params.update_manager.add_result(result);
 
-		let result = crate::net::game_files::libraries::get(
+		let result = libraries::get(
 			params.client_meta,
 			params.paths,
 			params.version,

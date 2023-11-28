@@ -1,6 +1,8 @@
 /// Writing to the server.properties file
 mod file;
 
+use mcvm_shared::util::ToInt;
+
 pub use file::create_keys;
 pub use file::write_server_properties;
 
@@ -9,7 +11,7 @@ use std::fmt::Display;
 
 use serde::{Deserialize, Serialize};
 
-use crate::util::{json, ToInt};
+use crate::util::json;
 
 use super::read::{EnumOrNumber, EnumOrString};
 

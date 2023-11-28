@@ -1,10 +1,9 @@
 use std::path::{Path, PathBuf};
 
 use anyhow::{anyhow, Context};
+use mcvm_core::net::download;
 use reqwest::Client;
 use serde::Deserialize;
-
-use super::download;
 
 /// Get the newest build number of Paper
 pub async fn get_newest_build(version: &str, client: &Client) -> anyhow::Result<u16> {

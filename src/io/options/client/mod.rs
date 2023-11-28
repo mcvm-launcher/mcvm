@@ -5,16 +5,14 @@ mod keybinds;
 
 pub use file::create_keys;
 pub use file::write_options_txt;
-use serde::Serialize;
 
 use std::{collections::HashMap, fmt::Display};
 
+use mcvm_shared::util::ToInt;
 use serde::Deserialize;
-
-use crate::util::ToInt;
+use serde::Serialize;
 
 use self::keybinds::Keybind;
-
 use super::read::EnumOrNumber;
 
 // I do not want to document all of these

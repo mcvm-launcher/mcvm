@@ -1,4 +1,4 @@
-use crate::net::download;
+use mcvm_core::net::download;
 use crate::util::{ARCH_STRING, OS_STRING, PREFERRED_ARCHIVE};
 
 use anyhow::{anyhow, Context};

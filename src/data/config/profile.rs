@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+use mcvm_core::util::versions::MinecraftVersionDeser;
 use mcvm_shared::Side;
 #[cfg(feature = "schema")]
 use schemars::JsonSchema;
@@ -7,7 +8,6 @@ use serde::{Deserialize, Serialize};
 
 use crate::data::id::{InstanceID, ProfileID};
 use crate::data::profile::Profile;
-use crate::util::versions::MinecraftVersionDeser;
 
 use mcvm_shared::modifications::{ClientType, Modloader, ServerType};
 use mcvm_shared::pkg::PackageStability;

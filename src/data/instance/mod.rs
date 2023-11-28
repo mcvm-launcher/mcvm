@@ -4,6 +4,9 @@ pub mod create;
 pub mod launch;
 
 use anyhow::{bail, ensure, Context};
+use mcvm_core::io::java::classpath::Classpath;
+use mcvm_core::launch::LaunchConfiguration;
+use mcvm_core::version::InstalledVersion;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::pkg::ArcPkgReq;
 use mcvm_shared::Side;
@@ -11,8 +14,6 @@ use reqwest::Client;
 
 use crate::io::files::paths::Paths;
 use crate::io::files::update_hardlink;
-use crate::io::java::classpath::Classpath;
-use crate::io::java::install::JavaInstallation;
 use crate::io::lock::{Lockfile, LockfileAddon};
 use crate::io::options::client::ClientOptions;
 use crate::io::options::server::ServerOptions;
@@ -47,10 +48,9 @@ pub struct Instance {
 	config: InstanceStoredConfig,
 	/// Directories of the instance
 	pub dirs: Later<InstanceDirs>,
-	java: Later<JavaInstallation>,
-	classpath: Option<Classpath>,
-	jar_path: Later<PathBuf>,
-	main_class: Option<String>,
+	main_class_override: Option<String>,
+	jar_path_override: Option<PathBuf>,
+	classpath_extension: Classpath,
 }
 
 /// Different kinds of instances and their associated data
@@ -137,10 +137,9 @@ impl Instance {
 			id,
 			config,
 			dirs: Later::Empty,
-			java: Later::new(),
-			classpath: None,
-			jar_path: Later::new(),
-			main_class: None,
+			main_class_override: None,
+			jar_path_override: None,
+			classpath_extension: Classpath::new(),
 		}
 	}
 
@@ -153,12 +152,56 @@ impl Instance {
 		Ok(())
 	}
 
-	/// Set the java installation for the instance
-	fn add_java(&mut self, version: &str, manager: &UpdateManager) {
-		let mut java = manager.java.get().clone();
-		java.add_version(version);
-		self.java.fill(java);
+	/// Create the core instance
+	async fn create_core_instance<'core>(
+		&mut self,
+		version: &'core mut InstalledVersion<'core, 'core>,
+		paths: &Paths,
+		o: &mut impl MCVMOutput,
+	) -> anyhow::Result<mcvm_core::Instance<'core>> {
+		self.ensure_dirs(paths)?;
+		// TODO: Make window settings work
+		let side = match &self.kind {
+			InstKind::Client { .. } => mcvm_core::InstanceKind::Client {
+				window: mcvm_core::ClientWindowConfig { resolution: None },
+			},
+			InstKind::Server { .. } => mcvm_core::InstanceKind::Server {},
+		};
+		let launch_config = LaunchConfiguration {
+			java: self.config.launch.java.clone(),
+			jvm_args: self.config.launch.jvm_args.clone(),
+			game_args: self.config.launch.game_args.clone(),
+			min_mem: self.config.launch.min_mem.clone(),
+			max_mem: self.config.launch.max_mem.clone(),
+			preset: self.config.launch.preset.clone(),
+			env: self.config.launch.env.clone(),
+			// TODO: Make wrappers work
+			wrapper: None,
+			// TODO: Make Quick Play work
+			quick_play: mcvm_core::QuickPlayType::None,
+			use_log4j_config: self.config.launch.use_log4j_config.clone(),
+		};
+		let config = mcvm_core::InstanceConfiguration {
+			side,
+			path: self.dirs.get().game_dir.clone(),
+			launch: launch_config,
+			jar_path: self.jar_path_override.clone(),
+			main_class: self.main_class_override.clone(),
+			additional_libs: self.classpath_extension.get_paths(),
+		};
+		let inst = version
+			.get_instance(config, o)
+			.await
+			.context("Failed to initialize instance")?;
+		Ok(inst)
 	}
+
+	/// Set the java installation for the instance
+	// fn add_java(&mut self, version: &str, manager: &UpdateManager) {
+	// 	let mut java = manager.java.get().clone();
+	// 	java.add_version(version);
+	// 	self.java.fill(java);
+	// }
 
 	async fn get_fabric_quilt(
 		&mut self,
@@ -167,7 +210,7 @@ impl Instance {
 	) -> anyhow::Result<Classpath> {
 		let meta = manager.fq_meta.get();
 		let classpath = fabric_quilt::get_classpath(meta, paths, self.kind.to_side());
-		self.main_class = Some(
+		self.main_class_override = Some(
 			meta.launcher_meta
 				.main_class
 				.get_main_class_string(self.kind.to_side())

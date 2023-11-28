@@ -5,7 +5,7 @@ use anyhow::{anyhow, Context};
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
-use crate::util::ToInt;
+use mcvm_shared::util::ToInt;
 
 use super::Options;
 

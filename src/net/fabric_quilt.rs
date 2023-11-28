@@ -3,18 +3,17 @@ use std::fs::File;
 use std::io::BufReader;
 
 use anyhow::{anyhow, Context};
+use mcvm_core::io::java::classpath::Classpath;
+use mcvm_core::io::java::maven::MavenLibraryParts;
+use mcvm_core::net::download;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel, OutputProcess};
+use mcvm_shared::Side;
 use reqwest::Client;
 use serde::Deserialize;
 
 use crate::data::profile::update::manager::UpdateManager;
 use crate::io::files;
 use crate::io::files::paths::Paths;
-use crate::io::java::classpath::Classpath;
-use crate::io::java::maven::MavenLibraryParts;
-use mcvm_shared::Side;
-
-use super::download;
 
 /// Mode we are in (Fabric / Quilt)
 /// This way we don't have to duplicate a lot of functions since these both

@@ -2,22 +2,19 @@ use std::collections::HashSet;
 use std::path::{Path, PathBuf};
 
 use anyhow::Context;
+use mcvm_core::io::java::install::JavaInstallationKind;
+use mcvm_core::util::versions::MinecraftVersion;
+use mcvm_core::MCVMCore;
 use mcvm_shared::later::Later;
-use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
+use mcvm_shared::output::MCVMOutput;
 use mcvm_shared::versions::VersionInfo;
 use mcvm_shared::Side;
 use reqwest::Client;
 
 use crate::io::files::paths::Paths;
-use crate::io::java::install::{JavaInstallation, JavaInstallationKind};
-use crate::io::lock::Lockfile;
 use crate::io::options::{read_options, Options};
 use crate::net::fabric_quilt::{self, FabricQuiltMeta};
-use crate::net::game_files::client_meta::{self, ClientMeta};
-use crate::net::game_files::version_manifest::VersionManifest;
-use crate::net::game_files::{assets, game_jar, libraries, log_config, version_manifest};
-use crate::util::{print::PrintOptions, versions::MinecraftVersion};
-use crate::RcType;
+use crate::util::print::PrintOptions;
 
 /// Requirements for operations that may be shared by multiple instances in a profile
 #[derive(Debug, Hash, PartialEq, Eq)]
@@ -53,16 +50,11 @@ pub struct UpdateManager {
 	requirements: HashSet<UpdateRequirement>,
 	/// File paths that are added when they have been updated by other functions
 	files: HashSet<PathBuf>,
-	/// The version manifest to be fulfilled later
-	version_manifest: Later<VersionManifest>,
-	/// The client meta to be fulfilled later
-	pub client_meta: Later<RcType<ClientMeta>>,
-	/// The Java installation to be fulfilled later
-	pub java: Later<JavaInstallation>,
 	/// The game options to be fulfilled later
 	pub options: Option<Options>,
 	/// The version info to be fulfilled later
 	pub version_info: Later<VersionInfo>,
+	mc_version: Later<MinecraftVersion>,
 	/// The Fabric/Quilt metadata to be fulfilled later
 	pub fq_meta: Later<FabricQuiltMeta>,
 }
@@ -76,12 +68,10 @@ impl UpdateManager {
 			allow_offline,
 			requirements: HashSet::new(),
 			files: HashSet::new(),
-			version_manifest: Later::new(),
-			client_meta: Later::new(),
-			java: Later::new(),
 			options: None,
 			version_info: Later::Empty,
 			fq_meta: Later::new(),
+			mc_version: Later::Empty,
 		}
 	}
 
@@ -119,52 +109,15 @@ impl UpdateManager {
 		}
 	}
 
-	/// Get the version manifest and fulfill the found version and version list fields.
-	/// Must be called before fulfill_requirements.
-	pub async fn fulfill_version_manifest(
-		&mut self,
-		version: &MinecraftVersion,
-		paths: &Paths,
-		client: &Client,
-		o: &mut impl MCVMOutput,
-	) -> anyhow::Result<()> {
-		o.start_process();
-		o.display(
-			MessageContents::StartProcess("Obtaining version index".into()),
-			MessageLevel::Important,
-		);
-
-		let manifest = version_manifest::get(paths, self, client, o)
-			.await
-			.context("Failed to get version manifest")?;
-
-		let version_list = version_manifest::make_version_list(&manifest)
-			.context("Failed to compose a list of versions")?;
-
-		let found_version = version
-			.get_version(&manifest)
-			.context("Failed to find the requested Minecraft version")?;
-
-		self.version_info.fill(VersionInfo {
-			version: found_version,
-			versions: version_list,
-		});
-		self.version_manifest.fill(manifest);
-
-		o.display(
-			MessageContents::Success("Version index obtained".into()),
-			MessageLevel::Important,
-		);
-		o.end_process();
-
-		Ok(())
+	/// Set the Minecraft version
+	pub fn set_version(&mut self, version: &MinecraftVersion) {
+		self.mc_version.fill(version.clone());
 	}
 
 	/// Run all of the operations that are part of the requirements.
 	pub async fn fulfill_requirements(
 		&mut self,
 		paths: &Paths,
-		lock: &mut Lockfile,
 		client: &Client,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
@@ -197,97 +150,18 @@ impl UpdateManager {
 			self.add_requirement(UpdateRequirement::ClientMeta);
 		}
 
-		if self.has_requirement(UpdateRequirement::ClientMeta) {
-			o.start_process();
-			o.display(
-				MessageContents::StartProcess("Obtaining client metadata".into()),
-				MessageLevel::Important,
-			);
-
-			let client_meta = client_meta::get(
-				&self.version_info.get().version,
-				self.version_manifest.get(),
-				paths,
-				self,
-				client,
-			)
+		let mut core = MCVMCore::new().context("Failed to initialize core")?;
+		let mut vers = core
+			.get_version(self.mc_version.get(), o)
 			.await
-			.context("Failed to get client meta")?;
-			self.client_meta.fill(RcType::new(client_meta));
+			.context("Failed to get version")?;
 
-			o.display(
-				MessageContents::Success("Client meta obtained".into()),
-				MessageLevel::Important,
-			);
-			o.end_process();
-		}
-
-		if self.has_requirement(UpdateRequirement::ClientAssets) {
-			let result = assets::get(
-				self.client_meta.get(),
-				paths,
-				self.version_info.get(),
-				self,
-				client,
-				o,
-			)
-			.await
-			.context("Failed to get game assets")?;
-			self.add_result(result);
-		}
-
-		if self.has_requirement(UpdateRequirement::ClientLibraries) {
-			let client_meta = self.client_meta.get();
-			let result = libraries::get(
-				client_meta,
-				paths,
-				&self.version_info.get().version,
-				self,
-				client,
-				o,
-			)
-			.await
-			.context("Failed to get game libraries")?;
-			self.add_result(result);
-		}
-
-		if java_required {
-			let client_meta = self.client_meta.get();
-			let java_vers = client_meta.java_info.major_version;
-
-			let mut java_result = UpdateMethodResult::new();
-			for req in self.requirements.iter() {
-				if let UpdateRequirement::Java(kind) = req {
-					let mut java = JavaInstallation::new(kind.clone());
-					java.add_version(&java_vers.0.to_string());
-					let result = java
-						.install(paths, self, lock, client, o)
-						.await
-						.context("Failed to install Java")?;
-					java_result.merge(result);
-					self.java.fill(java);
-				}
-			}
-			lock.finish(paths).await?;
-			self.add_result(java_result);
-		}
-
-		if game_jar_required {
-			for req in self.requirements.iter() {
-				if let UpdateRequirement::GameJar(side) = req {
-					game_jar::get(
-						*side,
-						self.client_meta.get(),
-						&self.version_info.get().version,
-						paths,
-						self,
-						client,
-						o,
-					)
-					.await
-					.context("Failed to get the game JAR file")?;
-				}
-			}
+		if self.has_requirement(UpdateRequirement::ClientAssets)
+			|| self.has_requirement(UpdateRequirement::ClientLibraries)
+		{
+			vers.ensure_client_assets_and_libs(o)
+				.await
+				.context("Failed to ensure client assets and libraries")?;
 		}
 
 		if fq_required {
@@ -327,18 +201,6 @@ impl UpdateManager {
 				.await
 				.context("Failed to read options.json")?;
 			self.options = options;
-		}
-
-		if self.has_requirement(UpdateRequirement::ClientLoggingConfig) {
-			log_config::get(
-				self.client_meta.get(),
-				&self.version_info.get().version,
-				paths,
-				self,
-				client,
-			)
-			.await
-			.context("Failed to get client logging config")?;
 		}
 
 		Ok(())

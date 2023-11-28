@@ -42,7 +42,7 @@ impl ConfigBuilder {
 	}
 
 	/// Set the Microsoft client ID to use for Microsoft / XBox Live authentication
-	pub fn ms_client_id(&mut self, ms_client_id: ClientId) -> &mut Self {
+	pub fn ms_client_id(mut self, ms_client_id: ClientId) -> Self {
 		self.config.ms_client_id = ms_client_id;
 		self
 	}

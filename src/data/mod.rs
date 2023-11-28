@@ -6,8 +6,6 @@ pub mod config;
 pub mod instance;
 /// Operating on profiles
 pub mod profile;
-/// Operating on users
-pub mod user;
 
 /// Types for IDs of things
 pub mod id {

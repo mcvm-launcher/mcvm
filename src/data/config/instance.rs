@@ -2,6 +2,9 @@ use std::collections::HashMap;
 use std::str::FromStr;
 
 use anyhow::{anyhow, bail, ensure, Context};
+use mcvm_core::io::java::args::{ArgsPreset, MemoryNum};
+use mcvm_core::io::java::install::JavaInstallationKind;
+use mcvm_shared::util::merge_options;
 use mcvm_shared::Side;
 #[cfg(feature = "schema")]
 use schemars::JsonSchema;
@@ -11,12 +14,9 @@ use crate::data::id::InstanceID;
 use crate::data::instance::launch::{LaunchOptions, WrapperCommand};
 use crate::data::instance::{InstKind, Instance, InstanceStoredConfig};
 use crate::data::profile::Profile;
-use crate::io::java::args::{ArgsPreset, MemoryNum};
-use crate::io::java::install::JavaInstallationKind;
 use crate::io::options::client::ClientOptions;
 use crate::io::options::server::ServerOptions;
 use crate::io::snapshot;
-use crate::util::merge_options;
 
 use super::package::PackageConfig;
 
@@ -531,7 +531,7 @@ mod tests {
 
 	use crate::data::config::profile::ProfilePackageConfiguration;
 	use crate::data::{config::profile::GameModifications, id::ProfileID};
-	use crate::util::versions::MinecraftVersion;
+	use mcvm_core::util::versions::MinecraftVersion;
 	use mcvm_shared::modifications::{ClientType, Modloader, ServerType};
 	use mcvm_shared::pkg::PackageStability;
 

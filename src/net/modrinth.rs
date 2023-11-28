@@ -1,9 +1,8 @@
 use anyhow::{anyhow, Context};
+use mcvm_core::net::download;
 use mcvm_shared::modifications::{Modloader, ServerType};
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
-
-use super::download;
 
 /// A Modrinth project (mod, resource pack, etc.)
 #[derive(Deserialize, Serialize)]
