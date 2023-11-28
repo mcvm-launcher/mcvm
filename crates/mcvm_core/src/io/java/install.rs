@@ -34,6 +34,7 @@ impl JavaInstallationKind {
 	/// Parse a string into a JavaKind
 	pub fn parse(string: &str) -> Self {
 		match string {
+			"auto" => Self::Auto(Later::Empty),
 			"system" => Self::System(Later::Empty),
 			"adoptium" => Self::Adoptium(Later::Empty),
 			"zulu" => Self::Zulu(Later::Empty),
