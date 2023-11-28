@@ -14,6 +14,7 @@ schema = ["dep:schemars"]
 
 [dependencies]
 anyhow = "1.0.70"
+cfg-match = "0.2.1"
 current_locale = "0.1.1"
 schemars = { version = "0.8.15", optional = true }
 serde = { version = "1.0.152", features = ["derive", "rc"] }

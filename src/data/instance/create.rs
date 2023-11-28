@@ -28,7 +28,7 @@ impl Instance {
 	/// Get the requirements for this instance
 	pub fn get_requirements(&self) -> HashSet<UpdateRequirement> {
 		let mut out = HashSet::new();
-		// Even though it is client meta it also contains the server download link
+		// Even though it is the client meta it also contains the server download link
 		// so we need it for both.
 		out.insert(UpdateRequirement::ClientMeta);
 

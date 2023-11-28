@@ -15,6 +15,8 @@ path = "src/lib.rs"
 
 [workspace]
 members = [
+	"crates/mcvm_auth",
+	"crates/mcvm_core",
 	"crates/mcvm_cli",
 	"crates/mcvm_parse",
 	"crates/mcvm_pkg",

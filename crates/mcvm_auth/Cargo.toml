@@ -1,0 +1,27 @@
+[package]
+name = "mcvm_auth"
+version = "0.1.0"
+edition = "2021"
+license = "GPL-3.0-or-later"
+description = "Useful authentication wrapper for Minecraft"
+authors = ["CarbonSmasher"]
+repository = "https://github.com/CarbonSmasher/mcvm"
+keywords = ["minecraft", "launcher", "game", "mc", "auth"]
+categories = ["games"]
+
+[features]
+
+[dependencies]
+anyhow = "1.0.70"
+bytes = "1.4.0"
+cfg-match = "0.2.1"
+mcvm_shared = { path = "../mcvm_shared", version = "0.9.0" }
+minecraft-msa-auth = "0.3.0"
+oauth2 = "4.4.1"
+reqwest = { version = "0.11.15", default_features = false, features = [
+	"json",
+	"rustls-tls",
+] }
+serde = { version = "1.0.152", features = ["derive"] }
+serde_json = "1.0.91"
+thiserror = "1.0.38"
