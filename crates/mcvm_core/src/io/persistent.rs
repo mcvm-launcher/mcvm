@@ -49,16 +49,16 @@ pub enum PersistentDataJavaInstallation {
 }
 
 impl PersistentDataContents {
-	/// Fix changes in lockfile format
+	/// Fix changes in persistent data format
 	pub fn fix(&mut self) {}
 }
 
 impl PersistentData {
-	/// Open the lockfile
+	/// Open the persistent data file
 	pub fn open(paths: &Paths) -> anyhow::Result<Self> {
 		let path = Self::get_path(paths);
 		let mut contents = if path.exists() {
-			let file = File::open(&path).context("Failed to open lockfile")?;
+			let file = File::open(&path).context("Failed to open persistent data file")?;
 			let mut file = BufReader::new(file);
 			serde_json::from_reader(&mut file).context("Failed to parse JSON")?
 		} else {
@@ -68,16 +68,16 @@ impl PersistentData {
 		Ok(Self { contents })
 	}
 
-	/// Get the path to the lockfile
+	/// Get the path to the persistent data file
 	pub fn get_path(paths: &Paths) -> PathBuf {
-		paths.internal.join("lock.json")
+		paths.internal.join("persistent.json")
 	}
 
-	/// Finish using the lockfile and write to the disk
+	/// Finish using the persistent data file and write to the disk
 	pub async fn finish(&mut self, paths: &Paths) -> anyhow::Result<()> {
 		let out = serde_json::to_string_pretty(&self.contents)
-			.context("Failed to serialize lockfile contents")?;
-		std::fs::write(Self::get_path(paths), out).context("Failed to write to lockfile")?;
+			.context("Failed to serialize persistent data contents")?;
+		std::fs::write(Self::get_path(paths), out).context("Failed to write to persistent data file")?;
 
 		Ok(())
 	}

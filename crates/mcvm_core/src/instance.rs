@@ -1,14 +1,13 @@
 use std::path::{Path, PathBuf};
 
 use anyhow::{bail, Context};
-use mcvm_shared::later::Later;
 use mcvm_shared::output::MCVMOutput;
 use mcvm_shared::Side;
 
 use crate::io::files::paths::Paths;
 use crate::io::files::update_hardlink;
 use crate::io::java::classpath::Classpath;
-use crate::io::java::install::{JavaInstallation, JavaInstallationKind};
+use crate::io::java::install::{JavaInstallParameters, JavaInstallation};
 use crate::io::persistent::PersistentData;
 use crate::io::update::UpdateManager;
 use crate::launch::{LaunchConfiguration, LaunchParameters};
@@ -46,21 +45,22 @@ impl<'params> Instance<'params> {
 		}
 
 		// Install Java
-		let mut java = JavaInstallation::new(JavaInstallationKind::Adoptium(Later::Empty));
 		let java_vers = &params.client_meta.java_info.major_version;
-		java.add_version(&java_vers.0.to_string());
-		let result = java
-			.install(
-				params.paths,
-				params.update_manager,
-				params.persistent,
-				params.req_client,
-				o,
-			)
-			.await
-			.context("Failed to install Java")?;
+		let java_params = JavaInstallParameters {
+			paths: params.paths,
+			update: params.update_manager,
+			persistent: params.persistent,
+			req_client: params.req_client,
+		};
+		let java = JavaInstallation::install(
+			config.launch.java.clone(),
+			java_vers.clone(),
+			java_params,
+			o,
+		)
+		.await
+		.context("Failed to install or update Java")?;
 
-		params.update_manager.add_result(result);
 		params.persistent.finish(params.paths).await?;
 
 		// Get the game jar

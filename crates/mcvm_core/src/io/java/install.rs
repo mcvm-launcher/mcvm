@@ -3,42 +3,49 @@ use std::io::BufReader;
 use std::path::{Path, PathBuf};
 
 use anyhow::{bail, Context};
-use mcvm_shared::later::Later;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
-use reqwest::Client;
 use tar::Archive;
 
 use crate::io::files::{self, paths::Paths};
 use crate::io::persistent::{PersistentData, PersistentDataJavaInstallation};
-use crate::io::update::{UpdateManager, UpdateMethodResult};
+use crate::io::update::UpdateManager;
 use crate::net::{self, download};
 use mcvm_shared::util::preferred_archive_extension;
+
+use super::JavaMajorVersion;
 
 /// Type of Java installation
 #[derive(Debug, Clone, Hash, PartialEq, Eq)]
 pub enum JavaInstallationKind {
 	/// Automatically chooses different Java
 	/// flavors based on system conditions
-	Auto(Later<String>),
-	/// System Java
-	System(Later<String>),
+	Auto,
+	/// Trys to use a Java installation that is
+	/// already on the system
+	System,
 	/// Adoptium
-	Adoptium(Later<String>),
+	Adoptium,
 	/// Azul Zulu
-	Zulu(Later<String>),
+	Zulu,
 	/// A user-specified installation
-	Custom(PathBuf),
+	Custom {
+		/// The path to the installation. The JVM must live at
+		/// `{path}/bin/java`
+		path: PathBuf,
+	},
 }
 
 impl JavaInstallationKind {
 	/// Parse a string into a JavaKind
 	pub fn parse(string: &str) -> Self {
 		match string {
-			"auto" => Self::Auto(Later::Empty),
-			"system" => Self::System(Later::Empty),
-			"adoptium" => Self::Adoptium(Later::Empty),
-			"zulu" => Self::Zulu(Later::Empty),
-			path => Self::Custom(PathBuf::from(path)),
+			"auto" => Self::Auto,
+			"system" => Self::System,
+			"adoptium" => Self::Adoptium,
+			"zulu" => Self::Zulu,
+			path => Self::Custom {
+				path: PathBuf::from(path),
+			},
 		}
 	}
 }
@@ -46,102 +53,87 @@ impl JavaInstallationKind {
 /// A Java installation used to launch the game
 #[derive(Debug, Clone)]
 pub struct JavaInstallation {
-	kind: JavaInstallationKind,
+	/// The major version of the Java installation
+	major_version: JavaMajorVersion,
 	/// The path to the directory where the installation is, which will be filled when it is installed
-	pub path: Later<PathBuf>,
+	path: PathBuf,
 }
 
 impl JavaInstallation {
-	/// Create a new Java
-	pub fn new(kind: JavaInstallationKind) -> Self {
-		Self {
-			kind,
-			path: Later::Empty,
-		}
-	}
-
-	/// Add a major version to a Java installation that supports it
-	pub fn add_version(&mut self, version: &str) {
-		match &mut self.kind {
-			JavaInstallationKind::Auto(vers)
-			| JavaInstallationKind::System(vers)
-			| JavaInstallationKind::Adoptium(vers)
-			| JavaInstallationKind::Zulu(vers) => vers.fill(version.to_owned()),
-			JavaInstallationKind::Custom(..) => {}
-		};
-	}
-
-	/// Download / install all needed files
-	pub async fn install(
-		&mut self,
-		paths: &Paths,
-		manager: &UpdateManager,
-		lock: &mut PersistentData,
-		client: &Client,
+	/// Load a new Java installation
+	pub(crate) async fn install(
+		kind: JavaInstallationKind,
+		major_version: JavaMajorVersion,
+		mut params: JavaInstallParameters<'_>,
 		o: &mut impl MCVMOutput,
-	) -> anyhow::Result<UpdateMethodResult> {
-		let out = UpdateMethodResult::new();
-
+	) -> anyhow::Result<Self> {
 		o.start_process();
 		o.display(
 			MessageContents::StartProcess("Checking for Java updates".into()),
 			MessageLevel::Important,
 		);
 
-		match &self.kind {
-			JavaInstallationKind::Auto(major_version) => {
-				self.path.fill(
-					install_auto(major_version.get(), paths, manager, lock, client, o).await?,
-				);
-			}
-			JavaInstallationKind::System(major_version) => {
-				self.path.fill(install_system(major_version.get())?);
-			}
-			JavaInstallationKind::Adoptium(major_version) => {
-				self.path.fill(
-					install_adoptium(major_version.get(), paths, manager, lock, client, o).await?,
-				);
-			}
-			JavaInstallationKind::Zulu(major_version) => {
-				self.path.fill(
-					install_zulu(major_version.get(), paths, manager, lock, client, o).await?,
-				);
-			}
-			JavaInstallationKind::Custom(path) => {
-				self.path.fill(path.clone());
-			}
-		}
+		let vers_str = major_version.to_string();
+
+		let path = match &kind {
+			JavaInstallationKind::Auto => install_auto(&vers_str, params, o).await?,
+			JavaInstallationKind::System => install_system(&vers_str)?,
+			JavaInstallationKind::Adoptium => install_adoptium(&vers_str, &mut params, o).await?,
+			JavaInstallationKind::Zulu => install_zulu(&vers_str, &mut params, o).await?,
+			JavaInstallationKind::Custom { path } => path.clone(),
+		};
+
 		o.display(
 			MessageContents::Success("Java updated".into()),
 			MessageLevel::Important,
 		);
 
+		let out = Self {
+			major_version,
+			path,
+		};
+
 		Ok(out)
+	}
+
+	/// Get the major version of the Java installation
+	pub fn get_major_version(&self) -> &JavaMajorVersion {
+		&self.major_version
+	}
+
+	/// Get the path to the Java installation
+	pub fn get_path(&self) -> &Path {
+		&self.path
 	}
 
 	/// Get the path to the JVM. Will panic if not installed.
 	pub fn get_jvm_path(&self) -> PathBuf {
-		self.path.get().join("bin/java")
+		self.path.join("bin/java")
 	}
+}
+
+/// Container struct for parameters for loading Java installations
+pub(crate) struct JavaInstallParameters<'a> {
+	pub paths: &'a Paths,
+	pub update: &'a mut UpdateManager,
+	pub persistent: &'a mut PersistentData,
+	pub req_client: &'a reqwest::Client,
 }
 
 async fn install_auto(
 	major_version: &str,
-	paths: &Paths,
-	manager: &UpdateManager,
-	lock: &mut PersistentData,
-	client: &Client,
+	mut params: JavaInstallParameters<'_>,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<PathBuf> {
 	let out = install_system(major_version);
 	if let Ok(out) = out {
 		return Ok(out);
 	}
-	let out = install_adoptium(major_version, paths, manager, lock, client, o).await;
+	let out = install_adoptium(major_version, &mut params, o).await;
 	if let Ok(out) = out {
 		return Ok(out);
 	}
-	let out = install_zulu(major_version, paths, manager, lock, client, o).await;
+	let out = install_zulu(major_version, &mut params, o).await;
 	if let Ok(out) = out {
 		return Ok(out);
 	}
@@ -159,24 +151,22 @@ fn install_system(major_version: &str) -> anyhow::Result<PathBuf> {
 
 async fn install_adoptium(
 	major_version: &str,
-	paths: &Paths,
-	manager: &UpdateManager,
-	lock: &mut PersistentData,
-	client: &Client,
+	params: &mut JavaInstallParameters<'_>,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<PathBuf> {
-	if manager.allow_offline {
-		if let Some(directory) =
-			lock.get_java_path(PersistentDataJavaInstallation::Adoptium, major_version)
+	if params.update.allow_offline {
+		if let Some(directory) = params
+			.persistent
+			.get_java_path(PersistentDataJavaInstallation::Adoptium, major_version)
 		{
 			Ok(directory)
 		} else {
-			update_adoptium(major_version, lock, paths, client, o)
+			update_adoptium(major_version, params, o)
 				.await
 				.context("Failed to update Adoptium Java")
 		}
 	} else {
-		update_adoptium(major_version, lock, paths, client, o)
+		update_adoptium(major_version, params, o)
 			.await
 			.context("Failed to update Adoptium Java")
 	}
@@ -184,24 +174,22 @@ async fn install_adoptium(
 
 async fn install_zulu(
 	major_version: &str,
-	paths: &Paths,
-	manager: &UpdateManager,
-	lock: &mut PersistentData,
-	client: &Client,
+	params: &mut JavaInstallParameters<'_>,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<PathBuf> {
-	if manager.allow_offline {
-		if let Some(directory) =
-			lock.get_java_path(PersistentDataJavaInstallation::Zulu, major_version)
+	if params.update.allow_offline {
+		if let Some(directory) = params
+			.persistent
+			.get_java_path(PersistentDataJavaInstallation::Zulu, major_version)
 		{
 			Ok(directory)
 		} else {
-			update_zulu(major_version, lock, paths, client, o)
+			update_zulu(major_version, params, o)
 				.await
 				.context("Failed to update Zulu Java")
 		}
 	} else {
-		update_zulu(major_version, lock, paths, client, o)
+		update_zulu(major_version, params, o)
 			.await
 			.context("Failed to update Zulu Java")
 	}
@@ -210,14 +198,12 @@ async fn install_zulu(
 /// Updates Adoptium and returns the path to the installation
 async fn update_adoptium(
 	major_version: &str,
-	lock: &mut PersistentData,
-	paths: &Paths,
-	client: &Client,
+	params: &mut JavaInstallParameters<'_>,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<PathBuf> {
-	let out_dir = paths.java.join("adoptium");
+	let out_dir = params.paths.java.join("adoptium");
 	files::create_dir(&out_dir)?;
-	let version = net::java::adoptium::get_latest(major_version, client)
+	let version = net::java::adoptium::get_latest(major_version, params.req_client)
 		.await
 		.context("Failed to obtain Adoptium information")?;
 
@@ -226,7 +212,8 @@ async fn update_adoptium(
 	extracted_bin_name.push_str("-jre");
 	let extracted_bin_dir = out_dir.join(&extracted_bin_name);
 
-	if !lock
+	if !params
+		.persistent
 		.update_java_installation(
 			PersistentDataJavaInstallation::Adoptium,
 			major_version,
@@ -238,7 +225,7 @@ async fn update_adoptium(
 		return Ok(extracted_bin_dir);
 	}
 
-	lock.finish(paths).await?;
+	params.persistent.finish(params.paths).await?;
 
 	let arc_extension = preferred_archive_extension();
 	let arc_name = format!("adoptium{major_version}{arc_extension}");
@@ -252,7 +239,7 @@ async fn update_adoptium(
 		)),
 		MessageLevel::Important,
 	);
-	download::file(bin_url, &arc_path, client)
+	download::file(bin_url, &arc_path, params.req_client)
 		.await
 		.context("Failed to download JRE binaries")?;
 
@@ -280,21 +267,20 @@ async fn update_adoptium(
 /// Updates Zulu and returns the path to the installation
 async fn update_zulu(
 	major_version: &str,
-	lock: &mut PersistentData,
-	paths: &Paths,
-	client: &Client,
+	params: &mut JavaInstallParameters<'_>,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<PathBuf> {
-	let out_dir = paths.java.join("zulu");
+	let out_dir = params.paths.java.join("zulu");
 	files::create_dir(&out_dir)?;
 
-	let package = net::java::zulu::get_latest(major_version, client)
+	let package = net::java::zulu::get_latest(major_version, params.req_client)
 		.await
 		.context("Failed to get the latest Zulu version")?;
 
 	let extracted_dir = out_dir.join(net::java::zulu::extract_dir_name(&package.name));
 
-	if !lock
+	if !params
+		.persistent
 		.update_java_installation(
 			PersistentDataJavaInstallation::Zulu,
 			major_version,
@@ -306,7 +292,7 @@ async fn update_zulu(
 		return Ok(extracted_dir);
 	}
 
-	lock.finish(paths).await?;
+	params.persistent.finish(params.paths).await?;
 
 	let arc_path = out_dir.join(&package.name);
 
@@ -317,7 +303,7 @@ async fn update_zulu(
 		)),
 		MessageLevel::Important,
 	);
-	download::file(&package.download_url, &arc_path, client)
+	download::file(&package.download_url, &arc_path, params.req_client)
 		.await
 		.context("Failed to download JRE binaries")?;
 

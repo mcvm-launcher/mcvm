@@ -156,6 +156,8 @@ impl UpdateManager {
 			.await
 			.context("Failed to get version")?;
 
+		let version_info = vers.get_version_info();
+
 		if self.has_requirement(UpdateRequirement::ClientAssets)
 			|| self.has_requirement(UpdateRequirement::ClientLibraries)
 		{
@@ -169,7 +171,7 @@ impl UpdateManager {
 				if let UpdateRequirement::FabricQuilt(mode, side) = req {
 					if self.fq_meta.is_empty() {
 						let meta = fabric_quilt::get_meta(
-							&self.version_info.get().version,
+							&version_info.version,
 							mode,
 							paths,
 							self,
@@ -202,6 +204,8 @@ impl UpdateManager {
 				.context("Failed to read options.json")?;
 			self.options = options;
 		}
+
+		self.version_info.fill(version_info);
 
 		Ok(())
 	}

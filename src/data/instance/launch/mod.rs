@@ -39,7 +39,7 @@ impl Instance {
 			.ms_client_id(ms_client_id)
 			.build();
 		let mut core = MCVMCore::with_config(core_config).context("Failed to initialize core")?;
-		*core.get_users() = users.clone();
+		core.get_users().steal_users(users);
 		let mut installed_version = core
 			.get_version(version, o)
 			.await

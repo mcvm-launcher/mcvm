@@ -3,6 +3,7 @@ use std::collections::HashMap;
 use anyhow::Context;
 use mcvm_shared::output::MCVMOutput;
 use mcvm_shared::output::{MessageContents, MessageLevel};
+use mcvm_shared::versions::VersionInfo;
 
 use crate::instance::{Instance, InstanceConfiguration, InstanceParameters};
 use crate::io::files::paths::Paths;
@@ -30,6 +31,14 @@ impl<'inner, 'params> InstalledVersion<'inner, 'params> {
 	/// Get the client meta
 	pub fn get_client_meta(&self) -> &ClientMeta {
 		&self.inner.client_meta
+	}
+
+	/// Get the version info
+	pub fn get_version_info(&self) -> VersionInfo {
+		VersionInfo {
+			version: self.inner.version.to_string(),
+			versions: self.params.version_manifest.list.clone(),
+		}
 	}
 
 	/// Create an instance and its files using this version,

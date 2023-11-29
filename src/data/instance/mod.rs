@@ -196,13 +196,6 @@ impl Instance {
 		Ok(inst)
 	}
 
-	/// Set the java installation for the instance
-	// fn add_java(&mut self, version: &str, manager: &UpdateManager) {
-	// 	let mut java = manager.java.get().clone();
-	// 	java.add_version(version);
-	// 	self.java.fill(java);
-	// }
-
 	async fn get_fabric_quilt(
 		&mut self,
 		paths: &Paths,

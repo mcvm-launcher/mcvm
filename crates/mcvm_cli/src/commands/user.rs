@@ -33,7 +33,7 @@ async fn list(data: &mut CmdData, raw: bool) -> anyhow::Result<()> {
 	if !raw {
 		cprintln!("<s>Users:");
 	}
-	for (id, user) in config.users.users.iter().sorted_by_key(|x| x.0) {
+	for (id, user) in config.users.iter_users().sorted_by_key(|x| x.0) {
 		cprint!("{}", HYPHEN_POINT);
 		if raw {
 			println!("{id}");
@@ -55,7 +55,7 @@ async fn status(data: &mut CmdData) -> anyhow::Result<()> {
 	data.ensure_config(true).await?;
 	let config = data.config.get();
 
-	match config.users.get_user() {
+	match config.users.get_chosen_user() {
 		Some(user) => {
 			cprint!("<g>Logged in as ");
 			let user_name = &user.name;

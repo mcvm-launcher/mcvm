@@ -76,13 +76,11 @@ impl Profile {
 			manager.add_requirements(instance.get_requirements());
 		}
 		let client = Client::new();
-		manager
-			.fulfill_requirements(paths, &client, o)
-			.await?;
+		manager.fulfill_requirements(paths, &client, o).await?;
 		for id in self.instances.iter_mut() {
 			// FIXME: This sucks
 			let mut core = MCVMCore::new().context("Failed to initialize core")?;
-			*core.get_users() = users.clone();
+			core.get_users().steal_users(users);
 			let mut installed_version = core
 				.get_version(&self.version, o)
 				.await

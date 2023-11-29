@@ -3,11 +3,9 @@ use std::fs::File;
 
 use anyhow::Context;
 use mcvm_core::io::java::classpath::Classpath;
-use mcvm_core::io::java::install::JavaInstallationKind;
 use mcvm_core::user::uuid::hyphenate_uuid;
 use mcvm_core::user::{AuthState, User, UserManager};
 use mcvm_core::version::InstalledVersion;
-use mcvm_shared::later::Later;
 use mcvm_shared::modifications::{Modloader, ServerType};
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel, OutputProcess};
 use reqwest::Client;
@@ -32,12 +30,7 @@ impl Instance {
 		// so we need it for both.
 		out.insert(UpdateRequirement::ClientMeta);
 
-		let java_kind = match &self.config.launch.java {
-			JavaInstallationKind::Adoptium(..) => JavaInstallationKind::Adoptium(Later::Empty),
-			JavaInstallationKind::Zulu(..) => JavaInstallationKind::Zulu(Later::Empty),
-			x => x.clone(),
-		};
-		out.insert(UpdateRequirement::Java(java_kind));
+		out.insert(UpdateRequirement::Java(self.config.launch.java.clone()));
 		out.insert(UpdateRequirement::GameJar(self.kind.to_side()));
 		match self.config.modifications.get_modloader(self.kind.to_side()) {
 			Modloader::Fabric => {
@@ -169,7 +162,7 @@ impl Instance {
 
 		// Create keypair file
 		if let AuthState::Authed(user) = &users.state {
-			let user = users.users.get(user).expect("Authed user does not exist");
+			let user = users.get_user(user).expect("Authed user does not exist");
 			self.create_keypair(user, paths)
 				.context("Failed to create user keypair")?;
 		}

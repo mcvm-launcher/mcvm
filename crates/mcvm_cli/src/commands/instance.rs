@@ -114,7 +114,7 @@ pub async fn launch(
 		.expect("Instance does not belong to any profiles");
 
 	if let Some(user) = user {
-		if !config.users.users.contains_key(&user) {
+		if !config.users.user_exists(&user) {
 			bail!("User '{user}' does not exist");
 		}
 		config.users.state = AuthState::UserChosen(user);

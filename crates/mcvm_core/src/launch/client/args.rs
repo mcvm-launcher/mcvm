@@ -43,7 +43,7 @@ pub(crate) fn process_arg(arg: &ArgumentItem, params: &LaunchParameters) -> Vec<
 				}
 				if let Some(is_demo_user) = &rule.features.is_demo_user {
 					if *is_demo_user {
-						let use_demo = match params.users.get_user() {
+						let use_demo = match params.users.get_chosen_user() {
 							Some(user) => matches!(user.kind, UserKind::Demo),
 							None => false,
 						};
@@ -181,7 +181,7 @@ pub(crate) fn replace_arg_placeholders(arg: &str, params: &LaunchParameters) -> 
 	);
 
 	// User
-	match params.users.get_user() {
+	match params.users.get_chosen_user() {
 		Some(user) => {
 			out = out.replace(placeholder!("auth_player_name"), &user.name);
 			if let Some(uuid) = &user.uuid {

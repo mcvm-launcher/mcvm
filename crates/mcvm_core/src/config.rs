@@ -21,6 +21,11 @@ impl Configuration {
 			ms_client_id: get_ms_client_id().into(),
 		}
 	}
+
+	/// Get a builder for the configuration
+	pub fn builder() -> ConfigBuilder {
+		ConfigBuilder::new()
+	}
 }
 
 /// Simple builder for the configuration

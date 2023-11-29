@@ -117,15 +117,14 @@ impl Config {
 				bail!("Invalid string '{}'", user.name);
 			}
 
-			users.users.insert(user_id.to_string(), user);
+			users.add_user(user);
 		}
 
 		if let Some(default_user_id) = &config.default_user {
-			match users.users.get(default_user_id) {
-				Some(..) => users.state = AuthState::UserChosen(default_user_id.clone()),
-				None => {
-					bail!("Provided default user '{default_user_id}' does not exist");
-				}
+			if users.user_exists(&default_user_id) {
+				users.state = AuthState::UserChosen(default_user_id.clone());
+			} else {
+				bail!("Provided default user '{default_user_id}' does not exist");
 			}
 		} else if config.users.is_empty() && show_warnings {
 			o.display(

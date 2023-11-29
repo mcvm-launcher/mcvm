@@ -58,8 +58,8 @@ impl ConfigBuilder {
 	}
 
 	/// Finish a UserBuilder
-	fn build_user(&mut self, id: String, user: User) {
-		self.users.users.insert(id, user);
+	fn build_user(&mut self, user: User) {
+		self.users.add_user(user);
 	}
 
 	/// Create a ProfileBuilder
@@ -98,11 +98,10 @@ impl ConfigBuilder {
 	/// Finishes the builder
 	pub fn build(mut self) -> anyhow::Result<Config> {
 		if let Some(default_user_id) = &self.default_user {
-			match self.users.users.get(default_user_id) {
-				Some(..) => self.users.state = AuthState::UserChosen(default_user_id.clone()),
-				None => {
-					bail!("Provided default user '{default_user_id}' does not exist");
-				}
+			if self.users.user_exists(&default_user_id) {
+				self.users.state = AuthState::UserChosen(default_user_id.clone());
+			} else {
+				bail!("Provided default user '{default_user_id}' does not exist");
 			}
 		}
 		Ok(Config {
@@ -160,16 +159,16 @@ impl<'parent> UserBuilder<'parent> {
 
 	/// Finish the builder and go to the parent
 	pub fn build(self) {
-		let (id, user, parent) = self.build_self();
+		let (user, parent) = self.build_self();
 		if let Some(parent) = parent {
-			parent.build_user(id, user);
+			parent.build_user(user);
 		}
 	}
 
 	/// Finish the builder and return the self
-	pub fn build_self(self) -> (String, User, Option<&'parent mut ConfigBuilder>) {
+	pub fn build_self(self) -> (User, Option<&'parent mut ConfigBuilder>) {
 		let built = self.config.to_user(&self.id);
-		(self.id, built, self.parent)
+		(built, self.parent)
 	}
 }
 
@@ -647,7 +646,7 @@ mod tests {
 			.build();
 		config.default_user("user".into());
 		let config = config.build().expect("Failed to build config");
-		assert!(config.users.users.contains_key("user"));
+		assert!(config.users.user_exists("user"));
 		assert!(matches!(
 			config.users.state,
 			AuthState::UserChosen(user) if user == "user"

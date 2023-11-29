@@ -21,11 +21,7 @@ pub(crate) async fn get_launch_props(
 	// Ensure the user is authenticated
 	params
 		.users
-		.ensure_authenticated(
-			params.users.get_ms_client_id().clone(),
-			params.req_client,
-			o,
-		)
+		.ensure_authenticated(params.req_client, o)
 		.await
 		.context("Failed to authenticate user")?;
 

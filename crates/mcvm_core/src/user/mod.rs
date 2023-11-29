@@ -67,7 +67,7 @@ pub struct UserManager {
 	/// The current state of authentication
 	pub state: AuthState,
 	/// All configured / available users
-	pub users: HashMap<String, User>,
+	users: HashMap<String, User>,
 	/// The MS client ID
 	ms_client_id: ClientId,
 }
@@ -93,8 +93,40 @@ impl UserManager {
 		}
 	}
 
+	/// Add a new user to the manager
+	pub fn add_user(&mut self, user: User) {
+		self.add_user_with_id(user.id.clone(), user);
+	}
+
+	/// Add a new user to the manager with a different
+	/// ID than the user struct has. I don't know why you would need to do this,
+	/// but it's an option anyways
+	pub fn add_user_with_id(&mut self, user_id: String, user: User) {
+		self.users.insert(user_id, user);
+	}
+
+	/// Get a user from the manager
+	pub fn get_user(&self, user_id: &str) -> Option<&User> {
+		self.users.get(user_id)
+	}
+
+	/// Get a user from the manager mutably
+	pub fn get_user_mut(&mut self, user_id: &str) -> Option<&mut User> {
+		self.users.get_mut(user_id)
+	}
+
+	/// Checks if a user with an ID exists
+	pub fn user_exists(&self, user_id: &str) -> bool {
+		self.users.contains_key(user_id)
+	}
+
+	/// Iterate over users and their IDs
+	pub fn iter_users(&self) -> impl Iterator<Item = (&String, &User)> {
+		self.users.iter()
+	}
+
 	/// Get the currently chosen user, if there is one
-	pub fn get_user(&self) -> Option<&User> {
+	pub fn get_chosen_user(&self) -> Option<&User> {
 		match &self.state {
 			AuthState::Offline => None,
 			AuthState::UserChosen(user_id) => self.users.get(user_id),
@@ -105,7 +137,6 @@ impl UserManager {
 	/// Ensures that the currently chosen user is authenticated
 	pub async fn ensure_authenticated(
 		&mut self,
-		client_id: ClientId,
 		client: &Client,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
@@ -114,16 +145,17 @@ impl UserManager {
 				.users
 				.get_mut(user)
 				.expect("User in AuthState does not exist");
-			user.authenticate(client_id, client, o).await?;
+			dbg!(&self.ms_client_id);
+			user.authenticate(self.ms_client_id.clone(), client, o)
+				.await?;
 		}
 
 		Ok(())
 	}
 
-	/// Get the current MS client ID.
-	/// This is a crate-only function because it may contain the default secret ID
-	pub(crate) fn get_ms_client_id(&self) -> &ClientId {
-		&self.ms_client_id
+	/// Adds users from another UserManager
+	pub fn steal_users(&mut self, other: &Self) {
+		self.users.extend(other.users.clone());
 	}
 }
 

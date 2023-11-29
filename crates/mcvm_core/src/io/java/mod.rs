@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 use serde::{Deserialize, Serialize};
 
 /// Operating Java memory arguments
@@ -10,6 +12,24 @@ pub mod install;
 /// A major Java version (e.g. 14 or 17)
 #[derive(Clone, Copy, Debug, Serialize, Deserialize)]
 pub struct JavaMajorVersion(pub u16);
+
+impl Display for JavaMajorVersion {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "{}", self.0)
+	}
+}
+
+impl JavaMajorVersion {
+	/// Constructs a new JavaMajorVersion
+	pub fn new(version: u16) -> Self {
+		Self(version)
+	}
+
+	/// Tries to parse a major version from a string
+	pub fn parse(string: &str) -> Option<Self> {
+		string.parse().map(Self::new).ok()
+	}
+}
 
 /// Dealing with Maven
 pub mod maven {
