@@ -46,16 +46,79 @@ pub(crate) fn launch_game_process(
 		o,
 	));
 
-	o.display(
-		MessageContents::Property(
-			"Launch command".into(),
-			Box::new(MessageContents::Simple(format!("{cmd:#?}"))),
-		),
-		MessageLevel::Debug,
-	);
+	output_launch_command(&cmd, params.user_access_token, params.censor_secrets, o)?;
+
 	let child = cmd.spawn().context("Failed to spawn child process")?;
 
 	Ok(child)
+}
+
+/// Display the launch command in our own way,
+/// censoring any credentials if needed
+fn output_launch_command(
+	command: &Command,
+	access_token: Option<String>,
+	censor_secrets: bool,
+	o: &mut impl MCVMOutput,
+) -> anyhow::Result<()> {
+	let access_token = if censor_secrets { access_token } else { None };
+	o.display(
+		MessageContents::Property(
+			"Launch command".into(),
+			Box::new(MessageContents::Simple(
+				command.get_program().to_string_lossy().into(),
+			)),
+		),
+		MessageLevel::Debug,
+	);
+
+	o.display(
+		MessageContents::Header("Launch command arguments".into()),
+		MessageLevel::Debug,
+	);
+
+	const CENSOR_STR: &str = "***";
+	for arg in command.get_args() {
+		let mut arg = arg.to_string_lossy().to_string();
+		if let Some(access_token) = &access_token {
+			arg = arg.replace(access_token, CENSOR_STR);
+		}
+		o.display(
+			MessageContents::ListItem(Box::new(MessageContents::Simple(arg))),
+			MessageLevel::Debug,
+		);
+	}
+
+	o.display(
+		MessageContents::Header("Launch command environment".into()),
+		MessageLevel::Debug,
+	);
+
+	for (env, val) in command.get_envs() {
+		let Some(val) = val else {continue };
+		let env = env.to_string_lossy().to_string();
+		let val = val.to_string_lossy().to_string();
+
+		o.display(
+			MessageContents::ListItem(Box::new(MessageContents::Property(
+				env,
+				Box::new(MessageContents::Simple(val)),
+			))),
+			MessageLevel::Debug,
+		);
+	}
+
+	if let Some(dir) = command.get_current_dir() {
+		o.display(
+			MessageContents::Property(
+				"Launch command directory".into(),
+				Box::new(MessageContents::Simple(dir.to_string_lossy().into())),
+			),
+			MessageLevel::Debug,
+		);
+	}
+
+	Ok(())
 }
 
 /// Container struct for parameters for launching the game process
@@ -71,6 +134,8 @@ pub(crate) struct LaunchProcessParameters<'a> {
 	pub version: &'a VersionName,
 	pub version_list: &'a [String],
 	pub side: &'a InstanceKind,
+	pub user_access_token: Option<String>,
+	pub censor_secrets: bool,
 }
 
 /// Properties for launching the game process that are created by

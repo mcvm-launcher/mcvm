@@ -58,6 +58,7 @@ impl<'inner, 'params> InstalledVersion<'inner, 'params> {
 			client_meta: &self.inner.client_meta,
 			users: self.params.users,
 			client_assets_and_libs: &mut self.inner.client_assets_and_libs,
+			censor_secrets: self.params.censor_secrets,
 		};
 		let instance = Instance::load(config, params, o)
 			.await
@@ -167,6 +168,7 @@ pub(crate) struct VersionParameters<'a> {
 	pub version_manifest: &'a VersionManifestAndList,
 	pub update_manager: &'a mut UpdateManager,
 	pub users: &'a mut UserManager,
+	pub censor_secrets: bool,
 }
 
 /// Container struct for parameters for loading version innards

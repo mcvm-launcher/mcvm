@@ -30,10 +30,10 @@ use user::UserManager;
 use util::versions::MinecraftVersion;
 use version::{InstalledVersion, LoadVersionParameters, VersionParameters, VersionRegistry};
 
-pub use config::{Configuration, ConfigBuilder};
+pub use config::{ConfigBuilder, Configuration};
 pub use instance::{ClientWindowConfig, Instance, InstanceConfiguration, InstanceKind};
 pub use io::files::paths::Paths;
-pub use launch::{InstanceHandle, WrapperCommand, QuickPlayType};
+pub use launch::{InstanceHandle, QuickPlayType, WrapperCommand};
 
 /// Wrapper around all usage of `mcvm_core`
 pub struct MCVMCore {
@@ -66,7 +66,11 @@ impl MCVMCore {
 			paths,
 			req_client: reqwest::Client::new(),
 			persistent,
-			update_manager: UpdateManager::new(PrintOptions::new(true, 0), false, false),
+			update_manager: UpdateManager::new(
+				PrintOptions::new(true, 0),
+				config.force_reinstall,
+				config.allow_offline,
+			),
 			versions: VersionRegistry::new(),
 			version_manifest: Later::Empty,
 			users: UserManager::new(config.ms_client_id.clone()),
@@ -152,6 +156,7 @@ impl MCVMCore {
 			version_manifest: self.version_manifest.get(),
 			update_manager: &mut self.update_manager,
 			users: &mut self.users,
+			censor_secrets: self.config.censor_secrets,
 		};
 		Ok(InstalledVersion { inner, params })
 	}

@@ -36,6 +36,11 @@ pub(crate) async fn launch(
 	}
 	.context("Failed to generate side-specific launch properties")?;
 
+	let user_access_token = params
+		.users
+		.get_chosen_user()
+		.and_then(|x| x.access_token.clone());
+
 	let proc_params = LaunchProcessParameters {
 		command: command.as_os_str(),
 		cwd: params.launch_dir,
@@ -45,6 +50,8 @@ pub(crate) async fn launch(
 		version: params.version,
 		version_list: &params.version_manifest.list,
 		side: params.side,
+		user_access_token,
+		censor_secrets: params.censor_secrets,
 	};
 
 	let child = launch_game_process(proc_params, o).context("Failed to launch game process")?;
@@ -67,6 +74,7 @@ pub(crate) struct LaunchParameters<'a> {
 	pub req_client: &'a reqwest::Client,
 	pub client_meta: &'a ClientMeta,
 	pub users: &'a mut UserManager,
+	pub censor_secrets: bool,
 }
 
 /// Options for launching an instance

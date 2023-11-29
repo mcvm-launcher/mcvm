@@ -177,6 +177,7 @@ impl<'params> Instance<'params> {
 			req_client: self.params.req_client,
 			client_meta: self.params.client_meta,
 			users: self.params.users,
+			censor_secrets: self.params.censor_secrets,
 		};
 		let handle = crate::launch::launch(params, o)
 			.await
@@ -257,4 +258,5 @@ pub(crate) struct InstanceParameters<'a> {
 	pub client_meta: &'a ClientMeta,
 	pub users: &'a mut UserManager,
 	pub client_assets_and_libs: &'a mut ClientAssetsAndLibraries,
+	pub censor_secrets: bool,
 }
