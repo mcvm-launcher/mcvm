@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use anyhow::bail;
-use mcvm_core::user::{AuthState, User, UserManager};
+use mcvm_core::user::{User, UserManager};
 use mcvm_core::util::versions::MinecraftVersionDeser;
 use mcvm_pkg::PackageContentType;
 use mcvm_shared::modifications::{ClientType, Modloader, ServerType};
@@ -99,7 +99,9 @@ impl ConfigBuilder {
 	pub fn build(mut self) -> anyhow::Result<Config> {
 		if let Some(default_user_id) = &self.default_user {
 			if self.users.user_exists(&default_user_id) {
-				self.users.state = AuthState::UserChosen(default_user_id.clone());
+				self.users
+					.choose_user(default_user_id)
+					.expect("Default user should exist");
 			} else {
 				bail!("Provided default user '{default_user_id}' does not exist");
 			}
@@ -647,10 +649,10 @@ mod tests {
 		config.default_user("user".into());
 		let config = config.build().expect("Failed to build config");
 		assert!(config.users.user_exists("user"));
-		assert!(matches!(
-			config.users.state,
-			AuthState::UserChosen(user) if user == "user"
-		));
+		assert_eq!(
+			config.users.get_chosen_user().map(|x| x.get_id().clone()),
+			Some("user".into())
+		);
 	}
 
 	#[test]

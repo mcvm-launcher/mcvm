@@ -19,7 +19,7 @@ use self::preferences::PrefDeser;
 use self::profile::ProfileConfig;
 use self::user::UserConfig;
 use anyhow::{bail, ensure, Context};
-use mcvm_core::user::{validate_username, AuthState, UserManager};
+use mcvm_core::user::UserManager;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::util::is_valid_identifier;
 use oauth2::ClientId;
@@ -113,8 +113,8 @@ impl Config {
 				bail!("Invalid string '{user_id}'");
 			}
 			let user = user_config.to_user(user_id);
-			if !validate_username(&user.kind, &user.name) {
-				bail!("Invalid string '{}'", user.name);
+			if !user.validate_username() {
+				bail!("Invalid string '{}'", user.get_name());
 			}
 
 			users.add_user(user);
@@ -122,7 +122,9 @@ impl Config {
 
 		if let Some(default_user_id) = &config.default_user {
 			if users.user_exists(&default_user_id) {
-				users.state = AuthState::UserChosen(default_user_id.clone());
+				users
+					.choose_user(default_user_id)
+					.expect("Default user should exist");
 			} else {
 				bail!("Provided default user '{default_user_id}' does not exist");
 			}

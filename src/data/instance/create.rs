@@ -4,7 +4,7 @@ use std::fs::File;
 use anyhow::Context;
 use mcvm_core::io::java::classpath::Classpath;
 use mcvm_core::user::uuid::hyphenate_uuid;
-use mcvm_core::user::{AuthState, User, UserManager};
+use mcvm_core::user::{User, UserManager};
 use mcvm_core::version::InstalledVersion;
 use mcvm_shared::modifications::{Modloader, ServerType};
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel, OutputProcess};
@@ -161,10 +161,11 @@ impl Instance {
 		}
 
 		// Create keypair file
-		if let AuthState::Authed(user) = &users.state {
-			let user = users.get_user(user).expect("Authed user does not exist");
-			self.create_keypair(user, paths)
-				.context("Failed to create user keypair")?;
+		if users.is_authenticated() {
+			if let Some(user) = users.get_chosen_user() {
+				self.create_keypair(user, paths)
+					.context("Failed to create user keypair")?;
+			}
 		}
 
 		self.classpath_extension = classpath;
@@ -272,8 +273,8 @@ impl Instance {
 
 	/// Create a keypair file in the instance
 	pub fn create_keypair(&mut self, user: &User, paths: &Paths) -> anyhow::Result<()> {
-		if let Some(uuid) = &user.uuid {
-			if let Some(keypair) = &user.keypair {
+		if let Some(uuid) = user.get_uuid() {
+			if let Some(keypair) = user.get_keypair() {
 				self.ensure_dirs(paths)?;
 				let keys_dir = self.dirs.get().game_dir.join("profilekeys");
 				let hyphenated_uuid = hyphenate_uuid(uuid).context("Failed to hyphenate UUID")?;

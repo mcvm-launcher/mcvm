@@ -5,27 +5,30 @@ pub mod uuid;
 
 use std::collections::HashMap;
 
+use anyhow::bail;
 use mcvm_shared::output::MCVMOutput;
 use oauth2::ClientId;
 use reqwest::Client;
 
 use crate::net::minecraft::Keypair;
 
+use self::auth::AccessToken;
+
 /// A user account that can play the game
 #[derive(Debug, Clone)]
 pub struct User {
 	/// Type of this user
-	pub kind: UserKind,
+	pub(crate) kind: UserKind,
 	/// This user's ID
-	pub id: String,
+	id: String,
 	/// The user's username
-	pub name: String,
+	name: String,
 	/// The user's UUID
-	pub uuid: Option<String>,
+	uuid: Option<String>,
 	/// The user's access token
-	pub access_token: Option<String>,
+	access_token: Option<AccessToken>,
 	/// The user's public / private key pair
-	pub keypair: Option<Keypair>,
+	keypair: Option<Keypair>,
 }
 
 /// Type of a user
@@ -55,9 +58,79 @@ impl User {
 		}
 	}
 
+	/// Get the ID of this user
+	pub fn get_id(&self) -> &String {
+		&self.id
+	}
+
+	/// Get the name of this user
+	pub fn get_name(&self) -> &String {
+		&self.name
+	}
+
+	/// Checks if this user is a Microsoft user
+	pub fn is_microsoft(&self) -> bool {
+		matches!(self.kind, UserKind::Microsoft { .. })
+	}
+
+	/// Checks if this user is a demo user
+	pub fn is_demo(&self) -> bool {
+		matches!(self.kind, UserKind::Demo)
+	}
+
+	/// Checks if this user is an unverified user
+	pub fn is_unverified(&self) -> bool {
+		matches!(self.kind, UserKind::Demo)
+	}
+
+	/// Gets the kind of this user
+	pub fn get_kind(&self) -> &UserKind {
+		&self.kind
+	}
+
 	/// Set this user's UUID
 	pub fn set_uuid(&mut self, uuid: &str) {
 		self.uuid = Some(uuid.to_string());
+	}
+
+	/// Get the UUID of this user, if it exists
+	pub fn get_uuid(&self) -> Option<&String> {
+		self.uuid.as_ref()
+	}
+
+	/// Get the access token of this user, if it exists
+	pub fn get_access_token(&self) -> Option<&AccessToken> {
+		self.access_token.as_ref()
+	}
+
+	/// Get the XBox UID of this user, if it exists
+	pub fn get_xbox_uid(&self) -> Option<&String> {
+		if let UserKind::Microsoft { xbox_uid } = &self.kind {
+			xbox_uid.as_ref()
+		} else {
+			None
+		}
+	}
+
+	/// Get the keypair of this user, if it exists
+	pub fn get_keypair(&self) -> Option<&Keypair> {
+		self.keypair.as_ref()
+	}
+
+	/// Validate the user's username. Returns true if the username is valid,
+	/// and false if it isn't
+	pub fn validate_username(&self) -> bool {
+		if self.name.is_empty() || self.name.len() > 16 {
+			return false;
+		}
+
+		for c in self.name.chars() {
+			if !c.is_ascii_alphanumeric() && c != '_' {
+				return false;
+			}
+		}
+
+		true
 	}
 }
 
@@ -65,7 +138,7 @@ impl User {
 #[derive(Debug, Clone)]
 pub struct UserManager {
 	/// The current state of authentication
-	pub state: AuthState,
+	state: AuthState,
 	/// All configured / available users
 	users: HashMap<String, User>,
 	/// The MS client ID
@@ -74,7 +147,7 @@ pub struct UserManager {
 
 /// State of authentication
 #[derive(Debug, Clone)]
-pub enum AuthState {
+enum AuthState {
 	/// No user is picked / MCVM is offline
 	Offline,
 	/// A user has been selected but not authenticated
@@ -125,6 +198,24 @@ impl UserManager {
 		self.users.iter()
 	}
 
+	/// Remove a user with an ID. Will unchoose the user if it is chosen.
+	pub fn remove_user(&mut self, user_id: &str) {
+		self.users.remove(user_id);
+		let chosen = self.get_chosen_user().is_some();
+		if chosen {
+			self.unchoose_user();
+		}
+	}
+
+	/// Set the chosen user. Fails if the user does not exist
+	pub fn choose_user(&mut self, user_id: &str) -> anyhow::Result<()> {
+		if !self.user_exists(user_id) {
+			bail!("Chosen user does not exist");
+		}
+		self.state = AuthState::UserChosen(user_id.into());
+		Ok(())
+	}
+
 	/// Get the currently chosen user, if there is one
 	pub fn get_chosen_user(&self) -> Option<&User> {
 		match &self.state {
@@ -134,23 +225,49 @@ impl UserManager {
 		}
 	}
 
+	/// Checks if a user is chosen
+	pub fn is_user_chosen(&self) -> bool {
+		matches!(
+			self.state,
+			AuthState::UserChosen(..) | AuthState::Authed(..)
+		)
+	}
+
+	/// Checks if a user is chosen and it is authenticated
+	pub fn is_authenticated(&self) -> bool {
+		matches!(self.state, AuthState::Authed(..))
+	}
+
 	/// Ensures that the currently chosen user is authenticated
-	pub async fn ensure_authenticated(
+	pub async fn authenticate(
 		&mut self,
 		client: &Client,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
-		if let AuthState::UserChosen(user) = &self.state {
+		if let AuthState::UserChosen(user_id) = &mut self.state {
 			let user = self
 				.users
-				.get_mut(user)
+				.get_mut(user_id)
 				.expect("User in AuthState does not exist");
-			dbg!(&self.ms_client_id);
+
 			user.authenticate(self.ms_client_id.clone(), client, o)
 				.await?;
+			self.state = AuthState::Authed(std::mem::take(user_id));
 		}
 
 		Ok(())
+	}
+
+	/// Unchooses the current user, if one is chosen
+	pub fn unchoose_user(&mut self) {
+		self.state = AuthState::Offline;
+	}
+
+	/// Unauthenticates the current user, if one is authenticated
+	pub fn unauth_user(&mut self) {
+		if let AuthState::Authed(user_id) = &mut self.state {
+			self.state = AuthState::UserChosen(std::mem::take(user_id))
+		}
 	}
 
 	/// Adds users from another UserManager

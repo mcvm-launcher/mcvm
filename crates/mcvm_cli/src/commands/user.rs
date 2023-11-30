@@ -38,12 +38,14 @@ async fn list(data: &mut CmdData, raw: bool) -> anyhow::Result<()> {
 		if raw {
 			println!("{id}");
 		} else {
-			match user.kind {
+			match user.get_kind() {
 				UserKind::Microsoft { .. } => {
-					cprintln!("<s><g>{}</g> <k!>({})</k!>", user.name, id)
+					cprintln!("<s><g>{}</g> <k!>({})</k!>", user.get_name(), id)
 				}
-				UserKind::Demo => cprintln!("<s><c!>{}</c!> <k!>({})</k!>", user.name, id),
-				UserKind::Unverified => cprintln!("<s><k!>{}</k!> <k!>({})</k!>", user.name, id),
+				UserKind::Demo => cprintln!("<s><c!>{}</c!> <k!>({})</k!>", user.get_name(), id),
+				UserKind::Unverified => {
+					cprintln!("<s><k!>{}</k!> <k!>({})</k!>", user.get_name(), id)
+				}
 			}
 		}
 	}
@@ -58,13 +60,13 @@ async fn status(data: &mut CmdData) -> anyhow::Result<()> {
 	match config.users.get_chosen_user() {
 		Some(user) => {
 			cprint!("<g>Logged in as ");
-			let user_name = &user.name;
-			match user.kind {
+			let user_name = user.get_name();
+			match user.get_kind() {
 				UserKind::Microsoft { .. } => cprint!("<s,g!>{}", user_name),
 				UserKind::Demo => cprint!("<s,c!>{}", user_name),
 				UserKind::Unverified => cprint!("<s,k!>{}", user_name),
 			}
-			cprintln!(" <k!>({})</k!>", user.id);
+			cprintln!(" <k!>({})</k!>", user.get_id());
 		}
 		None => cprintln!("<r>Currently logged out"),
 	}

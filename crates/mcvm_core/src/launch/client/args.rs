@@ -183,12 +183,12 @@ pub(crate) fn replace_arg_placeholders(arg: &str, params: &LaunchParameters) -> 
 	// User
 	match params.users.get_chosen_user() {
 		Some(user) => {
-			out = out.replace(placeholder!("auth_player_name"), &user.name);
-			if let Some(uuid) = &user.uuid {
+			out = out.replace(placeholder!("auth_player_name"), user.get_name());
+			if let Some(uuid) = user.get_uuid() {
 				out = out.replace(placeholder!("auth_uuid"), uuid);
 			}
-			if let Some(access_token) = &user.access_token {
-				out = out.replace(placeholder!("auth_access_token"), access_token);
+			if let Some(access_token) = user.get_access_token() {
+				out = out.replace(placeholder!("auth_access_token"), &access_token.0);
 			}
 			if let UserKind::Microsoft {
 				xbox_uid: Some(xbox_uid),

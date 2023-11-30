@@ -7,6 +7,7 @@ use anyhow::Context;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 
 use crate::instance::InstanceKind;
+use crate::user::auth::AccessToken;
 use crate::util::versions::VersionName;
 
 use super::LaunchConfiguration;
@@ -57,7 +58,7 @@ pub(crate) fn launch_game_process(
 /// censoring any credentials if needed
 fn output_launch_command(
 	command: &Command,
-	access_token: Option<String>,
+	access_token: Option<AccessToken>,
 	censor_secrets: bool,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<()> {
@@ -81,7 +82,7 @@ fn output_launch_command(
 	for arg in command.get_args() {
 		let mut arg = arg.to_string_lossy().to_string();
 		if let Some(access_token) = &access_token {
-			arg = arg.replace(access_token, CENSOR_STR);
+			arg = arg.replace(&access_token.0, CENSOR_STR);
 		}
 		o.display(
 			MessageContents::ListItem(Box::new(MessageContents::Simple(arg))),
@@ -134,7 +135,7 @@ pub(crate) struct LaunchProcessParameters<'a> {
 	pub version: &'a VersionName,
 	pub version_list: &'a [String],
 	pub side: &'a InstanceKind,
-	pub user_access_token: Option<String>,
+	pub user_access_token: Option<AccessToken>,
 	pub censor_secrets: bool,
 }
 

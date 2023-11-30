@@ -1,11 +1,10 @@
-use anyhow::{anyhow, bail, Context};
+use anyhow::{anyhow, Context};
 use clap::Subcommand;
 use color_print::cprintln;
 use inquire::Select;
 use itertools::Itertools;
 use mcvm::data::config::Config;
 use mcvm::data::id::{InstanceID, ProfileID};
-use mcvm::core::user::AuthState;
 
 use mcvm::data::instance::InstKind;
 use mcvm::shared::Side;
@@ -114,10 +113,10 @@ pub async fn launch(
 		.expect("Instance does not belong to any profiles");
 
 	if let Some(user) = user {
-		if !config.users.user_exists(&user) {
-			bail!("User '{user}' does not exist");
-		}
-		config.users.state = AuthState::UserChosen(user);
+		config
+			.users
+			.choose_user(&user)
+			.context("Failed to choose user")?;
 	}
 
 	let mut handle = instance
@@ -131,9 +130,7 @@ pub async fn launch(
 		.await
 		.context("Instance failed to launch")?;
 
-	handle
-		.wait()
-		.context("Failed to wait for child process")?;
+	handle.wait().context("Failed to wait for child process")?;
 
 	Ok(())
 }

@@ -39,7 +39,7 @@ pub(crate) async fn launch(
 	let user_access_token = params
 		.users
 		.get_chosen_user()
-		.and_then(|x| x.access_token.clone());
+		.and_then(|x| x.get_access_token().cloned());
 
 	let proc_params = LaunchProcessParameters {
 		command: command.as_os_str(),

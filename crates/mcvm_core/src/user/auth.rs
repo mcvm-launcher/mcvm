@@ -1,3 +1,5 @@
+use std::fmt::Debug;
+
 use anyhow::Context;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use oauth2::ClientId;
@@ -25,7 +27,7 @@ impl User {
 					crate::net::minecraft::get_user_certificate(&auth_result.access_token, client)
 						.await
 						.context("Failed to get user certificate")?;
-				self.access_token = Some(auth_result.access_token);
+				self.access_token = Some(AccessToken(auth_result.access_token));
 				self.name = auth_result.profile.name;
 				self.uuid = Some(auth_result.profile.uuid);
 				self.keypair = Some(certificate.key_pair);
@@ -123,4 +125,14 @@ pub async fn debug_authenticate(
 	println!("Profile: {profile:?}");
 
 	Ok(())
+}
+
+/// An access token for a user that will be hidden in debug messages
+#[derive(Clone, PartialEq, Eq, PartialOrd, Ord)]
+pub struct AccessToken(pub String);
+
+impl Debug for AccessToken {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "AccessToken(***)")
+	}
 }

@@ -117,7 +117,7 @@ pub async fn get_user_certificate(
 }
 
 /// Utility function to query the Minecraft Services API with correct authorization
-async fn call_api<T: DeserializeOwned>(
+pub async fn call_api<T: DeserializeOwned>(
 	url: &str,
 	access_token: &str,
 	client: &Client,
