@@ -29,6 +29,7 @@ struct LockfileContents {
 #[derive(Serialize, Deserialize, Debug)]
 struct LockfileProfile {
 	version: String,
+	#[serde(skip_serializing_if = "Option::is_none")]
 	paper_build: Option<u16>,
 }
 
@@ -57,11 +58,14 @@ struct LockfileJava {
 pub struct LockfileAddon {
 	#[serde(alias = "name")]
 	id: String,
+	#[serde(skip_serializing_if = "Option::is_none")]
 	file_name: Option<String>,
 	files: Vec<String>,
 	kind: String,
+	#[serde(skip_serializing_if = "Option::is_none")]
 	version: Option<String>,
 	#[serde(default)]
+	#[serde(skip_serializing_if = "PackageAddonOptionalHashes::is_empty")]
 	hashes: PackageAddonOptionalHashes,
 }
 

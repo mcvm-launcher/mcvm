@@ -23,7 +23,7 @@ pub mod game_jar {
 
 	use super::{client_meta::ClientMeta, *};
 
-	/// Downloads the game JAR file
+	/// Downloads the vanilla game JAR file
 	pub async fn get(
 		side: Side,
 		client_meta: &ClientMeta,
@@ -34,7 +34,7 @@ pub mod game_jar {
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
 		let side_str = side.to_string();
-		let path = crate::io::minecraft::game_jar::get_path(side, version, paths);
+		let path = crate::io::minecraft::game_jar::get_path(side, version, None, paths);
 		if !manager.should_update_file(&path) {
 			return Ok(());
 		}

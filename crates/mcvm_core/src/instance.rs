@@ -78,6 +78,7 @@ impl<'params> Instance<'params> {
 			crate::io::minecraft::game_jar::get_path(
 				config.side.get_side(),
 				params.version,
+				None,
 				params.paths,
 			)
 		};
@@ -87,15 +88,18 @@ impl<'params> Instance<'params> {
 		// For the server, the jar file has to be in the launch directory, so we hardlink it
 		if let Side::Server = config.side.get_side() {
 			let new_jar_path = config.path.join("server.jar");
-			// Update the hardlink
-			if params.update_manager.should_update_file(&new_jar_path) {
-				if new_jar_path.exists() {
-					std::fs::remove_file(&new_jar_path)
-						.context("Failed to remove existing JAR hardlink")?;
+			// Don't hardlink if it's already in the right place
+			if new_jar_path != jar_path {
+				// Update the hardlink
+				if params.update_manager.should_update_file(&new_jar_path) {
+					if new_jar_path.exists() {
+						std::fs::remove_file(&new_jar_path)
+							.context("Failed to remove existing JAR hardlink")?;
+					}
+					update_hardlink(&jar_path, &new_jar_path)
+						.context("Failed to hardlink server.jar")?;
+					params.update_manager.add_file(new_jar_path.clone());
 				}
-				update_hardlink(&jar_path, &new_jar_path)
-					.context("Failed to hardlink server.jar")?;
-				params.update_manager.add_file(new_jar_path.clone());
 			}
 			jar_path = new_jar_path;
 		}

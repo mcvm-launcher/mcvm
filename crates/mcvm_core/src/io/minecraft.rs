@@ -8,6 +8,7 @@ use zip::ZipArchive;
 use super::files::paths::Paths;
 
 /// Interacting with the game JAR file
+/// and storing your own JAR files
 pub mod game_jar {
 	use std::io::BufReader;
 
@@ -48,18 +49,31 @@ pub mod game_jar {
 		}
 	}
 
-	/// Gets the path to a stored game jar file
-	pub fn get_path(side: Side, version: &str, paths: &Paths) -> PathBuf {
+	/// Gets the path to a stored game jar file.
+	/// Using a custom specifier allows you to differentiate
+	/// between different types of jars. For example,
+	/// `fabric` could be used for storing Fabric jars
+	pub fn get_path(
+		side: Side,
+		version: &str,
+		custom_specifier: Option<&str>,
+		paths: &Paths,
+	) -> PathBuf {
 		let side_str = side.to_string();
-		paths.jars.join(format!("{version}_{side_str}.jar"))
+		let filename = if let Some(specifier) = custom_specifier {
+			format!("{version}_{side_str}_{specifier}.jar")
+		} else {
+			format!("{version}_{side_str}.jar")
+		};
+		paths.jars.join(filename)
 	}
 
 	/// Get the path to either the client or server jar. If the client path doesn't exist,
 	/// then the server path will be chosen
 	pub fn get_existing_path(mc_version: &str, paths: &Paths) -> anyhow::Result<PathBuf> {
-		let mut path = get_path(Side::Client, mc_version, paths);
+		let mut path = get_path(Side::Client, mc_version, None, paths);
 		if !path.exists() {
-			path = get_path(Side::Server, mc_version, paths);
+			path = get_path(Side::Server, mc_version, None, paths);
 		}
 		if !path.exists() {
 			bail!("An existing game jar for this Minecraft version does not exist");

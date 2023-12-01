@@ -203,7 +203,7 @@ impl Instance {
 				let file_name = paper::get_jar_file_name(version, build_num, client)
 					.await
 					.context("Failed to get the Paper file name")?;
-				let paper_jar_path = self.dirs.get().game_dir.join(&file_name);
+				let paper_jar_path = paper::get_local_jar_path(version, paths);
 				if !manager.should_update_file(&paper_jar_path) {
 					process.0.display(
 						MessageContents::Success("Paper is up to date".into()),
@@ -214,15 +214,9 @@ impl Instance {
 						MessageContents::StartProcess("Downloading Paper server".into()),
 						MessageLevel::Important,
 					);
-					paper::download_server_jar(
-						version,
-						build_num,
-						&file_name,
-						&self.dirs.get().game_dir,
-						client,
-					)
-					.await
-					.context("Failed to download Paper server JAR")?;
+					paper::download_server_jar(version, build_num, &file_name, paths, client)
+						.await
+						.context("Failed to download Paper server JAR")?;
 					process.0.display(
 						MessageContents::Success("Paper server downloaded".into()),
 						MessageLevel::Important,

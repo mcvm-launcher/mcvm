@@ -1,9 +1,12 @@
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 
 use anyhow::{anyhow, Context};
 use mcvm_core::net::download;
+use mcvm_shared::Side;
 use reqwest::Client;
 use serde::Deserialize;
+
+use crate::io::files::paths::Paths;
 
 /// Get the newest build number of Paper
 pub async fn get_newest_build(version: &str, client: &Client) -> anyhow::Result<u16> {
@@ -24,7 +27,9 @@ struct VersionInfoResponse {
 	builds: Vec<u16>,
 }
 
-/// Get the name of the Paper jar file
+/// Get the name of the Paper JAR file in the API.
+/// This does not represent the name of the file when downloaded
+/// as it will be stored in the core JAR location
 pub async fn get_jar_file_name(
 	version: &str,
 	build_num: u16,
@@ -58,16 +63,21 @@ pub async fn download_server_jar(
 	version: &str,
 	build_num: u16,
 	file_name: &str,
-	path: &Path,
+	paths: &Paths,
 	client: &Client,
-) -> anyhow::Result<PathBuf> {
+) -> anyhow::Result<()> {
 	let num_str = build_num.to_string();
-	let file_path = path.join(file_name);
 	let url = format!("https://api.papermc.io/v2/projects/paper/versions/{version}/builds/{num_str}/downloads/{file_name}");
 
+	let file_path = get_local_jar_path(version, paths);
 	download::file(&url, &file_path, client)
 		.await
 		.context("Failed to download file")?;
 
-	Ok(file_path)
+	Ok(())
+}
+
+/// Get the path to the stored Paper JAR file
+pub fn get_local_jar_path(version: &str, paths: &Paths) -> PathBuf {
+	mcvm_core::io::minecraft::game_jar::get_path(Side::Server, version, Some("paper"), &paths.core)
 }
