@@ -31,11 +31,12 @@ pub struct Paths {
 }
 
 impl Paths {
-	/// Create a new Paths object
+	/// Create a new Paths object. This will create all of the directories
+	/// referenced in the paths if they do not already exist.
 	pub fn new() -> anyhow::Result<Paths> {
-		let base = BaseDirs::new().ok_or(anyhow!("Base directories failed"))?;
-		let project =
-			ProjectDirs::from("", "mcvm", "mcvm").ok_or(anyhow!("Base directories failed"))?;
+		let base = BaseDirs::new().ok_or(anyhow!("Failed to create base directories"))?;
+		let project = ProjectDirs::from("", "mcvm", "mcvm")
+			.ok_or(anyhow!("Failed to create project directories"))?;
 
 		let data = project.data_dir().to_owned();
 		let internal = data.join("internal");

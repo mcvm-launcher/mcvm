@@ -10,7 +10,7 @@ pub mod classpath;
 pub mod install;
 
 /// A major Java version (e.g. 14 or 17)
-#[derive(Clone, Copy, Debug, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
 pub struct JavaMajorVersion(pub u16);
 
 impl Display for JavaMajorVersion {
@@ -26,6 +26,13 @@ impl JavaMajorVersion {
 	}
 
 	/// Tries to parse a major version from a string
+	///
+	/// ```
+	/// use mcvm_core::io::java::JavaMajorVersion;
+	/// let string = "17";
+	/// let version = JavaMajorVersion::parse(string);
+	/// assert_eq!(version, Some(JavaMajorVersion(17)));
+	/// ```
 	pub fn parse(string: &str) -> Option<Self> {
 		string.parse().map(Self::new).ok()
 	}
@@ -34,7 +41,7 @@ impl JavaMajorVersion {
 /// Dealing with Maven
 pub mod maven {
 	/// Sections of a Maven library string
-	#[derive(Debug, PartialEq)]
+	#[derive(Debug, PartialEq, Eq, Clone)]
 	pub struct MavenLibraryParts {
 		/// The organizations of the package
 		pub orgs: Vec<String>,
@@ -46,6 +53,16 @@ pub mod maven {
 
 	impl MavenLibraryParts {
 		/// Extract the parts of a library string
+		///
+		/// ```
+		/// use mcvm_core::io::java::maven::MavenLibraryParts;
+		///
+		/// let string = "foo.bar.baz:hello:world";
+		/// let parts = MavenLibraryParts::parse_from_str(string).unwrap();
+		/// assert_eq!(parts.orgs, vec!["foo".to_string(), "bar".to_string(), "baz".to_string()]);
+		/// assert_eq!(parts.package, "hello".to_string());
+		/// assert_eq!(parts.version, "world".to_string());
+		/// ```
 		pub fn parse_from_str(string: &str) -> Option<Self> {
 			let mut parts = string.split(':');
 			let orgs: Vec<String> = parts.next()?.split('.').map(|x| x.to_owned()).collect();

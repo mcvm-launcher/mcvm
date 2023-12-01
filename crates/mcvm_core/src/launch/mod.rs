@@ -149,12 +149,15 @@ impl LaunchConfiguration {
 	}
 }
 
-/// A wrapper command
+/// A wrapper command that can be used to
+/// enclose the normal launch command in another
+/// program.
 #[derive(Debug, Clone)]
 pub struct WrapperCommand {
 	/// The command to run
 	pub cmd: String,
-	/// The command's arguments
+	/// The command's arguments. These will be put after the argument
+	/// for the normal launch command.
 	pub args: Vec<String>,
 }
 
@@ -170,7 +173,8 @@ pub enum QuickPlayType {
 	Server {
 		/// The server address to join
 		server: String,
-		/// The port for the server to connect to
+		/// The port for the server to connect to.
+		/// Uses the default port (25565) if not specified
 		port: Option<u16>,
 	},
 	/// QuickPlay a realm

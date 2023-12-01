@@ -1,7 +1,8 @@
 /// Use of MCVM's configured system directories
 pub mod paths;
 
-use std::fs;
+use std::fs::{self, File};
+use std::io::{BufWriter, Write};
 use std::path::Path;
 
 use anyhow::ensure;
@@ -84,4 +85,13 @@ pub async fn copy_dir_contents_async(src: &Path, dest: &Path) -> anyhow::Result<
 	}
 
 	Ok(())
+}
+
+/// Simple tweak of std::fs::write to use a BufWriter
+pub fn write_buffered<P: AsRef<Path>, C: AsRef<[u8]>>(path: P, contents: C) -> std::io::Result<()> {
+	fn inner(path: &Path, contents: &[u8]) -> std::io::Result<()> {
+		let mut file = BufWriter::new(File::create(path)?);
+		file.write_all(contents)
+	}
+	inner(path.as_ref(), contents.as_ref())
 }

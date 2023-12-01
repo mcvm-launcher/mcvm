@@ -200,17 +200,28 @@ impl UserManager {
 
 	/// Remove a user with an ID. Will unchoose the user if it is chosen.
 	pub fn remove_user(&mut self, user_id: &str) {
-		self.users.remove(user_id);
-		let chosen = self.get_chosen_user().is_some();
-		if chosen {
+		let is_chosen = if let Some(chosen) = self.get_chosen_user() {
+			chosen.get_id() == user_id
+		} else {
+			false
+		};
+		if is_chosen {
 			self.unchoose_user();
 		}
+		self.users.remove(user_id);
 	}
 
-	/// Set the chosen user. Fails if the user does not exist
+	/// Set the chosen user. Fails if the user does not exist.
+	/// If the specified user is already chosen and authenticated, then
+	/// no change will be made.
 	pub fn choose_user(&mut self, user_id: &str) -> anyhow::Result<()> {
 		if !self.user_exists(user_id) {
 			bail!("Chosen user does not exist");
+		}
+		if let AuthState::Authed(current) = &self.state {
+			if current == user_id {
+				return Ok(());
+			}
 		}
 		self.state = AuthState::UserChosen(user_id.into());
 		Ok(())
@@ -318,5 +329,18 @@ mod tests {
 			&UserKind::Microsoft { xbox_uid: None },
 			"+++"
 		));
+	}
+
+	#[test]
+	fn test_user_manager() {
+		let mut users = UserManager::new(ClientId::new(String::new()));
+		let user = User::new(UserKind::Demo, "foo", "Foo");
+		users.add_user(user);
+		users.choose_user("foo").expect("Failed to choose user");
+		let user = User::new(UserKind::Demo, "bar", "Bar");
+		users.add_user(user);
+		users.remove_user("foo");
+		assert!(!users.is_user_chosen());
+		assert!(!users.user_exists("foo"));
 	}
 }

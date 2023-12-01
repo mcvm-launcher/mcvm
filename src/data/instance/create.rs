@@ -26,12 +26,6 @@ impl Instance {
 	/// Get the requirements for this instance
 	pub fn get_requirements(&self) -> HashSet<UpdateRequirement> {
 		let mut out = HashSet::new();
-		// Even though it is the client meta it also contains the server download link
-		// so we need it for both.
-		out.insert(UpdateRequirement::ClientMeta);
-
-		out.insert(UpdateRequirement::Java(self.config.launch.java.clone()));
-		out.insert(UpdateRequirement::GameJar(self.kind.to_side()));
 		match self.config.modifications.get_modloader(self.kind.to_side()) {
 			Modloader::Fabric => {
 				out.insert(UpdateRequirement::FabricQuilt(
@@ -50,8 +44,6 @@ impl Instance {
 		out.insert(UpdateRequirement::Options);
 		match &self.kind {
 			InstKind::Client { .. } => {
-				out.insert(UpdateRequirement::ClientAssets);
-				out.insert(UpdateRequirement::ClientLibraries);
 				if self.config.launch.use_log4j_config {
 					out.insert(UpdateRequirement::ClientLoggingConfig);
 				}
@@ -109,7 +101,7 @@ impl Instance {
 	}
 
 	/// Create a client
-	pub async fn create_client(
+	async fn create_client(
 		&mut self,
 		manager: &UpdateManager,
 		paths: &Paths,
@@ -153,8 +145,9 @@ impl Instance {
 		}
 		if !keys.is_empty() {
 			let options_path = self.dirs.get().game_dir.join("options.txt");
-			let data_version = crate::io::minecraft::get_data_version(version_info, paths)
-				.context("Failed to obtain data version")?;
+			let data_version =
+				mcvm_core::io::minecraft::get_data_version(version_info, &paths.core)
+					.context("Failed to obtain data version")?;
 			write_options_txt(keys, &options_path, &data_version)
 				.await
 				.context("Failed to write options.txt")?;
@@ -174,7 +167,7 @@ impl Instance {
 	}
 
 	/// Create a server
-	pub async fn create_server(
+	async fn create_server(
 		&mut self,
 		manager: &UpdateManager,
 		paths: &Paths,
@@ -272,7 +265,7 @@ impl Instance {
 	}
 
 	/// Create a keypair file in the instance
-	pub fn create_keypair(&mut self, user: &User, paths: &Paths) -> anyhow::Result<()> {
+	fn create_keypair(&mut self, user: &User, paths: &Paths) -> anyhow::Result<()> {
 		if let Some(uuid) = user.get_uuid() {
 			if let Some(keypair) = user.get_keypair() {
 				self.ensure_dirs(paths)?;

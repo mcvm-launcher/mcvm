@@ -1,77 +1,60 @@
 /// Printing and output utilities
 pub mod print;
 
-use std::{
-	process::{Command, Stdio},
-	time::{SystemTime, UNIX_EPOCH},
-};
+use std::process::{Command, Stdio};
+use std::time::{SystemTime, UNIX_EPOCH};
 
 use cfg_match::cfg_match;
 
-cfg_match! {
-	target_os = "linux" => {
-		/// String representing the current operating system
-		pub const OS_STRING: &str = "linux";
-	}
-	target_os = "windows" => {
-		/// String representing the current operating system
-		pub const OS_STRING: &str = "windows";
-	}
-	target_os = "macos" => {
-		/// String representing the current operating system
-		pub const OS_STRING: &str = "macos";
-	}
-	_ => {
-		compile_error!("Target operating system is unsupported")
-		pub const OS_STRING: &str = "";
-	}
+macro_rules! def_matched_item {
+	($cfg:ident, $doc:literal, $name:ident, $err:literal, $($k:literal: $v: literal);* $(;)?) => {
+		cfg_match! {
+			$(
+				$cfg = $k => {
+					#[doc = $doc]
+					pub const $name: &str = $v;
+				}
+			)*
+			_ => {
+				compile_error!($err)
+				pub const $name: &str = "";
+			}
+		}
+	};
 }
 
-cfg_match! {
-	target_arch = "x86" => {
-		/// String representing the current architecture
-		pub const ARCH_STRING: &str = "x86";
-	}
-	target_arch = "x86_64" => {
-		/// String representing the current architecture
-		pub const ARCH_STRING: &str = "x64";
-	}
-	target_arch = "arm" => {
-		/// String representing the current architecture
-		pub const ARCH_STRING: &str = "arm";
-	}
-	target_arch = "aarch64" => {
-		/// String representing the current architecture
-		pub const ARCH_STRING: &str = "aarch64";
-	}
-	target_arch = "riscv32" => {
-		/// String representing the current architecture
-		pub const ARCH_STRING: &str = "riscv32";
-	}
-	target_arch = "riscv64" => {
-		/// String representing the current architecture
-		pub const ARCH_STRING: &str = "riscv64";
-	}
-	target_arch = "mips" => {
-		/// String representing the current architecture
-		pub const ARCH_STRING: &str = "mips";
-	}
-	target_arch = "mips64" => {
-		/// String representing the current architecture
-		pub const ARCH_STRING: &str = "mips64";
-	}
-	target_arch = "powerpc" => {
-		/// String representing the current architecture
-		pub const ARCH_STRING: &str = "powerpc";
-	}
-	target_arch = "powerpc64" => {
-		/// String representing the current architecture
-		pub const ARCH_STRING: &str = "powerpc64";
-	}
-	_ => {
-		pub const ARCH_STRING: &str = "";
-		compile_error!("Target architecture is unsupported")
-	}
+def_matched_item! {
+	target_os,
+	"String representing the current operating system",
+	OS_STRING,
+	"Target operating system is unsupported",
+	"linux": "linux";
+	"windows": "windows";
+	"macos": "macos";
+	"ios": "ios";
+	"android": "android";
+	"freebsd": "freebsd";
+	"dragonfly": "dragonfly";
+	"bitrig": "bitrig";
+	"netbsd": "netbsd";
+	"openbsd": "openbsd";
+}
+
+def_matched_item! {
+	target_arch,
+	"String representing the current architecture",
+	ARCH_STRING,
+	"Target architecture is unsupported",
+	"x86": "x86";
+	"x86_64": "x86_64";
+	"arm": "arm";
+	"aarch64": "aarch64";
+	"riscv32": "riscv32";
+	"riscv64": "riscv64";
+	"mips": "mips";
+	"mips64": "mips64";
+	"powerpc": "powerpc";
+	"powerpc64": "powerpc64";
 }
 
 cfg_match! {
@@ -205,158 +188,158 @@ pub fn open_link(link: &str) -> anyhow::Result<()> {
 }
 
 #[cfg(feature = "schema")]
-	use schemars::JsonSchema;
-	use serde::{Deserialize, Serialize};
+use schemars::JsonSchema;
+use serde::{Deserialize, Serialize};
 
-	/// Converts "yes" or "no" to a boolean
-	pub fn yes_no(string: &str) -> Option<bool> {
-		match string {
-			"yes" => Some(true),
-			"no" => Some(false),
-			_ => None,
+/// Converts "yes" or "no" to a boolean
+pub fn yes_no(string: &str) -> Option<bool> {
+	match string {
+		"yes" => Some(true),
+		"no" => Some(false),
+		_ => None,
+	}
+}
+
+/// Checks if a string is a valid identifier
+pub fn is_valid_identifier(id: &str) -> bool {
+	for c in id.chars() {
+		if !c.is_ascii() {
+			return false;
+		}
+
+		if c.is_ascii_punctuation() {
+			match c {
+				'_' | '-' | '.' => {}
+				_ => return false,
+			}
+		}
+
+		if c.is_ascii_whitespace() {
+			return false;
 		}
 	}
 
-	/// Checks if a string is a valid identifier
-	pub fn is_valid_identifier(id: &str) -> bool {
-		for c in id.chars() {
-			if !c.is_ascii() {
-				return false;
-			}
+	true
+}
 
-			if c.is_ascii_punctuation() {
-				match c {
-					'_' | '-' | '.' => {}
-					_ => return false,
+/// Utility enum for deserialization that lets you do a list that can be one item
+/// without the braces
+#[derive(Deserialize, Debug, Clone)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
+#[serde(untagged)]
+pub enum DeserListOrSingle<T> {
+	/// Only one item, specified without braces
+	Single(T),
+	/// A list of items, specified with braces
+	List(Vec<T>),
+}
+
+impl<T> Default for DeserListOrSingle<T> {
+	fn default() -> Self {
+		Self::List(Vec::default())
+	}
+}
+
+impl<T: Serialize> Serialize for DeserListOrSingle<T> {
+	fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+	where
+		S: serde::Serializer,
+	{
+		match self {
+			Self::List(list) => {
+				if list.len() == 1 {
+					list[0].serialize(serializer)
+				} else {
+					list.serialize(serializer)
 				}
 			}
+			Self::Single(val) => val.serialize(serializer),
+		}
+	}
+}
 
-			if c.is_ascii_whitespace() {
-				return false;
+impl<T> DeserListOrSingle<T> {
+	/// Checks if this value is empty
+	pub fn is_empty(&self) -> bool {
+		matches!(self, Self::List(list) if list.is_empty())
+	}
+
+	/// Iterates over this DeserListOrSingle
+	pub fn iter(&self) -> DeserListOrSingleIter<'_, T> {
+		match &self {
+			Self::Single(val) => {
+				DeserListOrSingleIter(DeserListOrSingleIterState::Single(Some(val)))
 			}
-		}
-
-		true
-	}
-
-	/// Utility enum for deserialization that lets you do a list that can be one item
-	/// without the braces
-	#[derive(Deserialize, Debug, Clone)]
-	#[cfg_attr(feature = "schema", derive(JsonSchema))]
-	#[serde(untagged)]
-	pub enum DeserListOrSingle<T> {
-		/// Only one item, specified without braces
-		Single(T),
-		/// A list of items, specified with braces
-		List(Vec<T>),
-	}
-
-	impl<T> Default for DeserListOrSingle<T> {
-		fn default() -> Self {
-			Self::List(Vec::default())
-		}
-	}
-
-	impl<T: Serialize> Serialize for DeserListOrSingle<T> {
-		fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-		where
-			S: serde::Serializer,
-		{
-			match self {
-				Self::List(list) => {
-					if list.len() == 1 {
-						list[0].serialize(serializer)
-					} else {
-						list.serialize(serializer)
-					}
-				}
-				Self::Single(val) => val.serialize(serializer),
+			Self::List(list) => {
+				DeserListOrSingleIter(DeserListOrSingleIterState::List(list.iter()))
 			}
 		}
 	}
+}
 
-	impl<T> DeserListOrSingle<T> {
-		/// Checks if this value is empty
-		pub fn is_empty(&self) -> bool {
-			matches!(self, Self::List(list) if list.is_empty())
-		}
-
-		/// Iterates over this DeserListOrSingle
-		pub fn iter(&self) -> DeserListOrSingleIter<'_, T> {
-			match &self {
-				Self::Single(val) => {
-					DeserListOrSingleIter(DeserListOrSingleIterState::Single(Some(val)))
-				}
-				Self::List(list) => {
-					DeserListOrSingleIter(DeserListOrSingleIterState::List(list.iter()))
-				}
-			}
+impl<T: Clone> DeserListOrSingle<T> {
+	/// Get the contained value as a Vec
+	pub fn get_vec(&self) -> Vec<T> {
+		match &self {
+			Self::Single(val) => vec![val.clone()],
+			Self::List(list) => list.clone(),
 		}
 	}
 
-	impl<T: Clone> DeserListOrSingle<T> {
-		/// Get the contained value as a Vec
-		pub fn get_vec(&self) -> Vec<T> {
-			match &self {
-				Self::Single(val) => vec![val.clone()],
-				Self::List(list) => list.clone(),
-			}
-		}
+	/// Merges this enum with another
+	pub fn merge(&mut self, other: Self) {
+		let mut self_vec = self.get_vec();
+		self_vec.extend(other.iter().cloned());
+		*self = Self::List(self_vec);
+	}
+}
 
-		/// Merges this enum with another
-		pub fn merge(&mut self, other: Self) {
-			let mut self_vec = self.get_vec();
-			self_vec.extend(other.iter().cloned());
-			*self = Self::List(self_vec);
+/// Iterator over DeserListOrSingle
+pub struct DeserListOrSingleIter<'a, T>(DeserListOrSingleIterState<'a, T>);
+
+/// State for a DeserListOrSingleIter
+enum DeserListOrSingleIterState<'a, T> {
+	Single(Option<&'a T>),
+	List(std::slice::Iter<'a, T>),
+}
+
+impl<'a, T> Iterator for DeserListOrSingleIter<'a, T> {
+	type Item = &'a T;
+
+	fn next(&mut self) -> Option<Self::Item> {
+		match &mut self.0 {
+			DeserListOrSingleIterState::Single(val) => val.take(),
+			DeserListOrSingleIterState::List(slice_iter) => slice_iter.next(),
 		}
 	}
+}
 
-	/// Iterator over DeserListOrSingle
-	pub struct DeserListOrSingleIter<'a, T>(DeserListOrSingleIterState<'a, T>);
+#[cfg(test)]
+mod tests {
+	use super::*;
 
-	/// State for a DeserListOrSingleIter
-	enum DeserListOrSingleIterState<'a, T> {
-		Single(Option<&'a T>),
-		List(std::slice::Iter<'a, T>),
+	#[test]
+	fn test_id_validation() {
+		assert!(is_valid_identifier("hello"));
+		assert!(is_valid_identifier("Hello"));
+		assert!(is_valid_identifier("H3110"));
+		assert!(is_valid_identifier("hello-world"));
+		assert!(is_valid_identifier("hello_world"));
+		assert!(is_valid_identifier("hello.world"));
+		assert!(!is_valid_identifier("hello*world"));
+		assert!(!is_valid_identifier("hello\nworld"));
+		assert!(!is_valid_identifier("hello world"));
 	}
 
-	impl<'a, T> Iterator for DeserListOrSingleIter<'a, T> {
-		type Item = &'a T;
+	#[test]
+	fn test_deser_list_or_single_iter() {
+		let item = DeserListOrSingle::Single(7);
+		assert_eq!(item.iter().next(), Some(&7));
 
-		fn next(&mut self) -> Option<Self::Item> {
-			match &mut self.0 {
-				DeserListOrSingleIterState::Single(val) => val.take(),
-				DeserListOrSingleIterState::List(slice_iter) => slice_iter.next(),
-			}
-		}
+		let item = DeserListOrSingle::List(vec![1, 2, 3]);
+		let mut iter = item.iter();
+		assert_eq!(iter.next(), Some(&1));
+		assert_eq!(iter.next(), Some(&2));
+		assert_eq!(iter.next(), Some(&3));
 	}
-
-	#[cfg(test)]
-	mod tests {
-		use super::*;
-
-		#[test]
-		fn test_id_validation() {
-			assert!(is_valid_identifier("hello"));
-			assert!(is_valid_identifier("Hello"));
-			assert!(is_valid_identifier("H3110"));
-			assert!(is_valid_identifier("hello-world"));
-			assert!(is_valid_identifier("hello_world"));
-			assert!(is_valid_identifier("hello.world"));
-			assert!(!is_valid_identifier("hello*world"));
-			assert!(!is_valid_identifier("hello\nworld"));
-			assert!(!is_valid_identifier("hello world"));
-		}
-
-		#[test]
-		fn test_deser_list_or_single_iter() {
-			let item = DeserListOrSingle::Single(7);
-			assert_eq!(item.iter().next(), Some(&7));
-
-			let item = DeserListOrSingle::List(vec![1, 2, 3]);
-			let mut iter = item.iter();
-			assert_eq!(iter.next(), Some(&1));
-			assert_eq!(iter.next(), Some(&2));
-			assert_eq!(iter.next(), Some(&3));
-		}
-	}
+}

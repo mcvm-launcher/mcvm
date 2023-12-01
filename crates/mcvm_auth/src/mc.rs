@@ -9,6 +9,7 @@ use oauth2::{
 	RequestTokenError, Scope, StandardDeviceAuthorizationResponse, StandardTokenResponse,
 	TokenResponse, TokenUrl,
 };
+use serde::de::DeserializeOwned;
 
 const DEVICE_CODE_URL: &str = "https://login.microsoftonline.com/consumers/oauth2/v2.0/devicecode";
 const MSA_AUTHORIZE_URL: &str = "https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize";
@@ -90,12 +91,9 @@ pub async fn auth_minecraft(
 	Ok(mc_token)
 }
 
-/// Shouldn't have to do this, but I couldn't find any other way to convert this to a string
-pub fn mc_access_token_to_string(token: &MinecraftAccessToken) -> anyhow::Result<String> {
-	let serialized = serde_json::to_string(token)?;
-	// Now we have to remove the quotes
-	let out = serialized[1..serialized.len() - 1].to_string();
-	Ok(out)
+/// Converts a Minecraft access token to a string
+pub fn mc_access_token_to_string(token: &MinecraftAccessToken) -> String {
+	token.clone().into_inner()
 }
 
 /// Decorates a RequestTokenError
@@ -108,4 +106,22 @@ fn decorate_request_token_error<RE: std::error::Error, T: ErrorResponse>(
 		}
 		e => anyhow!("{e}"),
 	}
+}
+
+/// Utility function to query the Minecraft Services API with correct authorization
+pub async fn call_mc_api<T: DeserializeOwned>(
+	url: &str,
+	access_token: &str,
+	client: &reqwest::Client,
+) -> anyhow::Result<T> {
+	let response = client
+		.get(url)
+		.header("Authorization", format!("Bearer {access_token}"))
+		.send()
+		.await?
+		.error_for_status()?
+		.json()
+		.await?;
+
+	Ok(response)
 }

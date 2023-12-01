@@ -13,8 +13,8 @@ use crate::io::files::{self, paths::Paths};
 use crate::io::java::classpath::Classpath;
 use crate::io::update::{UpdateManager, UpdateMethodResult};
 use crate::net::download::FD_SENSIBLE_LIMIT;
-use mcvm_shared::util;
 use mcvm_shared::skip_none;
+use mcvm_shared::util;
 
 use super::client_meta::libraries::ExtractionRules;
 use super::client_meta::{libraries::Library, ClientMeta};
@@ -113,7 +113,7 @@ pub async fn get(
 		let fut = async move {
 			let response = client.get(library.url).send();
 			let _permit = permit;
-			std::fs::write(
+			files::write_buffered(
 				&path_clone,
 				response.await?.error_for_status()?.bytes().await?,
 			)?;

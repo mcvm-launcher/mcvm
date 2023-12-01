@@ -122,7 +122,7 @@ async fn get_contents(
 	let mut path = paths.internal.join("versions");
 	files::create_dir(&path)?;
 	path.push("manifest.json");
-
+	println!("{}", manager.allow_offline);
 	if manager.allow_offline && !force && path.exists() {
 		return std::fs::read_to_string(path).context("Failed to read manifest contents from file");
 	}

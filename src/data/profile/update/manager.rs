@@ -2,7 +2,6 @@ use std::collections::HashSet;
 use std::path::{Path, PathBuf};
 
 use anyhow::Context;
-use mcvm_core::io::java::install::JavaInstallationKind;
 use mcvm_core::util::versions::MinecraftVersion;
 use mcvm_core::MCVMCore;
 use mcvm_shared::later::Later;
@@ -19,16 +18,6 @@ use crate::util::print::PrintOptions;
 /// Requirements for operations that may be shared by multiple instances in a profile
 #[derive(Debug, Hash, PartialEq, Eq)]
 pub enum UpdateRequirement {
-	/// The client metadata file
-	ClientMeta,
-	/// Assets for the client
-	ClientAssets,
-	/// Libraries for the client
-	ClientLibraries,
-	/// A Java installation
-	Java(JavaInstallationKind),
-	/// The game JAR for a specific side
-	GameJar(Side),
 	/// Game options
 	Options,
 	/// Fabric and Quilt
@@ -121,20 +110,6 @@ impl UpdateManager {
 		client: &Client,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
-		let java_required = matches!(
-			self.requirements
-				.iter()
-				.find(|x| matches!(x, UpdateRequirement::Java(..))),
-			Some(..)
-		);
-
-		let game_jar_required = matches!(
-			self.requirements
-				.iter()
-				.find(|x| matches!(x, UpdateRequirement::GameJar(..))),
-			Some(..)
-		);
-
 		let fq_required = matches!(
 			self.requirements
 				.iter()
@@ -142,29 +117,17 @@ impl UpdateManager {
 			Some(..)
 		);
 
-		if java_required
-			|| game_jar_required
-			|| self.has_requirement(UpdateRequirement::ClientAssets)
-			|| self.has_requirement(UpdateRequirement::ClientLibraries)
-		{
-			self.add_requirement(UpdateRequirement::ClientMeta);
-		}
-
-		let mut core = MCVMCore::new().context("Failed to initialize core")?;
-		let mut vers = core
+		let core_config = mcvm_core::ConfigBuilder::new()
+			.allow_offline(self.allow_offline)
+			.force_reinstall(self.force)
+			.build();
+		let mut core = MCVMCore::with_config(core_config).context("Failed to initialize core")?;
+		let vers = core
 			.get_version(self.mc_version.get(), o)
 			.await
 			.context("Failed to get version")?;
 
 		let version_info = vers.get_version_info();
-
-		if self.has_requirement(UpdateRequirement::ClientAssets)
-			|| self.has_requirement(UpdateRequirement::ClientLibraries)
-		{
-			vers.ensure_client_assets_and_libs(o)
-				.await
-				.context("Failed to ensure client assets and libraries")?;
-		}
 
 		if fq_required {
 			for req in self.requirements.iter() {

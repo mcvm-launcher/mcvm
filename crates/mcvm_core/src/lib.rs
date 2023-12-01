@@ -5,6 +5,8 @@
 //! for installing certain modifications, like modloaders and alternative server runtimes, will be
 //! provided in extension plugins
 
+pub use mcvm_auth as auth_crate;
+
 /// Configuration for library functionality
 pub mod config;
 /// Instances of versions that can be launched

@@ -4,9 +4,11 @@ pub mod create;
 pub mod launch;
 
 use anyhow::{bail, ensure, Context};
+use mcvm_core::instance::WindowResolution;
 use mcvm_core::io::java::classpath::Classpath;
 use mcvm_core::launch::LaunchConfiguration;
 use mcvm_core::version::InstalledVersion;
+use mcvm_core::QuickPlayType;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::pkg::ArcPkgReq;
 use mcvm_shared::Side;
@@ -26,7 +28,7 @@ use mcvm_shared::later::Later;
 use self::launch::LaunchOptions;
 
 use super::addon;
-use super::config::instance::ClientWindowConfig;
+use super::config::instance::{ClientWindowConfig, QuickPlay};
 use super::config::package::PackageConfig;
 use super::config::profile::GameModifications;
 use super::config::profile::ProfilePackageConfiguration;
@@ -160,13 +162,34 @@ impl Instance {
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<mcvm_core::Instance<'core>> {
 		self.ensure_dirs(paths)?;
-		// TODO: Make window settings work
 		let side = match &self.kind {
-			InstKind::Client { .. } => mcvm_core::InstanceKind::Client {
-				window: mcvm_core::ClientWindowConfig { resolution: None },
+			InstKind::Client { window, .. } => mcvm_core::InstanceKind::Client {
+				window: mcvm_core::ClientWindowConfig {
+					resolution: window
+						.resolution
+						.map(|x| WindowResolution::new(x.width, x.height)),
+				},
 			},
-			InstKind::Server { .. } => mcvm_core::InstanceKind::Server {},
+			InstKind::Server { .. } => mcvm_core::InstanceKind::Server {
+				create_eula: true,
+				show_gui: false,
+			},
 		};
+		let quick_play = match self.config.launch.quick_play.clone() {
+			QuickPlay::None => QuickPlayType::None,
+			QuickPlay::Server { server, port } => QuickPlayType::Server { server, port },
+			QuickPlay::World { world } => QuickPlayType::World { world },
+			QuickPlay::Realm { realm } => QuickPlayType::Realm { realm },
+		};
+		let wrapper = self
+			.config
+			.launch
+			.wrapper
+			.as_ref()
+			.map(|x| mcvm_core::WrapperCommand {
+				cmd: x.cmd.clone(),
+				args: x.args.clone(),
+			});
 		let launch_config = LaunchConfiguration {
 			java: self.config.launch.java.clone(),
 			jvm_args: self.config.launch.jvm_args.clone(),
@@ -175,10 +198,8 @@ impl Instance {
 			max_mem: self.config.launch.max_mem.clone(),
 			preset: self.config.launch.preset.clone(),
 			env: self.config.launch.env.clone(),
-			// TODO: Make wrappers work
-			wrapper: None,
-			// TODO: Make Quick Play work
-			quick_play: mcvm_core::QuickPlayType::None,
+			wrapper,
+			quick_play,
 			use_log4j_config: self.config.launch.use_log4j_config.clone(),
 		};
 		let config = mcvm_core::InstanceConfiguration {

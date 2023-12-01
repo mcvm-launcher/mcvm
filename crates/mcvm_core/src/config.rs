@@ -24,7 +24,7 @@ impl Configuration {
 	/// Construct the default configuration
 	pub fn new() -> Self {
 		Self {
-			ms_client_id: get_ms_client_id().into(),
+			ms_client_id: get_ms_client_id(),
 			force_reinstall: false,
 			allow_offline: false,
 			censor_secrets: true,
@@ -77,5 +77,11 @@ impl ConfigBuilder {
 	pub fn censor_secrets(mut self, censor_secrets: bool) -> Self {
 		self.config.censor_secrets = censor_secrets;
 		self
+	}
+}
+
+impl Default for ConfigBuilder {
+	fn default() -> Self {
+		Self::new()
 	}
 }

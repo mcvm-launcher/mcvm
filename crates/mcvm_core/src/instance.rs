@@ -48,28 +48,24 @@ impl<'params> Instance<'params> {
 		let java_vers = &params.client_meta.java_info.major_version;
 		let java_params = JavaInstallParameters {
 			paths: params.paths,
-			update: params.update_manager,
+			update_manager: params.update_manager,
 			persistent: params.persistent,
 			req_client: params.req_client,
 		};
-		let java = JavaInstallation::install(
-			config.launch.java.clone(),
-			java_vers.clone(),
-			java_params,
-			o,
-		)
-		.await
-		.context("Failed to install or update Java")?;
+		let java =
+			JavaInstallation::install(config.launch.java.clone(), *java_vers, java_params, o)
+				.await
+				.context("Failed to install or update Java")?;
 
-		params.persistent.finish(params.paths).await?;
+		params.persistent.dump(params.paths).await?;
 
 		// Get the game jar
 		game_jar::get(
 			config.side.get_side(),
 			params.client_meta,
-			&params.version,
+			params.version,
 			params.paths,
-			&params.update_manager,
+			params.update_manager,
 			params.req_client,
 			o,
 		)
@@ -81,7 +77,7 @@ impl<'params> Instance<'params> {
 		} else {
 			crate::io::minecraft::game_jar::get_path(
 				config.side.get_side(),
-				&params.version,
+				params.version,
 				params.paths,
 			)
 		};
@@ -93,6 +89,10 @@ impl<'params> Instance<'params> {
 			let new_jar_path = config.path.join("server.jar");
 			// Update the hardlink
 			if params.update_manager.should_update_file(&new_jar_path) {
+				if new_jar_path.exists() {
+					std::fs::remove_file(&new_jar_path)
+						.context("Failed to remove existing JAR hardlink")?;
+				}
 				update_hardlink(&jar_path, &new_jar_path)
 					.context("Failed to hardlink server.jar")?;
 				params.update_manager.add_file(new_jar_path.clone());
@@ -124,6 +124,9 @@ impl<'params> Instance<'params> {
 				.context("Failed to extract classpath from game library list")?;
 			classpath.extend(lib_classpath);
 		}
+		for lib in &config.additional_libs {
+			classpath.add_path(lib);
+		}
 		classpath.add_path(&jar_path);
 
 		// Main class
@@ -137,9 +140,14 @@ impl<'params> Instance<'params> {
 		};
 
 		// Server EULA
-		let eula_path = config.path.join("eula.txt");
-		if !eula_path.exists() {
-			std::fs::write(eula_path, "eula = true\n").context("Failed to create eula.txt")?;
+		if let InstanceKind::Server { create_eula, .. } = &config.side {
+			if *create_eula {
+				let eula_path = config.path.join("eula.txt");
+				if !eula_path.exists() {
+					std::fs::write(eula_path, "eula = true\n")
+						.context("Failed to create eula.txt")?;
+				}
+			}
 		}
 
 		Ok(Self {
@@ -218,7 +226,13 @@ pub enum InstanceKind {
 		window: ClientWindowConfig,
 	},
 	/// Server-side
-	Server {},
+	Server {
+		/// Whether to automatically agree to the server EULA and create
+		/// the eula.txt file set to true in the server directory
+		create_eula: bool,
+		/// Whether to display the default server GUI
+		show_gui: bool,
+	},
 }
 
 impl InstanceKind {
@@ -245,6 +259,13 @@ pub struct WindowResolution {
 	pub width: u32,
 	/// The height of the window
 	pub height: u32,
+}
+
+impl WindowResolution {
+	/// Construct a new WindowResolution
+	pub fn new(width: u32, height: u32) -> Self {
+		Self { width, height }
+	}
 }
 
 /// Container struct for parameters for an instance

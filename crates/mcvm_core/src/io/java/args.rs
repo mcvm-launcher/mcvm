@@ -248,4 +248,16 @@ mod tests {
 		assert_eq!(MemoryNum::parse("fooG"), None);
 		assert_eq!(MemoryNum::parse(""), None);
 	}
+
+	#[test]
+	fn test_mem_arg_output() {
+		assert_eq!(
+			MemoryArg::Max.to_string(MemoryNum::Gb(4)),
+			"-Xmx4g".to_string()
+		);
+		assert_eq!(
+			MemoryArg::Min.to_string(MemoryNum::B(128)),
+			"-Xms128".to_string()
+		);
+	}
 }

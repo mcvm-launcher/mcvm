@@ -10,9 +10,9 @@ pub struct UpdateManager {
 	/// Options for printing / output
 	pub print: PrintOptions,
 	/// Whether to force file updates
-	pub force: bool,
+	pub(crate) force: bool,
 	/// Whether we will prioritize local files instead of remote ones
-	pub allow_offline: bool,
+	pub(crate) allow_offline: bool,
 	/// File paths that are added when they have been updated by other functions
 	files: HashSet<PathBuf>,
 }

@@ -163,12 +163,12 @@ async fn download_index(
 	force: bool,
 ) -> anyhow::Result<AssetIndex> {
 	let text = if manager.allow_offline && !force && path.exists() {
-		std::fs::read_to_string(path).context("Failed to read index contents from file")?
+		std::fs::read_to_string(path).context("Failed to read asset index contents from file")?
 	} else {
 		let text = download::text(url, client)
 			.await
 			.context("Failed to download index")?;
-		std::fs::write(path, &text).context("Failed to write index to a file")?;
+		std::fs::write(path, &text).context("Failed to write asset index to a file")?;
 
 		text
 	};

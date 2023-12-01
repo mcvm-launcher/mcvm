@@ -106,16 +106,20 @@ impl JavaInstallation {
 		&self.path
 	}
 
-	/// Get the path to the JVM. Will panic if not installed.
+	/// Get the path to the JVM.
 	pub fn get_jvm_path(&self) -> PathBuf {
-		self.path.join("bin/java")
+		#[cfg(target_family = "windows")]
+		let path = "bin/java.exe";
+		#[cfg(not(target_family = "windows"))]
+		let path = "bin/java";
+		self.path.join(path)
 	}
 }
 
 /// Container struct for parameters for loading Java installations
 pub(crate) struct JavaInstallParameters<'a> {
 	pub paths: &'a Paths,
-	pub update: &'a mut UpdateManager,
+	pub update_manager: &'a mut UpdateManager,
 	pub persistent: &'a mut PersistentData,
 	pub req_client: &'a reqwest::Client,
 }
@@ -154,7 +158,7 @@ async fn install_adoptium(
 	params: &mut JavaInstallParameters<'_>,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<PathBuf> {
-	if params.update.allow_offline {
+	if params.update_manager.allow_offline {
 		if let Some(directory) = params
 			.persistent
 			.get_java_path(PersistentDataJavaInstallation::Adoptium, major_version)
@@ -177,7 +181,7 @@ async fn install_zulu(
 	params: &mut JavaInstallParameters<'_>,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<PathBuf> {
-	if params.update.allow_offline {
+	if params.update_manager.allow_offline {
 		if let Some(directory) = params
 			.persistent
 			.get_java_path(PersistentDataJavaInstallation::Zulu, major_version)
@@ -225,7 +229,7 @@ async fn update_adoptium(
 		return Ok(extracted_bin_dir);
 	}
 
-	params.persistent.finish(params.paths).await?;
+	params.persistent.dump(params.paths).await?;
 
 	let arc_extension = preferred_archive_extension();
 	let arc_name = format!("adoptium{major_version}{arc_extension}");
@@ -292,7 +296,7 @@ async fn update_zulu(
 		return Ok(extracted_dir);
 	}
 
-	params.persistent.finish(params.paths).await?;
+	params.persistent.dump(params.paths).await?;
 
 	let arc_path = out_dir.join(&package.name);
 
@@ -363,6 +367,30 @@ fn get_system_java_installation(#[allow(unused_variables)] major_version: &str) 
 						continue;
 					}
 					if !name.contains(&format!("-{major_version}.")) {
+						continue;
+					}
+					return Some(path.path());
+				}
+			}
+		}
+	}
+	#[cfg(target_os = "linux")]
+	{
+		// OpenJDK
+		let dir = PathBuf::from("/usr/lib/jvm");
+		if dir.exists() {
+			let read = std::fs::read_dir(dir);
+			if let Ok(read) = read {
+				for path in read {
+					let Ok(path) = path else { continue };
+					if !path.path().is_dir() {
+						continue;
+					}
+					let name = path.file_name().to_string_lossy().to_string();
+					if !name.starts_with("java-") {
+						continue;
+					}
+					if !name.contains(&format!("-{major_version}-")) {
 						continue;
 					}
 					return Some(path.path());

@@ -12,7 +12,7 @@ use super::{User, UserKind};
 
 impl User {
 	/// Authenticate the user
-	pub async fn authenticate(
+	pub(super) async fn authenticate(
 		&mut self,
 		client_id: ClientId,
 		client: &reqwest::Client,
@@ -23,11 +23,13 @@ impl User {
 				let auth_result = authenticate_microsoft_user(client_id, client, o)
 					.await
 					.context("Failed to authenticate user")?;
-				let certificate =
-					crate::net::minecraft::get_user_certificate(&auth_result.access_token, client)
-						.await
-						.context("Failed to get user certificate")?;
-				self.access_token = Some(AccessToken(auth_result.access_token));
+				let certificate = crate::net::minecraft::get_user_certificate(
+					&auth_result.access_token.0,
+					client,
+				)
+				.await
+				.context("Failed to get user certificate")?;
+				self.access_token = Some(auth_result.access_token);
 				self.name = auth_result.profile.name;
 				self.uuid = Some(auth_result.profile.uuid);
 				self.keypair = Some(certificate.key_pair);
@@ -38,16 +40,6 @@ impl User {
 
 		Ok(())
 	}
-}
-
-/// Result from the Microsoft authentication function
-pub struct MicrosoftAuthResult {
-	/// The access token for logging into the game and other API services
-	pub access_token: String,
-	/// The user's Minecraft profile
-	pub profile: MinecraftUserProfile,
-	/// The XBox UID of the user
-	pub xbox_uid: String,
 }
 
 /// Authenticate a Microsoft user using Microsoft OAuth
@@ -69,7 +61,7 @@ pub async fn authenticate_microsoft_user(
 	let mc_token = auth::auth_minecraft(token, client)
 		.await
 		.context("Failed to get Minecraft token")?;
-	let access_token = mc_access_token_to_string(mc_token.access_token())?;
+	let access_token = mc_access_token_to_string(mc_token.access_token());
 
 	let profile = minecraft::get_user_profile(&access_token, client)
 		.await
@@ -81,7 +73,7 @@ pub async fn authenticate_microsoft_user(
 	);
 
 	let out = MicrosoftAuthResult {
-		access_token,
+		access_token: AccessToken(access_token),
 		profile,
 		xbox_uid: mc_token.username().clone(),
 	};
@@ -116,7 +108,7 @@ pub async fn debug_authenticate(
 
 	println!("Minecraft token: {mc_token:?}");
 
-	let access_token = mc_access_token_to_string(mc_token.access_token())?;
+	let access_token = mc_access_token_to_string(mc_token.access_token());
 	println!("Minecraft Access Token: {access_token}");
 
 	let profile = minecraft::get_user_profile(&access_token, &req_client)
@@ -125,6 +117,16 @@ pub async fn debug_authenticate(
 	println!("Profile: {profile:?}");
 
 	Ok(())
+}
+
+/// Result from the Microsoft authentication function
+pub struct MicrosoftAuthResult {
+	/// The access token for logging into the game and other API services
+	pub access_token: AccessToken,
+	/// The user's Minecraft profile
+	pub profile: MinecraftUserProfile,
+	/// The XBox UID of the user
+	pub xbox_uid: String,
 }
 
 /// An access token for a user that will be hidden in debug messages

@@ -1,5 +1,6 @@
+use mcvm_auth::mc::call_mc_api;
 use reqwest::Client;
-use serde::{de::DeserializeOwned, Deserialize, Serialize};
+use serde::{Deserialize, Serialize};
 
 /// Struct for a Minecraft Profile from the Minecraft Services API
 #[derive(Deserialize, Debug)]
@@ -71,7 +72,7 @@ pub async fn get_user_profile(
 	access_token: &str,
 	client: &Client,
 ) -> anyhow::Result<MinecraftUserProfile> {
-	call_api(
+	call_mc_api(
 		"https://api.minecraftservices.com/minecraft/profile",
 		access_token,
 		client,
@@ -106,24 +107,6 @@ pub async fn get_user_certificate(
 ) -> anyhow::Result<MinecraftUserCertificate> {
 	let response = client
 		.post("https://api.minecraftservices.com/player/certificates")
-		.header("Authorization", format!("Bearer {access_token}"))
-		.send()
-		.await?
-		.error_for_status()?
-		.json()
-		.await?;
-
-	Ok(response)
-}
-
-/// Utility function to query the Minecraft Services API with correct authorization
-pub async fn call_api<T: DeserializeOwned>(
-	url: &str,
-	access_token: &str,
-	client: &Client,
-) -> anyhow::Result<T> {
-	let response = client
-		.get(url)
 		.header("Authorization", format!("Bearer {access_token}"))
 		.send()
 		.await?

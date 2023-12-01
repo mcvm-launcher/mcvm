@@ -37,6 +37,7 @@ impl Instance {
 		);
 		let core_config = mcvm_core::ConfigBuilder::new()
 			.ms_client_id(ms_client_id)
+			.allow_offline(true)
 			.build();
 		let mut core = MCVMCore::with_config(core_config).context("Failed to initialize core")?;
 		core.get_users().steal_users(users);

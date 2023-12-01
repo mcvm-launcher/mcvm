@@ -24,7 +24,9 @@ impl Classpath {
 		}
 	}
 
-	/// Append the classpath separator to the end of the string
+	/// Append the classpath separator to the end of the string.
+	/// This can create invalid classpaths, so don't use it unless
+	/// you know what you are doing.
 	pub fn add_sep(&mut self) {
 		self.string.push(CLASSPATH_SEP);
 	}

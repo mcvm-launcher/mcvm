@@ -1,4 +1,5 @@
 #![warn(missing_docs)]
+#![deny(unsafe_code)]
 
 //! This is the library for MCVM and pretty much all of the features that the
 //! CLI uses.

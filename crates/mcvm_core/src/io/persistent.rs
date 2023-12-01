@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 use std::fs::{self, File};
-use std::io::BufReader;
+use std::io::{BufReader, BufWriter};
 use std::path::{Path, PathBuf};
 
 use anyhow::Context;
@@ -41,7 +41,7 @@ struct PersistentDataJava {
 }
 
 /// Used as a function argument
-pub enum PersistentDataJavaInstallation {
+pub(crate) enum PersistentDataJavaInstallation {
 	/// Adoptium Java
 	Adoptium,
 	/// Zulu Java
@@ -74,16 +74,18 @@ impl PersistentData {
 	}
 
 	/// Finish using the persistent data file and write to the disk
-	pub async fn finish(&mut self, paths: &Paths) -> anyhow::Result<()> {
-		let out = serde_json::to_string_pretty(&self.contents)
+	pub async fn dump(&mut self, paths: &Paths) -> anyhow::Result<()> {
+		let path = Self::get_path(paths);
+		let file =
+			BufWriter::new(File::create(path).context("Failed to open persistent data file")?);
+		serde_json::to_writer_pretty(file, &self.contents)
 			.context("Failed to serialize persistent data contents")?;
-		std::fs::write(Self::get_path(paths), out).context("Failed to write to persistent data file")?;
 
 		Ok(())
 	}
 
 	/// Updates a Java installation with a new version. Returns true if the version has changed.
-	pub fn update_java_installation(
+	pub(crate) fn update_java_installation(
 		&mut self,
 		installation: PersistentDataJavaInstallation,
 		major_version: &str,
@@ -122,7 +124,7 @@ impl PersistentData {
 	}
 
 	/// Gets the path to a Java installation
-	pub fn get_java_path(
+	pub(crate) fn get_java_path(
 		&self,
 		installation: PersistentDataJavaInstallation,
 		version: &str,

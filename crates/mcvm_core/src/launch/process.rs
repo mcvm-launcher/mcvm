@@ -62,6 +62,7 @@ fn output_launch_command(
 	censor_secrets: bool,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<()> {
+	o.end_process();
 	let access_token = if censor_secrets { access_token } else { None };
 	o.display(
 		MessageContents::Property(

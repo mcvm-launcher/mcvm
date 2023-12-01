@@ -195,7 +195,7 @@ pub enum LaunchMemory {
 }
 
 fn default_java() -> String {
-	"adoptium".into()
+	"auto".into()
 }
 
 fn default_flags_preset() -> String {

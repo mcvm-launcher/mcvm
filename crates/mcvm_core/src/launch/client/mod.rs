@@ -31,7 +31,7 @@ pub(crate) async fn get_launch_props(
 
 	if params.launch_config.use_log4j_config {
 		let logging_arg = params.client_meta.logging.client.argument.clone();
-		let logging_arg = args::fill_logging_path_arg(logging_arg, &params.version, params.paths)
+		let logging_arg = args::fill_logging_path_arg(logging_arg, params.version, params.paths)
 			.ok_or(anyhow!("Failed to convert logging path to a string"))?;
 		jvm_args.push(logging_arg);
 	}
@@ -72,7 +72,7 @@ pub(crate) async fn get_launch_props(
 	}
 
 	let env_vars =
-		get_additional_environment_variables(&params.version, &params.version_manifest.list);
+		get_additional_environment_variables(params.version, &params.version_manifest.list);
 
 	let props = LaunchProcessProperties {
 		jvm_args,

@@ -2,9 +2,9 @@
 pub mod files;
 /// Interaction with some of Java's formats
 pub mod java;
-/// Use of a file for persistent data
-pub mod persistent;
 /// I/O with Minecraft data formats
 pub mod minecraft;
+/// Use of a file for persistent data
+pub mod persistent;
 /// Management of file updates
 pub mod update;
