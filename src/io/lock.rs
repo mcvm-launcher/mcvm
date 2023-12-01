@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use std::fs::{self, File};
 use std::io::BufReader;
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 
 use anyhow::{anyhow, bail, Context};
 use mcvm_shared::output::{MCVMOutput, MessageContents};
@@ -23,7 +23,6 @@ pub struct Lockfile {
 struct LockfileContents {
 	packages: HashMap<String, HashMap<String, LockfilePackage>>,
 	profiles: HashMap<String, LockfileProfile>,
-	java: LockfileJava,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -37,20 +36,6 @@ struct LockfileProfile {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct LockfilePackage {
 	addons: Vec<LockfileAddon>,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-struct LockfileJavaVersion {
-	version: String,
-	path: String,
-}
-
-/// Contains maps of major versions to information about installations
-#[derive(Serialize, Deserialize, Default, Debug)]
-#[serde(default)]
-struct LockfileJava {
-	adoptium: HashMap<String, LockfileJavaVersion>,
-	zulu: HashMap<String, LockfileJavaVersion>,
 }
 
 /// Format for an addon in the lockfile
@@ -117,14 +102,6 @@ impl LockfileAddon {
 
 		Ok(())
 	}
-}
-
-/// Used as a function argument
-pub enum LockfileJavaInstallation {
-	/// Adoptium Java
-	Adoptium,
-	/// Zulu Java
-	Zulu,
 }
 
 impl LockfileContents {
@@ -321,58 +298,5 @@ impl Lockfile {
 		} else {
 			false
 		}
-	}
-
-	/// Updates a Java installation with a new version. Returns true if the version has changed.
-	pub fn update_java_installation(
-		&mut self,
-		installation: LockfileJavaInstallation,
-		major_version: &str,
-		version: &str,
-		path: &Path,
-	) -> anyhow::Result<bool> {
-		let installation = match installation {
-			LockfileJavaInstallation::Adoptium => &mut self.contents.java.adoptium,
-			LockfileJavaInstallation::Zulu => &mut self.contents.java.zulu,
-		};
-		let path_str = path.to_string_lossy().to_string();
-		if let Some(current_version) = installation.get_mut(major_version) {
-			if current_version.version == version {
-				Ok(false)
-			} else {
-				// Remove the old installation, if it exists
-				let current_version_path = PathBuf::from(&current_version.path);
-				if current_version_path.exists() {
-					fs::remove_dir_all(current_version_path)
-						.context("Failed to remove old Java installation")?;
-				}
-				current_version.version = version.to_string();
-				current_version.path = path_str;
-				Ok(true)
-			}
-		} else {
-			installation.insert(
-				major_version.to_string(),
-				LockfileJavaVersion {
-					version: version.to_string(),
-					path: path_str,
-				},
-			);
-			Ok(true)
-		}
-	}
-
-	/// Gets the path to a Java installation
-	pub fn get_java_path(
-		&self,
-		installation: LockfileJavaInstallation,
-		version: &str,
-	) -> Option<PathBuf> {
-		let installation = match installation {
-			LockfileJavaInstallation::Adoptium => &self.contents.java.adoptium,
-			LockfileJavaInstallation::Zulu => &self.contents.java.zulu,
-		};
-		let version = installation.get(version)?;
-		Some(PathBuf::from(version.path.clone()))
 	}
 }
