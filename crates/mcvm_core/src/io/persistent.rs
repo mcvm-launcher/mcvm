@@ -1,12 +1,13 @@
 use std::collections::HashMap;
 use std::fs::{self, File};
-use std::io::{BufReader, BufWriter};
+use std::io::BufWriter;
 use std::path::{Path, PathBuf};
 
 use anyhow::Context;
 use serde::{Deserialize, Serialize};
 
 use super::files::paths::Paths;
+use super::json_from_file;
 
 /// A file that remembers important info like what versions and files are currently installed
 #[derive(Debug)]
@@ -58,9 +59,7 @@ impl PersistentData {
 	pub fn open(paths: &Paths) -> anyhow::Result<Self> {
 		let path = Self::get_path(paths);
 		let mut contents = if path.exists() {
-			let file = File::open(&path).context("Failed to open persistent data file")?;
-			let mut file = BufReader::new(file);
-			serde_json::from_reader(&mut file).context("Failed to parse JSON")?
+			json_from_file(&path).context("Failed to get JSON contents")?
 		} else {
 			PersistentDataContents::default()
 		};
