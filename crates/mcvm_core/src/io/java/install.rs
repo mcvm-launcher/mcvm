@@ -1,5 +1,6 @@
 use std::fs::File;
 use std::io::BufReader;
+use std::os::unix::fs::PermissionsExt;
 use std::path::{Path, PathBuf};
 
 use anyhow::{bail, Context};
@@ -113,6 +114,28 @@ impl JavaInstallation {
 		#[cfg(not(target_family = "windows"))]
 		let path = "bin/java";
 		self.path.join(path)
+	}
+
+	/// Verifies that this installation is set up correctly
+	pub fn verify(&self) -> anyhow::Result<bool> {
+		let jvm_path = self.get_jvm_path();
+		if !jvm_path.exists() || !jvm_path.is_file() {
+			return Ok(false);
+		}
+		#[cfg(target_family = "unix")]
+		{
+			// Check if JVM is executable
+			let mode = jvm_path
+				.metadata()
+				.context("Failed to get JVM metadata")?
+				.permissions()
+				.mode();
+			if mode & 0o111 == 0 {
+				return Ok(false);
+			}
+		}
+
+		Ok(true)
 	}
 }
 

@@ -57,6 +57,13 @@ impl<'params> Instance<'params> {
 				.await
 				.context("Failed to install or update Java")?;
 
+		let is_valid = java
+			.verify()
+			.context("Failed to verify Java installation")?;
+		if !is_valid {
+			bail!("Java installation is invalid");
+		}
+
 		params.persistent.dump(params.paths).await?;
 
 		// Get the game jar
