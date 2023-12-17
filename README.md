@@ -1,6 +1,6 @@
 # MCVM
 
-MCVM is a lightweight Minecraft launcher meant to provide a better interface with custom content such as mods and resource packs.
+MCVM is a lightweight Minecraft launcher ecosystem meant to provide a better interface with custom content such as mods and resource packs.
 
 In the official launcher, you have to waste time moving files in and out of folders, downloading mods from sketchy websites, setting up servers, and sharing your config to play with friends. MCVM hopes to alleviate some of these pains with its smart systems for configuration sharing and package management.
 
@@ -64,7 +64,7 @@ MCVM has many use cases for different applications
 This is the main use case of most people, and is an important focus of the ecosystem.
 
 ### A library for your launcher
-You can use the MCVM library as a base for the functionalities of your launcher. Even if you don't use the packaging formats, MCVM contains functions to launch the game in a simple way.
+You can use the MCVM library as a base for the functionalities of your launcher. Even if you don't use the packaging formats, MCVM contains functions to launch the game in a simple way, as well as customize the launch process to your liking.
 
 ### A server management tool
 The MCVM CLI is a perfect asset for server managers. The way that it groups configuration for instances makes it easy to orchestrate multiple running servers at once. This system will be great in the future as well when MCVM adds support for proxies like BungeeCord and Velocity.
@@ -73,7 +73,10 @@ The MCVM CLI is a perfect asset for server managers. The way that it groups conf
 Launchers can use the different MCVM crates to parse, validate, evaluate, and host MCVM packages.
 
 ### A GUI launcher (planned)
-All the functionalities of the CLI in a more approachable format.
+All the functionalities of the CLI in a more approachable format as a desktop application.
+
+### Automated testing and CI
+MCVM can be used to quickly start up a server instance in your automated CI pipelines, which you can run tests on.
 
 ## Progress
 
