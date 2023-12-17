@@ -6,6 +6,7 @@ use mcvm_core::io::java::classpath::Classpath;
 use mcvm_core::user::uuid::hyphenate_uuid;
 use mcvm_core::user::{User, UserManager};
 use mcvm_core::version::InstalledVersion;
+use mcvm_mods::fabric_quilt;
 use mcvm_shared::modifications::{Modloader, ServerType};
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel, OutputProcess};
 use reqwest::Client;
@@ -13,7 +14,7 @@ use reqwest::Client;
 use crate::data::profile::update::manager::{UpdateManager, UpdateMethodResult, UpdateRequirement};
 use crate::io::files::{self, paths::Paths};
 use crate::io::options::{self, client::write_options_txt, server::write_server_properties};
-use crate::net::{fabric_quilt, paper};
+use crate::net::paper;
 
 use super::{InstKind, Instance};
 

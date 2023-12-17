@@ -3,17 +3,17 @@ use std::fs::File;
 use std::io::BufReader;
 
 use anyhow::{anyhow, Context};
+use mcvm_core::io::files;
 use mcvm_core::io::java::classpath::Classpath;
 use mcvm_core::io::java::maven::MavenLibraryParts;
+use mcvm_core::io::update::UpdateManager;
 use mcvm_core::net::download;
+use mcvm_core::{MCVMCore, Paths};
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel, OutputProcess};
+use mcvm_shared::versions::VersionInfo;
 use mcvm_shared::Side;
 use reqwest::Client;
 use serde::Deserialize;
-
-use crate::data::profile::update::manager::UpdateManager;
-use crate::io::files;
-use crate::io::files::paths::Paths;
 
 /// Mode we are in (Fabric / Quilt)
 /// This way we don't have to duplicate a lot of functions since these both
@@ -37,6 +37,57 @@ impl Display for Mode {
 			}
 		)
 	}
+}
+
+/// Install Fabric/Quilt using the core and information about the version.
+/// First, create the core and the version you want. Then, get the version info from the version.
+/// Finally, run this function. Returns the classpath and main class to add to the instance you are launching
+pub async fn install_from_core(
+	core: &mut MCVMCore,
+	version_info: &VersionInfo,
+	mode: Mode,
+	side: Side,
+	o: &mut impl MCVMOutput,
+) -> anyhow::Result<(Classpath, String)> {
+	let meta = get_meta(
+		&version_info.version,
+		&mode,
+		core.get_paths(),
+		core.get_update_manager(),
+		core.get_client(),
+	)
+	.await
+	.context("Failed to download Fabric/Quilt metadata")?;
+	download_files(
+		&meta,
+		core.get_paths(),
+		mode,
+		core.get_update_manager(),
+		core.get_client(),
+		o,
+	)
+	.await
+	.context("Failed to download common Fabric/Quilt files")?;
+
+	download_side_specific_files(
+		&meta,
+		core.get_paths(),
+		side,
+		core.get_update_manager(),
+		core.get_client(),
+	)
+	.await
+	.context("Failed to download {mode} files for {side}")?;
+
+	let classpath = get_classpath(&meta, core.get_paths(), side);
+
+	Ok((
+		classpath,
+		meta.launcher_meta
+			.main_class
+			.get_main_class_string(side)
+			.into(),
+	))
 }
 
 /// Metadata for Fabric or Quilt
@@ -129,10 +180,11 @@ pub async fn get_meta(
 	};
 	let mode_lowercase = mode.to_string().to_lowercase();
 	let path = paths
-		.fabric_quilt
+		.internal
+		.join("fabric_quilt")
 		.join(format!("meta_{mode_lowercase}_{version}.json"));
 
-	let meta = if manager.allow_offline && path.exists() {
+	let meta = if manager.allow_offline() && path.exists() {
 		let file = File::open(path).with_context(|| format!("Failed to open {mode} meta file"))?;
 		let mut file = BufReader::new(file);
 		serde_json::from_reader(&mut file)
@@ -141,9 +193,7 @@ pub async fn get_meta(
 		let bytes = download::bytes(&meta_url, client)
 			.await
 			.with_context(|| format!("Failed to download {mode} metadata file"))?;
-		tokio::fs::write(path, &bytes)
-			.await
-			.context("Failed to write meta to a file")?;
+		std::fs::write(path, &bytes).context("Failed to write meta to a file")?;
 
 		serde_json::from_slice::<Vec<FabricQuiltMeta>>(&bytes)
 			.context("Failed to parse downloaded metadata")?
@@ -165,7 +215,7 @@ pub async fn download_files(
 	client: &Client,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<()> {
-	let force = manager.force;
+	let force = manager.force_reinstall();
 
 	let process = OutputProcess::new(o);
 	process.0.display(
@@ -240,7 +290,7 @@ pub async fn download_side_specific_files(
 		Side::Server => meta.launcher_meta.libraries.server.clone(),
 	};
 
-	download_libraries(&libs, paths, client, manager.force).await?;
+	download_libraries(&libs, paths, client, manager.force_reinstall()).await?;
 
 	Ok(())
 }
@@ -304,7 +354,7 @@ async fn download_main_library(
 	let url = url.to_owned() + &path;
 	let resp = download::bytes(url, client).await?;
 
-	files::create_leading_dirs_async(&lib_path).await?;
+	files::create_leading_dirs(&lib_path)?;
 	tokio::fs::write(&lib_path, resp).await?;
 
 	Ok(())

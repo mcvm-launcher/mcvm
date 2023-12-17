@@ -122,7 +122,6 @@ async fn get_contents(
 	let mut path = paths.internal.join("versions");
 	files::create_dir(&path)?;
 	path.push("manifest.json");
-	println!("{}", manager.allow_offline);
 	if manager.allow_offline && !force && path.exists() {
 		return std::fs::read_to_string(path).context("Failed to read manifest contents from file");
 	}
@@ -139,6 +138,7 @@ async fn get_contents(
 }
 
 /// Make an ordered list of versions from the manifest to use for matching
+/// TODO: This does not need a result
 pub fn make_version_list(version_manifest: &VersionManifest) -> anyhow::Result<Vec<String>> {
 	let mut out = Vec::new();
 	for entry in &version_manifest.versions {

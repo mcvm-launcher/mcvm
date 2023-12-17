@@ -20,9 +20,9 @@ use crate::io::lock::{Lockfile, LockfileAddon};
 use crate::io::options::client::ClientOptions;
 use crate::io::options::server::ServerOptions;
 use crate::io::{files, snapshot};
-use crate::net::fabric_quilt;
 use crate::package::eval::{EvalData, EvalInput, Routine};
 use crate::package::reg::PkgRegistry;
+use mcvm_mods::fabric_quilt;
 use mcvm_shared::later::Later;
 
 use self::launch::LaunchOptions;
@@ -223,7 +223,7 @@ impl Instance {
 		manager: &UpdateManager,
 	) -> anyhow::Result<Classpath> {
 		let meta = manager.fq_meta.get();
-		let classpath = fabric_quilt::get_classpath(meta, paths, self.kind.to_side());
+		let classpath = fabric_quilt::get_classpath(meta, &paths.core, self.kind.to_side());
 		self.main_class_override = Some(
 			meta.launcher_meta
 				.main_class

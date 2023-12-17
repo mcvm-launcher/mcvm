@@ -1013,6 +1013,7 @@ dependencies = [
  "itertools",
  "libflate",
  "mcvm_core",
+ "mcvm_mods",
  "mcvm_parse",
  "mcvm_pkg",
  "mcvm_shared",
@@ -1089,6 +1090,24 @@ dependencies = [
  "tokio",
  "zip",
  "zip-extract",
+]
+
+[[package]]
+name = "mcvm_mods"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "bytes",
+ "cfg-match",
+ "mcvm_core",
+ "mcvm_shared",
+ "minecraft-msa-auth",
+ "oauth2",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "thiserror",
+ "tokio",
 ]
 
 [[package]]

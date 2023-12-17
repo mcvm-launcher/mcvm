@@ -18,6 +18,7 @@ members = [
 	"crates/mcvm_auth",
 	"crates/mcvm_core",
 	"crates/mcvm_cli",
+	"crates/mcvm_mods",
 	"crates/mcvm_parse",
 	"crates/mcvm_pkg",
 	"crates/mcvm_shared",
@@ -33,6 +34,10 @@ schema = [
 	"mcvm_shared/schema",
 	"mcvm_core/schema",
 ]
+
+[[bin]]
+name = "man_int_fabric_core"
+path = "test/manual_integration/fabric_core.rs"
 
 [dependencies]
 anyhow = "1.0.70"
@@ -55,6 +60,7 @@ serde = { version = "1.0.152", features = ["derive", "rc"] }
 serde_json = "1.0.91"
 sha2 = "0.10.7"
 mcvm_core = { path = "crates/mcvm_core", version = "0.1.0" }
+mcvm_mods = { path = "crates/mcvm_mods", version = "0.1.0" }
 mcvm_parse = { path = "crates/mcvm_parse", version = "0.9.0" }
 mcvm_pkg = { path = "crates/mcvm_pkg", version = "0.7.0" }
 mcvm_shared = { path = "crates/mcvm_shared", version = "0.9.0" }

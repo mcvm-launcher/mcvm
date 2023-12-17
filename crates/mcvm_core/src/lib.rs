@@ -26,8 +26,13 @@ pub mod version;
 
 use anyhow::Context;
 use io::{persistent::PersistentData, update::UpdateManager};
-use mcvm_shared::{later::Later, output::MCVMOutput, util::print::PrintOptions};
-use net::game_files::version_manifest::{self, VersionManifest, VersionManifestAndList};
+use mcvm_shared::later::Later;
+use mcvm_shared::output::{self, MCVMOutput};
+use mcvm_shared::util::print::PrintOptions;
+use mcvm_shared::versions::VersionInfo;
+use net::game_files::version_manifest::{
+	self, make_version_list, VersionManifest, VersionManifestAndList,
+};
 use user::UserManager;
 use util::versions::MinecraftVersion;
 use version::{InstalledVersion, LoadVersionParameters, VersionParameters, VersionRegistry};
@@ -106,6 +111,18 @@ impl MCVMCore {
 		&mut self.users
 	}
 
+	/// Get the UpdateManager in order to help with custom installation
+	/// routines
+	pub fn get_update_manager(&self) -> &UpdateManager {
+		&self.update_manager
+	}
+
+	/// Get the UpdateManager mutably in order to help with custom installation
+	/// routines. Don't modify this unless you know what you are doing!
+	pub fn get_update_manager_mut(&mut self) -> &mut UpdateManager {
+		&mut self.update_manager
+	}
+
 	/// Get the version manifest
 	pub async fn get_version_manifest(
 		&mut self,
@@ -161,5 +178,21 @@ impl MCVMCore {
 			censor_secrets: self.config.censor_secrets,
 		};
 		Ok(InstalledVersion { inner, params })
+	}
+
+	/// Get just the VersionInfo for a version, without creating the version.
+	/// This is useful for doing your own installation of things. This will download
+	/// the version manifest if it is not downloaded already
+	pub async fn get_version_info(&mut self, version: String) -> anyhow::Result<VersionInfo> {
+		let mut o = output::NoOp;
+		let manifest = self
+			.get_version_manifest(&mut o)
+			.await
+			.context("Failed to get version manifest")?;
+		let list = make_version_list(manifest).context("Failed to create version list")?;
+		Ok(VersionInfo {
+			version,
+			versions: list,
+		})
 	}
 }

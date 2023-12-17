@@ -263,6 +263,13 @@ pub struct ClientWindowConfig {
 	pub resolution: Option<WindowResolution>,
 }
 
+impl ClientWindowConfig {
+	/// Construct a new ClientWindowConfig with default settings
+	pub fn new() -> Self {
+		Self { resolution: None }
+	}
+}
+
 /// Resolution for a client window
 #[derive(Clone, Debug, Copy)]
 pub struct WindowResolution {

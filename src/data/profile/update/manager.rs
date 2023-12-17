@@ -12,8 +12,8 @@ use reqwest::Client;
 
 use crate::io::files::paths::Paths;
 use crate::io::options::{read_options, Options};
-use crate::net::fabric_quilt::{self, FabricQuiltMeta};
 use crate::util::print::PrintOptions;
+use mcvm_mods::fabric_quilt::{self, FabricQuiltMeta};
 
 /// Requirements for operations that may be shared by multiple instances in a profile
 #[derive(Debug, Hash, PartialEq, Eq)]
@@ -122,12 +122,14 @@ impl UpdateManager {
 			.force_reinstall(self.force)
 			.build();
 		let mut core = MCVMCore::with_config(core_config).context("Failed to initialize core")?;
-		let vers = core
-			.get_version(self.mc_version.get(), o)
-			.await
-			.context("Failed to get version")?;
+		let version_info = {
+			let vers = core
+				.get_version(self.mc_version.get(), o)
+				.await
+				.context("Failed to get version")?;
 
-		let version_info = vers.get_version_info();
+			vers.get_version_info()
+		};
 
 		if fq_required {
 			for req in self.requirements.iter() {
@@ -136,23 +138,30 @@ impl UpdateManager {
 						let meta = fabric_quilt::get_meta(
 							&version_info.version,
 							mode,
-							paths,
-							self,
+							&paths.core,
+							core.get_update_manager(),
 							client,
 						)
 						.await
 						.context("Failed to download Fabric/Quilt metadata")?;
-						fabric_quilt::download_files(&meta, paths, *mode, self, client, o)
-							.await
-							.context("Failed to download common Fabric/Quilt files")?;
+						fabric_quilt::download_files(
+							&meta,
+							&paths.core,
+							*mode,
+							core.get_update_manager(),
+							client,
+							o,
+						)
+						.await
+						.context("Failed to download common Fabric/Quilt files")?;
 						self.fq_meta.fill(meta);
 					}
 
 					fabric_quilt::download_side_specific_files(
 						self.fq_meta.get(),
-						paths,
+						&paths.core,
 						*side,
-						self,
+						core.get_update_manager(),
 						client,
 					)
 					.await

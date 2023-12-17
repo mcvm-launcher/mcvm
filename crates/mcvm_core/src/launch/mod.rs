@@ -103,6 +103,22 @@ pub struct LaunchConfiguration {
 }
 
 impl LaunchConfiguration {
+	/// Create a new LaunchConfiguration with default settings
+	pub fn new() -> Self {
+		Self {
+			java: JavaInstallationKind::Auto,
+			jvm_args: Vec::new(),
+			game_args: Vec::new(),
+			min_mem: None,
+			max_mem: None,
+			preset: ArgsPreset::None,
+			env: HashMap::new(),
+			wrapper: None,
+			quick_play: QuickPlayType::None,
+			use_log4j_config: false,
+		}
+	}
+
 	/// Create the args for the JVM when launching the game
 	pub fn generate_jvm_args(&self) -> Vec<String> {
 		let mut out = self.jvm_args.clone();

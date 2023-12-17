@@ -51,6 +51,18 @@ impl UpdateManager {
 			!file.exists()
 		}
 	}
+
+	/// Gets whether the manager allows being offline and not checking for
+	/// file updates
+	pub fn allow_offline(&self) -> bool {
+		self.allow_offline
+	}
+
+	/// Gets whether the manager forces the reinstallation of files
+	/// even if they are already installed
+	pub fn force_reinstall(&self) -> bool {
+		self.force
+	}
 }
 
 /// Struct returned by updating functions, with data like changed files
