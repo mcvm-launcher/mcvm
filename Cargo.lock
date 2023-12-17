@@ -1041,7 +1041,7 @@ dependencies = [
 
 [[package]]
 name = "mcvm"
-version = "0.15.0"
+version = "0.16.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -1091,7 +1091,7 @@ dependencies = [
 
 [[package]]
 name = "mcvm_cli"
-version = "0.3.0"
+version = "0.3.1"
 dependencies = [
  "anyhow",
  "clap",
@@ -1152,7 +1152,7 @@ dependencies = [
 
 [[package]]
 name = "mcvm_parse"
-version = "0.9.0"
+version = "0.10.0"
 dependencies = [
  "anyhow",
  "mcvm_shared",
@@ -1162,7 +1162,7 @@ dependencies = [
 
 [[package]]
 name = "mcvm_pkg"
-version = "0.7.0"
+version = "0.8.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -1176,7 +1176,7 @@ dependencies = [
 
 [[package]]
 name = "mcvm_shared"
-version = "0.9.0"
+version = "0.10.0"
 dependencies = [
  "anyhow",
  "cfg-match",
@@ -1187,7 +1187,7 @@ dependencies = [
 
 [[package]]
 name = "mcvm_tools"
-version = "0.2.0"
+version = "0.2.1"
 dependencies = [
  "anyhow",
  "clap",

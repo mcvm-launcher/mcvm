@@ -7,6 +7,18 @@ cd mcvm_shared
 cargo publish
 cd ..
 
+cd mcvm_auth
+cargo publish
+cd ..
+
+cd mcvm_core
+cargo publish
+cd ..
+
+cd mcvm_mods
+cargo publish
+cd ..
+
 cd mcvm_parse
 cargo publish
 cd ..

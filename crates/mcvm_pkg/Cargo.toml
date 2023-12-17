@@ -1,6 +1,6 @@
 [package]
 name = "mcvm_pkg"
-version = "0.7.0"
+version = "0.8.0"
 edition = "2021"
 license = "GPL-3.0-or-later"
 description = "Package standard for mcvm"
@@ -16,8 +16,8 @@ schema = ["dep:schemars", "mcvm_parse/schema", "mcvm_shared/schema"]
 async-trait = "0.1.73"
 anyhow = "1.0.70"
 itertools = "0.11.0"
-mcvm_parse = { path = "../mcvm_parse", version = "0.9.0" }
-mcvm_shared = { path = "../mcvm_shared", version = "0.9.0" }
+mcvm_parse = { path = "../mcvm_parse", version = "0.10.0" }
+mcvm_shared = { path = "../mcvm_shared", version = "0.10.0" }
 schemars = { version = "0.8.15", optional = true }
 serde = { version = "1.0.152", features = ["derive", "rc"] }
 serde_json = "1.0.91"

@@ -21,7 +21,7 @@ futures = "0.3.26"
 hex = "0.4.3"
 libflate = "2.0.0"
 mcvm_auth = { path = "../mcvm_auth", version = "0.1.0" }
-mcvm_shared = { path = "../mcvm_shared", version = "0.9.0" }
+mcvm_shared = { path = "../mcvm_shared", version = "0.10.0" }
 oauth2 = "4.4.1"
 reqwest = { version = "0.11.15", default_features = false, features = [
 	"json",
