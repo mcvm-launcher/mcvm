@@ -227,8 +227,9 @@ impl InstanceHandle {
 		self.process.kill()
 	}
 
-	/// Gets the internal child process for the game
-	pub fn get_process(&mut self) -> &mut std::process::Child {
-		&mut self.process
+	/// Gets the internal child process for the game, consuming the
+	/// InstanceHandle
+	pub fn get_process(self) -> std::process::Child {
+		self.process
 	}
 }
