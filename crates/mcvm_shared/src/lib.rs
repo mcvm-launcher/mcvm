@@ -16,10 +16,10 @@ pub mod modifications;
 pub mod output;
 /// Common package constructs
 pub mod pkg;
-/// Tools for dealing with version patterns
-pub mod versions;
 /// Other utilities
 pub mod util;
+/// Tools for dealing with version patterns
+pub mod versions;
 
 use std::{fmt::Display, str::FromStr};
 

@@ -4,7 +4,7 @@ use super::CmdData;
 use itertools::Itertools;
 use mcvm::data::id::ProfileID;
 use mcvm::parse::lex::Token;
-use mcvm::pkg_crate::{PkgRequest, PkgRequestSource, PackageContentType};
+use mcvm::pkg_crate::{PackageContentType, PkgRequest, PkgRequestSource};
 use mcvm::util::print::ReplPrinter;
 
 use anyhow::{bail, Context};

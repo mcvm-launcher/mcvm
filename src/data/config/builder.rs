@@ -98,7 +98,7 @@ impl ConfigBuilder {
 	/// Finishes the builder
 	pub fn build(mut self) -> anyhow::Result<Config> {
 		if let Some(default_user_id) = &self.default_user {
-			if self.users.user_exists(&default_user_id) {
+			if self.users.user_exists(default_user_id) {
 				self.users
 					.choose_user(default_user_id)
 					.expect("Default user should exist");

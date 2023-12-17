@@ -110,13 +110,7 @@ pub async fn update_profiles(
 
 			if !profile.instances.is_empty() {
 				let version_list = profile
-					.create_instances(
-						ctx.instances,
-						paths,
-						manager,
-						&config.users,
-						ctx.output,
-					)
+					.create_instances(ctx.instances, paths, manager, &config.users, ctx.output)
 					.await
 					.context("Failed to create profile instances")?;
 

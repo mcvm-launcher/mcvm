@@ -121,7 +121,7 @@ impl Config {
 		}
 
 		if let Some(default_user_id) = &config.default_user {
-			if users.user_exists(&default_user_id) {
+			if users.user_exists(default_user_id) {
 				users
 					.choose_user(default_user_id)
 					.expect("Default user should exist");

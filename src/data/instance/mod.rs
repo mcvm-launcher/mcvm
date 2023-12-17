@@ -196,11 +196,11 @@ impl Instance {
 			game_args: self.config.launch.game_args.clone(),
 			min_mem: self.config.launch.min_mem.clone(),
 			max_mem: self.config.launch.max_mem.clone(),
-			preset: self.config.launch.preset.clone(),
+			preset: self.config.launch.preset,
 			env: self.config.launch.env.clone(),
 			wrapper,
 			quick_play,
-			use_log4j_config: self.config.launch.use_log4j_config.clone(),
+			use_log4j_config: self.config.launch.use_log4j_config,
 		};
 		let config = mcvm_core::InstanceConfiguration {
 			side,
