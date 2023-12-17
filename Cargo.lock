@@ -1041,7 +1041,7 @@ dependencies = [
 
 [[package]]
 name = "mcvm"
-version = "0.16.0"
+version = "0.16.1"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -1108,7 +1108,7 @@ dependencies = [
 
 [[package]]
 name = "mcvm_core"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "anyhow",
  "bytes",
@@ -1134,7 +1134,7 @@ dependencies = [
 
 [[package]]
 name = "mcvm_mods"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "anyhow",
  "bytes",
