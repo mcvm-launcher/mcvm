@@ -60,7 +60,7 @@ pub fn dir_symlink(path: &Path, target: &Path) -> std::io::Result<()> {
 }
 
 /// Cross platform - create a directory soft link
-#[cfg(target_os = "linux")]
+#[cfg(target_family = "unix")]
 pub fn dir_symlink(path: &Path, target: &Path) -> std::io::Result<()> {
 	std::os::unix::fs::symlink(path, target)?;
 	Ok(())
