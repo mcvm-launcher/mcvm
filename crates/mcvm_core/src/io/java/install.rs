@@ -1,5 +1,7 @@
 use std::fs::File;
 use std::io::BufReader;
+
+#[cfg(target_family = "unix")]
 use std::os::unix::fs::PermissionsExt;
 use std::path::{Path, PathBuf};
 
