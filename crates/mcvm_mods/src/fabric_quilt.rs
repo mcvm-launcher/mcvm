@@ -3,7 +3,7 @@ use std::fs::File;
 use std::io::BufReader;
 
 use anyhow::{anyhow, Context};
-use mcvm_core::io::files;
+use mcvm_core::io::files::{self, create_leading_dirs};
 use mcvm_core::io::java::classpath::Classpath;
 use mcvm_core::io::java::maven::MavenLibraryParts;
 use mcvm_core::io::update::UpdateManager;
@@ -183,6 +183,8 @@ pub async fn get_meta(
 		.internal
 		.join("fabric_quilt")
 		.join(format!("meta_{mode_lowercase}_{version}.json"));
+	create_leading_dirs(&path)
+		.context("Failed to create parent directories for Fabric/Quilt meta")?;
 
 	let meta = if manager.allow_offline() && path.exists() {
 		let file = File::open(path).with_context(|| format!("Failed to open {mode} meta file"))?;
