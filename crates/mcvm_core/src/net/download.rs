@@ -52,14 +52,18 @@ pub async fn bytes(url: impl IntoUrl, client: &Client) -> anyhow::Result<bytes::
 }
 
 /// Downloads and puts the contents in a file
-pub async fn file(url: impl IntoUrl, path: &Path, client: &Client) -> anyhow::Result<()> {
+pub async fn file(
+	url: impl IntoUrl,
+	path: impl AsRef<Path>,
+	client: &Client,
+) -> anyhow::Result<()> {
 	let bytes = bytes(url, client)
 		.await
 		.context("Failed to download data")?;
-	std::fs::write(path, bytes).with_context(|| {
+	std::fs::write(path.as_ref(), bytes).with_context(|| {
 		format!(
 			"Failed to write downloaded contents to path {}",
-			path.display()
+			path.as_ref().display()
 		)
 	})?;
 
