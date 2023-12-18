@@ -12,6 +12,9 @@ pub struct Configuration {
 	pub(crate) allow_offline: bool,
 	/// Whether to censor user credentials in output messages and logs
 	pub(crate) censor_secrets: bool,
+	/// Whether to use file copies instead of hardlinks. Useful if you
+	/// are on a filesystem that doesn't like hardlinks
+	pub(crate) disable_hardlinks: bool,
 }
 
 impl Default for Configuration {
@@ -28,6 +31,7 @@ impl Configuration {
 			force_reinstall: false,
 			allow_offline: false,
 			censor_secrets: true,
+			disable_hardlinks: false,
 		}
 	}
 

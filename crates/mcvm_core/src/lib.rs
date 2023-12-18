@@ -176,6 +176,7 @@ impl MCVMCore {
 			update_manager: &mut self.update_manager,
 			users: &mut self.users,
 			censor_secrets: self.config.censor_secrets,
+			disable_hardlinks: self.config.disable_hardlinks,
 		};
 		Ok(InstalledVersion { inner, params })
 	}

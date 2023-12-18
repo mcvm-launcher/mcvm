@@ -92,7 +92,8 @@ impl<'params> Instance<'params> {
 		if !jar_path.exists() {
 			bail!("Game JAR does not exist");
 		}
-		// For the server, the jar file has to be in the launch directory, so we hardlink it
+		// For the server, the jar file has to be in the launch directory, so we hardlink it,
+		// or copy it if hardlinks are disabled
 		if let Side::Server = config.side.get_side() {
 			let new_jar_path = config.path.join("server.jar");
 			// Don't hardlink if it's already in the right place
@@ -103,8 +104,13 @@ impl<'params> Instance<'params> {
 						std::fs::remove_file(&new_jar_path)
 							.context("Failed to remove existing JAR hardlink")?;
 					}
-					update_hardlink(&jar_path, &new_jar_path)
-						.context("Failed to hardlink server.jar")?;
+					if params.disable_hardlinks {
+						std::fs::copy(&jar_path, &new_jar_path)
+							.context("Failed to copy server.jar")?;
+					} else {
+						update_hardlink(&jar_path, &new_jar_path)
+							.context("Failed to hardlink server.jar")?;
+					}
 					params.update_manager.add_file(new_jar_path.clone());
 				}
 			}
@@ -298,4 +304,5 @@ pub(crate) struct InstanceParameters<'a> {
 	pub users: &'a mut UserManager,
 	pub client_assets_and_libs: &'a mut ClientAssetsAndLibraries,
 	pub censor_secrets: bool,
+	pub disable_hardlinks: bool,
 }
