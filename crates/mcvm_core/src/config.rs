@@ -82,6 +82,12 @@ impl ConfigBuilder {
 		self.config.censor_secrets = censor_secrets;
 		self
 	}
+
+	/// Set whether to disable the use of hardlinks
+	pub fn disable_hardlinks(mut self, disable_hardlinks: bool) -> Self {
+		self.config.disable_hardlinks = disable_hardlinks;
+		self
+	}
 }
 
 impl Default for ConfigBuilder {

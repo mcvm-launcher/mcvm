@@ -1,6 +1,6 @@
 [package]
 name = "mcvm_mods"
-version = "0.1.3"
+version = "0.1.4"
 edition = "2021"
 license = "GPL-3.0-or-later"
 description = "Installation of game modifications for use with mcvm_core"
@@ -15,7 +15,7 @@ categories = ["games"]
 anyhow = "1.0.70"
 bytes = "1.4.0"
 cfg-match = "0.2.1"
-mcvm_core = { path = "../mcvm_core", version = "0.1.1" }
+mcvm_core = { path = "../mcvm_core", version = "0.1.3" }
 mcvm_shared = { path = "../mcvm_shared", version = "0.10.0" }
 minecraft-msa-auth = "0.3.0"
 oauth2 = "4.4.1"
