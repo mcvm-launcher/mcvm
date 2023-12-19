@@ -18,7 +18,7 @@ The different types of fields are listed here. Variants may be listed with `supp
 ## Server types (`server_type`)
 
 - `vanilla` The standard game. (supported)
-- `paper` Papermc server (supported)
+- `paper` PaperMC server (supported)
 - `sponge` SpongeVanilla server (unsupported)
 - `spongeforge` SpongeForge server (unsupported)
 - `craftbukkit` CraftBukkit server (unsupported)
