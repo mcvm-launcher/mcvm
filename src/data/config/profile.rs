@@ -249,6 +249,7 @@ pub fn can_install_server_type(server_type: ServerType) -> bool {
 		ServerType::None
 			| ServerType::Vanilla
 			| ServerType::Paper
+			| ServerType::Folia
 			| ServerType::Fabric
 			| ServerType::Quilt
 	)

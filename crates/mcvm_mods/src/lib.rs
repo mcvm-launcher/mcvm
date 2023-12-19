@@ -8,5 +8,5 @@
 
 /// Installation of the Fabric and Quilt modloaders
 pub mod fabric_quilt;
-/// Installation of the Paper server
+/// Installation of projects from PaperMC, such as the Paper and Folia servers
 pub mod paper;

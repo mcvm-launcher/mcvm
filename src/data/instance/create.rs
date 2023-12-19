@@ -190,20 +190,22 @@ impl Instance {
 			Classpath::new()
 		};
 
+		// TODO: This is janky
 		match self.config.modifications.server_type {
 			ServerType::Paper => {
 				let process = OutputProcess::new(o);
 				process.0.display(
-					MessageContents::StartProcess("Checking for paper updates".into()),
+					MessageContents::StartProcess("Checking for Paper updates".into()),
 					MessageLevel::Important,
 				);
 
-				let build_num = paper::get_newest_build(version, client)
+				let build_num = paper::get_newest_build(paper::Mode::Paper, version, client)
 					.await
 					.context("Failed to get the newest Paper version")?;
-				let file_name = paper::get_jar_file_name(version, build_num, client)
-					.await
-					.context("Failed to get the Paper file name")?;
+				let file_name =
+					paper::get_jar_file_name(paper::Mode::Paper, version, build_num, client)
+						.await
+						.context("Failed to get the Paper file name")?;
 				let paper_jar_path = paper::get_local_jar_path(version, &paths.core);
 				if !manager.should_update_file(&paper_jar_path) {
 					process.0.display(
@@ -215,9 +217,16 @@ impl Instance {
 						MessageContents::StartProcess("Downloading Paper server".into()),
 						MessageLevel::Important,
 					);
-					paper::download_server_jar(version, build_num, &file_name, &paths.core, client)
-						.await
-						.context("Failed to download Paper server JAR")?;
+					paper::download_server_jar(
+						paper::Mode::Paper,
+						version,
+						build_num,
+						&file_name,
+						&paths.core,
+						client,
+					)
+					.await
+					.context("Failed to download Paper server JAR")?;
 					process.0.display(
 						MessageContents::Success("Paper server downloaded".into()),
 						MessageLevel::Important,
@@ -226,6 +235,50 @@ impl Instance {
 
 				out.files_updated.insert(paper_jar_path.clone());
 				self.jar_path_override = Some(paper_jar_path);
+			}
+			ServerType::Folia => {
+				let process = OutputProcess::new(o);
+				process.0.display(
+					MessageContents::StartProcess("Checking for Folia updates".into()),
+					MessageLevel::Important,
+				);
+
+				let build_num = paper::get_newest_build(paper::Mode::Folia, version, client)
+					.await
+					.context("Failed to get the newest Folia version")?;
+				let file_name =
+					paper::get_jar_file_name(paper::Mode::Folia, version, build_num, client)
+						.await
+						.context("Failed to get the Folia file name")?;
+				let folia_jar_path = paper::get_local_jar_path(version, &paths.core);
+				if !manager.should_update_file(&folia_jar_path) {
+					process.0.display(
+						MessageContents::Success("Folia is up to date".into()),
+						MessageLevel::Important,
+					);
+				} else {
+					process.0.display(
+						MessageContents::StartProcess("Downloading Folia server".into()),
+						MessageLevel::Important,
+					);
+					paper::download_server_jar(
+						paper::Mode::Folia,
+						version,
+						build_num,
+						&file_name,
+						&paths.core,
+						client,
+					)
+					.await
+					.context("Failed to download Paper server JAR")?;
+					process.0.display(
+						MessageContents::Success("Paper server downloaded".into()),
+						MessageLevel::Important,
+					);
+				}
+
+				out.files_updated.insert(folia_jar_path.clone());
+				self.jar_path_override = Some(folia_jar_path);
 			}
 			_ => {}
 		}

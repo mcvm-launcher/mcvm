@@ -26,7 +26,7 @@ The different types of fields are listed here. Variants may be listed with `supp
 - `glowstone` Glowstone server (unsupported)
 - `pufferfish` Pufferfish server (unsupported)
 - `purpur` Purpur server (unsupported)
-- `folia` Folia server (unsupported)
+- `folia` Folia server (supported)
 - `fabric` The Fabric modloader. (supported)
 - `quilt` The Quilt modloader. (supported)
 - `forge` The Forge modloader. (unsupported)

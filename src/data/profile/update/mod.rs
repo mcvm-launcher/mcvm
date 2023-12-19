@@ -198,12 +198,13 @@ async fn get_paper_properties<'a, O: MCVMOutput>(
 	ctx: &mut ProfileUpdateContext<'a, O>,
 ) -> anyhow::Result<Option<(u16, String)>> {
 	let out = if let ServerType::Paper = profile.modifications.server_type {
-		let build_num = paper::get_newest_build(mc_version, ctx.client)
+		let build_num = paper::get_newest_build(paper::Mode::Paper, mc_version, ctx.client)
 			.await
 			.context("Failed to get the newest Paper build number")?;
-		let paper_file_name = paper::get_jar_file_name(mc_version, build_num, ctx.client)
-			.await
-			.context("Failed to get the name of the Paper Jar file")?;
+		let paper_file_name =
+			paper::get_jar_file_name(paper::Mode::Paper, mc_version, build_num, ctx.client)
+				.await
+				.context("Failed to get the name of the Paper Jar file")?;
 		Some((build_num, paper_file_name))
 	} else {
 		None
@@ -212,6 +213,7 @@ async fn get_paper_properties<'a, O: MCVMOutput>(
 	Ok(out)
 }
 
+// TODO: Make this work with Folia
 /// Remove the old Paper files for a profile if they have updated
 async fn check_profile_paper_update<'a, O: MCVMOutput>(
 	profile: &Profile,
