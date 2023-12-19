@@ -72,8 +72,8 @@ async fn gen_smithed_pkg(id: &str, dep_substitutions: Option<Vec<String>>) {
 	if let Some(dep_substitutions) = dep_substitutions {
 		for dep in dep_substitutions {
 			let mut items = dep.split('=');
-			let key = items.nth(0).expect("Key in dep sub is missing");
-			let val = items.nth(0).expect("Val in dep sub is missing");
+			let key = items.next().expect("Key in dep sub is missing");
+			let val = items.next().expect("Val in dep sub is missing");
 			if key.is_empty() {
 				panic!("Dep sub key is empty");
 			}

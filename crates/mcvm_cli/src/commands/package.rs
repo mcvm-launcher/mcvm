@@ -221,7 +221,7 @@ fn pretty_print_package_script(contents: &str) -> anyhow::Result<()> {
 				continue;
 			}
 			// A range thing
-			let text = if left_pos == contents.len() - 1 && contents.len() > 0 {
+			let text = if left_pos == contents.len() - 1 && !contents.is_empty() {
 				&contents[left_pos..]
 			} else {
 				&contents[left_pos..right_pos]

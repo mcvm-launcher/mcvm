@@ -51,6 +51,12 @@ impl LaunchConfiguration {
 	}
 }
 
+impl Default for LaunchConfiguration {
+	fn default() -> Self {
+		Self::new()
+	}
+}
+
 /// Builder for the launch configuration
 pub struct LaunchConfigBuilder {
 	config: LaunchConfiguration,
