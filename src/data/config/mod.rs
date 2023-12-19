@@ -113,6 +113,11 @@ impl Config {
 				bail!("Invalid string '{user_id}'");
 			}
 			let user = user_config.to_user(user_id);
+			// Disabled until we can verify game ownership.
+			// We don't want to be a cracked launcher.
+			if user.is_unverified() || user.is_demo() {
+				bail!("Unverified and Demo users are currently disabled");
+			}
 			if !user.validate_username() {
 				bail!("Invalid string '{}'", user.get_name());
 			}
