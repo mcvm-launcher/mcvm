@@ -1,9 +1,11 @@
+/// Addon-related functions for instances
+mod addons;
 /// Creation of instance contents
 pub mod create;
 /// Launching an instance
 pub mod launch;
 
-use anyhow::{bail, ensure, Context};
+use anyhow::{bail, Context};
 use mcvm_core::instance::WindowResolution;
 use mcvm_core::io::java::classpath::Classpath;
 use mcvm_core::launch::LaunchConfiguration;
@@ -15,7 +17,6 @@ use mcvm_shared::Side;
 use reqwest::Client;
 
 use crate::io::files::paths::Paths;
-use crate::io::files::update_hardlink;
 use crate::io::lock::{Lockfile, LockfileAddon};
 use crate::io::options::client::ClientOptions;
 use crate::io::options::server::ServerOptions;
@@ -34,11 +35,10 @@ use super::config::profile::GameModifications;
 use super::config::profile::ProfilePackageConfiguration;
 use super::id::InstanceID;
 use super::profile::update::manager::UpdateManager;
-use mcvm_shared::addon::{Addon, AddonKind};
 
 use std::collections::HashMap;
 use std::fs;
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 
 /// An instance of the game on a profile
 #[derive(Debug)]
@@ -232,105 +232,6 @@ impl Instance {
 		);
 
 		Ok(classpath)
-	}
-
-	/// Get the paths on this instance to hardlink an addon to
-	pub fn get_linked_addon_paths(
-		&mut self,
-		addon: &Addon,
-		paths: &Paths,
-	) -> anyhow::Result<Vec<PathBuf>> {
-		self.ensure_dirs(paths)?;
-		let inst_dir = &self.dirs.get().inst_dir;
-		Ok(match addon.kind {
-			AddonKind::ResourcePack => {
-				if let InstKind::Client { .. } = self.kind {
-					vec![inst_dir.join("resourcepacks")]
-				} else {
-					vec![]
-				}
-			}
-			AddonKind::Mod => vec![inst_dir.join("mods")],
-			AddonKind::Plugin => {
-				if let InstKind::Server { .. } = self.kind {
-					vec![inst_dir.join("plugins")]
-				} else {
-					vec![]
-				}
-			}
-			AddonKind::Shader => {
-				if let InstKind::Client { .. } = self.kind {
-					vec![inst_dir.join("shaderpacks")]
-				} else {
-					vec![]
-				}
-			}
-			AddonKind::Datapack => {
-				if let Some(datapack_folder) = &self.config.datapack_folder {
-					vec![inst_dir.join(datapack_folder)]
-				} else {
-					match self.kind {
-						InstKind::Client { .. } => inst_dir
-							.join("saves")
-							.read_dir()
-							.context("Failed to read saves directory")?
-							.filter_map(|world| {
-								world.map(|world| world.path().join("datapacks")).ok()
-							})
-							.collect(),
-						// TODO: Different world paths in options
-						InstKind::Server { .. } => vec![inst_dir.join("world").join("datapacks")],
-					}
-				}
-			}
-		})
-	}
-
-	fn link_addon(
-		dir: &Path,
-		addon: &Addon,
-		paths: &Paths,
-		instance_id: &str,
-	) -> anyhow::Result<()> {
-		let link = dir.join(addon.file_name.clone());
-		let addon_path = addon::get_path(addon, paths, instance_id);
-		files::create_leading_dirs(&link)?;
-		// These checks are to make sure that we properly link the hardlink to the right location
-		// We have to remove the current link since it doesnt let us update it in place
-		ensure!(addon_path.exists(), "Addon path does not exist");
-		if link.exists() {
-			fs::remove_file(&link).context("Failed to remove instance addon file")?;
-		}
-		update_hardlink(&addon_path, &link).context("Failed to create hard link")?;
-		Ok(())
-	}
-
-	/// Creates an addon on the instance
-	pub fn create_addon(&mut self, addon: &Addon, paths: &Paths) -> anyhow::Result<()> {
-		self.ensure_dirs(paths)?;
-		let game_dir = &self.dirs.get().game_dir;
-		files::create_leading_dirs(game_dir)?;
-		files::create_dir(game_dir)?;
-		for path in self
-			.get_linked_addon_paths(addon, paths)
-			.context("Failed to get linked directory")?
-		{
-			Self::link_addon(&path, addon, paths, &self.id)
-				.with_context(|| format!("Failed to link addon {}", addon.id))?;
-		}
-
-		Ok(())
-	}
-
-	/// Removes an addon file from this instance
-	pub fn remove_addon_file(&self, path: &Path, paths: &Paths) -> anyhow::Result<()> {
-		// We check if it is a stored addon path due to the old behavior to put that path in the lockfile.
-		// Also some other sanity checks
-		if path.exists() && !addon::is_stored_addon_path(path, paths) && !path.is_dir() {
-			fs::remove_file(path).context("Failed to remove instance addon file")?;
-		}
-
-		Ok(())
 	}
 
 	/// Removes the paper server jar file from a server instance
