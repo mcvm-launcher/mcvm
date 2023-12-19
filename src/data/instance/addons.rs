@@ -2,6 +2,7 @@ use std::path::{Path, PathBuf};
 
 use anyhow::{ensure, Context};
 use mcvm_shared::addon::{Addon, AddonKind};
+use mcvm_shared::versions::{VersionInfo, VersionPattern};
 
 use crate::data::addon;
 use crate::io::files::{self, paths::Paths, update_hardlink};
@@ -10,13 +11,18 @@ use super::{InstKind, Instance};
 
 impl Instance {
 	/// Creates an addon on the instance
-	pub fn create_addon(&mut self, addon: &Addon, paths: &Paths) -> anyhow::Result<()> {
+	pub fn create_addon(
+		&mut self,
+		addon: &Addon,
+		paths: &Paths,
+		version_info: &VersionInfo,
+	) -> anyhow::Result<()> {
 		self.ensure_dirs(paths)?;
 		let game_dir = &self.dirs.get().game_dir;
 		files::create_leading_dirs(game_dir)?;
 		files::create_dir(game_dir)?;
 		for path in self
-			.get_linked_addon_paths(addon, paths)
+			.get_linked_addon_paths(addon, paths, version_info)
 			.context("Failed to get linked directory")?
 		{
 			Self::link_addon(&path, addon, paths, &self.id)
@@ -25,19 +31,25 @@ impl Instance {
 
 		Ok(())
 	}
-	
+
 	/// Get the paths on this instance to hardlink an addon to
 	pub fn get_linked_addon_paths(
 		&mut self,
 		addon: &Addon,
 		paths: &Paths,
+		version_info: &VersionInfo,
 	) -> anyhow::Result<Vec<PathBuf>> {
 		self.ensure_dirs(paths)?;
 		let inst_dir = &self.dirs.get().inst_dir;
 		Ok(match addon.kind {
 			AddonKind::ResourcePack => {
 				if let InstKind::Client { .. } = self.kind {
-					vec![inst_dir.join("resourcepacks")]
+					// Resource packs are texture packs on older versions
+					if VersionPattern::After("13w24a".into()).matches_info(version_info) {
+						vec![inst_dir.join("resourcepacks")]
+					} else {
+						vec![inst_dir.join("texturepacks")]
+					}
 				} else {
 					vec![]
 				}

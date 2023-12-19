@@ -13,6 +13,7 @@ use mcvm_core::version::InstalledVersion;
 use mcvm_core::QuickPlayType;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::pkg::ArcPkgReq;
+use mcvm_shared::versions::VersionInfo;
 use mcvm_shared::Side;
 use reqwest::Client;
 
@@ -290,6 +291,11 @@ impl Instance {
 		client: &Client,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<EvalData<'a>> {
+		let version_info = VersionInfo {
+			version: eval_input.constants.version.clone(),
+			versions: eval_input.constants.version_list.clone(),
+		};
+		
 		let eval = reg
 			.eval(pkg, paths, Routine::Install, eval_input, client, o)
 			.await
@@ -338,7 +344,7 @@ impl Instance {
 			.map(|x| {
 				Ok(LockfileAddon::from_addon(
 					&x.addon,
-					self.get_linked_addon_paths(&x.addon, paths)?
+					self.get_linked_addon_paths(&x.addon, paths, &version_info)?
 						.iter()
 						.map(|y| y.join(x.addon.file_name.clone()))
 						.collect(),
@@ -358,7 +364,7 @@ impl Instance {
 					.await
 					.with_context(|| format!("Failed to acquire addon '{}'", addon.addon.id))?;
 			}
-			self.create_addon(&addon.addon, paths)
+			self.create_addon(&addon.addon, paths, &version_info)
 				.with_context(|| format!("Failed to install addon '{}'", addon.addon.id))?;
 		}
 
