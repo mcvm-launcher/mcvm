@@ -7,13 +7,13 @@ use mcvm_core::user::uuid::hyphenate_uuid;
 use mcvm_core::user::{User, UserManager};
 use mcvm_core::version::InstalledVersion;
 use mcvm_mods::fabric_quilt;
+use mcvm_options::{self, client::write_options_txt, server::write_server_properties};
 use mcvm_shared::modifications::{Modloader, ServerType};
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel, OutputProcess};
 use reqwest::Client;
 
 use crate::data::profile::update::manager::{UpdateManager, UpdateMethodResult, UpdateRequirement};
 use crate::io::files::{self, paths::Paths};
-use crate::io::options::{self, client::write_options_txt, server::write_server_properties};
 use crate::net::paper;
 
 use super::{InstKind, Instance};
@@ -130,7 +130,7 @@ impl Instance {
 		let version_info = &manager.version_info.get();
 		if let Some(global_options) = &manager.options {
 			if let Some(global_options) = &global_options.client {
-				let global_keys = options::client::create_keys(global_options, version_info)
+				let global_keys = mcvm_options::client::create_keys(global_options, version_info)
 					.context("Failed to create keys for global options")?;
 				keys.extend(global_keys);
 			}
@@ -140,7 +140,7 @@ impl Instance {
 			..
 		} = &self.kind
 		{
-			let override_keys = options::client::create_keys(options, version_info)
+			let override_keys = mcvm_options::client::create_keys(options, version_info)
 				.context("Failed to create keys for override options")?;
 			keys.extend(override_keys);
 		}
@@ -234,7 +234,7 @@ impl Instance {
 		let version_info = manager.version_info.get();
 		if let Some(global_options) = &manager.options {
 			if let Some(global_options) = &global_options.server {
-				let global_keys = options::server::create_keys(global_options, version_info)
+				let global_keys = mcvm_options::server::create_keys(global_options, version_info)
 					.context("Failed to create keys for global options")?;
 				keys.extend(global_keys);
 			}
@@ -243,7 +243,7 @@ impl Instance {
 			options: Some(options),
 		} = &self.kind
 		{
-			let override_keys = options::server::create_keys(options, version_info)
+			let override_keys = mcvm_options::server::create_keys(options, version_info)
 				.context("Failed to create keys for override options")?;
 			keys.extend(override_keys);
 		}

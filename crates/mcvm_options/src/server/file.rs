@@ -5,7 +5,7 @@ use std::{collections::HashMap, io::Write, path::Path};
 use anyhow::Context;
 use itertools::Itertools;
 
-use crate::io::options::read::read_options_file;
+use crate::read::read_options_file;
 use mcvm_shared::util::ToInt;
 use mcvm_shared::versions::{VersionInfo, VersionPattern};
 
@@ -34,9 +34,7 @@ pub async fn write_server_properties(
 /// Collect a hashmap from an existing server.properties file so we can compare with it
 async fn read_server_properties(path: &Path) -> anyhow::Result<HashMap<String, String>> {
 	if path.exists() {
-		let contents = tokio::fs::read_to_string(path)
-			.await
-			.context("Failed to read options.txt")?;
+		let contents = std::fs::read_to_string(path).context("Failed to read options.txt")?;
 		read_options_file(&contents, SEP)
 	} else {
 		Ok(HashMap::new())
@@ -285,7 +283,7 @@ pub fn create_keys(
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use crate::io::options::read::parse_options_str;
+	use crate::read::parse_options_str;
 
 	#[test]
 	fn test_escape_colons() {

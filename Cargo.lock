@@ -1054,6 +1054,7 @@ dependencies = [
  "libflate",
  "mcvm_core",
  "mcvm_mods",
+ "mcvm_options",
  "mcvm_parse",
  "mcvm_pkg",
  "mcvm_shared",
@@ -1148,6 +1149,19 @@ dependencies = [
  "serde_json",
  "thiserror",
  "tokio",
+]
+
+[[package]]
+name = "mcvm_options"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "itertools",
+ "mcvm_shared",
+ "schemars",
+ "serde",
+ "serde_json",
+ "thiserror",
 ]
 
 [[package]]

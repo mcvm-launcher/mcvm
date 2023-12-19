@@ -5,7 +5,7 @@ use std::{fs::File, io::BufWriter, path::PathBuf};
 
 use clap::Parser;
 use mcvm::data::config::ConfigDeser;
-use mcvm::io::options::Options;
+use mcvm::options::Options;
 use mcvm::pkg_crate::declarative::{
 	DeclarativeAddon, DeclarativeAddonVersion, DeclarativeConditionSet, DeclarativePackageRelations,
 };

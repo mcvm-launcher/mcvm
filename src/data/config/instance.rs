@@ -4,6 +4,8 @@ use std::str::FromStr;
 use anyhow::{anyhow, bail, ensure, Context};
 use mcvm_core::io::java::args::{ArgsPreset, MemoryNum};
 use mcvm_core::io::java::install::JavaInstallationKind;
+use mcvm_options::client::ClientOptions;
+use mcvm_options::server::ServerOptions;
 use mcvm_shared::util::merge_options;
 use mcvm_shared::Side;
 #[cfg(feature = "schema")]
@@ -14,8 +16,6 @@ use crate::data::id::InstanceID;
 use crate::data::instance::launch::{LaunchOptions, WrapperCommand};
 use crate::data::instance::{InstKind, Instance, InstanceStoredConfig};
 use crate::data::profile::Profile;
-use crate::io::options::client::ClientOptions;
-use crate::io::options::server::ServerOptions;
 use crate::io::snapshot;
 
 use super::package::PackageConfig;

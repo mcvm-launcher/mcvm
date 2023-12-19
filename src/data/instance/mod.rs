@@ -11,6 +11,10 @@ use mcvm_core::io::java::classpath::Classpath;
 use mcvm_core::launch::LaunchConfiguration;
 use mcvm_core::version::InstalledVersion;
 use mcvm_core::QuickPlayType;
+use mcvm_mods::fabric_quilt;
+use mcvm_options::client::ClientOptions;
+use mcvm_options::server::ServerOptions;
+use mcvm_shared::later::Later;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::pkg::ArcPkgReq;
 use mcvm_shared::versions::VersionInfo;
@@ -19,13 +23,9 @@ use reqwest::Client;
 
 use crate::io::files::paths::Paths;
 use crate::io::lock::{Lockfile, LockfileAddon};
-use crate::io::options::client::ClientOptions;
-use crate::io::options::server::ServerOptions;
 use crate::io::{files, snapshot};
 use crate::package::eval::{EvalData, EvalInput, Routine};
 use crate::package::reg::PkgRegistry;
-use mcvm_mods::fabric_quilt;
-use mcvm_shared::later::Later;
 
 use self::launch::LaunchOptions;
 
@@ -295,7 +295,7 @@ impl Instance {
 			version: eval_input.constants.version.clone(),
 			versions: eval_input.constants.version_list.clone(),
 		};
-		
+
 		let eval = reg
 			.eval(pkg, paths, Routine::Install, eval_input, client, o)
 			.await

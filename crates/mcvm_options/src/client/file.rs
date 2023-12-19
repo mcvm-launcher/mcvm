@@ -6,7 +6,7 @@ use std::path::Path;
 use anyhow::Context;
 use itertools::Itertools;
 
-use crate::io::options::read::{read_options_file, EnumOrNumber};
+use crate::read::{read_options_file, EnumOrNumber};
 use mcvm_shared::util::ToInt;
 
 use mcvm_shared::versions::{VersionInfo, VersionPattern};
@@ -39,9 +39,7 @@ pub async fn write_options_txt(
 /// Collect a hashmap from an existing options.txt file so we can compare with it
 pub async fn read_options_txt(path: &Path) -> anyhow::Result<HashMap<String, String>> {
 	if path.exists() {
-		let contents = tokio::fs::read_to_string(path)
-			.await
-			.context("Failed to read options.txt")?;
+		let contents = std::fs::read_to_string(path).context("Failed to read options.txt")?;
 		read_options_file(&contents, SEP)
 	} else {
 		Ok(HashMap::new())
@@ -758,7 +756,7 @@ pub fn create_keys(
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use crate::io::options::read::parse_options_str;
+	use crate::read::parse_options_str;
 
 	#[test]
 	fn test_create_keys() {

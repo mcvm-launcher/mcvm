@@ -15,6 +15,7 @@
 //! - `schema`: Enable generation of JSON schemas using the `schemars` crate
 
 pub use mcvm_core as core;
+pub use mcvm_options as options;
 pub use mcvm_parse as parse;
 pub use mcvm_pkg as pkg_crate;
 pub use mcvm_shared as shared;

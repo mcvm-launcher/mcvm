@@ -1,3 +1,11 @@
+#![warn(missing_docs)]
+#![deny(unsafe_code)]
+
+//! This library is used by MCVM to provide structure for specifying
+//! version-agnostic game options for both Minecraft clients and Minecraft
+//! servers. It also generates the options files in a way that is non-destructive
+//! to existing settings
+
 /// Options management for the client
 pub mod client;
 /// Common utilties for reading and parsing options-related files
@@ -7,7 +15,7 @@ pub mod server;
 
 use std::fs::File;
 use std::io::BufReader;
-use std::path::PathBuf;
+use std::path::Path;
 
 use anyhow::Context;
 #[cfg(feature = "schema")]
@@ -15,7 +23,6 @@ use schemars::JsonSchema;
 use serde::Deserialize;
 
 use self::read::parse_options;
-use super::files::paths::Paths;
 use client::ClientOptions;
 use server::ServerOptions;
 
@@ -31,14 +38,8 @@ pub struct Options {
 	pub server: Option<ServerOptions>,
 }
 
-/// Get the path to the options file
-pub fn get_path(paths: &Paths) -> PathBuf {
-	paths.project.config_dir().join("options.json")
-}
-
 /// Read the options.json file
-pub async fn read_options(paths: &Paths) -> anyhow::Result<Option<Options>> {
-	let path = get_path(paths);
+pub async fn read_options(path: &Path) -> anyhow::Result<Option<Options>> {
 	if !path.exists() {
 		return Ok(None);
 	}

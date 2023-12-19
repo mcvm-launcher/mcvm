@@ -11,8 +11,6 @@ use std::fmt::Display;
 
 use serde::{Deserialize, Serialize};
 
-use crate::util::json;
-
 use super::read::{EnumOrNumber, EnumOrString};
 
 // I do not want to document all of these
@@ -122,7 +120,7 @@ pub mod deser {
 		pub seed: Option<String>,
 		pub r#type: Option<EnumOrString<WorldType>>,
 		pub structures: Option<bool>,
-		pub generator_settings: Option<json::JsonObject>,
+		pub generator_settings: Option<serde_json::Map<String, serde_json::Value>>,
 		pub max_size: Option<u32>,
 		pub max_build_height: Option<u32>,
 		pub allow_nether: Option<bool>,

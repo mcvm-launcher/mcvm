@@ -4,6 +4,7 @@ use std::path::{Path, PathBuf};
 use anyhow::Context;
 use mcvm_core::util::versions::MinecraftVersion;
 use mcvm_core::MCVMCore;
+use mcvm_options::{read_options, Options};
 use mcvm_shared::later::Later;
 use mcvm_shared::output::MCVMOutput;
 use mcvm_shared::versions::VersionInfo;
@@ -11,7 +12,6 @@ use mcvm_shared::Side;
 use reqwest::Client;
 
 use crate::io::files::paths::Paths;
-use crate::io::options::{read_options, Options};
 use crate::util::print::PrintOptions;
 use mcvm_mods::fabric_quilt::{self, FabricQuiltMeta};
 
@@ -171,7 +171,8 @@ impl UpdateManager {
 		}
 
 		if self.has_requirement(UpdateRequirement::Options) {
-			let options = read_options(paths)
+			let path = crate::io::options::get_path(paths);
+			let options = read_options(&path)
 				.await
 				.context("Failed to read options.json")?;
 			self.options = options;
