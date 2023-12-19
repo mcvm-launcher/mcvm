@@ -234,6 +234,64 @@ pub struct InstanceConfiguration {
 	pub additional_libs: Vec<PathBuf>,
 }
 
+impl InstanceConfiguration {
+	/// Construct a new InstanceConfiguration with default settings
+	pub fn new(side: InstanceKind, path: PathBuf) -> Self {
+		Self {
+			side,
+			path,
+			launch: LaunchConfiguration::new(),
+			jar_path: None,
+			main_class: None,
+			additional_libs: Vec::new(),
+		}
+	}
+}
+
+/// Simple builder for the configuration
+pub struct InstanceConfigBuilder {
+	config: InstanceConfiguration,
+}
+
+impl InstanceConfigBuilder {
+	/// Start a new ConfigBuilder with default configuration
+	pub fn new(side: InstanceKind, path: PathBuf) -> Self {
+		Self {
+			config: InstanceConfiguration::new(side, path),
+		}
+	}
+
+	/// Finish building and get the configuration
+	pub fn build(self) -> InstanceConfiguration {
+		self.config
+	}
+
+	/// Set the launch options for the instance
+	pub fn launch_config(mut self, launch_config: LaunchConfiguration) -> Self {
+		self.config.launch = launch_config;
+		self
+	}
+
+	/// Override the default JAR path
+	pub fn jar_path(mut self, jar_path: PathBuf) -> Self {
+		self.config.jar_path = Some(jar_path);
+		self
+	}
+
+	/// Override the default main class
+	pub fn main_class(mut self, main_class: String) -> Self {
+		self.config.main_class = Some(main_class);
+		self
+	}
+
+	/// Add additional libraries to the game. They must already be installed
+	/// on the system.
+	pub fn additional_libs(mut self, additional_libs: Vec<PathBuf>) -> Self {
+		self.config.additional_libs.extend(additional_libs);
+		self
+	}
+}
+
 /// Configuration for what side an instance is, along with configuration
 /// specific to that side
 pub enum InstanceKind {

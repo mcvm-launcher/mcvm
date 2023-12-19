@@ -1,9 +1,9 @@
 use std::path::PathBuf;
 
 use anyhow::Context;
-use mcvm_core::launch::LaunchConfiguration;
+use mcvm_core::instance::InstanceConfigBuilder;
 use mcvm_core::util::versions::MinecraftVersion;
-use mcvm_core::{ClientWindowConfig, InstanceConfiguration, InstanceKind, MCVMCore};
+use mcvm_core::{ClientWindowConfig, InstanceKind, MCVMCore};
 use mcvm_mods::fabric_quilt;
 use mcvm_shared::{output, Side};
 
@@ -39,20 +39,18 @@ async fn run() -> anyhow::Result<()> {
 		.await
 		.context("Failed to ensure assets and libraries")?;
 
-	let launch_config = LaunchConfiguration::new();
-	let inst_config = InstanceConfiguration {
-		side: InstanceKind::Client {
+	let inst_config = InstanceConfigBuilder::new(
+		InstanceKind::Client {
 			window: ClientWindowConfig::new(),
 		},
-		path: PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+		PathBuf::from(env!("CARGO_MANIFEST_DIR"))
 			.join("test/manual_integration/instances/fabric_core"),
-		launch: launch_config,
-		jar_path: None,
-		main_class: Some(main_class),
-		additional_libs: classpath.get_paths(),
-	};
+	)
+	.main_class(main_class)
+	.additional_libs(classpath.get_paths());
+
 	let mut instance = vers
-		.get_instance(inst_config, &mut o)
+		.get_instance(inst_config.build(), &mut o)
 		.await
 		.context("Failed to create instance")?;
 	instance
