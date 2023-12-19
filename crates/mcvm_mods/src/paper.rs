@@ -1,12 +1,47 @@
 use std::path::PathBuf;
 
 use anyhow::{anyhow, Context};
-use mcvm_core::net::download;
-use mcvm_shared::Side;
+use mcvm_core::{net::download, MCVMCore};
+use mcvm_shared::{output::MCVMOutput, versions::VersionInfo, Side};
 use reqwest::Client;
 use serde::Deserialize;
 
-use crate::io::files::paths::Paths;
+use mcvm_core::io::files::paths::Paths;
+
+/// The main class for a Paper server
+pub const PAPER_SERVER_MAIN_CLASS: &str = "io.papermc.paperclip.Main";
+
+/// Install Paper using the core and information about the version.
+/// First, create the core and the version you want. Then, get the version info from the version.
+/// Finally, run this function. Returns the JAR path and main class to add to the instance you are launching
+pub async fn install_from_core(
+	core: &mut MCVMCore,
+	version_info: &VersionInfo,
+	o: &mut impl MCVMOutput,
+) -> anyhow::Result<(PathBuf, String)> {
+	let _ = o;
+	
+	let build_num = get_newest_build(&version_info.version, core.get_client())
+		.await
+		.context("Failed to get newest Paper build")?;
+	let jar_file_name = get_jar_file_name(&version_info.version, build_num, core.get_client())
+		.await
+		.context("Failed to get the API name of the Paper JAR file")?;
+	download_server_jar(
+		&version_info.version,
+		build_num,
+		&jar_file_name,
+		core.get_paths(),
+		core.get_client(),
+	)
+	.await
+	.context("Failed to download Paper JAR file")?;
+
+	Ok((
+		get_local_jar_path(&version_info.version, core.get_paths()),
+		PAPER_SERVER_MAIN_CLASS.into(),
+	))
+}
 
 /// Get the newest build number of Paper
 pub async fn get_newest_build(version: &str, client: &Client) -> anyhow::Result<u16> {
@@ -79,5 +114,5 @@ pub async fn download_server_jar(
 
 /// Get the path to the stored Paper JAR file
 pub fn get_local_jar_path(version: &str, paths: &Paths) -> PathBuf {
-	mcvm_core::io::minecraft::game_jar::get_path(Side::Server, version, Some("paper"), &paths.core)
+	mcvm_core::io::minecraft::game_jar::get_path(Side::Server, version, Some("paper"), paths)
 }

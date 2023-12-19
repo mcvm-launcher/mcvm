@@ -8,3 +8,5 @@
 
 /// Installation of the Fabric and Quilt modloaders
 pub mod fabric_quilt;
+/// Installation of the Paper server
+pub mod paper;

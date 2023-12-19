@@ -11,6 +11,7 @@ use packages::{print_package_support_messages, update_profile_packages};
 use std::collections::HashSet;
 
 use anyhow::{anyhow, Context};
+use mcvm_mods::paper;
 use mcvm_shared::modifications::ServerType;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use reqwest::Client;
@@ -19,7 +20,6 @@ use crate::data::config::Config;
 use crate::data::id::ProfileID;
 use crate::io::files::paths::Paths;
 use crate::io::lock::Lockfile;
-use crate::net::paper;
 use crate::package::reg::PkgRegistry;
 use crate::util::print::PrintOptions;
 

@@ -7,6 +7,7 @@ use mcvm_core::user::uuid::hyphenate_uuid;
 use mcvm_core::user::{User, UserManager};
 use mcvm_core::version::InstalledVersion;
 use mcvm_mods::fabric_quilt;
+use mcvm_mods::paper;
 use mcvm_options::{self, client::write_options_txt, server::write_server_properties};
 use mcvm_shared::modifications::{Modloader, ServerType};
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel, OutputProcess};
@@ -14,7 +15,6 @@ use reqwest::Client;
 
 use crate::data::profile::update::manager::{UpdateManager, UpdateMethodResult, UpdateRequirement};
 use crate::io::files::{self, paths::Paths};
-use crate::net::paper;
 
 use super::{InstKind, Instance};
 
@@ -204,7 +204,7 @@ impl Instance {
 				let file_name = paper::get_jar_file_name(version, build_num, client)
 					.await
 					.context("Failed to get the Paper file name")?;
-				let paper_jar_path = paper::get_local_jar_path(version, paths);
+				let paper_jar_path = paper::get_local_jar_path(version, &paths.core);
 				if !manager.should_update_file(&paper_jar_path) {
 					process.0.display(
 						MessageContents::Success("Paper is up to date".into()),
@@ -215,7 +215,7 @@ impl Instance {
 						MessageContents::StartProcess("Downloading Paper server".into()),
 						MessageLevel::Important,
 					);
-					paper::download_server_jar(version, build_num, &file_name, paths, client)
+					paper::download_server_jar(version, build_num, &file_name, &paths.core, client)
 						.await
 						.context("Failed to download Paper server JAR")?;
 					process.0.display(
