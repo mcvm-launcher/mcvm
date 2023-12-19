@@ -199,7 +199,7 @@ impl Instance {
 			max_mem: self.config.launch.max_mem.clone(),
 			preset: self.config.launch.preset,
 			env: self.config.launch.env.clone(),
-			wrapper,
+			wrappers: Vec::from_iter(wrapper),
 			quick_play,
 			use_log4j_config: self.config.launch.use_log4j_config,
 		};

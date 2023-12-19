@@ -9,6 +9,7 @@ use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use crate::instance::InstanceKind;
 use crate::user::auth::AccessToken;
 use crate::util::versions::VersionName;
+use crate::WrapperCommand;
 
 use super::LaunchConfiguration;
 
@@ -18,15 +19,7 @@ pub(crate) fn launch_game_process(
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<std::process::Child> {
 	// Create the base command based on wrapper settings
-	let mut cmd = match &params.launch_config.wrapper {
-		Some(wrapper) => {
-			let mut cmd = Command::new(&wrapper.cmd);
-			cmd.args(&wrapper.args);
-			cmd.arg(params.command);
-			cmd
-		}
-		None => Command::new(params.command),
-	};
+	let mut cmd = create_wrapped_command(params.command, &params.launch_config.wrappers);
 
 	// Fill out the command properties
 	cmd.current_dir(params.cwd);
@@ -123,6 +116,24 @@ fn output_launch_command(
 	Ok(())
 }
 
+/// Creates a command wrapped in multiple other wrappers
+fn create_wrapped_command(command: &OsStr, wrappers: &[WrapperCommand]) -> Command {
+	let mut cmd = Command::new(command);
+	for wrapper in wrappers {
+		cmd = wrap_single(cmd, wrapper);
+	}
+	cmd
+}
+
+/// Wraps a single command in a wrapper
+fn wrap_single(command: Command, wrapper: &WrapperCommand) -> Command {
+	let mut new_cmd = Command::new(&wrapper.cmd);
+	new_cmd.args(&wrapper.args);
+	new_cmd.arg(command.get_program());
+	new_cmd.args(command.get_args());
+	new_cmd
+}
+
 /// Container struct for parameters for launching the game process
 pub(crate) struct LaunchProcessParameters<'a> {
 	/// The base command to run, usually the path to the JVM
@@ -149,4 +160,31 @@ pub(crate) struct LaunchProcessProperties {
 	pub game_args: Vec<String>,
 	/// Additional environment variables to add to the launch command
 	pub additional_env_vars: HashMap<String, String>,
+}
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+
+	#[test]
+	fn test_wrappers() {
+		let wrappers = vec![
+			WrapperCommand {
+				cmd: "hello".into(),
+				args: Vec::new(),
+			},
+			WrapperCommand {
+				cmd: "world".into(),
+				args: vec!["foo".into(), "bar".into()],
+			},
+		];
+		let cmd = create_wrapped_command(OsStr::new("run"), &wrappers);
+		dbg!(&cmd);
+		assert_eq!(cmd.get_program(), OsStr::new("world"));
+		let mut args = cmd.get_args();
+		assert_eq!(args.next(), Some(OsStr::new("foo")));
+		assert_eq!(args.next(), Some(OsStr::new("bar")));
+		assert_eq!(args.next(), Some(OsStr::new("hello")));
+		assert_eq!(args.next(), Some(OsStr::new("run")));
+	}
 }

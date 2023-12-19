@@ -21,7 +21,7 @@ pub struct LaunchConfiguration {
 	/// Environment variables
 	pub env: HashMap<String, String>,
 	/// Wrapper command
-	pub wrapper: Option<WrapperCommand>,
+	pub wrappers: Vec<WrapperCommand>,
 	/// Quick Play options
 	pub quick_play: QuickPlayType,
 	/// Whether or not to use the Log4J configuration
@@ -39,7 +39,7 @@ impl LaunchConfiguration {
 			max_mem: None,
 			preset: ArgsPreset::None,
 			env: HashMap::new(),
-			wrapper: None,
+			wrappers: Vec::new(),
 			quick_play: QuickPlayType::None,
 			use_log4j_config: false,
 		}
@@ -117,9 +117,9 @@ impl LaunchConfigBuilder {
 		self
 	}
 
-	/// Set a wrapper command that encloses the normal command
+	/// Add a wrapper command that encloses the normal command
 	pub fn wrapper(mut self, wrapper: WrapperCommand) -> Self {
-		self.config.wrapper = Some(wrapper);
+		self.config.wrappers.push(wrapper);
 		self
 	}
 
