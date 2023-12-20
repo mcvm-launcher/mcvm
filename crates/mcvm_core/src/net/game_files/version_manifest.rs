@@ -138,8 +138,7 @@ async fn get_contents(
 }
 
 /// Make an ordered list of versions from the manifest to use for matching
-/// TODO: This does not need a result
-pub fn make_version_list(version_manifest: &VersionManifest) -> anyhow::Result<Vec<String>> {
+pub fn make_version_list(version_manifest: &VersionManifest) -> Vec<String> {
 	let mut out = Vec::new();
 	for entry in &version_manifest.versions {
 		out.push(entry.id.clone());
@@ -147,7 +146,7 @@ pub fn make_version_list(version_manifest: &VersionManifest) -> anyhow::Result<V
 	// We have to reverse since the version list expects oldest to newest
 	out.reverse();
 
-	Ok(out)
+	out
 }
 
 /// Combination of the version manifest and version list
@@ -161,13 +160,13 @@ pub struct VersionManifestAndList {
 impl VersionManifestAndList {
 	/// Construct a new VersionManifestAndList
 	pub fn new(manifest: VersionManifest) -> anyhow::Result<Self> {
-		let list = make_version_list(&manifest)?;
+		let list = make_version_list(&manifest);
 		Ok(Self { manifest, list })
 	}
 
 	/// Change the version manifest and list
 	pub fn set(&mut self, manifest: VersionManifest) -> anyhow::Result<()> {
-		self.list = make_version_list(&manifest)?;
+		self.list = make_version_list(&manifest);
 		self.manifest = manifest;
 
 		Ok(())

@@ -190,7 +190,7 @@ impl MCVMCore {
 			.get_version_manifest(&mut o)
 			.await
 			.context("Failed to get version manifest")?;
-		let list = make_version_list(manifest).context("Failed to create version list")?;
+		let list = make_version_list(manifest);
 		Ok(VersionInfo {
 			version,
 			versions: list,
