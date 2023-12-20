@@ -67,21 +67,21 @@ impl<'params> Instance<'params> {
 		params.persistent.dump(params.paths).await?;
 
 		// Get the game jar
-		game_jar::get(
-			config.side.get_side(),
-			params.client_meta,
-			params.version,
-			params.paths,
-			params.update_manager,
-			params.req_client,
-			o,
-		)
-		.await
-		.context("Failed to get the game JAR file")?;
-
 		let mut jar_path = if let Some(jar_path) = &config.jar_path {
 			jar_path.clone()
 		} else {
+			game_jar::get(
+				config.side.get_side(),
+				params.client_meta,
+				params.version,
+				params.paths,
+				params.update_manager,
+				params.req_client,
+				o,
+			)
+			.await
+			.context("Failed to get the game JAR file")?;
+
 			crate::io::minecraft::game_jar::get_path(
 				config.side.get_side(),
 				params.version,
@@ -102,7 +102,7 @@ impl<'params> Instance<'params> {
 				if params.update_manager.should_update_file(&new_jar_path) {
 					if new_jar_path.exists() {
 						std::fs::remove_file(&new_jar_path)
-							.context("Failed to remove existing JAR hardlink")?;
+							.context("Failed to remove existing server.jar")?;
 					}
 					if params.disable_hardlinks {
 						std::fs::copy(&jar_path, &new_jar_path)
@@ -115,6 +115,10 @@ impl<'params> Instance<'params> {
 				}
 			}
 			jar_path = new_jar_path;
+
+			if !jar_path.exists() {
+				bail!("Game JAR does not exist");
+			}
 		}
 
 		// Load assets and libs for client
