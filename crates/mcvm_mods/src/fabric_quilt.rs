@@ -195,10 +195,11 @@ pub async fn get_meta(
 		let bytes = download::bytes(&meta_url, client)
 			.await
 			.with_context(|| format!("Failed to download {mode} metadata file"))?;
+		let out = serde_json::from_slice::<Vec<FabricQuiltMeta>>(&bytes)
+			.context("Failed to parse downloaded metadata")?;
 		std::fs::write(path, &bytes).context("Failed to write meta to a file")?;
-
-		serde_json::from_slice::<Vec<FabricQuiltMeta>>(&bytes)
-			.context("Failed to parse downloaded metadata")?
+		
+		out
 	};
 
 	let meta = meta

@@ -5,6 +5,7 @@ use serde::Deserialize;
 
 use crate::io::files::{self, paths::Paths};
 use crate::io::java::JavaMajorVersion;
+use crate::io::json_from_file;
 use crate::io::update::UpdateManager;
 use crate::net::download;
 
@@ -333,18 +334,19 @@ pub async fn get(
 	let version_dir = paths.internal.join("versions").join(version_string);
 	files::create_dir(&version_dir)?;
 	let path = version_dir.join(client_meta_name);
-	let text = if manager.allow_offline && path.exists() {
-		std::fs::read_to_string(path).context("Failed to read client meta from file")?
+
+	let meta = if manager.allow_offline && path.exists() {
+		json_from_file(path).context("Failed to read client meta contents from file")?
 	} else {
-		let text = download::text(version_url.expect("Version does not exist"), client)
+		let bytes = download::bytes(version_url.expect("Version does not exist"), client)
 			.await
 			.context("Failed to download client meta")?;
-		std::fs::write(path, &text).context("Failed to write client meta to a file")?;
+		let out = serde_json::from_slice(&bytes).context("Failed to parse client meta")?;
 
-		text
+		std::fs::write(path, &bytes).context("Failed to write asset index to a file")?;
+
+		out
 	};
 
-	let version_doc = serde_json::from_str(&text).context("Failed to parse client meta")?;
-
-	Ok(version_doc)
+	Ok(meta)
 }

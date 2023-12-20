@@ -10,6 +10,7 @@ use serde::Deserialize;
 use tokio::{sync::Semaphore, task::JoinSet};
 
 use crate::io::files::{self, paths::Paths};
+use crate::io::json_from_file;
 use crate::io::update::{UpdateManager, UpdateMethodResult};
 use crate::net::download::{self, FD_SENSIBLE_LIMIT};
 use crate::util::versions::VersionName;
@@ -162,18 +163,19 @@ async fn download_index(
 	client: &Client,
 	force: bool,
 ) -> anyhow::Result<AssetIndex> {
-	let text = if manager.allow_offline && !force && path.exists() {
-		std::fs::read_to_string(path).context("Failed to read asset index contents from file")?
+	let index = if manager.allow_offline && !force && path.exists() {
+		json_from_file(path).context("Failed to read asset index contents from file")?
 	} else {
-		let text = download::text(url, client)
+		let bytes = download::bytes(url, client)
 			.await
-			.context("Failed to download index")?;
-		std::fs::write(path, &text).context("Failed to write asset index to a file")?;
+			.context("Failed to download asset index")?;
+		let out = serde_json::from_slice(&bytes).context("Failed to parse asset index")?;
 
-		text
+		std::fs::write(path, &bytes).context("Failed to write asset index to a file")?;
+		
+		out
 	};
 
-	let index = serde_json::from_str(&text).context("Failed to parse index")?;
 	Ok(index)
 }
 
