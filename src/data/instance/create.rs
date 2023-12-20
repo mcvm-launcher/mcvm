@@ -6,8 +6,8 @@ use mcvm_core::io::java::classpath::Classpath;
 use mcvm_core::user::uuid::hyphenate_uuid;
 use mcvm_core::user::{User, UserManager};
 use mcvm_core::version::InstalledVersion;
-use mcvm_mods::fabric_quilt;
 use mcvm_mods::paper;
+use mcvm_mods::{fabric_quilt, sponge};
 use mcvm_options::{self, client::write_options_txt, server::write_server_properties};
 use mcvm_shared::modifications::{Modloader, ServerType};
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel, OutputProcess};
@@ -279,6 +279,47 @@ impl Instance {
 
 				out.files_updated.insert(folia_jar_path.clone());
 				self.jar_path_override = Some(folia_jar_path);
+			}
+			ServerType::Sponge => {
+				let process = OutputProcess::new(o);
+				process.0.display(
+					MessageContents::StartProcess("Checking for Sponge updates".into()),
+					MessageLevel::Important,
+				);
+
+				let sponge_version =
+					sponge::get_newest_version(sponge::Mode::Vanilla, version, client)
+						.await
+						.context("Failed to get newest Sponge version")?;
+				let sponge_jar_path =
+					sponge::get_local_jar_path(sponge::Mode::Vanilla, version, &paths.core);
+				if !manager.should_update_file(&sponge_jar_path) {
+					process.0.display(
+						MessageContents::Success("Sponge is up to date".into()),
+						MessageLevel::Important,
+					);
+				} else {
+					process.0.display(
+						MessageContents::StartProcess("Downloading Sponge server".into()),
+						MessageLevel::Important,
+					);
+					sponge::download_server_jar(
+						sponge::Mode::Vanilla,
+						version,
+						&sponge_version,
+						&paths.core,
+						client,
+					)
+					.await
+					.context("Failed to download Sponge server JAR")?;
+					process.0.display(
+						MessageContents::Success("Sponge server downloaded".into()),
+						MessageLevel::Important,
+					);
+				}
+
+				out.files_updated.insert(sponge_jar_path.clone());
+				self.jar_path_override = Some(sponge_jar_path);
 			}
 			_ => {}
 		}

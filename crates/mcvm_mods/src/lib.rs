@@ -10,3 +10,5 @@
 pub mod fabric_quilt;
 /// Installation of projects from PaperMC, such as the Paper and Folia servers
 pub mod paper;
+/// Installation of SpongeVanilla
+pub mod sponge;
