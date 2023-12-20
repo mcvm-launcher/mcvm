@@ -60,7 +60,7 @@ pub async fn install_from_core(
 	.context("Failed to download Paper/Folia JAR file")?;
 
 	Ok((
-		get_local_jar_path(&version_info.version, core.get_paths()),
+		get_local_jar_path(mode, &version_info.version, core.get_paths()),
 		PAPER_SERVER_MAIN_CLASS.into(),
 	))
 }
@@ -134,15 +134,15 @@ pub async fn download_server_jar(
 	let num_str = build_num.to_string();
 	let url = format!("https://api.papermc.io/v2/projects/{}/versions/{version}/builds/{num_str}/downloads/{file_name}", mode.to_str());
 
-	let file_path = get_local_jar_path(version, paths);
+	let file_path = get_local_jar_path(mode, version, paths);
 	download::file(&url, &file_path, client)
 		.await
-		.context("Failed to download file")?;
+		.context("Failed to download Paper JAR")?;
 
 	Ok(())
 }
 
 /// Get the path to the stored Paper JAR file
-pub fn get_local_jar_path(version: &str, paths: &Paths) -> PathBuf {
-	mcvm_core::io::minecraft::game_jar::get_path(Side::Server, version, Some("paper"), paths)
+pub fn get_local_jar_path(mode: Mode, version: &str, paths: &Paths) -> PathBuf {
+	mcvm_core::io::minecraft::game_jar::get_path(Side::Server, version, Some(mode.to_str()), paths)
 }

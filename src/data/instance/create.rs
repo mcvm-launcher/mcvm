@@ -206,7 +206,8 @@ impl Instance {
 					paper::get_jar_file_name(paper::Mode::Paper, version, build_num, client)
 						.await
 						.context("Failed to get the Paper file name")?;
-				let paper_jar_path = paper::get_local_jar_path(version, &paths.core);
+				let paper_jar_path =
+					paper::get_local_jar_path(paper::Mode::Paper, version, &paths.core);
 				if !manager.should_update_file(&paper_jar_path) {
 					process.0.display(
 						MessageContents::Success("Paper is up to date".into()),
@@ -250,7 +251,8 @@ impl Instance {
 					paper::get_jar_file_name(paper::Mode::Folia, version, build_num, client)
 						.await
 						.context("Failed to get the Folia file name")?;
-				let folia_jar_path = paper::get_local_jar_path(version, &paths.core);
+				let folia_jar_path =
+					paper::get_local_jar_path(paper::Mode::Folia, version, &paths.core);
 				if !manager.should_update_file(&folia_jar_path) {
 					process.0.display(
 						MessageContents::Success("Folia is up to date".into()),
