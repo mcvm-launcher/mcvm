@@ -3,7 +3,7 @@
 		"name": "Fabric API",
 		"description": "Lightweight and modular API providing common hooks and intercompatibility measures utilized by mods using the Fabric toolchain",
 		"authors": ["modmuss50", "sfPlayer1"],
-		"package_maintainers": "mcvm",
+		"package_maintainers": ["mcvm"],
 		"documentation": "https://fabricmc.net/wiki/",
 		"source": "https://github.com/FabricMC/fabric",
 		"issues": "https://github.com/FabricMC/fabric/issues",
