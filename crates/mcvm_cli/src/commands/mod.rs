@@ -28,6 +28,7 @@ use super::output::TerminalOutput;
 #[derive(Debug, Subcommand)]
 pub enum Command {
 	#[command(about = "Manage profiles")]
+	#[clap(alias = "prof")]
 	Profile {
 		#[command(subcommand)]
 		command: ProfileSubcommand,
@@ -50,11 +51,13 @@ pub enum Command {
 		command: FilesSubcommand,
 	},
 	#[command(about = "Manage packages")]
+	#[clap(alias = "pkg")]
 	Package {
 		#[command(subcommand)]
 		command: PackageSubcommand,
 	},
 	#[command(about = "Manage instances")]
+	#[clap(alias = "inst")]
 	Instance {
 		#[command(subcommand)]
 		command: InstanceSubcommand,
