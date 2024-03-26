@@ -110,10 +110,10 @@ pub fn eval_script_package<E: ScriptEvaluator>(
 	shared: &mut E::Shared<'_>,
 	config: &ScriptEvalConfig,
 ) -> anyhow::Result<()> {
-	let routine_id = parsed.routines.get(INSTALL_ROUTINE).ok_or(anyhow!(
-		"Routine {} does not exist",
-		INSTALL_ROUTINE.clone()
-	))?;
+	let routine_id = parsed
+		.routines
+		.get(INSTALL_ROUTINE)
+		.ok_or(anyhow!("Routine {} does not exist", INSTALL_ROUTINE))?;
 	let block = parsed
 		.blocks
 		.get(routine_id)
