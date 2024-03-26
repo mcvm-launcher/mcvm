@@ -1,3 +1,4 @@
+use std::collections::HashSet;
 use std::path::PathBuf;
 
 use crate::package::reg::CachingStrategy;
@@ -64,8 +65,18 @@ impl ConfigPreferences {
 		for repo in prefs.repositories.preferred.iter() {
 			add_repo(&mut repositories, repo)?;
 		}
+		repositories.extend(get_default_repos());
 		for repo in prefs.repositories.backup.iter() {
 			add_repo(&mut repositories, repo)?;
+		}
+
+		// Check for duplicate IDs
+		let mut existing = HashSet::new();
+		for repo in &repositories {
+			if existing.contains(&repo.id) {
+				bail!("Duplicate repository ID '{}'", repo.id);
+			}
+			existing.insert(&repo.id);
 		}
 
 		Ok((
@@ -76,6 +87,14 @@ impl ConfigPreferences {
 			repositories,
 		))
 	}
+}
+
+/// Get the default set of repositories
+fn get_default_repos() -> Vec<PkgRepo> {
+	vec![PkgRepo::new(
+		"std",
+		PkgRepoLocation::Remote("https://carbonsmasher.github.io/mcvm/std".into()),
+	)]
 }
 
 /// Add a repo to the list
