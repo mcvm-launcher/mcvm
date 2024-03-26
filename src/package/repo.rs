@@ -8,6 +8,7 @@ use anyhow::Context;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use reqwest::Client;
 
+use std::fmt::Display;
 use std::fs::File;
 use std::io::{BufReader, Cursor};
 use std::path::PathBuf;
@@ -30,6 +31,15 @@ pub enum PkgRepoLocation {
 	Local(PathBuf),
 }
 
+impl Display for PkgRepoLocation {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Remote(url) => write!(f, "{url}"),
+			Self::Local(path) => write!(f, "{path:?}"),
+		}
+	}
+}
+
 impl PkgRepo {
 	/// Create a new PkgRepo
 	pub fn new(id: &str, location: PkgRepoLocation) -> Self {
@@ -43,6 +53,11 @@ impl PkgRepo {
 	/// The cached path of the index
 	pub fn get_path(&self, paths: &Paths) -> PathBuf {
 		paths.pkg_index_cache.join(format!("{}.json", &self.id))
+	}
+
+	/// Gets the location of the repository
+	pub fn get_location(&self) -> &PkgRepoLocation {
+		&self.location
 	}
 
 	/// Set the index to serialized json text

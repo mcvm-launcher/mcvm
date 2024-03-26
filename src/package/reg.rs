@@ -320,6 +320,11 @@ impl PkgRegistry {
 
 		Ok(())
 	}
+
+	/// Gets the repositories stored in this registry in their correct order
+	pub fn get_repos(&self) -> &[PkgRepo] {
+		&self.repos
+	}
 }
 
 /// What strategy to use for the local caching of package scripts

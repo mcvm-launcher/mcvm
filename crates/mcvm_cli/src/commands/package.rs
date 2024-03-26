@@ -51,6 +51,24 @@ This package does not need to be installed, it just has to be in the index."
 		/// The package to get info about
 		package: String,
 	},
+	#[command(about = "Query information about configured packages repositories")]
+	#[clap(alias = "repo")]
+	Repository {
+		/// The repository subcommand
+		#[command(subcommand)]
+		command: RepoSubcommand,
+	},
+}
+
+#[derive(Debug, Subcommand)]
+pub enum RepoSubcommand {
+	#[command(about = "List all configured package repositories")]
+	#[clap(alias = "ls")]
+	List {
+		/// Whether to remove formatting and warnings from the output
+		#[arg(short, long)]
+		raw: bool,
+	},
 }
 
 pub async fn run(subcommand: PackageSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
@@ -59,6 +77,7 @@ pub async fn run(subcommand: PackageSubcommand, data: &mut CmdData) -> anyhow::R
 		PackageSubcommand::Sync => sync(data).await,
 		PackageSubcommand::Cat { raw, package } => cat(data, &package, raw).await,
 		PackageSubcommand::Info { package } => info(data, &package).await,
+		PackageSubcommand::Repository { command } => repo(command, data).await,
 	}
 }
 
@@ -346,6 +365,32 @@ async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
 	if let Some(license) = &metadata.license {
 		if !license.is_empty() {
 			cprintln!("   <s>License:</s> <b!>{}", license);
+		}
+	}
+
+	Ok(())
+}
+
+async fn repo(subcommand: RepoSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
+	match subcommand {
+		RepoSubcommand::List { raw } => repo_list(data, raw).await,
+	}
+}
+
+async fn repo_list(data: &mut CmdData, raw: bool) -> anyhow::Result<()> {
+	data.ensure_config(!raw).await?;
+	let config = data.config.get_mut();
+
+	let repos = config.packages.get_repos();
+
+	if raw {
+		for repo in repos {
+			println!("{}", repo.id);
+		}
+	} else {
+		cprintln!("<s>Repositories:");
+		for repo in repos {
+			cprintln!("<b!>{}</> <k!>-</> <m>{}</>", repo.id, repo.get_location());
 		}
 	}
 
