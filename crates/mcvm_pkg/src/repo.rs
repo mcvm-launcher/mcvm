@@ -63,8 +63,8 @@ pub enum PackageFlag {
 	Malicious,
 }
 
-/// Get the URL of the repository index file
-pub fn get_index_url(base_url: &str) -> String {
+/// Get the URL of the repository api
+pub fn get_api_url(base_url: &str) -> String {
 	// Remove trailing slash
 	let base_url = if base_url.ends_with('/') {
 		&base_url[..base_url.len() - 1]
@@ -72,5 +72,12 @@ pub fn get_index_url(base_url: &str) -> String {
 		base_url
 	};
 
-	base_url.to_string() + "/api/mcvm/index.json"
+	base_url.to_string() + "/api/mcvm/"
+}
+
+/// Get the URL of the repository index file
+pub fn get_index_url(base_url: &str) -> String {
+	let api_url = get_api_url(base_url);
+
+	api_url + "index.json"
 }

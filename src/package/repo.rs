@@ -1,6 +1,6 @@
 use crate::io::files::paths::Paths;
 use mcvm_core::net::download;
-use mcvm_pkg::repo::{get_index_url, PackageFlag, RepoIndex, RepoPkgEntry};
+use mcvm_pkg::repo::{get_api_url, get_index_url, PackageFlag, RepoIndex, RepoPkgEntry};
 use mcvm_pkg::PackageContentType;
 use mcvm_shared::later::Later;
 
@@ -234,8 +234,17 @@ pub fn get_package_location(
 			// Relative paths on remote repositories
 			PkgRepoLocation::Remote(url) => {
 				if path.is_relative() {
+					// Trim the Path
 					let path = path.to_string_lossy();
 					let trimmed = path.trim_start_matches("./");
+
+					let url = get_api_url(url);
+					// Ensure a slash at the end
+					let url = if url.ends_with('/') {
+						url.clone()
+					} else {
+						url.clone() + "/"
+					};
 					Ok(PkgLocation::Remote(Some(url.to_owned() + trimmed)))
 				} else {
 					bail!("Package path on remote repository is non-relative")
