@@ -1,0 +1,12 @@
+{
+	"metadata": {
+		"name": "MCVM Standard Package Library",
+		"description": "Official standard packages for MCVM"
+	},
+	"packages": {
+		"fabric-api": {
+			"path": "pkg/fabric-api.json",
+			"content_type": "declarative"
+		}
+	}
+}
