@@ -8,3 +8,5 @@
 
 /// Authentication for Minecraft
 pub mod mc;
+/// Implementation of authentication with MSA for Minecraft auth
+mod mc_msa;

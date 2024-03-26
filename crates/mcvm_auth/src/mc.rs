@@ -1,5 +1,5 @@
 use anyhow::{anyhow, Context};
-use minecraft_msa_auth::{
+use super::mc_msa::{
 	MinecraftAccessToken, MinecraftAuthenticationResponse, MinecraftAuthorizationFlow,
 };
 use oauth2::basic::{BasicClient, BasicTokenType};

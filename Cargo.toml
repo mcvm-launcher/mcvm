@@ -53,7 +53,7 @@ itertools = "0.11.0"
 libflate = "2.0.0"
 oauth2 = "4.4.1"
 rand = "0.8.5"
-reqwest = { version = "0.11.15", default_features = false, features = [
+reqwest = { version = "0.12.2", default_features = false, features = [
 	"json",
 	"rustls-tls",
 ] }
@@ -71,6 +71,6 @@ minecraft-msa-auth = "0.3.0"
 shellexpand = { version = "3.0.0", features = ["path"] }
 tar = "0.4.38"
 thiserror = "1.0.38"
-tokio = { version = "1.25.0", features = ["macros", "fs", "rt-multi-thread"] }
+tokio = { version = "1.36.0", features = ["macros", "fs", "rt-multi-thread"] }
 zip = "0.6.4"
 zip-extract = "0.1.2"
