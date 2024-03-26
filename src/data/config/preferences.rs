@@ -107,7 +107,7 @@ fn add_repo(repos: &mut Vec<PkgRepo>, repo: &RepoDeser) -> anyhow::Result<()> {
 	} else if let Some(path) = &repo.path {
 		PkgRepoLocation::Local(PathBuf::from(path))
 	} else {
-		bail!("Nether path nor URL was set for repository {}", repo.id);
+		bail!("Niether path nor URL was set for repository {}", repo.id);
 	};
 	repos.push(PkgRepo::new(&repo.id, location));
 	Ok(())
