@@ -70,12 +70,7 @@ impl PkgRegistry {
 		if let Some(result) = query_all(&mut self.repos, &pkg_id, paths, client, o).await? {
 			return Ok(self.insert(
 				req.clone(),
-				Package::new(
-					pkg_id,
-					PkgLocation::Remote(Some(result.url)),
-					result.content_type,
-					result.flags,
-				),
+				Package::new(pkg_id, result.location, result.content_type, result.flags),
 			));
 		}
 

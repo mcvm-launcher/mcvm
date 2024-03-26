@@ -4,7 +4,7 @@ use mcvm_pkg::repo::{get_index_url, PackageFlag, RepoIndex, RepoPkgEntry};
 use mcvm_pkg::PackageContentType;
 use mcvm_shared::later::Later;
 
-use anyhow::Context;
+use anyhow::{bail, Context};
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use reqwest::Client;
 
@@ -13,6 +13,8 @@ use std::fmt::Display;
 use std::fs::File;
 use std::io::{BufReader, Cursor};
 use std::path::PathBuf;
+
+use super::PkgLocation;
 
 /// A remote source for mcvm packages
 #[derive(Debug)]
@@ -126,8 +128,10 @@ impl PkgRepo {
 		self.ensure_index(paths, client).await?;
 		let index = self.index.get();
 		if let Some(entry) = index.packages.get(id) {
+			let location = get_package_location(entry, &self.location)
+				.context("Failed to get location of package")?;
 			return Ok(Some(RepoQueryResult {
-				url: entry.url.clone(),
+				location,
 				content_type: get_content_type(entry).await,
 				flags: entry.flags.clone(),
 			}));
@@ -200,8 +204,8 @@ pub async fn get_all_packages(
 /// Result from repository querying. This represents an entry
 /// for a package that can be accessed
 pub struct RepoQueryResult {
-	/// The URL to download the package from
-	pub url: String,
+	/// The location to copy the package from
+	pub location: PkgLocation,
 	/// The content type of the package
 	pub content_type: PackageContentType,
 	/// The flags for the package
@@ -214,5 +218,41 @@ pub async fn get_content_type(entry: &RepoPkgEntry) -> PackageContentType {
 		*content_type
 	} else {
 		PackageContentType::Script
+	}
+}
+
+/// Gets the location of a package from it's repository entry in line with url and path rules
+pub fn get_package_location(
+	entry: &RepoPkgEntry,
+	repo_location: &PkgRepoLocation,
+) -> anyhow::Result<PkgLocation> {
+	if let Some(url) = &entry.url {
+		Ok(PkgLocation::Remote(Some(url.clone())))
+	} else if let Some(path) = &entry.path {
+		let path = PathBuf::from(path);
+		match &repo_location {
+			// Relative paths on remote repositories
+			PkgRepoLocation::Remote(url) => {
+				if path.is_relative() {
+					let path = path.to_string_lossy();
+					let trimmed = path.trim_start_matches("./");
+					Ok(PkgLocation::Remote(Some(url.to_owned() + trimmed)))
+				} else {
+					bail!("Package path on remote repository is non-relative")
+				}
+			}
+			// Local paths
+			PkgRepoLocation::Local(repo_path) => {
+				let path = if path.is_relative() {
+					repo_path.join(path)
+				} else {
+					path
+				};
+
+				Ok(PkgLocation::Local(path))
+			}
+		}
+	} else {
+		bail!("Neither url nor path entry present in package")
 	}
 }

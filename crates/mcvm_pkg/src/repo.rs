@@ -35,10 +35,16 @@ pub struct RepoMetadata {
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 pub struct RepoPkgEntry {
 	/// The URL to the package file
-	pub url: String,
+	#[serde(default)]
+	pub url: Option<String>,
+	/// The local or relative path to the package file
+	#[serde(default)]
+	pub path: Option<String>,
 	/// Override for the content type of this package
+	#[serde(default)]
 	pub content_type: Option<PackageContentType>,
 	/// Flags for this package
+	#[serde(default)]
 	pub flags: HashSet<PackageFlag>,
 }
 
