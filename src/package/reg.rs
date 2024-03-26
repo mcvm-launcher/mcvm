@@ -2,6 +2,7 @@ use anyhow::{anyhow, Context};
 use mcvm_pkg::metadata::PackageMetadata;
 use mcvm_pkg::parse_and_validate;
 use mcvm_pkg::properties::PackageProperties;
+use mcvm_pkg::repo::PackageFlag;
 use mcvm_pkg::PackageContentType;
 use mcvm_pkg::PkgRequest;
 use mcvm_pkg::PkgRequestSource;
@@ -19,6 +20,7 @@ use super::{Package, PkgContents, PkgLocation};
 use crate::io::files::paths::Paths;
 
 use std::collections::HashMap;
+use std::collections::HashSet;
 use std::path::Path;
 use std::sync::Arc;
 
@@ -72,6 +74,7 @@ impl PkgRegistry {
 					pkg_id,
 					PkgLocation::Remote(Some(result.url)),
 					result.content_type,
+					result.flags,
 				),
 			));
 		}
@@ -82,7 +85,7 @@ impl PkgRegistry {
 				get_core_package_content_type(&pkg_id).expect("Core package should exist");
 			Ok(self.insert(
 				req.clone(),
-				Package::new(pkg_id, PkgLocation::Core, content_type),
+				Package::new(pkg_id, PkgLocation::Core, content_type, HashSet::new()),
 			))
 		} else {
 			Err(anyhow!("Package '{pkg_id}' does not exist"))
@@ -236,6 +239,18 @@ impl PkgRegistry {
 		Ok(pkg.content_type)
 	}
 
+	/// Get the flags of a package
+	pub async fn flags<'a>(
+		&'a mut self,
+		req: &ArcPkgReq,
+		paths: &Paths,
+		client: &Client,
+		o: &mut impl MCVMOutput,
+	) -> anyhow::Result<&'a HashSet<PackageFlag>> {
+		let pkg = self.ensure_package_contents(req, paths, client, o).await?;
+		Ok(&pkg.flags)
+	}
+
 	/// Remove a cached package
 	pub async fn remove_cached(
 		&mut self,
@@ -260,6 +275,7 @@ impl PkgRegistry {
 				req.id.clone(),
 				PkgLocation::Local(path.to_path_buf()),
 				content_type,
+				HashSet::new(),
 			),
 		);
 	}

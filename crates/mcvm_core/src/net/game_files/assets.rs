@@ -172,7 +172,7 @@ async fn download_index(
 		let out = serde_json::from_slice(&bytes).context("Failed to parse asset index")?;
 
 		std::fs::write(path, &bytes).context("Failed to write asset index to a file")?;
-		
+
 		out
 	};
 

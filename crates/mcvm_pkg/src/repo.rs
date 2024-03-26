@@ -2,7 +2,7 @@
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
 use crate::PackageContentType;
 
@@ -38,6 +38,23 @@ pub struct RepoPkgEntry {
 	pub url: String,
 	/// Override for the content type of this package
 	pub content_type: Option<PackageContentType>,
+	/// Flags for this package
+	pub flags: HashSet<PackageFlag>,
+}
+
+/// Flags that can be applied to packages by repositories to provide information about them
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
+#[serde(rename_all = "snake_case")]
+pub enum PackageFlag {
+	/// The package file has not been updated to reflect the newest versions of the content
+	OutOfDate,
+	/// This package has been deprecated in favor of another one
+	Deprecated,
+	/// This package has security or safety vulnerabilities
+	Insecure,
+	/// The package provides malicious content
+	Malicious,
 }
 
 /// Get the URL of the repository index file

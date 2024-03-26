@@ -198,7 +198,7 @@ pub async fn get_meta(
 		let out = serde_json::from_slice::<Vec<FabricQuiltMeta>>(&bytes)
 			.context("Failed to parse downloaded metadata")?;
 		std::fs::write(path, &bytes).context("Failed to write meta to a file")?;
-		
+
 		out
 	};
 

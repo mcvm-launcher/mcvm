@@ -10,9 +10,11 @@ pub mod repo;
 use crate::io::files::paths::Paths;
 use mcvm_core::net::download;
 use mcvm_pkg::declarative::{deserialize_declarative_package, DeclarativePackage};
+use mcvm_pkg::repo::PackageFlag;
 use mcvm_pkg::PackageContentType;
 use mcvm_shared::later::Later;
 
+use std::collections::HashSet;
 use std::fs;
 use std::path::PathBuf;
 
@@ -35,6 +37,8 @@ pub struct Package {
 	pub location: PkgLocation,
 	/// Type of the content in the package
 	pub content_type: PackageContentType,
+	/// Flags for the package from the repository
+	pub flags: HashSet<PackageFlag>,
 	/// The data of the package
 	pub data: Later<PkgData>,
 }
@@ -107,12 +111,18 @@ impl PkgContents {
 
 impl Package {
 	/// Create a new Package
-	pub fn new(id: PackageID, location: PkgLocation, content_type: PackageContentType) -> Self {
+	pub fn new(
+		id: PackageID,
+		location: PkgLocation,
+		content_type: PackageContentType,
+		flags: HashSet<PackageFlag>,
+	) -> Self {
 		Self {
 			id,
 			location,
 			data: Later::new(),
 			content_type,
+			flags,
 		}
 	}
 
@@ -258,6 +268,7 @@ mod tests {
 			PackageID::from("sodium"),
 			PkgLocation::Remote(None),
 			PackageContentType::Script,
+			HashSet::new(),
 		);
 		assert_eq!(package.filename(), "sodium".to_string() + PKG_EXTENSION);
 
@@ -265,6 +276,7 @@ mod tests {
 			PackageID::from("fabriclike-api"),
 			PkgLocation::Remote(None),
 			PackageContentType::Script,
+			HashSet::new(),
 		);
 		assert_eq!(
 			package.filename(),

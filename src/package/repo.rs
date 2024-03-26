@@ -1,6 +1,6 @@
 use crate::io::files::paths::Paths;
 use mcvm_core::net::download;
-use mcvm_pkg::repo::{get_index_url, RepoPkgEntry, RepoIndex};
+use mcvm_pkg::repo::{get_index_url, PackageFlag, RepoIndex, RepoPkgEntry};
 use mcvm_pkg::PackageContentType;
 use mcvm_shared::later::Later;
 
@@ -8,6 +8,7 @@ use anyhow::Context;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use reqwest::Client;
 
+use std::collections::HashSet;
 use std::fmt::Display;
 use std::fs::File;
 use std::io::{BufReader, Cursor};
@@ -128,6 +129,7 @@ impl PkgRepo {
 			return Ok(Some(RepoQueryResult {
 				url: entry.url.clone(),
 				content_type: get_content_type(entry).await,
+				flags: entry.flags.clone(),
 			}));
 		}
 
@@ -202,6 +204,8 @@ pub struct RepoQueryResult {
 	pub url: String,
 	/// The content type of the package
 	pub content_type: PackageContentType,
+	/// The flags for the package
+	pub flags: HashSet<PackageFlag>,
 }
 
 /// Get the content type of a package from the repository

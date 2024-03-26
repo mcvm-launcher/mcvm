@@ -90,7 +90,7 @@ fn output_launch_command(
 	);
 
 	for (env, val) in command.get_envs() {
-		let Some(val) = val else {continue };
+		let Some(val) = val else { continue };
 		let env = env.to_string_lossy().to_string();
 		let val = val.to_string_lossy().to_string();
 

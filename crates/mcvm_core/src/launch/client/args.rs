@@ -13,7 +13,9 @@ use crate::user::UserKind;
 /// Process an argument for the client from the client meta
 pub(crate) fn process_arg(arg: &ArgumentItem, params: &LaunchParameters) -> Vec<String> {
 	let mut out = Vec::new();
-	let InstanceKind::Client { window } = &params.side else { panic!("Instance is not a client") };
+	let InstanceKind::Client { window } = &params.side else {
+		panic!("Instance is not a client")
+	};
 	match arg {
 		ArgumentItem::Simple(arg) => {
 			let arg = process_simple_arg(arg, params);
@@ -145,7 +147,9 @@ pub(crate) fn replace_arg_placeholders(arg: &str, params: &LaunchParameters) -> 
 	out = out.replace(placeholder!("user_properties"), "\"\"");
 
 	// Window resolution
-	let InstanceKind::Client { window } = &params.side else { panic!("Instance is not a client") };
+	let InstanceKind::Client { window } = &params.side else {
+		panic!("Instance is not a client")
+	};
 	if let Some(WindowResolution { width, height }) = window.resolution {
 		out = out.replace(placeholder!("resolution_width"), &width.to_string());
 		out = out.replace(placeholder!("resolution_height"), &height.to_string());

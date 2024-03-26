@@ -10,7 +10,7 @@ use super::{process::LaunchProcessProperties, LaunchParameters};
 pub(crate) fn get_launch_props(
 	params: &LaunchParameters,
 ) -> anyhow::Result<LaunchProcessProperties> {
-	let InstanceKind::Server {show_gui, ..} = &params.side else {
+	let InstanceKind::Server { show_gui, .. } = &params.side else {
 		bail!("Instance is not a server");
 	};
 	let mut jvm_args = Vec::new();

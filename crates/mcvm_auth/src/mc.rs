@@ -1,7 +1,7 @@
-use anyhow::{anyhow, Context};
 use super::mc_msa::{
 	MinecraftAccessToken, MinecraftAuthenticationResponse, MinecraftAuthorizationFlow,
 };
+use anyhow::{anyhow, Context};
 use oauth2::basic::{BasicClient, BasicTokenType};
 use oauth2::reqwest::async_http_client;
 use oauth2::{

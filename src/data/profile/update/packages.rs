@@ -1,6 +1,7 @@
 use std::collections::{HashMap, HashSet};
 
 use itertools::Itertools;
+use mcvm_pkg::repo::PackageFlag;
 use mcvm_pkg::PkgRequest;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::pkg::{ArcPkgReq, PackageID, PackageStability};
@@ -30,6 +31,12 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 	let (batched, resolved) = resolve_and_batch(profile, global_packages, constants, ctx)
 		.await
 		.context("Failed to resolve dependencies for profile")?;
+
+	for (pkg, ..) in &batched {
+		check_package(ctx, pkg)
+			.await
+			.with_context(|| format!("Failed to check package {pkg}"))?;
+	}
 
 	ctx.output.display(
 		MessageContents::StartProcess("Installing packages".into()),
@@ -237,4 +244,45 @@ fn format_package_update_message(
 	};
 
 	MessageContents::ListItem(Box::new(msg))
+}
+
+/// Checks a package with the registry to report any warnings about it
+async fn check_package<'a, O: MCVMOutput>(
+	ctx: &mut ProfileUpdateContext<'a, O>,
+	pkg: &ArcPkgReq,
+) -> anyhow::Result<()> {
+	let flags = ctx
+		.packages
+		.flags(pkg, ctx.paths, ctx.client, ctx.output)
+		.await
+		.context("Failed to get flags for package")?;
+	if flags.contains(&PackageFlag::OutOfDate) {
+		ctx.output.display(
+			MessageContents::Warning(format!("Package {pkg} has been flagged as out of date")),
+			MessageLevel::Important,
+		);
+	}
+
+	if flags.contains(&PackageFlag::Deprecated) {
+		ctx.output.display(
+			MessageContents::Warning(format!("Package {pkg} has been flagged as deprecated")),
+			MessageLevel::Important,
+		);
+	}
+
+	if flags.contains(&PackageFlag::Insecure) {
+		ctx.output.display(
+			MessageContents::Error(format!("Package {pkg} has been flagged as insecure")),
+			MessageLevel::Important,
+		);
+	}
+
+	if flags.contains(&PackageFlag::Malicious) {
+		ctx.output.display(
+			MessageContents::Error(format!("Package {pkg} has been flagged as malicious")),
+			MessageLevel::Important,
+		);
+	}
+
+	Ok(())
 }
