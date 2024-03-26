@@ -95,7 +95,7 @@ fn get_additional_environment_variables(
 	// Compatability env var for old versions on Linux to prevent graphical issues
 	#[cfg(target_os = "linux")]
 	{
-		if VersionPattern::from("1.8.9-").matches_single(version, version_list) {
+		if VersionPattern::Before("1.8.9".into()).matches_single(version, version_list) {
 			env_vars.insert("__GL_THREADED_OPTIMIZATIONS".to_string(), "0".to_string());
 		}
 	}
