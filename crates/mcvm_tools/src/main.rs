@@ -11,7 +11,7 @@ use mcvm::pkg_crate::declarative::{
 };
 use mcvm::pkg_crate::metadata::PackageMetadata;
 use mcvm::pkg_crate::properties::PackageProperties;
-use mcvm::pkg_crate::{declarative::DeclarativePackage, repo::RepoPkgIndex};
+use mcvm::pkg_crate::{declarative::DeclarativePackage, repo::RepoIndex};
 use mcvm::shared::addon::AddonKind;
 use mcvm::shared::util::DeserListOrSingle;
 use mcvm::shared::versions::VersionPattern;
@@ -56,7 +56,7 @@ fn gen_schemas() {
 			schemars::schema_for!(DeclarativePackage),
 			"declarative.json",
 		),
-		(schemars::schema_for!(RepoPkgIndex), "pkg_repo.json"),
+		(schemars::schema_for!(RepoIndex), "pkg_repo.json"),
 		(schemars::schema_for!(Options), "options.json"),
 		(schemars::schema_for!(ConfigDeser), "config.json"),
 	];

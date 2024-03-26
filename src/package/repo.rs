@@ -1,6 +1,6 @@
 use crate::io::files::paths::Paths;
 use mcvm_core::net::download;
-use mcvm_pkg::repo::{RepoPkgEntry, RepoPkgIndex};
+use mcvm_pkg::repo::{get_index_url, RepoPkgEntry, RepoIndex};
 use mcvm_pkg::PackageContentType;
 use mcvm_shared::later::Later;
 
@@ -18,7 +18,7 @@ pub struct PkgRepo {
 	/// The identifier for the repository
 	pub id: String,
 	location: PkgRepoLocation,
-	index: Later<RepoPkgIndex>,
+	index: Later<RepoIndex>,
 }
 
 /// Location for a PkgRepo
@@ -62,7 +62,7 @@ impl PkgRepo {
 				self.set_index(&mut cursor).context("Failed to set index")?;
 			}
 			PkgRepoLocation::Remote(url) => {
-				let bytes = download::bytes(get_package_index_url(url), client)
+				let bytes = download::bytes(get_index_url(url), client)
 					.await
 					.context("Failed to download index")?;
 				tokio::fs::write(self.get_path(paths), &bytes)
@@ -178,11 +178,6 @@ pub async fn get_all_packages(
 	}
 
 	Ok(out)
-}
-
-/// Get the URL of the package index file
-pub fn get_package_index_url(base: &str) -> String {
-	base.to_string() + "/api/mcvm/index.json"
 }
 
 /// Result from repository querying. This represents an entry
