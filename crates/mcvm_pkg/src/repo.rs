@@ -10,8 +10,24 @@ use crate::PackageContentType;
 #[derive(Debug, Deserialize, Serialize, Clone)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 pub struct RepoIndex {
+	/// Metadata for the repository
+	#[serde(default)]
+	pub metadata: RepoMetadata,
 	/// The packages available from the repository
+	#[serde(default)]
 	pub packages: HashMap<String, RepoPkgEntry>,
+}
+
+/// Metadata for a package repository
+#[derive(Debug, Deserialize, Serialize, Clone, Default)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
+pub struct RepoMetadata {
+	/// The display name of the repository
+	#[serde(default)]
+	pub name: Option<String>,
+	/// The short description of the repository
+	#[serde(default)]
+	pub description: Option<String>,
 }
 
 /// An entry in the repository index package list that specifies information about the package
