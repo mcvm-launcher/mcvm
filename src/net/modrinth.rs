@@ -240,7 +240,7 @@ pub struct Dependency {
 	/// The ID of the project
 	pub project_id: String,
 	/// The ID of the version
-	pub version_id: String,
+	pub version_id: Option<String>,
 	/// The type of the dependency
 	pub dependency_type: DependencyType,
 }
