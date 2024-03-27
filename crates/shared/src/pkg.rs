@@ -152,6 +152,7 @@ pub type ArcPkgReq = Arc<PkgRequest>;
 /// Stability setting for a package
 #[derive(Deserialize, Serialize, Default, Debug, Copy, Clone, PartialEq, Eq)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
+#[serde(rename_all = "snake_case")]
 pub enum PackageStability {
 	/// Whatever the latest stable version is
 	#[default]
