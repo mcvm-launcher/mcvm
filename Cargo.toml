@@ -1,6 +1,6 @@
 [package]
 name = "mcvm"
-version = "0.17.0"
+version = "0.18.0"
 edition = "2021"
 license = "GPL-3.0-or-later"
 description = "A command-line Minecraft launcher and package manager"
@@ -65,7 +65,7 @@ mcvm_core = { path = "crates/mcvm_core", version = "0.2.0" }
 mcvm_mods = { path = "crates/mcvm_mods", version = "0.2.0" }
 mcvm_options = { path = "crates/mcvm_options", version = "0.2.0" }
 mcvm_parse = { path = "crates/mcvm_parse", version = "0.11.0" }
-mcvm_pkg = { path = "crates/mcvm_pkg", version = "0.9.0" }
+mcvm_pkg = { path = "crates/mcvm_pkg", version = "0.10.0" }
 mcvm_shared = { path = "crates/mcvm_shared", version = "0.10.1" }
 minecraft-msa-auth = "0.3.0"
 shellexpand = { version = "3.0.0", features = ["path"] }
