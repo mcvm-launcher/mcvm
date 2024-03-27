@@ -1,3 +1,6 @@
+/// System Java installation
+mod system;
+
 use std::fs::File;
 use std::io::BufReader;
 
@@ -80,7 +83,7 @@ impl JavaInstallation {
 
 		let path = match &kind {
 			JavaInstallationKind::Auto => install_auto(&vers_str, params, o).await?,
-			JavaInstallationKind::System => install_system(&vers_str)?,
+			JavaInstallationKind::System => system::install(&vers_str)?,
 			JavaInstallationKind::Adoptium => install_adoptium(&vers_str, &mut params, o).await?,
 			JavaInstallationKind::Zulu => install_zulu(&vers_str, &mut params, o).await?,
 			JavaInstallationKind::Custom { path } => path.clone(),
@@ -154,7 +157,7 @@ async fn install_auto(
 	mut params: JavaInstallParameters<'_>,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<PathBuf> {
-	let out = install_system(major_version);
+	let out = system::install(major_version);
 	if let Ok(out) = out {
 		return Ok(out);
 	}
@@ -167,15 +170,6 @@ async fn install_auto(
 		return Ok(out);
 	}
 	bail!("Failed to automatically install Java")
-}
-
-fn install_system(major_version: &str) -> anyhow::Result<PathBuf> {
-	let installation = get_system_java_installation(major_version);
-	if let Some(installation) = installation {
-		Ok(installation)
-	} else {
-		bail!("No valid system Java installation was found");
-	}
 }
 
 async fn install_adoptium(
@@ -371,57 +365,4 @@ fn extract_archive(arc_path: &Path, out_dir: &Path) -> anyhow::Result<()> {
 	}
 
 	Ok(())
-}
-
-/// Gets the optimal path to a system Java installation
-fn get_system_java_installation(#[allow(unused_variables)] major_version: &str) -> Option<PathBuf> {
-	#[cfg(target_os = "windows")]
-	{
-		// OpenJDK
-		let dir = PathBuf::from("C:/Program Files/Java");
-		if dir.exists() {
-			let read = std::fs::read_dir(dir);
-			if let Ok(read) = read {
-				for path in read {
-					let Ok(path) = path else { continue };
-					if !path.path().is_dir() {
-						continue;
-					}
-					let name = path.file_name().to_string_lossy().to_string();
-					if !name.starts_with("jdk-") {
-						continue;
-					}
-					if !name.contains(&format!("-{major_version}.")) {
-						continue;
-					}
-					return Some(path.path());
-				}
-			}
-		}
-	}
-	#[cfg(target_os = "linux")]
-	{
-		// OpenJDK
-		let dir = PathBuf::from("/usr/lib/jvm");
-		if dir.exists() {
-			let read = std::fs::read_dir(dir);
-			if let Ok(read) = read {
-				for path in read {
-					let Ok(path) = path else { continue };
-					if !path.path().is_dir() {
-						continue;
-					}
-					let name = path.file_name().to_string_lossy().to_string();
-					if !name.starts_with("java-") {
-						continue;
-					}
-					if !name.contains(&format!("-{major_version}-")) {
-						continue;
-					}
-					return Some(path.path());
-				}
-			}
-		}
-	}
-	None
 }
