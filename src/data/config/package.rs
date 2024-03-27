@@ -123,7 +123,7 @@ impl PackageConfig {
 	/// Get the request of the config
 	pub fn get_request(&self) -> ArcPkgReq {
 		let id = self.get_pkg_id();
-		Arc::new(PkgRequest::new(id.clone(), PkgRequestSource::UserRequire))
+		Arc::new(PkgRequest::parse(id, PkgRequestSource::UserRequire))
 	}
 
 	/// Get the features of the config

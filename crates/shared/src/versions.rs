@@ -5,7 +5,7 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 /// Pattern matching for the version of Minecraft, a package, etc.
-#[derive(Debug, Hash, Clone, PartialEq)]
+#[derive(Debug, Hash, Clone, PartialEq, Eq, PartialOrd, Ord)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 pub enum VersionPattern {
 	/// Matches a single version

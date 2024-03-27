@@ -313,7 +313,7 @@ impl PkgRegistry {
 			.await
 			.context("Failed to retrieve all packages from repos")?
 			.iter()
-			.map(|(id, ..)| Arc::new(PkgRequest::new(id.clone(), PkgRequestSource::Repository)))
+			.map(|(id, ..)| Arc::new(PkgRequest::parse(id, PkgRequestSource::Repository)))
 			.collect::<Vec<_>>();
 		self.remove_cached_packages(packages.iter(), paths, client, o)
 			.await
@@ -361,19 +361,19 @@ mod tests {
 	fn test_reg_insert() {
 		let mut reg = PkgRegistry::new(vec![], CachingStrategy::Lazy);
 		reg.insert_local(
-			&Arc::new(PkgRequest::new("test", PkgRequestSource::UserRequire)),
+			&Arc::new(PkgRequest::parse("test", PkgRequestSource::UserRequire)),
 			&PathBuf::from("./test"),
 			PackageContentType::Script,
 		);
-		let req = PkgRequest::new(
+		let req = PkgRequest::parse(
 			"test",
-			PkgRequestSource::Dependency(Arc::new(PkgRequest::new(
+			PkgRequestSource::Dependency(Arc::new(PkgRequest::parse(
 				"hello",
 				PkgRequestSource::UserRequire,
 			))),
 		);
 		assert!(reg.has_now(&req));
-		assert!(!reg.has_now(&PkgRequest::new(
+		assert!(!reg.has_now(&PkgRequest::parse(
 			"doesnotexist",
 			PkgRequestSource::UserRequire
 		)));
@@ -381,11 +381,11 @@ mod tests {
 
 	#[test]
 	fn test_request_source_debug() {
-		let req = PkgRequest::new(
+		let req = PkgRequest::parse(
 			"foo",
-			PkgRequestSource::Dependency(Arc::new(PkgRequest::new(
+			PkgRequestSource::Dependency(Arc::new(PkgRequest::parse(
 				"bar",
-				PkgRequestSource::Dependency(Arc::new(PkgRequest::new(
+				PkgRequestSource::Dependency(Arc::new(PkgRequest::parse(
 					"baz",
 					PkgRequestSource::Repository,
 				))),

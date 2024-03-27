@@ -155,8 +155,8 @@ async fn resolve_eval_package<'a, E: PackageEvaluator<'a>>(
 		.context("Failed to evaluate package")?;
 
 	for conflict in result.get_conflicts().iter().sorted() {
-		let req = Arc::new(PkgRequest::new(
-			conflict.clone(),
+		let req = Arc::new(PkgRequest::parse(
+			conflict,
 			PkgRequestSource::Refused(package.clone()),
 		));
 		if resolver.is_required(&req) {
@@ -171,8 +171,8 @@ async fn resolve_eval_package<'a, E: PackageEvaluator<'a>>(
 	}
 
 	for dep in result.get_deps().iter().flatten().sorted() {
-		let req = Arc::new(PkgRequest::new(
-			dep.value.clone(),
+		let req = Arc::new(PkgRequest::parse(
+			&dep.value,
 			PkgRequestSource::Dependency(package.clone()),
 		));
 		if dep.explicit && !resolver.is_user_required(&req) {
@@ -191,8 +191,8 @@ async fn resolve_eval_package<'a, E: PackageEvaluator<'a>>(
 	}
 
 	for bundled in result.get_bundled().iter().sorted() {
-		let req = Arc::new(PkgRequest::new(
-			bundled.clone(),
+		let req = Arc::new(PkgRequest::parse(
+			bundled,
 			PkgRequestSource::Bundled(package.clone()),
 		));
 		resolver.check_constraints(&req)?;
@@ -207,12 +207,12 @@ async fn resolve_eval_package<'a, E: PackageEvaluator<'a>>(
 	}
 
 	for (check_package, compat_package) in result.get_compats().iter().sorted() {
-		let check_package = Arc::new(PkgRequest::new(
-			check_package.clone(),
+		let check_package = Arc::new(PkgRequest::parse(
+			check_package,
 			PkgRequestSource::Dependency(package.clone()),
 		));
-		let compat_package = Arc::new(PkgRequest::new(
-			compat_package.clone(),
+		let compat_package = Arc::new(PkgRequest::parse(
+			compat_package,
 			PkgRequestSource::Dependency(package.clone()),
 		));
 		if !resolver.compat_exists(check_package.clone(), compat_package.clone()) {
@@ -223,8 +223,8 @@ async fn resolve_eval_package<'a, E: PackageEvaluator<'a>>(
 	}
 
 	for extension in result.get_extensions().iter().sorted() {
-		let req = Arc::new(PkgRequest::new(
-			extension.clone(),
+		let req = Arc::new(PkgRequest::parse(
+			extension,
 			PkgRequestSource::Dependency(package.clone()),
 		));
 		resolver.constraints.push(Constraint {
@@ -233,8 +233,8 @@ async fn resolve_eval_package<'a, E: PackageEvaluator<'a>>(
 	}
 
 	for recommendation in result.get_recommendations().iter().sorted() {
-		let req = Arc::new(PkgRequest::new(
-			recommendation.value.clone(),
+		let req = Arc::new(PkgRequest::parse(
+			&recommendation.value,
 			PkgRequestSource::Dependency(package.clone()),
 		));
 		resolver.constraints.push(Constraint {

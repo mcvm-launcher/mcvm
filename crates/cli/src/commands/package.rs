@@ -187,7 +187,7 @@ async fn cat(data: &mut CmdData, id: &str, raw: bool) -> anyhow::Result<()> {
 
 	let client = Client::new();
 
-	let req = Arc::new(PkgRequest::new(id, PkgRequestSource::UserRequire));
+	let req = Arc::new(PkgRequest::parse(id, PkgRequestSource::UserRequire));
 	let contents = config
 		.packages
 		.load(&req, &data.paths, &client, &mut data.output)
@@ -297,7 +297,7 @@ async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
 
 	let client = Client::new();
 
-	let req = Arc::new(PkgRequest::new(id, PkgRequestSource::UserRequire));
+	let req = Arc::new(PkgRequest::parse(id, PkgRequestSource::UserRequire));
 	let metadata = config
 		.packages
 		.get_metadata(&req, &data.paths, &client, &mut data.output)

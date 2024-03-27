@@ -6,6 +6,7 @@ use std::hash::Hash;
 use std::sync::Arc;
 
 use crate::util::is_valid_identifier;
+use crate::versions::VersionPattern;
 
 /// Type for the ID of a package
 pub type PackageID = Arc<str>;
@@ -18,6 +19,8 @@ pub struct PkgRequest {
 	pub source: PkgRequestSource,
 	/// The ID of the package to request
 	pub id: PackageID,
+	/// The requested content version of the package
+	pub content_version: VersionPattern,
 }
 
 /// Where a package was requested from
@@ -76,10 +79,32 @@ impl PkgRequestSource {
 
 impl PkgRequest {
 	/// Create a new PkgRequest
-	pub fn new(id: impl Into<PackageID>, source: PkgRequestSource) -> Self {
+	pub fn new(
+		id: impl Into<PackageID>,
+		source: PkgRequestSource,
+		content_version: VersionPattern,
+	) -> Self {
 		Self {
 			id: id.into(),
 			source,
+			content_version,
+		}
+	}
+
+	/// Parse the package name and content version from a string
+	pub fn parse(string: impl AsRef<str>, source: PkgRequestSource) -> Self {
+		let string = string.as_ref();
+		if let Some(index) = string.find('@') {
+			let (id, mut version) = string.split_at(index);
+			if index + 1 < string.len() {
+				// Cut off the at symbol
+				version = &version[1..];
+				PkgRequest::new(id, source, VersionPattern::from(version))
+			} else {
+				PkgRequest::new(id, source, VersionPattern::Any)
+			}
+		} else {
+			PkgRequest::new(string, source, VersionPattern::Any)
 		}
 	}
 
