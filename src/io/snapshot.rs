@@ -288,7 +288,7 @@ fn write_snapshot_files<R: Read>(
 			let mut file = BufWriter::new(file);
 			let mut arc = ZipWriter::new(&mut file);
 			let options = zip::write::FileOptions::default()
-				.compression_method(zip::CompressionMethod::Stored);
+				.compression_method(zip::CompressionMethod::Deflated);
 			for (path, mut reader) in readers {
 				arc.start_file(path, options)?;
 				std::io::copy(&mut reader, &mut arc)?;
@@ -321,19 +321,8 @@ async fn restore_snapshot_files(
 			let file = File::open(snapshot_path)?;
 			let mut file = BufReader::new(file);
 			let mut arc = ZipArchive::new(&mut file)?;
-			for i in 0..arc.len() {
-				let mut file = arc.by_index(i)?;
-				let rel_path = PathBuf::from(
-					file.enclosed_name()
-						.context("Invalid compressed file path")?,
-				);
-				let out_path = instance_dir.join(rel_path);
-				files::create_leading_dirs(&out_path)?;
-
-				let mut out_file = File::create(&out_path)?;
-				std::io::copy(&mut file, &mut out_file)
-					.context("Failed to copy compressed file")?;
-			}
+			arc.extract(instance_dir)
+				.context("Failed to extract snapshot archive")?;
 		}
 		StorageType::Folder => {
 			files::copy_dir_contents_async(snapshot_path, instance_dir)
