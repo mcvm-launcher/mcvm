@@ -474,6 +474,7 @@ where
 				use_default_features: true,
 				permissions: Default::default(),
 				stability: Default::default(),
+				worlds: Default::default(),
 			},
 			InitialPackageData::Repository { id } => FullPackageConfig::Repository {
 				id,
@@ -481,6 +482,7 @@ where
 				use_default_features: true,
 				permissions: Default::default(),
 				stability: Default::default(),
+				worlds: Default::default(),
 			},
 		};
 
@@ -528,6 +530,16 @@ where
 		match &mut self.config {
 			FullPackageConfig::Local { stability, .. } => *stability = Some(other_stability),
 			FullPackageConfig::Repository { stability, .. } => *stability = Some(other_stability),
+		}
+		self
+	}
+
+	/// Set the configured worlds of the package
+	pub fn worlds(&mut self, worlds: Vec<String>) -> &mut Self {
+		let other_worlds = worlds;
+		match &mut self.config {
+			FullPackageConfig::Local { worlds, .. } => *worlds = other_worlds,
+			FullPackageConfig::Repository { worlds, .. } => *worlds = other_worlds,
 		}
 		self
 	}

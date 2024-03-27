@@ -1,3 +1,4 @@
+use std::borrow::Cow;
 use std::fmt::Display;
 use std::sync::Arc;
 
@@ -53,6 +54,9 @@ pub enum FullPackageConfig {
 		/// Expected stability for the package
 		#[serde(default)]
 		stability: Option<PackageStability>,
+		/// Worlds to use for the package
+		#[serde(default)]
+		worlds: Vec<String>,
 	},
 	/// Config for a repository package
 	Repository {
@@ -70,6 +74,9 @@ pub enum FullPackageConfig {
 		/// Expected stability for the package
 		#[serde(default)]
 		stability: Option<PackageStability>,
+		/// Worlds to use for the package
+		#[serde(default)]
+		worlds: Vec<String>,
 	},
 }
 
@@ -196,6 +203,17 @@ impl PackageConfig {
 		out.extend(features);
 
 		Ok(out)
+	}
+
+	/// Get the  worlds of the config
+	pub fn get_worlds(&self) -> Cow<[String]> {
+		match &self {
+			Self::Basic(..) => Cow::Owned(Vec::new()),
+			Self::Full(cfg) => match cfg {
+				FullPackageConfig::Local { worlds, .. } => Cow::Borrowed(worlds),
+				FullPackageConfig::Repository { worlds, .. } => Cow::Borrowed(worlds),
+			},
+		}
 	}
 
 	/// Validate this config

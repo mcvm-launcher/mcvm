@@ -283,6 +283,7 @@ impl Instance {
 	pub async fn install_package<'a>(
 		&mut self,
 		pkg: &ArcPkgReq,
+		pkg_config: &PackageConfig,
 		eval_input: EvalInput<'a>,
 		reg: &mut PkgRegistry,
 		paths: &Paths,
@@ -344,10 +345,15 @@ impl Instance {
 			.map(|x| {
 				Ok(LockfileAddon::from_addon(
 					&x.addon,
-					self.get_linked_addon_paths(&x.addon, paths, &version_info)?
-						.iter()
-						.map(|y| y.join(x.addon.file_name.clone()))
-						.collect(),
+					self.get_linked_addon_paths(
+						&x.addon,
+						&pkg_config.get_worlds(),
+						paths,
+						&version_info,
+					)?
+					.iter()
+					.map(|y| y.join(x.addon.file_name.clone()))
+					.collect(),
 				))
 			})
 			.collect::<anyhow::Result<Vec<LockfileAddon>>>()
@@ -364,7 +370,7 @@ impl Instance {
 					.await
 					.with_context(|| format!("Failed to acquire addon '{}'", addon.addon.id))?;
 			}
-			self.create_addon(&addon.addon, paths, &version_info)
+			self.create_addon(&addon.addon, &pkg_config.get_worlds(), paths, &version_info)
 				.with_context(|| format!("Failed to install addon '{}'", addon.addon.id))?;
 		}
 

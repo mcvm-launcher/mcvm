@@ -290,6 +290,7 @@ mod tests {
 				features: vec![],
 				perms: EvalPermissions::Standard,
 				stability: PackageStability::Stable,
+				worlds: Vec::new(),
 			},
 		};
 

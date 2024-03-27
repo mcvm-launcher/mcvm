@@ -136,6 +136,8 @@ pub struct EvalParameters {
 	pub perms: EvalPermissions,
 	/// Requested stability of the package's contents
 	pub stability: PackageStability,
+	/// Requested worlds to put addons in
+	pub worlds: Vec<String>,
 }
 
 /// Persistent state for evaluation

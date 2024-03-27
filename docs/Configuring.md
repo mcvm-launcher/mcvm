@@ -173,7 +173,8 @@ or
 	"features": [string],
 	"use_default_features": bool,
 	"permissions": "restricted" | "standard" | "elevated",
-	"stability": "stable" | "latest"
+	"stability": "stable" | "latest",
+	"worlds": [string]
 }
 ```
 
@@ -188,6 +189,7 @@ In most cases the first form is all you need. If you want more control over how 
 - `use_default_features` (Optional): Whether or not to use the default features of this package. `true` by default.
 - `permissions` (Optional): The amount of control you would like to give this package. Can be `"restricted"`, `"standard"`, or `"elevated"`. Packages you do not trust should be given the `"restricted"` level. Packages that you trust and want to provide access to special commands for can be given `"elevated"`. Defaults to `"standard"`.
 - `stability` (Optional): Specify whether you want this package to use development versions of addons or not. Defaults to using the `package_stability` setting from the profile.
+- `worlds` (Optional): A list of worlds to only apply addons like datapacks to. If left empty (the default), will apply to all worlds in the instance.
 
 ## Preferences
 

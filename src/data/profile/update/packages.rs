@@ -50,12 +50,23 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 			let instance = ctx.instances.get_mut(instance_id).ok_or(anyhow!(
 				"Instance '{instance_id}' does not exist in the registry"
 			))?;
+
+			let configured_packages =
+				instance.get_configured_packages(global_packages, &profile.packages);
+			let package_config = configured_packages
+				.into_iter()
+				.find(|x| x.get_pkg_id() == package.id)
+				.expect("Package should still be configured")
+				.clone();
+
 			let params = EvalParameters {
 				side: instance.kind.to_side(),
 				features: Vec::new(),
 				perms: EvalPermissions::Standard,
 				stability: PackageStability::Stable,
+				worlds: Vec::new(),
 			};
+
 			ctx.output.display(
 				format_package_update_message(
 					package,
@@ -64,10 +75,12 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 				),
 				MessageLevel::Important,
 			);
+
 			let input = EvalInput { constants, params };
 			let result = instance
 				.install_package(
 					package,
+					&package_config,
 					input,
 					ctx.packages,
 					ctx.paths,
@@ -164,6 +177,7 @@ async fn resolve_and_batch<'a, O: MCVMOutput>(
 			features: Vec::new(),
 			perms: EvalPermissions::Standard,
 			stability: PackageStability::Stable,
+			worlds: Vec::new(),
 		};
 		let instance_pkgs = instance.get_configured_packages(global_packages, &profile.packages);
 		let instance_resolved = resolve(

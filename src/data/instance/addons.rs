@@ -14,6 +14,7 @@ impl Instance {
 	pub fn create_addon(
 		&mut self,
 		addon: &Addon,
+		selected_worlds: &[String],
 		paths: &Paths,
 		version_info: &VersionInfo,
 	) -> anyhow::Result<()> {
@@ -22,7 +23,7 @@ impl Instance {
 		files::create_leading_dirs(game_dir)?;
 		files::create_dir(game_dir)?;
 		for path in self
-			.get_linked_addon_paths(addon, paths, version_info)
+			.get_linked_addon_paths(addon, selected_worlds, paths, version_info)
 			.context("Failed to get linked directory")?
 		{
 			Self::link_addon(&path, addon, paths, &self.id)
@@ -36,6 +37,7 @@ impl Instance {
 	pub fn get_linked_addon_paths(
 		&mut self,
 		addon: &Addon,
+		selected_worlds: &[String],
 		paths: &Paths,
 		version_info: &VersionInfo,
 	) -> anyhow::Result<Vec<PathBuf>> {
@@ -74,14 +76,25 @@ impl Instance {
 					vec![inst_dir.join(datapack_folder)]
 				} else {
 					match self.kind {
-						InstKind::Client { .. } => inst_dir
-							.join("saves")
-							.read_dir()
-							.context("Failed to read saves directory")?
-							.filter_map(|world| {
-								world.map(|world| world.path().join("datapacks")).ok()
-							})
-							.collect(),
+						InstKind::Client { .. } => {
+							inst_dir
+								.join("saves")
+								.read_dir()
+								.context("Failed to read saves directory")?
+								.filter_map(|world| {
+									let world = world.ok()?;
+									let path = world.path();
+									// Filter worlds not in the list
+									if !selected_worlds.is_empty() {
+										let dir_name = path.file_name()?.to_string_lossy();
+										if !selected_worlds.iter().any(|x| x == dir_name.as_ref()) {
+											return None;
+										}
+									}
+									Some(path.join("datapacks"))
+								})
+								.collect()
+						}
 						// TODO: Different world paths in options
 						InstKind::Server { .. } => vec![inst_dir.join("world").join("datapacks")],
 					}
