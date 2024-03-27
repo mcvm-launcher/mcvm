@@ -47,6 +47,7 @@ pub fn eval_condition(condition: &ConditionKind, eval: &EvalData) -> anyhow::Res
 		ConditionKind::ContentVersion(version) => {
 			let version = version.get(&eval.vars)?;
 			let version = VersionPattern::from(&version);
+			let _ = version;
 			// TODO
 			return Ok(true);
 		}
