@@ -15,15 +15,15 @@ path = "src/lib.rs"
 
 [workspace]
 members = [
-	"crates/mcvm_auth",
-	"crates/mcvm_core",
-	"crates/mcvm_cli",
-	"crates/mcvm_mods",
-	"crates/mcvm_options",
-	"crates/mcvm_parse",
-	"crates/mcvm_pkg",
-	"crates/mcvm_shared",
-	"crates/mcvm_tools",
+	"crates/auth",
+	"crates/cli",
+	"crates/core",
+	"crates/mods",
+	"crates/options",
+	"crates/parse",
+	"crates/pkg",
+	"crates/shared",
+	"crates/tools",
 ]
 
 [features]
@@ -61,12 +61,12 @@ schemars = { version = "0.8.15", optional = true }
 serde = { version = "1.0.152", features = ["derive", "rc"] }
 serde_json = "1.0.91"
 sha2 = "0.10.7"
-mcvm_core = { path = "crates/mcvm_core", version = "0.2.0" }
-mcvm_mods = { path = "crates/mcvm_mods", version = "0.2.0" }
-mcvm_options = { path = "crates/mcvm_options", version = "0.2.0" }
-mcvm_parse = { path = "crates/mcvm_parse", version = "0.11.0" }
-mcvm_pkg = { path = "crates/mcvm_pkg", version = "0.10.0" }
-mcvm_shared = { path = "crates/mcvm_shared", version = "0.10.1" }
+mcvm_core = { path = "crates/core", version = "0.2.0" }
+mcvm_mods = { path = "crates/mods", version = "0.2.0" }
+mcvm_options = { path = "crates/options", version = "0.2.0" }
+mcvm_parse = { path = "crates/parse", version = "0.11.0" }
+mcvm_pkg = { path = "crates/pkg", version = "0.10.0" }
+mcvm_shared = { path = "crates/shared", version = "0.10.1" }
 minecraft-msa-auth = "0.3.0"
 shellexpand = { version = "3.0.0", features = ["path"] }
 tar = "0.4.38"

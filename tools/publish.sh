@@ -4,37 +4,37 @@
 cd crates
 
 # mcvm_shared
-cd mcvm_shared
+cd shared
 cargo publish
 cd ..
 
 # mcvm_auth
-cd mcvm_auth
+cd auth
 cargo publish
 cd ..
 
 # mcvm_core
-cd mcvm_core
+cd core
 cargo publish
 cd ..
 
 # mcvm_mods
-cd mcvm_mods
+cd mods
 cargo publish
 cd ..
 
 # mcvm_parse
-cd mcvm_parse
+cd parse
 cargo publish
 cd ..
 
 # mcvm_pkg
-cd mcvm_pkg
+cd pkg
 cargo publish
 cd ..
 
 # mcvm_options
-cd mcvm_options
+cd options
 cargo publish
 cd ..
 
@@ -43,7 +43,7 @@ cd ..
 cargo publish
 
 # mcvm_cli
-cd crates/mcvm_cli
+cd crates/cli
 cargo publish
 
 cd ../..
