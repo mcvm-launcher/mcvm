@@ -253,6 +253,8 @@ pub enum DependencyType {
 	Required,
 	/// An optional / recommended dependency
 	Optional,
+	/// An incompatible dependency
+	Incompatible,
 }
 
 /// Information about a project license

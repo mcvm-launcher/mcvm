@@ -93,6 +93,7 @@ pub async fn gen(
 		let mut deps = Vec::new();
 		let mut recommendations = Vec::new();
 		let mut extensions = Vec::new();
+		let mut conflicts = Vec::new();
 
 		for dep in &version.dependencies {
 			let pkg_id = if let Some(dep_id) = relation_substitutions.get(&dep.project_id) {
@@ -112,6 +113,7 @@ pub async fn gen(
 					value: pkg_id.into(),
 					invert: false,
 				}),
+				DependencyType::Incompatible => conflicts.push(pkg_id),
 			}
 		}
 
@@ -125,6 +127,7 @@ pub async fn gen(
 				dependencies: DeserListOrSingle::List(deps),
 				recommendations: DeserListOrSingle::List(recommendations),
 				extensions: DeserListOrSingle::List(extensions),
+				conflicts: DeserListOrSingle::List(conflicts),
 				..Default::default()
 			},
 			..Default::default()
