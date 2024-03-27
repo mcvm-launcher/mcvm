@@ -4,7 +4,7 @@ pub mod manager;
 pub mod packages;
 
 #[cfg(not(feature = "disable_profile_update_packages"))]
-use crate::package::eval::EvalConstants;
+use crate::pkg::eval::EvalConstants;
 #[cfg(not(feature = "disable_profile_update_packages"))]
 use packages::{print_package_support_messages, update_profile_packages};
 #[cfg(not(feature = "disable_profile_update_packages"))]
@@ -20,7 +20,7 @@ use crate::data::config::Config;
 use crate::data::id::ProfileID;
 use crate::io::files::paths::Paths;
 use crate::io::lock::Lockfile;
-use crate::package::reg::PkgRegistry;
+use crate::pkg::reg::PkgRegistry;
 use crate::util::print::PrintOptions;
 
 use manager::UpdateManager;

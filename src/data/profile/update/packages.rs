@@ -9,7 +9,7 @@ use mcvm_shared::pkg::{ArcPkgReq, PackageID, PackageStability};
 use crate::data::config::package::PackageConfig;
 use crate::data::id::InstanceID;
 use crate::data::profile::Profile;
-use crate::package::eval::{resolve, EvalConstants, EvalInput, EvalParameters, EvalPermissions};
+use crate::pkg::eval::{resolve, EvalConstants, EvalInput, EvalParameters, EvalPermissions};
 use crate::util::select_random_n_items_from_list;
 
 use super::ProfileUpdateContext;

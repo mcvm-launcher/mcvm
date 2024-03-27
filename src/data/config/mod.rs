@@ -31,7 +31,7 @@ use serde::{Deserialize, Serialize};
 use super::id::ProfileID;
 use super::profile::{InstanceRegistry, Profile};
 use crate::io::files::paths::Paths;
-use crate::package::reg::PkgRegistry;
+use crate::pkg::reg::PkgRegistry;
 
 use serde_json::json;
 

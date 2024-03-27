@@ -11,7 +11,7 @@ use mcvm_shared::util::is_valid_identifier;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
-use crate::package::eval::EvalPermissions;
+use crate::pkg::eval::EvalPermissions;
 use mcvm_pkg::{PkgRequest, PkgRequestSource};
 
 /// Different representations for the configuration of a package

@@ -1,8 +1,8 @@
 use std::collections::HashSet;
 use std::path::PathBuf;
 
-use crate::package::reg::CachingStrategy;
-use crate::package::repo::{PkgRepo, PkgRepoLocation};
+use crate::pkg::reg::CachingStrategy;
+use crate::pkg::repo::{PkgRepo, PkgRepoLocation};
 use mcvm_core::net::download::validate_url;
 
 use anyhow::{bail, Context};

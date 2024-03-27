@@ -27,7 +27,7 @@ pub mod io;
 /// API wrappers and networking utilities
 pub mod net;
 /// Dealing with packages
-pub mod package;
+pub mod pkg;
 /// Common utilities that can't live anywhere else
 pub mod util;
 

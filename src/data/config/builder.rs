@@ -13,9 +13,9 @@ use crate::data::id::{InstanceID, ProfileID};
 use crate::data::instance::Instance;
 use crate::data::profile::{InstanceRegistry, Profile};
 use crate::io::snapshot;
-use crate::package::eval::EvalPermissions;
-use crate::package::reg::PkgRegistry;
-use crate::package::repo::PkgRepo;
+use crate::pkg::eval::EvalPermissions;
+use crate::pkg::reg::PkgRegistry;
+use crate::pkg::repo::PkgRepo;
 
 use super::instance::{
 	read_instance_config, ClientWindowConfig, FullInstanceConfig, InstanceConfig, LaunchConfig,
@@ -637,7 +637,7 @@ mod tests {
 	use mcvm_shared::lang::Language;
 
 	use crate::data::config::preferences::{PrefDeser, RepositoriesDeser};
-	use crate::package::reg::CachingStrategy;
+	use crate::pkg::reg::CachingStrategy;
 
 	use super::*;
 

@@ -24,8 +24,8 @@ use reqwest::Client;
 use crate::io::files::paths::Paths;
 use crate::io::lock::{Lockfile, LockfileAddon};
 use crate::io::{files, snapshot};
-use crate::package::eval::{EvalData, EvalInput, Routine};
-use crate::package::reg::PkgRegistry;
+use crate::pkg::eval::{EvalData, EvalInput, Routine};
+use crate::pkg::reg::PkgRegistry;
 
 use self::launch::LaunchOptions;
 
