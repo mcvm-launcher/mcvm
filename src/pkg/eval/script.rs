@@ -2,6 +2,7 @@ use anyhow::bail;
 use mcvm_parse::conditions::ConditionKind;
 use mcvm_parse::parse::Parsed;
 use mcvm_parse::vars::{HashMapVariableStore, ReservedConstantVariables, VariableStore};
+use mcvm_pkg::properties::PackageProperties;
 use mcvm_pkg::script_eval::{
 	AddonInstructionData, ScriptEvalConfig, ScriptEvaluator as ScriptEvaluatorTrait,
 };
@@ -19,9 +20,10 @@ pub fn eval_script_package<'a>(
 	pkg_id: PackageID,
 	parsed: &Parsed,
 	routine: Routine,
+	properties: PackageProperties,
 	input: EvalInput<'a>,
 ) -> anyhow::Result<EvalData<'a>> {
-	let mut eval = EvalData::new(input, pkg_id, &routine);
+	let mut eval = EvalData::new(input, pkg_id, properties, &routine);
 
 	eval.vars.set_reserved_constants(ReservedConstantVariables {
 		mc_version: &eval.input.constants.version,

@@ -1,5 +1,6 @@
 use anyhow::anyhow;
 use mcvm_pkg::declarative::{DeclarativeAddonVersion, DeclarativeConditionSet, DeclarativePackage};
+use mcvm_pkg::properties::PackageProperties;
 use mcvm_pkg::script_eval::AddonInstructionData;
 use mcvm_pkg::RequiredPackage;
 use mcvm_shared::pkg::PackageID;
@@ -12,11 +13,12 @@ pub fn eval_declarative_package<'a>(
 	id: PackageID,
 	contents: &DeclarativePackage,
 	input: EvalInput<'a>,
+	properties: PackageProperties,
 	routine: Routine,
 ) -> anyhow::Result<EvalData<'a>> {
 	let pkg_id = id;
 
-	let mut eval_data = EvalData::new(input, pkg_id.clone(), &routine);
+	let mut eval_data = EvalData::new(input, pkg_id.clone(), properties, &routine);
 
 	// Vars for the EvalData that are modified by conditions / versions
 	let mut relations = contents.relations.clone();
@@ -294,8 +296,14 @@ mod tests {
 			},
 		};
 
-		let eval = eval_declarative_package(PackageID::from("foo"), &pkg, input, Routine::Install)
-			.unwrap();
+		let eval = eval_declarative_package(
+			PackageID::from("foo"),
+			&pkg,
+			input,
+			PackageProperties::default(),
+			Routine::Install,
+		)
+		.unwrap();
 
 		let addon = eval.addon_reqs.first().unwrap();
 		assert_eq!(addon.addon.version, Some("2".into()));

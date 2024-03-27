@@ -44,6 +44,12 @@ pub fn eval_condition(condition: &ConditionKind, eval: &EvalData) -> anyhow::Res
 		ConditionKind::Arch(arch) => Ok(check_arch_condition(arch.get())),
 		ConditionKind::Stability(stability) => Ok(eval.input.params.stability == *stability.get()),
 		ConditionKind::Language(lang) => Ok(eval.input.constants.language == *lang.get()),
+		ConditionKind::ContentVersion(version) => {
+			let version = version.get(&eval.vars)?;
+			let version = VersionPattern::from(&version);
+			// TODO
+			return Ok(true);
+		}
 		ConditionKind::Value(left, right) => Ok(left.get(&eval.vars)? == right.get(&eval.vars)?),
 		ConditionKind::Defined(var) => Ok(eval.vars.var_exists(var.get())),
 		ConditionKind::Const(val) => Ok(val.get_clone()),

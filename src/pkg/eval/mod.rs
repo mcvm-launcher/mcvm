@@ -149,6 +149,8 @@ pub struct EvalData<'a> {
 	pub id: PackageID,
 	/// Level of evaluation
 	pub reason: EvalReason,
+	/// Package properties
+	pub properties: PackageProperties,
 	/// Variables, used for script evaluation
 	pub vars: HashMapVariableStore,
 	/// The output of addon requests
@@ -175,11 +177,17 @@ pub struct EvalData<'a> {
 
 impl<'a> EvalData<'a> {
 	/// Create a new EvalData
-	pub fn new(input: EvalInput<'a>, id: PackageID, routine: &Routine) -> Self {
+	pub fn new(
+		input: EvalInput<'a>,
+		id: PackageID,
+		properties: PackageProperties,
+		routine: &Routine,
+	) -> Self {
 		Self {
 			input,
 			id,
 			reason: routine.get_reason(),
+			properties,
 			vars: HashMapVariableStore::default(),
 			addon_reqs: Vec::new(),
 			deps: Vec::new(),
@@ -207,20 +215,27 @@ impl Package {
 		self.parse(paths, client).await?;
 
 		// Check properties
-		let properties = self.get_properties(paths, client).await?;
-		if eval_check_properties(&input, properties)? {
-			return Ok(EvalData::new(input, self.id.clone(), &routine));
+		let properties = self.get_properties(paths, client).await?.clone();
+		if eval_check_properties(&input, &properties)? {
+			return Ok(EvalData::new(input, self.id.clone(), properties, &routine));
 		}
 
 		match self.content_type {
 			PackageContentType::Script => {
 				let parsed = self.data.get_mut().contents.get_mut().get_script_contents();
-				let eval = eval_script_package(self.id.clone(), parsed, routine, input)?;
+				let eval =
+					eval_script_package(self.id.clone(), parsed, routine, properties, input)?;
 				Ok(eval)
 			}
 			PackageContentType::Declarative => {
 				let contents = self.data.get().contents.get().get_declarative_contents();
-				let eval = eval_declarative_package(self.id.clone(), contents, input, routine)?;
+				let eval = eval_declarative_package(
+					self.id.clone(),
+					contents,
+					input,
+					properties,
+					routine,
+				)?;
 				Ok(eval)
 			}
 		}

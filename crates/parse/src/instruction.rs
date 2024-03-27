@@ -76,6 +76,8 @@ pub enum InstrKind {
 	Features(Vec<String>),
 	/// Set the package default features property
 	DefaultFeatures(Vec<String>),
+	/// Set the package content versions property
+	ContentVersions(Vec<String>),
 	/// Set the package Modrinth ID property
 	ModrinthID(Later<String>),
 	/// Set the package CurseForge ID property
@@ -178,6 +180,7 @@ impl Display for InstrKind {
 				Self::Categories(..) => "categories",
 				Self::Features(..) => "features",
 				Self::DefaultFeatures(..) => "default_features",
+				Self::ContentVersions(..) => "content_versions",
 				Self::ModrinthID(..) => "modrinth_id",
 				Self::CurseForgeID(..) => "curseforge_id",
 				Self::SmithedID(..) => "smithed_id",
@@ -235,6 +238,7 @@ impl Instruction {
 			"categories" => Ok(InstrKind::Categories(Vec::new())),
 			"features" => Ok(InstrKind::Features(Vec::new())),
 			"default_features" => Ok(InstrKind::DefaultFeatures(Vec::new())),
+			"content_versions" => Ok(InstrKind::ContentVersions(Vec::new())),
 			"modrinth_id" => Ok(InstrKind::ModrinthID(Later::Empty)),
 			"curseforge_id" => Ok(InstrKind::CurseForgeID(Later::Empty)),
 			"supported_versions" => Ok(InstrKind::SupportedVersions(Vec::new())),
@@ -287,6 +291,7 @@ impl Instruction {
 			| InstrKind::Authors(val)
 			| InstrKind::PackageMaintainers(val)
 			| InstrKind::DefaultFeatures(val)
+			| InstrKind::ContentVersions(val)
 			| InstrKind::Keywords(val)
 			| InstrKind::Categories(val)
 			| InstrKind::Tags(val)
@@ -357,6 +362,7 @@ impl Instruction {
 				| InstrKind::PackageMaintainers(list)
 				| InstrKind::Features(list)
 				| InstrKind::DefaultFeatures(list)
+				| InstrKind::ContentVersions(list)
 				| InstrKind::Keywords(list)
 				| InstrKind::Categories(list)
 				| InstrKind::Tags(list)

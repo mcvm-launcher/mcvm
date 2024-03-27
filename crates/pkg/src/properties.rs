@@ -19,6 +19,9 @@ pub struct PackageProperties {
 	/// Features enabled by default
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub default_features: Option<Vec<String>>,
+	/// List of available content versions in order
+	#[serde(skip_serializing_if = "Option::is_none")]
+	pub content_versions: Option<Vec<String>>,
 	/// The package's Modrinth ID
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub modrinth_id: Option<String>,
@@ -87,6 +90,7 @@ impl PackageProperties {
 			&& self.supported_architectures.is_none()
 			&& self.tags.is_none()
 			&& self.open_source.is_none()
+			&& self.content_versions.is_none()
 	}
 }
 
@@ -100,6 +104,7 @@ pub fn eval_properties(parsed: &Parsed) -> anyhow::Result<PackageProperties> {
 				match &instr.kind {
 					InstrKind::Features(list) => out.features = Some(list.clone()),
 					InstrKind::DefaultFeatures(list) => out.default_features = Some(list.clone()),
+					InstrKind::ContentVersions(list) => out.content_versions = Some(list.clone()),
 					InstrKind::ModrinthID(id) => out.modrinth_id = Some(id.get_clone()),
 					InstrKind::CurseForgeID(id) => out.curseforge_id = Some(id.get_clone()),
 					InstrKind::SmithedID(id) => out.smithed_id = Some(id.get_clone()),

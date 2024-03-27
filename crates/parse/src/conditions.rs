@@ -67,6 +67,8 @@ pub enum ConditionKind {
 	Stability(Later<PackageStability>),
 	/// Check the user's language
 	Language(Later<Language>),
+	/// Check the requested content version of the package
+	ContentVersion(Value),
 }
 
 /// Value for the OS condition
@@ -139,6 +141,7 @@ impl ConditionKind {
 			"defined" => Some(Self::Defined(Later::Empty)),
 			"os" => Some(Self::OS(Later::Empty)),
 			"stability" => Some(Self::Stability(Later::Empty)),
+			"language" => Some(Self::Language(Later::Empty)),
 			_ => None,
 		}
 	}
@@ -153,7 +156,7 @@ impl ConditionKind {
 				left.is_finished_parsing()
 					&& matches!(right, Later::Full(condition) if condition.is_finished_parsing())
 			}
-			Self::Version(val) | Self::Feature(val) => val.is_some(),
+			Self::Version(val) | Self::Feature(val) | Self::ContentVersion(val) => val.is_some(),
 			Self::Side(val) => val.is_full(),
 			Self::Modloader(val) => val.is_full(),
 			Self::PluginLoader(val) => val.is_full(),
@@ -204,7 +207,7 @@ impl ConditionKind {
 					},
 				}
 			}
-			Self::Version(val) | Self::Feature(val) => {
+			Self::Version(val) | Self::Feature(val) | Self::ContentVersion(val) => {
 				*val = parse_arg(tok, pos)?;
 			}
 			Self::Defined(var) => match tok {
