@@ -7,10 +7,34 @@ use serde::{Deserialize, Serialize};
 /// A Modrinth project (mod, resource pack, etc.)
 #[derive(Deserialize, Serialize)]
 pub struct Project {
+	/// The ID of the project
+	pub id: String,
 	/// The type of this project and its files
 	pub project_type: ProjectType,
 	/// The ID's of the available project versions
 	pub versions: Vec<String>,
+	/// The Minecraft versions this project is available for
+	pub game_versions: Vec<String>,
+	/// The display name of the project
+	pub title: String,
+	/// The short description of the project
+	pub description: String,
+	/// URL to the icon
+	pub icon_url: String,
+	/// URL to the issue tracker
+	pub issues_url: Option<String>,
+	/// URL to the source
+	pub source_url: Option<String>,
+	/// URL to the wiki
+	pub wiki_url: Option<String>,
+	/// URL to the Discord
+	pub discord_url: Option<String>,
+	/// Donation URLs
+	pub donation_urls: Vec<String>,
+	/// The loaders this project is available for
+	pub loaders: Vec<Loader>,
+	/// The license of the project
+	pub license: License,
 }
 
 /// The type of a Modrinth project
@@ -69,6 +93,8 @@ pub enum ReleaseChannel {
 /// A Modrinth project version
 #[derive(Deserialize, Serialize)]
 pub struct Version {
+	/// The ID of this version
+	pub id: String,
 	/// The name of this version
 	pub name: String,
 	/// The version number of this version
@@ -76,7 +102,11 @@ pub struct Version {
 	/// The loaders that this version supports
 	pub loaders: Vec<Loader>,
 	/// The list of downloads for this version
-	pub downloads: Vec<Download>,
+	pub files: Vec<Download>,
+	/// The game versions this version supports
+	pub game_versions: Vec<String>,
+	/// The dependencies that this version has
+	pub dependencies: Vec<Dependency>,
 }
 
 /// Loader for a Modrinth project version
@@ -143,11 +173,11 @@ impl Loader {
 impl Version {
 	/// Returns the primary file download for this version
 	pub fn get_primary_download(&self) -> anyhow::Result<&Download> {
-		let primary = self.downloads.iter().find(|x| x.primary);
+		let primary = self.files.iter().find(|x| x.primary);
 		if let Some(primary) = primary {
 			Ok(primary)
 		} else {
-			self.downloads
+			self.files
 				.first()
 				.ok_or(anyhow!("Version has no downloads"))
 		}
@@ -202,4 +232,32 @@ pub struct Download {
 	pub filename: String,
 	/// Whether or not this is the primary file for this version
 	pub primary: bool,
+}
+
+/// A version dependency
+#[derive(Deserialize, Serialize)]
+pub struct Dependency {
+	/// The ID of the project
+	pub project_id: String,
+	/// The ID of the version
+	pub version_id: String,
+	/// The type of the dependency
+	pub dependency_type: DependencyType,
+}
+
+/// The type of a dependency
+#[derive(Deserialize, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum DependencyType {
+	/// A required dependency
+	Required,
+	/// An optional / recommended dependency
+	Optional,
+}
+
+/// Information about a project license
+#[derive(Deserialize, Serialize)]
+pub struct License {
+	/// The short ID of the license
+	pub id: String,
 }

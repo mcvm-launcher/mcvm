@@ -3,6 +3,8 @@ use std::collections::HashMap;
 use serde::Deserialize;
 use serde_json::Value;
 
+/// Modrinth package generation
+pub mod modrinth;
 /// Smithed package generation
 pub mod smithed;
 
@@ -10,6 +12,7 @@ pub mod smithed;
 #[derive(Copy, Clone, Debug, clap::ValueEnum)]
 pub enum PackageSource {
 	Smithed,
+	Modrinth,
 }
 
 /// Configuration for generating the package from whatever source
@@ -27,6 +30,7 @@ pub async fn gen(source: PackageSource, config: Option<PackageGenerationConfig>,
 	let config = config.unwrap_or_default();
 	let pkg = match source {
 		PackageSource::Smithed => smithed::gen(id, config.relation_substitutions).await,
+		PackageSource::Modrinth => modrinth::gen(id, config.relation_substitutions).await,
 	};
 
 	// Merge with config
