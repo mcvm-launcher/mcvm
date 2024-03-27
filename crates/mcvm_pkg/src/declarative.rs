@@ -206,9 +206,8 @@ pub struct DeclarativeAddonVersionPatchProperties {
 	/// Relations to append
 	#[serde(skip_serializing_if = "DeclarativePackageRelations::is_empty")]
 	pub relations: DeclarativePackageRelations,
-	// TODO: This should be an option
 	/// A filename to change
-	pub filename: String,
+	pub filename: Option<String>,
 }
 
 /// Deserialize a declarative package
