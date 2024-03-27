@@ -7,6 +7,26 @@
 		"fabric-api": {
 			"path": "pkg/fabric-api.json",
 			"content_type": "declarative"
+		},
+		"qfapi-qsl": {
+			"path": "pkg/qfapi-qsl.json",
+			"content_type": "declarative"
+		},
+		"quilt-kotlin-libraries": {
+			"path": "pkg/quilt-kotlin-libraries.json",
+			"content_type": "declarative"
+		},
+		"fabric-language-kotlin": {
+			"path": "pkg/fabric-language-kotlin.json",
+			"content_type": "declarative"
+		},
+		"sodium": {
+			"path": "pkg/sodium.json",
+			"content_type": "declarative"
+		},
+		"indium": {
+			"path": "pkg/indium.json",
+			"content_type": "declarative"
 		}
 	}
 }

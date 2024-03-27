@@ -1,0 +1,49 @@
+{
+	"meta": {
+		"name": "Quilted Fabric API (QFAPI) and Quilt Standard Libraries (QSL)",
+		"description": "The standard libraries of the Quilt ecosystem. Essential for your modding experience on Quilt!",
+		"authors": ["QuiltMC", "OroArmor", "LambdAurora"],
+		"package_maintainers": ["mcvm"],
+		"source": "https://github.com/QuiltMC/quilted-fabric-api",
+		"issues": "https://github.com/QuiltMC/quilted-fabric-api/issues",
+		"community": "https://discord.quiltmc.org/",
+		"support_link": "https://opencollective.com/quiltmc",
+		"icon": "https://cdn.modrinth.com/data/qvIfYCYJ/icon.png",
+		"license": "Apache-2.0",
+		"keywords": ["quilt", "api"],
+		"categories": ["api", "technical"]
+	},
+	"properties": {
+		"modrinth_id": "qvIfYCYJ",
+		"supported_modloaders": ["quilt"],
+		"open_source": true
+	},
+	"relations": {
+		"conflicts": "fabric-api"
+	},
+	"addons": {
+		"mod": {
+			"kind": "mod",
+			"versions": [
+				{
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/vZbU3nyq/quilted-fabric-api-8.0.0-alpha.5%2B0.91.6-1.20.2.jar",
+					"version": "vZbU3nyq",
+					"minecraft_versions": "1.20.2",
+					"stability": "latest"
+				},
+				{
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/qAYOU2Af/qfapi-7.5.0_qsl-6.1.2_fapi-0.91.0_mc-1.20.1.jar",
+					"version": "qAYOU2Af",
+					"minecraft_versions": "1.20.1",
+					"stability": "stable"
+				},
+				{
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/BQoiDT9n/qfapi-6.0.0-beta.11_qsl-5.0.0-beta.11_fapi-0.87.0_mc-1.19.4.jar",
+					"version": "BQoiDT9n",
+					"minecraft_versions": "1.19.4",
+					"stability": "stable"
+				}
+			]
+		}
+	}
+}

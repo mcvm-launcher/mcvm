@@ -1,0 +1,62 @@
+{
+	"meta": {
+		"name": "Quilt Kotlin Libraries",
+		"description": "Quilt's official Kotlin libraries",
+		"authors": ["QuiltMC", "NoComment1105", "Potatoboy9999", "sschr15"],
+		"package_maintainers": ["mcvm"],
+		"source": "https://github.com/QuiltMC/quilt-kotlin-libraries",
+		"issues": "https://github.com/QuiltMC/quilt-kotlin-libraries/issues",
+		"community": "https://discord.quiltmc.org/",
+		"support_link": "https://opencollective.com/quiltmc",
+		"icon": "https://cdn.modrinth.com/data/lwVhp9o5/icon.png",
+		"license": "Apache-2.0",
+		"keywords": ["quilt", "api", "kotlin"],
+		"categories": ["api", "technical"]
+	},
+	"properties": {
+		"modrinth_id": "lwVhp9o5",
+		"supported_modloaders": ["quilt"],
+		"open_source": true
+	},
+	"relations": {
+		"conflicts": "fabric-language-kotlin",
+		"dependencies": "qfapi-qsl"
+	},
+	"addons": {
+		"mod": {
+			"kind": "mod",
+			"versions": [
+				{
+					"url": "https://cdn.modrinth.com/data/lwVhp9o5/versions/di4GKAZU/quilt-kotlin-libraries-3.0.0%2Bkt.1.9.22%2Bflk.1.10.17.jar",
+					"version": "di4GKAZU",
+					"minecraft_versions": "1.20.2",
+					"stability": "stable"
+				},
+				{
+					"url": "https://cdn.modrinth.com/data/lwVhp9o5/versions/RYTef2Wb/quilt-kotlin-libraries-2.1.3%2Bkt.1.9.10%2Bflk.1.10.10.jar",
+					"version": "RYTef2Wb",
+					"minecraft_versions": "1.20.1",
+					"stability": "stable"
+				},
+				{
+					"url": "https://cdn.modrinth.com/data/lwVhp9o5/versions/weDX41J0/quilt-kotlin-libraries-2.0.2%2Bkt.1.8.20%2Bflk.1.9.3.jar",
+					"version": "weDX41J0",
+					"minecraft_versions": "1.19.4",
+					"stability": "stable"
+				},
+				{
+					"url": "https://cdn.modrinth.com/data/lwVhp9o5/versions/rvPEzQsW/quilt-kotlin-libraries-1.1.1%2Bkt.1.8.10%2Bflk.1.9.2.jar",
+					"version": "rvPEzQsW",
+					"minecraft_versions": "1.19.3",
+					"stability": "stable"
+				},
+				{
+					"url": "https://cdn.modrinth.com/data/lwVhp9o5/versions/4Ag1YF4s/quilt-kotlin-libraries-1.0.2%2Bkt.1.8.0%2Bflk.1.9.0.jar",
+					"version": "4Ag1YF4s",
+					"minecraft_versions": "1.19.2",
+					"stability": "stable"
+				}
+			]
+		}
+	}
+}

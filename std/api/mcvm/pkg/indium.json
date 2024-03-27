@@ -1,0 +1,57 @@
+{
+	"meta": {
+		"name": "Indium",
+		"description": "Sodium addon providing support for the Fabric Rendering API, based on Indigo",
+		"authors": ["comp500"],
+		"package_maintainers": ["mcvm"],
+		"source": "https://github.com/comp500/Indium",
+		"issues": "https://github.com/comp500/Indium/issues",
+		"icon": "https://cdn.modrinth.com/data/Orvt0mRa/icon.png",
+		"license": "Apache-2.0",
+		"keywords": ["graphics"],
+		"categories": ["compatability", "technical"]
+	},
+	"properties": {
+		"modrinth_id": "Orvt0mRa",
+		"supported_modloaders": ["fabriclike"],
+		"open_source": true
+	},
+	"relations": {
+		"extensions": "sodium"
+	},
+	"addons": {
+		"mod": {
+			"kind": "mod",
+			"versions": [
+				{
+					"url": "https://cdn.modrinth.com/data/Orvt0mRa/versions/Aouse6P7/indium-1.0.30%2Bmc1.20.4.jar",
+					"version": "Aouse6P7",
+					"minecraft_versions": "1.20.1..1.20.4"
+				},
+				{
+					"url": "https://cdn.modrinth.com/data/Orvt0mRa/versions/oYQsfz9e/indium-1.0.19%2Bmc1.19.4.jar",
+					"version": "oYQsfz9e",
+					"minecraft_versions": "1.19.4"
+				},
+				{
+					"url": "https://cdn.modrinth.com/data/Orvt0mRa/versions/U94NcDpV/indium-1.0.14%2Bmc1.19.3.jar",
+					"version": "U94NcDpV",
+					"minecraft_versions": "1.19.3"
+				},
+				{
+					"url": "https://cdn.modrinth.com/data/Orvt0mRa/versions/yTfou6df/indium-1.0.9%2Bmc1.19.2.jar",
+					"version": "yTfou6df",
+					"minecraft_versions": "1.19.2"
+				},
+				{
+					"url": "https://cdn.modrinth.com/data/Orvt0mRa/versions/1.0.7%2Bmc1.18.2/indium-1.0.7%2Bmc1.18.2.jar",
+					"version": "H45YVREb",
+					"minecraft_versions": "1.18.2"
+				}
+			],
+			"conditions": {
+				"side": "client"
+			}
+		}
+	}
+}

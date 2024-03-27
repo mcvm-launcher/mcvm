@@ -1,0 +1,36 @@
+{
+	"meta": {
+		"name": "Fabric Language Kotlin",
+		"description": "This is a mod that enables usage of the Kotlin programming language for Fabric mods",
+		"authors": ["modmuss50", "sfPlayer1"],
+		"package_maintainers": ["mcvm"],
+		"documentation": "https://fabricmc.net/wiki/",
+		"source": "https://github.com/FabricMC/fabric-language-kotlin",
+		"issues": "https://github.com/FabricMC/fabric-language-kotlin/issues",
+		"community": "https://discord.gg/v6v4pMv",
+		"icon": "https://cdn.modrinth.com/data/Ha28R6CL/icon.png",
+		"license": "Apache-2.0",
+		"keywords": ["fabric", "api", "kotlin"],
+		"categories": ["api", "technical"]
+	},
+	"properties": {
+		"modrinth_id": "Ha28R6CL",
+		"supported_modloaders": ["fabric"],
+		"open_source": true
+	},
+	"relations": {
+		"conflicts": "quilt-kotlin-libraries"
+	},
+	"addons": {
+		"mod": {
+			"kind": "mod",
+			"versions": [
+				{
+					"url": "https://cdn.modrinth.com/data/Ha28R6CL/versions/ZMokinzs/fabric-language-kotlin-1.10.19%2Bkotlin.1.9.23.jar",
+					"version": "ZMokinzs",
+					"minecraft_versions": "1.20.4-"
+				}
+			]
+		}
+	}
+}

@@ -1,0 +1,70 @@
+{
+	"meta": {
+		"name": "Sodium",
+		"description": "A modern rendering engine for Minecraft which greatly improves performance",
+		"authors": ["jellysquid3", "IMS"],
+		"package_maintainers": ["mcvm"],
+		"documentation": "https://github.com/CaffeineMC/sodium-fabric/wiki",
+		"source": "https://github.com/CaffeineMC/sodium-fabric",
+		"issues": "https://github.com/CaffeineMC/sodium-fabric/issues",
+		"community": "https://caffeinemc.net/discord",
+		"support_link": "https://caffeinemc.net/donate",
+		"icon": "https://cdn.modrinth.com/data/AANobbMI/icon.png",
+		"gallery": [
+			"https://cdn.modrinth.com/data/AANobbMI/images/d84313e6f57dc9e7896961dbd2dfc2689d482758.webp",
+			"https://cdn.modrinth.com/data/AANobbMI/images/6b0e58705156ba67a6d97a74b9f9ac05da69f502.webp",
+			"https://cdn.modrinth.com/data/AANobbMI/images/b681a9e87daa53a0e85336a894db70427007149b.webp",
+			"https://cdn.modrinth.com/data/AANobbMI/images/56c4599efcb529a19aed0e118caad4178d7fd540.webp",
+			"https://cdn.modrinth.com/data/AANobbMI/images/5ca2e8f6c72f3d543dd3dc95b706964c5678d80e.png",
+			"https://cdn.modrinth.com/data/AANobbMI/images/c39debea7fc623306e9c45148084585399fc59ee.webp"
+		],
+		"license": "LGPL-3.0-only",
+		"keywords": ["graphics"],
+		"categories": ["optimization", "technical"]
+	},
+	"properties": {
+		"modrinth_id": "AANobbMI",
+		"supported_modloaders": ["fabriclike"],
+		"open_source": true
+	},
+	"addons": {
+		"mod": {
+			"kind": "mod",
+			"versions": [
+				{
+					"url": "https://cdn.modrinth.com/data/AANobbMI/versions/4GyXKCLd/sodium-fabric-0.5.8%2Bmc1.20.4.jar",
+					"version": "4GyXKCLd",
+					"minecraft_versions": "1.20.3..1.20.4"
+				},
+				{
+					"url": "https://cdn.modrinth.com/data/AANobbMI/versions/mhZtY2lR/sodium-fabric-0.5.8%2Bmc1.20.1.jar",
+					"version": "mhZtY2lR",
+					"minecraft_versions": "1.20.1"
+				},
+				{
+					"url": "https://cdn.modrinth.com/data/AANobbMI/versions/b4hTi3mo/sodium-fabric-mc1.19.4-0.4.10%2Bbuild.24.jar",
+					"version": "b4hTi3mo",
+					"minecraft_versions": "1.19.4"
+				},
+				{
+					"url": "https://cdn.modrinth.com/data/AANobbMI/versions/mc1.18.2-0.4.1/sodium-fabric-mc1.18.2-0.4.1%2Bbuild.15.jar",
+					"version": "74Y5Z8fo",
+					"minecraft_versions": "1.18.2"
+				},
+				{
+					"url": "https://cdn.modrinth.com/data/AANobbMI/versions/mc1.17.1-0.3.4/sodium-fabric-mc1.17.1-0.3.4%2Bbuild.13.jar",
+					"version": "Fz37KqRh",
+					"minecraft_versions": "1.17.1"
+				},
+				{
+					"url": "https://cdn.modrinth.com/data/AANobbMI/versions/mc1.16.5-0.2.0/sodium-fabric-mc1.16.5-0.2.0%2Bbuild.4.jar",
+					"version": "YAGZ1cCS",
+					"minecraft_versions": "1.16.3..1.16.5"
+				}
+			],
+			"conditions": {
+				"side": "client"
+			}
+		}
+	}
+}

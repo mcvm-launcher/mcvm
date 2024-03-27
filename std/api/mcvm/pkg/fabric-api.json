@@ -19,7 +19,7 @@
 		"open_source": true
 	},
 	"relations": {
-		"conflicts": "quilted-fabric-api"
+		"conflicts": "qfapi-qsl"
 	},
 	"addons": {
 		"mod": {
