@@ -13,7 +13,11 @@ use mcvm::shared::versions::VersionPattern;
 
 use mcvm::net::modrinth::{self, DependencyType, ProjectType};
 
-pub async fn gen(id: &str, relation_substitutions: HashMap<String, String>) -> DeclarativePackage {
+pub async fn gen(
+	id: &str,
+	relation_substitutions: HashMap<String, String>,
+	force_extensions: &[String],
+) -> DeclarativePackage {
 	let client = reqwest::Client::new();
 	let project = modrinth::get_project(id, &client)
 		.await
@@ -88,6 +92,7 @@ pub async fn gen(id: &str, relation_substitutions: HashMap<String, String>) -> D
 
 		let mut deps = Vec::new();
 		let mut recommendations = Vec::new();
+		let mut extensions = Vec::new();
 
 		for dep in &version.dependencies {
 			let pkg_id = if let Some(dep_id) = relation_substitutions.get(&dep.project_id) {
@@ -96,7 +101,13 @@ pub async fn gen(id: &str, relation_substitutions: HashMap<String, String>) -> D
 				panic!("Dependency {} was not substituted", dep.project_id)
 			};
 			match dep.dependency_type {
-				DependencyType::Required => deps.push(pkg_id),
+				DependencyType::Required => {
+					if force_extensions.contains(&pkg_id) {
+						extensions.push(pkg_id);
+					} else {
+						deps.push(pkg_id)
+					}
+				}
 				DependencyType::Optional => recommendations.push(RecommendedPackage {
 					value: pkg_id.into(),
 					invert: false,
@@ -113,6 +124,7 @@ pub async fn gen(id: &str, relation_substitutions: HashMap<String, String>) -> D
 			relations: DeclarativePackageRelations {
 				dependencies: DeserListOrSingle::List(deps),
 				recommendations: DeserListOrSingle::List(recommendations),
+				extensions: DeserListOrSingle::List(extensions),
 				..Default::default()
 			},
 			..Default::default()

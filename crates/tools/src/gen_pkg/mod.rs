@@ -23,14 +23,20 @@ pub struct PackageGenerationConfig {
 	pub merge: serde_json::Map<String, serde_json::Value>,
 	/// Substitutions for relations
 	pub relation_substitutions: HashMap<String, String>,
+	/// Dependencies to force into extensions
+	pub force_extensions: Vec<String>,
 }
 
 /// Generates a package from a source and config
 pub async fn gen(source: PackageSource, config: Option<PackageGenerationConfig>, id: &str) {
 	let config = config.unwrap_or_default();
 	let pkg = match source {
-		PackageSource::Smithed => smithed::gen(id, config.relation_substitutions).await,
-		PackageSource::Modrinth => modrinth::gen(id, config.relation_substitutions).await,
+		PackageSource::Smithed => {
+			smithed::gen(id, config.relation_substitutions, &config.force_extensions).await
+		}
+		PackageSource::Modrinth => {
+			modrinth::gen(id, config.relation_substitutions, &config.force_extensions).await
+		}
 	};
 
 	// Merge with config

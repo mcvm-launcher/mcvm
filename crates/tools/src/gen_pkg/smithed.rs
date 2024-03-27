@@ -12,7 +12,11 @@ use mcvm::shared::versions::VersionPattern;
 
 use crate::smithed_api;
 
-pub async fn gen(id: &str, relation_substitutions: HashMap<String, String>) -> DeclarativePackage {
+pub async fn gen(
+	id: &str,
+	relation_substitutions: HashMap<String, String>,
+	force_extensions: &[String],
+) -> DeclarativePackage {
 	let pack = smithed_api::get_pack(id).await.expect("Failed to get pack");
 
 	let meta = PackageMetadata {
@@ -63,17 +67,20 @@ pub async fn gen(id: &str, relation_substitutions: HashMap<String, String>) -> D
 			}
 		}
 
-		let deps: Vec<String> = version
-			.dependencies
-			.iter()
-			.map(|dep| {
-				if let Some(dep_id) = relation_substitutions.get(&dep.id) {
-					dep_id.clone()
+		let mut deps = Vec::new();
+		let mut extensions = Vec::new();
+
+		for dep in version.dependencies {
+			if let Some(dep_id) = relation_substitutions.get(&dep.id) {
+				if force_extensions.contains(dep_id) {
+					extensions.push(dep_id.clone());
 				} else {
-					panic!("Dependency {} was not substituted", dep.id)
+					deps.push(dep_id.clone());
 				}
-			})
-			.collect();
+			} else {
+				panic!("Dependency {} was not substituted", dep.id);
+			}
+		}
 
 		let mut pkg_version = DeclarativeAddonVersion {
 			version: Some(version_name),
@@ -83,6 +90,7 @@ pub async fn gen(id: &str, relation_substitutions: HashMap<String, String>) -> D
 			},
 			relations: DeclarativePackageRelations {
 				dependencies: DeserListOrSingle::List(deps),
+				extensions: DeserListOrSingle::List(extensions),
 				..Default::default()
 			},
 			..Default::default()
