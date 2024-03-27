@@ -212,15 +212,11 @@ pub async fn get_multiple_versions(
 	versions: &[String],
 	client: &Client,
 ) -> anyhow::Result<Vec<Version>> {
-	let mut out = Vec::new();
-	for version in versions {
-		out.push(
-			get_version(version, client)
-				.await
-				.with_context(|| format!("Failed to get version '{version}'"))?,
-		);
-	}
-	Ok(out)
+	// Use the multiple-versions API endpoint as it's faster
+	let param = serde_json::to_string(versions)
+		.context("Failed to convert version list to API parameter")?;
+	let url = format!("https://api.modrinth.com/v2/versions?ids={param}");
+	download::json(url, client).await
 }
 
 /// A file download from the Modrinth API
