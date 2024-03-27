@@ -309,7 +309,7 @@ impl PkgRegistry {
 		client: &Client,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
-		let packages = super::repo::get_all_packages(&mut self.repos, paths, client)
+		let packages = super::repo::get_all_packages(&mut self.repos, paths, client, o)
 			.await
 			.context("Failed to retrieve all packages from repos")?
 			.iter()

@@ -28,6 +28,9 @@ pub struct RepoMetadata {
 	/// The short description of the repository
 	#[serde(default)]
 	pub description: Option<String>,
+	/// The MCVM version of the repository
+	#[serde(default)]
+	pub mcvm_version: Option<String>,
 }
 
 /// An entry in the repository index package list that specifies information about the package

@@ -95,7 +95,12 @@ impl PkgRepo {
 	}
 
 	/// Make sure that the repository index is downloaded
-	pub async fn ensure_index(&mut self, paths: &Paths, client: &Client) -> anyhow::Result<()> {
+	pub async fn ensure_index(
+		&mut self,
+		paths: &Paths,
+		client: &Client,
+		o: &mut impl MCVMOutput,
+	) -> anyhow::Result<()> {
 		if self.index.is_empty() {
 			let path = self.get_path(paths);
 			if path.exists() {
@@ -115,7 +120,28 @@ impl PkgRepo {
 					.context("Failed to sync index")?;
 			}
 		}
+
+		self.check_index(o);
+
 		Ok(())
+	}
+
+	/// Checks the index. It must be already loaded.
+	fn check_index(&self, o: &mut impl MCVMOutput) {
+		let repo_version = &self.index.get().metadata.mcvm_version;
+		if let Some(repo_version) = repo_version {
+			let repo_version = version_compare::Version::from(repo_version);
+			let program_version = version_compare::Version::from(crate::VERSION);
+			if repo_version > program_version {
+				o.display(
+					MessageContents::Warning(format!(
+							"Minimum MCVM version for repository {} is higher than current installation",
+							self.id
+						)),
+					MessageLevel::Important,
+				);
+			}
+		}
 	}
 
 	/// Ask if the index has a package and return the url and version for that package if it exists
@@ -124,8 +150,9 @@ impl PkgRepo {
 		id: &str,
 		paths: &Paths,
 		client: &Client,
+		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Option<RepoQueryResult>> {
-		self.ensure_index(paths, client).await?;
+		self.ensure_index(paths, client, o).await?;
 		let index = self.index.get();
 		if let Some(entry) = index.packages.get(id) {
 			let location = get_package_location(entry, &self.location)
@@ -145,8 +172,9 @@ impl PkgRepo {
 		&mut self,
 		paths: &Paths,
 		client: &Client,
+		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Vec<(String, RepoPkgEntry)>> {
-		self.ensure_index(paths, client).await?;
+		self.ensure_index(paths, client, o).await?;
 		let index = self.index.get();
 		Ok(index
 			.packages
@@ -165,7 +193,7 @@ pub async fn query_all(
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<Option<RepoQueryResult>> {
 	for repo in repos {
-		let query = match repo.query(id, paths, client).await {
+		let query = match repo.query(id, paths, client, o).await {
 			Ok(val) => val,
 			Err(e) => {
 				o.display(
@@ -187,12 +215,13 @@ pub async fn get_all_packages(
 	repos: &mut [PkgRepo],
 	paths: &Paths,
 	client: &Client,
+	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<Vec<(String, RepoPkgEntry)>> {
 	// Iterate in reverse to make sure that repos at the beginning take precendence
 	let mut out = Vec::new();
 	for repo in repos.iter_mut().rev() {
 		let packages = repo
-			.get_all_packages(paths, client)
+			.get_all_packages(paths, client, o)
 			.await
 			.with_context(|| format!("Failed to get all packages from repository '{}'", repo.id))?;
 		out.extend(packages);

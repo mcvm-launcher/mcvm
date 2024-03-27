@@ -13,7 +13,8 @@ A package repository is any server that provides an `index.json` of packages for
 {
 	"metadata": {
 		"name": string,
-		"description": string
+		"description": string,
+		"mcvm_version": string
 	}
 	"packages": {
 		"package-id": {
@@ -27,6 +28,7 @@ A package repository is any server that provides an `index.json` of packages for
 
 - `metadata.name`: The display name of the repository. Not required.
 - `metadata.description`: A short description of the repository. Not required.
+- `metadata.mcvm_version`: The oldest MCVM version that packages included in the repository are compatible with. Used to give warnings to the user. Not required.
 - `package-id`: The ID of the package.
 - `url`: The URL to the package file. Unnecessary if `path` is specified.
 - `path`: The path to the package file. Unnecessary if `url` is specified. On local repositories, can be either an absolute filesystem path or a path relative to where the index is. On remote repositories, can only be a relative url from where the index is.
