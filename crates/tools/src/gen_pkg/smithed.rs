@@ -12,23 +12,7 @@ use mcvm::shared::versions::VersionPattern;
 
 use crate::smithed_api;
 
-pub async fn gen(id: &str, dep_substitutions: Option<Vec<String>>) {
-	let mut dep_subs = HashMap::new();
-	if let Some(dep_substitutions) = dep_substitutions {
-		for dep in dep_substitutions {
-			let mut items = dep.split('=');
-			let key = items.next().expect("Key in dep sub is missing");
-			let val = items.next().expect("Val in dep sub is missing");
-			if key.is_empty() {
-				panic!("Dep sub key is empty");
-			}
-			if val.is_empty() {
-				panic!("Dep sub value is empty");
-			}
-			dep_subs.insert(key.to_string(), val.to_string());
-		}
-	}
-
+pub async fn gen(id: &str, relation_substitutions: HashMap<String, String>) -> DeclarativePackage {
 	let pack = smithed_api::get_pack(id).await.expect("Failed to get pack");
 
 	let meta = PackageMetadata {
@@ -39,7 +23,7 @@ pub async fn gen(id: &str, dep_substitutions: Option<Vec<String>>) {
 		..Default::default()
 	};
 
-	let props = PackageProperties {
+	let mut props = PackageProperties {
 		smithed_id: Some(pack.id),
 		tags: Some(vec!["datapack".into()]),
 		..Default::default()
@@ -59,20 +43,31 @@ pub async fn gen(id: &str, dep_substitutions: Option<Vec<String>>) {
 		conditions: Vec::new(),
 	};
 
+	let mut all_mc_versions = Vec::new();
+
 	for version in pack.versions {
+		// Get the sanitized version name
 		let version_name_sanitized = version.name.replace('.', "-");
 		let version_name = format!("smithed-version-{version_name_sanitized}");
+		// Collect Minecraft versions
 		let mc_versions: Vec<VersionPattern> = version
 			.supports
 			.iter()
 			.map(|x| VersionPattern::Single(x.clone()))
 			.collect();
 
+		// Add to all Minecraft versions
+		for version in mc_versions.clone() {
+			if !all_mc_versions.contains(&version) {
+				all_mc_versions.push(version);
+			}
+		}
+
 		let deps: Vec<String> = version
 			.dependencies
 			.iter()
 			.map(|dep| {
-				if let Some(dep_id) = dep_subs.get(&dep.id) {
+				if let Some(dep_id) = relation_substitutions.get(&dep.id) {
 					dep_id.clone()
 				} else {
 					panic!("Dependency {} was not substituted", dep.id)
@@ -104,6 +99,8 @@ pub async fn gen(id: &str, dep_substitutions: Option<Vec<String>>) {
 		}
 	}
 
+	props.supported_versions = Some(all_mc_versions);
+
 	let mut addon_map = HashMap::new();
 	addon_map.insert("datapack".into(), datapack);
 	addon_map.insert("resourcepack".into(), resourcepack);
@@ -115,8 +112,5 @@ pub async fn gen(id: &str, dep_substitutions: Option<Vec<String>>) {
 		..Default::default()
 	};
 
-	println!(
-		"{}",
-		serde_json::to_string_pretty(&pkg).expect("Failed to format package")
-	);
+	pkg
 }

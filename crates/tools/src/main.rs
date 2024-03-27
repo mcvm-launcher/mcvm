@@ -4,6 +4,7 @@ mod smithed_api;
 use std::{fs::File, io::BufWriter, path::PathBuf};
 
 use clap::Parser;
+use gen_pkg::PackageSource;
 use mcvm::data::config::ConfigDeser;
 use mcvm::options::Options;
 use mcvm::pkg_crate::{declarative::DeclarativePackage, repo::RepoIndex};
@@ -13,10 +14,19 @@ async fn main() {
 	let cli = Cli::parse();
 	match cli.command {
 		Subcommand::Schemas => gen_schemas(),
-		Subcommand::SmithedPkg {
+		Subcommand::GenPkg {
+			config_path,
+			source,
 			id,
-			dep_substitutions,
-		} => gen_pkg::smithed::gen(&id, dep_substitutions).await,
+		} => {
+			let config = config_path.map(|config_path| {
+				serde_json::from_reader(
+					File::open(config_path).expect("Failed to open config file"),
+				)
+				.expect("Failed to deserialize config")
+			});
+			gen_pkg::gen(source, config, &id).await;
+		}
 	}
 }
 
@@ -29,9 +39,13 @@ struct Cli {
 #[derive(clap::Subcommand)]
 enum Subcommand {
 	Schemas,
-	SmithedPkg {
+	GenPkg {
+		/// Path to configuration for the package generation
 		#[arg(short, long)]
-		dep_substitutions: Option<Vec<String>>,
+		config_path: Option<String>,
+		/// The source to get the package from
+		source: PackageSource,
+		/// The ID of the package from whatever source it is from
 		id: String,
 	},
 }
