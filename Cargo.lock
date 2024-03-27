@@ -1211,7 +1211,7 @@ dependencies = [
 
 [[package]]
 name = "mcvm_cli"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "anyhow",
  "clap",
@@ -1320,7 +1320,7 @@ dependencies = [
 
 [[package]]
 name = "mcvm_tools"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "anyhow",
  "clap",
