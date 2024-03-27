@@ -69,7 +69,7 @@ impl PersistentData {
 
 	/// Get the path to the persistent data file
 	pub fn get_path(paths: &Paths) -> PathBuf {
-		paths.internal.join("persistent.json")
+		paths.internal.join("core_persistent.json")
 	}
 
 	/// Finish using the persistent data file and write to the disk
