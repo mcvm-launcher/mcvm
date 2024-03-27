@@ -14,6 +14,7 @@ use std::fs::File;
 use std::io::{BufReader, Cursor};
 use std::path::PathBuf;
 
+use super::core::{get_all_core_packages, get_core_package_content_type, is_core_package};
 use super::PkgLocation;
 
 /// A remote source for mcvm packages
@@ -32,6 +33,8 @@ pub enum PkgRepoLocation {
 	Remote(String),
 	/// A repository on the local filesystem
 	Local(PathBuf),
+	/// The internal core repository
+	Core,
 }
 
 impl Display for PkgRepoLocation {
@@ -39,6 +42,7 @@ impl Display for PkgRepoLocation {
 		match self {
 			Self::Remote(url) => write!(f, "{url}"),
 			Self::Local(path) => write!(f, "{path:?}"),
+			Self::Core => write!(f, "internal"),
 		}
 	}
 }
@@ -51,6 +55,25 @@ impl PkgRepo {
 			location,
 			index: Later::new(),
 		}
+	}
+
+	/// Create the core repository
+	pub fn core() -> Self {
+		Self::new("core", PkgRepoLocation::Core)
+	}
+
+	/// Create the std repository
+	pub fn std() -> Self {
+		Self::new(
+			"std",
+			PkgRepoLocation::Remote("https://carbonsmasher.github.io/mcvm/std".into()),
+		)
+	}
+
+	/// Get the default set of repositories
+	pub fn default_repos() -> Vec<Self> {
+		// We don't want std overriding core
+		vec![Self::core(), Self::std()]
 	}
 
 	/// The cached path of the index
@@ -89,6 +112,7 @@ impl PkgRepo {
 				let mut cursor = Cursor::new(&bytes);
 				self.set_index(&mut cursor).context("Failed to set index")?;
 			}
+			PkgRepoLocation::Core => {}
 		}
 
 		Ok(())
@@ -101,6 +125,11 @@ impl PkgRepo {
 		client: &Client,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
+		// The core repository doesn't have an index
+		if let PkgRepoLocation::Core = &self.location {
+			return Ok(());
+		}
+
 		if self.index.is_empty() {
 			let path = self.get_path(paths);
 			if path.exists() {
@@ -152,19 +181,32 @@ impl PkgRepo {
 		client: &Client,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Option<RepoQueryResult>> {
-		self.ensure_index(paths, client, o).await?;
-		let index = self.index.get();
-		if let Some(entry) = index.packages.get(id) {
-			let location = get_package_location(entry, &self.location)
-				.context("Failed to get location of package")?;
-			return Ok(Some(RepoQueryResult {
-				location,
-				content_type: get_content_type(entry).await,
-				flags: entry.flags.clone(),
-			}));
+		// Get from the core
+		if let PkgRepoLocation::Core = &self.location {
+			if is_core_package(id) {
+				Ok(Some(RepoQueryResult {
+					location: PkgLocation::Core,
+					content_type: get_core_package_content_type(id)
+						.expect("Core package exists and should have a content type"),
+					flags: HashSet::new(),
+				}))
+			} else {
+				Ok(None)
+			}
+		} else {
+			self.ensure_index(paths, client, o).await?;
+			let index = self.index.get();
+			if let Some(entry) = index.packages.get(id) {
+				let location = get_package_location(entry, &self.location)
+					.context("Failed to get location of package")?;
+				return Ok(Some(RepoQueryResult {
+					location,
+					content_type: get_content_type(entry).await,
+					flags: entry.flags.clone(),
+				}));
+			}
+			Ok(None)
 		}
-
-		Ok(None)
 	}
 
 	/// Get all packages from this repo
@@ -175,12 +217,17 @@ impl PkgRepo {
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Vec<(String, RepoPkgEntry)>> {
 		self.ensure_index(paths, client, o).await?;
-		let index = self.index.get();
-		Ok(index
-			.packages
-			.iter()
-			.map(|(id, entry)| (id.clone(), entry.clone()))
-			.collect())
+		// Get list from core
+		if let PkgRepoLocation::Core = &self.location {
+			Ok(get_all_core_packages())
+		} else {
+			let index = self.index.get();
+			Ok(index
+				.packages
+				.iter()
+				.map(|(id, entry)| (id.clone(), entry.clone()))
+				.collect())
+		}
 	}
 }
 
@@ -289,6 +336,7 @@ pub fn get_package_location(
 
 				Ok(PkgLocation::Local(path))
 			}
+			PkgRepoLocation::Core => Ok(PkgLocation::Core),
 		}
 	} else {
 		bail!("Neither url nor path entry present in package")

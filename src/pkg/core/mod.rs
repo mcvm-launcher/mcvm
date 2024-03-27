@@ -1,4 +1,34 @@
-use mcvm_pkg::PackageContentType;
+use std::collections::HashSet;
+
+use mcvm_pkg::{repo::RepoPkgEntry, PackageContentType};
+
+const ALL_CORE_PACKAGE_IDS: [&str; 25] = [
+	"animated-textures-support",
+	"cem-support",
+	"cit-support",
+	"ctm-support",
+	"custom-colors-support",
+	"custom-gui-support",
+	"custom-sky-support",
+	"emissive-blocks-support",
+	"emissive-entities-support",
+	"fabric-rendering-api",
+	"fabriclike-api",
+	"fail",
+	"hd-fonts-support",
+	"kotlin-support",
+	"kotlin-support-forgelin",
+	"kubejs-script-support",
+	"natural-textures-support",
+	"none",
+	"optifine-resource-packs",
+	"optifine-support",
+	"quilted-fabric-api",
+	"quilt-standard-libraries",
+	"random-entities-support",
+	"shader-support",
+	"splash-screen-support",
+];
 
 const ANIMATED_TEXTURES_SUPPORT: &str = include_str!("animated-textures-support.pkg.txt");
 const CEM_SUPPORT: &str = include_str!("cem-support.pkg.txt");
@@ -94,38 +124,28 @@ pub fn is_core_package(package: &str) -> bool {
 	get_core_package(package).is_some()
 }
 
+pub fn get_all_core_packages() -> Vec<(String, RepoPkgEntry)> {
+	let mut out = Vec::new();
+	for pkg in ALL_CORE_PACKAGE_IDS {
+		let content_type = get_core_package_content_type(pkg).expect("Content type should exist");
+		out.push((
+			pkg.to_string(),
+			RepoPkgEntry {
+				url: None,
+				path: None,
+				content_type: Some(content_type),
+				flags: HashSet::new(),
+			},
+		));
+	}
+
+	out
+}
+
 #[cfg(test)]
 mod tests {
 	use super::*;
 	use mcvm_pkg::parse_and_validate;
-
-	const ALL_CORE_PACKAGE_IDS: [&str; 25] = [
-		"animated-textures-support",
-		"cem-support",
-		"cit-support",
-		"ctm-support",
-		"custom-colors-support",
-		"custom-gui-support",
-		"custom-sky-support",
-		"emissive-blocks-support",
-		"emissive-entities-support",
-		"fabric-rendering-api",
-		"fabriclike-api",
-		"fail",
-		"hd-fonts-support",
-		"kotlin-support",
-		"kotlin-support-forgelin",
-		"kubejs-script-support",
-		"natural-textures-support",
-		"none",
-		"optifine-resource-packs",
-		"optifine-support",
-		"quilted-fabric-api",
-		"quilt-standard-libraries",
-		"random-entities-support",
-		"shader-support",
-		"splash-screen-support",
-	];
 
 	#[test]
 	fn test_core_package_parse() {

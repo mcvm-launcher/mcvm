@@ -65,7 +65,7 @@ impl ConfigPreferences {
 		for repo in prefs.repositories.preferred.iter() {
 			add_repo(&mut repositories, repo)?;
 		}
-		repositories.extend(get_default_repos());
+		repositories.extend(PkgRepo::default_repos());
 		for repo in prefs.repositories.backup.iter() {
 			add_repo(&mut repositories, repo)?;
 		}
@@ -87,14 +87,6 @@ impl ConfigPreferences {
 			repositories,
 		))
 	}
-}
-
-/// Get the default set of repositories
-fn get_default_repos() -> Vec<PkgRepo> {
-	vec![PkgRepo::new(
-		"std",
-		PkgRepoLocation::Remote("https://carbonsmasher.github.io/mcvm/std".into()),
-	)]
 }
 
 /// Add a repo to the list

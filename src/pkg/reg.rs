@@ -13,7 +13,6 @@ use reqwest::Client;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
-use super::core::{get_core_package_content_type, is_core_package};
 use super::eval::{EvalData, EvalInput, Routine};
 use super::repo::{query_all, PkgRepo};
 use super::{Package, PkgContents, PkgLocation};
@@ -72,16 +71,6 @@ impl PkgRegistry {
 				req.clone(),
 				Package::new(pkg_id, result.location, result.content_type, result.flags),
 			));
-		}
-
-		// Now check if it exists as a core package
-		if is_core_package(&req.id) {
-			let content_type =
-				get_core_package_content_type(&pkg_id).expect("Core package should exist");
-			Ok(self.insert(
-				req.clone(),
-				Package::new(pkg_id, PkgLocation::Core, content_type, HashSet::new()),
-			))
 		} else {
 			Err(anyhow!("Package '{pkg_id}' does not exist"))
 		}
