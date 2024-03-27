@@ -43,7 +43,7 @@ pub async fn gen(
 		meta.community = Some(discord_url);
 	}
 	if let Some(support_link) = project.donation_urls.first() {
-		meta.support_link = Some(support_link.clone());
+		meta.support_link = Some(support_link.url.clone());
 	}
 
 	meta.license = Some(project.license.id);

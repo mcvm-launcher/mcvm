@@ -30,7 +30,7 @@ pub struct Project {
 	/// URL to the Discord
 	pub discord_url: Option<String>,
 	/// Donation URLs
-	pub donation_urls: Vec<String>,
+	pub donation_urls: Vec<DonationLink>,
 	/// The loaders this project is available for
 	pub loaders: Vec<Loader>,
 	/// The license of the project
@@ -260,4 +260,11 @@ pub enum DependencyType {
 pub struct License {
 	/// The short ID of the license
 	pub id: String,
+}
+
+/// Information about a donation link
+#[derive(Deserialize, Serialize)]
+pub struct DonationLink {
+	/// The URL of the link
+	pub url: String,
 }
