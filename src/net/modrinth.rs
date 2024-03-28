@@ -15,6 +15,8 @@ pub struct Project {
 	pub versions: Vec<String>,
 	/// The Minecraft versions this project is available for
 	pub game_versions: Vec<String>,
+	/// The loaders this project is available for
+	pub loaders: Vec<Loader>,
 	/// The project's support on the client side
 	pub client_side: SideSupport,
 	/// The project's support on the server side
@@ -35,10 +37,10 @@ pub struct Project {
 	pub discord_url: Option<String>,
 	/// Donation URLs
 	pub donation_urls: Vec<DonationLink>,
-	/// The loaders this project is available for
-	pub loaders: Vec<Loader>,
 	/// The license of the project
 	pub license: License,
+	/// The gallery items of the project
+	pub gallery: Option<Vec<GalleryEntry>>,
 }
 
 /// The type of a Modrinth project
@@ -275,6 +277,13 @@ pub struct License {
 #[derive(Deserialize, Serialize)]
 pub struct DonationLink {
 	/// The URL of the link
+	pub url: String,
+}
+
+/// An entry in a project's gallery
+#[derive(Deserialize, Serialize)]
+pub struct GalleryEntry {
+	/// The URL to the gallery image
 	pub url: String,
 }
 

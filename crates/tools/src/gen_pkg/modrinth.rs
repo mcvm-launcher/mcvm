@@ -54,6 +54,9 @@ pub async fn gen(
 	if let Some(support_link) = project.donation_urls.first() {
 		meta.support_link = Some(support_link.url.clone());
 	}
+	if let Some(gallery) = project.gallery {
+		meta.gallery = Some(gallery.into_iter().map(|x| x.url).collect());
+	}
 
 	meta.license = Some(project.license.id);
 
