@@ -1,0 +1,31 @@
+{
+	"relation_substitutions": {},
+	"merge": {
+		"meta": {
+			"authors": [
+				"modmuss50",
+				"sfPlayer1"
+			],
+			"package_maintainers": [
+				"mcvm"
+			],
+			"keywords": [
+				"fabric",
+				"api"
+			],
+			"categories": [
+				"api",
+				"technical"
+			]
+		},
+		"properties": {
+			"supported_modloaders": [
+				"fabric"
+			],
+			"open_source": true
+		},
+		"relations": {
+			"conflicts": "qfapi-qsl"
+		}
+	}
+}

@@ -1,0 +1,31 @@
+{
+	"relation_substitutions": {
+		"AANobbMI": "sodium"
+	},
+	"force_extensions": [
+		"sodium"
+	],
+	"merge": {
+		"meta": {
+			"authors": [
+				"comp500"
+			],
+			"package_maintainers": [
+				"mcvm"
+			],
+			"keywords": [
+				"graphics"
+			],
+			"categories": [
+				"compatability",
+				"technical"
+			]
+		},
+		"properties": {
+			"open_source": true,
+			"supported_modloaders": [
+				"fabriclike"
+			]
+		}
+	}
+}

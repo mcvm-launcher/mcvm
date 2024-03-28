@@ -1,0 +1,34 @@
+{
+	"relation_substitutions": {
+		"AANobbMI": "sodium"
+	},
+	"merge": {
+		"meta": {
+			"authors": [
+				"coderbot",
+				"IMS"
+			],
+			"package_maintainers": [
+				"mcvm"
+			],
+			"gallery": [
+				"https://cdn.modrinth.com/data/YL57xq9U/images/1c3d0dfbedf31dbee4e30e20c5329e5db9a881ae.png",
+				"https://cdn.modrinth.com/data/YL57xq9U/images/2fbd04f5d123577696e29b28bb7981a2bc95a0c8.png",
+				"https://cdn.modrinth.com/data/YL57xq9U/images/d382106b9a2b943d06107c31c139c77849f1a0e8.png"
+			],
+			"keywords": [
+				"graphics"
+			],
+			"categories": [
+				"shaders",
+				"technical"
+			]
+		},
+		"properties": {
+			"open_source": true,
+			"supported_modloaders": [
+				"fabriclike"
+			]
+		}
+	}
+}

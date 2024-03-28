@@ -1,0 +1,37 @@
+{
+	"relation_substitutions": {
+		"qvIfYCYJ": "qfapi-qsl",
+		"Ha28R6CL": "fabric-language-kotlin"
+	},
+	"merge": {
+		"meta": {
+			"authors": [
+				"QuiltMC",
+				"OroArmor",
+				"LambdAurora"
+			],
+			"package_maintainers": [
+				"mcvm"
+			],
+			"keywords": [
+				"quilt",
+				"api",
+				"kotlin"
+			],
+			"categories": [
+				"api",
+				"technical"
+			]
+		},
+		"properties": {
+			"supported_modloaders": [
+				"quilt"
+			],
+			"open_source": true
+		},
+		"relations": {
+			"conflicts": "fabric-language-kotlin",
+			"dependencies": "qfapi-qsl"
+		}
+	}
+}

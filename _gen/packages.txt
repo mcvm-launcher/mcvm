@@ -1,0 +1,6 @@
+fabric-api modrinth P7dR8mSH
+qfapi-qsl modrinth qvIfYCYJ
+quilt-kotlin-libraries modrinth lwVhp9o5
+sodium modrinth AANobbMI
+indium modrinth Orvt0mRa
+iris modrinth YL57xq9U
