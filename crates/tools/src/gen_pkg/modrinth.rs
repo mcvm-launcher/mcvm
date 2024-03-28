@@ -12,7 +12,10 @@ use mcvm::shared::modifications::{ModloaderMatch, PluginLoaderMatch};
 use mcvm::shared::util::DeserListOrSingle;
 use mcvm::shared::versions::VersionPattern;
 
-use mcvm::net::modrinth::{self, DependencyType, KnownLoader, Loader, ProjectType};
+use mcvm::net::modrinth::{
+	self, DependencyType, KnownLoader, Loader, Project, ProjectType, SideSupport,
+};
+use mcvm::shared::Side;
 
 pub async fn gen(
 	id: &str,
@@ -24,6 +27,10 @@ pub async fn gen(
 		.await
 		.expect("Failed to get Modrinth project");
 
+	// Get supported sides
+	let supported_sides = get_supported_sides(&project);
+
+	// Fill out metadata
 	let mut meta = PackageMetadata {
 		name: Some(project.title),
 		description: Some(project.description),
@@ -57,8 +64,10 @@ pub async fn gen(
 	members.sort_by_key(|x| x.ordering);
 	meta.authors = Some(members.into_iter().map(|x| x.user.username).collect());
 
+	// Create properties
 	let mut props = PackageProperties {
 		modrinth_id: Some(project.id),
+		supported_sides: Some(supported_sides),
 		..Default::default()
 	};
 
@@ -190,4 +199,16 @@ pub async fn gen(
 	};
 
 	pkg
+}
+
+/// Gets the list of supported sides from the project
+fn get_supported_sides(project: &Project) -> Vec<Side> {
+	let mut out = Vec::with_capacity(2);
+	if let SideSupport::Required | SideSupport::Optional = &project.client_side {
+		out.push(Side::Client);
+	}
+	if let SideSupport::Required | SideSupport::Optional = &project.server_side {
+		out.push(Side::Server);
+	}
+	out
 }

@@ -15,6 +15,10 @@ pub struct Project {
 	pub versions: Vec<String>,
 	/// The Minecraft versions this project is available for
 	pub game_versions: Vec<String>,
+	/// The project's support on the client side
+	pub client_side: SideSupport,
+	/// The project's support on the server side
+	pub server_side: SideSupport,
 	/// The display name of the project
 	pub title: String,
 	/// The short description of the project
@@ -272,6 +276,18 @@ pub struct License {
 pub struct DonationLink {
 	/// The URL of the link
 	pub url: String,
+}
+
+/// Support status for a project on a specific side
+#[derive(Deserialize, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum SideSupport {
+	/// Required to be on this side
+	Required,
+	/// Can optionally be on this side
+	Optional,
+	/// Unsupported on this side
+	Unsupported,
 }
 
 /// Get the team members of a project
