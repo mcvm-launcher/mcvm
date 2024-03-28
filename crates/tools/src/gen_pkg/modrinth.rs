@@ -171,6 +171,12 @@ pub async fn gen(
 			}
 		}
 
+		// Sort relations
+		deps.sort();
+		recommendations.sort();
+		extensions.sort();
+		conflicts.sort();
+
 		let mut pkg_version = DeclarativeAddonVersion {
 			version: Some(version_name),
 			conditional_properties: DeclarativeConditionSet {
