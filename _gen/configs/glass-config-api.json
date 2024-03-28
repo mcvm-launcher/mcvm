@@ -1,0 +1,26 @@
+{
+	"relation_substitutions": {
+		"472oW63Q": "stationapi",
+		"6v8kVRE3": "modmenu-beta"
+	},
+	"merge": {
+		"meta": {
+			"package_maintainers": [
+				"mcvm"
+			],
+			"keywords": [
+				"config"
+			],
+			"categories": [
+				"library",
+				"technical"
+			]
+		},
+		"properties": {
+			"open_source": true,
+			"supported_modloaders": [
+				"fabriclike"
+			]
+		}
+	}
+}

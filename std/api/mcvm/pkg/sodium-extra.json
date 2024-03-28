@@ -1,0 +1,1492 @@
+{
+	"addons": {
+		"addon": {
+			"kind": "mod",
+			"versions": [
+				{
+					"minecraft_versions": [
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/M0ndiav7/sodium-extra-0.5.4%2Bmc1.20.4-build.116.jar",
+					"version": "M0ndiav7"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/I7ggF6B5/sodium-extra-0.5.4%2Bmc1.20.1-build.115.jar",
+					"version": "I7ggF6B5"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.2",
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/e8Jw5Pey/sodium-extra-0.5.3%2Bmc1.20.2-build.114.jar",
+					"version": "e8Jw5Pey"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/zgaajBnP/sodium-extra-0.5.2%2Bmc1.20.2-build.113.jar",
+					"version": "zgaajBnP"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/80a0J5Cn/sodium-extra-0.5.1%2Bmc1.20.1-build.112.jar",
+					"version": "80a0J5Cn"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/5KCYvoSI/sodium-extra-0.5.0%2Bmc1.20.1-build.111.jar",
+					"version": "5KCYvoSI"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/UwpTYr4K/sodium-extra-0.4.27%2Bmc1.20.1-build.110.jar",
+					"version": "UwpTYr4K"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/GGGuNLtT/sodium-extra-0.4.26%2Bmc1.20.1-build.109.jar",
+					"version": "GGGuNLtT"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/jy7D3eLo/sodium-extra-0.4.25%2Bmc1.20.1-build.108.jar",
+					"version": "jy7D3eLo"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/dno0PvHr/sodium-extra-0.4.24%2Bmc1.20.1-build.107.jar",
+					"version": "dno0PvHr"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/Tf56kC8G/sodium-extra-0.4.23%2Bmc1.20.1-build.106.jar",
+					"version": "Tf56kC8G"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/KFJPGpgu/sodium-extra-0.4.22%2Bmc1.20.1-build.105.jar",
+					"version": "KFJPGpgu"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/jeT8mcQT/sodium-extra-0.4.21%2Bmc1.20.1-build.104.jar",
+					"version": "jeT8mcQT"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/kTxAMqAj/sodium-extra-0.4.20%2Bmc1.20-build.103.jar",
+					"version": "kTxAMqAj"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/YknbqkHe/sodium-extra-0.4.18%2Bmc1.19.4-build.100.jar",
+					"version": "YknbqkHe"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/Fo9beybz/sodium-extra-0.4.18%2Bmc1.19.3-build.99.jar",
+					"version": "Fo9beybz"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/DwCPxThW/sodium-extra-0.4.18%2Bmc1.18.2-build.98.jar",
+					"version": "DwCPxThW"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/1OzghAbl/sodium-extra-0.4.18%2Bmc1.17.1-build.97.jar",
+					"version": "1OzghAbl"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/Et3PybAh/sodium-extra-0.4.18%2Bmc1.16.5-build.96.jar",
+					"version": "Et3PybAh"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/wA35IJw8/sodium-extra-0.4.17%2Bmc1.19.3-build.95.jar",
+					"version": "wA35IJw8"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/X61cCJdB/sodium-extra-0.4.17%2Bmc1.18.2-build.94.jar",
+					"version": "X61cCJdB"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/f0Pua8c0/sodium-extra-0.4.17%2Bmc1.17.1-build.93.jar",
+					"version": "f0Pua8c0"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/mNSJsLuw/sodium-extra-0.4.17%2Bmc1.16.5-build.92.jar",
+					"version": "mNSJsLuw"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/8DeIhGTv/sodium-extra-0.4.16%2Bmc1.19.3-build.91.jar",
+					"version": "8DeIhGTv"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/MTxUvPFz/sodium-extra-0.4.16%2Bmc1.19.2-build.90.jar",
+					"version": "MTxUvPFz"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/WtfLjBKR/sodium-extra-0.4.16%2Bmc1.18.2-build.89.jar",
+					"version": "WtfLjBKR"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/Qwl9yhs4/sodium-extra-0.4.16%2Bmc1.17.1-build.88.jar",
+					"version": "Qwl9yhs4"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/nLSk51d5/sodium-extra-0.4.16%2Bmc1.16.5-build.87.jar",
+					"version": "nLSk51d5"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/r5w0P2Aa/sodium-extra-0.4.15%2Bmc1.19.3-build.86.jar",
+					"version": "r5w0P2Aa"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/Bua36tz2/sodium-extra-0.4.15%2Bmc1.19.2-build.85.jar",
+					"version": "Bua36tz2"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/XVg96BXq/sodium-extra-0.4.15%2Bmc1.18.2-build.84.jar",
+					"version": "XVg96BXq"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/7Qpm7TfK/sodium-extra-0.4.15%2Bmc1.17.1-build.83.jar",
+					"version": "7Qpm7TfK"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/o1MVdBA0/sodium-extra-0.4.15%2Bmc1.16.5-build.82.jar",
+					"version": "o1MVdBA0"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/dGDpjLtu/sodium-extra-0.4.14%2Bmc1.19.3-build.81.jar",
+					"version": "dGDpjLtu"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/1ha6EuaV/sodium-extra-0.4.14%2Bmc1.19.2-build.80.jar",
+					"version": "1ha6EuaV"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/2mn0qHfs/sodium-extra-0.4.14%2Bmc1.18.2-build.79.jar",
+					"version": "2mn0qHfs"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/EROX4u0x/sodium-extra-0.4.14%2Bmc1.17.1-build.78.jar",
+					"version": "EROX4u0x"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/3FVJYJsq/sodium-extra-0.4.14%2Bmc1.16.5-build.77.jar",
+					"version": "3FVJYJsq"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/Z9F12IDt/sodium-extra-0.4.13%2Bmc1.19.2-build.76.jar",
+					"version": "Z9F12IDt"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/Ihk94xIe/sodium-extra-0.4.13%2Bmc1.18.2-build.75.jar",
+					"version": "Ihk94xIe"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/7bIiOq5p/sodium-extra-0.4.13%2Bmc1.17.1-build.74.jar",
+					"version": "7bIiOq5p"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/NKTWKANh/sodium-extra-0.4.13%2Bmc1.16.5-build.73.jar",
+					"version": "NKTWKANh"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/yL4dOxzM/sodium-extra-0.4.12%2Bmc1.19.2-build.72.jar",
+					"version": "yL4dOxzM"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/fvj3bKb0/sodium-extra-0.4.12%2Bmc1.18.2-build.71.jar",
+					"version": "fvj3bKb0"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/GlEfyf5R/sodium-extra-0.4.12%2Bmc1.17.1-build.70.jar",
+					"version": "GlEfyf5R"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/VkoIIaJU/sodium-extra-0.4.12%2Bmc1.16.5-build.69.jar",
+					"version": "VkoIIaJU"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/xJ8SShUa/sodium-extra-0.4.11%2Bmc1.19.2-build.68.jar",
+					"version": "xJ8SShUa"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/lyZvsCAT/sodium-extra-0.4.11%2Bmc1.18.2-build.67.jar",
+					"version": "lyZvsCAT"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/xBm1fnBi/sodium-extra-0.4.11%2Bmc1.17.1-build.66.jar",
+					"version": "xBm1fnBi"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/i1IXAPlQ/sodium-extra-0.4.11%2Bmc1.16.5-build.65.jar",
+					"version": "i1IXAPlQ"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/uy3WEIvn/sodium-extra-0.4.10%2Bmc1.19.2-build.64.jar",
+					"version": "uy3WEIvn"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/uCddykP4/sodium-extra-0.4.10%2Bmc1.18.2-build.63.jar",
+					"version": "uCddykP4"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/CFf3OHWs/sodium-extra-0.4.10%2Bmc1.17.1-build.62.jar",
+					"version": "CFf3OHWs"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/HqNshD3l/sodium-extra-0.4.10%2Bmc1.16.5-build.61.jar",
+					"version": "HqNshD3l"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/tXEG62IN/sodium-extra-0.4.9%2Bmc1.19.2-build.60.jar",
+					"version": "tXEG62IN"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/upfJqxrg/sodium-extra-0.4.9%2Bmc1.18.2-build.59.jar",
+					"version": "upfJqxrg"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/CHnZwuLy/sodium-extra-0.4.9%2Bmc1.17.1-build.58.jar",
+					"version": "CHnZwuLy"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/xRv53DSs/sodium-extra-0.4.9%2Bmc1.16.5-build.57.jar",
+					"version": "xRv53DSs"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/Epqrq6OM/sodium-extra-0.4.8%2Bmc1.18.2-build.56.jar",
+					"version": "Epqrq6OM"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/n6VFgnC4/sodium-extra-0.4.8%2Bmc1.18.1-build.55.jar",
+					"version": "n6VFgnC4"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/nQ4I7m5V/sodium-extra-0.4.8%2Bmc1.17.1-build.54.jar",
+					"version": "nQ4I7m5V"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/9GqAP74m/sodium-extra-0.4.8%2Bmc1.16.5-build.53.jar",
+					"version": "9GqAP74m"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/xYkvKUSC/sodium-extra-0.4.7%2Bmc1.19.2-build.52.jar",
+					"version": "xYkvKUSC"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/C705535I/sodium-extra-0.4.7%2Bmc1.18.2-build.51.jar",
+					"version": "C705535I"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/DIcY6vej/sodium-extra-0.4.7%2Bmc1.18.1-build.50.jar",
+					"version": "DIcY6vej"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/yLv38Kes/sodium-extra-0.4.7%2Bmc1.17.1-build.49.jar",
+					"version": "yLv38Kes"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/vYMuk2fC/sodium-extra-0.4.7%2Bmc1.16.5-build.48.jar",
+					"version": "vYMuk2fC"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/mc1.19-0.4.6/sodium-extra-0.4.6%2Bmc1.19-build.47.jar",
+					"version": "tA6TDKYR"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/mc1.18.2-0.4.6/sodium-extra-0.4.6%2Bmc1.18.2-build.46.jar",
+					"version": "4hASygiF"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/mc1.17.1-0.4.6/sodium-extra-0.4.6%2Bmc1.17.1-build.45.jar",
+					"version": "C4Ah6iqO"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/mc1.16.5-0.4.6/sodium-extra-0.4.6%2Bmc1.16.5-build.44.jar",
+					"version": "fCTkvX2E"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/mc1.19-0.4.5/sodium-extra-0.4.5%2Bmc1.19-build.43.jar",
+					"version": "THhTlwlR"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/mc1.18.2-0.4.5/sodium-extra-0.4.5%2Bmc1.18.2-build.42.jar",
+					"version": "pKxxvfqr"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/mc1.17.1-0.4.5/sodium-extra-0.4.5%2Bmc1.17.1-build.41.jar",
+					"version": "7R4bmDHx"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/mc1.16.5-0.4.5/sodium-extra-0.4.5%2Bmc1.16.5-build.40.jar",
+					"version": "IBHsiw9F"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/mc1.18.2-0.4.4/sodium-extra-0.4.4%2Bmc1.18.2-build.39.jar",
+					"version": "9LvKUEYM"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/mc1.17.1-0.4.4/sodium-extra-0.4.4%2Bmc1.17.1-build.38.jar",
+					"version": "PnPHBaVy"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/mc1.16.5-0.4.4/sodium-extra-0.4.4%2Bmc1.16.5-build.37.jar",
+					"version": "CTXE2AKs"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/mc1.18.2-0.4.3/sodium-extra-mc1.18.2-0.4.3.jar",
+					"version": "i2Nmjt90"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/mc1.17.1-0.4.3/sodium-extra-mc1.17.1-0.4.3.jar",
+					"version": "94EgQDeg"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/mc1.16.5-0.4.3/sodium-extra-mc1.16.5-0.4.3.jar",
+					"version": "sbn6gcHk"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/mc1.18.2-0.4.2/sodium-extra-mc1.18.2-0.4.2.jar",
+					"version": "PJ4CMlHv"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/mc1.17.1-0.4.2/sodium-extra-mc1.17.1-0.4.2.jar",
+					"version": "ayM5uEC0"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/mc1.16.5-0.4.2/sodium-extra-mc1.16.5-0.4.2.jar",
+					"version": "VN2ZNh3U"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/mc1.18.2-0.4.1/sodium-extra-mc1.18.2-0.4.1.jar",
+					"version": "sz9gF7BV"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/mc1.16.5-0.4.1/sodium-extra-mc1.16.5-0.4.1.jar",
+					"version": "Rm4R3w92"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/mc1.17.1-0.4.1/sodium-extra-mc1.17.1-0.4.1.jar",
+					"version": "ttrO1VBz"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"relations": {
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "reeses-sodium-options"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/mc1.18.1-0.4.0/sodium-extra-mc1.18.1-0.4.0.jar",
+					"version": "F8hFUYl1"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/mc1.17.1-0.4.0/sodium-extra-mc1.17.1-0.4.0.jar",
+					"version": "gPzjZZuj"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/mc1.16.5-0.4.0/sodium-extra-mc1.16.5-0.4.0.jar",
+					"version": "8aOUTxhP"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/mc1.16.5-0.3.9/sodium-extra-mc1.16.5-0.3.9.jar",
+					"version": "SlKhm70V"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/mc1.18.1-0.3.9/sodium-extra-mc1.18.1-0.3.9.jar",
+					"version": "In6mnyuN"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/mc1.17.1-0.3.9/sodium-extra-mc1.17.1-0.3.9.jar",
+					"version": "mskRjVNX"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/mc1.18.1-0.3.8/sodium-extra-mc1.18.1-0.3.8.jar",
+					"version": "xph98Tt6"
+				},
+				{
+					"minecraft_versions": "1.18",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/mc1.18-0.3.7/sodium-extra-mc1.18-0.3.7.jar",
+					"version": "iChhfRqr"
+				},
+				{
+					"minecraft_versions": [
+						"1.17",
+						"1.17.1"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/mc1.17.1-0.3.6/sodium-extra-mc1.17.1-0.3.6.jar",
+					"version": "H7MDUukG"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/mc.1.16.5-0.3.5/sodium-extra-mc1.16.5-0.3.5.jar",
+					"version": "9t9pgzTc"
+				},
+				{
+					"minecraft_versions": [
+						"1.17",
+						"1.17.1"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/0.3.5/sodium-extra-mc1.17.1-0.3.5.jar",
+					"version": "qGLCzjA2"
+				},
+				{
+					"minecraft_versions": [
+						"1.17",
+						"1.17.1"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/0.3.4/sodium-extra-mc1.17.1-0.3.4.jar",
+					"version": "K9lmo9hu"
+				},
+				{
+					"minecraft_versions": [
+						"1.17",
+						"1.17.1"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/0.3.3/sodium-extra-mc1.17.1-0.3.3.jar",
+					"version": "2X32poLf"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.2",
+						"1.16.3",
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/0.3.2/sodium-extra-0.3.2.jar",
+					"version": "NjwlXlbU"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.2",
+						"1.16.3",
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/0.3.1/sodium-extra-0.3.1.jar",
+					"version": "4RzKa4mY"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.2",
+						"1.16.3",
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/0.3.0-next-compat/sodium-extra-0.3.0-next-compat.jar",
+					"version": "L460MTe0"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.2",
+						"1.16.3",
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/0.3.0/sodium-extra-0.3.0.jar",
+					"version": "NDv7VmNM"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.2",
+						"1.16.3",
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/0.2.6/sodium-extra-0.2.6.jar",
+					"version": "qBwrXVDm"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.2",
+						"1.16.3",
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/0.2.5/sodium-extra-0.2.5.jar",
+					"version": "dA5kUtCN"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.2",
+						"1.16.3",
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/0.2.2/sodium-extra-0.2.2.jar",
+					"version": "E1Chj4yH"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.2",
+						"1.16.3",
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/0.2.0/sodium-extra-0.2.0.jar",
+					"version": "fQlbGqah"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.2",
+						"1.16.3",
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/PtjYWJkn/versions/0.1.0/sodium-extra-0.1.0.jar",
+					"version": "uFWdXpRc"
+				}
+			]
+		}
+	},
+	"meta": {
+		"authors": [
+			"FlashyReese"
+		],
+		"categories": [
+			"addon"
+		],
+		"community": "https://discord.gg/TBGGM9VzH9",
+		"description": "A Sodium addon that adds features that shouldn't be in Sodium.",
+		"documentation": "https://github.com/FlashyReese/sodium-extra-fabric/wiki",
+		"gallery": [],
+		"icon": "https://cdn.modrinth.com/data/PtjYWJkn/icon.png",
+		"issues": "https://github.com/FlashyReese/sodium-extra-fabric/issues",
+		"keywords": [
+			"sodium"
+		],
+		"license": "LGPL-3.0-only",
+		"name": "Sodium Extra",
+		"package_maintainers": [
+			"mcvm"
+		],
+		"source": "https://github.com/FlashyReese/sodium-extra-fabric",
+		"support_link": "https://ko-fi.com/flashyreese"
+	},
+	"properties": {
+		"modrinth_id": "PtjYWJkn",
+		"open_source": true,
+		"supported_modloaders": [
+			"fabriclike"
+		],
+		"supported_sides": [
+			"client"
+		],
+		"supported_versions": [
+			"1.16.2",
+			"1.16.3",
+			"1.16.4",
+			"1.16.5",
+			"1.17",
+			"1.17.1",
+			"1.18",
+			"1.18.1",
+			"1.18.2",
+			"1.19",
+			"1.19.1",
+			"1.19.2",
+			"1.19.3",
+			"1.19.4",
+			"1.20",
+			"1.20.1",
+			"1.20.2",
+			"1.20.3",
+			"1.20.4"
+		]
+	}
+}

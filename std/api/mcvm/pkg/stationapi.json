@@ -1,0 +1,59 @@
+{
+	"addons": {
+		"addon": {
+			"kind": "mod",
+			"versions": [
+				{
+					"minecraft_versions": "b1.7.3",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/472oW63Q/versions/vVp9vR53/StationAPI-2.0-alpha.1.1.jar",
+					"version": "vVp9vR53"
+				},
+				{
+					"minecraft_versions": "b1.7.3",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/472oW63Q/versions/zZYwzGqM/StationAPI-2.0-alpha.1.jar",
+					"version": "zZYwzGqM"
+				}
+			]
+		}
+	},
+	"meta": {
+		"authors": [
+			"mine_diver"
+		],
+		"categories": [
+			"library",
+			"technical"
+		],
+		"community": "https://discord.gg/8Qky5XY",
+		"description": "A general use API for Fabric Loader mods on legacy Minecraft versions.",
+		"documentation": "https://github.com/ModificationStation/StationAPI/wiki",
+		"gallery": [
+			"https://cdn.modrinth.com/data/472oW63Q/images/bafdba08f96125f8c6adeb3c2c31fe5279817e1b.png"
+		],
+		"icon": "https://cdn.modrinth.com/data/472oW63Q/dbc3b893c76f70695fb4fc5a4ae9728c2eaa18a5.png",
+		"issues": "https://github.com/ModificationStation/StationAPI/issues",
+		"license": "MIT",
+		"name": "StationAPI",
+		"package_maintainers": [
+			"mcvm"
+		],
+		"source": "https://github.com/ModificationStation/StationAPI"
+	},
+	"properties": {
+		"modrinth_id": "472oW63Q",
+		"supported_modloaders": [
+			"fabriclike"
+		],
+		"supported_sides": [
+			"client",
+			"server"
+		],
+		"supported_versions": [
+			"b1.7.3"
+		]
+	}
+}

@@ -40,6 +40,10 @@
 			"path": "pkg/collective.json",
 			"content_type": "declarative"
 		},
+		"complimentary-reimagined": {
+			"path": "pkg/complimentary-reimagined.json",
+			"content_type": "declarative"
+		},
 		"continuity": {
 			"path": "pkg/continuity.json",
 			"content_type": "declarative"
@@ -50,6 +54,10 @@
 		},
 		"emi": {
 			"path": "pkg/emi.json",
+			"content_type": "declarative"
+		},
+		"entity-culling": {
+			"path": "pkg/entity-culling.json",
 			"content_type": "declarative"
 		},
 		"entity-model-features": {
@@ -72,8 +80,20 @@
 			"path": "pkg/farmers-delight-fabric.json",
 			"content_type": "declarative"
 		},
+		"ferrite-core": {
+			"path": "pkg/ferrite-core.json",
+			"content_type": "declarative"
+		},
 		"geckolib": {
 			"path": "pkg/geckolib.json",
+			"content_type": "declarative"
+		},
+		"glass-config-api": {
+			"path": "pkg/glass-config-api.json",
+			"content_type": "declarative"
+		},
+		"gtnh-mixins": {
+			"path": "pkg/gtnh-mixins.json",
 			"content_type": "declarative"
 		},
 		"indium": {
@@ -108,8 +128,16 @@
 			"path": "pkg/midnightlib.json",
 			"content_type": "declarative"
 		},
+		"mixinbooter": {
+			"path": "pkg/mixinbooter.json",
+			"content_type": "declarative"
+		},
 		"mod-menu": {
 			"path": "pkg/mod-menu.json",
+			"content_type": "declarative"
+		},
+		"modmenu-beta": {
+			"path": "pkg/modmenu-beta.json",
 			"content_type": "declarative"
 		},
 		"moonlight-lib": {
@@ -148,6 +176,10 @@
 			"path": "pkg/quilt-kotlin-libraries.json",
 			"content_type": "declarative"
 		},
+		"reeses-sodium-options": {
+			"path": "pkg/reeses-sodium-options.json",
+			"content_type": "declarative"
+		},
 		"rei": {
 			"path": "pkg/rei.json",
 			"content_type": "declarative"
@@ -168,12 +200,24 @@
 			"path": "pkg/smithed-custom-block.json",
 			"content_type": "declarative"
 		},
+		"sodium-extra": {
+			"path": "pkg/sodium-extra.json",
+			"content_type": "declarative"
+		},
 		"sodium": {
 			"path": "pkg/sodium.json",
 			"content_type": "declarative"
 		},
 		"spark": {
 			"path": "pkg/spark.json",
+			"content_type": "declarative"
+		},
+		"spasm": {
+			"path": "pkg/spasm.json",
+			"content_type": "declarative"
+		},
+		"stationapi": {
+			"path": "pkg/stationapi.json",
 			"content_type": "declarative"
 		},
 		"trinkets": {

@@ -1,0 +1,29 @@
+{
+	"relation_substitutions": {
+		"P7dR8mSH": "fabriclike-api",
+		"G1ckZuWK": "mixinbooter",
+		"8nh1ehhB": "gtnh-mixins",
+		"rFeWTq4G": "glass-config-api",
+		"6v8kVRE3": "modmenu-beta"
+	},
+	"merge": {
+		"meta": {
+			"package_maintainers": [
+				"mcvm"
+			],
+			"keywords": [
+				"cull"
+			],
+			"categories": [
+				"optimization",
+				"technical"
+			]
+		},
+		"properties": {
+			"supported_modloaders": [
+				"fabriclike",
+				"forgelike"
+			]
+		}
+	}
+}

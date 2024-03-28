@@ -43,3 +43,14 @@ cardinal-components-api modrinth K01OU20C
 emi modrinth fRiHVvU7
 polymorph modrinth tagwiZkJ
 pehkui modrinth t5W7Jfwy
+complimentary-reimagined modrinth HVnmMxH1
+entity-culling modrinth NNAgCjsB
+mixinbooter modrinth G1ckZuWK
+gtnh-mixins modrinth 8nh1ehhB
+glass-config-api modrinth rFeWTq4G
+modmenu-beta modrinth 6v8kVRE3
+stationapi modrinth 472oW63Q
+spasm modrinth kVAXUykP
+ferrite-core modrinth uXXizFIs
+sodium-extra modrinth PtjYWJkn
+reeses-sodium-options modrinth Bh37bMuy
