@@ -65,9 +65,16 @@ pub async fn gen(
 	meta.authors = Some(members.into_iter().map(|x| x.user.username).collect());
 
 	// Create properties
-	let mut props = PackageProperties {
+	let props = PackageProperties {
 		modrinth_id: Some(project.id),
 		supported_sides: Some(supported_sides),
+		supported_versions: Some(
+			project
+				.game_versions
+				.into_iter()
+				.map(|x| VersionPattern::from(&x))
+				.collect(),
+		),
 		..Default::default()
 	};
 
@@ -86,8 +93,6 @@ pub async fn gen(
 		conditions: Vec::new(),
 	};
 
-	let mut all_mc_versions = Vec::new();
-
 	let versions = modrinth::get_multiple_versions(&project.versions, &client)
 		.await
 		.expect("Failed to get Modrinth project versions");
@@ -100,13 +105,6 @@ pub async fn gen(
 			.iter()
 			.map(|x| VersionPattern::Single(x.clone()))
 			.collect();
-
-		// Add to all Minecraft versions
-		for version in mc_versions.clone() {
-			if !all_mc_versions.contains(&version) {
-				all_mc_versions.push(version);
-			}
-		}
 
 		// Look at loaders
 		let mut modloaders = Vec::new();
@@ -185,8 +183,6 @@ pub async fn gen(
 
 		addon.versions.push(pkg_version);
 	}
-
-	props.supported_versions = Some(all_mc_versions);
 
 	let mut addon_map = HashMap::new();
 	addon_map.insert("addon".into(), addon);
