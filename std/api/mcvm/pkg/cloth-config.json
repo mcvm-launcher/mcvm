@@ -1,839 +1,839 @@
 {
-  "addons": {
-    "addon": {
-      "kind": "mod",
-      "versions": [
-        {
-          "minecraft_versions": [
-            "1.14",
-            "1.14.1",
-            "1.14.2",
-            "1.14.3",
-            "1.14.4"
-          ],
-          "modloaders": "forge",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/1.4.1%2Bforge/ClothConfig2-1.4.1.jar",
-          "version": "2E04stZn"
-        },
-        {
-          "minecraft_versions": [
-            "1.14",
-            "1.14.1",
-            "1.14.2",
-            "1.14.3",
-            "1.14.4"
-          ],
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/1.8%2Bfabric/config-2-1.8.jar",
-          "version": "vcrZcwvb"
-        },
-        {
-          "minecraft_versions": [
-            "1.15",
-            "1.15.1",
-            "1.15.2"
-          ],
-          "modloaders": "forge",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/3.0%2Bforge/config-2-3.0.jar",
-          "version": "dhr1Royh"
-        },
-        {
-          "minecraft_versions": [
-            "1.15",
-            "1.15.1",
-            "1.15.2"
-          ],
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/2.14.2%2Bfabric/config-2-2.14.2.jar",
-          "version": "FtlBFpp0"
-        },
-        {
-          "minecraft_versions": [
-            "1.16",
-            "1.16.1"
-          ],
-          "modloaders": "forge",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/4.0.2%2Bforge/cloth-config-forge-4.0.2.jar",
-          "version": "tR748cRj"
-        },
-        {
-          "minecraft_versions": [
-            "1.16.2",
-            "1.16.3",
-            "1.16.4",
-            "1.16.5"
-          ],
-          "modloaders": "forge",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/4.14.54%2Bforge/cloth-config-4.14.54-forge.jar",
-          "version": "D7tEkaAc"
-        },
-        {
-          "minecraft_versions": [
-            "1.16",
-            "1.16.1"
-          ],
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/4.6.0%2Bfabric/config-2-4.6.0.jar",
-          "version": "mJwBHBVB"
-        },
-        {
-          "minecraft_versions": [
-            "1.16.2",
-            "1.16.3",
-            "1.16.4",
-            "1.16.5"
-          ],
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/4.14.54%2Bfabric/cloth-config-4.14.54-fabric.jar",
-          "version": "wqFP5baC"
-        },
-        {
-          "minecraft_versions": [
-            "1.17",
-            "1.17.1"
-          ],
-          "modloaders": "forge",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/5.3.58%2Bforge/cloth-config-5.3.58-forge.jar",
-          "version": "HvviXJZV"
-        },
-        {
-          "minecraft_versions": [
-            "1.17",
-            "1.17.1"
-          ],
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/5.3.58%2Bfabric/cloth-config-5.3.58-fabric.jar",
-          "version": "vb3noRwi"
-        },
-        {
-          "minecraft_versions": [
-            "1.18",
-            "1.18.1",
-            "1.18.2"
-          ],
-          "modloaders": "forge",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/6.2.57%2Bforge/cloth-config-6.2.57-forge.jar",
-          "version": "6vFGWMar"
-        },
-        {
-          "minecraft_versions": [
-            "1.18",
-            "1.18.1",
-            "1.18.2"
-          ],
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/6.2.57%2Bfabric/cloth-config-6.2.57-fabric.jar",
-          "version": "63NArvT8"
-        },
-        {
-          "minecraft_versions": "1.19",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/7.0.69/cloth-config-7.0.69-fabric.jar",
-          "version": "re60xAev"
-        },
-        {
-          "minecraft_versions": "1.19",
-          "modloaders": "forge",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/7.0.69%2Bforge/cloth-config-forge-7.0.69.jar",
-          "version": "hcuWsP3M"
-        },
-        {
-          "minecraft_versions": [
-            "1.18",
-            "1.18.1",
-            "1.18.2"
-          ],
-          "modloaders": "forge",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/6.2.62%2Bforge/cloth-config-forge-6.2.62.jar",
-          "version": "DmOAoTTg"
-        },
-        {
-          "minecraft_versions": [
-            "1.18",
-            "1.18.1",
-            "1.18.2"
-          ],
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/6.2.62/cloth-config-fabric-6.2.62.jar",
-          "version": "d1D40LRO"
-        },
-        {
-          "minecraft_versions": [
-            "1.17",
-            "1.17.1"
-          ],
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/5.3.63/cloth-config-fabric-5.3.63.jar",
-          "version": "gb0cZ2Qp"
-        },
-        {
-          "minecraft_versions": [
-            "1.17",
-            "1.17.1"
-          ],
-          "modloaders": "forge",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/5.3.63%2Bforge/cloth-config-forge-5.3.63.jar",
-          "version": "GH6kNTCk"
-        },
-        {
-          "minecraft_versions": [
-            "1.16.2",
-            "1.16.3",
-            "1.16.4",
-            "1.16.5"
-          ],
-          "modloaders": "forge",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/4.14.64%2Bforge/cloth-config-forge-4.14.64.jar",
-          "version": "31tLmbMI"
-        },
-        {
-          "minecraft_versions": [
-            "1.16.2",
-            "1.16.3",
-            "1.16.4",
-            "1.16.5"
-          ],
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/4.14.64/cloth-config-fabric-4.14.64.jar",
-          "version": "KiKLKNrl"
-        },
-        {
-          "minecraft_versions": "1.19",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/7.0.72%2Bfabric/cloth-config-7.0.72-fabric.jar",
-          "version": "wOP2dCdL"
-        },
-        {
-          "minecraft_versions": "1.19",
-          "modloaders": "forge",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/7.0.72%2Bforge/cloth-config-7.0.72-forge.jar",
-          "version": "CsdOwOro"
-        },
-        {
-          "minecraft_versions": "1.19",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/7.0.73%2Bfabric/cloth-config-7.0.73-fabric.jar",
-          "version": "ehzvjLXC"
-        },
-        {
-          "minecraft_versions": "1.19",
-          "modloaders": "forge",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/7.0.73%2Bforge/cloth-config-7.0.73-forge.jar",
-          "version": "XInqR7zc"
-        },
-        {
-          "minecraft_versions": "1.19",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/7.0.74%2Bfabric/cloth-config-7.0.74-fabric.jar",
-          "version": "FPWqEBEx"
-        },
-        {
-          "minecraft_versions": "1.19",
-          "modloaders": "forge",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/7.0.74%2Bforge/cloth-config-7.0.74-forge.jar",
-          "version": "c4kFw2we"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2"
-          ],
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/8.0.75%2Bfabric/cloth-config-8.0.75-fabric.jar",
-          "version": "hg9bSXT3"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2"
-          ],
-          "modloaders": "forge",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/8.0.75%2Bforge/cloth-config-8.0.75-forge.jar",
-          "version": "VazGdWq6"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2"
-          ],
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/JaKvOQIz/cloth-config-8.1.77-fabric.jar",
-          "version": "JaKvOQIz"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2"
-          ],
-          "modloaders": "forge",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/Q0bdszKc/cloth-config-8.1.77-forge.jar",
-          "version": "Q0bdszKc"
-        },
-        {
-          "minecraft_versions": [
-            "1.18",
-            "1.18.1",
-            "1.18.2"
-          ],
-          "modloaders": "forge",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/GcaDCWXk/cloth-config-6.3.81-forge.jar",
-          "version": "GcaDCWXk"
-        },
-        {
-          "minecraft_versions": [
-            "1.18",
-            "1.18.1",
-            "1.18.2"
-          ],
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/gPqHXnrg/cloth-config-6.3.81-fabric.jar",
-          "version": "gPqHXnrg"
-        },
-        {
-          "minecraft_versions": [
-            "1.16.2",
-            "1.16.3",
-            "1.16.4",
-            "1.16.5"
-          ],
-          "modloaders": "forge",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/iYo4XV1L/cloth-config-4.15.82-forge.jar",
-          "version": "iYo4XV1L"
-        },
-        {
-          "minecraft_versions": [
-            "1.16.2",
-            "1.16.3",
-            "1.16.4",
-            "1.16.5"
-          ],
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/szXeTOs6/cloth-config-4.15.82-fabric.jar",
-          "version": "szXeTOs6"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2"
-          ],
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/EXrxCjl6/cloth-config-8.2.88-fabric.jar",
-          "version": "EXrxCjl6"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2"
-          ],
-          "modloaders": "forge",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/Fw7B2c97/cloth-config-8.2.88-forge.jar",
-          "version": "Fw7B2c97"
-        },
-        {
-          "minecraft_versions": "22w43a",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/72Wj1Wri/cloth-config-9.0.92-fabric.jar",
-          "version": "72Wj1Wri"
-        },
-        {
-          "minecraft_versions": "1.19.3-pre2",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/IVxgEGfU/cloth-config-9.0.93-fabric.jar",
-          "version": "IVxgEGfU"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/M3yxljrZ/cloth-config-9.0.94-fabric.jar",
-          "version": "M3yxljrZ"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "forge",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/VYURtAAK/cloth-config-9.0.94-forge.jar",
-          "version": "VYURtAAK"
-        },
-        {
-          "minecraft_versions": "1.19.4-pre1",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/QXKLvmdz/cloth-config-10.0.95-fabric.jar",
-          "version": "QXKLvmdz"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/6XGTNEII/cloth-config-10.0.96-fabric.jar",
-          "version": "6XGTNEII"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "forge",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/X8YuGurB/cloth-config-10.0.96-forge.jar",
-          "version": "X8YuGurB"
-        },
-        {
-          "minecraft_versions": "23w13a_or_b",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/XqZIxbLN/cloth-config-11.0.97-fabric.jar",
-          "version": "XqZIxbLN"
-        },
-        {
-          "minecraft_versions": "1.20-pre6",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/dVpHBgHi/cloth-config-11.0.98-fabric.jar",
-          "version": "dVpHBgHi"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/y0kQixP8/cloth-config-11.0.99-fabric.jar",
-          "version": "y0kQixP8"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "forge",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/aAaLEVNM/cloth-config-11.0.99-forge.jar",
-          "version": "aAaLEVNM"
-        },
-        {
-          "minecraft_versions": [
-            "1.16.4",
-            "1.16.5"
-          ],
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/oIHJeqqQ/cloth-config-4.16.91-fabric.jar",
-          "version": "oIHJeqqQ"
-        },
-        {
-          "minecraft_versions": [
-            "1.16.4",
-            "1.16.5"
-          ],
-          "modloaders": "forge",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/CXaMuU8e/cloth-config-4.16.91-forge.jar",
-          "version": "CXaMuU8e"
-        },
-        {
-          "minecraft_versions": [
-            "1.16.4",
-            "1.16.5"
-          ],
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/xMTUxQCV/cloth-config-4.17.101-fabric.jar",
-          "version": "xMTUxQCV"
-        },
-        {
-          "minecraft_versions": [
-            "1.16.4",
-            "1.16.5"
-          ],
-          "modloaders": "forge",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/i0ExoqTD/cloth-config-4.17.101-forge.jar",
-          "version": "i0ExoqTD"
-        },
-        {
-          "minecraft_versions": [
-            "1.18",
-            "1.18.1",
-            "1.18.2"
-          ],
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/BLMp2TRt/cloth-config-6.5.102-fabric.jar",
-          "version": "BLMp2TRt"
-        },
-        {
-          "minecraft_versions": [
-            "1.18",
-            "1.18.1",
-            "1.18.2"
-          ],
-          "modloaders": "forge",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/ZbWG3eJW/cloth-config-6.5.102-forge.jar",
-          "version": "ZbWG3eJW"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/w2VZSLTf/cloth-config-9.1.104-fabric.jar",
-          "version": "w2VZSLTf"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2"
-          ],
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/o9dFD9SO/cloth-config-8.3.103-fabric.jar",
-          "version": "o9dFD9SO"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "forge",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/8AMPotFw/cloth-config-9.1.104-forge.jar",
-          "version": "8AMPotFw"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2"
-          ],
-          "modloaders": "forge",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/EUyHCmUW/cloth-config-8.3.103-forge.jar",
-          "version": "EUyHCmUW"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/mhFzbEwE/cloth-config-10.1.105-fabric.jar",
-          "version": "mhFzbEwE"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "forge",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/Sqf2NXVd/cloth-config-10.1.105-forge.jar",
-          "version": "Sqf2NXVd"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/s7VTKfLA/cloth-config-11.1.106-fabric.jar",
-          "version": "s7VTKfLA"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "forge",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/JoLgnJ0G/cloth-config-11.1.106-forge.jar",
-          "version": "JoLgnJ0G"
-        },
-        {
-          "minecraft_versions": "23w31a",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/YR0cy5Ll/cloth-config-12.0.107-fabric.jar",
-          "version": "YR0cy5Ll"
-        },
-        {
-          "minecraft_versions": "1.20.2",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/EuWT3qek/cloth-config-12.0.108-fabric.jar",
-          "version": "EuWT3qek"
-        },
-        {
-          "minecraft_versions": "1.20.2",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/LnfolBYb/cloth-config-12.0.109-fabric.jar",
-          "version": "LnfolBYb"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "forge",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/IbAdAuBo/cloth-config-12.0.109-forge.jar",
-          "version": "IbAdAuBo"
-        },
-        {
-          "minecraft_versions": "1.20.2",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/HvC4UPrB/cloth-config-12.0.110-fabric.jar",
-          "version": "HvC4UPrB"
-        },
-        {
-          "minecraft_versions": "1.20.2",
-          "modloaders": "forge",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/rMIyh1ac/cloth-config-12.0.110-forge.jar",
-          "version": "rMIyh1ac"
-        },
-        {
-          "minecraft_versions": "1.20.2",
-          "modloaders": "neoforged",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/XkFQE0kx/cloth-config-12.0.110-neoforge.jar",
-          "version": "XkFQE0kx"
-        },
-        {
-          "minecraft_versions": "1.20.2",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/jvy82BGQ/cloth-config-12.0.111-fabric.jar",
-          "version": "jvy82BGQ"
-        },
-        {
-          "minecraft_versions": "1.20.2",
-          "modloaders": "forge",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/VmKENDcG/cloth-config-12.0.111-forge.jar",
-          "version": "VmKENDcG"
-        },
-        {
-          "minecraft_versions": "1.20.2",
-          "modloaders": "neoforged",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/x8gS3Jdy/cloth-config-12.0.111-neoforge.jar",
-          "version": "x8gS3Jdy"
-        },
-        {
-          "minecraft_versions": [
-            "1.20.3",
-            "1.20.4"
-          ],
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/Q4D6X8wF/cloth-config-13.0.112-fabric.jar",
-          "version": "Q4D6X8wF"
-        },
-        {
-          "minecraft_versions": [
-            "1.20.3",
-            "1.20.4"
-          ],
-          "modloaders": "forge",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/gYTUlUKu/cloth-config-13.0.112-forge.jar",
-          "version": "gYTUlUKu"
-        },
-        {
-          "minecraft_versions": [
-            "1.20.3",
-            "1.20.4"
-          ],
-          "modloaders": "neoforged",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/srGqKdky/cloth-config-13.0.112-neoforge.jar",
-          "version": "srGqKdky"
-        },
-        {
-          "minecraft_versions": "1.20.2",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/wjYUbvpn/cloth-config-12.0.113-fabric.jar",
-          "version": "wjYUbvpn"
-        },
-        {
-          "minecraft_versions": [
-            "1.20.3",
-            "1.20.4"
-          ],
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/YFpDLLdu/cloth-config-13.0.114-fabric.jar",
-          "version": "YFpDLLdu"
-        },
-        {
-          "minecraft_versions": "1.20.2",
-          "modloaders": "forge",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/A4lNtO10/cloth-config-12.0.113-forge.jar",
-          "version": "A4lNtO10"
-        },
-        {
-          "minecraft_versions": [
-            "1.20.3",
-            "1.20.4"
-          ],
-          "modloaders": "forge",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/q2CkD3c1/cloth-config-13.0.114-forge.jar",
-          "version": "q2CkD3c1"
-        },
-        {
-          "minecraft_versions": [
-            "1.20.3",
-            "1.20.4"
-          ],
-          "modloaders": "neoforged",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/KBfIrjbA/cloth-config-13.0.114-neoforge.jar",
-          "version": "KBfIrjbA"
-        },
-        {
-          "minecraft_versions": "1.20.2",
-          "modloaders": "neoforged",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/2FKRnZ92/cloth-config-12.0.113-neoforge.jar",
-          "version": "2FKRnZ92"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/J3FLptsi/cloth-config-11.1.118-fabric.jar",
-          "version": "J3FLptsi"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "forge",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/nr1znv5v/cloth-config-11.1.118-forge.jar",
-          "version": "nr1znv5v"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2"
-          ],
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/3Ejdp6VI/cloth-config-8.3.115-fabric.jar",
-          "version": "3Ejdp6VI"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2"
-          ],
-          "modloaders": "forge",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/o6AGzycg/cloth-config-8.3.115-forge.jar",
-          "version": "o6AGzycg"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/4UgNKji6/cloth-config-10.1.117-fabric.jar",
-          "version": "4UgNKji6"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "forge",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/w2LhUkqZ/cloth-config-10.1.117-forge.jar",
-          "version": "w2LhUkqZ"
-        },
-        {
-          "minecraft_versions": "1.20.2",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/NPcjyMhi/cloth-config-12.0.119-fabric.jar",
-          "version": "NPcjyMhi"
-        },
-        {
-          "minecraft_versions": "1.20.2",
-          "modloaders": "forge",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/Y51gygcX/cloth-config-12.0.119-forge.jar",
-          "version": "Y51gygcX"
-        },
-        {
-          "minecraft_versions": "1.20.2",
-          "modloaders": "neoforged",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/6GeyuE7Y/cloth-config-12.0.119-neoforge.jar",
-          "version": "6GeyuE7Y"
-        },
-        {
-          "minecraft_versions": [
-            "1.20.3",
-            "1.20.4"
-          ],
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/eBZiZ9NS/cloth-config-13.0.121-fabric.jar",
-          "version": "eBZiZ9NS"
-        },
-        {
-          "minecraft_versions": [
-            "1.20.3",
-            "1.20.4"
-          ],
-          "modloaders": "forge",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/1MwQkf8u/cloth-config-13.0.121-forge.jar",
-          "version": "1MwQkf8u"
-        },
-        {
-          "minecraft_versions": [
-            "1.20.3",
-            "1.20.4"
-          ],
-          "modloaders": "neoforged",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/hUXzyFVO/cloth-config-13.0.121-neoforge.jar",
-          "version": "hUXzyFVO"
-        },
-        {
-          "minecraft_versions": "24w09a",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/3TLtSX1e/cloth-config-14.0.122-fabric.jar",
-          "version": "3TLtSX1e"
-        }
-      ]
-    }
-  },
-  "meta": {
-    "authors": [
-      "shedaniel"
-    ],
-    "categories": [
-      "technical"
-    ],
-    "community": "https://discord.gg/Vs9AVkxjYY",
-    "description": "Configuration Library for Minecraft Mods",
-    "documentation": "https://shedaniel.gitbook.io/cloth-config/",
-    "gallery": [
-      "https://cdn.modrinth.com/data/9s6osm5g/images/baa0dc605540953f5262f24109ec7837c090a04c.png"
-    ],
-    "icon": "https://cdn.modrinth.com/data/9s6osm5g/icon.png",
-    "issues": "https://github.com/shedaniel/ClothConfig/issues",
-    "keywords": [
-      "config"
-    ],
-    "license": "LGPL-3.0-only",
-    "name": "Cloth Config API",
-    "package_maintainers": [
-      "mcvm"
-    ],
-    "source": "https://github.com/shedaniel/ClothConfig/",
-    "support_link": "https://www.patreon.com/shedaniel"
-  },
-  "properties": {
-    "modrinth_id": "9s6osm5g",
-    "open_source": true,
-    "supported_modloaders": [
-      "fabriclike",
-      "forgelike"
-    ],
-    "supported_versions": [
-      "1.14",
-      "1.14.1",
-      "1.14.2",
-      "1.14.3",
-      "1.14.4",
-      "1.15",
-      "1.15.1",
-      "1.15.2",
-      "1.16",
-      "1.16.1",
-      "1.16.2",
-      "1.16.3",
-      "1.16.4",
-      "1.16.5",
-      "1.17",
-      "1.17.1",
-      "1.18",
-      "1.18.1",
-      "1.18.2",
-      "1.19",
-      "1.19.1",
-      "1.19.2",
-      "22w43a",
-      "1.19.3-pre2",
-      "1.19.3",
-      "1.19.4-pre1",
-      "1.19.4",
-      "23w13a_or_b",
-      "1.20-pre6",
-      "1.20",
-      "1.20.1",
-      "23w31a",
-      "1.20.2",
-      "1.20.3",
-      "1.20.4",
-      "24w09a"
-    ]
-  }
+	"addons": {
+		"addon": {
+			"kind": "mod",
+			"versions": [
+				{
+					"minecraft_versions": [
+						"1.14",
+						"1.14.1",
+						"1.14.2",
+						"1.14.3",
+						"1.14.4"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/1.4.1%2Bforge/ClothConfig2-1.4.1.jar",
+					"version": "2E04stZn"
+				},
+				{
+					"minecraft_versions": [
+						"1.14",
+						"1.14.1",
+						"1.14.2",
+						"1.14.3",
+						"1.14.4"
+					],
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/1.8%2Bfabric/config-2-1.8.jar",
+					"version": "vcrZcwvb"
+				},
+				{
+					"minecraft_versions": [
+						"1.15",
+						"1.15.1",
+						"1.15.2"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/3.0%2Bforge/config-2-3.0.jar",
+					"version": "dhr1Royh"
+				},
+				{
+					"minecraft_versions": [
+						"1.15",
+						"1.15.1",
+						"1.15.2"
+					],
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/2.14.2%2Bfabric/config-2-2.14.2.jar",
+					"version": "FtlBFpp0"
+				},
+				{
+					"minecraft_versions": [
+						"1.16",
+						"1.16.1"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/4.0.2%2Bforge/cloth-config-forge-4.0.2.jar",
+					"version": "tR748cRj"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.2",
+						"1.16.3",
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/4.14.54%2Bforge/cloth-config-4.14.54-forge.jar",
+					"version": "D7tEkaAc"
+				},
+				{
+					"minecraft_versions": [
+						"1.16",
+						"1.16.1"
+					],
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/4.6.0%2Bfabric/config-2-4.6.0.jar",
+					"version": "mJwBHBVB"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.2",
+						"1.16.3",
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/4.14.54%2Bfabric/cloth-config-4.14.54-fabric.jar",
+					"version": "wqFP5baC"
+				},
+				{
+					"minecraft_versions": [
+						"1.17",
+						"1.17.1"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/5.3.58%2Bforge/cloth-config-5.3.58-forge.jar",
+					"version": "HvviXJZV"
+				},
+				{
+					"minecraft_versions": [
+						"1.17",
+						"1.17.1"
+					],
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/5.3.58%2Bfabric/cloth-config-5.3.58-fabric.jar",
+					"version": "vb3noRwi"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/6.2.57%2Bforge/cloth-config-6.2.57-forge.jar",
+					"version": "6vFGWMar"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2"
+					],
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/6.2.57%2Bfabric/cloth-config-6.2.57-fabric.jar",
+					"version": "63NArvT8"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/7.0.69/cloth-config-7.0.69-fabric.jar",
+					"version": "re60xAev"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/7.0.69%2Bforge/cloth-config-forge-7.0.69.jar",
+					"version": "hcuWsP3M"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/6.2.62%2Bforge/cloth-config-forge-6.2.62.jar",
+					"version": "DmOAoTTg"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2"
+					],
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/6.2.62/cloth-config-fabric-6.2.62.jar",
+					"version": "d1D40LRO"
+				},
+				{
+					"minecraft_versions": [
+						"1.17",
+						"1.17.1"
+					],
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/5.3.63/cloth-config-fabric-5.3.63.jar",
+					"version": "gb0cZ2Qp"
+				},
+				{
+					"minecraft_versions": [
+						"1.17",
+						"1.17.1"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/5.3.63%2Bforge/cloth-config-forge-5.3.63.jar",
+					"version": "GH6kNTCk"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.2",
+						"1.16.3",
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/4.14.64%2Bforge/cloth-config-forge-4.14.64.jar",
+					"version": "31tLmbMI"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.2",
+						"1.16.3",
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/4.14.64/cloth-config-fabric-4.14.64.jar",
+					"version": "KiKLKNrl"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/7.0.72%2Bfabric/cloth-config-7.0.72-fabric.jar",
+					"version": "wOP2dCdL"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/7.0.72%2Bforge/cloth-config-7.0.72-forge.jar",
+					"version": "CsdOwOro"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/7.0.73%2Bfabric/cloth-config-7.0.73-fabric.jar",
+					"version": "ehzvjLXC"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/7.0.73%2Bforge/cloth-config-7.0.73-forge.jar",
+					"version": "XInqR7zc"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/7.0.74%2Bfabric/cloth-config-7.0.74-fabric.jar",
+					"version": "FPWqEBEx"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/7.0.74%2Bforge/cloth-config-7.0.74-forge.jar",
+					"version": "c4kFw2we"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/8.0.75%2Bfabric/cloth-config-8.0.75-fabric.jar",
+					"version": "hg9bSXT3"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/8.0.75%2Bforge/cloth-config-8.0.75-forge.jar",
+					"version": "VazGdWq6"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/JaKvOQIz/cloth-config-8.1.77-fabric.jar",
+					"version": "JaKvOQIz"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/Q0bdszKc/cloth-config-8.1.77-forge.jar",
+					"version": "Q0bdszKc"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/GcaDCWXk/cloth-config-6.3.81-forge.jar",
+					"version": "GcaDCWXk"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2"
+					],
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/gPqHXnrg/cloth-config-6.3.81-fabric.jar",
+					"version": "gPqHXnrg"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.2",
+						"1.16.3",
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/iYo4XV1L/cloth-config-4.15.82-forge.jar",
+					"version": "iYo4XV1L"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.2",
+						"1.16.3",
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/szXeTOs6/cloth-config-4.15.82-fabric.jar",
+					"version": "szXeTOs6"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/EXrxCjl6/cloth-config-8.2.88-fabric.jar",
+					"version": "EXrxCjl6"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/Fw7B2c97/cloth-config-8.2.88-forge.jar",
+					"version": "Fw7B2c97"
+				},
+				{
+					"minecraft_versions": "22w43a",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/72Wj1Wri/cloth-config-9.0.92-fabric.jar",
+					"version": "72Wj1Wri"
+				},
+				{
+					"minecraft_versions": "1.19.3-pre2",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/IVxgEGfU/cloth-config-9.0.93-fabric.jar",
+					"version": "IVxgEGfU"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/M3yxljrZ/cloth-config-9.0.94-fabric.jar",
+					"version": "M3yxljrZ"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/VYURtAAK/cloth-config-9.0.94-forge.jar",
+					"version": "VYURtAAK"
+				},
+				{
+					"minecraft_versions": "1.19.4-pre1",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/QXKLvmdz/cloth-config-10.0.95-fabric.jar",
+					"version": "QXKLvmdz"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/6XGTNEII/cloth-config-10.0.96-fabric.jar",
+					"version": "6XGTNEII"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/X8YuGurB/cloth-config-10.0.96-forge.jar",
+					"version": "X8YuGurB"
+				},
+				{
+					"minecraft_versions": "23w13a_or_b",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/XqZIxbLN/cloth-config-11.0.97-fabric.jar",
+					"version": "XqZIxbLN"
+				},
+				{
+					"minecraft_versions": "1.20-pre6",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/dVpHBgHi/cloth-config-11.0.98-fabric.jar",
+					"version": "dVpHBgHi"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/y0kQixP8/cloth-config-11.0.99-fabric.jar",
+					"version": "y0kQixP8"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/aAaLEVNM/cloth-config-11.0.99-forge.jar",
+					"version": "aAaLEVNM"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/oIHJeqqQ/cloth-config-4.16.91-fabric.jar",
+					"version": "oIHJeqqQ"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/CXaMuU8e/cloth-config-4.16.91-forge.jar",
+					"version": "CXaMuU8e"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/xMTUxQCV/cloth-config-4.17.101-fabric.jar",
+					"version": "xMTUxQCV"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/i0ExoqTD/cloth-config-4.17.101-forge.jar",
+					"version": "i0ExoqTD"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2"
+					],
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/BLMp2TRt/cloth-config-6.5.102-fabric.jar",
+					"version": "BLMp2TRt"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/ZbWG3eJW/cloth-config-6.5.102-forge.jar",
+					"version": "ZbWG3eJW"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/w2VZSLTf/cloth-config-9.1.104-fabric.jar",
+					"version": "w2VZSLTf"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/o9dFD9SO/cloth-config-8.3.103-fabric.jar",
+					"version": "o9dFD9SO"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/8AMPotFw/cloth-config-9.1.104-forge.jar",
+					"version": "8AMPotFw"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/EUyHCmUW/cloth-config-8.3.103-forge.jar",
+					"version": "EUyHCmUW"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/mhFzbEwE/cloth-config-10.1.105-fabric.jar",
+					"version": "mhFzbEwE"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/Sqf2NXVd/cloth-config-10.1.105-forge.jar",
+					"version": "Sqf2NXVd"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/s7VTKfLA/cloth-config-11.1.106-fabric.jar",
+					"version": "s7VTKfLA"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/JoLgnJ0G/cloth-config-11.1.106-forge.jar",
+					"version": "JoLgnJ0G"
+				},
+				{
+					"minecraft_versions": "23w31a",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/YR0cy5Ll/cloth-config-12.0.107-fabric.jar",
+					"version": "YR0cy5Ll"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/EuWT3qek/cloth-config-12.0.108-fabric.jar",
+					"version": "EuWT3qek"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/LnfolBYb/cloth-config-12.0.109-fabric.jar",
+					"version": "LnfolBYb"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/IbAdAuBo/cloth-config-12.0.109-forge.jar",
+					"version": "IbAdAuBo"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/HvC4UPrB/cloth-config-12.0.110-fabric.jar",
+					"version": "HvC4UPrB"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/rMIyh1ac/cloth-config-12.0.110-forge.jar",
+					"version": "rMIyh1ac"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "neoforged",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/XkFQE0kx/cloth-config-12.0.110-neoforge.jar",
+					"version": "XkFQE0kx"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/jvy82BGQ/cloth-config-12.0.111-fabric.jar",
+					"version": "jvy82BGQ"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/VmKENDcG/cloth-config-12.0.111-forge.jar",
+					"version": "VmKENDcG"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "neoforged",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/x8gS3Jdy/cloth-config-12.0.111-neoforge.jar",
+					"version": "x8gS3Jdy"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/Q4D6X8wF/cloth-config-13.0.112-fabric.jar",
+					"version": "Q4D6X8wF"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/gYTUlUKu/cloth-config-13.0.112-forge.jar",
+					"version": "gYTUlUKu"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": "neoforged",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/srGqKdky/cloth-config-13.0.112-neoforge.jar",
+					"version": "srGqKdky"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/wjYUbvpn/cloth-config-12.0.113-fabric.jar",
+					"version": "wjYUbvpn"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/YFpDLLdu/cloth-config-13.0.114-fabric.jar",
+					"version": "YFpDLLdu"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/A4lNtO10/cloth-config-12.0.113-forge.jar",
+					"version": "A4lNtO10"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/q2CkD3c1/cloth-config-13.0.114-forge.jar",
+					"version": "q2CkD3c1"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": "neoforged",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/KBfIrjbA/cloth-config-13.0.114-neoforge.jar",
+					"version": "KBfIrjbA"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "neoforged",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/2FKRnZ92/cloth-config-12.0.113-neoforge.jar",
+					"version": "2FKRnZ92"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/J3FLptsi/cloth-config-11.1.118-fabric.jar",
+					"version": "J3FLptsi"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/nr1znv5v/cloth-config-11.1.118-forge.jar",
+					"version": "nr1znv5v"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/3Ejdp6VI/cloth-config-8.3.115-fabric.jar",
+					"version": "3Ejdp6VI"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/o6AGzycg/cloth-config-8.3.115-forge.jar",
+					"version": "o6AGzycg"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/4UgNKji6/cloth-config-10.1.117-fabric.jar",
+					"version": "4UgNKji6"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/w2LhUkqZ/cloth-config-10.1.117-forge.jar",
+					"version": "w2LhUkqZ"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/NPcjyMhi/cloth-config-12.0.119-fabric.jar",
+					"version": "NPcjyMhi"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/Y51gygcX/cloth-config-12.0.119-forge.jar",
+					"version": "Y51gygcX"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "neoforged",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/6GeyuE7Y/cloth-config-12.0.119-neoforge.jar",
+					"version": "6GeyuE7Y"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/eBZiZ9NS/cloth-config-13.0.121-fabric.jar",
+					"version": "eBZiZ9NS"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/1MwQkf8u/cloth-config-13.0.121-forge.jar",
+					"version": "1MwQkf8u"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": "neoforged",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/hUXzyFVO/cloth-config-13.0.121-neoforge.jar",
+					"version": "hUXzyFVO"
+				},
+				{
+					"minecraft_versions": "24w09a",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/3TLtSX1e/cloth-config-14.0.122-fabric.jar",
+					"version": "3TLtSX1e"
+				}
+			]
+		}
+	},
+	"meta": {
+		"authors": [
+			"shedaniel"
+		],
+		"categories": [
+			"technical"
+		],
+		"community": "https://discord.gg/Vs9AVkxjYY",
+		"description": "Configuration Library for Minecraft Mods",
+		"documentation": "https://shedaniel.gitbook.io/cloth-config/",
+		"gallery": [
+			"https://cdn.modrinth.com/data/9s6osm5g/images/baa0dc605540953f5262f24109ec7837c090a04c.png"
+		],
+		"icon": "https://cdn.modrinth.com/data/9s6osm5g/icon.png",
+		"issues": "https://github.com/shedaniel/ClothConfig/issues",
+		"keywords": [
+			"config"
+		],
+		"license": "LGPL-3.0-only",
+		"name": "Cloth Config API",
+		"package_maintainers": [
+			"mcvm"
+		],
+		"source": "https://github.com/shedaniel/ClothConfig/",
+		"support_link": "https://www.patreon.com/shedaniel"
+	},
+	"properties": {
+		"modrinth_id": "9s6osm5g",
+		"open_source": true,
+		"supported_modloaders": [
+			"fabriclike",
+			"forgelike"
+		],
+		"supported_versions": [
+			"1.14",
+			"1.14.1",
+			"1.14.2",
+			"1.14.3",
+			"1.14.4",
+			"1.15",
+			"1.15.1",
+			"1.15.2",
+			"1.16",
+			"1.16.1",
+			"1.16.2",
+			"1.16.3",
+			"1.16.4",
+			"1.16.5",
+			"1.17",
+			"1.17.1",
+			"1.18",
+			"1.18.1",
+			"1.18.2",
+			"1.19",
+			"1.19.1",
+			"1.19.2",
+			"22w43a",
+			"1.19.3-pre2",
+			"1.19.3",
+			"1.19.4-pre1",
+			"1.19.4",
+			"23w13a_or_b",
+			"1.20-pre6",
+			"1.20",
+			"1.20.1",
+			"23w31a",
+			"1.20.2",
+			"1.20.3",
+			"1.20.4",
+			"24w09a"
+		]
+	}
 }

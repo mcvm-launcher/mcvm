@@ -1,0 +1,28 @@
+{
+	"relation_substitutions": {
+		"P7dR8mSH": "fabriclike-api",
+		"qvIfYCYJ": "fabriclike-api",
+		"PRN43VSY": "animatica",
+		"Ha28R6CL": "kotlin-support",
+		"PswX9vWM": "know-my-name",
+		"Rtp2Lyr5": "lilac"
+	},
+	"merge": {
+		"meta": {
+			"package_maintainers": [
+				"mcvm"
+			],
+			"keywords": [
+				"graphics"
+			],
+			"categories": [
+				"technical"
+			]
+		},
+		"properties": {
+			"supported_modloaders": [
+				"fabriclike"
+			]
+		}
+	}
+}

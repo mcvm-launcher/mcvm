@@ -1,0 +1,21 @@
+{
+	"relation_substitutions": {
+		"P7dR8mSH": "fabriclike-api",
+		"Ha28R6CL": "kotlin-support"
+	},
+	"merge": {
+		"meta": {
+			"package_maintainers": [
+				"mcvm"
+			],
+			"categories": [
+				"library"
+			]
+		},
+		"properties": {
+			"supported_modloaders": [
+				"fabriclike"
+			]
+		}
+	}
+}

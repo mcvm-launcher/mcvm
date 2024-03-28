@@ -1,0 +1,21 @@
+{
+	"relation_substitutions": {},
+	"merge": {
+		"meta": {
+			"package_maintainers": [
+				"mcvm"
+			],
+			"keywords": [
+				"items"
+			],
+			"categories": [
+				"utility"
+			]
+		},
+		"properties": {
+			"supported_modloaders": [
+				"forgelike"
+			]
+		}
+	}
+}

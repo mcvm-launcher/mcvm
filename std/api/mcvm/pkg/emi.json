@@ -1,0 +1,3320 @@
+{
+	"addons": {
+		"addon": {
+			"kind": "mod",
+			"versions": [
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/0.1.0%2B1.18.2/emi-0.1.0%2B1.18.2.jar",
+					"version": "y07Z99Fu"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/0.1.1%2B1.18.2/emi-0.1.1%2B1.18.2.jar",
+					"version": "Q6tTbo1x"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/0.1.2%2B1.18.2/emi-0.1.2%2B1.18.2.jar",
+					"version": "K65QAWMh"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/0.2.0%2B1.18.2/emi-0.2.0%2B1.18.2.jar",
+					"version": "YXPSJa6e"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/0.2.0%2B1.19/emi-0.2.0%2B1.19.jar",
+					"version": "iYEz2kTL"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/0.3.0%2B1.18.2/emi-0.3.0%2B1.18.2.jar",
+					"version": "Selw0HYX"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/0.3.0%2B1.19/emi-0.3.0%2B1.19.jar",
+					"version": "A8yQEzfW"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/0.3.1%2B1.18.2/emi-0.3.1%2B1.18.2.jar",
+					"version": "E5xVJcgc"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/0.3.1%2B1.19/emi-0.3.1%2B1.19.jar",
+					"version": "pgkoQN7L"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/0.3.2%2B1.18.2/emi-0.3.2%2B1.18.2.jar",
+					"version": "D3LyTAws"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/0.3.2%2B1.19/emi-0.3.2%2B1.19.jar",
+					"version": "wWQ7UZ2q"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/0.3.3%2B1.18.2/emi-0.3.3%2B1.18.2.jar",
+					"version": "nZGKMwAA"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/0.3.3%2B1.19/emi-0.3.3%2B1.19.jar",
+					"version": "yu6i46bx"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/n7JoPQix/emi-0.3.4%2B1.18.2.jar",
+					"version": "n7JoPQix"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/LAmIsYNr/emi-0.3.4%2B1.19.jar",
+					"version": "LAmIsYNr"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/RgQ7FrsH/emi-0.4.0%2B1.18.2.jar",
+					"version": "RgQ7FrsH"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/IoW80f9m/emi-0.4.0%2B1.19.jar",
+					"version": "IoW80f9m"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/udXqkIbu/emi-0.4.1%2B1.18.2.jar",
+					"version": "udXqkIbu"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/HoOD920y/emi-0.4.1%2B1.19.jar",
+					"version": "HoOD920y"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/olpu7zwd/emi-0.4.2%2B1.18.2.jar",
+					"version": "olpu7zwd"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/cfYr580M/emi-0.4.2%2B1.19.jar",
+					"version": "cfYr580M"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/Nah0xUBl/emi-0.4.3%2B1.18.2.jar",
+					"version": "Nah0xUBl"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/QMDzRsgo/emi-0.4.3%2B1.19.jar",
+					"version": "QMDzRsgo"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/p9jbOqyn/emi-0.5.0%2B1.19.2.jar",
+					"version": "p9jbOqyn"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/tN2XQVEJ/emi-0.5.0%2B1.18.2.jar",
+					"version": "tN2XQVEJ"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/ftT3b1yq/emi-0.5.0%2B1.19.3.jar",
+					"version": "ftT3b1yq"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/WhmdWccV/emi-0.5.1%2B1.19.3.jar",
+					"version": "WhmdWccV"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/bAyIAOBL/emi-0.5.1%2B1.19.2.jar",
+					"version": "bAyIAOBL"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/ZxUKxSNd/emi-0.5.1%2B1.18.2.jar",
+					"version": "ZxUKxSNd"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/UUi66xPS/emi-0.5.2%2B1.19.3.jar",
+					"version": "UUi66xPS"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/e8yMWd29/emi-0.5.2%2B1.19.2.jar",
+					"version": "e8yMWd29"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/X4bOWHC2/emi-0.5.2%2B1.18.2.jar",
+					"version": "X4bOWHC2"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/fI0dINR4/emi-0.5.3%2B1.19.3.jar",
+					"version": "fI0dINR4"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/XmCUxxkW/emi-0.5.3%2B1.19.2.jar",
+					"version": "XmCUxxkW"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/jBccUcin/emi-0.5.3%2B1.18.2.jar",
+					"version": "jBccUcin"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/xmDkD61V/emi-0.6.0%2B1.19.3.jar",
+					"version": "xmDkD61V"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/wMwDwu3J/emi-0.6.0%2B1.18.2.jar",
+					"version": "wMwDwu3J"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/JDYyc3km/emi-0.6.0%2B1.19.2.jar",
+					"version": "JDYyc3km"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/k0JvR8fB/emi-0.6.1%2B1.19.3.jar",
+					"version": "k0JvR8fB"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/YjHd11wZ/emi-0.6.1%2B1.18.2.jar",
+					"version": "YjHd11wZ"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/AVh1lXN3/emi-0.6.1%2B1.19.2.jar",
+					"version": "AVh1lXN3"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/foXHvGih/emi-0.6.2%2B1.19.3.jar",
+					"version": "foXHvGih"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/7z5aEkkm/emi-0.6.2%2B1.19.2.jar",
+					"version": "7z5aEkkm"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/Sr03WyB4/emi-0.6.2%2B1.18.2.jar",
+					"version": "Sr03WyB4"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/FSHwx86x/emi-0.6.3%2B1.19.3.jar",
+					"version": "FSHwx86x"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/cCpcaR2M/emi-0.6.3%2B1.19.2.jar",
+					"version": "cCpcaR2M"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/yQJ7B5nr/emi-0.6.3%2B1.18.2.jar",
+					"version": "yQJ7B5nr"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/yKTNiAdh/emi-0.6.4%2B1.19.3.jar",
+					"version": "yKTNiAdh"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/57RIQAd7/emi-0.6.4%2B1.18.2.jar",
+					"version": "57RIQAd7"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/o33Kccwv/emi-0.6.4%2B1.19.2.jar",
+					"version": "o33Kccwv"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/9GlQFcnd/emi-0.6.5%2B1.19.3.jar",
+					"version": "9GlQFcnd"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/vlDdC1kL/emi-0.6.5%2B1.19.2.jar",
+					"version": "vlDdC1kL"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/lkS8hPC7/emi-0.6.5%2B1.18.2.jar",
+					"version": "lkS8hPC7"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/fS3fm4Dd/emi-0.6.6%2B1.19.3.jar",
+					"version": "fS3fm4Dd"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/6mrLiOWt/emi-0.6.6%2B1.19.2.jar",
+					"version": "6mrLiOWt"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/dlvl62R7/emi-0.6.6%2B1.18.2.jar",
+					"version": "dlvl62R7"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/mpzT6mBc/emi-0.7.0%2B1.19.2.jar",
+					"version": "mpzT6mBc"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/PuAYjGi1/emi-0.7.0%2B1.18.2.jar",
+					"version": "PuAYjGi1"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/s4KYdf4l/emi-0.7.0%2B1.19.3.jar",
+					"version": "s4KYdf4l"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/rKHPdZDJ/emi-0.7.1%2B1.18.2.jar",
+					"version": "rKHPdZDJ"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/ZIS2bNb1/emi-0.7.1%2B1.19.2.jar",
+					"version": "ZIS2bNb1"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/jGpO3aCU/emi-0.7.1%2B1.19.3.jar",
+					"version": "jGpO3aCU"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/wAp7hMUU/emi-0.7.1%2B1.19.4.jar",
+					"version": "wAp7hMUU"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/l9ixr9Dk/emi-0.7.2%2B1.18.2.jar",
+					"version": "l9ixr9Dk"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/WGclw60s/emi-0.7.2%2B1.19.2.jar",
+					"version": "WGclw60s"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/iu1dOnJl/emi-0.7.2%2B1.19.3.jar",
+					"version": "iu1dOnJl"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/vy8MPD02/emi-0.7.2%2B1.19.4.jar",
+					"version": "vy8MPD02"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/RPPRwMBI/emi-0.7.3%2B1.19.2.jar",
+					"version": "RPPRwMBI"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/DDkCVTmY/emi-0.7.3%2B1.18.2.jar",
+					"version": "DDkCVTmY"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/jOFzj21O/emi-0.7.3%2B1.19.4.jar",
+					"version": "jOFzj21O"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/lnPekvZX/emi-0.7.3%2B1.19.3.jar",
+					"version": "lnPekvZX"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/bTjX0Jsd/emi-1.0.0%2B1.19.4%2Bfabric.jar",
+					"version": "bTjX0Jsd"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/gEGU5Xir/emi-1.0.0%2B1.19.4%2Bforge.jar",
+					"version": "gEGU5Xir"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/rjkcKxdA/emi-1.0.0%2B1.19.3%2Bfabric.jar",
+					"version": "rjkcKxdA"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/Xek2SeF3/emi-1.0.0%2B1.19.3%2Bforge.jar",
+					"version": "Xek2SeF3"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/yTEBSR8Y/emi-1.0.0%2B1.19.2%2Bfabric.jar",
+					"version": "yTEBSR8Y"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/gokBtbDo/emi-1.0.0%2B1.19.2%2Bforge.jar",
+					"version": "gokBtbDo"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/t14D5ZJk/emi-1.0.1%2B1.19.4%2Bfabric.jar",
+					"version": "t14D5ZJk"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/TGaxuN3i/emi-1.0.1%2B1.19.4%2Bforge.jar",
+					"version": "TGaxuN3i"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/4pbvOVlV/emi-1.0.1%2B1.19.2%2Bfabric.jar",
+					"version": "4pbvOVlV"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/OTbAVSDE/emi-1.0.1%2B1.19.2%2Bforge.jar",
+					"version": "OTbAVSDE"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/MDskMT93/emi-1.0.1%2B1.19.3%2Bfabric.jar",
+					"version": "MDskMT93"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/SKPXM4q6/emi-1.0.1%2B1.19.3%2Bforge.jar",
+					"version": "SKPXM4q6"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/OwZJfOuX/emi-1.0.2%2B1.19.4%2Bfabric.jar",
+					"version": "OwZJfOuX"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/DBeXPclI/emi-1.0.2%2B1.19.4%2Bforge.jar",
+					"version": "DBeXPclI"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/XjeprwvC/emi-1.0.2%2B1.19.3%2Bfabric.jar",
+					"version": "XjeprwvC"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/cbZWmhGq/emi-1.0.2%2B1.19.3%2Bforge.jar",
+					"version": "cbZWmhGq"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/NUdGBKhA/emi-1.0.2%2B1.19.2%2Bfabric.jar",
+					"version": "NUdGBKhA"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/luelaLAf/emi-1.0.2%2B1.19.2%2Bforge.jar",
+					"version": "luelaLAf"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/XcvcmBXS/emi-1.0.2%2B1.20%2Bfabric.jar",
+					"version": "XcvcmBXS"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/CIUgXtQR/emi-1.0.2%2B1.20%2Bforge.jar",
+					"version": "CIUgXtQR"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/jrHZcUei/emi-1.0.3%2B1.19.4%2Bfabric.jar",
+					"version": "jrHZcUei"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/ppVyb7ns/emi-1.0.3%2B1.19.4%2Bforge.jar",
+					"version": "ppVyb7ns"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/Bx4nG0q7/emi-1.0.3%2B1.19.3%2Bfabric.jar",
+					"version": "Bx4nG0q7"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/yAcaigy0/emi-1.0.3%2B1.19.3%2Bforge.jar",
+					"version": "yAcaigy0"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/VSLv9j3b/emi-1.0.3%2B1.19.2%2Bfabric.jar",
+					"version": "VSLv9j3b"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/gS3G7IQC/emi-1.0.3%2B1.19.2%2Bforge.jar",
+					"version": "gS3G7IQC"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/7DxyV3hH/emi-1.0.3%2B1.20%2Bfabric.jar",
+					"version": "7DxyV3hH"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/BOUEFB16/emi-1.0.3%2B1.20%2Bforge.jar",
+					"version": "BOUEFB16"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/ZYREdR8e/emi-1.0.4%2B1.19.2%2Bfabric.jar",
+					"version": "ZYREdR8e"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/9Sl6aEEg/emi-1.0.4%2B1.19.2%2Bforge.jar",
+					"version": "9Sl6aEEg"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/LzmUaL4c/emi-1.0.4%2B1.19.3%2Bfabric.jar",
+					"version": "LzmUaL4c"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/kP4Ttjg3/emi-1.0.4%2B1.19.3%2Bforge.jar",
+					"version": "kP4Ttjg3"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/ARMJwZQk/emi-1.0.4%2B1.19.4%2Bfabric.jar",
+					"version": "ARMJwZQk"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/lFlnmxZX/emi-1.0.4%2B1.19.4%2Bforge.jar",
+					"version": "lFlnmxZX"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/99422QOb/emi-1.0.4%2B1.20.1%2Bfabric.jar",
+					"version": "99422QOb"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/rUnMUodd/emi-1.0.4%2B1.20.1%2Bforge.jar",
+					"version": "rUnMUodd"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/gXppZuUk/emi-1.0.5%2B1.19.2%2Bfabric.jar",
+					"version": "gXppZuUk"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/SRfzqUwE/emi-1.0.5%2B1.19.2%2Bforge.jar",
+					"version": "SRfzqUwE"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/PA7CNBS1/emi-1.0.5%2B1.19.3%2Bfabric.jar",
+					"version": "PA7CNBS1"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/GXDabLjD/emi-1.0.5%2B1.19.3%2Bforge.jar",
+					"version": "GXDabLjD"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/ZHJCnRrV/emi-1.0.5%2B1.20.1%2Bfabric.jar",
+					"version": "ZHJCnRrV"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/SErzvird/emi-1.0.5%2B1.20.1%2Bforge.jar",
+					"version": "SErzvird"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/fPRExx0b/emi-1.0.5%2B1.19.4%2Bfabric.jar",
+					"version": "fPRExx0b"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/lZUnNROf/emi-1.0.5%2B1.19.4%2Bforge.jar",
+					"version": "lZUnNROf"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/P2jD6pvi/emi-1.0.6%2B1.20.1%2Bfabric.jar",
+					"version": "P2jD6pvi"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/3ZTak90f/emi-1.0.6%2B1.20.1%2Bforge.jar",
+					"version": "3ZTak90f"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/eo1v9M36/emi-1.0.6%2B1.19.3%2Bfabric.jar",
+					"version": "eo1v9M36"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/nxwHXyAp/emi-1.0.6%2B1.19.3%2Bforge.jar",
+					"version": "nxwHXyAp"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/VDBZ3FfS/emi-1.0.6%2B1.19.4%2Bfabric.jar",
+					"version": "VDBZ3FfS"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/vQWnMEgA/emi-1.0.6%2B1.19.4%2Bforge.jar",
+					"version": "vQWnMEgA"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/nROflJT2/emi-1.0.6%2B1.19.2%2Bfabric.jar",
+					"version": "nROflJT2"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/Of9yAFuQ/emi-1.0.6%2B1.19.2%2Bforge.jar",
+					"version": "Of9yAFuQ"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/IXuWMuh3/emi-1.0.6%2B1.19.4%2Bfabric.jar",
+					"version": "IXuWMuh3"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/IOTLvGDt/emi-1.0.6%2B1.19.4%2Bforge.jar",
+					"version": "IOTLvGDt"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/3bWCInBV/emi-1.0.7%2B1.19.4%2Bfabric.jar",
+					"version": "3bWCInBV"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/T6JBXl6g/emi-1.0.7%2B1.19.4%2Bforge.jar",
+					"version": "T6JBXl6g"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/higCO4E4/emi-1.0.7%2B1.19.3%2Bfabric.jar",
+					"version": "higCO4E4"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/YxwzpJCq/emi-1.0.7%2B1.19.3%2Bforge.jar",
+					"version": "YxwzpJCq"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/w5JiWCW7/emi-1.0.7%2B1.20.1%2Bfabric.jar",
+					"version": "w5JiWCW7"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/pG5HGVTu/emi-1.0.7%2B1.20.1%2Bforge.jar",
+					"version": "pG5HGVTu"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/MkemtDIU/emi-1.0.7%2B1.19.2%2Bfabric.jar",
+					"version": "MkemtDIU"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/VyI9Fr1W/emi-1.0.7%2B1.19.2%2Bforge.jar",
+					"version": "VyI9Fr1W"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/uWOLRJF1/emi-1.0.8%2B1.20.1%2Bfabric.jar",
+					"version": "uWOLRJF1"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/dJR0haLe/emi-1.0.8%2B1.20.1%2Bforge.jar",
+					"version": "dJR0haLe"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/nFk08aES/emi-1.0.8%2B1.19.4%2Bfabric.jar",
+					"version": "nFk08aES"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/ozJzwpzN/emi-1.0.8%2B1.19.4%2Bforge.jar",
+					"version": "ozJzwpzN"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/IvAyCXEb/emi-1.0.8%2B1.19.3%2Bfabric.jar",
+					"version": "IvAyCXEb"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/5Zld5CC5/emi-1.0.8%2B1.19.3%2Bforge.jar",
+					"version": "5Zld5CC5"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/t2VUPeY1/emi-1.0.8%2B1.19.2%2Bfabric.jar",
+					"version": "t2VUPeY1"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/e637x6DP/emi-1.0.8%2B1.19.2%2Bforge.jar",
+					"version": "e637x6DP"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/mswL1Cx9/emi-1.0.9%2B1.19.4%2Bfabric.jar",
+					"version": "mswL1Cx9"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/zA0tREKg/emi-1.0.9%2B1.19.4%2Bforge.jar",
+					"version": "zA0tREKg"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/VNH5f0Hi/emi-1.0.9%2B1.19.3%2Bfabric.jar",
+					"version": "VNH5f0Hi"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/cZIemJcR/emi-1.0.9%2B1.19.3%2Bforge.jar",
+					"version": "cZIemJcR"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/qnO2ZoJH/emi-1.0.9%2B1.20.1%2Bfabric.jar",
+					"version": "qnO2ZoJH"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/XbMku1KO/emi-1.0.9%2B1.20.1%2Bforge.jar",
+					"version": "XbMku1KO"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/bAYhhGqf/emi-1.0.9%2B1.19.2%2Bfabric.jar",
+					"version": "bAYhhGqf"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/I3JL1sI9/emi-1.0.9%2B1.19.2%2Bforge.jar",
+					"version": "I3JL1sI9"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/FZ64cRZE/emi-1.0.10%2B1.20.1%2Bfabric.jar",
+					"version": "FZ64cRZE"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/vcybH53j/emi-1.0.10%2B1.20.1%2Bforge.jar",
+					"version": "vcybH53j"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/pYDQKFeb/emi-1.0.10%2B1.19.3%2Bfabric.jar",
+					"version": "pYDQKFeb"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/STIuB6G5/emi-1.0.10%2B1.19.3%2Bforge.jar",
+					"version": "STIuB6G5"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/10TkzyBV/emi-1.0.10%2B1.19.4%2Bfabric.jar",
+					"version": "10TkzyBV"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/LHHhqkL2/emi-1.0.10%2B1.19.4%2Bforge.jar",
+					"version": "LHHhqkL2"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/X5W6NKzV/emi-1.0.10%2B1.19.2%2Bfabric.jar",
+					"version": "X5W6NKzV"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/Qhg4LbNd/emi-1.0.10%2B1.19.2%2Bforge.jar",
+					"version": "Qhg4LbNd"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/xrNa7BYH/emi-1.0.11%2B1.20.1%2Bfabric.jar",
+					"version": "xrNa7BYH"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/zuUJzYUV/emi-1.0.11%2B1.20.1%2Bforge.jar",
+					"version": "zuUJzYUV"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/WFt4jv0T/emi-1.0.11%2B1.19.3%2Bfabric.jar",
+					"version": "WFt4jv0T"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/52yAooXY/emi-1.0.11%2B1.19.3%2Bforge.jar",
+					"version": "52yAooXY"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/De0PHzIx/emi-1.0.11%2B1.19.4%2Bfabric.jar",
+					"version": "De0PHzIx"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/WjW9CHfj/emi-1.0.11%2B1.19.4%2Bforge.jar",
+					"version": "WjW9CHfj"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/CLHwCTp1/emi-1.0.11%2B1.19.2%2Bfabric.jar",
+					"version": "CLHwCTp1"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/JZDbqnxr/emi-1.0.11%2B1.19.2%2Bforge.jar",
+					"version": "JZDbqnxr"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/paDs62jv/emi-1.0.12%2B1.20.1%2Bfabric.jar",
+					"version": "paDs62jv"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/YVPp8jzW/emi-1.0.12%2B1.20.1%2Bforge.jar",
+					"version": "YVPp8jzW"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/Jr0Yf8u2/emi-1.0.12%2B1.19.3%2Bfabric.jar",
+					"version": "Jr0Yf8u2"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/oA5GgOHE/emi-1.0.12%2B1.19.3%2Bforge.jar",
+					"version": "oA5GgOHE"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/7jVTxOCF/emi-1.0.12%2B1.19.4%2Bfabric.jar",
+					"version": "7jVTxOCF"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/5U4TG26Y/emi-1.0.12%2B1.19.4%2Bforge.jar",
+					"version": "5U4TG26Y"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/lOT4MTxG/emi-1.0.12%2B1.19.2%2Bfabric.jar",
+					"version": "lOT4MTxG"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/L1Ew1Lqd/emi-1.0.12%2B1.19.2%2Bforge.jar",
+					"version": "L1Ew1Lqd"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/duZtEIpt/emi-1.0.13%2B1.20.1%2Bfabric.jar",
+					"version": "duZtEIpt"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/feTe8TlD/emi-1.0.13%2B1.19.3%2Bfabric.jar",
+					"version": "feTe8TlD"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/BBCH3lGq/emi-1.0.13%2B1.20.1%2Bforge.jar",
+					"version": "BBCH3lGq"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/v23AX0tn/emi-1.0.13%2B1.19.3%2Bforge.jar",
+					"version": "v23AX0tn"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/mn3yNAK2/emi-1.0.13%2B1.19.4%2Bfabric.jar",
+					"version": "mn3yNAK2"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/G8b88mou/emi-1.0.13%2B1.19.4%2Bforge.jar",
+					"version": "G8b88mou"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/YUxVrA2Y/emi-1.0.13%2B1.19.2%2Bfabric.jar",
+					"version": "YUxVrA2Y"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/BPGh6SPX/emi-1.0.13%2B1.19.2%2Bforge.jar",
+					"version": "BPGh6SPX"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/kQtM7WHz/emi-1.0.14%2B1.19.4%2Bfabric.jar",
+					"version": "kQtM7WHz"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/bkE3fS2l/emi-1.0.14%2B1.19.3%2Bfabric.jar",
+					"version": "bkE3fS2l"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/MdaKz81K/emi-1.0.14%2B1.19.4%2Bforge.jar",
+					"version": "MdaKz81K"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/O7aSkZQW/emi-1.0.14%2B1.19.3%2Bforge.jar",
+					"version": "O7aSkZQW"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/X2ligAnL/emi-1.0.14%2B1.20.1%2Bfabric.jar",
+					"version": "X2ligAnL"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/B3nCpImc/emi-1.0.14%2B1.20.1%2Bforge.jar",
+					"version": "B3nCpImc"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/TEc5cW0M/emi-1.0.14%2B1.19.2%2Bfabric.jar",
+					"version": "TEc5cW0M"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/1i6tvCQX/emi-1.0.14%2B1.19.2%2Bforge.jar",
+					"version": "1i6tvCQX"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/et5qRkAD/emi-1.0.15%2B1.19.3%2Bfabric.jar",
+					"version": "et5qRkAD"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/9cfSTnIK/emi-1.0.15%2B1.19.3%2Bforge.jar",
+					"version": "9cfSTnIK"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/BSIAesA3/emi-1.0.15%2B1.20.1%2Bfabric.jar",
+					"version": "BSIAesA3"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/tKSmt8eh/emi-1.0.15%2B1.20.1%2Bforge.jar",
+					"version": "tKSmt8eh"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/YDTMLiJr/emi-1.0.15%2B1.19.4%2Bfabric.jar",
+					"version": "YDTMLiJr"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/38WXrQH1/emi-1.0.15%2B1.19.4%2Bforge.jar",
+					"version": "38WXrQH1"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/CAr87JlY/emi-1.0.15%2B1.19.2%2Bfabric.jar",
+					"version": "CAr87JlY"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/Qj9KohS3/emi-1.0.15%2B1.19.2%2Bforge.jar",
+					"version": "Qj9KohS3"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/khldbYJv/emi-1.0.16%2B1.20.1%2Bfabric.jar",
+					"version": "khldbYJv"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/6zkJhbnx/emi-1.0.16%2B1.20.1%2Bforge.jar",
+					"version": "6zkJhbnx"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/DBMNFHj3/emi-1.0.16%2B1.19.3%2Bfabric.jar",
+					"version": "DBMNFHj3"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/ZuZUW60m/emi-1.0.16%2B1.19.3%2Bforge.jar",
+					"version": "ZuZUW60m"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/Tg64Z6sA/emi-1.0.16%2B1.19.4%2Bfabric.jar",
+					"version": "Tg64Z6sA"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/r3B6x1If/emi-1.0.16%2B1.19.4%2Bforge.jar",
+					"version": "r3B6x1If"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/F2UmhLRv/emi-1.0.16%2B1.19.2%2Bfabric.jar",
+					"version": "F2UmhLRv"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/lElIQlYu/emi-1.0.16%2B1.19.2%2Bforge.jar",
+					"version": "lElIQlYu"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/Tgsj5Iry/emi-1.0.17%2B1.20.1%2Bfabric.jar",
+					"version": "Tgsj5Iry"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/DCjY1O8T/emi-1.0.17%2B1.20.1%2Bforge.jar",
+					"version": "DCjY1O8T"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/Vkud1bpA/emi-1.0.17%2B1.19.4%2Bfabric.jar",
+					"version": "Vkud1bpA"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/7SYqsFB9/emi-1.0.17%2B1.19.4%2Bforge.jar",
+					"version": "7SYqsFB9"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/WZsj6ARC/emi-1.0.17%2B1.19.3%2Bfabric.jar",
+					"version": "WZsj6ARC"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/1D1XIvL7/emi-1.0.17%2B1.19.3%2Bforge.jar",
+					"version": "1D1XIvL7"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/rB7RxzsG/emi-1.0.17%2B1.19.2%2Bfabric.jar",
+					"version": "rB7RxzsG"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/t0oce5tQ/emi-1.0.17%2B1.19.2%2Bforge.jar",
+					"version": "t0oce5tQ"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/DoKtwgI7/emi-1.0.18%2B1.19.3%2Bfabric.jar",
+					"version": "DoKtwgI7"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/aHJUq2yS/emi-1.0.18%2B1.19.3%2Bforge.jar",
+					"version": "aHJUq2yS"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/sSgnWL3r/emi-1.0.18%2B1.19.4%2Bfabric.jar",
+					"version": "sSgnWL3r"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/4mx41ehI/emi-1.0.18%2B1.20.1%2Bfabric.jar",
+					"version": "4mx41ehI"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/kr0VbAGZ/emi-1.0.18%2B1.19.4%2Bforge.jar",
+					"version": "kr0VbAGZ"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/TEs5oCdP/emi-1.0.18%2B1.20.1%2Bforge.jar",
+					"version": "TEs5oCdP"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/ciMqRO3M/emi-1.0.18%2B1.19.2%2Bfabric.jar",
+					"version": "ciMqRO3M"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/ZiWxCd0J/emi-1.0.18%2B1.19.2%2Bforge.jar",
+					"version": "ZiWxCd0J"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/FRCRUfd3/emi-1.0.19%2B1.19.4%2Bfabric.jar",
+					"version": "FRCRUfd3"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/MvPCuYYA/emi-1.0.19%2B1.19.4%2Bforge.jar",
+					"version": "MvPCuYYA"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/VQROU1Eb/emi-1.0.19%2B1.19.3%2Bfabric.jar",
+					"version": "VQROU1Eb"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/WPGlB0Q4/emi-1.0.19%2B1.19.3%2Bforge.jar",
+					"version": "WPGlB0Q4"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/K2ePWegL/emi-1.0.19%2B1.20.1%2Bfabric.jar",
+					"version": "K2ePWegL"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/r0H3gXol/emi-1.0.19%2B1.20.1%2Bforge.jar",
+					"version": "r0H3gXol"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/kf0WMidK/emi-1.0.19%2B1.19.2%2Bfabric.jar",
+					"version": "kf0WMidK"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/fhrIZU0y/emi-1.0.19%2B1.19.2%2Bforge.jar",
+					"version": "fhrIZU0y"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/wGL8eTVV/emi-1.0.20%2B1.20.1%2Bfabric.jar",
+					"version": "wGL8eTVV"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/E80ymIet/emi-1.0.20%2B1.20.1%2Bforge.jar",
+					"version": "E80ymIet"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/CUoRjscx/emi-1.0.20%2B1.19.2%2Bfabric.jar",
+					"version": "CUoRjscx"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/y6Pchk8E/emi-1.0.20%2B1.19.2%2Bforge.jar",
+					"version": "y6Pchk8E"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/COZQFEqG/emi-1.0.20%2B1.19.4%2Bfabric.jar",
+					"version": "COZQFEqG"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/RP9coq1M/emi-1.0.20%2B1.19.4%2Bforge.jar",
+					"version": "RP9coq1M"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/LqtKhfge/emi-1.0.20%2B1.19.3%2Bfabric.jar",
+					"version": "LqtKhfge"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/idoOUaCk/emi-1.0.20%2B1.19.3%2Bforge.jar",
+					"version": "idoOUaCk"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/mQ5vmtq6/emi-1.0.21%2B1.20.1%2Bfabric.jar",
+					"version": "mQ5vmtq6"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/bTfpCdYw/emi-1.0.21%2B1.20.1%2Bforge.jar",
+					"version": "bTfpCdYw"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/WYq0OMLK/emi-1.0.21%2B1.19.2%2Bfabric.jar",
+					"version": "WYq0OMLK"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/LhbqNQf1/emi-1.0.21%2B1.19.2%2Bforge.jar",
+					"version": "LhbqNQf1"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/UCpCV4NB/emi-1.0.21%2B1.19.3%2Bfabric.jar",
+					"version": "UCpCV4NB"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/EwkWJFiL/emi-1.0.21%2B1.19.3%2Bforge.jar",
+					"version": "EwkWJFiL"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/h8uRTkMm/emi-1.0.21%2B1.19.4%2Bfabric.jar",
+					"version": "h8uRTkMm"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/4P7cDZh6/emi-1.0.21%2B1.19.4%2Bforge.jar",
+					"version": "4P7cDZh6"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/S95SltXc/emi-1.0.21%2B1.20.2%2Bfabric.jar",
+					"version": "S95SltXc"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/uc0bAHRJ/emi-1.0.21%2B1.20.2%2Bforge.jar",
+					"version": "uc0bAHRJ"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/5EF7qT9j/emi-1.0.22%2B1.19.4%2Bfabric.jar",
+					"version": "5EF7qT9j"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/yAKyNAcX/emi-1.0.22%2B1.19.4%2Bforge.jar",
+					"version": "yAKyNAcX"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/m20CKFQP/emi-1.0.22%2B1.20.2%2Bfabric.jar",
+					"version": "m20CKFQP"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/LuKVNzSW/emi-1.0.22%2B1.20.2%2Bforge.jar",
+					"version": "LuKVNzSW"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/C7wDPBBO/emi-1.0.22%2B1.19.2%2Bfabric.jar",
+					"version": "C7wDPBBO"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/VldBzgSe/emi-1.0.22%2B1.19.2%2Bforge.jar",
+					"version": "VldBzgSe"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/KVRbalGS/emi-1.0.22%2B1.19.3%2Bfabric.jar",
+					"version": "KVRbalGS"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/bu1kRUXQ/emi-1.0.22%2B1.19.3%2Bforge.jar",
+					"version": "bu1kRUXQ"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/IOqjd65y/emi-1.0.22%2B1.20.1%2Bfabric.jar",
+					"version": "IOqjd65y"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/WfgfLwLP/emi-1.0.22%2B1.20.1%2Bforge.jar",
+					"version": "WfgfLwLP"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/YnaTUIc5/emi-1.0.23%2B1.20.2%2Bfabric.jar",
+					"version": "YnaTUIc5"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/Oh5hbbaI/emi-1.0.23%2B1.20.2%2Bforge.jar",
+					"version": "Oh5hbbaI"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/kZ9XQdPd/emi-1.0.23%2B1.19.4%2Bfabric.jar",
+					"version": "kZ9XQdPd"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/V3N4J6qf/emi-1.0.23%2B1.19.3%2Bfabric.jar",
+					"version": "V3N4J6qf"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/v5NJCWY9/emi-1.0.23%2B1.19.4%2Bforge.jar",
+					"version": "v5NJCWY9"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/SeSuTQxr/emi-1.0.23%2B1.19.3%2Bforge.jar",
+					"version": "SeSuTQxr"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/kFb4jT7Q/emi-1.0.23%2B1.19.2%2Bfabric.jar",
+					"version": "kFb4jT7Q"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/DqzrW6QN/emi-1.0.23%2B1.19.2%2Bforge.jar",
+					"version": "DqzrW6QN"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/HlfhF7AQ/emi-1.0.23%2B1.20.1%2Bfabric.jar",
+					"version": "HlfhF7AQ"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/ShejnJfY/emi-1.0.23%2B1.20.1%2Bforge.jar",
+					"version": "ShejnJfY"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/LKSxkjKD/emi-1.0.24%2B1.19.4%2Bfabric.jar",
+					"version": "LKSxkjKD"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/mqiPWBzS/emi-1.0.24%2B1.19.4%2Bforge.jar",
+					"version": "mqiPWBzS"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/qpiHDyUC/emi-1.0.24%2B1.19.2%2Bfabric.jar",
+					"version": "qpiHDyUC"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/7XKOZJmG/emi-1.0.24%2B1.19.2%2Bforge.jar",
+					"version": "7XKOZJmG"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/EY0bsln7/emi-1.0.24%2B1.20.1%2Bfabric.jar",
+					"version": "EY0bsln7"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/hIuOBjbs/emi-1.0.24%2B1.20.1%2Bforge.jar",
+					"version": "hIuOBjbs"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/aD5TSGGI/emi-1.0.24%2B1.19.3%2Bfabric.jar",
+					"version": "aD5TSGGI"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/jT5Qro6x/emi-1.0.24%2B1.19.3%2Bforge.jar",
+					"version": "jT5Qro6x"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/hyg4KnuZ/emi-1.0.24%2B1.20.2%2Bfabric.jar",
+					"version": "hyg4KnuZ"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/fTlqZTyF/emi-1.0.24%2B1.20.2%2Bforge.jar",
+					"version": "fTlqZTyF"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/P0MSenTX/emi-1.0.25%2B1.20.2%2Bfabric.jar",
+					"version": "P0MSenTX"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/gUG5ToEM/emi-1.0.25%2B1.20.2%2Bforge.jar",
+					"version": "gUG5ToEM"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/WsJqAKp7/emi-1.0.25%2B1.19.2%2Bfabric.jar",
+					"version": "WsJqAKp7"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/OakBkMPU/emi-1.0.25%2B1.19.2%2Bforge.jar",
+					"version": "OakBkMPU"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/Ph2khrMS/emi-1.0.25%2B1.19.4%2Bfabric.jar",
+					"version": "Ph2khrMS"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/H9w4Ydog/emi-1.0.25%2B1.19.4%2Bforge.jar",
+					"version": "H9w4Ydog"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/mxCcRtpg/emi-1.0.25%2B1.20.1%2Bfabric.jar",
+					"version": "mxCcRtpg"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/Q8CMK9N2/emi-1.0.25%2B1.20.1%2Bforge.jar",
+					"version": "Q8CMK9N2"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/nXM9GfId/emi-1.0.25%2B1.19.3%2Bfabric.jar",
+					"version": "nXM9GfId"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/3E656I3R/emi-1.0.25%2B1.19.3%2Bforge.jar",
+					"version": "3E656I3R"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/4AAJllHB/emi-1.0.25%2B1.20.1%2Bfabric.jar",
+					"version": "4AAJllHB"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/2cTZQ8kN/emi-1.0.25%2B1.20.1%2Bforge.jar",
+					"version": "2cTZQ8kN"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/ORJaB6VX/emi-1.0.25%2B1.19.3%2Bfabric.jar",
+					"version": "ORJaB6VX"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/AoRrWyoO/emi-1.0.25%2B1.19.3%2Bforge.jar",
+					"version": "AoRrWyoO"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/wbgMJeMX/emi-1.0.26%2B1.20.2%2Bfabric.jar",
+					"version": "wbgMJeMX"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/nKHd76xj/emi-1.0.26%2B1.20.2%2Bforge.jar",
+					"version": "nKHd76xj"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/RNRM4uV3/emi-1.0.26%2B1.20.1%2Bfabric.jar",
+					"version": "RNRM4uV3"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/pKhU2h5V/emi-1.0.26%2B1.20.1%2Bforge.jar",
+					"version": "pKhU2h5V"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/yzBWYzer/emi-1.0.26%2B1.19.3%2Bfabric.jar",
+					"version": "yzBWYzer"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/mh0nVpvd/emi-1.0.26%2B1.19.3%2Bforge.jar",
+					"version": "mh0nVpvd"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/oPrVxI1B/emi-1.0.26%2B1.19.4%2Bfabric.jar",
+					"version": "oPrVxI1B"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/1CqxcckV/emi-1.0.26%2B1.19.4%2Bforge.jar",
+					"version": "1CqxcckV"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/WL0Evl7s/emi-1.0.26%2B1.19.2%2Bfabric.jar",
+					"version": "WL0Evl7s"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/frxcvFif/emi-1.0.26%2B1.19.2%2Bforge.jar",
+					"version": "frxcvFif"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/CT8YRMFZ/emi-1.0.27%2B1.20.2%2Bfabric.jar",
+					"version": "CT8YRMFZ"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/o9YEnMle/emi-1.0.27%2B1.20.2%2Bforge.jar",
+					"version": "o9YEnMle"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/XLFgFOY5/emi-1.0.27%2B1.19.4%2Bfabric.jar",
+					"version": "XLFgFOY5"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/QaDJ9Qul/emi-1.0.27%2B1.19.4%2Bforge.jar",
+					"version": "QaDJ9Qul"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/sxxVZDxv/emi-1.0.27%2B1.19.3%2Bfabric.jar",
+					"version": "sxxVZDxv"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/CuU3yQ5k/emi-1.0.27%2B1.19.3%2Bforge.jar",
+					"version": "CuU3yQ5k"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/FPU1PaZ9/emi-1.0.27%2B1.19.2%2Bfabric.jar",
+					"version": "FPU1PaZ9"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/KzxcdPKP/emi-1.0.27%2B1.20.1%2Bfabric.jar",
+					"version": "KzxcdPKP"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/Lz7REsqm/emi-1.0.27%2B1.19.2%2Bforge.jar",
+					"version": "Lz7REsqm"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/t6sA5eIt/emi-1.0.27%2B1.20.1%2Bforge.jar",
+					"version": "t6sA5eIt"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/M7ynHTnb/emi-1.0.28%2B1.20.2%2Bfabric.jar",
+					"version": "M7ynHTnb"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/qlOQ1Ts3/emi-1.0.28%2B1.20.2%2Bforge.jar",
+					"version": "qlOQ1Ts3"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/vgP2BYpD/emi-1.0.28%2B1.19.4%2Bfabric.jar",
+					"version": "vgP2BYpD"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/LPa8R1oT/emi-1.0.28%2B1.19.2%2Bfabric.jar",
+					"version": "LPa8R1oT"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/wJJNXskX/emi-1.0.28%2B1.19.4%2Bforge.jar",
+					"version": "wJJNXskX"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/pWonvbOv/emi-1.0.28%2B1.20.1%2Bfabric.jar",
+					"version": "pWonvbOv"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/rohQlpM0/emi-1.0.28%2B1.19.2%2Bforge.jar",
+					"version": "rohQlpM0"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/ZP7ZK7Lj/emi-1.0.28%2B1.20.1%2Bforge.jar",
+					"version": "ZP7ZK7Lj"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/SFAPEnOo/emi-1.0.28%2B1.19.3%2Bfabric.jar",
+					"version": "SFAPEnOo"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/EiKbj434/emi-1.0.28%2B1.19.3%2Bforge.jar",
+					"version": "EiKbj434"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/79b5GcsK/emi-1.0.28%2B1.20.4%2Bfabric.jar",
+					"version": "79b5GcsK"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/LtMXoSYI/emi-1.0.29%2B1.20.2%2Bfabric.jar",
+					"version": "LtMXoSYI"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/3KtYJ2Av/emi-1.0.29%2B1.20.1%2Bfabric.jar",
+					"version": "3KtYJ2Av"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/hAbEzEta/emi-1.0.29%2B1.19.2%2Bfabric.jar",
+					"version": "hAbEzEta"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/QXfQTnbM/emi-1.0.29%2B1.19.3%2Bfabric.jar",
+					"version": "QXfQTnbM"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/Tk1KEPaS/emi-1.0.29%2B1.19.4%2Bfabric.jar",
+					"version": "Tk1KEPaS"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/56E4LTxT/emi-1.0.29%2B1.20.2%2Bforge.jar",
+					"version": "56E4LTxT"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/pORJ7GVs/emi-1.0.29%2B1.19.2%2Bforge.jar",
+					"version": "pORJ7GVs"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/wjQy6sQv/emi-1.0.29%2B1.19.3%2Bforge.jar",
+					"version": "wjQy6sQv"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/l15ilTAR/emi-1.0.29%2B1.20.1%2Bforge.jar",
+					"version": "l15ilTAR"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/AJ1mDwj6/emi-1.0.29%2B1.19.4%2Bforge.jar",
+					"version": "AJ1mDwj6"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/jXyglcrU/emi-1.0.29%2B1.20.4%2Bfabric.jar",
+					"version": "jXyglcrU"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/1ocza6o7/emi-1.0.29%2B1.20.4%2Bneoforge.jar",
+					"version": "1ocza6o7"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/crPExfgb/emi-1.0.30%2B1.20.4%2Bfabric.jar",
+					"version": "crPExfgb"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/arTpMrYe/emi-1.0.30%2B1.20.4%2Bneoforge.jar",
+					"version": "arTpMrYe"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/eLWsC2tY/emi-1.0.30%2B1.20.2%2Bfabric.jar",
+					"version": "eLWsC2tY"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/940GsBY0/emi-1.0.30%2B1.20.2%2Bforge.jar",
+					"version": "940GsBY0"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/RvMwqywq/emi-1.0.30%2B1.19.2%2Bfabric.jar",
+					"version": "RvMwqywq"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/ynMAB9G5/emi-1.0.30%2B1.19.2%2Bforge.jar",
+					"version": "ynMAB9G5"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/eINRNebJ/emi-1.0.30%2B1.19.4%2Bfabric.jar",
+					"version": "eINRNebJ"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/cEuDNBVH/emi-1.0.30%2B1.19.4%2Bforge.jar",
+					"version": "cEuDNBVH"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/NYZWAPDB/emi-1.0.30%2B1.19.3%2Bfabric.jar",
+					"version": "NYZWAPDB"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/qTM8LiKt/emi-1.0.30%2B1.19.3%2Bforge.jar",
+					"version": "qTM8LiKt"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/X6In4fQO/emi-1.0.30%2B1.20.1%2Bfabric.jar",
+					"version": "X6In4fQO"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/3pZIo9DE/emi-1.0.30%2B1.20.1%2Bforge.jar",
+					"version": "3pZIo9DE"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/36EFbBVx/emi-1.1.0%2B1.20.4%2Bfabric.jar",
+					"version": "36EFbBVx"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/DUkvQ7If/emi-1.1.0%2B1.20.4%2Bneoforge.jar",
+					"version": "DUkvQ7If"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/EaJzQKgN/emi-1.1.0%2B1.19.3%2Bfabric.jar",
+					"version": "EaJzQKgN"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/danfgWqK/emi-1.1.0%2B1.19.3%2Bforge.jar",
+					"version": "danfgWqK"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/XuHFpyev/emi-1.1.0%2B1.19.4%2Bfabric.jar",
+					"version": "XuHFpyev"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/qFRA5N2t/emi-1.1.0%2B1.19.4%2Bforge.jar",
+					"version": "qFRA5N2t"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/43E0iqX3/emi-1.1.0%2B1.19.2%2Bfabric.jar",
+					"version": "43E0iqX3"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/r10gArKs/emi-1.1.0%2B1.20.1%2Bfabric.jar",
+					"version": "r10gArKs"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/EJ5ehoSS/emi-1.1.0%2B1.20.2%2Bfabric.jar",
+					"version": "EJ5ehoSS"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/umtBPJhO/emi-1.1.0%2B1.19.2%2Bforge.jar",
+					"version": "umtBPJhO"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/10yrqfdd/emi-1.1.0%2B1.20.2%2Bforge.jar",
+					"version": "10yrqfdd"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/yJKM4MT2/emi-1.1.0%2B1.20.1%2Bforge.jar",
+					"version": "yJKM4MT2"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/PABSe7Zo/emi-1.1.1%2B1.20.4%2Bfabric.jar",
+					"version": "PABSe7Zo"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/rO3GdrOm/emi-1.1.1%2B1.20.4%2Bneoforge.jar",
+					"version": "rO3GdrOm"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/x9hGUE2v/emi-1.1.1%2B1.20.1%2Bfabric.jar",
+					"version": "x9hGUE2v"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/4Wza0ktp/emi-1.1.1%2B1.20.1%2Bforge.jar",
+					"version": "4Wza0ktp"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/FPjC6tiC/emi-1.1.1%2B1.20.2%2Bfabric.jar",
+					"version": "FPjC6tiC"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/jYOMGYft/emi-1.1.1%2B1.20.2%2Bforge.jar",
+					"version": "jYOMGYft"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/9RjArgzl/emi-1.1.1%2B1.19.4%2Bfabric.jar",
+					"version": "9RjArgzl"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/8bCpIouQ/emi-1.1.1%2B1.19.4%2Bforge.jar",
+					"version": "8bCpIouQ"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/et3Yda8g/emi-1.1.1%2B1.19.3%2Bfabric.jar",
+					"version": "et3Yda8g"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/hWsaLfXF/emi-1.1.1%2B1.19.3%2Bforge.jar",
+					"version": "hWsaLfXF"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/bvRrYwRL/emi-1.1.1%2B1.19.2%2Bfabric.jar",
+					"version": "bvRrYwRL"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/UsF0weKt/emi-1.1.1%2B1.19.2%2Bforge.jar",
+					"version": "UsF0weKt"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/4xHDcgGs/emi-1.1.2%2B1.20.2%2Bfabric.jar",
+					"version": "4xHDcgGs"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/fgfL6Dkb/emi-1.1.2%2B1.20.2%2Bforge.jar",
+					"version": "fgfL6Dkb"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/UJYtxEYG/emi-1.1.2%2B1.20.4%2Bfabric.jar",
+					"version": "UJYtxEYG"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/8a9CXUGo/emi-1.1.2%2B1.20.1%2Bfabric.jar",
+					"version": "8a9CXUGo"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/UcPFZeeY/emi-1.1.2%2B1.20.1%2Bforge.jar",
+					"version": "UcPFZeeY"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/8qHA9xh2/emi-1.1.2%2B1.20.4%2Bneoforge.jar",
+					"version": "8qHA9xh2"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/7eFmRnoY/emi-1.1.2%2B1.19.4%2Bfabric.jar",
+					"version": "7eFmRnoY"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/dzfVGVCn/emi-1.1.2%2B1.19.4%2Bforge.jar",
+					"version": "dzfVGVCn"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/T0I7aPo5/emi-1.1.2%2B1.19.3%2Bfabric.jar",
+					"version": "T0I7aPo5"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/mB9YETyo/emi-1.1.2%2B1.19.3%2Bforge.jar",
+					"version": "mB9YETyo"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/QybkuIsL/emi-1.1.2%2B1.19.2%2Bfabric.jar",
+					"version": "QybkuIsL"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/WBHPrpGy/emi-1.1.2%2B1.19.2%2Bforge.jar",
+					"version": "WBHPrpGy"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/gI8Bw8ak/emi-1.1.3%2B1.20.4%2Bfabric.jar",
+					"version": "gI8Bw8ak"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/e7RuCuSB/emi-1.1.3%2B1.20.4%2Bneoforge.jar",
+					"version": "e7RuCuSB"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/wu6Lm26O/emi-1.1.3%2B1.20.2%2Bfabric.jar",
+					"version": "wu6Lm26O"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/UFMTkoOy/emi-1.1.3%2B1.20.2%2Bforge.jar",
+					"version": "UFMTkoOy"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/UTsNvm4s/emi-1.1.3%2B1.20.1%2Bfabric.jar",
+					"version": "UTsNvm4s"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/oco3Ru0n/emi-1.1.3%2B1.19.2%2Bfabric.jar",
+					"version": "oco3Ru0n"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/3yd5CGg0/emi-1.1.3%2B1.20.1%2Bforge.jar",
+					"version": "3yd5CGg0"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/5grMgrk4/emi-1.1.3%2B1.19.2%2Bforge.jar",
+					"version": "5grMgrk4"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/8wePCvSM/emi-1.1.3%2B1.19.4%2Bfabric.jar",
+					"version": "8wePCvSM"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/61eK5Qjc/emi-1.1.3%2B1.19.4%2Bforge.jar",
+					"version": "61eK5Qjc"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/iOJ2kiCY/emi-1.1.3%2B1.19.3%2Bfabric.jar",
+					"version": "iOJ2kiCY"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/251brana/emi-1.1.3%2B1.19.3%2Bforge.jar",
+					"version": "251brana"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/OGkfV4Do/emi-1.1.4%2B1.20.4%2Bfabric.jar",
+					"version": "OGkfV4Do"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/gCofWXuy/emi-1.1.4%2B1.20.4%2Bneoforge.jar",
+					"version": "gCofWXuy"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/TK3FWW0Q/emi-1.1.4%2B1.20.2%2Bfabric.jar",
+					"version": "TK3FWW0Q"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/Nzw7ssBi/emi-1.1.4%2B1.20.2%2Bforge.jar",
+					"version": "Nzw7ssBi"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/AR8gkjgI/emi-1.1.4%2B1.19.3%2Bfabric.jar",
+					"version": "AR8gkjgI"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/oIJgMuQd/emi-1.1.4%2B1.19.3%2Bforge.jar",
+					"version": "oIJgMuQd"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/fxJ8ridT/emi-1.1.4%2B1.19.4%2Bfabric.jar",
+					"version": "fxJ8ridT"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/Vnq1EITA/emi-1.1.4%2B1.19.4%2Bforge.jar",
+					"version": "Vnq1EITA"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/tzF0licw/emi-1.1.4%2B1.20.1%2Bfabric.jar",
+					"version": "tzF0licw"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/UpPKrvOx/emi-1.1.4%2B1.19.2%2Bfabric.jar",
+					"version": "UpPKrvOx"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/2DnY7e8V/emi-1.1.4%2B1.20.1%2Bforge.jar",
+					"version": "2DnY7e8V"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/pikNrU5i/emi-1.1.4%2B1.19.2%2Bforge.jar",
+					"version": "pikNrU5i"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/BzLRE7QI/emi-1.1.4%2B1.20.4%2Bfabric.jar",
+					"version": "BzLRE7QI"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/5PYnL6bp/emi-1.1.4%2B1.20.4%2Bneoforge.jar",
+					"version": "5PYnL6bp"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/kjfimrqy/emi-1.1.4%2B1.20.2%2Bfabric.jar",
+					"version": "kjfimrqy"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/x3JXUQXu/emi-1.1.4%2B1.20.2%2Bforge.jar",
+					"version": "x3JXUQXu"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/dR5R70l0/emi-1.1.4%2B1.19.2%2Bfabric.jar",
+					"version": "dR5R70l0"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/nkTNGPfi/emi-1.1.4%2B1.19.3%2Bfabric.jar",
+					"version": "nkTNGPfi"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/uMsufpiT/emi-1.1.4%2B1.19.2%2Bforge.jar",
+					"version": "uMsufpiT"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/h1PlnLK8/emi-1.1.4%2B1.19.3%2Bforge.jar",
+					"version": "h1PlnLK8"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/dx9JAxBH/emi-1.1.4%2B1.19.4%2Bfabric.jar",
+					"version": "dx9JAxBH"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/SJ0JAHhd/emi-1.1.4%2B1.19.4%2Bforge.jar",
+					"version": "SJ0JAHhd"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/ab3hfPOi/emi-1.1.4%2B1.20.1%2Bfabric.jar",
+					"version": "ab3hfPOi"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/fRiHVvU7/versions/lDQkgadT/emi-1.1.4%2B1.20.1%2Bforge.jar",
+					"version": "lDQkgadT"
+				}
+			]
+		}
+	},
+	"meta": {
+		"authors": [
+			"Emi"
+		],
+		"categories": [
+			"tools"
+		],
+		"community": "https://discord.gg/T2PuD9RTWV",
+		"description": "A featureful and accessible item and recipe viewer",
+		"documentation": "https://github.com/emilyploszaj/emi/wiki/",
+		"icon": "https://cdn.modrinth.com/data/fRiHVvU7/icon.png",
+		"issues": "https://github.com/emilyploszaj/emi/issues/",
+		"keywords": [
+			"items"
+		],
+		"license": "MIT",
+		"name": "EMI",
+		"package_maintainers": [
+			"mcvm"
+		],
+		"source": "https://github.com/emilyploszaj/emi/"
+	},
+	"properties": {
+		"modrinth_id": "fRiHVvU7",
+		"supported_modloaders": [
+			"fabriclike",
+			"forgelike"
+		],
+		"supported_versions": [
+			"1.18.2",
+			"1.19",
+			"1.19.1",
+			"1.19.2",
+			"1.19.3",
+			"1.19.4",
+			"1.20",
+			"1.20.1",
+			"1.20.2",
+			"1.20.4"
+		]
+	}
+}

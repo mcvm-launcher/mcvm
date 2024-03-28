@@ -1,0 +1,284 @@
+{
+	"addons": {
+		"addon": {
+			"kind": "mod",
+			"versions": [
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/1IjD5062/versions/1.0.0%2B1.17/continuity-1.0.0%2B1.17.jar",
+					"version": "Xn8QzMB9"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/1IjD5062/versions/1.0.1%2B1.17/continuity-1.0.1%2B1.17.jar",
+					"version": "6JEV45oM"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/1IjD5062/versions/1.0.2%2B1.17/continuity-1.0.2%2B1.17.jar",
+					"version": "i0ccQghD"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/1IjD5062/versions/1.0.3%2B1.17/continuity-1.0.3%2B1.17.jar",
+					"version": "27YRAXEt"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1"
+					],
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/1IjD5062/versions/1.0.3%2B1.18/continuity-1.0.3%2B1.18.jar",
+					"version": "SffGs8Ro"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/1IjD5062/versions/1.1.0%2B1.17/continuity-1.1.0%2B1.17.jar",
+					"version": "yiOF0F2t"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/1IjD5062/versions/1.1.0%2B1.18/continuity-1.1.0%2B1.18.jar",
+					"version": "sD3iTKbB"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/1IjD5062/versions/1.1.0%2B1.18.2/continuity-1.1.0%2B1.18.2.jar",
+					"version": "gOxkykhO"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/1IjD5062/versions/2.0.0%2B1.18.2/continuity-2.0.0%2B1.18.2.jar",
+					"version": "Bl7pOAQf"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/1IjD5062/versions/2.0.0%2B1.19/continuity-2.0.0%2B1.19.jar",
+					"version": "zcqSiVI3"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1IjD5062/versions/2.0.1%2B1.18.2/continuity-2.0.1%2B1.18.2.jar",
+					"version": "jjpzIZoY"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1IjD5062/versions/2.0.1%2B1.19/continuity-2.0.1%2B1.19.jar",
+					"version": "xTtULC68"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1IjD5062/versions/YEKdScFW/continuity-2.0.2%2B1.18.2.jar",
+					"version": "YEKdScFW"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1IjD5062/versions/Ql3Ho9eR/continuity-2.0.2%2B1.19.jar",
+					"version": "Ql3Ho9eR"
+				},
+				{
+					"minecraft_versions": [
+						"1.19.3",
+						"1.19.4"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1IjD5062/versions/4h5IIa7B/continuity-3.0.0-beta.2%2B1.19.3.jar",
+					"version": "4h5IIa7B"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1IjD5062/versions/ImUFj5Gl/continuity-3.0.0-beta.2%2B1.20.jar",
+					"version": "ImUFj5Gl"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1IjD5062/versions/G2qoxVmV/continuity-3.0.0-beta.3%2B1.19.3.jar",
+					"version": "G2qoxVmV"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1IjD5062/versions/OOpbpU2z/continuity-3.0.0-beta.3%2B1.19.4.jar",
+					"version": "OOpbpU2z"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1IjD5062/versions/xy2co4Rh/continuity-3.0.0-beta.3%2B1.20.1.jar",
+					"version": "xy2co4Rh"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1IjD5062/versions/JYaO3lPe/continuity-3.0.0-beta.4%2B1.19.4.jar",
+					"version": "JYaO3lPe"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1IjD5062/versions/Z9FJWLMt/continuity-3.0.0-beta.4%2B1.20.1.jar",
+					"version": "Z9FJWLMt"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.2",
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1IjD5062/versions/JXhQlDZl/continuity-3.0.0-beta.4%2B1.20.2.jar",
+					"version": "JXhQlDZl"
+				}
+			]
+		}
+	},
+	"meta": {
+		"authors": [
+			"PepperCode1"
+		],
+		"categories": [
+			"graphics",
+			"technical"
+		],
+		"community": "https://discord.gg/7rnTYXu",
+		"description": "A Fabric mod that allows for efficient connected textures",
+		"icon": "https://cdn.modrinth.com/data/1IjD5062/icon.png",
+		"issues": "https://github.com/PepperCode1/Continuity/issues",
+		"keywords": [
+			"connected",
+			"textures"
+		],
+		"license": "LGPL-3.0-only",
+		"name": "Continuity",
+		"package_maintainers": [
+			"mcvm"
+		],
+		"source": "https://github.com/PepperCode1/Continuity",
+		"support_link": "https://www.buymeacoffee.com/pepperbell"
+	},
+	"properties": {
+		"modrinth_id": "1IjD5062",
+		"open_source": true,
+		"supported_modloaders": [
+			"fabriclike"
+		],
+		"supported_versions": [
+			"1.17.1",
+			"1.18",
+			"1.18.1",
+			"1.18.2",
+			"1.19",
+			"1.19.1",
+			"1.19.2",
+			"1.19.3",
+			"1.19.4",
+			"1.20",
+			"1.20.1",
+			"1.20.2",
+			"1.20.3",
+			"1.20.4"
+		]
+	},
+	"relations": {
+		"dependencies": [
+			"fabric-rendering-api"
+		]
+	}
+}

@@ -1,66 +1,66 @@
 {
-  "addons": {
-    "datapack": {
-      "kind": "datapack",
-      "versions": [
-        {
-          "minecraft_versions": "1.19",
-          "url": "https://github.com/Smithed-MC/Libraries/blob/7e44409e7ed22871489a978aeec0ad0cd25d6eee/1.19/custom_block/smithed_custom_block_dp.zip?raw=true",
-          "version": "smithed-version-0-1-0"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "url": "https://github.com/Smithed-MC/Libraries/blob/d0f14054318cbbab0eb9d3b9d11ece9f529a6cbe/1.20/custom_block/smithed_custom_block_dp.zip?raw=true",
-          "version": "smithed-version-0-2-0"
-        }
-      ]
-    },
-    "resourcepack": {
-      "kind": "resource_pack",
-      "versions": [
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "url": "",
-          "version": "smithed-version-0-2-0"
-        }
-      ]
-    }
-  },
-  "meta": {
-    "authors": [
-      "Smithed"
-    ],
-    "categories": [
-      "library",
-      "technical"
-    ],
-    "description": "Custom block API for datapacks",
-    "icon": "https://github.com/Smithed-MC/Libraries/blob/main/smithed_libraries/packs/custom-block/pack.png?raw=true",
-    "keywords": [
-      "block"
-    ],
-    "name": "Custom Block",
-    "package_maintainers": [
-      "mcvm"
-    ],
-    "website": "https://github.com/Smithed-MC/Libraries/blob/main/smithed_libraries/packs/custom-block/README.md?raw=true"
-  },
-  "properties": {
-    "open_source": true,
-    "smithed_id": "custom-block",
-    "supported_versions": [
-      "1.19",
-      "1.20",
-      "1.20.1"
-    ],
-    "tags": [
-      "datapack"
-    ]
-  }
+	"addons": {
+		"datapack": {
+			"kind": "datapack",
+			"versions": [
+				{
+					"minecraft_versions": "1.19",
+					"url": "https://github.com/Smithed-MC/Libraries/blob/7e44409e7ed22871489a978aeec0ad0cd25d6eee/1.19/custom_block/smithed_custom_block_dp.zip?raw=true",
+					"version": "smithed-version-0-1-0"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"url": "https://github.com/Smithed-MC/Libraries/blob/d0f14054318cbbab0eb9d3b9d11ece9f529a6cbe/1.20/custom_block/smithed_custom_block_dp.zip?raw=true",
+					"version": "smithed-version-0-2-0"
+				}
+			]
+		},
+		"resourcepack": {
+			"kind": "resource_pack",
+			"versions": [
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"url": "",
+					"version": "smithed-version-0-2-0"
+				}
+			]
+		}
+	},
+	"meta": {
+		"authors": [
+			"Smithed"
+		],
+		"categories": [
+			"library",
+			"technical"
+		],
+		"description": "Custom block API for datapacks",
+		"icon": "https://github.com/Smithed-MC/Libraries/blob/main/smithed_libraries/packs/custom-block/pack.png?raw=true",
+		"keywords": [
+			"block"
+		],
+		"name": "Custom Block",
+		"package_maintainers": [
+			"mcvm"
+		],
+		"website": "https://github.com/Smithed-MC/Libraries/blob/main/smithed_libraries/packs/custom-block/README.md?raw=true"
+	},
+	"properties": {
+		"open_source": true,
+		"smithed_id": "custom-block",
+		"supported_versions": [
+			"1.19",
+			"1.20",
+			"1.20.1"
+		],
+		"tags": [
+			"datapack"
+		]
+	}
 }

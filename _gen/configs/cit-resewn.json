@@ -1,0 +1,21 @@
+{
+	"relation_substitutions": {},
+	"merge": {
+		"meta": {
+			"package_maintainers": [
+				"mcvm"
+			],
+			"keywords": [
+				"graphics"
+			],
+			"categories": [
+				"library"
+			]
+		},
+		"properties": {
+			"supported_modloaders": [
+				"fabriclike"
+			]
+		}
+	}
+}

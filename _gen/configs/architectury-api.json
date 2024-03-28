@@ -1,6 +1,6 @@
 {
 	"relation_substitutions": {
-		"P7dR8mSH": "fabric-api"
+		"P7dR8mSH": "fabriclike-api"
 	},
 	"merge": {
 		"meta": {

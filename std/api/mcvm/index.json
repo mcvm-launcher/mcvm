@@ -4,24 +4,76 @@
 		"description": "Official standard packages for MCVM"
 	},
 	"packages": {
+		"animatica": {
+			"path": "pkg/animatica.json",
+			"content_type": "declarative"
+		},
+		"architectury-api": {
+			"path": "pkg/architectury-api.json",
+			"content_type": "declarative"
+		},
+		"balm": {
+			"path": "pkg/balm.json",
+			"content_type": "declarative"
+		},
+		"bendy-lib": {
+			"path": "pkg/bendy-lib.json",
+			"content_type": "declarative"
+		},
+		"bookshelf": {
+			"path": "pkg/bookshelf.json",
+			"content_type": "declarative"
+		},
+		"cardinal-components-api": {
+			"path": "pkg/cardinal-components-api.json",
+			"content_type": "declarative"
+		},
+		"cit-resewn": {
+			"path": "pkg/cit-resewn.json",
+			"content_type": "declarative"
+		},
+		"cloth-config": {
+			"path": "pkg/cloth-config.json",
+			"content_type": "declarative"
+		},
+		"collective": {
+			"path": "pkg/collective.json",
+			"content_type": "declarative"
+		},
+		"continuity": {
+			"path": "pkg/continuity.json",
+			"content_type": "declarative"
+		},
+		"create-fabric": {
+			"path": "pkg/create-fabric.json",
+			"content_type": "declarative"
+		},
+		"emi": {
+			"path": "pkg/emi.json",
+			"content_type": "declarative"
+		},
+		"entity-model-features": {
+			"path": "pkg/entity-model-features.json",
+			"content_type": "declarative"
+		},
+		"entity-texture-features": {
+			"path": "pkg/entity-texture-features.json",
+			"content_type": "declarative"
+		},
 		"fabric-api": {
 			"path": "pkg/fabric-api.json",
-			"content_type": "declarative"
-		},
-		"qfapi-qsl": {
-			"path": "pkg/qfapi-qsl.json",
-			"content_type": "declarative"
-		},
-		"quilt-kotlin-libraries": {
-			"path": "pkg/quilt-kotlin-libraries.json",
 			"content_type": "declarative"
 		},
 		"fabric-language-kotlin": {
 			"path": "pkg/fabric-language-kotlin.json",
 			"content_type": "declarative"
 		},
-		"sodium": {
-			"path": "pkg/sodium.json",
+		"farmers-delight-fabric": {
+			"path": "pkg/farmers-delight-fabric.json",
+			"content_type": "declarative"
+		},
+		"geckolib": {
+			"path": "pkg/geckolib.json",
 			"content_type": "declarative"
 		},
 		"indium": {
@@ -32,32 +84,108 @@
 			"path": "pkg/iris.json",
 			"content_type": "declarative"
 		},
-		"smithed-actionbar": {
-			"path": "pkg/smithed-actionbar.json",
+		"jei": {
+			"path": "pkg/jei.json",
 			"content_type": "declarative"
 		},
-		"smithed-custom-block": {
-			"path": "pkg/smithed-custom-block.json",
+		"know-my-name": {
+			"path": "pkg/know-my-name.json",
 			"content_type": "declarative"
 		},
-		"smithed-crafter": {
-			"path": "pkg/smithed-crafter.json",
+		"kotlin-for-forge": {
+			"path": "pkg/kotlin-for-forge.json",
+			"content_type": "declarative"
+		},
+		"lilac": {
+			"path": "pkg/lilac.json",
 			"content_type": "declarative"
 		},
 		"lithium": {
 			"path": "pkg/lithium.json",
 			"content_type": "declarative"
 		},
+		"midnightlib": {
+			"path": "pkg/midnightlib.json",
+			"content_type": "declarative"
+		},
 		"mod-menu": {
 			"path": "pkg/mod-menu.json",
 			"content_type": "declarative"
 		},
-		"cloth-config": {
-			"path": "pkg/cloth-config.json",
+		"moonlight-lib": {
+			"path": "pkg/moonlight-lib.json",
 			"content_type": "declarative"
 		},
-		"architectury-api": {
-			"path": "pkg/architectury-api.json",
+		"optigui": {
+			"path": "pkg/optigui.json",
+			"content_type": "declarative"
+		},
+		"owo-lib": {
+			"path": "pkg/owo-lib.json",
+			"content_type": "declarative"
+		},
+		"patchouli": {
+			"path": "pkg/patchouli.json",
+			"content_type": "declarative"
+		},
+		"pehkui": {
+			"path": "pkg/pehkui.json",
+			"content_type": "declarative"
+		},
+		"playeranimator": {
+			"path": "pkg/playeranimator.json",
+			"content_type": "declarative"
+		},
+		"polymorph": {
+			"path": "pkg/polymorph.json",
+			"content_type": "declarative"
+		},
+		"qfapi-qsl": {
+			"path": "pkg/qfapi-qsl.json",
+			"content_type": "declarative"
+		},
+		"quilt-kotlin-libraries": {
+			"path": "pkg/quilt-kotlin-libraries.json",
+			"content_type": "declarative"
+		},
+		"rei": {
+			"path": "pkg/rei.json",
+			"content_type": "declarative"
+		},
+		"resourceful-lib": {
+			"path": "pkg/resourceful-lib.json",
+			"content_type": "declarative"
+		},
+		"smithed-actionbar": {
+			"path": "pkg/smithed-actionbar.json",
+			"content_type": "declarative"
+		},
+		"smithed-crafter": {
+			"path": "pkg/smithed-crafter.json",
+			"content_type": "declarative"
+		},
+		"smithed-custom-block": {
+			"path": "pkg/smithed-custom-block.json",
+			"content_type": "declarative"
+		},
+		"sodium": {
+			"path": "pkg/sodium.json",
+			"content_type": "declarative"
+		},
+		"spark": {
+			"path": "pkg/spark.json",
+			"content_type": "declarative"
+		},
+		"trinkets": {
+			"path": "pkg/trinkets.json",
+			"content_type": "declarative"
+		},
+		"yacl": {
+			"path": "pkg/yacl.json",
+			"content_type": "declarative"
+		},
+		"yungs-api": {
+			"path": "pkg/yungs-api.json",
 			"content_type": "declarative"
 		}
 	}

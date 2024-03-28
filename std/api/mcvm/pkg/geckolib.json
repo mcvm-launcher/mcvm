@@ -1,0 +1,2417 @@
+{
+	"addons": {
+		"addon": {
+			"kind": "mod",
+			"versions": [
+				{
+					"minecraft_versions": "1.12.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/3.0.30/geckolib-forge-1.12.2-3.0.30.jar",
+					"version": "qsDdTKC4"
+				},
+				{
+					"minecraft_versions": "1.15.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/3.0.46/geckolib-forge-1.15.2-3.0.46.jar",
+					"version": "WlJpUDzh"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/3.0.15/geckolib-1.17.1-forge-3.0.15.jar",
+					"version": "qL484XIi"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/3.0.32/geckolib-fabric-1.17-3.0.32.jar",
+					"version": "uGcjKjMT"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/3.0.87/geckolib-forge-1.16.5-3.0.87.jar",
+					"version": "qTaRycbQ"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/3.0.56/geckolib-fabric-1.18-3.0.56.jar",
+					"version": "RQJwyPuD"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/3.0.34/geckolib-forge-1.18-3.0.34.jar",
+					"version": "136B88lJ"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/3.0.20/geckolib-quilt-1.18-3.0.20.jar",
+					"version": "bpKnMhEa"
+				},
+				{
+					"minecraft_versions": [
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/3.0.16/geckolib-forge-1.19-3.1.16.jar",
+					"version": "UKhnnujs"
+				},
+				{
+					"minecraft_versions": [
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/3.1.14/geckolib-fabric-1.19-3.1.14.jar",
+					"version": "FQM6xvXj"
+				},
+				{
+					"minecraft_versions": [
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/3.1.14/geckolib-quilt-1.19-3.1.14.jar",
+					"version": "3wOAeMp4"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/3.0.87/geckolib-fabric-1.16.5-3.0.87.jar",
+					"version": "FULWdgD2"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/3.1.15/geckolib-quilt-1.19-3.1.15.jar",
+					"version": "PCuF7vta"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/3.0.21/geckolib-quilt-1.18-3.0.21.jar",
+					"version": "EMhe8KDf"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/3.0.56/geckolib-fabric-1.18-3.0.56.jar",
+					"version": "VoJWQ0A5"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/3.1.15/geckolib-fabric-1.19-3.1.15.jar",
+					"version": "LjY1py3L"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/NieUKm9V/geckolib-forge-1.16.5-3.0.88.jar",
+					"version": "NieUKm9V"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/FBez9mw0/geckolib-fabric-1.16.5-3.0.88.jar",
+					"version": "FBez9mw0"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/bfDs5CGO/geckolib-fabric-1.18-3.0.58.jar",
+					"version": "bfDs5CGO"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/e46ntzMz/geckolib-forge-1.18-3.0.35.jar",
+					"version": "e46ntzMz"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/Lufe4XGu/geckolib-quilt-1.18-3.0.22.jar",
+					"version": "Lufe4XGu"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/pZg4ShGq/geckolib-quilt-1.19-3.1.16.jar",
+					"version": "pZg4ShGq"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/rnpkwA6U/geckolib-fabric-1.19-3.1.16.jar",
+					"version": "rnpkwA6U"
+				},
+				{
+					"minecraft_versions": [
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/23iMZ077/geckolib-forge-1.19-3.1.17.jar",
+					"version": "23iMZ077"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/cPl587dh/geckolib-fabric-1.16.5-3.0.89.jar",
+					"version": "cPl587dh"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/aybWUDvp/geckolib-forge-1.16.5-3.0.89.jar",
+					"version": "aybWUDvp"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/MdTCpBJs/geckolib-fabric-1.18-3.0.59.jar",
+					"version": "MdTCpBJs"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/kd7nev5i/geckolib-forge-1.18-3.0.36.jar",
+					"version": "kd7nev5i"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/UyGeKl49/geckolib-quilt-1.18-3.0.23.jar",
+					"version": "UyGeKl49"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/HfqFVm6P/geckolib-quilt-1.19-3.1.17.jar",
+					"version": "HfqFVm6P"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/QahGC1tv/geckolib-fabric-1.19-3.1.17.jar",
+					"version": "QahGC1tv"
+				},
+				{
+					"minecraft_versions": [
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/m9AnbIdD/geckolib-forge-1.19-3.1.18.jar",
+					"version": "m9AnbIdD"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/wAM2IwJW/geckolib-fabric-1.16.5-3.0.90.jar",
+					"version": "wAM2IwJW"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/z7ttczzS/geckolib-forge-1.16.5-3.0.90.jar",
+					"version": "z7ttczzS"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/Xy0nEDNy/geckolib-fabric-1.18-3.0.60.jar",
+					"version": "Xy0nEDNy"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/eEj1SnTD/geckolib-forge-1.18-3.0.37.jar",
+					"version": "eEj1SnTD"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/iRoNiwjq/geckolib-quilt-1.18-3.0.24.jar",
+					"version": "iRoNiwjq"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/ZFwnAEum/geckolib-fabric-1.19-3.1.18.jar",
+					"version": "ZFwnAEum"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/ssDvxZOr/geckolib-quilt-1.19-3.1.18.jar",
+					"version": "ssDvxZOr"
+				},
+				{
+					"minecraft_versions": [
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/a2zhIVW2/geckolib-forge-1.19-3.1.19.jar",
+					"version": "a2zhIVW2"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/GMevGe2P/geckolib-fabric-1.16.5-3.0.91.jar",
+					"version": "GMevGe2P"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/aavqJAu0/geckolib-forge-1.16.5-3.0.91.jar",
+					"version": "aavqJAu0"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/oTCPZRK2/geckolib-fabric-1.18-3.0.61.jar",
+					"version": "oTCPZRK2"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/TuPk6QZp/geckolib-quilt-1.18-3.0.25.jar",
+					"version": "TuPk6QZp"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/2EGIW2Bk/geckolib-forge-1.18-3.0.38.jar",
+					"version": "2EGIW2Bk"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/Ac58BAut/geckolib-fabric-1.19-3.1.19.jar",
+					"version": "Ac58BAut"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/bQR9FtHO/geckolib-quilt-1.19-3.1.19.jar",
+					"version": "bQR9FtHO"
+				},
+				{
+					"minecraft_versions": [
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/2gh3yA6d/geckolib-forge-1.19-3.1.20.jar",
+					"version": "2gh3yA6d"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/sZX0Ksio/geckolib-fabric-1.16.5-3.0.92.jar",
+					"version": "sZX0Ksio"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/s3lOSctd/geckolib-forge-1.16.5-3.0.92.jar",
+					"version": "s3lOSctd"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/pOOaURnj/geckolib-fabric-1.18-3.0.62.jar",
+					"version": "pOOaURnj"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/t3kOAVy9/geckolib-forge-1.18-3.0.39.jar",
+					"version": "t3kOAVy9"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/txnNTpPP/geckolib-quilt-1.18-3.0.26.jar",
+					"version": "txnNTpPP"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/BuycnCr6/geckolib-fabric-1.19-3.1.20.jar",
+					"version": "BuycnCr6"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/KeljFi5f/geckolib-quilt-1.19-3.1.20.jar",
+					"version": "KeljFi5f"
+				},
+				{
+					"minecraft_versions": [
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/xArw9Rpd/geckolib-forge-1.19-3.1.21.jar",
+					"version": "xArw9Rpd"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/N3QQyyNO/geckolib-fabric-1.16.5-3.0.93.jar",
+					"version": "N3QQyyNO"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/R5tKL3H0/geckolib-forge-1.16.5-3.0.93.jar",
+					"version": "R5tKL3H0"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/lFeJ1Y6Z/geckolib-fabric-1.18-3.0.63.jar",
+					"version": "lFeJ1Y6Z"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/985FODzz/geckolib-forge-1.18-3.0.40.jar",
+					"version": "985FODzz"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/Mb3tsipy/geckolib-quilt-1.18-3.0.27.jar",
+					"version": "Mb3tsipy"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/CdZDxK19/geckolib-fabric-1.19-3.1.21.jar",
+					"version": "CdZDxK19"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/VwYAuIe2/geckolib-quilt-1.19-3.1.21.jar",
+					"version": "VwYAuIe2"
+				},
+				{
+					"minecraft_versions": [
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/dZ80RpWZ/geckolib-forge-1.19-3.1.22.jar",
+					"version": "dZ80RpWZ"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/IWsrMj74/geckolib-forge-1.16.5-3.0.94.jar",
+					"version": "IWsrMj74"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/fU0VPYUQ/geckolib-fabric-1.16.5-3.0.94.jar",
+					"version": "fU0VPYUQ"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/ZARTsAr0/geckolib-fabric-1.18-3.0.64.jar",
+					"version": "ZARTsAr0"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/nWu6K0d8/geckolib-quilt-1.18-3.0.28.jar",
+					"version": "nWu6K0d8"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/J7M9EKvT/geckolib-forge-1.18-3.0.41.jar",
+					"version": "J7M9EKvT"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/ZnAjp6NS/geckolib-fabric-1.19-3.1.22.jar",
+					"version": "ZnAjp6NS"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/toUneKTa/geckolib-quilt-1.19-3.1.22.jar",
+					"version": "toUneKTa"
+				},
+				{
+					"minecraft_versions": [
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/YcJlytqm/geckolib-forge-1.19-3.1.23.jar",
+					"version": "YcJlytqm"
+				},
+				{
+					"minecraft_versions": "1.12.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/PePYVhnE/geckolib-forge-1.12.2-3.0.31.jar",
+					"version": "PePYVhnE"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/GTDBRhSM/geckolib-forge-1.16.5-3.0.96.jar",
+					"version": "GTDBRhSM"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/x78E4Tlx/geckolib-fabric-1.16.5-3.0.97.jar",
+					"version": "x78E4Tlx"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/GvdbRgRZ/geckolib-fabric-1.18-3.0.67.jar",
+					"version": "GvdbRgRZ"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/TBflAYyp/geckolib-quilt-1.18-3.0.31.jar",
+					"version": "TBflAYyp"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/Wtqi370i/geckolib-fabric-1.19-3.1.25.jar",
+					"version": "Wtqi370i"
+				},
+				{
+					"minecraft_versions": [
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/Yr6avANW/geckolib-forge-1.19-3.1.27.jar",
+					"version": "Yr6avANW"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/ktczq9M5/geckolib-quilt-1.19-3.1.25.jar",
+					"version": "ktczq9M5"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/Wl4D0Y5t/geckolib-forge-1.18-3.0.45.jar",
+					"version": "Wl4D0Y5t"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/PrXWMSTC/geckolib-fabric-1.16.5-3.0.98.jar",
+					"version": "PrXWMSTC"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/4EE9OtNu/geckolib-forge-1.16.5-3.0.97.jar",
+					"version": "4EE9OtNu"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/8YJ2SCwm/geckolib-fabric-1.18-3.0.68.jar",
+					"version": "8YJ2SCwm"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/r2mQozkq/geckolib-quilt-1.18-3.0.32.jar",
+					"version": "r2mQozkq"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/QSWXbrQt/geckolib-forge-1.18-3.0.46.jar",
+					"version": "QSWXbrQt"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/AnSkgs2g/geckolib-fabric-1.19-3.1.26.jar",
+					"version": "AnSkgs2g"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/K7FKS2QU/geckolib-quilt-1.19-3.1.26.jar",
+					"version": "K7FKS2QU"
+				},
+				{
+					"minecraft_versions": [
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/yicTO4gk/geckolib-forge-1.19-3.1.28.jar",
+					"version": "yicTO4gk"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/af2O77o6/geckolib-forge-1.16.5-3.0.98.jar",
+					"version": "af2O77o6"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/ScTMGjW0/geckolib-fabric-1.16.5-3.0.99.jar",
+					"version": "ScTMGjW0"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/znZYx5xF/geckolib-fabric-1.18-3.0.69.jar",
+					"version": "znZYx5xF"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/6CPHVMxL/geckolib-quilt-1.18-3.0.33.jar",
+					"version": "6CPHVMxL"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/YRXoztI9/geckolib-quilt-1.19-3.1.27.jar",
+					"version": "YRXoztI9"
+				},
+				{
+					"minecraft_versions": [
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/ZjycXvlH/geckolib-forge-1.19-3.1.29.jar",
+					"version": "ZjycXvlH"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/D7zKpl75/geckolib-forge-1.18-3.0.47.jar",
+					"version": "D7zKpl75"
+				},
+				{
+					"minecraft_versions": "22w42a",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/Lk6yJhJI/geckolib-fabric-22w42a-3.1.28.jar",
+					"version": "Lk6yJhJI"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/9NhnjTrH/geckolib-fabric-1.19-3.1.27.jar",
+					"version": "9NhnjTrH"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/6uVE2Ntc/geckolib-fabric-1.16.5-3.0.100.jar",
+					"version": "6uVE2Ntc"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/KozOahEp/geckolib-forge-1.16.5-3.0.99.jar",
+					"version": "KozOahEp"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/JUfF6Jer/geckolib-fabric-1.18-3.0.70.jar",
+					"version": "JUfF6Jer"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/E4nh57qb/geckolib-quilt-1.18-3.0.34.jar",
+					"version": "E4nh57qb"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/T8CaK9d5/geckolib-forge-1.18-3.0.48.jar",
+					"version": "T8CaK9d5"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/w1DWrZwm/geckolib-fabric-1.19-3.1.28.jar",
+					"version": "w1DWrZwm"
+				},
+				{
+					"minecraft_versions": [
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/QCo5GZL2/geckolib-forge-1.19-3.1.30.jar",
+					"version": "QCo5GZL2"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/aJWSPyUh/geckolib-quilt-1.19-3.1.28.jar",
+					"version": "aJWSPyUh"
+				},
+				{
+					"minecraft_versions": "22w42a",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/BVbxR0lq/geckolib-fabric-22w42a-3.1.29.jar",
+					"version": "BVbxR0lq"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/eProCvAi/geckolib-forge-1.16.5-3.0.100.jar",
+					"version": "eProCvAi"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/dlFzExiC/geckolib-fabric-1.16.5-3.0.101.jar",
+					"version": "dlFzExiC"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/8lHNv1BR/geckolib-fabric-1.18-3.0.71.jar",
+					"version": "8lHNv1BR"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/5GVTBPUE/geckolib-quilt-1.18-3.0.35.jar",
+					"version": "5GVTBPUE"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/qUDA5Ozd/geckolib-forge-1.18-3.0.49.jar",
+					"version": "qUDA5Ozd"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/bhPmYcTR/geckolib-fabric-1.19-3.1.29.jar",
+					"version": "bhPmYcTR"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/C4VIuMdv/geckolib-quilt-1.19-3.1.29.jar",
+					"version": "C4VIuMdv"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/wvgmgrMa/geckolib-forge-1.19-3.1.31.jar",
+					"version": "wvgmgrMa"
+				},
+				{
+					"minecraft_versions": "22w42a",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/sa9wyf1R/geckolib-fabric-22w42a-3.1.30.jar",
+					"version": "sa9wyf1R"
+				},
+				{
+					"minecraft_versions": "22w42a",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/nQTlPpY3/geckolib-fabric-22w43a-3.1.30.jar",
+					"version": "nQTlPpY3"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/BHwMnQiT/geckolib-fabric-1.18-3.0.72.jar",
+					"version": "BHwMnQiT"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/AnwcpwtS/geckolib-quilt-1.18-3.0.36.jar",
+					"version": "AnwcpwtS"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/ULE87UoX/geckolib-forge-1.18-3.0.50.jar",
+					"version": "ULE87UoX"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/vJkUTLKD/geckolib-fabric-1.19-3.1.30.jar",
+					"version": "vJkUTLKD"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/Lrxf2dfv/geckolib-forge-1.19-3.1.32.jar",
+					"version": "Lrxf2dfv"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/BKXKWNHN/geckolib-quilt-1.19-3.1.30.jar",
+					"version": "BKXKWNHN"
+				},
+				{
+					"minecraft_versions": "22w42a",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/e14z89Tc/geckolib-fabric-22w43a-3.1.31.jar",
+					"version": "e14z89Tc"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/lt84hTBS/geckolib-forge-1.16.5-3.0.101.jar",
+					"version": "lt84hTBS"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/iYQH7uEL/geckolib-fabric-1.16.5-3.0.102.jar",
+					"version": "iYQH7uEL"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/p29L54mf/geckolib-forge-1.16.5-3.0.102.jar",
+					"version": "p29L54mf"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/YADnFBNq/geckolib-fabric-1.16.5-3.0.103.jar",
+					"version": "YADnFBNq"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/xXGDe6P5/geckolib-fabric-1.18-3.0.73.jar",
+					"version": "xXGDe6P5"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/f3XhBRHz/geckolib-quilt-1.18-3.0.37.jar",
+					"version": "f3XhBRHz"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/lDhul8lN/geckolib-forge-1.18-3.0.51.jar",
+					"version": "lDhul8lN"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/PXKR9X73/geckolib-fabric-1.19-3.1.31.jar",
+					"version": "PXKR9X73"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/TiAfTtVK/geckolib-forge-1.19-3.1.33.jar",
+					"version": "TiAfTtVK"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/pnqQuYJn/geckolib-quilt-1.19-3.1.31.jar",
+					"version": "pnqQuYJn"
+				},
+				{
+					"minecraft_versions": "22w42a",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/rjdRQUqS/geckolib-fabric-22w43a-3.1.32.jar",
+					"version": "rjdRQUqS"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/ZMaBVc0E/geckolib-fabric-1.19-3.1.32.jar",
+					"version": "ZMaBVc0E"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/oeKXWdtC/geckolib-quilt-1.19-3.1.32.jar",
+					"version": "oeKXWdtC"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/Zl8TorMb/geckolib-quilt-1.18-3.0.38.jar",
+					"version": "Zl8TorMb"
+				},
+				{
+					"minecraft_versions": "22w42a",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/vpi1hsCQ/geckolib-fabric-22w43a-3.1.33.jar",
+					"version": "vpi1hsCQ"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/1aPT3e1t/geckolib-fabric-1.18-3.0.74.jar",
+					"version": "1aPT3e1t"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/JTvFZCgx/geckolib-forge-1.18-3.0.52.jar",
+					"version": "JTvFZCgx"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/M3YdkbNy/geckolib-quilt-1.18-3.0.39.jar",
+					"version": "M3YdkbNy"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/aqERQH8d/geckolib-fabric-1.19-3.1.33.jar",
+					"version": "aqERQH8d"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/cddgJkS9/geckolib-quilt-1.19-3.1.33.jar",
+					"version": "cddgJkS9"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/tW58wvXj/geckolib-forge-1.19-3.1.34.jar",
+					"version": "tW58wvXj"
+				},
+				{
+					"minecraft_versions": "22w42a",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/Sgjcv40y/geckolib-fabric-22w43a-3.1.34.jar",
+					"version": "Sgjcv40y"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/1ZrdoKlp/geckolib-forge-1.16.5-3.0.103.jar",
+					"version": "1ZrdoKlp"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/UhSQdxcp/geckolib-fabric-1.16.5-3.0.104.jar",
+					"version": "UhSQdxcp"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/OaVRMrL9/geckolib-forge-1.18-3.0.53.jar",
+					"version": "OaVRMrL9"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/5XPm4pRO/geckolib-quilt-1.18-3.0.40.jar",
+					"version": "5XPm4pRO"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/V1WV1xOD/geckolib-fabric-1.18-3.0.75.jar",
+					"version": "V1WV1xOD"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/QS9XNW9P/geckolib-fabric-1.19-3.1.34.jar",
+					"version": "QS9XNW9P"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/gvGNfUeU/geckolib-quilt-1.19-3.1.34.jar",
+					"version": "gvGNfUeU"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/Rh21CzYm/geckolib-forge-1.19-3.1.35.jar",
+					"version": "Rh21CzYm"
+				},
+				{
+					"minecraft_versions": "22w42a",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/faphAyqV/geckolib-fabric-22w43a-3.1.35.jar",
+					"version": "faphAyqV"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/PGdyqE3B/geckolib-fabric-1.18-3.0.76.jar",
+					"version": "PGdyqE3B"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/NqzcbCO3/geckolib-fabric-1.18-3.0.77.jar",
+					"version": "NqzcbCO3"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/s3u1zFH2/geckolib-quilt-1.18-3.0.41.jar",
+					"version": "s3u1zFH2"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/LEndENkm/geckolib-forge-1.18-3.0.54.jar",
+					"version": "LEndENkm"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/86Mbu5mU/geckolib-fabric-1.19-3.1.35.jar",
+					"version": "86Mbu5mU"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/AGtXkmMt/geckolib-quilt-1.19-3.1.35.jar",
+					"version": "AGtXkmMt"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/eHT3dHPd/geckolib-forge-1.19-3.1.36.jar",
+					"version": "eHT3dHPd"
+				},
+				{
+					"minecraft_versions": "22w42a",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/fUME5kUI/geckolib-fabric-22w45a-3.1.36.jar",
+					"version": "fUME5kUI"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/xhCnuSjR/geckolib-fabric-1.16.5-3.0.105.jar",
+					"version": "xhCnuSjR"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/mXxld3t8/geckolib-forge-1.16.5-3.0.104.jar",
+					"version": "mXxld3t8"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/G46UXN4P/geckolib-fabric-1.18-3.0.78.jar",
+					"version": "G46UXN4P"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/p2dalTPH/geckolib-forge-1.18-3.0.55.jar",
+					"version": "p2dalTPH"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/8vkpQIf8/geckolib-quilt-1.18-3.0.42.jar",
+					"version": "8vkpQIf8"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/8jw6t6DH/geckolib-fabric-1.19-3.1.36.jar",
+					"version": "8jw6t6DH"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/zOvnacPM/geckolib-quilt-1.19-3.1.36.jar",
+					"version": "zOvnacPM"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/LHmZ1Krb/geckolib-forge-1.19-3.1.37.jar",
+					"version": "LHmZ1Krb"
+				},
+				{
+					"minecraft_versions": "22w42a",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/We6XodNB/geckolib-fabric-22w45a-3.1.37.jar",
+					"version": "We6XodNB"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/rWeVCWgR/geckolib-fabric-1.18-3.0.79.jar",
+					"version": "rWeVCWgR"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/KfwWK3E2/geckolib-quilt-1.18-3.0.43.jar",
+					"version": "KfwWK3E2"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/LhezFear/geckolib-forge-1.18-3.0.56.jar",
+					"version": "LhezFear"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/QvVmqFDc/geckolib-forge-1.19-3.1.38.jar",
+					"version": "QvVmqFDc"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/H1mCsWKb/geckolib-quilt-1.19-3.1.37.jar",
+					"version": "H1mCsWKb"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/wBBaWvGV/geckolib-fabric-1.19-3.1.37.jar",
+					"version": "wBBaWvGV"
+				},
+				{
+					"minecraft_versions": "1.19.3-pre2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/DgA0gMMc/geckolib-fabric-1.19.3-pre2-4.0.0.jar",
+					"version": "DgA0gMMc"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/vFTTggHa/geckolib-quilt-1.18-3.0.44.jar",
+					"version": "vFTTggHa"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/g90LsOdt/geckolib-quilt-1.19-3.1.38.jar",
+					"version": "g90LsOdt"
+				},
+				{
+					"minecraft_versions": "1.19.3-pre3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/daSMlw4L/geckolib-fabric-1.19.3-pre3-4.0.0.jar",
+					"version": "daSMlw4L"
+				},
+				{
+					"minecraft_versions": "1.19.3-pre3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/uk7FQRvC/geckolib-fabric-1.19.3-rc1-4.0.0.jar",
+					"version": "uk7FQRvC"
+				},
+				{
+					"minecraft_versions": "1.19.3-rc2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/E1Z2wSuT/geckolib-fabric-1.19.3-rc2-4.0.0.jar",
+					"version": "E1Z2wSuT"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/WspBbYOH/geckolib-fabric-1.19.3-4.0.0.jar",
+					"version": "WspBbYOH"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/OoBHBsUu/geckolib-quilt-1.19.3-4.0.0.jar",
+					"version": "OoBHBsUu"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/bYYpbnJG/geckolib-fabric-1.19.3-4.0.1.jar",
+					"version": "bYYpbnJG"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/u8LHqLYt/geckolib-forge-1.19.3-4.0.1.jar",
+					"version": "u8LHqLYt"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/lTKMOGfM/geckolib-quilt-1.19.3-4.0.1.jar",
+					"version": "lTKMOGfM"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/NVpH4rdV/geckolib-quilt-1.18-3.0.45.jar",
+					"version": "NVpH4rdV"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/wwh0ZFLu/geckolib-forge-1.18-3.0.57.jar",
+					"version": "wwh0ZFLu"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/Z7uH6V77/geckolib-fabric-1.18-3.0.80.jar",
+					"version": "Z7uH6V77"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/Wc0K0JdF/geckolib-fabric-1.19-3.1.38.jar",
+					"version": "Wc0K0JdF"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/Cpb3NEuc/geckolib-quilt-1.19-3.1.39.jar",
+					"version": "Cpb3NEuc"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/cxFfuDw6/geckolib-forge-1.19-3.1.39.jar",
+					"version": "cxFfuDw6"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/zcE0moFY/geckolib-fabric-1.19.3-4.0.2.jar",
+					"version": "zcE0moFY"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/AQq8fMnZ/geckolib-forge-1.19.3-4.0.2.jar",
+					"version": "AQq8fMnZ"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/6hvy9UPH/geckolib-quilt-1.19.3-4.0.2.jar",
+					"version": "6hvy9UPH"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/jIvd4A4a/geckolib-forge-1.16.5-3.0.105.jar",
+					"version": "jIvd4A4a"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/TPK2iTqH/geckolib-fabric-1.16.5-3.0.106.jar",
+					"version": "TPK2iTqH"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/UQGoJDhn/geckolib-forge-1.16.5-3.0.106.jar",
+					"version": "UQGoJDhn"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/Z8ZwOmeO/geckolib-fabric-1.16.5-3.0.107.jar",
+					"version": "Z8ZwOmeO"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/HSMmTQz5/geckolib-quilt-1.18-3.0.46.jar",
+					"version": "HSMmTQz5"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/ECNL11XI/geckolib-quilt-1.19-3.1.40.jar",
+					"version": "ECNL11XI"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/6ptEPw1M/geckolib-fabric-1.19.3-4.0.3.jar",
+					"version": "6ptEPw1M"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/zUwlnUJD/geckolib-quilt-1.19.3-4.0.3.jar",
+					"version": "zUwlnUJD"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/FEkGX3MJ/geckolib-forge-1.19.3-4.0.3.jar",
+					"version": "FEkGX3MJ"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/GF04iZJU/geckolib-fabric-1.19-3.1.39.jar",
+					"version": "GF04iZJU"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/zgFD8eDN/geckolib-quilt-1.19.3-4.0.4.jar",
+					"version": "zgFD8eDN"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/blSVr08Y/geckolib-forge-1.19.3-4.0.4.jar",
+					"version": "blSVr08Y"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/1myM5wR4/geckolib-fabric-1.19.3-4.0.4.jar",
+					"version": "1myM5wR4"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/YaWDUJEE/geckolib-quilt-1.19-3.1.41.jar",
+					"version": "YaWDUJEE"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/ATPZfRS1/geckolib-fabric-1.19-3.1.40.jar",
+					"version": "ATPZfRS1"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/lxzmD9V4/geckolib-forge-1.19-3.1.40.jar",
+					"version": "lxzmD9V4"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/AwczxULS/geckolib-fabric-1.19.4-4.1.0.jar",
+					"version": "AwczxULS"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/8QvnKtLJ/geckolib-quilt-1.19.4-4.1.0.jar",
+					"version": "8QvnKtLJ"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/CHEy45yh/geckolib-forge-1.19.4-4.1.0.jar",
+					"version": "CHEy45yh"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/rnr7nYuM/geckolib-fabric-1.19.3-4.0.5.jar",
+					"version": "rnr7nYuM"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/KqLqSsme/geckolib-forge-1.19.3-4.0.5.jar",
+					"version": "KqLqSsme"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/oTLyaKlW/geckolib-quilt-1.19.3-4.0.5.jar",
+					"version": "oTLyaKlW"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/vmiN6kCm/geckolib-fabric-1.19.4-4.1.1.jar",
+					"version": "vmiN6kCm"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/gOx2as1z/geckolib-quilt-1.19.4-4.1.1.jar",
+					"version": "gOx2as1z"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/eynJ8oNP/geckolib-forge-1.19.4-4.1.1.jar",
+					"version": "eynJ8oNP"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/cYRFw6kc/geckolib-fabric-1.19.3-4.0.6.jar",
+					"version": "cYRFw6kc"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/d48ItbMp/geckolib-quilt-1.19.3-4.0.6.jar",
+					"version": "d48ItbMp"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/QTZrKfzq/geckolib-forge-1.19.3-4.0.6.jar",
+					"version": "QTZrKfzq"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/RXmXb7fC/geckolib-fabric-1.19.4-4.1.2.jar",
+					"version": "RXmXb7fC"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/woswYEKK/geckolib-quilt-1.19.4-4.1.2.jar",
+					"version": "woswYEKK"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/cv3DdC41/geckolib-forge-1.19.4-4.1.2.jar",
+					"version": "cv3DdC41"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/roB0GDEp/geckolib-quilt-1.19.4-4.1.3.jar",
+					"version": "roB0GDEp"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/6mx7VPLs/geckolib-fabric-1.19.4-4.1.3.jar",
+					"version": "6mx7VPLs"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/A4mByKCk/geckolib-forge-1.19.4-4.1.3.jar",
+					"version": "A4mByKCk"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/fWtfrvf2/geckolib-fabric-1.19.4-4.2.jar",
+					"version": "fWtfrvf2"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/ApKEGN4z/geckolib-forge-1.19.4-4.2.jar",
+					"version": "ApKEGN4z"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/B4kTh670/geckolib-fabric-1.20-4.2.jar",
+					"version": "B4kTh670"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/e503GzWn/geckolib-forge-1.20-4.2.jar",
+					"version": "e503GzWn"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/qq4z76WF/geckolib-forge-1.20.1-4.2.1.jar",
+					"version": "qq4z76WF"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/5bofFrdJ/geckolib-fabric-1.20.1-4.2.1.jar",
+					"version": "5bofFrdJ"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/V5QnDeov/geckolib-fabric-1.20.1-4.2.2.jar",
+					"version": "V5QnDeov"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/UuuqztzH/geckolib-forge-1.20.1-4.2.2.jar",
+					"version": "UuuqztzH"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/oPgOSBzN/geckolib-fabric-1.20.1-4.2.3.jar",
+					"version": "oPgOSBzN"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/ISrpRn5q/geckolib-forge-1.20.1-4.2.3.jar",
+					"version": "ISrpRn5q"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/GVK2FvVE/geckolib-fabric-1.20.2-4.2.3.jar",
+					"version": "GVK2FvVE"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/B9QFOUgq/geckolib-forge-1.20.2-4.2.3.jar",
+					"version": "B9QFOUgq"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/xeICIALe/geckolib-fabric-1.20.1-4.2.4.jar",
+					"version": "xeICIALe"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/BphtIZ9i/geckolib-forge-1.20.1-4.2.4.jar",
+					"version": "BphtIZ9i"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "neoforged",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/tkFgcZ7f/geckolib-neoforge-1.20.1-4.2.4.jar",
+					"version": "tkFgcZ7f"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/RCo2zVmf/geckolib-fabric-1.20.2-4.2.4.jar",
+					"version": "RCo2zVmf"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/MOUhkQH6/geckolib-forge-1.20.2-4.2.4.jar",
+					"version": "MOUhkQH6"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/gkLopHQN/geckolib-fabric-1.20.2-4.3.jar",
+					"version": "gkLopHQN"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/9McGNAut/geckolib-forge-1.20.2-4.3.jar",
+					"version": "9McGNAut"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/jeyby0vh/geckolib-fabric-1.20.1-4.3.jar",
+					"version": "jeyby0vh"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/ivvYEVfa/geckolib-forge-1.20.1-4.3.jar",
+					"version": "ivvYEVfa"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "neoforged",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/Ks3ebpYi/geckolib-neoforge-1.20.1-4.3.jar",
+					"version": "Ks3ebpYi"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/496UKM7k/geckolib-fabric-1.20.2-4.3.1.jar",
+					"version": "496UKM7k"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/WErUOFCR/geckolib-forge-1.20.2-4.3.1.jar",
+					"version": "WErUOFCR"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/KyRLWNQb/geckolib-fabric-1.20.1-4.3.1.jar",
+					"version": "KyRLWNQb"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/5bspDn1H/geckolib-forge-1.20.1-4.3.1.jar",
+					"version": "5bspDn1H"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "neoforged",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/LsTR7vL2/geckolib-neoforge-1.20.1-4.3.1.jar",
+					"version": "LsTR7vL2"
+				},
+				{
+					"minecraft_versions": "1.20.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/TW9RyHl8/geckolib-fabric-1.20.3-4.3.1.jar",
+					"version": "TW9RyHl8"
+				},
+				{
+					"minecraft_versions": "1.20.3",
+					"modloaders": "neoforged",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/Jfq413xC/geckolib-neoforge-1.20.3-4.3.1.jar",
+					"version": "Jfq413xC"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "neoforged",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/t7b6BuZg/geckolib-neoforge-1.20.2-4.3.1.jar",
+					"version": "t7b6BuZg"
+				},
+				{
+					"minecraft_versions": "1.20.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/5gvx4EoC/geckolib-forge-1.20.3-4.3.1.jar",
+					"version": "5gvx4EoC"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/Z4SMiN06/geckolib-fabric-1.20.4-4.3.1.jar",
+					"version": "Z4SMiN06"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/Bz42AtzS/geckolib-forge-1.20.4-4.3.1.jar",
+					"version": "Bz42AtzS"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/WBHev6kG/geckolib-neoforge-1.20.4-4.3.1.jar",
+					"version": "WBHev6kG"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/19vAzqod/geckolib-neoforge-1.20.4-4.3.2.jar",
+					"version": "19vAzqod"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/i86GnJGu/geckolib-neoforge-1.20.4-4.3.3.jar",
+					"version": "i86GnJGu"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/VHbOcZ8J/geckolib-fabric-1.20.4-4.4.jar",
+					"version": "VHbOcZ8J"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/NlQP6qIW/geckolib-forge-1.20.4-4.4.jar",
+					"version": "NlQP6qIW"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/gDKBrobB/geckolib-neoforge-1.20.4-4.4.jar",
+					"version": "gDKBrobB"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/6AmfrKIK/geckolib-fabric-1.20.1-4.4.jar",
+					"version": "6AmfrKIK"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/RsTqpaFp/geckolib-forge-1.20.1-4.4.jar",
+					"version": "RsTqpaFp"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "neoforged",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/B46dYvsx/geckolib-neoforge-1.20.1-4.4.jar",
+					"version": "B46dYvsx"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/yQBqORty/geckolib-fabric-1.20.4-4.4.1.jar",
+					"version": "yQBqORty"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/wO1uihQr/geckolib-forge-1.20.4-4.4.1.jar",
+					"version": "wO1uihQr"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/oOD7OqIv/geckolib-neoforge-1.20.4-4.4.1.jar",
+					"version": "oOD7OqIv"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/nnfDaAnr/geckolib-fabric-1.20.4-4.4.2.jar",
+					"version": "nnfDaAnr"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/OitMQuA2/geckolib-forge-1.20.4-4.4.2.jar",
+					"version": "OitMQuA2"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/QQiBbYQ7/geckolib-neoforge-1.20.4-4.4.2.jar",
+					"version": "QQiBbYQ7"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/KImFOI2k/geckolib-fabric-1.20.1-4.4.2.jar",
+					"version": "KImFOI2k"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/pyB0jIsx/geckolib-forge-1.20.1-4.4.2.jar",
+					"version": "pyB0jIsx"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "neoforged",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/NWOU2OY5/geckolib-neoforge-1.20.1-4.4.2.jar",
+					"version": "NWOU2OY5"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "neoforged",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/jM7tAFAm/geckolib-neoforge-1.20.1-4.4.2.jar",
+					"version": "jM7tAFAm"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/LgQ7WQ4T/geckolib-fabric-1.20.4-4.4.3.jar",
+					"version": "LgQ7WQ4T"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/sw6GjiBg/geckolib-forge-1.20.4-4.4.3.jar",
+					"version": "sw6GjiBg"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/WcZ8Wvmt/geckolib-neoforge-1.20.4-4.4.3.jar",
+					"version": "WcZ8Wvmt"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/1V70r7yv/geckolib-fabric-1.20.1-4.4.3.jar",
+					"version": "1V70r7yv"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/slWFrHeX/geckolib-forge-1.20.1-4.4.3.jar",
+					"version": "slWFrHeX"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "neoforged",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/pXlv5nlE/geckolib-neoforge-1.20.1-4.4.3.jar",
+					"version": "pXlv5nlE"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/9xn1SoTo/geckolib-fabric-1.20.4-4.4.4.jar",
+					"version": "9xn1SoTo"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/WxC8HFLo/geckolib-forge-1.20.4-4.4.4.jar",
+					"version": "WxC8HFLo"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/jK2C8NsI/geckolib-neoforge-1.20.4-4.4.4.jar",
+					"version": "jK2C8NsI"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/qsvFEDEz/geckolib-fabric-1.20.1-4.4.4.jar",
+					"version": "qsvFEDEz"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/vv4Q0406/geckolib-forge-1.20.1-4.4.4.jar",
+					"version": "vv4Q0406"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "neoforged",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/72yIIxm4/geckolib-neoforge-1.20.1-4.4.4.jar",
+					"version": "72yIIxm4"
+				}
+			]
+		}
+	},
+	"meta": {
+		"authors": [
+			"DerToaster98",
+			"mchorse",
+			"KyoSleep",
+			"Tslat",
+			"Gecko"
+		],
+		"categories": [
+			"library"
+		],
+		"community": "https://discord.gg/sJb8TVjW",
+		"description": "A 3D animation library for entities, blocks, items, armor, and more!",
+		"documentation": "https://github.com/bernie-g/geckolib/wiki",
+		"icon": "https://cdn.modrinth.com/data/8BmcQJ2H/7638e6cddbc4d675c3dd874c8be5ae01efcfe31b.png",
+		"issues": "https://github.com/bernie-g/geckolib/issues",
+		"keywords": [
+			"graphics"
+		],
+		"license": "MIT",
+		"name": "Geckolib",
+		"package_maintainers": [
+			"mcvm"
+		],
+		"source": "https://github.com/bernie-g/geckolib"
+	},
+	"properties": {
+		"modrinth_id": "8BmcQJ2H",
+		"supported_modloaders": [
+			"fabriclike",
+			"forgelike"
+		],
+		"supported_versions": [
+			"1.12.2",
+			"1.15.2",
+			"1.17.1",
+			"1.16.5",
+			"1.18.2",
+			"1.19.1",
+			"1.19.2",
+			"22w42a",
+			"1.19.3-pre2",
+			"1.19.3-pre3",
+			"1.19.3-rc2",
+			"1.19.3",
+			"1.19.4",
+			"1.20",
+			"1.20.1",
+			"1.20.2",
+			"1.20.3",
+			"1.20.4"
+		]
+	}
+}

@@ -1,0 +1,28 @@
+{
+	"relation_substitutions": {
+		"P7dR8mSH": "fabriclike-api",
+		"qvIfYCYJ": "fabriclike-api",
+		"9s6osm5g": "cloth-config",
+		"lhGA9TYQ": "architectury-api"
+	},
+	"merge": {
+		"meta": {
+			"package_maintainers": [
+				"mcvm"
+			],
+			"keywords": [
+				"graphics"
+			],
+			"categories": [
+				"library"
+			]
+		},
+		"properties": {
+			"supported_modloaders": [
+				"fabriclike",
+				"forgelike",
+				"rift"
+			]
+		}
+	}
+}

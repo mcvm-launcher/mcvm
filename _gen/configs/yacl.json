@@ -1,0 +1,29 @@
+{
+	"relation_substitutions": {
+		"P7dR8mSH": "fabriclike-api"
+	},
+	"merge": {
+		"meta": {
+			"package_maintainers": [
+				"mcvm"
+			],
+			"gallery": [
+				"https://cdn.modrinth.com/data/1eAoo2KR/images/f5f6bdad06350bc34c8a207df242705660231e8a.png"
+			],
+			"keywords": [
+				"config"
+			],
+			"categories": [
+				"library",
+				"technical"
+			]
+		},
+		"properties": {
+			"open_source": true,
+			"supported_modloaders": [
+				"fabriclike",
+				"forgelike"
+			]
+		}
+	}
+}

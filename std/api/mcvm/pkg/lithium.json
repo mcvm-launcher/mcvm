@@ -1,362 +1,362 @@
 {
-  "addons": {
-    "addon": {
-      "kind": "mod",
-      "versions": [
-        {
-          "minecraft_versions": "1.16.4",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.16.4-0.6.0/lithium-fabric-mc1.16.4-0.6.0.jar",
-          "version": "EhG1mQzx"
-        },
-        {
-          "minecraft_versions": [
-            "1.16.2",
-            "1.16.3",
-            "1.16.4",
-            "1.16.5"
-          ],
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.16.5-v0.6.1/lithium-fabric-mc1.16.5-0.6.1.jar",
-          "version": "5fmGl08Y"
-        },
-        {
-          "minecraft_versions": [
-            "1.16.2",
-            "1.16.3",
-            "1.16.4",
-            "1.16.5"
-          ],
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.16.5-0.6.3/lithium-fabric-mc1.16.5-0.6.3.jar",
-          "version": "ouTdXXWj"
-        },
-        {
-          "minecraft_versions": [
-            "1.16.2",
-            "1.16.3",
-            "1.16.4",
-            "1.16.5"
-          ],
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.16.5-0.6.4/lithium-fabric-mc1.16.5-0.6.4.jar",
-          "version": "igqdFUYG"
-        },
-        {
-          "minecraft_versions": [
-            "1.16.2",
-            "1.16.3",
-            "1.16.4",
-            "1.16.5"
-          ],
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.16.5-0.6.5/lithium-fabric-mc1.16.5-0.6.5.jar",
-          "version": "pGhOMdTm"
-        },
-        {
-          "minecraft_versions": "1.17",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.17-0.7.0/lithium-fabric-mc1.17-0.7.0.jar",
-          "version": "Le0tKjFX"
-        },
-        {
-          "minecraft_versions": [
-            "1.16.2",
-            "1.16.3",
-            "1.16.4",
-            "1.16.5"
-          ],
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.16.5-0.6.6/lithium-fabric-mc1.16.5-0.6.6.jar",
-          "version": "rvsW1zhb"
-        },
-        {
-          "minecraft_versions": "1.17",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.17-0.7.1/lithium-fabric-mc1.17-0.7.1.jar",
-          "version": "7jxErppe"
-        },
-        {
-          "minecraft_versions": "1.17",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.17-0.7.2/lithium-fabric-mc1.17-0.7.2.jar",
-          "version": "aZ0JFf08"
-        },
-        {
-          "minecraft_versions": [
-            "1.17",
-            "1.17.1"
-          ],
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.17.1-0.7.3/lithium-fabric-mc1.17.1-0.7.3.jar",
-          "version": "cTZv31gu"
-        },
-        {
-          "minecraft_versions": [
-            "1.17",
-            "1.17.1"
-          ],
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.17.1-0.7.4/lithium-fabric-mc1.17.1-0.7.4.jar",
-          "version": "nVR7Q63z"
-        },
-        {
-          "minecraft_versions": [
-            "1.17",
-            "1.17.1"
-          ],
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.17.1-0.7.5/lithium-fabric-mc1.17.1-0.7.5.jar",
-          "version": "FHFKMKeu"
-        },
-        {
-          "minecraft_versions": "1.18",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.18-0.7.6-rc1/lithium-fabric-mc1.18-0.7.6-rc1.jar",
-          "version": "2w527DB2"
-        },
-        {
-          "minecraft_versions": "1.18.1",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.18.1-0.7.6/lithium-fabric-mc1.18.1-0.7.6.jar",
-          "version": "2CbyxeU0"
-        },
-        {
-          "minecraft_versions": "1.18.1",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.18.1-0.7.7/lithium-fabric-mc1.18.1-0.7.7.jar",
-          "version": "2aoHIXuK"
-        },
-        {
-          "minecraft_versions": "1.18.1",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.18.1-0.7.8/lithium-fabric-mc1.18.1-0.7.8.jar",
-          "version": "Ehsd7YUl"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.18.2-0.7.9/lithium-fabric-mc1.18.2-0.7.9.jar",
-          "version": "MoF1cn6g"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.18.2-0.7.10/lithium-fabric-mc1.18.2-0.7.10.jar",
-          "version": "pHl1Vi6k"
-        },
-        {
-          "minecraft_versions": "1.19",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.19-0.8.0/lithium-fabric-mc1.19-0.8.0.jar",
-          "version": "pXdccFQf"
-        },
-        {
-          "minecraft_versions": "1.19",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.19-0.8.1/lithium-fabric-mc1.19-0.8.1.jar",
-          "version": "sIKhU9s4"
-        },
-        {
-          "minecraft_versions": "1.19.1",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.19.1-0.8.3/lithium-fabric-mc1.19.1-0.8.3.jar",
-          "version": "ZRR9yqHD"
-        },
-        {
-          "minecraft_versions": [
-            "1.19.1",
-            "1.19.2"
-          ],
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.19.2-0.8.3/lithium-fabric-mc1.19.2-0.8.3.jar",
-          "version": "Zs3sdHjK"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/Nba2vozh/lithium-fabric-mc1.19.2-0.9.0.jar",
-          "version": "Nba2vozh"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/2ysRxhIL/lithium-fabric-mc1.19.2-0.9.1.jar",
-          "version": "2ysRxhIL"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/ySBrfN8N/lithium-fabric-mc1.19.2-0.10.0.jar",
-          "version": "ySBrfN8N"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/xVm1caOt/lithium-fabric-mc1.19.2-0.10.1.jar",
-          "version": "xVm1caOt"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/IQxlSIiw/lithium-fabric-mc1.19.2-0.10.2.jar",
-          "version": "IQxlSIiw"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/FXG2XqRP/lithium-fabric-mc1.18.2-0.10.2.jar",
-          "version": "FXG2XqRP"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/ALnv7Npy/lithium-fabric-mc1.18.2-0.10.3.jar",
-          "version": "ALnv7Npy"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/OKrb9xMn/lithium-fabric-mc1.19.2-0.10.3.jar",
-          "version": "OKrb9xMn"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/3Gq9H7R9/lithium-fabric-mc1.19.3-0.10.3.jar",
-          "version": "3Gq9H7R9"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/7scJ9RTg/lithium-fabric-mc1.19.2-0.10.4.jar",
-          "version": "7scJ9RTg"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/XS6vJwop/lithium-fabric-mc1.19.3-0.10.4.jar",
-          "version": "XS6vJwop"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/sMWkk4VU/lithium-fabric-mc1.19.3-0.11.0.jar",
-          "version": "sMWkk4VU"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/GYl3zwgt/lithium-fabric-mc1.19.2-0.11.0.jar",
-          "version": "GYl3zwgt"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/m6sVgAi6/lithium-fabric-mc1.19.2-0.11.1.jar",
-          "version": "m6sVgAi6"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/53cwYYb1/lithium-fabric-mc1.19.3-0.11.1.jar",
-          "version": "53cwYYb1"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/14hWYkog/lithium-fabric-mc1.19.4-0.11.1.jar",
-          "version": "14hWYkog"
-        },
-        {
-          "minecraft_versions": "1.20",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/2KMrj5c1/lithium-fabric-mc1.20-0.11.2.jar",
-          "version": "2KMrj5c1"
-        },
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": "fabric",
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/ZSNsJrPI/lithium-fabric-mc1.20.1-0.11.2.jar",
-          "version": "ZSNsJrPI"
-        },
-        {
-          "minecraft_versions": "1.20.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/qdzL5Hkg/lithium-fabric-mc1.20.2-0.12.0.jar",
-          "version": "qdzL5Hkg"
-        },
-        {
-          "minecraft_versions": "1.20.3",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/WzQmxYRa/lithium-fabric-mc1.20.3-0.12.1.jar",
-          "version": "WzQmxYRa"
-        },
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/nMhjKWVE/lithium-fabric-mc1.20.4-0.12.1.jar",
-          "version": "nMhjKWVE"
-        }
-      ]
-    }
-  },
-  "meta": {
-    "authors": [
-      "jellysquid3",
-      "2No2Name"
-    ],
-    "categories": [
-      "optimization",
-      "technical"
-    ],
-    "community": "https://caffeinemc.net/discord",
-    "description": "No-compromises game logic/server optimization mod",
-    "icon": "https://cdn.modrinth.com/data/gvQqBUqZ/icon.png",
-    "issues": "https://github.com/caffeinemc/lithium-fabric/issues",
-    "license": "LGPL-3.0-only",
-    "name": "Lithium",
-    "package_maintainers": [
-      "mcvm"
-    ],
-    "source": "https://github.com/caffeinemc/lithium-fabric",
-    "support_link": "https://www.patreon.com/2No2Name"
-  },
-  "properties": {
-    "modrinth_id": "gvQqBUqZ",
-    "open_source": true,
-    "supported_modloaders": [
-      "fabriclike"
-    ],
-    "supported_versions": [
-      "1.16.4",
-      "1.16.2",
-      "1.16.3",
-      "1.16.5",
-      "1.17",
-      "1.17.1",
-      "1.18",
-      "1.18.1",
-      "1.18.2",
-      "1.19",
-      "1.19.1",
-      "1.19.2",
-      "1.19.3",
-      "1.19.4",
-      "1.20",
-      "1.20.1",
-      "1.20.2",
-      "1.20.3",
-      "1.20.4"
-    ]
-  }
+	"addons": {
+		"addon": {
+			"kind": "mod",
+			"versions": [
+				{
+					"minecraft_versions": "1.16.4",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.16.4-0.6.0/lithium-fabric-mc1.16.4-0.6.0.jar",
+					"version": "EhG1mQzx"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.2",
+						"1.16.3",
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.16.5-v0.6.1/lithium-fabric-mc1.16.5-0.6.1.jar",
+					"version": "5fmGl08Y"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.2",
+						"1.16.3",
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.16.5-0.6.3/lithium-fabric-mc1.16.5-0.6.3.jar",
+					"version": "ouTdXXWj"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.2",
+						"1.16.3",
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.16.5-0.6.4/lithium-fabric-mc1.16.5-0.6.4.jar",
+					"version": "igqdFUYG"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.2",
+						"1.16.3",
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.16.5-0.6.5/lithium-fabric-mc1.16.5-0.6.5.jar",
+					"version": "pGhOMdTm"
+				},
+				{
+					"minecraft_versions": "1.17",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.17-0.7.0/lithium-fabric-mc1.17-0.7.0.jar",
+					"version": "Le0tKjFX"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.2",
+						"1.16.3",
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.16.5-0.6.6/lithium-fabric-mc1.16.5-0.6.6.jar",
+					"version": "rvsW1zhb"
+				},
+				{
+					"minecraft_versions": "1.17",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.17-0.7.1/lithium-fabric-mc1.17-0.7.1.jar",
+					"version": "7jxErppe"
+				},
+				{
+					"minecraft_versions": "1.17",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.17-0.7.2/lithium-fabric-mc1.17-0.7.2.jar",
+					"version": "aZ0JFf08"
+				},
+				{
+					"minecraft_versions": [
+						"1.17",
+						"1.17.1"
+					],
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.17.1-0.7.3/lithium-fabric-mc1.17.1-0.7.3.jar",
+					"version": "cTZv31gu"
+				},
+				{
+					"minecraft_versions": [
+						"1.17",
+						"1.17.1"
+					],
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.17.1-0.7.4/lithium-fabric-mc1.17.1-0.7.4.jar",
+					"version": "nVR7Q63z"
+				},
+				{
+					"minecraft_versions": [
+						"1.17",
+						"1.17.1"
+					],
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.17.1-0.7.5/lithium-fabric-mc1.17.1-0.7.5.jar",
+					"version": "FHFKMKeu"
+				},
+				{
+					"minecraft_versions": "1.18",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.18-0.7.6-rc1/lithium-fabric-mc1.18-0.7.6-rc1.jar",
+					"version": "2w527DB2"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.18.1-0.7.6/lithium-fabric-mc1.18.1-0.7.6.jar",
+					"version": "2CbyxeU0"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.18.1-0.7.7/lithium-fabric-mc1.18.1-0.7.7.jar",
+					"version": "2aoHIXuK"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.18.1-0.7.8/lithium-fabric-mc1.18.1-0.7.8.jar",
+					"version": "Ehsd7YUl"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.18.2-0.7.9/lithium-fabric-mc1.18.2-0.7.9.jar",
+					"version": "MoF1cn6g"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.18.2-0.7.10/lithium-fabric-mc1.18.2-0.7.10.jar",
+					"version": "pHl1Vi6k"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.19-0.8.0/lithium-fabric-mc1.19-0.8.0.jar",
+					"version": "pXdccFQf"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.19-0.8.1/lithium-fabric-mc1.19-0.8.1.jar",
+					"version": "sIKhU9s4"
+				},
+				{
+					"minecraft_versions": "1.19.1",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.19.1-0.8.3/lithium-fabric-mc1.19.1-0.8.3.jar",
+					"version": "ZRR9yqHD"
+				},
+				{
+					"minecraft_versions": [
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/mc1.19.2-0.8.3/lithium-fabric-mc1.19.2-0.8.3.jar",
+					"version": "Zs3sdHjK"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/Nba2vozh/lithium-fabric-mc1.19.2-0.9.0.jar",
+					"version": "Nba2vozh"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/2ysRxhIL/lithium-fabric-mc1.19.2-0.9.1.jar",
+					"version": "2ysRxhIL"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/ySBrfN8N/lithium-fabric-mc1.19.2-0.10.0.jar",
+					"version": "ySBrfN8N"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/xVm1caOt/lithium-fabric-mc1.19.2-0.10.1.jar",
+					"version": "xVm1caOt"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/IQxlSIiw/lithium-fabric-mc1.19.2-0.10.2.jar",
+					"version": "IQxlSIiw"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/FXG2XqRP/lithium-fabric-mc1.18.2-0.10.2.jar",
+					"version": "FXG2XqRP"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/ALnv7Npy/lithium-fabric-mc1.18.2-0.10.3.jar",
+					"version": "ALnv7Npy"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/OKrb9xMn/lithium-fabric-mc1.19.2-0.10.3.jar",
+					"version": "OKrb9xMn"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/3Gq9H7R9/lithium-fabric-mc1.19.3-0.10.3.jar",
+					"version": "3Gq9H7R9"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/7scJ9RTg/lithium-fabric-mc1.19.2-0.10.4.jar",
+					"version": "7scJ9RTg"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/XS6vJwop/lithium-fabric-mc1.19.3-0.10.4.jar",
+					"version": "XS6vJwop"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/sMWkk4VU/lithium-fabric-mc1.19.3-0.11.0.jar",
+					"version": "sMWkk4VU"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/GYl3zwgt/lithium-fabric-mc1.19.2-0.11.0.jar",
+					"version": "GYl3zwgt"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/m6sVgAi6/lithium-fabric-mc1.19.2-0.11.1.jar",
+					"version": "m6sVgAi6"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/53cwYYb1/lithium-fabric-mc1.19.3-0.11.1.jar",
+					"version": "53cwYYb1"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/14hWYkog/lithium-fabric-mc1.19.4-0.11.1.jar",
+					"version": "14hWYkog"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/2KMrj5c1/lithium-fabric-mc1.20-0.11.2.jar",
+					"version": "2KMrj5c1"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/ZSNsJrPI/lithium-fabric-mc1.20.1-0.11.2.jar",
+					"version": "ZSNsJrPI"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/qdzL5Hkg/lithium-fabric-mc1.20.2-0.12.0.jar",
+					"version": "qdzL5Hkg"
+				},
+				{
+					"minecraft_versions": "1.20.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/WzQmxYRa/lithium-fabric-mc1.20.3-0.12.1.jar",
+					"version": "WzQmxYRa"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/nMhjKWVE/lithium-fabric-mc1.20.4-0.12.1.jar",
+					"version": "nMhjKWVE"
+				}
+			]
+		}
+	},
+	"meta": {
+		"authors": [
+			"jellysquid3",
+			"2No2Name"
+		],
+		"categories": [
+			"optimization",
+			"technical"
+		],
+		"community": "https://caffeinemc.net/discord",
+		"description": "No-compromises game logic/server optimization mod",
+		"icon": "https://cdn.modrinth.com/data/gvQqBUqZ/icon.png",
+		"issues": "https://github.com/caffeinemc/lithium-fabric/issues",
+		"license": "LGPL-3.0-only",
+		"name": "Lithium",
+		"package_maintainers": [
+			"mcvm"
+		],
+		"source": "https://github.com/caffeinemc/lithium-fabric",
+		"support_link": "https://www.patreon.com/2No2Name"
+	},
+	"properties": {
+		"modrinth_id": "gvQqBUqZ",
+		"open_source": true,
+		"supported_modloaders": [
+			"fabriclike"
+		],
+		"supported_versions": [
+			"1.16.4",
+			"1.16.2",
+			"1.16.3",
+			"1.16.5",
+			"1.17",
+			"1.17.1",
+			"1.18",
+			"1.18.1",
+			"1.18.2",
+			"1.19",
+			"1.19.1",
+			"1.19.2",
+			"1.19.3",
+			"1.19.4",
+			"1.20",
+			"1.20.1",
+			"1.20.2",
+			"1.20.3",
+			"1.20.4"
+		]
+	}
 }

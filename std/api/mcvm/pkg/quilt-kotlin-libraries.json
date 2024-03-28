@@ -1,207 +1,207 @@
 {
-  "addons": {
-    "addon": {
-      "kind": "mod",
-      "versions": [
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2"
-          ],
-          "modloaders": "quilt",
-          "relations": {
-            "dependencies": "qfapi-qsl"
-          },
-          "url": "https://cdn.modrinth.com/data/lwVhp9o5/versions/FAi0G48K/quilt-kotlin-libraries-0.1.0%2Bkt.1.7.10%2Bflk.1.8.2-MODFEST.jar",
-          "version": "FAi0G48K"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2"
-          ],
-          "modloaders": "quilt",
-          "relations": {
-            "dependencies": "qfapi-qsl"
-          },
-          "url": "https://cdn.modrinth.com/data/lwVhp9o5/versions/ixUoVpXh/quilt-kotlin-libraries-0.1.1-MODFEST%2Bkt.1.7.10%2Bflk.1.8.2.jar",
-          "version": "ixUoVpXh"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2"
-          ],
-          "modloaders": "quilt",
-          "relations": {
-            "dependencies": "qfapi-qsl"
-          },
-          "url": "https://cdn.modrinth.com/data/lwVhp9o5/versions/RFKK2wt2/quilt-kotlin-libraries-0.1.2-MODFEST%2Bkt.1.7.10%2Bflk.1.8.2.jar",
-          "version": "RFKK2wt2"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "quilt",
-          "relations": {
-            "dependencies": "qfapi-qsl"
-          },
-          "url": "https://cdn.modrinth.com/data/lwVhp9o5/versions/UMYsuGTO/quilt-kotlin-libraries-1.0.0%2Bkt.1.7.20%2Bflk.1.8.5.jar",
-          "version": "UMYsuGTO"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "quilt",
-          "relations": {
-            "dependencies": "qfapi-qsl"
-          },
-          "url": "https://cdn.modrinth.com/data/lwVhp9o5/versions/NqD6unKV/quilt-kotlin-libraries-1.0.1%2Bkt.1.7.22%2Bflk.1.8.6.jar",
-          "version": "NqD6unKV"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "quilt",
-          "relations": {
-            "dependencies": "qfapi-qsl"
-          },
-          "url": "https://cdn.modrinth.com/data/lwVhp9o5/versions/4Ag1YF4s/quilt-kotlin-libraries-1.0.2%2Bkt.1.8.0%2Bflk.1.9.0.jar",
-          "version": "4Ag1YF4s"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "quilt",
-          "relations": {
-            "dependencies": "qfapi-qsl"
-          },
-          "url": "https://cdn.modrinth.com/data/lwVhp9o5/versions/xGk0YDl2/quilt-kotlin-libraries-1.1.0%2Bkt.1.8.0%2Bflk.1.9.0.jar",
-          "version": "xGk0YDl2"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "quilt",
-          "relations": {
-            "dependencies": "qfapi-qsl"
-          },
-          "url": "https://cdn.modrinth.com/data/lwVhp9o5/versions/rvPEzQsW/quilt-kotlin-libraries-1.1.1%2Bkt.1.8.10%2Bflk.1.9.2.jar",
-          "version": "rvPEzQsW"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "quilt",
-          "relations": {
-            "dependencies": "qfapi-qsl"
-          },
-          "url": "https://cdn.modrinth.com/data/lwVhp9o5/versions/p9eQkY9q/quilt-kotlin-libraries-2.0.1%2Bkt.1.8.20%2Bflk.1.9.3.jar",
-          "version": "p9eQkY9q"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "quilt",
-          "relations": {
-            "dependencies": "qfapi-qsl"
-          },
-          "url": "https://cdn.modrinth.com/data/lwVhp9o5/versions/weDX41J0/quilt-kotlin-libraries-2.0.2%2Bkt.1.8.20%2Bflk.1.9.3.jar",
-          "version": "weDX41J0"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "quilt",
-          "relations": {
-            "dependencies": "qfapi-qsl"
-          },
-          "url": "https://cdn.modrinth.com/data/lwVhp9o5/versions/AD5KqMGz/quilt-kotlin-libraries-2.1.0%2Bkt.1.8.22%2Bflk.1.9.4.jar",
-          "version": "AD5KqMGz"
-        },
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": "quilt",
-          "relations": {
-            "dependencies": "qfapi-qsl"
-          },
-          "url": "https://cdn.modrinth.com/data/lwVhp9o5/versions/iFjjxcEj/quilt-kotlin-libraries-2.1.1%2Bkt.1.9.0%2Bflk.1.9.6.jar",
-          "version": "iFjjxcEj"
-        },
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": "quilt",
-          "relations": {
-            "dependencies": "qfapi-qsl"
-          },
-          "url": "https://cdn.modrinth.com/data/lwVhp9o5/versions/9WIAwhe7/quilt-kotlin-libraries-2.1.2%2Bkt.1.9.0%2Bflk.1.10.8.jar",
-          "version": "9WIAwhe7"
-        },
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": "quilt",
-          "relations": {
-            "dependencies": "qfapi-qsl"
-          },
-          "url": "https://cdn.modrinth.com/data/lwVhp9o5/versions/RYTef2Wb/quilt-kotlin-libraries-2.1.3%2Bkt.1.9.10%2Bflk.1.10.10.jar",
-          "version": "RYTef2Wb"
-        },
-        {
-          "minecraft_versions": "1.20.2",
-          "modloaders": "quilt",
-          "relations": {
-            "dependencies": "qfapi-qsl"
-          },
-          "url": "https://cdn.modrinth.com/data/lwVhp9o5/versions/di4GKAZU/quilt-kotlin-libraries-3.0.0%2Bkt.1.9.22%2Bflk.1.10.17.jar",
-          "version": "di4GKAZU"
-        }
-      ]
-    }
-  },
-  "meta": {
-    "authors": [
-      "QuiltMC",
-      "OroArmor",
-      "LambdAurora"
-    ],
-    "categories": [
-      "api",
-      "technical"
-    ],
-    "community": "https://discord.quiltmc.org/",
-    "description": "Quilt's official Kotlin libraries",
-    "icon": "https://cdn.modrinth.com/data/lwVhp9o5/icon.png",
-    "issues": "https://github.com/QuiltMC/quilt-kotlin-libraries/issues",
-    "keywords": [
-      "quilt",
-      "api",
-      "kotlin"
-    ],
-    "license": "Apache-2.0",
-    "name": "Quilt Kotlin Libraries (QKL)",
-    "package_maintainers": [
-      "mcvm"
-    ],
-    "source": "https://github.com/QuiltMC/quilt-kotlin-libraries",
-    "support_link": "https://opencollective.com/quiltmc"
-  },
-  "properties": {
-    "modrinth_id": "lwVhp9o5",
-    "open_source": true,
-    "supported_modloaders": [
-      "quilt"
-    ],
-    "supported_versions": [
-      "1.19",
-      "1.19.1",
-      "1.19.2",
-      "1.19.3",
-      "1.19.4",
-      "1.20",
-      "1.20.1",
-      "1.20.2"
-    ]
-  },
-  "relations": {
-    "conflicts": "fabric-language-kotlin",
-    "dependencies": "qfapi-qsl"
-  }
+	"addons": {
+		"addon": {
+			"kind": "mod",
+			"versions": [
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "qfapi-qsl"
+					},
+					"url": "https://cdn.modrinth.com/data/lwVhp9o5/versions/FAi0G48K/quilt-kotlin-libraries-0.1.0%2Bkt.1.7.10%2Bflk.1.8.2-MODFEST.jar",
+					"version": "FAi0G48K"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "qfapi-qsl"
+					},
+					"url": "https://cdn.modrinth.com/data/lwVhp9o5/versions/ixUoVpXh/quilt-kotlin-libraries-0.1.1-MODFEST%2Bkt.1.7.10%2Bflk.1.8.2.jar",
+					"version": "ixUoVpXh"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "qfapi-qsl"
+					},
+					"url": "https://cdn.modrinth.com/data/lwVhp9o5/versions/RFKK2wt2/quilt-kotlin-libraries-0.1.2-MODFEST%2Bkt.1.7.10%2Bflk.1.8.2.jar",
+					"version": "RFKK2wt2"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "qfapi-qsl"
+					},
+					"url": "https://cdn.modrinth.com/data/lwVhp9o5/versions/UMYsuGTO/quilt-kotlin-libraries-1.0.0%2Bkt.1.7.20%2Bflk.1.8.5.jar",
+					"version": "UMYsuGTO"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "qfapi-qsl"
+					},
+					"url": "https://cdn.modrinth.com/data/lwVhp9o5/versions/NqD6unKV/quilt-kotlin-libraries-1.0.1%2Bkt.1.7.22%2Bflk.1.8.6.jar",
+					"version": "NqD6unKV"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "qfapi-qsl"
+					},
+					"url": "https://cdn.modrinth.com/data/lwVhp9o5/versions/4Ag1YF4s/quilt-kotlin-libraries-1.0.2%2Bkt.1.8.0%2Bflk.1.9.0.jar",
+					"version": "4Ag1YF4s"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "qfapi-qsl"
+					},
+					"url": "https://cdn.modrinth.com/data/lwVhp9o5/versions/xGk0YDl2/quilt-kotlin-libraries-1.1.0%2Bkt.1.8.0%2Bflk.1.9.0.jar",
+					"version": "xGk0YDl2"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "qfapi-qsl"
+					},
+					"url": "https://cdn.modrinth.com/data/lwVhp9o5/versions/rvPEzQsW/quilt-kotlin-libraries-1.1.1%2Bkt.1.8.10%2Bflk.1.9.2.jar",
+					"version": "rvPEzQsW"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "qfapi-qsl"
+					},
+					"url": "https://cdn.modrinth.com/data/lwVhp9o5/versions/p9eQkY9q/quilt-kotlin-libraries-2.0.1%2Bkt.1.8.20%2Bflk.1.9.3.jar",
+					"version": "p9eQkY9q"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "qfapi-qsl"
+					},
+					"url": "https://cdn.modrinth.com/data/lwVhp9o5/versions/weDX41J0/quilt-kotlin-libraries-2.0.2%2Bkt.1.8.20%2Bflk.1.9.3.jar",
+					"version": "weDX41J0"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "qfapi-qsl"
+					},
+					"url": "https://cdn.modrinth.com/data/lwVhp9o5/versions/AD5KqMGz/quilt-kotlin-libraries-2.1.0%2Bkt.1.8.22%2Bflk.1.9.4.jar",
+					"version": "AD5KqMGz"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "qfapi-qsl"
+					},
+					"url": "https://cdn.modrinth.com/data/lwVhp9o5/versions/iFjjxcEj/quilt-kotlin-libraries-2.1.1%2Bkt.1.9.0%2Bflk.1.9.6.jar",
+					"version": "iFjjxcEj"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "qfapi-qsl"
+					},
+					"url": "https://cdn.modrinth.com/data/lwVhp9o5/versions/9WIAwhe7/quilt-kotlin-libraries-2.1.2%2Bkt.1.9.0%2Bflk.1.10.8.jar",
+					"version": "9WIAwhe7"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "qfapi-qsl"
+					},
+					"url": "https://cdn.modrinth.com/data/lwVhp9o5/versions/RYTef2Wb/quilt-kotlin-libraries-2.1.3%2Bkt.1.9.10%2Bflk.1.10.10.jar",
+					"version": "RYTef2Wb"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "qfapi-qsl"
+					},
+					"url": "https://cdn.modrinth.com/data/lwVhp9o5/versions/di4GKAZU/quilt-kotlin-libraries-3.0.0%2Bkt.1.9.22%2Bflk.1.10.17.jar",
+					"version": "di4GKAZU"
+				}
+			]
+		}
+	},
+	"meta": {
+		"authors": [
+			"QuiltMC",
+			"OroArmor",
+			"LambdAurora"
+		],
+		"categories": [
+			"api",
+			"technical"
+		],
+		"community": "https://discord.quiltmc.org/",
+		"description": "Quilt's official Kotlin libraries",
+		"icon": "https://cdn.modrinth.com/data/lwVhp9o5/icon.png",
+		"issues": "https://github.com/QuiltMC/quilt-kotlin-libraries/issues",
+		"keywords": [
+			"quilt",
+			"api",
+			"kotlin"
+		],
+		"license": "Apache-2.0",
+		"name": "Quilt Kotlin Libraries (QKL)",
+		"package_maintainers": [
+			"mcvm"
+		],
+		"source": "https://github.com/QuiltMC/quilt-kotlin-libraries",
+		"support_link": "https://opencollective.com/quiltmc"
+	},
+	"properties": {
+		"modrinth_id": "lwVhp9o5",
+		"open_source": true,
+		"supported_modloaders": [
+			"quilt"
+		],
+		"supported_versions": [
+			"1.19",
+			"1.19.1",
+			"1.19.2",
+			"1.19.3",
+			"1.19.4",
+			"1.20",
+			"1.20.1",
+			"1.20.2"
+		]
+	},
+	"relations": {
+		"conflicts": "fabric-language-kotlin",
+		"dependencies": "qfapi-qsl"
+	}
 }

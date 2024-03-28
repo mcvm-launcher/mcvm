@@ -1,0 +1,1060 @@
+{
+	"addons": {
+		"addon": {
+			"kind": "mod",
+			"versions": [
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/WRaSIAfC/YetAnotherConfigLib-0.1.0.jar",
+					"version": "WRaSIAfC"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/9TFyuVJN/YetAnotherConfigLib-0.1.1.jar",
+					"version": "9TFyuVJN"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/DM1biniZ/YetAnotherConfigLib-0.1.2.jar",
+					"version": "DM1biniZ"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/iYzpWd2Z/YetAnotherConfigLib-1.0.0.jar",
+					"version": "iYzpWd2Z"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/Af0BJTus/YetAnotherConfigLib-1.1.0.jar",
+					"version": "Af0BJTus"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/6Fl6Ilzn/YetAnotherConfigLib-1.1.1.jar",
+					"version": "6Fl6Ilzn"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/RsiSJn8g/YetAnotherConfigLib-1.2.0.jar",
+					"version": "RsiSJn8g"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/4M515h9Z/YetAnotherConfigLib-1.2.1.jar",
+					"version": "4M515h9Z"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/Op8HYd0I/YetAnotherConfigLib-1.3.0.jar",
+					"version": "Op8HYd0I"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/knEInTQd/YetAnotherConfigLib-1.4.0.jar",
+					"version": "knEInTQd"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/2To1GHMW/YetAnotherConfigLib-1.4.1.jar",
+					"version": "2To1GHMW"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/zngBEiw5/YetAnotherConfigLib-1.4.2.jar",
+					"version": "zngBEiw5"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/JLCAxM5G/YetAnotherConfigLib-1.4.3.jar",
+					"version": "JLCAxM5G"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/FKVJYGyf/YetAnotherConfigLib-1.4.4.jar",
+					"version": "FKVJYGyf"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/hbt0DzsC/YetAnotherConfigLib-1.4.5.jar",
+					"version": "hbt0DzsC"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/FxNs8Edj/YetAnotherConfigLib-1.5.0.jar",
+					"version": "FxNs8Edj"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2",
+						"22w42a"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/EyhlJvkj/YetAnotherConfigLib-1.6.0.jar",
+					"version": "EyhlJvkj"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/VdIvtIwz/YetAnotherConfigLib-1.7.0.jar",
+					"version": "VdIvtIwz"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/mW3CVg5N/YetAnotherConfigLib-1.7.1.jar",
+					"version": "mW3CVg5N"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/UIAaWmvd/YetAnotherConfigLib-2.0.0.jar",
+					"version": "UIAaWmvd"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/wibQ6TRj/YetAnotherConfigLib-2.1.0.jar",
+					"version": "wibQ6TRj"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/GkKQsCJ6/YetAnotherConfigLib-2.1.1.jar",
+					"version": "GkKQsCJ6"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/3EWbdCzX/YetAnotherConfigLib-2.2.0.jar",
+					"version": "3EWbdCzX"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/bIVYcRpm/YetAnotherConfigLib-2.2.0-for-1.19.2.jar",
+					"version": "bIVYcRpm"
+				},
+				{
+					"minecraft_versions": [
+						"23w05a",
+						"23w06a"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/eQtAB8nC/YetAnotherConfigLib-2.3.0%2Bbeta.1.jar",
+					"version": "eQtAB8nC"
+				},
+				{
+					"minecraft_versions": [
+						"23w05a",
+						"23w06a"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/TWgoDEtx/YetAnotherConfigLib-2.3.0%2Bbeta.2.jar",
+					"version": "TWgoDEtx"
+				},
+				{
+					"minecraft_versions": "1.19.4-pre1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/TXnYvmpI/YetAnotherConfigLib-2.3.0%2Bbeta.3.jar",
+					"version": "TXnYvmpI"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/RmZvIqeu/YetAnotherConfigLib-2.3.0.jar",
+					"version": "RmZvIqeu"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/A04AftxZ/YetAnotherConfigLib-2.3.1.jar",
+					"version": "A04AftxZ"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/RLTQViRg/YetAnotherConfigLib-2.4.0.jar",
+					"version": "RLTQViRg"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/51iCmuDG/YetAnotherConfigLib-2.4.1.jar",
+					"version": "51iCmuDG"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/sj4aPwnQ/YetAnotherConfigLib-2.4.2.jar",
+					"version": "sj4aPwnQ"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/NZpUvhBc/yet-another-config-lib-fabric-2.5.0%2B1.19.4.jar",
+					"version": "NZpUvhBc"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/nMuzsoQt/yet-another-config-lib-forge-2.5.0%2B1.19.4.jar",
+					"version": "nMuzsoQt"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/M5iKxVFU/yet-another-config-lib-fabric-2.5.1%2B1.19.4.jar",
+					"version": "M5iKxVFU"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/VHMFG82e/yet-another-config-lib-forge-2.5.1%2B1.19.4.jar",
+					"version": "VHMFG82e"
+				},
+				{
+					"minecraft_versions": [
+						"1.20-pre1",
+						"1.20-pre2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/6EBKvxyG/yet-another-config-lib-fabric-2.5.1-beta.1%2B1.20.jar",
+					"version": "6EBKvxyG"
+				},
+				{
+					"minecraft_versions": "1.20-pre2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/qHhZ3Mlp/yet-another-config-lib-fabric-3.0.0-beta.1%2B1.20.jar",
+					"version": "qHhZ3Mlp"
+				},
+				{
+					"minecraft_versions": "1.20-pre2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/CSXeGyWW/yet-another-config-lib-fabric-3.0.0-beta.2%2B1.20.jar",
+					"version": "CSXeGyWW"
+				},
+				{
+					"minecraft_versions": "1.20-pre2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/zRlTTWFK/yet-another-config-lib-fabric-3.0.0-beta.4%2B1.20.jar",
+					"version": "zRlTTWFK"
+				},
+				{
+					"minecraft_versions": "1.20-pre2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/yShEHkWR/yet-another-config-lib-fabric-3.0.0-beta.5%2B1.20.jar",
+					"version": "yShEHkWR"
+				},
+				{
+					"minecraft_versions": "1.20-pre2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/kr3UvTk4/yet-another-config-lib-fabric-3.0.0-beta.6%2B1.20.jar",
+					"version": "kr3UvTk4"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/jZFsc9tg/yet-another-config-lib-fabric-3.0.0-beta.1%2B1.19.4.jar",
+					"version": "jZFsc9tg"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/oIlFdLZI/yet-another-config-lib-forge-3.0.0-beta.1%2B1.19.4.jar",
+					"version": "oIlFdLZI"
+				},
+				{
+					"minecraft_versions": "1.20-pre2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/8WHpxnmg/yet-another-config-lib-fabric-3.0.0-beta.7%2B1.20.jar",
+					"version": "8WHpxnmg"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/SiEAKMh4/yet-another-config-lib-fabric-3.0.0-beta.2%2B1.19.4.jar",
+					"version": "SiEAKMh4"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/gfyPkvYv/yet-another-config-lib-forge-3.0.0-beta.2%2B1.19.4.jar",
+					"version": "gfyPkvYv"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/Vc0cNGqC/yet-another-config-lib-fabric-3.0.0%2B1.19.4.jar",
+					"version": "Vc0cNGqC"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/uRw9Zalc/yet-another-config-lib-forge-3.0.0%2B1.19.4.jar",
+					"version": "uRw9Zalc"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/HOxWjhyo/yet-another-config-lib-fabric-3.0.0%2B1.20.jar",
+					"version": "HOxWjhyo"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/9ACWUOXp/yet-another-config-lib-fabric-3.0.1%2B1.19.4.jar",
+					"version": "9ACWUOXp"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/wa9YGZhd/yet-another-config-lib-forge-3.0.1%2B1.19.4.jar",
+					"version": "wa9YGZhd"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/ZqWkEgYo/yet-another-config-lib-fabric-3.0.1%2B1.20.jar",
+					"version": "ZqWkEgYo"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/zoMzOEbl/yet-another-config-lib-forge-3.0.1%2B1.20.jar",
+					"version": "zoMzOEbl"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/LM15Ky9N/yet-another-config-lib-fabric-3.0.2%2B1.19.4.jar",
+					"version": "LM15Ky9N"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/vASIPGay/yet-another-config-lib-forge-3.0.2%2B1.19.4.jar",
+					"version": "vASIPGay"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/zJ1Wh6pM/yet-another-config-lib-fabric-3.0.2%2B1.20.jar",
+					"version": "zJ1Wh6pM"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/DjwHtlVp/yet-another-config-lib-forge-3.0.2%2B1.20.jar",
+					"version": "DjwHtlVp"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/omClzsLe/yet-another-config-lib-fabric-3.0.3%2B1.19.4.jar",
+					"version": "omClzsLe"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/zU7Ejh24/yet-another-config-lib-forge-3.0.3%2B1.19.4.jar",
+					"version": "zU7Ejh24"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/g38uL3ti/yet-another-config-lib-fabric-3.0.3%2B1.20.jar",
+					"version": "g38uL3ti"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/3vGF9MOJ/yet-another-config-lib-forge-3.0.3%2B1.20.jar",
+					"version": "3vGF9MOJ"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/SqpDFYpa/yet-another-config-lib-fabric-3.0.4%2B1.19.4.jar",
+					"version": "SqpDFYpa"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/M1u6F79I/yet-another-config-lib-forge-3.0.4%2B1.19.4.jar",
+					"version": "M1u6F79I"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/3HHSMwA9/yet-another-config-lib-fabric-3.1.0%2B1.19.4.jar",
+					"version": "3HHSMwA9"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/IsGTmmrV/yet-another-config-lib-forge-3.1.0%2B1.19.4.jar",
+					"version": "IsGTmmrV"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/CgwTUAR2/yet-another-config-lib-fabric-3.1.0%2B1.20.jar",
+					"version": "CgwTUAR2"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/RPlKFmas/yet-another-config-lib-forge-3.1.0%2B1.20.jar",
+					"version": "RPlKFmas"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/VPm1SrE4/yet-another-config-lib-fabric-3.1.1%2B1.20.jar",
+					"version": "VPm1SrE4"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/RpevhOax/yet-another-config-lib-forge-3.1.1%2B1.20.jar",
+					"version": "RpevhOax"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/gJ6ZmZ4Z/yet-another-config-lib-fabric-3.1.1%2B1.19.4.jar",
+					"version": "gJ6ZmZ4Z"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/Jf2pciI1/yet-another-config-lib-forge-3.1.1%2B1.19.4.jar",
+					"version": "Jf2pciI1"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/HM9McfrA/yet-another-config-lib-fabric-3.2.0%2B1.20.2.jar",
+					"version": "HM9McfrA"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/O7kIps9X/yet-another-config-lib-forge-3.2.0%2B1.20.2.jar",
+					"version": "O7kIps9X"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/RBAUxw9P/yet-another-config-lib-fabric-3.2.0%2B1.20.jar",
+					"version": "RBAUxw9P"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/4EU2xyVo/yet-another-config-lib-forge-3.2.0%2B1.20.jar",
+					"version": "4EU2xyVo"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/u6jV7Q7R/yet-another-config-lib-fabric-3.2.1%2B1.20.2.jar",
+					"version": "u6jV7Q7R"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/lVQpbXSe/yet-another-config-lib-forge-3.2.1%2B1.20.2.jar",
+					"version": "lVQpbXSe"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/3hsIB5yP/yet-another-config-lib-fabric-3.2.1%2B1.20.jar",
+					"version": "3hsIB5yP"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/smEdHeFU/yet-another-config-lib-forge-3.2.1%2B1.20.jar",
+					"version": "smEdHeFU"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/vede4iWJ/yet-another-config-lib-fabric-3.3.0-beta.1%2B1.20.2.jar",
+					"version": "vede4iWJ"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/n8X2J9Hh/yet-another-config-lib-forge-3.3.0-beta.1%2B1.20.2.jar",
+					"version": "n8X2J9Hh"
+				},
+				{
+					"minecraft_versions": "1.20.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/ZytICJS4/yet-another-config-lib-fabric-3.3.0-beta.1%2B1.20.3.jar",
+					"version": "ZytICJS4"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/IHHNzQkV/yet-another-config-lib-fabric-3.3.0%2B1.20.4.jar",
+					"version": "IHHNzQkV"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": "neoforged",
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/3TfeWIWo/yet-another-config-lib-neoforge-3.3.0%2B1.20.4.jar",
+					"version": "3TfeWIWo"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/cwavYrLH/yet-another-config-lib-fabric-3.3.1%2B1.20.4.jar",
+					"version": "cwavYrLH"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": "neoforged",
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/vMzBhYIk/yet-another-config-lib-neoforge-3.3.1%2B1.20.4.jar",
+					"version": "vMzBhYIk"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/StXMrAsz/yet-another-config-lib-fabric-3.3.2%2B1.20.4.jar",
+					"version": "StXMrAsz"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": "neoforged",
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/5Y3n1Apc/yet-another-config-lib-neoforge-3.3.2%2B1.20.4.jar",
+					"version": "5Y3n1Apc"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/DretS191/yet-another-config-lib-fabric-3.2.2%2B1.20.jar",
+					"version": "DretS191"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/WdbHS4uT/yet-another-config-lib-forge-3.2.2%2B1.20.jar",
+					"version": "WdbHS4uT"
+				}
+			]
+		}
+	},
+	"meta": {
+		"authors": [
+			"isxander"
+		],
+		"categories": [
+			"library",
+			"technical"
+		],
+		"community": "https://short.isxander.dev/discord",
+		"description": "A builder-based configuration library for Minecraft.",
+		"documentation": "https://docs.isxander.dev/yet-another-config-lib",
+		"gallery": [
+			"https://cdn.modrinth.com/data/1eAoo2KR/images/f5f6bdad06350bc34c8a207df242705660231e8a.png"
+		],
+		"icon": "https://cdn.modrinth.com/data/1eAoo2KR/1e43d5714f87ac6b20622e73b3ba7209be5ebafb.png",
+		"issues": "https://github.com/isXander/YetAnotherConfigLib/issues",
+		"keywords": [
+			"config"
+		],
+		"license": "LGPL-3.0-or-later",
+		"name": "YetAnotherConfigLib",
+		"package_maintainers": [
+			"mcvm"
+		],
+		"source": "https://github.com/isXander/YetAnotherConfigLib",
+		"support_link": "https://ko-fi.com/isxander"
+	},
+	"properties": {
+		"modrinth_id": "1eAoo2KR",
+		"open_source": true,
+		"supported_modloaders": [
+			"fabriclike",
+			"forgelike"
+		],
+		"supported_versions": [
+			"1.19",
+			"1.19.1",
+			"1.19.2",
+			"22w42a",
+			"1.19.3",
+			"23w05a",
+			"23w06a",
+			"1.19.4-pre1",
+			"1.19.4",
+			"1.20-pre1",
+			"1.20-pre2",
+			"1.20",
+			"1.20.1",
+			"1.20.2",
+			"1.20.3",
+			"1.20.4"
+		]
+	}
+}

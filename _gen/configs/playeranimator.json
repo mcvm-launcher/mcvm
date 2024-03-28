@@ -1,0 +1,21 @@
+{
+	"relation_substitutions": {
+		"aRnIEV0F": "bendy-lib"
+	},
+	"merge": {
+		"meta": {
+			"package_maintainers": [
+				"mcvm"
+			],
+			"categories": [
+				"library",
+				"technical"
+			]
+		},
+		"properties": {
+			"supported_modloaders": [
+				"forgelike"
+			]
+		}
+	}
+}

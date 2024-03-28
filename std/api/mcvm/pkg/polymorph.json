@@ -1,0 +1,388 @@
+{
+	"addons": {
+		"addon": {
+			"kind": "mod",
+			"versions": [
+				{
+					"minecraft_versions": "1.15.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/diy4s2XO/polymorph-FORGE-1.15.2-0.10.jar",
+					"version": "diy4s2XO"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/66Bkdq05/polymorph-forge-1.16.5-0.41.jar",
+					"version": "66Bkdq05"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/68l9BR3j/polymorph-fabric-0.0.14-1.16.5.jar",
+					"version": "68l9BR3j"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/bT9w3gh5/polymorph-forge-1.17.1-0.33.jar",
+					"version": "bT9w3gh5"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/hR8YtS8a/polymorph-fabric-0.0.15-1.17.1.jar",
+					"version": "hR8YtS8a"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/gxwQtnsA/polymorph-forge-1.18.2-0.46.jar",
+					"version": "gxwQtnsA"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/vAv92Cl4/polymorph-fabric-0.0.21-1.18.2.jar",
+					"version": "vAv92Cl4"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/vuRsKlbz/polymorph-forge-0.46.1%2B1.19.2.jar",
+					"version": "vuRsKlbz"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/cnPRpn78/polymorph-fabric-0.46.1%2B1.19.2.jar",
+					"version": "cnPRpn78"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/tLFw14o5/polymorph-forge-1.18.2-0.47.jar",
+					"version": "tLFw14o5"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/haoNzeyv/polymorph-forge-1.18.2-0.48.jar",
+					"version": "haoNzeyv"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/750iJ3hO/polymorph-fabric-0.0.22-1.18.2.jar",
+					"version": "750iJ3hO"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/rect6WEh/polymorph-fabric-0.0.23-1.18.2.jar",
+					"version": "rect6WEh"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/aYxyXMzJ/polymorph-forge-0.46.2%2B1.19.2.jar",
+					"version": "aYxyXMzJ"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/ChHxCoAb/polymorph-fabric-0.46.2%2B1.19.2.jar",
+					"version": "ChHxCoAb"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/STYYlkp8/polymorph-forge-0.46.3%2B1.19.2.jar",
+					"version": "STYYlkp8"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/wN8G3kAN/polymorph-fabric-0.46.3%2B1.19.2.jar",
+					"version": "wN8G3kAN"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/skUakdXR/polymorph-forge-0.47.0%2B1.19.3.jar",
+					"version": "skUakdXR"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/uAleZkbS/polymorph-fabric-0.47.0%2B1.19.3.jar",
+					"version": "uAleZkbS"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/SNlci35k/polymorph-forge-0.47.1%2B1.19.3.jar",
+					"version": "SNlci35k"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/GKZ6KVfs/polymorph-fabric-0.47.1%2B1.19.3.jar",
+					"version": "GKZ6KVfs"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/6Nyu412V/polymorph-forge-0.48.0%2B1.19.4.jar",
+					"version": "6Nyu412V"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/VQtXcHcR/polymorph-fabric-0.48.0%2B1.19.4.jar",
+					"version": "VQtXcHcR"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/bIDSNOm5/polymorph-forge-0.49.0%2B1.20.1.jar",
+					"version": "bIDSNOm5"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/UlRasi89/polymorph-fabric-0.49.0%2B1.20.1.jar",
+					"version": "UlRasi89"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/l15iQHMn/polymorph-quilt-0.49.0%2B1.20.1.jar",
+					"version": "l15iQHMn"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/AWwJD7yS/polymorph-forge-0.46.4%2B1.19.2.jar",
+					"version": "AWwJD7yS"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/7L5hC81R/polymorph-fabric-0.46.4%2B1.19.2.jar",
+					"version": "7L5hC81R"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/zncS6GGa/polymorph-forge-1.18.2-0.49.jar",
+					"version": "zncS6GGa"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/pJZr4yc3/polymorph-forge-0.46.5%2B1.19.2.jar",
+					"version": "pJZr4yc3"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/8zhVFKEL/polymorph-fabric-0.46.5%2B1.19.2.jar",
+					"version": "8zhVFKEL"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/Sj0OPjRM/polymorph-forge-0.48.1%2B1.19.4.jar",
+					"version": "Sj0OPjRM"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/2BAp032A/polymorph-fabric-0.48.1%2B1.19.4.jar",
+					"version": "2BAp032A"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/FBfg7una/polymorph-forge-0.49.1%2B1.20.1.jar",
+					"version": "FBfg7una"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/E4b6m0sQ/polymorph-fabric-0.49.1%2B1.20.1.jar",
+					"version": "E4b6m0sQ"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/GcFD377O/polymorph-quilt-0.49.1%2B1.20.1.jar",
+					"version": "GcFD377O"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/km82tZAr/polymorph-forge-0.49.2%2B1.20.1.jar",
+					"version": "km82tZAr"
+				}
+			]
+		}
+	},
+	"meta": {
+		"authors": [
+			"TheIllusiveC4"
+		],
+		"categories": [
+			"technical"
+		],
+		"community": "https://discord.gg/JWgrdwt",
+		"description": "No more recipe conflicts! Adds an option to choose the crafting result if more than one is available.",
+		"icon": "https://cdn.modrinth.com/data/tagwiZkJ/ed244c5829bde539763c7fffb55cb3194a349d66.png",
+		"issues": "https://github.com/illusivesoulworks/polymorph/issues",
+		"keywords": [
+			"bug-fix"
+		],
+		"license": "LGPL-3.0-or-later",
+		"name": "Polymorph",
+		"package_maintainers": [
+			"mcvm"
+		],
+		"source": "https://github.com/illusivesoulworks/polymorph",
+		"support_link": "https://ko-fi.com/theillusivec4"
+	},
+	"properties": {
+		"modrinth_id": "tagwiZkJ",
+		"supported_modloaders": [
+			"forgelike",
+			"fabriclike"
+		],
+		"supported_versions": [
+			"1.15.2",
+			"1.16.5",
+			"1.17.1",
+			"1.18.2",
+			"1.19",
+			"1.19.1",
+			"1.19.2",
+			"1.19.3",
+			"1.19.4",
+			"1.20",
+			"1.20.1"
+		]
+	}
+}

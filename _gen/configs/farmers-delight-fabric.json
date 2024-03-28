@@ -1,0 +1,26 @@
+{
+	"relation_substitutions": {
+		"P7dR8mSH": "fabriclike-api"
+	},
+	"merge": {
+		"meta": {
+			"package_maintainers": [
+				"mcvm"
+			],
+			"banner": "https://cdn.modrinth.com/data/4EakbH8e/images/101ca5b7809ad50252bee78c8dfe456d65881d4e.png",
+			"keywords": [
+				"farming"
+			],
+			"categories": [
+				"technology",
+				"farming",
+				"food"
+			]
+		},
+		"properties": {
+			"supported_modloaders": [
+				"fabriclike"
+			]
+		}
+	}
+}

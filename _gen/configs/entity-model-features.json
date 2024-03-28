@@ -1,0 +1,42 @@
+{
+	"relation_substitutions": {
+		"BVzZfTc1": "entity-texture-features"
+	},
+	"merge": {
+		"meta": {
+			"package_maintainers": [
+				"mcvm"
+			],
+			"gallery": [
+				"https://cdn.modrinth.com/data/4I1XuqiY/images/2f32dbeadc25e46ef6c56f0e47e5eb5d305c8ea2.png",
+				"https://cdn.modrinth.com/data/4I1XuqiY/images/6a28d3a7f7178334c22d2c7878b3c816128f39d8.png",
+				"https://cdn.modrinth.com/data/4I1XuqiY/images/9afb8d0168dfc5ce99b2d3796b114a2d6986dcd3.png",
+				"https://cdn.modrinth.com/data/4I1XuqiY/images/a243ddc1979faacf3745a6fa74d6e46218f1dff9.png",
+				"https://cdn.modrinth.com/data/4I1XuqiY/images/a6fe81b299dff2877272c143ecf97b65a79bec39.png",
+				"https://cdn.modrinth.com/data/4I1XuqiY/images/b1faba6938262d67ff523a6eda870f0131b5960a.png",
+				"https://cdn.modrinth.com/data/4I1XuqiY/images/f62f4ec3152716aead6b53119049def9106f0b26.png",
+				"https://cdn.modrinth.com/data/4I1XuqiY/images/49f5b98dfef5b073a3971750673d343e1f92efe5.png"
+			],
+			"keywords": [
+				"entity",
+				"models"
+			],
+			"categories": [
+				"graphics",
+				"technical"
+			]
+		},
+		"properties": {
+			"open_source": true,
+			"supported_modloaders": [
+				"fabriclike",
+				"forgelike"
+			]
+		},
+		"relations": {
+			"dependencies": [
+				"fabric-rendering-api"
+			]
+		}
+	}
+}

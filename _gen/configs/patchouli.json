@@ -1,0 +1,22 @@
+{
+	"relation_substitutions": {
+		"P7dR8mSH": "fabriclike-api"
+	},
+	"merge": {
+		"meta": {
+			"package_maintainers": [
+				"mcvm"
+			],
+			"categories": [
+				"library",
+				"technical"
+			]
+		},
+		"properties": {
+			"supported_modloaders": [
+				"forgelike",
+				"fabriclike"
+			]
+		}
+	}
+}

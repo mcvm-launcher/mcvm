@@ -1,0 +1,26 @@
+{
+	"relation_substitutions": {
+		"P7dR8mSH": "fabriclike-api",
+		"K01OU20C": "cardinal-components-api",
+		"qvIfYCYJ": "fabriclike-api"
+	},
+	"merge": {
+		"meta": {
+			"package_maintainers": [
+				"mcvm"
+			],
+			"keywords": [
+				"bug-fix"
+			],
+			"categories": [
+				"technical"
+			]
+		},
+		"properties": {
+			"supported_modloaders": [
+				"forgelike",
+				"fabriclike"
+			]
+		}
+	}
+}
