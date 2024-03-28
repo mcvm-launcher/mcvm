@@ -3,13 +3,16 @@ use std::collections::HashMap;
 use serde::Deserialize;
 use serde_json::Value;
 
+/// Generation of many packages
+pub mod batched;
 /// Modrinth package generation
 pub mod modrinth;
 /// Smithed package generation
 pub mod smithed;
 
 /// Different types of package generation
-#[derive(Copy, Clone, Debug, clap::ValueEnum)]
+#[derive(Copy, Clone, Debug, clap::ValueEnum, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
 pub enum PackageSource {
 	Smithed,
 	Modrinth,

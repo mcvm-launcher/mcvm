@@ -5,7 +5,7 @@ use reqwest::Client;
 use serde::{Deserialize, Serialize};
 
 /// A Modrinth project (mod, resource pack, etc.)
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Clone)]
 pub struct Project {
 	/// The ID of the project
 	pub id: String,
@@ -21,6 +21,8 @@ pub struct Project {
 	pub client_side: SideSupport,
 	/// The project's support on the server side
 	pub server_side: SideSupport,
+	/// The project's team ID
+	pub team: String,
 	/// The display name of the project
 	pub title: String,
 	/// The short description of the project
@@ -44,7 +46,7 @@ pub struct Project {
 }
 
 /// The type of a Modrinth project
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Copy, Clone)]
 #[serde(rename_all = "lowercase")]
 pub enum ProjectType {
 	/// A mod project
@@ -84,6 +86,18 @@ fn format_get_project_url(project_id: &str) -> String {
 	format!("https://api.modrinth.com/v2/project/{project_id}")
 }
 
+/// Get multiple Modrinth projects
+pub async fn get_multiple_projects(
+	projects: &[String],
+	client: &Client,
+) -> anyhow::Result<Vec<Project>> {
+	// Use the multiple-projects API endpoint as it's faster
+	let param = serde_json::to_string(projects)
+		.context("Failed to convert project list to API parameter")?;
+	let url = format!("https://api.modrinth.com/v2/projects?ids={param}");
+	download::json(url, client).await
+}
+
 /// Release channel for a Modrinth project version
 #[derive(Deserialize, Serialize)]
 #[serde(rename_all = "snake_case")]
@@ -118,7 +132,7 @@ pub struct Version {
 }
 
 /// Loader for a Modrinth project version
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Clone)]
 #[serde(untagged)]
 pub enum Loader {
 	/// A loader that is known
@@ -128,7 +142,7 @@ pub enum Loader {
 }
 
 /// A known plugin / mod loader that Modrinth supports
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Copy, Clone)]
 #[serde(rename_all = "snake_case")]
 pub enum KnownLoader {
 	/// MinecraftForge
@@ -273,28 +287,28 @@ pub enum DependencyType {
 }
 
 /// Information about a project license
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Clone)]
 pub struct License {
 	/// The short ID of the license
 	pub id: String,
 }
 
 /// Information about a donation link
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Clone)]
 pub struct DonationLink {
 	/// The URL of the link
 	pub url: String,
 }
 
 /// An entry in a project's gallery
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Clone)]
 pub struct GalleryEntry {
 	/// The URL to the gallery image
 	pub url: String,
 }
 
 /// Support status for a project on a specific side
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Clone, Copy)]
 #[serde(rename_all = "snake_case")]
 pub enum SideSupport {
 	/// Required to be on this side
@@ -311,17 +325,31 @@ pub async fn get_project_team(project_id: &str, client: &Client) -> anyhow::Resu
 	download::json(url, client).await
 }
 
+/// Get multiple Modrinth teams
+pub async fn get_multiple_teams(
+	teams: &[String],
+	client: &Client,
+) -> anyhow::Result<Vec<Vec<Member>>> {
+	// Use the multiple-teams API endpoint as it's faster
+	let param =
+		serde_json::to_string(teams).context("Failed to convert team list to API parameter")?;
+	let url = format!("https://api.modrinth.com/v2/teams?ids={param}");
+	download::json(url, client).await
+}
+
 /// A member of a project team
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Clone)]
 pub struct Member {
 	/// The user that represents this member
 	pub user: User,
 	/// The ordering of the team member
 	pub ordering: i32,
+	/// The ID of the team this member is a part of
+	pub team_id: String,
 }
 
 /// A user on the platform
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Clone)]
 pub struct User {
 	/// The user's username
 	pub username: String,

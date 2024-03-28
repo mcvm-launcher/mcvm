@@ -14,7 +14,8 @@ use mcvm::shared::util::DeserListOrSingle;
 use mcvm::shared::versions::VersionPattern;
 
 use mcvm::net::modrinth::{
-	self, DependencyType, KnownLoader, Loader, Project, ProjectType, ReleaseChannel, SideSupport,
+	self, DependencyType, KnownLoader, Loader, Member, Project, ProjectType, ReleaseChannel,
+	SideSupport, Version,
 };
 use mcvm::shared::Side;
 
@@ -28,6 +29,31 @@ pub async fn gen(
 		.await
 		.expect("Failed to get Modrinth project");
 
+	let versions = modrinth::get_multiple_versions(&project.versions, &client)
+		.await
+		.expect("Failed to get Modrinth project versions");
+
+	let members = modrinth::get_project_team(id, &client)
+		.await
+		.expect("Failed to get project team members from Modrinth");
+
+	gen_raw(
+		project,
+		&versions,
+		&members,
+		relation_substitutions,
+		force_extensions,
+	)
+	.await
+}
+
+pub async fn gen_raw(
+	project: Project,
+	versions: &[Version],
+	members: &[Member],
+	relation_substitutions: HashMap<String, String>,
+	force_extensions: &[String],
+) -> DeclarativePackage {
 	// Get supported sides
 	let supported_sides = get_supported_sides(&project);
 
@@ -65,9 +91,7 @@ pub async fn gen(
 	meta.license = Some(project.license.id);
 
 	// Get team members and use them to fill out the authors field
-	let mut members = modrinth::get_project_team(id, &client)
-		.await
-		.expect("Failed to get project team members from Modrinth");
+	let mut members = members.to_vec();
 	members.sort_by_key(|x| x.ordering);
 	meta.authors = Some(members.into_iter().map(|x| x.user.username).collect());
 
@@ -100,12 +124,13 @@ pub async fn gen(
 		conditions: Vec::new(),
 	};
 
-	let versions = modrinth::get_multiple_versions(&project.versions, &client)
-		.await
-		.expect("Failed to get Modrinth project versions");
-
 	// Iterate in reverse so that newer versions are closer to the top
 	for version in versions.into_iter().rev() {
+		// Check if the version is in the project's versions since it may be from a batched pool
+		if !project.versions.contains(&version.id) {
+			continue;
+		}
+
 		let version_name = version.id.clone();
 		// Collect Minecraft versions
 		let mc_versions: Vec<VersionPattern> = version
