@@ -54,3 +54,5 @@ spasm modrinth kVAXUykP
 ferrite-core modrinth uXXizFIs
 sodium-extra modrinth PtjYWJkn
 reeses-sodium-options modrinth Bh37bMuy
+immediatelyfast modrinth 5ZwdcRci
+lambdynamiclights modrinth yBW8D80W
