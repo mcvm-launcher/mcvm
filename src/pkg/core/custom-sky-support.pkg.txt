@@ -1,7 +1,7 @@
 @meta {
 	name "Custom Skies Support";
 	description "Installs mods to support custom skies in resource packs";
-	authors "CarbonSmasher";
+	authors "mcvm";
 }
 
 @install {

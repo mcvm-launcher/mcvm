@@ -1,7 +1,7 @@
 @meta {
 	name "HD Fonts Support";
 	description "Installs mods to ensure support for HD fonts in resource packs";
-	authors "CarbonSmasher";
+	authors "mcvm";
 }
 
 @install {

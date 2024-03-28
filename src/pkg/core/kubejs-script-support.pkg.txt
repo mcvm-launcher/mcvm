@@ -1,7 +1,7 @@
 @meta {
 	name "KubeJS Script Support";
 	description "Adds support for loading and running KubeJS scripts";
-	authors "CarbonSmasher";
+	authors "mcvm";
 }
 
 @install {

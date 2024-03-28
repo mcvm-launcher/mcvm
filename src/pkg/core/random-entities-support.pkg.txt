@@ -1,7 +1,7 @@
 @meta {
 	name "Random Entities Support";
 	description "Installs mods to support random entities in resource packs";
-	authors "CarbonSmasher";
+	authors "mcvm";
 }
 
 @install {

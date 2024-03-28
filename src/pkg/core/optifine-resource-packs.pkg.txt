@@ -2,7 +2,7 @@
 	name "Optifine Resource Packs Support";
 	description "Bundles all the mods necessary to support features in Optifine resource packs";
 	long_description "It is better to require the specific support packages you need for your resource pack than all of them";
-	authors "CarbonSmasher";
+	authors "mcvm";
 }
 
 @install {

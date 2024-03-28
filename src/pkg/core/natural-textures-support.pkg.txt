@@ -1,7 +1,7 @@
 @meta {
 	name "Natural Textures Support";
 	description "Installs mods to ensure support for natural textures in resource packs";
-	authors "CarbonSmasher";
+	authors "mcvm";
 }
 
 @install {

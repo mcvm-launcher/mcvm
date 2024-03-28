@@ -1,7 +1,7 @@
 @meta {
 	name "Animated Textures Support";
 	description "Installs mods to support animated textures in resource packs";
-	authors "CarbonSmasher";
+	authors "mcvm";
 }
 
 @install {

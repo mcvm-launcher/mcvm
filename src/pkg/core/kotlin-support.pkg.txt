@@ -1,7 +1,7 @@
 @meta {
 	name "Kotlin Language Support";
 	description "Provides support for the Kotlin language for mods";
-	authors "CarbonSmasher";
+	authors "mcvm";
 }
 
 @install {

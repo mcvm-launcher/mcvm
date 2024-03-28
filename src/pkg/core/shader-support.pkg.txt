@@ -1,7 +1,7 @@
 @meta {
 	name "Shader Support";
 	description "Installs mods to allow the loading of shader packs";
-	authors "CarbonSmasher";
+	authors "mcvm";
 }
 
 @install {

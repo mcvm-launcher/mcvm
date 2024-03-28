@@ -1,7 +1,7 @@
 @meta {
 	name "Custom Splash Screen Support";
 	description "Installs mods to support custom splash screens in resource packs";
-	authors "CarbonSmasher";
+	authors "mcvm";
 }
 
 @install {

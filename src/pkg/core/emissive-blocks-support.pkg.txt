@@ -1,7 +1,7 @@
 @meta {
 	name "Emissive Blocks Support";
 	description "Installs mods to support emissive blocks in resource packs";
-	authors "CarbonSmasher";
+	authors "mcvm";
 }
 
 @install {

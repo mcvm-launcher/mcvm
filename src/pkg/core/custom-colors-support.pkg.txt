@@ -1,7 +1,7 @@
 @meta {
 	name "Custom Colors Support";
 	description "Installs mods to support custom colors in resource packs";
-	authors "CarbonSmasher";
+	authors "mcvm";
 }
 
 @install {

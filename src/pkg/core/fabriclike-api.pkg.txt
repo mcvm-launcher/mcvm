@@ -1,7 +1,7 @@
 @meta {
 	name "Fabriclike API";
 	description "Installs the proper Fabric/Quilt API mod";
-	authors "CarbonSmasher";
+	authors "mcvm";
 }
 
 @install {

@@ -2,7 +2,7 @@
 	"meta": {
 		"name": "Quilted Fabric API",
 		"description": "Ensures support for the Quilted Fabric API",
-		"package_maintainers": [ "CarbonSmasher" ]
+		"package_maintainers": [ "mcvm" ]
 	},
 	"properties": {
 		"supported_modloaders": [ "quilt" ]

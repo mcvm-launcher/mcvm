@@ -1,7 +1,7 @@
 @meta {
 	name "Emissive Entities Support";
 	description "Installs mods to support emissive entities in resource packs";
-	authors "CarbonSmasher";
+	authors "mcvm";
 }
 
 @install {

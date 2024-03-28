@@ -1,7 +1,7 @@
 @meta {
 	name "Custom GUI Support";
 	description "Installs mods to support custom GUIs in resource packs";
-	authors "CarbonSmasher";
+	authors "mcvm";
 }
 
 @install {

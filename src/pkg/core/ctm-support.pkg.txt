@@ -1,7 +1,7 @@
 @meta {
 	name "Connected Textures Support";
 	description "Installs mods to support Connected Textures in resource packs";
-	authors "CarbonSmasher";
+	authors "mcvm";
 }
 
 @install {

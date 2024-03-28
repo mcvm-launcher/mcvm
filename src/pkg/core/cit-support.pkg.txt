@@ -1,7 +1,7 @@
 @meta {
 	name "Custom Item Textures Support";
 	description "Installs mods to support Custom Item Textures in resource packs";
-	authors "CarbonSmasher";
+	authors "mcvm";
 }
 
 @install {

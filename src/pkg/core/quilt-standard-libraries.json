@@ -2,7 +2,7 @@
 	"meta": {
 		"name": "Quilt Standard Libraries",
 		"description": "Ensures support for the Quilt Standard Libraries",
-		"package_maintainers": [ "CarbonSmasher" ]
+		"package_maintainers": [ "mcvm" ]
 	},
 	"properties": {
 		"supported_modloaders": [ "quilt" ]
