@@ -85,7 +85,7 @@ fn format_get_project_url(project_id: &str) -> String {
 }
 
 /// Release channel for a Modrinth project version
-#[derive(Deserialize)]
+#[derive(Deserialize, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum ReleaseChannel {
 	/// A finished release version
@@ -105,6 +105,8 @@ pub struct Version {
 	pub name: String,
 	/// The version number of this version
 	pub version_number: String,
+	/// The type / release channel of this version
+	pub version_type: ReleaseChannel,
 	/// The loaders that this version supports
 	pub loaders: Vec<Loader>,
 	/// The list of downloads for this version

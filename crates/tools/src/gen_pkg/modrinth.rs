@@ -9,11 +9,12 @@ use mcvm::pkg_crate::properties::PackageProperties;
 use mcvm::pkg_crate::RecommendedPackage;
 use mcvm::shared::addon::AddonKind;
 use mcvm::shared::modifications::{ModloaderMatch, PluginLoaderMatch};
+use mcvm::shared::pkg::PackageStability;
 use mcvm::shared::util::DeserListOrSingle;
 use mcvm::shared::versions::VersionPattern;
 
 use mcvm::net::modrinth::{
-	self, DependencyType, KnownLoader, Loader, Project, ProjectType, SideSupport,
+	self, DependencyType, KnownLoader, Loader, Project, ProjectType, ReleaseChannel, SideSupport,
 };
 use mcvm::shared::Side;
 
@@ -132,6 +133,12 @@ pub async fn gen(
 			}
 		}
 
+		// Get stability
+		let stability = match version.version_type {
+			ReleaseChannel::Release => PackageStability::Stable,
+			ReleaseChannel::Alpha | ReleaseChannel::Beta => PackageStability::Latest,
+		};
+
 		let mut deps = Vec::new();
 		let mut recommendations = Vec::new();
 		let mut extensions = Vec::new();
@@ -167,6 +174,7 @@ pub async fn gen(
 				minecraft_versions: Some(DeserListOrSingle::List(mc_versions)),
 				modloaders: Some(DeserListOrSingle::List(modloaders)),
 				plugin_loaders: Some(DeserListOrSingle::List(plugin_loaders)),
+				stability: Some(stability),
 				..Default::default()
 			},
 			relations: DeclarativePackageRelations {
