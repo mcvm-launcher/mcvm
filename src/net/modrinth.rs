@@ -251,6 +251,8 @@ pub enum DependencyType {
 	Optional,
 	/// An incompatible dependency
 	Incompatible,
+	/// An embedded dependency
+	Embedded,
 }
 
 /// Information about a project license

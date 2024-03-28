@@ -114,6 +114,8 @@ pub async fn gen(
 					invert: false,
 				}),
 				DependencyType::Incompatible => conflicts.push(pkg_id),
+				// We don't need to do anything with embedded dependencies yet
+				DependencyType::Embedded => {}
 			}
 		}
 
