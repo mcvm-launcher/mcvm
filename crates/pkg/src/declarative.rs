@@ -99,31 +99,31 @@ impl DeclarativePackageRelations {
 #[serde(default)]
 pub struct DeclarativeConditionSet {
 	/// Minecraft versions to allow
-	#[serde(skip_serializing_if = "Option::is_none")]
+	#[serde(skip_serializing_if = "DeserListOrSingle::is_option_empty")]
 	pub minecraft_versions: Option<DeserListOrSingle<VersionPattern>>,
 	/// What side to allow
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub side: Option<Side>,
 	/// What modloaders to allow
-	#[serde(skip_serializing_if = "Option::is_none")]
+	#[serde(skip_serializing_if = "DeserListOrSingle::is_option_empty")]
 	pub modloaders: Option<DeserListOrSingle<ModloaderMatch>>,
 	/// What plugin loaders to allow
-	#[serde(skip_serializing_if = "Option::is_none")]
+	#[serde(skip_serializing_if = "DeserListOrSingle::is_option_empty")]
 	pub plugin_loaders: Option<DeserListOrSingle<PluginLoaderMatch>>,
 	/// What stability setting to allow
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub stability: Option<PackageStability>,
 	/// What features to allow
-	#[serde(skip_serializing_if = "Option::is_none")]
+	#[serde(skip_serializing_if = "DeserListOrSingle::is_option_empty")]
 	pub features: Option<DeserListOrSingle<String>>,
 	/// What operating systems to allow
-	#[serde(skip_serializing_if = "Option::is_none")]
+	#[serde(skip_serializing_if = "DeserListOrSingle::is_option_empty")]
 	pub operating_systems: Option<DeserListOrSingle<OSCondition>>,
 	/// What system architectures to allow
-	#[serde(skip_serializing_if = "Option::is_none")]
+	#[serde(skip_serializing_if = "DeserListOrSingle::is_option_empty")]
 	pub architectures: Option<DeserListOrSingle<ArchCondition>>,
 	/// What languages to allow
-	#[serde(skip_serializing_if = "Option::is_none")]
+	#[serde(skip_serializing_if = "DeserListOrSingle::is_option_empty")]
 	pub languages: Option<DeserListOrSingle<Language>>,
 }
 

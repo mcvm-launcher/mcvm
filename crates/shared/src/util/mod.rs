@@ -264,6 +264,11 @@ impl<T> DeserListOrSingle<T> {
 		matches!(self, Self::List(list) if list.is_empty())
 	}
 
+	/// Checks if an option of this struct is empty
+	pub fn is_option_empty(val: &Option<Self>) -> bool {
+		val.is_none() || matches!(val, Some(val) if val.is_empty())
+	}
+
 	/// Iterates over this DeserListOrSingle
 	pub fn iter(&self) -> DeserListOrSingleIter<'_, T> {
 		match &self {
