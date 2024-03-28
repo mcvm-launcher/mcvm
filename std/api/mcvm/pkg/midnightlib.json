@@ -25,7 +25,6 @@
 					"relations": {
 						"dependencies": "fabriclike-api",
 						"recommendations": {
-							"invert": false,
 							"value": "mod-menu"
 						}
 					},

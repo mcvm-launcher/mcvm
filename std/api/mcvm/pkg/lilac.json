@@ -16,8 +16,8 @@
 					],
 					"relations": {
 						"dependencies": [
-							"kotlin-support",
-							"fabriclike-api"
+							"fabriclike-api",
+							"kotlin-support"
 						]
 					},
 					"stability": "latest",
@@ -36,8 +36,8 @@
 					],
 					"relations": {
 						"dependencies": [
-							"kotlin-support",
-							"fabriclike-api"
+							"fabriclike-api",
+							"kotlin-support"
 						]
 					},
 					"stability": "latest",

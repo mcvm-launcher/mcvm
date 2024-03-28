@@ -4450,8 +4450,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
-							"collective"
+							"collective",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -4519,8 +4519,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
-							"collective"
+							"collective",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -4532,8 +4532,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
-							"collective"
+							"collective",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -4575,8 +4575,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
-							"collective"
+							"collective",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -4601,8 +4601,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
-							"collective"
+							"collective",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -4644,8 +4644,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
-							"collective"
+							"collective",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -4722,8 +4722,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
-							"collective"
+							"collective",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -4748,8 +4748,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
-							"collective"
+							"collective",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -4761,8 +4761,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
-							"collective"
+							"collective",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -4830,8 +4830,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
-							"collective"
+							"collective",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -4843,8 +4843,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
-							"collective"
+							"collective",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -4869,8 +4869,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
-							"collective"
+							"collective",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -4895,8 +4895,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
-							"collective"
+							"collective",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -4938,8 +4938,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
-							"collective"
+							"collective",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -4951,8 +4951,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
-							"collective"
+							"collective",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -4964,8 +4964,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
-							"collective"
+							"collective",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -5033,8 +5033,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
-							"collective"
+							"collective",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -5158,8 +5158,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
-							"collective"
+							"collective",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -5184,8 +5184,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
-							"collective"
+							"collective",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -5210,8 +5210,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
-							"collective"
+							"collective",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -5253,8 +5253,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
-							"collective"
+							"collective",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -5322,8 +5322,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
-							"collective"
+							"collective",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -5391,8 +5391,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
-							"collective"
+							"collective",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -5417,8 +5417,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
-							"collective"
+							"collective",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -5473,8 +5473,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
-							"collective"
+							"collective",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -5529,8 +5529,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
-							"collective"
+							"collective",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -5542,8 +5542,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
-							"collective"
+							"collective",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",

@@ -15,11 +15,10 @@
 					],
 					"relations": {
 						"dependencies": [
-							"kotlin-support",
-							"fabriclike-api"
+							"fabriclike-api",
+							"kotlin-support"
 						],
 						"recommendations": {
-							"invert": false,
 							"value": "animatica"
 						}
 					},
@@ -49,11 +48,10 @@
 					],
 					"relations": {
 						"dependencies": [
-							"kotlin-support",
-							"fabriclike-api"
+							"fabriclike-api",
+							"kotlin-support"
 						],
 						"recommendations": {
-							"invert": false,
 							"value": "animatica"
 						}
 					},
@@ -81,11 +79,10 @@
 					],
 					"relations": {
 						"dependencies": [
-							"kotlin-support",
-							"fabriclike-api"
+							"fabriclike-api",
+							"kotlin-support"
 						],
 						"recommendations": {
-							"invert": false,
 							"value": "animatica"
 						}
 					},
@@ -104,12 +101,11 @@
 					],
 					"relations": {
 						"dependencies": [
-							"kotlin-support",
 							"fabriclike-api",
+							"kotlin-support",
 							"lilac"
 						],
 						"recommendations": {
-							"invert": false,
 							"value": "animatica"
 						}
 					},
@@ -136,11 +132,10 @@
 					],
 					"relations": {
 						"dependencies": [
-							"kotlin-support",
-							"fabriclike-api"
+							"fabriclike-api",
+							"kotlin-support"
 						],
 						"recommendations": {
-							"invert": false,
 							"value": "animatica"
 						}
 					},
@@ -161,11 +156,10 @@
 					],
 					"relations": {
 						"dependencies": [
-							"kotlin-support",
-							"fabriclike-api"
+							"fabriclike-api",
+							"kotlin-support"
 						],
 						"recommendations": {
-							"invert": false,
 							"value": "animatica"
 						}
 					},
@@ -186,11 +180,10 @@
 					],
 					"relations": {
 						"dependencies": [
-							"kotlin-support",
-							"fabriclike-api"
+							"fabriclike-api",
+							"kotlin-support"
 						],
 						"recommendations": {
-							"invert": false,
 							"value": "animatica"
 						}
 					},
@@ -217,11 +210,10 @@
 					],
 					"relations": {
 						"dependencies": [
-							"kotlin-support",
-							"fabriclike-api"
+							"fabriclike-api",
+							"kotlin-support"
 						],
 						"recommendations": {
-							"invert": false,
 							"value": "animatica"
 						}
 					},
@@ -247,11 +239,10 @@
 					],
 					"relations": {
 						"dependencies": [
-							"kotlin-support",
-							"fabriclike-api"
+							"fabriclike-api",
+							"kotlin-support"
 						],
 						"recommendations": {
-							"invert": false,
 							"value": "animatica"
 						}
 					},
@@ -277,11 +268,10 @@
 					],
 					"relations": {
 						"dependencies": [
-							"kotlin-support",
-							"fabriclike-api"
+							"fabriclike-api",
+							"kotlin-support"
 						],
 						"recommendations": {
-							"invert": false,
 							"value": "animatica"
 						}
 					},
@@ -306,11 +296,10 @@
 					],
 					"relations": {
 						"dependencies": [
-							"kotlin-support",
-							"fabriclike-api"
+							"fabriclike-api",
+							"kotlin-support"
 						],
 						"recommendations": {
-							"invert": false,
 							"value": "animatica"
 						}
 					},
@@ -335,11 +324,10 @@
 					],
 					"relations": {
 						"dependencies": [
-							"kotlin-support",
-							"fabriclike-api"
+							"fabriclike-api",
+							"kotlin-support"
 						],
 						"recommendations": {
-							"invert": false,
 							"value": "animatica"
 						}
 					},
@@ -364,16 +352,14 @@
 					],
 					"relations": {
 						"dependencies": [
-							"kotlin-support",
-							"fabriclike-api"
+							"fabriclike-api",
+							"kotlin-support"
 						],
 						"recommendations": [
 							{
-								"invert": false,
 								"value": "animatica"
 							},
 							{
-								"invert": false,
 								"value": "know-my-name"
 							}
 						]
@@ -393,16 +379,14 @@
 					],
 					"relations": {
 						"dependencies": [
-							"kotlin-support",
-							"fabriclike-api"
+							"fabriclike-api",
+							"kotlin-support"
 						],
 						"recommendations": [
 							{
-								"invert": false,
 								"value": "animatica"
 							},
 							{
-								"invert": false,
 								"value": "know-my-name"
 							}
 						]
@@ -422,17 +406,15 @@
 					],
 					"relations": {
 						"dependencies": [
-							"kotlin-support",
-							"fabriclike-api"
+							"fabriclike-api",
+							"kotlin-support"
 						],
 						"recommendations": [
 							{
-								"invert": false,
-								"value": "know-my-name"
+								"value": "animatica"
 							},
 							{
-								"invert": false,
-								"value": "animatica"
+								"value": "know-my-name"
 							}
 						]
 					},
@@ -448,17 +430,15 @@
 					],
 					"relations": {
 						"dependencies": [
-							"kotlin-support",
-							"fabriclike-api"
+							"fabriclike-api",
+							"kotlin-support"
 						],
 						"recommendations": [
 							{
-								"invert": false,
-								"value": "know-my-name"
+								"value": "animatica"
 							},
 							{
-								"invert": false,
-								"value": "animatica"
+								"value": "know-my-name"
 							}
 						]
 					},
@@ -479,12 +459,10 @@
 						],
 						"recommendations": [
 							{
-								"invert": false,
-								"value": "know-my-name"
+								"value": "animatica"
 							},
 							{
-								"invert": false,
-								"value": "animatica"
+								"value": "know-my-name"
 							}
 						]
 					},
@@ -508,16 +486,14 @@
 					],
 					"relations": {
 						"dependencies": [
-							"kotlin-support",
-							"fabriclike-api"
+							"fabriclike-api",
+							"kotlin-support"
 						],
 						"recommendations": [
 							{
-								"invert": false,
 								"value": "animatica"
 							},
 							{
-								"invert": false,
 								"value": "know-my-name"
 							}
 						]
@@ -544,11 +520,9 @@
 						],
 						"recommendations": [
 							{
-								"invert": false,
 								"value": "animatica"
 							},
 							{
-								"invert": false,
 								"value": "know-my-name"
 							}
 						]
@@ -567,16 +541,14 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"kotlin-support",
-							"fabriclike-api"
+							"fabriclike-api",
+							"kotlin-support"
 						],
 						"recommendations": [
 							{
-								"invert": false,
 								"value": "animatica"
 							},
 							{
-								"invert": false,
 								"value": "know-my-name"
 							}
 						]
@@ -590,16 +562,14 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"kotlin-support",
-							"fabriclike-api"
+							"fabriclike-api",
+							"kotlin-support"
 						],
 						"recommendations": [
 							{
-								"invert": false,
 								"value": "animatica"
 							},
 							{
-								"invert": false,
 								"value": "know-my-name"
 							}
 						]
@@ -617,7 +587,6 @@
 							"kotlin-support"
 						],
 						"recommendations": {
-							"invert": false,
 							"value": "know-my-name"
 						}
 					},
@@ -632,12 +601,10 @@
 						"dependencies": "fabriclike-api",
 						"recommendations": [
 							{
-								"invert": false,
-								"value": "know-my-name"
+								"value": "animatica"
 							},
 							{
-								"invert": false,
-								"value": "animatica"
+								"value": "know-my-name"
 							}
 						]
 					},
@@ -656,11 +623,9 @@
 						"dependencies": "fabriclike-api",
 						"recommendations": [
 							{
-								"invert": false,
 								"value": "animatica"
 							},
 							{
-								"invert": false,
 								"value": "know-my-name"
 							}
 						]
@@ -676,11 +641,9 @@
 						"dependencies": "fabriclike-api",
 						"recommendations": [
 							{
-								"invert": false,
 								"value": "animatica"
 							},
 							{
-								"invert": false,
 								"value": "know-my-name"
 							}
 						]
@@ -699,7 +662,6 @@
 					"relations": {
 						"dependencies": "fabriclike-api",
 						"recommendations": {
-							"invert": false,
 							"value": "animatica"
 						}
 					},
@@ -713,7 +675,6 @@
 					"relations": {
 						"dependencies": "fabriclike-api",
 						"recommendations": {
-							"invert": false,
 							"value": "animatica"
 						}
 					},
@@ -731,7 +692,6 @@
 					"relations": {
 						"dependencies": "fabriclike-api",
 						"recommendations": {
-							"invert": false,
 							"value": "animatica"
 						}
 					},
@@ -745,7 +705,6 @@
 					"relations": {
 						"dependencies": "fabriclike-api",
 						"recommendations": {
-							"invert": false,
 							"value": "animatica"
 						}
 					},
@@ -763,7 +722,6 @@
 					"relations": {
 						"dependencies": "fabriclike-api",
 						"recommendations": {
-							"invert": false,
 							"value": "animatica"
 						}
 					},
@@ -777,7 +735,6 @@
 					"relations": {
 						"dependencies": "fabriclike-api",
 						"recommendations": {
-							"invert": false,
 							"value": "animatica"
 						}
 					},
@@ -791,7 +748,6 @@
 					"relations": {
 						"dependencies": "fabriclike-api",
 						"recommendations": {
-							"invert": false,
 							"value": "animatica"
 						}
 					},
@@ -809,7 +765,6 @@
 					"relations": {
 						"dependencies": "fabriclike-api",
 						"recommendations": {
-							"invert": false,
 							"value": "animatica"
 						}
 					},
@@ -827,7 +782,6 @@
 					"relations": {
 						"dependencies": "fabriclike-api",
 						"recommendations": {
-							"invert": false,
 							"value": "animatica"
 						}
 					},
@@ -845,7 +799,6 @@
 					"relations": {
 						"dependencies": "fabriclike-api",
 						"recommendations": {
-							"invert": false,
 							"value": "animatica"
 						}
 					},
@@ -859,7 +812,6 @@
 					"relations": {
 						"dependencies": "fabriclike-api",
 						"recommendations": {
-							"invert": false,
 							"value": "animatica"
 						}
 					},
@@ -873,7 +825,6 @@
 					"relations": {
 						"dependencies": "fabriclike-api",
 						"recommendations": {
-							"invert": false,
 							"value": "animatica"
 						}
 					},
@@ -887,7 +838,6 @@
 					"relations": {
 						"dependencies": "fabriclike-api",
 						"recommendations": {
-							"invert": false,
 							"value": "animatica"
 						}
 					},
@@ -901,7 +851,6 @@
 					"relations": {
 						"dependencies": "fabriclike-api",
 						"recommendations": {
-							"invert": false,
 							"value": "animatica"
 						}
 					},
@@ -915,7 +864,6 @@
 					"relations": {
 						"dependencies": "fabriclike-api",
 						"recommendations": {
-							"invert": false,
 							"value": "animatica"
 						}
 					},
@@ -929,7 +877,6 @@
 					"relations": {
 						"dependencies": "fabriclike-api",
 						"recommendations": {
-							"invert": false,
 							"value": "animatica"
 						}
 					},
@@ -943,7 +890,6 @@
 					"relations": {
 						"dependencies": "fabriclike-api",
 						"recommendations": {
-							"invert": false,
 							"value": "animatica"
 						}
 					},

@@ -1661,7 +1661,6 @@
 					"modloaders": "fabric",
 					"relations": {
 						"recommendations": {
-							"invert": false,
 							"value": "fabriclike-api"
 						}
 					},
@@ -2274,7 +2273,6 @@
 					"modloaders": "fabric",
 					"relations": {
 						"recommendations": {
-							"invert": false,
 							"value": "mod-menu"
 						}
 					},

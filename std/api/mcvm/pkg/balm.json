@@ -532,8 +532,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -621,8 +621,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -681,8 +681,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -718,8 +718,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",

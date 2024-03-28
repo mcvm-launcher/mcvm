@@ -8,9 +8,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "latest",
@@ -22,8 +22,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
 							"architectury-api",
+							"cloth-config",
 							"fabriclike-api"
 						]
 					},
@@ -36,9 +36,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
 							"architectury-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -63,8 +63,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -89,9 +89,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
 							"architectury-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -116,8 +116,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -132,8 +132,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -148,9 +148,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -162,8 +162,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -175,9 +175,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -193,8 +193,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -210,9 +210,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -224,8 +224,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -251,9 +251,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -265,8 +265,8 @@
 					"modloaders": "neoforged",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -278,8 +278,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
 							"architectury-api",
+							"cloth-config",
 							"fabriclike-api"
 						]
 					},
@@ -292,8 +292,8 @@
 					"modloaders": "neoforged",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -305,8 +305,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -318,9 +318,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -332,8 +332,8 @@
 					"modloaders": "neoforged",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -358,9 +358,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
+							"architectury-api",
 							"cloth-config",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -388,8 +388,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -432,8 +432,8 @@
 					"relations": {
 						"dependencies": [
 							"architectury-api",
-							"fabriclike-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -464,9 +464,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -498,8 +498,8 @@
 					"relations": {
 						"dependencies": [
 							"architectury-api",
-							"fabriclike-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -512,8 +512,8 @@
 					"relations": {
 						"dependencies": [
 							"architectury-api",
-							"fabriclike-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -538,8 +538,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -569,8 +569,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -600,8 +600,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -614,8 +614,8 @@
 					"relations": {
 						"dependencies": [
 							"architectury-api",
-							"fabriclike-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -627,9 +627,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
+							"architectury-api",
 							"cloth-config",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -660,9 +660,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -695,8 +695,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
 							"architectury-api",
+							"cloth-config",
 							"fabriclike-api"
 						]
 					},
@@ -709,8 +709,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -722,9 +722,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
+							"architectury-api",
 							"cloth-config",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -736,8 +736,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -749,9 +749,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
+							"architectury-api",
 							"cloth-config",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -796,8 +796,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
 							"architectury-api",
+							"cloth-config",
 							"fabriclike-api"
 						]
 					},
@@ -823,9 +823,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -841,8 +841,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -859,8 +859,8 @@
 					"relations": {
 						"dependencies": [
 							"architectury-api",
-							"fabriclike-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -885,9 +885,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -902,9 +902,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
 							"architectury-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -916,9 +916,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "latest",
@@ -949,8 +949,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
 							"architectury-api",
+							"cloth-config",
 							"fabriclike-api"
 						]
 					},
@@ -994,8 +994,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -1011,8 +1011,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
 							"architectury-api",
+							"cloth-config",
 							"fabriclike-api"
 						]
 					},
@@ -1038,9 +1038,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -1065,9 +1065,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
+							"architectury-api",
 							"cloth-config",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -1093,8 +1093,8 @@
 					"relations": {
 						"dependencies": [
 							"architectury-api",
-							"fabriclike-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -1125,9 +1125,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
 							"architectury-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -1152,9 +1152,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
 							"architectury-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -1185,9 +1185,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -1221,8 +1221,8 @@
 					"relations": {
 						"dependencies": [
 							"architectury-api",
-							"fabriclike-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -1234,8 +1234,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -1248,8 +1248,8 @@
 					"relations": {
 						"dependencies": [
 							"architectury-api",
-							"fabriclike-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -1265,8 +1265,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -1301,8 +1301,8 @@
 					"relations": {
 						"dependencies": [
 							"architectury-api",
-							"fabriclike-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -1314,8 +1314,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -1327,9 +1327,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -1354,9 +1354,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
+							"architectury-api",
 							"cloth-config",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -1371,8 +1371,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -1388,8 +1388,8 @@
 					"relations": {
 						"dependencies": [
 							"architectury-api",
-							"fabriclike-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -1414,9 +1414,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
 							"architectury-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -1449,9 +1449,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -1476,9 +1476,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
 							"architectury-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -1493,8 +1493,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -1509,8 +1509,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
 							"architectury-api",
+							"cloth-config",
 							"fabriclike-api"
 						]
 					},
@@ -1523,8 +1523,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -1536,9 +1536,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -1554,8 +1554,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -1571,9 +1571,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -1585,8 +1585,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -1599,8 +1599,8 @@
 					"relations": {
 						"dependencies": [
 							"architectury-api",
-							"fabriclike-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -1612,8 +1612,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -1625,9 +1625,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
 							"architectury-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -1658,8 +1658,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
 							"architectury-api",
+							"cloth-config",
 							"fabriclike-api"
 						]
 					},
@@ -1685,9 +1685,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
+							"architectury-api",
 							"cloth-config",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -1720,9 +1720,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
+							"architectury-api",
 							"cloth-config",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -1753,9 +1753,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -1786,9 +1786,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -1800,8 +1800,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -1827,9 +1827,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
+							"architectury-api",
 							"cloth-config",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -1841,8 +1841,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -1854,9 +1854,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -1868,9 +1868,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -1895,9 +1895,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
+							"architectury-api",
 							"cloth-config",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -1930,8 +1930,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
 							"architectury-api",
+							"cloth-config",
 							"fabriclike-api"
 						]
 					},
@@ -1984,9 +1984,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
 							"architectury-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -2002,8 +2002,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -2033,8 +2033,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -2046,8 +2046,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
 							"architectury-api",
+							"cloth-config",
 							"fabriclike-api"
 						]
 					},
@@ -2060,8 +2060,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -2073,9 +2073,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
+							"architectury-api",
 							"cloth-config",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -2088,8 +2088,8 @@
 					"relations": {
 						"dependencies": [
 							"architectury-api",
-							"fabriclike-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -2115,8 +2115,8 @@
 					"relations": {
 						"dependencies": [
 							"architectury-api",
-							"fabriclike-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -2128,8 +2128,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -2141,9 +2141,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
 							"architectury-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -2177,8 +2177,8 @@
 					"relations": {
 						"dependencies": [
 							"architectury-api",
-							"fabriclike-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -2190,8 +2190,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -2217,8 +2217,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -2230,9 +2230,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
+							"architectury-api",
 							"cloth-config",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -2265,8 +2265,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
 							"architectury-api",
+							"cloth-config",
 							"fabriclike-api"
 						]
 					},
@@ -2279,8 +2279,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -2292,8 +2292,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
 							"architectury-api",
+							"cloth-config",
 							"fabriclike-api"
 						]
 					},
@@ -2319,9 +2319,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -2333,8 +2333,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -2346,9 +2346,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
 							"architectury-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -2373,9 +2373,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
+							"architectury-api",
 							"cloth-config",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -2417,9 +2417,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
 							"architectury-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -2435,9 +2435,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -2449,9 +2449,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "latest",
@@ -2463,8 +2463,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -2476,9 +2476,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -2490,8 +2490,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -2503,9 +2503,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
+							"architectury-api",
 							"cloth-config",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -2539,8 +2539,8 @@
 					"relations": {
 						"dependencies": [
 							"architectury-api",
-							"fabriclike-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -2552,8 +2552,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -2566,8 +2566,8 @@
 					"relations": {
 						"dependencies": [
 							"architectury-api",
-							"fabriclike-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -2579,8 +2579,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -2592,9 +2592,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
 							"architectury-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -2606,8 +2606,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -2619,9 +2619,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
+							"architectury-api",
 							"cloth-config",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -2646,9 +2646,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
+							"architectury-api",
 							"cloth-config",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -2681,8 +2681,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
 							"architectury-api",
+							"cloth-config",
 							"fabriclike-api"
 						]
 					},
@@ -2699,8 +2699,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -2716,9 +2716,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
+							"architectury-api",
 							"cloth-config",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -2730,8 +2730,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -2743,9 +2743,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
 							"architectury-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -2757,8 +2757,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -2770,8 +2770,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
 							"architectury-api",
+							"cloth-config",
 							"fabriclike-api"
 						]
 					},
@@ -2788,8 +2788,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -2805,9 +2805,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
 							"architectury-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -2860,8 +2860,8 @@
 					"relations": {
 						"dependencies": [
 							"architectury-api",
-							"fabriclike-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -2886,9 +2886,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -2900,8 +2900,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -2949,8 +2949,8 @@
 					"relations": {
 						"dependencies": [
 							"architectury-api",
-							"fabriclike-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -2975,8 +2975,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
 							"architectury-api",
+							"cloth-config",
 							"fabriclike-api"
 						]
 					},
@@ -2989,8 +2989,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -3002,9 +3002,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
+							"architectury-api",
 							"cloth-config",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -3029,9 +3029,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
 							"architectury-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -3047,8 +3047,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -3064,9 +3064,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
+							"architectury-api",
 							"cloth-config",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -3078,8 +3078,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -3091,9 +3091,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
+							"architectury-api",
 							"cloth-config",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -3126,9 +3126,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -3140,8 +3140,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -3154,8 +3154,8 @@
 					"relations": {
 						"dependencies": [
 							"architectury-api",
-							"fabriclike-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -3171,8 +3171,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -3188,9 +3188,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
 							"architectury-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -3224,8 +3224,8 @@
 					"relations": {
 						"dependencies": [
 							"architectury-api",
-							"fabriclike-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -3237,8 +3237,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -3250,9 +3250,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -3313,8 +3313,8 @@
 					"relations": {
 						"dependencies": [
 							"architectury-api",
-							"fabriclike-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -3326,8 +3326,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -3339,9 +3339,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -3357,8 +3357,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -3401,9 +3401,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
+							"architectury-api",
 							"cloth-config",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -3428,8 +3428,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
 							"architectury-api",
+							"cloth-config",
 							"fabriclike-api"
 						]
 					},
@@ -3442,8 +3442,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -3455,9 +3455,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
 							"architectury-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -3473,8 +3473,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -3490,8 +3490,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
 							"architectury-api",
+							"cloth-config",
 							"fabriclike-api"
 						]
 					},
@@ -3535,8 +3535,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -3552,9 +3552,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
+							"architectury-api",
 							"cloth-config",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -3601,8 +3601,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -3614,9 +3614,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
+							"architectury-api",
 							"cloth-config",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -3642,8 +3642,8 @@
 					"relations": {
 						"dependencies": [
 							"architectury-api",
-							"fabriclike-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -3676,9 +3676,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
+							"architectury-api",
 							"cloth-config",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -3690,8 +3690,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -3703,9 +3703,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
 							"architectury-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -3738,8 +3738,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
 							"architectury-api",
+							"cloth-config",
 							"fabriclike-api"
 						]
 					},
@@ -3774,8 +3774,8 @@
 					"relations": {
 						"dependencies": [
 							"architectury-api",
-							"fabriclike-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -3800,8 +3800,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
 							"architectury-api",
+							"cloth-config",
 							"fabriclike-api"
 						]
 					},
@@ -3827,9 +3827,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -3845,8 +3845,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -3862,9 +3862,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -3890,8 +3890,8 @@
 					"relations": {
 						"dependencies": [
 							"architectury-api",
-							"fabriclike-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -3907,8 +3907,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -3925,8 +3925,8 @@
 					"relations": {
 						"dependencies": [
 							"architectury-api",
-							"fabriclike-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -3942,8 +3942,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -3959,9 +3959,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
+							"architectury-api",
 							"cloth-config",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -3973,8 +3973,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -3986,9 +3986,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
 							"architectury-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -4022,8 +4022,8 @@
 					"relations": {
 						"dependencies": [
 							"architectury-api",
-							"fabriclike-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -4035,8 +4035,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -4048,9 +4048,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -4062,8 +4062,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -4089,8 +4089,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
 							"architectury-api",
+							"cloth-config",
 							"fabriclike-api"
 						]
 					},
@@ -4126,8 +4126,8 @@
 					"relations": {
 						"dependencies": [
 							"architectury-api",
-							"fabriclike-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -4157,8 +4157,8 @@
 					"relations": {
 						"dependencies": [
 							"architectury-api",
-							"fabriclike-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -4187,9 +4187,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
+							"architectury-api",
 							"cloth-config",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -4218,9 +4218,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
 							"architectury-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -4249,9 +4249,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
+							"architectury-api",
 							"cloth-config",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -4294,8 +4294,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -4311,9 +4311,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -4329,8 +4329,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -4347,8 +4347,8 @@
 					"relations": {
 						"dependencies": [
 							"architectury-api",
-							"fabriclike-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -4364,8 +4364,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -4377,9 +4377,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
+							"architectury-api",
 							"cloth-config",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -4407,9 +4407,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
 							"architectury-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -4441,9 +4441,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -4458,8 +4458,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -4471,8 +4471,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
 							"architectury-api",
+							"cloth-config",
 							"fabriclike-api"
 						]
 					},
@@ -4512,8 +4512,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -4525,8 +4525,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
 							"architectury-api",
+							"cloth-config",
 							"fabriclike-api"
 						]
 					},
@@ -4552,8 +4552,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
 							"architectury-api",
+							"cloth-config",
 							"fabriclike-api"
 						]
 					},
@@ -4579,9 +4579,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -4607,8 +4607,8 @@
 					"relations": {
 						"dependencies": [
 							"architectury-api",
-							"fabriclike-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -4620,8 +4620,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -4661,8 +4661,8 @@
 					"relations": {
 						"dependencies": [
 							"architectury-api",
-							"fabriclike-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -4674,8 +4674,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -4688,8 +4688,8 @@
 					"relations": {
 						"dependencies": [
 							"architectury-api",
-							"fabriclike-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -4701,8 +4701,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -4741,9 +4741,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
 							"architectury-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -4755,8 +4755,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -4768,8 +4768,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
 							"architectury-api",
+							"cloth-config",
 							"fabriclike-api"
 						]
 					},
@@ -4795,9 +4795,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -4822,9 +4822,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -4849,9 +4849,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -4863,8 +4863,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -4903,9 +4903,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -4931,8 +4931,8 @@
 					"relations": {
 						"dependencies": [
 							"architectury-api",
-							"fabriclike-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -4998,8 +4998,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -5011,8 +5011,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
 							"architectury-api",
+							"cloth-config",
 							"fabriclike-api"
 						]
 					},
@@ -5025,8 +5025,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -5038,9 +5038,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
+							"architectury-api",
 							"cloth-config",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -5065,9 +5065,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -5079,8 +5079,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -5093,8 +5093,8 @@
 					"relations": {
 						"dependencies": [
 							"architectury-api",
-							"fabriclike-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -5119,9 +5119,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
+							"architectury-api",
 							"cloth-config",
-							"fabriclike-api",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -5133,8 +5133,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -5147,8 +5147,8 @@
 					"relations": {
 						"dependencies": [
 							"architectury-api",
-							"fabriclike-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -5160,8 +5160,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -5173,9 +5173,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
 							"architectury-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -5187,8 +5187,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -5200,9 +5200,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
 							"architectury-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -5214,8 +5214,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -5227,9 +5227,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
+							"architectury-api",
 							"cloth-config",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -5254,9 +5254,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
+							"architectury-api",
 							"cloth-config",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -5268,8 +5268,8 @@
 					"modloaders": "forge",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
-							"architectury-api"
+							"architectury-api",
+							"cloth-config"
 						]
 					},
 					"stability": "latest",
@@ -5281,8 +5281,8 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"cloth-config",
 							"architectury-api",
+							"cloth-config",
 							"fabriclike-api"
 						]
 					},
@@ -5336,8 +5336,8 @@
 					"relations": {
 						"dependencies": [
 							"architectury-api",
-							"fabriclike-api",
-							"cloth-config"
+							"cloth-config",
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
@@ -5365,9 +5365,9 @@
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": [
-							"fabriclike-api",
+							"architectury-api",
 							"cloth-config",
-							"architectury-api"
+							"fabriclike-api"
 						]
 					},
 					"stability": "stable",
