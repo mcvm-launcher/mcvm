@@ -4,365 +4,680 @@
 			"kind": "mod",
 			"versions": [
 				{
-					"minecraft_versions": "1.18.2",
+					"minecraft_versions": "1.20.2",
 					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1.0.0-beta.4%2B0.48.0-1.18.2/qsl-1.1.0-beta.2_qfapi-1.0.0-beta.4_fapi-0.48.0_mc-1.18.2.jar",
-					"version": "cmqWpwyC"
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/vZbU3nyq/quilted-fabric-api-8.0.0-alpha.5%2B0.91.6-1.20.2.jar",
+					"version": "vZbU3nyq"
 				},
 				{
-					"minecraft_versions": "1.18.2",
+					"minecraft_versions": "1.20.2",
 					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1.0.0-beta.5%2B0.48.0-1.18.2/qsl-1.1.0-beta.2_qfapi-1.0.0-beta.5_fapi-0.48.0_mc-1.18.2.jar",
-					"version": "w6Z1WEDi"
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/z7EhOm3D/quilted-fabric-api-8.0.0-alpha.4%2B0.91.6-1.20.2.jar",
+					"version": "z7EhOm3D"
 				},
 				{
-					"minecraft_versions": "1.18.2",
+					"minecraft_versions": "1.19.2",
 					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1.0.0-beta.6%2B0.51.1-1.18.2/qsl-1.1.0-beta.2_qfapi-1.0.0-beta.6_fapi-0.51.1_mc-1.18.2.jar",
-					"version": "VtK9e93B"
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/aaucrsnr/qfapi-4.0.0-beta.30_qsl-3.0.0-beta.29_fapi-0.77.0_mc-1.19.2.jar",
+					"version": "aaucrsnr"
 				},
 				{
-					"minecraft_versions": "1.18.2",
+					"minecraft_versions": "1.20.1",
 					"modloaders": "quilt",
-					"relations": {
-						"conflicts": "fabric-api"
-					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1.0.0-beta.7%2B0.51.1-1.18.2/qsl-1.1.0-beta.4_qfapi-1.0.0-beta.7_fapi-0.51.1_mc-1.18.2.jar",
-					"version": "zrMlJA87"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/qAYOU2Af/qfapi-7.5.0_qsl-6.1.2_fapi-0.91.0_mc-1.20.1.jar",
+					"version": "qAYOU2Af"
 				},
 				{
-					"minecraft_versions": "1.18.2",
+					"minecraft_versions": "1.20.2",
 					"modloaders": "quilt",
-					"relations": {
-						"conflicts": "fabric-api"
-					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1.0.0-beta.8%2B0.51.1-1.18.2/qsl-1.1.0-beta.4_qfapi-1.0.0-beta.8_fapi-0.51.1_mc-1.18.2.jar",
-					"version": "t1xewTPM"
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/gIUtHixU/quilted-fabric-api-8.0.0-alpha.3%2B0.91.2-1.20.2.jar",
+					"version": "gIUtHixU"
 				},
 				{
-					"minecraft_versions": "1.18.2",
+					"minecraft_versions": "1.20.2",
 					"modloaders": "quilt",
-					"relations": {
-						"conflicts": "fabric-api"
-					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1.0.0-beta.9%2B0.51.1-1.18.2/qsl-1.1.0-beta.5_qfapi-1.0.0-beta.9_fapi-0.51.1_mc-1.18.2.jar",
-					"version": "PAE9ujTn"
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/Xo36xpLR/quilted-fabric-api-8.0.0-alpha.2%2B0.91.2-1.20.2.jar",
+					"version": "Xo36xpLR"
 				},
 				{
-					"minecraft_versions": "1.18.2",
+					"minecraft_versions": "1.20.2",
 					"modloaders": "quilt",
-					"relations": {
-						"conflicts": "fabric-api"
-					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1.0.0-beta.10%2B0.51.1-1.18.2/qsl-1.1.0-beta.6_qfapi-1.0.0-beta.10_fapi-0.51.1_mc-1.18.2.jar",
-					"version": "GAyycZIm"
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/g6CMDJLy/quilted-fabric-api-8.0.0-alpha.1%2B0.91.2-1.20.2.jar",
+					"version": "g6CMDJLy"
 				},
 				{
-					"minecraft_versions": "1.18.2",
+					"minecraft_versions": "1.19.4",
 					"modloaders": "quilt",
-					"relations": {
-						"conflicts": "fabric-api"
-					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1.0.0-beta.11%2B0.51.1-1.18.2/qsl-1.1.0-beta.7_qfapi-1.0.0-beta.11_fapi-0.51.1_mc-1.18.2.jar",
-					"version": "VvjoqNcy"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/BQoiDT9n/qfapi-6.0.0-beta.11_qsl-5.0.0-beta.11_fapi-0.87.0_mc-1.19.4.jar",
+					"version": "BQoiDT9n"
 				},
 				{
-					"minecraft_versions": "1.18.2",
+					"minecraft_versions": "1.20.1",
 					"modloaders": "quilt",
-					"relations": {
-						"conflicts": "fabric-api"
-					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1.0.0-beta.12%2B0.51.1-1.18.2/qsl-1.1.0-beta.8_qfapi-1.0.0-beta.12_fapi-0.51.1_mc-1.18.2.jar",
-					"version": "9QT3b4mE"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/GjvWb8WQ/qfapi-7.4.0_qsl-6.1.2_fapi-0.90.0_mc-1.20.1.jar",
+					"version": "GjvWb8WQ"
 				},
 				{
-					"minecraft_versions": "1.18.2",
+					"minecraft_versions": "1.19.4",
 					"modloaders": "quilt",
-					"relations": {
-						"conflicts": "fabric-api"
-					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1.0.0-beta.13%2B0.51.1-1.18.2/qsl-1.1.0-beta.8_qfapi-1.0.0-beta.13_fapi-0.51.1_mc-1.18.2.jar",
-					"version": "Qocje47u"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/jOT4fzXf/qfapi-6.0.0-beta.10_qsl-5.0.0-beta.11_fapi-0.87.0_mc-1.19.4.jar",
+					"version": "jOT4fzXf"
 				},
 				{
-					"minecraft_versions": "1.18.2",
+					"minecraft_versions": "1.20.1",
 					"modloaders": "quilt",
-					"relations": {
-						"conflicts": "fabric-api"
-					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1.0.0-beta.14%2B0.51.1-1.18.2/qsl-1.1.0-beta.8_qfapi-1.0.0-beta.14_fapi-0.51.1_mc-1.18.2.jar",
-					"version": "45CcbAvo"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/ftu8PpDD/qfapi-7.3.1_qsl-6.1.2_fapi-0.89.3_mc-1.20.1.jar",
+					"version": "ftu8PpDD"
 				},
 				{
-					"minecraft_versions": "1.18.2",
+					"minecraft_versions": "1.20.1",
 					"modloaders": "quilt",
-					"relations": {
-						"conflicts": "fabric-api"
-					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1.0.0-beta.15%2B0.53.4-1.18.2/qsl-1.1.0-beta.13_qfapi-1.0.0-beta.15_fapi-0.53.4_mc-1.18.2.jar",
-					"version": "RUKOwGTz"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "quilt",
-					"relations": {
-						"conflicts": "fabric-api"
-					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1.0.0-beta.16%2B0.53.4-1.18.2/qsl-1.1.0-beta.13_qfapi-1.0.0-beta.16_fapi-0.53.4_mc-1.18.2.jar",
-					"version": "I9rPSfaR"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "quilt",
-					"relations": {
-						"conflicts": "fabric-api"
-					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1.0.0-beta.17%2B0.54.0-1.18.2/qsl-1.1.0-beta.14_qfapi-1.0.0-beta.17_fapi-0.54.0_mc-1.18.2.jar",
-					"version": "lz767pA6"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "quilt",
-					"relations": {
-						"conflicts": "fabric-api"
-					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1.0.0-beta.18%2B0.55.1-1.18.2/qsl-1.1.0-beta.17_qfapi-1.0.0-beta.18_fapi-0.55.1_mc-1.18.2.jar",
-					"version": "L1XD5HAW"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "quilt",
-					"relations": {
-						"conflicts": "fabric-api"
-					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1.0.0-beta.19%2B0.55.1-1.18.2/qsl-1.1.0-beta.17_qfapi-1.0.0-beta.19_fapi-0.55.1_mc-1.18.2.jar",
-					"version": "hPStWdDs"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "quilt",
-					"relations": {
-						"conflicts": "fabric-api"
-					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1.0.0-beta.20%2B0.55.1-1.18.2/qsl-1.1.0-beta.17_qfapi-1.0.0-beta.20_fapi-0.55.1_mc-1.18.2.jar",
-					"version": "pwp94ACs"
-				},
-				{
-					"minecraft_versions": "1.19",
-					"modloaders": "quilt",
-					"relations": {
-						"conflicts": "fabric-api"
-					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/2.0.0-alpha.2%2B0.55.3-1.19/qfapi-2.0.0-alpha.2_qsl-2.0.0-beta.2_fapi-0.55.3_mc-1.19.jar",
-					"version": "HwOyG7I5"
-				},
-				{
-					"minecraft_versions": "1.19",
-					"modloaders": "quilt",
-					"relations": {
-						"conflicts": "fabric-api"
-					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/2.0.0-alpha.3%2B0.55.3-1.19/qfapi-2.0.0-alpha.3_qsl-2.0.0-beta.2_fapi-0.55.3_mc-1.19.jar",
-					"version": "3u6Qbhdw"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "quilt",
-					"relations": {
-						"conflicts": "fabric-api"
-					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1.0.0-beta.22%2B0.56.0-1.18.2/qsl-1.1.0-beta.19_qfapi-1.0.0-beta.22_fapi-0.56.0_mc-1.18.2.jar",
-					"version": "IhFPlQD2"
-				},
-				{
-					"minecraft_versions": "1.19",
-					"modloaders": "quilt",
-					"relations": {
-						"conflicts": "fabric-api"
-					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/2.0.0-alpha.4%2B0.56.1-1.19/qfapi-2.0.0-alpha.4_qsl-2.0.0-beta.5_fapi-0.56.1_mc-1.19.jar",
-					"version": "6PllArdw"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/Ycmh3qg8/qfapi-7.3.0_qsl-6.1.2_fapi-0.89.0_mc-1.20.1.jar",
+					"version": "Ycmh3qg8"
 				},
 				{
 					"minecraft_versions": [
-						"1.19",
-						"22w24a",
-						"1.19.1-pre1",
-						"1.19.1-rc1"
+						"1.20",
+						"1.20.1"
 					],
 					"modloaders": "quilt",
-					"relations": {
-						"conflicts": "fabric-api"
-					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/2.0.0-beta.1%2B0.56.3-1.19/qfapi-2.0.0-beta.1_qsl-2.0.0-beta.8_fapi-0.56.3_mc-1.19.jar",
-					"version": "rahw4ZIK"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/vTQynnGn/qfapi-7.2.2_qsl-6.1.2_fapi-0.88.1_mc-1.20.1.jar",
+					"version": "vTQynnGn"
 				},
 				{
 					"minecraft_versions": [
-						"1.19",
-						"22w24a",
-						"1.19.1-pre1",
-						"1.19.1-rc1"
+						"1.20",
+						"1.20.1"
 					],
 					"modloaders": "quilt",
-					"relations": {
-						"conflicts": "fabric-api"
-					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/2.0.0-beta.3%2B0.57.0-1.19/qfapi-2.0.0-beta.3_qsl-2.0.0-beta.9_fapi-0.57.0_mc-1.19.jar",
-					"version": "Sq6bz7rT"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/DzBePwtf/qfapi-7.2.1_qsl-6.1.1_fapi-0.88.0_mc-1.20.1.jar",
+					"version": "DzBePwtf"
 				},
 				{
-					"minecraft_versions": "1.19",
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "quilt",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/PmZhDLt6/qfapi-7.2.0_qsl-6.1.1_fapi-0.88.0_mc-1.20.1.jar",
+					"version": "PmZhDLt6"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "quilt",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/aWl2Qw6u/qfapi-7.1.2_qsl-6.1.1_fapi-0.87.0_mc-1.20.1.jar",
+					"version": "aWl2Qw6u"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "quilt",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/ugK6veHN/qfapi-7.1.1_qsl-6.1.1_fapi-0.86.1_mc-1.20.1.jar",
+					"version": "ugK6veHN"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "quilt",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/fFx48erS/qfapi-7.1.0_qsl-6.1.0_fapi-0.86.1_mc-1.20.1.jar",
+					"version": "fFx48erS"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "quilt",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/4JBkYQUF/qfapi-7.0.6_qsl-6.0.4_fapi-0.85.0_mc-1.20.1.jar",
+					"version": "4JBkYQUF"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "quilt",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/BAwbsZ2r/qfapi-7.0.5_qsl-6.0.4_fapi-0.84.0_mc-1.20.1.jar",
+					"version": "BAwbsZ2r"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "quilt",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/cFCbC3OH/qfapi-7.0.4_qsl-6.0.3_fapi-0.84.0_mc-1.20.1.jar",
+					"version": "cFCbC3OH"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "quilt",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/di82eiyL/qfapi-7.0.3_qsl-6.0.3_fapi-0.83.1_mc-1.20.1.jar",
+					"version": "di82eiyL"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "quilt",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/uw5SkGdQ/qfapi-7.0.2_qsl-6.0.3_fapi-0.83.0_mc-1.20.1.jar",
+					"version": "uw5SkGdQ"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "quilt",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/rS9Tm10P/qfapi-7.0.1_qsl-6.0.1_fapi-0.83.0_mc-1.20.jar",
+					"version": "rS9Tm10P"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/csBGi8FI/qfapi-7.0.0_qsl-6.0.0_fapi-0.83.0_mc-1.20.jar",
+					"version": "csBGi8FI"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "quilt",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/QPXihdoB/qfapi-6.0.0-beta.9_qsl-5.0.0-beta.10_fapi-0.83.0_mc-1.19.4.jar",
+					"version": "QPXihdoB"
+				},
+				{
+					"minecraft_versions": "1.20-rc1",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/YiAkMxMf/qfapi-7.0.0-alpha.4_qsl-6.0.0-alpha.6_fapi-0.83.0_mc-1.20-rc1.jar",
+					"version": "YiAkMxMf"
+				},
+				{
+					"minecraft_versions": "1.20-pre7",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/b1Y1Otv7/qfapi-7.0.0-alpha.3_qsl-6.0.0-alpha.5_fapi-0.83.0_mc-1.20-pre7.jar",
+					"version": "b1Y1Otv7"
+				},
+				{
+					"minecraft_versions": "1.20-pre6",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/Y4qL3XEB/qfapi-7.0.0-alpha.2_qsl-6.0.0-alpha.4_fapi-0.82.1_mc-1.20-pre6.jar",
+					"version": "Y4qL3XEB"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "quilt",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/x86qltyO/qfapi-6.0.0-beta.8_qsl-5.0.0-beta.9_fapi-0.82.0_mc-1.19.4.jar",
+					"version": "x86qltyO"
+				},
+				{
+					"minecraft_versions": "1.20-pre5",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/Xhv4rEIJ/qfapi-7.0.0-alpha.1_qsl-6.0.0-alpha.3_fapi-0.81.3_mc-1.20-pre5.jar",
+					"version": "Xhv4rEIJ"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "quilt",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/jCiJggRO/qfapi-6.0.0-beta.7_qsl-5.0.0-beta.8_fapi-0.81.1_mc-1.19.4.jar",
+					"version": "jCiJggRO"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "quilt",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/Gxq4k3Vt/qfapi-6.0.0-beta.6_qsl-5.0.0-beta.8_fapi-0.81.1_mc-1.19.4.jar",
+					"version": "Gxq4k3Vt"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/Ng2kCEiP/qfapi-6.0.0-beta.6_qsl-5.0.0-beta.5_fapi-0.79.0_mc-1.19.4.jar",
+					"version": "Ng2kCEiP"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/8eRjIPoA/qfapi-6.0.0-beta.5_qsl-5.0.0-beta.4_fapi-0.78.0_mc-1.19.4.jar",
+					"version": "8eRjIPoA"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/cpRPaFBn/qfapi-6.0.0-beta.4_qsl-5.0.0-beta.3_fapi-0.78.0_mc-1.19.4.jar",
+					"version": "cpRPaFBn"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/eaoB99I6/qfapi-5.0.0-beta.9_qsl-4.0.0-beta.13_fapi-0.76.0_mc-1.19.3.jar",
+					"version": "eaoB99I6"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/9gcIrw5Z/qfapi-6.0.0-beta.3_qsl-5.0.0-beta.2_fapi-0.76.0_mc-1.19.4.jar",
+					"version": "9gcIrw5Z"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/BTCxVi75/qfapi-4.0.0-beta.30_qsl-3.0.0-beta.29_fapi-0.76.0_mc-1.19.2.jar",
+					"version": "BTCxVi75"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/AmlAy82C/qfapi-6.0.0-beta.2_qsl-5.0.0-beta.1_fapi-0.76.0_mc-1.19.4.jar",
+					"version": "AmlAy82C"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/3isqQyAk/qfapi-6.0.0-beta.1_qsl-5.0.0-beta.1_fapi-0.75.3_mc-1.19.4.jar",
+					"version": "3isqQyAk"
+				},
+				{
+					"minecraft_versions": "1.19.4-rc2",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/JYRztVNW/qfapi-6.0.0-alpha.2_qsl-5.0.0-alpha.3_fapi-0.75.3_mc-1.19.4-rc2.jar",
+					"version": "JYRztVNW"
+				},
+				{
+					"minecraft_versions": "1.19.4-pre3",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/RAIWeVLH/qfapi-6.0.0-alpha.1_qsl-5.0.0-alpha.2_fapi-0.75.2_mc-1.19.4-pre3.jar",
+					"version": "RAIWeVLH"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/MYbIY8g7/qfapi-5.0.0-beta.8_qsl-4.0.0-beta.12_fapi-0.75.1_mc-1.19.3.jar",
+					"version": "MYbIY8g7"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/kMDIFsRI/qfapi-4.0.0-beta.29_qsl-3.0.0-beta.29_fapi-0.75.1_mc-1.19.2.jar",
+					"version": "kMDIFsRI"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/spTTmhS4/qfapi-5.0.0-beta.7_qsl-4.0.0-beta.11_fapi-0.75.1_mc-1.19.3.jar",
+					"version": "spTTmhS4"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/oQbYgY9f/qfapi-5.0.0-beta.6_qsl-4.0.0-beta.11_fapi-0.74.0_mc-1.19.3.jar",
+					"version": "oQbYgY9f"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/t8snEhsc/qfapi-5.0.0-beta.5_qsl-4.0.0-beta.11_fapi-0.73.2_mc-1.19.3.jar",
+					"version": "t8snEhsc"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/WKziOmCZ/qfapi-4.0.0-beta.28_qsl-3.0.0-beta.29_fapi-0.73.2_mc-1.19.2.jar",
+					"version": "WKziOmCZ"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/ZUB07xly/qfapi-5.0.0-beta.4_qsl-4.0.0-beta.10_fapi-0.73.0_mc-1.19.3.jar",
+					"version": "ZUB07xly"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/o9KoJqZQ/qfapi-4.0.0-beta.27_qsl-3.0.0-beta.29_fapi-0.73.0_mc-1.19.2.jar",
+					"version": "o9KoJqZQ"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/wKBO3Xkk/qfapi-5.0.0-beta.3_qsl-4.0.0-beta.10_fapi-0.73.0_mc-1.19.3.jar",
+					"version": "wKBO3Xkk"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/Dvj5P1fV/qfapi-5.0.0-beta.1_qsl-4.0.0-beta.9_fapi-0.73.0_mc-1.19.3.jar",
+					"version": "Dvj5P1fV"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/i7UY2LFx/qfapi-4.0.0-beta.26_qsl-3.0.0-beta.25_fapi-0.72.0_mc-1.19.2.jar",
+					"version": "i7UY2LFx"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/5I6Al1Gw/qfapi-5.0.0-alpha.9_qsl-4.0.0-beta.5_fapi-0.72.0_mc-1.19.3.jar",
+					"version": "5I6Al1Gw"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/MoSNH4oo/qfapi-5.0.0-alpha.8_qsl-4.0.0-beta.4_fapi-0.71.0_mc-1.19.3.jar",
+					"version": "MoSNH4oo"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/bRcRsE72/qfapi-4.0.0-beta.25_qsl-3.0.0-beta.24_fapi-0.70.0_mc-1.19.2.jar",
+					"version": "bRcRsE72"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/TbQBjHUn/qfapi-5.0.0-alpha.7_qsl-4.0.0-beta.3_fapi-0.70.0_mc-1.19.3.jar",
+					"version": "TbQBjHUn"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/cEh00xLw/qfapi-5.0.0-alpha.6_qsl-4.0.0-beta.2_fapi-0.69.1_mc-1.19.3.jar",
+					"version": "cEh00xLw"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/VRQm0KLG/qfapi-5.0.0-alpha.5_qsl-4.0.0-beta.2_fapi-0.68.1_mc-1.19.3.jar",
+					"version": "VRQm0KLG"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/3fkx18f5/qfapi-5.0.0-alpha.4_qsl-4.0.0-beta.2_fapi-0.68.1_mc-1.19.3.jar",
+					"version": "3fkx18f5"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/NxpdXpm6/qfapi-5.0.0-alpha.3_qsl-4.0.0-beta.1_fapi-0.68.1_mc-1.19.3.jar",
+					"version": "NxpdXpm6"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/hmX9pHvE/qfapi-4.0.0-beta.24_qsl-3.0.0-beta.24_fapi-0.68.0_mc-1.19.2.jar",
+					"version": "hmX9pHvE"
+				},
+				{
+					"minecraft_versions": "1.19.3-rc1",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/ae1ofda7/qfapi-5.0.0-alpha.2_qsl-4.0.0-alpha.6_fapi-0.68.1_mc-1.19.3-rc1.jar",
+					"version": "ae1ofda7"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/WmdTkZ6I/qfapi-4.0.0-beta.23_qsl-3.0.0-beta.22_fapi-0.68.0_mc-1.19.2.jar",
+					"version": "WmdTkZ6I"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/NRjGGNrs/qfapi-4.0.0-beta.22_qsl-3.0.0-beta.22_fapi-0.67.1_mc-1.19.2.jar",
+					"version": "NRjGGNrs"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/LKDRXFIa/qfapi-4.0.0-beta.21_qsl-3.0.0-beta.21_fapi-0.67.0_mc-1.19.2.jar",
+					"version": "LKDRXFIa"
+				},
+				{
+					"minecraft_versions": "1.18.2",
 					"modloaders": "quilt",
 					"relations": {
 						"conflicts": "fabric-api"
 					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/2.0.0-beta.4%2B0.57.0-1.19/qfapi-2.0.0-beta.4_qsl-2.0.0-beta.10_fapi-0.57.0_mc-1.19.jar",
-					"version": "zEy1plMo"
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/U0wSVcD2/qfapi-1.0.0-beta.28_qsl-1.1.0-beta.26_fapi-0.67.0_mc-1.18.2.jar",
+					"version": "U0wSVcD2"
 				},
 				{
-					"minecraft_versions": "1.19.1-pre2",
+					"minecraft_versions": "1.18.2",
 					"modloaders": "quilt",
 					"relations": {
 						"conflicts": "fabric-api"
 					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/3.0.0-alpha.1%2B0.57.1-1.19.1/qfapi-3.0.0-alpha.1_qsl-2.0.0-beta.10_fapi-0.57.1_mc-1.19.1-pre2.jar",
-					"version": "UU6RE2F3"
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/zmdteZF3/qfapi-1.0.0-beta.27_qsl-1.1.0-beta.26_fapi-0.66.0_mc-1.18.2.jar",
+					"version": "zmdteZF3"
 				},
 				{
-					"minecraft_versions": "1.19",
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/TwxGzxIl/qfapi-4.0.0-beta.20_qsl-3.0.0-beta.21_fapi-0.66.0_mc-1.19.2.jar",
+					"version": "TwxGzxIl"
+				},
+				{
+					"minecraft_versions": "22w43a",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/Y8jT2hZ4/quilted-fabric-api-5.0.0-alpha.1%2B0.65.2-1.19.3.jar",
+					"version": "Y8jT2hZ4"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/zzHaJbi0/quilted-fabric-api-4.0.0-beta.19%2B0.64.0-1.19.2.jar",
+					"version": "zzHaJbi0"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/ue0SvAIA/quilted-fabric-api-4.0.0-beta.18%2B0.64.0-1.19.2.jar",
+					"version": "ue0SvAIA"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1RL57ufH/quilted-fabric-api-4.0.0-beta.17%2B0.64.0-1.19.2.jar",
+					"version": "1RL57ufH"
+				},
+				{
+					"minecraft_versions": "1.18.2",
 					"modloaders": "quilt",
 					"relations": {
 						"conflicts": "fabric-api"
 					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/2.0.0-beta.5%2B0.57.0-1.19/qfapi-2.0.0-beta.5_qsl-2.0.0-beta.12_fapi-0.57.0_mc-1.19.jar",
-					"version": "BM67Isrd"
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/X7Z3WAXh/qfapi-1.0.0-beta.26_qsl-1.1.0-beta.26_fapi-0.59.1_mc-1.18.2.jar",
+					"version": "X7Z3WAXh"
 				},
 				{
-					"minecraft_versions": "1.19.1-pre4",
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/sSSwdqie/quilted-fabric-api-4.0.0-beta.16%2B0.64.0-1.19.2.jar",
+					"version": "sSSwdqie"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/qg8B4tEe/quilted-fabric-api-4.0.0-beta.15%2B0.63.0-1.19.2.jar",
+					"version": "qg8B4tEe"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/x1bEhzoO/quilted-fabric-api-4.0.0-beta.14%2B0.62.0-1.19.2.jar",
+					"version": "x1bEhzoO"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/RMRJccdH/quilted-fabric-api-4.0.0-beta.13%2B0.62.0-1.19.2.jar",
+					"version": "RMRJccdH"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/VJj4Lc8d/qfapi-1.0.0-beta.25_qsl-1.1.0-beta.26_fapi-0.59.0_mc-1.18.2.jar",
+					"version": "VJj4Lc8d"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/VNZ3SkYT/quilted-fabric-api-4.0.0-beta.12%2B0.61.0-1.19.2.jar",
+					"version": "VNZ3SkYT"
+				},
+				{
+					"minecraft_versions": "1.19.2",
 					"modloaders": "quilt",
 					"relations": {
 						"conflicts": "fabric-api"
 					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/3.0.0-alpha.2%2B0.57.2-1.19.1/qfapi-3.0.0-alpha.2_qsl-2.0.0-beta.12_fapi-0.57.2_mc-1.19.1-pre4.jar",
-					"version": "OAY06QzZ"
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/UUGSby2q/qfapi-4.0.0-beta.11_qsl-3.0.0-beta.15_fapi-0.60.0_mc-1.19.2.jar",
+					"version": "UUGSby2q"
 				},
 				{
-					"minecraft_versions": "1.19",
+					"minecraft_versions": "1.19.2",
 					"modloaders": "quilt",
 					"relations": {
 						"conflicts": "fabric-api"
 					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/2.0.0-beta.6%2B0.57.0-1.19/qfapi-2.0.0-beta.6_qsl-2.0.0-beta.14_fapi-0.57.0_mc-1.19.jar",
-					"version": "pnrewaSX"
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/SHjwCrR0/qfapi-4.0.0-beta.10_qsl-3.0.0-beta.15_fapi-0.60.0_mc-1.19.2.jar",
+					"version": "SHjwCrR0"
 				},
 				{
-					"minecraft_versions": "1.19.1-pre4",
+					"minecraft_versions": "1.19.2",
 					"modloaders": "quilt",
 					"relations": {
 						"conflicts": "fabric-api"
 					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/3.0.0-alpha.3%2B0.57.2-1.19.1/qfapi-3.0.0-alpha.3_qsl-2.0.0-beta.14_fapi-0.57.2_mc-1.19.1-pre4.jar",
-					"version": "gfkHVL2e"
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/4.0.0-beta.9%2B0.60.0-1.19.2/qfapi-4.0.0-beta.9_qsl-3.0.0-beta.14_fapi-0.60.0_mc-1.19.2.jar",
+					"version": "HpHTJI6P"
 				},
 				{
-					"minecraft_versions": "1.19",
+					"minecraft_versions": "1.19.2",
 					"modloaders": "quilt",
 					"relations": {
 						"conflicts": "fabric-api"
 					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/2.0.0-beta.7%2B0.57.0-1.19/qfapi-2.0.0-beta.7_qsl-2.0.0-beta.15_fapi-0.57.0_mc-1.19.jar",
-					"version": "CkDCzjJ0"
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/4.0.0-beta.8%2B0.59.0-1.19.2/qfapi-4.0.0-beta.8_qsl-3.0.0-beta.13_fapi-0.59.0_mc-1.19.2.jar",
+					"version": "wMtZiptr"
 				},
 				{
-					"minecraft_versions": "1.19.1-pre6",
+					"minecraft_versions": "1.18.2",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1.0.0-beta.24%2B0.58.0-1.18.2/qfapi-1.0.0-beta.24_qsl-1.1.0-beta.26_fapi-0.58.0_mc-1.18.2.jar",
+					"version": "H1soL5Sq"
+				},
+				{
+					"minecraft_versions": "1.18.2",
 					"modloaders": "quilt",
 					"relations": {
 						"conflicts": "fabric-api"
 					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/3.0.0-alpha.4%2B0.57.3-1.19.1/qfapi-3.0.0-alpha.4_qsl-2.1.0-alpha.3_fapi-0.57.3_mc-1.19.1-pre6.jar",
-					"version": "x7fqy7dc"
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1.0.0-beta.23%2B0.58.0-1.18.2/qfapi-1.0.0-beta.23_qsl-1.1.0-beta.25_fapi-0.58.0_mc-1.18.2.jar",
+					"version": "brNZ0tRC"
 				},
 				{
-					"minecraft_versions": "1.19",
+					"minecraft_versions": "1.19.2",
 					"modloaders": "quilt",
 					"relations": {
 						"conflicts": "fabric-api"
 					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/2.0.0-beta.8%2B0.57.0-1.19/qfapi-2.0.0-beta.8_qsl-2.0.0-beta.16_fapi-0.57.0_mc-1.19.jar",
-					"version": "dFp106HY"
-				},
-				{
-					"minecraft_versions": "1.19.1-rc2",
-					"modloaders": "quilt",
-					"relations": {
-						"conflicts": "fabric-api"
-					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/3.0.0-alpha.5%2B0.58.0-1.19.1/qfapi-3.0.0-alpha.5_qsl-2.1.0-alpha.4_fapi-0.58.0_mc-1.19.1-rc2.jar",
-					"version": "QngFBFZl"
-				},
-				{
-					"minecraft_versions": "1.19",
-					"modloaders": "quilt",
-					"relations": {
-						"conflicts": "fabric-api"
-					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/2.0.0-beta.9%2B0.58.0-1.19/qfapi-2.0.0-beta.9_qsl-2.0.0-beta.16_fapi-0.58.0_mc-1.19.jar",
-					"version": "ddaofVmY"
-				},
-				{
-					"minecraft_versions": "1.19.1-rc2",
-					"modloaders": "quilt",
-					"relations": {
-						"conflicts": "fabric-api"
-					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/3.0.0-alpha.6%2B0.58.1-1.19.1/qfapi-3.0.0-alpha.6_qsl-2.1.0-alpha.4_fapi-0.58.1_mc-1.19.1-rc2.jar",
-					"version": "MM1jFJNL"
-				},
-				{
-					"minecraft_versions": "1.19.1",
-					"modloaders": "quilt",
-					"relations": {
-						"conflicts": "fabric-api"
-					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/4.0.0-beta.1%2B0.58.5-1.19.1/qfapi-4.0.0-beta.1_qsl-3.0.0-beta.2_fapi-0.58.5_mc-1.19.1.jar",
-					"version": "MrInA5CW"
-				},
-				{
-					"minecraft_versions": "1.19.1",
-					"modloaders": "quilt",
-					"relations": {
-						"conflicts": "fabric-api"
-					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/4.0.0-beta.2%2B0.58.5-1.19.1/qfapi-4.0.0-beta.2_qsl-3.0.0-beta.3_fapi-0.58.5_mc-1.19.1.jar",
-					"version": "P1gbVJ0v"
-				},
-				{
-					"minecraft_versions": "1.19.1",
-					"modloaders": "quilt",
-					"relations": {
-						"conflicts": "fabric-api"
-					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/4.0.0-beta.3%2B0.58.5-1.19.1/qfapi-4.0.0-beta.3_qsl-3.0.0-beta.5_fapi-0.58.5_mc-1.19.1.jar",
-					"version": "j0ZcDm2x"
-				},
-				{
-					"minecraft_versions": "1.19.1",
-					"modloaders": "quilt",
-					"relations": {
-						"conflicts": "fabric-api"
-					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/4.0.0-beta.4%2B0.58.5-1.19.1/qfapi-4.0.0-beta.4_qsl-3.0.0-beta.7_fapi-0.58.5_mc-1.19.1.jar",
-					"version": "8BeDPO6l"
-				},
-				{
-					"minecraft_versions": "1.19.1",
-					"modloaders": "quilt",
-					"relations": {
-						"conflicts": "fabric-api"
-					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/4.0.0-beta.5%2B0.58.5-1.19.1/qfapi-4.0.0-beta.5_qsl-3.0.0-beta.9_fapi-0.58.5_mc-1.19.1.jar",
-					"version": "f7DTnkIq"
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/4.0.0-beta.7%2B0.59.0-1.19.2/qfapi-4.0.0-beta.7_qsl-3.0.0-beta.10_fapi-0.59.0_mc-1.19.2.jar",
+					"version": "J4qgCouL"
 				},
 				{
 					"minecraft_versions": [
@@ -373,17 +688,219 @@
 					"relations": {
 						"conflicts": "fabric-api"
 					},
+					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/4.0.0-beta.6%2B0.58.5-1.19.1/qfapi-4.0.0-beta.6_qsl-3.0.0-beta.10_fapi-0.58.5_mc-1.19.1.jar",
 					"version": "obMVHg7L"
 				},
 				{
-					"minecraft_versions": "1.19.2",
+					"minecraft_versions": "1.19.1",
 					"modloaders": "quilt",
 					"relations": {
 						"conflicts": "fabric-api"
 					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/4.0.0-beta.7%2B0.59.0-1.19.2/qfapi-4.0.0-beta.7_qsl-3.0.0-beta.10_fapi-0.59.0_mc-1.19.2.jar",
-					"version": "J4qgCouL"
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/4.0.0-beta.5%2B0.58.5-1.19.1/qfapi-4.0.0-beta.5_qsl-3.0.0-beta.9_fapi-0.58.5_mc-1.19.1.jar",
+					"version": "f7DTnkIq"
+				},
+				{
+					"minecraft_versions": "1.19.1",
+					"modloaders": "quilt",
+					"relations": {
+						"conflicts": "fabric-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/4.0.0-beta.4%2B0.58.5-1.19.1/qfapi-4.0.0-beta.4_qsl-3.0.0-beta.7_fapi-0.58.5_mc-1.19.1.jar",
+					"version": "8BeDPO6l"
+				},
+				{
+					"minecraft_versions": "1.19.1",
+					"modloaders": "quilt",
+					"relations": {
+						"conflicts": "fabric-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/4.0.0-beta.3%2B0.58.5-1.19.1/qfapi-4.0.0-beta.3_qsl-3.0.0-beta.5_fapi-0.58.5_mc-1.19.1.jar",
+					"version": "j0ZcDm2x"
+				},
+				{
+					"minecraft_versions": "1.19.1",
+					"modloaders": "quilt",
+					"relations": {
+						"conflicts": "fabric-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/4.0.0-beta.2%2B0.58.5-1.19.1/qfapi-4.0.0-beta.2_qsl-3.0.0-beta.3_fapi-0.58.5_mc-1.19.1.jar",
+					"version": "P1gbVJ0v"
+				},
+				{
+					"minecraft_versions": "1.19.1",
+					"modloaders": "quilt",
+					"relations": {
+						"conflicts": "fabric-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/4.0.0-beta.1%2B0.58.5-1.19.1/qfapi-4.0.0-beta.1_qsl-3.0.0-beta.2_fapi-0.58.5_mc-1.19.1.jar",
+					"version": "MrInA5CW"
+				},
+				{
+					"minecraft_versions": "1.19.1-rc2",
+					"modloaders": "quilt",
+					"relations": {
+						"conflicts": "fabric-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/3.0.0-alpha.6%2B0.58.1-1.19.1/qfapi-3.0.0-alpha.6_qsl-2.1.0-alpha.4_fapi-0.58.1_mc-1.19.1-rc2.jar",
+					"version": "MM1jFJNL"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "quilt",
+					"relations": {
+						"conflicts": "fabric-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/2.0.0-beta.9%2B0.58.0-1.19/qfapi-2.0.0-beta.9_qsl-2.0.0-beta.16_fapi-0.58.0_mc-1.19.jar",
+					"version": "ddaofVmY"
+				},
+				{
+					"minecraft_versions": "1.19.1-rc2",
+					"modloaders": "quilt",
+					"relations": {
+						"conflicts": "fabric-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/3.0.0-alpha.5%2B0.58.0-1.19.1/qfapi-3.0.0-alpha.5_qsl-2.1.0-alpha.4_fapi-0.58.0_mc-1.19.1-rc2.jar",
+					"version": "QngFBFZl"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "quilt",
+					"relations": {
+						"conflicts": "fabric-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/2.0.0-beta.8%2B0.57.0-1.19/qfapi-2.0.0-beta.8_qsl-2.0.0-beta.16_fapi-0.57.0_mc-1.19.jar",
+					"version": "dFp106HY"
+				},
+				{
+					"minecraft_versions": "1.19.1-pre6",
+					"modloaders": "quilt",
+					"relations": {
+						"conflicts": "fabric-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/3.0.0-alpha.4%2B0.57.3-1.19.1/qfapi-3.0.0-alpha.4_qsl-2.1.0-alpha.3_fapi-0.57.3_mc-1.19.1-pre6.jar",
+					"version": "x7fqy7dc"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "quilt",
+					"relations": {
+						"conflicts": "fabric-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/2.0.0-beta.7%2B0.57.0-1.19/qfapi-2.0.0-beta.7_qsl-2.0.0-beta.15_fapi-0.57.0_mc-1.19.jar",
+					"version": "CkDCzjJ0"
+				},
+				{
+					"minecraft_versions": "1.19.1-pre4",
+					"modloaders": "quilt",
+					"relations": {
+						"conflicts": "fabric-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/3.0.0-alpha.3%2B0.57.2-1.19.1/qfapi-3.0.0-alpha.3_qsl-2.0.0-beta.14_fapi-0.57.2_mc-1.19.1-pre4.jar",
+					"version": "gfkHVL2e"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "quilt",
+					"relations": {
+						"conflicts": "fabric-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/2.0.0-beta.6%2B0.57.0-1.19/qfapi-2.0.0-beta.6_qsl-2.0.0-beta.14_fapi-0.57.0_mc-1.19.jar",
+					"version": "pnrewaSX"
+				},
+				{
+					"minecraft_versions": "1.19.1-pre4",
+					"modloaders": "quilt",
+					"relations": {
+						"conflicts": "fabric-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/3.0.0-alpha.2%2B0.57.2-1.19.1/qfapi-3.0.0-alpha.2_qsl-2.0.0-beta.12_fapi-0.57.2_mc-1.19.1-pre4.jar",
+					"version": "OAY06QzZ"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "quilt",
+					"relations": {
+						"conflicts": "fabric-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/2.0.0-beta.5%2B0.57.0-1.19/qfapi-2.0.0-beta.5_qsl-2.0.0-beta.12_fapi-0.57.0_mc-1.19.jar",
+					"version": "BM67Isrd"
+				},
+				{
+					"minecraft_versions": "1.19.1-pre2",
+					"modloaders": "quilt",
+					"relations": {
+						"conflicts": "fabric-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/3.0.0-alpha.1%2B0.57.1-1.19.1/qfapi-3.0.0-alpha.1_qsl-2.0.0-beta.10_fapi-0.57.1_mc-1.19.1-pre2.jar",
+					"version": "UU6RE2F3"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "quilt",
+					"relations": {
+						"conflicts": "fabric-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/2.0.0-beta.4%2B0.57.0-1.19/qfapi-2.0.0-beta.4_qsl-2.0.0-beta.10_fapi-0.57.0_mc-1.19.jar",
+					"version": "zEy1plMo"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"22w24a",
+						"1.19.1-pre1",
+						"1.19.1-rc1"
+					],
+					"modloaders": "quilt",
+					"relations": {
+						"conflicts": "fabric-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/2.0.0-beta.3%2B0.57.0-1.19/qfapi-2.0.0-beta.3_qsl-2.0.0-beta.9_fapi-0.57.0_mc-1.19.jar",
+					"version": "Sq6bz7rT"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"22w24a",
+						"1.19.1-pre1",
+						"1.19.1-rc1"
+					],
+					"modloaders": "quilt",
+					"relations": {
+						"conflicts": "fabric-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/2.0.0-beta.1%2B0.56.3-1.19/qfapi-2.0.0-beta.1_qsl-2.0.0-beta.8_fapi-0.56.3_mc-1.19.jar",
+					"version": "rahw4ZIK"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "quilt",
+					"relations": {
+						"conflicts": "fabric-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/2.0.0-alpha.4%2B0.56.1-1.19/qfapi-2.0.0-alpha.4_qsl-2.0.0-beta.5_fapi-0.56.1_mc-1.19.jar",
+					"version": "6PllArdw"
 				},
 				{
 					"minecraft_versions": "1.18.2",
@@ -391,86 +908,29 @@
 					"relations": {
 						"conflicts": "fabric-api"
 					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1.0.0-beta.23%2B0.58.0-1.18.2/qfapi-1.0.0-beta.23_qsl-1.1.0-beta.25_fapi-0.58.0_mc-1.18.2.jar",
-					"version": "brNZ0tRC"
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1.0.0-beta.22%2B0.56.0-1.18.2/qsl-1.1.0-beta.19_qfapi-1.0.0-beta.22_fapi-0.56.0_mc-1.18.2.jar",
+					"version": "IhFPlQD2"
 				},
 				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1.0.0-beta.24%2B0.58.0-1.18.2/qfapi-1.0.0-beta.24_qsl-1.1.0-beta.26_fapi-0.58.0_mc-1.18.2.jar",
-					"version": "H1soL5Sq"
-				},
-				{
-					"minecraft_versions": "1.19.2",
+					"minecraft_versions": "1.19",
 					"modloaders": "quilt",
 					"relations": {
 						"conflicts": "fabric-api"
 					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/4.0.0-beta.8%2B0.59.0-1.19.2/qfapi-4.0.0-beta.8_qsl-3.0.0-beta.13_fapi-0.59.0_mc-1.19.2.jar",
-					"version": "wMtZiptr"
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/2.0.0-alpha.3%2B0.55.3-1.19/qfapi-2.0.0-alpha.3_qsl-2.0.0-beta.2_fapi-0.55.3_mc-1.19.jar",
+					"version": "3u6Qbhdw"
 				},
 				{
-					"minecraft_versions": "1.19.2",
+					"minecraft_versions": "1.19",
 					"modloaders": "quilt",
 					"relations": {
 						"conflicts": "fabric-api"
 					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/4.0.0-beta.9%2B0.60.0-1.19.2/qfapi-4.0.0-beta.9_qsl-3.0.0-beta.14_fapi-0.60.0_mc-1.19.2.jar",
-					"version": "HpHTJI6P"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "quilt",
-					"relations": {
-						"conflicts": "fabric-api"
-					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/SHjwCrR0/qfapi-4.0.0-beta.10_qsl-3.0.0-beta.15_fapi-0.60.0_mc-1.19.2.jar",
-					"version": "SHjwCrR0"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "quilt",
-					"relations": {
-						"conflicts": "fabric-api"
-					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/UUGSby2q/qfapi-4.0.0-beta.11_qsl-3.0.0-beta.15_fapi-0.60.0_mc-1.19.2.jar",
-					"version": "UUGSby2q"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/VNZ3SkYT/quilted-fabric-api-4.0.0-beta.12%2B0.61.0-1.19.2.jar",
-					"version": "VNZ3SkYT"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/VJj4Lc8d/qfapi-1.0.0-beta.25_qsl-1.1.0-beta.26_fapi-0.59.0_mc-1.18.2.jar",
-					"version": "VJj4Lc8d"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/RMRJccdH/quilted-fabric-api-4.0.0-beta.13%2B0.62.0-1.19.2.jar",
-					"version": "RMRJccdH"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/x1bEhzoO/quilted-fabric-api-4.0.0-beta.14%2B0.62.0-1.19.2.jar",
-					"version": "x1bEhzoO"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/qg8B4tEe/quilted-fabric-api-4.0.0-beta.15%2B0.63.0-1.19.2.jar",
-					"version": "qg8B4tEe"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/sSSwdqie/quilted-fabric-api-4.0.0-beta.16%2B0.64.0-1.19.2.jar",
-					"version": "sSSwdqie"
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/2.0.0-alpha.2%2B0.55.3-1.19/qfapi-2.0.0-alpha.2_qsl-2.0.0-beta.2_fapi-0.55.3_mc-1.19.jar",
+					"version": "HwOyG7I5"
 				},
 				{
 					"minecraft_versions": "1.18.2",
@@ -478,38 +938,9 @@
 					"relations": {
 						"conflicts": "fabric-api"
 					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/X7Z3WAXh/qfapi-1.0.0-beta.26_qsl-1.1.0-beta.26_fapi-0.59.1_mc-1.18.2.jar",
-					"version": "X7Z3WAXh"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1RL57ufH/quilted-fabric-api-4.0.0-beta.17%2B0.64.0-1.19.2.jar",
-					"version": "1RL57ufH"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/ue0SvAIA/quilted-fabric-api-4.0.0-beta.18%2B0.64.0-1.19.2.jar",
-					"version": "ue0SvAIA"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/zzHaJbi0/quilted-fabric-api-4.0.0-beta.19%2B0.64.0-1.19.2.jar",
-					"version": "zzHaJbi0"
-				},
-				{
-					"minecraft_versions": "22w43a",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/Y8jT2hZ4/quilted-fabric-api-5.0.0-alpha.1%2B0.65.2-1.19.3.jar",
-					"version": "Y8jT2hZ4"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/TwxGzxIl/qfapi-4.0.0-beta.20_qsl-3.0.0-beta.21_fapi-0.66.0_mc-1.19.2.jar",
-					"version": "TwxGzxIl"
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1.0.0-beta.20%2B0.55.1-1.18.2/qsl-1.1.0-beta.17_qfapi-1.0.0-beta.20_fapi-0.55.1_mc-1.18.2.jar",
+					"version": "pwp94ACs"
 				},
 				{
 					"minecraft_versions": "1.18.2",
@@ -517,8 +948,9 @@
 					"relations": {
 						"conflicts": "fabric-api"
 					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/zmdteZF3/qfapi-1.0.0-beta.27_qsl-1.1.0-beta.26_fapi-0.66.0_mc-1.18.2.jar",
-					"version": "zmdteZF3"
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1.0.0-beta.19%2B0.55.1-1.18.2/qsl-1.1.0-beta.17_qfapi-1.0.0-beta.19_fapi-0.55.1_mc-1.18.2.jar",
+					"version": "hPStWdDs"
 				},
 				{
 					"minecraft_versions": "1.18.2",
@@ -526,443 +958,140 @@
 					"relations": {
 						"conflicts": "fabric-api"
 					},
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/U0wSVcD2/qfapi-1.0.0-beta.28_qsl-1.1.0-beta.26_fapi-0.67.0_mc-1.18.2.jar",
-					"version": "U0wSVcD2"
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1.0.0-beta.18%2B0.55.1-1.18.2/qsl-1.1.0-beta.17_qfapi-1.0.0-beta.18_fapi-0.55.1_mc-1.18.2.jar",
+					"version": "L1XD5HAW"
 				},
 				{
-					"minecraft_versions": "1.19.2",
+					"minecraft_versions": "1.18.2",
 					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/LKDRXFIa/qfapi-4.0.0-beta.21_qsl-3.0.0-beta.21_fapi-0.67.0_mc-1.19.2.jar",
-					"version": "LKDRXFIa"
+					"relations": {
+						"conflicts": "fabric-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1.0.0-beta.17%2B0.54.0-1.18.2/qsl-1.1.0-beta.14_qfapi-1.0.0-beta.17_fapi-0.54.0_mc-1.18.2.jar",
+					"version": "lz767pA6"
 				},
 				{
-					"minecraft_versions": "1.19.2",
+					"minecraft_versions": "1.18.2",
 					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/NRjGGNrs/qfapi-4.0.0-beta.22_qsl-3.0.0-beta.22_fapi-0.67.1_mc-1.19.2.jar",
-					"version": "NRjGGNrs"
+					"relations": {
+						"conflicts": "fabric-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1.0.0-beta.16%2B0.53.4-1.18.2/qsl-1.1.0-beta.13_qfapi-1.0.0-beta.16_fapi-0.53.4_mc-1.18.2.jar",
+					"version": "I9rPSfaR"
 				},
 				{
-					"minecraft_versions": "1.19.2",
+					"minecraft_versions": "1.18.2",
 					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/WmdTkZ6I/qfapi-4.0.0-beta.23_qsl-3.0.0-beta.22_fapi-0.68.0_mc-1.19.2.jar",
-					"version": "WmdTkZ6I"
+					"relations": {
+						"conflicts": "fabric-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1.0.0-beta.15%2B0.53.4-1.18.2/qsl-1.1.0-beta.13_qfapi-1.0.0-beta.15_fapi-0.53.4_mc-1.18.2.jar",
+					"version": "RUKOwGTz"
 				},
 				{
-					"minecraft_versions": "1.19.3-rc1",
+					"minecraft_versions": "1.18.2",
 					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/ae1ofda7/qfapi-5.0.0-alpha.2_qsl-4.0.0-alpha.6_fapi-0.68.1_mc-1.19.3-rc1.jar",
-					"version": "ae1ofda7"
+					"relations": {
+						"conflicts": "fabric-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1.0.0-beta.14%2B0.51.1-1.18.2/qsl-1.1.0-beta.8_qfapi-1.0.0-beta.14_fapi-0.51.1_mc-1.18.2.jar",
+					"version": "45CcbAvo"
 				},
 				{
-					"minecraft_versions": "1.19.2",
+					"minecraft_versions": "1.18.2",
 					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/hmX9pHvE/qfapi-4.0.0-beta.24_qsl-3.0.0-beta.24_fapi-0.68.0_mc-1.19.2.jar",
-					"version": "hmX9pHvE"
+					"relations": {
+						"conflicts": "fabric-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1.0.0-beta.13%2B0.51.1-1.18.2/qsl-1.1.0-beta.8_qfapi-1.0.0-beta.13_fapi-0.51.1_mc-1.18.2.jar",
+					"version": "Qocje47u"
 				},
 				{
-					"minecraft_versions": "1.19.3",
+					"minecraft_versions": "1.18.2",
 					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/NxpdXpm6/qfapi-5.0.0-alpha.3_qsl-4.0.0-beta.1_fapi-0.68.1_mc-1.19.3.jar",
-					"version": "NxpdXpm6"
+					"relations": {
+						"conflicts": "fabric-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1.0.0-beta.12%2B0.51.1-1.18.2/qsl-1.1.0-beta.8_qfapi-1.0.0-beta.12_fapi-0.51.1_mc-1.18.2.jar",
+					"version": "9QT3b4mE"
 				},
 				{
-					"minecraft_versions": "1.19.3",
+					"minecraft_versions": "1.18.2",
 					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/3fkx18f5/qfapi-5.0.0-alpha.4_qsl-4.0.0-beta.2_fapi-0.68.1_mc-1.19.3.jar",
-					"version": "3fkx18f5"
+					"relations": {
+						"conflicts": "fabric-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1.0.0-beta.11%2B0.51.1-1.18.2/qsl-1.1.0-beta.7_qfapi-1.0.0-beta.11_fapi-0.51.1_mc-1.18.2.jar",
+					"version": "VvjoqNcy"
 				},
 				{
-					"minecraft_versions": "1.19.3",
+					"minecraft_versions": "1.18.2",
 					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/VRQm0KLG/qfapi-5.0.0-alpha.5_qsl-4.0.0-beta.2_fapi-0.68.1_mc-1.19.3.jar",
-					"version": "VRQm0KLG"
+					"relations": {
+						"conflicts": "fabric-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1.0.0-beta.10%2B0.51.1-1.18.2/qsl-1.1.0-beta.6_qfapi-1.0.0-beta.10_fapi-0.51.1_mc-1.18.2.jar",
+					"version": "GAyycZIm"
 				},
 				{
-					"minecraft_versions": "1.19.3",
+					"minecraft_versions": "1.18.2",
 					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/cEh00xLw/qfapi-5.0.0-alpha.6_qsl-4.0.0-beta.2_fapi-0.69.1_mc-1.19.3.jar",
-					"version": "cEh00xLw"
+					"relations": {
+						"conflicts": "fabric-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1.0.0-beta.9%2B0.51.1-1.18.2/qsl-1.1.0-beta.5_qfapi-1.0.0-beta.9_fapi-0.51.1_mc-1.18.2.jar",
+					"version": "PAE9ujTn"
 				},
 				{
-					"minecraft_versions": "1.19.3",
+					"minecraft_versions": "1.18.2",
 					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/TbQBjHUn/qfapi-5.0.0-alpha.7_qsl-4.0.0-beta.3_fapi-0.70.0_mc-1.19.3.jar",
-					"version": "TbQBjHUn"
+					"relations": {
+						"conflicts": "fabric-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1.0.0-beta.8%2B0.51.1-1.18.2/qsl-1.1.0-beta.4_qfapi-1.0.0-beta.8_fapi-0.51.1_mc-1.18.2.jar",
+					"version": "t1xewTPM"
 				},
 				{
-					"minecraft_versions": "1.19.2",
+					"minecraft_versions": "1.18.2",
 					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/bRcRsE72/qfapi-4.0.0-beta.25_qsl-3.0.0-beta.24_fapi-0.70.0_mc-1.19.2.jar",
-					"version": "bRcRsE72"
+					"relations": {
+						"conflicts": "fabric-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1.0.0-beta.7%2B0.51.1-1.18.2/qsl-1.1.0-beta.4_qfapi-1.0.0-beta.7_fapi-0.51.1_mc-1.18.2.jar",
+					"version": "zrMlJA87"
 				},
 				{
-					"minecraft_versions": "1.19.3",
+					"minecraft_versions": "1.18.2",
 					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/MoSNH4oo/qfapi-5.0.0-alpha.8_qsl-4.0.0-beta.4_fapi-0.71.0_mc-1.19.3.jar",
-					"version": "MoSNH4oo"
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1.0.0-beta.6%2B0.51.1-1.18.2/qsl-1.1.0-beta.2_qfapi-1.0.0-beta.6_fapi-0.51.1_mc-1.18.2.jar",
+					"version": "VtK9e93B"
 				},
 				{
-					"minecraft_versions": "1.19.3",
+					"minecraft_versions": "1.18.2",
 					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/5I6Al1Gw/qfapi-5.0.0-alpha.9_qsl-4.0.0-beta.5_fapi-0.72.0_mc-1.19.3.jar",
-					"version": "5I6Al1Gw"
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1.0.0-beta.5%2B0.48.0-1.18.2/qsl-1.1.0-beta.2_qfapi-1.0.0-beta.5_fapi-0.48.0_mc-1.18.2.jar",
+					"version": "w6Z1WEDi"
 				},
 				{
-					"minecraft_versions": "1.19.2",
+					"minecraft_versions": "1.18.2",
 					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/i7UY2LFx/qfapi-4.0.0-beta.26_qsl-3.0.0-beta.25_fapi-0.72.0_mc-1.19.2.jar",
-					"version": "i7UY2LFx"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/Dvj5P1fV/qfapi-5.0.0-beta.1_qsl-4.0.0-beta.9_fapi-0.73.0_mc-1.19.3.jar",
-					"version": "Dvj5P1fV"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/wKBO3Xkk/qfapi-5.0.0-beta.3_qsl-4.0.0-beta.10_fapi-0.73.0_mc-1.19.3.jar",
-					"version": "wKBO3Xkk"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/o9KoJqZQ/qfapi-4.0.0-beta.27_qsl-3.0.0-beta.29_fapi-0.73.0_mc-1.19.2.jar",
-					"version": "o9KoJqZQ"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/ZUB07xly/qfapi-5.0.0-beta.4_qsl-4.0.0-beta.10_fapi-0.73.0_mc-1.19.3.jar",
-					"version": "ZUB07xly"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/WKziOmCZ/qfapi-4.0.0-beta.28_qsl-3.0.0-beta.29_fapi-0.73.2_mc-1.19.2.jar",
-					"version": "WKziOmCZ"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/t8snEhsc/qfapi-5.0.0-beta.5_qsl-4.0.0-beta.11_fapi-0.73.2_mc-1.19.3.jar",
-					"version": "t8snEhsc"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/oQbYgY9f/qfapi-5.0.0-beta.6_qsl-4.0.0-beta.11_fapi-0.74.0_mc-1.19.3.jar",
-					"version": "oQbYgY9f"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/spTTmhS4/qfapi-5.0.0-beta.7_qsl-4.0.0-beta.11_fapi-0.75.1_mc-1.19.3.jar",
-					"version": "spTTmhS4"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/kMDIFsRI/qfapi-4.0.0-beta.29_qsl-3.0.0-beta.29_fapi-0.75.1_mc-1.19.2.jar",
-					"version": "kMDIFsRI"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/MYbIY8g7/qfapi-5.0.0-beta.8_qsl-4.0.0-beta.12_fapi-0.75.1_mc-1.19.3.jar",
-					"version": "MYbIY8g7"
-				},
-				{
-					"minecraft_versions": "1.19.4-pre3",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/RAIWeVLH/qfapi-6.0.0-alpha.1_qsl-5.0.0-alpha.2_fapi-0.75.2_mc-1.19.4-pre3.jar",
-					"version": "RAIWeVLH"
-				},
-				{
-					"minecraft_versions": "1.19.4-rc2",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/JYRztVNW/qfapi-6.0.0-alpha.2_qsl-5.0.0-alpha.3_fapi-0.75.3_mc-1.19.4-rc2.jar",
-					"version": "JYRztVNW"
-				},
-				{
-					"minecraft_versions": "1.19.4",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/3isqQyAk/qfapi-6.0.0-beta.1_qsl-5.0.0-beta.1_fapi-0.75.3_mc-1.19.4.jar",
-					"version": "3isqQyAk"
-				},
-				{
-					"minecraft_versions": "1.19.4",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/AmlAy82C/qfapi-6.0.0-beta.2_qsl-5.0.0-beta.1_fapi-0.76.0_mc-1.19.4.jar",
-					"version": "AmlAy82C"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/BTCxVi75/qfapi-4.0.0-beta.30_qsl-3.0.0-beta.29_fapi-0.76.0_mc-1.19.2.jar",
-					"version": "BTCxVi75"
-				},
-				{
-					"minecraft_versions": "1.19.4",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/9gcIrw5Z/qfapi-6.0.0-beta.3_qsl-5.0.0-beta.2_fapi-0.76.0_mc-1.19.4.jar",
-					"version": "9gcIrw5Z"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/eaoB99I6/qfapi-5.0.0-beta.9_qsl-4.0.0-beta.13_fapi-0.76.0_mc-1.19.3.jar",
-					"version": "eaoB99I6"
-				},
-				{
-					"minecraft_versions": "1.19.4",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/cpRPaFBn/qfapi-6.0.0-beta.4_qsl-5.0.0-beta.3_fapi-0.78.0_mc-1.19.4.jar",
-					"version": "cpRPaFBn"
-				},
-				{
-					"minecraft_versions": "1.19.4",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/8eRjIPoA/qfapi-6.0.0-beta.5_qsl-5.0.0-beta.4_fapi-0.78.0_mc-1.19.4.jar",
-					"version": "8eRjIPoA"
-				},
-				{
-					"minecraft_versions": "1.19.4",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/Ng2kCEiP/qfapi-6.0.0-beta.6_qsl-5.0.0-beta.5_fapi-0.79.0_mc-1.19.4.jar",
-					"version": "Ng2kCEiP"
-				},
-				{
-					"minecraft_versions": "1.19.4",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/Gxq4k3Vt/qfapi-6.0.0-beta.6_qsl-5.0.0-beta.8_fapi-0.81.1_mc-1.19.4.jar",
-					"version": "Gxq4k3Vt"
-				},
-				{
-					"minecraft_versions": "1.19.4",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/jCiJggRO/qfapi-6.0.0-beta.7_qsl-5.0.0-beta.8_fapi-0.81.1_mc-1.19.4.jar",
-					"version": "jCiJggRO"
-				},
-				{
-					"minecraft_versions": "1.20-pre5",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/Xhv4rEIJ/qfapi-7.0.0-alpha.1_qsl-6.0.0-alpha.3_fapi-0.81.3_mc-1.20-pre5.jar",
-					"version": "Xhv4rEIJ"
-				},
-				{
-					"minecraft_versions": "1.19.4",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/x86qltyO/qfapi-6.0.0-beta.8_qsl-5.0.0-beta.9_fapi-0.82.0_mc-1.19.4.jar",
-					"version": "x86qltyO"
-				},
-				{
-					"minecraft_versions": "1.20-pre6",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/Y4qL3XEB/qfapi-7.0.0-alpha.2_qsl-6.0.0-alpha.4_fapi-0.82.1_mc-1.20-pre6.jar",
-					"version": "Y4qL3XEB"
-				},
-				{
-					"minecraft_versions": "1.20-pre7",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/b1Y1Otv7/qfapi-7.0.0-alpha.3_qsl-6.0.0-alpha.5_fapi-0.83.0_mc-1.20-pre7.jar",
-					"version": "b1Y1Otv7"
-				},
-				{
-					"minecraft_versions": "1.20-rc1",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/YiAkMxMf/qfapi-7.0.0-alpha.4_qsl-6.0.0-alpha.6_fapi-0.83.0_mc-1.20-rc1.jar",
-					"version": "YiAkMxMf"
-				},
-				{
-					"minecraft_versions": "1.19.4",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/QPXihdoB/qfapi-6.0.0-beta.9_qsl-5.0.0-beta.10_fapi-0.83.0_mc-1.19.4.jar",
-					"version": "QPXihdoB"
-				},
-				{
-					"minecraft_versions": "1.20",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/csBGi8FI/qfapi-7.0.0_qsl-6.0.0_fapi-0.83.0_mc-1.20.jar",
-					"version": "csBGi8FI"
-				},
-				{
-					"minecraft_versions": "1.20",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/rS9Tm10P/qfapi-7.0.1_qsl-6.0.1_fapi-0.83.0_mc-1.20.jar",
-					"version": "rS9Tm10P"
-				},
-				{
-					"minecraft_versions": [
-						"1.20",
-						"1.20.1"
-					],
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/uw5SkGdQ/qfapi-7.0.2_qsl-6.0.3_fapi-0.83.0_mc-1.20.1.jar",
-					"version": "uw5SkGdQ"
-				},
-				{
-					"minecraft_versions": [
-						"1.20",
-						"1.20.1"
-					],
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/di82eiyL/qfapi-7.0.3_qsl-6.0.3_fapi-0.83.1_mc-1.20.1.jar",
-					"version": "di82eiyL"
-				},
-				{
-					"minecraft_versions": [
-						"1.20",
-						"1.20.1"
-					],
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/cFCbC3OH/qfapi-7.0.4_qsl-6.0.3_fapi-0.84.0_mc-1.20.1.jar",
-					"version": "cFCbC3OH"
-				},
-				{
-					"minecraft_versions": [
-						"1.20",
-						"1.20.1"
-					],
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/BAwbsZ2r/qfapi-7.0.5_qsl-6.0.4_fapi-0.84.0_mc-1.20.1.jar",
-					"version": "BAwbsZ2r"
-				},
-				{
-					"minecraft_versions": [
-						"1.20",
-						"1.20.1"
-					],
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/4JBkYQUF/qfapi-7.0.6_qsl-6.0.4_fapi-0.85.0_mc-1.20.1.jar",
-					"version": "4JBkYQUF"
-				},
-				{
-					"minecraft_versions": [
-						"1.20",
-						"1.20.1"
-					],
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/fFx48erS/qfapi-7.1.0_qsl-6.1.0_fapi-0.86.1_mc-1.20.1.jar",
-					"version": "fFx48erS"
-				},
-				{
-					"minecraft_versions": [
-						"1.20",
-						"1.20.1"
-					],
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/ugK6veHN/qfapi-7.1.1_qsl-6.1.1_fapi-0.86.1_mc-1.20.1.jar",
-					"version": "ugK6veHN"
-				},
-				{
-					"minecraft_versions": [
-						"1.20",
-						"1.20.1"
-					],
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/aWl2Qw6u/qfapi-7.1.2_qsl-6.1.1_fapi-0.87.0_mc-1.20.1.jar",
-					"version": "aWl2Qw6u"
-				},
-				{
-					"minecraft_versions": [
-						"1.20",
-						"1.20.1"
-					],
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/PmZhDLt6/qfapi-7.2.0_qsl-6.1.1_fapi-0.88.0_mc-1.20.1.jar",
-					"version": "PmZhDLt6"
-				},
-				{
-					"minecraft_versions": [
-						"1.20",
-						"1.20.1"
-					],
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/DzBePwtf/qfapi-7.2.1_qsl-6.1.1_fapi-0.88.0_mc-1.20.1.jar",
-					"version": "DzBePwtf"
-				},
-				{
-					"minecraft_versions": [
-						"1.20",
-						"1.20.1"
-					],
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/vTQynnGn/qfapi-7.2.2_qsl-6.1.2_fapi-0.88.1_mc-1.20.1.jar",
-					"version": "vTQynnGn"
-				},
-				{
-					"minecraft_versions": "1.20.1",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/Ycmh3qg8/qfapi-7.3.0_qsl-6.1.2_fapi-0.89.0_mc-1.20.1.jar",
-					"version": "Ycmh3qg8"
-				},
-				{
-					"minecraft_versions": "1.20.1",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/ftu8PpDD/qfapi-7.3.1_qsl-6.1.2_fapi-0.89.3_mc-1.20.1.jar",
-					"version": "ftu8PpDD"
-				},
-				{
-					"minecraft_versions": "1.19.4",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/jOT4fzXf/qfapi-6.0.0-beta.10_qsl-5.0.0-beta.11_fapi-0.87.0_mc-1.19.4.jar",
-					"version": "jOT4fzXf"
-				},
-				{
-					"minecraft_versions": "1.20.1",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/GjvWb8WQ/qfapi-7.4.0_qsl-6.1.2_fapi-0.90.0_mc-1.20.1.jar",
-					"version": "GjvWb8WQ"
-				},
-				{
-					"minecraft_versions": "1.19.4",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/BQoiDT9n/qfapi-6.0.0-beta.11_qsl-5.0.0-beta.11_fapi-0.87.0_mc-1.19.4.jar",
-					"version": "BQoiDT9n"
-				},
-				{
-					"minecraft_versions": "1.20.2",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/g6CMDJLy/quilted-fabric-api-8.0.0-alpha.1%2B0.91.2-1.20.2.jar",
-					"version": "g6CMDJLy"
-				},
-				{
-					"minecraft_versions": "1.20.2",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/Xo36xpLR/quilted-fabric-api-8.0.0-alpha.2%2B0.91.2-1.20.2.jar",
-					"version": "Xo36xpLR"
-				},
-				{
-					"minecraft_versions": "1.20.2",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/gIUtHixU/quilted-fabric-api-8.0.0-alpha.3%2B0.91.2-1.20.2.jar",
-					"version": "gIUtHixU"
-				},
-				{
-					"minecraft_versions": "1.20.1",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/qAYOU2Af/qfapi-7.5.0_qsl-6.1.2_fapi-0.91.0_mc-1.20.1.jar",
-					"version": "qAYOU2Af"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/aaucrsnr/qfapi-4.0.0-beta.30_qsl-3.0.0-beta.29_fapi-0.77.0_mc-1.19.2.jar",
-					"version": "aaucrsnr"
-				},
-				{
-					"minecraft_versions": "1.20.2",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/z7EhOm3D/quilted-fabric-api-8.0.0-alpha.4%2B0.91.6-1.20.2.jar",
-					"version": "z7EhOm3D"
-				},
-				{
-					"minecraft_versions": "1.20.2",
-					"modloaders": "quilt",
-					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/vZbU3nyq/quilted-fabric-api-8.0.0-alpha.5%2B0.91.6-1.20.2.jar",
-					"version": "vZbU3nyq"
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/1.0.0-beta.4%2B0.48.0-1.18.2/qsl-1.1.0-beta.2_qfapi-1.0.0-beta.4_fapi-0.48.0_mc-1.18.2.jar",
+					"version": "cmqWpwyC"
 				}
 			]
 		}
@@ -979,6 +1108,7 @@
 		],
 		"community": "https://discord.quiltmc.org",
 		"description": "The standard libraries of the Quilt ecosystem. Essential for your modding experience on Quilt!",
+		"gallery": [],
 		"icon": "https://cdn.modrinth.com/data/qvIfYCYJ/icon.png",
 		"issues": "https://github.com/QuiltMC/quilted-fabric-api/issues",
 		"keywords": [
@@ -998,6 +1128,10 @@
 		"open_source": true,
 		"supported_modloaders": [
 			"quilt"
+		],
+		"supported_sides": [
+			"client",
+			"server"
 		],
 		"supported_versions": [
 			"1.18.2",

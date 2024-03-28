@@ -4,10 +4,91 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/wddoDji1/YungsApi-1.20.4-Forge-4.4.2.jar",
+					"version": "wddoDji1"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/RXxBbRs7/YungsApi-1.20.4-Fabric-4.4.2.jar",
+					"version": "RXxBbRs7"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/sE5QMX20/YungsApi-1.20-Forge-4.0.4.jar",
+					"version": "sE5QMX20"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/k1OTLc33/YungsApi-1.20-Fabric-4.0.4.jar",
+					"version": "k1OTLc33"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/5Zb55w2q/YungsApi-1.20.4-Fabric-4.4.1.jar",
+					"version": "5Zb55w2q"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/rbgh8n1F/YungsApi-1.20.4-Forge-4.4.1.jar",
+					"version": "rbgh8n1F"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/hyQxutx9/YungsApi-1.20-Fabric-4.0.3.jar",
+					"version": "hyQxutx9"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/QnR5jGmc/YungsApi-1.20-Forge-4.0.3.jar",
+					"version": "QnR5jGmc"
+				},
+				{
 					"minecraft_versions": "1.19.2",
 					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/xET3UZBe/YungsApi-1.19.2-Forge-3.8.2.jar",
-					"version": "xET3UZBe"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/L5GqhLVE/YungsApi-1.19.2-Forge-3.8.10.jar",
+					"version": "L5GqhLVE"
 				},
 				{
 					"minecraft_versions": "1.19.2",
@@ -15,12 +96,169 @@
 					"relations": {
 						"dependencies": "fabriclike-api"
 					},
-					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/UNVzqGkX/YungsApi-1.19.2-Fabric-3.8.2.jar",
-					"version": "UNVzqGkX"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/pxmQWPn7/YungsApi-1.19.2-Fabric-3.8.10.jar",
+					"version": "pxmQWPn7"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/HIRzLg0r/YungsApi-1.20-Forge-4.0.2.jar",
+					"version": "HIRzLg0r"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/TT8tnzlH/YungsApi-1.20-Fabric-4.0.2.jar",
+					"version": "TT8tnzlH"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/NmrTF2A5/YungsApi-1.20-Fabric-4.0.1.jar",
+					"version": "NmrTF2A5"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/4Ek11kQV/YungsApi-1.20-Forge-4.0.1.jar",
+					"version": "4Ek11kQV"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/h32n7OPC/YungsApi-1.19.4-Fabric-3.10.1.jar",
+					"version": "h32n7OPC"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/yIFytswN/YungsApi-1.19.4-Forge-3.10.1.jar",
+					"version": "yIFytswN"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/IxuGYnWF/YungsApi-1.19.2-Fabric-3.8.9.jar",
+					"version": "IxuGYnWF"
 				},
 				{
 					"minecraft_versions": "1.19.2",
 					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/GNNfW5IV/YungsApi-1.19.2-Forge-3.8.9.jar",
+					"version": "GNNfW5IV"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/YZE1pnbT/YungsApi-1.18.2-Forge-2.2.9.jar",
+					"version": "YZE1pnbT"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/i0Z1vSK9/YungsApi-1.18.2-Fabric-2.2.9.jar",
+					"version": "i0Z1vSK9"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/IOIGqCVr/YungsApi-1.19.3-Fabric-3.9.0.jar",
+					"version": "IOIGqCVr"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/dpSzBMP6/YungsApi-1.19.3-Forge-3.9.0.jar",
+					"version": "dpSzBMP6"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/Em3G31xp/YungsApi-1.19.2-Fabric-3.8.8.jar",
+					"version": "Em3G31xp"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/LEuKu3qt/YungsApi-1.19.2-Forge-3.8.8.jar",
+					"version": "LEuKu3qt"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/YwHWUw19/YungsApi-1.19.2-Forge-3.8.7.jar",
+					"version": "YwHWUw19"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/LYoQlbQt/YungsApi-1.19.2-Fabric-3.8.7.jar",
+					"version": "LYoQlbQt"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/xvoWCwex/YungsApi-1.19.2-Fabric-3.8.6.jar",
+					"version": "xvoWCwex"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
 					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/82XBGKbQ/YungsApi-1.19.2-Forge-3.8.6.jar",
 					"version": "82XBGKbQ"
 				},
@@ -30,224 +268,16 @@
 					"relations": {
 						"dependencies": "fabriclike-api"
 					},
-					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/xvoWCwex/YungsApi-1.19.2-Fabric-3.8.6.jar",
-					"version": "xvoWCwex"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/LYoQlbQt/YungsApi-1.19.2-Fabric-3.8.7.jar",
-					"version": "LYoQlbQt"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/UNVzqGkX/YungsApi-1.19.2-Fabric-3.8.2.jar",
+					"version": "UNVzqGkX"
 				},
 				{
 					"minecraft_versions": "1.19.2",
 					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/YwHWUw19/YungsApi-1.19.2-Forge-3.8.7.jar",
-					"version": "YwHWUw19"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/LEuKu3qt/YungsApi-1.19.2-Forge-3.8.8.jar",
-					"version": "LEuKu3qt"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/Em3G31xp/YungsApi-1.19.2-Fabric-3.8.8.jar",
-					"version": "Em3G31xp"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/dpSzBMP6/YungsApi-1.19.3-Forge-3.9.0.jar",
-					"version": "dpSzBMP6"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/IOIGqCVr/YungsApi-1.19.3-Fabric-3.9.0.jar",
-					"version": "IOIGqCVr"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/i0Z1vSK9/YungsApi-1.18.2-Fabric-2.2.9.jar",
-					"version": "i0Z1vSK9"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/YZE1pnbT/YungsApi-1.18.2-Forge-2.2.9.jar",
-					"version": "YZE1pnbT"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/GNNfW5IV/YungsApi-1.19.2-Forge-3.8.9.jar",
-					"version": "GNNfW5IV"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/IxuGYnWF/YungsApi-1.19.2-Fabric-3.8.9.jar",
-					"version": "IxuGYnWF"
-				},
-				{
-					"minecraft_versions": "1.19.4",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/yIFytswN/YungsApi-1.19.4-Forge-3.10.1.jar",
-					"version": "yIFytswN"
-				},
-				{
-					"minecraft_versions": "1.19.4",
-					"modloaders": "fabric",
-					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/h32n7OPC/YungsApi-1.19.4-Fabric-3.10.1.jar",
-					"version": "h32n7OPC"
-				},
-				{
-					"minecraft_versions": [
-						"1.20",
-						"1.20.1"
-					],
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/4Ek11kQV/YungsApi-1.20-Forge-4.0.1.jar",
-					"version": "4Ek11kQV"
-				},
-				{
-					"minecraft_versions": [
-						"1.20",
-						"1.20.1"
-					],
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/NmrTF2A5/YungsApi-1.20-Fabric-4.0.1.jar",
-					"version": "NmrTF2A5"
-				},
-				{
-					"minecraft_versions": [
-						"1.20",
-						"1.20.1"
-					],
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/TT8tnzlH/YungsApi-1.20-Fabric-4.0.2.jar",
-					"version": "TT8tnzlH"
-				},
-				{
-					"minecraft_versions": [
-						"1.20",
-						"1.20.1"
-					],
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/HIRzLg0r/YungsApi-1.20-Forge-4.0.2.jar",
-					"version": "HIRzLg0r"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/pxmQWPn7/YungsApi-1.19.2-Fabric-3.8.10.jar",
-					"version": "pxmQWPn7"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/L5GqhLVE/YungsApi-1.19.2-Forge-3.8.10.jar",
-					"version": "L5GqhLVE"
-				},
-				{
-					"minecraft_versions": [
-						"1.20",
-						"1.20.1"
-					],
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/QnR5jGmc/YungsApi-1.20-Forge-4.0.3.jar",
-					"version": "QnR5jGmc"
-				},
-				{
-					"minecraft_versions": [
-						"1.20",
-						"1.20.1"
-					],
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/hyQxutx9/YungsApi-1.20-Fabric-4.0.3.jar",
-					"version": "hyQxutx9"
-				},
-				{
-					"minecraft_versions": "1.20.4",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/rbgh8n1F/YungsApi-1.20.4-Forge-4.4.1.jar",
-					"version": "rbgh8n1F"
-				},
-				{
-					"minecraft_versions": "1.20.4",
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/5Zb55w2q/YungsApi-1.20.4-Fabric-4.4.1.jar",
-					"version": "5Zb55w2q"
-				},
-				{
-					"minecraft_versions": [
-						"1.20",
-						"1.20.1"
-					],
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/k1OTLc33/YungsApi-1.20-Fabric-4.0.4.jar",
-					"version": "k1OTLc33"
-				},
-				{
-					"minecraft_versions": [
-						"1.20",
-						"1.20.1"
-					],
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/sE5QMX20/YungsApi-1.20-Forge-4.0.4.jar",
-					"version": "sE5QMX20"
-				},
-				{
-					"minecraft_versions": "1.20.4",
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/RXxBbRs7/YungsApi-1.20.4-Fabric-4.4.2.jar",
-					"version": "RXxBbRs7"
-				},
-				{
-					"minecraft_versions": "1.20.4",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/wddoDji1/YungsApi-1.20.4-Forge-4.4.2.jar",
-					"version": "wddoDji1"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/xET3UZBe/YungsApi-1.19.2-Forge-3.8.2.jar",
+					"version": "xET3UZBe"
 				}
 			]
 		}
@@ -262,6 +292,7 @@
 		],
 		"community": "https://discord.gg/rns3beq",
 		"description": "Library mod for YUNG's mods.",
+		"gallery": [],
 		"icon": "https://cdn.modrinth.com/data/Ua7DFN59/38049bae08310ffed43435f717e309b15ec6f29d.png",
 		"issues": "https://github.com/YUNG-GANG/YUNGs-API/issues",
 		"license": "LGPL-3.0-only",
@@ -278,10 +309,14 @@
 			"forgelike",
 			"fabriclike"
 		],
+		"supported_sides": [
+			"client",
+			"server"
+		],
 		"supported_versions": [
+			"1.18.2",
 			"1.19.2",
 			"1.19.3",
-			"1.18.2",
 			"1.19.4",
 			"1.20",
 			"1.20.1",

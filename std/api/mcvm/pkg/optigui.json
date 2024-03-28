@@ -4,598 +4,10 @@
 			"kind": "mod",
 			"versions": [
 				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/v0.1.0%2B1.18.2/optigui-0.1.0.jar",
-					"version": "LICx0kWh"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api",
-						"recommendations": {
-							"invert": false,
-							"value": "animatica"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/v0.2.0%2B1.18.2/optigui-0.2.0.jar",
-					"version": "W7KZowlh"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api",
-						"recommendations": {
-							"invert": false,
-							"value": "animatica"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/v1.0.0%2B1.18.2/optigui-1.0.0.jar",
-					"version": "GlXDrxTY"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api",
-						"recommendations": {
-							"invert": false,
-							"value": "animatica"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/v1.0.1%2B1.18.2/optigui-1.0.1.jar",
-					"version": "jvJfecx9"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api",
-						"recommendations": {
-							"invert": false,
-							"value": "animatica"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/v1.0.2%2B1.18.2/optigui-1.0.2.jar",
-					"version": "2zE7dj3R"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api",
-						"recommendations": {
-							"invert": false,
-							"value": "animatica"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/v1.0.3%2B1.18.2/optigui-1.0.3.jar",
-					"version": "bds6PhCr"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api",
-						"recommendations": {
-							"invert": false,
-							"value": "animatica"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/v1.0.4%2B1.18.2/optigui-1.0.4.jar",
-					"version": "LjxrGjwN"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api",
-						"recommendations": {
-							"invert": false,
-							"value": "animatica"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/v1.1.0%2B1.18.2/optigui-1.1.0.jar",
-					"version": "KWUgM1Pm"
-				},
-				{
 					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api",
-						"recommendations": {
-							"invert": false,
-							"value": "animatica"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/v1.1.0%2B1.19/optigui-1.1.0.jar",
-					"version": "EmeZ0Gqt"
-				},
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api",
-						"recommendations": {
-							"invert": false,
-							"value": "animatica"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/v1.1.1%2B1.19/optigui-1.1.1.jar",
-					"version": "SBi7COdt"
-				},
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api",
-						"recommendations": {
-							"invert": false,
-							"value": "animatica"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/enCs35o3/optigui-1.1.2.jar",
-					"version": "enCs35o3"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api",
-						"recommendations": {
-							"invert": false,
-							"value": "animatica"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/QNaBS24G/optigui-1.1.2.jar",
-					"version": "QNaBS24G"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api",
-						"recommendations": {
-							"invert": false,
-							"value": "animatica"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/o5KsFiVJ/optigui-1.1.3.jar",
-					"version": "o5KsFiVJ"
-				},
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api",
-						"recommendations": {
-							"invert": false,
-							"value": "animatica"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/WwSxteqI/optigui-1.1.3.jar",
-					"version": "WwSxteqI"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api",
-						"recommendations": {
-							"invert": false,
-							"value": "animatica"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/w1ctchwV/optigui-1.1.4.jar",
-					"version": "w1ctchwV"
-				},
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api",
-						"recommendations": {
-							"invert": false,
-							"value": "animatica"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/DvWsedjb/optigui-1.1.4.jar",
-					"version": "DvWsedjb"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api",
-						"recommendations": {
-							"invert": false,
-							"value": "animatica"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/IDfdFriT/optigui-1.1.5.jar",
-					"version": "IDfdFriT"
-				},
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api",
-						"recommendations": {
-							"invert": false,
-							"value": "animatica"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/KaUaJJ1i/optigui-1.1.5.jar",
-					"version": "KaUaJJ1i"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api",
-						"recommendations": [
-							{
-								"invert": false,
-								"value": "animatica"
-							},
-							{
-								"invert": false,
-								"value": "know-my-name"
-							}
-						]
-					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/jdW6CBhM/optigui-1.1.6.jar",
-					"version": "jdW6CBhM"
-				},
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api",
-						"recommendations": [
-							{
-								"invert": false,
-								"value": "animatica"
-							},
-							{
-								"invert": false,
-								"value": "know-my-name"
-							}
-						]
-					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/RMa6KMf9/optigui-1.1.6.jar",
-					"version": "RMa6KMf9"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api",
-						"recommendations": [
-							{
-								"invert": false,
-								"value": "know-my-name"
-							},
-							{
-								"invert": false,
-								"value": "animatica"
-							}
-						]
-					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/HpDkLZjj/optigui-1.1.6.jar",
-					"version": "HpDkLZjj"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": [
-							"fabriclike-api",
-							"kotlin-support"
-						],
-						"recommendations": {
-							"invert": false,
-							"value": "know-my-name"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/bqQWHwWx/optigui-2.0.0-alpha.1.jar",
-					"version": "bqQWHwWx"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": [
-							"kotlin-support",
-							"fabriclike-api"
-						],
-						"recommendations": [
-							{
-								"invert": false,
-								"value": "animatica"
-							},
-							{
-								"invert": false,
-								"value": "know-my-name"
-							}
-						]
-					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/ehlFpVEb/optigui-2.0.0-alpha.2.jar",
-					"version": "ehlFpVEb"
-				},
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2",
-						"1.19.3"
-					],
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": [
-							"kotlin-support",
-							"fabriclike-api"
-						],
-						"recommendations": [
-							{
-								"invert": false,
-								"value": "animatica"
-							},
-							{
-								"invert": false,
-								"value": "know-my-name"
-							}
-						]
-					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/3uGk4ChO/optigui-2.0.0-alpha.3.jar",
-					"version": "3uGk4ChO"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1",
-						"1.18.2",
-						"1.19",
-						"1.19.1",
-						"1.19.2",
-						"1.19.3"
-					],
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": [
-							"fabriclike-api",
-							"kotlin-support"
-						],
-						"recommendations": [
-							{
-								"invert": false,
-								"value": "animatica"
-							},
-							{
-								"invert": false,
-								"value": "know-my-name"
-							}
-						]
-					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/eM7FKWWG/optigui-2.0.0-alpha.4.jar",
-					"version": "eM7FKWWG"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1",
-						"1.18.2",
-						"1.19",
-						"1.19.1",
-						"1.19.2",
-						"1.19.3"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"dependencies": [
-							"kotlin-support",
-							"fabriclike-api"
-						],
-						"recommendations": [
-							{
-								"invert": false,
-								"value": "animatica"
-							},
-							{
-								"invert": false,
-								"value": "know-my-name"
-							}
-						]
-					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/L99Bxt2Y/optigui-2.0.0-alpha.5.jar",
-					"version": "L99Bxt2Y"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"dependencies": [
-							"fabriclike-api",
-							"kotlin-support"
-						],
-						"recommendations": [
-							{
-								"invert": false,
-								"value": "know-my-name"
-							},
-							{
-								"invert": false,
-								"value": "animatica"
-							}
-						]
-					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/2oUHeIhM/optigui-2.0.0-alpha.6.jar",
-					"version": "2oUHeIhM"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"dependencies": [
-							"kotlin-support",
-							"fabriclike-api"
-						],
-						"recommendations": [
-							{
-								"invert": false,
-								"value": "know-my-name"
-							},
-							{
-								"invert": false,
-								"value": "animatica"
-							}
-						]
-					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/v4BLjO6F/optigui-2.0.0-beta.1.jar",
-					"version": "v4BLjO6F"
-				},
-				{
-					"minecraft_versions": [
-						"1.19.3",
-						"1.19.4"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"dependencies": [
-							"kotlin-support",
-							"fabriclike-api"
-						],
-						"recommendations": [
-							{
-								"invert": false,
-								"value": "know-my-name"
-							},
-							{
-								"invert": false,
-								"value": "animatica"
-							}
-						]
-					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/vJb4cpaY/optigui-2.0.0-beta.2.jar",
-					"version": "vJb4cpaY"
-				},
-				{
-					"minecraft_versions": [
-						"1.19.3",
-						"1.19.4"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"dependencies": [
-							"kotlin-support",
-							"fabriclike-api"
-						],
-						"recommendations": [
-							{
-								"invert": false,
-								"value": "know-my-name"
-							},
-							{
-								"invert": false,
-								"value": "animatica"
-							}
-						]
-					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/TM9YqUwX/optigui-2.0.0-beta.3.jar",
-					"version": "TM9YqUwX"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1",
-						"1.18.2",
-						"1.19",
-						"1.19.1",
-						"1.19.2",
-						"1.19.3",
-						"1.19.4"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"dependencies": [
-							"kotlin-support",
-							"fabriclike-api"
-						],
-						"recommendations": [
-							{
-								"invert": false,
-								"value": "animatica"
-							},
-							{
-								"invert": false,
-								"value": "know-my-name"
-							}
-						]
-					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/EOU9oC3S/optigui-2.1.0-beta.1.jar",
-					"version": "EOU9oC3S"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1",
-						"1.18.2",
-						"1.19",
-						"1.19.1",
-						"1.19.2",
-						"1.19.3",
-						"1.19.4"
+						"1.20.2",
+						"1.20.3",
+						"1.20.4"
 					],
 					"modloaders": [
 						"fabric",
@@ -611,94 +23,9 @@
 							"value": "animatica"
 						}
 					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/LVdJJtmU/optigui-2.1.0-beta.2.jar",
-					"version": "LVdJJtmU"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1",
-						"1.18.2",
-						"1.19",
-						"1.19.1",
-						"1.19.2",
-						"1.19.3",
-						"1.19.4"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"dependencies": [
-							"kotlin-support",
-							"fabriclike-api"
-						],
-						"recommendations": {
-							"invert": false,
-							"value": "animatica"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/XflepaVP/optigui-2.1.0-beta.3.jar",
-					"version": "XflepaVP"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1",
-						"1.18.2",
-						"1.19",
-						"1.19.1",
-						"1.19.2",
-						"1.19.3",
-						"1.19.4",
-						"1.20"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"dependencies": [
-							"kotlin-support",
-							"fabriclike-api"
-						],
-						"recommendations": {
-							"invert": false,
-							"value": "animatica"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/P6myMR8K/optigui-2.1.0.jar",
-					"version": "P6myMR8K"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1",
-						"1.18.2",
-						"1.19",
-						"1.19.1",
-						"1.19.2",
-						"1.19.3",
-						"1.19.4",
-						"1.20"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"dependencies": [
-							"kotlin-support",
-							"fabriclike-api"
-						],
-						"recommendations": {
-							"invert": false,
-							"value": "animatica"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/xQrH4kWR/optigui-2.1.1.jar",
-					"version": "xQrH4kWR"
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/cGrREnKA/optigui-2.3.0-alpha.2.jar",
+					"version": "cGrREnKA"
 				},
 				{
 					"minecraft_versions": [
@@ -711,7 +38,10 @@
 						"1.19.3",
 						"1.19.4",
 						"1.20",
-						"1.20.1"
+						"1.20.1",
+						"1.20.2",
+						"1.20.3",
+						"1.20.4"
 					],
 					"modloaders": [
 						"fabric",
@@ -727,109 +57,9 @@
 							"value": "animatica"
 						}
 					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/YU9Yi2mO/optigui-2.1.2.jar",
-					"version": "YU9Yi2mO"
-				},
-				{
-					"minecraft_versions": [
-						"1.19.3",
-						"1.19.4",
-						"1.20",
-						"1.20.1"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"dependencies": [
-							"kotlin-support",
-							"fabriclike-api"
-						],
-						"recommendations": {
-							"invert": false,
-							"value": "animatica"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/41AoOR3G/optigui-2.1.3.jar",
-					"version": "41AoOR3G"
-				},
-				{
-					"minecraft_versions": [
-						"1.19.3",
-						"1.19.4",
-						"1.20",
-						"1.20.1"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"dependencies": [
-							"kotlin-support",
-							"fabriclike-api"
-						],
-						"recommendations": {
-							"invert": false,
-							"value": "animatica"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/3CSEKfcd/optigui-2.1.4.jar",
-					"version": "3CSEKfcd"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1",
-						"1.18.2",
-						"1.19",
-						"1.19.1",
-						"1.19.2",
-						"1.19.3",
-						"1.19.4",
-						"1.20",
-						"1.20.1"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"dependencies": [
-							"kotlin-support",
-							"fabriclike-api"
-						],
-						"recommendations": {
-							"invert": false,
-							"value": "animatica"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/x0k8u61W/optigui-2.1.5.jar",
-					"version": "x0k8u61W"
-				},
-				{
-					"minecraft_versions": [
-						"1.20",
-						"1.20.1"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"dependencies": [
-							"kotlin-support",
-							"fabriclike-api",
-							"lilac"
-						],
-						"recommendations": {
-							"invert": false,
-							"value": "animatica"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/noPVqZnY/optigui-2.2.0-alpha.1.jar",
-					"version": "noPVqZnY"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/xpfegZsE/optigui-2.1.7.jar",
+					"version": "xpfegZsE"
 				},
 				{
 					"minecraft_versions": [
@@ -859,8 +89,33 @@
 							"value": "animatica"
 						}
 					},
+					"stability": "stable",
 					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/rBFq3aQs/optigui-2.1.6.jar",
 					"version": "rBFq3aQs"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": [
+							"kotlin-support",
+							"fabriclike-api",
+							"lilac"
+						],
+						"recommendations": {
+							"invert": false,
+							"value": "animatica"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/noPVqZnY/optigui-2.2.0-alpha.1.jar",
+					"version": "noPVqZnY"
 				},
 				{
 					"minecraft_versions": [
@@ -873,10 +128,7 @@
 						"1.19.3",
 						"1.19.4",
 						"1.20",
-						"1.20.1",
-						"1.20.2",
-						"1.20.3",
-						"1.20.4"
+						"1.20.1"
 					],
 					"modloaders": [
 						"fabric",
@@ -892,14 +144,16 @@
 							"value": "animatica"
 						}
 					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/xpfegZsE/optigui-2.1.7.jar",
-					"version": "xpfegZsE"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/x0k8u61W/optigui-2.1.5.jar",
+					"version": "x0k8u61W"
 				},
 				{
 					"minecraft_versions": [
-						"1.20.2",
-						"1.20.3",
-						"1.20.4"
+						"1.19.3",
+						"1.19.4",
+						"1.20",
+						"1.20.1"
 					],
 					"modloaders": [
 						"fabric",
@@ -915,8 +169,797 @@
 							"value": "animatica"
 						}
 					},
-					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/cGrREnKA/optigui-2.3.0-alpha.2.jar",
-					"version": "cGrREnKA"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/3CSEKfcd/optigui-2.1.4.jar",
+					"version": "3CSEKfcd"
+				},
+				{
+					"minecraft_versions": [
+						"1.19.3",
+						"1.19.4",
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": [
+							"kotlin-support",
+							"fabriclike-api"
+						],
+						"recommendations": {
+							"invert": false,
+							"value": "animatica"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/41AoOR3G/optigui-2.1.3.jar",
+					"version": "41AoOR3G"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2",
+						"1.19",
+						"1.19.1",
+						"1.19.2",
+						"1.19.3",
+						"1.19.4",
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": [
+							"kotlin-support",
+							"fabriclike-api"
+						],
+						"recommendations": {
+							"invert": false,
+							"value": "animatica"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/YU9Yi2mO/optigui-2.1.2.jar",
+					"version": "YU9Yi2mO"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2",
+						"1.19",
+						"1.19.1",
+						"1.19.2",
+						"1.19.3",
+						"1.19.4",
+						"1.20"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": [
+							"kotlin-support",
+							"fabriclike-api"
+						],
+						"recommendations": {
+							"invert": false,
+							"value": "animatica"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/xQrH4kWR/optigui-2.1.1.jar",
+					"version": "xQrH4kWR"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2",
+						"1.19",
+						"1.19.1",
+						"1.19.2",
+						"1.19.3",
+						"1.19.4",
+						"1.20"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": [
+							"kotlin-support",
+							"fabriclike-api"
+						],
+						"recommendations": {
+							"invert": false,
+							"value": "animatica"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/P6myMR8K/optigui-2.1.0.jar",
+					"version": "P6myMR8K"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2",
+						"1.19",
+						"1.19.1",
+						"1.19.2",
+						"1.19.3",
+						"1.19.4"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": [
+							"kotlin-support",
+							"fabriclike-api"
+						],
+						"recommendations": {
+							"invert": false,
+							"value": "animatica"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/XflepaVP/optigui-2.1.0-beta.3.jar",
+					"version": "XflepaVP"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2",
+						"1.19",
+						"1.19.1",
+						"1.19.2",
+						"1.19.3",
+						"1.19.4"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": [
+							"kotlin-support",
+							"fabriclike-api"
+						],
+						"recommendations": {
+							"invert": false,
+							"value": "animatica"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/LVdJJtmU/optigui-2.1.0-beta.2.jar",
+					"version": "LVdJJtmU"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2",
+						"1.19",
+						"1.19.1",
+						"1.19.2",
+						"1.19.3",
+						"1.19.4"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": [
+							"kotlin-support",
+							"fabriclike-api"
+						],
+						"recommendations": [
+							{
+								"invert": false,
+								"value": "animatica"
+							},
+							{
+								"invert": false,
+								"value": "know-my-name"
+							}
+						]
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/EOU9oC3S/optigui-2.1.0-beta.1.jar",
+					"version": "EOU9oC3S"
+				},
+				{
+					"minecraft_versions": [
+						"1.19.3",
+						"1.19.4"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": [
+							"kotlin-support",
+							"fabriclike-api"
+						],
+						"recommendations": [
+							{
+								"invert": false,
+								"value": "animatica"
+							},
+							{
+								"invert": false,
+								"value": "know-my-name"
+							}
+						]
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/TM9YqUwX/optigui-2.0.0-beta.3.jar",
+					"version": "TM9YqUwX"
+				},
+				{
+					"minecraft_versions": [
+						"1.19.3",
+						"1.19.4"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": [
+							"kotlin-support",
+							"fabriclike-api"
+						],
+						"recommendations": [
+							{
+								"invert": false,
+								"value": "know-my-name"
+							},
+							{
+								"invert": false,
+								"value": "animatica"
+							}
+						]
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/vJb4cpaY/optigui-2.0.0-beta.2.jar",
+					"version": "vJb4cpaY"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": [
+							"kotlin-support",
+							"fabriclike-api"
+						],
+						"recommendations": [
+							{
+								"invert": false,
+								"value": "know-my-name"
+							},
+							{
+								"invert": false,
+								"value": "animatica"
+							}
+						]
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/v4BLjO6F/optigui-2.0.0-beta.1.jar",
+					"version": "v4BLjO6F"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": [
+							"fabriclike-api",
+							"kotlin-support"
+						],
+						"recommendations": [
+							{
+								"invert": false,
+								"value": "know-my-name"
+							},
+							{
+								"invert": false,
+								"value": "animatica"
+							}
+						]
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/2oUHeIhM/optigui-2.0.0-alpha.6.jar",
+					"version": "2oUHeIhM"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2",
+						"1.19",
+						"1.19.1",
+						"1.19.2",
+						"1.19.3"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": [
+							"kotlin-support",
+							"fabriclike-api"
+						],
+						"recommendations": [
+							{
+								"invert": false,
+								"value": "animatica"
+							},
+							{
+								"invert": false,
+								"value": "know-my-name"
+							}
+						]
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/L99Bxt2Y/optigui-2.0.0-alpha.5.jar",
+					"version": "L99Bxt2Y"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2",
+						"1.19",
+						"1.19.1",
+						"1.19.2",
+						"1.19.3"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"fabriclike-api",
+							"kotlin-support"
+						],
+						"recommendations": [
+							{
+								"invert": false,
+								"value": "animatica"
+							},
+							{
+								"invert": false,
+								"value": "know-my-name"
+							}
+						]
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/eM7FKWWG/optigui-2.0.0-alpha.4.jar",
+					"version": "eM7FKWWG"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2",
+						"1.19.3"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"kotlin-support",
+							"fabriclike-api"
+						],
+						"recommendations": [
+							{
+								"invert": false,
+								"value": "animatica"
+							},
+							{
+								"invert": false,
+								"value": "know-my-name"
+							}
+						]
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/3uGk4ChO/optigui-2.0.0-alpha.3.jar",
+					"version": "3uGk4ChO"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"kotlin-support",
+							"fabriclike-api"
+						],
+						"recommendations": [
+							{
+								"invert": false,
+								"value": "animatica"
+							},
+							{
+								"invert": false,
+								"value": "know-my-name"
+							}
+						]
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/ehlFpVEb/optigui-2.0.0-alpha.2.jar",
+					"version": "ehlFpVEb"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"fabriclike-api",
+							"kotlin-support"
+						],
+						"recommendations": {
+							"invert": false,
+							"value": "know-my-name"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/bqQWHwWx/optigui-2.0.0-alpha.1.jar",
+					"version": "bqQWHwWx"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": [
+							{
+								"invert": false,
+								"value": "know-my-name"
+							},
+							{
+								"invert": false,
+								"value": "animatica"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/HpDkLZjj/optigui-1.1.6.jar",
+					"version": "HpDkLZjj"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": [
+							{
+								"invert": false,
+								"value": "animatica"
+							},
+							{
+								"invert": false,
+								"value": "know-my-name"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/RMa6KMf9/optigui-1.1.6.jar",
+					"version": "RMa6KMf9"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": [
+							{
+								"invert": false,
+								"value": "animatica"
+							},
+							{
+								"invert": false,
+								"value": "know-my-name"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/jdW6CBhM/optigui-1.1.6.jar",
+					"version": "jdW6CBhM"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"invert": false,
+							"value": "animatica"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/KaUaJJ1i/optigui-1.1.5.jar",
+					"version": "KaUaJJ1i"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"invert": false,
+							"value": "animatica"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/IDfdFriT/optigui-1.1.5.jar",
+					"version": "IDfdFriT"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"invert": false,
+							"value": "animatica"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/DvWsedjb/optigui-1.1.4.jar",
+					"version": "DvWsedjb"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"invert": false,
+							"value": "animatica"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/w1ctchwV/optigui-1.1.4.jar",
+					"version": "w1ctchwV"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"invert": false,
+							"value": "animatica"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/WwSxteqI/optigui-1.1.3.jar",
+					"version": "WwSxteqI"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"invert": false,
+							"value": "animatica"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/o5KsFiVJ/optigui-1.1.3.jar",
+					"version": "o5KsFiVJ"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"invert": false,
+							"value": "animatica"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/QNaBS24G/optigui-1.1.2.jar",
+					"version": "QNaBS24G"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"invert": false,
+							"value": "animatica"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/enCs35o3/optigui-1.1.2.jar",
+					"version": "enCs35o3"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"invert": false,
+							"value": "animatica"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/v1.1.1%2B1.19/optigui-1.1.1.jar",
+					"version": "SBi7COdt"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"invert": false,
+							"value": "animatica"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/v1.1.0%2B1.19/optigui-1.1.0.jar",
+					"version": "EmeZ0Gqt"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"invert": false,
+							"value": "animatica"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/v1.1.0%2B1.18.2/optigui-1.1.0.jar",
+					"version": "KWUgM1Pm"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"invert": false,
+							"value": "animatica"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/v1.0.4%2B1.18.2/optigui-1.0.4.jar",
+					"version": "LjxrGjwN"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"invert": false,
+							"value": "animatica"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/v1.0.3%2B1.18.2/optigui-1.0.3.jar",
+					"version": "bds6PhCr"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"invert": false,
+							"value": "animatica"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/v1.0.2%2B1.18.2/optigui-1.0.2.jar",
+					"version": "2zE7dj3R"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"invert": false,
+							"value": "animatica"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/v1.0.1%2B1.18.2/optigui-1.0.1.jar",
+					"version": "jvJfecx9"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"invert": false,
+							"value": "animatica"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/v1.0.0%2B1.18.2/optigui-1.0.0.jar",
+					"version": "GlXDrxTY"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"invert": false,
+							"value": "animatica"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/v0.2.0%2B1.18.2/optigui-0.2.0.jar",
+					"version": "W7KZowlh"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/v0.1.0%2B1.18.2/optigui-0.1.0.jar",
+					"version": "LICx0kWh"
 				}
 			]
 		}
@@ -930,6 +973,7 @@
 		],
 		"description": "Blazing fast custom GUI textures on Fabric and Quilt with built-in OptiFine custom GUI resource pack support",
 		"documentation": "https://opekope2.dev/OptiGUI/",
+		"gallery": [],
 		"icon": "https://cdn.modrinth.com/data/JuksLGBQ/2ec739011e612256ebe0c79a4ce064d0e453dd0f.png",
 		"issues": "https://github.com/opekope2/OptiGUI/issues",
 		"keywords": [
@@ -948,14 +992,17 @@
 		"supported_modloaders": [
 			"fabriclike"
 		],
+		"supported_sides": [
+			"client"
+		],
 		"supported_versions": [
+			"1.18",
+			"1.18.1",
 			"1.18.2",
 			"1.19",
 			"1.19.1",
 			"1.19.2",
 			"1.19.3",
-			"1.18",
-			"1.18.1",
 			"1.19.4",
 			"1.20",
 			"1.20.1",

@@ -7,825 +7,14 @@
 					"minecraft_versions": [
 						"1.14.4",
 						"1.15.2",
-						"1.16.4",
-						"20w51a"
-					],
-					"modloaders": "fabric",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/1.7.0%2B20w51a/Pehkui-1.7.0%2B20w51a-sources.jar",
-					"version": "8iVwQyoe"
-				},
-				{
-					"minecraft_versions": [
-						"1.14.4",
-						"1.15.2",
-						"1.16.5",
-						"21w03a"
-					],
-					"modloaders": "fabric",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/1.7.1%2B21w03a/Pehkui-1.7.1%2B21w03a.jar",
-					"version": "uGZwG5nQ"
-				},
-				{
-					"minecraft_versions": [
-						"1.14.4",
-						"1.15.2",
-						"1.16.5",
-						"21w08b"
-					],
-					"modloaders": "fabric",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/1.8.0%2B21w08b/Pehkui-1.8.0%2B21w08b.jar",
-					"version": "C4bVKiVX"
-				},
-				{
-					"minecraft_versions": [
-						"1.14.4",
-						"1.15.2",
-						"1.16.5",
-						"21w10a"
-					],
-					"modloaders": "fabric",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/1.9.0%2B21w10a/Pehkui-1.9.0%2B21w10a-sources.jar",
-					"version": "JOFpwk0p"
-				},
-				{
-					"minecraft_versions": [
-						"1.14.4",
-						"1.15.2",
-						"1.16.5",
-						"21w14a"
-					],
-					"modloaders": "fabric",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/1.10.0%2B21w14a/Pehkui-1.10.0%2B21w14a-sources.jar",
-					"version": "sDXHk7EW"
-				},
-				{
-					"minecraft_versions": "1.16.5",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.0.0%2B1.16.5-forge/Pehkui-2.0.0%2B1.16.5-forge.jar",
-					"version": "20hbi2WP"
-				},
-				{
-					"minecraft_versions": [
-						"1.14.4",
-						"1.15.2",
-						"1.16.5",
-						"21w14a"
-					],
-					"modloaders": "fabric",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.0.0%2B21w14a/Pehkui-2.0.0%2B21w14a.jar",
-					"version": "LGSarUA2"
-				},
-				{
-					"minecraft_versions": "1.16.5",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.1.0%2B1.16.5-forge/Pehkui-2.1.0%2B1.16.5-forge-sources.jar",
-					"version": "EFunm8S6"
-				},
-				{
-					"minecraft_versions": [
-						"1.14.4",
-						"1.15.2",
-						"1.16.5",
-						"21w18a"
-					],
-					"modloaders": "fabric",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.1.0%2B21w18a/Pehkui-2.1.0%2B21w18a.jar",
-					"version": "iMdrs7GR"
-				},
-				{
-					"minecraft_versions": "1.16.5",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.2.0%2B1.16.5-forge/Pehkui-2.2.0%2B1.16.5-forge-sources-dev.jar",
-					"version": "P3OyDMUF"
-				},
-				{
-					"minecraft_versions": [
-						"1.14.4",
-						"1.15.2",
-						"1.16.5",
-						"21w20a"
-					],
-					"modloaders": "fabric",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.2.0%2B21w20a/Pehkui-2.2.0%2B21w20a.jar",
-					"version": "qewhz2kB"
-				},
-				{
-					"minecraft_versions": "1.16.5",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.2.1%2B1.16.5-forge/Pehkui-2.2.1%2B1.16.5-forge.jar",
-					"version": "kAplpXbg"
-				},
-				{
-					"minecraft_versions": [
-						"1.14.4",
-						"1.15.2",
-						"1.16.5",
-						"1.17"
-					],
-					"modloaders": "fabric",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.2.1%2B1.14.4-1.17/Pehkui-2.2.1%2B1.14.4-1.17-sources.jar",
-					"version": "fL3GTx3o"
-				},
-				{
-					"minecraft_versions": "1.16.5",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.3.0%2B1.16.5-forge/Pehkui-2.3.0%2B1.16.5-forge.jar",
-					"version": "uixX7uTm"
-				},
-				{
-					"minecraft_versions": [
-						"1.14.4",
-						"1.15.2",
-						"1.16.5",
-						"1.17.1"
-					],
-					"modloaders": "fabric",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.3.0%2B1.14.4-1.17.1/Pehkui-2.3.0%2B1.14.4-1.17.1.jar",
-					"version": "6bneSych"
-				},
-				{
-					"minecraft_versions": "1.16.5",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com//data/t5W7Jfwy/versions/2.4.0%2B1.16.5-forge/Pehkui-2.4.0%2B1.16.5-forge.jar",
-					"version": "UBywUz0S"
-				},
-				{
-					"minecraft_versions": [
-						"1.14.4",
-						"1.15.2",
-						"1.16.5",
-						"1.17.1"
-					],
-					"modloaders": "fabric",
-					"url": "https://cdn.modrinth.com//data/t5W7Jfwy/versions/2.4.0%2B1.14.4-1.17.1/Pehkui-2.4.0%2B1.14.4-1.17.1.jar",
-					"version": "oEhNh3HJ"
-				},
-				{
-					"minecraft_versions": "1.16.5",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.5.0%2B1.16.5-forge/Pehkui-2.5.0%2B1.16.5-forge-sources-dev.jar",
-					"version": "LW2F1INY"
-				},
-				{
-					"minecraft_versions": "1.17.1",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.5.0%2B1.17.1-forge/Pehkui-2.5.0%2B1.17.1-forge-sources-dev.jar",
-					"version": "8LJ3VID8"
-				},
-				{
-					"minecraft_versions": [
-						"1.14.4",
-						"1.15.2",
-						"1.16.5",
-						"1.17.1",
-						"21w41a"
-					],
-					"modloaders": "fabric",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.5.0%2B1.14.4-1.18/Pehkui-2.5.0%2B1.14.4-1.18.jar",
-					"version": "l6pY2bfj"
-				},
-				{
-					"minecraft_versions": "1.16.5",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.5.1%2B1.16.5-forge/Pehkui-2.5.1%2B1.16.5-forge-sources-dev.jar",
-					"version": "gRlLC81G"
-				},
-				{
-					"minecraft_versions": "1.17.1",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.5.1%2B1.17.1-forge/Pehkui-2.5.1%2B1.17.1-forge-sources-dev.jar",
-					"version": "5wJwXIMI"
-				},
-				{
-					"minecraft_versions": [
-						"1.14.4",
-						"1.15.2",
-						"1.16.5",
-						"1.17.1",
-						"21w41a"
-					],
-					"modloaders": "fabric",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.5.1%2B1.14.4-1.18/Pehkui-2.5.1%2B1.14.4-1.18.jar",
-					"version": "bP3qVJwJ"
-				},
-				{
-					"minecraft_versions": "1.16.5",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.5.2%2B1.16.5-forge/Pehkui-2.5.2%2B1.16.5-forge-sources-dev.jar",
-					"version": "b1keEVDt"
-				},
-				{
-					"minecraft_versions": "1.17.1",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.5.2%2B1.17.1-forge/Pehkui-2.5.2%2B1.17.1-forge-sources-dev.jar",
-					"version": "DxngfJuJ"
-				},
-				{
-					"minecraft_versions": [
-						"1.14.4",
-						"1.15.2",
-						"1.16.5",
-						"1.17.1",
-						"21w41a"
-					],
-					"modloaders": "fabric",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.5.2%2B1.14.4-1.18/Pehkui-2.5.2%2B1.14.4-1.18.jar",
-					"version": "Ekr2ZDxt"
-				},
-				{
-					"minecraft_versions": "1.16.5",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.5.3%2B1.16.5-forge/Pehkui-2.5.3%2B1.16.5-forge-sources-dev.jar",
-					"version": "xLdJpnVb"
-				},
-				{
-					"minecraft_versions": "1.17.1",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.5.3%2B1.17.1-forge/Pehkui-2.5.3%2B1.17.1-forge-sources-dev.jar",
-					"version": "dglzVhIX"
-				},
-				{
-					"minecraft_versions": [
-						"1.14.4",
-						"1.15.2",
-						"1.16.5",
-						"1.17.1",
-						"21w42a"
-					],
-					"modloaders": "fabric",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.5.3%2B1.14.4-1.18/Pehkui-2.5.3%2B1.14.4-1.18.jar",
-					"version": "SVt0OGM2"
-				},
-				{
-					"minecraft_versions": [
-						"1.14.4",
-						"1.15.2",
-						"1.16.5",
-						"1.17.1",
-						"1.18"
-					],
-					"modloaders": "fabric",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.6.0%2B1.14.4-1.18/Pehkui-2.6.0%2B1.14.4-1.18.jar",
-					"version": "LnoMm6he"
-				},
-				{
-					"minecraft_versions": [
-						"1.14.4",
-						"1.15.2",
-						"1.16.5",
-						"1.17.1",
-						"1.18"
-					],
-					"modloaders": "fabric",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.0.0%2B1.14.4-1.18/Pehkui-3.0.0%2B1.14.4-1.18-sources.jar",
-					"version": "sI52fskA"
-				},
-				{
-					"minecraft_versions": "1.16.5",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.0.0%2B1.16.5-forge/Pehkui-3.0.0%2B1.16.5-forge.jar",
-					"version": "3XjGSpws"
-				},
-				{
-					"minecraft_versions": "1.17.1",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.0.0%2B1.17.1-forge/Pehkui-3.0.0%2B1.17.1-forge.jar",
-					"version": "3cWBK9qw"
-				},
-				{
-					"minecraft_versions": "1.16.5",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.0.1%2B1.16.5-forge/Pehkui-3.0.1%2B1.16.5-forge-sources-dev.jar",
-					"version": "m0GIYqFo"
-				},
-				{
-					"minecraft_versions": "1.17.1",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.0.1%2B1.17.1-forge/Pehkui-3.0.1%2B1.17.1-forge.jar",
-					"version": "7ZBhcegV"
-				},
-				{
-					"minecraft_versions": "1.18",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.0.1%2B1.18-forge/Pehkui-3.0.1%2B1.18-forge.jar",
-					"version": "zPzdrmfl"
-				},
-				{
-					"minecraft_versions": [
-						"1.14.4",
-						"1.15.2",
-						"1.16.5",
-						"1.17.1",
-						"1.18.1"
-					],
-					"modloaders": "fabric",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.1.0%2B1.14.4-1.18.1/Pehkui-3.1.0%2B1.14.4-1.18.1-sources.jar",
-					"version": "8wNiKOgR"
-				},
-				{
-					"minecraft_versions": "1.16.5",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.1.0%2B1.16.5-forge/Pehkui-3.1.0%2B1.16.5-forge-sources-dev.jar",
-					"version": "FSFtpl3b"
-				},
-				{
-					"minecraft_versions": "1.17.1",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.1.0%2B1.17.1-forge/Pehkui-3.1.0%2B1.17.1-forge.jar",
-					"version": "KsbWX2iu"
-				},
-				{
-					"minecraft_versions": "1.18.1",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.1.0%2B1.18.1-forge/Pehkui-3.1.0%2B1.18.1-forge.jar",
-					"version": "SAPndlN1"
-				},
-				{
-					"minecraft_versions": "1.16.5",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.2.0%2B1.16.5-forge/Pehkui-3.2.0%2B1.16.5-forge.jar",
-					"version": "mXkdO3uD"
-				},
-				{
-					"minecraft_versions": "1.17.1",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.2.0%2B1.17.1-forge/Pehkui-3.2.0%2B1.17.1-forge.jar",
-					"version": "ESrmPgam"
-				},
-				{
-					"minecraft_versions": "1.18.1",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.2.0%2B1.18.1-forge/Pehkui-3.2.0%2B1.18.1-forge.jar",
-					"version": "WB2iijy2"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.2.0%2B1.18.2-forge/Pehkui-3.2.0%2B1.18.2-forge.jar",
-					"version": "NSmkDR7p"
-				},
-				{
-					"minecraft_versions": [
-						"1.14.4",
-						"1.15.2",
-						"1.16.5",
-						"1.17.1",
-						"1.18.1",
-						"1.18.2",
-						"22w11a"
-					],
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.2.0%2B1.14.4-1.19/Pehkui-3.2.0%2B1.14.4-1.19.jar",
-					"version": "e3FnyyOz"
-				},
-				{
-					"minecraft_versions": [
-						"1.14.4",
-						"1.15.2",
-						"1.16.5",
-						"1.17.1",
-						"1.18.1",
-						"1.18.2",
-						"22w12a"
-					],
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.2.1%2B1.14.4-1.19/Pehkui-3.2.1%2B1.14.4-1.19.jar",
-					"version": "HhGvqcIp"
-				},
-				{
-					"minecraft_versions": [
-						"1.14.4",
-						"1.15.2",
-						"1.16.5",
-						"1.17.1",
-						"1.18.1",
-						"1.18.2",
-						"22w14a"
-					],
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.2.2%2B1.14.4-1.19/Pehkui-3.2.2%2B1.14.4-1.19.jar",
-					"version": "HUaaBNb3"
-				},
-				{
-					"minecraft_versions": "1.16.5",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.3.0%2B1.16.5-forge/Pehkui-3.3.0%2B1.16.5-forge.jar",
-					"version": "VHPFed8p"
-				},
-				{
-					"minecraft_versions": "1.17.1",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.3.0%2B1.17.1-forge/Pehkui-3.3.0%2B1.17.1-forge.jar",
-					"version": "TIsZQadK"
-				},
-				{
-					"minecraft_versions": "1.18.1",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.3.0%2B1.18.1-forge/Pehkui-3.3.0%2B1.18.1-forge.jar",
-					"version": "VePYQ4q4"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.3.0%2B1.18.2-forge/Pehkui-3.3.0%2B1.18.2-forge.jar",
-					"version": "AybsfjaP"
-				},
-				{
-					"minecraft_versions": [
-						"1.14.4",
-						"1.15.2",
-						"1.16.5",
-						"1.17.1",
-						"1.18.1",
-						"1.18.2",
-						"22w17a"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.3.0%2B1.14.4-1.19/Pehkui-3.3.0%2B1.14.4-1.19.jar",
-					"version": "wBi86WOn"
-				},
-				{
-					"minecraft_versions": "1.16.5",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.3.1%2B1.16.5-forge/Pehkui-3.3.1%2B1.16.5-forge.jar",
-					"version": "97Gt1I1O"
-				},
-				{
-					"minecraft_versions": "1.17.1",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.3.1%2B1.17.1-forge/Pehkui-3.3.1%2B1.17.1-forge.jar",
-					"version": "hqx2zVGa"
-				},
-				{
-					"minecraft_versions": "1.18.1",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.3.1%2B1.18.1-forge/Pehkui-3.3.1%2B1.18.1-forge.jar",
-					"version": "VR4OPni5"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.3.1%2B1.18.2-forge/Pehkui-3.3.1%2B1.18.2-forge.jar",
-					"version": "z9luQsnx"
-				},
-				{
-					"minecraft_versions": [
-						"1.14.4",
-						"1.15.2",
-						"1.16.5",
-						"1.17.1",
-						"1.18.1",
-						"1.18.2",
-						"22w19a"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.3.1%2B1.14.4-1.19/Pehkui-3.3.1%2B1.14.4-1.19.jar",
-					"version": "2VMSSb9P"
-				},
-				{
-					"minecraft_versions": "1.16.5",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.3.2%2B1.16.5-forge/Pehkui-3.3.2%2B1.16.5-forge.jar",
-					"version": "5mN0z3rt"
-				},
-				{
-					"minecraft_versions": "1.17.1",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.3.2%2B1.17.1-forge/Pehkui-3.3.2%2B1.17.1-forge.jar",
-					"version": "zYsAv0Rp"
-				},
-				{
-					"minecraft_versions": "1.18.1",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.3.2%2B1.18.1-forge/Pehkui-3.3.2%2B1.18.1-forge.jar",
-					"version": "krBDWieK"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.3.2%2B1.18.2-forge/Pehkui-3.3.2%2B1.18.2-forge.jar",
-					"version": "s6llh4eB"
-				},
-				{
-					"minecraft_versions": [
-						"1.14.4",
-						"1.15.2",
-						"1.16.5",
-						"1.17.1",
-						"1.18.1",
-						"1.18.2",
-						"1.19-pre3"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.3.2%2B1.14.4-1.19/Pehkui-3.3.2%2B1.14.4-1.19.jar",
-					"version": "vUoAK8ZT"
-				},
-				{
-					"minecraft_versions": "1.16.5",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.3.3%2B1.16.5-forge/Pehkui-3.3.3%2B1.16.5-forge.jar",
-					"version": "HhI6rrzI"
-				},
-				{
-					"minecraft_versions": "1.17.1",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.3.3%2B1.17.1-forge/Pehkui-3.3.3%2B1.17.1-forge.jar",
-					"version": "dE0m9Mpm"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.3.3%2B1.18.2-forge/Pehkui-3.3.3%2B1.18.2-forge.jar",
-					"version": "LsjNUY9E"
-				},
-				{
-					"minecraft_versions": "1.19",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.3.3%2B1.19-forge/Pehkui-3.3.3%2B1.19-forge.jar",
-					"version": "4i8d0BQ7"
-				},
-				{
-					"minecraft_versions": [
-						"1.14.4",
-						"1.15.2",
-						"1.16.5",
-						"1.17.1",
-						"1.18.2",
-						"1.19",
-						"1.19.1-rc1"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.3.3%2B1.14.4-1.19.1/Pehkui-3.3.3%2B1.14.4-1.19.1.jar",
-					"version": "rCJ3oStN"
-				},
-				{
-					"minecraft_versions": "1.16.5",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.4.0%2B1.16.5-forge/Pehkui-3.4.0%2B1.16.5-forge.jar",
-					"version": "GyH4xOVe"
-				},
-				{
-					"minecraft_versions": "1.17.1",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.4.0%2B1.17.1-forge/Pehkui-3.4.0%2B1.17.1-forge.jar",
-					"version": "4EiUhzgy"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.4.0%2B1.18.2-forge/Pehkui-3.4.0%2B1.18.2-forge.jar",
-					"version": "fIo2oXqt"
-				},
-				{
-					"minecraft_versions": "1.19",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.4.0%2B1.19-forge/Pehkui-3.4.0%2B1.19-forge.jar",
-					"version": "WMNaY5zV"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.4.0%2B1.19.2-forge/Pehkui-3.4.0%2B1.19.2-forge.jar",
-					"version": "ZTkICia9"
-				},
-				{
-					"minecraft_versions": [
-						"1.14.4",
-						"1.15.2",
-						"1.16.5",
-						"1.17.1",
-						"1.18.2",
-						"1.19.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.4.0%2B1.14.4-1.19.2/Pehkui-3.4.0%2B1.14.4-1.19.2.jar",
-					"version": "6J3h8sJb"
-				},
-				{
-					"minecraft_versions": "1.16.5",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/G7TO2pT2/Pehkui-3.4.1%2B1.16.5-forge.jar",
-					"version": "G7TO2pT2"
-				},
-				{
-					"minecraft_versions": "1.17.1",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/d8YwH8cV/Pehkui-3.4.1%2B1.17.1-forge.jar",
-					"version": "d8YwH8cV"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/jhQ2drFe/Pehkui-3.4.1%2B1.18.2-forge.jar",
-					"version": "jhQ2drFe"
-				},
-				{
-					"minecraft_versions": "1.19",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/GnsvAYez/Pehkui-3.4.1%2B1.19-forge.jar",
-					"version": "GnsvAYez"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/NPtp5hxN/Pehkui-3.4.1%2B1.19.2-forge.jar",
-					"version": "NPtp5hxN"
-				},
-				{
-					"minecraft_versions": [
-						"1.14.4",
-						"1.15.2",
-						"1.16.5",
-						"1.17.1",
-						"1.18.2",
-						"1.19.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/fsgVBwgV/Pehkui-3.4.1%2B1.14.4-1.19.2.jar",
-					"version": "fsgVBwgV"
-				},
-				{
-					"minecraft_versions": "1.16.5",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/An8Sq8ta/Pehkui-3.4.2%2B1.16.5-forge.jar",
-					"version": "An8Sq8ta"
-				},
-				{
-					"minecraft_versions": "1.17.1",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/V9PuotIF/Pehkui-3.4.2%2B1.17.1-forge.jar",
-					"version": "V9PuotIF"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/t5Dwtntv/Pehkui-3.4.2%2B1.18.2-forge.jar",
-					"version": "t5Dwtntv"
-				},
-				{
-					"minecraft_versions": "1.19",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/OBXo0zvd/Pehkui-3.4.2%2B1.19-forge.jar",
-					"version": "OBXo0zvd"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/4w4GKmvP/Pehkui-3.4.2%2B1.19.2-forge.jar",
-					"version": "4w4GKmvP"
-				},
-				{
-					"minecraft_versions": [
-						"1.14.4",
-						"1.15.2",
-						"1.16.5",
-						"1.17.1",
-						"1.18.2",
-						"1.19.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/mQUvJcQi/Pehkui-3.4.2%2B1.14.4-1.19.2.jar",
-					"version": "mQUvJcQi"
-				},
-				{
-					"minecraft_versions": "1.16.5",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3lLe9YIl/Pehkui-3.5.0%2B1.16.5-forge.jar",
-					"version": "3lLe9YIl"
-				},
-				{
-					"minecraft_versions": "1.17.1",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/c18f3v4b/Pehkui-3.5.0%2B1.17.1-forge.jar",
-					"version": "c18f3v4b"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/85ppXUz9/Pehkui-3.5.0%2B1.18.2-forge.jar",
-					"version": "85ppXUz9"
-				},
-				{
-					"minecraft_versions": "1.19",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/HrGwuVOl/Pehkui-3.5.0%2B1.19-forge.jar",
-					"version": "HrGwuVOl"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/xASmJbpW/Pehkui-3.5.0%2B1.19.2-forge.jar",
-					"version": "xASmJbpW"
-				},
-				{
-					"minecraft_versions": [
-						"1.14.4",
-						"1.15.2",
-						"1.16.5",
-						"1.17.1",
-						"1.18.2",
-						"1.19.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/bqlYHqmT/Pehkui-3.5.0%2B1.14.4-1.19.2.jar",
-					"version": "bqlYHqmT"
-				},
-				{
-					"minecraft_versions": "1.16.5",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/jFaljqTH/Pehkui-3.6.0%2B1.16.5-forge.jar",
-					"version": "jFaljqTH"
-				},
-				{
-					"minecraft_versions": "1.17.1",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/oodYungl/Pehkui-3.6.0%2B1.17.1-forge.jar",
-					"version": "oodYungl"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/tfTNNCrg/Pehkui-3.6.0%2B1.18.2-forge.jar",
-					"version": "tfTNNCrg"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/fyUUmUnh/Pehkui-3.6.0%2B1.19-forge.jar",
-					"version": "fyUUmUnh"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/MarwFR48/Pehkui-3.6.0%2B1.19.2-forge.jar",
-					"version": "MarwFR48"
-				},
-				{
-					"minecraft_versions": [
-						"1.14.4",
-						"1.15.2",
 						"1.16.5",
 						"1.17.1",
 						"1.18.2",
 						"1.19.2",
-						"22w43a"
+						"1.19.4",
+						"1.20.1",
+						"1.20.2",
+						"1.20.4"
 					],
 					"modloaders": [
 						"fabric",
@@ -834,244 +23,68 @@
 					"relations": {
 						"dependencies": "fabriclike-api"
 					},
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/KdbiK6RJ/Pehkui-3.6.0%2B1.14.4-1.19.3.jar",
-					"version": "KdbiK6RJ"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/czRgm3k6/Pehkui-3.8.0%2B1.14.4-1.20.4.jar",
+					"version": "czRgm3k6"
 				},
 				{
-					"minecraft_versions": "1.16.5",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/5F101RsO/Pehkui-3.6.1%2B1.16.5-forge.jar",
-					"version": "5F101RsO"
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/TYdeDZh6/Pehkui-3.8.0%2B1.20.4-neoforge.jar",
+					"version": "TYdeDZh6"
 				},
 				{
-					"minecraft_versions": "1.17.1",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/awhnjWbk/Pehkui-3.6.1%2B1.17.1-forge.jar",
-					"version": "awhnjWbk"
+					"minecraft_versions": "1.20.2",
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/cvOaFr8t/Pehkui-3.8.0%2B1.20.2-neoforge.jar",
+					"version": "cvOaFr8t"
 				},
 				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/BFPCTtXw/Pehkui-3.6.1%2B1.18.2-forge.jar",
-					"version": "BFPCTtXw"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/N960OfvE/Pehkui-3.6.1%2B1.19.2-forge.jar",
-					"version": "N960OfvE"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/O9lYBISl/Pehkui-3.6.1%2B1.19.3-forge.jar",
-					"version": "O9lYBISl"
-				},
-				{
-					"minecraft_versions": [
-						"1.14.4",
-						"1.15.2",
-						"1.16.5",
-						"1.17.1",
-						"1.18.2",
-						"1.19.2",
-						"1.19.3"
-					],
+					"minecraft_versions": "1.20.1",
 					"modloaders": [
-						"fabric",
-						"quilt"
+						"forge",
+						"neoforged"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/J8DnNDOS/Pehkui-3.6.1%2B1.14.4-1.19.3.jar",
-					"version": "J8DnNDOS"
-				},
-				{
-					"minecraft_versions": "1.16.5",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/gqjZp19U/Pehkui-3.6.2%2B1.16.5-forge.jar",
-					"version": "gqjZp19U"
-				},
-				{
-					"minecraft_versions": "1.17.1",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/g2bjqfZX/Pehkui-3.6.2%2B1.17.1-forge.jar",
-					"version": "g2bjqfZX"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/auOoqqjD/Pehkui-3.6.2%2B1.18.2-forge.jar",
-					"version": "auOoqqjD"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/XYhYLzTm/Pehkui-3.6.2%2B1.19.2-forge.jar",
-					"version": "XYhYLzTm"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/NHdDfXOe/Pehkui-3.6.2%2B1.19.3-forge.jar",
-					"version": "NHdDfXOe"
-				},
-				{
-					"minecraft_versions": [
-						"1.14.4",
-						"1.15.2",
-						"1.16.5",
-						"1.17.1",
-						"1.18.2",
-						"1.19.2",
-						"1.19.3"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/IFmJuF78/Pehkui-3.6.2%2B1.14.4-1.19.3.jar",
-					"version": "IFmJuF78"
-				},
-				{
-					"minecraft_versions": "1.16.5",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/AA2E43UR/Pehkui-3.6.3%2B1.16.5-forge.jar",
-					"version": "AA2E43UR"
-				},
-				{
-					"minecraft_versions": "1.17.1",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/wseZzZ0O/Pehkui-3.6.3%2B1.17.1-forge.jar",
-					"version": "wseZzZ0O"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/ixUullxL/Pehkui-3.6.3%2B1.18.2-forge.jar",
-					"version": "ixUullxL"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/bpEK2Y8B/Pehkui-3.6.3%2B1.19.2-forge.jar",
-					"version": "bpEK2Y8B"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/NFQLWwbU/Pehkui-3.6.3%2B1.19.3-forge.jar",
-					"version": "NFQLWwbU"
-				},
-				{
-					"minecraft_versions": [
-						"1.14.4",
-						"1.15.2",
-						"1.16.5",
-						"1.17.1",
-						"1.18.2",
-						"1.19.2",
-						"1.19.3"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/rOb9x5fM/Pehkui-3.6.3%2B1.14.4-1.19.3.jar",
-					"version": "rOb9x5fM"
-				},
-				{
-					"minecraft_versions": "1.16.5",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/1o5iGGCh/Pehkui-3.7.0%2B1.16.5-forge.jar",
-					"version": "1o5iGGCh"
-				},
-				{
-					"minecraft_versions": "1.17.1",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/Z1elHZ48/Pehkui-3.7.0%2B1.17.1-forge.jar",
-					"version": "Z1elHZ48"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/sku0rAXL/Pehkui-3.7.0%2B1.18.2-forge.jar",
-					"version": "sku0rAXL"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/N2dG5Den/Pehkui-3.7.0%2B1.19.2-forge.jar",
-					"version": "N2dG5Den"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/WtaJKPLc/Pehkui-3.7.0%2B1.19.3-forge.jar",
-					"version": "WtaJKPLc"
-				},
-				{
-					"minecraft_versions": [
-						"1.14.4",
-						"1.15.2",
-						"1.16.5",
-						"1.17.1",
-						"1.18.2",
-						"1.19.2",
-						"1.19.3"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/ZlyksjwT/Pehkui-3.7.0%2B1.14.4-1.19.3.jar",
-					"version": "ZlyksjwT"
-				},
-				{
-					"minecraft_versions": "1.16.5",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/slhQqGHb/Pehkui-3.7.1%2B1.16.5-forge.jar",
-					"version": "slhQqGHb"
-				},
-				{
-					"minecraft_versions": "1.17.1",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/ps21grCg/Pehkui-3.7.1%2B1.17.1-forge.jar",
-					"version": "ps21grCg"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/ap29c7Hq/Pehkui-3.7.1%2B1.18.2-forge.jar",
-					"version": "ap29c7Hq"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/nRO31hZ7/Pehkui-3.7.1%2B1.19.2-forge.jar",
-					"version": "nRO31hZ7"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/14FEjUKX/Pehkui-3.7.1%2B1.19.3-forge.jar",
-					"version": "14FEjUKX"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/vtnrxIhq/Pehkui-3.8.0%2B1.20.1-forge.jar",
+					"version": "vtnrxIhq"
 				},
 				{
 					"minecraft_versions": "1.19.4",
 					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/qlGEV818/Pehkui-3.7.1%2B1.19.4-forge.jar",
-					"version": "qlGEV818"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/CyiYSQre/Pehkui-3.8.0%2B1.19.4-forge.jar",
+					"version": "CyiYSQre"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/yV53lABS/Pehkui-3.8.0%2B1.19.2-forge.jar",
+					"version": "yV53lABS"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/que73KU8/Pehkui-3.8.0%2B1.18.2-forge.jar",
+					"version": "que73KU8"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/hfv8Ahlb/Pehkui-3.8.0%2B1.17.1-forge.jar",
+					"version": "hfv8Ahlb"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/OSy4tTWV/Pehkui-3.8.0%2B1.16.5-forge.jar",
+					"version": "OSy4tTWV"
 				},
 				{
 					"minecraft_versions": [
@@ -1081,8 +94,10 @@
 						"1.17.1",
 						"1.18.2",
 						"1.19.2",
-						"1.19.3",
-						"1.19.4"
+						"1.19.4",
+						"1.20.1",
+						"1.20.2",
+						"1.20.4"
 					],
 					"modloaders": [
 						"fabric",
@@ -1091,44 +106,33 @@
 					"relations": {
 						"dependencies": "fabriclike-api"
 					},
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/HuSbUkKH/Pehkui-3.7.1%2B1.14.4-1.19.4.jar",
-					"version": "HuSbUkKH"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/CEwGflAU/Pehkui-3.7.12%2B1.14.4-1.20.4.jar",
+					"version": "CEwGflAU"
 				},
 				{
-					"minecraft_versions": "1.16.5",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/ycZywLc2/Pehkui-3.7.2%2B1.16.5-forge.jar",
-					"version": "ycZywLc2"
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/gW0NRaWB/Pehkui-3.7.12%2B1.20.4-neoforge.jar",
+					"version": "gW0NRaWB"
 				},
 				{
-					"minecraft_versions": "1.17.1",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/O07xXPJP/Pehkui-3.7.2%2B1.17.1-forge.jar",
-					"version": "O07xXPJP"
+					"minecraft_versions": "1.20.2",
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/Ho0klGEY/Pehkui-3.7.12%2B1.20.2-neoforge.jar",
+					"version": "Ho0klGEY"
 				},
 				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/TIrb7iC5/Pehkui-3.7.2%2B1.18.2-forge.jar",
-					"version": "TIrb7iC5"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/1DUs2AMQ/Pehkui-3.7.2%2B1.19.2-forge.jar",
-					"version": "1DUs2AMQ"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/jWUVWsfC/Pehkui-3.7.2%2B1.19.3-forge.jar",
-					"version": "jWUVWsfC"
-				},
-				{
-					"minecraft_versions": "1.19.4",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/BmVR1rnu/Pehkui-3.7.2%2B1.19.4-forge.jar",
-					"version": "BmVR1rnu"
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/trgbZnd0/Pehkui-3.7.12%2B1.20.1-forge.jar",
+					"version": "trgbZnd0"
 				},
 				{
 					"minecraft_versions": [
@@ -1138,8 +142,9 @@
 						"1.17.1",
 						"1.18.2",
 						"1.19.2",
-						"1.19.3",
-						"1.19.4"
+						"1.19.4",
+						"1.20.1",
+						"1.20.2"
 					],
 					"modloaders": [
 						"fabric",
@@ -1148,44 +153,153 @@
 					"relations": {
 						"dependencies": "fabriclike-api"
 					},
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/79X6I2xj/Pehkui-3.7.2%2B1.14.4-1.19.4.jar",
-					"version": "79X6I2xj"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/EKhpC3mG/Pehkui-3.7.11%2B1.14.4-1.20.2.jar",
+					"version": "EKhpC3mG"
 				},
 				{
-					"minecraft_versions": "1.16.5",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3v6rQPKd/Pehkui-3.7.3%2B1.16.5-forge.jar",
-					"version": "3v6rQPKd"
-				},
-				{
-					"minecraft_versions": "1.17.1",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/RPdCM56t/Pehkui-3.7.3%2B1.17.1-forge.jar",
-					"version": "RPdCM56t"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/Ok01w4EA/Pehkui-3.7.3%2B1.18.2-forge.jar",
-					"version": "Ok01w4EA"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/LlYFRp4h/Pehkui-3.7.3%2B1.19.2-forge.jar",
-					"version": "LlYFRp4h"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/cA16CC37/Pehkui-3.7.3%2B1.19.3-forge.jar",
-					"version": "cA16CC37"
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/ysBfIbZ4/Pehkui-3.7.11%2B1.20.1-forge.jar",
+					"version": "ysBfIbZ4"
 				},
 				{
 					"minecraft_versions": "1.19.4",
 					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/sl7EtQRn/Pehkui-3.7.3%2B1.19.4-forge.jar",
-					"version": "sl7EtQRn"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/6W8BENkb/Pehkui-3.7.11%2B1.19.4-forge.jar",
+					"version": "6W8BENkb"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/ANbTpOlT/Pehkui-3.7.11%2B1.19.2-forge.jar",
+					"version": "ANbTpOlT"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/OJw7ES2q/Pehkui-3.7.11%2B1.18.2-forge.jar",
+					"version": "OJw7ES2q"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/SU8qVXsl/Pehkui-3.7.11%2B1.17.1-forge.jar",
+					"version": "SU8qVXsl"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/nevkDPPl/Pehkui-3.7.10%2B1.20.1-forge.jar",
+					"version": "nevkDPPl"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/ibnHzhdA/Pehkui-3.7.10%2B1.19.4-forge.jar",
+					"version": "ibnHzhdA"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/grAxoHg3/Pehkui-3.7.10%2B1.19.2-forge.jar",
+					"version": "grAxoHg3"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/BQ3axApK/Pehkui-3.7.10%2B1.18.2-forge.jar",
+					"version": "BQ3axApK"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/WpdMROMn/Pehkui-3.7.10%2B1.17.1-forge.jar",
+					"version": "WpdMROMn"
+				},
+				{
+					"minecraft_versions": [
+						"1.14.4",
+						"1.15.2",
+						"1.16.5",
+						"1.17.1",
+						"1.18.2",
+						"1.19.2",
+						"1.19.4",
+						"1.20.1",
+						"1.20.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/NXT21hP9/Pehkui-3.7.9%2B1.14.4-1.20.2.jar",
+					"version": "NXT21hP9"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/iFa0Xbhn/Pehkui-3.7.9%2B1.20.1-forge.jar",
+					"version": "iFa0Xbhn"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/YIvErKZO/Pehkui-3.7.9%2B1.19.4-forge.jar",
+					"version": "YIvErKZO"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/Gow8CV2Y/Pehkui-3.7.9%2B1.19.2-forge.jar",
+					"version": "Gow8CV2Y"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/h8RIYvDU/Pehkui-3.7.9%2B1.18.2-forge.jar",
+					"version": "h8RIYvDU"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/jHJKizEb/Pehkui-3.7.9%2B1.17.1-forge.jar",
+					"version": "jHJKizEb"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/ww97SXdc/Pehkui-3.7.9%2B1.16.5-forge.jar",
+					"version": "ww97SXdc"
 				},
 				{
 					"minecraft_versions": [
@@ -1197,7 +311,8 @@
 						"1.19.2",
 						"1.19.3",
 						"1.19.4",
-						"23w14a"
+						"1.20",
+						"1.20.1"
 					],
 					"modloaders": [
 						"fabric",
@@ -1206,44 +321,58 @@
 					"relations": {
 						"dependencies": "fabriclike-api"
 					},
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/T6zz9cnV/Pehkui-3.7.3%2B1.14.4-1.20.jar",
-					"version": "T6zz9cnV"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/ooQsxSVg/Pehkui-3.7.8%2B1.14.4-1.20.1.jar",
+					"version": "ooQsxSVg"
 				},
 				{
-					"minecraft_versions": "1.16.5",
+					"minecraft_versions": "1.20.1",
 					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/RmqK4lbE/Pehkui-3.7.4%2B1.16.5-forge.jar",
-					"version": "RmqK4lbE"
-				},
-				{
-					"minecraft_versions": "1.17.1",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/KqcPDIoK/Pehkui-3.7.4%2B1.17.1-forge.jar",
-					"version": "KqcPDIoK"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/T8bcCdtD/Pehkui-3.7.4%2B1.18.2-forge.jar",
-					"version": "T8bcCdtD"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/VZ99wiTL/Pehkui-3.7.4%2B1.19.2-forge.jar",
-					"version": "VZ99wiTL"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/pHSvP7Bw/Pehkui-3.7.4%2B1.19.3-forge.jar",
-					"version": "pHSvP7Bw"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/jERMr4ha/Pehkui-3.7.8%2B1.20.1-forge.jar",
+					"version": "jERMr4ha"
 				},
 				{
 					"minecraft_versions": "1.19.4",
 					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/cCMp4GkO/Pehkui-3.7.4%2B1.19.4-forge.jar",
-					"version": "cCMp4GkO"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/Pxg0KblB/Pehkui-3.7.8%2B1.19.4-forge.jar",
+					"version": "Pxg0KblB"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/rwo6Gdl6/Pehkui-3.7.8%2B1.19.3-forge.jar",
+					"version": "rwo6Gdl6"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/ElQ6t56c/Pehkui-3.7.8%2B1.19.2-forge.jar",
+					"version": "ElQ6t56c"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/34Zka5Wk/Pehkui-3.7.8%2B1.18.2-forge.jar",
+					"version": "34Zka5Wk"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/aiAmAWjE/Pehkui-3.7.8%2B1.17.1-forge.jar",
+					"version": "aiAmAWjE"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/5yyDnQzj/Pehkui-3.7.8%2B1.16.5-forge.jar",
+					"version": "5yyDnQzj"
 				},
 				{
 					"minecraft_versions": [
@@ -1255,7 +384,8 @@
 						"1.19.2",
 						"1.19.3",
 						"1.19.4",
-						"1.20-pre4"
+						"1.20",
+						"1.20.1"
 					],
 					"modloaders": [
 						"fabric",
@@ -1264,44 +394,131 @@
 					"relations": {
 						"dependencies": "fabriclike-api"
 					},
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/JFBKABoe/Pehkui-3.7.4%2B1.14.4-1.20.jar",
-					"version": "JFBKABoe"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/upq7HCkV/Pehkui-3.7.7%2B1.14.4-1.20.1.jar",
+					"version": "upq7HCkV"
 				},
 				{
-					"minecraft_versions": "1.16.5",
+					"minecraft_versions": "1.20.1",
 					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/k0zCzZWr/Pehkui-3.7.5%2B1.16.5-forge.jar",
-					"version": "k0zCzZWr"
-				},
-				{
-					"minecraft_versions": "1.17.1",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/HLKM2roB/Pehkui-3.7.5%2B1.17.1-forge.jar",
-					"version": "HLKM2roB"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/Jq7b4lL3/Pehkui-3.7.5%2B1.18.2-forge.jar",
-					"version": "Jq7b4lL3"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/sMaMk1fr/Pehkui-3.7.5%2B1.19.2-forge.jar",
-					"version": "sMaMk1fr"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/h4YmqkcU/Pehkui-3.7.5%2B1.19.3-forge.jar",
-					"version": "h4YmqkcU"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/uTXXBeVj/Pehkui-3.7.7%2B1.20.1-forge.jar",
+					"version": "uTXXBeVj"
 				},
 				{
 					"minecraft_versions": "1.19.4",
 					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/xy2vSEFv/Pehkui-3.7.5%2B1.19.4-forge.jar",
-					"version": "xy2vSEFv"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/MHxDX3nd/Pehkui-3.7.7%2B1.19.4-forge.jar",
+					"version": "MHxDX3nd"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/TYANFfos/Pehkui-3.7.7%2B1.19.3-forge.jar",
+					"version": "TYANFfos"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/YsC6605j/Pehkui-3.7.7%2B1.19.2-forge.jar",
+					"version": "YsC6605j"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/S6n8jGiO/Pehkui-3.7.7%2B1.18.2-forge.jar",
+					"version": "S6n8jGiO"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/XGAc4fdG/Pehkui-3.7.7%2B1.17.1-forge.jar",
+					"version": "XGAc4fdG"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/nsh98J9M/Pehkui-3.7.7%2B1.16.5-forge.jar",
+					"version": "nsh98J9M"
+				},
+				{
+					"minecraft_versions": [
+						"1.14.4",
+						"1.15.2",
+						"1.16.5",
+						"1.17.1",
+						"1.18.2",
+						"1.19.2",
+						"1.19.3",
+						"1.19.4",
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/hYzQBiXB/Pehkui-3.7.6%2B1.14.4-1.20.1.jar",
+					"version": "hYzQBiXB"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/rUlbXz1h/Pehkui-3.7.6%2B1.20.1-forge.jar",
+					"version": "rUlbXz1h"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/TrrnL0P5/Pehkui-3.7.6%2B1.19.4-forge.jar",
+					"version": "TrrnL0P5"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/YcTOR0C4/Pehkui-3.7.6%2B1.19.3-forge.jar",
+					"version": "YcTOR0C4"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/BtfnTk61/Pehkui-3.7.6%2B1.19.2-forge.jar",
+					"version": "BtfnTk61"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/8MORTlbd/Pehkui-3.7.6%2B1.18.2-forge.jar",
+					"version": "8MORTlbd"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/K6karNxN/Pehkui-3.7.6%2B1.17.1-forge.jar",
+					"version": "K6karNxN"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/ZiXsm8mU/Pehkui-3.7.6%2B1.16.5-forge.jar",
+					"version": "ZiXsm8mU"
 				},
 				{
 					"minecraft_versions": [
@@ -1322,50 +539,51 @@
 					"relations": {
 						"dependencies": "fabriclike-api"
 					},
+					"stability": "stable",
 					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/riJf9xr3/Pehkui-3.7.5%2B1.14.4-1.20.jar",
 					"version": "riJf9xr3"
 				},
 				{
-					"minecraft_versions": "1.16.5",
+					"minecraft_versions": "1.19.4",
 					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/ZiXsm8mU/Pehkui-3.7.6%2B1.16.5-forge.jar",
-					"version": "ZiXsm8mU"
-				},
-				{
-					"minecraft_versions": "1.17.1",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/K6karNxN/Pehkui-3.7.6%2B1.17.1-forge.jar",
-					"version": "K6karNxN"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/8MORTlbd/Pehkui-3.7.6%2B1.18.2-forge.jar",
-					"version": "8MORTlbd"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/BtfnTk61/Pehkui-3.7.6%2B1.19.2-forge.jar",
-					"version": "BtfnTk61"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/xy2vSEFv/Pehkui-3.7.5%2B1.19.4-forge.jar",
+					"version": "xy2vSEFv"
 				},
 				{
 					"minecraft_versions": "1.19.3",
 					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/YcTOR0C4/Pehkui-3.7.6%2B1.19.3-forge.jar",
-					"version": "YcTOR0C4"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/h4YmqkcU/Pehkui-3.7.5%2B1.19.3-forge.jar",
+					"version": "h4YmqkcU"
 				},
 				{
-					"minecraft_versions": "1.19.4",
+					"minecraft_versions": "1.19.2",
 					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/TrrnL0P5/Pehkui-3.7.6%2B1.19.4-forge.jar",
-					"version": "TrrnL0P5"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/sMaMk1fr/Pehkui-3.7.5%2B1.19.2-forge.jar",
+					"version": "sMaMk1fr"
 				},
 				{
-					"minecraft_versions": "1.20.1",
+					"minecraft_versions": "1.18.2",
 					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/rUlbXz1h/Pehkui-3.7.6%2B1.20.1-forge.jar",
-					"version": "rUlbXz1h"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/Jq7b4lL3/Pehkui-3.7.5%2B1.18.2-forge.jar",
+					"version": "Jq7b4lL3"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/HLKM2roB/Pehkui-3.7.5%2B1.17.1-forge.jar",
+					"version": "HLKM2roB"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/k0zCzZWr/Pehkui-3.7.5%2B1.16.5-forge.jar",
+					"version": "k0zCzZWr"
 				},
 				{
 					"minecraft_versions": [
@@ -1377,8 +595,7 @@
 						"1.19.2",
 						"1.19.3",
 						"1.19.4",
-						"1.20",
-						"1.20.1"
+						"1.20-pre4"
 					],
 					"modloaders": [
 						"fabric",
@@ -1387,50 +604,51 @@
 					"relations": {
 						"dependencies": "fabriclike-api"
 					},
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/hYzQBiXB/Pehkui-3.7.6%2B1.14.4-1.20.1.jar",
-					"version": "hYzQBiXB"
-				},
-				{
-					"minecraft_versions": "1.16.5",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/nsh98J9M/Pehkui-3.7.7%2B1.16.5-forge.jar",
-					"version": "nsh98J9M"
-				},
-				{
-					"minecraft_versions": "1.17.1",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/XGAc4fdG/Pehkui-3.7.7%2B1.17.1-forge.jar",
-					"version": "XGAc4fdG"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/S6n8jGiO/Pehkui-3.7.7%2B1.18.2-forge.jar",
-					"version": "S6n8jGiO"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/YsC6605j/Pehkui-3.7.7%2B1.19.2-forge.jar",
-					"version": "YsC6605j"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/TYANFfos/Pehkui-3.7.7%2B1.19.3-forge.jar",
-					"version": "TYANFfos"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/JFBKABoe/Pehkui-3.7.4%2B1.14.4-1.20.jar",
+					"version": "JFBKABoe"
 				},
 				{
 					"minecraft_versions": "1.19.4",
 					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/MHxDX3nd/Pehkui-3.7.7%2B1.19.4-forge.jar",
-					"version": "MHxDX3nd"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/cCMp4GkO/Pehkui-3.7.4%2B1.19.4-forge.jar",
+					"version": "cCMp4GkO"
 				},
 				{
-					"minecraft_versions": "1.20.1",
+					"minecraft_versions": "1.19.3",
 					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/uTXXBeVj/Pehkui-3.7.7%2B1.20.1-forge.jar",
-					"version": "uTXXBeVj"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/pHSvP7Bw/Pehkui-3.7.4%2B1.19.3-forge.jar",
+					"version": "pHSvP7Bw"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/VZ99wiTL/Pehkui-3.7.4%2B1.19.2-forge.jar",
+					"version": "VZ99wiTL"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/T8bcCdtD/Pehkui-3.7.4%2B1.18.2-forge.jar",
+					"version": "T8bcCdtD"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/KqcPDIoK/Pehkui-3.7.4%2B1.17.1-forge.jar",
+					"version": "KqcPDIoK"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/RmqK4lbE/Pehkui-3.7.4%2B1.16.5-forge.jar",
+					"version": "RmqK4lbE"
 				},
 				{
 					"minecraft_versions": [
@@ -1442,8 +660,7 @@
 						"1.19.2",
 						"1.19.3",
 						"1.19.4",
-						"1.20",
-						"1.20.1"
+						"23w14a"
 					],
 					"modloaders": [
 						"fabric",
@@ -1452,50 +669,51 @@
 					"relations": {
 						"dependencies": "fabriclike-api"
 					},
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/upq7HCkV/Pehkui-3.7.7%2B1.14.4-1.20.1.jar",
-					"version": "upq7HCkV"
-				},
-				{
-					"minecraft_versions": "1.16.5",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/5yyDnQzj/Pehkui-3.7.8%2B1.16.5-forge.jar",
-					"version": "5yyDnQzj"
-				},
-				{
-					"minecraft_versions": "1.17.1",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/aiAmAWjE/Pehkui-3.7.8%2B1.17.1-forge.jar",
-					"version": "aiAmAWjE"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/34Zka5Wk/Pehkui-3.7.8%2B1.18.2-forge.jar",
-					"version": "34Zka5Wk"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/ElQ6t56c/Pehkui-3.7.8%2B1.19.2-forge.jar",
-					"version": "ElQ6t56c"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/rwo6Gdl6/Pehkui-3.7.8%2B1.19.3-forge.jar",
-					"version": "rwo6Gdl6"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/T6zz9cnV/Pehkui-3.7.3%2B1.14.4-1.20.jar",
+					"version": "T6zz9cnV"
 				},
 				{
 					"minecraft_versions": "1.19.4",
 					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/Pxg0KblB/Pehkui-3.7.8%2B1.19.4-forge.jar",
-					"version": "Pxg0KblB"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/sl7EtQRn/Pehkui-3.7.3%2B1.19.4-forge.jar",
+					"version": "sl7EtQRn"
 				},
 				{
-					"minecraft_versions": "1.20.1",
+					"minecraft_versions": "1.19.3",
 					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/jERMr4ha/Pehkui-3.7.8%2B1.20.1-forge.jar",
-					"version": "jERMr4ha"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/cA16CC37/Pehkui-3.7.3%2B1.19.3-forge.jar",
+					"version": "cA16CC37"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/LlYFRp4h/Pehkui-3.7.3%2B1.19.2-forge.jar",
+					"version": "LlYFRp4h"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/Ok01w4EA/Pehkui-3.7.3%2B1.18.2-forge.jar",
+					"version": "Ok01w4EA"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/RPdCM56t/Pehkui-3.7.3%2B1.17.1-forge.jar",
+					"version": "RPdCM56t"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3v6rQPKd/Pehkui-3.7.3%2B1.16.5-forge.jar",
+					"version": "3v6rQPKd"
 				},
 				{
 					"minecraft_versions": [
@@ -1506,9 +724,7 @@
 						"1.18.2",
 						"1.19.2",
 						"1.19.3",
-						"1.19.4",
-						"1.20",
-						"1.20.1"
+						"1.19.4"
 					],
 					"modloaders": [
 						"fabric",
@@ -1517,47 +733,51 @@
 					"relations": {
 						"dependencies": "fabriclike-api"
 					},
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/ooQsxSVg/Pehkui-3.7.8%2B1.14.4-1.20.1.jar",
-					"version": "ooQsxSVg"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/79X6I2xj/Pehkui-3.7.2%2B1.14.4-1.19.4.jar",
+					"version": "79X6I2xj"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/BmVR1rnu/Pehkui-3.7.2%2B1.19.4-forge.jar",
+					"version": "BmVR1rnu"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/jWUVWsfC/Pehkui-3.7.2%2B1.19.3-forge.jar",
+					"version": "jWUVWsfC"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/1DUs2AMQ/Pehkui-3.7.2%2B1.19.2-forge.jar",
+					"version": "1DUs2AMQ"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/TIrb7iC5/Pehkui-3.7.2%2B1.18.2-forge.jar",
+					"version": "TIrb7iC5"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/O07xXPJP/Pehkui-3.7.2%2B1.17.1-forge.jar",
+					"version": "O07xXPJP"
 				},
 				{
 					"minecraft_versions": "1.16.5",
 					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/ww97SXdc/Pehkui-3.7.9%2B1.16.5-forge.jar",
-					"version": "ww97SXdc"
-				},
-				{
-					"minecraft_versions": "1.17.1",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/jHJKizEb/Pehkui-3.7.9%2B1.17.1-forge.jar",
-					"version": "jHJKizEb"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/h8RIYvDU/Pehkui-3.7.9%2B1.18.2-forge.jar",
-					"version": "h8RIYvDU"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/Gow8CV2Y/Pehkui-3.7.9%2B1.19.2-forge.jar",
-					"version": "Gow8CV2Y"
-				},
-				{
-					"minecraft_versions": "1.19.4",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/YIvErKZO/Pehkui-3.7.9%2B1.19.4-forge.jar",
-					"version": "YIvErKZO"
-				},
-				{
-					"minecraft_versions": "1.20.1",
-					"modloaders": [
-						"forge",
-						"neoforged"
-					],
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/iFa0Xbhn/Pehkui-3.7.9%2B1.20.1-forge.jar",
-					"version": "iFa0Xbhn"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/ycZywLc2/Pehkui-3.7.2%2B1.16.5-forge.jar",
+					"version": "ycZywLc2"
 				},
 				{
 					"minecraft_versions": [
@@ -1567,9 +787,8 @@
 						"1.17.1",
 						"1.18.2",
 						"1.19.2",
-						"1.19.4",
-						"1.20.1",
-						"1.20.2"
+						"1.19.3",
+						"1.19.4"
 					],
 					"modloaders": [
 						"fabric",
@@ -1578,191 +797,51 @@
 					"relations": {
 						"dependencies": "fabriclike-api"
 					},
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/NXT21hP9/Pehkui-3.7.9%2B1.14.4-1.20.2.jar",
-					"version": "NXT21hP9"
-				},
-				{
-					"minecraft_versions": "1.17.1",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/WpdMROMn/Pehkui-3.7.10%2B1.17.1-forge.jar",
-					"version": "WpdMROMn"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/BQ3axApK/Pehkui-3.7.10%2B1.18.2-forge.jar",
-					"version": "BQ3axApK"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/grAxoHg3/Pehkui-3.7.10%2B1.19.2-forge.jar",
-					"version": "grAxoHg3"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/HuSbUkKH/Pehkui-3.7.1%2B1.14.4-1.19.4.jar",
+					"version": "HuSbUkKH"
 				},
 				{
 					"minecraft_versions": "1.19.4",
 					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/ibnHzhdA/Pehkui-3.7.10%2B1.19.4-forge.jar",
-					"version": "ibnHzhdA"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/qlGEV818/Pehkui-3.7.1%2B1.19.4-forge.jar",
+					"version": "qlGEV818"
 				},
 				{
-					"minecraft_versions": "1.20.1",
-					"modloaders": [
-						"forge",
-						"neoforged"
-					],
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/nevkDPPl/Pehkui-3.7.10%2B1.20.1-forge.jar",
-					"version": "nevkDPPl"
-				},
-				{
-					"minecraft_versions": "1.17.1",
+					"minecraft_versions": "1.19.3",
 					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/SU8qVXsl/Pehkui-3.7.11%2B1.17.1-forge.jar",
-					"version": "SU8qVXsl"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/OJw7ES2q/Pehkui-3.7.11%2B1.18.2-forge.jar",
-					"version": "OJw7ES2q"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/14FEjUKX/Pehkui-3.7.1%2B1.19.3-forge.jar",
+					"version": "14FEjUKX"
 				},
 				{
 					"minecraft_versions": "1.19.2",
 					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/ANbTpOlT/Pehkui-3.7.11%2B1.19.2-forge.jar",
-					"version": "ANbTpOlT"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/nRO31hZ7/Pehkui-3.7.1%2B1.19.2-forge.jar",
+					"version": "nRO31hZ7"
 				},
 				{
-					"minecraft_versions": "1.19.4",
+					"minecraft_versions": "1.18.2",
 					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/6W8BENkb/Pehkui-3.7.11%2B1.19.4-forge.jar",
-					"version": "6W8BENkb"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/ap29c7Hq/Pehkui-3.7.1%2B1.18.2-forge.jar",
+					"version": "ap29c7Hq"
 				},
 				{
-					"minecraft_versions": "1.20.1",
-					"modloaders": [
-						"forge",
-						"neoforged"
-					],
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/ysBfIbZ4/Pehkui-3.7.11%2B1.20.1-forge.jar",
-					"version": "ysBfIbZ4"
-				},
-				{
-					"minecraft_versions": [
-						"1.14.4",
-						"1.15.2",
-						"1.16.5",
-						"1.17.1",
-						"1.18.2",
-						"1.19.2",
-						"1.19.4",
-						"1.20.1",
-						"1.20.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/EKhpC3mG/Pehkui-3.7.11%2B1.14.4-1.20.2.jar",
-					"version": "EKhpC3mG"
-				},
-				{
-					"minecraft_versions": "1.20.1",
-					"modloaders": [
-						"forge",
-						"neoforged"
-					],
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/trgbZnd0/Pehkui-3.7.12%2B1.20.1-forge.jar",
-					"version": "trgbZnd0"
-				},
-				{
-					"minecraft_versions": "1.20.2",
-					"modloaders": "neoforged",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/Ho0klGEY/Pehkui-3.7.12%2B1.20.2-neoforge.jar",
-					"version": "Ho0klGEY"
-				},
-				{
-					"minecraft_versions": "1.20.4",
-					"modloaders": "neoforged",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/gW0NRaWB/Pehkui-3.7.12%2B1.20.4-neoforge.jar",
-					"version": "gW0NRaWB"
-				},
-				{
-					"minecraft_versions": [
-						"1.14.4",
-						"1.15.2",
-						"1.16.5",
-						"1.17.1",
-						"1.18.2",
-						"1.19.2",
-						"1.19.4",
-						"1.20.1",
-						"1.20.2",
-						"1.20.4"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/CEwGflAU/Pehkui-3.7.12%2B1.14.4-1.20.4.jar",
-					"version": "CEwGflAU"
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/ps21grCg/Pehkui-3.7.1%2B1.17.1-forge.jar",
+					"version": "ps21grCg"
 				},
 				{
 					"minecraft_versions": "1.16.5",
 					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/OSy4tTWV/Pehkui-3.8.0%2B1.16.5-forge.jar",
-					"version": "OSy4tTWV"
-				},
-				{
-					"minecraft_versions": "1.17.1",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/hfv8Ahlb/Pehkui-3.8.0%2B1.17.1-forge.jar",
-					"version": "hfv8Ahlb"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/que73KU8/Pehkui-3.8.0%2B1.18.2-forge.jar",
-					"version": "que73KU8"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/yV53lABS/Pehkui-3.8.0%2B1.19.2-forge.jar",
-					"version": "yV53lABS"
-				},
-				{
-					"minecraft_versions": "1.19.4",
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/CyiYSQre/Pehkui-3.8.0%2B1.19.4-forge.jar",
-					"version": "CyiYSQre"
-				},
-				{
-					"minecraft_versions": "1.20.1",
-					"modloaders": [
-						"forge",
-						"neoforged"
-					],
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/vtnrxIhq/Pehkui-3.8.0%2B1.20.1-forge.jar",
-					"version": "vtnrxIhq"
-				},
-				{
-					"minecraft_versions": "1.20.2",
-					"modloaders": "neoforged",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/cvOaFr8t/Pehkui-3.8.0%2B1.20.2-neoforge.jar",
-					"version": "cvOaFr8t"
-				},
-				{
-					"minecraft_versions": "1.20.4",
-					"modloaders": "neoforged",
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/TYdeDZh6/Pehkui-3.8.0%2B1.20.4-neoforge.jar",
-					"version": "TYdeDZh6"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/slhQqGHb/Pehkui-3.7.1%2B1.16.5-forge.jar",
+					"version": "slhQqGHb"
 				},
 				{
 					"minecraft_versions": [
@@ -1772,10 +851,7 @@
 						"1.17.1",
 						"1.18.2",
 						"1.19.2",
-						"1.19.4",
-						"1.20.1",
-						"1.20.2",
-						"1.20.4"
+						"1.19.3"
 					],
 					"modloaders": [
 						"fabric",
@@ -1784,8 +860,1143 @@
 					"relations": {
 						"dependencies": "fabriclike-api"
 					},
-					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/czRgm3k6/Pehkui-3.8.0%2B1.14.4-1.20.4.jar",
-					"version": "czRgm3k6"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/ZlyksjwT/Pehkui-3.7.0%2B1.14.4-1.19.3.jar",
+					"version": "ZlyksjwT"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/WtaJKPLc/Pehkui-3.7.0%2B1.19.3-forge.jar",
+					"version": "WtaJKPLc"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/N2dG5Den/Pehkui-3.7.0%2B1.19.2-forge.jar",
+					"version": "N2dG5Den"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/sku0rAXL/Pehkui-3.7.0%2B1.18.2-forge.jar",
+					"version": "sku0rAXL"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/Z1elHZ48/Pehkui-3.7.0%2B1.17.1-forge.jar",
+					"version": "Z1elHZ48"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/1o5iGGCh/Pehkui-3.7.0%2B1.16.5-forge.jar",
+					"version": "1o5iGGCh"
+				},
+				{
+					"minecraft_versions": [
+						"1.14.4",
+						"1.15.2",
+						"1.16.5",
+						"1.17.1",
+						"1.18.2",
+						"1.19.2",
+						"1.19.3"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/rOb9x5fM/Pehkui-3.6.3%2B1.14.4-1.19.3.jar",
+					"version": "rOb9x5fM"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/NFQLWwbU/Pehkui-3.6.3%2B1.19.3-forge.jar",
+					"version": "NFQLWwbU"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/bpEK2Y8B/Pehkui-3.6.3%2B1.19.2-forge.jar",
+					"version": "bpEK2Y8B"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/ixUullxL/Pehkui-3.6.3%2B1.18.2-forge.jar",
+					"version": "ixUullxL"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/wseZzZ0O/Pehkui-3.6.3%2B1.17.1-forge.jar",
+					"version": "wseZzZ0O"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/AA2E43UR/Pehkui-3.6.3%2B1.16.5-forge.jar",
+					"version": "AA2E43UR"
+				},
+				{
+					"minecraft_versions": [
+						"1.14.4",
+						"1.15.2",
+						"1.16.5",
+						"1.17.1",
+						"1.18.2",
+						"1.19.2",
+						"1.19.3"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/IFmJuF78/Pehkui-3.6.2%2B1.14.4-1.19.3.jar",
+					"version": "IFmJuF78"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/NHdDfXOe/Pehkui-3.6.2%2B1.19.3-forge.jar",
+					"version": "NHdDfXOe"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/XYhYLzTm/Pehkui-3.6.2%2B1.19.2-forge.jar",
+					"version": "XYhYLzTm"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/auOoqqjD/Pehkui-3.6.2%2B1.18.2-forge.jar",
+					"version": "auOoqqjD"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/g2bjqfZX/Pehkui-3.6.2%2B1.17.1-forge.jar",
+					"version": "g2bjqfZX"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/gqjZp19U/Pehkui-3.6.2%2B1.16.5-forge.jar",
+					"version": "gqjZp19U"
+				},
+				{
+					"minecraft_versions": [
+						"1.14.4",
+						"1.15.2",
+						"1.16.5",
+						"1.17.1",
+						"1.18.2",
+						"1.19.2",
+						"1.19.3"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/J8DnNDOS/Pehkui-3.6.1%2B1.14.4-1.19.3.jar",
+					"version": "J8DnNDOS"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/O9lYBISl/Pehkui-3.6.1%2B1.19.3-forge.jar",
+					"version": "O9lYBISl"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/N960OfvE/Pehkui-3.6.1%2B1.19.2-forge.jar",
+					"version": "N960OfvE"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/BFPCTtXw/Pehkui-3.6.1%2B1.18.2-forge.jar",
+					"version": "BFPCTtXw"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/awhnjWbk/Pehkui-3.6.1%2B1.17.1-forge.jar",
+					"version": "awhnjWbk"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/5F101RsO/Pehkui-3.6.1%2B1.16.5-forge.jar",
+					"version": "5F101RsO"
+				},
+				{
+					"minecraft_versions": [
+						"1.14.4",
+						"1.15.2",
+						"1.16.5",
+						"1.17.1",
+						"1.18.2",
+						"1.19.2",
+						"22w43a"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/KdbiK6RJ/Pehkui-3.6.0%2B1.14.4-1.19.3.jar",
+					"version": "KdbiK6RJ"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/MarwFR48/Pehkui-3.6.0%2B1.19.2-forge.jar",
+					"version": "MarwFR48"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/fyUUmUnh/Pehkui-3.6.0%2B1.19-forge.jar",
+					"version": "fyUUmUnh"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/tfTNNCrg/Pehkui-3.6.0%2B1.18.2-forge.jar",
+					"version": "tfTNNCrg"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/oodYungl/Pehkui-3.6.0%2B1.17.1-forge.jar",
+					"version": "oodYungl"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/jFaljqTH/Pehkui-3.6.0%2B1.16.5-forge.jar",
+					"version": "jFaljqTH"
+				},
+				{
+					"minecraft_versions": [
+						"1.14.4",
+						"1.15.2",
+						"1.16.5",
+						"1.17.1",
+						"1.18.2",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/bqlYHqmT/Pehkui-3.5.0%2B1.14.4-1.19.2.jar",
+					"version": "bqlYHqmT"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/xASmJbpW/Pehkui-3.5.0%2B1.19.2-forge.jar",
+					"version": "xASmJbpW"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/HrGwuVOl/Pehkui-3.5.0%2B1.19-forge.jar",
+					"version": "HrGwuVOl"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/85ppXUz9/Pehkui-3.5.0%2B1.18.2-forge.jar",
+					"version": "85ppXUz9"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/c18f3v4b/Pehkui-3.5.0%2B1.17.1-forge.jar",
+					"version": "c18f3v4b"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3lLe9YIl/Pehkui-3.5.0%2B1.16.5-forge.jar",
+					"version": "3lLe9YIl"
+				},
+				{
+					"minecraft_versions": [
+						"1.14.4",
+						"1.15.2",
+						"1.16.5",
+						"1.17.1",
+						"1.18.2",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/mQUvJcQi/Pehkui-3.4.2%2B1.14.4-1.19.2.jar",
+					"version": "mQUvJcQi"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/4w4GKmvP/Pehkui-3.4.2%2B1.19.2-forge.jar",
+					"version": "4w4GKmvP"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/OBXo0zvd/Pehkui-3.4.2%2B1.19-forge.jar",
+					"version": "OBXo0zvd"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/t5Dwtntv/Pehkui-3.4.2%2B1.18.2-forge.jar",
+					"version": "t5Dwtntv"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/V9PuotIF/Pehkui-3.4.2%2B1.17.1-forge.jar",
+					"version": "V9PuotIF"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/An8Sq8ta/Pehkui-3.4.2%2B1.16.5-forge.jar",
+					"version": "An8Sq8ta"
+				},
+				{
+					"minecraft_versions": [
+						"1.14.4",
+						"1.15.2",
+						"1.16.5",
+						"1.17.1",
+						"1.18.2",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/fsgVBwgV/Pehkui-3.4.1%2B1.14.4-1.19.2.jar",
+					"version": "fsgVBwgV"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/NPtp5hxN/Pehkui-3.4.1%2B1.19.2-forge.jar",
+					"version": "NPtp5hxN"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/GnsvAYez/Pehkui-3.4.1%2B1.19-forge.jar",
+					"version": "GnsvAYez"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/jhQ2drFe/Pehkui-3.4.1%2B1.18.2-forge.jar",
+					"version": "jhQ2drFe"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/d8YwH8cV/Pehkui-3.4.1%2B1.17.1-forge.jar",
+					"version": "d8YwH8cV"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/G7TO2pT2/Pehkui-3.4.1%2B1.16.5-forge.jar",
+					"version": "G7TO2pT2"
+				},
+				{
+					"minecraft_versions": [
+						"1.14.4",
+						"1.15.2",
+						"1.16.5",
+						"1.17.1",
+						"1.18.2",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.4.0%2B1.14.4-1.19.2/Pehkui-3.4.0%2B1.14.4-1.19.2.jar",
+					"version": "6J3h8sJb"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.4.0%2B1.19.2-forge/Pehkui-3.4.0%2B1.19.2-forge.jar",
+					"version": "ZTkICia9"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.4.0%2B1.19-forge/Pehkui-3.4.0%2B1.19-forge.jar",
+					"version": "WMNaY5zV"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.4.0%2B1.18.2-forge/Pehkui-3.4.0%2B1.18.2-forge.jar",
+					"version": "fIo2oXqt"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.4.0%2B1.17.1-forge/Pehkui-3.4.0%2B1.17.1-forge.jar",
+					"version": "4EiUhzgy"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.4.0%2B1.16.5-forge/Pehkui-3.4.0%2B1.16.5-forge.jar",
+					"version": "GyH4xOVe"
+				},
+				{
+					"minecraft_versions": [
+						"1.14.4",
+						"1.15.2",
+						"1.16.5",
+						"1.17.1",
+						"1.18.2",
+						"1.19",
+						"1.19.1-rc1"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.3.3%2B1.14.4-1.19.1/Pehkui-3.3.3%2B1.14.4-1.19.1.jar",
+					"version": "rCJ3oStN"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.3.3%2B1.19-forge/Pehkui-3.3.3%2B1.19-forge.jar",
+					"version": "4i8d0BQ7"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.3.3%2B1.18.2-forge/Pehkui-3.3.3%2B1.18.2-forge.jar",
+					"version": "LsjNUY9E"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.3.3%2B1.17.1-forge/Pehkui-3.3.3%2B1.17.1-forge.jar",
+					"version": "dE0m9Mpm"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.3.3%2B1.16.5-forge/Pehkui-3.3.3%2B1.16.5-forge.jar",
+					"version": "HhI6rrzI"
+				},
+				{
+					"minecraft_versions": [
+						"1.14.4",
+						"1.15.2",
+						"1.16.5",
+						"1.17.1",
+						"1.18.1",
+						"1.18.2",
+						"1.19-pre3"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.3.2%2B1.14.4-1.19/Pehkui-3.3.2%2B1.14.4-1.19.jar",
+					"version": "vUoAK8ZT"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.3.2%2B1.18.2-forge/Pehkui-3.3.2%2B1.18.2-forge.jar",
+					"version": "s6llh4eB"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.3.2%2B1.18.1-forge/Pehkui-3.3.2%2B1.18.1-forge.jar",
+					"version": "krBDWieK"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.3.2%2B1.17.1-forge/Pehkui-3.3.2%2B1.17.1-forge.jar",
+					"version": "zYsAv0Rp"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.3.2%2B1.16.5-forge/Pehkui-3.3.2%2B1.16.5-forge.jar",
+					"version": "5mN0z3rt"
+				},
+				{
+					"minecraft_versions": [
+						"1.14.4",
+						"1.15.2",
+						"1.16.5",
+						"1.17.1",
+						"1.18.1",
+						"1.18.2",
+						"22w19a"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.3.1%2B1.14.4-1.19/Pehkui-3.3.1%2B1.14.4-1.19.jar",
+					"version": "2VMSSb9P"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.3.1%2B1.18.2-forge/Pehkui-3.3.1%2B1.18.2-forge.jar",
+					"version": "z9luQsnx"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.3.1%2B1.18.1-forge/Pehkui-3.3.1%2B1.18.1-forge.jar",
+					"version": "VR4OPni5"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.3.1%2B1.17.1-forge/Pehkui-3.3.1%2B1.17.1-forge.jar",
+					"version": "hqx2zVGa"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.3.1%2B1.16.5-forge/Pehkui-3.3.1%2B1.16.5-forge.jar",
+					"version": "97Gt1I1O"
+				},
+				{
+					"minecraft_versions": [
+						"1.14.4",
+						"1.15.2",
+						"1.16.5",
+						"1.17.1",
+						"1.18.1",
+						"1.18.2",
+						"22w17a"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.3.0%2B1.14.4-1.19/Pehkui-3.3.0%2B1.14.4-1.19.jar",
+					"version": "wBi86WOn"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.3.0%2B1.18.2-forge/Pehkui-3.3.0%2B1.18.2-forge.jar",
+					"version": "AybsfjaP"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.3.0%2B1.18.1-forge/Pehkui-3.3.0%2B1.18.1-forge.jar",
+					"version": "VePYQ4q4"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.3.0%2B1.17.1-forge/Pehkui-3.3.0%2B1.17.1-forge.jar",
+					"version": "TIsZQadK"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.3.0%2B1.16.5-forge/Pehkui-3.3.0%2B1.16.5-forge.jar",
+					"version": "VHPFed8p"
+				},
+				{
+					"minecraft_versions": [
+						"1.14.4",
+						"1.15.2",
+						"1.16.5",
+						"1.17.1",
+						"1.18.1",
+						"1.18.2",
+						"22w14a"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.2.2%2B1.14.4-1.19/Pehkui-3.2.2%2B1.14.4-1.19.jar",
+					"version": "HUaaBNb3"
+				},
+				{
+					"minecraft_versions": [
+						"1.14.4",
+						"1.15.2",
+						"1.16.5",
+						"1.17.1",
+						"1.18.1",
+						"1.18.2",
+						"22w12a"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.2.1%2B1.14.4-1.19/Pehkui-3.2.1%2B1.14.4-1.19.jar",
+					"version": "HhGvqcIp"
+				},
+				{
+					"minecraft_versions": [
+						"1.14.4",
+						"1.15.2",
+						"1.16.5",
+						"1.17.1",
+						"1.18.1",
+						"1.18.2",
+						"22w11a"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.2.0%2B1.14.4-1.19/Pehkui-3.2.0%2B1.14.4-1.19.jar",
+					"version": "e3FnyyOz"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.2.0%2B1.18.2-forge/Pehkui-3.2.0%2B1.18.2-forge.jar",
+					"version": "NSmkDR7p"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.2.0%2B1.18.1-forge/Pehkui-3.2.0%2B1.18.1-forge.jar",
+					"version": "WB2iijy2"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.2.0%2B1.17.1-forge/Pehkui-3.2.0%2B1.17.1-forge.jar",
+					"version": "ESrmPgam"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.2.0%2B1.16.5-forge/Pehkui-3.2.0%2B1.16.5-forge.jar",
+					"version": "mXkdO3uD"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.1.0%2B1.18.1-forge/Pehkui-3.1.0%2B1.18.1-forge.jar",
+					"version": "SAPndlN1"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.1.0%2B1.17.1-forge/Pehkui-3.1.0%2B1.17.1-forge.jar",
+					"version": "KsbWX2iu"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.1.0%2B1.16.5-forge/Pehkui-3.1.0%2B1.16.5-forge-sources-dev.jar",
+					"version": "FSFtpl3b"
+				},
+				{
+					"minecraft_versions": [
+						"1.14.4",
+						"1.15.2",
+						"1.16.5",
+						"1.17.1",
+						"1.18.1"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.1.0%2B1.14.4-1.18.1/Pehkui-3.1.0%2B1.14.4-1.18.1-sources.jar",
+					"version": "8wNiKOgR"
+				},
+				{
+					"minecraft_versions": "1.18",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.0.1%2B1.18-forge/Pehkui-3.0.1%2B1.18-forge.jar",
+					"version": "zPzdrmfl"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.0.1%2B1.17.1-forge/Pehkui-3.0.1%2B1.17.1-forge.jar",
+					"version": "7ZBhcegV"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.0.1%2B1.16.5-forge/Pehkui-3.0.1%2B1.16.5-forge-sources-dev.jar",
+					"version": "m0GIYqFo"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.0.0%2B1.17.1-forge/Pehkui-3.0.0%2B1.17.1-forge.jar",
+					"version": "3cWBK9qw"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.0.0%2B1.16.5-forge/Pehkui-3.0.0%2B1.16.5-forge.jar",
+					"version": "3XjGSpws"
+				},
+				{
+					"minecraft_versions": [
+						"1.14.4",
+						"1.15.2",
+						"1.16.5",
+						"1.17.1",
+						"1.18"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/3.0.0%2B1.14.4-1.18/Pehkui-3.0.0%2B1.14.4-1.18-sources.jar",
+					"version": "sI52fskA"
+				},
+				{
+					"minecraft_versions": [
+						"1.14.4",
+						"1.15.2",
+						"1.16.5",
+						"1.17.1",
+						"1.18"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.6.0%2B1.14.4-1.18/Pehkui-2.6.0%2B1.14.4-1.18.jar",
+					"version": "LnoMm6he"
+				},
+				{
+					"minecraft_versions": [
+						"1.14.4",
+						"1.15.2",
+						"1.16.5",
+						"1.17.1",
+						"21w42a"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.5.3%2B1.14.4-1.18/Pehkui-2.5.3%2B1.14.4-1.18.jar",
+					"version": "SVt0OGM2"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.5.3%2B1.17.1-forge/Pehkui-2.5.3%2B1.17.1-forge-sources-dev.jar",
+					"version": "dglzVhIX"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.5.3%2B1.16.5-forge/Pehkui-2.5.3%2B1.16.5-forge-sources-dev.jar",
+					"version": "xLdJpnVb"
+				},
+				{
+					"minecraft_versions": [
+						"1.14.4",
+						"1.15.2",
+						"1.16.5",
+						"1.17.1",
+						"21w41a"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.5.2%2B1.14.4-1.18/Pehkui-2.5.2%2B1.14.4-1.18.jar",
+					"version": "Ekr2ZDxt"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.5.2%2B1.17.1-forge/Pehkui-2.5.2%2B1.17.1-forge-sources-dev.jar",
+					"version": "DxngfJuJ"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.5.2%2B1.16.5-forge/Pehkui-2.5.2%2B1.16.5-forge-sources-dev.jar",
+					"version": "b1keEVDt"
+				},
+				{
+					"minecraft_versions": [
+						"1.14.4",
+						"1.15.2",
+						"1.16.5",
+						"1.17.1",
+						"21w41a"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.5.1%2B1.14.4-1.18/Pehkui-2.5.1%2B1.14.4-1.18.jar",
+					"version": "bP3qVJwJ"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.5.1%2B1.17.1-forge/Pehkui-2.5.1%2B1.17.1-forge-sources-dev.jar",
+					"version": "5wJwXIMI"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.5.1%2B1.16.5-forge/Pehkui-2.5.1%2B1.16.5-forge-sources-dev.jar",
+					"version": "gRlLC81G"
+				},
+				{
+					"minecraft_versions": [
+						"1.14.4",
+						"1.15.2",
+						"1.16.5",
+						"1.17.1",
+						"21w41a"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.5.0%2B1.14.4-1.18/Pehkui-2.5.0%2B1.14.4-1.18.jar",
+					"version": "l6pY2bfj"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.5.0%2B1.17.1-forge/Pehkui-2.5.0%2B1.17.1-forge-sources-dev.jar",
+					"version": "8LJ3VID8"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.5.0%2B1.16.5-forge/Pehkui-2.5.0%2B1.16.5-forge-sources-dev.jar",
+					"version": "LW2F1INY"
+				},
+				{
+					"minecraft_versions": [
+						"1.14.4",
+						"1.15.2",
+						"1.16.5",
+						"1.17.1"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com//data/t5W7Jfwy/versions/2.4.0%2B1.14.4-1.17.1/Pehkui-2.4.0%2B1.14.4-1.17.1.jar",
+					"version": "oEhNh3HJ"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com//data/t5W7Jfwy/versions/2.4.0%2B1.16.5-forge/Pehkui-2.4.0%2B1.16.5-forge.jar",
+					"version": "UBywUz0S"
+				},
+				{
+					"minecraft_versions": [
+						"1.14.4",
+						"1.15.2",
+						"1.16.5",
+						"1.17.1"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.3.0%2B1.14.4-1.17.1/Pehkui-2.3.0%2B1.14.4-1.17.1.jar",
+					"version": "6bneSych"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.3.0%2B1.16.5-forge/Pehkui-2.3.0%2B1.16.5-forge.jar",
+					"version": "uixX7uTm"
+				},
+				{
+					"minecraft_versions": [
+						"1.14.4",
+						"1.15.2",
+						"1.16.5",
+						"1.17"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.2.1%2B1.14.4-1.17/Pehkui-2.2.1%2B1.14.4-1.17-sources.jar",
+					"version": "fL3GTx3o"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.2.1%2B1.16.5-forge/Pehkui-2.2.1%2B1.16.5-forge.jar",
+					"version": "kAplpXbg"
+				},
+				{
+					"minecraft_versions": [
+						"1.14.4",
+						"1.15.2",
+						"1.16.5",
+						"21w20a"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.2.0%2B21w20a/Pehkui-2.2.0%2B21w20a.jar",
+					"version": "qewhz2kB"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.2.0%2B1.16.5-forge/Pehkui-2.2.0%2B1.16.5-forge-sources-dev.jar",
+					"version": "P3OyDMUF"
+				},
+				{
+					"minecraft_versions": [
+						"1.14.4",
+						"1.15.2",
+						"1.16.5",
+						"21w18a"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.1.0%2B21w18a/Pehkui-2.1.0%2B21w18a.jar",
+					"version": "iMdrs7GR"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.1.0%2B1.16.5-forge/Pehkui-2.1.0%2B1.16.5-forge-sources.jar",
+					"version": "EFunm8S6"
+				},
+				{
+					"minecraft_versions": [
+						"1.14.4",
+						"1.15.2",
+						"1.16.5",
+						"21w14a"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.0.0%2B21w14a/Pehkui-2.0.0%2B21w14a.jar",
+					"version": "LGSarUA2"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/2.0.0%2B1.16.5-forge/Pehkui-2.0.0%2B1.16.5-forge.jar",
+					"version": "20hbi2WP"
+				},
+				{
+					"minecraft_versions": [
+						"1.14.4",
+						"1.15.2",
+						"1.16.5",
+						"21w14a"
+					],
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/1.10.0%2B21w14a/Pehkui-1.10.0%2B21w14a-sources.jar",
+					"version": "sDXHk7EW"
+				},
+				{
+					"minecraft_versions": [
+						"1.14.4",
+						"1.15.2",
+						"1.16.5",
+						"21w10a"
+					],
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/1.9.0%2B21w10a/Pehkui-1.9.0%2B21w10a-sources.jar",
+					"version": "JOFpwk0p"
+				},
+				{
+					"minecraft_versions": [
+						"1.14.4",
+						"1.15.2",
+						"1.16.5",
+						"21w08b"
+					],
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/1.8.0%2B21w08b/Pehkui-1.8.0%2B21w08b.jar",
+					"version": "C4bVKiVX"
+				},
+				{
+					"minecraft_versions": [
+						"1.14.4",
+						"1.15.2",
+						"1.16.5",
+						"21w03a"
+					],
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/1.7.1%2B21w03a/Pehkui-1.7.1%2B21w03a.jar",
+					"version": "uGZwG5nQ"
+				},
+				{
+					"minecraft_versions": [
+						"1.14.4",
+						"1.15.2",
+						"1.16.4",
+						"20w51a"
+					],
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/t5W7Jfwy/versions/1.7.0%2B20w51a/Pehkui-1.7.0%2B20w51a-sources.jar",
+					"version": "8iVwQyoe"
 				}
 			]
 		}
@@ -1799,6 +2010,7 @@
 			"technical"
 		],
 		"description": "Lets you change the size of most entities, shrinking them smaller or growing them larger",
+		"gallery": [],
 		"icon": "https://cdn.modrinth.com/data/t5W7Jfwy/icon.png",
 		"issues": "https://github.com/Virtuoel/Pehkui/issues",
 		"license": "MIT",
@@ -1813,6 +2025,10 @@
 		"supported_modloaders": [
 			"forgelike",
 			"fabriclike"
+		],
+		"supported_sides": [
+			"client",
+			"server"
 		],
 		"supported_versions": [
 			"1.14.4",
@@ -1848,8 +2064,8 @@
 			"23w14a",
 			"1.20-pre4",
 			"1.20-pre6",
-			"1.20.1",
 			"1.20",
+			"1.20.1",
 			"1.20.2",
 			"1.20.4"
 		]

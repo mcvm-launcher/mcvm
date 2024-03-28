@@ -4,23 +4,182 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/pimBqcCZ/player-animation-lib-fabric-1.0.2-rc1%2B1.20.4.jar",
+					"version": "pimBqcCZ"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/5NNC7aNZ/player-animation-lib-forge-1.0.2-rc1%2B1.20.4.jar",
+					"version": "5NNC7aNZ"
+				},
+				{
 					"minecraft_versions": [
-						"1.18",
-						"1.18.1",
-						"1.18.2",
-						"1.19",
-						"1.19.1",
-						"1.19.2"
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/yDqYTUaf/player-animation-lib-fabric-1.0.2-rc1%2B1.20.jar",
+					"version": "yDqYTUaf"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
 					],
 					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.0.7-forge/player-animation-lib-forge-0.0.7.jar",
-					"version": "THOZNRoE"
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/xe2EVE6q/player-animation-lib-forge-1.0.2-rc1%2B1.20.jar",
+					"version": "xe2EVE6q"
+				},
+				{
+					"minecraft_versions": [
+						"1.19.4",
+						"23w13a_or_b"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/cfkAgcOh/player-animation-lib-fabric-1.0.2%2B1.19.4.jar",
+					"version": "cfkAgcOh"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/Gy1IkfP0/player-animation-lib-forge-1.0.2%2B1.19.4.jar",
+					"version": "Gy1IkfP0"
+				},
+				{
+					"minecraft_versions": "1.19.4-rc2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/9rKZXwwG/player-animation-lib-fabric-1.0.2%2B1.19.4-rc2.jar",
+					"version": "9rKZXwwG"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/3tNyGwmk/player-animation-lib-fabric-1.0.2%2B1.19.3.jar",
+					"version": "3tNyGwmk"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/wKI7GwLC/player-animation-lib-forge-1.0.2%2B1.19.3.jar",
+					"version": "wKI7GwLC"
 				},
 				{
 					"minecraft_versions": [
 						"1.18",
 						"1.18.1",
-						"1.18.2",
+						"1.18.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/VaUxPIjt/player-animation-lib-fabric-1.0.2%2B1.18.jar",
+					"version": "VaUxPIjt"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/CPJiW7pf/player-animation-lib-forge-1.0.2%2B1.18.jar",
+					"version": "CPJiW7pf"
+				},
+				{
+					"minecraft_versions": [
 						"1.19",
 						"1.19.1",
 						"1.19.2"
@@ -29,8 +188,637 @@
 						"fabric",
 						"quilt"
 					],
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.0.7-fabric/player-animation-lib-fabric-0.0.7.jar",
-					"version": "YU7uPmWH"
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/sqgkbmQD/player-animation-lib-fabric-1.0.2.jar",
+					"version": "sqgkbmQD"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/zYLNRVUQ/player-animation-lib-forge-1.0.2.jar",
+					"version": "zYLNRVUQ"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/leZVErPu/player-animation-lib-fabric-1.0.1%2B1.19.3.jar",
+					"version": "leZVErPu"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/dmnguAHR/player-animation-lib-forge-1.0.1%2B1.19.3.jar",
+					"version": "dmnguAHR"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/B3FAWqzv/player-animation-lib-fabric-1.0.1.jar",
+					"version": "B3FAWqzv"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/wVLE9C3w/player-animation-lib-forge-1.0.1.jar",
+					"version": "wVLE9C3w"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/LnRVY9EZ/player-animation-lib-fabric-1.0.1%2B1.18.jar",
+					"version": "LnRVY9EZ"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/JMBcrkdj/player-animation-lib-forge-1.0.1%2B1.18.jar",
+					"version": "JMBcrkdj"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/R3iXDOmt/player-animation-lib-fabric-1.0.0.jar",
+					"version": "R3iXDOmt"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/OFVSYSus/player-animation-lib-forge-1.0.0.jar",
+					"version": "OFVSYSus"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/PujZb3yL/player-animation-lib-fabric-1.0.0%2B1.18.jar",
+					"version": "PujZb3yL"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/F1B0DPoK/player-animation-lib-forge-1.0.0%2B1.18.jar",
+					"version": "F1B0DPoK"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/Nk6YKTdI/player-animation-lib-fabric-1.0.0%2B1.19.3.jar",
+					"version": "Nk6YKTdI"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/JEB8v3vz/player-animation-lib-forge-1.0.0%2B1.19.3.jar",
+					"version": "JEB8v3vz"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/QKP7hs3o/player-animation-lib-fabric-1.0.0-rc2.jar",
+					"version": "QKP7hs3o"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/THm9a5TR/player-animation-lib-fabric-1.0.0-rc1%2B1.19.3.jar",
+					"version": "THm9a5TR"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/jN83StNY/player-animation-lib-forge-1.0.0-rc2.jar",
+					"version": "jN83StNY"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/pznztjvB/player-animation-lib-forge-1.0.0-rc1%2B1.19.3.jar",
+					"version": "pznztjvB"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/bAqk5kkx/player-animation-lib-fabric-1.0.0-rc1%2B1.18.jar",
+					"version": "bAqk5kkx"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/M9QPnfvs/player-animation-lib-forge-1.0.0-rc1%2B1.18.jar",
+					"version": "M9QPnfvs"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/k4EG452i/player-animation-lib-fabric-1.0.0-rc1.jar",
+					"version": "k4EG452i"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/B9uH7rGh/player-animation-lib-forge-1.0.0-rc1.jar",
+					"version": "B9uH7rGh"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/PXXGDgQV/player-animation-lib-fabric-0.4.2.jar",
+					"version": "PXXGDgQV"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/ub6CQyxN/player-animation-lib-forge-0.4.2.jar",
+					"version": "ub6CQyxN"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/AhfSG8AT/player-animation-lib-fabric-0.4.2%2B1.19.3.jar",
+					"version": "AhfSG8AT"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/x2m0VuvZ/player-animation-lib-forge-0.4.2%2B1.19.3.jar",
+					"version": "x2m0VuvZ"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/izY0Y4nM/player-animation-lib-fabric-0.4.2%2B1.18.jar",
+					"version": "izY0Y4nM"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/CHf7i67V/player-animation-lib-forge-0.4.2%2B1.18.jar",
+					"version": "CHf7i67V"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/NDPOdXWf/player-animation-lib-fabric-0.4.2-test0.jar",
+					"version": "NDPOdXWf"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/blp8J65W/player-animation-lib-forge-0.4.2-test0.jar",
+					"version": "blp8J65W"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/le78RhEJ/player-animation-lib-fabric-0.4.1%2B1.19.3.jar",
+					"version": "le78RhEJ"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/TPE7Y670/player-animation-lib-forge-0.4.1%2B1.19.3.jar",
+					"version": "TPE7Y670"
+				},
+				{
+					"minecraft_versions": "1.19.3-rc3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/OgndJbvZ/player-animation-lib-fabric-0.4.0%2B1.19.3.jar",
+					"version": "OgndJbvZ"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/4FDGNCQU/player-animation-lib-fabric-0.4.0.jar",
+					"version": "4FDGNCQU"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/T6IJcbh3/player-animation-lib-forge-0.4.0.jar",
+					"version": "T6IJcbh3"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/4PpXiiks/player-animation-lib-fabric-0.4.0%2B1.18.jar",
+					"version": "4PpXiiks"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/mQLnpnUD/player-animation-lib-forge-0.4.0%2B1.18.jar",
+					"version": "mQLnpnUD"
 				},
 				{
 					"minecraft_versions": [
@@ -41,8 +829,15 @@
 						"fabric",
 						"quilt"
 					],
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.0.7%2B1.16.5-fabric/player-animation-lib-fabric-0.0.7%2B1.16.5.jar",
-					"version": "F02Nxp0g"
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/PLDhaAs8/player-animation-lib-fabric-0.4.0%2B1.16.5.jar",
+					"version": "PLDhaAs8"
 				},
 				{
 					"minecraft_versions": [
@@ -50,23 +845,38 @@
 						"1.16.5"
 					],
 					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.0.7%2B1.16.5-forge/player-animation-lib-forge-0.0.7%2B1.16.5.jar",
-					"version": "UDV0nxPw"
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/jzuEXFAI/player-animation-lib-forge-0.4.0%2B1.16.5.jar",
+					"version": "jzuEXFAI"
 				},
 				{
 					"minecraft_versions": [
-						"1.16.4",
-						"1.16.5"
+						"1.19",
+						"1.19.1",
+						"1.19.2"
 					],
-					"modloaders": "forge",
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.0.8%2B1.16.5-forge/player-animation-lib-forge-0.0.8%2B1.16.5.jar",
-					"version": "9OlNd8ki"
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/jHIScPki/player-animation-lib-fabric-0.4.0-test4.jar",
+					"version": "jHIScPki"
 				},
 				{
 					"minecraft_versions": [
-						"1.18",
-						"1.18.1",
-						"1.18.2",
 						"1.19",
 						"1.19.1",
 						"1.19.2"
@@ -78,8 +888,336 @@
 							"value": "bendy-lib"
 						}
 					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.1.0-forge/player-animation-lib-forge-0.1.0.jar",
-					"version": "5WK3RhA3"
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/4N2FD8jo/player-animation-lib-forge-0.4.0-test4.jar",
+					"version": "4N2FD8jo"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/lOeO23c3/player-animation-lib-fabric-0.4.0-test4%2B1.18.jar",
+					"version": "lOeO23c3"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/gjfICiaj/player-animation-lib-forge-0.4.0-test4%2B1.18.jar",
+					"version": "gjfICiaj"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/tBibpiwv/player-animation-lib-fabric-0.4.0-test4%2B1.16.5.jar",
+					"version": "tBibpiwv"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/E1zFlrZp/player-animation-lib-forge-0.4.0-test4%2B1.16.5.jar",
+					"version": "E1zFlrZp"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/AgTWc5Fa/player-animation-lib-fabric-0.4.0-test3.jar",
+					"version": "AgTWc5Fa"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/lofdWspI/player-animation-lib-forge-0.4.0-test3.jar",
+					"version": "lofdWspI"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/U34MtBQJ/player-animation-lib-fabric-0.4.0-test1.jar",
+					"version": "U34MtBQJ"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/YMQRB7Wh/player-animation-lib-forge-0.4.0-test1.jar",
+					"version": "YMQRB7Wh"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/w2N1QNQH/player-animation-lib-fabric-0.4.0-test1%2B1.18.jar",
+					"version": "w2N1QNQH"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/s1Gs1RRk/player-animation-lib-forge-0.4.0-test1%2B1.18.jar",
+					"version": "s1Gs1RRk"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/aaz6UsqG/player-animation-lib-fabric-0.4.0-test1%2B1.16.5.jar",
+					"version": "aaz6UsqG"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/JnvSnbAn/player-animation-lib-forge-0.4.0-test1%2B1.16.5.jar",
+					"version": "JnvSnbAn"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/80yvONMg/player-animation-lib-fabric-0.4.0-test0%2B1.18.jar",
+					"version": "80yvONMg"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/4zF2vOhz/player-animation-lib-fabric-0.4.0-test0.jar",
+					"version": "4zF2vOhz"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/HJVnaNVl/player-animation-lib-forge-0.4.0-test0%2B1.18.jar",
+					"version": "HJVnaNVl"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/J9WIErYr/player-animation-lib-forge-0.4.0-test0.jar",
+					"version": "J9WIErYr"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/ncM3Ynss/player-animation-lib-fabric-0.4.0-test0%2B1.16.5.jar",
+					"version": "ncM3Ynss"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/76L16qTG/player-animation-lib-forge-0.4.0-test0%2B1.16.5.jar",
+					"version": "76L16qTG"
 				},
 				{
 					"minecraft_versions": [
@@ -100,41 +1238,9 @@
 							"value": "bendy-lib"
 						}
 					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.1.0-fabric/player-animation-lib-fabric-0.1.0.jar",
-					"version": "R4N5ypa8"
-				},
-				{
-					"minecraft_versions": [
-						"1.16.4",
-						"1.16.5"
-					],
-					"modloaders": "forge",
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.1.0%2B1.16.5-forge/player-animation-lib-forge-0.1.0%2B1.16.5.jar",
-					"version": "eOvttFV4"
-				},
-				{
-					"minecraft_versions": [
-						"1.16.4",
-						"1.16.5"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.1.0%2B1.16.5-fabric/player-animation-lib-fabric-0.1.0%2B1.16.5.jar",
-					"version": "pOowsj5K"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/2gqws5Cn/player-animation-lib-fabric-0.3.5.jar",
+					"version": "2gqws5Cn"
 				},
 				{
 					"minecraft_versions": [
@@ -152,127 +1258,9 @@
 							"value": "bendy-lib"
 						}
 					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.2.0-test0-forge/player-animation-lib-forge-0.2.0-test0.jar",
-					"version": "Hpo6Zg71"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1",
-						"1.18.2",
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.2.0-test0-fabric/player-animation-lib-fabric-0.2.0-test0.jar",
-					"version": "9oJv3LkS"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1",
-						"1.18.2",
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": "forge",
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.2.0-test1-forge/player-animation-lib-forge-0.2.0-test1.jar",
-					"version": "nOiIFWTh"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1",
-						"1.18.2",
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.2.0-test1-fabric/player-animation-lib-fabric-0.2.0-test1.jar",
-					"version": "osHH9s8H"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1",
-						"1.18.2",
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": "forge",
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.2.0-test2-forge/player-animation-lib-forge-0.2.0-test2.jar",
-					"version": "76BApM7H"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1",
-						"1.18.2",
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.2.0-test2-fabric/player-animation-lib-fabric-0.2.0-test2.jar",
-					"version": "Czzt9eKT"
-				},
-				{
-					"minecraft_versions": [
-						"1.16.4",
-						"1.16.5"
-					],
-					"modloaders": "forge",
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.2.0-test2%2B1.16.5-forge/player-animation-lib-forge-0.2.0-test2%2B1.16.5.jar",
-					"version": "TdeQTpS0"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/9iFJBTMG/player-animation-lib-forge-0.3.5.jar",
+					"version": "9iFJBTMG"
 				},
 				{
 					"minecraft_versions": [
@@ -289,17 +1277,14 @@
 							"value": "bendy-lib"
 						}
 					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.2.0-test2%2B1.16.5-fabric/player-animation-lib-fabric-0.2.0-test2%2B1.16.5.jar",
-					"version": "jJe1lq0j"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/J5RIGaS3/player-animation-lib-fabric-0.3.5%2B1.16.5.jar",
+					"version": "J5RIGaS3"
 				},
 				{
 					"minecraft_versions": [
-						"1.18",
-						"1.18.1",
-						"1.18.2",
-						"1.19",
-						"1.19.1",
-						"1.19.2"
+						"1.16.4",
+						"1.16.5"
 					],
 					"modloaders": "forge",
 					"relations": {
@@ -308,8 +1293,44 @@
 							"value": "bendy-lib"
 						}
 					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.2.0-test3-forge/player-animation-lib-forge-0.2.0-test3.jar",
-					"version": "CSbuU2Gq"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/RYYvz0bV/player-animation-lib-forge-0.3.5%2B1.16.5.jar",
+					"version": "RYYvz0bV"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/u2YZN5qk/player-animation-lib-fabric-0.3.4%2B1.16.5.jar",
+					"version": "u2YZN5qk"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/aacwsKxg/player-animation-lib-forge-0.3.4%2B1.16.5.jar",
+					"version": "aacwsKxg"
 				},
 				{
 					"minecraft_versions": [
@@ -330,41 +1351,9 @@
 							"value": "bendy-lib"
 						}
 					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.2.0-test3-fabric/player-animation-lib-fabric-0.2.0-test3.jar",
-					"version": "pUKhhKMt"
-				},
-				{
-					"minecraft_versions": [
-						"1.16.4",
-						"1.16.5"
-					],
-					"modloaders": "forge",
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.2.0-test3%2B1.16.5-forge/player-animation-lib-forge-0.2.0-test3%2B1.16.5.jar",
-					"version": "GJMlTjP2"
-				},
-				{
-					"minecraft_versions": [
-						"1.16.4",
-						"1.16.5"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.2.0-test3%2B1.16.5-fabric/player-animation-lib-fabric-0.2.0-test3%2B1.16.5.jar",
-					"version": "wTKnVu2g"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/AH5brgNg/player-animation-lib-fabric-0.3.4.jar",
+					"version": "AH5brgNg"
 				},
 				{
 					"minecraft_versions": [
@@ -382,376 +1371,7 @@
 							"value": "bendy-lib"
 						}
 					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.2.0-forge/player-animation-lib-forge-0.2.0.jar",
-					"version": "Cq1UTXSp"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1",
-						"1.18.2",
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.2.0-fabric/player-animation-lib-fabric-0.2.0.jar",
-					"version": "pY9pqJiM"
-				},
-				{
-					"minecraft_versions": [
-						"1.16.4",
-						"1.16.5"
-					],
-					"modloaders": "forge",
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.2.0%2B1.16.5-forge/player-animation-lib-forge-0.2.0%2B1.16.5.jar",
-					"version": "6iF3Ls0k"
-				},
-				{
-					"minecraft_versions": [
-						"1.16.4",
-						"1.16.5"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.2.0%2B1.16.5-fabric/player-animation-lib-fabric-0.2.0%2B1.16.5.jar",
-					"version": "pRXTNKwW"
-				},
-				{
-					"minecraft_versions": [
-						"1.16.4",
-						"1.16.5"
-					],
-					"modloaders": "forge",
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/fPXFzjec/player-animation-lib-forge-0.3.0%2B1.16.5.jar",
-					"version": "fPXFzjec"
-				},
-				{
-					"minecraft_versions": [
-						"1.16.4",
-						"1.16.5"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/bwPxeXJu/player-animation-lib-fabric-0.3.0%2B1.16.5.jar",
-					"version": "bwPxeXJu"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1",
-						"1.18.2",
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": "forge",
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/cQT9frKV/player-animation-lib-forge-0.3.0.jar",
-					"version": "cQT9frKV"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1",
-						"1.18.2",
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/pMH5RdCh/player-animation-lib-fabric-0.3.0.jar",
-					"version": "pMH5RdCh"
-				},
-				{
-					"minecraft_versions": [
-						"1.16.4",
-						"1.16.5"
-					],
-					"modloaders": "forge",
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/cEAuVfqv/player-animation-lib-forge-0.3.1%2B1.16.5.jar",
-					"version": "cEAuVfqv"
-				},
-				{
-					"minecraft_versions": [
-						"1.16.4",
-						"1.16.5"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/J6QSvhtw/player-animation-lib-fabric-0.3.1%2B1.16.5.jar",
-					"version": "J6QSvhtw"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1",
-						"1.18.2",
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": "forge",
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/WbrEEJ3N/player-animation-lib-forge-0.3.1.jar",
-					"version": "WbrEEJ3N"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1",
-						"1.18.2",
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/cdx0himd/player-animation-lib-fabric-0.3.1.jar",
-					"version": "cdx0himd"
-				},
-				{
-					"minecraft_versions": [
-						"1.16.4",
-						"1.16.5"
-					],
-					"modloaders": "forge",
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/U09iTtvu/player-animation-lib-forge-0.3.2%2B1.16.5.jar",
-					"version": "U09iTtvu"
-				},
-				{
-					"minecraft_versions": [
-						"1.16.4",
-						"1.16.5"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/3mSZprpI/player-animation-lib-fabric-0.3.2%2B1.16.5.jar",
-					"version": "3mSZprpI"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1",
-						"1.18.2",
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": "forge",
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/WAX5DL1e/player-animation-lib-forge-0.3.2.jar",
-					"version": "WAX5DL1e"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1",
-						"1.18.2",
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/aesl8Jxi/player-animation-lib-fabric-0.3.2.jar",
-					"version": "aesl8Jxi"
-				},
-				{
-					"minecraft_versions": [
-						"1.16.4",
-						"1.16.5"
-					],
-					"modloaders": "forge",
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/32VUPjib/player-animation-lib-forge-0.3.3%2B1.16.5.jar",
-					"version": "32VUPjib"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1",
-						"1.18.2",
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": "forge",
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/18n5aQLY/player-animation-lib-forge-0.3.3.jar",
-					"version": "18n5aQLY"
-				},
-				{
-					"minecraft_versions": [
-						"1.16.4",
-						"1.16.5"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/CIiQhJn2/player-animation-lib-fabric-0.3.3%2B1.16.5.jar",
-					"version": "CIiQhJn2"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1",
-						"1.18.2",
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/qCZpilj8/player-animation-lib-fabric-0.3.3.jar",
-					"version": "qCZpilj8"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1",
-						"1.18.2",
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": "forge",
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
+					"stability": "stable",
 					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/Qd4FjY04/player-animation-lib-forge-0.3.4.jar",
 					"version": "Qd4FjY04"
 				},
@@ -774,23 +1394,9 @@
 							"value": "bendy-lib"
 						}
 					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/AH5brgNg/player-animation-lib-fabric-0.3.4.jar",
-					"version": "AH5brgNg"
-				},
-				{
-					"minecraft_versions": [
-						"1.16.4",
-						"1.16.5"
-					],
-					"modloaders": "forge",
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/aacwsKxg/player-animation-lib-forge-0.3.4%2B1.16.5.jar",
-					"version": "aacwsKxg"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/qCZpilj8/player-animation-lib-fabric-0.3.3.jar",
+					"version": "qCZpilj8"
 				},
 				{
 					"minecraft_versions": [
@@ -807,41 +1413,9 @@
 							"value": "bendy-lib"
 						}
 					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/u2YZN5qk/player-animation-lib-fabric-0.3.4%2B1.16.5.jar",
-					"version": "u2YZN5qk"
-				},
-				{
-					"minecraft_versions": [
-						"1.16.4",
-						"1.16.5"
-					],
-					"modloaders": "forge",
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/RYYvz0bV/player-animation-lib-forge-0.3.5%2B1.16.5.jar",
-					"version": "RYYvz0bV"
-				},
-				{
-					"minecraft_versions": [
-						"1.16.4",
-						"1.16.5"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/J5RIGaS3/player-animation-lib-fabric-0.3.5%2B1.16.5.jar",
-					"version": "J5RIGaS3"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/CIiQhJn2/player-animation-lib-fabric-0.3.3%2B1.16.5.jar",
+					"version": "CIiQhJn2"
 				},
 				{
 					"minecraft_versions": [
@@ -859,8 +1433,25 @@
 							"value": "bendy-lib"
 						}
 					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/9iFJBTMG/player-animation-lib-forge-0.3.5.jar",
-					"version": "9iFJBTMG"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/18n5aQLY/player-animation-lib-forge-0.3.3.jar",
+					"version": "18n5aQLY"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/32VUPjib/player-animation-lib-forge-0.3.3%2B1.16.5.jar",
+					"version": "32VUPjib"
 				},
 				{
 					"minecraft_versions": [
@@ -881,44 +1472,15 @@
 							"value": "bendy-lib"
 						}
 					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/2gqws5Cn/player-animation-lib-fabric-0.3.5.jar",
-					"version": "2gqws5Cn"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/aesl8Jxi/player-animation-lib-fabric-0.3.2.jar",
+					"version": "aesl8Jxi"
 				},
 				{
 					"minecraft_versions": [
-						"1.16.4",
-						"1.16.5"
-					],
-					"modloaders": "forge",
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/76L16qTG/player-animation-lib-forge-0.4.0-test0%2B1.16.5.jar",
-					"version": "76L16qTG"
-				},
-				{
-					"minecraft_versions": [
-						"1.16.4",
-						"1.16.5"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/ncM3Ynss/player-animation-lib-fabric-0.4.0-test0%2B1.16.5.jar",
-					"version": "ncM3Ynss"
-				},
-				{
-					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2",
 						"1.19",
 						"1.19.1",
 						"1.19.2"
@@ -930,77 +1492,9 @@
 							"value": "bendy-lib"
 						}
 					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/J9WIErYr/player-animation-lib-forge-0.4.0-test0.jar",
-					"version": "J9WIErYr"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1",
-						"1.18.2"
-					],
-					"modloaders": "forge",
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/HJVnaNVl/player-animation-lib-forge-0.4.0-test0%2B1.18.jar",
-					"version": "HJVnaNVl"
-				},
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/4zF2vOhz/player-animation-lib-fabric-0.4.0-test0.jar",
-					"version": "4zF2vOhz"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1",
-						"1.18.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/80yvONMg/player-animation-lib-fabric-0.4.0-test0%2B1.18.jar",
-					"version": "80yvONMg"
-				},
-				{
-					"minecraft_versions": [
-						"1.16.4",
-						"1.16.5"
-					],
-					"modloaders": "forge",
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/JnvSnbAn/player-animation-lib-forge-0.4.0-test1%2B1.16.5.jar",
-					"version": "JnvSnbAn"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/WAX5DL1e/player-animation-lib-forge-0.3.2.jar",
+					"version": "WAX5DL1e"
 				},
 				{
 					"minecraft_versions": [
@@ -1017,113 +1511,9 @@
 							"value": "bendy-lib"
 						}
 					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/aaz6UsqG/player-animation-lib-fabric-0.4.0-test1%2B1.16.5.jar",
-					"version": "aaz6UsqG"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1",
-						"1.18.2"
-					],
-					"modloaders": "forge",
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/s1Gs1RRk/player-animation-lib-forge-0.4.0-test1%2B1.18.jar",
-					"version": "s1Gs1RRk"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1",
-						"1.18.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/w2N1QNQH/player-animation-lib-fabric-0.4.0-test1%2B1.18.jar",
-					"version": "w2N1QNQH"
-				},
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": "forge",
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/YMQRB7Wh/player-animation-lib-forge-0.4.0-test1.jar",
-					"version": "YMQRB7Wh"
-				},
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/U34MtBQJ/player-animation-lib-fabric-0.4.0-test1.jar",
-					"version": "U34MtBQJ"
-				},
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": "forge",
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/lofdWspI/player-animation-lib-forge-0.4.0-test3.jar",
-					"version": "lofdWspI"
-				},
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/AgTWc5Fa/player-animation-lib-fabric-0.4.0-test3.jar",
-					"version": "AgTWc5Fa"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/3mSZprpI/player-animation-lib-fabric-0.3.2%2B1.16.5.jar",
+					"version": "3mSZprpI"
 				},
 				{
 					"minecraft_versions": [
@@ -1137,8 +1527,52 @@
 							"value": "bendy-lib"
 						}
 					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/E1zFlrZp/player-animation-lib-forge-0.4.0-test4%2B1.16.5.jar",
-					"version": "E1zFlrZp"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/U09iTtvu/player-animation-lib-forge-0.3.2%2B1.16.5.jar",
+					"version": "U09iTtvu"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2",
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/cdx0himd/player-animation-lib-fabric-0.3.1.jar",
+					"version": "cdx0himd"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2",
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/WbrEEJ3N/player-animation-lib-forge-0.3.1.jar",
+					"version": "WbrEEJ3N"
 				},
 				{
 					"minecraft_versions": [
@@ -1155,78 +1589,9 @@
 							"value": "bendy-lib"
 						}
 					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/tBibpiwv/player-animation-lib-fabric-0.4.0-test4%2B1.16.5.jar",
-					"version": "tBibpiwv"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1",
-						"1.18.2"
-					],
-					"modloaders": "forge",
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/gjfICiaj/player-animation-lib-forge-0.4.0-test4%2B1.18.jar",
-					"version": "gjfICiaj"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1",
-						"1.18.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/lOeO23c3/player-animation-lib-fabric-0.4.0-test4%2B1.18.jar",
-					"version": "lOeO23c3"
-				},
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": "forge",
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/4N2FD8jo/player-animation-lib-forge-0.4.0-test4.jar",
-					"version": "4N2FD8jo"
-				},
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/jHIScPki/player-animation-lib-fabric-0.4.0-test4.jar",
-					"version": "jHIScPki"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/J6QSvhtw/player-animation-lib-fabric-0.3.1%2B1.16.5.jar",
+					"version": "J6QSvhtw"
 				},
 				{
 					"minecraft_versions": [
@@ -1240,8 +1605,52 @@
 							"value": "bendy-lib"
 						}
 					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/jzuEXFAI/player-animation-lib-forge-0.4.0%2B1.16.5.jar",
-					"version": "jzuEXFAI"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/cEAuVfqv/player-animation-lib-forge-0.3.1%2B1.16.5.jar",
+					"version": "cEAuVfqv"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2",
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/pMH5RdCh/player-animation-lib-fabric-0.3.0.jar",
+					"version": "pMH5RdCh"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2",
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/cQT9frKV/player-animation-lib-forge-0.3.0.jar",
+					"version": "cQT9frKV"
 				},
 				{
 					"minecraft_versions": [
@@ -1258,46 +1667,89 @@
 							"value": "bendy-lib"
 						}
 					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/PLDhaAs8/player-animation-lib-fabric-0.4.0%2B1.16.5.jar",
-					"version": "PLDhaAs8"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/bwPxeXJu/player-animation-lib-fabric-0.3.0%2B1.16.5.jar",
+					"version": "bwPxeXJu"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/fPXFzjec/player-animation-lib-forge-0.3.0%2B1.16.5.jar",
+					"version": "fPXFzjec"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.2.0%2B1.16.5-fabric/player-animation-lib-fabric-0.2.0%2B1.16.5.jar",
+					"version": "pRXTNKwW"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"invert": false,
+							"value": "bendy-lib"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.2.0%2B1.16.5-forge/player-animation-lib-forge-0.2.0%2B1.16.5.jar",
+					"version": "6iF3Ls0k"
 				},
 				{
 					"minecraft_versions": [
 						"1.18",
 						"1.18.1",
-						"1.18.2"
+						"1.18.2",
+						"1.19",
+						"1.19.1",
+						"1.19.2"
 					],
-					"modloaders": "forge",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
 					"relations": {
 						"recommendations": {
 							"invert": false,
 							"value": "bendy-lib"
 						}
 					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/mQLnpnUD/player-animation-lib-forge-0.4.0%2B1.18.jar",
-					"version": "mQLnpnUD"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.2.0-fabric/player-animation-lib-fabric-0.2.0.jar",
+					"version": "pY9pqJiM"
 				},
 				{
 					"minecraft_versions": [
 						"1.18",
 						"1.18.1",
-						"1.18.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/4PpXiiks/player-animation-lib-fabric-0.4.0%2B1.18.jar",
-					"version": "4PpXiiks"
-				},
-				{
-					"minecraft_versions": [
+						"1.18.2",
 						"1.19",
 						"1.19.1",
 						"1.19.2"
@@ -1309,14 +1761,14 @@
 							"value": "bendy-lib"
 						}
 					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/T6IJcbh3/player-animation-lib-forge-0.4.0.jar",
-					"version": "T6IJcbh3"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.2.0-forge/player-animation-lib-forge-0.2.0.jar",
+					"version": "Cq1UTXSp"
 				},
 				{
 					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
+						"1.16.4",
+						"1.16.5"
 					],
 					"modloaders": [
 						"fabric",
@@ -1328,56 +1780,14 @@
 							"value": "bendy-lib"
 						}
 					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/4FDGNCQU/player-animation-lib-fabric-0.4.0.jar",
-					"version": "4FDGNCQU"
-				},
-				{
-					"minecraft_versions": "1.19.3-rc3",
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/OgndJbvZ/player-animation-lib-fabric-0.4.0%2B1.19.3.jar",
-					"version": "OgndJbvZ"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": "forge",
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/TPE7Y670/player-animation-lib-forge-0.4.1%2B1.19.3.jar",
-					"version": "TPE7Y670"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/le78RhEJ/player-animation-lib-fabric-0.4.1%2B1.19.3.jar",
-					"version": "le78RhEJ"
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.2.0-test3%2B1.16.5-fabric/player-animation-lib-fabric-0.2.0-test3%2B1.16.5.jar",
+					"version": "wTKnVu2g"
 				},
 				{
 					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
+						"1.16.4",
+						"1.16.5"
 					],
 					"modloaders": "forge",
 					"relations": {
@@ -1386,92 +1796,38 @@
 							"value": "bendy-lib"
 						}
 					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/blp8J65W/player-animation-lib-forge-0.4.2-test0.jar",
-					"version": "blp8J65W"
-				},
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/NDPOdXWf/player-animation-lib-fabric-0.4.2-test0.jar",
-					"version": "NDPOdXWf"
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.2.0-test3%2B1.16.5-forge/player-animation-lib-forge-0.2.0-test3%2B1.16.5.jar",
+					"version": "GJMlTjP2"
 				},
 				{
 					"minecraft_versions": [
 						"1.18",
 						"1.18.1",
-						"1.18.2"
+						"1.18.2",
+						"1.19",
+						"1.19.1",
+						"1.19.2"
 					],
-					"modloaders": "forge",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
 					"relations": {
 						"recommendations": {
 							"invert": false,
 							"value": "bendy-lib"
 						}
 					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/CHf7i67V/player-animation-lib-forge-0.4.2%2B1.18.jar",
-					"version": "CHf7i67V"
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.2.0-test3-fabric/player-animation-lib-fabric-0.2.0-test3.jar",
+					"version": "pUKhhKMt"
 				},
 				{
 					"minecraft_versions": [
 						"1.18",
 						"1.18.1",
-						"1.18.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/izY0Y4nM/player-animation-lib-fabric-0.4.2%2B1.18.jar",
-					"version": "izY0Y4nM"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": "forge",
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/x2m0VuvZ/player-animation-lib-forge-0.4.2%2B1.19.3.jar",
-					"version": "x2m0VuvZ"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/AhfSG8AT/player-animation-lib-fabric-0.4.2%2B1.19.3.jar",
-					"version": "AhfSG8AT"
-				},
-				{
-					"minecraft_versions": [
+						"1.18.2",
 						"1.19",
 						"1.19.1",
 						"1.19.2"
@@ -1483,14 +1839,14 @@
 							"value": "bendy-lib"
 						}
 					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/ub6CQyxN/player-animation-lib-forge-0.4.2.jar",
-					"version": "ub6CQyxN"
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.2.0-test3-forge/player-animation-lib-forge-0.2.0-test3.jar",
+					"version": "CSbuU2Gq"
 				},
 				{
 					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
+						"1.16.4",
+						"1.16.5"
 					],
 					"modloaders": [
 						"fabric",
@@ -1502,14 +1858,14 @@
 							"value": "bendy-lib"
 						}
 					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/PXXGDgQV/player-animation-lib-fabric-0.4.2.jar",
-					"version": "PXXGDgQV"
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.2.0-test2%2B1.16.5-fabric/player-animation-lib-fabric-0.2.0-test2%2B1.16.5.jar",
+					"version": "jJe1lq0j"
 				},
 				{
 					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
+						"1.16.4",
+						"1.16.5"
 					],
 					"modloaders": "forge",
 					"relations": {
@@ -1518,77 +1874,38 @@
 							"value": "bendy-lib"
 						}
 					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/B9uH7rGh/player-animation-lib-forge-1.0.0-rc1.jar",
-					"version": "B9uH7rGh"
-				},
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/k4EG452i/player-animation-lib-fabric-1.0.0-rc1.jar",
-					"version": "k4EG452i"
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.2.0-test2%2B1.16.5-forge/player-animation-lib-forge-0.2.0-test2%2B1.16.5.jar",
+					"version": "TdeQTpS0"
 				},
 				{
 					"minecraft_versions": [
 						"1.18",
 						"1.18.1",
-						"1.18.2"
+						"1.18.2",
+						"1.19",
+						"1.19.1",
+						"1.19.2"
 					],
-					"modloaders": "forge",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
 					"relations": {
 						"recommendations": {
 							"invert": false,
 							"value": "bendy-lib"
 						}
 					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/M9QPnfvs/player-animation-lib-forge-1.0.0-rc1%2B1.18.jar",
-					"version": "M9QPnfvs"
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.2.0-test2-fabric/player-animation-lib-fabric-0.2.0-test2.jar",
+					"version": "Czzt9eKT"
 				},
 				{
 					"minecraft_versions": [
 						"1.18",
 						"1.18.1",
-						"1.18.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/bAqk5kkx/player-animation-lib-fabric-1.0.0-rc1%2B1.18.jar",
-					"version": "bAqk5kkx"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": "forge",
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/pznztjvB/player-animation-lib-forge-1.0.0-rc1%2B1.19.3.jar",
-					"version": "pznztjvB"
-				},
-				{
-					"minecraft_versions": [
+						"1.18.2",
 						"1.19",
 						"1.19.1",
 						"1.19.2"
@@ -1600,107 +1917,38 @@
 							"value": "bendy-lib"
 						}
 					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/jN83StNY/player-animation-lib-forge-1.0.0-rc2.jar",
-					"version": "jN83StNY"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/THm9a5TR/player-animation-lib-fabric-1.0.0-rc1%2B1.19.3.jar",
-					"version": "THm9a5TR"
-				},
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/QKP7hs3o/player-animation-lib-fabric-1.0.0-rc2.jar",
-					"version": "QKP7hs3o"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": "forge",
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/JEB8v3vz/player-animation-lib-forge-1.0.0%2B1.19.3.jar",
-					"version": "JEB8v3vz"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/Nk6YKTdI/player-animation-lib-fabric-1.0.0%2B1.19.3.jar",
-					"version": "Nk6YKTdI"
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.2.0-test2-forge/player-animation-lib-forge-0.2.0-test2.jar",
+					"version": "76BApM7H"
 				},
 				{
 					"minecraft_versions": [
 						"1.18",
 						"1.18.1",
-						"1.18.2"
+						"1.18.2",
+						"1.19",
+						"1.19.1",
+						"1.19.2"
 					],
-					"modloaders": "forge",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
 					"relations": {
 						"recommendations": {
 							"invert": false,
 							"value": "bendy-lib"
 						}
 					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/F1B0DPoK/player-animation-lib-forge-1.0.0%2B1.18.jar",
-					"version": "F1B0DPoK"
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.2.0-test1-fabric/player-animation-lib-fabric-0.2.0-test1.jar",
+					"version": "osHH9s8H"
 				},
 				{
 					"minecraft_versions": [
 						"1.18",
 						"1.18.1",
-						"1.18.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/PujZb3yL/player-animation-lib-fabric-1.0.0%2B1.18.jar",
-					"version": "PujZb3yL"
-				},
-				{
-					"minecraft_versions": [
+						"1.18.2",
 						"1.19",
 						"1.19.1",
 						"1.19.2"
@@ -1712,65 +1960,38 @@
 							"value": "bendy-lib"
 						}
 					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/OFVSYSus/player-animation-lib-forge-1.0.0.jar",
-					"version": "OFVSYSus"
-				},
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/R3iXDOmt/player-animation-lib-fabric-1.0.0.jar",
-					"version": "R3iXDOmt"
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.2.0-test1-forge/player-animation-lib-forge-0.2.0-test1.jar",
+					"version": "nOiIFWTh"
 				},
 				{
 					"minecraft_versions": [
 						"1.18",
 						"1.18.1",
-						"1.18.2"
+						"1.18.2",
+						"1.19",
+						"1.19.1",
+						"1.19.2"
 					],
-					"modloaders": "forge",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
 					"relations": {
 						"recommendations": {
 							"invert": false,
 							"value": "bendy-lib"
 						}
 					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/JMBcrkdj/player-animation-lib-forge-1.0.1%2B1.18.jar",
-					"version": "JMBcrkdj"
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.2.0-test0-fabric/player-animation-lib-fabric-0.2.0-test0.jar",
+					"version": "9oJv3LkS"
 				},
 				{
 					"minecraft_versions": [
 						"1.18",
 						"1.18.1",
-						"1.18.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/LnRVY9EZ/player-animation-lib-fabric-1.0.1%2B1.18.jar",
-					"version": "LnRVY9EZ"
-				},
-				{
-					"minecraft_versions": [
+						"1.18.2",
 						"1.19",
 						"1.19.1",
 						"1.19.2"
@@ -1782,14 +2003,14 @@
 							"value": "bendy-lib"
 						}
 					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/wVLE9C3w/player-animation-lib-forge-1.0.1.jar",
-					"version": "wVLE9C3w"
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.2.0-test0-forge/player-animation-lib-forge-0.2.0-test0.jar",
+					"version": "Hpo6Zg71"
 				},
 				{
 					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
+						"1.16.4",
+						"1.16.5"
 					],
 					"modloaders": [
 						"fabric",
@@ -1801,41 +2022,14 @@
 							"value": "bendy-lib"
 						}
 					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/B3FAWqzv/player-animation-lib-fabric-1.0.1.jar",
-					"version": "B3FAWqzv"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": "forge",
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/dmnguAHR/player-animation-lib-forge-1.0.1%2B1.19.3.jar",
-					"version": "dmnguAHR"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/leZVErPu/player-animation-lib-fabric-1.0.1%2B1.19.3.jar",
-					"version": "leZVErPu"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.1.0%2B1.16.5-fabric/player-animation-lib-fabric-0.1.0%2B1.16.5.jar",
+					"version": "pOowsj5K"
 				},
 				{
 					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
+						"1.16.4",
+						"1.16.5"
 					],
 					"modloaders": "forge",
 					"relations": {
@@ -1844,139 +2038,41 @@
 							"value": "bendy-lib"
 						}
 					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/zYLNRVUQ/player-animation-lib-forge-1.0.2.jar",
-					"version": "zYLNRVUQ"
-				},
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/sqgkbmQD/player-animation-lib-fabric-1.0.2.jar",
-					"version": "sqgkbmQD"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.1.0%2B1.16.5-forge/player-animation-lib-forge-0.1.0%2B1.16.5.jar",
+					"version": "eOvttFV4"
 				},
 				{
 					"minecraft_versions": [
 						"1.18",
 						"1.18.1",
-						"1.18.2"
+						"1.18.2",
+						"1.19",
+						"1.19.1",
+						"1.19.2"
 					],
-					"modloaders": "forge",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
 					"relations": {
 						"recommendations": {
 							"invert": false,
 							"value": "bendy-lib"
 						}
 					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/CPJiW7pf/player-animation-lib-forge-1.0.2%2B1.18.jar",
-					"version": "CPJiW7pf"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.1.0-fabric/player-animation-lib-fabric-0.1.0.jar",
+					"version": "R4N5ypa8"
 				},
 				{
 					"minecraft_versions": [
 						"1.18",
 						"1.18.1",
-						"1.18.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/VaUxPIjt/player-animation-lib-fabric-1.0.2%2B1.18.jar",
-					"version": "VaUxPIjt"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": "forge",
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/wKI7GwLC/player-animation-lib-forge-1.0.2%2B1.19.3.jar",
-					"version": "wKI7GwLC"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/3tNyGwmk/player-animation-lib-fabric-1.0.2%2B1.19.3.jar",
-					"version": "3tNyGwmk"
-				},
-				{
-					"minecraft_versions": "1.19.4-rc2",
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/9rKZXwwG/player-animation-lib-fabric-1.0.2%2B1.19.4-rc2.jar",
-					"version": "9rKZXwwG"
-				},
-				{
-					"minecraft_versions": "1.19.4",
-					"modloaders": "forge",
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/Gy1IkfP0/player-animation-lib-forge-1.0.2%2B1.19.4.jar",
-					"version": "Gy1IkfP0"
-				},
-				{
-					"minecraft_versions": [
-						"1.19.4",
-						"23w13a_or_b"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/cfkAgcOh/player-animation-lib-fabric-1.0.2%2B1.19.4.jar",
-					"version": "cfkAgcOh"
-				},
-				{
-					"minecraft_versions": [
-						"1.20",
-						"1.20.1"
+						"1.18.2",
+						"1.19",
+						"1.19.1",
+						"1.19.2"
 					],
 					"modloaders": "forge",
 					"relations": {
@@ -1985,50 +2081,73 @@
 							"value": "bendy-lib"
 						}
 					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/xe2EVE6q/player-animation-lib-forge-1.0.2-rc1%2B1.20.jar",
-					"version": "xe2EVE6q"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.1.0-forge/player-animation-lib-forge-0.1.0.jar",
+					"version": "5WK3RhA3"
 				},
 				{
 					"minecraft_versions": [
-						"1.20",
-						"1.20.1"
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.0.8%2B1.16.5-forge/player-animation-lib-forge-0.0.8%2B1.16.5.jar",
+					"version": "9OlNd8ki"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.0.7%2B1.16.5-forge/player-animation-lib-forge-0.0.7%2B1.16.5.jar",
+					"version": "UDV0nxPw"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.4",
+						"1.16.5"
 					],
 					"modloaders": [
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/yDqYTUaf/player-animation-lib-fabric-1.0.2-rc1%2B1.20.jar",
-					"version": "yDqYTUaf"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.0.7%2B1.16.5-fabric/player-animation-lib-fabric-0.0.7%2B1.16.5.jar",
+					"version": "F02Nxp0g"
 				},
 				{
-					"minecraft_versions": "1.20.4",
-					"modloaders": "neoforged",
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/5NNC7aNZ/player-animation-lib-forge-1.0.2-rc1%2B1.20.4.jar",
-					"version": "5NNC7aNZ"
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2",
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.0.7-fabric/player-animation-lib-fabric-0.0.7.jar",
+					"version": "YU7uPmWH"
 				},
 				{
-					"minecraft_versions": "1.20.4",
-					"modloaders": "fabric",
-					"relations": {
-						"recommendations": {
-							"invert": false,
-							"value": "bendy-lib"
-						}
-					},
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/pimBqcCZ/player-animation-lib-fabric-1.0.2-rc1%2B1.20.4.jar",
-					"version": "pimBqcCZ"
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2",
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.0.7-forge/player-animation-lib-forge-0.0.7.jar",
+					"version": "THOZNRoE"
 				}
 			]
 		}
@@ -2042,6 +2161,7 @@
 			"technical"
 		],
 		"description": "animate the player",
+		"gallery": [],
 		"issues": "https://github.com/KosmX/fabricPlayerAnimation/issues",
 		"license": "MIT",
 		"name": "playerAnimator",
@@ -2055,15 +2175,19 @@
 		"supported_modloaders": [
 			"forgelike"
 		],
+		"supported_sides": [
+			"client",
+			"server"
+		],
 		"supported_versions": [
+			"1.16.4",
+			"1.16.5",
 			"1.18",
 			"1.18.1",
 			"1.18.2",
 			"1.19",
 			"1.19.1",
 			"1.19.2",
-			"1.16.4",
-			"1.16.5",
 			"1.19.3-rc3",
 			"1.19.3",
 			"1.19.4-rc2",

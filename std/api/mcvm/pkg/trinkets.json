@@ -4,150 +4,21 @@
 			"kind": "mod",
 			"versions": [
 				{
-					"minecraft_versions": "1.17-rc2",
+					"minecraft_versions": "1.20.4",
 					"modloaders": "fabric",
-					"url": "https://cdn.modrinth.com/data/5aaWibi9/versions/3.0.0/trinkets-3.0.0.jar",
-					"version": "70Ajg5iP"
-				},
-				{
-					"minecraft_versions": "1.17.1",
-					"modloaders": "fabric",
-					"url": "https://cdn.modrinth.com/data/5aaWibi9/versions/3.0.1/trinkets-3.0.1.jar",
-					"version": "dRgbv7A2"
-				},
-				{
-					"minecraft_versions": "1.17.1",
-					"modloaders": "fabric",
-					"url": "https://cdn.modrinth.com/data/5aaWibi9/versions/3.0.2/trinkets-3.0.2.jar",
-					"version": "29Jd2Dm4"
-				},
-				{
-					"minecraft_versions": "1.17.1",
-					"modloaders": "fabric",
-					"url": "https://cdn.modrinth.com/data/5aaWibi9/versions/3.0.3/trinkets-3.0.3.jar",
-					"version": "qpiOPBB9"
-				},
-				{
-					"minecraft_versions": "1.17.1",
-					"modloaders": "fabric",
-					"url": "https://cdn.modrinth.com//data/5aaWibi9/versions/3.0.4/trinkets-3.0.4.jar",
-					"version": "R2UW6ejS"
-				},
-				{
-					"minecraft_versions": "1.18",
-					"modloaders": "fabric",
-					"url": "https://cdn.modrinth.com/data/5aaWibi9/versions/3.1.0/trinkets-3.1.0.jar",
-					"version": "FdJA5sbK"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1"
-					],
-					"modloaders": "fabric",
-					"url": "https://cdn.modrinth.com/data/5aaWibi9/versions/3.2.0/trinkets-3.2.0.jar",
-					"version": "DtvgyMK2"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "fabric",
-					"url": "https://cdn.modrinth.com/data/5aaWibi9/versions/3.3.0/trinkets-3.3.0.jar",
-					"version": "vOuy3Z5S"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"url": "https://cdn.modrinth.com/data/5aaWibi9/versions/3.3.1/trinkets-3.3.1.jar",
-					"version": "XqLNMi9J"
-				},
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"url": "https://cdn.modrinth.com/data/5aaWibi9/versions/3.4.0/trinkets-3.4.0.jar",
-					"version": "WiXqMygm"
-				},
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"url": "https://cdn.modrinth.com/data/5aaWibi9/versions/oLUBJhyv/trinkets-3.4.1.jar",
-					"version": "oLUBJhyv"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"url": "https://cdn.modrinth.com/data/5aaWibi9/versions/9qrmAiwv/trinkets-3.5.0.jar",
-					"version": "9qrmAiwv"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"url": "https://cdn.modrinth.com/data/5aaWibi9/versions/OLwsMJv4/trinkets-3.4.2.jar",
-					"version": "OLwsMJv4"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"url": "https://cdn.modrinth.com/data/5aaWibi9/versions/5zEAvqnX/trinkets-3.5.1.jar",
-					"version": "5zEAvqnX"
-				},
-				{
-					"minecraft_versions": "1.19.4",
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"url": "https://cdn.modrinth.com/data/5aaWibi9/versions/A5kxdEY3/trinkets-3.6.0.jar",
-					"version": "A5kxdEY3"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5aaWibi9/versions/7aQD4OG8/trinkets-3.8.1.jar",
+					"version": "7aQD4OG8"
 				},
 				{
 					"minecraft_versions": [
 						"1.20",
 						"1.20.1"
 					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"url": "https://cdn.modrinth.com/data/5aaWibi9/versions/z8ProfKL/trinkets-3.7.0.jar",
-					"version": "z8ProfKL"
-				},
-				{
-					"minecraft_versions": [
-						"1.20",
-						"1.20.1"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"url": "https://cdn.modrinth.com/data/5aaWibi9/versions/e563ycts/trinkets-3.7.1.jar",
-					"version": "e563ycts"
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5aaWibi9/versions/AHxQGtuC/trinkets-3.7.2.jar",
+					"version": "AHxQGtuC"
 				},
 				{
 					"minecraft_versions": [
@@ -159,6 +30,7 @@
 						"fabric",
 						"quilt"
 					],
+					"stability": "stable",
 					"url": "https://cdn.modrinth.com/data/5aaWibi9/versions/tJ23Vcff/trinkets-3.8.0.jar",
 					"version": "tJ23Vcff"
 				},
@@ -167,15 +39,163 @@
 						"1.20",
 						"1.20.1"
 					],
-					"modloaders": "fabric",
-					"url": "https://cdn.modrinth.com/data/5aaWibi9/versions/AHxQGtuC/trinkets-3.7.2.jar",
-					"version": "AHxQGtuC"
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5aaWibi9/versions/e563ycts/trinkets-3.7.1.jar",
+					"version": "e563ycts"
 				},
 				{
-					"minecraft_versions": "1.20.4",
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5aaWibi9/versions/z8ProfKL/trinkets-3.7.0.jar",
+					"version": "z8ProfKL"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5aaWibi9/versions/A5kxdEY3/trinkets-3.6.0.jar",
+					"version": "A5kxdEY3"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5aaWibi9/versions/5zEAvqnX/trinkets-3.5.1.jar",
+					"version": "5zEAvqnX"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5aaWibi9/versions/OLwsMJv4/trinkets-3.4.2.jar",
+					"version": "OLwsMJv4"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5aaWibi9/versions/9qrmAiwv/trinkets-3.5.0.jar",
+					"version": "9qrmAiwv"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5aaWibi9/versions/oLUBJhyv/trinkets-3.4.1.jar",
+					"version": "oLUBJhyv"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5aaWibi9/versions/3.4.0/trinkets-3.4.0.jar",
+					"version": "WiXqMygm"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5aaWibi9/versions/3.3.1/trinkets-3.3.1.jar",
+					"version": "XqLNMi9J"
+				},
+				{
+					"minecraft_versions": "1.18.2",
 					"modloaders": "fabric",
-					"url": "https://cdn.modrinth.com/data/5aaWibi9/versions/7aQD4OG8/trinkets-3.8.1.jar",
-					"version": "7aQD4OG8"
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5aaWibi9/versions/3.3.0/trinkets-3.3.0.jar",
+					"version": "vOuy3Z5S"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5aaWibi9/versions/3.2.0/trinkets-3.2.0.jar",
+					"version": "DtvgyMK2"
+				},
+				{
+					"minecraft_versions": "1.18",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5aaWibi9/versions/3.1.0/trinkets-3.1.0.jar",
+					"version": "FdJA5sbK"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com//data/5aaWibi9/versions/3.0.4/trinkets-3.0.4.jar",
+					"version": "R2UW6ejS"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5aaWibi9/versions/3.0.3/trinkets-3.0.3.jar",
+					"version": "qpiOPBB9"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5aaWibi9/versions/3.0.2/trinkets-3.0.2.jar",
+					"version": "29Jd2Dm4"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5aaWibi9/versions/3.0.1/trinkets-3.0.1.jar",
+					"version": "dRgbv7A2"
+				},
+				{
+					"minecraft_versions": "1.17-rc2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5aaWibi9/versions/3.0.0/trinkets-3.0.0.jar",
+					"version": "70Ajg5iP"
 				}
 			]
 		}
@@ -191,6 +211,9 @@
 		"community": "https://discord.gg/T2PuD9RTWV",
 		"description": "A data-driven accessory mod",
 		"documentation": "https://github.com/emilyalexandra/trinkets/wiki",
+		"gallery": [
+			"https://cdn.modrinth.com/data/5aaWibi9/images/56224f13887cdd914a9624a18eb845dae0bcdfc0.png"
+		],
 		"icon": "https://cdn.modrinth.com/data/5aaWibi9/icon.png",
 		"issues": "https://github.com/emilyalexandra/trinkets/issues",
 		"license": "MIT",
@@ -204,6 +227,10 @@
 		"modrinth_id": "5aaWibi9",
 		"supported_modloaders": [
 			"fabriclike"
+		],
+		"supported_sides": [
+			"client",
+			"server"
 		],
 		"supported_versions": [
 			"1.17-rc2",
