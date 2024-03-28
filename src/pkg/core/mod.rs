@@ -142,6 +142,10 @@ pub fn get_all_core_packages() -> Vec<(String, RepoPkgEntry)> {
 	out
 }
 
+pub fn get_core_package_count() -> usize {
+	ALL_CORE_PACKAGE_IDS.len()
+}
+
 #[cfg(test)]
 mod tests {
 	use super::*;

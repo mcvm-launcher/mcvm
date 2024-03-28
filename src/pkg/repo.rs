@@ -1,6 +1,8 @@
 use crate::io::files::paths::Paths;
 use mcvm_core::net::download;
-use mcvm_pkg::repo::{get_api_url, get_index_url, PackageFlag, RepoIndex, RepoPkgEntry};
+use mcvm_pkg::repo::{
+	get_api_url, get_index_url, PackageFlag, RepoIndex, RepoMetadata, RepoPkgEntry,
+};
 use mcvm_pkg::PackageContentType;
 use mcvm_shared::later::Later;
 
@@ -8,13 +10,16 @@ use anyhow::{bail, Context};
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use reqwest::Client;
 
+use std::borrow::Cow;
 use std::collections::HashSet;
 use std::fmt::Display;
 use std::fs::File;
 use std::io::{BufReader, Cursor};
 use std::path::PathBuf;
 
-use super::core::{get_all_core_packages, get_core_package_content_type, is_core_package};
+use super::core::{
+	get_all_core_packages, get_core_package_content_type, get_core_package_count, is_core_package,
+};
 use super::PkgLocation;
 
 /// A remote source for mcvm packages
@@ -227,6 +232,44 @@ impl PkgRepo {
 				.iter()
 				.map(|(id, entry)| (id.clone(), entry.clone()))
 				.collect())
+		}
+	}
+
+	/// Get the number of packages in the repo
+	pub async fn get_package_count(
+		&mut self,
+		paths: &Paths,
+		client: &Client,
+		o: &mut impl MCVMOutput,
+	) -> anyhow::Result<usize> {
+		self.ensure_index(paths, client, o).await?;
+
+		if let PkgRepoLocation::Core = &self.location {
+			Ok(get_core_package_count())
+		} else {
+			Ok(self.index.get().packages.len())
+		}
+	}
+
+	/// Get the repo's metadata
+	pub async fn get_metadata(
+		&mut self,
+		paths: &Paths,
+		client: &Client,
+		o: &mut impl MCVMOutput,
+	) -> anyhow::Result<Cow<RepoMetadata>> {
+		self.ensure_index(paths, client, o).await?;
+
+		if let PkgRepoLocation::Core = &self.location {
+			let meta = RepoMetadata {
+				name: Some("Core".into()),
+				description: Some("The built-in set of packages".into()),
+				mcvm_version: Some(crate::VERSION.into()),
+			};
+
+			Ok(Cow::Owned(meta))
+		} else {
+			Ok(Cow::Borrowed(&self.index.get().metadata))
 		}
 	}
 }

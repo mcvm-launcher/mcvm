@@ -73,6 +73,11 @@ pub enum RepoSubcommand {
 		#[arg(short, long)]
 		raw: bool,
 	},
+	#[command(about = "Print information about a specific repository")]
+	Info {
+		/// The repository to get info about
+		repo: String,
+	},
 }
 
 pub async fn run(subcommand: PackageSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
@@ -388,6 +393,7 @@ async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
 async fn repo(subcommand: RepoSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
 	match subcommand {
 		RepoSubcommand::List { raw } => repo_list(data, raw).await,
+		RepoSubcommand::Info { repo } => repo_info(data, repo).await,
 	}
 }
 
@@ -414,6 +420,61 @@ async fn repo_list(data: &mut CmdData, raw: bool) -> anyhow::Result<()> {
 			cprintln!(" <k!>-</> <m>{}</>", repo.get_location());
 		}
 	}
+
+	Ok(())
+}
+
+async fn repo_info(data: &mut CmdData, repo_id: String) -> anyhow::Result<()> {
+	data.ensure_config(true).await?;
+	let config = data.config.get_mut();
+
+	let repo = config.packages.repos.iter_mut().find(|x| x.id == repo_id);
+	let Some(repo) = repo else {
+		bail!("Repository {repo_id} does not exist");
+	};
+
+	// Get the repo package count and metadata
+	let client = Client::new();
+
+	let pkg_count = repo
+		.get_package_count(&data.paths, &client, &mut data.output)
+		.await
+		.context("Failed to get repository package count")?;
+
+	let meta = repo
+		.get_metadata(&data.paths, &client, &mut data.output)
+		.await
+		.context("Failed to get repository metadata")?
+		.as_ref()
+		.clone();
+
+	// Print the repo name
+	let name = if let Some(name) = &meta.name {
+		name.clone()
+	} else {
+		repo.id.clone()
+	};
+
+	cprint!("<s>Repository </>");
+	if repo.id == "core" {
+		cprint!("<s><m>{}</></>", name);
+	} else if repo.id == "std" {
+		cprint!("<s><b>{}</></>", name);
+	} else {
+		cprint!("<s>{}</>", name);
+	}
+	cprintln!("<s>:</>");
+
+	// Print info
+	if let Some(description) = &meta.description {
+		cprintln!("   {}", description);
+	}
+	cprintln!("   <s>ID:</> {}", repo.id);
+	cprintln!("   <s>Location:</> <m>{}</>", repo.get_location());
+	if let Some(version) = &meta.mcvm_version {
+		cprintln!("   <s>MCVM Version:</> <c>{}</>", version);
+	}
+	cprintln!("   <s>Package Count:</> <y>{}</>", pkg_count);
 
 	Ok(())
 }
