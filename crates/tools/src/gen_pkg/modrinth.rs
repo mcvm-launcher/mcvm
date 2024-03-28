@@ -107,6 +107,7 @@ pub async fn gen(
 					KnownLoader::Quilt => modloaders.push(ModloaderMatch::Quilt),
 					KnownLoader::Forge => modloaders.push(ModloaderMatch::Forge),
 					KnownLoader::NeoForged => modloaders.push(ModloaderMatch::NeoForged),
+					KnownLoader::Rift => modloaders.push(ModloaderMatch::Rift),
 					KnownLoader::Bukkit => plugin_loaders.push(PluginLoaderMatch::Bukkit),
 					KnownLoader::Folia => plugin_loaders.push(PluginLoaderMatch::Folia),
 					KnownLoader::Spigot => plugin_loaders.push(PluginLoaderMatch::Spigot),

@@ -132,6 +132,8 @@ pub enum KnownLoader {
 	/// NeoForged loader
 	#[serde(rename = "neoforge")]
 	NeoForged,
+	/// Rift loader
+	Rift,
 	/// Bukkit loaders
 	Bukkit,
 	/// Spigot server
