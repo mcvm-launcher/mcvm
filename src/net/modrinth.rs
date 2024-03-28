@@ -130,6 +130,7 @@ pub enum KnownLoader {
 	/// Quilt loader
 	Quilt,
 	/// NeoForged loader
+	#[serde(rename = "neoforge")]
 	NeoForged,
 	/// Bukkit loaders
 	Bukkit,
