@@ -8,10 +8,11 @@ use mcvm::pkg_crate::metadata::PackageMetadata;
 use mcvm::pkg_crate::properties::PackageProperties;
 use mcvm::pkg_crate::RecommendedPackage;
 use mcvm::shared::addon::AddonKind;
+use mcvm::shared::modifications::{ModloaderMatch, PluginLoaderMatch};
 use mcvm::shared::util::DeserListOrSingle;
 use mcvm::shared::versions::VersionPattern;
 
-use mcvm::net::modrinth::{self, DependencyType, ProjectType};
+use mcvm::net::modrinth::{self, DependencyType, KnownLoader, Loader, ProjectType};
 
 pub async fn gen(
 	id: &str,
@@ -90,6 +91,27 @@ pub async fn gen(
 			}
 		}
 
+		// Look at loaders
+		let mut modloaders = Vec::new();
+		let mut plugin_loaders = Vec::new();
+		for loader in &version.loaders {
+			match loader {
+				Loader::Known(loader) => match loader {
+					KnownLoader::Fabric => modloaders.push(ModloaderMatch::Fabric),
+					KnownLoader::Quilt => modloaders.push(ModloaderMatch::Quilt),
+					KnownLoader::Forge => modloaders.push(ModloaderMatch::Forge),
+					KnownLoader::NeoForged => modloaders.push(ModloaderMatch::NeoForged),
+					KnownLoader::Bukkit => plugin_loaders.push(PluginLoaderMatch::Bukkit),
+					KnownLoader::Folia => plugin_loaders.push(PluginLoaderMatch::Folia),
+					KnownLoader::Spigot => plugin_loaders.push(PluginLoaderMatch::Spigot),
+					KnownLoader::Sponge => plugin_loaders.push(PluginLoaderMatch::Sponge),
+					KnownLoader::Paper => plugin_loaders.push(PluginLoaderMatch::Paper),
+					KnownLoader::Purpur => plugin_loaders.push(PluginLoaderMatch::Purpur),
+				},
+				Loader::Unknown(other) => panic!("Unknown loader {other}"),
+			}
+		}
+
 		let mut deps = Vec::new();
 		let mut recommendations = Vec::new();
 		let mut extensions = Vec::new();
@@ -123,6 +145,8 @@ pub async fn gen(
 			version: Some(version_name),
 			conditional_properties: DeclarativeConditionSet {
 				minecraft_versions: Some(DeserListOrSingle::List(mc_versions)),
+				modloaders: Some(DeserListOrSingle::List(modloaders)),
+				plugin_loaders: Some(DeserListOrSingle::List(plugin_loaders)),
 				..Default::default()
 			},
 			relations: DeclarativePackageRelations {

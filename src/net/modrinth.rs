@@ -129,6 +129,8 @@ pub enum KnownLoader {
 	Fabric,
 	/// Quilt loader
 	Quilt,
+	/// NeoForged loader
+	NeoForged,
 	/// Bukkit loaders
 	Bukkit,
 	/// Spigot server
