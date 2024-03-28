@@ -154,6 +154,10 @@ pub enum KnownLoader {
 	Purpur,
 	/// Folia server
 	Folia,
+	/// Iris shader loader
+	Iris,
+	/// Optifine shader loader
+	Optifine,
 }
 
 impl Loader {
