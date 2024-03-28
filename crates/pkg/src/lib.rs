@@ -78,7 +78,13 @@ pub struct RecommendedPackage {
 	/// The package id that is required
 	pub value: PackageID,
 	/// Whether to invert this recommendation
+	#[serde(default)]
+	#[serde(skip_serializing_if = "is_false")]
 	pub invert: bool,
+}
+
+fn is_false(x: &bool) -> bool {
+	!x
 }
 
 /// Trait for a central package registry that can evaluate packages
