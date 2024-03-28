@@ -20,7 +20,7 @@ pub struct Project {
 	/// The short description of the project
 	pub description: String,
 	/// URL to the icon
-	pub icon_url: String,
+	pub icon_url: Option<String>,
 	/// URL to the issue tracker
 	pub issues_url: Option<String>,
 	/// URL to the source

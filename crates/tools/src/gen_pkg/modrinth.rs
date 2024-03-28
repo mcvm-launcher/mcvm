@@ -27,9 +27,11 @@ pub async fn gen(
 	let mut meta = PackageMetadata {
 		name: Some(project.title),
 		description: Some(project.description),
-		icon: Some(project.icon_url),
 		..Default::default()
 	};
+	if let Some(icon_url) = project.icon_url {
+		meta.icon = Some(icon_url);
+	}
 	if let Some(issues_url) = project.issues_url {
 		meta.issues = Some(issues_url);
 	}
