@@ -1,0 +1,26 @@
+{
+	"relation_substitutions": {
+		"HoIqL0Lk3HN3kl2aWZHK": "smithed-custom-block"
+	},
+	"merge": {
+		"meta": {
+			"description": "Crafter API for datapacks",
+			"authors": [
+				"Smithed"
+			],
+			"package_maintainers": [
+				"mcvm"
+			],
+			"keywords": [
+				"crafter"
+			],
+			"categories": [
+				"library",
+				"technical"
+			]
+		},
+		"properties": {
+			"open_source": true
+		}
+	}
+}

@@ -1,0 +1,24 @@
+{
+	"relation_substitutions": {},
+	"merge": {
+		"meta": {
+			"description": "Actionbar API for datapacks",
+			"authors": [
+				"Smithed"
+			],
+			"package_maintainers": [
+				"mcvm"
+			],
+			"keywords": [
+				"actionbar"
+			],
+			"categories": [
+				"library",
+				"technical"
+			]
+		},
+		"properties": {
+			"open_source": true
+		}
+	}
+}

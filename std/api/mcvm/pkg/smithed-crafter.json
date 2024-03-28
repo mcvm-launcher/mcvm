@@ -1,0 +1,99 @@
+{
+  "addons": {
+    "datapack": {
+      "kind": "datapack",
+      "versions": [
+        {
+          "minecraft_versions": "1.19",
+          "relations": {
+            "dependencies": "smithed-custom-block"
+          },
+          "url": "https://github.com/Smithed-MC/Libraries/raw/releases/v0.0.3/Smithed%20Crafter.zip",
+          "version": "smithed-version-0-0-3"
+        },
+        {
+          "minecraft_versions": "1.19",
+          "relations": {
+            "dependencies": "smithed-custom-block"
+          },
+          "url": "https://raw.githubusercontent.com/Smithed-MC/Libraries/3ade114ed1c0d704c24203d110df3ae66b96a66f/1.19/crafter/smithed_crafter_dp.zip",
+          "version": "smithed-version-0-1-0"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "relations": {
+            "dependencies": "smithed-custom-block"
+          },
+          "url": "https://github.com/Smithed-MC/Libraries/blob/d0f14054318cbbab0eb9d3b9d11ece9f529a6cbe/1.20/crafter/smithed_crafter_dp.zip?raw=true",
+          "version": "smithed-version-0-2-0"
+        }
+      ]
+    },
+    "resourcepack": {
+      "kind": "resource_pack",
+      "versions": [
+        {
+          "minecraft_versions": "1.19",
+          "relations": {
+            "dependencies": "smithed-custom-block"
+          },
+          "url": "https://github.com/Smithed-MC/Libraries/raw/releases/v0.0.3/Smithed%20Crafter%20RP.zip",
+          "version": "smithed-version-0-0-3"
+        },
+        {
+          "minecraft_versions": "1.19",
+          "relations": {
+            "dependencies": "smithed-custom-block"
+          },
+          "url": "https://raw.githubusercontent.com/Smithed-MC/Libraries/3ade114ed1c0d704c24203d110df3ae66b96a66f/1.19/crafter/smithed_crafter_rp.zip",
+          "version": "smithed-version-0-1-0"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "relations": {
+            "dependencies": "smithed-custom-block"
+          },
+          "url": "https://github.com/Smithed-MC/Libraries/blob/d0f14054318cbbab0eb9d3b9d11ece9f529a6cbe/1.20/crafter/smithed_crafter_rp.zip?raw=true",
+          "version": "smithed-version-0-2-0"
+        }
+      ]
+    }
+  },
+  "meta": {
+    "authors": [
+      "Smithed"
+    ],
+    "categories": [
+      "library",
+      "technical"
+    ],
+    "description": "Crafter API for datapacks",
+    "icon": "https://github.com/Smithed-MC/Libraries/blob/main/smithed_libraries/packs/crafter/pack.png?raw=true",
+    "keywords": [
+      "crafter"
+    ],
+    "name": "Crafter",
+    "package_maintainers": [
+      "mcvm"
+    ],
+    "website": "https://github.com/Smithed-MC/Libraries/blob/main/smithed_libraries/packs/crafter/README.md?raw=true"
+  },
+  "properties": {
+    "open_source": true,
+    "smithed_id": "crafter",
+    "supported_versions": [
+      "1.19",
+      "1.20",
+      "1.20.1"
+    ],
+    "tags": [
+      "datapack"
+    ]
+  }
+}

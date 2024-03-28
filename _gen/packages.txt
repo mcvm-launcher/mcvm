@@ -1,6 +1,13 @@
 fabric-api modrinth P7dR8mSH
 qfapi-qsl modrinth qvIfYCYJ
 quilt-kotlin-libraries modrinth lwVhp9o5
+cloth-config modrinth 9s6osm5g
+architectury-api modrinth lhGA9TYQ
+mod-menu modrinth mOgUt4GM
 sodium modrinth AANobbMI
 indium modrinth Orvt0mRa
+lithium modrinth gvQqBUqZ
 iris modrinth YL57xq9U
+smithed-crafter smithed crafter
+smithed-custom-block smithed custom-block
+smithed-actionbar smithed actionbar

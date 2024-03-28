@@ -1,0 +1,29 @@
+{
+	"relation_substitutions": {},
+	"merge": {
+		"meta": {
+			"authors": [
+				"shedaniel"
+			],
+			"package_maintainers": [
+				"mcvm"
+			],
+			"gallery": [
+				"https://cdn.modrinth.com/data/9s6osm5g/images/baa0dc605540953f5262f24109ec7837c090a04c.png"
+			],
+			"keywords": [
+				"config"
+			],
+			"categories": [
+				"technical"
+			]
+		},
+		"properties": {
+			"open_source": true,
+			"supported_modloaders": [
+				"fabriclike",
+				"forgelike"
+			]
+		}
+	}
+}

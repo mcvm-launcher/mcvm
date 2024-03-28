@@ -1,0 +1,24 @@
+{
+	"relation_substitutions": {},
+	"merge": {
+		"meta": {
+			"authors": [
+				"jellysquid3",
+				"2No2Name"
+			],
+			"package_maintainers": [
+				"mcvm"
+			],
+			"categories": [
+				"optimization",
+				"technical"
+			]
+		},
+		"properties": {
+			"open_source": true,
+			"supported_modloaders": [
+				"fabriclike"
+			]
+		}
+	}
+}

@@ -19,6 +19,6 @@ while read pkg; do
 
 	# Generate the package
 	OUTPUT=$(mcvm_tools gen-pkg $PKG_SOURCE $PKG_ID -c $PKG_GEN_CONFIG)
-	# Write the package
-	echo $OUTPUT > "../std/api/mcvm/pkg/$PKG_NAME.json"
+	# Write the package file with JSON formatting
+	echo $OUTPUT | jq > "../std/api/mcvm/pkg/$PKG_NAME.json"
 done < packages.txt

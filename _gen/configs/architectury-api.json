@@ -1,0 +1,31 @@
+{
+	"relation_substitutions": {
+		"P7dR8mSH": "fabric-api"
+	},
+	"merge": {
+		"meta": {
+			"authors": [
+				"architectury",
+				"MaxNeedsSnacks",
+				"Juuz"
+			],
+			"package_maintainers": [
+				"mcvm"
+			],
+			"keywords": [
+				"api"
+			],
+			"categories": [
+				"library",
+				"technical"
+			]
+		},
+		"properties": {
+			"open_source": true,
+			"supported_modloaders": [
+				"fabriclike",
+				"forgelike"
+			]
+		}
+	}
+}

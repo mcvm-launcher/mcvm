@@ -1,0 +1,24 @@
+{
+	"relation_substitutions": {},
+	"merge": {
+		"meta": {
+			"description": "Custom block API for datapacks",
+			"authors": [
+				"Smithed"
+			],
+			"package_maintainers": [
+				"mcvm"
+			],
+			"keywords": [
+				"block"
+			],
+			"categories": [
+				"library",
+				"technical"
+			]
+		},
+		"properties": {
+			"open_source": true
+		}
+	}
+}
