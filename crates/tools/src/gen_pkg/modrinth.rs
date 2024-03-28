@@ -23,7 +23,6 @@ pub async fn gen(
 	let project = modrinth::get_project(id, &client)
 		.await
 		.expect("Failed to get Modrinth project");
-	// let pack = smithed_api::get_pack(id).await.expect("Failed to get pack");
 
 	let mut meta = PackageMetadata {
 		name: Some(project.title),
@@ -48,6 +47,13 @@ pub async fn gen(
 	}
 
 	meta.license = Some(project.license.id);
+
+	// Get team members and use them to fill out the authors field
+	let mut members = modrinth::get_project_team(id, &client)
+		.await
+		.expect("Failed to get project team members from Modrinth");
+	members.sort_by_key(|x| x.ordering);
+	meta.authors = Some(members.into_iter().map(|x| x.user.username).collect());
 
 	let mut props = PackageProperties {
 		modrinth_id: Some(project.id),

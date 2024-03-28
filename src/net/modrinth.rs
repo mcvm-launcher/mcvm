@@ -270,3 +270,25 @@ pub struct DonationLink {
 	/// The URL of the link
 	pub url: String,
 }
+
+/// Get the team members of a project
+pub async fn get_project_team(project_id: &str, client: &Client) -> anyhow::Result<Vec<Member>> {
+	let url = format!("https://api.modrinth.com/v2/project/{project_id}/members");
+	download::json(url, client).await
+}
+
+/// A member of a project team
+#[derive(Deserialize, Serialize)]
+pub struct Member {
+	/// The user that represents this member
+	pub user: User,
+	/// The ordering of the team member
+	pub ordering: i32,
+}
+
+/// A user on the platform
+#[derive(Deserialize, Serialize)]
+pub struct User {
+	/// The user's username
+	pub username: String,
+}
