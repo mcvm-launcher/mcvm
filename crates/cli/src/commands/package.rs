@@ -32,7 +32,11 @@ pub enum PackageSubcommand {
 		long_about = "Sync all package indexes from remote repositories. They will be
 cached locally, but all currently cached package scripts will be removed"
 	)]
-	Sync,
+	Sync {
+		/// Only sync the repositories that you specify
+		#[arg(short, long)]
+		filter: Vec<String>,
+	},
 	#[command(
 		about = "Print the contents of a package to standard out",
 		long_about = "Print the contents of any package to standard out.
@@ -74,7 +78,7 @@ pub enum RepoSubcommand {
 pub async fn run(subcommand: PackageSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
 	match subcommand {
 		PackageSubcommand::List { raw, profile } => list(data, raw, profile).await,
-		PackageSubcommand::Sync => sync(data).await,
+		PackageSubcommand::Sync { filter } => sync(data, filter).await,
 		PackageSubcommand::Cat { raw, package } => cat(data, &package, raw).await,
 		PackageSubcommand::Info { package } => info(data, &package).await,
 		PackageSubcommand::Repository { command } => repo(command, data).await,
@@ -137,13 +141,18 @@ async fn list(data: &mut CmdData, raw: bool, profile: Option<String>) -> anyhow:
 	Ok(())
 }
 
-async fn sync(data: &mut CmdData) -> anyhow::Result<()> {
+async fn sync(data: &mut CmdData, filter: Vec<String>) -> anyhow::Result<()> {
 	data.ensure_config(true).await?;
 	let config = data.config.get_mut();
 
 	let mut printer = ReplPrinter::new(true);
 	let client = Client::new();
 	for repo in config.packages.repos.iter_mut() {
+		// Skip repositories not in the filter
+		if !filter.is_empty() && !filter.contains(&repo.id) {
+			continue;
+		}
+
 		printer.print(&cformat!("Syncing repository <b>{}</b>...", repo.id));
 		match repo.sync(&data.paths, &client).await {
 			Ok(..) => {
