@@ -27,6 +27,10 @@
 		"indium": {
 			"path": "pkg/indium.json",
 			"content_type": "declarative"
+		},
+		"iris": {
+			"path": "pkg/iris.json",
+			"content_type": "declarative"
 		}
 	}
 }
