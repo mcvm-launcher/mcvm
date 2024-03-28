@@ -89,7 +89,10 @@ pub async fn run_cli() -> anyhow::Result<()> {
 	// Parse the CLI
 	let cli = Cli::try_parse();
 	if let Err(e) = &cli {
-		if let clap::error::ErrorKind::DisplayHelp = e.kind() {
+		if let clap::error::ErrorKind::DisplayHelp
+		| clap::error::ErrorKind::DisplayHelpOnMissingArgumentOrSubcommand
+		| clap::error::ErrorKind::DisplayVersion = e.kind()
+		{
 			println!("{e}");
 			return Ok(());
 		} else {
