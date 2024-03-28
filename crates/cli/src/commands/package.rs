@@ -146,13 +146,18 @@ async fn sync(data: &mut CmdData) -> anyhow::Result<()> {
 	for repo in config.packages.repos.iter_mut() {
 		printer.print(&cformat!("Syncing repository <b>{}</b>...", repo.id));
 		match repo.sync(&data.paths, &client).await {
-			Ok(..) => {}
+			Ok(..) => {
+				printer.print(&cformat!("<g>Synced repository <b!>{}</b!>", repo.id));
+			}
 			Err(e) => {
-				printer.print(&cformat!("<r>{}", e));
+				printer.println(&cformat!("<r>{}", e));
+				printer.print(&cformat!(
+					"<r>Failed to sync repository <r!>{}</r!>",
+					repo.id
+				));
 				continue;
 			}
 		};
-		printer.print(&cformat!("<g>Synced repository <b!>{}</b!>", repo.id));
 		cprintln!();
 	}
 	printer.print(&cformat!("<s>Updating packages..."));
