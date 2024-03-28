@@ -52,7 +52,10 @@ pub async fn gen(
 	if let Some(discord_url) = project.discord_url {
 		meta.community = Some(discord_url);
 	}
-	if let Some(support_link) = project.donation_urls.first() {
+	// Sort donation URLs as their order does not seem to be deterministic
+	let mut donation_urls = project.donation_urls;
+	donation_urls.sort_by_key(|x| x.url.clone());
+	if let Some(support_link) = donation_urls.first() {
 		meta.support_link = Some(support_link.url.clone());
 	}
 	if let Some(gallery) = project.gallery {
