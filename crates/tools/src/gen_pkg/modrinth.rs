@@ -100,7 +100,8 @@ pub async fn gen(
 		.await
 		.expect("Failed to get Modrinth project versions");
 
-	for version in versions {
+	// Iterate in reverse so that newer versions are closer to the top
+	for version in versions.into_iter().rev() {
 		let version_name = version.id.clone();
 		// Collect Minecraft versions
 		let mc_versions: Vec<VersionPattern> = version
