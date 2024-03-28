@@ -9,7 +9,7 @@ use mcvm::util::print::ReplPrinter;
 
 use anyhow::{bail, Context};
 use clap::Subcommand;
-use color_print::{cformat, cprintln};
+use color_print::{cformat, cprint, cprintln};
 use mcvm::shared::pkg::PackageID;
 use reqwest::Client;
 
@@ -390,7 +390,14 @@ async fn repo_list(data: &mut CmdData, raw: bool) -> anyhow::Result<()> {
 	} else {
 		cprintln!("<s>Repositories:");
 		for repo in repos {
-			cprintln!("<b!>{}</> <k!>-</> <m>{}</>", repo.id, repo.get_location());
+			if repo.id == "core" {
+				cprint!("<s><m>{}</></>", repo.id);
+			} else if repo.id == "std" {
+				cprint!("<s><b>{}</></>", repo.id);
+			} else {
+				cprint!("<s>{}</>", repo.id);
+			}
+			cprintln!(" <k!>-</> <m>{}</>", repo.get_location());
 		}
 	}
 
