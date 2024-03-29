@@ -173,7 +173,7 @@ pub async fn gen_raw(
 					KnownLoader::Paper => plugin_loaders.push(PluginLoaderMatch::Paper),
 					KnownLoader::Purpur => plugin_loaders.push(PluginLoaderMatch::Purpur),
 					// We don't care about these
-					KnownLoader::Iris | KnownLoader::Optifine => {}
+					KnownLoader::Iris | KnownLoader::Optifine | KnownLoader::Minecraft => {}
 				},
 				Loader::Unknown(other) => panic!("Unknown loader {other}"),
 			}

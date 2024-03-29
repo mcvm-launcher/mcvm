@@ -151,6 +151,8 @@ pub enum Loader {
 #[derive(Deserialize, Serialize, Copy, Clone)]
 #[serde(rename_all = "snake_case")]
 pub enum KnownLoader {
+	/// The Vanilla game
+	Minecraft,
 	/// MinecraftForge
 	Forge,
 	/// Fabric loader
