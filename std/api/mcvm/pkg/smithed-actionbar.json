@@ -1,104 +1,104 @@
 {
-	"addons": {
-		"datapack": {
-			"kind": "datapack",
-			"versions": [
-				{
-					"minecraft_versions": "1.19",
-					"url": "https://github.com/Smithed-MC/Libraries/blob/3ade114ed1c0d704c24203d110df3ae66b96a66f/1.19/actionbar/smithed_actionbar_dp.zip?raw=true",
-					"version": "smithed-version-0-1-0"
-				},
-				{
-					"minecraft_versions": "1.19",
-					"url": "https://github.com/Smithed-MC/Libraries/blob/84ba5778a692fd8ffc50360edd716ddbfd84042e/1.19/actionbar/smithed_actionbar_dp.zip?raw=true",
-					"version": "smithed-version-0-2-0"
-				},
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.4"
-					],
-					"url": "https://github.com/Smithed-MC/Libraries/blob/bd3b15d481fff15975580af56d8eecad59ae98ba/1.19/actionbar/smithed_actionbar_dp.zip?raw=true",
-					"version": "smithed-version-0-3-0"
-				},
-				{
-					"minecraft_versions": [
-						"1.20",
-						"1.20.1"
-					],
-					"url": "https://github.com/Smithed-MC/Libraries/blob/d0f14054318cbbab0eb9d3b9d11ece9f529a6cbe/1.20/actionbar/smithed_actionbar_dp.zip?raw=true",
-					"version": "smithed-version-0-4-0"
-				},
-				{
-					"minecraft_versions": [
-						"1.20",
-						"1.20.1"
-					],
-					"url": "https://github.com/Smithed-MC/Libraries/blob/83d267ce642639e9a7996703b65d80317e4ca71a/1.20/actionbar/smithed_actionbar_dp.zip?raw=true",
-					"version": "smithed-version-0-4-1"
-				}
-			]
-		},
-		"resourcepack": {
-			"kind": "resource_pack",
-			"versions": [
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.4"
-					],
-					"url": "",
-					"version": "smithed-version-0-3-0"
-				},
-				{
-					"minecraft_versions": [
-						"1.20",
-						"1.20.1"
-					],
-					"url": "",
-					"version": "smithed-version-0-4-0"
-				},
-				{
-					"minecraft_versions": [
-						"1.20",
-						"1.20.1"
-					],
-					"url": "",
-					"version": "smithed-version-0-4-1"
-				}
-			]
-		}
-	},
-	"meta": {
-		"authors": [
-			"Smithed"
-		],
-		"categories": [
-			"library",
-			"technical"
-		],
-		"description": "Actionbar API for datapacks",
-		"icon": "https://github.com/Smithed-MC/Libraries/blob/main/smithed_libraries/packs/actionbar/pack.png?raw=true",
-		"keywords": [
-			"actionbar"
-		],
-		"name": "Actionbar",
-		"package_maintainers": [
-			"mcvm"
-		],
-		"website": "https://github.com/Smithed-MC/Libraries/blob/main/smithed_libraries/packs/actionbar/README.md?raw=true"
-	},
-	"properties": {
-		"open_source": true,
-		"smithed_id": "actionbar",
-		"supported_versions": [
-			"1.19",
-			"1.19.4",
-			"1.20",
-			"1.20.1"
-		],
-		"tags": [
-			"datapack"
-		]
-	}
+  "addons": {
+    "datapack": {
+      "kind": "datapack",
+      "versions": [
+        {
+          "minecraft_versions": "1.19",
+          "url": "https://github.com/Smithed-MC/Libraries/blob/3ade114ed1c0d704c24203d110df3ae66b96a66f/1.19/actionbar/smithed_actionbar_dp.zip?raw=true",
+          "version": "smithed-version-0-1-0"
+        },
+        {
+          "minecraft_versions": "1.19",
+          "url": "https://github.com/Smithed-MC/Libraries/blob/84ba5778a692fd8ffc50360edd716ddbfd84042e/1.19/actionbar/smithed_actionbar_dp.zip?raw=true",
+          "version": "smithed-version-0-2-0"
+        },
+        {
+          "minecraft_versions": [
+            "1.19",
+            "1.19.4"
+          ],
+          "url": "https://github.com/Smithed-MC/Libraries/blob/bd3b15d481fff15975580af56d8eecad59ae98ba/1.19/actionbar/smithed_actionbar_dp.zip?raw=true",
+          "version": "smithed-version-0-3-0"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "url": "https://github.com/Smithed-MC/Libraries/blob/d0f14054318cbbab0eb9d3b9d11ece9f529a6cbe/1.20/actionbar/smithed_actionbar_dp.zip?raw=true",
+          "version": "smithed-version-0-4-0"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "url": "https://github.com/Smithed-MC/Libraries/blob/83d267ce642639e9a7996703b65d80317e4ca71a/1.20/actionbar/smithed_actionbar_dp.zip?raw=true",
+          "version": "smithed-version-0-4-1"
+        }
+      ]
+    },
+    "resourcepack": {
+      "kind": "resource_pack",
+      "versions": [
+        {
+          "minecraft_versions": [
+            "1.19",
+            "1.19.4"
+          ],
+          "url": "",
+          "version": "smithed-version-0-3-0"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "url": "",
+          "version": "smithed-version-0-4-0"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "url": "",
+          "version": "smithed-version-0-4-1"
+        }
+      ]
+    }
+  },
+  "meta": {
+    "authors": [
+      "Smithed"
+    ],
+    "categories": [
+      "library",
+      "technical"
+    ],
+    "description": "Actionbar API for datapacks",
+    "icon": "https://github.com/Smithed-MC/Libraries/blob/main/smithed_libraries/packs/actionbar/pack.png?raw=true",
+    "keywords": [
+      "actionbar"
+    ],
+    "name": "Actionbar",
+    "package_maintainers": [
+      "mcvm"
+    ],
+    "website": "https://github.com/Smithed-MC/Libraries/blob/main/smithed_libraries/packs/actionbar/README.md?raw=true"
+  },
+  "properties": {
+    "open_source": true,
+    "smithed_id": "actionbar",
+    "supported_versions": [
+      "1.19",
+      "1.19.4",
+      "1.20",
+      "1.20.1"
+    ],
+    "tags": [
+      "datapack"
+    ]
+  }
 }

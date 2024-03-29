@@ -1,302 +1,302 @@
 {
-	"addons": {
-		"addon": {
-			"kind": "mod",
-			"versions": [
-				{
-					"minecraft_versions": [
-						"1.20.3",
-						"1.20.4"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/yBW8D80W/versions/mrQ8ZiyU/lambdynamiclights-2.3.4%2B1.20.4.jar",
-					"version": "mrQ8ZiyU"
-				},
-				{
-					"minecraft_versions": "1.20.2",
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/yBW8D80W/versions/i6nks8QI/lambdynamiclights-2.3.3%2B1.20.2.jar",
-					"version": "i6nks8QI"
-				},
-				{
-					"minecraft_versions": [
-						"1.20",
-						"1.20.1",
-						"1.20.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/yBW8D80W/versions/mYl4RvKg/lambdynamiclights-2.3.2%2B1.20.1.jar",
-					"version": "mYl4RvKg"
-				},
-				{
-					"minecraft_versions": "1.20.1",
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/yBW8D80W/versions/Vsx4I8Np/lambdynamiclights-2.3.1%2B1.20.1.jar",
-					"version": "Vsx4I8Np"
-				},
-				{
-					"minecraft_versions": "1.19.4",
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/yBW8D80W/versions/85Jaf9ic/lambdynamiclights-2.3.1%2B1.19.4.jar",
-					"version": "85Jaf9ic"
-				},
-				{
-					"minecraft_versions": "1.19.4",
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/yBW8D80W/versions/7Cx8p05b/lambdynamiclights-2.3.0%2B1.19.4.jar",
-					"version": "7Cx8p05b"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/yBW8D80W/versions/9E1ECN95/lambdynamiclights-2.2.0%2B1.19.3.jar",
-					"version": "9E1ECN95"
-				},
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/yBW8D80W/versions/YQkZSlfq/lambdynamiclights-2.2.0%2B1.19.2.jar",
-					"version": "YQkZSlfq"
-				},
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/yBW8D80W/versions/2.1.2%2B1.19/lambdynamiclights-2.1.2%2B1.19.jar",
-					"version": "Fp4gUsxF"
-				},
-				{
-					"minecraft_versions": [
-						"1.17",
-						"1.17.1",
-						"1.18",
-						"1.18.1-pre1",
-						"1.18.1-rc1",
-						"1.18.1-rc2",
-						"1.18.1-rc3",
-						"1.18.1",
-						"22w03a",
-						"22w05a",
-						"22w06a",
-						"22w07a",
-						"1.18.2-pre1",
-						"1.18.2-pre2",
-						"1.18.2-pre3",
-						"1.18.2-rc1",
-						"1.18.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/yBW8D80W/versions/2.1.0%2B1.17/lambdynamiclights-2.1.0%2B1.17.jar",
-					"version": "zhBXhMhZ"
-				},
-				{
-					"minecraft_versions": [
-						"1.17",
-						"1.17.1",
-						"1.18-rc1",
-						"1.18-rc2",
-						"1.18-rc3",
-						"1.18-rc4"
-					],
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/yBW8D80W/versions/2.0.2%2B1.17/lambdynamiclights-2.0.2%2B1.17.jar",
-					"version": "GiwO5rBh"
-				},
-				{
-					"minecraft_versions": [
-						"1.17",
-						"1.17.1"
-					],
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/yBW8D80W/versions/2.0.1%2B1.17/lambdynamiclights-2.0.1%2B1.17.jar",
-					"version": "s0scL0LW"
-				},
-				{
-					"minecraft_versions": "1.17",
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/yBW8D80W/versions/2.0.0%2B1.17/lambdynamiclights-2.0.0%2B1.17.jar",
-					"version": "8zO3sewB"
-				},
-				{
-					"minecraft_versions": [
-						"1.16.2",
-						"1.16.3",
-						"1.16.4",
-						"1.16.5"
-					],
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/yBW8D80W/versions/1.3.4%2B1.16/lambdynamiclights-fabric-1.3.4%2B1.16.jar",
-					"version": "hKXQNf9z"
-				},
-				{
-					"minecraft_versions": [
-						"1.16.2",
-						"1.16.3",
-						"1.16.4",
-						"1.16.5"
-					],
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/yBW8D80W/versions/1.3.3%2B1.16/lambdynamiclights-fabric-1.3.3%2B1.16.jar",
-					"version": "kaKDsLxl"
-				},
-				{
-					"minecraft_versions": [
-						"1.16.2",
-						"1.16.3",
-						"1.16.4"
-					],
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/yBW8D80W/versions/1.3.2/lambdynamiclights-fabric-1.3.2%2B1.16.4.jar",
-					"version": "YuZK7F05"
-				}
-			]
-		}
-	},
-	"meta": {
-		"authors": [
-			"LambdAurora"
-		],
-		"categories": [],
-		"community": "https://discord.gg/abEbzzv",
-		"description": "A dynamic lights mod for Fabric.",
-		"gallery": [],
-		"icon": "https://cdn.modrinth.com/data/yBW8D80W/icon.png",
-		"issues": "https://github.com/LambdAurora/LambDynamicLights/issues",
-		"keywords": [
-			"graphics"
-		],
-		"license": "MIT",
-		"name": "LambDynamicLights",
-		"package_maintainers": [
-			"mcvm"
-		],
-		"source": "https://github.com/LambdAurora/LambDynamicLights"
-	},
-	"properties": {
-		"modrinth_id": "yBW8D80W",
-		"open_source": true,
-		"supported_modloaders": [
-			"fabriclike"
-		],
-		"supported_sides": [
-			"client"
-		],
-		"supported_versions": [
-			"1.16.2",
-			"1.16.3",
-			"1.16.4",
-			"1.16.5",
-			"1.17",
-			"1.17.1",
-			"1.18-rc1",
-			"1.18-rc2",
-			"1.18-rc3",
-			"1.18-rc4",
-			"1.18",
-			"1.18.1-pre1",
-			"1.18.1-rc1",
-			"1.18.1-rc2",
-			"1.18.1-rc3",
-			"1.18.1",
-			"22w03a",
-			"22w05a",
-			"22w06a",
-			"22w07a",
-			"1.18.2-pre1",
-			"1.18.2-pre2",
-			"1.18.2-pre3",
-			"1.18.2-rc1",
-			"1.18.2",
-			"1.19",
-			"1.19.1",
-			"1.19.2",
-			"1.19.3",
-			"1.19.4",
-			"1.20",
-			"1.20.1",
-			"1.20.2",
-			"1.20.3",
-			"1.20.4"
-		]
-	}
+  "addons": {
+    "addon": {
+      "kind": "mod",
+      "versions": [
+        {
+          "minecraft_versions": [
+            "1.20.3",
+            "1.20.4"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "relations": {
+            "dependencies": "fabriclike-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/yBW8D80W/versions/mrQ8ZiyU/lambdynamiclights-2.3.4%2B1.20.4.jar",
+          "version": "mrQ8ZiyU"
+        },
+        {
+          "minecraft_versions": "1.20.2",
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "relations": {
+            "dependencies": "fabriclike-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/yBW8D80W/versions/i6nks8QI/lambdynamiclights-2.3.3%2B1.20.2.jar",
+          "version": "i6nks8QI"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1",
+            "1.20.2"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "relations": {
+            "dependencies": "fabriclike-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/yBW8D80W/versions/mYl4RvKg/lambdynamiclights-2.3.2%2B1.20.1.jar",
+          "version": "mYl4RvKg"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "relations": {
+            "dependencies": "fabriclike-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/yBW8D80W/versions/Vsx4I8Np/lambdynamiclights-2.3.1%2B1.20.1.jar",
+          "version": "Vsx4I8Np"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "relations": {
+            "dependencies": "fabriclike-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/yBW8D80W/versions/85Jaf9ic/lambdynamiclights-2.3.1%2B1.19.4.jar",
+          "version": "85Jaf9ic"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "relations": {
+            "dependencies": "fabriclike-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/yBW8D80W/versions/7Cx8p05b/lambdynamiclights-2.3.0%2B1.19.4.jar",
+          "version": "7Cx8p05b"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "relations": {
+            "dependencies": "fabriclike-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/yBW8D80W/versions/9E1ECN95/lambdynamiclights-2.2.0%2B1.19.3.jar",
+          "version": "9E1ECN95"
+        },
+        {
+          "minecraft_versions": [
+            "1.19",
+            "1.19.1",
+            "1.19.2"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "relations": {
+            "dependencies": "fabriclike-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/yBW8D80W/versions/YQkZSlfq/lambdynamiclights-2.2.0%2B1.19.2.jar",
+          "version": "YQkZSlfq"
+        },
+        {
+          "minecraft_versions": [
+            "1.19",
+            "1.19.1",
+            "1.19.2"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "relations": {
+            "dependencies": "fabriclike-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/yBW8D80W/versions/2.1.2%2B1.19/lambdynamiclights-2.1.2%2B1.19.jar",
+          "version": "Fp4gUsxF"
+        },
+        {
+          "minecraft_versions": [
+            "1.17",
+            "1.17.1",
+            "1.18",
+            "1.18.1-pre1",
+            "1.18.1-rc1",
+            "1.18.1-rc2",
+            "1.18.1-rc3",
+            "1.18.1",
+            "22w03a",
+            "22w05a",
+            "22w06a",
+            "22w07a",
+            "1.18.2-pre1",
+            "1.18.2-pre2",
+            "1.18.2-pre3",
+            "1.18.2-rc1",
+            "1.18.2"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/yBW8D80W/versions/2.1.0%2B1.17/lambdynamiclights-2.1.0%2B1.17.jar",
+          "version": "zhBXhMhZ"
+        },
+        {
+          "minecraft_versions": [
+            "1.17",
+            "1.17.1",
+            "1.18-rc1",
+            "1.18-rc2",
+            "1.18-rc3",
+            "1.18-rc4"
+          ],
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/yBW8D80W/versions/2.0.2%2B1.17/lambdynamiclights-2.0.2%2B1.17.jar",
+          "version": "GiwO5rBh"
+        },
+        {
+          "minecraft_versions": [
+            "1.17",
+            "1.17.1"
+          ],
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/yBW8D80W/versions/2.0.1%2B1.17/lambdynamiclights-2.0.1%2B1.17.jar",
+          "version": "s0scL0LW"
+        },
+        {
+          "minecraft_versions": "1.17",
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/yBW8D80W/versions/2.0.0%2B1.17/lambdynamiclights-2.0.0%2B1.17.jar",
+          "version": "8zO3sewB"
+        },
+        {
+          "minecraft_versions": [
+            "1.16.2",
+            "1.16.3",
+            "1.16.4",
+            "1.16.5"
+          ],
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/yBW8D80W/versions/1.3.4%2B1.16/lambdynamiclights-fabric-1.3.4%2B1.16.jar",
+          "version": "hKXQNf9z"
+        },
+        {
+          "minecraft_versions": [
+            "1.16.2",
+            "1.16.3",
+            "1.16.4",
+            "1.16.5"
+          ],
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/yBW8D80W/versions/1.3.3%2B1.16/lambdynamiclights-fabric-1.3.3%2B1.16.jar",
+          "version": "kaKDsLxl"
+        },
+        {
+          "minecraft_versions": [
+            "1.16.2",
+            "1.16.3",
+            "1.16.4"
+          ],
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/yBW8D80W/versions/1.3.2/lambdynamiclights-fabric-1.3.2%2B1.16.4.jar",
+          "version": "YuZK7F05"
+        }
+      ]
+    }
+  },
+  "meta": {
+    "authors": [
+      "LambdAurora"
+    ],
+    "categories": [],
+    "community": "https://discord.gg/abEbzzv",
+    "description": "A dynamic lights mod for Fabric.",
+    "gallery": [],
+    "icon": "https://cdn.modrinth.com/data/yBW8D80W/icon.png",
+    "issues": "https://github.com/LambdAurora/LambDynamicLights/issues",
+    "keywords": [
+      "graphics"
+    ],
+    "license": "MIT",
+    "name": "LambDynamicLights",
+    "package_maintainers": [
+      "mcvm"
+    ],
+    "source": "https://github.com/LambdAurora/LambDynamicLights"
+  },
+  "properties": {
+    "modrinth_id": "yBW8D80W",
+    "open_source": true,
+    "supported_modloaders": [
+      "fabriclike"
+    ],
+    "supported_sides": [
+      "client"
+    ],
+    "supported_versions": [
+      "1.16.2",
+      "1.16.3",
+      "1.16.4",
+      "1.16.5",
+      "1.17",
+      "1.17.1",
+      "1.18-rc1",
+      "1.18-rc2",
+      "1.18-rc3",
+      "1.18-rc4",
+      "1.18",
+      "1.18.1-pre1",
+      "1.18.1-rc1",
+      "1.18.1-rc2",
+      "1.18.1-rc3",
+      "1.18.1",
+      "22w03a",
+      "22w05a",
+      "22w06a",
+      "22w07a",
+      "1.18.2-pre1",
+      "1.18.2-pre2",
+      "1.18.2-pre3",
+      "1.18.2-rc1",
+      "1.18.2",
+      "1.19",
+      "1.19.1",
+      "1.19.2",
+      "1.19.3",
+      "1.19.4",
+      "1.20",
+      "1.20.1",
+      "1.20.2",
+      "1.20.3",
+      "1.20.4"
+    ]
+  }
 }

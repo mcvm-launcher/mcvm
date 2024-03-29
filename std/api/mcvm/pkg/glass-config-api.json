@@ -1,115 +1,115 @@
 {
-	"addons": {
-		"addon": {
-			"kind": "mod",
-			"versions": [
-				{
-					"minecraft_versions": "b1.7.3",
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "stationapi",
-						"recommendations": {
-							"value": "modmenu-beta"
-						}
-					},
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/rFeWTq4G/versions/x3ncbEgM/GlassConfigAPI-2.0.2.jar",
-					"version": "x3ncbEgM"
-				},
-				{
-					"minecraft_versions": "b1.7.3",
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "stationapi",
-						"recommendations": {
-							"value": "modmenu-beta"
-						}
-					},
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/rFeWTq4G/versions/c5Do9bzq/GlassConfigAPI-2.0.1.jar",
-					"version": "c5Do9bzq"
-				},
-				{
-					"minecraft_versions": "b1.7.3",
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "stationapi",
-						"recommendations": {
-							"value": "modmenu-beta"
-						}
-					},
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/rFeWTq4G/versions/l2ykjfSv/GlassConfigAPI-2.0.0.jar",
-					"version": "l2ykjfSv"
-				},
-				{
-					"minecraft_versions": "b1.7.3",
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "stationapi",
-						"recommendations": {
-							"value": "modmenu-beta"
-						}
-					},
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/rFeWTq4G/versions/3AACvE0Q/GlassConfigAPI-1.3.1.jar",
-					"version": "3AACvE0Q"
-				},
-				{
-					"minecraft_versions": "b1.7.3",
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "stationapi",
-						"recommendations": {
-							"value": "modmenu-beta"
-						}
-					},
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/rFeWTq4G/versions/744bVSYO/GlassConfigAPI-1.3.0.jar",
-					"version": "744bVSYO"
-				}
-			]
-		}
-	},
-	"meta": {
-		"authors": [
-			"calmilamsy"
-		],
-		"categories": [
-			"library",
-			"technical"
-		],
-		"community": "https://discord.gg/invite/J9vhpBQ",
-		"description": "An API for easily creating and syncing configs in b1.7.3, with optional ModMenu support.",
-		"documentation": "https://github.com/calmilamsy/glass-config-api/wiki",
-		"gallery": [
-			"https://cdn.modrinth.com/data/rFeWTq4G/images/0d32f506b4e6e993724bad1bd9db7d4839f53433.png",
-			"https://cdn.modrinth.com/data/rFeWTq4G/images/d92cbb0bf2410d320ae976fd9593b9d59c96d9ab.png"
-		],
-		"icon": "https://cdn.modrinth.com/data/rFeWTq4G/2ffaf35b55df4c9805e5c5405fb7c1653860cf7d.png",
-		"issues": "https://github.com/calmilamsy/glass-config-api/issues",
-		"keywords": [
-			"config"
-		],
-		"license": "CC0-1.0",
-		"name": "Glass Config API",
-		"package_maintainers": [
-			"mcvm"
-		],
-		"source": "https://github.com/calmilamsy/glass-config-api"
-	},
-	"properties": {
-		"modrinth_id": "rFeWTq4G",
-		"open_source": true,
-		"supported_modloaders": [
-			"fabriclike"
-		],
-		"supported_sides": [
-			"client",
-			"server"
-		],
-		"supported_versions": [
-			"b1.7.3"
-		]
-	}
+  "addons": {
+    "addon": {
+      "kind": "mod",
+      "versions": [
+        {
+          "minecraft_versions": "b1.7.3",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": "stationapi",
+            "recommendations": {
+              "value": "modmenu-beta"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/rFeWTq4G/versions/x3ncbEgM/GlassConfigAPI-2.0.2.jar",
+          "version": "x3ncbEgM"
+        },
+        {
+          "minecraft_versions": "b1.7.3",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": "stationapi",
+            "recommendations": {
+              "value": "modmenu-beta"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/rFeWTq4G/versions/c5Do9bzq/GlassConfigAPI-2.0.1.jar",
+          "version": "c5Do9bzq"
+        },
+        {
+          "minecraft_versions": "b1.7.3",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": "stationapi",
+            "recommendations": {
+              "value": "modmenu-beta"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/rFeWTq4G/versions/l2ykjfSv/GlassConfigAPI-2.0.0.jar",
+          "version": "l2ykjfSv"
+        },
+        {
+          "minecraft_versions": "b1.7.3",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": "stationapi",
+            "recommendations": {
+              "value": "modmenu-beta"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/rFeWTq4G/versions/3AACvE0Q/GlassConfigAPI-1.3.1.jar",
+          "version": "3AACvE0Q"
+        },
+        {
+          "minecraft_versions": "b1.7.3",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": "stationapi",
+            "recommendations": {
+              "value": "modmenu-beta"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/rFeWTq4G/versions/744bVSYO/GlassConfigAPI-1.3.0.jar",
+          "version": "744bVSYO"
+        }
+      ]
+    }
+  },
+  "meta": {
+    "authors": [
+      "calmilamsy"
+    ],
+    "categories": [
+      "library",
+      "technical"
+    ],
+    "community": "https://discord.gg/invite/J9vhpBQ",
+    "description": "An API for easily creating and syncing configs in b1.7.3, with optional ModMenu support.",
+    "documentation": "https://github.com/calmilamsy/glass-config-api/wiki",
+    "gallery": [
+      "https://cdn.modrinth.com/data/rFeWTq4G/images/0d32f506b4e6e993724bad1bd9db7d4839f53433.png",
+      "https://cdn.modrinth.com/data/rFeWTq4G/images/d92cbb0bf2410d320ae976fd9593b9d59c96d9ab.png"
+    ],
+    "icon": "https://cdn.modrinth.com/data/rFeWTq4G/2ffaf35b55df4c9805e5c5405fb7c1653860cf7d.png",
+    "issues": "https://github.com/calmilamsy/glass-config-api/issues",
+    "keywords": [
+      "config"
+    ],
+    "license": "CC0-1.0",
+    "name": "Glass Config API",
+    "package_maintainers": [
+      "mcvm"
+    ],
+    "source": "https://github.com/calmilamsy/glass-config-api"
+  },
+  "properties": {
+    "modrinth_id": "rFeWTq4G",
+    "open_source": true,
+    "supported_modloaders": [
+      "fabriclike"
+    ],
+    "supported_sides": [
+      "client",
+      "server"
+    ],
+    "supported_versions": [
+      "b1.7.3"
+    ]
+  }
 }

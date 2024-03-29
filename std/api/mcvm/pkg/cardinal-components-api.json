@@ -1,243 +1,243 @@
 {
-	"addons": {
-		"addon": {
-			"kind": "mod",
-			"versions": [
-				{
-					"minecraft_versions": [
-						"1.20.3-pre4",
-						"1.20.3",
-						"1.20.4"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/K01OU20C/versions/DObEjZD4/cardinal-components-api-5.4.0.jar",
-					"version": "DObEjZD4"
-				},
-				{
-					"minecraft_versions": [
-						"1.20.2-pre1",
-						"1.20.2-pre2",
-						"1.20.2-pre3",
-						"1.20.2-pre4",
-						"1.20.2-rc1",
-						"1.20.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/K01OU20C/versions/IBZVrThp/cardinal-components-api-5.3.0.jar",
-					"version": "IBZVrThp"
-				},
-				{
-					"minecraft_versions": [
-						"1.20",
-						"1.20.1"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/K01OU20C/versions/qW85eawp/cardinal-components-api-5.2.2.jar",
-					"version": "qW85eawp"
-				},
-				{
-					"minecraft_versions": [
-						"1.20",
-						"1.20.1"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/K01OU20C/versions/HykM2Qyv/cardinal-components-api-5.2.1.jar",
-					"version": "HykM2Qyv"
-				},
-				{
-					"minecraft_versions": "1.20-pre4",
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/K01OU20C/versions/NGEFAf1u/cardinal-components-api-5.2.0.jar",
-					"version": "NGEFAf1u"
-				},
-				{
-					"minecraft_versions": [
-						"1.19.3",
-						"1.19.4"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/K01OU20C/versions/h4Dd87o5/cardinal-components-api-5.1.0.jar",
-					"version": "h4Dd87o5"
-				},
-				{
-					"minecraft_versions": [
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/K01OU20C/versions/tPfCTMiZ/cardinal-components-api-5.0.2.jar",
-					"version": "tPfCTMiZ"
-				},
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.1"
-					],
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/K01OU20C/versions/5.0.1/cardinal-components-api-5.0.1.jar",
-					"version": "hRgkWC9v"
-				},
-				{
-					"minecraft_versions": "1.19",
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/K01OU20C/versions/5.0.0/cardinal-components-api-5.0.0.jar",
-					"version": "7inPiMmR"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1",
-						"1.18.2"
-					],
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/K01OU20C/versions/4.2.0/cardinal-components-api-4.2.0.jar",
-					"version": "rQt4CSD0"
-				},
-				{
-					"minecraft_versions": "1.19-pre1",
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/K01OU20C/versions/5.0.0-beta.1/cardinal-components-api-5.0.0-beta.1.jar",
-					"version": "cBAcMXlz"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1",
-						"1.18.2"
-					],
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/K01OU20C/versions/4.1.4/cardinal-components-base-4.1.4.jar",
-					"version": "oI0J6zee"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1"
-					],
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/K01OU20C/versions/4.1.3/cardinal-components-api-4.1.3.jar",
-					"version": "XVi4pC8A"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1"
-					],
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/K01OU20C/versions/4.1.2/cardinal-components-api-4.1.2.jar",
-					"version": "UiFscSdF"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1"
-					],
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/K01OU20C/versions/4.1.1/cardinal-components-api-4.1.1.jar",
-					"version": "ymGlSdB7"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1"
-					],
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/K01OU20C/versions/4.1.0/cardinal-components-api-4.1.0.jar",
-					"version": "WCcq6SE2"
-				}
-			]
-		}
-	},
-	"meta": {
-		"authors": [
-			"Up",
-			"Pyrofab"
-		],
-		"categories": [
-			"library",
-			"technical"
-		],
-		"community": "https://discord.ladysnake.org",
-		"description": "A data attachment API that is easy, modular, and extremely fast.",
-		"documentation": "https://ladysnake.org/wiki/cardinal-components-api",
-		"gallery": [],
-		"icon": "https://cdn.modrinth.com/data/K01OU20C/6a9f1a26662f544d139accddee9a3b1ac5c46b4e.png",
-		"issues": "https://github.com/Ladysnake/Cardinal-Components-API/issues",
-		"license": "MIT",
-		"name": "Cardinal Components API",
-		"package_maintainers": [
-			"mcvm"
-		],
-		"source": "https://github.com/Ladysnake/Cardinal-Components-API",
-		"support_link": "https://ko-fi.com/upcraftlp"
-	},
-	"properties": {
-		"modrinth_id": "K01OU20C",
-		"supported_modloaders": [
-			"fabriclike"
-		],
-		"supported_sides": [
-			"server"
-		],
-		"supported_versions": [
-			"1.18",
-			"1.18.1",
-			"1.18.2",
-			"1.19-pre1",
-			"1.19",
-			"1.19.1",
-			"1.19.2",
-			"1.19.3",
-			"1.19.4",
-			"1.20-pre4",
-			"1.20",
-			"1.20.1",
-			"1.20.2-pre1",
-			"1.20.2-pre2",
-			"1.20.2-pre3",
-			"1.20.2-pre4",
-			"1.20.2-rc1",
-			"1.20.2",
-			"1.20.3-pre4",
-			"1.20.3",
-			"1.20.4"
-		]
-	}
+  "addons": {
+    "addon": {
+      "kind": "mod",
+      "versions": [
+        {
+          "minecraft_versions": [
+            "1.20.3-pre4",
+            "1.20.3",
+            "1.20.4"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/K01OU20C/versions/DObEjZD4/cardinal-components-api-5.4.0.jar",
+          "version": "DObEjZD4"
+        },
+        {
+          "minecraft_versions": [
+            "1.20.2-pre1",
+            "1.20.2-pre2",
+            "1.20.2-pre3",
+            "1.20.2-pre4",
+            "1.20.2-rc1",
+            "1.20.2"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/K01OU20C/versions/IBZVrThp/cardinal-components-api-5.3.0.jar",
+          "version": "IBZVrThp"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/K01OU20C/versions/qW85eawp/cardinal-components-api-5.2.2.jar",
+          "version": "qW85eawp"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/K01OU20C/versions/HykM2Qyv/cardinal-components-api-5.2.1.jar",
+          "version": "HykM2Qyv"
+        },
+        {
+          "minecraft_versions": "1.20-pre4",
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/K01OU20C/versions/NGEFAf1u/cardinal-components-api-5.2.0.jar",
+          "version": "NGEFAf1u"
+        },
+        {
+          "minecraft_versions": [
+            "1.19.3",
+            "1.19.4"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/K01OU20C/versions/h4Dd87o5/cardinal-components-api-5.1.0.jar",
+          "version": "h4Dd87o5"
+        },
+        {
+          "minecraft_versions": [
+            "1.19.1",
+            "1.19.2"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/K01OU20C/versions/tPfCTMiZ/cardinal-components-api-5.0.2.jar",
+          "version": "tPfCTMiZ"
+        },
+        {
+          "minecraft_versions": [
+            "1.19",
+            "1.19.1"
+          ],
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/K01OU20C/versions/5.0.1/cardinal-components-api-5.0.1.jar",
+          "version": "hRgkWC9v"
+        },
+        {
+          "minecraft_versions": "1.19",
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/K01OU20C/versions/5.0.0/cardinal-components-api-5.0.0.jar",
+          "version": "7inPiMmR"
+        },
+        {
+          "minecraft_versions": [
+            "1.18",
+            "1.18.1",
+            "1.18.2"
+          ],
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/K01OU20C/versions/4.2.0/cardinal-components-api-4.2.0.jar",
+          "version": "rQt4CSD0"
+        },
+        {
+          "minecraft_versions": "1.19-pre1",
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/K01OU20C/versions/5.0.0-beta.1/cardinal-components-api-5.0.0-beta.1.jar",
+          "version": "cBAcMXlz"
+        },
+        {
+          "minecraft_versions": [
+            "1.18",
+            "1.18.1",
+            "1.18.2"
+          ],
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/K01OU20C/versions/4.1.4/cardinal-components-base-4.1.4.jar",
+          "version": "oI0J6zee"
+        },
+        {
+          "minecraft_versions": [
+            "1.18",
+            "1.18.1"
+          ],
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/K01OU20C/versions/4.1.3/cardinal-components-api-4.1.3.jar",
+          "version": "XVi4pC8A"
+        },
+        {
+          "minecraft_versions": [
+            "1.18",
+            "1.18.1"
+          ],
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/K01OU20C/versions/4.1.2/cardinal-components-api-4.1.2.jar",
+          "version": "UiFscSdF"
+        },
+        {
+          "minecraft_versions": [
+            "1.18",
+            "1.18.1"
+          ],
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/K01OU20C/versions/4.1.1/cardinal-components-api-4.1.1.jar",
+          "version": "ymGlSdB7"
+        },
+        {
+          "minecraft_versions": [
+            "1.18",
+            "1.18.1"
+          ],
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/K01OU20C/versions/4.1.0/cardinal-components-api-4.1.0.jar",
+          "version": "WCcq6SE2"
+        }
+      ]
+    }
+  },
+  "meta": {
+    "authors": [
+      "Up",
+      "Pyrofab"
+    ],
+    "categories": [
+      "library",
+      "technical"
+    ],
+    "community": "https://discord.ladysnake.org",
+    "description": "A data attachment API that is easy, modular, and extremely fast.",
+    "documentation": "https://ladysnake.org/wiki/cardinal-components-api",
+    "gallery": [],
+    "icon": "https://cdn.modrinth.com/data/K01OU20C/6a9f1a26662f544d139accddee9a3b1ac5c46b4e.png",
+    "issues": "https://github.com/Ladysnake/Cardinal-Components-API/issues",
+    "license": "MIT",
+    "name": "Cardinal Components API",
+    "package_maintainers": [
+      "mcvm"
+    ],
+    "source": "https://github.com/Ladysnake/Cardinal-Components-API",
+    "support_link": "https://ko-fi.com/upcraftlp"
+  },
+  "properties": {
+    "modrinth_id": "K01OU20C",
+    "supported_modloaders": [
+      "fabriclike"
+    ],
+    "supported_sides": [
+      "server"
+    ],
+    "supported_versions": [
+      "1.18",
+      "1.18.1",
+      "1.18.2",
+      "1.19-pre1",
+      "1.19",
+      "1.19.1",
+      "1.19.2",
+      "1.19.3",
+      "1.19.4",
+      "1.20-pre4",
+      "1.20",
+      "1.20.1",
+      "1.20.2-pre1",
+      "1.20.2-pre2",
+      "1.20.2-pre3",
+      "1.20.2-pre4",
+      "1.20.2-rc1",
+      "1.20.2",
+      "1.20.3-pre4",
+      "1.20.3",
+      "1.20.4"
+    ]
+  }
 }

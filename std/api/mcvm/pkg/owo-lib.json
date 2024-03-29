@@ -1,651 +1,651 @@
 {
-	"addons": {
-		"addon": {
-			"kind": "mod",
-			"versions": [
-				{
-					"minecraft_versions": [
-						"1.20.3",
-						"1.20.4"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/CJ29u2GJ/owo-lib-0.12.5%2B1.20.3.jar",
-					"version": "CJ29u2GJ"
-				},
-				{
-					"minecraft_versions": [
-						"1.20.3",
-						"1.20.4"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/HEZ55HbJ/owo-lib-0.12.4%2B1.20.3.jar",
-					"version": "HEZ55HbJ"
-				},
-				{
-					"minecraft_versions": [
-						"1.20.3",
-						"1.20.4"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/HYGIKGSR/owo-lib-0.12.3%2B1.20.3.jar",
-					"version": "HYGIKGSR"
-				},
-				{
-					"minecraft_versions": [
-						"1.20.3",
-						"1.20.4"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"stability": "latest",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/LWhxwhvI/owo-lib-0.12.2%2B1.20.3.jar",
-					"version": "LWhxwhvI"
-				},
-				{
-					"minecraft_versions": [
-						"1.20.3",
-						"1.20.4"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"stability": "latest",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/9NFjhCIH/owo-lib-0.12.1%2B1.20.3.jar",
-					"version": "9NFjhCIH"
-				},
-				{
-					"minecraft_versions": [
-						"1.20.3",
-						"1.20.4"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"stability": "latest",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/rGwQL6vN/owo-lib-0.12.0%2B1.20.3.jar",
-					"version": "rGwQL6vN"
-				},
-				{
-					"minecraft_versions": "1.20.2",
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/DYgDdRtg/owo-lib-0.11.4%2B1.20.2.jar",
-					"version": "DYgDdRtg"
-				},
-				{
-					"minecraft_versions": "1.20.2",
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"stability": "latest",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/oLoJCrky/owo-lib-0.11.3%2B1.20.2.jar",
-					"version": "oLoJCrky"
-				},
-				{
-					"minecraft_versions": [
-						"1.20",
-						"1.20.1"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/zyOBB7J4/owo-lib-0.11.2%2B1.20.jar",
-					"version": "zyOBB7J4"
-				},
-				{
-					"minecraft_versions": [
-						"1.20",
-						"1.20.1"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/m23n3uIM/owo-lib-0.11.1%2B1.20.jar",
-					"version": "m23n3uIM"
-				},
-				{
-					"minecraft_versions": [
-						"1.20",
-						"1.20.1"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"stability": "latest",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/DgIYuFEF/owo-lib-0.11.0%2B1.20.jar",
-					"version": "DgIYuFEF"
-				},
-				{
-					"minecraft_versions": "1.19.4",
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/beTZr7PG/owo-lib-0.10.6%2B1.19.4.jar",
-					"version": "beTZr7PG"
-				},
-				{
-					"minecraft_versions": "1.19.4",
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/5QgPEzLH/owo-lib-0.10.5%2B1.19.4.jar",
-					"version": "5QgPEzLH"
-				},
-				{
-					"minecraft_versions": "1.19.4",
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/T8DsELMD/owo-lib-0.10.4%2B1.19.4.jar",
-					"version": "T8DsELMD"
-				},
-				{
-					"minecraft_versions": "1.19.4",
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"stability": "latest",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/ORA8RfoA/owo-lib-0.10.3%2B1.19.4.jar",
-					"version": "ORA8RfoA"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/gmwB5dLB/owo-lib-0.10.3%2B1.19.3.jar",
-					"version": "gmwB5dLB"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/KMwbSA7v/owo-lib-0.10.2%2B1.19.3.jar",
-					"version": "KMwbSA7v"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"stability": "latest",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/LI7k719Y/owo-lib-0.10.1%2B1.19.3.jar",
-					"version": "LI7k719Y"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"stability": "latest",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/gsbvHClE/owo-lib-0.10.0%2B1.19.3.jar",
-					"version": "gsbvHClE"
-				},
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"stability": "latest",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/yGLYmVnT/owo-lib-0.9.3%2B1.19.jar",
-					"version": "yGLYmVnT"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"stability": "latest",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/2yMO9WGE/owo-lib-0.9.3%2B1.19.3.jar",
-					"version": "2yMO9WGE"
-				},
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"stability": "latest",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/JX2OM2ED/owo-lib-0.9.2%2B1.19.jar",
-					"version": "JX2OM2ED"
-				},
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"stability": "latest",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/fr6mJFIx/owo-lib-0.9.1%2B1.19.jar",
-					"version": "fr6mJFIx"
-				},
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"stability": "latest",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/lEVNuJ3B/owo-lib-0.9.0%2B1.19.jar",
-					"version": "lEVNuJ3B"
-				},
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/bJtMgK25/owo-lib-0.8.5%2B1.19.jar",
-					"version": "bJtMgK25"
-				},
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/Dmqb8GqA/owo-lib-0.8.4%2B1.19.jar",
-					"version": "Dmqb8GqA"
-				},
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/RV8F1iab/owo-lib-0.8.3%2B1.19.jar",
-					"version": "RV8F1iab"
-				},
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"stability": "latest",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/NzQ8iAeC/owo-lib-0.8.2%2B1.19.jar",
-					"version": "NzQ8iAeC"
-				},
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"stability": "latest",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/HqAtE0un/owo-lib-0.8.1%2B1.19.jar",
-					"version": "HqAtE0un"
-				},
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"stability": "latest",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/C46ht027/owo-lib-0.8.0%2B1.19.jar",
-					"version": "C46ht027"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "fabric",
-					"stability": "latest",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.7.2-no-cme%2B1.18/owo-lib-0.7.2-no-cme%2B1.18.jar",
-					"version": "uAXx21D1"
-				},
-				{
-					"minecraft_versions": "1.19",
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.7.3%2B1.19/owo-lib-0.7.3%2B1.19.jar",
-					"version": "aXMVV7gj"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.7.2%2B1.18/owo-lib-0.7.2%2B1.18.jar",
-					"version": "F4LqV8lu"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.7.1%2B1.18/owo-lib-0.7.1%2B1.18.jar",
-					"version": "WJsP5KWE"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.7.0%2B1.18/owo-lib-0.7.0%2B1.18.jar",
-					"version": "zVhs4uLj"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.6.0%2B1.18/owo-lib-0.6.0%2B1.18.jar",
-					"version": "aWqxWaL7"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.5.4%2B1.18/owo-lib-0.5.4%2B1.18.jar",
-					"version": "GqwSx15g"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1"
-					],
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.5.2%2B1.18/owo-lib-0.5.2%2B1.18.jar",
-					"version": "i8cpzMnQ"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1"
-					],
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.5.1%2B1.18/owo-lib-0.5.1%2B1.18.jar",
-					"version": "q3Sxg4SA"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1"
-					],
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.5.0%2B1.18/owo-lib-0.5.0%2B1.18.jar",
-					"version": "2QnmkZKc"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1"
-					],
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.4.0%2B1.18/owo-lib-0.4.0%2B1.18.jar",
-					"version": "vnSwwEYV"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1"
-					],
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.3.14%2B1.18/owo-lib-0.3.14%2B1.18.jar",
-					"version": "6LkUrYRt"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1"
-					],
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.3.13%2B1.18/owo-lib-0.3.13%2B1.18.jar",
-					"version": "lT5Mm5fS"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1"
-					],
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.3.12%2B1.18/owo-lib-0.3.12%2B1.18.jar",
-					"version": "3Qzf5TkU"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1"
-					],
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.3.11%2B1.18/owo-lib-0.3.11%2B1.18.jar",
-					"version": "Jfd8qbEF"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1"
-					],
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.3.10%2B1.18/owo-lib-0.3.10%2B1.18.jar",
-					"version": "eAlYR8cf"
-				},
-				{
-					"minecraft_versions": "1.18",
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.3.8%2B1.18/owo-lib-0.3.8%2B1.18.jar",
-					"version": "1E69wiMJ"
-				},
-				{
-					"minecraft_versions": "1.18-pre8",
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.3.7%2B1.18/owo-lib-0.3.7%2B1.18.jar",
-					"version": "F6DR79FV"
-				},
-				{
-					"minecraft_versions": "1.18-pre8",
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.3.6%2B1.18/owo-lib-0.3.6%2B1.18.jar",
-					"version": "1WqSpJvo"
-				},
-				{
-					"minecraft_versions": "1.18-pre8",
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.3.5%2B1.18/owo-lib-0.3.5%2B1.18.jar",
-					"version": "PptbPV7y"
-				},
-				{
-					"minecraft_versions": [
-						"1.17",
-						"1.17.1"
-					],
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.3.2%2B1.17/owo-lib-0.3.2%2B1.17.jar",
-					"version": "flVS3RS0"
-				},
-				{
-					"minecraft_versions": "21w43a",
-					"modloaders": "fabric",
-					"stability": "latest",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.3.0%2B1.18/owo-0.3.0%2B1.18.jar",
-					"version": "LmWOyXVW"
-				},
-				{
-					"minecraft_versions": [
-						"1.17",
-						"1.17.1"
-					],
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.3.1/owo-0.3.1.jar",
-					"version": "IPVeGmcd"
-				},
-				{
-					"minecraft_versions": [
-						"1.17",
-						"1.17.1"
-					],
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.3.0/owo-0.3.0.jar",
-					"version": "ERFRuuW5"
-				},
-				{
-					"minecraft_versions": [
-						"1.17",
-						"1.17.1"
-					],
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.2.1/owo-0.2.1.jar",
-					"version": "4NeTD3y0"
-				},
-				{
-					"minecraft_versions": [
-						"1.17",
-						"1.17.1"
-					],
-					"modloaders": "fabric",
-					"stability": "latest",
-					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.2.0/owo-0.2.0.jar",
-					"version": "HyvkCi1L"
-				}
-			]
-		}
-	},
-	"meta": {
-		"authors": [
-			"BasiqueEvangelist",
-			"glisco",
-			"Blodhgarm"
-		],
-		"categories": [
-			"library",
-			"technical"
-		],
-		"community": "https://discord.gg/xrwHKktV2d",
-		"description": "A general utility, GUI and config library for modding on Fabric and Quilt",
-		"gallery": [],
-		"icon": "https://cdn.modrinth.com/data/ccKDOlHs/icon.png",
-		"issues": "https://github.com/glisco03/owo-lib/issues",
-		"license": "MIT",
-		"name": "oωo (owo-lib)",
-		"package_maintainers": [
-			"mcvm"
-		],
-		"source": "https://github.com/glisco03/owo-lib"
-	},
-	"properties": {
-		"modrinth_id": "ccKDOlHs",
-		"supported_modloaders": [
-			"fabriclike"
-		],
-		"supported_sides": [
-			"client",
-			"server"
-		],
-		"supported_versions": [
-			"1.17",
-			"1.17.1",
-			"21w43a",
-			"1.18-pre8",
-			"1.18",
-			"1.18.1",
-			"1.18.2",
-			"1.19",
-			"1.19.1",
-			"1.19.2",
-			"1.19.3",
-			"1.19.4",
-			"1.20",
-			"1.20.1",
-			"1.20.2",
-			"1.20.3",
-			"1.20.4"
-		]
-	}
+  "addons": {
+    "addon": {
+      "kind": "mod",
+      "versions": [
+        {
+          "minecraft_versions": [
+            "1.20.3",
+            "1.20.4"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/CJ29u2GJ/owo-lib-0.12.5%2B1.20.3.jar",
+          "version": "CJ29u2GJ"
+        },
+        {
+          "minecraft_versions": [
+            "1.20.3",
+            "1.20.4"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/HEZ55HbJ/owo-lib-0.12.4%2B1.20.3.jar",
+          "version": "HEZ55HbJ"
+        },
+        {
+          "minecraft_versions": [
+            "1.20.3",
+            "1.20.4"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/HYGIKGSR/owo-lib-0.12.3%2B1.20.3.jar",
+          "version": "HYGIKGSR"
+        },
+        {
+          "minecraft_versions": [
+            "1.20.3",
+            "1.20.4"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "latest",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/LWhxwhvI/owo-lib-0.12.2%2B1.20.3.jar",
+          "version": "LWhxwhvI"
+        },
+        {
+          "minecraft_versions": [
+            "1.20.3",
+            "1.20.4"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "latest",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/9NFjhCIH/owo-lib-0.12.1%2B1.20.3.jar",
+          "version": "9NFjhCIH"
+        },
+        {
+          "minecraft_versions": [
+            "1.20.3",
+            "1.20.4"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "latest",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/rGwQL6vN/owo-lib-0.12.0%2B1.20.3.jar",
+          "version": "rGwQL6vN"
+        },
+        {
+          "minecraft_versions": "1.20.2",
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/DYgDdRtg/owo-lib-0.11.4%2B1.20.2.jar",
+          "version": "DYgDdRtg"
+        },
+        {
+          "minecraft_versions": "1.20.2",
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "latest",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/oLoJCrky/owo-lib-0.11.3%2B1.20.2.jar",
+          "version": "oLoJCrky"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/zyOBB7J4/owo-lib-0.11.2%2B1.20.jar",
+          "version": "zyOBB7J4"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/m23n3uIM/owo-lib-0.11.1%2B1.20.jar",
+          "version": "m23n3uIM"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "latest",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/DgIYuFEF/owo-lib-0.11.0%2B1.20.jar",
+          "version": "DgIYuFEF"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/beTZr7PG/owo-lib-0.10.6%2B1.19.4.jar",
+          "version": "beTZr7PG"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/5QgPEzLH/owo-lib-0.10.5%2B1.19.4.jar",
+          "version": "5QgPEzLH"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/T8DsELMD/owo-lib-0.10.4%2B1.19.4.jar",
+          "version": "T8DsELMD"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "latest",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/ORA8RfoA/owo-lib-0.10.3%2B1.19.4.jar",
+          "version": "ORA8RfoA"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/gmwB5dLB/owo-lib-0.10.3%2B1.19.3.jar",
+          "version": "gmwB5dLB"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/KMwbSA7v/owo-lib-0.10.2%2B1.19.3.jar",
+          "version": "KMwbSA7v"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "latest",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/LI7k719Y/owo-lib-0.10.1%2B1.19.3.jar",
+          "version": "LI7k719Y"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "latest",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/gsbvHClE/owo-lib-0.10.0%2B1.19.3.jar",
+          "version": "gsbvHClE"
+        },
+        {
+          "minecraft_versions": [
+            "1.19",
+            "1.19.1",
+            "1.19.2"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "latest",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/yGLYmVnT/owo-lib-0.9.3%2B1.19.jar",
+          "version": "yGLYmVnT"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "latest",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/2yMO9WGE/owo-lib-0.9.3%2B1.19.3.jar",
+          "version": "2yMO9WGE"
+        },
+        {
+          "minecraft_versions": [
+            "1.19",
+            "1.19.1",
+            "1.19.2"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "latest",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/JX2OM2ED/owo-lib-0.9.2%2B1.19.jar",
+          "version": "JX2OM2ED"
+        },
+        {
+          "minecraft_versions": [
+            "1.19",
+            "1.19.1",
+            "1.19.2"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "latest",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/fr6mJFIx/owo-lib-0.9.1%2B1.19.jar",
+          "version": "fr6mJFIx"
+        },
+        {
+          "minecraft_versions": [
+            "1.19",
+            "1.19.1",
+            "1.19.2"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "latest",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/lEVNuJ3B/owo-lib-0.9.0%2B1.19.jar",
+          "version": "lEVNuJ3B"
+        },
+        {
+          "minecraft_versions": [
+            "1.19",
+            "1.19.1",
+            "1.19.2"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/bJtMgK25/owo-lib-0.8.5%2B1.19.jar",
+          "version": "bJtMgK25"
+        },
+        {
+          "minecraft_versions": [
+            "1.19",
+            "1.19.1",
+            "1.19.2"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/Dmqb8GqA/owo-lib-0.8.4%2B1.19.jar",
+          "version": "Dmqb8GqA"
+        },
+        {
+          "minecraft_versions": [
+            "1.19",
+            "1.19.1",
+            "1.19.2"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/RV8F1iab/owo-lib-0.8.3%2B1.19.jar",
+          "version": "RV8F1iab"
+        },
+        {
+          "minecraft_versions": [
+            "1.19",
+            "1.19.1",
+            "1.19.2"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "latest",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/NzQ8iAeC/owo-lib-0.8.2%2B1.19.jar",
+          "version": "NzQ8iAeC"
+        },
+        {
+          "minecraft_versions": [
+            "1.19",
+            "1.19.1",
+            "1.19.2"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "latest",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/HqAtE0un/owo-lib-0.8.1%2B1.19.jar",
+          "version": "HqAtE0un"
+        },
+        {
+          "minecraft_versions": [
+            "1.19",
+            "1.19.1",
+            "1.19.2"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "latest",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/C46ht027/owo-lib-0.8.0%2B1.19.jar",
+          "version": "C46ht027"
+        },
+        {
+          "minecraft_versions": "1.18.2",
+          "modloaders": "fabric",
+          "stability": "latest",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.7.2-no-cme%2B1.18/owo-lib-0.7.2-no-cme%2B1.18.jar",
+          "version": "uAXx21D1"
+        },
+        {
+          "minecraft_versions": "1.19",
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.7.3%2B1.19/owo-lib-0.7.3%2B1.19.jar",
+          "version": "aXMVV7gj"
+        },
+        {
+          "minecraft_versions": "1.18.2",
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.7.2%2B1.18/owo-lib-0.7.2%2B1.18.jar",
+          "version": "F4LqV8lu"
+        },
+        {
+          "minecraft_versions": "1.18.2",
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.7.1%2B1.18/owo-lib-0.7.1%2B1.18.jar",
+          "version": "WJsP5KWE"
+        },
+        {
+          "minecraft_versions": "1.18.2",
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.7.0%2B1.18/owo-lib-0.7.0%2B1.18.jar",
+          "version": "zVhs4uLj"
+        },
+        {
+          "minecraft_versions": "1.18.2",
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.6.0%2B1.18/owo-lib-0.6.0%2B1.18.jar",
+          "version": "aWqxWaL7"
+        },
+        {
+          "minecraft_versions": "1.18.2",
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.5.4%2B1.18/owo-lib-0.5.4%2B1.18.jar",
+          "version": "GqwSx15g"
+        },
+        {
+          "minecraft_versions": [
+            "1.18",
+            "1.18.1"
+          ],
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.5.2%2B1.18/owo-lib-0.5.2%2B1.18.jar",
+          "version": "i8cpzMnQ"
+        },
+        {
+          "minecraft_versions": [
+            "1.18",
+            "1.18.1"
+          ],
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.5.1%2B1.18/owo-lib-0.5.1%2B1.18.jar",
+          "version": "q3Sxg4SA"
+        },
+        {
+          "minecraft_versions": [
+            "1.18",
+            "1.18.1"
+          ],
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.5.0%2B1.18/owo-lib-0.5.0%2B1.18.jar",
+          "version": "2QnmkZKc"
+        },
+        {
+          "minecraft_versions": [
+            "1.18",
+            "1.18.1"
+          ],
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.4.0%2B1.18/owo-lib-0.4.0%2B1.18.jar",
+          "version": "vnSwwEYV"
+        },
+        {
+          "minecraft_versions": [
+            "1.18",
+            "1.18.1"
+          ],
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.3.14%2B1.18/owo-lib-0.3.14%2B1.18.jar",
+          "version": "6LkUrYRt"
+        },
+        {
+          "minecraft_versions": [
+            "1.18",
+            "1.18.1"
+          ],
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.3.13%2B1.18/owo-lib-0.3.13%2B1.18.jar",
+          "version": "lT5Mm5fS"
+        },
+        {
+          "minecraft_versions": [
+            "1.18",
+            "1.18.1"
+          ],
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.3.12%2B1.18/owo-lib-0.3.12%2B1.18.jar",
+          "version": "3Qzf5TkU"
+        },
+        {
+          "minecraft_versions": [
+            "1.18",
+            "1.18.1"
+          ],
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.3.11%2B1.18/owo-lib-0.3.11%2B1.18.jar",
+          "version": "Jfd8qbEF"
+        },
+        {
+          "minecraft_versions": [
+            "1.18",
+            "1.18.1"
+          ],
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.3.10%2B1.18/owo-lib-0.3.10%2B1.18.jar",
+          "version": "eAlYR8cf"
+        },
+        {
+          "minecraft_versions": "1.18",
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.3.8%2B1.18/owo-lib-0.3.8%2B1.18.jar",
+          "version": "1E69wiMJ"
+        },
+        {
+          "minecraft_versions": "1.18-pre8",
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.3.7%2B1.18/owo-lib-0.3.7%2B1.18.jar",
+          "version": "F6DR79FV"
+        },
+        {
+          "minecraft_versions": "1.18-pre8",
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.3.6%2B1.18/owo-lib-0.3.6%2B1.18.jar",
+          "version": "1WqSpJvo"
+        },
+        {
+          "minecraft_versions": "1.18-pre8",
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.3.5%2B1.18/owo-lib-0.3.5%2B1.18.jar",
+          "version": "PptbPV7y"
+        },
+        {
+          "minecraft_versions": [
+            "1.17",
+            "1.17.1"
+          ],
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.3.2%2B1.17/owo-lib-0.3.2%2B1.17.jar",
+          "version": "flVS3RS0"
+        },
+        {
+          "minecraft_versions": "21w43a",
+          "modloaders": "fabric",
+          "stability": "latest",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.3.0%2B1.18/owo-0.3.0%2B1.18.jar",
+          "version": "LmWOyXVW"
+        },
+        {
+          "minecraft_versions": [
+            "1.17",
+            "1.17.1"
+          ],
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.3.1/owo-0.3.1.jar",
+          "version": "IPVeGmcd"
+        },
+        {
+          "minecraft_versions": [
+            "1.17",
+            "1.17.1"
+          ],
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.3.0/owo-0.3.0.jar",
+          "version": "ERFRuuW5"
+        },
+        {
+          "minecraft_versions": [
+            "1.17",
+            "1.17.1"
+          ],
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.2.1/owo-0.2.1.jar",
+          "version": "4NeTD3y0"
+        },
+        {
+          "minecraft_versions": [
+            "1.17",
+            "1.17.1"
+          ],
+          "modloaders": "fabric",
+          "stability": "latest",
+          "url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/0.2.0/owo-0.2.0.jar",
+          "version": "HyvkCi1L"
+        }
+      ]
+    }
+  },
+  "meta": {
+    "authors": [
+      "BasiqueEvangelist",
+      "glisco",
+      "Blodhgarm"
+    ],
+    "categories": [
+      "library",
+      "technical"
+    ],
+    "community": "https://discord.gg/xrwHKktV2d",
+    "description": "A general utility, GUI and config library for modding on Fabric and Quilt",
+    "gallery": [],
+    "icon": "https://cdn.modrinth.com/data/ccKDOlHs/icon.png",
+    "issues": "https://github.com/glisco03/owo-lib/issues",
+    "license": "MIT",
+    "name": "oωo (owo-lib)",
+    "package_maintainers": [
+      "mcvm"
+    ],
+    "source": "https://github.com/glisco03/owo-lib"
+  },
+  "properties": {
+    "modrinth_id": "ccKDOlHs",
+    "supported_modloaders": [
+      "fabriclike"
+    ],
+    "supported_sides": [
+      "client",
+      "server"
+    ],
+    "supported_versions": [
+      "1.17",
+      "1.17.1",
+      "21w43a",
+      "1.18-pre8",
+      "1.18",
+      "1.18.1",
+      "1.18.2",
+      "1.19",
+      "1.19.1",
+      "1.19.2",
+      "1.19.3",
+      "1.19.4",
+      "1.20",
+      "1.20.1",
+      "1.20.2",
+      "1.20.3",
+      "1.20.4"
+    ]
+  }
 }

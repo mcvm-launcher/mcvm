@@ -1,165 +1,165 @@
 {
-	"addons": {
-		"addon": {
-			"kind": "mod",
-			"versions": [
-				{
-					"minecraft_versions": [
-						"1.19.4",
-						"1.20",
-						"1.20.1"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/PRN43VSY/versions/uNgEPb10/animatica-0.6%2B1.20.jar",
-					"version": "uNgEPb10"
-				},
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.2",
-						"1.19.3"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/PRN43VSY/versions/0.5%2B1.19/animatica-0.5%2B1.19.jar",
-					"version": "rghK1s60"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/PRN43VSY/versions/0.5%2B1.18.2/animatica-0.5%2B1.18.2.jar",
-					"version": "GYUKcduK"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1",
-						"1.18.2"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/PRN43VSY/versions/0.4%2B1.18/animatica-0.4%2B1.18.jar",
-					"version": "uoIGWJxI"
-				},
-				{
-					"minecraft_versions": "1.17.1",
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/PRN43VSY/versions/0.4%2B1.17/animatica-0.4%2B1.17.jar",
-					"version": "BLd2HXCa"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1"
-					],
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/PRN43VSY/versions/0.3%2B1.18/animatica-0.3%2B1.18.jar",
-					"version": "LGW8h05F"
-				},
-				{
-					"minecraft_versions": "1.17.1",
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/PRN43VSY/versions/0.3%2B1.17/animatica-0.3%2B1.17.jar",
-					"version": "MQ9LuxTT"
-				},
-				{
-					"minecraft_versions": [
-						"1.18",
-						"1.18.1"
-					],
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/PRN43VSY/versions/0.2%2B1.18/animatica-0.2%2B1.18.jar",
-					"version": "u8LKZ5Ko"
-				},
-				{
-					"minecraft_versions": "1.17.1",
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/PRN43VSY/versions/0.2%2B1.17/animatica-0.2%2B1.17.jar",
-					"version": "QEMvNfIT"
-				},
-				{
-					"minecraft_versions": [
-						"1.17",
-						"1.17.1"
-					],
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/PRN43VSY/versions/0.1%2B1.17/animatica-0.1%2B1.17.jar",
-					"version": "NXTzSfcj"
-				}
-			]
-		}
-	},
-	"meta": {
-		"authors": [
-			"FoundationGames"
-		],
-		"categories": [
-			"library"
-		],
-		"community": "https://discord.gg/7Aw3y4RtY9",
-		"description": "A mod implementing the OptiFine/MCPatcher animated texture format",
-		"gallery": [],
-		"icon": "https://cdn.modrinth.com/data/PRN43VSY/icon.png",
-		"issues": "https://github.com/FoundationGames/Animatica/issues",
-		"keywords": [
-			"graphics"
-		],
-		"license": "LGPL-3.0-only",
-		"name": "Animatica",
-		"package_maintainers": [
-			"mcvm"
-		],
-		"source": "https://github.com/FoundationGames/Animatica"
-	},
-	"properties": {
-		"modrinth_id": "PRN43VSY",
-		"supported_modloaders": [
-			"fabriclike"
-		],
-		"supported_sides": [
-			"client"
-		],
-		"supported_versions": [
-			"1.17",
-			"1.17.1",
-			"1.18",
-			"1.18.1",
-			"1.18.2",
-			"1.19",
-			"1.19.2",
-			"1.19.3",
-			"1.19.4",
-			"1.20",
-			"1.20.1"
-		]
-	}
+  "addons": {
+    "addon": {
+      "kind": "mod",
+      "versions": [
+        {
+          "minecraft_versions": [
+            "1.19.4",
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "relations": {
+            "dependencies": "fabriclike-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/PRN43VSY/versions/uNgEPb10/animatica-0.6%2B1.20.jar",
+          "version": "uNgEPb10"
+        },
+        {
+          "minecraft_versions": [
+            "1.19",
+            "1.19.2",
+            "1.19.3"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "relations": {
+            "dependencies": "fabriclike-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/PRN43VSY/versions/0.5%2B1.19/animatica-0.5%2B1.19.jar",
+          "version": "rghK1s60"
+        },
+        {
+          "minecraft_versions": "1.18.2",
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "relations": {
+            "dependencies": "fabriclike-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/PRN43VSY/versions/0.5%2B1.18.2/animatica-0.5%2B1.18.2.jar",
+          "version": "GYUKcduK"
+        },
+        {
+          "minecraft_versions": [
+            "1.18",
+            "1.18.1",
+            "1.18.2"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/PRN43VSY/versions/0.4%2B1.18/animatica-0.4%2B1.18.jar",
+          "version": "uoIGWJxI"
+        },
+        {
+          "minecraft_versions": "1.17.1",
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/PRN43VSY/versions/0.4%2B1.17/animatica-0.4%2B1.17.jar",
+          "version": "BLd2HXCa"
+        },
+        {
+          "minecraft_versions": [
+            "1.18",
+            "1.18.1"
+          ],
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/PRN43VSY/versions/0.3%2B1.18/animatica-0.3%2B1.18.jar",
+          "version": "LGW8h05F"
+        },
+        {
+          "minecraft_versions": "1.17.1",
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/PRN43VSY/versions/0.3%2B1.17/animatica-0.3%2B1.17.jar",
+          "version": "MQ9LuxTT"
+        },
+        {
+          "minecraft_versions": [
+            "1.18",
+            "1.18.1"
+          ],
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/PRN43VSY/versions/0.2%2B1.18/animatica-0.2%2B1.18.jar",
+          "version": "u8LKZ5Ko"
+        },
+        {
+          "minecraft_versions": "1.17.1",
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/PRN43VSY/versions/0.2%2B1.17/animatica-0.2%2B1.17.jar",
+          "version": "QEMvNfIT"
+        },
+        {
+          "minecraft_versions": [
+            "1.17",
+            "1.17.1"
+          ],
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/PRN43VSY/versions/0.1%2B1.17/animatica-0.1%2B1.17.jar",
+          "version": "NXTzSfcj"
+        }
+      ]
+    }
+  },
+  "meta": {
+    "authors": [
+      "FoundationGames"
+    ],
+    "categories": [
+      "library"
+    ],
+    "community": "https://discord.gg/7Aw3y4RtY9",
+    "description": "A mod implementing the OptiFine/MCPatcher animated texture format",
+    "gallery": [],
+    "icon": "https://cdn.modrinth.com/data/PRN43VSY/icon.png",
+    "issues": "https://github.com/FoundationGames/Animatica/issues",
+    "keywords": [
+      "graphics"
+    ],
+    "license": "LGPL-3.0-only",
+    "name": "Animatica",
+    "package_maintainers": [
+      "mcvm"
+    ],
+    "source": "https://github.com/FoundationGames/Animatica"
+  },
+  "properties": {
+    "modrinth_id": "PRN43VSY",
+    "supported_modloaders": [
+      "fabriclike"
+    ],
+    "supported_sides": [
+      "client"
+    ],
+    "supported_versions": [
+      "1.17",
+      "1.17.1",
+      "1.18",
+      "1.18.1",
+      "1.18.2",
+      "1.19",
+      "1.19.2",
+      "1.19.3",
+      "1.19.4",
+      "1.20",
+      "1.20.1"
+    ]
+  }
 }
