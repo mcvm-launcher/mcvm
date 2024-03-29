@@ -598,28 +598,12 @@ dependencies = [
 ]
 
 [[package]]
-name = "futures"
-version = "0.3.30"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "645c6916888f6cb6350d2550b80fb63e734897a8498abe35cfb732b6487804b0"
-dependencies = [
- "futures-channel",
- "futures-core",
- "futures-executor",
- "futures-io",
- "futures-sink",
- "futures-task",
- "futures-util",
-]
-
-[[package]]
 name = "futures-channel"
 version = "0.3.30"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "eac8f7d7865dcb88bd4373ab671c8cf4508703796caa2b1985a9ca867b3fcb78"
 dependencies = [
  "futures-core",
- "futures-sink",
 ]
 
 [[package]]
@@ -629,32 +613,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dfc6580bb841c5a68e9ef15c77ccc837b40a7504914d52e47b8b0e9bbda25a1d"
 
 [[package]]
-name = "futures-executor"
-version = "0.3.30"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a576fc72ae164fca6b9db127eaa9a9dda0d61316034f33a0a0d4eda41f02b01d"
-dependencies = [
- "futures-core",
- "futures-task",
- "futures-util",
-]
-
-[[package]]
 name = "futures-io"
 version = "0.3.30"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a44623e20b9681a318efdd71c299b6b222ed6f231972bfe2f224ebad6311f0c1"
-
-[[package]]
-name = "futures-macro"
-version = "0.3.30"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "87750cf4b7a4c0625b1529e4c543c2182106e4dedc60a2a6455e00d212c489ac"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn 2.0.55",
-]
 
 [[package]]
 name = "futures-sink"
@@ -674,11 +636,8 @@ version = "0.3.30"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3d6401deb83407ab3da39eba7e33987a73c3df0c82b4bb5813ee871c19c41d48"
 dependencies = [
- "futures-channel",
  "futures-core",
  "futures-io",
- "futures-macro",
- "futures-sink",
  "futures-task",
  "memchr",
  "pin-project-lite",
@@ -716,18 +675,6 @@ dependencies = [
  "libc",
  "wasi",
  "wasm-bindgen",
-]
-
-[[package]]
-name = "getset"
-version = "0.1.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e45727250e75cc04ff2846a66397da8ef2b3db8e40e0cef4df67950a07621eb9"
-dependencies = [
- "proc-macro-error",
- "proc-macro2",
- "quote",
- "syn 1.0.109",
 ]
 
 [[package]]
@@ -1182,10 +1129,8 @@ version = "0.19.0"
 dependencies = [
  "anyhow",
  "async-trait",
- "bytes",
  "cfg-match",
  "directories",
- "futures",
  "hex",
  "itertools",
  "libflate",
@@ -1195,7 +1140,6 @@ dependencies = [
  "mcvm_parse",
  "mcvm_pkg",
  "mcvm_shared",
- "minecraft-msa-auth",
  "oauth2",
  "rand",
  "reqwest 0.12.2",
@@ -1205,11 +1149,9 @@ dependencies = [
  "sha2",
  "shellexpand",
  "tar",
- "thiserror",
  "tokio",
  "version-compare",
  "zip",
- "zip-extract",
 ]
 
 [[package]]
@@ -1219,9 +1161,8 @@ dependencies = [
  "anyhow",
  "bytes",
  "cfg-match",
- "getset",
  "mcvm_shared",
- "nutype 0.4.0",
+ "nutype",
  "oauth2",
  "reqwest 0.12.2",
  "serde",
@@ -1254,7 +1195,6 @@ dependencies = [
  "bytes",
  "cfg-match",
  "directories",
- "futures",
  "hex",
  "libflate",
  "mcvm_auth",
@@ -1264,12 +1204,9 @@ dependencies = [
  "schemars",
  "serde",
  "serde_json",
- "sha2",
  "tar",
- "thiserror",
  "tokio",
  "zip",
- "zip-extract",
 ]
 
 [[package]]
@@ -1277,16 +1214,12 @@ name = "mcvm_mods"
 version = "0.3.0"
 dependencies = [
  "anyhow",
- "bytes",
- "cfg-match",
  "mcvm_core",
  "mcvm_shared",
- "minecraft-msa-auth",
  "oauth2",
  "reqwest 0.12.2",
  "serde",
  "serde_json",
- "thiserror",
  "tokio",
 ]
 
@@ -1300,7 +1233,6 @@ dependencies = [
  "schemars",
  "serde",
  "serde_json",
- "thiserror",
 ]
 
 [[package]]
@@ -1364,20 +1296,6 @@ name = "mime"
 version = "0.3.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6877bb514081ee2a7ff5ef9de3281f14a4dd4bceac4c09388074a6b5df8a139a"
-
-[[package]]
-name = "minecraft-msa-auth"
-version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e53e950abeaaa66d667b6dbc088d56481d06a8a91c44df9bca827ff6c445497a"
-dependencies = [
- "getset",
- "nutype 0.1.1",
- "reqwest 0.11.27",
- "serde",
- "serde_json",
- "thiserror",
-]
 
 [[package]]
 name = "minimal-lexical"
@@ -1452,31 +1370,11 @@ dependencies = [
 
 [[package]]
 name = "nutype"
-version = "0.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2a9d7240ff1fd77d3efca29efbd1be0a1ee3308b14d01b61240cafbd3072082c"
-dependencies = [
- "nutype_macros 0.1.1",
-]
-
-[[package]]
-name = "nutype"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "38fd38251d275b6a3cecbf4d2f8ce83b80609f0e33e2508a8bc3a7d94401d007"
 dependencies = [
- "nutype_macros 0.4.0",
-]
-
-[[package]]
-name = "nutype_macros"
-version = "0.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c291ec1f18dff28b7d4119d19140f06fddb089fcce4d4589d490e887ea546843"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn 1.0.109",
+ "nutype_macros",
 ]
 
 [[package]]
@@ -1672,30 +1570,6 @@ name = "ppv-lite86"
 version = "0.2.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5b40af805b3121feab8a3c29f04d8ad262fa8e0561883e7653e024ae4479e6de"
-
-[[package]]
-name = "proc-macro-error"
-version = "1.0.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "da25490ff9892aab3fcf7c36f08cfb902dd3e71ca0f9f9517bea02a73a5ce38c"
-dependencies = [
- "proc-macro-error-attr",
- "proc-macro2",
- "quote",
- "syn 1.0.109",
- "version_check",
-]
-
-[[package]]
-name = "proc-macro-error-attr"
-version = "1.0.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a1be40180e52ecc98ad80b184934baf3d0d29f979574e439af5a55274b35f869"
-dependencies = [
- "proc-macro2",
- "quote",
- "version_check",
-]
 
 [[package]]
 name = "proc-macro2"
@@ -2822,17 +2696,6 @@ dependencies = [
  "sha1",
  "time",
  "zstd",
-]
-
-[[package]]
-name = "zip-extract"
-version = "0.1.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e109e5a291403b4c1e514d39f8a22d3f98d257e691a52bb1f16051bb1ffed63e"
-dependencies = [
- "log",
- "thiserror",
- "zip",
 ]
 
 [[package]]

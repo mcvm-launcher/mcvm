@@ -11,6 +11,7 @@ use std::path::{Path, PathBuf};
 use anyhow::{bail, Context};
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use tar::Archive;
+use zip::ZipArchive;
 
 use crate::io::files::{self, paths::Paths};
 use crate::io::persistent::{PersistentData, PersistentDataJavaInstallation};
@@ -356,7 +357,10 @@ fn extract_archive(arc_path: &Path, out_dir: &Path) -> anyhow::Result<()> {
 	let file = File::open(arc_path).context("Failed to read archive file")?;
 	let mut file = BufReader::new(file);
 	if cfg!(windows) {
-		zip_extract::extract(&mut file, out_dir, false).context("Failed to extract zip file")?;
+		let mut archive = ZipArchive::new(file).context("Failed to open zip archive")?;
+		archive
+			.extract(out_dir)
+			.context("Failed to extract zip file")?;
 	} else {
 		let mut decoder =
 			libflate::gzip::Decoder::new(&mut file).context("Failed to decode tar.gz")?;

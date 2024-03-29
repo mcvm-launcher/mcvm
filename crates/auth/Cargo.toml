@@ -15,7 +15,6 @@ categories = ["games"]
 anyhow = "1.0.70"
 bytes = "1.4.0"
 cfg-match = "0.2.1"
-getset = "0.1.2"
 mcvm_shared = { path = "../shared", version = "0.11.0" }
 nutype = { version = "0.4.0", features = ["serde"]}
 oauth2 = "4.4.1"

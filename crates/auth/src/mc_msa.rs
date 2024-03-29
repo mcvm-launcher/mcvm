@@ -4,7 +4,6 @@
 use std::collections::HashMap;
 use std::fmt::Debug;
 
-use getset::{CopyGetters, Getters};
 use nutype::nutype;
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
@@ -52,24 +51,20 @@ pub enum MinecraftAuthorizationError {
 
 /// The response from Minecraft when attempting to authenticate with an xbox
 /// token
-#[derive(Deserialize, Serialize, Debug, Getters, CopyGetters, Clone)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct MinecraftAuthenticationResponse {
 	/// UUID of the Xbox account.
 	/// Please note that this is not the Minecraft player's UUID
-	#[getset(get = "pub")]
-	username: String,
+	pub username: String,
 
 	/// The minecraft JWT access token
-	#[getset(get = "pub")]
-	access_token: MinecraftAccessToken,
+	pub access_token: MinecraftAccessToken,
 
 	/// The type of access token
-	#[getset(get = "pub")]
-	token_type: MinecraftTokenType,
+	pub token_type: MinecraftTokenType,
 
 	/// How many seconds until the token expires
-	#[getset(get_copy = "pub")]
-	expires_in: u32,
+	pub expires_in: u32,
 }
 
 /// The response from Xbox when authenticating with a Microsoft token

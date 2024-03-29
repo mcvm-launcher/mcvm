@@ -44,10 +44,8 @@ path = "test/manual_integration/fabric_core.rs"
 [dependencies]
 anyhow = "1.0.70"
 async-trait = "0.1.73"
-bytes = "1.4.0"
 cfg-match = "0.2.1"
 directories = "5.0.0"
-futures = "0.3.26"
 hex = "0.4.3"
 itertools = "0.11.0"
 libflate = "2.0.0"
@@ -67,11 +65,8 @@ mcvm_options = { path = "crates/options", version = "0.3.0" }
 mcvm_parse = { path = "crates/parse", version = "0.12.0" }
 mcvm_pkg = { path = "crates/pkg", version = "0.11.0" }
 mcvm_shared = { path = "crates/shared", version = "0.11.0" }
-minecraft-msa-auth = "0.3.0"
 shellexpand = { version = "3.0.0", features = ["path"] }
 tar = "0.4.38"
-thiserror = "1.0.38"
 tokio = { version = "1.36.0", features = ["macros", "fs", "rt-multi-thread"] }
-zip = "0.6.4"
-zip-extract = "0.1.2"
 version-compare = "0.2.0"
+zip = "0.6.4"
