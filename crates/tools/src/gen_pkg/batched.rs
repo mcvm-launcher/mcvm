@@ -100,6 +100,13 @@ pub async fn batched_gen(mut config: BatchedConfig, filter: Vec<String>) {
 		.iter()
 		.flat_map(|x| x.versions.iter().cloned())
 		.collect();
+	if modrinth_version_ids.len() > 0 {
+		println!(
+			"Downloading {} Modrinth versions...",
+			modrinth_version_ids.len()
+		);
+	}
+
 	let chunks = modrinth_version_ids.chunks(batch_limit);
 
 	let modrinth_versions = Arc::new(Mutex::new(Vec::new()));
