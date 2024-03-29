@@ -1,6 +1,6 @@
 [package]
 name = "mcvm_tools"
-version = "0.4.0"
+version = "0.5.0"
 edition = "2021"
 license = "GPL-3.0-or-later"
 description = "Utilities for MCVM"
@@ -13,7 +13,7 @@ categories = ["games"]
 anyhow = "1.0.70"
 clap = { version = "4.1.13", features = ["derive"] }
 iso8601-timestamp = "0.2.17"
-mcvm = { path = "../../", version = "0.18.0", features = ["schema"] }
+mcvm = { path = "../../", version = "0.19.0", features = ["schema"] }
 reqwest = { version = "0.12.2", default_features = false, features = [
 	"json",
 	"rustls-tls",

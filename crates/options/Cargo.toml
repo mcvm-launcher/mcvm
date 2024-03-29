@@ -1,6 +1,6 @@
 [package]
 name = "mcvm_options"
-version = "0.2.0"
+version = "0.3.0"
 edition = "2021"
 license = "GPL-3.0-or-later"
 description = "Game options generation for Minecraft"
@@ -18,7 +18,7 @@ schema = [
 [dependencies]
 anyhow = "1.0.70"
 itertools = "0.11.0"
-mcvm_shared = { path = "../shared", version = "0.10.1" }
+mcvm_shared = { path = "../shared", version = "0.11.0" }
 schemars = { version = "0.8.15", optional = true }
 serde = { version = "1.0.152", features = ["derive"] }
 serde_json = "1.0.91"

@@ -214,12 +214,13 @@ Conditional rules let you change the package based on ConditionSets. Each rule w
 {
 	"conditions": [ConditionSet],
 	"properties": {
-		"relations": Relations
+		"relations": Relations,
+		"notices": [string]
 	}
 }
 ```
 
 - `conditions`: A list of condition sets to check.
 - `properties`: The changes to apply if the conditions are satisfied.
-- `properties.relations`: Package relations to include. These are appended to the other relations
-- `properties.notices`: A list of messages to display to the user.
+- `properties.relations` (Optional): Package relations to include. These are appended to the other relations
+- `properties.notices` (Optional): A list of messages to display to the user.

@@ -1,6 +1,6 @@
 [package]
 name = "mcvm_cli"
-version = "0.5.0"
+version = "0.6.0"
 edition = "2021"
 license = "GPL-3.0-or-later"
 description = "The command-line interface for mcvm"
@@ -23,7 +23,7 @@ clap = { version = "4.1.13", features = ["derive"] }
 color-print = "0.3.4"
 inquire = "0.6.2"
 itertools = "0.11.0"
-mcvm = { path = "../../", version = "0.18.0" }
+mcvm = { path = "../../", version = "0.19.0" }
 oauth2 = "4.4.1"
 reqwest = { version = "0.12.2", default_features = false, features = [
 	"json",

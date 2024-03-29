@@ -1,6 +1,6 @@
 [package]
 name = "mcvm_core"
-version = "0.2.0"
+version = "0.3.0"
 edition = "2021"
 license = "GPL-3.0-or-later"
 description = "Core functionality for launching Minecraft"
@@ -20,8 +20,8 @@ directories = "5.0.0"
 futures = "0.3.26"
 hex = "0.4.3"
 libflate = "2.0.0"
-mcvm_auth = { path = "../auth", version = "0.1.1" }
-mcvm_shared = { path = "../shared", version = "0.10.1" }
+mcvm_auth = { path = "../auth", version = "0.2.0" }
+mcvm_shared = { path = "../shared", version = "0.11.0" }
 oauth2 = "4.4.1"
 reqwest = { version = "0.12.2", default_features = false, features = [
 	"json",
