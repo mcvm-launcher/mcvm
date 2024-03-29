@@ -131,6 +131,10 @@ pub struct Version {
 	pub game_versions: Vec<String>,
 	/// The dependencies that this version has
 	pub dependencies: Vec<Dependency>,
+	/// Whether this version is featured
+	pub featured: bool,
+	/// The date this version was published in ISO-8601
+	pub date_published: String,
 }
 
 /// Loader for a Modrinth project version

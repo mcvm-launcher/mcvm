@@ -3,6 +3,8 @@ use std::io::BufWriter;
 use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
 
+use iso8601_timestamp::Timestamp;
+use mcvm::net::modrinth::Version;
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 use serde_json::{ser::PrettyFormatter, Serializer};
@@ -128,7 +130,9 @@ pub async fn batched_gen(mut config: BatchedConfig, filter: Vec<String>) {
 	while let Some(result) = tasks.join_next().await {
 		result.expect("Task failed");
 	}
-	let modrinth_versions = modrinth_versions.lock().expect("Failed to lock mutex");
+	let mut modrinth_versions = modrinth_versions.lock().expect("Failed to lock mutex");
+	// Sort the versions
+	modrinth_versions.sort_by_key(|x| SortVersions::new(x));
 
 	// Collect Modrinth teams
 	let mut modrinth_team_ids = Vec::new();
@@ -207,5 +211,20 @@ pub async fn batched_gen(mut config: BatchedConfig, filter: Vec<String>) {
 		package
 			.serialize(&mut serializer)
 			.expect("Failed to serialize JSON");
+	}
+}
+
+#[derive(PartialEq, Eq, PartialOrd, Ord)]
+struct SortVersions {
+	featured: bool,
+	timestamp: Timestamp,
+}
+
+impl SortVersions {
+	fn new(version: &Version) -> Self {
+		Self {
+			featured: version.featured,
+			timestamp: Timestamp::parse(&version.date_published).unwrap_or(Timestamp::UNIX_EPOCH),
+		}
 	}
 }
