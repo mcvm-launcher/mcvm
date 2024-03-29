@@ -1,4 +1,6 @@
 {
+	"source": "modrinth",
+	"id": "4I1XuqiY",
 	"relation_substitutions": {
 		"BVzZfTc1": "entity-texture-features"
 	},

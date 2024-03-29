@@ -1,4 +1,6 @@
 {
+	"source": "modrinth",
+	"id": "nU0bVIaL",
 	"relation_substitutions": {
 		"P7dR8mSH": "fabriclike-api"
 	},

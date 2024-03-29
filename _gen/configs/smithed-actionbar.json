@@ -1,4 +1,6 @@
 {
+	"source": "smithed",
+	"id": "actionbar",
 	"relation_substitutions": {},
 	"merge": {
 		"meta": {

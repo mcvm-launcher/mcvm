@@ -1,4 +1,6 @@
 {
+	"source": "modrinth",
+	"id": "BVzZfTc1",
 	"relation_substitutions": {
 		"mOgUt4GM": "mod-menu",
 		"9s6osm5g": "cloth-config",

@@ -1,4 +1,6 @@
 {
+	"source": "smithed",
+	"id": "crafter",
 	"relation_substitutions": {
 		"HoIqL0Lk3HN3kl2aWZHK": "smithed-custom-block"
 	},

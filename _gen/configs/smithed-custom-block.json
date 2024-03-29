@@ -1,4 +1,6 @@
 {
+	"source": "smithed",
+	"id": "custom-block",
 	"relation_substitutions": {},
 	"merge": {
 		"meta": {

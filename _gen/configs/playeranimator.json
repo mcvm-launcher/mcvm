@@ -1,4 +1,6 @@
 {
+	"source": "modrinth",
+	"id": "gedNE4y2",
 	"relation_substitutions": {
 		"aRnIEV0F": "bendy-lib"
 	},
