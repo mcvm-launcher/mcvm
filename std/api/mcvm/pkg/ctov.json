@@ -1,0 +1,620 @@
+{
+	"addons": {
+		"addon": {
+			"kind": "mod",
+			"versions": [
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1",
+						"1.20.2",
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "lithostitched"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/SHDgiWhe/%5BForge%5Dctov-3.4.2.jar",
+					"version": "SHDgiWhe"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1",
+						"1.20.2",
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "lithostitched"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/rKP4gGrZ/ctov-3.4.2.jar",
+					"version": "rKP4gGrZ"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.2",
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "lithostitched"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/vCaQDw8e/ctov-3.4.1.jar",
+					"version": "vCaQDw8e"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.2",
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": "neoforged",
+					"relations": {
+						"dependencies": "lithostitched"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/2pKy4ELO/ctov-3.4.1.jar",
+					"version": "2pKy4ELO"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.2",
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"recommendations": {
+							"value": "lithostitched"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/UlWylSLM/ctov-3.4.1.jar",
+					"version": "UlWylSLM"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.2",
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": [
+						"fabric",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/L6yQN8AJ/ctov-3.4-beta.jar",
+					"version": "L6yQN8AJ"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1",
+						"1.20.2"
+					],
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/nF92O1uF/ctov-3.3.6.jar",
+					"version": "nF92O1uF"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1",
+						"1.20.2"
+					],
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/7LYJgioY/ctov-3.3.5b.jar",
+					"version": "7LYJgioY"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2",
+						"1.19.3",
+						"1.19.4"
+					],
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/CXja9TJq/ctov-3.2.6c.jar",
+					"version": "CXja9TJq"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/j7JHN8EG/ctov-3.3.4.jar",
+					"version": "j7JHN8EG"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/f51MDpat/ctov-3.3.3.jar",
+					"version": "f51MDpat"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": [
+						"fabric",
+						"forge",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/MrzGaj60/ctov-3.3.2.jar",
+					"version": "MrzGaj60"
+				},
+				{
+					"minecraft_versions": [
+						"1.19.1",
+						"1.19.2",
+						"1.19.3",
+						"1.19.4"
+					],
+					"modloaders": [
+						"fabric",
+						"forge",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/tnyL873R/ctov-3.2.5.jar",
+					"version": "tnyL873R"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": [
+						"fabric",
+						"forge",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/WCTtzdXO/ctov-3.3.1.jar",
+					"version": "WCTtzdXO"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2",
+						"1.19.3",
+						"1.19.4"
+					],
+					"modloaders": [
+						"fabric",
+						"forge",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/D6NL63Wk/ctov-3.2.4.jar",
+					"version": "D6NL63Wk"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": [
+						"fabric",
+						"forge",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/fFfVQkrT/ctov-3.3.0.jar",
+					"version": "fFfVQkrT"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2",
+						"1.19.3",
+						"1.19.4"
+					],
+					"modloaders": [
+						"fabric",
+						"forge",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/ygoCStaG/ctov-3.2.3.jar",
+					"version": "ygoCStaG"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2",
+						"1.19.3",
+						"1.19.4"
+					],
+					"modloaders": [
+						"fabric",
+						"forge",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/Fmf9SrAU/ctov-3.2.2.jar",
+					"version": "Fmf9SrAU"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2",
+						"1.19.3",
+						"1.19.4"
+					],
+					"modloaders": [
+						"fabric",
+						"forge",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/JiU3eJDL/ctov-3.2.1.jar",
+					"version": "JiU3eJDL"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/mL9oaPkZ/ctov-2.9.4.jar",
+					"version": "mL9oaPkZ"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2",
+						"1.19.3",
+						"1.19.4"
+					],
+					"modloaders": [
+						"fabric",
+						"forge",
+						"quilt"
+					],
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/Pg8s7GZE/ctov-3.2.0b.jar",
+					"version": "Pg8s7GZE"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2",
+						"1.19.3",
+						"1.19.4"
+					],
+					"modloaders": [
+						"fabric",
+						"forge",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/qC5GfpM0/ctov-3.2.0.jar",
+					"version": "qC5GfpM0"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2",
+						"1.19.3",
+						"1.19.4"
+					],
+					"modloaders": [
+						"fabric",
+						"forge",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/3eXWBWdB/ctov-3.1.8.jar",
+					"version": "3eXWBWdB"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/j703cf0E/ctov-2.9.3.jar",
+					"version": "j703cf0E"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2",
+						"1.19.3"
+					],
+					"modloaders": [
+						"fabric",
+						"forge",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/9g99Yime/ctov-3.1.7.jar",
+					"version": "9g99Yime"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2",
+						"1.19.3"
+					],
+					"modloaders": [
+						"fabric",
+						"forge",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/HuaUXmX8/ctov-3.1.6.jar",
+					"version": "HuaUXmX8"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2",
+						"1.19.3"
+					],
+					"modloaders": [
+						"fabric",
+						"forge",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/KihNxY42/ctov-3.1.5a.jar",
+					"version": "KihNxY42"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2",
+						"1.19.3"
+					],
+					"modloaders": [
+						"fabric",
+						"forge",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/cSwNn8fR/ctov-3.1.5.jar",
+					"version": "cSwNn8fR"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"forge",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/LcnT1dY5/ctov-3.1.4.jar",
+					"version": "LcnT1dY5"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"forge",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/VTwGNXsJ/%5BUniversal%5DCTOV-v3-1-3.jar",
+					"version": "VTwGNXsJ"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"forge",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/JczZEgVm/%5BUniversal%5DCTOV-v3-1-2.jar",
+					"version": "JczZEgVm"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/wP8LFpoA/%5BUniversal%5DCTOV-v2-9-2.jar",
+					"version": "wP8LFpoA"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"forge",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/vCg4Atsm/ChoiceTheorem%27s-overhauled-village-v-3-1-1.jar",
+					"version": "vCg4Atsm"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/3.0.1/ChoiceTheorem%27s-overhauled-village.jar",
+					"version": "hWUQHLTy"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": [
+						"fabric",
+						"forge"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/3.0.2/CTOV-Fabric-Forge-3.0.jar",
+					"version": "BGJCx9uY"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"forge"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/2.9/CTOV-Fabric-Forge-2.9.jar",
+					"version": "qvvu7W5e"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"forge"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/2.8/CTOV-Fabric-Forge-2.8.jar",
+					"version": "N9bzxzVo"
+				},
+				{
+					"minecraft_versions": [
+						"1.18.2-rc1",
+						"1.18.2"
+					],
+					"modloaders": [
+						"fabric",
+						"forge"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/1-18-2-2/CTOV-Fabric-Forge.jar",
+					"version": "sd27RBEO"
+				}
+			]
+		}
+	},
+	"meta": {
+		"authors": [
+			"ChoiceTheorem"
+		],
+		"banner": "https://cdn.modrinth.com/data/fgmhI8kH/images/15d7bf1aa1b7174fde4a5dac2ed81d4b8adb4b06.png",
+		"categories": [
+			"structures"
+		],
+		"community": "https://discord.gg/JzYEw7PxQv",
+		"description": "Enhances and creates new villages and pillager outposts, that perfectly fit into your Minecraft world.",
+		"gallery": [
+			"https://cdn.modrinth.com/data/fgmhI8kH/images/15d7bf1aa1b7174fde4a5dac2ed81d4b8adb4b06.png",
+			"https://cdn.modrinth.com/data/fgmhI8kH/images/2f7b8e2fc46cbb9e7a83368a93ab1ba1feb110ed.webp",
+			"https://cdn.modrinth.com/data/fgmhI8kH/images/576fb3e920f242512932434a51cba40b14da2750.png"
+		],
+		"icon": "https://cdn.modrinth.com/data/fgmhI8kH/76dd7230a35c12d4956985317ffd0c079d6a9148.jpeg",
+		"issues": "https://github.com/ChoiceTheorem/ChoiceTheorem-s-overhauled-village/issues",
+		"license": "CC-BY-NC-ND-4.0",
+		"long_description": "**![](https://www.bisecthosting.com/images/CF/CT_Overhauled_Village/BH_CT_HEADER.webp)**\n**![](https://www.bisecthosting.com/images/CF/CT_Overhauled_Village/BH_CT_BANNER1.webp)**\n\n**ChoiceTheorem's Overhauled Village (CTOV) is a mod that adds new and improved villages and pillager outposts to Minecraft.** It is available for both Forge and Fabric, and it works with most world-generation and structure mods. CTOV adds 23 village variants and 14 pillager outpost variants, each of which is tailored to the terrain, theme, and biome of your Minecraft world.\n\nCTOV will not be backported beyond 1.18.2 for the mod version and 1.17 for the datapack version. This means that if you are playing an older version of Minecraft, you will not be able to use CTOV.\n\n<details><summary>FAQs</summary>\n\n1.  **Is it safe to update CTOV to a newer version?**\nYes, it is safe to update CTOV to a newer version. However, if you do experience any problems, please let the mod author know so that they can fix them.\n\n2.  **Is it safe to add CTOV to an already existing world?**\nYes, it is safe to add CTOV to an already existing world. However, the new structures will only spawn in newly generated chunks.\n\n3.  **Is this mod for Forge or Fabric/Quilt?**\nCTOV is available for all three mod loaders: Forge, Fabric, and Quilt.\n\n4.  **How can I locate the new structures?**\nTo locate the new structures, you can use the `/locate` command.\n    For 1.18.2, you would use the following command:\n    >  /locate ctov:\\[structure\\_from\\_list\\] <br>\n\n    For 1.19+, you would use the following command:\n    >  /locate structure ctov:[structure_from_list] <br>\n\n    The `[structure_from_list]` part of the command is the name of the structure that you want to locate. You can find a list of all the available structures in the CTOV documentation.\n\n5.  **Does CTOV modify existing vanilla structures?**\nThe only structures that are modified by CTOV are vanilla villages in older versions. In newer versions, CTOV creates its own structures that are separate from vanilla villages.\n\n6.  **What about the loot of these structures?**\nThe vast majority of structures use vanilla loot tables for better mod compatibility. However, they also use some custom loot tables to integrate said structures into the world better. You will still find pillager outpost loot in pillager outposts, profession chests in villages, as well as bells, workstations, etc., but you may also find new stuff like food, armour, and other goodies.\n\n7.  **How can I report bugs/issues/suggestions?**\nTo report bugs, issues, or suggestions, please go to the CTOV GitHub repo and create an issue. You can also message the mod author on Discord.\n\n8.  **Can I include CTOV in my modpack?**\nYes, you can include CTOV in your modpack. However, please be sure to give credit to the mod author and provide a link to their page.\n\n9.  **Can I have CTOV for 1.x.x, please?**\nIf it's lower than 1.18.2, no. Please don't ask this question. The technical limit is too high here.\n\n10.  **Can I give Choicetheorem any commission or support?**\nThe mod author does not accept commissions or monetary support. They are doing this as a hobby and do not want to be paid for their work.\n\nI hope this answers all of your questions.\n</details>\n\n**![](https://www.bisecthosting.com/images/CF/CT_Overhauled_Village/BH_CT_BANNER4.webp)**\n\n\nChoiceTheorem's Overhauled Village (CTOV) is compatible with most world-generation and structure mods. Full documentation is [here](https://github.com/ChoiceTheorem/ChoiceTheorem-s-overhauled-village/wiki/Compatibility)\n\nIt also works with Guard Villager and other structure packs by ChoiceTheorem.\nMods that add new villagers will need compatibility packs.\n\nHere are some more details about the compatibility of CTOV with other mods:\n\n- **World-generation mods:** CTOV relies on vanilla biome Tags, so almost all world-generation mods like Terralith, Oh Biome You'll Go, and Biomes O'plenty will have appropriate CTOV villages in their biomes.\n- **Structure mods:** Various structure mods like Town&Tower and Repurposed structures also work well with CTOV. However, it is important to exercise caution when using too many mods, as this can cause instability. The same applies to Better Village.\n- **Other mods:** Any other mod that doesn't affect villages and villagers will be compatible by default.\n- Mods that add new villagers will need compatibility packs, which can be found on the CurseForge website.\n\nMod integration\n\nAs a rule of thumb, it's compatible. If it isn't yet, It will be. Read this [wiki page](https://github.com/ChoiceTheorem/ChoiceTheorem-s-overhauled-village/wiki/Compatibility) for details!\n\nYou can suggest more mods in my GitHub Issue section.\n</details>\n\n\n![](https://www.bisecthosting.com/images/CF/CT_Overhauled_Village/BH_CT_BANNER5.webp)\n\n[![discord-plural](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy-minimal/social/discord-plural_64h.png)](https://discord.gg/JzYEw7PxQv) \n[![github-plural](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy-minimal/social/github-plural_64h.png)](https://github.com/ChoiceTheorem/ChoiceTheorem-s-overhauled-village) \n[![twitter-plural](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy-minimal/social/twitter-plural_64h.png)](https://twitter.com/ChoiceTheorem)\n[![youtube-plural](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy-minimal/social/youtube-plural_64h.png)](https://www.youtube.com/channel/UCUSv0t-aWToQkpP5eonHmlA)\n\n**Credits**\n-----------\n\n*   Vichy0623 for codesigning the builds\n*   Robified for converting this datapack into a mod.\n\n[![](https://www.bisecthosting.com/images/CF/CT_Overhauled_Village/BH_CT_PROMO.webp)](https://bisecthosting.com/CT)",
+		"name": "ChoiceTheorem's Overhauled Village",
+		"package_maintainers": [
+			"mcvm"
+		],
+		"source": "https://github.com/ChoiceTheorem/ChoiceTheorem-s-overhauled-village"
+	},
+	"properties": {
+		"modrinth_id": "fgmhI8kH",
+		"supported_modloaders": [
+			"fabriclike",
+			"forgelike"
+		],
+		"supported_sides": [
+			"server"
+		],
+		"supported_versions": [
+			"1.18.2-rc1",
+			"1.18.2",
+			"1.19",
+			"1.19.1",
+			"1.19.2",
+			"1.19.3",
+			"1.19.4",
+			"1.20",
+			"1.20.1",
+			"1.20.2",
+			"1.20.3",
+			"1.20.4"
+		]
+	}
+}

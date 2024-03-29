@@ -1,0 +1,25 @@
+{
+	"source": "modrinth",
+	"id": "GchcoXML",
+	"relation_substitutions": {
+		"4ZqxOvjD": "rubidium",
+		"sk9rgfiA": "embeddium"
+	},
+	"merge": {
+		"meta": {
+			"keywords": [
+				"graphics"
+			],
+			"categories": [
+				"shaders",
+				"technical"
+			]
+		},
+		"properties": {
+			"open_source": true,
+			"supported_modloaders": [
+				"forgelike"
+			]
+		}
+	}
+}

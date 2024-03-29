@@ -1,0 +1,427 @@
+{
+	"addons": {
+		"addon": {
+			"kind": "mod",
+			"versions": [
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/8oZvic6F/lithostitched-neoforge-1.20.2-1.1.5.jar",
+					"version": "8oZvic6F"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/VyXuOP1c/lithostitched-forge-1.20.2-1.1.5.jar",
+					"version": "VyXuOP1c"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.1",
+						"1.20.2"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/P9uKfQS0/lithostitched-fabric-1.20.1-1.1.5.jar",
+					"version": "P9uKfQS0"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/Tr6EqtWX/lithostitched-forge-1.20.1-1.1.5.jar",
+					"version": "Tr6EqtWX"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/H8ayf2w5/lithostitched-neoforge-1.20.4-1.1.5.jar",
+					"version": "H8ayf2w5"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/41JvRcQ8/lithostitched-fabric-1.20.4-1.1.5.jar",
+					"version": "41JvRcQ8"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/S4aRnNaS/lithostitched-forge-1.20.4-1.1.5.jar",
+					"version": "S4aRnNaS"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.1",
+						"1.20.2"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/uU1zP8Xq/lithostitched-fabric-1.20.1-1.1.4a.jar",
+					"version": "uU1zP8Xq"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/1qkHiTdN/lithostitched-neoforge-1.20.2-1.1.4.jar",
+					"version": "1qkHiTdN"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/WzBvUWrI/lithostitched-forge-1.20.2-1.1.4.jar",
+					"version": "WzBvUWrI"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/EKDwshle/lithostitched-neoforge-1.20.4-1.1.4.jar",
+					"version": "EKDwshle"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/oq7IWIMY/lithostitched-fabric-1.20.4-1.1.4.jar",
+					"version": "oq7IWIMY"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/IB3ZwwFr/lithostitched-forge-1.20.4-1.1.4.jar",
+					"version": "IB3ZwwFr"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.1",
+						"1.20.2"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/d0nhXKYJ/lithostitched-fabric-1.20.1-1.1.4.jar",
+					"version": "d0nhXKYJ"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/fvEGd9yu/lithostitched-forge-1.20.1-1.1.4.jar",
+					"version": "fvEGd9yu"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/BqlZtg2R/lithostitched-neoforge-1.20.4-1.1.3.jar",
+					"version": "BqlZtg2R"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/jEiKH0Fw/lithostitched-fabric-1.20.4-1.1.3.jar",
+					"version": "jEiKH0Fw"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/FNkZqfSj/lithostitched-forge-1.20.4-1.1.3.jar",
+					"version": "FNkZqfSj"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/jfpvoA4O/lithostitched-neoforge-1.20.2-1.1.3.jar",
+					"version": "jfpvoA4O"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/DruvQkF7/lithostitched-forge-1.20.2-1.1.3.jar",
+					"version": "DruvQkF7"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.1",
+						"1.20.2"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/hnvpI0hn/lithostitched-fabric-1.20.1-1.1.3.jar",
+					"version": "hnvpI0hn"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/ZXXJfwMx/lithostitched-forge-1.20.1-1.1.3.jar",
+					"version": "ZXXJfwMx"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/THwW3NlU/lithostitched-neoforge-1.20.4-1.1.2.jar",
+					"version": "THwW3NlU"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/SKnmNMCM/lithostitched-forge-1.20.4-1.1.2.jar",
+					"version": "SKnmNMCM"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/g01HKP5e/lithostitched-neoforge-1.20.2-1.1.2.jar",
+					"version": "g01HKP5e"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/sOHwiEW6/lithostitched-fabric-1.20.4-1.1.2.jar",
+					"version": "sOHwiEW6"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/eF4QuuoD/lithostitched-forge-1.20.2-1.1.2.jar",
+					"version": "eF4QuuoD"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.1",
+						"1.20.2"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/4ac1XgMH/lithostitched-fabric-1.20.1-1.1.2.jar",
+					"version": "4ac1XgMH"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/Da1jDBpW/lithostitched-forge-1.20.1-1.1.2.jar",
+					"version": "Da1jDBpW"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/y49el8x8/lithostitched-fabric-1.20.4-1.1.1a.jar",
+					"version": "y49el8x8"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.1",
+						"1.20.2"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/5QR5PAS6/lithostitched-fabric-1.20.1-1.1.1a.jar",
+					"version": "5QR5PAS6"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/XEx1V1hn/lithostitched-forge-1.20.4-1.1.1.jar",
+					"version": "XEx1V1hn"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/v6zMMJ19/lithostitched-neoforge-1.20.4-1.1.1.jar",
+					"version": "v6zMMJ19"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/GSpxeHSW/lithostitched-fabric-1.20.4-1.1.1-dev.jar",
+					"version": "GSpxeHSW"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/282AV7oN/lithostitched-neoforge-1.20.2-1.1.1.jar",
+					"version": "282AV7oN"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/ivdfbiyU/lithostitched-forge-1.20.2-1.1.1.jar",
+					"version": "ivdfbiyU"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/CGuNKKtx/lithostitched-forge-1.20.1-1.1.1.jar",
+					"version": "CGuNKKtx"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.1",
+						"1.20.2"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/xoeYggd1/lithostitched-fabric-1.20.1-1.1.1-dev.jar",
+					"version": "xoeYggd1"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.2",
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/lSEqJCDB/lithostitched-fabric-1.20.2-1.1.0.jar",
+					"version": "lSEqJCDB"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/zENaprO1/lithostitched-forge-1.20.2-1.1.0.jar",
+					"version": "zENaprO1"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/fqTBv1lv/lithostitched-forge-1.20.1-1.1.0.jar",
+					"version": "fqTBv1lv"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/RpsFZIW7/lithostitched-fabric-1.20.1-1.1.0.jar",
+					"version": "RpsFZIW7"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.2",
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/1d7slIuK/lithostitched-forge-1.20.2%2B-1.0.0.jar",
+					"version": "1d7slIuK"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.2",
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/nWGTsnuc/lithostitched-fabric-1.20.2-1.0.0.jar",
+					"version": "nWGTsnuc"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.2",
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/ffxUpKO9/lithostitched-fabric-1.20.2-1.0.0.jar",
+					"version": "ffxUpKO9"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/nxR2QJq9/lithostitched-forge-1.20.2-1.0.0.jar",
+					"version": "nxR2QJq9"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/2GhadkWw/lithostitched-forge-1.20.1-1.0.0.jar",
+					"version": "2GhadkWw"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/8fRJMUtj/lithostitched-fabric-1.20.1-1.0.0.jar",
+					"version": "8fRJMUtj"
+				}
+			]
+		}
+	},
+	"meta": {
+		"authors": [
+			"Apollo"
+		],
+		"categories": [
+			"library",
+			"technical"
+		],
+		"description": "Library mod with new configurability and compatibility enhancements for worldgen",
+		"documentation": "https://github.com/Apollounknowndev/lithostitched/wiki",
+		"gallery": [],
+		"icon": "https://cdn.modrinth.com/data/XaDC71GB/bc3425bcb318176adc7da99b6eec48787eed98d3.png",
+		"issues": "https://github.com/Apollounknowndev/lithostitched/issues",
+		"license": "MIT",
+		"long_description": "# Lithostitched\n\nLithostitched is a library mod for Forge and Fabric with new configurability and compatibility enhancements for worldgen.\n\n## Description\n\nThis mod introduces new tools for datapack and modded worldgen developers to utilize, with the aim of increasing inter-project compatibility and expanding configurability in general. Currently, there are features such as:\n- Biome modifiers\n- Template pool injectors\n- Surface rule modifiers\n- Guaranteed pieces in jigsaw structures\n\nAll of these new capabilities are **data-driven**! Take a look at the [Lithostitched Wiki](https://github.com/Apollounknowndev/lithostitched/wiki) for more information.",
+		"name": "Lithostitched",
+		"package_maintainers": [
+			"mcvm"
+		],
+		"source": "https://github.com/Apollounknowndev/lithostitched/",
+		"support_link": "https://ko-fi.com/apollodev"
+	},
+	"properties": {
+		"modrinth_id": "XaDC71GB",
+		"open_source": true,
+		"supported_modloaders": [
+			"fabriclike",
+			"forgelike"
+		],
+		"supported_sides": [
+			"server"
+		],
+		"supported_versions": [
+			"1.20.1",
+			"1.20.2",
+			"1.20.3",
+			"1.20.4"
+		]
+	}
+}

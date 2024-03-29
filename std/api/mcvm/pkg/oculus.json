@@ -1,0 +1,327 @@
+{
+	"addons": {
+		"addon": {
+			"kind": "mod",
+			"versions": [
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "rubidium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/GchcoXML/versions/SPCLqJn1/oculus-mc1.16.5-1.4.8.jar",
+					"version": "SPCLqJn1"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"relations": {
+						"dependencies": "embeddium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/GchcoXML/versions/Bj8M79wL/oculus-mc1.20.1-1.6.15a.jar",
+					"version": "Bj8M79wL"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"relations": {
+						"dependencies": "embeddium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/GchcoXML/versions/KexKV6k0/oculus-mc1.20.1-1.6.15.jar",
+					"version": "KexKV6k0"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "rubidium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/GchcoXML/versions/ZFTuwymb/oculus-mc1.16.5-1.4.7.jar",
+					"version": "ZFTuwymb"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"relations": {
+						"dependencies": "embeddium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/GchcoXML/versions/yUsIHXQX/oculus-mc1.20.1-1.6.13.jar",
+					"version": "yUsIHXQX"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"relations": {
+						"dependencies": "rubidium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/GchcoXML/versions/6xfXhsvf/oculus-mc1.20.1-1.6.9.jar",
+					"version": "6xfXhsvf"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "rubidium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/GchcoXML/versions/4lE9D01D/oculus-mc1.19.2-1.6.9.jar",
+					"version": "4lE9D01D"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/GchcoXML/versions/Uz28Wi1p/oculus-mc1.16.5-1.4.6.jar",
+					"version": "Uz28Wi1p"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "rubidium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/GchcoXML/versions/UynWw2df/oculus-mc1.18.2-1.6.4.jar",
+					"version": "UynWw2df"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "rubidium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/GchcoXML/versions/HxUtDCCe/oculus-mc1.20-1.6.4.jar",
+					"version": "HxUtDCCe"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "rubidium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/GchcoXML/versions/Af4brqYV/oculus-mc1.19.2-1.6.4.jar",
+					"version": "Af4brqYV"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "rubidium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/GchcoXML/versions/mGoSRprD/oculus-1.5.2.jar",
+					"version": "mGoSRprD"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "rubidium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/GchcoXML/versions/KyxZ315g/oculus-1.5.2.jar",
+					"version": "KyxZ315g"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "rubidium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/GchcoXML/versions/zuJ1306r/oculus-1.4.3a.jar",
+					"version": "zuJ1306r"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/GchcoXML/versions/uNDmEO4n/oculus-1.4.5.jar",
+					"version": "uNDmEO4n"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "rubidium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/GchcoXML/versions/nApEYsZi/oculus-mc1.19.2-1.2.8a.jar",
+					"version": "nApEYsZi"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "rubidium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/GchcoXML/versions/A6aEs4bJ/oculus-mc1.19.2-1.2.8.jar",
+					"version": "A6aEs4bJ"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "rubidium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/GchcoXML/versions/YM91QDuZ/oculus-1.4.3.jar",
+					"version": "YM91QDuZ"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "rubidium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/GchcoXML/versions/9KaQ8Nei/oculus-1.4.3.jar",
+					"version": "9KaQ8Nei"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "rubidium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/GchcoXML/versions/zxDW8JVW/oculus-1.2.6.jar",
+					"version": "zxDW8JVW"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "rubidium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/GchcoXML/versions/1.19-1.2.5a/oculus-mc1.19-1.2.5a.jar",
+					"version": "rR8ZrdCw"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "rubidium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/GchcoXML/versions/1.16.5-1.2.5a/oculus-1.2.5a.jar",
+					"version": "ZjN0wxRC"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "rubidium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/GchcoXML/versions/1.18.2-1.2.5a/oculus-mc1.18.2-1.2.5a.jar",
+					"version": "E7vz516D"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "rubidium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/GchcoXML/versions/1.16.5-1.2.5/oculus-1.2.5.jar",
+					"version": "sl4bJ9He"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "rubidium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/GchcoXML/versions/1.18.2-1.2.5/oculus-mc1.18.2-1.2.5.jar",
+					"version": "rhj7Nexq"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "rubidium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/GchcoXML/versions/1.2.5/oculus-mc1.19-1.2.5.jar",
+					"version": "Ti8TJ58B"
+				}
+			]
+		}
+	},
+	"meta": {
+		"authors": [
+			"Asek3"
+		],
+		"categories": [
+			"shaders",
+			"technical"
+		],
+		"community": "https://discord.com/invite/UCsyn5RS4s",
+		"description": "Unofficial Fork of \"Iris\", made to work with FML",
+		"gallery": [],
+		"icon": "https://cdn.modrinth.com/data/GchcoXML/icon.png",
+		"issues": "https://github.com/Asek3/Oculus/issues",
+		"keywords": [
+			"graphics"
+		],
+		"license": "LGPL-3.0-only",
+		"long_description": "Unofficial Fork of \"Iris\", made to work with FML\n\nFeatures\n\n<details>\n  <summary>Features</summary>\n\n- Performance. Oculus should fully utilize your graphics card when paired with optimization mods like Rubidium.\n- Mod compatibility. Oculus should make a best effort to be compatible with modded environments.\n- Backwards compatibility. All existing ShadersMod / OptiFine shader packs should just work on Iris, without any modifications required.\n- A well-organized codebase. I'd like for working with Iris code to be a pleasant experience overall.\n</details>\n\n \nPlease, don't report Oculus' issues to the official Iris Github.",
+		"name": "Oculus",
+		"package_maintainers": [
+			"mcvm"
+		],
+		"source": "https://github.com/Asek3/Oculus",
+		"support_link": "https://www.patreon.com/asek3"
+	},
+	"properties": {
+		"modrinth_id": "GchcoXML",
+		"open_source": true,
+		"supported_modloaders": [
+			"forgelike"
+		],
+		"supported_sides": [
+			"client"
+		],
+		"supported_versions": [
+			"1.16.5",
+			"1.18.2",
+			"1.19",
+			"1.19.1",
+			"1.19.2",
+			"1.19.4",
+			"1.20",
+			"1.20.1"
+		]
+	}
+}

@@ -1,0 +1,27 @@
+{
+	"source": "modrinth",
+	"id": "sk9rgfiA",
+	"relation_substitutions": {
+		"AANobbMI": "sodium",
+		"Orvt0mRa": "indium",
+		"4ZqxOvjD": "rubidium"
+	},
+	"merge": {
+		"meta": {
+			"keywords": [
+				"graphics"
+			],
+			"categories": [
+				"optimization",
+				"technical"
+			]
+		},
+		"properties": {
+			"open_source": true,
+			"supported_modloaders": [
+				"forgelike",
+				"fabriclike"
+			]
+		}
+	}
+}

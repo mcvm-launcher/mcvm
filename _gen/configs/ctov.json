@@ -1,0 +1,23 @@
+{
+	"source": "modrinth",
+	"id": "fgmhI8kH",
+	"relation_substitutions": {
+		"P7dR8mSH": "fabriclike-api",
+		"qvIfYCYJ": "fabriclike-api",
+		"mOgUt4GM": "mod-menu",
+		"XaDC71GB": "lithostitched"
+	},
+	"merge": {
+		"meta": {
+			"categories": [
+				"structures"
+			]
+		},
+		"properties": {
+			"supported_modloaders": [
+				"fabriclike",
+				"forgelike"
+			]
+		}
+	}
+}

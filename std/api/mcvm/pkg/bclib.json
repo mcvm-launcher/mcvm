@@ -1,0 +1,552 @@
+{
+	"addons": {
+		"addon": {
+			"kind": "mod",
+			"versions": [
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/BgNRHReB/versions/2sXLB8a2/bclib-2.3.5.jar",
+					"version": "2sXLB8a2"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/BgNRHReB/versions/2RDeUu4R/bclib-2.2.5.jar",
+					"version": "2RDeUu4R"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/BgNRHReB/versions/Z8nIBt5J/bclib-2.1.8.jar",
+					"version": "Z8nIBt5J"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/BgNRHReB/versions/HP1eF3Su/bclib-3.30.1.jar",
+					"version": "HP1eF3Su"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/BgNRHReB/versions/TPC86Pyz/bclib-3.0.14.jar",
+					"version": "TPC86Pyz"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/BgNRHReB/versions/ghLtVmRL/bclib-3.30.0.jar",
+					"version": "ghLtVmRL"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/BgNRHReB/versions/bccqbyya/bclib-3.0.13.jar",
+					"version": "bccqbyya"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/BgNRHReB/versions/o3lVyUSA/bclib-3.0.12.jar",
+					"version": "o3lVyUSA"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/BgNRHReB/versions/D6bAamqR/bclib-3.0.11.jar",
+					"version": "D6bAamqR"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/BgNRHReB/versions/VIKYJnYA/bclib-3.0.10.jar",
+					"version": "VIKYJnYA"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/BgNRHReB/versions/ZGx3XHOO/bclib-3.0.9.jar",
+					"version": "ZGx3XHOO"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/BgNRHReB/versions/MCriQhNd/bclib-3.0.8.jar",
+					"version": "MCriQhNd"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/BgNRHReB/versions/xSXBLwfQ/bclib-2.3.4.jar",
+					"version": "xSXBLwfQ"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/BgNRHReB/versions/WDnv1BOR/bclib-3.0.7.jar",
+					"version": "WDnv1BOR"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/BgNRHReB/versions/sLid477I/bclib-3.0.6.jar",
+					"version": "sLid477I"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/BgNRHReB/versions/L2Lkhe7y/bclib-2.3.3.jar",
+					"version": "L2Lkhe7y"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/BgNRHReB/versions/ZzfMrZCj/bclib-3.0.5.jar",
+					"version": "ZzfMrZCj"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/BgNRHReB/versions/v2t3ERqV/bclib-3.0.4.jar",
+					"version": "v2t3ERqV"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/BgNRHReB/versions/iXZF8l0s/bclib-3.0.3.jar",
+					"version": "iXZF8l0s"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/BgNRHReB/versions/yZskNeFO/bclib-3.0.2.jar",
+					"version": "yZskNeFO"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/BgNRHReB/versions/TMKsPs2I/bclib-3.0.1.jar",
+					"version": "TMKsPs2I"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/BgNRHReB/versions/aykCQLhD/bclib-2.1.7.jar",
+					"version": "aykCQLhD"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/BgNRHReB/versions/v3SUqvCn/bclib-3.0.0.jar",
+					"version": "v3SUqvCn"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/BgNRHReB/versions/l2oWjhoi/bclib-2.3.2.jar",
+					"version": "l2oWjhoi"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/BgNRHReB/versions/WpPJmMjm/bclib-2.3.1.jar",
+					"version": "WpPJmMjm"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/BgNRHReB/versions/ipLcyock/bclib-2.3.0.jar",
+					"version": "ipLcyock"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/BgNRHReB/versions/mKksn4EY/bclib-2.1.6.jar",
+					"version": "mKksn4EY"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/BgNRHReB/versions/CXLaMuHt/bclib-2.2.4.jar",
+					"version": "CXLaMuHt"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/BgNRHReB/versions/vfltbwjl/bclib-2.2.3.jar",
+					"version": "vfltbwjl"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/BgNRHReB/versions/kyFQ8QVW/bclib-2.1.5.jar",
+					"version": "kyFQ8QVW"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/BgNRHReB/versions/mqh4nTSp/bclib-2.2.2.jar",
+					"version": "mqh4nTSp"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/BgNRHReB/versions/G6Nxs4C3/bclib-2.2.1.jar",
+					"version": "G6Nxs4C3"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/BgNRHReB/versions/y5bt0nDm/bclib-2.2.0.jar",
+					"version": "y5bt0nDm"
+				},
+				{
+					"minecraft_versions": "1.19.3-rc3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/BgNRHReB/versions/scuWwIaO/bclib-2.2.0-pre1.jar",
+					"version": "scuWwIaO"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/BgNRHReB/versions/hyMhFkOC/bclib-2.1.4.jar",
+					"version": "hyMhFkOC"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/BgNRHReB/versions/E5bVN8yO/bclib-2.1.3.jar",
+					"version": "E5bVN8yO"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/BgNRHReB/versions/FcJeV6Yg/bclib-2.1.2.jar",
+					"version": "FcJeV6Yg"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/BgNRHReB/versions/cMDt7fG3/bclib-2.1.1.jar",
+					"version": "cMDt7fG3"
+				}
+			]
+		}
+	},
+	"meta": {
+		"authors": [
+			"quiqueck"
+		],
+		"categories": [
+			"library",
+			"technical"
+		],
+		"community": "https://discord.gg/kYuATbYbKW",
+		"description": "A Library Mod for the BetterX Team",
+		"gallery": [
+			"https://cdn.modrinth.com/data/BgNRHReB/images/1685c2d4d5875006a5db18ec22b8f57952f1f51d.png",
+			"https://cdn.modrinth.com/data/BgNRHReB/images/2d7fa966accd575584269c1331171cc31a484e14.png"
+		],
+		"icon": "https://cdn.modrinth.com/data/BgNRHReB/1b057bebe91712f5d135b2240baaffa8cd3cf065.png",
+		"issues": "https://github.com/quiqueck/BCLib/issues",
+		"license": "MIT",
+		"long_description": "\nBCLib is primarily a mod library for BetterEnd, BetterNether, Eden Ring and possible future mods from the BetterX team. \n\nFurthermore, BCLib creates **compatibility between different Nether/End mods**. This allows Biomes from different DataPacks and mods to generate in your world. For this (and many other features) BCLib uses its own world type: BetterX.\n\nThe library can be used by other developers to create their own mods. If you have suggestions or extensions, we are open to discussions and pull requests.\n\n### Key Features\n* Block templates for common types (plants with seedlings, wood types, signs, ...)\n* Simple API to create your own biomes, features, structures and much more\n* SurfaceRule/MaterialRule registry. This makes it possible for mods and datapacks to define additional SurfaceRules/MaterialRules for a dimension without editing/copying the vanilla rules.\n* API to create own world types\n* Manage tags\n* Simple UI layout toolkit\n* Recipe management\n* SDF tools\n* Config system with automatic synchronization between client/server\n* Manage world specific data\n* And many smaller extensions like color helper, block/item management, world patchers, etc.",
+		"name": "BCLib",
+		"package_maintainers": [
+			"mcvm"
+		],
+		"source": "https://github.com/quiqueck/BCLib/",
+		"support_link": "https://www.buymeacoffee.com/quiqueck"
+	},
+	"properties": {
+		"modrinth_id": "BgNRHReB",
+		"supported_modloaders": [
+			"fabriclike"
+		],
+		"supported_sides": [
+			"client",
+			"server"
+		],
+		"supported_versions": [
+			"1.19",
+			"1.19.1",
+			"1.19.2",
+			"1.19.3-rc3",
+			"1.19.3",
+			"1.19.4",
+			"1.20",
+			"1.20.1",
+			"1.20.3",
+			"1.20.4"
+		]
+	}
+}

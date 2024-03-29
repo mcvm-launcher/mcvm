@@ -16,6 +16,10 @@
 			"path": "pkg/balm.json",
 			"content_type": "declarative"
 		},
+		"bclib": {
+			"path": "pkg/bclib.json",
+			"content_type": "declarative"
+		},
 		"bendy-lib": {
 			"path": "pkg/bendy-lib.json",
 			"content_type": "declarative"
@@ -64,8 +68,16 @@
 			"path": "pkg/cristel-lib.json",
 			"content_type": "declarative"
 		},
+		"ctov": {
+			"path": "pkg/ctov.json",
+			"content_type": "declarative"
+		},
 		"dynamic-fps": {
 			"path": "pkg/dynamic-fps.json",
+			"content_type": "declarative"
+		},
+		"embeddium": {
+			"path": "pkg/embeddium.json",
 			"content_type": "declarative"
 		},
 		"emi": {
@@ -168,6 +180,10 @@
 			"path": "pkg/lithium.json",
 			"content_type": "declarative"
 		},
+		"lithostitched": {
+			"path": "pkg/lithostitched.json",
+			"content_type": "declarative"
+		},
 		"midnightlib": {
 			"path": "pkg/midnightlib.json",
 			"content_type": "declarative"
@@ -186,6 +202,10 @@
 		},
 		"moonlight-lib": {
 			"path": "pkg/moonlight-lib.json",
+			"content_type": "declarative"
+		},
+		"oculus": {
+			"path": "pkg/oculus.json",
 			"content_type": "declarative"
 		},
 		"open-parties-and-claims": {

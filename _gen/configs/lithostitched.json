@@ -1,0 +1,22 @@
+{
+	"source": "modrinth",
+	"id": "XaDC71GB",
+	"relation_substitutions": {
+		"P7dR8mSH": "fabriclike-api"
+	},
+	"merge": {
+		"meta": {
+			"categories": [
+				"library",
+				"technical"
+			]
+		},
+		"properties": {
+			"open_source": true,
+			"supported_modloaders": [
+				"fabriclike",
+				"forgelike"
+			]
+		}
+	}
+}
