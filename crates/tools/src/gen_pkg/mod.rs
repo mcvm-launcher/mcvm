@@ -1,7 +1,7 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, io::stdout};
 
-use serde::Deserialize;
-use serde_json::Value;
+use serde::{Deserialize, Serialize};
+use serde_json::{ser::PrettyFormatter, Serializer, Value};
 
 /// Generation of many packages
 pub mod batched;
@@ -58,10 +58,9 @@ pub async fn gen(source: PackageSource, config: Option<PackageGenerationConfig>,
 	let mut pkg = serde_json::value::to_value(pkg).expect("Failed to convert package to value");
 	json_merge(&mut pkg, config.merge);
 
-	println!(
-		"{}",
-		serde_json::to_string_pretty(&pkg).expect("Failed to format package")
-	);
+	let mut serializer = Serializer::with_formatter(stdout(), PrettyFormatter::with_indent(b"\t"));
+	pkg.serialize(&mut serializer)
+		.expect("Failed to output package");
 }
 
 /// Utility function to merge serde_json values

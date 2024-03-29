@@ -3,7 +3,8 @@ use std::io::BufWriter;
 use std::path::PathBuf;
 
 use reqwest::Client;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
+use serde_json::{ser::PrettyFormatter, Serializer};
 
 use crate::gen_pkg::json_merge;
 
@@ -167,6 +168,10 @@ pub async fn batched_gen(mut config: BatchedConfig) {
 			.join(format!("{}.json", pkg.pkg_id.expect("Package ID missing")));
 		let file =
 			BufWriter::new(File::create(path).expect("Failed to create package output file"));
-		serde_json::to_writer_pretty(file, &package).expect("Failed to write package to file");
+
+		let mut serializer = Serializer::with_formatter(file, PrettyFormatter::with_indent(b"\t"));
+		package
+			.serialize(&mut serializer)
+			.expect("Failed to serialize JSON");
 	}
 }
