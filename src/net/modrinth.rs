@@ -27,6 +27,8 @@ pub struct Project {
 	pub title: String,
 	/// The short description of the project
 	pub description: String,
+	/// The long description of the project
+	pub body: Option<String>,
 	/// URL to the icon
 	pub icon_url: Option<String>,
 	/// URL to the issue tracker

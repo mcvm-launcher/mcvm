@@ -63,6 +63,9 @@ pub async fn gen_raw(
 		description: Some(project.description),
 		..Default::default()
 	};
+	if let Some(body) = project.body {
+		meta.long_description = Some(body);
+	}
 	if let Some(icon_url) = project.icon_url {
 		meta.icon = Some(icon_url);
 	}
