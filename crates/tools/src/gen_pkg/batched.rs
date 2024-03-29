@@ -127,11 +127,12 @@ pub async fn batched_gen(mut config: BatchedConfig) {
 					.iter()
 					.find(|x| x.id == pkg.id)
 					.expect("Project should have been fetched");
-				// Get the team associated with this project
+				// Get the team associated with this project. Teams can have no members, which we handle by just using an empty team
+				let empty_vec = Vec::new();
 				let team = modrinth_teams
 					.iter()
 					.find(|team| team.iter().any(|member| member.team_id == project.team))
-					.expect("Team should have been fetched");
+					.unwrap_or(&empty_vec);
 				super::modrinth::gen_raw(
 					project.clone(),
 					&modrinth_versions,
