@@ -7,7 +7,7 @@ format in the file `options.json` in your config directory. This file may not ex
 have to create it yourself.
 
 Format:
-```json
+```
 {
 	"client": {
 		...
