@@ -88,6 +88,10 @@ pub async fn gen_raw(
 		meta.support_link = Some(support_link.url.clone());
 	}
 	if let Some(gallery) = project.gallery {
+		// Get the banner image from the featured gallery image
+		if let Some(banner) = gallery.iter().find(|x| x.featured) {
+			meta.banner = Some(banner.url.clone());
+		}
 		meta.gallery = Some(gallery.into_iter().map(|x| x.url).collect());
 	}
 

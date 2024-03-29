@@ -309,6 +309,8 @@ pub struct DonationLink {
 pub struct GalleryEntry {
 	/// The URL to the gallery image
 	pub url: String,
+	/// Whether the gallery image is a featured banner on the project page
+	pub featured: bool,
 }
 
 /// Support status for a project on a specific side
