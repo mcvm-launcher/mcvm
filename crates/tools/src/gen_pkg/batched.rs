@@ -12,6 +12,7 @@ use serde_json::{ser::PrettyFormatter, Serializer};
 use tokio::task::JoinSet;
 
 use crate::gen_pkg::json_merge;
+use crate::smithed_api;
 
 use super::{PackageGenerationConfig, PackageSource};
 
@@ -115,8 +116,8 @@ pub async fn batched_gen(mut config: BatchedConfig, filter: Vec<String>) {
 	let modrinth_versions = Arc::new(Mutex::new(Vec::new()));
 	let mut tasks = JoinSet::new();
 	for chunk in chunks {
-		let client = client.clone();
 		let chunk = chunk.to_vec();
+		let client = client.clone();
 		let modrinth_versions = modrinth_versions.clone();
 		let task = async move {
 			let versions = mcvm::net::modrinth::get_multiple_versions(&chunk, &client)
@@ -127,12 +128,32 @@ pub async fn batched_gen(mut config: BatchedConfig, filter: Vec<String>) {
 		};
 		tasks.spawn(task);
 	}
+
+	// Download Smithed packs at the same time
+	let smithed_packs = Arc::new(Mutex::new(Vec::new()));
+	for pkg in &config.packages {
+		if let PackageSource::Smithed = pkg.source {
+			let client = client.clone();
+			let smithed_packs = smithed_packs.clone();
+			let id = pkg.id.clone();
+			let task = async move {
+				let pack = smithed_api::get_pack(&id, &client)
+					.await
+					.expect("Failed to get Smithed pack");
+				let mut lock = smithed_packs.lock().expect("Failed to lock mutex");
+				lock.push(pack);
+			};
+			tasks.spawn(task);
+		}
+	}
+
 	// Run the tasks
 	while let Some(result) = tasks.join_next().await {
 		result.expect("Task failed");
 	}
 	let mut modrinth_versions = modrinth_versions.lock().expect("Failed to lock mutex");
-	// Sort the versions
+	let mut smithed_packs = smithed_packs.lock().expect("Failed to lock mutex");
+	// Sort the Modrinth versions
 	modrinth_versions.sort_by_key(|x| SortVersions::new(x));
 
 	// Collect Modrinth teams
@@ -161,9 +182,12 @@ pub async fn batched_gen(mut config: BatchedConfig, filter: Vec<String>) {
 
 		let mut package = match pkg.source {
 			PackageSource::Smithed => {
-				// Just generate the package
-				super::smithed::gen(
-					&pkg.id,
+				let pack = smithed_packs
+					.iter()
+					.find(|x| x.id == pkg.id)
+					.expect("Smithed pack should have been downloaded");
+				super::smithed::gen_raw(
+					pack.clone(),
 					pkg_config.relation_substitutions,
 					&pkg_config.force_extensions,
 				)

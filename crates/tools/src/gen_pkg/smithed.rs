@@ -9,16 +9,27 @@ use mcvm::pkg_crate::properties::PackageProperties;
 use mcvm::shared::addon::AddonKind;
 use mcvm::shared::util::DeserListOrSingle;
 use mcvm::shared::versions::VersionPattern;
+use reqwest::Client;
 
-use crate::smithed_api;
+use crate::smithed_api::{self, Pack};
 
 pub async fn gen(
 	id: &str,
 	relation_substitutions: HashMap<String, String>,
 	force_extensions: &[String],
 ) -> DeclarativePackage {
-	let pack = smithed_api::get_pack(id).await.expect("Failed to get pack");
+	let pack = smithed_api::get_pack(id, &Client::new())
+		.await
+		.expect("Failed to get pack");
 
+	gen_raw(pack, relation_substitutions, force_extensions).await
+}
+
+pub async fn gen_raw(
+	pack: Pack,
+	relation_substitutions: HashMap<String, String>,
+	force_extensions: &[String],
+) -> DeclarativePackage {
 	let meta = PackageMetadata {
 		name: Some(pack.display.name),
 		description: Some(pack.display.description),
