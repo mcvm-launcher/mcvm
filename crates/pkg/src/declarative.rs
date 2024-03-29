@@ -226,6 +226,22 @@ pub fn validate_declarative_package(pkg: &DeclarativePackage) -> anyhow::Result<
 	Ok(())
 }
 
+impl DeclarativePackage {
+	/// Improve a generated package by inferring certain fields
+	pub fn improve_generation(&mut self) {
+		// Infer issues link from a GitHub source link
+		if self.meta.issues.is_none() {
+			if let Some(source) = &self.meta.source {
+				if source.contains("://github.com/") {
+					let issues = source.clone();
+					let issues = issues.trim_end_matches('/');
+					self.meta.issues = Some(issues.to_string() + "issues");
+				}
+			}
+		}
+	}
+}
+
 #[cfg(test)]
 mod tests {
 	use super::*;

@@ -45,7 +45,7 @@ impl PackageGenerationConfig {
 /// Generates a package from a source and config
 pub async fn gen(source: PackageSource, config: Option<PackageGenerationConfig>, id: &str) {
 	let config = config.unwrap_or_default();
-	let pkg = match source {
+	let mut pkg = match source {
 		PackageSource::Smithed => {
 			smithed::gen(id, config.relation_substitutions, &config.force_extensions).await
 		}
@@ -53,6 +53,9 @@ pub async fn gen(source: PackageSource, config: Option<PackageGenerationConfig>,
 			modrinth::gen(id, config.relation_substitutions, &config.force_extensions).await
 		}
 	};
+
+	// Improve the generated package
+	pkg.improve_generation();
 
 	// Merge with config
 	let mut pkg = serde_json::value::to_value(pkg).expect("Failed to convert package to value");

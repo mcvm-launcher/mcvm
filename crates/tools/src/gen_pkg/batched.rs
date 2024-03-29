@@ -123,7 +123,7 @@ pub async fn batched_gen(mut config: BatchedConfig) {
 			pkg.config
 		};
 
-		let package = match pkg.source {
+		let mut package = match pkg.source {
 			PackageSource::Smithed => {
 				// Just generate the package
 				super::smithed::gen(
@@ -155,6 +155,9 @@ pub async fn batched_gen(mut config: BatchedConfig) {
 				.await
 			}
 		};
+
+		// Improve the generated package
+		package.improve_generation();
 
 		// Merge with config
 		let mut package =
