@@ -1,10 +1,12 @@
 use std::fs::File;
 use std::io::BufWriter;
 use std::path::PathBuf;
+use std::sync::{Arc, Mutex};
 
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 use serde_json::{ser::PrettyFormatter, Serializer};
+use tokio::task::JoinSet;
 
 use crate::gen_pkg::json_merge;
 
@@ -99,14 +101,27 @@ pub async fn batched_gen(mut config: BatchedConfig, filter: Vec<String>) {
 		.flat_map(|x| x.versions.iter().cloned())
 		.collect();
 	let chunks = modrinth_version_ids.chunks(batch_limit);
-	let mut modrinth_versions = Vec::new();
+
+	let modrinth_versions = Arc::new(Mutex::new(Vec::new()));
+	let mut tasks = JoinSet::new();
 	for chunk in chunks {
-		modrinth_versions.extend(
-			mcvm::net::modrinth::get_multiple_versions(chunk, &client)
+		let client = client.clone();
+		let chunk = chunk.to_vec();
+		let modrinth_versions = modrinth_versions.clone();
+		let task = async move {
+			let versions = mcvm::net::modrinth::get_multiple_versions(&chunk, &client)
 				.await
-				.expect("Failed to get Modrinth versions"),
-		);
+				.expect("Failed to get Modrinth versions");
+			let mut lock = modrinth_versions.lock().expect("Failed to lock mutex");
+			lock.extend(versions);
+		};
+		tasks.spawn(task);
 	}
+	// Run the tasks
+	while let Some(result) = tasks.join_next().await {
+		result.expect("Task failed");
+	}
+	let modrinth_versions = modrinth_versions.lock().expect("Failed to lock mutex");
 
 	// Collect Modrinth teams
 	let mut modrinth_team_ids = Vec::new();
