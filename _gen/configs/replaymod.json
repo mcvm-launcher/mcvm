@@ -1,0 +1,23 @@
+{
+	"source": "modrinth",
+	"id": "Nv2fQJo5",
+	"relation_substitutions": {
+		"P7dR8mSH": "fabriclike-api"
+	},
+	"merge": {
+		"meta": {
+			"keywords": [
+				"replay"
+			],
+			"categories": [
+				"tools"
+			]
+		},
+		"properties": {
+			"supported_modloaders": [
+				"fabriclike",
+				"forgelike"
+			]
+		}
+	}
+}

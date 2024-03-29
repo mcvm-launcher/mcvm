@@ -1,0 +1,249 @@
+{
+  "addons": {
+    "addon": {
+      "kind": "mod",
+      "versions": [
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/Ht4BfYp6/versions/tx2e5Fjp/YungsBridges-1.20.4-Fabric-4.4.0.jar",
+          "version": "tx2e5Fjp"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/Ht4BfYp6/versions/UjHqaPUL/YungsBridges-1.20.4-Forge-4.4.0.jar",
+          "version": "UjHqaPUL"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/Ht4BfYp6/versions/hvfjXu8d/YungsBridges-1.20-Fabric-4.0.3.jar",
+          "version": "hvfjXu8d"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/Ht4BfYp6/versions/KgO1gfM2/YungsBridges-1.20-Forge-4.0.3.jar",
+          "version": "KgO1gfM2"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/Ht4BfYp6/versions/KDibEgMd/YungsBridges-1.20-Fabric-4.0.2.jar",
+          "version": "KDibEgMd"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/Ht4BfYp6/versions/F6lxHU1v/YungsBridges-1.20-Forge-4.0.2.jar",
+          "version": "F6lxHU1v"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/Ht4BfYp6/versions/j10QkrM6/YungsBridges-1.20-Fabric-4.0.1.jar",
+          "version": "j10QkrM6"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/Ht4BfYp6/versions/kmK7n0CX/YungsBridges-1.20-Forge-4.0.1.jar",
+          "version": "kmK7n0CX"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/Ht4BfYp6/versions/KqjSgDPc/YungsBridges-1.19.4-Forge-3.3.0.jar",
+          "version": "KqjSgDPc"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/Ht4BfYp6/versions/pWD9qGts/YungsBridges-1.19.4-Fabric-3.3.0.jar",
+          "version": "pWD9qGts"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/Ht4BfYp6/versions/RHuxQShE/YungsBridges-1.19.3-Fabric-3.2.0.jar",
+          "version": "RHuxQShE"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/Ht4BfYp6/versions/W7cTjzEy/YungsBridges-1.19.3-Forge-3.2.0.jar",
+          "version": "W7cTjzEy"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/Ht4BfYp6/versions/42BwR2A5/YungsBridges-1.19.2-Fabric-3.1.0.jar",
+          "version": "42BwR2A5"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/Ht4BfYp6/versions/rgVgefNE/YungsBridges-1.19.2-Forge-3.1.0.jar",
+          "version": "rgVgefNE"
+        }
+      ]
+    }
+  },
+  "meta": {
+    "authors": [
+      "YUNGNICKYOUNG"
+    ],
+    "categories": [
+      "worldgen"
+    ],
+    "community": "https://discord.gg/rns3beq",
+    "description": "Adds beautiful naturally generated bridges throughout the world!",
+    "gallery": [
+      "https://cdn.modrinth.com/data/Ht4BfYp6/images/7a403ad4545200cf40c766a9b5f03678a726313f.jpeg",
+      "https://cdn.modrinth.com/data/Ht4BfYp6/images/acdbdc56bb8265197faaed79e27d9fa404aa794b.jpeg",
+      "https://cdn.modrinth.com/data/Ht4BfYp6/images/adad5a9cbe37071018e845def3eb9be9218fa615.jpeg",
+      "https://cdn.modrinth.com/data/Ht4BfYp6/images/c9ce969fff7aed52a33885c443835d168703d721.jpeg"
+    ],
+    "icon": "https://cdn.modrinth.com/data/Ht4BfYp6/1d55ae5220d5e8a3bd9224ce100c21492f43abb0.png",
+    "issues": "https://github.com/YUNG-GANG/YUNGs-Bridges/issues",
+    "keywords": [
+      "yungs"
+    ],
+    "license": "LGPL-3.0-only",
+    "name": "YUNG's Bridges",
+    "package_maintainers": [
+      "mcvm"
+    ],
+    "source": "https://github.com/YUNG-GANG/YUNGs-Bridges",
+    "support_link": "https://www.patreon.com/yungnickyoung"
+  },
+  "properties": {
+    "modrinth_id": "Ht4BfYp6",
+    "supported_modloaders": [
+      "fabriclike",
+      "forgelike"
+    ],
+    "supported_sides": [
+      "server"
+    ],
+    "supported_versions": [
+      "1.19.2",
+      "1.19.3",
+      "1.19.4",
+      "1.20",
+      "1.20.1",
+      "1.20.4"
+    ]
+  }
+}

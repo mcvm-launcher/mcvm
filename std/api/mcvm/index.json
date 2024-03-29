@@ -60,6 +60,10 @@
 			"path": "pkg/create-fabric.json",
 			"content_type": "declarative"
 		},
+		"cristel-lib": {
+			"path": "pkg/cristel-lib.json",
+			"content_type": "declarative"
+		},
 		"dynamic-fps": {
 			"path": "pkg/dynamic-fps.json",
 			"content_type": "declarative"
@@ -200,6 +204,10 @@
 			"path": "pkg/patchouli.json",
 			"content_type": "declarative"
 		},
+		"paxi": {
+			"path": "pkg/paxi.json",
+			"content_type": "declarative"
+		},
 		"pehkui": {
 			"path": "pkg/pehkui.json",
 			"content_type": "declarative"
@@ -214,6 +222,10 @@
 		},
 		"presence-footsteps": {
 			"path": "pkg/presence-footsteps.json",
+			"content_type": "declarative"
+		},
+		"prism": {
+			"path": "pkg/prism.json",
 			"content_type": "declarative"
 		},
 		"puzzles-lib": {
@@ -234,6 +246,10 @@
 		},
 		"rei": {
 			"path": "pkg/rei.json",
+			"content_type": "declarative"
+		},
+		"replaymod": {
+			"path": "pkg/replaymod.json",
 			"content_type": "declarative"
 		},
 		"resourceful-lib": {
@@ -276,8 +292,24 @@
 			"path": "pkg/stationapi.json",
 			"content_type": "declarative"
 		},
+		"supplementaries": {
+			"path": "pkg/supplementaries.json",
+			"content_type": "declarative"
+		},
+		"terrablender": {
+			"path": "pkg/terrablender.json",
+			"content_type": "declarative"
+		},
+		"terralith": {
+			"path": "pkg/terralith.json",
+			"content_type": "declarative"
+		},
 		"trinkets": {
 			"path": "pkg/trinkets.json",
+			"content_type": "declarative"
+		},
+		"unfixed-seeds": {
+			"path": "pkg/unfixed-seeds.json",
 			"content_type": "declarative"
 		},
 		"xaeros-minimap": {
@@ -290,6 +322,54 @@
 		},
 		"yungs-api": {
 			"path": "pkg/yungs-api.json",
+			"content_type": "declarative"
+		},
+		"yungs-bridges": {
+			"path": "pkg/yungs-bridges.json",
+			"content_type": "declarative"
+		},
+		"yungs-desert-temples": {
+			"path": "pkg/yungs-desert-temples.json",
+			"content_type": "declarative"
+		},
+		"yungs-dungeons": {
+			"path": "pkg/yungs-dungeons.json",
+			"content_type": "declarative"
+		},
+		"yungs-end-island": {
+			"path": "pkg/yungs-end-island.json",
+			"content_type": "declarative"
+		},
+		"yungs-extras": {
+			"path": "pkg/yungs-extras.json",
+			"content_type": "declarative"
+		},
+		"yungs-jungle-temples": {
+			"path": "pkg/yungs-jungle-temples.json",
+			"content_type": "declarative"
+		},
+		"yungs-mineshafts": {
+			"path": "pkg/yungs-mineshafts.json",
+			"content_type": "declarative"
+		},
+		"yungs-nether-fortresses": {
+			"path": "pkg/yungs-nether-fortresses.json",
+			"content_type": "declarative"
+		},
+		"yungs-ocean-monuments": {
+			"path": "pkg/yungs-ocean-monuments.json",
+			"content_type": "declarative"
+		},
+		"yungs-strongholds": {
+			"path": "pkg/yungs-strongholds.json",
+			"content_type": "declarative"
+		},
+		"yungs-witch-huts": {
+			"path": "pkg/yungs-witch-huts.json",
+			"content_type": "declarative"
+		},
+		"yungs-worldgen": {
+			"path": "pkg/yungs-worldgen.json",
 			"content_type": "declarative"
 		}
 	}

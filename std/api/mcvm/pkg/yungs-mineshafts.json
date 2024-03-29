@@ -1,0 +1,336 @@
+{
+  "addons": {
+    "addon": {
+      "kind": "mod",
+      "versions": [
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/HjmxVlSr/versions/St6cNi1U/YungsBetterMineshafts-1.20.4-Fabric-4.4.1.jar",
+          "version": "St6cNi1U"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/HjmxVlSr/versions/a4fD45oH/YungsBetterMineshafts-1.20.4-Forge-4.4.1.jar",
+          "version": "a4fD45oH"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/HjmxVlSr/versions/2Z4xpeH5/YungsBetterMineshafts-1.20.4-Fabric-4.4.0.jar",
+          "version": "2Z4xpeH5"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/HjmxVlSr/versions/tSco9t4E/YungsBetterMineshafts-1.20.4-Forge-4.4.0.jar",
+          "version": "tSco9t4E"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/HjmxVlSr/versions/K4G8SGWy/YungsBetterMineshafts-1.19.2-Forge-3.2.1.jar",
+          "version": "K4G8SGWy"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/HjmxVlSr/versions/vlpZvDsy/YungsBetterMineshafts-1.19.2-Fabric-3.2.1.jar",
+          "version": "vlpZvDsy"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/HjmxVlSr/versions/qLnQnqXS/YungsBetterMineshafts-1.20-Fabric-4.0.4.jar",
+          "version": "qLnQnqXS"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/HjmxVlSr/versions/kVO57zxB/YungsBetterMineshafts-1.20-Forge-4.0.4.jar",
+          "version": "kVO57zxB"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/HjmxVlSr/versions/LAORtIY1/YungsBetterMineshafts-1.20-Fabric-4.0.3.jar",
+          "version": "LAORtIY1"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/HjmxVlSr/versions/UoFb8XqU/YungsBetterMineshafts-1.20-Forge-4.0.3.jar",
+          "version": "UoFb8XqU"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/HjmxVlSr/versions/kbBSCFhO/YungsBetterMineshafts-1.20-Fabric-4.0.2.jar",
+          "version": "kbBSCFhO"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/HjmxVlSr/versions/N75UXpfR/YungsBetterMineshafts-1.20-Forge-4.0.2.jar",
+          "version": "N75UXpfR"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/HjmxVlSr/versions/McprBxTA/YungsBetterMineshafts-1.20-Fabric-4.0.1.jar",
+          "version": "McprBxTA"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/HjmxVlSr/versions/JmB3Jh9x/YungsBetterMineshafts-1.20-Forge-4.0.1.jar",
+          "version": "JmB3Jh9x"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/HjmxVlSr/versions/BcX4CMtc/YungsBetterMineshafts-1.19.4-Forge-3.4.0.jar",
+          "version": "BcX4CMtc"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/HjmxVlSr/versions/TzrcWYpl/YungsBetterMineshafts-1.19.4-Fabric-3.4.0.jar",
+          "version": "TzrcWYpl"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/HjmxVlSr/versions/kA7MDzPW/YungsBetterMineshafts-1.19.3-Fabric-3.3.0.jar",
+          "version": "kA7MDzPW"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/HjmxVlSr/versions/5abzcYs5/YungsBetterMineshafts-1.19.3-Forge-3.3.0.jar",
+          "version": "5abzcYs5"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/HjmxVlSr/versions/g2waVAZy/YungsBetterMineshafts-1.19.2-Fabric-3.2.0.jar",
+          "version": "g2waVAZy"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/HjmxVlSr/versions/iUlejQ4i/YungsBetterMineshafts-1.19.2-Forge-3.2.0.jar",
+          "version": "iUlejQ4i"
+        }
+      ]
+    }
+  },
+  "meta": {
+    "authors": [
+      "YUNGNICKYOUNG"
+    ],
+    "categories": [
+      "worldgen"
+    ],
+    "community": "https://discord.gg/rns3beq",
+    "description": "A long-awaited and much-needed abandoned mineshaft overhaul!",
+    "gallery": [
+      "https://cdn.modrinth.com/data/HjmxVlSr/images/34a44aa5af1f4b20fe959fbb90a2299c8496a000.png",
+      "https://cdn.modrinth.com/data/HjmxVlSr/images/964c22df53b6b7a87df0e6f66fa5ea409c572225.png",
+      "https://cdn.modrinth.com/data/HjmxVlSr/images/9e2e0764403af30a82c861dc9fe9821f24011264.png",
+      "https://cdn.modrinth.com/data/HjmxVlSr/images/eb599107a4feb2f0b61687e32b8f9138cce16280.png"
+    ],
+    "icon": "https://cdn.modrinth.com/data/HjmxVlSr/947b35bc08547e1b16cd51e6fc1c621852ea30c9.png",
+    "issues": "https://github.com/YUNG-GANG/YUNGs-Better-Mineshafts/issues",
+    "keywords": [
+      "yungs"
+    ],
+    "license": "LGPL-3.0-only",
+    "name": "YUNG's Better Mineshafts",
+    "package_maintainers": [
+      "mcvm"
+    ],
+    "source": "https://github.com/YUNG-GANG/YUNGs-Better-Mineshafts",
+    "support_link": "https://www.patreon.com/yungnickyoung"
+  },
+  "properties": {
+    "modrinth_id": "HjmxVlSr",
+    "supported_modloaders": [
+      "fabriclike",
+      "forgelike"
+    ],
+    "supported_sides": [
+      "server"
+    ],
+    "supported_versions": [
+      "1.19.2",
+      "1.19.3",
+      "1.19.4",
+      "1.20",
+      "1.20.1",
+      "1.20.4"
+    ]
+  }
+}

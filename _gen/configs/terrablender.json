@@ -1,0 +1,25 @@
+{
+	"source": "modrinth",
+	"id": "kkmrDlKT",
+	"relation_substitutions": {
+		"P7dR8mSH": "fabriclike-api"
+	},
+	"merge": {
+		"meta": {
+			"keywords": [
+				"biome"
+			],
+			"categories": [
+				"library",
+				"technical",
+				"worldgen"
+			]
+		},
+		"properties": {
+			"supported_modloaders": [
+				"fabriclike",
+				"forgelike"
+			]
+		}
+	}
+}

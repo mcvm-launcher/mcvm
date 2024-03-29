@@ -1,0 +1,380 @@
+{
+  "addons": {
+    "addon": {
+      "kind": "mod",
+      "versions": [
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "relations": {
+            "dependencies": "fabriclike-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/cl223EMc/versions/3aypqSNl/cristellib-1.2.4-fabric.jar",
+          "version": "3aypqSNl"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "relations": {
+            "dependencies": "fabriclike-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/cl223EMc/versions/9e6KHhU3/cristellib-1.2.3-fabric.jar",
+          "version": "9e6KHhU3"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "relations": {
+            "dependencies": "fabriclike-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/cl223EMc/versions/QzhenNWE/cristellib-1.2.2-fabric.jar",
+          "version": "QzhenNWE"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "neoforged",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/cl223EMc/versions/oTRDEoMt/cristellib-1.2.2-neoforge.jar",
+          "version": "oTRDEoMt"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/cl223EMc/versions/LOGne5BJ/cristellib-1.2.2-forge.jar",
+          "version": "LOGne5BJ"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "neoforged",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/cl223EMc/versions/fANI0ba4/cristellib-1.2.1-neoforge.jar",
+          "version": "fANI0ba4"
+        },
+        {
+          "minecraft_versions": [
+            "1.20.2",
+            "1.20.4"
+          ],
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/cl223EMc/versions/HiLmugPC/cristellib-1.2.0-fabric.jar",
+          "version": "HiLmugPC"
+        },
+        {
+          "minecraft_versions": "1.20.2",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/cl223EMc/versions/rXMG4HtT/cristellib-1.2.0-forge.jar",
+          "version": "rXMG4HtT"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "relations": {
+            "dependencies": "fabriclike-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/cl223EMc/versions/tBnivdbu/cristellib-1.1.5-fabric.jar",
+          "version": "tBnivdbu"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": [
+            "forge",
+            "neoforged"
+          ],
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/cl223EMc/versions/amI1oyGG/cristellib-1.1.5-forge.jar",
+          "version": "amI1oyGG"
+        },
+        {
+          "minecraft_versions": "1.20.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": "fabriclike-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/cl223EMc/versions/LRFIdFuW/cristellib-1.1.4-fabric.jar",
+          "version": "LRFIdFuW"
+        },
+        {
+          "minecraft_versions": "1.20.2",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/cl223EMc/versions/BNcnK1k5/cristellib-1.1.4-forge.jar",
+          "version": "BNcnK1k5"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": "fabriclike-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/cl223EMc/versions/k0RzoTGC/cristellib-1.1.3-fabric.jar",
+          "version": "k0RzoTGC"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/cl223EMc/versions/vwJk3fWs/cristellib-1.1.3-forge.jar",
+          "version": "vwJk3fWs"
+        },
+        {
+          "minecraft_versions": [
+            "1.19.4",
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": "fabriclike-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/cl223EMc/versions/FGDF6byY/cristellib-1.1.2-fabric.jar",
+          "version": "FGDF6byY"
+        },
+        {
+          "minecraft_versions": [
+            "1.19.4",
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/cl223EMc/versions/VGzwSAM8/cristellib-1.1.2-forge.jar",
+          "version": "VGzwSAM8"
+        },
+        {
+          "minecraft_versions": [
+            "1.19.4",
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "quilt",
+          "relations": {
+            "dependencies": "fabriclike-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/cl223EMc/versions/wSQEXFVB/cristellib-1.1.2-quilt.jar",
+          "version": "wSQEXFVB"
+        },
+        {
+          "minecraft_versions": [
+            "1.19.4",
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": "fabriclike-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/cl223EMc/versions/TRoJ8Yc4/cristellib-1.1.1-fabric.jar",
+          "version": "TRoJ8Yc4"
+        },
+        {
+          "minecraft_versions": [
+            "1.19.4",
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/cl223EMc/versions/sc0QxThr/cristellib-1.1.1-forge.jar",
+          "version": "sc0QxThr"
+        },
+        {
+          "minecraft_versions": [
+            "1.19.4",
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "quilt",
+          "relations": {
+            "dependencies": "fabriclike-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/cl223EMc/versions/LlLYE55K/cristellib-1.1.1-quilt.jar",
+          "version": "LlLYE55K"
+        },
+        {
+          "minecraft_versions": [
+            "1.19.4",
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": "fabriclike-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/cl223EMc/versions/y3Ko1fGT/cristellib-1.1.0.jar",
+          "version": "y3Ko1fGT"
+        },
+        {
+          "minecraft_versions": [
+            "1.19.4",
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "quilt",
+          "relations": {
+            "dependencies": "fabriclike-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/cl223EMc/versions/U859rPyK/cristellib-quilt-1.1.0.jar",
+          "version": "U859rPyK"
+        },
+        {
+          "minecraft_versions": [
+            "1.19.4",
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/cl223EMc/versions/FsQL6FXV/cristellib-forge-1.1.0.jar",
+          "version": "FsQL6FXV"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": "fabriclike-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/cl223EMc/versions/pLuCu0Ka/cristellib-fabric-1.0.1.jar",
+          "version": "pLuCu0Ka"
+        },
+        {
+          "minecraft_versions": "1.18.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": "fabriclike-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/cl223EMc/versions/HocdgthH/cristellib-fabric-1.0.0.jar",
+          "version": "HocdgthH"
+        },
+        {
+          "minecraft_versions": "1.18.2",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/cl223EMc/versions/J0jTgCIB/cristellib-forge-1.0.0.jar",
+          "version": "J0jTgCIB"
+        },
+        {
+          "minecraft_versions": "1.18.2",
+          "modloaders": "quilt",
+          "relations": {
+            "dependencies": "fabriclike-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/cl223EMc/versions/rGfmEx0B/cristellib-quilt-1.0.0.jar",
+          "version": "rGfmEx0B"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/cl223EMc/versions/BeiojRZG/cristellib-forge-1.0.1.jar",
+          "version": "BeiojRZG"
+        },
+        {
+          "minecraft_versions": [
+            "1.19.3",
+            "1.19.4"
+          ],
+          "modloaders": "quilt",
+          "relations": {
+            "dependencies": "fabriclike-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/cl223EMc/versions/qTUoNGY9/cristellib-quilt-1.0.0.jar",
+          "version": "qTUoNGY9"
+        },
+        {
+          "minecraft_versions": [
+            "1.19.3",
+            "1.19.4"
+          ],
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": "fabriclike-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/cl223EMc/versions/QbWRJZhp/cristellib-fabric-1.0.0.jar",
+          "version": "QbWRJZhp"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/cl223EMc/versions/qyBhDCjL/cristellib-forge-1.0.0.jar",
+          "version": "qyBhDCjL"
+        }
+      ]
+    }
+  },
+  "meta": {
+    "authors": [
+      "Cristelknight"
+    ],
+    "categories": [
+      "library",
+      "technical"
+    ],
+    "description": "A Library mod for easy structure config and runtime datapacks.",
+    "gallery": [
+      "https://cdn.modrinth.com/data/cl223EMc/images/11e68225a792104a309304e4865464f2e94fa239.png",
+      "https://cdn.modrinth.com/data/cl223EMc/images/973fb1607ff3685e128a2362e0387dfb2e3a0e61.jpeg",
+      "https://cdn.modrinth.com/data/cl223EMc/images/dff51d0855ae4ed90adee6c3d26c1abfc0ea7a63.png"
+    ],
+    "icon": "https://cdn.modrinth.com/data/cl223EMc/9ad4bececf55487f1a69862bb0a83d58347f71c8.jpeg",
+    "issues": "https://github.com/Cristelknight999/Cristel-Lib/issues",
+    "keywords": [],
+    "license": "CC-BY-NC-ND-4.0",
+    "name": "Cristel Lib",
+    "package_maintainers": [
+      "mcvm"
+    ],
+    "source": "https://github.com/Cristelknight999/Cristel-Lib"
+  },
+  "properties": {
+    "modrinth_id": "cl223EMc",
+    "supported_modloaders": [
+      "fabriclike",
+      "forgelike"
+    ],
+    "supported_sides": [
+      "server"
+    ],
+    "supported_versions": [
+      "1.18.2",
+      "1.19.3",
+      "1.19.4",
+      "1.20",
+      "1.20.1",
+      "1.20.2",
+      "1.20.4"
+    ]
+  }
+}

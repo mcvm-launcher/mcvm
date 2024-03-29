@@ -1,0 +1,306 @@
+{
+  "addons": {
+    "addon": {
+      "kind": "mod",
+      "versions": [
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/XNlO7sBv/versions/ubWx2R23/YungsBetterDesertTemples-1.20.4-Fabric-3.4.1.jar",
+          "version": "ubWx2R23"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/XNlO7sBv/versions/dCWZlWYv/YungsBetterDesertTemples-1.20.4-Forge-3.4.1.jar",
+          "version": "dCWZlWYv"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/XNlO7sBv/versions/Rnvv7pHS/YungsBetterDesertTemples-1.20.4-Fabric-3.4.0.jar",
+          "version": "Rnvv7pHS"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/XNlO7sBv/versions/sscYfIzO/YungsBetterDesertTemples-1.20.4-Forge-3.4.0.jar",
+          "version": "sscYfIzO"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/XNlO7sBv/versions/1Z9HNWpj/YungsBetterDesertTemples-1.20-Fabric-3.0.3.jar",
+          "version": "1Z9HNWpj"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/XNlO7sBv/versions/lRK2ZA9U/YungsBetterDesertTemples-1.20-Forge-3.0.3.jar",
+          "version": "lRK2ZA9U"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/XNlO7sBv/versions/v4pDHgFV/YungsBetterDesertTemples-1.20-Fabric-3.0.2.jar",
+          "version": "v4pDHgFV"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/XNlO7sBv/versions/4a8fruuc/YungsBetterDesertTemples-1.20-Forge-3.0.2.jar",
+          "version": "4a8fruuc"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/XNlO7sBv/versions/xrrG1pue/YungsBetterDesertTemples-1.20-Fabric-3.0.1.jar",
+          "version": "xrrG1pue"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/XNlO7sBv/versions/ChDXLIZS/YungsBetterDesertTemples-1.20-Forge-3.0.1.jar",
+          "version": "ChDXLIZS"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/XNlO7sBv/versions/Sa1Psnly/YungsBetterDesertTemples-1.19.4-Forge-2.4.0.jar",
+          "version": "Sa1Psnly"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/XNlO7sBv/versions/XPZvt9X7/YungsBetterDesertTemples-1.19.4-Fabric-2.4.0.jar",
+          "version": "XPZvt9X7"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/XNlO7sBv/versions/p8cwpZLc/YungsBetterDesertTemples-1.19.3-Fabric-2.3.0.jar",
+          "version": "p8cwpZLc"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/XNlO7sBv/versions/MtlwvaOG/YungsBetterDesertTemples-1.19.3-Forge-2.3.0.jar",
+          "version": "MtlwvaOG"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/XNlO7sBv/versions/fPGcJ7Ts/YungsBetterDesertTemples-1.19.2-Fabric-2.2.2.jar",
+          "version": "fPGcJ7Ts"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/XNlO7sBv/versions/4szLNMTj/YungsBetterDesertTemples-1.19.2-Forge-2.2.2.jar",
+          "version": "4szLNMTj"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/XNlO7sBv/versions/L4h3G4u8/YungsBetterDesertTemples-1.19.2-Fabric-2.2.1.jar",
+          "version": "L4h3G4u8"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/XNlO7sBv/versions/QqT68vQL/YungsBetterDesertTemples-1.19.2-Forge-2.2.1.jar",
+          "version": "QqT68vQL"
+        }
+      ]
+    }
+  },
+  "meta": {
+    "authors": [
+      "TeraBuildsStuff",
+      "YUNGNICKYOUNG"
+    ],
+    "categories": [
+      "worldgen"
+    ],
+    "community": "https://discord.gg/rns3beq",
+    "description": "A complete redesign of Minecraft's desert temples!",
+    "gallery": [
+      "https://cdn.modrinth.com/data/XNlO7sBv/images/2e73ada29fe12cb01ecdea5916a5c8b76bf92251.png",
+      "https://cdn.modrinth.com/data/XNlO7sBv/images/4666a27bbc0b4b8bf1eb32993c739b4fae5dab5e.png",
+      "https://cdn.modrinth.com/data/XNlO7sBv/images/b038f3cf881908855e839d8512f2e5c72d60b554.png",
+      "https://cdn.modrinth.com/data/XNlO7sBv/images/c0981f08baa9c58eb2693dfd187d58afd3adf770.png",
+      "https://cdn.modrinth.com/data/XNlO7sBv/images/e2f8ce59e0967a2e6244d8ee6073526a54009335.png",
+      "https://cdn.modrinth.com/data/XNlO7sBv/images/e4540d16c2b4d6db2d54a75345492b005f81032e.png"
+    ],
+    "icon": "https://cdn.modrinth.com/data/XNlO7sBv/7c28d323155163f64343670e6553b85e681d7796.png",
+    "issues": "https://github.com/YUNG-GANG/YUNGs-Better-Desert-Temples/issues",
+    "keywords": [
+      "yungs"
+    ],
+    "license": "LGPL-3.0-only",
+    "name": "YUNG's Better Desert Temples",
+    "package_maintainers": [
+      "mcvm"
+    ],
+    "source": "https://github.com/YUNG-GANG/YUNGs-Better-Desert-Temples",
+    "support_link": "https://www.patreon.com/yungnickyoung"
+  },
+  "properties": {
+    "modrinth_id": "XNlO7sBv",
+    "supported_modloaders": [
+      "fabriclike",
+      "forgelike"
+    ],
+    "supported_sides": [
+      "server"
+    ],
+    "supported_versions": [
+      "1.19.2",
+      "1.19.3",
+      "1.19.4",
+      "1.20",
+      "1.20.1",
+      "1.20.4"
+    ]
+  }
+}

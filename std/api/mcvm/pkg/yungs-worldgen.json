@@ -1,0 +1,45 @@
+{
+	"meta": {
+		"name": "Yung's Worldgen Collection",
+		"description": "A collection of world generation and structure mods from YUNGNICKYOUNG",
+		"license": "LGPL-3.0-only"
+	},
+	"properties": {
+		"features": [
+			"end_island"
+		],
+		"default_features": [
+			"end_island"
+		]
+	},
+	"relations": {
+		"bundled": [
+			"yungs-bridges",
+			"yungs-desert-temples",
+			"yungs-dungeons",
+			"yungs-extras",
+			"yungs-jungle-temples",
+			"yungs-mineshafts",
+			"yungs-nether-fortresses",
+			"yungs-ocean-monuments",
+			"yungs-stronholds",
+			"yungs-witch-huts"
+		]
+	},
+	"conditional_rules": [
+		{
+			"conditions": {
+				"features": [
+					"end_island"
+				]
+			},
+			"properties": {
+				"relations": {
+					"bundled": [
+						"yungs-end-island"
+					]
+				}
+			}
+		}
+	]
+}

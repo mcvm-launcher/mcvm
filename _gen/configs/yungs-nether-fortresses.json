@@ -1,0 +1,27 @@
+{
+	"source": "modrinth",
+	"id": "Z2mXHnxP",
+	"relation_substitutions": {
+		"P7dR8mSH": "fabriclike-api",
+		"qvIfYCYJ": "fabriclike-api",
+		"Ua7DFN59": "yungs-api",
+		"9s6osm5g": "cloth-config",
+		"mOgUt4GM": "mod-menu"
+	},
+	"merge": {
+		"meta": {
+			"keywords": [
+				"yungs"
+			],
+			"categories": [
+				"worldgen"
+			]
+		},
+		"properties": {
+			"supported_modloaders": [
+				"fabriclike",
+				"forgelike"
+			]
+		}
+	}
+}

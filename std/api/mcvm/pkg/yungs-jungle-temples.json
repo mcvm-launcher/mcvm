@@ -1,0 +1,296 @@
+{
+  "addons": {
+    "addon": {
+      "kind": "mod",
+      "versions": [
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/z9Ve58Ih/versions/csNNUblm/YungsBetterJungleTemples-1.20.4-Fabric-2.4.1.jar",
+          "version": "csNNUblm"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/z9Ve58Ih/versions/plZKEsHY/YungsBetterJungleTemples-1.20.4-Forge-2.4.1.jar",
+          "version": "plZKEsHY"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/z9Ve58Ih/versions/DIG3Vtjv/YungsBetterJungleTemples-1.20.4-Fabric-2.4.0.jar",
+          "version": "DIG3Vtjv"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/z9Ve58Ih/versions/uhy9jPGX/YungsBetterJungleTemples-1.20.4-Forge-2.4.0.jar",
+          "version": "uhy9jPGX"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/z9Ve58Ih/versions/KrGANMei/YungsBetterJungleTemples-1.20-Fabric-2.0.4.jar",
+          "version": "KrGANMei"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/z9Ve58Ih/versions/kvifUaXe/YungsBetterJungleTemples-1.20-Forge-2.0.4.jar",
+          "version": "kvifUaXe"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/z9Ve58Ih/versions/1nV3BdLt/YungsBetterJungleTemples-1.20-Fabric-2.0.3.jar",
+          "version": "1nV3BdLt"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/z9Ve58Ih/versions/ZnSyzkmN/YungsBetterJungleTemples-1.20-Forge-2.0.3.jar",
+          "version": "ZnSyzkmN"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/z9Ve58Ih/versions/T8rVoTjv/YungsBetterJungleTemples-1.20-Fabric-2.0.2.jar",
+          "version": "T8rVoTjv"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/z9Ve58Ih/versions/Ak10Ymte/YungsBetterJungleTemples-1.20-Forge-2.0.2.jar",
+          "version": "Ak10Ymte"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/z9Ve58Ih/versions/qk4AcUgB/YungsBetterJungleTemples-1.19.4-Forge-1.1.1.jar",
+          "version": "qk4AcUgB"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/z9Ve58Ih/versions/REe7auh2/YungsBetterJungleTemples-1.19.2-Forge-1.0.1.jar",
+          "version": "REe7auh2"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/z9Ve58Ih/versions/AaSzoIjG/YungsBetterJungleTemples-1.19.4-Fabric-1.1.1.jar",
+          "version": "AaSzoIjG"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/z9Ve58Ih/versions/nlCwNeL7/YungsBetterJungleTemples-1.19.2-Fabric-1.0.1.jar",
+          "version": "nlCwNeL7"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/z9Ve58Ih/versions/uLnkpEnp/YungsBetterJungleTemples-1.20-Fabric-2.0.1.jar",
+          "version": "uLnkpEnp"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/z9Ve58Ih/versions/nTG7jdrM/YungsBetterJungleTemples-1.20-Forge-2.0.1.jar",
+          "version": "nTG7jdrM"
+        }
+      ]
+    }
+  },
+  "meta": {
+    "authors": [
+      "YUNGNICKYOUNG",
+      "TeraBuildsStuff"
+    ],
+    "categories": [
+      "worldgen"
+    ],
+    "community": "https://discord.gg/rns3beq",
+    "description": "A complete redesign of Minecraft's jungle temples!",
+    "gallery": [
+      "https://cdn.modrinth.com/data/z9Ve58Ih/images/2a01851de68dbd1580254ae2cfaf2ad123d1ca6e.png",
+      "https://cdn.modrinth.com/data/z9Ve58Ih/images/2edba993e580048f7985966807e60f44c3ee3028.png",
+      "https://cdn.modrinth.com/data/z9Ve58Ih/images/7bcc32ebe2cc66bbd964f31bb89bc6c541d6a8e1.png",
+      "https://cdn.modrinth.com/data/z9Ve58Ih/images/be17d29a69a6b70f6cd8a81167e46f6847e2c6df.jpeg",
+      "https://cdn.modrinth.com/data/z9Ve58Ih/images/dbe3bfee189de3eb6b41ad4f7d614ccceeec269a.png"
+    ],
+    "icon": "https://cdn.modrinth.com/data/z9Ve58Ih/4a410457d1eca88ad1d4a2c4e7672fc3014056e4.png",
+    "issues": "https://github.com/YUNG-GANG/YUNGs-Better-Jungle-Temples/issues",
+    "keywords": [
+      "yungs"
+    ],
+    "license": "LGPL-3.0-only",
+    "name": "YUNG's Better Jungle Temples",
+    "package_maintainers": [
+      "mcvm"
+    ],
+    "source": "https://github.com/YUNG-GANG/YUNGs-Better-Jungle-Temples",
+    "support_link": "https://www.patreon.com/yungnickyoung"
+  },
+  "properties": {
+    "modrinth_id": "z9Ve58Ih",
+    "supported_modloaders": [
+      "fabriclike",
+      "forgelike"
+    ],
+    "supported_sides": [
+      "server"
+    ],
+    "supported_versions": [
+      "1.19.2",
+      "1.19.4",
+      "1.20",
+      "1.20.1",
+      "1.20.4"
+    ]
+  }
+}

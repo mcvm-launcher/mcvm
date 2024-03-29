@@ -1,0 +1,250 @@
+{
+  "addons": {
+    "addon": {
+      "kind": "mod",
+      "versions": [
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ZYgyPyfq/versions/F1adMKW8/YungsExtras-1.20.4-Fabric-4.4.0.jar",
+          "version": "F1adMKW8"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ZYgyPyfq/versions/YTvJanVJ/YungsExtras-1.20.4-Forge-4.4.0.jar",
+          "version": "YTvJanVJ"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ZYgyPyfq/versions/pfVTUz1L/YungsExtras-1.20-Fabric-4.0.3.jar",
+          "version": "pfVTUz1L"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ZYgyPyfq/versions/h4m8J7w8/YungsExtras-1.20-Forge-4.0.3.jar",
+          "version": "h4m8J7w8"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ZYgyPyfq/versions/TKzbRjqo/YungsExtras-1.20-Fabric-4.0.2.jar",
+          "version": "TKzbRjqo"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ZYgyPyfq/versions/ES49Icuw/YungsExtras-1.20-Forge-4.0.2.jar",
+          "version": "ES49Icuw"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ZYgyPyfq/versions/jDmHcs7q/YungsExtras-1.20-Fabric-4.0.1.jar",
+          "version": "jDmHcs7q"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ZYgyPyfq/versions/xV3hb9U8/YungsExtras-1.20-Forge-4.0.1.jar",
+          "version": "xV3hb9U8"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ZYgyPyfq/versions/uJ7BZWEq/YungsExtras-1.19.4-Forge-3.3.0.jar",
+          "version": "uJ7BZWEq"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ZYgyPyfq/versions/MUzrN78m/YungsExtras-1.19.4-Fabric-3.3.0.jar",
+          "version": "MUzrN78m"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ZYgyPyfq/versions/NxK9Eu2q/YungsExtras-1.19.3-Fabric-3.2.0.jar",
+          "version": "NxK9Eu2q"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ZYgyPyfq/versions/tEdVvBPJ/YungsExtras-1.19.3-Forge-3.2.0.jar",
+          "version": "tEdVvBPJ"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ZYgyPyfq/versions/oODh25Uv/YungsExtras-1.19.2-Fabric-3.1.0.jar",
+          "version": "oODh25Uv"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/ZYgyPyfq/versions/Ltax470w/YungsExtras-1.19.2-Forge-3.1.0.jar",
+          "version": "Ltax470w"
+        }
+      ]
+    }
+  },
+  "meta": {
+    "authors": [
+      "YUNGNICKYOUNG",
+      "Acarii"
+    ],
+    "categories": [
+      "worldgen"
+    ],
+    "community": "https://discord.gg/rns3beq",
+    "description": "Extra structures, features, and vanilla+ content suitable for any modpack!",
+    "gallery": [
+      "https://cdn.modrinth.com/data/ZYgyPyfq/images/03212b89fe65986e8e5734719a8eff4820d68d4c.png",
+      "https://cdn.modrinth.com/data/ZYgyPyfq/images/1520712d84f41bf86cdc4a90e8df21109560d146.png",
+      "https://cdn.modrinth.com/data/ZYgyPyfq/images/46d3b4ef0e51afd34abd7b651bdd8cd6597216e0.png",
+      "https://cdn.modrinth.com/data/ZYgyPyfq/images/b53da67c6e510c52b0b574343d2abb6f3c77230f.png"
+    ],
+    "icon": "https://cdn.modrinth.com/data/ZYgyPyfq/709b076c9de735145c95fb44c5239ff794ffac17.png",
+    "issues": "https://github.com/YUNG-GANG/YUNGs-Extras/issues",
+    "keywords": [
+      "yungs"
+    ],
+    "license": "LGPL-3.0-only",
+    "name": "YUNG's Extras",
+    "package_maintainers": [
+      "mcvm"
+    ],
+    "source": "https://github.com/YUNG-GANG/YUNGs-Extras",
+    "support_link": "https://www.patreon.com/yungnickyoung"
+  },
+  "properties": {
+    "modrinth_id": "ZYgyPyfq",
+    "supported_modloaders": [
+      "fabriclike",
+      "forgelike"
+    ],
+    "supported_sides": [
+      "server"
+    ],
+    "supported_versions": [
+      "1.19.2",
+      "1.19.3",
+      "1.19.4",
+      "1.20",
+      "1.20.1",
+      "1.20.4"
+    ]
+  }
+}

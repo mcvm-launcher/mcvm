@@ -1,0 +1,23 @@
+{
+	"source": "modrinth",
+	"id": "cl223EMc",
+	"relation_substitutions": {
+		"P7dR8mSH": "fabriclike-api",
+		"qvIfYCYJ": "fabriclike-api"
+	},
+	"merge": {
+		"meta": {
+			"keywords": [],
+			"categories": [
+				"library",
+				"technical"
+			]
+		},
+		"properties": {
+			"supported_modloaders": [
+				"fabriclike",
+				"forgelike"
+			]
+		}
+	}
+}

@@ -1,0 +1,197 @@
+{
+  "addons": {
+    "addon": {
+      "kind": "mod",
+      "versions": [
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "yungs-api"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/CU0PAyzb/versions/kOPN246o/Paxi-1.20.4-Fabric-4.4.0.jar",
+          "version": "kOPN246o"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/CU0PAyzb/versions/dfKKJWz8/Paxi-1.20.4-Forge-4.4.0.jar",
+          "version": "dfKKJWz8"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "yungs-api"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/CU0PAyzb/versions/UVPLKCqf/Paxi-1.20-Fabric-4.0.jar",
+          "version": "UVPLKCqf"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/CU0PAyzb/versions/C7buFh0l/Paxi-1.20-Forge-4.0.jar",
+          "version": "C7buFh0l"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "yungs-api"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/CU0PAyzb/versions/t0EvcKWk/Paxi-1.19.4-Fabric-3.2.0.jar",
+          "version": "t0EvcKWk"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "yungs-api"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/CU0PAyzb/versions/PndwEY0C/Paxi-1.19.3-Fabric-3.1.0.jar",
+          "version": "PndwEY0C"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/CU0PAyzb/versions/ncI5s51y/Paxi-1.19.4-Forge-3.2.0.jar",
+          "version": "ncI5s51y"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/CU0PAyzb/versions/QzQxGeh0/Paxi-1.19.3-Forge-3.1.0.jar",
+          "version": "QzQxGeh0"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/CU0PAyzb/versions/guE4gNYH/Paxi-1.19.2-Fabric-3.0.1.jar",
+          "version": "guE4gNYH"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/CU0PAyzb/versions/nAUDoZw6/Paxi-1.19.2-Forge-3.0.1.jar",
+          "version": "nAUDoZw6"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/CU0PAyzb/versions/PGslvGfk/Paxi-1.19.2-Fabric-3.0.jar",
+          "version": "PGslvGfk"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/CU0PAyzb/versions/fZAUUop4/Paxi-1.19.2-Forge-3.0.jar",
+          "version": "fZAUUop4"
+        }
+      ]
+    }
+  },
+  "meta": {
+    "authors": [
+      "YUNGNICKYOUNG"
+    ],
+    "categories": [
+      "tools",
+      "technical"
+    ],
+    "community": "https://discord.gg/rns3beq",
+    "description": "Automatic data & resource pack loading made easy.",
+    "gallery": [],
+    "icon": "https://cdn.modrinth.com/data/CU0PAyzb/a44cd118cf27547d17dc13a008cdb4efe53aa6d1.png",
+    "issues": "https://github.com/YUNG-GANG/Paxi/issues",
+    "keywords": [
+      "datapack"
+    ],
+    "license": "LGPL-3.0-only",
+    "name": "Paxi",
+    "package_maintainers": [
+      "mcvm"
+    ],
+    "source": "https://github.com/YUNG-GANG/Paxi",
+    "support_link": "https://www.patreon.com/yungnickyoung"
+  },
+  "properties": {
+    "modrinth_id": "CU0PAyzb",
+    "supported_modloaders": [
+      "fabriclike",
+      "forgelike"
+    ],
+    "supported_sides": [
+      "client",
+      "server"
+    ],
+    "supported_versions": [
+      "1.19.2",
+      "1.19.3",
+      "1.19.4",
+      "1.20",
+      "1.20.1",
+      "1.20.4"
+    ]
+  }
+}

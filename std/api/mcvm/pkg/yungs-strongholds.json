@@ -1,0 +1,278 @@
+{
+  "addons": {
+    "addon": {
+      "kind": "mod",
+      "versions": [
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/kidLKymU/versions/lT8OssHA/YungsBetterStrongholds-1.20.4-Fabric-4.4.1.jar",
+          "version": "lT8OssHA"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/kidLKymU/versions/gQjNrmlk/YungsBetterStrongholds-1.20.4-Forge-4.4.1.jar",
+          "version": "gQjNrmlk"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/kidLKymU/versions/Y05JQWx3/YungsBetterStrongholds-1.20.4-Fabric-4.4.0.jar",
+          "version": "Y05JQWx3"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/kidLKymU/versions/4oLId1t7/YungsBetterStrongholds-1.20.4-Forge-4.4.0.jar",
+          "version": "4oLId1t7"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/kidLKymU/versions/yV6hn0bB/YungsBetterStrongholds-1.20-Fabric-4.0.3.jar",
+          "version": "yV6hn0bB"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/kidLKymU/versions/rwiShgsc/YungsBetterStrongholds-1.20-Forge-4.0.3.jar",
+          "version": "rwiShgsc"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/kidLKymU/versions/VnyfzF7V/YungsBetterStrongholds-1.20-Fabric-4.0.2.jar",
+          "version": "VnyfzF7V"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/kidLKymU/versions/z6g8BExo/YungsBetterStrongholds-1.20-Forge-4.0.2.jar",
+          "version": "z6g8BExo"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/kidLKymU/versions/A5qUVGg0/YungsBetterStrongholds-1.20-Fabric-4.0.1.jar",
+          "version": "A5qUVGg0"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/kidLKymU/versions/Q3DjpEP4/YungsBetterStrongholds-1.20-Forge-4.0.1.jar",
+          "version": "Q3DjpEP4"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/kidLKymU/versions/tCcE7NO3/YungsBetterStrongholds-1.19.4-Forge-3.4.0.jar",
+          "version": "tCcE7NO3"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/kidLKymU/versions/AWml7PPK/YungsBetterStrongholds-1.19.4-Fabric-3.4.0.jar",
+          "version": "AWml7PPK"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/kidLKymU/versions/YHxAEStw/YungsBetterStrongholds-1.19.3-Fabric-3.3.0.jar",
+          "version": "YHxAEStw"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/kidLKymU/versions/ZpXd8UfW/YungsBetterStrongholds-1.19.3-Forge-3.3.0.jar",
+          "version": "ZpXd8UfW"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "cloth-config",
+              "fabriclike-api",
+              "yungs-api"
+            ],
+            "recommendations": {
+              "value": "mod-menu"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/kidLKymU/versions/KZDwDgOz/YungsBetterStrongholds-1.19.2-Fabric-3.2.0.jar",
+          "version": "KZDwDgOz"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "yungs-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/kidLKymU/versions/aW1VWzje/YungsBetterStrongholds-1.19.2-Forge-3.2.0.jar",
+          "version": "aW1VWzje"
+        }
+      ]
+    }
+  },
+  "meta": {
+    "authors": [
+      "YUNGNICKYOUNG",
+      "Acarii"
+    ],
+    "categories": [
+      "worldgen"
+    ],
+    "community": "https://discord.gg/rns3beq",
+    "description": "A complete redesign of Minecraft's strongholds!",
+    "gallery": [
+      "https://cdn.modrinth.com/data/kidLKymU/images/050aa0d8f566091b387eb44817f40d59808a9a25.png",
+      "https://cdn.modrinth.com/data/kidLKymU/images/50ee9e455a7a61cdb4652e5922ffaa573e33e377.png",
+      "https://cdn.modrinth.com/data/kidLKymU/images/b9781f7c78d89a5d4d34a41b9636055cf251800c.png",
+      "https://cdn.modrinth.com/data/kidLKymU/images/dea5e5a5f1422dfa68a90c35e873fe988782552d.png",
+      "https://cdn.modrinth.com/data/kidLKymU/images/fd07e825b22e252f5d6f52db53461d97b4e3362e.png"
+    ],
+    "icon": "https://cdn.modrinth.com/data/kidLKymU/c3c33be1c8b83ae8f69ba76cf0974cefcc620c47.png",
+    "issues": "https://github.com/YUNG-GANG/YUNGs-Better-Strongholds/issues",
+    "keywords": [
+      "yungs"
+    ],
+    "license": "LGPL-3.0-only",
+    "name": "YUNG's Better Strongholds",
+    "package_maintainers": [
+      "mcvm"
+    ],
+    "source": "https://github.com/YUNG-GANG/YUNGs-Better-Strongholds",
+    "support_link": "https://www.patreon.com/yungnickyoung"
+  },
+  "properties": {
+    "modrinth_id": "kidLKymU",
+    "supported_modloaders": [
+      "fabriclike",
+      "forgelike"
+    ],
+    "supported_sides": [
+      "server"
+    ],
+    "supported_versions": [
+      "1.19.2",
+      "1.19.3",
+      "1.19.4",
+      "1.20",
+      "1.20.1",
+      "1.20.4"
+    ]
+  }
+}

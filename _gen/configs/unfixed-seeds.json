@@ -1,0 +1,24 @@
+{
+	"source": "modrinth",
+	"id": "BMKSAGRn",
+	"relation_substitutions": {
+		"P7dR8mSH": "fabriclike-api"
+	},
+	"merge": {
+		"meta": {
+			"keywords": [
+				"seed"
+			],
+			"categories": [
+				"library",
+				"technical",
+				"worldgen"
+			]
+		},
+		"properties": {
+			"supported_modloaders": [
+				"fabriclike"
+			]
+		}
+	}
+}

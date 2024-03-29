@@ -1,0 +1,24 @@
+{
+	"source": "modrinth",
+	"id": "8oi3bsk5",
+	"relation_substitutions": {
+		"BMKSAGRn": "unfixed-seeds",
+		"P7dR8mSH": "fabriclike-api",
+		"cl223EMc": "cristel-lib"
+	},
+	"merge": {
+		"meta": {
+			"keywords": [],
+			"categories": [
+				"worldgen"
+			],
+			"license": "https://github.com/Stardust-Labs-MC/Terralith/blob/1.20/license.txt"
+		},
+		"properties": {
+			"supported_modloaders": [
+				"fabriclike",
+				"forgelike"
+			]
+		}
+	}
+}
