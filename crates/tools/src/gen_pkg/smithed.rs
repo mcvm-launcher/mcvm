@@ -49,7 +49,7 @@ pub async fn gen(
 
 	let mut all_mc_versions = Vec::new();
 
-	for version in pack.versions {
+	for version in pack.versions.into_iter().rev() {
 		// Get the sanitized version name
 		let version_name_sanitized = version.name.replace('.', "-");
 		let version_name = format!("smithed-version-{version_name_sanitized}");
