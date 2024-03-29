@@ -23,11 +23,23 @@ pub enum PackageSource {
 #[serde(default)]
 pub struct PackageGenerationConfig {
 	/// JSON structure to be merged with the output package
-	pub merge: serde_json::Map<String, serde_json::Value>,
+	pub merge: serde_json::Value,
 	/// Substitutions for relations
 	pub relation_substitutions: HashMap<String, String>,
 	/// Dependencies to force into extensions
 	pub force_extensions: Vec<String>,
+}
+
+impl PackageGenerationConfig {
+	/// Merge this config with another one to be placed over top of it
+	#[must_use]
+	pub fn merge(mut self, other: Self) -> Self {
+		json_merge(&mut self.merge, other.merge);
+		self.relation_substitutions
+			.extend(other.relation_substitutions);
+		self.force_extensions.extend(other.force_extensions);
+		self
+	}
 }
 
 /// Generates a package from a source and config
@@ -44,9 +56,7 @@ pub async fn gen(source: PackageSource, config: Option<PackageGenerationConfig>,
 
 	// Merge with config
 	let mut pkg = serde_json::value::to_value(pkg).expect("Failed to convert package to value");
-	let merge = serde_json::value::to_value(config.merge)
-		.expect("Failed to convert merged config to value");
-	json_merge(&mut pkg, merge);
+	json_merge(&mut pkg, config.merge);
 
 	println!(
 		"{}",

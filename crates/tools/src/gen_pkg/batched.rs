@@ -13,11 +13,16 @@ use super::{PackageGenerationConfig, PackageSource};
 #[derive(Deserialize)]
 pub struct BatchedConfig {
 	/// The packages to generate
+	#[serde(default)]
 	pub packages: Vec<BatchedPackageConfig>,
 	/// The output directory for the packages
 	pub output_dir: String,
 	/// A directory to read packages from
+	#[serde(default)]
 	pub config_dir: Option<String>,
+	/// Global package config to apply to all packages
+	#[serde(default)]
+	pub global_config: Option<PackageGenerationConfig>,
 }
 
 /// Configuration for a single batched package generation
@@ -111,13 +116,19 @@ pub async fn batched_gen(mut config: BatchedConfig) {
 			"Generating package {}",
 			pkg.pkg_id.as_ref().expect("Package ID should exist")
 		);
+		let pkg_config = if let Some(global_config) = &config.global_config {
+			global_config.clone().merge(pkg.config)
+		} else {
+			pkg.config
+		};
+
 		let package = match pkg.source {
 			PackageSource::Smithed => {
 				// Just generate the package
 				super::smithed::gen(
 					&pkg.id,
-					pkg.config.relation_substitutions,
-					&pkg.config.force_extensions,
+					pkg_config.relation_substitutions,
+					&pkg_config.force_extensions,
 				)
 				.await
 			}
@@ -137,8 +148,8 @@ pub async fn batched_gen(mut config: BatchedConfig) {
 					project.clone(),
 					&modrinth_versions,
 					team,
-					pkg.config.relation_substitutions,
-					&pkg.config.force_extensions,
+					pkg_config.relation_substitutions,
+					&pkg_config.force_extensions,
 				)
 				.await
 			}
@@ -147,7 +158,7 @@ pub async fn batched_gen(mut config: BatchedConfig) {
 		// Merge with config
 		let mut package =
 			serde_json::value::to_value(package).expect("Failed to convert package to value");
-		let merge = serde_json::value::to_value(pkg.config.merge)
+		let merge = serde_json::value::to_value(pkg_config.merge)
 			.expect("Failed to convert merged config to value");
 		json_merge(&mut package, merge);
 
