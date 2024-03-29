@@ -344,18 +344,18 @@ pub async fn get_multiple_teams(
 }
 
 /// A member of a project team
-#[derive(Deserialize, Serialize, Clone)]
+#[derive(Deserialize, Serialize, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Member {
-	/// The user that represents this member
-	pub user: User,
 	/// The ordering of the team member
 	pub ordering: i32,
+	/// The user that represents this member
+	pub user: User,
 	/// The ID of the team this member is a part of
 	pub team_id: String,
 }
 
 /// A user on the platform
-#[derive(Deserialize, Serialize, Clone)]
+#[derive(Deserialize, Serialize, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct User {
 	/// The user's username
 	pub username: String,

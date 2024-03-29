@@ -99,7 +99,7 @@ pub async fn gen_raw(
 
 	// Get team members and use them to fill out the authors field
 	let mut members = members.to_vec();
-	members.sort_by_key(|x| x.ordering);
+	members.sort();
 	meta.authors = Some(members.into_iter().map(|x| x.user.username).collect());
 
 	// Create properties
