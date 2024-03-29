@@ -1,4 +1,6 @@
-use std::{fs::File, io::BufWriter, path::PathBuf};
+use std::fs::File;
+use std::io::BufWriter;
+use std::path::PathBuf;
 
 use reqwest::Client;
 use serde::Deserialize;
@@ -14,6 +16,8 @@ pub struct BatchedConfig {
 	pub packages: Vec<BatchedPackageConfig>,
 	/// The output directory for the packages
 	pub output_dir: String,
+	/// A directory to read packages from
+	pub config_dir: Option<String>,
 }
 
 /// Configuration for a single batched package generation
@@ -24,14 +28,41 @@ pub struct BatchedPackageConfig {
 	/// The ID of the package at the source
 	pub id: String,
 	/// The ID of the generated package
-	pub pkg_id: String,
+	pub pkg_id: Option<String>,
 	/// The config for the generated package
 	#[serde(flatten)]
 	pub config: PackageGenerationConfig,
 }
 
 /// Generate a lot of packages
-pub async fn batched_gen(config: BatchedConfig) {
+pub async fn batched_gen(mut config: BatchedConfig) {
+	// Read config dir for additional packages
+	if let Some(config_dir) = config.config_dir {
+		let config_dir = PathBuf::from(config_dir);
+		let mut additional_pkgs = Vec::new();
+		for entry in std::fs::read_dir(config_dir).expect("Failed to read config directory") {
+			let entry = entry.expect("Failed to read config directory entry");
+			let file_type = entry
+				.file_type()
+				.expect("Failed to get config dir entry file type");
+			if file_type.is_file() {
+				let pkg_id = entry
+					.path()
+					.file_stem()
+					.expect("File stem missing")
+					.to_string_lossy()
+					.to_string();
+				let file = File::open(entry.path()).expect("Failed to open package config file");
+				let mut config: BatchedPackageConfig =
+					serde_json::from_reader(file).expect("Failed to read package config file");
+				config.pkg_id = Some(pkg_id);
+				additional_pkgs.push(config);
+			}
+		}
+
+		config.packages.extend(additional_pkgs);
+	}
+
 	let client = Client::new();
 
 	// Collect Modrinth projects and versions
@@ -104,7 +135,8 @@ pub async fn batched_gen(config: BatchedConfig) {
 		json_merge(&mut package, merge);
 
 		// Write out the package
-		let path = PathBuf::from(&config.output_dir).join(format!("{}.json", pkg.pkg_id));
+		let path = PathBuf::from(&config.output_dir)
+			.join(format!("{}.json", pkg.pkg_id.expect("Package ID missing")));
 		let file =
 			BufWriter::new(File::create(path).expect("Failed to create package output file"));
 		serde_json::to_writer_pretty(file, &package).expect("Failed to write package to file");
