@@ -27,12 +27,15 @@ async fn main() {
 			});
 			gen_pkg::gen(source, config, &id).await;
 		}
-		Subcommand::GenPkgBatched { config_path } => {
+		Subcommand::GenPkgBatched {
+			config_path,
+			filter,
+		} => {
 			let config = serde_json::from_reader(
 				File::open(config_path).expect("Failed to open config file"),
 			)
 			.expect("Failed to deserialize config");
-			gen_pkg::batched::batched_gen(config).await;
+			gen_pkg::batched::batched_gen(config, filter).await;
 		}
 	}
 }
@@ -58,6 +61,9 @@ enum Subcommand {
 	GenPkgBatched {
 		/// Path to configuration for the package generation
 		config_path: String,
+		/// Packages to filter and only include
+		#[arg(short, long)]
+		filter: Vec<String>,
 	},
 }
 

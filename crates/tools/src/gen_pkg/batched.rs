@@ -41,7 +41,7 @@ pub struct BatchedPackageConfig {
 }
 
 /// Generate a lot of packages
-pub async fn batched_gen(mut config: BatchedConfig) {
+pub async fn batched_gen(mut config: BatchedConfig, filter: Vec<String>) {
 	// Read config dir for additional packages
 	if let Some(config_dir) = config.config_dir {
 		let config_dir = PathBuf::from(config_dir);
@@ -77,7 +77,14 @@ pub async fn batched_gen(mut config: BatchedConfig) {
 	let modrinth_ids: Vec<_> = config
 		.packages
 		.iter()
-		.filter(|x| x.source == PackageSource::Modrinth)
+		.filter(|x| {
+			if !filter.is_empty()
+				&& !filter.contains(x.pkg_id.as_ref().expect("Package ID should exist"))
+			{
+				return false;
+			}
+			x.source == PackageSource::Modrinth
+		})
 		.map(|x| x.id.clone())
 		.collect();
 	let modrinth_projects = mcvm::net::modrinth::get_multiple_projects(&modrinth_ids, &client)
@@ -113,10 +120,12 @@ pub async fn batched_gen(mut config: BatchedConfig) {
 	// Iterate through the packages to generate
 	println!("Generating packages...");
 	for pkg in config.packages {
-		println!(
-			"Generating package {}",
-			pkg.pkg_id.as_ref().expect("Package ID should exist")
-		);
+		let pkg_id = pkg.pkg_id.as_ref().expect("Package ID should exist");
+		if !filter.is_empty() && !filter.contains(pkg_id) {
+			continue;
+		}
+
+		println!("Generating package {}", pkg_id);
 		let pkg_config = if let Some(global_config) = &config.global_config {
 			global_config.clone().merge(pkg.config)
 		} else {
