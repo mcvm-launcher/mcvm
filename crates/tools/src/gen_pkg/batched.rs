@@ -152,7 +152,7 @@ pub async fn batched_gen(mut config: BatchedConfig, filter: Vec<String>) {
 		result.expect("Task failed");
 	}
 	let mut modrinth_versions = modrinth_versions.lock().expect("Failed to lock mutex");
-	let mut smithed_packs = smithed_packs.lock().expect("Failed to lock mutex");
+	let smithed_packs = smithed_packs.lock().expect("Failed to lock mutex");
 	// Sort the Modrinth versions
 	modrinth_versions.sort_by_key(|x| SortVersions::new(x));
 
