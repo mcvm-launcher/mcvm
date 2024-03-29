@@ -112,7 +112,7 @@ pub async fn batched_gen(mut config: BatchedConfig) {
 					pkg.config.relation_substitutions,
 					&pkg.config.force_extensions,
 				)
-				.await;
+				.await
 			}
 			PackageSource::Modrinth => {
 				// Get the project
@@ -132,7 +132,7 @@ pub async fn batched_gen(mut config: BatchedConfig) {
 					pkg.config.relation_substitutions,
 					&pkg.config.force_extensions,
 				)
-				.await;
+				.await
 			}
 		};
 
