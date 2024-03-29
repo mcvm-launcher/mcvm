@@ -26,8 +26,6 @@ use mcvm_pkg::properties::{eval_properties, PackageProperties};
 use mcvm_shared::pkg::PackageID;
 use reqwest::Client;
 
-const PKG_EXTENSION: &str = ".pkg.txt";
-
 /// An installable package that loads content into your game
 #[derive(Debug)]
 pub struct Package {
@@ -128,7 +126,11 @@ impl Package {
 
 	/// Get the cached file name of the package
 	pub fn filename(&self) -> String {
-		format!("{}{PKG_EXTENSION}", self.id)
+		let extension = match self.content_type {
+			PackageContentType::Declarative => ".json",
+			PackageContentType::Script => ".pkg.txt",
+		};
+		format!("{}{extension}", self.id)
 	}
 
 	/// Get the cached path of the package
@@ -270,17 +272,14 @@ mod tests {
 			PackageContentType::Script,
 			HashSet::new(),
 		);
-		assert_eq!(package.filename(), "sodium".to_string() + PKG_EXTENSION);
+		assert_eq!(package.filename(), "sodium.pkg.txt".to_string());
 
 		let package = Package::new(
 			PackageID::from("fabriclike-api"),
 			PkgLocation::Remote(None),
-			PackageContentType::Script,
+			PackageContentType::Declarative,
 			HashSet::new(),
 		);
-		assert_eq!(
-			package.filename(),
-			"fabriclike-api".to_string() + PKG_EXTENSION
-		);
+		assert_eq!(package.filename(), "fabriclike-api.json".to_string());
 	}
 }
