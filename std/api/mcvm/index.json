@@ -108,6 +108,10 @@
 			"path": "pkg/farmers-delight-fabric.json",
 			"content_type": "declarative"
 		},
+		"fast-better-grass": {
+			"path": "pkg/fast-better-grass.json",
+			"content_type": "declarative"
+		},
 		"ferrite-core": {
 			"path": "pkg/ferrite-core.json",
 			"content_type": "declarative"
@@ -170,6 +174,10 @@
 		},
 		"lambdynamiclights": {
 			"path": "pkg/lambdynamiclights.json",
+			"content_type": "declarative"
+		},
+		"let-me-despawn": {
+			"path": "pkg/let-me-despawn.json",
 			"content_type": "declarative"
 		},
 		"lilac": {
@@ -330,6 +338,10 @@
 		},
 		"unfixed-seeds": {
 			"path": "pkg/unfixed-seeds.json",
+			"content_type": "declarative"
+		},
+		"worldedit": {
+			"path": "pkg/worldedit.json",
 			"content_type": "declarative"
 		},
 		"xaeros-minimap": {

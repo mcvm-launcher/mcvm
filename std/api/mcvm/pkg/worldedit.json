@@ -1,0 +1,266 @@
+{
+	"addons": {
+		"addon": {
+			"kind": "mod",
+			"versions": [
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1",
+						"1.20.2",
+						"1.20.3",
+						"1.20.4"
+					],
+					"plugin_loaders": [
+						"bukkit",
+						"paper",
+						"spigot"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/1u6JkXh5/versions/JzCMkGax/worldedit-bukkit-7.3.0.jar",
+					"version": "JzCMkGax"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": [
+						"fabric",
+						"forge"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/1u6JkXh5/versions/ZOhVauWn/worldedit-mod-7.3.0.jar",
+					"version": "ZOhVauWn"
+				},
+				{
+					"minecraft_versions": [
+						"1.17.1",
+						"1.18.2",
+						"1.19.4",
+						"1.20",
+						"1.20.1",
+						"1.20.2",
+						"1.20.3",
+						"1.20.4"
+					],
+					"plugin_loaders": [
+						"bukkit",
+						"paper",
+						"spigot"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/1u6JkXh5/versions/DfjpjdP5/worldedit-bukkit-7.2.20.jar",
+					"version": "DfjpjdP5"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": [
+						"fabric",
+						"forge"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/1u6JkXh5/versions/aMUZQKUG/worldedit-mod-7.2.20.jar",
+					"version": "aMUZQKUG"
+				},
+				{
+					"minecraft_versions": [
+						"1.17.1",
+						"1.18.2",
+						"1.19.4",
+						"1.20",
+						"1.20.1",
+						"1.20.2",
+						"1.20.3",
+						"1.20.4"
+					],
+					"plugin_loaders": [
+						"bukkit",
+						"paper",
+						"spigot"
+					],
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/1u6JkXh5/versions/gaP8AHk5/worldedit-bukkit-7.3.0-beta-04.jar",
+					"version": "gaP8AHk5"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": [
+						"fabric",
+						"forge"
+					],
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/1u6JkXh5/versions/9TCdUpws/worldedit-mod-7.3.0-beta-04.jar",
+					"version": "9TCdUpws"
+				},
+				{
+					"minecraft_versions": [
+						"1.17.1",
+						"1.18.2",
+						"1.19.4",
+						"1.20",
+						"1.20.1",
+						"1.20.2",
+						"1.20.3",
+						"1.20.4"
+					],
+					"plugin_loaders": [
+						"bukkit",
+						"paper",
+						"spigot"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/1u6JkXh5/versions/TdNeSMad/worldedit-bukkit-7.2.19.jar",
+					"version": "TdNeSMad"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": [
+						"fabric",
+						"forge"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/1u6JkXh5/versions/QKXBX0zs/worldedit-mod-7.2.19.jar",
+					"version": "QKXBX0zs"
+				},
+				{
+					"minecraft_versions": [
+						"1.17.1",
+						"1.18.2",
+						"1.19.4",
+						"1.20",
+						"1.20.1",
+						"1.20.2",
+						"1.20.3",
+						"1.20.4"
+					],
+					"plugin_loaders": [
+						"bukkit",
+						"paper",
+						"spigot"
+					],
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/1u6JkXh5/versions/jiqenRwc/worldedit-bukkit-7.3.0-beta-03-dist.jar",
+					"version": "jiqenRwc"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": [
+						"fabric",
+						"forge"
+					],
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/1u6JkXh5/versions/rTGh3R1y/worldedit-mod-7.3.0-beta-03-dist.jar",
+					"version": "rTGh3R1y"
+				},
+				{
+					"minecraft_versions": [
+						"1.17.1",
+						"1.18.2",
+						"1.19.4",
+						"1.20",
+						"1.20.1",
+						"1.20.2",
+						"1.20.3",
+						"1.20.4"
+					],
+					"plugin_loaders": [
+						"bukkit",
+						"paper",
+						"spigot"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/1u6JkXh5/versions/aNn2Fqf4/worldedit-bukkit-7.2.18-dist.jar",
+					"version": "aNn2Fqf4"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": [
+						"fabric",
+						"forge"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/1u6JkXh5/versions/ssjKpdGo/worldedit-mod-7.2.18-dist.jar",
+					"version": "ssjKpdGo"
+				},
+				{
+					"minecraft_versions": [
+						"1.17.1",
+						"1.18.2",
+						"1.19.4",
+						"1.20",
+						"1.20.1",
+						"1.20.2"
+					],
+					"plugin_loaders": [
+						"bukkit",
+						"paper",
+						"spigot"
+					],
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/1u6JkXh5/versions/ans4Koju/worldedit-bukkit-7.3.0-beta-02.jar",
+					"version": "ans4Koju"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": [
+						"fabric",
+						"forge"
+					],
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/1u6JkXh5/versions/PTig47IL/worldedit-mod-7.3.0-beta-02.jar",
+					"version": "PTig47IL"
+				}
+			]
+		}
+	},
+	"meta": {
+		"authors": [
+			"me4502",
+			"octylFractal",
+			"wizjany"
+		],
+		"categories": [
+			"tools",
+			"building"
+		],
+		"community": "https://discord.gg/enginehub",
+		"description": "A Minecraft Map Editor... that runs in-game!\nWith selections, schematics, copy and paste, brushes, and scripting.\nUse it in creative, or use it temporarily in survival.",
+		"documentation": "https://worldedit.enginehub.org/en/latest/",
+		"gallery": [],
+		"icon": "https://cdn.modrinth.com/data/1u6JkXh5/1aae10b5289feeba4b534ee408ce60bc01813165.png",
+		"issues": "https://github.com/EngineHub/WorldEdit/issues",
+		"keywords": [
+			"edit"
+		],
+		"license": "GPL-3.0-only",
+		"long_description": "<center>\n\n<img alt=\"WorldEdit Logo\" src=\"https://raw.githubusercontent.com/EngineHub/WorldEdit/master/worldedit-logo.svg\" width=\"500\">\n\n<br>\n<br>\n\n**A Minecraft Map Editor... that runs in-game!**\nWith selections, schematics, copy and paste, brushes, and scripting.\nUse it in creative, or use it temporarily in survival.\n\nJava Edition required.\nCompatible with Forge, Fabric, and Bukkit-based platforms (Spigot and Paper).\n\n<iframe width=\"560\" height=\"315\" src=\"https://www.youtube-nocookie.com/embed/dfhgsFNXVnU\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>\n\n<iframe width=\"560\" height=\"315\" src=\"https://www.youtube-nocookie.com/embed/72HlPD9CW10\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>\n\n</center>\n\n<br>\n<br>\n\n<center>\n\n![Installation](https://i.imgur.com/GnBqlju.png)\n\n</center>\n  \n  🛑 Make sure that you are using the Java version of Minecraft.<br><br>\n  \nMod version:\n\n1. Install Minecraft Forge or Fabric.<br>\n2. Download WorldEdit from this page.<br>\n3. Put the WorldEdit mod file into your mods folder.<br><br>\n\nPlugin version:\n\n1. Set up a Bukkit server such as [Spigot](https://spigotmc.org) or [Paper](https://papermc.io/) (Paper is [recommended](https://madelinemiller.dev/blog/paper-vs-spigot/) over Spigot).\n2. Download WorldEdit from this page (see the Files tab above for all versions).\n3. Put the WorldEdit plugin file into your plugins folder.\n\nCheck YouTube for tutorials, or read the official [documentation](https://worldedit.enginehub.org/)<br><br>\n\n⚠️ Bukkit, Spigot, or Paper users: Download the\n<a style=\"font-size: 100%\" href=\"https://dev.bukkit.org/projects/worldedit/\">WorldEdit plugin</a>.\n\n<br>\n<br>\n<br>\n\n<center>\n\n![Discord Server](https://i.imgur.com/C0ek15q.png)\n\n</center>\n\n[![Discord Server](https://discordapp.com/api/v6/guilds/80853743897149440/widget.png?style=banner2)](https://discord.gg/enginehub)\n\n[Join our Discord server](https://discord.gg/enginehub) if you need help with installing or using Worldedit.\n\n**Make sure to [check the docs](https://worldedit.enginehub.org/en/latest/) first!**\n\n<br>\n<br>\n<br>\n\n<center>\n\n![Highlights](https://i.imgur.com/xZAB7cO.png)\n\n![WorldEdit Highlights: Generate cool things](https://i.imgur.com/VXzkPUm.jpg==509x711)\n\n![WorldEdit Highlights: Works with other mods](https://i.imgur.com/3l8EGa2.jpg==458x711)\n\n![WorldEdit Highlights: Save parts of your world](https://i.imgur.com/sryer61.jpg==158x711)\n\n![WorldEdit Highlights: Terraform using brushes](https://i.imgur.com/PdLnuVw.jpg==664x711)\n\n</center>\n\n<br>\n<br>\n<br>\n\n<center>\n\n![Frequently Asked Questions](https://i.imgur.com/js55Dzh.png)\n\n</center>\n  \n**Do I need cheats on?**\n\nIf you're playing on single player: Yes, cheats must be enabled for the world to use WorldEdit, but you can change this in the configuration. If you're running a server: Only opped users can use WorldEdit, though this can be changed too.<br><br>\n\n**Can anyone use it?**\n\nOn Bukkit-based platforms, only opped users or users with permissions supplied with a permissions plugin can use WorldEdit.\n\n**How do you use WorldEdit?**\n\nTo learn how to use WorldEdit,&nbsp;<a style=\"font-size: 100%\" href=\"https://worldedit.enginehub.org\">read the docs</a>. Check YouTube for tutorials too!<br><br>\n\n**I need help!!**\n\nYou may visit our&nbsp;<a style=\"font-size: 100%\" href=\"https://worldedit.enginehub.org/en/latest/\">documentation</a> or&nbsp;<a style=\"font-size: 100%\" href=\"https://discord.gg/enginehub\">Discord Guild</a>.<br><br>\n\n**I have some feature requests...**\n\nVisit our&nbsp;<a style=\"font-size: 100%\" href=\"https://github.com/EngineHub/WorldEdit/issues\">issue tracker</a>. However, if you just have a question, please try one of the methods above.<br><br>\n\n**Can I include WorldEdit in my modpack?**\n\nYou are free to include WorldEdit, without having to asking for explicit permission.&nbsp;<br>\nA link back to this page or <a style=\"font-size: 100%\" href=\"https://github.com/sponsors/EngineHub\">our GitHub Sponsors</a> would be appreciated, however.<br><br>\n\n**Can I edit the source code?**\n\nVisit our&nbsp;<a style=\"font-size: 100%\" href=\"https://github.com/enginehub/worldedit\">GitHub repository</a>. WorldEdit is licensed under GPLv3 and you can compile it with Gradle.<br><br>\n",
+		"name": "WorldEdit",
+		"package_maintainers": [
+			"mcvm"
+		],
+		"source": "https://github.com/EngineHub/WorldEdit/",
+		"support_link": "https://github.com/sponsors/EngineHub"
+	},
+	"properties": {
+		"modrinth_id": "1u6JkXh5",
+		"supported_modloaders": [
+			"fabriclike",
+			"forgelike"
+		],
+		"supported_plugin_loaders": [
+			"bukkitlike",
+			"paper"
+		],
+		"supported_sides": [
+			"server"
+		],
+		"supported_versions": [
+			"1.17.1",
+			"1.18.2",
+			"1.19.4",
+			"1.20",
+			"1.20.1",
+			"1.20.2",
+			"1.20.3",
+			"1.20.4"
+		]
+	}
+}

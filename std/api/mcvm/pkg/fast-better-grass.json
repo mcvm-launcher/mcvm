@@ -1,0 +1,115 @@
+{
+	"addons": {
+		"addon": {
+			"kind": "resource_pack",
+			"versions": [
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1",
+						"1.20.2",
+						"1.20.3",
+						"1.20.4"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/dspVZXKP/versions/dsyjkZFg/Fast%20Better%20Grass.zip",
+					"version": "dsyjkZFg"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/dspVZXKP/versions/klfR3lzB/Fast%20Better%20Grass.zip",
+					"version": "klfR3lzB"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1",
+						"1.20.2"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/dspVZXKP/versions/czVWBndg/Fast%20Better%20Grass.zip",
+					"version": "czVWBndg"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1",
+						"1.20.2"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/dspVZXKP/versions/pFAWgnLj/Fast%20Better%20Grass.zip",
+					"version": "pFAWgnLj"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1",
+						"1.20.2"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/dspVZXKP/versions/SrnJOvoP/Fast%20Better%20Grass.zip",
+					"version": "SrnJOvoP"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/dspVZXKP/versions/85UDyEcd/Fast%20Better%20Grass.zip",
+					"version": "85UDyEcd"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/dspVZXKP/versions/UcuQ2Wf4/Fast%20Better%20Grass.zip",
+					"version": "UcuQ2Wf4"
+				}
+			]
+		}
+	},
+	"meta": {
+		"authors": [
+			"robotkoer"
+		],
+		"banner": "https://cdn.modrinth.com/data/dspVZXKP/images/331e0145f1969df5f38c94a597f9bdb457e29db2.png",
+		"categories": [],
+		"community": "https://fabulously-optimized.github.io/discord",
+		"description": "Makes grass and related blocks use the top texture on the sides. Works with other resource packs!",
+		"documentation": "https://fabulously-optimized.gitbook.io/modpack/readme/changed-options#resource-packs",
+		"gallery": [
+			"https://cdn.modrinth.com/data/dspVZXKP/images/331e0145f1969df5f38c94a597f9bdb457e29db2.png",
+			"https://cdn.modrinth.com/data/dspVZXKP/images/7428f15c6dc5c9c7627df2706896bee569113dde.png",
+			"https://cdn.modrinth.com/data/dspVZXKP/images/e9584118adb3e46eda88564bcee9b8c955ef48ff.png",
+			"https://cdn.modrinth.com/data/dspVZXKP/images/eae467af0d1854b0bc12603fa8ff2681cf364717.png"
+		],
+		"icon": "https://cdn.modrinth.com/data/dspVZXKP/5de0774f423d220fcd4e635b91f2bdfcb8a2b910.png",
+		"issues": "https://github.com/Fabulously-Optimized/fabulously-optimized/issues",
+		"keywords": [
+			"grass"
+		],
+		"license": "MIT",
+		"long_description": "**As seen on [Fabulously Optimized](https://modrinth.com/modpack/fabulously-optimized)!**\n\nThis resource pack makes the following blocks use the top texture on their sides as well:\n\n* Grass block\n* Snow-covered grass block\n* Dirt path\n* Podzol\n* Mycelium\n* Warped nylium\n* Crimson nylium\n\nDirt paths have a special feature - they \"spread\" to the block below in order to look more seamless on villages.\n\nIn other words, the pack imitates OptiFine's Better Grass feature (fast mode) in resource pack form. The imitation is done by solely adjusting vanilla block models, no assets from other mods are used.\n\nFAQ:\n\n* Q: Does this work with my resource pack?\n  *  A: Yes.\n* Q: Do I need any mods to use this?\n  *  A: No.\n* Q: Can you also imitate the fancy mode?\n  *  A: Not yet, maybe I'll figure a way out some day.\n* Q: How does it compare to other similar packs?\n  *  A: This resource pack: \n     * uses only models, no textures (looks good with other resource packs and has smaller filesize)\n     * requires no mods to use\n     * works with resource packs that also attempt to change block models\n     * has down-spreading dirt paths\n     * gives a minor performance boost\n* Q: Backports to older versions?\n  *  A: Not planned.",
+		"name": "Fast Better Grass",
+		"package_maintainers": [
+			"mcvm"
+		],
+		"source": "https://github.com/Fabulously-Optimized/fabulously-optimized/tree/main/Resource%20Packs/Fast%20Better%20Grass"
+	},
+	"properties": {
+		"modrinth_id": "dspVZXKP",
+		"supported_sides": [
+			"client"
+		],
+		"supported_versions": [
+			"1.19.3",
+			"1.19.4",
+			"1.20",
+			"1.20.1",
+			"1.20.2",
+			"1.20.3",
+			"1.20.4"
+		]
+	}
+}

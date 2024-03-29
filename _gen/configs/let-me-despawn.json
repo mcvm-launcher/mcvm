@@ -1,0 +1,30 @@
+{
+	"source": "modrinth",
+	"id": "vE2FN5qn",
+	"relation_substitutions": {
+		"P7dR8mSH": "fabriclike-api"
+	},
+	"merge": {
+		"meta": {
+			"keywords": [
+				"despawn"
+			],
+			"categories": [
+				"optimization",
+				"mobs"
+			]
+		},
+		"properties": {
+			"supported_modloaders": [
+				"fabriclike",
+				"forgelike"
+			],
+			"supported_plugin_loaders": [
+				"bukkitlike",
+				"purpur",
+				"paper",
+				"folia"
+			]
+		}
+	}
+}
