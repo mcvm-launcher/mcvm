@@ -9,12 +9,6 @@
 	],
 	"merge": {
 		"meta": {
-			"authors": [
-				"comp500"
-			],
-			"package_maintainers": [
-				"mcvm"
-			],
 			"keywords": [
 				"graphics"
 			],

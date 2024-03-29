@@ -228,7 +228,6 @@
   },
   "meta": {
     "authors": [
-      "JoeSeff",
       "dhi_holo",
       "zero-breaker",
       "BlazingBRO",
@@ -272,12 +271,13 @@
       "drewlordybuilds",
       "gingledoof0",
       "am-o",
-      "plastered_crab",
+      "JoeSeff",
       "addy_bromide",
       "Torchmarrow",
       "Waldleufer",
       "virtuositas",
-      "Cobblemon"
+      "Cobblemon",
+      "plastered_crab"
     ],
     "categories": [
       "mobs"

@@ -4,6 +4,13 @@
       "kind": "mod",
       "versions": [
         {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "quilt",
+          "stability": "latest",
+          "url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/DWVsGxzN/quilted-fabric-api-9.0.0-alpha.5%2B0.96.11-1.20.4.jar",
+          "version": "DWVsGxzN"
+        },
+        {
           "minecraft_versions": "1.20.2",
           "modloaders": "quilt",
           "stability": "latest",
@@ -1098,7 +1105,6 @@
   },
   "meta": {
     "authors": [
-      "QuiltMC",
       "OroArmor",
       "LambdAurora"
     ],
@@ -1157,7 +1163,8 @@
       "1.20-rc1",
       "1.20",
       "1.20.1",
-      "1.20.2"
+      "1.20.2",
+      "1.20.4"
     ]
   },
   "relations": {

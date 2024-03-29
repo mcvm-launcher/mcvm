@@ -8,9 +8,6 @@
 	},
 	"merge": {
 		"meta": {
-			"package_maintainers": [
-				"mcvm"
-			],
 			"categories": [
 				"technical",
 				"library"

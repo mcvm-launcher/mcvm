@@ -4,13 +4,6 @@
 	"relation_substitutions": {},
 	"merge": {
 		"meta": {
-			"authors": [
-				"jellysquid3",
-				"IMS"
-			],
-			"package_maintainers": [
-				"mcvm"
-			],
 			"keywords": [
 				"graphics"
 			],

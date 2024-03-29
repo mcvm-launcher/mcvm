@@ -7,21 +7,6 @@
 	},
 	"merge": {
 		"meta": {
-			"authors": [
-				"jellysquid3",
-				"IMS"
-			],
-			"package_maintainers": [
-				"mcvm"
-			],
-			"gallery": [
-				"https://cdn.modrinth.com/data/AANobbMI/images/d84313e6f57dc9e7896961dbd2dfc2689d482758.webp",
-				"https://cdn.modrinth.com/data/AANobbMI/images/6b0e58705156ba67a6d97a74b9f9ac05da69f502.webp",
-				"https://cdn.modrinth.com/data/AANobbMI/images/b681a9e87daa53a0e85336a894db70427007149b.webp",
-				"https://cdn.modrinth.com/data/AANobbMI/images/56c4599efcb529a19aed0e118caad4178d7fd540.webp",
-				"https://cdn.modrinth.com/data/AANobbMI/images/5ca2e8f6c72f3d543dd3dc95b706964c5678d80e.png",
-				"https://cdn.modrinth.com/data/AANobbMI/images/c39debea7fc623306e9c45148084585399fc59ee.webp"
-			],
 			"keywords": [
 				"graphics"
 			],

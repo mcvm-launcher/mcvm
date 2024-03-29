@@ -7,14 +7,6 @@
 	},
 	"merge": {
 		"meta": {
-			"authors": [
-				"QuiltMC",
-				"OroArmor",
-				"LambdAurora"
-			],
-			"package_maintainers": [
-				"mcvm"
-			],
 			"keywords": [
 				"quilt",
 				"api",

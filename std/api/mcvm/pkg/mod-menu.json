@@ -1304,10 +1304,9 @@
   },
   "meta": {
     "authors": [
-      "Terraformers",
       "modmuss50",
-      "Prospector",
-      "jackassmc"
+      "jackassmc",
+      "Prospector"
     ],
     "banner": "https://cdn.modrinth.com/data/mOgUt4GM/images/ec97a9f09bc750dd7895414eac14f6252ca47621.png",
     "categories": [
@@ -1318,6 +1317,7 @@
     "description": "Adds a mod menu to view the list of mods you have installed.",
     "documentation": "https://github.com/TerraformersMC/ModMenu/wiki",
     "gallery": [
+      "https://cdn.modrinth.com/data/mOgUt4GM/images/ec97a9f09bc750dd7895414eac14f6252ca47621.png",
       "https://cdn.modrinth.com/data/mOgUt4GM/images/5726bbaf7d0ea53e55b6e666af5d3e1861758334.png"
     ],
     "icon": "https://cdn.modrinth.com/data/mOgUt4GM/icon.png",

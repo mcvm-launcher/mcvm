@@ -11,9 +11,6 @@
 	},
 	"merge": {
 		"meta": {
-			"package_maintainers": [
-				"mcvm"
-			],
 			"keywords": [
 				"graphics"
 			],

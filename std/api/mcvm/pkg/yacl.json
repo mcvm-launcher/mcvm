@@ -1107,7 +1107,8 @@
     "description": "A builder-based configuration library for Minecraft.",
     "documentation": "https://docs.isxander.dev/yet-another-config-lib",
     "gallery": [
-      "https://cdn.modrinth.com/data/1eAoo2KR/images/f5f6bdad06350bc34c8a207df242705660231e8a.png"
+      "https://cdn.modrinth.com/data/1eAoo2KR/images/f5f6bdad06350bc34c8a207df242705660231e8a.png",
+      "https://cdn.modrinth.com/data/1eAoo2KR/images/2f8ecdf72f4dabd147feeb53676e295a134a8b80.png"
     ],
     "icon": "https://cdn.modrinth.com/data/1eAoo2KR/1e43d5714f87ac6b20622e73b3ba7209be5ebafb.png",
     "issues": "https://github.com/isXander/YetAnotherConfigLib/issues",

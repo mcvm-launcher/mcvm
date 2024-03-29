@@ -1447,8 +1447,8 @@
   },
   "meta": {
     "authors": [
-      "coderbot",
-      "IMS"
+      "IMS",
+      "coderbot"
     ],
     "categories": [
       "shaders",
