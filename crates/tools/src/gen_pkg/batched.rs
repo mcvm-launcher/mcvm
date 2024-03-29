@@ -65,6 +65,8 @@ pub async fn batched_gen(mut config: BatchedConfig) {
 
 	let client = Client::new();
 
+	println!("Requesting API...");
+
 	// Collect Modrinth projects
 	let modrinth_ids: Vec<_> = config
 		.packages
@@ -103,7 +105,12 @@ pub async fn batched_gen(mut config: BatchedConfig) {
 		.expect("Failed to get Modrinth teams");
 
 	// Iterate through the packages to generate
+	println!("Generating packages...");
 	for pkg in config.packages {
+		println!(
+			"Generating package {}",
+			pkg.pkg_id.as_ref().expect("Package ID should exist")
+		);
 		let package = match pkg.source {
 			PackageSource::Smithed => {
 				// Just generate the package
