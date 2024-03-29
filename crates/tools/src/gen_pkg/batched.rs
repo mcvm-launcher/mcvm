@@ -65,7 +65,7 @@ pub async fn batched_gen(mut config: BatchedConfig) {
 
 	let client = Client::new();
 
-	// Collect Modrinth projects and versions
+	// Collect Modrinth projects
 	let modrinth_ids: Vec<_> = config
 		.packages
 		.iter()
@@ -75,14 +75,23 @@ pub async fn batched_gen(mut config: BatchedConfig) {
 	let modrinth_projects = mcvm::net::modrinth::get_multiple_projects(&modrinth_ids, &client)
 		.await
 		.expect("Failed to get Modrinth projects");
+
+	// Collect Modrinth project versions. We have to batch these into multiple requests because there becomes
+	// just too many parameters for the URL to handle
+	let batch_limit = 200;
 	let modrinth_version_ids: Vec<_> = modrinth_projects
 		.iter()
 		.flat_map(|x| x.versions.iter().cloned())
 		.collect();
-	let modrinth_versions =
-		mcvm::net::modrinth::get_multiple_versions(&modrinth_version_ids, &client)
-			.await
-			.expect("Failed to get Modrinth versions");
+	let chunks = modrinth_version_ids.chunks(batch_limit);
+	let mut modrinth_versions = Vec::new();
+	for chunk in chunks {
+		modrinth_versions.extend(
+			mcvm::net::modrinth::get_multiple_versions(chunk, &client)
+				.await
+				.expect("Failed to get Modrinth versions"),
+		);
+	}
 
 	// Collect Modrinth teams
 	let mut modrinth_team_ids = Vec::new();
