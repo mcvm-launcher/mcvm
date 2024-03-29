@@ -1,713 +1,714 @@
 {
-  "addons": {
-    "addon": {
-      "kind": "mod",
-      "versions": [
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/42mznDva/create-fabric-0.5.1-f-build.1334%2Bmc1.19.2.jar",
-          "version": "42mznDva"
-        },
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/A8R3Be5A/create-fabric-0.5.1-f-build.1335%2Bmc1.20.1.jar",
-          "version": "A8R3Be5A"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mFmmdAVA/create-fabric-0.5.1-f-build.1333%2Bmc1.18.2.jar",
-          "version": "mFmmdAVA"
-        },
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/qlA1WuOK/create-fabric-0.5.1-d-build.1161%2Bmc1.20.1.jar",
-          "version": "qlA1WuOK"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/3eQP1uZu/create-fabric-0.5.1-c-build.1159%2Bmc1.18.2.jar",
-          "version": "3eQP1uZu"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/okpdciJG/create-fabric-0.5.1-c-build.1160%2Bmc1.19.2.jar",
-          "version": "okpdciJG"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/uxdmLu14/create-fabric-0.5.1-b-build.1088%2Bmc1.18.2.jar",
-          "version": "uxdmLu14"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/wKEEi1qX/create-fabric-0.5.1-b-build.1089%2Bmc1.19.2.jar",
-          "version": "wKEEi1qX"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/q6x0xvc1/create-fabric-0.5.1-b-build.1079%2Bmc1.19.2.jar",
-          "version": "q6x0xvc1"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/8hPKnWl8/create-fabric-0.5.1-b-build.1078%2Bmc1.18.2.jar",
-          "version": "8hPKnWl8"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/i0067Dja/create-fabric-0.5.1-b-build.1070%2Bmc1.18.2.jar",
-          "version": "i0067Dja"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/ojGZcMyX/create-fabric-0.5.1-b-build.1075%2Bmc1.19.2.jar",
-          "version": "ojGZcMyX"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/EkeMb3jA/create-fabric-0.5.0.i-1017%2B1.19.2.jar",
-          "version": "EkeMb3jA"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/URHyiw9Z/create-fabric-0.5.0.i-1016%2B1.18.2.jar",
-          "version": "URHyiw9Z"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/kOmlEnRT/create-fabric-0.5.0.i-1002%2B1.18.2.jar",
-          "version": "kOmlEnRT"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/js1edbtD/create-fabric-0.5.0.i-1003%2B1.19.2.jar",
-          "version": "js1edbtD"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/MpeKaF3n/create-fabric-0.5.0.i-991%2B1.19.2.jar",
-          "version": "MpeKaF3n"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/OzM1R01X/create-fabric-0.5.0.i-989%2B1.19.2.jar",
-          "version": "OzM1R01X"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/SDRtfq3B/create-fabric-0.5.0.i-988%2B1.18.2.jar",
-          "version": "SDRtfq3B"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/6WodDaRw/create-fabric-0.5.0.i-979%2B1.18.2.jar",
-          "version": "6WodDaRw"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/wSUajPZ2/create-fabric-0.5.0.i-963%2B1.18.2.jar",
-          "version": "wSUajPZ2"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/eiOEbe83/create-fabric-0.5.0.i-961%2B1.19.2.jar",
-          "version": "eiOEbe83"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/XfN2Gwkh/create-fabric-0.5.0.i-960%2B1.18.2.jar",
-          "version": "XfN2Gwkh"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/9Kizjtn4/create-fabric-0.5.0.i-946%2B1.19.2.jar",
-          "version": "9Kizjtn4"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/eMmAlNIo/create-fabric-0.5.0.i-944%2B1.18.2.jar",
-          "version": "eMmAlNIo"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/WIznfof3/create-fabric-0.5.0.i-925%2B1.19.2.jar",
-          "version": "WIznfof3"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/8wJieFuI/create-fabric-0.5.0.i-921%2B1.18.2.jar",
-          "version": "8wJieFuI"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/ZOucvJwc/create-fabric-0.5.0g-796%2B1.19.2.jar",
-          "version": "ZOucvJwc"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/aCFWhh4m/create-fabric-0.5.0g-792%2B1.18.2.jar",
-          "version": "aCFWhh4m"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/KVlT278H/create-fabric-0.5.0g-788%2B1.18.2.jar",
-          "version": "KVlT278H"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/CMXqOgvp/create-fabric-0.5.0g-791%2B1.19.2.jar",
-          "version": "CMXqOgvp"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/5QkKPfWg/create-fabric-1.19.2-0.5.0f-776.jar",
-          "version": "5QkKPfWg"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/AUnWONBr/create-fabric-1.18.2-0.5.0e-733.jar",
-          "version": "AUnWONBr"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/l66YzGBK/create-fabric-1.18.2-0.5.0d-731.jar",
-          "version": "l66YzGBK"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mEHNMQS7/create-fabric-1.18.2-0.5.0d-730.jar",
-          "version": "mEHNMQS7"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/uAheUy8q/create-fabric-1.18.2-0.5.0d-728.jar",
-          "version": "uAheUy8q"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/create-1.18.2-0.5.0c-708/create-1.18.2-0.5.0c-708.jar",
-          "version": "j7rLltXv"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1%2B637/create-mc1.18.2_v0.4.1%2B637.jar",
-          "version": "kTNqWWMa"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1%2B635/create-mc1.18.2_v0.4.1%2B635.jar",
-          "version": "TMePrzvw"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1%2B631/create-mc1.18.2_v0.4.1%2B631.jar",
-          "version": "bJKtTI8y"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1%2B629/create-mc1.18.2_v0.4.1%2B629.jar",
-          "version": "claJcl5F"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1%2B628/create-mc1.18.2_v0.4.1%2B628.jar",
-          "version": "CDGw3zSe"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1%2B601/create-mc1.18.2_v0.4.1%2B601.jar",
-          "version": "eNCMQaKl"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1%2B600/create-mc1.18.2_v0.4.1%2B600.jar",
-          "version": "5nlKopWj"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1%2B599/create-mc1.18.2_v0.4.1%2B599.jar",
-          "version": "OYqqVNgO"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1%2B596/create-mc1.18.2_v0.4.1%2B596.jar",
-          "version": "LQns5RQ4"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1%2B595/create-mc1.18.2_v0.4.1%2B595.jar",
-          "version": "yFEFFnx0"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1%2B594/create-mc1.18.2_v0.4.1%2B594.jar",
-          "version": "bGga7Elj"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1%2B586/create-mc1.18.2_v0.4.1%2B586.jar",
-          "version": "eq17R2hD"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1%2B576/create-mc1.18.2_v0.4.1%2B576.jar",
-          "version": "ce9nGr3a"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1/create-mc1.18.2_v0.4.1%2B565.jar",
-          "version": "mRXoRTy0"
-        }
-      ]
-    }
-  },
-  "meta": {
-    "authors": [
-      "alphamode",
-      "PepperCode1",
-      "tropheusj"
-    ],
-    "categories": [
-      "technology",
-      "building"
-    ],
-    "community": "https://discord.com/invite/hmaD7Se",
-    "description": "Building Tools and Aesthetic Technology",
-    "documentation": "https://github.com/Creators-of-Create/Create/wiki",
-    "gallery": [],
-    "icon": "https://cdn.modrinth.com/data/Xbc0uyRg/f9d7c09397588b690cf3c09303d7812837b2caab.png",
-    "issues": "https://github.com/Fabricators-of-Create/Create/issues",
-    "keywords": [
-      "create"
-    ],
-    "license": "MIT",
-    "name": "Create Fabric",
-    "package_maintainers": [
-      "mcvm"
-    ],
-    "source": "https://github.com/Fabricators-of-Create/Create"
-  },
-  "properties": {
-    "modrinth_id": "Xbc0uyRg",
-    "supported_modloaders": [
-      "fabriclike"
-    ],
-    "supported_sides": [
-      "client",
-      "server"
-    ],
-    "supported_versions": [
-      "1.18.2",
-      "1.19.2",
-      "1.20.1"
-    ]
-  }
+	"addons": {
+		"addon": {
+			"kind": "mod",
+			"versions": [
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/42mznDva/create-fabric-0.5.1-f-build.1334%2Bmc1.19.2.jar",
+					"version": "42mznDva"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/A8R3Be5A/create-fabric-0.5.1-f-build.1335%2Bmc1.20.1.jar",
+					"version": "A8R3Be5A"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mFmmdAVA/create-fabric-0.5.1-f-build.1333%2Bmc1.18.2.jar",
+					"version": "mFmmdAVA"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/qlA1WuOK/create-fabric-0.5.1-d-build.1161%2Bmc1.20.1.jar",
+					"version": "qlA1WuOK"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/3eQP1uZu/create-fabric-0.5.1-c-build.1159%2Bmc1.18.2.jar",
+					"version": "3eQP1uZu"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/okpdciJG/create-fabric-0.5.1-c-build.1160%2Bmc1.19.2.jar",
+					"version": "okpdciJG"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/uxdmLu14/create-fabric-0.5.1-b-build.1088%2Bmc1.18.2.jar",
+					"version": "uxdmLu14"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/wKEEi1qX/create-fabric-0.5.1-b-build.1089%2Bmc1.19.2.jar",
+					"version": "wKEEi1qX"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/q6x0xvc1/create-fabric-0.5.1-b-build.1079%2Bmc1.19.2.jar",
+					"version": "q6x0xvc1"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/8hPKnWl8/create-fabric-0.5.1-b-build.1078%2Bmc1.18.2.jar",
+					"version": "8hPKnWl8"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/i0067Dja/create-fabric-0.5.1-b-build.1070%2Bmc1.18.2.jar",
+					"version": "i0067Dja"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/ojGZcMyX/create-fabric-0.5.1-b-build.1075%2Bmc1.19.2.jar",
+					"version": "ojGZcMyX"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/EkeMb3jA/create-fabric-0.5.0.i-1017%2B1.19.2.jar",
+					"version": "EkeMb3jA"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/URHyiw9Z/create-fabric-0.5.0.i-1016%2B1.18.2.jar",
+					"version": "URHyiw9Z"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/kOmlEnRT/create-fabric-0.5.0.i-1002%2B1.18.2.jar",
+					"version": "kOmlEnRT"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/js1edbtD/create-fabric-0.5.0.i-1003%2B1.19.2.jar",
+					"version": "js1edbtD"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/MpeKaF3n/create-fabric-0.5.0.i-991%2B1.19.2.jar",
+					"version": "MpeKaF3n"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/OzM1R01X/create-fabric-0.5.0.i-989%2B1.19.2.jar",
+					"version": "OzM1R01X"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/SDRtfq3B/create-fabric-0.5.0.i-988%2B1.18.2.jar",
+					"version": "SDRtfq3B"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/6WodDaRw/create-fabric-0.5.0.i-979%2B1.18.2.jar",
+					"version": "6WodDaRw"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/wSUajPZ2/create-fabric-0.5.0.i-963%2B1.18.2.jar",
+					"version": "wSUajPZ2"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/eiOEbe83/create-fabric-0.5.0.i-961%2B1.19.2.jar",
+					"version": "eiOEbe83"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/XfN2Gwkh/create-fabric-0.5.0.i-960%2B1.18.2.jar",
+					"version": "XfN2Gwkh"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/9Kizjtn4/create-fabric-0.5.0.i-946%2B1.19.2.jar",
+					"version": "9Kizjtn4"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/eMmAlNIo/create-fabric-0.5.0.i-944%2B1.18.2.jar",
+					"version": "eMmAlNIo"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/WIznfof3/create-fabric-0.5.0.i-925%2B1.19.2.jar",
+					"version": "WIznfof3"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/8wJieFuI/create-fabric-0.5.0.i-921%2B1.18.2.jar",
+					"version": "8wJieFuI"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/ZOucvJwc/create-fabric-0.5.0g-796%2B1.19.2.jar",
+					"version": "ZOucvJwc"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/aCFWhh4m/create-fabric-0.5.0g-792%2B1.18.2.jar",
+					"version": "aCFWhh4m"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/KVlT278H/create-fabric-0.5.0g-788%2B1.18.2.jar",
+					"version": "KVlT278H"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/CMXqOgvp/create-fabric-0.5.0g-791%2B1.19.2.jar",
+					"version": "CMXqOgvp"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/5QkKPfWg/create-fabric-1.19.2-0.5.0f-776.jar",
+					"version": "5QkKPfWg"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/AUnWONBr/create-fabric-1.18.2-0.5.0e-733.jar",
+					"version": "AUnWONBr"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/l66YzGBK/create-fabric-1.18.2-0.5.0d-731.jar",
+					"version": "l66YzGBK"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mEHNMQS7/create-fabric-1.18.2-0.5.0d-730.jar",
+					"version": "mEHNMQS7"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/uAheUy8q/create-fabric-1.18.2-0.5.0d-728.jar",
+					"version": "uAheUy8q"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/create-1.18.2-0.5.0c-708/create-1.18.2-0.5.0c-708.jar",
+					"version": "j7rLltXv"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1%2B637/create-mc1.18.2_v0.4.1%2B637.jar",
+					"version": "kTNqWWMa"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1%2B635/create-mc1.18.2_v0.4.1%2B635.jar",
+					"version": "TMePrzvw"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1%2B631/create-mc1.18.2_v0.4.1%2B631.jar",
+					"version": "bJKtTI8y"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1%2B629/create-mc1.18.2_v0.4.1%2B629.jar",
+					"version": "claJcl5F"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1%2B628/create-mc1.18.2_v0.4.1%2B628.jar",
+					"version": "CDGw3zSe"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1%2B601/create-mc1.18.2_v0.4.1%2B601.jar",
+					"version": "eNCMQaKl"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1%2B600/create-mc1.18.2_v0.4.1%2B600.jar",
+					"version": "5nlKopWj"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1%2B599/create-mc1.18.2_v0.4.1%2B599.jar",
+					"version": "OYqqVNgO"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1%2B596/create-mc1.18.2_v0.4.1%2B596.jar",
+					"version": "LQns5RQ4"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1%2B595/create-mc1.18.2_v0.4.1%2B595.jar",
+					"version": "yFEFFnx0"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1%2B594/create-mc1.18.2_v0.4.1%2B594.jar",
+					"version": "bGga7Elj"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1%2B586/create-mc1.18.2_v0.4.1%2B586.jar",
+					"version": "eq17R2hD"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1%2B576/create-mc1.18.2_v0.4.1%2B576.jar",
+					"version": "ce9nGr3a"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1/create-mc1.18.2_v0.4.1%2B565.jar",
+					"version": "mRXoRTy0"
+				}
+			]
+		}
+	},
+	"meta": {
+		"authors": [
+			"PepperCode1",
+			"alphamode",
+			"tropheusj"
+		],
+		"categories": [
+			"technology",
+			"building"
+		],
+		"community": "https://discord.com/invite/hmaD7Se",
+		"description": "Building Tools and Aesthetic Technology",
+		"documentation": "https://github.com/Creators-of-Create/Create/wiki",
+		"gallery": [],
+		"icon": "https://cdn.modrinth.com/data/Xbc0uyRg/f9d7c09397588b690cf3c09303d7812837b2caab.png",
+		"issues": "https://github.com/Fabricators-of-Create/Create/issues",
+		"keywords": [
+			"create"
+		],
+		"license": "MIT",
+		"long_description": "<p>&nbsp;</p>\n<p><iframe allowfullscreen=\"allowfullscreen\" src=\"https://www.youtube.com/embed/rR8W-f9YhYA\" height=\"358\" width=\"638\"></iframe></p>\n<p>&nbsp;</p>\n\n## Installation Requirements\n\n<p><a href=\"https://modrinth.com/mod/fabric-api\"><img src=\"https://i.imgur.com/Ol1Tcf8.png\" width=\"156\" /></a></p>\n<p>This version of Create runs on <a href=\"https://fabricmc.net/\">Fabric</a> and <a href=\"https://quiltmc.org/\">Quilt</a> only.<br>You can find the version compatible with the Forge ecosystem <a href=\"https://modrinth.com/mod/create\">here</a>.<br /></p>\n<p>&nbsp;</p>\n\n## Our Patrons\n\nsintrinsic\n&#183; Daniel P.\n&#183; Kyrinon\n&#183; niraami\n&#183; Ulisses\n&#183; BananaIguana\n&#183; Pongo Sapiens\n&#183; Redmecha\n&#183; Kenneth\n&#183; Viriss\n&#183; Trakinson\n&#183; AcidKat\n&#183; rancorasaurous\n&#183; bonemill\n&#183; OldShadowHand\n&#183; dude\n&#183; KnyteGaming\n&#183; Cali\n&#183; CyanSoup\n&#183; Romblood\n&#183; lurker\n&#183; DerpTime \n&#183; Lolaa\n&#183; _Kilburn\n&#183; MrOxiMoron\n&#183; idlesn0w\n&#183; Gabriel M.\n&#183; PieKing1215\n&#183; No One \n&#183; Pixus\n&#183; Spammy\n&#183; nwmqpa\n&#183; A \n&#183; jonas\n&#183; Dannnis \n&#183; Lyren\n&#183; lujoBoy\n&#183; Tugu\n&#183; Shaun Francis H.\n&#183; Thor7O\n&#183; DigitalSeraphim\n&#183; Bootstrap22\n&#183; Marksmen\n&#183; Yuri\n&#183; Queso2469\n&#183; Zanthros\n&#183; Lubey\n&#183; LesserFlame\n&#183; millatime21\n&#183; bagofsquirrels\n&#183; ZizouMunoz\n&#183; sensual kazoo\n&#183; vesperdem\n&#183; Big Saffron\n&#183; rtwishon\n&#183; Jean Machine\n&#183; CottonHeads\n&#183; chimericdream\n&#183; Gyro\n&#183; Jehrendil\n&#183; Slaser360\n&#183; Myra G.\n&#183; Guy \n&#183; jpc\n&#183; LaserLemons\n&#183; Miner of 8 bits\n&#183; hazmodan\n&#183; moss \n&#183; Sunlis\n&#183; Theishiopian\n&#183; Jink\n&#183; AshCraft\n&#183; IllegalEagle\n&#183; Guybrush\n&#183; Requios\n&#183; 4096 RF\n&#183; zaknirahc\n&#183; TheDankMemeRises\n&#183; tomd1969\n&#183; VirenRunner\n&#183; LolaLela\n&#183; serkan\n&#183; Silviuz\n&#183; Jester\n&#183; Kyle\n&#183; Niv \n&#183; Fredster\n&#183; Redstone Says\n&#183; azurecrab5\n&#183; Freeziu\n&#183; End_Rage\n&#183; Lombbm\n&#183; TytusDeZoo\n&#183; Halcyon_Daze\n&#183; Guilherme R.\n&#183; Michael M.\n&#183; Loukenshrew\n&#183; tater\n&#183; Spencer G.\n&#183; breadtoast\n&#183; Poke_Heart\n&#183; 501warhead\n&#183; Captain S.\n&#183; Chewy\n&#183; Nary\n&#183; SillySnowFox\n&#183; Quacky\n<p>&nbsp;</p>\n\n\n## About\n\n<p>Welcome to Create, a mod offering a variety of tools and blocks for Building, Decoration and Aesthetic Automation.</p>\n<p>The added elements of tech are designed to leave as many design choices to the player as possible. With Create, the game isn't played inside a bunch of UIs, it challenges you to setup contraptions of animated components working together in many possible arrangements.</p>\n<p>Create's visual in-game documentation called 'Ponder' will guide you though all added mechanics and gadgets.</p>\n<p><strong>Important</strong>: In order to be able to see all recipes required in Create, consider installing a Recipe Viewer mod. Create has full support for <a href=\"https://www.curseforge.com/minecraft/mc-mods/jei\">JEI</a>, <a href=\"https://modrinth.com/mod/rei\">REI</a>, and <a href=\"https://modrinth.com/mod/emi\">EMI</a>. The vanilla recipe book will not be able to guide you through the experience by itself.</p>\n<p style=\"text-align: left;\">&nbsp;</p>\n<p><a href=\"https://github.com/Fabricators-of-Create/Create/issues\"><img src=\"https://i.imgur.com/qPmjSXy.png\" width=\"160\" /></a> <a href=\"https://www.youtube.com/channel/UCrKV2QTuyGcv4E3eSJpBiYA/playlists\"><img src=\"https://i.imgur.com/L1bU9mr.png\" width=\"160\" /></a><a href=\"https://discord.gg/hmaD7Se\"><img src=\"https://i.imgur.com/uf6V9ZX.png\" width=\"160\" /></a> <a href=\"https://github.com/Creators-of-Create/Create/wiki/Supporting-the-Project\"><img src=\"https://i.imgur.com/fHQ45KR.png\" width=\"227\" /></a></p>\n<p>&nbsp;</p>\n\n## Development\n\n<p>Find out about supported versions and what's currently in the works in <a href=\"https://github.com/Creators-of-Create/Create/wiki/dev.status\">this dedicated wiki page.</a></p>\n<p>&nbsp;</p>\n\n### Developers\n\n<p>simibubi, Jozufozu, Pepper, Zelophed, gamez7, Grimmauld, Snownee</p>\n\n### Porters\n\n<p>Pepper, Tropheus Jay, AlphaMode, smellypengu, Aeiou, Whangd00dle, YTG123</p>\n\n### Artists\n\n<p>Kryppers, voxel_dani, LeastReality, vectorwing</p>\n\n### Special thanks to\n\n<p>tterrag, evanthebruce, D'Arcy Olla</p>\n\n<p>&nbsp;</p>\n\n## Localization\nTranslations may be unfinished or out of date.\n\n* en_us (English US)\n* de_de (German) by Vexatos, Azratosh, SaurierZockt, DreiMu, muffinbarde, Peatral\n* nl_nl (Dutch) by Prusias\n* fr_fr (French) by Kiro, dindin-glitch\n* zh_cn (Chinese) by TUsama, BigDaleAHA, gloomybanana, Snownee, MacrousHyucen, Demonese, StarFish\n* zh_tw (Chinese, Traditional) by dunois\n* ru_ru (Russian) by sqcode06, Hanqnero, sirabein, pgkrol, Alepod\n* pt_br (Brazilian) by lucassabreu, vyhi\n* jp_jp (Japanese) by MORIMORI0317, CKenJa, RakuGaki-MC\n* ko_kr (Korean) by qkrehf2, red1854th\n* it_it (Italian) by Masterlupo, Chexet48\n* es_es (Spanish) by FrannDzs, muriplz\n* es_mx (Spanish, Mexico) by JohanIvan\n* es_cl (Spanish, Chile) by Alonsinwhat\n* pl_pl (Polish) by joker876\n* ro_ro (Romanian) by andreutu",
+		"name": "Create Fabric",
+		"package_maintainers": [
+			"mcvm"
+		],
+		"source": "https://github.com/Fabricators-of-Create/Create"
+	},
+	"properties": {
+		"modrinth_id": "Xbc0uyRg",
+		"supported_modloaders": [
+			"fabriclike"
+		],
+		"supported_sides": [
+			"client",
+			"server"
+		],
+		"supported_versions": [
+			"1.18.2",
+			"1.19.2",
+			"1.20.1"
+		]
+	}
 }

@@ -1,552 +1,553 @@
 {
-  "addons": {
-    "addon": {
-      "kind": "mod",
-      "versions": [
-        {
-          "minecraft_versions": [
-            "1.20.3",
-            "1.20.4"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/FeV5OquF/spark-1.10.58-fabric.jar",
-          "version": "FeV5OquF"
-        },
-        {
-          "minecraft_versions": [
-            "1.20.3",
-            "1.20.4"
-          ],
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/3FEq2lT7/spark-1.10.58-forge.jar",
-          "version": "3FEq2lT7"
-        },
-        {
-          "minecraft_versions": "1.20.3",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/8ZQqfeXy/spark-1.10.57-fabric.jar",
-          "version": "8ZQqfeXy"
-        },
-        {
-          "minecraft_versions": "1.20.2",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/tCU9VuzX/spark-1.10.54-fabric.jar",
-          "version": "tCU9VuzX"
-        },
-        {
-          "minecraft_versions": "1.20.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/h0Z2ObM0/spark-1.10.54-forge.jar",
-          "version": "h0Z2ObM0"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/XGW2fviP/spark-1.10.53-fabric.jar",
-          "version": "XGW2fviP"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/4FXHDE9F/spark-1.10.53-forge.jar",
-          "version": "4FXHDE9F"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/BeIg1bik/spark-1.10.42-fabric.jar",
-          "version": "BeIg1bik"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/Yp6s4wsw/spark-1.10.42-forge.jar",
-          "version": "Yp6s4wsw"
-        },
-        {
-          "minecraft_versions": "1.20",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/dVHkMOHv/spark-1.10.41-fabric.jar",
-          "version": "dVHkMOHv"
-        },
-        {
-          "minecraft_versions": "1.20",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/oCK984FP/spark-1.10.41-forge.jar",
-          "version": "oCK984FP"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/qyMNf4Pn/spark-1.10.39-fabric.jar",
-          "version": "qyMNf4Pn"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/GygIHGfW/spark-1.10.38-forge.jar",
-          "version": "GygIHGfW"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/VhY9p1RU/spark-1.10.38-fabric.jar",
-          "version": "VhY9p1RU"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2",
-            "1.19.3",
-            "1.19.4"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/XhFbpH8f/spark-1.10.37-fabric.jar",
-          "version": "XhFbpH8f"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2",
-            "1.19.3",
-            "1.19.4"
-          ],
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1dlOe6ez/spark-1.10.37-forge.jar",
-          "version": "1dlOe6ez"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2",
-            "1.19.3",
-            "1.19.4"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/N7JzEApO/spark-1.10.34-fabric.jar",
-          "version": "N7JzEApO"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2",
-            "1.19.3",
-            "1.19.4"
-          ],
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/pjW9S4dI/spark-1.10.34-forge.jar",
-          "version": "pjW9S4dI"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2",
-            "1.19.3"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/g5rM8xSA/spark-1.10.33-fabric.jar",
-          "version": "g5rM8xSA"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2",
-            "1.19.3"
-          ],
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/23U6xkbl/spark-1.10.33-forge.jar",
-          "version": "23U6xkbl"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2",
-            "1.19.3"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1K3xO8TS/spark-1.10.29-fabric.jar",
-          "version": "1K3xO8TS"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2",
-            "1.19.3"
-          ],
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/E5XaSI1N/spark-1.10.29-forge.jar",
-          "version": "E5XaSI1N"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2",
-            "1.19.3"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/OT1CD9Qj/spark-1.10.17-fabric.jar",
-          "version": "OT1CD9Qj"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2",
-            "1.19.3"
-          ],
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/XXMFHMBO/spark-1.10.17-forge.jar",
-          "version": "XXMFHMBO"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/RhyaY2vw/spark-1.9.45-fabric.jar",
-          "version": "RhyaY2vw"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2"
-          ],
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/EWTsXhFU/spark-1.9.45-forge.jar",
-          "version": "EWTsXhFU"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/3opVno4q/spark-1.9.42-fabric.jar",
-          "version": "3opVno4q"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2"
-          ],
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/mMSAkTm6/spark-1.9.42-forge.jar",
-          "version": "mMSAkTm6"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/FnKxsd40/spark-1.9.40-fabric.jar",
-          "version": "FnKxsd40"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2"
-          ],
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/6hatB19T/spark-1.9.40-forge.jar",
-          "version": "6hatB19T"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2"
-          ],
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/LVujS26K/spark-1.9.36-forge.jar",
-          "version": "LVujS26K"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2"
-          ],
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/g60nhl1v/spark-1.9.36-fabric.jar",
-          "version": "g60nhl1v"
-        },
-        {
-          "minecraft_versions": "1.19",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1.9.26-fabric/spark-1.9.26-fabric.jar",
-          "version": "Biivc7P1"
-        },
-        {
-          "minecraft_versions": "1.19",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1.9.25-fabric/spark-1.9.25-fabric.jar",
-          "version": "jg0K11We"
-        },
-        {
-          "minecraft_versions": "1.19",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1.9.25-forge/spark-1.9.25-forge.jar",
-          "version": "X9SnVAPS"
-        },
-        {
-          "minecraft_versions": "1.19",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1.9.12-forge/spark-1.9.13-forge.jar",
-          "version": "xvqXC3WU"
-        },
-        {
-          "minecraft_versions": "1.19",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1.9.12-fabric/spark-1.9.13-fabric.jar",
-          "version": "CWiQ0oM4"
-        },
-        {
-          "minecraft_versions": [
-            "1.18",
-            "1.18.1",
-            "1.18.2"
-          ],
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1.9.11-forge/spark-1.9.11-forge.jar",
-          "version": "sYlxF6IX"
-        },
-        {
-          "minecraft_versions": [
-            "1.18",
-            "1.18.1",
-            "1.18.2"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1.9.11-fabric/spark-1.9.11-fabric.jar",
-          "version": "JjikdHMk"
-        },
-        {
-          "minecraft_versions": "1.16.5",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1.9.1-forge1165/spark-1.9.1-forge.jar",
-          "version": "9NSIbttL"
-        },
-        {
-          "minecraft_versions": [
-            "1.18.1",
-            "1.18.2"
-          ],
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1.9.1-forge/spark-1.9.1-forge.jar",
-          "version": "6BEDTXhR"
-        },
-        {
-          "minecraft_versions": [
-            "1.18.1",
-            "1.18.2"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1.9.1-fabric/spark-1.9.1-fabric.jar",
-          "version": "qBdtA5uj"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1.8.14-fabric/spark-1.8.14-fabric.jar",
-          "version": "VkKsarbC"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1.8.14-forge/spark-1.8.14-forge.jar",
-          "version": "eEAJpQea"
-        },
-        {
-          "minecraft_versions": [
-            "1.18",
-            "1.18.1"
-          ],
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1.8.6-forge/spark-1.8.6-forge.jar",
-          "version": "yysWZODg"
-        },
-        {
-          "minecraft_versions": [
-            "1.18",
-            "1.18.1"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1.8.6-fabric/spark-1.8.6-fabric.jar",
-          "version": "b3zKGLTS"
-        },
-        {
-          "minecraft_versions": "1.18.1",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1.7.2-forge/spark-forge.jar",
-          "version": "DhT8Y7bB"
-        },
-        {
-          "minecraft_versions": "1.18.1",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1.7.2-fabric/spark-fabric.jar",
-          "version": "sf2nOVoP"
-        },
-        {
-          "minecraft_versions": "1.18",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1.6.3-forge/spark-forge.jar",
-          "version": "huGeKmwp"
-        },
-        {
-          "minecraft_versions": "1.18",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1.6.3-fabric/spark-fabric.jar",
-          "version": "D6L5yWtJ"
-        },
-        {
-          "minecraft_versions": "1.17.1",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1.6.2-fabric/spark-fabric.jar",
-          "version": "liwd7pvc"
-        },
-        {
-          "minecraft_versions": "1.17.1",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1.6.3/spark-forge.jar",
-          "version": "JdNt7oGW"
-        }
-      ]
-    }
-  },
-  "meta": {
-    "authors": [
-      "lucko"
-    ],
-    "categories": [
-      "tools",
-      "technical"
-    ],
-    "community": "https://discord.gg/PAGT2fu",
-    "description": "spark is a performance profiler for Minecraft clients, servers and proxies.",
-    "documentation": "https://spark.lucko.me/docs",
-    "gallery": [],
-    "icon": "https://cdn.modrinth.com/data/l6YH9Als/13676ddae142a85998c1c0086cafc30ce2efde80.png",
-    "issues": "https://github.com/lucko/spark/issues",
-    "keywords": [
-      "profiler"
-    ],
-    "license": "GPL-3.0-only",
-    "name": "spark",
-    "package_maintainers": [
-      "mcvm"
-    ],
-    "source": "https://github.com/lucko/spark"
-  },
-  "properties": {
-    "modrinth_id": "l6YH9Als",
-    "supported_modloaders": [
-      "fabriclike",
-      "forgelike"
-    ],
-    "supported_sides": [
-      "client",
-      "server"
-    ],
-    "supported_versions": [
-      "1.16.5",
-      "1.17.1",
-      "1.18",
-      "1.18.1",
-      "1.18.2",
-      "1.19",
-      "1.19.1",
-      "1.19.2",
-      "1.19.3",
-      "1.19.4",
-      "1.20",
-      "1.20.1",
-      "1.20.2",
-      "1.20.3",
-      "1.20.4"
-    ]
-  }
+	"addons": {
+		"addon": {
+			"kind": "mod",
+			"versions": [
+				{
+					"minecraft_versions": [
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/FeV5OquF/spark-1.10.58-fabric.jar",
+					"version": "FeV5OquF"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/3FEq2lT7/spark-1.10.58-forge.jar",
+					"version": "3FEq2lT7"
+				},
+				{
+					"minecraft_versions": "1.20.3",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/8ZQqfeXy/spark-1.10.57-fabric.jar",
+					"version": "8ZQqfeXy"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/tCU9VuzX/spark-1.10.54-fabric.jar",
+					"version": "tCU9VuzX"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/h0Z2ObM0/spark-1.10.54-forge.jar",
+					"version": "h0Z2ObM0"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/XGW2fviP/spark-1.10.53-fabric.jar",
+					"version": "XGW2fviP"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/4FXHDE9F/spark-1.10.53-forge.jar",
+					"version": "4FXHDE9F"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/BeIg1bik/spark-1.10.42-fabric.jar",
+					"version": "BeIg1bik"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/Yp6s4wsw/spark-1.10.42-forge.jar",
+					"version": "Yp6s4wsw"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/dVHkMOHv/spark-1.10.41-fabric.jar",
+					"version": "dVHkMOHv"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/oCK984FP/spark-1.10.41-forge.jar",
+					"version": "oCK984FP"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/qyMNf4Pn/spark-1.10.39-fabric.jar",
+					"version": "qyMNf4Pn"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/GygIHGfW/spark-1.10.38-forge.jar",
+					"version": "GygIHGfW"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/VhY9p1RU/spark-1.10.38-fabric.jar",
+					"version": "VhY9p1RU"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2",
+						"1.19.3",
+						"1.19.4"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/XhFbpH8f/spark-1.10.37-fabric.jar",
+					"version": "XhFbpH8f"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2",
+						"1.19.3",
+						"1.19.4"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1dlOe6ez/spark-1.10.37-forge.jar",
+					"version": "1dlOe6ez"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2",
+						"1.19.3",
+						"1.19.4"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/N7JzEApO/spark-1.10.34-fabric.jar",
+					"version": "N7JzEApO"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2",
+						"1.19.3",
+						"1.19.4"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/pjW9S4dI/spark-1.10.34-forge.jar",
+					"version": "pjW9S4dI"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2",
+						"1.19.3"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/g5rM8xSA/spark-1.10.33-fabric.jar",
+					"version": "g5rM8xSA"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2",
+						"1.19.3"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/23U6xkbl/spark-1.10.33-forge.jar",
+					"version": "23U6xkbl"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2",
+						"1.19.3"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1K3xO8TS/spark-1.10.29-fabric.jar",
+					"version": "1K3xO8TS"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2",
+						"1.19.3"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/E5XaSI1N/spark-1.10.29-forge.jar",
+					"version": "E5XaSI1N"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2",
+						"1.19.3"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/OT1CD9Qj/spark-1.10.17-fabric.jar",
+					"version": "OT1CD9Qj"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2",
+						"1.19.3"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/XXMFHMBO/spark-1.10.17-forge.jar",
+					"version": "XXMFHMBO"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/RhyaY2vw/spark-1.9.45-fabric.jar",
+					"version": "RhyaY2vw"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/EWTsXhFU/spark-1.9.45-forge.jar",
+					"version": "EWTsXhFU"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/3opVno4q/spark-1.9.42-fabric.jar",
+					"version": "3opVno4q"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/mMSAkTm6/spark-1.9.42-forge.jar",
+					"version": "mMSAkTm6"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/FnKxsd40/spark-1.9.40-fabric.jar",
+					"version": "FnKxsd40"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/6hatB19T/spark-1.9.40-forge.jar",
+					"version": "6hatB19T"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/LVujS26K/spark-1.9.36-forge.jar",
+					"version": "LVujS26K"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/g60nhl1v/spark-1.9.36-fabric.jar",
+					"version": "g60nhl1v"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1.9.26-fabric/spark-1.9.26-fabric.jar",
+					"version": "Biivc7P1"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1.9.25-fabric/spark-1.9.25-fabric.jar",
+					"version": "jg0K11We"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1.9.25-forge/spark-1.9.25-forge.jar",
+					"version": "X9SnVAPS"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1.9.12-forge/spark-1.9.13-forge.jar",
+					"version": "xvqXC3WU"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1.9.12-fabric/spark-1.9.13-fabric.jar",
+					"version": "CWiQ0oM4"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1.9.11-forge/spark-1.9.11-forge.jar",
+					"version": "sYlxF6IX"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1.9.11-fabric/spark-1.9.11-fabric.jar",
+					"version": "JjikdHMk"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1.9.1-forge1165/spark-1.9.1-forge.jar",
+					"version": "9NSIbttL"
+				},
+				{
+					"minecraft_versions": [
+						"1.18.1",
+						"1.18.2"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1.9.1-forge/spark-1.9.1-forge.jar",
+					"version": "6BEDTXhR"
+				},
+				{
+					"minecraft_versions": [
+						"1.18.1",
+						"1.18.2"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1.9.1-fabric/spark-1.9.1-fabric.jar",
+					"version": "qBdtA5uj"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1.8.14-fabric/spark-1.8.14-fabric.jar",
+					"version": "VkKsarbC"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1.8.14-forge/spark-1.8.14-forge.jar",
+					"version": "eEAJpQea"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1.8.6-forge/spark-1.8.6-forge.jar",
+					"version": "yysWZODg"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1.8.6-fabric/spark-1.8.6-fabric.jar",
+					"version": "b3zKGLTS"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1.7.2-forge/spark-forge.jar",
+					"version": "DhT8Y7bB"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1.7.2-fabric/spark-fabric.jar",
+					"version": "sf2nOVoP"
+				},
+				{
+					"minecraft_versions": "1.18",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1.6.3-forge/spark-forge.jar",
+					"version": "huGeKmwp"
+				},
+				{
+					"minecraft_versions": "1.18",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1.6.3-fabric/spark-fabric.jar",
+					"version": "D6L5yWtJ"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1.6.2-fabric/spark-fabric.jar",
+					"version": "liwd7pvc"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/1.6.3/spark-forge.jar",
+					"version": "JdNt7oGW"
+				}
+			]
+		}
+	},
+	"meta": {
+		"authors": [
+			"lucko"
+		],
+		"categories": [
+			"tools",
+			"technical"
+		],
+		"community": "https://discord.gg/PAGT2fu",
+		"description": "spark is a performance profiler for Minecraft clients, servers and proxies.",
+		"documentation": "https://spark.lucko.me/docs",
+		"gallery": [],
+		"icon": "https://cdn.modrinth.com/data/l6YH9Als/13676ddae142a85998c1c0086cafc30ce2efde80.png",
+		"issues": "https://github.com/lucko/spark/issues",
+		"keywords": [
+			"profiler"
+		],
+		"license": "GPL-3.0-only",
+		"long_description": "![spark](https://i.imgur.com/ykHn9vx.png)\n\n#### spark is a performance profiler for Minecraft clients, servers and proxies.\n\n#### Useful Links\n* [**Website**](https://spark.lucko.me/) - browse the project homepage\n* [**Documentation**](https://spark.lucko.me/docs) - read documentation and usage guides\n* [**Downloads**](https://spark.lucko.me/download) - latest plugin/mod downloads\n\n___\n\n[![](https://www.bisecthosting.com/partners/custom-banners/337246b0-c68e-400f-a40e-427b9a2fc516.png)](https://bisecthosting.com/spark)\n\nspark is proudly sponsored by [BisectHosting](https://bisecthosting.com/spark).​\n\nBisectHosting are Minecraft server hosting experts, ready to help you create and host your very own server! They are a trusted and well-established hosting provider in the community, and provide an outstanding level of service that we are happy to recommend. There is a special 25% off discount available for spark users - click the link above to create your server today.\n\n## What does spark do?\n\nspark is made up of three separate components:\n\n* **CPU Profiler**: Diagnose performance issues.\n* **Memory Inspection**: Diagnose memory issues.\n* **Server Health Reporting**: Keep track of overall server health.\n\n### ⚡ CPU Profiler\n\nspark's profiler can be used to diagnose performance issues: \"lag\", low tick rate, high CPU usage, etc.\n\nIt is:\n\n* **Lightweight** - can be ran in production with minimal impact.\n* **Easy to use** - no configuration or setup necessary, just install the plugin.\n* **Quick to produce results** - running for just ~30 seconds is enough to produce useful insights into problematic areas for performance.\n* **Customisable** - can be tuned to target specific threads, sample at a specific interval, record only \"laggy\" periods, etc\n* **Highly readable** - simple tree structure lends itself to easy analysis and interpretation. The viewer can also apply deobfuscation mappings.\n\nIt works by sampling statistical data about the systems activity, and constructing a call graph based on this data. The call graph is then displayed in an online viewer for further analysis by the user.\n\nThere are two different profiler engines:\n* Native `AsyncGetCallTrace` + `perf_events` - uses [async-profiler](https://github.com/jvm-profiling-tools/async-profiler) (*only available on Linux x86_64 systems*)\n* Built-in Java `ThreadMXBean` - an improved version of the popular [WarmRoast profiler](https://github.com/sk89q/WarmRoast) by sk89q.\n\n### ⚡ Memory Inspection\n\nspark includes a number of tools which are useful for diagnosing memory issues with a server.\n\n* **Heap Summary** - take & analyse a basic snapshot of the servers memory\n  * A simple view of the JVM's heap, see memory usage and instance counts for each class\n  * Not intended to be a full replacement of proper memory analysis tools. (see below)\n* **Heap Dump** - take a full (HPROF) snapshot of the servers memory\n  * Dumps (& optionally compresses) a full snapshot of JVM's heap.\n  * This snapshot can then be inspected using conventional analysis tools.\n* **GC Monitoring** - monitor garbage collection activity on the server\n  * Allows the user to relate GC activity to game server hangs, and easily see how long they are taking & how much memory is being free'd.\n  * Observe frequency/duration of young/old generation garbage collections to inform which GC tuning flags to use\n\n### ⚡ Server Health Reporting\n\nspark can report a number of metrics summarising the servers overall health.\n\nThese metrics include:\n\n* **TPS** - ticks per second, to a more accurate degree indicated by the /tps command\n* **Tick Durations** - how long each tick is taking (min, max and average)\n* **CPU Usage** - how much of the CPU is being used by the server process, and by the overall system\n* **Memory Usage** - how much memory is being used by the process\n* **Disk Usage** - how much disk space is free/being used by the system\n\nAs well as providing tick rate averages, spark can also **monitor individual ticks** - sending a report whenever a single tick's duration exceeds a certain threshold. This can be used to identify trends and the nature of performance issues, relative to other system or game events.\n\n## Usage\nTo install, just add the **.jar** file to your mods directory.\n\nInformation about [how to use commands](https://spark.lucko.me/docs/Command-Usage) can be found in the docs.\n\nIf you’d like help analysing a profiling report, or just want to chat, feel free to join us on [Discord](https://discord.gg/PAGT2fu).\n\n\n## Guides\nThere are a few small \"guides\" available in the docs, covering the following topics.\n* [The tick loop](https://spark.lucko.me/docs/guides/The-tick-loop)\n* [Finding the cause of lag spikes](https://spark.lucko.me/docs/guides/Finding-lag-spikes)",
+		"name": "spark",
+		"package_maintainers": [
+			"mcvm"
+		],
+		"source": "https://github.com/lucko/spark"
+	},
+	"properties": {
+		"modrinth_id": "l6YH9Als",
+		"supported_modloaders": [
+			"fabriclike",
+			"forgelike"
+		],
+		"supported_sides": [
+			"client",
+			"server"
+		],
+		"supported_versions": [
+			"1.16.5",
+			"1.17.1",
+			"1.18",
+			"1.18.1",
+			"1.18.2",
+			"1.19",
+			"1.19.1",
+			"1.19.2",
+			"1.19.3",
+			"1.19.4",
+			"1.20",
+			"1.20.1",
+			"1.20.2",
+			"1.20.3",
+			"1.20.4"
+		]
+	}
 }

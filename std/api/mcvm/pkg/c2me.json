@@ -1,1576 +1,1577 @@
 {
-  "addons": {
-    "addon": {
-      "kind": "mod",
-      "versions": [
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/2wBbjBss/c2me-fabric-mc1.20.4-0.2.0%2Balpha.11.61.jar",
-          "version": "2wBbjBss"
-        },
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/1mrrqqh8/c2me-fabric-mc1.20.4-0.2.0%2Balpha.11.60.jar",
-          "version": "1mrrqqh8"
-        },
-        {
-          "minecraft_versions": "24w12a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/7QHLk52H/c2me-fabric-mc24w12a-0.2.0%2Balpha.11.71.jar",
-          "version": "7QHLk52H"
-        },
-        {
-          "minecraft_versions": "24w11a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/pEdCxWfU/c2me-fabric-mc24w11a-0.2.0%2Balpha.11.70.jar",
-          "version": "pEdCxWfU"
-        },
-        {
-          "minecraft_versions": "24w10a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/K77J7VgJ/c2me-fabric-mc24w10a-0.2.0%2Balpha.11.69.jar",
-          "version": "K77J7VgJ"
-        },
-        {
-          "minecraft_versions": "24w09a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/EnNkM6hM/c2me-fabric-mc24w09a-0.2.0%2Balpha.11.68.jar",
-          "version": "EnNkM6hM"
-        },
-        {
-          "minecraft_versions": "24w09a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/ZwukJJVG/c2me-fabric-mc24w09a-0.2.0%2Balpha.11.67.jar",
-          "version": "ZwukJJVG"
-        },
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/Zarj7hYR/c2me-fabric-mc1.20.4-0.2.0%2Balpha.11.58.jar",
-          "version": "Zarj7hYR"
-        },
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/QZ5cUNXs/c2me-fabric-mc1.20.1-0.2.0%2Balpha.11.5.jar",
-          "version": "QZ5cUNXs"
-        },
-        {
-          "minecraft_versions": "1.20.2",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/vADXBkQ9/c2me-fabric-mc1.20.2-0.2.0%2Balpha.11.24.jar",
-          "version": "vADXBkQ9"
-        },
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/k0mGurbc/c2me-fabric-mc1.20.4-0.2.0%2Balpha.11.57.jar",
-          "version": "k0mGurbc"
-        },
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/YcNBclPA/c2me-fabric-mc1.20.4-0.2.0%2Balpha.11.56.jar",
-          "version": "YcNBclPA"
-        },
-        {
-          "minecraft_versions": "24w06a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/83cMDwyA/c2me-fabric-mc24w06a-0.2.0%2Balpha.11.57.jar",
-          "version": "83cMDwyA"
-        },
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/OIsJWyHK/c2me-fabric-mc1.20.1-0.2.0%2Balpha.11.4.jar",
-          "version": "OIsJWyHK"
-        },
-        {
-          "minecraft_versions": "1.20.2",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/Iigf1ayl/c2me-fabric-mc1.20.2-0.2.0%2Balpha.11.23.jar",
-          "version": "Iigf1ayl"
-        },
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/FegpExsA/c2me-fabric-mc1.20.4-0.2.0%2Balpha.11.52.jar",
-          "version": "FegpExsA"
-        },
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/IOsj4oCn/c2me-fabric-mc1.20.1-0.2.0%2Balpha.11.3.jar",
-          "version": "IOsj4oCn"
-        },
-        {
-          "minecraft_versions": "1.20.2",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/mdwisQbj/c2me-fabric-mc1.20.2-0.2.0%2Balpha.11.22.jar",
-          "version": "mdwisQbj"
-        },
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/7dTaskZd/c2me-fabric-mc1.20.4-0.2.0%2Balpha.11.50.jar",
-          "version": "7dTaskZd"
-        },
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/sXSliIXJ/c2me-fabric-mc1.20.4-0.2.0%2Balpha.11.46.jar",
-          "version": "sXSliIXJ"
-        },
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/mXxEG1Cc/c2me-fabric-mc1.20.4-0.2.0%2Balpha.11.42.jar",
-          "version": "mXxEG1Cc"
-        },
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/VMkY1xQJ/c2me-fabric-mc1.20.4-0.2.0%2Balpha.11.41.jar",
-          "version": "VMkY1xQJ"
-        },
-        {
-          "minecraft_versions": "24w05b",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/aCHiq3JR/c2me-fabric-mc24w05b-0.2.0%2Balpha.11.41.jar",
-          "version": "aCHiq3JR"
-        },
-        {
-          "minecraft_versions": "24w03b",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/mwWVX1eI/c2me-fabric-mc24w03b-0.2.0%2Balpha.11.40.jar",
-          "version": "mwWVX1eI"
-        },
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/OSw3GbgT/c2me-fabric-mc1.20.4-0.2.0%2Balpha.11.40.jar",
-          "version": "OSw3GbgT"
-        },
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/Nbvy7lxh/c2me-fabric-mc1.20.4-0.2.0%2Balpha.11.39.jar",
-          "version": "Nbvy7lxh"
-        },
-        {
-          "minecraft_versions": "23w51b",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/gl3Ol9Rf/c2me-fabric-mc23w51b-0.2.0%2Balpha.11.39.jar",
-          "version": "gl3Ol9Rf"
-        },
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/o0DcaA0L/c2me-fabric-mc1.20.4-0.2.0%2Balpha.11.38.jar",
-          "version": "o0DcaA0L"
-        },
-        {
-          "minecraft_versions": "1.20.3",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/OcowQN8k/c2me-fabric-mc1.20.3-0.2.0%2Balpha.11.36.jar",
-          "version": "OcowQN8k"
-        },
-        {
-          "minecraft_versions": "1.20.3",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/i8CQwoWH/c2me-fabric-mc1.20.3-0.2.0%2Balpha.11.35.jar",
-          "version": "i8CQwoWH"
-        },
-        {
-          "minecraft_versions": "1.20.3-rc1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/mUc2slbG/c2me-fabric-mc1.20.3-rc1-0.2.0%2Balpha.11.32.jar",
-          "version": "mUc2slbG"
-        },
-        {
-          "minecraft_versions": "1.20.3-pre4",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/BeDVaRrl/c2me-fabric-mc1.20.3-pre4-0.2.0%2Balpha.11.31.jar",
-          "version": "BeDVaRrl"
-        },
-        {
-          "minecraft_versions": [
-            "1.20.3-pre1",
-            "1.20.3-pre2"
-          ],
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/6bOtNtMk/c2me-fabric-mc1.20.3-pre1-0.2.0%2Balpha.11.29.jar",
-          "version": "6bOtNtMk"
-        },
-        {
-          "minecraft_versions": "23w45a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/i8QegMT0/c2me-fabric-mc23w45a-0.2.0%2Balpha.11.28.jar",
-          "version": "i8QegMT0"
-        },
-        {
-          "minecraft_versions": "23w43a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/ylU9Dbog/c2me-fabric-mc23w43a-0.2.0%2Balpha.11.27.jar",
-          "version": "ylU9Dbog"
-        },
-        {
-          "minecraft_versions": "23w42a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/eLutcGdb/c2me-fabric-mc23w42a-0.2.0%2Balpha.11.25.jar",
-          "version": "eLutcGdb"
-        },
-        {
-          "minecraft_versions": "23w41a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/FrNL4T4x/c2me-fabric-mc23w41a-0.2.0%2Balpha.11.23.jar",
-          "version": "FrNL4T4x"
-        },
-        {
-          "minecraft_versions": "23w40a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/Jqx0agDs/c2me-fabric-mc23w40a-0.2.0%2Balpha.11.21.jar",
-          "version": "Jqx0agDs"
-        },
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/T5Pkyhit/c2me-fabric-mc1.20.1-0.2.0%2Balpha.11.0.jar",
-          "version": "T5Pkyhit"
-        },
-        {
-          "minecraft_versions": "1.20.2",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/ilKwGRiJ/c2me-fabric-mc1.20.2-0.2.0%2Balpha.10.126.jar",
-          "version": "ilKwGRiJ"
-        },
-        {
-          "minecraft_versions": "1.20.2",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/NKLLto7o/c2me-fabric-mc1.20.2-0.2.0%2Balpha.10.123.jar",
-          "version": "NKLLto7o"
-        },
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/1xGxW45v/c2me-fabric-mc1.20.1-0.2.0%2Balpha.10.108.jar",
-          "version": "1xGxW45v"
-        },
-        {
-          "minecraft_versions": "1.20.2-rc2",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/4JSkFTyf/c2me-fabric-mc1.20.2-rc2-0.2.0%2Balpha.10.122.jar",
-          "version": "4JSkFTyf"
-        },
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/7y1gLd3J/c2me-fabric-mc1.20.1-0.2.0%2Balpha.10.107.jar",
-          "version": "7y1gLd3J"
-        },
-        {
-          "minecraft_versions": "1.20.2-rc1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/YtlVr5cf/c2me-fabric-mc1.20.2-rc1-0.2.0%2Balpha.10.120.jar",
-          "version": "YtlVr5cf"
-        },
-        {
-          "minecraft_versions": "1.20.2-pre4",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/QfwKEzZ4/c2me-fabric-mc1.20.2-pre4-0.2.0%2Balpha.10.119.jar",
-          "version": "QfwKEzZ4"
-        },
-        {
-          "minecraft_versions": "1.20.2-pre4",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/KptlCSFN/c2me-fabric-mc1.20.2-pre4-0.2.0%2Balpha.10.112.jar",
-          "version": "KptlCSFN"
-        },
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/rIG01joD/c2me-fabric-mc1.20.1-0.2.0%2Balpha.10.106.jar",
-          "version": "rIG01joD"
-        },
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/Bz7RVshA/c2me-fabric-mc1.20.1-0.2.0%2Balpha.10.105.jar",
-          "version": "Bz7RVshA"
-        },
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/9fFeZTDg/c2me-fabric-mc1.20.1-0.2.0%2Balpha.10.102.jar",
-          "version": "9fFeZTDg"
-        },
-        {
-          "minecraft_versions": "1.20.2-pre3",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/D2jFsTZq/c2me-fabric-mc1.20.2-pre3-0.2.0%2Balpha.10.111.jar",
-          "version": "D2jFsTZq"
-        },
-        {
-          "minecraft_versions": "1.20.2-pre2",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/4HeZGnXw/c2me-fabric-mc1.20.2-pre2-0.2.0%2Balpha.10.110.jar",
-          "version": "4HeZGnXw"
-        },
-        {
-          "minecraft_versions": "1.20.2-pre1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/4zE58u8n/c2me-fabric-mc1.20.2-pre1-0.2.0%2Balpha.10.109.jar",
-          "version": "4zE58u8n"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/uFhRzRj9/c2me-fabric-mc1.18.2-0.2.0%2Balpha.7.40.jar",
-          "version": "uFhRzRj9"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/TL8Qsm5r/c2me-fabric-mc1.19.2-0.2.0%2Balpha.9.11.jar",
-          "version": "TL8Qsm5r"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/uZ1nQtIu/c2me-fabric-mc1.19.4-0.2.0%2Balpha.10.66.jar",
-          "version": "uZ1nQtIu"
-        },
-        {
-          "minecraft_versions": "1.20",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/L5rSwveR/c2me-fabric-mc1.20-0.2.0%2Balpha.10.89.jar",
-          "version": "L5rSwveR"
-        },
-        {
-          "minecraft_versions": "23w35a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/VuQBVQFt/c2me-fabric-mc23w35a-0.2.0%2Balpha.10.108.jar",
-          "version": "VuQBVQFt"
-        },
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/oXqihlMj/c2me-fabric-mc1.20.1-0.2.0%2Balpha.10.100.jar",
-          "version": "oXqihlMj"
-        },
-        {
-          "minecraft_versions": "23w35a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/FRk7daOn/c2me-fabric-mc23w35a-0.2.0%2Balpha.10.103.jar",
-          "version": "FRk7daOn"
-        },
-        {
-          "minecraft_versions": "23w33a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/YihNBs47/c2me-fabric-mc23w33a-0.2.0%2Balpha.10.102.jar",
-          "version": "YihNBs47"
-        },
-        {
-          "minecraft_versions": "23w32a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/tRPtBOiR/c2me-fabric-mc23w32a-0.2.0%2Balpha.10.101.jar",
-          "version": "tRPtBOiR"
-        },
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/zLF8pgaa/c2me-fabric-mc1.20.1-0.2.0%2Balpha.10.98.jar",
-          "version": "zLF8pgaa"
-        },
-        {
-          "minecraft_versions": "23w32a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/YMkkzFrW/c2me-fabric-mc23w32a-0.2.0%2Balpha.10.99.jar",
-          "version": "YMkkzFrW"
-        },
-        {
-          "minecraft_versions": "23w31a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/H7mRFiai/c2me-fabric-mc23w31a-0.2.0%2Balpha.10.98.jar",
-          "version": "H7mRFiai"
-        },
-        {
-          "minecraft_versions": "23w31a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/RKHT15hh/c2me-fabric-mc23w31a-0.2.0%2Balpha.10.97.jar",
-          "version": "RKHT15hh"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/HnJvyOtR/c2me-fabric-mc1.19.4-0.2.0%2Balpha.10.65.jar",
-          "version": "HnJvyOtR"
-        },
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/iaC5daGO/c2me-fabric-mc1.20.1-0.2.0%2Balpha.10.96.jar",
-          "version": "iaC5daGO"
-        },
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/fIRoJeNG/c2me-fabric-mc1.20.1-0.2.0%2Balpha.10.94.jar",
-          "version": "fIRoJeNG"
-        },
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/2MsVranr/c2me-fabric-mc1.20.1-0.2.0%2Balpha.10.93.jar",
-          "version": "2MsVranr"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/5WCjzxLt/c2me-fabric-mc1.19.2-0.2.0%2Balpha.9.10.jar",
-          "version": "5WCjzxLt"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/N7ZGQT2F/c2me-fabric-mc1.19.4-0.2.0%2Balpha.10.61.jar",
-          "version": "N7ZGQT2F"
-        },
-        {
-          "minecraft_versions": "1.20",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/qCeR9Rtv/c2me-fabric-mc1.20-0.2.0%2Balpha.10.88.jar",
-          "version": "qCeR9Rtv"
-        },
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/t4juSkze/c2me-fabric-mc1.20.1-0.2.0%2Balpha.10.91.jar",
-          "version": "t4juSkze"
-        },
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/5UifZ0Q3/c2me-fabric-mc1.20.1-0.2.0%2Balpha.10.90.jar",
-          "version": "5UifZ0Q3"
-        },
-        {
-          "minecraft_versions": "1.20.1-rc1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/djsukR7B/c2me-fabric-mc1.20.1-rc1-0.2.0%2Balpha.10.89.jar",
-          "version": "djsukR7B"
-        },
-        {
-          "minecraft_versions": "1.20",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/upCWtixz/c2me-fabric-mc1.20-0.2.0%2Balpha.10.87.jar",
-          "version": "upCWtixz"
-        },
-        {
-          "minecraft_versions": "1.20",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/jjrmElas/c2me-fabric-mc1.20-0.2.0%2Balpha.10.85.jar",
-          "version": "jjrmElas"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/J6kO4r4K/c2me-fabric-mc1.19.4-0.2.0%2Balpha.10.60.jar",
-          "version": "J6kO4r4K"
-        },
-        {
-          "minecraft_versions": "1.20-rc1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/kGUYgrb2/c2me-fabric-mc1.20-rc1-0.2.0%2Balpha.10.84.jar",
-          "version": "kGUYgrb2"
-        },
-        {
-          "minecraft_versions": "1.20-rc1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/Wu5yZcaS/c2me-fabric-mc1.20-rc1-0.2.0%2Balpha.10.83.jar",
-          "version": "Wu5yZcaS"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/Pxfe5aWT/c2me-fabric-mc1.19.4-0.2.0%2Balpha.10.58.jar",
-          "version": "Pxfe5aWT"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/wNH05ZHf/c2me-fabric-mc1.19.4-0.2.0%2Balpha.10.56.jar",
-          "version": "wNH05ZHf"
-        },
-        {
-          "minecraft_versions": "1.20-pre7",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/43ydird3/c2me-fabric-mc1.20-pre7-0.2.0%2Balpha.10.77.jar",
-          "version": "43ydird3"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/aGexInhW/c2me-fabric-mc1.19.4-0.2.0%2Balpha.10.55.jar",
-          "version": "aGexInhW"
-        },
-        {
-          "minecraft_versions": "1.20-pre6",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/jb1CmeTY/c2me-fabric-mc1.20-pre6-0.2.0%2Balpha.10.76.jar",
-          "version": "jb1CmeTY"
-        },
-        {
-          "minecraft_versions": "1.20-pre6",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/vOwiIckX/c2me-fabric-mc1.20-pre6-0.2.0%2Balpha.10.74.jar",
-          "version": "vOwiIckX"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/Rp75Zg3V/c2me-fabric-mc1.19.4-0.2.0%2Balpha.10.54.jar",
-          "version": "Rp75Zg3V"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/QM0bHIgS/c2me-fabric-mc1.19.4-0.2.0%2Balpha.10.53.jar",
-          "version": "QM0bHIgS"
-        },
-        {
-          "minecraft_versions": "1.20-pre6",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/TPoREhh8/c2me-fabric-mc1.20-pre6-0.2.0%2Balpha.10.71.jar",
-          "version": "TPoREhh8"
-        },
-        {
-          "minecraft_versions": "1.20-pre5",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/o9JS246e/c2me-fabric-mc1.20-pre5-0.2.0%2Balpha.10.70.jar",
-          "version": "o9JS246e"
-        },
-        {
-          "minecraft_versions": "1.20-pre4",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/svIfxF6U/c2me-fabric-mc1.20-pre4-0.2.0%2Balpha.10.68.jar",
-          "version": "svIfxF6U"
-        },
-        {
-          "minecraft_versions": "1.20-pre4",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/kE6dSBb9/c2me-fabric-mc1.20-pre4-0.2.0%2Balpha.10.67.jar",
-          "version": "kE6dSBb9"
-        },
-        {
-          "minecraft_versions": "1.20-pre2",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/WNCmPNnH/c2me-fabric-mc1.20-pre2-0.2.0%2Balpha.10.65.jar",
-          "version": "WNCmPNnH"
-        },
-        {
-          "minecraft_versions": "1.20-pre1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/GcCkPPqP/c2me-fabric-mc1.20-pre1-0.2.0%2Balpha.10.64.jar",
-          "version": "GcCkPPqP"
-        },
-        {
-          "minecraft_versions": "23w18a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/x7MYMy4y/c2me-fabric-mc23w18a-0.2.0%2Balpha.10.63.jar",
-          "version": "x7MYMy4y"
-        },
-        {
-          "minecraft_versions": "23w17a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/CRKhNYeR/c2me-fabric-mc23w17a-0.2.0%2Balpha.10.62.jar",
-          "version": "CRKhNYeR"
-        },
-        {
-          "minecraft_versions": "23w16a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/H4cMvxMp/c2me-fabric-mc23w16a-0.2.0%2Balpha.10.61.jar",
-          "version": "H4cMvxMp"
-        },
-        {
-          "minecraft_versions": "23w16a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/wsPHNk8u/c2me-fabric-mc23w16a-0.2.0%2Balpha.10.60.jar",
-          "version": "wsPHNk8u"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/2LxKBERD/c2me-fabric-mc1.19.4-0.2.0%2Balpha.10.51.jar",
-          "version": "2LxKBERD"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/BPP2C04n/c2me-fabric-mc1.19.4-0.2.0%2Balpha.10.50.jar",
-          "version": "BPP2C04n"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/b3vDiaQb/c2me-fabric-mc1.19.4-0.2.0%2Balpha.10.49.jar",
-          "version": "b3vDiaQb"
-        },
-        {
-          "minecraft_versions": "23w14a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/gLH9G316/c2me-fabric-mc23w14a-0.2.0%2Balpha.10.46.jar",
-          "version": "gLH9G316"
-        },
-        {
-          "minecraft_versions": "23w13a_or_b",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/teZiZ7J8/c2me-fabric-mc23w13a_or_b-0.2.0%2Balpha.10.51.jar",
-          "version": "teZiZ7J8"
-        },
-        {
-          "minecraft_versions": "23w13a_or_b",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/FsgfLLf2/c2me-fabric-mc23w13a_or_b-0.2.0%2Balpha.10.49.jar",
-          "version": "FsgfLLf2"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/43Pjw5Zm/c2me-fabric-mc1.19.4-0.2.0%2Balpha.10.42.jar",
-          "version": "43Pjw5Zm"
-        },
-        {
-          "minecraft_versions": "23w13a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/E5ZHi8t8/c2me-fabric-mc23w13a-0.2.0%2Balpha.10.45.jar",
-          "version": "E5ZHi8t8"
-        },
-        {
-          "minecraft_versions": "23w13a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/Tfsv99Ne/c2me-fabric-mc23w13a-0.2.0%2Balpha.10.44.jar",
-          "version": "Tfsv99Ne"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/mbcVXjye/c2me-fabric-mc1.19.4-0.2.0%2Balpha.10.41.jar",
-          "version": "mbcVXjye"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/8rUarScX/c2me-fabric-mc1.19.2-0.2.0%2Balpha.9.9.jar",
-          "version": "8rUarScX"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/pH7xYFcg/c2me-fabric-mc1.19.4-0.2.0%2Balpha.10.31.jar",
-          "version": "pH7xYFcg"
-        },
-        {
-          "minecraft_versions": "23w12a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/6xnt6Mf7/c2me-fabric-mc23w12a-0.2.0%2Balpha.10.31.jar",
-          "version": "6xnt6Mf7"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/GtUrsjth/c2me-fabric-mc1.19.4-0.2.0%2Balpha.10.30.jar",
-          "version": "GtUrsjth"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/F59yqPKB/c2me-fabric-mc1.19.4-0.2.0%2Balpha.10.29.jar",
-          "version": "F59yqPKB"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/kHF4y8Qv/c2me-fabric-mc1.19.4-0.2.0%2Balpha.10.28.jar",
-          "version": "kHF4y8Qv"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/OnUjD19i/c2me-fabric-mc1.19.4-0.2.0%2Balpha.10.27.jar",
-          "version": "OnUjD19i"
-        },
-        {
-          "minecraft_versions": "1.19.4-rc2",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/I1yqocSA/c2me-fabric-mc1.19.4-rc2-0.2.0%2Balpha.10.26.jar",
-          "version": "I1yqocSA"
-        },
-        {
-          "minecraft_versions": "1.19.4-pre4",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/SJWk0Y6f/c2me-fabric-mc1.19.4-pre4-0.2.0%2Balpha.10.24.jar",
-          "version": "SJWk0Y6f"
-        },
-        {
-          "minecraft_versions": "1.19.4-pre4",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/lbYxbodc/c2me-fabric-mc1.19.4-pre4-0.2.0%2Balpha.10.18.jar",
-          "version": "lbYxbodc"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/WHwuwy0n/c2me-fabric-mc1.19.2-0.2.0%2Balpha.9.8.jar",
-          "version": "WHwuwy0n"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/tJR5QSfM/c2me-fabric-mc1.19.2-0.2.0%2Balpha.9.7.jar",
-          "version": "tJR5QSfM"
-        },
-        {
-          "minecraft_versions": "1.19.4-pre3",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/yjG2UYON/c2me-fabric-mc1.19.4-pre3-0.2.0%2Balpha.10.17.jar",
-          "version": "yjG2UYON"
-        },
-        {
-          "minecraft_versions": "1.19.4-pre2",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/am5H0QKm/c2me-fabric-mc1.19.4-pre2-0.2.0%2Balpha.10.16.jar",
-          "version": "am5H0QKm"
-        },
-        {
-          "minecraft_versions": "1.19.4-pre1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/mL9RAOql/c2me-fabric-mc1.19.4-pre1-0.2.0%2Balpha.10.15.jar",
-          "version": "mL9RAOql"
-        },
-        {
-          "minecraft_versions": "23w07a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/LcwiuiIT/c2me-fabric-mc23w07a-0.2.0%2Balpha.10.6.jar",
-          "version": "LcwiuiIT"
-        },
-        {
-          "minecraft_versions": "23w06a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/ofhUwNKT/c2me-fabric-mc23w06a-0.2.0%2Balpha.10.5.jar",
-          "version": "ofhUwNKT"
-        },
-        {
-          "minecraft_versions": "23w05a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/jg6Fxh7l/c2me-fabric-mc23w05a-0.2.0%2Balpha.10.4.jar",
-          "version": "jg6Fxh7l"
-        },
-        {
-          "minecraft_versions": "23w04a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/8R7qsoAz/c2me-fabric-mc23w04a-0.2.0%2Balpha.10.3.jar",
-          "version": "8R7qsoAz"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/MIL1AwdW/c2me-fabric-mc1.19.2-0.2.0%2Balpha.9.5.jar",
-          "version": "MIL1AwdW"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/b4OLEnN5/c2me-fabric-mc1.18.2-0.2.0%2Balpha.7.38.jar",
-          "version": "b4OLEnN5"
-        },
-        {
-          "minecraft_versions": "23w03a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/K4IJdtZz/c2me-fabric-mc23w03a-0.2.0%2Balpha.10.2.jar",
-          "version": "K4IJdtZz"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/FpgVeSQK/c2me-fabric-mc1.19.3-0.2.0%2Balpha.10.0.jar",
-          "version": "FpgVeSQK"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/kakddk9k/c2me-fabric-mc1.19.3-0.2.0%2Balpha.9.12.jar",
-          "version": "kakddk9k"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/ofTiB5aa/c2me-fabric-mc1.19.3-0.2.0%2Balpha.9.11.jar",
-          "version": "ofTiB5aa"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/U5BK0DTf/c2me-fabric-mc1.18.2-0.2.0%2Balpha.7.35.jar",
-          "version": "U5BK0DTf"
-        },
-        {
-          "minecraft_versions": "1.19.3-rc1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/h7FDMJhe/c2me-fabric-mc1.19.3-rc1-0.2.0%2Balpha.9.8.jar",
-          "version": "h7FDMJhe"
-        },
-        {
-          "minecraft_versions": "1.19.3-pre2",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/iEoaL6W4/c2me-fabric-mc1.19.3-pre2-0.2.0%2Balpha.9.7.jar",
-          "version": "iEoaL6W4"
-        },
-        {
-          "minecraft_versions": "22w46a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/hTvKpOrJ/c2me-fabric-mc22w46a-0.2.0%2Balpha.9.5.jar",
-          "version": "hTvKpOrJ"
-        },
-        {
-          "minecraft_versions": "22w45a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/KWFbqqg0/c2me-fabric-mc22w45a-0.2.0%2Balpha.9.4.jar",
-          "version": "KWFbqqg0"
-        },
-        {
-          "minecraft_versions": "22w44a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/AwoxTDW7/c2me-fabric-mc22w44a-0.2.0%2Balpha.9.3.jar",
-          "version": "AwoxTDW7"
-        },
-        {
-          "minecraft_versions": "22w43a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/RhyXTcEQ/c2me-fabric-mc22w43a-0.2.0%2Balpha.9.2.jar",
-          "version": "RhyXTcEQ"
-        },
-        {
-          "minecraft_versions": "22w42a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/JCraKtdM/c2me-fabric-mc22w42a-0.2.0%2Balpha.9.1.jar",
-          "version": "JCraKtdM"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/YaQCrYHB/c2me-fabric-mc1.19.2-0.2.0%2Balpha.9.0.jar",
-          "version": "YaQCrYHB"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.7.34%2B1.18.2/c2me-fabric-mc1.18.2-0.2.0%2Balpha.7.34.jar",
-          "version": "1uj78Fog"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.7.33%2B1.18.2/c2me-fabric-mc1.18.2-0.2.0%2Balpha.7.33.jar",
-          "version": "m1WNVlLC"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.8.37%2B1.19.2/c2me-fabric-mc1.19.2-0.2.0%2Balpha.8.37.jar",
-          "version": "4JyDag4R"
-        },
-        {
-          "minecraft_versions": "1.19.1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.8.33%2B1.19.1/c2me-fabric-mc1.19.1-0.2.0%2Balpha.8.33.jar",
-          "version": "joS4yKA6"
-        },
-        {
-          "minecraft_versions": [
-            "1.19.1-rc3",
-            "1.19.1"
-          ],
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.8.32%2B1.19.1-rc3/c2me-fabric-mc1.19.1-rc3-0.2.0%2Balpha.8.32.jar",
-          "version": "B0EsXokA"
-        },
-        {
-          "minecraft_versions": "1.19.1-pre6",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.8.29%2B1.19.1-pre6/c2me-fabric-mc1.19.1-pre6-0.2.0%2Balpha.8.29.jar",
-          "version": "5ckrYyQe"
-        },
-        {
-          "minecraft_versions": "1.19.1-pre4",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.8.10%2B1.19.1-pre4/c2me-fabric-mc1.19.1-pre4-0.2.0%2Balpha.8.10.jar",
-          "version": "UdhobdzY"
-        },
-        {
-          "minecraft_versions": "1.19.1-rc1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.8.6%2B1.19-rc1/c2me-fabric-mc1.19.1-rc1-0.2.0%2Balpha.8.6.jar",
-          "version": "ANzj8akD"
-        },
-        {
-          "minecraft_versions": "1.19",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.8.2%2B1.19/c2me-fabric-mc1.19-0.2.0%2Balpha.8.2.jar",
-          "version": "yU5A8Qx5"
-        },
-        {
-          "minecraft_versions": "22w24a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.8.5%2B22w24a/c2me-fabric-mc22w24a-0.2.0%2Balpha.8.5.jar",
-          "version": "36ArTfEB"
-        },
-        {
-          "minecraft_versions": "1.19",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.8.0%2B1.19/c2me-fabric-mc1.19-0.2.0%2Balpha.8.0.jar",
-          "version": "50qeuOZd"
-        },
-        {
-          "minecraft_versions": "1.19",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.7.56%2B1.19/c2me-fabric-mc1.19-0.2.0%2Balpha.7.56.jar",
-          "version": "KFecXkCR"
-        },
-        {
-          "minecraft_versions": "1.19-rc2",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.7.54%2B1.19-rc2/c2me-fabric-mc1.19-rc2-0.2.0%2Balpha.7.54.jar",
-          "version": "RaaE0QZS"
-        },
-        {
-          "minecraft_versions": "1.19-rc1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.7.53%2B1.19-rc1/c2me-fabric-mc1.19-rc1-0.2.0%2Balpha.7.53.jar",
-          "version": "9Bxa2twj"
-        },
-        {
-          "minecraft_versions": "1.19-pre3",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.7.50%2B1.19-pre3/c2me-fabric-mc1.19-pre3-0.2.0%2Balpha.7.50.jar",
-          "version": "WvJYXJ5r"
-        },
-        {
-          "minecraft_versions": "1.19-pre2",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.7.49%2B1.19-pre2/c2me-fabric-mc1.19-pre2-0.2.0%2Balpha.7.49.jar",
-          "version": "2suDoW3A"
-        },
-        {
-          "minecraft_versions": "1.19-pre1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.7.48%2B1.19-pre1/c2me-fabric-mc1.19-pre1-0.2.0%2Balpha.7.48.jar",
-          "version": "vv64RzIR"
-        },
-        {
-          "minecraft_versions": "22w19a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.7.40%2B22w19a/c2me-fabric-mc22w19a-0.2.0%2Balpha.7.40.jar",
-          "version": "hrDzs4sK"
-        },
-        {
-          "minecraft_versions": "22w19a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.7.38%2B22w19a/c2me-fabric-mc22w19a-0.2.0%2Balpha.7.38.jar",
-          "version": "HSbd0h1G"
-        },
-        {
-          "minecraft_versions": "22w19a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.7.37%2B22w19a/c2me-fabric-mc22w19a-0.2.0%2Balpha.7.37.jar",
-          "version": "4vuaNrle"
-        },
-        {
-          "minecraft_versions": "22w18a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.7.36%2B22w18a/c2me-fabric-mc22w18a-0.2.0%2Balpha.7.36.jar",
-          "version": "biOCYJZd"
-        },
-        {
-          "minecraft_versions": "22w17a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.7.30%2B22w17a/c2me-fabric-mc22w17a-0.2.0%2Balpha.7.30.jar",
-          "version": "ExoP2rex"
-        },
-        {
-          "minecraft_versions": "22w16b",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.7.29%2B22w16b/c2me-fabric-mc22w16b-0.2.0%2Balpha.7.29.jar",
-          "version": "anltmjSp"
-        },
-        {
-          "minecraft_versions": "22w14a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.7.16%2B22w14a/c2me-fabric-mc22w14a-0.2.0%2Balpha.7.16.jar",
-          "version": "7hUUNuox"
-        },
-        {
-          "minecraft_versions": "22w13a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.7.14%2B22w13a/c2me-fabric-mc22w13a-0.2.0%2Balpha.7.14.jar",
-          "version": "todB4Gz5"
-        },
-        {
-          "minecraft_versions": "22w12a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.7.13%2B22w13a/c2me-fabric-mc22w12a-0.2.0%2Balpha.7.13.jar",
-          "version": "rhq6flAe"
-        },
-        {
-          "minecraft_versions": "22w11a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.7.11%2B22w11a/c2me-fabric-mc22w11a-0.2.0%2Balpha.7.11.jar",
-          "version": "MRi5CAUa"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.7.0%2B1.18.2/c2me-fabric-mc1.18.2-0.2.0%2Balpha.7.0-all.jar",
-          "version": "5P5gJ4ws"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.6.62%2B1.18.2/c2me-fabric-mc1.18.2-0.2.0%2Balpha.6.62-all.jar",
-          "version": "U7wzpemA"
-        },
-        {
-          "minecraft_versions": "1.18.2-rc1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.6.58%2B1.18.2-rc1/c2me-fabric-mc1.18.2-rc1-0.2.0%2Balpha.6.58-all.jar",
-          "version": "iCgRTqOy"
-        },
-        {
-          "minecraft_versions": "1.18.1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.6.55%2B1.18.1/c2me-fabric-mc1.18.1-0.2.0%2Balpha.6.55-all.jar",
-          "version": "VVlAcu8X"
-        },
-        {
-          "minecraft_versions": "1.18.2-pre1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.6.54%2B1.18.2-pre1/c2me-fabric-mc1.18.2-pre1-0.2.0%2Balpha.6.54-all.jar",
-          "version": "LCwohtHy"
-        },
-        {
-          "minecraft_versions": "1.18.1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.6.54%2B1.18.1/c2me-fabric-mc1.18.1-0.2.0%2Balpha.6.54-all.jar",
-          "version": "5bqFdDSB"
-        },
-        {
-          "minecraft_versions": "22w06a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.6.50%2B22w06a/c2me-fabric-mc22w06a-0.2.0%2Balpha.6.50-all.jar",
-          "version": "8xmNpyLJ"
-        },
-        {
-          "minecraft_versions": "22w05a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.6.48%2B22w05a/c2me-fabric-mc22w05a-0.2.0%2Balpha.6.48-all.jar",
-          "version": "glmbs812"
-        },
-        {
-          "minecraft_versions": "1.18.1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.6.53/c2me-fabric-mc1.18.1-0.2.0%2Balpha.6.53-all.jar",
-          "version": "Dk2OSyZE"
-        },
-        {
-          "minecraft_versions": "1.18.1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.6.25%201.18.1/c2me-fabric-mc1.18.1-0.2.0%2Balpha.6.25-all.jar",
-          "version": "9ITewh53"
-        },
-        {
-          "minecraft_versions": "1.18.1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.6.24%201.18.1/c2me-fabric-mc1.18.1-0.2.0%2Balpha.6.24-all.jar",
-          "version": "c8VQ9yC5"
-        },
-        {
-          "minecraft_versions": "1.18.1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.6.1%201.18.1/c2me-fabric-mc1.18.1-0.2.0%2Balpha.6.1-all.jar",
-          "version": "UMPBDzKM"
-        },
-        {
-          "minecraft_versions": "1.18.1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.6.0%201.18.1/c2me-fabric-mc1.18.1-0.2.0%2Balpha.6.0-all.jar",
-          "version": "e7NAaeNt"
-        },
-        {
-          "minecraft_versions": "1.18.1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.5.110%201.18.1/c2me-fabric-mc1.18.1-0.2.0%2Balpha.5.110-all.jar",
-          "version": "GExDMas5"
-        },
-        {
-          "minecraft_versions": "1.18.1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.5.106%201.18.1/c2me-fabric-mc1.18.1-0.2.0%2Balpha.5.106-all.jar",
-          "version": "pIDNlM4l"
-        },
-        {
-          "minecraft_versions": "1.18.1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.5.104%201.18.1/c2me-fabric-mc1.18.1-0.2.0%2Balpha.5.104-all.jar",
-          "version": "E3cvbFES"
-        },
-        {
-          "minecraft_versions": "1.18.1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.5.103%201.18.1/c2me-fabric-mc1.18.1-0.2.0%2Balpha.5.103-all.jar",
-          "version": "L4GQmy36"
-        },
-        {
-          "minecraft_versions": "1.18.1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.5.99%201.18.1/c2me-fabric-mc1.18.1-0.2.0%2Balpha.5.99-all.jar",
-          "version": "G1RN9hkt"
-        },
-        {
-          "minecraft_versions": [
-            "1.18",
-            "1.18.1-pre1"
-          ],
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.5.96%201.18.1-pre1/c2me-fabric-mc1.18.1-pre1-0.2.0%2Balpha.5.96-all.jar",
-          "version": "yjCsfBzI"
-        },
-        {
-          "minecraft_versions": [
-            "1.18",
-            "1.18.1-pre1"
-          ],
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.5.94%201.18.1-pre1/c2me-fabric-mc1.18.1-pre1-0.2.0%2Balpha.5.94-all.jar",
-          "version": "u2JlHGcG"
-        },
-        {
-          "minecraft_versions": "1.18-rc3",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.5.87%201.18-rc3/c2me-fabric-mc1.18-rc3-0.2.0%2Balpha.5.87-all.jar",
-          "version": "B6ee0W8y"
-        },
-        {
-          "minecraft_versions": "1.18-rc3",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.5.85%201.18-rc3/c2me-fabric-mc1.18-rc3-0.2.0%2Balpha.5.85-all.jar",
-          "version": "SpaBqzHT"
-        },
-        {
-          "minecraft_versions": "1.18-pre5",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.5.77%201.18-pre5/c2me-fabric-mc1.18-pre5-0.2.0%2Balpha.5.77-all.jar",
-          "version": "pSxkh6Qu"
-        },
-        {
-          "minecraft_versions": "1.18-pre5",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.5.70%201.18-pre5/c2me-fabric-mc1.18-pre5-0.2.0%2Balpha.5.70-all.jar",
-          "version": "LFqvAnbE"
-        },
-        {
-          "minecraft_versions": "1.18-pre1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.5.63%201.18-pre1/c2me-fabric-mc1.18-pre1-0.2.0%2Balpha.5.63-all.jar",
-          "version": "xP8CXN3T"
-        },
-        {
-          "minecraft_versions": "21w44a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.5.54%2021w44a/c2me-fabric-mc21w44a-0.2.0%2Balpha.5.54-all.jar",
-          "version": "ojV9FS0t"
-        },
-        {
-          "minecraft_versions": "21w43a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.5.48%2021w43a/c2me-fabric-mc21w43a-0.2.0%2Balpha.5.48-all.jar",
-          "version": "pmOkpHL2"
-        },
-        {
-          "minecraft_versions": "21w42a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.5.43%2021w42a/c2me-fabric-mc21w42a-0.2.0%2Balpha.5.43-all.jar",
-          "version": "NSobPr3s"
-        },
-        {
-          "minecraft_versions": "21w41a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.5.40%2021w41a/c2me-fabric-mc21w41a-0.2.0%2Balpha.5.40-all.jar",
-          "version": "dKKE3zhp"
-        },
-        {
-          "minecraft_versions": "21w40a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.5.35%2021w40a/c2me-fabric-mc21w40a-0.2.0%2Balpha.5.35-all.jar",
-          "version": "1SfzeCfa"
-        },
-        {
-          "minecraft_versions": "21w39a",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/1/c2me-fabric-mc21w39a-0.2.0%2Balpha.5.31-all.jar",
-          "version": "2IaFivhp"
-        },
-        {
-          "minecraft_versions": "1.17.1",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0/c2me-fabric-mc1.17.1-0.2.0%2Balpha.5.0-all.jar",
-          "version": "4FLwGDDE"
-        }
-      ]
-    }
-  },
-  "meta": {
-    "authors": [
-      "duplexsystem",
-      "ishland"
-    ],
-    "categories": [
-      "optimization",
-      "technical"
-    ],
-    "community": "https://discord.gg/Kdy8NM5HW4",
-    "description": "A Fabric mod designed to improve the chunk performance of Minecraft.",
-    "gallery": [],
-    "icon": "https://cdn.modrinth.com/data/VSNURh3q/icon.png",
-    "issues": "https://github.com/RelativityMC/C2ME-fabric/issues",
-    "keywords": [
-      "chunks"
-    ],
-    "license": "MIT",
-    "name": "Concurrent Chunk Management Engine (Fabric)",
-    "package_maintainers": [
-      "mcvm"
-    ],
-    "source": "https://github.com/RelativityMC/C2ME-fabric"
-  },
-  "properties": {
-    "modrinth_id": "VSNURh3q",
-    "supported_modloaders": [
-      "fabriclike"
-    ],
-    "supported_sides": [
-      "client",
-      "server"
-    ],
-    "supported_versions": [
-      "1.17.1",
-      "21w39a",
-      "21w40a",
-      "21w41a",
-      "21w42a",
-      "21w43a",
-      "21w44a",
-      "1.18-pre1",
-      "1.18-pre5",
-      "1.18-rc3",
-      "1.18",
-      "1.18.1-pre1",
-      "1.18.1",
-      "22w05a",
-      "22w06a",
-      "1.18.2-pre1",
-      "1.18.2-rc1",
-      "1.18.2",
-      "22w11a",
-      "22w12a",
-      "22w13a",
-      "22w14a",
-      "22w16b",
-      "22w17a",
-      "22w18a",
-      "22w19a",
-      "1.19-pre1",
-      "1.19-pre2",
-      "1.19-pre3",
-      "1.19-rc1",
-      "1.19-rc2",
-      "1.19",
-      "22w24a",
-      "1.19.1-rc1",
-      "1.19.1-pre4",
-      "1.19.1-pre6",
-      "1.19.1-rc3",
-      "1.19.1",
-      "1.19.2",
-      "22w42a",
-      "22w43a",
-      "22w44a",
-      "22w45a",
-      "22w46a",
-      "1.19.3-pre2",
-      "1.19.3-rc1",
-      "1.19.3",
-      "23w03a",
-      "23w04a",
-      "23w05a",
-      "23w06a",
-      "23w07a",
-      "1.19.4-pre1",
-      "1.19.4-pre2",
-      "1.19.4-pre3",
-      "1.19.4-pre4",
-      "1.19.4-rc2",
-      "1.19.4",
-      "23w12a",
-      "23w13a",
-      "23w13a_or_b",
-      "23w14a",
-      "23w16a",
-      "23w17a",
-      "23w18a",
-      "1.20-pre1",
-      "1.20-pre2",
-      "1.20-pre4",
-      "1.20-pre5",
-      "1.20-pre6",
-      "1.20-pre7",
-      "1.20-rc1",
-      "1.20",
-      "1.20.1-rc1",
-      "1.20.1",
-      "23w31a",
-      "23w32a",
-      "23w33a",
-      "23w35a",
-      "1.20.2-pre1",
-      "1.20.2-pre2",
-      "1.20.2-pre3",
-      "1.20.2-pre4",
-      "1.20.2-rc1",
-      "1.20.2-rc2",
-      "1.20.2",
-      "23w40a",
-      "23w41a",
-      "23w42a",
-      "23w43a",
-      "23w45a",
-      "1.20.3-pre1",
-      "1.20.3-pre2",
-      "1.20.3-pre4",
-      "1.20.3-rc1",
-      "1.20.3",
-      "1.20.4",
-      "23w51b",
-      "24w03b",
-      "24w05b",
-      "24w06a",
-      "24w09a",
-      "24w10a",
-      "24w11a",
-      "24w12a"
-    ]
-  }
+	"addons": {
+		"addon": {
+			"kind": "mod",
+			"versions": [
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/2wBbjBss/c2me-fabric-mc1.20.4-0.2.0%2Balpha.11.61.jar",
+					"version": "2wBbjBss"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/1mrrqqh8/c2me-fabric-mc1.20.4-0.2.0%2Balpha.11.60.jar",
+					"version": "1mrrqqh8"
+				},
+				{
+					"minecraft_versions": "24w12a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/7QHLk52H/c2me-fabric-mc24w12a-0.2.0%2Balpha.11.71.jar",
+					"version": "7QHLk52H"
+				},
+				{
+					"minecraft_versions": "24w11a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/pEdCxWfU/c2me-fabric-mc24w11a-0.2.0%2Balpha.11.70.jar",
+					"version": "pEdCxWfU"
+				},
+				{
+					"minecraft_versions": "24w10a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/K77J7VgJ/c2me-fabric-mc24w10a-0.2.0%2Balpha.11.69.jar",
+					"version": "K77J7VgJ"
+				},
+				{
+					"minecraft_versions": "24w09a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/EnNkM6hM/c2me-fabric-mc24w09a-0.2.0%2Balpha.11.68.jar",
+					"version": "EnNkM6hM"
+				},
+				{
+					"minecraft_versions": "24w09a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/ZwukJJVG/c2me-fabric-mc24w09a-0.2.0%2Balpha.11.67.jar",
+					"version": "ZwukJJVG"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/Zarj7hYR/c2me-fabric-mc1.20.4-0.2.0%2Balpha.11.58.jar",
+					"version": "Zarj7hYR"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/QZ5cUNXs/c2me-fabric-mc1.20.1-0.2.0%2Balpha.11.5.jar",
+					"version": "QZ5cUNXs"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/vADXBkQ9/c2me-fabric-mc1.20.2-0.2.0%2Balpha.11.24.jar",
+					"version": "vADXBkQ9"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/k0mGurbc/c2me-fabric-mc1.20.4-0.2.0%2Balpha.11.57.jar",
+					"version": "k0mGurbc"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/YcNBclPA/c2me-fabric-mc1.20.4-0.2.0%2Balpha.11.56.jar",
+					"version": "YcNBclPA"
+				},
+				{
+					"minecraft_versions": "24w06a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/83cMDwyA/c2me-fabric-mc24w06a-0.2.0%2Balpha.11.57.jar",
+					"version": "83cMDwyA"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/OIsJWyHK/c2me-fabric-mc1.20.1-0.2.0%2Balpha.11.4.jar",
+					"version": "OIsJWyHK"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/Iigf1ayl/c2me-fabric-mc1.20.2-0.2.0%2Balpha.11.23.jar",
+					"version": "Iigf1ayl"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/FegpExsA/c2me-fabric-mc1.20.4-0.2.0%2Balpha.11.52.jar",
+					"version": "FegpExsA"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/IOsj4oCn/c2me-fabric-mc1.20.1-0.2.0%2Balpha.11.3.jar",
+					"version": "IOsj4oCn"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/mdwisQbj/c2me-fabric-mc1.20.2-0.2.0%2Balpha.11.22.jar",
+					"version": "mdwisQbj"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/7dTaskZd/c2me-fabric-mc1.20.4-0.2.0%2Balpha.11.50.jar",
+					"version": "7dTaskZd"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/sXSliIXJ/c2me-fabric-mc1.20.4-0.2.0%2Balpha.11.46.jar",
+					"version": "sXSliIXJ"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/mXxEG1Cc/c2me-fabric-mc1.20.4-0.2.0%2Balpha.11.42.jar",
+					"version": "mXxEG1Cc"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/VMkY1xQJ/c2me-fabric-mc1.20.4-0.2.0%2Balpha.11.41.jar",
+					"version": "VMkY1xQJ"
+				},
+				{
+					"minecraft_versions": "24w05b",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/aCHiq3JR/c2me-fabric-mc24w05b-0.2.0%2Balpha.11.41.jar",
+					"version": "aCHiq3JR"
+				},
+				{
+					"minecraft_versions": "24w03b",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/mwWVX1eI/c2me-fabric-mc24w03b-0.2.0%2Balpha.11.40.jar",
+					"version": "mwWVX1eI"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/OSw3GbgT/c2me-fabric-mc1.20.4-0.2.0%2Balpha.11.40.jar",
+					"version": "OSw3GbgT"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/Nbvy7lxh/c2me-fabric-mc1.20.4-0.2.0%2Balpha.11.39.jar",
+					"version": "Nbvy7lxh"
+				},
+				{
+					"minecraft_versions": "23w51b",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/gl3Ol9Rf/c2me-fabric-mc23w51b-0.2.0%2Balpha.11.39.jar",
+					"version": "gl3Ol9Rf"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/o0DcaA0L/c2me-fabric-mc1.20.4-0.2.0%2Balpha.11.38.jar",
+					"version": "o0DcaA0L"
+				},
+				{
+					"minecraft_versions": "1.20.3",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/OcowQN8k/c2me-fabric-mc1.20.3-0.2.0%2Balpha.11.36.jar",
+					"version": "OcowQN8k"
+				},
+				{
+					"minecraft_versions": "1.20.3",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/i8CQwoWH/c2me-fabric-mc1.20.3-0.2.0%2Balpha.11.35.jar",
+					"version": "i8CQwoWH"
+				},
+				{
+					"minecraft_versions": "1.20.3-rc1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/mUc2slbG/c2me-fabric-mc1.20.3-rc1-0.2.0%2Balpha.11.32.jar",
+					"version": "mUc2slbG"
+				},
+				{
+					"minecraft_versions": "1.20.3-pre4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/BeDVaRrl/c2me-fabric-mc1.20.3-pre4-0.2.0%2Balpha.11.31.jar",
+					"version": "BeDVaRrl"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.3-pre1",
+						"1.20.3-pre2"
+					],
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/6bOtNtMk/c2me-fabric-mc1.20.3-pre1-0.2.0%2Balpha.11.29.jar",
+					"version": "6bOtNtMk"
+				},
+				{
+					"minecraft_versions": "23w45a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/i8QegMT0/c2me-fabric-mc23w45a-0.2.0%2Balpha.11.28.jar",
+					"version": "i8QegMT0"
+				},
+				{
+					"minecraft_versions": "23w43a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/ylU9Dbog/c2me-fabric-mc23w43a-0.2.0%2Balpha.11.27.jar",
+					"version": "ylU9Dbog"
+				},
+				{
+					"minecraft_versions": "23w42a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/eLutcGdb/c2me-fabric-mc23w42a-0.2.0%2Balpha.11.25.jar",
+					"version": "eLutcGdb"
+				},
+				{
+					"minecraft_versions": "23w41a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/FrNL4T4x/c2me-fabric-mc23w41a-0.2.0%2Balpha.11.23.jar",
+					"version": "FrNL4T4x"
+				},
+				{
+					"minecraft_versions": "23w40a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/Jqx0agDs/c2me-fabric-mc23w40a-0.2.0%2Balpha.11.21.jar",
+					"version": "Jqx0agDs"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/T5Pkyhit/c2me-fabric-mc1.20.1-0.2.0%2Balpha.11.0.jar",
+					"version": "T5Pkyhit"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/ilKwGRiJ/c2me-fabric-mc1.20.2-0.2.0%2Balpha.10.126.jar",
+					"version": "ilKwGRiJ"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/NKLLto7o/c2me-fabric-mc1.20.2-0.2.0%2Balpha.10.123.jar",
+					"version": "NKLLto7o"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/1xGxW45v/c2me-fabric-mc1.20.1-0.2.0%2Balpha.10.108.jar",
+					"version": "1xGxW45v"
+				},
+				{
+					"minecraft_versions": "1.20.2-rc2",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/4JSkFTyf/c2me-fabric-mc1.20.2-rc2-0.2.0%2Balpha.10.122.jar",
+					"version": "4JSkFTyf"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/7y1gLd3J/c2me-fabric-mc1.20.1-0.2.0%2Balpha.10.107.jar",
+					"version": "7y1gLd3J"
+				},
+				{
+					"minecraft_versions": "1.20.2-rc1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/YtlVr5cf/c2me-fabric-mc1.20.2-rc1-0.2.0%2Balpha.10.120.jar",
+					"version": "YtlVr5cf"
+				},
+				{
+					"minecraft_versions": "1.20.2-pre4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/QfwKEzZ4/c2me-fabric-mc1.20.2-pre4-0.2.0%2Balpha.10.119.jar",
+					"version": "QfwKEzZ4"
+				},
+				{
+					"minecraft_versions": "1.20.2-pre4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/KptlCSFN/c2me-fabric-mc1.20.2-pre4-0.2.0%2Balpha.10.112.jar",
+					"version": "KptlCSFN"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/rIG01joD/c2me-fabric-mc1.20.1-0.2.0%2Balpha.10.106.jar",
+					"version": "rIG01joD"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/Bz7RVshA/c2me-fabric-mc1.20.1-0.2.0%2Balpha.10.105.jar",
+					"version": "Bz7RVshA"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/9fFeZTDg/c2me-fabric-mc1.20.1-0.2.0%2Balpha.10.102.jar",
+					"version": "9fFeZTDg"
+				},
+				{
+					"minecraft_versions": "1.20.2-pre3",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/D2jFsTZq/c2me-fabric-mc1.20.2-pre3-0.2.0%2Balpha.10.111.jar",
+					"version": "D2jFsTZq"
+				},
+				{
+					"minecraft_versions": "1.20.2-pre2",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/4HeZGnXw/c2me-fabric-mc1.20.2-pre2-0.2.0%2Balpha.10.110.jar",
+					"version": "4HeZGnXw"
+				},
+				{
+					"minecraft_versions": "1.20.2-pre1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/4zE58u8n/c2me-fabric-mc1.20.2-pre1-0.2.0%2Balpha.10.109.jar",
+					"version": "4zE58u8n"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/uFhRzRj9/c2me-fabric-mc1.18.2-0.2.0%2Balpha.7.40.jar",
+					"version": "uFhRzRj9"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/TL8Qsm5r/c2me-fabric-mc1.19.2-0.2.0%2Balpha.9.11.jar",
+					"version": "TL8Qsm5r"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/uZ1nQtIu/c2me-fabric-mc1.19.4-0.2.0%2Balpha.10.66.jar",
+					"version": "uZ1nQtIu"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/L5rSwveR/c2me-fabric-mc1.20-0.2.0%2Balpha.10.89.jar",
+					"version": "L5rSwveR"
+				},
+				{
+					"minecraft_versions": "23w35a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/VuQBVQFt/c2me-fabric-mc23w35a-0.2.0%2Balpha.10.108.jar",
+					"version": "VuQBVQFt"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/oXqihlMj/c2me-fabric-mc1.20.1-0.2.0%2Balpha.10.100.jar",
+					"version": "oXqihlMj"
+				},
+				{
+					"minecraft_versions": "23w35a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/FRk7daOn/c2me-fabric-mc23w35a-0.2.0%2Balpha.10.103.jar",
+					"version": "FRk7daOn"
+				},
+				{
+					"minecraft_versions": "23w33a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/YihNBs47/c2me-fabric-mc23w33a-0.2.0%2Balpha.10.102.jar",
+					"version": "YihNBs47"
+				},
+				{
+					"minecraft_versions": "23w32a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/tRPtBOiR/c2me-fabric-mc23w32a-0.2.0%2Balpha.10.101.jar",
+					"version": "tRPtBOiR"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/zLF8pgaa/c2me-fabric-mc1.20.1-0.2.0%2Balpha.10.98.jar",
+					"version": "zLF8pgaa"
+				},
+				{
+					"minecraft_versions": "23w32a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/YMkkzFrW/c2me-fabric-mc23w32a-0.2.0%2Balpha.10.99.jar",
+					"version": "YMkkzFrW"
+				},
+				{
+					"minecraft_versions": "23w31a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/H7mRFiai/c2me-fabric-mc23w31a-0.2.0%2Balpha.10.98.jar",
+					"version": "H7mRFiai"
+				},
+				{
+					"minecraft_versions": "23w31a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/RKHT15hh/c2me-fabric-mc23w31a-0.2.0%2Balpha.10.97.jar",
+					"version": "RKHT15hh"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/HnJvyOtR/c2me-fabric-mc1.19.4-0.2.0%2Balpha.10.65.jar",
+					"version": "HnJvyOtR"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/iaC5daGO/c2me-fabric-mc1.20.1-0.2.0%2Balpha.10.96.jar",
+					"version": "iaC5daGO"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/fIRoJeNG/c2me-fabric-mc1.20.1-0.2.0%2Balpha.10.94.jar",
+					"version": "fIRoJeNG"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/2MsVranr/c2me-fabric-mc1.20.1-0.2.0%2Balpha.10.93.jar",
+					"version": "2MsVranr"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/5WCjzxLt/c2me-fabric-mc1.19.2-0.2.0%2Balpha.9.10.jar",
+					"version": "5WCjzxLt"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/N7ZGQT2F/c2me-fabric-mc1.19.4-0.2.0%2Balpha.10.61.jar",
+					"version": "N7ZGQT2F"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/qCeR9Rtv/c2me-fabric-mc1.20-0.2.0%2Balpha.10.88.jar",
+					"version": "qCeR9Rtv"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/t4juSkze/c2me-fabric-mc1.20.1-0.2.0%2Balpha.10.91.jar",
+					"version": "t4juSkze"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/5UifZ0Q3/c2me-fabric-mc1.20.1-0.2.0%2Balpha.10.90.jar",
+					"version": "5UifZ0Q3"
+				},
+				{
+					"minecraft_versions": "1.20.1-rc1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/djsukR7B/c2me-fabric-mc1.20.1-rc1-0.2.0%2Balpha.10.89.jar",
+					"version": "djsukR7B"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/upCWtixz/c2me-fabric-mc1.20-0.2.0%2Balpha.10.87.jar",
+					"version": "upCWtixz"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/jjrmElas/c2me-fabric-mc1.20-0.2.0%2Balpha.10.85.jar",
+					"version": "jjrmElas"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/J6kO4r4K/c2me-fabric-mc1.19.4-0.2.0%2Balpha.10.60.jar",
+					"version": "J6kO4r4K"
+				},
+				{
+					"minecraft_versions": "1.20-rc1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/kGUYgrb2/c2me-fabric-mc1.20-rc1-0.2.0%2Balpha.10.84.jar",
+					"version": "kGUYgrb2"
+				},
+				{
+					"minecraft_versions": "1.20-rc1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/Wu5yZcaS/c2me-fabric-mc1.20-rc1-0.2.0%2Balpha.10.83.jar",
+					"version": "Wu5yZcaS"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/Pxfe5aWT/c2me-fabric-mc1.19.4-0.2.0%2Balpha.10.58.jar",
+					"version": "Pxfe5aWT"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/wNH05ZHf/c2me-fabric-mc1.19.4-0.2.0%2Balpha.10.56.jar",
+					"version": "wNH05ZHf"
+				},
+				{
+					"minecraft_versions": "1.20-pre7",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/43ydird3/c2me-fabric-mc1.20-pre7-0.2.0%2Balpha.10.77.jar",
+					"version": "43ydird3"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/aGexInhW/c2me-fabric-mc1.19.4-0.2.0%2Balpha.10.55.jar",
+					"version": "aGexInhW"
+				},
+				{
+					"minecraft_versions": "1.20-pre6",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/jb1CmeTY/c2me-fabric-mc1.20-pre6-0.2.0%2Balpha.10.76.jar",
+					"version": "jb1CmeTY"
+				},
+				{
+					"minecraft_versions": "1.20-pre6",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/vOwiIckX/c2me-fabric-mc1.20-pre6-0.2.0%2Balpha.10.74.jar",
+					"version": "vOwiIckX"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/Rp75Zg3V/c2me-fabric-mc1.19.4-0.2.0%2Balpha.10.54.jar",
+					"version": "Rp75Zg3V"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/QM0bHIgS/c2me-fabric-mc1.19.4-0.2.0%2Balpha.10.53.jar",
+					"version": "QM0bHIgS"
+				},
+				{
+					"minecraft_versions": "1.20-pre6",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/TPoREhh8/c2me-fabric-mc1.20-pre6-0.2.0%2Balpha.10.71.jar",
+					"version": "TPoREhh8"
+				},
+				{
+					"minecraft_versions": "1.20-pre5",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/o9JS246e/c2me-fabric-mc1.20-pre5-0.2.0%2Balpha.10.70.jar",
+					"version": "o9JS246e"
+				},
+				{
+					"minecraft_versions": "1.20-pre4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/svIfxF6U/c2me-fabric-mc1.20-pre4-0.2.0%2Balpha.10.68.jar",
+					"version": "svIfxF6U"
+				},
+				{
+					"minecraft_versions": "1.20-pre4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/kE6dSBb9/c2me-fabric-mc1.20-pre4-0.2.0%2Balpha.10.67.jar",
+					"version": "kE6dSBb9"
+				},
+				{
+					"minecraft_versions": "1.20-pre2",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/WNCmPNnH/c2me-fabric-mc1.20-pre2-0.2.0%2Balpha.10.65.jar",
+					"version": "WNCmPNnH"
+				},
+				{
+					"minecraft_versions": "1.20-pre1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/GcCkPPqP/c2me-fabric-mc1.20-pre1-0.2.0%2Balpha.10.64.jar",
+					"version": "GcCkPPqP"
+				},
+				{
+					"minecraft_versions": "23w18a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/x7MYMy4y/c2me-fabric-mc23w18a-0.2.0%2Balpha.10.63.jar",
+					"version": "x7MYMy4y"
+				},
+				{
+					"minecraft_versions": "23w17a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/CRKhNYeR/c2me-fabric-mc23w17a-0.2.0%2Balpha.10.62.jar",
+					"version": "CRKhNYeR"
+				},
+				{
+					"minecraft_versions": "23w16a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/H4cMvxMp/c2me-fabric-mc23w16a-0.2.0%2Balpha.10.61.jar",
+					"version": "H4cMvxMp"
+				},
+				{
+					"minecraft_versions": "23w16a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/wsPHNk8u/c2me-fabric-mc23w16a-0.2.0%2Balpha.10.60.jar",
+					"version": "wsPHNk8u"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/2LxKBERD/c2me-fabric-mc1.19.4-0.2.0%2Balpha.10.51.jar",
+					"version": "2LxKBERD"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/BPP2C04n/c2me-fabric-mc1.19.4-0.2.0%2Balpha.10.50.jar",
+					"version": "BPP2C04n"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/b3vDiaQb/c2me-fabric-mc1.19.4-0.2.0%2Balpha.10.49.jar",
+					"version": "b3vDiaQb"
+				},
+				{
+					"minecraft_versions": "23w14a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/gLH9G316/c2me-fabric-mc23w14a-0.2.0%2Balpha.10.46.jar",
+					"version": "gLH9G316"
+				},
+				{
+					"minecraft_versions": "23w13a_or_b",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/teZiZ7J8/c2me-fabric-mc23w13a_or_b-0.2.0%2Balpha.10.51.jar",
+					"version": "teZiZ7J8"
+				},
+				{
+					"minecraft_versions": "23w13a_or_b",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/FsgfLLf2/c2me-fabric-mc23w13a_or_b-0.2.0%2Balpha.10.49.jar",
+					"version": "FsgfLLf2"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/43Pjw5Zm/c2me-fabric-mc1.19.4-0.2.0%2Balpha.10.42.jar",
+					"version": "43Pjw5Zm"
+				},
+				{
+					"minecraft_versions": "23w13a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/E5ZHi8t8/c2me-fabric-mc23w13a-0.2.0%2Balpha.10.45.jar",
+					"version": "E5ZHi8t8"
+				},
+				{
+					"minecraft_versions": "23w13a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/Tfsv99Ne/c2me-fabric-mc23w13a-0.2.0%2Balpha.10.44.jar",
+					"version": "Tfsv99Ne"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/mbcVXjye/c2me-fabric-mc1.19.4-0.2.0%2Balpha.10.41.jar",
+					"version": "mbcVXjye"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/8rUarScX/c2me-fabric-mc1.19.2-0.2.0%2Balpha.9.9.jar",
+					"version": "8rUarScX"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/pH7xYFcg/c2me-fabric-mc1.19.4-0.2.0%2Balpha.10.31.jar",
+					"version": "pH7xYFcg"
+				},
+				{
+					"minecraft_versions": "23w12a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/6xnt6Mf7/c2me-fabric-mc23w12a-0.2.0%2Balpha.10.31.jar",
+					"version": "6xnt6Mf7"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/GtUrsjth/c2me-fabric-mc1.19.4-0.2.0%2Balpha.10.30.jar",
+					"version": "GtUrsjth"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/F59yqPKB/c2me-fabric-mc1.19.4-0.2.0%2Balpha.10.29.jar",
+					"version": "F59yqPKB"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/kHF4y8Qv/c2me-fabric-mc1.19.4-0.2.0%2Balpha.10.28.jar",
+					"version": "kHF4y8Qv"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/OnUjD19i/c2me-fabric-mc1.19.4-0.2.0%2Balpha.10.27.jar",
+					"version": "OnUjD19i"
+				},
+				{
+					"minecraft_versions": "1.19.4-rc2",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/I1yqocSA/c2me-fabric-mc1.19.4-rc2-0.2.0%2Balpha.10.26.jar",
+					"version": "I1yqocSA"
+				},
+				{
+					"minecraft_versions": "1.19.4-pre4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/SJWk0Y6f/c2me-fabric-mc1.19.4-pre4-0.2.0%2Balpha.10.24.jar",
+					"version": "SJWk0Y6f"
+				},
+				{
+					"minecraft_versions": "1.19.4-pre4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/lbYxbodc/c2me-fabric-mc1.19.4-pre4-0.2.0%2Balpha.10.18.jar",
+					"version": "lbYxbodc"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/WHwuwy0n/c2me-fabric-mc1.19.2-0.2.0%2Balpha.9.8.jar",
+					"version": "WHwuwy0n"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/tJR5QSfM/c2me-fabric-mc1.19.2-0.2.0%2Balpha.9.7.jar",
+					"version": "tJR5QSfM"
+				},
+				{
+					"minecraft_versions": "1.19.4-pre3",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/yjG2UYON/c2me-fabric-mc1.19.4-pre3-0.2.0%2Balpha.10.17.jar",
+					"version": "yjG2UYON"
+				},
+				{
+					"minecraft_versions": "1.19.4-pre2",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/am5H0QKm/c2me-fabric-mc1.19.4-pre2-0.2.0%2Balpha.10.16.jar",
+					"version": "am5H0QKm"
+				},
+				{
+					"minecraft_versions": "1.19.4-pre1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/mL9RAOql/c2me-fabric-mc1.19.4-pre1-0.2.0%2Balpha.10.15.jar",
+					"version": "mL9RAOql"
+				},
+				{
+					"minecraft_versions": "23w07a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/LcwiuiIT/c2me-fabric-mc23w07a-0.2.0%2Balpha.10.6.jar",
+					"version": "LcwiuiIT"
+				},
+				{
+					"minecraft_versions": "23w06a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/ofhUwNKT/c2me-fabric-mc23w06a-0.2.0%2Balpha.10.5.jar",
+					"version": "ofhUwNKT"
+				},
+				{
+					"minecraft_versions": "23w05a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/jg6Fxh7l/c2me-fabric-mc23w05a-0.2.0%2Balpha.10.4.jar",
+					"version": "jg6Fxh7l"
+				},
+				{
+					"minecraft_versions": "23w04a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/8R7qsoAz/c2me-fabric-mc23w04a-0.2.0%2Balpha.10.3.jar",
+					"version": "8R7qsoAz"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/MIL1AwdW/c2me-fabric-mc1.19.2-0.2.0%2Balpha.9.5.jar",
+					"version": "MIL1AwdW"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/b4OLEnN5/c2me-fabric-mc1.18.2-0.2.0%2Balpha.7.38.jar",
+					"version": "b4OLEnN5"
+				},
+				{
+					"minecraft_versions": "23w03a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/K4IJdtZz/c2me-fabric-mc23w03a-0.2.0%2Balpha.10.2.jar",
+					"version": "K4IJdtZz"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/FpgVeSQK/c2me-fabric-mc1.19.3-0.2.0%2Balpha.10.0.jar",
+					"version": "FpgVeSQK"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/kakddk9k/c2me-fabric-mc1.19.3-0.2.0%2Balpha.9.12.jar",
+					"version": "kakddk9k"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/ofTiB5aa/c2me-fabric-mc1.19.3-0.2.0%2Balpha.9.11.jar",
+					"version": "ofTiB5aa"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/U5BK0DTf/c2me-fabric-mc1.18.2-0.2.0%2Balpha.7.35.jar",
+					"version": "U5BK0DTf"
+				},
+				{
+					"minecraft_versions": "1.19.3-rc1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/h7FDMJhe/c2me-fabric-mc1.19.3-rc1-0.2.0%2Balpha.9.8.jar",
+					"version": "h7FDMJhe"
+				},
+				{
+					"minecraft_versions": "1.19.3-pre2",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/iEoaL6W4/c2me-fabric-mc1.19.3-pre2-0.2.0%2Balpha.9.7.jar",
+					"version": "iEoaL6W4"
+				},
+				{
+					"minecraft_versions": "22w46a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/hTvKpOrJ/c2me-fabric-mc22w46a-0.2.0%2Balpha.9.5.jar",
+					"version": "hTvKpOrJ"
+				},
+				{
+					"minecraft_versions": "22w45a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/KWFbqqg0/c2me-fabric-mc22w45a-0.2.0%2Balpha.9.4.jar",
+					"version": "KWFbqqg0"
+				},
+				{
+					"minecraft_versions": "22w44a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/AwoxTDW7/c2me-fabric-mc22w44a-0.2.0%2Balpha.9.3.jar",
+					"version": "AwoxTDW7"
+				},
+				{
+					"minecraft_versions": "22w43a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/RhyXTcEQ/c2me-fabric-mc22w43a-0.2.0%2Balpha.9.2.jar",
+					"version": "RhyXTcEQ"
+				},
+				{
+					"minecraft_versions": "22w42a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/JCraKtdM/c2me-fabric-mc22w42a-0.2.0%2Balpha.9.1.jar",
+					"version": "JCraKtdM"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/YaQCrYHB/c2me-fabric-mc1.19.2-0.2.0%2Balpha.9.0.jar",
+					"version": "YaQCrYHB"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.7.34%2B1.18.2/c2me-fabric-mc1.18.2-0.2.0%2Balpha.7.34.jar",
+					"version": "1uj78Fog"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.7.33%2B1.18.2/c2me-fabric-mc1.18.2-0.2.0%2Balpha.7.33.jar",
+					"version": "m1WNVlLC"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.8.37%2B1.19.2/c2me-fabric-mc1.19.2-0.2.0%2Balpha.8.37.jar",
+					"version": "4JyDag4R"
+				},
+				{
+					"minecraft_versions": "1.19.1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.8.33%2B1.19.1/c2me-fabric-mc1.19.1-0.2.0%2Balpha.8.33.jar",
+					"version": "joS4yKA6"
+				},
+				{
+					"minecraft_versions": [
+						"1.19.1-rc3",
+						"1.19.1"
+					],
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.8.32%2B1.19.1-rc3/c2me-fabric-mc1.19.1-rc3-0.2.0%2Balpha.8.32.jar",
+					"version": "B0EsXokA"
+				},
+				{
+					"minecraft_versions": "1.19.1-pre6",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.8.29%2B1.19.1-pre6/c2me-fabric-mc1.19.1-pre6-0.2.0%2Balpha.8.29.jar",
+					"version": "5ckrYyQe"
+				},
+				{
+					"minecraft_versions": "1.19.1-pre4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.8.10%2B1.19.1-pre4/c2me-fabric-mc1.19.1-pre4-0.2.0%2Balpha.8.10.jar",
+					"version": "UdhobdzY"
+				},
+				{
+					"minecraft_versions": "1.19.1-rc1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.8.6%2B1.19-rc1/c2me-fabric-mc1.19.1-rc1-0.2.0%2Balpha.8.6.jar",
+					"version": "ANzj8akD"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.8.2%2B1.19/c2me-fabric-mc1.19-0.2.0%2Balpha.8.2.jar",
+					"version": "yU5A8Qx5"
+				},
+				{
+					"minecraft_versions": "22w24a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.8.5%2B22w24a/c2me-fabric-mc22w24a-0.2.0%2Balpha.8.5.jar",
+					"version": "36ArTfEB"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.8.0%2B1.19/c2me-fabric-mc1.19-0.2.0%2Balpha.8.0.jar",
+					"version": "50qeuOZd"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.7.56%2B1.19/c2me-fabric-mc1.19-0.2.0%2Balpha.7.56.jar",
+					"version": "KFecXkCR"
+				},
+				{
+					"minecraft_versions": "1.19-rc2",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.7.54%2B1.19-rc2/c2me-fabric-mc1.19-rc2-0.2.0%2Balpha.7.54.jar",
+					"version": "RaaE0QZS"
+				},
+				{
+					"minecraft_versions": "1.19-rc1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.7.53%2B1.19-rc1/c2me-fabric-mc1.19-rc1-0.2.0%2Balpha.7.53.jar",
+					"version": "9Bxa2twj"
+				},
+				{
+					"minecraft_versions": "1.19-pre3",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.7.50%2B1.19-pre3/c2me-fabric-mc1.19-pre3-0.2.0%2Balpha.7.50.jar",
+					"version": "WvJYXJ5r"
+				},
+				{
+					"minecraft_versions": "1.19-pre2",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.7.49%2B1.19-pre2/c2me-fabric-mc1.19-pre2-0.2.0%2Balpha.7.49.jar",
+					"version": "2suDoW3A"
+				},
+				{
+					"minecraft_versions": "1.19-pre1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.7.48%2B1.19-pre1/c2me-fabric-mc1.19-pre1-0.2.0%2Balpha.7.48.jar",
+					"version": "vv64RzIR"
+				},
+				{
+					"minecraft_versions": "22w19a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.7.40%2B22w19a/c2me-fabric-mc22w19a-0.2.0%2Balpha.7.40.jar",
+					"version": "hrDzs4sK"
+				},
+				{
+					"minecraft_versions": "22w19a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.7.38%2B22w19a/c2me-fabric-mc22w19a-0.2.0%2Balpha.7.38.jar",
+					"version": "HSbd0h1G"
+				},
+				{
+					"minecraft_versions": "22w19a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.7.37%2B22w19a/c2me-fabric-mc22w19a-0.2.0%2Balpha.7.37.jar",
+					"version": "4vuaNrle"
+				},
+				{
+					"minecraft_versions": "22w18a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.7.36%2B22w18a/c2me-fabric-mc22w18a-0.2.0%2Balpha.7.36.jar",
+					"version": "biOCYJZd"
+				},
+				{
+					"minecraft_versions": "22w17a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.7.30%2B22w17a/c2me-fabric-mc22w17a-0.2.0%2Balpha.7.30.jar",
+					"version": "ExoP2rex"
+				},
+				{
+					"minecraft_versions": "22w16b",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.7.29%2B22w16b/c2me-fabric-mc22w16b-0.2.0%2Balpha.7.29.jar",
+					"version": "anltmjSp"
+				},
+				{
+					"minecraft_versions": "22w14a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.7.16%2B22w14a/c2me-fabric-mc22w14a-0.2.0%2Balpha.7.16.jar",
+					"version": "7hUUNuox"
+				},
+				{
+					"minecraft_versions": "22w13a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.7.14%2B22w13a/c2me-fabric-mc22w13a-0.2.0%2Balpha.7.14.jar",
+					"version": "todB4Gz5"
+				},
+				{
+					"minecraft_versions": "22w12a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.7.13%2B22w13a/c2me-fabric-mc22w12a-0.2.0%2Balpha.7.13.jar",
+					"version": "rhq6flAe"
+				},
+				{
+					"minecraft_versions": "22w11a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.7.11%2B22w11a/c2me-fabric-mc22w11a-0.2.0%2Balpha.7.11.jar",
+					"version": "MRi5CAUa"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.7.0%2B1.18.2/c2me-fabric-mc1.18.2-0.2.0%2Balpha.7.0-all.jar",
+					"version": "5P5gJ4ws"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.6.62%2B1.18.2/c2me-fabric-mc1.18.2-0.2.0%2Balpha.6.62-all.jar",
+					"version": "U7wzpemA"
+				},
+				{
+					"minecraft_versions": "1.18.2-rc1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.6.58%2B1.18.2-rc1/c2me-fabric-mc1.18.2-rc1-0.2.0%2Balpha.6.58-all.jar",
+					"version": "iCgRTqOy"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.6.55%2B1.18.1/c2me-fabric-mc1.18.1-0.2.0%2Balpha.6.55-all.jar",
+					"version": "VVlAcu8X"
+				},
+				{
+					"minecraft_versions": "1.18.2-pre1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.6.54%2B1.18.2-pre1/c2me-fabric-mc1.18.2-pre1-0.2.0%2Balpha.6.54-all.jar",
+					"version": "LCwohtHy"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.6.54%2B1.18.1/c2me-fabric-mc1.18.1-0.2.0%2Balpha.6.54-all.jar",
+					"version": "5bqFdDSB"
+				},
+				{
+					"minecraft_versions": "22w06a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.6.50%2B22w06a/c2me-fabric-mc22w06a-0.2.0%2Balpha.6.50-all.jar",
+					"version": "8xmNpyLJ"
+				},
+				{
+					"minecraft_versions": "22w05a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.6.48%2B22w05a/c2me-fabric-mc22w05a-0.2.0%2Balpha.6.48-all.jar",
+					"version": "glmbs812"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.6.53/c2me-fabric-mc1.18.1-0.2.0%2Balpha.6.53-all.jar",
+					"version": "Dk2OSyZE"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.6.25%201.18.1/c2me-fabric-mc1.18.1-0.2.0%2Balpha.6.25-all.jar",
+					"version": "9ITewh53"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.6.24%201.18.1/c2me-fabric-mc1.18.1-0.2.0%2Balpha.6.24-all.jar",
+					"version": "c8VQ9yC5"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.6.1%201.18.1/c2me-fabric-mc1.18.1-0.2.0%2Balpha.6.1-all.jar",
+					"version": "UMPBDzKM"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.6.0%201.18.1/c2me-fabric-mc1.18.1-0.2.0%2Balpha.6.0-all.jar",
+					"version": "e7NAaeNt"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.5.110%201.18.1/c2me-fabric-mc1.18.1-0.2.0%2Balpha.5.110-all.jar",
+					"version": "GExDMas5"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.5.106%201.18.1/c2me-fabric-mc1.18.1-0.2.0%2Balpha.5.106-all.jar",
+					"version": "pIDNlM4l"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.5.104%201.18.1/c2me-fabric-mc1.18.1-0.2.0%2Balpha.5.104-all.jar",
+					"version": "E3cvbFES"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.5.103%201.18.1/c2me-fabric-mc1.18.1-0.2.0%2Balpha.5.103-all.jar",
+					"version": "L4GQmy36"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.5.99%201.18.1/c2me-fabric-mc1.18.1-0.2.0%2Balpha.5.99-all.jar",
+					"version": "G1RN9hkt"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1-pre1"
+					],
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.5.96%201.18.1-pre1/c2me-fabric-mc1.18.1-pre1-0.2.0%2Balpha.5.96-all.jar",
+					"version": "yjCsfBzI"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1-pre1"
+					],
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.5.94%201.18.1-pre1/c2me-fabric-mc1.18.1-pre1-0.2.0%2Balpha.5.94-all.jar",
+					"version": "u2JlHGcG"
+				},
+				{
+					"minecraft_versions": "1.18-rc3",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.5.87%201.18-rc3/c2me-fabric-mc1.18-rc3-0.2.0%2Balpha.5.87-all.jar",
+					"version": "B6ee0W8y"
+				},
+				{
+					"minecraft_versions": "1.18-rc3",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.5.85%201.18-rc3/c2me-fabric-mc1.18-rc3-0.2.0%2Balpha.5.85-all.jar",
+					"version": "SpaBqzHT"
+				},
+				{
+					"minecraft_versions": "1.18-pre5",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.5.77%201.18-pre5/c2me-fabric-mc1.18-pre5-0.2.0%2Balpha.5.77-all.jar",
+					"version": "pSxkh6Qu"
+				},
+				{
+					"minecraft_versions": "1.18-pre5",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.5.70%201.18-pre5/c2me-fabric-mc1.18-pre5-0.2.0%2Balpha.5.70-all.jar",
+					"version": "LFqvAnbE"
+				},
+				{
+					"minecraft_versions": "1.18-pre1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.5.63%201.18-pre1/c2me-fabric-mc1.18-pre1-0.2.0%2Balpha.5.63-all.jar",
+					"version": "xP8CXN3T"
+				},
+				{
+					"minecraft_versions": "21w44a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.5.54%2021w44a/c2me-fabric-mc21w44a-0.2.0%2Balpha.5.54-all.jar",
+					"version": "ojV9FS0t"
+				},
+				{
+					"minecraft_versions": "21w43a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.5.48%2021w43a/c2me-fabric-mc21w43a-0.2.0%2Balpha.5.48-all.jar",
+					"version": "pmOkpHL2"
+				},
+				{
+					"minecraft_versions": "21w42a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.5.43%2021w42a/c2me-fabric-mc21w42a-0.2.0%2Balpha.5.43-all.jar",
+					"version": "NSobPr3s"
+				},
+				{
+					"minecraft_versions": "21w41a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.5.40%2021w41a/c2me-fabric-mc21w41a-0.2.0%2Balpha.5.40-all.jar",
+					"version": "dKKE3zhp"
+				},
+				{
+					"minecraft_versions": "21w40a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0.2.0%2Balpha.5.35%2021w40a/c2me-fabric-mc21w40a-0.2.0%2Balpha.5.35-all.jar",
+					"version": "1SfzeCfa"
+				},
+				{
+					"minecraft_versions": "21w39a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/1/c2me-fabric-mc21w39a-0.2.0%2Balpha.5.31-all.jar",
+					"version": "2IaFivhp"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/0/c2me-fabric-mc1.17.1-0.2.0%2Balpha.5.0-all.jar",
+					"version": "4FLwGDDE"
+				}
+			]
+		}
+	},
+	"meta": {
+		"authors": [
+			"duplexsystem",
+			"ishland"
+		],
+		"categories": [
+			"optimization",
+			"technical"
+		],
+		"community": "https://discord.gg/Kdy8NM5HW4",
+		"description": "A Fabric mod designed to improve the chunk performance of Minecraft.",
+		"gallery": [],
+		"icon": "https://cdn.modrinth.com/data/VSNURh3q/icon.png",
+		"issues": "https://github.com/RelativityMC/C2ME-fabric/issues",
+		"keywords": [
+			"chunks"
+		],
+		"license": "MIT",
+		"long_description": "# Concurrent Chunk Management Engine (Fabric)\n\nA Fabric mod designed to improve the chunk performance of Minecraft.\n\n## So what is C2ME?\nC^2M-Engine, or C2ME for short, is a Fabric mod designed to improve the performance of chunk generation, I/O, and loading. This is done by taking advantage of multiple CPU cores in parallel. For the best performance it is recommended to use C2ME with [Lithium](https://modrinth.com/mod/lithium) and [Starlight](https://modrinth.com/mod/starlight).\n\n## What does C2ME stand for?\nConcurrent chunk management engine, it's about making the game better threaded and more scalable in regard to world gen and chunk io performance.\n\n## So what is C2ME not?\n**C2ME is currently in alpha stage and pretty experimental.**  \nAlthough it is usable in most cases and tested during build time, it doesn't mean that it is fully stable for a production server.  \nSo backup your worlds and practice good game modding skills.\n\n## Support\nOur issue tracker: [link](https://github.com/RelativityMC/C2ME-fabric/issues)  \nOur discord server: [link](https://discord.gg/Kdy8NM5HW4)\n\n## Development builds\n**Note: Development builds may modify the config files in a way unreadable by previous versions. You may encounter crashes or config reset when rolling back to previous versions. Please always backup your config.**\n\nYou can find development builds here: https://ci.codemc.io/job/RelativityMC/job/C2ME-fabric  \nNote that these builds may contain more bugfixes and performance improvements but are less tested.  \nIf you have encountered any problems in release builds, give development builds a try before reporting. \n\n## FAQ\n- Q: Does this benefit client as well or only server?  \n  A: https://github.com/RelativityMC/C2ME-fabric/issues/116\n\n\n## More information\nCheck out the README.md here: https://github.com/RelativityMC/C2ME-fabric\n",
+		"name": "Concurrent Chunk Management Engine (Fabric)",
+		"package_maintainers": [
+			"mcvm"
+		],
+		"source": "https://github.com/RelativityMC/C2ME-fabric"
+	},
+	"properties": {
+		"modrinth_id": "VSNURh3q",
+		"supported_modloaders": [
+			"fabriclike"
+		],
+		"supported_sides": [
+			"client",
+			"server"
+		],
+		"supported_versions": [
+			"1.17.1",
+			"21w39a",
+			"21w40a",
+			"21w41a",
+			"21w42a",
+			"21w43a",
+			"21w44a",
+			"1.18-pre1",
+			"1.18-pre5",
+			"1.18-rc3",
+			"1.18",
+			"1.18.1-pre1",
+			"1.18.1",
+			"22w05a",
+			"22w06a",
+			"1.18.2-pre1",
+			"1.18.2-rc1",
+			"1.18.2",
+			"22w11a",
+			"22w12a",
+			"22w13a",
+			"22w14a",
+			"22w16b",
+			"22w17a",
+			"22w18a",
+			"22w19a",
+			"1.19-pre1",
+			"1.19-pre2",
+			"1.19-pre3",
+			"1.19-rc1",
+			"1.19-rc2",
+			"1.19",
+			"22w24a",
+			"1.19.1-rc1",
+			"1.19.1-pre4",
+			"1.19.1-pre6",
+			"1.19.1-rc3",
+			"1.19.1",
+			"1.19.2",
+			"22w42a",
+			"22w43a",
+			"22w44a",
+			"22w45a",
+			"22w46a",
+			"1.19.3-pre2",
+			"1.19.3-rc1",
+			"1.19.3",
+			"23w03a",
+			"23w04a",
+			"23w05a",
+			"23w06a",
+			"23w07a",
+			"1.19.4-pre1",
+			"1.19.4-pre2",
+			"1.19.4-pre3",
+			"1.19.4-pre4",
+			"1.19.4-rc2",
+			"1.19.4",
+			"23w12a",
+			"23w13a",
+			"23w13a_or_b",
+			"23w14a",
+			"23w16a",
+			"23w17a",
+			"23w18a",
+			"1.20-pre1",
+			"1.20-pre2",
+			"1.20-pre4",
+			"1.20-pre5",
+			"1.20-pre6",
+			"1.20-pre7",
+			"1.20-rc1",
+			"1.20",
+			"1.20.1-rc1",
+			"1.20.1",
+			"23w31a",
+			"23w32a",
+			"23w33a",
+			"23w35a",
+			"1.20.2-pre1",
+			"1.20.2-pre2",
+			"1.20.2-pre3",
+			"1.20.2-pre4",
+			"1.20.2-rc1",
+			"1.20.2-rc2",
+			"1.20.2",
+			"23w40a",
+			"23w41a",
+			"23w42a",
+			"23w43a",
+			"23w45a",
+			"1.20.3-pre1",
+			"1.20.3-pre2",
+			"1.20.3-pre4",
+			"1.20.3-rc1",
+			"1.20.3",
+			"1.20.4",
+			"23w51b",
+			"24w03b",
+			"24w05b",
+			"24w06a",
+			"24w09a",
+			"24w10a",
+			"24w11a",
+			"24w12a"
+		]
+	}
 }

@@ -1,387 +1,389 @@
 {
-  "addons": {
-    "addon": {
-      "kind": "mod",
-      "versions": [
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "cloth-config",
-              "fabriclike-api",
-              "yungs-api"
-            ],
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/qJTsmyiE/YungsBetterEndIsland-1.20-Fabric-2.0.6.jar",
-          "version": "qJTsmyiE"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/Izqhg3Va/YungsBetterEndIsland-1.20-Forge-2.0.6.jar",
-          "version": "Izqhg3Va"
-        },
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "cloth-config",
-              "fabriclike-api",
-              "yungs-api"
-            ],
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/sPWRtsih/YungsBetterEndIsland-1.20.4-Fabric-2.4.1.jar",
-          "version": "sPWRtsih"
-        },
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/mjcajOXu/YungsBetterEndIsland-1.20.4-Forge-2.4.1.jar",
-          "version": "mjcajOXu"
-        },
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "fabriclike-api",
-              "yungs-api"
-            ],
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/mRCm0pL5/YungsBetterEndIsland-1.20.4-Fabric-2.4.0.jar",
-          "version": "mRCm0pL5"
-        },
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/x7KJ0qFZ/YungsBetterEndIsland-1.20.4-Forge-2.4.0.jar",
-          "version": "x7KJ0qFZ"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "fabriclike-api",
-              "yungs-api"
-            ],
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/KMWjIKnN/YungsBetterEndIsland-1.20-Fabric-2.0.5.jar",
-          "version": "KMWjIKnN"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/weh531it/YungsBetterEndIsland-1.20-Forge-2.0.5.jar",
-          "version": "weh531it"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "cloth-config",
-              "fabriclike-api",
-              "yungs-api"
-            ],
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/AlE4iEnJ/YungsBetterEndIsland-1.20-Fabric-2.0.4.jar",
-          "version": "AlE4iEnJ"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/J2sdehqA/YungsBetterEndIsland-1.20-Forge-2.0.4.jar",
-          "version": "J2sdehqA"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "cloth-config",
-              "fabriclike-api",
-              "yungs-api"
-            ],
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/7JaIbxzK/YungsBetterEndIsland-1.20-Fabric-2.0.3.jar",
-          "version": "7JaIbxzK"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/25MjVFVn/YungsBetterEndIsland-1.20-Forge-2.0.3.jar",
-          "version": "25MjVFVn"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "cloth-config",
-              "fabriclike-api",
-              "yungs-api"
-            ],
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/3aGqQrO1/YungsBetterEndIsland-1.20-Fabric-2.0.2.jar",
-          "version": "3aGqQrO1"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/5u2gcMh9/YungsBetterEndIsland-1.20-Forge-2.0.2.jar",
-          "version": "5u2gcMh9"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/rykIEAMG/YungsBetterEndIsland-1.18.2-Forge-1.0.jar",
-          "version": "rykIEAMG"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "cloth-config",
-              "fabriclike-api",
-              "yungs-api"
-            ],
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/mId4Tfc1/YungsBetterEndIsland-1.18.2-Fabric-1.0.jar",
-          "version": "mId4Tfc1"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/AX0UDNyo/YungsBetterEndIsland-1.19.2-Forge-1.0.jar",
-          "version": "AX0UDNyo"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/2o3Fyh1D/YungsBetterEndIsland-1.19.4-Forge-1.1.jar",
-          "version": "2o3Fyh1D"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "cloth-config",
-              "fabriclike-api",
-              "yungs-api"
-            ],
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/61MlZk1C/YungsBetterEndIsland-1.19.2-Fabric-1.0.jar",
-          "version": "61MlZk1C"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "cloth-config",
-              "fabriclike-api",
-              "yungs-api"
-            ],
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/GzK0DHXl/YungsBetterEndIsland-1.19.4-Fabric-1.1.jar",
-          "version": "GzK0DHXl"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "cloth-config",
-              "fabriclike-api",
-              "yungs-api"
-            ],
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/TCi4C7SR/YungsBetterEndIsland-1.20-Fabric-2.0.1.jar",
-          "version": "TCi4C7SR"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/oV8ABTgb/YungsBetterEndIsland-1.20-Forge-2.0.1.jar",
-          "version": "oV8ABTgb"
-        }
-      ]
-    }
-  },
-  "meta": {
-    "authors": [
-      "YUNGNICKYOUNG",
-      "Acarii"
-    ],
-    "categories": [
-      "worldgen"
-    ],
-    "community": "https://discord.gg/rns3beq",
-    "description": "An overhaul of the main End Island where the dragon fight takes place!",
-    "gallery": [
-      "https://cdn.modrinth.com/data/2BwBOmBQ/images/540aa82dd7fa9d6490313b21e6261c15427ca1bf.png",
-      "https://cdn.modrinth.com/data/2BwBOmBQ/images/7ea8218329da37c64a35b67166a610209bfdf5fc.png",
-      "https://cdn.modrinth.com/data/2BwBOmBQ/images/bd46f8dbad600a98d88ace6d403e18856871a936.png",
-      "https://cdn.modrinth.com/data/2BwBOmBQ/images/c94d0f0141791cf524d74dfe3cbafc738a5e636a.png"
-    ],
-    "icon": "https://cdn.modrinth.com/data/2BwBOmBQ/e4f0f8d1668eda0f22a87d8771bba8344ebfc4b9.png",
-    "issues": "https://github.com/yungnickyoung/YUNGs-Better-End-Island/issues",
-    "keywords": [
-      "yungs"
-    ],
-    "license": "LGPL-3.0-only",
-    "name": "YUNG's Better End Island",
-    "package_maintainers": [
-      "mcvm"
-    ],
-    "source": "https://github.com/yungnickyoung/YUNGs-Better-End-Island",
-    "support_link": "https://www.patreon.com/yungnickyoung"
-  },
-  "properties": {
-    "modrinth_id": "2BwBOmBQ",
-    "supported_modloaders": [
-      "fabriclike",
-      "forgelike"
-    ],
-    "supported_sides": [
-      "server"
-    ],
-    "supported_versions": [
-      "1.18.2",
-      "1.19.2",
-      "1.19.4",
-      "1.20",
-      "1.20.1",
-      "1.20.4"
-    ]
-  }
+	"addons": {
+		"addon": {
+			"kind": "mod",
+			"versions": [
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/qJTsmyiE/YungsBetterEndIsland-1.20-Fabric-2.0.6.jar",
+					"version": "qJTsmyiE"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/Izqhg3Va/YungsBetterEndIsland-1.20-Forge-2.0.6.jar",
+					"version": "Izqhg3Va"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/sPWRtsih/YungsBetterEndIsland-1.20.4-Fabric-2.4.1.jar",
+					"version": "sPWRtsih"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/mjcajOXu/YungsBetterEndIsland-1.20.4-Forge-2.4.1.jar",
+					"version": "mjcajOXu"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/mRCm0pL5/YungsBetterEndIsland-1.20.4-Fabric-2.4.0.jar",
+					"version": "mRCm0pL5"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/x7KJ0qFZ/YungsBetterEndIsland-1.20.4-Forge-2.4.0.jar",
+					"version": "x7KJ0qFZ"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/KMWjIKnN/YungsBetterEndIsland-1.20-Fabric-2.0.5.jar",
+					"version": "KMWjIKnN"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/weh531it/YungsBetterEndIsland-1.20-Forge-2.0.5.jar",
+					"version": "weh531it"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/AlE4iEnJ/YungsBetterEndIsland-1.20-Fabric-2.0.4.jar",
+					"version": "AlE4iEnJ"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/J2sdehqA/YungsBetterEndIsland-1.20-Forge-2.0.4.jar",
+					"version": "J2sdehqA"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/7JaIbxzK/YungsBetterEndIsland-1.20-Fabric-2.0.3.jar",
+					"version": "7JaIbxzK"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/25MjVFVn/YungsBetterEndIsland-1.20-Forge-2.0.3.jar",
+					"version": "25MjVFVn"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/3aGqQrO1/YungsBetterEndIsland-1.20-Fabric-2.0.2.jar",
+					"version": "3aGqQrO1"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/5u2gcMh9/YungsBetterEndIsland-1.20-Forge-2.0.2.jar",
+					"version": "5u2gcMh9"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/rykIEAMG/YungsBetterEndIsland-1.18.2-Forge-1.0.jar",
+					"version": "rykIEAMG"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/mId4Tfc1/YungsBetterEndIsland-1.18.2-Fabric-1.0.jar",
+					"version": "mId4Tfc1"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/AX0UDNyo/YungsBetterEndIsland-1.19.2-Forge-1.0.jar",
+					"version": "AX0UDNyo"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/2o3Fyh1D/YungsBetterEndIsland-1.19.4-Forge-1.1.jar",
+					"version": "2o3Fyh1D"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/61MlZk1C/YungsBetterEndIsland-1.19.2-Fabric-1.0.jar",
+					"version": "61MlZk1C"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/GzK0DHXl/YungsBetterEndIsland-1.19.4-Fabric-1.1.jar",
+					"version": "GzK0DHXl"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/TCi4C7SR/YungsBetterEndIsland-1.20-Fabric-2.0.1.jar",
+					"version": "TCi4C7SR"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/oV8ABTgb/YungsBetterEndIsland-1.20-Forge-2.0.1.jar",
+					"version": "oV8ABTgb"
+				}
+			]
+		}
+	},
+	"meta": {
+		"authors": [
+			"Acarii",
+			"YUNGNICKYOUNG"
+		],
+		"banner": "https://cdn.modrinth.com/data/2BwBOmBQ/images/c94d0f0141791cf524d74dfe3cbafc738a5e636a.png",
+		"categories": [
+			"worldgen"
+		],
+		"community": "https://discord.gg/rns3beq",
+		"description": "An overhaul of the main End Island where the dragon fight takes place!",
+		"gallery": [
+			"https://cdn.modrinth.com/data/2BwBOmBQ/images/540aa82dd7fa9d6490313b21e6261c15427ca1bf.png",
+			"https://cdn.modrinth.com/data/2BwBOmBQ/images/7ea8218329da37c64a35b67166a610209bfdf5fc.png",
+			"https://cdn.modrinth.com/data/2BwBOmBQ/images/bd46f8dbad600a98d88ace6d403e18856871a936.png",
+			"https://cdn.modrinth.com/data/2BwBOmBQ/images/c94d0f0141791cf524d74dfe3cbafc738a5e636a.png"
+		],
+		"icon": "https://cdn.modrinth.com/data/2BwBOmBQ/e4f0f8d1668eda0f22a87d8771bba8344ebfc4b9.png",
+		"issues": "https://github.com/yungnickyoung/YUNGs-Better-End-Island/issues",
+		"keywords": [
+			"yungs"
+		],
+		"license": "LGPL-3.0-only",
+		"long_description": "<p>\n<img src=\"https://i.imgur.com/CbEPuEE.png\" alt=\"YUNG's Better End Island\" width=\"1344\" height=\"416\" /><br />\n<a title=\"Depends on YUNG's API\" href=\"https://modrinth.com/mod/yungs-api\" target=\"_blank\" rel=\"noopener\"><img src=\"https://tinyurl.com/yungsapibadge\" alt=\"Depends on YUNG's API\" width=\"211\" height=\"26\" /></a>&nbsp;<a title=\"Join the YUNG GANG on Discord!\" href=\"https://discord.gg/rns3beq\" target=\"_blank\" rel=\"noopener\"><img src=\"https://tinyurl.com/yungsdiscordbadge2\" alt=\"Join the YUNG GANG on Discord!\" width=\"136\" height=\"28\" /></a>&nbsp;<a title=\"Follow me on Twitter!\" href=\"https://twitter.com/yungnickyoung\" target=\"_blank\" rel=\"noopener\"><img src=\"https://tinyurl.com/yungstwitterbadge3\" alt=\"Follow me on Twitter!\" width=\"104\" height=\"37\" /></a>&nbsp;<a title=\"Subscribe to my YouTube!\" href=\"https://www.youtube.com/yungnickyoung\" target=\"_blank\" rel=\"noopener\"><img src=\"https://tinyurl.com/yungsyoutubebadge\" alt=\"Subscribe to my YouTube!\" width=\"80\" height=\"30\" /></a>&nbsp;<a title=\"Support me on Patreon!\" href=\"https://patreon.com/yungnickyoung\" target=\"_blank\" rel=\"noopener\"><img src=\"https://tinyurl.com/yungspatreonbadge\" alt=\"Support me on Patreon!\" width=\"138\" height=\"28\" /></a><br />\n<img src=\"https://i.imgur.com/ePR2LMC.png\" alt=\"What is this?\" width=\"1125\" height=\"59\" /><br />\n<b>An overhaul of the main End Island where the dragon fight takes place!</b>\n<p>Obsidian pillars, End gateways, the spawn platform, and the portal itself in the middle of the island have all been redesigned. Additionally, the dragon no longer spawns from the start - instead, it will be summoned once a player gets close to the bell tower in the center.</p>\n<p>To resummon the dragon, the 4 crystals no longer go right next to the portal. Instead, you'll see 4 bedrock blocks on the floor inside the tower, one in each directional wing of the building. The crystals can be placed on these 4 blocks to start summoning the dragon again. That being said, we do actually still support vanilla crystal summoning positions, to avoid confusing players who aren't familiar with the mod.</p>\n<p>The dragon's AI itself is unchanged.</p>\n<p><b>To use BEI on an existing world,</b> we've provided the <i>/end_island reset</i> command. Using this command while in the End will attempt to reset the dragon fight back to its initial state and replace any previous portal/pillars with our redesigned versions. But this command attempts some major things behind the scenes, so <b>please back up your world before trying!</b> Also note that <b>simply deleting your End dimension files is not suffificient, and you will still need to run the command.</b></p>\n<p>If you're having issues with the portal/tower spawning after using the command, such as the portal spawning under the island, you can use the full command `/end_island reset true` to attempt to place the portal on the surface again. But once again, back up your world before trying it! Seriously!</p>\n</p>\n<p>\n<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/D3LW5j7DAdE\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>\n</p>\n<p>\n<img src=\"https://i.imgur.com/zMhFcqM.png\" alt=\"Compatibility\" width=\"1125\" height=\"59\" /><br />\nYUNG's Better End Island is intended to be compatible with as many mods as possible. The following are compatibility notes for relevant End mods/datapacks:\n</p>\n<ul>\n<li><b>Endergetic Expansion</b><ul><li>End Gateways in the Outer End will be from EE instead of BEI. Everything should still work properly though.</li></ul></li>\n<li><b>Progressive Bosses</b><ul><li>Extra cage placement may be a little scuffed in older versions of Progressive Bosses. Make sure you're on the latest version!</li><li><i>/end_island reset</i> command may not properly reset fight history/progress on Progressive Bosses' side of things. If you use this command, you should also run <i>/progressivebosses difficulty set <player> dragon 0</i></li></ul></li>\n<li><b>Better End</b><ul><li>Since the island is smaller than in vanilla, obsidian spikes will spawn closer to the center</li><li>If any spikes are missing or you have any other issues with generation, try using the <i>/end_island reset</i> command while in the End</li></ul></li>\n<li><b>Nullscape</b><ul><li>Completely compatible on 1.19+. <b>Not compatible on 1.18.2.</b></li></ul></li>\n<li><b>Ender Trigon and Savage Ender Fight</b><ul><li>Completely compatible</li></ul></li>\n<li><b>Stellarity</b><ul><li><b>Not compatible</b></li></ul></li></ul>\n</ul>\n<p><img style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://i.imgur.com/a49IMQJ.png\" /><br />\n<a title=\"Get 25% off your server with code YUNGNICKYOUNG at Bisect Hosting!\" href=\"https://bisecthosting.com/yung\" target=\"_blank\" rel=\"noopener noreferrer\"><img src=\"https://i.imgur.com/nQRs7ZP.png\" alt=\"Use code YUNGNICKYOUNG with Bisect Hosting for 25% off!\" width=\"1344\" height=\"400\" /></a></p>",
+		"name": "YUNG's Better End Island",
+		"package_maintainers": [
+			"mcvm"
+		],
+		"source": "https://github.com/yungnickyoung/YUNGs-Better-End-Island",
+		"support_link": "https://www.patreon.com/yungnickyoung"
+	},
+	"properties": {
+		"modrinth_id": "2BwBOmBQ",
+		"supported_modloaders": [
+			"fabriclike",
+			"forgelike"
+		],
+		"supported_sides": [
+			"server"
+		],
+		"supported_versions": [
+			"1.18.2",
+			"1.19.2",
+			"1.19.4",
+			"1.20",
+			"1.20.1",
+			"1.20.4"
+		]
+	}
 }

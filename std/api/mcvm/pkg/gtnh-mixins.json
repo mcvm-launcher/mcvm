@@ -1,72 +1,73 @@
 {
-  "addons": {
-    "addon": {
-      "kind": "mod",
-      "versions": [
-        {
-          "minecraft_versions": "1.7.10",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/8nh1ehhB/versions/UmaoM7yG/gtnhmixins-2.1.2.jar",
-          "version": "UmaoM7yG"
-        },
-        {
-          "minecraft_versions": "1.7.10",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/8nh1ehhB/versions/R2q46Ki9/gtnhmixins-2.1.0.jar",
-          "version": "R2q46Ki9"
-        },
-        {
-          "minecraft_versions": "1.7.10",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/8nh1ehhB/versions/HF4kpH4a/gtnhmixins-2.0.2.jar",
-          "version": "HF4kpH4a"
-        },
-        {
-          "minecraft_versions": "1.7.10",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/8nh1ehhB/versions/uilzVimg/gtnhmixins-2.0.1.jar",
-          "version": "uilzVimg"
-        }
-      ]
-    }
-  },
-  "meta": {
-    "authors": [
-      "mitchej123"
-    ],
-    "categories": [
-      "library",
-      "technical"
-    ],
-    "description": "GTNH Flavored Mixins",
-    "gallery": [],
-    "icon": "https://cdn.modrinth.com/data/8nh1ehhB/7264e2d74c81bcabc8404772a1378f693b47ed94.png",
-    "issues": "https://github.com/GTNewHorizons/GTNHMixins/issues",
-    "keywords": [
-      "mixin"
-    ],
-    "license": "LGPL-3.0-only",
-    "name": "GTNH Mixins",
-    "package_maintainers": [
-      "mcvm"
-    ],
-    "source": "https://github.com/GTNewHorizons/GTNHMixins"
-  },
-  "properties": {
-    "modrinth_id": "8nh1ehhB",
-    "supported_modloaders": [
-      "forgelike"
-    ],
-    "supported_sides": [
-      "client",
-      "server"
-    ],
-    "supported_versions": [
-      "1.7.10"
-    ]
-  }
+	"addons": {
+		"addon": {
+			"kind": "mod",
+			"versions": [
+				{
+					"minecraft_versions": "1.7.10",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/8nh1ehhB/versions/UmaoM7yG/gtnhmixins-2.1.2.jar",
+					"version": "UmaoM7yG"
+				},
+				{
+					"minecraft_versions": "1.7.10",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/8nh1ehhB/versions/R2q46Ki9/gtnhmixins-2.1.0.jar",
+					"version": "R2q46Ki9"
+				},
+				{
+					"minecraft_versions": "1.7.10",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/8nh1ehhB/versions/HF4kpH4a/gtnhmixins-2.0.2.jar",
+					"version": "HF4kpH4a"
+				},
+				{
+					"minecraft_versions": "1.7.10",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/8nh1ehhB/versions/uilzVimg/gtnhmixins-2.0.1.jar",
+					"version": "uilzVimg"
+				}
+			]
+		}
+	},
+	"meta": {
+		"authors": [
+			"mitchej123"
+		],
+		"categories": [
+			"library",
+			"technical"
+		],
+		"description": "GTNH Flavored Mixins",
+		"gallery": [],
+		"icon": "https://cdn.modrinth.com/data/8nh1ehhB/7264e2d74c81bcabc8404772a1378f693b47ed94.png",
+		"issues": "https://github.com/GTNewHorizons/GTNHMixins/issues",
+		"keywords": [
+			"mixin"
+		],
+		"license": "LGPL-3.0-only",
+		"long_description": "Library that provides mixin functionality\n\n* Includes a shadowed Sponge Powered Mixins fork - Currently 0.8.5-GTNH\n* Shades the required libraries that previously made 0.8.5 challenging to use with MC 1.7.10\n* Adds two additional loading strategies for mixins, inspired by Mixin Booter Legacy\n  * IEarlyMixinLoader - For Mixins targetting Minecraft, Forge, and CoreMods\n  * ILateMixinLoader & @LateMixin - For mixins that target other (non core) mods. Requires both the interface and the Annotation due to limitations in the 1.7.10 ASMDataTable\n\nSupercedes SpongeMixins 1.5 (Not to be confused with SpongePowered Mixins which this is based around!  Yet another reason for the rename)",
+		"name": "GTNH Mixins",
+		"package_maintainers": [
+			"mcvm"
+		],
+		"source": "https://github.com/GTNewHorizons/GTNHMixins"
+	},
+	"properties": {
+		"modrinth_id": "8nh1ehhB",
+		"supported_modloaders": [
+			"forgelike"
+		],
+		"supported_sides": [
+			"client",
+			"server"
+		],
+		"supported_versions": [
+			"1.7.10"
+		]
+	}
 }

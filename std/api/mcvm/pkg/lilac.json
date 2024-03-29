@@ -1,106 +1,107 @@
 {
-  "addons": {
-    "addon": {
-      "kind": "mod",
-      "versions": [
-        {
-          "minecraft_versions": [
-            "1.19.4",
-            "1.20",
-            "1.20.1",
-            "1.20.2"
-          ],
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": [
-              "fabriclike-api",
-              "kotlin-support"
-            ]
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Rtp2Lyr5/versions/UuwX5TxU/lilac-1.0.0-beta.3.jar",
-          "version": "UuwX5TxU"
-        },
-        {
-          "minecraft_versions": [
-            "1.19.4",
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": [
-              "fabriclike-api",
-              "kotlin-support"
-            ]
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Rtp2Lyr5/versions/pRI9PPjm/lilac-1.0.0-beta.2.jar",
-          "version": "pRI9PPjm"
-        },
-        {
-          "minecraft_versions": [
-            "1.19.4",
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": [
-              "fabriclike-api",
-              "kotlin-support"
-            ]
-          },
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/Rtp2Lyr5/versions/R0Clyo73/lilac-1.0.0-beta.1-mc.1.19.4.jar",
-          "version": "R0Clyo73"
-        }
-      ]
-    }
-  },
-  "meta": {
-    "authors": [
-      "opekope2"
-    ],
-    "categories": [
-      "library"
-    ],
-    "description": "Lib Lapis Core - common code for opekope2's mods",
-    "documentation": "https://opekope2.github.io/LiLaC",
-    "gallery": [],
-    "icon": "https://cdn.modrinth.com/data/Rtp2Lyr5/f480c3c71419038505ffa0694917ee79742f4f14.png",
-    "issues": "https://github.com/opekope2/LiLaC/issues",
-    "license": "MIT",
-    "name": "LiLaC",
-    "package_maintainers": [
-      "mcvm"
-    ],
-    "source": "https://github.com/opekope2/LiLaC",
-    "support_link": "https://ko-fi.com/opekope2"
-  },
-  "properties": {
-    "modrinth_id": "Rtp2Lyr5",
-    "supported_modloaders": [
-      "fabriclike"
-    ],
-    "supported_sides": [
-      "client",
-      "server"
-    ],
-    "supported_versions": [
-      "1.19.4",
-      "1.20",
-      "1.20.1",
-      "1.20.2"
-    ]
-  }
+	"addons": {
+		"addon": {
+			"kind": "mod",
+			"versions": [
+				{
+					"minecraft_versions": [
+						"1.19.4",
+						"1.20",
+						"1.20.1",
+						"1.20.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": [
+							"fabriclike-api",
+							"kotlin-support"
+						]
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Rtp2Lyr5/versions/UuwX5TxU/lilac-1.0.0-beta.3.jar",
+					"version": "UuwX5TxU"
+				},
+				{
+					"minecraft_versions": [
+						"1.19.4",
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": [
+							"fabriclike-api",
+							"kotlin-support"
+						]
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Rtp2Lyr5/versions/pRI9PPjm/lilac-1.0.0-beta.2.jar",
+					"version": "pRI9PPjm"
+				},
+				{
+					"minecraft_versions": [
+						"1.19.4",
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": [
+							"fabriclike-api",
+							"kotlin-support"
+						]
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Rtp2Lyr5/versions/R0Clyo73/lilac-1.0.0-beta.1-mc.1.19.4.jar",
+					"version": "R0Clyo73"
+				}
+			]
+		}
+	},
+	"meta": {
+		"authors": [
+			"opekope2"
+		],
+		"categories": [
+			"library"
+		],
+		"description": "Lib Lapis Core - common code for opekope2's mods",
+		"documentation": "https://opekope2.github.io/LiLaC",
+		"gallery": [],
+		"icon": "https://cdn.modrinth.com/data/Rtp2Lyr5/f480c3c71419038505ffa0694917ee79742f4f14.png",
+		"issues": "https://github.com/opekope2/LiLaC/issues",
+		"license": "MIT",
+		"long_description": "# LiLaC is discontinued\n\nLiLaC aimed to provide a common API for different Minecraft versions, helping [OptiGUI](https://modrinth.com/mod/optigui) supporting multiple versions of the game. However, it became a relatively big and complex codebase, which is very prone to bugs and oversights. Other than that, I lost interest in maintaining it. [OptiGUI](https://modrinth.com/mod/optigui) will continue to receive updates and additions, but without LiLaC, and only for recent versions of the game.",
+		"name": "LiLaC",
+		"package_maintainers": [
+			"mcvm"
+		],
+		"source": "https://github.com/opekope2/LiLaC",
+		"support_link": "https://ko-fi.com/opekope2"
+	},
+	"properties": {
+		"modrinth_id": "Rtp2Lyr5",
+		"supported_modloaders": [
+			"fabriclike"
+		],
+		"supported_sides": [
+			"client",
+			"server"
+		],
+		"supported_versions": [
+			"1.19.4",
+			"1.20",
+			"1.20.1",
+			"1.20.2"
+		]
+	}
 }

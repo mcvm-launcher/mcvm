@@ -1,1097 +1,1098 @@
 {
-  "addons": {
-    "addon": {
-      "kind": "mod",
-      "versions": [
-        {
-          "minecraft_versions": [
-            "1.20.3",
-            "1.20.4"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/TGJXKoTQ/replaymod-1.20.4-2.6.15.jar",
-          "version": "TGJXKoTQ"
-        },
-        {
-          "minecraft_versions": "1.20.2",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/XeL4fIxn/replaymod-1.20.2-2.6.15.jar",
-          "version": "XeL4fIxn"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/MEAiQjrL/replaymod-1.20.1-2.6.15.jar",
-          "version": "MEAiQjrL"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/jkL57SOi/replaymod-1.19.4-2.6.15.jar",
-          "version": "jkL57SOi"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/9ayljarM/replaymod-1.19.3-2.6.15.jar",
-          "version": "9ayljarM"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/CFqKQmeU/replaymod-1.19.2-2.6.15.jar",
-          "version": "CFqKQmeU"
-        },
-        {
-          "minecraft_versions": "1.19.1",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/PWdKbWsL/replaymod-1.19.1-2.6.15.jar",
-          "version": "PWdKbWsL"
-        },
-        {
-          "minecraft_versions": "1.19",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/KOBmMoQY/replaymod-1.19-2.6.15.jar",
-          "version": "KOBmMoQY"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/96nDcCSh/replaymod-1.18.2-2.6.15.jar",
-          "version": "96nDcCSh"
-        },
-        {
-          "minecraft_versions": [
-            "1.18",
-            "1.18.1"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/sCcaaPB5/replaymod-1.18.1-2.6.15.jar",
-          "version": "sCcaaPB5"
-        },
-        {
-          "minecraft_versions": "1.17.1",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/XgiA5yWK/replaymod-1.17.1-2.6.15.jar",
-          "version": "XgiA5yWK"
-        },
-        {
-          "minecraft_versions": [
-            "1.16.2",
-            "1.16.3",
-            "1.16.4",
-            "1.16.5"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/pKQiOYLe/replaymod-1.16.4-2.6.15.jar",
-          "version": "pKQiOYLe"
-        },
-        {
-          "minecraft_versions": "1.16.1",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/2NCUTmsW/replaymod-1.16.1-2.6.15.jar",
-          "version": "2NCUTmsW"
-        },
-        {
-          "minecraft_versions": "1.15.2",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/He6IzILk/replaymod-1.15.2-2.6.15.jar",
-          "version": "He6IzILk"
-        },
-        {
-          "minecraft_versions": "1.14.4",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/L44XSh4f/replaymod-1.14.4-2.6.15.jar",
-          "version": "L44XSh4f"
-        },
-        {
-          "minecraft_versions": "1.12.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/QJwXFDrY/replaymod-1.12.2-2.6.15.jar",
-          "version": "QJwXFDrY"
-        },
-        {
-          "minecraft_versions": "1.12.1",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/LXYUZ5hR/replaymod-1.12.1-2.6.15.jar",
-          "version": "LXYUZ5hR"
-        },
-        {
-          "minecraft_versions": "1.12",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/PuCJ3fXk/replaymod-1.12-2.6.15.jar",
-          "version": "PuCJ3fXk"
-        },
-        {
-          "minecraft_versions": "1.11.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/3KscGeCR/replaymod-1.11.2-2.6.15.jar",
-          "version": "3KscGeCR"
-        },
-        {
-          "minecraft_versions": "1.11",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/GUjnhuc0/replaymod-1.11-2.6.15.jar",
-          "version": "GUjnhuc0"
-        },
-        {
-          "minecraft_versions": "1.10.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/gJapwSvl/replaymod-1.10.2-2.6.15.jar",
-          "version": "gJapwSvl"
-        },
-        {
-          "minecraft_versions": "1.9.4",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/ayRRIyfk/replaymod-1.9.4-2.6.15.jar",
-          "version": "ayRRIyfk"
-        },
-        {
-          "minecraft_versions": "1.8.9",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/z86I98cl/replaymod-1.8.9-2.6.15.jar",
-          "version": "z86I98cl"
-        },
-        {
-          "minecraft_versions": "1.8",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/3SDkAMrN/replaymod-1.8-2.6.15.jar",
-          "version": "3SDkAMrN"
-        },
-        {
-          "minecraft_versions": [
-            "1.20.3",
-            "1.20.4"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/gxDkodfS/replaymod-1.20.4-2.6.14.jar",
-          "version": "gxDkodfS"
-        },
-        {
-          "minecraft_versions": "1.20.2",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/G3s7lNSQ/replaymod-1.20.2-2.6.14.jar",
-          "version": "G3s7lNSQ"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/NIH877ct/replaymod-1.20.1-2.6.14.jar",
-          "version": "NIH877ct"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/hWebWQ5c/replaymod-1.19.4-2.6.14.jar",
-          "version": "hWebWQ5c"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/KnZ6lROh/replaymod-1.19.3-2.6.14.jar",
-          "version": "KnZ6lROh"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/BYJF82Q8/replaymod-1.19.2-2.6.14.jar",
-          "version": "BYJF82Q8"
-        },
-        {
-          "minecraft_versions": "1.19.1",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/RnKY1fkF/replaymod-1.19.1-2.6.14.jar",
-          "version": "RnKY1fkF"
-        },
-        {
-          "minecraft_versions": "1.19",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/B7PDdOiZ/replaymod-1.19-2.6.14.jar",
-          "version": "B7PDdOiZ"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/TQVVZ2sj/replaymod-1.18.2-2.6.14.jar",
-          "version": "TQVVZ2sj"
-        },
-        {
-          "minecraft_versions": [
-            "1.18",
-            "1.18.1"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/9mhAmHed/replaymod-1.18.1-2.6.14.jar",
-          "version": "9mhAmHed"
-        },
-        {
-          "minecraft_versions": "1.17.1",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/Sx6m0qjo/replaymod-1.17.1-2.6.14.jar",
-          "version": "Sx6m0qjo"
-        },
-        {
-          "minecraft_versions": [
-            "1.16.2",
-            "1.16.3",
-            "1.16.4",
-            "1.16.5"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/wgsQp9k2/replaymod-1.16.4-2.6.14.jar",
-          "version": "wgsQp9k2"
-        },
-        {
-          "minecraft_versions": "1.16.1",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/UdqCkUuj/replaymod-1.16.1-2.6.14.jar",
-          "version": "UdqCkUuj"
-        },
-        {
-          "minecraft_versions": "1.15.2",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/4bIBelGg/replaymod-1.15.2-2.6.14.jar",
-          "version": "4bIBelGg"
-        },
-        {
-          "minecraft_versions": "1.14.4",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/xJVrMXGu/replaymod-1.14.4-2.6.14.jar",
-          "version": "xJVrMXGu"
-        },
-        {
-          "minecraft_versions": "1.12.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/VDZOtfyO/replaymod-1.12.2-2.6.14.jar",
-          "version": "VDZOtfyO"
-        },
-        {
-          "minecraft_versions": "1.12.1",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/GcIiseAU/replaymod-1.12.1-2.6.14.jar",
-          "version": "GcIiseAU"
-        },
-        {
-          "minecraft_versions": "1.12",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/Sh6KNIPu/replaymod-1.12-2.6.14.jar",
-          "version": "Sh6KNIPu"
-        },
-        {
-          "minecraft_versions": "1.11.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/w4DntqI3/replaymod-1.11.2-2.6.14.jar",
-          "version": "w4DntqI3"
-        },
-        {
-          "minecraft_versions": "1.11",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/3l0HyAYX/replaymod-1.11-2.6.14.jar",
-          "version": "3l0HyAYX"
-        },
-        {
-          "minecraft_versions": "1.10.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/bGqLpW1Q/replaymod-1.10.2-2.6.14.jar",
-          "version": "bGqLpW1Q"
-        },
-        {
-          "minecraft_versions": "1.9.4",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/xwEJAW13/replaymod-1.9.4-2.6.14.jar",
-          "version": "xwEJAW13"
-        },
-        {
-          "minecraft_versions": "1.8.9",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/9wdM3teK/replaymod-1.8.9-2.6.14.jar",
-          "version": "9wdM3teK"
-        },
-        {
-          "minecraft_versions": "1.8",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/JlD16MVE/replaymod-1.8-2.6.14.jar",
-          "version": "JlD16MVE"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/akFkhrL8/replaymod-1.20.1-2.6.13.jar",
-          "version": "akFkhrL8"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/zZNW7mgL/replaymod-1.19.4-2.6.13.jar",
-          "version": "zZNW7mgL"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/BDSvzcm4/replaymod-1.19.3-2.6.13.jar",
-          "version": "BDSvzcm4"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/EtYipT0o/replaymod-1.19.2-2.6.13.jar",
-          "version": "EtYipT0o"
-        },
-        {
-          "minecraft_versions": "1.19.1",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/85lHULy4/replaymod-1.19.1-2.6.13.jar",
-          "version": "85lHULy4"
-        },
-        {
-          "minecraft_versions": "1.19",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/GYKYSHAl/replaymod-1.19-2.6.13.jar",
-          "version": "GYKYSHAl"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1eU6zO2B/replaymod-1.18.2-2.6.13.jar",
-          "version": "1eU6zO2B"
-        },
-        {
-          "minecraft_versions": [
-            "1.18",
-            "1.18.1"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/HvXgN9yg/replaymod-1.18.1-2.6.13.jar",
-          "version": "HvXgN9yg"
-        },
-        {
-          "minecraft_versions": "1.17.1",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/EgrrDQUS/replaymod-1.17.1-2.6.13.jar",
-          "version": "EgrrDQUS"
-        },
-        {
-          "minecraft_versions": [
-            "1.16.2",
-            "1.16.3",
-            "1.16.4",
-            "1.16.5"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/njHRZwEj/replaymod-1.16.4-2.6.13.jar",
-          "version": "njHRZwEj"
-        },
-        {
-          "minecraft_versions": "1.16.1",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/E9EK68vH/replaymod-1.16.1-2.6.13.jar",
-          "version": "E9EK68vH"
-        },
-        {
-          "minecraft_versions": "1.15.2",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/zvPU39ET/replaymod-1.15.2-2.6.13.jar",
-          "version": "zvPU39ET"
-        },
-        {
-          "minecraft_versions": "1.14.4",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/PbeaqpgH/replaymod-1.14.4-2.6.13.jar",
-          "version": "PbeaqpgH"
-        },
-        {
-          "minecraft_versions": "1.12.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/cbEVNsuL/replaymod-1.12.2-2.6.13.jar",
-          "version": "cbEVNsuL"
-        },
-        {
-          "minecraft_versions": "1.12.1",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/tubruMpy/replaymod-1.12.1-2.6.13.jar",
-          "version": "tubruMpy"
-        },
-        {
-          "minecraft_versions": "1.12",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/F3SjPcKJ/replaymod-1.12-2.6.13.jar",
-          "version": "F3SjPcKJ"
-        },
-        {
-          "minecraft_versions": "1.11.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/mzW8x79q/replaymod-1.11.2-2.6.13.jar",
-          "version": "mzW8x79q"
-        },
-        {
-          "minecraft_versions": "1.11",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/eGEmvYZI/replaymod-1.11-2.6.13.jar",
-          "version": "eGEmvYZI"
-        },
-        {
-          "minecraft_versions": "1.10.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/KKjQ0MzQ/replaymod-1.10.2-2.6.13.jar",
-          "version": "KKjQ0MzQ"
-        },
-        {
-          "minecraft_versions": "1.9.4",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/HHfjk4W8/replaymod-1.9.4-2.6.13.jar",
-          "version": "HHfjk4W8"
-        },
-        {
-          "minecraft_versions": "1.8.9",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/PltO0FTH/replaymod-1.8.9-2.6.13.jar",
-          "version": "PltO0FTH"
-        },
-        {
-          "minecraft_versions": "1.8",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/5dh4X2Px/replaymod-1.8-2.6.13.jar",
-          "version": "5dh4X2Px"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/MCLmJGNL/replaymod-1.19.4-2.6.12.jar",
-          "version": "MCLmJGNL"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/Jhu6Ce8l/replaymod-1.19.4-2.6.11.jar",
-          "version": "Jhu6Ce8l"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/C1eDr4u8/replaymod-1.19.3-2.6.11.jar",
-          "version": "C1eDr4u8"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/RTpOrhlB/replaymod-1.19.2-2.6.11.jar",
-          "version": "RTpOrhlB"
-        },
-        {
-          "minecraft_versions": "1.19.1",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/4KnSuv5i/replaymod-1.19.1-2.6.11.jar",
-          "version": "4KnSuv5i"
-        },
-        {
-          "minecraft_versions": "1.19",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/vpwF1AEt/replaymod-1.19-2.6.11.jar",
-          "version": "vpwF1AEt"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/Yc2W8QF2/replaymod-1.18.2-2.6.11.jar",
-          "version": "Yc2W8QF2"
-        },
-        {
-          "minecraft_versions": [
-            "1.18",
-            "1.18.1"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/NzL9uuuq/replaymod-1.18.1-2.6.11.jar",
-          "version": "NzL9uuuq"
-        },
-        {
-          "minecraft_versions": "1.17.1",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/hrjyOCCd/replaymod-1.17.1-2.6.11.jar",
-          "version": "hrjyOCCd"
-        },
-        {
-          "minecraft_versions": "1.17",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/JR4YzF0B/replaymod-1.17-2.6.11.jar",
-          "version": "JR4YzF0B"
-        },
-        {
-          "minecraft_versions": [
-            "1.16.2",
-            "1.16.3",
-            "1.16.4",
-            "1.16.5"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/QEnGJzQi/replaymod-1.16.4-2.6.11.jar",
-          "version": "QEnGJzQi"
-        },
-        {
-          "minecraft_versions": "1.16.1",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/XRiofskF/replaymod-1.16.1-2.6.11.jar",
-          "version": "XRiofskF"
-        },
-        {
-          "minecraft_versions": "1.15.2",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/XEgvQEao/replaymod-1.15.2-2.6.11.jar",
-          "version": "XEgvQEao"
-        },
-        {
-          "minecraft_versions": "1.14.4",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/CmWWcgPa/replaymod-1.14.4-2.6.11.jar",
-          "version": "CmWWcgPa"
-        },
-        {
-          "minecraft_versions": "1.12.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/Xi51Pi93/replaymod-1.12.2-2.6.11.jar",
-          "version": "Xi51Pi93"
-        },
-        {
-          "minecraft_versions": "1.12.1",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/WcMD8WyW/replaymod-1.12.1-2.6.11.jar",
-          "version": "WcMD8WyW"
-        },
-        {
-          "minecraft_versions": "1.12",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/7PD0BOWI/replaymod-1.12-2.6.11.jar",
-          "version": "7PD0BOWI"
-        },
-        {
-          "minecraft_versions": "1.11.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/ViDqRNbv/replaymod-1.11.2-2.6.11.jar",
-          "version": "ViDqRNbv"
-        },
-        {
-          "minecraft_versions": "1.11",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/2q2c14V5/replaymod-1.11-2.6.11.jar",
-          "version": "2q2c14V5"
-        },
-        {
-          "minecraft_versions": "1.10.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/7H88dLh3/replaymod-1.10.2-2.6.11.jar",
-          "version": "7H88dLh3"
-        },
-        {
-          "minecraft_versions": "1.9.4",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/tuL0Wy4t/replaymod-1.9.4-2.6.11.jar",
-          "version": "tuL0Wy4t"
-        },
-        {
-          "minecraft_versions": "1.8.9",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/ke9ZuM1y/replaymod-1.8.9-2.6.11.jar",
-          "version": "ke9ZuM1y"
-        },
-        {
-          "minecraft_versions": "1.8",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/6yy8gtDQ/replaymod-1.8-2.6.11.jar",
-          "version": "6yy8gtDQ"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/EcNOFu8c/replaymod-1.19.3-2.6.10.jar",
-          "version": "EcNOFu8c"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/InlvtwmO/replaymod-1.19.3-2.6.9.jar",
-          "version": "InlvtwmO"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/YtwBv8Wx/replaymod-1.19.2-2.6.9.jar",
-          "version": "YtwBv8Wx"
-        },
-        {
-          "minecraft_versions": "1.19.1",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/z93btwUO/replaymod-1.19.1-2.6.9.jar",
-          "version": "z93btwUO"
-        },
-        {
-          "minecraft_versions": "1.19",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/JVvnSjwE/replaymod-1.19-2.6.9.jar",
-          "version": "JVvnSjwE"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/okcFOvQB/replaymod-1.18.2-2.6.9.jar",
-          "version": "okcFOvQB"
-        },
-        {
-          "minecraft_versions": [
-            "1.18",
-            "1.18.1"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/DSbGQic7/replaymod-1.18.1-2.6.9.jar",
-          "version": "DSbGQic7"
-        },
-        {
-          "minecraft_versions": "1.17.1",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/xDKX1srD/replaymod-1.17.1-2.6.9.jar",
-          "version": "xDKX1srD"
-        },
-        {
-          "minecraft_versions": "1.17",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/IKpv0q93/replaymod-1.17-2.6.9.jar",
-          "version": "IKpv0q93"
-        },
-        {
-          "minecraft_versions": [
-            "1.16.2",
-            "1.16.3",
-            "1.16.4",
-            "1.16.5"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/Cl8Krcqb/replaymod-1.16.4-2.6.9.jar",
-          "version": "Cl8Krcqb"
-        },
-        {
-          "minecraft_versions": "1.16.1",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/81jL9qWp/replaymod-1.16.1-2.6.9.jar",
-          "version": "81jL9qWp"
-        },
-        {
-          "minecraft_versions": "1.15.2",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/QtrMwqKM/replaymod-1.15.2-2.6.9.jar",
-          "version": "QtrMwqKM"
-        },
-        {
-          "minecraft_versions": "1.14.4",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/volcHOdL/replaymod-1.14.4-2.6.9.jar",
-          "version": "volcHOdL"
-        },
-        {
-          "minecraft_versions": "1.12.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/KIWAOVvq/replaymod-1.12.2-2.6.9.jar",
-          "version": "KIWAOVvq"
-        },
-        {
-          "minecraft_versions": "1.12.1",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/RCeY0aqJ/replaymod-1.12.1-2.6.9.jar",
-          "version": "RCeY0aqJ"
-        },
-        {
-          "minecraft_versions": "1.12",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/BVuva3fz/replaymod-1.12-2.6.9.jar",
-          "version": "BVuva3fz"
-        },
-        {
-          "minecraft_versions": "1.11.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/WLE7L2Tr/replaymod-1.11.2-2.6.9.jar",
-          "version": "WLE7L2Tr"
-        },
-        {
-          "minecraft_versions": "1.11",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/Qe1waaR6/replaymod-1.11-2.6.9.jar",
-          "version": "Qe1waaR6"
-        },
-        {
-          "minecraft_versions": "1.10.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/ndcLZoMa/replaymod-1.10.2-2.6.9.jar",
-          "version": "ndcLZoMa"
-        },
-        {
-          "minecraft_versions": "1.9.4",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1rOZN1zo/replaymod-1.9.4-2.6.9.jar",
-          "version": "1rOZN1zo"
-        },
-        {
-          "minecraft_versions": "1.8.9",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/thijJjIp/replaymod-1.8.9-2.6.9.jar",
-          "version": "thijJjIp"
-        },
-        {
-          "minecraft_versions": "1.8",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/iMFoo1IA/replaymod-1.8-2.6.9.jar",
-          "version": "iMFoo1IA"
-        },
-        {
-          "minecraft_versions": [
-            "1.19.1",
-            "1.19.2"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.19.1-2.6.8/replaymod-1.19.1-2.6.8.jar",
-          "version": "1IAzC6AX"
-        },
-        {
-          "minecraft_versions": "1.19",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.19-2.6.8/replaymod-1.19-2.6.8.jar",
-          "version": "LIVeUIqD"
-        },
-        {
-          "minecraft_versions": [
-            "1.19.1",
-            "1.19.2"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.19.1-2.6.7/replaymod-1.19.1-2.6.7.jar",
-          "version": "EsOxUHNK"
-        },
-        {
-          "minecraft_versions": "1.19",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.19-2.6.7/replaymod-1.19-2.6.7.jar",
-          "version": "5CxMrid7"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.18.2-2.6.7/replaymod-1.18.2-2.6.7.jar",
-          "version": "8fXhWBcR"
-        },
-        {
-          "minecraft_versions": [
-            "1.18",
-            "1.18.1"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.18.1-2.6.7/replaymod-1.18.1-2.6.7.jar",
-          "version": "d40s9baB"
-        },
-        {
-          "minecraft_versions": "1.17.1",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.17.1-2.6.7/replaymod-1.17.1-2.6.7.jar",
-          "version": "iPTJ3Zg4"
-        },
-        {
-          "minecraft_versions": "1.17",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.17-2.6.7/replaymod-1.17-2.6.7.jar",
-          "version": "yRzXlkbS"
-        },
-        {
-          "minecraft_versions": [
-            "1.16.2",
-            "1.16.3",
-            "1.16.4",
-            "1.16.5"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.16.4-2.6.7/replaymod-1.16.4-2.6.7.jar",
-          "version": "2jcrjeH9"
-        },
-        {
-          "minecraft_versions": "1.16.1",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.16.1-2.6.7/replaymod-1.16.1-2.6.7.jar",
-          "version": "pSeNqPLG"
-        },
-        {
-          "minecraft_versions": "1.15.2",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.15.2-2.6.7/replaymod-1.15.2-2.6.7.jar",
-          "version": "oB9rCIQ3"
-        },
-        {
-          "minecraft_versions": "1.14.4",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.14.4-2.6.7/replaymod-1.14.4-2.6.7.jar",
-          "version": "Wa796DiZ"
-        },
-        {
-          "minecraft_versions": "1.12.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.12.2-2.6.7/replaymod-1.12.2-2.6.7.jar",
-          "version": "sXD2DQ4C"
-        },
-        {
-          "minecraft_versions": "1.12.1",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.12.1-2.6.7/replaymod-1.12.1-2.6.7.jar",
-          "version": "UlwxDwga"
-        },
-        {
-          "minecraft_versions": "1.12",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.12-2.6.7/replaymod-1.12-2.6.7.jar",
-          "version": "WQZaoKq7"
-        },
-        {
-          "minecraft_versions": "1.11.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.11.2-2.6.7/replaymod-1.11.2-2.6.7.jar",
-          "version": "fpD0rrcN"
-        },
-        {
-          "minecraft_versions": "1.11",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.11-2.6.7/replaymod-1.11-2.6.7.jar",
-          "version": "4clpWNTC"
-        },
-        {
-          "minecraft_versions": "1.10.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.10.2-2.6.7/replaymod-1.10.2-2.6.7.jar",
-          "version": "58ltb58q"
-        },
-        {
-          "minecraft_versions": "1.9.4",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.9.4-2.6.7/replaymod-1.9.4-2.6.7.jar",
-          "version": "sQVYgpOo"
-        },
-        {
-          "minecraft_versions": "1.8.9",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.8.9-2.6.7/replaymod-1.8.9-2.6.7.jar",
-          "version": "Bg7RAHyJ"
-        },
-        {
-          "minecraft_versions": "1.8",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.8-2.6.7/replaymod-1.8-2.6.7.jar",
-          "version": "LAdb5qRt"
-        }
-      ]
-    }
-  },
-  "meta": {
-    "authors": [
-      "Johni0702"
-    ],
-    "categories": [
-      "tools"
-    ],
-    "community": "https://discord.gg/5GR7RSb",
-    "description": "A Minecraft Mod to record, relive and share your experience.",
-    "documentation": "https://www.replaymod.com/docs/",
-    "gallery": [],
-    "icon": "https://cdn.modrinth.com/data/Nv2fQJo5/icon.png",
-    "issues": "https://github.com/ReplayMod/ReplayMod/issues",
-    "keywords": [
-      "replay"
-    ],
-    "license": "GPL-3.0-or-later",
-    "name": "ReplayMod",
-    "package_maintainers": [
-      "mcvm"
-    ],
-    "source": "https://github.com/ReplayMod/ReplayMod",
-    "support_link": "https://www.patreon.com/replaymod"
-  },
-  "properties": {
-    "modrinth_id": "Nv2fQJo5",
-    "supported_modloaders": [
-      "fabriclike",
-      "forgelike"
-    ],
-    "supported_sides": [
-      "client"
-    ],
-    "supported_versions": [
-      "1.8",
-      "1.8.9",
-      "1.9.4",
-      "1.10.2",
-      "1.11",
-      "1.11.2",
-      "1.12",
-      "1.12.1",
-      "1.12.2",
-      "1.14.4",
-      "1.15.2",
-      "1.16.1",
-      "1.16.2",
-      "1.16.3",
-      "1.16.4",
-      "1.16.5",
-      "1.17",
-      "1.17.1",
-      "1.18",
-      "1.18.1",
-      "1.18.2",
-      "1.19",
-      "1.19.1",
-      "1.19.2",
-      "1.19.3",
-      "1.19.4",
-      "1.20",
-      "1.20.1",
-      "1.20.2",
-      "1.20.3",
-      "1.20.4"
-    ]
-  }
+	"addons": {
+		"addon": {
+			"kind": "mod",
+			"versions": [
+				{
+					"minecraft_versions": [
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/TGJXKoTQ/replaymod-1.20.4-2.6.15.jar",
+					"version": "TGJXKoTQ"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/XeL4fIxn/replaymod-1.20.2-2.6.15.jar",
+					"version": "XeL4fIxn"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/MEAiQjrL/replaymod-1.20.1-2.6.15.jar",
+					"version": "MEAiQjrL"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/jkL57SOi/replaymod-1.19.4-2.6.15.jar",
+					"version": "jkL57SOi"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/9ayljarM/replaymod-1.19.3-2.6.15.jar",
+					"version": "9ayljarM"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/CFqKQmeU/replaymod-1.19.2-2.6.15.jar",
+					"version": "CFqKQmeU"
+				},
+				{
+					"minecraft_versions": "1.19.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/PWdKbWsL/replaymod-1.19.1-2.6.15.jar",
+					"version": "PWdKbWsL"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/KOBmMoQY/replaymod-1.19-2.6.15.jar",
+					"version": "KOBmMoQY"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/96nDcCSh/replaymod-1.18.2-2.6.15.jar",
+					"version": "96nDcCSh"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/sCcaaPB5/replaymod-1.18.1-2.6.15.jar",
+					"version": "sCcaaPB5"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/XgiA5yWK/replaymod-1.17.1-2.6.15.jar",
+					"version": "XgiA5yWK"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.2",
+						"1.16.3",
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/pKQiOYLe/replaymod-1.16.4-2.6.15.jar",
+					"version": "pKQiOYLe"
+				},
+				{
+					"minecraft_versions": "1.16.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/2NCUTmsW/replaymod-1.16.1-2.6.15.jar",
+					"version": "2NCUTmsW"
+				},
+				{
+					"minecraft_versions": "1.15.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/He6IzILk/replaymod-1.15.2-2.6.15.jar",
+					"version": "He6IzILk"
+				},
+				{
+					"minecraft_versions": "1.14.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/L44XSh4f/replaymod-1.14.4-2.6.15.jar",
+					"version": "L44XSh4f"
+				},
+				{
+					"minecraft_versions": "1.12.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/QJwXFDrY/replaymod-1.12.2-2.6.15.jar",
+					"version": "QJwXFDrY"
+				},
+				{
+					"minecraft_versions": "1.12.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/LXYUZ5hR/replaymod-1.12.1-2.6.15.jar",
+					"version": "LXYUZ5hR"
+				},
+				{
+					"minecraft_versions": "1.12",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/PuCJ3fXk/replaymod-1.12-2.6.15.jar",
+					"version": "PuCJ3fXk"
+				},
+				{
+					"minecraft_versions": "1.11.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/3KscGeCR/replaymod-1.11.2-2.6.15.jar",
+					"version": "3KscGeCR"
+				},
+				{
+					"minecraft_versions": "1.11",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/GUjnhuc0/replaymod-1.11-2.6.15.jar",
+					"version": "GUjnhuc0"
+				},
+				{
+					"minecraft_versions": "1.10.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/gJapwSvl/replaymod-1.10.2-2.6.15.jar",
+					"version": "gJapwSvl"
+				},
+				{
+					"minecraft_versions": "1.9.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/ayRRIyfk/replaymod-1.9.4-2.6.15.jar",
+					"version": "ayRRIyfk"
+				},
+				{
+					"minecraft_versions": "1.8.9",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/z86I98cl/replaymod-1.8.9-2.6.15.jar",
+					"version": "z86I98cl"
+				},
+				{
+					"minecraft_versions": "1.8",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/3SDkAMrN/replaymod-1.8-2.6.15.jar",
+					"version": "3SDkAMrN"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/gxDkodfS/replaymod-1.20.4-2.6.14.jar",
+					"version": "gxDkodfS"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/G3s7lNSQ/replaymod-1.20.2-2.6.14.jar",
+					"version": "G3s7lNSQ"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/NIH877ct/replaymod-1.20.1-2.6.14.jar",
+					"version": "NIH877ct"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/hWebWQ5c/replaymod-1.19.4-2.6.14.jar",
+					"version": "hWebWQ5c"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/KnZ6lROh/replaymod-1.19.3-2.6.14.jar",
+					"version": "KnZ6lROh"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/BYJF82Q8/replaymod-1.19.2-2.6.14.jar",
+					"version": "BYJF82Q8"
+				},
+				{
+					"minecraft_versions": "1.19.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/RnKY1fkF/replaymod-1.19.1-2.6.14.jar",
+					"version": "RnKY1fkF"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/B7PDdOiZ/replaymod-1.19-2.6.14.jar",
+					"version": "B7PDdOiZ"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/TQVVZ2sj/replaymod-1.18.2-2.6.14.jar",
+					"version": "TQVVZ2sj"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/9mhAmHed/replaymod-1.18.1-2.6.14.jar",
+					"version": "9mhAmHed"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/Sx6m0qjo/replaymod-1.17.1-2.6.14.jar",
+					"version": "Sx6m0qjo"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.2",
+						"1.16.3",
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/wgsQp9k2/replaymod-1.16.4-2.6.14.jar",
+					"version": "wgsQp9k2"
+				},
+				{
+					"minecraft_versions": "1.16.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/UdqCkUuj/replaymod-1.16.1-2.6.14.jar",
+					"version": "UdqCkUuj"
+				},
+				{
+					"minecraft_versions": "1.15.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/4bIBelGg/replaymod-1.15.2-2.6.14.jar",
+					"version": "4bIBelGg"
+				},
+				{
+					"minecraft_versions": "1.14.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/xJVrMXGu/replaymod-1.14.4-2.6.14.jar",
+					"version": "xJVrMXGu"
+				},
+				{
+					"minecraft_versions": "1.12.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/VDZOtfyO/replaymod-1.12.2-2.6.14.jar",
+					"version": "VDZOtfyO"
+				},
+				{
+					"minecraft_versions": "1.12.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/GcIiseAU/replaymod-1.12.1-2.6.14.jar",
+					"version": "GcIiseAU"
+				},
+				{
+					"minecraft_versions": "1.12",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/Sh6KNIPu/replaymod-1.12-2.6.14.jar",
+					"version": "Sh6KNIPu"
+				},
+				{
+					"minecraft_versions": "1.11.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/w4DntqI3/replaymod-1.11.2-2.6.14.jar",
+					"version": "w4DntqI3"
+				},
+				{
+					"minecraft_versions": "1.11",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/3l0HyAYX/replaymod-1.11-2.6.14.jar",
+					"version": "3l0HyAYX"
+				},
+				{
+					"minecraft_versions": "1.10.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/bGqLpW1Q/replaymod-1.10.2-2.6.14.jar",
+					"version": "bGqLpW1Q"
+				},
+				{
+					"minecraft_versions": "1.9.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/xwEJAW13/replaymod-1.9.4-2.6.14.jar",
+					"version": "xwEJAW13"
+				},
+				{
+					"minecraft_versions": "1.8.9",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/9wdM3teK/replaymod-1.8.9-2.6.14.jar",
+					"version": "9wdM3teK"
+				},
+				{
+					"minecraft_versions": "1.8",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/JlD16MVE/replaymod-1.8-2.6.14.jar",
+					"version": "JlD16MVE"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/akFkhrL8/replaymod-1.20.1-2.6.13.jar",
+					"version": "akFkhrL8"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/zZNW7mgL/replaymod-1.19.4-2.6.13.jar",
+					"version": "zZNW7mgL"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/BDSvzcm4/replaymod-1.19.3-2.6.13.jar",
+					"version": "BDSvzcm4"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/EtYipT0o/replaymod-1.19.2-2.6.13.jar",
+					"version": "EtYipT0o"
+				},
+				{
+					"minecraft_versions": "1.19.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/85lHULy4/replaymod-1.19.1-2.6.13.jar",
+					"version": "85lHULy4"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/GYKYSHAl/replaymod-1.19-2.6.13.jar",
+					"version": "GYKYSHAl"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1eU6zO2B/replaymod-1.18.2-2.6.13.jar",
+					"version": "1eU6zO2B"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/HvXgN9yg/replaymod-1.18.1-2.6.13.jar",
+					"version": "HvXgN9yg"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/EgrrDQUS/replaymod-1.17.1-2.6.13.jar",
+					"version": "EgrrDQUS"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.2",
+						"1.16.3",
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/njHRZwEj/replaymod-1.16.4-2.6.13.jar",
+					"version": "njHRZwEj"
+				},
+				{
+					"minecraft_versions": "1.16.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/E9EK68vH/replaymod-1.16.1-2.6.13.jar",
+					"version": "E9EK68vH"
+				},
+				{
+					"minecraft_versions": "1.15.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/zvPU39ET/replaymod-1.15.2-2.6.13.jar",
+					"version": "zvPU39ET"
+				},
+				{
+					"minecraft_versions": "1.14.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/PbeaqpgH/replaymod-1.14.4-2.6.13.jar",
+					"version": "PbeaqpgH"
+				},
+				{
+					"minecraft_versions": "1.12.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/cbEVNsuL/replaymod-1.12.2-2.6.13.jar",
+					"version": "cbEVNsuL"
+				},
+				{
+					"minecraft_versions": "1.12.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/tubruMpy/replaymod-1.12.1-2.6.13.jar",
+					"version": "tubruMpy"
+				},
+				{
+					"minecraft_versions": "1.12",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/F3SjPcKJ/replaymod-1.12-2.6.13.jar",
+					"version": "F3SjPcKJ"
+				},
+				{
+					"minecraft_versions": "1.11.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/mzW8x79q/replaymod-1.11.2-2.6.13.jar",
+					"version": "mzW8x79q"
+				},
+				{
+					"minecraft_versions": "1.11",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/eGEmvYZI/replaymod-1.11-2.6.13.jar",
+					"version": "eGEmvYZI"
+				},
+				{
+					"minecraft_versions": "1.10.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/KKjQ0MzQ/replaymod-1.10.2-2.6.13.jar",
+					"version": "KKjQ0MzQ"
+				},
+				{
+					"minecraft_versions": "1.9.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/HHfjk4W8/replaymod-1.9.4-2.6.13.jar",
+					"version": "HHfjk4W8"
+				},
+				{
+					"minecraft_versions": "1.8.9",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/PltO0FTH/replaymod-1.8.9-2.6.13.jar",
+					"version": "PltO0FTH"
+				},
+				{
+					"minecraft_versions": "1.8",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/5dh4X2Px/replaymod-1.8-2.6.13.jar",
+					"version": "5dh4X2Px"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/MCLmJGNL/replaymod-1.19.4-2.6.12.jar",
+					"version": "MCLmJGNL"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/Jhu6Ce8l/replaymod-1.19.4-2.6.11.jar",
+					"version": "Jhu6Ce8l"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/C1eDr4u8/replaymod-1.19.3-2.6.11.jar",
+					"version": "C1eDr4u8"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/RTpOrhlB/replaymod-1.19.2-2.6.11.jar",
+					"version": "RTpOrhlB"
+				},
+				{
+					"minecraft_versions": "1.19.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/4KnSuv5i/replaymod-1.19.1-2.6.11.jar",
+					"version": "4KnSuv5i"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/vpwF1AEt/replaymod-1.19-2.6.11.jar",
+					"version": "vpwF1AEt"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/Yc2W8QF2/replaymod-1.18.2-2.6.11.jar",
+					"version": "Yc2W8QF2"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/NzL9uuuq/replaymod-1.18.1-2.6.11.jar",
+					"version": "NzL9uuuq"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/hrjyOCCd/replaymod-1.17.1-2.6.11.jar",
+					"version": "hrjyOCCd"
+				},
+				{
+					"minecraft_versions": "1.17",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/JR4YzF0B/replaymod-1.17-2.6.11.jar",
+					"version": "JR4YzF0B"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.2",
+						"1.16.3",
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/QEnGJzQi/replaymod-1.16.4-2.6.11.jar",
+					"version": "QEnGJzQi"
+				},
+				{
+					"minecraft_versions": "1.16.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/XRiofskF/replaymod-1.16.1-2.6.11.jar",
+					"version": "XRiofskF"
+				},
+				{
+					"minecraft_versions": "1.15.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/XEgvQEao/replaymod-1.15.2-2.6.11.jar",
+					"version": "XEgvQEao"
+				},
+				{
+					"minecraft_versions": "1.14.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/CmWWcgPa/replaymod-1.14.4-2.6.11.jar",
+					"version": "CmWWcgPa"
+				},
+				{
+					"minecraft_versions": "1.12.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/Xi51Pi93/replaymod-1.12.2-2.6.11.jar",
+					"version": "Xi51Pi93"
+				},
+				{
+					"minecraft_versions": "1.12.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/WcMD8WyW/replaymod-1.12.1-2.6.11.jar",
+					"version": "WcMD8WyW"
+				},
+				{
+					"minecraft_versions": "1.12",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/7PD0BOWI/replaymod-1.12-2.6.11.jar",
+					"version": "7PD0BOWI"
+				},
+				{
+					"minecraft_versions": "1.11.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/ViDqRNbv/replaymod-1.11.2-2.6.11.jar",
+					"version": "ViDqRNbv"
+				},
+				{
+					"minecraft_versions": "1.11",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/2q2c14V5/replaymod-1.11-2.6.11.jar",
+					"version": "2q2c14V5"
+				},
+				{
+					"minecraft_versions": "1.10.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/7H88dLh3/replaymod-1.10.2-2.6.11.jar",
+					"version": "7H88dLh3"
+				},
+				{
+					"minecraft_versions": "1.9.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/tuL0Wy4t/replaymod-1.9.4-2.6.11.jar",
+					"version": "tuL0Wy4t"
+				},
+				{
+					"minecraft_versions": "1.8.9",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/ke9ZuM1y/replaymod-1.8.9-2.6.11.jar",
+					"version": "ke9ZuM1y"
+				},
+				{
+					"minecraft_versions": "1.8",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/6yy8gtDQ/replaymod-1.8-2.6.11.jar",
+					"version": "6yy8gtDQ"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/EcNOFu8c/replaymod-1.19.3-2.6.10.jar",
+					"version": "EcNOFu8c"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/InlvtwmO/replaymod-1.19.3-2.6.9.jar",
+					"version": "InlvtwmO"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/YtwBv8Wx/replaymod-1.19.2-2.6.9.jar",
+					"version": "YtwBv8Wx"
+				},
+				{
+					"minecraft_versions": "1.19.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/z93btwUO/replaymod-1.19.1-2.6.9.jar",
+					"version": "z93btwUO"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/JVvnSjwE/replaymod-1.19-2.6.9.jar",
+					"version": "JVvnSjwE"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/okcFOvQB/replaymod-1.18.2-2.6.9.jar",
+					"version": "okcFOvQB"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/DSbGQic7/replaymod-1.18.1-2.6.9.jar",
+					"version": "DSbGQic7"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/xDKX1srD/replaymod-1.17.1-2.6.9.jar",
+					"version": "xDKX1srD"
+				},
+				{
+					"minecraft_versions": "1.17",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/IKpv0q93/replaymod-1.17-2.6.9.jar",
+					"version": "IKpv0q93"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.2",
+						"1.16.3",
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/Cl8Krcqb/replaymod-1.16.4-2.6.9.jar",
+					"version": "Cl8Krcqb"
+				},
+				{
+					"minecraft_versions": "1.16.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/81jL9qWp/replaymod-1.16.1-2.6.9.jar",
+					"version": "81jL9qWp"
+				},
+				{
+					"minecraft_versions": "1.15.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/QtrMwqKM/replaymod-1.15.2-2.6.9.jar",
+					"version": "QtrMwqKM"
+				},
+				{
+					"minecraft_versions": "1.14.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/volcHOdL/replaymod-1.14.4-2.6.9.jar",
+					"version": "volcHOdL"
+				},
+				{
+					"minecraft_versions": "1.12.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/KIWAOVvq/replaymod-1.12.2-2.6.9.jar",
+					"version": "KIWAOVvq"
+				},
+				{
+					"minecraft_versions": "1.12.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/RCeY0aqJ/replaymod-1.12.1-2.6.9.jar",
+					"version": "RCeY0aqJ"
+				},
+				{
+					"minecraft_versions": "1.12",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/BVuva3fz/replaymod-1.12-2.6.9.jar",
+					"version": "BVuva3fz"
+				},
+				{
+					"minecraft_versions": "1.11.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/WLE7L2Tr/replaymod-1.11.2-2.6.9.jar",
+					"version": "WLE7L2Tr"
+				},
+				{
+					"minecraft_versions": "1.11",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/Qe1waaR6/replaymod-1.11-2.6.9.jar",
+					"version": "Qe1waaR6"
+				},
+				{
+					"minecraft_versions": "1.10.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/ndcLZoMa/replaymod-1.10.2-2.6.9.jar",
+					"version": "ndcLZoMa"
+				},
+				{
+					"minecraft_versions": "1.9.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1rOZN1zo/replaymod-1.9.4-2.6.9.jar",
+					"version": "1rOZN1zo"
+				},
+				{
+					"minecraft_versions": "1.8.9",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/thijJjIp/replaymod-1.8.9-2.6.9.jar",
+					"version": "thijJjIp"
+				},
+				{
+					"minecraft_versions": "1.8",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/iMFoo1IA/replaymod-1.8-2.6.9.jar",
+					"version": "iMFoo1IA"
+				},
+				{
+					"minecraft_versions": [
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.19.1-2.6.8/replaymod-1.19.1-2.6.8.jar",
+					"version": "1IAzC6AX"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.19-2.6.8/replaymod-1.19-2.6.8.jar",
+					"version": "LIVeUIqD"
+				},
+				{
+					"minecraft_versions": [
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.19.1-2.6.7/replaymod-1.19.1-2.6.7.jar",
+					"version": "EsOxUHNK"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.19-2.6.7/replaymod-1.19-2.6.7.jar",
+					"version": "5CxMrid7"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.18.2-2.6.7/replaymod-1.18.2-2.6.7.jar",
+					"version": "8fXhWBcR"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.18.1-2.6.7/replaymod-1.18.1-2.6.7.jar",
+					"version": "d40s9baB"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.17.1-2.6.7/replaymod-1.17.1-2.6.7.jar",
+					"version": "iPTJ3Zg4"
+				},
+				{
+					"minecraft_versions": "1.17",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.17-2.6.7/replaymod-1.17-2.6.7.jar",
+					"version": "yRzXlkbS"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.2",
+						"1.16.3",
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.16.4-2.6.7/replaymod-1.16.4-2.6.7.jar",
+					"version": "2jcrjeH9"
+				},
+				{
+					"minecraft_versions": "1.16.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.16.1-2.6.7/replaymod-1.16.1-2.6.7.jar",
+					"version": "pSeNqPLG"
+				},
+				{
+					"minecraft_versions": "1.15.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.15.2-2.6.7/replaymod-1.15.2-2.6.7.jar",
+					"version": "oB9rCIQ3"
+				},
+				{
+					"minecraft_versions": "1.14.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.14.4-2.6.7/replaymod-1.14.4-2.6.7.jar",
+					"version": "Wa796DiZ"
+				},
+				{
+					"minecraft_versions": "1.12.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.12.2-2.6.7/replaymod-1.12.2-2.6.7.jar",
+					"version": "sXD2DQ4C"
+				},
+				{
+					"minecraft_versions": "1.12.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.12.1-2.6.7/replaymod-1.12.1-2.6.7.jar",
+					"version": "UlwxDwga"
+				},
+				{
+					"minecraft_versions": "1.12",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.12-2.6.7/replaymod-1.12-2.6.7.jar",
+					"version": "WQZaoKq7"
+				},
+				{
+					"minecraft_versions": "1.11.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.11.2-2.6.7/replaymod-1.11.2-2.6.7.jar",
+					"version": "fpD0rrcN"
+				},
+				{
+					"minecraft_versions": "1.11",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.11-2.6.7/replaymod-1.11-2.6.7.jar",
+					"version": "4clpWNTC"
+				},
+				{
+					"minecraft_versions": "1.10.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.10.2-2.6.7/replaymod-1.10.2-2.6.7.jar",
+					"version": "58ltb58q"
+				},
+				{
+					"minecraft_versions": "1.9.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.9.4-2.6.7/replaymod-1.9.4-2.6.7.jar",
+					"version": "sQVYgpOo"
+				},
+				{
+					"minecraft_versions": "1.8.9",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.8.9-2.6.7/replaymod-1.8.9-2.6.7.jar",
+					"version": "Bg7RAHyJ"
+				},
+				{
+					"minecraft_versions": "1.8",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Nv2fQJo5/versions/1.8-2.6.7/replaymod-1.8-2.6.7.jar",
+					"version": "LAdb5qRt"
+				}
+			]
+		}
+	},
+	"meta": {
+		"authors": [
+			"Johni0702"
+		],
+		"categories": [
+			"tools"
+		],
+		"community": "https://discord.gg/5GR7RSb",
+		"description": "A Minecraft Mod to record, relive and share your experience.",
+		"documentation": "https://www.replaymod.com/docs/",
+		"gallery": [],
+		"icon": "https://cdn.modrinth.com/data/Nv2fQJo5/icon.png",
+		"issues": "https://github.com/ReplayMod/ReplayMod/issues",
+		"keywords": [
+			"replay"
+		],
+		"license": "GPL-3.0-or-later",
+		"long_description": "The ReplayMod allows you to record, replay and share your gaming experience.\n\nIt's easy to use, but an incredibly powerful tool. Create perfect Minecraft videos within minutes.\n\nReplay Files are in a lightweight format - an average recording over 1 hour is less than 10 Megabytes large. You can easily share your Replays with your friends simply by sending them the file.\n\nComing with a built-in video creator, the Replay Mod allows everyone to make perfect clips without any external software. The simple User Interface makes it very easy to design awesome Camera Paths.",
+		"name": "ReplayMod",
+		"package_maintainers": [
+			"mcvm"
+		],
+		"source": "https://github.com/ReplayMod/ReplayMod",
+		"support_link": "https://www.patreon.com/replaymod"
+	},
+	"properties": {
+		"modrinth_id": "Nv2fQJo5",
+		"supported_modloaders": [
+			"fabriclike",
+			"forgelike"
+		],
+		"supported_sides": [
+			"client"
+		],
+		"supported_versions": [
+			"1.8",
+			"1.8.9",
+			"1.9.4",
+			"1.10.2",
+			"1.11",
+			"1.11.2",
+			"1.12",
+			"1.12.1",
+			"1.12.2",
+			"1.14.4",
+			"1.15.2",
+			"1.16.1",
+			"1.16.2",
+			"1.16.3",
+			"1.16.4",
+			"1.16.5",
+			"1.17",
+			"1.17.1",
+			"1.18",
+			"1.18.1",
+			"1.18.2",
+			"1.19",
+			"1.19.1",
+			"1.19.2",
+			"1.19.3",
+			"1.19.4",
+			"1.20",
+			"1.20.1",
+			"1.20.2",
+			"1.20.3",
+			"1.20.4"
+		]
+	}
 }

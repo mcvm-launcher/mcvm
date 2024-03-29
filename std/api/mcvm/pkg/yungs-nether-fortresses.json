@@ -1,512 +1,514 @@
 {
-  "addons": {
-    "addon": {
-      "kind": "mod",
-      "versions": [
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "cloth-config",
-              "fabriclike-api",
-              "yungs-api"
-            ],
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/W7R83Bhr/YungsBetterNetherFortresses-1.20.4-Fabric-2.4.2.jar",
-          "version": "W7R83Bhr"
-        },
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/jJn0Zg8g/YungsBetterNetherFortresses-1.20.4-Forge-2.4.2.jar",
-          "version": "jJn0Zg8g"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "cloth-config",
-              "fabriclike-api",
-              "yungs-api"
-            ],
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/FL88RLRu/YungsBetterNetherFortresses-1.20-Fabric-2.0.6.jar",
-          "version": "FL88RLRu"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/2nUEz0zq/YungsBetterNetherFortresses-1.20-Forge-2.0.6.jar",
-          "version": "2nUEz0zq"
-        },
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "cloth-config",
-              "fabriclike-api",
-              "yungs-api"
-            ],
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/lQXMx7kq/YungsBetterNetherFortresses-1.20.4-Fabric-2.4.1.jar",
-          "version": "lQXMx7kq"
-        },
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/wtF2F6Ax/YungsBetterNetherFortresses-1.20.4-Forge-2.4.1.jar",
-          "version": "wtF2F6Ax"
-        },
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "cloth-config",
-              "fabriclike-api",
-              "yungs-api"
-            ],
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/QplnGAIz/YungsBetterNetherFortresses-1.20.4-Fabric-2.4.0.jar",
-          "version": "QplnGAIz"
-        },
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/qqIjSslt/YungsBetterNetherFortresses-1.20.4-Forge-2.4.0.jar",
-          "version": "qqIjSslt"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "cloth-config",
-              "fabriclike-api",
-              "yungs-api"
-            ],
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/lrZS6PH1/YungsBetterNetherFortresses-1.20-Fabric-2.0.5.jar",
-          "version": "lrZS6PH1"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/vKRSJIfJ/YungsBetterNetherFortresses-1.20-Forge-2.0.5.jar",
-          "version": "vKRSJIfJ"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "cloth-config",
-              "fabriclike-api",
-              "yungs-api"
-            ],
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/kuHlZxVW/YungsBetterNetherFortresses-1.20-Fabric-2.0.4.jar",
-          "version": "kuHlZxVW"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/fQyD1cxI/YungsBetterNetherFortresses-1.20-Forge-2.0.4.jar",
-          "version": "fQyD1cxI"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "cloth-config",
-              "fabriclike-api",
-              "yungs-api"
-            ],
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/RmyDSPdb/YungsBetterNetherFortresses-1.20-Fabric-2.0.3.jar",
-          "version": "RmyDSPdb"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/iYszV4T0/YungsBetterNetherFortresses-1.20-Forge-2.0.3.jar",
-          "version": "iYszV4T0"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "cloth-config",
-              "fabriclike-api",
-              "yungs-api"
-            ],
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/YouhzPUf/YungsBetterNetherFortresses-1.20-Fabric-2.0.2.jar",
-          "version": "YouhzPUf"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/449b2DDy/YungsBetterNetherFortresses-1.20-Forge-2.0.2.jar",
-          "version": "449b2DDy"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/9iPMgrMe/YungsBetterNetherFortresses-1.19.2-Forge-1.0.6.jar",
-          "version": "9iPMgrMe"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "fabriclike-api",
-              "yungs-api"
-            ]
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/W4uRBVaV/YungsBetterNetherFortresses-1.19.2-Fabric-1.0.6.jar",
-          "version": "W4uRBVaV"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/f3PibvQR/YungsBetterNetherFortresses-1.19.4-Forge-1.2.0.jar",
-          "version": "f3PibvQR"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/tS9cnHTd/YungsBetterNetherFortresses-1.19.4-Fabric-1.2.0.jar",
-          "version": "tS9cnHTd"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/XzRYWtHN/YungsBetterNetherFortresses-1.18.2-Forge-1.0.0.jar",
-          "version": "XzRYWtHN"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/gTTPcjUR/YungsBetterNetherFortresses-1.18.2-Fabric-1.0.0.jar",
-          "version": "gTTPcjUR"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/N2yKMcSO/YungsBetterNetherFortresses-1.19.3-Fabric-1.1.1.jar",
-          "version": "N2yKMcSO"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/CthwWOrc/YungsBetterNetherFortresses-1.19.3-Forge-1.1.1.jar",
-          "version": "CthwWOrc"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "fabriclike-api",
-              "yungs-api"
-            ]
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/16pSLk6u/YungsBetterNetherFortresses-1.19.2-Fabric-1.0.5.jar",
-          "version": "16pSLk6u"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/CogRXOHi/YungsBetterNetherFortresses-1.19.2-Forge-1.0.5.jar",
-          "version": "CogRXOHi"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "cloth-config",
-              "fabriclike-api",
-              "yungs-api"
-            ],
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/uol0Ji2G/YungsBetterNetherFortresses-1.19.3-Fabric-1.1.0.jar",
-          "version": "uol0Ji2G"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/kWtjzB64/YungsBetterNetherFortresses-1.19.3-Forge-1.1.0.jar",
-          "version": "kWtjzB64"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/KAarwq7Z/YungsBetterNetherFortresses-1.19.2-Forge-1.0.4.jar",
-          "version": "KAarwq7Z"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "cloth-config",
-              "fabriclike-api",
-              "yungs-api"
-            ],
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/NySrIdMV/YungsBetterNetherFortresses-1.19.2-Fabric-1.0.4.jar",
-          "version": "NySrIdMV"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/8Gq5f3b9/YungsBetterNetherFortresses-1.19.2-Forge-1.0.3.jar",
-          "version": "8Gq5f3b9"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "cloth-config",
-              "fabriclike-api",
-              "yungs-api"
-            ],
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/deDT156J/YungsBetterNetherFortresses-1.19.2-Fabric-1.0.3.jar",
-          "version": "deDT156J"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "cloth-config",
-              "fabriclike-api",
-              "yungs-api"
-            ],
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/LC6CBpn9/YungsBetterNetherFortresses-1.19.2-Fabric-1.0.2.jar",
-          "version": "LC6CBpn9"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/Ge5jWFMt/YungsBetterNetherFortresses-1.19.2-Forge-1.0.2.jar",
-          "version": "Ge5jWFMt"
-        }
-      ]
-    }
-  },
-  "meta": {
-    "authors": [
-      "YUNGNICKYOUNG",
-      "Acarii"
-    ],
-    "categories": [
-      "worldgen"
-    ],
-    "community": "https://discord.gg/rns3beq",
-    "description": "A complete redesign of Minecraft's Nether fortresses!",
-    "gallery": [
-      "https://cdn.modrinth.com/data/Z2mXHnxP/images/243291a972d7eb4ab406fe42a77403dc9328521a.png",
-      "https://cdn.modrinth.com/data/Z2mXHnxP/images/53d6867990746adfd9f2ab7e62b707825072a63a.png",
-      "https://cdn.modrinth.com/data/Z2mXHnxP/images/a1342b07e669e3a3bb7bcdd182d11d55b72876b2.png",
-      "https://cdn.modrinth.com/data/Z2mXHnxP/images/d31d5e626c5d8273d9c2afbc3b7ab268184c620e.png",
-      "https://cdn.modrinth.com/data/Z2mXHnxP/images/df4f72afa15c0a7161b712b7bdaa8707e1c502d3.png"
-    ],
-    "icon": "https://cdn.modrinth.com/data/Z2mXHnxP/c89b02a675b204bfbe1d7e494769e425355e23f9.png",
-    "issues": "https://github.com/YUNG-GANG/YUNGs-Better-Fortresses/issues",
-    "keywords": [
-      "yungs"
-    ],
-    "license": "LGPL-3.0-only",
-    "name": "YUNG's Better Nether Fortresses",
-    "package_maintainers": [
-      "mcvm"
-    ],
-    "source": "https://github.com/YUNG-GANG/YUNGs-Better-Fortresses",
-    "support_link": "https://www.patreon.com/yungnickyoung"
-  },
-  "properties": {
-    "modrinth_id": "Z2mXHnxP",
-    "supported_modloaders": [
-      "fabriclike",
-      "forgelike"
-    ],
-    "supported_sides": [
-      "server"
-    ],
-    "supported_versions": [
-      "1.18.2",
-      "1.19.2",
-      "1.19.3",
-      "1.19.4",
-      "1.20",
-      "1.20.1",
-      "1.20.4"
-    ]
-  }
+	"addons": {
+		"addon": {
+			"kind": "mod",
+			"versions": [
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/W7R83Bhr/YungsBetterNetherFortresses-1.20.4-Fabric-2.4.2.jar",
+					"version": "W7R83Bhr"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/jJn0Zg8g/YungsBetterNetherFortresses-1.20.4-Forge-2.4.2.jar",
+					"version": "jJn0Zg8g"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/FL88RLRu/YungsBetterNetherFortresses-1.20-Fabric-2.0.6.jar",
+					"version": "FL88RLRu"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/2nUEz0zq/YungsBetterNetherFortresses-1.20-Forge-2.0.6.jar",
+					"version": "2nUEz0zq"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/lQXMx7kq/YungsBetterNetherFortresses-1.20.4-Fabric-2.4.1.jar",
+					"version": "lQXMx7kq"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/wtF2F6Ax/YungsBetterNetherFortresses-1.20.4-Forge-2.4.1.jar",
+					"version": "wtF2F6Ax"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/QplnGAIz/YungsBetterNetherFortresses-1.20.4-Fabric-2.4.0.jar",
+					"version": "QplnGAIz"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/qqIjSslt/YungsBetterNetherFortresses-1.20.4-Forge-2.4.0.jar",
+					"version": "qqIjSslt"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/lrZS6PH1/YungsBetterNetherFortresses-1.20-Fabric-2.0.5.jar",
+					"version": "lrZS6PH1"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/vKRSJIfJ/YungsBetterNetherFortresses-1.20-Forge-2.0.5.jar",
+					"version": "vKRSJIfJ"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/kuHlZxVW/YungsBetterNetherFortresses-1.20-Fabric-2.0.4.jar",
+					"version": "kuHlZxVW"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/fQyD1cxI/YungsBetterNetherFortresses-1.20-Forge-2.0.4.jar",
+					"version": "fQyD1cxI"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/RmyDSPdb/YungsBetterNetherFortresses-1.20-Fabric-2.0.3.jar",
+					"version": "RmyDSPdb"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/iYszV4T0/YungsBetterNetherFortresses-1.20-Forge-2.0.3.jar",
+					"version": "iYszV4T0"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/YouhzPUf/YungsBetterNetherFortresses-1.20-Fabric-2.0.2.jar",
+					"version": "YouhzPUf"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/449b2DDy/YungsBetterNetherFortresses-1.20-Forge-2.0.2.jar",
+					"version": "449b2DDy"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/9iPMgrMe/YungsBetterNetherFortresses-1.19.2-Forge-1.0.6.jar",
+					"version": "9iPMgrMe"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"fabriclike-api",
+							"yungs-api"
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/W4uRBVaV/YungsBetterNetherFortresses-1.19.2-Fabric-1.0.6.jar",
+					"version": "W4uRBVaV"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/f3PibvQR/YungsBetterNetherFortresses-1.19.4-Forge-1.2.0.jar",
+					"version": "f3PibvQR"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/tS9cnHTd/YungsBetterNetherFortresses-1.19.4-Fabric-1.2.0.jar",
+					"version": "tS9cnHTd"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/XzRYWtHN/YungsBetterNetherFortresses-1.18.2-Forge-1.0.0.jar",
+					"version": "XzRYWtHN"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/gTTPcjUR/YungsBetterNetherFortresses-1.18.2-Fabric-1.0.0.jar",
+					"version": "gTTPcjUR"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/N2yKMcSO/YungsBetterNetherFortresses-1.19.3-Fabric-1.1.1.jar",
+					"version": "N2yKMcSO"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/CthwWOrc/YungsBetterNetherFortresses-1.19.3-Forge-1.1.1.jar",
+					"version": "CthwWOrc"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"fabriclike-api",
+							"yungs-api"
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/16pSLk6u/YungsBetterNetherFortresses-1.19.2-Fabric-1.0.5.jar",
+					"version": "16pSLk6u"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/CogRXOHi/YungsBetterNetherFortresses-1.19.2-Forge-1.0.5.jar",
+					"version": "CogRXOHi"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/uol0Ji2G/YungsBetterNetherFortresses-1.19.3-Fabric-1.1.0.jar",
+					"version": "uol0Ji2G"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/kWtjzB64/YungsBetterNetherFortresses-1.19.3-Forge-1.1.0.jar",
+					"version": "kWtjzB64"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/KAarwq7Z/YungsBetterNetherFortresses-1.19.2-Forge-1.0.4.jar",
+					"version": "KAarwq7Z"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/NySrIdMV/YungsBetterNetherFortresses-1.19.2-Fabric-1.0.4.jar",
+					"version": "NySrIdMV"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/8Gq5f3b9/YungsBetterNetherFortresses-1.19.2-Forge-1.0.3.jar",
+					"version": "8Gq5f3b9"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/deDT156J/YungsBetterNetherFortresses-1.19.2-Fabric-1.0.3.jar",
+					"version": "deDT156J"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/LC6CBpn9/YungsBetterNetherFortresses-1.19.2-Fabric-1.0.2.jar",
+					"version": "LC6CBpn9"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/Ge5jWFMt/YungsBetterNetherFortresses-1.19.2-Forge-1.0.2.jar",
+					"version": "Ge5jWFMt"
+				}
+			]
+		}
+	},
+	"meta": {
+		"authors": [
+			"Acarii",
+			"YUNGNICKYOUNG"
+		],
+		"banner": "https://cdn.modrinth.com/data/Z2mXHnxP/images/df4f72afa15c0a7161b712b7bdaa8707e1c502d3.png",
+		"categories": [
+			"worldgen"
+		],
+		"community": "https://discord.gg/rns3beq",
+		"description": "A complete redesign of Minecraft's Nether fortresses!",
+		"gallery": [
+			"https://cdn.modrinth.com/data/Z2mXHnxP/images/243291a972d7eb4ab406fe42a77403dc9328521a.png",
+			"https://cdn.modrinth.com/data/Z2mXHnxP/images/53d6867990746adfd9f2ab7e62b707825072a63a.png",
+			"https://cdn.modrinth.com/data/Z2mXHnxP/images/a1342b07e669e3a3bb7bcdd182d11d55b72876b2.png",
+			"https://cdn.modrinth.com/data/Z2mXHnxP/images/d31d5e626c5d8273d9c2afbc3b7ab268184c620e.png",
+			"https://cdn.modrinth.com/data/Z2mXHnxP/images/df4f72afa15c0a7161b712b7bdaa8707e1c502d3.png"
+		],
+		"icon": "https://cdn.modrinth.com/data/Z2mXHnxP/c89b02a675b204bfbe1d7e494769e425355e23f9.png",
+		"issues": "https://github.com/YUNG-GANG/YUNGs-Better-Fortresses/issues",
+		"keywords": [
+			"yungs"
+		],
+		"license": "LGPL-3.0-only",
+		"long_description": "<p>\n<img src=\"https://i.imgur.com/tgq23EN.png\" alt=\"YUNG's Better Nether Fortresses\" width=\"1344\" height=\"416/><br />\n<a title=\"Depends on YUNG's API\" href=\"https://modrinth.com/mod/yungs-api\" target=\"_blank\" rel=\"noopener\"><img src=\"https://tinyurl.com/yungsapibadge\" alt=\"Depends on YUNG's API\" width=\"211\" height=\"26\" /></a>&nbsp;<a title=\"Join the YUNG GANG on Discord!\" href=\"https://discord.gg/rns3beq\" target=\"_blank\" rel=\"noopener\"><img src=\"https://tinyurl.com/yungsdiscordbadge2\" alt=\"Join the YUNG GANG on Discord!\" width=\"136\" height=\"28\" /></a>&nbsp;<a title=\"Follow me on Twitter!\" href=\"https://twitter.com/yungnickyoung\" target=\"_blank\" rel=\"noopener\"><img src=\"https://tinyurl.com/yungstwitterbadge3\" alt=\"Follow me on Twitter!\" width=\"104\" height=\"37\" /></a>&nbsp;<a title=\"Subscribe to my YouTube!\" href=\"https://www.youtube.com/yungnickyoung\" target=\"_blank\" rel=\"noopener\"><img src=\"https://tinyurl.com/yungsyoutubebadge\" alt=\"Subscribe to my YouTube!\" width=\"80\" height=\"30\" /></a>&nbsp;<a title=\"Support me on Patreon!\" href=\"https://patreon.com/yungnickyoung\" target=\"_blank\" rel=\"noopener\"><img src=\"https://tinyurl.com/yungspatreonbadge\" alt=\"Support me on Patreon!\" width=\"138\" height=\"28\" /></a><br />\n<img src=\"https://i.imgur.com/brWx8ey.png\" alt=\"What is this?\" width=\"1125\" height=\"59\" /><br />\n<b>A complete overhaul of Minecraft's Nether fortresses!</b> YUNG's Better Nether Fortresses completely redesigns Nether fortresses from the ground up. Compared to vanilla, Better Fortresses are much larger, more complex, and more rewarding. Each fortress is comprised of three parts — the bridge networks, the Keep, and the Lava Halls that extend deep underground.\n</p>\n<p>\n<b>YUNG's Better Nether Fortresses also includes built-in Create compatibility!</b> If you're using Create, certain parts of the fortress have a chance of spawning using Create pieces. Note that this is an optional feature — Create is not required to run this mod. Be sure to use the latest release of Create for your Minecraft version! Note that this is for 1.19.2+ only.\n</p>\n<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/omRqM-gZBAg\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>\n<p>\n<img src=\"https://i.imgur.com/3wUhXJJ.png\" alt=\"Compatibility\" width=\"1125\" height=\"59\" /><br />\nYUNG's Better Nether Fortresses is intended to be fully compatible with every worldgen mod, including:\n</p>\n<ul>\n<li><a title=\"YUNG's Better Ocean Monuments\" href=\"https://modrinth.com/mod/yungs-better-ocean-monuments\" target=\"_blank\" rel=\"noopener\">YUNG's Ocean Monuments</a></li>\n<li><a title=\"YUNG's Better Witch Huts\" href=\"https://modrinth.com/mod/yungs-better-witch-huts\" target=\"_blank\" rel=\"noopener\">YUNG's Better Witch Huts</a></li>\n<li><a title=\"YUNG's Extras\" href=\"https://modrinth.com/mod/yungs-extras\" target=\"_blank\" rel=\"noopener\">YUNG's Extras</a></li>\n<li>Infernal Expansion, Better Nether & other Nether biome mods</li>\n<li>Apocalyptic Fortress: The AF fortress will spawn alongside the Better Fortress</li>\n<li>Bygone Nether: Better Fortresses will spawn instead of Bygone Nether's enhanced vanilla fortress</li>\n</ul>\n<p><img style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://i.imgur.com/a49IMQJ.png\" /><br />\n<a title=\"Get 25% off your server with code YUNGNICKYOUNG at Bisect Hosting!\" href=\"https://bisecthosting.com/yung\" target=\"_blank\" rel=\"noopener noreferrer\"><img src=\"https://i.imgur.com/nQRs7ZP.png\" alt=\"Use code YUNGNICKYOUNG with Bisect Hosting for 25% off!\" width=\"1344\" height=\"400\" /></a></p>",
+		"name": "YUNG's Better Nether Fortresses",
+		"package_maintainers": [
+			"mcvm"
+		],
+		"source": "https://github.com/YUNG-GANG/YUNGs-Better-Fortresses",
+		"support_link": "https://www.patreon.com/yungnickyoung"
+	},
+	"properties": {
+		"modrinth_id": "Z2mXHnxP",
+		"supported_modloaders": [
+			"fabriclike",
+			"forgelike"
+		],
+		"supported_sides": [
+			"server"
+		],
+		"supported_versions": [
+			"1.18.2",
+			"1.19.2",
+			"1.19.3",
+			"1.19.4",
+			"1.20",
+			"1.20.1",
+			"1.20.4"
+		]
+	}
 }

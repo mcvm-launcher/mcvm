@@ -1,248 +1,249 @@
 {
-  "addons": {
-    "addon": {
-      "kind": "mod",
-      "versions": [
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": [
-            "forge",
-            "neoforged"
-          ],
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/VKligEsm/rubidium-mc1.20.1-0.7.1.jar",
-          "version": "VKligEsm"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/bmmEZ4mh/rubidium-mc1.19.2-0.6.2c.jar",
-          "version": "bmmEZ4mh"
-        },
-        {
-          "minecraft_versions": "1.16.5",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/YDAuLUY8/rubidium-mc1.16.5-0.2.13.jar",
-          "version": "YDAuLUY8"
-        },
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": [
-            "forge",
-            "neoforged"
-          ],
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/KoZMxzwB/rubidium-mc1.20.1-0.7.0a.jar",
-          "version": "KoZMxzwB"
-        },
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": [
-            "forge",
-            "neoforged"
-          ],
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/17IcFh9q/rubidium-mc1.20.1-0.7.0.jar",
-          "version": "17IcFh9q"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": [
-            "forge",
-            "neoforged"
-          ],
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/iLEHOlRR/rubidium-0.6.5.jar",
-          "version": "iLEHOlRR"
-        },
-        {
-          "minecraft_versions": "1.16.5",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/vkRZleVy/rubidium-0.2.12.jar",
-          "version": "vkRZleVy"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/6YKudvQ5/rubidium-0.6.2b.jar",
-          "version": "6YKudvQ5"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/9DCa1IzX/rubidium-0.5.6.jar",
-          "version": "9DCa1IzX"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/uqcWRM8W/rubidium-0.5.5.jar",
-          "version": "uqcWRM8W"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/Hlexif59/rubidium-0.6.2a.jar",
-          "version": "Hlexif59"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/lCbMhmSa/rubidium-0.6.4.jar",
-          "version": "lCbMhmSa"
-        },
-        {
-          "minecraft_versions": "1.16.5",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/QrS8ZpUH/rubidium-0.2.11.jar",
-          "version": "QrS8ZpUH"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/ySmWhbfP/rubidium-0.6.3.jar",
-          "version": "ySmWhbfP"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/qSw3a67v/rubidium-0.6.2.jar",
-          "version": "qSw3a67v"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/v1Byy3O4/rubidium-0.5.4.jar",
-          "version": "v1Byy3O4"
-        },
-        {
-          "minecraft_versions": "1.16.5",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/JEoSJNGo/rubidium-0.2.10.jar",
-          "version": "JEoSJNGo"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2"
-          ],
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/0.6.1/rubidium-0.6.1.jar",
-          "version": "w6asrex4"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/0.5.3a/rubidium-0.5.3a.jar",
-          "version": "ibGbqBbP"
-        },
-        {
-          "minecraft_versions": "1.16.5",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/0.2.9/rubidium-0.2.9.jar",
-          "version": "WTmxKPaw"
-        },
-        {
-          "minecraft_versions": "1.16.5",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/0.2.8/rubidium-1.16.5-0.2.8.jar",
-          "version": "c4RHSmo9"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/0.5.3/rubidium-0.5.3.jar",
-          "version": "TnN4CV2Q"
-        },
-        {
-          "minecraft_versions": "1.16.5",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/0.2.7/rubidium-0.2.7.jar",
-          "version": "V7JZgyIU"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/0.5.2a/rubidium-0.5.2a.jar",
-          "version": "suKMGRbi"
-        },
-        {
-          "minecraft_versions": "1.19",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/0.6.0a/rubidium-0.6.0a.jar",
-          "version": "52gcrxOy"
-        }
-      ]
-    }
-  },
-  "meta": {
-    "authors": [
-      "Asek3"
-    ],
-    "categories": [
-      "optimization",
-      "technical"
-    ],
-    "community": "https://discord.com/invite/UCsyn5RS4s",
-    "description": "Unofficial Fork of CaffeineMC's \"Sodium\", made to work with FML",
-    "gallery": [],
-    "icon": "https://cdn.modrinth.com/data/4ZqxOvjD/icon.png",
-    "issues": "https://github.com/Asek3/Rubidium/issues",
-    "keywords": [
-      "graphics"
-    ],
-    "license": "LGPL-3.0-only",
-    "name": "Rubidium",
-    "package_maintainers": [
-      "mcvm"
-    ],
-    "source": "https://github.com/Asek3/Rubidium",
-    "support_link": "https://www.patreon.com/asek3"
-  },
-  "properties": {
-    "modrinth_id": "4ZqxOvjD",
-    "open_source": true,
-    "supported_modloaders": [
-      "forgelike"
-    ],
-    "supported_sides": [
-      "client"
-    ],
-    "supported_versions": [
-      "1.16.5",
-      "1.18.2",
-      "1.19",
-      "1.19.1",
-      "1.19.2",
-      "1.19.3",
-      "1.19.4",
-      "1.20",
-      "1.20.1"
-    ]
-  }
+	"addons": {
+		"addon": {
+			"kind": "mod",
+			"versions": [
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/VKligEsm/rubidium-mc1.20.1-0.7.1.jar",
+					"version": "VKligEsm"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/bmmEZ4mh/rubidium-mc1.19.2-0.6.2c.jar",
+					"version": "bmmEZ4mh"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/YDAuLUY8/rubidium-mc1.16.5-0.2.13.jar",
+					"version": "YDAuLUY8"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/KoZMxzwB/rubidium-mc1.20.1-0.7.0a.jar",
+					"version": "KoZMxzwB"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/17IcFh9q/rubidium-mc1.20.1-0.7.0.jar",
+					"version": "17IcFh9q"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/iLEHOlRR/rubidium-0.6.5.jar",
+					"version": "iLEHOlRR"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/vkRZleVy/rubidium-0.2.12.jar",
+					"version": "vkRZleVy"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/6YKudvQ5/rubidium-0.6.2b.jar",
+					"version": "6YKudvQ5"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/9DCa1IzX/rubidium-0.5.6.jar",
+					"version": "9DCa1IzX"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/uqcWRM8W/rubidium-0.5.5.jar",
+					"version": "uqcWRM8W"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/Hlexif59/rubidium-0.6.2a.jar",
+					"version": "Hlexif59"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/lCbMhmSa/rubidium-0.6.4.jar",
+					"version": "lCbMhmSa"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/QrS8ZpUH/rubidium-0.2.11.jar",
+					"version": "QrS8ZpUH"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/ySmWhbfP/rubidium-0.6.3.jar",
+					"version": "ySmWhbfP"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/qSw3a67v/rubidium-0.6.2.jar",
+					"version": "qSw3a67v"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/v1Byy3O4/rubidium-0.5.4.jar",
+					"version": "v1Byy3O4"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/JEoSJNGo/rubidium-0.2.10.jar",
+					"version": "JEoSJNGo"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/0.6.1/rubidium-0.6.1.jar",
+					"version": "w6asrex4"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/0.5.3a/rubidium-0.5.3a.jar",
+					"version": "ibGbqBbP"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/0.2.9/rubidium-0.2.9.jar",
+					"version": "WTmxKPaw"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/0.2.8/rubidium-1.16.5-0.2.8.jar",
+					"version": "c4RHSmo9"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/0.5.3/rubidium-0.5.3.jar",
+					"version": "TnN4CV2Q"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/0.2.7/rubidium-0.2.7.jar",
+					"version": "V7JZgyIU"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/0.5.2a/rubidium-0.5.2a.jar",
+					"version": "suKMGRbi"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4ZqxOvjD/versions/0.6.0a/rubidium-0.6.0a.jar",
+					"version": "52gcrxOy"
+				}
+			]
+		}
+	},
+	"meta": {
+		"authors": [
+			"Asek3"
+		],
+		"categories": [
+			"optimization",
+			"technical"
+		],
+		"community": "https://discord.com/invite/UCsyn5RS4s",
+		"description": "Unofficial Fork of CaffeineMC's \"Sodium\", made to work with FML",
+		"gallery": [],
+		"icon": "https://cdn.modrinth.com/data/4ZqxOvjD/icon.png",
+		"issues": "https://github.com/Asek3/Rubidium/issues",
+		"keywords": [
+			"graphics"
+		],
+		"license": "LGPL-3.0-only",
+		"long_description": "## **Rubidium is an Unofficial Fork of CaffeineMC's \"Sodium\", made to work with Forge Mod Loader.**\n\n\n# Features\n\nRubidium contains all the features of the classic Sodium.\n<details>\n  <summary>Features</summary>\n  \n- A modern OpenGL rendering pipeline for chunk rendering that takes advantage of multi-draw techniques, allowing for a significant reduction in CPU overhead (~90%) when rendering the world. This can make a huge difference to frame rates for most computers that are not bottle-necked by the GPU or other components. Even if your GPU can't keep up, you'll experience much more stable frame times thanks to the CPU being able to work on other rendering tasks while it waits.\n- Vertex data for rendered chunks is made much more compact, allowing for video memory and bandwidth requirements to be cut by almost 40%.\nNearby block updates now take advantage of multi-threading, greatly reducing lag spikes caused by chunks needing to be updated.\n- Chunk faces which are not visible (or facing away from the camera) are culled very early in the rendering process, eliminating a ton of geometry that would have to be processed on the GPU only to be immediately discarded. For integrated GPUs, this can greatly reduce memory bandwidth requirements and provide a modest speedup even when GPU-bound.\n- Plentiful optimizations for chunk loading and block rendering, making chunk loading significantly faster and less damaging to frame rates.\n- Many optimizations for vertex building and matrix transformations, speeding up block entity, mob, and item rendering significantly for when you get carried away placing too many chests in one room.\n- Many improvements to how the game manages memory and allocates objects, which in turn reduces memory consumption and lag spikes caused by garbage collector activity.\n- Many graphical fixes for smooth lighting effects, making the game run better while still applying a healthy amount of optimization.\n- Smooth lighting for fluids and other special blocks.\n- Smooth biome blending for blocks and fluids, providing greatly improved graphical quality that is significantly less computationally intensive.\n- Animated textures which are not visible in the world are not updated, speeding up texture updating on most hardware (especially AMD cards.)\n  \n</details>",
+		"name": "Rubidium",
+		"package_maintainers": [
+			"mcvm"
+		],
+		"source": "https://github.com/Asek3/Rubidium",
+		"support_link": "https://www.patreon.com/asek3"
+	},
+	"properties": {
+		"modrinth_id": "4ZqxOvjD",
+		"open_source": true,
+		"supported_modloaders": [
+			"forgelike"
+		],
+		"supported_sides": [
+			"client"
+		],
+		"supported_versions": [
+			"1.16.5",
+			"1.18.2",
+			"1.19",
+			"1.19.1",
+			"1.19.2",
+			"1.19.3",
+			"1.19.4",
+			"1.20",
+			"1.20.1"
+		]
+	}
 }

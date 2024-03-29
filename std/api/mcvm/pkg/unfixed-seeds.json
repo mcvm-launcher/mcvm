@@ -1,69 +1,70 @@
 {
-  "addons": {
-    "addon": {
-      "kind": "mod",
-      "versions": [
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/BMKSAGRn/versions/TDwrdjSl/unfixed-seeds-1.0.2.jar",
-          "version": "TDwrdjSl"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/BMKSAGRn/versions/iXIOdIoV/unfixed-seeds-1.0.1.jar",
-          "version": "iXIOdIoV"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/BMKSAGRn/versions/36sR4oUt/unfixed-seeds-1.0.jar",
-          "version": "36sR4oUt"
-        }
-      ]
-    }
-  },
-  "meta": {
-    "authors": [
-      "Apollo"
-    ],
-    "categories": [
-      "library",
-      "technical",
-      "worldgen"
-    ],
-    "description": "Allows dimension files in datapacks to use the world seed instead of a fixed seed",
-    "gallery": [],
-    "icon": "https://cdn.modrinth.com/data/BMKSAGRn/075e1e394eab167d83f5e37a90fe1cb82db222fe.png",
-    "issues": "https://github.com/ApolloDatapacks/unfixed-seeds/issues",
-    "keywords": [
-      "seed"
-    ],
-    "license": "CC0-1.0",
-    "name": "Unfixed Seeds",
-    "package_maintainers": [
-      "mcvm"
-    ],
-    "source": "https://github.com/ApolloDatapacks/unfixed-seeds",
-    "support_link": "https://ko-fi.com/apollodev"
-  },
-  "properties": {
-    "modrinth_id": "BMKSAGRn",
-    "supported_modloaders": [
-      "fabriclike"
-    ],
-    "supported_sides": [
-      "server"
-    ],
-    "supported_versions": [
-      "1.18.2"
-    ]
-  }
+	"addons": {
+		"addon": {
+			"kind": "mod",
+			"versions": [
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/BMKSAGRn/versions/TDwrdjSl/unfixed-seeds-1.0.2.jar",
+					"version": "TDwrdjSl"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/BMKSAGRn/versions/iXIOdIoV/unfixed-seeds-1.0.1.jar",
+					"version": "iXIOdIoV"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/BMKSAGRn/versions/36sR4oUt/unfixed-seeds-1.0.jar",
+					"version": "36sR4oUt"
+				}
+			]
+		}
+	},
+	"meta": {
+		"authors": [
+			"Apollo"
+		],
+		"categories": [
+			"library",
+			"technical",
+			"worldgen"
+		],
+		"description": "Allows dimension files in datapacks to use the world seed instead of a fixed seed",
+		"gallery": [],
+		"icon": "https://cdn.modrinth.com/data/BMKSAGRn/075e1e394eab167d83f5e37a90fe1cb82db222fe.png",
+		"issues": "https://github.com/ApolloDatapacks/unfixed-seeds/issues",
+		"keywords": [
+			"seed"
+		],
+		"license": "CC0-1.0",
+		"long_description": "This mod allows world generation datapacks that use dimension files to use the world seed instead of a fixed world seed. Worldgen datapack developers don't have to do anything different than normal; the mod will automatically scrap the seed in the dimension file.",
+		"name": "Unfixed Seeds",
+		"package_maintainers": [
+			"mcvm"
+		],
+		"source": "https://github.com/ApolloDatapacks/unfixed-seeds",
+		"support_link": "https://ko-fi.com/apollodev"
+	},
+	"properties": {
+		"modrinth_id": "BMKSAGRn",
+		"supported_modloaders": [
+			"fabriclike"
+		],
+		"supported_sides": [
+			"server"
+		],
+		"supported_versions": [
+			"1.18.2"
+		]
+	}
 }

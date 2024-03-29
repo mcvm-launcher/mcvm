@@ -1,153 +1,154 @@
 {
-  "addons": {
-    "addon": {
-      "kind": "mod",
-      "versions": [
-        {
-          "minecraft_versions": [
-            "1.19.4",
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/aRnIEV0F/versions/DFxVCaiC/bendy-lib-fabric-4.0.0.jar",
-          "version": "DFxVCaiC"
-        },
-        {
-          "minecraft_versions": [
-            "1.19.4",
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/aRnIEV0F/versions/df4Yfl6J/bendy-lib-forge-4.0.0.jar",
-          "version": "df4Yfl6J"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/aRnIEV0F/versions/lOyMrcXN/bendy-lib-forge-3.0.0.jar",
-          "version": "lOyMrcXN"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/aRnIEV0F/versions/QnIwFYBc/bendy-lib-fabric-3.0.0.jar",
-          "version": "QnIwFYBc"
-        },
-        {
-          "minecraft_versions": [
-            "1.16.4",
-            "1.16.5"
-          ],
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/aRnIEV0F/versions/1.2.1-fabric/bendy-lib-fabric-1.2.1.jar",
-          "version": "VLr7z7kq"
-        },
-        {
-          "minecraft_versions": [
-            "1.17",
-            "1.17.1",
-            "1.18",
-            "1.18.1",
-            "1.18.2",
-            "1.19",
-            "1.19.1",
-            "1.19.2"
-          ],
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/aRnIEV0F/versions/2.1.1-fabric/bendy-lib-fabric-2.1.1.jar",
-          "version": "lXlRe0jH"
-        },
-        {
-          "minecraft_versions": [
-            "1.17",
-            "1.17.1",
-            "1.18",
-            "1.18.1",
-            "1.18.2",
-            "1.19",
-            "1.19.1",
-            "1.19.2"
-          ],
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/aRnIEV0F/versions/2.1.1-forge/bendy-lib-forge-2.1.1.jar",
-          "version": "Sbjqwdm8"
-        },
-        {
-          "minecraft_versions": [
-            "1.16.4",
-            "1.16.5"
-          ],
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/aRnIEV0F/versions/1.2.1-forge/bendy-lib-forge-1.2.1.jar",
-          "version": "j2x8LByV"
-        }
-      ]
-    }
-  },
-  "meta": {
-    "authors": [
-      "KosmX"
-    ],
-    "categories": [
-      "library",
-      "technical"
-    ],
-    "description": "model part bending library",
-    "gallery": [],
-    "issues": "https://github.com/KosmX/bendy-lib/issues",
-    "license": "MIT",
-    "name": "bendy-lib",
-    "package_maintainers": [
-      "mcvm"
-    ],
-    "source": "https://github.com/KosmX/bendy-lib"
-  },
-  "properties": {
-    "modrinth_id": "aRnIEV0F",
-    "supported_modloaders": [
-      "forgelike",
-      "fabriclike"
-    ],
-    "supported_sides": [
-      "client"
-    ],
-    "supported_versions": [
-      "1.16.4",
-      "1.16.5",
-      "1.17",
-      "1.17.1",
-      "1.18",
-      "1.18.1",
-      "1.18.2",
-      "1.19",
-      "1.19.1",
-      "1.19.2",
-      "1.19.3",
-      "1.19.4",
-      "1.20",
-      "1.20.1"
-    ]
-  }
+	"addons": {
+		"addon": {
+			"kind": "mod",
+			"versions": [
+				{
+					"minecraft_versions": [
+						"1.19.4",
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/aRnIEV0F/versions/DFxVCaiC/bendy-lib-fabric-4.0.0.jar",
+					"version": "DFxVCaiC"
+				},
+				{
+					"minecraft_versions": [
+						"1.19.4",
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/aRnIEV0F/versions/df4Yfl6J/bendy-lib-forge-4.0.0.jar",
+					"version": "df4Yfl6J"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/aRnIEV0F/versions/lOyMrcXN/bendy-lib-forge-3.0.0.jar",
+					"version": "lOyMrcXN"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/aRnIEV0F/versions/QnIwFYBc/bendy-lib-fabric-3.0.0.jar",
+					"version": "QnIwFYBc"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/aRnIEV0F/versions/1.2.1-fabric/bendy-lib-fabric-1.2.1.jar",
+					"version": "VLr7z7kq"
+				},
+				{
+					"minecraft_versions": [
+						"1.17",
+						"1.17.1",
+						"1.18",
+						"1.18.1",
+						"1.18.2",
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/aRnIEV0F/versions/2.1.1-fabric/bendy-lib-fabric-2.1.1.jar",
+					"version": "lXlRe0jH"
+				},
+				{
+					"minecraft_versions": [
+						"1.17",
+						"1.17.1",
+						"1.18",
+						"1.18.1",
+						"1.18.2",
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/aRnIEV0F/versions/2.1.1-forge/bendy-lib-forge-2.1.1.jar",
+					"version": "Sbjqwdm8"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/aRnIEV0F/versions/1.2.1-forge/bendy-lib-forge-1.2.1.jar",
+					"version": "j2x8LByV"
+				}
+			]
+		}
+	},
+	"meta": {
+		"authors": [
+			"KosmX"
+		],
+		"categories": [
+			"library",
+			"technical"
+		],
+		"description": "model part bending library",
+		"gallery": [],
+		"issues": "https://github.com/KosmX/bendy-lib/issues",
+		"license": "MIT",
+		"long_description": "This mod does not do anything on its own but let other mods to bend model parts.  \n\nIt's lightweight, mod devs may include it in their project.  \n\nInstructions for developers: https://github.com/KosmX/bendy-lib",
+		"name": "bendy-lib",
+		"package_maintainers": [
+			"mcvm"
+		],
+		"source": "https://github.com/KosmX/bendy-lib"
+	},
+	"properties": {
+		"modrinth_id": "aRnIEV0F",
+		"supported_modloaders": [
+			"forgelike",
+			"fabriclike"
+		],
+		"supported_sides": [
+			"client"
+		],
+		"supported_versions": [
+			"1.16.4",
+			"1.16.5",
+			"1.17",
+			"1.17.1",
+			"1.18",
+			"1.18.1",
+			"1.18.2",
+			"1.19",
+			"1.19.1",
+			"1.19.2",
+			"1.19.3",
+			"1.19.4",
+			"1.20",
+			"1.20.1"
+		]
+	}
 }

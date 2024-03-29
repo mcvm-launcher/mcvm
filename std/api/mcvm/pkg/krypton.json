@@ -1,210 +1,211 @@
 {
-  "addons": {
-    "addon": {
-      "kind": "mod",
-      "versions": [
-        {
-          "minecraft_versions": [
-            "1.20.2",
-            "1.20.3",
-            "1.20.4"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/fQEb0iXm/versions/bRcuOnao/krypton-0.2.6.jar",
-          "version": "bRcuOnao"
-        },
-        {
-          "minecraft_versions": [
-            "1.20.2",
-            "1.20.3",
-            "1.20.4"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/fQEb0iXm/versions/X2k7QAQS/krypton-0.2.5.jar",
-          "version": "X2k7QAQS"
-        },
-        {
-          "minecraft_versions": [
-            "1.20.2",
-            "1.20.3",
-            "1.20.4"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/fQEb0iXm/versions/cQ60Ouax/krypton-0.2.4.jar",
-          "version": "cQ60Ouax"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/fQEb0iXm/versions/jiDwS0W1/krypton-0.2.3.jar",
-          "version": "jiDwS0W1"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/fQEb0iXm/versions/Tncui9tU/krypton-0.2.2.jar",
-          "version": "Tncui9tU"
-        },
-        {
-          "minecraft_versions": [
-            "1.19.1",
-            "1.19.2",
-            "1.19.3"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/fQEb0iXm/versions/0.2.1/krypton-0.2.1.jar",
-          "version": "vx0mZa04"
-        },
-        {
-          "minecraft_versions": "1.19",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/fQEb0iXm/versions/0.2.0/krypton-0.2.0.jar",
-          "version": "UJ6FlFnK"
-        },
-        {
-          "minecraft_versions": [
-            "1.18.1",
-            "1.18.2"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/fQEb0iXm/versions/0.1.9/krypton-0.1.9.jar",
-          "version": "vJQ7plH2"
-        },
-        {
-          "minecraft_versions": [
-            "1.18.1",
-            "1.18.2"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/fQEb0iXm/versions/0.1.7/krypton-0.1.7.jar",
-          "version": "QmrcLtH3"
-        },
-        {
-          "minecraft_versions": "1.18.1",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/fQEb0iXm/versions/0.1.6/krypton-0.1.6.jar",
-          "version": "kCiWZ1wv"
-        },
-        {
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/fQEb0iXm/versions/0.1.5/krypton-0.1.5.jar",
-          "version": "AXYWaIE8"
-        },
-        {
-          "minecraft_versions": "1.17.1",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/fQEb0iXm/versions/0.1.4/krypton-0.1.4.jar",
-          "version": "PGovBIXq"
-        },
-        {
-          "minecraft_versions": "1.17",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/fQEb0iXm/versions/0.1.3/krypton-0.1.3.jar",
-          "version": "Ff90AgU6"
-        },
-        {
-          "minecraft_versions": [
-            "1.16.2",
-            "1.16.3",
-            "1.16.4",
-            "1.16.5"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/fQEb0iXm/versions/0.1.2/krypton-0.1.2.jar",
-          "version": "7AwqDL7J"
-        },
-        {
-          "minecraft_versions": [
-            "1.16.2",
-            "1.16.3",
-            "1.16.4",
-            "1.16.5"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/fQEb0iXm/versions/0.1.1/krypton-0.1.1.jar",
-          "version": "19624YsD"
-        },
-        {
-          "minecraft_versions": [
-            "1.16.2",
-            "1.16.3",
-            "1.16.4"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/fQEb0iXm/versions/0.1.0/krypton-0.1.0.jar",
-          "version": "tO4HJpLA"
-        }
-      ]
-    }
-  },
-  "meta": {
-    "authors": [
-      "astei"
-    ],
-    "categories": [
-      "optimization",
-      "technical"
-    ],
-    "community": "https://discord.gg/RUGArxEQ8J",
-    "description": "A mod to optimize the Minecraft networking stack",
-    "gallery": [],
-    "icon": "https://cdn.modrinth.com/data/fQEb0iXm/icon.png",
-    "issues": "https://github.com/astei/krypton/issues",
-    "license": "LGPL-3.0-only",
-    "name": "Krypton",
-    "package_maintainers": [
-      "mcvm"
-    ],
-    "source": "https://github.com/astei/krypton",
-    "support_link": "https://github.com/sponsors/astei"
-  },
-  "properties": {
-    "modrinth_id": "fQEb0iXm",
-    "supported_modloaders": [
-      "fabriclike"
-    ],
-    "supported_sides": [
-      "client",
-      "server"
-    ],
-    "supported_versions": [
-      "1.16.2",
-      "1.16.3",
-      "1.16.4",
-      "1.16.5",
-      "1.17",
-      "1.17.1",
-      "1.18.1",
-      "1.18.2",
-      "1.19",
-      "1.19.1",
-      "1.19.2",
-      "1.19.3",
-      "1.19.4",
-      "1.20",
-      "1.20.1",
-      "1.20.2",
-      "1.20.3",
-      "1.20.4"
-    ]
-  }
+	"addons": {
+		"addon": {
+			"kind": "mod",
+			"versions": [
+				{
+					"minecraft_versions": [
+						"1.20.2",
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fQEb0iXm/versions/bRcuOnao/krypton-0.2.6.jar",
+					"version": "bRcuOnao"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.2",
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fQEb0iXm/versions/X2k7QAQS/krypton-0.2.5.jar",
+					"version": "X2k7QAQS"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.2",
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fQEb0iXm/versions/cQ60Ouax/krypton-0.2.4.jar",
+					"version": "cQ60Ouax"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fQEb0iXm/versions/jiDwS0W1/krypton-0.2.3.jar",
+					"version": "jiDwS0W1"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fQEb0iXm/versions/Tncui9tU/krypton-0.2.2.jar",
+					"version": "Tncui9tU"
+				},
+				{
+					"minecraft_versions": [
+						"1.19.1",
+						"1.19.2",
+						"1.19.3"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fQEb0iXm/versions/0.2.1/krypton-0.2.1.jar",
+					"version": "vx0mZa04"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fQEb0iXm/versions/0.2.0/krypton-0.2.0.jar",
+					"version": "UJ6FlFnK"
+				},
+				{
+					"minecraft_versions": [
+						"1.18.1",
+						"1.18.2"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fQEb0iXm/versions/0.1.9/krypton-0.1.9.jar",
+					"version": "vJQ7plH2"
+				},
+				{
+					"minecraft_versions": [
+						"1.18.1",
+						"1.18.2"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fQEb0iXm/versions/0.1.7/krypton-0.1.7.jar",
+					"version": "QmrcLtH3"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fQEb0iXm/versions/0.1.6/krypton-0.1.6.jar",
+					"version": "kCiWZ1wv"
+				},
+				{
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fQEb0iXm/versions/0.1.5/krypton-0.1.5.jar",
+					"version": "AXYWaIE8"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fQEb0iXm/versions/0.1.4/krypton-0.1.4.jar",
+					"version": "PGovBIXq"
+				},
+				{
+					"minecraft_versions": "1.17",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fQEb0iXm/versions/0.1.3/krypton-0.1.3.jar",
+					"version": "Ff90AgU6"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.2",
+						"1.16.3",
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fQEb0iXm/versions/0.1.2/krypton-0.1.2.jar",
+					"version": "7AwqDL7J"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.2",
+						"1.16.3",
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fQEb0iXm/versions/0.1.1/krypton-0.1.1.jar",
+					"version": "19624YsD"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.2",
+						"1.16.3",
+						"1.16.4"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fQEb0iXm/versions/0.1.0/krypton-0.1.0.jar",
+					"version": "tO4HJpLA"
+				}
+			]
+		}
+	},
+	"meta": {
+		"authors": [
+			"astei"
+		],
+		"categories": [
+			"optimization",
+			"technical"
+		],
+		"community": "https://discord.gg/RUGArxEQ8J",
+		"description": "A mod to optimize the Minecraft networking stack",
+		"gallery": [],
+		"icon": "https://cdn.modrinth.com/data/fQEb0iXm/icon.png",
+		"issues": "https://github.com/astei/krypton/issues",
+		"license": "LGPL-3.0-only",
+		"long_description": "## Warning\n\n**Krypton is a work-in-progress.** I do not provide any guarantees about its stability, compatibility with other mods, or support for every possible setup out there. Support for this mod is provided on a \"best-effort\" basis. This is not my day job, it is a hobby growing out of related work I've done.\n\n## Sponsor Me!\n\nDid this mod make your server playable? [Chip in a bit of money](https://github.com/sponsors/astei) so I can continue developing it.\n\n## What's Krypton?\n\nKrypton (from Ancient Greek _kryptos_, \"the hidden one\") is a Fabric mod that attempts to optimize the Minecraft networking stack. It derives from work\ndone in the [Velocity](https://velocitypowered.com/) and [Tuinity](https://github.com/Spottedleaf/Tuinity)\nprojects.\n\nKrypton contains several optimizations, including:\n\n* **Highly optimized Netty handlers** derived from the [Velocity](https://velocitypowered.com) proxy, which I am the developer of. These handlers have seen real-world usage and extensive profiling, and strategically deploy native code where it makes the most sense.\n* **Flush consolidation** to lower server CPU usage (and reducing the impact from hardware security vulnerabilities which exploit speculative execution) and lower server tick times.\n* **Micro-optimizations** to reduce memory usage and improve packet serialization speeds.\n\n[Please join my Discord](https://discord.gg/RUGArxEQ8J) to discuss the mod or get support.\n\n## Compatibility\n\nKrypton should work anywhere where a Minecraft can run &mdash; naturally, however, it is tuned for Linux.\n\nI try to ensure that Krypton will work with the Fabric API, Lithium, and Sodium. Support beyond these mods is provided on a best effort basis.",
+		"name": "Krypton",
+		"package_maintainers": [
+			"mcvm"
+		],
+		"source": "https://github.com/astei/krypton",
+		"support_link": "https://github.com/sponsors/astei"
+	},
+	"properties": {
+		"modrinth_id": "fQEb0iXm",
+		"supported_modloaders": [
+			"fabriclike"
+		],
+		"supported_sides": [
+			"client",
+			"server"
+		],
+		"supported_versions": [
+			"1.16.2",
+			"1.16.3",
+			"1.16.4",
+			"1.16.5",
+			"1.17",
+			"1.17.1",
+			"1.18.1",
+			"1.18.2",
+			"1.19",
+			"1.19.1",
+			"1.19.2",
+			"1.19.3",
+			"1.19.4",
+			"1.20",
+			"1.20.1",
+			"1.20.2",
+			"1.20.3",
+			"1.20.4"
+		]
+	}
 }

@@ -1,584 +1,585 @@
 {
-  "addons": {
-    "addon": {
-      "kind": "mod",
-      "versions": [
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/JMtc0mTS/Patchouli-1.20.1-84-FORGE.jar",
-          "version": "JMtc0mTS"
-        },
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/Y6tuH1cn/Patchouli-1.20.1-84-FABRIC.jar",
-          "version": "Y6tuH1cn"
-        },
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/WLoCqsiV/Patchouli-1.20.1-83-FORGE.jar",
-          "version": "WLoCqsiV"
-        },
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/ORmcsfvl/Patchouli-1.20.1-83-FABRIC.jar",
-          "version": "ORmcsfvl"
-        },
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/73JPyBPI/Patchouli-1.20.1-82-FORGE.jar",
-          "version": "73JPyBPI"
-        },
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/Up1ZGZ1f/Patchouli-1.20.1-82-FABRIC.jar",
-          "version": "Up1ZGZ1f"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/bxlh2STX/Patchouli-1.19.4-79.1-FORGE.jar",
-          "version": "bxlh2STX"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/qXopWA1k/Patchouli-1.19.4-79.1-FABRIC.jar",
-          "version": "qXopWA1k"
-        },
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/YodpuIBJ/Patchouli-1.20.1-81-FORGE.jar",
-          "version": "YodpuIBJ"
-        },
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/tzz6fEoj/Patchouli-1.20.1-81-FABRIC.jar",
-          "version": "tzz6fEoj"
-        },
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/scPQNgN5/Patchouli-1.20.1-80-FORGE.jar",
-          "version": "scPQNgN5"
-        },
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/PKvFvHeb/Patchouli-1.20.1-80-FABRIC.jar",
-          "version": "PKvFvHeb"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/VbKVW3Bi/Patchouli-1.19.4-79-FORGE.jar",
-          "version": "VbKVW3Bi"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/ajMDgDNM/Patchouli-1.19.4-79-FABRIC.jar",
-          "version": "ajMDgDNM"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/uLqYYIHD/Patchouli-1.19.3-78-FABRIC.jar",
-          "version": "uLqYYIHD"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/vU0HeQTe/Patchouli-1.19.3-78.jar",
-          "version": "vU0HeQTe"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/NorgAU8F/Patchouli-1.19.2-77-FABRIC.jar",
-          "version": "NorgAU8F"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/62ztr7HA/Patchouli-1.19.2-77.jar",
-          "version": "62ztr7HA"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.19.2-76-fabric/Patchouli-1.19.2-76-FABRIC.jar",
-          "version": "canbiioP"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.19.2-76-forge/Patchouli-1.19.2-76.jar",
-          "version": "1Cbhbli9"
-        },
-        {
-          "minecraft_versions": "1.19",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.19-75-forge/Patchouli-1.19-75.jar",
-          "version": "Ust5yPbd"
-        },
-        {
-          "minecraft_versions": "1.19",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.19-74-fabric/Patchouli-1.19-74-FABRIC.jar",
-          "version": "8cbrvZZN"
-        },
-        {
-          "minecraft_versions": "1.19",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.19-74-forge/Patchouli-1.19-74.jar",
-          "version": "4pBSxxGQ"
-        },
-        {
-          "minecraft_versions": [
-            "1.16.4",
-            "1.16.5"
-          ],
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.16.4-53.3-forge/Patchouli-1.16.4-53.3.jar",
-          "version": "swxCEODj"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.2-71.1-fabric/Patchouli-1.18.2-71.1-FABRIC.jar",
-          "version": "yLlzynQ5"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.2-71.1-forge/Patchouli-1.18.2-71.1.jar",
-          "version": "VReLlKMv"
-        },
-        {
-          "minecraft_versions": "1.19",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.19-73-fabric/Patchouli-1.19-73-FABRIC.jar",
-          "version": "vCTStWON"
-        },
-        {
-          "minecraft_versions": "1.19",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.19-73-forge/Patchouli-1.19-73.jar",
-          "version": "Dyqz3qo7"
-        },
-        {
-          "minecraft_versions": "1.19",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.19-72-fabric/Patchouli-1.19-72-FABRIC.jar",
-          "version": "expKhdK0"
-        },
-        {
-          "minecraft_versions": "1.19",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.19-72-forge/Patchouli-1.19-72.jar",
-          "version": "rJhsHi7U"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.2-71-fabric/Patchouli-1.18.2-71-FABRIC.jar",
-          "version": "x2hqKA51"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.2-71-forge/Patchouli-1.18.2-71.jar",
-          "version": "OgM9g0zW"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.2-70-forge/Patchouli-1.18.2-70.jar",
-          "version": "9ocdD9Uo"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.2-70-fabric/Patchouli-1.18.2-70-FABRIC.jar",
-          "version": "m3VnSBR9"
-        },
-        {
-          "minecraft_versions": [
-            "1.16.4",
-            "1.16.5"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.16.4-53-fabric/Patchouli-1.16.4-53-FABRIC.jar",
-          "version": "7hfShY6i"
-        },
-        {
-          "minecraft_versions": "1.17.1",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.17.1-59-fabric/Patchouli-1.17.1-59-FABRIC.jar",
-          "version": "WZ0HMKHN"
-        },
-        {
-          "minecraft_versions": "1.17.1",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.17.1-57-forge/Patchouli-1.17.1-57.jar",
-          "version": "owlMYTOU"
-        },
-        {
-          "minecraft_versions": "1.15.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.2-35-forge/Patchouli-1.15.2-1.2-35.jar",
-          "version": "oFXdEP6M"
-        },
-        {
-          "minecraft_versions": [
-            "1.16.4",
-            "1.16.5"
-          ],
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.16.4-53.2-forge/Patchouli-1.16.4-53.2.jar",
-          "version": "3nYm6JyE"
-        },
-        {
-          "minecraft_versions": "1.14.4",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.1-26.5-forge/Patchouli-1.14.4-1.1-26.5.jar",
-          "version": "pwPPKYN3"
-        },
-        {
-          "minecraft_versions": "1.12.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.0-23.6/Patchouli-1.0-23.6.jar",
-          "version": "rgxH3b9S"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.2-69-forge/Patchouli-1.18.2-69.jar",
-          "version": "b6yJCZbc"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.2-69-fabric/Patchouli-1.18.2-69-FABRIC.jar",
-          "version": "e8OPjNDT"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.2-68-fabric/Patchouli-1.18.2-68-FABRIC.jar",
-          "version": "YBbCmQdE"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.2-68-forge/Patchouli-1.18.2-68.jar",
-          "version": "NfGlUTEX"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.2-66-forge/Patchouli-1.18.2-66.jar",
-          "version": "lnWBMA5s"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.2-66-fabric/Patchouli-1.18.2-66-FABRIC.jar",
-          "version": "OfTGI9k6"
-        },
-        {
-          "minecraft_versions": "1.18.1",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.1-65-fabric/Patchouli-1.18.1-65-FABRIC.jar",
-          "version": "OUi0L7mI"
-        },
-        {
-          "minecraft_versions": "1.18.1",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.1-65-forge/Patchouli-1.18.1-65.jar",
-          "version": "bdOMmClI"
-        },
-        {
-          "minecraft_versions": "1.18.1",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.1-64-forge/Patchouli-1.18.1-64.jar",
-          "version": "LLQZJV1E"
-        },
-        {
-          "minecraft_versions": "1.18.1",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.1-64-fabric/Patchouli-1.18.1-64-FABRIC.jar",
-          "version": "y5Iv4bvx"
-        },
-        {
-          "minecraft_versions": "1.18.1",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.1-63-forge/Patchouli-1.18.1-63.jar",
-          "version": "7lEuKMXY"
-        },
-        {
-          "minecraft_versions": "1.18.1",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.1-63-fabric/Patchouli-1.18.1-63-FABRIC.jar",
-          "version": "AIocSIUP"
-        },
-        {
-          "minecraft_versions": "1.18.1",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.1-62.1-forge/Patchouli-1.18.1-62.1.jar",
-          "version": "hOeuGyBc"
-        },
-        {
-          "minecraft_versions": "1.18.1",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.1-62-fabric/Patchouli-1.18.1-62-FABRIC.jar",
-          "version": "I49wahSA"
-        },
-        {
-          "minecraft_versions": "1.18.1",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.1-62-forge/Patchouli-1.18.1-62.jar",
-          "version": "YELVQSgP"
-        },
-        {
-          "minecraft_versions": "1.18.1",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.1-61-fabric/Patchouli-1.18.1-61-FABRIC.jar",
-          "version": "Bc62letg"
-        },
-        {
-          "minecraft_versions": "1.18.1",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.1-61-forge/Patchouli-1.18.1-61.jar",
-          "version": "clOhZpKV"
-        }
-      ]
-    }
-  },
-  "meta": {
-    "authors": [
-      "williewillus",
-      "Vazkii"
-    ],
-    "categories": [
-      "library",
-      "technical"
-    ],
-    "community": "https://discord.gg/vm",
-    "description": "Accessible, Data-Driven, Dependency-Free Documentation for Minecraft Modders and Pack Makers",
-    "documentation": "https://vazkiimods.github.io/Patchouli/",
-    "gallery": [],
-    "icon": "https://cdn.modrinth.com/data/nU0bVIaL/130922464c30a3a61eb493ce71d2502b23f29905.png",
-    "issues": "https://github.com/VazkiiMods/Patchouli/issues",
-    "license": "CC-BY-NC-SA-3.0",
-    "name": "Patchouli",
-    "package_maintainers": [
-      "mcvm"
-    ],
-    "source": "https://github.com/VazkiiMods/Patchouli/",
-    "support_link": "https://www.patreon.com/Vazkii"
-  },
-  "properties": {
-    "modrinth_id": "nU0bVIaL",
-    "supported_modloaders": [
-      "forgelike",
-      "fabriclike"
-    ],
-    "supported_sides": [
-      "client",
-      "server"
-    ],
-    "supported_versions": [
-      "1.12.2",
-      "1.14.4",
-      "1.15.2",
-      "1.16.4",
-      "1.16.5",
-      "1.17.1",
-      "1.18.1",
-      "1.18.2",
-      "1.19",
-      "1.19.2",
-      "1.19.3",
-      "1.19.4",
-      "1.20.1"
-    ]
-  }
+	"addons": {
+		"addon": {
+			"kind": "mod",
+			"versions": [
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/JMtc0mTS/Patchouli-1.20.1-84-FORGE.jar",
+					"version": "JMtc0mTS"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/Y6tuH1cn/Patchouli-1.20.1-84-FABRIC.jar",
+					"version": "Y6tuH1cn"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/WLoCqsiV/Patchouli-1.20.1-83-FORGE.jar",
+					"version": "WLoCqsiV"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/ORmcsfvl/Patchouli-1.20.1-83-FABRIC.jar",
+					"version": "ORmcsfvl"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/73JPyBPI/Patchouli-1.20.1-82-FORGE.jar",
+					"version": "73JPyBPI"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/Up1ZGZ1f/Patchouli-1.20.1-82-FABRIC.jar",
+					"version": "Up1ZGZ1f"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/bxlh2STX/Patchouli-1.19.4-79.1-FORGE.jar",
+					"version": "bxlh2STX"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/qXopWA1k/Patchouli-1.19.4-79.1-FABRIC.jar",
+					"version": "qXopWA1k"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/YodpuIBJ/Patchouli-1.20.1-81-FORGE.jar",
+					"version": "YodpuIBJ"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/tzz6fEoj/Patchouli-1.20.1-81-FABRIC.jar",
+					"version": "tzz6fEoj"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/scPQNgN5/Patchouli-1.20.1-80-FORGE.jar",
+					"version": "scPQNgN5"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/PKvFvHeb/Patchouli-1.20.1-80-FABRIC.jar",
+					"version": "PKvFvHeb"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/VbKVW3Bi/Patchouli-1.19.4-79-FORGE.jar",
+					"version": "VbKVW3Bi"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/ajMDgDNM/Patchouli-1.19.4-79-FABRIC.jar",
+					"version": "ajMDgDNM"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/uLqYYIHD/Patchouli-1.19.3-78-FABRIC.jar",
+					"version": "uLqYYIHD"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/vU0HeQTe/Patchouli-1.19.3-78.jar",
+					"version": "vU0HeQTe"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/NorgAU8F/Patchouli-1.19.2-77-FABRIC.jar",
+					"version": "NorgAU8F"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/62ztr7HA/Patchouli-1.19.2-77.jar",
+					"version": "62ztr7HA"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.19.2-76-fabric/Patchouli-1.19.2-76-FABRIC.jar",
+					"version": "canbiioP"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.19.2-76-forge/Patchouli-1.19.2-76.jar",
+					"version": "1Cbhbli9"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.19-75-forge/Patchouli-1.19-75.jar",
+					"version": "Ust5yPbd"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.19-74-fabric/Patchouli-1.19-74-FABRIC.jar",
+					"version": "8cbrvZZN"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.19-74-forge/Patchouli-1.19-74.jar",
+					"version": "4pBSxxGQ"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.16.4-53.3-forge/Patchouli-1.16.4-53.3.jar",
+					"version": "swxCEODj"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.2-71.1-fabric/Patchouli-1.18.2-71.1-FABRIC.jar",
+					"version": "yLlzynQ5"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.2-71.1-forge/Patchouli-1.18.2-71.1.jar",
+					"version": "VReLlKMv"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.19-73-fabric/Patchouli-1.19-73-FABRIC.jar",
+					"version": "vCTStWON"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.19-73-forge/Patchouli-1.19-73.jar",
+					"version": "Dyqz3qo7"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.19-72-fabric/Patchouli-1.19-72-FABRIC.jar",
+					"version": "expKhdK0"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.19-72-forge/Patchouli-1.19-72.jar",
+					"version": "rJhsHi7U"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.2-71-fabric/Patchouli-1.18.2-71-FABRIC.jar",
+					"version": "x2hqKA51"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.2-71-forge/Patchouli-1.18.2-71.jar",
+					"version": "OgM9g0zW"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.2-70-forge/Patchouli-1.18.2-70.jar",
+					"version": "9ocdD9Uo"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.2-70-fabric/Patchouli-1.18.2-70-FABRIC.jar",
+					"version": "m3VnSBR9"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.16.4-53-fabric/Patchouli-1.16.4-53-FABRIC.jar",
+					"version": "7hfShY6i"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.17.1-59-fabric/Patchouli-1.17.1-59-FABRIC.jar",
+					"version": "WZ0HMKHN"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.17.1-57-forge/Patchouli-1.17.1-57.jar",
+					"version": "owlMYTOU"
+				},
+				{
+					"minecraft_versions": "1.15.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.2-35-forge/Patchouli-1.15.2-1.2-35.jar",
+					"version": "oFXdEP6M"
+				},
+				{
+					"minecraft_versions": [
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.16.4-53.2-forge/Patchouli-1.16.4-53.2.jar",
+					"version": "3nYm6JyE"
+				},
+				{
+					"minecraft_versions": "1.14.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.1-26.5-forge/Patchouli-1.14.4-1.1-26.5.jar",
+					"version": "pwPPKYN3"
+				},
+				{
+					"minecraft_versions": "1.12.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.0-23.6/Patchouli-1.0-23.6.jar",
+					"version": "rgxH3b9S"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.2-69-forge/Patchouli-1.18.2-69.jar",
+					"version": "b6yJCZbc"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.2-69-fabric/Patchouli-1.18.2-69-FABRIC.jar",
+					"version": "e8OPjNDT"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.2-68-fabric/Patchouli-1.18.2-68-FABRIC.jar",
+					"version": "YBbCmQdE"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.2-68-forge/Patchouli-1.18.2-68.jar",
+					"version": "NfGlUTEX"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.2-66-forge/Patchouli-1.18.2-66.jar",
+					"version": "lnWBMA5s"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.2-66-fabric/Patchouli-1.18.2-66-FABRIC.jar",
+					"version": "OfTGI9k6"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.1-65-fabric/Patchouli-1.18.1-65-FABRIC.jar",
+					"version": "OUi0L7mI"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.1-65-forge/Patchouli-1.18.1-65.jar",
+					"version": "bdOMmClI"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.1-64-forge/Patchouli-1.18.1-64.jar",
+					"version": "LLQZJV1E"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.1-64-fabric/Patchouli-1.18.1-64-FABRIC.jar",
+					"version": "y5Iv4bvx"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.1-63-forge/Patchouli-1.18.1-63.jar",
+					"version": "7lEuKMXY"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.1-63-fabric/Patchouli-1.18.1-63-FABRIC.jar",
+					"version": "AIocSIUP"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.1-62.1-forge/Patchouli-1.18.1-62.1.jar",
+					"version": "hOeuGyBc"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.1-62-fabric/Patchouli-1.18.1-62-FABRIC.jar",
+					"version": "I49wahSA"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.1-62-forge/Patchouli-1.18.1-62.jar",
+					"version": "YELVQSgP"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.1-61-fabric/Patchouli-1.18.1-61-FABRIC.jar",
+					"version": "Bc62letg"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/1.18.1-61-forge/Patchouli-1.18.1-61.jar",
+					"version": "clOhZpKV"
+				}
+			]
+		}
+	},
+	"meta": {
+		"authors": [
+			"Vazkii",
+			"williewillus"
+		],
+		"categories": [
+			"library",
+			"technical"
+		],
+		"community": "https://discord.gg/vm",
+		"description": "Accessible, Data-Driven, Dependency-Free Documentation for Minecraft Modders and Pack Makers",
+		"documentation": "https://vazkiimods.github.io/Patchouli/",
+		"gallery": [],
+		"icon": "https://cdn.modrinth.com/data/nU0bVIaL/130922464c30a3a61eb493ce71d2502b23f29905.png",
+		"issues": "https://github.com/VazkiiMods/Patchouli/issues",
+		"license": "CC-BY-NC-SA-3.0",
+		"long_description": "[![](https://violetmoon.org/branding/vm0.png)](https://violetmoon.org)[![](https://violetmoon.org/branding/vm1.png)](https://patreon.com/vazkii)[![](https://violetmoon.org/branding/vm2.png)](https://twitter.com/vazkiimods)[![](https://violetmoon.org/branding/vm3.png)](https://discord.gg/vm)\n![](https://violetmoon.org/branding/hero/patchouli.png)\n\n---\n\n# About\n\n**Patchouli** is a mod that aims to provide easy to implement, data-driven documentation for minecraft modders and modpack makers alike.\n\nPatchouli's systems allow any modder or modpack maker to quickly create beautiful books full of user experience enhancing features. The user-facing feature set of the mod is designed in function of research done on what features people liked from Botania's Lexica Botania.\n\n---\n\n# Features\n\n* Data-driven content creation, no code required, you don't even need patchouli's code to build\n* In-game text preview\n* Rich text formatting system that supports macros\n* Advancement-driven content unlocking\n* Nested categories and bookmarkable entries for quick and easy navigation\n* Several ready-to-use page types like text, crafting and image pages\n* Multiblock visualization for easy building\n* Template system to create custom page types\n* Seamless integration with mods, with creative tab and pretending the book is from your mod\n* Custom visuals and sounds\n* Easily localizable for other languages\n* Tons of other user friendly features!\n\n---\n\n# Learn more about Patchouli today\n### Visit the **[Wiki](https://vazkiimods.github.io/Patchouli/)** to learn about how to use this in your mod or modpack\n\n---\n\n# Credits\n\nMassive shout out to the following people who helped this become a reality:\n\n* Drullkus for testing, providing some code, and the logo\n* Ellpeck for extensive testing and tons of help with fixing bugs\n* StanHebben, for extensive testing, lots of good feature requests, and also providing fair amount of code\n* wiiv, for creating the art I used \n\n---\n\n\n\n![](https://violetmoon.org/branding/support.png)\n[![](https://violetmoon.org/branding/patreon.png)](https://patreon.com/vazkii)[![](https://violetmoon.org/branding/store.png)](https://store.vazkii.net)\n[![](https://violetmoon.org/branding/ch.png)](https://violetmoon.org/creeperhost)",
+		"name": "Patchouli",
+		"package_maintainers": [
+			"mcvm"
+		],
+		"source": "https://github.com/VazkiiMods/Patchouli/",
+		"support_link": "https://www.patreon.com/Vazkii"
+	},
+	"properties": {
+		"modrinth_id": "nU0bVIaL",
+		"supported_modloaders": [
+			"forgelike",
+			"fabriclike"
+		],
+		"supported_sides": [
+			"client",
+			"server"
+		],
+		"supported_versions": [
+			"1.12.2",
+			"1.14.4",
+			"1.15.2",
+			"1.16.4",
+			"1.16.5",
+			"1.17.1",
+			"1.18.1",
+			"1.18.2",
+			"1.19",
+			"1.19.2",
+			"1.19.3",
+			"1.19.4",
+			"1.20.1"
+		]
+	}
 }

@@ -1,152 +1,154 @@
 {
-  "addons": {
-    "addon": {
-      "kind": "mod",
-      "versions": [
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "fabriclike-api",
-              "forge-config-api-port",
-              "mod-menu"
-            ]
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/5WeWGLoJ/versions/nwy63zfI/ForgeConfigScreens-v8.0.2-1.20.1-Fabric.jar",
-          "version": "nwy63zfI"
-        },
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/5WeWGLoJ/versions/YUDLu26S/ForgeConfigScreens-v8.0.2-1.20.1-Forge.jar",
-          "version": "YUDLu26S"
-        },
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "fabriclike-api",
-              "forge-config-api-port",
-              "mod-menu"
-            ]
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/5WeWGLoJ/versions/n1EMZ4oz/ForgeConfigScreens-v8.0.1-1.20.1-Fabric.jar",
-          "version": "n1EMZ4oz"
-        },
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/5WeWGLoJ/versions/1jVBPRNS/ForgeConfigScreens-v8.0.1-1.20.1-Forge.jar",
-          "version": "1jVBPRNS"
-        },
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "fabriclike-api",
-              "forge-config-api-port",
-              "mod-menu"
-            ]
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/5WeWGLoJ/versions/S0IeqYrp/ForgeConfigScreens-v8.0.0-1.20.1-Fabric.jar",
-          "version": "S0IeqYrp"
-        },
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/5WeWGLoJ/versions/NJRmTOlf/ForgeConfigScreens-v8.0.0-1.20.1-Forge.jar",
-          "version": "NJRmTOlf"
-        },
-        {
-          "minecraft_versions": "1.20",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "fabriclike-api",
-              "forge-config-api-port",
-              "mod-menu"
-            ]
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/5WeWGLoJ/versions/UOV19nXG/ForgeConfigScreens-v7.0.0-1.20-Fabric.jar",
-          "version": "UOV19nXG"
-        },
-        {
-          "minecraft_versions": "1.20",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/5WeWGLoJ/versions/JwsEoVZ1/ForgeConfigScreens-v7.0.0-1.20-Forge.jar",
-          "version": "JwsEoVZ1"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/5WeWGLoJ/versions/onp8kYQo/ForgeConfigScreens-v6.0.0-1.19.4-Forge.jar",
-          "version": "onp8kYQo"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "fabriclike-api",
-              "forge-config-api-port",
-              "mod-menu"
-            ]
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/5WeWGLoJ/versions/d8rW8rDg/ForgeConfigScreens-v6.0.0-1.19.4-Fabric.jar",
-          "version": "d8rW8rDg"
-        }
-      ]
-    }
-  },
-  "meta": {
-    "authors": [
-      "LunaPixelStudios",
-      "SHXRKIE",
-      "Fuzs"
-    ],
-    "categories": [
-      "technical",
-      "library"
-    ],
-    "description": "Allows Forge's configs to be configured directly in-game. Quick and easy with a beautiful design!",
-    "gallery": [
-      "https://cdn.modrinth.com/data/5WeWGLoJ/images/b422431f2df483b89e127d1aae6b511fbdc68b01.png"
-    ],
-    "icon": "https://cdn.modrinth.com/data/5WeWGLoJ/bf276f7b508fb8cd64f5190691dc19c1b98dcd41.png",
-    "issues": "https://github.com/Fuzss/forgeconfigscreens/issues",
-    "license": "MPL-2.0",
-    "name": "Forge Config Screens",
-    "package_maintainers": [
-      "mcvm"
-    ],
-    "source": "https://github.com/Fuzss/forgeconfigscreens"
-  },
-  "properties": {
-    "modrinth_id": "5WeWGLoJ",
-    "supported_modloaders": [
-      "fabriclike",
-      "forgelike"
-    ],
-    "supported_sides": [
-      "client"
-    ],
-    "supported_versions": [
-      "1.19.4",
-      "1.20",
-      "1.20.1"
-    ]
-  }
+	"addons": {
+		"addon": {
+			"kind": "mod",
+			"versions": [
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"fabriclike-api",
+							"forge-config-api-port",
+							"mod-menu"
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5WeWGLoJ/versions/nwy63zfI/ForgeConfigScreens-v8.0.2-1.20.1-Fabric.jar",
+					"version": "nwy63zfI"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5WeWGLoJ/versions/YUDLu26S/ForgeConfigScreens-v8.0.2-1.20.1-Forge.jar",
+					"version": "YUDLu26S"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"fabriclike-api",
+							"forge-config-api-port",
+							"mod-menu"
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5WeWGLoJ/versions/n1EMZ4oz/ForgeConfigScreens-v8.0.1-1.20.1-Fabric.jar",
+					"version": "n1EMZ4oz"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5WeWGLoJ/versions/1jVBPRNS/ForgeConfigScreens-v8.0.1-1.20.1-Forge.jar",
+					"version": "1jVBPRNS"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"fabriclike-api",
+							"forge-config-api-port",
+							"mod-menu"
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5WeWGLoJ/versions/S0IeqYrp/ForgeConfigScreens-v8.0.0-1.20.1-Fabric.jar",
+					"version": "S0IeqYrp"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5WeWGLoJ/versions/NJRmTOlf/ForgeConfigScreens-v8.0.0-1.20.1-Forge.jar",
+					"version": "NJRmTOlf"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"fabriclike-api",
+							"forge-config-api-port",
+							"mod-menu"
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5WeWGLoJ/versions/UOV19nXG/ForgeConfigScreens-v7.0.0-1.20-Fabric.jar",
+					"version": "UOV19nXG"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5WeWGLoJ/versions/JwsEoVZ1/ForgeConfigScreens-v7.0.0-1.20-Forge.jar",
+					"version": "JwsEoVZ1"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5WeWGLoJ/versions/onp8kYQo/ForgeConfigScreens-v6.0.0-1.19.4-Forge.jar",
+					"version": "onp8kYQo"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"fabriclike-api",
+							"forge-config-api-port",
+							"mod-menu"
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5WeWGLoJ/versions/d8rW8rDg/ForgeConfigScreens-v6.0.0-1.19.4-Fabric.jar",
+					"version": "d8rW8rDg"
+				}
+			]
+		}
+	},
+	"meta": {
+		"authors": [
+			"Fuzs",
+			"LunaPixelStudios",
+			"SHXRKIE"
+		],
+		"banner": "https://cdn.modrinth.com/data/5WeWGLoJ/images/b422431f2df483b89e127d1aae6b511fbdc68b01.png",
+		"categories": [
+			"technical",
+			"library"
+		],
+		"description": "Allows Forge's configs to be configured directly in-game. Quick and easy with a beautiful design!",
+		"gallery": [
+			"https://cdn.modrinth.com/data/5WeWGLoJ/images/b422431f2df483b89e127d1aae6b511fbdc68b01.png"
+		],
+		"icon": "https://cdn.modrinth.com/data/5WeWGLoJ/bf276f7b508fb8cd64f5190691dc19c1b98dcd41.png",
+		"issues": "https://github.com/Fuzss/forgeconfigscreens/issues",
+		"license": "MPL-2.0",
+		"long_description": "<p><img src=\"https://i.imgur.com/kiHP8s9.png\" width=\"854\" height=\"240\" /></p>\n<p><img src=\"https://i.imgur.com/M1Yd5EZ.png\" width=\"854\" height=\"14\" /></p>\n<p style=\"text-align: center; line-height: 36px;\"><img src=\"https://img.shields.io/badge/available%20for-1.18%20%7C%201.17%20%7C%201.16-ecebe6?labelColor=2F4858&amp;style=for-the-badge\" width=\"265\" height=\"28\" />&emsp;<a href=\"https://files.minecraftforge.net/net/minecraftforge/forge/\"><img src=\"https://bit.ly/3ysUdY3\" width=\"173\" height=\"28\" /></a>&emsp;<img src=\"https://img.shields.io/badge/Client%20Side-Required-ecebe6?labelColor=2F4858&amp;style=for-the-badge\" width=\"196\" height=\"28\" />&emsp;<img src=\"https://img.shields.io/badge/Server%20Side-Optional-ecebe6?labelColor=2F4858&amp;style=for-the-badge\" width=\"199\" height=\"28\" /></p>\n<p><img src=\"https://i.imgur.com/M1Yd5EZ.png\" width=\"854\" height=\"14\" /></p>\n<p><span style=\"font-size: 20px;\"><strong>📖 About:</strong></span></p>\n<p><span style=\"font-size: 14px;\"><strong>Config Menus for Forge</strong> allows for editing config files for all mods directly in-game without having to ever touch a single file again.</span></p>\n<p><img src=\"https://i.imgur.com/M1Yd5EZ.png\" width=\"854\" height=\"14\" /></p>\n<p><span style=\"font-size: 20px;\"><strong>📚 Contents:</strong></span></p>\n<p><iframe src=\"https://www.youtube.com/embed/SOGJWKoZs3k\" height=\"480\" width=\"854\"></iframe></p>\n<p><span style=\"font-size: 14px;\">Most notably, this mod allows for: editing all of Forge's config types (including server configs, as well as syncing with an online server and other players), setting default configs to be used when creating new worlds, a powerful and immersive search, proper handling for editing lists with various data types, an easy to use interface for dealing with all configs added by a single mod at a glance, and much more.</span></p>\n<p><img src=\"https://media.forgecdn.net/attachments/405/946/2021-11-03_21.png\" width=\"854\" height=\"480\" /></p>\n<p><span style=\"font-size: 14px;\">When opening a mods config menu you'll be greeted with a file selection screen listing all config files added by the mod. The restore defaults button allows for resetting a single config file as a whole (you can tell a config has been modified when it's name is in italics). There is also a button for opening the actual config file in an editor. The copy to defaults button allows you to set this config as a default config to be used whenever the config is recreated (mainly useful for server configs when creating new worlds).</span></p>\n<p><img src=\"https://media.forgecdn.net/attachments/405/956/2021-11-03_21.png\" width=\"854\" height=\"480\" /></p>\n<p><span style=\"font-size: 14px;\">When a config is open, you'll find a big list with all config options and categories. The button to the right of every option will restore it's default value. When an option is hovered, a tooltip will provide additional information, including the internal key, description, range, allowed values, and the default value. On the bottom, the cancel button can be used for discarding changes, the done button will save all changes to the config file.</span></p>\n<p><img src=\"https://media.forgecdn.net/attachments/405/950/2021-11-03_21.png\" width=\"854\" height=\"480\" /></p>\n<p><span style=\"font-size: 14px;\">The path bar on top shows where you currently are within the active config file. But there's more: It also functions as a navigation bar. You can click on previous categories to go back to them.</span></p>\n<p><img src=\"https://media.forgecdn.net/attachments/405/951/2021-11-03_21.png\" width=\"854\" height=\"480\" /></p>\n<p><span style=\"font-size: 14px;\">Searching is quite fancy, the current query is highlighted, and found entries are sorted accordingly. Results will be located in the current, as well as all subsequent categories. And best of all, the search field can be cleared again with a simple left-click.</span></p>\n<p><img src=\"https://media.forgecdn.net/attachments/405/952/2021-10-05_16.png\" width=\"854\" height=\"480\" /></p>\n<p><span style=\"font-size: 14px;\">Editing more complex values such as strings, enums and lists is done via a separate screen. In this case, an enum value can be chosen from a list where all choices can be viewed at a glance.</span></p>\n<p><img src=\"https://media.forgecdn.net/attachments/405/953/2021-10-05_17.png\" width=\"854\" height=\"480\" /></p>\n<p><span style=\"font-size: 14px;\">Editing lists on the other hand looks quite a bit different. All values are entered as strings and will be converted and checked automatically. Sometimes, the type of a list cannot be determined by Config Menus for Forge, so you'll be promted to choose the type yourself, or edit the option directly in the config file instead (not yet implemented). Also lists cannot be saved when invalid entries have been added, they need to be manually corrected before that.</span></p>\n<p><img src=\"https://media.forgecdn.net/attachments/407/181/2021-11-09_23.png\" width=\"854\" height=\"480\" /></p>\n<p><span style=\"font-size: 14px;\">Editing server configs is a bit different from other config types. They exist for every single world, so to edit a server config from the main menu you'll have to select a world. When you're currently playing in a world this world will be selected automatically. This message is shown when Config Menus for Forge has to create the server config first as it doesn't exist yet.</span></p>\n<p><img src=\"https://media.forgecdn.net/attachments/407/182/2021-11-03_21.png\" width=\"854\" height=\"480\" /></p>\n<p><span style=\"font-size: 14px;\">This message is shown when playing on an online server. Server configs can only be edited by server operators. When doing so, they'll be synced back to the server and from there to all other clients. In singleplayer no warnings are shown and no syncing happens as everything is done locally.</span></p>\n<p><img src=\"https://i.imgur.com/M1Yd5EZ.png\" width=\"854\" height=\"14\" /></p>\n<p><span style=\"font-size: 20px;\"><strong>💡 FAQ:</strong></span></p>\n<p><span style=\"font-size: 14px;\"><strong>Q: Can I edit server configs with this mod?</strong><br /><strong>A:</strong> YES!</span></p>\n<p><span style=\"font-size: 14px;\"><strong>Q: Can I edit server configs while on a multiplayer server?</strong><br /><strong>A:</strong> Yes again! The only limitations are that you need to be an operator on that server, and Config Menus for Forge needs to be installed server-side as well.</span></p>\n<p><span style=\"font-size: 14px;\"><strong>Q: I can't edit Forge's client config!</strong><br /><strong>A:</strong> You have OptiFine installed, Forge's client config can't be used then. This has nothing to do with Config Menus for Forge.</span></p>\n<p><span style=\"font-size: 14px;\"><strong>Q: I'm a server owner and I don't want anyone to edit the server's configs while it is running.</strong><br /><strong>A:</strong> Simply don't install Config Menus for Forge on your server, everything but editing server configs will still work for your players.</span></p>\n<p><span style=\"font-size: 14px;\"><strong>Q: I'm a mod developer and I already added custom backgrounds for Configured. Do I need to do it for this mod again?</strong><br /><strong>A:</strong> No, Config Menus for Forge uses the resources provided by mods for Configured as well. There are other developer options planned for the future though. In case you're unsure about adding a custom background to the config menus for your mod, check out the instructions on the mod page for <a href=\"https://www.curseforge.com/minecraft/mc-mods/configured\"><span style=\"font-size: 14px;\"><strong>Configured</strong></span></a>.</span></p>\n<p><span style=\"font-size: 14px;\"><strong>Q: I'm a developer and I want my mod to use these config menus. What do I need to do?</strong><br /><strong>A:</strong> Nothing really. Just ask your users to install this mod alongside yours. You don't need to add a dependency or anything like that.</span></p>\n<p><img src=\"https://i.imgur.com/M1Yd5EZ.png\" width=\"854\" height=\"14\" /></p>\n<p><span style=\"font-size: 20px;\"><strong>🏆 Credits:</strong></span></p>\n<p><span style=\"font-size: 14px;\">Developing Config Menus for Forge was helped and inspired by:</span></p>\n<ul>\n<li><span style=\"font-size: 14px;\"><a href=\"https://www.curseforge.com/members/mrcrayfish\"><span style=\"font-size: 14px;\"><strong>MrCrayfish</strong></span></a> for their <a href=\"https://www.curseforge.com/minecraft/mc-mods/configured\"><span style=\"font-size: 14px;\"><strong>Configured</strong></span></a> mod, which Config Menus for Forge initially was a fork of</span></li>\n<li><span style=\"font-size: 14px;\"><a href=\"https://itch.io/profile/finalbossblues\"><span style=\"font-size: 14px;\"><strong>Finalbossblues</strong></span></a> for their amazing icons available over on <a href=\"https://finalbossblues.itch.io/icons\"><span style=\"font-size: 14px;\">itch.io</span></a></span></li>\n<li><span style=\"font-size: 14px;\"><a href=\"https://www.curseforge.com/members/unitedmel\"><span style=\"font-size: 14px;\"><strong> UnitedMel </strong></span></a> for allowing me to use the cute player icon from their <a href=\"https://www.curseforge.com/minecraft/mc-mods/better-menu\"><span style=\"font-size: 14px;\">BetterMenu</span></a> resource pack</span></li>\n</ul>\n<p><img src=\"https://i.imgur.com/M1Yd5EZ.png\" width=\"854\" height=\"14\" /></p>\n<p style=\"text-align: center; line-height: 36px;\"><a href=\"https://www.curseforge.com/members/lunapixelstudios/projects\"><img src=\"https://img.shields.io/static/v1?label=CurseForge&amp;message=LunaPixelStudios&amp;color=ecebe6&amp;labelColor=2F4858&amp;style=for-the-badge&amp;logo=curseforge&amp;logoColor=white\" width=\"282\" height=\"28\" /></a>&emsp;<a href=\"https://twitter.com/LunaPixelStudio\"><img src=\"https://img.shields.io/twitter/follow/LunaPixelStudio?label=Twitter&amp;color=ecebe6&amp;labelColor=2F4858&amp;style=for-the-badge&amp;logo=twitter&amp;logoColor=white\" width=\"149\" height=\"28\" /></a>&emsp;<a href=\"https://discord.gg/8ZmhaPPbjE\"><img src=\"https://img.shields.io/discord/790272037578473512?label=Discord&amp;color=ecebe6&amp;labelColor=2F4858&amp;style=for-the-badge&amp;logo=discord&amp;logoColor=white\" width=\"220\" height=\"28\" /></a></p>\n<p><img src=\"https://i.imgur.com/1MOyd2u.png\" width=\"854\" height=\"300\" /></p>\n<p style=\"text-align: center; line-height: 36px;\"><a href=\"https://www.curseforge.com/members/fuzs_/projects\"><img src=\"https://img.shields.io/static/v1?label=&amp;message=Fuzs_&amp;color=ecebe6&amp;labelColor=2F4858&amp;style=for-the-badge&amp;logo=curseforge&amp;logoColor=white\" width=\"97\" height=\"28\" /></a>&emsp;<a href=\"https://github.com/Fuzss\"><img src=\"https://img.shields.io/static/v1?label=&amp;message=Fuzss&amp;color=ecebe6&amp;labelColor=2F4858&amp;style=for-the-badge&amp;logo=github&amp;logoColor=white\" width=\"97\" height=\"28\" /></a>&emsp;<a href=\"https://www.youtube.com/channel/UC2l26SuCmCNSCPefpfbCX7Q\"><img src=\"https://img.shields.io/static/v1?label=&amp;message=Fuzs&amp;color=ecebe6&amp;labelColor=2F4858&amp;style=for-the-badge&amp;logo=youtube&amp;logoColor=white\" width=\"89\" height=\"28\" /></a>&emsp;<a href=\"https://twitter.com/Fusseel\"><img src=\"https://img.shields.io/static/v1?label=&amp;message=@Fusseel&amp;color=ecebe6&amp;labelColor=2F4858&amp;style=for-the-badge&amp;logo=twitter&amp;logoColor=white\" width=\"124\" height=\"28\" /></a>&emsp;<a href=\"https://www.reddit.com/user/Fusseel\"><img src=\"https://img.shields.io/static/v1?label=&amp;message=u/Fusseel&amp;color=ecebe6&amp;labelColor=2F4858&amp;style=for-the-badge&amp;logo=reddit&amp;logoColor=white\" alt=\"Reddit\" width=\"130\" height=\"28\" /></a>&emsp;<img src=\"https://img.shields.io/static/v1?label=&amp;message=Fuzs%200212&amp;color=ecebe6&amp;labelColor=2F4858&amp;style=for-the-badge&amp;logo=discord&amp;logoColor=white\" width=\"127\" height=\"28\" /></p>\n<p><img src=\"https://i.imgur.com/M1Yd5EZ.png\" width=\"854\" height=\"14\" /></p>\n<table style=\"text-align: center;\">\n<tbody>\n<tr>\n<td><a href=\"https://www.curseforge.com/minecraft/mc-mods/easy-magic\"><img src=\"https://i.imgur.com/Mlxi8cy.png\" width=\"410\" height=\"115\" /></a></td>\n<td>&emsp;&emsp;</td>\n<td><a href=\"https://www.curseforge.com/minecraft/mc-mods/better-animations-collection\"><img src=\"https://i.imgur.com/OVV5lXk.png\" width=\"410\" height=\"115\" /></a></td>\n</tr>\n<tr>\n<td>&nbsp;</td>\n</tr>\n<tr>\n<td><a href=\"https://www.curseforge.com/minecraft/mc-mods/trading-post\"><img src=\"https://i.imgur.com/UzgNFIB.png\" width=\"410\" height=\"115\" /></a></td>\n<td>&emsp;&emsp;</td>\n<td><a href=\"https://www.curseforge.com/minecraft/mc-mods/pick-up-notifier\"><img src=\"https://i.imgur.com/DCwxKZU.png\" width=\"410\" height=\"115\" /></a></td>\n</tr>\n<tr>\n<td>&nbsp;</td>\n</tr>\n<tr>\n<td><a href=\"https://www.curseforge.com/minecraft/mc-mods/console-experience\"><img src=\"https://i.imgur.com/aXWOS7B.png\" width=\"410\" height=\"115\" /></a></td>\n<td>&emsp;&emsp;</td>\n<td><a href=\"https://www.curseforge.com/minecraft/mc-mods/stylish-effects\"><img src=\"https://i.imgur.com/fmWwWkZ.png\" width=\"410\" height=\"115\" /></a></td>\n</tr>\n<tr>\n<td>&nbsp;</td>\n</tr>\n<tr>\n<td><a href=\"https://www.curseforge.com/minecraft/mc-mods/visual-workbench\"><img src=\"https://i.imgur.com/DTzDrbm.png\" width=\"410\" height=\"115\" /></a></td>\n<td>&emsp;&emsp;</td>\n<td><a href=\"https://www.curseforge.com/minecraft/mc-mods/diagonal-fences\"><img src=\"https://i.imgur.com/mU9OlhP.png\" width=\"410\" height=\"115\" /></a></td>\n</tr>\n<tr>\n<td>&nbsp;</td>\n</tr>\n<tr>\n<td><a href=\"https://www.curseforge.com/minecraft/mc-mods/golden-age-combat\"><img src=\"https://i.imgur.com/sHiR309.png\" width=\"410\" height=\"115\" /></a></td>\n<td>&emsp;&emsp;</td>\n<td><a href=\"https://www.curseforge.com/minecraft/mc-mods/air-hop\"><img src=\"https://i.imgur.com/MinxlVJ.png\" width=\"410\" height=\"115\" /></a></td>\n</tr>\n<tr>\n<td>&nbsp;</td>\n</tr>\n</tbody>\n</table>\n<p><img src=\"https://i.imgur.com/M1Yd5EZ.png\" width=\"854\" height=\"14\" /></p>",
+		"name": "Forge Config Screens",
+		"package_maintainers": [
+			"mcvm"
+		],
+		"source": "https://github.com/Fuzss/forgeconfigscreens"
+	},
+	"properties": {
+		"modrinth_id": "5WeWGLoJ",
+		"supported_modloaders": [
+			"fabriclike",
+			"forgelike"
+		],
+		"supported_sides": [
+			"client"
+		],
+		"supported_versions": [
+			"1.19.4",
+			"1.20",
+			"1.20.1"
+		]
+	}
 }

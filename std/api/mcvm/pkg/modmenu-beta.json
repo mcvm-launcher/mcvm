@@ -1,54 +1,56 @@
 {
-  "addons": {
-    "addon": {
-      "kind": "mod",
-      "versions": [
-        {
-          "minecraft_versions": "b1.7.3",
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/6v8kVRE3/versions/ntmKsIrU/modmenu-1.8.5-beta.3.jar",
-          "version": "ntmKsIrU"
-        }
-      ]
-    }
-  },
-  "meta": {
-    "authors": [
-      "calmilamsy"
-    ],
-    "categories": [
-      "menu",
-      "technical"
-    ],
-    "description": "A simple unofficial port of ModMenu to beta 1.7.3.",
-    "gallery": [
-      "https://cdn.modrinth.com/data/6v8kVRE3/images/822c5f04e52d0f9f04be84d75c9692ba879be536.png"
-    ],
-    "icon": "https://cdn.modrinth.com/data/6v8kVRE3/c4b768b082f5d02b11f3db3e80421e7244089e94.png",
-    "issues": "https://github.com/calmilamsy/ModMenu/issues",
-    "keywords": [
-      "menu",
-      "config"
-    ],
-    "license": "MIT",
-    "name": "ModMenu Beta",
-    "package_maintainers": [
-      "mcvm"
-    ],
-    "source": "https://github.com/calmilamsy/ModMenu"
-  },
-  "properties": {
-    "modrinth_id": "6v8kVRE3",
-    "open_source": true,
-    "supported_modloaders": [
-      "fabriclike"
-    ],
-    "supported_sides": [
-      "client"
-    ],
-    "supported_versions": [
-      "b1.7.3"
-    ]
-  }
+	"addons": {
+		"addon": {
+			"kind": "mod",
+			"versions": [
+				{
+					"minecraft_versions": "b1.7.3",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/6v8kVRE3/versions/ntmKsIrU/modmenu-1.8.5-beta.3.jar",
+					"version": "ntmKsIrU"
+				}
+			]
+		}
+	},
+	"meta": {
+		"authors": [
+			"calmilamsy"
+		],
+		"banner": "https://cdn.modrinth.com/data/6v8kVRE3/images/822c5f04e52d0f9f04be84d75c9692ba879be536.png",
+		"categories": [
+			"menu",
+			"technical"
+		],
+		"description": "A simple unofficial port of ModMenu to beta 1.7.3.",
+		"gallery": [
+			"https://cdn.modrinth.com/data/6v8kVRE3/images/822c5f04e52d0f9f04be84d75c9692ba879be536.png"
+		],
+		"icon": "https://cdn.modrinth.com/data/6v8kVRE3/c4b768b082f5d02b11f3db3e80421e7244089e94.png",
+		"issues": "https://github.com/calmilamsy/ModMenu/issues",
+		"keywords": [
+			"menu",
+			"config"
+		],
+		"license": "MIT",
+		"long_description": "An unofficial port of [ModMenu](https://modrinth.com/mod/modmenu) to b1.7.3.\n\nDoes nothing aside from add a button on the main and escape menu which lists mods, unless something like [Glass Config API](https://modrinth.com/mod/glass-config-api) is installed, in which case you can edit the settings of any mods that support it.",
+		"name": "ModMenu Beta",
+		"package_maintainers": [
+			"mcvm"
+		],
+		"source": "https://github.com/calmilamsy/ModMenu"
+	},
+	"properties": {
+		"modrinth_id": "6v8kVRE3",
+		"open_source": true,
+		"supported_modloaders": [
+			"fabriclike"
+		],
+		"supported_sides": [
+			"client"
+		],
+		"supported_versions": [
+			"b1.7.3"
+		]
+	}
 }

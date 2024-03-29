@@ -1,281 +1,283 @@
 {
-  "addons": {
-    "addon": {
-      "kind": "mod",
-      "versions": [
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "cloth-config",
-              "fabriclike-api",
-              "yungs-api"
-            ],
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/8zaPNLL8/YungsBetterDungeons-1.20.4-Fabric-4.4.1.jar",
-          "version": "8zaPNLL8"
-        },
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/xMqv6c8w/YungsBetterDungeons-1.20.4-Forge-4.4.1.jar",
-          "version": "xMqv6c8w"
-        },
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "cloth-config",
-              "fabriclike-api",
-              "yungs-api"
-            ],
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/4RpKnxDR/YungsBetterDungeons-1.20.4-Fabric-4.4.0.jar",
-          "version": "4RpKnxDR"
-        },
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/sOx1vdMN/YungsBetterDungeons-1.20.4-Forge-4.4.0.jar",
-          "version": "sOx1vdMN"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "cloth-config",
-              "fabriclike-api",
-              "yungs-api"
-            ],
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/bSSS84Op/YungsBetterDungeons-1.20-Fabric-4.0.3.jar",
-          "version": "bSSS84Op"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/yyEN8Zb4/YungsBetterDungeons-1.20-Forge-4.0.3.jar",
-          "version": "yyEN8Zb4"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "cloth-config",
-              "fabriclike-api",
-              "yungs-api"
-            ],
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/iOEKpSFY/YungsBetterDungeons-1.20-Fabric-4.0.2.jar",
-          "version": "iOEKpSFY"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/cJ2CwZT6/YungsBetterDungeons-1.20-Forge-4.0.2.jar",
-          "version": "cJ2CwZT6"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "cloth-config",
-              "fabriclike-api",
-              "yungs-api"
-            ],
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/xraHSR9S/YungsBetterDungeons-1.20-Fabric-4.0.1.jar",
-          "version": "xraHSR9S"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/sZO4lGuf/YungsBetterDungeons-1.20-Forge-4.0.1.jar",
-          "version": "sZO4lGuf"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/JylvzoB0/YungsBetterDungeons-1.19.4-Forge-3.4.0.jar",
-          "version": "JylvzoB0"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/ndfXFrkZ/YungsBetterDungeons-1.19.4-Fabric-3.4.0.jar",
-          "version": "ndfXFrkZ"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "cloth-config",
-              "fabriclike-api",
-              "yungs-api"
-            ],
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/So0mVHEW/YungsBetterDungeons-1.19.3-Fabric-3.3.0.jar",
-          "version": "So0mVHEW"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/xgwwD4nQ/YungsBetterDungeons-1.19.3-Forge-3.3.0.jar",
-          "version": "xgwwD4nQ"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "cloth-config",
-              "fabriclike-api",
-              "yungs-api"
-            ],
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/XOk0yK9M/YungsBetterDungeons-1.19.2-Fabric-3.2.1.jar",
-          "version": "XOk0yK9M"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/vhbhPrpZ/YungsBetterDungeons-1.19.2-Forge-3.2.2.jar",
-          "version": "vhbhPrpZ"
-        }
-      ]
-    }
-  },
-  "meta": {
-    "authors": [
-      "Acarii",
-      "YUNGNICKYOUNG"
-    ],
-    "categories": [
-      "worldgen"
-    ],
-    "community": "https://discord.gg/rns3beq",
-    "description": "A complete redesign of Minecraft's dungeons!",
-    "gallery": [
-      "https://cdn.modrinth.com/data/o1C1Dkj5/images/16cf9b2e65c75afe44ed8f13d67ab539ac9fdf00.png",
-      "https://cdn.modrinth.com/data/o1C1Dkj5/images/430a7b3df92615ef65e3e4d948f47d30c08a301d.png",
-      "https://cdn.modrinth.com/data/o1C1Dkj5/images/8dbfa5f91237d71785a78da80a7a2e35f9e0a936.png",
-      "https://cdn.modrinth.com/data/o1C1Dkj5/images/c41f4ad0f6909dd705036dfafdbb5bb895444f20.png",
-      "https://cdn.modrinth.com/data/o1C1Dkj5/images/ce1b9c1e55d4570ba1e90e8852d0c14d5559bf6b.png",
-      "https://cdn.modrinth.com/data/o1C1Dkj5/images/cf57af53d46cbfdcd4bab45cad6f0d0facb0b2de.png",
-      "https://cdn.modrinth.com/data/o1C1Dkj5/images/d3791d1eed6818c029ec6e2550c8a9e7c05ec564.png",
-      "https://cdn.modrinth.com/data/o1C1Dkj5/images/e6466de1c65c2fab8324a732a9555d39074c586c.png"
-    ],
-    "icon": "https://cdn.modrinth.com/data/o1C1Dkj5/1f4ac6d7203008cedc2dc998ff1ad6df48732e38.png",
-    "issues": "https://github.com/YUNG-GANG/YUNGs-Better-Dungeons/issues",
-    "keywords": [
-      "yungs"
-    ],
-    "license": "LGPL-3.0-only",
-    "name": "YUNG's Better Dungeons",
-    "package_maintainers": [
-      "mcvm"
-    ],
-    "source": "https://github.com/YUNG-GANG/YUNGs-Better-Dungeons",
-    "support_link": "https://www.patreon.com/yungnickyoung"
-  },
-  "properties": {
-    "modrinth_id": "o1C1Dkj5",
-    "supported_modloaders": [
-      "fabriclike",
-      "forgelike"
-    ],
-    "supported_sides": [
-      "server"
-    ],
-    "supported_versions": [
-      "1.19.2",
-      "1.19.3",
-      "1.19.4",
-      "1.20",
-      "1.20.1",
-      "1.20.4"
-    ]
-  }
+	"addons": {
+		"addon": {
+			"kind": "mod",
+			"versions": [
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/8zaPNLL8/YungsBetterDungeons-1.20.4-Fabric-4.4.1.jar",
+					"version": "8zaPNLL8"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/xMqv6c8w/YungsBetterDungeons-1.20.4-Forge-4.4.1.jar",
+					"version": "xMqv6c8w"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/4RpKnxDR/YungsBetterDungeons-1.20.4-Fabric-4.4.0.jar",
+					"version": "4RpKnxDR"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/sOx1vdMN/YungsBetterDungeons-1.20.4-Forge-4.4.0.jar",
+					"version": "sOx1vdMN"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/bSSS84Op/YungsBetterDungeons-1.20-Fabric-4.0.3.jar",
+					"version": "bSSS84Op"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/yyEN8Zb4/YungsBetterDungeons-1.20-Forge-4.0.3.jar",
+					"version": "yyEN8Zb4"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/iOEKpSFY/YungsBetterDungeons-1.20-Fabric-4.0.2.jar",
+					"version": "iOEKpSFY"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/cJ2CwZT6/YungsBetterDungeons-1.20-Forge-4.0.2.jar",
+					"version": "cJ2CwZT6"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/xraHSR9S/YungsBetterDungeons-1.20-Fabric-4.0.1.jar",
+					"version": "xraHSR9S"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/sZO4lGuf/YungsBetterDungeons-1.20-Forge-4.0.1.jar",
+					"version": "sZO4lGuf"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/JylvzoB0/YungsBetterDungeons-1.19.4-Forge-3.4.0.jar",
+					"version": "JylvzoB0"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/ndfXFrkZ/YungsBetterDungeons-1.19.4-Fabric-3.4.0.jar",
+					"version": "ndfXFrkZ"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/So0mVHEW/YungsBetterDungeons-1.19.3-Fabric-3.3.0.jar",
+					"version": "So0mVHEW"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/xgwwD4nQ/YungsBetterDungeons-1.19.3-Forge-3.3.0.jar",
+					"version": "xgwwD4nQ"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/XOk0yK9M/YungsBetterDungeons-1.19.2-Fabric-3.2.1.jar",
+					"version": "XOk0yK9M"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/vhbhPrpZ/YungsBetterDungeons-1.19.2-Forge-3.2.2.jar",
+					"version": "vhbhPrpZ"
+				}
+			]
+		}
+	},
+	"meta": {
+		"authors": [
+			"Acarii",
+			"YUNGNICKYOUNG"
+		],
+		"banner": "https://cdn.modrinth.com/data/o1C1Dkj5/images/430a7b3df92615ef65e3e4d948f47d30c08a301d.png",
+		"categories": [
+			"worldgen"
+		],
+		"community": "https://discord.gg/rns3beq",
+		"description": "A complete redesign of Minecraft's dungeons!",
+		"gallery": [
+			"https://cdn.modrinth.com/data/o1C1Dkj5/images/16cf9b2e65c75afe44ed8f13d67ab539ac9fdf00.png",
+			"https://cdn.modrinth.com/data/o1C1Dkj5/images/430a7b3df92615ef65e3e4d948f47d30c08a301d.png",
+			"https://cdn.modrinth.com/data/o1C1Dkj5/images/8dbfa5f91237d71785a78da80a7a2e35f9e0a936.png",
+			"https://cdn.modrinth.com/data/o1C1Dkj5/images/c41f4ad0f6909dd705036dfafdbb5bb895444f20.png",
+			"https://cdn.modrinth.com/data/o1C1Dkj5/images/ce1b9c1e55d4570ba1e90e8852d0c14d5559bf6b.png",
+			"https://cdn.modrinth.com/data/o1C1Dkj5/images/cf57af53d46cbfdcd4bab45cad6f0d0facb0b2de.png",
+			"https://cdn.modrinth.com/data/o1C1Dkj5/images/d3791d1eed6818c029ec6e2550c8a9e7c05ec564.png",
+			"https://cdn.modrinth.com/data/o1C1Dkj5/images/e6466de1c65c2fab8324a732a9555d39074c586c.png"
+		],
+		"icon": "https://cdn.modrinth.com/data/o1C1Dkj5/1f4ac6d7203008cedc2dc998ff1ad6df48732e38.png",
+		"issues": "https://github.com/YUNG-GANG/YUNGs-Better-Dungeons/issues",
+		"keywords": [
+			"yungs"
+		],
+		"license": "LGPL-3.0-only",
+		"long_description": "<p>\n<img src=\"https://i.imgur.com/0Ka2hKB.png\" alt=\"YUNG's Better Dungeons\" width=\"1344\" height=\"416\" /><br />\n<a title=\"Depends on YUNG's API\" href=\"https://modrinth.com/mod/yungs-api\" target=\"_blank\" rel=\"noopener\"><img src=\"https://tinyurl.com/yungsapibadge\" alt=\"Depends on YUNG's API\" width=\"211\" height=\"26\" /></a>&nbsp;<a title=\"Join the YUNG GANG on Discord!\" href=\"https://discord.gg/rns3beq\" target=\"_blank\" rel=\"noopener\"><img src=\"https://tinyurl.com/yungsdiscordbadge2\" alt=\"Join the YUNG GANG on Discord!\" width=\"136\" height=\"28\" /></a>&nbsp;<a title=\"Follow me on Twitter!\" href=\"https://twitter.com/yungnickyoung\" target=\"_blank\" rel=\"noopener\"><img src=\"https://tinyurl.com/yungstwitterbadge3\" alt=\"Follow me on Twitter!\" width=\"104\" height=\"37\" /></a>&nbsp;<a title=\"Subscribe to my YouTube!\" href=\"https://www.youtube.com/yungnickyoung\" target=\"_blank\" rel=\"noopener\"><img src=\"https://tinyurl.com/yungsyoutubebadge\" alt=\"Subscribe to my YouTube!\" width=\"80\" height=\"30\" /></a>&nbsp;<a title=\"Support me on Patreon!\" href=\"https://patreon.com/yungnickyoung\" target=\"_blank\" rel=\"noopener\"><img src=\"https://tinyurl.com/yungspatreonbadge\" alt=\"Support me on Patreon!\" width=\"138\" height=\"28\" /></a><br />\n<img src=\"https://i.imgur.com/gf4exw0.png\" alt=\"What is this?\" width=\"1125\" height=\"59\" /><br />\nA complete redesign of Minecraft's dungeons like never before. YUNG's Better Dungeons redesigns vanilla dungeons while also adding three new dungeons: <b>Catacombs, Fortresses of the Undead, and Spider Caves!</b>\n</p>\n<p>\n<b>1.19.2 introduces the Nether Update! </b>Now you can find small Nether dungeons scattered throughout the Nether.<b> Note that this is an extra opt-in feature</b>, meaning you will need to manually enable it in the mod's config.\n</p>\n<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/1gBQ8gCs4tU\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>\n<p>\n<img src=\"https://i.imgur.com/JR6R3uf.png\" alt=\"Compatibility\" width=\"1125\" height=\"59\" /><br />\nYUNG's Better Dungeons is intended to be fully compatible with every worldgen mod, including:\n</p>\n<ul>\n<li><a title=\"YUNG's Better Mineshafts\" href=\"https://modrinth.com/mod/yungs-better-mineshafts\" target=\"_blank\" rel=\"noopener\">YUNG's Better Mineshafts</a></li>\n<li><a title=\"YUNG's Better Strongholds\" href=\"https://modrinth.com/mod/yungs-better-strongholds\" target=\"_blank\" rel=\"noopener\">YUNG's Better Strongholds</a></li>\n<li><a title=\"YUNG's Extras\" href=\"https://modrinth.com/mod/yungs-extras\" target=\"_blank\" rel=\"noopener\">YUNG's Extras</a></li>\n<li><a title=\"YUNG's Bridges\" href=\"https://modrinth.com/mod/yungs-bridges\" target=\"_blank\" rel=\"noopener\">YUNG's Bridges</a></li>\n<li>Repurposed Structures. RS also offers a custom data pack you can use in addition to the mod that adds repurposed versions of the small dungeons from Better Dungeons! <a href=\"https://www.curseforge.com/minecraft/texture-packs/repurposed-structures-better-dungeons-datapack\" target=\"_blank\" rel=\"noopener\">Check it out here.</a></li>\n</ul>\n<p><img style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://i.imgur.com/a49IMQJ.png\" /><br />\n<a title=\"Get 25% off your server with code YUNGNICKYOUNG at Bisect Hosting!\" href=\"https://bisecthosting.com/yung\" target=\"_blank\" rel=\"noopener noreferrer\"><img src=\"https://i.imgur.com/nQRs7ZP.png\" alt=\"Use code YUNGNICKYOUNG with Bisect Hosting for 25% off!\" width=\"1344\" height=\"400\" /></a></p>",
+		"name": "YUNG's Better Dungeons",
+		"package_maintainers": [
+			"mcvm"
+		],
+		"source": "https://github.com/YUNG-GANG/YUNGs-Better-Dungeons",
+		"support_link": "https://www.patreon.com/yungnickyoung"
+	},
+	"properties": {
+		"modrinth_id": "o1C1Dkj5",
+		"supported_modloaders": [
+			"fabriclike",
+			"forgelike"
+		],
+		"supported_sides": [
+			"server"
+		],
+		"supported_versions": [
+			"1.19.2",
+			"1.19.3",
+			"1.19.4",
+			"1.20",
+			"1.20.1",
+			"1.20.4"
+		]
+	}
 }

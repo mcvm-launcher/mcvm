@@ -1,337 +1,339 @@
 {
-  "addons": {
-    "addon": {
-      "kind": "mod",
-      "versions": [
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "cloth-config",
-              "fabriclike-api",
-              "yungs-api"
-            ],
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/M9acJ70z/YungsBetterOceanMonuments-1.20.4-Fabric-3.4.1.jar",
-          "version": "M9acJ70z"
-        },
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/YIxZJeTP/YungsBetterOceanMonuments-1.20.4-Forge-3.4.1.jar",
-          "version": "YIxZJeTP"
-        },
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "cloth-config",
-              "fabriclike-api",
-              "yungs-api"
-            ],
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/V46v23Uz/YungsBetterOceanMonuments-1.20.4-Fabric-3.4.0.jar",
-          "version": "V46v23Uz"
-        },
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/XVZh8bzC/YungsBetterOceanMonuments-1.20.4-Forge-3.4.0.jar",
-          "version": "XVZh8bzC"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "cloth-config",
-              "fabriclike-api",
-              "yungs-api"
-            ],
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/4c00pjbt/YungsBetterOceanMonuments-1.20-Fabric-3.0.4.jar",
-          "version": "4c00pjbt"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/SN4iZ7wf/YungsBetterOceanMonuments-1.20-Forge-3.0.4.jar",
-          "version": "SN4iZ7wf"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "cloth-config",
-              "fabriclike-api",
-              "yungs-api"
-            ],
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/SyfairC7/YungsBetterOceanMonuments-1.20-Fabric-3.0.3.jar",
-          "version": "SyfairC7"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/unxdh73k/YungsBetterOceanMonuments-1.20-Forge-3.0.3.jar",
-          "version": "unxdh73k"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/Uehc7tGO/YungsBetterOceanMonuments-1.19.2-Forge-2.1.1.jar",
-          "version": "Uehc7tGO"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "cloth-config",
-              "fabriclike-api",
-              "yungs-api"
-            ],
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/Sn8cPXAH/YungsBetterOceanMonuments-1.19.2-Fabric-2.1.1.jar",
-          "version": "Sn8cPXAH"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "cloth-config",
-              "fabriclike-api",
-              "yungs-api"
-            ],
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/ZzZM3ac4/YungsBetterOceanMonuments-1.20-Fabric-3.0.2.jar",
-          "version": "ZzZM3ac4"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/zNEQO7qp/YungsBetterOceanMonuments-1.20-Forge-3.0.2.jar",
-          "version": "zNEQO7qp"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "cloth-config",
-              "fabriclike-api",
-              "yungs-api"
-            ],
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/QArcFtQd/YungsBetterOceanMonuments-1.20-Fabric-3.0.1.jar",
-          "version": "QArcFtQd"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/QaEO28kO/YungsBetterOceanMonuments-1.20-Forge-3.0.1.jar",
-          "version": "QaEO28kO"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "forge",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/4E8sbZ6U/YungsBetterOceanMonuments-1.19.4-Forge-2.3.0.jar",
-          "version": "4E8sbZ6U"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/JY9IpWlt/YungsBetterOceanMonuments-1.19.4-Fabric-2.3.0.jar",
-          "version": "JY9IpWlt"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "cloth-config",
-              "fabriclike-api",
-              "yungs-api"
-            ],
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/8rQhPDfK/YungsBetterOceanMonuments-1.19.3-Fabric-2.2.0.jar",
-          "version": "8rQhPDfK"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/EeHu6MGe/YungsBetterOceanMonuments-1.19.3-Forge-2.2.0.jar",
-          "version": "EeHu6MGe"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": [
-              "cloth-config",
-              "fabriclike-api",
-              "yungs-api"
-            ],
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/sLd6wlQB/YungsBetterOceanMonuments-1.19.2-Fabric-2.1.0.jar",
-          "version": "sLd6wlQB"
-        },
-        {
-          "minecraft_versions": "1.19.2",
-          "modloaders": "forge",
-          "relations": {
-            "dependencies": "yungs-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/xAjnizbV/YungsBetterOceanMonuments-1.19.2-Forge-2.1.0.jar",
-          "version": "xAjnizbV"
-        }
-      ]
-    }
-  },
-  "meta": {
-    "authors": [
-      "TeraBuildsStuff",
-      "YUNGNICKYOUNG"
-    ],
-    "categories": [
-      "worldgen"
-    ],
-    "community": "https://discord.gg/rns3beq",
-    "description": "A complete redesign of Minecraft's ocean monuments!",
-    "gallery": [
-      "https://cdn.modrinth.com/data/3dT9sgt4/images/2391636af9661c98c7818bb5d3e5a78ee4fbebbe.png",
-      "https://cdn.modrinth.com/data/3dT9sgt4/images/442fae567e021185475ff9b2565eecd3b9bdff09.png",
-      "https://cdn.modrinth.com/data/3dT9sgt4/images/51b111effed634b83de06dbf73fcdc088b9116d1.png",
-      "https://cdn.modrinth.com/data/3dT9sgt4/images/f0c8d67dc8dc17e029d6f327e1c33b6a4bb657e2.png"
-    ],
-    "icon": "https://cdn.modrinth.com/data/3dT9sgt4/d8c15602c866a1cdddb10caec83e57f8ca33e146.png",
-    "issues": "https://github.com/YUNG-GANG/YUNGs-Better-Ocean-Monuments/issues",
-    "keywords": [
-      "yungs"
-    ],
-    "license": "LGPL-3.0-only",
-    "name": "YUNG's Better Ocean Monuments",
-    "package_maintainers": [
-      "mcvm"
-    ],
-    "source": "https://github.com/YUNG-GANG/YUNGs-Better-Ocean-Monuments",
-    "support_link": "https://www.patreon.com/yungnickyoung"
-  },
-  "properties": {
-    "modrinth_id": "3dT9sgt4",
-    "supported_modloaders": [
-      "fabriclike",
-      "forgelike"
-    ],
-    "supported_sides": [
-      "server"
-    ],
-    "supported_versions": [
-      "1.19.2",
-      "1.19.3",
-      "1.19.4",
-      "1.20",
-      "1.20.1",
-      "1.20.4"
-    ]
-  }
+	"addons": {
+		"addon": {
+			"kind": "mod",
+			"versions": [
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/M9acJ70z/YungsBetterOceanMonuments-1.20.4-Fabric-3.4.1.jar",
+					"version": "M9acJ70z"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/YIxZJeTP/YungsBetterOceanMonuments-1.20.4-Forge-3.4.1.jar",
+					"version": "YIxZJeTP"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/V46v23Uz/YungsBetterOceanMonuments-1.20.4-Fabric-3.4.0.jar",
+					"version": "V46v23Uz"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/XVZh8bzC/YungsBetterOceanMonuments-1.20.4-Forge-3.4.0.jar",
+					"version": "XVZh8bzC"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/4c00pjbt/YungsBetterOceanMonuments-1.20-Fabric-3.0.4.jar",
+					"version": "4c00pjbt"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/SN4iZ7wf/YungsBetterOceanMonuments-1.20-Forge-3.0.4.jar",
+					"version": "SN4iZ7wf"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/SyfairC7/YungsBetterOceanMonuments-1.20-Fabric-3.0.3.jar",
+					"version": "SyfairC7"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/unxdh73k/YungsBetterOceanMonuments-1.20-Forge-3.0.3.jar",
+					"version": "unxdh73k"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/Uehc7tGO/YungsBetterOceanMonuments-1.19.2-Forge-2.1.1.jar",
+					"version": "Uehc7tGO"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/Sn8cPXAH/YungsBetterOceanMonuments-1.19.2-Fabric-2.1.1.jar",
+					"version": "Sn8cPXAH"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/ZzZM3ac4/YungsBetterOceanMonuments-1.20-Fabric-3.0.2.jar",
+					"version": "ZzZM3ac4"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/zNEQO7qp/YungsBetterOceanMonuments-1.20-Forge-3.0.2.jar",
+					"version": "zNEQO7qp"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/QArcFtQd/YungsBetterOceanMonuments-1.20-Fabric-3.0.1.jar",
+					"version": "QArcFtQd"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/QaEO28kO/YungsBetterOceanMonuments-1.20-Forge-3.0.1.jar",
+					"version": "QaEO28kO"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/4E8sbZ6U/YungsBetterOceanMonuments-1.19.4-Forge-2.3.0.jar",
+					"version": "4E8sbZ6U"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/JY9IpWlt/YungsBetterOceanMonuments-1.19.4-Fabric-2.3.0.jar",
+					"version": "JY9IpWlt"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/8rQhPDfK/YungsBetterOceanMonuments-1.19.3-Fabric-2.2.0.jar",
+					"version": "8rQhPDfK"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/EeHu6MGe/YungsBetterOceanMonuments-1.19.3-Forge-2.2.0.jar",
+					"version": "EeHu6MGe"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/sLd6wlQB/YungsBetterOceanMonuments-1.19.2-Fabric-2.1.0.jar",
+					"version": "sLd6wlQB"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/xAjnizbV/YungsBetterOceanMonuments-1.19.2-Forge-2.1.0.jar",
+					"version": "xAjnizbV"
+				}
+			]
+		}
+	},
+	"meta": {
+		"authors": [
+			"TeraBuildsStuff",
+			"YUNGNICKYOUNG"
+		],
+		"banner": "https://cdn.modrinth.com/data/3dT9sgt4/images/442fae567e021185475ff9b2565eecd3b9bdff09.png",
+		"categories": [
+			"worldgen"
+		],
+		"community": "https://discord.gg/rns3beq",
+		"description": "A complete redesign of Minecraft's ocean monuments!",
+		"gallery": [
+			"https://cdn.modrinth.com/data/3dT9sgt4/images/2391636af9661c98c7818bb5d3e5a78ee4fbebbe.png",
+			"https://cdn.modrinth.com/data/3dT9sgt4/images/442fae567e021185475ff9b2565eecd3b9bdff09.png",
+			"https://cdn.modrinth.com/data/3dT9sgt4/images/51b111effed634b83de06dbf73fcdc088b9116d1.png",
+			"https://cdn.modrinth.com/data/3dT9sgt4/images/f0c8d67dc8dc17e029d6f327e1c33b6a4bb657e2.png"
+		],
+		"icon": "https://cdn.modrinth.com/data/3dT9sgt4/d8c15602c866a1cdddb10caec83e57f8ca33e146.png",
+		"issues": "https://github.com/YUNG-GANG/YUNGs-Better-Ocean-Monuments/issues",
+		"keywords": [
+			"yungs"
+		],
+		"license": "LGPL-3.0-only",
+		"long_description": "<p>\n<img src=\"https://i.imgur.com/4IgKuSq.png\" alt=\"YUNG's Better Ocean Monuments\" width=\"1344\" height=\"416\" /><br />\n<a title=\"Depends on YUNG's API\" href=\"https://modrinth.com/mod/yungs-api\" target=\"_blank\" rel=\"noopener\"><img src=\"https://tinyurl.com/yungsapibadge\" alt=\"Depends on YUNG's API\" width=\"211\" height=\"26\" /></a>&nbsp;<a title=\"Join the YUNG GANG on Discord!\" href=\"https://discord.gg/rns3beq\" target=\"_blank\" rel=\"noopener\"><img src=\"https://tinyurl.com/yungsdiscordbadge2\" alt=\"Join the YUNG GANG on Discord!\" width=\"136\" height=\"28\" /></a>&nbsp;<a title=\"Follow me on Twitter!\" href=\"https://twitter.com/yungnickyoung\" target=\"_blank\" rel=\"noopener\"><img src=\"https://tinyurl.com/yungstwitterbadge3\" alt=\"Follow me on Twitter!\" width=\"104\" height=\"37\" /></a>&nbsp;<a title=\"Subscribe to my YouTube!\" href=\"https://www.youtube.com/yungnickyoung\" target=\"_blank\" rel=\"noopener\"><img src=\"https://tinyurl.com/yungsyoutubebadge\" alt=\"Subscribe to my YouTube!\" width=\"80\" height=\"30\" /></a>&nbsp;<a title=\"Support me on Patreon!\" href=\"https://patreon.com/yungnickyoung\" target=\"_blank\" rel=\"noopener\"><img src=\"https://tinyurl.com/yungspatreonbadge\" alt=\"Support me on Patreon!\" width=\"138\" height=\"28\" /></a><br />\n<img src=\"https://i.imgur.com/qs5CKD3.png\" alt=\"What is this?\" width=\"1125\" height=\"59\" /><br />\nA complete overhaul of Minecraft's ocean monuments! YUNG's Better Ocean Monuments fundamentally redesigns ocean monuments to be much more engaging and rewarding. Better Monuments are much larger than their vanilla counterparts and have completely randomized layouts. You'll find much better loot for your troubles, including Tridents and a Heart of the Sea!\n</p>\n<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/QavgJ5oL5SI\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>\n<p>\n<img src=\"https://i.imgur.com/61NjpSv.png\" alt=\"Compatibility\" width=\"1125\" height=\"59\" /><br />\nYUNG's Better Ocean Monuments is intended to be fully compatible with every worldgen mod, including:\n</p>\n<ul>\n<li><a href=\"https://modrinth.com/mod/yungs-better-desert-temples\" target=\"_blank\" rel=\"noopener\">YUNG's Better Desert Temples</a></li>\n<li><a title=\"YUNG's Better Mineshafts\" href=\"https://modrinth.com/mod/yungs-better-mineshafts\" target=\"_blank\" rel=\"noopener\">YUNG's Better Mineshafts</a></li>\n<li><a title=\"YUNG's Better Strongholds\" href=\"https://modrinth.com/mod/yungs-better-strongholds\" target=\"_blank\" rel=\"noopener\">YUNG's Better Strongholds</a></li>\n<li><a title=\"YUNG's Extras\" href=\"https://modrinth.com/mod/yungs-extras\" target=\"_blank\" rel=\"noopener\">YUNG's Extras</a></li>\n<li><a title=\"YUNG's Bridges\" href=\"https://modrinth.com/mod/yungs-bridges\" target=\"_blank\" rel=\"noopener\">YUNG's Bridges</a></li>\n<li>Repurposed Structures. RS also offers a custom data pack you can use in addition to the mod that adds repurposed versions of these overhauled monuments! <a href=\"https://www.curseforge.com/minecraft/texture-packs/repurposed-structures-better-ocean-monuments\" target=\"_blank\" rel=\"noopener\">Check it out here.</a></li>\n</ul>\n<p><img src=\"https://i.imgur.com/a49IMQJ.png\" /><br />\n<a title=\"Get 25% off your server with code YUNGNICKYOUNG at Bisect Hosting!\" href=\"https://bisecthosting.com/yung\" target=\"_blank\" rel=\"noopener noreferrer\"><img src=\"https://i.imgur.com/nQRs7ZP.png\" alt=\"Use code YUNGNICKYOUNG with Bisect Hosting for 25% off!\" width=\"1344\" height=\"400\" /></a></p>",
+		"name": "YUNG's Better Ocean Monuments",
+		"package_maintainers": [
+			"mcvm"
+		],
+		"source": "https://github.com/YUNG-GANG/YUNGs-Better-Ocean-Monuments",
+		"support_link": "https://www.patreon.com/yungnickyoung"
+	},
+	"properties": {
+		"modrinth_id": "3dT9sgt4",
+		"supported_modloaders": [
+			"fabriclike",
+			"forgelike"
+		],
+		"supported_sides": [
+			"server"
+		],
+		"supported_versions": [
+			"1.19.2",
+			"1.19.3",
+			"1.19.4",
+			"1.20",
+			"1.20.1",
+			"1.20.4"
+		]
+	}
 }

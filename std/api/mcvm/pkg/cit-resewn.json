@@ -1,410 +1,411 @@
 {
-  "addons": {
-    "addon": {
-      "kind": "mod",
-      "versions": [
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/otVJckYQ/versions/Hvp3zWWg/citresewn-1.1.3%2B1.20.4.jar",
-          "version": "Hvp3zWWg"
-        },
-        {
-          "minecraft_versions": [
-            "1.20",
-            "1.20.1"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/otVJckYQ/versions/c7Lo4vij/CITResewn-1.1.3%2B1.20.jar",
-          "version": "c7Lo4vij"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/otVJckYQ/versions/8oMEcc2E/CITResewn-1.1.3%2B1.19.4.jar",
-          "version": "8oMEcc2E"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/otVJckYQ/versions/hGatm5K8/CITResewn-1.1.3%2B1.19.3.jar",
-          "version": "hGatm5K8"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/otVJckYQ/versions/lYmW1wnD/CITResewn-1.1.2%2B1.19.2.jar",
-          "version": "lYmW1wnD"
-        },
-        {
-          "minecraft_versions": [
-            "1.18",
-            "1.18.1",
-            "1.18.2"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/otVJckYQ/versions/1.1.1%2B1.18.2/CITResewn-1.1.1%2B1.18.2.jar",
-          "version": "SwmQcI45"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/otVJckYQ/versions/1.1.1%2B1.19/CITResewn-1.1.1%2B1.19.jar",
-          "version": "2jLdI2KI"
-        },
-        {
-          "minecraft_versions": [
-            "1.18",
-            "1.18.1",
-            "1.18.2"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/otVJckYQ/versions/1.1.0%2B1.18.2/CITResewn-1.1.0%2B1.18.2.jar",
-          "version": "ity0tBq3"
-        },
-        {
-          "minecraft_versions": "1.19",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/otVJckYQ/versions/1.1.0%2B1.19/CITResewn-1.1.0%2B1.19.jar",
-          "version": "C2bXAbXg"
-        },
-        {
-          "minecraft_versions": [
-            "1.18",
-            "1.18.1",
-            "1.18.2"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/otVJckYQ/versions/1.0.1%2B1.18.2/CITResewn-1.0.1%2B1.18.2.jar",
-          "version": "UpVioyBK"
-        },
-        {
-          "minecraft_versions": [
-            "1.18",
-            "1.18.1",
-            "1.18.2"
-          ],
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/otVJckYQ/versions/1.0.0%2B1.18.2/CITResewn-1.0.0%2B1.18.2.jar",
-          "version": "Sn4jfAoS"
-        },
-        {
-          "minecraft_versions": [
-            "1.17",
-            "1.17.1"
-          ],
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/otVJckYQ/versions/0.9.1%2B1.17.1/CITResewn-0.9.1%2B1.17.1.jar",
-          "version": "fprkWN1h"
-        },
-        {
-          "minecraft_versions": [
-            "1.18",
-            "1.18.1",
-            "1.18.2"
-          ],
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/otVJckYQ/versions/0.9.1%2B1.18.1/CITResewn-0.9.1%2B1.18.1.jar",
-          "version": "PnxfNudU"
-        },
-        {
-          "minecraft_versions": [
-            "1.17",
-            "1.17.1"
-          ],
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/otVJckYQ/versions/0.9.0%2B1.17.1/CITResewn-0.9.0%2B1.17.1.jar",
-          "version": "LsLnEHfF"
-        },
-        {
-          "minecraft_versions": [
-            "1.18",
-            "1.18.1"
-          ],
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/otVJckYQ/versions/0.9.0%2B1.18.1/CITResewn-0.9.0%2B1.18.1.jar",
-          "version": "BPn79vsk"
-        },
-        {
-          "minecraft_versions": [
-            "1.18",
-            "1.18.1"
-          ],
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/otVJckYQ/versions/0.8.2%2B1.18.1/CITResewn-0.8.2%2B1.18.1.jar",
-          "version": "ysxlawje"
-        },
-        {
-          "minecraft_versions": [
-            "1.17",
-            "1.17.1"
-          ],
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/otVJckYQ/versions/0.8.2%2B1.17.1/CITResewn-0.8.2%2B1.17.1.jar",
-          "version": "jE0ZHEaE"
-        },
-        {
-          "minecraft_versions": [
-            "1.18",
-            "1.18.1"
-          ],
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/otVJckYQ/versions/0.8.1-1.18/CITResewn-0.8.1-1.18.jar",
-          "version": "n2100b4k"
-        },
-        {
-          "minecraft_versions": [
-            "1.17",
-            "1.17.1"
-          ],
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/otVJckYQ/versions/0.8.1/CITResewn-0.8.1.jar",
-          "version": "Zhnavk8e"
-        },
-        {
-          "minecraft_versions": [
-            "1.17",
-            "1.17.1"
-          ],
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/otVJckYQ/versions/0.8.0/CITResewn-0.8.0.jar",
-          "version": "V26qldGn"
-        },
-        {
-          "minecraft_versions": [
-            "1.17",
-            "1.17.1"
-          ],
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/otVJckYQ/versions/0.7.1/CITResewn-0.7.1.jar",
-          "version": "DbOYaOvK"
-        },
-        {
-          "minecraft_versions": [
-            "1.17",
-            "1.17.1"
-          ],
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com//data/otVJckYQ/versions/0.7.0/CITResewn-0.7.0.jar",
-          "version": "S0QSA59b"
-        },
-        {
-          "minecraft_versions": [
-            "1.17",
-            "1.17.1"
-          ],
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com//data/otVJckYQ/versions/0.6.1/CITResewn-0.6.1.jar",
-          "version": "4hStrBnq"
-        },
-        {
-          "minecraft_versions": [
-            "1.17",
-            "1.17.1"
-          ],
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com//data/otVJckYQ/versions/0.6.0/CITResewn-0.6.0.jar",
-          "version": "TaegaFdJ"
-        },
-        {
-          "minecraft_versions": [
-            "1.17",
-            "1.17.1"
-          ],
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com//data/otVJckYQ/versions/0.5.4/CITResewn-0.5.4.jar",
-          "version": "Pqmm2TG5"
-        },
-        {
-          "minecraft_versions": [
-            "1.17",
-            "1.17.1"
-          ],
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com//data/otVJckYQ/versions/0.5.3/CITResewn-0.5.3.jar",
-          "version": "urCxXORI"
-        },
-        {
-          "minecraft_versions": [
-            "1.17",
-            "1.17.1"
-          ],
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com//data/otVJckYQ/versions/0.5.2/CITResewn-0.5.2.jar",
-          "version": "na5V4QuI"
-        },
-        {
-          "minecraft_versions": [
-            "1.17",
-            "1.17.1"
-          ],
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com//data/otVJckYQ/versions/0.5.1/CITResewn-0.5.1.jar",
-          "version": "HRyH7tDk"
-        },
-        {
-          "minecraft_versions": [
-            "1.17",
-            "1.17.1"
-          ],
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com//data/otVJckYQ/versions/0.5.0/CITResewn-0.5.0.jar",
-          "version": "6JfMqtLA"
-        },
-        {
-          "minecraft_versions": [
-            "1.17",
-            "1.17.1"
-          ],
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com//data/otVJckYQ/versions/0.4.4/CITResewn-0.4.4.jar",
-          "version": "4OftTdzA"
-        },
-        {
-          "minecraft_versions": [
-            "1.17",
-            "1.17.1"
-          ],
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/otVJckYQ/versions/0.4.3/CITResewn-0.4.3.jar",
-          "version": "5wCycJoI"
-        },
-        {
-          "minecraft_versions": [
-            "1.17",
-            "1.17.1"
-          ],
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/otVJckYQ/versions/0.4.2/CITResewn-0.4.2.jar",
-          "version": "DtEfQRfa"
-        },
-        {
-          "minecraft_versions": [
-            "1.17",
-            "1.17.1"
-          ],
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/otVJckYQ/versions/0.4.1/CITResewn-0.4.1.jar",
-          "version": "8h3TrO13"
-        },
-        {
-          "minecraft_versions": [
-            "1.17",
-            "1.17.1"
-          ],
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/otVJckYQ/versions/0.4.0/CITResewn-0.4.0.jar",
-          "version": "Hcb3L5AR"
-        },
-        {
-          "minecraft_versions": [
-            "1.17",
-            "1.17.1"
-          ],
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/otVJckYQ/versions/0.3.0/CITResewn-0.3.0.jar",
-          "version": "waRHbaG2"
-        },
-        {
-          "minecraft_versions": [
-            "1.17",
-            "1.17.1"
-          ],
-          "modloaders": "fabric",
-          "stability": "latest",
-          "url": "https://cdn.modrinth.com/data/otVJckYQ/versions/0.2.0/CITResewn-0.2.0.jar",
-          "version": "iz6KVZZ8"
-        }
-      ]
-    }
-  },
-  "meta": {
-    "authors": [
-      "shsupercm"
-    ],
-    "categories": [
-      "library"
-    ],
-    "description": "Re-implements MCPatcher's CIT (custom item textures from optifine resource packs)",
-    "documentation": "https://citresewn.shcm.io/",
-    "gallery": [],
-    "icon": "https://cdn.modrinth.com/data/otVJckYQ/icon.png",
-    "issues": "https://github.com/SHsuperCM/CITResewn/issues",
-    "keywords": [
-      "graphics"
-    ],
-    "license": "MIT",
-    "name": "CIT Resewn",
-    "package_maintainers": [
-      "mcvm"
-    ],
-    "source": "https://github.com/SHsuperCM/CITResewn"
-  },
-  "properties": {
-    "modrinth_id": "otVJckYQ",
-    "supported_modloaders": [
-      "fabriclike"
-    ],
-    "supported_sides": [
-      "client"
-    ],
-    "supported_versions": [
-      "1.17",
-      "1.17.1",
-      "1.18",
-      "1.18.1",
-      "1.18.2",
-      "1.19",
-      "1.19.1",
-      "1.19.2",
-      "1.19.3",
-      "1.19.4",
-      "1.20",
-      "1.20.1",
-      "1.20.4"
-    ]
-  }
+	"addons": {
+		"addon": {
+			"kind": "mod",
+			"versions": [
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/otVJckYQ/versions/Hvp3zWWg/citresewn-1.1.3%2B1.20.4.jar",
+					"version": "Hvp3zWWg"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/otVJckYQ/versions/c7Lo4vij/CITResewn-1.1.3%2B1.20.jar",
+					"version": "c7Lo4vij"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/otVJckYQ/versions/8oMEcc2E/CITResewn-1.1.3%2B1.19.4.jar",
+					"version": "8oMEcc2E"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/otVJckYQ/versions/hGatm5K8/CITResewn-1.1.3%2B1.19.3.jar",
+					"version": "hGatm5K8"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/otVJckYQ/versions/lYmW1wnD/CITResewn-1.1.2%2B1.19.2.jar",
+					"version": "lYmW1wnD"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/otVJckYQ/versions/1.1.1%2B1.18.2/CITResewn-1.1.1%2B1.18.2.jar",
+					"version": "SwmQcI45"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/otVJckYQ/versions/1.1.1%2B1.19/CITResewn-1.1.1%2B1.19.jar",
+					"version": "2jLdI2KI"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/otVJckYQ/versions/1.1.0%2B1.18.2/CITResewn-1.1.0%2B1.18.2.jar",
+					"version": "ity0tBq3"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/otVJckYQ/versions/1.1.0%2B1.19/CITResewn-1.1.0%2B1.19.jar",
+					"version": "C2bXAbXg"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/otVJckYQ/versions/1.0.1%2B1.18.2/CITResewn-1.0.1%2B1.18.2.jar",
+					"version": "UpVioyBK"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/otVJckYQ/versions/1.0.0%2B1.18.2/CITResewn-1.0.0%2B1.18.2.jar",
+					"version": "Sn4jfAoS"
+				},
+				{
+					"minecraft_versions": [
+						"1.17",
+						"1.17.1"
+					],
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/otVJckYQ/versions/0.9.1%2B1.17.1/CITResewn-0.9.1%2B1.17.1.jar",
+					"version": "fprkWN1h"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2"
+					],
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/otVJckYQ/versions/0.9.1%2B1.18.1/CITResewn-0.9.1%2B1.18.1.jar",
+					"version": "PnxfNudU"
+				},
+				{
+					"minecraft_versions": [
+						"1.17",
+						"1.17.1"
+					],
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/otVJckYQ/versions/0.9.0%2B1.17.1/CITResewn-0.9.0%2B1.17.1.jar",
+					"version": "LsLnEHfF"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1"
+					],
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/otVJckYQ/versions/0.9.0%2B1.18.1/CITResewn-0.9.0%2B1.18.1.jar",
+					"version": "BPn79vsk"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1"
+					],
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/otVJckYQ/versions/0.8.2%2B1.18.1/CITResewn-0.8.2%2B1.18.1.jar",
+					"version": "ysxlawje"
+				},
+				{
+					"minecraft_versions": [
+						"1.17",
+						"1.17.1"
+					],
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/otVJckYQ/versions/0.8.2%2B1.17.1/CITResewn-0.8.2%2B1.17.1.jar",
+					"version": "jE0ZHEaE"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1"
+					],
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/otVJckYQ/versions/0.8.1-1.18/CITResewn-0.8.1-1.18.jar",
+					"version": "n2100b4k"
+				},
+				{
+					"minecraft_versions": [
+						"1.17",
+						"1.17.1"
+					],
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/otVJckYQ/versions/0.8.1/CITResewn-0.8.1.jar",
+					"version": "Zhnavk8e"
+				},
+				{
+					"minecraft_versions": [
+						"1.17",
+						"1.17.1"
+					],
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/otVJckYQ/versions/0.8.0/CITResewn-0.8.0.jar",
+					"version": "V26qldGn"
+				},
+				{
+					"minecraft_versions": [
+						"1.17",
+						"1.17.1"
+					],
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/otVJckYQ/versions/0.7.1/CITResewn-0.7.1.jar",
+					"version": "DbOYaOvK"
+				},
+				{
+					"minecraft_versions": [
+						"1.17",
+						"1.17.1"
+					],
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com//data/otVJckYQ/versions/0.7.0/CITResewn-0.7.0.jar",
+					"version": "S0QSA59b"
+				},
+				{
+					"minecraft_versions": [
+						"1.17",
+						"1.17.1"
+					],
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com//data/otVJckYQ/versions/0.6.1/CITResewn-0.6.1.jar",
+					"version": "4hStrBnq"
+				},
+				{
+					"minecraft_versions": [
+						"1.17",
+						"1.17.1"
+					],
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com//data/otVJckYQ/versions/0.6.0/CITResewn-0.6.0.jar",
+					"version": "TaegaFdJ"
+				},
+				{
+					"minecraft_versions": [
+						"1.17",
+						"1.17.1"
+					],
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com//data/otVJckYQ/versions/0.5.4/CITResewn-0.5.4.jar",
+					"version": "Pqmm2TG5"
+				},
+				{
+					"minecraft_versions": [
+						"1.17",
+						"1.17.1"
+					],
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com//data/otVJckYQ/versions/0.5.3/CITResewn-0.5.3.jar",
+					"version": "urCxXORI"
+				},
+				{
+					"minecraft_versions": [
+						"1.17",
+						"1.17.1"
+					],
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com//data/otVJckYQ/versions/0.5.2/CITResewn-0.5.2.jar",
+					"version": "na5V4QuI"
+				},
+				{
+					"minecraft_versions": [
+						"1.17",
+						"1.17.1"
+					],
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com//data/otVJckYQ/versions/0.5.1/CITResewn-0.5.1.jar",
+					"version": "HRyH7tDk"
+				},
+				{
+					"minecraft_versions": [
+						"1.17",
+						"1.17.1"
+					],
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com//data/otVJckYQ/versions/0.5.0/CITResewn-0.5.0.jar",
+					"version": "6JfMqtLA"
+				},
+				{
+					"minecraft_versions": [
+						"1.17",
+						"1.17.1"
+					],
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com//data/otVJckYQ/versions/0.4.4/CITResewn-0.4.4.jar",
+					"version": "4OftTdzA"
+				},
+				{
+					"minecraft_versions": [
+						"1.17",
+						"1.17.1"
+					],
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/otVJckYQ/versions/0.4.3/CITResewn-0.4.3.jar",
+					"version": "5wCycJoI"
+				},
+				{
+					"minecraft_versions": [
+						"1.17",
+						"1.17.1"
+					],
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/otVJckYQ/versions/0.4.2/CITResewn-0.4.2.jar",
+					"version": "DtEfQRfa"
+				},
+				{
+					"minecraft_versions": [
+						"1.17",
+						"1.17.1"
+					],
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/otVJckYQ/versions/0.4.1/CITResewn-0.4.1.jar",
+					"version": "8h3TrO13"
+				},
+				{
+					"minecraft_versions": [
+						"1.17",
+						"1.17.1"
+					],
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/otVJckYQ/versions/0.4.0/CITResewn-0.4.0.jar",
+					"version": "Hcb3L5AR"
+				},
+				{
+					"minecraft_versions": [
+						"1.17",
+						"1.17.1"
+					],
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/otVJckYQ/versions/0.3.0/CITResewn-0.3.0.jar",
+					"version": "waRHbaG2"
+				},
+				{
+					"minecraft_versions": [
+						"1.17",
+						"1.17.1"
+					],
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/otVJckYQ/versions/0.2.0/CITResewn-0.2.0.jar",
+					"version": "iz6KVZZ8"
+				}
+			]
+		}
+	},
+	"meta": {
+		"authors": [
+			"shsupercm"
+		],
+		"categories": [
+			"library"
+		],
+		"description": "Re-implements MCPatcher's CIT (custom item textures from optifine resource packs)",
+		"documentation": "https://citresewn.shcm.io/",
+		"gallery": [],
+		"icon": "https://cdn.modrinth.com/data/otVJckYQ/icon.png",
+		"issues": "https://github.com/SHsuperCM/CITResewn/issues",
+		"keywords": [
+			"graphics"
+		],
+		"license": "MIT",
+		"long_description": "<center><img src=\"https://citresewn.shcm.io/img/project_description/logo_shadow.png\" alt=\"CIT Resewn\" width=\"247\" height=\"247\"></center>\n<center>CIT Resewn is MCPatcher's CIT features re-written outside of optifine as a standalone mod for fabric</center>\n\n[<center><img src=\"https://citresewn.shcm.io/img/project_description/docs.png\" alt=\"Go to the docs for more info!\" width=\"268\" height=\"53\"></center>](https://citresewn.shcm.io/)\n\n[<center><img src=\"https://citresewn.shcm.io/img/project_description/link_curse.png\" alt=\"Curseforge\" width=\"135\" height=\"53\"></center>](https://www.curseforge.com/minecraft/mc-mods/cit-resewn)\n\n### Huh? What does it do?\nMCPatcher had a feature called Custom Item Textures(or CIT for short) which was later adopted by Optifine.\n\nCustom Item Textures allowed resourcepacks to replace the appearance of items when they met certain conditions.\n\nCIT Resewn does exactly that but as a standalone Fabric mod which does not require MCPatcher nor Optifine!\n\nOn top of that, CIT Resewn aims to build upon the concept of CITs by expanding the available types and conditions.\n\n### How is it different than MCPatcher/Optifine's CIT?\nCIT Resewn is intended to be fully backwards compatible with the old Optifine/MCPatcher packs. Though there are some key differences.\n\nFirst, the numeric id system was removed since the Flattening. Packs utilizing the so called \"magic numbers\" instead of the new text ids will not work.\n\nSecond, Optifine and old minecraft versions have a bug which allows resourcepacks to put files in malformatted(or \"broken\") paths.<br>\nThese are paths that contain \"Non (lower cased) a-z, 0-9, dots, underscores and dashes\" characters within either the file name or its parent directories. In the case that you must use such a broken pack, there is a compromise set up which is still highly experimental and not recommended. You can go to CIT Resewn's settings and allow broken paths. (I'm serious, this is not recommended at all)\n\nLastly, to ensure compatibility with foreign packs, CITs will be loaded from .properties files under:\n`assets/minecraft/citresewn/cit`\n`assets/minecraft/optifine/cit`\n`assets/minecraft/mcpatcher/cit`\n\n### Does CIT Resewn support Optifine/Sodium?\nWhile CIT Resewn is designed to work without any performance mod needed, I will try my best to ensure it is compatible with Sodium.\n\nWith all that said, there will not be support for Optifine at all.\n\nThere were also discussions around Sodium alternatives such as Canvas.<br>\nMy official statement on compatibility with these mods is \"if it works it works\" unless I say otherwise.\n\n### What about Forge?\nForge is being kinda doodoo recently and Fabric's Mixins is what allows the mod to inject cits into vanilla so smoothly.\n\nDo not ask for a forge port or I'll break your elbows.\n\n### 1.16/other versions?\nSee [Issues#120](https://github.com/SHsuperCM/CITResewn/issues/120)\n\n<strike>If a version says it's for 1.x, it means it is aimed to work on all of 1.x's minor versions but specifically recommended for its listed minor version.</strike><br>\nWell not anymore! Thanks a lot mojank   ._.\n\n\n[<center><img src=\"https://citresewn.shcm.io/img/project_description/docs.png\" alt=\"Go to the docs for more info!\" width=\"268\" height=\"53\"></center>](https://citresewn.shcm.io/)",
+		"name": "CIT Resewn",
+		"package_maintainers": [
+			"mcvm"
+		],
+		"source": "https://github.com/SHsuperCM/CITResewn"
+	},
+	"properties": {
+		"modrinth_id": "otVJckYQ",
+		"supported_modloaders": [
+			"fabriclike"
+		],
+		"supported_sides": [
+			"client"
+		],
+		"supported_versions": [
+			"1.17",
+			"1.17.1",
+			"1.18",
+			"1.18.1",
+			"1.18.2",
+			"1.19",
+			"1.19.1",
+			"1.19.2",
+			"1.19.3",
+			"1.19.4",
+			"1.20",
+			"1.20.1",
+			"1.20.4"
+		]
+	}
 }

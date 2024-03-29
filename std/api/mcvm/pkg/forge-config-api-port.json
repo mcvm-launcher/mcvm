@@ -1,1019 +1,1021 @@
 {
-  "addons": {
-    "addon": {
-      "kind": "mod",
-      "versions": [
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "neoforged",
-          "relations": {
-            "recommendations": {
-              "value": "forge-config-screens"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/izawYWhx/ForgeConfigAPIPort-v20.4.3-1.20.4-NeoForge.jar",
-          "version": "izawYWhx"
-        },
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "forge",
-          "relations": {
-            "recommendations": {
-              "value": "forge-config-screens"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/cPR7Hb0e/ForgeConfigAPIPort-v20.4.3-1.20.4-Forge.jar",
-          "version": "cPR7Hb0e"
-        },
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "forge-config-screens"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/xbVGsTLe/ForgeConfigAPIPort-v20.4.3-1.20.4-Fabric.jar",
-          "version": "xbVGsTLe"
-        },
-        {
-          "minecraft_versions": "1.20.2",
-          "modloaders": "forge",
-          "relations": {
-            "recommendations": {
-              "value": "forge-config-screens"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/r8gESJiS/ForgeConfigAPIPort-v20.2.6-1.20.2-Forge.jar",
-          "version": "r8gESJiS"
-        },
-        {
-          "minecraft_versions": "1.20.2",
-          "modloaders": "neoforged",
-          "relations": {
-            "recommendations": {
-              "value": "forge-config-screens"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/1bZs84f5/ForgeConfigAPIPort-v20.2.6-1.20.2-NeoForge.jar",
-          "version": "1bZs84f5"
-        },
-        {
-          "minecraft_versions": "1.20.2",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "forge-config-screens"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/sK1XwxTt/ForgeConfigAPIPort-v20.2.6-1.20.2-Fabric.jar",
-          "version": "sK1XwxTt"
-        },
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "neoforged",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/Uc2L9JYx/ForgeConfigAPIPort-v20.4.2-1.20.4-NeoForge.jar",
-          "version": "Uc2L9JYx"
-        },
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "forge",
-          "relations": {
-            "recommendations": {
-              "value": "forge-config-screens"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/P3GfPe5a/ForgeConfigAPIPort-v20.4.2-1.20.4-Forge.jar",
-          "version": "P3GfPe5a"
-        },
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "forge-config-screens"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/IS7wNJuv/ForgeConfigAPIPort-v20.4.2-1.20.4-Fabric.jar",
-          "version": "IS7wNJuv"
-        },
-        {
-          "minecraft_versions": "1.20.2",
-          "modloaders": "neoforged",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/REA2Y3hn/ForgeConfigAPIPort-v20.2.5-1.20.2-NeoForge.jar",
-          "version": "REA2Y3hn"
-        },
-        {
-          "minecraft_versions": "1.20.2",
-          "modloaders": "forge",
-          "relations": {
-            "recommendations": {
-              "value": "forge-config-screens"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/WjsrL3PB/ForgeConfigAPIPort-v20.2.5-1.20.2-Forge.jar",
-          "version": "WjsrL3PB"
-        },
-        {
-          "minecraft_versions": "1.20.2",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "forge-config-screens"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/uVasUkyz/ForgeConfigAPIPort-v20.2.5-1.20.2-Fabric.jar",
-          "version": "uVasUkyz"
-        },
-        {
-          "minecraft_versions": "1.20.2",
-          "modloaders": "neoforged",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/RRZz6X5Y/ForgeConfigAPIPort-v20.2.4-1.20.2-NeoForge.jar",
-          "version": "RRZz6X5Y"
-        },
-        {
-          "minecraft_versions": "1.20.2",
-          "modloaders": "forge",
-          "relations": {
-            "recommendations": {
-              "value": "forge-config-screens"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/d4o2DIW4/ForgeConfigAPIPort-v20.2.4-1.20.2-Forge.jar",
-          "version": "d4o2DIW4"
-        },
-        {
-          "minecraft_versions": "1.20.2",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "forge-config-screens"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/aQOysw5j/ForgeConfigAPIPort-v20.2.4-1.20.2-Fabric.jar",
-          "version": "aQOysw5j"
-        },
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "neoforged",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/8ZEqzvgl/ForgeConfigAPIPort-v20.4.1-1.20.4-NeoForge.jar",
-          "version": "8ZEqzvgl"
-        },
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "forge",
-          "relations": {
-            "recommendations": {
-              "value": "forge-config-screens"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/hSymtRZz/ForgeConfigAPIPort-v20.4.1-1.20.4-Forge.jar",
-          "version": "hSymtRZz"
-        },
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "forge-config-screens"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/y5ADtIQp/ForgeConfigAPIPort-v20.4.1-1.20.4-Fabric.jar",
-          "version": "y5ADtIQp"
-        },
-        {
-          "minecraft_versions": "1.20.4",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "forge-config-screens"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/jygSIEk6/ForgeConfigAPIPort-v20.4.0-1.20.4-Fabric.jar",
-          "version": "jygSIEk6"
-        },
-        {
-          "minecraft_versions": "1.20.2",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "forge-config-screens"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/lQ2BNzNV/ForgeConfigAPIPort-v9.1.2-1.20.2-Fabric.jar",
-          "version": "lQ2BNzNV"
-        },
-        {
-          "minecraft_versions": "1.20.2",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "forge-config-screens"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/14GbpcF7/ForgeConfigAPIPort-v9.1.1-1.20.2-Fabric.jar",
-          "version": "14GbpcF7"
-        },
-        {
-          "minecraft_versions": "1.20.2",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "forge-config-screens"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/52l6IXEd/ForgeConfigAPIPort-v9.1.0-1.20.2-Fabric.jar",
-          "version": "52l6IXEd"
-        },
-        {
-          "minecraft_versions": "1.20.2",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "forge-config-screens"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/f5d9VI72/ForgeConfigAPIPort-v9.0.0-1.20.2-Fabric.jar",
-          "version": "f5d9VI72"
-        },
-        {
-          "minecraft_versions": "1.20.1",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "forge-config-screens"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/CtENDTlF/ForgeConfigAPIPort-v8.0.0-1.20.1-Fabric.jar",
-          "version": "CtENDTlF"
-        },
-        {
-          "minecraft_versions": "1.20",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "forge-config-screens"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/ewYccCIi/ForgeConfigAPIPort-v7.0.0-1.20-Fabric.jar",
-          "version": "ewYccCIi"
-        },
-        {
-          "minecraft_versions": "1.20",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "forge-config-screens"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/1cG1sI8e/ForgeConfigAPIPort-v7.0.0-1.20-Fabric.jar",
-          "version": "1cG1sI8e"
-        },
-        {
-          "minecraft_versions": "1.20",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/nlcnay8A/ForgeConfigAPIPort-v7.0.0-1.20-Fabric.jar",
-          "version": "nlcnay8A"
-        },
-        {
-          "minecraft_versions": "1.20",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "forge-config-screens"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/oYUxEUGk/ForgeConfigAPIPort-v7.0.0-1.20-Fabric.jar",
-          "version": "oYUxEUGk"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/2TybfFU8/ForgeConfigAPIPort-v6.0.2-1.19.4-Fabric.jar",
-          "version": "2TybfFU8"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/MkqOn4Yc/ForgeConfigAPIPort-v5.0.11-1.19.3-Fabric.jar",
-          "version": "MkqOn4Yc"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/ou26o2qg/ForgeConfigAPIPort-v6.0.1-1.19.4-Fabric.jar",
-          "version": "ou26o2qg"
-        },
-        {
-          "minecraft_versions": "1.19.4",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/mFoJ8qnh/ForgeConfigAPIPort-v6.0.0-1.19.4-Fabric.jar",
-          "version": "mFoJ8qnh"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/TFLCxTVc/ForgeConfigAPIPort-v5.0.10-1.19.3-Fabric.jar",
-          "version": "TFLCxTVc"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2"
-          ],
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/3VCgXZ79/ForgeConfigAPIPort-v4.2.11-1.19.2-Fabric.jar",
-          "version": "3VCgXZ79"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/6J0K7FyD/ForgeConfigAPIPort-v5.0.9-1.19.3-Fabric.jar",
-          "version": "6J0K7FyD"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/cjmImt9R/ForgeConfigAPIPort-v5.0.7-1.19.3-Fabric.jar",
-          "version": "cjmImt9R"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/alqrny5V/ForgeConfigAPIPort-v5.0.6-1.19.3-Fabric.jar",
-          "version": "alqrny5V"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/bh0uyJuX/ForgeConfigAPIPort-v5.0.5-1.19.3-Fabric.jar",
-          "version": "bh0uyJuX"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2"
-          ],
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/tqRbIeBK/ForgeConfigAPIPort-v4.2.10-1.19.2-Fabric.jar",
-          "version": "tqRbIeBK"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/sJryrwj9/ForgeConfigAPIPort-v5.0.4-1.19.3-Fabric.jar",
-          "version": "sJryrwj9"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/tlNCwMwZ/ForgeConfigAPIPort-v5.0.3-1.19.3-Fabric.jar",
-          "version": "tlNCwMwZ"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/FtpEL8G9/ForgeConfigAPIPort-v5.0.2-1.19.3-Fabric.jar",
-          "version": "FtpEL8G9"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/hRGdglV6/ForgeConfigAPIPort-v5.0.1-1.19.3-Fabric.jar",
-          "version": "hRGdglV6"
-        },
-        {
-          "minecraft_versions": "1.19.3",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "fabriclike-api"
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/H1LkHOeQ/ForgeConfigAPIPort-v5.0.0-1.19.3-Fabric.jar",
-          "version": "H1LkHOeQ"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2"
-          ],
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/CkM0mGHX/ForgeConfigAPIPort-v4.2.9-1.19.2-Fabric.jar",
-          "version": "CkM0mGHX"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2"
-          ],
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/fI5AsaV4/ForgeConfigAPIPort-v4.2.7-1.19.2-Fabric.jar",
-          "version": "fI5AsaV4"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2"
-          ],
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/XhjJZ5uE/ForgeConfigAPIPort-v4.2.6-1.19.2-Fabric.jar",
-          "version": "XhjJZ5uE"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2"
-          ],
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/KjE2hCJv/ForgeConfigAPIPort-v4.2.5-1.19.2-Fabric.jar",
-          "version": "KjE2hCJv"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2"
-          ],
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/JdloDJit/ForgeConfigAPIPort-v4.2.4-1.19.2-Fabric.jar",
-          "version": "JdloDJit"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2"
-          ],
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/akDg87hC/ForgeConfigAPIPort-v4.2.3-1.19.2-Fabric.jar",
-          "version": "akDg87hC"
-        },
-        {
-          "minecraft_versions": [
-            "1.19",
-            "1.19.1",
-            "1.19.2"
-          ],
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/vlllTHgw/ForgeConfigAPIPort-v4.2.2-1.19.2-Fabric.jar",
-          "version": "vlllTHgw"
-        },
-        {
-          "minecraft_versions": [
-            "1.19.1",
-            "1.19.2"
-          ],
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/K7z34XSj/ForgeConfigAPIPort-v4.2.0-1.19.2-Fabric.jar",
-          "version": "K7z34XSj"
-        },
-        {
-          "minecraft_versions": [
-            "1.18",
-            "1.18.1",
-            "1.18.2"
-          ],
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/XGKEYlsw/ForgeConfigAPIPort-v3.2.4-1.18.2-Fabric.jar",
-          "version": "XGKEYlsw"
-        },
-        {
-          "minecraft_versions": [
-            "1.17",
-            "1.17.1"
-          ],
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/4JaArhTS/ForgeConfigAPIPort-v2.0.5-1.17.1-Fabric.jar",
-          "version": "4JaArhTS"
-        },
-        {
-          "minecraft_versions": [
-            "1.16",
-            "1.16.1",
-            "1.16.2",
-            "1.16.3",
-            "1.16.4",
-            "1.16.5"
-          ],
-          "modloaders": [
-            "fabric",
-            "quilt"
-          ],
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/p2C10JUL/ForgeConfigAPIPort-v1.0.2-1.16.5-Fabric.jar",
-          "version": "p2C10JUL"
-        },
-        {
-          "minecraft_versions": [
-            "1.17",
-            "1.17.1"
-          ],
-          "modloaders": "fabric",
-          "relations": {
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/2.0.4/ForgeConfigAPIPort-v2.0.4-1.17.1-Fabric.jar",
-          "version": "WjwjuiDp"
-        },
-        {
-          "minecraft_versions": "1.19.1",
-          "modloaders": "fabric",
-          "relations": {
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/4.1.4/ForgeConfigAPIPort-v4.1.4-1.19.1-Fabric.jar",
-          "version": "h7joEojU"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "fabric",
-          "relations": {
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/3.2.3/ForgeConfigAPIPort-v3.2.3-1.18.2-Fabric.jar",
-          "version": "rXgI0k5P"
-        },
-        {
-          "minecraft_versions": [
-            "1.16",
-            "1.16.1",
-            "1.16.2",
-            "1.16.3",
-            "1.16.4",
-            "1.16.5"
-          ],
-          "modloaders": "fabric",
-          "relations": {
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/1.0.1/ForgeConfigAPIPort-v1.0.1-1.16.5-Fabric.jar",
-          "version": "86FCTo9M"
-        },
-        {
-          "minecraft_versions": [
-            "1.17",
-            "1.17.1"
-          ],
-          "modloaders": "fabric",
-          "relations": {
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/2.0.3/ForgeConfigAPIPort-v2.0.3-1.17.1-Fabric.jar",
-          "version": "eYeUbc3T"
-        },
-        {
-          "minecraft_versions": [
-            "1.16",
-            "1.16.1",
-            "1.16.2",
-            "1.16.3",
-            "1.16.4",
-            "1.16.5"
-          ],
-          "modloaders": "fabric",
-          "relations": {
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/1.0.0/ForgeConfigAPIPort-v1.0.0-1.16.5-Fabric.jar",
-          "version": "jwtFMyhT"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "fabric",
-          "relations": {
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/3.2.2/ForgeConfigAPIPort-v3.2.2-1.18.2-Fabric.jar",
-          "version": "JpOqHq5p"
-        },
-        {
-          "minecraft_versions": "1.19.1",
-          "modloaders": "fabric",
-          "relations": {
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/4.1.3/ForgeConfigAPIPort-v4.1.3-1.19.1-Fabric.jar",
-          "version": "2eL7Opm5"
-        },
-        {
-          "minecraft_versions": "1.18.2",
-          "modloaders": "fabric",
-          "relations": {
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/3.2.1/ForgeConfigAPIPort-v3.2.1-1.18.2-Fabric.jar",
-          "version": "GJ0aBxFN"
-        },
-        {
-          "minecraft_versions": "1.19.1",
-          "modloaders": "fabric",
-          "relations": {
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/4.1.2/ForgeConfigAPIPort-v4.1.2-1.19.1-Fabric.jar",
-          "version": "notOZAjX"
-        },
-        {
-          "minecraft_versions": "1.19",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/4.0.2/ForgeConfigAPIPort-v4.0.2-1.19-Fabric.jar",
-          "version": "AxEvkjh5"
-        },
-        {
-          "minecraft_versions": "1.19",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/4.0.1/ForgeConfigAPIPort-v4.0.1-1.19-Fabric.jar",
-          "version": "3h8hgyqP"
-        },
-        {
-          "minecraft_versions": "1.19",
-          "modloaders": "fabric",
-          "relations": {
-            "dependencies": "fabriclike-api",
-            "recommendations": {
-              "value": "mod-menu"
-            }
-          },
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/4.0.0/ForgeConfigAPIPort-v4.0.0-1.19-Fabric.jar",
-          "version": "16w4kT84"
-        },
-        {
-          "minecraft_versions": "1.18",
-          "modloaders": "fabric",
-          "stability": "stable",
-          "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/v3.0.0-1.18-Fabric/ForgeConfigAPIPort-v3.0.0-1.18-Fabric-sources.jar",
-          "version": "VpvE1h2H"
-        }
-      ]
-    }
-  },
-  "meta": {
-    "authors": [
-      "Fuzs"
-    ],
-    "categories": [
-      "technical",
-      "library"
-    ],
-    "description": "NeoForge's & Forge's config systems provided to other modding ecosystems. Designed for a multiloader architecture.",
-    "documentation": "https://github.com/Fuzss/forgeconfigapiport/wiki",
-    "gallery": [
-      "https://cdn.modrinth.com/data/ohNO6lps/images/201d6c2cd17e10032e9651bc0070007b4774286c.png"
-    ],
-    "icon": "https://cdn.modrinth.com/data/ohNO6lps/73070dfd2940f1c25d1a18f6d5158f79e9d798ec.png",
-    "issues": "https://github.com/Fuzss/forgeconfigapiport/issues",
-    "license": "MPL-2.0",
-    "name": "Forge Config API Port",
-    "package_maintainers": [
-      "mcvm"
-    ],
-    "source": "https://github.com/Fuzss/forgeconfigapiport"
-  },
-  "properties": {
-    "modrinth_id": "ohNO6lps",
-    "supported_modloaders": [
-      "fabriclike",
-      "forgelike"
-    ],
-    "supported_sides": [
-      "client",
-      "server"
-    ],
-    "supported_versions": [
-      "1.16",
-      "1.16.1",
-      "1.16.2",
-      "1.16.3",
-      "1.16.4",
-      "1.16.5",
-      "1.17",
-      "1.17.1",
-      "1.18",
-      "1.18.1",
-      "1.18.2",
-      "1.19",
-      "1.19.1",
-      "1.19.2",
-      "1.19.3",
-      "1.19.4",
-      "1.20",
-      "1.20.1",
-      "1.20.2",
-      "1.20.4"
-    ]
-  }
+	"addons": {
+		"addon": {
+			"kind": "mod",
+			"versions": [
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"relations": {
+						"recommendations": {
+							"value": "forge-config-screens"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/izawYWhx/ForgeConfigAPIPort-v20.4.3-1.20.4-NeoForge.jar",
+					"version": "izawYWhx"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"value": "forge-config-screens"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/cPR7Hb0e/ForgeConfigAPIPort-v20.4.3-1.20.4-Forge.jar",
+					"version": "cPR7Hb0e"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "forge-config-screens"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/xbVGsTLe/ForgeConfigAPIPort-v20.4.3-1.20.4-Fabric.jar",
+					"version": "xbVGsTLe"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"value": "forge-config-screens"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/r8gESJiS/ForgeConfigAPIPort-v20.2.6-1.20.2-Forge.jar",
+					"version": "r8gESJiS"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "neoforged",
+					"relations": {
+						"recommendations": {
+							"value": "forge-config-screens"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/1bZs84f5/ForgeConfigAPIPort-v20.2.6-1.20.2-NeoForge.jar",
+					"version": "1bZs84f5"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "forge-config-screens"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/sK1XwxTt/ForgeConfigAPIPort-v20.2.6-1.20.2-Fabric.jar",
+					"version": "sK1XwxTt"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/Uc2L9JYx/ForgeConfigAPIPort-v20.4.2-1.20.4-NeoForge.jar",
+					"version": "Uc2L9JYx"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"value": "forge-config-screens"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/P3GfPe5a/ForgeConfigAPIPort-v20.4.2-1.20.4-Forge.jar",
+					"version": "P3GfPe5a"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "forge-config-screens"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/IS7wNJuv/ForgeConfigAPIPort-v20.4.2-1.20.4-Fabric.jar",
+					"version": "IS7wNJuv"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/REA2Y3hn/ForgeConfigAPIPort-v20.2.5-1.20.2-NeoForge.jar",
+					"version": "REA2Y3hn"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"value": "forge-config-screens"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/WjsrL3PB/ForgeConfigAPIPort-v20.2.5-1.20.2-Forge.jar",
+					"version": "WjsrL3PB"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "forge-config-screens"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/uVasUkyz/ForgeConfigAPIPort-v20.2.5-1.20.2-Fabric.jar",
+					"version": "uVasUkyz"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/RRZz6X5Y/ForgeConfigAPIPort-v20.2.4-1.20.2-NeoForge.jar",
+					"version": "RRZz6X5Y"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"value": "forge-config-screens"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/d4o2DIW4/ForgeConfigAPIPort-v20.2.4-1.20.2-Forge.jar",
+					"version": "d4o2DIW4"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "forge-config-screens"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/aQOysw5j/ForgeConfigAPIPort-v20.2.4-1.20.2-Fabric.jar",
+					"version": "aQOysw5j"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/8ZEqzvgl/ForgeConfigAPIPort-v20.4.1-1.20.4-NeoForge.jar",
+					"version": "8ZEqzvgl"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"value": "forge-config-screens"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/hSymtRZz/ForgeConfigAPIPort-v20.4.1-1.20.4-Forge.jar",
+					"version": "hSymtRZz"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "forge-config-screens"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/y5ADtIQp/ForgeConfigAPIPort-v20.4.1-1.20.4-Fabric.jar",
+					"version": "y5ADtIQp"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "forge-config-screens"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/jygSIEk6/ForgeConfigAPIPort-v20.4.0-1.20.4-Fabric.jar",
+					"version": "jygSIEk6"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "forge-config-screens"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/lQ2BNzNV/ForgeConfigAPIPort-v9.1.2-1.20.2-Fabric.jar",
+					"version": "lQ2BNzNV"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "forge-config-screens"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/14GbpcF7/ForgeConfigAPIPort-v9.1.1-1.20.2-Fabric.jar",
+					"version": "14GbpcF7"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "forge-config-screens"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/52l6IXEd/ForgeConfigAPIPort-v9.1.0-1.20.2-Fabric.jar",
+					"version": "52l6IXEd"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "forge-config-screens"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/f5d9VI72/ForgeConfigAPIPort-v9.0.0-1.20.2-Fabric.jar",
+					"version": "f5d9VI72"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "forge-config-screens"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/CtENDTlF/ForgeConfigAPIPort-v8.0.0-1.20.1-Fabric.jar",
+					"version": "CtENDTlF"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "forge-config-screens"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/ewYccCIi/ForgeConfigAPIPort-v7.0.0-1.20-Fabric.jar",
+					"version": "ewYccCIi"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "forge-config-screens"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/1cG1sI8e/ForgeConfigAPIPort-v7.0.0-1.20-Fabric.jar",
+					"version": "1cG1sI8e"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/nlcnay8A/ForgeConfigAPIPort-v7.0.0-1.20-Fabric.jar",
+					"version": "nlcnay8A"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "forge-config-screens"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/oYUxEUGk/ForgeConfigAPIPort-v7.0.0-1.20-Fabric.jar",
+					"version": "oYUxEUGk"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/2TybfFU8/ForgeConfigAPIPort-v6.0.2-1.19.4-Fabric.jar",
+					"version": "2TybfFU8"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/MkqOn4Yc/ForgeConfigAPIPort-v5.0.11-1.19.3-Fabric.jar",
+					"version": "MkqOn4Yc"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/ou26o2qg/ForgeConfigAPIPort-v6.0.1-1.19.4-Fabric.jar",
+					"version": "ou26o2qg"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/mFoJ8qnh/ForgeConfigAPIPort-v6.0.0-1.19.4-Fabric.jar",
+					"version": "mFoJ8qnh"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/TFLCxTVc/ForgeConfigAPIPort-v5.0.10-1.19.3-Fabric.jar",
+					"version": "TFLCxTVc"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/3VCgXZ79/ForgeConfigAPIPort-v4.2.11-1.19.2-Fabric.jar",
+					"version": "3VCgXZ79"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/6J0K7FyD/ForgeConfigAPIPort-v5.0.9-1.19.3-Fabric.jar",
+					"version": "6J0K7FyD"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/cjmImt9R/ForgeConfigAPIPort-v5.0.7-1.19.3-Fabric.jar",
+					"version": "cjmImt9R"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/alqrny5V/ForgeConfigAPIPort-v5.0.6-1.19.3-Fabric.jar",
+					"version": "alqrny5V"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/bh0uyJuX/ForgeConfigAPIPort-v5.0.5-1.19.3-Fabric.jar",
+					"version": "bh0uyJuX"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/tqRbIeBK/ForgeConfigAPIPort-v4.2.10-1.19.2-Fabric.jar",
+					"version": "tqRbIeBK"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/sJryrwj9/ForgeConfigAPIPort-v5.0.4-1.19.3-Fabric.jar",
+					"version": "sJryrwj9"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/tlNCwMwZ/ForgeConfigAPIPort-v5.0.3-1.19.3-Fabric.jar",
+					"version": "tlNCwMwZ"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/FtpEL8G9/ForgeConfigAPIPort-v5.0.2-1.19.3-Fabric.jar",
+					"version": "FtpEL8G9"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/hRGdglV6/ForgeConfigAPIPort-v5.0.1-1.19.3-Fabric.jar",
+					"version": "hRGdglV6"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/H1LkHOeQ/ForgeConfigAPIPort-v5.0.0-1.19.3-Fabric.jar",
+					"version": "H1LkHOeQ"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/CkM0mGHX/ForgeConfigAPIPort-v4.2.9-1.19.2-Fabric.jar",
+					"version": "CkM0mGHX"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/fI5AsaV4/ForgeConfigAPIPort-v4.2.7-1.19.2-Fabric.jar",
+					"version": "fI5AsaV4"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/XhjJZ5uE/ForgeConfigAPIPort-v4.2.6-1.19.2-Fabric.jar",
+					"version": "XhjJZ5uE"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/KjE2hCJv/ForgeConfigAPIPort-v4.2.5-1.19.2-Fabric.jar",
+					"version": "KjE2hCJv"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/JdloDJit/ForgeConfigAPIPort-v4.2.4-1.19.2-Fabric.jar",
+					"version": "JdloDJit"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/akDg87hC/ForgeConfigAPIPort-v4.2.3-1.19.2-Fabric.jar",
+					"version": "akDg87hC"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/vlllTHgw/ForgeConfigAPIPort-v4.2.2-1.19.2-Fabric.jar",
+					"version": "vlllTHgw"
+				},
+				{
+					"minecraft_versions": [
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/K7z34XSj/ForgeConfigAPIPort-v4.2.0-1.19.2-Fabric.jar",
+					"version": "K7z34XSj"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/XGKEYlsw/ForgeConfigAPIPort-v3.2.4-1.18.2-Fabric.jar",
+					"version": "XGKEYlsw"
+				},
+				{
+					"minecraft_versions": [
+						"1.17",
+						"1.17.1"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/4JaArhTS/ForgeConfigAPIPort-v2.0.5-1.17.1-Fabric.jar",
+					"version": "4JaArhTS"
+				},
+				{
+					"minecraft_versions": [
+						"1.16",
+						"1.16.1",
+						"1.16.2",
+						"1.16.3",
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/p2C10JUL/ForgeConfigAPIPort-v1.0.2-1.16.5-Fabric.jar",
+					"version": "p2C10JUL"
+				},
+				{
+					"minecraft_versions": [
+						"1.17",
+						"1.17.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/2.0.4/ForgeConfigAPIPort-v2.0.4-1.17.1-Fabric.jar",
+					"version": "WjwjuiDp"
+				},
+				{
+					"minecraft_versions": "1.19.1",
+					"modloaders": "fabric",
+					"relations": {
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/4.1.4/ForgeConfigAPIPort-v4.1.4-1.19.1-Fabric.jar",
+					"version": "h7joEojU"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/3.2.3/ForgeConfigAPIPort-v3.2.3-1.18.2-Fabric.jar",
+					"version": "rXgI0k5P"
+				},
+				{
+					"minecraft_versions": [
+						"1.16",
+						"1.16.1",
+						"1.16.2",
+						"1.16.3",
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/1.0.1/ForgeConfigAPIPort-v1.0.1-1.16.5-Fabric.jar",
+					"version": "86FCTo9M"
+				},
+				{
+					"minecraft_versions": [
+						"1.17",
+						"1.17.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/2.0.3/ForgeConfigAPIPort-v2.0.3-1.17.1-Fabric.jar",
+					"version": "eYeUbc3T"
+				},
+				{
+					"minecraft_versions": [
+						"1.16",
+						"1.16.1",
+						"1.16.2",
+						"1.16.3",
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/1.0.0/ForgeConfigAPIPort-v1.0.0-1.16.5-Fabric.jar",
+					"version": "jwtFMyhT"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/3.2.2/ForgeConfigAPIPort-v3.2.2-1.18.2-Fabric.jar",
+					"version": "JpOqHq5p"
+				},
+				{
+					"minecraft_versions": "1.19.1",
+					"modloaders": "fabric",
+					"relations": {
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/4.1.3/ForgeConfigAPIPort-v4.1.3-1.19.1-Fabric.jar",
+					"version": "2eL7Opm5"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/3.2.1/ForgeConfigAPIPort-v3.2.1-1.18.2-Fabric.jar",
+					"version": "GJ0aBxFN"
+				},
+				{
+					"minecraft_versions": "1.19.1",
+					"modloaders": "fabric",
+					"relations": {
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/4.1.2/ForgeConfigAPIPort-v4.1.2-1.19.1-Fabric.jar",
+					"version": "notOZAjX"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/4.0.2/ForgeConfigAPIPort-v4.0.2-1.19-Fabric.jar",
+					"version": "AxEvkjh5"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/4.0.1/ForgeConfigAPIPort-v4.0.1-1.19-Fabric.jar",
+					"version": "3h8hgyqP"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/4.0.0/ForgeConfigAPIPort-v4.0.0-1.19-Fabric.jar",
+					"version": "16w4kT84"
+				},
+				{
+					"minecraft_versions": "1.18",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/v3.0.0-1.18-Fabric/ForgeConfigAPIPort-v3.0.0-1.18-Fabric-sources.jar",
+					"version": "VpvE1h2H"
+				}
+			]
+		}
+	},
+	"meta": {
+		"authors": [
+			"Fuzs"
+		],
+		"banner": "https://cdn.modrinth.com/data/ohNO6lps/images/201d6c2cd17e10032e9651bc0070007b4774286c.png",
+		"categories": [
+			"technical",
+			"library"
+		],
+		"description": "NeoForge's & Forge's config systems provided to other modding ecosystems. Designed for a multiloader architecture.",
+		"documentation": "https://github.com/Fuzss/forgeconfigapiport/wiki",
+		"gallery": [
+			"https://cdn.modrinth.com/data/ohNO6lps/images/201d6c2cd17e10032e9651bc0070007b4774286c.png"
+		],
+		"icon": "https://cdn.modrinth.com/data/ohNO6lps/73070dfd2940f1c25d1a18f6d5158f79e9d798ec.png",
+		"issues": "https://github.com/Fuzss/forgeconfigapiport/issues",
+		"license": "MPL-2.0",
+		"long_description": "<p><img src=\"https://raw.githubusercontent.com/Fuzss/modresources/main/pages/data/forgeconfigapiport/banner.png\" width=\"854\" height=\"240\" /></p>\n<p><img src=\"https://raw.githubusercontent.com/Fuzss/modresources/main/pages/data/forgeconfigapiport/strip.png\" width=\"854\" height=\"14\" /></p>\n<p style=\"text-align: center; line-height: 36px;\"><a href=\"https://lunapixel.studio/discord\"><img src=\"https://img.shields.io/static/v1?label=&amp;message=Discord&amp;color=ECEBE6&amp;labelColor=2F4858&amp;style=for-the-badge&amp;logo=discord&amp;logoColor=white\" width=\"117\" height=\"28\" /></a>&emsp;<a href=\"https://twitter.com/Fusseel\"><img src=\"https://img.shields.io/static/v1?label=&amp;message=Twitter&amp;color=ECEBE6&amp;labelColor=2F4858&amp;style=for-the-badge&amp;logo=twitter&amp;logoColor=white\" width=\"116\" height=\"28\" /></a>&emsp;<a href=\"https://www.youtube.com/channel/UC2l26SuCmCNSCPefpfbCX7Q\"><img src=\"https://img.shields.io/static/v1?label=&amp;message=YouTube&amp;color=ECEBE6&amp;labelColor=2F4858&amp;style=for-the-badge&amp;logo=youtube&amp;logoColor=white\" width=\"118\" height=\"28\" /></a>&emsp;<a href=\"https://www.reddit.com/user/Fusseel\"><img src=\"https://img.shields.io/static/v1?label=&amp;message=Reddit&amp;color=ECEBE6&amp;labelColor=2F4858&amp;style=for-the-badge&amp;logo=reddit&amp;logoColor=white\" width=\"107\" height=\"28\" /></a>&emsp;<a href=\"https://github.com/Fuzss\"><img src=\"https://img.shields.io/static/v1?label=&amp;message=GitHub&amp;color=ECEBE6&amp;labelColor=2F4858&amp;style=for-the-badge&amp;logo=github&amp;logoColor=white\" width=\"108\" height=\"28\" /></a>&emsp;<a href=\"https://www.curseforge.com/members/fuzs_/projects\"><img src=\"https://img.shields.io/static/v1?label=&amp;message=CurseForge&amp;color=ECEBE6&amp;labelColor=2F4858&amp;style=for-the-badge&amp;logo=curseforge&amp;logoColor=white\" width=\"143\" height=\"28\" /></a></p>\n<p><img src=\"https://raw.githubusercontent.com/Fuzss/modresources/main/pages/data/forgeconfigapiport/strip.png\" width=\"854\" height=\"14\" /></p>\n<p><img src=\"https://raw.githubusercontent.com/Fuzss/modresources/main/pages/commons/headers/about.png\" width=\"854\" height=\"32\" /></p>\n<p><span style=\"font-size: 14px;\">Forge Config API Port is a modding library for mod developers that provides both NeoForge's &amp; Forge's whole config system to other modding ecosystems. Allows developers to use NeoForge configs on Fabric &amp; Forge and Forge configs on Fabric &amp; NeoForge.</span></p>\n<p><span style=\"font-size: 14px;\">The library is built with a multiloader architecture in mind by also offering a mod loader independent common distribution, so there needs to be as little platform specific code as possible.</span></p>\n<p><img src=\"https://raw.githubusercontent.com/Fuzss/modresources/main/pages/data/forgeconfigapiport/strip.png\" width=\"854\" height=\"14\" /></p>\n<p><img src=\"https://raw.githubusercontent.com/Fuzss/modresources/main/pages/commons/headers/features.png\" width=\"854\" height=\"32\" /></p>\n<p><strong><span style=\"font-size: 14px;\">▶️ </span></strong><strong><span style=\"font-size: 14px;\">Allows developers to continue using the same code for creating their configs as they do on NeoForge &amp; Forge.</span></strong></p>\n<p><strong><span style=\"font-size: 14px;\">▶️ </span></strong><strong><span style=\"font-size: 14px;\">Same package and class names as NeoForge &amp; Forge, no refactoring required when porting!</span></strong></p>\n<p><strong><span style=\"font-size: 14px;\">▶️ </span></strong><strong><span style=\"font-size: 14px;\">Built for a multiloader architecture: Simply setup your configs in a common module!</span></strong></p>\n<p><strong><span style=\"font-size: 14px;\">▶️ </span></strong><strong><span style=\"font-size: 14px;\">Users don't need to install any additional library on the mod loader the chosen config system is native to (NeoForge / Forge), everything is built in there!</span></strong></p>\n<p><strong><span style=\"font-size: 14px;\">▶️ </span></strong><strong><span style=\"font-size: 14px;\">Check out the developer wiki for instructions on how to use Forge Config API Port in your project!</span></strong></p>\n<p><strong><span style=\"font-size: 14px;\">▶️ </span></strong><strong><span style=\"font-size: 14px;\">Install </span></strong><a href=\"https://legacy.curseforge.com/minecraft/mc-mods/config-menus-forge\"><strong><span style=\"font-size: 14px;\">Forge Config Screens</span></strong></a><strong><span style=\"font-size: 14px;\"> for in-game configuration!</span></strong></p>\n<p><img src=\"https://raw.githubusercontent.com/Fuzss/modresources/main/pages/data/forgeconfigapiport/strip.png\" width=\"854\" height=\"14\" /></p>\n<p><img src=\"https://raw.githubusercontent.com/Fuzss/modresources/main/pages/commons/headers/installation.png\" width=\"854\" height=\"32\" /></p>\n<p><strong><span style=\"font-size: 14px;\">⏩ </span></strong><strong><span style=\"font-size: 14px;\">INSTALLATION REQUIRED ON CLIENT &amp; REQUIRED ON SERVER</span></strong></p>\n<p><strong><span style=\"font-size: 14px;\">⏩ </span></strong><strong><span style=\"font-size: 14px;\">REQUIRES </span></strong><a href=\"https://modrinth.com/mod/fabric-api\"><strong><span style=\"font-size: 14px;\">FABRIC API</span></strong></a><strong><span style=\"font-size: 14px;\"> TO BE INSTALLED (FABRIC)</span></strong></p>\n<p><img src=\"https://raw.githubusercontent.com/Fuzss/modresources/main/pages/data/forgeconfigapiport/strip.png\" width=\"854\" height=\"14\" /></p>\n<p><img src=\"https://raw.githubusercontent.com/Fuzss/modresources/main/pages/commons/headers/credits.png\" width=\"854\" height=\"32\" /></p>\n<p><span style=\"font-size: 14px;\">🌟 </span><span style=\"font-size: 14px;\">Thanks to the Forge team for putting the config api together in the first place!</span></p>\n<p><img src=\"https://raw.githubusercontent.com/Fuzss/modresources/main/pages/data/forgeconfigapiport/strip.png\" width=\"854\" height=\"14\" /></p>\n",
+		"name": "Forge Config API Port",
+		"package_maintainers": [
+			"mcvm"
+		],
+		"source": "https://github.com/Fuzss/forgeconfigapiport"
+	},
+	"properties": {
+		"modrinth_id": "ohNO6lps",
+		"supported_modloaders": [
+			"fabriclike",
+			"forgelike"
+		],
+		"supported_sides": [
+			"client",
+			"server"
+		],
+		"supported_versions": [
+			"1.16",
+			"1.16.1",
+			"1.16.2",
+			"1.16.3",
+			"1.16.4",
+			"1.16.5",
+			"1.17",
+			"1.17.1",
+			"1.18",
+			"1.18.1",
+			"1.18.2",
+			"1.19",
+			"1.19.1",
+			"1.19.2",
+			"1.19.3",
+			"1.19.4",
+			"1.20",
+			"1.20.1",
+			"1.20.2",
+			"1.20.4"
+		]
+	}
 }
