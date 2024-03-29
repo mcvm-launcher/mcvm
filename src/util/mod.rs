@@ -1,7 +1,5 @@
 /// Utilities for working with hashes and checksums
 pub mod hash;
-/// Utilities for working with serde_json values
-pub mod json;
 /// Printing and output utilities
 pub mod print;
 

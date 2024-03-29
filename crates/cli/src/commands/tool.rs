@@ -61,7 +61,7 @@ async fn get_modrinth_project(_data: &mut CmdData, project: String) -> anyhow::R
 	let project = mcvm::net::modrinth::get_project_raw(&project, &client)
 		.await
 		.context("Failed to get project")?;
-	let project_pretty = mcvm::util::json::format_json(&project);
+	let project_pretty = mcvm::core::util::json::format_json(&project);
 
 	let out = if let Ok(val) = project_pretty {
 		val
@@ -80,7 +80,7 @@ async fn get_modrinth_version(_data: &mut CmdData, version: String) -> anyhow::R
 	let version = mcvm::net::modrinth::get_version_raw(&version, &client)
 		.await
 		.context("Failed to get project version")?;
-	let version_pretty = mcvm::util::json::format_json(&version);
+	let version_pretty = mcvm::core::util::json::format_json(&version);
 
 	let out = if let Ok(val) = version_pretty {
 		val
