@@ -95,7 +95,16 @@ pub async fn gen_raw(
 		meta.gallery = Some(gallery.into_iter().map(|x| x.url).collect());
 	}
 
-	meta.license = Some(project.license.id);
+	// Handle custom licenses
+	meta.license = Some(if project.license.id == "LicenseRef-Custom" {
+		if let Some(url) = project.license.url {
+			url
+		} else {
+			"Custom".into()
+		}
+	} else {
+		project.license.id
+	});
 
 	// Get team members and use them to fill out the authors field
 	let mut members = members.to_vec();

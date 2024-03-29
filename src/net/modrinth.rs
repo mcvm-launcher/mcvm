@@ -295,6 +295,8 @@ pub enum DependencyType {
 pub struct License {
 	/// The short ID of the license
 	pub id: String,
+	/// The URL to a custom license
+	pub url: Option<String>,
 }
 
 /// Information about a donation link
