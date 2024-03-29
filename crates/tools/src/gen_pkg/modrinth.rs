@@ -140,8 +140,7 @@ pub async fn gen_raw(
 		conditions: Vec::new(),
 	};
 
-	// Iterate in reverse so that newer versions are closer to the top
-	for version in versions.into_iter().rev() {
+	for version in versions {
 		// Check if the version is in the project's versions since it may be from a batched pool
 		if !project.versions.contains(&version.id) {
 			continue;
