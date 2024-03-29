@@ -24,6 +24,10 @@
 			"path": "pkg/bookshelf.json",
 			"content_type": "declarative"
 		},
+		"c2me": {
+			"path": "pkg/c2me.json",
+			"content_type": "declarative"
+		},
 		"cardinal-components-api": {
 			"path": "pkg/cardinal-components-api.json",
 			"content_type": "declarative"
@@ -34,6 +38,10 @@
 		},
 		"cloth-config": {
 			"path": "pkg/cloth-config.json",
+			"content_type": "declarative"
+		},
+		"cobblemon": {
+			"path": "pkg/cobblemon.json",
 			"content_type": "declarative"
 		},
 		"collective": {
@@ -50,6 +58,10 @@
 		},
 		"create-fabric": {
 			"path": "pkg/create-fabric.json",
+			"content_type": "declarative"
+		},
+		"dynamic-fps": {
+			"path": "pkg/dynamic-fps.json",
 			"content_type": "declarative"
 		},
 		"emi": {
@@ -84,6 +96,14 @@
 			"path": "pkg/ferrite-core.json",
 			"content_type": "declarative"
 		},
+		"forge-config-api-port": {
+			"path": "pkg/forge-config-api-port.json",
+			"content_type": "declarative"
+		},
+		"forge-config-screens": {
+			"path": "pkg/forge-config-screens.json",
+			"content_type": "declarative"
+		},
 		"geckolib": {
 			"path": "pkg/geckolib.json",
 			"content_type": "declarative"
@@ -94,6 +114,14 @@
 		},
 		"gtnh-mixins": {
 			"path": "pkg/gtnh-mixins.json",
+			"content_type": "declarative"
+		},
+		"iceberg": {
+			"path": "pkg/iceberg.json",
+			"content_type": "declarative"
+		},
+		"immediatelyfast": {
+			"path": "pkg/immediatelyfast.json",
 			"content_type": "declarative"
 		},
 		"indium": {
@@ -108,12 +136,24 @@
 			"path": "pkg/jei.json",
 			"content_type": "declarative"
 		},
+		"kirin": {
+			"path": "pkg/kirin.json",
+			"content_type": "declarative"
+		},
 		"know-my-name": {
 			"path": "pkg/know-my-name.json",
 			"content_type": "declarative"
 		},
 		"kotlin-for-forge": {
 			"path": "pkg/kotlin-for-forge.json",
+			"content_type": "declarative"
+		},
+		"krypton": {
+			"path": "pkg/krypton.json",
+			"content_type": "declarative"
+		},
+		"lambdynamiclights": {
+			"path": "pkg/lambdynamiclights.json",
 			"content_type": "declarative"
 		},
 		"lilac": {
@@ -144,6 +184,10 @@
 			"path": "pkg/moonlight-lib.json",
 			"content_type": "declarative"
 		},
+		"open-parties-and-claims": {
+			"path": "pkg/open-parties-and-claims.json",
+			"content_type": "declarative"
+		},
 		"optigui": {
 			"path": "pkg/optigui.json",
 			"content_type": "declarative"
@@ -168,6 +212,14 @@
 			"path": "pkg/polymorph.json",
 			"content_type": "declarative"
 		},
+		"presence-footsteps": {
+			"path": "pkg/presence-footsteps.json",
+			"content_type": "declarative"
+		},
+		"puzzles-lib": {
+			"path": "pkg/puzzles-lib.json",
+			"content_type": "declarative"
+		},
 		"qfapi-qsl": {
 			"path": "pkg/qfapi-qsl.json",
 			"content_type": "declarative"
@@ -186,6 +238,10 @@
 		},
 		"resourceful-lib": {
 			"path": "pkg/resourceful-lib.json",
+			"content_type": "declarative"
+		},
+		"rubidium": {
+			"path": "pkg/rubidium.json",
 			"content_type": "declarative"
 		},
 		"smithed-actionbar": {
@@ -222,6 +278,10 @@
 		},
 		"trinkets": {
 			"path": "pkg/trinkets.json",
+			"content_type": "declarative"
+		},
+		"xaeros-minimap": {
+			"path": "pkg/xaeros-minimap.json",
 			"content_type": "declarative"
 		},
 		"yacl": {

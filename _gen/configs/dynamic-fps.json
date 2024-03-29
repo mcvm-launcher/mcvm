@@ -1,0 +1,30 @@
+{
+	"source": "modrinth",
+	"id": "LQ3K71Q1",
+	"relation_substitutions": {
+		"P7dR8mSH": "fabriclike-api",
+		"mOgUt4GM": "mod-menu",
+		"9s6osm5g": "cloth-config",
+		"qvIfYCYJ": "fabriclike-api"
+	},
+	"merge": {
+		"meta": {
+			"package_maintainers": [
+				"mcvm"
+			],
+			"keywords": [
+				"fps"
+			],
+			"categories": [
+				"optimization",
+				"technical"
+			]
+		},
+		"properties": {
+			"supported_modloaders": [
+				"fabriclike",
+				"forgelike"
+			]
+		}
+	}
+}

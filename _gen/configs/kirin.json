@@ -1,0 +1,26 @@
+{
+	"source": "modrinth",
+	"id": "9aNz8Zqn",
+	"relation_substitutions": {
+		"P7dR8mSH": "fabriclike-api"
+	},
+	"merge": {
+		"meta": {
+			"package_maintainers": [
+				"mcvm"
+			],
+			"keywords": [
+				"gui"
+			],
+			"categories": [
+				"technical",
+				"library"
+			]
+		},
+		"properties": {
+			"supported_modloaders": [
+				"fabriclike"
+			]
+		}
+	}
+}

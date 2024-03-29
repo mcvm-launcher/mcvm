@@ -1,0 +1,349 @@
+{
+  "addons": {
+    "addon": {
+      "kind": "mod",
+      "versions": [
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": "fabriclike-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/MdwFAVRL/versions/uWAkNUxZ/Cobblemon-fabric-1.4.1%2B1.20.1.jar",
+          "version": "uWAkNUxZ"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "kotlin-for-forge"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/MdwFAVRL/versions/SDUPgboU/Cobblemon-forge-1.4.1%2B1.20.1.jar",
+          "version": "SDUPgboU"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": "fabriclike-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/MdwFAVRL/versions/YEzu8qAH/Cobblemon-fabric-1.4.0%2B1.20.1.jar",
+          "version": "YEzu8qAH"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "kotlin-for-forge"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/MdwFAVRL/versions/dAAoVjwT/Cobblemon-forge-1.4.0%2B1.20.1.jar",
+          "version": "dAAoVjwT"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "architectury-api",
+              "fabriclike-api"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/MdwFAVRL/versions/ZuhveJd6/Cobblemon-fabric-1.3.2%2B1.19.2.jar",
+          "version": "ZuhveJd6"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": [
+              "architectury-api",
+              "kotlin-for-forge"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/MdwFAVRL/versions/2FDom3sg/Cobblemon-forge-1.3.2%2B1.19.2.jar",
+          "version": "2FDom3sg"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "architectury-api",
+              "fabriclike-api"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/MdwFAVRL/versions/3zopTj2c/Cobblemon-fabric-1.3.1%2B1.19.2.jar",
+          "version": "3zopTj2c"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": [
+              "architectury-api",
+              "kotlin-for-forge"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/MdwFAVRL/versions/hzSW8qrU/Cobblemon-forge-1.3.1%2B1.19.2.jar",
+          "version": "hzSW8qrU"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "architectury-api",
+              "fabriclike-api"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/MdwFAVRL/versions/BUYzYxsK/Cobblemon-fabric-1.3.0%2B1.19.2.jar",
+          "version": "BUYzYxsK"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": [
+              "architectury-api",
+              "kotlin-for-forge"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/MdwFAVRL/versions/jj2Oqlks/Cobblemon-forge-1.3.0%2B1.19.2.jar",
+          "version": "jj2Oqlks"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "architectury-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/MdwFAVRL/versions/5QPvAcTC/Cobblemon-forge-1.2.0%2B1.19.2.jar",
+          "version": "5QPvAcTC"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "architectury-api",
+              "fabriclike-api"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/MdwFAVRL/versions/Ytht2Amb/Cobblemon-fabric-1.2.0%2B1.19.2.jar",
+          "version": "Ytht2Amb"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "architectury-api",
+              "fabriclike-api"
+            ]
+          },
+          "stability": "latest",
+          "url": "https://cdn.modrinth.com/data/MdwFAVRL/versions/YanJGnFy/Cobblemon-fabric-1.1.1%2B1.19.2.jar",
+          "version": "YanJGnFy"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "architectury-api"
+          },
+          "stability": "latest",
+          "url": "https://cdn.modrinth.com/data/MdwFAVRL/versions/DQC4nTXQ/Cobblemon-forge-1.1.1%2B1.19.2.jar",
+          "version": "DQC4nTXQ"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "architectury-api"
+          },
+          "stability": "latest",
+          "url": "https://cdn.modrinth.com/data/MdwFAVRL/versions/EA9ciua2/Cobblemon-forge-1.1.0%2B1.19.2.jar",
+          "version": "EA9ciua2"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "architectury-api",
+              "fabriclike-api"
+            ]
+          },
+          "stability": "latest",
+          "url": "https://cdn.modrinth.com/data/MdwFAVRL/versions/JhtKiTGM/Cobblemon-fabric-1.1.0%2B1.19.2.jar",
+          "version": "JhtKiTGM"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "architectury-api"
+          },
+          "stability": "latest",
+          "url": "https://cdn.modrinth.com/data/MdwFAVRL/versions/9R4TYt4N/Cobblemon-forge-1.0.0%2B1.19.2.jar",
+          "version": "9R4TYt4N"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "architectury-api",
+              "fabriclike-api"
+            ]
+          },
+          "stability": "latest",
+          "url": "https://cdn.modrinth.com/data/MdwFAVRL/versions/8PEfPFzz/Cobblemon-fabric-1.0.0%2B1.19.2.jar",
+          "version": "8PEfPFzz"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": "architectury-api"
+          },
+          "stability": "latest",
+          "url": "https://cdn.modrinth.com/data/MdwFAVRL/versions/YOivHEUu/Cobblemon-fabric-0.9.9%2B1.19.2-remap.jar",
+          "version": "YOivHEUu"
+        }
+      ]
+    }
+  },
+  "meta": {
+    "authors": [
+      "JoeSeff",
+      "dhi_holo",
+      "zero-breaker",
+      "BlazingBRO",
+      "Hiroku",
+      "Veraxiel",
+      "TotallyNotAHobo",
+      "Yaseen121",
+      "EikoBiko",
+      "321retrogamer",
+      "Reisen",
+      "Mallowu",
+      "matwooo",
+      "NickImpact",
+      "DoctorWafflePhD",
+      "Renaissance",
+      "MoeBoy76",
+      "mvthwus",
+      "maashous",
+      "MJB-coolness",
+      "StrawberriMilkshake",
+      "SamyTheGil",
+      "Brotatsun64",
+      "Hi_Im_Licious",
+      "Sourbeefio",
+      "SPGesus",
+      "Tyzillion",
+      "JMMCP",
+      "TheFourthFate",
+      "Myslippy",
+      "KleeHubertus",
+      "HexeChroma",
+      "Aggrotadpole",
+      "whatsy",
+      "giodude1580",
+      "Mallowuu",
+      "QriviateA",
+      "Valirus",
+      "DeliWtz",
+      "Apion",
+      "Sterrezo",
+      "drewlordybuilds",
+      "gingledoof0",
+      "am-o",
+      "plastered_crab",
+      "addy_bromide",
+      "Torchmarrow",
+      "Waldleufer",
+      "virtuositas",
+      "Cobblemon"
+    ],
+    "categories": [
+      "mobs"
+    ],
+    "community": "https://discord.gg/cobblemon",
+    "description": "A Pokémon mod for Fabric and Forge",
+    "documentation": "https://wiki.cobblemon.com",
+    "gallery": [
+      "https://cdn.modrinth.com/data/MdwFAVRL/images/0230817ff009add1621a033d77235d0f7c851b6b.png",
+      "https://cdn.modrinth.com/data/MdwFAVRL/images/062fd9b610d66c1fdbece4afe345961ce9f01c24.png",
+      "https://cdn.modrinth.com/data/MdwFAVRL/images/1d71baa726a8044eadd66c4b114c1f968a4600f2.png",
+      "https://cdn.modrinth.com/data/MdwFAVRL/images/214dc6c12507612f8d5e13b40c45ee45cef61200.png",
+      "https://cdn.modrinth.com/data/MdwFAVRL/images/33af5c0accf10039f8ad77ffaa5fa8d286825344.png",
+      "https://cdn.modrinth.com/data/MdwFAVRL/images/3493e266c5f5d780fc2dae7aac941abbb4e68740.png",
+      "https://cdn.modrinth.com/data/MdwFAVRL/images/3bb5f8e7b7e82ec227c9a68012ba4d7128be87b8.png",
+      "https://cdn.modrinth.com/data/MdwFAVRL/images/3cece3b4b6bb29dc386fb12a626a6d7a752ec401.png",
+      "https://cdn.modrinth.com/data/MdwFAVRL/images/41b96d7bca73254c8d9de34e25b5cae5fc40d728.png",
+      "https://cdn.modrinth.com/data/MdwFAVRL/images/41ee864115e4ff0f75c8195f0b05d75af2fc55fe.png",
+      "https://cdn.modrinth.com/data/MdwFAVRL/images/4d52c52619aae0a4a3b2a6d7b9672d736a2b15fb.png",
+      "https://cdn.modrinth.com/data/MdwFAVRL/images/5d3b4017f961849cf654c55d37b171ba61137d31.png",
+      "https://cdn.modrinth.com/data/MdwFAVRL/images/6336a540086f194fd67f2a1115472fa8f9e25043.png",
+      "https://cdn.modrinth.com/data/MdwFAVRL/images/6e0f10bce2ea60b326782f66054e069e1628d8c9.png",
+      "https://cdn.modrinth.com/data/MdwFAVRL/images/6eedf0fed228c840778192f5236717a469888998.png",
+      "https://cdn.modrinth.com/data/MdwFAVRL/images/6f8e194e428fc1e6fefa8abc543f600b15b9044e.png",
+      "https://cdn.modrinth.com/data/MdwFAVRL/images/7e70e7b6c9f7d3fe755a5d56877cdc108da5dd7f.png",
+      "https://cdn.modrinth.com/data/MdwFAVRL/images/9bad71e5fa78e140c6293813a4bf63dc20135fa3.png",
+      "https://cdn.modrinth.com/data/MdwFAVRL/images/9da617c7af3e4db862db86f9224cb7ed0a89d061.png",
+      "https://cdn.modrinth.com/data/MdwFAVRL/images/a0253c410cd160f457b0c4276d84b9c4c92247c2.png",
+      "https://cdn.modrinth.com/data/MdwFAVRL/images/a44d47d5cef64865f82e73f67e92bf127d1d0a67.png",
+      "https://cdn.modrinth.com/data/MdwFAVRL/images/ba19e0fa34d63e68ba95b0f3ffd1a43722ce27ff.png",
+      "https://cdn.modrinth.com/data/MdwFAVRL/images/c0267a73dd8f4b27c5893f1279e4c428eeb18642.png",
+      "https://cdn.modrinth.com/data/MdwFAVRL/images/c475bfb2f4a02e22856a72f24e5fc0931f3c3d95.png",
+      "https://cdn.modrinth.com/data/MdwFAVRL/images/c603e6ea7dfee194da0d7a0ef0806ea09f082982.png",
+      "https://cdn.modrinth.com/data/MdwFAVRL/images/c6a0a601c1b5205261a3a41a70511fb67b748c71.png",
+      "https://cdn.modrinth.com/data/MdwFAVRL/images/c80c5f3a080c421b3c99af4dd6f4d09ae5955e63.png",
+      "https://cdn.modrinth.com/data/MdwFAVRL/images/d3377cd09f444ce238688606191774343e9dee9d.png",
+      "https://cdn.modrinth.com/data/MdwFAVRL/images/e772cde3f108d42026282237deddf958801056d2.png",
+      "https://cdn.modrinth.com/data/MdwFAVRL/images/e9bfe1b787483b6a38da6e16b591f41ac5a1381e.png",
+      "https://cdn.modrinth.com/data/MdwFAVRL/images/edec670ab25a1e2193c2909fec314a16aa45ea34.png",
+      "https://cdn.modrinth.com/data/MdwFAVRL/images/ee13bf1fefdebae3ce0de6901dc378cbe12035f4.png"
+    ],
+    "icon": "https://cdn.modrinth.com/data/MdwFAVRL/e54083a07bcd9436d1f8d2879b0d821a54588b9e.png",
+    "issues": "https://gitlab.com/cable-mc/cobblemon/-/issues",
+    "keywords": [
+      "cobblemon"
+    ],
+    "license": "MPL-2.0",
+    "name": "Cobblemon",
+    "package_maintainers": [
+      "mcvm"
+    ],
+    "source": "https://gitlab.com/cable-mc/cobblemon"
+  },
+  "properties": {
+    "modrinth_id": "MdwFAVRL",
+    "supported_modloaders": [
+      "fabriclike",
+      "forgelike"
+    ],
+    "supported_sides": [
+      "client",
+      "server"
+    ],
+    "supported_versions": [
+      "1.19.2",
+      "1.20.1"
+    ]
+  }
+}

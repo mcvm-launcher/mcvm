@@ -1,0 +1,26 @@
+{
+	"source": "modrinth",
+	"id": "5WeWGLoJ",
+	"relation_substitutions": {
+		"P7dR8mSH": "fabriclike-api",
+		"ohNO6lps": "forge-config-api-port",
+		"mOgUt4GM": "mod-menu"
+	},
+	"merge": {
+		"meta": {
+			"package_maintainers": [
+				"mcvm"
+			],
+			"categories": [
+				"technical",
+				"library"
+			]
+		},
+		"properties": {
+			"supported_modloaders": [
+				"fabriclike",
+				"forgelike"
+			]
+		}
+	}
+}

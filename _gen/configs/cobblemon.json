@@ -1,0 +1,28 @@
+{
+	"source": "modrinth",
+	"id": "MdwFAVRL",
+	"relation_substitutions": {
+		"P7dR8mSH": "fabriclike-api",
+		"ordsPcFz": "kotlin-for-forge",
+		"lhGA9TYQ": "architectury-api"
+	},
+	"merge": {
+		"meta": {
+			"package_maintainers": [
+				"mcvm"
+			],
+			"keywords": [
+				"cobblemon"
+			],
+			"categories": [
+				"mobs"
+			]
+		},
+		"properties": {
+			"supported_modloaders": [
+				"fabriclike",
+				"forgelike"
+			]
+		}
+	}
+}

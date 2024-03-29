@@ -1,0 +1,175 @@
+{
+  "addons": {
+    "addon": {
+      "kind": "mod",
+      "versions": [
+        {
+          "minecraft_versions": [
+            "1.20.4",
+            "23w51a",
+            "23w51b"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "relations": {
+            "dependencies": "fabriclike-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/9aNz8Zqn/versions/rQt5jR0L/kirin-1.17.0%2B1.20.4.jar",
+          "version": "rQt5jR0L"
+        },
+        {
+          "minecraft_versions": "1.20.2",
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/9aNz8Zqn/versions/1szJCpO0/kirin-1.16.0%2B1.20.2.jar",
+          "version": "1szJCpO0"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/9aNz8Zqn/versions/zFAxMHkW/kirin-1.15.3%2B1.19.3.jar",
+          "version": "zFAxMHkW"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/9aNz8Zqn/versions/GlNFICBW/kirin-1.15.3%2B1.19.2.jar",
+          "version": "GlNFICBW"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/9aNz8Zqn/versions/Oiy7wUe3/kirin-1.15.2%2B1.19.4.jar",
+          "version": "Oiy7wUe3"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/9aNz8Zqn/versions/54qjYmTd/kirin-1.15.2.jar",
+          "version": "54qjYmTd"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/9aNz8Zqn/versions/ewQpHc8q/kirin-1.15.1.jar",
+          "version": "ewQpHc8q"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/9aNz8Zqn/versions/ePzzvV1b/kirin-1.15.0.jar",
+          "version": "ePzzvV1b"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/9aNz8Zqn/versions/otAnRDcJ/kirin-1.14.0.jar",
+          "version": "otAnRDcJ"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/9aNz8Zqn/versions/99cBvzlK/kirin-1.13.2%2Blts.jar",
+          "version": "99cBvzlK"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/9aNz8Zqn/versions/PIr2m57k/kirin-1.13.2.jar",
+          "version": "PIr2m57k"
+        }
+      ]
+    }
+  },
+  "meta": {
+    "authors": [],
+    "categories": [
+      "technical",
+      "library"
+    ],
+    "description": "GUI Library for help with making minecraft screens more easily",
+    "gallery": [],
+    "icon": "https://cdn.modrinth.com/data/9aNz8Zqn/3655425b74f1d7e897b49a40d5abab887e4bb69c.png",
+    "issues": "https://github.com/MineLittlePony/Kirin/issues",
+    "keywords": [
+      "gui"
+    ],
+    "license": "MIT",
+    "name": "Kirin",
+    "package_maintainers": [
+      "mcvm"
+    ],
+    "source": "https://github.com/MineLittlePony/Kirin"
+  },
+  "properties": {
+    "modrinth_id": "9aNz8Zqn",
+    "supported_modloaders": [
+      "fabriclike"
+    ],
+    "supported_sides": [
+      "client"
+    ],
+    "supported_versions": [
+      "1.19.2",
+      "1.19.3",
+      "1.19.4",
+      "1.20",
+      "1.20.1",
+      "1.20.2",
+      "1.20.4",
+      "23w51a",
+      "23w51b"
+    ]
+  }
+}

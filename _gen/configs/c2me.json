@@ -1,0 +1,24 @@
+{
+	"source": "modrinth",
+	"id": "VSNURh3q",
+	"relation_substitutions": {},
+	"merge": {
+		"meta": {
+			"package_maintainers": [
+				"mcvm"
+			],
+			"keywords": [
+				"chunks"
+			],
+			"categories": [
+				"optimization",
+				"technical"
+			]
+		},
+		"properties": {
+			"supported_modloaders": [
+				"fabriclike"
+			]
+		}
+	}
+}

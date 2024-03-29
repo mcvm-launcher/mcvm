@@ -1,0 +1,27 @@
+{
+	"source": "modrinth",
+	"id": "1bokaNcj",
+	"relation_substitutions": {
+		"P7dR8mSH": "fabriclike-api",
+		"gF3BGWvG": "open-parties-and-claims"
+	},
+	"merge": {
+		"meta": {
+			"package_maintainers": [
+				"mcvm"
+			],
+			"keywords": [
+				"map"
+			],
+			"categories": [
+				"information"
+			]
+		},
+		"properties": {
+			"supported_modloaders": [
+				"fabriclike",
+				"forgelike"
+			]
+		}
+	}
+}

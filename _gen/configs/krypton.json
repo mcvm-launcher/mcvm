@@ -1,0 +1,21 @@
+{
+	"source": "modrinth",
+	"id": "fQEb0iXm",
+	"relation_substitutions": {},
+	"merge": {
+		"meta": {
+			"package_maintainers": [
+				"mcvm"
+			],
+			"categories": [
+				"optimization",
+				"technical"
+			]
+		},
+		"properties": {
+			"supported_modloaders": [
+				"fabriclike"
+			]
+		}
+	}
+}

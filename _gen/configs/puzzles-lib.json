@@ -1,0 +1,27 @@
+{
+	"source": "modrinth",
+	"id": "QAGBst4M",
+	"relation_substitutions": {
+		"P7dR8mSH": "fabriclike-api",
+		"ohNO6lps": "forge-config-api-port",
+		"K01OU20C": "cardinal-components-api",
+		"QAGBst4M": "puzzles-lib"
+	},
+	"merge": {
+		"meta": {
+			"package_maintainers": [
+				"mcvm"
+			],
+			"categories": [
+				"library",
+				"technical"
+			]
+		},
+		"properties": {
+			"supported_modloaders": [
+				"forgelike",
+				"fabriclike"
+			]
+		}
+	}
+}

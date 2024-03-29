@@ -1,0 +1,152 @@
+{
+  "addons": {
+    "addon": {
+      "kind": "mod",
+      "versions": [
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port",
+              "mod-menu"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/5WeWGLoJ/versions/nwy63zfI/ForgeConfigScreens-v8.0.2-1.20.1-Fabric.jar",
+          "version": "nwy63zfI"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/5WeWGLoJ/versions/YUDLu26S/ForgeConfigScreens-v8.0.2-1.20.1-Forge.jar",
+          "version": "YUDLu26S"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port",
+              "mod-menu"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/5WeWGLoJ/versions/n1EMZ4oz/ForgeConfigScreens-v8.0.1-1.20.1-Fabric.jar",
+          "version": "n1EMZ4oz"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/5WeWGLoJ/versions/1jVBPRNS/ForgeConfigScreens-v8.0.1-1.20.1-Forge.jar",
+          "version": "1jVBPRNS"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port",
+              "mod-menu"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/5WeWGLoJ/versions/S0IeqYrp/ForgeConfigScreens-v8.0.0-1.20.1-Fabric.jar",
+          "version": "S0IeqYrp"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/5WeWGLoJ/versions/NJRmTOlf/ForgeConfigScreens-v8.0.0-1.20.1-Forge.jar",
+          "version": "NJRmTOlf"
+        },
+        {
+          "minecraft_versions": "1.20",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port",
+              "mod-menu"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/5WeWGLoJ/versions/UOV19nXG/ForgeConfigScreens-v7.0.0-1.20-Fabric.jar",
+          "version": "UOV19nXG"
+        },
+        {
+          "minecraft_versions": "1.20",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/5WeWGLoJ/versions/JwsEoVZ1/ForgeConfigScreens-v7.0.0-1.20-Forge.jar",
+          "version": "JwsEoVZ1"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/5WeWGLoJ/versions/onp8kYQo/ForgeConfigScreens-v6.0.0-1.19.4-Forge.jar",
+          "version": "onp8kYQo"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port",
+              "mod-menu"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/5WeWGLoJ/versions/d8rW8rDg/ForgeConfigScreens-v6.0.0-1.19.4-Fabric.jar",
+          "version": "d8rW8rDg"
+        }
+      ]
+    }
+  },
+  "meta": {
+    "authors": [
+      "LunaPixelStudios",
+      "SHXRKIE",
+      "Fuzs"
+    ],
+    "categories": [
+      "technical",
+      "library"
+    ],
+    "description": "Allows Forge's configs to be configured directly in-game. Quick and easy with a beautiful design!",
+    "gallery": [
+      "https://cdn.modrinth.com/data/5WeWGLoJ/images/b422431f2df483b89e127d1aae6b511fbdc68b01.png"
+    ],
+    "icon": "https://cdn.modrinth.com/data/5WeWGLoJ/bf276f7b508fb8cd64f5190691dc19c1b98dcd41.png",
+    "issues": "https://github.com/Fuzss/forgeconfigscreens/issues",
+    "license": "MPL-2.0",
+    "name": "Forge Config Screens",
+    "package_maintainers": [
+      "mcvm"
+    ],
+    "source": "https://github.com/Fuzss/forgeconfigscreens"
+  },
+  "properties": {
+    "modrinth_id": "5WeWGLoJ",
+    "supported_modloaders": [
+      "fabriclike",
+      "forgelike"
+    ],
+    "supported_sides": [
+      "client"
+    ],
+    "supported_versions": [
+      "1.19.4",
+      "1.20",
+      "1.20.1"
+    ]
+  }
+}

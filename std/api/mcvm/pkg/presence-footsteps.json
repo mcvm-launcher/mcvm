@@ -1,0 +1,513 @@
+{
+  "addons": {
+    "addon": {
+      "kind": "mod",
+      "versions": [
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "relations": {
+            "dependencies": "fabriclike-api",
+            "recommendations": {
+              "value": "none"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/rcTfTZr3/versions/ji7wRvVK/PresenceFootsteps-1.11.2.jar",
+          "version": "ji7wRvVK"
+        },
+        {
+          "minecraft_versions": "1.20.2",
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "relations": {
+            "dependencies": "fabriclike-api",
+            "recommendations": {
+              "value": "none"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/rcTfTZr3/versions/EvZkNyaK/PresenceFootsteps-1.10.2.jar",
+          "version": "EvZkNyaK"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "relations": {
+            "dependencies": "fabriclike-api",
+            "recommendations": {
+              "value": "none"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/rcTfTZr3/versions/KAmTaDGR/PresenceFootsteps-1.9.2.jar",
+          "version": "KAmTaDGR"
+        },
+        {
+          "minecraft_versions": "1.7.10",
+          "modloaders": "liteloader",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/rcTfTZr3/versions/LIWEWgbC/PresenceFootsteps_r5c_Unofficial__1.7.10.litemod",
+          "version": "LIWEWgbC"
+        },
+        {
+          "minecraft_versions": "1.8.9",
+          "modloaders": "liteloader",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/rcTfTZr3/versions/WswrXhsm/mod-presence-footsteps-u8f.litemod",
+          "version": "WswrXhsm"
+        },
+        {
+          "minecraft_versions": "1.9.4",
+          "modloaders": "liteloader",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/rcTfTZr3/versions/douonZQK/mod-presencefootsteps-u10b.litemod",
+          "version": "douonZQK"
+        },
+        {
+          "minecraft_versions": "1.10",
+          "modloaders": "liteloader",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/rcTfTZr3/versions/3JQQCViD/presencefootsteps-u11.litemod",
+          "version": "3JQQCViD"
+        },
+        {
+          "minecraft_versions": "1.20.2",
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "relations": {
+            "dependencies": "fabriclike-api",
+            "recommendations": {
+              "value": "none"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/rcTfTZr3/versions/Vt7ls0pO/PresenceFootsteps-1.10.1.jar",
+          "version": "Vt7ls0pO"
+        },
+        {
+          "minecraft_versions": [
+            "1.20.3",
+            "1.20.4",
+            "23w51a",
+            "23w51b"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "relations": {
+            "dependencies": "fabriclike-api",
+            "recommendations": {
+              "value": "none"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/rcTfTZr3/versions/teGodXxG/PresenceFootsteps-1.11.1.jar",
+          "version": "teGodXxG"
+        },
+        {
+          "minecraft_versions": [
+            "1.20.3",
+            "1.20.4"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "relations": {
+            "dependencies": "fabriclike-api",
+            "recommendations": {
+              "value": "none"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/rcTfTZr3/versions/giebTOyU/PresenceFootsteps-1.11.0.jar",
+          "version": "giebTOyU"
+        },
+        {
+          "minecraft_versions": [
+            "1.20",
+            "1.20.1"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "relations": {
+            "dependencies": "fabriclike-api",
+            "recommendations": {
+              "value": "none"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/rcTfTZr3/versions/pOCYcZUF/PresenceFootsteps-1.9.1.jar",
+          "version": "pOCYcZUF"
+        },
+        {
+          "minecraft_versions": [
+            "1.20.2",
+            "1.20.3",
+            "1.20.4"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "kirin"
+            ],
+            "recommendations": {
+              "value": "none"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/rcTfTZr3/versions/KrTss88l/PresenceFootsteps-1.10.0.jar",
+          "version": "KrTss88l"
+        },
+        {
+          "minecraft_versions": [
+            "1.20-pre6",
+            "1.20-pre7",
+            "1.20-rc1",
+            "1.20",
+            "1.20.1-rc1",
+            "1.20.1"
+          ],
+          "modloaders": [
+            "fabric",
+            "quilt"
+          ],
+          "relations": {
+            "dependencies": "fabriclike-api",
+            "recommendations": {
+              "value": "none"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/rcTfTZr3/versions/FMF3yzCR/PresenceFootsteps-1.9.0.jar",
+          "version": "FMF3yzCR"
+        },
+        {
+          "minecraft_versions": [
+            "1.19.4",
+            "23w13a_or_b"
+          ],
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": "fabriclike-api",
+            "recommendations": {
+              "value": "none"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/rcTfTZr3/versions/jxsFtML2/PresenceFootsteps-1.8.2.jar",
+          "version": "jxsFtML2"
+        },
+        {
+          "minecraft_versions": [
+            "1.19.4",
+            "23w13a_or_b"
+          ],
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": "fabriclike-api",
+            "recommendations": {
+              "value": "none"
+            }
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/rcTfTZr3/versions/M7xLhDyx/PresenceFootsteps-1.8.1.jar",
+          "version": "M7xLhDyx"
+        },
+        {
+          "minecraft_versions": [
+            "1.19.4",
+            "23w12a",
+            "23w13a",
+            "23w13a_or_b"
+          ],
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": "fabriclike-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/rcTfTZr3/versions/M7mmrOFn/PresenceFootsteps-1.8.0.jar",
+          "version": "M7mmrOFn"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": "fabriclike-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/rcTfTZr3/versions/GExGOzbi/PresenceFootsteps-1.7.1.jar",
+          "version": "GExGOzbi"
+        },
+        {
+          "minecraft_versions": [
+            "1.19",
+            "1.19.1",
+            "1.19.2"
+          ],
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": "fabriclike-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/rcTfTZr3/versions/3fEb2K4u/PresenceFootsteps-1.6.4.jar",
+          "version": "3fEb2K4u"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": "fabriclike-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/rcTfTZr3/versions/9ZPyiU8N/PresenceFootsteps-1.7.0.jar",
+          "version": "9ZPyiU8N"
+        },
+        {
+          "minecraft_versions": [
+            "1.19",
+            "1.19.1",
+            "1.19.2"
+          ],
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": "fabriclike-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/rcTfTZr3/versions/IUc6dyrf/PresenceFootsteps-1.6.3.jar",
+          "version": "IUc6dyrf"
+        },
+        {
+          "minecraft_versions": [
+            "1.19",
+            "1.19.1",
+            "1.19.2"
+          ],
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": "fabriclike-api"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/rcTfTZr3/versions/gLDVmoRt/PresenceFootsteps-1.6.2.jar",
+          "version": "gLDVmoRt"
+        },
+        {
+          "minecraft_versions": [
+            "1.18",
+            "1.18.1",
+            "1.18.2"
+          ],
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/rcTfTZr3/versions/1.5.1/PresenceFootsteps-1.5.1.jar",
+          "version": "31QS6G6Z"
+        },
+        {
+          "minecraft_versions": [
+            "1.19",
+            "1.19.1",
+            "1.19.2"
+          ],
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/rcTfTZr3/versions/1.6.1/PresenceFootsteps-1.6.1.jar",
+          "version": "HSI3wnPT"
+        },
+        {
+          "minecraft_versions": "1.19",
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/rcTfTZr3/versions/1.6.0/PresenceFootsteps-1.6.0.jar",
+          "version": "cXdGDBED"
+        },
+        {
+          "minecraft_versions": "1.18.2",
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/rcTfTZr3/versions/1.5.0/PresenceFootsteps-1.5.0.jar",
+          "version": "2Dcs7kJq"
+        },
+        {
+          "minecraft_versions": [
+            "1.18",
+            "1.18.1"
+          ],
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/rcTfTZr3/versions/1.4.0/PresenceFootsteps-1.4.0.jar",
+          "version": "20NGWQNM"
+        },
+        {
+          "minecraft_versions": [
+            "1.17",
+            "1.17.1",
+            "1.18"
+          ],
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/rcTfTZr3/versions/35/PresenceFootsteps-r35-1.17.jar",
+          "version": "3R7j6E4Z"
+        },
+        {
+          "minecraft_versions": [
+            "1.17.1",
+            "1.18"
+          ],
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/rcTfTZr3/versions/33/PresenceFootsteps-r34-1.17.jar",
+          "version": "r0Hz3hFo"
+        },
+        {
+          "minecraft_versions": [
+            "1.17",
+            "1.17.1"
+          ],
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/rcTfTZr3/versions/32/PresenceFootsteps-r32-1.17-rc1.jar",
+          "version": "U0g0vHwf"
+        },
+        {
+          "minecraft_versions": [
+            "1.17-rc1",
+            "1.17"
+          ],
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/rcTfTZr3/versions/31/PresenceFootsteps-r31-1.17-rc1.jar",
+          "version": "iu4qJBKh"
+        },
+        {
+          "minecraft_versions": "1.17-rc1",
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/rcTfTZr3/versions/30/PresenceFootsteps-r30-1.17-rc1.jar",
+          "version": "wl2DCPmO"
+        },
+        {
+          "minecraft_versions": [
+            "1.16.1",
+            "1.16.2-pre1",
+            "1.16.2-pre2",
+            "1.16.2-pre3",
+            "1.16.2-rc1",
+            "1.16.2-rc2",
+            "1.16.2",
+            "1.16.3-rc1",
+            "1.16.3",
+            "1.16.4-pre1",
+            "1.16.4-pre2",
+            "1.16.4-rc1",
+            "1.16.4",
+            "1.16.5"
+          ],
+          "modloaders": "fabric",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/rcTfTZr3/versions/29/PresenceFootsteps-r29%2B1.16.4.jar",
+          "version": "BEtLdX9C"
+        }
+      ]
+    }
+  },
+  "meta": {
+    "authors": [
+      "Sollace"
+    ],
+    "categories": [
+      "sound",
+      "cosmetic"
+    ],
+    "description": "..An Overly complicated Sound Mod...",
+    "documentation": "https://github.com/Sollace/Presence-Footsteps/wiki",
+    "gallery": [
+      "https://cdn.modrinth.com/data/rcTfTZr3/images/76de1af1150df6e5adec16599c01c08ffe2b167f.jpeg"
+    ],
+    "icon": "https://cdn.modrinth.com/data/rcTfTZr3/icon.png",
+    "issues": "https://github.com/Sollace/Presence-Footsteps/issues",
+    "keywords": [
+      "sound"
+    ],
+    "license": "MIT",
+    "name": "Presence Footsteps",
+    "package_maintainers": [
+      "mcvm"
+    ],
+    "source": "https://github.com/Sollace/Presence-Footsteps"
+  },
+  "properties": {
+    "modrinth_id": "rcTfTZr3",
+    "supported_modloaders": [
+      "fabriclike"
+    ],
+    "supported_sides": [
+      "client"
+    ],
+    "supported_versions": [
+      "1.7.10",
+      "1.8.9",
+      "1.9.4",
+      "1.10",
+      "1.16.1",
+      "1.16.2-pre1",
+      "1.16.2-pre2",
+      "1.16.2-pre3",
+      "1.16.2-rc1",
+      "1.16.2-rc2",
+      "1.16.2",
+      "1.16.3-rc1",
+      "1.16.3",
+      "1.16.4-pre1",
+      "1.16.4-pre2",
+      "1.16.4-rc1",
+      "1.16.4",
+      "1.16.5",
+      "1.17-rc1",
+      "1.17",
+      "1.17.1",
+      "1.18",
+      "1.18.1",
+      "1.18.2",
+      "1.19",
+      "1.19.1",
+      "1.19.2",
+      "1.19.3",
+      "1.19.4",
+      "23w12a",
+      "23w13a",
+      "23w13a_or_b",
+      "1.20-pre6",
+      "1.20-pre7",
+      "1.20-rc1",
+      "1.20",
+      "1.20.1-rc1",
+      "1.20.1",
+      "1.20.2",
+      "1.20.3",
+      "1.20.4",
+      "23w51a",
+      "23w51b"
+    ]
+  }
+}

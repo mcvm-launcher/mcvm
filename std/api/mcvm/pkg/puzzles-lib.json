@@ -1,0 +1,3093 @@
+{
+  "addons": {
+    "addon": {
+      "kind": "mod",
+      "versions": [
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "forge-config-api-port"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/3FxP0dZE/PuzzlesLib-v20.4.41-1.20.4-Forge.jar",
+          "version": "3FxP0dZE"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "neoforged",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/dg6ziRn7/PuzzlesLib-v20.4.41-1.20.4-NeoForge.jar",
+          "version": "dg6ziRn7"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/5AajzfKh/PuzzlesLib-v20.4.41-1.20.4-Fabric.jar",
+          "version": "5AajzfKh"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/1radnytC/PuzzlesLib-v8.1.18-1.20.1-Forge.jar",
+          "version": "1radnytC"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/UevkyHdQ/PuzzlesLib-v8.1.18-1.20.1-Fabric.jar",
+          "version": "UevkyHdQ"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "neoforged",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/h49wtUmr/PuzzlesLib-v20.4.40-1.20.4-NeoForge.jar",
+          "version": "h49wtUmr"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "forge-config-api-port"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/Kzujt3Wg/PuzzlesLib-v20.4.40-1.20.4-Forge.jar",
+          "version": "Kzujt3Wg"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/8ENMTJuS/PuzzlesLib-v20.4.40-1.20.4-Fabric.jar",
+          "version": "8ENMTJuS"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "neoforged",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/aYUxnbFX/PuzzlesLib-v20.4.39-1.20.4-NeoForge.jar",
+          "version": "aYUxnbFX"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/YV5fPHDv/PuzzlesLib-v20.4.39-1.20.4-Fabric.jar",
+          "version": "YV5fPHDv"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "forge-config-api-port"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/8H0WEHWb/PuzzlesLib-v20.4.39-1.20.4-Forge.jar",
+          "version": "8H0WEHWb"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "neoforged",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/8TeiPNFS/PuzzlesLib-v20.4.36-1.20.4-NeoForge.jar",
+          "version": "8TeiPNFS"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "forge-config-api-port"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/KI13IqvB/PuzzlesLib-v20.4.36-1.20.4-Forge.jar",
+          "version": "KI13IqvB"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/9SKeDQfZ/PuzzlesLib-v20.4.36-1.20.4-Fabric.jar",
+          "version": "9SKeDQfZ"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "neoforged",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/hs4gH8fg/PuzzlesLib-v20.4.31-1.20.4-NeoForge.jar",
+          "version": "hs4gH8fg"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "forge-config-api-port"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/EpSfQOOy/PuzzlesLib-v20.4.31-1.20.4-Forge.jar",
+          "version": "EpSfQOOy"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/GHuvKmu8/PuzzlesLib-v20.4.31-1.20.4-Fabric.jar",
+          "version": "GHuvKmu8"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "neoforged",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/6lsMD0wH/PuzzlesLib-v20.4.30-1.20.4-NeoForge.jar",
+          "version": "6lsMD0wH"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "forge-config-api-port"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/DD87WPm0/PuzzlesLib-v20.4.30-1.20.4-Forge.jar",
+          "version": "DD87WPm0"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/XrQEeA3j/PuzzlesLib-v20.4.30-1.20.4-Fabric.jar",
+          "version": "XrQEeA3j"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "neoforged",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/2W0fLYmI/PuzzlesLib-v20.4.25-1.20.4-NeoForge.jar",
+          "version": "2W0fLYmI"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "forge-config-api-port"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/8biFI7PT/PuzzlesLib-v20.4.25-1.20.4-Forge.jar",
+          "version": "8biFI7PT"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/I0w9FYVT/PuzzlesLib-v20.4.25-1.20.4-Fabric.jar",
+          "version": "I0w9FYVT"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "neoforged",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/WzEMd08l/PuzzlesLib-v20.4.24-1.20.4-NeoForge.jar",
+          "version": "WzEMd08l"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "forge-config-api-port"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/9MMQnG3c/PuzzlesLib-v20.4.24-1.20.4-Forge.jar",
+          "version": "9MMQnG3c"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/DxOr6NRG/PuzzlesLib-v20.4.24-1.20.4-Fabric.jar",
+          "version": "DxOr6NRG"
+        },
+        {
+          "minecraft_versions": "1.18.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/tDJF06pn/PuzzlesLib-v3.5.9-1.18.2-Fabric.jar",
+          "version": "tDJF06pn"
+        },
+        {
+          "minecraft_versions": "1.18.2",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/4MxDan2p/PuzzlesLib-v3.5.9-1.18.2-Forge.jar",
+          "version": "4MxDan2p"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/FTMya93H/PuzzlesLib-v8.1.17-1.20.1-Fabric.jar",
+          "version": "FTMya93H"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/iwDQtahk/PuzzlesLib-v8.1.17-1.20.1-Forge.jar",
+          "version": "iwDQtahk"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "neoforged",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/8DBzZOGj/PuzzlesLib-v20.4.23-1.20.4-NeoForge.jar",
+          "version": "8DBzZOGj"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "forge-config-api-port"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/qdBCO6ts/PuzzlesLib-v20.4.23-1.20.4-Forge.jar",
+          "version": "qdBCO6ts"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/EnIz7EYT/PuzzlesLib-v20.4.23-1.20.4-Fabric.jar",
+          "version": "EnIz7EYT"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "forge-config-api-port"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/TbC3Jf6X/PuzzlesLib-v20.4.22-1.20.4-Forge.jar",
+          "version": "TbC3Jf6X"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "neoforged",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/VX10tpqr/PuzzlesLib-v20.4.22-1.20.4-NeoForge.jar",
+          "version": "VX10tpqr"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/mi9Mryhy/PuzzlesLib-v20.4.22-1.20.4-Fabric.jar",
+          "version": "mi9Mryhy"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "neoforged",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/hAnXRGE6/PuzzlesLib-v20.4.21-1.20.4-NeoForge.jar",
+          "version": "hAnXRGE6"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "forge-config-api-port"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/RXjYpwik/PuzzlesLib-v20.4.21-1.20.4-Forge.jar",
+          "version": "RXjYpwik"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/4pPSXzLY/PuzzlesLib-v20.4.21-1.20.4-Fabric.jar",
+          "version": "4pPSXzLY"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "neoforged",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/fRs9GSN9/PuzzlesLib-v20.4.18-1.20.4-NeoForge.jar",
+          "version": "fRs9GSN9"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "forge-config-api-port"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/heTs4xwy/PuzzlesLib-v20.4.18-1.20.4-Forge.jar",
+          "version": "heTs4xwy"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/ztwxN6az/PuzzlesLib-v20.4.18-1.20.4-Fabric.jar",
+          "version": "ztwxN6az"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "forge-config-api-port"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/lWxIr4jA/PuzzlesLib-v20.4.17-1.20.4-Forge.jar",
+          "version": "lWxIr4jA"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "neoforged",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/qTyUOUnm/PuzzlesLib-v20.4.17-1.20.4-NeoForge.jar",
+          "version": "qTyUOUnm"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/Hd24Sjqn/PuzzlesLib-v20.4.17-1.20.4-Fabric.jar",
+          "version": "Hd24Sjqn"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "forge-config-api-port"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/UmSXV9Rq/PuzzlesLib-v20.4.16-1.20.4-Forge.jar",
+          "version": "UmSXV9Rq"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "neoforged",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/EuOcMDkX/PuzzlesLib-v20.4.16-1.20.4-NeoForge.jar",
+          "version": "EuOcMDkX"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/2MTgLRdA/PuzzlesLib-v20.4.16-1.20.4-Fabric.jar",
+          "version": "2MTgLRdA"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "neoforged",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/QPlKuTc3/PuzzlesLib-v20.4.15-1.20.4-NeoForge.jar",
+          "version": "QPlKuTc3"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "forge-config-api-port"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/VWijWTpQ/PuzzlesLib-v20.4.15-1.20.4-Forge.jar",
+          "version": "VWijWTpQ"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/SNpPIaBe/PuzzlesLib-v20.4.15-1.20.4-Fabric.jar",
+          "version": "SNpPIaBe"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/NZat9O7c/PuzzlesLib-v8.1.16-1.20.1-Fabric.jar",
+          "version": "NZat9O7c"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/dGKTOxmu/PuzzlesLib-v8.1.16-1.20.1-Forge.jar",
+          "version": "dGKTOxmu"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "neoforged",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/t21ZaLpl/PuzzlesLib-v20.4.14-1.20.4-NeoForge.jar",
+          "version": "t21ZaLpl"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "forge-config-api-port"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/gfFhZGIK/PuzzlesLib-v20.4.14-1.20.4-Forge.jar",
+          "version": "gfFhZGIK"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/62Td8gAV/PuzzlesLib-v20.4.14-1.20.4-Fabric.jar",
+          "version": "62Td8gAV"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "neoforged",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/wyqkVBR6/PuzzlesLib-v20.4.13-1.20.4-NeoForge.jar",
+          "version": "wyqkVBR6"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "forge-config-api-port"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/yv0STfcl/PuzzlesLib-v20.4.13-1.20.4-Forge.jar",
+          "version": "yv0STfcl"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/kQgkv5iT/PuzzlesLib-v20.4.13-1.20.4-Fabric.jar",
+          "version": "kQgkv5iT"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "forge-config-api-port"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/nmSD44fp/PuzzlesLib-v20.4.12-1.20.4-Forge.jar",
+          "version": "nmSD44fp"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "neoforged",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/Ab5KUgTb/PuzzlesLib-v20.4.12-1.20.4-NeoForge.jar",
+          "version": "Ab5KUgTb"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/k8mU0QlS/PuzzlesLib-v20.4.12-1.20.4-Fabric.jar",
+          "version": "k8mU0QlS"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "forge-config-api-port"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/L30yzNuL/PuzzlesLib-v20.4.11-1.20.4-Forge.jar",
+          "version": "L30yzNuL"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "neoforged",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/3wteGlwJ/PuzzlesLib-v20.4.11-1.20.4-NeoForge.jar",
+          "version": "3wteGlwJ"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/pVdAf92x/PuzzlesLib-v20.4.11-1.20.4-Fabric.jar",
+          "version": "pVdAf92x"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/O4VA1IJL/PuzzlesLib-v8.1.15-1.20.1-Fabric.jar",
+          "version": "O4VA1IJL"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/jkphsaH8/PuzzlesLib-v8.1.15-1.20.1-Forge.jar",
+          "version": "jkphsaH8"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "neoforged",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/e4lzFDZS/PuzzlesLib-v20.4.9-1.20.4-NeoForge.jar",
+          "version": "e4lzFDZS"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "forge-config-api-port"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/iKy6nFZL/PuzzlesLib-v20.4.9-1.20.4-Forge.jar",
+          "version": "iKy6nFZL"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/6Pjd6OaZ/PuzzlesLib-v20.4.9-1.20.4-Fabric.jar",
+          "version": "6Pjd6OaZ"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/SgNgKci7/PuzzlesLib-v8.1.14-1.20.1-Fabric.jar",
+          "version": "SgNgKci7"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/DIhm8o76/PuzzlesLib-v8.1.14-1.20.1-Forge.jar",
+          "version": "DIhm8o76"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "forge-config-api-port"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/v423n2Pm/PuzzlesLib-v20.4.7-1.20.4-Forge.jar",
+          "version": "v423n2Pm"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "neoforged",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/9nJxieAS/PuzzlesLib-v20.4.7-1.20.4-NeoForge.jar",
+          "version": "9nJxieAS"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/tfARtYYn/PuzzlesLib-v20.4.7-1.20.4-Fabric.jar",
+          "version": "tfARtYYn"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "forge-config-api-port"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/SWQ2ahqO/PuzzlesLib-v20.4.4-1.20.4-Forge.jar",
+          "version": "SWQ2ahqO"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "neoforged",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/vWlFyCm4/PuzzlesLib-v20.4.4-1.20.4-NeoForge.jar",
+          "version": "vWlFyCm4"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/8gv1l93Y/PuzzlesLib-v20.4.4-1.20.4-Fabric.jar",
+          "version": "8gv1l93Y"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "forge-config-api-port"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/HANk7S8Y/PuzzlesLib-v20.4.3-1.20.4-Forge.jar",
+          "version": "HANk7S8Y"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "neoforged",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/EFyslVOo/PuzzlesLib-v20.4.3-1.20.4-NeoForge.jar",
+          "version": "EFyslVOo"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/Txoaqdfx/PuzzlesLib-v20.4.3-1.20.4-Fabric.jar",
+          "version": "Txoaqdfx"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "forge-config-api-port"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/SW4ids1s/PuzzlesLib-v20.4.2-1.20.4-Forge.jar",
+          "version": "SW4ids1s"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "neoforged",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/ZUVLIzWs/PuzzlesLib-v20.4.2-1.20.4-NeoForge.jar",
+          "version": "ZUVLIzWs"
+        },
+        {
+          "minecraft_versions": "1.20.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/xiHYPU0O/PuzzlesLib-v20.4.2-1.20.4-Fabric.jar",
+          "version": "xiHYPU0O"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/6VIgAUJL/PuzzlesLib-v8.1.13-1.20.1-Fabric.jar",
+          "version": "6VIgAUJL"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/nBWJys7K/PuzzlesLib-v8.1.13-1.20.1-Forge.jar",
+          "version": "nBWJys7K"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/LTVbnixz/PuzzlesLib-v8.1.12-1.20.1-Fabric.jar",
+          "version": "LTVbnixz"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/5ADGGlfq/PuzzlesLib-v8.1.12-1.20.1-Forge.jar",
+          "version": "5ADGGlfq"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/cCopyIlz/PuzzlesLib-v8.1.11-1.20.1-Fabric.jar",
+          "version": "cCopyIlz"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/Wb6w0J7U/PuzzlesLib-v8.1.11-1.20.1-Forge.jar",
+          "version": "Wb6w0J7U"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/MCFpJ1Oq/PuzzlesLib-v8.1.9-1.20.1-Fabric.jar",
+          "version": "MCFpJ1Oq"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/OGBBlBRy/PuzzlesLib-v8.1.9-1.20.1-Forge.jar",
+          "version": "OGBBlBRy"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/57xICvxd/PuzzlesLib-v8.1.8-1.20.1-Fabric.jar",
+          "version": "57xICvxd"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/V1MfC0Mw/PuzzlesLib-v8.1.8-1.20.1-Forge.jar",
+          "version": "V1MfC0Mw"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/xShIH08f/PuzzlesLib-v8.1.7-1.20.1-Fabric.jar",
+          "version": "xShIH08f"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/lOhe38BY/PuzzlesLib-v8.1.7-1.20.1-Forge.jar",
+          "version": "lOhe38BY"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/gGsQ0pWm/PuzzlesLib-v8.1.5-1.20.1-Fabric.jar",
+          "version": "gGsQ0pWm"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/TXMzWrbS/PuzzlesLib-v8.1.5-1.20.1-Forge.jar",
+          "version": "TXMzWrbS"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/mnz2Hm7Z/PuzzlesLib-v8.1.3-1.20.1-Forge.jar",
+          "version": "mnz2Hm7Z"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/XcEPni7L/PuzzlesLib-v8.1.3-1.20.1-Fabric.jar",
+          "version": "XcEPni7L"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/XqZXczYQ/PuzzlesLib-v8.1.2-1.20.1-Fabric.jar",
+          "version": "XqZXczYQ"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/ltzRj1Al/PuzzlesLib-v8.1.2-1.20.1-Forge.jar",
+          "version": "ltzRj1Al"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/5nBTQI8o/PuzzlesLib-v8.1.1-1.20.1-Fabric.jar",
+          "version": "5nBTQI8o"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/WKcrcW20/PuzzlesLib-v8.1.1-1.20.1-Forge.jar",
+          "version": "WKcrcW20"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/oFX0OV3d/PuzzlesLib-v8.1.0-1.20.1-Fabric.jar",
+          "version": "oFX0OV3d"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/oPr3RcvY/PuzzlesLib-v8.1.0-1.20.1-Forge.jar",
+          "version": "oPr3RcvY"
+        },
+        {
+          "minecraft_versions": "1.18.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/bKkfr7ay/PuzzlesLib-v3.5.8-1.18.2-Fabric.jar",
+          "version": "bKkfr7ay"
+        },
+        {
+          "minecraft_versions": "1.18.2",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/nEMiPLZ0/PuzzlesLib-v3.5.8-1.18.2-Forge.jar",
+          "version": "nEMiPLZ0"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/KGAO1rK6/PuzzlesLib-v8.0.24-1.20.1-Fabric.jar",
+          "version": "KGAO1rK6"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/Sk64RP7y/PuzzlesLib-v8.0.24-1.20.1-Forge.jar",
+          "version": "Sk64RP7y"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/dXLl9uWi/PuzzlesLib-v8.0.23-1.20.1-Fabric.jar",
+          "version": "dXLl9uWi"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/ZtDMfIUN/PuzzlesLib-v8.0.23-1.20.1-Forge.jar",
+          "version": "ZtDMfIUN"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/3aTpS1mg/PuzzlesLib-v8.0.21-1.20.1-Fabric.jar",
+          "version": "3aTpS1mg"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/RYhkOF7A/PuzzlesLib-v8.0.21-1.20.1-Forge.jar",
+          "version": "RYhkOF7A"
+        },
+        {
+          "minecraft_versions": "1.18.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/jLn169xV/PuzzlesLib-v3.5.7-1.18.2-Fabric.jar",
+          "version": "jLn169xV"
+        },
+        {
+          "minecraft_versions": "1.18.2",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/83sS3ngW/PuzzlesLib-v3.5.7-1.18.2-Forge.jar",
+          "version": "83sS3ngW"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/ZwbaWApq/PuzzlesLib-v8.0.20-1.20.1-Fabric.jar",
+          "version": "ZwbaWApq"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/d3flGMAv/PuzzlesLib-v8.0.20-1.20.1-Forge.jar",
+          "version": "d3flGMAv"
+        },
+        {
+          "minecraft_versions": "1.18.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/gJPobzvP/PuzzlesLib-v3.5.6-1.18.2-Fabric.jar",
+          "version": "gJPobzvP"
+        },
+        {
+          "minecraft_versions": "1.18.2",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/RVGrKpDw/PuzzlesLib-v3.5.6-1.18.2-Forge.jar",
+          "version": "RVGrKpDw"
+        },
+        {
+          "minecraft_versions": "1.18.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/qiuZsD4R/PuzzlesLib-v3.5.5-1.18.2-Fabric.jar",
+          "version": "qiuZsD4R"
+        },
+        {
+          "minecraft_versions": "1.18.2",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/cJqMmNyP/PuzzlesLib-v3.5.5-1.18.2-Forge.jar",
+          "version": "cJqMmNyP"
+        },
+        {
+          "minecraft_versions": "1.18.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/8mMvpXiC/PuzzlesLib-v3.5.4-1.18.2-Fabric.jar",
+          "version": "8mMvpXiC"
+        },
+        {
+          "minecraft_versions": "1.18.2",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/LTuYPgiM/PuzzlesLib-v3.5.4-1.18.2-Forge.jar",
+          "version": "LTuYPgiM"
+        },
+        {
+          "minecraft_versions": "1.18.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/tcY2bo8S/PuzzlesLib-v3.5.3-1.18.2-Fabric.jar",
+          "version": "tcY2bo8S"
+        },
+        {
+          "minecraft_versions": "1.18.2",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/UMRz9cBy/PuzzlesLib-v3.5.3-1.18.2-Forge.jar",
+          "version": "UMRz9cBy"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/HEzEuCRw/PuzzlesLib-v8.0.19-1.20.1-Fabric.jar",
+          "version": "HEzEuCRw"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/8BIig8L5/PuzzlesLib-v8.0.19-1.20.1-Forge.jar",
+          "version": "8BIig8L5"
+        },
+        {
+          "minecraft_versions": "1.18.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/ItncP8dX/PuzzlesLib-v3.5.2-1.18.2-Fabric.jar",
+          "version": "ItncP8dX"
+        },
+        {
+          "minecraft_versions": "1.18.2",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/paSPjnHb/PuzzlesLib-v3.5.2-1.18.2-Forge.jar",
+          "version": "paSPjnHb"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/1UwAgU9l/PuzzlesLib-v8.0.18-1.20.1-Fabric.jar",
+          "version": "1UwAgU9l"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/RDV4dG9C/PuzzlesLib-v8.0.18-1.20.1-Forge.jar",
+          "version": "RDV4dG9C"
+        },
+        {
+          "minecraft_versions": "1.18.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/rNieKbmF/PuzzlesLib-v3.4.7-1.18.2-Fabric.jar",
+          "version": "rNieKbmF"
+        },
+        {
+          "minecraft_versions": "1.18.2",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/Lr1pamFx/PuzzlesLib-v3.4.7-1.18.2-Forge.jar",
+          "version": "Lr1pamFx"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/wfZ1WUlB/PuzzlesLib-v8.0.15-1.20.1-Fabric.jar",
+          "version": "wfZ1WUlB"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/V4g0yKzo/PuzzlesLib-v8.0.15-1.20.1-Forge.jar",
+          "version": "V4g0yKzo"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/RayW5xBY/PuzzlesLib-v8.0.14-1.20.1-Fabric.jar",
+          "version": "RayW5xBY"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/gAz4ZDBl/PuzzlesLib-v8.0.14-1.20.1-Forge.jar",
+          "version": "gAz4ZDBl"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/51n2dMFU/PuzzlesLib-v8.0.13-1.20.1-Fabric.jar",
+          "version": "51n2dMFU"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/Y5Kjea08/PuzzlesLib-v8.0.13-1.20.1-Forge.jar",
+          "version": "Y5Kjea08"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/RUsPffnS/PuzzlesLib-v8.0.12-1.20.1-Fabric.jar",
+          "version": "RUsPffnS"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/hPp2iJwv/PuzzlesLib-v8.0.12-1.20.1-Forge.jar",
+          "version": "hPp2iJwv"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/H9EbhiH7/PuzzlesLib-v8.0.11-1.20.1-Fabric.jar",
+          "version": "H9EbhiH7"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/5r3BfjAc/PuzzlesLib-v8.0.11-1.20.1-Forge.jar",
+          "version": "5r3BfjAc"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/Noj6vMtz/PuzzlesLib-v8.0.7-1.20.1-Fabric.jar",
+          "version": "Noj6vMtz"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/WjRzXRln/PuzzlesLib-v8.0.7-1.20.1-Forge.jar",
+          "version": "WjRzXRln"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/e0aWlelt/PuzzlesLib-v8.0.5-1.20.1-Fabric.jar",
+          "version": "e0aWlelt"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/WyvOkbnG/PuzzlesLib-v8.0.5-1.20.1-Forge.jar",
+          "version": "WyvOkbnG"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/a5MLEWK6/PuzzlesLib-v8.0.4-1.20.1-Fabric.jar",
+          "version": "a5MLEWK6"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/31TqmnJN/PuzzlesLib-v8.0.4-1.20.1-Forge.jar",
+          "version": "31TqmnJN"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/TwMB98sM/PuzzlesLib-v8.0.2-1.20.1-Fabric.jar",
+          "version": "TwMB98sM"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/g8d307PL/PuzzlesLib-v8.0.2-1.20.1-Forge.jar",
+          "version": "g8d307PL"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/lSd7CXvO/PuzzlesLib-v8.0.1-1.20.1-Fabric.jar",
+          "version": "lSd7CXvO"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/KmQylKLN/PuzzlesLib-v8.0.1-1.20.1-Forge.jar",
+          "version": "KmQylKLN"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/Q1j5L2yM/PuzzlesLib-v8.0.0-1.20.1-Fabric.jar",
+          "version": "Q1j5L2yM"
+        },
+        {
+          "minecraft_versions": "1.20.1",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/qdNeRisk/PuzzlesLib-v8.0.0-1.20.1-Forge.jar",
+          "version": "qdNeRisk"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/hYKHLRZ3/PuzzlesLib-v4.4.3-1.19.2-Fabric.jar",
+          "version": "hYKHLRZ3"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/UbCrBSit/PuzzlesLib-v4.4.3-1.19.2-Forge.jar",
+          "version": "UbCrBSit"
+        },
+        {
+          "minecraft_versions": "1.18.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/gd7iDa09/PuzzlesLib-v3.4.6-1.18.2-Fabric.jar",
+          "version": "gd7iDa09"
+        },
+        {
+          "minecraft_versions": "1.18.2",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/GpusdAdv/PuzzlesLib-v3.4.6-1.18.2-Forge.jar",
+          "version": "GpusdAdv"
+        },
+        {
+          "minecraft_versions": "1.20",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/UUEjLtmS/PuzzlesLib-v7.0.9-1.20-Fabric.jar",
+          "version": "UUEjLtmS"
+        },
+        {
+          "minecraft_versions": "1.20",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/9Q6cCSz6/PuzzlesLib-v7.0.9-1.20-Forge.jar",
+          "version": "9Q6cCSz6"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/bEmPd1vO/PuzzlesLib-v4.4.2-1.19.2-Fabric.jar",
+          "version": "bEmPd1vO"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/Bp8RvlYw/PuzzlesLib-v4.4.2-1.19.2-Forge.jar",
+          "version": "Bp8RvlYw"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/Fnlslono/PuzzlesLib-v6.0.11-1.19.4-Fabric.jar",
+          "version": "Fnlslono"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/yP5oQ3Ak/PuzzlesLib-v6.0.11-1.19.4-Forge.jar",
+          "version": "yP5oQ3Ak"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/cPGoonJT/PuzzlesLib-v4.4.1-1.19.2-Fabric.jar",
+          "version": "cPGoonJT"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/SuhOII0F/PuzzlesLib-v4.4.1-1.19.2-Forge.jar",
+          "version": "SuhOII0F"
+        },
+        {
+          "minecraft_versions": "1.20",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/DHk61kCu/PuzzlesLib-v7.0.3-1.20-Fabric.jar",
+          "version": "DHk61kCu"
+        },
+        {
+          "minecraft_versions": "1.20",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/pvuBqFqb/PuzzlesLib-v7.0.3-1.20-Forge.jar",
+          "version": "pvuBqFqb"
+        },
+        {
+          "minecraft_versions": "1.20",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/OKZ6mA1W/PuzzlesLib-v7.0.2-1.20-Fabric.jar",
+          "version": "OKZ6mA1W"
+        },
+        {
+          "minecraft_versions": "1.20",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/lf6PGWwe/PuzzlesLib-v7.0.2-1.20-Forge.jar",
+          "version": "lf6PGWwe"
+        },
+        {
+          "minecraft_versions": "1.20",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/wCK8ij3a/PuzzlesLib-v7.0.0-1.20-Fabric.jar",
+          "version": "wCK8ij3a"
+        },
+        {
+          "minecraft_versions": "1.20",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/IEXOIGVL/PuzzlesLib-v7.0.0-1.20-Forge.jar",
+          "version": "IEXOIGVL"
+        },
+        {
+          "minecraft_versions": "1.18.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/7fAHr6w5/PuzzlesLib-v3.4.5-1.18.2-Fabric.jar",
+          "version": "7fAHr6w5"
+        },
+        {
+          "minecraft_versions": "1.18.2",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/P6S26sSD/PuzzlesLib-v3.4.5-1.18.2-Forge.jar",
+          "version": "P6S26sSD"
+        },
+        {
+          "minecraft_versions": "1.18.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/7yxa655A/PuzzlesLib-v3.4.4-1.18.2-Fabric.jar",
+          "version": "7yxa655A"
+        },
+        {
+          "minecraft_versions": "1.18.2",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/R1uJEZ31/PuzzlesLib-v3.4.4-1.18.2-Forge.jar",
+          "version": "R1uJEZ31"
+        },
+        {
+          "minecraft_versions": "1.18.2",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/TkxPgn47/PuzzlesLib-v3.4.0-1.18.2-Forge.jar",
+          "version": "TkxPgn47"
+        },
+        {
+          "minecraft_versions": "1.18.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/690IIFFZ/PuzzlesLib-v3.4.0-1.18.2-Fabric.jar",
+          "version": "690IIFFZ"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/QiVyRzQB/PuzzlesLib-v6.0.9-1.19.4-Forge.jar",
+          "version": "QiVyRzQB"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/KoZGuWml/PuzzlesLib-v6.0.9-1.19.4-Fabric.jar",
+          "version": "KoZGuWml"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/zBzpSBKZ/PuzzlesLib-v6.0.8-1.19.4-Forge.jar",
+          "version": "zBzpSBKZ"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/UCiKAgMn/PuzzlesLib-v6.0.8-1.19.4-Fabric.jar",
+          "version": "UCiKAgMn"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/KCA6vQD5/PuzzlesLib-v6.0.7-1.19.4-Forge.jar",
+          "version": "KCA6vQD5"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/zizb6yD6/PuzzlesLib-v6.0.7-1.19.4-Fabric.jar",
+          "version": "zizb6yD6"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/7ABrOIgA/PuzzlesLib-v6.0.6-1.19.4-Fabric.jar",
+          "version": "7ABrOIgA"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/op5e6xRq/PuzzlesLib-v6.0.6-1.19.4-Forge.jar",
+          "version": "op5e6xRq"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/6As7amla/PuzzlesLib-v6.0.5-1.19.4-Fabric.jar",
+          "version": "6As7amla"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/KFG50Qhy/PuzzlesLib-v6.0.5-1.19.4-Forge.jar",
+          "version": "KFG50Qhy"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/PxXJo3k4/PuzzlesLib-v5.0.33-1.19.3-Fabric.jar",
+          "version": "PxXJo3k4"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/OXRJbrn6/PuzzlesLib-v5.0.33-1.19.3-Forge.jar",
+          "version": "OXRJbrn6"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/sv1iPMzi/PuzzlesLib-v5.0.31-1.19.3-Forge.jar",
+          "version": "sv1iPMzi"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/ns69L8dI/PuzzlesLib-v5.0.31-1.19.3-Fabric.jar",
+          "version": "ns69L8dI"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/yeHvhYOD/PuzzlesLib-v6.0.4-1.19.4-Fabric.jar",
+          "version": "yeHvhYOD"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/rKfjKi33/PuzzlesLib-v6.0.4-1.19.4-Forge.jar",
+          "version": "rKfjKi33"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/h1ns5GaM/PuzzlesLib-v5.0.30-1.19.3-Forge.jar",
+          "version": "h1ns5GaM"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/a8ZgypYg/PuzzlesLib-v5.0.30-1.19.3-Fabric.jar",
+          "version": "a8ZgypYg"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/i2xTbv7Y/PuzzlesLib-v5.0.28-1.19.3-Forge.jar",
+          "version": "i2xTbv7Y"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/LZOEQVQC/PuzzlesLib-v5.0.28-1.19.3-Fabric.jar",
+          "version": "LZOEQVQC"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/rO6E3jGm/PuzzlesLib-v5.0.27-1.19.3-Fabric.jar",
+          "version": "rO6E3jGm"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/1lSk5VZh/PuzzlesLib-v5.0.27-1.19.3-Forge.jar",
+          "version": "1lSk5VZh"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/hP9hXoCe/PuzzlesLib-v6.0.3-1.19.4-Forge.jar",
+          "version": "hP9hXoCe"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/GwsJMvCw/PuzzlesLib-v6.0.3-1.19.4-Fabric.jar",
+          "version": "GwsJMvCw"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/JrupytDU/PuzzlesLib-v6.0.2-1.19.4-Forge.jar",
+          "version": "JrupytDU"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/DFhQb5uf/PuzzlesLib-v6.0.2-1.19.4-Fabric.jar",
+          "version": "DFhQb5uf"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/L5GPGt7F/PuzzlesLib-v5.0.26-1.19.3-Fabric.jar",
+          "version": "L5GPGt7F"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/rD8mGLPb/PuzzlesLib-v5.0.26-1.19.3-Forge.jar",
+          "version": "rD8mGLPb"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/2kp8bKQO/PuzzlesLib-v6.0.0-1.19.4-Forge.jar",
+          "version": "2kp8bKQO"
+        },
+        {
+          "minecraft_versions": "1.19.4",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/mPEMMhvN/PuzzlesLib-v6.0.0-1.19.4-Fabric.jar",
+          "version": "mPEMMhvN"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/8QmUx5Fl/PuzzlesLib-v5.0.24-1.19.3-Forge.jar",
+          "version": "8QmUx5Fl"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/fgZrY52r/PuzzlesLib-v5.0.24-1.19.3-Fabric.jar",
+          "version": "fgZrY52r"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/4DEcuUZZ/PuzzlesLib-v5.0.22-1.19.3-Forge.jar",
+          "version": "4DEcuUZZ"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/QpkkVVyn/PuzzlesLib-v5.0.22-1.19.3-Fabric.jar",
+          "version": "QpkkVVyn"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/iKGK4NBG/PuzzlesLib-v5.0.20-1.19.3-Fabric.jar",
+          "version": "iKGK4NBG"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/NRIoCBh3/PuzzlesLib-v5.0.20-1.19.3-Forge.jar",
+          "version": "NRIoCBh3"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/LSUMYLnt/PuzzlesLib-v4.4.0-1.19.2-Fabric.jar",
+          "version": "LSUMYLnt"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/NjsLQCQh/PuzzlesLib-v4.4.0-1.19.2-Forge.jar",
+          "version": "NjsLQCQh"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/m2m1WsQC/PuzzlesLib-v5.0.19-1.19.3-Forge.jar",
+          "version": "m2m1WsQC"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/Gx40SdoU/PuzzlesLib-v5.0.19-1.19.3-Fabric.jar",
+          "version": "Gx40SdoU"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/ObWocDjJ/PuzzlesLib-v5.0.18-1.19.3-Forge.jar",
+          "version": "ObWocDjJ"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/5uHrsodn/PuzzlesLib-v5.0.18-1.19.3-Fabric.jar",
+          "version": "5uHrsodn"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/WtjnkHmQ/PuzzlesLib-v5.0.17-1.19.3-Forge.jar",
+          "version": "WtjnkHmQ"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/FHljGbgZ/PuzzlesLib-v5.0.17-1.19.3-Fabric.jar",
+          "version": "FHljGbgZ"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/xDxHThlp/PuzzlesLib-v5.0.14-1.19.3-Fabric.jar",
+          "version": "xDxHThlp"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/kwepeOdS/PuzzlesLib-v5.0.14-1.19.3-Forge.jar",
+          "version": "kwepeOdS"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/z7svCBW6/PuzzlesLib-v5.0.12-1.19.3-Fabric.jar",
+          "version": "z7svCBW6"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/VPPkHE7i/PuzzlesLib-v5.0.12-1.19.3-Forge.jar",
+          "version": "VPPkHE7i"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/YoJzLFN6/PuzzlesLib-v5.0.11-1.19.3-Fabric.jar",
+          "version": "YoJzLFN6"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/2ztHmiwc/PuzzlesLib-v5.0.11-1.19.3-Forge.jar",
+          "version": "2ztHmiwc"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/LGbvfJUd/PuzzlesLib-v5.0.10-1.19.3-Forge.jar",
+          "version": "LGbvfJUd"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/Lm5gebmK/PuzzlesLib-v5.0.10-1.19.3-Fabric.jar",
+          "version": "Lm5gebmK"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/fL77THCh/PuzzlesLib-v5.0.8-1.19.3-Forge.jar",
+          "version": "fL77THCh"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/p1tTNyCv/PuzzlesLib-v5.0.8-1.19.3-Fabric.jar",
+          "version": "p1tTNyCv"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/FkILlZd7/PuzzlesLib-v5.0.6-1.19.3-Forge.jar",
+          "version": "FkILlZd7"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/VGj1zGrn/PuzzlesLib-v5.0.6-1.19.3-Fabric.jar",
+          "version": "VGj1zGrn"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/HwzoFHC1/PuzzlesLib-v5.0.5-1.19.3-Forge.jar",
+          "version": "HwzoFHC1"
+        },
+        {
+          "minecraft_versions": "1.19.3",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/8CR0bnID/PuzzlesLib-v5.0.5-1.19.3-Fabric.jar",
+          "version": "8CR0bnID"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/FCWQcWnv/PuzzlesLib-v4.3.12-1.19.2-Fabric.jar",
+          "version": "FCWQcWnv"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/mC47wVQz/PuzzlesLib-v4.3.12-1.19.2-Forge.jar",
+          "version": "mC47wVQz"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/h6zwrOXh/PuzzlesLib-v4.3.11-1.19.2-Fabric.jar",
+          "version": "h6zwrOXh"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/i21HIDqx/PuzzlesLib-v4.3.11-1.19.2-Forge.jar",
+          "version": "i21HIDqx"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/XWUp4icb/PuzzlesLib-v4.3.10-1.19.2-Fabric.jar",
+          "version": "XWUp4icb"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/y4nUf0PC/PuzzlesLib-v4.3.10-1.19.2-Forge.jar",
+          "version": "y4nUf0PC"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/wZcJ8cWK/PuzzlesLib-v4.3.9-1.19.2-Fabric.jar",
+          "version": "wZcJ8cWK"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/b4lBddf3/PuzzlesLib-v4.3.9-1.19.2-Forge.jar",
+          "version": "b4lBddf3"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/D9vM6NoG/PuzzlesLib-v4.3.8-1.19.2-Fabric.jar",
+          "version": "D9vM6NoG"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/BP33eOxU/PuzzlesLib-v4.3.8-1.19.2-Forge.jar",
+          "version": "BP33eOxU"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/6GQc3co6/PuzzlesLib-v4.3.4-1.19.2-Fabric.jar",
+          "version": "6GQc3co6"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/2bEMzr1L/PuzzlesLib-v4.3.4-1.19.2-Forge.jar",
+          "version": "2bEMzr1L"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/jgMObcuM/PuzzlesLib-v4.3.2-1.19.2-Forge.jar",
+          "version": "jgMObcuM"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/Dp7R36Xs/PuzzlesLib-v4.3.2-1.19.2-Fabric.jar",
+          "version": "Dp7R36Xs"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/6NuJBhyA/PuzzlesLib-v4.3.1-1.19.2-Fabric.jar",
+          "version": "6NuJBhyA"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/oQsbSTy3/PuzzlesLib-v4.3.1-1.19.2-Forge.jar",
+          "version": "oQsbSTy3"
+        },
+        {
+          "minecraft_versions": "1.19.2",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/45edveqj/PuzzlesLib-v4.3.0-1.19.2-Forge.jar",
+          "version": "45edveqj"
+        },
+        {
+          "minecraft_versions": [
+            "1.19.1",
+            "1.19.2"
+          ],
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/Ez5gkdlU/PuzzlesLib-v4.3.0-1.19.2-Fabric.jar",
+          "version": "Ez5gkdlU"
+        },
+        {
+          "minecraft_versions": [
+            "1.19.1",
+            "1.19.2"
+          ],
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port",
+              "puzzles-lib"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/gd0G2hhz/PuzzlesLib-v4.2.4-1.19.2-Fabric.jar",
+          "version": "gd0G2hhz"
+        },
+        {
+          "minecraft_versions": [
+            "1.19.1",
+            "1.19.2"
+          ],
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "puzzles-lib"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/iYV1Feh5/PuzzlesLib-v4.2.4-1.19.2-Forge.jar",
+          "version": "iYV1Feh5"
+        },
+        {
+          "minecraft_versions": [
+            "1.19.1",
+            "1.19.2"
+          ],
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port",
+              "puzzles-lib"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/SJGSFBMc/PuzzlesLib-v4.2.2-1.19.2-Fabric.jar",
+          "version": "SJGSFBMc"
+        },
+        {
+          "minecraft_versions": [
+            "1.19.1",
+            "1.19.2"
+          ],
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "puzzles-lib"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/BpOQ6Lqg/PuzzlesLib-v4.2.2-1.19.2-Forge.jar",
+          "version": "BpOQ6Lqg"
+        },
+        {
+          "minecraft_versions": [
+            "1.19.1",
+            "1.19.2"
+          ],
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "puzzles-lib"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/JSEHdamZ/PuzzlesLib-v4.2.1-1.19.2-Forge.jar",
+          "version": "JSEHdamZ"
+        },
+        {
+          "minecraft_versions": [
+            "1.19.1",
+            "1.19.2"
+          ],
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port",
+              "puzzles-lib"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/jA529ngn/PuzzlesLib-v4.2.1-1.19.2-Fabric.jar",
+          "version": "jA529ngn"
+        },
+        {
+          "minecraft_versions": "1.19.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port",
+              "puzzles-lib"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/v4.1.8-1.19.1-Fabric/PuzzlesLib-v4.1.8-1.19.1-Fabric.jar",
+          "version": "1DmyxKmi"
+        },
+        {
+          "minecraft_versions": "1.19.1",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "puzzles-lib"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/v4.1.8-1.19.1-Forge/PuzzlesLib-v4.1.8-1.19.1-Forge.jar",
+          "version": "ZxiflfQp"
+        },
+        {
+          "minecraft_versions": "1.19.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port",
+              "puzzles-lib"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/v4.1.6-1.19.1-Fabric/PuzzlesLib-v4.1.6-1.19.1-Fabric.jar",
+          "version": "9VA381uD"
+        },
+        {
+          "minecraft_versions": "1.19.1",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "puzzles-lib"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/v4.1.6-1.19.1-Forge/PuzzlesLib-v4.1.6-1.19.1-Forge.jar",
+          "version": "bRZ6AoTv"
+        },
+        {
+          "minecraft_versions": "1.19.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port",
+              "puzzles-lib"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/v4.1.4-1.19.1-Fabric/PuzzlesLib-v4.1.4-1.19.1-Fabric.jar",
+          "version": "s6sGKfbx"
+        },
+        {
+          "minecraft_versions": "1.19.1",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "puzzles-lib"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/v4.1.4-1.19.1-Forge/PuzzlesLib-v4.1.4-1.19.1-Forge.jar",
+          "version": "V5LBscZ6"
+        },
+        {
+          "minecraft_versions": "1.19.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port",
+              "puzzles-lib"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/v4.1.3-1.19.1-Fabric/PuzzlesLib-v4.1.3-1.19.1-Fabric.jar",
+          "version": "E9Qlol2T"
+        },
+        {
+          "minecraft_versions": "1.19.1",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "puzzles-lib"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/v4.1.3-1.19.1-Forge/PuzzlesLib-v4.1.3-1.19.1-Forge.jar",
+          "version": "48jeSKzO"
+        },
+        {
+          "minecraft_versions": "1.19.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port",
+              "puzzles-lib"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/v4.1.2-1.19.1-Fabric/PuzzlesLib-v4.1.2-1.19.1-Fabric.jar",
+          "version": "Pg6wh6Id"
+        },
+        {
+          "minecraft_versions": "1.19.1",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "puzzles-lib"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/v4.1.2-1.19.1-Forge/PuzzlesLib-v4.1.2-1.19.1-Forge.jar",
+          "version": "mH2iiwlr"
+        },
+        {
+          "minecraft_versions": "1.19.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port",
+              "puzzles-lib"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/v4.1.1-1.19.1-Fabric/PuzzlesLib-v4.1.1-1.19.1-Fabric.jar",
+          "version": "R9uwqQnV"
+        },
+        {
+          "minecraft_versions": "1.19.1",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "puzzles-lib"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/v4.1.1-1.19.1-Forge/PuzzlesLib-v4.1.1-1.19.1-Forge.jar",
+          "version": "Dfk6Kdpk"
+        },
+        {
+          "minecraft_versions": "1.19.1",
+          "modloaders": "forge",
+          "relations": {
+            "dependencies": "puzzles-lib"
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/v4.1.0-1.19.1-Forge/PuzzlesLib-v4.1.0-1.19.1-Forge.jar",
+          "version": "1PvxPgTS"
+        },
+        {
+          "minecraft_versions": "1.19.1",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port",
+              "puzzles-lib"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/v4.1.0-1.19.1-Fabric/PuzzlesLib-v4.1.0-1.19.1-Fabric.jar",
+          "version": "w1IA6pkN"
+        },
+        {
+          "minecraft_versions": "1.19",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/v4.0.18-1.19-Fabric/PuzzlesLib-v4.0.18-1.19-Fabric.jar",
+          "version": "U7RPCAL4"
+        },
+        {
+          "minecraft_versions": "1.19",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/v4.0.18-1.19-Forge/PuzzlesLib-v4.0.18-1.19-Forge.jar",
+          "version": "o5YLPKfR"
+        },
+        {
+          "minecraft_versions": "1.19",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/v4.0.17-1.19-Forge/PuzzlesLib-v4.0.17-1.19-Forge.jar",
+          "version": "V7IXjDfj"
+        },
+        {
+          "minecraft_versions": "1.19",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/v4.0.17-1.19-Fabric/PuzzlesLib-v4.0.17-1.19-Fabric.jar",
+          "version": "yDmfcIc3"
+        },
+        {
+          "minecraft_versions": "1.19",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/v4.0.15-1.19-Fabric/PuzzlesLib-v4.0.15-1.19-Fabric.jar",
+          "version": "8ae5TjLO"
+        },
+        {
+          "minecraft_versions": "1.19",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/v4.0.15-1.19-Forge/PuzzlesLib-v4.0.15-1.19-Forge.jar",
+          "version": "vi5hw79t"
+        },
+        {
+          "minecraft_versions": "1.19",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/v4.0.14-1.19-Fabric/PuzzlesLib-v4.0.14-1.19-Fabric.jar",
+          "version": "O8agM1Hz"
+        },
+        {
+          "minecraft_versions": "1.19",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/v4.0.14-1.19-Forge/PuzzlesLib-v4.0.14-1.19-Forge.jar",
+          "version": "ZwirJqdf"
+        },
+        {
+          "minecraft_versions": "1.19",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/v4.0.13-1.19-Fabric/PuzzlesLib-v4.0.13-1.19-Fabric.jar",
+          "version": "wQvOrCfA"
+        },
+        {
+          "minecraft_versions": "1.19",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/v4.0.13-1.19-Forge/PuzzlesLib-v4.0.13-1.19-Forge.jar",
+          "version": "vy6Bovd4"
+        },
+        {
+          "minecraft_versions": "1.19",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/v4.0.11-1.19-Fabric/PuzzlesLib-v4.0.11-1.19-Fabric.jar",
+          "version": "1osO35Q5"
+        },
+        {
+          "minecraft_versions": "1.19",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/v4.0.11-1.19-Forge/PuzzlesLib-v4.0.11-1.19-Forge.jar",
+          "version": "SRIg4iQn"
+        },
+        {
+          "minecraft_versions": "1.19",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/v4.0.10-1.19-Fabric/PuzzlesLib-v4.0.10-1.19-Fabric.jar",
+          "version": "MORtFjT7"
+        },
+        {
+          "minecraft_versions": "1.19",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/v4.0.10-1.19-Forge/PuzzlesLib-v4.0.10-1.19-Forge.jar",
+          "version": "GEaTK1To"
+        },
+        {
+          "minecraft_versions": "1.19",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/v4.0.8-1.19-Fabric/PuzzlesLib-v4.0.8-1.19-Fabric.jar",
+          "version": "3R2noZBz"
+        },
+        {
+          "minecraft_versions": "1.19",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/v4.0.8-1.19-Forge/PuzzlesLib-v4.0.8-1.19-Forge.jar",
+          "version": "3FVGVSRL"
+        },
+        {
+          "minecraft_versions": "1.19",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/v4.0.6-1.19-Fabric/PuzzlesLib-v4.0.6-1.19-Fabric.jar",
+          "version": "ggK4alzB"
+        },
+        {
+          "minecraft_versions": "1.19",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/v4.0.6-1.19-Forge/PuzzlesLib-v4.0.6-1.19-Forge.jar",
+          "version": "jrxiZIJg"
+        },
+        {
+          "minecraft_versions": "1.19",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/v4.0.5-1.19-Fabric/PuzzlesLib-v4.0.5-1.19-Fabric.jar",
+          "version": "4T4HZk3f"
+        },
+        {
+          "minecraft_versions": "1.19",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/v4.0.5-1.19-Forge/PuzzlesLib-v4.0.5-1.19-Forge.jar",
+          "version": "Z3scKqNL"
+        },
+        {
+          "minecraft_versions": "1.19",
+          "modloaders": "fabric",
+          "relations": {
+            "dependencies": [
+              "fabriclike-api",
+              "forge-config-api-port"
+            ]
+          },
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/v4.0.2-1.19-Fabric/PuzzlesLib-v4.0.2-1.19-Fabric.jar",
+          "version": "4bHK0bos"
+        },
+        {
+          "minecraft_versions": "1.19",
+          "modloaders": "forge",
+          "stability": "stable",
+          "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/4.0.2/PuzzlesLib-v4.0.2-1.19-Forge.jar",
+          "version": "n3g4OsEQ"
+        }
+      ]
+    }
+  },
+  "meta": {
+    "authors": [
+      "Fuzs"
+    ],
+    "categories": [
+      "library",
+      "technical"
+    ],
+    "description": "Why's it called Puzzles you ask? That's the puzzle!",
+    "gallery": [
+      "https://cdn.modrinth.com/data/QAGBst4M/images/f57930a615a4c67e94387efeb6016c3e2d3e8ff9.png"
+    ],
+    "icon": "https://cdn.modrinth.com/data/QAGBst4M/icon.png",
+    "issues": "https://github.com/Fuzss/puzzleslib/issues",
+    "license": "MPL-2.0",
+    "name": "Puzzles Lib",
+    "package_maintainers": [
+      "mcvm"
+    ],
+    "source": "https://github.com/Fuzss/puzzleslib"
+  },
+  "properties": {
+    "modrinth_id": "QAGBst4M",
+    "supported_modloaders": [
+      "forgelike",
+      "fabriclike"
+    ],
+    "supported_sides": [
+      "client",
+      "server"
+    ],
+    "supported_versions": [
+      "1.18.2",
+      "1.19",
+      "1.19.1",
+      "1.19.2",
+      "1.19.3",
+      "1.19.4",
+      "1.20",
+      "1.20.1",
+      "1.20.4"
+    ]
+  }
+}
