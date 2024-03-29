@@ -4,6 +4,16 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": [
+						"1.16.4",
+						"1.16.5"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.0.8%2B1.16.5-forge/player-animation-lib-forge-0.0.8%2B1.16.5.jar",
+					"version": "9OlNd8ki"
+				},
+				{
 					"minecraft_versions": "1.20.4",
 					"modloaders": "fabric",
 					"relations": {
@@ -1970,16 +1980,6 @@
 					"stability": "stable",
 					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.1.0-forge/player-animation-lib-forge-0.1.0.jar",
 					"version": "5WK3RhA3"
-				},
-				{
-					"minecraft_versions": [
-						"1.16.4",
-						"1.16.5"
-					],
-					"modloaders": "forge",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/gedNE4y2/versions/0.0.8%2B1.16.5-forge/player-animation-lib-forge-0.0.8%2B1.16.5.jar",
-					"version": "9OlNd8ki"
 				},
 				{
 					"minecraft_versions": [

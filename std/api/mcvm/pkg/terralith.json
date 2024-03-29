@@ -55,6 +55,33 @@
 					"version": "FgvUosFH"
 				},
 				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/8oi3bsk5/versions/IWVbiEbl/Terralith_1.19.4_v2.3.12.jar",
+					"version": "IWVbiEbl"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2",
+						"1.19.3"
+					],
+					"modloaders": [
+						"fabric",
+						"forge",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/8oi3bsk5/versions/FOe2l0tx/Terralith_1.19.3_v2.3.12.jar",
+					"version": "FOe2l0tx"
+				},
+				{
 					"minecraft_versions": "1.18.2",
 					"modloaders": [
 						"fabric",
@@ -116,33 +143,6 @@
 					"stability": "stable",
 					"url": "https://cdn.modrinth.com/data/8oi3bsk5/versions/1hOeraaL/Terralith_1.20.2_v2.4.8.jar",
 					"version": "1hOeraaL"
-				},
-				{
-					"minecraft_versions": "1.19.4",
-					"modloaders": [
-						"fabric",
-						"forge",
-						"quilt"
-					],
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/8oi3bsk5/versions/IWVbiEbl/Terralith_1.19.4_v2.3.12.jar",
-					"version": "IWVbiEbl"
-				},
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2",
-						"1.19.3"
-					],
-					"modloaders": [
-						"fabric",
-						"forge",
-						"quilt"
-					],
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/8oi3bsk5/versions/FOe2l0tx/Terralith_1.19.3_v2.3.12.jar",
-					"version": "FOe2l0tx"
 				},
 				{
 					"minecraft_versions": [

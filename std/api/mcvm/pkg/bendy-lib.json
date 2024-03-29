@@ -4,6 +4,23 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/aRnIEV0F/versions/lOyMrcXN/bendy-lib-forge-3.0.0.jar",
+					"version": "lOyMrcXN"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/aRnIEV0F/versions/QnIwFYBc/bendy-lib-fabric-3.0.0.jar",
+					"version": "QnIwFYBc"
+				},
+				{
 					"minecraft_versions": [
 						"1.19.4",
 						"1.20",
@@ -27,23 +44,6 @@
 					"stability": "stable",
 					"url": "https://cdn.modrinth.com/data/aRnIEV0F/versions/df4Yfl6J/bendy-lib-forge-4.0.0.jar",
 					"version": "df4Yfl6J"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": "forge",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/aRnIEV0F/versions/lOyMrcXN/bendy-lib-forge-3.0.0.jar",
-					"version": "lOyMrcXN"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/aRnIEV0F/versions/QnIwFYBc/bendy-lib-fabric-3.0.0.jar",
-					"version": "QnIwFYBc"
 				},
 				{
 					"minecraft_versions": [

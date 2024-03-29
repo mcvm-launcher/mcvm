@@ -5,6 +5,66 @@
 			"versions": [
 				{
 					"minecraft_versions": [
+						"1.20.2",
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": [
+						"fabric",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/L6yQN8AJ/ctov-3.4-beta.jar",
+					"version": "L6yQN8AJ"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1",
+						"1.20.2"
+					],
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/nF92O1uF/ctov-3.3.6.jar",
+					"version": "nF92O1uF"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2",
+						"1.19.3",
+						"1.19.4"
+					],
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/CXja9TJq/ctov-3.2.6c.jar",
+					"version": "CXja9TJq"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/wP8LFpoA/%5BUniversal%5DCTOV-v2-9-2.jar",
+					"version": "wP8LFpoA"
+				},
+				{
+					"minecraft_versions": [
 						"1.20",
 						"1.20.1",
 						"1.20.2",
@@ -84,37 +144,6 @@
 				},
 				{
 					"minecraft_versions": [
-						"1.20.2",
-						"1.20.3",
-						"1.20.4"
-					],
-					"modloaders": [
-						"fabric",
-						"neoforged",
-						"quilt"
-					],
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/L6yQN8AJ/ctov-3.4-beta.jar",
-					"version": "L6yQN8AJ"
-				},
-				{
-					"minecraft_versions": [
-						"1.20",
-						"1.20.1",
-						"1.20.2"
-					],
-					"modloaders": [
-						"fabric",
-						"forge",
-						"neoforged",
-						"quilt"
-					],
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/nF92O1uF/ctov-3.3.6.jar",
-					"version": "nF92O1uF"
-				},
-				{
-					"minecraft_versions": [
 						"1.20",
 						"1.20.1",
 						"1.20.2"
@@ -128,24 +157,6 @@
 					"stability": "stable",
 					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/7LYJgioY/ctov-3.3.5b.jar",
 					"version": "7LYJgioY"
-				},
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2",
-						"1.19.3",
-						"1.19.4"
-					],
-					"modloaders": [
-						"fabric",
-						"forge",
-						"neoforged",
-						"quilt"
-					],
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/CXja9TJq/ctov-3.2.6c.jar",
-					"version": "CXja9TJq"
 				},
 				{
 					"minecraft_versions": [
@@ -484,17 +495,6 @@
 					"stability": "stable",
 					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/JczZEgVm/%5BUniversal%5DCTOV-v3-1-2.jar",
 					"version": "JczZEgVm"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": [
-						"fabric",
-						"forge",
-						"quilt"
-					],
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/wP8LFpoA/%5BUniversal%5DCTOV-v2-9-2.jar",
-					"version": "wP8LFpoA"
 				},
 				{
 					"minecraft_versions": [

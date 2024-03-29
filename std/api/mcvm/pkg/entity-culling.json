@@ -25,6 +25,136 @@
 					"version": "iC2A1KnJ"
 				},
 				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/NNAgCjsB/versions/tUVHg6HN/entityculling-fabric-1.6.3-mc1.20.2.jar",
+					"version": "tUVHg6HN"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/NNAgCjsB/versions/LwvhfrTE/entityculling-forge-1.6.3-mc1.20.2.jar",
+					"version": "LwvhfrTE"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/NNAgCjsB/versions/1MBmcSf1/entityculling-neoforge-1.6.3-mc1.20.2.jar",
+					"version": "1MBmcSf1"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1",
+						"1.20.2"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/NNAgCjsB/versions/BDwHAdWc/entityculling-fabric-1.6.2-mc1.20.1.jar",
+					"version": "BDwHAdWc"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1",
+						"1.20.2"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/NNAgCjsB/versions/17Hi340V/entityculling-forge-1.6.2-mc1.20.1.jar",
+					"version": "17Hi340V"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/NNAgCjsB/versions/d20sUcYn/entityculling-fabric-1.6.2-mc1.20.jar",
+					"version": "d20sUcYn"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/NNAgCjsB/versions/NB6TPjI8/entityculling-forge-1.6.2-mc1.19.4.jar",
+					"version": "NB6TPjI8"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/NNAgCjsB/versions/UvJN5Cy4/entityculling-fabric-1.6.2-mc1.19.4.jar",
+					"version": "UvJN5Cy4"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/NNAgCjsB/versions/d3CbGntl/entityculling-fabric-1.6.1-mc1.18.2.jar",
+					"version": "d3CbGntl"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/NNAgCjsB/versions/jFORrKV6/entityculling-forge-1.6.1-mc1.18.2.jar",
+					"version": "jFORrKV6"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/NNAgCjsB/versions/twdGLDHv/entityculling-fabric-1.6.1-mc1.19.2.jar",
+					"version": "twdGLDHv"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/NNAgCjsB/versions/WR6z6MYC/entityculling-forge-1.6.1-mc1.19.2.jar",
+					"version": "WR6z6MYC"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/NNAgCjsB/versions/AdkBUIRs/entityculling-fabric-1.6.1-mc1.19.3.jar",
+					"version": "AdkBUIRs"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/NNAgCjsB/versions/N7HJbtfe/entityculling-forge-1.6.1-mc1.19.3.jar",
+					"version": "N7HJbtfe"
+				},
+				{
 					"minecraft_versions": "1.12.2",
 					"modloaders": "forge",
 					"relations": {
@@ -104,68 +234,6 @@
 					"version": "pVb6ajsR"
 				},
 				{
-					"minecraft_versions": "1.20.2",
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/NNAgCjsB/versions/tUVHg6HN/entityculling-fabric-1.6.3-mc1.20.2.jar",
-					"version": "tUVHg6HN"
-				},
-				{
-					"minecraft_versions": "1.20.2",
-					"modloaders": "forge",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/NNAgCjsB/versions/LwvhfrTE/entityculling-forge-1.6.3-mc1.20.2.jar",
-					"version": "LwvhfrTE"
-				},
-				{
-					"minecraft_versions": "1.20.2",
-					"modloaders": "neoforged",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/NNAgCjsB/versions/1MBmcSf1/entityculling-neoforge-1.6.3-mc1.20.2.jar",
-					"version": "1MBmcSf1"
-				},
-				{
-					"minecraft_versions": [
-						"1.20",
-						"1.20.1",
-						"1.20.2"
-					],
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/NNAgCjsB/versions/BDwHAdWc/entityculling-fabric-1.6.2-mc1.20.1.jar",
-					"version": "BDwHAdWc"
-				},
-				{
-					"minecraft_versions": [
-						"1.20",
-						"1.20.1",
-						"1.20.2"
-					],
-					"modloaders": "forge",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/NNAgCjsB/versions/17Hi340V/entityculling-forge-1.6.2-mc1.20.1.jar",
-					"version": "17Hi340V"
-				},
-				{
-					"minecraft_versions": [
-						"1.20",
-						"1.20.1"
-					],
-					"modloaders": [
-						"fabric",
-						"quilt"
-					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/NNAgCjsB/versions/d20sUcYn/entityculling-fabric-1.6.2-mc1.20.jar",
-					"version": "d20sUcYn"
-				},
-				{
 					"minecraft_versions": [
 						"1.20",
 						"1.20.1"
@@ -174,74 +242,6 @@
 					"stability": "stable",
 					"url": "https://cdn.modrinth.com/data/NNAgCjsB/versions/374z4jcq/entityculling-forge-1.6.2-mc1.20.jar",
 					"version": "374z4jcq"
-				},
-				{
-					"minecraft_versions": "1.19.4",
-					"modloaders": "forge",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/NNAgCjsB/versions/NB6TPjI8/entityculling-forge-1.6.2-mc1.19.4.jar",
-					"version": "NB6TPjI8"
-				},
-				{
-					"minecraft_versions": "1.19.4",
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/NNAgCjsB/versions/UvJN5Cy4/entityculling-fabric-1.6.2-mc1.19.4.jar",
-					"version": "UvJN5Cy4"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/NNAgCjsB/versions/d3CbGntl/entityculling-fabric-1.6.1-mc1.18.2.jar",
-					"version": "d3CbGntl"
-				},
-				{
-					"minecraft_versions": "1.18.2",
-					"modloaders": "forge",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/NNAgCjsB/versions/jFORrKV6/entityculling-forge-1.6.1-mc1.18.2.jar",
-					"version": "jFORrKV6"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/NNAgCjsB/versions/twdGLDHv/entityculling-fabric-1.6.1-mc1.19.2.jar",
-					"version": "twdGLDHv"
-				},
-				{
-					"minecraft_versions": "1.19.2",
-					"modloaders": "forge",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/NNAgCjsB/versions/WR6z6MYC/entityculling-forge-1.6.1-mc1.19.2.jar",
-					"version": "WR6z6MYC"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/NNAgCjsB/versions/AdkBUIRs/entityculling-fabric-1.6.1-mc1.19.3.jar",
-					"version": "AdkBUIRs"
-				},
-				{
-					"minecraft_versions": "1.19.3",
-					"modloaders": "forge",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/NNAgCjsB/versions/N7HJbtfe/entityculling-forge-1.6.1-mc1.19.3.jar",
-					"version": "N7HJbtfe"
 				},
 				{
 					"minecraft_versions": "1.19.3",

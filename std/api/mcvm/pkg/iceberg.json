@@ -28,6 +28,66 @@
 					"version": "ZioCfzuX"
 				},
 				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5faXoLqX/versions/snRtsUWd/Iceberg-1.20.2-fabric-1.1.18.jar",
+					"version": "snRtsUWd"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5faXoLqX/versions/uu7sqQDO/Iceberg-1.20.1-fabric-1.1.18.jar",
+					"version": "uu7sqQDO"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5faXoLqX/versions/Ozakzb1f/Iceberg-1.20.2-forge-1.1.17.jar",
+					"version": "Ozakzb1f"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5faXoLqX/versions/3lLfxs9z/Iceberg-1.19.4-fabric-1.1.9.1.jar",
+					"version": "3lLfxs9z"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5faXoLqX/versions/3TiGuxtb/Iceberg-1.19.4-forge-1.1.10.jar",
+					"version": "3TiGuxtb"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5faXoLqX/versions/wog3r1ZM/Iceberg-1.19.2-forge-1.1.4.jar",
+					"version": "wog3r1ZM"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5faXoLqX/versions/qC0waeNX/Iceberg-1.19.1-fabric-1.0.46.jar",
+					"version": "qC0waeNX"
+				},
+				{
 					"minecraft_versions": "1.20.4",
 					"modloaders": "forge",
 					"stability": "stable",
@@ -48,23 +108,6 @@
 					"version": "HV5U2z6b"
 				},
 				{
-					"minecraft_versions": "1.20.2",
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/5faXoLqX/versions/snRtsUWd/Iceberg-1.20.2-fabric-1.1.18.jar",
-					"version": "snRtsUWd"
-				},
-				{
-					"minecraft_versions": [
-						"1.20",
-						"1.20.1"
-					],
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/5faXoLqX/versions/uu7sqQDO/Iceberg-1.20.1-fabric-1.1.18.jar",
-					"version": "uu7sqQDO"
-				},
-				{
 					"minecraft_versions": [
 						"1.20",
 						"1.20.1"
@@ -80,13 +123,6 @@
 					"stability": "stable",
 					"url": "https://cdn.modrinth.com/data/5faXoLqX/versions/hkA16Cxw/Iceberg-1.20.2-fabric-1.1.17.jar",
 					"version": "hkA16Cxw"
-				},
-				{
-					"minecraft_versions": "1.20.2",
-					"modloaders": "forge",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/5faXoLqX/versions/Ozakzb1f/Iceberg-1.20.2-forge-1.1.17.jar",
-					"version": "Ozakzb1f"
 				},
 				{
 					"minecraft_versions": [
@@ -192,20 +228,6 @@
 				},
 				{
 					"minecraft_versions": "1.19.4",
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/5faXoLqX/versions/3lLfxs9z/Iceberg-1.19.4-fabric-1.1.9.1.jar",
-					"version": "3lLfxs9z"
-				},
-				{
-					"minecraft_versions": "1.19.4",
-					"modloaders": "forge",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/5faXoLqX/versions/3TiGuxtb/Iceberg-1.19.4-forge-1.1.10.jar",
-					"version": "3TiGuxtb"
-				},
-				{
-					"minecraft_versions": "1.19.4",
 					"modloaders": "forge",
 					"stability": "stable",
 					"url": "https://cdn.modrinth.com/data/5faXoLqX/versions/puRtyl3V/Iceberg-1.19.4-forge-1.1.8.jar",
@@ -231,17 +253,6 @@
 					"stability": "stable",
 					"url": "https://cdn.modrinth.com/data/5faXoLqX/versions/VoOBBJRg/Iceberg-1.19.3-fabric-1.1.4.jar",
 					"version": "VoOBBJRg"
-				},
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": "forge",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/5faXoLqX/versions/wog3r1ZM/Iceberg-1.19.2-forge-1.1.4.jar",
-					"version": "wog3r1ZM"
 				},
 				{
 					"minecraft_versions": "1.19.3",
@@ -270,17 +281,6 @@
 					"stability": "stable",
 					"url": "https://cdn.modrinth.com/data/5faXoLqX/versions/bhT2LnaE/Iceberg-1.18.2-fabric-1.0.38.jar",
 					"version": "bhT2LnaE"
-				},
-				{
-					"minecraft_versions": [
-						"1.19",
-						"1.19.1",
-						"1.19.2"
-					],
-					"modloaders": "fabric",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/5faXoLqX/versions/qC0waeNX/Iceberg-1.19.1-fabric-1.0.46.jar",
-					"version": "qC0waeNX"
 				},
 				{
 					"minecraft_versions": [
