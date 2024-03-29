@@ -1,3 +1,4 @@
+use std::cmp::Reverse;
 use std::fs::File;
 use std::io::BufWriter;
 use std::path::PathBuf;
@@ -216,15 +217,17 @@ pub async fn batched_gen(mut config: BatchedConfig, filter: Vec<String>) {
 
 #[derive(PartialEq, Eq, PartialOrd, Ord)]
 struct SortVersions {
-	featured: bool,
-	timestamp: Timestamp,
+	featured: Reverse<bool>,
+	timestamp: Reverse<Timestamp>,
 }
 
 impl SortVersions {
 	fn new(version: &Version) -> Self {
 		Self {
-			featured: version.featured,
-			timestamp: Timestamp::parse(&version.date_published).unwrap_or(Timestamp::UNIX_EPOCH),
+			featured: Reverse(version.featured),
+			timestamp: Reverse(
+				Timestamp::parse(&version.date_published).unwrap_or(Timestamp::UNIX_EPOCH),
+			),
 		}
 	}
 }
