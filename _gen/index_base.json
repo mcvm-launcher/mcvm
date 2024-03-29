@@ -1,6 +1,7 @@
 {
 	"metadata": {
 		"name": "MCVM Standard Package Library",
-		"description": "Official standard packages for MCVM"
+		"description": "Official standard packages for MCVM",
+		"mcvm_version": "1.19.0"
 	}
 }
