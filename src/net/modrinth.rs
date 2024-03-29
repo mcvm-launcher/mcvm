@@ -156,6 +156,8 @@ pub enum KnownLoader {
 	NeoForged,
 	/// Rift loader
 	Rift,
+	/// Liteloader
+	Liteloader,
 	/// Bukkit loaders
 	Bukkit,
 	/// Spigot server
