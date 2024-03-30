@@ -5,6 +5,84 @@
 			"versions": [
 				{
 					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/Mq4la1Hv/polymorph-fabric-0.46.6%2B1.19.2.jar",
+					"version": "Mq4la1Hv"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/6tFcWl5d/polymorph-forge-0.46.6%2B1.19.2.jar",
+					"version": "6tFcWl5d"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/iaqnjwBU/polymorph-forge-0.49.3%2B1.20.1.jar",
+					"version": "iaqnjwBU"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/akZJjqpV/polymorph-fabric-0.49.3%2B1.20.1.jar",
+					"version": "akZJjqpV"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "quilt",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/qA4syOxx/polymorph-quilt-0.49.3%2B1.20.1.jar",
+					"version": "qA4syOxx"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/Y8yR5ZhZ/polymorph-forge-1.18.2-0.50.jar",
+					"version": "Y8yR5ZhZ"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/tagwiZkJ/versions/gXWxJGsW/polymorph-fabric-0.0.24-1.18.2.jar",
+					"version": "gXWxJGsW"
+				},
+				{
+					"minecraft_versions": [
 						"1.20",
 						"1.20.1"
 					],

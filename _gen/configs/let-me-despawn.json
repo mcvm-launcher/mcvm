@@ -20,7 +20,7 @@
 				"forgelike"
 			],
 			"supported_plugin_loaders": [
-				"bukkitlike",
+				"bukkit",
 				"purpur",
 				"paper",
 				"folia"

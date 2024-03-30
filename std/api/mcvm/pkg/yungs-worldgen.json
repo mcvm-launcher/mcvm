@@ -28,11 +28,13 @@
 	},
 	"conditional_rules": [
 		{
-			"conditions": {
-				"features": [
-					"end_island"
-				]
-			},
+			"conditions": [
+				{
+					"features": [
+						"end_island"
+					]
+				}
+			],
 			"properties": {
 				"relations": {
 					"bundled": [

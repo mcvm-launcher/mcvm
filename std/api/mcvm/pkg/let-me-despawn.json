@@ -318,8 +318,10 @@
 		"modrinth_id": "vE2FN5qn",
 		"supported_modloaders": [
 			"fabriclike",
-			"forgelike",
-			"bukkitlike",
+			"forgelike"
+		],
+		"supported_plugin_loaders": [
+			"bukkit",
 			"purpur",
 			"paper",
 			"folia"

@@ -4,6 +4,13 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": "24w13a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/lbeFtqcD/c2me-fabric-mc24w13a-0.2.0%2Balpha.11.77.jar",
+					"version": "lbeFtqcD"
+				},
+				{
 					"minecraft_versions": "1.20.4",
 					"modloaders": "fabric",
 					"stability": "latest",
@@ -1571,7 +1578,8 @@
 			"24w09a",
 			"24w10a",
 			"24w11a",
-			"24w12a"
+			"24w12a",
+			"24w13a"
 		]
 	}
 }
