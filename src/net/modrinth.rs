@@ -101,7 +101,7 @@ pub async fn get_multiple_projects(
 }
 
 /// Release channel for a Modrinth project version
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Clone, Copy)]
 #[serde(rename_all = "snake_case")]
 pub enum ReleaseChannel {
 	/// A finished release version
@@ -113,10 +113,12 @@ pub enum ReleaseChannel {
 }
 
 /// A Modrinth project version
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Clone)]
 pub struct Version {
 	/// The ID of this version
 	pub id: String,
+	/// The ID of the project this version is from
+	pub project_id: String,
 	/// The name of this version
 	pub name: String,
 	/// The version number of this version
@@ -261,7 +263,7 @@ pub async fn get_multiple_versions(
 }
 
 /// A file download from the Modrinth API
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Clone)]
 pub struct Download {
 	/// The URL to the file download
 	pub url: String,
@@ -272,7 +274,7 @@ pub struct Download {
 }
 
 /// A version dependency
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Clone)]
 pub struct Dependency {
 	/// The ID of the project
 	pub project_id: String,
@@ -283,7 +285,7 @@ pub struct Dependency {
 }
 
 /// The type of a dependency
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Clone, Copy)]
 #[serde(rename_all = "snake_case")]
 pub enum DependencyType {
 	/// A required dependency

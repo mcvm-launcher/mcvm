@@ -142,11 +142,6 @@ pub async fn gen_raw(
 	};
 
 	for version in versions {
-		// Check if the version is in the project's versions since it may be from a batched pool
-		if !project.versions.contains(&version.id) {
-			continue;
-		}
-
 		let version_name = version.id.clone();
 		// Collect Minecraft versions
 		let mc_versions: Vec<VersionPattern> = version

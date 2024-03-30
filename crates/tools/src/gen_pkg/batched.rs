@@ -1,8 +1,8 @@
-use std::cmp::Reverse;
 use std::fs::File;
 use std::io::BufWriter;
 use std::path::PathBuf;
 use std::sync::Arc;
+use std::{cmp::Reverse, collections::HashMap};
 
 use iso8601_timestamp::Timestamp;
 use mcvm::net::modrinth::Version;
@@ -100,7 +100,7 @@ pub async fn batched_gen(mut config: BatchedConfig, filter: Vec<String>) {
 
 	// Collect Modrinth project versions. We have to batch these into multiple requests because there becomes
 	// just too many parameters for the URL to handle
-	let batch_limit = 200;
+	let batch_limit = 215;
 	let modrinth_version_ids: Vec<_> = modrinth_projects
 		.iter()
 		.flat_map(|x| x.versions.iter().cloned())
@@ -148,23 +148,45 @@ pub async fn batched_gen(mut config: BatchedConfig, filter: Vec<String>) {
 		}
 	}
 
+	// Download Modrinth teams at the same time
+	let mut modrinth_team_ids = Vec::new();
+	for project in &modrinth_projects {
+		modrinth_team_ids.push(project.team.clone());
+	}
+	let modrinth_teams = Arc::new(Mutex::new(Vec::new()));
+	{
+		let client = client.clone();
+		let modrinth_teams = modrinth_teams.clone();
+		let task = async move {
+			let teams = mcvm::net::modrinth::get_multiple_teams(&modrinth_team_ids, &client)
+				.await
+				.expect("Failed to get Modrinth teams");
+			let mut lock = modrinth_teams.lock().await;
+			*lock = teams;
+		};
+		tasks.spawn(task);
+	}
+
 	// Run the tasks
 	while let Some(result) = tasks.join_next().await {
 		result.expect("Task failed");
 	}
 	let mut modrinth_versions = modrinth_versions.lock().await;
 	let smithed_packs = smithed_packs.lock().await;
+	let modrinth_teams = modrinth_teams.lock().await;
+
 	// Sort the Modrinth versions
 	modrinth_versions.sort_by_key(SortVersions::new);
 
-	// Collect Modrinth teams
-	let mut modrinth_team_ids = Vec::new();
-	for project in &modrinth_projects {
-		modrinth_team_ids.push(project.team.clone());
+	// Put the Modrinth versions into a HashMap for better performance
+	let mut modrinth_version_map: HashMap<_, Vec<_>> = HashMap::new();
+	for version in modrinth_versions.iter() {
+		let entry = modrinth_version_map
+			.entry(version.project_id.clone())
+			.or_default();
+
+		entry.push(version.clone());
 	}
-	let modrinth_teams = mcvm::net::modrinth::get_multiple_teams(&modrinth_team_ids, &client)
-		.await
-		.expect("Failed to get Modrinth teams");
 
 	// Iterate through the packages to generate
 	println!("Generating packages...");
@@ -200,15 +222,22 @@ pub async fn batched_gen(mut config: BatchedConfig, filter: Vec<String>) {
 					.iter()
 					.find(|x| x.id == pkg.id)
 					.expect("Project should have been fetched");
+
+				// Get the versions for the project
+				let versions = modrinth_version_map
+					.get(&pkg.id)
+					.expect("Project versions missing from map");
+
 				// Get the team associated with this project. Teams can have no members, which we handle by just using an empty team
 				let empty_vec = Vec::new();
 				let team = modrinth_teams
 					.iter()
 					.find(|team| team.iter().any(|member| member.team_id == project.team))
 					.unwrap_or(&empty_vec);
+
 				super::modrinth::gen_raw(
 					project.clone(),
-					&modrinth_versions,
+					versions,
 					team,
 					pkg_config.relation_substitutions,
 					&pkg_config.force_extensions,
