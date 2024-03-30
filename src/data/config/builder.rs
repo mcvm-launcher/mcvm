@@ -19,7 +19,7 @@ use crate::pkg::repo::PkgRepo;
 use super::instance::{
 	read_instance_config, ClientWindowConfig, FullInstanceConfig, InstanceConfig, LaunchConfig,
 };
-use super::package::{FullPackageConfig, PackageConfigDeser};
+use super::package::{FullPackageConfig, PackageConfigDeser, PackageConfigSource};
 use super::preferences::ConfigPreferences;
 use super::profile::{ProfileConfig, ProfilePackageConfiguration};
 use super::user::{UserConfig, UserVariant};
@@ -109,7 +109,7 @@ impl ConfigBuilder {
 		let global_packages = self
 			.global_packages
 			.into_iter()
-			.map(|x| x.to_package_config(PackageStability::default()))
+			.map(|x| x.to_package_config(PackageStability::default(), PackageConfigSource::Global))
 			.collect();
 
 		Ok(Config {

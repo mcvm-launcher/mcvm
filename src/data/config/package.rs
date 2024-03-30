@@ -18,6 +18,8 @@ use mcvm_pkg::{PkgRequest, PkgRequestSource};
 pub struct PackageConfig {
 	/// The ID of the pcakage
 	pub id: PackageID,
+	/// The source of where the package was configured
+	pub source: PackageConfigSource,
 	/// The package's enabled features
 	pub features: Vec<String>,
 	/// Whether or not to use the package's default features
@@ -35,6 +37,7 @@ impl PackageConfig {
 	pub fn from_id(id: PackageID) -> Self {
 		Self {
 			id,
+			source: PackageConfigSource::Instance,
 			features: Vec::new(),
 			use_default_features: use_default_features_default(),
 			permissions: EvalPermissions::default(),
@@ -74,6 +77,17 @@ impl PackageConfig {
 			PkgRequestSource::UserRequire,
 		))
 	}
+}
+
+/// Where a package was configured from
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum PackageConfigSource {
+	/// Configured globally for all profiles and instances
+	Global,
+	/// Configured for one profile and all of it's instances
+	Profile,
+	/// Configured for one instance
+	Instance,
 }
 
 /// Different representations for the configuration of a package in deserialization
@@ -139,9 +153,14 @@ impl Display for PackageConfigDeser {
 
 impl PackageConfigDeser {
 	/// Convert this deserialized config into the actual package config
-	pub fn to_package_config(self, profile_stability: PackageStability) -> PackageConfig {
+	pub fn to_package_config(
+		self,
+		profile_stability: PackageStability,
+		source: PackageConfigSource,
+	) -> PackageConfig {
 		PackageConfig {
 			id: self.get_pkg_id(),
+			source,
 			features: self.get_features(),
 			use_default_features: self.get_use_default_features(),
 			permissions: self.get_permissions(),

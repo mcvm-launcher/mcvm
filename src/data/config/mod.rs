@@ -14,7 +14,7 @@ pub mod profile;
 pub mod user;
 
 use self::instance::{read_instance_config, InstanceConfig};
-use self::package::{PackageConfig, PackageConfigDeser};
+use self::package::{PackageConfig, PackageConfigDeser, PackageConfigSource};
 use self::preferences::PrefDeser;
 use self::profile::ProfileConfig;
 use self::user::UserConfig;
@@ -216,7 +216,7 @@ impl Config {
 		let global_packages = config
 			.packages
 			.into_iter()
-			.map(|x| x.to_package_config(PackageStability::default()))
+			.map(|x| x.to_package_config(PackageStability::default(), PackageConfigSource::Global))
 			.collect();
 
 		Ok(Self {

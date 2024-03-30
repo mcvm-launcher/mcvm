@@ -6,6 +6,7 @@ use mcvm_core::io::java::args::{ArgsPreset, MemoryNum};
 use mcvm_core::io::java::install::JavaInstallationKind;
 use mcvm_options::client::ClientOptions;
 use mcvm_options::server::ServerOptions;
+use mcvm_shared::pkg::PackageStability;
 use mcvm_shared::util::merge_options;
 use mcvm_shared::Side;
 #[cfg(feature = "schema")]
@@ -18,7 +19,7 @@ use crate::data::instance::{InstKind, Instance, InstanceStoredConfig};
 use crate::data::profile::Profile;
 use crate::io::snapshot;
 
-use super::package::{PackageConfig, PackageConfigDeser};
+use super::package::{PackageConfig, PackageConfigDeser, PackageConfigSource};
 
 /// Different representations of configuration for an instance
 #[derive(Deserialize, Serialize, Clone)]
@@ -542,28 +543,34 @@ fn consolidate_package_configs(
 	// with those from more specific ones
 	let mut map = HashMap::new();
 	for pkg in global_packages {
-		map.insert(pkg.get_pkg_id(), pkg.clone());
+		let pkg = pkg
+			.clone()
+			.to_package_config(PackageStability::default(), PackageConfigSource::Global);
+		map.insert(pkg.id.clone(), pkg);
 	}
 	for pkg in profile.packages.iter_global() {
-		map.insert(pkg.get_pkg_id(), pkg.clone());
+		let pkg = pkg
+			.clone()
+			.to_package_config(profile.default_stability, PackageConfigSource::Profile);
+		map.insert(pkg.id.clone(), pkg);
 	}
 	for pkg in profile.packages.iter_side(side) {
-		map.insert(pkg.get_pkg_id(), pkg.clone());
+		let pkg = pkg
+			.clone()
+			.to_package_config(profile.default_stability, PackageConfigSource::Profile);
+		map.insert(pkg.id.clone(), pkg);
 	}
 	for pkg in instance_packages {
-		map.insert(pkg.get_pkg_id(), pkg.clone());
+		let pkg = pkg
+			.clone()
+			.to_package_config(profile.default_stability, PackageConfigSource::Instance);
+		map.insert(pkg.id.clone(), pkg);
 	}
 
 	let mut out = Vec::new();
 	for pkg in map.values() {
 		out.push(pkg.clone());
 	}
-
-	// Convert deserialized package configs to actual package configs
-	let out: Vec<_> = out
-		.into_iter()
-		.map(|x| x.to_package_config(profile.default_stability))
-		.collect();
 
 	out
 }
