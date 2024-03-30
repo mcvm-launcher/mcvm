@@ -182,7 +182,7 @@ pub fn get_classpath(client_meta: &ClientMeta, paths: &Paths) -> anyhow::Result<
 fn get_natives_classifier_key(classifiers: &HashMap<String, String>) -> Option<String> {
 	let key = classifiers
 		.get(&format!("natives-{}", util::OS_STRING))
-		.unwrap_or(classifiers.get(util::OS_STRING)?);
+		.or_else(|| classifiers.get(util::OS_STRING))?;
 	let key = key.replace("${arch}", util::TARGET_BITS_STR);
 
 	Some(key)
