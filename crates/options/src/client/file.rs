@@ -637,13 +637,6 @@ pub fn create_keys(
 				value.get_keycode(before_1_13),
 			);
 		}
-		// FIXME: Duplicated key
-		if let Some(value) = &options.control.keys.stream_commercial {
-			out.insert(
-				"key_key.streamCommercial".into(),
-				value.get_keycode(before_1_13),
-			);
-		}
 		if let Some(value) = &options.control.keys.stream_toggle_microphone {
 			out.insert(
 				"key_key.streamToggleMic".into(),
