@@ -165,6 +165,15 @@ pub struct DeclarativeAddon {
 	#[serde(default)]
 	#[serde(skip_serializing_if = "Vec::is_empty")]
 	pub conditions: Vec<DeclarativeConditionSet>,
+	/// Whether this addon should be considered optional and not throw an error if it
+	/// does not match any versions
+	#[serde(default)]
+	#[serde(skip_serializing_if = "is_false")]
+	pub optional: bool,
+}
+
+fn is_false(v: &bool) -> bool {
+	!v
 }
 
 /// Version for an addon in a declarative package

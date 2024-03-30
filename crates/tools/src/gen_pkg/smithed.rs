@@ -50,12 +50,14 @@ pub async fn gen_raw(
 		kind: AddonKind::Datapack,
 		versions: Vec::new(),
 		conditions: Vec::new(),
+		optional: false,
 	};
 
 	let mut resourcepack = DeclarativeAddon {
 		kind: AddonKind::ResourcePack,
 		versions: Vec::new(),
 		conditions: Vec::new(),
+		optional: false,
 	};
 
 	let mut all_mc_versions = Vec::new();

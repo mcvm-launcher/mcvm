@@ -138,6 +138,7 @@ pub async fn gen_raw(
 		kind: addon_kind,
 		versions: Vec::new(),
 		conditions: Vec::new(),
+		optional: false,
 	};
 
 	for version in versions {

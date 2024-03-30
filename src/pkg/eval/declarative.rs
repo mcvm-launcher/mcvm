@@ -1,5 +1,7 @@
-use anyhow::anyhow;
-use mcvm_pkg::declarative::{DeclarativeAddonVersion, DeclarativeConditionSet, DeclarativePackage};
+use anyhow::bail;
+use mcvm_pkg::declarative::{
+	DeclarativeAddon, DeclarativeAddonVersion, DeclarativeConditionSet, DeclarativePackage,
+};
 use mcvm_pkg::properties::PackageProperties;
 use mcvm_pkg::script_eval::AddonInstructionData;
 use mcvm_pkg::RequiredPackage;
@@ -10,6 +12,19 @@ use super::{create_valid_addon_request, EvalData, EvalInput, Routine};
 
 /// Evaluate a declarative package
 pub fn eval_declarative_package<'a>(
+	id: PackageID,
+	contents: &DeclarativePackage,
+	input: EvalInput<'a>,
+	properties: PackageProperties,
+	routine: Routine,
+) -> anyhow::Result<EvalData<'a>> {
+	let eval_data = eval_declarative_package_impl(id, contents, input, properties, routine)?;
+
+	Ok(eval_data)
+}
+
+/// Implementation for evaluating a declarative package
+fn eval_declarative_package_impl<'a>(
 	id: PackageID,
 	contents: &DeclarativePackage,
 	input: EvalInput<'a>,
@@ -33,24 +48,26 @@ pub fn eval_declarative_package<'a>(
 
 		// Pick the best version
 		let version = pick_best_addon_version(&addon.versions, &eval_data.input);
-		let version = version.ok_or(anyhow!("No valid addon version found"))?;
+		if let Some(version) = version {
+			let data = AddonInstructionData {
+				id: addon_id.clone(),
+				url: version.url.clone(),
+				path: version.path.clone(),
+				kind: addon.kind,
+				file_name: version.filename.clone(),
+				version: version.version.clone(),
+				hashes: version.hashes.clone(),
+			};
 
-		let data = AddonInstructionData {
-			id: addon_id.clone(),
-			url: version.url.clone(),
-			path: version.path.clone(),
-			kind: addon.kind,
-			file_name: version.filename.clone(),
-			version: version.version.clone(),
-			hashes: version.hashes.clone(),
-		};
+			let addon_req = create_valid_addon_request(data, pkg_id.clone(), &eval_data.input)?;
 
-		let addon_req = create_valid_addon_request(data, pkg_id.clone(), &eval_data.input)?;
+			eval_data.addon_reqs.push(addon_req);
 
-		eval_data.addon_reqs.push(addon_req);
-
-		relations.merge(version.relations.clone());
-		notices.extend(version.notices.iter().cloned());
+			relations.merge(version.relations.clone());
+			notices.extend(version.notices.iter().cloned());
+		} else {
+			handle_no_matched_versions(addon)?;
+		}
 	}
 
 	// Apply conditional rules
@@ -201,6 +218,16 @@ fn check_condition_set<'a>(conditions: &DeclarativeConditionSet, input: &'a Eval
 	true
 }
 
+/// Handle the case where no versions were matched for an addon
+fn handle_no_matched_versions<'a>(addon: &DeclarativeAddon) -> anyhow::Result<()> {
+	// If the addon is optional then this is ok
+	if addon.optional {
+		return Ok(());
+	}
+
+	bail!("No valid addon version found")
+}
+
 #[cfg(test)]
 mod tests {
 	use mcvm_pkg::declarative::deserialize_declarative_package;
@@ -210,7 +237,7 @@ mod tests {
 	use mcvm_shared::Side;
 
 	use crate::data::config::profile::GameModifications;
-	use crate::pkg::eval::{EvalConstants, EvalParameters, EvalPermissions, RequiredPackage};
+	use crate::pkg::eval::{EvalConstants, EvalParameters, RequiredPackage};
 
 	use super::*;
 
@@ -287,13 +314,7 @@ mod tests {
 		};
 		let input = EvalInput {
 			constants: &constants,
-			params: EvalParameters {
-				side: Side::Client,
-				features: vec![],
-				perms: EvalPermissions::Standard,
-				stability: PackageStability::Stable,
-				worlds: Vec::new(),
-			},
+			params: EvalParameters::new(Side::Client),
 		};
 
 		let eval = eval_declarative_package(
