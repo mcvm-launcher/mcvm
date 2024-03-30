@@ -6,7 +6,6 @@ use mcvm_pkg::PkgRequest;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::pkg::{ArcPkgReq, PackageID};
 
-use crate::data::config::package::PackageConfig;
 use crate::data::id::InstanceID;
 use crate::data::profile::Profile;
 use crate::pkg::eval::{resolve, EvalConstants, EvalInput, EvalParameters};
@@ -56,12 +55,6 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 				"Instance '{instance_id}' does not exist in the registry"
 			))?;
 
-			// Get the configuration for the package or the default if it is not configured by the user
-			let package_config = instance
-				.get_package_config(&package.id)
-				.cloned()
-				.unwrap_or_else(|| PackageConfig::Basic(package.id.clone()));
-
 			let params = EvalParameters::new(instance.kind.to_side());
 
 			ctx.output.display(
@@ -77,7 +70,6 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 			let result = instance
 				.install_package(
 					package,
-					&package_config,
 					input,
 					ctx.packages,
 					ctx.paths,

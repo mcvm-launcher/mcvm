@@ -300,7 +300,6 @@ impl Instance {
 	pub async fn install_package<'a>(
 		&mut self,
 		pkg: &ArcPkgReq,
-		pkg_config: &PackageConfig,
 		eval_input: EvalInput<'a>,
 		reg: &mut PkgRegistry,
 		paths: &Paths,
@@ -313,6 +312,12 @@ impl Instance {
 			version: eval_input.constants.version.clone(),
 			versions: eval_input.constants.version_list.clone(),
 		};
+
+		// Get the configuration for the package or the default if it is not configured by the user
+		let pkg_config = self
+			.get_package_config(&pkg.id)
+			.cloned()
+			.unwrap_or_else(|| PackageConfig::Basic(pkg.id.clone()));
 
 		let eval = reg
 			.eval(pkg, paths, Routine::Install, eval_input, client, o)
