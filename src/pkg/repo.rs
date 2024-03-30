@@ -76,9 +76,16 @@ impl PkgRepo {
 	}
 
 	/// Get the default set of repositories
-	pub fn default_repos() -> Vec<Self> {
+	pub fn default_repos(enable_core: bool, enable_std: bool) -> Vec<Self> {
+		let mut out = Vec::new();
 		// We don't want std overriding core
-		vec![Self::core(), Self::std()]
+		if enable_core {
+			out.push(Self::core());
+		}
+		if enable_std {
+			out.push(Self::std());
+		}
+		out
 	}
 
 	/// The cached path of the index

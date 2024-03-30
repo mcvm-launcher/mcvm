@@ -48,13 +48,22 @@ pub struct RepoDeser {
 /// Deserialization struct for all configured package repositories
 #[derive(Deserialize, Serialize, Default)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
+#[serde(default)]
 pub struct RepositoriesDeser {
 	/// The preferred repositories over the default ones
-	#[serde(default)]
 	pub preferred: Vec<RepoDeser>,
 	/// The backup repositories included after the default ones
-	#[serde(default)]
 	pub backup: Vec<RepoDeser>,
+	/// Whether to enable the core repository
+	#[serde(default = "default_enable")]
+	pub enable_core: bool,
+	/// Whether to enable the std repository
+	#[serde(default = "default_enable")]
+	pub enable_std: bool,
+}
+
+fn default_enable() -> bool {
+	true
 }
 
 impl ConfigPreferences {
@@ -65,7 +74,10 @@ impl ConfigPreferences {
 		for repo in prefs.repositories.preferred.iter() {
 			add_repo(&mut repositories, repo)?;
 		}
-		repositories.extend(PkgRepo::default_repos());
+		repositories.extend(PkgRepo::default_repos(
+			prefs.repositories.enable_core,
+			prefs.repositories.enable_std,
+		));
 		for repo in prefs.repositories.backup.iter() {
 			add_repo(&mut repositories, repo)?;
 		}

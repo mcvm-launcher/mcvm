@@ -193,9 +193,11 @@ In this section you can set preferences for how the whole program will work. The
 {
 	"repositories": {
 		"preferred": [],
-		"backup": []
+		"backup": [],
+		"enable_core": boolean,
+		"enable_std": boolean
 	},
-	"caching_strategy": "none" | "lazy" | "all"
+	"package_caching_strategy": "none" | "lazy" | "all"
 }
 ```
 
@@ -212,5 +214,7 @@ In this section you can set preferences for how the whole program will work. The
 Either `url` or `path` must be set. `path` allows you to have repository indices on your local machine.
 The URL should start with `http://` or `https://`. Port specifiers (`:123`) are allowed.
 
-- `caching_strategy`: What strategy to use for locally caching package scripts. `"none"` will never cache any scripts, `"lazy"` will cache only when a package is requested, and `"all"` will cache all packages whenever you run the `package sync` command. The default option is `"lazy"`.
+- `repositories.enable_core`: Whether to enable the internal package repository. Defaults to true.
+- `repositories.enable_std`: Whether to enable the standard package repository. Defaults to true.
+- `package_caching_strategy`: What strategy to use for locally caching package scripts. `"none"` will never cache any scripts, `"lazy"` will cache only when a package is requested, and `"all"` will cache all packages whenever you run the `package sync` command. The default option is `"lazy"`.
 - `language`: Select what language to use for MCVM. Right now this does not affect the messages inside the program, but does allow packages to do things like install additional language resource packs based on your language. By default, MCVM will try to auto-detect your system language. If this fails, it will fall back to American English. Possible values are: `"afrikaans"`, `"arabic"`, `"asturian"`, `"azerbaijani"`, `"bashkir"`, `"bavarian"`, `"belarusian"`, `"bulgarian"`, `"breton"`, `"brabantian"`, `"bosnian"`, `"catalan"`, `"czech"`, `"welsh"`, `"danish"`, `"austrian_german"`, `"swiss_german"`, `"german"`, `"greek"`, `"australian_english"`, `"canadian_english"`, `"british_english"`, `"new_zealand_english"`, `"pirate_speak"`, `"upside_down"`, `"american_english"`, `"anglish"`, `"shakespearean"`, `"esperanto"`, `"argentinian_spanish"`, `"chilean_spanish"`, `"ecuadorian_spanish"`, `"european_spanish"`, `"mexican_spanish"`, `"uruguayan_spanish"`, `"venezuelan_spanish"`, `"andalusian"`, `"estonian"`, `"basque"`, `"persian"`, `"finnish"`, `"filipino"`, `"faroese"`, `"canadian_french"`, `"european_french"`, `"east_franconian"`, `"friulian"`, `"frisian"`, `"irish"`, `"scottish_gaelic"`, `"galician"`, `"hawaiian"`, `"hebrew"`, `"hindi"`, `"croatian"`, `"hungarian"`, `"armenian"`, `"indonesian"`, `"igbo"`, `"ido"`, `"icelandic"`, `"interslavic"`, `"italian"`, `"japanese"`, `"lojban"`, `"georgian"`, `"kazakh"`, `"kannada"`, `"korean"`, `"kolsch"`, `"cornish"`, `"latin"`, `"luxembourgish"`, `"limburgish"`, `"lombard"`, `"lolcat"`, `"lithuanian"`, `"latvian"`, `"classical_chinese"`, `"macedonian"`, `"mongolian"`, `"malay"`, `"maltese"`, `"nahuatl"`, `"low_german"`, `"dutch_flemish"`, `"dutch"`, `"norwegian_nynorsk"`, `"norwegian_bokmal"`, `"occitan"`, `"elfdalian"`, `"polish"`, `"brazilian_portuguese"`, `"european_portuguese"`, `"quenya"`, `"romanian"`, `"russian_pre_revolutionary"`, `"russian"`, `"rusyn"`, `"northern_sami"`, `"slovak"`, `"slovenian"`, `"somali"`, `"albanian"`, `"serbian"`, `"swedish"`, `"upper_saxon_german"`, `"silesian"`, `"tamil"`, `"thai"`, `"tagalog"`, `"klingon"`, `"toki_pona"`, `"turkish"`, `"tatar"`, `"ukrainian"`, `"valencian"`, `"venetian"`, `"vietnamese"`, `"yiddish"`, `"yoruba"`, `"chinese_simplified"`, `"chinese_traditional_hong_kong"`, `"chinese_traditional_taiwan"`, `"malay_jawi"`.
