@@ -14,7 +14,7 @@ pub mod profile;
 pub mod user;
 
 use self::instance::{read_instance_config, InstanceConfig};
-use self::package::{FullPackageConfig, PackageConfig};
+use self::package::PackageConfig;
 use self::preferences::PrefDeser;
 use self::profile::ProfileConfig;
 use self::user::UserConfig;
@@ -105,7 +105,7 @@ impl Config {
 		let (prefs, repositories) =
 			ConfigPreferences::read(&config.preferences).context("Failed to read preferences")?;
 
-		let mut packages = PkgRegistry::new(repositories, prefs.package_caching_strategy.clone());
+		let packages = PkgRegistry::new(repositories, prefs.package_caching_strategy.clone());
 
 		// Users
 		for (user_id, user_config) in config.users.iter() {
@@ -206,24 +206,6 @@ impl Config {
 			}
 
 			profile_config.packages.validate()?;
-
-			// Insert local packages
-			for package_config in profile_config.packages.iter() {
-				if let PackageConfig::Full(FullPackageConfig::Local {
-					id: _,
-					path,
-					content_type,
-					..
-				}) = package_config
-				{
-					let path = shellexpand::tilde(&path);
-					packages.insert_local(
-						&package_config.get_request(),
-						&PathBuf::from(path.to_string()),
-						*content_type,
-					);
-				}
-			}
 
 			profiles.insert(profile_id.clone(), profile);
 		}

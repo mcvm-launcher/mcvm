@@ -3,7 +3,6 @@ use std::collections::HashMap;
 use anyhow::bail;
 use mcvm_core::user::{User, UserManager};
 use mcvm_core::util::versions::MinecraftVersionDeser;
-use mcvm_pkg::PackageContentType;
 use mcvm_shared::modifications::{ClientType, Modloader, ServerType};
 use mcvm_shared::pkg::{PackageID, PackageStability};
 use mcvm_shared::Side;
@@ -20,7 +19,7 @@ use crate::pkg::repo::PkgRepo;
 use super::instance::{
 	read_instance_config, ClientWindowConfig, FullInstanceConfig, InstanceConfig, LaunchConfig,
 };
-use super::package::{FullPackageConfig, PackageConfig, PackageType};
+use super::package::{FullPackageConfig, PackageConfig};
 use super::preferences::ConfigPreferences;
 use super::profile::{ProfileConfig, ProfilePackageConfiguration};
 use super::user::{UserConfig, UserVariant};
@@ -481,30 +480,13 @@ where
 {
 	/// Construct with a parent
 	fn with_parent(data: InitialPackageData, parent: Parent) -> Self {
-		let config = match data {
-			InitialPackageData::Local {
-				id,
-				path,
-				content_type,
-			} => FullPackageConfig::Local {
-				r#type: PackageType::Local,
-				id,
-				content_type,
-				path,
-				features: Default::default(),
-				use_default_features: true,
-				permissions: Default::default(),
-				stability: Default::default(),
-				worlds: Default::default(),
-			},
-			InitialPackageData::Repository { id } => FullPackageConfig::Repository {
-				id,
-				features: Default::default(),
-				use_default_features: true,
-				permissions: Default::default(),
-				stability: Default::default(),
-				worlds: Default::default(),
-			},
+		let config = FullPackageConfig {
+			id: data.id,
+			features: Default::default(),
+			use_default_features: true,
+			permissions: Default::default(),
+			stability: Default::default(),
+			worlds: Default::default(),
 		};
 
 		Self { config, parent }
@@ -512,56 +494,31 @@ where
 
 	/// Add to the package's features
 	pub fn features(&mut self, features: Vec<String>) -> &mut Self {
-		let other_features = features;
-		match &mut self.config {
-			FullPackageConfig::Local { features, .. } => features.extend(other_features),
-			FullPackageConfig::Repository { features, .. } => features.extend(other_features),
-		}
+		self.config.features.extend(features);
 		self
 	}
 
 	/// Set the use_default_features setting of the package
 	pub fn use_default_features(&mut self, value: bool) -> &mut Self {
-		match &mut self.config {
-			FullPackageConfig::Local {
-				use_default_features,
-				..
-			} => *use_default_features = value,
-			FullPackageConfig::Repository {
-				use_default_features,
-				..
-			} => *use_default_features = value,
-		}
+		self.config.use_default_features = value;
 		self
 	}
 
 	/// Set the permissions of the package
 	pub fn permissions(&mut self, permissions: EvalPermissions) -> &mut Self {
-		let other_permissions = permissions;
-		match &mut self.config {
-			FullPackageConfig::Local { permissions, .. } => *permissions = other_permissions,
-			FullPackageConfig::Repository { permissions, .. } => *permissions = other_permissions,
-		}
+		self.config.permissions = permissions;
 		self
 	}
 
 	/// Set the configured stability of the package
 	pub fn stability(&mut self, stability: PackageStability) -> &mut Self {
-		let other_stability = stability;
-		match &mut self.config {
-			FullPackageConfig::Local { stability, .. } => *stability = Some(other_stability),
-			FullPackageConfig::Repository { stability, .. } => *stability = Some(other_stability),
-		}
+		self.config.stability = Some(stability);
 		self
 	}
 
 	/// Set the configured worlds of the package
 	pub fn worlds(&mut self, worlds: Vec<String>) -> &mut Self {
-		let other_worlds = worlds;
-		match &mut self.config {
-			FullPackageConfig::Local { worlds, .. } => *worlds = other_worlds,
-			FullPackageConfig::Repository { worlds, .. } => *worlds = other_worlds,
-		}
+		self.config.worlds = worlds;
 		self
 	}
 
@@ -579,21 +536,8 @@ impl PackageBuilder<PackageBuilderOrphan> {
 }
 
 /// Initial data for a PackageBuilder
-pub enum InitialPackageData {
-	/// A local package
-	Local {
-		/// The ID of the pcakage
-		id: PackageID,
-		/// The path to the local package
-		path: String,
-		/// The content type of the package
-		content_type: PackageContentType,
-	},
-	/// A repository package
-	Repository {
-		/// The ID of the package
-		id: PackageID,
-	},
+pub struct InitialPackageData {
+	id: PackageID,
 }
 
 /// Trait for a parent builder that can have a PackageBuilder added
@@ -672,7 +616,7 @@ mod tests {
 		);
 		modify_profile(&mut profile);
 		config
-			.package(InitialPackageData::Repository {
+			.package(InitialPackageData {
 				id: "global-package".into(),
 			})
 			.build();
@@ -706,7 +650,7 @@ mod tests {
 
 	fn modify_profile(profile: &mut ProfileBuilder<'_>) {
 		let mut instance = profile.instance("instance".into(), Side::Client);
-		let package = instance.package(InitialPackageData::Repository {
+		let package = instance.package(InitialPackageData {
 			id: "instance-package".into(),
 		});
 		package.build();
@@ -715,7 +659,7 @@ mod tests {
 		profile.client_type(ClientType::Fabric);
 		let mut package = profile.package(
 			ProfilePackageGroup::Global,
-			InitialPackageData::Repository {
+			InitialPackageData {
 				id: "profile-package".into(),
 			},
 		);

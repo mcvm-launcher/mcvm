@@ -15,12 +15,11 @@ use serde::{Deserialize, Serialize};
 
 use super::eval::{EvalData, EvalInput, Routine};
 use super::repo::{query_all, PkgRepo};
-use super::{Package, PkgContents, PkgLocation};
+use super::{Package, PkgContents};
 use crate::io::files::paths::Paths;
 
 use std::collections::HashMap;
 use std::collections::HashSet;
-use std::path::Path;
 use std::sync::Arc;
 
 /// An object used to store and cache all of the packages that we are working with.
@@ -251,19 +250,6 @@ impl PkgRegistry {
 		Ok(())
 	}
 
-	/// Insert a local package into the registry
-	pub fn insert_local(&mut self, req: &ArcPkgReq, path: &Path, content_type: PackageContentType) {
-		self.insert(
-			req.clone(),
-			Package::new(
-				req.id.clone(),
-				PkgLocation::Local(path.to_path_buf()),
-				content_type,
-				HashSet::new(),
-			),
-		);
-	}
-
 	/// Iterator over all package requests in the registry
 	pub fn iter_requests(&self) -> impl Iterator<Item = &ArcPkgReq> {
 		self.packages.keys()
@@ -344,29 +330,7 @@ pub enum CachingStrategy {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use std::{path::PathBuf, sync::Arc};
-
-	#[test]
-	fn test_reg_insert() {
-		let mut reg = PkgRegistry::new(vec![], CachingStrategy::Lazy);
-		reg.insert_local(
-			&Arc::new(PkgRequest::parse("test", PkgRequestSource::UserRequire)),
-			&PathBuf::from("./test"),
-			PackageContentType::Script,
-		);
-		let req = PkgRequest::parse(
-			"test",
-			PkgRequestSource::Dependency(Arc::new(PkgRequest::parse(
-				"hello",
-				PkgRequestSource::UserRequire,
-			))),
-		);
-		assert!(reg.has_now(&req));
-		assert!(!reg.has_now(&PkgRequest::parse(
-			"doesnotexist",
-			PkgRequestSource::UserRequire
-		)));
-	}
+	use std::sync::Arc;
 
 	#[test]
 	fn test_request_source_debug() {

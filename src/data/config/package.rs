@@ -4,7 +4,6 @@ use std::sync::Arc;
 
 use anyhow::{bail, ensure};
 use mcvm_pkg::properties::PackageProperties;
-use mcvm_pkg::PackageContentType;
 use mcvm_shared::pkg::{is_valid_package_id, ArcPkgReq, PackageID, PackageStability};
 use mcvm_shared::util::is_valid_identifier;
 #[cfg(feature = "schema")]
@@ -28,56 +27,24 @@ pub enum PackageConfig {
 /// Full configuration for a package
 #[derive(Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
-#[serde(untagged)]
-#[serde(rename_all = "snake_case")]
-pub enum FullPackageConfig {
-	/// Config for a local package
-	Local {
-		/// The type of the package
-		r#type: PackageType,
-		/// The ID of the pcakage
-		id: PackageID,
-		/// The package's content type
-		#[serde(default)]
-		content_type: PackageContentType,
-		/// The path to the local package
-		path: String,
-		/// The package's enabled features
-		#[serde(default)]
-		features: Vec<String>,
-		/// Whether or not to use the package's default features
-		#[serde(default = "use_default_features_default")]
-		use_default_features: bool,
-		/// Permissions for the package
-		#[serde(default)]
-		permissions: EvalPermissions,
-		/// Expected stability for the package
-		#[serde(default)]
-		stability: Option<PackageStability>,
-		/// Worlds to use for the package
-		#[serde(default)]
-		worlds: Vec<String>,
-	},
-	/// Config for a repository package
-	Repository {
-		/// The ID of the pcakage
-		id: PackageID,
-		#[serde(default)]
-		/// The package's enabled features
-		features: Vec<String>,
-		/// Whether or not to use the package's default features
-		#[serde(default = "use_default_features_default")]
-		use_default_features: bool,
-		/// Permissions for the package
-		#[serde(default)]
-		permissions: EvalPermissions,
-		/// Expected stability for the package
-		#[serde(default)]
-		stability: Option<PackageStability>,
-		/// Worlds to use for the package
-		#[serde(default)]
-		worlds: Vec<String>,
-	},
+pub struct FullPackageConfig {
+	/// The ID of the pcakage
+	pub id: PackageID,
+	#[serde(default)]
+	/// The package's enabled features
+	pub features: Vec<String>,
+	/// Whether or not to use the package's default features
+	#[serde(default = "use_default_features_default")]
+	pub use_default_features: bool,
+	/// Permissions for the package
+	#[serde(default)]
+	pub permissions: EvalPermissions,
+	/// Expected stability for the package
+	#[serde(default)]
+	pub stability: Option<PackageStability>,
+	/// Worlds to use for the package
+	#[serde(default)]
+	pub worlds: Vec<String>,
 }
 
 /// Trick enum used to make deserialization work in the way we want
@@ -101,8 +68,7 @@ impl Display for PackageConfig {
 			"{}",
 			match self {
 				Self::Basic(id) => id,
-				Self::Full(FullPackageConfig::Local { id, .. }) => id,
-				Self::Full(FullPackageConfig::Repository { id, .. }) => id,
+				Self::Full(FullPackageConfig { id, .. }) => id,
 			}
 		)
 	}
@@ -113,10 +79,7 @@ impl PackageConfig {
 	pub fn get_pkg_id(&self) -> PackageID {
 		match &self {
 			Self::Basic(id) => id.clone(),
-			Self::Full(cfg) => match cfg {
-				FullPackageConfig::Local { id, .. } => id.clone(),
-				FullPackageConfig::Repository { id, .. } => id.clone(),
-			},
+			Self::Full(cfg) => cfg.id.clone(),
 		}
 	}
 
@@ -130,10 +93,7 @@ impl PackageConfig {
 	pub fn get_features(&self) -> Vec<String> {
 		match &self {
 			Self::Basic(..) => Vec::new(),
-			Self::Full(cfg) => match cfg {
-				FullPackageConfig::Local { features, .. } => features.clone(),
-				FullPackageConfig::Repository { features, .. } => features.clone(),
-			},
+			Self::Full(cfg) => cfg.features.clone(),
 		}
 	}
 
@@ -141,16 +101,7 @@ impl PackageConfig {
 	pub fn get_use_default_features(&self) -> bool {
 		match &self {
 			Self::Basic(..) => use_default_features_default(),
-			Self::Full(cfg) => match cfg {
-				FullPackageConfig::Local {
-					use_default_features,
-					..
-				} => *use_default_features,
-				FullPackageConfig::Repository {
-					use_default_features,
-					..
-				} => *use_default_features,
-			},
+			Self::Full(cfg) => cfg.use_default_features,
 		}
 	}
 
@@ -158,10 +109,7 @@ impl PackageConfig {
 	pub fn get_permissions(&self) -> EvalPermissions {
 		match &self {
 			Self::Basic(..) => EvalPermissions::Standard,
-			Self::Full(cfg) => match cfg {
-				FullPackageConfig::Local { permissions, .. } => *permissions,
-				FullPackageConfig::Repository { permissions, .. } => *permissions,
-			},
+			Self::Full(cfg) => cfg.permissions,
 		}
 	}
 
@@ -169,14 +117,7 @@ impl PackageConfig {
 	pub fn get_stability(&self, profile_stability: PackageStability) -> PackageStability {
 		match &self {
 			Self::Basic(..) => profile_stability,
-			Self::Full(cfg) => match cfg {
-				FullPackageConfig::Local { stability, .. } => {
-					stability.unwrap_or(profile_stability)
-				}
-				FullPackageConfig::Repository { stability, .. } => {
-					stability.unwrap_or(profile_stability)
-				}
-			},
+			Self::Full(cfg) => cfg.stability.unwrap_or(profile_stability),
 		}
 	}
 
@@ -209,10 +150,7 @@ impl PackageConfig {
 	pub fn get_worlds(&self) -> Cow<[String]> {
 		match &self {
 			Self::Basic(..) => Cow::Owned(Vec::new()),
-			Self::Full(cfg) => match cfg {
-				FullPackageConfig::Local { worlds, .. } => Cow::Borrowed(worlds),
-				FullPackageConfig::Repository { worlds, .. } => Cow::Borrowed(worlds),
-			},
+			Self::Full(cfg) => Cow::Borrowed(&cfg.worlds),
 		}
 	}
 
