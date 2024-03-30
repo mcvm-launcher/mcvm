@@ -73,7 +73,7 @@ impl Instance {
 			}
 		}
 
-		self.classpath_extension = classpath;
+		self.modification_data.classpath_extension = classpath;
 
 		Ok(out)
 	}

@@ -88,7 +88,7 @@ impl Instance {
 				.context("Failed to write server.properties")?;
 		}
 
-		self.classpath_extension = classpath;
+		self.modification_data.classpath_extension = classpath;
 
 		Ok(out)
 	}
@@ -143,7 +143,7 @@ impl Instance {
 			);
 		}
 
-		self.jar_path_override = Some(paper_jar_path.clone());
+		self.modification_data.jar_path_override = Some(paper_jar_path.clone());
 
 		Ok(UpdateMethodResult::from_path(paper_jar_path))
 	}
@@ -194,7 +194,7 @@ impl Instance {
 			);
 		}
 
-		self.jar_path_override = Some(sponge_jar_path.clone());
+		self.modification_data.jar_path_override = Some(sponge_jar_path.clone());
 		Ok(UpdateMethodResult::from_path(sponge_jar_path))
 	}
 }

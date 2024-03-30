@@ -48,12 +48,12 @@ pub struct Instance {
 	pub kind: InstKind,
 	/// The ID of this instance
 	pub id: InstanceID,
-	config: InstanceStoredConfig,
 	/// Directories of the instance
 	pub dirs: Later<InstanceDirs>,
-	main_class_override: Option<String>,
-	jar_path_override: Option<PathBuf>,
-	classpath_extension: Classpath,
+	/// Configuration for the instance
+	config: InstanceStoredConfig,
+	/// Modification data
+	modification_data: ModificationData,
 }
 
 /// Different kinds of instances and their associated data
@@ -132,6 +132,27 @@ impl InstanceDirs {
 	}
 }
 
+/// Things that modifications for an instance change when creating it
+#[derive(Debug)]
+struct ModificationData {
+	/// Override for the main class from modifications
+	pub main_class_override: Option<String>,
+	/// Override for the Jar path from modifications
+	pub jar_path_override: Option<PathBuf>,
+	/// Extension for the classpath from modifications
+	pub classpath_extension: Classpath,
+}
+
+impl ModificationData {
+	pub fn new() -> Self {
+		Self {
+			main_class_override: None,
+			jar_path_override: None,
+			classpath_extension: Classpath::new(),
+		}
+	}
+}
+
 impl Instance {
 	/// Create a new instance
 	pub fn new(kind: InstKind, id: InstanceID, config: InstanceStoredConfig) -> Self {
@@ -140,9 +161,7 @@ impl Instance {
 			id,
 			config,
 			dirs: Later::Empty,
-			main_class_override: None,
-			jar_path_override: None,
-			classpath_extension: Classpath::new(),
+			modification_data: ModificationData::new(),
 		}
 	}
 
@@ -207,9 +226,9 @@ impl Instance {
 			side,
 			path: self.dirs.get().game_dir.clone(),
 			launch: launch_config,
-			jar_path: self.jar_path_override.clone(),
-			main_class: self.main_class_override.clone(),
-			additional_libs: self.classpath_extension.get_paths(),
+			jar_path: self.modification_data.jar_path_override.clone(),
+			main_class: self.modification_data.main_class_override.clone(),
+			additional_libs: self.modification_data.classpath_extension.get_paths(),
 		};
 		let inst = version
 			.get_instance(config, o)
@@ -225,7 +244,7 @@ impl Instance {
 	) -> anyhow::Result<Classpath> {
 		let meta = manager.fq_meta.get();
 		let classpath = fabric_quilt::get_classpath(meta, &paths.core, self.kind.to_side());
-		self.main_class_override = Some(
+		self.modification_data.main_class_override = Some(
 			meta.launcher_meta
 				.main_class
 				.get_main_class_string(self.kind.to_side())
