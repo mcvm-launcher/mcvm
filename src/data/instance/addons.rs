@@ -75,7 +75,7 @@ impl Instance {
 				if let Some(datapack_folder) = &self.config.datapack_folder {
 					vec![inst_dir.join(datapack_folder)]
 				} else {
-					match self.kind {
+					match &self.kind {
 						InstKind::Client { .. } => {
 							inst_dir
 								.join("saves")
@@ -95,8 +95,10 @@ impl Instance {
 								})
 								.collect()
 						}
-						// TODO: Different world paths in options
-						InstKind::Server { .. } => vec![inst_dir.join("world").join("datapacks")],
+						InstKind::Server { world_name, .. } => {
+							let world_dir = world_name.as_deref().unwrap_or("world");
+							vec![inst_dir.join(world_dir).join("datapacks")]
+						}
 					}
 				}
 			}

@@ -471,11 +471,8 @@ pub fn read_instance_config(
 	let (kind, launch, datapack_folder, snapshot_config, packages) = match config {
 		InstanceConfig::Simple(side) => (
 			match side {
-				Side::Client => InstKind::Client {
-					options: None,
-					window: ClientWindowConfig::default(),
-				},
-				Side::Server => InstKind::Server { options: None },
+				Side::Client => InstKind::client(None, ClientWindowConfig::default()),
+				Side::Server => InstKind::server(None),
 			},
 			LaunchConfig::default(),
 			None,
@@ -492,7 +489,7 @@ pub fn read_instance_config(
 				packages,
 				..
 			} => (
-				InstKind::Client { options, window },
+				InstKind::client(options, window),
 				launch,
 				datapack_folder,
 				snapshots,
@@ -506,7 +503,7 @@ pub fn read_instance_config(
 				packages,
 				..
 			} => (
-				InstKind::Server { options },
+				InstKind::server(options),
 				launch,
 				datapack_folder,
 				snapshots,

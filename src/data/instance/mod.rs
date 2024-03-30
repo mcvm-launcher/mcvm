@@ -68,10 +68,25 @@ pub enum InstKind {
 	Server {
 		/// Options for the server
 		options: Option<Box<ServerOptions>>,
+		/// The new world name if it is changed by the options
+		world_name: Option<String>,
 	},
 }
 
 impl InstKind {
+	/// Create a new client InstKind
+	pub fn client(options: Option<Box<ClientOptions>>, window: ClientWindowConfig) -> Self {
+		Self::Client { options, window }
+	}
+
+	/// Create a new server InstKind
+	pub fn server(options: Option<Box<ServerOptions>>) -> Self {
+		Self::Server {
+			options,
+			world_name: None,
+		}
+	}
+
 	/// Convert to the Side enum
 	pub fn to_side(&self) -> Side {
 		match self {

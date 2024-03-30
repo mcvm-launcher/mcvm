@@ -72,6 +72,9 @@ fn write_datapacks(datapacks: &[String]) -> String {
 	datapacks.join(",")
 }
 
+/// The key of the world name property
+const WORLD_NAME_KEY: &str = "level-name";
+
 /// Write server options to a list of keys
 pub fn create_keys(
 	options: &ServerOptions,
@@ -169,7 +172,7 @@ pub fn create_keys(
 		out.insert("initial-enabled-packs".into(), write_datapacks(value));
 	}
 	if let Some(value) = &options.world.name {
-		out.insert("level-name".into(), value.clone());
+		out.insert(WORLD_NAME_KEY.into(), value.clone());
 	}
 	if let Some(value) = &options.world.seed {
 		out.insert("level-seed".into(), value.clone());
@@ -278,6 +281,11 @@ pub fn create_keys(
 	out.extend(custom_clone);
 
 	Ok(out)
+}
+
+/// Gets the world name property from the rendered options
+pub fn get_world_name(options: &HashMap<String, String>) -> Option<&String> {
+	options.get(WORLD_NAME_KEY)
 }
 
 #[cfg(test)]

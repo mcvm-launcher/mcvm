@@ -4,6 +4,7 @@ use anyhow::Context;
 use mcvm_core::io::java::classpath::Classpath;
 use mcvm_mods::paper;
 use mcvm_mods::sponge;
+use mcvm_options::server::get_world_name;
 use mcvm_options::{self, server::write_server_properties};
 use mcvm_shared::modifications::{Modloader, ServerType};
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel, OutputProcess};
@@ -38,7 +39,6 @@ impl Instance {
 			Classpath::new()
 		};
 
-		// TODO: This is janky
 		match self.config.modifications.server_type {
 			ServerType::Paper => {
 				let result = self
@@ -75,11 +75,14 @@ impl Instance {
 		}
 		if let InstKind::Server {
 			options: Some(options),
-		} = &self.kind
+			world_name,
+		} = &mut self.kind
 		{
 			let override_keys = mcvm_options::server::create_keys(options, version_info)
 				.context("Failed to create keys for override options")?;
 			keys.extend(override_keys);
+
+			*world_name = get_world_name(&keys).cloned();
 		}
 		if !keys.is_empty() {
 			let options_path = self.dirs.get().game_dir.join("server.properties");

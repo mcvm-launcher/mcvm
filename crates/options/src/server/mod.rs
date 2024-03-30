@@ -4,6 +4,7 @@ mod file;
 use mcvm_shared::util::ToInt;
 
 pub use file::create_keys;
+pub use file::get_world_name;
 pub use file::write_server_properties;
 
 use std::collections::HashMap;
