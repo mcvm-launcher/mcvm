@@ -127,14 +127,8 @@ pub async fn update_profiles(
 					profile_stability: profile.default_stability,
 				};
 
-				let packages = update_profile_packages(
-					profile,
-					&config.global_packages,
-					&constants,
-					&mut ctx,
-					force,
-				)
-				.await?;
+				let packages =
+					update_profile_packages(profile, &constants, &mut ctx, force).await?;
 
 				ctx.output.display(
 					MessageContents::Success("All packages installed".into()),

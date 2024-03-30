@@ -532,7 +532,7 @@ impl<'a> PackageEvaluatorTrait<'a> for PackageEvaluator<'a> {
 
 /// Resolve package dependencies
 pub async fn resolve(
-	packages: &[&PackageConfig],
+	packages: &[PackageConfig],
 	constants: &EvalConstants,
 	default_params: EvalParameters,
 	paths: &Paths,

@@ -33,11 +33,9 @@ use super::addon;
 use super::config::instance::{ClientWindowConfig, QuickPlay};
 use super::config::package::PackageConfig;
 use super::config::profile::GameModifications;
-use super::config::profile::ProfilePackageConfiguration;
 use super::id::InstanceID;
 use super::profile::update::manager::UpdateManager;
 
-use std::collections::HashMap;
 use std::fs;
 use std::path::PathBuf;
 
@@ -94,7 +92,7 @@ pub struct InstanceStoredConfig {
 	pub datapack_folder: Option<String>,
 	/// The instance's snapshot configuration
 	pub snapshot_config: snapshot::Config,
-	/// The packages on the instance
+	/// The packages on the instance, consolidated from all parent sources
 	pub packages: Vec<PackageConfig>,
 }
 
@@ -401,44 +399,14 @@ impl Instance {
 		Ok(eval)
 	}
 
-	/// Collects all the configured packages for this instance
-	pub fn get_configured_packages<'a>(
-		&'a self,
-		global: &'a [PackageConfig],
-		profile: &'a ProfilePackageConfiguration,
-	) -> Vec<&'a PackageConfig> {
-		// We use a map so that we can override packages from more general sources
-		// with those from more specific ones
-		let mut map = HashMap::new();
-		for pkg in global {
-			map.insert(pkg.get_pkg_id(), pkg);
-		}
-		for pkg in profile.iter_global() {
-			map.insert(pkg.get_pkg_id(), pkg);
-		}
-		for pkg in profile.iter_side(self.kind.to_side()) {
-			map.insert(pkg.get_pkg_id(), pkg);
-		}
-		for pkg in &self.config.packages {
-			map.insert(pkg.get_pkg_id(), pkg);
-		}
-
-		let mut out = Vec::new();
-		for pkg in map.values() {
-			out.push(*pkg);
-		}
-
-		out
+	/// Gets all of the configured packages for this instance
+	pub fn get_configured_packages(&self) -> &Vec<PackageConfig> {
+		&self.config.packages
 	}
 
 	/// Gets the configuration for a specific package on this instance
-	pub fn get_package_config<'a>(
-		&'a self,
-		package: &str,
-		global: &'a [PackageConfig],
-		profile: &'a ProfilePackageConfiguration,
-	) -> Option<&'a PackageConfig> {
-		let configured_packages = self.get_configured_packages(global, profile);
+	pub fn get_package_config(&self, package: &str) -> Option<&PackageConfig> {
+		let configured_packages = self.get_configured_packages();
 		let package_config = configured_packages
 			.into_iter()
 			.find(|x| x.get_pkg_id() == package.into());

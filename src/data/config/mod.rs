@@ -197,6 +197,7 @@ impl Config {
 					instance_id.clone(),
 					&instance_config,
 					&profile,
+					&config.packages,
 					&config.instance_presets,
 				)
 				.with_context(|| format!("Failed to configure instance '{instance_id}'"))?;

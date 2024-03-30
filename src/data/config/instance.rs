@@ -443,6 +443,7 @@ pub fn read_instance_config(
 	id: InstanceID,
 	config: &InstanceConfig,
 	profile: &Profile,
+	global_packages: &[PackageConfig],
 	presets: &HashMap<String, InstanceConfig>,
 ) -> anyhow::Result<Instance> {
 	let config = if let InstanceConfig::Full(
@@ -510,19 +511,52 @@ pub fn read_instance_config(
 		},
 	};
 
-	let instance = Instance::new(
-		kind,
-		id,
-		InstanceStoredConfig {
-			modifications: profile.modifications.clone(),
-			launch: launch.to_options()?,
-			datapack_folder,
-			snapshot_config: snapshot_config.unwrap_or_default(),
-			packages,
-		},
-	);
+	// Consolidate all of the package configs into the instance package config list
+	let packages = consolidate_package_configs(profile, global_packages, &packages, kind.to_side());
+
+	let stored_config = InstanceStoredConfig {
+		modifications: profile.modifications.clone(),
+		launch: launch.to_options()?,
+		datapack_folder,
+		snapshot_config: snapshot_config.unwrap_or_default(),
+		packages,
+	};
+
+	let instance = Instance::new(kind, id, stored_config);
 
 	Ok(instance)
+}
+
+/// Combines all of the package configs from global, profile, and instance together into
+/// the configurations for just one instance
+fn consolidate_package_configs(
+	profile: &Profile,
+	global_packages: &[PackageConfig],
+	instance_packages: &[PackageConfig],
+	side: Side,
+) -> Vec<PackageConfig> {
+	// We use a map so that we can override packages from more general sources
+	// with those from more specific ones
+	let mut map = HashMap::new();
+	for pkg in global_packages {
+		map.insert(pkg.get_pkg_id(), pkg.clone());
+	}
+	for pkg in profile.packages.iter_global() {
+		map.insert(pkg.get_pkg_id(), pkg.clone());
+	}
+	for pkg in profile.packages.iter_side(side) {
+		map.insert(pkg.get_pkg_id(), pkg.clone());
+	}
+	for pkg in instance_packages {
+		map.insert(pkg.get_pkg_id(), pkg.clone());
+	}
+
+	let mut out = Vec::new();
+	for pkg in map.values() {
+		out.push(pkg.clone());
+	}
+
+	out
 }
 
 #[cfg(test)]
@@ -563,6 +597,7 @@ mod tests {
 			InstanceID::from("foo"),
 			&test.instance,
 			&profile,
+			&[],
 			&HashMap::new(),
 		)
 		.unwrap();
@@ -611,8 +646,9 @@ mod tests {
 			snapshots: None,
 			packages: Vec::new(),
 		});
-		let instance = read_instance_config(InstanceID::from("test"), &config, &profile, &presets)
-			.expect("Failed to read instance config");
+		let instance =
+			read_instance_config(InstanceID::from("test"), &config, &profile, &[], &presets)
+				.expect("Failed to read instance config");
 		if !matches!(
 			instance.kind,
 			InstKind::Client {
@@ -636,7 +672,7 @@ mod tests {
 			snapshots: None,
 			packages: Vec::new(),
 		});
-		read_instance_config(InstanceID::from("test"), &config, &profile, &presets)
+		read_instance_config(InstanceID::from("test"), &config, &profile, &[], &presets)
 			.expect_err("Instance kinds should be incompatible");
 	}
 

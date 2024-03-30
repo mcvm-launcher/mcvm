@@ -306,10 +306,23 @@ impl<'parent> ProfileBuilder<'parent> {
 	)> {
 		let mut built = self.config.to_profile(self.id.clone());
 		let mut new_map = HashMap::new();
+
+		let empty_global_packages = Vec::new();
+		let global_packages = self
+			.parent
+			.as_ref()
+			.map(|x| &x.global_packages)
+			.unwrap_or(&empty_global_packages);
+
 		for (id, instance) in self.instances {
 			built.instances.push(id.clone());
-			let instance =
-				read_instance_config(self.id.clone(), &instance, &built, &HashMap::new())?;
+			let instance = read_instance_config(
+				self.id.clone(),
+				&instance,
+				&built,
+				global_packages,
+				&HashMap::new(),
+			)?;
 			new_map.insert(id, instance);
 		}
 
@@ -437,10 +450,18 @@ impl<'parent, 'grandparent> InstanceBuilder<'parent, 'grandparent> {
 		Instance,
 		Option<&'parent mut ProfileBuilder<'grandparent>>,
 	)> {
+		let empty_global_packages = Vec::new();
+		let global_packages = self
+			.parent
+			.as_ref()
+			.and_then(|x| x.parent.as_ref())
+			.map(|x| &x.global_packages)
+			.unwrap_or(&empty_global_packages);
 		let built = read_instance_config(
 			self.id.clone(),
 			&InstanceConfig::Full(self.config),
 			profile,
+			global_packages,
 			&HashMap::new(),
 		)?;
 

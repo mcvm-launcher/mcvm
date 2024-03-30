@@ -19,7 +19,6 @@ use anyhow::{anyhow, Context};
 /// Install packages on a profile. Returns a set of all unique packages
 pub async fn update_profile_packages<'a, O: MCVMOutput>(
 	profile: &Profile,
-	global_packages: &[PackageConfig],
 	constants: &EvalConstants,
 	ctx: &mut ProfileUpdateContext<'a, O>,
 	force: bool,
@@ -29,7 +28,7 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 		MessageContents::StartProcess("Resolving package dependencies".into()),
 		MessageLevel::Important,
 	);
-	let resolved_packages = resolve_and_batch(profile, global_packages, constants, ctx)
+	let resolved_packages = resolve_and_batch(profile, constants, ctx)
 		.await
 		.context("Failed to resolve dependencies for profile")?;
 
@@ -59,7 +58,7 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 
 			// Get the configuration for the package or the default if it is not configured by the user
 			let package_config = instance
-				.get_package_config(&package.id, global_packages, &profile.packages)
+				.get_package_config(&package.id)
 				.cloned()
 				.unwrap_or_else(|| PackageConfig::Basic(package.id.clone()));
 
@@ -163,7 +162,6 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 /// It also returns a map of instances to packages so that unused packages can be removed
 async fn resolve_and_batch<'a, O: MCVMOutput>(
 	profile: &Profile,
-	global_packages: &[PackageConfig],
 	constants: &EvalConstants,
 	ctx: &mut ProfileUpdateContext<'a, O>,
 ) -> anyhow::Result<ResolvedPackages> {
@@ -175,7 +173,7 @@ async fn resolve_and_batch<'a, O: MCVMOutput>(
 			"Instance '{instance_id}' does not exist in the registry"
 		))?;
 		let params = EvalParameters::new(instance.kind.to_side());
-		let instance_pkgs = instance.get_configured_packages(global_packages, &profile.packages);
+		let instance_pkgs = instance.get_configured_packages();
 		let instance_resolved = resolve(
 			&instance_pkgs,
 			constants,
