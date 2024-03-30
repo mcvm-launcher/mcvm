@@ -126,12 +126,10 @@ pub async fn gen_raw(
 	addon_map.insert("datapack".into(), datapack);
 	addon_map.insert("resourcepack".into(), resourcepack);
 
-	let pkg = DeclarativePackage {
+	DeclarativePackage {
 		meta,
 		properties: props,
 		addons: addon_map,
 		..Default::default()
-	};
-
-	pkg
+	}
 }

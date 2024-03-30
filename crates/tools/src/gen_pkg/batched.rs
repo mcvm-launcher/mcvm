@@ -2,13 +2,14 @@ use std::cmp::Reverse;
 use std::fs::File;
 use std::io::BufWriter;
 use std::path::PathBuf;
-use std::sync::{Arc, Mutex};
+use std::sync::Arc;
 
 use iso8601_timestamp::Timestamp;
 use mcvm::net::modrinth::Version;
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 use serde_json::{ser::PrettyFormatter, Serializer};
+use tokio::sync::Mutex;
 use tokio::task::JoinSet;
 
 use crate::gen_pkg::json_merge;
@@ -104,7 +105,7 @@ pub async fn batched_gen(mut config: BatchedConfig, filter: Vec<String>) {
 		.iter()
 		.flat_map(|x| x.versions.iter().cloned())
 		.collect();
-	if modrinth_version_ids.len() > 0 {
+	if !modrinth_version_ids.is_empty() {
 		println!(
 			"Downloading {} Modrinth versions...",
 			modrinth_version_ids.len()
@@ -123,7 +124,7 @@ pub async fn batched_gen(mut config: BatchedConfig, filter: Vec<String>) {
 			let versions = mcvm::net::modrinth::get_multiple_versions(&chunk, &client)
 				.await
 				.expect("Failed to get Modrinth versions");
-			let mut lock = modrinth_versions.lock().expect("Failed to lock mutex");
+			let mut lock = modrinth_versions.lock().await;
 			lock.extend(versions);
 		};
 		tasks.spawn(task);
@@ -140,7 +141,7 @@ pub async fn batched_gen(mut config: BatchedConfig, filter: Vec<String>) {
 				let pack = smithed_api::get_pack(&id, &client)
 					.await
 					.expect("Failed to get Smithed pack");
-				let mut lock = smithed_packs.lock().expect("Failed to lock mutex");
+				let mut lock = smithed_packs.lock().await;
 				lock.push(pack);
 			};
 			tasks.spawn(task);
@@ -151,10 +152,10 @@ pub async fn batched_gen(mut config: BatchedConfig, filter: Vec<String>) {
 	while let Some(result) = tasks.join_next().await {
 		result.expect("Task failed");
 	}
-	let mut modrinth_versions = modrinth_versions.lock().expect("Failed to lock mutex");
-	let smithed_packs = smithed_packs.lock().expect("Failed to lock mutex");
+	let mut modrinth_versions = modrinth_versions.lock().await;
+	let smithed_packs = smithed_packs.lock().await;
 	// Sort the Modrinth versions
-	modrinth_versions.sort_by_key(|x| SortVersions::new(x));
+	modrinth_versions.sort_by_key(SortVersions::new);
 
 	// Collect Modrinth teams
 	let mut modrinth_team_ids = Vec::new();

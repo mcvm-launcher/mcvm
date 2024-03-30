@@ -427,10 +427,8 @@ impl Instance {
 	/// Gets the configuration for a specific package on this instance
 	pub fn get_package_config(&self, package: &str) -> Option<&PackageConfig> {
 		let configured_packages = self.get_configured_packages();
-		let package_config = configured_packages
-			.into_iter()
-			.find(|x| x.id == package.into());
-		package_config
+
+		configured_packages.iter().find(|x| x.id == package.into())
 	}
 }
 

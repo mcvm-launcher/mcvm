@@ -20,7 +20,7 @@ pub enum Mode {
 }
 
 impl Mode {
-	fn to_str(&self) -> &'static str {
+	fn to_str(self) -> &'static str {
 		match self {
 			Self::Vanilla => "spongevanilla",
 		}

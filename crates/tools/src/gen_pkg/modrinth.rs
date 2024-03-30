@@ -252,14 +252,12 @@ pub async fn gen_raw(
 	let mut addon_map = HashMap::new();
 	addon_map.insert("addon".into(), addon);
 
-	let pkg = DeclarativePackage {
+	DeclarativePackage {
 		meta,
 		properties: props,
 		addons: addon_map,
 		..Default::default()
-	};
-
-	pkg
+	}
 }
 
 /// Gets the list of supported sides from the project

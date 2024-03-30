@@ -49,7 +49,7 @@ pub fn eval_condition(condition: &ConditionKind, eval: &EvalData) -> anyhow::Res
 			let version = VersionPattern::from(&version);
 			let _ = version;
 			// TODO
-			return Ok(true);
+			Ok(true)
 		}
 		ConditionKind::Value(left, right) => Ok(left.get(&eval.vars)? == right.get(&eval.vars)?),
 		ConditionKind::Defined(var) => Ok(eval.vars.var_exists(var.get())),

@@ -170,7 +170,7 @@ async fn resolve_and_batch<'a, O: MCVMOutput>(
 		let params = EvalParameters::new(instance.kind.to_side());
 		let instance_pkgs = instance.get_configured_packages();
 		let instance_resolved = resolve(
-			&instance_pkgs,
+			instance_pkgs,
 			constants,
 			params,
 			ctx.paths,

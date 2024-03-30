@@ -219,7 +219,7 @@ fn check_condition_set<'a>(conditions: &DeclarativeConditionSet, input: &'a Eval
 }
 
 /// Handle the case where no versions were matched for an addon
-fn handle_no_matched_versions<'a>(addon: &DeclarativeAddon) -> anyhow::Result<()> {
+fn handle_no_matched_versions(addon: &DeclarativeAddon) -> anyhow::Result<()> {
 	// If the addon is optional then this is ok
 	if addon.optional {
 		return Ok(());

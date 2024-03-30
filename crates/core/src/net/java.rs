@@ -70,7 +70,7 @@ pub mod zulu {
 			.await
 			.context("Failed to download manifest of Zulu versions")?;
 		let package = manifest
-			.get(0)
+			.first()
 			.ok_or(anyhow!("A valid installation was not found"))?;
 
 		Ok(package.to_owned())

@@ -69,8 +69,8 @@ pub enum PackageFlag {
 /// Get the URL of the repository api
 pub fn get_api_url(base_url: &str) -> String {
 	// Remove trailing slash
-	let base_url = if base_url.ends_with('/') {
-		&base_url[..base_url.len() - 1]
+	let base_url = if let Some(stripped) = base_url.strip_suffix('/') {
+		stripped
 	} else {
 		base_url
 	};

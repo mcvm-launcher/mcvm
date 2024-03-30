@@ -169,7 +169,7 @@ impl MinecraftAuthorizationFlow {
 			.display_claims
 			.get("xui")
 			.ok_or(MinecraftAuthorizationError::MissingClaims)?
-			.get(0)
+			.first()
 			.ok_or(MinecraftAuthorizationError::MissingClaims)?
 			.get("uhs")
 			.ok_or(MinecraftAuthorizationError::MissingClaims)?

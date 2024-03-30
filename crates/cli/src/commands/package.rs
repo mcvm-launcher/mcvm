@@ -124,7 +124,7 @@ async fn list(data: &mut CmdData, raw: bool, profile: Option<String>) -> anyhow:
 			for pkg in profile.packages.iter_global() {
 				found_pkgs
 					.entry(pkg.get_pkg_id().clone())
-					.or_insert(vec![])
+					.or_default()
 					.push(id.clone());
 			}
 		}
@@ -247,7 +247,7 @@ fn pretty_print_package_script(contents: &str) -> anyhow::Result<()> {
 	let mut last_tok_was_at = false;
 	let mut last_tok_was_curly_or_semi = false;
 	for elem in lexed.windows(2) {
-		if let Some(left) = elem.get(0) {
+		if let Some(left) = elem.first() {
 			// If the right does not exist, set it to the end of the string
 			let right_pos = elem
 				.get(1)
