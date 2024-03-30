@@ -153,9 +153,9 @@ impl PkgRepo {
 					.await
 					.context("Failed to sync index")?;
 			}
-		}
 
-		self.check_index(o);
+			self.check_index(o);
+		}
 
 		Ok(())
 	}
