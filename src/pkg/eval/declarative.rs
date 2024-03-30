@@ -119,7 +119,7 @@ pub fn pick_best_addon_version<'a>(
 	versions.next()
 }
 
-/// Check multiple setso f addon version conditions
+/// Check multiple sets of addon version conditions
 fn check_multiple_condition_sets<'a>(
 	conditions: &[DeclarativeConditionSet],
 	input: &'a EvalInput<'a>,
