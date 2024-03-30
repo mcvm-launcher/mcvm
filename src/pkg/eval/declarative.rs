@@ -39,6 +39,18 @@ fn eval_declarative_package_impl<'a>(
 	let mut relations = contents.relations.clone();
 	let mut notices = Vec::new();
 
+	// Apply conditional rules
+	for rule in &contents.conditional_rules {
+		for condition in &rule.conditions {
+			if !check_condition_set(condition, &eval_data.input) {
+				continue;
+			}
+		}
+
+		relations.merge(rule.properties.relations.clone());
+		notices.extend(rule.properties.notices.iter().cloned());
+	}
+
 	// Select addon versions
 	for (addon_id, addon) in &contents.addons {
 		// Check conditions
@@ -68,18 +80,6 @@ fn eval_declarative_package_impl<'a>(
 		} else {
 			handle_no_matched_versions(addon)?;
 		}
-	}
-
-	// Apply conditional rules
-	for rule in &contents.conditional_rules {
-		for condition in &rule.conditions {
-			if !check_condition_set(condition, &eval_data.input) {
-				continue;
-			}
-		}
-
-		relations.merge(rule.properties.relations.clone());
-		notices.extend(rule.properties.notices.iter().cloned());
 	}
 
 	eval_data
