@@ -433,8 +433,8 @@ impl ConfiguredPackage for EvalPackageConfig {
 			.context("Failed to calculate features")?;
 
 		input.params.features = features;
-		input.params.perms = self.0.get_permissions();
-		input.params.stability = self.0.get_stability(input.constants.profile_stability);
+		input.params.perms = self.0.permissions;
+		input.params.stability = self.0.stability;
 
 		Ok(())
 	}

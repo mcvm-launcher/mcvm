@@ -14,13 +14,14 @@ pub mod profile;
 pub mod user;
 
 use self::instance::{read_instance_config, InstanceConfig};
-use self::package::PackageConfig;
+use self::package::{PackageConfig, PackageConfigDeser};
 use self::preferences::PrefDeser;
 use self::profile::ProfileConfig;
 use self::user::UserConfig;
 use anyhow::{bail, ensure, Context};
 use mcvm_core::user::UserManager;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
+use mcvm_shared::pkg::PackageStability;
 use mcvm_shared::util::is_valid_identifier;
 use oauth2::ClientId;
 use preferences::ConfigPreferences;
@@ -67,7 +68,7 @@ pub struct ConfigDeser {
 	default_user: Option<String>,
 	profiles: HashMap<ProfileID, ProfileConfig>,
 	instance_presets: HashMap<String, InstanceConfig>,
-	packages: Vec<PackageConfig>,
+	packages: Vec<PackageConfigDeser>,
 	preferences: PrefDeser,
 }
 
@@ -212,12 +213,18 @@ impl Config {
 			profiles.insert(profile_id.clone(), profile);
 		}
 
+		let global_packages = config
+			.packages
+			.into_iter()
+			.map(|x| x.to_package_config(PackageStability::default()))
+			.collect();
+
 		Ok(Self {
 			users,
 			instances,
 			profiles,
 			packages,
-			global_packages: config.packages,
+			global_packages,
 			prefs,
 		})
 	}

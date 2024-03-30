@@ -317,7 +317,7 @@ impl Instance {
 		let pkg_config = self
 			.get_package_config(&pkg.id)
 			.cloned()
-			.unwrap_or_else(|| PackageConfig::Basic(pkg.id.clone()));
+			.unwrap_or_else(|| PackageConfig::from_id(pkg.id.clone()));
 
 		let eval = reg
 			.eval(pkg, paths, Routine::Install, eval_input, client, o)
@@ -369,7 +369,7 @@ impl Instance {
 					&x.addon,
 					self.get_linked_addon_paths(
 						&x.addon,
-						&pkg_config.get_worlds(),
+						&pkg_config.worlds,
 						paths,
 						&version_info,
 					)?
@@ -392,7 +392,7 @@ impl Instance {
 					.await
 					.with_context(|| format!("Failed to acquire addon '{}'", addon.addon.id))?;
 			}
-			self.create_addon(&addon.addon, &pkg_config.get_worlds(), paths, &version_info)
+			self.create_addon(&addon.addon, &pkg_config.worlds, paths, &version_info)
 				.with_context(|| format!("Failed to install addon '{}'", addon.addon.id))?;
 		}
 
@@ -414,7 +414,7 @@ impl Instance {
 		let configured_packages = self.get_configured_packages();
 		let package_config = configured_packages
 			.into_iter()
-			.find(|x| x.get_pkg_id() == package.into());
+			.find(|x| x.id == package.into());
 		package_config
 	}
 }

@@ -12,7 +12,8 @@ use crate::data::profile::Profile;
 use mcvm_shared::modifications::{ClientType, Modloader, ServerType};
 use mcvm_shared::pkg::PackageStability;
 
-use super::{instance::InstanceConfig, package::PackageConfig};
+use super::instance::InstanceConfig;
+use super::package::PackageConfigDeser;
 
 /// Configuration for a profile
 #[derive(Deserialize, Serialize)]
@@ -45,18 +46,18 @@ pub struct ProfileConfig {
 #[serde(untagged)]
 pub enum ProfilePackageConfiguration {
 	/// Is just a list of packages for every instance
-	Simple(Vec<PackageConfig>),
+	Simple(Vec<PackageConfigDeser>),
 	/// Full configuration
 	Full {
 		/// Packages to apply to every instance
 		#[serde(default)]
-		global: Vec<PackageConfig>,
+		global: Vec<PackageConfigDeser>,
 		/// Packages to apply to only clients
 		#[serde(default)]
-		client: Vec<PackageConfig>,
+		client: Vec<PackageConfigDeser>,
 		/// Packages to apply to only servers
 		#[serde(default)]
-		server: Vec<PackageConfig>,
+		server: Vec<PackageConfigDeser>,
 	},
 }
 
@@ -90,7 +91,7 @@ impl ProfilePackageConfiguration {
 	}
 
 	/// Iterate over all of the packages
-	pub fn iter<'a>(&'a self) -> Box<dyn Iterator<Item = &'a PackageConfig> + 'a> {
+	pub fn iter<'a>(&'a self) -> Box<dyn Iterator<Item = &'a PackageConfigDeser> + 'a> {
 		match &self {
 			Self::Simple(global) => Box::new(global.iter()),
 			Self::Full {
@@ -102,7 +103,7 @@ impl ProfilePackageConfiguration {
 	}
 
 	/// Iterate over the global package list
-	pub fn iter_global(&self) -> impl Iterator<Item = &PackageConfig> {
+	pub fn iter_global(&self) -> impl Iterator<Item = &PackageConfigDeser> {
 		match &self {
 			Self::Simple(global) => global,
 			Self::Full { global, .. } => global,
@@ -111,7 +112,7 @@ impl ProfilePackageConfiguration {
 	}
 
 	/// Iterate over the package list for a specific side
-	pub fn iter_side(&self, side: Side) -> impl Iterator<Item = &PackageConfig> {
+	pub fn iter_side(&self, side: Side) -> impl Iterator<Item = &PackageConfigDeser> {
 		match &self {
 			Self::Simple(..) => [].iter(),
 			Self::Full { client, server, .. } => match side {
@@ -122,7 +123,7 @@ impl ProfilePackageConfiguration {
 	}
 
 	/// Adds a package to the global list
-	pub fn add_global_package(&mut self, pkg: PackageConfig) {
+	pub fn add_global_package(&mut self, pkg: PackageConfigDeser) {
 		match self {
 			Self::Simple(global) => global.push(pkg),
 			Self::Full { global, .. } => global.push(pkg),
@@ -130,7 +131,7 @@ impl ProfilePackageConfiguration {
 	}
 
 	/// Adds a package to the client list
-	pub fn add_client_package(&mut self, pkg: PackageConfig) {
+	pub fn add_client_package(&mut self, pkg: PackageConfigDeser) {
 		match self {
 			Self::Simple(global) => {
 				*self = Self::Full {
@@ -144,7 +145,7 @@ impl ProfilePackageConfiguration {
 	}
 
 	/// Adds a package to the server list
-	pub fn add_server_package(&mut self, pkg: PackageConfig) {
+	pub fn add_server_package(&mut self, pkg: PackageConfigDeser) {
 		match self {
 			Self::Simple(global) => {
 				*self = Self::Full {

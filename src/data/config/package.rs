@@ -13,11 +13,74 @@ use serde::{Deserialize, Serialize};
 use crate::pkg::eval::EvalPermissions;
 use mcvm_pkg::{PkgRequest, PkgRequestSource};
 
-/// Different representations for the configuration of a package
+/// Stored configuration for a package
+#[derive(Clone, Debug)]
+pub struct PackageConfig {
+	/// The ID of the pcakage
+	pub id: PackageID,
+	/// The package's enabled features
+	pub features: Vec<String>,
+	/// Whether or not to use the package's default features
+	pub use_default_features: bool,
+	/// Permissions for the package
+	pub permissions: EvalPermissions,
+	/// Expected stability for the package
+	pub stability: PackageStability,
+	/// Worlds to use for the package
+	pub worlds: Vec<String>,
+}
+
+impl PackageConfig {
+	/// Create the default configuration for a package with a package ID
+	pub fn from_id(id: PackageID) -> Self {
+		Self {
+			id,
+			features: Vec::new(),
+			use_default_features: use_default_features_default(),
+			permissions: EvalPermissions::default(),
+			stability: PackageStability::default(),
+			worlds: Vec::new(),
+		}
+	}
+
+	/// Calculate the features of the config
+	pub fn calculate_features(
+		&self,
+		properties: &PackageProperties,
+	) -> anyhow::Result<Vec<String>> {
+		let allowed_features = properties.features.clone().unwrap_or_default();
+		let default_features = properties.default_features.clone().unwrap_or_default();
+
+		for feature in &self.features {
+			ensure!(
+				allowed_features.contains(feature),
+				"Configured feature '{feature}' does not exist"
+			);
+		}
+
+		let mut out = Vec::new();
+		if self.use_default_features {
+			out.extend(default_features);
+		}
+		out.extend(self.features.clone());
+
+		Ok(out)
+	}
+
+	/// Get the request of the config
+	pub fn get_request(&self) -> ArcPkgReq {
+		Arc::new(PkgRequest::parse(
+			self.id.clone(),
+			PkgRequestSource::UserRequire,
+		))
+	}
+}
+
+/// Different representations for the configuration of a package in deserialization
 #[derive(Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(untagged)]
-pub enum PackageConfig {
+pub enum PackageConfigDeser {
 	/// Basic configuration for a repository package with just the package ID
 	Basic(PackageID),
 	/// Full configuration for a package
@@ -61,7 +124,7 @@ fn use_default_features_default() -> bool {
 	true
 }
 
-impl Display for PackageConfig {
+impl Display for PackageConfigDeser {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		write!(
 			f,
@@ -74,19 +137,25 @@ impl Display for PackageConfig {
 	}
 }
 
-impl PackageConfig {
+impl PackageConfigDeser {
+	/// Convert this deserialized config into the actual package config
+	pub fn to_package_config(self, profile_stability: PackageStability) -> PackageConfig {
+		PackageConfig {
+			id: self.get_pkg_id(),
+			features: self.get_features(),
+			use_default_features: self.get_use_default_features(),
+			permissions: self.get_permissions(),
+			stability: self.get_stability(profile_stability),
+			worlds: self.get_worlds().into_owned(),
+		}
+	}
+
 	/// Get the package ID of the config
 	pub fn get_pkg_id(&self) -> PackageID {
 		match &self {
 			Self::Basic(id) => id.clone(),
 			Self::Full(cfg) => cfg.id.clone(),
 		}
-	}
-
-	/// Get the request of the config
-	pub fn get_request(&self) -> ArcPkgReq {
-		let id = self.get_pkg_id();
-		Arc::new(PkgRequest::parse(id, PkgRequestSource::UserRequire))
 	}
 
 	/// Get the features of the config
@@ -119,31 +188,6 @@ impl PackageConfig {
 			Self::Basic(..) => profile_stability,
 			Self::Full(cfg) => cfg.stability.unwrap_or(profile_stability),
 		}
-	}
-
-	/// Calculate the features of the config
-	pub fn calculate_features(
-		&self,
-		properties: &PackageProperties,
-	) -> anyhow::Result<Vec<String>> {
-		let allowed_features = properties.features.clone().unwrap_or_default();
-		let default_features = properties.default_features.clone().unwrap_or_default();
-
-		let features = self.get_features();
-		for feature in &features {
-			ensure!(
-				allowed_features.contains(feature),
-				"Configured feature '{feature}' does not exist"
-			);
-		}
-
-		let mut out = Vec::new();
-		if self.get_use_default_features() {
-			out.extend(default_features);
-		}
-		out.extend(features);
-
-		Ok(out)
 	}
 
 	/// Get the  worlds of the config

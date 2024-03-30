@@ -18,7 +18,7 @@ use crate::data::instance::{InstKind, Instance, InstanceStoredConfig};
 use crate::data::profile::Profile;
 use crate::io::snapshot;
 
-use super::package::PackageConfig;
+use super::package::{PackageConfig, PackageConfigDeser};
 
 /// Different representations of configuration for an instance
 #[derive(Deserialize, Serialize, Clone)]
@@ -104,7 +104,7 @@ pub enum FullInstanceConfig {
 		snapshots: Option<snapshot::Config>,
 		/// Packages for this instance
 		#[serde(default)]
-		packages: Vec<PackageConfig>,
+		packages: Vec<PackageConfigDeser>,
 	},
 	/// Config for the server
 	Server {
@@ -125,7 +125,7 @@ pub enum FullInstanceConfig {
 		snapshots: Option<snapshot::Config>,
 		/// Packages for this instance
 		#[serde(default)]
-		packages: Vec<PackageConfig>,
+		packages: Vec<PackageConfigDeser>,
 	},
 }
 
@@ -203,7 +203,10 @@ fn default_flags_preset() -> String {
 }
 
 /// Merges two lists of instance packages
-fn merge_package_lists(mut a: Vec<PackageConfig>, b: Vec<PackageConfig>) -> Vec<PackageConfig> {
+fn merge_package_lists(
+	mut a: Vec<PackageConfigDeser>,
+	b: Vec<PackageConfigDeser>,
+) -> Vec<PackageConfigDeser> {
 	a.extend(b);
 	a
 }
@@ -443,7 +446,7 @@ pub fn read_instance_config(
 	id: InstanceID,
 	config: &InstanceConfig,
 	profile: &Profile,
-	global_packages: &[PackageConfig],
+	global_packages: &[PackageConfigDeser],
 	presets: &HashMap<String, InstanceConfig>,
 ) -> anyhow::Result<Instance> {
 	let config = if let InstanceConfig::Full(
@@ -531,8 +534,8 @@ pub fn read_instance_config(
 /// the configurations for just one instance
 fn consolidate_package_configs(
 	profile: &Profile,
-	global_packages: &[PackageConfig],
-	instance_packages: &[PackageConfig],
+	global_packages: &[PackageConfigDeser],
+	instance_packages: &[PackageConfigDeser],
 	side: Side,
 ) -> Vec<PackageConfig> {
 	// We use a map so that we can override packages from more general sources
@@ -555,6 +558,12 @@ fn consolidate_package_configs(
 	for pkg in map.values() {
 		out.push(pkg.clone());
 	}
+
+	// Convert deserialized package configs to actual package configs
+	let out: Vec<_> = out
+		.into_iter()
+		.map(|x| x.to_package_config(profile.default_stability))
+		.collect();
 
 	out
 }

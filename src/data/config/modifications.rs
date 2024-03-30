@@ -5,7 +5,7 @@ use anyhow::{anyhow, Context};
 
 use crate::{data::id::ProfileID, io::files::paths::Paths};
 
-use super::package::PackageConfig;
+use super::package::PackageConfigDeser;
 use super::profile::ProfileConfig;
 use super::user::UserConfig;
 use super::{Config, ConfigDeser};
@@ -17,7 +17,7 @@ pub enum ConfigModification {
 	/// Adds a new profile
 	AddProfile(ProfileID, ProfileConfig),
 	/// Adds a new package to a profile
-	AddPackage(ProfileID, PackageConfig),
+	AddPackage(ProfileID, PackageConfigDeser),
 }
 
 /// Applies modifications to the config

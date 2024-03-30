@@ -19,7 +19,7 @@ use crate::pkg::repo::PkgRepo;
 use super::instance::{
 	read_instance_config, ClientWindowConfig, FullInstanceConfig, InstanceConfig, LaunchConfig,
 };
-use super::package::{FullPackageConfig, PackageConfig};
+use super::package::{FullPackageConfig, PackageConfigDeser};
 use super::preferences::ConfigPreferences;
 use super::profile::{ProfileConfig, ProfilePackageConfiguration};
 use super::user::{UserConfig, UserVariant};
@@ -32,7 +32,7 @@ pub struct ConfigBuilder {
 	profiles: HashMap<ProfileID, Profile>,
 	packages: PkgRegistry,
 	preferences: ConfigPreferences,
-	global_packages: Vec<PackageConfig>,
+	global_packages: Vec<PackageConfigDeser>,
 	default_user: Option<String>,
 }
 
@@ -83,7 +83,7 @@ impl ConfigBuilder {
 
 	/// Finish a PackageBuilder
 	fn build_package(&mut self, package: FullPackageConfig) {
-		let config = PackageConfig::Full(package);
+		let config = PackageConfigDeser::Full(package);
 		self.global_packages.push(config);
 	}
 
@@ -105,12 +105,19 @@ impl ConfigBuilder {
 				bail!("Provided default user '{default_user_id}' does not exist");
 			}
 		}
+
+		let global_packages = self
+			.global_packages
+			.into_iter()
+			.map(|x| x.to_package_config(PackageStability::default()))
+			.collect();
+
 		Ok(Config {
 			users: self.users,
 			instances: self.instances,
 			profiles: self.profiles,
 			packages: self.packages,
-			global_packages: self.global_packages,
+			global_packages,
 			prefs: self.preferences,
 		})
 	}
@@ -252,7 +259,7 @@ impl<'parent> ProfileBuilder<'parent> {
 
 	/// Finish a PackageBuilder
 	fn build_package(&mut self, group: ProfilePackageGroup, package: FullPackageConfig) {
-		let config = PackageConfig::Full(package);
+		let config = PackageConfigDeser::Full(package);
 		match group {
 			ProfilePackageGroup::Global => self.config.packages.add_global_package(config),
 			ProfilePackageGroup::Client => self.config.packages.add_client_package(config),
@@ -382,7 +389,7 @@ impl<'parent, 'grandparent> InstanceBuilder<'parent, 'grandparent> {
 
 	/// Finish a PackageBuilder
 	fn build_package(&mut self, package: FullPackageConfig) {
-		let config = PackageConfig::Full(package);
+		let config = PackageConfigDeser::Full(package);
 		match &mut self.config {
 			FullInstanceConfig::Client { packages, .. } => packages.push(config),
 			FullInstanceConfig::Server { packages, .. } => packages.push(config),
