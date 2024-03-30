@@ -165,7 +165,8 @@ Addons are the actual files that are installed to a user's game. They are specif
 		"versions": [
 			...
 		],
-		"conditions": [ConditionSet]
+		"conditions": [ConditionSet],
+		"optional": boolean
 	}
 }
 ```
@@ -174,6 +175,7 @@ Addons are the actual files that are installed to a user's game. They are specif
 - `kind`: What type of addon / modification this is.
 - `versions`: A list of versions for this addon. See the addon versions section.
 - `conditions` (Optional): A list of conditions for the installation of this addon. If any of these conditions fails, the addon will not be installed, but no errors will be shown. Thus, it is better to use the `supported_...` properties for this purpose.
+- `optional` (Optional): Whether this addon should be considered optional when evaluating the package. If this is set to false, and no versions of the addon are matched when evaluating, then the evaluation will fail. Defaults to false.
 
 ## Addon Versions
 

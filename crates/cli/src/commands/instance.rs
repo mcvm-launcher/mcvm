@@ -33,7 +33,7 @@ pub enum InstanceSubcommand {
 		/// An optional user to choose when launching
 		#[arg(short, long)]
 		user: Option<String>,
-		/// The instance to launch
+		/// The instance to launch, as an instance reference (profile:instance)
 		instance: Option<String>,
 	},
 }
