@@ -55,18 +55,20 @@ impl Paths {
 		let snapshots = internal.join("snapshots");
 		let fabric_quilt = internal.join("fabric_quilt");
 
-		tokio::fs::create_dir_all(&data).await?;
-		tokio::fs::create_dir_all(project.cache_dir()).await?;
-		tokio::fs::create_dir_all(project.config_dir()).await?;
-		tokio::fs::create_dir_all(&internal).await?;
-		tokio::fs::create_dir_all(&addons).await?;
-		tokio::fs::create_dir_all(&pkg_cache).await?;
-		tokio::fs::create_dir_all(&pkg_index_cache).await?;
-		tokio::fs::create_dir_all(&logs).await?;
-		tokio::fs::create_dir_all(&launch_logs).await?;
-		tokio::fs::create_dir_all(&run).await?;
-		tokio::fs::create_dir_all(&snapshots).await?;
-		tokio::fs::create_dir_all(&fabric_quilt).await?;
+		tokio::try_join!(
+			tokio::fs::create_dir_all(&data),
+			tokio::fs::create_dir_all(project.cache_dir()),
+			tokio::fs::create_dir_all(project.config_dir()),
+			tokio::fs::create_dir_all(&internal),
+			tokio::fs::create_dir_all(&addons),
+			tokio::fs::create_dir_all(&pkg_cache),
+			tokio::fs::create_dir_all(&pkg_index_cache),
+			tokio::fs::create_dir_all(&logs),
+			tokio::fs::create_dir_all(&launch_logs),
+			tokio::fs::create_dir_all(&run),
+			tokio::fs::create_dir_all(&snapshots),
+			tokio::fs::create_dir_all(&fabric_quilt),
+		)?;
 
 		let core_paths = mcvm_core::Paths::new().context("Failed to create core paths")?;
 
