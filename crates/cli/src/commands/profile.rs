@@ -74,7 +74,8 @@ async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
 
 		cprintln!("   <s>Instances:");
 		for inst_id in profile.instances.iter() {
-			if let Some(instance) = config.instances.get(inst_id) {
+			let inst_ref = profile.get_inst_ref(inst_id);
+			if let Some(instance) = config.instances.get(&inst_ref) {
 				cprint!("   {}", HYPHEN_POINT);
 				match instance.kind {
 					InstKind::Client { .. } => cprint!("<y!>Client {}", inst_id),
@@ -109,7 +110,8 @@ async fn list(data: &mut CmdData, raw: bool) -> anyhow::Result<()> {
 		} else {
 			cprintln!("<s><g>   {}", id);
 			for inst_id in profile.instances.iter() {
-				if let Some(instance) = config.instances.get(inst_id) {
+				let inst_ref = profile.get_inst_ref(inst_id);
+				if let Some(instance) = config.instances.get(&inst_ref) {
 					match instance.kind {
 						InstKind::Client { .. } => cprintln!("   {}<y!>{}", HYPHEN_POINT, inst_id),
 						InstKind::Server { .. } => cprintln!("   {}<c!>{}", HYPHEN_POINT, inst_id),

@@ -4,7 +4,7 @@ use color_print::cprintln;
 use inquire::Select;
 use itertools::Itertools;
 use mcvm::data::config::Config;
-use mcvm::data::id::{InstanceID, ProfileID};
+use mcvm::data::id::{InstanceRef, ProfileID};
 
 use mcvm::data::instance::InstKind;
 use mcvm::shared::Side;
@@ -74,7 +74,7 @@ async fn list(
 		}
 
 		if let Some(profile) = profile {
-			if !profile.instances.contains(id) {
+			if !profile.instances.contains(&id.instance) {
 				continue;
 			}
 		}
@@ -136,11 +136,11 @@ pub async fn launch(
 }
 
 /// Pick which instance to launch
-fn pick_instance(instance: Option<String>, config: &Config) -> anyhow::Result<InstanceID> {
+fn pick_instance(instance: Option<String>, config: &Config) -> anyhow::Result<InstanceRef> {
 	if let Some(instance) = instance {
-		Ok(InstanceID::from(instance))
+		InstanceRef::parse(instance).context("Failed to parse instance reference")
 	} else {
-		let options: Vec<InstanceID> = config.instances.keys().cloned().collect();
+		let options: Vec<InstanceRef> = config.instances.keys().cloned().collect();
 		let selection = Select::new("Choose an instance to launch", options)
 			.prompt()
 			.context("Prompt failed")?;

@@ -8,7 +8,7 @@ use mcvm_shared::pkg::{PackageID, PackageStability};
 use mcvm_shared::Side;
 use oauth2::ClientId;
 
-use crate::data::id::{InstanceID, ProfileID};
+use crate::data::id::{InstanceID, InstanceRef, ProfileID};
 use crate::data::instance::Instance;
 use crate::data::profile::{InstanceRegistry, Profile};
 use crate::io::snapshot;
@@ -322,7 +322,7 @@ impl<'parent> ProfileBuilder<'parent> {
 				global_packages,
 				&HashMap::new(),
 			)?;
-			new_map.insert(id, instance);
+			new_map.insert(InstanceRef::new(self.id.clone(), id), instance);
 		}
 
 		Ok((self.id, built, new_map, self.parent))
@@ -602,6 +602,7 @@ mod tests {
 	use mcvm_shared::lang::Language;
 
 	use crate::data::config::preferences::{PrefDeser, RepositoriesDeser};
+	use crate::data::id::InstanceRef;
 	use crate::pkg::reg::CachingStrategy;
 
 	use super::*;
@@ -643,7 +644,7 @@ mod tests {
 		let (profile_id, profile, instances, ..) =
 			profile.build_self().expect("Failed to build profile");
 		assert_eq!(profile_id, "profile".into());
-		assert!(instances.contains_key("instance"));
+		assert!(instances.contains_key(&InstanceRef::new(profile_id.clone(), "instance".into())));
 		assert_eq!(profile.instances, vec!["instance".into()]);
 		assert_eq!(profile.modifications.client_type, ClientType::Fabric);
 	}

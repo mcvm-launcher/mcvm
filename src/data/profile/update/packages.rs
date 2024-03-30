@@ -51,7 +51,8 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 		// Install the package on it's instances
 		let mut notices = Vec::new();
 		for instance_id in package_instances {
-			let instance = ctx.instances.get_mut(instance_id).ok_or(anyhow!(
+			let inst_ref = profile.get_inst_ref(instance_id);
+			let instance = ctx.instances.get_mut(&inst_ref).ok_or(anyhow!(
 				"Instance '{instance_id}' does not exist in the registry"
 			))?;
 
@@ -116,7 +117,8 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 
 	// Use the instance-package map to remove unused packages and addons
 	for (instance_id, packages) in resolved_packages.instance_to_packages {
-		let instance = ctx.instances.get(&instance_id).ok_or(anyhow!(
+		let inst_ref = profile.get_inst_ref(&instance_id);
+		let instance = ctx.instances.get(&inst_ref).ok_or(anyhow!(
 			"Instance '{instance_id}' does not exist in the registry"
 		))?;
 		let files_to_remove = ctx
@@ -161,7 +163,8 @@ async fn resolve_and_batch<'a, O: MCVMOutput>(
 	let mut resolved = HashMap::new();
 
 	for instance_id in &profile.instances {
-		let instance = ctx.instances.get(instance_id).ok_or(anyhow!(
+		let inst_ref = profile.get_inst_ref(instance_id);
+		let instance = ctx.instances.get(&inst_ref).ok_or(anyhow!(
 			"Instance '{instance_id}' does not exist in the registry"
 		))?;
 		let params = EvalParameters::new(instance.kind.to_side());

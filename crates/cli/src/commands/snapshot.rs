@@ -1,7 +1,7 @@
-use anyhow::anyhow;
+use anyhow::{anyhow, Context};
 use clap::Subcommand;
 use color_print::cprintln;
-use mcvm::io::snapshot::SnapshotKind;
+use mcvm::{data::id::InstanceRef, io::snapshot::SnapshotKind};
 
 use super::CmdData;
 use crate::output::HYPHEN_POINT;
@@ -67,9 +67,11 @@ async fn list(data: &mut CmdData, raw: bool, instance: &str) -> anyhow::Result<(
 	data.ensure_config(true).await?;
 	let config = data.config.get_mut();
 
+	let instance =
+		InstanceRef::parse(instance.into()).context("Failed to parse instance reference")?;
 	let instance = config
 		.instances
-		.get(instance)
+		.get(&instance)
 		.ok_or(anyhow!("Instance does not exist"))?;
 	let (snapshot_dir, index) = instance.open_snapshot_index(&data.paths)?;
 
@@ -89,9 +91,11 @@ async fn create(data: &mut CmdData, instance: &str, snapshot: &str) -> anyhow::R
 	data.ensure_config(true).await?;
 	let config = data.config.get_mut();
 
+	let instance =
+		InstanceRef::parse(instance.into()).context("Failed to parse instance reference")?;
 	let instance = config
 		.instances
-		.get_mut(instance)
+		.get_mut(&instance)
 		.ok_or(anyhow!("Instance does not exist"))?;
 
 	let (snapshot_dir, index) = instance.open_snapshot_index(&data.paths)?;
@@ -111,9 +115,11 @@ async fn remove(data: &mut CmdData, instance: &str, snapshot: &str) -> anyhow::R
 	data.ensure_config(true).await?;
 	let config = data.config.get_mut();
 
+	let instance =
+		InstanceRef::parse(instance.into()).context("Failed to parse instance reference")?;
 	let instance = config
 		.instances
-		.get(instance)
+		.get(&instance)
 		.ok_or(anyhow!("Instance does not exist"))?;
 	instance.remove_snapshot(snapshot, &data.paths)?;
 
@@ -126,9 +132,11 @@ async fn restore(data: &mut CmdData, instance: &str, snapshot: &str) -> anyhow::
 	data.ensure_config(true).await?;
 	let config = data.config.get_mut();
 
+	let instance =
+		InstanceRef::parse(instance.into()).context("Failed to parse instance reference")?;
 	let instance = config
 		.instances
-		.get_mut(instance)
+		.get_mut(&instance)
 		.ok_or(anyhow!("Instance does not exist"))?;
 	instance.restore_snapshot(snapshot, &data.paths).await?;
 
@@ -141,9 +149,11 @@ async fn info(data: &mut CmdData, instance_id: &str, snapshot_id: &str) -> anyho
 	data.ensure_config(true).await?;
 	let config = data.config.get_mut();
 
+	let inst_ref =
+		InstanceRef::parse(instance_id.into()).context("Failed to parse instance reference")?;
 	let instance = config
 		.instances
-		.get(instance_id)
+		.get(&inst_ref)
 		.ok_or(anyhow!("Instance does not exist"))?;
 	let (snapshot_dir, index) = instance.open_snapshot_index(&data.paths)?;
 

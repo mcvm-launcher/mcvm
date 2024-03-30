@@ -15,11 +15,12 @@ use self::update::manager::UpdateManager;
 
 use super::config::profile::GameModifications;
 use super::config::profile::ProfilePackageConfiguration;
+use super::id::InstanceRef;
 use super::id::{InstanceID, ProfileID};
 use mcvm_core::user::UserManager;
 
 /// A hashmap of InstanceIDs to Instances
-pub type InstanceRegistry = std::collections::HashMap<InstanceID, Instance>;
+pub type InstanceRegistry = std::collections::HashMap<InstanceRef, Instance>;
 
 /// A user profile which applies many settings to contained instances
 #[derive(Debug)]
@@ -62,6 +63,11 @@ impl Profile {
 		self.instances.push(instance);
 	}
 
+	/// Get the InstanceRef of an instance on this profile
+	pub fn get_inst_ref(&self, instance: &InstanceID) -> InstanceRef {
+		InstanceRef::new(self.id.clone(), instance.clone())
+	}
+
 	/// Create all the instances in this profile. Returns the version list.
 	pub async fn create_instances(
 		&mut self,
@@ -72,20 +78,26 @@ impl Profile {
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Vec<String>> {
 		for id in self.instances.iter_mut() {
-			let instance = reg.get(id).expect("Profile has unknown instance");
+			let inst_ref = InstanceRef::new(self.id.clone(), id.clone());
+			let instance = reg.get(&inst_ref).expect("Profile has unknown instance");
 			manager.add_requirements(instance.get_requirements());
 		}
 		let client = Client::new();
 		manager.fulfill_requirements(paths, &client, o).await?;
 		for id in self.instances.iter_mut() {
+			let inst_ref = InstanceRef::new(self.id.clone(), id.clone());
+
 			// FIXME: This sucks
 			let mut core = MCVMCore::new().context("Failed to initialize core")?;
 			core.get_users().steal_users(users);
+
 			let mut installed_version = core
 				.get_version(&self.version, o)
 				.await
 				.context("Failed to get version")?;
-			let instance = reg.get_mut(id).expect("Profile has unknown instance");
+			let instance = reg
+				.get_mut(&inst_ref)
+				.expect("Profile has unknown instance");
 			{
 				instance
 					.create(&mut installed_version, &manager, paths, users, &client, o)

@@ -28,7 +28,7 @@ use preferences::ConfigPreferences;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
-use super::id::ProfileID;
+use super::id::{InstanceRef, ProfileID};
 use super::profile::{InstanceRegistry, Profile};
 use crate::io::files::paths::Paths;
 use crate::pkg::reg::PkgRegistry;
@@ -186,11 +186,13 @@ impl Config {
 				);
 			}
 
+			// Create instances from profiles
 			for (instance_id, instance_config) in profile_config.instances {
 				if !is_valid_identifier(&instance_id) {
 					bail!("Invalid string '{}'", instance_id.to_string());
 				}
-				if instances.contains_key(&instance_id) {
+				let inst_ref = InstanceRef::new(profile_id.clone(), instance_id.clone());
+				if instances.contains_key(&inst_ref) {
 					bail!("Duplicate instance '{instance_id}'");
 				}
 				let instance = read_instance_config(
@@ -202,7 +204,7 @@ impl Config {
 				)
 				.with_context(|| format!("Failed to configure instance '{instance_id}'"))?;
 				profile.add_instance(instance_id.clone());
-				instances.insert(instance_id, instance);
+				instances.insert(inst_ref, instance);
 			}
 
 			profile_config.packages.validate()?;
