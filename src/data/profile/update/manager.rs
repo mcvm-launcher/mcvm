@@ -26,16 +26,24 @@ pub enum UpdateRequirement {
 	ClientLoggingConfig,
 }
 
-/// Manager for when we are updating profile files.
-/// It will keep track of files we have already downloaded, manage task requirements, etc
+/// Settings for updating
 #[derive(Debug)]
-pub struct UpdateManager {
+pub struct UpdateSettings {
 	/// Options for printing / output
 	pub print: PrintOptions,
 	/// Whether to force file updates
 	pub force: bool,
 	/// Whether we will prioritize local files instead of remote ones
 	pub allow_offline: bool,
+}
+
+/// Manager for when we are updating profile files.
+/// It will keep track of files we have already downloaded, manage task requirements, etc
+#[derive(Debug)]
+pub struct UpdateManager {
+	/// Settings for the update
+	pub settings: UpdateSettings,
+	/// Update requirements that are fulfilled
 	requirements: HashSet<UpdateRequirement>,
 	/// File paths that are added when they have been updated by other functions
 	files: HashSet<PathBuf>,
@@ -51,10 +59,14 @@ pub struct UpdateManager {
 impl UpdateManager {
 	/// Create a new UpdateManager
 	pub fn new(print: PrintOptions, force: bool, allow_offline: bool) -> Self {
-		Self {
+		let settings = UpdateSettings {
 			print,
 			force,
 			allow_offline,
+		};
+
+		Self {
+			settings,
 			requirements: HashSet::new(),
 			files: HashSet::new(),
 			options: None,
@@ -91,7 +103,7 @@ impl UpdateManager {
 
 	/// Whether a file needs to be updated
 	pub fn should_update_file(&self, file: &Path) -> bool {
-		if self.force {
+		if self.settings.force {
 			!self.files.contains(file) || !file.exists()
 		} else {
 			!file.exists()
@@ -110,16 +122,30 @@ impl UpdateManager {
 		client: &Client,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
-		let fq_required = matches!(
-			self.requirements
-				.iter()
-				.find(|x| matches!(x, UpdateRequirement::FabricQuilt(..))),
-			Some(..)
-		);
+		// Setup the core
+		let (core, version_info) = self.setup_core(o).await.context("Failed to setup core")?;
 
+		self.update_fabric_quilt(&core, &version_info, paths, client, o)
+			.await
+			.context("Failed to update Fabric/Quilt")?;
+
+		self.update_options(paths)
+			.context("Failed to update game options")?;
+
+		self.version_info.fill(version_info);
+
+		Ok(())
+	}
+
+	/// Sets up the core and version
+	async fn setup_core(
+		&mut self,
+		o: &mut impl MCVMOutput,
+	) -> anyhow::Result<(MCVMCore, VersionInfo)> {
+		// Setup the core
 		let core_config = mcvm_core::ConfigBuilder::new()
-			.allow_offline(self.allow_offline)
-			.force_reinstall(self.force)
+			.allow_offline(self.settings.allow_offline)
+			.force_reinstall(self.settings.force)
 			.build();
 		let mut core = MCVMCore::with_config(core_config).context("Failed to initialize core")?;
 		let version_info = {
@@ -131,7 +157,28 @@ impl UpdateManager {
 			vers.get_version_info()
 		};
 
-		if fq_required {
+		Ok((core, version_info))
+	}
+
+	/// Update Fabric or Quilt if it is required
+	async fn update_fabric_quilt(
+		&mut self,
+		core: &MCVMCore,
+		version_info: &VersionInfo,
+		paths: &Paths,
+		client: &Client,
+		o: &mut impl MCVMOutput,
+	) -> anyhow::Result<()> {
+		// Check if we need to update
+		let required = matches!(
+			self.requirements
+				.iter()
+				.find(|x| matches!(x, UpdateRequirement::FabricQuilt(..))),
+			Some(..)
+		);
+
+		// Update Fabric / Quilt
+		if required {
 			for req in self.requirements.iter() {
 				if let UpdateRequirement::FabricQuilt(mode, side) = req {
 					if self.fq_meta.is_empty() {
@@ -170,15 +217,16 @@ impl UpdateManager {
 			}
 		}
 
+		Ok(())
+	}
+
+	/// Update options if they need to be updated
+	fn update_options(&mut self, paths: &Paths) -> anyhow::Result<()> {
 		if self.has_requirement(UpdateRequirement::Options) {
 			let path = crate::io::options::get_path(paths);
-			let options = read_options(&path)
-				.await
-				.context("Failed to read options.json")?;
+			let options = read_options(&path).context("Failed to read options.json")?;
 			self.options = options;
 		}
-
-		self.version_info.fill(version_info);
 
 		Ok(())
 	}
@@ -195,6 +243,13 @@ impl UpdateMethodResult {
 	/// Create a new UpdateMethodResult
 	pub fn new() -> Self {
 		Self::default()
+	}
+
+	/// Create a new UpdateMethodResult from one path
+	pub fn from_path(path: PathBuf) -> Self {
+		let mut out = Self::new();
+		out.files_updated.insert(path);
+		out
 	}
 
 	/// Merges this result with another one

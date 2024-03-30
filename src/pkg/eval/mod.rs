@@ -140,6 +140,19 @@ pub struct EvalParameters {
 	pub worlds: Vec<String>,
 }
 
+impl EvalParameters {
+	/// Create new EvalParameters with default parameters and a side
+	pub fn new(side: Side) -> Self {
+		Self {
+			side,
+			features: Vec::new(),
+			perms: EvalPermissions::default(),
+			stability: PackageStability::default(),
+			worlds: Vec::new(),
+		}
+	}
+}
+
 /// Persistent state for evaluation
 #[derive(Debug, Clone)]
 pub struct EvalData<'a> {

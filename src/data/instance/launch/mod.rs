@@ -35,6 +35,7 @@ impl Instance {
 			MessageContents::StartProcess("Checking for updates".into()),
 			MessageLevel::Important,
 		);
+		// Setup the core
 		let core_config = mcvm_core::ConfigBuilder::new()
 			.ms_client_id(ms_client_id)
 			.allow_offline(true)
@@ -125,13 +126,3 @@ pub struct WrapperCommand {
 	/// The command's arguments
 	pub args: Vec<String>,
 }
-
-// /// Get the name of the launch log file
-// fn log_file_name(instance_id: &str) -> anyhow::Result<String> {
-// 	Ok(format!("{instance_id}-{}.txt", utc_timestamp()?))
-// }
-
-// /// Get the path to the launch log file
-// fn log_file_path(instance_id: &str, paths: &Paths) -> anyhow::Result<PathBuf> {
-// 	Ok(paths.launch_logs.join(log_file_name(instance_id)?))
-// }

@@ -4,12 +4,12 @@ use itertools::Itertools;
 use mcvm_pkg::repo::PackageFlag;
 use mcvm_pkg::PkgRequest;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
-use mcvm_shared::pkg::{ArcPkgReq, PackageID, PackageStability};
+use mcvm_shared::pkg::{ArcPkgReq, PackageID};
 
 use crate::data::config::package::PackageConfig;
 use crate::data::id::InstanceID;
 use crate::data::profile::Profile;
-use crate::pkg::eval::{resolve, EvalConstants, EvalInput, EvalParameters, EvalPermissions};
+use crate::pkg::eval::{resolve, EvalConstants, EvalInput, EvalParameters};
 use crate::util::select_random_n_items_from_list;
 
 use super::ProfileUpdateContext;
@@ -24,48 +24,46 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 	ctx: &mut ProfileUpdateContext<'a, O>,
 	force: bool,
 ) -> anyhow::Result<HashSet<ArcPkgReq>> {
+	// Resolve dependencies
 	ctx.output.display(
 		MessageContents::StartProcess("Resolving package dependencies".into()),
 		MessageLevel::Important,
 	);
-	let (batched, resolved) = resolve_and_batch(profile, global_packages, constants, ctx)
+	let resolved_packages = resolve_and_batch(profile, global_packages, constants, ctx)
 		.await
 		.context("Failed to resolve dependencies for profile")?;
 
-	for (pkg, ..) in &batched {
-		check_package(ctx, pkg)
-			.await
-			.with_context(|| format!("Failed to check package {pkg}"))?;
-	}
-
+	// Install each package one after another onto all of it's instances
 	ctx.output.display(
 		MessageContents::StartProcess("Installing packages".into()),
 		MessageLevel::Important,
 	);
-	for (package, package_instances) in batched.iter().sorted_by_key(|x| x.0) {
+	for (package, package_instances) in resolved_packages
+		.package_to_instances
+		.iter()
+		.sorted_by_key(|x| x.0)
+	{
+		// Check the package to display warnings
+		check_package(ctx, package)
+			.await
+			.with_context(|| format!("Failed to check package {package}"))?;
+
 		ctx.output.start_process();
 
+		// Install the package on it's instances
 		let mut notices = Vec::new();
 		for instance_id in package_instances {
 			let instance = ctx.instances.get_mut(instance_id).ok_or(anyhow!(
 				"Instance '{instance_id}' does not exist in the registry"
 			))?;
 
-			let configured_packages =
-				instance.get_configured_packages(global_packages, &profile.packages);
-			let package_config = configured_packages
-				.into_iter()
-				.find(|x| x.get_pkg_id() == package.id)
-				.expect("Package should still be configured")
-				.clone();
+			// Get the configuration for the package or the default if it is not configured by the user
+			let package_config = instance
+				.get_package_config(&package.id, global_packages, &profile.packages)
+				.cloned()
+				.unwrap_or_else(|| PackageConfig::Basic(package.id.clone()));
 
-			let params = EvalParameters {
-				side: instance.kind.to_side(),
-				features: Vec::new(),
-				perms: EvalPermissions::Standard,
-				stability: PackageStability::Stable,
-				worlds: Vec::new(),
-			};
+			let params = EvalParameters::new(instance.kind.to_side());
 
 			ctx.output.display(
 				format_package_update_message(
@@ -93,6 +91,8 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 				.with_context(|| {
 					format!("Failed to install package '{package}' for instance '{instance_id}'")
 				})?;
+
+			// Add any notices to the list
 			notices.extend(
 				result
 					.notices
@@ -110,6 +110,7 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 		);
 		ctx.output.end_process();
 
+		// Display any accumulated notices from the installation
 		for (instance, notice) in notices {
 			ctx.output.display(
 				format_package_update_message(
@@ -121,7 +122,9 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 			);
 		}
 	}
-	for (instance_id, packages) in resolved {
+
+	// Use the instance-package map to remove unused packages and addons
+	for (instance_id, packages) in resolved_packages.instance_to_packages {
 		let instance = ctx.instances.get(&instance_id).ok_or(anyhow!(
 			"Instance '{instance_id}' does not exist in the registry"
 		))?;
@@ -148,8 +151,9 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 		}
 	}
 
+	// Get the set of unique packages
 	let mut out = HashSet::new();
-	out.extend(batched.keys().cloned());
+	out.extend(resolved_packages.package_to_instances.keys().cloned());
 
 	Ok(out)
 }
@@ -162,23 +166,15 @@ async fn resolve_and_batch<'a, O: MCVMOutput>(
 	global_packages: &[PackageConfig],
 	constants: &EvalConstants,
 	ctx: &mut ProfileUpdateContext<'a, O>,
-) -> anyhow::Result<(
-	HashMap<ArcPkgReq, Vec<InstanceID>>,
-	HashMap<InstanceID, Vec<ArcPkgReq>>,
-)> {
+) -> anyhow::Result<ResolvedPackages> {
 	let mut batched: HashMap<ArcPkgReq, Vec<InstanceID>> = HashMap::new();
 	let mut resolved = HashMap::new();
+
 	for instance_id in &profile.instances {
 		let instance = ctx.instances.get(instance_id).ok_or(anyhow!(
 			"Instance '{instance_id}' does not exist in the registry"
 		))?;
-		let params = EvalParameters {
-			side: instance.kind.to_side(),
-			features: Vec::new(),
-			perms: EvalPermissions::Standard,
-			stability: PackageStability::Stable,
-			worlds: Vec::new(),
-		};
+		let params = EvalParameters::new(instance.kind.to_side());
 		let instance_pkgs = instance.get_configured_packages(global_packages, &profile.packages);
 		let instance_resolved = resolve(
 			&instance_pkgs,
@@ -203,7 +199,58 @@ async fn resolve_and_batch<'a, O: MCVMOutput>(
 		resolved.insert(instance_id.clone(), instance_resolved.packages);
 	}
 
-	Ok((batched, resolved))
+	Ok(ResolvedPackages {
+		package_to_instances: batched,
+		instance_to_packages: resolved,
+	})
+}
+
+struct ResolvedPackages {
+	/// A mapping of package IDs to all of the instances they are installed on
+	pub package_to_instances: HashMap<ArcPkgReq, Vec<InstanceID>>,
+	/// A reverse mapping of instance IDs to all of the packages they have resolved
+	pub instance_to_packages: HashMap<InstanceID, Vec<ArcPkgReq>>,
+}
+
+/// Checks a package with the registry to report any warnings about it
+async fn check_package<'a, O: MCVMOutput>(
+	ctx: &mut ProfileUpdateContext<'a, O>,
+	pkg: &ArcPkgReq,
+) -> anyhow::Result<()> {
+	let flags = ctx
+		.packages
+		.flags(pkg, ctx.paths, ctx.client, ctx.output)
+		.await
+		.context("Failed to get flags for package")?;
+	if flags.contains(&PackageFlag::OutOfDate) {
+		ctx.output.display(
+			MessageContents::Warning(format!("Package {pkg} has been flagged as out of date")),
+			MessageLevel::Important,
+		);
+	}
+
+	if flags.contains(&PackageFlag::Deprecated) {
+		ctx.output.display(
+			MessageContents::Warning(format!("Package {pkg} has been flagged as deprecated")),
+			MessageLevel::Important,
+		);
+	}
+
+	if flags.contains(&PackageFlag::Insecure) {
+		ctx.output.display(
+			MessageContents::Error(format!("Package {pkg} has been flagged as insecure")),
+			MessageLevel::Important,
+		);
+	}
+
+	if flags.contains(&PackageFlag::Malicious) {
+		ctx.output.display(
+			MessageContents::Error(format!("Package {pkg} has been flagged as malicious")),
+			MessageLevel::Important,
+		);
+	}
+
+	Ok(())
 }
 
 /// Prints support messages about installed packages when updating
@@ -258,45 +305,4 @@ fn format_package_update_message(
 	};
 
 	MessageContents::ListItem(Box::new(msg))
-}
-
-/// Checks a package with the registry to report any warnings about it
-async fn check_package<'a, O: MCVMOutput>(
-	ctx: &mut ProfileUpdateContext<'a, O>,
-	pkg: &ArcPkgReq,
-) -> anyhow::Result<()> {
-	let flags = ctx
-		.packages
-		.flags(pkg, ctx.paths, ctx.client, ctx.output)
-		.await
-		.context("Failed to get flags for package")?;
-	if flags.contains(&PackageFlag::OutOfDate) {
-		ctx.output.display(
-			MessageContents::Warning(format!("Package {pkg} has been flagged as out of date")),
-			MessageLevel::Important,
-		);
-	}
-
-	if flags.contains(&PackageFlag::Deprecated) {
-		ctx.output.display(
-			MessageContents::Warning(format!("Package {pkg} has been flagged as deprecated")),
-			MessageLevel::Important,
-		);
-	}
-
-	if flags.contains(&PackageFlag::Insecure) {
-		ctx.output.display(
-			MessageContents::Error(format!("Package {pkg} has been flagged as insecure")),
-			MessageLevel::Important,
-		);
-	}
-
-	if flags.contains(&PackageFlag::Malicious) {
-		ctx.output.display(
-			MessageContents::Error(format!("Package {pkg} has been flagged as malicious")),
-			MessageLevel::Important,
-		);
-	}
-
-	Ok(())
 }

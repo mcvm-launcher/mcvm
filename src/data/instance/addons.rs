@@ -103,6 +103,8 @@ impl Instance {
 		})
 	}
 
+	/// Hardlinks the addon from the path in addon storage to the correct in the instance,
+	/// under the specified directory
 	fn link_addon(
 		dir: &Path,
 		addon: &Addon,

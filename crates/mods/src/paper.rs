@@ -1,4 +1,4 @@
-use std::path::PathBuf;
+use std::{fmt::Display, path::PathBuf};
 
 use anyhow::{anyhow, Context};
 use mcvm_core::{net::download, MCVMCore};
@@ -26,6 +26,15 @@ impl Mode {
 		match self {
 			Self::Paper => "paper",
 			Self::Folia => "folia",
+		}
+	}
+}
+
+impl Display for Mode {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Paper => write!(f, "Paper"),
+			Self::Folia => write!(f, "Folia"),
 		}
 	}
 }

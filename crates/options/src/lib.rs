@@ -39,7 +39,7 @@ pub struct Options {
 }
 
 /// Read the options.json file
-pub async fn read_options(path: &Path) -> anyhow::Result<Option<Options>> {
+pub fn read_options(path: &Path) -> anyhow::Result<Option<Options>> {
 	if !path.exists() {
 		return Ok(None);
 	}

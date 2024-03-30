@@ -412,6 +412,23 @@ impl Instance {
 		out
 	}
 
+	/// Gets the configuration for a specific package on this instance
+	pub fn get_package_config<'a>(
+		&'a self,
+		package: &str,
+		global: &'a [PackageConfig],
+		profile: &'a ProfilePackageConfiguration,
+	) -> Option<&'a PackageConfig> {
+		let configured_packages = self.get_configured_packages(global, profile);
+		let package_config = configured_packages
+			.into_iter()
+			.find(|x| x.get_pkg_id() == package.into());
+		package_config
+	}
+}
+
+/// Snapshot-related functions
+impl Instance {
 	/// Starts snapshot interactions by generating the path and opening the index
 	pub fn open_snapshot_index(&self, paths: &Paths) -> anyhow::Result<(PathBuf, snapshot::Index)> {
 		let snapshot_dir = snapshot::get_snapshot_directory(&self.id, paths);
