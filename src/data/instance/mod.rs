@@ -36,7 +36,9 @@ use super::config::profile::GameModifications;
 use super::id::InstanceID;
 use super::profile::update::manager::UpdateManager;
 
+use std::collections::HashMap;
 use std::fs;
+use std::future::Future;
 use std::path::PathBuf;
 
 /// An instance of the game on a profile
@@ -328,16 +330,70 @@ impl Instance {
 			versions: eval_input.constants.version_list.clone(),
 		};
 
+		let (eval, tasks) = self
+			.get_package_addon_tasks(pkg, eval_input, reg, paths, force, client, o)
+			.await
+			.context("Failed to get download tasks for installing package")?;
+
+		for task in tasks.into_values() {
+			task.await.context("Failed to install addon")?;
+		}
+
+		self.install_eval_data(pkg, &eval, &version_info, paths, lock, o)
+			.await
+			.context("Failed to install evaluation data on instance")?;
+
+		Ok(eval)
+	}
+
+	/// Gets the tasks for installing addons for a package by evaluating it
+	pub async fn get_package_addon_tasks<'a>(
+		&mut self,
+		pkg: &ArcPkgReq,
+		eval_input: EvalInput<'a>,
+		reg: &mut PkgRegistry,
+		paths: &Paths,
+		force: bool,
+		client: &Client,
+		o: &mut impl MCVMOutput,
+	) -> anyhow::Result<(
+		EvalData<'a>,
+		HashMap<String, impl Future<Output = anyhow::Result<()>> + Send + 'static>,
+	)> {
+		let eval = reg
+			.eval(pkg, paths, Routine::Install, eval_input, client, o)
+			.await
+			.context("Failed to evaluate package")?;
+
+		let mut tasks = HashMap::new();
+		for addon in eval.addon_reqs.iter() {
+			if addon::should_update(&addon.addon, paths, &self.id) || force {
+				let task = addon
+					.get_acquire_task(paths, &self.id, client)
+					.context("Failed to get task for acquiring addon")?;
+				tasks.insert(addon.get_unique_id(&self.id), task);
+			}
+		}
+
+		Ok((eval, tasks))
+	}
+
+	/// Install the EvalData resulting from evaluating a package onto this instance
+	pub async fn install_eval_data<'a>(
+		&mut self,
+		pkg: &ArcPkgReq,
+		eval: &EvalData<'a>,
+		// eval_input: EvalInput<'a>,
+		version_info: &VersionInfo,
+		paths: &Paths,
+		lock: &mut Lockfile,
+		o: &mut impl MCVMOutput,
+	) -> anyhow::Result<()> {
 		// Get the configuration for the package or the default if it is not configured by the user
 		let pkg_config = self
 			.get_package_config(&pkg.id)
 			.cloned()
 			.unwrap_or_else(|| PackageConfig::from_id(pkg.id.clone()));
-
-		let eval = reg
-			.eval(pkg, paths, Routine::Install, eval_input, client, o)
-			.await
-			.context("Failed to evaluate package")?;
 
 		if eval.uses_custom_instructions {
 			o.display(
@@ -401,12 +457,6 @@ impl Instance {
 			.context("Failed to update package in lockfile")?;
 
 		for addon in eval.addon_reqs.iter() {
-			if addon::should_update(&addon.addon, paths, &self.id) || force {
-				addon
-					.acquire(paths, &self.id, client)
-					.await
-					.with_context(|| format!("Failed to acquire addon '{}'", addon.addon.id))?;
-			}
 			self.create_addon(&addon.addon, &pkg_config.worlds, paths, &version_info)
 				.with_context(|| format!("Failed to install addon '{}'", addon.addon.id))?;
 		}
@@ -416,7 +466,7 @@ impl Instance {
 				.context("Failed to remove addon file from instance")?;
 		}
 
-		Ok(eval)
+		Ok(())
 	}
 
 	/// Gets all of the configured packages for this instance

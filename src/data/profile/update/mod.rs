@@ -81,6 +81,10 @@ pub async fn update_profiles(
 		let print_options = PrintOptions::new(true, 0);
 		let mut manager = UpdateManager::new(print_options, force, false);
 		manager.set_version(&profile.version);
+		manager
+			.fulfill_requirements(paths, ctx.client, ctx.output)
+			.await
+			.context("Failed to fulfill update manager")?;
 		let mc_version = manager.version_info.get().version.clone();
 
 		let paper_properties = get_paper_properties(profile, &mc_version, &mut ctx)

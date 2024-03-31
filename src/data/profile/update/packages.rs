@@ -1,10 +1,13 @@
 use std::collections::{HashMap, HashSet};
+use std::future::Future;
 
 use itertools::Itertools;
 use mcvm_pkg::repo::PackageFlag;
 use mcvm_pkg::PkgRequest;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::pkg::{ArcPkgReq, PackageID};
+use mcvm_shared::versions::VersionInfo;
+use tokio::task::JoinSet;
 
 use crate::data::id::InstanceID;
 use crate::data::profile::Profile;
@@ -23,6 +26,7 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 	force: bool,
 ) -> anyhow::Result<HashSet<ArcPkgReq>> {
 	// Resolve dependencies
+	ctx.output.start_process();
 	ctx.output.display(
 		MessageContents::StartProcess("Resolving package dependencies".into()),
 		MessageLevel::Important,
@@ -30,12 +34,19 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 	let resolved_packages = resolve_and_batch(profile, constants, ctx)
 		.await
 		.context("Failed to resolve dependencies for profile")?;
-
-	// Install each package one after another onto all of it's instances
 	ctx.output.display(
-		MessageContents::StartProcess("Installing packages".into()),
+		MessageContents::Success("Dependencies resolved".into()),
 		MessageLevel::Important,
 	);
+	ctx.output.end_process();
+
+	// Evaluate first to install all of the addons
+	ctx.output.display(
+		MessageContents::StartProcess("Acquiring addons".into()),
+		MessageLevel::Important,
+	);
+	let mut tasks = HashMap::new();
+	let mut evals = HashMap::new();
 	for (package, package_instances) in resolved_packages
 		.package_to_instances
 		.iter()
@@ -46,8 +57,6 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 			.await
 			.with_context(|| format!("Failed to check package {package}"))?;
 
-		ctx.output.start_process();
-
 		// Install the package on it's instances
 		let mut notices = Vec::new();
 		for instance_id in package_instances {
@@ -56,51 +65,34 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 				"Instance '{instance_id}' does not exist in the registry"
 			))?;
 
-			let params = EvalParameters::new(instance.kind.to_side());
-
-			ctx.output.display(
-				format_package_update_message(
-					package,
-					Some(instance_id),
-					MessageContents::StartProcess("Installing".into()),
-				),
-				MessageLevel::Important,
-			);
+			let mut params = EvalParameters::new(instance.kind.to_side());
+			params.stability = profile.default_stability;
 
 			let input = EvalInput { constants, params };
-			let result = instance
-				.install_package(
+			let (eval, new_tasks) = instance
+				.get_package_addon_tasks(
 					package,
 					input,
 					ctx.packages,
 					ctx.paths,
-					ctx.lock,
 					force,
 					ctx.client,
 					ctx.output,
 				)
 				.await
-				.with_context(|| {
-					format!("Failed to install package '{package}' for instance '{instance_id}'")
-				})?;
+				.context("Failed to get addon install tasks for package on instance")?;
+			tasks.extend(new_tasks);
 
 			// Add any notices to the list
 			notices.extend(
-				result
-					.notices
+				eval.notices
 					.iter()
 					.map(|x| (instance_id.clone(), x.to_owned())),
 			);
+
+			// Add the eval to the map
+			evals.insert((package, instance_id), eval);
 		}
-		ctx.output.display(
-			format_package_update_message(
-				package,
-				None,
-				MessageContents::Success("Installed".into()),
-			),
-			MessageLevel::Important,
-		);
-		ctx.output.end_process();
 
 		// Display any accumulated notices from the installation
 		for (instance, notice) in notices {
@@ -113,6 +105,65 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 				MessageLevel::Important,
 			);
 		}
+	}
+
+	// Run the acquire tasks
+	run_addon_tasks(tasks)
+		.await
+		.context("Failed to acquire addons")?;
+
+	ctx.output.display(
+		MessageContents::Success("Addons acquired".into()),
+		MessageLevel::Important,
+	);
+
+	// Install each package one after another onto all of its instances
+	ctx.output.display(
+		MessageContents::StartProcess("Installing packages".into()),
+		MessageLevel::Important,
+	);
+	for (package, package_instances) in resolved_packages
+		.package_to_instances
+		.iter()
+		.sorted_by_key(|x| x.0)
+	{
+		ctx.output.start_process();
+
+		for instance_id in package_instances {
+			let inst_ref = profile.get_inst_ref(instance_id);
+			let instance = ctx.instances.get_mut(&inst_ref).ok_or(anyhow!(
+				"Instance '{instance_id}' does not exist in the registry"
+			))?;
+
+			let version_info = VersionInfo {
+				version: constants.version.clone(),
+				versions: constants.version_list.clone(),
+			};
+			let eval = evals
+				.get(&(package, instance_id))
+				.expect("Evaluation should be in map");
+			instance
+				.install_eval_data(
+					package,
+					eval,
+					&version_info,
+					ctx.paths,
+					ctx.lock,
+					ctx.output,
+				)
+				.await
+				.context("Failed to install package on instance")?;
+		}
+
+		ctx.output.display(
+			format_package_update_message(
+				package,
+				None,
+				MessageContents::Success("Installed".into()),
+			),
+			MessageLevel::Important,
+		);
+		ctx.output.end_process();
 	}
 
 	// Use the instance-package map to remove unused packages and addons
@@ -151,6 +202,24 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 	Ok(out)
 }
 
+/// Evaluates addon acquire tasks efficiently with a progress display to the user
+async fn run_addon_tasks(
+	tasks: HashMap<String, impl Future<Output = anyhow::Result<()>> + Send + 'static>,
+) -> anyhow::Result<()> {
+	let mut task_set = JoinSet::new();
+	for task in tasks.into_values() {
+		task_set.spawn(task);
+	}
+
+	while let Some(result) = task_set.join_next().await {
+		result
+			.context("Failed to run addon acquire task")?
+			.context("Failed to acquire addon")?;
+	}
+
+	Ok(())
+}
+
 /// Resolve packages and create a mapping of packages to a list of instances.
 /// This allows us to update packages in a reasonable order to the user.
 /// It also returns a map of instances to packages so that unused packages can be removed
@@ -167,7 +236,9 @@ async fn resolve_and_batch<'a, O: MCVMOutput>(
 		let instance = ctx.instances.get(&inst_ref).ok_or(anyhow!(
 			"Instance '{instance_id}' does not exist in the registry"
 		))?;
-		let params = EvalParameters::new(instance.kind.to_side());
+		let mut params = EvalParameters::new(instance.kind.to_side());
+		params.stability = profile.default_stability;
+
 		let instance_pkgs = instance.get_configured_packages();
 		let instance_resolved = resolve(
 			instance_pkgs,

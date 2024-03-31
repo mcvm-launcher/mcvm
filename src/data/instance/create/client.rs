@@ -58,8 +58,7 @@ impl Instance {
 		if !keys.is_empty() {
 			let options_path = self.dirs.get().game_dir.join("options.txt");
 			let data_version =
-				mcvm_core::io::minecraft::get_data_version(version_info, &paths.core)
-					.context("Failed to obtain data version")?;
+				mcvm_core::io::minecraft::get_data_version(version_info, &paths.core);
 			write_options_txt(keys, &options_path, &data_version)
 				.await
 				.context("Failed to write options.txt")?;
