@@ -8,7 +8,10 @@ use mcvm_pkg::RequiredPackage;
 use mcvm_shared::pkg::PackageID;
 
 use super::conditions::{check_arch_condition, check_os_condition};
-use super::{create_valid_addon_request, EvalData, EvalInput, Routine};
+use super::{
+	create_valid_addon_request, EvalData, EvalInput, Routine, MAX_NOTICE_CHARACTERS,
+	MAX_NOTICE_INSTRUCTIONS,
+};
 
 /// Evaluate a declarative package
 pub fn eval_declarative_package<'a>(
@@ -119,6 +122,16 @@ fn eval_declarative_package_impl<'a>(
 		.extend(relations.recommendations.iter().cloned());
 
 	eval_data.notices.extend(notices);
+
+	// Check notices
+	if eval_data.notices.len() > MAX_NOTICE_INSTRUCTIONS {
+		bail!("Max number of notices was exceded (>{MAX_NOTICE_INSTRUCTIONS})");
+	}
+	for notice in &eval_data.notices {
+		if notice.len() > MAX_NOTICE_CHARACTERS {
+			bail!("Notice message is too long (>{MAX_NOTICE_CHARACTERS})");
+		}
+	}
 
 	Ok(eval_data)
 }
