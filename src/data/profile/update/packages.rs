@@ -108,7 +108,7 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 	}
 
 	// Run the acquire tasks
-	run_addon_tasks(tasks)
+	run_addon_tasks(tasks, ctx.output)
 		.await
 		.context("Failed to acquire addons")?;
 
@@ -205,17 +205,30 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 /// Evaluates addon acquire tasks efficiently with a progress display to the user
 async fn run_addon_tasks(
 	tasks: HashMap<String, impl Future<Output = anyhow::Result<()>> + Send + 'static>,
+	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<()> {
+	let total_count = tasks.len();
 	let mut task_set = JoinSet::new();
 	for task in tasks.into_values() {
 		task_set.spawn(task);
 	}
 
+	o.start_process();
 	while let Some(result) = task_set.join_next().await {
 		result
 			.context("Failed to run addon acquire task")?
 			.context("Failed to acquire addon")?;
+
+		// Update progress bar
+		let progress = MessageContents::Progress {
+			current: (total_count - task_set.len()) as u32,
+			total: total_count as u32,
+		};
+
+		o.display(progress, MessageLevel::Important);
 	}
+
+	o.end_process();
 
 	Ok(())
 }
