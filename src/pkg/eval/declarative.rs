@@ -146,17 +146,31 @@ fn check_multiple_condition_sets<'a>(
 
 /// Filtering function for addon version picking and rule checking
 fn check_condition_set<'a>(conditions: &DeclarativeConditionSet, input: &'a EvalInput<'a>) -> bool {
-	if let Some(minecraft_versions) = &conditions.minecraft_versions {
-		if !minecraft_versions
-			.iter()
-			.any(|x| x.matches_single(&input.constants.version, &input.constants.version_list))
-		{
+	if let Some(stability) = &conditions.stability {
+		if stability > &input.params.stability {
 			return false;
 		}
 	}
 
 	if let Some(side) = conditions.side {
 		if side != input.params.side {
+			return false;
+		}
+	}
+
+	if let Some(features) = &conditions.features {
+		for feature in features.iter() {
+			if !input.params.features.contains(feature) {
+				return false;
+			}
+		}
+	}
+
+	if let Some(minecraft_versions) = &conditions.minecraft_versions {
+		if !minecraft_versions
+			.iter()
+			.any(|x| x.matches_single(&input.constants.version, &input.constants.version_list))
+		{
 			return false;
 		}
 	}
@@ -180,20 +194,6 @@ fn check_condition_set<'a>(conditions: &DeclarativeConditionSet, input: &'a Eval
 			.any(|x| x.matches(&input.constants.modifications.server_type))
 		{
 			return false;
-		}
-	}
-
-	if let Some(stability) = &conditions.stability {
-		if stability > &input.params.stability {
-			return false;
-		}
-	}
-
-	if let Some(features) = &conditions.features {
-		for feature in features.iter() {
-			if !input.params.features.contains(feature) {
-				return false;
-			}
 		}
 	}
 
