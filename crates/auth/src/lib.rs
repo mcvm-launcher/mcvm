@@ -10,3 +10,5 @@
 pub mod mc;
 /// Implementation of authentication with MSA for Minecraft auth
 mod mc_msa;
+/// Database for storing authentication information
+pub mod db;

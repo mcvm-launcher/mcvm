@@ -1,0 +1,109 @@
+use std::fs::File;
+use std::path::{Path, PathBuf};
+
+use anyhow::Context;
+use mcvm_shared::util::utc_timestamp;
+use serde::{Deserialize, Serialize};
+
+/// The buffer time in seconds before a token actually expires to still consider it expired
+/// because it won't be valid for very long
+const EXPIRATION_BUFFER: u64 = 120;
+
+/// A handle to the authentication database where things like credentials are stored
+pub struct AuthDatabase {
+	/// The directory where the database is stored
+	dir: PathBuf,
+	/// The contents of the main database file
+	contents: DatabaseContents,
+}
+
+impl AuthDatabase {
+	/// Open the database in the specified directory
+	pub fn open(path: &Path) -> anyhow::Result<Self> {
+		std::fs::create_dir_all(path).context("Failed to ensure database directory exists")?;
+		let database_path = Self::get_db_path(path);
+		let contents = if database_path.exists() {
+			let file = File::open(&database_path).context("Failed to open database file")?;
+			serde_json::from_reader(file).context("Failed to deserialize database contents")?
+		} else {
+			DatabaseContents::default()
+		};
+
+		let out = Self {
+			dir: path.to_owned(),
+			contents,
+		};
+
+		Ok(out)
+	}
+
+	/// Write the updated contents of the database handler to the database
+	pub fn write(&self) -> anyhow::Result<()> {
+		let path = Self::get_db_path(&self.dir);
+		let file = File::create(path).context("Failed to create database file")?;
+		serde_json::to_writer_pretty(file, &self.contents)
+			.context("Failed to write database contents")?;
+
+		Ok(())
+	}
+
+	/// Get the path to the main database file
+	fn get_db_path(dir: &Path) -> PathBuf {
+		dir.join("db.json")
+	}
+
+	/// Get whether the current user is valid
+	pub fn is_user_valid(&self) -> bool {
+		if let Some(user) = &self.contents.user {
+			let Ok(now) = utc_timestamp() else {
+				return false;
+			};
+
+			return now < (user.expires - EXPIRATION_BUFFER);
+		} else {
+			false
+		}
+	}
+
+	/// Update the current user
+	pub fn update_user(&mut self, user: DatabaseUser) -> anyhow::Result<()> {
+		// Update the user
+		self.contents.user = Some(user);
+
+		// Update the DB
+		self.write().context("Failed to write to database")?;
+		Ok(())
+	}
+
+	/// Remove the current user
+	pub fn remove_user(&mut self) -> anyhow::Result<()> {
+		self.contents.user = None;
+
+		self.write().context("Failed to write to database")?;
+		Ok(())
+	}
+
+	/// Get the current user, if it is present
+	pub fn get_user(&self) -> Option<&DatabaseUser> {
+		self.contents.user.as_ref()
+	}
+}
+
+/// Structure for the auth database
+#[derive(Serialize, Deserialize, Debug, Default)]
+#[serde(default)]
+struct DatabaseContents {
+	/// The currently held user
+	user: Option<DatabaseUser>,
+}
+
+/// A user in the database
+#[derive(Serialize, Deserialize, Debug, Default)]
+pub struct DatabaseUser {
+	/// A unique ID for the user
+	id: String,
+	/// The authentication token for the user
+	token: String,
+	/// When the authentication token will expire, as a UTC timestamp in seconds
+	expires: u64,
+}

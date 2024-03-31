@@ -149,7 +149,7 @@ pub fn merge_options<T>(left: Option<T>, right: Option<T>) -> Option<T> {
 	}
 }
 
-/// Gets the current UTC timestamp
+/// Gets the current UTC timestamp in seconds
 pub fn utc_timestamp() -> anyhow::Result<u64> {
 	Ok(SystemTime::now().duration_since(UNIX_EPOCH)?.as_secs())
 }
