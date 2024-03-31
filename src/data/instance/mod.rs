@@ -31,11 +31,11 @@ use std::path::PathBuf;
 #[derive(Debug)]
 pub struct Instance {
 	/// What type of instance this is
-	pub kind: InstKind,
+	pub(crate) kind: InstKind,
 	/// The ID of this instance
-	pub id: InstanceID,
+	pub(crate) id: InstanceID,
 	/// Directories of the instance
-	pub dirs: Later<InstanceDirs>,
+	pub(crate) dirs: Later<InstanceDirs>,
 	/// Configuration for the instance
 	config: InstanceStoredConfig,
 	/// Modification data
@@ -109,6 +109,26 @@ impl Instance {
 			dirs: Later::Empty,
 			modification_data: ModificationData::new(),
 		}
+	}
+
+	/// Get the kind of the instance
+	pub fn get_kind(&self) -> &InstKind {
+		&self.kind
+	}
+
+	/// Get the side of the instance
+	pub fn get_side(&self) -> Side {
+		self.kind.to_side()
+	}
+
+	/// Get the ID of the instance
+	pub fn get_id(&self) -> &InstanceID {
+		&self.id
+	}
+
+	/// Get the instance's directories
+	pub fn get_dirs(&self) -> &Later<InstanceDirs> {
+		&self.dirs
 	}
 }
 

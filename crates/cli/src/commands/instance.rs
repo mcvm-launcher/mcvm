@@ -6,7 +6,6 @@ use itertools::Itertools;
 use mcvm::data::config::Config;
 use mcvm::data::id::{InstanceRef, ProfileID};
 
-use mcvm::data::instance::InstKind;
 use mcvm::shared::Side;
 
 use super::CmdData;
@@ -68,7 +67,7 @@ async fn list(
 
 	for (id, instance) in config.instances.iter().sorted_by_key(|x| x.0) {
 		if let Some(side) = side {
-			if instance.kind.to_side() != side {
+			if instance.get_side() != side {
 				continue;
 			}
 		}
@@ -82,9 +81,9 @@ async fn list(
 		if raw {
 			println!("{id}");
 		} else {
-			match instance.kind {
-				InstKind::Client { .. } => cprintln!("{}<y!>{}", HYPHEN_POINT, id),
-				InstKind::Server { .. } => cprintln!("{}<c!>{}", HYPHEN_POINT, id),
+			match instance.get_side() {
+				Side::Client => cprintln!("{}<y!>{}", HYPHEN_POINT, id),
+				Side::Server => cprintln!("{}<c!>{}", HYPHEN_POINT, id),
 			}
 		}
 	}
@@ -109,7 +108,7 @@ pub async fn launch(
 	let (.., profile) = config
 		.profiles
 		.iter()
-		.find(|(.., profile)| profile.instances.contains(&instance.id))
+		.find(|(.., profile)| profile.instances.contains(instance.get_id()))
 		.expect("Instance does not belong to any profiles");
 
 	if let Some(user) = user {

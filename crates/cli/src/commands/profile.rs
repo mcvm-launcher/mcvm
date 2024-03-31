@@ -1,7 +1,6 @@
 use super::CmdData;
 use itertools::Itertools;
 use mcvm::data::id::ProfileID;
-use mcvm::data::instance::InstKind;
 use mcvm::data::profile::update::update_profiles;
 
 use anyhow::bail;
@@ -77,9 +76,9 @@ async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
 			let inst_ref = profile.get_inst_ref(inst_id);
 			if let Some(instance) = config.instances.get(&inst_ref) {
 				cprint!("   {}", HYPHEN_POINT);
-				match instance.kind {
-					InstKind::Client { .. } => cprint!("<y!>Client {}", inst_id),
-					InstKind::Server { .. } => cprint!("<c!>Server {}", inst_id),
+				match instance.get_side() {
+					Side::Client => cprint!("<y!>Client {}", inst_id),
+					Side::Server => cprint!("<c!>Server {}", inst_id),
 				}
 				cprintln!();
 			}
@@ -112,9 +111,9 @@ async fn list(data: &mut CmdData, raw: bool) -> anyhow::Result<()> {
 			for inst_id in profile.instances.iter() {
 				let inst_ref = profile.get_inst_ref(inst_id);
 				if let Some(instance) = config.instances.get(&inst_ref) {
-					match instance.kind {
-						InstKind::Client { .. } => cprintln!("   {}<y!>{}", HYPHEN_POINT, inst_id),
-						InstKind::Server { .. } => cprintln!("   {}<c!>{}", HYPHEN_POINT, inst_id),
+					match instance.get_side() {
+						Side::Client => cprintln!("   {}<y!>{}", HYPHEN_POINT, inst_id),
+						Side::Server => cprintln!("   {}<c!>{}", HYPHEN_POINT, inst_id),
 					}
 				}
 			}
