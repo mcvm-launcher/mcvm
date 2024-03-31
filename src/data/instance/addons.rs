@@ -42,42 +42,42 @@ impl Instance {
 		version_info: &VersionInfo,
 	) -> anyhow::Result<Vec<PathBuf>> {
 		self.ensure_dirs(paths)?;
-		let inst_dir = &self.dirs.get().inst_dir;
+		let game_dir = &self.dirs.get().game_dir;
 		Ok(match addon.kind {
 			AddonKind::ResourcePack => {
 				if let InstKind::Client { .. } = self.kind {
 					// Resource packs are texture packs on older versions
 					if VersionPattern::After("13w24a".into()).matches_info(version_info) {
-						vec![inst_dir.join("resourcepacks")]
+						vec![game_dir.join("resourcepacks")]
 					} else {
-						vec![inst_dir.join("texturepacks")]
+						vec![game_dir.join("texturepacks")]
 					}
 				} else {
 					vec![]
 				}
 			}
-			AddonKind::Mod => vec![inst_dir.join("mods")],
+			AddonKind::Mod => vec![game_dir.join("mods")],
 			AddonKind::Plugin => {
 				if let InstKind::Server { .. } = self.kind {
-					vec![inst_dir.join("plugins")]
+					vec![game_dir.join("plugins")]
 				} else {
 					vec![]
 				}
 			}
 			AddonKind::Shader => {
 				if let InstKind::Client { .. } = self.kind {
-					vec![inst_dir.join("shaderpacks")]
+					vec![game_dir.join("shaderpacks")]
 				} else {
 					vec![]
 				}
 			}
 			AddonKind::Datapack => {
 				if let Some(datapack_folder) = &self.config.datapack_folder {
-					vec![inst_dir.join(datapack_folder)]
+					vec![game_dir.join(datapack_folder)]
 				} else {
 					match &self.kind {
 						InstKind::Client { .. } => {
-							inst_dir
+							game_dir
 								.join("saves")
 								.read_dir()
 								.context("Failed to read saves directory")?
@@ -97,7 +97,7 @@ impl Instance {
 						}
 						InstKind::Server { world_name, .. } => {
 							let world_dir = world_name.as_deref().unwrap_or("world");
-							vec![inst_dir.join(world_dir).join("datapacks")]
+							vec![game_dir.join(world_dir).join("datapacks")]
 						}
 					}
 				}
