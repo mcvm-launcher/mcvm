@@ -14,10 +14,17 @@ pub const FD_SENSIBLE_LIMIT: usize = 128;
 #[cfg(not(target_os = "windows"))]
 pub const FD_SENSIBLE_LIMIT: usize = 64;
 
+/// The User-Agent header for requests
+fn user_agent() -> String {
+	let version = env!("CARGO_PKG_VERSION");
+	format!("mcvm_core_{version}")
+}
+
 /// Downloads data from a remote location
 pub async fn download(url: impl IntoUrl, client: &Client) -> anyhow::Result<reqwest::Response> {
 	let resp = client
 		.get(url)
+		.header("User-Agent", user_agent())
 		.send()
 		.await
 		.context("Failed to send request")?
