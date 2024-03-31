@@ -184,7 +184,7 @@ fn check_condition_set<'a>(conditions: &DeclarativeConditionSet, input: &'a Eval
 	}
 
 	if let Some(stability) = &conditions.stability {
-		if stability != &input.params.stability {
+		if stability > &input.params.stability {
 			return false;
 		}
 	}
