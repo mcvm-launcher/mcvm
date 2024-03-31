@@ -45,21 +45,21 @@ impl Instance {
 				let result = self
 					.create_paper_folia(paper::Mode::Paper, manager, paths, client, o)
 					.await
-					.context("Failed to create Paper on the server")?;
+					.context("Failed to create Paper")?;
 				out.merge(result);
 			}
 			ServerType::Folia => {
 				let result = self
 					.create_paper_folia(paper::Mode::Folia, manager, paths, client, o)
 					.await
-					.context("Failed to create Folia on the server")?;
+					.context("Failed to create Folia")?;
 				out.merge(result);
 			}
 			ServerType::Sponge => {
 				let result = self
 					.create_sponge(manager, paths, client, o)
 					.await
-					.context("Failed to create Sponge on the server")?;
+					.context("Failed to create Sponge")?;
 				out.merge(result);
 			}
 			_ => {}
@@ -110,16 +110,16 @@ impl Instance {
 
 		let process = OutputProcess::new(o);
 		process.0.display(
-			MessageContents::StartProcess("Checking for Paper updates".into()),
+			MessageContents::StartProcess("Checking for {mode} updates".into()),
 			MessageLevel::Important,
 		);
 
 		let build_num = paper::get_newest_build(mode, version, client)
 			.await
-			.context("Failed to get the newest Paper version")?;
+			.context("Failed to get the newest {mode} version")?;
 		let file_name = paper::get_jar_file_name(mode, version, build_num, client)
 			.await
-			.context("Failed to get the Paper file name")?;
+			.context("Failed to get the {mode} file name")?;
 		let paper_jar_path = paper::get_local_jar_path(mode, version, &paths.core);
 		if !manager.should_update_file(&paper_jar_path) {
 			process.0.display(
@@ -128,7 +128,7 @@ impl Instance {
 			);
 		} else {
 			process.0.display(
-				MessageContents::StartProcess("Downloading Paper server".into()),
+				MessageContents::StartProcess("Downloading {mode} server".into()),
 				MessageLevel::Important,
 			);
 			paper::download_server_jar(
@@ -140,9 +140,9 @@ impl Instance {
 				client,
 			)
 			.await
-			.context("Failed to download Paper server JAR")?;
+			.context("Failed to download {mode} server JAR")?;
 			process.0.display(
-				MessageContents::Success("Paper server downloaded".into()),
+				MessageContents::Success("{mode} server downloaded".into()),
 				MessageLevel::Important,
 			);
 		}
