@@ -1,12 +1,15 @@
 use std::collections::{HashMap, HashSet};
 use std::future::Future;
+use std::sync::Arc;
 
 use itertools::Itertools;
+use mcvm_core::net::download::FD_SENSIBLE_LIMIT;
 use mcvm_pkg::repo::PackageFlag;
 use mcvm_pkg::PkgRequest;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::pkg::{ArcPkgReq, PackageID};
 use mcvm_shared::versions::VersionInfo;
+use tokio::sync::Semaphore;
 use tokio::task::JoinSet;
 
 use crate::data::id::InstanceID;
@@ -209,7 +212,15 @@ async fn run_addon_tasks(
 ) -> anyhow::Result<()> {
 	let total_count = tasks.len();
 	let mut task_set = JoinSet::new();
+
+	let sem = Arc::new(Semaphore::new(FD_SENSIBLE_LIMIT));
 	for task in tasks.into_values() {
+		let permit = sem.clone().acquire_owned().await;
+		let task = async move {
+			let _permit = permit?;
+
+			task.await
+		};
 		task_set.spawn(task);
 	}
 
