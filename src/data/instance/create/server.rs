@@ -34,7 +34,8 @@ impl Instance {
 		let classpath = if let Modloader::Fabric | Modloader::Quilt =
 			self.config.modifications.get_modloader(self.kind.to_side())
 		{
-			self.get_fabric_quilt(paths, manager).await?
+			self.get_fabric_quilt(paths, manager)
+				.context("Failed to get Fabric/Quilt")?
 		} else {
 			Classpath::new()
 		};

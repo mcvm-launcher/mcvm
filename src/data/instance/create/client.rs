@@ -31,7 +31,6 @@ impl Instance {
 		{
 			classpath.extend(
 				self.get_fabric_quilt(paths, manager)
-					.await
 					.context("Failed to install Fabric/Quilt")?,
 			);
 		}
