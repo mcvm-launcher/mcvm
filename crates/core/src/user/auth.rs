@@ -2,6 +2,7 @@ use std::fmt::Debug;
 
 use anyhow::Context;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
+use mcvm_shared::util::utc_timestamp;
 use oauth2::ClientId;
 
 use crate::net::minecraft::MinecraftUserProfile;
@@ -114,13 +115,17 @@ pub async fn update_microsoft_user_auth(
 				.await
 				.context("Failed to get user certificate")?;
 
+		// Calculate expiration time
+		let now = utc_timestamp().context("Failed to get current timestamp")?;
+		let expiration_time = now + auth_result.expires_in;
+
 		// Write the new user to the database
 		let db_user = DatabaseUser {
 			id: user_id.to_string(),
 			username: profile.name.clone(),
 			uuid: profile.uuid.clone(),
 			token: auth_result.access_token.0.clone(),
-			expires: 0,
+			expires: expiration_time,
 			xbox_uid: Some(auth_result.xbox_uid.clone()),
 			keypair: Some(certificate.key_pair.clone()),
 		};
@@ -153,6 +158,8 @@ pub async fn authenticate_microsoft_user(
 
 	o.display_special_ms_auth(response.verification_uri(), response.user_code().secret());
 
+	let expires_in = response.expires_in().as_secs();
+
 	let token = auth::get_microsoft_token(&oauth_client, response)
 		.await
 		.context("Failed to get Microsoft token")?;
@@ -169,6 +176,7 @@ pub async fn authenticate_microsoft_user(
 	let out = MicrosoftAuthResult {
 		access_token: AccessToken(access_token),
 		xbox_uid: mc_token.username.clone(),
+		expires_in,
 	};
 
 	Ok(out)
@@ -218,6 +226,8 @@ pub struct MicrosoftAuthResult {
 	pub access_token: AccessToken,
 	/// The Xbox UID of the user
 	pub xbox_uid: String,
+	/// The amount of time in seconds before the token expires
+	pub expires_in: u64,
 }
 
 /// An access token for a user that will be hidden in debug messages
