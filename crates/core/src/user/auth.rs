@@ -91,6 +91,34 @@ impl User {
 
 		Ok(())
 	}
+
+	/// Checks if the user still has valid authentication. This does not mean that they are
+	/// authenticated yet. To check if the user is authenticated and ready to be used, use the is_authenticated
+	/// function instead.
+	pub fn is_auth_valid(&self, paths: &Paths) -> bool {
+		match &self.kind {
+			UserKind::Microsoft { .. } => {
+				let Ok(db) = AuthDatabase::open(&paths.auth) else {
+					return false;
+				};
+
+				if let Some(user) = db.get_valid_user() {
+					user.id == self.id
+				} else {
+					false
+				}
+			}
+			UserKind::Demo | UserKind::Unverified => true,
+		}
+	}
+
+	/// Checks if this user is currently authenticated and ready to be used
+	pub fn is_authenticated(&self) -> bool {
+		match &self.kind {
+			UserKind::Microsoft { .. } => self.access_token.is_some() && self.uuid.is_some(),
+			UserKind::Demo | UserKind::Unverified => true,
+		}
+	}
 }
 
 /// Data for a Microsoft user
