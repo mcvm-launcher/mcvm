@@ -242,7 +242,6 @@ fn pretty_print_package_script(contents: &str) -> anyhow::Result<()> {
 	if let Some(last) = lexed.last().cloned() {
 		lexed.push((Token::None, last.1));
 	}
-	dbg!(&lexed, contents.len());
 
 	let mut last_tok_was_at = false;
 	let mut last_tok_was_curly_or_semi = false;
