@@ -110,11 +110,9 @@ pub async fn get(
 		o.start_process();
 	}
 
-	let mut num_done = 0;
 	let mut join = JoinSet::new();
 	// Used to limit the number of open file descriptors
 	let sem = Arc::new(Semaphore::new(FD_SENSIBLE_LIMIT));
-	#[allow(clippy::explicit_counter_loop)]
 	for (name, url, path, virtual_path) in assets_to_download {
 		let client = client.clone();
 		let permit = sem.clone().acquire_owned().await;
@@ -126,25 +124,35 @@ pub async fn get(
 				files::update_hardlink(&path, &virtual_path)
 					.context("Failed to hardlink virtual asset")?;
 			}
-			Ok::<(), anyhow::Error>(())
+			Ok::<String, anyhow::Error>(name)
 		};
 		join.spawn(fut);
-		num_done += 1;
+	}
 
+	o.display(
+		MessageContents::Associated(
+			Box::new(MessageContents::Progress {
+				current: 0,
+				total: count as u32,
+			}),
+			Box::new(MessageContents::Simple(String::new())),
+		),
+		MessageLevel::Important,
+	);
+	let mut num_done = 0;
+	while let Some(asset) = join.join_next().await {
+		let name = asset??;
+		num_done += 1;
 		o.display(
 			MessageContents::Associated(
 				Box::new(MessageContents::Progress {
 					current: num_done,
 					total: count as u32,
 				}),
-				Box::new(MessageContents::Simple(name)),
+				Box::new(MessageContents::Simple(format!("Downloaded {name}"))),
 			),
 			MessageLevel::Important,
 		);
-	}
-
-	while let Some(asset) = join.join_next().await {
-		asset??;
 	}
 
 	o.display(
