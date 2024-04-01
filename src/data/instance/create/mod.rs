@@ -318,3 +318,9 @@ impl ModificationData {
 		}
 	}
 }
+
+impl Default for ModificationData {
+	fn default() -> Self {
+		Self::new()
+	}
+}

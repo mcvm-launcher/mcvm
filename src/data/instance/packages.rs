@@ -141,15 +141,10 @@ impl Instance {
 			.map(|x| {
 				Ok(LockfileAddon::from_addon(
 					&x.addon,
-					self.get_linked_addon_paths(
-						&x.addon,
-						&pkg_config.worlds,
-						paths,
-						&version_info,
-					)?
-					.iter()
-					.map(|y| y.join(x.addon.file_name.clone()))
-					.collect(),
+					self.get_linked_addon_paths(&x.addon, &pkg_config.worlds, paths, version_info)?
+						.iter()
+						.map(|y| y.join(x.addon.file_name.clone()))
+						.collect(),
 				))
 			})
 			.collect::<anyhow::Result<Vec<LockfileAddon>>>()
@@ -160,7 +155,7 @@ impl Instance {
 			.context("Failed to update package in lockfile")?;
 
 		for addon in eval.addon_reqs.iter() {
-			self.create_addon(&addon.addon, &pkg_config.worlds, paths, &version_info)
+			self.create_addon(&addon.addon, &pkg_config.worlds, paths, version_info)
 				.with_context(|| format!("Failed to install addon '{}'", addon.addon.id))?;
 		}
 

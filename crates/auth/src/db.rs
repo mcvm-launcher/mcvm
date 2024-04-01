@@ -61,7 +61,7 @@ impl AuthDatabase {
 				return false;
 			};
 
-			return now < (user.expires - EXPIRATION_BUFFER);
+			now < (user.expires - EXPIRATION_BUFFER)
 		} else {
 			false
 		}
