@@ -51,7 +51,7 @@ pub(crate) fn launch_game_process(
 /// censoring any credentials if needed
 fn output_launch_command(
 	command: &Command,
-	access_token: Option<AccessToken>,
+	access_token: Option<&AccessToken>,
 	censor_secrets: bool,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<()> {
@@ -147,7 +147,7 @@ pub(crate) struct LaunchProcessParameters<'a> {
 	pub version: &'a VersionName,
 	pub version_list: &'a [String],
 	pub side: &'a InstanceKind,
-	pub user_access_token: Option<AccessToken>,
+	pub user_access_token: Option<&'a AccessToken>,
 	pub censor_secrets: bool,
 }
 
