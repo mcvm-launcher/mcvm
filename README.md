@@ -80,7 +80,7 @@ MCVM can be used to quickly start up a server instance in your automated CI pipe
 
 ## Progress
 
-Right now, the launcher and library have most of the core features implemented. However, support for more complex features and the hosting of the package ecosystem have yet to be fleshed out. If you see something you want that isn't there, try contributing!
+Right now, the launcher and library have most of the core features implemented. However, support for more complex features such as a plugin system have yet to be fleshed out. If you see something you want that isn't there, try contributing!
 
 ## Things that need to be completed before 1.0.0:
 
