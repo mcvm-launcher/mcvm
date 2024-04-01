@@ -23,62 +23,9 @@ impl User {
 	) -> anyhow::Result<()> {
 		match &mut self.kind {
 			UserKind::Microsoft { xbox_uid } => {
-				// Check the authentication DB
-				let mut db = AuthDatabase::open(&paths.auth)
-					.context("Failed to open authentication database")?;
-				let user_data = if let Some(db_user) = db.get_valid_user() {
-					MicrosoftUserData {
-						access_token: AccessToken(db_user.token.clone()),
-						profile: MinecraftUserProfile {
-							name: db_user.username.clone(),
-							uuid: db_user.uuid.clone(),
-							skins: Vec::new(),
-							capes: Vec::new(),
-						},
-						xbox_uid: db_user.xbox_uid.clone(),
-						keypair: db_user.keypair.clone(),
-					}
-				} else {
-					// Authenticate with the server again
-					let auth_result = authenticate_microsoft_user(client_id, client, o)
-						.await
-						.context("Failed to authenticate user")?;
-
-					let profile = crate::net::minecraft::get_user_profile(
-						&auth_result.access_token.0,
-						client,
-					)
+				let user_data = update_microsoft_user_auth(&self.id, client_id, paths, client, o)
 					.await
-					.context("Failed to get Microsoft user profile")?;
-
-					let certificate = crate::net::minecraft::get_user_certificate(
-						&auth_result.access_token.0,
-						client,
-					)
-					.await
-					.context("Failed to get user certificate")?;
-
-					// Write the new user to the database
-					let db_user = DatabaseUser {
-						id: self.id.clone(),
-						username: profile.name.clone(),
-						uuid: profile.uuid.clone(),
-						token: auth_result.access_token.0.clone(),
-						expires: 0,
-						xbox_uid: Some(auth_result.xbox_uid.clone()),
-						keypair: Some(certificate.key_pair.clone()),
-					};
-
-					db.update_user(db_user)
-						.context("Failed to update user in database")?;
-
-					MicrosoftUserData {
-						access_token: auth_result.access_token,
-						xbox_uid: Some(auth_result.xbox_uid),
-						profile,
-						keypair: Some(certificate.key_pair),
-					}
-				};
+					.context("Failed to update user authentication")?;
 
 				self.access_token = Some(user_data.access_token);
 				self.name = user_data.profile.name;
@@ -122,11 +69,74 @@ impl User {
 }
 
 /// Data for a Microsoft user
-struct MicrosoftUserData {
+pub struct MicrosoftUserData {
 	access_token: AccessToken,
 	profile: MinecraftUserProfile,
 	xbox_uid: Option<String>,
 	keypair: Option<Keypair>,
+}
+
+/// Updates authentication for a Microsoft user using either the database or updating from the API
+pub async fn update_microsoft_user_auth(
+	user_id: &str,
+	client_id: ClientId,
+	paths: &Paths,
+	client: &reqwest::Client,
+	o: &mut impl MCVMOutput,
+) -> anyhow::Result<MicrosoftUserData> {
+	// Check the authentication DB
+	let mut db =
+		AuthDatabase::open(&paths.auth).context("Failed to open authentication database")?;
+	let user_data = if let Some(db_user) = db.get_valid_user() {
+		MicrosoftUserData {
+			access_token: AccessToken(db_user.token.clone()),
+			profile: MinecraftUserProfile {
+				name: db_user.username.clone(),
+				uuid: db_user.uuid.clone(),
+				skins: Vec::new(),
+				capes: Vec::new(),
+			},
+			xbox_uid: db_user.xbox_uid.clone(),
+			keypair: db_user.keypair.clone(),
+		}
+	} else {
+		// Authenticate with the server again
+		let auth_result = authenticate_microsoft_user(client_id, client, o)
+			.await
+			.context("Failed to authenticate user")?;
+
+		let profile = crate::net::minecraft::get_user_profile(&auth_result.access_token.0, client)
+			.await
+			.context("Failed to get Microsoft user profile")?;
+
+		let certificate =
+			crate::net::minecraft::get_user_certificate(&auth_result.access_token.0, client)
+				.await
+				.context("Failed to get user certificate")?;
+
+		// Write the new user to the database
+		let db_user = DatabaseUser {
+			id: user_id.to_string(),
+			username: profile.name.clone(),
+			uuid: profile.uuid.clone(),
+			token: auth_result.access_token.0.clone(),
+			expires: 0,
+			xbox_uid: Some(auth_result.xbox_uid.clone()),
+			keypair: Some(certificate.key_pair.clone()),
+		};
+
+		db.update_user(db_user)
+			.context("Failed to update user in database")?;
+
+		MicrosoftUserData {
+			access_token: auth_result.access_token,
+			xbox_uid: Some(auth_result.xbox_uid),
+			profile,
+			keypair: Some(certificate.key_pair),
+		}
+	};
+
+	Ok(user_data)
 }
 
 /// Authenticate a Microsoft user using Microsoft OAuth.
