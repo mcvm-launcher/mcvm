@@ -59,16 +59,26 @@ async fn status(data: &mut CmdData) -> anyhow::Result<()> {
 
 	match config.users.get_chosen_user() {
 		Some(user) => {
-			cprint!("<g>Logged in as ");
+			let user_valid = user.is_auth_valid(&data.paths.core);
+			if user_valid {
+				cprint!("<g>Logged in as ");
+			} else {
+				cprint!("<g>User chosen as ");
+			}
 			let user_name = user.get_name();
 			match user.get_kind() {
 				UserKind::Microsoft { .. } => cprint!("<s,g!>{}", user_name),
 				UserKind::Demo => cprint!("<s,c!>{}", user_name),
 				UserKind::Unverified => cprint!("<s,k!>{}", user_name),
 			}
-			cprintln!(" <k!>({})</k!>", user.get_id());
+			cprint!(" <k!>({})</k!>", user.get_id());
+
+			if !user_valid {
+				cprint!(" - <r>Currently logged out");
+			}
+			cprintln!();
 		}
-		None => cprintln!("<r>Currently logged out"),
+		None => cprintln!("<r>No user chosen"),
 	}
 
 	Ok(())
