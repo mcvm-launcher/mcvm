@@ -111,7 +111,7 @@ impl Config {
 		// Users
 		for (user_id, user_config) in config.users.iter() {
 			if !is_valid_identifier(user_id) {
-				bail!("Invalid string '{user_id}'");
+				bail!("Invalid user ID '{user_id}'");
 			}
 			let user = user_config.to_user(user_id);
 			// Disabled until we can verify game ownership.
@@ -120,7 +120,7 @@ impl Config {
 				bail!("Unverified and Demo users are currently disabled");
 			}
 			if !user.validate_username() {
-				bail!("Invalid string '{}'", user.get_name());
+				bail!("Invalid username '{}'", user.get_name());
 			}
 
 			users.add_user(user);
