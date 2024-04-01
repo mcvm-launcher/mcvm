@@ -256,15 +256,16 @@ impl UserManager {
 		client: &Client,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
-		if let AuthState::UserChosen(user_id) = &mut self.state {
-			println!("Auth");
+		if let AuthState::UserChosen(user_id) | AuthState::Authed(user_id) = &mut self.state {
 			let user = self
 				.users
 				.get_mut(user_id)
 				.expect("User in AuthState does not exist");
 
-			user.authenticate(self.ms_client_id.clone(), paths, client, o)
-				.await?;
+			if !user.is_authenticated() || !user.is_auth_valid(paths) {
+				user.authenticate(self.ms_client_id.clone(), paths, client, o)
+					.await?;
+			}
 			self.state = AuthState::Authed(std::mem::take(user_id));
 		}
 
