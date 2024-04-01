@@ -5,6 +5,8 @@ use anyhow::Context;
 use mcvm_shared::util::utc_timestamp;
 use serde::{Deserialize, Serialize};
 
+use crate::mc::Keypair;
+
 /// The buffer time in seconds before a token actually expires to still consider it expired
 /// because it won't be valid for very long
 const EXPIRATION_BUFFER: u64 = 120;
@@ -87,6 +89,15 @@ impl AuthDatabase {
 	pub fn get_user(&self) -> Option<&DatabaseUser> {
 		self.contents.user.as_ref()
 	}
+
+	/// Get the current user, if it is present and valid
+	pub fn get_valid_user(&self) -> Option<&DatabaseUser> {
+		if self.is_user_valid() {
+			self.get_user()
+		} else {
+			None
+		}
+	}
 }
 
 /// Structure for the auth database
@@ -101,9 +112,17 @@ struct DatabaseContents {
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct DatabaseUser {
 	/// A unique ID for the user
-	id: String,
+	pub id: String,
+	/// The username of the user
+	pub username: String,
+	/// The UUID of the user
+	pub uuid: String,
 	/// The authentication token for the user
-	token: String,
+	pub token: String,
 	/// When the authentication token will expire, as a UTC timestamp in seconds
-	expires: u64,
+	pub expires: u64,
+	/// The Xbox uid of the user, if applicable
+	pub xbox_uid: Option<String>,
+	/// The keypair of the user, if applicable
+	pub keypair: Option<Keypair>,
 }

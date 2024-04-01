@@ -1,6 +1,6 @@
-use mcvm_auth::mc::call_mc_api;
+use mcvm_auth::mc::{call_mc_api, Keypair};
 use reqwest::Client;
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 
 /// Struct for a Minecraft Profile from the Minecraft Services API
 #[derive(Deserialize, Debug)]
@@ -86,18 +86,6 @@ pub async fn get_user_profile(
 pub struct MinecraftUserCertificate {
 	/// Public / private key pair
 	pub key_pair: Keypair,
-}
-
-/// Keypair in player certificate
-#[derive(Deserialize, Serialize, Debug, Clone)]
-pub struct Keypair {
-	/// Private key
-	// Yes this is stupid
-	#[serde(rename(deserialize = "privateKey"))]
-	pub private_key: String,
-	/// Public key
-	#[serde(rename(deserialize = "publicKey"))]
-	pub public_key: String,
 }
 
 /// Get a Minecraft user certificate

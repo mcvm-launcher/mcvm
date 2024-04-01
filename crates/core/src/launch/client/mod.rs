@@ -21,7 +21,7 @@ pub(crate) async fn get_launch_props(
 	// Ensure the user is authenticated
 	params
 		.users
-		.authenticate(params.req_client, o)
+		.authenticate(params.paths, params.req_client, o)
 		.await
 		.context("Failed to authenticate user")?;
 

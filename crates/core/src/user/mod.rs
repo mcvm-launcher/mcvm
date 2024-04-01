@@ -6,11 +6,12 @@ pub mod uuid;
 use std::collections::HashMap;
 
 use anyhow::bail;
+use mcvm_auth::mc::Keypair;
 use mcvm_shared::output::MCVMOutput;
 use oauth2::ClientId;
 use reqwest::Client;
 
-use crate::net::minecraft::Keypair;
+use crate::Paths;
 
 use self::auth::AccessToken;
 
@@ -252,6 +253,7 @@ impl UserManager {
 	/// Ensures that the currently chosen user is authenticated
 	pub async fn authenticate(
 		&mut self,
+		paths: &Paths,
 		client: &Client,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
@@ -261,7 +263,7 @@ impl UserManager {
 				.get_mut(user_id)
 				.expect("User in AuthState does not exist");
 
-			user.authenticate(self.ms_client_id.clone(), client, o)
+			user.authenticate(self.ms_client_id.clone(), paths, client, o)
 				.await?;
 			self.state = AuthState::Authed(std::mem::take(user_id));
 		}

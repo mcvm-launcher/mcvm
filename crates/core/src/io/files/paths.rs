@@ -22,6 +22,8 @@ pub struct Paths {
 	pub java: PathBuf,
 	/// Holds game jar files
 	pub jars: PathBuf,
+	/// Holds authentication data
+	pub auth: PathBuf,
 	/// Holds log files
 	pub logs: PathBuf,
 	/// Holds launch log files
@@ -44,6 +46,7 @@ impl Paths {
 		let libraries = internal.join("libraries");
 		let java = internal.join("java");
 		let jars = internal.join("jars");
+		let auth = internal.join("auth");
 		let logs = data.join("logs");
 		let launch_logs = logs.join("launch");
 		let run = project
@@ -58,6 +61,7 @@ impl Paths {
 		std::fs::create_dir_all(&assets)?;
 		std::fs::create_dir_all(&java)?;
 		std::fs::create_dir_all(&jars)?;
+		std::fs::create_dir_all(&auth)?;
 		std::fs::create_dir_all(&logs)?;
 		std::fs::create_dir_all(&launch_logs)?;
 		std::fs::create_dir_all(&run)?;
@@ -71,6 +75,7 @@ impl Paths {
 			libraries,
 			java,
 			jars,
+			auth,
 			logs,
 			launch_logs,
 			run,

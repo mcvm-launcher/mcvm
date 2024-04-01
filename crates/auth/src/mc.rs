@@ -10,6 +10,7 @@ use oauth2::{
 	TokenResponse, TokenUrl,
 };
 use serde::de::DeserializeOwned;
+use serde::{Deserialize, Serialize};
 
 const DEVICE_CODE_URL: &str = "https://login.microsoftonline.com/consumers/oauth2/v2.0/devicecode";
 const MSA_AUTHORIZE_URL: &str = "https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize";
@@ -124,4 +125,16 @@ pub async fn call_mc_api<T: DeserializeOwned>(
 		.await?;
 
 	Ok(response)
+}
+
+/// Keypair in player certificate
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct Keypair {
+	/// Private key
+	// Yes this is stupid
+	#[serde(rename(deserialize = "privateKey"))]
+	pub private_key: String,
+	/// Public key
+	#[serde(rename(deserialize = "publicKey"))]
+	pub public_key: String,
 }

@@ -4,9 +4,11 @@ use anyhow::Context;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use oauth2::ClientId;
 
-use crate::net::minecraft;
 use crate::net::minecraft::MinecraftUserProfile;
-use mcvm_auth::mc::{self as auth, mc_access_token_to_string};
+use crate::{net::minecraft, Paths};
+use mcvm_auth::db::{AuthDatabase, DatabaseUser};
+use mcvm_auth::mc as auth;
+use mcvm_auth::mc::{mc_access_token_to_string, Keypair};
 
 use super::{User, UserKind};
 
@@ -15,25 +17,74 @@ impl User {
 	pub(super) async fn authenticate(
 		&mut self,
 		client_id: ClientId,
+		paths: &Paths,
 		client: &reqwest::Client,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
 		match &mut self.kind {
 			UserKind::Microsoft { xbox_uid } => {
-				let auth_result = authenticate_microsoft_user(client_id, client, o)
+				// Check the authentication DB
+				let mut db = AuthDatabase::open(&paths.auth)
+					.context("Failed to open authentication database")?;
+				let user_data = if let Some(db_user) = db.get_valid_user() {
+					MicrosoftUserData {
+						access_token: AccessToken(db_user.token.clone()),
+						profile: MinecraftUserProfile {
+							name: db_user.username.clone(),
+							uuid: db_user.uuid.clone(),
+							skins: Vec::new(),
+							capes: Vec::new(),
+						},
+						xbox_uid: db_user.xbox_uid.clone(),
+						keypair: db_user.keypair.clone(),
+					}
+				} else {
+					// Authenticate with the server again
+					let auth_result = authenticate_microsoft_user(client_id, client, o)
+						.await
+						.context("Failed to authenticate user")?;
+
+					let profile = crate::net::minecraft::get_user_profile(
+						&auth_result.access_token.0,
+						client,
+					)
 					.await
-					.context("Failed to authenticate user")?;
-				let certificate = crate::net::minecraft::get_user_certificate(
-					&auth_result.access_token.0,
-					client,
-				)
-				.await
-				.context("Failed to get user certificate")?;
-				self.access_token = Some(auth_result.access_token);
-				self.name = auth_result.profile.name;
-				self.uuid = Some(auth_result.profile.uuid);
-				self.keypair = Some(certificate.key_pair);
-				*xbox_uid = Some(auth_result.xbox_uid);
+					.context("Failed to get Microsoft user profile")?;
+
+					let certificate = crate::net::minecraft::get_user_certificate(
+						&auth_result.access_token.0,
+						client,
+					)
+					.await
+					.context("Failed to get user certificate")?;
+
+					// Write the new user to the database
+					let db_user = DatabaseUser {
+						id: self.id.clone(),
+						username: profile.name.clone(),
+						uuid: profile.uuid.clone(),
+						token: auth_result.access_token.0.clone(),
+						expires: 0,
+						xbox_uid: Some(auth_result.xbox_uid.clone()),
+						keypair: Some(certificate.key_pair.clone()),
+					};
+
+					db.update_user(db_user)
+						.context("Failed to update user in database")?;
+
+					MicrosoftUserData {
+						access_token: auth_result.access_token,
+						xbox_uid: Some(auth_result.xbox_uid),
+						profile,
+						keypair: Some(certificate.key_pair),
+					}
+				};
+
+				self.access_token = Some(user_data.access_token);
+				self.name = user_data.profile.name;
+				self.uuid = Some(user_data.profile.uuid);
+				self.keypair = user_data.keypair;
+				*xbox_uid = user_data.xbox_uid;
 			}
 			UserKind::Demo | UserKind::Unverified => {}
 		}
@@ -42,7 +93,16 @@ impl User {
 	}
 }
 
-/// Authenticate a Microsoft user using Microsoft OAuth
+/// Data for a Microsoft user
+struct MicrosoftUserData {
+	access_token: AccessToken,
+	profile: MinecraftUserProfile,
+	xbox_uid: Option<String>,
+	keypair: Option<Keypair>,
+}
+
+/// Authenticate a Microsoft user using Microsoft OAuth.
+/// Will authenticate every time and will not use the database.
 pub async fn authenticate_microsoft_user(
 	client_id: ClientId,
 	client: &reqwest::Client,
@@ -63,10 +123,6 @@ pub async fn authenticate_microsoft_user(
 		.context("Failed to get Minecraft token")?;
 	let access_token = mc_access_token_to_string(&mc_token.access_token);
 
-	let profile = minecraft::get_user_profile(&access_token, client)
-		.await
-		.context("Failed to get user profile")?;
-
 	o.display(
 		MessageContents::Success("Authentication successful".into()),
 		MessageLevel::Important,
@@ -74,7 +130,6 @@ pub async fn authenticate_microsoft_user(
 
 	let out = MicrosoftAuthResult {
 		access_token: AccessToken(access_token),
-		profile,
 		xbox_uid: mc_token.username.clone(),
 	};
 
@@ -123,9 +178,7 @@ pub async fn debug_authenticate(
 pub struct MicrosoftAuthResult {
 	/// The access token for logging into the game and other API services
 	pub access_token: AccessToken,
-	/// The user's Minecraft profile
-	pub profile: MinecraftUserProfile,
-	/// The XBox UID of the user
+	/// The Xbox UID of the user
 	pub xbox_uid: String,
 }
 
