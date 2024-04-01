@@ -232,8 +232,7 @@ impl UserManager {
 	pub fn get_chosen_user(&self) -> Option<&User> {
 		match &self.state {
 			AuthState::Offline => None,
-			AuthState::UserChosen(user_id) => self.users.get(user_id),
-			AuthState::Authed(user_id) => self.users.get(user_id),
+			AuthState::UserChosen(user_id) | AuthState::Authed(user_id) => self.users.get(user_id),
 		}
 	}
 
@@ -258,6 +257,7 @@ impl UserManager {
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
 		if let AuthState::UserChosen(user_id) = &mut self.state {
+			println!("Auth");
 			let user = self
 				.users
 				.get_mut(user_id)
@@ -283,9 +283,10 @@ impl UserManager {
 		}
 	}
 
-	/// Adds users from another UserManager
+	/// Adds users from another UserManager, and copies it's authentication state
 	pub fn steal_users(&mut self, other: &Self) {
 		self.users.extend(other.users.clone());
+		self.state = other.state.clone();
 	}
 }
 
