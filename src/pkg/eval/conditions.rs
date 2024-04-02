@@ -58,28 +58,29 @@ pub fn eval_condition(condition: &ConditionKind, eval: &EvalData) -> anyhow::Res
 }
 
 /// Checks an OS condition to see if it matches the current operating system
-pub const fn check_os_condition(condition: &OSCondition) -> bool {
-	match condition {
-		OSCondition::Windows => cfg!(target_os = "windows"),
-		OSCondition::Linux => cfg!(target_os = "linux"),
-		OSCondition::MacOS => cfg!(target_os = "macos"),
-		OSCondition::Other => {
-			!(cfg!(target_os = "windows") || cfg!(target_os = "linux") || cfg!(target_os = "macos"))
-		}
+pub fn check_os_condition(condition: &OSCondition) -> bool {
+	if cfg!(target_os = "windows") {
+		return condition == &OSCondition::Windows;
 	}
+	if cfg!(target_os = "linux") {
+		return condition == &OSCondition::Linux;
+	}
+	if cfg!(target_os = "macos") {
+		return condition == &OSCondition::MacOS;
+	}
+	return condition == &OSCondition::Other;
 }
 
 /// Checks an arch condition to see if it matches the current system architecture
-pub const fn check_arch_condition(condition: &ArchCondition) -> bool {
-	match condition {
-		ArchCondition::X86 => cfg!(target_arch = "x86"),
-		ArchCondition::X86_64 => cfg!(target_arch = "x86_64"),
-		ArchCondition::Arm => cfg!(target_arch = "arm"),
-		ArchCondition::Other => {
-			!(cfg!(target_arch = "x86")
-				|| cfg!(target_arch = "x86_64")
-				|| cfg!(target_arch = "arm")
-				|| cfg!(target_arch = "loongarch"))
-		}
+pub fn check_arch_condition(condition: &ArchCondition) -> bool {
+	if cfg!(target_arch = "x86") {
+		return condition == &ArchCondition::X86;
 	}
+	if cfg!(target_arch = "x86_86") {
+		return condition == &ArchCondition::X86_64;
+	}
+	if cfg!(target_arch = "arm") {
+		return condition == &ArchCondition::Arm;
+	}
+	return condition == &ArchCondition::Other;
 }
