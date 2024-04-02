@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use anyhow::bail;
 use mcvm_core::user::{User, UserManager};
 use mcvm_core::util::versions::MinecraftVersionDeser;
-use mcvm_shared::modifications::{ClientType, Modloader, ServerType};
+use mcvm_shared::modifications::{ClientType, Modloader, Proxy, ServerType};
 use mcvm_shared::pkg::{PackageID, PackageStability};
 use mcvm_shared::Side;
 use oauth2::ClientId;
@@ -216,6 +216,7 @@ impl<'parent> ProfileBuilder<'parent> {
 			modloader: Modloader::Vanilla,
 			client_type: ClientType::None,
 			server_type: ServerType::None,
+			proxy: Proxy::None,
 			instances: HashMap::new(),
 			packages: ProfilePackageConfiguration::Full {
 				global: Vec::new(),

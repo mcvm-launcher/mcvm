@@ -579,7 +579,7 @@ mod tests {
 	use crate::data::config::profile::ProfilePackageConfiguration;
 	use crate::data::{config::profile::GameModifications, id::ProfileID};
 	use mcvm_core::util::versions::MinecraftVersion;
-	use mcvm_shared::modifications::{ClientType, Modloader, ServerType};
+	use mcvm_shared::modifications::{ClientType, Modloader, Proxy, ServerType};
 	use mcvm_shared::pkg::PackageStability;
 
 	#[test]
@@ -601,7 +601,12 @@ mod tests {
 		let profile = Profile::new(
 			ProfileID::from("foo"),
 			MinecraftVersion::Latest,
-			GameModifications::new(Modloader::Vanilla, ClientType::Vanilla, ServerType::Vanilla),
+			GameModifications::new(
+				Modloader::Vanilla,
+				ClientType::Vanilla,
+				ServerType::Vanilla,
+				Proxy::None,
+			),
 			ProfilePackageConfiguration::default(),
 			PackageStability::Latest,
 		);
@@ -645,7 +650,12 @@ mod tests {
 		let profile = Profile::new(
 			ProfileID::from("foo"),
 			MinecraftVersion::Latest,
-			GameModifications::new(Modloader::Vanilla, ClientType::Vanilla, ServerType::Vanilla),
+			GameModifications::new(
+				Modloader::Vanilla,
+				ClientType::Vanilla,
+				ServerType::Vanilla,
+				Proxy::None,
+			),
 			ProfilePackageConfiguration::default(),
 			PackageStability::Latest,
 		);

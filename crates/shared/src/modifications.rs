@@ -281,3 +281,72 @@ impl Display for ClientType {
 		}
 	}
 }
+
+/// Different proxies
+#[derive(Serialize, Deserialize, Debug, Copy, Clone, Default, PartialEq, Eq)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
+#[serde(rename_all = "lowercase")]
+pub enum Proxy {
+	/// No proxy
+	#[default]
+	None,
+	/// The BungeeCord proxy
+	BungeeCord,
+	/// The Waterfall proxy
+	Waterfall,
+	/// The Velocity proxy
+	Velocity,
+}
+
+impl Display for Proxy {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::None => write!(f, "None"),
+			Self::BungeeCord => write!(f, "BungeeCord"),
+			Self::Waterfall => write!(f, "Waterfall"),
+			Self::Velocity => write!(f, "Velocity"),
+		}
+	}
+}
+
+/// Matcher for different types of server proxies
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
+#[serde(rename_all = "lowercase")]
+pub enum ProxyMatch {
+	/// No proxy
+	None,
+	/// The BungeeCord proxy
+	BungeeCord,
+	/// The Waterfall proxy
+	Waterfall,
+	/// The Velocity proxy
+	Velocity,
+	/// Matches any proxy that can load BungeeCord plugins
+	BungeeCordLike,
+}
+
+impl ProxyMatch {
+	/// Parse a ProxyMatch from a string
+	pub fn parse_from_str(string: &str) -> Option<Self> {
+		match string {
+			"none" => Some(Self::None),
+			"bungeecord" => Some(Self::BungeeCord),
+			"waterfall" => Some(Self::Waterfall),
+			"velocity" => Some(Self::Velocity),
+			"bungeecordlike" => Some(Self::BungeeCordLike),
+			_ => None,
+		}
+	}
+
+	/// Checks if a proxy matches
+	pub fn matches(&self, other: &Proxy) -> bool {
+		match self {
+			Self::None => matches!(other, Proxy::None),
+			Self::BungeeCord => matches!(other, Proxy::BungeeCord),
+			Self::Waterfall => matches!(other, Proxy::Waterfall),
+			Self::Velocity => matches!(other, Proxy::Velocity),
+			Self::BungeeCordLike => matches!(other, Proxy::BungeeCord | Proxy::Waterfall),
+		}
+	}
+}

@@ -9,7 +9,7 @@ use serde::{Deserialize, Serialize};
 use crate::data::id::{InstanceID, ProfileID};
 use crate::data::profile::Profile;
 
-use mcvm_shared::modifications::{ClientType, Modloader, ServerType};
+use mcvm_shared::modifications::{ClientType, Modloader, Proxy, ServerType};
 use mcvm_shared::pkg::PackageStability;
 
 use super::instance::InstanceConfig;
@@ -30,7 +30,11 @@ pub struct ProfileConfig {
 	/// Configured server type
 	#[serde(default)]
 	pub server_type: ServerType,
+	/// Configured proxy
+	#[serde(default)]
+	pub proxy: Proxy,
 	/// Configured list of instances in this profile
+	#[serde(default)]
 	pub instances: HashMap<InstanceID, InstanceConfig>,
 	/// Packages on this profile
 	#[serde(default)]
@@ -165,7 +169,12 @@ impl ProfileConfig {
 		Profile::new(
 			profile_id,
 			self.version.to_mc_version(),
-			GameModifications::new(self.modloader, self.client_type, self.server_type),
+			GameModifications::new(
+				self.modloader,
+				self.client_type,
+				self.server_type,
+				self.proxy,
+			),
 			self.packages.clone(),
 			self.package_stability,
 		)
@@ -180,15 +189,23 @@ pub struct GameModifications {
 	pub client_type: ClientType,
 	/// Type of the server
 	pub server_type: ServerType,
+	/// Proxy
+	pub proxy: Proxy,
 }
 
 impl GameModifications {
 	/// Create a new GameModifications
-	pub fn new(modloader: Modloader, client_type: ClientType, server_type: ServerType) -> Self {
+	pub fn new(
+		modloader: Modloader,
+		client_type: ClientType,
+		server_type: ServerType,
+		proxy: Proxy,
+	) -> Self {
 		Self {
 			modloader,
 			client_type,
 			server_type,
+			proxy,
 		}
 	}
 
@@ -255,4 +272,9 @@ pub fn can_install_server_type(server_type: ServerType) -> bool {
 			| ServerType::Fabric
 			| ServerType::Quilt
 	)
+}
+
+/// Check if a proxy can be installed by MCVM
+pub fn can_install_proxy(proxy: Proxy) -> bool {
+	matches!(proxy, Proxy::None)
 }

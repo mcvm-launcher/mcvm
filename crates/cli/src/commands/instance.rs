@@ -1,3 +1,5 @@
+use std::time::Duration;
+
 use anyhow::{anyhow, Context};
 use clap::Subcommand;
 use color_print::cprintln;
@@ -107,7 +109,7 @@ pub async fn launch(
 		.ok_or(anyhow!("Unknown instance '{instance}'"))?;
 	let (.., profile) = config
 		.profiles
-		.iter()
+		.iter_mut()
 		.find(|(.., profile)| profile.instances.contains(instance.get_id()))
 		.expect("Instance does not belong to any profiles");
 
@@ -118,7 +120,17 @@ pub async fn launch(
 			.context("Failed to choose user")?;
 	}
 
-	let mut handle = instance
+	// Launch the proxy first
+	let proxy_handle = if let Side::Server = instance.get_side() {
+		profile
+			.launch_proxy()
+			.await
+			.context("Failed to launch profile proxy")?
+	} else {
+		None
+	};
+
+	let mut instance_handle = instance
 		.launch(
 			&data.paths,
 			&mut config.users,
@@ -129,7 +141,33 @@ pub async fn launch(
 		.await
 		.context("Instance failed to launch")?;
 
-	handle.wait().context("Failed to wait for child process")?;
+	// Await both asynchronously if the proxy is present
+	if let Some(mut proxy_handle) = proxy_handle {
+		let proxy = async move {
+			proxy_handle
+				.wait()
+				.context("Failed to wait for proxy child process")?;
+
+			Ok::<(), anyhow::Error>(())
+		};
+
+		let instance = async move {
+			// Wait for the proxy to start up
+			tokio::time::sleep(Duration::from_secs(5)).await;
+			instance_handle
+				.wait()
+				.context("Failed to wait for instance child process")?;
+
+			Ok::<(), anyhow::Error>(())
+		};
+
+		tokio::try_join!(proxy, instance).context("Failed to launch proxy and instance")?;
+	} else {
+		// Otherwise, just wait for the instance
+		instance_handle
+			.wait()
+			.context("Failed to wait for instance child process")?;
+	}
 
 	Ok(())
 }

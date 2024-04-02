@@ -1,6 +1,8 @@
 /// Functions for updating profiles
 pub mod update;
 
+use std::process::Child;
+
 use anyhow::Context;
 use mcvm_core::MCVMCore;
 use mcvm_shared::output::MCVMOutput;
@@ -106,5 +108,14 @@ impl Profile {
 			}
 		}
 		Ok(manager.version_info.get_val().versions)
+	}
+
+	/// Launch the profile's proxy, if it has one, returning the child process
+	pub async fn launch_proxy(&mut self) -> anyhow::Result<Option<Child>> {
+		let child = match self.modifications.proxy {
+			_ => None,
+		};
+
+		Ok(child)
 	}
 }
