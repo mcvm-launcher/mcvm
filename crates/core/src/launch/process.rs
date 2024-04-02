@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use std::ffi::OsStr;
 use std::path::Path;
-use std::process::Command;
+use std::process::{Child, Command};
 
 use anyhow::Context;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
@@ -15,9 +15,52 @@ use super::LaunchConfiguration;
 
 /// Launch the game process
 pub(crate) fn launch_game_process(
-	params: LaunchProcessParameters<'_>,
+	mut params: LaunchGameProcessParameters<'_>,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<std::process::Child> {
+	// Modify the parameters based on game-specific properties
+
+	// Prepend generated game args to the beginning
+	let previous_game_args = params.props.game_args.clone();
+	params.props.game_args = params.launch_config.generate_game_args(
+		params.version,
+		params.version_list,
+		params.side.get_side(),
+		o,
+	);
+	params.props.game_args.extend(previous_game_args);
+
+	// Create the parameters for the process
+	let proc_params = LaunchProcessParameters {
+		command: params.command,
+		cwd: params.cwd,
+		main_class: params.main_class,
+		props: params.props,
+		launch_config: params.launch_config,
+	};
+
+	// Get the command and output it
+	let mut cmd = get_process_launch_command(proc_params)
+		.context("Failed to create process launch command")?;
+
+	output_launch_command(&cmd, params.user_access_token, params.censor_secrets, o)?;
+
+	// Spawn
+	let child = cmd.spawn().context("Failed to spawn child process")?;
+
+	Ok(child)
+}
+
+/// Launch a generic process with the core's config system
+pub fn launch_process(params: LaunchProcessParameters<'_>) -> anyhow::Result<Child> {
+	let mut cmd =
+		get_process_launch_command(params).context("Failed to create process launch command")?;
+
+	cmd.spawn().context("Failed to spawn child process")
+}
+
+/// Get the command for launching a generic process using the core's config system
+pub fn get_process_launch_command(params: LaunchProcessParameters<'_>) -> anyhow::Result<Command> {
 	// Create the base command based on wrapper settings
 	let mut cmd = create_wrapped_command(params.command, &params.launch_config.wrappers);
 
@@ -33,18 +76,8 @@ pub(crate) fn launch_game_process(
 		cmd.arg(main_class);
 	}
 	cmd.args(params.props.game_args);
-	cmd.args(params.launch_config.generate_game_args(
-		params.version,
-		params.version_list,
-		params.side.get_side(),
-		o,
-	));
 
-	output_launch_command(&cmd, params.user_access_token, params.censor_secrets, o)?;
-
-	let child = cmd.spawn().context("Failed to spawn child process")?;
-
-	Ok(child)
+	Ok(cmd)
 }
 
 /// Display the launch command in our own way,
@@ -135,7 +168,7 @@ fn wrap_single(command: Command, wrapper: &WrapperCommand) -> Command {
 }
 
 /// Container struct for parameters for launching the game process
-pub(crate) struct LaunchProcessParameters<'a> {
+pub(crate) struct LaunchGameProcessParameters<'a> {
 	/// The base command to run, usually the path to the JVM
 	pub command: &'a OsStr,
 	/// The current working directory, usually the instance dir
@@ -151,9 +184,21 @@ pub(crate) struct LaunchProcessParameters<'a> {
 	pub censor_secrets: bool,
 }
 
+/// Container struct for parameters for launching a generic Java process
+pub struct LaunchProcessParameters<'a> {
+	/// The base command to run, usually the path to the JVM
+	pub command: &'a OsStr,
+	/// The current working directory, usually the instance dir
+	pub cwd: &'a Path,
+	/// The Java main class to run
+	pub main_class: Option<&'a str>,
+	pub props: LaunchProcessProperties,
+	pub launch_config: &'a LaunchConfiguration,
+}
+
 /// Properties for launching the game process that are created by
 /// the side-specific launch routine
-pub(crate) struct LaunchProcessProperties {
+pub struct LaunchProcessProperties {
 	/// Arguments for the JVM
 	pub jvm_args: Vec<String>,
 	/// Arguments for the game

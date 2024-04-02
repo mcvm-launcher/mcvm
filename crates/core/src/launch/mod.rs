@@ -14,7 +14,7 @@ use mcvm_shared::output::MCVMOutput;
 use mcvm_shared::Side;
 
 use self::client::create_quick_play_args;
-use self::process::{launch_game_process, LaunchProcessParameters};
+use self::process::{launch_game_process, LaunchGameProcessParameters};
 use crate::instance::InstanceKind;
 use crate::io::files::paths::Paths;
 use crate::io::java::args::{MemoryArg, MemoryNum};
@@ -28,6 +28,8 @@ use crate::util::versions::VersionName;
 pub use self::configuration::{
 	LaunchConfigBuilder, LaunchConfiguration, QuickPlayType, WrapperCommand,
 };
+
+pub use self::process::launch_process;
 
 pub(crate) async fn launch(
 	mut params: LaunchParameters<'_>,
@@ -46,7 +48,7 @@ pub(crate) async fn launch(
 		.get_chosen_user()
 		.and_then(|x| x.get_access_token());
 
-	let proc_params = LaunchProcessParameters {
+	let proc_params = LaunchGameProcessParameters {
 		command: command.as_os_str(),
 		cwd: params.launch_dir,
 		main_class: Some(params.main_class),
@@ -115,6 +117,21 @@ impl LaunchConfiguration {
 		o: &mut impl MCVMOutput,
 	) -> Vec<String> {
 		let mut out = self.game_args.clone();
+
+		out.extend(self.generate_additional_game_args(version, version_list, side, o));
+
+		out
+	}
+
+	/// Create additional args for the game when launching
+	pub fn generate_additional_game_args(
+		&self,
+		version: &str,
+		version_list: &[String],
+		side: Side,
+		o: &mut impl MCVMOutput,
+	) -> Vec<String> {
+		let mut out = Vec::new();
 
 		if let Side::Client = side {
 			out.extend(create_quick_play_args(
