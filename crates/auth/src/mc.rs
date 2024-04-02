@@ -131,7 +131,6 @@ pub async fn call_mc_api<T: DeserializeOwned>(
 #[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Keypair {
 	/// Private key
-	// Yes this is stupid
 	#[serde(alias = "privateKey")]
 	pub private_key: String,
 	/// Public key
