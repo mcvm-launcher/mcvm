@@ -63,6 +63,9 @@ impl Instance {
 			.await
 			.context("Failed to create core instance")?;
 
+		// Make sure that any fluff from the update gets ended
+		o.end_process();
+
 		o.display(
 			MessageContents::Success("Launching!".into()),
 			MessageLevel::Important,
