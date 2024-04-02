@@ -246,32 +246,29 @@ pub async fn download_files(
 
 	let client_clone = client.clone();
 	let main_libs_task = tokio::spawn(async move {
-		download_main_library(
+		let task1 = download_main_library(
 			&loader_clone,
 			loader_url,
 			&paths_clone,
 			&client_clone,
 			force,
-		)
-		.await?;
-		download_main_library(
+		);
+		let task2 = download_main_library(
 			&intermediary_clone,
 			"https://maven.fabricmc.net/",
 			&paths_clone,
 			&client_clone,
 			force,
-		)
-		.await?;
+		);
+
+		tokio::try_join!(task1, task2)?;
 
 		Ok::<(), anyhow::Error>(())
 	});
 
-	common_task
-		.await?
-		.with_context(|| format!("Failed to download {mode} common libraries"))?;
-	main_libs_task
-		.await?
-		.with_context(|| format!("Failed to download {mode} main libraries"))?;
+	let (res1, res2) = tokio::try_join!(common_task, main_libs_task,)?;
+	res1.with_context(|| format!("Failed to download {mode} common libraries"))?;
+	res2.with_context(|| format!("Failed to download {mode} main libraries"))?;
 
 	process.0.display(
 		MessageContents::Success(format!("{mode} downloaded")),
@@ -370,7 +367,7 @@ async fn download_main_library(
 	let url = url.to_owned() + &path;
 	let resp = download::bytes(url, client).await?;
 
-	files::create_leading_dirs(&lib_path)?;
+	files::create_leading_dirs_async(&lib_path).await?;
 	tokio::fs::write(&lib_path, resp).await?;
 
 	Ok(())
