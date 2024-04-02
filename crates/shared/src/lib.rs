@@ -59,12 +59,19 @@ pub mod later {
 			}
 		}
 
+		/// Clear the Later
+		pub fn clear(&mut self) {
+			*self = Self::Empty;
+		}
+
 		/// Checks if the Later does not contain a value
+		#[must_use]
 		pub fn is_empty(&self) -> bool {
 			matches!(self, Self::Empty)
 		}
 
 		/// Checks if the Later does contain a value
+		#[must_use]
 		pub fn is_full(&self) -> bool {
 			matches!(self, Self::Full(..))
 		}

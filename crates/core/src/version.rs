@@ -34,6 +34,7 @@ impl<'inner, 'params> InstalledVersion<'inner, 'params> {
 	}
 
 	/// Get the version info
+	#[must_use]
 	pub fn get_version_info(&self) -> VersionInfo {
 		VersionInfo {
 			version: self.inner.version.to_string(),

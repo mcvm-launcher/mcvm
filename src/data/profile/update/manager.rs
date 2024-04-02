@@ -2,13 +2,16 @@ use std::collections::HashSet;
 use std::path::{Path, PathBuf};
 
 use anyhow::Context;
+use mcvm_core::user::UserManager;
 use mcvm_core::util::versions::MinecraftVersion;
+use mcvm_core::version::InstalledVersion;
 use mcvm_core::MCVMCore;
 use mcvm_options::{read_options, Options};
 use mcvm_shared::later::Later;
 use mcvm_shared::output::MCVMOutput;
 use mcvm_shared::versions::VersionInfo;
 use mcvm_shared::Side;
+use oauth2::ClientId;
 use reqwest::Client;
 
 use crate::io::files::paths::Paths;
@@ -39,7 +42,6 @@ pub struct UpdateSettings {
 
 /// Manager for when we are updating profile files.
 /// It will keep track of files we have already downloaded, manage task requirements, etc
-#[derive(Debug)]
 pub struct UpdateManager {
 	/// Settings for the update
 	pub settings: UpdateSettings,
@@ -47,11 +49,16 @@ pub struct UpdateManager {
 	requirements: HashSet<UpdateRequirement>,
 	/// File paths that are added when they have been updated by other functions
 	files: HashSet<PathBuf>,
+	/// The Minecraft version of the manager
+	mc_version: Later<MinecraftVersion>,
+	/// The MS client id, if used
+	ms_client_id: Option<ClientId>,
+	/// The core to be fulfilled later
+	pub core: Later<MCVMCore>,
 	/// The game options to be fulfilled later
 	pub options: Option<Options>,
 	/// The version info to be fulfilled later
 	pub version_info: Later<VersionInfo>,
-	mc_version: Later<MinecraftVersion>,
 	/// The Fabric/Quilt metadata to be fulfilled later
 	pub fq_meta: Later<FabricQuiltMeta>,
 }
@@ -68,12 +75,19 @@ impl UpdateManager {
 		Self {
 			settings,
 			requirements: HashSet::new(),
+			core: Later::Empty,
+			ms_client_id: None,
 			files: HashSet::new(),
 			options: None,
 			version_info: Later::Empty,
 			fq_meta: Later::new(),
 			mc_version: Later::Empty,
 		}
+	}
+
+	/// Set the MS client ID
+	pub fn set_client_id(&mut self, id: ClientId) {
+		self.ms_client_id = Some(id);
 	}
 
 	/// Add a single requirement
@@ -110,22 +124,35 @@ impl UpdateManager {
 		}
 	}
 
-	/// Set the Minecraft version
+	/// Set the Minecraft version. Can be used with the same UpdateManager and will work fine.
+	/// Just make sure to fulfill requirements again.
 	pub fn set_version(&mut self, version: &MinecraftVersion) {
 		self.mc_version.fill(version.clone());
+		// We have to clear these now since they are out of date
+		self.version_info.clear();
+		self.fq_meta.clear();
 	}
 
 	/// Run all of the operations that are part of the requirements.
 	pub async fn fulfill_requirements(
 		&mut self,
+		users: &UserManager,
 		paths: &Paths,
 		client: &Client,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
 		// Setup the core
-		let (core, version_info) = self.setup_core(o).await.context("Failed to setup core")?;
+		self.setup_core(client, users)
+			.await
+			.context("Failed to setup core")?;
 
-		self.update_fabric_quilt(&core, &version_info, paths, client, o)
+		let version = self
+			.get_core_version(o)
+			.await
+			.context("Failed to get version")?;
+		let version_info = version.get_version_info();
+
+		self.update_fabric_quilt(&version_info, paths, client, o)
 			.await
 			.context("Failed to update Fabric/Quilt")?;
 
@@ -138,37 +165,57 @@ impl UpdateManager {
 	}
 
 	/// Sets up the core and version
-	async fn setup_core(
+	async fn setup_core(&mut self, client: &Client, users: &UserManager) -> anyhow::Result<()> {
+		if self.core.is_full() {
+			return Ok(());
+		}
+
+		// Setup the core
+		let mut core_config = mcvm_core::ConfigBuilder::new()
+			.allow_offline(self.settings.allow_offline)
+			.force_reinstall(self.settings.force);
+		if let Some(client_id) = &self.ms_client_id {
+			core_config = core_config.ms_client_id(client_id.clone());
+		}
+		let core_config = core_config.build();
+		let mut core = MCVMCore::with_config(core_config).context("Failed to initialize core")?;
+		core.get_users().steal_users(users);
+		core.set_client(client.clone());
+
+		self.core.fill(core);
+
+		Ok(())
+	}
+
+	/// Get the version from the core
+	pub async fn get_core_version(
 		&mut self,
 		o: &mut impl MCVMOutput,
-	) -> anyhow::Result<(MCVMCore, VersionInfo)> {
-		// Setup the core
-		let core_config = mcvm_core::ConfigBuilder::new()
-			.allow_offline(self.settings.allow_offline)
-			.force_reinstall(self.settings.force)
-			.build();
-		let mut core = MCVMCore::with_config(core_config).context("Failed to initialize core")?;
-		let version_info = {
-			let vers = core
-				.get_version(self.mc_version.get(), o)
-				.await
-				.context("Failed to get version")?;
+	) -> anyhow::Result<InstalledVersion> {
+		let version = self
+			.core
+			.get_mut()
+			.get_version(self.mc_version.get_mut(), o)
+			.await
+			.context("Failed to get core version")?;
 
-			vers.get_version_info()
-		};
-
-		Ok((core, version_info))
+		Ok(version)
 	}
 
 	/// Update Fabric or Quilt if it is required
 	async fn update_fabric_quilt(
 		&mut self,
-		core: &MCVMCore,
 		version_info: &VersionInfo,
 		paths: &Paths,
 		client: &Client,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
+		if self.fq_meta.is_full() {
+			return Ok(());
+		}
+
+		let core = self.core.get();
+
 		// Check if we need to update
 		let required = matches!(
 			self.requirements

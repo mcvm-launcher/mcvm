@@ -66,13 +66,12 @@ impl Instance {
 	/// Create the data for the instance.
 	pub async fn create<'core>(
 		&mut self,
-		version: &'core mut InstalledVersion<'core, 'core>,
-		manager: &UpdateManager,
+		manager: &'core mut UpdateManager,
 		paths: &Paths,
 		users: &UserManager,
 		client: &Client,
 		o: &mut impl MCVMOutput,
-	) -> anyhow::Result<(UpdateMethodResult, mcvm_core::Instance<'core>)> {
+	) -> anyhow::Result<UpdateMethodResult> {
 		// Start by setting up custom changes
 		let result = match &self.kind {
 			InstKind::Client { .. } => {
@@ -100,14 +99,19 @@ impl Instance {
 				Ok(result)
 			}
 		}?;
+
 		// Make the core instance
-		let inst = self
-			.create_core_instance(version, paths, o)
+		let mut version = manager
+			.get_core_version(o)
+			.await
+			.context("Failed to get manager version")?;
+
+		self.create_core_instance(&mut version, paths, o)
 			.await
 			.context("Failed to create core instance")?;
 		o.end_section();
 
-		Ok((result, inst))
+		Ok(result)
 	}
 
 	/// Ensure the directories are set and exist
@@ -120,7 +124,7 @@ impl Instance {
 	}
 
 	/// Create the core instance
-	async fn create_core_instance<'core>(
+	pub(super) async fn create_core_instance<'core>(
 		&mut self,
 		version: &'core mut InstalledVersion<'core, 'core>,
 		paths: &Paths,

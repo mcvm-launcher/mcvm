@@ -4,7 +4,6 @@ pub mod update;
 use std::process::Child;
 
 use anyhow::Context;
-use mcvm_core::MCVMCore;
 use mcvm_shared::output::MCVMOutput;
 use mcvm_shared::pkg::PackageStability;
 use reqwest::Client;
@@ -70,44 +69,41 @@ impl Profile {
 		InstanceRef::new(self.id.clone(), instance.clone())
 	}
 
-	/// Create all the instances in this profile. Returns the version list.
+	/// Create all the instances in this profile.
 	pub async fn create_instances(
 		&mut self,
 		reg: &mut InstanceRegistry,
 		paths: &Paths,
-		mut manager: UpdateManager,
+		manager: &mut UpdateManager,
 		users: &UserManager,
 		o: &mut impl MCVMOutput,
-	) -> anyhow::Result<Vec<String>> {
+	) -> anyhow::Result<()> {
 		for id in self.instances.iter_mut() {
 			let inst_ref = InstanceRef::new(self.id.clone(), id.clone());
 			let instance = reg.get(&inst_ref).expect("Profile has unknown instance");
 			manager.add_requirements(instance.get_requirements());
 		}
 		let client = Client::new();
-		manager.fulfill_requirements(paths, &client, o).await?;
+		manager
+			.fulfill_requirements(users, paths, &client, o)
+			.await?;
+
 		for id in self.instances.iter_mut() {
 			let inst_ref = InstanceRef::new(self.id.clone(), id.clone());
 
-			// FIXME: This sucks
-			let mut core = MCVMCore::new().context("Failed to initialize core")?;
-			core.get_users().steal_users(users);
-
-			let mut installed_version = core
-				.get_version(&self.version, o)
-				.await
-				.context("Failed to get version")?;
 			let instance = reg
 				.get_mut(&inst_ref)
 				.expect("Profile has unknown instance");
 			{
-				instance
-					.create(&mut installed_version, &manager, paths, users, &client, o)
+				let result = instance
+					.create(manager, paths, users, &client, o)
 					.await
 					.with_context(|| format!("Failed to create instance {id}"))?;
+				manager.add_result(result);
 			}
 		}
-		Ok(manager.version_info.get_val().versions)
+
+		Ok(())
 	}
 
 	/// Launch the profile's proxy, if it has one, returning the child process

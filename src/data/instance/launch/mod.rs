@@ -6,7 +6,7 @@ use mcvm_core::io::java::args::{ArgsPreset, MemoryNum};
 use mcvm_core::io::java::install::JavaInstallationKind;
 use mcvm_core::user::UserManager;
 use mcvm_core::util::versions::MinecraftVersion;
-use mcvm_core::{InstanceHandle, MCVMCore};
+use mcvm_core::InstanceHandle;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use oauth2::ClientId;
 use reqwest::Client;
@@ -35,33 +35,34 @@ impl Instance {
 			MessageContents::StartProcess("Checking for updates".into()),
 			MessageLevel::Important,
 		);
-		// Setup the core
-		let core_config = mcvm_core::ConfigBuilder::new()
-			.ms_client_id(ms_client_id)
-			.allow_offline(true)
-			.build();
-		let mut core = MCVMCore::with_config(core_config).context("Failed to initialize core")?;
-		core.get_users().steal_users(users);
-		let mut installed_version = core
-			.get_version(version, o)
-			.await
-			.context("Failed to get version")?;
 
 		let options = PrintOptions::new(false, 0);
 		let mut manager = UpdateManager::new(options, false, true);
 		let client = Client::new();
 		manager.set_version(version);
 		manager.add_requirements(self.get_requirements());
+		manager.set_client_id(ms_client_id);
 		manager
-			.fulfill_requirements(paths, &client, o)
+			.fulfill_requirements(users, paths, &client, o)
 			.await
 			.context("Update failed")?;
 
-		let (result, mut instance) = self
-			.create(&mut installed_version, &manager, paths, users, &client, o)
+		let result = self
+			.create(&mut manager, paths, users, &client, o)
 			.await
 			.context("Failed to update instance")?;
 		manager.add_result(result);
+
+		let mut installed_version = manager
+			.get_core_version(o)
+			.await
+			.context("Failed to get core version")?;
+
+		let mut instance = self
+			.create_core_instance(&mut installed_version, paths, o)
+			.await
+			.context("Failed to create core instance")?;
+
 		o.display(
 			MessageContents::Success("Launching!".into()),
 			MessageLevel::Important,

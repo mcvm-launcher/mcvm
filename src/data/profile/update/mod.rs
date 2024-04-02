@@ -67,6 +67,9 @@ pub async fn update_profiles(
 		output: o,
 	};
 
+	let print_options = PrintOptions::new(true, 0);
+	let mut manager = UpdateManager::new(print_options, force, false);
+
 	for id in ids {
 		let profile = config
 			.profiles
@@ -78,11 +81,9 @@ pub async fn update_profiles(
 			MessageLevel::Important,
 		);
 
-		let print_options = PrintOptions::new(true, 0);
-		let mut manager = UpdateManager::new(print_options, force, false);
 		manager.set_version(&profile.version);
 		manager
-			.fulfill_requirements(paths, ctx.client, ctx.output)
+			.fulfill_requirements(&config.users, paths, ctx.client, ctx.output)
 			.await
 			.context("Failed to fulfill update manager")?;
 		let mc_version = manager.version_info.get().version.clone();
@@ -113,8 +114,14 @@ pub async fn update_profiles(
 			let mut all_packages = HashSet::new();
 
 			if !profile.instances.is_empty() {
-				let version_list = profile
-					.create_instances(ctx.instances, paths, manager, &config.users, ctx.output)
+				profile
+					.create_instances(
+						ctx.instances,
+						paths,
+						&mut manager,
+						&config.users,
+						ctx.output,
+					)
 					.await
 					.context("Failed to create profile instances")?;
 
@@ -126,7 +133,7 @@ pub async fn update_profiles(
 				let constants = EvalConstants {
 					version: mc_version.to_string(),
 					modifications: profile.modifications.clone(),
-					version_list: version_list.clone(),
+					version_list: manager.version_info.get().versions.clone(),
 					language: config.prefs.language,
 					profile_stability: profile.default_stability,
 				};
