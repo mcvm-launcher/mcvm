@@ -108,18 +108,23 @@ impl PkgRequest {
 		}
 	}
 
-	/// Create a dependency list for debugging. Recursive, so call with an empty string
-	pub fn debug_sources(&self, list: String) -> String {
+	/// Create a dependency list for debugging
+	pub fn debug_sources(&self) -> String {
+		self.debug_sources_inner(String::new())
+	}
+
+	/// Recursive inner function for debugging sources
+	fn debug_sources_inner(&self, list: String) -> String {
 		match &self.source {
 			PkgRequestSource::UserRequire => format!("{}{list}", self.id),
 			PkgRequestSource::Dependency(source) => {
-				format!("{} -> {}", source.debug_sources(list), self.id)
+				format!("{} -> {}", source.debug_sources_inner(list), self.id)
 			}
 			PkgRequestSource::Refused(source) => {
-				format!("{} =X=> {}", source.debug_sources(list), self.id)
+				format!("{} =X=> {}", source.debug_sources_inner(list), self.id)
 			}
 			PkgRequestSource::Bundled(bundler) => {
-				format!("{} => {}", bundler.debug_sources(list), self.id)
+				format!("{} => {}", bundler.debug_sources_inner(list), self.id)
 			}
 			PkgRequestSource::Repository => format!("Repository -> {}{list}", self.id),
 		}
@@ -233,5 +238,21 @@ mod tests {
 		assert!(!is_valid_package_id(
 			"very-very-long-long-long-package-name-thats-too-long"
 		));
+	}
+
+	#[test]
+	fn test_request_source_debug() {
+		let req = PkgRequest::parse(
+			"foo",
+			PkgRequestSource::Dependency(Arc::new(PkgRequest::parse(
+				"bar",
+				PkgRequestSource::Dependency(Arc::new(PkgRequest::parse(
+					"baz",
+					PkgRequestSource::Repository,
+				))),
+			))),
+		);
+		let debug = req.debug_sources();
+		assert_eq!(debug, "Repository -> baz -> bar -> foo");
 	}
 }

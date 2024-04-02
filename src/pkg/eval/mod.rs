@@ -576,7 +576,7 @@ fn print_recommendation_warning(
 	let source = package.req.source.get_source();
 	let message = if package.invert {
 		if let Some(source) = source {
-			MessageContents::Warning(format!("The package '{}' recommends against the use of the package '{}', which is installed", source.debug_sources(String::new()), package.req))
+			MessageContents::Warning(format!("The package '{}' recommends against the use of the package '{}', which is installed", source.debug_sources(), package.req))
 		} else {
 			MessageContents::Warning(format!(
 				"A package recommends against the use of the package '{}', which is installed",
@@ -586,7 +586,7 @@ fn print_recommendation_warning(
 	} else if let Some(source) = source {
 		MessageContents::Warning(format!(
 			"The package '{}' recommends the use of the package '{}', which is not installed",
-			source.debug_sources(String::new()),
+			source.debug_sources(),
 			package.req
 		))
 	} else {

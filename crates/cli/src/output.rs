@@ -177,7 +177,7 @@ impl TerminalOutput {
 				)
 			}
 			MessageContents::Package(pkg, message) => {
-				let pkg_disp = pkg.debug_sources(String::new());
+				let pkg_disp = pkg.debug_sources();
 				format!("[{}] {}", pkg_disp, Self::format_message_log(*message))
 			}
 			MessageContents::Hyperlink(url) => url,

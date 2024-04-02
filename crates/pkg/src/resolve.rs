@@ -66,7 +66,7 @@ pub async fn resolve<'a, E: PackageEvaluator<'a>>(
 					if let Some(source) = source {
 						bail!(
 							"The package '{}' extends the functionality of the package '{}', which is not installed.",
-							source.debug_sources(String::new()),
+							source.debug_sources(),
 							package
 						);
 					} else {
@@ -162,7 +162,7 @@ async fn resolve_eval_package<'a, E: PackageEvaluator<'a>>(
 		if resolver.is_required(&req) {
 			bail!(
 				"Package '{}' is incompatible with this package.",
-				req.debug_sources(String::new())
+				req.debug_sources()
 			);
 		}
 		resolver.constraints.push(Constraint {
@@ -430,5 +430,5 @@ enum Task<'a, E: PackageEvaluator<'a>> {
 
 /// Creates the error message for package context
 fn package_context_error_message(package: &PkgRequest) -> String {
-	format!("In package '{}'", package.debug_sources(String::new()))
+	format!("In package '{}'", package.debug_sources())
 }

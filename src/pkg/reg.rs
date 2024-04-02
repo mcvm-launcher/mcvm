@@ -326,25 +326,3 @@ pub enum CachingStrategy {
 	/// Cache all packages whenever syncing the repositories
 	All,
 }
-
-#[cfg(test)]
-mod tests {
-	use super::*;
-	use std::sync::Arc;
-
-	#[test]
-	fn test_request_source_debug() {
-		let req = PkgRequest::parse(
-			"foo",
-			PkgRequestSource::Dependency(Arc::new(PkgRequest::parse(
-				"bar",
-				PkgRequestSource::Dependency(Arc::new(PkgRequest::parse(
-					"baz",
-					PkgRequestSource::Repository,
-				))),
-			))),
-		);
-		let debug = req.debug_sources(String::new());
-		assert_eq!(debug, "Repository -> baz -> bar -> foo");
-	}
-}
