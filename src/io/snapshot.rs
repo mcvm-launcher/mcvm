@@ -10,7 +10,6 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use zip::{ZipArchive, ZipWriter};
 
-use super::files;
 use super::files::paths::Paths;
 
 /// Name of the snapshot index file
@@ -299,7 +298,7 @@ fn write_snapshot_files<R: Read>(
 		StorageType::Folder => {
 			for (path, mut reader) in readers {
 				let dest = snapshot_path.join(path);
-				files::create_leading_dirs(&dest)?;
+				mcvm_core::io::files::create_leading_dirs(&dest)?;
 				let file = File::create(dest)?;
 				let mut file = BufWriter::new(file);
 				std::io::copy(&mut reader, &mut file)?;
@@ -325,7 +324,7 @@ async fn restore_snapshot_files(
 				.context("Failed to extract snapshot archive")?;
 		}
 		StorageType::Folder => {
-			files::copy_dir_contents_async(snapshot_path, instance_dir)
+			mcvm_core::io::files::copy_dir_contents_async(snapshot_path, instance_dir)
 				.await
 				.context("Failed to copy directory")?;
 		}

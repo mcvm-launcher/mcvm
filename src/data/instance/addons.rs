@@ -5,7 +5,7 @@ use mcvm_shared::addon::{Addon, AddonKind};
 use mcvm_shared::versions::{VersionInfo, VersionPattern};
 
 use crate::data::addon::{self, AddonExt};
-use crate::io::files::{self, paths::Paths, update_hardlink};
+use crate::io::files::paths::Paths;
 
 use super::{InstKind, Instance};
 
@@ -20,8 +20,8 @@ impl Instance {
 	) -> anyhow::Result<()> {
 		self.ensure_dirs(paths)?;
 		let game_dir = &self.dirs.get().game_dir;
-		files::create_leading_dirs(game_dir)?;
-		files::create_dir(game_dir)?;
+		mcvm_core::io::files::create_leading_dirs(game_dir)?;
+		mcvm_core::io::files::create_dir(game_dir)?;
 		for path in self
 			.get_linked_addon_paths(addon, selected_worlds, paths, version_info)
 			.context("Failed to get linked directory")?
@@ -115,14 +115,15 @@ impl Instance {
 	) -> anyhow::Result<()> {
 		let link = dir.join(addon.file_name.clone());
 		let addon_path = addon.get_path(paths, instance_id);
-		files::create_leading_dirs(&link)?;
+		mcvm_core::io::files::create_leading_dirs(&link)?;
 		// These checks are to make sure that we properly link the hardlink to the right location
 		// We have to remove the current link since it doesnt let us update it in place
 		ensure!(addon_path.exists(), "Addon path does not exist");
 		if link.exists() {
 			std::fs::remove_file(&link).context("Failed to remove instance addon file")?;
 		}
-		update_hardlink(&addon_path, &link).context("Failed to create hard link")?;
+		mcvm_core::io::files::update_hardlink(&addon_path, &link)
+			.context("Failed to create hard link")?;
 		Ok(())
 	}
 

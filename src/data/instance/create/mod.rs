@@ -23,7 +23,7 @@ use reqwest::Client;
 
 use crate::data::config::instance::QuickPlay;
 use crate::data::profile::update::manager::{UpdateManager, UpdateMethodResult, UpdateRequirement};
-use crate::io::files::{self, paths::Paths};
+use crate::io::files::paths::Paths;
 
 use super::{InstKind, Instance};
 
@@ -251,7 +251,7 @@ impl Instance {
 				let keys_dir = self.dirs.get().game_dir.join("profilekeys");
 				let hyphenated_uuid = hyphenate_uuid(uuid).context("Failed to hyphenate UUID")?;
 				let path = keys_dir.join(format!("{hyphenated_uuid}.json"));
-				files::create_leading_dirs(&path)?;
+				mcvm_core::io::files::create_leading_dirs(&path)?;
 
 				let mut file = File::create(path).context("Failed to create keypair file")?;
 				serde_json::to_writer(&mut file, keypair)
@@ -290,9 +290,11 @@ impl InstanceDirs {
 
 	/// Make sure the directories exist
 	pub fn ensure_exist(&self) -> anyhow::Result<()> {
-		files::create_leading_dirs(&self.inst_dir)?;
-		files::create_dir(&self.inst_dir).context("Failed to create instance directory")?;
-		files::create_dir(&self.game_dir).context("Failed to create game directory")?;
+		mcvm_core::io::files::create_leading_dirs(&self.inst_dir)?;
+		mcvm_core::io::files::create_dir(&self.inst_dir)
+			.context("Failed to create instance directory")?;
+		mcvm_core::io::files::create_dir(&self.game_dir)
+			.context("Failed to create game directory")?;
 		Ok(())
 	}
 }
