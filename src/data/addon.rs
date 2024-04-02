@@ -12,52 +12,69 @@ use mcvm_shared::modifications::{Modloader, ServerType};
 use std::future::Future;
 use std::path::{Path, PathBuf};
 
-/// Get the addon directory where an addon is stored
-pub fn get_dir(addon: &Addon, paths: &Paths) -> PathBuf {
-	paths.addons.join(addon.kind.to_plural_string())
+/// Extension methods for addons that this crate uses
+pub trait AddonExt {
+	/// Get the addon directory where an addon is stored
+	fn get_dir(&self, paths: &Paths) -> PathBuf;
+
+	/// Get the path to this addon stored in the internal addons folder
+	fn get_path(&self, paths: &Paths, instance_id: &str) -> PathBuf;
+
+	/// Get a unique identifier for this addon
+	fn get_unique_id(&self, instance_id: &str) -> String;
+
+	/// Whether this addon has different behavior based on the filename
+	fn filename_important(&self) -> bool;
+
+	/// Split this addon's filename into base and extension
+	fn split_filename(&self) -> (&str, &str);
+
+	/// Whether this addon should be updated
+	fn should_update(&self, paths: &Paths, instance_id: &str) -> bool;
 }
 
-/// Get the path to an addon stored in the internal addons folder
-pub fn get_path(addon: &Addon, paths: &Paths, instance_id: &str) -> PathBuf {
-	let pkg_dir = get_dir(addon, paths).join(addon.pkg_id.to_string());
-	if let Some(version) = &addon.version {
-		pkg_dir.join(addon.id.clone()).join(version)
-	} else {
-		pkg_dir.join(format!("{}_{instance_id}", addon.id))
+impl AddonExt for Addon {
+	fn get_dir(&self, paths: &Paths) -> PathBuf {
+		paths.addons.join(self.kind.to_plural_string())
 	}
-}
 
-/// Get a unique identifier for an addon
-pub fn get_unique_id(addon: &Addon, instance_id: &str) -> String {
-	if let Some(version) = &addon.version {
-		format!("{}_{instance_id}_{version}", addon.id)
-	} else {
-		format!("{}_{instance_id}", addon.id)
+	fn get_path(&self, paths: &Paths, instance_id: &str) -> PathBuf {
+		let pkg_dir = self.get_dir(paths).join(self.pkg_id.to_string());
+		if let Some(version) = &self.version {
+			pkg_dir.join(self.id.clone()).join(version)
+		} else {
+			pkg_dir.join(format!("{}_{instance_id}", self.id))
+		}
 	}
-}
 
-/// Whether this addon has different behavior based on the filename
-pub fn filename_important(addon: &Addon) -> bool {
-	matches!(addon.kind, AddonKind::ResourcePack)
+	fn get_unique_id(&self, instance_id: &str) -> String {
+		if let Some(version) = &self.version {
+			format!("{}_{instance_id}_{version}", self.id)
+		} else {
+			format!("{}_{instance_id}", self.id)
+		}
+	}
+
+	fn filename_important(&self) -> bool {
+		matches!(self.kind, AddonKind::ResourcePack)
+	}
+
+	fn split_filename(&self) -> (&str, &str) {
+		if let Some(index) = self.file_name.find('.') {
+			self.file_name.split_at(index)
+		} else {
+			(&self.file_name, "")
+		}
+	}
+
+	fn should_update(&self, paths: &Paths, instance_id: &str) -> bool {
+		self.version.is_none() || !self.get_path(paths, instance_id).exists()
+	}
 }
 
 /// Gets the formulaic filename for an addon in the instance, meant to reduce name clashes
 pub fn get_addon_instance_filename(package_id: &str, id: &str, kind: &AddonKind) -> String {
 	format!("mcvm_{package_id}_{id}{}", kind.get_extension())
-}
-
-/// Split an addon filename into base and extension
-pub fn split_filename(addon: &Addon) -> (&str, &str) {
-	if let Some(index) = addon.file_name.find('.') {
-		addon.file_name.split_at(index)
-	} else {
-		(&addon.file_name, "")
-	}
-}
-
-/// Whether this addon should be updated
-pub fn should_update(addon: &Addon, paths: &Paths, instance_id: &str) -> bool {
-	addon.version.is_none() || !get_path(addon, paths, instance_id).exists()
 }
 
 /// Checks if this path is in the stored addons directory
@@ -91,7 +108,7 @@ impl AddonRequest {
 
 	/// Get a unique identifier for this addon
 	pub fn get_unique_id(&self, instance_id: &str) -> String {
-		get_unique_id(&self.addon, instance_id)
+		self.addon.get_unique_id(instance_id)
 	}
 
 	/// Get the addon and store it
@@ -115,7 +132,7 @@ impl AddonRequest {
 		instance_id: &str,
 		client: &Client,
 	) -> anyhow::Result<impl Future<Output = anyhow::Result<()>> + Send + 'static> {
-		let path = get_path(&self.addon, paths, instance_id);
+		let path = self.addon.get_path(paths, instance_id);
 		create_leading_dirs(&path)?;
 
 		let location = self.location.clone();
@@ -208,6 +225,6 @@ mod tests {
 			version: None,
 			hashes: PackageAddonOptionalHashes::default(),
 		};
-		assert_eq!(split_filename(&addon), ("FooBar", ".baz.jar"));
+		assert_eq!(addon.split_filename(), ("FooBar", ".baz.jar"));
 	}
 }

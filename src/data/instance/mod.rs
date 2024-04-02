@@ -19,7 +19,6 @@ use crate::io::snapshot;
 use self::create::{InstanceDirs, ModificationData};
 use self::launch::LaunchOptions;
 
-use super::addon;
 use super::config::instance::ClientWindowConfig;
 use super::config::package::PackageConfig;
 use super::config::profile::GameModifications;

@@ -4,7 +4,7 @@ use anyhow::{ensure, Context};
 use mcvm_shared::addon::{Addon, AddonKind};
 use mcvm_shared::versions::{VersionInfo, VersionPattern};
 
-use crate::data::addon;
+use crate::data::addon::{self, AddonExt};
 use crate::io::files::{self, paths::Paths, update_hardlink};
 
 use super::{InstKind, Instance};
@@ -114,7 +114,7 @@ impl Instance {
 		instance_id: &str,
 	) -> anyhow::Result<()> {
 		let link = dir.join(addon.file_name.clone());
-		let addon_path = addon::get_path(addon, paths, instance_id);
+		let addon_path = addon.get_path(paths, instance_id);
 		files::create_leading_dirs(&link)?;
 		// These checks are to make sure that we properly link the hardlink to the right location
 		// We have to remove the current link since it doesnt let us update it in place

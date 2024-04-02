@@ -4,12 +4,13 @@ use mcvm_shared::pkg::ArcPkgReq;
 use mcvm_shared::versions::VersionInfo;
 use reqwest::Client;
 
+use crate::data::addon::AddonExt;
 use crate::io::files::paths::Paths;
 use crate::io::lock::{Lockfile, LockfileAddon};
 use crate::pkg::eval::{EvalData, EvalInput, Routine};
 use crate::pkg::reg::PkgRegistry;
 
-use super::{addon, Instance};
+use super::Instance;
 use crate::data::config::package::PackageConfig;
 
 use std::collections::HashMap;
@@ -70,7 +71,7 @@ impl Instance {
 
 		let mut tasks = HashMap::new();
 		for addon in eval.addon_reqs.iter() {
-			if addon::should_update(&addon.addon, paths, &self.id) || force {
+			if addon.addon.should_update(paths, &self.id) || force {
 				let task = addon
 					.get_acquire_task(paths, &self.id, client)
 					.context("Failed to get task for acquiring addon")?;
