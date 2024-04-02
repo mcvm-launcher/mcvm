@@ -43,6 +43,15 @@ pub fn update_hardlink(path: &Path, link: &Path) -> std::io::Result<()> {
 	Ok(())
 }
 
+/// Creates a new hardlink if it does not exist
+pub async fn update_hardlink_async(path: &Path, link: &Path) -> std::io::Result<()> {
+	if !link.exists() {
+		tokio::fs::hard_link(path, link).await?;
+	}
+
+	Ok(())
+}
+
 /// Cross platform - create a directory soft link
 #[cfg(target_os = "windows")]
 pub fn dir_symlink(path: &Path, target: &Path) -> std::io::Result<()> {

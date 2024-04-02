@@ -117,11 +117,17 @@ pub async fn get(
 		let client = client.clone();
 		let permit = sem.clone().acquire_owned().await;
 		let fut = async move {
-			let response = client.get(url).send();
+			let response = download::bytes(url, &client)
+				.await
+				.context("Failed to download asset")?;
+
 			let _permit = permit;
-			std::fs::write(&path, response.await?.error_for_status()?.bytes().await?)?;
+			tokio::fs::write(&path, response)
+				.await
+				.context("Failed to write asset to file")?;
 			if let Some(virtual_path) = virtual_path {
-				files::update_hardlink(&path, &virtual_path)
+				files::update_hardlink_async(&path, &virtual_path)
+					.await
 					.context("Failed to hardlink virtual asset")?;
 			}
 			Ok::<String, anyhow::Error>(name)

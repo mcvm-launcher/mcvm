@@ -324,6 +324,7 @@ pub async fn get(
 	for entry in &version_manifest.versions {
 		if entry.id == version_string {
 			version_url = Some(entry.url.clone());
+			break;
 		}
 	}
 	if version_url.is_none() {

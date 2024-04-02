@@ -12,7 +12,7 @@ use zip::ZipArchive;
 use crate::io::files::{self, paths::Paths};
 use crate::io::java::classpath::Classpath;
 use crate::io::update::{UpdateManager, UpdateMethodResult};
-use crate::net::download::FD_SENSIBLE_LIMIT;
+use crate::net::download::{self, FD_SENSIBLE_LIMIT};
 use mcvm_shared::skip_none;
 use mcvm_shared::util;
 
@@ -86,12 +86,43 @@ pub async fn get(
 	}
 
 	let mut join = JoinSet::new();
-	let mut num_done = 0;
 	// Used to limit the number of open file descriptors
 	let sem = Arc::new(Semaphore::new(FD_SENSIBLE_LIMIT));
-	// Clippy complains about num_done, but if we iter().enumerate() the compiler complains
-	#[allow(clippy::explicit_counter_loop)]
 	for (name, library, path) in libs_to_download {
+		files::create_leading_dirs(&path)?;
+
+		let client = client.clone();
+		let permit = sem.clone().acquire_owned().await;
+		let path_clone = path.clone();
+		let fut = async move {
+			let response = download::bytes(library.url, &client)
+				.await
+				.context("Failed to download library")?;
+			let _permit = permit;
+			tokio::fs::write(&path_clone, response)
+				.await
+				.context("Failed to write library file")?;
+
+			Ok::<String, anyhow::Error>(name)
+		};
+		join.spawn(fut);
+		out.files_updated.insert(path.clone());
+	}
+
+	o.display(
+		MessageContents::Associated(
+			Box::new(MessageContents::Progress {
+				current: 0,
+				total: count as u32,
+			}),
+			Box::new(MessageContents::Simple(String::new())),
+		),
+		MessageLevel::Important,
+	);
+	let mut num_done = 0;
+	while let Some(lib) = join.join_next().await {
+		let name = lib??;
+		num_done += 1;
 		o.display(
 			MessageContents::Associated(
 				Box::new(MessageContents::Progress {
@@ -99,39 +130,17 @@ pub async fn get(
 					total: count as u32,
 				}),
 				Box::new(MessageContents::StartProcess(format!(
-					"Downloading library {name}"
+					"Downloaded library {name}"
 				))),
 			),
 			MessageLevel::Important,
 		);
-
-		files::create_leading_dirs(&path)?;
-
-		let client = client.clone();
-		let permit = sem.clone().acquire_owned().await;
-		let path_clone = path.clone();
-		let fut = async move {
-			let response = client.get(library.url).send();
-			let _permit = permit;
-			files::write_buffered(
-				&path_clone,
-				response.await?.error_for_status()?.bytes().await?,
-			)?;
-			Ok::<(), anyhow::Error>(())
-		};
-		join.spawn(fut);
-		out.files_updated.insert(path.clone());
-		num_done += 1;
-	}
-
-	while let Some(lib) = join.join_next().await {
-		lib??;
 	}
 
 	for (path, name, extract) in natives {
 		o.display(
 			MessageContents::StartProcess(format!("Extracting native library {name}")),
-			MessageLevel::Important,
+			MessageLevel::Debug,
 		);
 		let natives_result = extract_native(&path, &natives_path, extract, manager, o)
 			.with_context(|| format!("Failed to extract native library {name}"))?;
@@ -216,8 +225,8 @@ fn extract_native(
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<UpdateMethodResult> {
 	let mut out = UpdateMethodResult::new();
-	let file = File::open(path)?;
-	let mut zip = ZipArchive::new(file)?;
+	let file = File::open(path).context("Failed to open native file")?;
+	let mut zip = ZipArchive::new(file).context("Failed to unarchive native")?;
 	for i in 0..zip.len() {
 		let mut file = zip.by_index(i)?;
 		let rel_path = PathBuf::from(
@@ -236,7 +245,8 @@ fn extract_native(
 					if !manager.should_update_file(&out_path) {
 						continue;
 					}
-					let mut out_file = File::create(&out_path)?;
+					let mut out_file =
+						File::create(&out_path).context("Failed to open output file for native")?;
 					std::io::copy(&mut file, &mut out_file)
 						.context("Failed to copy compressed file")?;
 					o.display(
