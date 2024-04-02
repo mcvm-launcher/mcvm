@@ -7,7 +7,6 @@
 					"minecraft_versions": "b1.7.3",
 					"modloaders": "fabric",
 					"relations": {
-						"dependencies": "stationapi",
 						"recommendations": {
 							"value": "modmenu-beta"
 						}
@@ -20,7 +19,6 @@
 					"minecraft_versions": "b1.7.3",
 					"modloaders": "fabric",
 					"relations": {
-						"dependencies": "stationapi",
 						"recommendations": {
 							"value": "modmenu-beta"
 						}
@@ -33,7 +31,6 @@
 					"minecraft_versions": "b1.7.3",
 					"modloaders": "fabric",
 					"relations": {
-						"dependencies": "stationapi",
 						"recommendations": {
 							"value": "modmenu-beta"
 						}
@@ -46,7 +43,6 @@
 					"minecraft_versions": "b1.7.3",
 					"modloaders": "fabric",
 					"relations": {
-						"dependencies": "stationapi",
 						"recommendations": {
 							"value": "modmenu-beta"
 						}
@@ -59,7 +55,6 @@
 					"minecraft_versions": "b1.7.3",
 					"modloaders": "fabric",
 					"relations": {
-						"dependencies": "stationapi",
 						"recommendations": {
 							"value": "modmenu-beta"
 						}
@@ -113,5 +108,8 @@
 		"supported_versions": [
 			"b1.7.3"
 		]
+	},
+	"relations": {
+		"dependencies": "stationapi"
 	}
 }

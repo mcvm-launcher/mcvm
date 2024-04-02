@@ -9,9 +9,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/42mznDva/create-fabric-0.5.1-f-build.1334%2Bmc1.19.2.jar",
 					"version": "42mznDva"
@@ -22,9 +19,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/A8R3Be5A/create-fabric-0.5.1-f-build.1335%2Bmc1.20.1.jar",
 					"version": "A8R3Be5A"
@@ -35,9 +29,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mFmmdAVA/create-fabric-0.5.1-f-build.1333%2Bmc1.18.2.jar",
 					"version": "mFmmdAVA"
@@ -48,9 +39,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/qlA1WuOK/create-fabric-0.5.1-d-build.1161%2Bmc1.20.1.jar",
 					"version": "qlA1WuOK"
@@ -61,9 +49,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/3eQP1uZu/create-fabric-0.5.1-c-build.1159%2Bmc1.18.2.jar",
 					"version": "3eQP1uZu"
@@ -74,9 +59,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/okpdciJG/create-fabric-0.5.1-c-build.1160%2Bmc1.19.2.jar",
 					"version": "okpdciJG"
@@ -87,9 +69,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/uxdmLu14/create-fabric-0.5.1-b-build.1088%2Bmc1.18.2.jar",
 					"version": "uxdmLu14"
@@ -100,9 +79,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/wKEEi1qX/create-fabric-0.5.1-b-build.1089%2Bmc1.19.2.jar",
 					"version": "wKEEi1qX"
@@ -113,9 +89,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/q6x0xvc1/create-fabric-0.5.1-b-build.1079%2Bmc1.19.2.jar",
 					"version": "q6x0xvc1"
@@ -126,9 +99,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/8hPKnWl8/create-fabric-0.5.1-b-build.1078%2Bmc1.18.2.jar",
 					"version": "8hPKnWl8"
@@ -139,9 +109,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/i0067Dja/create-fabric-0.5.1-b-build.1070%2Bmc1.18.2.jar",
 					"version": "i0067Dja"
@@ -152,9 +119,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/ojGZcMyX/create-fabric-0.5.1-b-build.1075%2Bmc1.19.2.jar",
 					"version": "ojGZcMyX"
@@ -165,9 +129,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/EkeMb3jA/create-fabric-0.5.0.i-1017%2B1.19.2.jar",
 					"version": "EkeMb3jA"
@@ -178,9 +139,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/URHyiw9Z/create-fabric-0.5.0.i-1016%2B1.18.2.jar",
 					"version": "URHyiw9Z"
@@ -191,9 +149,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/kOmlEnRT/create-fabric-0.5.0.i-1002%2B1.18.2.jar",
 					"version": "kOmlEnRT"
@@ -204,9 +159,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/js1edbtD/create-fabric-0.5.0.i-1003%2B1.19.2.jar",
 					"version": "js1edbtD"
@@ -217,9 +169,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/MpeKaF3n/create-fabric-0.5.0.i-991%2B1.19.2.jar",
 					"version": "MpeKaF3n"
@@ -230,9 +179,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/OzM1R01X/create-fabric-0.5.0.i-989%2B1.19.2.jar",
 					"version": "OzM1R01X"
@@ -243,9 +189,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/SDRtfq3B/create-fabric-0.5.0.i-988%2B1.18.2.jar",
 					"version": "SDRtfq3B"
@@ -256,9 +199,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/6WodDaRw/create-fabric-0.5.0.i-979%2B1.18.2.jar",
 					"version": "6WodDaRw"
@@ -269,9 +209,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/wSUajPZ2/create-fabric-0.5.0.i-963%2B1.18.2.jar",
 					"version": "wSUajPZ2"
@@ -282,9 +219,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/eiOEbe83/create-fabric-0.5.0.i-961%2B1.19.2.jar",
 					"version": "eiOEbe83"
@@ -295,9 +229,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/XfN2Gwkh/create-fabric-0.5.0.i-960%2B1.18.2.jar",
 					"version": "XfN2Gwkh"
@@ -308,9 +239,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/9Kizjtn4/create-fabric-0.5.0.i-946%2B1.19.2.jar",
 					"version": "9Kizjtn4"
@@ -321,9 +249,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/eMmAlNIo/create-fabric-0.5.0.i-944%2B1.18.2.jar",
 					"version": "eMmAlNIo"
@@ -334,9 +259,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/WIznfof3/create-fabric-0.5.0.i-925%2B1.19.2.jar",
 					"version": "WIznfof3"
@@ -347,9 +269,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/8wJieFuI/create-fabric-0.5.0.i-921%2B1.18.2.jar",
 					"version": "8wJieFuI"
@@ -360,9 +279,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/ZOucvJwc/create-fabric-0.5.0g-796%2B1.19.2.jar",
 					"version": "ZOucvJwc"
@@ -373,9 +289,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/aCFWhh4m/create-fabric-0.5.0g-792%2B1.18.2.jar",
 					"version": "aCFWhh4m"
@@ -386,9 +299,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/KVlT278H/create-fabric-0.5.0g-788%2B1.18.2.jar",
 					"version": "KVlT278H"
@@ -399,9 +309,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/CMXqOgvp/create-fabric-0.5.0g-791%2B1.19.2.jar",
 					"version": "CMXqOgvp"
@@ -412,9 +319,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/5QkKPfWg/create-fabric-1.19.2-0.5.0f-776.jar",
 					"version": "5QkKPfWg"
@@ -425,9 +329,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/AUnWONBr/create-fabric-1.18.2-0.5.0e-733.jar",
 					"version": "AUnWONBr"
@@ -438,9 +339,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/l66YzGBK/create-fabric-1.18.2-0.5.0d-731.jar",
 					"version": "l66YzGBK"
@@ -451,9 +349,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mEHNMQS7/create-fabric-1.18.2-0.5.0d-730.jar",
 					"version": "mEHNMQS7"
@@ -464,9 +359,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/uAheUy8q/create-fabric-1.18.2-0.5.0d-728.jar",
 					"version": "uAheUy8q"
@@ -477,9 +369,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/create-1.18.2-0.5.0c-708/create-1.18.2-0.5.0c-708.jar",
 					"version": "j7rLltXv"
@@ -490,9 +379,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1%2B637/create-mc1.18.2_v0.4.1%2B637.jar",
 					"version": "kTNqWWMa"
@@ -503,9 +389,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1%2B635/create-mc1.18.2_v0.4.1%2B635.jar",
 					"version": "TMePrzvw"
@@ -516,9 +399,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1%2B631/create-mc1.18.2_v0.4.1%2B631.jar",
 					"version": "bJKtTI8y"
@@ -529,9 +409,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1%2B629/create-mc1.18.2_v0.4.1%2B629.jar",
 					"version": "claJcl5F"
@@ -542,9 +419,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1%2B628/create-mc1.18.2_v0.4.1%2B628.jar",
 					"version": "CDGw3zSe"
@@ -555,9 +429,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1%2B601/create-mc1.18.2_v0.4.1%2B601.jar",
 					"version": "eNCMQaKl"
@@ -568,9 +439,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1%2B600/create-mc1.18.2_v0.4.1%2B600.jar",
 					"version": "5nlKopWj"
@@ -581,9 +449,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1%2B599/create-mc1.18.2_v0.4.1%2B599.jar",
 					"version": "OYqqVNgO"
@@ -594,9 +459,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1%2B596/create-mc1.18.2_v0.4.1%2B596.jar",
 					"version": "LQns5RQ4"
@@ -607,9 +469,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1%2B595/create-mc1.18.2_v0.4.1%2B595.jar",
 					"version": "yFEFFnx0"
@@ -620,9 +479,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1%2B594/create-mc1.18.2_v0.4.1%2B594.jar",
 					"version": "bGga7Elj"
@@ -633,9 +489,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1%2B586/create-mc1.18.2_v0.4.1%2B586.jar",
 					"version": "eq17R2hD"
@@ -646,9 +499,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1%2B576/create-mc1.18.2_v0.4.1%2B576.jar",
 					"version": "ce9nGr3a"
@@ -659,9 +509,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/mc1.18.2_v0.4.1/create-mc1.18.2_v0.4.1%2B565.jar",
 					"version": "mRXoRTy0"
@@ -710,5 +557,8 @@
 			"1.19.2",
 			"1.20.1"
 		]
+	},
+	"relations": {
+		"dependencies": "fabriclike-api"
 	}
 }

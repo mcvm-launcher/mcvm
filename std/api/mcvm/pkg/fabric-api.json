@@ -4,6 +4,13 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": "24w14potato",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/P7dR8mSH/versions/WovL05Nr/fabric-api-0.96.14%2B24w14potato.jar",
+					"version": "WovL05Nr"
+				},
+				{
 					"minecraft_versions": "24w13a",
 					"modloaders": "fabric",
 					"stability": "latest",
@@ -5778,7 +5785,8 @@
 			"24w10a",
 			"24w11a",
 			"24w12a",
-			"24w13a"
+			"24w13a",
+			"24w14potato"
 		]
 	},
 	"relations": {

@@ -9,7 +9,8 @@
 						"24w10a",
 						"24w11a",
 						"24w12a",
-						"24w13a"
+						"24w13a",
+						"24w14potato"
 					],
 					"modloaders": "fabric",
 					"relations": {
@@ -2376,7 +2377,8 @@
 			"24w10a",
 			"24w11a",
 			"24w12a",
-			"24w13a"
+			"24w13a",
+			"24w14potato"
 		]
 	}
 }

@@ -4,6 +4,26 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": "24w14potato",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/lhGA9TYQ/versions/TiDPj2Uz/architectury-12.0.19-fabric.jar",
+					"version": "TiDPj2Uz"
+				},
+				{
+					"minecraft_versions": "24w12a",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/lhGA9TYQ/versions/vEEP0bOY/architectury-12.0.18-fabric.jar",
+					"version": "vEEP0bOY"
+				},
+				{
 					"minecraft_versions": "1.20.2",
 					"modloaders": "neoforged",
 					"stability": "stable",
@@ -3006,7 +3026,9 @@
 			"23w41a",
 			"1.20.3-pre1",
 			"1.20.4",
-			"24w09a"
+			"24w09a",
+			"24w12a",
+			"24w14potato"
 		]
 	}
 }

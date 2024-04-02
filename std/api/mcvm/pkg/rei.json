@@ -4,6 +4,20 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": "24w14potato",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"architectury-api",
+							"cloth-config",
+							"fabriclike-api"
+						]
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/nfn13YXA/versions/XEH5ZZoo/RoughlyEnoughItems-14.0.691-alpha-fabric.jar",
+					"version": "XEH5ZZoo"
+				},
+				{
 					"minecraft_versions": "24w09a",
 					"modloaders": "fabric",
 					"relations": {
@@ -5573,7 +5587,8 @@
 			"1.20.2-rc1",
 			"1.20.2",
 			"1.20.4",
-			"24w09a"
+			"24w09a",
+			"24w14potato"
 		]
 	}
 }

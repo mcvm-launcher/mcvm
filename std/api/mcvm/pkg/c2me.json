@@ -4,6 +4,13 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/rq177mLj/c2me-fabric-mc1.20.4-0.2.0%2Balpha.11.62.jar",
+					"version": "rq177mLj"
+				},
+				{
 					"minecraft_versions": "24w13a",
 					"modloaders": "fabric",
 					"stability": "latest",

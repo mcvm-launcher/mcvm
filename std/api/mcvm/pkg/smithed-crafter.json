@@ -8,25 +8,16 @@
 						"1.20",
 						"1.20.1"
 					],
-					"relations": {
-						"dependencies": "smithed-custom-block"
-					},
 					"url": "https://github.com/Smithed-MC/Libraries/blob/d0f14054318cbbab0eb9d3b9d11ece9f529a6cbe/1.20/crafter/smithed_crafter_dp.zip?raw=true",
 					"version": "smithed-version-0-2-0"
 				},
 				{
 					"minecraft_versions": "1.19",
-					"relations": {
-						"dependencies": "smithed-custom-block"
-					},
 					"url": "https://raw.githubusercontent.com/Smithed-MC/Libraries/3ade114ed1c0d704c24203d110df3ae66b96a66f/1.19/crafter/smithed_crafter_dp.zip",
 					"version": "smithed-version-0-1-0"
 				},
 				{
 					"minecraft_versions": "1.19",
-					"relations": {
-						"dependencies": "smithed-custom-block"
-					},
 					"url": "https://github.com/Smithed-MC/Libraries/raw/releases/v0.0.3/Smithed%20Crafter.zip",
 					"version": "smithed-version-0-0-3"
 				}
@@ -40,25 +31,16 @@
 						"1.20",
 						"1.20.1"
 					],
-					"relations": {
-						"dependencies": "smithed-custom-block"
-					},
 					"url": "https://github.com/Smithed-MC/Libraries/blob/d0f14054318cbbab0eb9d3b9d11ece9f529a6cbe/1.20/crafter/smithed_crafter_rp.zip?raw=true",
 					"version": "smithed-version-0-2-0"
 				},
 				{
 					"minecraft_versions": "1.19",
-					"relations": {
-						"dependencies": "smithed-custom-block"
-					},
 					"url": "https://raw.githubusercontent.com/Smithed-MC/Libraries/3ade114ed1c0d704c24203d110df3ae66b96a66f/1.19/crafter/smithed_crafter_rp.zip",
 					"version": "smithed-version-0-1-0"
 				},
 				{
 					"minecraft_versions": "1.19",
-					"relations": {
-						"dependencies": "smithed-custom-block"
-					},
 					"url": "https://github.com/Smithed-MC/Libraries/raw/releases/v0.0.3/Smithed%20Crafter%20RP.zip",
 					"version": "smithed-version-0-0-3"
 				}
@@ -94,6 +76,12 @@
 		],
 		"tags": [
 			"datapack"
+		]
+	},
+	"relations": {
+		"dependencies": [
+			"smithed-custom-block",
+			"smithed-custom-block"
 		]
 	}
 }

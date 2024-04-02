@@ -14,12 +14,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": [
-							"fabriclike-api",
-							"kotlin-support"
-						]
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Rtp2Lyr5/versions/UuwX5TxU/lilac-1.0.0-beta.3.jar",
 					"version": "UuwX5TxU"
@@ -34,12 +28,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": [
-							"fabriclike-api",
-							"kotlin-support"
-						]
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Rtp2Lyr5/versions/pRI9PPjm/lilac-1.0.0-beta.2.jar",
 					"version": "pRI9PPjm"
@@ -54,12 +42,6 @@
 						"fabric",
 						"quilt"
 					],
-					"relations": {
-						"dependencies": [
-							"fabriclike-api",
-							"kotlin-support"
-						]
-					},
 					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/Rtp2Lyr5/versions/R0Clyo73/lilac-1.0.0-beta.1-mc.1.19.4.jar",
 					"version": "R0Clyo73"
@@ -102,6 +84,12 @@
 			"1.20",
 			"1.20.1",
 			"1.20.2"
+		]
+	},
+	"relations": {
+		"dependencies": [
+			"fabriclike-api",
+			"kotlin-support"
 		]
 	}
 }

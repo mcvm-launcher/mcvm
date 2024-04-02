@@ -4,6 +4,84 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"fabriclike-api",
+							"moonlight-lib"
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fFEIiSDQ/versions/VQx7vGrB/supplementaries-1.19.2-2.4.21-fabric.jar",
+					"version": "VQx7vGrB"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"fabriclike-api",
+							"moonlight-lib"
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fFEIiSDQ/versions/R5P1cLjK/supplementaries-1.20-2.8.10-fabric.jar",
+					"version": "R5P1cLjK"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"relations": {
+						"dependencies": "moonlight-lib"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fFEIiSDQ/versions/bY4VCxjZ/supplementaries-1.20-2.8.10.jar",
+					"version": "bY4VCxjZ"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"fabriclike-api",
+							"moonlight-lib"
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fFEIiSDQ/versions/nAE4Ovlk/supplementaries-1.20-2.8.10-fabric.jar",
+					"version": "nAE4Ovlk"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"relations": {
+						"dependencies": "moonlight-lib"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fFEIiSDQ/versions/55DwJc4A/supplementaries-1.20-2.8.10.jar",
+					"version": "55DwJc4A"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"relations": {
+						"dependencies": "moonlight-lib"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fFEIiSDQ/versions/l22bQrP7/supplementaries-1.20-2.8.10.jar",
+					"version": "l22bQrP7"
+				},
+				{
 					"minecraft_versions": "1.20.1",
 					"modloaders": "fabric",
 					"relations": {

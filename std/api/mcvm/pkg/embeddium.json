@@ -4,6 +4,19 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": "24w14potato",
+					"modloaders": "fabric",
+					"relations": {
+						"conflicts": [
+							"indium",
+							"sodium"
+						]
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/sk9rgfiA/versions/L9TkFdpn/embeddium-fabric-0.3.11%2Bmc24w14potato.jar",
+					"version": "L9TkFdpn"
+				},
+				{
 					"minecraft_versions": "24w13a",
 					"modloaders": "fabric",
 					"relations": {
@@ -1919,7 +1932,8 @@
 			"24w10a",
 			"24w11a",
 			"24w12a",
-			"24w13a"
+			"24w13a",
+			"24w14potato"
 		]
 	}
 }
