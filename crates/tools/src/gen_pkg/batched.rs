@@ -248,6 +248,7 @@ pub async fn batched_gen(mut config: BatchedConfig, filter: Vec<String>) {
 
 		// Improve the generated package
 		package.improve_generation();
+		package.optimize();
 
 		// Merge with config
 		let mut package =

@@ -249,6 +249,39 @@ impl DeclarativePackage {
 			}
 		}
 	}
+
+	/// Optimize the package by removing redundancies. This might break some packages
+	/// so it is recommended to use it only on simple generated ones
+	pub fn optimize(&mut self) {
+		// Move common relations in every version of an addon to the package scope
+		for addon in self.addons.values_mut() {
+			if addon.versions.is_empty() {
+				return;
+			}
+			let mut first = None;
+			let mut all_same = true;
+			for version in &addon.versions {
+				if let Some(first) = first {
+					if &version.relations.dependencies != first {
+						all_same = false;
+						break;
+					}
+				} else {
+					first = Some(&version.relations.dependencies);
+				}
+			}
+
+			if all_same && addon.conditions.is_empty() {
+				self.relations
+					.dependencies
+					.extend(first.expect("Length of versions is > 0").iter().cloned());
+
+				for version in &mut addon.versions {
+					version.relations.dependencies = DeserListOrSingle::List(Vec::new());
+				}
+			}
+		}
+	}
 }
 
 #[cfg(test)]

@@ -56,6 +56,7 @@ pub async fn gen(source: PackageSource, config: Option<PackageGenerationConfig>,
 
 	// Improve the generated package
 	pkg.improve_generation();
+	pkg.optimize();
 
 	// Merge with config
 	let mut pkg = serde_json::value::to_value(pkg).expect("Failed to convert package to value");

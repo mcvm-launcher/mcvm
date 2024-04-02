@@ -224,7 +224,7 @@ pub fn is_valid_identifier(id: &str) -> bool {
 
 /// Utility enum for deserialization that lets you do a list that can be one item
 /// without the braces
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone, Eq)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(untagged)]
 pub enum DeserListOrSingle<T> {
@@ -296,6 +296,38 @@ impl<T: Clone> DeserListOrSingle<T> {
 		let mut self_vec = self.get_vec();
 		self_vec.extend(other.iter().cloned());
 		*self = Self::List(self_vec);
+	}
+}
+
+impl<T: PartialEq> PartialEq for DeserListOrSingle<T> {
+	fn eq(&self, other: &Self) -> bool {
+		match (self, other) {
+			(DeserListOrSingle::Single(l), DeserListOrSingle::Single(r)) => l == r,
+			(DeserListOrSingle::List(l), DeserListOrSingle::List(r)) => l == r,
+			(DeserListOrSingle::List(l), DeserListOrSingle::Single(r)) => {
+				l.len() == 1 && l.first().expect("Length is 1") == r
+			}
+			(DeserListOrSingle::Single(l), DeserListOrSingle::List(r)) => {
+				r.len() == 1 && r.first().expect("Length is 1") == l
+			}
+		}
+	}
+}
+
+impl<T: Clone> Extend<T> for DeserListOrSingle<T> {
+	fn extend<U: IntoIterator<Item = T>>(&mut self, iter: U) {
+		// Convert single to list
+		if let Self::Single(item) = self {
+			*self = Self::List(vec![item.clone()]);
+		}
+		// Extend the list
+		if let Self::List(list) = self {
+			list.extend(iter);
+			// Convert back to single if there is only one item
+			if list.len() == 1 {
+				*self = Self::Single(list.first().expect("Length is 1").clone());
+			}
+		}
 	}
 }
 
