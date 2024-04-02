@@ -6,9 +6,9 @@
 //! together for you. For an example of using this crate, look at the `user::auth` module in
 //! the `mcvm_core` crate.
 
+/// Database for storing authentication information
+pub mod db;
 /// Authentication for Minecraft
 pub mod mc;
 /// Implementation of authentication with MSA for Minecraft auth
 mod mc_msa;
-/// Database for storing authentication information
-pub mod db;

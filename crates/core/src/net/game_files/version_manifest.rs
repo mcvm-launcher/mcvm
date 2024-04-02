@@ -79,7 +79,7 @@ pub async fn get(
 			);
 			manifest_contents = get_contents(paths, manager, client, true)
 				.await
-				.context("Failed to donwload manifest contents")?;
+				.context("Failed to download manifest contents")?;
 			serde_json::from_str(&manifest_contents)?
 		}
 	};

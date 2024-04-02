@@ -16,15 +16,6 @@ pub fn create_dir(path: &Path) -> std::io::Result<()> {
 	}
 }
 
-/// Same as create_dir, but asynchronous
-// pub async fn create_dir_async(path: &Path) -> std::io::Result<()> {
-// 	if path.exists() {
-// 		Ok(())
-// 	} else {
-// 		tokio::fs::create_dir(path).await
-// 	}
-// }
-
 /// Create all the directories leading up to a path
 pub fn create_leading_dirs(path: &Path) -> std::io::Result<()> {
 	if let Some(parent) = path.parent() {
@@ -33,15 +24,6 @@ pub fn create_leading_dirs(path: &Path) -> std::io::Result<()> {
 
 	Ok(())
 }
-
-/// Same as create_leading_dirs, but asynchronous
-// pub async fn create_leading_dirs_async(path: &Path) -> std::io::Result<()> {
-// 	if let Some(parent) = path.parent() {
-// 		tokio::fs::create_dir_all(parent).await?;
-// 	}
-
-// 	Ok(())
-// }
 
 /// Creates a new hardlink if it does not exist
 pub fn update_hardlink(path: &Path, link: &Path) -> std::io::Result<()> {

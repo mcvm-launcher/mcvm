@@ -258,7 +258,5 @@ fn extract_native(
 
 /// Gets the list of allowed libraries from the client meta
 pub fn get_list(client_meta: &ClientMeta) -> impl Iterator<Item = &Library> {
-	let libraries = client_meta.libraries.iter().filter(|lib| is_allowed(lib));
-
-	libraries
+	client_meta.libraries.iter().filter(|lib| is_allowed(lib))
 }

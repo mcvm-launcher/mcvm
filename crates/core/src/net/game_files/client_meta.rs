@@ -332,7 +332,7 @@ pub async fn get(
 
 	let client_meta_name: String = version_string.clone() + ".json";
 	let version_dir = paths.internal.join("versions").join(version_string);
-	files::create_dir(&version_dir)?;
+	files::create_dir(&version_dir).context("Failed to create versions directory")?;
 	let path = version_dir.join(client_meta_name);
 
 	let meta = if manager.allow_offline && path.exists() {
