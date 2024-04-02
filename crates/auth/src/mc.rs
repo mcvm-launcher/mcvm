@@ -5,7 +5,7 @@ use anyhow::{anyhow, Context};
 use oauth2::basic::{BasicClient, BasicTokenType};
 use oauth2::reqwest::async_http_client;
 use oauth2::{
-	AuthUrl, ClientId, DeviceAuthorizationUrl, EmptyExtraTokenFields, ErrorResponse,
+	AuthUrl, ClientId, DeviceAuthorizationUrl, EmptyExtraTokenFields, ErrorResponse, RefreshToken,
 	RequestTokenError, Scope, StandardDeviceAuthorizationResponse, StandardTokenResponse,
 	TokenResponse, TokenUrl,
 };
@@ -14,7 +14,7 @@ use serde::{Deserialize, Serialize};
 
 const DEVICE_CODE_URL: &str = "https://login.microsoftonline.com/consumers/oauth2/v2.0/devicecode";
 const MSA_AUTHORIZE_URL: &str = "https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize";
-const MSA_TOKEN_URL: &str = "https://login.microsoftonline.com/common/oauth2/v2.0/token";
+const MSA_TOKEN_URL: &str = "https://login.microsoftonline.com/consumers/oauth2/v2.0/token";
 
 /// Get the auth URL
 fn get_auth_url() -> anyhow::Result<AuthUrl> {
@@ -74,6 +74,19 @@ pub async fn get_microsoft_token(
 			|x| async move { std::thread::sleep(x) },
 			None,
 		)
+		.await;
+
+	out.map_err(decorate_request_token_error)
+}
+
+/// Gets the access token using a refresh token
+pub async fn refresh_microsoft_token(
+	client: &BasicClient,
+	refresh_token: &RefreshToken,
+) -> anyhow::Result<MicrosoftToken> {
+	let out = client
+		.exchange_refresh_token(refresh_token)
+		.request_async(async_http_client)
 		.await;
 
 	out.map_err(decorate_request_token_error)

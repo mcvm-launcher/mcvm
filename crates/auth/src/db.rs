@@ -11,6 +11,11 @@ use crate::mc::Keypair;
 /// because it won't be valid for very long
 const EXPIRATION_BUFFER: u64 = 120;
 
+/// The amount of time to consider a refresh token valid for. We want it to expire eventually to
+/// ensure some amount of security.
+// 180 days
+const REFRESH_TOKEN_EXPIRATION: u64 = 15552000;
+
 /// A handle to the authentication database where things like credentials are stored
 pub struct AuthDatabase {
 	/// The directory where the database is stored
@@ -122,12 +127,18 @@ pub struct DatabaseUser {
 	pub username: String,
 	/// The UUID of the user
 	pub uuid: String,
-	/// The authentication token for the user
-	pub token: String,
-	/// When the authentication token will expire, as a UTC timestamp in seconds
+	/// The refresh token for the user
+	pub refresh_token: Option<String>,
+	/// When the refresh token will expire, as a UTC timestamp in seconds
 	pub expires: u64,
 	/// The Xbox uid of the user, if applicable
 	pub xbox_uid: Option<String>,
 	/// The keypair of the user, if applicable
 	pub keypair: Option<Keypair>,
+}
+
+/// Calculate the date to expire the refresh token at
+pub fn calculate_expiration_date() -> u64 {
+	let now = utc_timestamp().unwrap_or_default();
+	now + REFRESH_TOKEN_EXPIRATION
 }

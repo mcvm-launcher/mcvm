@@ -2,13 +2,12 @@ use std::fmt::Debug;
 
 use anyhow::Context;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
-use mcvm_shared::util::utc_timestamp;
-use oauth2::ClientId;
+use oauth2::{ClientId, RefreshToken, TokenResponse};
 
 use crate::net::minecraft::MinecraftUserProfile;
 use crate::{net::minecraft, Paths};
 use mcvm_auth::db::{AuthDatabase, DatabaseUser};
-use mcvm_auth::mc as auth;
+use mcvm_auth::mc::{self as auth, MicrosoftToken};
 use mcvm_auth::mc::{mc_access_token_to_string, Keypair};
 
 use super::{User, UserKind};
@@ -88,9 +87,20 @@ pub async fn update_microsoft_user_auth(
 	// Check the authentication DB
 	let mut db =
 		AuthDatabase::open(&paths.auth).context("Failed to open authentication database")?;
-	let user_data = if let Some(db_user) = db.get_valid_user() {
+	let user_data = if let Some((db_user, refresh_token)) = get_full_user(&db) {
+		// Get the access token using the refresh token
+		let oauth_client =
+			auth::create_client(client_id).context("Failed to create OAuth client")?;
+		let token = auth::refresh_microsoft_token(&oauth_client, &refresh_token)
+			.await
+			.context("Failed to get refreshed token")?;
+
+		let token = authenticate_microsoft_user_from_token(token, client, o)
+			.await
+			.context("Failed to authenticate with refreshed token")?;
+
 		MicrosoftUserData {
-			access_token: AccessToken(db_user.token.clone()),
+			access_token: AccessToken(token.access_token.0.clone()),
 			profile: MinecraftUserProfile {
 				name: db_user.username.clone(),
 				uuid: db_user.uuid.clone(),
@@ -133,15 +143,14 @@ pub async fn update_microsoft_user_auth(
 		let (profile, certificate) = tokio::try_join!(profile_task, certificate_task)?;
 
 		// Calculate expiration time
-		let now = utc_timestamp().context("Failed to get current timestamp")?;
-		let expiration_time = now + auth_result.expires_in;
+		let expiration_time = mcvm_auth::db::calculate_expiration_date();
 
 		// Write the new user to the database
 		let db_user = DatabaseUser {
 			id: user_id.to_string(),
 			username: profile.name.clone(),
 			uuid: profile.uuid.clone(),
-			token: auth_result.access_token.0.clone(),
+			refresh_token: auth_result.refresh_token.map(|x| x.secret().clone()),
 			expires: expiration_time,
 			xbox_uid: Some(auth_result.xbox_uid.clone()),
 			keypair: Some(certificate.key_pair.clone()),
@@ -161,6 +170,14 @@ pub async fn update_microsoft_user_auth(
 	Ok(user_data)
 }
 
+/// Tries to get a full valid user from the database
+fn get_full_user(db: &AuthDatabase) -> Option<(&DatabaseUser, RefreshToken)> {
+	let user = db.get_valid_user()?;
+	let refresh_token = RefreshToken::new(user.refresh_token.clone()?);
+
+	Some((user, refresh_token))
+}
+
 /// Authenticate a Microsoft user using Microsoft OAuth.
 /// Will authenticate every time and will not use the database.
 pub async fn authenticate_microsoft_user(
@@ -175,14 +192,27 @@ pub async fn authenticate_microsoft_user(
 
 	o.display_special_ms_auth(response.verification_uri(), response.user_code().secret());
 
-	let expires_in = response.expires_in().as_secs();
-
 	let token = auth::get_microsoft_token(&oauth_client, response)
 		.await
 		.context("Failed to get Microsoft token")?;
+
+	let token = authenticate_microsoft_user_from_token(token, client, o).await?;
+
+	Ok(token)
+}
+
+/// Authenticate a Microsoft user from the Microsoft access token
+pub async fn authenticate_microsoft_user_from_token(
+	token: MicrosoftToken,
+	client: &reqwest::Client,
+	o: &mut impl MCVMOutput,
+) -> anyhow::Result<MicrosoftAuthResult> {
+	let refresh_token = token.refresh_token().cloned();
+
 	let mc_token = auth::auth_minecraft(token, client)
 		.await
 		.context("Failed to get Minecraft token")?;
+
 	let access_token = mc_access_token_to_string(&mc_token.access_token);
 
 	o.display(
@@ -193,7 +223,7 @@ pub async fn authenticate_microsoft_user(
 	let out = MicrosoftAuthResult {
 		access_token: AccessToken(access_token),
 		xbox_uid: mc_token.username.clone(),
-		expires_in,
+		refresh_token,
 	};
 
 	Ok(out)
@@ -243,8 +273,8 @@ pub struct MicrosoftAuthResult {
 	pub access_token: AccessToken,
 	/// The Xbox UID of the user
 	pub xbox_uid: String,
-	/// The amount of time in seconds before the token expires
-	pub expires_in: u64,
+	/// The refresh token
+	pub refresh_token: Option<RefreshToken>,
 }
 
 /// An access token for a user that will be hidden in debug messages
