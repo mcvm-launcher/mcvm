@@ -11,22 +11,6 @@ pub const HASH_SHA256_RESULT_LENGTH: usize = 32;
 /// Length in bytes of a SHA-512 hash
 pub const HASH_SHA512_RESULT_LENGTH: usize = 64;
 
-/// Digest a reader into a hasher
-pub fn digest_reader<D: Digest, R: Read>(mut reader: R) -> anyhow::Result<Vec<u8>> {
-	let mut digest = D::new();
-	let mut buf = [0; 1024];
-
-	loop {
-		let count = reader.read(&mut buf)?;
-		if count == 0 {
-			break;
-		}
-		digest.update(&buf[..count]);
-	}
-
-	Ok(digest.finalize().to_vec())
-}
-
 /// Get a hash string as a hex
 pub fn get_hash_str_as_hex(hash: &str) -> anyhow::Result<Vec<u8>> {
 	Ok(hex::decode(hash)?)
@@ -84,6 +68,22 @@ pub fn hash_file_with_best_hash(path: &Path, result: BestHashResult) -> anyhow::
 		== get_hash_str_as_hex(&expected_hash).context("Failed to parse provided hash")?;
 
 	Ok(matches)
+}
+
+/// Digest a reader into a hasher
+pub fn digest_reader<D: Digest, R: Read>(mut reader: R) -> anyhow::Result<Vec<u8>> {
+	let mut digest = D::new();
+	let mut buf = [0; 1024];
+
+	loop {
+		let count = reader.read(&mut buf)?;
+		if count == 0 {
+			break;
+		}
+		digest.update(&buf[..count]);
+	}
+
+	Ok(digest.finalize().to_vec())
 }
 
 #[cfg(test)]
