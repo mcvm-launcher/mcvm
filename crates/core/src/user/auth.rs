@@ -106,14 +106,31 @@ pub async fn update_microsoft_user_auth(
 			.await
 			.context("Failed to authenticate user")?;
 
-		let profile = crate::net::minecraft::get_user_profile(&auth_result.access_token.0, client)
-			.await
-			.context("Failed to get Microsoft user profile")?;
+		let profile_task = {
+			let client = client.clone();
+			let token = auth_result.access_token.0.clone();
+			async move {
+				let profile = crate::net::minecraft::get_user_profile(&token, &client)
+					.await
+					.context("Failed to get Microsoft user profile")?;
 
-		let certificate =
-			crate::net::minecraft::get_user_certificate(&auth_result.access_token.0, client)
-				.await
-				.context("Failed to get user certificate")?;
+				Ok::<MinecraftUserProfile, anyhow::Error>(profile)
+			}
+		};
+
+		let certificate_task = {
+			let client = client.clone();
+			let token = auth_result.access_token.0.clone();
+			async move {
+				let certificate = crate::net::minecraft::get_user_certificate(&token, &client)
+					.await
+					.context("Failed to get user certificate")?;
+
+				Ok(certificate)
+			}
+		};
+
+		let (profile, certificate) = tokio::try_join!(profile_task, certificate_task)?;
 
 		// Calculate expiration time
 		let now = utc_timestamp().context("Failed to get current timestamp")?;
