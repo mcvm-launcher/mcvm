@@ -14,6 +14,7 @@ use mcvm_shared::versions::VersionInfo;
 use mcvm_shared::Side;
 use reqwest::Client;
 use serde::Deserialize;
+use tokio::task::JoinSet;
 
 /// Mode we are in (Fabric / Quilt)
 /// This way we don't have to duplicate a lot of functions since these both
@@ -323,6 +324,7 @@ async fn download_libraries(
 	force: bool,
 ) -> anyhow::Result<Classpath> {
 	let mut classpath = Classpath::new();
+	let mut tasks = JoinSet::new();
 	for lib in libs.iter() {
 		let path = get_lib_path(&lib.name);
 		if let Some(path) = path {
@@ -332,9 +334,20 @@ async fn download_libraries(
 				continue;
 			}
 			let url = lib.url.clone() + &path;
-			files::create_leading_dirs(&lib_path)?;
-			let resp = download::bytes(url, client).await?;
-			tokio::fs::write(&lib_path, resp).await?;
+
+			let client = client.clone();
+			let task = async move {
+				files::create_leading_dirs(&lib_path)?;
+				let resp = download::bytes(url, &client).await?;
+				tokio::fs::write(&lib_path, resp).await?;
+				Ok::<(), anyhow::Error>(())
+			};
+
+			tasks.spawn(task);
+		}
+
+		while let Some(result) = tasks.join_next().await {
+			result??;
 		}
 	}
 
