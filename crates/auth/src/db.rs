@@ -61,6 +61,11 @@ impl AuthDatabase {
 				return false;
 			};
 
+			// Handle overflow
+			if user.expires < EXPIRATION_BUFFER {
+				return false;
+			}
+
 			now < (user.expires - EXPIRATION_BUFFER)
 		} else {
 			false
