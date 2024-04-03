@@ -99,6 +99,8 @@ impl JavaInstallation {
 			MessageLevel::Important,
 		);
 
+		o.end_process();
+
 		let out = Self {
 			major_version,
 			path,
@@ -310,7 +312,6 @@ async fn update_adoptium(
 		MessageContents::Success("Java installation finished".into()),
 		MessageLevel::Important,
 	);
-	o.end_process();
 
 	Ok(extracted_bin_dir)
 }
@@ -374,7 +375,6 @@ async fn update_zulu(
 		MessageContents::Success("Java installation finished".into()),
 		MessageLevel::Important,
 	);
-	o.end_process();
 
 	Ok(extracted_dir)
 }
@@ -427,7 +427,6 @@ async fn update_graalvm(
 		MessageContents::Success("Java installation finished".into()),
 		MessageLevel::Important,
 	);
-	o.end_process();
 
 	Ok(extracted_dir)
 }
