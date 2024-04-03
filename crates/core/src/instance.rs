@@ -39,7 +39,9 @@ impl<'params> Instance<'params> {
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Instance<'params>> {
 		// Start setting up the instance
-		std::fs::create_dir_all(&config.path).context("Failed to create instance directory")?;
+		tokio::fs::create_dir_all(&config.path)
+			.await
+			.context("Failed to create instance directory")?;
 		if !config.path.is_dir() {
 			bail!("Instance directory path is not a directory");
 		}
@@ -101,11 +103,13 @@ impl<'params> Instance<'params> {
 				// Update the hardlink
 				if params.update_manager.should_update_file(&new_jar_path) {
 					if new_jar_path.exists() {
-						std::fs::remove_file(&new_jar_path)
+						tokio::fs::remove_file(&new_jar_path)
+							.await
 							.context("Failed to remove existing server.jar")?;
 					}
 					if params.disable_hardlinks {
-						std::fs::copy(&jar_path, &new_jar_path)
+						tokio::fs::copy(&jar_path, &new_jar_path)
+							.await
 							.context("Failed to copy server.jar")?;
 					} else {
 						update_hardlink(&jar_path, &new_jar_path)
@@ -165,7 +169,8 @@ impl<'params> Instance<'params> {
 			if *create_eula {
 				let eula_path = config.path.join("eula.txt");
 				if !eula_path.exists() {
-					std::fs::write(eula_path, "eula = true\n")
+					tokio::fs::write(eula_path, "eula = true\n")
+						.await
 						.context("Failed to create eula.txt")?;
 				}
 			}
