@@ -67,7 +67,7 @@ pub async fn get_newest_version(
 		"https://dl-api.spongepowered.org/v1/org.spongepowered/{}/downloads?type=stable&minecraft={version}",
 		mode.to_str(),
 	);
-	let resp = serde_json::from_str::<Vec<Version>>(&client.get(url).send().await?.text().await?)?;
+	let resp: Vec<Version> = download::json(url, client).await?;
 
 	let version = resp
 		.first()

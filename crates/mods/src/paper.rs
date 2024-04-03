@@ -117,8 +117,7 @@ pub async fn install_velocity(paths: &Paths, client: &Client) -> anyhow::Result<
 /// Get the newest version of a PaperMC project
 pub async fn get_newest_version(mode: Mode, client: &Client) -> anyhow::Result<String> {
 	let url = format!("https://api.papermc.io/v2/projects/{}", mode.to_str(),);
-	let resp =
-		serde_json::from_str::<ProjectInfoResponse>(&client.get(url).send().await?.text().await?)?;
+	let resp: ProjectInfoResponse = download::json(url, client).await?;
 
 	let version = resp
 		.versions
@@ -139,8 +138,7 @@ pub async fn get_newest_build(mode: Mode, version: &str, client: &Client) -> any
 		"https://api.papermc.io/v2/projects/{}/versions/{version}",
 		mode.to_str(),
 	);
-	let resp =
-		serde_json::from_str::<VersionInfoResponse>(&client.get(url).send().await?.text().await?)?;
+	let resp: VersionInfoResponse = download::json(url, client).await?;
 
 	let build = resp
 		.builds
@@ -170,7 +168,7 @@ pub async fn get_jar_file_name(
 		"https://api.papermc.io/v2/projects/{}/versions/{version}/builds/{num_str}",
 		mode.to_str(),
 	);
-	let resp = serde_json::from_str::<BuildInfoResponse>(&download::text(&url, client).await?)?;
+	let resp: BuildInfoResponse = download::json(url, client).await?;
 
 	Ok(resp.downloads.application.name)
 }
