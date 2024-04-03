@@ -181,7 +181,6 @@ async fn sync(data: &mut CmdData, filter: Vec<String>) -> anyhow::Result<()> {
 		.await
 		.context("Failed to update cached packages")?;
 	printer.println(&cformat!("<s>Validating packages..."));
-	let client = Client::new();
 	for package in config.packages.get_all_packages() {
 		match config
 			.packages
