@@ -193,9 +193,6 @@ impl Config {
 					bail!("Invalid string '{}'", instance_id.to_string());
 				}
 				let inst_ref = InstanceRef::new(profile_id.clone(), instance_id.clone());
-				if instances.contains_key(&inst_ref) {
-					bail!("Duplicate instance '{instance_id}'");
-				}
 				let instance = read_instance_config(
 					instance_id.clone(),
 					&instance_config,
