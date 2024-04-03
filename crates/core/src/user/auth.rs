@@ -1,6 +1,6 @@
 use std::fmt::Debug;
 
-use anyhow::Context;
+use anyhow::{bail, Context};
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use oauth2::{ClientId, RefreshToken, TokenResponse};
 
@@ -116,6 +116,18 @@ pub async fn update_microsoft_user_auth(
 			.await
 			.context("Failed to authenticate user")?;
 
+		let ownership_task = {
+			let client = client.clone();
+			let token = auth_result.access_token.0.clone();
+			async move {
+				let owns_game = auth::account_owns_game(&token, &client)
+					.await
+					.context("Failed to check for game ownership")?;
+
+				Ok::<bool, anyhow::Error>(owns_game)
+			}
+		};
+
 		let profile_task = {
 			let client = client.clone();
 			let token = auth_result.access_token.0.clone();
@@ -140,7 +152,12 @@ pub async fn update_microsoft_user_auth(
 			}
 		};
 
-		let (profile, certificate) = tokio::try_join!(profile_task, certificate_task)?;
+		let (owns_game, profile, certificate) =
+			tokio::try_join!(ownership_task, profile_task, certificate_task)?;
+
+		if !owns_game {
+			bail!("Specified account does not own Minecraft");
+		}
 
 		// Calculate expiration time
 		let expiration_time = mcvm_auth::db::calculate_expiration_date();
@@ -196,9 +213,9 @@ pub async fn authenticate_microsoft_user(
 		.await
 		.context("Failed to get Microsoft token")?;
 
-	let token = authenticate_microsoft_user_from_token(token, client, o).await?;
+	let result = authenticate_microsoft_user_from_token(token, client, o).await?;
 
-	Ok(token)
+	Ok(result)
 }
 
 /// Authenticate a Microsoft user from the Microsoft access token

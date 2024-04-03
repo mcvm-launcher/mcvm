@@ -9,6 +9,7 @@ use oauth2::{
 	RequestTokenError, Scope, StandardDeviceAuthorizationResponse, StandardTokenResponse,
 	TokenResponse, TokenUrl,
 };
+use reqwest::Response;
 use serde::de::DeserializeOwned;
 use serde::{Deserialize, Serialize};
 
@@ -122,20 +123,47 @@ fn decorate_request_token_error<RE: std::error::Error, T: ErrorResponse>(
 	}
 }
 
+/// Check whether the account owns the game
+pub async fn account_owns_game(
+	access_token: &str,
+	client: &reqwest::Client,
+) -> anyhow::Result<bool> {
+	let response = call_mc_api_impl(
+		"https://api.minecraftservices.com/entitlements/mcstore",
+		access_token,
+		client,
+	)
+	.await
+	.context("Failed to call API to check game ownership")?;
+	// Instead of using the JSON format, it's faster and easier to just check for strings in the response
+	let text = response.text().await?;
+	let out = text.contains("product_minecraft") | text.contains("game_minecraft");
+	Ok(out)
+}
+
 /// Utility function to query the Minecraft Services API with correct authorization
 pub async fn call_mc_api<T: DeserializeOwned>(
 	url: &str,
 	access_token: &str,
 	client: &reqwest::Client,
 ) -> anyhow::Result<T> {
+	let response = call_mc_api_impl(url, access_token, client).await?;
+	let response = response.json().await?;
+
+	Ok(response)
+}
+
+async fn call_mc_api_impl(
+	url: &str,
+	access_token: &str,
+	client: &reqwest::Client,
+) -> anyhow::Result<Response> {
 	let response = client
 		.get(url)
 		.header("Authorization", format!("Bearer {access_token}"))
 		.send()
 		.await?
-		.error_for_status()?
-		.json()
-		.await?;
+		.error_for_status()?;
 
 	Ok(response)
 }
