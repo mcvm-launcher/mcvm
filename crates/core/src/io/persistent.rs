@@ -39,6 +39,7 @@ struct PersistentDataJavaVersion {
 struct PersistentDataJava {
 	adoptium: HashMap<String, PersistentDataJavaVersion>,
 	zulu: HashMap<String, PersistentDataJavaVersion>,
+	graalvm: HashMap<String, PersistentDataJavaVersion>,
 }
 
 /// Used as a function argument
@@ -47,6 +48,8 @@ pub(crate) enum PersistentDataJavaInstallation {
 	Adoptium,
 	/// Zulu Java
 	Zulu,
+	/// GraalVM Java
+	GraalVM,
 }
 
 impl PersistentDataContents {
@@ -94,6 +97,7 @@ impl PersistentData {
 		let installation = match installation {
 			PersistentDataJavaInstallation::Adoptium => &mut self.contents.java.adoptium,
 			PersistentDataJavaInstallation::Zulu => &mut self.contents.java.zulu,
+			PersistentDataJavaInstallation::GraalVM => &mut self.contents.java.graalvm,
 		};
 		let path_str = path.to_string_lossy().to_string();
 		if let Some(current_version) = installation.get_mut(major_version) {
@@ -131,6 +135,7 @@ impl PersistentData {
 		let installation = match installation {
 			PersistentDataJavaInstallation::Adoptium => &self.contents.java.adoptium,
 			PersistentDataJavaInstallation::Zulu => &self.contents.java.zulu,
+			PersistentDataJavaInstallation::GraalVM => &self.contents.java.graalvm,
 		};
 		let version = installation.get(version)?;
 		Some(PathBuf::from(version.path.clone()))

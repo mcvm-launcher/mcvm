@@ -2,7 +2,7 @@
 mod system;
 
 use std::fs::File;
-use std::io::BufReader;
+use std::io::{BufReader, Read, Seek};
 
 #[cfg(target_family = "unix")]
 use std::os::unix::fs::PermissionsExt;
@@ -34,6 +34,8 @@ pub enum JavaInstallationKind {
 	Adoptium,
 	/// Azul Zulu
 	Zulu,
+	/// GraalVM
+	GraalVM,
 	/// A user-specified installation
 	Custom {
 		/// The path to the installation. The JVM must live at
@@ -50,6 +52,7 @@ impl JavaInstallationKind {
 			"system" => Self::System,
 			"adoptium" => Self::Adoptium,
 			"zulu" => Self::Zulu,
+			"graalvm" => Self::GraalVM,
 			path => Self::Custom {
 				path: PathBuf::from(path),
 			},
@@ -87,6 +90,7 @@ impl JavaInstallation {
 			JavaInstallationKind::System => system::install(&vers_str)?,
 			JavaInstallationKind::Adoptium => install_adoptium(&vers_str, &mut params, o).await?,
 			JavaInstallationKind::Zulu => install_zulu(&vers_str, &mut params, o).await?,
+			JavaInstallationKind::GraalVM => install_graalvm(&vers_str, &mut params, o).await?,
 			JavaInstallationKind::Custom { path } => path.clone(),
 		};
 
@@ -219,6 +223,29 @@ async fn install_zulu(
 	}
 }
 
+async fn install_graalvm(
+	major_version: &str,
+	params: &mut JavaInstallParameters<'_>,
+	o: &mut impl MCVMOutput,
+) -> anyhow::Result<PathBuf> {
+	if params.update_manager.allow_offline {
+		if let Some(directory) = params
+			.persistent
+			.get_java_path(PersistentDataJavaInstallation::GraalVM, major_version)
+		{
+			Ok(directory)
+		} else {
+			update_graalvm(major_version, params, o)
+				.await
+				.context("Failed to update GraalVM Java")
+		}
+	} else {
+		update_graalvm(major_version, params, o)
+			.await
+			.context("Failed to update GraalVM Java")
+	}
+}
+
 /// Updates Adoptium and returns the path to the installation
 async fn update_adoptium(
 	major_version: &str,
@@ -272,7 +299,7 @@ async fn update_adoptium(
 		MessageContents::StartProcess("Extracting JRE".into()),
 		MessageLevel::Important,
 	);
-	extract_archive(&arc_path, &out_dir).context("Failed to extract")?;
+	extract_archive_file(&arc_path, &out_dir).context("Failed to extract")?;
 	o.display(
 		MessageContents::StartProcess("Removing archive".into()),
 		MessageLevel::Important,
@@ -336,7 +363,7 @@ async fn update_zulu(
 		MessageContents::StartProcess("Extracting JRE".into()),
 		MessageLevel::Important,
 	);
-	extract_archive(&arc_path, &out_dir).context("Failed to extract")?;
+	extract_archive_file(&arc_path, &out_dir).context("Failed to extract")?;
 	o.display(
 		MessageContents::StartProcess("Removing archive".into()),
 		MessageLevel::Important,
@@ -352,21 +379,102 @@ async fn update_zulu(
 	Ok(extracted_dir)
 }
 
-/// Extracts the Adoptium/Zulu JRE archive (either a tar or a zip)
-fn extract_archive(arc_path: &Path, out_dir: &Path) -> anyhow::Result<()> {
+/// Updates GraalVM and returns the path to the installation
+async fn update_graalvm(
+	major_version: &str,
+	params: &mut JavaInstallParameters<'_>,
+	o: &mut impl MCVMOutput,
+) -> anyhow::Result<PathBuf> {
+	let out_dir = params.paths.java.join("graalvm");
+	files::create_dir(&out_dir)?;
+
+	o.display(
+		MessageContents::StartProcess("Downloading GraalVM".into()),
+		MessageLevel::Important,
+	);
+	let archive = net::java::graalvm::get_latest(major_version, params.req_client)
+		.await
+		.context("Failed to download the latest GraalVM version")?;
+
+	// We have to extract now since we need the extracted dir
+	o.display(
+		MessageContents::StartProcess("Extracting JRE".into()),
+		MessageLevel::Important,
+	);
+	let dir_name = extract_archive(std::io::Cursor::new(archive), &out_dir)
+		.context("Failed to extract GraalVM archive")?;
+
+	let extracted_dir = out_dir.join(&dir_name);
+
+	let version = dir_name.replace("graalvm-jdk-", "");
+
+	if !params
+		.persistent
+		.update_java_installation(
+			PersistentDataJavaInstallation::GraalVM,
+			major_version,
+			&version,
+			&extracted_dir,
+		)
+		.context("Failed to update Java in lockfile")?
+	{
+		return Ok(extracted_dir);
+	}
+
+	params.persistent.dump(params.paths).await?;
+
+	o.display(
+		MessageContents::Success("Java installation finished".into()),
+		MessageLevel::Important,
+	);
+	o.end_process();
+
+	Ok(extracted_dir)
+}
+
+/// Extracts the archive file
+fn extract_archive_file(arc_path: &Path, out_dir: &Path) -> anyhow::Result<()> {
 	let file = File::open(arc_path).context("Failed to read archive file")?;
-	let mut file = BufReader::new(file);
-	if cfg!(windows) {
-		let mut archive = ZipArchive::new(file).context("Failed to open zip archive")?;
+	let file = BufReader::new(file);
+
+	extract_archive(file, out_dir)?;
+
+	Ok(())
+}
+
+/// Extracts the JRE archive (either a tar or a zip) and also returns the internal extraction directory name
+fn extract_archive<R: Read + Seek>(reader: R, out_dir: &Path) -> anyhow::Result<String> {
+	let dir_name = if cfg!(windows) {
+		let mut archive = ZipArchive::new(reader).context("Failed to open zip archive")?;
+
+		let dir_name = archive
+			.file_names()
+			.nth(0)
+			.context("Missing archive internal directory")?
+			.to_string();
+
 		archive
 			.extract(out_dir)
 			.context("Failed to extract zip file")?;
+
+		dir_name
 	} else {
 		let mut decoder =
-			libflate::gzip::Decoder::new(&mut file).context("Failed to decode tar.gz")?;
+			libflate::gzip::Decoder::new(reader).context("Failed to decode tar.gz")?;
 		let mut arc = Archive::new(&mut decoder);
 		arc.unpack(out_dir).context("Failed to unarchive tar")?;
-	}
 
-	Ok(())
+		// Wow
+		arc.entries()
+			.context("Failed to get Tar entries")?
+			.nth(0)
+			.context("Missing archive internal directory")?
+			.context("Failed to get entry")?
+			.path()
+			.context("Failed to get entry path name")?
+			.to_string_lossy()
+			.to_string()
+	};
+
+	Ok(dir_name)
 }

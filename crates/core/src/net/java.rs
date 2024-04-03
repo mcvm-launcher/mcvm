@@ -108,3 +108,27 @@ pub mod zulu {
 		}
 	}
 }
+
+/// Downloading GraalVM
+pub mod graalvm {
+	use bytes::Bytes;
+	use mcvm_shared::util::preferred_archive_extension;
+
+	use super::*;
+
+	/// Downloads the contents of the GraalVM archive
+	pub async fn get_latest(major_version: &str, client: &Client) -> anyhow::Result<Bytes> {
+		let url = download_url(major_version);
+		download::bytes(url, client).await
+	}
+
+	/// Gets the download URL
+	fn download_url(major_version: &str) -> String {
+		format!(
+			"https://download.oracle.com/graalvm/{major_version}/latest/graalvm-jdk-{major_version}_{}-{}_bin{}",
+			OS_STRING,
+			ARCH_STRING,
+			preferred_archive_extension()
+		)
+	}
+}
