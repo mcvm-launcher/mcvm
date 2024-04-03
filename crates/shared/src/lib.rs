@@ -43,11 +43,13 @@ pub mod later {
 
 	impl<T> Later<T> {
 		/// Construct an empty Later
+		#[inline(always)]
 		pub fn new() -> Self {
 			Self::Empty
 		}
 
 		/// Fill the Later with a value
+		#[inline(always)]
 		pub fn fill(&mut self, value: T) {
 			*self = Self::Full(value);
 		}
@@ -60,23 +62,27 @@ pub mod later {
 		}
 
 		/// Clear the Later
+		#[inline(always)]
 		pub fn clear(&mut self) {
 			*self = Self::Empty;
 		}
 
 		/// Checks if the Later does not contain a value
 		#[must_use]
+		#[inline(always)]
 		pub fn is_empty(&self) -> bool {
 			matches!(self, Self::Empty)
 		}
 
 		/// Checks if the Later does contain a value
 		#[must_use]
+		#[inline(always)]
 		pub fn is_full(&self) -> bool {
 			matches!(self, Self::Full(..))
 		}
 
 		/// Grab the value inside and panic if it isn't there
+		#[inline(always)]
 		pub fn get(&self) -> &T {
 			if let Self::Full(value) = self {
 				value
@@ -86,6 +92,7 @@ pub mod later {
 		}
 
 		/// Grab the value inside mutably and panic if it isn't there
+		#[inline(always)]
 		pub fn get_mut(&mut self) -> &mut T {
 			if let Self::Full(value) = self {
 				value
@@ -95,6 +102,7 @@ pub mod later {
 		}
 
 		/// Grab the value inside without a reference and panic if it isn't there
+		#[inline(always)]
 		pub fn get_val(self) -> T {
 			if let Self::Full(value) = self {
 				value
@@ -104,6 +112,7 @@ pub mod later {
 		}
 
 		/// Converts to an `Option<T>`
+		#[inline(always)]
 		pub fn into_option(self) -> Option<T> {
 			match self {
 				Self::Empty => None,

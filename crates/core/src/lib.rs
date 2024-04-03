@@ -99,11 +99,13 @@ impl MCVMCore {
 	}
 
 	/// Get the reqwest client that the core uses
+	#[inline]
 	pub fn get_client(&self) -> &reqwest::Client {
 		&self.req_client
 	}
 
 	/// Get the paths that the core uses
+	#[inline]
 	pub fn get_paths(&self) -> &Paths {
 		&self.paths
 	}
