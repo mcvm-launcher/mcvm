@@ -1,5 +1,4 @@
 use std::collections::HashMap;
-use std::path::Path;
 
 use anyhow::Context;
 use mcvm_core::io::java::args::{ArgsPreset, MemoryNum};
@@ -78,22 +77,6 @@ impl Instance {
 
 		Ok(handle)
 	}
-}
-
-/// Argument for the launch_process command that includes properties about the launch command
-pub struct LaunchProcessProperties<'a> {
-	/// The current working directory, usually the instance subdir
-	pub cwd: &'a Path,
-	/// The base command to run, usually the path to the JVM
-	pub command: &'a str,
-	/// Arguments for the JVM
-	pub jvm_args: &'a [String],
-	/// The Java main class to run
-	pub main_class: Option<&'a str>,
-	/// Arguments for the game
-	pub game_args: &'a [String],
-	/// Additional environment variables to add to the launch command
-	pub additional_env_vars: &'a HashMap<String, String>,
 }
 
 /// Options for launching after conversion from the deserialized version
