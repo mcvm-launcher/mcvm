@@ -149,8 +149,6 @@ pub(crate) fn replace_arg_placeholders(arg: &str, params: &LaunchParameters) -> 
 		get_virtual_dir_path(params.paths).to_str()?,
 	);
 
-	// TODO: Use different user types
-	out = out.replace(placeholder!("user_type"), "msa");
 	out = out.replace(placeholder!("clientid"), "mcvm");
 	// Apparently this is used for Twitch on older versions
 	out = out.replace(placeholder!("user_properties"), "\"\"");
@@ -198,6 +196,13 @@ pub(crate) fn replace_arg_placeholders(arg: &str, params: &LaunchParameters) -> 
 	// User
 	match params.users.get_chosen_user() {
 		Some(user) => {
+			// User type
+			let user_type = match user.get_kind() {
+				UserKind::Microsoft { .. } => "msa",
+				_ => "msa",
+			};
+			out = out.replace(placeholder!("user_type"), user_type);
+
 			out = out.replace(placeholder!("auth_player_name"), user.get_name());
 			if let Some(uuid) = user.get_uuid() {
 				out = out.replace(placeholder!("auth_uuid"), uuid);
