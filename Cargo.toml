@@ -22,6 +22,7 @@ members = [
 	"crates/options",
 	"crates/parse",
 	"crates/pkg",
+	"crates/plugin",
 	"crates/shared",
 	"crates/tools",
 ]

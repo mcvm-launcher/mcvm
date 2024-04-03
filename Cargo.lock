@@ -1288,6 +1288,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "mcvm_plugin"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "mcvm_shared",
+ "serde",
+ "serde_json",
+ "thiserror",
+]
+
+[[package]]
 name = "mcvm_shared"
 version = "0.11.0"
 dependencies = [
