@@ -12,7 +12,7 @@ pub use reqwest::Client;
 pub const FD_SENSIBLE_LIMIT: usize = 128;
 /// Sensible open file descriptor limit for asynchronous transfers
 #[cfg(not(target_os = "windows"))]
-pub const FD_SENSIBLE_LIMIT: usize = 64;
+pub const FD_SENSIBLE_LIMIT: usize = 128;
 
 /// The User-Agent header for requests
 fn user_agent() -> String {

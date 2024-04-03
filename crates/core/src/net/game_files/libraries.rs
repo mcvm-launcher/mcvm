@@ -89,16 +89,17 @@ pub async fn get(
 	// Used to limit the number of open file descriptors
 	let sem = Arc::new(Semaphore::new(FD_SENSIBLE_LIMIT));
 	for (name, library, path) in libs_to_download {
-		files::create_leading_dirs(&path)?;
-
 		let client = client.clone();
-		let permit = sem.clone().acquire_owned().await;
+		let sem = sem.clone();
 		let path_clone = path.clone();
 		let fut = async move {
+			files::create_leading_dirs_async(&path_clone).await?;
+
+			let _permit = sem.acquire().await;
+
 			let response = download::bytes(library.url, &client)
 				.await
 				.context("Failed to download library")?;
-			let _permit = permit;
 			tokio::fs::write(&path_clone, response)
 				.await
 				.context("Failed to write library file")?;
@@ -109,16 +110,18 @@ pub async fn get(
 		out.files_updated.insert(path.clone());
 	}
 
-	o.display(
-		MessageContents::Associated(
-			Box::new(MessageContents::Progress {
-				current: 0,
-				total: count as u32,
-			}),
-			Box::new(MessageContents::Simple(String::new())),
-		),
-		MessageLevel::Important,
-	);
+	if count > 0 {
+		o.display(
+			MessageContents::Associated(
+				Box::new(MessageContents::Progress {
+					current: 0,
+					total: count as u32,
+				}),
+				Box::new(MessageContents::Simple(String::new())),
+			),
+			MessageLevel::Important,
+		);
+	}
 	let mut num_done = 0;
 	while let Some(lib) = join.join_next().await {
 		let name = lib??;

@@ -115,16 +115,17 @@ pub async fn get(
 	let sem = Arc::new(Semaphore::new(FD_SENSIBLE_LIMIT));
 	for (name, url, path, virtual_path) in assets_to_download {
 		let client = client.clone();
-		let permit = sem.clone().acquire_owned().await;
+		let sem = sem.clone();
 		let fut = async move {
+			let _permit = sem.acquire().await;
 			let response = download::bytes(url, &client)
 				.await
 				.context("Failed to download asset")?;
 
-			let _permit = permit;
 			tokio::fs::write(&path, response)
 				.await
 				.context("Failed to write asset to file")?;
+
 			if let Some(virtual_path) = virtual_path {
 				files::update_hardlink_async(&path, &virtual_path)
 					.await
@@ -135,16 +136,18 @@ pub async fn get(
 		join.spawn(fut);
 	}
 
-	o.display(
-		MessageContents::Associated(
-			Box::new(MessageContents::Progress {
-				current: 0,
-				total: count as u32,
-			}),
-			Box::new(MessageContents::Simple(String::new())),
-		),
-		MessageLevel::Important,
-	);
+	if count > 0 {
+		o.display(
+			MessageContents::Associated(
+				Box::new(MessageContents::Progress {
+					current: 0,
+					total: count as u32,
+				}),
+				Box::new(MessageContents::Simple(String::new())),
+			),
+			MessageLevel::Important,
+		);
+	}
 	let mut num_done = 0;
 	while let Some(asset) = join.join_next().await {
 		let name = asset??;
