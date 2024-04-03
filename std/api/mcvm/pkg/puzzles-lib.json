@@ -10,6 +10,36 @@
 						"dependencies": "forge-config-api-port"
 					},
 					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/QAGBst4M/versions/juwmigdj/PuzzlesLib-v20.4.42-1.20.4-Forge.jar",
+					"version": "juwmigdj"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/QAGBst4M/versions/L3apApXu/PuzzlesLib-v20.4.42-1.20.4-NeoForge.jar",
+					"version": "L3apApXu"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"fabriclike-api",
+							"forge-config-api-port"
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/QAGBst4M/versions/tXRgMC8h/PuzzlesLib-v20.4.42-1.20.4-Fabric.jar",
+					"version": "tXRgMC8h"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "forge-config-api-port"
+					},
+					"stability": "stable",
 					"url": "https://cdn.modrinth.com/data/QAGBst4M/versions/3FxP0dZE/PuzzlesLib-v20.4.41-1.20.4-Forge.jar",
 					"version": "3FxP0dZE"
 				},

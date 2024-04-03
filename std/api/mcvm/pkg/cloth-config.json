@@ -4,6 +4,13 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": "24w14potato",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/JRZSHDFK/cloth-config-14.0.123-fabric.jar",
+					"version": "JRZSHDFK"
+				},
+				{
 					"minecraft_versions": "24w09a",
 					"modloaders": "fabric",
 					"stability": "latest",
@@ -932,7 +939,8 @@
 			"1.20.2",
 			"1.20.3",
 			"1.20.4",
-			"24w09a"
+			"24w09a",
+			"24w14potato"
 		]
 	}
 }

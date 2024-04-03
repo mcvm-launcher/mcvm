@@ -4,6 +4,13 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "quilt",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/lwVhp9o5/versions/daGMirHp/quilt-kotlin-libraries-4.0.0%2Bkt.1.9.23%2Bflk.1.10.19.jar",
+					"version": "daGMirHp"
+				},
+				{
 					"minecraft_versions": "1.20.2",
 					"modloaders": "quilt",
 					"stability": "stable",
@@ -173,7 +180,8 @@
 			"1.19.4",
 			"1.20",
 			"1.20.1",
-			"1.20.2"
+			"1.20.2",
+			"1.20.4"
 		]
 	},
 	"relations": {

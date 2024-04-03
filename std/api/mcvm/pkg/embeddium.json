@@ -4,6 +4,88 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": "24w14a",
+					"modloaders": "fabric",
+					"relations": {
+						"conflicts": [
+							"indium",
+							"sodium"
+						]
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/sk9rgfiA/versions/B86stv25/embeddium-fabric-0.3.13%2Bmc24w14a.jar",
+					"version": "B86stv25"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"conflicts": [
+							"indium",
+							"sodium"
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/sk9rgfiA/versions/kbkd7mOQ/embeddium-fabric-0.3.13%2Bmc1.20.4.jar",
+					"version": "kbkd7mOQ"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"relations": {
+						"conflicts": [
+							"indium",
+							"sodium"
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/sk9rgfiA/versions/n1Nt5hK2/embeddium-fabric-0.3.13%2Bmc1.20.1.jar",
+					"version": "n1Nt5hK2"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"relations": {
+						"conflicts": "rubidium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/sk9rgfiA/versions/3KdD83Qu/embeddium-0.3.12%2Bmc1.16.5.jar",
+					"version": "3KdD83Qu"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"relations": {
+						"conflicts": "rubidium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/sk9rgfiA/versions/9tXCBDZj/embeddium-0.3.12%2Bmc1.18.2.jar",
+					"version": "9tXCBDZj"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"relations": {
+						"conflicts": "rubidium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/sk9rgfiA/versions/B33sb7Zs/embeddium-0.3.12%2Bmc1.19.2.jar",
+					"version": "B33sb7Zs"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"relations": {
+						"conflicts": "rubidium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/sk9rgfiA/versions/aVRvM7I7/embeddium-0.3.12%2Bmc1.20.1.jar",
+					"version": "aVRvM7I7"
+				},
+				{
 					"minecraft_versions": "24w14potato",
 					"modloaders": "fabric",
 					"relations": {
@@ -1933,7 +2015,8 @@
 			"24w11a",
 			"24w12a",
 			"24w13a",
-			"24w14potato"
+			"24w14potato",
+			"24w14a"
 		]
 	}
 }
