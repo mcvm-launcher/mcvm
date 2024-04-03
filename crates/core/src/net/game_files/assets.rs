@@ -29,6 +29,8 @@ pub struct AssetIndex {
 pub struct IndexEntry {
 	/// The hash of the index file
 	pub hash: String,
+	/// The size of the asset in bytes
+	pub size: usize,
 }
 
 /// Download assets used by the client, such as game resources and icons.
@@ -97,8 +99,10 @@ pub async fn get(
 		if let Some(virtual_path) = &virtual_path {
 			files::create_leading_dirs(virtual_path)?;
 		}
-		assets_to_download.push((name, url, path, virtual_path));
+		assets_to_download.push((name, url, path, virtual_path, asset.size));
 	}
+	// Sort downloads by biggest first
+	assets_to_download.sort_by_key(|x| std::cmp::Reverse(x.4));
 
 	let count = assets_to_download.len();
 	if manager.print.verbose && count > 0 {
@@ -113,7 +117,7 @@ pub async fn get(
 	let mut join = JoinSet::new();
 	// Used to limit the number of open file descriptors
 	let sem = Arc::new(Semaphore::new(FD_SENSIBLE_LIMIT));
-	for (name, url, path, virtual_path) in assets_to_download {
+	for (name, url, path, virtual_path, _) in assets_to_download {
 		let client = client.clone();
 		let sem = sem.clone();
 		let fut = async move {
