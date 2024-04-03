@@ -1,6 +1,6 @@
 use std::{fmt::Display, path::PathBuf};
 
-use anyhow::{anyhow, Context};
+use anyhow::{anyhow, bail, Context};
 use mcvm_core::{net::download, MCVMCore};
 use mcvm_shared::{output::MCVMOutput, versions::VersionInfo, Side};
 use reqwest::Client;
@@ -11,14 +11,18 @@ use mcvm_core::io::files::paths::Paths;
 /// The main class for a Paper/Folia server
 pub const PAPER_SERVER_MAIN_CLASS: &str = "io.papermc.paperclip.Main";
 
-/// Different modes for this module, either Paper or Folia,
-/// depending on the one you want to install
+/// The main class for the Velocity proxy
+pub const VELOCITY_MAIN_CLASS: &str = "com.velocitypowered.proxy.Velocity";
+
+/// Different modes for this module, depending on which project you want to install
 #[derive(Debug, Clone, Copy)]
 pub enum Mode {
 	/// The Paper server
 	Paper,
 	/// The Folia multithreaded server
 	Folia,
+	/// The Velocity proxy
+	Velocity,
 }
 
 impl Mode {
@@ -26,6 +30,7 @@ impl Mode {
 		match self {
 			Self::Paper => "paper",
 			Self::Folia => "folia",
+			Self::Velocity => "velocity",
 		}
 	}
 }
@@ -35,11 +40,13 @@ impl Display for Mode {
 		match self {
 			Self::Paper => write!(f, "Paper"),
 			Self::Folia => write!(f, "Folia"),
+			Self::Velocity => write!(f, "Velocity"),
 		}
 	}
 }
 
 /// Install Paper or Folia using the core and information about the version.
+/// This function will throw an error if Velocity is passed as a mode.
 /// First, create the core and the version you want. Then, get the version info from the version.
 /// Finally, run this function. Returns the JAR path and main class to add to the instance you are launching
 pub async fn install_from_core(
@@ -50,13 +57,17 @@ pub async fn install_from_core(
 ) -> anyhow::Result<(PathBuf, String)> {
 	let _ = o;
 
+	if let Mode::Velocity = mode {
+		bail!("Velocity is a proxy and cannot be used in the install_from_core function");
+	}
+
 	let build_num = get_newest_build(mode, &version_info.version, core.get_client())
 		.await
-		.context("Failed to get newest Paper/Folia build")?;
+		.context(format!("Failed to get newest {mode} build"))?;
 	let jar_file_name =
 		get_jar_file_name(mode, &version_info.version, build_num, core.get_client())
 			.await
-			.context("Failed to get the API name of the Paper/Folia JAR file")?;
+			.context(format!("Failed to get the API name of the {mode} JAR file"))?;
 	download_server_jar(
 		mode,
 		&version_info.version,
@@ -66,7 +77,7 @@ pub async fn install_from_core(
 		core.get_client(),
 	)
 	.await
-	.context("Failed to download Paper/Folia JAR file")?;
+	.context(format!("Failed to download {mode} JAR file"))?;
 
 	Ok((
 		get_local_jar_path(mode, &version_info.version, core.get_paths()),
@@ -74,7 +85,55 @@ pub async fn install_from_core(
 	))
 }
 
-/// Get the newest build number of a PaperMC project
+/// Install Velocity, returning the path to the JAR file and the main class
+pub async fn install_velocity(paths: &Paths, client: &Client) -> anyhow::Result<(PathBuf, String)> {
+	let version = get_newest_version(Mode::Velocity, client)
+		.await
+		.context("Failed to get newest Velocity version")?;
+	let build_num = get_newest_build(Mode::Velocity, &version, client)
+		.await
+		.context("Failed to get newest Velocity build version")?;
+	let file_name = get_jar_file_name(Mode::Velocity, &version, build_num, client)
+		.await
+		.context("Failed to get Velocity build file name")?;
+
+	download_server_jar(
+		Mode::Velocity,
+		&version,
+		build_num,
+		&file_name,
+		paths,
+		client,
+	)
+	.await
+	.context("Failed to download Velocity JAR")?;
+
+	Ok((
+		get_local_jar_path(Mode::Velocity, &version, paths),
+		VELOCITY_MAIN_CLASS.into(),
+	))
+}
+
+/// Get the newest version of a PaperMC project
+pub async fn get_newest_version(mode: Mode, client: &Client) -> anyhow::Result<String> {
+	let url = format!("https://api.papermc.io/v2/projects/{}", mode.to_str(),);
+	let resp =
+		serde_json::from_str::<ProjectInfoResponse>(&client.get(url).send().await?.text().await?)?;
+
+	let version = resp
+		.versions
+		.last()
+		.ok_or(anyhow!("Could not find a valid {mode} version"))?;
+
+	Ok(version.clone())
+}
+
+#[derive(Deserialize)]
+struct ProjectInfoResponse {
+	versions: Vec<String>,
+}
+
+/// Get the newest build number of a PaperMC project version
 pub async fn get_newest_build(mode: Mode, version: &str, client: &Client) -> anyhow::Result<u16> {
 	let url = format!(
 		"https://api.papermc.io/v2/projects/{}/versions/{version}",
@@ -87,7 +146,7 @@ pub async fn get_newest_build(mode: Mode, version: &str, client: &Client) -> any
 		.builds
 		.iter()
 		.max()
-		.ok_or(anyhow!("Could not find a valid Paper/Folia version"))?;
+		.ok_or(anyhow!("Could not find a valid {mode} build version"))?;
 
 	Ok(*build)
 }
@@ -131,7 +190,7 @@ struct BuildInfoApplication {
 	name: String,
 }
 
-/// Download the Paper server jar
+/// Download the server jar
 pub async fn download_server_jar(
 	mode: Mode,
 	version: &str,
@@ -146,12 +205,12 @@ pub async fn download_server_jar(
 	let file_path = get_local_jar_path(mode, version, paths);
 	download::file(&url, &file_path, client)
 		.await
-		.context("Failed to download Paper JAR")?;
+		.context("Failed to download {mode} JAR")?;
 
 	Ok(())
 }
 
-/// Get the path to the stored Paper JAR file
+/// Get the path to the stored JAR file
 pub fn get_local_jar_path(mode: Mode, version: &str, paths: &Paths) -> PathBuf {
 	mcvm_core::io::minecraft::game_jar::get_path(Side::Server, version, Some(mode.to_str()), paths)
 }

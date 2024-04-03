@@ -80,7 +80,7 @@ impl Instance {
 	}
 }
 
-/// Argument for the launch_game_process command that includes properties about the launch command
+/// Argument for the launch_process command that includes properties about the launch command
 pub struct LaunchProcessProperties<'a> {
 	/// The current working directory, usually the instance subdir
 	pub cwd: &'a Path,

@@ -9,6 +9,7 @@ use mcvm::data::config::Config;
 use mcvm::data::id::{InstanceRef, ProfileID};
 
 use mcvm::shared::Side;
+use reqwest::Client;
 
 use super::CmdData;
 use crate::output::HYPHEN_POINT;
@@ -122,8 +123,9 @@ pub async fn launch(
 
 	// Launch the proxy first
 	let proxy_handle = if let Side::Server = instance.get_side() {
+		let client = Client::new();
 		profile
-			.launch_proxy()
+			.launch_proxy(&client, &data.paths, &mut data.output)
 			.await
 			.context("Failed to launch profile proxy")?
 	} else {

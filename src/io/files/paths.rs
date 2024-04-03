@@ -32,6 +32,8 @@ pub struct Paths {
 	pub snapshots: PathBuf,
 	/// Storing Fabric and Quilt data
 	pub fabric_quilt: PathBuf,
+	/// Storing proxy data
+	pub proxy: PathBuf,
 }
 
 impl Paths {
@@ -54,6 +56,7 @@ impl Paths {
 			.unwrap_or(internal.join("run"));
 		let snapshots = internal.join("snapshots");
 		let fabric_quilt = internal.join("fabric_quilt");
+		let proxy = data.join("proxy");
 
 		tokio::try_join!(
 			tokio::fs::create_dir_all(&data),
@@ -68,6 +71,7 @@ impl Paths {
 			tokio::fs::create_dir_all(&run),
 			tokio::fs::create_dir_all(&snapshots),
 			tokio::fs::create_dir_all(&fabric_quilt),
+			tokio::fs::create_dir_all(&proxy),
 		)?;
 
 		let core_paths = mcvm_core::Paths::new().context("Failed to create core paths")?;
@@ -86,6 +90,7 @@ impl Paths {
 			run,
 			snapshots,
 			fabric_quilt,
+			proxy,
 		})
 	}
 }

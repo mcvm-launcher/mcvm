@@ -192,12 +192,15 @@ pub struct LaunchProcessParameters<'a> {
 	pub cwd: &'a Path,
 	/// The Java main class to run
 	pub main_class: Option<&'a str>,
+	/// Properties for launching
 	pub props: LaunchProcessProperties,
+	/// The launch configuration
 	pub launch_config: &'a LaunchConfiguration,
 }
 
 /// Properties for launching the game process that are created by
 /// the side-specific launch routine
+#[derive(Default)]
 pub struct LaunchProcessProperties {
 	/// Arguments for the JVM
 	pub jvm_args: Vec<String>,

@@ -146,6 +146,11 @@ impl UpdateManager {
 			.await
 			.context("Failed to setup core")?;
 
+		// If the Minecraft version is not set then we can just assume it is not being used
+		if self.mc_version.is_empty() {
+			return Ok(());
+		}
+
 		let version = self
 			.get_core_version(o)
 			.await

@@ -115,11 +115,12 @@ pub async fn update_profiles(
 
 			if !profile.instances.is_empty() {
 				profile
-					.create_instances(
+					.create(
 						ctx.instances,
 						paths,
 						&mut manager,
 						&config.users,
+						ctx.client,
 						ctx.output,
 					)
 					.await

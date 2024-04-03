@@ -25,6 +25,8 @@ pub mod util;
 pub mod version;
 
 use anyhow::Context;
+use io::java::install::{JavaInstallParameters, JavaInstallation, JavaInstallationKind};
+use io::java::JavaMajorVersion;
 use io::{persistent::PersistentData, update::UpdateManager};
 use mcvm_shared::later::Later;
 use mcvm_shared::output::{self, MCVMOutput};
@@ -195,5 +197,25 @@ impl MCVMCore {
 			version,
 			versions: list,
 		})
+	}
+
+	/// Gets a raw Java installation for use with things like custom processes
+	pub async fn get_java_installation(
+		&mut self,
+		major_version: JavaMajorVersion,
+		kind: JavaInstallationKind,
+		o: &mut impl MCVMOutput,
+	) -> anyhow::Result<JavaInstallation> {
+		let java_params = JavaInstallParameters {
+			paths: &self.paths,
+			update_manager: &mut self.update_manager,
+			persistent: &mut self.persistent,
+			req_client: &self.req_client,
+		};
+		let java = JavaInstallation::install(kind, major_version, java_params, o)
+			.await
+			.context("Failed to install or update Java")?;
+
+		Ok(java)
 	}
 }

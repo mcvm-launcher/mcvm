@@ -30,6 +30,7 @@ pub use self::configuration::{
 };
 
 pub use self::process::launch_process;
+pub use self::process::{LaunchProcessParameters, LaunchProcessProperties};
 
 pub(crate) async fn launch(
 	mut params: LaunchParameters<'_>,

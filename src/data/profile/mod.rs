@@ -1,9 +1,10 @@
+/// Installing and launching proxies on profiles
+pub mod proxy;
 /// Functions for updating profiles
 pub mod update;
 
-use std::process::Child;
-
 use anyhow::Context;
+use mcvm_shared::later::Later;
 use mcvm_shared::output::MCVMOutput;
 use mcvm_shared::pkg::PackageStability;
 use reqwest::Client;
@@ -12,6 +13,7 @@ use crate::data::instance::Instance;
 use crate::io::files::paths::Paths;
 use mcvm_core::util::versions::MinecraftVersion;
 
+use self::proxy::ProxyProperties;
 use self::update::manager::UpdateManager;
 
 use super::config::profile::GameModifications;
@@ -38,6 +40,8 @@ pub struct Profile {
 	pub modifications: GameModifications,
 	/// The default stability for packages in this profile
 	pub default_stability: PackageStability,
+	/// The profile's proxy properties, fulfilled when creating
+	proxy_props: Later<ProxyProperties>,
 }
 
 impl Profile {
@@ -56,6 +60,7 @@ impl Profile {
 			packages,
 			modifications,
 			default_stability,
+			proxy_props: Later::Empty,
 		}
 	}
 
@@ -69,13 +74,14 @@ impl Profile {
 		InstanceRef::new(self.id.clone(), instance.clone())
 	}
 
-	/// Create all the instances in this profile.
-	pub async fn create_instances(
+	/// Create this profile and all of it's instances
+	pub async fn create(
 		&mut self,
 		reg: &mut InstanceRegistry,
 		paths: &Paths,
 		manager: &mut UpdateManager,
 		users: &UserManager,
+		client: &Client,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
 		for id in self.instances.iter_mut() {
@@ -83,9 +89,8 @@ impl Profile {
 			let instance = reg.get(&inst_ref).expect("Profile has unknown instance");
 			manager.add_requirements(instance.get_requirements());
 		}
-		let client = Client::new();
 		manager
-			.fulfill_requirements(users, paths, &client, o)
+			.fulfill_requirements(users, paths, client, o)
 			.await?;
 
 		for id in self.instances.iter_mut() {
@@ -96,22 +101,18 @@ impl Profile {
 				.expect("Profile has unknown instance");
 			{
 				let result = instance
-					.create(manager, paths, users, &client, o)
+					.create(manager, paths, users, client, o)
 					.await
 					.with_context(|| format!("Failed to create instance {id}"))?;
 				manager.add_result(result);
 			}
 		}
 
+		// Update the proxy
+		self.create_proxy(manager, paths, client, o)
+			.await
+			.context("Failed to create proxy")?;
+
 		Ok(())
-	}
-
-	/// Launch the profile's proxy, if it has one, returning the child process
-	pub async fn launch_proxy(&mut self) -> anyhow::Result<Option<Child>> {
-		let child = match self.modifications.proxy {
-			_ => None,
-		};
-
-		Ok(child)
 	}
 }
