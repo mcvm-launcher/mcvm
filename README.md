@@ -11,13 +11,13 @@ In the official launcher and many alternative ones, you have to waste time movin
 You have probably heard of instances before from other launchers like MultiMC. They are separate installations of the game that are kept isolated from each other to prevent your data from combining in strange ways. MCVM supports both client and server instances and makes the management of both trivial.
 
 ## Profiles
-**_Profiles_** in MCVM are shared configuration for multiple instances which are attached to them. Profiles apply their settings, such as the game version and modloader, to all of the instances that they contain. This lets you update multiple instances simulataneously and sync data between them.
+**_Profiles_** in MCVM are shared configuration for multiple instances which are attached to them. Profiles apply their settings, such as the game version and modloader, to all of the instances that they contain. This lets you update many instances simulataneously and sync configuration between them.
 
 ## Packages
 **_Packages_** are the big selling point of MCVM. They are simple files which are configured on profiles and instances and obtain the correct content files for your game. The `sodium` package, for example, when installed on a profile, will add the Sodium jar file to your mods folder only on client instances.
 
 ### A universal format
-Packages are designed in such a way that they work with any hosting system. Because they download files from any URL, packages serve as an intermediary for many different websites.
+Packages are designed in such a way that they work with any hosting system. Because they can download files from any URL, packages serve as an intermediary for the formats and conventions of many different websites.
 
 ### Package relationships
 MCVM's packaging format provides the ability to model complex relationships between packages. You won't have to worry about getting all of the correct dependencies for your packages, as they will be automatically installed.
@@ -31,30 +31,30 @@ Packages are made to be as secure as possible. Even though they have scripting c
 ### Control
 You don't have to just use the packages from the official repositories. You can use whatever local or remote package repository you please with whatever priority, as long as they match the API standard. The syncing of package files from repositories is a separate process that only happens when you explicitly say so. Changes to packages will never break your game without your knowledge.
 
-### Automatic installation of modifications
-Although there is currently only support for a few modifications, such as Fabric, Quilt, and Paper, we hope to eventually install every popular modloader, server implementation, and proxy automatically.
+## Automatic installation of modifications
+Although there is currently only support for a few modifications, such as Fabric, Quilt, and Paper, we hope to eventually install every popular modloader, server implementation, and proxy automatically. You can see a list of available modifications [here](docs/Modifications.md)
 
-### Game options management
+## Game options management
 With the official launcher, changing versions often means your configuration breaks. In most instanced launchers, creating a new instance doesn't bring your options along with it. MCVM combines the best of both.
 
 Global options for your clients and servers can be defined in simple files that propagate seamlessly. Even though Mojang changes the formats for their options files often, MCVM's options are consistent and fully backwards compatible.
 
-### Snapshots and backups
+## Snapshots and backups
 Easily create named backups of the files you want to, and not the ones you don't.
 
-### Support for many types of users
+## Support for many types of users
 You can log in with Microsoft, as a demo user, or not at all. You don't need to have an internet connection to play. Support for alternative authentication and skin servers will come in the future.
 
-### Presets and sensible defaults
+## Presets and sensible defaults
 There are many available presets for popular sets of game options that optimize servers, such as Aikar's or Krusic's. Although you can configure a lot, you don't have to to get a great experience.
 
-### Fast and resource-efficient
+## Fast and resource-efficient
 MCVM does a lot of work in parallel and is shipped as a single binary without the need for any runtime. The linked instances data model MCVM uses allows separation of data while still sharing large files using hardlinks. Optimizing disk use is a big focus.
 
-### Extremely configurable and modular
+## Extremely configurable and modular
 MCVM has a deep amount of configuration for pretty much every part of the application. Its availablity as a library, integrations, and flexible command-line interface allow scripting many different parts. With your permission, packages can access the local filesystem and run commands to fit your needs.
 
-### Compatability and stability as a feature
+## Compatability and stability as a feature
 Where others may take shortcuts, MCVM strives for perfect compatability with Mojang's formats.
 
 ## Use cases
@@ -75,16 +75,12 @@ The MCVM CLI is a perfect asset for server managers. The way that it groups conf
 ### A packaging format
 Launchers can use the different MCVM crates to parse, validate, evaluate, and host MCVM packages.
 
-### Automated testing and CI
-MCVM can be used to quickly start up a server instance in your automated CI pipelines, which you can run tests on.
-
 ## Progress
 
 Right now, the launcher and library have most of the core features implemented. However, support for more complex features such as a plugin system have yet to be fleshed out. If you see something you want that isn't there, try contributing!
 
-## Things that need to be completed before 1.0.0:
+### Things that need to be completed before 1.0.0:
 
-- Storing login credentials so you don't have to log in every time you launch, along with checking for game ownership so that you can play offline
-- Installing Forge
+- Installing NeoForge
 
 Contact `@carbonsmasher` on Discord if you have any questions.
