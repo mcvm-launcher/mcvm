@@ -172,6 +172,10 @@ async fn install_auto(
 	if let Ok(out) = out {
 		return Ok(out);
 	}
+	let out = install_graalvm(major_version, &mut params, o).await;
+	if let Ok(out) = out {
+		return Ok(out);
+	}
 	let out = install_zulu(major_version, &mut params, o).await;
 	if let Ok(out) = out {
 		return Ok(out);
