@@ -116,6 +116,8 @@ impl AuthDatabase {
 struct DatabaseContents {
 	/// The currently held user
 	user: Option<DatabaseUser>,
+	/// Passkey information
+	passkey: Option<PasskeyInfo>,
 }
 
 /// A user in the database
@@ -135,6 +137,15 @@ pub struct DatabaseUser {
 	pub xbox_uid: Option<String>,
 	/// The keypair of the user, if applicable
 	pub keypair: Option<Keypair>,
+}
+
+/// Passkey information in the database
+#[derive(Serialize, Deserialize, Debug)]
+pub struct PasskeyInfo {
+	/// The public key that was derived from the passkey
+	pub public_key: String,
+	/// An encrypted check string used to make sure that the correct passkey was used
+	pub check: String,
 }
 
 /// Calculate the date to expire the refresh token at
