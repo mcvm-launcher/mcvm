@@ -1,11 +1,10 @@
 use std::fmt::Display;
-use std::fs::File;
-use std::io::BufReader;
 
 use anyhow::{anyhow, Context};
-use mcvm_core::io::files::{self, create_leading_dirs};
+use mcvm_core::io::files;
 use mcvm_core::io::java::classpath::Classpath;
 use mcvm_core::io::java::maven::MavenLibraryParts;
+use mcvm_core::io::json_from_file;
 use mcvm_core::io::update::UpdateManager;
 use mcvm_core::net::download;
 use mcvm_core::{MCVMCore, Paths};
@@ -184,21 +183,21 @@ pub async fn get_meta(
 		.internal
 		.join("fabric_quilt")
 		.join(format!("meta_{mode_lowercase}_{version}.json"));
-	create_leading_dirs(&path)
+	files::create_leading_dirs_async(&path)
+		.await
 		.context("Failed to create parent directories for Fabric/Quilt meta")?;
 
 	let meta = if manager.allow_offline() && path.exists() {
-		let file = File::open(path).with_context(|| format!("Failed to open {mode} meta file"))?;
-		let mut file = BufReader::new(file);
-		serde_json::from_reader(&mut file)
-			.with_context(|| format!("Failed to parse {mode} meta from file"))?
+		json_from_file(path).with_context(|| format!("Failed to parse {mode} meta from file"))?
 	} else {
 		let bytes = download::bytes(&meta_url, client)
 			.await
 			.with_context(|| format!("Failed to download {mode} metadata file"))?;
 		let out = serde_json::from_slice::<Vec<FabricQuiltMeta>>(&bytes)
 			.context("Failed to parse downloaded metadata")?;
-		std::fs::write(path, &bytes).context("Failed to write meta to a file")?;
+		tokio::fs::write(path, &bytes)
+			.await
+			.context("Failed to write meta to a file")?;
 
 		out
 	};
@@ -266,7 +265,7 @@ pub async fn download_files(
 		Ok::<(), anyhow::Error>(())
 	});
 
-	let (res1, res2) = tokio::try_join!(common_task, main_libs_task,)?;
+	let (res1, res2) = tokio::try_join!(common_task, main_libs_task)?;
 	res1.with_context(|| format!("Failed to download {mode} common libraries"))?;
 	res2.with_context(|| format!("Failed to download {mode} main libraries"))?;
 
@@ -287,11 +286,11 @@ pub async fn download_side_specific_files(
 	client: &Client,
 ) -> anyhow::Result<()> {
 	let libs = match side {
-		Side::Client => meta.launcher_meta.libraries.client.clone(),
-		Side::Server => meta.launcher_meta.libraries.server.clone(),
+		Side::Client => &meta.launcher_meta.libraries.client,
+		Side::Server => &meta.launcher_meta.libraries.server,
 	};
 
-	download_libraries(&libs, paths, client, manager.force_reinstall()).await?;
+	download_libraries(libs, paths, client, manager.force_reinstall()).await?;
 
 	Ok(())
 }
@@ -334,7 +333,7 @@ async fn download_libraries(
 
 			let client = client.clone();
 			let task = async move {
-				files::create_leading_dirs(&lib_path)?;
+				files::create_leading_dirs_async(&lib_path).await?;
 				let resp = download::bytes(url, &client).await?;
 				tokio::fs::write(&lib_path, resp).await?;
 				Ok::<(), anyhow::Error>(())
