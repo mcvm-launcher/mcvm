@@ -179,6 +179,7 @@ impl MCVMCore {
 			users: &mut self.users,
 			censor_secrets: self.config.censor_secrets,
 			disable_hardlinks: self.config.disable_hardlinks,
+			branding: &self.config.branding,
 		};
 		Ok(InstalledVersion { inner, params })
 	}

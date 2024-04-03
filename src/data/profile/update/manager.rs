@@ -2,6 +2,7 @@ use std::collections::HashSet;
 use std::path::{Path, PathBuf};
 
 use anyhow::Context;
+use mcvm_core::config::BrandingProperties;
 use mcvm_core::user::UserManager;
 use mcvm_core::util::versions::MinecraftVersion;
 use mcvm_core::version::InstalledVersion;
@@ -169,7 +170,7 @@ impl UpdateManager {
 		Ok(())
 	}
 
-	/// Sets up the core and version
+	/// Sets up the core
 	async fn setup_core(&mut self, client: &Client, users: &UserManager) -> anyhow::Result<()> {
 		if self.core.is_full() {
 			return Ok(());
@@ -178,7 +179,11 @@ impl UpdateManager {
 		// Setup the core
 		let mut core_config = mcvm_core::ConfigBuilder::new()
 			.allow_offline(self.settings.allow_offline)
-			.force_reinstall(self.settings.force);
+			.force_reinstall(self.settings.force)
+			.branding(BrandingProperties::new(
+				"mcvm".into(),
+				crate::VERSION.into(),
+			));
 		if let Some(client_id) = &self.ms_client_id {
 			core_config = core_config.ms_client_id(client_id.clone());
 		}

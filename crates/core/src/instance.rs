@@ -4,6 +4,7 @@ use anyhow::{bail, Context};
 use mcvm_shared::output::MCVMOutput;
 use mcvm_shared::Side;
 
+use crate::config::BrandingProperties;
 use crate::io::files::paths::Paths;
 use crate::io::files::update_hardlink;
 use crate::io::java::classpath::Classpath;
@@ -212,6 +213,7 @@ impl<'params> Instance<'params> {
 			client_meta: self.params.client_meta,
 			users: self.params.users,
 			censor_secrets: self.params.censor_secrets,
+			branding: self.params.branding,
 		};
 		let handle = crate::launch::launch(params, o)
 			.await
@@ -372,4 +374,5 @@ pub(crate) struct InstanceParameters<'a> {
 	pub client_assets_and_libs: &'a mut ClientAssetsAndLibraries,
 	pub censor_secrets: bool,
 	pub disable_hardlinks: bool,
+	pub branding: &'a BrandingProperties,
 }

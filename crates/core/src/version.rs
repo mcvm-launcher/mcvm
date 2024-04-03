@@ -5,6 +5,7 @@ use mcvm_shared::output::MCVMOutput;
 use mcvm_shared::output::{MessageContents, MessageLevel};
 use mcvm_shared::versions::VersionInfo;
 
+use crate::config::BrandingProperties;
 use crate::instance::{Instance, InstanceConfiguration, InstanceParameters};
 use crate::io::files::paths::Paths;
 use crate::io::persistent::PersistentData;
@@ -61,6 +62,7 @@ impl<'inner, 'params> InstalledVersion<'inner, 'params> {
 			client_assets_and_libs: &mut self.inner.client_assets_and_libs,
 			censor_secrets: self.params.censor_secrets,
 			disable_hardlinks: self.params.disable_hardlinks,
+			branding: self.params.branding,
 		};
 		let instance = Instance::load(config, params, o)
 			.await
@@ -172,6 +174,7 @@ pub(crate) struct VersionParameters<'a> {
 	pub users: &'a mut UserManager,
 	pub censor_secrets: bool,
 	pub disable_hardlinks: bool,
+	pub branding: &'a BrandingProperties,
 }
 
 /// Container struct for parameters for loading version innards

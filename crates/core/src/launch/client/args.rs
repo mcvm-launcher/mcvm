@@ -117,9 +117,17 @@ macro_rules! placeholder {
 
 /// Replace placeholders in a string argument from the client meta
 pub(crate) fn replace_arg_placeholders(arg: &str, params: &LaunchParameters) -> Option<String> {
-	// TODO: Config for these branding properties
-	let mut out = arg.replace(placeholder!("launcher_name"), "mcvm");
-	out = out.replace(placeholder!("launcher_version"), "alpha");
+	// Branding properties
+	let mut out = arg.replace(
+		placeholder!("launcher_name"),
+		&params.branding.launcher_name,
+	);
+	out = out.replace(
+		placeholder!("launcher_version"),
+		&params.branding.launcher_version,
+	);
+
+	// Game files information
 	out = out.replace(placeholder!("classpath"), &params.classpath.get_str());
 	out = out.replace(
 		placeholder!("natives_directory"),
@@ -140,6 +148,7 @@ pub(crate) fn replace_arg_placeholders(arg: &str, params: &LaunchParameters) -> 
 		placeholder!("game_assets"),
 		get_virtual_dir_path(params.paths).to_str()?,
 	);
+
 	// TODO: Use different user types
 	out = out.replace(placeholder!("user_type"), "msa");
 	out = out.replace(placeholder!("clientid"), "mcvm");

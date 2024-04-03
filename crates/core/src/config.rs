@@ -15,6 +15,8 @@ pub struct Configuration {
 	/// Whether to use file copies instead of hardlinks. Useful if you
 	/// are on a filesystem that doesn't like hardlinks
 	pub(crate) disable_hardlinks: bool,
+	/// Launcher branding
+	pub(crate) branding: BrandingProperties,
 }
 
 impl Default for Configuration {
@@ -32,6 +34,7 @@ impl Configuration {
 			allow_offline: false,
 			censor_secrets: true,
 			disable_hardlinks: false,
+			branding: BrandingProperties::default(),
 		}
 	}
 
@@ -88,10 +91,43 @@ impl ConfigBuilder {
 		self.config.disable_hardlinks = disable_hardlinks;
 		self
 	}
+
+	/// Set the branding properties
+	pub fn branding(mut self, branding: BrandingProperties) -> Self {
+		self.config.branding = branding;
+		self
+	}
 }
 
 impl Default for ConfigBuilder {
 	fn default() -> Self {
 		Self::new()
+	}
+}
+
+/// Branding properties for the launcher to send to the client
+pub struct BrandingProperties {
+	/// The desired launcher name to send to the client
+	pub(crate) launcher_name: String,
+	/// The desired launcher version to send to the client
+	pub(crate) launcher_version: String,
+}
+
+impl Default for BrandingProperties {
+	fn default() -> Self {
+		Self {
+			launcher_name: "mcvm_core".into(),
+			launcher_version: env!("CARGO_PKG_VERSION").into(),
+		}
+	}
+}
+
+impl BrandingProperties {
+	/// Create new BrandingProperties
+	pub fn new(name: String, version: String) -> Self {
+		Self {
+			launcher_name: name,
+			launcher_version: version,
+		}
 	}
 }

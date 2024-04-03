@@ -15,6 +15,7 @@ use mcvm_shared::Side;
 
 use self::client::create_quick_play_args;
 use self::process::{launch_game_process, LaunchGameProcessParameters};
+use crate::config::BrandingProperties;
 use crate::instance::InstanceKind;
 use crate::io::files::paths::Paths;
 use crate::io::java::args::{MemoryArg, MemoryNum};
@@ -83,6 +84,7 @@ pub(crate) struct LaunchParameters<'a> {
 	pub client_meta: &'a ClientMeta,
 	pub users: &'a mut UserManager,
 	pub censor_secrets: bool,
+	pub branding: &'a BrandingProperties,
 }
 
 impl LaunchConfiguration {
