@@ -4,57 +4,67 @@ MCVM is a lightweight Minecraft launcher and management ecosystem meant to provi
 
 In the official launcher and many alternative ones, you have to waste time moving files in and out of folders, downloading mods from sketchy websites, setting up servers, and sharing your config to play with friends. MCVM hopes to alleviate some of these pains with its smart systems for configuration sharing and package management.
 
-- [Documentation](docs/README.md)
-- [Contributing](CONTRIBUTING.md)
+- 📖 [Documentation](docs/README.md)
+- 🤝 [Contributing](CONTRIBUTING.md)
 
-## Instances
+# Features
+
+- 🚀 **Launching**: Configure and launch both clients and servers seamlessly.
+- ⌨️ **CLI**: An intuitive and ergonomic command-line interface makes using MCVM easy and satisfying.
+- 💼 **Instances**: Separate game installations into self-contained instances.
+- 🗃️ **Profiles**: Easily share configuration across multiple instances.
+- 📦 **Packages**: Automatically install mods, resource packs, and other addons with a novel package format and intelligent dependency management.
+- 📥 **Install Everything**: Utilize many of the popular loaders, like Fabric and Quilt, along with server implementations like Paper, with automatic installation.
+- 🪪 **User Management**: Configure as many different types of users as you want, and log them in and out as needed.
+- 📄 **Game Options**: Specify client options and server properties using a backwards compatible format that can be shared between all your instances.
+- 💾 **Backups**: Create named and archived snapshots of the files you want, and not the ones you don't.
+- ⚡**Speed**: Probably one of the fastest launchers on the market. Download files concurrently using the best APIs available.
+- 🛠️ **Deep Configuration**: Sensible defaults, but plenty of options and escape hatches to make MCVM work for you.
+- 🔒 **Robustness**: A lot of design work has gone into making MCVM error-resilient, secure, and future-proof.
+- ✅ **Compatability**: MCVM is designed to work on as many operating systems and architectures as possible.
+
+## 💼 Instances
 You have probably heard of instances before from other launchers like MultiMC. They are separate installations of the game that are kept isolated from each other to prevent your data from combining in strange ways. MCVM supports both client and server instances and makes the management of both trivial.
 
-## Profiles
+## 🗃️ Profiles
 **_Profiles_** in MCVM are shared configuration for multiple instances which are attached to them. Profiles apply their settings, such as the game version and modloader, to all of the instances that they contain. This lets you update many instances simulataneously and sync configuration between them.
 
-## Packages
+## 📦 Packages
 **_Packages_** are the big selling point of MCVM. They are simple files which are configured on profiles and instances and obtain the correct content files for your game. The `sodium` package, for example, when installed on a profile, will add the Sodium jar file to your mods folder only on client instances.
 
-### A universal format
+### 🌐 A universal format
 Packages are designed in such a way that they work with any hosting system. Because they can download files from any URL, packages serve as an intermediary for the formats and conventions of many different websites.
 
-### Package relationships
+### 🔗 Package relationships
 MCVM's packaging format provides the ability to model complex relationships between packages. You won't have to worry about getting all of the correct dependencies for your packages, as they will be automatically installed.
 
-### Flexibility with scripting
+### 🧮 Flexibility with scripting
 Packages can be more than just an index of files. They can be scripts which run simple logic to determine dependencies and addon files depending on the conditions of the environment.
 
-### Safety
+### 🔒 Safety
 Packages are made to be as secure as possible. Even though they have scripting capabilities, they are in a controlled environment with no uneeded access to the system or ability to run arbitrary code. Public repositories will be screened often to ensure quality.
 
-### Control
+### 🔧 Control
 You don't have to just use the packages from the official repositories. You can use whatever local or remote package repository you please with whatever priority, as long as they match the API standard. The syncing of package files from repositories is a separate process that only happens when you explicitly say so. Changes to packages will never break your game without your knowledge.
 
-## Automatic installation of modifications
+## 📥 Automatic installation of modifications
 Although there is currently only support for a few modifications, such as Fabric, Quilt, and Paper, we hope to eventually install every popular modloader, server implementation, and proxy automatically. You can see a list of available modifications [here](docs/Modifications.md)
 
-## Game options management
+## 📄 Game options management
 With the official launcher, changing versions often means your configuration breaks. In most instanced launchers, creating a new instance doesn't bring your options along with it. MCVM combines the best of both.
 
 Global options for your clients and servers can be defined in simple files that propagate seamlessly. Even though Mojang changes the formats for their options files often, MCVM's options are consistent and fully backwards compatible.
 
-## Snapshots and backups
-Easily create named backups of the files you want to, and not the ones you don't.
-
-## Support for many types of users
+## 🪪 Support for many types of users
 You can log in with Microsoft, as a demo user, or not at all. You don't need to have an internet connection to play. Support for alternative authentication and skin servers will come in the future.
 
-## Presets and sensible defaults
-There are many available presets for popular sets of game options that optimize servers, such as Aikar's or Krusic's. Although you can configure a lot, you don't have to to get a great experience.
-
-## Fast and resource-efficient
+## ⚡ Fast and resource-efficient
 MCVM does a lot of work in parallel and is shipped as a single binary without the need for any runtime. The linked instances data model MCVM uses allows separation of data while still sharing large files using hardlinks. Optimizing disk use is a big focus.
 
-## Extremely configurable and modular
+## 🛠️ Extremely configurable and modular
 MCVM has a deep amount of configuration for pretty much every part of the application. Its availablity as a library, integrations, and flexible command-line interface allow scripting many different parts. With your permission, packages can access the local filesystem and run commands to fit your needs.
 
-## Compatability and stability as a feature
+## ✅ Compatability and stability as a feature
 Where others may take shortcuts, MCVM strives for perfect compatability with Mojang's formats.
 
 ## Use cases
@@ -75,7 +85,7 @@ The MCVM CLI is a perfect asset for server managers. The way that it groups conf
 ### A packaging format
 Launchers can use the different MCVM crates to parse, validate, evaluate, and host MCVM packages.
 
-## Progress
+# Status
 
 Right now, the launcher and library have most of the core features implemented. However, support for more complex features such as a plugin system have yet to be fleshed out. If you see something you want that isn't there, try contributing!
 
