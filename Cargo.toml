@@ -16,7 +16,6 @@ strip = true
 [lib]
 name = "mcvm"
 path = "src/lib.rs"
-crate-type = ["dylib"]
 
 [workspace]
 members = [
