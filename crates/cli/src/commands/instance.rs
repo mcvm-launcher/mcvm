@@ -179,7 +179,7 @@ fn pick_instance(instance: Option<String>, config: &Config) -> anyhow::Result<In
 	if let Some(instance) = instance {
 		InstanceRef::parse(instance).context("Failed to parse instance reference")
 	} else {
-		let options: Vec<InstanceRef> = config.instances.keys().cloned().collect();
+		let options: Vec<InstanceRef> = config.instances.keys().sorted().cloned().collect();
 		let selection = Select::new("Choose an instance to launch", options)
 			.prompt()
 			.context("Prompt failed")?;
