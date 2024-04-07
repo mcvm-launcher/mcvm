@@ -99,8 +99,12 @@ impl ConfigBuilder {
 	}
 
 	/// Add a plugin configuration
-	pub fn add_plugin(&mut self, plugin: PluginConfig, manifest: PluginManifest) {
-		self.plugins.add_plugin(plugin, manifest);
+	pub fn add_plugin(
+		&mut self,
+		plugin: PluginConfig,
+		manifest: PluginManifest,
+	) -> anyhow::Result<()> {
+		self.plugins.add_plugin(plugin, manifest)
 	}
 
 	/// Finishes the builder

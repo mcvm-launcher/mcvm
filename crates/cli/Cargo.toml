@@ -13,10 +13,6 @@ categories = ["games", "command-line-utilities"]
 name = "mcvm"
 path = "src/main.rs"
 
-[profile.release]
-lto = "thin"
-strip = true
-
 [dependencies]
 anyhow = "1.0.70"
 clap = { version = "4.1.13", features = ["derive"] }

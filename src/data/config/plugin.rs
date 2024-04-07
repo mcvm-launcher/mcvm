@@ -5,22 +5,23 @@ use mcvm_core::io::json_from_file;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
-use mcvm_plugin::{
-	hooks::Hook,
-	plugin::{Plugin, PluginManifest},
-	PluginManager as LoadedPluginManager,
-};
+use mcvm_plugin::hooks::Hook;
+use mcvm_plugin::plugin::{Plugin, PluginManifest};
+use mcvm_plugin::PluginManager as LoadedPluginManager;
 
 /// User configuration for a plugin
 #[derive(Debug)]
 pub struct PluginConfig {
 	/// The name of the plugin
 	pub name: String,
+	/// The custom config for the plugin
+	pub custom_config: Option<serde_json::Value>,
 }
 
 /// Deserialized format for a plugin configuration
 #[derive(Serialize, Deserialize)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
+#[serde(untagged)]
 pub enum PluginConfigDeser {
 	/// Simple configuration with just the plugin name
 	Simple(String),
@@ -28,6 +29,9 @@ pub enum PluginConfigDeser {
 	Full {
 		/// The name of the plugin
 		name: String,
+		/// The custom config for the plugin
+		#[serde(default)]
+		custom_config: Option<serde_json::Value>,
 	},
 }
 
@@ -35,10 +39,17 @@ impl PluginConfigDeser {
 	/// Convert this deserialized plugin config to the final version
 	pub fn to_config(&self) -> PluginConfig {
 		let name = match self {
-			Self::Simple(name) | Self::Full { name } => name.clone(),
+			Self::Simple(name) | Self::Full { name, .. } => name.clone(),
+		};
+		let custom_config = match self {
+			Self::Simple(..) => None,
+			Self::Full { custom_config, .. } => custom_config.clone(),
 		};
 
-		PluginConfig { name }
+		PluginConfig {
+			name,
+			custom_config,
+		}
 	}
 }
 
@@ -59,10 +70,21 @@ impl PluginManager {
 	}
 
 	/// Add a plugin to the manager
-	pub fn add_plugin(&mut self, plugin: PluginConfig, manifest: PluginManifest) {
+	pub fn add_plugin(
+		&mut self,
+		plugin: PluginConfig,
+		manifest: PluginManifest,
+	) -> anyhow::Result<()> {
+		let custom_config = plugin.custom_config.clone();
 		self.configs.push(plugin);
-		let plugin = Plugin::new(manifest);
-		self.manager.add_plugin(plugin);
+		let mut plugin = Plugin::new(manifest);
+		if let Some(custom_config) = custom_config {
+			plugin.set_custom_config(custom_config)?;
+		}
+
+		self.manager.add_plugin(plugin)?;
+
+		Ok(())
 	}
 
 	/// Load a plugin from the plugin directory
@@ -76,7 +98,7 @@ impl PluginManager {
 		};
 		let manifest = json_from_file(path).context("Failed to read plugin manifest from file")?;
 
-		self.add_plugin(plugin, manifest);
+		self.add_plugin(plugin, manifest)?;
 
 		Ok(())
 	}

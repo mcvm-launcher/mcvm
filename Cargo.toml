@@ -9,6 +9,10 @@ repository = "https://github.com/CarbonSmasher/mcvm"
 keywords = ["minecraft", "launcher", "game", "mc"]
 categories = ["games"]
 
+[profile.release]
+lto = "thin"
+strip = true
+
 [lib]
 name = "mcvm"
 path = "src/lib.rs"

@@ -10,6 +10,12 @@ keywords = ["minecraft", "launcher", "game", "mc", "plugin"]
 categories = ["games"]
 
 [features]
+default = ["api"]
+api = []
+
+[[bin]]
+name = "print_custom_config"
+path = "plugins/print_custom_config.rs"
 
 [dependencies]
 anyhow = "1.0.70"

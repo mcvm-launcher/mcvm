@@ -5,9 +5,12 @@
 //! Rust plugins for MCVM to use
 
 use anyhow::Context;
-use hooks::Hook;
+use hooks::{Hook, OnLoad};
 use plugin::Plugin;
 
+/// API for Rust-based plugins to use to define plugins
+#[cfg(feature = "api")]
+pub mod api;
 /// Plugin hooks and their definitions
 pub mod hooks;
 /// Plugins
@@ -28,8 +31,15 @@ impl PluginManager {
 	}
 
 	/// Add a plugin to the manager
-	pub fn add_plugin(&mut self, plugin: Plugin) {
+	pub fn add_plugin(&mut self, plugin: Plugin) -> anyhow::Result<()> {
+		// Call the on_load hook
+		plugin
+			.call_hook(&OnLoad, &())
+			.context("Failed to call on_load hook of plugin")?;
+
 		self.plugins.push(plugin);
+
+		Ok(())
 	}
 
 	/// Call a plugin hook on the manager and collects the results into a Vec
