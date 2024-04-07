@@ -1166,6 +1166,7 @@ dependencies = [
  "mcvm_options",
  "mcvm_parse",
  "mcvm_pkg",
+ "mcvm_plugin",
  "mcvm_shared",
  "oauth2",
  "rand",

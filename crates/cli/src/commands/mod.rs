@@ -170,6 +170,7 @@ impl CmdData {
 				Config::load(
 					&Config::get_path(&self.paths),
 					show_warnings,
+					&self.paths,
 					&mut self.output,
 				)
 				.context("Failed to load config")?,

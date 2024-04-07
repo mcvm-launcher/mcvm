@@ -3,6 +3,7 @@ use std::collections::HashMap;
 use anyhow::bail;
 use mcvm_core::user::{User, UserManager};
 use mcvm_core::util::versions::MinecraftVersionDeser;
+use mcvm_plugin::plugin::PluginManifest;
 use mcvm_shared::modifications::{ClientType, Modloader, Proxy, ServerType};
 use mcvm_shared::pkg::{PackageID, PackageStability};
 use mcvm_shared::Side;
@@ -20,6 +21,7 @@ use super::instance::{
 	read_instance_config, ClientWindowConfig, FullInstanceConfig, InstanceConfig, LaunchConfig,
 };
 use super::package::{FullPackageConfig, PackageConfigDeser, PackageConfigSource};
+use super::plugin::{PluginConfig, PluginManager};
 use super::preferences::ConfigPreferences;
 use super::profile::{ProfileConfig, ProfilePackageConfiguration};
 use super::user::{UserConfig, UserVariant};
@@ -33,6 +35,7 @@ pub struct ConfigBuilder {
 	packages: PkgRegistry,
 	preferences: ConfigPreferences,
 	global_packages: Vec<PackageConfigDeser>,
+	plugins: PluginManager,
 	default_user: Option<String>,
 }
 
@@ -46,6 +49,7 @@ impl ConfigBuilder {
 			profiles: HashMap::new(),
 			packages,
 			preferences: prefs,
+			plugins: PluginManager::new(),
 			global_packages: Vec::new(),
 			default_user: None,
 		}
@@ -94,6 +98,11 @@ impl ConfigBuilder {
 		self
 	}
 
+	/// Add a plugin configuration
+	pub fn add_plugin(&mut self, plugin: PluginConfig, manifest: PluginManifest) {
+		self.plugins.add_plugin(plugin, manifest);
+	}
+
 	/// Finishes the builder
 	pub fn build(mut self) -> anyhow::Result<Config> {
 		if let Some(default_user_id) = &self.default_user {
@@ -118,6 +127,7 @@ impl ConfigBuilder {
 			profiles: self.profiles,
 			packages: self.packages,
 			global_packages,
+			plugins: self.plugins,
 			prefs: self.preferences,
 		})
 	}

@@ -66,6 +66,7 @@ mcvm_mods = { path = "crates/mods", version = "0.3.0" }
 mcvm_options = { path = "crates/options", version = "0.3.0" }
 mcvm_parse = { path = "crates/parse", version = "0.12.0" }
 mcvm_pkg = { path = "crates/pkg", version = "0.11.0" }
+mcvm_plugin = { path = "crates/plugin", version = "0.1.0" }
 mcvm_shared = { path = "crates/shared", version = "0.11.0" }
 shellexpand = { version = "3.0.0", features = ["path"] }
 tar = "0.4.38"

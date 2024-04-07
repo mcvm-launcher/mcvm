@@ -34,11 +34,44 @@ pub struct Paths {
 	pub fabric_quilt: PathBuf,
 	/// Storing proxy data
 	pub proxy: PathBuf,
+	/// Holding user plugins
+	pub plugins: PathBuf,
 }
 
 impl Paths {
 	/// Create a new Paths object and also create all of the paths it contains on the filesystem
 	pub async fn new() -> anyhow::Result<Paths> {
+		let out = Self::new_no_create()?;
+		out.create_dirs().await?;
+
+		Ok(out)
+	}
+
+	/// Create the directories on an existing set of paths
+	pub async fn create_dirs(&self) -> anyhow::Result<()> {
+		tokio::try_join!(
+			tokio::fs::create_dir_all(&self.data),
+			tokio::fs::create_dir_all(self.project.cache_dir()),
+			tokio::fs::create_dir_all(self.project.config_dir()),
+			tokio::fs::create_dir_all(&self.internal),
+			tokio::fs::create_dir_all(&self.addons),
+			tokio::fs::create_dir_all(&self.pkg_cache),
+			tokio::fs::create_dir_all(&self.pkg_index_cache),
+			tokio::fs::create_dir_all(&self.logs),
+			tokio::fs::create_dir_all(&self.launch_logs),
+			tokio::fs::create_dir_all(&self.run),
+			tokio::fs::create_dir_all(&self.snapshots),
+			tokio::fs::create_dir_all(&self.fabric_quilt),
+			tokio::fs::create_dir_all(&self.proxy),
+			tokio::fs::create_dir_all(&self.plugins),
+		)?;
+		self.core.create_dirs()?;
+
+		Ok(())
+	}
+
+	/// Create the paths without creating any directories
+	pub fn new_no_create() -> anyhow::Result<Self> {
 		let base = BaseDirs::new().ok_or(anyhow!("Base directories failed"))?;
 		let project =
 			ProjectDirs::from("", "mcvm", "mcvm").ok_or(anyhow!("Base directories failed"))?;
@@ -57,22 +90,7 @@ impl Paths {
 		let snapshots = internal.join("snapshots");
 		let fabric_quilt = internal.join("fabric_quilt");
 		let proxy = data.join("proxy");
-
-		tokio::try_join!(
-			tokio::fs::create_dir_all(&data),
-			tokio::fs::create_dir_all(project.cache_dir()),
-			tokio::fs::create_dir_all(project.config_dir()),
-			tokio::fs::create_dir_all(&internal),
-			tokio::fs::create_dir_all(&addons),
-			tokio::fs::create_dir_all(&pkg_cache),
-			tokio::fs::create_dir_all(&pkg_index_cache),
-			tokio::fs::create_dir_all(&logs),
-			tokio::fs::create_dir_all(&launch_logs),
-			tokio::fs::create_dir_all(&run),
-			tokio::fs::create_dir_all(&snapshots),
-			tokio::fs::create_dir_all(&fabric_quilt),
-			tokio::fs::create_dir_all(&proxy),
-		)?;
+		let plugins = data.join("plugins");
 
 		let core_paths = mcvm_core::Paths::new().context("Failed to create core paths")?;
 
@@ -91,6 +109,7 @@ impl Paths {
 			snapshots,
 			fabric_quilt,
 			proxy,
+			plugins,
 		})
 	}
 }

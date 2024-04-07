@@ -14,6 +14,7 @@ pub mod hooks;
 pub mod plugin;
 
 /// A manager for plugins that is used to call their hooks
+#[derive(Debug)]
 pub struct PluginManager {
 	plugins: Vec<Plugin>,
 }

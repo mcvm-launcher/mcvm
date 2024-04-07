@@ -36,6 +36,30 @@ impl Paths {
 	/// Create a new Paths object. This will create all of the directories
 	/// referenced in the paths if they do not already exist.
 	pub fn new() -> anyhow::Result<Paths> {
+		let out = Self::new_no_create()?;
+		out.create_dirs()?;
+
+		Ok(out)
+	}
+
+	/// Create the directories on an existing set of paths
+	pub fn create_dirs(&self) -> anyhow::Result<()> {
+		std::fs::create_dir_all(&self.data)?;
+		std::fs::create_dir_all(&self.project.cache_dir())?;
+		std::fs::create_dir_all(&self.project.config_dir())?;
+		std::fs::create_dir_all(&self.internal)?;
+		std::fs::create_dir_all(&self.assets)?;
+		std::fs::create_dir_all(&self.java)?;
+		std::fs::create_dir_all(&self.jars)?;
+		std::fs::create_dir_all(&self.auth)?;
+		std::fs::create_dir_all(&self.logs)?;
+		std::fs::create_dir_all(&self.launch_logs)?;
+		std::fs::create_dir_all(&self.run)?;
+		Ok(())
+	}
+
+	/// Create the paths without creating any directories
+	pub fn new_no_create() -> anyhow::Result<Self> {
 		let base = BaseDirs::new().ok_or(anyhow!("Failed to create base directories"))?;
 		let project = ProjectDirs::from("", "mcvm", "mcvm")
 			.ok_or(anyhow!("Failed to create project directories"))?;
@@ -53,18 +77,6 @@ impl Paths {
 			.runtime_dir()
 			.map(|x| x.to_path_buf())
 			.unwrap_or(internal.join("run"));
-
-		std::fs::create_dir_all(&data)?;
-		std::fs::create_dir_all(project.cache_dir())?;
-		std::fs::create_dir_all(project.config_dir())?;
-		std::fs::create_dir_all(&internal)?;
-		std::fs::create_dir_all(&assets)?;
-		std::fs::create_dir_all(&java)?;
-		std::fs::create_dir_all(&jars)?;
-		std::fs::create_dir_all(&auth)?;
-		std::fs::create_dir_all(&logs)?;
-		std::fs::create_dir_all(&launch_logs)?;
-		std::fs::create_dir_all(&run)?;
 
 		Ok(Paths {
 			base,

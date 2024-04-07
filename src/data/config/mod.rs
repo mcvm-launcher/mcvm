@@ -6,6 +6,8 @@ pub mod instance;
 pub mod modifications;
 /// Configuring packages
 pub mod package;
+/// Configuring plugins
+pub mod plugin;
 /// Configuring global preferences
 pub mod preferences;
 /// Configuring profiles
@@ -15,6 +17,7 @@ pub mod user;
 
 use self::instance::{read_instance_config, InstanceConfig};
 use self::package::{PackageConfig, PackageConfigDeser, PackageConfigSource};
+use self::plugin::{PluginConfigDeser, PluginManager};
 use self::preferences::PrefDeser;
 use self::profile::ProfileConfig;
 use self::user::UserConfig;
@@ -55,6 +58,8 @@ pub struct Config {
 	pub packages: PkgRegistry,
 	/// Globally configured packages to include in every profile
 	pub global_packages: Vec<PackageConfig>,
+	/// Configured plugins
+	pub plugins: PluginManager,
 	/// Global user preferences
 	pub prefs: ConfigPreferences,
 }
@@ -69,6 +74,7 @@ pub struct ConfigDeser {
 	profiles: HashMap<ProfileID, ProfileConfig>,
 	instance_presets: HashMap<String, InstanceConfig>,
 	packages: Vec<PackageConfigDeser>,
+	plugins: Vec<PluginConfigDeser>,
 	preferences: PrefDeser,
 }
 
@@ -97,6 +103,7 @@ impl Config {
 	fn load_from_deser(
 		config: ConfigDeser,
 		show_warnings: bool,
+		paths: &Paths,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Self> {
 		let mut users = UserManager::new(ClientId::new("".into()));
@@ -216,20 +223,35 @@ impl Config {
 			.map(|x| x.to_package_config(PackageStability::default(), PackageConfigSource::Global))
 			.collect();
 
+		let mut plugins = PluginManager::new();
+
+		for plugin in config.plugins {
+			let plugin = plugin.to_config();
+			plugins
+				.load_plugin(plugin, paths)
+				.context("Failed to load plugin")?;
+		}
+
 		Ok(Self {
 			users,
 			instances,
 			profiles,
 			packages,
 			global_packages,
+			plugins,
 			prefs,
 		})
 	}
 
 	/// Load the configuration from the config file
-	pub fn load(path: &Path, show_warnings: bool, o: &mut impl MCVMOutput) -> anyhow::Result<Self> {
+	pub fn load(
+		path: &Path,
+		show_warnings: bool,
+		paths: &Paths,
+		o: &mut impl MCVMOutput,
+	) -> anyhow::Result<Self> {
 		let obj = Self::open(path)?;
-		Self::load_from_deser(obj, show_warnings, o)
+		Self::load_from_deser(obj, show_warnings, paths, o)
 	}
 }
 
@@ -272,6 +294,7 @@ mod tests {
 		Config::load_from_deser(
 			deser,
 			true,
+			&Paths::new_no_create().expect("Failed to create paths"),
 			&mut output::Simple(output::MessageLevel::Debug),
 		)
 		.unwrap();
