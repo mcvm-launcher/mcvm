@@ -236,6 +236,16 @@ impl UserManager {
 		}
 	}
 
+	/// Get the currently chosen mutably, if there is one
+	pub fn get_chosen_user_mut(&mut self) -> Option<&mut User> {
+		match &self.state {
+			AuthState::Offline => None,
+			AuthState::UserChosen(user_id) | AuthState::Authed(user_id) => {
+				self.users.get_mut(user_id)
+			}
+		}
+	}
+
 	/// Checks if a user is chosen
 	pub fn is_user_chosen(&self) -> bool {
 		matches!(
@@ -263,7 +273,7 @@ impl UserManager {
 				.expect("User in AuthState does not exist");
 
 			if !user.is_authenticated() || !user.is_auth_valid(paths) {
-				user.authenticate(self.ms_client_id.clone(), paths, client, o)
+				user.authenticate(false, self.ms_client_id.clone(), paths, client, o)
 					.await?;
 			}
 			self.state = AuthState::Authed(std::mem::take(user_id));

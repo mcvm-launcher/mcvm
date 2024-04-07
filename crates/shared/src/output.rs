@@ -1,3 +1,5 @@
+use anyhow::bail;
+
 use crate::pkg::PkgRequest;
 
 /// Trait for a type that can output information about MCVM processes
@@ -33,6 +35,17 @@ pub trait MCVMOutput {
 	fn prompt_yes_no(&mut self, default: bool, message: MessageContents) -> anyhow::Result<bool> {
 		let _message = message;
 		Ok(default)
+	}
+
+	/// Offer a password / secret prompt
+	fn prompt_password(&mut self, message: MessageContents) -> anyhow::Result<String> {
+		let _ = message;
+		bail!("No password prompt available")
+	}
+
+	/// Offer a new password / secret prompt
+	fn prompt_new_password(&mut self, message: MessageContents) -> anyhow::Result<String> {
+		self.prompt_password(message)
 	}
 
 	// Specialized implementations for certain combinations of messages.

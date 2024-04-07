@@ -3,7 +3,7 @@ use std::{fs::File, path::PathBuf};
 
 use anyhow::Context;
 use color_print::{cformat, cstr};
-use inquire::Confirm;
+use inquire::{Confirm, Password};
 use mcvm::io::files::paths::Paths;
 use mcvm::pkg_crate::{PkgRequest, PkgRequestSource};
 use mcvm::shared::output::{
@@ -69,6 +69,23 @@ impl MCVMOutput for TerminalOutput {
 	fn prompt_yes_no(&mut self, default: bool, message: MessageContents) -> anyhow::Result<bool> {
 		let ans = Confirm::new(&Self::format_message(message))
 			.with_default(default)
+			.prompt()
+			.context("Inquire prompt failed")?;
+
+		Ok(ans)
+	}
+
+	fn prompt_password(&mut self, message: MessageContents) -> anyhow::Result<String> {
+		let ans = Password::new(&Self::format_message(message))
+			.without_confirmation()
+			.prompt()
+			.context("Inquire prompt failed")?;
+
+		Ok(ans)
+	}
+
+	fn prompt_new_password(&mut self, message: MessageContents) -> anyhow::Result<String> {
+		let ans = Password::new(&Self::format_message(message))
 			.prompt()
 			.context("Inquire prompt failed")?;
 

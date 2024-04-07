@@ -12,3 +12,5 @@ pub mod db;
 pub mod mc;
 /// Implementation of authentication with MSA for Minecraft auth
 mod mc_msa;
+/// Usage of passkeys for encoding and decoding sensitive info
+pub mod passkey;
