@@ -4,6 +4,16 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/w3icASIi/modmenu-9.1.0-beta.1.jar",
+					"version": "w3icASIi"
+				},
+				{
 					"minecraft_versions": [
 						"24w10a",
 						"24w11a",
@@ -1323,7 +1333,7 @@
 			"https://cdn.modrinth.com/data/mOgUt4GM/images/ec97a9f09bc750dd7895414eac14f6252ca47621.png",
 			"https://cdn.modrinth.com/data/mOgUt4GM/images/5726bbaf7d0ea53e55b6e666af5d3e1861758334.png"
 		],
-		"icon": "https://cdn.modrinth.com/data/mOgUt4GM/530e1c50e9d3c2ea1aab98c0dc5a7faead8a2a87.png",
+		"icon": "https://cdn.modrinth.com/data/mOgUt4GM/1b6bcdef5a3d92572f517122650716be7ec6458b.webp",
 		"issues": "https://github.com/TerraformersMC/ModMenu/issues",
 		"keywords": [
 			"menu",

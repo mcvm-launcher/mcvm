@@ -7,6 +7,20 @@
 					"minecraft_versions": "1.20.4",
 					"modloaders": "quilt",
 					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/DiaeDvXG/quilted-fabric-api-9.0.0-alpha.7%2B0.96.11-1.20.4.jar",
+					"version": "DiaeDvXG"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "quilt",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/zHVlrS0A/quilted-fabric-api-8.0.0-alpha.6%2B0.91.6-1.20.2.jar",
+					"version": "zHVlrS0A"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "quilt",
+					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/qvIfYCYJ/versions/rfATdsrM/quilted-fabric-api-9.0.0-alpha.6%2B0.96.11-1.20.4.jar",
 					"version": "rfATdsrM"
 				},

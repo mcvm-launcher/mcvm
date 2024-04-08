@@ -13,6 +13,19 @@
 						"quilt"
 					],
 					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/Her7Z3CG/owo-lib-0.12.6%2B1.20.3.jar",
+					"version": "Her7Z3CG"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "stable",
 					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/CJ29u2GJ/owo-lib-0.12.5%2B1.20.3.jar",
 					"version": "CJ29u2GJ"
 				},

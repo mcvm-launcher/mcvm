@@ -8,6 +8,16 @@
 						"1.20.3",
 						"1.20.4"
 					],
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/iKVUNCME/spark-1.10.61-neoforge.jar",
+					"version": "iKVUNCME"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.3",
+						"1.20.4"
+					],
 					"modloaders": "fabric",
 					"stability": "stable",
 					"url": "https://cdn.modrinth.com/data/l6YH9Als/versions/FeV5OquF/spark-1.10.58-fabric.jar",

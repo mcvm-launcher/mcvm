@@ -4,6 +4,199 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": [
+							"fabriclike-api",
+							"forge-config-api-port"
+						]
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gF3BGWvG/versions/r2YF0IYK/open-parties-and-claims-fabric-1.20.4-0.22.0.jar",
+					"version": "r2YF0IYK"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gF3BGWvG/versions/tv29e3k3/open-parties-and-claims-neoforge-1.20.4-0.22.0.jar",
+					"version": "tv29e3k3"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "forge-config-api-port"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gF3BGWvG/versions/L7yzrgmm/open-parties-and-claims-forge-1.20.4-0.22.0.jar",
+					"version": "L7yzrgmm"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": [
+							"fabriclike-api",
+							"forge-config-api-port"
+						]
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gF3BGWvG/versions/31GgLvOZ/open-parties-and-claims-fabric-1.20.2-0.22.0.jar",
+					"version": "31GgLvOZ"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "neoforged",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gF3BGWvG/versions/imGZXkUN/open-parties-and-claims-neoforge-1.20.2-0.22.0.jar",
+					"version": "imGZXkUN"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "forge-config-api-port"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gF3BGWvG/versions/wimsIk57/open-parties-and-claims-forge-1.20.2-0.22.0.jar",
+					"version": "wimsIk57"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": [
+							"fabriclike-api",
+							"forge-config-api-port"
+						]
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gF3BGWvG/versions/cH8Mmlny/open-parties-and-claims-fabric-1.20.1-0.22.0.jar",
+					"version": "cH8Mmlny"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gF3BGWvG/versions/qazws2P9/open-parties-and-claims-forge-1.20.1-0.22.0.jar",
+					"version": "qazws2P9"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": [
+							"fabriclike-api",
+							"forge-config-api-port"
+						]
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gF3BGWvG/versions/ioFVaVc8/open-parties-and-claims-fabric-1.19.4-0.22.0.jar",
+					"version": "ioFVaVc8"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gF3BGWvG/versions/dH4zjHBk/open-parties-and-claims-forge-1.19.4-0.22.0.jar",
+					"version": "dH4zjHBk"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": [
+							"fabriclike-api",
+							"forge-config-api-port"
+						]
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gF3BGWvG/versions/gT8h7Qbr/open-parties-and-claims-fabric-1.19.3-0.22.0.jar",
+					"version": "gT8h7Qbr"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gF3BGWvG/versions/TvmQ5MiU/open-parties-and-claims-forge-1.19.3-0.22.0.jar",
+					"version": "TvmQ5MiU"
+				},
+				{
+					"minecraft_versions": [
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": [
+							"fabriclike-api",
+							"forge-config-api-port"
+						]
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gF3BGWvG/versions/mt8qiUe8/open-parties-and-claims-fabric-1.19.2-0.22.0.jar",
+					"version": "mt8qiUe8"
+				},
+				{
+					"minecraft_versions": [
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gF3BGWvG/versions/uaX6D8xA/open-parties-and-claims-forge-1.19.2-0.22.0.jar",
+					"version": "uaX6D8xA"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": [
+							"fabriclike-api",
+							"forge-config-api-port"
+						]
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gF3BGWvG/versions/PyIsMBbB/open-parties-and-claims-fabric-1.18.2-0.22.0.jar",
+					"version": "PyIsMBbB"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gF3BGWvG/versions/9yrbDlr7/open-parties-and-claims-forge-1.18.2-0.22.0.jar",
+					"version": "9yrbDlr7"
+				},
+				{
 					"minecraft_versions": [
 						"1.20.3",
 						"1.20.4"
