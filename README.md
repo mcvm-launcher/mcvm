@@ -67,30 +67,31 @@ MCVM has a deep amount of configuration for pretty much every part of the applic
 ## ✅ Compatability and stability as a feature
 Where others may take shortcuts, MCVM strives for perfect compatability with Mojang's formats.
 
-## Use cases
+## 👷 Use cases
 MCVM has many use cases for different applications 
 
-### A command-line launcher
+### ⌨️ A command-line launcher
 This is the main use case of most people, and is an important focus of the ecosystem.
 
-### A GUI launcher (planned)
+### ✨ A GUI launcher (planned)
 All the functionalities of the CLI in a more approachable format as a desktop application.
 
-### A library for your launcher
+### 📗 A library for your launcher
 You can use the MCVM library as a base for the functionalities of your launcher. Even if you don't use the packaging formats, MCVM contains functions to launch the game in a simple way, as well as customize the launch process to your liking.
 
-### A server management tool
+### 🪛 A server management tool
 The MCVM CLI is a perfect asset for server managers. The way that it groups configuration for instances makes it easy to orchestrate multiple running servers at once. This system will be great in the future as well when MCVM adds support for proxies like BungeeCord and Velocity.
 
-### A packaging format
+### 📦 A packaging format
 Launchers can use the different MCVM crates to parse, validate, evaluate, and host MCVM packages.
 
-# Status
+# ℹ️ Status
 
 Right now, the launcher and library have most of the core features implemented. However, support for more complex features such as a plugin system have yet to be fleshed out. If you see something you want that isn't there, try contributing!
 
 ### Things that need to be completed before 1.0.0:
 
 - Installing NeoForge
+- More in-depth plugin system and a standard plugin set
 
 Contact `@carbonsmasher` on Discord if you have any questions.
