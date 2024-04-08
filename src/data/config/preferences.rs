@@ -46,7 +46,7 @@ pub struct RepoDeser {
 }
 
 /// Deserialization struct for all configured package repositories
-#[derive(Deserialize, Serialize, Default)]
+#[derive(Deserialize, Serialize)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(default)]
 pub struct RepositoriesDeser {
@@ -55,15 +55,20 @@ pub struct RepositoriesDeser {
 	/// The backup repositories included after the default ones
 	pub backup: Vec<RepoDeser>,
 	/// Whether to enable the core repository
-	#[serde(default = "default_enable")]
 	pub enable_core: bool,
 	/// Whether to enable the std repository
-	#[serde(default = "default_enable")]
 	pub enable_std: bool,
 }
 
-fn default_enable() -> bool {
-	true
+impl Default for RepositoriesDeser {
+	fn default() -> Self {
+		Self {
+			preferred: Vec::new(),
+			backup: Vec::new(),
+			enable_core: true,
+			enable_std: true,
+		}
+	}
 }
 
 impl ConfigPreferences {
