@@ -17,6 +17,10 @@ api = []
 name = "print_custom_config"
 path = "plugins/print_custom_config.rs"
 
+[[bin]]
+name = "echo"
+path = "plugins/echo.rs"
+
 [dependencies]
 anyhow = "1.0.70"
 mcvm_shared = { path = "../shared", version = "0.11.0" }

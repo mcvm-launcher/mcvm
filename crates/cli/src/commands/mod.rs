@@ -12,6 +12,7 @@ use color_print::{cformat, cprintln};
 
 use mcvm::data::config::Config;
 use mcvm::io::files::paths::Paths;
+use mcvm::plugin::hooks;
 use mcvm::shared::later::Later;
 use mcvm::shared::output::{MCVMOutput, MessageContents, MessageLevel};
 
@@ -72,6 +73,8 @@ pub enum Command {
 		#[command(subcommand)]
 		command: ToolSubcommand,
 	},
+	#[clap(external_subcommand)]
+	External(Vec<String>),
 }
 
 #[derive(Debug, Parser)]
@@ -120,6 +123,17 @@ pub async fn run_cli() -> anyhow::Result<()> {
 		Command::Instance { command } => instance::run(command, &mut data).await,
 		Command::Snapshot { command } => snapshot::run(command, &mut data).await,
 		Command::Tool { command } => tool::run(command, &mut data).await,
+		Command::External(args) => {
+			// Run the plugin subcommand
+			data.ensure_config(true).await?;
+			let config = data.config.get();
+			config
+				.plugins
+				.call_hook(hooks::Subcommand, &args)
+				.context("Plugin subcommand failed")?;
+
+			Ok(())
+		}
 	};
 
 	if let Err(e) = &res {

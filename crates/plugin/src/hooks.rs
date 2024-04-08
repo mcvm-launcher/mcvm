@@ -8,7 +8,7 @@ pub trait Hook {
 	/// The type for the argument that goes into the hook
 	type Arg: Serialize + DeserializeOwned;
 	/// The type for the result from the hook
-	type Result: DeserializeOwned + Serialize;
+	type Result: DeserializeOwned + Serialize + Default;
 
 	/// Get the name of the hook
 	fn get_name(&self) -> &'static str {
@@ -17,6 +17,11 @@ pub trait Hook {
 
 	/// Get the name of the hook statically
 	fn get_name_static() -> &'static str;
+
+	/// Get whether the hook should forward all output to the terminal
+	fn get_takes_over() -> bool {
+		false
+	}
 
 	/// Call the hook using the specified program
 	fn call(
@@ -32,30 +37,37 @@ pub trait Hook {
 		if let Some(custom_config) = custom_config {
 			cmd.env("MCVM_CUSTOM_CONFIG", custom_config);
 		}
-		cmd.stdout(std::process::Stdio::piped());
 
-		let result = cmd
-			.spawn()?
-			.wait_with_output()
-			.context("Failed to wait for hook child process")?;
+		if Self::get_takes_over() {
+			cmd.spawn()?.wait()?;
 
-		if !result.status.success() {
-			if let Some(exit_code) = result.status.code() {
-				bail!("Hook returned a non-zero exit code of {}", exit_code);
-			} else {
-				bail!("Hook returned a non-zero exit code");
+			Ok(Self::Result::default())
+		} else {
+			cmd.stdout(std::process::Stdio::piped());
+
+			let result = cmd
+				.spawn()?
+				.wait_with_output()
+				.context("Failed to wait for hook child process")?;
+
+			if !result.status.success() {
+				if let Some(exit_code) = result.status.code() {
+					bail!("Hook returned a non-zero exit code of {}", exit_code);
+				} else {
+					bail!("Hook returned a non-zero exit code");
+				}
 			}
+
+			let result = serde_json::from_slice(&result.stdout)
+				.context("Failed to deserialize hook result")?;
+
+			Ok(result)
 		}
-
-		let result =
-			serde_json::from_slice(&result.stdout).context("Failed to deserialize hook result")?;
-
-		Ok(result)
 	}
 }
 
 macro_rules! def_hook {
-	($struct:ident, $name:literal, $desc:literal, $arg:ty, $res:ty) => {
+	($struct:ident, $name:literal, $desc:literal, $arg:ty, $res:ty, $($extra:tt)*) => {
 		#[doc = $desc]
 		pub struct $struct;
 
@@ -66,6 +78,10 @@ macro_rules! def_hook {
 			fn get_name_static() -> &'static str {
 				$name
 			}
+
+			$(
+				$extra
+			)*
 		}
 	};
 }
@@ -75,5 +91,16 @@ def_hook!(
 	"on_load",
 	"Hook for when a plugin is loaded",
 	(),
-	()
+	(),
+);
+
+def_hook!(
+	Subcommand,
+	"subcommand",
+	"Hook for when a command's subcommands are run",
+	Vec<String>,
+	(),
+	fn get_takes_over() -> bool {
+		true
+	}
 );
