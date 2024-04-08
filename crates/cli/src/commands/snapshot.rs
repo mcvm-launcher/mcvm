@@ -70,8 +70,7 @@ async fn list(data: &mut CmdData, raw: bool, instance: &str) -> anyhow::Result<(
 	let instance =
 		InstanceRef::parse(instance.into()).context("Failed to parse instance reference")?;
 	let instance = config
-		.instances
-		.get(&instance)
+		.get_instance(&instance)
 		.ok_or(anyhow!("Instance does not exist"))?;
 	let (snapshot_dir, index) = instance.open_snapshot_index(&data.paths)?;
 
@@ -94,8 +93,7 @@ async fn create(data: &mut CmdData, instance: &str, snapshot: &str) -> anyhow::R
 	let instance =
 		InstanceRef::parse(instance.into()).context("Failed to parse instance reference")?;
 	let instance = config
-		.instances
-		.get_mut(&instance)
+		.get_instance_mut(&instance)
 		.ok_or(anyhow!("Instance does not exist"))?;
 
 	let (snapshot_dir, index) = instance.open_snapshot_index(&data.paths)?;
@@ -118,8 +116,7 @@ async fn remove(data: &mut CmdData, instance: &str, snapshot: &str) -> anyhow::R
 	let instance =
 		InstanceRef::parse(instance.into()).context("Failed to parse instance reference")?;
 	let instance = config
-		.instances
-		.get(&instance)
+		.get_instance(&instance)
 		.ok_or(anyhow!("Instance does not exist"))?;
 	instance.remove_snapshot(snapshot, &data.paths)?;
 
@@ -135,8 +132,7 @@ async fn restore(data: &mut CmdData, instance: &str, snapshot: &str) -> anyhow::
 	let instance =
 		InstanceRef::parse(instance.into()).context("Failed to parse instance reference")?;
 	let instance = config
-		.instances
-		.get_mut(&instance)
+		.get_instance_mut(&instance)
 		.ok_or(anyhow!("Instance does not exist"))?;
 	instance.restore_snapshot(snapshot, &data.paths).await?;
 
@@ -152,8 +148,7 @@ async fn info(data: &mut CmdData, instance_id: &str, snapshot_id: &str) -> anyho
 	let inst_ref =
 		InstanceRef::parse(instance_id.into()).context("Failed to parse instance reference")?;
 	let instance = config
-		.instances
-		.get(&inst_ref)
+		.get_instance(&inst_ref)
 		.ok_or(anyhow!("Instance does not exist"))?;
 	let (snapshot_dir, index) = instance.open_snapshot_index(&data.paths)?;
 

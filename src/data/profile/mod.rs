@@ -3,6 +3,8 @@ pub mod proxy;
 /// Functions for updating profiles
 pub mod update;
 
+use std::collections::HashMap;
+
 use anyhow::Context;
 use mcvm_shared::later::Later;
 use mcvm_shared::output::MCVMOutput;
@@ -33,7 +35,7 @@ pub struct Profile {
 	/// The Minecraft version of this profile
 	pub version: MinecraftVersion,
 	/// The instances that are contained in this profile
-	pub instances: Vec<InstanceID>,
+	pub instances: HashMap<InstanceID, Instance>,
 	/// The packages that are selected for this profile
 	pub packages: ProfilePackageConfiguration,
 	/// Modifications applied to instances in this profile
@@ -56,7 +58,7 @@ impl Profile {
 		Profile {
 			id,
 			version,
-			instances: Vec::new(),
+			instances: HashMap::new(),
 			packages,
 			modifications,
 			default_stability,
@@ -65,8 +67,8 @@ impl Profile {
 	}
 
 	/// Add a new instance to this profile
-	pub fn add_instance(&mut self, instance: InstanceID) {
-		self.instances.push(instance);
+	pub fn add_instance(&mut self, instance: Instance) {
+		self.instances.insert(instance.id.clone(), instance);
 	}
 
 	/// Get the InstanceRef of an instance on this profile
@@ -77,35 +79,25 @@ impl Profile {
 	/// Create this profile and all of it's instances
 	pub async fn create(
 		&mut self,
-		reg: &mut InstanceRegistry,
 		paths: &Paths,
 		manager: &mut UpdateManager,
 		users: &UserManager,
 		client: &Client,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
-		for id in self.instances.iter_mut() {
-			let inst_ref = InstanceRef::new(self.id.clone(), id.clone());
-			let instance = reg.get(&inst_ref).expect("Profile has unknown instance");
+		for instance in self.instances.values_mut() {
 			manager.add_requirements(instance.get_requirements());
 		}
 		manager
 			.fulfill_requirements(users, paths, client, o)
 			.await?;
 
-		for id in self.instances.iter_mut() {
-			let inst_ref = InstanceRef::new(self.id.clone(), id.clone());
-
-			let instance = reg
-				.get_mut(&inst_ref)
-				.expect("Profile has unknown instance");
-			{
-				let result = instance
-					.create(manager, paths, users, client, o)
-					.await
-					.with_context(|| format!("Failed to create instance {id}"))?;
-				manager.add_result(result);
-			}
+		for instance in self.instances.values_mut() {
+			let result = instance
+				.create(manager, paths, users, client, o)
+				.await
+				.with_context(|| format!("Failed to create instance {}", instance.id))?;
+			manager.add_result(result);
 		}
 
 		// Update the proxy

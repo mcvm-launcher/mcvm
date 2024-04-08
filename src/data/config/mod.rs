@@ -34,7 +34,8 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 use super::id::{InstanceRef, ProfileID};
-use super::profile::{InstanceRegistry, Profile};
+use super::instance::Instance;
+use super::profile::Profile;
 use crate::io::files::paths::Paths;
 use crate::pkg::reg::PkgRegistry;
 
@@ -51,8 +52,6 @@ use std::path::{Path, PathBuf};
 pub struct Config {
 	/// The user manager
 	pub users: UserManager,
-	/// The available instances
-	pub instances: InstanceRegistry,
 	/// The available profiles
 	pub profiles: HashMap<ProfileID, Profile>,
 	/// The registry of packages. Will include packages that are configured when created this way
@@ -63,6 +62,34 @@ pub struct Config {
 	pub plugins: PluginManager,
 	/// Global user preferences
 	pub prefs: ConfigPreferences,
+}
+
+impl Config {
+	/// Get an instance from an instance ref
+	pub fn get_instance(&self, instance: &InstanceRef) -> Option<&Instance> {
+		self.profiles
+			.get(&instance.profile)?
+			.instances
+			.get(&instance.instance)
+	}
+
+	/// Get an instance mutably from an instance ref
+	pub fn get_instance_mut(&mut self, instance: &InstanceRef) -> Option<&mut Instance> {
+		self.profiles
+			.get_mut(&instance.profile)?
+			.instances
+			.get_mut(&instance.instance)
+	}
+
+	/// Get an iterator of all instance refs on all profiles
+	pub fn get_all_instances<'a>(&'a self) -> impl Iterator<Item = InstanceRef> + 'a {
+		self.profiles.values().flat_map(|profile| {
+			profile
+				.instances
+				.values()
+				.map(|instance| profile.get_inst_ref(&instance.id))
+		})
+	}
 }
 
 /// Deserialization struct for user configuration
@@ -108,7 +135,6 @@ impl Config {
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Self> {
 		let mut users = UserManager::new(ClientId::new("".into()));
-		let mut instances = InstanceRegistry::new();
 		let mut profiles = HashMap::new();
 		// Preferences
 		let (prefs, repositories) =
@@ -200,7 +226,6 @@ impl Config {
 				if !is_valid_identifier(&instance_id) {
 					bail!("Invalid string '{}'", instance_id.to_string());
 				}
-				let inst_ref = InstanceRef::new(profile_id.clone(), instance_id.clone());
 				let instance = read_instance_config(
 					instance_id.clone(),
 					&instance_config,
@@ -209,8 +234,7 @@ impl Config {
 					&config.instance_presets,
 				)
 				.with_context(|| format!("Failed to configure instance '{instance_id}'"))?;
-				profile.add_instance(instance_id.clone());
-				instances.insert(inst_ref, instance);
+				profile.add_instance(instance);
 			}
 
 			profile_config.packages.validate()?;
@@ -235,7 +259,6 @@ impl Config {
 
 		Ok(Self {
 			users,
-			instances,
 			profiles,
 			packages,
 			global_packages,

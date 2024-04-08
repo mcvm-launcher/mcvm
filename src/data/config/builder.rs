@@ -10,9 +10,9 @@ use mcvm_shared::output::MCVMOutput;
 use mcvm_shared::pkg::{PackageID, PackageStability};
 use mcvm_shared::Side;
 
-use crate::data::id::{InstanceID, InstanceRef, ProfileID};
+use crate::data::id::{InstanceID, ProfileID};
 use crate::data::instance::Instance;
-use crate::data::profile::{InstanceRegistry, Profile};
+use crate::data::profile::Profile;
 use crate::io::snapshot;
 use crate::pkg::eval::EvalPermissions;
 use crate::pkg::reg::PkgRegistry;
@@ -31,7 +31,6 @@ use super::Config;
 /// Simple builder for config
 pub struct ConfigBuilder {
 	users: UserManager,
-	instances: InstanceRegistry,
 	profiles: HashMap<ProfileID, Profile>,
 	packages: PkgRegistry,
 	preferences: ConfigPreferences,
@@ -46,7 +45,6 @@ impl ConfigBuilder {
 		let packages = PkgRegistry::new(repos, prefs.package_caching_strategy.clone());
 		Self {
 			users: UserManager::new(ClientId::new("".into())),
-			instances: InstanceRegistry::new(),
 			profiles: HashMap::new(),
 			packages,
 			preferences: prefs,
@@ -72,8 +70,7 @@ impl ConfigBuilder {
 	}
 
 	/// Finish a ProfileBuilder
-	fn build_profile(&mut self, id: ProfileID, profile: Profile, instances: InstanceRegistry) {
-		self.instances.extend(instances);
+	fn build_profile(&mut self, id: ProfileID, profile: Profile) {
 		self.profiles.insert(id, profile);
 	}
 
@@ -129,7 +126,6 @@ impl ConfigBuilder {
 
 		Ok(Config {
 			users: self.users,
-			instances: self.instances,
 			profiles: self.profiles,
 			packages: self.packages,
 			global_packages,
@@ -310,9 +306,9 @@ impl<'parent> ProfileBuilder<'parent> {
 
 	/// Finish the builder and go to the parent
 	pub fn build(self) -> anyhow::Result<()> {
-		let (id, profile, instances, parent) = self.build_self()?;
+		let (id, profile, parent) = self.build_self()?;
 		if let Some(parent) = parent {
-			parent.build_profile(id, profile, instances);
+			parent.build_profile(id, profile);
 		}
 
 		Ok(())
@@ -321,14 +317,8 @@ impl<'parent> ProfileBuilder<'parent> {
 	/// Finish the builder and return the self
 	pub fn build_self(
 		self,
-	) -> anyhow::Result<(
-		ProfileID,
-		Profile,
-		InstanceRegistry,
-		Option<&'parent mut ConfigBuilder>,
-	)> {
+	) -> anyhow::Result<(ProfileID, Profile, Option<&'parent mut ConfigBuilder>)> {
 		let mut built = self.config.to_profile(self.id.clone());
-		let mut new_map = HashMap::new();
 
 		let empty_global_packages = Vec::new();
 		let global_packages = self
@@ -337,19 +327,18 @@ impl<'parent> ProfileBuilder<'parent> {
 			.map(|x| &x.global_packages)
 			.unwrap_or(&empty_global_packages);
 
-		for (id, instance) in self.instances {
-			built.instances.push(id.clone());
+		for (instance_id, instance) in self.instances.into_iter() {
 			let instance = read_instance_config(
-				self.id.clone(),
+				instance_id,
 				&instance,
 				&built,
 				global_packages,
 				&HashMap::new(),
 			)?;
-			new_map.insert(InstanceRef::new(self.id.clone(), id), instance);
+			built.add_instance(instance);
 		}
 
-		Ok((self.id, built, new_map, self.parent))
+		Ok((self.id, built, self.parent))
 	}
 }
 
@@ -626,7 +615,6 @@ mod tests {
 	use mcvm_shared::lang::Language;
 
 	use crate::data::config::preferences::{PrefDeser, RepositoriesDeser};
-	use crate::data::id::InstanceRef;
 	use crate::pkg::reg::CachingStrategy;
 
 	use super::*;
@@ -665,11 +653,9 @@ mod tests {
 		);
 		modify_profile(&mut profile);
 
-		let (profile_id, profile, instances, ..) =
-			profile.build_self().expect("Failed to build profile");
+		let (profile_id, profile, ..) = profile.build_self().expect("Failed to build profile");
 		assert_eq!(profile_id, "profile".into());
-		assert!(instances.contains_key(&InstanceRef::new(profile_id.clone(), "instance".into())));
-		assert_eq!(profile.instances, vec!["instance".into()]);
+		assert!(profile.instances.contains_key("instance"));
 		assert_eq!(profile.modifications.client_type, ClientType::Fabric);
 	}
 

@@ -25,14 +25,12 @@ use crate::util::print::PrintOptions;
 
 use manager::UpdateManager;
 
-use super::{InstanceRegistry, Profile};
+use super::Profile;
 
 /// Shared objects for profile updating functions
 pub struct ProfileUpdateContext<'a, O: MCVMOutput> {
 	/// The package registry
 	pub packages: &'a mut PkgRegistry,
-	/// The instance registry
-	pub instances: &'a mut InstanceRegistry,
 	/// The shared paths
 	pub paths: &'a Paths,
 	/// The lockfile
@@ -60,7 +58,6 @@ pub async fn update_profiles(
 
 	let mut ctx = ProfileUpdateContext {
 		packages: &mut config.packages,
-		instances: &mut config.instances,
 		paths,
 		lock: &mut lock,
 		client: &client,
@@ -115,14 +112,7 @@ pub async fn update_profiles(
 
 			if !profile.instances.is_empty() {
 				profile
-					.create(
-						ctx.instances,
-						paths,
-						&mut manager,
-						&config.users,
-						ctx.client,
-						ctx.output,
-					)
+					.create(paths, &mut manager, &config.users, ctx.client, ctx.output)
 					.await
 					.context("Failed to create profile instances")?;
 
@@ -167,7 +157,7 @@ pub async fn update_profiles(
 
 /// Update a profile when the Minecraft version has changed
 async fn check_profile_version_change<'a, O: MCVMOutput>(
-	profile: &Profile,
+	profile: &mut Profile,
 	mc_version: &str,
 	paper_properties: Option<(u16, String)>,
 	ctx: &mut ProfileUpdateContext<'a, O>,
@@ -179,11 +169,7 @@ async fn check_profile_version_change<'a, O: MCVMOutput>(
 			MessageLevel::Important,
 		);
 
-		for instance_id in profile.instances.iter() {
-			let inst_ref = profile.get_inst_ref(instance_id);
-			let instance = ctx.instances.get_mut(&inst_ref).ok_or(anyhow!(
-				"Instance '{instance_id}' does not exist in the registry"
-			))?;
+		for instance in profile.instances.values_mut() {
 			instance
 				.teardown(ctx.paths, paper_properties.clone())
 				.context("Failed to remove old files when updating Minecraft version")?;
@@ -223,18 +209,15 @@ async fn get_paper_properties<'a, O: MCVMOutput>(
 // TODO: Make this work with Folia
 /// Remove the old Paper files for a profile if they have updated
 async fn check_profile_paper_update<'a, O: MCVMOutput>(
-	profile: &Profile,
+	profile: &mut Profile,
 	paper_properties: Option<(u16, String)>,
 	ctx: &mut ProfileUpdateContext<'a, O>,
 ) -> anyhow::Result<()> {
 	if let Some((build_num, file_name)) = paper_properties {
 		if ctx.lock.update_profile_paper_build(&profile.id, build_num) {
-			for inst in profile.instances.iter() {
-				let inst_ref = profile.get_inst_ref(inst);
-				if let Some(inst) = ctx.instances.get_mut(&inst_ref) {
-					inst.remove_paper(ctx.paths, file_name.clone())
-						.context("Failed to remove Paper")?;
-				}
+			for inst in profile.instances.values_mut() {
+				inst.remove_paper(ctx.paths, file_name.clone())
+					.context("Failed to remove Paper")?;
 			}
 		}
 	}

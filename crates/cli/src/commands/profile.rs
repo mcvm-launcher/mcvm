@@ -72,16 +72,13 @@ async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
 		}
 
 		cprintln!("   <s>Instances:");
-		for inst_id in profile.instances.iter() {
-			let inst_ref = profile.get_inst_ref(inst_id);
-			if let Some(instance) = config.instances.get(&inst_ref) {
-				cprint!("   {}", HYPHEN_POINT);
-				match instance.get_side() {
-					Side::Client => cprint!("<y!>Client {}", inst_id),
-					Side::Server => cprint!("<c!>Server {}", inst_id),
-				}
-				cprintln!();
+		for (inst_id, instance) in profile.instances.iter() {
+			cprint!("   {}", HYPHEN_POINT);
+			match instance.get_side() {
+				Side::Client => cprint!("<y!>Client {}", inst_id),
+				Side::Server => cprint!("<c!>Server {}", inst_id),
 			}
+			cprintln!();
 		}
 		cprintln!("   <s>Packages:");
 		for pkg in profile.packages.iter_global() {
@@ -108,13 +105,10 @@ async fn list(data: &mut CmdData, raw: bool) -> anyhow::Result<()> {
 			println!("{id}");
 		} else {
 			cprintln!("<s><g>   {}", id);
-			for inst_id in profile.instances.iter() {
-				let inst_ref = profile.get_inst_ref(inst_id);
-				if let Some(instance) = config.instances.get(&inst_ref) {
-					match instance.get_side() {
-						Side::Client => cprintln!("   {}<y!>{}", HYPHEN_POINT, inst_id),
-						Side::Server => cprintln!("   {}<c!>{}", HYPHEN_POINT, inst_id),
-					}
+			for (inst_id, instance) in profile.instances.iter() {
+				match instance.get_side() {
+					Side::Client => cprintln!("   {}<y!>{}", HYPHEN_POINT, inst_id),
+					Side::Server => cprintln!("   {}<c!>{}", HYPHEN_POINT, inst_id),
 				}
 			}
 		}
