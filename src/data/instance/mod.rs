@@ -22,7 +22,7 @@ use self::launch::LaunchOptions;
 use super::config::instance::ClientWindowConfig;
 use super::config::package::PackageConfig;
 use super::config::profile::GameModifications;
-use super::id::InstanceID;
+use super::id::{InstanceID, ProfileID};
 
 use std::path::PathBuf;
 
@@ -33,6 +33,8 @@ pub struct Instance {
 	pub(crate) kind: InstKind,
 	/// The ID of this instance
 	pub(crate) id: InstanceID,
+	/// The ID of the parent profile for this instance
+	pub(crate) profile_id: ProfileID,
 	/// Directories of the instance
 	pub(crate) dirs: Later<InstanceDirs>,
 	/// Configuration for the instance
@@ -100,10 +102,16 @@ pub struct InstanceStoredConfig {
 
 impl Instance {
 	/// Create a new instance
-	pub fn new(kind: InstKind, id: InstanceID, config: InstanceStoredConfig) -> Self {
+	pub fn new(
+		kind: InstKind,
+		id: InstanceID,
+		profile_id: ProfileID,
+		config: InstanceStoredConfig,
+	) -> Self {
 		Self {
 			kind,
 			id,
+			profile_id,
 			config,
 			dirs: Later::Empty,
 			modification_data: ModificationData::new(),
@@ -123,6 +131,11 @@ impl Instance {
 	/// Get the ID of the instance
 	pub fn get_id(&self) -> &InstanceID {
 		&self.id
+	}
+
+	/// Get the ID of the instance's parent profile
+	pub fn get_profile_id(&self) -> &ProfileID {
+		&self.profile_id
 	}
 
 	/// Get the instance's directories

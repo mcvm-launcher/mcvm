@@ -523,7 +523,7 @@ pub fn read_instance_config(
 		packages,
 	};
 
-	let instance = Instance::new(kind, id, stored_config);
+	let instance = Instance::new(kind, id, profile.id.clone(), stored_config);
 
 	Ok(instance)
 }
