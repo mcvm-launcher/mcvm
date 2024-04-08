@@ -12,7 +12,7 @@ use zip::ZipArchive;
 use crate::io::files::{self, paths::Paths};
 use crate::io::java::classpath::Classpath;
 use crate::io::update::{UpdateManager, UpdateMethodResult};
-use crate::net::download::{self, FD_SENSIBLE_LIMIT};
+use crate::net::download::{self, get_transfer_limit};
 use mcvm_shared::skip_none;
 use mcvm_shared::util;
 
@@ -87,7 +87,7 @@ pub async fn get(
 
 	let mut join = JoinSet::new();
 	// Used to limit the number of open file descriptors
-	let sem = Arc::new(Semaphore::new(FD_SENSIBLE_LIMIT));
+	let sem = Arc::new(Semaphore::new(get_transfer_limit()));
 	for (name, library, path) in libs_to_download {
 		let client = client.clone();
 		let sem = sem.clone();

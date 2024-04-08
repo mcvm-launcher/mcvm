@@ -9,10 +9,19 @@ pub use reqwest::Client;
 
 /// Sensible open file descriptor limit for asynchronous transfers
 #[cfg(target_os = "windows")]
-pub const FD_SENSIBLE_LIMIT: usize = 128;
+const FD_SENSIBLE_LIMIT: usize = 128;
 /// Sensible open file descriptor limit for asynchronous transfers
 #[cfg(not(target_os = "windows"))]
-pub const FD_SENSIBLE_LIMIT: usize = 128;
+const FD_SENSIBLE_LIMIT: usize = 128;
+
+/// Get the sensible limit for asynchronous transfers
+pub fn get_transfer_limit() -> usize {
+	if let Ok(env) = std::env::var("MCVM_TRANSFER_LIMIT") {
+		env.parse().unwrap_or_default()
+	} else {
+		FD_SENSIBLE_LIMIT
+	}
+}
 
 /// The User-Agent header for requests
 fn user_agent() -> String {

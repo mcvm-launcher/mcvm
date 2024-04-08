@@ -3,7 +3,7 @@ use std::future::Future;
 use std::sync::Arc;
 
 use itertools::Itertools;
-use mcvm_core::net::download::FD_SENSIBLE_LIMIT;
+use mcvm_core::net::download::get_transfer_limit;
 use mcvm_pkg::repo::PackageFlag;
 use mcvm_pkg::PkgRequest;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
@@ -210,7 +210,7 @@ async fn run_addon_tasks(
 	let total_count = tasks.len();
 	let mut task_set = JoinSet::new();
 
-	let sem = Arc::new(Semaphore::new(FD_SENSIBLE_LIMIT));
+	let sem = Arc::new(Semaphore::new(get_transfer_limit()));
 	for task in tasks.into_values() {
 		let permit = sem.clone().acquire_owned().await;
 		let task = async move {
