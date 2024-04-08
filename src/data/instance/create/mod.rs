@@ -116,8 +116,9 @@ impl Instance {
 
 	/// Ensure the directories are set and exist
 	pub fn ensure_dirs(&mut self, paths: &Paths) -> anyhow::Result<()> {
-		self.dirs
-			.ensure_full(|| InstanceDirs::new(paths, &self.id, &self.kind.to_side()));
+		self.dirs.ensure_full(|| {
+			InstanceDirs::new(paths, &self.id, &self.profile_id, &self.kind.to_side())
+		});
 		self.dirs.get().ensure_exist()?;
 
 		Ok(())
@@ -278,16 +279,15 @@ pub struct InstanceDirs {
 
 impl InstanceDirs {
 	/// Create a new InstanceDirs
-	pub fn new(paths: &Paths, id: &str, side: &Side) -> Self {
-		let inst_dir = match side {
-			Side::Client { .. } => paths.project.data_dir().join("client").join(id),
-			Side::Server { .. } => paths.project.data_dir().join("server").join(id),
-		};
+	pub fn new(paths: &Paths, instance_id: &str, profile_id: &str, side: &Side) -> Self {
+		let prof_dir = paths.project.data_dir().join("instances").join(profile_id);
 
-		let game_dir = inst_dir.join(match side {
-			Side::Client { .. } => ".minecraft",
-			Side::Server { .. } => "server",
-		});
+		let inst_dir = prof_dir.join(instance_id);
+
+		let game_dir = match side {
+			Side::Client => inst_dir.join(".minecraft"),
+			Side::Server => inst_dir.clone(),
+		};
 
 		Self { inst_dir, game_dir }
 	}
