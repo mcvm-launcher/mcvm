@@ -1,0 +1,20 @@
+{
+	"source": "modrinth",
+	"id": "k2ZPuTBm",
+	"relation_substitutions": {},
+	"merge": {
+		"meta": {
+			"keywords": [],
+			"categories": [
+				"multiplayer",
+				"cosmetic"
+			]
+		},
+		"properties": {
+			"supported_modloaders": [
+				"fabriclike",
+				"forgelike"
+			]
+		}
+	}
+}

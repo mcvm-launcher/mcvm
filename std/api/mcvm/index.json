@@ -97,6 +97,10 @@
 			"path": "pkg/entity-texture-features.json",
 			"content_type": "declarative"
 		},
+		"essential": {
+			"path": "pkg/essential.json",
+			"content_type": "declarative"
+		},
 		"fabric-api": {
 			"path": "pkg/fabric-api.json",
 			"content_type": "declarative"

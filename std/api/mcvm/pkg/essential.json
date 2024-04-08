@@ -1,0 +1,2644 @@
+{
+	"addons": {
+		"addon": {
+			"kind": "mod",
+			"versions": [
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/5SQFQcKh/essential_1-3-1-3_forge_1-17-1.jar",
+					"version": "5SQFQcKh"
+				},
+				{
+					"minecraft_versions": "1.12.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/M90dPjJ6/essential_1-3-1-3_forge_1-12-2.jar",
+					"version": "M90dPjJ6"
+				},
+				{
+					"minecraft_versions": "1.8.9",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/zga3F8ww/essential_1-3-1-3_forge_1-8-9.jar",
+					"version": "zga3F8ww"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/OdEQyAtP/essential_1-3-1-3_forge_1-20-1.jar",
+					"version": "OdEQyAtP"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/juFvRpZr/essential_1-3-1-3_fabric_1-20-4.jar",
+					"version": "juFvRpZr"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/avwTEySK/essential_1-3-1-3_fabric_1-20-1.jar",
+					"version": "avwTEySK"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/STvZpvQO/essential_1-3-1-3_fabric_1-20-2.jar",
+					"version": "STvZpvQO"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/raDTMnl9/essential_1-3-1-3_fabric_1-20.jar",
+					"version": "raDTMnl9"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/RajvGGgW/essential_1-3-1-3_fabric_1-19-3.jar",
+					"version": "RajvGGgW"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/ieyV1nsd/essential_1-3-1-3_fabric_1-19-4.jar",
+					"version": "ieyV1nsd"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/ee4Jv9mp/essential_1-3-1-3_fabric_1-18-2.jar",
+					"version": "ee4Jv9mp"
+				},
+				{
+					"minecraft_versions": "1.19.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/aaHbWgIP/essential_1-3-1-3_fabric_1-19-1.jar",
+					"version": "aaHbWgIP"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/7GPHja1z/essential_1-3-1-3_fabric_1-16-5.jar",
+					"version": "7GPHja1z"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/Y8jUbgRj/essential_1-3-1-3_fabric_1-19-2.jar",
+					"version": "Y8jUbgRj"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/xbkfmKBj/essential_1-3-1-3_fabric_1-17-1.jar",
+					"version": "xbkfmKBj"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/g2dK72EY/essential_1-3-1-3_fabric_1-18-1.jar",
+					"version": "g2dK72EY"
+				},
+				{
+					"minecraft_versions": "1.18",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/V4iAcC2H/essential_1-3-1-3_fabric_1-18.jar",
+					"version": "V4iAcC2H"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/BPzEn1xf/essential_1-3-1-3_fabric_1-19.jar",
+					"version": "BPzEn1xf"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/PhhL8oTx/essential_1-3-1-3_forge_1-18-2.jar",
+					"version": "PhhL8oTx"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/vYZEw9Jt/essential_1-3-1-3_forge_1-16-5.jar",
+					"version": "vYZEw9Jt"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/IMQiMoDG/essential_1-3-1-3_forge_1-19-2.jar",
+					"version": "IMQiMoDG"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/HXIql6en/essential_1-3-1-3_forge_1-19-3.jar",
+					"version": "HXIql6en"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/SPKhdGXT/essential_1-3-1-3_forge_1-19-4.jar",
+					"version": "SPKhdGXT"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/T015SmbL/essential_1-3-1-2_fabric_1-20-4.jar",
+					"version": "T015SmbL"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/f6Ca8SDp/essential_1-3-1-2_forge_1-20-1.jar",
+					"version": "f6Ca8SDp"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/6VIl1kRC/essential_1-3-1-2_fabric_1-20-1.jar",
+					"version": "6VIl1kRC"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/PPnfgo9n/essential_1-3-1-2_fabric_1-20-2.jar",
+					"version": "PPnfgo9n"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/7pqgZuKm/essential_1-3-1-2_fabric_1-20.jar",
+					"version": "7pqgZuKm"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/FAzi31sG/essential_1-3-1-2_fabric_1-19-3.jar",
+					"version": "FAzi31sG"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/4v3c2RYt/essential_1-3-1-2_fabric_1-19-4.jar",
+					"version": "4v3c2RYt"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/4M93JFbY/essential_1-3-1-2_fabric_1-18-2.jar",
+					"version": "4M93JFbY"
+				},
+				{
+					"minecraft_versions": "1.19.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/sOzv0GaQ/essential_1-3-1-2_fabric_1-19-1.jar",
+					"version": "sOzv0GaQ"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/4tKkRlpQ/essential_1-3-1-2_fabric_1-16-5.jar",
+					"version": "4tKkRlpQ"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/u9nof53v/essential_1-3-1-2_fabric_1-19-2.jar",
+					"version": "u9nof53v"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/yRcJx9kM/essential_1-3-1-2_fabric_1-17-1.jar",
+					"version": "yRcJx9kM"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/Yi1TC9FC/essential_1-3-1-2_fabric_1-18-1.jar",
+					"version": "Yi1TC9FC"
+				},
+				{
+					"minecraft_versions": "1.18",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/M2q3oJA6/essential_1-3-1-2_fabric_1-18.jar",
+					"version": "M2q3oJA6"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/RC180vw1/essential_1-3-1-2_fabric_1-19.jar",
+					"version": "RC180vw1"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/BCWRHZTF/essential_1-3-1-2_forge_1-18-2.jar",
+					"version": "BCWRHZTF"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/qsa9kdmK/essential_1-3-1-2_forge_1-16-5.jar",
+					"version": "qsa9kdmK"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/ENBxfUjK/essential_1-3-1-2_forge_1-19-2.jar",
+					"version": "ENBxfUjK"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/mYJkaKzK/essential_1-3-1-2_forge_1-19-3.jar",
+					"version": "mYJkaKzK"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/zT6AP5ML/essential_1-3-1-2_forge_1-19-4.jar",
+					"version": "zT6AP5ML"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/EJh5GR8w/essential_1-3-1-1_forge_1-17-1.jar",
+					"version": "EJh5GR8w"
+				},
+				{
+					"minecraft_versions": "1.12.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/6Z6o484J/essential_1-3-1-1_forge_1-12-2.jar",
+					"version": "6Z6o484J"
+				},
+				{
+					"minecraft_versions": "1.8.9",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/BYcaEjpv/essential_1-3-1-1_forge_1-8-9.jar",
+					"version": "BYcaEjpv"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/ZnYFiwxE/essential_1-3-1-1_forge_1-20-1.jar",
+					"version": "ZnYFiwxE"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/jzhdo12q/essential_1-3-1-1_fabric_1-20-4.jar",
+					"version": "jzhdo12q"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/MyTRChNp/essential_1-3-1-1_fabric_1-20-1.jar",
+					"version": "MyTRChNp"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/pscQejhQ/essential_1-3-1-1_fabric_1-20-2.jar",
+					"version": "pscQejhQ"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/MPGrEVvi/essential_1-3-1-1_fabric_1-20.jar",
+					"version": "MPGrEVvi"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/AgO5s3q5/essential_1-3-1-1_fabric_1-19-3.jar",
+					"version": "AgO5s3q5"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/TUs10dPO/essential_1-3-1-1_fabric_1-19-4.jar",
+					"version": "TUs10dPO"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/TFTNKjEd/essential_1-3-1-1_fabric_1-18-2.jar",
+					"version": "TFTNKjEd"
+				},
+				{
+					"minecraft_versions": "1.19.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/nmTGRBrG/essential_1-3-1-1_fabric_1-19-1.jar",
+					"version": "nmTGRBrG"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/kkW6sEBD/essential_1-3-1-1_fabric_1-16-5.jar",
+					"version": "kkW6sEBD"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/3EIx2FIp/essential_1-3-1-1_fabric_1-19-2.jar",
+					"version": "3EIx2FIp"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/PxuYIiWe/essential_1-3-1-1_fabric_1-17-1.jar",
+					"version": "PxuYIiWe"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/vkNv0QmO/essential_1-3-1-1_fabric_1-18-1.jar",
+					"version": "vkNv0QmO"
+				},
+				{
+					"minecraft_versions": "1.18",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/bqrAeQDD/essential_1-3-1-1_fabric_1-18.jar",
+					"version": "bqrAeQDD"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/84EbGo9o/essential_1-3-1-1_fabric_1-19.jar",
+					"version": "84EbGo9o"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/F5r4AuOs/essential_1-3-1-1_forge_1-18-2.jar",
+					"version": "F5r4AuOs"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/4Evp6uMj/essential_1-3-1-1_forge_1-16-5.jar",
+					"version": "4Evp6uMj"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/KbXXkDAy/essential_1-3-1-1_forge_1-19-2.jar",
+					"version": "KbXXkDAy"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/MSIiqIrm/essential_1-3-1-1_forge_1-19-3.jar",
+					"version": "MSIiqIrm"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/iSe9G4eJ/essential_1-3-1-1_forge_1-19-4.jar",
+					"version": "iSe9G4eJ"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/37N8YCVr/essential_1-3-1_forge_1-17-1.jar",
+					"version": "37N8YCVr"
+				},
+				{
+					"minecraft_versions": "1.12.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/kWVP4R7z/essential_1-3-1_forge_1-12-2.jar",
+					"version": "kWVP4R7z"
+				},
+				{
+					"minecraft_versions": "1.8.9",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/9YwmGyuq/essential_1-3-1_forge_1-8-9.jar",
+					"version": "9YwmGyuq"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/a5JZHCAT/essential_1-3-1_forge_1-20-1.jar",
+					"version": "a5JZHCAT"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/Gr4AMnAW/essential_1-3-1_fabric_1-20-4.jar",
+					"version": "Gr4AMnAW"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/tyrGzExB/essential_1-3-1_fabric_1-20-1.jar",
+					"version": "tyrGzExB"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/xzdCYpRy/essential_1-3-1_fabric_1-20-2.jar",
+					"version": "xzdCYpRy"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/wDTBgJYn/essential_1-3-1_fabric_1-20.jar",
+					"version": "wDTBgJYn"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/E3GXmNIx/essential_1-3-1_fabric_1-19-3.jar",
+					"version": "E3GXmNIx"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/XSoul4fp/essential_1-3-1_fabric_1-19-4.jar",
+					"version": "XSoul4fp"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/LKJF7eRi/essential_1-3-1_fabric_1-18-2.jar",
+					"version": "LKJF7eRi"
+				},
+				{
+					"minecraft_versions": "1.19.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/3yxRb15j/essential_1-3-1_fabric_1-19-1.jar",
+					"version": "3yxRb15j"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/rv6bapkJ/essential_1-3-1_fabric_1-19-2.jar",
+					"version": "rv6bapkJ"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/WpNq06Fh/essential_1-3-1_fabric_1-16-5.jar",
+					"version": "WpNq06Fh"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/migVYRMR/essential_1-3-1_fabric_1-17-1.jar",
+					"version": "migVYRMR"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/rnp9hvhZ/essential_1-3-1_fabric_1-18-1.jar",
+					"version": "rnp9hvhZ"
+				},
+				{
+					"minecraft_versions": "1.18",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/YoNU0OTW/essential_1-3-1_fabric_1-18.jar",
+					"version": "YoNU0OTW"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/q9kI4Nk4/essential_1-3-1_fabric_1-19.jar",
+					"version": "q9kI4Nk4"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/N44heUib/essential_1-3-1_forge_1-18-2.jar",
+					"version": "N44heUib"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/8MXywcNP/essential_1-3-1_forge_1-19-2.jar",
+					"version": "8MXywcNP"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/zoEGTb3Y/essential_1-3-1_forge_1-16-5.jar",
+					"version": "zoEGTb3Y"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/OHyzFRGj/essential_1-3-1_forge_1-19-3.jar",
+					"version": "OHyzFRGj"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/Ab1URjaE/essential_1-3-1_forge_1-19-4.jar",
+					"version": "Ab1URjaE"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/jCLMlmNE/essential_1-3-0-6_forge_1-17-1.jar",
+					"version": "jCLMlmNE"
+				},
+				{
+					"minecraft_versions": "1.12.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/9Yum1Vct/essential_1-3-0-6_forge_1-12-2.jar",
+					"version": "9Yum1Vct"
+				},
+				{
+					"minecraft_versions": "1.8.9",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/8Ev7RVTl/essential_1-3-0-6_forge_1-8-9.jar",
+					"version": "8Ev7RVTl"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/8z1ebSEt/essential_1-3-0-6_fabric_1-20-4.jar",
+					"version": "8z1ebSEt"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/kHcDDL3O/essential_1-3-0-6_forge_1-20-1.jar",
+					"version": "kHcDDL3O"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/JSi1fOjX/essential_1-3-0-6_fabric_1-20-1.jar",
+					"version": "JSi1fOjX"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/OW8gWug7/essential_1-3-0-6_fabric_1-20-2.jar",
+					"version": "OW8gWug7"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/njXKU9Wt/essential_1-3-0-6_fabric_1-20.jar",
+					"version": "njXKU9Wt"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/lDeqF4YW/essential_1-3-0-6_fabric_1-19-3.jar",
+					"version": "lDeqF4YW"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/sqOsswa3/essential_1-3-0-6_fabric_1-19-4.jar",
+					"version": "sqOsswa3"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/mfygvJs4/essential_1-3-0-6_fabric_1-18-2.jar",
+					"version": "mfygvJs4"
+				},
+				{
+					"minecraft_versions": "1.19.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/AZXmyyzP/essential_1-3-0-6_fabric_1-19-1.jar",
+					"version": "AZXmyyzP"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/IMofJZXb/essential_1-3-0-6_fabric_1-16-5.jar",
+					"version": "IMofJZXb"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/nIu3gtMt/essential_1-3-0-6_fabric_1-19-2.jar",
+					"version": "nIu3gtMt"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/IPpP8gJ8/essential_1-3-0-6_fabric_1-17-1.jar",
+					"version": "IPpP8gJ8"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/DIeyHOhp/essential_1-3-0-6_fabric_1-18-1.jar",
+					"version": "DIeyHOhp"
+				},
+				{
+					"minecraft_versions": "1.18",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/aLHzd2LT/essential_1-3-0-6_fabric_1-18.jar",
+					"version": "aLHzd2LT"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/eIuW4H3d/essential_1-3-0-6_fabric_1-19.jar",
+					"version": "eIuW4H3d"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/eI0dxVmB/essential_1-3-0-6_forge_1-18-2.jar",
+					"version": "eI0dxVmB"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/22miPwgu/essential_1-3-0-6_forge_1-16-5.jar",
+					"version": "22miPwgu"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/sg0qOo0d/essential_1-3-0-6_forge_1-19-2.jar",
+					"version": "sg0qOo0d"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/W4Z2G5ih/essential_1-3-0-6_forge_1-19-3.jar",
+					"version": "W4Z2G5ih"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/pcTNhJgE/essential_1-3-0-6_forge_1-19-4.jar",
+					"version": "pcTNhJgE"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/T7UJvJtJ/essential_1-3-0-5_forge_1-17-1.jar",
+					"version": "T7UJvJtJ"
+				},
+				{
+					"minecraft_versions": "1.12.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/c8F5HxeS/essential_1-3-0-5_forge_1-12-2.jar",
+					"version": "c8F5HxeS"
+				},
+				{
+					"minecraft_versions": "1.8.9",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/5o4A8VBp/essential_1-3-0-5_forge_1-8-9.jar",
+					"version": "5o4A8VBp"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/r3p2waoy/essential_1-3-0-5_forge_1-20-1.jar",
+					"version": "r3p2waoy"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/SRvLiFrd/essential_1-3-0-5_fabric_1-20-4.jar",
+					"version": "SRvLiFrd"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/1WjP7KVE/essential_1-3-0-5_fabric_1-20-1.jar",
+					"version": "1WjP7KVE"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/CKpy6naZ/essential_1-3-0-5_fabric_1-20-2.jar",
+					"version": "CKpy6naZ"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/SyEVlaxL/essential_1-3-0-5_fabric_1-20.jar",
+					"version": "SyEVlaxL"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/8FJqFoKd/essential_1-3-0-5_fabric_1-19-3.jar",
+					"version": "8FJqFoKd"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/119chxq3/essential_1-3-0-5_fabric_1-19-4.jar",
+					"version": "119chxq3"
+				},
+				{
+					"minecraft_versions": "1.19.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/XhNehKft/essential_1-3-0-5_fabric_1-19-1.jar",
+					"version": "XhNehKft"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/FLUox7FB/essential_1-3-0-5_fabric_1-18-2.jar",
+					"version": "FLUox7FB"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/e8wQDJbc/essential_1-3-0-5_fabric_1-16-5.jar",
+					"version": "e8wQDJbc"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/dBJCllLu/essential_1-3-0-5_fabric_1-19-2.jar",
+					"version": "dBJCllLu"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/XNHEakcu/essential_1-3-0-5_fabric_1-17-1.jar",
+					"version": "XNHEakcu"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/nQI2Z0lr/essential_1-3-0-5_fabric_1-18-1.jar",
+					"version": "nQI2Z0lr"
+				},
+				{
+					"minecraft_versions": "1.18",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/iHP9j58N/essential_1-3-0-5_fabric_1-18.jar",
+					"version": "iHP9j58N"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/BnN6R13s/essential_1-3-0-5_fabric_1-19.jar",
+					"version": "BnN6R13s"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/6Dk1AmC7/essential_1-3-0-5_forge_1-18-2.jar",
+					"version": "6Dk1AmC7"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/hONO2ol5/essential_1-3-0-5_forge_1-16-5.jar",
+					"version": "hONO2ol5"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/C967VH38/essential_1-3-0-5_forge_1-19-2.jar",
+					"version": "C967VH38"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/iBfxZu3H/essential_1-3-0-5_forge_1-19-3.jar",
+					"version": "iBfxZu3H"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/xy6ENjhS/essential_1-3-0-5_forge_1-19-4.jar",
+					"version": "xy6ENjhS"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/gtq5LIOM/essential_1-3-0-4_forge_1-17-1.jar",
+					"version": "gtq5LIOM"
+				},
+				{
+					"minecraft_versions": "1.12.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/WXd3BWQi/essential_1-3-0-4_forge_1-12-2.jar",
+					"version": "WXd3BWQi"
+				},
+				{
+					"minecraft_versions": "1.8.9",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/k6ns9AO5/essential_1-3-0-4_forge_1-8-9.jar",
+					"version": "k6ns9AO5"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/Kvh6VQVk/essential_1-3-0-4_fabric_1-20-4.jar",
+					"version": "Kvh6VQVk"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/Qfr3nLcL/essential_1-3-0-4_forge_1-20-1.jar",
+					"version": "Qfr3nLcL"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/UjBYixBc/essential_1-3-0-4_fabric_1-20-1.jar",
+					"version": "UjBYixBc"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/SCZmxuzH/essential_1-3-0-4_fabric_1-20-2.jar",
+					"version": "SCZmxuzH"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/GEZnYrWO/essential_1-3-0-4_fabric_1-20.jar",
+					"version": "GEZnYrWO"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/N0dQb2uZ/essential_1-3-0-4_fabric_1-19-3.jar",
+					"version": "N0dQb2uZ"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/tLlbiLHg/essential_1-3-0-4_fabric_1-19-4.jar",
+					"version": "tLlbiLHg"
+				},
+				{
+					"minecraft_versions": "1.19.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/XONy2dqv/essential_1-3-0-4_fabric_1-19-1.jar",
+					"version": "XONy2dqv"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/Mkj3LXYL/essential_1-3-0-4_fabric_1-18-2.jar",
+					"version": "Mkj3LXYL"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/yfQS04sb/essential_1-3-0-4_fabric_1-16-5.jar",
+					"version": "yfQS04sb"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/xwPoDTzA/essential_1-3-0-4_fabric_1-19-2.jar",
+					"version": "xwPoDTzA"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/OPhj5Orz/essential_1-3-0-4_fabric_1-17-1.jar",
+					"version": "OPhj5Orz"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/VOCLHjaD/essential_1-3-0-4_fabric_1-18-1.jar",
+					"version": "VOCLHjaD"
+				},
+				{
+					"minecraft_versions": "1.18",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/EBXFQRqf/essential_1-3-0-4_fabric_1-18.jar",
+					"version": "EBXFQRqf"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/FwaWOkv3/essential_1-3-0-4_fabric_1-19.jar",
+					"version": "FwaWOkv3"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/tv2UBulG/essential_1-3-0-4_forge_1-18-2.jar",
+					"version": "tv2UBulG"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/ZS9GKkVF/essential_1-3-0-4_forge_1-16-5.jar",
+					"version": "ZS9GKkVF"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/JBxMxUtf/essential_1-3-0-4_forge_1-19-2.jar",
+					"version": "JBxMxUtf"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/gDItTFkK/essential_1-3-0-4_forge_1-19-3.jar",
+					"version": "gDItTFkK"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/hMo2zCzE/essential_1-3-0-4_forge_1-19-4.jar",
+					"version": "hMo2zCzE"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/rQftosPL/essential_1-3-0-3_forge_1-17-1.jar",
+					"version": "rQftosPL"
+				},
+				{
+					"minecraft_versions": "1.12.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/3D9WlKT7/essential_1-3-0-3_forge_1-12-2.jar",
+					"version": "3D9WlKT7"
+				},
+				{
+					"minecraft_versions": "1.8.9",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/dMGFoQzw/essential_1-3-0-3_forge_1-8-9.jar",
+					"version": "dMGFoQzw"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/Px939S7l/essential_1-3-0-3_forge_1-20-1.jar",
+					"version": "Px939S7l"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/Jmpw4NZN/essential_1-3-0-3_fabric_1-20-4.jar",
+					"version": "Jmpw4NZN"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/xX8Lq1LH/essential_1-3-0-3_fabric_1-20-1.jar",
+					"version": "xX8Lq1LH"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/wM8y2KNW/essential_1-3-0-3_fabric_1-20-2.jar",
+					"version": "wM8y2KNW"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/3pnLj7Fe/essential_1-3-0-3_fabric_1-20.jar",
+					"version": "3pnLj7Fe"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/5t4b7PS9/essential_1-3-0-3_fabric_1-19-3.jar",
+					"version": "5t4b7PS9"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/yPnq6bEb/essential_1-3-0-3_fabric_1-19-4.jar",
+					"version": "yPnq6bEb"
+				},
+				{
+					"minecraft_versions": "1.19.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/Qbu3d9tV/essential_1-3-0-3_fabric_1-19-1.jar",
+					"version": "Qbu3d9tV"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/qDXCldtx/essential_1-3-0-3_fabric_1-18-2.jar",
+					"version": "qDXCldtx"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/ZNfP7rUB/essential_1-3-0-3_fabric_1-16-5.jar",
+					"version": "ZNfP7rUB"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/Bb2DJZPj/essential_1-3-0-3_fabric_1-19-2.jar",
+					"version": "Bb2DJZPj"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/i87Wl0q7/essential_1-3-0-3_fabric_1-17-1.jar",
+					"version": "i87Wl0q7"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/PWCHPk8O/essential_1-3-0-3_fabric_1-18-1.jar",
+					"version": "PWCHPk8O"
+				},
+				{
+					"minecraft_versions": "1.18",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/GUj4lVAH/essential_1-3-0-3_fabric_1-18.jar",
+					"version": "GUj4lVAH"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/v0vBGWkb/essential_1-3-0-3_fabric_1-19.jar",
+					"version": "v0vBGWkb"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/1CzuS7eE/essential_1-3-0-3_forge_1-18-2.jar",
+					"version": "1CzuS7eE"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/src3arRJ/essential_1-3-0-3_forge_1-16-5.jar",
+					"version": "src3arRJ"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/7habSRKn/essential_1-3-0-3_forge_1-19-2.jar",
+					"version": "7habSRKn"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/cZDpdpsD/essential_1-3-0-3_forge_1-19-3.jar",
+					"version": "cZDpdpsD"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/u4buWSdC/essential_1-3-0-3_forge_1-19-4.jar",
+					"version": "u4buWSdC"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/ntiViyTx/essential_1-3-0-2_forge_1-16-5.jar",
+					"version": "ntiViyTx"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/70fnijUi/essential_1-3-0-2_forge_1-19-4.jar",
+					"version": "70fnijUi"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/298EN1sf/essential_1-3-0-2_forge_1-17-1.jar",
+					"version": "298EN1sf"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/2vYtsuCs/essential_1-3-0-2_forge_1-20-1.jar",
+					"version": "2vYtsuCs"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/E1C1ayvX/essential_1-3-0-2_fabric_1-20-4.jar",
+					"version": "E1C1ayvX"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/PQ4V8nU6/essential_1-3-0-2_fabric_1-20-1.jar",
+					"version": "PQ4V8nU6"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/LrwG1QYr/essential_1-3-0-2_fabric_1-20-2.jar",
+					"version": "LrwG1QYr"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/Yv6a2gGv/essential_1-3-0-2_fabric_1-20.jar",
+					"version": "Yv6a2gGv"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/Sgb3JNfw/essential_1-3-0-2_fabric_1-19-3.jar",
+					"version": "Sgb3JNfw"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/mpcU22pr/essential_1-3-0-2_fabric_1-19-4.jar",
+					"version": "mpcU22pr"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/zlc2uaNH/essential_1-3-0-2_fabric_1-18-2.jar",
+					"version": "zlc2uaNH"
+				},
+				{
+					"minecraft_versions": "1.19.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/ndvDhLTf/essential_1-3-0-2_fabric_1-19-1.jar",
+					"version": "ndvDhLTf"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/EpYNb15b/essential_1-3-0-2_fabric_1-16-5.jar",
+					"version": "EpYNb15b"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/CvYuxdrC/essential_1-3-0-2_fabric_1-19-2.jar",
+					"version": "CvYuxdrC"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/LIOFYRrO/essential_1-3-0-2_fabric_1-17-1.jar",
+					"version": "LIOFYRrO"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/QHFSvoUB/essential_1-3-0-2_fabric_1-18-1.jar",
+					"version": "QHFSvoUB"
+				},
+				{
+					"minecraft_versions": "1.18",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/mHJKrR07/essential_1-3-0-2_fabric_1-18.jar",
+					"version": "mHJKrR07"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/343rI67M/essential_1-3-0-2_fabric_1-19.jar",
+					"version": "343rI67M"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/oGjVvbk8/essential_1-3-0-2_forge_1-18-2.jar",
+					"version": "oGjVvbk8"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/YRskeeH8/essential_1-3-0-2_forge_1-19-2.jar",
+					"version": "YRskeeH8"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/7dy8sWPk/essential_1-3-0-2_forge_1-16-5.jar",
+					"version": "7dy8sWPk"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/F7mzHRH4/essential_1-3-0-2_forge_1-19-3.jar",
+					"version": "F7mzHRH4"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/aHuawP6L/essential_1-3-0-2_forge_1-19-4.jar",
+					"version": "aHuawP6L"
+				},
+				{
+					"minecraft_versions": "1.19.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/x6nBfmIp/essential_1-3-0-1_fabric_1-19-1.jar",
+					"version": "x6nBfmIp"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/lidadoBA/essential_1-3-0-1_forge_1-17-1.jar",
+					"version": "lidadoBA"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/cYzpOyyC/essential_1-3-0-1_forge_1-20-1.jar",
+					"version": "cYzpOyyC"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/UWTY2XQ0/essential_1-3-0-1_fabric_1-20-1.jar",
+					"version": "UWTY2XQ0"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/nHTxlzBJ/essential_1-3-0-1_fabric_1-20-2.jar",
+					"version": "nHTxlzBJ"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/r9a6OMEK/essential_1-3-0-1_fabric_1-20.jar",
+					"version": "r9a6OMEK"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/mf5efQfp/essential_1-3-0-1_fabric_1-19-3.jar",
+					"version": "mf5efQfp"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/YxCCt4Pp/essential_1-3-0-1_fabric_1-19-4.jar",
+					"version": "YxCCt4Pp"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/E1zyztxb/essential_1-3-0-1_fabric_1-18-2.jar",
+					"version": "E1zyztxb"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/uqJyIolA/essential_1-3-0-1_fabric_1-19-2.jar",
+					"version": "uqJyIolA"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/5H1OGNQU/essential_1-3-0-1_fabric_1-16-5.jar",
+					"version": "5H1OGNQU"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/6xYQ1fPy/essential_1-3-0-1_fabric_1-17-1.jar",
+					"version": "6xYQ1fPy"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/TtP7fxKT/essential_1-3-0-1_fabric_1-18-1.jar",
+					"version": "TtP7fxKT"
+				},
+				{
+					"minecraft_versions": "1.18",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/VuGjdiea/essential_1-3-0-1_fabric_1-18.jar",
+					"version": "VuGjdiea"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/9342Qlti/essential_1-3-0-1_fabric_1-19.jar",
+					"version": "9342Qlti"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/NSgy7tHk/essential_1-3-0-1_forge_1-18-2.jar",
+					"version": "NSgy7tHk"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/I1Bqni6r/essential_1-3-0-1_forge_1-16-5.jar",
+					"version": "I1Bqni6r"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/wzbUb7f8/essential_1-3-0-1_forge_1-19-2.jar",
+					"version": "wzbUb7f8"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/mosucG6G/essential_1-3-0-1_forge_1-19-3.jar",
+					"version": "mosucG6G"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/xXgDqqUS/essential_1-3-0-1_forge_1-19-4.jar",
+					"version": "xXgDqqUS"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/T74el3I6/essential_1-3-0_forge_1-17-1.jar",
+					"version": "T74el3I6"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/KKNKJE4m/essential_1-3-0_forge_1-20-1.jar",
+					"version": "KKNKJE4m"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/nRxtJ82V/essential_1-3-0_fabric_1-20-1.jar",
+					"version": "nRxtJ82V"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/AL2C63nX/essential_1-3-0_fabric_1-20-2.jar",
+					"version": "AL2C63nX"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/AdXFUbsl/essential_1-3-0_fabric_1-20.jar",
+					"version": "AdXFUbsl"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/CRlLSDww/essential_1-3-0_fabric_1-19-3.jar",
+					"version": "CRlLSDww"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/qREjOIov/essential_1-3-0_fabric_1-19-4.jar",
+					"version": "qREjOIov"
+				},
+				{
+					"minecraft_versions": "1.19.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/dayhqPFt/essential_1-3-0_fabric_1-19-1.jar",
+					"version": "dayhqPFt"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/1zEZbJZ8/essential_1-3-0_fabric_1-18-2.jar",
+					"version": "1zEZbJZ8"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/RdYDVfDh/essential_1-3-0_fabric_1-19-2.jar",
+					"version": "RdYDVfDh"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/sgBZB3e3/essential_1-3-0_fabric_1-16-5.jar",
+					"version": "sgBZB3e3"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/4wtXWKo7/essential_1-3-0_fabric_1-17-1.jar",
+					"version": "4wtXWKo7"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/DxcpfOaH/essential_1-3-0_fabric_1-18-1.jar",
+					"version": "DxcpfOaH"
+				},
+				{
+					"minecraft_versions": "1.18",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/eyPFlizH/essential_1-3-0_fabric_1-18.jar",
+					"version": "eyPFlizH"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/lHFinJho/essential_1-3-0_fabric_1-19.jar",
+					"version": "lHFinJho"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/MVALMmRH/essential_1-3-0_forge_1-18-2.jar",
+					"version": "MVALMmRH"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/bkiS5adV/essential_1-3-0_forge_1-16-5.jar",
+					"version": "bkiS5adV"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/5MOdC3Hn/essential_1-3-0_forge_1-19-2.jar",
+					"version": "5MOdC3Hn"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/UIHq4A12/essential_1-3-0_forge_1-19-3.jar",
+					"version": "UIHq4A12"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/8J2XJAMD/essential_1-3-0_forge_1-19-4.jar",
+					"version": "8J2XJAMD"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/fsxDMmxv/essential_1-2-3_forge_1-17-1.jar",
+					"version": "fsxDMmxv"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/NE3Wax6V/essential_1-2-3_forge_1-20-1.jar",
+					"version": "NE3Wax6V"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/IpANjyfH/essential_1-2-3_fabric_1-20-1.jar",
+					"version": "IpANjyfH"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/rFQ1STVu/essential_1-2-3_fabric_1-20-2.jar",
+					"version": "rFQ1STVu"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/gtQZYX0f/essential_1-2-3_fabric_1-20.jar",
+					"version": "gtQZYX0f"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/nq1wFlSO/essential_1-2-3_fabric_1-19-3.jar",
+					"version": "nq1wFlSO"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/93cVO2s7/essential_1-2-3_fabric_1-19-4.jar",
+					"version": "93cVO2s7"
+				},
+				{
+					"minecraft_versions": "1.19.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/UMuP4x2s/essential_1-2-3_fabric_1-19-1.jar",
+					"version": "UMuP4x2s"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/nmpXcBaT/essential_1-2-3_fabric_1-18-2.jar",
+					"version": "nmpXcBaT"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/QwPPinu3/essential_1-2-3_fabric_1-19-2.jar",
+					"version": "QwPPinu3"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/ywhBeoCw/essential_1-2-3_fabric_1-16-5.jar",
+					"version": "ywhBeoCw"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/ZsDXwwkI/essential_1-2-3_fabric_1-17-1.jar",
+					"version": "ZsDXwwkI"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/zVtBl0JU/essential_1-2-3_fabric_1-18-1.jar",
+					"version": "zVtBl0JU"
+				},
+				{
+					"minecraft_versions": "1.18",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/ZcBuinga/essential_1-2-3_fabric_1-18.jar",
+					"version": "ZcBuinga"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/TWgEz4Qi/essential_1-2-3_fabric_1-19.jar",
+					"version": "TWgEz4Qi"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/1nEKf5kg/essential_1-2-3_forge_1-18-2.jar",
+					"version": "1nEKf5kg"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/dwXcCro8/essential_1-2-3_forge_1-16-5.jar",
+					"version": "dwXcCro8"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/9bUVpslg/essential_1-2-3_forge_1-19-2.jar",
+					"version": "9bUVpslg"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/38Cmi2I6/essential_1-2-3_forge_1-19-3.jar",
+					"version": "38Cmi2I6"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/sPJuTQNT/essential_1-2-3_forge_1-19-4.jar",
+					"version": "sPJuTQNT"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/gXDKMBUl/essential_1-2-2-4_forge_1-17-1.jar",
+					"version": "gXDKMBUl"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/eSzJ2Drr/essential_1-2-2-4_forge_1-20-1.jar",
+					"version": "eSzJ2Drr"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/TADe7kN2/essential_1-2-2-4_fabric_1-20-1.jar",
+					"version": "TADe7kN2"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/IlsnOLhH/essential_1-2-2-4_fabric_1-20-2.jar",
+					"version": "IlsnOLhH"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/uYAkJCAJ/essential_1-2-2-4_fabric_1-20.jar",
+					"version": "uYAkJCAJ"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/ap62S7bo/essential_1-2-2-4_fabric_1-19-3.jar",
+					"version": "ap62S7bo"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/L5ZDVJvB/essential_1-2-2-4_fabric_1-19-4.jar",
+					"version": "L5ZDVJvB"
+				},
+				{
+					"minecraft_versions": "1.19.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/uwYR8x6w/essential_1-2-2-4_fabric_1-19-1.jar",
+					"version": "uwYR8x6w"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/VqsFvpFp/essential_1-2-2-4_fabric_1-18-2.jar",
+					"version": "VqsFvpFp"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/YB5VDhsC/essential_1-2-2-4_fabric_1-19-2.jar",
+					"version": "YB5VDhsC"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/FX6eMN7M/essential_1-2-2-4_fabric_1-16-5.jar",
+					"version": "FX6eMN7M"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/zkHr7bhk/essential_1-2-2-4_fabric_1-17-1.jar",
+					"version": "zkHr7bhk"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/SLzL1aFH/essential_1-2-2-4_fabric_1-18-1.jar",
+					"version": "SLzL1aFH"
+				},
+				{
+					"minecraft_versions": "1.18",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/WAsibMhR/essential_1-2-2-4_fabric_1-18.jar",
+					"version": "WAsibMhR"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/jgRfO7XT/essential_1-2-2-4_fabric_1-19.jar",
+					"version": "jgRfO7XT"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/1XAgUDgs/essential_1-2-2-4_forge_1-18-2.jar",
+					"version": "1XAgUDgs"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/ULR5CVpq/essential_1-2-2-4_forge_1-16-5.jar",
+					"version": "ULR5CVpq"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/FRaNQlLm/essential_1-2-2-4_forge_1-19-2.jar",
+					"version": "FRaNQlLm"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/mbJzFzFI/essential_1-2-2-4_forge_1-19-3.jar",
+					"version": "mbJzFzFI"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/p8G5gdEt/essential_1-2-2-4_forge_1-19-4.jar",
+					"version": "p8G5gdEt"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/34Cl7G0L/essential_1-2-2-3_forge_1-16-5.jar",
+					"version": "34Cl7G0L"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/ApwpaKTN/essential_1-2-2-3_forge_1-17-1.jar",
+					"version": "ApwpaKTN"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/spyOcsnX/essential_1-2-2-3_forge_1-20-1.jar",
+					"version": "spyOcsnX"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/BLWvDxDL/essential_1-2-2-3_fabric_1-20-1.jar",
+					"version": "BLWvDxDL"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/HBRYFo6J/essential_1-2-2-3_fabric_1-20-2.jar",
+					"version": "HBRYFo6J"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/kf4Mp5Yi/essential_1-2-2-3_fabric_1-20.jar",
+					"version": "kf4Mp5Yi"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/aKMUtzsP/essential_1-2-2-3_fabric_1-19-3.jar",
+					"version": "aKMUtzsP"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/K6ri6Dx6/essential_1-2-2-3_fabric_1-19-4.jar",
+					"version": "K6ri6Dx6"
+				},
+				{
+					"minecraft_versions": "1.19.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/IwOOB6CY/essential_1-2-2-3_fabric_1-19-1.jar",
+					"version": "IwOOB6CY"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/2NT52oIZ/essential_1-2-2-3_fabric_1-18-2.jar",
+					"version": "2NT52oIZ"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/7mzqvjN7/essential_1-2-2-3_fabric_1-19-2.jar",
+					"version": "7mzqvjN7"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/dOeKgkQm/essential_1-2-2-3_fabric_1-16-5.jar",
+					"version": "dOeKgkQm"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/iJw6vsfo/essential_1-2-2-3_fabric_1-17-1.jar",
+					"version": "iJw6vsfo"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/GvMkMxOc/essential_1-2-2-3_fabric_1-18-1.jar",
+					"version": "GvMkMxOc"
+				},
+				{
+					"minecraft_versions": "1.18",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/d47bex5r/essential_1-2-2-3_fabric_1-18.jar",
+					"version": "d47bex5r"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/2dqlyvqg/essential_1-2-2-3_fabric_1-19.jar",
+					"version": "2dqlyvqg"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/sPnrk3Bg/essential_1-2-2-3_forge_1-18-2.jar",
+					"version": "sPnrk3Bg"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/a7k5mYAw/essential_1-2-2-3_forge_1-16-5.jar",
+					"version": "a7k5mYAw"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/Pj9N9ewe/essential_1-2-2-3_forge_1-19-2.jar",
+					"version": "Pj9N9ewe"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/xOiTk2ZS/essential_1-2-2-3_forge_1-19-3.jar",
+					"version": "xOiTk2ZS"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/xFB78bFC/essential_1-2-2-3_forge_1-19-4.jar",
+					"version": "xFB78bFC"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/1MLsutog/essential_1-2-2-2_forge_1-17-1.jar",
+					"version": "1MLsutog"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/4w0DC0Id/essential_1-2-2-2_forge_1-20-1.jar",
+					"version": "4w0DC0Id"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/SLg31vTD/essential_1-2-2-2_fabric_1-20-1.jar",
+					"version": "SLg31vTD"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/g35O07Ss/essential_1-2-2-2_fabric_1-20-2.jar",
+					"version": "g35O07Ss"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/LRJ1BFOm/essential_1-2-2-2_fabric_1-20.jar",
+					"version": "LRJ1BFOm"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/VSQw9khd/essential_1-2-2-2_fabric_1-19-3.jar",
+					"version": "VSQw9khd"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/dc2P3Z61/essential_1-2-2-2_fabric_1-19-4.jar",
+					"version": "dc2P3Z61"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/zxBAP5az/essential_1-2-2-2_fabric_1-18-2.jar",
+					"version": "zxBAP5az"
+				},
+				{
+					"minecraft_versions": "1.19.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/WgcBFCDj/essential_1-2-2-2_fabric_1-19-1.jar",
+					"version": "WgcBFCDj"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/aqD8G98f/essential_1-2-2-2_fabric_1-19-2.jar",
+					"version": "aqD8G98f"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/NcwSGVmU/essential_1-2-2-2_fabric_1-16-5.jar",
+					"version": "NcwSGVmU"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/gaFCjGQa/essential_1-2-2-2_fabric_1-17-1.jar",
+					"version": "gaFCjGQa"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/enHPiM5V/essential_1-2-2-2_fabric_1-18-1.jar",
+					"version": "enHPiM5V"
+				},
+				{
+					"minecraft_versions": "1.18",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/NpNFed9z/essential_1-2-2-2_fabric_1-18.jar",
+					"version": "NpNFed9z"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/bZcBsuYs/essential_1-2-2-2_fabric_1-19.jar",
+					"version": "bZcBsuYs"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/RBN1WDPd/essential_1-2-2-2_forge_1-18-2.jar",
+					"version": "RBN1WDPd"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/3c5O4ivg/essential_1-2-2-2_forge_1-19-2.jar",
+					"version": "3c5O4ivg"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/kDQythaL/essential_1-2-2-2_forge_1-16-5.jar",
+					"version": "kDQythaL"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/H5rAhsEU/essential_1-2-2-2_forge_1-19-3.jar",
+					"version": "H5rAhsEU"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/Vq6o8uyv/essential_1-2-2-2_forge_1-19-4.jar",
+					"version": "Vq6o8uyv"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/sI6u6KmN/essential_1-2-2-1_forge_1-17-1.jar",
+					"version": "sI6u6KmN"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/e3EFbLc3/essential_1-2-2-1_forge_1-20-1.jar",
+					"version": "e3EFbLc3"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/lLB4YANQ/essential_1-2-2-1_fabric_1-20-1.jar",
+					"version": "lLB4YANQ"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/QvAIHfKN/essential_1-2-2-1_fabric_1-20.jar",
+					"version": "QvAIHfKN"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/vtNq8eEL/essential_1-2-2-1_fabric_1-19-3.jar",
+					"version": "vtNq8eEL"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/MgBFwvPe/essential_1-2-2-1_fabric_1-19-4.jar",
+					"version": "MgBFwvPe"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/sCIhwmxn/essential_1-2-2-1_fabric_1-18-2.jar",
+					"version": "sCIhwmxn"
+				},
+				{
+					"minecraft_versions": "1.19.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/O9OVZTB2/essential_1-2-2-1_fabric_1-19-1.jar",
+					"version": "O9OVZTB2"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/SDrumNLf/essential_1-2-2-1_fabric_1-16-5.jar",
+					"version": "SDrumNLf"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/RskZfdat/essential_1-2-2-1_fabric_1-19-2.jar",
+					"version": "RskZfdat"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/Pl0IEda6/essential_1-2-2-1_fabric_1-17-1.jar",
+					"version": "Pl0IEda6"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/ER37AtlK/essential_1-2-2-1_fabric_1-18-1.jar",
+					"version": "ER37AtlK"
+				},
+				{
+					"minecraft_versions": "1.18",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/FKEafoZV/essential_1-2-2-1_fabric_1-18.jar",
+					"version": "FKEafoZV"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/9BioDP79/essential_1-2-2-1_fabric_1-19.jar",
+					"version": "9BioDP79"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/Axy3tbRL/essential_1-2-2-1_forge_1-18-2.jar",
+					"version": "Axy3tbRL"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/BRNb0nok/essential_1-2-2-1_forge_1-19-2.jar",
+					"version": "BRNb0nok"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/acuZXpgD/essential_1-2-2-1_forge_1-16-5.jar",
+					"version": "acuZXpgD"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/PwT6BnfZ/essential_1-2-2-1_forge_1-19-3.jar",
+					"version": "PwT6BnfZ"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/dt5irfFY/essential_1-2-2-1_forge_1-19-4.jar",
+					"version": "dt5irfFY"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/MNByYxiY/essential_1-2-2_forge_1-20-1.jar",
+					"version": "MNByYxiY"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/pI59XW57/essential_1-2-2_fabric_1-20-1.jar",
+					"version": "pI59XW57"
+				},
+				{
+					"minecraft_versions": "1.20",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/MF5tMS1q/essential_1-2-2_fabric_1-20.jar",
+					"version": "MF5tMS1q"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/KqfjvSOs/essential_1-2-2_fabric_1-19-4.jar",
+					"version": "KqfjvSOs"
+				},
+				{
+					"minecraft_versions": "1.19.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/t6hxavF2/essential_1-2-2_fabric_1-19-1.jar",
+					"version": "t6hxavF2"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/3bvIcoFu/essential_1-2-2_fabric_1-18-2.jar",
+					"version": "3bvIcoFu"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/z1cnV3N4/essential_1-2-2_fabric_1-19-2.jar",
+					"version": "z1cnV3N4"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/OvVwxDay/essential_1-2-2_fabric_1-16-5.jar",
+					"version": "OvVwxDay"
+				},
+				{
+					"minecraft_versions": "1.18.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/faEjDj6x/essential_1-2-2_fabric_1-18-1.jar",
+					"version": "faEjDj6x"
+				},
+				{
+					"minecraft_versions": "1.18",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/CFQOCjky/essential_1-2-2_fabric_1-18.jar",
+					"version": "CFQOCjky"
+				},
+				{
+					"minecraft_versions": "1.19",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/pKEZadFX/essential_1-2-2_fabric_1-19.jar",
+					"version": "pKEZadFX"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/7D2PRHRH/essential_1-2-2_forge_1-18-2.jar",
+					"version": "7D2PRHRH"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/BMW4Q84p/essential_1-2-2_forge_1-19-2.jar",
+					"version": "BMW4Q84p"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/JxjkYy0x/essential_1-2-2_forge_1-16-5.jar",
+					"version": "JxjkYy0x"
+				},
+				{
+					"minecraft_versions": "1.19.3",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/IzuctiXZ/essential_1-2-2_forge_1-19-3.jar",
+					"version": "IzuctiXZ"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/91eG1wRR/essential_1-2-2_forge_1-19-4.jar",
+					"version": "91eG1wRR"
+				},
+				{
+					"minecraft_versions": [
+						"1.18.2",
+						"1.19.2",
+						"1.19.3",
+						"1.19.4",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/1.0.0/Essential-forge_1-18-2.jar",
+					"version": "3nCsG7YS"
+				},
+				{
+					"minecraft_versions": "1.17.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/1.0.0/Essential-forge_1-17-1.jar",
+					"version": "PxUnFXa2"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/1.0.0/Essential-forge_1-16-5.jar",
+					"version": "8q6uxXvD"
+				},
+				{
+					"minecraft_versions": "1.12.2",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/1.0.0/Essential-forge_1-12-2.jar",
+					"version": "X6SeDlUa"
+				},
+				{
+					"minecraft_versions": "1.8.9",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/1.0.0/Essential-forge_1-8-9.jar",
+					"version": "8R4POUdw"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2",
+						"1.19.3",
+						"1.19.4",
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/1.0.0/Essential-fabric_1-19.jar",
+					"version": "EVfUPvny"
+				},
+				{
+					"minecraft_versions": [
+						"1.18",
+						"1.18.1",
+						"1.18.2"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/k2ZPuTBm/versions/1.0.0/Essential-fabric_1-18-2.jar",
+					"version": "ynwHfHh0"
+				}
+			]
+		}
+	},
+	"meta": {
+		"authors": [
+			"SparkUniverse"
+		],
+		"categories": [
+			"multiplayer",
+			"cosmetic"
+		],
+		"community": "https://essential.gg/discord",
+		"description": "Boost your Minecraft. Play together without a server. Customize your character. And more.",
+		"gallery": [],
+		"icon": "https://cdn.modrinth.com/data/k2ZPuTBm/icon.png",
+		"keywords": [],
+		"license": "LicenseRef-All-Rights-Reserved",
+		"long_description": "<font size=+3><b>Essential is a quality of life mod that boosts Minecraft Java to the next level.</b></font>\n\n<font size=+1>\n\n\\+ Play together without a server\n\n\\+ Take, edit, and share screenshots easily\n\n\\+ Customize your character (free + paid cosmetics)\n\n\\+ In-game messenger, across worlds and servers\n\n\\+ In-game account manager\n\n\\+ And mooooore!\n\n---\n\n-> Supports 1.8, 1.12, 1.16, 1.17, 1.18, 1.19, 1.20\n\n</font>\n\n## World Hosting\nInvite friends to join your singleplayer world, no server required! Simply open a world and click \"Invite\" in the ESC menu.\n\n<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/HhL7E8-fcGQ\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>\n\n---\n\n## In-Game Messenger\nAdd your friends and message them across worlds and servers, all in-game. Stay organized and create groups.\n\n<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/lS0CuFFV0RI\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>\n\n---\n\n## Wardrobe\nDress up your character with many different cosmetics, some even for free. You can also switch your skin and save multiple outfits.\n\n<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/FCF40DxoIsg\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>\n\n---\n\n## Screenshot Browser\nEssential features fully updated screenshot experience. Take, favorite, edit, and share screenshots from in-game, easier than ever before.\n\n<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/icWUOzMDQk4\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>\n\n---\n\n<font size=+2>\n\nWebsite -> essential.gg  \nPrivacy Policy -> essential.gg/privacy-policy\n\n</font>",
+		"name": "ESSENTIAL Mod",
+		"package_maintainers": [
+			"mcvm"
+		]
+	},
+	"properties": {
+		"modrinth_id": "k2ZPuTBm",
+		"supported_modloaders": [
+			"fabriclike",
+			"forgelike"
+		],
+		"supported_sides": [
+			"client"
+		],
+		"supported_versions": [
+			"1.8.9",
+			"1.12.2",
+			"1.16.5",
+			"1.17.1",
+			"1.18",
+			"1.18.1",
+			"1.18.2",
+			"1.19",
+			"1.19.1",
+			"1.19.2",
+			"1.19.3",
+			"1.19.4",
+			"1.20",
+			"1.20.1",
+			"1.20.2",
+			"1.20.4"
+		]
+	}
+}
