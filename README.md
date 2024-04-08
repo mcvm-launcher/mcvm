@@ -1,4 +1,4 @@
-# MCVM
+# 🚀 MCVM
 
 MCVM is a lightweight Minecraft launcher and management ecosystem meant to provide a better interface with custom content such as mods and resource packs.
 
@@ -7,7 +7,7 @@ In the official launcher and many alternative ones, you have to waste time movin
 - 📖 [Documentation](docs/README.md)
 - 🤝 [Contributing](CONTRIBUTING.md)
 
-# Features
+# ✨ Features
 
 - 🚀 **Launching**: Configure and launch both clients and servers seamlessly.
 - ⌨️ **CLI**: An intuitive and ergonomic command-line interface makes using MCVM easy and satisfying.
