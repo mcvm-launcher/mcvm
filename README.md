@@ -15,6 +15,7 @@ In the official launcher and many alternative ones, you have to waste time movin
 - 🗃️ **Profiles**: Easily share configuration across multiple instances.
 - 📦 **Packages**: Automatically install mods, resource packs, and other addons with a novel package format and intelligent dependency management.
 - 📥 **Install Everything**: Utilize many of the popular loaders, like Fabric and Quilt, along with server implementations like Paper, with automatic installation.
+- 🔌**Plugin System**: Many of MCVM's features are split into separate plugins with a simple and extremely extensible format. 
 - 🪪 **User Management**: Configure as many different types of users as you want, and log them in and out as needed.
 - 📄 **Game Options**: Specify client options and server properties using a backwards compatible format that can be shared between all your instances.
 - 💾 **Backups**: Create named and archived snapshots of the files you want, and not the ones you don't.
