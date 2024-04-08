@@ -13,7 +13,7 @@ categories = ["games"]
 anyhow = "1.0.70"
 clap = { version = "4.1.13", features = ["derive"] }
 iso8601-timestamp = "0.2.17"
-mcvm = { path = "../../", version = "0.21.0", features = ["schema"] }
+mcvm = { path = "../../", version = "0.21.1", features = ["schema"] }
 reqwest = { version = "0.12.2", default_features = false, features = [
 	"json",
 	"rustls-tls",
