@@ -452,7 +452,7 @@ fn extract_archive<R: Read + Seek>(reader: R, out_dir: &Path) -> anyhow::Result<
 
 		let dir_name = archive
 			.file_names()
-			.nth(0)
+			.next()
 			.context("Missing archive internal directory")?
 			.to_string();
 
@@ -470,7 +470,7 @@ fn extract_archive<R: Read + Seek>(reader: R, out_dir: &Path) -> anyhow::Result<
 		// Wow
 		arc.entries()
 			.context("Failed to get Tar entries")?
-			.nth(0)
+			.next()
 			.context("Missing archive internal directory")?
 			.context("Failed to get entry")?
 			.path()

@@ -55,7 +55,7 @@ pub fn decrypt_chunks<P: PaddingScheme + Copy>(
 	padding: P,
 ) -> anyhow::Result<Vec<u8>> {
 	let mut out = Vec::with_capacity(data.len());
-	for (i, chunk) in data.into_iter().enumerate() {
+	for (i, chunk) in data.iter().enumerate() {
 		let data = private_key
 			.decrypt(padding, chunk)
 			.with_context(|| format!("Failed to decrypt data chunk {i}"))?;

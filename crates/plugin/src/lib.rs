@@ -25,6 +25,12 @@ pub struct PluginManager {
 	plugins: Vec<Plugin>,
 }
 
+impl Default for PluginManager {
+	fn default() -> Self {
+		Self::new()
+	}
+}
+
 impl PluginManager {
 	/// Construct a new PluginManager
 	pub fn new() -> Self {

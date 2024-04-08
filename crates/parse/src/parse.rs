@@ -759,15 +759,15 @@ mod tests {
 			.unwrap();
 		for instr in &block.contents {
 			if let InstrKind::Require(groups) = &instr.kind {
-				let package = groups.get(0).unwrap().get(0).unwrap();
+				let package = groups.first().unwrap().first().unwrap();
 				assert!(matches!(&package.value, Value::Literal(name) if name == "optifine"));
 				assert!(package.explicit);
 
-				let package = groups.get(1).unwrap().get(0).unwrap();
+				let package = groups.get(1).unwrap().first().unwrap();
 				assert!(matches!(&package.value, Value::Literal(name) if name == "sodium"));
 				assert!(package.explicit);
 
-				let package = groups.get(2).unwrap().get(0).unwrap();
+				let package = groups.get(2).unwrap().first().unwrap();
 				assert!(matches!(&package.value, Value::Literal(name) if name == "cit-support"));
 				assert!(!package.explicit);
 			}
@@ -832,7 +832,7 @@ mod tests {
 						Value::Literal(String::new())
 					)
 				);
-				let else_block = else_blocks.get(0).unwrap();
+				let else_block = else_blocks.first().unwrap();
 				assert_eq!(
 					else_block.condition.clone().unwrap().kind,
 					ConditionKind::Value(

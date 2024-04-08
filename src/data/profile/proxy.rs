@@ -93,8 +93,10 @@ impl Profile {
 				let props = self.proxy_props.get();
 				let jvm_path = props.java.get_jvm_path();
 
-				let mut proc_props = LaunchProcessProperties::default();
-				proc_props.jvm_args = vec!["-jar".into(), props.jar_path.to_string_lossy().into()];
+				let proc_props = LaunchProcessProperties {
+					jvm_args: vec!["-jar".into(), props.jar_path.to_string_lossy().into()],
+					..Default::default()
+				};
 				let params = LaunchProcessParameters {
 					cwd: &dir,
 					command: jvm_path.as_os_str(),

@@ -68,7 +68,7 @@ pub fn check_os_condition(condition: &OSCondition) -> bool {
 	if cfg!(target_os = "macos") {
 		return condition == &OSCondition::MacOS;
 	}
-	return condition == &OSCondition::Other;
+	condition == &OSCondition::Other
 }
 
 /// Checks an arch condition to see if it matches the current system architecture
@@ -82,5 +82,5 @@ pub fn check_arch_condition(condition: &ArchCondition) -> bool {
 	if cfg!(target_arch = "arm") {
 		return condition == &ArchCondition::Arm;
 	}
-	return condition == &ArchCondition::Other;
+	condition == &ArchCondition::Other
 }

@@ -18,6 +18,7 @@ use std::future::Future;
 
 impl Instance {
 	/// Installs a package on this instance
+	#[allow(clippy::too_many_arguments)]
 	pub async fn install_package<'a>(
 		&mut self,
 		pkg: &ArcPkgReq,
@@ -51,6 +52,7 @@ impl Instance {
 	}
 
 	/// Gets the tasks for installing addons for a package by evaluating it
+	#[allow(clippy::too_many_arguments)]
 	pub async fn get_package_addon_tasks<'a>(
 		&mut self,
 		pkg: &ArcPkgReq,
@@ -83,11 +85,11 @@ impl Instance {
 	}
 
 	/// Install the EvalData resulting from evaluating a package onto this instance
+	#[allow(clippy::too_many_arguments)]
 	pub async fn install_eval_data<'a>(
 		&mut self,
 		pkg: &ArcPkgReq,
 		eval: &EvalData<'a>,
-		// eval_input: EvalInput<'a>,
 		version_info: &VersionInfo,
 		paths: &Paths,
 		lock: &mut Lockfile,
