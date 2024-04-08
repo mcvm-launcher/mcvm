@@ -1,4 +1,5 @@
-/// Easy creation of config
+/// Easy programatic creation of config
+#[cfg(feature = "builder")]
 pub mod builder;
 /// Configuring instances
 pub mod instance;

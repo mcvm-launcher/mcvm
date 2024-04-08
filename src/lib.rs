@@ -9,6 +9,7 @@
 //! - `arc`: MCVM uses Rc's in a couple places. Although these are more performant than Arc's, they
 //! may not be compatible with some async runtimes. With this feature enabled, these Rc's will be replaced with
 //! Arc's where possible.
+//! - `builder`: Enable or disable the config builder system, which isn't needed if you are just deserializing the standard config.
 //! - `disable_profile_update_packages`: A workaround for `https://github.com/rust-lang/rust/issues/102211`. If you are
 //! getting higher-ranked lifetime errors when running the update_profiles function, try enabling this. When enabled, the
 //! update_profiles function will no longer update packages at all.

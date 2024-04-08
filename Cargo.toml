@@ -32,7 +32,9 @@ members = [
 ]
 
 [features]
+default = ["builder"]
 arc = []
+builder = []
 disable_profile_update_packages = []
 schema = [
 	"dep:schemars",
