@@ -6,9 +6,8 @@ pub mod uuid;
 use std::collections::HashMap;
 
 use anyhow::bail;
-use mcvm_auth::mc::Keypair;
+use mcvm_auth::mc::{ClientId, Keypair};
 use mcvm_shared::output::MCVMOutput;
-use oauth2::ClientId;
 use reqwest::Client;
 
 use crate::Paths;

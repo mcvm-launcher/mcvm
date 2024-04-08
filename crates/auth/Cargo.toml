@@ -18,7 +18,7 @@ cfg-match = "0.2.1"
 hex = "0.4.3"
 mcvm_shared = { path = "../shared", version = "0.11.0" }
 nutype = { version = "0.4.0", features = ["serde"]}
-oauth2 = "4.4.1"
+oauth2 = "4.4.2"
 rand = "0.8.5"
 rand_chacha = "0.3.1"
 reqwest = { version = "0.12.2", default_features = false, features = [

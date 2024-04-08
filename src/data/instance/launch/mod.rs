@@ -1,13 +1,13 @@
 use std::collections::HashMap;
 
 use anyhow::Context;
+use mcvm_core::auth_crate::mc::ClientId;
 use mcvm_core::io::java::args::{ArgsPreset, MemoryNum};
 use mcvm_core::io::java::install::JavaInstallationKind;
 use mcvm_core::user::UserManager;
 use mcvm_core::util::versions::MinecraftVersion;
 use mcvm_core::InstanceHandle;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
-use oauth2::ClientId;
 use reqwest::Client;
 #[cfg(feature = "schema")]
 use schemars::JsonSchema;

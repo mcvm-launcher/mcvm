@@ -54,7 +54,6 @@ directories = "5.0.0"
 hex = "0.4.3"
 itertools = "0.11.0"
 libflate = "2.0.0"
-oauth2 = "4.4.1"
 rand = "0.8.5"
 reqwest = { version = "0.12.2", default_features = false, features = [
 	"json",
@@ -73,6 +72,6 @@ mcvm_plugin = { path = "crates/plugin", version = "0.1.0", default_features = fa
 mcvm_shared = { path = "crates/shared", version = "0.11.0" }
 shellexpand = { version = "3.0.0", features = ["path"] }
 tar = "0.4.38"
-tokio = { version = "1.36.0", features = ["macros", "fs", "rt-multi-thread"] }
+tokio = { version = "1.37.0", features = ["macros", "fs", "rt-multi-thread"] }
 version-compare = "0.2.0"
 zip = "0.6.4"

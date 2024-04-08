@@ -2,12 +2,11 @@ use std::fmt::Debug;
 
 use anyhow::{bail, Context};
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
-use oauth2::{ClientId, RefreshToken, TokenResponse};
 
 use crate::net::minecraft::MinecraftUserProfile;
 use crate::{net::minecraft, Paths};
 use mcvm_auth::db::{AuthDatabase, DatabaseUser, SensitiveUserInfo};
-use mcvm_auth::mc::{self as auth, MicrosoftToken};
+use mcvm_auth::mc::{self as auth, ClientId, MicrosoftToken, RefreshToken, TokenResponse as _};
 use mcvm_auth::mc::{mc_access_token_to_string, Keypair};
 
 use super::{User, UserKind};

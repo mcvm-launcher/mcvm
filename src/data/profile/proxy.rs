@@ -1,6 +1,7 @@
 use std::{path::PathBuf, process::Child};
 
 use anyhow::Context;
+use mcvm_core::auth_crate::mc::ClientId;
 use mcvm_core::io::java::install::{JavaInstallation, JavaInstallationKind};
 use mcvm_core::io::java::JavaMajorVersion;
 use mcvm_core::launch::{
@@ -10,7 +11,6 @@ use mcvm_core::user::UserManager;
 use mcvm_mods::paper;
 use mcvm_shared::modifications::Proxy;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
-use oauth2::ClientId;
 use reqwest::Client;
 
 use crate::io::files::paths::Paths;

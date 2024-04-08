@@ -2,6 +2,7 @@ use std::collections::HashSet;
 use std::path::{Path, PathBuf};
 
 use anyhow::Context;
+use mcvm_core::auth_crate::mc::ClientId;
 use mcvm_core::config::BrandingProperties;
 use mcvm_core::user::UserManager;
 use mcvm_core::util::versions::MinecraftVersion;
@@ -12,7 +13,6 @@ use mcvm_shared::later::Later;
 use mcvm_shared::output::MCVMOutput;
 use mcvm_shared::versions::VersionInfo;
 use mcvm_shared::Side;
-use oauth2::ClientId;
 use reqwest::Client;
 
 use crate::io::files::paths::Paths;

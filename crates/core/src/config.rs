@@ -1,4 +1,4 @@
-use oauth2::ClientId;
+use mcvm_auth::mc::ClientId;
 
 use crate::util::secrets::get_ms_client_id;
 

@@ -22,11 +22,11 @@ use self::preferences::PrefDeser;
 use self::profile::ProfileConfig;
 use self::user::UserConfig;
 use anyhow::{bail, ensure, Context};
+use mcvm_core::auth_crate::mc::ClientId;
 use mcvm_core::user::UserManager;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::pkg::PackageStability;
 use mcvm_shared::util::is_valid_identifier;
-use oauth2::ClientId;
 use preferences::ConfigPreferences;
 #[cfg(feature = "schema")]
 use schemars::JsonSchema;

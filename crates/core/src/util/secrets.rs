@@ -1,4 +1,4 @@
-use oauth2::ClientId;
+use mcvm_auth::mc::ClientId;
 
 /// Get the Microsoft client ID
 pub fn get_ms_client_id() -> ClientId {

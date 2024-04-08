@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 
 use anyhow::bail;
+use mcvm_core::auth_crate::mc::ClientId;
 use mcvm_core::user::{User, UserManager};
 use mcvm_core::util::versions::MinecraftVersionDeser;
 use mcvm_plugin::plugin::PluginManifest;
@@ -8,7 +9,6 @@ use mcvm_shared::modifications::{ClientType, Modloader, Proxy, ServerType};
 use mcvm_shared::output::MCVMOutput;
 use mcvm_shared::pkg::{PackageID, PackageStability};
 use mcvm_shared::Side;
-use oauth2::ClientId;
 
 use crate::data::id::{InstanceID, InstanceRef, ProfileID};
 use crate::data::instance::Instance;
