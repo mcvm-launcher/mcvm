@@ -1,7 +1,13 @@
-use std::process::Command;
+use std::{
+	io::{BufRead, BufReader},
+	process::Command,
+};
 
 use anyhow::{bail, Context};
+use mcvm_shared::output::MCVMOutput;
 use serde::{de::DeserializeOwned, Serialize};
+
+use crate::output::OutputAction;
 
 /// Trait for a hook that can be called
 pub trait Hook {
@@ -29,6 +35,7 @@ pub trait Hook {
 		cmd: &str,
 		arg: &Self::Arg,
 		custom_config: Option<String>,
+		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Self::Result> {
 		let arg = serde_json::to_string(arg).context("Failed to serialize hook argument")?;
 		let mut cmd = Command::new(cmd);
@@ -45,21 +52,56 @@ pub trait Hook {
 		} else {
 			cmd.stdout(std::process::Stdio::piped());
 
-			let result = cmd
-				.spawn()?
-				.wait_with_output()
-				.context("Failed to wait for hook child process")?;
+			let mut child = cmd.spawn()?;
 
-			if !result.status.success() {
-				if let Some(exit_code) = result.status.code() {
+			let stdout = child.stdout.as_mut().unwrap();
+			let stdout_reader = BufReader::new(stdout);
+			let stdout_lines = stdout_reader.lines();
+
+			let mut result = None;
+			for line in stdout_lines {
+				let line = line?;
+				let action = OutputAction::deserialize(&line)
+					.context("Failed to deserialize plugin action")?;
+				match action {
+					OutputAction::SetResult(new_result) => {
+						result = Some(
+							serde_json::from_str(&new_result)
+								.context("Failed to deserialize hook result")?,
+						);
+					}
+					OutputAction::Text(text, level) => {
+						o.display_text(text, level);
+					}
+					OutputAction::Message(message) => {
+						o.display_message(message);
+					}
+					OutputAction::StartProcess => {
+						o.start_process();
+					}
+					OutputAction::EndProcess => {
+						o.end_process();
+					}
+					OutputAction::StartSection => {
+						o.start_section();
+					}
+					OutputAction::EndSection => {
+						o.end_section();
+					}
+				}
+			}
+
+			let cmd_result = child.wait()?;
+
+			if !cmd_result.success() {
+				if let Some(exit_code) = cmd_result.code() {
 					bail!("Hook returned a non-zero exit code of {}", exit_code);
 				} else {
 					bail!("Hook returned a non-zero exit code");
 				}
 			}
 
-			let result = serde_json::from_slice(&result.stdout)
-				.context("Failed to deserialize hook result")?;
+			let result = result.context("Plugin hook did not return a result")?;
 
 			Ok(result)
 		}

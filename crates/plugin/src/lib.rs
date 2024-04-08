@@ -6,6 +6,7 @@
 
 use anyhow::Context;
 use hooks::{Hook, OnLoad};
+use mcvm_shared::output::MCVMOutput;
 use plugin::Plugin;
 
 /// API for Rust-based plugins to use to define plugins
@@ -13,6 +14,8 @@ use plugin::Plugin;
 pub mod api;
 /// Plugin hooks and their definitions
 pub mod hooks;
+/// Serialized output format for plugins
+pub mod output;
 /// Plugins
 pub mod plugin;
 
@@ -31,10 +34,10 @@ impl PluginManager {
 	}
 
 	/// Add a plugin to the manager
-	pub fn add_plugin(&mut self, plugin: Plugin) -> anyhow::Result<()> {
+	pub fn add_plugin(&mut self, plugin: Plugin, o: &mut impl MCVMOutput) -> anyhow::Result<()> {
 		// Call the on_load hook
 		plugin
-			.call_hook(&OnLoad, &())
+			.call_hook(&OnLoad, &(), o)
 			.context("Failed to call on_load hook of plugin")?;
 
 		self.plugins.push(plugin);
@@ -43,10 +46,17 @@ impl PluginManager {
 	}
 
 	/// Call a plugin hook on the manager and collects the results into a Vec
-	pub fn call_hook<H: Hook>(&self, hook: H, arg: &H::Arg) -> anyhow::Result<Vec<H::Result>> {
+	pub fn call_hook<H: Hook>(
+		&self,
+		hook: H,
+		arg: &H::Arg,
+		o: &mut impl MCVMOutput,
+	) -> anyhow::Result<Vec<H::Result>> {
 		let mut out = Vec::with_capacity(self.plugins.len());
 		for plugin in &self.plugins {
-			let result = plugin.call_hook(&hook, arg).context("Plugin hook failed")?;
+			let result = plugin
+				.call_hook(&hook, arg, o)
+				.context("Plugin hook failed")?;
 			out.extend(result);
 		}
 

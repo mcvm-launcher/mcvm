@@ -1,6 +1,7 @@
 use crate::io::files::paths::Paths;
 use anyhow::Context;
 use mcvm_core::io::json_from_file;
+use mcvm_shared::output::MCVMOutput;
 #[cfg(feature = "schema")]
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
@@ -74,6 +75,7 @@ impl PluginManager {
 		&mut self,
 		plugin: PluginConfig,
 		manifest: PluginManifest,
+		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
 		let custom_config = plugin.custom_config.clone();
 		self.configs.push(plugin);
@@ -82,13 +84,18 @@ impl PluginManager {
 			plugin.set_custom_config(custom_config)?;
 		}
 
-		self.manager.add_plugin(plugin)?;
+		self.manager.add_plugin(plugin, o)?;
 
 		Ok(())
 	}
 
 	/// Load a plugin from the plugin directory
-	pub fn load_plugin(&mut self, plugin: PluginConfig, paths: &Paths) -> anyhow::Result<()> {
+	pub fn load_plugin(
+		&mut self,
+		plugin: PluginConfig,
+		paths: &Paths,
+		o: &mut impl MCVMOutput,
+	) -> anyhow::Result<()> {
 		// Get the path for the manifest
 		let path = paths.plugins.join(format!("{}.json", plugin.name));
 		let path = if path.exists() {
@@ -98,14 +105,19 @@ impl PluginManager {
 		};
 		let manifest = json_from_file(path).context("Failed to read plugin manifest from file")?;
 
-		self.add_plugin(plugin, manifest)?;
+		self.add_plugin(plugin, manifest, o)?;
 
 		Ok(())
 	}
 
 	/// Call a plugin hook on the manager and collects the results into a Vec
-	pub fn call_hook<H: Hook>(&self, hook: H, arg: &H::Arg) -> anyhow::Result<Vec<H::Result>> {
-		self.manager.call_hook(hook, arg)
+	pub fn call_hook<H: Hook>(
+		&self,
+		hook: H,
+		arg: &H::Arg,
+		o: &mut impl MCVMOutput,
+	) -> anyhow::Result<Vec<H::Result>> {
+		self.manager.call_hook(hook, arg, o)
 	}
 }
 

@@ -5,6 +5,7 @@ use mcvm_core::user::{User, UserManager};
 use mcvm_core::util::versions::MinecraftVersionDeser;
 use mcvm_plugin::plugin::PluginManifest;
 use mcvm_shared::modifications::{ClientType, Modloader, Proxy, ServerType};
+use mcvm_shared::output::MCVMOutput;
 use mcvm_shared::pkg::{PackageID, PackageStability};
 use mcvm_shared::Side;
 use oauth2::ClientId;
@@ -103,8 +104,9 @@ impl ConfigBuilder {
 		&mut self,
 		plugin: PluginConfig,
 		manifest: PluginManifest,
+		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
-		self.plugins.add_plugin(plugin, manifest)
+		self.plugins.add_plugin(plugin, manifest, o)
 	}
 
 	/// Finishes the builder

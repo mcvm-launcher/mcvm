@@ -129,7 +129,7 @@ pub async fn run_cli() -> anyhow::Result<()> {
 			let config = data.config.get();
 			config
 				.plugins
-				.call_hook(hooks::Subcommand, &args)
+				.call_hook(hooks::Subcommand, &args, &mut data.output)
 				.context("Plugin subcommand failed")?;
 
 			Ok(())

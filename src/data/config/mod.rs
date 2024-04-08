@@ -228,7 +228,7 @@ impl Config {
 		for plugin in config.plugins {
 			let plugin = plugin.to_config();
 			plugins
-				.load_plugin(plugin, paths)
+				.load_plugin(plugin, paths, o)
 				.context("Failed to load plugin")?;
 		}
 

@@ -12,7 +12,7 @@ use crate::versions::VersionPattern;
 pub type PackageID = Arc<str>;
 
 /// Used to store a request for a package that will be fulfilled later
-#[derive(Debug, Clone, PartialOrd, Ord)]
+#[derive(Debug, Clone, PartialOrd, Ord, Deserialize, Serialize)]
 pub struct PkgRequest {
 	/// The source of this request.
 	/// Could be a dependent, a recommender, or anything else.
@@ -24,7 +24,7 @@ pub struct PkgRequest {
 }
 
 /// Where a package was requested from
-#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Deserialize, Serialize)]
 pub enum PkgRequestSource {
 	/// This package was required by the user
 	UserRequire,

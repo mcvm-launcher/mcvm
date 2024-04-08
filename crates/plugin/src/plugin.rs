@@ -1,6 +1,7 @@
 use std::collections::HashSet;
 
 use anyhow::Context;
+use mcvm_shared::output::MCVMOutput;
 use serde::Deserialize;
 
 use crate::hooks::Hook;
@@ -24,10 +25,20 @@ impl Plugin {
 	}
 
 	/// Call a hook on the plugin
-	pub fn call_hook<H: Hook>(&self, hook: &H, arg: &H::Arg) -> anyhow::Result<Option<H::Result>> {
+	pub fn call_hook<H: Hook>(
+		&self,
+		hook: &H,
+		arg: &H::Arg,
+		o: &mut impl MCVMOutput,
+	) -> anyhow::Result<Option<H::Result>> {
 		if self.manifest.enabled_hooks.contains(hook.get_name()) {
-			hook.call(&self.manifest.executable, arg, self.custom_config.clone())
-				.map(Some)
+			hook.call(
+				&self.manifest.executable,
+				arg,
+				self.custom_config.clone(),
+				o,
+			)
+			.map(Some)
 		} else {
 			Ok(None)
 		}

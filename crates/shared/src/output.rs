@@ -1,4 +1,5 @@
 use anyhow::bail;
+use serde::{Deserialize, Serialize};
 
 use crate::pkg::PkgRequest;
 
@@ -76,7 +77,7 @@ pub fn default_special_ms_auth(o: &mut (impl MCVMOutput + ?Sized), url: &str, co
 }
 
 /// A message supplied to the output
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Message {
 	/// The contents of the message
 	pub contents: MessageContents,
@@ -86,7 +87,7 @@ pub struct Message {
 
 /// Contents of a message. Different types represent different formatting
 #[non_exhaustive]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub enum MessageContents {
 	/// Simple message with no formatting
 	Simple(String),
@@ -152,7 +153,8 @@ impl MessageContents {
 }
 
 /// The level of logging that a message has
-#[derive(Copy, Clone, Debug)]
+#[derive(Copy, Clone, Debug, Deserialize, Serialize)]
+#[serde(rename_all = "snake_case")]
 pub enum MessageLevel {
 	/// Messages that should always be displayed
 	Important,
