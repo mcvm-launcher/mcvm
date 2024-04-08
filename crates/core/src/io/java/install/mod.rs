@@ -464,11 +464,12 @@ fn extract_archive<R: Read + Seek>(reader: R, out_dir: &Path) -> anyhow::Result<
 	} else {
 		let mut decoder =
 			libflate::gzip::Decoder::new(reader).context("Failed to decode tar.gz")?;
+		// Get the archive twice because of archive shenanigans
 		let mut arc = Archive::new(&mut decoder);
-		arc.unpack(out_dir).context("Failed to unarchive tar")?;
 
 		// Wow
-		arc.entries()
+		let dir_name = arc
+			.entries()
 			.context("Failed to get Tar entries")?
 			.next()
 			.context("Missing archive internal directory")?
@@ -476,7 +477,12 @@ fn extract_archive<R: Read + Seek>(reader: R, out_dir: &Path) -> anyhow::Result<
 			.path()
 			.context("Failed to get entry path name")?
 			.to_string_lossy()
-			.to_string()
+			.to_string();
+
+		let mut arc = Archive::new(&mut decoder);
+		arc.unpack(out_dir).context("Failed to unarchive tar")?;
+
+		dir_name
 	};
 
 	Ok(dir_name)
