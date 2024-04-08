@@ -21,7 +21,7 @@ inquire = { version = "0.6.2", default_features = false, features = [
 	"crossterm",
 ] }
 itertools = "0.11.0"
-mcvm = { path = "../../", version = "0.19.0", features = ["arc"] }
+mcvm = { path = "../../", version = "0.19.0" }
 oauth2 = "4.4.1"
 reqwest = { version = "0.12.2", default_features = false, features = [
 	"json",
