@@ -1,6 +1,6 @@
 [package]
 name = "mcvm"
-version = "0.19.0"
+version = "0.20.0"
 edition = "2021"
 license = "GPL-3.0-or-later"
 description = "A command-line Minecraft launcher and package manager"
@@ -63,13 +63,13 @@ schemars = { version = "0.8.15", optional = true }
 serde = { version = "1.0.152", features = ["derive", "rc"] }
 serde_json = "1.0.91"
 sha2 = "0.10.7"
-mcvm_core = { path = "crates/core", version = "0.3.0" }
-mcvm_mods = { path = "crates/mods", version = "0.3.0" }
-mcvm_options = { path = "crates/options", version = "0.3.0" }
-mcvm_parse = { path = "crates/parse", version = "0.12.0" }
-mcvm_pkg = { path = "crates/pkg", version = "0.11.0" }
+mcvm_core = { path = "crates/core", version = "0.4.0" }
+mcvm_mods = { path = "crates/mods", version = "0.4.0" }
+mcvm_options = { path = "crates/options", version = "0.4.0" }
+mcvm_parse = { path = "crates/parse", version = "0.13.0" }
+mcvm_pkg = { path = "crates/pkg", version = "0.12.0" }
 mcvm_plugin = { path = "crates/plugin", version = "0.1.0", default_features = false }
-mcvm_shared = { path = "crates/shared", version = "0.11.0" }
+mcvm_shared = { path = "crates/shared", version = "0.12.0" }
 shellexpand = { version = "3.0.0", features = ["path"] }
 tar = "0.4.38"
 tokio = { version = "1.37.0", features = ["macros", "fs", "rt-multi-thread"] }

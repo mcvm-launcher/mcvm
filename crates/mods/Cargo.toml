@@ -1,6 +1,6 @@
 [package]
 name = "mcvm_mods"
-version = "0.3.0"
+version = "0.4.0"
 edition = "2021"
 license = "GPL-3.0-or-later"
 description = "Installation of game modifications for use with mcvm_core"
@@ -13,8 +13,8 @@ categories = ["games"]
 
 [dependencies]
 anyhow = "1.0.70"
-mcvm_core = { path = "../core", version = "0.3.0" }
-mcvm_shared = { path = "../shared", version = "0.11.0" }
+mcvm_core = { path = "../core", version = "0.4.0" }
+mcvm_shared = { path = "../shared", version = "0.12.0" }
 reqwest = { version = "0.12.2", default_features = false, features = [
 	"json",
 	"rustls-tls",

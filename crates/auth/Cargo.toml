@@ -1,6 +1,6 @@
 [package]
 name = "mcvm_auth"
-version = "0.2.0"
+version = "0.3.0"
 edition = "2021"
 license = "GPL-3.0-or-later"
 description = "Useful authentication wrapper for Minecraft"
@@ -16,7 +16,7 @@ anyhow = "1.0.70"
 bytes = "1.4.0"
 cfg-match = "0.2.1"
 hex = "0.4.3"
-mcvm_shared = { path = "../shared", version = "0.11.0" }
+mcvm_shared = { path = "../shared", version = "0.12.0" }
 nutype = { version = "0.4.0", features = ["serde"]}
 oauth2 = "4.4.2"
 rand = "0.8.5"
