@@ -1,7 +1,5 @@
 /// Utilities for working with hashes and checksums
 pub mod hash;
-/// Printing and output utilities
-pub mod print;
 
 use rand::Rng;
 

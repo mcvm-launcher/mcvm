@@ -9,8 +9,8 @@ use mcvm::pkg_crate::{PkgRequest, PkgRequestSource};
 use mcvm::shared::output::{
 	default_special_ms_auth, MCVMOutput, Message, MessageContents, MessageLevel,
 };
+use mcvm::shared::util::print::ReplPrinter;
 use mcvm::shared::util::utc_timestamp;
-use mcvm::util::print::ReplPrinter;
 
 /// A nice colored bullet point for terminal output
 pub const HYPHEN_POINT: &str = cstr!("<k!> - </k!>");
