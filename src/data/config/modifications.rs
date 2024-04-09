@@ -3,8 +3,10 @@ use std::fs::File;
 
 use anyhow::{anyhow, Context};
 
+use crate::data::id::InstanceID;
 use crate::{data::id::ProfileID, io::files::paths::Paths};
 
+use super::instance::InstanceConfig;
 use super::package::PackageConfigDeser;
 use super::profile::ProfileConfig;
 use super::user::UserConfig;
@@ -16,6 +18,8 @@ pub enum ConfigModification {
 	AddUser(String, UserConfig),
 	/// Adds a new profile
 	AddProfile(ProfileID, ProfileConfig),
+	/// Adds a new instance
+	AddInstance(ProfileID, InstanceID, InstanceConfig),
 	/// Adds a new package to a profile
 	AddPackage(ProfileID, PackageConfigDeser),
 }
@@ -33,11 +37,18 @@ pub fn apply_modifications(
 			ConfigModification::AddProfile(id, profile) => {
 				config.profiles.insert(id, profile);
 			}
-			ConfigModification::AddPackage(id, package) => {
+			ConfigModification::AddInstance(profile_id, instance_id, instance) => {
 				let profile = config
 					.profiles
-					.get_mut(&id)
-					.ok_or(anyhow!("Unknown profile '{id}'"))?;
+					.get_mut(&profile_id)
+					.ok_or(anyhow!("Unknown profile '{profile_id}'"))?;
+				profile.instances.insert(instance_id, instance);
+			}
+			ConfigModification::AddPackage(profile_id, package) => {
+				let profile = config
+					.profiles
+					.get_mut(&profile_id)
+					.ok_or(anyhow!("Unknown profile '{profile_id}'"))?;
 				profile.packages.add_global_package(package);
 			}
 		};
