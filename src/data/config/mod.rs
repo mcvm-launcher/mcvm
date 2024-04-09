@@ -113,7 +113,7 @@ impl Config {
 	}
 
 	/// Open the config from a file
-	fn open(path: &Path) -> anyhow::Result<ConfigDeser> {
+	pub fn open(path: &Path) -> anyhow::Result<ConfigDeser> {
 		if path.exists() {
 			let file = File::open(path).context("Failed to open config file")?;
 			let mut file = BufReader::new(file);

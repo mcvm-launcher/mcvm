@@ -1,9 +1,13 @@
 use super::CmdData;
 use itertools::Itertools;
-use mcvm::data::id::ProfileID;
+use mcvm::core::util::versions::{MinecraftLatestVersion, MinecraftVersionDeser};
+use mcvm::data::config::builder::ProfileBuilder;
+use mcvm::data::config::modifications::{apply_modifications_and_write, ConfigModification};
 use mcvm::data::profile::update::update_profiles;
+use mcvm::shared::modifications::{Modloader, ServerType};
+use mcvm::{data::id::ProfileID, shared::modifications::ClientType};
 
-use anyhow::bail;
+use anyhow::{bail, Context};
 use clap::Subcommand;
 use color_print::{cprint, cprintln};
 use mcvm::shared::Side;
@@ -38,6 +42,8 @@ pub enum ProfileSubcommand {
 		/// The profiles to update
 		profiles: Vec<String>,
 	},
+	#[command(about = "Add new profiles to your config")]
+	Add {},
 }
 
 pub async fn run(subcommand: ProfileSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
@@ -50,6 +56,7 @@ pub async fn run(subcommand: ProfileSubcommand, data: &mut CmdData) -> anyhow::R
 			profiles,
 			skip_packages,
 		} => update(data, &profiles, force, all, skip_packages).await,
+		ProfileSubcommand::Add {} => add(data).await,
 	}
 }
 
@@ -142,6 +149,68 @@ async fn update(
 		&mut data.output,
 	)
 	.await?;
+
+	Ok(())
+}
+
+async fn add(data: &mut CmdData) -> anyhow::Result<()> {
+	data.ensure_config(true).await?;
+	let mut config = data.get_raw_config()?;
+
+	// Build the profile
+	let id = inquire::Text::new("What is the ID for the profile?").prompt()?;
+	let version = inquire::Text::new("What Minecraft version should the profile be?").prompt()?;
+	let version = match version.as_str() {
+		"latest" => MinecraftVersionDeser::Latest(MinecraftLatestVersion::Release),
+		"latest_snapshot" => MinecraftVersionDeser::Latest(MinecraftLatestVersion::Snapshot),
+		other => MinecraftVersionDeser::Version(other.into()),
+	};
+	let mut profile = ProfileBuilder::new(id.into(), version);
+
+	let options = vec![Modloader::Vanilla, Modloader::Fabric, Modloader::Quilt];
+	let modloader =
+		inquire::Select::new("What modloader should the profile use?", options).prompt()?;
+	profile.modloader(modloader);
+
+	let options = vec![
+		ClientType::None,
+		ClientType::Vanilla,
+		ClientType::Fabric,
+		ClientType::Quilt,
+	];
+	let client_type = inquire::Select::new(
+		"What client type should the profile use? Select 'None' to inherit from the modloader",
+		options,
+	)
+	.prompt()?;
+	profile.client_type(client_type);
+
+	let options = vec![
+		ServerType::None,
+		ServerType::Vanilla,
+		ServerType::Fabric,
+		ServerType::Quilt,
+		ServerType::Paper,
+		ServerType::Sponge,
+		ServerType::Folia,
+	];
+	let server_type = inquire::Select::new(
+		"What server type should the profile use? Select 'None' to inherit from the modloader",
+		options,
+	)
+	.prompt()?;
+	profile.server_type(server_type);
+
+	let (profile_id, profile) = profile.build_inner();
+
+	apply_modifications_and_write(
+		&mut config,
+		vec![ConfigModification::AddProfile(profile_id, profile)],
+		&data.paths,
+	)
+	.context("Failed to write modified config")?;
+
+	cprintln!("<g>Profile added.");
 
 	Ok(())
 }

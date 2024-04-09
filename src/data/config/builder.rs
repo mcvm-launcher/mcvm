@@ -340,6 +340,11 @@ impl<'parent> ProfileBuilder<'parent> {
 
 		Ok((self.id, built, self.parent))
 	}
+
+	/// Finish the builder and return the raw config
+	pub fn build_inner(self) -> (ProfileID, ProfileConfig) {
+		(self.id, self.config)
+	}
 }
 
 /// Builder for an instance

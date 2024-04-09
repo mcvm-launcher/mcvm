@@ -10,7 +10,7 @@ use anyhow::{bail, Context};
 use clap::{Parser, Subcommand};
 use color_print::{cformat, cprintln};
 
-use mcvm::data::config::Config;
+use mcvm::data::config::{Config, ConfigDeser};
 use mcvm::io::files::paths::Paths;
 use mcvm::plugin::hooks;
 use mcvm::shared::later::Later;
@@ -192,6 +192,14 @@ impl CmdData {
 		}
 
 		Ok(())
+	}
+
+	/// Get the raw deserialized config
+	pub fn get_raw_config(&self) -> anyhow::Result<ConfigDeser> {
+		let config =
+			Config::open(&Config::get_path(&self.paths)).context("Failed to open config")?;
+
+		Ok(config)
 	}
 }
 
