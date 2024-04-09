@@ -260,6 +260,23 @@ impl PkgRegistry {
 		self.iter_requests().cloned().collect()
 	}
 
+	/// Get all of the available package requests from the repos
+	pub async fn get_all_available_packages(
+		&mut self,
+		paths: &Paths,
+		client: &Client,
+		o: &mut impl MCVMOutput,
+	) -> anyhow::Result<Vec<ArcPkgReq>> {
+		let out = super::repo::get_all_packages(&mut self.repos, paths, client, o)
+			.await
+			.context("Failed to retrieve all packages from repos")?
+			.iter()
+			.map(|(id, ..)| Arc::new(PkgRequest::parse(id, PkgRequestSource::Repository)))
+			.collect();
+
+		Ok(out)
+	}
+
 	/// Remove cached packages
 	async fn remove_cached_packages(
 		&mut self,
@@ -284,12 +301,11 @@ impl PkgRegistry {
 		client: &Client,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
-		let packages = super::repo::get_all_packages(&mut self.repos, paths, client, o)
+		let packages = self
+			.get_all_available_packages(paths, client, o)
 			.await
-			.context("Failed to retrieve all packages from repos")?
-			.iter()
-			.map(|(id, ..)| Arc::new(PkgRequest::parse(id, PkgRequestSource::Repository)))
-			.collect::<Vec<_>>();
+			.context("Failed to get list of available packages")?;
+
 		self.remove_cached_packages(packages.iter(), paths, client, o)
 			.await
 			.context("Failed to remove all cached packages")?;

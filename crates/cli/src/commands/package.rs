@@ -62,6 +62,8 @@ This package does not need to be installed, it just has to be in the index."
 		#[command(subcommand)]
 		command: RepoSubcommand,
 	},
+	#[command(about = "Browse packages from the remote repositories")]
+	Browse {},
 }
 
 #[derive(Debug, Subcommand)]
@@ -87,6 +89,7 @@ pub async fn run(subcommand: PackageSubcommand, data: &mut CmdData) -> anyhow::R
 		PackageSubcommand::Cat { raw, package } => cat(data, &package, raw).await,
 		PackageSubcommand::Info { package } => info(data, &package).await,
 		PackageSubcommand::Repository { command } => repo(command, data).await,
+		PackageSubcommand::Browse {} => browse(data).await,
 	}
 }
 
@@ -473,6 +476,32 @@ async fn repo_info(data: &mut CmdData, repo_id: String) -> anyhow::Result<()> {
 		cprintln!("   <s>MCVM Version:</> <c>{}</>", version);
 	}
 	cprintln!("   <s>Package Count:</> <y>{}</>", pkg_count);
+
+	Ok(())
+}
+
+async fn browse(data: &mut CmdData) -> anyhow::Result<()> {
+	data.ensure_config(true).await?;
+	let config = data.config.get_mut();
+
+	let client = Client::new();
+	let mut packages = config
+		.packages
+		.get_all_available_packages(&data.paths, &client, &mut data.output)
+		.await
+		.context("Failed to get list of available packages")?;
+	packages.sort();
+
+	loop {
+		let select = inquire::Select::new("Browse packages. Press ESC to exit.", packages.clone());
+		let package = select.prompt_skippable()?;
+		if let Some(package) = package {
+			info(data, &package.id).await?;
+			inquire::Confirm::new("Return to browse page?").prompt_skippable()?;
+		} else {
+			break;
+		}
+	}
 
 	Ok(())
 }
