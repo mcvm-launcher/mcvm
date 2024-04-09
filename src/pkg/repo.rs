@@ -173,14 +173,16 @@ impl PkgRepo {
 		if let Some(repo_version) = repo_version {
 			let repo_version = version_compare::Version::from(repo_version);
 			let program_version = version_compare::Version::from(crate::VERSION);
-			if repo_version > program_version {
-				o.display(
-					MessageContents::Warning(format!(
-							"Minimum MCVM version for repository {} is higher than current installation",
-							self.id
-						)),
-					MessageLevel::Important,
-				);
+			if let (Some(repo_version), Some(program_version)) = (repo_version, program_version) {
+				if repo_version > program_version {
+					o.display(
+						MessageContents::Warning(format!(
+								"Minimum MCVM version for repository {} is higher than current installation",
+								self.id
+							)),
+						MessageLevel::Important,
+					);
+				}
 			}
 		}
 	}
