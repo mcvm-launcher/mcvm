@@ -14,7 +14,6 @@ use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use reqwest::Client;
 
 use crate::io::files::paths::Paths;
-use crate::util::print::PrintOptions;
 
 use super::{update::manager::UpdateManager, Profile};
 
@@ -71,8 +70,7 @@ impl Profile {
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Option<Child>> {
 		// Check for updates first
-		let options = PrintOptions::new(false, 0);
-		let mut manager = UpdateManager::new(options, false, true);
+		let mut manager = UpdateManager::new(false, true);
 		manager
 			.fulfill_requirements(
 				&UserManager::new(ClientId::new(String::new())),

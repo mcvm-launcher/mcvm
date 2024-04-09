@@ -105,7 +105,7 @@ pub async fn get(
 	assets_to_download.sort_by_key(|x| std::cmp::Reverse(x.4));
 
 	let count = assets_to_download.len();
-	if manager.print.verbose && count > 0 {
+	if count > 0 {
 		o.display(
 			MessageContents::StartProcess(format!("Downloading {count} assets")),
 			MessageLevel::Important,

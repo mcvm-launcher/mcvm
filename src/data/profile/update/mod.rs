@@ -21,7 +21,6 @@ use crate::data::id::ProfileID;
 use crate::io::files::paths::Paths;
 use crate::io::lock::Lockfile;
 use crate::pkg::reg::PkgRegistry;
-use crate::util::print::PrintOptions;
 
 use manager::UpdateManager;
 
@@ -64,8 +63,7 @@ pub async fn update_profiles(
 		output: o,
 	};
 
-	let print_options = PrintOptions::new(true, 0);
-	let mut manager = UpdateManager::new(print_options, force, false);
+	let mut manager = UpdateManager::new(force, false);
 
 	for id in ids {
 		let profile = config

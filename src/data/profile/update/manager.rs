@@ -16,7 +16,6 @@ use mcvm_shared::Side;
 use reqwest::Client;
 
 use crate::io::files::paths::Paths;
-use crate::util::print::PrintOptions;
 use mcvm_mods::fabric_quilt::{self, FabricQuiltMeta};
 
 /// Requirements for operations that may be shared by multiple instances in a profile
@@ -33,8 +32,6 @@ pub enum UpdateRequirement {
 /// Settings for updating
 #[derive(Debug)]
 pub struct UpdateSettings {
-	/// Options for printing / output
-	pub print: PrintOptions,
 	/// Whether to force file updates
 	pub force: bool,
 	/// Whether we will prioritize local files instead of remote ones
@@ -66,9 +63,8 @@ pub struct UpdateManager {
 
 impl UpdateManager {
 	/// Create a new UpdateManager
-	pub fn new(print: PrintOptions, force: bool, allow_offline: bool) -> Self {
+	pub fn new(force: bool, allow_offline: bool) -> Self {
 		let settings = UpdateSettings {
-			print,
 			force,
 			allow_offline,
 		};

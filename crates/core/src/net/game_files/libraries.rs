@@ -76,7 +76,7 @@ pub async fn get(
 	}
 
 	let count = libs_to_download.len();
-	if manager.print.verbose && count > 0 {
+	if count > 0 {
 		o.display(
 			MessageContents::StartProcess(format!("Downloading {count} libraries")),
 			MessageLevel::Important,

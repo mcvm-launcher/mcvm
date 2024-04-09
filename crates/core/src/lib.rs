@@ -30,7 +30,6 @@ use io::java::JavaMajorVersion;
 use io::{persistent::PersistentData, update::UpdateManager};
 use mcvm_shared::later::Later;
 use mcvm_shared::output::{self, MCVMOutput};
-use mcvm_shared::util::print::PrintOptions;
 use mcvm_shared::versions::VersionInfo;
 use net::game_files::version_manifest::{
 	self, make_version_list, VersionManifest, VersionManifestAndList,
@@ -75,11 +74,7 @@ impl MCVMCore {
 			paths,
 			req_client: reqwest::Client::new(),
 			persistent,
-			update_manager: UpdateManager::new(
-				PrintOptions::new(true, 0),
-				config.force_reinstall,
-				config.allow_offline,
-			),
+			update_manager: UpdateManager::new(config.force_reinstall, config.allow_offline),
 			versions: VersionRegistry::new(),
 			version_manifest: Later::Empty,
 			users: UserManager::new(config.ms_client_id.clone()),

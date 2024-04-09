@@ -1,14 +1,10 @@
 use std::collections::HashSet;
 use std::path::{Path, PathBuf};
 
-use mcvm_shared::util::print::PrintOptions;
-
 /// Manager for when we are updating profile files.
 /// It will keep track of files we have already downloaded, manage task requirements, etc
 #[derive(Debug)]
 pub struct UpdateManager {
-	/// Options for printing / output
-	pub print: PrintOptions,
 	/// Whether to force file updates
 	pub(crate) force: bool,
 	/// Whether we will prioritize local files instead of remote ones
@@ -19,9 +15,8 @@ pub struct UpdateManager {
 
 impl UpdateManager {
 	/// Create a new UpdateManager
-	pub fn new(print: PrintOptions, force: bool, allow_offline: bool) -> Self {
+	pub fn new(force: bool, allow_offline: bool) -> Self {
 		Self {
-			print,
 			force,
 			allow_offline,
 			files: HashSet::new(),

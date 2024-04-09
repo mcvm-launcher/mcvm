@@ -16,7 +16,6 @@ use serde::{Deserialize, Serialize};
 use crate::data::config::instance::QuickPlay;
 use crate::data::profile::update::manager::UpdateManager;
 use crate::io::files::paths::Paths;
-use crate::util::print::PrintOptions;
 
 use super::Instance;
 
@@ -35,8 +34,7 @@ impl Instance {
 			MessageLevel::Important,
 		);
 
-		let options = PrintOptions::new(false, 0);
-		let mut manager = UpdateManager::new(options, false, true);
+		let mut manager = UpdateManager::new(false, true);
 		let client = Client::new();
 		manager.set_version(version);
 		manager.add_requirements(self.get_requirements());
