@@ -1,4 +1,8 @@
-use std::path::Path;
+use std::{
+	fs::File,
+	io::{BufWriter, Write},
+	path::Path,
+};
 
 use anyhow::Context;
 use reqwest::{IntoUrl, Url};
@@ -94,6 +98,78 @@ pub async fn json<T: DeserializeOwned>(url: impl IntoUrl, client: &Client) -> an
 		.json()
 		.await
 		.context("Failed to parse JSON")
+}
+
+/// A persistent single download that can be used to track progress
+pub struct ProgressiveDownload<W: Write> {
+	response: reqwest::Response,
+	writer: W,
+	content_length: u64,
+	bytes_downloaded: usize,
+	finished: bool,
+}
+
+impl<W: Write> ProgressiveDownload<W> {
+	/// Create a new ProgressiveDownload from a response
+	pub fn from_response(response: reqwest::Response, writer: W) -> Self {
+		Self {
+			content_length: response.content_length().unwrap_or_default(),
+			response,
+			writer,
+			bytes_downloaded: 0,
+			finished: false,
+		}
+	}
+
+	/// Get the number of bytes that have been downloaded
+	pub fn get_downloaded(&self) -> usize {
+		self.bytes_downloaded
+	}
+
+	/// Get the total length of the content
+	pub fn get_total_length(&self) -> usize {
+		self.content_length as usize
+	}
+
+	/// Poll the download
+	pub async fn poll_download(&mut self) -> anyhow::Result<()> {
+		let chunk = self
+			.response
+			.chunk()
+			.await
+			.context("Failed to download chunk")?;
+		if let Some(bytes) = chunk {
+			self.writer
+				.write_all(&bytes)
+				.context("Failed to write downloaded bytes")?;
+			self.bytes_downloaded += bytes.len();
+		} else {
+			self.finished = true;
+		}
+
+		Ok(())
+	}
+
+	/// Check if the download is finished
+	pub fn is_finished(&self) -> bool {
+		self.finished
+	}
+}
+
+impl ProgressiveDownload<BufWriter<File>> {
+	/// Create a new ProgressiveDownload that downloads a file
+	pub async fn file(
+		url: impl IntoUrl,
+		path: impl AsRef<Path>,
+		client: &Client,
+	) -> anyhow::Result<Self> {
+		let file = BufWriter::new(File::create(path).context("Failed to open file")?);
+		let response = download(url, client)
+			.await
+			.context("Failed to get response")?;
+
+		Ok(Self::from_response(response, file))
+	}
 }
 
 /// Validates a URL with a helpful error message
