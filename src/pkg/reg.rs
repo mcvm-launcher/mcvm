@@ -347,8 +347,8 @@ pub enum CachingStrategy {
 	/// Don't cache any packages locally. Fetch them from the repository every time
 	None,
 	/// Only cache packages when they are requested
-	#[default]
 	Lazy,
 	/// Cache all packages whenever syncing the repositories
+	#[default]
 	All,
 }
