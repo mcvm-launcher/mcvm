@@ -107,7 +107,36 @@ fn convert_mouse_sensitivity(sensitivity: i16) -> f32 {
 	(sensitivity as f32) / 2.0 / 100.0
 }
 
+macro_rules! match_key {
+	($out:ident, $option:expr, $key:literal) => {
+		if let Some(value) = $option {
+			$out.insert($key.into(), value.to_string());
+		}
+	};
+
+	($out:ident, $option:expr, $key:literal, $version:expr) => {
+		if $version {
+			match_key!($out, $option, $key)
+		}
+	};
+}
+
+macro_rules! match_key_int {
+	($out:ident, $option:expr, $key:literal) => {
+		if let Some(value) = $option {
+			$out.insert($key.into(), value.to_int().to_string());
+		}
+	};
+
+	($out:ident, $option:expr, $key:literal, $version:expr) => {
+		if $version {
+			match_key_int!($out, $option, $key)
+		}
+	};
+}
+
 /// Write options options to a list of keys
+#[rustfmt::skip]
 pub fn create_keys(
 	options: &ClientOptions,
 	version_info: &VersionInfo,
@@ -149,85 +178,31 @@ pub fn create_keys(
 
 	let stream_options_enabled = after_13w47a && before_15w31a;
 
-	if let Some(value) = options.data_version {
-		out.insert("version".into(), value.to_string());
-	}
-	if let Some(value) = options.control.auto_jump {
-		out.insert("autoJump".into(), value.to_string());
-	}
-	if let Some(value) = options.video.fullscreen {
-		out.insert("fullscreen".into(), value.to_string());
-	}
-	if let Some(value) = options.chat.auto_command_suggestions {
-		if after_17w47a {
-			out.insert("autoSuggestions".into(), value.to_string());
-		}
-	}
-	if let Some(value) = options.chat.enable_colors {
-		out.insert("chatColors".into(), value.to_string());
-	}
-	if let Some(value) = options.chat.enable_links {
-		out.insert("chatLinks".into(), value.to_string());
-	}
-	if let Some(value) = options.chat.prompt_links {
-		out.insert("chatLinksPrompt".into(), value.to_string());
-	}
-	if let Some(value) = options.video.vsync {
-		out.insert("enableVsync".into(), value.to_string());
-	}
-	if let Some(value) = options.video.entity_shadows {
-		out.insert("entityShadows".into(), value.to_string());
-	}
-	if let Some(value) = options.chat.force_unicode {
-		out.insert("forceUnicodeFont".into(), value.to_string());
-	}
-	if let Some(value) = options.control.discrete_mouse_scroll {
-		out.insert("discrete_mouse_scroll".into(), value.to_string());
-	}
-	if let Some(value) = options.control.invert_mouse_y {
-		out.insert("invertYMouse".into(), value.to_string());
-	}
-	if let Some(value) = options.realms_notifications {
-		out.insert("realmsNotifications".into(), value.to_string());
-	}
-	if let Some(value) = options.reduced_debug_info {
-		out.insert("reducedDebugInfo".into(), value.to_string());
-	}
-	if let Some(value) = options.sound.show_subtitles {
-		out.insert("showSubtitles".into(), value.to_string());
-	}
-	if let Some(value) = options.sound.directional_audio {
-		if after_22w11a {
-			out.insert("directionalAudio".into(), value.to_string());
-		}
-	}
-	if let Some(value) = options.control.enable_touchscreen {
-		out.insert("touchscreen".into(), value.to_string());
-	}
-	if let Some(value) = options.video.view_bobbing {
-		out.insert("bobView".into(), value.to_string());
-	}
-	if let Some(value) = options.control.toggle_crouch {
-		out.insert("toggleCrouch".into(), value.to_string());
-	}
-	if let Some(value) = options.control.toggle_sprint {
-		out.insert("toggleSprint".into(), value.to_string());
-	}
-	if let Some(value) = options.video.dark_mojang_background {
-		if after_21w13a {
-			out.insert("darkMojangStudiosBackground".into(), value.to_string());
-		}
-	}
+	match_key!(out, options.data_version, "version");
+	match_key!(out, options.control.auto_jump, "autoJump");
+	match_key!(out, options.video.fullscreen, "fullscreen");
+	match_key!(out, options.chat.auto_command_suggestions, "autoSuggestions", after_17w47a);
+	match_key!(out, options.chat.enable_colors, "chatColors");
+	match_key!(out, options.chat.enable_links, "chatLinks");
+	match_key!(out, options.chat.prompt_links, "chatLinksPrompt");
+	match_key!(out, options.video.vsync, "enableVsync");
+	match_key!(out, options.video.entity_shadows, "entityShadows");
+	match_key!(out, options.chat.force_unicode, "forceUnicodeFont");
+	match_key!(out, options.control.discrete_mouse_scroll, "discrete_mouse_scroll");
+	match_key!(out, options.control.invert_mouse_y, "invertYMouse");
+	match_key!(out, options.realms_notifications, "realmsNotifications");
+	match_key!(out, options.reduced_debug_info, "reducedDebugInfo");
+	match_key!(out, options.sound.show_subtitles, "showSubtitles");
+	match_key!(out, options.sound.directional_audio, "directionalAudio", after_22w11a);
+	match_key!(out, options.control.enable_touchscreen, "touchscreen");
+	match_key!(out, options.video.view_bobbing, "bobView");
+	match_key!(out, options.control.toggle_crouch, "toggleCrouch");
+	match_key!(out, options.control.toggle_sprint, "toggleSprint");
+	match_key!(out, options.video.dark_mojang_background, "darkMojangStudiosBackground", after_21w13a);	
 	if after_21w37a {
-		if let Some(value) = options.video.hide_lightning_flashes {
-			out.insert("hideLightningFlashes".into(), value.to_string());
-		}
-		if let Some(value) = &options.video.chunk_updates_mode {
-			out.insert("prioritizeChunkUpdates".into(), value.to_int().to_string());
-		}
-		if let Some(device) = &options.sound.device {
-			out.insert("soundDevice".into(), device.clone());
-		}
+		match_key!(out, options.video.hide_lightning_flashes, "hideLightningFlashes");
+		match_key!(out, &options.sound.device, "soundDevice");
+		match_key_int!(out, &options.video.chunk_updates_mode, "prioritizeChunkUpdates");
 	}
 	if let Some(value) = options.control.mouse_sensitivity {
 		out.insert(
@@ -238,43 +213,19 @@ pub fn create_keys(
 	if let Some(value) = options.video.fov {
 		out.insert("fov".into(), convert_fov(value).to_string());
 	}
-	if let Some(value) = options.video.screen_effect_scale {
-		out.insert("screenEffectScale".into(), value.to_string());
-	}
-	if let Some(value) = options.video.fov_effect_scale {
-		out.insert("fovEffectScale".into(), value.to_string());
-	}
-	if let Some(value) = options.video.darkness_effect_scale {
-		if after_22w15a {
-			out.insert("darknessEffectScale".into(), value.to_string());
-		}
-	}
-	if let Some(value) = options.video.brightness {
-		out.insert("gamma".into(), value.to_string());
-	}
-	if let Some(value) = options.video.render_distance {
-		out.insert("renderDistance".into(), value.to_string());
-	}
-	if let Some(value) = options.video.simulation_distance {
-		if after_21w38a {
-			out.insert("simulationDistance".into(), value.to_string());
-		}
-	}
-	if let Some(value) = options.video.entity_distance_scaling {
-		out.insert("entityDistanceScaling".into(), value.to_string());
-	}
-	if let Some(value) = options.video.gui_scale {
-		out.insert("guiScale".into(), value.to_string());
-	}
+	match_key!(out, options.video.screen_effect_scale, "screenEffectScale");
+	match_key!(out, options.video.fov_effect_scale, "fovEffectScale");
+	match_key!(out, options.video.darkness_effect_scale, "darknessEffectScale", after_22w15a);
+	match_key!(out, options.video.brightness, "gamma");
+	match_key!(out, options.video.render_distance, "renderDistance");
+	match_key!(out, options.video.simulation_distance, "simulationDistance", after_21w38a);
+	match_key!(out, options.video.entity_distance_scaling, "entityDistanceScaling");
+	match_key!(out, options.video.gui_scale, "guiScale");
 	if let Some(value) = &options.video.particles {
 		out.insert("particles".into(), value.to_int().to_string());
 	}
-	if let Some(value) = options.video.max_fps {
-		out.insert("maxFps".into(), value.to_string());
-	}
-	if let Some(value) = &options.difficulty {
-		out.insert("difficulty".into(), value.to_int().to_string());
-	}
+	match_key!(out, options.video.max_fps, "maxFps");
+	match_key_int!(out, &options.difficulty, "difficulty");
 	if let Some(value) = &options.video.graphics_mode {
 		if before_20w27a {
 			out.insert(
@@ -290,14 +241,8 @@ pub fn create_keys(
 			out.insert("graphicsMode".into(), value.to_int().to_string());
 		}
 	}
-	if let Some(value) = options.video.smooth_lighting {
-		out.insert("ao".into(), value.to_string());
-	}
-	if let Some(value) = options.video.biome_blend {
-		if after_18w15a {
-			out.insert("biomeBlendRadius".into(), value.to_string());
-		}
-	}
+	match_key!(out, options.video.smooth_lighting, "ao");
+	match_key!(out, options.video.biome_blend, "biomeBlendRadius", after_18w15a);
 	if let Some(value) = &options.video.clouds {
 		if after_14w25a {
 			out.insert("renderClouds".into(), value.to_string());
@@ -311,163 +256,55 @@ pub fn create_keys(
 	if let Some(value) = &options.resource_packs {
 		out.insert("resourcePacks".into(), write_resource_packs(value));
 	}
-	if let Some(value) = &options.language {
-		out.insert("lang".into(), value.clone());
-	}
-	if let Some(value) = &options.chat.visibility {
-		out.insert("chatVisibility".into(), value.to_int().to_string());
-	}
-	if let Some(value) = options.chat.opacity {
-		out.insert("chatOpacity".into(), value.to_string());
-	}
-	if let Some(value) = options.chat.line_spacing {
-		out.insert("chatLineSpacing".into(), value.to_string());
-	}
-	if let Some(value) = options.chat.background_opacity {
-		out.insert("textBackgroundOpacity".into(), value.to_string());
-	}
-	if let Some(value) = options.chat.background_for_chat_only {
-		out.insert("backgroundForChatOnly".into(), value.to_string());
-	}
-	if let Some(value) = options.hide_server_address {
-		out.insert("hideServerAddress".into(), value.to_string());
-	}
-	if let Some(value) = options.advanced_item_tooltips {
-		out.insert("advancedItemTooltips".into(), value.to_string());
-	}
-	if let Some(value) = options.pause_on_lost_focus {
-		out.insert("pauseOnLostFocus".into(), value.to_string());
-	}
-	if let Some(value) = options.video.window_width {
-		out.insert("overrideWidth".into(), value.to_string());
-	}
-	if let Some(value) = options.video.window_height {
-		out.insert("overrideHeight".into(), value.to_string());
-	}
-	if let Some(value) = options.held_item_tooltips {
-		if after_12w50a && before_1_19_4 {
-			out.insert("heldItemTooltips".into(), value.to_string());
-		}
-	}
-	if let Some(value) = options.chat.focused_height {
-		out.insert("chatHeightFocused".into(), value.to_string());
-	}
-	if let Some(value) = options.chat.delay {
-		out.insert("chatDelay".into(), value.to_string());
-	}
-	if let Some(value) = options.chat.unfocused_height {
-		out.insert("chatHeightUnfocused".into(), value.to_string());
-	}
-	if let Some(value) = options.chat.scale {
-		out.insert("chatScale".into(), value.to_string());
-	}
-	if let Some(value) = options.chat.width {
-		out.insert("chatWidth".into(), value.to_string());
-	}
-	if let Some(value) = options.video.mipmap_levels {
-		out.insert("mipmapLevels".into(), value.to_string());
-	}
-	if let Some(value) = options.use_native_transport {
-		out.insert("useNativeTransport".into(), value.to_string());
-	}
-	if let Some(value) = &options.main_hand {
-		out.insert("mainHand".into(), value.to_string());
-	}
+	match_key!(out, &options.language, "lang");
+	match_key_int!(out, &options.chat.visibility, "chatVisibility");
+	match_key!(out, options.chat.opacity, "chatOpacity");
+	match_key!(out, options.chat.line_spacing, "chatLineSpacing");
+	match_key!(out, options.chat.background_opacity, "textBackgroundOpacity");
+	match_key!(out, options.chat.background_for_chat_only, "backgroundForChatOnly");
+	match_key!(out, options.hide_server_address, "hideServerAddress");
+	match_key!(out, options.advanced_item_tooltips, "advancedItemTooltips");
+	match_key!(out, options.pause_on_lost_focus, "pauseOnLostFocus");
+	match_key!(out, options.video.window_width, "overrideWidth");
+	match_key!(out, options.video.window_height, "overrideHeight");
+	match_key!(out, options.held_item_tooltips, "heldItemTooltips", after_12w50a && before_1_19_4);
+	match_key!(out, options.chat.focused_height, "chatHeightFocused");
+	match_key!(out, options.chat.delay, "chatDelay");
+	match_key!(out, options.chat.unfocused_height, "chatHeightUnfocused");
+	match_key!(out, options.chat.scale, "chatScale");
+	match_key!(out, options.chat.width, "chatWidth");
+	match_key!(out, options.video.mipmap_levels, "mipmapLevels");
+	match_key!(out, options.use_native_transport, "useNativeTransport");
+	match_key!(out, &options.main_hand, "mainHand");
 	if after_17w06a {
-		if let Some(value) = &options.chat.narrator_mode {
-			out.insert("narrator".into(), value.to_int().to_string());
-		}
-		if let Some(value) = &options.tutorial_step {
-			out.insert("tutorialStep".into(), value.to_string());
-		}
+		match_key_int!(out, &options.chat.narrator_mode, "narrator");
+		match_key!(out, &options.tutorial_step, "tutorialStep");
 	}
-	if let Some(value) = options.control.mouse_wheel_sensitivity {
-		if after_18w21a {
-			out.insert("mouseWheelSensitivity".into(), value.to_string());
-		}
-	}
-	if let Some(value) = options.control.raw_mouse_input {
-		out.insert("rawMouseInput".into(), value.to_string());
-	}
-	if let Some(value) = &options.log_level {
-		if after_1_13_pre2 {
-			out.insert("glDebugVerbosity".into(), value.to_int().to_string());
-		}
-	}
-	if let Some(value) = options.skip_multiplayer_warning {
-		if after_1_15_2_pre1 {
-			out.insert("skipMultiplayerWarning".into(), value.to_string());
-		}
-	}
-	if let Some(value) = options.skip_realms_32_bit_warning {
-		if after_1_18_2_pre1 {
-			out.insert("skipRealms32bitWarning".into(), value.to_string());
-		}
-	}
-	if after_1_16_4_rc1 {
-		if let Some(value) = options.hide_matched_names {
-			out.insert("hideMatchedNames".into(), value.to_string());
-		}
-		if let Some(value) = options.joined_server {
-			out.insert("joinedFirstServer".into(), value.to_string());
-		}
-	}
-	if let Some(value) = options.hide_bundle_tutorial {
-		out.insert("hideBundleTutorial".into(), value.to_string());
-	}
-	if let Some(value) = options.sync_chunk_writes {
-		out.insert("syncChunkWrites".into(), value.to_string());
-	}
-	if let Some(value) = options.show_autosave_indicator {
-		if after_21w42a {
-			out.insert("showAutosaveIndicator".into(), value.to_string());
-		}
-	}
-	if let Some(value) = options.allow_server_listing {
-		if after_1_18_pre2 {
-			out.insert("allowServerListing".into(), value.to_string());
-		}
-	}
-	if let Some(value) = options.snooper_enabled {
-		if before_21w43a {
-			out.insert("snooperEnabled".into(), value.to_string());
-		}
-	}
+	match_key!(out, options.control.mouse_wheel_sensitivity, "mouseWheelSensitivity", after_18w21a);
+	match_key!(out, options.control.raw_mouse_input, "rawMouseInput");
+	match_key_int!(out, &options.log_level, "glDebugVerbosity", after_1_13_pre2);
+	match_key!(out, options.skip_multiplayer_warning, "skipMultiplayerWarning", after_1_15_2_pre1);
+	match_key!(out, options.skip_realms_32_bit_warning, "skipRealms32bitWarning", after_1_18_2_pre1);
+	match_key!(out, options.hide_matched_names, "hideMatchedNames", after_1_16_4_rc1);
+	match_key!(out, options.joined_server, "joinedFirstServer", after_1_16_4_rc1);
+	match_key!(out, options.hide_bundle_tutorial, "hideBundleTutorial");
+	match_key!(out, options.sync_chunk_writes, "syncChunkWrites");
+	match_key!(out, options.show_autosave_indicator, "showAutosaveIndicator", after_21w42a);
+	match_key!(out, options.allow_server_listing, "allowServerListing", after_1_18_pre2);
+	match_key!(out, options.snooper_enabled, "snooperEnabled", before_21w43a);
 	if stream_options_enabled {
-		if let Some(value) = options.stream.bytes_per_pixel {
-			out.insert("streamBytesPerPixel".into(), value.to_string());
-		}
-		if let Some(value) = options.stream.chat_enabled {
-			out.insert("streamChatEnabled".into(), (value as i32).to_string());
-		}
-		if let Some(value) = options.stream.chat_filter {
-			out.insert("streamChatUserFilter".into(), (value as i32).to_string());
-		}
-		if let Some(value) = options.stream.compression {
-			out.insert("streamCompression".into(), (value as i32).to_string());
-		}
-		if let Some(value) = options.stream.fps {
-			out.insert("streamFps".into(), value.to_string());
-		}
-		if let Some(value) = options.stream.bitrate {
-			out.insert("streamKbps".into(), value.to_string());
-		}
-		if let Some(value) = options.stream.microphone_toggle_behavior {
-			out.insert("streamMicToggleBehavior".into(), (value as i32).to_string());
-		}
-		if let Some(value) = options.stream.microphone_volume {
-			out.insert("streamMicVolume".into(), value.to_string());
-		}
-		if let Some(value) = &options.stream.preferred_server {
-			out.insert("streamKbps".into(), value.clone());
-		}
-		// No idea why this one is suddenly true/false instead of 1/0 but the wiki says so
-		if let Some(value) = options.stream.send_metadata {
-			out.insert("streamSendMetadata".into(), value.to_string());
-		}
-		if let Some(value) = options.stream.system_volume {
-			out.insert("streamSystemVolume".into(), value.to_string());
-		}
+		match_key!(out, options.stream.bytes_per_pixel, "streamBytesPerPixel");
+		match_key_int!(out, options.stream.chat_enabled, "streamChatEnabled");
+		match_key_int!(out, options.stream.chat_filter, "streamChatUserFilter");
+		match_key_int!(out, options.stream.compression, "streamCompression");
+		match_key!(out, options.stream.bytes_per_pixel, "streamBytesPerPixel");
+		match_key!(out, options.stream.fps, "streamFps");
+		match_key!(out, options.stream.bitrate, "streamKbps");
+		match_key_int!(out, options.stream.microphone_toggle_behavior, "streamMicToggleBehavior");
+		match_key!(out, options.stream.microphone_volume, "streamMicVolume");
+		match_key!(out, &options.stream.preferred_server, "streamPreferredServer");
+		match_key!(out, options.stream.send_metadata, "streamSendMetadata");
+		match_key!(out, options.stream.system_volume, "streamSystemVolume");
 	}
 
 	// Keybinds

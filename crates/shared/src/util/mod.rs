@@ -160,6 +160,12 @@ pub trait ToInt {
 	fn to_int(&self) -> i32;
 }
 
+impl ToInt for bool {
+	fn to_int(&self) -> i32 {
+		*self as i32
+	}
+}
+
 // Command for opening links
 cfg_match! {
 	target_os = "linux" => {
