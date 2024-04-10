@@ -16,6 +16,7 @@ use mcvm_shared::later::Later;
 
 use std::collections::HashSet;
 use std::fs;
+use std::future::Future;
 use std::path::PathBuf;
 
 use self::core::get_core_package;
@@ -184,6 +185,29 @@ impl Package {
 			};
 		}
 		Ok(())
+	}
+
+	/// Returns a task that download's the package file if necessary. This will not
+	/// update the contents and is only useful when doing repo resyncs
+	pub fn get_download_task(
+		&self,
+		paths: &Paths,
+		force: bool,
+		client: &Client,
+	) -> Option<impl Future<Output = anyhow::Result<()>> + 'static> {
+		if let PkgLocation::Remote(url) = &self.location {
+			let path = self.cached_path(paths);
+			if force || !path.exists() {
+				let url = url
+					.as_ref()
+					.expect("URL for remote package missing")
+					.clone();
+				let client = client.clone();
+				return Some(async move { download::file(url, path, &client).await });
+			}
+		}
+
+		None
 	}
 
 	/// Parse the contents of the package

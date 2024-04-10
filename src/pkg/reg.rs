@@ -12,6 +12,7 @@ use reqwest::Client;
 #[cfg(feature = "schema")]
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use tokio::task::JoinSet;
 
 use super::eval::{EvalData, EvalInput, Routine};
 use super::repo::{query_all, PkgRepo};
@@ -310,13 +311,22 @@ impl PkgRegistry {
 			.await
 			.context("Failed to remove all cached packages")?;
 
+		// Redownload all the packages
 		if let CachingStrategy::All = self.caching_strategy {
+			let mut tasks = JoinSet::new();
 			for package in packages {
-				self.ensure_package(&package, paths, client, o)
+				let pkg = self
+					.get(&package, paths, client, o)
 					.await
-					.with_context(|| {
-						format!("Failed to get cached contents of package '{package}'")
-					})?;
+					.with_context(|| format!("Failed to get package {package}"))?;
+				let task = pkg.get_download_task(paths, true, client);
+				if let Some(task) = task {
+					tasks.spawn(task);
+				}
+			}
+
+			while let Some(res) = tasks.join_next().await {
+				res??;
 			}
 		}
 
