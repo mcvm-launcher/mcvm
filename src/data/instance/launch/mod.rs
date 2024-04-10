@@ -103,7 +103,7 @@ pub struct LaunchOptions {
 }
 
 /// A wrapper command
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 pub struct WrapperCommand {
 	/// The command to run

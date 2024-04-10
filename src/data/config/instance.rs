@@ -7,7 +7,7 @@ use mcvm_core::io::java::install::JavaInstallationKind;
 use mcvm_options::client::ClientOptions;
 use mcvm_options::server::ServerOptions;
 use mcvm_shared::pkg::PackageStability;
-use mcvm_shared::util::merge_options;
+use mcvm_shared::util::{merge_options, DefaultExt};
 use mcvm_shared::Side;
 #[cfg(feature = "schema")]
 use schemars::JsonSchema;
@@ -87,51 +87,64 @@ pub enum FullInstanceConfig {
 	Client {
 		/// Launch configuration
 		#[serde(default)]
+		#[serde(skip_serializing_if = "DefaultExt::is_default")]
 		launch: LaunchConfig,
 		/// Game options
 		#[serde(default)]
+		#[serde(skip_serializing_if = "Option::is_none")]
 		options: Option<Box<ClientOptions>>,
 		/// Window configuration
 		#[serde(default)]
+		#[serde(skip_serializing_if = "DefaultExt::is_default")]
 		window: ClientWindowConfig,
 		/// An instance preset to use
 		#[serde(default)]
+		#[serde(skip_serializing_if = "Option::is_none")]
 		preset: Option<String>,
 		/// The folder for global datapacks to be installed to
 		#[serde(default)]
+		#[serde(skip_serializing_if = "Option::is_none")]
 		datapack_folder: Option<String>,
 		/// Options for snapshot config
 		#[serde(default)]
+		#[serde(skip_serializing_if = "Option::is_none")]
 		snapshots: Option<snapshot::Config>,
 		/// Packages for this instance
 		#[serde(default)]
+		#[serde(skip_serializing_if = "Vec::is_empty")]
 		packages: Vec<PackageConfigDeser>,
 	},
 	/// Config for the server
 	Server {
 		/// Launch configuration
 		#[serde(default)]
+		#[serde(skip_serializing_if = "DefaultExt::is_default")]
 		launch: LaunchConfig,
 		/// Game options
 		#[serde(default)]
+		#[serde(skip_serializing_if = "Option::is_none")]
 		options: Option<Box<ServerOptions>>,
 		/// An instance preset to use
 		#[serde(default)]
+		#[serde(skip_serializing_if = "Option::is_none")]
 		preset: Option<String>,
 		/// The folder for global datapacks to be installed to
 		#[serde(default)]
+		#[serde(skip_serializing_if = "Option::is_none")]
 		datapack_folder: Option<String>,
 		/// Options for snapshot config
 		#[serde(default)]
+		#[serde(skip_serializing_if = "Option::is_none")]
 		snapshots: Option<snapshot::Config>,
 		/// Packages for this instance
 		#[serde(default)]
+		#[serde(skip_serializing_if = "Vec::is_empty")]
 		packages: Vec<PackageConfigDeser>,
 	},
 }
 
 /// Different representations for JVM / game arguments
-#[derive(Deserialize, Serialize, Debug, Clone)]
+#[derive(Deserialize, Serialize, Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(untagged)]
 pub enum Args {
@@ -165,19 +178,21 @@ impl Default for Args {
 }
 
 /// Arguments for the process when launching
-#[derive(Deserialize, Serialize, Debug, Default, Clone)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 pub struct LaunchArgs {
 	/// Arguments for the JVM
 	#[serde(default)]
+	#[serde(skip_serializing_if = "DefaultExt::is_default")]
 	pub jvm: Args,
 	/// Arguments for the game
 	#[serde(default)]
+	#[serde(skip_serializing_if = "DefaultExt::is_default")]
 	pub game: Args,
 }
 
 /// Different representations of both memory arguments for the JVM
-#[derive(Deserialize, Serialize, Debug, Default, Clone)]
+#[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(untagged)]
 pub enum LaunchMemory {
@@ -241,14 +256,16 @@ pub enum QuickPlay {
 }
 
 /// Configuration for the launching of the game
-#[derive(Deserialize, Serialize, Debug, Clone)]
+#[derive(Deserialize, Serialize, Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 pub struct LaunchConfig {
 	/// The arguments for the process
 	#[serde(default)]
+	#[serde(skip_serializing_if = "DefaultExt::is_default")]
 	pub args: LaunchArgs,
 	/// JVM memory options
 	#[serde(default)]
+	#[serde(skip_serializing_if = "DefaultExt::is_default")]
 	pub memory: LaunchMemory,
 	/// The java installation to use
 	#[serde(default = "default_java")]
@@ -258,15 +275,19 @@ pub struct LaunchConfig {
 	pub preset: String,
 	/// Environment variables
 	#[serde(default)]
+	#[serde(skip_serializing_if = "HashMap::is_empty")]
 	pub env: HashMap<String, String>,
 	/// A wrapper command
 	#[serde(default)]
+	#[serde(skip_serializing_if = "Option::is_none")]
 	pub wrapper: Option<WrapperCommand>,
 	/// QuickPlay options
 	#[serde(default)]
+	#[serde(skip_serializing_if = "DefaultExt::is_default")]
 	pub quick_play: QuickPlay,
 	/// Whether or not to use the Log4J configuration
 	#[serde(default)]
+	#[serde(skip_serializing_if = "DefaultExt::is_default")]
 	pub use_log4j_config: bool,
 }
 
@@ -347,7 +368,7 @@ impl Default for LaunchConfig {
 }
 
 /// Resolution for a client window
-#[derive(Deserialize, Serialize, Clone, Debug, Copy)]
+#[derive(Deserialize, Serialize, Clone, Debug, Copy, PartialEq)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 pub struct WindowResolution {
 	/// The width of the window
@@ -357,11 +378,12 @@ pub struct WindowResolution {
 }
 
 /// Configuration for the client window
-#[derive(Deserialize, Serialize, Default, Clone, Debug)]
+#[derive(Deserialize, Serialize, Default, Clone, Debug, PartialEq)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(default)]
 pub struct ClientWindowConfig {
 	/// The resolution of the window
+	#[serde(skip_serializing_if = "Option::is_none")]
 	pub resolution: Option<WindowResolution>,
 }
 

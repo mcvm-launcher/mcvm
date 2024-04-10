@@ -351,6 +351,18 @@ impl<'a, T> Iterator for DeserListOrSingleIter<'a, T> {
 	}
 }
 
+/// Extension trait for Default
+pub trait DefaultExt {
+	/// Check if the value is equal to it's default value
+	fn is_default(&self) -> bool;
+}
+
+impl<T: Default + PartialEq> DefaultExt for T {
+	fn is_default(&self) -> bool {
+		self == &Self::default()
+	}
+}
+
 #[cfg(test)]
 mod tests {
 	use super::*;

@@ -40,7 +40,7 @@ pub fn read_options_file(
 }
 
 /// Used for both difficulty and gamemode to have compatability with different versions
-#[derive(Deserialize, Serialize, Debug, Clone)]
+#[derive(Deserialize, Serialize, Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(untagged)]
 pub enum EnumOrNumber<T> {
@@ -71,7 +71,7 @@ impl<T: ToInt> ToInt for EnumOrNumber<T> {
 }
 
 /// Allow an enum or custom string
-#[derive(Deserialize, Serialize, Debug, Clone)]
+#[derive(Deserialize, Serialize, Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(untagged)]
 pub enum EnumOrString<T> {
