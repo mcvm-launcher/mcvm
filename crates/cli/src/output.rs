@@ -142,11 +142,20 @@ impl TerminalOutput {
 			MessageContents::Header(text) => cformat!("<s>{}", text),
 			MessageContents::StartProcess(text) => cformat!("{text}..."),
 			MessageContents::Associated(item, message) => {
-				cformat!(
-					"({}) {}",
-					Self::format_message(*item),
-					Self::format_message(*message)
-				)
+				// Don't parenthesize progress bars
+				if let MessageContents::Progress { .. } = item.as_ref() {
+					cformat!(
+						"{} {}",
+						Self::format_message(*item),
+						Self::format_message(*message)
+					)
+				} else {
+					cformat!(
+						"({}) {}",
+						Self::format_message(*item),
+						Self::format_message(*message)
+					)
+				}
 			}
 			MessageContents::Package(pkg, message) => {
 				let pkg_disp = disp_pkg_request_with_colors(pkg);
@@ -162,12 +171,12 @@ impl TerminalOutput {
 					current,
 					total,
 					ProgressBarSettings {
-						len: 8,
+						len: 14,
 						full: "=",
 						empty: "-",
 					},
 				);
-				cformat!("[<b>{}</>{}]", full, empty)
+				cformat!("<s>[</><b>{}</>{}<s>]</>", full, empty)
 			}
 			contents => contents.default_format(),
 		}
