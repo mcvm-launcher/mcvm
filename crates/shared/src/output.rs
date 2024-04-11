@@ -1,7 +1,7 @@
 use anyhow::bail;
 use serde::{Deserialize, Serialize};
 
-use crate::pkg::PkgRequest;
+use crate::{lang::translate::TranslationKey, pkg::PkgRequest};
 
 /// Trait for a type that can output information about MCVM processes
 pub trait MCVMOutput {
@@ -47,6 +47,11 @@ pub trait MCVMOutput {
 	/// Offer a new password / secret prompt
 	fn prompt_new_password(&mut self, message: MessageContents) -> anyhow::Result<String> {
 		self.prompt_password(message)
+	}
+
+	/// Get the translation for the specified key
+	fn translate(&self, key: TranslationKey) -> &str {
+		key.get_default()
 	}
 
 	// Specialized implementations for certain combinations of messages.

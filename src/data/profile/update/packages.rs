@@ -6,8 +6,10 @@ use itertools::Itertools;
 use mcvm_core::net::download::get_transfer_limit;
 use mcvm_pkg::repo::PackageFlag;
 use mcvm_pkg::PkgRequest;
+use mcvm_shared::lang::translate::TranslationKey;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::pkg::{ArcPkgReq, PackageID};
+use mcvm_shared::translate;
 use mcvm_shared::versions::VersionInfo;
 use tokio::sync::Semaphore;
 use tokio::task::JoinSet;
@@ -31,21 +33,21 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 	// Resolve dependencies
 	ctx.output.start_process();
 	ctx.output.display(
-		MessageContents::StartProcess("Resolving package dependencies".into()),
+		MessageContents::StartProcess(translate!(ctx.output, StartResolvingDependencies)),
 		MessageLevel::Important,
 	);
 	let resolved_packages = resolve_and_batch(profile, constants, ctx)
 		.await
 		.context("Failed to resolve dependencies for profile")?;
 	ctx.output.display(
-		MessageContents::Success("Dependencies resolved".into()),
+		MessageContents::Success(translate!(ctx.output, FinishResolvingDependencies)),
 		MessageLevel::Important,
 	);
 	ctx.output.end_process();
 
 	// Evaluate first to install all of the addons
 	ctx.output.display(
-		MessageContents::StartProcess("Acquiring addons".into()),
+		MessageContents::StartProcess(translate!(ctx.output, StartAcquiringAddons)),
 		MessageLevel::Important,
 	);
 	let mut tasks = HashMap::new();
@@ -115,13 +117,13 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 		.context("Failed to acquire addons")?;
 
 	ctx.output.display(
-		MessageContents::Success("Addons acquired".into()),
+		MessageContents::Success(translate!(ctx.output, FinishAcquiringAddons)),
 		MessageLevel::Important,
 	);
 
 	// Install each package one after another onto all of its instances
 	ctx.output.display(
-		MessageContents::StartProcess("Installing packages".into()),
+		MessageContents::StartProcess(translate!(ctx.output, StartInstallingPackages)),
 		MessageLevel::Important,
 	);
 	for (package, package_instances) in resolved_packages
@@ -160,7 +162,7 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 			format_package_update_message(
 				package,
 				None,
-				MessageContents::Success("Installed".into()),
+				MessageContents::Success(translate!(ctx.output, FinishInstallingPackages)),
 			),
 			MessageLevel::Important,
 		);
@@ -305,28 +307,28 @@ async fn check_package<'a, O: MCVMOutput>(
 		.context("Failed to get flags for package")?;
 	if flags.contains(&PackageFlag::OutOfDate) {
 		ctx.output.display(
-			MessageContents::Warning(format!("Package {pkg} has been flagged as out of date")),
+			MessageContents::Warning(translate!(ctx.output, PackageOutOfDate, "pkg" = &pkg.id)),
 			MessageLevel::Important,
 		);
 	}
 
 	if flags.contains(&PackageFlag::Deprecated) {
 		ctx.output.display(
-			MessageContents::Warning(format!("Package {pkg} has been flagged as deprecated")),
+			MessageContents::Warning(translate!(ctx.output, PackageDeprecated, "pkg" = &pkg.id)),
 			MessageLevel::Important,
 		);
 	}
 
 	if flags.contains(&PackageFlag::Insecure) {
 		ctx.output.display(
-			MessageContents::Error(format!("Package {pkg} has been flagged as insecure")),
+			MessageContents::Error(translate!(ctx.output, PackageInsecure, "pkg" = &pkg.id)),
 			MessageLevel::Important,
 		);
 	}
 
 	if flags.contains(&PackageFlag::Malicious) {
 		ctx.output.display(
-			MessageContents::Error(format!("Package {pkg} has been flagged as malicious")),
+			MessageContents::Error(translate!(ctx.output, PackageMalicious, "pkg" = &pkg.id)),
 			MessageLevel::Important,
 		);
 	}
@@ -355,7 +357,7 @@ pub async fn print_package_support_messages<'a, O: MCVMOutput>(
 	}
 	if !links.is_empty() {
 		ctx.output.display(
-			MessageContents::Header("Packages to consider supporting:".into()),
+			MessageContents::Header(translate!(ctx.output, PackageSupportHeader)),
 			MessageLevel::Important,
 		);
 		for (req, link) in links {

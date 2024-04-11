@@ -9,8 +9,10 @@ use mcvm_core::launch::{
 };
 use mcvm_core::user::UserManager;
 use mcvm_mods::paper;
+use mcvm_shared::lang::translate::TranslationKey;
 use mcvm_shared::modifications::Proxy;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
+use mcvm_shared::translate;
 use reqwest::Client;
 
 use crate::io::files::paths::Paths;
@@ -28,7 +30,7 @@ impl Profile {
 	) -> anyhow::Result<()> {
 		o.start_process();
 		o.display(
-			MessageContents::StartProcess("Checking for proxy updates".into()),
+			MessageContents::StartProcess(translate!(o, StartUpdatingProxy)),
 			MessageLevel::Important,
 		);
 
@@ -58,7 +60,7 @@ impl Profile {
 		}
 
 		o.display(
-			MessageContents::Success("Proxy updated".into()),
+			MessageContents::Success(translate!(o, FinishUpdatingProxy)),
 			MessageLevel::Important,
 		);
 		o.end_process();
@@ -74,12 +76,6 @@ impl Profile {
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Option<Child>> {
 		// Check for updates first
-
-		o.start_process();
-		o.display(
-			MessageContents::StartProcess("Checking for proxy updates".into()),
-			MessageLevel::Important,
-		);
 		let mut manager = UpdateManager::new(false, true);
 		manager
 			.fulfill_requirements(
@@ -95,13 +91,7 @@ impl Profile {
 			.context("Failed to check for proxy updates")?;
 
 		o.display(
-			MessageContents::Success("Proxy updated".into()),
-			MessageLevel::Important,
-		);
-		o.end_process();
-
-		o.display(
-			MessageContents::Simple("Launching!".into()),
+			MessageContents::Simple(translate!(o, Launch)),
 			MessageLevel::Important,
 		);
 

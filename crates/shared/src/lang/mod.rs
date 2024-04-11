@@ -1,3 +1,6 @@
+/// Translation for multiple languages
+pub mod translate;
+
 #[cfg(feature = "schema")]
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};

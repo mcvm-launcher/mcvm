@@ -5,6 +5,7 @@ pub mod packages;
 
 #[cfg(not(feature = "disable_profile_update_packages"))]
 use crate::pkg::eval::EvalConstants;
+use mcvm_shared::translate;
 #[cfg(not(feature = "disable_profile_update_packages"))]
 use packages::{print_package_support_messages, update_profile_packages};
 #[cfg(not(feature = "disable_profile_update_packages"))]
@@ -12,6 +13,7 @@ use std::collections::HashSet;
 
 use anyhow::{anyhow, Context};
 use mcvm_mods::paper;
+use mcvm_shared::lang::translate::TranslationKey;
 use mcvm_shared::modifications::ServerType;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use reqwest::Client;
@@ -72,7 +74,7 @@ pub async fn update_profiles(
 			.ok_or(anyhow!("Unknown profile '{id}'"))?;
 
 		ctx.output.display(
-			MessageContents::Header(format!("Updating profile {id}")),
+			MessageContents::Header(translate!(ctx.output, StartUpdatingProfile, "prof" = id)),
 			MessageLevel::Important,
 		);
 
@@ -115,7 +117,7 @@ pub async fn update_profiles(
 					.context("Failed to create profile instances")?;
 
 				ctx.output.display(
-					MessageContents::Header("Updating packages".into()),
+					MessageContents::Header(translate!(ctx.output, StartUpdatingPackages)),
 					MessageLevel::Important,
 				);
 
@@ -131,7 +133,7 @@ pub async fn update_profiles(
 					update_profile_packages(profile, &constants, &mut ctx, force).await?;
 
 				ctx.output.display(
-					MessageContents::Success("All packages installed".into()),
+					MessageContents::Success(translate!(ctx.output, FinishUpdatingPackages)),
 					MessageLevel::Important,
 				);
 
@@ -163,7 +165,7 @@ async fn check_profile_version_change<'a, O: MCVMOutput>(
 	if ctx.lock.update_profile_version(&profile.id, mc_version) {
 		ctx.output.start_process();
 		ctx.output.display(
-			MessageContents::StartProcess("Updating profile version".into()),
+			MessageContents::StartProcess(translate!(ctx.output, StartUpdatingProfileVersion)),
 			MessageLevel::Important,
 		);
 
@@ -174,7 +176,7 @@ async fn check_profile_version_change<'a, O: MCVMOutput>(
 		}
 
 		ctx.output.display(
-			MessageContents::Success("Profile version changed".into()),
+			MessageContents::Success(translate!(ctx.output, FinishUpdatingProfileVersion)),
 			MessageLevel::Important,
 		);
 		ctx.output.end_process();
