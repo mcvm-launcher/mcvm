@@ -16,7 +16,9 @@ use mcvm::plugin::hooks;
 use mcvm::shared::later::Later;
 use mcvm::shared::output::{MCVMOutput, MessageContents, MessageLevel};
 
+#[cfg(feature = "docs")]
 use crate::docs::Docs;
+#[cfg(feature = "docs")]
 use crate::output::HYPHEN_POINT;
 
 use self::files::FilesSubcommand;
@@ -76,6 +78,7 @@ pub enum Command {
 		#[command(subcommand)]
 		command: ToolSubcommand,
 	},
+	#[cfg(feature = "docs")]
 	#[command(about = "Get program documentation")]
 	Docs {
 		/// The documentation page to view. If omitted, lists the available pages
@@ -131,6 +134,7 @@ pub async fn run_cli() -> anyhow::Result<()> {
 		Command::Instance { command } => instance::run(command, &mut data).await,
 		Command::Snapshot { command } => snapshot::run(command, &mut data).await,
 		Command::Tool { command } => tool::run(command, &mut data).await,
+		#[cfg(feature = "docs")]
 		Command::Docs { page } => display_docs(page),
 		Command::External(args) => {
 			// Run the plugin subcommand

@@ -13,6 +13,10 @@ categories = ["games", "command-line-utilities"]
 name = "mcvm"
 path = "src/main.rs"
 
+[features]
+default = ["docs"]
+docs = []
+
 [dependencies]
 anyhow = "1.0.70"
 clap = { version = "4.5.4", features = ["derive"] }
@@ -36,4 +40,3 @@ zip = "0.6.4"
 
 [build-dependencies]
 zip = "0.6.4"
-
