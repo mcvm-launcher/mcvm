@@ -31,9 +31,7 @@ Users are defined in the `users` object in the base of the config. User structur
 
 ```
 "id": {
-	"type": "microsoft" | "demo" | "unverified",
-	"name": string,
-	"uuid": string
+	"type": "microsoft" | "demo" | "unverified"
 }
 ```
 
@@ -42,10 +40,8 @@ Users are defined in the `users` object in the base of the config. User structur
   - `"microsoft"`: A normal Minecraft account
   - `"demo"`: An account that owns a demo of the game
   - `"unverified"`: An unverified or 'cracked` account
-- `name`: The username for this user.
-- `uuid` (Optional): The Universally Unique Identifier for this account. Some users may not use this field, but you may get a warning if you don't specify it in the config. This is to prevent username changes from invalidating your user.
 
-There is a field called `default_user` where you should specify which user you are currently using. Otherwise, MCVM will not know which user to start the game with.
+There is a field called `default_user` where you should specify which user you are currently using. Otherwise, MCVM will not know which user to start the game with by default and you will have to specify it every time.
 
 ## Profiles
 

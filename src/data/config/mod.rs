@@ -153,9 +153,6 @@ impl Config {
 			if user.is_unverified() || user.is_demo() {
 				bail!("Unverified and Demo users are currently disabled");
 			}
-			if !user.validate_username() {
-				bail!("Invalid username '{}'", user.get_name());
-			}
 
 			users.add_user(user);
 		}

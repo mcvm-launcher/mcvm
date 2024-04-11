@@ -29,7 +29,7 @@ impl User {
 						.context("Failed to update user authentication")?;
 
 				self.access_token = Some(user_data.access_token);
-				self.name = user_data.profile.name;
+				self.name = Some(user_data.profile.name);
 				self.uuid = Some(user_data.profile.uuid);
 				self.keypair = user_data.keypair;
 				*xbox_uid = user_data.xbox_uid;

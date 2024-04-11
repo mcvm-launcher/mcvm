@@ -22,7 +22,7 @@ pub struct User {
 	/// This user's ID
 	id: String,
 	/// The user's username
-	name: String,
+	name: Option<String>,
 	/// The user's UUID
 	uuid: Option<String>,
 	/// The user's access token
@@ -47,11 +47,11 @@ pub enum UserKind {
 
 impl User {
 	/// Create a new user
-	pub fn new(kind: UserKind, id: &str, name: &str) -> Self {
+	pub fn new(kind: UserKind, id: &str) -> Self {
 		Self {
 			kind,
 			id: id.to_string(),
-			name: name.to_string(),
+			name: None,
 			uuid: None,
 			access_token: None,
 			keypair: None,
@@ -64,8 +64,8 @@ impl User {
 	}
 
 	/// Get the name of this user
-	pub fn get_name(&self) -> &String {
-		&self.name
+	pub fn get_name(&self) -> Option<&String> {
+		self.name.as_ref()
 	}
 
 	/// Checks if this user is a Microsoft user
@@ -120,13 +120,15 @@ impl User {
 	/// Validate the user's username. Returns true if the username is valid,
 	/// and false if it isn't
 	pub fn validate_username(&self) -> bool {
-		if self.name.is_empty() || self.name.len() > 16 {
-			return false;
-		}
-
-		for c in self.name.chars() {
-			if !c.is_ascii_alphanumeric() && c != '_' {
+		if let Some(name) = &self.name {
+			if name.is_empty() || name.len() > 16 {
 				return false;
+			}
+
+			for c in name.chars() {
+				if !c.is_ascii_alphanumeric() && c != '_' {
+					return false;
+				}
 			}
 		}
 
@@ -347,10 +349,10 @@ mod tests {
 	#[test]
 	fn test_user_manager() {
 		let mut users = UserManager::new(ClientId::new(String::new()));
-		let user = User::new(UserKind::Demo, "foo", "Foo");
+		let user = User::new(UserKind::Demo, "foo");
 		users.add_user(user);
 		users.choose_user("foo").expect("Failed to choose user");
-		let user = User::new(UserKind::Demo, "bar", "Bar");
+		let user = User::new(UserKind::Demo, "bar");
 		users.add_user(user);
 		users.remove_user("foo");
 		assert!(!users.is_user_chosen());

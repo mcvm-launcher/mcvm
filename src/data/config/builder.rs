@@ -55,8 +55,8 @@ impl ConfigBuilder {
 	}
 
 	/// Create a UserBuilder
-	pub fn user(&mut self, id: String, name: String, kind: UserBuilderKind) -> UserBuilder {
-		UserBuilder::with_parent(id, name, kind, Some(self))
+	pub fn user(&mut self, id: String, kind: UserBuilderKind) -> UserBuilder {
+		UserBuilder::with_parent(id, kind, Some(self))
 	}
 
 	/// Finish a UserBuilder
@@ -144,37 +144,26 @@ pub struct UserBuilder<'parent> {
 
 impl<'parent> UserBuilder<'parent> {
 	/// Construct a new UserBuilder
-	pub fn new(id: String, name: String, kind: UserBuilderKind) -> Self {
-		Self::with_parent(id, name, kind, None)
+	pub fn new(id: String, kind: UserBuilderKind) -> Self {
+		Self::with_parent(id, kind, None)
 	}
 
 	/// Construct with a parent
 	fn with_parent(
 		id: String,
-		name: String,
 		kind: UserBuilderKind,
 		parent: Option<&'parent mut ConfigBuilder>,
 	) -> Self {
 		let variant = match kind {
-			UserBuilderKind::Microsoft => UserVariant::Microsoft { uuid: None },
-			UserBuilderKind::Demo => UserVariant::Demo { uuid: None },
+			UserBuilderKind::Microsoft => UserVariant::Microsoft {},
+			UserBuilderKind::Demo => UserVariant::Demo {},
 			UserBuilderKind::Unverified => UserVariant::Unverified {},
 		};
 		Self {
 			id,
-			config: UserConfig { name, variant },
+			config: UserConfig { variant },
 			parent,
 		}
-	}
-
-	/// Fill the UUID of the user if it supports it
-	pub fn uuid(&mut self, uuid: String) -> &mut Self {
-		match &mut self.config.variant {
-			UserVariant::Microsoft { uuid: uuid_to_set }
-			| UserVariant::Demo { uuid: uuid_to_set } => *uuid_to_set = Some(uuid),
-			_ => {}
-		}
-		self
 	}
 
 	/// Finish the builder and go to the parent
@@ -639,7 +628,7 @@ mod tests {
 			})
 			.build();
 		config
-			.user("user".into(), "User".into(), UserBuilderKind::Microsoft)
+			.user("user".into(), UserBuilderKind::Microsoft)
 			.build();
 		config.default_user("user".into());
 		let config = config.build().expect("Failed to build config");

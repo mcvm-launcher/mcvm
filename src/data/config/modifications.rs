@@ -81,7 +81,6 @@ mod tests {
 		let mut config = ConfigDeser::default();
 
 		let user_config = UserConfig {
-			name: "Bob".into(),
 			variant: UserVariant::Unverified {},
 		};
 

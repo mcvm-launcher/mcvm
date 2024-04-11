@@ -8,8 +8,6 @@ use mcvm_core::user::{User, UserKind};
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 /// Configuration for a user
 pub struct UserConfig {
-	/// The username of the user
-	pub name: String,
 	/// Configuration for the different user variants
 	#[serde(flatten)]
 	pub variant: UserVariant,
@@ -22,15 +20,9 @@ pub struct UserConfig {
 #[serde(rename_all = "snake_case")]
 pub enum UserVariant {
 	/// A Microsoft user
-	Microsoft {
-		/// The UUID of the user
-		uuid: Option<String>,
-	},
+	Microsoft {},
 	/// A demo user
-	Demo {
-		/// The UUID of the user
-		uuid: Option<String>,
-	},
+	Demo {},
 	/// An unverified user
 	Unverified {},
 }
@@ -48,15 +40,7 @@ impl UserVariant {
 impl UserConfig {
 	/// Creates a user from this user config
 	pub fn to_user(&self, id: &str) -> User {
-		let mut user = User::new(self.variant.to_user_kind(), id, &self.name);
-		match &self.variant {
-			UserVariant::Microsoft { uuid } | UserVariant::Demo { uuid } => {
-				if let Some(uuid) = uuid {
-					user.set_uuid(uuid);
-				}
-			}
-			_ => {}
-		}
+		let user = User::new(self.variant.to_user_kind(), id);
 
 		user
 	}

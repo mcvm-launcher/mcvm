@@ -203,7 +203,9 @@ pub(crate) fn replace_arg_placeholders(arg: &str, params: &LaunchParameters) -> 
 			};
 			out = out.replace(placeholder!("user_type"), user_type);
 
-			out = out.replace(placeholder!("auth_player_name"), user.get_name());
+			if let Some(username) = user.get_name() {
+				out = out.replace(placeholder!("auth_player_name"), username);
+			}
 			if let Some(uuid) = user.get_uuid() {
 				out = out.replace(placeholder!("auth_uuid"), uuid);
 			}
