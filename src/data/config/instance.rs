@@ -40,40 +40,37 @@ impl InstanceConfig {
 			Self::Full(config) => config.clone(),
 			Self::Simple(side) => match side {
 				Side::Client => FullInstanceConfig::Client {
-					launch: LaunchConfig::default(),
 					options: None,
 					window: ClientWindowConfig::default(),
-					preset: None,
-					datapack_folder: None,
-					snapshots: None,
-					packages: Vec::new(),
+					common: CommonInstanceConfig::default(),
 				},
 				Side::Server => FullInstanceConfig::Server {
-					launch: LaunchConfig::default(),
 					options: None,
-					preset: None,
-					datapack_folder: None,
-					snapshots: None,
-					packages: Vec::new(),
+					common: CommonInstanceConfig::default(),
 				},
 			},
 		}
 	}
 
+	/// Gets the common config
+	pub fn get_common_config(&self) -> Option<&CommonInstanceConfig> {
+		match self {
+			Self::Full(
+				FullInstanceConfig::Client { common, .. }
+				| FullInstanceConfig::Server { common, .. },
+			) => Some(common),
+			_ => None,
+		}
+	}
+
 	/// Checks if this config has the preset field filled out
 	pub fn uses_preset(&self) -> bool {
-		matches!(
-			self,
-			Self::Full(
-				FullInstanceConfig::Client {
-					preset: Some(..),
-					..
-				} | FullInstanceConfig::Server {
-					preset: Some(..),
-					..
-				}
-			)
-		)
+		let config = self.get_common_config();
+		if let Some(config) = config {
+			config.preset.is_some()
+		} else {
+			false
+		}
 	}
 }
 
@@ -85,10 +82,9 @@ impl InstanceConfig {
 pub enum FullInstanceConfig {
 	/// Config for the client
 	Client {
-		/// Launch configuration
-		#[serde(default)]
-		#[serde(skip_serializing_if = "DefaultExt::is_default")]
-		launch: LaunchConfig,
+		/// Common configuration
+		#[serde(flatten)]
+		common: CommonInstanceConfig,
 		/// Game options
 		#[serde(default)]
 		#[serde(skip_serializing_if = "Option::is_none")]
@@ -97,50 +93,52 @@ pub enum FullInstanceConfig {
 		#[serde(default)]
 		#[serde(skip_serializing_if = "DefaultExt::is_default")]
 		window: ClientWindowConfig,
-		/// An instance preset to use
-		#[serde(default)]
-		#[serde(skip_serializing_if = "Option::is_none")]
-		preset: Option<String>,
-		/// The folder for global datapacks to be installed to
-		#[serde(default)]
-		#[serde(skip_serializing_if = "Option::is_none")]
-		datapack_folder: Option<String>,
-		/// Options for snapshot config
-		#[serde(default)]
-		#[serde(skip_serializing_if = "Option::is_none")]
-		snapshots: Option<snapshot::Config>,
-		/// Packages for this instance
-		#[serde(default)]
-		#[serde(skip_serializing_if = "Vec::is_empty")]
-		packages: Vec<PackageConfigDeser>,
 	},
 	/// Config for the server
 	Server {
-		/// Launch configuration
-		#[serde(default)]
-		#[serde(skip_serializing_if = "DefaultExt::is_default")]
-		launch: LaunchConfig,
+		/// Common configuration
+		#[serde(flatten)]
+		common: CommonInstanceConfig,
 		/// Game options
 		#[serde(default)]
 		#[serde(skip_serializing_if = "Option::is_none")]
 		options: Option<Box<ServerOptions>>,
-		/// An instance preset to use
-		#[serde(default)]
-		#[serde(skip_serializing_if = "Option::is_none")]
-		preset: Option<String>,
-		/// The folder for global datapacks to be installed to
-		#[serde(default)]
-		#[serde(skip_serializing_if = "Option::is_none")]
-		datapack_folder: Option<String>,
-		/// Options for snapshot config
-		#[serde(default)]
-		#[serde(skip_serializing_if = "Option::is_none")]
-		snapshots: Option<snapshot::Config>,
-		/// Packages for this instance
-		#[serde(default)]
-		#[serde(skip_serializing_if = "Vec::is_empty")]
-		packages: Vec<PackageConfigDeser>,
 	},
+}
+
+/// Common full instance config for both client and server
+#[derive(Deserialize, Serialize, Clone, Default)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
+#[serde(default)]
+pub struct CommonInstanceConfig {
+	/// Launch configuration
+	#[serde(skip_serializing_if = "DefaultExt::is_default")]
+	pub launch: LaunchConfig,
+	/// An instance preset to use
+	#[serde(skip_serializing_if = "Option::is_none")]
+	pub preset: Option<String>,
+	/// The folder for global datapacks to be installed to
+	#[serde(skip_serializing_if = "Option::is_none")]
+	pub datapack_folder: Option<String>,
+	/// Options for snapshot config
+	#[serde(skip_serializing_if = "Option::is_none")]
+	pub snapshots: Option<snapshot::Config>,
+	/// Packages for this instance
+	#[serde(skip_serializing_if = "Vec::is_empty")]
+	pub packages: Vec<PackageConfigDeser>,
+}
+
+impl CommonInstanceConfig {
+	/// Merge multiple common configs
+	pub fn merge(&mut self, other: Self) -> &mut Self {
+		self.launch.merge(other.launch);
+		self.preset = merge_options(self.preset.clone(), other.preset);
+		self.datapack_folder = merge_options(self.datapack_folder.clone(), other.datapack_folder);
+		self.snapshots = merge_options(self.snapshots.clone(), other.snapshots);
+		self.packages.extend(other.packages);
+
+		self
+	}
 }
 
 /// Different representations for JVM / game arguments
@@ -216,15 +214,6 @@ fn default_java() -> String {
 
 fn default_flags_preset() -> String {
 	"none".into()
-}
-
-/// Merges two lists of instance packages
-fn merge_package_lists(
-	mut a: Vec<PackageConfigDeser>,
-	b: Vec<PackageConfigDeser>,
-) -> Vec<PackageConfigDeser> {
-	a.extend(b);
-	a
 }
 
 /// Options for the Minecraft QuickPlay feature
@@ -407,56 +396,36 @@ pub fn merge_instance_configs(
 	out = match (out, applied) {
 		(
 			FullInstanceConfig::Client {
-				mut launch,
 				options,
 				mut window,
-				datapack_folder,
-				snapshots,
-				packages,
+				mut common,
 				..
 			},
 			FullInstanceConfig::Client {
-				launch: launch2,
 				options: options2,
 				window: window2,
-				datapack_folder: datapack_folder2,
-				snapshots: snapshots2,
-				packages: packages2,
+				common: common2,
 				..
 			},
 		) => Ok::<FullInstanceConfig, anyhow::Error>(FullInstanceConfig::Client {
-			launch: launch.merge(launch2).clone(),
 			options: merge_options(options, options2),
 			window: window.merge(window2).clone(),
-			preset: None,
-			datapack_folder: merge_options(datapack_folder, datapack_folder2),
-			snapshots: merge_options(snapshots, snapshots2),
-			packages: merge_package_lists(packages, packages2),
+			common: common.merge(common2).clone(),
 		}),
 		(
 			FullInstanceConfig::Server {
-				mut launch,
 				options,
-				datapack_folder,
-				snapshots,
-				packages,
+				mut common,
 				..
 			},
 			FullInstanceConfig::Server {
-				launch: launch2,
 				options: options2,
-				datapack_folder: datapack_folder2,
-				snapshots: snapshots2,
-				packages: packages2,
+				common: common2,
 				..
 			},
 		) => Ok::<FullInstanceConfig, anyhow::Error>(FullInstanceConfig::Server {
-			launch: launch.merge(launch2).clone(),
 			options: merge_options(options, options2),
-			preset: None,
-			datapack_folder: merge_options(datapack_folder, datapack_folder2),
-			snapshots: merge_options(snapshots, snapshots2),
-			packages: merge_package_lists(packages, packages2),
+			common: common.merge(common2).clone(),
 		}),
 		_ => bail!("Instance types do not match"),
 	}?;
@@ -474,11 +443,17 @@ pub fn read_instance_config(
 ) -> anyhow::Result<Instance> {
 	let config = if let InstanceConfig::Full(
 		FullInstanceConfig::Client {
-			preset: Some(preset),
+			common: CommonInstanceConfig {
+				preset: Some(preset),
+				..
+			},
 			..
 		}
 		| FullInstanceConfig::Server {
-			preset: Some(preset),
+			common: CommonInstanceConfig {
+				preset: Some(preset),
+				..
+			},
 			..
 		},
 	) = config
@@ -490,58 +465,33 @@ pub fn read_instance_config(
 	} else {
 		config.clone()
 	};
-	let (kind, launch, datapack_folder, snapshot_config, packages) = match config {
+	let (kind, common) = match config {
 		InstanceConfig::Simple(side) => (
 			match side {
 				Side::Client => InstKind::client(None, ClientWindowConfig::default()),
 				Side::Server => InstKind::server(None),
 			},
-			LaunchConfig::default(),
-			None,
-			None,
-			Vec::new(),
+			CommonInstanceConfig::default(),
 		),
 		InstanceConfig::Full(config) => match config {
 			FullInstanceConfig::Client {
-				launch,
 				options,
 				window,
-				datapack_folder,
-				snapshots,
-				packages,
-				..
-			} => (
-				InstKind::client(options, window),
-				launch,
-				datapack_folder,
-				snapshots,
-				packages,
-			),
-			FullInstanceConfig::Server {
-				launch,
-				options,
-				datapack_folder,
-				snapshots,
-				packages,
-				..
-			} => (
-				InstKind::server(options),
-				launch,
-				datapack_folder,
-				snapshots,
-				packages,
-			),
+				common,
+			} => (InstKind::client(options, window), common),
+			FullInstanceConfig::Server { options, common } => (InstKind::server(options), common),
 		},
 	};
 
 	// Consolidate all of the package configs into the instance package config list
-	let packages = consolidate_package_configs(profile, global_packages, &packages, kind.to_side());
+	let packages =
+		consolidate_package_configs(profile, global_packages, &common.packages, kind.to_side());
 
 	let stored_config = InstanceStoredConfig {
 		modifications: profile.modifications.clone(),
-		launch: launch.to_options()?,
-		datapack_folder,
-		snapshot_config: snapshot_config.unwrap_or_default(),
+		launch: common.launch.to_options()?,
+		datapack_folder: common.datapack_folder,
+		snapshot_config: common.snapshots.unwrap_or_default(),
 		packages,
 	};
 
@@ -652,7 +602,6 @@ mod tests {
 			presets.insert(
 				"hello".into(),
 				InstanceConfig::Full(FullInstanceConfig::Client {
-					launch: LaunchConfig::default(),
 					options: None,
 					window: ClientWindowConfig {
 						resolution: Some(WindowResolution {
@@ -660,10 +609,7 @@ mod tests {
 							height: 100,
 						}),
 					},
-					preset: None,
-					datapack_folder: None,
-					snapshots: None,
-					packages: Vec::new(),
+					common: CommonInstanceConfig::default(),
 				}),
 			);
 			presets
@@ -683,13 +629,12 @@ mod tests {
 		);
 
 		let config = InstanceConfig::Full(FullInstanceConfig::Client {
-			launch: LaunchConfig::default(),
 			options: None,
 			window: ClientWindowConfig::default(),
-			preset: Some("hello".into()),
-			datapack_folder: None,
-			snapshots: None,
-			packages: Vec::new(),
+			common: CommonInstanceConfig {
+				preset: Some("hello".into()),
+				..Default::default()
+			},
 		});
 		let instance =
 			read_instance_config(InstanceID::from("test"), &config, &profile, &[], &presets)
@@ -710,12 +655,11 @@ mod tests {
 		}
 
 		let config = InstanceConfig::Full(FullInstanceConfig::Server {
-			launch: LaunchConfig::default(),
 			options: None,
-			preset: Some("hello".into()),
-			datapack_folder: None,
-			snapshots: None,
-			packages: Vec::new(),
+			common: CommonInstanceConfig {
+				preset: Some("hello".into()),
+				..Default::default()
+			},
 		});
 		read_instance_config(InstanceID::from("test"), &config, &profile, &[], &presets)
 			.expect_err("Instance kinds should be incompatible");

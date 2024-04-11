@@ -19,7 +19,8 @@ use crate::pkg::reg::PkgRegistry;
 use crate::pkg::repo::PkgRepo;
 
 use super::instance::{
-	read_instance_config, ClientWindowConfig, FullInstanceConfig, InstanceConfig, LaunchConfig,
+	read_instance_config, ClientWindowConfig, CommonInstanceConfig, FullInstanceConfig,
+	InstanceConfig, LaunchConfig,
 };
 use super::package::{FullPackageConfig, PackageConfigDeser, PackageConfigSource};
 use super::plugin::{PluginConfig, PluginManager};
@@ -357,21 +358,13 @@ impl<'parent, 'grandparent> InstanceBuilder<'parent, 'grandparent> {
 	) -> Self {
 		let config = match side {
 			Side::Client => FullInstanceConfig::Client {
-				launch: Default::default(),
 				options: Default::default(),
 				window: Default::default(),
-				preset: Default::default(),
-				datapack_folder: Default::default(),
-				snapshots: Default::default(),
-				packages: Default::default(),
+				common: Default::default(),
 			},
 			Side::Server => FullInstanceConfig::Server {
-				launch: Default::default(),
 				options: Default::default(),
-				preset: Default::default(),
-				datapack_folder: Default::default(),
-				snapshots: Default::default(),
-				packages: Default::default(),
+				common: Default::default(),
 			},
 		};
 
@@ -391,16 +384,28 @@ impl<'parent, 'grandparent> InstanceBuilder<'parent, 'grandparent> {
 	fn build_package(&mut self, package: FullPackageConfig) {
 		let config = PackageConfigDeser::Full(package);
 		match &mut self.config {
-			FullInstanceConfig::Client { packages, .. } => packages.push(config),
-			FullInstanceConfig::Server { packages, .. } => packages.push(config),
+			FullInstanceConfig::Client {
+				common: CommonInstanceConfig { packages, .. },
+				..
+			} => packages.push(config),
+			FullInstanceConfig::Server {
+				common: CommonInstanceConfig { packages, .. },
+				..
+			} => packages.push(config),
 		};
 	}
 
 	/// Set the launch options of the instance
 	pub fn launch_options(&mut self, launch_options: LaunchConfig) -> &mut Self {
 		match &mut self.config {
-			FullInstanceConfig::Client { launch, .. } => *launch = launch_options,
-			FullInstanceConfig::Server { launch, .. } => *launch = launch_options,
+			FullInstanceConfig::Client {
+				common: CommonInstanceConfig { launch, .. },
+				..
+			} => *launch = launch_options,
+			FullInstanceConfig::Server {
+				common: CommonInstanceConfig { launch, .. },
+				..
+			} => *launch = launch_options,
 		};
 
 		self
@@ -420,10 +425,16 @@ impl<'parent, 'grandparent> InstanceBuilder<'parent, 'grandparent> {
 	pub fn datapack_folder(&mut self, folder: String) -> &mut Self {
 		match &mut self.config {
 			FullInstanceConfig::Client {
-				datapack_folder, ..
+				common: CommonInstanceConfig {
+					datapack_folder, ..
+				},
+				..
 			} => *datapack_folder = Some(folder),
 			FullInstanceConfig::Server {
-				datapack_folder, ..
+				common: CommonInstanceConfig {
+					datapack_folder, ..
+				},
+				..
 			} => *datapack_folder = Some(folder),
 		};
 
@@ -433,8 +444,14 @@ impl<'parent, 'grandparent> InstanceBuilder<'parent, 'grandparent> {
 	/// Set the snapshot config of the instance
 	pub fn snapshot_config(&mut self, snapshot_config: snapshot::Config) -> &mut Self {
 		match &mut self.config {
-			FullInstanceConfig::Client { snapshots, .. } => *snapshots = Some(snapshot_config),
-			FullInstanceConfig::Server { snapshots, .. } => *snapshots = Some(snapshot_config),
+			FullInstanceConfig::Client {
+				common: CommonInstanceConfig { snapshots, .. },
+				..
+			} => *snapshots = Some(snapshot_config),
+			FullInstanceConfig::Server {
+				common: CommonInstanceConfig { snapshots, .. },
+				..
+			} => *snapshots = Some(snapshot_config),
 		};
 
 		self
