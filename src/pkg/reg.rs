@@ -1,4 +1,5 @@
 use anyhow::{anyhow, Context};
+use mcvm_core::net::download;
 use mcvm_pkg::metadata::PackageMetadata;
 use mcvm_pkg::parse_and_validate;
 use mcvm_pkg::properties::PackageProperties;
@@ -12,6 +13,7 @@ use reqwest::Client;
 #[cfg(feature = "schema")]
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use tokio::sync::Semaphore;
 use tokio::task::JoinSet;
 
 use super::eval::{EvalData, EvalInput, Routine};
@@ -314,13 +316,19 @@ impl PkgRegistry {
 		// Redownload all the packages
 		if let CachingStrategy::All = self.caching_strategy {
 			let mut tasks = JoinSet::new();
+			let semaphore = Arc::new(Semaphore::new(download::get_transfer_limit()));
 			for package in packages {
 				let pkg = self
 					.get(&package, paths, client, o)
 					.await
 					.with_context(|| format!("Failed to get package {package}"))?;
-				let task = pkg.get_download_task(paths, true, client);
-				if let Some(task) = task {
+
+				if let Some(task) = pkg.get_download_task(paths, true, client) {
+					let semaphore = semaphore.clone();
+					let task = async move {
+						let _ = semaphore.acquire_owned().await;
+						task.await
+					};
 					tasks.spawn(task);
 				}
 			}
