@@ -135,6 +135,20 @@ macro_rules! match_key_int {
 	};
 }
 
+macro_rules! match_keybind {
+	($out:ident, $option:expr, $key:literal, $before_1_13:expr) => {
+		if let Some(value) = $option {
+			$out.insert($key.into(), value.get_keycode($before_1_13));
+		}
+	};
+
+	($out:ident, $option:expr, $key:literal, $before_1_13:expr, $version:expr) => {
+		if $version {
+			match_keybind!($out, $option, $key, $before_1_13)
+		}
+	};
+}
+
 /// Write options options to a list of keys
 #[rustfmt::skip]
 pub fn create_keys(
@@ -292,6 +306,7 @@ pub fn create_keys(
 	match_key!(out, options.show_autosave_indicator, "showAutosaveIndicator", after_21w42a);
 	match_key!(out, options.allow_server_listing, "allowServerListing", after_1_18_pre2);
 	match_key!(out, options.snooper_enabled, "snooperEnabled", before_21w43a);
+
 	if stream_options_enabled {
 		match_key!(out, options.stream.bytes_per_pixel, "streamBytesPerPixel");
 		match_key_int!(out, options.stream.chat_enabled, "streamChatEnabled");
@@ -308,179 +323,48 @@ pub fn create_keys(
 	}
 
 	// Keybinds
-	if let Some(value) = &options.control.keys.attack {
-		out.insert("key_key.attack".into(), value.get_keycode(before_1_13));
-	}
-	if let Some(value) = &options.control.keys.r#use {
-		out.insert("key_key.use".into(), value.get_keycode(before_1_13));
-	}
-	if let Some(value) = &options.control.keys.forward {
-		out.insert("key_key.forward".into(), value.get_keycode(before_1_13));
-	}
-	if let Some(value) = &options.control.keys.left {
-		out.insert("key_key.left".into(), value.get_keycode(before_1_13));
-	}
-	if let Some(value) = &options.control.keys.back {
-		out.insert("key_key.back".into(), value.get_keycode(before_1_13));
-	}
-	if let Some(value) = &options.control.keys.right {
-		out.insert("key_key.right".into(), value.get_keycode(before_1_13));
-	}
-	if let Some(value) = &options.control.keys.jump {
-		out.insert("key_key.jump".into(), value.get_keycode(before_1_13));
-	}
-	if let Some(value) = &options.control.keys.sneak {
-		out.insert("key_key.sneak".into(), value.get_keycode(before_1_13));
-	}
-	if let Some(value) = &options.control.keys.sprint {
-		out.insert("key_key.sprint".into(), value.get_keycode(before_1_13));
-	}
-	if let Some(value) = &options.control.keys.drop {
-		out.insert("key_key.drop".into(), value.get_keycode(before_1_13));
-	}
-	if let Some(value) = &options.control.keys.inventory {
-		out.insert("key_key.inventory".into(), value.get_keycode(before_1_13));
-	}
-	if let Some(value) = &options.control.keys.chat {
-		out.insert("key_key.chat".into(), value.get_keycode(before_1_13));
-	}
-	if let Some(value) = &options.control.keys.playerlist {
-		out.insert("key_key.playerlist".into(), value.get_keycode(before_1_13));
-	}
-	if let Some(value) = &options.control.keys.pick_item {
-		out.insert("key_key.pickItem".into(), value.get_keycode(before_1_13));
-	}
-	if let Some(value) = &options.control.keys.command {
-		out.insert("key_key.command".into(), value.get_keycode(before_1_13));
-	}
-	if let Some(value) = &options.control.keys.social_interactions {
-		out.insert(
-			"key_key.socialInteractions".into(),
-			value.get_keycode(before_1_13),
-		);
-	}
-	if let Some(value) = &options.control.keys.screenshot {
-		out.insert("key_key.screenshot".into(), value.get_keycode(before_1_13));
-	}
-	if let Some(value) = &options.control.keys.toggle_perspective {
-		out.insert(
-			"key_key.togglePerspective".into(),
-			value.get_keycode(before_1_13),
-		);
-	}
-	if let Some(value) = &options.control.keys.smooth_camera {
-		out.insert(
-			"key_key.smoothCamera".into(),
-			value.get_keycode(before_1_13),
-		);
-	}
-	if let Some(value) = &options.control.keys.fullscreen {
-		out.insert("key_key.fullscreen".into(), value.get_keycode(before_1_13));
-	}
-	if let Some(value) = &options.control.keys.spectator_outlines {
-		out.insert(
-			"key_key.spectatorOutlines".into(),
-			value.get_keycode(before_1_13),
-		);
-	}
-	if let Some(value) = &options.control.keys.swap_offhand {
-		let keybind = if before_20w27a {
-			"key_key.swapHands"
-		} else {
-			"key_key.swapOffhand"
-		};
-		out.insert(keybind.to_string(), value.get_keycode(before_1_13));
-	}
-	if after_17w06a {
-		if let Some(value) = &options.control.keys.save_toolbar {
-			out.insert(
-				"key_key.saveToolbarActivator".into(),
-				value.get_keycode(before_1_13),
-			);
-		}
-		if let Some(value) = &options.control.keys.load_toolbar {
-			out.insert(
-				"key_key.loadToolbarActivator".into(),
-				value.get_keycode(before_1_13),
-			);
-		}
-		if let Some(value) = &options.control.keys.advancements {
-			out.insert(
-				"key_key.advancements".into(),
-				value.get_keycode(before_1_13),
-			);
-		}
-	}
-	if let Some(value) = &options.control.keys.hotbar_1 {
-		out.insert("key_key.hotbar.1".into(), value.get_keycode(before_1_13));
-	}
-	if let Some(value) = &options.control.keys.hotbar_2 {
-		out.insert("key_key.hotbar.2".into(), value.get_keycode(before_1_13));
-	}
-	if let Some(value) = &options.control.keys.hotbar_3 {
-		out.insert("key_key.hotbar.3".into(), value.get_keycode(before_1_13));
-	}
-	if let Some(value) = &options.control.keys.hotbar_4 {
-		out.insert("key_key.hotbar.4".into(), value.get_keycode(before_1_13));
-	}
-	if let Some(value) = &options.control.keys.hotbar_5 {
-		out.insert("key_key.hotbar.5".into(), value.get_keycode(before_1_13));
-	}
-	if let Some(value) = &options.control.keys.hotbar_6 {
-		out.insert("key_key.hotbar.6".into(), value.get_keycode(before_1_13));
-	}
-	if let Some(value) = &options.control.keys.hotbar_7 {
-		out.insert("key_key.hotbar.7".into(), value.get_keycode(before_1_13));
-	}
-	if let Some(value) = &options.control.keys.hotbar_8 {
-		out.insert("key_key.hotbar.8".into(), value.get_keycode(before_1_13));
-	}
-	if let Some(value) = &options.control.keys.hotbar_9 {
-		out.insert("key_key.hotbar.9".into(), value.get_keycode(before_1_13));
-	}
-	if is_3d_shareware {
-		if let Some(value) = &options.control.keys.boss_mode {
-			out.insert("key_key.boss_mode".into(), value.get_keycode(before_1_13));
-		}
-		if let Some(value) = &options.control.keys.decrease_view {
-			out.insert(
-				"key_key.decrease_view".into(),
-				value.get_keycode(before_1_13),
-			);
-		}
-		if let Some(value) = &options.control.keys.increase_view {
-			out.insert(
-				"key_key.increase_view".into(),
-				value.get_keycode(before_1_13),
-			);
-		}
-	}
-	if stream_options_enabled {
-		if let Some(value) = &options.control.keys.stream_commercial {
-			out.insert(
-				"key_key.streamCommercial".into(),
-				value.get_keycode(before_1_13),
-			);
-		}
-		if let Some(value) = &options.control.keys.stream_pause_unpause {
-			out.insert(
-				"key_key.streamPauseUnpause".into(),
-				value.get_keycode(before_1_13),
-			);
-		}
-		if let Some(value) = &options.control.keys.stream_start_stop {
-			out.insert(
-				"key_key.streamStartStop".into(),
-				value.get_keycode(before_1_13),
-			);
-		}
-		if let Some(value) = &options.control.keys.stream_toggle_microphone {
-			out.insert(
-				"key_key.streamToggleMic".into(),
-				value.get_keycode(before_1_13),
-			);
-		}
-	}
+	match_keybind!(out, &options.control.keys.attack, "key_key.attack", before_1_13);
+	match_keybind!(out, &options.control.keys.r#use, "key_key.use", before_1_13);
+	match_keybind!(out, &options.control.keys.forward, "key_key.forward", before_1_13);
+	match_keybind!(out, &options.control.keys.back, "key_key.back", before_1_13);
+	match_keybind!(out, &options.control.keys.left, "key_key.left", before_1_13);
+	match_keybind!(out, &options.control.keys.right, "key_key.right", before_1_13);
+	match_keybind!(out, &options.control.keys.jump, "key_key.jump", before_1_13);
+	match_keybind!(out, &options.control.keys.sneak, "key_key.sneak", before_1_13);
+	match_keybind!(out, &options.control.keys.sprint, "key_key.sprint", before_1_13);
+	match_keybind!(out, &options.control.keys.drop, "key_key.drop", before_1_13);
+	match_keybind!(out, &options.control.keys.inventory, "key_key.inventory", before_1_13);
+	match_keybind!(out, &options.control.keys.chat, "key_key.chat", before_1_13);
+	match_keybind!(out, &options.control.keys.playerlist, "key_key.playerlist", before_1_13);
+	match_keybind!(out, &options.control.keys.pick_item, "key_key.pickItem", before_1_13);
+	match_keybind!(out, &options.control.keys.command, "key_key.command", before_1_13);
+	match_keybind!(out, &options.control.keys.social_interactions, "key_key.socialInteractions", before_1_13);
+	match_keybind!(out, &options.control.keys.screenshot, "key_key.screenshot", before_1_13);
+	match_keybind!(out, &options.control.keys.toggle_perspective, "key_key.togglePerspective", before_1_13);
+	match_keybind!(out, &options.control.keys.smooth_camera, "key_key.smoothCamera", before_1_13);
+	match_keybind!(out, &options.control.keys.fullscreen, "key_key.fullscreen", before_1_13);
+	match_keybind!(out, &options.control.keys.spectator_outlines, "key_key.spectatorOutlines", before_1_13);
+	match_keybind!(out, &options.control.keys.swap_offhand, "key_key.swapHands", before_1_13, before_20w27a);
+	match_keybind!(out, &options.control.keys.swap_offhand, "key_key.swapOffhand", before_1_13, !before_20w27a);
+	match_keybind!(out, &options.control.keys.save_toolbar, "key_key.saveToolbarActivator", before_1_13, after_17w06a);
+	match_keybind!(out, &options.control.keys.load_toolbar, "key_key.loadToolbarActivator", before_1_13, after_17w06a);
+	match_keybind!(out, &options.control.keys.advancements, "key_key.advancements", before_1_13, after_17w06a);
+	match_keybind!(out, &options.control.keys.hotbar_1, "key_key.hotbar.1", before_1_13);
+	match_keybind!(out, &options.control.keys.hotbar_2, "key_key.hotbar.2", before_1_13);
+	match_keybind!(out, &options.control.keys.hotbar_3, "key_key.hotbar.3", before_1_13);
+	match_keybind!(out, &options.control.keys.hotbar_4, "key_key.hotbar.4", before_1_13);
+	match_keybind!(out, &options.control.keys.hotbar_5, "key_key.hotbar.5", before_1_13);
+	match_keybind!(out, &options.control.keys.hotbar_6, "key_key.hotbar.6", before_1_13);
+	match_keybind!(out, &options.control.keys.hotbar_7, "key_key.hotbar.7", before_1_13);
+	match_keybind!(out, &options.control.keys.hotbar_8, "key_key.hotbar.8", before_1_13);
+	match_keybind!(out, &options.control.keys.hotbar_9, "key_key.hotbar.9", before_1_13);
+	match_keybind!(out, &options.control.keys.boss_mode, "key_key.boss_mode", before_1_13, is_3d_shareware);
+	match_keybind!(out, &options.control.keys.decrease_view, "key_key.decrease_view", before_1_13, is_3d_shareware);
+	match_keybind!(out, &options.control.keys.increase_view, "key_key.increase_view", before_1_13, is_3d_shareware);
+	match_keybind!(out, &options.control.keys.stream_commercial, "key_key.streamCommercial", before_1_13, stream_options_enabled);
+	match_keybind!(out, &options.control.keys.stream_pause_unpause, "key_key.streamPauseUnpause", before_1_13, stream_options_enabled);
+	match_keybind!(out, &options.control.keys.stream_start_stop, "key_key.streamStartStop", before_1_13, stream_options_enabled);
+	match_keybind!(out, &options.control.keys.stream_toggle_microphone, "key_key.streamToggleMic", before_1_13, stream_options_enabled);
 
 	// Volumes
 	if after_13w36a {
