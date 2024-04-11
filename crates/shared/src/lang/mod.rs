@@ -7,8 +7,9 @@ use serde::{Deserialize, Serialize};
 
 /// A language supported by mcvm. Includes all languages in Minecraft.
 #[allow(missing_docs)]
-#[derive(Deserialize, Serialize, Copy, Clone, Eq, PartialEq, Debug)]
+#[derive(Deserialize, Serialize, Copy, Clone, Eq, PartialEq, Debug, Hash)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
+#[serde(rename_all = "snake_case")]
 pub enum Language {
 	Afrikaans,
 	Arabic,

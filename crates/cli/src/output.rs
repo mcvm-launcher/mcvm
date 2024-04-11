@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use std::io::Write;
 use std::{fs::File, path::PathBuf};
 
@@ -6,6 +7,7 @@ use color_print::{cformat, cstr};
 use inquire::{Confirm, Password};
 use mcvm::io::files::paths::Paths;
 use mcvm::pkg_crate::{PkgRequest, PkgRequestSource};
+use mcvm::shared::lang::translate::TranslationKey;
 use mcvm::shared::output::{
 	default_special_ms_auth, MCVMOutput, Message, MessageContents, MessageLevel,
 };
@@ -23,6 +25,7 @@ pub struct TerminalOutput {
 	indent_level: u8,
 	log_file: File,
 	latest_log_file: File,
+	translation_map: Option<HashMap<TranslationKey, String>>,
 }
 
 impl MCVMOutput for TerminalOutput {
@@ -92,6 +95,16 @@ impl MCVMOutput for TerminalOutput {
 		Ok(ans)
 	}
 
+	fn translate(&self, key: TranslationKey) -> &str {
+		if let Some(map) = &self.translation_map {
+			map.get(&key)
+				.map(|x| x.as_str())
+				.unwrap_or(key.get_default())
+		} else {
+			key.get_default()
+		}
+	}
+
 	fn display_special_ms_auth(&mut self, url: &str, code: &str) {
 		let _ = mcvm::shared::util::open_link(url);
 		default_special_ms_auth(self, url, code);
@@ -111,6 +124,7 @@ impl TerminalOutput {
 			indent_level: 0,
 			log_file: file,
 			latest_log_file: latest_file,
+			translation_map: None,
 		})
 	}
 
@@ -232,6 +246,11 @@ impl TerminalOutput {
 	/// Set the log level of the output
 	pub fn set_log_level(&mut self, level: MessageLevel) {
 		self.level = level;
+	}
+
+	/// Set the translation map of the output
+	pub fn set_translation_map(&mut self, map: HashMap<TranslationKey, String>) {
+		self.translation_map = Some(map);
 	}
 }
 

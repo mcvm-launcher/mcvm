@@ -68,4 +68,9 @@ impl PluginManager {
 
 		Ok(out)
 	}
+
+	/// Iterate over the plugins
+	pub fn iter_plugins(&self) -> impl Iterator<Item = &Plugin> {
+		self.plugins.iter()
+	}
 }

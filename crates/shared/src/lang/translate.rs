@@ -1,9 +1,13 @@
+use std::collections::HashMap;
+
 use serde::{Deserialize, Serialize};
+
+use super::Language;
 
 macro_rules! define_translations {
 	($($key:ident, $doc:literal, $default:literal);* $(;)?) => {
 		/// Keys for translations
-		#[derive(Serialize, Deserialize, Clone, Copy, PartialEq, Eq, Hash)]
+		#[derive(Serialize, Deserialize, Clone, Copy, PartialEq, Eq, Hash, Debug)]
 		#[serde(rename_all = "snake_case")]
 		pub enum TranslationKey {
 			$(
@@ -77,3 +81,6 @@ macro_rules! translate {
 		}
 	};
 }
+
+/// A translation map
+pub type TranslationMap = HashMap<Language, HashMap<TranslationKey, String>>;

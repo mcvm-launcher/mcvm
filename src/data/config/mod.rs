@@ -25,6 +25,7 @@ use self::user::UserConfig;
 use anyhow::{bail, ensure, Context};
 use mcvm_core::auth_crate::mc::ClientId;
 use mcvm_core::user::UserManager;
+use mcvm_shared::lang::translate::TranslationKey;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::pkg::PackageStability;
 use mcvm_shared::util::is_valid_identifier;
@@ -89,6 +90,28 @@ impl Config {
 				.values()
 				.map(|instance| profile.get_inst_ref(&instance.id))
 		})
+	}
+
+	/// Get the single-language translation map based on language and plugins
+	pub fn get_translation_map(&self) -> Option<HashMap<TranslationKey, String>> {
+		let mut out = HashMap::new();
+		for plugin in self.plugins.iter_plugins() {
+			let Some(map) = plugin
+				.get_manifest()
+				.translation_map
+				.get(&self.prefs.language)
+			else {
+				continue;
+			};
+
+			out.extend(map.clone());
+		}
+
+		if out.is_empty() {
+			None
+		} else {
+			Some(out)
+		}
 	}
 }
 

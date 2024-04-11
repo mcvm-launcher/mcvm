@@ -1,7 +1,7 @@
 use std::collections::HashSet;
 
 use anyhow::Context;
-use mcvm_shared::output::MCVMOutput;
+use mcvm_shared::{lang::translate::TranslationMap, output::MCVMOutput};
 use serde::Deserialize;
 
 use crate::hooks::Hook;
@@ -22,6 +22,11 @@ impl Plugin {
 			manifest,
 			custom_config: None,
 		}
+	}
+
+	/// Get the manifest of the plugin
+	pub fn get_manifest(&self) -> &PluginManifest {
+		&self.manifest
 	}
 
 	/// Call a hook on the plugin
@@ -61,6 +66,9 @@ pub struct PluginManifest {
 	/// The enabled hooks for the plugin
 	#[serde(default)]
 	pub enabled_hooks: HashSet<String>,
+	/// The translation map the plugin provides
+	#[serde(default)]
+	pub translation_map: TranslationMap,
 }
 
 impl PluginManifest {
@@ -69,6 +77,7 @@ impl PluginManifest {
 		Self {
 			executable,
 			enabled_hooks: HashSet::new(),
+			translation_map: TranslationMap::new(),
 		}
 	}
 }

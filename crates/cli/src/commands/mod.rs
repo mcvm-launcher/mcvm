@@ -191,6 +191,11 @@ impl CmdData {
 			);
 		}
 
+		// Update the translation map
+		if let Some(map) = self.config.get().get_translation_map() {
+			self.output.set_translation_map(map);
+		}
+
 		Ok(())
 	}
 

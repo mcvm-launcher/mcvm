@@ -119,6 +119,11 @@ impl PluginManager {
 	) -> anyhow::Result<Vec<H::Result>> {
 		self.manager.call_hook(hook, arg, o)
 	}
+
+	/// Iterate over the stored plugins
+	pub fn iter_plugins(&self) -> impl Iterator<Item = &Plugin> {
+		self.manager.iter_plugins()
+	}
 }
 
 impl Default for PluginManager {
