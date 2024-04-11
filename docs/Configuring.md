@@ -153,7 +153,7 @@ The first form just has the type of the instance. All fields are optional unless
 
 ## Packages
 
-Packages are specified globally in the `packages` list or for a specific profile in its `packages` list. It has two valid forms:
+Packages are specified globally in the `packages` list, for a specific profile in its `packages` list, or in an instance's package list. Each package has two valid forms:
 
 ```
 "id"
@@ -173,10 +173,10 @@ or
 }
 ```
 
-In most cases the first form is all you need. If you want more control over how the package works or need to add a local package, use the second form.
+In most cases the first form is all you need. If you want more control over how the package works, use the second form.
 
 - `id`: The identifier for the package. It is very important that this field is correct for the package to work.
-- `type`: The type of the package, either a standard `"repository"` package or a `"local"` package.
+- `type`: The type of the package, currently only allowing a standard `"repository"` package.
 - `features` (Optional): A list of strings for package features that you would like to enable.
 - `use_default_features` (Optional): Whether or not to use the default features of this package. `true` by default.
 - `permissions` (Optional): The amount of control you would like to give this package. Can be `"restricted"`, `"standard"`, or `"elevated"`. Packages you do not trust should be given the `"restricted"` level. Packages that you trust and want to provide access to special commands for can be given `"elevated"`. Defaults to `"standard"`.
@@ -228,7 +228,7 @@ In this section you can set preferences for how the whole program will work. The
 ```
 
 Either `url` or `path` must be set. `path` allows you to have repository indices on your local machine.
-The URL should start with `http://` or `https://`. Port specifiers (`:123`) are allowed.
+The URL should start with `http://` or `https://`. Port specifiers (`:123`) are allowed. You can also use sub-paths of a URL like `https://example.com/foo` to use multiple repositories from the same site.
 
 - `repositories.enable_core`: Whether to enable the internal package repository. Defaults to true.
 - `repositories.enable_std`: Whether to enable the standard package repository. Defaults to true.
