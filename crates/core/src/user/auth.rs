@@ -4,7 +4,7 @@ use anyhow::{bail, Context};
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 
 use crate::net::minecraft::MinecraftUserProfile;
-use crate::{net::minecraft, Paths};
+use crate::Paths;
 use mcvm_auth::db::{AuthDatabase, DatabaseUser, SensitiveUserInfo};
 use mcvm_auth::mc::{self as auth, ClientId, MicrosoftToken, RefreshToken, TokenResponse as _};
 use mcvm_auth::mc::{mc_access_token_to_string, Keypair};
@@ -328,44 +328,6 @@ pub async fn authenticate_microsoft_user_from_token(
 	};
 
 	Ok(out)
-}
-
-/// Authenticate with lots of prints; used for debugging
-pub async fn debug_authenticate(
-	client_id: ClientId,
-	o: &mut impl MCVMOutput,
-) -> anyhow::Result<()> {
-	println!("Note: This authentication is not complete and is for debug purposes only");
-	println!("Client ID: {}", client_id.as_str());
-	let client = auth::create_client(client_id).context("Failed to create OAuth client")?;
-	let req_client = reqwest::Client::new();
-	let response = auth::generate_login_page(&client)
-		.await
-		.context("Failed to execute authorization and generate login page")?;
-
-	o.display_special_ms_auth(response.verification_uri(), response.user_code().secret());
-
-	let token = auth::get_microsoft_token(&client, response)
-		.await
-		.context("Failed to get Microsoft token")?;
-
-	println!("Microsoft token: {token:?}");
-
-	let mc_token = auth::auth_minecraft(token, &req_client)
-		.await
-		.context("Failed to get Minecraft token")?;
-
-	println!("Minecraft token: {mc_token:?}");
-
-	let access_token = mc_access_token_to_string(&mc_token.access_token);
-	println!("Minecraft Access Token: {access_token}");
-
-	let profile = minecraft::get_user_profile(&access_token, &req_client)
-		.await
-		.context("Failed to get user profile")?;
-	println!("Profile: {profile:?}");
-
-	Ok(())
 }
 
 /// Result from the Microsoft authentication function
