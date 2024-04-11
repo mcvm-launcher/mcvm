@@ -76,7 +76,7 @@ impl Instance {
 		let result = match &self.kind {
 			InstKind::Client { .. } => {
 				o.display(
-					MessageContents::Header(format!("Updating client {}", self.id)),
+					MessageContents::Header(format!("Updating client '{}'", self.id)),
 					MessageLevel::Important,
 				);
 				o.start_section();
@@ -88,7 +88,7 @@ impl Instance {
 			}
 			InstKind::Server { .. } => {
 				o.display(
-					MessageContents::Header(format!("Updating server {}", self.id)),
+					MessageContents::Header(format!("Updating server '{}'", self.id)),
 					MessageLevel::Important,
 				);
 				o.start_section();

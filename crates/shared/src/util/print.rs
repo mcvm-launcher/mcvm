@@ -4,7 +4,7 @@ use std::io::{Stdout, Write};
 // use color_print::{cformat, cstr};
 
 /// String used program-wide for most indentation
-pub const INDENT_STR: &str = "  ";
+pub const INDENT_STR: &str = "    ";
 
 /// Used to print text that is replaced
 #[derive(Debug)]
@@ -19,12 +19,7 @@ impl ReplPrinter {
 	/// Make a new ReplPrinter with a verbosity option.
 	/// If that option is false, then nothing will be printed
 	pub fn new(verbose: bool) -> Self {
-		Self {
-			stdout: std::io::stdout(),
-			chars_written: 0,
-			finished: false,
-			options: PrintOptions::new(verbose, 0),
-		}
+		Self::from_options(PrintOptions::new(verbose, 0))
 	}
 
 	/// Make a new ReplPrinter using a set of print options
@@ -62,9 +57,18 @@ impl ReplPrinter {
 		if !self.options.verbose {
 			return;
 		}
-		self.clearline();
+
+		// Write the text
 		let _ = write!(self.stdout, "\r{}{text}", self.options.indent_str);
-		self.chars_written = text.len() + (self.options.indent_str.len() * 8);
+
+		// Calculate the amount written
+		let written = get_terminal_width(text) + self.options.indent_str.chars().count();
+
+		// Clear leftover characters from the last print
+		let clear_count = self.chars_written.checked_sub(written).unwrap_or_default();
+		let _ = write!(self.stdout, "{}", " ".repeat(clear_count));
+
+		self.chars_written = written;
 		let _ = self.stdout.flush();
 	}
 
@@ -130,5 +134,37 @@ impl PrintOptions {
 		out.indent += 1;
 		out.indent_str = make_indent(out.indent);
 		out
+	}
+}
+
+/// Calculate how many characters long something will appear to be in the terminal,
+/// skipping over escape sequences and the such
+pub fn get_terminal_width(text: &str) -> usize {
+	let esc = 0o33 as char;
+	let mut out = 0;
+	let mut in_escape = false;
+	for c in text.chars() {
+		if c == esc {
+			in_escape = true;
+		}
+
+		if !in_escape {
+			out += 1;
+		}
+
+		if c == 'm' {
+			in_escape = false;
+		}
+	}
+	out
+}
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+
+	#[test]
+	fn test_terminal_width() {
+		assert_eq!(get_terminal_width("\u{001b}[16mHello"), 5);
 	}
 }

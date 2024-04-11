@@ -116,6 +116,7 @@ impl InstalledVersionInner {
 			params.paths,
 			params.update_manager,
 			params.req_client,
+			o,
 		)
 		.await
 		.context("Failed to get client meta")?;

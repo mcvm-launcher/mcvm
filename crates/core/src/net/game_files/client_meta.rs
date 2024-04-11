@@ -1,4 +1,5 @@
 use anyhow::{bail, Context};
+use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::util::DeserListOrSingle;
 use reqwest::Client;
 use serde::Deserialize;
@@ -7,7 +8,7 @@ use crate::io::files::{self, paths::Paths};
 use crate::io::java::JavaMajorVersion;
 use crate::io::json_from_file;
 use crate::io::update::UpdateManager;
-use crate::net::download;
+use crate::net::download::ProgressiveDownload;
 
 use super::version_manifest::VersionManifest;
 
@@ -317,6 +318,7 @@ pub async fn get(
 	paths: &Paths,
 	manager: &UpdateManager,
 	client: &Client,
+	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<ClientMeta> {
 	let version_string = version.to_owned();
 
@@ -339,12 +341,24 @@ pub async fn get(
 	let meta = if manager.allow_offline && path.exists() {
 		json_from_file(path).context("Failed to read client meta contents from file")?
 	} else {
-		let bytes = download::bytes(version_url.expect("Version does not exist"), client)
-			.await
-			.context("Failed to download client meta")?;
+		let mut download =
+			ProgressiveDownload::bytes(version_url.expect("Version does not exist"), client)
+				.await?;
+
+		while !download.is_finished() {
+			download.poll_download().await?;
+			o.display(
+				MessageContents::Associated(
+					Box::new(download.get_progress()),
+					Box::new(MessageContents::Simple("Downloading client meta".into())),
+				),
+				MessageLevel::Important,
+			);
+		}
+		let bytes = download.finish();
 		let out = serde_json::from_slice(&bytes).context("Failed to parse client meta")?;
 
-		std::fs::write(path, &bytes).context("Failed to write asset index to a file")?;
+		std::fs::write(path, &bytes).context("Failed to write client meta to a file")?;
 
 		out
 	};

@@ -5,7 +5,7 @@ use serde::Deserialize;
 
 use crate::io::files::{self, paths::Paths};
 use crate::io::update::UpdateManager;
-use crate::net::download;
+use crate::net::download::ProgressiveDownload;
 use crate::util::versions::VersionName;
 
 /// JSON format for the version manifest that contains all available Minecraft versions
@@ -59,7 +59,7 @@ pub async fn get(
 	client: &Client,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<VersionManifest> {
-	let mut manifest_contents = get_contents(paths, manager, client, false)
+	let mut manifest_contents = get_contents(paths, manager, client, false, o)
 		.await
 		.context("Failed to get manifest contents")?;
 	let manifest = match serde_json::from_str(&manifest_contents) {
@@ -77,7 +77,7 @@ pub async fn get(
 				MessageContents::StartProcess("Redownloading".into()),
 				MessageLevel::Important,
 			);
-			manifest_contents = get_contents(paths, manager, client, true)
+			manifest_contents = get_contents(paths, manager, client, true, o)
 				.await
 				.context("Failed to download manifest contents")?;
 			serde_json::from_str(&manifest_contents)?
@@ -95,7 +95,7 @@ pub async fn get_with_output(
 ) -> anyhow::Result<VersionManifest> {
 	o.start_process();
 	o.display(
-		MessageContents::StartProcess("Obtaining version index".into()),
+		MessageContents::StartProcess("Obtaining version manifest".into()),
 		MessageLevel::Important,
 	);
 
@@ -104,7 +104,7 @@ pub async fn get_with_output(
 		.context("Failed to get version manifest")?;
 
 	o.display(
-		MessageContents::Success("Version index obtained".into()),
+		MessageContents::Success("Version manifest obtained".into()),
 		MessageLevel::Important,
 	);
 	o.end_process();
@@ -118,6 +118,7 @@ async fn get_contents(
 	manager: &UpdateManager,
 	client: &Client,
 	force: bool,
+	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<String> {
 	let mut path = paths.internal.join("versions");
 	files::create_dir(&path)?;
@@ -126,12 +127,26 @@ async fn get_contents(
 		return std::fs::read_to_string(path).context("Failed to read manifest contents from file");
 	}
 
-	let text = download::text(
+	let mut download = ProgressiveDownload::bytes(
 		"https://piston-meta.mojang.com/mc/game/version_manifest_v2.json",
 		client,
 	)
-	.await
-	.context("Failed to download manifest")?;
+	.await?;
+
+	while !download.is_finished() {
+		download.poll_download().await?;
+		o.display(
+			MessageContents::Associated(
+				Box::new(download.get_progress()),
+				Box::new(MessageContents::Simple(
+					"Downloading version manifest".into(),
+				)),
+			),
+			MessageLevel::Important,
+		);
+	}
+	let text = String::from_utf8_lossy(&download.finish()).to_string();
+
 	std::fs::write(&path, &text).context("Failed to write manifest to a file")?;
 
 	Ok(text)

@@ -41,7 +41,7 @@ impl MCVMOutput for TerminalOutput {
 
 	fn start_process(&mut self) {
 		if self.in_process {
-			self.printer.println("");
+			self.printer.newline();
 		} else {
 			self.in_process = true;
 		}
@@ -49,7 +49,7 @@ impl MCVMOutput for TerminalOutput {
 
 	fn end_process(&mut self) {
 		if self.in_process {
-			self.printer.println("");
+			self.printer.newline();
 		}
 		self.in_process = false;
 	}
@@ -124,7 +124,7 @@ impl TerminalOutput {
 			self.printer.print(&text);
 		} else {
 			self.printer.print(&text);
-			self.printer.println("");
+			self.printer.newline();
 		}
 	}
 
@@ -171,12 +171,13 @@ impl TerminalOutput {
 					current,
 					total,
 					ProgressBarSettings {
-						len: 14,
+						len: 25,
 						full: "=",
 						empty: "-",
+						end: ">",
 					},
 				);
-				cformat!("<s>[</><b>{}</>{}<s>]</>", full, empty)
+				cformat!("<s>[</><g>{}</g>{}<s>]</>", full, empty)
 			}
 			contents => contents.default_format(),
 		}
@@ -264,6 +265,8 @@ struct ProgressBarSettings {
 	full: &'static str,
 	/// The string to use for empty
 	empty: &'static str,
+	/// The character to use for the end of the filled section of the bar
+	end: &'static str,
 }
 
 /// Creates a nice looking progress bar and returns the full and empty parts
@@ -271,7 +274,13 @@ fn progress_bar_parts(current: u32, total: u32, settings: ProgressBarSettings) -
 	let progress = (current as f32) / (total as f32);
 	let full_count = (progress * (settings.len as f32)) as u8;
 	let empty_count = settings.len - full_count;
-	let full_bar = settings.full.repeat(full_count.into());
+	let mut full_bar = settings.full.repeat(full_count.into());
+	if full_count > 0 {
+		full_bar.replace_range(
+			full_bar.len() - settings.end.len()..full_bar.len(),
+			settings.end,
+		);
+	}
 	let empty_bar = settings.empty.repeat(empty_count.into());
 	(full_bar, empty_bar)
 }

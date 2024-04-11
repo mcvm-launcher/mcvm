@@ -79,7 +79,7 @@ pub async fn get(
 	let mut assets_to_download = Vec::new();
 	for (name, asset) in index.objects {
 		let hash = asset.hash;
-		let hash_path = format!("{}/{hash}", hash[..2].to_owned());
+		let hash_path = format!("{}/{hash}", &hash[..2]);
 		let url = format!("https://resources.download.minecraft.net/{hash_path}");
 
 		let path = objects_dir.join(&hash_path);
@@ -162,7 +162,7 @@ pub async fn get(
 					current: num_done,
 					total: count as u32,
 				}),
-				Box::new(MessageContents::Simple(format!("Downloaded {name}"))),
+				Box::new(MessageContents::Simple(format!("Downloaded asset {name}"))),
 			),
 			MessageLevel::Important,
 		);

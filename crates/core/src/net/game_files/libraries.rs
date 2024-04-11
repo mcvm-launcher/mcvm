@@ -132,7 +132,7 @@ pub async fn get(
 					current: num_done,
 					total: count as u32,
 				}),
-				Box::new(MessageContents::StartProcess(format!(
+				Box::new(MessageContents::Simple(format!(
 					"Downloaded library {name}"
 				))),
 			),

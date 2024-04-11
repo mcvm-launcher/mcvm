@@ -1,10 +1,11 @@
 use std::{
 	fs::File,
-	io::{BufWriter, Write},
+	io::{BufWriter, Cursor, Write},
 	path::Path,
 };
 
-use anyhow::Context;
+use anyhow::{ensure, Context};
+use mcvm_shared::output::MessageContents;
 use reqwest::{IntoUrl, Url};
 use serde::de::DeserializeOwned;
 
@@ -131,6 +132,13 @@ impl<W: Write> ProgressiveDownload<W> {
 		self.content_length as usize
 	}
 
+	/// Get the progress message corresponding to this download
+	pub fn get_progress(&self) -> MessageContents {
+		let current = (self.get_downloaded() / 2) as u32;
+		let total = (self.get_total_length() / 2) as u32;
+		MessageContents::Progress { current, total }
+	}
+
 	/// Poll the download
 	pub async fn poll_download(&mut self) -> anyhow::Result<()> {
 		let chunk = self
@@ -145,6 +153,11 @@ impl<W: Write> ProgressiveDownload<W> {
 			self.bytes_downloaded += bytes.len();
 		} else {
 			self.finished = true;
+			// Ensure that we downloaded the correct amount
+			ensure!(
+				self.get_downloaded() == self.get_total_length(),
+				"Bytes downloaded did not equal the amount expected"
+			);
 		}
 
 		Ok(())
@@ -169,6 +182,25 @@ impl ProgressiveDownload<BufWriter<File>> {
 			.context("Failed to get response")?;
 
 		Ok(Self::from_response(response, file))
+	}
+}
+
+impl ProgressiveDownload<Cursor<Vec<u8>>> {
+	/// Create a new ProgressiveDownload that downloads bytes
+	pub async fn bytes(url: impl IntoUrl, client: &Client) -> anyhow::Result<Self> {
+		let response = download(url, client)
+			.await
+			.context("Failed to get response")?;
+		let cursor = Cursor::new(Vec::with_capacity(
+			response.content_length().unwrap_or_default() as usize,
+		));
+
+		Ok(Self::from_response(response, cursor))
+	}
+
+	/// Consume the download and get the resulting bytes
+	pub fn finish(self) -> Vec<u8> {
+		self.writer.into_inner()
 	}
 }
 

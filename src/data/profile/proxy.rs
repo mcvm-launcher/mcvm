@@ -57,6 +57,10 @@ impl Profile {
 			_ => {}
 		}
 
+		o.display(
+			MessageContents::Success("Proxy updated".into()),
+			MessageLevel::Important,
+		);
 		o.end_process();
 
 		Ok(())

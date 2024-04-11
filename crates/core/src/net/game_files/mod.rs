@@ -12,7 +12,6 @@ use crate::io::update::UpdateManager;
 use mcvm_shared::util::cap_first_letter;
 use mcvm_shared::Side;
 
-use anyhow::Context;
 use reqwest::Client;
 
 use super::download;
@@ -20,6 +19,8 @@ use super::download;
 /// Downloading the game JAR file
 pub mod game_jar {
 	use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel, OutputProcess};
+
+	use self::download::ProgressiveDownload;
 
 	use super::{client_meta::ClientMeta, *};
 
@@ -50,9 +51,18 @@ pub mod game_jar {
 			Side::Server => &client_meta.downloads.server,
 		};
 
-		download::file(&download.url, &path, client)
-			.await
-			.context("Failed to download file")?;
+		let mut download = ProgressiveDownload::file(&download.url, path, client).await?;
+		let message = Box::new(MessageContents::Simple(format!(
+			"Downloading {side_str} jar"
+		)));
+		while !download.is_finished() {
+			download.poll_download().await?;
+			process.0.display(
+				MessageContents::Associated(Box::new(download.get_progress()), message.clone()),
+				MessageLevel::Important,
+			);
+		}
+
 		let side_str = cap_first_letter(&side_str);
 
 		process.0.display(
