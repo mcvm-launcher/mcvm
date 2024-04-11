@@ -3,7 +3,9 @@ use std::path::{Path, PathBuf};
 use std::sync::Arc;
 
 use anyhow::Context;
+use mcvm_shared::lang::translate::TranslationKey;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
+use mcvm_shared::translate;
 use mcvm_shared::versions::VersionPattern;
 use reqwest::Client;
 use serde::Deserialize;
@@ -59,7 +61,7 @@ pub async fn get(
 		Ok(val) => val,
 		Err(err) => {
 			o.display(
-				MessageContents::Error("Failed to obtain asset index".into()),
+				MessageContents::Error(translate!(o, AssetIndexFailed)),
 				MessageLevel::Important,
 			);
 			o.display(
@@ -67,7 +69,7 @@ pub async fn get(
 				MessageLevel::Important,
 			);
 			o.display(
-				MessageContents::StartProcess("Redownloading".into()),
+				MessageContents::StartProcess(translate!(o, Redownloading)),
 				MessageLevel::Important,
 			);
 			download_index(index_url, &index_path, manager, client, true)
@@ -107,7 +109,11 @@ pub async fn get(
 	let count = assets_to_download.len();
 	if count > 0 {
 		o.display(
-			MessageContents::StartProcess(format!("Downloading {count} assets")),
+			MessageContents::StartProcess(translate!(
+				o,
+				StartDownloadingAssets,
+				"count" = &format!("{count}")
+			)),
 			MessageLevel::Important,
 		);
 
@@ -162,14 +168,18 @@ pub async fn get(
 					current: num_done,
 					total: count as u32,
 				}),
-				Box::new(MessageContents::Simple(format!("Downloaded asset {name}"))),
+				Box::new(MessageContents::Simple(translate!(
+					o,
+					DownloadedAsset,
+					"asset" = &name
+				))),
 			),
 			MessageLevel::Important,
 		);
 	}
 
 	o.display(
-		MessageContents::Success("Assets downloaded".into()),
+		MessageContents::Success(translate!(o, FinishDownloadingAssets)),
 		MessageLevel::Important,
 	);
 	o.end_process();

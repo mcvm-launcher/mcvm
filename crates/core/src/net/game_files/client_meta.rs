@@ -1,5 +1,7 @@
 use anyhow::{bail, Context};
+use mcvm_shared::lang::translate::TranslationKey;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
+use mcvm_shared::translate;
 use mcvm_shared::util::DeserListOrSingle;
 use reqwest::Client;
 use serde::Deserialize;
@@ -350,7 +352,10 @@ pub async fn get(
 			o.display(
 				MessageContents::Associated(
 					Box::new(download.get_progress()),
-					Box::new(MessageContents::Simple("Downloading client meta".into())),
+					Box::new(MessageContents::Simple(translate!(
+						o,
+						DownloadingClientMeta
+					))),
 				),
 				MessageLevel::Important,
 			);

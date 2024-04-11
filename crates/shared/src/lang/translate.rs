@@ -57,6 +57,17 @@ define_translations! {
 	RepoVersionWarning, "Warning when a remote repo version is too high", "Minimum MCVM version for repository %repo is higher than current installation";
 	OverwriteAddonFilePrompt, "Prompt when an addon file would be overwriten", "The existing file '%file' has the same path as an addon. Overwrite it?";
 	CustomInstructionsWarning, "When a package uses unrecognized custom instructions", "Package uses custom instructions that MCVM does not recognize";
+	Redownloading, "When something is being redownloaded", "Redownloading";
+	AssetIndexFailed, "When the asset index is unable to be obtained", "Failed to obtain asset index";
+	StartDownloadingAssets, "When starting to download assets", "Downloading %count assets";
+	FinishDownloadingAssets, "When finishing downloading assets", "Assets downloaded";
+	DownloadedAsset, "When an asset finishes downloading", "Downloaded asset %asset";
+	DownloadingClientMeta, "While the client meta is downloading", "Downloading client meta";
+	StartDownloadingLibraries, "When starting to download libraries", "Downloading %count libraries";
+	FinishDownloadingLibraries, "When finishing downloading libraries", "Libraries downloaded";
+	DownloadedLibrary, "When a library finishes downloading", "Downloaded library %lib";
+	StartExtractingNative, "When a native library starts to extract", "Extracting native library %lib";
+	ExtractedNativeFile, "When a native library file extract is extracted", "Extracted native file %file";
 }
 
 /// Replaces placeholders in a translated key

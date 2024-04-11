@@ -4,7 +4,9 @@ use std::path::{Path, PathBuf};
 use std::sync::Arc;
 
 use anyhow::{anyhow, Context};
+use mcvm_shared::lang::translate::TranslationKey;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
+use mcvm_shared::translate;
 use reqwest::Client;
 use tokio::{sync::Semaphore, task::JoinSet};
 use zip::ZipArchive;
@@ -78,7 +80,11 @@ pub async fn get(
 	let count = libs_to_download.len();
 	if count > 0 {
 		o.display(
-			MessageContents::StartProcess(format!("Downloading {count} libraries")),
+			MessageContents::StartProcess(translate!(
+				o,
+				StartDownloadingLibraries,
+				"count" = &format!("{count}")
+			)),
 			MessageLevel::Important,
 		);
 
@@ -132,8 +138,10 @@ pub async fn get(
 					current: num_done,
 					total: count as u32,
 				}),
-				Box::new(MessageContents::Simple(format!(
-					"Downloaded library {name}"
+				Box::new(MessageContents::Simple(translate!(
+					o,
+					DownloadedLibrary,
+					"lib" = &name
 				))),
 			),
 			MessageLevel::Important,
@@ -142,7 +150,7 @@ pub async fn get(
 
 	for (path, name, extract) in natives {
 		o.display(
-			MessageContents::StartProcess(format!("Extracting native library {name}")),
+			MessageContents::StartProcess(translate!(o, StartExtractingNative, "lib" = name)),
 			MessageLevel::Debug,
 		);
 		let natives_result = extract_native(&path, &natives_path, extract, manager, o)
@@ -151,7 +159,7 @@ pub async fn get(
 	}
 
 	o.display(
-		MessageContents::Success("Libraries downloaded".into()),
+		MessageContents::Success(translate!(o, FinishDownloadingLibraries)),
 		MessageLevel::Important,
 	);
 	o.end_process();
@@ -253,9 +261,10 @@ fn extract_native(
 					std::io::copy(&mut file, &mut out_file)
 						.context("Failed to copy compressed file")?;
 					o.display(
-						MessageContents::Simple(format!(
-							"Extracted native file {}",
-							out_path.to_string_lossy()
+						MessageContents::Simple(translate!(
+							o,
+							ExtractedNativeFile,
+							"file" = &out_path.to_string_lossy()
 						)),
 						MessageLevel::Debug,
 					);
