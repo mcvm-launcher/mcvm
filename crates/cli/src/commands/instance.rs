@@ -8,6 +8,7 @@ use itertools::Itertools;
 use mcvm::data::config::Config;
 use mcvm::data::id::{InstanceRef, ProfileID};
 
+use mcvm::shared::modifications::Proxy;
 use mcvm::shared::Side;
 use reqwest::Client;
 
@@ -125,7 +126,7 @@ pub async fn launch(
 	}
 
 	// Launch the proxy first
-	let proxy_handle = if let Side::Server = side {
+	let proxy_handle = if side == Side::Server && profile.modifications.proxy != Proxy::None {
 		let client = Client::new();
 		profile
 			.launch_proxy(&client, &data.paths, &mut data.output)
