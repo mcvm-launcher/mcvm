@@ -74,6 +74,12 @@ impl Profile {
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Option<Child>> {
 		// Check for updates first
+
+		o.start_process();
+		o.display(
+			MessageContents::StartProcess("Checking for proxy updates".into()),
+			MessageLevel::Important,
+		);
 		let mut manager = UpdateManager::new(false, true);
 		manager
 			.fulfill_requirements(
@@ -87,6 +93,17 @@ impl Profile {
 		self.create_proxy(&mut manager, paths, client, o)
 			.await
 			.context("Failed to check for proxy updates")?;
+
+		o.display(
+			MessageContents::Success("Proxy updated".into()),
+			MessageLevel::Important,
+		);
+		o.end_process();
+
+		o.display(
+			MessageContents::Simple("Launching!".into()),
+			MessageLevel::Important,
+		);
 
 		let child = match self.modifications.proxy {
 			Proxy::None => None,

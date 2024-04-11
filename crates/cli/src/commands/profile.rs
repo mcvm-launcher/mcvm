@@ -11,6 +11,7 @@ use anyhow::{bail, Context};
 use clap::Subcommand;
 use color_print::{cprint, cprintln};
 use mcvm::shared::Side;
+use reqwest::Client;
 
 use crate::output::HYPHEN_POINT;
 
@@ -44,6 +45,11 @@ pub enum ProfileSubcommand {
 	},
 	#[command(about = "Add new profiles to your config")]
 	Add {},
+	#[command(about = "Launch the proxy on a profile")]
+	ProxyLaunch {
+		/// The profile which has the proxy to launch
+		profile: String,
+	},
 }
 
 pub async fn run(subcommand: ProfileSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
@@ -57,6 +63,7 @@ pub async fn run(subcommand: ProfileSubcommand, data: &mut CmdData) -> anyhow::R
 			skip_packages,
 		} => update(data, &profiles, force, all, skip_packages).await,
 		ProfileSubcommand::Add {} => add(data).await,
+		ProfileSubcommand::ProxyLaunch { profile } => proxy_launch(data, profile).await,
 	}
 }
 
@@ -211,6 +218,26 @@ async fn add(data: &mut CmdData) -> anyhow::Result<()> {
 	.context("Failed to write modified config")?;
 
 	cprintln!("<g>Profile added.");
+
+	Ok(())
+}
+
+async fn proxy_launch(data: &mut CmdData, profile: String) -> anyhow::Result<()> {
+	data.ensure_config(true).await?;
+	let config = data.config.get_mut();
+
+	let profile = ProfileID::from(profile);
+	let profile = config
+		.profiles
+		.get_mut(&profile)
+		.context(format!("Profile '{profile}' does not exist"))?;
+
+	let client = Client::new();
+
+	profile
+		.launch_proxy(&client, &data.paths, &mut data.output)
+		.await
+		.context("Failed to launch proxy")?;
 
 	Ok(())
 }
