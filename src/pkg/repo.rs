@@ -7,7 +7,9 @@ use mcvm_pkg::PackageContentType;
 use mcvm_shared::later::Later;
 
 use anyhow::{bail, Context};
+use mcvm_shared::lang::translate::TranslationKey;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
+use mcvm_shared::translate;
 use reqwest::Client;
 
 use std::borrow::Cow;
@@ -176,10 +178,11 @@ impl PkgRepo {
 			if let (Some(repo_version), Some(program_version)) = (repo_version, program_version) {
 				if repo_version > program_version {
 					o.display(
-						MessageContents::Warning(format!(
-								"Minimum MCVM version for repository {} is higher than current installation",
-								self.id
-							)),
+						MessageContents::Warning(translate!(
+							o,
+							RepoVersionWarning,
+							"repo" = &self.id
+						)),
 						MessageLevel::Important,
 					);
 				}
@@ -271,8 +274,8 @@ impl PkgRepo {
 
 		if let PkgRepoLocation::Core = &self.location {
 			let meta = RepoMetadata {
-				name: Some("Core".into()),
-				description: Some("The built-in set of packages".into()),
+				name: Some(translate!(o, CoreRepoName)),
+				description: Some(translate!(o, CoreRepoDescription)),
 				mcvm_version: Some(crate::VERSION.into()),
 			};
 

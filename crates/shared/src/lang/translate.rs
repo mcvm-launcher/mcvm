@@ -44,7 +44,15 @@ define_translations! {
 	FinishUpdatingProfileVersion, "When finishing updating a profile's version", "Profile version updated";
 	StartUpdatingProxy, "When starting to update a proxy", "Checking for proxy updates";
 	FinishUpdatingProxy, "When finishing updating a proxy", "Proxy updated";
+	StartRunningCommands, "When starting to run package commands", "Running commands";
+	FinishRunningCommands, "When finishing running package commands", "Finished running commands";
+	StartUpdatingInstance, "When starting to update an instance", "Checking for updates";
 	Launch, "When launching the game", "Launching!";
+	CoreRepoName, "Name of the core repo", "Core";
+	CoreRepoDescription, "Description of the core repo", "The built-in set of packages";
+	RepoVersionWarning, "Warning when a remote repo version is too high", "Minimum MCVM version for repository %repo is higher than current installation";
+	OverwriteAddonFilePrompt, "Prompt when an addon file would be overwriten", "The existing file '%file' has the same path as an addon. Overwrite it?";
+	CustomInstructionsWarning, "When a package uses unrecognized custom instructions", "Package uses custom instructions that MCVM does not recognize";
 }
 
 /// Replaces placeholders in a translated key

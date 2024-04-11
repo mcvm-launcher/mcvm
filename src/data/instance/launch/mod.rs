@@ -7,7 +7,9 @@ use mcvm_core::io::java::install::JavaInstallationKind;
 use mcvm_core::user::UserManager;
 use mcvm_core::util::versions::MinecraftVersion;
 use mcvm_core::InstanceHandle;
+use mcvm_shared::lang::translate::TranslationKey;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
+use mcvm_shared::translate;
 use reqwest::Client;
 #[cfg(feature = "schema")]
 use schemars::JsonSchema;
@@ -30,7 +32,7 @@ impl Instance {
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<InstanceHandle> {
 		o.display(
-			MessageContents::StartProcess("Checking for updates".into()),
+			MessageContents::StartProcess(translate!(o, StartUpdatingInstance)),
 			MessageLevel::Important,
 		);
 
@@ -64,7 +66,7 @@ impl Instance {
 		o.end_process();
 
 		o.display(
-			MessageContents::Success("Launching!".into()),
+			MessageContents::Success(translate!(o, Launch)),
 			MessageLevel::Important,
 		);
 		// Launch the instance using core

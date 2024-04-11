@@ -4,7 +4,9 @@ use std::io::BufReader;
 use std::path::PathBuf;
 
 use anyhow::{anyhow, bail, Context};
+use mcvm_shared::lang::translate::TranslationKey;
 use mcvm_shared::output::{MCVMOutput, MessageContents};
+use mcvm_shared::translate;
 use serde::{Deserialize, Serialize};
 
 use mcvm_shared::addon::{Addon, AddonKind};
@@ -215,10 +217,16 @@ impl Lockfile {
 
 		for file in &new_files {
 			if PathBuf::from(file).exists() {
-				let allow = o.prompt_yes_no(false, MessageContents::Warning(
-					format!("The existing file '{file}' has the same path as an addon. Overwrite it?")
-				))
-				.context("Prompt failed")?;
+				let allow = o
+					.prompt_yes_no(
+						false,
+						MessageContents::Warning(translate!(
+							o,
+							OverwriteAddonFilePrompt,
+							"file" = file
+						)),
+					)
+					.context("Prompt failed")?;
 
 				if !allow {
 					bail!("File '{file}' would be overwritten by an addon");

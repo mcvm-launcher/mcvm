@@ -1,6 +1,8 @@
 use anyhow::{bail, Context};
+use mcvm_shared::lang::translate::TranslationKey;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::pkg::ArcPkgReq;
+use mcvm_shared::translate;
 use mcvm_shared::versions::VersionInfo;
 use reqwest::Client;
 
@@ -103,9 +105,7 @@ impl Instance {
 
 		if eval.uses_custom_instructions {
 			o.display(
-				MessageContents::Warning(
-					"Package uses custom instructions that MCVM does not recognize".into(),
-				),
+				MessageContents::Warning(translate!(o, CustomInstructionsWarning)),
 				MessageLevel::Important,
 			);
 		}
@@ -113,7 +113,7 @@ impl Instance {
 		// Run commands
 		if !eval.commands.is_empty() {
 			o.display(
-				MessageContents::StartProcess("Running commands".into()),
+				MessageContents::StartProcess(translate!(o, StartRunningCommands)),
 				MessageLevel::Important,
 			);
 
@@ -133,7 +133,7 @@ impl Instance {
 			}
 
 			o.display(
-				MessageContents::Success("Finished running commands".into()),
+				MessageContents::Success(translate!(o, FinishRunningCommands)),
 				MessageLevel::Important,
 			);
 		}
