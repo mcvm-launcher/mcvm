@@ -1,4 +1,5 @@
 mod commands;
+mod docs;
 mod output;
 mod secrets;
 

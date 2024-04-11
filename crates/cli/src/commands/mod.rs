@@ -16,6 +16,9 @@ use mcvm::plugin::hooks;
 use mcvm::shared::later::Later;
 use mcvm::shared::output::{MCVMOutput, MessageContents, MessageLevel};
 
+use crate::docs::Docs;
+use crate::output::HYPHEN_POINT;
+
 use self::files::FilesSubcommand;
 use self::instance::InstanceSubcommand;
 use self::package::PackageSubcommand;
@@ -73,6 +76,11 @@ pub enum Command {
 		#[command(subcommand)]
 		command: ToolSubcommand,
 	},
+	#[command(about = "Get program documentation")]
+	Docs {
+		/// The documentation page to view. If omitted, lists the available pages
+		page: Option<String>,
+	},
 	#[clap(external_subcommand)]
 	External(Vec<String>),
 }
@@ -123,6 +131,7 @@ pub async fn run_cli() -> anyhow::Result<()> {
 		Command::Instance { command } => instance::run(command, &mut data).await,
 		Command::Snapshot { command } => snapshot::run(command, &mut data).await,
 		Command::Tool { command } => tool::run(command, &mut data).await,
+		Command::Docs { page } => display_docs(page),
 		Command::External(args) => {
 			// Run the plugin subcommand
 			data.ensure_config(true).await?;
@@ -214,4 +223,24 @@ fn print_version() {
 	let mcvm_version = mcvm::VERSION;
 	cprintln!("CLI version: <g>{}</g>", version);
 	cprintln!("MCVM version: <g>{}</g>", mcvm_version);
+}
+
+/// Display docs
+fn display_docs(page: Option<String>) -> anyhow::Result<()> {
+	let docs = Docs::load().context("Failed to load documentation")?;
+	if let Some(page) = page {
+		if let Some(page) = docs.get_page(&page) {
+			termimad::print_text(page);
+		} else {
+			bail!("Documentation page '{page}' does not exist");
+		}
+	} else {
+		let pages = docs.get_pages();
+		cprintln!("<s>Available documentation pages:");
+		for page in pages {
+			print!("{HYPHEN_POINT}");
+			cprintln!("<b>{page}");
+		}
+	}
+	Ok(())
 }
