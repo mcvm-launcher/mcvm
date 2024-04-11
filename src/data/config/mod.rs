@@ -293,12 +293,13 @@ fn default_config() -> serde_json::Value {
 			"profiles": {
 				"example": {
 					"version": "1.19.3",
-					"server_type": "paper",
+					"modloader": "fabric",
+					"server_type": "none",
 					"instances": {
-						"example-client": {
+						"client": {
 							"type": "client"
 						},
-						"example-server": "server"
+						"server": "server"
 					}
 				}
 			}
