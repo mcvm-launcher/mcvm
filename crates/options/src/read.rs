@@ -24,14 +24,14 @@ pub fn read_options_file(
 	separator: char,
 ) -> anyhow::Result<HashMap<String, String>> {
 	// TODO: Make this more robust to formatting differences and whitespace
-	let mut out = HashMap::new();
+	let mut out = HashMap::with_capacity(contents.lines().count());
 	for (i, line) in contents.lines().enumerate() {
 		if !line.contains(separator) {
 			continue;
 		}
 		let index = line
 			.find(separator)
-			.ok_or(anyhow!("Options line {i} does not have a colon separator!"))?;
+			.ok_or_else(|| anyhow!("Options line {i} does not have a separator!"))?;
 		let (key, value) = line.split_at(index);
 		out.insert(key.to_string(), String::from(&value[1..]));
 	}
