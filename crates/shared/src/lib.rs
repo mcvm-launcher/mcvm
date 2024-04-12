@@ -120,6 +120,7 @@ pub mod later {
 			}
 		}
 
+		#[cold]
 		fn fail(&self) -> ! {
 			panic!("Value in Later<T> does not exist");
 		}

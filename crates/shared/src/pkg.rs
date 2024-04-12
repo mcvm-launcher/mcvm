@@ -79,6 +79,7 @@ impl PkgRequestSource {
 
 impl PkgRequest {
 	/// Create a new PkgRequest
+	#[inline(always)]
 	pub fn new(
 		id: impl Into<PackageID>,
 		source: PkgRequestSource,

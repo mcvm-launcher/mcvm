@@ -273,7 +273,7 @@ impl Config {
 
 			profile_config.packages.validate()?;
 
-			profiles.insert(profile_id.clone(), profile);
+			profiles.insert(profile_id, profile);
 		}
 
 		let global_packages = config

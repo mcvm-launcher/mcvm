@@ -289,7 +289,7 @@ pub struct LaunchConfig {
 
 impl LaunchConfig {
 	/// Parse and finalize this LaunchConfig into LaunchOptions
-	pub fn to_options(&self) -> anyhow::Result<LaunchOptions> {
+	pub fn to_options(self) -> anyhow::Result<LaunchOptions> {
 		let min_mem = match &self.memory {
 			LaunchMemory::None => None,
 			LaunchMemory::Single(string) => MemoryNum::parse(string),
@@ -315,9 +315,9 @@ impl LaunchConfig {
 			max_mem,
 			java: JavaInstallationKind::parse(&self.java),
 			preset: ArgsPreset::from_str(&self.preset)?,
-			env: self.env.clone(),
-			wrapper: self.wrapper.clone(),
-			quick_play: self.quick_play.clone(),
+			env: self.env,
+			wrapper: self.wrapper,
+			quick_play: self.quick_play,
 			use_log4j_config: self.use_log4j_config,
 		})
 	}
@@ -416,8 +416,14 @@ pub fn merge_instance_configs(
 			},
 		) => Ok::<FullInstanceConfig, anyhow::Error>(FullInstanceConfig::Client {
 			options: merge_options(options, options2),
-			window: window.merge(window2).clone(),
-			common: common.merge(common2).clone(),
+			window: {
+				window.merge(window2);
+				window
+			},
+			common: {
+				common.merge(common2);
+				common
+			},
 		}),
 		(
 			FullInstanceConfig::Server {
@@ -432,7 +438,10 @@ pub fn merge_instance_configs(
 			},
 		) => Ok::<FullInstanceConfig, anyhow::Error>(FullInstanceConfig::Server {
 			options: merge_options(options, options2),
-			common: common.merge(common2).clone(),
+			common: {
+				common.merge(common2);
+				common
+			},
 		}),
 		_ => bail!("Instance types do not match"),
 	}?;
@@ -471,7 +480,7 @@ pub fn read_instance_config(
 			.ok_or(anyhow!("Preset '{preset}' does not exist"))?;
 		merge_instance_configs(preset, config).context("Failed to merge preset with instance")?
 	} else {
-		config.clone()
+		config
 	};
 	let (kind, mut common) = match config {
 		FullInstanceConfig::Client {

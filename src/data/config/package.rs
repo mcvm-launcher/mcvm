@@ -51,8 +51,8 @@ impl PackageConfig {
 		&self,
 		properties: &PackageProperties,
 	) -> anyhow::Result<Vec<String>> {
-		let allowed_features = properties.features.clone().unwrap_or_default();
-		let default_features = properties.default_features.clone().unwrap_or_default();
+		let empty = Vec::new();
+		let allowed_features = properties.features.as_ref().unwrap_or(&empty);
 
 		for feature in &self.features {
 			ensure!(
@@ -61,11 +61,11 @@ impl PackageConfig {
 			);
 		}
 
-		let mut out = Vec::new();
+		let mut out = self.features.clone();
 		if self.use_default_features {
+			let default_features = properties.default_features.clone().unwrap_or_default();
 			out.extend(default_features);
 		}
-		out.extend(self.features.clone());
 
 		Ok(out)
 	}
