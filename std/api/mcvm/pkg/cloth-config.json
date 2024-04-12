@@ -4,6 +4,13 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": "24w14a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/9s6osm5g/versions/X9ucoGCn/cloth-config-14.0.125-fabric.jar",
+					"version": "X9ucoGCn"
+				},
+				{
 					"minecraft_versions": "24w14potato",
 					"modloaders": "fabric",
 					"stability": "latest",
@@ -940,7 +947,8 @@
 			"1.20.3",
 			"1.20.4",
 			"24w09a",
-			"24w14potato"
+			"24w14potato",
+			"24w14a"
 		]
 	}
 }

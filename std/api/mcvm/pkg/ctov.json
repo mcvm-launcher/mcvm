@@ -5,34 +5,35 @@
 			"versions": [
 				{
 					"minecraft_versions": [
+						"1.20",
+						"1.20.1",
 						"1.20.2",
 						"1.20.3",
 						"1.20.4"
 					],
-					"modloaders": [
-						"fabric",
-						"neoforged",
-						"quilt"
-					],
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "lithostitched"
+					},
 					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/L6yQN8AJ/ctov-3.4-beta.jar",
-					"version": "L6yQN8AJ"
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/BIB9Ritw/ctov-forge-3.4.3.jar",
+					"version": "BIB9Ritw"
 				},
 				{
 					"minecraft_versions": [
 						"1.20",
 						"1.20.1",
-						"1.20.2"
+						"1.20.2",
+						"1.20.3",
+						"1.20.4"
 					],
-					"modloaders": [
-						"fabric",
-						"forge",
-						"neoforged",
-						"quilt"
-					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "lithostitched"
+					},
 					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/nF92O1uF/ctov-3.3.6.jar",
-					"version": "nF92O1uF"
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/KXEQACvr/ctov-fabric-3.4.3.jar",
+					"version": "KXEQACvr"
 				},
 				{
 					"minecraft_versions": [
@@ -141,6 +142,37 @@
 					"stability": "stable",
 					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/UlWylSLM/ctov-3.4.1.jar",
 					"version": "UlWylSLM"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.2",
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": [
+						"fabric",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/L6yQN8AJ/ctov-3.4-beta.jar",
+					"version": "L6yQN8AJ"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1",
+						"1.20.2"
+					],
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/fgmhI8kH/versions/nF92O1uF/ctov-3.3.6.jar",
+					"version": "nF92O1uF"
 				},
 				{
 					"minecraft_versions": [

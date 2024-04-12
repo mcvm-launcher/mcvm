@@ -4,6 +4,36 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/h2HgGyvA/create-fabric-0.5.1-f-build.1417%2Bmc1.20.1.jar",
+					"version": "h2HgGyvA"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/ylv5ppFs/create-fabric-0.5.1-f-build.1416%2Bmc1.19.2.jar",
+					"version": "ylv5ppFs"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/Xbc0uyRg/versions/ACfVIQMB/create-fabric-0.5.1-f-build.1415%2Bmc1.18.2.jar",
+					"version": "ACfVIQMB"
+				},
+				{
 					"minecraft_versions": "1.19.2",
 					"modloaders": [
 						"fabric",

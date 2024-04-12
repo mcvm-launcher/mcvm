@@ -198,7 +198,7 @@
 		"description": "A data attachment API that is easy, modular, and extremely fast.",
 		"documentation": "https://ladysnake.org/wiki/cardinal-components-api",
 		"gallery": [],
-		"icon": "https://cdn.modrinth.com/data/K01OU20C/1c94d0e9d6f7d1f79b5ae30d9d9cd5eede671a7f.jpeg",
+		"icon": "https://cdn.modrinth.com/data/K01OU20C/c95792db39092b68abb6266237382281d441ad9d.webp",
 		"issues": "https://github.com/Ladysnake/Cardinal-Components-API/issues",
 		"license": "MIT",
 		"long_description": "# ![Cardinal Components API](https://raw.githubusercontent.com/OnyxStudios/Cardinal-Components-API/1.18/banner.svg)\nA components API for Quilt and Fabric that is easy, modular, and extremely fast.\n\nDetailed information is available in the repository's [**wiki**](https://ladysnake.org/wiki/cardinal-components-api).\nThe information below is a condensed form of the latter.\n\n## Features\\*\n- 🔗 Attach data to a variety of vanilla classes\n- 🧩 Implement once, plug anywhere - modded data will be saved automatically\n- 📤 Synchronize data with a single helper interface\n- 👥 Choose how components are copied when a player respawns\n- ⏲️ Tick components alongside their target\n- 🛠️ Fine-tune everything so that it fits your needs\n- ☄️ And enjoy the blazing speed of ASM-generated extensions\n\n*\\*Non exhaustive, refer to the wiki and javadoc for the full list.*\n",

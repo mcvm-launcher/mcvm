@@ -4,6 +4,27 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/P7dR8mSH/versions/xklQBMta/fabric-api-0.97.0%2B1.20.4.jar",
+					"version": "xklQBMta"
+				},
+				{
+					"minecraft_versions": "1.20.5-pre1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/P7dR8mSH/versions/axDEQtMs/fabric-api-0.96.15%2B1.20.5.jar",
+					"version": "axDEQtMs"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/P7dR8mSH/versions/ba99D9Qf/fabric-api-0.92.1%2B1.20.1.jar",
+					"version": "ba99D9Qf"
+				},
+				{
 					"minecraft_versions": "24w14a",
 					"modloaders": "fabric",
 					"stability": "latest",
@@ -5794,7 +5815,8 @@
 			"24w12a",
 			"24w13a",
 			"24w14potato",
-			"24w14a"
+			"24w14a",
+			"1.20.5-pre1"
 		]
 	},
 	"relations": {

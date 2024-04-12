@@ -5,6 +5,71 @@
 			"versions": [
 				{
 					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/uy4Cnpcm/versions/E00CwMTB/Bookshelf-Fabric-1.20.4-23.0.8.jar",
+					"version": "E00CwMTB"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/uy4Cnpcm/versions/GE5otVe5/Bookshelf-NeoForge-1.20.4-23.0.8.jar",
+					"version": "GE5otVe5"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/uy4Cnpcm/versions/agzurVeI/Bookshelf-Forge-1.20.4-23.0.8.jar",
+					"version": "agzurVeI"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/uy4Cnpcm/versions/N6gUTQen/Bookshelf-NeoForge-1.20.4-23.0.7.jar",
+					"version": "N6gUTQen"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/uy4Cnpcm/versions/NwR8CYEk/Bookshelf-Forge-1.20.4-23.0.7.jar",
+					"version": "NwR8CYEk"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/uy4Cnpcm/versions/xObShtdR/Bookshelf-Fabric-1.20.4-23.0.7.jar",
+					"version": "xObShtdR"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/uy4Cnpcm/versions/zozOd4AM/Bookshelf-Forge-1.20.1-20.1.10.jar",
+					"version": "zozOd4AM"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/uy4Cnpcm/versions/X9JByRlL/Bookshelf-Fabric-1.20.1-20.1.10.jar",
+					"version": "X9JByRlL"
+				},
+				{
+					"minecraft_versions": "1.20.4",
 					"modloaders": "neoforged",
 					"stability": "stable",
 					"url": "https://cdn.modrinth.com/data/uy4Cnpcm/versions/c4b2TmiR/Bookshelf-NeoForge-1.20.4-23.0.6.jar",
