@@ -8,6 +8,7 @@ In the official launcher and many alternative ones, you have to waste time movin
 - ✨ [Features](#✨-features)
 - 📥 [Installation](#📥-installation)
 - ➕ [More Info](#➕-more-info)
+- 👷 [Use Cases](#👷-use-cases)
 - 👍 [Status](#👍-status)
 - 🤝 [Contributing](CONTRIBUTING.md)
 
@@ -35,7 +36,7 @@ cargo install mcvm_cli
 ```
 in your favorite terminal. 
 
-# ➕ More info
+# ➕ More Info
 
 ### 📦 Packages
 **_Packages_** are the big selling point of MCVM. They are simple files which are configured on profiles and instances and obtain the correct content files for your game. The `sodium` package, for example, when installed on a profile, will add the Sodium jar file to your mods folder only on client instances.
@@ -60,7 +61,7 @@ With the official launcher, changing versions often means your configuration bre
 
 Global options for your clients and servers can be defined in simple files that propagate seamlessly. Even though Mojang changes the formats for their options files often, MCVM's options are consistent and fully backwards compatible.
 
-# 👷 Use cases
+# 👷 Use Cases
 MCVM has many use cases for different applications 
 
 ### ⌨️ A command-line launcher
