@@ -28,8 +28,28 @@ pub mod adoptium {
 	/// Gets the URL to the JSON file for a major Java version
 	fn json_url(major_version: &str) -> String {
 		format!(
-			"https://api.adoptium.net/v3/assets/latest/{major_version}/hotspot?image_type=jre&vendor=eclipse&architecture={ARCH_STRING}&os={OS_STRING}"
+			"https://api.adoptium.net/v3/assets/latest/{major_version}/hotspot?image_type=jre&vendor=eclipse&architecture={}&os={}",
+			get_arch_arg(),
+			get_os_arg(),
 		)
+	}
+
+	/// Get the OS argument for the API
+	fn get_os_arg() -> &'static str {
+		if cfg!(target_os = "macos") {
+			"mac"
+		} else {
+			OS_STRING
+		}
+	}
+
+	/// Get the arch argument for the API
+	fn get_arch_arg() -> &'static str {
+		if cfg!(target_arch = "x86_64") {
+			"x64"
+		} else {
+			ARCH_STRING
+		}
 	}
 
 	/// A single package info for Adoptium
