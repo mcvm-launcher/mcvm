@@ -295,8 +295,8 @@ impl<'parent> ProfileBuilder<'parent> {
 	}
 
 	/// Finish the builder and go to the parent
-	pub fn build(self) -> anyhow::Result<()> {
-		let (id, profile, parent) = self.build_self()?;
+	pub fn build(self, o: &mut impl MCVMOutput) -> anyhow::Result<()> {
+		let (id, profile, parent) = self.build_self(o)?;
 		if let Some(parent) = parent {
 			parent.build_profile(id, profile);
 		}
@@ -307,6 +307,7 @@ impl<'parent> ProfileBuilder<'parent> {
 	/// Finish the builder and return the self
 	pub fn build_self(
 		self,
+		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<(ProfileID, Profile, Option<&'parent mut ConfigBuilder>)> {
 		let mut built = self.config.to_profile(self.id.clone());
 
@@ -317,6 +318,13 @@ impl<'parent> ProfileBuilder<'parent> {
 			.map(|x| &x.global_packages)
 			.unwrap_or(&empty_global_packages);
 
+		let default_plugins = PluginManager::new();
+		let plugins = if let Some(ref parent) = self.parent {
+			&parent.plugins
+		} else {
+			&default_plugins
+		};
+
 		for (instance_id, instance) in self.instances.into_iter() {
 			let instance = read_instance_config(
 				instance_id,
@@ -324,6 +332,8 @@ impl<'parent> ProfileBuilder<'parent> {
 				&built,
 				global_packages,
 				&HashMap::new(),
+				plugins,
+				o,
 			)?;
 			built.add_instance(instance);
 		}
@@ -468,6 +478,7 @@ impl<'parent, 'grandparent> InstanceBuilder<'parent, 'grandparent> {
 	pub fn build_self(
 		self,
 		profile: &Profile,
+		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<(
 		InstanceID,
 		Instance,
@@ -480,12 +491,25 @@ impl<'parent, 'grandparent> InstanceBuilder<'parent, 'grandparent> {
 			.and_then(|x| x.parent.as_ref())
 			.map(|x| &x.global_packages)
 			.unwrap_or(&empty_global_packages);
+
+		let default_plugins = PluginManager::new();
+		let plugins = if let Some(ref parent) = self.parent {
+			if let Some(ref parent) = parent.parent {
+				&parent.plugins
+			} else {
+				&default_plugins
+			}
+		} else {
+			&default_plugins
+		};
 		let built = read_instance_config(
 			self.id.clone(),
 			&InstanceConfig::Full(self.config),
 			profile,
 			global_packages,
 			&HashMap::new(),
+			plugins,
+			o,
 		)?;
 
 		Ok((self.id, built, self.parent))
@@ -623,6 +647,7 @@ impl<'config> PackageBuilderParent for PackageBuilderConfigParent<'config> {
 
 #[cfg(test)]
 mod tests {
+	use mcvm_plugin::api::NoOp;
 	use mcvm_shared::lang::Language;
 
 	use crate::data::config::preferences::{PrefDeser, RepositoriesDeser};
@@ -664,7 +689,9 @@ mod tests {
 		);
 		modify_profile(&mut profile);
 
-		let (profile_id, profile, ..) = profile.build_self().expect("Failed to build profile");
+		let (profile_id, profile, ..) = profile
+			.build_self(&mut NoOp)
+			.expect("Failed to build profile");
 		assert_eq!(profile_id, "profile".into());
 		assert!(profile.instances.contains_key("instance"));
 		assert_eq!(profile.modifications.client_type, ClientType::Fabric);

@@ -6,7 +6,7 @@ use std::env::Args;
 use anyhow::Context;
 use serde::de::DeserializeOwned;
 
-use crate::hooks::{Hook, OnLoad, Subcommand};
+use crate::hooks::{Hook, ModifyInstanceConfig, ModifyInstanceConfigResult, OnLoad, Subcommand};
 use crate::output::OutputAction;
 
 use self::output::PluginOutput;
@@ -58,6 +58,17 @@ impl CustomPlugin {
 		f: impl FnOnce(&mut HookContext, Vec<String>) -> anyhow::Result<()>,
 	) -> anyhow::Result<()> {
 		self.handle_hook::<Subcommand>(Self::get_hook_arg, f)
+	}
+
+	/// Bind to the modify_instance_config hook
+	pub fn modify_instance_config(
+		&mut self,
+		f: impl FnOnce(
+			&mut HookContext,
+			serde_json::Map<String, serde_json::Value>,
+		) -> anyhow::Result<ModifyInstanceConfigResult>,
+	) -> anyhow::Result<()> {
+		self.handle_hook::<ModifyInstanceConfig>(Self::get_hook_arg, f)
 	}
 
 	/// Handle a hook

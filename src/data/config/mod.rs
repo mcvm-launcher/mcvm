@@ -157,6 +157,15 @@ impl Config {
 		paths: &Paths,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Self> {
+		let mut plugins = PluginManager::new();
+
+		for plugin in config.plugins {
+			let plugin = plugin.to_config();
+			plugins
+				.load_plugin(plugin, paths, o)
+				.context("Failed to load plugin")?;
+		}
+
 		let mut users = UserManager::new(ClientId::new("".into()));
 		let mut profiles = HashMap::new();
 		// Preferences
@@ -252,6 +261,8 @@ impl Config {
 					&profile,
 					&config.packages,
 					&config.instance_presets,
+					&plugins,
+					o,
 				)
 				.with_context(|| format!("Failed to configure instance '{instance_id}'"))?;
 				profile.add_instance(instance);
@@ -267,15 +278,6 @@ impl Config {
 			.into_iter()
 			.map(|x| x.to_package_config(PackageStability::default(), PackageConfigSource::Global))
 			.collect();
-
-		let mut plugins = PluginManager::new();
-
-		for plugin in config.plugins {
-			let plugin = plugin.to_config();
-			plugins
-				.load_plugin(plugin, paths, o)
-				.context("Failed to load plugin")?;
-		}
 
 		Ok(Self {
 			users,

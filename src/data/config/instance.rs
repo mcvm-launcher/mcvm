@@ -6,6 +6,8 @@ use mcvm_core::io::java::args::{ArgsPreset, MemoryNum};
 use mcvm_core::io::java::install::JavaInstallationKind;
 use mcvm_options::client::ClientOptions;
 use mcvm_options::server::ServerOptions;
+use mcvm_plugin::hooks::ModifyInstanceConfig;
+use mcvm_shared::output::MCVMOutput;
 use mcvm_shared::pkg::PackageStability;
 use mcvm_shared::util::{merge_options, DefaultExt};
 use mcvm_shared::Side;
@@ -20,6 +22,7 @@ use crate::data::profile::Profile;
 use crate::io::snapshot;
 
 use super::package::{PackageConfig, PackageConfigDeser, PackageConfigSource};
+use super::plugin::PluginManager;
 
 /// Different representations of configuration for an instance
 #[derive(Deserialize, Serialize, Clone)]
@@ -126,6 +129,10 @@ pub struct CommonInstanceConfig {
 	/// Packages for this instance
 	#[serde(skip_serializing_if = "Vec::is_empty")]
 	pub packages: Vec<PackageConfigDeser>,
+	/// Config for plugins
+	#[serde(flatten)]
+	#[serde(skip_serializing_if = "serde_json::Map::is_empty")]
+	pub plugin_config: serde_json::Map<String, serde_json::Value>,
 }
 
 impl CommonInstanceConfig {
@@ -389,10 +396,10 @@ impl ClientWindowConfig {
 /// Some values will be merged while others will have the right side take precendence
 pub fn merge_instance_configs(
 	preset: &InstanceConfig,
-	config: &InstanceConfig,
-) -> anyhow::Result<InstanceConfig> {
+	config: FullInstanceConfig,
+) -> anyhow::Result<FullInstanceConfig> {
 	let mut out = preset.make_full();
-	let applied = config.make_full();
+	let applied = config;
 	out = match (out, applied) {
 		(
 			FullInstanceConfig::Client {
@@ -430,7 +437,7 @@ pub fn merge_instance_configs(
 		_ => bail!("Instance types do not match"),
 	}?;
 
-	Ok(InstanceConfig::Full(out))
+	Ok(out)
 }
 
 /// Read the config for an instance to create the instance
@@ -440,23 +447,24 @@ pub fn read_instance_config(
 	profile: &Profile,
 	global_packages: &[PackageConfigDeser],
 	presets: &HashMap<String, InstanceConfig>,
+	plugins: &PluginManager,
+	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<Instance> {
-	let config = if let InstanceConfig::Full(
-		FullInstanceConfig::Client {
-			common: CommonInstanceConfig {
-				preset: Some(preset),
-				..
-			},
-			..
-		}
-		| FullInstanceConfig::Server {
-			common: CommonInstanceConfig {
-				preset: Some(preset),
-				..
-			},
+	let config = config.make_full();
+	let config = if let FullInstanceConfig::Client {
+		common: CommonInstanceConfig {
+			preset: Some(ref preset),
 			..
 		},
-	) = config
+		..
+	}
+	| FullInstanceConfig::Server {
+		common: CommonInstanceConfig {
+			preset: Some(ref preset),
+			..
+		},
+		..
+	} = config
 	{
 		let preset = presets
 			.get(preset)
@@ -465,23 +473,26 @@ pub fn read_instance_config(
 	} else {
 		config.clone()
 	};
-	let (kind, common) = match config {
-		InstanceConfig::Simple(side) => (
-			match side {
-				Side::Client => InstKind::client(None, ClientWindowConfig::default()),
-				Side::Server => InstKind::server(None),
-			},
-			CommonInstanceConfig::default(),
-		),
-		InstanceConfig::Full(config) => match config {
-			FullInstanceConfig::Client {
-				options,
-				window,
-				common,
-			} => (InstKind::client(options, window), common),
-			FullInstanceConfig::Server { options, common } => (InstKind::server(options), common),
-		},
+	let (kind, mut common) = match config {
+		FullInstanceConfig::Client {
+			options,
+			window,
+			common,
+		} => (InstKind::client(options, window), common),
+		FullInstanceConfig::Server { options, common } => (InstKind::server(options), common),
 	};
+
+	// Apply plugins
+	let results = plugins
+		.call_hook(ModifyInstanceConfig, &common.plugin_config, o)
+		.context("Failed to apply plugin instance modifications")?;
+	for result in results {
+		common
+			.launch
+			.args
+			.jvm
+			.merge(Args::List(result.additional_jvm_args));
+	}
 
 	// Consolidate all of the package configs into the instance package config list
 	let packages =
@@ -551,6 +562,7 @@ mod tests {
 	use crate::data::config::profile::ProfilePackageConfiguration;
 	use crate::data::{config::profile::GameModifications, id::ProfileID};
 	use mcvm_core::util::versions::MinecraftVersion;
+	use mcvm_plugin::api::NoOp;
 	use mcvm_shared::modifications::{ClientType, Modloader, Proxy, ServerType};
 	use mcvm_shared::pkg::PackageStability;
 
@@ -589,6 +601,8 @@ mod tests {
 			&profile,
 			&[],
 			&HashMap::new(),
+			&PluginManager::new(),
+			&mut NoOp,
 		)
 		.unwrap();
 		assert_eq!(instance.id, InstanceID::from("foo"));
@@ -636,9 +650,16 @@ mod tests {
 				..Default::default()
 			},
 		});
-		let instance =
-			read_instance_config(InstanceID::from("test"), &config, &profile, &[], &presets)
-				.expect("Failed to read instance config");
+		let instance = read_instance_config(
+			InstanceID::from("test"),
+			&config,
+			&profile,
+			&[],
+			&presets,
+			&PluginManager::new(),
+			&mut NoOp,
+		)
+		.expect("Failed to read instance config");
 		if !matches!(
 			instance.kind,
 			InstKind::Client {
@@ -661,8 +682,16 @@ mod tests {
 				..Default::default()
 			},
 		});
-		read_instance_config(InstanceID::from("test"), &config, &profile, &[], &presets)
-			.expect_err("Instance kinds should be incompatible");
+		read_instance_config(
+			InstanceID::from("test"),
+			&config,
+			&profile,
+			&[],
+			&presets,
+			&PluginManager::new(),
+			&mut NoOp,
+		)
+		.expect_err("Instance kinds should be incompatible");
 	}
 
 	#[test]

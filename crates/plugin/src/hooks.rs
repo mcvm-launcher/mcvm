@@ -5,7 +5,7 @@ use std::{
 
 use anyhow::{bail, Context};
 use mcvm_shared::output::MCVMOutput;
-use serde::{de::DeserializeOwned, Serialize};
+use serde::{de::DeserializeOwned, Deserialize, Serialize};
 
 use crate::output::OutputAction;
 
@@ -146,3 +146,19 @@ def_hook!(
 		true
 	}
 );
+
+def_hook!(
+	ModifyInstanceConfig,
+	"modify_instance_config",
+	"Hook for modifying an instance's configuration",
+	serde_json::Map<String, serde_json::Value>,
+	ModifyInstanceConfigResult,
+);
+
+/// Result from the ModifyInstanceConfig hook
+#[derive(Serialize, Deserialize, Default)]
+#[serde(default)]
+pub struct ModifyInstanceConfigResult {
+	/// Additional JVM args to add to the instance
+	pub additional_jvm_args: Vec<String>,
+}
