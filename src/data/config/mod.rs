@@ -28,6 +28,7 @@ use mcvm_core::user::UserManager;
 use mcvm_shared::lang::translate::TranslationKey;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::pkg::PackageStability;
+use mcvm_shared::translate;
 use mcvm_shared::util::is_valid_identifier;
 use preferences::ConfigPreferences;
 #[cfg(feature = "schema")]
@@ -199,12 +200,12 @@ impl Config {
 			}
 		} else if config.users.is_empty() && show_warnings {
 			o.display(
-				MessageContents::Warning("Users are available but no default user is set".into()),
+				MessageContents::Warning(translate!(o, NoDefaultUser)),
 				MessageLevel::Important,
 			);
 		} else if show_warnings {
 			o.display(
-				MessageContents::Warning("No users are available".into()),
+				MessageContents::Warning(translate!(o, NoUsers)),
 				MessageLevel::Important,
 			);
 		}
@@ -224,9 +225,11 @@ impl Config {
 			if show_warnings && !profile::can_install_client_type(profile.modifications.client_type)
 			{
 				o.display(
-					MessageContents::Warning(
-						format!("{} installation on the client is currently unimplemented by mcvm. You will be expected to install it yourself for the time being", profile.modifications.client_type),
-					),
+					MessageContents::Warning(translate!(
+						o,
+						ModificationNotSupported,
+						"mod" = &format!("{}", profile.modifications.client_type)
+					)),
 					MessageLevel::Important,
 				);
 			}
@@ -234,18 +237,18 @@ impl Config {
 			if show_warnings && !profile::can_install_server_type(profile.modifications.server_type)
 			{
 				o.display(
-					MessageContents::Warning(
-						format!("{} installation on the server is currently unimplemented by mcvm. You will be expected to install it yourself for the time being", profile.modifications.client_type),
-					),
+					MessageContents::Warning(translate!(
+						o,
+						ModificationNotSupported,
+						"mod" = &format!("{}", profile.modifications.server_type)
+					)),
 					MessageLevel::Important,
 				);
 			}
 
 			if profile_config.instances.is_empty() && show_warnings {
 				o.display(
-					MessageContents::Warning(format!(
-						"Profile '{profile_id}' does not have any instances"
-					)),
+					MessageContents::Warning(translate!(o, EmptyProfile, "profile" = &profile_id)),
 					MessageLevel::Important,
 				);
 			}

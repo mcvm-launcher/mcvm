@@ -41,7 +41,7 @@ define_translations! {
 	PackageInsecure, "When a package is insecure", "Package %pkg has been flagged as insecure";
 	PackageMalicious, "When a package is malicious", "Package %pkg has been flagged as malicious";
 	PackageSupportHeader, "Header for packages to consider supporting", "Packages to consider supporting";
-	StartUpdatingProfile, "When starting to update a profile", "Updating profile %prof";
+	StartUpdatingProfile, "When starting to update a profile", "Updating profile '%prof'";
 	StartUpdatingPackages, "When starting to update packages on a profile", "Updating packages";
 	FinishUpdatingPackages, "When finishing updating packages on a profile", "All packages installed";
 	StartUpdatingProfileVersion, "When starting to update a profile's version", "Updating profile version";
@@ -68,6 +68,10 @@ define_translations! {
 	DownloadedLibrary, "When a library finishes downloading", "Downloaded library %lib";
 	StartExtractingNative, "When a native library starts to extract", "Extracting native library %lib";
 	ExtractedNativeFile, "When a native library file extract is extracted", "Extracted native file %file";
+	NoDefaultUser, "When users are available but no default is set", "Users are available but no default user is set";
+	NoUsers, "When no users are available", "No users are available";
+	ModificationNotSupported, "When a game modification can't be installed by MCVM", "%mod installation is currently unimplemented by mcvm. You will be expected to install it yourself for the time being";
+	EmptyProfile, "When a profile has no instances", "Profile '%profile' does not have any instances";
 }
 
 /// Replaces placeholders in a translated key
