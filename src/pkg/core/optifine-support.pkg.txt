@@ -1,6 +1,6 @@
 @meta {
 	name "Optifine Support";
-	description "Installs optifine and any necessary compatability mods";
+	description "Installs Optifine and any necessary compatability mods";
 	authors "mcvm";
 }
 

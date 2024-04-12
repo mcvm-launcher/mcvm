@@ -5,7 +5,7 @@
 }
 
 @install {
-	if modloader forge {
+	if modloader forgelike {
 		require "kotlin-for-forge";
 		finish;
 	}

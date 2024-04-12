@@ -4,6 +4,4 @@
 	authors "mcvm";
 }
 
-@install {
-	fail;
-}
+@install { fail; }

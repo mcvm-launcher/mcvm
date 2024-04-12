@@ -10,7 +10,7 @@
 		finish;
 	}
 
-	if modloader forge {
+	if modloader forgelike {
 		require "optifine-support";
 	}
 	fail unsupported_modloader;
