@@ -147,8 +147,8 @@ impl TerminalOutput {
 		match contents {
 			MessageContents::Simple(text) => text,
 			MessageContents::Notice(text) => cformat!("<y>Notice: {}", text),
-			MessageContents::Warning(text) => cformat!("<y>Warning: {}", text),
-			MessageContents::Error(text) => cformat!("<r>Error: {}", text),
+			MessageContents::Warning(text) => cformat!("<y><s>Warning:</> {}", text),
+			MessageContents::Error(text) => cformat!("<r><s,u>Error:</> {}", text),
 			MessageContents::Success(text) => cformat!("<g>{}", add_period(text)),
 			MessageContents::Property(key, value) => {
 				cformat!("<s>{}:</> {}", key, Self::format_message(*value))
@@ -157,7 +157,9 @@ impl TerminalOutput {
 			MessageContents::StartProcess(text) => cformat!("{text}..."),
 			MessageContents::Associated(item, message) => {
 				// Don't parenthesize progress bars
-				if let MessageContents::Progress { .. } = item.as_ref() {
+				if let MessageContents::Progress { .. } | MessageContents::Package(..) =
+					item.as_ref()
+				{
 					cformat!(
 						"{} {}",
 						Self::format_message(*item),
@@ -165,7 +167,7 @@ impl TerminalOutput {
 					)
 				} else {
 					cformat!(
-						"({}) {}",
+						"[{}] {}",
 						Self::format_message(*item),
 						Self::format_message(*message)
 					)
@@ -175,7 +177,7 @@ impl TerminalOutput {
 				let pkg_disp = disp_pkg_request_with_colors(pkg);
 				cformat!("[{}] {}", pkg_disp, Self::format_message(*message))
 			}
-			MessageContents::Hyperlink(url) => cformat!("<m>{}", url),
+			MessageContents::Hyperlink(url) => cformat!("<m,u>{}", url),
 			MessageContents::ListItem(item) => {
 				HYPHEN_POINT.to_string() + &Self::format_message(*item)
 			}
@@ -191,7 +193,7 @@ impl TerminalOutput {
 						end: ">",
 					},
 				);
-				cformat!("<s>[</><g>{}</g>{}<s>]</>", full, empty)
+				cformat!("<s>[</><g>{}</g><k!>{}</><s>]</>", full, empty)
 			}
 			contents => contents.default_format(),
 		}
