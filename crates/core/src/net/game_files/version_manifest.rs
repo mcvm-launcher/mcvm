@@ -24,16 +24,18 @@ pub struct VersionEntry {
 	pub id: String,
 	/// What type of version this is
 	#[serde(rename = "type")]
+	#[serde(default)]
 	pub ty: VersionType,
 	/// The URL to the client version meta for this version
 	pub url: String,
 }
 
 /// Type of a version in the version manifest
-#[derive(Deserialize, Debug, Clone, Copy)]
+#[derive(Deserialize, Debug, Clone, Copy, Default)]
 #[serde(rename_all = "snake_case")]
 pub enum VersionType {
 	/// A release version
+	#[default]
 	Release,
 	/// A snapshot / development version
 	Snapshot,

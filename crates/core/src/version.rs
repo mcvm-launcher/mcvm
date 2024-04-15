@@ -13,7 +13,7 @@ use crate::io::files::paths::Paths;
 use crate::io::persistent::PersistentData;
 use crate::io::update::UpdateManager;
 use crate::net::game_files::client_meta::{self, ClientMeta};
-use crate::net::game_files::version_manifest::{self, VersionManifestAndList};
+use crate::net::game_files::version_manifest::{self, VersionEntry, VersionManifestAndList};
 use crate::net::game_files::{assets, libraries};
 use crate::user::UserManager;
 use crate::util::versions::VersionName;
@@ -144,6 +144,7 @@ impl InstalledVersionInner {
 pub(crate) struct VersionRegistry {
 	versions: HashMap<VersionName, InstalledVersionInner>,
 	version_manifest: Later<Arc<VersionManifestAndList>>,
+	additional_versions: Vec<VersionEntry>,
 }
 
 impl VersionRegistry {
@@ -151,6 +152,7 @@ impl VersionRegistry {
 		Self {
 			versions: HashMap::new(),
 			version_manifest: Later::Empty,
+			additional_versions: Vec::new(),
 		}
 	}
 
@@ -194,7 +196,7 @@ impl VersionRegistry {
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<&VersionManifestAndList> {
 		if self.version_manifest.is_empty() {
-			let manifest = version_manifest::get_with_output(
+			let mut manifest = version_manifest::get_with_output(
 				params.paths,
 				params.update_manager,
 				params.req_client,
@@ -202,6 +204,10 @@ impl VersionRegistry {
 			)
 			.await
 			.context("Failed to get version manifest")?;
+
+			// Add additional versions
+			let additional_versions = std::mem::take(&mut self.additional_versions);
+			manifest.versions.extend(additional_versions);
 
 			let combo = VersionManifestAndList::new(manifest);
 
@@ -213,6 +219,11 @@ impl VersionRegistry {
 	/// Get the version manifest, panicking if it does not exist
 	pub fn get_version_manifest(&self) -> &Arc<VersionManifestAndList> {
 		self.version_manifest.get()
+	}
+
+	/// Add additional versions to the manifest. Must be called before the manifest is obtained.
+	pub fn add_additional_versions(&mut self, versions: Vec<VersionEntry>) {
+		self.additional_versions.extend(versions);
 	}
 }
 

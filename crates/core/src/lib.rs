@@ -30,7 +30,7 @@ use io::java::JavaMajorVersion;
 use io::{persistent::PersistentData, update::UpdateManager};
 use mcvm_shared::output::{self, MCVMOutput};
 use mcvm_shared::versions::VersionInfo;
-use net::game_files::version_manifest::{make_version_list, VersionManifestAndList};
+use net::game_files::version_manifest::{make_version_list, VersionEntry, VersionManifestAndList};
 use user::UserManager;
 use util::versions::MinecraftVersion;
 use version::{
@@ -204,5 +204,11 @@ impl MCVMCore {
 			.context("Failed to install or update Java")?;
 
 		Ok(java)
+	}
+
+	/// Add additional versions to the version manifest. Must be called before the version manifest is obtained,
+	/// including before creating any versions
+	pub fn add_additional_versions(&mut self, versions: Vec<VersionEntry>) {
+		self.versions.add_additional_versions(versions);
 	}
 }
