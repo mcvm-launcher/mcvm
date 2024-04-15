@@ -1,6 +1,8 @@
 use std::collections::HashMap;
+use std::sync::Arc;
 
 use anyhow::Context;
+use mcvm_shared::later::Later;
 use mcvm_shared::output::MCVMOutput;
 use mcvm_shared::output::{MessageContents, MessageLevel};
 use mcvm_shared::versions::VersionInfo;
@@ -11,7 +13,7 @@ use crate::io::files::paths::Paths;
 use crate::io::persistent::PersistentData;
 use crate::io::update::UpdateManager;
 use crate::net::game_files::client_meta::{self, ClientMeta};
-use crate::net::game_files::version_manifest::VersionManifestAndList;
+use crate::net::game_files::version_manifest::{self, VersionManifestAndList};
 use crate::net::game_files::{assets, libraries};
 use crate::user::UserManager;
 use crate::util::versions::VersionName;
@@ -39,7 +41,7 @@ impl<'inner, 'params> InstalledVersion<'inner, 'params> {
 	pub fn get_version_info(&self) -> VersionInfo {
 		VersionInfo {
 			version: self.inner.version.to_string(),
-			versions: self.params.version_manifest.list.clone(),
+			versions: self.inner.version_manifest.list.clone(),
 		}
 	}
 
@@ -52,7 +54,7 @@ impl<'inner, 'params> InstalledVersion<'inner, 'params> {
 	) -> anyhow::Result<Instance> {
 		let params = InstanceParameters {
 			version: &self.inner.version,
-			version_manifest: self.params.version_manifest,
+			version_manifest: &self.inner.version_manifest,
 			paths: self.params.paths,
 			req_client: self.params.req_client,
 			persistent: self.params.persistent,
@@ -83,7 +85,7 @@ impl<'inner, 'params> InstalledVersion<'inner, 'params> {
 			version: &self.inner.version,
 			paths: self.params.paths,
 			req_client: self.params.req_client,
-			version_manifest: self.params.version_manifest,
+			version_manifest: &self.inner.version_manifest,
 			update_manager: self.params.update_manager,
 		};
 		self.inner.client_assets_and_libs.load(params, o).await
@@ -92,6 +94,7 @@ impl<'inner, 'params> InstalledVersion<'inner, 'params> {
 
 pub(crate) struct InstalledVersionInner {
 	version: VersionName,
+	version_manifest: Arc<VersionManifestAndList>,
 	client_meta: ClientMeta,
 	client_assets_and_libs: ClientAssetsAndLibraries,
 }
@@ -100,6 +103,7 @@ impl InstalledVersionInner {
 	/// Load a version
 	async fn load(
 		version: VersionName,
+		version_manifest: &Arc<VersionManifestAndList>,
 		params: LoadVersionParameters<'_>,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Self> {
@@ -112,7 +116,7 @@ impl InstalledVersionInner {
 
 		let client_meta = client_meta::get(
 			&version,
-			&params.version_manifest.manifest,
+			&version_manifest.manifest,
 			params.paths,
 			params.update_manager,
 			params.req_client,
@@ -129,6 +133,7 @@ impl InstalledVersionInner {
 
 		Ok(Self {
 			version,
+			version_manifest: version_manifest.clone(),
 			client_meta,
 			client_assets_and_libs: ClientAssetsAndLibraries::new(),
 		})
@@ -138,12 +143,14 @@ impl InstalledVersionInner {
 /// A registry of installed versions
 pub(crate) struct VersionRegistry {
 	versions: HashMap<VersionName, InstalledVersionInner>,
+	version_manifest: Later<Arc<VersionManifestAndList>>,
 }
 
 impl VersionRegistry {
 	pub fn new() -> Self {
 		Self {
 			versions: HashMap::new(),
+			version_manifest: Later::Empty,
 		}
 	}
 
@@ -154,14 +161,58 @@ impl VersionRegistry {
 		params: LoadVersionParameters<'_>,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<&mut InstalledVersionInner> {
+		// Ensure the version manifest first
+		let vm_params = LoadVersionManifestParameters {
+			paths: params.paths,
+			req_client: params.req_client,
+			update_manager: params.update_manager,
+		};
+		self.load_version_manifest(vm_params, o)
+			.await
+			.context("Failed to get version manifest")?;
+
 		if !self.versions.contains_key(version) {
-			let installed_version = InstalledVersionInner::load(version.clone(), params, o).await?;
+			let installed_version = InstalledVersionInner::load(
+				version.clone(),
+				&self.version_manifest.get(),
+				params,
+				o,
+			)
+			.await?;
 			self.versions.insert(version.clone(), installed_version);
 		}
 		Ok(self
 			.versions
 			.get_mut(version)
 			.expect("Version should exist in map"))
+	}
+
+	/// Load the version manifest
+	pub async fn load_version_manifest(
+		&mut self,
+		params: LoadVersionManifestParameters<'_>,
+		o: &mut impl MCVMOutput,
+	) -> anyhow::Result<&VersionManifestAndList> {
+		if self.version_manifest.is_empty() {
+			let manifest = version_manifest::get_with_output(
+				params.paths,
+				params.update_manager,
+				params.req_client,
+				o,
+			)
+			.await
+			.context("Failed to get version manifest")?;
+
+			let combo = VersionManifestAndList::new(manifest);
+
+			self.version_manifest.fill(Arc::new(combo));
+		}
+		Ok(&self.version_manifest.get())
+	}
+
+	/// Get the version manifest, panicking if it does not exist
+	pub fn get_version_manifest(&self) -> &Arc<VersionManifestAndList> {
+		self.version_manifest.get()
 	}
 }
 
@@ -170,7 +221,6 @@ pub(crate) struct VersionParameters<'a> {
 	pub paths: &'a Paths,
 	pub req_client: &'a reqwest::Client,
 	pub persistent: &'a mut PersistentData,
-	pub version_manifest: &'a VersionManifestAndList,
 	pub update_manager: &'a mut UpdateManager,
 	pub users: &'a mut UserManager,
 	pub censor_secrets: bool,
@@ -183,7 +233,14 @@ pub(crate) struct VersionParameters<'a> {
 pub(crate) struct LoadVersionParameters<'a> {
 	pub paths: &'a Paths,
 	pub req_client: &'a reqwest::Client,
-	pub version_manifest: &'a VersionManifestAndList,
+	pub update_manager: &'a UpdateManager,
+}
+
+/// Container struct for parameters for loading the version manifest
+#[derive(Clone)]
+pub(crate) struct LoadVersionManifestParameters<'a> {
+	pub paths: &'a Paths,
+	pub req_client: &'a reqwest::Client,
 	pub update_manager: &'a UpdateManager,
 }
 

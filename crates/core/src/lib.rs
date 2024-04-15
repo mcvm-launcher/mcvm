@@ -28,15 +28,15 @@ use anyhow::Context;
 use io::java::install::{JavaInstallParameters, JavaInstallation, JavaInstallationKind};
 use io::java::JavaMajorVersion;
 use io::{persistent::PersistentData, update::UpdateManager};
-use mcvm_shared::later::Later;
 use mcvm_shared::output::{self, MCVMOutput};
 use mcvm_shared::versions::VersionInfo;
-use net::game_files::version_manifest::{
-	self, make_version_list, VersionManifest, VersionManifestAndList,
-};
+use net::game_files::version_manifest::{make_version_list, VersionManifestAndList};
 use user::UserManager;
 use util::versions::MinecraftVersion;
-use version::{InstalledVersion, LoadVersionParameters, VersionParameters, VersionRegistry};
+use version::{
+	InstalledVersion, LoadVersionManifestParameters, LoadVersionParameters, VersionParameters,
+	VersionRegistry,
+};
 
 pub use config::{ConfigBuilder, Configuration};
 pub use instance::{ClientWindowConfig, Instance, InstanceConfiguration, InstanceKind};
@@ -51,7 +51,6 @@ pub struct MCVMCore {
 	persistent: PersistentData,
 	update_manager: UpdateManager,
 	versions: VersionRegistry,
-	version_manifest: Later<VersionManifestAndList>,
 	users: UserManager,
 }
 
@@ -76,7 +75,6 @@ impl MCVMCore {
 			persistent,
 			update_manager: UpdateManager::new(config.force_reinstall, config.allow_offline),
 			versions: VersionRegistry::new(),
-			version_manifest: Later::Empty,
 			users: UserManager::new(config.ms_client_id.clone()),
 			config,
 		};
@@ -126,22 +124,13 @@ impl MCVMCore {
 	pub async fn get_version_manifest(
 		&mut self,
 		o: &mut impl MCVMOutput,
-	) -> anyhow::Result<&VersionManifest> {
-		if self.version_manifest.is_empty() {
-			let manifest = version_manifest::get_with_output(
-				&self.paths,
-				&self.update_manager,
-				&self.req_client,
-				o,
-			)
-			.await
-			.context("Failed to get version manifest")?;
-
-			let combo = VersionManifestAndList::new(manifest)?;
-
-			self.version_manifest.fill(combo);
-		}
-		Ok(&self.version_manifest.get().manifest)
+	) -> anyhow::Result<&VersionManifestAndList> {
+		let params = LoadVersionManifestParameters {
+			paths: &self.paths,
+			update_manager: &self.update_manager,
+			req_client: &self.req_client,
+		};
+		self.versions.load_version_manifest(params, o).await
 	}
 
 	/// Load or install a version of the game
@@ -154,12 +143,12 @@ impl MCVMCore {
 			.await
 			.context("Failed to ensure version manifest exists")?;
 		let version = version
-			.get_version(&self.version_manifest.get().manifest)
+			.get_version(&self.versions.get_version_manifest().manifest)
 			.context("Version does not exist")?;
+
 		let params = LoadVersionParameters {
 			paths: &self.paths,
 			req_client: &self.req_client,
-			version_manifest: self.version_manifest.get(),
 			update_manager: &self.update_manager,
 		};
 		let inner = self
@@ -167,11 +156,11 @@ impl MCVMCore {
 			.get_version(&version, params, o)
 			.await
 			.context("Failed to get or install version")?;
+
 		let params = VersionParameters {
 			paths: &self.paths,
 			req_client: &self.req_client,
 			persistent: &mut self.persistent,
-			version_manifest: self.version_manifest.get(),
 			update_manager: &mut self.update_manager,
 			users: &mut self.users,
 			censor_secrets: self.config.censor_secrets,
@@ -190,7 +179,7 @@ impl MCVMCore {
 			.get_version_manifest(&mut o)
 			.await
 			.context("Failed to get version manifest")?;
-		let list = make_version_list(manifest);
+		let list = make_version_list(&manifest.manifest);
 		Ok(VersionInfo {
 			version,
 			versions: list,

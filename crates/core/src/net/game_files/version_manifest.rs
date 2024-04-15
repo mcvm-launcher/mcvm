@@ -174,9 +174,9 @@ pub struct VersionManifestAndList {
 
 impl VersionManifestAndList {
 	/// Construct a new VersionManifestAndList
-	pub fn new(manifest: VersionManifest) -> anyhow::Result<Self> {
+	pub fn new(manifest: VersionManifest) -> Self {
 		let list = make_version_list(&manifest);
-		Ok(Self { manifest, list })
+		Self { manifest, list }
 	}
 
 	/// Change the version manifest and list
