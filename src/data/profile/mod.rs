@@ -18,6 +18,7 @@ use mcvm_core::util::versions::MinecraftVersion;
 use self::proxy::ProxyProperties;
 use self::update::manager::UpdateManager;
 
+use super::config::plugin::PluginManager;
 use super::config::profile::GameModifications;
 use super::config::profile::ProfilePackageConfiguration;
 use super::id::InstanceRef;
@@ -82,6 +83,7 @@ impl Profile {
 		paths: &Paths,
 		manager: &mut UpdateManager,
 		users: &UserManager,
+		plugins: &PluginManager,
 		client: &Client,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
@@ -89,7 +91,7 @@ impl Profile {
 			manager.add_requirements(instance.get_requirements());
 		}
 		manager
-			.fulfill_requirements(users, paths, client, o)
+			.fulfill_requirements(users, plugins, paths, client, o)
 			.await?;
 
 		for instance in self.instances.values_mut() {

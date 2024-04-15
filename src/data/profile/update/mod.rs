@@ -80,7 +80,13 @@ pub async fn update_profiles(
 
 		manager.set_version(&profile.version);
 		manager
-			.fulfill_requirements(&config.users, paths, ctx.client, ctx.output)
+			.fulfill_requirements(
+				&config.users,
+				&config.plugins,
+				paths,
+				ctx.client,
+				ctx.output,
+			)
 			.await
 			.context("Failed to fulfill update manager")?;
 		let mc_version = manager.version_info.get().version.clone();
@@ -112,7 +118,14 @@ pub async fn update_profiles(
 
 			if !profile.instances.is_empty() {
 				profile
-					.create(paths, &mut manager, &config.users, ctx.client, ctx.output)
+					.create(
+						paths,
+						&mut manager,
+						&config.users,
+						&config.plugins,
+						ctx.client,
+						ctx.output,
+					)
 					.await
 					.context("Failed to create profile instances")?;
 

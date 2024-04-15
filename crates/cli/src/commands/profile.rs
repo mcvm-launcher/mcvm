@@ -235,7 +235,7 @@ async fn proxy_launch(data: &mut CmdData, profile: String) -> anyhow::Result<()>
 	let client = Client::new();
 
 	profile
-		.launch_proxy(&client, &data.paths, &mut data.output)
+		.launch_proxy(&client, &data.paths, &config.plugins, &mut data.output)
 		.await
 		.context("Failed to launch proxy")?;
 

@@ -9,12 +9,14 @@ use mcvm_core::util::versions::MinecraftVersion;
 use mcvm_core::version::InstalledVersion;
 use mcvm_core::MCVMCore;
 use mcvm_options::{read_options, Options};
+use mcvm_plugin::hooks::AddVersions;
 use mcvm_shared::later::Later;
 use mcvm_shared::output::MCVMOutput;
 use mcvm_shared::versions::VersionInfo;
 use mcvm_shared::Side;
 use reqwest::Client;
 
+use crate::data::config::plugin::PluginManager;
 use crate::io::files::paths::Paths;
 use mcvm_mods::fabric_quilt::{self, FabricQuiltMeta};
 
@@ -134,12 +136,13 @@ impl UpdateManager {
 	pub async fn fulfill_requirements(
 		&mut self,
 		users: &UserManager,
+		plugins: &PluginManager,
 		paths: &Paths,
 		client: &Client,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
 		// Setup the core
-		self.setup_core(client, users)
+		self.setup_core(client, users, plugins, o)
 			.await
 			.context("Failed to setup core")?;
 
@@ -167,7 +170,13 @@ impl UpdateManager {
 	}
 
 	/// Sets up the core
-	async fn setup_core(&mut self, client: &Client, users: &UserManager) -> anyhow::Result<()> {
+	async fn setup_core(
+		&mut self,
+		client: &Client,
+		users: &UserManager,
+		plugins: &PluginManager,
+		o: &mut impl MCVMOutput,
+	) -> anyhow::Result<()> {
 		if self.core.is_full() {
 			return Ok(());
 		}
@@ -187,6 +196,10 @@ impl UpdateManager {
 		let mut core = MCVMCore::with_config(core_config).context("Failed to initialize core")?;
 		core.get_users().steal_users(users);
 		core.set_client(client.clone());
+		let additional_versions = plugins
+			.call_hook(AddVersions, &(), o)
+			.context("Failed to call add_versions hook")?;
+		core.add_additional_versions(additional_versions.into_iter().flatten().collect());
 
 		self.core.fill(core);
 

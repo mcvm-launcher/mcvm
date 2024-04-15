@@ -15,6 +15,7 @@ use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::translate;
 use reqwest::Client;
 
+use crate::data::config::plugin::PluginManager;
 use crate::io::files::paths::Paths;
 
 use super::{update::manager::UpdateManager, Profile};
@@ -73,6 +74,7 @@ impl Profile {
 		&mut self,
 		client: &Client,
 		paths: &Paths,
+		plugins: &PluginManager,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Option<Child>> {
 		// Check for updates first
@@ -80,6 +82,7 @@ impl Profile {
 		manager
 			.fulfill_requirements(
 				&UserManager::new(ClientId::new(String::new())),
+				plugins,
 				paths,
 				client,
 				o,

@@ -4,9 +4,12 @@ pub mod output;
 use std::env::Args;
 
 use anyhow::Context;
+use mcvm_core::net::game_files::version_manifest::VersionEntry;
 use serde::de::DeserializeOwned;
 
-use crate::hooks::{Hook, ModifyInstanceConfig, ModifyInstanceConfigResult, OnLoad, Subcommand};
+use crate::hooks::{
+	AddVersions, Hook, ModifyInstanceConfig, ModifyInstanceConfigResult, OnLoad, Subcommand,
+};
 use crate::output::OutputAction;
 
 use self::output::PluginOutput;
@@ -69,6 +72,14 @@ impl CustomPlugin {
 		) -> anyhow::Result<ModifyInstanceConfigResult>,
 	) -> anyhow::Result<()> {
 		self.handle_hook::<ModifyInstanceConfig>(Self::get_hook_arg, f)
+	}
+
+	/// Bind to the add_versions hook
+	pub fn add_versions(
+		&mut self,
+		f: impl FnOnce(&mut HookContext, ()) -> anyhow::Result<Vec<VersionEntry>>,
+	) -> anyhow::Result<()> {
+		self.handle_hook::<AddVersions>(Self::get_hook_arg, f)
 	}
 
 	/// Handle a hook

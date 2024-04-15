@@ -129,7 +129,7 @@ pub async fn launch(
 	let proxy_handle = if side == Side::Server && profile.modifications.proxy != Proxy::None {
 		let client = Client::new();
 		profile
-			.launch_proxy(&client, &data.paths, &mut data.output)
+			.launch_proxy(&client, &data.paths, &config.plugins, &mut data.output)
 			.await
 			.context("Failed to launch profile proxy")?
 	} else {
@@ -145,6 +145,7 @@ pub async fn launch(
 		.launch(
 			&data.paths,
 			&mut config.users,
+			&config.plugins,
 			&profile.version,
 			get_ms_client_id(),
 			&mut data.output,

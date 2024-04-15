@@ -1,7 +1,7 @@
 use anyhow::Context;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use reqwest::Client;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::io::files::{self, paths::Paths};
 use crate::io::update::UpdateManager;
@@ -18,7 +18,7 @@ pub struct VersionManifest {
 }
 
 /// Entry for a version in the version manifest
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct VersionEntry {
 	/// The identifier for the version (e.g. "1.19.2" or "22w13a")
 	pub id: String,
@@ -34,7 +34,7 @@ pub struct VersionEntry {
 }
 
 /// Type of a version in the version manifest
-#[derive(Deserialize, Debug, Clone, Copy, Default)]
+#[derive(Deserialize, Serialize, Debug, Clone, Copy, Default)]
 #[serde(rename_all = "snake_case")]
 pub enum VersionType {
 	/// A release version

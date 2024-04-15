@@ -16,6 +16,7 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 use crate::data::config::instance::QuickPlay;
+use crate::data::config::plugin::PluginManager;
 use crate::data::profile::update::manager::UpdateManager;
 use crate::io::files::paths::Paths;
 
@@ -27,6 +28,7 @@ impl Instance {
 		&mut self,
 		paths: &Paths,
 		users: &mut UserManager,
+		plugins: &PluginManager,
 		version: &MinecraftVersion,
 		ms_client_id: ClientId,
 		o: &mut impl MCVMOutput,
@@ -42,7 +44,7 @@ impl Instance {
 		manager.add_requirements(self.get_requirements());
 		manager.set_client_id(ms_client_id);
 		manager
-			.fulfill_requirements(users, paths, &client, o)
+			.fulfill_requirements(users, plugins, paths, &client, o)
 			.await
 			.context("Update failed")?;
 

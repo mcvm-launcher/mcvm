@@ -1433,6 +1433,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "base64 0.22.0",
+ "mcvm_core",
  "mcvm_shared",
  "serde",
  "serde_json",

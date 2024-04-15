@@ -4,6 +4,7 @@ use std::{
 };
 
 use anyhow::{bail, Context};
+use mcvm_core::net::game_files::version_manifest::VersionEntry;
 use mcvm_shared::output::MCVMOutput;
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 
@@ -162,3 +163,11 @@ pub struct ModifyInstanceConfigResult {
 	/// Additional JVM args to add to the instance
 	pub additional_jvm_args: Vec<String>,
 }
+
+def_hook!(
+	AddVersions,
+	"add_versions",
+	"Hook for adding extra versions to the version manifest",
+	(),
+	Vec<VersionEntry>,
+);
