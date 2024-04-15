@@ -92,6 +92,12 @@ impl PkgRequest {
 		}
 	}
 
+	/// Create a new PkgRequest that matches all content versions
+	#[inline(always)]
+	pub fn any(id: impl Into<PackageID>, source: PkgRequestSource) -> Self {
+		Self::new(id, source, VersionPattern::Any)
+	}
+
 	/// Parse the package name and content version from a string
 	pub fn parse(string: impl AsRef<str>, source: PkgRequestSource) -> Self {
 		let string = string.as_ref();

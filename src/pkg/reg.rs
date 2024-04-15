@@ -37,7 +37,7 @@ pub struct PkgRegistry {
 }
 
 impl PkgRegistry {
-	/// Create a new PkgRegistry
+	/// Create a new PkgRegistry with repositories and a caching strategy
 	pub fn new(repos: Vec<PkgRepo>, caching_strategy: CachingStrategy) -> Self {
 		Self {
 			repos,
@@ -46,6 +46,8 @@ impl PkgRegistry {
 		}
 	}
 
+	/// Insert a package into the registry and return a mutable reference to the
+	/// newly inserted package
 	fn insert(&mut self, req: ArcPkgReq, pkg: Package) -> &mut Package {
 		self.packages.insert(req.clone(), pkg);
 		self.packages
@@ -58,6 +60,7 @@ impl PkgRegistry {
 		self.packages.contains_key(req)
 	}
 
+	/// Query repositories to insert a package
 	async fn query_insert(
 		&mut self,
 		req: &ArcPkgReq,
@@ -65,19 +68,26 @@ impl PkgRegistry {
 		client: &Client,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<&mut Package> {
-		let pkg_id = req.id.clone();
-
 		// First check the remote repositories
-		if let Some(result) = query_all(&mut self.repos, &pkg_id, paths, client, o).await? {
+		let query = query_all(&mut self.repos, &req.id, paths, client, o)
+			.await
+			.context("Failed to query remote repositories")?;
+		if let Some(result) = query {
 			return Ok(self.insert(
 				req.clone(),
-				Package::new(pkg_id, result.location, result.content_type, result.flags),
+				Package::new(
+					req.id.clone(),
+					result.location,
+					result.content_type,
+					result.flags,
+				),
 			));
 		} else {
-			Err(anyhow!("Package '{pkg_id}' does not exist"))
+			Err(anyhow!("Package '{req}' does not exist"))
 		}
 	}
 
+	/// Get a package from the map if it exists, and query insert it otherwise
 	async fn get(
 		&mut self,
 		req: &ArcPkgReq,
@@ -274,7 +284,7 @@ impl PkgRegistry {
 			.await
 			.context("Failed to retrieve all packages from repos")?
 			.iter()
-			.map(|(id, ..)| Arc::new(PkgRequest::parse(id, PkgRequestSource::Repository)))
+			.map(|(id, ..)| Arc::new(PkgRequest::any(id.as_ref(), PkgRequestSource::Repository)))
 			.collect();
 
 		Ok(out)

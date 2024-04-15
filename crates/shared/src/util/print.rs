@@ -1,8 +1,6 @@
 use std::fmt::Debug;
 use std::io::{Stdout, Write};
 
-// use color_print::{cformat, cstr};
-
 /// String used program-wide for most indentation
 pub const INDENT_STR: &str = "    ";
 
