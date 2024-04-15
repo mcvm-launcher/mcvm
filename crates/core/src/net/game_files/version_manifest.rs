@@ -28,6 +28,9 @@ pub struct VersionEntry {
 	pub ty: VersionType,
 	/// The URL to the client version meta for this version
 	pub url: String,
+	/// Whether the client meta needs to be unzipped first
+	#[serde(default)]
+	pub is_zipped: bool,
 }
 
 /// Type of a version in the version manifest

@@ -1,3 +1,5 @@
+use std::io::{Cursor, Read};
+
 use anyhow::{bail, Context};
 use mcvm_shared::lang::translate::TranslationKey;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
@@ -5,6 +7,7 @@ use mcvm_shared::translate;
 use mcvm_shared::util::DeserListOrSingle;
 use reqwest::Client;
 use serde::Deserialize;
+use zip::ZipArchive;
 
 use crate::io::files::{self, paths::Paths};
 use crate::io::java::JavaMajorVersion;
@@ -324,16 +327,13 @@ pub async fn get(
 ) -> anyhow::Result<ClientMeta> {
 	let version_string = version.to_owned();
 
-	let mut version_url = None;
-	for entry in &version_manifest.versions {
-		if entry.id == version_string {
-			version_url = Some(entry.url.clone());
-			break;
-		}
-	}
-	if version_url.is_none() {
+	let entry = version_manifest
+		.versions
+		.iter()
+		.find(|x| x.id == version_string);
+	let Some(entry) = entry else {
 		bail!("Minecraft version does not exist or was not found in the manifest");
-	}
+	};
 
 	let client_meta_name: String = version_string.clone() + ".json";
 	let version_dir = paths.internal.join("versions").join(version_string);
@@ -343,9 +343,7 @@ pub async fn get(
 	let meta = if manager.allow_offline && path.exists() {
 		json_from_file(path).context("Failed to read client meta contents from file")?
 	} else {
-		let mut download =
-			ProgressiveDownload::bytes(version_url.expect("Version does not exist"), client)
-				.await?;
+		let mut download = ProgressiveDownload::bytes(&entry.url, client).await?;
 
 		while !download.is_finished() {
 			download.poll_download().await?;
@@ -360,7 +358,35 @@ pub async fn get(
 				MessageLevel::Important,
 			);
 		}
-		let bytes = download.finish();
+		let mut bytes = download.finish();
+
+		// Unzip if we need to
+		if entry.is_zipped {
+			let mut zip =
+				ZipArchive::new(Cursor::new(&bytes)).context("Failed to open zip archive")?;
+			if !zip.is_empty() {
+				let mut out = None;
+				for i in 0..zip.len() {
+					let mut file = zip.by_index(i).expect("Index should exist");
+					if file.is_file() {
+						let mut buf = Vec::with_capacity(
+							file.size().try_into().expect("Stop using 32 pointer width"),
+						);
+						file.read_to_end(&mut buf)
+							.context("Failed to read zip file")?;
+						out = Some(buf);
+					}
+				}
+				if let Some(out) = out {
+					bytes = out;
+				} else {
+					bail!("No files found for use in zip file");
+				}
+			} else {
+				bail!("Zipped client meta has no files inside")
+			}
+		}
+
 		let out = serde_json::from_slice(&bytes).context("Failed to parse client meta")?;
 
 		std::fs::write(path, &bytes).context("Failed to write client meta to a file")?;
