@@ -9,7 +9,9 @@ use std::os::unix::fs::PermissionsExt;
 use std::path::{Path, PathBuf};
 
 use anyhow::{bail, Context};
+use mcvm_shared::lang::translate::TranslationKey;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
+use mcvm_shared::translate;
 use tar::Archive;
 use zip::ZipArchive;
 
@@ -79,7 +81,7 @@ impl JavaInstallation {
 	) -> anyhow::Result<Self> {
 		o.start_process();
 		o.display(
-			MessageContents::StartProcess("Checking for Java updates".into()),
+			MessageContents::StartProcess(translate!(o, StartCheckingForJavaUpdates)),
 			MessageLevel::Important,
 		);
 
@@ -95,7 +97,7 @@ impl JavaInstallation {
 		};
 
 		o.display(
-			MessageContents::Success("Java updated".into()),
+			MessageContents::Success(translate!(o, FinishCheckingForJavaUpdates)),
 			MessageLevel::Important,
 		);
 
@@ -291,8 +293,10 @@ async fn update_adoptium(
 	let bin_url = version.binary.package.link;
 
 	o.display(
-		MessageContents::StartProcess(format!(
-			"Downloading Adoptium Temurin JRE version {release_name}"
+		MessageContents::StartProcess(translate!(
+			o,
+			DownloadingAdoptium,
+			"version" = &release_name
 		)),
 		MessageLevel::Important,
 	);
@@ -302,18 +306,18 @@ async fn update_adoptium(
 
 	// Extraction
 	o.display(
-		MessageContents::StartProcess("Extracting JRE".into()),
+		MessageContents::StartProcess(translate!(o, StartExtractingJava)),
 		MessageLevel::Important,
 	);
 	extract_archive_file(&arc_path, &out_dir).context("Failed to extract")?;
 	o.display(
-		MessageContents::StartProcess("Removing archive".into()),
+		MessageContents::StartProcess(translate!(o, StartRemovingJavaArchive)),
 		MessageLevel::Important,
 	);
 	std::fs::remove_file(arc_path).context("Failed to remove archive")?;
 
 	o.display(
-		MessageContents::Success("Java installation finished".into()),
+		MessageContents::Success(translate!(o, FinishJavaInstallation)),
 		MessageLevel::Important,
 	);
 
@@ -353,10 +357,7 @@ async fn update_zulu(
 	let arc_path = out_dir.join(&package.name);
 
 	o.display(
-		MessageContents::StartProcess(format!(
-			"Downloading Azul Zulu JRE version {}",
-			package.name
-		)),
+		MessageContents::StartProcess(translate!(o, DownloadingZulu, "version" = &package.name)),
 		MessageLevel::Important,
 	);
 	download::file(&package.download_url, &arc_path, params.req_client)
@@ -365,18 +366,18 @@ async fn update_zulu(
 
 	// Extraction
 	o.display(
-		MessageContents::StartProcess("Extracting JRE".into()),
+		MessageContents::StartProcess(translate!(o, StartExtractingJava)),
 		MessageLevel::Important,
 	);
 	extract_archive_file(&arc_path, &out_dir).context("Failed to extract")?;
 	o.display(
-		MessageContents::StartProcess("Removing archive".into()),
+		MessageContents::StartProcess(translate!(o, StartRemovingJavaArchive)),
 		MessageLevel::Important,
 	);
 	std::fs::remove_file(arc_path).context("Failed to remove archive")?;
 
 	o.display(
-		MessageContents::Success("Java installation finished".into()),
+		MessageContents::Success(translate!(o, FinishJavaInstallation)),
 		MessageLevel::Important,
 	);
 
@@ -393,7 +394,7 @@ async fn update_graalvm(
 	files::create_dir(&out_dir)?;
 
 	o.display(
-		MessageContents::StartProcess("Downloading GraalVM".into()),
+		MessageContents::StartProcess(translate!(o, DownloadingGraalVM)),
 		MessageLevel::Important,
 	);
 	let archive = net::java::graalvm::get_latest(major_version, params.req_client)
@@ -402,7 +403,7 @@ async fn update_graalvm(
 
 	// We have to extract now since we need the extracted dir
 	o.display(
-		MessageContents::StartProcess("Extracting JRE".into()),
+		MessageContents::StartProcess(translate!(o, StartExtractingJava)),
 		MessageLevel::Important,
 	);
 	let dir_name = extract_archive(std::io::Cursor::new(archive), &out_dir)
@@ -428,7 +429,7 @@ async fn update_graalvm(
 	params.persistent.dump(params.paths).await?;
 
 	o.display(
-		MessageContents::Success("Java installation finished".into()),
+		MessageContents::Success(translate!(o, FinishJavaInstallation)),
 		MessageLevel::Important,
 	);
 

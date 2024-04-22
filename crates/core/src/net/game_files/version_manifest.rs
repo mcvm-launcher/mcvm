@@ -1,5 +1,7 @@
 use anyhow::Context;
+use mcvm_shared::lang::translate::TranslationKey;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
+use mcvm_shared::translate;
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 
@@ -143,9 +145,10 @@ async fn get_contents(
 		o.display(
 			MessageContents::Associated(
 				Box::new(download.get_progress()),
-				Box::new(MessageContents::Simple(
-					"Downloading version manifest".into(),
-				)),
+				Box::new(MessageContents::Simple(translate!(
+					o,
+					StartDownloadingVersionManifest
+				))),
 			),
 			MessageLevel::Important,
 		);

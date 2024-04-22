@@ -9,6 +9,8 @@ pub mod version_manifest;
 
 use crate::io::files::paths::Paths;
 use crate::io::update::UpdateManager;
+use mcvm_shared::lang::translate::TranslationKey;
+use mcvm_shared::translate;
 use mcvm_shared::util::cap_first_letter;
 use mcvm_shared::Side;
 
@@ -41,8 +43,9 @@ pub mod game_jar {
 		}
 
 		let process = OutputProcess::new(o);
+		let download_message = translate!(process.0, StartDownloadingGameJar, "side" = &side_str);
 		process.0.display(
-			MessageContents::StartProcess(format!("Downloading {side_str} jar")),
+			MessageContents::StartProcess(download_message.clone()),
 			MessageLevel::Important,
 		);
 
@@ -52,13 +55,13 @@ pub mod game_jar {
 		};
 
 		let mut download = ProgressiveDownload::file(&download.url, path, client).await?;
-		let message = Box::new(MessageContents::Simple(format!(
-			"Downloading {side_str} jar"
-		)));
 		while !download.is_finished() {
 			download.poll_download().await?;
 			process.0.display(
-				MessageContents::Associated(Box::new(download.get_progress()), message.clone()),
+				MessageContents::Associated(
+					Box::new(download.get_progress()),
+					Box::new(MessageContents::Simple(download_message.clone())),
+				),
 				MessageLevel::Important,
 			);
 		}
@@ -66,7 +69,11 @@ pub mod game_jar {
 		let side_str = cap_first_letter(&side_str);
 
 		process.0.display(
-			MessageContents::Success(format!("{side_str} jar downloaded")),
+			MessageContents::Success(translate!(
+				process.0,
+				FinishDownloadingGameJar,
+				"side" = &side_str
+			)),
 			MessageLevel::Important,
 		);
 

@@ -72,6 +72,19 @@ define_translations! {
 	NoUsers, "When no users are available", "No users are available";
 	ModificationNotSupported, "When a game modification can't be installed by MCVM", "%mod installation is currently unimplemented by mcvm. You will be expected to install it yourself for the time being";
 	EmptyProfile, "When a profile has no instances", "Profile '%profile' does not have any instances";
+	StartDownloadingVersionManifest, "When starting to download the version manifest", "Downloading version manifest";
+	StartDownloadingGameJar, "When starting to download the game jar", "Downloading %side jar";
+	FinishDownloadingGameJar, "When finishing downloading the game jar", "%side jar downloaded";
+	StartCheckingForJavaUpdates, "When starting to check for Java updates", "Checking for Java updates";
+	FinishCheckingForJavaUpdates, "When finishing checking for Java updates", "Java updated";
+	FinishJavaInstallation, "When finishing installing Java", "Java installation finished";
+	StartExtractingJava, "When starting to extract the JRE", "Extracting JRE";
+	StartRemovingJavaArchive, "When starting to remove the Java archive", "Removing archive";
+	DownloadingGraalVM, "When starting to download GraalVM", "Downloading GraalVM";
+	DownloadingZulu, "When starting to download Zulu", "Downloading Azul Zulu JRE version %version";
+	DownloadingAdoptium, "When starting to download Adoptium", "Downloading Adoptium Temurin JRE version %version";
+	StartUpdatingClient, "When starting to update a client", "Updating client '%id'";
+	StartUpdatingServer, "When starting to update a server", "Updating server '%id'";
 }
 
 /// Replaces placeholders in a translated key

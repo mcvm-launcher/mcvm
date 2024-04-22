@@ -16,8 +16,10 @@ use mcvm_core::user::{User, UserManager};
 use mcvm_core::version::InstalledVersion;
 use mcvm_core::QuickPlayType;
 use mcvm_mods::fabric_quilt;
+use mcvm_shared::lang::translate::TranslationKey;
 use mcvm_shared::modifications::Modloader;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
+use mcvm_shared::translate;
 use mcvm_shared::Side;
 use reqwest::Client;
 
@@ -76,7 +78,7 @@ impl Instance {
 		let result = match &self.kind {
 			InstKind::Client { .. } => {
 				o.display(
-					MessageContents::Header(format!("Updating client '{}'", self.id)),
+					MessageContents::Header(translate!(o, StartUpdatingClient, "id" = &self.id)),
 					MessageLevel::Important,
 				);
 				o.start_section();
@@ -88,7 +90,7 @@ impl Instance {
 			}
 			InstKind::Server { .. } => {
 				o.display(
-					MessageContents::Header(format!("Updating server '{}'", self.id)),
+					MessageContents::Header(translate!(o, StartUpdatingServer, "id" = &self.id)),
 					MessageLevel::Important,
 				);
 				o.start_section();
