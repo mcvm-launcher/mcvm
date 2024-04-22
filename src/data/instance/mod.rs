@@ -22,7 +22,7 @@ use self::launch::LaunchOptions;
 use super::config::instance::ClientWindowConfig;
 use super::config::package::PackageConfig;
 use super::config::profile::GameModifications;
-use super::id::{InstanceID, ProfileID};
+use super::id::{InstanceID, InstanceRef, ProfileID};
 
 use std::path::PathBuf;
 
@@ -141,6 +141,11 @@ impl Instance {
 	/// Get the instance's directories
 	pub fn get_dirs(&self) -> &Later<InstanceDirs> {
 		&self.dirs
+	}
+
+	/// Get the instance ref for this instance
+	pub fn get_inst_ref(&self) -> InstanceRef {
+		InstanceRef::new(self.profile_id.clone(), self.id.clone())
 	}
 }
 
