@@ -36,17 +36,14 @@ impl Plugin {
 		arg: &H::Arg,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Option<H::Result>> {
-		if self.manifest.enabled_hooks.contains(hook.get_name()) {
-			hook.call(
-				&self.manifest.executable,
-				arg,
-				self.custom_config.clone(),
-				o,
-			)
-			.map(Some)
-		} else {
-			Ok(None)
+		let Some(executable) = self.manifest.executable.as_ref() else {
+			return Ok(None);
+		};
+		if !self.manifest.enabled_hooks.contains(hook.get_name()) {
+			return Ok(None);
 		}
+		hook.call(executable, arg, self.custom_config.clone(), o)
+			.map(Some)
 	}
 
 	/// Set the custom config of the plugin
@@ -62,7 +59,7 @@ impl Plugin {
 #[derive(Deserialize, Debug)]
 pub struct PluginManifest {
 	/// The executable to use for the plugin
-	pub executable: String,
+	pub executable: Option<String>,
 	/// The enabled hooks for the plugin
 	#[serde(default)]
 	pub enabled_hooks: HashSet<String>,
@@ -72,10 +69,19 @@ pub struct PluginManifest {
 }
 
 impl PluginManifest {
-	/// Create a new PluginManifest from the executable
-	pub fn new(executable: String) -> Self {
+	/// Create a new PluginManifest with no executable
+	pub fn new() -> Self {
 		Self {
-			executable,
+			executable: None,
+			enabled_hooks: HashSet::new(),
+			language_map: LanguageMap::new(),
+		}
+	}
+
+	/// Create a new PluginManifest with an executable
+	pub fn with_executable(executable: String) -> Self {
+		Self {
+			executable: Some(executable),
 			enabled_hooks: HashSet::new(),
 			language_map: LanguageMap::new(),
 		}
