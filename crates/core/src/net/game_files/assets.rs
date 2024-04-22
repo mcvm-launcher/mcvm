@@ -12,8 +12,8 @@ use serde::Deserialize;
 use tokio::{sync::Semaphore, task::JoinSet};
 
 use crate::io::files::{self, paths::Paths};
-use crate::io::json_from_file;
 use crate::io::update::{UpdateManager, UpdateMethodResult};
+use crate::io::{json_from_file, json_to_file};
 use crate::net::download::{self, get_transfer_limit};
 use crate::util::versions::VersionName;
 
@@ -147,9 +147,17 @@ pub async fn get(
 				.await
 				.context("Failed to download asset")?;
 
-			tokio::fs::write(&asset.path, response)
-				.await
-				.context("Failed to write asset to file")?;
+			// Write JSON as minified to save storage space
+			if asset.name.ends_with(".json") {
+				let json: serde_json::Value = serde_json::from_slice(&response)
+					.context("Failed to deserialize JSON of asset")?;
+				json_to_file(&asset.path, &json)
+					.context("Failed to write minified JSON asset to file")?;
+			} else {
+				tokio::fs::write(&asset.path, response)
+					.await
+					.context("Failed to write asset to file")?;
+			}
 
 			if let Some(virtual_path) = asset.virtual_path {
 				files::update_hardlink_async(&asset.path, &virtual_path)
