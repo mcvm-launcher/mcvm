@@ -35,7 +35,7 @@ define_translations! {
 	StartAcquiringAddons, "When starting to acquire addons", "Acquiring addons";
 	FinishAcquiringAddons, "When finishing acquiring addons", "Addons acquired";
 	StartInstallingPackages, "When starting to install packages", "Installing packages";
-	FinishInstallingPackages, "When finishing installing packages", "Packages installed";
+	FinishInstallingPackage, "When finishing installing a single package", "Package installed";
 	PackageOutOfDate, "When a package is out of date", "Package %pkg has been flagged as out of date";
 	PackageDeprecated, "When a package is deprecated", "Package %pkg has been flagged as deprecated";
 	PackageInsecure, "When a package is insecure", "Package %pkg has been flagged as insecure";

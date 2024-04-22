@@ -162,7 +162,7 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 			format_package_update_message(
 				package,
 				None,
-				MessageContents::Success(translate!(ctx.output, FinishInstallingPackages)),
+				MessageContents::Success(translate!(ctx.output, FinishInstallingPackage)),
 			),
 			MessageLevel::Important,
 		);
