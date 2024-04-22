@@ -1,9 +1,10 @@
 use std::fs::File;
-use std::io::BufReader;
+use std::io::{BufReader, BufWriter};
 use std::path::Path;
 
 use anyhow::Context;
 use serde::de::DeserializeOwned;
+use serde::Serialize;
 
 /// Utilities for dealing with the filesystem
 pub mod files;
@@ -20,4 +21,11 @@ pub mod update;
 pub fn json_from_file<D: DeserializeOwned>(path: impl AsRef<Path>) -> anyhow::Result<D> {
 	let file = BufReader::new(File::open(path).context("Failed to open file")?);
 	Ok(serde_json::from_reader(file)?)
+}
+
+/// Writes JSON to a file with a buffer
+pub fn json_to_file<S: Serialize>(path: impl AsRef<Path>, data: &S) -> anyhow::Result<()> {
+	let file = BufWriter::new(File::create(path).context("Failed to open file")?);
+	serde_json::to_writer(file, data).context("Failed to serialize data to file")?;
+	Ok(())
 }

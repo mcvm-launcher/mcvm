@@ -202,6 +202,11 @@ impl ProgressiveDownload<Cursor<Vec<u8>>> {
 	pub fn finish(self) -> Vec<u8> {
 		self.writer.into_inner()
 	}
+
+	/// Consume the download into JSON
+	pub fn finish_json<D: DeserializeOwned>(self) -> anyhow::Result<D> {
+		serde_json::from_reader(self.writer).context("Failed to deserialize downloaded output")
+	}
 }
 
 /// Validates a URL with a helpful error message

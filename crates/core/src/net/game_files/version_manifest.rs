@@ -7,11 +7,12 @@ use serde::{Deserialize, Serialize};
 
 use crate::io::files::{self, paths::Paths};
 use crate::io::update::UpdateManager;
+use crate::io::{json_from_file, json_to_file};
 use crate::net::download::ProgressiveDownload;
 use crate::util::versions::VersionName;
 
 /// JSON format for the version manifest that contains all available Minecraft versions
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct VersionManifest {
 	/// The latest available versions
 	pub latest: LatestVersions,
@@ -51,7 +52,7 @@ pub enum VersionType {
 }
 
 /// Latest available Minecraft versions in the version manifest
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct LatestVersions {
 	/// The latest release version
 	pub release: VersionName,
@@ -66,10 +67,8 @@ pub async fn get(
 	client: &Client,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<VersionManifest> {
-	let mut manifest_contents = get_contents(paths, manager, client, false, o)
-		.await
-		.context("Failed to get manifest contents")?;
-	let manifest = match serde_json::from_str(&manifest_contents) {
+	let manifest = get_contents(paths, manager, client, false, o).await;
+	let manifest = match manifest {
 		Ok(manifest) => manifest,
 		Err(err) => {
 			o.display(
@@ -84,10 +83,9 @@ pub async fn get(
 				MessageContents::StartProcess("Redownloading".into()),
 				MessageLevel::Important,
 			);
-			manifest_contents = get_contents(paths, manager, client, true, o)
+			get_contents(paths, manager, client, true, o)
 				.await
-				.context("Failed to download manifest contents")?;
-			serde_json::from_str(&manifest_contents)?
+				.context("Failed to download manifest contents")?
 		}
 	};
 	Ok(manifest)
@@ -126,12 +124,12 @@ async fn get_contents(
 	client: &Client,
 	force: bool,
 	o: &mut impl MCVMOutput,
-) -> anyhow::Result<String> {
+) -> anyhow::Result<VersionManifest> {
 	let mut path = paths.internal.join("versions");
 	files::create_dir(&path)?;
 	path.push("manifest.json");
 	if manager.allow_offline && !force && path.exists() {
-		return std::fs::read_to_string(path).context("Failed to read manifest contents from file");
+		return json_from_file(path).context("Failed to read manifest contents from file");
 	}
 
 	let mut download = ProgressiveDownload::bytes(
@@ -153,11 +151,11 @@ async fn get_contents(
 			MessageLevel::Important,
 		);
 	}
-	let text = String::from_utf8_lossy(&download.finish()).to_string();
+	let manifest = download.finish_json()?;
 
-	std::fs::write(&path, &text).context("Failed to write manifest to a file")?;
+	json_to_file(path, &manifest).context("Failed to write manifest to a file")?;
 
-	Ok(text)
+	Ok(manifest)
 }
 
 /// Make an ordered list of versions from the manifest to use for matching
