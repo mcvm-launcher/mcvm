@@ -1,4 +1,3 @@
-use std::collections::HashMap;
 use std::io::Write;
 use std::{fs::File, path::PathBuf};
 
@@ -7,7 +6,7 @@ use color_print::{cformat, cstr};
 use inquire::{Confirm, Password};
 use mcvm::io::files::paths::Paths;
 use mcvm::pkg_crate::{PkgRequest, PkgRequestSource};
-use mcvm::shared::lang::translate::TranslationKey;
+use mcvm::shared::lang::translate::{TranslationKey, TranslationMap};
 use mcvm::shared::output::{
 	default_special_ms_auth, MCVMOutput, Message, MessageContents, MessageLevel,
 };
@@ -25,7 +24,7 @@ pub struct TerminalOutput {
 	indent_level: u8,
 	log_file: File,
 	latest_log_file: File,
-	translation_map: Option<HashMap<TranslationKey, String>>,
+	translation_map: Option<TranslationMap>,
 }
 
 impl MCVMOutput for TerminalOutput {
@@ -251,7 +250,7 @@ impl TerminalOutput {
 	}
 
 	/// Set the translation map of the output
-	pub fn set_translation_map(&mut self, map: HashMap<TranslationKey, String>) {
+	pub fn set_translation_map(&mut self, map: TranslationMap) {
 		self.translation_map = Some(map);
 	}
 }

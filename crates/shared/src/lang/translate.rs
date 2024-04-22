@@ -97,5 +97,7 @@ macro_rules! translate {
 	};
 }
 
-/// A translation map
-pub type TranslationMap = HashMap<Language, HashMap<TranslationKey, String>>;
+/// A translation map of translation keys to their translations
+pub type TranslationMap = HashMap<TranslationKey, String>;
+/// A map of languages to translation maps
+pub type LanguageMap = HashMap<Language, TranslationMap>;
