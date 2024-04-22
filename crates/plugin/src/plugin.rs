@@ -59,6 +59,7 @@ impl Plugin {
 #[derive(Deserialize, Debug)]
 pub struct PluginManifest {
 	/// The executable to use for the plugin
+	#[serde(default)]
 	pub executable: Option<String>,
 	/// The enabled hooks for the plugin
 	#[serde(default)]
