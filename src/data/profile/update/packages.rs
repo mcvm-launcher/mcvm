@@ -174,10 +174,11 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 		let instance = profile.instances.get(&instance_id).ok_or(anyhow!(
 			"Instance '{instance_id}' does not exist in the registry"
 		))?;
+		let inst_ref = instance.get_inst_ref().to_string();
 		let files_to_remove = ctx
 			.lock
 			.remove_unused_packages(
-				&instance_id,
+				&inst_ref,
 				&packages
 					.iter()
 					.map(|x| x.id.clone())
