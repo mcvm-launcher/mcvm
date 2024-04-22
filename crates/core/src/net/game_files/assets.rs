@@ -78,6 +78,14 @@ pub async fn get(
 		}
 	};
 
+	struct AssetData {
+		name: String,
+		url: String,
+		path: PathBuf,
+		virtual_path: Option<PathBuf>,
+		size: usize,
+	}
+
 	let mut assets_to_download = Vec::new();
 	for (name, asset) in index.objects {
 		let hash = asset.hash;
@@ -101,10 +109,17 @@ pub async fn get(
 		if let Some(virtual_path) = &virtual_path {
 			files::create_leading_dirs(virtual_path)?;
 		}
-		assets_to_download.push((name, url, path, virtual_path, asset.size));
+		let data = AssetData {
+			name,
+			url,
+			path,
+			virtual_path,
+			size: asset.size,
+		};
+		assets_to_download.push(data);
 	}
 	// Sort downloads by biggest first
-	assets_to_download.sort_by_key(|x| std::cmp::Reverse(x.4));
+	assets_to_download.sort_by_key(|x| std::cmp::Reverse(x.size));
 
 	let count = assets_to_download.len();
 	if count > 0 {
@@ -123,25 +138,25 @@ pub async fn get(
 	let mut join = JoinSet::new();
 	// Used to limit the number of open file descriptors
 	let sem = Arc::new(Semaphore::new(get_transfer_limit()));
-	for (name, url, path, virtual_path, _) in assets_to_download {
+	for asset in assets_to_download {
 		let client = client.clone();
 		let sem = sem.clone();
 		let fut = async move {
 			let _permit = sem.acquire().await;
-			let response = download::bytes(url, &client)
+			let response = download::bytes(asset.url, &client)
 				.await
 				.context("Failed to download asset")?;
 
-			tokio::fs::write(&path, response)
+			tokio::fs::write(&asset.path, response)
 				.await
 				.context("Failed to write asset to file")?;
 
-			if let Some(virtual_path) = virtual_path {
-				files::update_hardlink_async(&path, &virtual_path)
+			if let Some(virtual_path) = asset.virtual_path {
+				files::update_hardlink_async(&asset.path, &virtual_path)
 					.await
 					.context("Failed to hardlink virtual asset")?;
 			}
-			Ok::<String, anyhow::Error>(name)
+			Ok::<String, anyhow::Error>(asset.name)
 		};
 		join.spawn(fut);
 	}
