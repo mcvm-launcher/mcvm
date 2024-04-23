@@ -88,4 +88,4 @@ Right now, the launcher and library have most of the core features implemented. 
 - Installing NeoForge
 - More in-depth plugin system and a standard plugin set
 
-Contact `@carbonsmasher` on Discord if you have any questions.
+Join the [Discord](https://discord.gg/25fhkjeTvW) if you have any questions.
