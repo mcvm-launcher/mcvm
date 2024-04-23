@@ -8,7 +8,7 @@ use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::translate;
 use mcvm_shared::versions::VersionPattern;
 use reqwest::Client;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use tokio::{sync::Semaphore, task::JoinSet};
 
 use crate::io::files::{self, paths::Paths};
@@ -20,14 +20,14 @@ use crate::util::versions::VersionName;
 use super::client_meta::ClientMeta;
 
 /// Structure for the assets index
-#[derive(Deserialize)]
+#[derive(Deserialize, Serialize)]
 pub struct AssetIndex {
 	/// The map of asset resource locations to index entries
 	pub objects: HashMap<String, IndexEntry>,
 }
 
 /// A single asset in the index
-#[derive(Deserialize)]
+#[derive(Deserialize, Serialize)]
 pub struct IndexEntry {
 	/// The hash of the index file
 	pub hash: String,
@@ -228,14 +228,13 @@ async fn download_index(
 	let index = if manager.allow_offline && !force && path.exists() {
 		json_from_file(path).context("Failed to read asset index contents from file")?
 	} else {
-		let bytes = download::bytes(url, client)
+		let index = download::json(url, client)
 			.await
 			.context("Failed to download asset index")?;
-		let out = serde_json::from_slice(&bytes).context("Failed to parse asset index")?;
 
-		std::fs::write(path, &bytes).context("Failed to write asset index to a file")?;
+		json_to_file(path, &index).context("Failed to serialize asset index to a file")?;
 
-		out
+		index
 	};
 
 	Ok(index)
