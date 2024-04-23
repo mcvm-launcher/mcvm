@@ -1,18 +1,18 @@
 use std::fmt::Display;
 
 use anyhow::{anyhow, Context};
-use mcvm_core::io::files;
 use mcvm_core::io::java::classpath::Classpath;
 use mcvm_core::io::java::maven::MavenLibraryParts;
 use mcvm_core::io::json_from_file;
 use mcvm_core::io::update::UpdateManager;
+use mcvm_core::io::{files, json_to_file};
 use mcvm_core::net::download;
 use mcvm_core::{MCVMCore, Paths};
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel, OutputProcess};
 use mcvm_shared::versions::VersionInfo;
 use mcvm_shared::Side;
 use reqwest::Client;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use tokio::task::JoinSet;
 
 /// Mode we are in (Fabric / Quilt)
@@ -91,7 +91,7 @@ pub async fn install_from_core(
 }
 
 /// Metadata for Fabric or Quilt
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct FabricQuiltMeta {
 	/// Metadata for the launcher
 	#[serde(rename = "launcherMeta")]
@@ -103,7 +103,7 @@ pub struct FabricQuiltMeta {
 }
 
 /// Metadata for the launcher
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct LauncherMeta {
 	libraries: Libraries,
 	/// The main class to override with when launching
@@ -112,7 +112,7 @@ pub struct LauncherMeta {
 }
 
 /// A library in the Fabric/Quilt meta
-#[derive(Debug, Deserialize, Clone)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct Library {
 	name: String,
 	#[serde(default = "default_library_url")]
@@ -125,13 +125,13 @@ fn default_library_url() -> String {
 }
 
 /// An important library in the Fabric/Quilt meta
-#[derive(Deserialize, Clone, Debug)]
+#[derive(Deserialize, Serialize, Clone, Debug)]
 pub struct MainLibrary {
 	maven: String,
 }
 
 /// The struct of libraries for different sides
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Libraries {
 	common: Vec<Library>,
 	client: Vec<Library>,
@@ -139,7 +139,7 @@ pub struct Libraries {
 }
 
 /// A Java main class override provided by the meta
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 #[serde(untagged)]
 pub enum MainClass {
 	/// The new format with a different string for client and server
@@ -195,9 +195,8 @@ pub async fn get_meta(
 			.with_context(|| format!("Failed to download {mode} metadata file"))?;
 		let out = serde_json::from_slice::<Vec<FabricQuiltMeta>>(&bytes)
 			.context("Failed to parse downloaded metadata")?;
-		tokio::fs::write(path, &bytes)
-			.await
-			.context("Failed to write meta to a file")?;
+
+		json_to_file(path, &out).context("Failed to serialize meta to a file")?;
 
 		out
 	};
