@@ -59,14 +59,15 @@ impl Plugin {
 }
 
 /// Configuration for a plugin
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Default)]
+#[serde(default)]
 pub struct PluginManifest {
 	/// The hook handlers for the plugin
-	#[serde(default)]
 	pub hooks: HashMap<String, HookHandler>,
 	/// The lanugage map the plugin provides
-	#[serde(default)]
 	pub language_map: LanguageMap,
+	/// The subcommands the plugin provides
+	pub subcommands: HashMap<String, String>,
 }
 
 impl PluginManifest {
@@ -75,6 +76,7 @@ impl PluginManifest {
 		Self {
 			hooks: HashMap::new(),
 			language_map: LanguageMap::new(),
+			subcommands: HashMap::new(),
 		}
 	}
 }
