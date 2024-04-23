@@ -4,6 +4,101 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": [
+						"1.20.5-pre2",
+						"1.20.5-rc3"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"conflicts": [
+							"indium",
+							"sodium"
+						]
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/sk9rgfiA/versions/8ZSgkYpx/embeddium-fabric-0.3.14%2Bmc1.20.5-pre2.jar",
+					"version": "8ZSgkYpx"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"relations": {
+						"conflicts": "rubidium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/sk9rgfiA/versions/KLQezI6V/embeddium-0.3.14%2Bmc1.16.5.jar",
+					"version": "KLQezI6V"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"relations": {
+						"conflicts": "rubidium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/sk9rgfiA/versions/rNFOdDcR/embeddium-0.3.14%2Bmc1.18.2.jar",
+					"version": "rNFOdDcR"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"relations": {
+						"conflicts": "rubidium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/sk9rgfiA/versions/syxwmWEk/embeddium-0.3.14%2Bmc1.19.2.jar",
+					"version": "syxwmWEk"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"conflicts": [
+							"indium",
+							"sodium"
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/sk9rgfiA/versions/RHVugIok/embeddium-fabric-0.3.14%2Bmc1.20.4.jar",
+					"version": "RHVugIok"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"relations": {
+						"conflicts": [
+							"indium",
+							"sodium"
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/sk9rgfiA/versions/2D6ipaiY/embeddium-fabric-0.3.14%2Bmc1.20.1.jar",
+					"version": "2D6ipaiY"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"relations": {
+						"conflicts": "rubidium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/sk9rgfiA/versions/pGzoqyWU/embeddium-0.3.14%2Bmc1.20.4.jar",
+					"version": "pGzoqyWU"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"relations": {
+						"conflicts": "rubidium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/sk9rgfiA/versions/Yf0WdDp1/embeddium-0.3.14%2Bmc1.20.1.jar",
+					"version": "Yf0WdDp1"
+				},
+				{
 					"minecraft_versions": "1.20.5-pre1",
 					"modloaders": "fabric",
 					"relations": {
@@ -2030,7 +2125,9 @@
 			"24w13a",
 			"24w14potato",
 			"24w14a",
-			"1.20.5-pre1"
+			"1.20.5-pre1",
+			"1.20.5-pre2",
+			"1.20.5-rc3"
 		]
 	}
 }

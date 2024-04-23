@@ -4,6 +4,27 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/B4y7zUNd/c2me-fabric-mc1.20.4-0.2.0%2Balpha.11.66.jar",
+					"version": "B4y7zUNd"
+				},
+				{
+					"minecraft_versions": "1.20.5-rc2",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/Yqt8ijOx/c2me-fabric-mc1.20.5-rc2-0.2.0%2Balpha.11.87.jar",
+					"version": "Yqt8ijOx"
+				},
+				{
+					"minecraft_versions": "1.20.5-pre1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/GWtvjtVr/c2me-fabric-mc1.20.5-pre1-0.2.0%2Balpha.11.86.jar",
+					"version": "GWtvjtVr"
+				},
+				{
 					"minecraft_versions": "24w14a",
 					"modloaders": "fabric",
 					"stability": "latest",
@@ -1608,7 +1629,9 @@
 			"24w11a",
 			"24w12a",
 			"24w13a",
-			"24w14a"
+			"24w14a",
+			"1.20.5-pre1",
+			"1.20.5-rc2"
 		]
 	}
 }

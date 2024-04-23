@@ -4,6 +4,36 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": "1.20.5-rc3",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/NgnZx44E/modmenu-10.0.0-beta.1.jar",
+					"version": "NgnZx44E"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/ybV7vGT5/modmenu-9.2.0-beta.2.jar",
+					"version": "ybV7vGT5"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/VOHp29AO/modmenu-9.2.0-beta.1.jar",
+					"version": "VOHp29AO"
+				},
+				{
 					"minecraft_versions": "1.20.4",
 					"modloaders": [
 						"fabric",
@@ -1472,7 +1502,8 @@
 			"24w13a",
 			"24w14potato",
 			"24w14a",
-			"1.20.5-pre1"
+			"1.20.5-pre1",
+			"1.20.5-rc3"
 		]
 	}
 }

@@ -4,6 +4,30 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/MBAkmtvl/versions/z5z8sM4m/balm-neoforge-1.20.4-9.0.7.jar",
+					"version": "z5z8sM4m"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/MBAkmtvl/versions/OjHYTM4n/balm-forge-1.20.4-9.0.7.jar",
+					"version": "OjHYTM4n"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/MBAkmtvl/versions/U79V1VMr/balm-fabric-1.20.4-9.0.7.jar",
+					"version": "U79V1VMr"
+				},
+				{
 					"minecraft_versions": [
 						"1.20",
 						"1.20.1"

@@ -4,6 +4,66 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/kPiQ6v4q/YungsBetterDungeons-1.20-Forge-4.0.4.jar",
+					"version": "kPiQ6v4q"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/nidyvq2m/YungsBetterDungeons-1.20-Fabric-4.0.4.jar",
+					"version": "nidyvq2m"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/y2Ahguul/YungsBetterDungeons-1.20.4-Fabric-4.4.2.jar",
+					"version": "y2Ahguul"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/9jmgNEyb/YungsBetterDungeons-1.20.4-Forge-4.4.2.jar",
+					"version": "9jmgNEyb"
+				},
+				{
 					"minecraft_versions": "1.20.4",
 					"modloaders": "fabric",
 					"relations": {

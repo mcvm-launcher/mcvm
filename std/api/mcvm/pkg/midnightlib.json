@@ -188,6 +188,16 @@
 					"version": "CRaHmCcJ"
 				},
 				{
+					"minecraft_versions": "1.20.5-rc2",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/codAaoxh/versions/D5jKfbBO/midnightlib-fabric-1.5.4.jar",
+					"version": "D5jKfbBO"
+				},
+				{
 					"minecraft_versions": [
 						"1.20.3",
 						"1.20.4"
@@ -612,7 +622,8 @@
 			"1.20.1",
 			"1.20.2",
 			"1.20.3",
-			"1.20.4"
+			"1.20.4",
+			"1.20.5-rc2"
 		]
 	}
 }

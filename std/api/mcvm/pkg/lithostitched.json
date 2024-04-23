@@ -4,6 +4,13 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": "1.20.5-rc3",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/aw2MztJz/lithostitched-fabric-1.20.5-1.1.5.jar",
+					"version": "aw2MztJz"
+				},
+				{
 					"minecraft_versions": "1.20.2",
 					"modloaders": "neoforged",
 					"stability": "stable",
@@ -421,7 +428,8 @@
 			"1.20.1",
 			"1.20.2",
 			"1.20.3",
-			"1.20.4"
+			"1.20.4",
+			"1.20.5-rc3"
 		]
 	}
 }

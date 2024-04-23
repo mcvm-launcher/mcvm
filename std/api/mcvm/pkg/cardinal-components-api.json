@@ -4,6 +4,16 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": "1.20.5-rc2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/K01OU20C/versions/jYO4yNFS/cardinal-components-api-6.0.0-beta.1.jar",
+					"version": "jYO4yNFS"
+				},
+				{
 					"minecraft_versions": [
 						"1.20.3-pre4",
 						"1.20.3",
@@ -238,7 +248,8 @@
 			"1.20.2",
 			"1.20.3-pre4",
 			"1.20.3",
-			"1.20.4"
+			"1.20.4",
+			"1.20.5-rc2"
 		]
 	}
 }
