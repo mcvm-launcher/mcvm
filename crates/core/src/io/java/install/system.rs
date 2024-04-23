@@ -10,6 +10,13 @@ pub fn install(major_version: &str) -> anyhow::Result<PathBuf> {
 
 /// Gets the optimal path to a system Java installation
 fn get_system_java_installation(#[allow(unused_variables)] major_version: &str) -> Option<PathBuf> {
+	// JAVA_HOME
+	if let Ok(home) = std::env::var("JAVA_HOME") {
+		if let Some(path) = scan_dir(&PathBuf::from(home), major_version) {
+			return Some(path);
+		}
+	}
+
 	#[cfg(target_os = "windows")]
 	{
 		if let Some(path) = scan_windows(major_version) {
