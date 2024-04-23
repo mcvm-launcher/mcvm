@@ -35,11 +35,13 @@ pub trait Hook {
 		&self,
 		cmd: &str,
 		arg: &Self::Arg,
+		additional_args: &[String],
 		custom_config: Option<String>,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Self::Result> {
 		let arg = serde_json::to_string(arg).context("Failed to serialize hook argument")?;
 		let mut cmd = Command::new(cmd);
+		cmd.args(additional_args);
 		cmd.arg(self.get_name());
 		cmd.arg(arg);
 		if let Some(custom_config) = custom_config {
