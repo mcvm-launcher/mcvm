@@ -35,6 +35,14 @@ pub struct IndexEntry {
 	pub size: usize,
 }
 
+impl IndexEntry {
+	/// Get the hash path for this asset, which is used for the relative location on the filesystem
+	/// and the remote server where they are downloaded
+	pub fn get_hash_path(&self) -> String {
+		format!("{}/{}", &self.hash[..2], self.hash)
+	}
+}
+
 /// Download assets used by the client, such as game resources and icons.
 pub async fn get(
 	client_meta: &ClientMeta,
@@ -88,8 +96,7 @@ pub async fn get(
 
 	let mut assets_to_download = Vec::new();
 	for (name, asset) in index.objects {
-		let hash = asset.hash;
-		let hash_path = format!("{}/{hash}", &hash[..2]);
+		let hash_path = asset.get_hash_path();
 		let url = format!("https://resources.download.minecraft.net/{hash_path}");
 
 		let path = objects_dir.join(&hash_path);
@@ -210,6 +217,7 @@ pub async fn get(
 	Ok(out)
 }
 
+/// Downloads the asset index which contains all of the assets that need to be downloaded
 async fn download_index(
 	url: &str,
 	path: &Path,
