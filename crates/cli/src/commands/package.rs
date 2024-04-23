@@ -493,11 +493,12 @@ async fn browse(data: &mut CmdData) -> anyhow::Result<()> {
 	packages.sort();
 
 	loop {
-		let select = inquire::Select::new("Browse packages. Press ESC to exit.", packages.clone());
+		let select =
+			inquire::Select::new("Browse packages. Press Escape to exit.", packages.clone());
 		let package = select.prompt_skippable()?;
 		if let Some(package) = package {
 			info(data, &package.id).await?;
-			inquire::Confirm::new("Return to browse page?").prompt_skippable()?;
+			inquire::Confirm::new("Press Escape to return to browse page").prompt_skippable()?;
 		} else {
 			break;
 		}
