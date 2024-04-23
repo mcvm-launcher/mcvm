@@ -18,7 +18,7 @@ pub mod user;
 
 use self::instance::{read_instance_config, InstanceConfig};
 use self::package::{PackageConfig, PackageConfigDeser, PackageConfigSource};
-use self::plugin::{PluginConfigDeser, PluginManager};
+use self::plugin::PluginManager;
 use self::preferences::PrefDeser;
 use self::profile::ProfileConfig;
 use self::user::UserConfig;
@@ -122,7 +122,6 @@ pub struct ConfigDeser {
 	profiles: HashMap<ProfileID, ProfileConfig>,
 	instance_presets: HashMap<String, InstanceConfig>,
 	packages: Vec<PackageConfigDeser>,
-	plugins: Vec<PluginConfigDeser>,
 	preferences: PrefDeser,
 }
 
@@ -150,19 +149,10 @@ impl Config {
 	/// Create the Config struct from deserialized config
 	fn load_from_deser(
 		config: ConfigDeser,
+		plugins: PluginManager,
 		show_warnings: bool,
-		paths: &Paths,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Self> {
-		let mut plugins = PluginManager::new();
-
-		for plugin in config.plugins {
-			let plugin = plugin.to_config();
-			plugins
-				.load_plugin(plugin, paths, o)
-				.context("Failed to load plugin")?;
-		}
-
 		let mut users = UserManager::new(ClientId::new("".into()));
 		let mut profiles = HashMap::new();
 		// Preferences
@@ -291,12 +281,12 @@ impl Config {
 	/// Load the configuration from the config file
 	pub fn load(
 		path: &Path,
+		plugins: PluginManager,
 		show_warnings: bool,
-		paths: &Paths,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Self> {
 		let obj = Self::open(path)?;
-		Self::load_from_deser(obj, show_warnings, paths, o)
+		Self::load_from_deser(obj, plugins, show_warnings, o)
 	}
 }
 
@@ -339,8 +329,8 @@ mod tests {
 		let deser = serde_json::from_value(default_config()).unwrap();
 		Config::load_from_deser(
 			deser,
+			PluginManager::new(),
 			true,
-			&Paths::new_no_create().expect("Failed to create paths"),
 			&mut output::Simple(output::MessageLevel::Debug),
 		)
 		.unwrap();

@@ -1,6 +1,6 @@
 use crate::io::files::paths::Paths;
 use anyhow::Context;
-use mcvm_core::io::json_from_file;
+use mcvm_core::io::{json_from_file, json_to_file};
 use mcvm_shared::output::MCVMOutput;
 #[cfg(feature = "schema")]
 use schemars::JsonSchema;
@@ -9,6 +9,14 @@ use serde::{Deserialize, Serialize};
 use mcvm_plugin::hooks::Hook;
 use mcvm_plugin::plugin::{Plugin, PluginManifest};
 use mcvm_plugin::PluginManager as LoadedPluginManager;
+
+/// User configuration for all plugins, stored in the plugins.json file
+#[derive(Serialize, Deserialize, Default)]
+#[serde(default)]
+pub struct PluginsConfig {
+	/// The enabled plugins
+	pub plugins: Vec<PluginConfigDeser>,
+}
 
 /// User configuration for a plugin
 #[derive(Debug)]
@@ -62,7 +70,30 @@ pub struct PluginManager {
 }
 
 impl PluginManager {
-	/// Create a new PluginManager
+	/// Load the PluginManager from the plugins.json file
+	pub fn load(paths: &Paths, o: &mut impl MCVMOutput) -> anyhow::Result<Self> {
+		let path = paths.project.config_dir().join("plugins.json");
+		let config = if path.exists() {
+			json_from_file(path).context("Failed to load plugin config from file")?
+		} else {
+			let out = PluginsConfig::default();
+			json_to_file(path, &out).context("Failed to write default plugin config to file")?;
+
+			out
+		};
+
+		let mut out = Self::new();
+
+		for plugin in config.plugins {
+			let plugin = plugin.to_config();
+			out.load_plugin(plugin, paths, o)
+				.context("Failed to load plugin")?;
+		}
+
+		Ok(out)
+	}
+
+	/// Create a new PluginManager with no plugins
 	pub fn new() -> Self {
 		Self {
 			manager: LoadedPluginManager::new(),

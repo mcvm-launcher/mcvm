@@ -10,6 +10,7 @@ use anyhow::{bail, Context};
 use clap::{Parser, Subcommand};
 use color_print::{cformat, cprintln};
 
+use mcvm::data::config::plugin::PluginManager;
 use mcvm::data::config::{Config, ConfigDeser};
 use mcvm::io::files::paths::Paths;
 use mcvm::plugin::hooks;
@@ -196,11 +197,14 @@ impl CmdData {
 	/// Ensure that the config is loaded
 	pub async fn ensure_config(&mut self, show_warnings: bool) -> anyhow::Result<()> {
 		if self.config.is_empty() {
+			let plugins = PluginManager::load(&self.paths, &mut self.output)
+				.context("Failed to load plugins configuration")?;
+
 			self.config.fill(
 				Config::load(
 					&Config::get_path(&self.paths),
+					plugins,
 					show_warnings,
-					&self.paths,
 					&mut self.output,
 				)
 				.context("Failed to load config")?,
