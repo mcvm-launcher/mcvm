@@ -58,7 +58,7 @@ impl PluginManager {
 		arg: &H::Arg,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Vec<H::Result>> {
-		let mut out = Vec::with_capacity(self.plugins.len());
+		let mut out = Vec::new();
 		for plugin in &self.plugins {
 			let result = plugin
 				.call_hook(&hook, arg, o)
