@@ -150,6 +150,9 @@ pub async fn run_cli() -> anyhow::Result<()> {
 	};
 
 	if let Err(e) = &res {
+		// Don't use the existing process or section
+		data.output.end_process();
+		data.output.end_section();
 		data.output.display(
 			MessageContents::Error(format!("{e:?}")),
 			MessageLevel::Important,
