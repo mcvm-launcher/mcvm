@@ -43,6 +43,9 @@ impl Plugin {
 			HookHandler::Execute { executable, args } => hook
 				.call(executable, arg, args, self.custom_config.clone(), o)
 				.map(Some),
+			HookHandler::Constant { constant } => {
+				Ok(Some(serde_json::from_value(constant.clone())?))
+			}
 		}
 	}
 
@@ -88,5 +91,10 @@ pub enum HookHandler {
 		/// Arguments for the executable
 		#[serde(default)]
 		args: Vec<String>,
+	},
+	/// Handle this hook by returning a constant result
+	Constant {
+		/// The constant result
+		constant: serde_json::Value,
 	},
 }
