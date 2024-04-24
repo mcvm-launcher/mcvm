@@ -39,7 +39,6 @@ Users are defined in the `users` object in the base of the config. User structur
 - `type`: What type of user this is. Can be any of the following:
   - `"microsoft"`: A normal Minecraft account
   - `"demo"`: An account that owns a demo of the game
-  - `"unverified"`: An unverified or 'cracked` account
 
 There is a field called `default_user` where you should specify which user you are currently using. Otherwise, MCVM will not know which user to start the game with by default and you will have to specify it every time.
 

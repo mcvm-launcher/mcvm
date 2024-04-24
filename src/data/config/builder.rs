@@ -158,7 +158,6 @@ impl<'parent> UserBuilder<'parent> {
 		let variant = match kind {
 			UserBuilderKind::Microsoft => UserVariant::Microsoft {},
 			UserBuilderKind::Demo => UserVariant::Demo {},
-			UserBuilderKind::Unverified => UserVariant::Unverified {},
 		};
 		Self {
 			id,
@@ -189,8 +188,6 @@ pub enum UserBuilderKind {
 	Microsoft,
 	/// A demo user
 	Demo,
-	/// An unverified user
-	Unverified,
 }
 
 /// Builder for a profile

@@ -23,8 +23,6 @@ pub enum UserVariant {
 	Microsoft {},
 	/// A demo user
 	Demo {},
-	/// An unverified user
-	Unverified {},
 }
 
 impl UserVariant {
@@ -32,7 +30,6 @@ impl UserVariant {
 		match self {
 			Self::Microsoft { .. } => UserKind::Microsoft { xbox_uid: None },
 			Self::Demo { .. } => UserKind::Demo,
-			Self::Unverified {} => UserKind::Unverified,
 		}
 	}
 }

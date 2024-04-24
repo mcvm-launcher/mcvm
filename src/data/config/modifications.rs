@@ -81,7 +81,7 @@ mod tests {
 		let mut config = ConfigDeser::default();
 
 		let user_config = UserConfig {
-			variant: UserVariant::Unverified {},
+			variant: UserVariant::Demo {},
 		};
 
 		let modifications = vec![ConfigModification::AddUser("bob".into(), user_config)];

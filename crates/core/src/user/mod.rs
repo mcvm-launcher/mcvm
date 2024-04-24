@@ -39,8 +39,6 @@ pub enum UserKind {
 	},
 	/// A demo user
 	Demo,
-	/// An unverified / not logged in user
-	Unverified,
 }
 
 impl User {

@@ -35,7 +35,7 @@ impl User {
 				self.keypair = user_data.keypair;
 				*xbox_uid = user_data.xbox_uid;
 			}
-			UserKind::Demo | UserKind::Unverified => {}
+			UserKind::Demo => {}
 		}
 
 		Ok(())
@@ -53,7 +53,7 @@ impl User {
 
 				db.get_valid_user(&self.id).is_some()
 			}
-			UserKind::Demo | UserKind::Unverified => true,
+			UserKind::Demo => true,
 		}
 	}
 
@@ -61,7 +61,7 @@ impl User {
 	pub fn is_authenticated(&self) -> bool {
 		match &self.kind {
 			UserKind::Microsoft { .. } => self.access_token.is_some() && self.uuid.is_some(),
-			UserKind::Demo | UserKind::Unverified => true,
+			UserKind::Demo => true,
 		}
 	}
 
