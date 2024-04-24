@@ -38,7 +38,7 @@ impl MCVMOutput for TerminalOutput {
 			&Self::format_message_log(message.contents.clone()),
 			message.level,
 		);
-		self.display_text_impl(Self::format_message(message.contents), message.level);
+		self.display_text_impl(self.format_message(message.contents), message.level);
 	}
 
 	fn start_process(&mut self) {
@@ -69,7 +69,7 @@ impl MCVMOutput for TerminalOutput {
 	}
 
 	fn prompt_yes_no(&mut self, default: bool, message: MessageContents) -> anyhow::Result<bool> {
-		let ans = Confirm::new(&Self::format_message(message))
+		let ans = Confirm::new(&self.format_message(message))
 			.with_default(default)
 			.prompt()
 			.context("Inquire prompt failed")?;
@@ -78,7 +78,7 @@ impl MCVMOutput for TerminalOutput {
 	}
 
 	fn prompt_password(&mut self, message: MessageContents) -> anyhow::Result<String> {
-		let ans = Password::new(&Self::format_message(message))
+		let ans = Password::new(&self.format_message(message))
 			.without_confirmation()
 			.prompt()
 			.context("Inquire prompt failed")?;
@@ -87,7 +87,7 @@ impl MCVMOutput for TerminalOutput {
 	}
 
 	fn prompt_new_password(&mut self, message: MessageContents) -> anyhow::Result<String> {
-		let ans = Password::new(&Self::format_message(message))
+		let ans = Password::new(&self.format_message(message))
 			.prompt()
 			.context("Inquire prompt failed")?;
 
@@ -142,15 +142,25 @@ impl TerminalOutput {
 	}
 
 	/// Formatting for messages
-	fn format_message(contents: MessageContents) -> String {
+	fn format_message(&self, contents: MessageContents) -> String {
 		match contents {
 			MessageContents::Simple(text) => text,
-			MessageContents::Notice(text) => cformat!("<y>Notice: {}", text),
-			MessageContents::Warning(text) => cformat!("<y><s>Warning:</> {}", text),
-			MessageContents::Error(text) => cformat!("<r><s,u>Error:</> {}", text),
+			MessageContents::Notice(text) => {
+				cformat!("<y>{}: {}", self.translate(TranslationKey::Notice), text)
+			}
+			MessageContents::Warning(text) => cformat!(
+				"<y><s>{}:</> {}",
+				self.translate(TranslationKey::Warning),
+				text
+			),
+			MessageContents::Error(text) => cformat!(
+				"<r><s,u>{}:</> {}",
+				self.translate(TranslationKey::Error),
+				text
+			),
 			MessageContents::Success(text) => cformat!("<g>{}", add_period(text)),
 			MessageContents::Property(key, value) => {
-				cformat!("<s>{}:</> {}", key, Self::format_message(*value))
+				cformat!("<s>{}:</> {}", key, self.format_message(*value))
 			}
 			MessageContents::Header(text) => cformat!("<s>{}", text),
 			MessageContents::StartProcess(text) => cformat!("{text}..."),
@@ -161,24 +171,24 @@ impl TerminalOutput {
 				{
 					cformat!(
 						"{} {}",
-						Self::format_message(*item),
-						Self::format_message(*message)
+						self.format_message(*item),
+						self.format_message(*message)
 					)
 				} else {
 					cformat!(
 						"[{}] {}",
-						Self::format_message(*item),
-						Self::format_message(*message)
+						self.format_message(*item),
+						self.format_message(*message)
 					)
 				}
 			}
 			MessageContents::Package(pkg, message) => {
 				let pkg_disp = disp_pkg_request_with_colors(pkg);
-				cformat!("[{}] {}", pkg_disp, Self::format_message(*message))
+				cformat!("[{}] {}", pkg_disp, self.format_message(*message))
 			}
 			MessageContents::Hyperlink(url) => cformat!("<m,u>{}", url),
 			MessageContents::ListItem(item) => {
-				HYPHEN_POINT.to_string() + &Self::format_message(*item)
+				HYPHEN_POINT.to_string() + &self.format_message(*item)
 			}
 			MessageContents::Copyable(text) => cformat!("<u>{}", text),
 			MessageContents::Progress { current, total } => {
