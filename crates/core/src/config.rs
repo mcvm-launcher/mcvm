@@ -2,6 +2,16 @@ use mcvm_auth::mc::ClientId;
 
 use crate::util::secrets::get_ms_client_id;
 
+macro_rules! builder_method {
+	($name:ident, $ty:ty, $doc:literal) => {
+		#[doc = $doc]
+		pub fn $name(mut self, $name: $ty) -> Self {
+			self.config.$name = $name;
+			self
+		}
+	};
+}
+
 /// Configuration for different parts of the core library
 pub struct Configuration {
 	/// The Microsoft client ID to use for Microsoft authentication
@@ -62,41 +72,33 @@ impl ConfigBuilder {
 		self.config
 	}
 
-	/// Set the Microsoft client ID to use for Microsoft / XBox Live authentication
-	pub fn ms_client_id(mut self, ms_client_id: ClientId) -> Self {
-		self.config.ms_client_id = ms_client_id;
-		self
-	}
+	builder_method!(
+		ms_client_id,
+		ClientId,
+		"Set the Microsoft client ID to use for Microsoft / XBox Live authentication"
+	);
 
-	/// Set whether to force the reinstall of files
-	pub fn force_reinstall(mut self, force_reinstall: bool) -> Self {
-		self.config.force_reinstall = force_reinstall;
-		self
-	}
+	builder_method!(
+		force_reinstall,
+		bool,
+		"Set whether to force the reinstall of files"
+	);
 
-	/// Set whether to allow offline installs
-	pub fn allow_offline(mut self, allow_offline: bool) -> Self {
-		self.config.allow_offline = allow_offline;
-		self
-	}
+	builder_method!(allow_offline, bool, "Set whether to allow offline installs");
 
-	/// Set whether to censor user credentials in output messages and logs
-	pub fn censor_secrets(mut self, censor_secrets: bool) -> Self {
-		self.config.censor_secrets = censor_secrets;
-		self
-	}
+	builder_method!(
+		censor_secrets,
+		bool,
+		"Set whether to censor user credentials in output messages and logs"
+	);
 
-	/// Set whether to disable the use of hardlinks
-	pub fn disable_hardlinks(mut self, disable_hardlinks: bool) -> Self {
-		self.config.disable_hardlinks = disable_hardlinks;
-		self
-	}
+	builder_method!(
+		disable_hardlinks,
+		bool,
+		"Set whether to disable the use of hardlinks"
+	);
 
-	/// Set the branding properties
-	pub fn branding(mut self, branding: BrandingProperties) -> Self {
-		self.config.branding = branding;
-		self
-	}
+	builder_method!(branding, BrandingProperties, "Set the branding properties");
 }
 
 impl Default for ConfigBuilder {
