@@ -30,7 +30,7 @@ impl Instance {
 		users: &mut UserManager,
 		plugins: &PluginManager,
 		version: &MinecraftVersion,
-		ms_client_id: ClientId,
+		settings: LaunchSettings,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<InstanceHandle> {
 		o.display(
@@ -42,7 +42,10 @@ impl Instance {
 		let client = Client::new();
 		manager.set_version(version);
 		manager.add_requirements(self.get_requirements());
-		manager.set_client_id(ms_client_id);
+		manager.set_client_id(settings.ms_client_id);
+		if settings.offline_auth {
+			manager.offline_auth();
+		}
 		manager
 			.fulfill_requirements(users, plugins, paths, &client, o)
 			.await
@@ -79,6 +82,14 @@ impl Instance {
 
 		Ok(handle)
 	}
+}
+
+/// Settings for launch provided to the instance launch function
+pub struct LaunchSettings {
+	/// The Microsoft client ID to use
+	pub ms_client_id: ClientId,
+	/// Whether to do offline auth
+	pub offline_auth: bool,
 }
 
 /// Options for launching after conversion from the deserialized version

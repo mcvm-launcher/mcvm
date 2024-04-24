@@ -8,6 +8,7 @@ use itertools::Itertools;
 use mcvm::data::config::Config;
 use mcvm::data::id::{InstanceRef, ProfileID};
 
+use mcvm::data::instance::launch::LaunchSettings;
 use mcvm::shared::modifications::Proxy;
 use mcvm::shared::Side;
 use reqwest::Client;
@@ -141,13 +142,17 @@ pub async fn launch(
 		.get_mut(&instance_ref.instance)
 		.context("Instance in profile does not exist")?;
 
+	let launch_settings = LaunchSettings {
+		ms_client_id: get_ms_client_id(),
+		offline_auth: false,
+	};
 	let mut instance_handle = instance
 		.launch(
 			&data.paths,
 			&mut config.users,
 			&config.plugins,
 			&profile.version,
-			get_ms_client_id(),
+			launch_settings,
 			&mut data.output,
 		)
 		.await
