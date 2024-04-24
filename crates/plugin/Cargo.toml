@@ -21,10 +21,6 @@ path = "plugins/print_custom_config.rs"
 name = "echo"
 path = "plugins/echo.rs"
 
-[[bin]]
-name = "args"
-path = "plugins/args.rs"
-
 [dependencies]
 anyhow = "1.0.70"
 base64 = "0.22.0"
