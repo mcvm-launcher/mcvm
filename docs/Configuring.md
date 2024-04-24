@@ -31,7 +31,7 @@ Users are defined in the `users` object in the base of the config. User structur
 
 ```
 "id": {
-	"type": "microsoft" | "demo" | "unverified"
+	"type": "microsoft" | "demo"
 }
 ```
 
