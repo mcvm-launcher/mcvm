@@ -9,6 +9,8 @@ use crate::hooks::Hook;
 /// A plugin
 #[derive(Debug)]
 pub struct Plugin {
+	/// The plugin's ID
+	id: String,
 	/// The plugin's manifest
 	manifest: PluginManifest,
 	/// The custom config for the plugin, serialized from JSON
@@ -16,12 +18,18 @@ pub struct Plugin {
 }
 
 impl Plugin {
-	/// Create a new plugin from a manifest
-	pub fn new(manifest: PluginManifest) -> Self {
+	/// Create a new plugin from an ID and manifest
+	pub fn new(id: String, manifest: PluginManifest) -> Self {
 		Self {
+			id,
 			manifest,
 			custom_config: None,
 		}
+	}
+
+	/// Get the ID of the plugin
+	pub fn get_id(&self) -> &String {
+		&self.id
 	}
 
 	/// Get the manifest of the plugin

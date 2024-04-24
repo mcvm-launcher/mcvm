@@ -1,6 +1,7 @@
 mod files;
 mod instance;
 mod package;
+mod plugin;
 mod profile;
 mod snapshot;
 mod tool;
@@ -25,6 +26,7 @@ use crate::output::HYPHEN_POINT;
 use self::files::FilesSubcommand;
 use self::instance::InstanceSubcommand;
 use self::package::PackageSubcommand;
+use self::plugin::PluginSubcommand;
 use self::profile::ProfileSubcommand;
 use self::snapshot::SnapshotSubcommand;
 use self::tool::ToolSubcommand;
@@ -73,6 +75,12 @@ pub enum Command {
 	Snapshot {
 		#[command(subcommand)]
 		command: SnapshotSubcommand,
+	},
+	#[command(about = "Manage plugins")]
+	#[clap(alias = "plug")]
+	Plugin {
+		#[command(subcommand)]
+		command: PluginSubcommand,
 	},
 	#[command(about = "Access different tools and tests included with mcvm")]
 	Tool {
@@ -134,6 +142,7 @@ pub async fn run_cli() -> anyhow::Result<()> {
 		Command::Package { command } => package::run(command, &mut data).await,
 		Command::Instance { command } => instance::run(command, &mut data).await,
 		Command::Snapshot { command } => snapshot::run(command, &mut data).await,
+		Command::Plugin { command } => plugin::run(command, &mut data).await,
 		Command::Tool { command } => tool::run(command, &mut data).await,
 		#[cfg(feature = "docs")]
 		Command::Docs { page } => display_docs(page),

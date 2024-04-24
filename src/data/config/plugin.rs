@@ -109,8 +109,9 @@ impl PluginManager {
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
 		let custom_config = plugin.custom_config.clone();
+		let id = plugin.name.clone();
 		self.configs.push(plugin);
-		let mut plugin = Plugin::new(manifest);
+		let mut plugin = Plugin::new(id, manifest);
 		if let Some(custom_config) = custom_config {
 			plugin.set_custom_config(custom_config)?;
 		}
