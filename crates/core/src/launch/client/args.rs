@@ -223,6 +223,7 @@ pub(crate) fn replace_arg_placeholders(arg: &str, params: &LaunchParameters) -> 
 			if out.contains(placeholder!("auth_player_name"))
 				|| out.contains(placeholder!("auth_access_token"))
 				|| out.contains(placeholder!("auth_uuid"))
+				|| out.contains(placeholder!("auth_xuid"))
 			{
 				return Some(String::new());
 			}
