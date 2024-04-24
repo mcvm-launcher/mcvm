@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use crate::io::java::args::{ArgsPreset, MemoryNum};
+use crate::io::java::args::MemoryNum;
 use crate::io::java::install::JavaInstallationKind;
 
 /// Options for launching an instance
@@ -16,8 +16,6 @@ pub struct LaunchConfiguration {
 	pub min_mem: Option<MemoryNum>,
 	/// Maximum JVM memory
 	pub max_mem: Option<MemoryNum>,
-	/// Java arguments preset
-	pub preset: ArgsPreset,
 	/// Environment variables
 	pub env: HashMap<String, String>,
 	/// Wrapper command
@@ -37,7 +35,6 @@ impl LaunchConfiguration {
 			game_args: Vec::new(),
 			min_mem: None,
 			max_mem: None,
-			preset: ArgsPreset::None,
 			env: HashMap::new(),
 			wrappers: Vec::new(),
 			quick_play: QuickPlayType::None,
@@ -102,12 +99,6 @@ impl LaunchConfigBuilder {
 	/// Set the maximum memory for the JVM
 	pub fn max_mem(mut self, max_mem: MemoryNum) -> Self {
 		self.config.max_mem = Some(max_mem);
-		self
-	}
-
-	/// Set a preset for game arguments
-	pub fn args_preset(mut self, args_preset: ArgsPreset) -> Self {
-		self.config.preset = args_preset;
 		self
 	}
 

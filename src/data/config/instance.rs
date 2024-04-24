@@ -1,8 +1,7 @@
 use std::collections::HashMap;
-use std::str::FromStr;
 
 use anyhow::{anyhow, bail, ensure, Context};
-use mcvm_core::io::java::args::{ArgsPreset, MemoryNum};
+use mcvm_core::io::java::args::MemoryNum;
 use mcvm_core::io::java::install::JavaInstallationKind;
 use mcvm_options::client::ClientOptions;
 use mcvm_options::server::ServerOptions;
@@ -314,7 +313,6 @@ impl LaunchConfig {
 			min_mem,
 			max_mem,
 			java: JavaInstallationKind::parse(&self.java),
-			preset: ArgsPreset::from_str(&self.preset)?,
 			env: self.env,
 			wrapper: self.wrapper,
 			quick_play: self.quick_play,

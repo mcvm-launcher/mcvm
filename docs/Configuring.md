@@ -135,11 +135,6 @@ The first form just has the type of the instance. All fields are optional unless
 - `launch.env`: A map of strings to strings that let you set environment variables for the game program.
 - `launch.wrapper`: A command to wrap the launch command in. Set the command and its arguments.
 - `launch.java`: The Java installation you would like to use. Can either be one of `"auto"`, `"system"`, `"adoptium"`, `"zulu"`, or `"graalvm"`, or a path to a custom Java installation. Defaults to `"auto"`, which automatically picks or downloads the best Java flavor for your system. The `"system"` setting will try to find an existing installation on your system, and will fail if it doesn't find one. If the system setting doesn't find Java even though you know it is installed, let us know with an issue. The custom Java path must have the JVM executable at `{path}/bin/java`.
-- `launch.preset`: A preset that will automatically apply changes to your launch configuration to improve your experience.
-  - `"none"`: The default. No changes will be applied.
-  - `"aikars"`: A popular set of tuned arguments for better performance. This works better for servers that have a lot of available memory (8GB+) and is not recommended otherwise. See https://docs.papermc.io/paper/aikars-flags for more information.
-  - `"krusic"`: Another set of performance arguments.
-  - `"obydux"`: Another set of performance arguments.
 - `launch.use_log4j_config`: Whether to use Mojang's config for Log4J on the client. Defaults to false.
 
 - `datapack_folder`: Make MCVM install datapack type addons to this folder instead of every existing world. This provides better behavior than the default one, but requires a modification of some sort that enables global datapacks. This path is relative to the game directory of the instance (`.minecraft` or the folder where the server.properties is).

@@ -18,7 +18,7 @@ use self::process::{launch_game_process, LaunchGameProcessParameters};
 use crate::config::BrandingProperties;
 use crate::instance::InstanceKind;
 use crate::io::files::paths::Paths;
-use crate::io::java::args::{MemoryArg, MemoryNum};
+use crate::io::java::args::MemoryArg;
 use crate::io::java::classpath::Classpath;
 use crate::io::java::install::JavaInstallation;
 use crate::net::game_files::client_meta::ClientMeta;
@@ -98,15 +98,6 @@ impl LaunchConfiguration {
 		if let Some(n) = &self.max_mem {
 			out.push(MemoryArg::Max.to_string(n.clone()));
 		}
-
-		let avg = match &self.min_mem {
-			Some(min) => self
-				.max_mem
-				.as_ref()
-				.map(|max| MemoryNum::avg(min.clone(), max.clone())),
-			None => None,
-		};
-		out.extend(self.preset.generate_args(avg));
 
 		out
 	}

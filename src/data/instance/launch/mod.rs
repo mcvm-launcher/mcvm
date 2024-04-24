@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use anyhow::Context;
 use mcvm_core::auth_crate::mc::ClientId;
-use mcvm_core::io::java::args::{ArgsPreset, MemoryNum};
+use mcvm_core::io::java::args::MemoryNum;
 use mcvm_core::io::java::install::JavaInstallationKind;
 use mcvm_core::user::UserManager;
 use mcvm_core::util::versions::MinecraftVersion;
@@ -105,8 +105,6 @@ pub struct LaunchOptions {
 	pub min_mem: Option<MemoryNum>,
 	/// Maximum JVM memory
 	pub max_mem: Option<MemoryNum>,
-	/// Java arguments preset
-	pub preset: ArgsPreset,
 	/// Environment variables
 	pub env: HashMap<String, String>,
 	/// Wrapper command

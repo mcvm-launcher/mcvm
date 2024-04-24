@@ -168,7 +168,6 @@ impl Instance {
 			game_args: self.config.launch.game_args.clone(),
 			min_mem: self.config.launch.min_mem.clone(),
 			max_mem: self.config.launch.max_mem.clone(),
-			preset: self.config.launch.preset,
 			env: self.config.launch.env.clone(),
 			wrappers: Vec::from_iter(wrapper),
 			quick_play,
