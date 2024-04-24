@@ -17,6 +17,7 @@ impl User {
 	pub async fn authenticate(
 		&mut self,
 		force: bool,
+		offline: bool,
 		client_id: ClientId,
 		paths: &Paths,
 		client: &reqwest::Client,
@@ -24,16 +25,31 @@ impl User {
 	) -> anyhow::Result<()> {
 		match &mut self.kind {
 			UserKind::Microsoft { xbox_uid } => {
-				let user_data =
-					update_microsoft_user_auth(&self.id, force, client_id, paths, client, o)
-						.await
-						.context("Failed to update user authentication")?;
+				if offline {
+					let db = AuthDatabase::open(&paths.auth)
+						.context("Failed to open authentication database")?;
+					let Some((user, sensitive)) = get_full_user(&db, &self.id, o)
+						.context("Failed to get user from database")?
+					else {
+						bail!("User not present in database. Make sure to authenticate at least once before logging in in offline mode");
+					};
 
-				self.access_token = Some(user_data.access_token);
-				self.name = Some(user_data.profile.name);
-				self.uuid = Some(user_data.profile.uuid);
-				self.keypair = user_data.keypair;
-				*xbox_uid = user_data.xbox_uid;
+					self.name = Some(user.username.clone());
+					self.uuid = Some(user.uuid.clone());
+					self.keypair = sensitive.keypair.clone();
+					*xbox_uid = sensitive.xbox_uid.clone();
+				} else {
+					let user_data =
+						update_microsoft_user_auth(&self.id, force, client_id, paths, client, o)
+							.await
+							.context("Failed to update user authentication")?;
+
+					self.access_token = Some(user_data.access_token);
+					self.name = Some(user_data.profile.name);
+					self.uuid = Some(user_data.profile.uuid);
+					self.keypair = user_data.keypair;
+					*xbox_uid = user_data.xbox_uid;
+				}
 			}
 			UserKind::Demo => {}
 		}

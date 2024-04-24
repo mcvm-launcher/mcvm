@@ -127,6 +127,7 @@ async fn auth(data: &mut CmdData, user: Option<String>) -> anyhow::Result<()> {
 	let client = Client::new();
 	user.authenticate(
 		true,
+		false,
 		get_ms_client_id(),
 		&data.paths.core,
 		&client,

@@ -141,6 +141,8 @@ pub struct UserManager {
 	users: HashMap<String, User>,
 	/// The MS client ID
 	ms_client_id: ClientId,
+	/// Whether the manager has been set as offline for authentication
+	offline: bool,
 }
 
 /// State of authentication
@@ -161,6 +163,7 @@ impl UserManager {
 			state: AuthState::Offline,
 			users: HashMap::new(),
 			ms_client_id,
+			offline: false,
 		}
 	}
 
@@ -270,8 +273,15 @@ impl UserManager {
 				.expect("User in AuthState does not exist");
 
 			if !user.is_authenticated() || !user.is_auth_valid(paths) {
-				user.authenticate(false, self.ms_client_id.clone(), paths, client, o)
-					.await?;
+				user.authenticate(
+					false,
+					self.offline,
+					self.ms_client_id.clone(),
+					paths,
+					client,
+					o,
+				)
+				.await?;
 			}
 			self.state = AuthState::Authed(std::mem::take(user_id));
 		}
@@ -295,6 +305,12 @@ impl UserManager {
 	pub fn steal_users(&mut self, other: &Self) {
 		self.users.extend(other.users.clone());
 		self.state = other.state.clone();
+	}
+
+	/// Set whether the UserManager is offline. When offline, authentication won't use remote servers
+	/// if possible, and error if it doesn't have enough local information to authenticate
+	pub fn set_offline(&mut self, offline: bool) {
+		self.offline = offline;
 	}
 }
 
