@@ -37,6 +37,10 @@ pub enum InstanceSubcommand {
 		/// An optional user to choose when launching
 		#[arg(short, long)]
 		user: Option<String>,
+		/// Whether to launch in offline mode, skipping authentication. This only works
+		/// if you have authenticated at least once
+		#[arg(short, long)]
+		offline: bool,
 		/// The instance to launch, as an instance reference (profile:instance)
 		instance: Option<String>,
 	},
@@ -45,7 +49,11 @@ pub enum InstanceSubcommand {
 pub async fn run(command: InstanceSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
 	match command {
 		InstanceSubcommand::List { raw, side, profile } => list(data, raw, side, profile).await,
-		InstanceSubcommand::Launch { user, instance } => launch(instance, user, data).await,
+		InstanceSubcommand::Launch {
+			user,
+			offline,
+			instance,
+		} => launch(instance, user, offline, data).await,
 	}
 }
 
@@ -102,6 +110,7 @@ async fn list(
 pub async fn launch(
 	instance: Option<String>,
 	user: Option<String>,
+	offline: bool,
 	data: &mut CmdData,
 ) -> anyhow::Result<()> {
 	data.ensure_config(true).await?;
@@ -144,7 +153,7 @@ pub async fn launch(
 
 	let launch_settings = LaunchSettings {
 		ms_client_id: get_ms_client_id(),
-		offline_auth: false,
+		offline_auth: offline,
 	};
 	let mut instance_handle = instance
 		.launch(
