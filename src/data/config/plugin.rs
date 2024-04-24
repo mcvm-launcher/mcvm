@@ -21,8 +21,8 @@ pub struct PluginsConfig {
 /// User configuration for a plugin
 #[derive(Debug)]
 pub struct PluginConfig {
-	/// The name of the plugin
-	pub name: String,
+	/// The ID of the plugin
+	pub id: String,
 	/// The custom config for the plugin
 	pub custom_config: Option<serde_json::Value>,
 }
@@ -36,8 +36,8 @@ pub enum PluginConfigDeser {
 	Simple(String),
 	/// Full configuration
 	Full {
-		/// The name of the plugin
-		name: String,
+		/// The ID of the plugin
+		id: String,
 		/// The custom config for the plugin
 		#[serde(default)]
 		custom_config: Option<serde_json::Value>,
@@ -47,18 +47,15 @@ pub enum PluginConfigDeser {
 impl PluginConfigDeser {
 	/// Convert this deserialized plugin config to the final version
 	pub fn to_config(&self) -> PluginConfig {
-		let name = match self {
-			Self::Simple(name) | Self::Full { name, .. } => name.clone(),
+		let id = match self {
+			Self::Simple(id) | Self::Full { id, .. } => id.clone(),
 		};
 		let custom_config = match self {
 			Self::Simple(..) => None,
 			Self::Full { custom_config, .. } => custom_config.clone(),
 		};
 
-		PluginConfig {
-			name,
-			custom_config,
-		}
+		PluginConfig { id, custom_config }
 	}
 }
 
@@ -109,7 +106,7 @@ impl PluginManager {
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
 		let custom_config = plugin.custom_config.clone();
-		let id = plugin.name.clone();
+		let id = plugin.id.clone();
 		self.configs.push(plugin);
 		let mut plugin = Plugin::new(id, manifest);
 		if let Some(custom_config) = custom_config {
@@ -129,11 +126,11 @@ impl PluginManager {
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
 		// Get the path for the manifest
-		let path = paths.plugins.join(format!("{}.json", plugin.name));
+		let path = paths.plugins.join(format!("{}.json", plugin.id));
 		let path = if path.exists() {
 			path
 		} else {
-			paths.plugins.join(&plugin.name).join("plugin.json")
+			paths.plugins.join(&plugin.id).join("plugin.json")
 		};
 		let manifest = json_from_file(path).context("Failed to read plugin manifest from file")?;
 
