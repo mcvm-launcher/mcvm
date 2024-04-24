@@ -1,7 +1,7 @@
 /// Client arguments
 mod args;
 
-use anyhow::{anyhow, Context};
+use anyhow::{anyhow, bail, Context};
 
 use std::collections::HashMap;
 
@@ -18,6 +18,11 @@ pub(crate) async fn get_launch_props(
 	params: &mut LaunchParameters<'_>,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<LaunchProcessProperties> {
+	// Ensure a user is picked
+	if !params.users.is_user_chosen() {
+		bail!("No user chosen");
+	}
+
 	// Ensure the user is authenticated
 	params
 		.users
