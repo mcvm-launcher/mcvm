@@ -91,9 +91,7 @@ fn scan_dir(dir: &Path, major_version: &str) -> Option<PathBuf> {
 			if !(name.starts_with("java-") || name.starts_with("jdk-")) {
 				continue;
 			}
-			if !(name.contains(&format!("-{major_version}"))
-				|| name.contains(&format!("-{major_version}")))
-			{
+			if !name.contains(&format!("-{major_version}")) {
 				continue;
 			}
 			return Some(path.path());
