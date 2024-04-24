@@ -4,10 +4,10 @@ use std::path::Path;
 use std::process::{Child, Command};
 
 use anyhow::Context;
+use mcvm_auth::mc::AccessToken;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 
 use crate::instance::InstanceKind;
-use crate::user::auth::AccessToken;
 use crate::util::versions::VersionName;
 use crate::WrapperCommand;
 

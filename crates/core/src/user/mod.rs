@@ -6,13 +6,11 @@ pub mod uuid;
 use std::collections::HashMap;
 
 use anyhow::bail;
-use mcvm_auth::mc::{ClientId, Keypair};
+use mcvm_auth::mc::{AccessToken, ClientId, Keypair};
 use mcvm_shared::output::MCVMOutput;
 use reqwest::Client;
 
 use crate::Paths;
-
-use self::auth::AccessToken;
 
 /// A user account that can play the game
 #[derive(Debug, Clone)]

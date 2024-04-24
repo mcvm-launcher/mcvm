@@ -2,6 +2,7 @@ use super::mc_msa::{
 	MinecraftAccessToken, MinecraftAuthenticationResponse, MinecraftAuthorizationFlow,
 };
 use anyhow::{anyhow, Context};
+use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 pub use oauth2::basic::{BasicClient, BasicTokenType};
 pub use oauth2::reqwest::async_http_client;
 pub use oauth2::{
@@ -12,10 +13,62 @@ pub use oauth2::{
 use reqwest::Response;
 use serde::de::DeserializeOwned;
 use serde::{Deserialize, Serialize};
+use std::fmt::Debug;
 
 const DEVICE_CODE_URL: &str = "https://login.microsoftonline.com/consumers/oauth2/v2.0/devicecode";
 const MSA_AUTHORIZE_URL: &str = "https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize";
 const MSA_TOKEN_URL: &str = "https://login.microsoftonline.com/consumers/oauth2/v2.0/token";
+
+/// Authenticate a Microsoft user using Microsoft OAuth.
+/// Will authenticate every time and will not use the database.
+pub async fn authenticate_microsoft_user(
+	client_id: ClientId,
+	client: &reqwest::Client,
+	o: &mut impl MCVMOutput,
+) -> anyhow::Result<MicrosoftAuthResult> {
+	let oauth_client = create_client(client_id).context("Failed to create OAuth client")?;
+	let response = generate_login_page(&oauth_client)
+		.await
+		.context("Failed to execute authorization and generate login page")?;
+
+	o.display_special_ms_auth(response.verification_uri(), response.user_code().secret());
+
+	let token = get_microsoft_token(&oauth_client, response)
+		.await
+		.context("Failed to get Microsoft token")?;
+
+	let result = authenticate_microsoft_user_from_token(token, client, o).await?;
+
+	Ok(result)
+}
+
+/// Authenticate a Microsoft user from the Microsoft access token
+pub async fn authenticate_microsoft_user_from_token(
+	token: MicrosoftToken,
+	client: &reqwest::Client,
+	o: &mut impl MCVMOutput,
+) -> anyhow::Result<MicrosoftAuthResult> {
+	let refresh_token = token.refresh_token().cloned();
+
+	let mc_token = auth_minecraft(token, client)
+		.await
+		.context("Failed to get Minecraft token")?;
+
+	let access_token = mc_access_token_to_string(&mc_token.access_token);
+
+	o.display(
+		MessageContents::Success("Authentication successful".into()),
+		MessageLevel::Important,
+	);
+
+	let out = MicrosoftAuthResult {
+		access_token: AccessToken(access_token),
+		xbox_uid: mc_token.username.clone(),
+		refresh_token,
+	};
+
+	Ok(out)
+}
 
 /// Get the auth URL
 fn get_auth_url() -> anyhow::Result<AuthUrl> {
@@ -139,6 +192,26 @@ pub async fn account_owns_game(
 	let text = response.text().await?;
 	let out = text.contains("product_minecraft") | text.contains("game_minecraft");
 	Ok(out)
+}
+
+/// Result from the Microsoft authentication function
+pub struct MicrosoftAuthResult {
+	/// The access token for logging into the game and other API services
+	pub access_token: AccessToken,
+	/// The Xbox UID of the user
+	pub xbox_uid: String,
+	/// The refresh token
+	pub refresh_token: Option<RefreshToken>,
+}
+
+/// An access token for a user that will be hidden in debug messages
+#[derive(Clone, PartialEq, Eq, PartialOrd, Ord)]
+pub struct AccessToken(pub String);
+
+impl Debug for AccessToken {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "AccessToken(***)")
+	}
 }
 
 /// Utility function to query the Minecraft Services API with correct authorization

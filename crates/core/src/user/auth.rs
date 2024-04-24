@@ -1,13 +1,14 @@
-use std::fmt::Debug;
-
 use anyhow::{bail, Context};
-use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
+use mcvm_shared::output::{MCVMOutput, MessageContents};
 
 use crate::net::minecraft::MinecraftUserProfile;
 use crate::Paths;
 use mcvm_auth::db::{AuthDatabase, DatabaseUser, SensitiveUserInfo};
-use mcvm_auth::mc::{self as auth, ClientId, MicrosoftToken, RefreshToken, TokenResponse as _};
-use mcvm_auth::mc::{mc_access_token_to_string, Keypair};
+use mcvm_auth::mc::Keypair;
+use mcvm_auth::mc::{
+	self as auth, authenticate_microsoft_user, authenticate_microsoft_user_from_token, AccessToken,
+	ClientId, RefreshToken,
+};
 
 use super::{User, UserKind};
 
@@ -277,75 +278,4 @@ fn get_full_user<'db>(
 	}
 
 	Ok(Some((user, sensitive)))
-}
-
-/// Authenticate a Microsoft user using Microsoft OAuth.
-/// Will authenticate every time and will not use the database.
-pub async fn authenticate_microsoft_user(
-	client_id: ClientId,
-	client: &reqwest::Client,
-	o: &mut impl MCVMOutput,
-) -> anyhow::Result<MicrosoftAuthResult> {
-	let oauth_client = auth::create_client(client_id).context("Failed to create OAuth client")?;
-	let response = auth::generate_login_page(&oauth_client)
-		.await
-		.context("Failed to execute authorization and generate login page")?;
-
-	o.display_special_ms_auth(response.verification_uri(), response.user_code().secret());
-
-	let token = auth::get_microsoft_token(&oauth_client, response)
-		.await
-		.context("Failed to get Microsoft token")?;
-
-	let result = authenticate_microsoft_user_from_token(token, client, o).await?;
-
-	Ok(result)
-}
-
-/// Authenticate a Microsoft user from the Microsoft access token
-pub async fn authenticate_microsoft_user_from_token(
-	token: MicrosoftToken,
-	client: &reqwest::Client,
-	o: &mut impl MCVMOutput,
-) -> anyhow::Result<MicrosoftAuthResult> {
-	let refresh_token = token.refresh_token().cloned();
-
-	let mc_token = auth::auth_minecraft(token, client)
-		.await
-		.context("Failed to get Minecraft token")?;
-
-	let access_token = mc_access_token_to_string(&mc_token.access_token);
-
-	o.display(
-		MessageContents::Success("Authentication successful".into()),
-		MessageLevel::Important,
-	);
-
-	let out = MicrosoftAuthResult {
-		access_token: AccessToken(access_token),
-		xbox_uid: mc_token.username.clone(),
-		refresh_token,
-	};
-
-	Ok(out)
-}
-
-/// Result from the Microsoft authentication function
-pub struct MicrosoftAuthResult {
-	/// The access token for logging into the game and other API services
-	pub access_token: AccessToken,
-	/// The Xbox UID of the user
-	pub xbox_uid: String,
-	/// The refresh token
-	pub refresh_token: Option<RefreshToken>,
-}
-
-/// An access token for a user that will be hidden in debug messages
-#[derive(Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub struct AccessToken(pub String);
-
-impl Debug for AccessToken {
-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		write!(f, "AccessToken(***)")
-	}
 }
