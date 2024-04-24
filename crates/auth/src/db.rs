@@ -11,10 +11,6 @@ use serde::{Deserialize, Serialize};
 use crate::mc::Keypair;
 use crate::passkey::{decrypt_chunks, encrypt_chunks};
 
-/// The buffer time in seconds before a token actually expires to still consider it expired
-/// because it won't be valid for very long
-const EXPIRATION_BUFFER: u64 = 120;
-
 /// The amount of time to consider a refresh token valid for. We want it to expire eventually to
 /// ensure some amount of security.
 // 180 days
@@ -70,12 +66,7 @@ impl AuthDatabase {
 				return false;
 			};
 
-			// Handle overflow
-			if user.expires < EXPIRATION_BUFFER {
-				return false;
-			}
-
-			now < (user.expires - EXPIRATION_BUFFER)
+			now < user.expires
 		} else {
 			false
 		}
