@@ -38,6 +38,8 @@ pub struct UpdateSettings {
 	pub force: bool,
 	/// Whether we will prioritize local files instead of remote ones
 	pub allow_offline: bool,
+	/// Whether to do offline authentication
+	pub offline_auth: bool,
 }
 
 /// Manager for when we are updating profile files.
@@ -69,6 +71,7 @@ impl UpdateManager {
 		let settings = UpdateSettings {
 			force,
 			allow_offline,
+			offline_auth: false,
 		};
 
 		Self {
@@ -82,6 +85,11 @@ impl UpdateManager {
 			fq_meta: Later::new(),
 			mc_version: Later::Empty,
 		}
+	}
+
+	/// Set offline authentication
+	pub fn offline_auth(&mut self) {
+		self.settings.offline_auth = true;
 	}
 
 	/// Set the MS client ID
@@ -195,6 +203,7 @@ impl UpdateManager {
 		let core_config = core_config.build();
 		let mut core = MCVMCore::with_config(core_config).context("Failed to initialize core")?;
 		core.get_users().steal_users(users);
+		core.get_users().set_offline(self.settings.offline_auth);
 		core.set_client(client.clone());
 		let additional_versions = plugins
 			.call_hook(AddVersions, &(), o)
