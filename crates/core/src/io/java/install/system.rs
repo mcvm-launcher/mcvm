@@ -8,13 +8,19 @@ pub fn install(major_version: &str) -> anyhow::Result<PathBuf> {
 	installation.context("No valid system Java installation found")
 }
 
+macro_rules! scan {
+	($path:expr, $major_version:expr) => {
+		if let Some(path) = scan_dir($path, $major_version) {
+			return Some(path);
+		}
+	};
+}
+
 /// Gets the optimal path to a system Java installation
 fn get_system_java_installation(#[allow(unused_variables)] major_version: &str) -> Option<PathBuf> {
 	// JAVA_HOME
 	if let Ok(home) = std::env::var("JAVA_HOME") {
-		if let Some(path) = scan_dir(&PathBuf::from(home), major_version) {
-			return Some(path);
-		}
+		scan!(&PathBuf::from(home), major_version);
 	}
 
 	#[cfg(target_os = "windows")]
@@ -37,9 +43,7 @@ fn get_system_java_installation(#[allow(unused_variables)] major_version: &str) 
 #[cfg(target_os = "windows")]
 fn scan_windows(major_version: &str) -> Option<PathBuf> {
 	// OpenJDK
-	if let Some(path) = scan_dir(&PathBuf::from("C:/Program Files/Java"), major_version) {
-		return Some(path);
-	}
+	scan!(&PathBuf::from("C:/Program Files/Java"), major_version);
 
 	None
 }
@@ -48,11 +52,27 @@ fn scan_windows(major_version: &str) -> Option<PathBuf> {
 #[cfg(target_os = "linux")]
 fn scan_linux(major_version: &str) -> Option<PathBuf> {
 	// OpenJDK
-	if let Some(path) = scan_dir(&PathBuf::from("/usr/lib/jvm"), major_version) {
-		return Some(path);
-	}
-	if let Some(path) = scan_dir(&PathBuf::from("/usr/lib/java"), major_version) {
-		return Some(path);
+	scan!(&PathBuf::from("/usr/lib/jvm"), major_version);
+	scan!(&PathBuf::from("/usr/lib64/jvm"), major_version);
+	scan!(&PathBuf::from("/usr/lib32/jvm"), major_version);
+	scan!(&PathBuf::from("/usr/lib/java"), major_version);
+	// Oracle RPMs
+	scan!(&PathBuf::from("/usr/java"), major_version);
+	// Manually installed
+	scan!(&PathBuf::from("/opt/jvm"), major_version);
+	scan!(&PathBuf::from("/opt/jdk"), major_version);
+	scan!(&PathBuf::from("/opt/jdks"), major_version);
+	// Flatpak
+	scan!(&PathBuf::from("/app/jdk"), major_version);
+
+	if let Ok(home) = std::env::var("HOME") {
+		let home = PathBuf::from(home);
+		// IntelliJ
+		scan!(&home.join(".jdks"), major_version);
+		// SDKMan
+		scan!(&home.join(".sdkman/candidates/java"), major_version);
+		// Gradle
+		scan!(&home.join(".gradle/jdks"), major_version);
 	}
 
 	None
