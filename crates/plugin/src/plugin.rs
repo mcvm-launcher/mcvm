@@ -1,8 +1,8 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, fmt::Debug};
 
 use anyhow::Context;
 use mcvm_shared::{lang::translate::LanguageMap, output::MCVMOutput};
-use serde::Deserialize;
+use serde::{Deserialize, Deserializer};
 
 use crate::hooks::Hook;
 
@@ -54,6 +54,14 @@ impl Plugin {
 			HookHandler::Constant { constant } => {
 				Ok(Some(serde_json::from_value(constant.clone())?))
 			}
+			HookHandler::Native { function } => {
+				let arg = serde_json::to_string(arg)
+					.context("Failed to serialize native hook argument")?;
+				let result = function(arg).context("Native hook handler failed")?;
+				let result = serde_json::from_str(&result)
+					.context("Failed to deserialize native hook result")?;
+				Ok(Some(result))
+			}
 		}
 	}
 
@@ -90,7 +98,7 @@ impl PluginManifest {
 }
 
 /// A handler for a single hook that a plugin uses
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize)]
 #[serde(untagged)]
 #[serde(rename_all = "snake_case")]
 pub enum HookHandler {
@@ -107,4 +115,27 @@ pub enum HookHandler {
 		/// The constant result
 		constant: serde_json::Value,
 	},
+	/// Handle this hook with a native function call
+	Native {
+		/// The function to handle the hook
+		#[serde(deserialize_with = "deserialize_native_function")]
+		function: Box<dyn Fn(String) -> anyhow::Result<String>>,
+	},
+}
+
+impl Debug for HookHandler {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "HookHandler")
+	}
+}
+
+/// Deserialize function for the native hook. No plugin manifests should ever use this,
+/// so just return a function that does nothing.
+fn deserialize_native_function<'de, D>(
+	_: D,
+) -> Result<Box<dyn Fn(String) -> anyhow::Result<String>>, D::Error>
+where
+	D: Deserializer<'de>,
+{
+	Ok(Box::new(|_| Ok(String::new())))
 }
