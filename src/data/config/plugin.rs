@@ -13,6 +13,7 @@ use mcvm_plugin::PluginManager as LoadedPluginManager;
 /// User configuration for all plugins, stored in the plugins.json file
 #[derive(Serialize, Deserialize, Default)]
 #[serde(default)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
 pub struct PluginsConfig {
 	/// The enabled plugins
 	pub plugins: Vec<PluginConfigDeser>,
