@@ -16,6 +16,17 @@ use mcvm::shared::util::utc_timestamp;
 /// A nice colored bullet point for terminal output
 pub const HYPHEN_POINT: &str = cstr!("<k!> - </k!>");
 
+/// A star icon
+pub const STAR: &str = "\u{2605}";
+/// A package icon
+pub const PACKAGE: &str = "\u{1F4E6}";
+/// An instance icon
+pub const INSTANCE: &str = "\u{1F4C0}";
+/// A version icon
+pub const VERSION: &str = "\u{1F4C5}";
+/// A loader icon
+pub const LOADER: &str = "\u{1F4E5}";
+
 /// Terminal MCVMOutput
 pub struct TerminalOutput {
 	printer: ReplPrinter,

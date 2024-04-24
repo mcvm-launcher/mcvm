@@ -13,7 +13,7 @@ use color_print::{cprint, cprintln};
 use mcvm::shared::Side;
 use reqwest::Client;
 
-use crate::output::HYPHEN_POINT;
+use crate::output::{icons_enabled, HYPHEN_POINT, INSTANCE, LOADER, PACKAGE, VERSION};
 
 #[derive(Debug, Subcommand)]
 pub enum ProfileSubcommand {
@@ -71,32 +71,62 @@ async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
 	data.ensure_config(true).await?;
 	let config = data.config.get_mut();
 
+	fn print_indent() {
+		print!("   ");
+	}
+
 	if let Some(profile) = config.profiles.get(id) {
 		cprintln!("<s><g>Profile <b>{}", id);
-		cprintln!("   <s>Version:</s> <g>{}", profile.version);
+		print_indent();
+		if icons_enabled() {
+			print!("{} ", VERSION);
+		}
+		cprintln!("<s>Version:</s> <g>{}", profile.version);
 
 		if profile.modifications.common_modloader() {
+			print_indent();
+			if icons_enabled() {
+				print!("{} ", LOADER);
+			}
 			cprintln!(
-				"   <s>Modloader:</s> <g>{}",
+				"<s>Modloader:</s> <g>{}",
 				profile.modifications.get_modloader(Side::Client)
 			);
 		} else {
-			cprintln!("   <s>Client:</s> <g>{}", profile.modifications.client_type);
-			cprintln!("   <s>Server:</s> <g>{}", profile.modifications.server_type);
+			print_indent();
+			if icons_enabled() {
+				print!("{} ", LOADER);
+			}
+			cprintln!("<s>Client:</s> <g>{}", profile.modifications.client_type);
+			print_indent();
+			if icons_enabled() {
+				print!("{} ", LOADER);
+			}
+			cprintln!("<s>Server:</s> <g>{}", profile.modifications.server_type);
 		}
 
-		cprintln!("   <s>Instances:");
+		print_indent();
+		if icons_enabled() {
+			print!("{} ", INSTANCE);
+		}
+		cprintln!("<s>Instances:");
 		for (inst_id, instance) in profile.instances.iter() {
-			cprint!("   {}", HYPHEN_POINT);
+			print_indent();
+			cprint!("{}", HYPHEN_POINT);
 			match instance.get_side() {
 				Side::Client => cprint!("<y!>Client {}", inst_id),
 				Side::Server => cprint!("<c!>Server {}", inst_id),
 			}
 			cprintln!();
 		}
-		cprintln!("   <s>Packages:");
+		print_indent();
+		if icons_enabled() {
+			print!("{} ", PACKAGE);
+		}
+		cprintln!("<s>Packages:");
 		for pkg in profile.packages.iter_global() {
-			cprint!("   {}", HYPHEN_POINT);
+			print_indent();
+			cprint!("{}", HYPHEN_POINT);
 			cprint!("<b!>{}<g!>", pkg);
 			cprintln!();
 		}

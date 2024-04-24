@@ -1,5 +1,8 @@
 use super::CmdData;
-use crate::{output::HYPHEN_POINT, secrets::get_ms_client_id};
+use crate::{
+	output::{icons_enabled, HYPHEN_POINT, STAR},
+	secrets::get_ms_client_id,
+};
 use anyhow::{bail, Context};
 use itertools::Itertools;
 use mcvm::core::user::UserKind;
@@ -56,10 +59,20 @@ async fn list(data: &mut CmdData, raw: bool) -> anyhow::Result<()> {
 		} else {
 			match user.get_kind() {
 				UserKind::Microsoft { .. } => {
-					cprintln!("<s><g>{}</g>", id)
+					cprint!("<s><g>{}</g>", id)
 				}
-				UserKind::Demo => cprintln!("<s><c!>{}</c!>", id),
+				UserKind::Demo => cprint!("<s><c!>{}</c!>", id),
 			}
+			if let Some(chosen) = config.users.get_chosen_user() {
+				if chosen.get_id() == id {
+					if icons_enabled() {
+						cprint!("<y> {}", STAR);
+					} else {
+						cprint!("<s> (Default)");
+					}
+				}
+			}
+			println!();
 		}
 	}
 
