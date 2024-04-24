@@ -146,17 +146,7 @@ pub async fn run_cli() -> anyhow::Result<()> {
 		Command::Tool { command } => tool::run(command, &mut data).await,
 		#[cfg(feature = "docs")]
 		Command::Docs { page } => display_docs(page),
-		Command::External(args) => {
-			// Run the plugin subcommand
-			data.ensure_config(true).await?;
-			let config = data.config.get();
-			config
-				.plugins
-				.call_hook(hooks::Subcommand, &args, &mut data.output)
-				.context("Plugin subcommand failed")?;
-
-			Ok(())
-		}
+		Command::External(args) => call_plugin_subcommand(args, &mut data).await,
 	};
 
 	if let Err(e) = &res {
@@ -243,6 +233,31 @@ fn print_version() {
 	let mcvm_version = mcvm::VERSION;
 	cprintln!("CLI version: <g>{}</g>", version);
 	cprintln!("MCVM version: <g>{}</g>", mcvm_version);
+}
+
+/// Call a plugin subcommand
+async fn call_plugin_subcommand(args: Vec<String>, data: &mut CmdData) -> anyhow::Result<()> {
+	data.ensure_config(true).await?;
+	let config = data.config.get();
+
+	// Make sure the subcommand is handled by one of the plugins
+	let subcommand = args
+		.first()
+		.context("Subcommand does not have first argument")?;
+	let exists = config
+		.plugins
+		.iter_plugins()
+		.any(|x| x.get_manifest().subcommands.contains_key(subcommand));
+	if !exists {
+		bail!("Subcommand '{subcommand}' does not exist");
+	}
+
+	config
+		.plugins
+		.call_hook(hooks::Subcommand, &args, &mut data.output)
+		.context("Plugin subcommand failed")?;
+
+	Ok(())
 }
 
 /// Display docs
