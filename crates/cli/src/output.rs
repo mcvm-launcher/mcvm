@@ -323,3 +323,10 @@ fn add_period(string: String) -> String {
 		string + "."
 	}
 }
+
+/// Get whether icons are enabled
+pub fn icons_enabled() -> bool {
+	let out = std::env::var("MCVM_CLI_ICONS").unwrap_or("0".into());
+	let out: u8 = out.parse().unwrap_or(0);
+	out != 0
+}
