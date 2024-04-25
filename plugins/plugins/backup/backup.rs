@@ -171,7 +171,7 @@ impl Index {
 				.context("Failed to get recursive file paths")?;
 			for path in paths {
 				let file = File::open(instance_dir.join(&path))
-					.with_context(|| format!("Failed to open backupted file with path {path}"))?;
+					.with_context(|| format!("Failed to open backed up file with path {path}"))?;
 				let file = BufReader::new(file);
 				readers.push((path.clone(), file));
 			}
@@ -208,7 +208,7 @@ impl Index {
 			.backups
 			.iter()
 			.position(|x| x.id == backup_id)
-			.ok_or(anyhow!("backup with ID was not found"))?;
+			.ok_or(anyhow!("Backup with ID was not found"))?;
 		let backup = &group_entry.backups[index];
 		let storage_type = backup.storage_type;
 
