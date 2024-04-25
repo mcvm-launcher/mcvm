@@ -354,6 +354,24 @@ pub fn generate_random_id() -> String {
 
 /// Gets all file paths from a user-provided path recursively
 fn get_instance_file_paths(path: &str, instance_dir: &Path) -> anyhow::Result<Vec<String>> {
+	// Handle glob patterns
+	let glob = format!("path");
+	let glob = glob::glob(&glob);
+
+	if let Ok(glob) = glob {
+		let mut out = Vec::new();
+		for path in glob {
+			let path = path?;
+			let rel = path.strip_prefix(instance_dir)?;
+			let rel_str = rel.to_string_lossy().to_string();
+			let recursive_paths = get_instance_file_paths(&rel_str, instance_dir)
+				.context("Failed to read subdirectory")?;
+			out.extend(recursive_paths);
+		}
+
+		return Ok(out);
+	}
+
 	let instance_path = instance_dir.join(path);
 	if instance_path.is_file() {
 		Ok(vec![path.to_owned()])
