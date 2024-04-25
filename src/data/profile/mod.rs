@@ -21,9 +21,9 @@ use self::update::manager::UpdateManager;
 use super::config::plugin::PluginManager;
 use super::config::profile::GameModifications;
 use super::config::profile::ProfilePackageConfiguration;
-use super::id::InstanceRef;
-use super::id::{InstanceID, ProfileID};
 use mcvm_core::user::UserManager;
+use mcvm_shared::id::InstanceRef;
+use mcvm_shared::id::{InstanceID, ProfileID};
 
 /// A hashmap of InstanceIDs to Instances
 pub type InstanceRegistry = std::collections::HashMap<InstanceRef, Instance>;

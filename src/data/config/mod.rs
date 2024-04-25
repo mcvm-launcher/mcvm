@@ -25,6 +25,7 @@ use self::user::UserConfig;
 use anyhow::{bail, ensure, Context};
 use mcvm_core::auth_crate::mc::ClientId;
 use mcvm_core::user::UserManager;
+use mcvm_shared::id::{InstanceRef, ProfileID};
 use mcvm_shared::lang::translate::{TranslationKey, TranslationMap};
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::pkg::PackageStability;
@@ -35,7 +36,6 @@ use preferences::ConfigPreferences;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
-use super::id::{InstanceRef, ProfileID};
 use super::instance::Instance;
 use super::profile::Profile;
 use crate::io::files::paths::Paths;
@@ -151,6 +151,7 @@ impl Config {
 		config: ConfigDeser,
 		plugins: PluginManager,
 		show_warnings: bool,
+		paths: &Paths,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Self> {
 		let mut users = UserManager::new(ClientId::new("".into()));
@@ -251,6 +252,7 @@ impl Config {
 					&config.packages,
 					&config.instance_presets,
 					&plugins,
+					paths,
 					o,
 				)
 				.with_context(|| format!("Failed to configure instance '{instance_id}'"))?;
@@ -283,10 +285,11 @@ impl Config {
 		path: &Path,
 		plugins: PluginManager,
 		show_warnings: bool,
+		paths: &Paths,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Self> {
 		let obj = Self::open(path)?;
-		Self::load_from_deser(obj, plugins, show_warnings, o)
+		Self::load_from_deser(obj, plugins, show_warnings, paths, o)
 	}
 }
 
@@ -331,6 +334,7 @@ mod tests {
 			deser,
 			PluginManager::new(),
 			true,
+			&Paths::new_no_create().unwrap(),
 			&mut output::Simple(output::MessageLevel::Debug),
 		)
 		.unwrap();

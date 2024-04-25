@@ -10,8 +10,6 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use zip::{ZipArchive, ZipWriter};
 
-use super::files::paths::Paths;
-
 /// Name of the snapshot index file
 pub const INDEX_NAME: &str = "index.json";
 
@@ -78,15 +76,15 @@ impl Index {
 		config: &Config,
 		instance_id: &str,
 		instance_dir: &Path,
-		paths: &Paths,
+		snapshots_dir: &Path,
 	) -> anyhow::Result<()> {
 		// Remove the snapshot if it exists already
 		if self.snapshot_exists(&snapshot_id) {
-			self.remove_snapshot(&snapshot_id, instance_id, paths)
+			self.remove_snapshot(&snapshot_id, instance_id, snapshots_dir)
 				.context("Failed to remove existing snapshot with same ID")?;
 		}
 
-		let snapshot_dir = get_snapshot_directory(instance_id, paths);
+		let snapshot_dir = get_snapshot_directory(instance_id, snapshots_dir);
 
 		let snapshot_path = get_snapshot_path(&snapshot_dir, &snapshot_id, config.storage_type);
 
@@ -111,7 +109,7 @@ impl Index {
 			storage_type: config.storage_type,
 		});
 
-		self.remove_old_snapshots(config, instance_id, paths)?;
+		self.remove_old_snapshots(config, instance_id, snapshots_dir)?;
 
 		Ok(())
 	}
@@ -121,7 +119,7 @@ impl Index {
 		&mut self,
 		snapshot_id: &str,
 		instance_id: &str,
-		paths: &Paths,
+		snapshot_dir: &Path,
 	) -> anyhow::Result<()> {
 		let index = self
 			.snapshots
@@ -130,7 +128,7 @@ impl Index {
 			.ok_or(anyhow!("Snapshot with ID was not found"))?;
 		let snapshot = &mut self.snapshots[index];
 
-		let snapshot_dir = get_snapshot_directory(instance_id, paths);
+		let snapshot_dir = get_snapshot_directory(instance_id, snapshot_dir);
 		let snapshot_path = get_snapshot_path(&snapshot_dir, snapshot_id, snapshot.storage_type);
 		if snapshot_path.exists() {
 			match snapshot.storage_type {
@@ -149,7 +147,7 @@ impl Index {
 		&mut self,
 		config: &Config,
 		instance_id: &str,
-		paths: &Paths,
+		snapshot_dir: &Path,
 	) -> anyhow::Result<()> {
 		if let Some(limit) = config.max_count {
 			if self.snapshots.len() > (limit as usize) {
@@ -159,7 +157,7 @@ impl Index {
 					.map(|x| x.id.clone())
 					.collect();
 				for id in to_remove {
-					self.remove_snapshot(&id, instance_id, paths)
+					self.remove_snapshot(&id, instance_id, snapshot_dir)
 						.with_context(|| format!("Failed to remove old snapshot '{id}'"))?;
 				}
 			}
@@ -169,12 +167,12 @@ impl Index {
 	}
 
 	/// Restores a snapshot
-	pub async fn restore_snapshot(
+	pub fn restore_snapshot(
 		&self,
 		snapshot_id: &str,
 		instance_id: &str,
 		instance_dir: &Path,
-		paths: &Paths,
+		snapshot_dir: &Path,
 	) -> anyhow::Result<()> {
 		let snapshot = self
 			.snapshots
@@ -182,9 +180,9 @@ impl Index {
 			.find(|x| x.id == snapshot_id)
 			.ok_or(anyhow!("Snapshot with ID was not found"))?;
 
-		let snapshot_dir = get_snapshot_directory(instance_id, paths);
+		let snapshot_dir = get_snapshot_directory(instance_id, snapshot_dir);
 		let snapshot_path = get_snapshot_path(&snapshot_dir, snapshot_id, snapshot.storage_type);
-		restore_snapshot_files(&snapshot_path, snapshot.storage_type, instance_dir).await?;
+		restore_snapshot_files(&snapshot_path, snapshot.storage_type, instance_dir)?;
 
 		Ok(())
 	}
@@ -224,8 +222,8 @@ pub enum StorageType {
 }
 
 /// Get the snapshot directory for an instance
-pub fn get_snapshot_directory(instance_id: &str, paths: &Paths) -> PathBuf {
-	paths.snapshots.join(instance_id)
+pub fn get_snapshot_directory(instance_id: &str, base_dir: &Path) -> PathBuf {
+	base_dir.join(instance_id)
 }
 
 /// Get the path to a specific snapshot
@@ -310,7 +308,7 @@ fn write_snapshot_files<R: Read>(
 }
 
 /// Restores snapshot files to the instance. Takes the path to the snapshot file / directory.
-async fn restore_snapshot_files(
+fn restore_snapshot_files(
 	snapshot_path: &Path,
 	storage_type: StorageType,
 	instance_dir: &Path,
@@ -324,8 +322,7 @@ async fn restore_snapshot_files(
 				.context("Failed to extract snapshot archive")?;
 		}
 		StorageType::Folder => {
-			mcvm_core::io::files::copy_dir_contents_async(snapshot_path, instance_dir)
-				.await
+			mcvm_core::io::files::copy_dir_contents(snapshot_path, instance_dir)
 				.context("Failed to copy directory")?;
 		}
 	}

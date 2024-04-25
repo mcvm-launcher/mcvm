@@ -6,7 +6,7 @@ use mcvm_plugin::hooks::ModifyInstanceConfigResult;
 
 fn main() -> anyhow::Result<()> {
 	let mut plugin = CustomPlugin::new("args")?;
-	plugin.modify_instance_config(|ctx, config| {
+	plugin.modify_instance_config(|mut ctx, config| {
 		let args = if let Some(preset) = config.get("args_preset") {
 			if let Some(preset) = preset.as_str() {
 				if let Ok(preset) = ArgsPreset::from_str(preset) {

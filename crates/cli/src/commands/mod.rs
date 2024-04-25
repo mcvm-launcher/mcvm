@@ -3,7 +3,6 @@ mod instance;
 mod package;
 mod plugin;
 mod profile;
-mod snapshot;
 mod tool;
 mod user;
 
@@ -28,7 +27,6 @@ use self::instance::InstanceSubcommand;
 use self::package::PackageSubcommand;
 use self::plugin::PluginSubcommand;
 use self::profile::ProfileSubcommand;
-use self::snapshot::SnapshotSubcommand;
 use self::tool::ToolSubcommand;
 use self::user::UserSubcommand;
 
@@ -70,11 +68,6 @@ pub enum Command {
 	Instance {
 		#[command(subcommand)]
 		command: InstanceSubcommand,
-	},
-	#[command(about = "Manage snapshots for instances")]
-	Snapshot {
-		#[command(subcommand)]
-		command: SnapshotSubcommand,
 	},
 	#[command(about = "Manage plugins")]
 	#[clap(alias = "plug")]
@@ -141,7 +134,6 @@ pub async fn run_cli() -> anyhow::Result<()> {
 		Command::Files { command } => files::run(command, &mut data).await,
 		Command::Package { command } => package::run(command, &mut data).await,
 		Command::Instance { command } => instance::run(command, &mut data).await,
-		Command::Snapshot { command } => snapshot::run(command, &mut data).await,
 		Command::Plugin { command } => plugin::run(command, &mut data).await,
 		Command::Tool { command } => tool::run(command, &mut data).await,
 		#[cfg(feature = "docs")]
@@ -204,6 +196,7 @@ impl CmdData {
 					&Config::get_path(&self.paths),
 					plugins,
 					show_warnings,
+					&self.paths,
 					&mut self.output,
 				)
 				.context("Failed to load config")?,
@@ -254,7 +247,7 @@ async fn call_plugin_subcommand(args: Vec<String>, data: &mut CmdData) -> anyhow
 
 	config
 		.plugins
-		.call_hook(hooks::Subcommand, &args, &mut data.output)
+		.call_hook(hooks::Subcommand, &args, &data.paths, &mut data.output)
 		.context("Plugin subcommand failed")?;
 
 	Ok(())

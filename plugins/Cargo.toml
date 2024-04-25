@@ -13,8 +13,18 @@ categories = ["games"]
 name = "mcvm_plugin_args"
 path = "plugins/args/main.rs"
 
+[[bin]]
+name = "mcvm_plugin_snapshot"
+path = "plugins/snapshot/main.rs"
+
 [dependencies]
 anyhow = "1.0.70"
-mcvm_plugin = { version = "0.1.0", path = "../crates/plugin" }
+clap = { version = "4.5.4", features = ["derive"] }
+color-print = "0.3.4"
+mcvm_core = { path = "../crates/core", version = "0.5.0" }
+mcvm_plugin = { path = "../crates/plugin", version = "0.1.0" }
+mcvm_shared = { path = "../crates/shared", version = "0.12.0" }
+rand = "0.8.5"
 serde = { version = "1.0.152", features = ["derive"] }
 serde_json = "1.0.91"
+zip = "0.6.4"

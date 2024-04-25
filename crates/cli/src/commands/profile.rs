@@ -4,8 +4,9 @@ use mcvm::core::util::versions::{MinecraftLatestVersion, MinecraftVersionDeser};
 use mcvm::data::config::builder::ProfileBuilder;
 use mcvm::data::config::modifications::{apply_modifications_and_write, ConfigModification};
 use mcvm::data::profile::update::update_profiles;
+use mcvm::shared::id::ProfileID;
+use mcvm::shared::modifications::ClientType;
 use mcvm::shared::modifications::{Modloader, ServerType};
-use mcvm::{data::id::ProfileID, shared::modifications::ClientType};
 
 use anyhow::{bail, Context};
 use clap::Subcommand;

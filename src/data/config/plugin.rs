@@ -104,6 +104,7 @@ impl PluginManager {
 		&mut self,
 		plugin: PluginConfig,
 		manifest: PluginManifest,
+		paths: &Paths,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
 		let custom_config = plugin.custom_config.clone();
@@ -114,7 +115,7 @@ impl PluginManager {
 			plugin.set_custom_config(custom_config)?;
 		}
 
-		self.manager.add_plugin(plugin, o)?;
+		self.manager.add_plugin(plugin, &paths.core, o)?;
 
 		Ok(())
 	}
@@ -135,7 +136,7 @@ impl PluginManager {
 		};
 		let manifest = json_from_file(path).context("Failed to read plugin manifest from file")?;
 
-		self.add_plugin(plugin, manifest, o)?;
+		self.add_plugin(plugin, manifest, paths, o)?;
 
 		Ok(())
 	}
@@ -145,9 +146,10 @@ impl PluginManager {
 		&self,
 		hook: H,
 		arg: &H::Arg,
+		paths: &Paths,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Vec<H::Result>> {
-		self.manager.call_hook(hook, arg, o)
+		self.manager.call_hook(hook, arg, &paths.core, o)
 	}
 
 	/// Iterate over the stored plugins

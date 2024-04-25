@@ -19,10 +19,10 @@ use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use reqwest::Client;
 
 use crate::data::config::Config;
-use crate::data::id::ProfileID;
 use crate::io::files::paths::Paths;
 use crate::io::lock::Lockfile;
 use crate::pkg::reg::PkgRegistry;
+use mcvm_shared::id::ProfileID;
 
 use manager::UpdateManager;
 

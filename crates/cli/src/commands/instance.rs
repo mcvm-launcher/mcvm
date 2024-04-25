@@ -6,7 +6,7 @@ use color_print::cprintln;
 use inquire::Select;
 use itertools::Itertools;
 use mcvm::data::config::Config;
-use mcvm::data::id::{InstanceRef, ProfileID};
+use mcvm::shared::id::{InstanceRef, ProfileID};
 
 use mcvm::data::instance::launch::LaunchSettings;
 use mcvm::shared::modifications::Proxy;

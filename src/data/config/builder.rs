@@ -5,15 +5,15 @@ use mcvm_core::auth_crate::mc::ClientId;
 use mcvm_core::user::{User, UserManager};
 use mcvm_core::util::versions::MinecraftVersionDeser;
 use mcvm_plugin::plugin::PluginManifest;
+use mcvm_shared::id::{InstanceID, ProfileID};
 use mcvm_shared::modifications::{ClientType, Modloader, Proxy, ServerType};
 use mcvm_shared::output::MCVMOutput;
 use mcvm_shared::pkg::{PackageID, PackageStability};
 use mcvm_shared::Side;
 
-use crate::data::id::{InstanceID, ProfileID};
 use crate::data::instance::Instance;
 use crate::data::profile::Profile;
-use crate::io::snapshot;
+use crate::io::files::paths::Paths;
 use crate::pkg::eval::EvalPermissions;
 use crate::pkg::reg::PkgRegistry;
 use crate::pkg::repo::PkgRepo;
@@ -102,9 +102,10 @@ impl ConfigBuilder {
 		&mut self,
 		plugin: PluginConfig,
 		manifest: PluginManifest,
+		paths: &Paths,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
-		self.plugins.add_plugin(plugin, manifest, o)
+		self.plugins.add_plugin(plugin, manifest, paths, o)
 	}
 
 	/// Finishes the builder
@@ -292,8 +293,8 @@ impl<'parent> ProfileBuilder<'parent> {
 	}
 
 	/// Finish the builder and go to the parent
-	pub fn build(self, o: &mut impl MCVMOutput) -> anyhow::Result<()> {
-		let (id, profile, parent) = self.build_self(o)?;
+	pub fn build(self, paths: &Paths, o: &mut impl MCVMOutput) -> anyhow::Result<()> {
+		let (id, profile, parent) = self.build_self(paths, o)?;
 		if let Some(parent) = parent {
 			parent.build_profile(id, profile);
 		}
@@ -304,6 +305,7 @@ impl<'parent> ProfileBuilder<'parent> {
 	/// Finish the builder and return the self
 	pub fn build_self(
 		self,
+		paths: &Paths,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<(ProfileID, Profile, Option<&'parent mut ConfigBuilder>)> {
 		let mut built = self.config.to_profile(self.id.clone());
@@ -330,6 +332,7 @@ impl<'parent> ProfileBuilder<'parent> {
 				global_packages,
 				&HashMap::new(),
 				plugins,
+				paths,
 				o,
 			)?;
 			built.add_instance(instance);
@@ -448,22 +451,6 @@ impl<'parent, 'grandparent> InstanceBuilder<'parent, 'grandparent> {
 		self
 	}
 
-	/// Set the snapshot config of the instance
-	pub fn snapshot_config(&mut self, snapshot_config: snapshot::Config) -> &mut Self {
-		match &mut self.config {
-			FullInstanceConfig::Client {
-				common: CommonInstanceConfig { snapshots, .. },
-				..
-			} => *snapshots = Some(snapshot_config),
-			FullInstanceConfig::Server {
-				common: CommonInstanceConfig { snapshots, .. },
-				..
-			} => *snapshots = Some(snapshot_config),
-		};
-
-		self
-	}
-
 	/// Finish the builder and go to the parent
 	pub fn build(self) {
 		if let Some(parent) = self.parent {
@@ -475,6 +462,7 @@ impl<'parent, 'grandparent> InstanceBuilder<'parent, 'grandparent> {
 	pub fn build_self(
 		self,
 		profile: &Profile,
+		paths: &Paths,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<(
 		InstanceID,
@@ -506,6 +494,7 @@ impl<'parent, 'grandparent> InstanceBuilder<'parent, 'grandparent> {
 			global_packages,
 			&HashMap::new(),
 			plugins,
+			paths,
 			o,
 		)?;
 
@@ -687,7 +676,7 @@ mod tests {
 		modify_profile(&mut profile);
 
 		let (profile_id, profile, ..) = profile
-			.build_self(&mut NoOp)
+			.build_self(&Paths::new_no_create().unwrap(), &mut NoOp)
 			.expect("Failed to build profile");
 		assert_eq!(profile_id, "profile".into());
 		assert!(profile.instances.contains_key("instance"));

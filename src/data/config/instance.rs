@@ -6,6 +6,7 @@ use mcvm_core::io::java::install::JavaInstallationKind;
 use mcvm_options::client::ClientOptions;
 use mcvm_options::server::ServerOptions;
 use mcvm_plugin::hooks::ModifyInstanceConfig;
+use mcvm_shared::id::InstanceID;
 use mcvm_shared::output::MCVMOutput;
 use mcvm_shared::pkg::PackageStability;
 use mcvm_shared::util::{merge_options, DefaultExt};
@@ -14,11 +15,10 @@ use mcvm_shared::Side;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
-use crate::data::id::InstanceID;
 use crate::data::instance::launch::{LaunchOptions, WrapperCommand};
 use crate::data::instance::{InstKind, Instance, InstanceStoredConfig};
 use crate::data::profile::Profile;
-use crate::io::snapshot;
+use crate::io::files::paths::Paths;
 
 use super::package::{PackageConfig, PackageConfigDeser, PackageConfigSource};
 use super::plugin::PluginManager;
@@ -122,9 +122,6 @@ pub struct CommonInstanceConfig {
 	/// The folder for global datapacks to be installed to
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub datapack_folder: Option<String>,
-	/// Options for snapshot config
-	#[serde(skip_serializing_if = "Option::is_none")]
-	pub snapshots: Option<snapshot::Config>,
 	/// Packages for this instance
 	#[serde(skip_serializing_if = "Vec::is_empty")]
 	pub packages: Vec<PackageConfigDeser>,
@@ -140,7 +137,6 @@ impl CommonInstanceConfig {
 		self.launch.merge(other.launch);
 		self.preset = merge_options(self.preset.clone(), other.preset);
 		self.datapack_folder = merge_options(self.datapack_folder.clone(), other.datapack_folder);
-		self.snapshots = merge_options(self.snapshots.clone(), other.snapshots);
 		self.packages.extend(other.packages);
 
 		self
@@ -455,6 +451,7 @@ pub fn read_instance_config(
 	global_packages: &[PackageConfigDeser],
 	presets: &HashMap<String, InstanceConfig>,
 	plugins: &PluginManager,
+	paths: &Paths,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<Instance> {
 	let config = config.make_full();
@@ -491,7 +488,7 @@ pub fn read_instance_config(
 
 	// Apply plugins
 	let results = plugins
-		.call_hook(ModifyInstanceConfig, &common.plugin_config, o)
+		.call_hook(ModifyInstanceConfig, &common.plugin_config, paths, o)
 		.context("Failed to apply plugin instance modifications")?;
 	for result in results {
 		common
@@ -509,7 +506,6 @@ pub fn read_instance_config(
 		modifications: profile.modifications.clone(),
 		launch: common.launch.to_options()?,
 		datapack_folder: common.datapack_folder,
-		snapshot_config: common.snapshots.unwrap_or_default(),
 		packages,
 	};
 
@@ -566,10 +562,11 @@ fn consolidate_package_configs(
 mod tests {
 	use super::*;
 
+	use crate::data::config::profile::GameModifications;
 	use crate::data::config::profile::ProfilePackageConfiguration;
-	use crate::data::{config::profile::GameModifications, id::ProfileID};
 	use mcvm_core::util::versions::MinecraftVersion;
 	use mcvm_plugin::api::NoOp;
+	use mcvm_shared::id::ProfileID;
 	use mcvm_shared::modifications::{ClientType, Modloader, Proxy, ServerType};
 	use mcvm_shared::pkg::PackageStability;
 
@@ -602,6 +599,8 @@ mod tests {
 			PackageStability::Latest,
 		);
 
+		let paths = Paths::new_no_create().unwrap();
+
 		let instance = read_instance_config(
 			InstanceID::from("foo"),
 			&test.instance,
@@ -609,6 +608,7 @@ mod tests {
 			&[],
 			&HashMap::new(),
 			&PluginManager::new(),
+			&paths,
 			&mut NoOp,
 		)
 		.unwrap();
@@ -618,6 +618,8 @@ mod tests {
 
 	#[test]
 	fn test_instance_config_merging() {
+		let paths = Paths::new_no_create().unwrap();
+
 		let presets = {
 			let mut presets = HashMap::new();
 			presets.insert(
@@ -664,6 +666,7 @@ mod tests {
 			&[],
 			&presets,
 			&PluginManager::new(),
+			&paths,
 			&mut NoOp,
 		)
 		.expect("Failed to read instance config");
@@ -696,6 +699,7 @@ mod tests {
 			&[],
 			&presets,
 			&PluginManager::new(),
+			&paths,
 			&mut NoOp,
 		)
 		.expect_err("Instance kinds should be incompatible");

@@ -1,0 +1,13 @@
+{
+	"name": "Snapshot",
+	"description": "Create backups of instances",
+	"hooks": {
+		"subcommand": {
+			"executable": "mcvm_plugin_snapshot"
+		}
+	},
+	"subcommands": {
+		"snapshot": "Manage snapshots for instances",
+		"snap": "Manage snapshots for instances"
+	}
+}

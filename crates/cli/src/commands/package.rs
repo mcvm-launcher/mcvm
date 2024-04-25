@@ -2,9 +2,9 @@ use std::{collections::HashMap, sync::Arc};
 
 use super::CmdData;
 use itertools::Itertools;
-use mcvm::data::id::ProfileID;
 use mcvm::parse::lex::Token;
 use mcvm::pkg_crate::{PackageContentType, PkgRequest, PkgRequestSource};
+use mcvm::shared::id::ProfileID;
 use mcvm::shared::util::print::ReplPrinter;
 
 use anyhow::{bail, Context};

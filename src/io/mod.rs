@@ -4,5 +4,3 @@ pub mod files;
 pub mod lock;
 /// Smart game options system
 pub mod options;
-/// Dealing with instance snapshots
-pub mod snapshot;

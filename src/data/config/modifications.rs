@@ -3,8 +3,8 @@ use std::fs::File;
 
 use anyhow::{anyhow, Context};
 
-use crate::data::id::InstanceID;
-use crate::{data::id::ProfileID, io::files::paths::Paths};
+use crate::io::files::paths::Paths;
+use mcvm_shared::id::{InstanceID, ProfileID};
 
 use super::instance::InstanceConfig;
 use super::package::PackageConfigDeser;

@@ -150,7 +150,7 @@ impl UpdateManager {
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
 		// Setup the core
-		self.setup_core(client, users, plugins, o)
+		self.setup_core(client, users, plugins, paths, o)
 			.await
 			.context("Failed to setup core")?;
 
@@ -183,6 +183,7 @@ impl UpdateManager {
 		client: &Client,
 		users: &UserManager,
 		plugins: &PluginManager,
+		paths: &Paths,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
 		if self.core.is_full() {
@@ -206,7 +207,7 @@ impl UpdateManager {
 		core.get_users().set_offline(self.settings.offline_auth);
 		core.set_client(client.clone());
 		let additional_versions = plugins
-			.call_hook(AddVersions, &(), o)
+			.call_hook(AddVersions, &(), paths, o)
 			.context("Failed to call add_versions hook")?;
 		core.add_additional_versions(additional_versions.into_iter().flatten().collect());
 

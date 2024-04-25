@@ -1445,9 +1445,15 @@ name = "mcvm_plugins"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "clap",
+ "color-print",
+ "mcvm_core",
  "mcvm_plugin",
+ "mcvm_shared",
+ "rand",
  "serde",
  "serde_json",
+ "zip",
 ]
 
 [[package]]

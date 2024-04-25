@@ -4,7 +4,7 @@ use std::{
 };
 
 use anyhow::{bail, Context};
-use mcvm_core::net::game_files::version_manifest::VersionEntry;
+use mcvm_core::{net::game_files::version_manifest::VersionEntry, Paths};
 use mcvm_shared::output::MCVMOutput;
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 
@@ -37,6 +37,7 @@ pub trait Hook {
 		arg: &Self::Arg,
 		additional_args: &[String],
 		custom_config: Option<String>,
+		paths: &Paths,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Self::Result> {
 		let arg = serde_json::to_string(arg).context("Failed to serialize hook argument")?;
@@ -44,9 +45,13 @@ pub trait Hook {
 		cmd.args(additional_args);
 		cmd.arg(self.get_name());
 		cmd.arg(arg);
+
+		// Set up environment
 		if let Some(custom_config) = custom_config {
 			cmd.env("MCVM_CUSTOM_CONFIG", custom_config);
 		}
+		cmd.env("MCVM_DATA_DIR", &paths.data);
+		cmd.env("MCVM_CONFIG_DIR", &paths.project.config_dir());
 
 		if Self::get_takes_over() {
 			cmd.spawn()?.wait()?;

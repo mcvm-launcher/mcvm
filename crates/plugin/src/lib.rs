@@ -6,6 +6,7 @@
 
 use anyhow::Context;
 use hooks::{Hook, OnLoad};
+use mcvm_core::Paths;
 use mcvm_shared::output::MCVMOutput;
 use plugin::Plugin;
 
@@ -40,10 +41,15 @@ impl PluginManager {
 	}
 
 	/// Add a plugin to the manager
-	pub fn add_plugin(&mut self, plugin: Plugin, o: &mut impl MCVMOutput) -> anyhow::Result<()> {
+	pub fn add_plugin(
+		&mut self,
+		plugin: Plugin,
+		paths: &Paths,
+		o: &mut impl MCVMOutput,
+	) -> anyhow::Result<()> {
 		// Call the on_load hook
 		plugin
-			.call_hook(&OnLoad, &(), o)
+			.call_hook(&OnLoad, &(), paths, o)
 			.context("Failed to call on_load hook of plugin")?;
 
 		self.plugins.push(plugin);
@@ -56,12 +62,13 @@ impl PluginManager {
 		&self,
 		hook: H,
 		arg: &H::Arg,
+		paths: &Paths,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Vec<H::Result>> {
 		let mut out = Vec::new();
 		for plugin in &self.plugins {
 			let result = plugin
-				.call_hook(&hook, arg, o)
+				.call_hook(&hook, arg, paths, o)
 				.context("Plugin hook failed")?;
 			out.extend(result);
 		}

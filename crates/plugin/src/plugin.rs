@@ -1,6 +1,7 @@
 use std::{collections::HashMap, fmt::Debug};
 
 use anyhow::Context;
+use mcvm_core::Paths;
 use mcvm_shared::{lang::translate::LanguageMap, output::MCVMOutput};
 use serde::{Deserialize, Deserializer};
 
@@ -42,6 +43,7 @@ impl Plugin {
 		&self,
 		hook: &H,
 		arg: &H::Arg,
+		paths: &Paths,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Option<H::Result>> {
 		let Some(handler) = self.manifest.hooks.get(hook.get_name()) else {
@@ -49,7 +51,7 @@ impl Plugin {
 		};
 		match handler {
 			HookHandler::Execute { executable, args } => hook
-				.call(executable, arg, args, self.custom_config.clone(), o)
+				.call(executable, arg, args, self.custom_config.clone(), paths, o)
 				.map(Some),
 			HookHandler::Constant { constant } => {
 				Ok(Some(serde_json::from_value(constant.clone())?))
