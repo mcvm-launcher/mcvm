@@ -386,14 +386,15 @@ fn write_backup_files<R: Read>(
 ) -> anyhow::Result<()> {
 	match &group_config.common.storage_type {
 		StorageType::Archive => {
-			let file = File::create(backup_path)?;
+			mcvm_core::io::files::create_leading_dirs(backup_path)?;
+			let file = File::create(backup_path).context("Failed to create archive file")?;
 			let mut file = BufWriter::new(file);
 			let mut arc = ZipWriter::new(&mut file);
 			let options = zip::write::FileOptions::default()
 				.compression_method(zip::CompressionMethod::Deflated);
 			for (path, mut reader) in readers {
 				arc.start_file(path, options)?;
-				std::io::copy(&mut reader, &mut arc)?;
+				std::io::copy(&mut reader, &mut arc).context("Failed to copy to archive file")?;
 			}
 
 			arc.finish()?;
@@ -402,9 +403,11 @@ fn write_backup_files<R: Read>(
 			for (path, mut reader) in readers {
 				let dest = backup_path.join(path);
 				mcvm_core::io::files::create_leading_dirs(&dest)?;
-				let file = File::create(dest)?;
+				let file =
+					File::create(dest).context("Failed to create snapshot destination file")?;
 				let mut file = BufWriter::new(file);
-				std::io::copy(&mut reader, &mut file)?;
+				std::io::copy(&mut reader, &mut file)
+					.context("Failed to copy to snapshot destination file")?;
 			}
 		}
 	};
