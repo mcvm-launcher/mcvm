@@ -1,25 +1,25 @@
-mod snapshot;
+mod backup;
 
 use std::collections::HashMap;
 use std::path::PathBuf;
 
 use anyhow::Context;
+use backup::{get_backup_directory, Config, Index, DEFAULT_GROUP};
 use clap::Parser;
 use color_print::cprintln;
 use mcvm_plugin::api::{CustomPlugin, HookContext};
 use mcvm_plugin::hooks;
 use mcvm_shared::id::InstanceRef;
-use snapshot::{get_snapshot_directory, Config, Index, DEFAULT_GROUP};
 
-use crate::snapshot::SnapshotKind;
+use crate::backup::BackupKind;
 
 fn main() -> anyhow::Result<()> {
-	let mut plugin = CustomPlugin::new("snapshot")?;
+	let mut plugin = CustomPlugin::new("backup")?;
 	plugin.subcommand(|ctx, args| {
 		let Some(subcommand) = args.first() else {
 			return Ok(());
 		};
-		if subcommand != "snapshot" && subcommand != "snap" {
+		if subcommand != "backup" && subcommand != "back" {
 			return Ok(());
 		}
 		// Trick the parser to give it the right bin name
@@ -35,18 +35,18 @@ fn main() -> anyhow::Result<()> {
 			Subcommand::Remove {
 				instance,
 				group,
-				snapshot,
-			} => remove(&ctx, &instance, group.as_deref(), &snapshot),
+				backup,
+			} => remove(&ctx, &instance, group.as_deref(), &backup),
 			Subcommand::Restore {
 				instance,
 				group,
-				snapshot,
-			} => restore(&ctx, &instance, group.as_deref(), &snapshot),
+				backup,
+			} => restore(&ctx, &instance, group.as_deref(), &backup),
 			Subcommand::Info {
 				instance,
 				group,
-				snapshot,
-			} => info(&ctx, &instance, group.as_deref(), &snapshot),
+				backup,
+			} => info(&ctx, &instance, group.as_deref(), &backup),
 		};
 		result?;
 
@@ -63,52 +63,52 @@ struct Cli {
 }
 
 #[derive(clap::Subcommand)]
-#[command(name = "mcvm snapshot")]
+#[command(name = "mcvm backup")]
 enum Subcommand {
-	#[command(about = "List snapshots for an instance")]
+	#[command(about = "List backups for an instance")]
 	#[clap(alias = "ls")]
 	List {
 		/// Whether to remove formatting and warnings from the output
 		#[arg(short, long)]
 		raw: bool,
-		/// The instance to list snapshots for
+		/// The instance to list backups for
 		instance: String,
-		/// The group to list snapshots for
+		/// The group to list backups for
 		group: Option<String>,
 	},
-	#[command(about = "Create a snapshot")]
+	#[command(about = "Create a backup")]
 	Create {
-		/// The instance to create a snapshot for
+		/// The instance to create a backup for
 		instance: String,
-		/// The group to create the snapshot for
+		/// The group to create the backup for
 		group: Option<String>,
 	},
-	#[command(about = "Remove an existing snapshot")]
+	#[command(about = "Remove an existing backup")]
 	Remove {
-		/// The instance the snapshot is in
+		/// The instance the backup is in
 		instance: String,
-		/// The group the snapshot is in
+		/// The group the backup is in
 		group: Option<String>,
-		/// The snapshot to remove
-		snapshot: String,
+		/// The backup to remove
+		backup: String,
 	},
-	#[command(about = "Restore an existing snapshot")]
+	#[command(about = "Restore an existing backup")]
 	Restore {
-		/// The instance the snapshot is in
+		/// The instance the backup is in
 		instance: String,
-		/// The group the snapshot is in
+		/// The group the backup is in
 		group: Option<String>,
-		/// The snapshot to restore
-		snapshot: String,
+		/// The backup to restore
+		backup: String,
 	},
-	#[command(about = "Print information about a specific snapshot")]
+	#[command(about = "Print information about a specific backup")]
 	Info {
-		/// The instance the snapshot is in
+		/// The instance the backup is in
 		instance: String,
-		/// The group the snapshot is in
+		/// The group the backup is in
 		group: Option<String>,
-		/// The snapshot to get info about
-		snapshot: String,
+		/// The backup to get info about
+		backup: String,
 	},
 }
 
@@ -129,11 +129,11 @@ fn list(
 		.get(group)
 		.context("Group does not exist")?;
 
-	for snapshot in &group.snapshots {
+	for backup in &group.backups {
 		if raw {
-			println!("{}", snapshot.id);
+			println!("{}", backup.id);
 		} else {
-			cprintln!("<k!> - </>{}", snapshot.id);
+			cprintln!("<k!> - </>{}", backup.id);
 		}
 	}
 
@@ -158,11 +158,11 @@ fn create(
 		.join(inst_ref.profile.to_string())
 		.join(&inst_ref.instance.to_string());
 
-	index.create_snapshot(SnapshotKind::User, Some(group), &inst_dir)?;
+	index.create_backup(BackupKind::User, Some(group), &inst_dir)?;
 
 	index.finish()?;
 
-	cprintln!("<g>Snapshot created.");
+	cprintln!("<g>Backup created.");
 
 	Ok(())
 }
@@ -171,7 +171,7 @@ fn remove(
 	ctx: &HookContext<'_, hooks::Subcommand>,
 	instance: &str,
 	group: Option<&str>,
-	snapshot: &str,
+	backup: &str,
 ) -> anyhow::Result<()> {
 	let inst_ref =
 		InstanceRef::parse(instance.into()).context("Failed to parse instance reference")?;
@@ -179,10 +179,10 @@ fn remove(
 
 	let mut index = get_index(ctx, &inst_ref)?;
 
-	index.remove_snapshot(group, snapshot)?;
+	index.remove_backup(group, backup)?;
 	index.finish()?;
 
-	cprintln!("<g>Snapshot removed.");
+	cprintln!("<g>Backup removed.");
 
 	Ok(())
 }
@@ -191,7 +191,7 @@ fn restore(
 	ctx: &HookContext<'_, hooks::Subcommand>,
 	instance: &str,
 	group: Option<&str>,
-	snapshot: &str,
+	backup: &str,
 ) -> anyhow::Result<()> {
 	let inst_ref =
 		InstanceRef::parse(instance.into()).context("Failed to parse instance reference")?;
@@ -205,10 +205,10 @@ fn restore(
 		.join(inst_ref.profile.to_string())
 		.join(&inst_ref.instance.to_string());
 
-	index.restore_snapshot(group, snapshot, &inst_dir)?;
+	index.restore_backup(group, backup, &inst_dir)?;
 	index.finish()?;
 
-	cprintln!("<g>Snapshot restored.");
+	cprintln!("<g>Backup restored.");
 
 	Ok(())
 }
@@ -217,7 +217,7 @@ fn info(
 	ctx: &HookContext<'_, hooks::Subcommand>,
 	instance: &str,
 	group: Option<&str>,
-	snapshot_id: &str,
+	backup_id: &str,
 ) -> anyhow::Result<()> {
 	let inst_ref =
 		InstanceRef::parse(instance.into()).context("Failed to parse instance reference")?;
@@ -225,14 +225,14 @@ fn info(
 
 	let index = get_index(ctx, &inst_ref)?;
 
-	let snapshot = index.get_snapshot(group, snapshot_id)?;
+	let backup = index.get_backup(group, backup_id)?;
 
 	cprintln!(
-		"<s>Snapshot <b>{}</b> in instance <g>{}</g>:",
-		snapshot_id,
+		"<s>Backup <b>{}</b> in instance <g>{}</g>:",
+		backup_id,
 		inst_ref
 	);
-	cprintln!("<k!> - </>Date created: <c>{}", snapshot.date);
+	cprintln!("<k!> - </>Date created: <c>{}", backup.date);
 
 	Ok(())
 }
@@ -241,17 +241,17 @@ fn get_index(
 	ctx: &HookContext<'_, hooks::Subcommand>,
 	inst_ref: &InstanceRef,
 ) -> anyhow::Result<Index> {
-	let dir = get_snapshot_directory(&get_snapshots_dir(ctx)?, inst_ref);
-	Index::open(&dir, inst_ref.clone(), &get_snapshot_config(inst_ref, ctx)?)
+	let dir = get_backup_directory(&get_backups_dir(ctx)?, inst_ref);
+	Index::open(&dir, inst_ref.clone(), &get_backup_config(inst_ref, ctx)?)
 }
 
-fn get_snapshots_dir(ctx: &HookContext<'_, hooks::Subcommand>) -> anyhow::Result<PathBuf> {
-	let dir = ctx.get_data_dir()?.join("snapshots");
+fn get_backups_dir(ctx: &HookContext<'_, hooks::Subcommand>) -> anyhow::Result<PathBuf> {
+	let dir = ctx.get_data_dir()?.join("backups");
 	std::fs::create_dir_all(&dir)?;
 	Ok(dir)
 }
 
-fn get_snapshot_config(
+fn get_backup_config(
 	instance: &InstanceRef,
 	ctx: &HookContext<'_, hooks::Subcommand>,
 ) -> anyhow::Result<Config> {

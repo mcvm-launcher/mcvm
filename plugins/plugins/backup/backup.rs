@@ -13,20 +13,20 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use zip::{ZipArchive, ZipWriter};
 
-/// Name of the snapshot index file
+/// Name of the backup index file
 pub const INDEX_NAME: &str = "index.json";
 /// ID of the default group
 pub const DEFAULT_GROUP: &str = "default";
 
-/// Settings for snapshots
+/// Settings for backups
 #[derive(Serialize, Deserialize, Default, Clone, Debug)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(default)]
 pub struct Config {
-	/// Default settings for snapshots
+	/// Default settings for backups
 	#[serde(flatten)]
 	pub common: CommonConfig,
-	/// Snapshot groups
+	/// backup groups
 	pub groups: HashMap<String, GroupConfig>,
 }
 
@@ -53,46 +53,46 @@ impl Config {
 	}
 }
 
-/// Configuration for a group of snapshots
+/// Configuration for a group of backups
 #[derive(Serialize, Deserialize, Default, Clone, Debug)]
 #[serde(default)]
 pub struct GroupConfig {
-	/// When the snapshot should be automatically created
-	pub on: Option<SnapshotAutoHook>,
-	/// Snapshot settings for this group
+	/// When the backup should be automatically created
+	pub on: Option<BackupAutoHook>,
+	/// backup settings for this group
 	#[serde(flatten)]
 	pub common: CommonConfig,
 }
 
-/// General configuration for snapshots and snapshot groups
+/// General configuration for backups and backup groups
 #[derive(Serialize, Deserialize, Default, Clone, Debug)]
 #[serde(default)]
 pub struct CommonConfig {
-	/// The max number of snapshots
+	/// The max number of backups
 	pub max_count: Option<u32>,
-	/// The files and directories to include in the snapshot
+	/// The files and directories to include in the backup
 	pub paths: Vec<String>,
-	/// How the snapshot should be stored
+	/// How the backup should be stored
 	pub storage_type: StorageType,
 }
 
-/// When a snapshot should be automatically created
+/// When a backup should be automatically created
 #[derive(Serialize, Deserialize, Clone, Debug)]
-pub enum SnapshotAutoHook {}
+pub enum BackupAutoHook {}
 
-/// Index for the snapshots of an instance
+/// Index for the backups of an instance
 pub struct Index {
 	/// The contents of the index
 	pub contents: IndexContents,
-	/// The path where the snapshots are
+	/// The path where the backups are
 	pub dir: PathBuf,
-	/// The config for the snapshots
+	/// The config for the backups
 	pub config: Config,
 	/// The instance ref for this index
 	pub inst_ref: InstanceRef,
 }
 
-/// Contents for the snapshot index
+/// Contents for the backup index
 #[derive(Serialize, Deserialize, Default)]
 #[serde(default)]
 pub struct IndexContents {
@@ -102,27 +102,27 @@ pub struct IndexContents {
 
 impl Index {
 	/// Gets the index path
-	fn get_path(snapshot_directory: &Path) -> PathBuf {
-		snapshot_directory.join(INDEX_NAME)
+	fn get_path(backup_directory: &Path) -> PathBuf {
+		backup_directory.join(INDEX_NAME)
 	}
 
 	/// Open the index
 	pub fn open(
-		snapshot_directory: &Path,
+		backup_directory: &Path,
 		inst_ref: InstanceRef,
 		config: &Config,
 	) -> anyhow::Result<Self> {
-		fs::create_dir_all(snapshot_directory)?;
-		let path = Self::get_path(snapshot_directory);
+		fs::create_dir_all(backup_directory)?;
+		let path = Self::get_path(backup_directory);
 		let contents = if path.exists() {
-			let mut file = File::open(&path).context("Failed to open snapshot index")?;
+			let mut file = File::open(&path).context("Failed to open backup index")?;
 			serde_json::from_reader(&mut file).context("Failed to parse JSON")?
 		} else {
 			IndexContents::default()
 		};
 		let index = Self {
 			contents,
-			dir: snapshot_directory.to_owned(),
+			dir: backup_directory.to_owned(),
 			inst_ref,
 			config: config.clone(),
 		};
@@ -138,37 +138,32 @@ impl Index {
 		Ok(())
 	}
 
-	/// Get a snapshot
-	pub fn get_snapshot(&self, group_id: &str, snapshot_id: &str) -> anyhow::Result<&Entry> {
+	/// Get a backup
+	pub fn get_backup(&self, group_id: &str, backup_id: &str) -> anyhow::Result<&Entry> {
 		self.contents
 			.groups
 			.get(group_id)
 			.context("Group does not exist")?
-			.snapshots
+			.backups
 			.iter()
-			.find(|x| x.id == snapshot_id)
-			.context("Snapshot does not exist")
+			.find(|x| x.id == backup_id)
+			.context("Backup does not exist")
 	}
 
-	/// Create a new snapshot
-	pub fn create_snapshot(
+	/// Create a new backup
+	pub fn create_backup(
 		&mut self,
-		kind: SnapshotKind,
+		kind: BackupKind,
 		group_id: Option<&str>,
 		instance_dir: &Path,
 	) -> anyhow::Result<()> {
 		let group_id = group_id.unwrap_or(DEFAULT_GROUP);
-		// // Remove the snapshot if it exists already
-		// if self.snapshot_exists(&snapshot_id) {
-		// 	self.remove_snapshot(&snapshot_id)
-		// 		.context("Failed to remove existing snapshot with same ID")?;
-		// }
 
 		let group_config = self.config.get_group_config(group_id)?;
 
-		let snapshot_id = generate_random_id();
-		let snapshot_path =
-			self.get_snapshot_path(group_id, &snapshot_id, group_config.common.storage_type);
+		let backup_id = generate_random_id();
+		let backup_path =
+			self.get_backup_path(group_id, &backup_id, group_config.common.storage_type);
 
 		let mut readers = Vec::new();
 		for path in &group_config.common.paths {
@@ -176,62 +171,62 @@ impl Index {
 				.context("Failed to get recursive file paths")?;
 			for path in paths {
 				let file = File::open(instance_dir.join(&path))
-					.with_context(|| format!("Failed to open snapshotted file with path {path}"))?;
+					.with_context(|| format!("Failed to open backupted file with path {path}"))?;
 				let file = BufReader::new(file);
 				readers.push((path.clone(), file));
 			}
 		}
-		write_snapshot_files(&snapshot_path, &group_config, readers)?;
+		write_backup_files(&backup_path, &group_config, readers)?;
 
 		let now = utc_timestamp()?;
-		// Add the snapshot entry to the group
+		// Add the backup entry to the group
 		let group_entry = self
 			.contents
 			.groups
 			.entry(group_id.into())
 			.or_insert_with(GroupEntry::default);
-		group_entry.snapshots.push(Entry {
-			id: snapshot_id,
+		group_entry.backups.push(Entry {
+			id: backup_id,
 			date: now,
 			kind,
 			storage_type: group_config.common.storage_type,
 		});
 
-		self.remove_old_snapshots(group_id, &group_config)?;
+		self.remove_old_backups(group_id, &group_config)?;
 
 		Ok(())
 	}
 
-	/// Remove a snapshot
-	pub fn remove_snapshot(&mut self, group_id: &str, snapshot_id: &str) -> anyhow::Result<()> {
+	/// Remove a backup
+	pub fn remove_backup(&mut self, group_id: &str, backup_id: &str) -> anyhow::Result<()> {
 		let group_entry = self
 			.contents
 			.groups
 			.entry(group_id.into())
 			.or_insert_with(GroupEntry::default);
 		let index = group_entry
-			.snapshots
+			.backups
 			.iter()
-			.position(|x| x.id == snapshot_id)
-			.ok_or(anyhow!("Snapshot with ID was not found"))?;
-		let snapshot = &group_entry.snapshots[index];
-		let storage_type = snapshot.storage_type;
+			.position(|x| x.id == backup_id)
+			.ok_or(anyhow!("backup with ID was not found"))?;
+		let backup = &group_entry.backups[index];
+		let storage_type = backup.storage_type;
 
-		group_entry.snapshots.remove(index);
+		group_entry.backups.remove(index);
 
-		let snapshot_path = self.get_snapshot_path(group_id, snapshot_id, storage_type);
-		if snapshot_path.exists() {
+		let backup_path = self.get_backup_path(group_id, backup_id, storage_type);
+		if backup_path.exists() {
 			match storage_type {
-				StorageType::Archive => fs::remove_file(snapshot_path)?,
-				StorageType::Folder => fs::remove_dir_all(snapshot_path)?,
+				StorageType::Archive => fs::remove_file(backup_path)?,
+				StorageType::Folder => fs::remove_dir_all(backup_path)?,
 			}
 		}
 
 		Ok(())
 	}
 
-	/// Remove old snapshots that are over the limit
-	pub fn remove_old_snapshots(
+	/// Remove old backups that are over the limit
+	pub fn remove_old_backups(
 		&mut self,
 		group_id: &str,
 		group_config: &GroupConfig,
@@ -240,15 +235,15 @@ impl Index {
 			return Ok(());
 		};
 		if let Some(limit) = group_config.common.max_count {
-			if group_entry.snapshots.len() > (limit as usize) {
-				let num_to_remove = group_entry.snapshots.len() - (limit as usize);
-				let to_remove: Vec<String> = group_entry.snapshots[0..num_to_remove - 1]
+			if group_entry.backups.len() > (limit as usize) {
+				let num_to_remove = group_entry.backups.len() - (limit as usize);
+				let to_remove: Vec<String> = group_entry.backups[0..num_to_remove - 1]
 					.iter()
 					.map(|x| x.id.clone())
 					.collect();
 				for id in to_remove {
-					self.remove_snapshot(group_id, &id)
-						.with_context(|| format!("Failed to remove old snapshot '{id}'"))?;
+					self.remove_backup(group_id, &id)
+						.with_context(|| format!("Failed to remove old backup '{id}'"))?;
 				}
 			}
 		}
@@ -256,11 +251,11 @@ impl Index {
 		Ok(())
 	}
 
-	/// Restores a snapshot
-	pub fn restore_snapshot(
+	/// Restores a backup
+	pub fn restore_backup(
 		&self,
 		group_id: &str,
-		snapshot_id: &str,
+		backup_id: &str,
 		instance_dir: &Path,
 	) -> anyhow::Result<()> {
 		let group_entry = self
@@ -268,70 +263,70 @@ impl Index {
 			.groups
 			.get(group_id)
 			.context("Group does not exist")?;
-		let snapshot = group_entry
-			.snapshots
+		let backup = group_entry
+			.backups
 			.iter()
-			.find(|x| x.id == snapshot_id)
-			.ok_or(anyhow!("Snapshot with ID was not found"))?;
+			.find(|x| x.id == backup_id)
+			.ok_or(anyhow!("Backup with ID was not found"))?;
 
-		let snapshot_path = self.get_snapshot_path(group_id, snapshot_id, snapshot.storage_type);
-		restore_snapshot_files(&snapshot_path, snapshot.storage_type, instance_dir)?;
+		let backup_path = self.get_backup_path(group_id, backup_id, backup.storage_type);
+		restore_backup_files(&backup_path, backup.storage_type, instance_dir)?;
 
 		Ok(())
 	}
 
-	/// Gets the snapshot directory for a group
+	/// Gets the backup directory for a group
 	fn get_group_dir(&self, group_id: &str) -> PathBuf {
 		self.dir.join(group_id)
 	}
 
-	/// Get the path to a specific snapshot
-	pub fn get_snapshot_path(
+	/// Get the path to a specific backup
+	pub fn get_backup_path(
 		&self,
 		group_id: &str,
-		snapshot_id: &str,
+		backup_id: &str,
 		storage_type: StorageType,
 	) -> PathBuf {
 		let path = self.get_group_dir(group_id);
 		let filename = match storage_type {
-			StorageType::Archive => format!("{snapshot_id}.zip"),
-			StorageType::Folder => snapshot_id.to_owned(),
+			StorageType::Archive => format!("{backup_id}.zip"),
+			StorageType::Folder => backup_id.to_owned(),
 		};
 
 		path.join(filename)
 	}
 }
 
-/// A group entry in the snapshot index
+/// A group entry in the backup index
 #[derive(Serialize, Deserialize, Default)]
 #[serde(default)]
 pub struct GroupEntry {
-	/// The snapshots in this group
-	pub snapshots: Vec<Entry>,
+	/// The backups in this group
+	pub backups: Vec<Entry>,
 }
 
-/// Entry for a snapshot in the snapshot index
+/// Entry for a backup in the backup index
 #[derive(Serialize, Deserialize)]
 pub struct Entry {
-	/// The ID of the snapshot
+	/// The ID of the backup
 	pub id: String,
-	/// The timestamp when the snapshot was created
+	/// The timestamp when the backup was created
 	pub date: u64,
-	/// What kind of snapshot this is
-	pub kind: SnapshotKind,
-	/// How the snapshot is stored on the filesystem
+	/// What kind of backup this is
+	pub kind: BackupKind,
+	/// How the backup is stored on the filesystem
 	pub storage_type: StorageType,
 }
 
-/// Type of a snapshot
+/// Type of a backup
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
-pub enum SnapshotKind {
-	/// A snapshot created by the user
+pub enum BackupKind {
+	/// A backup created by the user
 	User,
 }
 
-/// Format for stored snapshots
+/// Format for stored backups
 #[derive(Serialize, Deserialize, Default, Copy, Clone, Debug)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(rename_all = "snake_case")]
@@ -343,14 +338,14 @@ pub enum StorageType {
 	Archive,
 }
 
-/// Get the snapshot directory for an instance
-pub fn get_snapshot_directory(base_dir: &Path, inst_ref: &InstanceRef) -> PathBuf {
+/// Get the backup directory for an instance
+pub fn get_backup_directory(base_dir: &Path, inst_ref: &InstanceRef) -> PathBuf {
 	base_dir
 		.join(inst_ref.profile.to_string())
 		.join(inst_ref.instance.to_string())
 }
 
-/// Generates a random snapshot ID
+/// Generates a random backup ID
 pub fn generate_random_id() -> String {
 	let mut rng = rand::thread_rng();
 	let num = rng.gen_range(0..std::u64::MAX);
@@ -382,16 +377,16 @@ fn get_instance_file_paths(path: &str, instance_dir: &Path) -> anyhow::Result<Ve
 	}
 }
 
-/// Writes snapshot files to the stored format. Takes the path to the snapshot file / directory.
+/// Writes backup files to the stored format. Takes the path to the backup file / directory.
 /// Readers are pairs of relative file paths and readers for files.
-fn write_snapshot_files<R: Read>(
-	snapshot_path: &Path,
+fn write_backup_files<R: Read>(
+	backup_path: &Path,
 	group_config: &GroupConfig,
 	readers: Vec<(String, R)>,
 ) -> anyhow::Result<()> {
 	match &group_config.common.storage_type {
 		StorageType::Archive => {
-			let file = File::create(snapshot_path)?;
+			let file = File::create(backup_path)?;
 			let mut file = BufWriter::new(file);
 			let mut arc = ZipWriter::new(&mut file);
 			let options = zip::write::FileOptions::default()
@@ -405,7 +400,7 @@ fn write_snapshot_files<R: Read>(
 		}
 		StorageType::Folder => {
 			for (path, mut reader) in readers {
-				let dest = snapshot_path.join(path);
+				let dest = backup_path.join(path);
 				mcvm_core::io::files::create_leading_dirs(&dest)?;
 				let file = File::create(dest)?;
 				let mut file = BufWriter::new(file);
@@ -417,22 +412,22 @@ fn write_snapshot_files<R: Read>(
 	Ok(())
 }
 
-/// Restores snapshot files to the instance. Takes the path to the snapshot file / directory.
-fn restore_snapshot_files(
-	snapshot_path: &Path,
+/// Restores backup files to the instance. Takes the path to the backup file / directory.
+fn restore_backup_files(
+	backup_path: &Path,
 	storage_type: StorageType,
 	instance_dir: &Path,
 ) -> anyhow::Result<()> {
 	match storage_type {
 		StorageType::Archive => {
-			let file = File::open(snapshot_path)?;
+			let file = File::open(backup_path)?;
 			let mut file = BufReader::new(file);
 			let mut arc = ZipArchive::new(&mut file)?;
 			arc.extract(instance_dir)
-				.context("Failed to extract snapshot archive")?;
+				.context("Failed to extract backup archive")?;
 		}
 		StorageType::Folder => {
-			mcvm_core::io::files::copy_dir_contents(snapshot_path, instance_dir)
+			mcvm_core::io::files::copy_dir_contents(backup_path, instance_dir)
 				.context("Failed to copy directory")?;
 		}
 	}

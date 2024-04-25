@@ -14,8 +14,8 @@ name = "mcvm_plugin_args"
 path = "plugins/args/main.rs"
 
 [[bin]]
-name = "mcvm_plugin_snapshot"
-path = "plugins/snapshot/main.rs"
+name = "mcvm_plugin_backup"
+path = "plugins/backup/main.rs"
 
 [[bin]]
 name = "mcvm_plugin_options"

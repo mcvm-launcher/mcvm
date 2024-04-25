@@ -1,0 +1,13 @@
+{
+	"name": "Backup",
+	"description": "Create backups of instances",
+	"hooks": {
+		"subcommand": {
+			"executable": "mcvm_plugin_backup"
+		}
+	},
+	"subcommands": {
+		"backup": "Manage backups for instances",
+		"back": "Manage backups for instances"
+	}
+}
