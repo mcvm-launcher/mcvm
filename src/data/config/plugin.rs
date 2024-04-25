@@ -1,6 +1,6 @@
 use crate::io::files::paths::Paths;
 use anyhow::Context;
-use mcvm_core::io::{json_from_file, json_to_file};
+use mcvm_core::io::{json_from_file, json_to_file_pretty};
 use mcvm_shared::output::MCVMOutput;
 #[cfg(feature = "schema")]
 use schemars::JsonSchema;
@@ -75,7 +75,8 @@ impl PluginManager {
 			json_from_file(path).context("Failed to load plugin config from file")?
 		} else {
 			let out = PluginsConfig::default();
-			json_to_file(path, &out).context("Failed to write default plugin config to file")?;
+			json_to_file_pretty(path, &out)
+				.context("Failed to write default plugin config to file")?;
 
 			out
 		};
