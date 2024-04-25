@@ -66,7 +66,6 @@ pub fn dir_symlink(path: &Path, target: &Path) -> std::io::Result<()> {
 	Ok(())
 }
 
-
 /// Copy the contents of a directory recursively to another directory.
 /// Identical files will be overwritten
 pub fn copy_dir_contents(src: &Path, dest: &Path) -> anyhow::Result<()> {

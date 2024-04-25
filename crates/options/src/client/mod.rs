@@ -8,7 +8,7 @@ pub use file::write_options_txt;
 
 use std::{collections::HashMap, fmt::Display};
 
-use mcvm_shared::util::{ToInt, DefaultExt};
+use mcvm_shared::util::{DefaultExt, ToInt};
 use serde::Deserialize;
 use serde::Serialize;
 

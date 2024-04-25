@@ -1,7 +1,7 @@
 /// Writing to the server.properties file
 mod file;
 
-use mcvm_shared::util::{ToInt, DefaultExt};
+use mcvm_shared::util::{DefaultExt, ToInt};
 
 pub use file::create_keys;
 pub use file::get_world_name;
