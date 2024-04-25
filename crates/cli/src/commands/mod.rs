@@ -1,3 +1,4 @@
+mod config;
 mod files;
 mod instance;
 mod package;
@@ -22,6 +23,7 @@ use crate::docs::Docs;
 #[cfg(feature = "docs")]
 use crate::output::HYPHEN_POINT;
 
+use self::config::ConfigSubcommand;
 use self::files::FilesSubcommand;
 use self::instance::InstanceSubcommand;
 use self::package::PackageSubcommand;
@@ -74,6 +76,12 @@ pub enum Command {
 	Plugin {
 		#[command(subcommand)]
 		command: PluginSubcommand,
+	},
+	#[command(about = "Manage config")]
+	#[clap(alias = "cfg")]
+	Config {
+		#[command(subcommand)]
+		command: ConfigSubcommand,
 	},
 	#[command(about = "Access different tools and tests included with mcvm")]
 	Tool {
@@ -135,6 +143,7 @@ pub async fn run_cli() -> anyhow::Result<()> {
 		Command::Package { command } => package::run(command, &mut data).await,
 		Command::Instance { command } => instance::run(command, &mut data).await,
 		Command::Plugin { command } => plugin::run(command, &mut data).await,
+		Command::Config { command } => config::run(command, &mut data).await,
 		Command::Tool { command } => tool::run(command, &mut data).await,
 		#[cfg(feature = "docs")]
 		Command::Docs { page } => display_docs(page),
