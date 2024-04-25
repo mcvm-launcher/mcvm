@@ -16,14 +16,13 @@ use super::{ClientOptions, CloudRenderMode, FullscreenResolution, GraphicsMode};
 const SEP: char = ':';
 
 /// Write options.txt to a file
-pub async fn write_options_txt(
+pub fn write_options_txt(
 	options: HashMap<String, String>,
 	path: &Path,
 	data_version: &Option<i32>,
 ) -> anyhow::Result<()> {
-	let mut options = merge_options_txt(path, options)
-		.await
-		.context("Failed to merge with existing options.txt")?;
+	let mut options =
+		merge_options_txt(path, options).context("Failed to merge with existing options.txt")?;
 	// Write the data version so that the game recognizes the options file correctly on first run
 	add_data_version_field(&mut options, data_version);
 	let file = File::create(path).context("Failed to open file")?;
@@ -37,7 +36,7 @@ pub async fn write_options_txt(
 }
 
 /// Collect a hashmap from an existing options.txt file so we can compare with it
-pub async fn read_options_txt(path: &Path) -> anyhow::Result<HashMap<String, String>> {
+pub fn read_options_txt(path: &Path) -> anyhow::Result<HashMap<String, String>> {
 	if path.exists() {
 		let contents = std::fs::read_to_string(path).context("Failed to read options.txt")?;
 		read_options_file(&contents, SEP)
@@ -47,13 +46,12 @@ pub async fn read_options_txt(path: &Path) -> anyhow::Result<HashMap<String, Str
 }
 
 /// Merge keys with an existing file
-pub async fn merge_options_txt(
+pub fn merge_options_txt(
 	path: &Path,
 	keys: HashMap<String, String>,
 ) -> anyhow::Result<HashMap<String, String>> {
-	let mut file_keys = read_options_txt(path)
-		.await
-		.context("Failed to open options file for merging")?;
+	let mut file_keys =
+		read_options_txt(path).context("Failed to open options file for merging")?;
 	file_keys.extend(keys);
 	Ok(file_keys)
 }

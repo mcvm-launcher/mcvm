@@ -1,11 +1,7 @@
-use std::collections::HashMap;
-
 use anyhow::Context;
 use mcvm_core::io::java::classpath::Classpath;
 use mcvm_mods::paper;
 use mcvm_mods::sponge;
-use mcvm_options::server::get_world_name;
-use mcvm_options::{self, server::write_server_properties};
 use mcvm_shared::modifications::{Modloader, ServerType};
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel, OutputProcess};
 use reqwest::Client;
@@ -63,33 +59,6 @@ impl Instance {
 				out.merge(result);
 			}
 			_ => {}
-		}
-
-		let mut keys = HashMap::new();
-		let version_info = manager.version_info.get();
-		if let Some(global_options) = &manager.options {
-			if let Some(global_options) = &global_options.server {
-				let global_keys = mcvm_options::server::create_keys(global_options, version_info)
-					.context("Failed to create keys for global options")?;
-				keys.extend(global_keys);
-			}
-		}
-		if let InstKind::Server {
-			options: Some(options),
-			world_name,
-		} = &mut self.kind
-		{
-			let override_keys = mcvm_options::server::create_keys(options, version_info)
-				.context("Failed to create keys for override options")?;
-			keys.extend(override_keys);
-
-			*world_name = get_world_name(&keys).cloned();
-		}
-		if !keys.is_empty() {
-			let options_path = self.dirs.get().game_dir.join("server.properties");
-			write_server_properties(keys, &options_path)
-				.await
-				.context("Failed to write server.properties")?;
 		}
 
 		self.modification_data.classpath_extension = classpath;

@@ -2,5 +2,3 @@
 pub mod files;
 /// Use of the lockfile for persistent data
 pub mod lock;
-/// Smart game options system
-pub mod options;

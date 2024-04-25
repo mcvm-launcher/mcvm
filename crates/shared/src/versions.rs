@@ -223,7 +223,7 @@ impl Serialize for VersionPattern {
 }
 
 /// Utility struct that contains the version and version list
-#[derive(Debug)]
+#[derive(Debug, Default, Deserialize, Serialize, Clone)]
 pub struct VersionInfo {
 	/// The version
 	pub version: String,

@@ -8,7 +8,6 @@ use mcvm_core::user::UserManager;
 use mcvm_core::util::versions::MinecraftVersion;
 use mcvm_core::version::InstalledVersion;
 use mcvm_core::MCVMCore;
-use mcvm_options::{read_options, Options};
 use mcvm_plugin::hooks::AddVersions;
 use mcvm_shared::later::Later;
 use mcvm_shared::output::MCVMOutput;
@@ -23,8 +22,6 @@ use mcvm_mods::fabric_quilt::{self, FabricQuiltMeta};
 /// Requirements for operations that may be shared by multiple instances in a profile
 #[derive(Debug, Hash, PartialEq, Eq)]
 pub enum UpdateRequirement {
-	/// Game options
-	Options,
 	/// Fabric and Quilt
 	FabricQuilt(fabric_quilt::Mode, Side),
 	/// Client logging configuration
@@ -57,8 +54,6 @@ pub struct UpdateManager {
 	ms_client_id: Option<ClientId>,
 	/// The core to be fulfilled later
 	pub core: Later<MCVMCore>,
-	/// The game options to be fulfilled later
-	pub options: Option<Options>,
 	/// The version info to be fulfilled later
 	pub version_info: Later<VersionInfo>,
 	/// The Fabric/Quilt metadata to be fulfilled later
@@ -80,7 +75,6 @@ impl UpdateManager {
 			core: Later::Empty,
 			ms_client_id: None,
 			files: HashSet::new(),
-			options: None,
 			version_info: Later::Empty,
 			fq_meta: Later::new(),
 			mc_version: Later::Empty,
@@ -168,9 +162,6 @@ impl UpdateManager {
 		self.update_fabric_quilt(&version_info, paths, client, o)
 			.await
 			.context("Failed to update Fabric/Quilt")?;
-
-		self.update_options(paths)
-			.context("Failed to update game options")?;
 
 		self.version_info.fill(version_info);
 
@@ -291,17 +282,6 @@ impl UpdateManager {
 					.context("Failed to download {mode} files for {side}")?;
 				}
 			}
-		}
-
-		Ok(())
-	}
-
-	/// Update options if they need to be updated
-	fn update_options(&mut self, paths: &Paths) -> anyhow::Result<()> {
-		if self.has_requirement(UpdateRequirement::Options) {
-			let path = crate::io::options::get_path(paths);
-			let options = read_options(&path).context("Failed to read options.json")?;
-			self.options = options;
 		}
 
 		Ok(())

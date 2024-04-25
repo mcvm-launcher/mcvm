@@ -13,3 +13,10 @@ install.snapshot: build.snapshot
 
 build.snapshot: plugins/snapshot
 	@cargo build -r --bin mcvm_plugin_snapshot
+
+install.options: build.options
+	@cargo install --path . --bin mcvm_plugin_options --offline
+	@cp plugins/options/plugin.json ~/.local/share/mcvm/plugins/options.json
+
+build.options: plugins/options
+	@cargo build -r --bin mcvm_plugin_options

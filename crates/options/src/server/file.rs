@@ -14,13 +14,11 @@ use super::ServerOptions;
 const SEP: char = '=';
 
 /// Write server.properties to a file
-pub async fn write_server_properties(
+pub fn write_server_properties(
 	options: HashMap<String, String>,
 	path: &Path,
 ) -> anyhow::Result<()> {
-	let options = merge_server_properties(path, options)
-		.await
-		.context("Failed to merge properties")?;
+	let options = merge_server_properties(path, options).context("Failed to merge properties")?;
 	let file = File::create(path).context("Failed to open file")?;
 	let mut file = BufWriter::new(file);
 	for (key, value) in options.iter().sorted_by_key(|x| x.0) {
@@ -32,7 +30,7 @@ pub async fn write_server_properties(
 }
 
 /// Collect a hashmap from an existing server.properties file so we can compare with it
-async fn read_server_properties(path: &Path) -> anyhow::Result<HashMap<String, String>> {
+fn read_server_properties(path: &Path) -> anyhow::Result<HashMap<String, String>> {
 	if path.exists() {
 		let contents = std::fs::read_to_string(path).context("Failed to read options.txt")?;
 		read_options_file(&contents, SEP)
@@ -42,13 +40,12 @@ async fn read_server_properties(path: &Path) -> anyhow::Result<HashMap<String, S
 }
 
 /// Merge keys with an existing file
-async fn merge_server_properties(
+fn merge_server_properties(
 	path: &Path,
 	keys: HashMap<String, String>,
 ) -> anyhow::Result<HashMap<String, String>> {
-	let mut file_keys = read_server_properties(path)
-		.await
-		.context("Failed to open options file for merging")?;
+	let mut file_keys =
+		read_server_properties(path).context("Failed to open options file for merging")?;
 	file_keys.extend(keys);
 	Ok(file_keys)
 }

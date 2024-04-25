@@ -96,7 +96,7 @@ impl Profile {
 
 		for instance in self.instances.values_mut() {
 			let result = instance
-				.create(manager, paths, users, client, o)
+				.create(manager, plugins, paths, users, client, o)
 				.await
 				.with_context(|| format!("Failed to create instance {}", instance.id))?;
 			manager.add_result(result);

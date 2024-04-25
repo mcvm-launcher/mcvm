@@ -16,6 +16,7 @@ use mcvm_core::user::{User, UserManager};
 use mcvm_core::version::InstalledVersion;
 use mcvm_core::QuickPlayType;
 use mcvm_mods::fabric_quilt;
+use mcvm_plugin::hooks::{OnInstanceSetup, OnInstanceSetupArg};
 use mcvm_shared::lang::translate::TranslationKey;
 use mcvm_shared::modifications::Modloader;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
@@ -24,6 +25,7 @@ use mcvm_shared::Side;
 use reqwest::Client;
 
 use crate::data::config::instance::QuickPlay;
+use crate::data::config::plugin::PluginManager;
 use crate::data::profile::update::manager::{UpdateManager, UpdateMethodResult, UpdateRequirement};
 use crate::io::files::paths::Paths;
 
@@ -53,7 +55,6 @@ impl Instance {
 			}
 			_ => {}
 		};
-		out.insert(UpdateRequirement::Options);
 		match &self.kind {
 			InstKind::Client { .. } => {
 				if self.config.launch.use_log4j_config {
@@ -69,6 +70,7 @@ impl Instance {
 	pub async fn create<'core>(
 		&mut self,
 		manager: &'core mut UpdateManager,
+		plugins: &PluginManager,
 		paths: &Paths,
 		users: &UserManager,
 		client: &Client,
@@ -101,6 +103,18 @@ impl Instance {
 				Ok(result)
 			}
 		}?;
+
+		// Run plugin setup hooks
+		self.ensure_dirs(paths)?;
+		let arg = OnInstanceSetupArg {
+			side: Some(self.get_side()),
+			game_dir: self.dirs.get().game_dir.to_string_lossy().to_string(),
+			version_info: manager.version_info.get_clone(),
+			custom_config: self.config.plugin_config.clone(),
+		};
+		plugins
+			.call_hook(OnInstanceSetup, &arg, paths, o)
+			.context("Failed to call instance setup hook")?;
 
 		// Make the core instance
 		let mut version = manager

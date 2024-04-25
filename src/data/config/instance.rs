@@ -3,8 +3,6 @@ use std::collections::HashMap;
 use anyhow::{anyhow, bail, ensure, Context};
 use mcvm_core::io::java::args::MemoryNum;
 use mcvm_core::io::java::install::JavaInstallationKind;
-use mcvm_options::client::ClientOptions;
-use mcvm_options::server::ServerOptions;
 use mcvm_plugin::hooks::ModifyInstanceConfig;
 use mcvm_shared::id::InstanceID;
 use mcvm_shared::output::MCVMOutput;
@@ -42,12 +40,10 @@ impl InstanceConfig {
 			Self::Full(config) => config.clone(),
 			Self::Simple(side) => match side {
 				Side::Client => FullInstanceConfig::Client {
-					options: None,
 					window: ClientWindowConfig::default(),
 					common: CommonInstanceConfig::default(),
 				},
 				Side::Server => FullInstanceConfig::Server {
-					options: None,
 					common: CommonInstanceConfig::default(),
 				},
 			},
@@ -87,10 +83,6 @@ pub enum FullInstanceConfig {
 		/// Common configuration
 		#[serde(flatten)]
 		common: CommonInstanceConfig,
-		/// Game options
-		#[serde(default)]
-		#[serde(skip_serializing_if = "Option::is_none")]
-		options: Option<Box<ClientOptions>>,
 		/// Window configuration
 		#[serde(default)]
 		#[serde(skip_serializing_if = "DefaultExt::is_default")]
@@ -101,10 +93,6 @@ pub enum FullInstanceConfig {
 		/// Common configuration
 		#[serde(flatten)]
 		common: CommonInstanceConfig,
-		/// Game options
-		#[serde(default)]
-		#[serde(skip_serializing_if = "Option::is_none")]
-		options: Option<Box<ServerOptions>>,
 	},
 }
 
@@ -397,19 +385,16 @@ pub fn merge_instance_configs(
 	out = match (out, applied) {
 		(
 			FullInstanceConfig::Client {
-				options,
 				mut window,
 				mut common,
 				..
 			},
 			FullInstanceConfig::Client {
-				options: options2,
 				window: window2,
 				common: common2,
 				..
 			},
 		) => Ok::<FullInstanceConfig, anyhow::Error>(FullInstanceConfig::Client {
-			options: merge_options(options, options2),
 			window: {
 				window.merge(window2);
 				window
@@ -420,18 +405,11 @@ pub fn merge_instance_configs(
 			},
 		}),
 		(
+			FullInstanceConfig::Server { mut common, .. },
 			FullInstanceConfig::Server {
-				options,
-				mut common,
-				..
-			},
-			FullInstanceConfig::Server {
-				options: options2,
-				common: common2,
-				..
+				common: common2, ..
 			},
 		) => Ok::<FullInstanceConfig, anyhow::Error>(FullInstanceConfig::Server {
-			options: merge_options(options, options2),
 			common: {
 				common.merge(common2);
 				common
@@ -478,12 +456,8 @@ pub fn read_instance_config(
 		config
 	};
 	let (kind, mut common) = match config {
-		FullInstanceConfig::Client {
-			options,
-			window,
-			common,
-		} => (InstKind::client(options, window), common),
-		FullInstanceConfig::Server { options, common } => (InstKind::server(options), common),
+		FullInstanceConfig::Client { window, common } => (InstKind::client(window), common),
+		FullInstanceConfig::Server { common } => (InstKind::server(), common),
 	};
 
 	// Apply plugins
@@ -507,6 +481,7 @@ pub fn read_instance_config(
 		launch: common.launch.to_options()?,
 		datapack_folder: common.datapack_folder,
 		packages,
+		plugin_config: common.plugin_config,
 	};
 
 	let instance = Instance::new(kind, id, profile.id.clone(), stored_config);
@@ -625,7 +600,6 @@ mod tests {
 			presets.insert(
 				"hello".into(),
 				InstanceConfig::Full(FullInstanceConfig::Client {
-					options: None,
 					window: ClientWindowConfig {
 						resolution: Some(WindowResolution {
 							width: 200,
@@ -652,7 +626,6 @@ mod tests {
 		);
 
 		let config = InstanceConfig::Full(FullInstanceConfig::Client {
-			options: None,
 			window: ClientWindowConfig::default(),
 			common: CommonInstanceConfig {
 				preset: Some("hello".into()),
@@ -673,7 +646,6 @@ mod tests {
 		if !matches!(
 			instance.kind,
 			InstKind::Client {
-				options: None,
 				window: ClientWindowConfig {
 					resolution: Some(WindowResolution {
 						width: 200,
@@ -686,7 +658,6 @@ mod tests {
 		}
 
 		let config = InstanceConfig::Full(FullInstanceConfig::Server {
-			options: None,
 			common: CommonInstanceConfig {
 				preset: Some("hello".into()),
 				..Default::default()

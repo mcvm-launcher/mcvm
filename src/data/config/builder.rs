@@ -368,12 +368,10 @@ impl<'parent, 'grandparent> InstanceBuilder<'parent, 'grandparent> {
 	) -> Self {
 		let config = match side {
 			Side::Client => FullInstanceConfig::Client {
-				options: Default::default(),
 				window: Default::default(),
 				common: Default::default(),
 			},
 			Side::Server => FullInstanceConfig::Server {
-				options: Default::default(),
 				common: Default::default(),
 			},
 		};

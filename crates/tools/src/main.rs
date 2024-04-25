@@ -6,8 +6,8 @@ use std::{fs::File, io::BufWriter, path::PathBuf};
 use clap::Parser;
 use gen_pkg::PackageSource;
 use mcvm::data::config::ConfigDeser;
-use mcvm::options::Options;
 use mcvm::pkg_crate::{declarative::DeclarativePackage, repo::RepoIndex};
+use mcvm_options::Options;
 
 #[tokio::main]
 async fn main() {

@@ -10,7 +10,8 @@ use mcvm_core::net::game_files::version_manifest::VersionEntry;
 use serde::de::DeserializeOwned;
 
 use crate::hooks::{
-	AddVersions, Hook, ModifyInstanceConfig, ModifyInstanceConfigResult, OnLoad, Subcommand,
+	AddVersions, Hook, ModifyInstanceConfig, ModifyInstanceConfigResult, OnInstanceSetup,
+	OnInstanceSetupArg, OnLoad, Subcommand,
 };
 use crate::output::OutputAction;
 
@@ -82,6 +83,14 @@ impl CustomPlugin {
 		f: impl FnOnce(HookContext<AddVersions>, ()) -> anyhow::Result<Vec<VersionEntry>>,
 	) -> anyhow::Result<()> {
 		self.handle_hook::<AddVersions>(Self::get_hook_arg, f)
+	}
+
+	/// Bind to the on_instance_setup hook
+	pub fn on_instance_setup(
+		&mut self,
+		f: impl FnOnce(HookContext<OnInstanceSetup>, OnInstanceSetupArg) -> anyhow::Result<()>,
+	) -> anyhow::Result<()> {
+		self.handle_hook::<OnInstanceSetup>(Self::get_hook_arg, f)
 	}
 
 	/// Handle a hook

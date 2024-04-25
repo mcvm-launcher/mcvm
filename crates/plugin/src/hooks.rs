@@ -5,7 +5,7 @@ use std::{
 
 use anyhow::{bail, Context};
 use mcvm_core::{net::game_files::version_manifest::VersionEntry, Paths};
-use mcvm_shared::output::MCVMOutput;
+use mcvm_shared::{output::MCVMOutput, versions::VersionInfo, Side};
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 
 use crate::output::OutputAction;
@@ -178,3 +178,25 @@ def_hook!(
 	(),
 	Vec<VersionEntry>,
 );
+
+def_hook!(
+	OnInstanceSetup,
+	"on_instance_setup",
+	"Hook for doing work when setting up an instance for update or launch",
+	OnInstanceSetupArg,
+	(),
+);
+
+/// Argument for the OnInstanceSetup hook
+#[derive(Serialize, Deserialize, Default)]
+#[serde(default)]
+pub struct OnInstanceSetupArg {
+	/// The side of the instance
+	pub side: Option<Side>,
+	/// Path to the instance's game dir
+	pub game_dir: String,
+	/// Version info for the instance
+	pub version_info: VersionInfo,
+	/// Custom config on the instance
+	pub custom_config: serde_json::Map<String, serde_json::Value>,
+}

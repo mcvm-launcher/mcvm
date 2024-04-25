@@ -1,9 +1,6 @@
-use std::collections::HashMap;
-
 use anyhow::Context;
 use mcvm_core::io::java::classpath::Classpath;
 use mcvm_core::user::UserManager;
-use mcvm_options::{self, client::write_options_txt};
 use mcvm_shared::modifications::Modloader;
 
 use crate::data::profile::update::manager::{UpdateManager, UpdateMethodResult};
@@ -33,34 +30,6 @@ impl Instance {
 				self.get_fabric_quilt(paths, manager)
 					.context("Failed to install Fabric/Quilt")?,
 			);
-		}
-
-		// Options
-		let mut keys = HashMap::new();
-		let version_info = &manager.version_info.get();
-		if let Some(global_options) = &manager.options {
-			if let Some(global_options) = &global_options.client {
-				let global_keys = mcvm_options::client::create_keys(global_options, version_info)
-					.context("Failed to create keys for global options")?;
-				keys.extend(global_keys);
-			}
-		}
-		if let InstKind::Client {
-			options: Some(options),
-			..
-		} = &self.kind
-		{
-			let override_keys = mcvm_options::client::create_keys(options, version_info)
-				.context("Failed to create keys for override options")?;
-			keys.extend(override_keys);
-		}
-		if !keys.is_empty() {
-			let options_path = self.dirs.get().game_dir.join("options.txt");
-			let data_version =
-				mcvm_core::io::minecraft::get_data_version(version_info, &paths.core);
-			write_options_txt(keys, &options_path, &data_version)
-				.await
-				.context("Failed to write options.txt")?;
 		}
 
 		// Create keypair file

@@ -7,8 +7,6 @@ pub mod launch;
 /// Managing and installing packages on an instance
 pub mod packages;
 
-use mcvm_options::client::ClientOptions;
-use mcvm_options::server::ServerOptions;
 use mcvm_shared::later::Later;
 use mcvm_shared::Side;
 
@@ -42,15 +40,11 @@ pub struct Instance {
 pub enum InstKind {
 	/// A client instance
 	Client {
-		/// Options for the client
-		options: Option<Box<ClientOptions>>,
 		/// Configuration for the client window
 		window: ClientWindowConfig,
 	},
 	/// A server instance
 	Server {
-		/// Options for the server
-		options: Option<Box<ServerOptions>>,
 		/// The new world name if it is changed by the options
 		world_name: Option<String>,
 	},
@@ -58,16 +52,13 @@ pub enum InstKind {
 
 impl InstKind {
 	/// Create a new client InstKind
-	pub fn client(options: Option<Box<ClientOptions>>, window: ClientWindowConfig) -> Self {
-		Self::Client { options, window }
+	pub fn client(window: ClientWindowConfig) -> Self {
+		Self::Client { window }
 	}
 
 	/// Create a new server InstKind
-	pub fn server(options: Option<Box<ServerOptions>>) -> Self {
-		Self::Server {
-			options,
-			world_name: None,
-		}
+	pub fn server() -> Self {
+		Self::Server { world_name: None }
 	}
 
 	/// Convert to the Side enum
@@ -90,6 +81,8 @@ pub struct InstanceStoredConfig {
 	pub datapack_folder: Option<String>,
 	/// The packages on the instance, consolidated from all parent sources
 	pub packages: Vec<PackageConfig>,
+	/// Custom plugin config
+	pub plugin_config: serde_json::Map<String, serde_json::Value>,
 }
 
 impl Instance {
