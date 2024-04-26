@@ -6,7 +6,7 @@ use mcvm_core::io::java::args::MemoryNum;
 use mcvm_core::io::java::install::JavaInstallationKind;
 use mcvm_core::user::UserManager;
 use mcvm_core::util::versions::MinecraftVersion;
-use mcvm_core::InstanceHandle;
+use mcvm_plugin::hooks::{HookHandle, WhileInstanceLaunch, WhileInstanceLaunchArg};
 use mcvm_shared::lang::translate::TranslationKey;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::translate;
@@ -79,6 +79,20 @@ impl Instance {
 			.launch_with_handle(o)
 			.await
 			.context("Failed to launch core instance")?;
+		let arg = WhileInstanceLaunchArg {
+			side: Some(self.get_side()),
+			game_dir: self.dirs.get().game_dir.to_string_lossy().into(),
+			version_info: manager.version_info.get_clone(),
+			custom_config: self.config.plugin_config.clone(),
+			pid: None,
+		};
+		let hook_handles = plugins
+			.call_hook(WhileInstanceLaunch, &arg, paths, o)
+			.context("Failed to call while launch hook")?;
+		let handle = InstanceHandle {
+			inner: handle,
+			hook_handles,
+		};
 
 		Ok(handle)
 	}
@@ -123,4 +137,43 @@ pub struct WrapperCommand {
 	pub cmd: String,
 	/// The command's arguments
 	pub args: Vec<String>,
+}
+
+/// A handle for an instance
+pub struct InstanceHandle {
+	inner: mcvm_core::InstanceHandle,
+	hook_handles: Vec<HookHandle<WhileInstanceLaunch>>,
+}
+
+impl InstanceHandle {
+	/// Waits for the process to complete
+	pub fn wait(mut self, o: &mut impl MCVMOutput) -> anyhow::Result<std::process::ExitStatus> {
+		let result = self.inner.wait()?;
+		// Kill any sibling processes now that the main one is complete
+		for handle in self.hook_handles {
+			handle
+				.kill(o)
+				.context("Failed to kill plugin sibling process")?;
+		}
+
+		Ok(result)
+	}
+
+	/// Kills the process early
+	pub fn kill(mut self, o: &mut impl MCVMOutput) -> anyhow::Result<()> {
+		for handle in self.hook_handles {
+			handle
+				.kill(o)
+				.context("Failed to kill plugin sibling process")?;
+		}
+		self.inner
+			.kill()
+			.context("Failed to kill inner instance handle")
+	}
+
+	/// Gets the internal child process for the game, consuming the
+	/// InstanceHandle
+	pub fn get_process(self) -> std::process::Child {
+		self.inner.get_process()
+	}
 }

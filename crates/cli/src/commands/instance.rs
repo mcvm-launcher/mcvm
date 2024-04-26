@@ -155,7 +155,7 @@ pub async fn launch(
 		ms_client_id: get_ms_client_id(),
 		offline_auth: offline,
 	};
-	let mut instance_handle = instance
+	let instance_handle = instance
 		.launch(
 			&data.paths,
 			&mut config.users,
@@ -181,7 +181,7 @@ pub async fn launch(
 			// Wait for the proxy to start up
 			tokio::time::sleep(Duration::from_secs(5)).await;
 			instance_handle
-				.wait()
+				.wait(&mut data.output)
 				.context("Failed to wait for instance child process")?;
 
 			Ok::<(), anyhow::Error>(())
@@ -191,7 +191,7 @@ pub async fn launch(
 	} else {
 		// Otherwise, just wait for the instance
 		instance_handle
-			.wait()
+			.wait(&mut data.output)
 			.context("Failed to wait for instance child process")?;
 	}
 
