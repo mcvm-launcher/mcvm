@@ -153,7 +153,7 @@ impl Index {
 	/// Create a new backup
 	pub fn create_backup(
 		&mut self,
-		kind: BackupKind,
+		source: BackupSource,
 		group_id: Option<&str>,
 		instance_dir: &Path,
 	) -> anyhow::Result<()> {
@@ -188,7 +188,7 @@ impl Index {
 		group_entry.backups.push(Entry {
 			id: backup_id,
 			date: now,
-			kind,
+			source,
 			storage_type: group_config.common.storage_type,
 		});
 
@@ -313,17 +313,20 @@ pub struct Entry {
 	/// The timestamp when the backup was created
 	pub date: u64,
 	/// What kind of backup this is
-	pub kind: BackupKind,
+	#[serde(alias = "kind")]
+	pub source: BackupSource,
 	/// How the backup is stored on the filesystem
 	pub storage_type: StorageType,
 }
 
-/// Type of a backup
+/// Where a backup was created from
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
-pub enum BackupKind {
+pub enum BackupSource {
 	/// A backup created by the user
 	User,
+	/// An automatically created backup
+	Auto,
 }
 
 /// Format for stored backups

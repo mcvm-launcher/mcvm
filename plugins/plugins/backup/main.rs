@@ -11,7 +11,7 @@ use mcvm_plugin::api::{CustomPlugin, HookContext};
 use mcvm_plugin::hooks;
 use mcvm_shared::id::InstanceRef;
 
-use crate::backup::BackupKind;
+use crate::backup::BackupSource;
 
 fn main() -> anyhow::Result<()> {
 	let mut plugin = CustomPlugin::new("backup")?;
@@ -158,7 +158,7 @@ fn create(
 		.join(inst_ref.profile.to_string())
 		.join(&inst_ref.instance.to_string());
 
-	index.create_backup(BackupKind::User, Some(group), &inst_dir)?;
+	index.create_backup(BackupSource::User, Some(group), &inst_dir)?;
 
 	index.finish()?;
 
