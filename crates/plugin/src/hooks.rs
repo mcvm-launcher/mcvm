@@ -30,6 +30,12 @@ pub trait Hook {
 		false
 	}
 
+	/// Get whether the hook should be waited on for a result.
+	/// If this is false, then no result will be collected from the hook
+	fn get_await() -> bool {
+		true
+	}
+
 	/// Call the hook using the specified program
 	fn call(
 		&self,
@@ -97,6 +103,12 @@ pub trait Hook {
 						o.end_section();
 					}
 				}
+			}
+
+			// Hooks that don't wait will just leave the process running in the background
+			// and we will return the default result
+			if !Self::get_await() {
+				return Ok(Self::Result::default());
 			}
 
 			let cmd_result = child.wait()?;
