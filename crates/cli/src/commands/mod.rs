@@ -254,10 +254,13 @@ async fn call_plugin_subcommand(args: Vec<String>, data: &mut CmdData) -> anyhow
 		bail!("Subcommand '{subcommand}' does not exist");
 	}
 
-	config
+	let results = config
 		.plugins
 		.call_hook(hooks::Subcommand, &args, &data.paths, &mut data.output)
 		.context("Plugin subcommand failed")?;
+	for result in results {
+		result.result(&mut data.output)?;
+	}
 
 	Ok(())
 }

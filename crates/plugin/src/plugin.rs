@@ -5,7 +5,7 @@ use mcvm_core::Paths;
 use mcvm_shared::{lang::translate::LanguageMap, output::MCVMOutput};
 use serde::{Deserialize, Deserializer};
 
-use crate::hooks::Hook;
+use crate::hooks::{Hook, HookHandle};
 
 /// A plugin
 #[derive(Debug)]
@@ -45,7 +45,7 @@ impl Plugin {
 		arg: &H::Arg,
 		paths: &Paths,
 		o: &mut impl MCVMOutput,
-	) -> anyhow::Result<Option<H::Result>> {
+	) -> anyhow::Result<Option<HookHandle<H>>> {
 		let Some(handler) = self.manifest.hooks.get(hook.get_name()) else {
 			return Ok(None);
 		};
@@ -53,16 +53,16 @@ impl Plugin {
 			HookHandler::Execute { executable, args } => hook
 				.call(executable, arg, args, self.custom_config.clone(), paths, o)
 				.map(Some),
-			HookHandler::Constant { constant } => {
-				Ok(Some(serde_json::from_value(constant.clone())?))
-			}
+			HookHandler::Constant { constant } => Ok(Some(HookHandle::constant(
+				serde_json::from_value(constant.clone())?,
+			))),
 			HookHandler::Native { function } => {
 				let arg = serde_json::to_string(arg)
 					.context("Failed to serialize native hook argument")?;
 				let result = function(arg).context("Native hook handler failed")?;
 				let result = serde_json::from_str(&result)
 					.context("Failed to deserialize native hook result")?;
-				Ok(Some(result))
+				Ok(Some(HookHandle::constant(result)))
 			}
 		}
 	}

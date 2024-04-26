@@ -197,10 +197,13 @@ impl UpdateManager {
 		core.get_users().steal_users(users);
 		core.get_users().set_offline(self.settings.offline_auth);
 		core.set_client(client.clone());
-		let additional_versions = plugins
+		let results = plugins
 			.call_hook(AddVersions, &(), paths, o)
 			.context("Failed to call add_versions hook")?;
-		core.add_additional_versions(additional_versions.into_iter().flatten().collect());
+		for result in results {
+			let result = result.result(o)?;
+			core.add_additional_versions(result);
+		}
 
 		self.core.fill(core);
 

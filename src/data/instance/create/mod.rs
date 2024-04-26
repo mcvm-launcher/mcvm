@@ -112,9 +112,12 @@ impl Instance {
 			version_info: manager.version_info.get_clone(),
 			custom_config: self.config.plugin_config.clone(),
 		};
-		plugins
+		let results = plugins
 			.call_hook(OnInstanceSetup, &arg, paths, o)
 			.context("Failed to call instance setup hook")?;
+		for result in results {
+			result.result(o)?;
+		}
 
 		// Make the core instance
 		let mut version = manager

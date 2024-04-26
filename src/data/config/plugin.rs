@@ -6,7 +6,7 @@ use mcvm_shared::output::MCVMOutput;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
-use mcvm_plugin::hooks::Hook;
+use mcvm_plugin::hooks::{Hook, HookHandle};
 use mcvm_plugin::plugin::{Plugin, PluginManifest};
 use mcvm_plugin::PluginManager as LoadedPluginManager;
 
@@ -149,7 +149,7 @@ impl PluginManager {
 		arg: &H::Arg,
 		paths: &Paths,
 		o: &mut impl MCVMOutput,
-	) -> anyhow::Result<Vec<H::Result>> {
+	) -> anyhow::Result<Vec<HookHandle<H>>> {
 		self.manager.call_hook(hook, arg, &paths.core, o)
 	}
 

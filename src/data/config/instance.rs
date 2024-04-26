@@ -465,6 +465,7 @@ pub fn read_instance_config(
 		.call_hook(ModifyInstanceConfig, &common.plugin_config, paths, o)
 		.context("Failed to apply plugin instance modifications")?;
 	for result in results {
+		let result = result.result(o)?;
 		common
 			.launch
 			.args

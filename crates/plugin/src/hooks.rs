@@ -1,6 +1,6 @@
 use std::{
-	io::{BufRead, BufReader},
-	process::Command,
+	io::{BufRead, BufReader, Lines},
+	process::{Child, ChildStdout, Command},
 };
 
 use anyhow::{bail, Context};
@@ -30,12 +30,6 @@ pub trait Hook {
 		false
 	}
 
-	/// Get whether the hook should be waited on for a result.
-	/// If this is false, then no result will be collected from the hook
-	fn get_await() -> bool {
-		true
-	}
-
 	/// Call the hook using the specified program
 	fn call(
 		&self,
@@ -45,7 +39,11 @@ pub trait Hook {
 		custom_config: Option<String>,
 		paths: &Paths,
 		o: &mut impl MCVMOutput,
-	) -> anyhow::Result<Self::Result> {
+	) -> anyhow::Result<HookHandle<Self>>
+	where
+		Self: Sized,
+	{
+		let _ = o;
 		let arg = serde_json::to_string(arg).context("Failed to serialize hook argument")?;
 		let mut cmd = Command::new(cmd);
 		cmd.args(additional_args);
@@ -62,70 +60,119 @@ pub trait Hook {
 		if Self::get_takes_over() {
 			cmd.spawn()?.wait()?;
 
-			Ok(Self::Result::default())
+			Ok(HookHandle::constant(Self::Result::default()))
 		} else {
 			cmd.stdout(std::process::Stdio::piped());
 
 			let mut child = cmd.spawn()?;
 
-			let stdout = child.stdout.as_mut().unwrap();
+			let stdout = child.stdout.take().unwrap();
 			let stdout_reader = BufReader::new(stdout);
 			let stdout_lines = stdout_reader.lines();
 
-			let mut result = None;
-			for line in stdout_lines {
-				let line = line?;
-				let action = OutputAction::deserialize(&line)
-					.context("Failed to deserialize plugin action")?;
-				match action {
-					OutputAction::SetResult(new_result) => {
-						result = Some(
-							serde_json::from_str(&new_result)
-								.context("Failed to deserialize hook result")?,
-						);
-					}
-					OutputAction::Text(text, level) => {
-						o.display_text(text, level);
-					}
-					OutputAction::Message(message) => {
-						o.display_message(message);
-					}
-					OutputAction::StartProcess => {
-						o.start_process();
-					}
-					OutputAction::EndProcess => {
-						o.end_process();
-					}
-					OutputAction::StartSection => {
-						o.start_section();
-					}
-					OutputAction::EndSection => {
-						o.end_section();
-					}
-				}
-			}
+			let handle = HookHandle {
+				inner: HookHandleInner::Process(child, stdout_lines, None),
+			};
 
-			// Hooks that don't wait will just leave the process running in the background
-			// and we will return the default result
-			if !Self::get_await() {
-				return Ok(Self::Result::default());
-			}
-
-			let cmd_result = child.wait()?;
-
-			if !cmd_result.success() {
-				if let Some(exit_code) = cmd_result.code() {
-					bail!("Hook returned a non-zero exit code of {}", exit_code);
-				} else {
-					bail!("Hook returned a non-zero exit code");
-				}
-			}
-
-			let result = result.context("Plugin hook did not return a result")?;
-
-			Ok(result)
+			Ok(handle)
 		}
 	}
+}
+
+/// Handle returned by running a hook. Make sure to await it if you need to.
+#[must_use]
+pub struct HookHandle<H: Hook> {
+	inner: HookHandleInner<H>,
+}
+
+impl<H: Hook> HookHandle<H> {
+	/// Create a new constant handle
+	pub fn constant(result: H::Result) -> Self {
+		Self {
+			inner: HookHandleInner::Constant(result),
+		}
+	}
+
+	/// Poll the handle, returning true if the handle is ready
+	pub fn poll(&mut self, o: &mut impl MCVMOutput) -> anyhow::Result<bool> {
+		match &mut self.inner {
+			HookHandleInner::Process(_, lines, result) => {
+				for line in lines {
+					let line = line?;
+					let action = OutputAction::deserialize(&line)
+						.context("Failed to deserialize plugin action")?;
+					match action {
+						OutputAction::SetResult(new_result) => {
+							*result = Some(
+								serde_json::from_str(&new_result)
+									.context("Failed to deserialize hook result")?,
+							);
+						}
+						OutputAction::Text(text, level) => {
+							o.display_text(text, level);
+						}
+						OutputAction::Message(message) => {
+							o.display_message(message);
+						}
+						OutputAction::StartProcess => {
+							o.start_process();
+						}
+						OutputAction::EndProcess => {
+							o.end_process();
+						}
+						OutputAction::StartSection => {
+							o.start_section();
+						}
+						OutputAction::EndSection => {
+							o.end_section();
+						}
+					}
+				}
+
+				Ok(true)
+			}
+			HookHandleInner::Constant(..) => Ok(true),
+		}
+	}
+
+	/// Get the result of the hook by waiting for it
+	pub fn result(mut self, o: &mut impl MCVMOutput) -> anyhow::Result<H::Result> {
+		if let HookHandleInner::Process(..) = &self.inner {
+			loop {
+				let result = self.poll(o)?;
+				if result {
+					break;
+				}
+			}
+		}
+
+		match self.inner {
+			HookHandleInner::Constant(result) => Ok(result),
+			HookHandleInner::Process(mut child, _, result) => {
+				let cmd_result = child.wait()?;
+
+				if !cmd_result.success() {
+					if let Some(exit_code) = cmd_result.code() {
+						bail!("Hook returned a non-zero exit code of {}", exit_code);
+					} else {
+						bail!("Hook returned a non-zero exit code");
+					}
+				}
+
+				let result = result.context("Plugin hook did not return a result")?;
+
+				Ok(result)
+			}
+		}
+	}
+}
+
+/// The inner value for a HookHandle
+enum HookHandleInner<H: Hook> {
+	/// A process hook
+	Process(Child, Lines<BufReader<ChildStdout>>, Option<H::Result>),
+	/// A constant result hook
+	Constant(H::Result),
 }
 
 macro_rules! def_hook {

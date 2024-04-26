@@ -5,7 +5,7 @@
 //! Rust plugins for MCVM to use
 
 use anyhow::Context;
-use hooks::{Hook, OnLoad};
+use hooks::{Hook, HookHandle, OnLoad};
 use mcvm_core::Paths;
 use mcvm_shared::output::MCVMOutput;
 use plugin::Plugin;
@@ -48,9 +48,12 @@ impl PluginManager {
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
 		// Call the on_load hook
-		plugin
+		let result = plugin
 			.call_hook(&OnLoad, &(), paths, o)
 			.context("Failed to call on_load hook of plugin")?;
+		if let Some(result) = result {
+			result.result(o)?;
+		}
 
 		self.plugins.push(plugin);
 
@@ -64,7 +67,7 @@ impl PluginManager {
 		arg: &H::Arg,
 		paths: &Paths,
 		o: &mut impl MCVMOutput,
-	) -> anyhow::Result<Vec<H::Result>> {
+	) -> anyhow::Result<Vec<HookHandle<H>>> {
 		let mut out = Vec::new();
 		for plugin in &self.plugins {
 			let result = plugin
