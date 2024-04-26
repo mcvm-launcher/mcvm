@@ -3,7 +3,7 @@ use std::{collections::HashMap, io::Cursor};
 use anyhow::Context;
 use zip::ZipArchive;
 
-static DOCS: &[u8] = include_bytes!("../zipped_docs.zip");
+static DOCS: &[u8] = include_bytes!("../../zipped_docs.zip");
 
 /// Manager struct for the stored docs
 pub struct Docs {

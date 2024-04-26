@@ -21,6 +21,10 @@ path = "plugins/backup/main.rs"
 name = "mcvm_plugin_options"
 path = "plugins/options/main.rs"
 
+[[bin]]
+name = "mcvm_plugin_docs"
+path = "plugins/docs/main.rs"
+
 [dependencies]
 anyhow = "1.0.70"
 clap = { version = "4.5.4", features = ["derive"] }
@@ -33,4 +37,8 @@ mcvm_options = { path = "../crates/options", version = "0.4.0" }
 rand = "0.8.5"
 serde = { version = "1.0.152", features = ["derive"] }
 serde_json = "1.0.91"
+termimad = "0.29.1"
+zip = "0.6.4"
+
+[build-dependencies]
 zip = "0.6.4"

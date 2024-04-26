@@ -4,7 +4,7 @@ use zip::{write::FileOptions, CompressionMethod, ZipWriter};
 
 macro_rules! add_file {
 	($zip:expr, $path:literal) => {
-		let path = concat!("../../docs/", $path);
+		let path = concat!("../docs/", $path);
 		$zip.start_file(
 			$path,
 			FileOptions::default().compression_method(CompressionMethod::Deflated),

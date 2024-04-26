@@ -1,6 +1,4 @@
 mod commands;
-#[cfg(feature = "docs")]
-mod docs;
 mod output;
 mod secrets;
 

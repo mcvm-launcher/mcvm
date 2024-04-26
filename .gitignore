@@ -3,4 +3,4 @@
 /target
 /.env
 /crates/tools/schemas
-/crates/cli/zipped_docs.zip
+/plugins/zipped_docs.zip

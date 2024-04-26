@@ -20,3 +20,10 @@ install.options: build.options
 
 build.options: plugins/options
 	@cargo build -r --bin mcvm_plugin_options
+
+install.docs: build.docs
+	@cargo install --path . --bin mcvm_plugin_docs --offline
+	@cp plugins/docs/plugin.json ~/.local/share/mcvm/plugins/docs.json
+
+build.docs: plugins/docs
+	@cargo build -r --bin mcvm_plugin_docs

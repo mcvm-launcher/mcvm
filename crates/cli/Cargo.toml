@@ -14,8 +14,6 @@ name = "mcvm"
 path = "src/main.rs"
 
 [features]
-default = ["docs"]
-docs = []
 
 [dependencies]
 anyhow = "1.0.70"
@@ -36,7 +34,4 @@ serde = { version = "1.0.152", features = ["derive", "rc"] }
 serde_json = "1.0.91"
 termimad = "0.29.1"
 tokio = { version = "1.37.0", features = ["macros", "fs", "rt-multi-thread"] }
-zip = "0.6.4"
-
-[build-dependencies]
 zip = "0.6.4"
