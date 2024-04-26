@@ -97,6 +97,7 @@ impl<H: Hook> HookHandle<H> {
 	pub fn poll(&mut self, o: &mut impl MCVMOutput) -> anyhow::Result<bool> {
 		match &mut self.inner {
 			HookHandleInner::Process(_, lines, result) => {
+				// TODO: Make this actually poll instead of just reading all the lines
 				for line in lines {
 					let line = line?;
 					let action = OutputAction::deserialize(&line)
@@ -160,6 +161,19 @@ impl<H: Hook> HookHandle<H> {
 				}
 
 				let result = result.context("Plugin hook did not return a result")?;
+
+				Ok(result)
+			}
+		}
+	}
+
+	/// Get the result of the hook by killing it
+	pub fn kill(self, o: &mut impl MCVMOutput) -> anyhow::Result<Option<H::Result>> {
+		let _ = o;
+		match self.inner {
+			HookHandleInner::Constant(result) => Ok(Some(result)),
+			HookHandleInner::Process(mut child, _, result) => {
+				child.kill()?;
 
 				Ok(result)
 			}
@@ -258,4 +272,28 @@ pub struct OnInstanceSetupArg {
 	pub version_info: VersionInfo,
 	/// Custom config on the instance
 	pub custom_config: serde_json::Map<String, serde_json::Value>,
+}
+
+def_hook!(
+	WhileInstanceLaunch,
+	"while_instance_launch",
+	"Hook for running sibling processes with an instance when it is launched",
+	WhileInstanceLaunchArg,
+	(),
+);
+
+/// Argument for the WhileInstanceLaunch hook
+#[derive(Serialize, Deserialize, Default)]
+#[serde(default)]
+pub struct WhileInstanceLaunchArg {
+	/// The side of the instance
+	pub side: Option<Side>,
+	/// Path to the instance's game dir
+	pub game_dir: String,
+	/// Version info for the instance
+	pub version_info: VersionInfo,
+	/// Custom config on the instance
+	pub custom_config: serde_json::Map<String, serde_json::Value>,
+	/// The PID of the instance process
+	pub pid: Option<u32>,
 }

@@ -11,7 +11,7 @@ use serde::de::DeserializeOwned;
 
 use crate::hooks::{
 	AddVersions, Hook, ModifyInstanceConfig, ModifyInstanceConfigResult, OnInstanceSetup,
-	OnInstanceSetupArg, OnLoad, Subcommand,
+	OnInstanceSetupArg, OnLoad, Subcommand, WhileInstanceLaunch, WhileInstanceLaunchArg,
 };
 use crate::output::OutputAction;
 
@@ -91,6 +91,14 @@ impl CustomPlugin {
 		f: impl FnOnce(HookContext<OnInstanceSetup>, OnInstanceSetupArg) -> anyhow::Result<()>,
 	) -> anyhow::Result<()> {
 		self.handle_hook::<OnInstanceSetup>(Self::get_hook_arg, f)
+	}
+
+	/// Bind to the while_instance_launch hook
+	pub fn while_instance_launch(
+		&mut self,
+		f: impl FnOnce(HookContext<WhileInstanceLaunch>, WhileInstanceLaunchArg) -> anyhow::Result<()>,
+	) -> anyhow::Result<()> {
+		self.handle_hook::<WhileInstanceLaunch>(Self::get_hook_arg, f)
 	}
 
 	/// Handle a hook
