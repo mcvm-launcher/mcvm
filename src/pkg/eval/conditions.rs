@@ -76,7 +76,7 @@ pub fn check_arch_condition(condition: &ArchCondition) -> bool {
 	if cfg!(target_arch = "x86") {
 		return condition == &ArchCondition::X86;
 	}
-	if cfg!(target_arch = "x86_86") {
+	if cfg!(target_arch = "x86_64") {
 		return condition == &ArchCondition::X86_64;
 	}
 	if cfg!(target_arch = "arm") {
