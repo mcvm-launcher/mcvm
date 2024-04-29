@@ -14,4 +14,5 @@ Just fork and make a PR, about as simple as that. Try to only work on the `dev` 
 - `/crates/shared`: Shared types and utils for all of the MCVM crates that can't really live anywhere else.
 - `/crates/options`: Generation of game options in a backwards-compatible manner.
 - `/crates/tools`: A command line utility that uses MCVM to do certain tasks, mostly relating to generating files.
+- `/plugins`: Standard plugins that MCVM provides
 - `/tools`: Some assorted scripts and tools to help development.
