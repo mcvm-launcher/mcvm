@@ -1,3 +1,5 @@
+use std::path::Path;
+
 use crate::io::files::paths::Paths;
 use anyhow::Context;
 use mcvm_core::io::{json_from_file, json_to_file_pretty};
@@ -106,6 +108,7 @@ impl PluginManager {
 		plugin: PluginConfig,
 		manifest: PluginManifest,
 		paths: &Paths,
+		plugin_dir: Option<&Path>,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
 		let custom_config = plugin.custom_config.clone();
@@ -114,6 +117,9 @@ impl PluginManager {
 		let mut plugin = Plugin::new(id, manifest);
 		if let Some(custom_config) = custom_config {
 			plugin.set_custom_config(custom_config)?;
+		}
+		if let Some(plugin_dir) = plugin_dir {
+			plugin.set_working_dir(plugin_dir.to_owned());
 		}
 
 		self.manager.add_plugin(plugin, &paths.core, o)?;
@@ -130,14 +136,15 @@ impl PluginManager {
 	) -> anyhow::Result<()> {
 		// Get the path for the manifest
 		let path = paths.plugins.join(format!("{}.json", plugin.id));
-		let path = if path.exists() {
-			path
+		let (path, plugin_dir) = if path.exists() {
+			(path, None)
 		} else {
-			paths.plugins.join(&plugin.id).join("plugin.json")
+			let dir = paths.plugins.join(&plugin.id);
+			(dir.join("plugin.json"), Some(dir))
 		};
 		let manifest = json_from_file(path).context("Failed to read plugin manifest from file")?;
 
-		self.add_plugin(plugin, manifest, paths, o)?;
+		self.add_plugin(plugin, manifest, paths, plugin_dir.as_deref(), o)?;
 
 		Ok(())
 	}

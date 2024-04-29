@@ -1,4 +1,4 @@
-use std::{collections::HashMap, fmt::Debug};
+use std::{collections::HashMap, fmt::Debug, path::PathBuf};
 
 use anyhow::Context;
 use mcvm_core::Paths;
@@ -16,6 +16,8 @@ pub struct Plugin {
 	manifest: PluginManifest,
 	/// The custom config for the plugin, serialized from JSON
 	custom_config: Option<String>,
+	/// The working directory for the plugin
+	working_dir: Option<PathBuf>,
 }
 
 impl Plugin {
@@ -25,6 +27,7 @@ impl Plugin {
 			id,
 			manifest,
 			custom_config: None,
+			working_dir: None,
 		}
 	}
 
@@ -51,7 +54,15 @@ impl Plugin {
 		};
 		match handler {
 			HookHandler::Execute { executable, args } => hook
-				.call(executable, arg, args, self.custom_config.clone(), paths, o)
+				.call(
+					executable,
+					arg,
+					args,
+					self.working_dir.as_deref(),
+					self.custom_config.clone(),
+					paths,
+					o,
+				)
 				.map(Some),
 			HookHandler::Constant { constant } => Ok(Some(HookHandle::constant(
 				serde_json::from_value(constant.clone())?,
@@ -73,6 +84,11 @@ impl Plugin {
 			serde_json::to_string(&config).context("Failed to serialize custom plugin config")?;
 		self.custom_config = Some(serialized);
 		Ok(())
+	}
+
+	/// Set the working dir of the plugin
+	pub fn set_working_dir(&mut self, dir: PathBuf) {
+		self.working_dir = Some(dir);
 	}
 }
 

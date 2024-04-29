@@ -105,7 +105,7 @@ impl ConfigBuilder {
 		paths: &Paths,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
-		self.plugins.add_plugin(plugin, manifest, paths, o)
+		self.plugins.add_plugin(plugin, manifest, paths, None, o)
 	}
 
 	/// Finishes the builder

@@ -1,5 +1,6 @@
 use std::{
 	io::{BufRead, BufReader, Lines},
+	path::Path,
 	process::{Child, ChildStdout, Command},
 };
 
@@ -36,6 +37,7 @@ pub trait Hook {
 		cmd: &str,
 		arg: &Self::Arg,
 		additional_args: &[String],
+		working_dir: Option<&Path>,
 		custom_config: Option<String>,
 		paths: &Paths,
 		o: &mut impl MCVMOutput,
@@ -56,6 +58,9 @@ pub trait Hook {
 		}
 		cmd.env("MCVM_DATA_DIR", &paths.data);
 		cmd.env("MCVM_CONFIG_DIR", &paths.project.config_dir());
+		if let Some(working_dir) = working_dir {
+			cmd.current_dir(working_dir);
+		}
 
 		if Self::get_takes_over() {
 			cmd.spawn()?.wait()?;
