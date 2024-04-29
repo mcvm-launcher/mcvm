@@ -1,13 +1,24 @@
 use std::io::{BufRead, BufReader, Lines};
+use std::ops::Deref;
 use std::path::Path;
 use std::process::{Child, ChildStdout, Command};
+use std::sync::{Arc, Mutex};
 
-use anyhow::{bail, Context};
+use anyhow::{anyhow, bail, Context};
 use mcvm_core::{net::game_files::version_manifest::VersionEntry, Paths};
 use mcvm_shared::{output::MCVMOutput, versions::VersionInfo, Side};
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 
 use crate::output::OutputAction;
+
+/// The environment variable for custom config passed to a hook
+pub static CUSTOM_CONFIG_ENV: &str = "MCVM_CUSTOM_CONFIG";
+/// The environment variable for the data directory passed to a hook
+pub static DATA_DIR_ENV: &str = "MCVM_DATA_DIR";
+/// The environment variable for the config directory passed to a hook
+pub static CONFIG_DIR_ENV: &str = "MCVM_CONFIG_DIR";
+/// The environment variable for the plugin state passed to a hook
+pub static PLUGIN_STATE_ENV: &str = "MCVM_PLUGIN_STATE";
 
 /// Trait for a hook that can be called
 pub trait Hook {
@@ -37,6 +48,7 @@ pub trait Hook {
 		additional_args: &[String],
 		working_dir: Option<&Path>,
 		custom_config: Option<String>,
+		state: Arc<Mutex<serde_json::Value>>,
 		paths: &Paths,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<HookHandle<Self>>
@@ -52,12 +64,21 @@ pub trait Hook {
 
 		// Set up environment
 		if let Some(custom_config) = custom_config {
-			cmd.env("MCVM_CUSTOM_CONFIG", custom_config);
+			cmd.env(CUSTOM_CONFIG_ENV, custom_config);
 		}
-		cmd.env("MCVM_DATA_DIR", &paths.data);
-		cmd.env("MCVM_CONFIG_DIR", &paths.project.config_dir());
+		cmd.env(DATA_DIR_ENV, &paths.data);
+		cmd.env(CONFIG_DIR_ENV, &paths.project.config_dir());
 		if let Some(working_dir) = working_dir {
 			cmd.current_dir(working_dir);
+		}
+		{
+			let lock = state.lock().map_err(|x| anyhow!("{x}"))?;
+			// Don't send null state to improve performance
+			if !lock.is_null() {
+				let state = serde_json::to_string(lock.deref())
+					.context("Failed to serialize plugin state")?;
+				cmd.env(PLUGIN_STATE_ENV, state);
+			}
 		}
 
 		if Self::get_takes_over() {
@@ -75,6 +96,7 @@ pub trait Hook {
 
 			let handle = HookHandle {
 				inner: HookHandleInner::Process(child, stdout_lines, None),
+				plugin_state: Some(state),
 			};
 
 			Ok(handle)
@@ -86,6 +108,7 @@ pub trait Hook {
 #[must_use]
 pub struct HookHandle<H: Hook> {
 	inner: HookHandleInner<H>,
+	plugin_state: Option<Arc<Mutex<serde_json::Value>>>,
 }
 
 impl<H: Hook> HookHandle<H> {
@@ -93,6 +116,7 @@ impl<H: Hook> HookHandle<H> {
 	pub fn constant(result: H::Result) -> Self {
 		Self {
 			inner: HookHandleInner::Constant(result),
+			plugin_state: None,
 		}
 	}
 
@@ -111,6 +135,13 @@ impl<H: Hook> HookHandle<H> {
 								serde_json::from_str(&new_result)
 									.context("Failed to deserialize hook result")?,
 							);
+						}
+						OutputAction::SetState(new_state) => {
+							let state = self.plugin_state.as_mut().context(
+								"Hook handle does not have a reference to persistent state",
+							)?;
+							let mut lock = state.lock().map_err(|x| anyhow!("{x}"))?;
+							*lock = new_state;
 						}
 						OutputAction::Text(text, level) => {
 							o.display_text(text, level);

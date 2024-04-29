@@ -1,4 +1,8 @@
-use std::{collections::HashMap, fmt::Debug, path::PathBuf};
+use std::collections::HashMap;
+use std::fmt::Debug;
+use std::path::PathBuf;
+use std::sync::Arc;
+use std::sync::Mutex;
 
 use anyhow::Context;
 use mcvm_core::Paths;
@@ -18,6 +22,8 @@ pub struct Plugin {
 	custom_config: Option<String>,
 	/// The working directory for the plugin
 	working_dir: Option<PathBuf>,
+	/// The persistent state of the plugin
+	state: Arc<Mutex<serde_json::Value>>,
 }
 
 impl Plugin {
@@ -28,6 +34,7 @@ impl Plugin {
 			manifest,
 			custom_config: None,
 			working_dir: None,
+			state: Arc::new(Mutex::new(serde_json::Value::Null)),
 		}
 	}
 
@@ -60,6 +67,7 @@ impl Plugin {
 					args,
 					self.working_dir.as_deref(),
 					self.custom_config.clone(),
+					self.state.clone(),
 					paths,
 					o,
 				)

@@ -8,7 +8,7 @@ use std::path::PathBuf;
 use anyhow::Context;
 use serde::de::DeserializeOwned;
 
-use crate::hooks::Hook;
+use crate::hooks::{Hook, CONFIG_DIR_ENV, CUSTOM_CONFIG_ENV, DATA_DIR_ENV, PLUGIN_STATE_ENV};
 use crate::output::OutputAction;
 
 use self::output::PluginOutput;
@@ -48,7 +48,7 @@ impl CustomPlugin {
 		let mut args = std::env::args();
 		args.nth(0);
 		let hook = args.nth(0).context("Missing hook to run")?;
-		let custom_config = std::env::var("MCVM_CUSTOM_CONFIG").ok();
+		let custom_config = std::env::var(CUSTOM_CONFIG_ENV).ok();
 		let ctx = StoredHookContext {
 			custom_config,
 			output: PluginOutput::new(),
@@ -91,12 +91,15 @@ impl CustomPlugin {
 	) -> anyhow::Result<()> {
 		if self.hook == H::get_name_static() {
 			let arg = arg(self)?;
+			let mut state = None;
 			let ctx = HookContext {
 				ctx: &mut self.ctx,
+				state: &mut state,
 				_h: PhantomData,
 			};
 			let result = f(ctx, arg)?;
 			if !H::get_takes_over() {
+				// Output result
 				let serialized = serde_json::to_string(&result)?;
 				let action = OutputAction::SetResult(serialized);
 				println!(
@@ -105,6 +108,17 @@ impl CustomPlugin {
 						.serialize()
 						.context("Failed to serialize hook result")?
 				);
+
+				// Output state
+				if let Some(state) = state {
+					let action = OutputAction::SetState(state);
+					println!(
+						"{}",
+						action
+							.serialize()
+							.context("Failed to serialize new hook state")?
+					);
+				}
 			}
 			Ok(())
 		} else {
@@ -128,6 +142,7 @@ struct StoredHookContext {
 /// Argument passed to every hook
 pub struct HookContext<'ctx, H: Hook> {
 	ctx: &'ctx mut StoredHookContext,
+	state: &'ctx mut Option<serde_json::Value>,
 	_h: PhantomData<H>,
 }
 
@@ -144,12 +159,25 @@ impl<'ctx, H: Hook> HookContext<'ctx, H> {
 
 	/// Get the mcvm data directory path
 	pub fn get_data_dir(&self) -> anyhow::Result<PathBuf> {
-		get_env_path("MCVM_DATA_DIR").context("Failed to get directory from environment variable")
+		get_env_path(DATA_DIR_ENV).context("Failed to get directory from environment variable")
 	}
 
 	/// Get the mcvm config directory path
 	pub fn get_config_dir(&self) -> anyhow::Result<PathBuf> {
-		get_env_path("MCVM_CONFIG_DIR").context("Failed to get directory from environment variable")
+		get_env_path(CONFIG_DIR_ENV).context("Failed to get directory from environment variable")
+	}
+
+	/// Get the persistent plugin state, kept the same for this entire hook handler
+	pub fn get_persistent_state(&mut self) -> Option<&mut serde_json::Value> {
+		match &mut self.state {
+			Some(val) => Some(val),
+			self_state @ None => {
+				let state = std::env::var(PLUGIN_STATE_ENV).ok()?;
+				let state = serde_json::from_str(&state).ok()?;
+				**self_state = Some(state);
+				self_state.as_mut()
+			}
+		}
 	}
 }
 

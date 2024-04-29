@@ -21,6 +21,8 @@ pub enum OutputAction {
 	EndSection,
 	/// Set the result of the hook
 	SetResult(String),
+	/// Set the persistent state of the plugin
+	SetState(serde_json::Value),
 }
 
 impl OutputAction {
