@@ -89,7 +89,7 @@ Properties like `features` and `modrinth_id` can only be used in the `@propertie
 - `community {link}`: Set a Discord / forum link.
 - `icon {link}`: Set a link to a small square icon image.
 - `banner {link}`: Set a link to a large background / banner image.
-- `gallery {link}`: Set links to gallery images.
+- `gallery {link1} {link2} ...`: Set links to gallery images.
 - `license {license}`: Set the project license.
 - `keywords {keyword1} {keyword2} ...`: Set the package keywords.
 - `categories {category1} {category2} ...`: Set the package categories.
