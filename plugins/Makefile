@@ -1,4 +1,4 @@
-install: install.args install.backup install.options
+install: install.args install.backup install.options install.docs
 
 install.args: build.args
 	@cargo install --path . --bin mcvm_plugin_args --offline
