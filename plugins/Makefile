@@ -1,4 +1,4 @@
-install: install.args install.backup install.options install.docs
+install: install.args install.backup install.options install.docs install.stats
 
 install.args: build.args
 	@cargo install --path . --bin mcvm_plugin_args --offline
@@ -27,3 +27,10 @@ install.docs: build.docs
 
 build.docs: plugins/docs
 	@cargo build -r --bin mcvm_plugin_docs
+
+install.stats: build.stats
+	@cargo install --path . --bin mcvm_plugin_stats --offline
+	@cp plugins/stats/plugin.json ~/.local/share/mcvm/plugins/stats.json
+
+build.stats: plugins/stats
+	@cargo build -r --bin mcvm_plugin_stats

@@ -1,0 +1,12 @@
+{
+	"name": "Stats",
+	"description": "Track and view playtime stats",
+	"hooks": {
+		"subcommand": {
+			"executable": "mcvm_plugin_stats"
+		}
+	},
+	"subcommands": {
+		"stats": "View playtime stats"
+	}
+}
