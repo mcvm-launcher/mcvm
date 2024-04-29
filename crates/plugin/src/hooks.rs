@@ -1,8 +1,6 @@
-use std::{
-	io::{BufRead, BufReader, Lines},
-	path::Path,
-	process::{Child, ChildStdout, Command},
-};
+use std::io::{BufRead, BufReader, Lines};
+use std::path::Path;
+use std::process::{Child, ChildStdout, Command};
 
 use anyhow::{bail, Context};
 use mcvm_core::{net::game_files::version_manifest::VersionEntry, Paths};

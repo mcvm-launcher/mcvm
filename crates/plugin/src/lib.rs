@@ -1,7 +1,7 @@
 #![warn(missing_docs)]
 #![deny(unsafe_code)]
 
-//! This library is used by both MCVM to load plugins, and as a framework for definining
+//! This library is used by both MCVM to load plugins, and as a framework for defining
 //! Rust plugins for MCVM to use
 
 use anyhow::Context;
@@ -10,7 +10,7 @@ use mcvm_core::Paths;
 use mcvm_shared::output::MCVMOutput;
 use plugin::Plugin;
 
-/// API for Rust-based plugins to use to define plugins
+/// API for Rust-based plugins to use
 #[cfg(feature = "api")]
 pub mod api;
 /// Plugin hooks and their definitions
