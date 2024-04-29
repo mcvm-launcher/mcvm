@@ -293,6 +293,14 @@ def_hook!(
 	(),
 );
 
+def_hook!(
+	OnInstanceStop,
+	"on_instance_stop",
+	"Hook for doing work when an instance is stopped gracefully",
+	InstanceLaunchArg,
+	(),
+);
+
 /// Argument for the OnInstanceLaunch and WhileInstanceLaunch hooks
 #[derive(Serialize, Deserialize, Default)]
 #[serde(default)]

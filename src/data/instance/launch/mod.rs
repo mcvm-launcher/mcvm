@@ -6,7 +6,9 @@ use mcvm_core::io::java::args::MemoryNum;
 use mcvm_core::io::java::install::JavaInstallationKind;
 use mcvm_core::user::UserManager;
 use mcvm_core::util::versions::MinecraftVersion;
-use mcvm_plugin::hooks::{HookHandle, InstanceLaunchArg, OnInstanceLaunch, WhileInstanceLaunch};
+use mcvm_plugin::hooks::{
+	HookHandle, InstanceLaunchArg, OnInstanceLaunch, OnInstanceStop, WhileInstanceLaunch,
+};
 use mcvm_shared::lang::translate::TranslationKey;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::translate;
@@ -106,6 +108,7 @@ impl Instance {
 		let handle = InstanceHandle {
 			inner: handle,
 			hook_handles,
+			hook_arg,
 		};
 
 		Ok(handle)
@@ -155,13 +158,22 @@ pub struct WrapperCommand {
 
 /// A handle for an instance
 pub struct InstanceHandle {
+	/// Core InstanceHandle with the process
 	inner: mcvm_core::InstanceHandle,
+	/// Handles for hooks running while the instance is running
 	hook_handles: Vec<HookHandle<WhileInstanceLaunch>>,
+	/// Arg to pass to the stop hook when the instance is stopped
+	hook_arg: InstanceLaunchArg,
 }
 
 impl InstanceHandle {
 	/// Waits for the process to complete
-	pub fn wait(mut self, o: &mut impl MCVMOutput) -> anyhow::Result<std::process::ExitStatus> {
+	pub fn wait(
+		mut self,
+		plugins: &PluginManager,
+		paths: &Paths,
+		o: &mut impl MCVMOutput,
+	) -> anyhow::Result<std::process::ExitStatus> {
 		let result = self.inner.wait()?;
 		// Kill any sibling processes now that the main one is complete
 		for handle in self.hook_handles {
@@ -170,11 +182,18 @@ impl InstanceHandle {
 				.context("Failed to kill plugin sibling process")?;
 		}
 
+		Self::call_stop_hooks(&self.hook_arg, plugins, paths, o)?;
+
 		Ok(result)
 	}
 
 	/// Kills the process early
-	pub fn kill(mut self, o: &mut impl MCVMOutput) -> anyhow::Result<()> {
+	pub fn kill(
+		mut self,
+		plugins: &PluginManager,
+		paths: &Paths,
+		o: &mut impl MCVMOutput,
+	) -> anyhow::Result<()> {
 		for handle in self.hook_handles {
 			handle
 				.kill(o)
@@ -182,12 +201,32 @@ impl InstanceHandle {
 		}
 		self.inner
 			.kill()
-			.context("Failed to kill inner instance handle")
+			.context("Failed to kill inner instance handle")?;
+
+		Self::call_stop_hooks(&self.hook_arg, plugins, paths, o)?;
+
+		Ok(())
 	}
 
 	/// Gets the internal child process for the game, consuming the
 	/// InstanceHandle
 	pub fn get_process(self) -> std::process::Child {
 		self.inner.get_process()
+	}
+
+	/// Calls on stop hooks
+	fn call_stop_hooks(
+		arg: &InstanceLaunchArg,
+		plugins: &PluginManager,
+		paths: &Paths,
+		o: &mut impl MCVMOutput,
+	) -> anyhow::Result<()> {
+		let results = plugins
+			.call_hook(OnInstanceStop, arg, paths, o)
+			.context("Failed to call on stop hook")?;
+		for result in results {
+			result.result(o)?;
+		}
+		Ok(())
 	}
 }

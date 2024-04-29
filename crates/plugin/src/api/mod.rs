@@ -81,6 +81,7 @@ impl CustomPlugin {
 		"while_instance_launch",
 		WhileInstanceLaunch
 	);
+	hook_interface!(on_instance_stop, "on_instance_stop", OnInstanceStop);
 
 	/// Handle a hook
 	fn handle_hook<H: Hook>(

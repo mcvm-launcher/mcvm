@@ -178,10 +178,11 @@ pub async fn launch(
 		};
 
 		let instance = async move {
+			let config = data.config.get();
 			// Wait for the proxy to start up
 			tokio::time::sleep(Duration::from_secs(5)).await;
 			instance_handle
-				.wait(&mut data.output)
+				.wait(&config.plugins, &data.paths, &mut data.output)
 				.context("Failed to wait for instance child process")?;
 
 			Ok::<(), anyhow::Error>(())
@@ -191,7 +192,7 @@ pub async fn launch(
 	} else {
 		// Otherwise, just wait for the instance
 		instance_handle
-			.wait(&mut data.output)
+			.wait(&config.plugins, &data.paths, &mut data.output)
 			.context("Failed to wait for instance child process")?;
 	}
 
