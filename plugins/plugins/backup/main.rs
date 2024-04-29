@@ -83,11 +83,11 @@ fn main() -> anyhow::Result<()> {
 		}
 
 		if creating_backups {
-			ctx.get_output().end_process();
 			ctx.get_output().display(
 				MessageContents::Success("Backups created".into()),
 				MessageLevel::Important,
 			);
+			ctx.get_output().end_process();
 		}
 
 		index.finish()?;
