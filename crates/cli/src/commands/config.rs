@@ -29,8 +29,10 @@ pub async fn edit(data: &mut CmdData) -> anyhow::Result<()> {
 /// Run the text editor on the user's system
 fn edit_text(path: PathBuf) -> anyhow::Result<()> {
 	#[cfg(target_family = "unix")]
-	let mut command =
-		Command::new(std::env::var("EDITOR").context("Failed to get editor environment variable")?);
+	let mut command = {
+		let editor = std::env::var("EDITOR").unwrap_or_else(|_| "vim".into());
+		Command::new(editor)
+	};
 	#[cfg(target_os = "windows")]
 	let mut command = Command::new("notepad");
 	#[cfg(target_os = "macos")]
