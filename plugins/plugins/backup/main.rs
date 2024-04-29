@@ -1,7 +1,7 @@
 mod backup;
 
 use std::collections::HashMap;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 use anyhow::Context;
 use backup::{get_backup_directory, BackupAutoHook, Config, Index, DEFAULT_GROUP};
@@ -54,43 +54,16 @@ fn main() -> anyhow::Result<()> {
 		Ok(())
 	})?;
 
-	plugin.on_instance_launch(|mut ctx, arg| {
-		let inst_ref =
-			InstanceRef::parse(arg.inst_ref.clone()).context("Failed to parse instance ref")?;
-		let mut index = get_index(&ctx, &inst_ref)?;
+	plugin.on_instance_launch(|ctx, arg| {
 		let inst_dir = PathBuf::from(&arg.dir);
-		let groups = index.config.groups.clone();
+		check_auto_hook(ctx, BackupAutoHook::OnLaunch, &arg.inst_ref, &inst_dir)?;
 
-		let creating_backups = groups
-			.values()
-			.any(|x| matches!(x.on, Some(BackupAutoHook::OnLaunch)));
+		Ok(())
+	})?;
 
-		if creating_backups {
-			ctx.get_output().start_process();
-			ctx.get_output().display(
-				MessageContents::StartProcess("Creating backups".into()),
-				MessageLevel::Important,
-			);
-		}
-
-		for (group_id, group) in groups {
-			if let Some(on) = &group.on {
-				#[allow(irrefutable_let_patterns)]
-				if let BackupAutoHook::OnLaunch = on {
-					index.create_backup(BackupSource::Auto, Some(&group_id), &inst_dir)?;
-				}
-			}
-		}
-
-		if creating_backups {
-			ctx.get_output().display(
-				MessageContents::Success("Backups created".into()),
-				MessageLevel::Important,
-			);
-			ctx.get_output().end_process();
-		}
-
-		index.finish()?;
+	plugin.on_instance_stop(|ctx, arg| {
+		let inst_dir = PathBuf::from(&arg.dir);
+		check_auto_hook(ctx, BackupAutoHook::OnStop, &arg.inst_ref, &inst_dir)?;
 
 		Ok(())
 	})?;
@@ -299,4 +272,49 @@ fn get_backup_config<H: Hook>(
 		serde_json::from_str(config).context("Failed to deserialize custom config")?;
 	let config = config.remove(&instance.to_string()).unwrap_or_default();
 	Ok(config)
+}
+
+fn check_auto_hook<H: Hook>(
+	mut ctx: HookContext<'_, H>,
+	hook: BackupAutoHook,
+	instance: &str,
+	inst_dir: &Path,
+) -> anyhow::Result<()> {
+	let inst_ref =
+		InstanceRef::parse(instance.to_string()).context("Failed to parse instance ref")?;
+	let mut index = get_index(&ctx, &inst_ref)?;
+	let groups = index.config.groups.clone();
+
+	let creating_backups = groups
+		.values()
+		.any(|x| matches!(x.on, Some(x) if x == hook));
+
+	if creating_backups {
+		ctx.get_output().start_process();
+		ctx.get_output().display(
+			MessageContents::StartProcess("Creating backups".into()),
+			MessageLevel::Important,
+		);
+	}
+
+	for (group_id, group) in groups {
+		if let Some(on) = &group.on {
+			#[allow(irrefutable_let_patterns)]
+			if on == &hook {
+				index.create_backup(BackupSource::Auto, Some(&group_id), inst_dir)?;
+			}
+		}
+	}
+
+	if creating_backups {
+		ctx.get_output().display(
+			MessageContents::Success("Backups created".into()),
+			MessageLevel::Important,
+		);
+		ctx.get_output().end_process();
+	}
+
+	index.finish()?;
+
+	Ok(())
 }
