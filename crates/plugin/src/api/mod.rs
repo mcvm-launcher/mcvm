@@ -10,8 +10,8 @@ use mcvm_core::net::game_files::version_manifest::VersionEntry;
 use serde::de::DeserializeOwned;
 
 use crate::hooks::{
-	AddVersions, Hook, ModifyInstanceConfig, ModifyInstanceConfigResult, OnInstanceSetup,
-	OnInstanceSetupArg, OnLoad, Subcommand, WhileInstanceLaunch, WhileInstanceLaunchArg,
+	AddVersions, Hook, InstanceLaunchArg, ModifyInstanceConfig, ModifyInstanceConfigResult,
+	OnInstanceLaunch, OnInstanceSetup, OnInstanceSetupArg, OnLoad, Subcommand, WhileInstanceLaunch,
 };
 use crate::output::OutputAction;
 
@@ -93,10 +93,18 @@ impl CustomPlugin {
 		self.handle_hook::<OnInstanceSetup>(Self::get_hook_arg, f)
 	}
 
+	/// Bind to the on_instance_launch hook
+	pub fn on_instance_launch(
+		&mut self,
+		f: impl FnOnce(HookContext<OnInstanceLaunch>, InstanceLaunchArg) -> anyhow::Result<()>,
+	) -> anyhow::Result<()> {
+		self.handle_hook::<OnInstanceLaunch>(Self::get_hook_arg, f)
+	}
+
 	/// Bind to the while_instance_launch hook
 	pub fn while_instance_launch(
 		&mut self,
-		f: impl FnOnce(HookContext<WhileInstanceLaunch>, WhileInstanceLaunchArg) -> anyhow::Result<()>,
+		f: impl FnOnce(HookContext<WhileInstanceLaunch>, InstanceLaunchArg) -> anyhow::Result<()>,
 	) -> anyhow::Result<()> {
 		self.handle_hook::<WhileInstanceLaunch>(Self::get_hook_arg, f)
 	}

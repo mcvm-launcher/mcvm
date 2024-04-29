@@ -280,17 +280,25 @@ pub struct OnInstanceSetupArg {
 }
 
 def_hook!(
-	WhileInstanceLaunch,
-	"while_instance_launch",
-	"Hook for running sibling processes with an instance when it is launched",
-	WhileInstanceLaunchArg,
+	OnInstanceLaunch,
+	"on_instance_launch",
+	"Hook for doing work before an instance is launched",
+	InstanceLaunchArg,
 	(),
 );
 
-/// Argument for the WhileInstanceLaunch hook
+def_hook!(
+	WhileInstanceLaunch,
+	"while_instance_launch",
+	"Hook for running sibling processes with an instance when it is launched",
+	InstanceLaunchArg,
+	(),
+);
+
+/// Argument for the OnInstanceLaunch and WhileInstanceLaunch hooks
 #[derive(Serialize, Deserialize, Default)]
 #[serde(default)]
-pub struct WhileInstanceLaunchArg {
+pub struct InstanceLaunchArg {
 	/// The side of the instance
 	pub side: Option<Side>,
 	/// Path to the instance's game dir

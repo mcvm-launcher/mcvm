@@ -6,7 +6,7 @@ use mcvm_core::io::java::args::MemoryNum;
 use mcvm_core::io::java::install::JavaInstallationKind;
 use mcvm_core::user::UserManager;
 use mcvm_core::util::versions::MinecraftVersion;
-use mcvm_plugin::hooks::{HookHandle, WhileInstanceLaunch, WhileInstanceLaunchArg};
+use mcvm_plugin::hooks::{HookHandle, InstanceLaunchArg, OnInstanceLaunch, WhileInstanceLaunch};
 use mcvm_shared::lang::translate::TranslationKey;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::translate;
@@ -57,6 +57,14 @@ impl Instance {
 			.context("Failed to update instance")?;
 		manager.add_result(result);
 
+		let hook_arg = InstanceLaunchArg {
+			side: Some(self.get_side()),
+			game_dir: self.dirs.get().game_dir.to_string_lossy().into(),
+			version_info: manager.version_info.get_clone(),
+			custom_config: self.config.plugin_config.clone(),
+			pid: None,
+		};
+
 		let mut installed_version = manager
 			.get_core_version(o)
 			.await
@@ -74,20 +82,24 @@ impl Instance {
 			MessageContents::Success(translate!(o, Launch)),
 			MessageLevel::Important,
 		);
+
+		// Run pre-launch hooks
+		let results = plugins
+			.call_hook(OnInstanceLaunch, &hook_arg, paths, o)
+			.context("Failed to call on launch hook")?;
+		for result in results {
+			result.result(o)?;
+		}
+
 		// Launch the instance using core
 		let handle = instance
 			.launch_with_handle(o)
 			.await
 			.context("Failed to launch core instance")?;
-		let arg = WhileInstanceLaunchArg {
-			side: Some(self.get_side()),
-			game_dir: self.dirs.get().game_dir.to_string_lossy().into(),
-			version_info: manager.version_info.get_clone(),
-			custom_config: self.config.plugin_config.clone(),
-			pid: None,
-		};
+
+		// Run while_instance_launch hooks alongside
 		let hook_handles = plugins
-			.call_hook(WhileInstanceLaunch, &arg, paths, o)
+			.call_hook(WhileInstanceLaunch, &hook_arg, paths, o)
 			.context("Failed to call while launch hook")?;
 		let handle = InstanceHandle {
 			inner: handle,
