@@ -107,6 +107,7 @@ impl Instance {
 		// Run plugin setup hooks
 		self.ensure_dirs(paths)?;
 		let arg = OnInstanceSetupArg {
+			inst_ref: self.get_inst_ref().to_string(),
 			side: Some(self.get_side()),
 			game_dir: self.dirs.get().game_dir.to_string_lossy().to_string(),
 			version_info: manager.version_info.get_clone(),

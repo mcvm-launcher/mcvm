@@ -298,6 +298,8 @@ def_hook!(
 #[derive(Serialize, Deserialize, Default)]
 #[serde(default)]
 pub struct OnInstanceSetupArg {
+	/// The instance ref of the instance
+	pub inst_ref: String,
 	/// The side of the instance
 	pub side: Option<Side>,
 	/// Path to the instance's game dir
