@@ -4,11 +4,12 @@ use std::collections::HashMap;
 use std::path::PathBuf;
 
 use anyhow::Context;
-use backup::{get_backup_directory, Config, Index, DEFAULT_GROUP};
+use backup::{get_backup_directory, BackupAutoHook, Config, Index, DEFAULT_GROUP};
 use clap::Parser;
 use color_print::cprintln;
 use mcvm_plugin::api::{CustomPlugin, HookContext};
-use mcvm_plugin::hooks;
+use mcvm_plugin::api::{MCVMOutput, MessageContents, MessageLevel};
+use mcvm_plugin::hooks::{self, Hook};
 use mcvm_shared::id::InstanceRef;
 
 use crate::backup::BackupSource;
@@ -49,6 +50,47 @@ fn main() -> anyhow::Result<()> {
 			} => info(&ctx, &instance, group.as_deref(), &backup),
 		};
 		result?;
+
+		Ok(())
+	})?;
+
+	plugin.on_instance_launch(|mut ctx, arg| {
+		let inst_ref =
+			InstanceRef::parse(arg.inst_ref.clone()).context("Failed to parse instance ref")?;
+		let mut index = get_index(&ctx, &inst_ref)?;
+		let inst_dir = PathBuf::from(&arg.dir);
+		let groups = index.config.groups.clone();
+
+		let creating_backups = groups
+			.values()
+			.any(|x| matches!(x.on, Some(BackupAutoHook::OnLaunch)));
+
+		if creating_backups {
+			ctx.get_output().start_process();
+			ctx.get_output().display(
+				MessageContents::StartProcess("Creating backups".into()),
+				MessageLevel::Important,
+			);
+		}
+
+		for (group_id, group) in groups {
+			if let Some(on) = &group.on {
+				#[allow(irrefutable_let_patterns)]
+				if let BackupAutoHook::OnLaunch = on {
+					index.create_backup(BackupSource::Auto, Some(&group_id), &inst_dir)?;
+				}
+			}
+		}
+
+		if creating_backups {
+			ctx.get_output().end_process();
+			ctx.get_output().display(
+				MessageContents::Success("Backups created".into()),
+				MessageLevel::Important,
+			);
+		}
+
+		index.finish()?;
 
 		Ok(())
 	})?;
@@ -237,23 +279,20 @@ fn info(
 	Ok(())
 }
 
-fn get_index(
-	ctx: &HookContext<'_, hooks::Subcommand>,
-	inst_ref: &InstanceRef,
-) -> anyhow::Result<Index> {
+fn get_index<H: Hook>(ctx: &HookContext<'_, H>, inst_ref: &InstanceRef) -> anyhow::Result<Index> {
 	let dir = get_backup_directory(&get_backups_dir(ctx)?, inst_ref);
 	Index::open(&dir, inst_ref.clone(), &get_backup_config(inst_ref, ctx)?)
 }
 
-fn get_backups_dir(ctx: &HookContext<'_, hooks::Subcommand>) -> anyhow::Result<PathBuf> {
+fn get_backups_dir<H: Hook>(ctx: &HookContext<'_, H>) -> anyhow::Result<PathBuf> {
 	let dir = ctx.get_data_dir()?.join("backups");
 	std::fs::create_dir_all(&dir)?;
 	Ok(dir)
 }
 
-fn get_backup_config(
+fn get_backup_config<H: Hook>(
 	instance: &InstanceRef,
-	ctx: &HookContext<'_, hooks::Subcommand>,
+	ctx: &HookContext<'_, H>,
 ) -> anyhow::Result<Config> {
 	let config = ctx.get_custom_config().unwrap_or("{}");
 	let mut config: HashMap<String, Config> =

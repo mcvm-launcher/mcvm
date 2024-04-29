@@ -78,7 +78,11 @@ pub struct CommonConfig {
 
 /// When a backup should be automatically created
 #[derive(Serialize, Deserialize, Clone, Debug)]
-pub enum BackupAutoHook {}
+#[serde(rename_all = "snake_case")]
+pub enum BackupAutoHook {
+	/// Create a backup whenever the instance is launched
+	OnLaunch,
+}
 
 /// Index for the backups of an instance
 pub struct Index {

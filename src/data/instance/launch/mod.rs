@@ -58,7 +58,9 @@ impl Instance {
 		manager.add_result(result);
 
 		let hook_arg = InstanceLaunchArg {
+			inst_ref: self.get_inst_ref().to_string(),
 			side: Some(self.get_side()),
+			dir: self.dirs.get().inst_dir.to_string_lossy().into(),
 			game_dir: self.dirs.get().game_dir.to_string_lossy().into(),
 			version_info: manager.version_info.get_clone(),
 			custom_config: self.config.plugin_config.clone(),

@@ -297,8 +297,12 @@ def_hook!(
 #[derive(Serialize, Deserialize, Default)]
 #[serde(default)]
 pub struct InstanceLaunchArg {
+	/// The instance ref of the instance
+	pub inst_ref: String,
 	/// The side of the instance
 	pub side: Option<Side>,
+	/// Path to the instance's dir
+	pub dir: String,
 	/// Path to the instance's game dir
 	pub game_dir: String,
 	/// Version info for the instance
