@@ -6,13 +6,9 @@ use std::marker::PhantomData;
 use std::path::PathBuf;
 
 use anyhow::Context;
-use mcvm_core::net::game_files::version_manifest::VersionEntry;
 use serde::de::DeserializeOwned;
 
-use crate::hooks::{
-	AddVersions, Hook, InstanceLaunchArg, ModifyInstanceConfig, ModifyInstanceConfigResult,
-	OnInstanceLaunch, OnInstanceSetup, OnInstanceSetupArg, OnLoad, Subcommand, WhileInstanceLaunch,
-};
+use crate::hooks::Hook;
 use crate::output::OutputAction;
 
 use self::output::PluginOutput;
@@ -24,6 +20,26 @@ pub struct CustomPlugin {
 	args: Args,
 	hook: String,
 	ctx: StoredHookContext,
+}
+
+macro_rules! hook_interface {
+	($name:ident, $name2:literal, $hook:ident, $arg:expr) => {
+		/// Bind to the subcommand hook
+		#[doc = concat!("Bind to the ", $name2, " hook")]
+		pub fn $name(
+			&mut self,
+			f: impl FnOnce(
+				HookContext<$crate::hooks::$hook>,
+				<$crate::hooks::$hook as Hook>::Arg,
+			) -> anyhow::Result<<$crate::hooks::$hook as Hook>::Result>,
+		) -> anyhow::Result<()> {
+			self.handle_hook::<$crate::hooks::$hook>($arg, f)
+		}
+	};
+
+	($name:ident, $name2:literal, $hook:ident) => {
+		hook_interface!($name, $name2, $hook, Self::get_hook_arg);
+	};
 }
 
 impl CustomPlugin {
@@ -50,64 +66,21 @@ impl CustomPlugin {
 		&self.name
 	}
 
-	/// Bind to the on_load hook
-	pub fn on_load(
-		&mut self,
-		f: impl FnOnce(HookContext<OnLoad>, ()) -> anyhow::Result<()>,
-	) -> anyhow::Result<()> {
-		self.handle_hook::<OnLoad>(|_| Ok(()), f)
-	}
-
-	/// Bind to the subcommand hook
-	pub fn subcommand(
-		&mut self,
-		f: impl FnOnce(HookContext<Subcommand>, Vec<String>) -> anyhow::Result<()>,
-	) -> anyhow::Result<()> {
-		self.handle_hook::<Subcommand>(Self::get_hook_arg, f)
-	}
-
-	/// Bind to the modify_instance_config hook
-	pub fn modify_instance_config(
-		&mut self,
-		f: impl FnOnce(
-			HookContext<ModifyInstanceConfig>,
-			serde_json::Map<String, serde_json::Value>,
-		) -> anyhow::Result<ModifyInstanceConfigResult>,
-	) -> anyhow::Result<()> {
-		self.handle_hook::<ModifyInstanceConfig>(Self::get_hook_arg, f)
-	}
-
-	/// Bind to the add_versions hook
-	pub fn add_versions(
-		&mut self,
-		f: impl FnOnce(HookContext<AddVersions>, ()) -> anyhow::Result<Vec<VersionEntry>>,
-	) -> anyhow::Result<()> {
-		self.handle_hook::<AddVersions>(Self::get_hook_arg, f)
-	}
-
-	/// Bind to the on_instance_setup hook
-	pub fn on_instance_setup(
-		&mut self,
-		f: impl FnOnce(HookContext<OnInstanceSetup>, OnInstanceSetupArg) -> anyhow::Result<()>,
-	) -> anyhow::Result<()> {
-		self.handle_hook::<OnInstanceSetup>(Self::get_hook_arg, f)
-	}
-
-	/// Bind to the on_instance_launch hook
-	pub fn on_instance_launch(
-		&mut self,
-		f: impl FnOnce(HookContext<OnInstanceLaunch>, InstanceLaunchArg) -> anyhow::Result<()>,
-	) -> anyhow::Result<()> {
-		self.handle_hook::<OnInstanceLaunch>(Self::get_hook_arg, f)
-	}
-
-	/// Bind to the while_instance_launch hook
-	pub fn while_instance_launch(
-		&mut self,
-		f: impl FnOnce(HookContext<WhileInstanceLaunch>, InstanceLaunchArg) -> anyhow::Result<()>,
-	) -> anyhow::Result<()> {
-		self.handle_hook::<WhileInstanceLaunch>(Self::get_hook_arg, f)
-	}
+	hook_interface!(on_load, "on_load", OnLoad, |_| Ok(()));
+	hook_interface!(subcommand, "subcommand", Subcommand);
+	hook_interface!(
+		modify_instance_config,
+		"modify_instance_config",
+		ModifyInstanceConfig
+	);
+	hook_interface!(add_versions, "add_versions", AddVersions);
+	hook_interface!(on_instance_setup, "on_instance_setup", OnInstanceSetup);
+	hook_interface!(on_instance_launch, "on_instance_launch", OnInstanceLaunch);
+	hook_interface!(
+		while_instance_launch,
+		"while_instance_launch",
+		WhileInstanceLaunch
+	);
 
 	/// Handle a hook
 	fn handle_hook<H: Hook>(
