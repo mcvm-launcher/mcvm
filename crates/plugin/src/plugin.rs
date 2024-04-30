@@ -108,6 +108,8 @@ pub struct PluginManifest {
 	pub name: Option<String>,
 	/// The short description of the plugin
 	pub description: Option<String>,
+	/// The MCVM version this plugin is for
+	pub mcvm_version: Option<String>,
 	/// The hook handlers for the plugin
 	pub hooks: HashMap<String, HookHandler>,
 	/// The lanugage map the plugin provides
