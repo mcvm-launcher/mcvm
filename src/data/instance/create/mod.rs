@@ -313,11 +313,9 @@ impl InstanceDirs {
 
 	/// Make sure the directories exist
 	pub fn ensure_exist(&self) -> anyhow::Result<()> {
-		mcvm_core::io::files::create_leading_dirs(&self.inst_dir)?;
-		mcvm_core::io::files::create_dir(&self.inst_dir)
-			.context("Failed to create instance directory")?;
-		mcvm_core::io::files::create_dir(&self.game_dir)
-			.context("Failed to create game directory")?;
+		std::fs::create_dir_all(&self.inst_dir).context("Failed to create instance directory")?;
+		std::fs::create_dir_all(&self.game_dir)
+			.context("Failed to create instance game directory")?;
 		Ok(())
 	}
 }

@@ -19,9 +19,7 @@ impl Instance {
 		version_info: &VersionInfo,
 	) -> anyhow::Result<()> {
 		self.ensure_dirs(paths)?;
-		let game_dir = &self.dirs.get().game_dir;
-		mcvm_core::io::files::create_leading_dirs(game_dir)?;
-		mcvm_core::io::files::create_dir(game_dir)?;
+
 		for path in self
 			.get_linked_addon_paths(addon, selected_worlds, paths, version_info)
 			.context("Failed to get linked directory")?
