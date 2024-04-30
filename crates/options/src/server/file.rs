@@ -6,6 +6,7 @@ use anyhow::Context;
 use itertools::Itertools;
 
 use crate::read::read_options_file;
+use crate::{match_key, match_key_int};
 use mcvm_shared::util::ToInt;
 use mcvm_shared::versions::{VersionInfo, VersionPattern};
 
@@ -73,6 +74,7 @@ fn write_datapacks(datapacks: &[String]) -> String {
 const WORLD_NAME_KEY: &str = "level-name";
 
 /// Write server options to a list of keys
+#[rustfmt::skip]
 pub fn create_keys(
 	options: &ServerOptions,
 	version_info: &VersionInfo,
@@ -81,74 +83,25 @@ pub fn create_keys(
 
 	let after_18w42a = VersionPattern::After("18w42a".into()).matches_info(version_info);
 
-	if let Some(value) = options.allow_flight {
-		out.insert("allow-flight".into(), value.to_string());
-	}
-	if let Some(value) = options.world.allow_nether {
-		out.insert("allow-nether".into(), value.to_string());
-	}
-	if let Some(value) = options.broadcast_console_to_ops {
-		out.insert("broadcast-console-to-ops".into(), value.to_string());
-	}
-	if let Some(value) = options.broadcast_rcon_to_ops {
-		out.insert("broadcast-rcon-to-ops".into(), value.to_string());
-	}
-	if let Some(value) = &options.difficulty {
-		out.insert(
-			"difficulty".into(),
-			if after_18w42a {
-				value.to_string()
-			} else {
-				value.to_int().to_string()
-			},
-		);
-	}
-	if let Some(value) = options.allow_command_blocks {
-		out.insert("enable-command-block".into(), value.to_string());
-	}
-	if let Some(value) = options.jmx_monitoring {
-		out.insert("enable-jmx-monitoring".into(), value.to_string());
-	}
-	if let Some(value) = options.rcon.enable {
-		out.insert("enable-rcon".into(), value.to_string());
-	}
-	if let Some(value) = options.enable_status {
-		out.insert("enable-status".into(), value.to_string());
-	}
-	if let Some(value) = options.query.enable {
-		out.insert("enable-query".into(), value.to_string());
-	}
-	if let Some(value) = options.enforce_secure_profile {
-		out.insert("enforce-secure-profile".into(), value.to_string());
-	}
-	if let Some(value) = options.whitelist.enforce {
-		out.insert("enforce-whitelist".into(), value.to_string());
-	}
-	if let Some(value) = options.entity_broadcast_range {
-		out.insert(
-			"entity-broadcast-range-percentage".into(),
-			value.to_string(),
-		);
-	}
-	if let Some(value) = options.gamemode.force {
-		out.insert("force-gamemode".into(), value.to_string());
-	}
-	if let Some(value) = options.datapacks.function_permission_level {
-		out.insert("function-permission-level".into(), value.to_string());
-	}
-	if let Some(value) = &options.gamemode.default {
-		out.insert(
-			"gamemode".into(),
-			if after_18w42a {
-				value.to_string()
-			} else {
-				value.to_int().to_string()
-			},
-		);
-	}
-	if let Some(value) = options.world.structures {
-		out.insert("generate-structures".into(), value.to_string());
-	}
+	match_key!(out, options.allow_flight, "allow-flight");
+	match_key!(out, options.world.allow_nether, "allow-nether");
+	match_key!(out, options.broadcast_console_to_ops, "broadcast-console-to-ops");
+	match_key!(out, options.broadcast_rcon_to_ops, "broadcast-rcon-to-ops");
+	match_key!(out, &options.difficulty, "difficulty", after_18w42a);
+	match_key_int!(out, &options.difficulty, "difficulty", !after_18w42a);
+	match_key!(out, options.allow_command_blocks, "enable-command-block");
+	match_key!(out, options.jmx_monitoring, "enable-jmx-monitoring");
+	match_key!(out, options.rcon.enable, "enable-rcon");
+	match_key!(out, options.enable_status, "enable-status");
+	match_key!(out, options.query.enable, "enable-query");
+	match_key!(out, options.enforce_secure_profile, "enforce-secure-profile");
+	match_key!(out, options.whitelist.enforce, "enforce-whitelist");
+	match_key!( out, options.entity_broadcast_range, "entity-broadcast-range-percentage");
+	match_key!(out, options.gamemode.force, "force-gamemode");
+	match_key!( out, options.datapacks.function_permission_level, "function-permission-level");
+	match_key!(out, &options.gamemode.default, "gamemode", after_18w42a);
+	match_key_int!(out, &options.gamemode.default, "gamemode", !after_18w42a);
+	match_key!(out, options.world.structures, "generate-structures");
 	if let Some(value) = &options.world.generator_settings {
 		out.insert(
 			"generator-settings".into(),
@@ -156,123 +109,50 @@ pub fn create_keys(
 				.context("Failed to convert generator settings to a string")?,
 		);
 	}
-	if let Some(value) = options.hardcore {
-		out.insert("hardcore".into(), value.to_string());
-	}
-	if let Some(value) = options.hide_online_players {
-		out.insert("hide-online-players".into(), value.to_string());
-	}
+	match_key!(out, options.hardcore, "hardcore");
+	match_key!(out, options.hide_online_players, "hide-online-players");
 	if let Some(value) = &options.datapacks.initial_disabled {
 		out.insert("initial-disabled-packs".into(), write_datapacks(value));
 	}
 	if let Some(value) = &options.datapacks.initial_enabled {
 		out.insert("initial-enabled-packs".into(), write_datapacks(value));
 	}
-	if let Some(value) = &options.world.name {
-		out.insert(WORLD_NAME_KEY.into(), value.clone());
-	}
-	if let Some(value) = &options.world.seed {
-		out.insert("level-seed".into(), value.clone());
-	}
-	if let Some(value) = &options.world.r#type {
-		out.insert("level-type".into(), value.to_string());
-	}
-	if let Some(value) = options.max_chained_neighbor_updates {
-		out.insert("max-chained-neighbor-updates".into(), value.to_string());
-	}
-	if let Some(value) = options.max_players {
-		out.insert("max-players".into(), value.to_string());
-	}
-	if let Some(value) = options.max_tick_time {
-		out.insert("max-tick-time".into(), value.to_string());
-	}
-	if let Some(value) = options.world.max_build_height {
-		out.insert("max-build-height".into(), value.to_string());
-	}
-	if let Some(value) = options.world.max_size {
-		out.insert("max-world-size".into(), value.to_string());
-	}
-	if let Some(value) = &options.motd {
-		out.insert("motd".into(), value.clone());
-	}
-	if let Some(value) = &options.network_compression_threshold {
-		out.insert(
-			"network-compression-threshold".into(),
-			value.to_int().to_string(),
-		);
-	}
+	match_key!(out, &options.world.name, WORLD_NAME_KEY);
+	match_key!(out, &options.world.seed, "level-seed");
+	match_key!(out, &options.world.r#type, "level-type");
+	match_key!( out, options.max_chained_neighbor_updates, "max-chained-neighbor-updates");
+	match_key!(out, options.max_players, "max-players");
+	match_key!(out, options.max_tick_time, "max-tick-time");
+	match_key!(out, options.world.max_build_height, "max-build-height");
+	match_key!(out, options.world.max_size, "max-world-size");
+	match_key!(out, &options.motd, "motd");
+	match_key_int!( out, &options.network_compression_threshold, "network-compression-threshold");
 	if let Some(value) = options.offline_mode {
 		out.insert("online-mode".into(), (!value).to_string());
 	}
-	if let Some(value) = options.op_permission_level {
-		out.insert("op-permission-level".into(), value.to_string());
-	}
-	if let Some(value) = options.player_idle_timeout {
-		out.insert("player-idle-timeout".into(), value.to_string());
-	}
-	if let Some(value) = options.prevent_proxy_connections {
-		out.insert("prevent-proxy-connections".into(), value.to_string());
-	}
-	if let Some(value) = options.enable_chat_preview {
-		out.insert("previews-chat".into(), value.to_string());
-	}
-	if let Some(value) = options.enable_pvp {
-		out.insert("pvp".into(), value.to_string());
-	}
-	if let Some(value) = options.query.port {
-		out.insert("query.port".into(), value.to_string());
-	}
-	if let Some(value) = options.rate_limit {
-		out.insert("rate-limit".into(), value.to_string());
-	}
-	if let Some(value) = &options.rcon.password {
-		out.insert("rcon.password".into(), value.clone());
-	}
-	if let Some(value) = options.rcon.port {
-		out.insert("rcon.port".into(), value.to_string());
-	}
-	if let Some(value) = &options.resource_pack.uri {
-		out.insert("resource-pack".into(), value.clone());
-	}
-	if let Some(value) = &options.resource_pack.prompt {
-		out.insert("resource-pack-prompt".into(), value.clone());
-	}
-	if let Some(value) = options.resource_pack.required {
-		out.insert("require-resource-pack".into(), value.to_string());
-	}
-	if let Some(value) = &options.ip {
-		out.insert("server-ip".into(), value.clone());
-	}
-	if let Some(value) = options.port {
-		out.insert("server-port".into(), value.to_string());
-	}
-	if let Some(value) = options.simulation_distance {
-		out.insert("simulation-distance".into(), value.to_string());
-	}
-	if let Some(value) = options.enable_snooper {
-		out.insert("snooper-enabled".into(), value.to_string());
-	}
-	if let Some(value) = options.spawn_animals {
-		out.insert("spawn-animals".into(), value.to_string());
-	}
-	if let Some(value) = options.spawn_monsters {
-		out.insert("spawn-monsters".into(), value.to_string());
-	}
-	if let Some(value) = options.spawn_npcs {
-		out.insert("spawn-npcs".into(), value.to_string());
-	}
-	if let Some(value) = options.spawn_protection {
-		out.insert("spawn-protection".into(), value.to_string());
-	}
-	if let Some(value) = options.use_native_transport {
-		out.insert("use-native-transport".into(), value.to_string());
-	}
-	if let Some(value) = options.view_distance {
-		out.insert("view-distance".into(), value.to_string());
-	}
-	if let Some(value) = options.whitelist.enable {
-		out.insert("white-list".into(), value.to_string());
-	}
+	match_key!(out, options.op_permission_level, "op-permission-level");
+	match_key!(out, options.player_idle_timeout, "player-idle-timeout");
+	match_key!( out, options.prevent_proxy_connections, "prevent-proxy-connections");
+	match_key!(out, options.enable_chat_preview, "previews-chat");
+	match_key!(out, options.enable_pvp, "pvp");
+	match_key!(out, options.query.port, "query.port");
+	match_key!(out, options.rate_limit, "rate-limit");
+	match_key!(out, &options.rcon.password, "rcon.password");
+	match_key!(out, options.rcon.port, "rcon.port");
+	match_key!(out, &options.resource_pack.uri, "resource-pack");
+	match_key!(out, &options.resource_pack.prompt, "resource-pack-prompt");
+	match_key!( out, &options.resource_pack.required, "require-resource-pack");
+	match_key!(out, &options.ip, "server-ip");
+	match_key!(out, options.port, "server-port");
+	match_key!(out, options.simulation_distance, "simulation-distance");
+	match_key!(out, options.enable_snooper, "snooper-enabled");
+	match_key!(out, options.spawn_animals, "spawn-animals");
+	match_key!(out, options.spawn_monsters, "spawn-monsters");
+	match_key!(out, options.spawn_npcs, "spawn-npcs");
+	match_key!(out, options.spawn_protection, "spawn-protection");
+	match_key!(out, options.use_native_transport, "use-native-transport");
+	match_key!(out, options.view_distance, "view-distance");
+	match_key!(out, options.whitelist.enable, "white-list");
 
 	let custom_clone = options.custom.clone();
 	out.extend(custom_clone);

@@ -49,3 +49,35 @@ pub fn read_options(path: &Path) -> anyhow::Result<Option<Options>> {
 		parse_options(&mut file).context("Failed to read options")?,
 	))
 }
+
+
+macro_rules! match_key {
+	($out:ident, $option:expr, $key:expr) => {
+		if let Some(value) = $option {
+			$out.insert($key.into(), value.to_string());
+		}
+	};
+
+	($out:ident, $option:expr, $key:expr, $version:expr) => {
+		if $version {
+			match_key!($out, $option, $key)
+		}
+	};
+}
+
+macro_rules! match_key_int {
+	($out:ident, $option:expr, $key:expr) => {
+		if let Some(value) = $option {
+			$out.insert($key.into(), value.to_int().to_string());
+		}
+	};
+
+	($out:ident, $option:expr, $key:expr, $version:expr) => {
+		if $version {
+			match_key_int!($out, $option, $key)
+		}
+	};
+}
+
+pub(crate) use match_key;
+pub(crate) use match_key_int;

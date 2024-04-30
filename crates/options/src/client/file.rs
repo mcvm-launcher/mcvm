@@ -7,6 +7,7 @@ use anyhow::Context;
 use itertools::Itertools;
 
 use crate::read::{read_options_file, EnumOrNumber};
+use crate::{match_key, match_key_int};
 use mcvm_shared::util::ToInt;
 
 use mcvm_shared::versions::{VersionInfo, VersionPattern};
@@ -103,34 +104,6 @@ fn convert_fov(fov: u8) -> f32 {
 /// Converts mouse sensitivity from the 0-200% integer value to 0-1
 fn convert_mouse_sensitivity(sensitivity: i16) -> f32 {
 	(sensitivity as f32) / 2.0 / 100.0
-}
-
-macro_rules! match_key {
-	($out:ident, $option:expr, $key:expr) => {
-		if let Some(value) = $option {
-			$out.insert($key.into(), value.to_string());
-		}
-	};
-
-	($out:ident, $option:expr, $key:expr, $version:expr) => {
-		if $version {
-			match_key!($out, $option, $key)
-		}
-	};
-}
-
-macro_rules! match_key_int {
-	($out:ident, $option:expr, $key:expr) => {
-		if let Some(value) = $option {
-			$out.insert($key.into(), value.to_int().to_string());
-		}
-	};
-
-	($out:ident, $option:expr, $key:expr, $version:expr) => {
-		if $version {
-			match_key_int!($out, $option, $key)
-		}
-	};
 }
 
 macro_rules! match_keybind {
