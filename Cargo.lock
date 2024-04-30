@@ -1453,6 +1453,7 @@ dependencies = [
  "clap",
  "color-print",
  "glob",
+ "itertools",
  "mcvm_core",
  "mcvm_options",
  "mcvm_plugin",

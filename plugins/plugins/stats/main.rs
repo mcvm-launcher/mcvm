@@ -1,8 +1,10 @@
+use std::cmp::Reverse;
 use std::{collections::HashMap, path::PathBuf};
 
 use anyhow::Context;
 use clap::Parser;
 use color_print::cprintln;
+use itertools::Itertools;
 use mcvm_core::io::{json_from_file, json_to_file};
 use mcvm_plugin::api::{CustomPlugin, HookContext};
 use mcvm_plugin::hooks::{Hook, Subcommand};
@@ -79,7 +81,22 @@ struct Cli {}
 
 fn print_stats(ctx: HookContext<'_, Subcommand>) -> anyhow::Result<()> {
 	let stats = Stats::open(&ctx).context("Failed to open stats")?;
-	for (instance, stats) in stats.instances {
+
+	#[derive(PartialEq, Eq, PartialOrd, Ord)]
+	struct Ordering {
+		launches: Reverse<u32>,
+		playtime: Reverse<u64>,
+		instance_id: String,
+	}
+
+	for (instance, stats) in stats
+		.instances
+		.into_iter()
+		.sorted_by_key(|(inst_id, stats)| Ordering {
+			launches: Reverse(stats.launches),
+			playtime: Reverse(stats.playtime),
+			instance_id: inst_id.clone(),
+		}) {
 		cprintln!(
 			"<k!> - </><b,s>{instance}</> - Launched <m>{}</> times for a total of <m!>{}</>",
 			stats.launches,
