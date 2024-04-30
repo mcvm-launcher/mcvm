@@ -4,10 +4,9 @@ use anyhow::Context;
 use clap::Parser;
 use color_print::cprintln;
 use mcvm_core::io::{json_from_file, json_to_file};
-use mcvm_plugin::{
-	api::{CustomPlugin, HookContext},
-	hooks::{Hook, Subcommand},
-};
+use mcvm_plugin::api::{CustomPlugin, HookContext};
+use mcvm_plugin::hooks::{Hook, Subcommand};
+use mcvm_shared::util::utc_timestamp;
 use serde::{Deserialize, Serialize};
 
 fn main() -> anyhow::Result<()> {
@@ -27,13 +26,46 @@ fn main() -> anyhow::Result<()> {
 		Ok(())
 	})?;
 
-	plugin.on_instance_launch(|ctx, arg| {
+	plugin.on_instance_launch(|mut ctx, arg| {
 		let mut stats = Stats::open(&ctx).context("Failed to open stats")?;
+
+		// Write launch count
 		stats
 			.instances
 			.entry(arg.inst_ref.clone())
 			.or_default()
 			.launches += 1;
+		stats.write(&ctx).context("Failed to write stats")?;
+
+		// Track when the instance started in persistent state to get playtime
+		let state = ctx
+			.get_persistent_state(HashMap::<String, u64>::new())
+			.context("Failed to get persistent state")?;
+		let mut state: HashMap<String, u64> = serde_json::from_value(state.clone())?;
+		state.insert(arg.inst_ref.clone(), utc_timestamp()?);
+		ctx.set_persistent_state(state)
+			.context("Failed to set persistent state")?;
+
+		Ok(())
+	})?;
+
+	plugin.on_instance_stop(|mut ctx, arg| {
+		let state = ctx
+			.get_persistent_state(HashMap::<String, u64>::new())
+			.context("Failed to get persistent state")?;
+		let state: HashMap<String, u64> = serde_json::from_value(state.clone())?;
+		let Some(start_time) = state.get(&arg.inst_ref) else {
+			return Ok(());
+		};
+		let now = utc_timestamp()?;
+		let diff_minutes = (now - start_time) / 60;
+
+		let mut stats = Stats::open(&ctx).context("Failed to open stats")?;
+		stats
+			.instances
+			.entry(arg.inst_ref.clone())
+			.or_default()
+			.playtime += diff_minutes;
 		stats.write(&ctx).context("Failed to write stats")?;
 
 		Ok(())

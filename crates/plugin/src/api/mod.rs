@@ -7,6 +7,7 @@ use std::path::PathBuf;
 
 use anyhow::Context;
 use serde::de::DeserializeOwned;
+use serde::Serialize;
 
 use crate::hooks::{Hook, CONFIG_DIR_ENV, CUSTOM_CONFIG_ENV, DATA_DIR_ENV, PLUGIN_STATE_ENV};
 use crate::output::OutputAction;
@@ -167,17 +168,31 @@ impl<'ctx, H: Hook> HookContext<'ctx, H> {
 		get_env_path(CONFIG_DIR_ENV).context("Failed to get directory from environment variable")
 	}
 
-	/// Get the persistent plugin state, kept the same for this entire hook handler
-	pub fn get_persistent_state(&mut self) -> Option<&mut serde_json::Value> {
+	/// Get the persistent plugin state, kept the same for this entire hook handler,
+	/// along with a default state
+	pub fn get_persistent_state(
+		&mut self,
+		default: impl Serialize,
+	) -> anyhow::Result<&mut serde_json::Value> {
 		match &mut self.state {
-			Some(val) => Some(val),
+			Some(val) => Ok(val),
 			self_state @ None => {
-				let state = std::env::var(PLUGIN_STATE_ENV).ok()?;
-				let state = serde_json::from_str(&state).ok()?;
-				**self_state = Some(state);
-				self_state.as_mut()
+				if let Ok(state) = std::env::var(PLUGIN_STATE_ENV) {
+					**self_state = Some(serde_json::from_str(&state)?);
+				} else {
+					**self_state = Some(serde_json::to_value(default)?);
+				};
+				Ok(self_state.as_mut().expect("We just set it man"))
 			}
 		}
+	}
+
+	/// Set the persistent plugin state
+	pub fn set_persistent_state(&mut self, state: impl Serialize) -> anyhow::Result<()> {
+		let state = serde_json::to_value(state)?;
+		*self.state = Some(state);
+
+		Ok(())
 	}
 }
 
