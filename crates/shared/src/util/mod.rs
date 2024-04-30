@@ -169,22 +169,26 @@ impl ToInt for bool {
 // Command for opening links
 cfg_match! {
 	target_os = "linux" => {
-		const URL_OPEN_CMD: &str = "xdg-open";
+		const URL_OPEN_CMD: Option<&str> = Some("xdg-open");
 	}
 	target_os = "windows" => {
-		const URL_OPEN_CMD: &str = "start";
+		const URL_OPEN_CMD: Option<&str> = Some("start");
 	}
 	target_os = "macos" => {
-		const URL_OPEN_CMD: &str = "open";
+		const URL_OPEN_CMD: Option<&str> = Some("open");
 	}
 	_ => {
-		compile_error!("Target operating system is unsupported")
+		const URL_OPEN_CMD: Option<&str> = None;
 	}
 }
 
 /// Attempt to open a link on the user's computer
 pub fn open_link(link: &str) -> anyhow::Result<()> {
-	Command::new(URL_OPEN_CMD)
+	let Some(cmd) = URL_OPEN_CMD else {
+		return Ok(());
+	};
+
+	Command::new(cmd)
 		.arg(link)
 		.stderr(Stdio::null())
 		.stdout(Stdio::null())
