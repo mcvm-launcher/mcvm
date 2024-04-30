@@ -106,13 +106,13 @@ fn convert_mouse_sensitivity(sensitivity: i16) -> f32 {
 }
 
 macro_rules! match_key {
-	($out:ident, $option:expr, $key:literal) => {
+	($out:ident, $option:expr, $key:expr) => {
 		if let Some(value) = $option {
 			$out.insert($key.into(), value.to_string());
 		}
 	};
 
-	($out:ident, $option:expr, $key:literal, $version:expr) => {
+	($out:ident, $option:expr, $key:expr, $version:expr) => {
 		if $version {
 			match_key!($out, $option, $key)
 		}
@@ -120,13 +120,13 @@ macro_rules! match_key {
 }
 
 macro_rules! match_key_int {
-	($out:ident, $option:expr, $key:literal) => {
+	($out:ident, $option:expr, $key:expr) => {
 		if let Some(value) = $option {
 			$out.insert($key.into(), value.to_int().to_string());
 		}
 	};
 
-	($out:ident, $option:expr, $key:literal, $version:expr) => {
+	($out:ident, $option:expr, $key:expr, $version:expr) => {
 		if $version {
 			match_key_int!($out, $option, $key)
 		}
@@ -134,13 +134,13 @@ macro_rules! match_key_int {
 }
 
 macro_rules! match_keybind {
-	($out:ident, $option:expr, $key:literal, $before_1_13:expr) => {
+	($out:ident, $option:expr, $key:expr, $before_1_13:expr) => {
 		if let Some(value) = $option {
 			$out.insert($key.into(), value.get_keycode($before_1_13));
 		}
 	};
 
-	($out:ident, $option:expr, $key:literal, $before_1_13:expr, $version:expr) => {
+	($out:ident, $option:expr, $key:expr, $before_1_13:expr, $version:expr) => {
 		if $version {
 			match_keybind!($out, $option, $key, $before_1_13)
 		}
@@ -233,9 +233,7 @@ pub fn create_keys(
 	match_key!(out, options.video.simulation_distance, "simulationDistance", after_21w38a);
 	match_key!(out, options.video.entity_distance_scaling, "entityDistanceScaling");
 	match_key!(out, options.video.gui_scale, "guiScale");
-	if let Some(value) = &options.video.particles {
-		out.insert("particles".into(), value.to_int().to_string());
-	}
+	match_key_int!(out, &options.video.particles, "particles");
 	match_key!(out, options.video.max_fps, "maxFps");
 	match_key_int!(out, &options.difficulty, "difficulty");
 	if let Some(value) = &options.video.graphics_mode {
@@ -385,72 +383,31 @@ pub fn create_keys(
 				)
 			}
 		};
-		if let Some(value) = options.sound.volume.master {
-			out.insert("soundCategory_master".into(), value.to_string());
-		}
-		if let Some(value) = options.sound.volume.music {
-			out.insert("soundCategory_music".into(), value.to_string());
-		}
-		if let Some(value) = options.sound.volume.record {
-			out.insert(records_key.to_string(), value.to_string());
-		}
-		if let Some(value) = options.sound.volume.weather {
-			out.insert("soundCategory_weather".into(), value.to_string());
-		}
-		if let Some(value) = options.sound.volume.block {
-			out.insert(blocks_key.to_string(), value.to_string());
-		}
-		if let Some(value) = options.sound.volume.hostile {
-			out.insert(mobs_key.to_string(), value.to_string());
-		}
-		if let Some(value) = options.sound.volume.neutral {
-			out.insert(animals_key.to_string(), value.to_string());
-		}
-		if let Some(value) = options.sound.volume.player {
-			out.insert(players_key.to_string(), value.to_string());
-		}
-		if let Some(value) = options.sound.volume.ambient {
-			out.insert("soundCategory_ambient".into(), value.to_string());
-		}
-		if let Some(value) = options.sound.volume.voice {
-			out.insert("soundCategory_voice".into(), value.to_string());
-		}
+		match_key!(out, options.sound.volume.master, "soundCategory_master");
+		match_key!(out, options.sound.volume.music, "soundCategory_music");
+		match_key!(out, options.sound.volume.record, records_key);
+		match_key!(out, options.sound.volume.weather, "soundCategory_weather");
+		match_key!(out, options.sound.volume.block, blocks_key);
+		match_key!(out, options.sound.volume.hostile, mobs_key);
+		match_key!(out, options.sound.volume.neutral, animals_key);
+		match_key!(out, options.sound.volume.player, players_key);
+		match_key!(out, options.sound.volume.ambient, "soundCategory_ambient");
+		match_key!(out, options.sound.volume.voice, "soundCategory_voice");
 	} else if let Some(value) = options.sound.volume.master {
 		let volume_up = value > 0.0;
 		out.insert("sound".into(), volume_up.to_string());
 	}
+
 	// Model parts
-	if let Some(value) = options.skin.cape {
-		let key = if before_14w03a {
-			"showCape"
-		} else {
-			"modelPart_cape"
-		};
-		out.insert(key.to_string(), value.to_string());
-	}
-	if let Some(value) = options.skin.jacket {
-		out.insert("modelPart_jacket".into(), value.to_string());
-	}
-	if let Some(value) = options.skin.left_sleeve {
-		out.insert("modelPart_left_sleeve".into(), value.to_string());
-	}
-	if let Some(value) = options.skin.right_sleeve {
-		out.insert("modelPart_right_sleeve".into(), value.to_string());
-	}
-	if let Some(value) = options.skin.left_pants {
-		out.insert("modelPart_left_pants_leg".into(), value.to_string());
-	}
-	if let Some(value) = options.skin.right_pants {
-		out.insert("modelPart_right_pants_leg".into(), value.to_string());
-	}
-	if let Some(value) = options.skin.hat {
-		out.insert("modelPart_hat".into(), value.to_string());
-	}
-	if let Some(value) = options.video.allow_block_alternatives {
-		if after_14w28a && before_15w31a {
-			out.insert("allowBlockAlternatives".into(), value.to_string());
-		}
-	}
+	match_key!(out, options.skin.cape, "showCape", before_14w03a);
+	match_key!(out, options.skin.cape, "modelPart_cape", !before_14w03a);
+	match_key!(out, options.skin.jacket, "modelPart_jacket");
+	match_key!(out, options.skin.left_sleeve, "modelPart_left_sleeve");
+	match_key!(out, options.skin.right_sleeve, "modelPart_right_sleeve");
+	match_key!(out, options.skin.left_pants, "modelPart_left_pants_leg");
+	match_key!(out, options.skin.right_pants, "modelPart_right_pants_leg");
+	match_key!(out, options.skin.hat, "modelPart_hat");
+	match_key!(out, options.video.allow_block_alternatives, "allowBlockAlternatives", after_14w28a && before_15w31a);
 
 	if let Some(resolution) = &options.video.fullscreen_resolution {
 		out.insert(
