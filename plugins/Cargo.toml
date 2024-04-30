@@ -29,6 +29,10 @@ path = "plugins/docs/main.rs"
 name = "mcvm_plugin_stats"
 path = "plugins/stats/main.rs"
 
+[[bin]]
+name = "mcvm_plugin_server_restart"
+path = "plugins/server_restart/main.rs"
+
 [dependencies]
 anyhow = "1.0.70"
 clap = { version = "4.5.4", features = ["derive"] }

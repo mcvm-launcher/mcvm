@@ -1,4 +1,9 @@
-install: install.args install.backup install.options install.docs install.stats
+install: install.args \
+				 install.backup \
+				 install.options \
+				 install.docs \
+				 install.stats \
+				 install.server_restart
 
 install.args: build.args
 	@cargo install --path . --bin mcvm_plugin_args --offline
@@ -34,3 +39,10 @@ install.stats: build.stats
 
 build.stats: plugins/stats
 	@cargo build -r --bin mcvm_plugin_stats
+
+install.server_restart: build.server_restart
+	@cargo install --path . --bin mcvm_plugin_server_restart --offline
+	@cp plugins/server_restart/plugin.json ~/.local/share/mcvm/plugins/server_restart.json
+
+build.server_restart: plugins/server_restart
+	@cargo build -r --bin mcvm_plugin_server_restart
