@@ -190,7 +190,9 @@ impl<'params> Instance<'params> {
 	/// Launch the instance and block until the process is finished
 	pub async fn launch(&mut self, o: &mut impl MCVMOutput) -> anyhow::Result<()> {
 		let mut handle = self.launch_with_handle(o).await?;
-		handle.wait().context("Failed to wait instance process")?;
+		handle
+			.wait()
+			.context("Failed to wait for instance process")?;
 		Ok(())
 	}
 
