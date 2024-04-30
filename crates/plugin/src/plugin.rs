@@ -112,7 +112,7 @@ pub struct PluginManifest {
 	pub mcvm_version: Option<String>,
 	/// The hook handlers for the plugin
 	pub hooks: HashMap<String, HookHandler>,
-	/// The lanugage map the plugin provides
+	/// The language map the plugin provides
 	pub language_map: LanguageMap,
 	/// The subcommands the plugin provides
 	pub subcommands: HashMap<String, String>,
