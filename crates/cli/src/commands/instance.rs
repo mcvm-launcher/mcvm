@@ -1,5 +1,3 @@
-use std::time::Duration;
-
 use anyhow::{anyhow, Context};
 use clap::Subcommand;
 use color_print::cprintln;
@@ -9,9 +7,7 @@ use mcvm::data::config::Config;
 use mcvm::shared::id::{InstanceRef, ProfileID};
 
 use mcvm::data::instance::launch::LaunchSettings;
-use mcvm::shared::modifications::Proxy;
 use mcvm::shared::Side;
-use reqwest::Client;
 
 use super::CmdData;
 use crate::output::HYPHEN_POINT;
@@ -122,11 +118,6 @@ pub async fn launch(
 		.profiles
 		.get_mut(&instance_ref.profile)
 		.context("Profile in instance reference does not exist")?;
-	let instance = profile
-		.instances
-		.get(&instance_ref.instance)
-		.context("Instance in profile does not exist")?;
-	let side = instance.get_side();
 
 	if let Some(user) = user {
 		config
@@ -134,17 +125,6 @@ pub async fn launch(
 			.choose_user(&user)
 			.context("Failed to choose user")?;
 	}
-
-	// Launch the proxy first
-	let proxy_handle = if side == Side::Server && profile.modifications.proxy != Proxy::None {
-		let client = Client::new();
-		profile
-			.launch_proxy(&client, &data.paths, &config.plugins, &mut data.output)
-			.await
-			.context("Failed to launch profile proxy")?
-	} else {
-		None
-	};
 
 	let instance = profile
 		.instances
@@ -167,34 +147,9 @@ pub async fn launch(
 		.await
 		.context("Instance failed to launch")?;
 
-	// Await both asynchronously if the proxy is present
-	if let Some(mut proxy_handle) = proxy_handle {
-		let proxy = async move {
-			proxy_handle
-				.wait()
-				.context("Failed to wait for proxy child process")?;
-
-			Ok::<(), anyhow::Error>(())
-		};
-
-		let instance = async move {
-			let config = data.config.get();
-			// Wait for the proxy to start up
-			tokio::time::sleep(Duration::from_secs(5)).await;
-			instance_handle
-				.wait(&config.plugins, &data.paths, &mut data.output)
-				.context("Failed to wait for instance child process")?;
-
-			Ok::<(), anyhow::Error>(())
-		};
-
-		tokio::try_join!(proxy, instance).context("Failed to launch proxy and instance")?;
-	} else {
-		// Otherwise, just wait for the instance
-		instance_handle
-			.wait(&config.plugins, &data.paths, &mut data.output)
-			.context("Failed to wait for instance child process")?;
-	}
+	instance_handle
+		.wait(&config.plugins, &data.paths, &mut data.output)
+		.context("Failed to wait for instance child process")?;
 
 	Ok(())
 }
