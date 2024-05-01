@@ -111,32 +111,7 @@ impl Instance {
 		}
 
 		// Run commands
-		if !eval.commands.is_empty() {
-			o.display(
-				MessageContents::StartProcess(translate!(o, StartRunningCommands)),
-				MessageLevel::Important,
-			);
-
-			for command_and_args in &eval.commands {
-				let program = command_and_args
-					.first()
-					.expect("Command should contain at least the program");
-				let mut command = std::process::Command::new(program);
-				command.args(&command_and_args[1..]);
-				let mut child = command
-					.spawn()
-					.context("Failed to spawn command {program}")?;
-				let result = child.wait()?;
-				if !result.success() {
-					bail!("Command {program} returned a non-zero exit code");
-				}
-			}
-
-			o.display(
-				MessageContents::Success(translate!(o, FinishRunningCommands)),
-				MessageLevel::Important,
-			);
-		}
+		run_package_commands(&eval.commands, o).context("Failed to run package commands")?;
 
 		let lockfile_addons = eval
 			.addon_reqs
@@ -186,4 +161,36 @@ impl Instance {
 
 		configured_packages.iter().find(|x| x.id == package.into())
 	}
+}
+
+/// Runs package commands
+fn run_package_commands(commands: &[Vec<String>], o: &mut impl MCVMOutput) -> anyhow::Result<()> {
+	if !commands.is_empty() {
+		o.display(
+			MessageContents::StartProcess(translate!(o, StartRunningCommands)),
+			MessageLevel::Important,
+		);
+
+		for command_and_args in commands {
+			let program = command_and_args
+				.first()
+				.expect("Command should contain at least the program");
+			let mut command = std::process::Command::new(program);
+			command.args(&command_and_args[1..]);
+			let mut child = command
+				.spawn()
+				.context("Failed to spawn command {program}")?;
+			let result = child.wait()?;
+			if !result.success() {
+				bail!("Command {program} returned a non-zero exit code");
+			}
+		}
+
+		o.display(
+			MessageContents::Success(translate!(o, FinishRunningCommands)),
+			MessageLevel::Important,
+		);
+	}
+
+	Ok(())
 }
