@@ -213,7 +213,7 @@ impl PkgRegistry {
 	pub async fn eval<'a>(
 		&mut self,
 		req: &ArcPkgReq,
-		paths: &Paths,
+		paths: &'a Paths,
 		routine: Routine,
 		input: EvalInput<'a>,
 		client: &Client,

@@ -8,6 +8,7 @@ use mcvm_parse::FailReason;
 use anyhow::{anyhow, bail, Context};
 use mcvm_shared::addon::AddonKind;
 use mcvm_shared::pkg::{PackageAddonOptionalHashes, PackageID};
+use serde::{Deserialize, Serialize};
 
 use crate::{RecommendedPackage, RequiredPackage};
 
@@ -337,6 +338,7 @@ fn get_value_vec(vec: &[Value], vars: &impl VariableStore) -> anyhow::Result<Vec
 }
 
 /// Data for implementing the addon instruction
+#[derive(Serialize, Deserialize, Clone)]
 pub struct AddonInstructionData {
 	/// The ID of the addon
 	pub id: String,

@@ -7,15 +7,23 @@ use mcvm_pkg::script_eval::{
 	AddonInstructionData, ScriptEvalConfig, ScriptEvaluator as ScriptEvaluatorTrait,
 };
 use mcvm_pkg::RecommendedPackage;
+use mcvm_plugin::api::NoOp;
+use mcvm_plugin::hooks::{CustomPackageInstruction, CustomPackageInstructionArg};
 use mcvm_shared::pkg::PackageID;
 
 use crate::data::config::plugin::PluginManager;
+use crate::io::files::paths::Paths;
 
 use super::conditions::eval_condition;
 use super::{
 	create_valid_addon_request, EvalData, EvalInput, EvalPermissions, RequiredPackage, Routine,
 	MAX_NOTICE_CHARACTERS, MAX_NOTICE_INSTRUCTIONS,
 };
+
+struct SharedData<'a> {
+	eval: EvalData<'a>,
+	paths: &'a Paths,
+}
 
 /// Evaluate a script package
 pub fn eval_script_package<'a>(
@@ -25,6 +33,7 @@ pub fn eval_script_package<'a>(
 	properties: PackageProperties,
 	input: EvalInput<'a>,
 	plugins: &PluginManager,
+	paths: &'a Paths,
 ) -> anyhow::Result<EvalData<'a>> {
 	let mut eval = EvalData::new(input, pkg_id, properties, &routine, plugins);
 
@@ -33,28 +42,29 @@ pub fn eval_script_package<'a>(
 	});
 
 	let reason = eval.reason;
+	let mut data = SharedData { eval, paths };
 
 	mcvm_pkg::script_eval::eval_script_package(
 		parsed,
 		&mut ScriptEvaluator,
-		&mut eval,
+		&mut data,
 		&ScriptEvalConfig { reason },
 	)?;
 
-	Ok(eval)
+	Ok(data.eval)
 }
 
 struct ScriptEvaluator;
 
 impl ScriptEvaluatorTrait for ScriptEvaluator {
-	type Shared<'a> = EvalData<'a>;
+	type Shared<'a> = SharedData<'a>;
 	type VariableStore = HashMapVariableStore;
 
 	fn get_variable_store<'a>(
 		&self,
 		shared: &'a mut Self::Shared<'_>,
 	) -> &'a mut Self::VariableStore {
-		&mut shared.vars
+		&mut shared.eval.vars
 	}
 
 	fn eval_condition(
@@ -62,7 +72,7 @@ impl ScriptEvaluatorTrait for ScriptEvaluator {
 		shared: &mut Self::Shared<'_>,
 		condition: &ConditionKind,
 	) -> anyhow::Result<bool> {
-		eval_condition(condition, shared)
+		eval_condition(condition, &shared.eval)
 	}
 
 	fn add_addon(
@@ -70,18 +80,24 @@ impl ScriptEvaluatorTrait for ScriptEvaluator {
 		shared: &mut Self::Shared<'_>,
 		addon: AddonInstructionData,
 	) -> anyhow::Result<()> {
-		if shared.addon_reqs.iter().any(|x| x.addon.id == addon.id) {
+		if shared
+			.eval
+			.addon_reqs
+			.iter()
+			.any(|x| x.addon.id == addon.id)
+		{
 			bail!("Duplicate addon id '{}'", addon.id);
 		}
 
-		let addon_req = create_valid_addon_request(addon, shared.id.clone(), &shared.input)?;
-		shared.addon_reqs.push(addon_req);
+		let addon_req =
+			create_valid_addon_request(addon, shared.eval.id.clone(), &shared.eval.input)?;
+		shared.eval.addon_reqs.push(addon_req);
 
 		Ok(())
 	}
 
 	fn add_bundled(&mut self, shared: &mut Self::Shared<'_>, pkg: PackageID) -> anyhow::Result<()> {
-		shared.bundled.push(pkg);
+		shared.eval.bundled.push(pkg);
 		Ok(())
 	}
 
@@ -90,11 +106,11 @@ impl ScriptEvaluatorTrait for ScriptEvaluator {
 		shared: &mut Self::Shared<'_>,
 		command: Vec<String>,
 	) -> anyhow::Result<()> {
-		match shared.input.params.perms {
+		match shared.eval.input.params.perms {
 			EvalPermissions::Elevated => {}
 			_ => bail!("Insufficient permissions to run the 'cmd' instruction"),
 		}
-		shared.commands.push(command);
+		shared.eval.commands.push(command);
 		Ok(())
 	}
 
@@ -103,7 +119,7 @@ impl ScriptEvaluatorTrait for ScriptEvaluator {
 		shared: &mut Self::Shared<'_>,
 		compat: (PackageID, PackageID),
 	) -> anyhow::Result<()> {
-		shared.compats.push(compat);
+		shared.eval.compats.push(compat);
 		Ok(())
 	}
 
@@ -112,7 +128,7 @@ impl ScriptEvaluatorTrait for ScriptEvaluator {
 		shared: &mut Self::Shared<'_>,
 		pkg: PackageID,
 	) -> anyhow::Result<()> {
-		shared.conflicts.push(pkg);
+		shared.eval.conflicts.push(pkg);
 		Ok(())
 	}
 
@@ -121,7 +137,7 @@ impl ScriptEvaluatorTrait for ScriptEvaluator {
 		shared: &mut Self::Shared<'_>,
 		dep: Vec<RequiredPackage>,
 	) -> anyhow::Result<()> {
-		shared.deps.push(dep);
+		shared.eval.deps.push(dep);
 		Ok(())
 	}
 
@@ -130,18 +146,18 @@ impl ScriptEvaluatorTrait for ScriptEvaluator {
 		shared: &mut Self::Shared<'_>,
 		pkg: PackageID,
 	) -> anyhow::Result<()> {
-		shared.extensions.push(pkg);
+		shared.eval.extensions.push(pkg);
 		Ok(())
 	}
 
 	fn add_notice(&mut self, shared: &mut Self::Shared<'_>, notice: String) -> anyhow::Result<()> {
-		if shared.notices.len() > MAX_NOTICE_INSTRUCTIONS {
+		if shared.eval.notices.len() > MAX_NOTICE_INSTRUCTIONS {
 			bail!("Max number of notice instructions was exceded (>{MAX_NOTICE_INSTRUCTIONS})");
 		}
 		if notice.len() > MAX_NOTICE_CHARACTERS {
 			bail!("Notice message is too long (>{MAX_NOTICE_CHARACTERS})");
 		}
-		shared.notices.push(notice);
+		shared.eval.notices.push(notice);
 		Ok(())
 	}
 
@@ -150,12 +166,57 @@ impl ScriptEvaluatorTrait for ScriptEvaluator {
 		shared: &mut Self::Shared<'_>,
 		pkg: RecommendedPackage,
 	) -> anyhow::Result<()> {
-		shared.recommendations.push(pkg);
+		shared.eval.recommendations.push(pkg);
 		Ok(())
 	}
 
 	fn run_custom(&mut self, shared: &mut Self::Shared<'_>, _custom: String) -> anyhow::Result<()> {
-		shared.uses_custom_instructions = true;
+		let arg = CustomPackageInstructionArg {
+			pkg_id: shared.eval.id.to_string(),
+		};
+		let results = shared.eval.plugins.call_hook(
+			CustomPackageInstruction,
+			&arg,
+			shared.paths,
+			&mut NoOp,
+		)?;
+
+		if results.is_empty() {
+			shared.eval.uses_custom_instructions = true;
+		}
+
+		for result in results {
+			let result = result.result(&mut NoOp)?;
+			if !result.handled {
+				shared.eval.uses_custom_instructions = true;
+			}
+
+			for addon in result.addon_reqs {
+				self.add_addon(shared, addon)?;
+			}
+			for bundled in result.bundled {
+				self.add_bundled(shared, bundled)?;
+			}
+			for conflict in result.conflicts {
+				self.add_conflict(shared, conflict)?;
+			}
+			for dep in result.deps {
+				self.add_dependency(shared, dep)?;
+			}
+			for compat in result.compats {
+				self.add_compat(shared, compat)?;
+			}
+			for notice in result.notices {
+				self.add_notice(shared, notice)?;
+			}
+			for extension in result.extensions {
+				self.add_extension(shared, extension)?;
+			}
+			for recommendation in result.recommendations {
+				self.add_recommendation(shared, recommendation)?;
+			}
+		}
+
 		Ok(())
 	}
 }

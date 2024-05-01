@@ -6,6 +6,9 @@ use std::sync::{Arc, Mutex};
 
 use anyhow::{anyhow, bail, Context};
 use mcvm_core::{net::game_files::version_manifest::VersionEntry, Paths};
+use mcvm_pkg::script_eval::AddonInstructionData;
+use mcvm_pkg::{RecommendedPackage, RequiredPackage};
+use mcvm_shared::pkg::PackageID;
 use mcvm_shared::{output::MCVMOutput, versions::VersionInfo, Side};
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 
@@ -352,4 +355,44 @@ pub struct InstanceLaunchArg {
 	pub custom_config: serde_json::Map<String, serde_json::Value>,
 	/// The PID of the instance process
 	pub pid: Option<u32>,
+}
+
+def_hook!(
+	CustomPackageInstruction,
+	"custom_package_instruction",
+	"Hook for handling custom instructions in packages",
+	CustomPackageInstructionArg,
+	CustomPackageInstructionResult,
+);
+
+/// Argument for the CustomPackageInstruction hook
+#[derive(Serialize, Deserialize, Default)]
+#[serde(default)]
+pub struct CustomPackageInstructionArg {
+	/// The ID of the package
+	pub pkg_id: String,
+}
+
+/// Result from the CustomPackageInstruction hook
+#[derive(Serialize, Deserialize, Default)]
+#[serde(default)]
+pub struct CustomPackageInstructionResult {
+	/// Whether the instruction was handled by this plugin
+	pub handled: bool,
+	/// The output of addon requests
+	pub addon_reqs: Vec<AddonInstructionData>,
+	/// The output dependencies
+	pub deps: Vec<Vec<RequiredPackage>>,
+	/// The output conflicts
+	pub conflicts: Vec<PackageID>,
+	/// The output recommendations
+	pub recommendations: Vec<RecommendedPackage>,
+	/// The output bundled packages
+	pub bundled: Vec<PackageID>,
+	/// The output compats
+	pub compats: Vec<(PackageID, PackageID)>,
+	/// The output package extensions
+	pub extensions: Vec<PackageID>,
+	/// The output notices
+	pub notices: Vec<String>,
 }

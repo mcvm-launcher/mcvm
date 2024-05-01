@@ -229,7 +229,7 @@ impl Package {
 	/// Evaluate a routine on a package
 	pub async fn eval<'a>(
 		&mut self,
-		paths: &Paths,
+		paths: &'a Paths,
 		routine: Routine,
 		input: EvalInput<'a>,
 		client: &Client,
@@ -259,6 +259,7 @@ impl Package {
 					properties,
 					input,
 					plugins,
+					paths,
 				)?;
 				Ok(eval)
 			}

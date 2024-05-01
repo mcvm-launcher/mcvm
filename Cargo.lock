@@ -1439,6 +1439,7 @@ dependencies = [
  "anyhow",
  "base64 0.22.0",
  "mcvm_core",
+ "mcvm_pkg",
  "mcvm_shared",
  "serde",
  "serde_json",
