@@ -50,7 +50,6 @@ pub fn read_options(path: &Path) -> anyhow::Result<Option<Options>> {
 	))
 }
 
-
 macro_rules! match_key {
 	($out:ident, $option:expr, $key:expr) => {
 		if let Some(value) = $option {

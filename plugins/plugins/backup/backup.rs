@@ -186,11 +186,7 @@ impl Index {
 
 		let now = utc_timestamp()?;
 		// Add the backup entry to the group
-		let group_entry = self
-			.contents
-			.groups
-			.entry(group_id.into())
-			.or_default();
+		let group_entry = self.contents.groups.entry(group_id.into()).or_default();
 		group_entry.backups.push(Entry {
 			id: backup_id,
 			date: now,
@@ -205,11 +201,7 @@ impl Index {
 
 	/// Remove a backup
 	pub fn remove_backup(&mut self, group_id: &str, backup_id: &str) -> anyhow::Result<()> {
-		let group_entry = self
-			.contents
-			.groups
-			.entry(group_id.into())
-			.or_default();
+		let group_entry = self.contents.groups.entry(group_id.into()).or_default();
 		let index = group_entry
 			.backups
 			.iter()
