@@ -20,13 +20,13 @@ fn main() {
 	let mut zip = ZipWriter::new(out);
 
 	add_file!(zip, "README.md");
-	add_file!(zip, "Configuring.md");
-	add_file!(zip, "Game Options.md");
-	add_file!(zip, "Modifications.md");
-	add_file!(zip, "Principles.md");
-	zip.add_directory("Packages", FileOptions::default())
+	add_file!(zip, "configuring.md");
+	add_file!(zip, "game_options.md");
+	add_file!(zip, "modifications.md");
+	add_file!(zip, "principles.md");
+	zip.add_directory("packages", FileOptions::default())
 		.unwrap();
-	add_file!(zip, "Packages/Declarative.md");
-	add_file!(zip, "Packages/Packages.md");
-	add_file!(zip, "Packages/Scripts.md");
+	add_file!(zip, "packages/declarative.md");
+	add_file!(zip, "packages/packages.md");
+	add_file!(zip, "packages/scripts.md");
 }

@@ -2,8 +2,8 @@
 
 An MCVM package is simply a file that is evaluated to install files and dependencies. They can be either declarative JSON files or custom scripts. Scripts usually follow the format of `package-id.pkg.txt`. Declarative packages should be named `package-id.json`. Package IDs may contain only letters, numbers, and hyphens (`-`). They cannot be longer than 32 characters.
 
-- [Declarative Packages](Declarative.md)
-- [Script Packages](Scripts.md)
+- [Declarative Packages](declarative.md)
+- [Script Packages](scripts.md)
 
 # Repository
 
