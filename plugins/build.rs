@@ -29,4 +29,6 @@ fn main() {
 	add_file!(zip, "packages/declarative.md");
 	add_file!(zip, "packages/packages.md");
 	add_file!(zip, "packages/scripts.md");
+	zip.add_directory("guide", FileOptions::default()).unwrap();
+	add_file!(zip, "guide/1_getting_started.md");
 }
