@@ -1,6 +1,7 @@
 # MCVM Documentation
 This is the simple Markdown documentation for MCVM.
 
+- [Getting Started](guide/1_getting_started.md)
 - [Configuring](configuring.md)
 - [Modifications](modifications.md)
 - [Packages](packages/packages.md)

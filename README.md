@@ -6,6 +6,7 @@ In the official launcher and many alternative ones, you have to waste time movin
 
 In addition, MCVM has a ton of flexibility and power, allowing you to build your perfect launcher by hand, or just use the amazing tools already built by the community.
 
+- 🚀 [Getting Started](docs/guide/1_getting_started.md)
 - 📖 [Documentation](docs/README.md)
 - ✨ [Features](#✨-features)
 - 📥 [Installation](#📥-installation)
