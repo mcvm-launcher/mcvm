@@ -14,3 +14,5 @@ pub mod mc;
 mod mc_msa;
 /// Usage of passkeys for encoding and decoding sensitive info
 pub mod passkey;
+
+pub use rsa::{RsaPrivateKey, RsaPublicKey};

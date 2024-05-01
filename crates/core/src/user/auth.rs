@@ -1,5 +1,6 @@
 use anyhow::{bail, Context};
-use mcvm_shared::output::{MCVMOutput, MessageContents};
+use mcvm_auth::RsaPrivateKey;
+use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 
 use crate::net::minecraft::MinecraftUserProfile;
 use crate::Paths;
@@ -274,15 +275,12 @@ fn get_full_user<'db>(
 	};
 	// Get their sensitive info
 	let sensitive = if user.has_passkey() {
-		let passkey = o
-			.prompt_password(MessageContents::Simple(format!(
-				"Please enter the passkey for the user '{user_id}'"
-			)))
-			.context("Passkey prompt failed")?;
-		let private_key = user
-			.get_private_key(&passkey)
-			.context("Failed to get user private key")?
-			.expect("User should have passkey");
+		let private_key = get_private_key(
+			user,
+			MessageContents::Simple(format!("Please enter the passkey for the user '{user_id}'")),
+			o,
+		)
+		.context("Failed to get key")?;
 		user.get_sensitive_info_with_key(&private_key)
 			.context("Failed to get sensitive user info using key")?
 	} else {
@@ -294,4 +292,34 @@ fn get_full_user<'db>(
 	}
 
 	Ok(Some((user, sensitive)))
+}
+
+/// Gets the user's private key with a repeating passkey prompt.
+/// The user must have a passkey available.
+fn get_private_key(
+	user: &DatabaseUser,
+	message: MessageContents,
+	o: &mut impl MCVMOutput,
+) -> anyhow::Result<RsaPrivateKey> {
+	const MAX_ATTEMPTS: u8 = 3;
+
+	for _ in 0..MAX_ATTEMPTS {
+		let result = o.prompt_password(message.clone());
+		if let Ok(passkey) = result {
+			let result = user.get_private_key(&passkey);
+			match result {
+				Ok(private_key) => {
+					return Ok(private_key.expect("User should have passkey"));
+				}
+				Err(e) => {
+					o.display(
+						MessageContents::Error(format!("{e:?}")),
+						MessageLevel::Important,
+					);
+				}
+			}
+		}
+	}
+
+	bail!("Passkey authentication failed")
 }
