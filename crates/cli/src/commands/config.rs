@@ -21,6 +21,8 @@ pub async fn run(subcommand: ConfigSubcommand, data: &mut CmdData) -> anyhow::Re
 pub async fn edit(data: &mut CmdData) -> anyhow::Result<()> {
 	let path = Config::get_path(&data.paths);
 
+	Config::create_default(&path).context("Failed to create default config")?;
+
 	edit_text(path).context("Failed to edit config")?;
 
 	Ok(())

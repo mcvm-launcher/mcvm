@@ -140,11 +140,22 @@ impl Config {
 			Ok(serde_json::from_reader(&mut file).context("Failed to parse config")?)
 		} else {
 			let doc = default_config();
-			let mut file = File::create(path).context("Failed to open config file")?;
+			let mut file = File::create(path).context("Failed to open default config file")?;
 			serde_json::to_writer_pretty(&mut file, &doc)
 				.context("Failed to write default configuration")?;
 			Ok(serde_json::from_value(doc).context("Failed to parse default configuration")?)
 		}
+	}
+
+	/// Create the default config at the specified path if it does not exist
+	pub fn create_default(path: &Path) -> anyhow::Result<()> {
+		if !path.exists() {
+			let doc = default_config();
+			let mut file = File::create(path).context("Failed to open default config file")?;
+			serde_json::to_writer_pretty(&mut file, &doc)
+				.context("Failed to write default configuration")?;
+		}
+		Ok(())
 	}
 
 	/// Create the Config struct from deserialized config
