@@ -117,9 +117,10 @@ impl Profile {
 					props: proc_props,
 				};
 
-				launch_process(params).context("Failed to launch Velocity child process")?;
+				let child =
+					launch_process(params).context("Failed to launch Velocity child process")?;
 
-				None
+				Some(child)
 			}
 		};
 
