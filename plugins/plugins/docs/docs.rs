@@ -27,7 +27,7 @@ impl Docs {
 			let doc = String::from_utf8(doc.into_inner())
 				.context("Documentation was not in valid UTF-8")?;
 
-			docs.insert(file.name().to_string(), doc);
+			docs.insert(file.name().trim_end_matches(".md").into(), doc);
 		}
 
 		Ok(Self { docs })
