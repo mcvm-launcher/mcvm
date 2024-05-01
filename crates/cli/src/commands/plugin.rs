@@ -30,7 +30,8 @@ async fn list(data: &mut CmdData, raw: bool) -> anyhow::Result<()> {
 	data.ensure_config(!raw).await?;
 	let config = data.config.get_mut();
 
-	for plugin in config.plugins.iter_plugins().sorted_by_key(|x| x.get_id()) {
+	let lock = config.plugins.get_lock()?;
+	for plugin in lock.manager.iter_plugins().sorted_by_key(|x| x.get_id()) {
 		if raw {
 			println!("{}", plugin.get_id());
 		} else {
@@ -45,8 +46,9 @@ async fn info(data: &mut CmdData, plugin: String) -> anyhow::Result<()> {
 	data.ensure_config(true).await?;
 	let config = data.config.get_mut();
 
-	let plugin = config
-		.plugins
+	let lock = config.plugins.get_lock()?;
+	let plugin = lock
+		.manager
 		.iter_plugins()
 		.find(|x| x.get_id() == &plugin)
 		.context("Plugin does not exist")?;

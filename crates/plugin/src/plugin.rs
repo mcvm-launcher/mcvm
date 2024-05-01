@@ -147,7 +147,7 @@ pub enum HookHandler {
 	Native {
 		/// The function to handle the hook
 		#[serde(deserialize_with = "deserialize_native_function")]
-		function: Box<dyn Fn(String) -> anyhow::Result<String>>,
+		function: Arc<dyn Fn(String) -> anyhow::Result<String> + Send + Sync + 'static>,
 	},
 }
 
@@ -161,9 +161,9 @@ impl Debug for HookHandler {
 /// so just return a function that does nothing.
 fn deserialize_native_function<'de, D>(
 	_: D,
-) -> Result<Box<dyn Fn(String) -> anyhow::Result<String>>, D::Error>
+) -> Result<Arc<dyn Fn(String) -> anyhow::Result<String> + Send + Sync + 'static>, D::Error>
 where
 	D: Deserializer<'de>,
 {
-	Ok(Box::new(|_| Ok(String::new())))
+	Ok(Arc::new(|_| Ok(String::new())))
 }

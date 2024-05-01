@@ -3,6 +3,7 @@ pub mod manager;
 /// Updating packages on a profile
 pub mod packages;
 
+use crate::data::config::plugin::PluginManager;
 #[cfg(not(feature = "disable_profile_update_packages"))]
 use crate::pkg::eval::EvalConstants;
 use mcvm_shared::translate;
@@ -38,6 +39,8 @@ pub struct ProfileUpdateContext<'a, O: MCVMOutput> {
 	pub lock: &'a mut Lockfile,
 	/// The reqwest client
 	pub client: &'a Client,
+	/// The plugins
+	pub plugins: &'a PluginManager,
 	/// The output object
 	pub output: &'a mut O,
 }
@@ -63,6 +66,7 @@ pub async fn update_profiles(
 		lock: &mut lock,
 		client: &client,
 		output: o,
+		plugins: &config.plugins,
 	};
 
 	let mut manager = UpdateManager::new(force, false);

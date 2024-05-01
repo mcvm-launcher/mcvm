@@ -19,6 +19,7 @@ use tokio::task::JoinSet;
 use super::eval::{EvalData, EvalInput, Routine};
 use super::repo::{query_all, PkgRepo};
 use super::{Package, PkgContents};
+use crate::data::config::plugin::PluginManager;
 use crate::io::files::paths::Paths;
 
 use std::collections::HashMap;
@@ -216,10 +217,11 @@ impl PkgRegistry {
 		routine: Routine,
 		input: EvalInput<'a>,
 		client: &Client,
+		plugins: &'a PluginManager,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<EvalData<'a>> {
 		let pkg = self.ensure_package_contents(req, paths, client, o).await?;
-		let eval = pkg.eval(paths, routine, input, client).await?;
+		let eval = pkg.eval(paths, routine, input, client, plugins).await?;
 		Ok(eval)
 	}
 

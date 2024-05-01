@@ -9,6 +9,8 @@ use mcvm_pkg::script_eval::{
 use mcvm_pkg::RecommendedPackage;
 use mcvm_shared::pkg::PackageID;
 
+use crate::data::config::plugin::PluginManager;
+
 use super::conditions::eval_condition;
 use super::{
 	create_valid_addon_request, EvalData, EvalInput, EvalPermissions, RequiredPackage, Routine,
@@ -22,8 +24,9 @@ pub fn eval_script_package<'a>(
 	routine: Routine,
 	properties: PackageProperties,
 	input: EvalInput<'a>,
+	plugins: &PluginManager,
 ) -> anyhow::Result<EvalData<'a>> {
-	let mut eval = EvalData::new(input, pkg_id, properties, &routine);
+	let mut eval = EvalData::new(input, pkg_id, properties, &routine, plugins);
 
 	eval.vars.set_reserved_constants(ReservedConstantVariables {
 		mc_version: &eval.input.constants.version,

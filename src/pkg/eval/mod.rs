@@ -46,6 +46,7 @@ use super::Package;
 use crate::data::addon::{self, AddonLocation, AddonRequest};
 use crate::data::config::package::PackageConfig;
 use crate::data::config::package::PackageConfigSource;
+use crate::data::config::plugin::PluginManager;
 use crate::data::config::profile::GameModifications;
 use crate::io::files::paths::Paths;
 use crate::util::hash::{
@@ -162,6 +163,8 @@ impl EvalParameters {
 pub struct EvalData<'a> {
 	/// Input to the evaluator
 	pub input: EvalInput<'a>,
+	/// Plugins
+	pub plugins: PluginManager,
 	/// ID of the package we are evaluating
 	pub id: PackageID,
 	/// Level of evaluation
@@ -199,10 +202,12 @@ impl<'a> EvalData<'a> {
 		id: PackageID,
 		properties: PackageProperties,
 		routine: &Routine,
+		plugins: &PluginManager,
 	) -> Self {
 		Self {
 			input,
 			id,
+			plugins: plugins.clone(),
 			reason: routine.get_reason(),
 			properties,
 			vars: HashMapVariableStore::default(),
@@ -228,20 +233,33 @@ impl Package {
 		routine: Routine,
 		input: EvalInput<'a>,
 		client: &Client,
+		plugins: &'a PluginManager,
 	) -> anyhow::Result<EvalData<'a>> {
 		self.parse(paths, client).await?;
 
 		// Check properties
 		let properties = self.get_properties(paths, client).await?.clone();
 		if eval_check_properties(&input, &properties)? {
-			return Ok(EvalData::new(input, self.id.clone(), properties, &routine));
+			return Ok(EvalData::new(
+				input,
+				self.id.clone(),
+				properties,
+				&routine,
+				plugins,
+			));
 		}
 
 		match self.content_type {
 			PackageContentType::Script => {
 				let parsed = self.data.get_mut().contents.get_mut().get_script_contents();
-				let eval =
-					eval_script_package(self.id.clone(), parsed, routine, properties, input)?;
+				let eval = eval_script_package(
+					self.id.clone(),
+					parsed,
+					routine,
+					properties,
+					input,
+					plugins,
+				)?;
 				Ok(eval)
 			}
 			PackageContentType::Declarative => {
@@ -252,6 +270,7 @@ impl Package {
 					input,
 					properties,
 					routine,
+					plugins,
 				)?;
 				Ok(eval)
 			}
@@ -413,6 +432,7 @@ struct PackageEvaluator<'a> {
 struct EvaluatorCommonInput<'a> {
 	paths: &'a Paths,
 	client: &'a Client,
+	plugins: PluginManager,
 }
 
 /// Newtype for PkgInstanceConfig
@@ -500,6 +520,7 @@ impl<'a> PackageEvaluatorTrait<'a> for PackageEvaluator<'a> {
 				Routine::InstallResolve,
 				input.clone(),
 				common_input.client,
+				&common_input.plugins,
 				&mut output::NoOp,
 			)
 			.await
@@ -543,6 +564,7 @@ pub async fn resolve(
 	paths: &Paths,
 	reg: &mut PkgRegistry,
 	client: &Client,
+	plugins: &PluginManager,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<ResolutionResult> {
 	let evaluator = PackageEvaluator { reg };
@@ -552,7 +574,11 @@ pub async fn resolve(
 		params: default_params,
 	};
 
-	let common_input = EvaluatorCommonInput { client, paths };
+	let common_input = EvaluatorCommonInput {
+		client,
+		paths,
+		plugins: plugins.clone(),
+	};
 
 	let packages = packages
 		.iter()

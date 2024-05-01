@@ -94,9 +94,10 @@ impl Config {
 	}
 
 	/// Get the single-language translation map based on language and plugins
-	pub fn get_translation_map(&self) -> Option<TranslationMap> {
+	pub fn get_translation_map(&self) -> anyhow::Result<Option<TranslationMap>> {
 		let mut out = HashMap::new();
-		for plugin in self.plugins.iter_plugins() {
+		let lock = self.plugins.get_lock()?;
+		for plugin in lock.manager.iter_plugins() {
 			let Some(map) = plugin.get_manifest().language_map.get(&self.prefs.language) else {
 				continue;
 			};
@@ -105,9 +106,9 @@ impl Config {
 		}
 
 		if out.is_empty() {
-			None
+			Ok(None)
 		} else {
-			Some(out)
+			Ok(Some(out))
 		}
 	}
 }

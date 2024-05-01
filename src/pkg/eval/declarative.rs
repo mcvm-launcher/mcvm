@@ -7,6 +7,8 @@ use mcvm_pkg::script_eval::AddonInstructionData;
 use mcvm_pkg::RequiredPackage;
 use mcvm_shared::pkg::PackageID;
 
+use crate::data::config::plugin::PluginManager;
+
 use super::conditions::{check_arch_condition, check_os_condition};
 use super::{
 	create_valid_addon_request, EvalData, EvalInput, Routine, MAX_NOTICE_CHARACTERS,
@@ -20,8 +22,10 @@ pub fn eval_declarative_package<'a>(
 	input: EvalInput<'a>,
 	properties: PackageProperties,
 	routine: Routine,
+	plugins: &'a PluginManager,
 ) -> anyhow::Result<EvalData<'a>> {
-	let eval_data = eval_declarative_package_impl(id, contents, input, properties, routine)?;
+	let eval_data =
+		eval_declarative_package_impl(id, contents, input, properties, routine, plugins)?;
 
 	Ok(eval_data)
 }
@@ -33,10 +37,11 @@ fn eval_declarative_package_impl<'a>(
 	input: EvalInput<'a>,
 	properties: PackageProperties,
 	routine: Routine,
+	plugins: &'a PluginManager,
 ) -> anyhow::Result<EvalData<'a>> {
 	let pkg_id = id;
 
-	let mut eval_data = EvalData::new(input, pkg_id.clone(), properties, &routine);
+	let mut eval_data = EvalData::new(input, pkg_id.clone(), properties, &routine, plugins);
 
 	// Vars for the EvalData that are modified by conditions / versions
 	let mut relations = contents.relations.clone();
@@ -331,12 +336,14 @@ mod tests {
 			params: EvalParameters::new(Side::Client),
 		};
 
+		let plugins = PluginManager::new();
 		let eval = eval_declarative_package(
 			PackageID::from("foo"),
 			&pkg,
 			input,
 			PackageProperties::default(),
 			Routine::Install,
+			&plugins,
 		)
 		.unwrap();
 

@@ -200,7 +200,7 @@ impl CmdData {
 		}
 
 		// Update the translation map
-		if let Some(map) = self.config.get().get_translation_map() {
+		if let Some(map) = self.config.get().get_translation_map()? {
 			self.output.set_translation_map(map);
 		}
 
@@ -233,8 +233,9 @@ async fn call_plugin_subcommand(args: Vec<String>, data: &mut CmdData) -> anyhow
 	let subcommand = args
 		.first()
 		.context("Subcommand does not have first argument")?;
-	let exists = config
-		.plugins
+	let lock = config.plugins.get_lock()?;
+	let exists = lock
+		.manager
 		.iter_plugins()
 		.any(|x| x.get_manifest().subcommands.contains_key(subcommand));
 	if !exists {

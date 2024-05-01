@@ -1,7 +1,8 @@
 use std::path::Path;
+use std::sync::{Arc, MutexGuard};
 
 use crate::io::files::paths::Paths;
-use anyhow::Context;
+use anyhow::{anyhow, Context};
 use mcvm_core::io::{json_from_file, json_to_file_pretty};
 use mcvm_shared::output::MCVMOutput;
 #[cfg(feature = "schema")]
@@ -11,6 +12,7 @@ use serde::{Deserialize, Serialize};
 use mcvm_plugin::hooks::{Hook, HookHandle};
 use mcvm_plugin::plugin::{Plugin, PluginManifest};
 use mcvm_plugin::PluginManager as LoadedPluginManager;
+use std::sync::Mutex;
 
 /// User configuration for all plugins, stored in the plugins.json file
 #[derive(Serialize, Deserialize, Default)]
@@ -63,10 +65,18 @@ impl PluginConfigDeser {
 }
 
 /// Manager for plugin configs and the actual loaded plugin manager
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct PluginManager {
-	manager: LoadedPluginManager,
-	configs: Vec<PluginConfig>,
+	inner: Arc<Mutex<PluginManagerInner>>,
+}
+
+/// Inner for the PluginManager
+#[derive(Debug)]
+pub struct PluginManagerInner {
+	/// The core PluginManager
+	pub manager: LoadedPluginManager,
+	/// Plugin configurations
+	pub configs: Vec<PluginConfig>,
 }
 
 impl PluginManager {
@@ -97,8 +107,10 @@ impl PluginManager {
 	/// Create a new PluginManager with no plugins
 	pub fn new() -> Self {
 		Self {
-			manager: LoadedPluginManager::new(),
-			configs: Vec::new(),
+			inner: Arc::new(Mutex::new(PluginManagerInner {
+				manager: LoadedPluginManager::new(),
+				configs: Vec::new(),
+			})),
 		}
 	}
 
@@ -113,7 +125,8 @@ impl PluginManager {
 	) -> anyhow::Result<()> {
 		let custom_config = plugin.custom_config.clone();
 		let id = plugin.id.clone();
-		self.configs.push(plugin);
+		let mut inner = self.inner.lock().map_err(|x| anyhow!("{x}"))?;
+		inner.configs.push(plugin);
 		let mut plugin = Plugin::new(id, manifest);
 		if let Some(custom_config) = custom_config {
 			plugin.set_custom_config(custom_config)?;
@@ -122,7 +135,7 @@ impl PluginManager {
 			plugin.set_working_dir(plugin_dir.to_owned());
 		}
 
-		self.manager.add_plugin(plugin, &paths.core, o)?;
+		inner.manager.add_plugin(plugin, &paths.core, o)?;
 
 		Ok(())
 	}
@@ -157,12 +170,14 @@ impl PluginManager {
 		paths: &Paths,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Vec<HookHandle<H>>> {
-		self.manager.call_hook(hook, arg, &paths.core, o)
+		let inner = self.inner.lock().map_err(|x| anyhow!("{x}"))?;
+		inner.manager.call_hook(hook, arg, &paths.core, o)
 	}
 
-	/// Iterate over the stored plugins
-	pub fn iter_plugins(&self) -> impl Iterator<Item = &Plugin> {
-		self.manager.iter_plugins()
+	/// Get a lock for the inner mutex
+	pub fn get_lock(&self) -> anyhow::Result<MutexGuard<PluginManagerInner>> {
+		let inner = self.inner.lock().map_err(|x| anyhow!("{x}"))?;
+		Ok(inner)
 	}
 }
 

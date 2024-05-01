@@ -7,6 +7,7 @@ use mcvm_shared::versions::VersionInfo;
 use reqwest::Client;
 
 use crate::data::addon::AddonExt;
+use crate::data::config::plugin::PluginManager;
 use crate::io::files::paths::Paths;
 use crate::io::lock::{Lockfile, LockfileAddon};
 use crate::pkg::eval::{EvalData, EvalInput, Routine};
@@ -30,6 +31,7 @@ impl Instance {
 		lock: &mut Lockfile,
 		force: bool,
 		client: &Client,
+		plugins: &'a PluginManager,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<EvalData<'a>> {
 		let version_info = VersionInfo {
@@ -38,7 +40,7 @@ impl Instance {
 		};
 
 		let (eval, tasks) = self
-			.get_package_addon_tasks(pkg, eval_input, reg, paths, force, client, o)
+			.get_package_addon_tasks(pkg, eval_input, reg, paths, force, client, plugins, o)
 			.await
 			.context("Failed to get download tasks for installing package")?;
 
@@ -63,13 +65,14 @@ impl Instance {
 		paths: &Paths,
 		force: bool,
 		client: &Client,
+		plugins: &'a PluginManager,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<(
 		EvalData<'a>,
 		HashMap<String, impl Future<Output = anyhow::Result<()>> + Send + 'static>,
 	)> {
 		let eval = reg
-			.eval(pkg, paths, Routine::Install, eval_input, client, o)
+			.eval(pkg, paths, Routine::Install, eval_input, client, plugins, o)
 			.await
 			.context("Failed to evaluate package")?;
 
