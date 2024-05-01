@@ -176,7 +176,7 @@ impl VersionRegistry {
 		if !self.versions.contains_key(version) {
 			let installed_version = InstalledVersionInner::load(
 				version.clone(),
-				&self.version_manifest.get(),
+				self.version_manifest.get(),
 				params,
 				o,
 			)
@@ -213,7 +213,7 @@ impl VersionRegistry {
 
 			self.version_manifest.fill(Arc::new(combo));
 		}
-		Ok(&self.version_manifest.get())
+		Ok(self.version_manifest.get())
 	}
 
 	/// Get the version manifest, panicking if it does not exist

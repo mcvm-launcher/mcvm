@@ -37,8 +37,8 @@ impl UserVariant {
 impl UserConfig {
 	/// Creates a user from this user config
 	pub fn to_user(&self, id: &str) -> User {
-		let user = User::new(self.variant.to_user_kind(), id);
+		
 
-		user
+		User::new(self.variant.to_user_kind(), id)
 	}
 }

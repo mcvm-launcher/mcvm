@@ -190,7 +190,7 @@ impl Index {
 			.contents
 			.groups
 			.entry(group_id.into())
-			.or_insert_with(GroupEntry::default);
+			.or_default();
 		group_entry.backups.push(Entry {
 			id: backup_id,
 			date: now,
@@ -209,7 +209,7 @@ impl Index {
 			.contents
 			.groups
 			.entry(group_id.into())
-			.or_insert_with(GroupEntry::default);
+			.or_default();
 		let index = group_entry
 			.backups
 			.iter()
@@ -364,7 +364,7 @@ pub fn generate_random_id() -> String {
 /// Gets all file paths from a user-provided path recursively
 fn get_instance_file_paths(path: &str, instance_dir: &Path) -> anyhow::Result<Vec<String>> {
 	// Handle glob patterns
-	if path.contains("*") {
+	if path.contains('*') {
 		let glob = format!("{}/{path}", instance_dir.to_string_lossy());
 		let glob = glob::glob(&glob);
 

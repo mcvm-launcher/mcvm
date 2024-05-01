@@ -70,7 +70,7 @@ pub trait Hook {
 			cmd.env(CUSTOM_CONFIG_ENV, custom_config);
 		}
 		cmd.env(DATA_DIR_ENV, &paths.data);
-		cmd.env(CONFIG_DIR_ENV, &paths.project.config_dir());
+		cmd.env(CONFIG_DIR_ENV, paths.project.config_dir());
 		if let Some(working_dir) = working_dir {
 			cmd.current_dir(working_dir);
 		}

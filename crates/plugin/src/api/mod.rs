@@ -47,8 +47,8 @@ impl CustomPlugin {
 	/// Create a new plugin definition
 	pub fn new(name: &str) -> anyhow::Result<Self> {
 		let mut args = std::env::args();
-		args.nth(0);
-		let hook = args.nth(0).context("Missing hook to run")?;
+		args.next();
+		let hook = args.next().context("Missing hook to run")?;
 		let custom_config = std::env::var(CUSTOM_CONFIG_ENV).ok();
 		let ctx = StoredHookContext {
 			custom_config,

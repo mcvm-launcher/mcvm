@@ -84,7 +84,7 @@ impl Config {
 	}
 
 	/// Get an iterator of all instance refs on all profiles
-	pub fn get_all_instances<'a>(&'a self) -> impl Iterator<Item = InstanceRef> + 'a {
+	pub fn get_all_instances(&self) -> impl Iterator<Item = InstanceRef> + '_ {
 		self.profiles.values().flat_map(|profile| {
 			profile
 				.instances

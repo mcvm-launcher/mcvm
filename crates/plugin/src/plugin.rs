@@ -147,7 +147,7 @@ pub enum HookHandler {
 	Native {
 		/// The function to handle the hook
 		#[serde(deserialize_with = "deserialize_native_function")]
-		function: Arc<dyn Fn(String) -> anyhow::Result<String> + Send + Sync + 'static>,
+		function: NativeHookHandler,
 	},
 }
 
@@ -159,11 +159,12 @@ impl Debug for HookHandler {
 
 /// Deserialize function for the native hook. No plugin manifests should ever use this,
 /// so just return a function that does nothing.
-fn deserialize_native_function<'de, D>(
-	_: D,
-) -> Result<Arc<dyn Fn(String) -> anyhow::Result<String> + Send + Sync + 'static>, D::Error>
+fn deserialize_native_function<'de, D>(_: D) -> Result<NativeHookHandler, D::Error>
 where
 	D: Deserializer<'de>,
 {
 	Ok(Arc::new(|_| Ok(String::new())))
 }
+
+/// Type for native plugin hook handlers
+pub type NativeHookHandler = Arc<dyn Fn(String) -> anyhow::Result<String> + Send + Sync + 'static>;
