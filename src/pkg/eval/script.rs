@@ -7,8 +7,8 @@ use mcvm_pkg::script_eval::{
 	AddonInstructionData, ScriptEvalConfig, ScriptEvaluator as ScriptEvaluatorTrait,
 };
 use mcvm_pkg::RecommendedPackage;
-use mcvm_plugin::api::NoOp;
 use mcvm_plugin::hooks::{CustomPackageInstruction, CustomPackageInstructionArg};
+use mcvm_shared::output::NoOp;
 use mcvm_shared::pkg::PackageID;
 
 use crate::data::config::plugin::PluginManager;
