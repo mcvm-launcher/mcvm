@@ -265,14 +265,12 @@ async fn proxy_launch(data: &mut CmdData, profile: String) -> anyhow::Result<()>
 
 	let client = Client::new();
 
-	let child = profile
+	let handle = profile
 		.launch_proxy(&client, &data.paths, &config.plugins, &mut data.output)
 		.await
 		.context("Failed to launch proxy")?;
 
-	if let Some(mut child) = child {
-		child.wait().context("Failed to wait for child process")?;
-	}
+	handle.wait().context("Failed to wait for proxy")?;
 
 	Ok(())
 }

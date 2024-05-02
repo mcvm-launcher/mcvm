@@ -76,7 +76,7 @@ impl Profile {
 		paths: &Paths,
 		plugins: &PluginManager,
 		o: &mut impl MCVMOutput,
-	) -> anyhow::Result<Option<Child>> {
+	) -> anyhow::Result<ProxyHandle> {
 		// Check for updates first
 		let mut manager = UpdateManager::new(false, true);
 		manager
@@ -124,7 +124,9 @@ impl Profile {
 			}
 		};
 
-		Ok(child)
+		let handle = ProxyHandle { child };
+
+		Ok(handle)
 	}
 
 	/// Gets the directory for this profile's proxy and creates it
@@ -144,4 +146,41 @@ pub struct ProxyProperties {
 	jar_path: PathBuf,
 	main_class: String,
 	java: JavaInstallation,
+}
+
+/// A handle to a running proxy
+pub struct ProxyHandle {
+	/// The child process for the proxy. Will be empty if
+	/// the launched profile does not have a proxy
+	child: Option<Child>,
+}
+
+impl ProxyHandle {
+	/// Convert this handle into its inner child
+	pub fn into_inner(self) -> Option<Child> {
+		self.child
+	}
+
+	/// Check if this handle has a child process
+	pub fn has_child(&self) -> bool {
+		self.child.is_some()
+	}
+
+	/// Wait for this proxy to finish executing
+	pub fn wait(self) -> anyhow::Result<()> {
+		if let Some(mut child) = self.child {
+			child.wait().context("Failed to wait for child process")?;
+		}
+
+		Ok(())
+	}
+
+	/// Kill this proxy early
+	pub fn kill(self) -> anyhow::Result<()> {
+		if let Some(mut child) = self.child {
+			child.kill().context("Failed to kill child process")?;
+		}
+
+		Ok(())
+	}
 }
