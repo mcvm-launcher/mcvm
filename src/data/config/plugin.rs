@@ -1,4 +1,4 @@
-use std::path::Path;
+use std::path::{Path, PathBuf};
 use std::sync::{Arc, MutexGuard};
 
 use crate::io::files::paths::Paths;
@@ -82,7 +82,7 @@ pub struct PluginManagerInner {
 impl PluginManager {
 	/// Load the PluginManager from the plugins.json file
 	pub fn load(paths: &Paths, o: &mut impl MCVMOutput) -> anyhow::Result<Self> {
-		let path = paths.project.config_dir().join("plugins.json");
+		let path = Self::get_path(paths);
 		let config = if path.exists() {
 			json_from_file(path).context("Failed to load plugin config from file")?
 		} else {
@@ -102,6 +102,20 @@ impl PluginManager {
 		}
 
 		Ok(out)
+	}
+
+	/// Get the path to the config file
+	pub fn get_path(paths: &Paths) -> PathBuf {
+		paths.project.config_dir().join("plugins.json")
+	}
+
+	/// Write the default config file
+	pub fn create_default(paths: &Paths) -> anyhow::Result<()> {
+		let out = PluginsConfig::default();
+		json_to_file_pretty(Self::get_path(paths), &out)
+			.context("Failed to write default plugin config to file")?;
+
+		Ok(())
 	}
 
 	/// Create a new PluginManager with no plugins

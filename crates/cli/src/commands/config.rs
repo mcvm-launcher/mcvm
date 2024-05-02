@@ -2,7 +2,7 @@ use super::CmdData;
 
 use anyhow::Context;
 use clap::Subcommand;
-use mcvm::data::config::Config;
+use mcvm::data::config::{plugin::PluginManager, Config};
 
 use std::{path::PathBuf, process::Command};
 
@@ -10,18 +10,31 @@ use std::{path::PathBuf, process::Command};
 pub enum ConfigSubcommand {
 	#[command(about = "Edit config using your default text editor")]
 	Edit {},
+	#[command(about = "Edit plugin config using your default text editor")]
+	EditPlugins {},
 }
 
 pub async fn run(subcommand: ConfigSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
 	match subcommand {
 		ConfigSubcommand::Edit {} => edit(data).await,
+		ConfigSubcommand::EditPlugins {} => edit_plugins(data).await,
 	}
 }
 
-pub async fn edit(data: &mut CmdData) -> anyhow::Result<()> {
+async fn edit(data: &mut CmdData) -> anyhow::Result<()> {
 	let path = Config::get_path(&data.paths);
 
 	Config::create_default(&path).context("Failed to create default config")?;
+
+	edit_text(path).context("Failed to edit config")?;
+
+	Ok(())
+}
+
+async fn edit_plugins(data: &mut CmdData) -> anyhow::Result<()> {
+	let path = PluginManager::get_path(&data.paths);
+
+	PluginManager::create_default(&data.paths).context("Failed to create default config")?;
 
 	edit_text(path).context("Failed to edit config")?;
 
