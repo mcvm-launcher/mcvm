@@ -5,7 +5,7 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 /// A loader for Minecraft mods
-#[derive(Serialize, Deserialize, Debug, Copy, Clone, PartialEq, Eq, Default)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, Default)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(rename_all = "lowercase")]
 pub enum Modloader {
@@ -26,6 +26,9 @@ pub enum Modloader {
 	Risugamis,
 	/// Rift
 	Rift,
+	/// An unknown modloader
+	#[cfg_attr(not(feature = "schema"), serde(untagged))]
+	Unknown(String),
 }
 
 impl Display for Modloader {
@@ -39,6 +42,7 @@ impl Display for Modloader {
 			Self::LiteLoader => write!(f, "LiteLoader"),
 			Self::Risugamis => write!(f, "Risugami's"),
 			Self::Rift => write!(f, "Rift"),
+			Self::Unknown(other) => write!(f, "{other}"),
 		}
 	}
 }
@@ -68,6 +72,9 @@ pub enum ModloaderMatch {
 	Risugamis,
 	/// Matches Rift
 	Rift,
+	/// An unknown modloader match
+	#[cfg_attr(not(feature = "schema"), serde(untagged))]
+	Unknown(String),
 }
 
 impl ModloaderMatch {
@@ -84,7 +91,7 @@ impl ModloaderMatch {
 			"liteloader" => Some(Self::LiteLoader),
 			"risugamis" => Some(Self::Risugamis),
 			"rift" => Some(Self::Rift),
-			_ => None,
+			other => Some(Self::Unknown(other.into())),
 		}
 	}
 
@@ -101,12 +108,13 @@ impl ModloaderMatch {
 			Self::LiteLoader => matches!(other, Modloader::LiteLoader),
 			Self::Risugamis => matches!(other, Modloader::Risugamis),
 			Self::Rift => matches!(other, Modloader::Rift),
+			Self::Unknown(this) => matches!(other, Modloader::Unknown(other) if this == other),
 		}
 	}
 }
 
 /// Different types of server changes. These are mostly mutually exclusive.
-#[derive(Serialize, Deserialize, Debug, Copy, Clone, Default, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, Clone, Default, PartialEq, Eq)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(rename_all = "lowercase")]
 pub enum ServerType {
@@ -145,6 +153,9 @@ pub enum ServerType {
 	Risugamis,
 	/// Rift
 	Rift,
+	/// An unknown server type
+	#[cfg_attr(not(feature = "schema"), serde(untagged))]
+	Unknown(String),
 }
 
 impl Display for ServerType {
@@ -167,6 +178,7 @@ impl Display for ServerType {
 			Self::Quilt => write!(f, "Quilt"),
 			Self::Risugamis => write!(f, "Risugami's"),
 			Self::Rift => write!(f, "Rift"),
+			Self::Unknown(other) => write!(f, "{other}"),
 		}
 	}
 }
@@ -196,6 +208,9 @@ pub enum PluginLoaderMatch {
 	Purpur,
 	/// Matches Folia
 	Folia,
+	/// An unknown plugin loader match
+	#[cfg_attr(not(feature = "schema"), serde(untagged))]
+	Unknown(String),
 }
 
 impl PluginLoaderMatch {
@@ -212,7 +227,7 @@ impl PluginLoaderMatch {
 			"pufferfish" => Some(Self::Pufferfish),
 			"purpur" => Some(Self::Purpur),
 			"folia" => Some(Self::Folia),
-			_ => None,
+			other => Some(Self::Unknown(other.into())),
 		}
 	}
 
@@ -236,12 +251,13 @@ impl PluginLoaderMatch {
 			Self::Pufferfish => matches!(other, ServerType::Pufferfish),
 			Self::Purpur => matches!(other, ServerType::Purpur),
 			Self::Folia => matches!(other, ServerType::Folia),
+			Self::Unknown(this) => matches!(other, ServerType::Unknown(other) if this == other),
 		}
 	}
 }
 
 /// Different modifications for the client. Mostly mututally exclusive
-#[derive(Serialize, Deserialize, Debug, Copy, Clone, Default, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, Clone, Default, PartialEq, Eq)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(rename_all = "lowercase")]
 pub enum ClientType {
@@ -264,6 +280,9 @@ pub enum ClientType {
 	Risugamis,
 	/// Rift
 	Rift,
+	/// An unknown client type
+	#[cfg_attr(not(feature = "schema"), serde(untagged))]
+	Unknown(String),
 }
 
 impl Display for ClientType {
@@ -278,12 +297,13 @@ impl Display for ClientType {
 			Self::LiteLoader => write!(f, "LiteLoader"),
 			Self::Risugamis => write!(f, "Risugami's"),
 			Self::Rift => write!(f, "Rift"),
+			Self::Unknown(other) => write!(f, "{other}"),
 		}
 	}
 }
 
 /// Different proxies
-#[derive(Serialize, Deserialize, Debug, Copy, Clone, Default, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Debug, Clone, Default, PartialEq, Eq)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(rename_all = "lowercase")]
 pub enum Proxy {
@@ -296,6 +316,9 @@ pub enum Proxy {
 	Waterfall,
 	/// The Velocity proxy
 	Velocity,
+	/// An unknown proxy
+	#[cfg_attr(not(feature = "schema"), serde(untagged))]
+	Unknown(String),
 }
 
 impl Display for Proxy {
@@ -305,6 +328,7 @@ impl Display for Proxy {
 			Self::BungeeCord => write!(f, "BungeeCord"),
 			Self::Waterfall => write!(f, "Waterfall"),
 			Self::Velocity => write!(f, "Velocity"),
+			Self::Unknown(other) => write!(f, "{other}"),
 		}
 	}
 }
@@ -324,6 +348,9 @@ pub enum ProxyMatch {
 	Velocity,
 	/// Matches any proxy that can load BungeeCord plugins
 	BungeeCordLike,
+	/// An unknown proxy match
+	#[cfg_attr(not(feature = "schema"), serde(untagged))]
+	Unknown(String),
 }
 
 impl ProxyMatch {
@@ -335,7 +362,7 @@ impl ProxyMatch {
 			"waterfall" => Some(Self::Waterfall),
 			"velocity" => Some(Self::Velocity),
 			"bungeecordlike" => Some(Self::BungeeCordLike),
-			_ => None,
+			other => Some(Self::Unknown(other.into())),
 		}
 	}
 
@@ -347,6 +374,7 @@ impl ProxyMatch {
 			Self::Waterfall => matches!(other, Proxy::Waterfall),
 			Self::Velocity => matches!(other, Proxy::Velocity),
 			Self::BungeeCordLike => matches!(other, Proxy::BungeeCord | Proxy::Waterfall),
+			Self::Unknown(this) => matches!(other, Proxy::Unknown(other) if this == other),
 		}
 	}
 }

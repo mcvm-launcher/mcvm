@@ -170,10 +170,10 @@ impl ProfileConfig {
 			profile_id,
 			self.version.to_mc_version(),
 			GameModifications::new(
-				self.modloader,
-				self.client_type,
-				self.server_type,
-				self.proxy,
+				self.modloader.clone(),
+				self.client_type.clone(),
+				self.server_type.clone(),
+				self.proxy.clone(),
 			),
 			self.packages.clone(),
 			self.package_stability,
@@ -213,7 +213,7 @@ impl GameModifications {
 	pub fn get_modloader(&self, side: Side) -> Modloader {
 		match side {
 			Side::Client => match self.client_type {
-				ClientType::None => self.modloader,
+				ClientType::None => self.modloader.clone(),
 				ClientType::Vanilla => Modloader::Vanilla,
 				ClientType::Forge => Modloader::Forge,
 				ClientType::NeoForged => Modloader::NeoForged,
@@ -222,9 +222,10 @@ impl GameModifications {
 				ClientType::LiteLoader => Modloader::LiteLoader,
 				ClientType::Risugamis => Modloader::Risugamis,
 				ClientType::Rift => Modloader::Rift,
+				_ => Modloader::Vanilla,
 			},
 			Side::Server => match self.server_type {
-				ServerType::None => self.modloader,
+				ServerType::None => self.modloader.clone(),
 				ServerType::Forge | ServerType::SpongeForge => Modloader::Forge,
 				ServerType::NeoForged => Modloader::NeoForged,
 				ServerType::Fabric => Modloader::Fabric,
@@ -239,7 +240,7 @@ impl GameModifications {
 	/// Gets whether both client and server have the same modloader
 	pub fn common_modloader(&self) -> bool {
 		matches!(
-			(self.client_type, self.server_type),
+			(&self.client_type, &self.server_type),
 			(ClientType::None, ServerType::None)
 				| (ClientType::Vanilla, ServerType::Vanilla)
 				| (ClientType::Forge, ServerType::Forge)
@@ -253,7 +254,7 @@ impl GameModifications {
 }
 
 /// Check if a client type can be installed by MCVM
-pub fn can_install_client_type(client_type: ClientType) -> bool {
+pub fn can_install_client_type(client_type: &ClientType) -> bool {
 	matches!(
 		client_type,
 		ClientType::None | ClientType::Vanilla | ClientType::Fabric | ClientType::Quilt
@@ -261,7 +262,7 @@ pub fn can_install_client_type(client_type: ClientType) -> bool {
 }
 
 /// Check if a server type can be installed by MCVM
-pub fn can_install_server_type(server_type: ServerType) -> bool {
+pub fn can_install_server_type(server_type: &ServerType) -> bool {
 	matches!(
 		server_type,
 		ServerType::None
