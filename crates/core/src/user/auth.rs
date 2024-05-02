@@ -15,19 +15,15 @@ use super::{User, UserKind};
 
 impl User {
 	/// Authenticate the user
-	pub async fn authenticate(
+	pub(crate) async fn authenticate(
 		&mut self,
-		force: bool,
-		offline: bool,
-		client_id: ClientId,
-		paths: &Paths,
-		client: &reqwest::Client,
+		params: AuthParameters<'_>,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
 		match &mut self.kind {
 			UserKind::Microsoft { xbox_uid } => {
-				if offline {
-					let db = AuthDatabase::open(&paths.auth)
+				if params.offline {
+					let db = AuthDatabase::open(&params.paths.auth)
 						.context("Failed to open authentication database")?;
 					let Some((user, sensitive)) = get_full_user(&db, &self.id, o)
 						.context("Failed to get user from database")?
@@ -40,10 +36,9 @@ impl User {
 					self.keypair = sensitive.keypair.clone();
 					*xbox_uid = sensitive.xbox_uid.clone();
 				} else {
-					let user_data =
-						update_microsoft_user_auth(&self.id, force, client_id, paths, client, o)
-							.await
-							.context("Failed to update user authentication")?;
+					let user_data = update_microsoft_user_auth(&self.id, params, o)
+						.await
+						.context("Failed to update user authentication")?;
 
 					self.access_token = Some(user_data.access_token);
 					self.name = Some(user_data.profile.name);
@@ -138,20 +133,18 @@ pub struct MicrosoftUserData {
 }
 
 /// Updates authentication for a Microsoft user using either the database or updating from the API
-pub async fn update_microsoft_user_auth(
+async fn update_microsoft_user_auth(
 	user_id: &str,
-	force: bool,
-	client_id: ClientId,
-	paths: &Paths,
-	client: &reqwest::Client,
+	params: AuthParameters<'_>,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<MicrosoftUserData> {
 	let mut db =
-		AuthDatabase::open(&paths.auth).context("Failed to open authentication database")?;
+		AuthDatabase::open(&params.paths.auth).context("Failed to open authentication database")?;
 
 	// Force reauth if specified
-	if force {
-		return reauth_microsoft_user(user_id, &mut db, client_id, client, o).await;
+	if params.force {
+		return reauth_microsoft_user(user_id, &mut db, params.client_id, params.req_client, o)
+			.await;
 	}
 
 	// Check the authentication DB
@@ -165,12 +158,12 @@ pub async fn update_microsoft_user_auth(
 		);
 		// Get the access token using the refresh token
 		let oauth_client =
-			auth::create_client(client_id).context("Failed to create OAuth client")?;
+			auth::create_client(params.client_id).context("Failed to create OAuth client")?;
 		let token = auth::refresh_microsoft_token(&oauth_client, &refresh_token)
 			.await
 			.context("Failed to get refreshed token")?;
 
-		let token = authenticate_microsoft_user_from_token(token, client, o)
+		let token = authenticate_microsoft_user_from_token(token, params.req_client, o)
 			.await
 			.context("Failed to authenticate with refreshed token")?;
 
@@ -187,7 +180,7 @@ pub async fn update_microsoft_user_auth(
 		}
 	} else {
 		// Authenticate with the server again
-		reauth_microsoft_user(user_id, &mut db, client_id, client, o).await?
+		reauth_microsoft_user(user_id, &mut db, params.client_id, params.req_client, o).await?
 	};
 
 	Ok(user_data)
@@ -340,4 +333,13 @@ fn get_private_key(
 	}
 
 	bail!("Passkey authentication failed")
+}
+
+/// Container struct for parameters for authenticating a user
+pub(crate) struct AuthParameters<'a> {
+	pub force: bool,
+	pub offline: bool,
+	pub client_id: ClientId,
+	pub paths: &'a Paths,
+	pub req_client: &'a reqwest::Client,
 }

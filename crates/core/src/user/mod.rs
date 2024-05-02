@@ -12,6 +12,8 @@ use reqwest::Client;
 
 use crate::Paths;
 
+use self::auth::AuthParameters;
+
 /// A user account that can play the game
 #[derive(Debug, Clone)]
 pub struct User {
@@ -266,15 +268,14 @@ impl UserManager {
 				.expect("User in AuthState does not exist");
 
 			if !user.is_authenticated() || !user.is_auth_valid(paths) {
-				user.authenticate(
-					false,
-					self.offline,
-					self.ms_client_id.clone(),
+				let params = AuthParameters {
+					req_client: client,
 					paths,
-					client,
-					o,
-				)
-				.await?;
+					force: false,
+					offline: self.offline,
+					client_id: self.ms_client_id.clone(),
+				};
+				user.authenticate(params, o).await?;
 			}
 		}
 

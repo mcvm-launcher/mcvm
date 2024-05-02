@@ -1,8 +1,5 @@
 use super::CmdData;
-use crate::{
-	output::{icons_enabled, HYPHEN_POINT, STAR},
-	secrets::get_ms_client_id,
-};
+use crate::output::{icons_enabled, HYPHEN_POINT, STAR};
 use anyhow::{bail, Context};
 use itertools::Itertools;
 use mcvm::core::user::UserKind;
@@ -137,26 +134,16 @@ async fn passkey(data: &mut CmdData, user: Option<String>) -> anyhow::Result<()>
 async fn auth(data: &mut CmdData, user: Option<String>) -> anyhow::Result<()> {
 	data.ensure_config(true).await?;
 	let config = data.config.get_mut();
-	let user = if let Some(user) = user {
-		config.users.get_user_mut(&user)
-	} else {
-		config.users.get_chosen_user_mut()
-	};
-	let Some(user) = user else {
-		bail!("Specified user does not exist");
-	};
+	if let Some(user) = user {
+		config.users.choose_user(&user)?;
+	}
 
 	let client = Client::new();
-	user.authenticate(
-		true,
-		false,
-		get_ms_client_id(),
-		&data.paths.core,
-		&client,
-		&mut data.output,
-	)
-	.await
-	.context("Failed to update passkey")?;
+	config
+		.users
+		.authenticate(&data.paths.core, &client, &mut data.output)
+		.await
+		.context("Failed to authenticate")?;
 
 	Ok(())
 }
