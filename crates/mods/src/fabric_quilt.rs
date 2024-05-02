@@ -79,7 +79,8 @@ pub async fn install_from_core(
 	.await
 	.context("Failed to download {mode} files for {side}")?;
 
-	let classpath = get_classpath(&meta, core.get_paths(), side);
+	let classpath =
+		get_classpath(&meta, core.get_paths(), side).context("Failed to get classpath")?;
 
 	Ok((
 		classpath,
@@ -324,7 +325,7 @@ async fn download_libraries(
 		let path = get_lib_path(&lib.name);
 		if let Some(path) = path {
 			let lib_path = paths.libraries.join(&path);
-			classpath.add_path(&lib_path);
+			classpath.add_path(&lib_path)?;
 			if !force && lib_path.exists() {
 				continue;
 			}
@@ -372,41 +373,45 @@ async fn download_main_library(
 }
 
 /// Get the classpath of a list of libraries
-fn get_lib_list_classpath(libs: &[Library], paths: &Paths) -> Classpath {
+fn get_lib_list_classpath(libs: &[Library], paths: &Paths) -> anyhow::Result<Classpath> {
 	let mut out = Classpath::new();
 
 	for lib in libs.iter() {
 		let path = get_lib_path(&lib.name);
 		if let Some(path) = path {
 			let lib_path = paths.libraries.join(&path);
-			out.add_path(&lib_path);
+			out.add_path(&lib_path)?;
 		}
 	}
 
-	out
+	Ok(out)
 }
 
 /// Get the classpath for Quilt/Fabric
-pub fn get_classpath(meta: &FabricQuiltMeta, paths: &Paths, side: Side) -> Classpath {
+pub fn get_classpath(
+	meta: &FabricQuiltMeta,
+	paths: &Paths,
+	side: Side,
+) -> anyhow::Result<Classpath> {
 	let mut out = Classpath::new();
 
 	out.extend(get_lib_list_classpath(
 		&meta.launcher_meta.libraries.common,
 		paths,
-	));
+	)?);
 
 	let side_libs = match side {
 		Side::Client => &meta.launcher_meta.libraries.client,
 		Side::Server => &meta.launcher_meta.libraries.server,
 	};
 
-	out.extend(get_lib_list_classpath(side_libs, paths));
+	out.extend(get_lib_list_classpath(side_libs, paths)?);
 
 	let path = get_lib_path(&meta.loader.maven).expect("Expected a valid path");
-	out.add_path(&paths.libraries.join(path));
+	out.add_path(&paths.libraries.join(path))?;
 
 	let path = get_lib_path(&meta.intermediary.maven).expect("Expected a valid path");
-	out.add_path(&paths.libraries.join(path));
+	out.add_path(&paths.libraries.join(path))?;
 
-	out
+	Ok(out)
 }

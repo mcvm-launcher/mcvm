@@ -185,13 +185,13 @@ pub fn get_classpath(client_meta: &ClientMeta, paths: &Paths) -> anyhow::Result<
 				.ok_or(anyhow!("Native lib artifact does not exist"))?;
 
 			let path = natives_jars_path.join(classifier.path.clone());
-			classpath.add_path(&path);
+			classpath.add_path(&path)?;
 
 			continue;
 		}
 		if let Some(artifact) = &lib.downloads.artifact {
 			let path = libraries_path.join(artifact.path.clone());
-			classpath.add_path(&path);
+			classpath.add_path(&path)?;
 			continue;
 		}
 	}

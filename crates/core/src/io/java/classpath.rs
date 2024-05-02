@@ -1,5 +1,7 @@
 use std::path::{Path, PathBuf};
 
+use anyhow::Context;
+
 /// The separator for entries in the classpath
 #[cfg(target_os = "linux")]
 pub const CLASSPATH_SEP: char = ':';
@@ -43,8 +45,13 @@ impl Classpath {
 	}
 
 	/// Converts a path to a string and appends it to the classpath
-	pub fn add_path(&mut self, path: &Path) {
-		self.add(path.to_str().expect("Failed to convert path to a string"))
+	pub fn add_path(&mut self, path: &Path) -> anyhow::Result<()> {
+		self.add(
+			path.to_str()
+				.context("Failed to convert path to a string")?,
+		);
+
+		Ok(())
 	}
 
 	/// Extends the classpath with another classpath

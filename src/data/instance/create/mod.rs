@@ -256,7 +256,7 @@ impl Instance {
 		manager: &UpdateManager,
 	) -> anyhow::Result<Classpath> {
 		let meta = manager.fq_meta.get();
-		let classpath = fabric_quilt::get_classpath(meta, &paths.core, self.kind.to_side());
+		let classpath = fabric_quilt::get_classpath(meta, &paths.core, self.kind.to_side())?;
 		self.modification_data.main_class_override = Some(
 			meta.launcher_meta
 				.main_class

@@ -151,9 +151,9 @@ impl<'params> Instance<'params> {
 			classpath.extend(lib_classpath);
 		}
 		for lib in &config.additional_libs {
-			classpath.add_path(lib);
+			classpath.add_path(lib)?;
 		}
-		classpath.add_path(&jar_path);
+		classpath.add_path(&jar_path)?;
 
 		// Main class
 		let main_class = if let Some(main_class) = &config.main_class {
