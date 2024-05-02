@@ -11,7 +11,7 @@ use mcvm_auth::mc::{
 	ClientId, RefreshToken,
 };
 
-use super::{User, UserKind};
+use super::{CustomAuthFunction, User, UserKind};
 
 impl User {
 	/// Authenticate the user
@@ -48,7 +48,13 @@ impl User {
 				}
 			}
 			UserKind::Demo => {}
-			UserKind::Unknown(..) => {}
+			UserKind::Unknown(other) => {
+				if let Some(func) = params.custom_auth_fn {
+					let profile = func(&self.id, other).context("Custom auth function failed")?;
+					self.name = Some(profile.name);
+					self.uuid = Some(profile.uuid);
+				}
+			}
 		}
 
 		Ok(())
@@ -342,4 +348,5 @@ pub(crate) struct AuthParameters<'a> {
 	pub client_id: ClientId,
 	pub paths: &'a Paths,
 	pub req_client: &'a reqwest::Client,
+	pub custom_auth_fn: Option<CustomAuthFunction>,
 }

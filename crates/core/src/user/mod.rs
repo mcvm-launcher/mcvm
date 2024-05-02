@@ -3,14 +3,14 @@ pub mod auth;
 /// Tools for working with UUIDs
 pub mod uuid;
 
-use std::collections::HashMap;
+use std::{collections::HashMap, sync::Arc};
 
 use anyhow::bail;
 use mcvm_auth::mc::{AccessToken, ClientId, Keypair};
 use mcvm_shared::output::MCVMOutput;
 use reqwest::Client;
 
-use crate::Paths;
+use crate::{net::minecraft::MinecraftUserProfile, Paths};
 
 use self::auth::AuthParameters;
 
@@ -137,7 +137,7 @@ impl User {
 }
 
 /// List of users and AuthState
-#[derive(Debug, Clone)]
+#[derive(Clone)]
 pub struct UserManager {
 	/// The current state of authentication
 	state: AuthState,
@@ -147,6 +147,8 @@ pub struct UserManager {
 	ms_client_id: ClientId,
 	/// Whether the manager has been set as offline for authentication
 	offline: bool,
+	/// Custom auth function for plugin injection
+	custom_auth_fn: Option<CustomAuthFunction>,
 }
 
 /// State of authentication
@@ -166,6 +168,7 @@ impl UserManager {
 			users: HashMap::new(),
 			ms_client_id,
 			offline: false,
+			custom_auth_fn: None,
 		}
 	}
 
@@ -274,6 +277,7 @@ impl UserManager {
 					force: false,
 					offline: self.offline,
 					client_id: self.ms_client_id.clone(),
+					custom_auth_fn: self.custom_auth_fn.clone(),
 				};
 				user.authenticate(params, o).await?;
 			}
@@ -298,7 +302,15 @@ impl UserManager {
 	pub fn set_offline(&mut self, offline: bool) {
 		self.offline = offline;
 	}
+
+	/// Set the manager's custom auth function
+	pub fn set_custom_auth_function(&mut self, func: CustomAuthFunction) {
+		self.custom_auth_fn = Some(func);
+	}
 }
+
+/// Function for custom authentication handling
+pub type CustomAuthFunction = Arc<dyn Fn(&str, &str) -> anyhow::Result<MinecraftUserProfile>>;
 
 /// Validate a Minecraft username
 pub fn validate_username(_kind: &UserKind, name: &str) -> bool {

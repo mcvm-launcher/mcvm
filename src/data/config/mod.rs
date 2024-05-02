@@ -50,7 +50,6 @@ use std::path::{Path, PathBuf};
 
 /// The data resulting from reading configuration.
 /// Represents all of the configured data that MCVM will use
-#[derive(Debug)]
 pub struct Config {
 	/// The user manager
 	pub users: UserManager,
