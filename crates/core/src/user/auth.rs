@@ -114,6 +114,16 @@ impl User {
 
 		Ok(())
 	}
+
+	/// Logs out this user and removes their data from the auth database (not including passkey)
+	pub fn logout(&mut self, paths: &Paths) -> anyhow::Result<()> {
+		let mut db =
+			AuthDatabase::open(&paths.auth).context("Failed to open authentication database")?;
+		db.logout_user(&self.id)
+			.context("Failed to logout user in database")?;
+
+		Ok(())
+	}
 }
 
 /// Data for a Microsoft user
@@ -273,6 +283,11 @@ fn get_full_user<'db>(
 	let Some(user) = db.get_valid_user(user_id) else {
 		return Ok(None);
 	};
+	// We have to reauthenticate non-logged-in users
+	if !user.is_logged_in() {
+		return Ok(None);
+	}
+
 	// Get their sensitive info
 	let sensitive = if user.has_passkey() {
 		let private_key = get_private_key(

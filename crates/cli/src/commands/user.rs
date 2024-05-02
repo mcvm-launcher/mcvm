@@ -34,6 +34,12 @@ pub enum UserSubcommand {
 		#[arg(short, long)]
 		user: Option<String>,
 	},
+	#[command(about = "Log out a user")]
+	Logout {
+		/// The user to log out. If not specified, uses the default user
+		#[arg(short, long)]
+		user: Option<String>,
+	},
 }
 
 pub async fn run(subcommand: UserSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
@@ -42,6 +48,7 @@ pub async fn run(subcommand: UserSubcommand, data: &mut CmdData) -> anyhow::Resu
 		UserSubcommand::Status => status(data).await,
 		UserSubcommand::Passkey { user } => passkey(data, user).await,
 		UserSubcommand::Auth { user } => auth(data, user).await,
+		UserSubcommand::Logout { user } => logout(data, user).await,
 	}
 }
 
@@ -148,6 +155,24 @@ async fn auth(data: &mut CmdData, user: Option<String>) -> anyhow::Result<()> {
 	)
 	.await
 	.context("Failed to update passkey")?;
+
+	Ok(())
+}
+
+async fn logout(data: &mut CmdData, user: Option<String>) -> anyhow::Result<()> {
+	data.ensure_config(true).await?;
+	let config = data.config.get_mut();
+	let user = if let Some(user) = user {
+		config.users.get_user_mut(&user)
+	} else {
+		config.users.get_chosen_user_mut()
+	};
+	let Some(user) = user else {
+		bail!("Specified user does not exist");
+	};
+
+	user.logout(&data.paths.core)
+		.context("Failed to logout user")?;
 
 	Ok(())
 }

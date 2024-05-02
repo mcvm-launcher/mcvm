@@ -90,6 +90,15 @@ impl AuthDatabase {
 		Ok(())
 	}
 
+	/// Logs out a user from the database by removing their sensitive data, but not their passkey or user
+	pub fn logout_user(&mut self, user_id: &str) -> anyhow::Result<()> {
+		if let Some(user) = self.contents.users.get_mut(user_id) {
+			user.sensitive = SensitiveUserInfoSerialized::None;
+		}
+
+		Ok(())
+	}
+
 	/// Gets a user from the database, if it is present
 	pub fn get_user(&self, user_id: &str) -> Option<&DatabaseUser> {
 		self.contents.users.get(user_id)
@@ -163,6 +172,11 @@ impl DatabaseUser {
 		self.passkey.is_some()
 	}
 
+	/// Checks if the user is logged in, where their sensitive info is present
+	pub fn is_logged_in(&self) -> bool {
+		!matches!(self.sensitive, SensitiveUserInfoSerialized::None)
+	}
+
 	/// Get the user's private key from their passkey. Will fail if the passkey doesn't match
 	/// and return none if the user doesn't have a passkey
 	pub fn get_private_key(&self, passkey: &str) -> anyhow::Result<Option<RsaPrivateKey>> {
@@ -214,7 +228,7 @@ impl DatabaseUser {
 		private_key: &RsaPrivateKey,
 	) -> anyhow::Result<SensitiveUserInfo> {
 		let SensitiveUserInfoSerialized::Encrypted(encrypted) = &self.sensitive else {
-			bail!("Sensitive user info is raw, not encrypted");
+			bail!("Sensitive user info is raw or empty");
 		};
 		let mut hex_decoded = Vec::new();
 		for chunk in encrypted {
@@ -329,6 +343,8 @@ pub struct PasskeyInfo {
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(untagged)]
 pub enum SensitiveUserInfoSerialized {
+	/// No info
+	None,
 	/// Raw info with no passkey encryption
 	Raw(SensitiveUserInfo),
 	/// Info encrypted with a passkey, as chunks of key-encoded hex strings
