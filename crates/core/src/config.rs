@@ -75,7 +75,7 @@ impl ConfigBuilder {
 	builder_method!(
 		ms_client_id,
 		ClientId,
-		"Set the Microsoft client ID to use for Microsoft / XBox Live authentication"
+		"Set the Microsoft client ID to use for Microsoft / Xbox Live authentication"
 	);
 
 	builder_method!(

@@ -34,7 +34,7 @@ pub struct User {
 pub enum UserKind {
 	/// A new Microsoft user, the standard account
 	Microsoft {
-		/// The XBox UID of the user
+		/// The Xbox UID of the user
 		xbox_uid: Option<String>,
 	},
 	/// A demo user
@@ -99,7 +99,7 @@ impl User {
 		self.access_token.as_ref()
 	}
 
-	/// Get the XBox UID of this user, if it exists
+	/// Get the Xbox UID of this user, if it exists
 	pub fn get_xbox_uid(&self) -> Option<&String> {
 		if let UserKind::Microsoft { xbox_uid } = &self.kind {
 			xbox_uid.as_ref()
