@@ -150,10 +150,8 @@ pub struct UserManager {
 enum AuthState {
 	/// No user is picked / MCVM is offline
 	Offline,
-	/// A user has been selected but not authenticated
+	/// A default user has been selected
 	UserChosen(String),
-	/// The user is authenticated
-	Authed(String),
 }
 
 impl UserManager {
@@ -219,11 +217,6 @@ impl UserManager {
 		if !self.user_exists(user_id) {
 			bail!("Chosen user does not exist");
 		}
-		if let AuthState::Authed(current) = &self.state {
-			if current == user_id {
-				return Ok(());
-			}
-		}
 		self.state = AuthState::UserChosen(user_id.into());
 		Ok(())
 	}
@@ -232,7 +225,7 @@ impl UserManager {
 	pub fn get_chosen_user(&self) -> Option<&User> {
 		match &self.state {
 			AuthState::Offline => None,
-			AuthState::UserChosen(user_id) | AuthState::Authed(user_id) => self.users.get(user_id),
+			AuthState::UserChosen(user_id) => self.users.get(user_id),
 		}
 	}
 
@@ -240,23 +233,21 @@ impl UserManager {
 	pub fn get_chosen_user_mut(&mut self) -> Option<&mut User> {
 		match &self.state {
 			AuthState::Offline => None,
-			AuthState::UserChosen(user_id) | AuthState::Authed(user_id) => {
-				self.users.get_mut(user_id)
-			}
+			AuthState::UserChosen(user_id) => self.users.get_mut(user_id),
 		}
 	}
 
 	/// Checks if a user is chosen
 	pub fn is_user_chosen(&self) -> bool {
-		matches!(
-			self.state,
-			AuthState::UserChosen(..) | AuthState::Authed(..)
-		)
+		matches!(self.state, AuthState::UserChosen(..))
 	}
 
 	/// Checks if a user is chosen and it is authenticated
 	pub fn is_authenticated(&self) -> bool {
-		matches!(self.state, AuthState::Authed(..))
+		let Some(user) = self.get_chosen_user() else {
+			return false;
+		};
+		user.is_authenticated()
 	}
 
 	/// Ensures that the currently chosen user is authenticated
@@ -266,7 +257,7 @@ impl UserManager {
 		client: &Client,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
-		if let AuthState::UserChosen(user_id) | AuthState::Authed(user_id) = &mut self.state {
+		if let AuthState::UserChosen(user_id) = &mut self.state {
 			let user = self
 				.users
 				.get_mut(user_id)
@@ -283,7 +274,6 @@ impl UserManager {
 				)
 				.await?;
 			}
-			self.state = AuthState::Authed(std::mem::take(user_id));
 		}
 
 		Ok(())
@@ -292,13 +282,6 @@ impl UserManager {
 	/// Unchooses the current user, if one is chosen
 	pub fn unchoose_user(&mut self) {
 		self.state = AuthState::Offline;
-	}
-
-	/// Unauthenticates the current user, if one is authenticated
-	pub fn unauth_user(&mut self) {
-		if let AuthState::Authed(user_id) = &mut self.state {
-			self.state = AuthState::UserChosen(std::mem::take(user_id))
-		}
 	}
 
 	/// Adds users from another UserManager, and copies it's authentication state
