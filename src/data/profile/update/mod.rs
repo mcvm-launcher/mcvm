@@ -74,7 +74,7 @@ pub async fn update_profiles(
 	for id in ids {
 		let profile = config
 			.profiles
-			.get_mut(&ProfileID::from(id.clone()))
+			.get_mut(id)
 			.ok_or(anyhow!("Unknown profile '{id}'"))?;
 
 		ctx.output.display(
