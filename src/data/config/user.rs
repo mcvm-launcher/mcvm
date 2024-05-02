@@ -23,6 +23,9 @@ pub enum UserVariant {
 	Microsoft {},
 	/// A demo user
 	Demo {},
+	/// An unknown user
+	#[cfg_attr(not(feature = "schema"), serde(untagged))]
+	Unknown(String),
 }
 
 impl UserVariant {
@@ -30,6 +33,7 @@ impl UserVariant {
 		match self {
 			Self::Microsoft { .. } => UserKind::Microsoft { xbox_uid: None },
 			Self::Demo { .. } => UserKind::Demo,
+			Self::Unknown(id) => UserKind::Unknown(id.clone()),
 		}
 	}
 }

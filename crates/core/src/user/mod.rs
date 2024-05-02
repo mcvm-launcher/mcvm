@@ -39,6 +39,8 @@ pub enum UserKind {
 	},
 	/// A demo user
 	Demo,
+	/// An unknown user kind
+	Unknown(String),
 }
 
 impl User {

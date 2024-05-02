@@ -53,6 +53,7 @@ impl User {
 				}
 			}
 			UserKind::Demo => {}
+			UserKind::Unknown(..) => {}
 		}
 
 		Ok(())
@@ -71,6 +72,7 @@ impl User {
 				db.get_valid_user(&self.id).is_some()
 			}
 			UserKind::Demo => true,
+			UserKind::Unknown(..) => true,
 		}
 	}
 
@@ -79,6 +81,7 @@ impl User {
 		match &self.kind {
 			UserKind::Microsoft { .. } => self.access_token.is_some() && self.uuid.is_some(),
 			UserKind::Demo => true,
+			UserKind::Unknown(..) => true,
 		}
 	}
 

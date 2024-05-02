@@ -69,6 +69,7 @@ async fn list(data: &mut CmdData, raw: bool) -> anyhow::Result<()> {
 					cprint!("<s><g>{}</g>", id)
 				}
 				UserKind::Demo => cprint!("<s><c!>{}</c!>", id),
+				UserKind::Unknown(other) => cprint!("<s><k!>({other}) {}</k!>", id),
 			}
 			if let Some(chosen) = config.users.get_chosen_user() {
 				if chosen.get_id() == id {
@@ -101,6 +102,7 @@ async fn status(data: &mut CmdData) -> anyhow::Result<()> {
 			match user.get_kind() {
 				UserKind::Microsoft { .. } => cprint!("<s,g!>{}", user.get_id()),
 				UserKind::Demo => cprint!("<s,c!>{}", user.get_id()),
+				UserKind::Unknown(other) => cprint!("<s,k!>({other}) {}", user.get_id()),
 			}
 
 			if !user_valid {
