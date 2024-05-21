@@ -1,3 +1,4 @@
+use std::ffi::OsString;
 use std::path::{Path, PathBuf};
 
 use anyhow::Context;
@@ -94,7 +95,16 @@ fn scan_dir(dir: &Path, major_version: &str) -> Option<PathBuf> {
 			if !name.contains(&format!("-{major_version}")) {
 				continue;
 			}
-			return Some(path.path());
+
+			// Make sure there is a bin directory
+			let path = path.path();
+			let mut read = std::fs::read_dir(&path).ok()?;
+			let bin_file_name = OsString::from("bin");
+			if !read.any(|x| x.map(|x| &x.file_name() == &bin_file_name).unwrap_or(false)) {
+				continue;
+			}
+
+			return Some(path);
 		}
 	}
 
