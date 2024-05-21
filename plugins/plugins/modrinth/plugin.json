@@ -1,0 +1,13 @@
+{
+	"name": "Modrinth",
+	"description": "Make simple Modrinth API calls to query project versions",
+	"hooks": {
+		"subcommand": {
+			"executable": "mcvm_plugin_modrinth"
+		}
+	},
+	"subcommands": {
+		"modrinth": "Use the Modrinth API",
+		"mr": "Use the Modrinth API"
+	}
+}

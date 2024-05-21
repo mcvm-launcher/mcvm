@@ -4,7 +4,6 @@ mod instance;
 mod package;
 mod plugin;
 mod profile;
-mod tool;
 mod user;
 
 use anyhow::{bail, Context};
@@ -24,7 +23,6 @@ use self::instance::InstanceSubcommand;
 use self::package::PackageSubcommand;
 use self::plugin::PluginSubcommand;
 use self::profile::ProfileSubcommand;
-use self::tool::ToolSubcommand;
 use self::user::UserSubcommand;
 
 use super::output::TerminalOutput;
@@ -78,11 +76,6 @@ pub enum Command {
 		#[command(subcommand)]
 		command: ConfigSubcommand,
 	},
-	#[command(about = "Access different tools and tests included with mcvm")]
-	Tool {
-		#[command(subcommand)]
-		command: ToolSubcommand,
-	},
 	#[clap(external_subcommand)]
 	External(Vec<String>),
 }
@@ -133,7 +126,6 @@ pub async fn run_cli() -> anyhow::Result<()> {
 		Command::Instance { command } => instance::run(command, &mut data).await,
 		Command::Plugin { command } => plugin::run(command, &mut data).await,
 		Command::Config { command } => config::run(command, &mut data).await,
-		Command::Tool { command } => tool::run(command, &mut data).await,
 		Command::External(args) => call_plugin_subcommand(args, &mut data).await,
 	};
 
@@ -233,13 +225,16 @@ async fn call_plugin_subcommand(args: Vec<String>, data: &mut CmdData) -> anyhow
 	let subcommand = args
 		.first()
 		.context("Subcommand does not have first argument")?;
-	let lock = config.plugins.get_lock()?;
-	let exists = lock
-		.manager
-		.iter_plugins()
-		.any(|x| x.get_manifest().subcommands.contains_key(subcommand));
-	if !exists {
-		bail!("Subcommand '{subcommand}' does not exist");
+
+	{
+		let lock = config.plugins.get_lock()?;
+		let exists = lock
+			.manager
+			.iter_plugins()
+			.any(|x| x.get_manifest().subcommands.contains_key(subcommand));
+		if !exists {
+			bail!("Subcommand '{subcommand}' does not exist");
+		}
 	}
 
 	let results = config

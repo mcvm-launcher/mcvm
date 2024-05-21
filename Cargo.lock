@@ -1448,6 +1448,7 @@ dependencies = [
  "color-print",
  "glob",
  "itertools",
+ "mcvm",
  "mcvm_core",
  "mcvm_options",
  "mcvm_plugin",
@@ -1456,6 +1457,7 @@ dependencies = [
  "serde",
  "serde_json",
  "termimad",
+ "tokio",
  "zip",
 ]
 

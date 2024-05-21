@@ -46,3 +46,10 @@ install.server_restart: build.server_restart
 
 build.server_restart: plugins/server_restart
 	@cargo build -r --bin mcvm_plugin_server_restart
+
+install.modrinth: build.modrinth
+	@cargo install --path . --bin mcvm_plugin_modrinth --offline
+	@cp plugins/modrinth/plugin.json ~/.local/share/mcvm/plugins/modrinth.json
+
+build.modrinth: plugins/modrinth
+	@cargo build -r --bin mcvm_plugin_modrinth
