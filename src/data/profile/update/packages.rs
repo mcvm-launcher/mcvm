@@ -6,7 +6,6 @@ use itertools::Itertools;
 use mcvm_core::net::download::get_transfer_limit;
 use mcvm_pkg::repo::PackageFlag;
 use mcvm_pkg::PkgRequest;
-use mcvm_shared::lang::translate::TranslationKey;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::pkg::{ArcPkgReq, PackageID};
 use mcvm_shared::translate;

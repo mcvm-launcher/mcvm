@@ -1,5 +1,4 @@
 use anyhow::Context;
-use mcvm_shared::lang::translate::TranslationKey;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::translate;
 use reqwest::Client;

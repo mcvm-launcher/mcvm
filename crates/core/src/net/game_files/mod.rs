@@ -9,7 +9,6 @@ pub mod version_manifest;
 
 use crate::io::files::paths::Paths;
 use crate::io::update::UpdateManager;
-use mcvm_shared::lang::translate::TranslationKey;
 use mcvm_shared::translate;
 use mcvm_shared::util::cap_first_letter;
 use mcvm_shared::Side;

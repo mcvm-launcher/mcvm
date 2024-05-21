@@ -17,7 +17,6 @@ use mcvm_core::version::InstalledVersion;
 use mcvm_core::QuickPlayType;
 use mcvm_mods::fabric_quilt;
 use mcvm_plugin::hooks::{OnInstanceSetup, OnInstanceSetupArg};
-use mcvm_shared::lang::translate::TranslationKey;
 use mcvm_shared::modifications::Modloader;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::translate;

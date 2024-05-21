@@ -4,7 +4,6 @@ use std::io::BufReader;
 use std::path::PathBuf;
 
 use anyhow::{anyhow, bail, Context};
-use mcvm_shared::lang::translate::TranslationKey;
 use mcvm_shared::output::{MCVMOutput, MessageContents};
 use mcvm_shared::translate;
 use serde::{Deserialize, Serialize};

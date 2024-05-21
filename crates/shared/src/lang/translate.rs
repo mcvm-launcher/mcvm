@@ -99,12 +99,12 @@ pub fn replace_placeholders(string: &str, placeholder_name: &str, value: &str) -
 #[macro_export]
 macro_rules! translate {
 	($o:expr, $key:ident) => {
-		$o.translate(TranslationKey::$key).into()
+		$o.translate($crate::lang::translate::TranslationKey::$key).into()
 	};
 
 	($o:expr, $key:ident, $($placeholder:literal = $value:expr),+) => {
 		{
-			let mut out = $o.translate(TranslationKey::$key).to_string();
+			let mut out = $o.translate($crate::lang::translate::TranslationKey::$key).to_string();
 			$(
 				out = out.replace(&format!("%{}", $placeholder), $value);
 			)+

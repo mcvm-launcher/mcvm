@@ -26,7 +26,7 @@ use anyhow::{bail, ensure, Context};
 use mcvm_core::auth_crate::mc::ClientId;
 use mcvm_core::user::UserManager;
 use mcvm_shared::id::{InstanceRef, ProfileID};
-use mcvm_shared::lang::translate::{TranslationKey, TranslationMap};
+use mcvm_shared::lang::translate::TranslationMap;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::pkg::PackageStability;
 use mcvm_shared::translate;

@@ -9,7 +9,6 @@ use mcvm_core::launch::{
 };
 use mcvm_core::user::UserManager;
 use mcvm_mods::paper;
-use mcvm_shared::lang::translate::TranslationKey;
 use mcvm_shared::modifications::Proxy;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::translate;

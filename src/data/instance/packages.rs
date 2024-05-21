@@ -1,5 +1,4 @@
 use anyhow::{bail, Context};
-use mcvm_shared::lang::translate::TranslationKey;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::pkg::ArcPkgReq;
 use mcvm_shared::translate;

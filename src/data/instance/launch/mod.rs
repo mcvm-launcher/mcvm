@@ -9,7 +9,6 @@ use mcvm_core::util::versions::MinecraftVersion;
 use mcvm_plugin::hooks::{
 	HookHandle, InstanceLaunchArg, OnInstanceLaunch, OnInstanceStop, WhileInstanceLaunch,
 };
-use mcvm_shared::lang::translate::TranslationKey;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::translate;
 use reqwest::Client;

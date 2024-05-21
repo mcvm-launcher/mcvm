@@ -14,7 +14,6 @@ use std::collections::HashSet;
 
 use anyhow::{anyhow, Context};
 use mcvm_mods::paper;
-use mcvm_shared::lang::translate::TranslationKey;
 use mcvm_shared::modifications::ServerType;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use reqwest::Client;
