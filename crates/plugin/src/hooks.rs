@@ -5,6 +5,7 @@ use std::process::{Child, ChildStdout, Command};
 use std::sync::{Arc, Mutex};
 
 use anyhow::{anyhow, bail, Context};
+use mcvm_core::net::minecraft::MinecraftUserProfile;
 use mcvm_core::{net::game_files::version_manifest::VersionEntry, Paths};
 use mcvm_pkg::script_eval::AddonInstructionData;
 use mcvm_pkg::{RecommendedPackage, RequiredPackage};
@@ -395,4 +396,32 @@ pub struct CustomPackageInstructionResult {
 	pub extensions: Vec<PackageID>,
 	/// The output notices
 	pub notices: Vec<String>,
+}
+
+def_hook!(
+	HandleAuth,
+	"handle_auth",
+	"Hook for handling authentication for custom user types",
+	HandleAuthArg,
+	HandleAuthResult,
+);
+
+/// Argument for the HandleAuth hook
+#[derive(Serialize, Deserialize, Default)]
+#[serde(default)]
+pub struct HandleAuthArg {
+	/// The ID of the user
+	pub user_id: String,
+	/// The custom type of the user
+	pub user_type: String,
+}
+
+/// Result from the HandleAuth hook
+#[derive(Serialize, Deserialize, Default)]
+#[serde(default)]
+pub struct HandleAuthResult {
+	/// Whether the auth for this user type was handled by this plugin
+	pub handled: bool,
+	/// The resulting user profile
+	pub profile: Option<MinecraftUserProfile>,
 }

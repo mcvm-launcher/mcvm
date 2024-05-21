@@ -1,9 +1,9 @@
 use mcvm_auth::mc::{call_mc_api, Keypair};
 use reqwest::Client;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 /// Struct for a Minecraft Profile from the Minecraft Services API
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Serialize, Debug)]
 pub struct MinecraftUserProfile {
 	/// The username of this user
 	pub name: String,
@@ -17,7 +17,7 @@ pub struct MinecraftUserProfile {
 }
 
 /// A skin for a Minecraft user
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Serialize, Debug)]
 pub struct Skin {
 	/// Common cosmetic data for the skin
 	#[serde(flatten)]
@@ -27,7 +27,7 @@ pub struct Skin {
 }
 
 /// Variant for a skin
-#[derive(Deserialize, Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Deserialize, Serialize, Debug, Copy, Clone, PartialEq, Eq)]
 #[serde(rename_all = "UPPERCASE")]
 pub enum SkinVariant {
 	/// The classic wide-arm player model
@@ -37,7 +37,7 @@ pub enum SkinVariant {
 }
 
 /// A cape for a Minecraft user
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Serialize, Debug)]
 pub struct Cape {
 	/// Common cosmetic data for the cape
 	#[serde(flatten)]
@@ -47,7 +47,7 @@ pub struct Cape {
 }
 
 /// Common structure used for a user cosmetic (skins and capes)
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Serialize, Debug)]
 pub struct Cosmetic {
 	/// The ID of this cosmetic
 	pub id: String,
@@ -58,7 +58,7 @@ pub struct Cosmetic {
 }
 
 /// State for a cosmetic of whether it is active or not
-#[derive(Deserialize, Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Deserialize, Serialize, Debug, Copy, Clone, PartialEq, Eq)]
 #[serde(rename_all = "UPPERCASE")]
 pub enum CosmeticState {
 	/// The cosmetic is active and being used

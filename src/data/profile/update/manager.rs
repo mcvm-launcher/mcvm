@@ -1,5 +1,6 @@
 use std::collections::HashSet;
 use std::path::{Path, PathBuf};
+use std::sync::Arc;
 
 use anyhow::Context;
 use mcvm_core::auth_crate::mc::ClientId;
@@ -8,7 +9,8 @@ use mcvm_core::user::UserManager;
 use mcvm_core::util::versions::MinecraftVersion;
 use mcvm_core::version::InstalledVersion;
 use mcvm_core::MCVMCore;
-use mcvm_plugin::hooks::AddVersions;
+use mcvm_plugin::api::NoOp;
+use mcvm_plugin::hooks::{AddVersions, HandleAuth, HandleAuthArg};
 use mcvm_shared::later::Later;
 use mcvm_shared::output::MCVMOutput;
 use mcvm_shared::versions::VersionInfo;
@@ -194,9 +196,37 @@ impl UpdateManager {
 		}
 		let core_config = core_config.build();
 		let mut core = MCVMCore::with_config(core_config).context("Failed to initialize core")?;
+
+		// Set up user manager along with custom auth function that handles using plugins
 		core.get_users().steal_users(users);
 		core.get_users().set_offline(self.settings.offline_auth);
+		{
+			let plugins = plugins.clone();
+			let paths = paths.clone();
+
+			core.get_users()
+				.set_custom_auth_function(Arc::new(move |user_id, user_type| {
+					let arg = HandleAuthArg {
+						user_id: user_id.to_string(),
+						user_type: user_type.to_string(),
+					};
+					let results = plugins
+						.call_hook(HandleAuth, &arg, &paths, &mut NoOp)
+						.context("Failed to call handle auth hook")?;
+					for result in results {
+						let result = result.result(&mut NoOp)?;
+						if result.handled {
+							return Ok(result.profile);
+						}
+					}
+
+					Ok(None)
+				}));
+		}
+
 		core.set_client(client.clone());
+
+		// Add extra versions to manifest from plugins
 		let results = plugins
 			.call_hook(AddVersions, &(), paths, o)
 			.context("Failed to call add_versions hook")?;

@@ -310,7 +310,7 @@ impl UserManager {
 }
 
 /// Function for custom authentication handling
-pub type CustomAuthFunction = Arc<dyn Fn(&str, &str) -> anyhow::Result<MinecraftUserProfile>>;
+pub type CustomAuthFunction = Arc<dyn Fn(&str, &str) -> anyhow::Result<Option<MinecraftUserProfile>>>;
 
 /// Validate a Minecraft username
 pub fn validate_username(_kind: &UserKind, name: &str) -> bool {

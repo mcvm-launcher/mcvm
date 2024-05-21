@@ -57,8 +57,10 @@ impl User {
 						MessageLevel::Debug,
 					);
 					let profile = func(&self.id, other).context("Custom auth function failed")?;
-					self.name = Some(profile.name);
-					self.uuid = Some(profile.uuid);
+					if let Some(profile) = profile {
+						self.name = Some(profile.name);
+						self.uuid = Some(profile.uuid);
+					}
 				} else {
 					o.display(
 						MessageContents::Simple(
