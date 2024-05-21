@@ -1,24 +1,25 @@
 [package]
 name = "mcvm_options"
 version = "0.4.0"
-edition = "2021"
-license = "GPL-3.0-or-later"
 description = "Game options generation for Minecraft"
-authors = ["CarbonSmasher"]
-repository = "https://github.com/CarbonSmasher/mcvm"
 keywords = ["minecraft", "launcher", "game", "mc", "options"]
-categories = ["games"]
+categories.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[lints]
+workspace = true
 
 [features]
-schema = [
-	"dep:schemars",
-	"mcvm_shared/schema",
-]
+schema = ["dep:schemars", "mcvm_shared/schema"]
 
 [dependencies]
-anyhow = "1.0.70"
-itertools = "0.11.0"
-mcvm_shared = { path = "../shared", version = "0.12.0" }
-schemars = { version = "0.8.15", optional = true }
-serde = { version = "1.0.152", features = ["derive"] }
-serde_json = "1.0.91"
+anyhow = { workspace = true }
+itertools = { workspace = true }
+mcvm_shared = { workspace = true }
+schemars = { workspace = true, optional = true }
+serde = { workspace = true }
+serde_json = { workspace = true }

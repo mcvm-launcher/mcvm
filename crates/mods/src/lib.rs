@@ -1,5 +1,4 @@
 #![warn(missing_docs)]
-#![deny(unsafe_code)]
 
 //! This library can install different game modifications, such as Fabric and Paper,
 //! for use with the mcvm_core library. It is packaged separately so that users who

@@ -1,5 +1,4 @@
 #![warn(missing_docs)]
-#![deny(unsafe_code)]
 
 //! This library is used by both MCVM to load plugins, and as a framework for defining
 //! Rust plugins for MCVM to use

@@ -1,5 +1,4 @@
 #![warn(missing_docs)]
-#![deny(unsafe_code)]
 
 //! This library is used by MCVM to provide structure for specifying
 //! version-agnostic game options for both Minecraft clients and Minecraft

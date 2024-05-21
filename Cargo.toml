@@ -1,13 +1,29 @@
 [package]
 name = "mcvm"
 version = "0.21.1"
+description = "A fast, extensible, and powerful Minecraft launcher"
+keywords = ["minecraft", "launcher", "game", "mc"]
+exclude = ["/docs", "/tools"]
+categories.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[workspace.package]
 edition = "2021"
 license = "GPL-3.0-or-later"
-description = "A fast, extensible, and powerful Minecraft launcher"
 authors = ["CarbonSmasher"]
 repository = "https://github.com/CarbonSmasher/mcvm"
-keywords = ["minecraft", "launcher", "game", "mc"]
+rust-version = "1.77.0"
 categories = ["games"]
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+
+[lints]
+workspace = true
 
 [profile.release]
 lto = "thin"
@@ -33,7 +49,7 @@ members = [
 ]
 
 [features]
-default = ["builder"]
+default = []
 arc = []
 builder = []
 disable_profile_update_packages = []
@@ -48,31 +64,76 @@ schema = [
 name = "man_int_fabric_core"
 path = "test/manual_integration/fabric_core.rs"
 
-[dependencies]
+[workspace.dependencies]
 anyhow = "1.0.70"
 async-trait = "0.1.73"
+base64 = "0.22.0"
+bytes = "1.4.0"
 cfg-match = "0.2.1"
+clap = { version = "4.5.4", features = ["derive"] }
+color-print = "0.3.4"
+current_locale = "0.1.1"
 directories = "5.0.0"
+glob = "0.3.1"
 hex = "0.4.3"
+inquire = { version = "0.6.2", default_features = false, features = [
+	"crossterm",
+] }
+iso8601-timestamp = "0.2.17"
 itertools = "0.11.0"
 libflate = "2.0.0"
-rand = "0.8.5"
-reqwest = { version = "0.12.2", default_features = false, features = [
-	"json",
-	"rustls-tls",
-] }
-schemars = { version = "0.8.15", optional = true }
+schemars = { version = "0.8.15" }
 serde = { version = "1.0.152", features = ["derive", "rc"] }
 serde_json = "1.0.91"
 sha2 = "0.10.7"
+mcvm = { path = ".", version = "0.21.1" }
+mcvm_auth = { path = "crates/auth", version = "0.3.1" }
 mcvm_core = { path = "crates/core", version = "0.5.0" }
 mcvm_mods = { path = "crates/mods", version = "0.5.0" }
+mcvm_options = { path = "crates/options", version = "0.4.0" }
 mcvm_parse = { path = "crates/parse", version = "0.13.0" }
 mcvm_pkg = { path = "crates/pkg", version = "0.12.0" }
 mcvm_plugin = { path = "crates/plugin", version = "0.1.0", default_features = false }
 mcvm_shared = { path = "crates/shared", version = "0.12.0" }
+nutype = { version = "0.4.0", features = ["serde"] }
+oauth2 = "4.4.2"
+rand = "0.8.5"
+rand_chacha = "0.3.1"
+reqwest = { version = "0.12.2", default_features = false, features = [
+	"json",
+	"rustls-tls",
+] }
+rsa = { version = "0.9.6", default-features = false, features = [
+	"std",
+	"u64_digit",
+] }
 shellexpand = { version = "3.0.0", features = ["path"] }
 tar = "0.4.38"
-tokio = { version = "1.37.0", features = ["macros", "fs", "rt-multi-thread"] }
+termimad = "0.29.1"
+thiserror = "1.0.38"
+tokio = { version = "1.37.0", features = ["rt-multi-thread"] }
 version-compare = "0.2.0"
 zip = "0.6.4"
+
+[dependencies]
+anyhow = { workspace = true }
+async-trait = { workspace = true }
+cfg-match = { workspace = true }
+directories = { workspace = true }
+hex = { workspace = true }
+itertools = { workspace = true }
+rand = { workspace = true }
+reqwest = { workspace = true }
+schemars = { workspace = true, optional = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+sha2 = { workspace = true }
+mcvm_core = { workspace = true }
+mcvm_mods = { workspace = true }
+mcvm_parse = { workspace = true }
+mcvm_pkg = { workspace = true }
+mcvm_plugin = { workspace = true }
+mcvm_shared = { workspace = true }
+shellexpand = { workspace = true }
+tokio = { workspace = true, features = ["fs"] }
+version-compare = { workspace = true }

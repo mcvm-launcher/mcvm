@@ -1,5 +1,4 @@
 #![warn(missing_docs)]
-#![deny(unsafe_code)]
 
 //! This library is used by MCVM to authenticate with Minecraft using Microsoft's APIs.
 //! Although it provides the base functions for authentication, it does not string them

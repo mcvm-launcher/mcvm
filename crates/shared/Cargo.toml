@@ -1,20 +1,24 @@
 [package]
 name = "mcvm_shared"
 version = "0.12.0"
-edition = "2021"
-license = "GPL-3.0-or-later"
 description = "Shared libraries and utilities for mcvm crates"
-authors = ["CarbonSmasher"]
-repository = "https://github.com/CarbonSmasher/mcvm"
 keywords = ["minecraft", "launcher", "game", "mc"]
-categories = ["games"]
+categories.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[lints]
+workspace = true
 
 [features]
 schema = ["dep:schemars"]
 
 [dependencies]
-anyhow = "1.0.70"
-cfg-match = "0.2.1"
-current_locale = "0.1.1"
-schemars = { version = "0.8.15", optional = true }
-serde = { version = "1.0.152", features = ["derive", "rc"] }
+anyhow = { workspace = true }
+cfg-match = { workspace = true }
+current_locale = { workspace = true }
+schemars = { workspace = true, optional = true }
+serde = { workspace = true }
