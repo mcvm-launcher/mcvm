@@ -93,10 +93,10 @@ impl LaunchConfiguration {
 		let mut out = self.jvm_args.clone();
 
 		if let Some(n) = &self.min_mem {
-			out.push(MemoryArg::Min.to_string(n.clone()));
+			out.push(MemoryArg::Min.to_string(n));
 		}
 		if let Some(n) = &self.max_mem {
-			out.push(MemoryArg::Max.to_string(n.clone()));
+			out.push(MemoryArg::Max.to_string(n));
 		}
 
 		out

@@ -65,7 +65,7 @@ pub enum MemoryArg {
 
 impl MemoryArg {
 	/// Convert this memory arg to an argument string with a memory num
-	pub fn to_string(&self, n: MemoryNum) -> String {
+	pub fn to_string(&self, n: &MemoryNum) -> String {
 		let arg = match self {
 			Self::Min => "-Xms".to_string(),
 			Self::Max => "-Xmx".to_string(),
@@ -92,11 +92,11 @@ mod tests {
 	#[test]
 	fn test_mem_arg_output() {
 		assert_eq!(
-			MemoryArg::Max.to_string(MemoryNum::Gb(4)),
+			MemoryArg::Max.to_string(&MemoryNum::Gb(4)),
 			"-Xmx4g".to_string()
 		);
 		assert_eq!(
-			MemoryArg::Min.to_string(MemoryNum::B(128)),
+			MemoryArg::Min.to_string(&MemoryNum::B(128)),
 			"-Xms128".to_string()
 		);
 	}
