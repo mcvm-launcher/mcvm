@@ -351,7 +351,7 @@ fn get_private_key(
 		}
 	}
 
-	bail!("Passkey authentication failed")
+	bail!("Passkey authentication failed; max attempts exceeded")
 }
 
 /// Container struct for parameters for authenticating a user
