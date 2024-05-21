@@ -50,9 +50,22 @@ impl User {
 			UserKind::Demo => {}
 			UserKind::Unknown(other) => {
 				if let Some(func) = params.custom_auth_fn {
+					o.display(
+						MessageContents::Simple(
+							"Handling custom user type with authentication function".into(),
+						),
+						MessageLevel::Debug,
+					);
 					let profile = func(&self.id, other).context("Custom auth function failed")?;
 					self.name = Some(profile.name);
 					self.uuid = Some(profile.uuid);
+				} else {
+					o.display(
+						MessageContents::Simple(
+							"Authentication for custom user type not handled".into(),
+						),
+						MessageLevel::Debug,
+					);
 				}
 			}
 		}
