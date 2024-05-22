@@ -1,6 +1,7 @@
 use anyhow::{bail, Context};
 use mcvm_auth::RsaPrivateKey;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
+use mcvm_shared::translate;
 
 use crate::net::minecraft::MinecraftUserProfile;
 use crate::Paths;
@@ -313,8 +314,16 @@ fn get_full_user<'db>(
 			o,
 		)
 		.context("Failed to get key")?;
-		user.get_sensitive_info_with_key(&private_key)
-			.context("Failed to get sensitive user info using key")?
+
+		let out = user
+			.get_sensitive_info_with_key(&private_key)
+			.context("Failed to get sensitive user info using key")?;
+		o.display(
+			MessageContents::Success(translate!(o, PasskeyAccepted)),
+			MessageLevel::Important,
+		);
+
+		out
 	} else {
 		user.get_sensitive_info_no_passkey()
 			.context("Failed to get sensitive user info without key")?

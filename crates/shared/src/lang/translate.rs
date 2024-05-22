@@ -88,6 +88,7 @@ define_translations! {
 	DownloadingAdoptium, "When starting to download Adoptium", "Downloading Adoptium Temurin JRE version %version";
 	StartUpdatingClient, "When starting to update a client", "Updating client '%id'";
 	StartUpdatingServer, "When starting to update a server", "Updating server '%id'";
+	PasskeyAccepted, "When finishing decrypting with a passkey", "Passkey accepted";
 }
 
 /// Replaces placeholders in a translated key
