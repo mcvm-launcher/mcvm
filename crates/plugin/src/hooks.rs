@@ -143,7 +143,7 @@ impl<H: Hook> HookHandle<H> {
 				if result_len == 0 {
 					return Ok(true);
 				}
-				let line = line_buf.trim_end_matches("\r\n").trim_end_matches("\n");
+				let line = line_buf.trim_end_matches("\r\n").trim_end_matches('\n');
 
 				let action = OutputAction::deserialize(line)
 					.context("Failed to deserialize plugin action")?;

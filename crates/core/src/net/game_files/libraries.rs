@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 use std::fs::File;
-use std::path::{Path, PathBuf};
+use std::path::Path;
 use std::sync::Arc;
 
 use anyhow::{anyhow, Context};
@@ -239,10 +239,9 @@ fn extract_native(
 	let mut zip = ZipArchive::new(file).context("Failed to unarchive native")?;
 	for i in 0..zip.len() {
 		let mut file = zip.by_index(i)?;
-		let rel_path = PathBuf::from(
-			file.enclosed_name()
-				.context("Invalid compressed file path")?,
-		);
+		let rel_path = file
+			.enclosed_name()
+			.context("Invalid compressed file path")?;
 		if let Some(rel_path_str) = rel_path.to_str() {
 			if extraction_rules.exclude.iter().any(|x| x == rel_path_str) {
 				continue;

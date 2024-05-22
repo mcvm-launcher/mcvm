@@ -100,7 +100,7 @@ fn scan_dir(dir: &Path, major_version: &str) -> Option<PathBuf> {
 			let path = path.path();
 			let mut read = std::fs::read_dir(&path).ok()?;
 			let bin_file_name = OsString::from("bin");
-			if !read.any(|x| x.map(|x| &x.file_name() == &bin_file_name).unwrap_or(false)) {
+			if !read.any(|x| x.map(|x| x.file_name() == bin_file_name).unwrap_or(false)) {
 				continue;
 			}
 
