@@ -3,7 +3,7 @@ pub mod auth;
 /// Tools for working with UUIDs
 pub mod uuid;
 
-use std::{collections::HashMap, sync::Arc};
+use std::{collections::HashMap, ops::Deref, sync::Arc};
 
 use anyhow::bail;
 use mcvm_auth::mc::{AccessToken, ClientId, Keypair};
@@ -14,13 +14,16 @@ use crate::{net::minecraft::MinecraftUserProfile, Paths};
 
 use self::auth::AuthParameters;
 
+/// ID for a user
+pub type UserID = Arc<str>;
+
 /// A user account that can play the game
 #[derive(Debug, Clone)]
 pub struct User {
 	/// Type of this user
 	pub(crate) kind: UserKind,
 	/// This user's ID
-	id: String,
+	id: UserID,
 	/// The user's username
 	name: Option<String>,
 	/// The user's UUID
@@ -47,10 +50,10 @@ pub enum UserKind {
 
 impl User {
 	/// Create a new user
-	pub fn new(kind: UserKind, id: &str) -> Self {
+	pub fn new(kind: UserKind, id: UserID) -> Self {
 		Self {
 			kind,
-			id: id.to_string(),
+			id,
 			name: None,
 			uuid: None,
 			access_token: None,
@@ -59,7 +62,7 @@ impl User {
 	}
 
 	/// Get the ID of this user
-	pub fn get_id(&self) -> &String {
+	pub fn get_id(&self) -> &UserID {
 		&self.id
 	}
 
@@ -142,7 +145,7 @@ pub struct UserManager {
 	/// The current state of authentication
 	state: AuthState,
 	/// All configured / available users
-	users: HashMap<String, User>,
+	users: HashMap<UserID, User>,
 	/// The MS client ID
 	ms_client_id: ClientId,
 	/// Whether the manager has been set as offline for authentication
@@ -157,7 +160,7 @@ enum AuthState {
 	/// No user is picked / MCVM is offline
 	Offline,
 	/// A default user has been selected
-	UserChosen(String),
+	UserChosen(UserID),
 }
 
 impl UserManager {
@@ -180,7 +183,7 @@ impl UserManager {
 	/// Add a new user to the manager with a different
 	/// ID than the user struct has. I don't know why you would need to do this,
 	/// but it's an option anyways
-	pub fn add_user_with_id(&mut self, user_id: String, user: User) {
+	pub fn add_user_with_id(&mut self, user_id: UserID, user: User) {
 		self.users.insert(user_id, user);
 	}
 
@@ -200,14 +203,14 @@ impl UserManager {
 	}
 
 	/// Iterate over users and their IDs
-	pub fn iter_users(&self) -> impl Iterator<Item = (&String, &User)> {
+	pub fn iter_users(&self) -> impl Iterator<Item = (&UserID, &User)> {
 		self.users.iter()
 	}
 
 	/// Remove a user with an ID. Will unchoose the user if it is chosen.
 	pub fn remove_user(&mut self, user_id: &str) {
 		let is_chosen = if let Some(chosen) = self.get_chosen_user() {
-			chosen.get_id() == user_id
+			chosen.get_id().deref() == user_id
 		} else {
 			false
 		};
@@ -310,7 +313,8 @@ impl UserManager {
 }
 
 /// Function for custom authentication handling
-pub type CustomAuthFunction = Arc<dyn Fn(&str, &str) -> anyhow::Result<Option<MinecraftUserProfile>>>;
+pub type CustomAuthFunction =
+	Arc<dyn Fn(&str, &str) -> anyhow::Result<Option<MinecraftUserProfile>>>;
 
 /// Validate a Minecraft username
 pub fn validate_username(_kind: &UserKind, name: &str) -> bool {
@@ -359,10 +363,10 @@ mod tests {
 	#[test]
 	fn test_user_manager() {
 		let mut users = UserManager::new(ClientId::new(String::new()));
-		let user = User::new(UserKind::Demo, "foo");
+		let user = User::new(UserKind::Demo, "foo".into());
 		users.add_user(user);
 		users.choose_user("foo").expect("Failed to choose user");
-		let user = User::new(UserKind::Demo, "bar");
+		let user = User::new(UserKind::Demo, "bar".into());
 		users.add_user(user);
 		users.remove_user("foo");
 		assert!(!users.is_user_chosen());
