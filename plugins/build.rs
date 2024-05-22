@@ -7,7 +7,7 @@ macro_rules! add_file {
 		let path = concat!("../docs/", $path);
 		$zip.start_file(
 			$path,
-			FileOptions::default().compression_method(CompressionMethod::Deflated),
+			FileOptions::<()>::default().compression_method(CompressionMethod::Deflated),
 		)
 		.unwrap();
 		std::io::copy(&mut File::open(path).unwrap(), &mut $zip).unwrap();
@@ -24,11 +24,12 @@ fn main() {
 	add_file!(zip, "game_options.md");
 	add_file!(zip, "modifications.md");
 	add_file!(zip, "principles.md");
-	zip.add_directory("packages", FileOptions::default())
+	zip.add_directory("packages", FileOptions::<()>::default())
 		.unwrap();
 	add_file!(zip, "packages/declarative.md");
 	add_file!(zip, "packages/packages.md");
 	add_file!(zip, "packages/scripts.md");
-	zip.add_directory("guide", FileOptions::default()).unwrap();
+	zip.add_directory("guide", FileOptions::<()>::default())
+		.unwrap();
 	add_file!(zip, "guide/1_getting_started.md");
 }

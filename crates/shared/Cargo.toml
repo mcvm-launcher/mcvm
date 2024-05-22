@@ -19,6 +19,6 @@ schema = ["dep:schemars"]
 [dependencies]
 anyhow = { workspace = true }
 cfg-match = { workspace = true }
-current_locale = { workspace = true }
 schemars = { workspace = true, optional = true }
 serde = { workspace = true }
+sys-locale = { workspace = true }

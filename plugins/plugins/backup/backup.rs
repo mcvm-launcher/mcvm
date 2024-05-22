@@ -415,7 +415,7 @@ fn write_backup_files<R: Read>(
 			let file = File::create(backup_path).context("Failed to create archive file")?;
 			let mut file = BufWriter::new(file);
 			let mut arc = ZipWriter::new(&mut file);
-			let options = zip::write::FileOptions::default()
+			let options = zip::write::FileOptions::<()>::default()
 				.compression_method(zip::CompressionMethod::Deflated);
 			for (path, mut reader) in readers {
 				arc.start_file(path, options)?;

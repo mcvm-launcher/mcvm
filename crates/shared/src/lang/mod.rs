@@ -140,9 +140,9 @@ pub enum Language {
 
 impl Default for Language {
 	fn default() -> Self {
-		match current_locale::current_locale() {
-			Ok(locale) => extract_locale_language(&locale).unwrap_or(Self::AmericanEnglish),
-			Err(..) => Self::AmericanEnglish,
+		match sys_locale::get_locale() {
+			Some(locale) => extract_locale_language(&locale).unwrap_or(Self::AmericanEnglish),
+			None => Self::AmericanEnglish,
 		}
 	}
 }
