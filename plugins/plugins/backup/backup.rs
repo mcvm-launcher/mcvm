@@ -342,7 +342,7 @@ pub enum StorageType {
 /// Get the backup directory for an instance
 pub fn get_backup_directory(base_dir: &Path, inst_ref: &InstanceRef) -> PathBuf {
 	base_dir
-		.join(inst_ref.profile.to_string())
+		.join(inst_ref.get_profile_id().to_string())
 		.join(inst_ref.instance.to_string())
 }
 

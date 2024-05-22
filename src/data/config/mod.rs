@@ -69,7 +69,7 @@ impl Config {
 	/// Get an instance from an instance ref
 	pub fn get_instance(&self, instance: &InstanceRef) -> Option<&Instance> {
 		self.profiles
-			.get(&instance.profile)?
+			.get(&instance.get_profile_id())?
 			.instances
 			.get(&instance.instance)
 	}
@@ -77,7 +77,7 @@ impl Config {
 	/// Get an instance mutably from an instance ref
 	pub fn get_instance_mut(&mut self, instance: &InstanceRef) -> Option<&mut Instance> {
 		self.profiles
-			.get_mut(&instance.profile)?
+			.get_mut(&instance.get_profile_id())?
 			.instances
 			.get_mut(&instance.instance)
 	}

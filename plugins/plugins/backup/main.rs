@@ -170,7 +170,7 @@ fn create(
 	let inst_dir = ctx
 		.get_data_dir()?
 		.join("instances")
-		.join(inst_ref.profile.to_string())
+		.join(inst_ref.get_profile_id().to_string())
 		.join(inst_ref.instance.to_string());
 
 	index.create_backup(BackupSource::User, Some(group), &inst_dir)?;
@@ -217,7 +217,7 @@ fn restore(
 	let inst_dir = ctx
 		.get_data_dir()?
 		.join("instances")
-		.join(inst_ref.profile.to_string())
+		.join(inst_ref.get_profile_id().to_string())
 		.join(inst_ref.instance.to_string());
 
 	index.restore_backup(group, backup, &inst_dir)?;

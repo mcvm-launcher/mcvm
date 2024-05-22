@@ -214,7 +214,7 @@ pub mod id {
 	#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 	pub struct InstanceRef {
 		/// The ID of the profile
-		pub profile: ProfileID,
+		pub profile: Option<ProfileID>,
 		/// The ID of the instance
 		pub instance: InstanceID,
 	}
@@ -222,7 +222,18 @@ pub mod id {
 	impl InstanceRef {
 		/// Create a new InstanceRef
 		pub fn new(profile: ProfileID, instance: InstanceID) -> Self {
-			Self { profile, instance }
+			Self {
+				profile: Some(profile),
+				instance,
+			}
+		}
+
+		/// Create a new InstanceRef with an instance ID only
+		pub fn new_instance(instance: InstanceID) -> Self {
+			Self {
+				profile: None,
+				instance,
+			}
 		}
 
 		/// Parse an InstanceRef from a string
@@ -232,11 +243,25 @@ pub mod id {
 			let instance = split.nth(0)?;
 			Some(Self::new(profile.into(), instance.into()))
 		}
+
+		/// Get the profile ID of this ref, depending on whether it has a profile ID.
+		/// If it has no profile ID, returns the instance ID instead
+		pub fn get_profile_id(&self) -> ProfileID {
+			if let Some(profile) = &self.profile {
+				profile.clone()
+			} else {
+				self.instance.clone()
+			}
+		}
 	}
 
 	impl Display for InstanceRef {
 		fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-			write!(f, "{}:{}", self.profile, self.instance)
+			if let Some(profile) = &self.profile {
+				write!(f, "{}:{}", profile, self.instance)
+			} else {
+				write!(f, "{}", self.instance)
+			}
 		}
 	}
 }

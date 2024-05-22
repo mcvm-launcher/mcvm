@@ -116,7 +116,7 @@ pub async fn launch(
 
 	let profile = config
 		.profiles
-		.get_mut(&instance_ref.profile)
+		.get_mut(&instance_ref.get_profile_id())
 		.context("Profile in instance reference does not exist")?;
 
 	if let Some(user) = user {
