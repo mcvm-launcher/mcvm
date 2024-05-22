@@ -5,6 +5,65 @@
 			"versions": [
 				{
 					"minecraft_versions": [
+						"1.20.2",
+						"1.20.3",
+						"1.20.4",
+						"1.20.5",
+						"1.20.6"
+					],
+					"plugin_loaders": [
+						"bukkit",
+						"paper",
+						"spigot"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/1u6JkXh5/versions/VaMk0SQH/worldedit-bukkit-7.3.2.jar",
+					"version": "VaMk0SQH"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": [
+						"fabric",
+						"neoforged"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/1u6JkXh5/versions/4tGY0ePl/worldedit-mod-7.3.2.jar",
+					"version": "4tGY0ePl"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1",
+						"1.20.2",
+						"1.20.3",
+						"1.20.4",
+						"1.20.5",
+						"1.20.6"
+					],
+					"plugin_loaders": [
+						"bukkit",
+						"paper",
+						"spigot"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/1u6JkXh5/versions/j8KJp1Ch/worldedit-bukkit-7.3.1.jar",
+					"version": "j8KJp1Ch"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.5",
+						"1.20.6"
+					],
+					"modloaders": [
+						"fabric",
+						"neoforged"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/1u6JkXh5/versions/2BXiy3fP/worldedit-mod-7.3.1.jar",
+					"version": "2BXiy3fP"
+				},
+				{
+					"minecraft_versions": [
 						"1.20",
 						"1.20.1",
 						"1.20.2",
@@ -260,7 +319,9 @@
 			"1.20.1",
 			"1.20.2",
 			"1.20.3",
-			"1.20.4"
+			"1.20.4",
+			"1.20.5",
+			"1.20.6"
 		]
 	}
 }

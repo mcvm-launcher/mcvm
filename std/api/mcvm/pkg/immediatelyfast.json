@@ -5,6 +5,358 @@
 			"versions": [
 				{
 					"minecraft_versions": [
+						"1.20.5",
+						"1.20.6"
+					],
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5ZwdcRci/versions/iByzP2fT/ImmediatelyFast-NeoForge-1.2.15%2B1.20.6.jar",
+					"version": "iByzP2fT"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.5",
+						"1.20.6"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5ZwdcRci/versions/aY5V6MjG/ImmediatelyFast-Fabric-1.2.15%2B1.20.6.jar",
+					"version": "aY5V6MjG"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.2",
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5ZwdcRci/versions/Cq7J3qt5/ImmediatelyFast-NeoForge-1.2.15%2B1.20.4.jar",
+					"version": "Cq7J3qt5"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1",
+						"1.20.2",
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5ZwdcRci/versions/lTRPaThw/ImmediatelyFast-Forge-1.2.15%2B1.20.4.jar",
+					"version": "lTRPaThw"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1",
+						"1.20.2",
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5ZwdcRci/versions/Rh3MdqnM/ImmediatelyFast-Fabric-1.2.15%2B1.20.4.jar",
+					"version": "Rh3MdqnM"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5ZwdcRci/versions/NjjMcdYf/ImmediatelyFast-Forge-1.2.15%2B1.19.2.jar",
+					"version": "NjjMcdYf"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5ZwdcRci/versions/wrvAzLRZ/ImmediatelyFast-Fabric-1.2.15%2B1.19.2.jar",
+					"version": "wrvAzLRZ"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.5",
+						"1.20.6"
+					],
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5ZwdcRci/versions/rH9ktH6J/ImmediatelyFast-NeoForge-1.2.14%2B1.20.6.jar",
+					"version": "rH9ktH6J"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.5",
+						"1.20.6"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5ZwdcRci/versions/CdHWqPx2/ImmediatelyFast-Fabric-1.2.14%2B1.20.6.jar",
+					"version": "CdHWqPx2"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1",
+						"1.20.2",
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5ZwdcRci/versions/8eoEPo8E/ImmediatelyFast-Fabric-1.2.14%2B1.20.4.jar",
+					"version": "8eoEPo8E"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1",
+						"1.20.2",
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5ZwdcRci/versions/2Ps4um76/ImmediatelyFast-Forge-1.2.14%2B1.20.4.jar",
+					"version": "2Ps4um76"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.2",
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5ZwdcRci/versions/1ZDtilFf/ImmediatelyFast-NeoForge-1.2.14%2B1.20.4.jar",
+					"version": "1ZDtilFf"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5ZwdcRci/versions/cxatW0Qh/ImmediatelyFast-Fabric-1.2.14%2B1.19.2.jar",
+					"version": "cxatW0Qh"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5ZwdcRci/versions/LNw8xhY1/ImmediatelyFast-Forge-1.2.14%2B1.19.2.jar",
+					"version": "LNw8xhY1"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.5",
+						"1.20.6"
+					],
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5ZwdcRci/versions/bKXy6tWA/ImmediatelyFast-NeoForge-1.2.13%2B1.20.6.jar",
+					"version": "bKXy6tWA"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.5",
+						"1.20.6"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5ZwdcRci/versions/Z4sPylCR/ImmediatelyFast-Fabric-1.2.13%2B1.20.6.jar",
+					"version": "Z4sPylCR"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1",
+						"1.20.2",
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5ZwdcRci/versions/9HwVBmbJ/ImmediatelyFast-Fabric-1.2.13%2B1.20.4.jar",
+					"version": "9HwVBmbJ"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.2",
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5ZwdcRci/versions/Xj7xCxJ1/ImmediatelyFast-NeoForge-1.2.13%2B1.20.4.jar",
+					"version": "Xj7xCxJ1"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1",
+						"1.20.2",
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5ZwdcRci/versions/7Twx0B8r/ImmediatelyFast-Forge-1.2.13%2B1.20.4.jar",
+					"version": "7Twx0B8r"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5ZwdcRci/versions/Lw7F67te/ImmediatelyFast-Forge-1.2.13%2B1.19.2.jar",
+					"version": "Lw7F67te"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5ZwdcRci/versions/PApQEGE3/ImmediatelyFast-Fabric-1.2.13%2B1.19.2.jar",
+					"version": "PApQEGE3"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.5",
+						"1.20.6"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5ZwdcRci/versions/cnnaUyZd/ImmediatelyFast-Fabric-1.2.12%2B1.20.5.jar",
+					"version": "cnnaUyZd"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.5",
+						"1.20.6"
+					],
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5ZwdcRci/versions/RbjZFqTz/ImmediatelyFast-NeoForge-1.2.12%2B1.20.5.jar",
+					"version": "RbjZFqTz"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1",
+						"1.20.2",
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5ZwdcRci/versions/Zmg9Im8A/ImmediatelyFast-Forge-1.2.12%2B1.20.4.jar",
+					"version": "Zmg9Im8A"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1",
+						"1.20.2",
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5ZwdcRci/versions/TqFSrfXD/ImmediatelyFast-Fabric-1.2.12%2B1.20.4.jar",
+					"version": "TqFSrfXD"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.2",
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5ZwdcRci/versions/u2AFTh8j/ImmediatelyFast-NeoForge-1.2.12%2B1.20.4.jar",
+					"version": "u2AFTh8j"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5ZwdcRci/versions/XJv24FpT/ImmediatelyFast-Forge-1.2.12%2B1.19.2.jar",
+					"version": "XJv24FpT"
+				},
+				{
+					"minecraft_versions": [
+						"1.19",
+						"1.19.1",
+						"1.19.2"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/5ZwdcRci/versions/GbH3WLI3/ImmediatelyFast-Fabric-1.2.12%2B1.19.2.jar",
+					"version": "GbH3WLI3"
+				},
+				{
+					"minecraft_versions": [
 						"1.20",
 						"1.20.1",
 						"1.20.2",
@@ -1590,7 +1942,9 @@
 			"1.20.1",
 			"1.20.2",
 			"1.20.3",
-			"1.20.4"
+			"1.20.4",
+			"1.20.5",
+			"1.20.6"
 		]
 	}
 }

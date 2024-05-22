@@ -4,7 +4,10 @@
 			"kind": "mod",
 			"versions": [
 				{
-					"minecraft_versions": "1.20.5-rc2",
+					"minecraft_versions": [
+						"1.20.5",
+						"1.20.6"
+					],
 					"modloaders": [
 						"fabric",
 						"quilt"
@@ -12,7 +15,364 @@
 					"relations": {
 						"dependencies": "entity-texture-features"
 					},
-					"stability": "latest",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4I1XuqiY/versions/84vLaMxp/entity_model_features_fabric_1.20.5-2.0.2.jar",
+					"version": "84vLaMxp"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "entity-texture-features"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4I1XuqiY/versions/FTmtYNdf/entity_model_features_fabric_1.20.4-2.0.2.jar",
+					"version": "FTmtYNdf"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "entity-texture-features"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4I1XuqiY/versions/g2i5i750/entity_model_features_fabric_1.20.2-2.0.2.jar",
+					"version": "g2i5i750"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "entity-texture-features"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4I1XuqiY/versions/jkLvxFFA/entity_model_features_fabric_1.20.1-2.0.2.jar",
+					"version": "jkLvxFFA"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "entity-texture-features"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4I1XuqiY/versions/9BVLcBub/entity_model_features_fabric_1.19.4-2.0.2.jar",
+					"version": "9BVLcBub"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "entity-texture-features"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4I1XuqiY/versions/av84l2vE/entity_model_features_fabric_1.19.2-2.0.2.jar",
+					"version": "av84l2vE"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "entity-texture-features"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4I1XuqiY/versions/BzcsKF0w/entity_model_features_fabric_1.18.2-2.0.2.jar",
+					"version": "BzcsKF0w"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "entity-texture-features"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4I1XuqiY/versions/5SZ2FbHC/entity_model_features_forge_1.20.4-2.0.2.jar",
+					"version": "5SZ2FbHC"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "entity-texture-features"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4I1XuqiY/versions/OUq3XNDY/entity_model_features_forge_1.20.2-2.0.2.jar",
+					"version": "OUq3XNDY"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "entity-texture-features"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4I1XuqiY/versions/nYfJt8sH/entity_model_features_forge_1.20.1-2.0.2.jar",
+					"version": "nYfJt8sH"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "entity-texture-features"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4I1XuqiY/versions/S7FrTSoe/entity_model_features_forge_1.19.4-2.0.2.jar",
+					"version": "S7FrTSoe"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "entity-texture-features"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4I1XuqiY/versions/sZcSLicd/entity_model_features_forge_1.19.2-2.0.2.jar",
+					"version": "sZcSLicd"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "entity-texture-features"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4I1XuqiY/versions/9PuZ3Kv1/entity_model_features_forge_1.18.2-2.0.2.jar",
+					"version": "9PuZ3Kv1"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"relations": {
+						"dependencies": "entity-texture-features"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4I1XuqiY/versions/at9xKHYT/entity_model_features_neoforge_1.20.4-2.0.2.jar",
+					"version": "at9xKHYT"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "neoforged",
+					"relations": {
+						"dependencies": "entity-texture-features"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4I1XuqiY/versions/JN7NY56L/entity_model_features_neoforge_1.20.2-2.0.2.jar",
+					"version": "JN7NY56L"
+				},
+				{
+					"minecraft_versions": "1.20.5",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "entity-texture-features"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4I1XuqiY/versions/nAaR07o2/entity_model_features_fabric_1.20.5-2.0.1.jar",
+					"version": "nAaR07o2"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "entity-texture-features"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4I1XuqiY/versions/ZBKoFavY/entity_model_features_fabric_1.20.4-2.0.1.jar",
+					"version": "ZBKoFavY"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "entity-texture-features"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4I1XuqiY/versions/ch6lB4Mh/entity_model_features_fabric_1.20.2-2.0.1.jar",
+					"version": "ch6lB4Mh"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "entity-texture-features"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4I1XuqiY/versions/QWCOTizL/entity_model_features_fabric_1.20.1-2.0.1.jar",
+					"version": "QWCOTizL"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "entity-texture-features"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4I1XuqiY/versions/gpqniM0d/entity_model_features_fabric_1.19.4-2.0.1.jar",
+					"version": "gpqniM0d"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "entity-texture-features"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4I1XuqiY/versions/cqKSqPQH/entity_model_features_fabric_1.19.2-2.0.1.jar",
+					"version": "cqKSqPQH"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "entity-texture-features"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4I1XuqiY/versions/xvYCCPha/entity_model_features_fabric_1.18.2-2.0.1.jar",
+					"version": "xvYCCPha"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "entity-texture-features"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4I1XuqiY/versions/9xVJZ8Xr/entity_model_features_forge_1.20.4-2.0.1.jar",
+					"version": "9xVJZ8Xr"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "entity-texture-features"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4I1XuqiY/versions/K0xj45PZ/entity_model_features_forge_1.20.2-2.0.1.jar",
+					"version": "K0xj45PZ"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "entity-texture-features"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4I1XuqiY/versions/BitxFUOE/entity_model_features_forge_1.20.1-2.0.1.jar",
+					"version": "BitxFUOE"
+				},
+				{
+					"minecraft_versions": "1.19.4",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "entity-texture-features"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4I1XuqiY/versions/khwkB6ra/entity_model_features_forge_1.19.4-2.0.1.jar",
+					"version": "khwkB6ra"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "entity-texture-features"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4I1XuqiY/versions/rD5uCHNg/entity_model_features_forge_1.19.2-2.0.1.jar",
+					"version": "rD5uCHNg"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "entity-texture-features"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4I1XuqiY/versions/ORJKgPNp/entity_model_features_forge_1.18.2-2.0.1.jar",
+					"version": "ORJKgPNp"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"relations": {
+						"dependencies": "entity-texture-features"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4I1XuqiY/versions/mtJzKD3q/entity_model_features_neoforge_1.20.4-2.0.1.jar",
+					"version": "mtJzKD3q"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "neoforged",
+					"relations": {
+						"dependencies": "entity-texture-features"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/4I1XuqiY/versions/dzyn3ag2/entity_model_features_neoforge_1.20.2-2.0.1.jar",
+					"version": "dzyn3ag2"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.5-rc2",
+						"1.20.5"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "entity-texture-features"
+					},
+					"stability": "stable",
 					"url": "https://cdn.modrinth.com/data/4I1XuqiY/versions/jVIxXxpT/entity_model_features_fabric_1.20.5-2.0.jar",
 					"version": "jVIxXxpT"
 				},
@@ -1880,7 +2240,9 @@
 			"1.20.2",
 			"1.20.3",
 			"1.20.4",
-			"1.20.5-rc2"
+			"1.20.5-rc2",
+			"1.20.5",
+			"1.20.6"
 		]
 	},
 	"relations": {

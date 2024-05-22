@@ -5,6 +5,51 @@
 			"versions": [
 				{
 					"minecraft_versions": [
+						"1.20.5",
+						"1.20.6"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": [
+							"fabriclike-api",
+							"kotlin-support"
+						],
+						"recommendations": {
+							"value": "animatica"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/2FbON5jl/optigui-2.3.0-beta.2%2B1.20.5.jar",
+					"version": "2FbON5jl"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.2",
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": [
+							"fabriclike-api",
+							"kotlin-support"
+						],
+						"recommendations": {
+							"value": "animatica"
+						}
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/JuksLGBQ/versions/pUVuXS69/optigui-2.3.0-beta.2.jar",
+					"version": "pUVuXS69"
+				},
+				{
+					"minecraft_versions": [
 						"1.20.2",
 						"1.20.3",
 						"1.20.4"
@@ -955,7 +1000,9 @@
 			"1.20.1",
 			"1.20.2",
 			"1.20.3",
-			"1.20.4"
+			"1.20.4",
+			"1.20.5",
+			"1.20.6"
 		]
 	}
 }

@@ -4,18 +4,73 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": [
+						"1.20.5",
+						"1.20.6"
+					],
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/il99xVpN/lithostitched-fabric-1.20.5-1.1.7b.jar",
+					"version": "il99xVpN"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.5",
+						"1.20.6"
+					],
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/WpqMDbHg/lithostitched-neoforge-1.20.5-1.1.7b.jar",
+					"version": "WpqMDbHg"
+				},
+				{
+					"minecraft_versions": "1.20.5",
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/yl71RvCO/lithostitched-neoforge-1.20.5-1.1.7a.jar",
+					"version": "yl71RvCO"
+				},
+				{
+					"minecraft_versions": "1.20.5",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/cRMmOPJV/lithostitched-fabric-1.20.5-1.1.7a.jar",
+					"version": "cRMmOPJV"
+				},
+				{
+					"minecraft_versions": "1.20.5",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/ZeoIH2iV/lithostitched-fabric-1.20.5-1.1.7.jar",
+					"version": "ZeoIH2iV"
+				},
+				{
+					"minecraft_versions": "1.20.5",
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/t46P71pQ/lithostitched-neoforge-1.20.5-1.1.7.jar",
+					"version": "t46P71pQ"
+				},
+				{
+					"minecraft_versions": "1.20.5",
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/gPw9w4zf/lithostitched-neoforge-1.20.5-1.1.6.jar",
+					"version": "gPw9w4zf"
+				},
+				{
+					"minecraft_versions": "1.20.5",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/PxgLRee5/lithostitched-fabric-1.20.5-1.1.6.jar",
+					"version": "PxgLRee5"
+				},
+				{
 					"minecraft_versions": "1.20.5-rc3",
 					"modloaders": "fabric",
 					"stability": "stable",
 					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/aw2MztJz/lithostitched-fabric-1.20.5-1.1.5.jar",
 					"version": "aw2MztJz"
-				},
-				{
-					"minecraft_versions": "1.20.2",
-					"modloaders": "neoforged",
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/XaDC71GB/versions/8oZvic6F/lithostitched-neoforge-1.20.2-1.1.5.jar",
-					"version": "8oZvic6F"
 				},
 				{
 					"minecraft_versions": "1.20.2",
@@ -406,7 +461,7 @@
 		"icon": "https://cdn.modrinth.com/data/XaDC71GB/bc3425bcb318176adc7da99b6eec48787eed98d3.png",
 		"issues": "https://github.com/Apollounknowndev/lithostitched/issues",
 		"license": "MIT",
-		"long_description": "# Lithostitched\n\nLithostitched is a library mod for Forge and Fabric with new configurability and compatibility enhancements for worldgen.\n\n## Description\n\nThis mod introduces new tools for datapack and modded worldgen developers to utilize, with the aim of increasing inter-project compatibility and expanding configurability in general. Currently, there are features such as:\n- Biome modifiers\n- Template pool injectors\n- Surface rule modifiers\n- Guaranteed pieces in jigsaw structures\n\nAll of these new capabilities are **data-driven**! Take a look at the [Lithostitched Wiki](https://github.com/Apollounknowndev/lithostitched/wiki) for more information.",
+		"long_description": "# Lithostitched\n\nLithostitched is a library mod for Fabric and Neoforge with new configurability and compatibility enhancements for worldgen.\n\n## Description\n\nThis mod introduces new tools for datapack and modded worldgen developers to utilize, with the aim of increasing inter-project compatibility and expanding configurability in general. Currently, there are features such as:\n- Biome modifiers\n- Template pool injectors\n- Surface rule modifiers\n- Guaranteed pieces in jigsaw structures\n\nAll of these new capabilities are **data-driven**! Take a look at the [Lithostitched Wiki](https://github.com/Apollounknowndev/lithostitched/wiki) for more information.",
 		"name": "Lithostitched",
 		"package_maintainers": [
 			"mcvm"
@@ -429,7 +484,9 @@
 			"1.20.2",
 			"1.20.3",
 			"1.20.4",
-			"1.20.5-rc3"
+			"1.20.5-rc3",
+			"1.20.5",
+			"1.20.6"
 		]
 	}
 }

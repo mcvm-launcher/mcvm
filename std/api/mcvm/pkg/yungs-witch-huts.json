@@ -17,6 +17,80 @@
 						}
 					},
 					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5FRdP87/versions/ZtIhxDv1/YungsBetterWitchHuts-1.20.4-Fabric-3.4.3.jar",
+					"version": "ZtIhxDv1"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5FRdP87/versions/ApxfQWlS/YungsBetterWitchHuts-1.20.4-NeoForge-3.4.3.jar",
+					"version": "ApxfQWlS"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5FRdP87/versions/c5PmoGZz/YungsBetterWitchHuts-1.20.4-Forge-3.4.3.jar",
+					"version": "c5PmoGZz"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5FRdP87/versions/BIMTws7n/YungsBetterWitchHuts-1.20.4-Fabric-3.4.2.jar",
+					"version": "BIMTws7n"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5FRdP87/versions/hf9Pw91V/YungsBetterWitchHuts-1.20.4-NeoForge-3.4.2.jar",
+					"version": "hf9Pw91V"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/t5FRdP87/versions/2kmhqa1o/YungsBetterWitchHuts-1.20.4-Forge-3.4.2.jar",
+					"version": "2kmhqa1o"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
 					"url": "https://cdn.modrinth.com/data/t5FRdP87/versions/hXyLPxPz/YungsBetterWitchHuts-1.20.4-Fabric-3.4.1.jar",
 					"version": "hXyLPxPz"
 				},
@@ -230,6 +304,7 @@
 	"meta": {
 		"authors": [
 			"Acarii",
+			"Drullkus",
 			"YUNGNICKYOUNG"
 		],
 		"banner": "https://cdn.modrinth.com/data/t5FRdP87/images/d1ca4580ae1d2f90835355a1b1e07759ff1def3a.png",

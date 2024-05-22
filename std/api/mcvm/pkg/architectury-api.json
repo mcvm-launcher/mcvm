@@ -4,6 +4,97 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/lhGA9TYQ/versions/ABmmUMl5/architectury-12.1.2-neoforge.jar",
+					"version": "ABmmUMl5"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/lhGA9TYQ/versions/7SK856ow/architectury-12.1.2-fabric.jar",
+					"version": "7SK856ow"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/lhGA9TYQ/versions/jDrqxvlE/architectury-12.0.1-neoforge.jar",
+					"version": "jDrqxvlE"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/lhGA9TYQ/versions/pdzYN3Za/architectury-12.0.1-fabric.jar",
+					"version": "pdzYN3Za"
+				},
+				{
+					"minecraft_versions": "1.20.5",
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/lhGA9TYQ/versions/FOAcMcjs/architectury-12.0.28-neoforge.jar",
+					"version": "FOAcMcjs"
+				},
+				{
+					"minecraft_versions": "1.20.5",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/lhGA9TYQ/versions/CQnItbHC/architectury-12.0.28-fabric.jar",
+					"version": "CQnItbHC"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.5",
+						"1.20.6"
+					],
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/lhGA9TYQ/versions/SC8yTYVZ/architectury-12.0.27-neoforge.jar",
+					"version": "SC8yTYVZ"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.5",
+						"1.20.6"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/lhGA9TYQ/versions/M57oafqk/architectury-12.0.27-fabric.jar",
+					"version": "M57oafqk"
+				},
+				{
+					"minecraft_versions": "1.20.5",
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/lhGA9TYQ/versions/WdiKTPMg/architectury-12.0.26-neoforge.jar",
+					"version": "WdiKTPMg"
+				},
+				{
+					"minecraft_versions": "1.20.5",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/lhGA9TYQ/versions/N6v35Fhx/architectury-12.0.26-fabric.jar",
+					"version": "N6v35Fhx"
+				},
+				{
 					"minecraft_versions": "1.20.5-pre1",
 					"modloaders": "fabric",
 					"relations": {
@@ -3050,7 +3141,9 @@
 			"24w12a",
 			"24w14potato",
 			"24w14a",
-			"1.20.5-pre1"
+			"1.20.5-pre1",
+			"1.20.5",
+			"1.20.6"
 		]
 	}
 }

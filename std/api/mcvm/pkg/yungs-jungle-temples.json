@@ -17,6 +17,150 @@
 						}
 					},
 					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/z9Ve58Ih/versions/Iq0fDEMt/YungsBetterJungleTemples-1.20.4-Fabric-2.4.4.jar",
+					"version": "Iq0fDEMt"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/z9Ve58Ih/versions/g6j5u6DM/YungsBetterJungleTemples-1.20.4-NeoForge-2.4.4.jar",
+					"version": "g6j5u6DM"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/z9Ve58Ih/versions/oMIPxNmK/YungsBetterJungleTemples-1.20.4-Forge-2.4.4.jar",
+					"version": "oMIPxNmK"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/z9Ve58Ih/versions/6LPrzuB0/YungsBetterJungleTemples-1.20-Fabric-2.0.5.jar",
+					"version": "6LPrzuB0"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/z9Ve58Ih/versions/CXQc6EnZ/YungsBetterJungleTemples-1.20-Forge-2.0.5.jar",
+					"version": "CXQc6EnZ"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/z9Ve58Ih/versions/Hno4zjlG/YungsBetterJungleTemples-1.20.4-Fabric-2.4.3.jar",
+					"version": "Hno4zjlG"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/z9Ve58Ih/versions/OBQVCOOK/YungsBetterJungleTemples-1.20.4-NeoForge-2.4.3.jar",
+					"version": "OBQVCOOK"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/z9Ve58Ih/versions/uXblfHXz/YungsBetterJungleTemples-1.20.4-Forge-2.4.3.jar",
+					"version": "uXblfHXz"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/z9Ve58Ih/versions/kVVQp8zR/YungsBetterJungleTemples-1.20.4-Fabric-2.4.2.jar",
+					"version": "kVVQp8zR"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/z9Ve58Ih/versions/kOYw43i3/YungsBetterJungleTemples-1.20.4-NeoForge-2.4.2.jar",
+					"version": "kOYw43i3"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/z9Ve58Ih/versions/ia46jcmb/YungsBetterJungleTemples-1.20.4-Forge-2.4.2.jar",
+					"version": "ia46jcmb"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
 					"url": "https://cdn.modrinth.com/data/z9Ve58Ih/versions/csNNUblm/YungsBetterJungleTemples-1.20.4-Fabric-2.4.1.jar",
 					"version": "csNNUblm"
 				},
@@ -248,6 +392,7 @@
 	},
 	"meta": {
 		"authors": [
+			"Drullkus",
 			"TeraBuildsStuff",
 			"YUNGNICKYOUNG"
 		],

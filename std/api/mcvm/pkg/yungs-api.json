@@ -4,6 +4,53 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/zPT7QfIk/YungsApi-1.20-Fabric-4.0.5.jar",
+					"version": "zPT7QfIk"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/aMs83SRk/YungsApi-1.20-Forge-4.0.5.jar",
+					"version": "aMs83SRk"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/a7qxhSOZ/YungsApi-1.20.4-Fabric-4.4.3.jar",
+					"version": "a7qxhSOZ"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/jLW564iU/YungsApi-1.20.4-NeoForge-4.4.3.jar",
+					"version": "jLW564iU"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/dpTBMhjf/YungsApi-1.20.4-Forge-4.4.3.jar",
+					"version": "dpTBMhjf"
+				},
+				{
 					"minecraft_versions": "1.20.4",
 					"modloaders": "forge",
 					"stability": "stable",
@@ -284,6 +331,7 @@
 	},
 	"meta": {
 		"authors": [
+			"Drullkus",
 			"YUNGNICKYOUNG"
 		],
 		"categories": [

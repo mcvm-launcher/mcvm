@@ -4,6 +4,57 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/mAODxf2E/geckolib-neoforge-1.20.6-4.5.2.jar",
+					"version": "mAODxf2E"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/T5k4FbjP/geckolib-fabric-1.20.6-4.5.2.jar",
+					"version": "T5k4FbjP"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/6JGPZhtp/geckolib-neoforge-1.20.6-4.5.1.jar",
+					"version": "6JGPZhtp"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/74JZpmum/geckolib-fabric-1.20.6-4.5.1.jar",
+					"version": "74JZpmum"
+				},
+				{
+					"minecraft_versions": "1.20.5",
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/OYa6KHmE/geckolib-neoforge-1.20.5-4.5.jar",
+					"version": "OYa6KHmE"
+				},
+				{
+					"minecraft_versions": "1.20.5",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/zg4T7LyQ/geckolib-fabric-1.20.5-4.5.jar",
+					"version": "zg4T7LyQ"
+				},
+				{
 					"minecraft_versions": "1.20.1",
 					"modloaders": "neoforged",
 					"stability": "stable",
@@ -2681,7 +2732,7 @@
 			"graphics"
 		],
 		"license": "MIT",
-		"long_description": "<center>\n<img src=\"https://i.ibb.co/nQsXG5b/Geckolib-Banner.jpg\" alt=\"logo\"/> \n\n<a href=\"https://discord.gg/sJb8TVjW\"><img src=\"https://img.shields.io/discord/730912704776110121?color=green&label=Discord&logo=Discord&logoColor=green&style=for-the-badge\" alt=\"discord\"/></a> <a href=\"https://www.patreon.com/geckosmods\"><img src=\"https://img.shields.io/endpoint.svg?url=https://shieldsio-patreon.vercel.app/api?username=geckosmods&type=patrons&style=for-the-badge&color=green&logoColor=green\" alt=\"patreon\"/> </a>\n\n<h1 style=\"font-size:10vw\">GeckoLib is an animation engine for Minecraft Mods, with support for complex 3D keyframe-based animations, 30+ easings, concurrent animation support, sound and particle keyframes, event keyframes, and more. Available for Forge 1.12/1.15/1.16/1.17/1.18/1.19, Fabric 1.16/1.17/1.18/1.19, and Quilt 1.18/1.19.</h1>\n\n<img src=\"https://f000.backblazeb2.com/file/softwarelocker/bh_GL_2.png\" alt=\"logo\"/> \n<h3>You can view installation instructions for modders <a href=\"https://github.com/bernie-g/geckolib/wiki/Installation\">here</a>.\n\n</br>\n\nFor non-modders, just download the mod and put it in your mods folder like normal. You can also click the following images for a list of versions for each mod loader.</h3>\n\n<a href=\"#\"><img src=\"https://github.com/intergrav/devins-badges/blob/v2/assets/minimal/requires/fabric-api_64h.png?raw=true\" alt=\"logo\"  width=\"192\" height=\"192\" /> </a><a href=\"#\"><img src=\"https://github.com/intergrav/devins-badges/blob/v2/assets/minimal/supported/forge_64h.png?raw=true\" alt=\"logo\"   width=\"192\" height=\"192\" /> </a><a href=\"#\"><img src=\"https://github.com/intergrav/devins-badges/blob/v2/assets/minimal/requires/quilt-standard-libraries_64h.png?raw=true\" alt=\"logo\"  width=\"192\" height=\"192\" /> </a>\n\n<img src=\"https://f000.backblazeb2.com/file/softwarelocker/bh_GL_3.png\" alt=\"logo\"/> \n\nGeckoLib provides detailed documentation in the form of a <a href=\"https://github.com/bernie-g/geckolib/wiki\">wiki</a>. We spent many hours writing the wiki, so please read it!\n\n<img src=\"https://f000.backblazeb2.com/file/softwarelocker/bh_GL_4.png\" alt=\"logo\"/> \n\nIf you have questions or need help getting up and running with questions, join our discord!\n\n\n<img src=\"https://f000.backblazeb2.com/file/softwarelocker/bh_GL_5.png\" alt=\"logo\"/> \nPull requests are welcome. For significant changes, please open an issue first to discuss what you would like to change.\n\n<a href=\"https://github.com/bernie-g/geckolib\"><img src=\"https://github-readme-stats.vercel.app/api/pin/?username=bernie-g&repo=geckolib&theme=merko\"></a>\n\n<img src=\"https://f000.backblazeb2.com/file/softwarelocker/bh_GL_6.png\" alt=\"logo\"/> \n<img src=\"https://img.shields.io/github/license/bernie-g/geckolib?style=for-the-badge\" alt=\"logo\"/> \n\n<h1 style=\"font-size:10vw\">Sponsored by BisectHosting</h1>\n\nNeed a server to play with friends? Don't know how to setup one? Just rent an already configured server from BisectHosting!\n\n<a href=\"https://bisecthosting.com/gecko\"><img src=\"https://f000.backblazeb2.com/file/softwarelocker/bh_GL_promo.png\" alt=\"logo\"/> </a>\n\nClick on the picture above, select plan(at least 4GB), and use my code gecko to get 25% off your first month and enjoy playing with your friends!\n</center>",
+		"long_description": "<center>\n<img src=\"https://i.ibb.co/nQsXG5b/Geckolib-Banner.jpg\" alt=\"logo\"/> \n\n<a href=\"https://discord.gg/pPEqBgJtZW\"><img src=\"https://img.shields.io/discord/730912704776110121?color=green&label=Discord&logo=Discord&logoColor=green&style=for-the-badge\" alt=\"discord\"/></a> <a href=\"https://www.patreon.com/geckosmods\"><img src=\"https://img.shields.io/endpoint.svg?url=https://shieldsio-patreon.vercel.app/api?username=geckosmods&type=patrons&style=for-the-badge&color=green&logoColor=green\" alt=\"patreon\"/> </a>\n\n<h1 style=\"font-size:10vw\">GeckoLib is an animation engine for Minecraft Mods, with support for complex 3D keyframe-based animations, 30+ easings, concurrent animation support, sound and particle keyframes, event keyframes, and more. Available for Forge 1.12/1.15/1.16/1.17/1.18/1.19, Fabric 1.16/1.17/1.18/1.19, and Quilt 1.18/1.19.</h1>\n\n<img src=\"https://f000.backblazeb2.com/file/softwarelocker/bh_GL_2.png\" alt=\"logo\"/> \n<h3>You can view installation instructions for modders <a href=\"https://github.com/bernie-g/geckolib/wiki/Installation\">here</a>.\n\n</br>\n\nFor non-modders, just download the mod and put it in your mods folder like normal. You can also click the following images for a list of versions for each mod loader.</h3>\n\n<a href=\"#\"><img src=\"https://github.com/intergrav/devins-badges/blob/v2/assets/minimal/requires/fabric-api_64h.png?raw=true\" alt=\"logo\"  width=\"192\" height=\"192\" /> </a><a href=\"#\"><img src=\"https://github.com/intergrav/devins-badges/blob/v2/assets/minimal/supported/forge_64h.png?raw=true\" alt=\"logo\"   width=\"192\" height=\"192\" /> </a><a href=\"#\"><img src=\"https://github.com/intergrav/devins-badges/blob/v2/assets/minimal/requires/quilt-standard-libraries_64h.png?raw=true\" alt=\"logo\"  width=\"192\" height=\"192\" /> </a>\n\n<img src=\"https://f000.backblazeb2.com/file/softwarelocker/bh_GL_3.png\" alt=\"logo\"/> \n\nGeckoLib provides detailed documentation in the form of a <a href=\"https://github.com/bernie-g/geckolib/wiki\">wiki</a>. We spent many hours writing the wiki, so please read it!\n\n<img src=\"https://f000.backblazeb2.com/file/softwarelocker/bh_GL_4.png\" alt=\"logo\"/> \n\nIf you have questions or need help getting up and running with questions, join our discord!\n\n\n<img src=\"https://f000.backblazeb2.com/file/softwarelocker/bh_GL_5.png\" alt=\"logo\"/> \nPull requests are welcome. For significant changes, please open an issue first to discuss what you would like to change.\n\n<a href=\"https://github.com/bernie-g/geckolib\"><img src=\"https://github-readme-stats.vercel.app/api/pin/?username=bernie-g&repo=geckolib&theme=merko\"></a>\n\n<img src=\"https://f000.backblazeb2.com/file/softwarelocker/bh_GL_6.png\" alt=\"logo\"/> \n<img src=\"https://img.shields.io/github/license/bernie-g/geckolib?style=for-the-badge\" alt=\"logo\"/> \n\n<h1 style=\"font-size:10vw\">Sponsored by BisectHosting</h1>\n\nNeed a server to play with friends? Don't know how to setup one? Just rent an already configured server from BisectHosting!\n\n<a href=\"https://bisecthosting.com/gecko\"><img src=\"https://f000.backblazeb2.com/file/softwarelocker/bh_GL_promo.png\" alt=\"logo\"/> </a>\n\nClick on the picture above, select plan(at least 4GB), and use my code gecko to get 25% off your first month and enjoy playing with your friends!\n</center>",
 		"name": "Geckolib",
 		"package_maintainers": [
 			"mcvm"
@@ -2716,7 +2767,9 @@
 			"1.20.1",
 			"1.20.2",
 			"1.20.3",
-			"1.20.4"
+			"1.20.4",
+			"1.20.5",
+			"1.20.6"
 		]
 	}
 }

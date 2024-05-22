@@ -5,6 +5,85 @@
 			"versions": [
 				{
 					"minecraft_versions": [
+						"1.20.5",
+						"1.20.6"
+					],
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/1bokaNcj/versions/4B2YTORj/Xaeros_Minimap_24.1.4_NeoForge_1.20.6.jar",
+					"version": "4B2YTORj"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.5",
+						"1.20.6"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/1bokaNcj/versions/3nguWW3k/Xaeros_Minimap_24.1.4_Fabric_1.20.6.jar",
+					"version": "3nguWW3k"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "forge",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/1bokaNcj/versions/EmtRNLL4/Xaeros_Minimap_24.1.4_Forge_1.20.6.jar",
+					"version": "EmtRNLL4"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.5",
+						"1.20.6"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/1bokaNcj/versions/YtAGhx5I/Xaeros_Minimap_24.1.3_Fabric_1.20.5.jar",
+					"version": "YtAGhx5I"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.5",
+						"1.20.6"
+					],
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/1bokaNcj/versions/grjC2cUV/Xaeros_Minimap_24.1.3_NeoForge_1.20.5.jar",
+					"version": "grjC2cUV"
+				},
+				{
+					"minecraft_versions": "1.20.5",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/1bokaNcj/versions/H5U9OIBR/Xaeros_Minimap_24.1.2_Fabric_1.20.5.jar",
+					"version": "H5U9OIBR"
+				},
+				{
+					"minecraft_versions": "1.20.5",
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/1bokaNcj/versions/AE2guKuD/Xaeros_Minimap_24.1.2_NeoForge_1.20.5.jar",
+					"version": "AE2guKuD"
+				},
+				{
+					"minecraft_versions": [
 						"1.20.3",
 						"1.20.4"
 					],
@@ -5753,7 +5832,9 @@
 			"1.20.2",
 			"1.20.3-rc1",
 			"1.20.3",
-			"1.20.4"
+			"1.20.4",
+			"1.20.5",
+			"1.20.6"
 		]
 	}
 }

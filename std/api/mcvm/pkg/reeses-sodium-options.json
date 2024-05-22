@@ -5,6 +5,30 @@
 			"versions": [
 				{
 					"minecraft_versions": [
+						"1.20.5",
+						"1.20.6"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"extensions": "sodium",
+						"recommendations": [
+							{
+								"value": "iris"
+							},
+							{
+								"value": "sodium-extra"
+							}
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Bh37bMuy/versions/JKZokbpT/reeses_sodium_options-1.7.2%2Bmc1.20.5-build.103.jar",
+					"version": "JKZokbpT"
+				},
+				{
+					"minecraft_versions": [
 						"1.20.3",
 						"1.20.4"
 					],
@@ -1061,7 +1085,7 @@
 			"sodium"
 		],
 		"license": "MIT",
-		"long_description": "Replaces Sodium's Options Screen with intention of improving UX\n\n \n\n# Features\n- Search Bar.\n- Slider values can be changed while holding down `SHIFT` key and scrolling.\n- Scrollable Tabs\n- Scrollable Pages (Overall better UX when using with Sodium Extra).\n- Iris Shader Pack Button.\n \n\n# Screenshot\n\n![image](https://i.imgur.com/KBsXRBI.png)\n\n![image2](https://i.imgur.com/UjVSMcC.png)\n\n\n# Requirements\n- [Sodium](https://modrinth.com/mod/sodium)\n\n\n#### Please do not go and ask CaffeineMC to support this. This mod has no affiliation with CaffeineMC.",
+		"long_description": "Replaces Sodium's Options Screen with intention of improving UX\n\n \n\n# Features\n- Search Bar.\n- Slider values can be changed while holding down `SHIFT` key and scrolling.\n- Scrollable Tabs\n- Scrollable Pages (Overall better UX when using with Sodium Extra).\n- Iris Shader Pack Button.\n \n\n# Screenshot\n\n![image](https://i.imgur.com/KBsXRBI.png)\n\n![image2](https://i.imgur.com/UjVSMcC.png)\n\n\n# Requirements\n- [Sodium](https://modrinth.com/mod/sodium)\n\n\n#### Please do not go and ask CaffeineMC to support this. This mod has no affiliation with CaffeineMC.\n\n# Support the project\n[![Support me Ko-fi](https://i.imgur.com/FSNi7zk.png)](https://ko-fi.com/flashyreese)",
 		"name": "Reese's Sodium Options",
 		"package_maintainers": [
 			"mcvm"
@@ -1101,7 +1125,9 @@
 			"1.20.1",
 			"1.20.2",
 			"1.20.3",
-			"1.20.4"
+			"1.20.4",
+			"1.20.5",
+			"1.20.6"
 		]
 	}
 }

@@ -5,6 +5,256 @@
 			"versions": [
 				{
 					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/twkfQtEc/versions/4aP9Rkxt/moonlight-1.20-2.11.28-forge.jar",
+					"version": "4aP9Rkxt"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/twkfQtEc/versions/EghVG3Df/moonlight-1.20-2.11.28-fabric.jar",
+					"version": "EghVG3Df"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/twkfQtEc/versions/z5otFTC5/moonlight-1.20-2.11.27-forge.jar",
+					"version": "z5otFTC5"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/twkfQtEc/versions/P1OnKMWx/moonlight-1.20-2.11.27-fabric.jar",
+					"version": "P1OnKMWx"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/twkfQtEc/versions/3WzCZus7/moonlight-1.20-2.11.26-forge.jar",
+					"version": "3WzCZus7"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/twkfQtEc/versions/syE4OiG7/moonlight-1.20-2.11.26-fabric.jar",
+					"version": "syE4OiG7"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/twkfQtEc/versions/TrNPp0VJ/moonlight-1.20-2.11.24-forge.jar",
+					"version": "TrNPp0VJ"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/twkfQtEc/versions/erMSGCtZ/moonlight-1.20-2.11.24-fabric.jar",
+					"version": "erMSGCtZ"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/twkfQtEc/versions/uv4zha4H/moonlight-1.20-2.11.22-forge.jar",
+					"version": "uv4zha4H"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/twkfQtEc/versions/xAoofRnn/moonlight-1.20-2.11.22-fabric.jar",
+					"version": "xAoofRnn"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/twkfQtEc/versions/W3TFpB71/moonlight-1.20-2.11.21-forge.jar",
+					"version": "W3TFpB71"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/twkfQtEc/versions/qaPBcEwV/moonlight-1.20-2.11.21-fabric.jar",
+					"version": "qaPBcEwV"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/twkfQtEc/versions/dYm8xmxC/moonlight-1.20-2.11.20-fabric.jar",
+					"version": "dYm8xmxC"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/twkfQtEc/versions/mrMZDCEp/moonlight-1.20-2.11.20-forge.jar",
+					"version": "mrMZDCEp"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/twkfQtEc/versions/oM4tZMNR/moonlight-1.20-2.11.19-fabric.jar",
+					"version": "oM4tZMNR"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/twkfQtEc/versions/LazriRXO/moonlight-1.20-2.11.19-forge.jar",
+					"version": "LazriRXO"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/twkfQtEc/versions/Funmd64I/moonlight-1.20-2.11.18-forge.jar",
+					"version": "Funmd64I"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/twkfQtEc/versions/OOWX2Oij/moonlight-1.20-2.11.17-fabric.jar",
+					"version": "OOWX2Oij"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/twkfQtEc/versions/7saLSGbf/moonlight-1.20-2.11.17-forge.jar",
+					"version": "7saLSGbf"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/twkfQtEc/versions/93Yehddj/moonlight-1.20-2.11.15-fabric.jar",
+					"version": "93Yehddj"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/twkfQtEc/versions/ej91c9V8/moonlight-1.20-2.11.15-forge.jar",
+					"version": "ej91c9V8"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/twkfQtEc/versions/ZOqeyUiV/moonlight-1.20-2.11.14-fabric.jar",
+					"version": "ZOqeyUiV"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/twkfQtEc/versions/c1lxzTbA/moonlight-1.20-2.11.14-forge.jar",
+					"version": "c1lxzTbA"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/twkfQtEc/versions/luqVInL6/moonlight-1.20-2.11.13-fabric.jar",
+					"version": "luqVInL6"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/twkfQtEc/versions/ZloMzYX2/moonlight-1.20-2.11.13-forge.jar",
+					"version": "ZloMzYX2"
+				},
+				{
+					"minecraft_versions": "1.20.1",
 					"modloaders": "fabric",
 					"relations": {
 						"dependencies": "fabriclike-api"

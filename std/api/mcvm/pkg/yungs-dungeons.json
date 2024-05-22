@@ -4,6 +4,80 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/ISvARzqL/YungsBetterDungeons-1.20.4-Fabric-4.4.4.jar",
+					"version": "ISvARzqL"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/emTrSGfp/YungsBetterDungeons-1.20.4-NeoForge-4.4.4.jar",
+					"version": "emTrSGfp"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/5e0sLvAW/YungsBetterDungeons-1.20.4-Forge-4.4.4.jar",
+					"version": "5e0sLvAW"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/60GnmH9u/YungsBetterDungeons-1.20.4-Fabric-4.4.3.jar",
+					"version": "60GnmH9u"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/sR9iSOHj/YungsBetterDungeons-1.20.4-NeoForge-4.4.3.jar",
+					"version": "sR9iSOHj"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/sSqM7waC/YungsBetterDungeons-1.20.4-Forge-4.4.3.jar",
+					"version": "sSqM7waC"
+				},
+				{
 					"minecraft_versions": [
 						"1.20",
 						"1.20.1"
@@ -290,6 +364,7 @@
 	"meta": {
 		"authors": [
 			"Acarii",
+			"Drullkus",
 			"YUNGNICKYOUNG"
 		],
 		"banner": "https://cdn.modrinth.com/data/o1C1Dkj5/images/430a7b3df92615ef65e3e4d948f47d30c08a301d.png",

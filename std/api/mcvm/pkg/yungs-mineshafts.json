@@ -17,6 +17,43 @@
 						}
 					},
 					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/HjmxVlSr/versions/6bYbds1y/YungsBetterMineshafts-1.20.4-Fabric-4.4.2.jar",
+					"version": "6bYbds1y"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/HjmxVlSr/versions/buSrqoIV/YungsBetterMineshafts-1.20.4-NeoForge-4.4.2.jar",
+					"version": "buSrqoIV"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/HjmxVlSr/versions/JYbhvvYE/YungsBetterMineshafts-1.20.4-Forge-4.4.2.jar",
+					"version": "JYbhvvYE"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
 					"url": "https://cdn.modrinth.com/data/HjmxVlSr/versions/St6cNi1U/YungsBetterMineshafts-1.20.4-Fabric-4.4.1.jar",
 					"version": "St6cNi1U"
 				},
@@ -289,6 +326,7 @@
 	},
 	"meta": {
 		"authors": [
+			"Drullkus",
 			"YUNGNICKYOUNG"
 		],
 		"banner": "https://cdn.modrinth.com/data/HjmxVlSr/images/964c22df53b6b7a87df0e6f66fa5ea409c572225.png",

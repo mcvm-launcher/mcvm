@@ -1,7 +1,9 @@
 {
 	"source": "modrinth",
 	"id": "ccKDOlHs",
-	"relation_substitutions": {},
+	"relation_substitutions": {
+		"P7dR8mSH": "fabriclike-api"
+	},
 	"merge": {
 		"meta": {
 			"categories": [

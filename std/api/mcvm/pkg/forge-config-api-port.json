@@ -4,6 +4,43 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "forge",
+					"relations": {
+						"recommendations": {
+							"value": "forge-config-screens"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/6b78kro0/ForgeConfigAPIPort-v20.6.0-1.20.6-Forge.jar",
+					"version": "6b78kro0"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "neoforged",
+					"relations": {
+						"recommendations": {
+							"value": "forge-config-screens"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/s4eBrY4J/ForgeConfigAPIPort-v20.6.0-1.20.6-NeoForge.jar",
+					"version": "s4eBrY4J"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api",
+						"recommendations": {
+							"value": "forge-config-screens"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ohNO6lps/versions/MuoYnIrW/ForgeConfigAPIPort-v20.6.0-1.20.6-Fabric.jar",
+					"version": "MuoYnIrW"
+				},
+				{
 					"minecraft_versions": "1.20.4",
 					"modloaders": "neoforged",
 					"relations": {
@@ -1015,7 +1052,8 @@
 			"1.20",
 			"1.20.1",
 			"1.20.2",
-			"1.20.4"
+			"1.20.4",
+			"1.20.6"
 		]
 	}
 }

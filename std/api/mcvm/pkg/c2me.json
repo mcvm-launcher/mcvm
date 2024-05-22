@@ -4,6 +4,62 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": "24w18a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/hQJaqYiE/c2me-fabric-mc24w18a-0.2.0%2Balpha.11.96.jar",
+					"version": "hQJaqYiE"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/1jjyJyVe/c2me-fabric-mc1.20.6-0.2.0%2Balpha.11.95.jar",
+					"version": "1jjyJyVe"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/pcisR2P7/c2me-fabric-mc1.20.6-0.2.0%2Balpha.11.94.jar",
+					"version": "pcisR2P7"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/OMK7p0OR/c2me-fabric-mc1.20.6-0.2.0%2Balpha.11.93.jar",
+					"version": "OMK7p0OR"
+				},
+				{
+					"minecraft_versions": "1.20.6-rc1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/GkUPjy4s/c2me-fabric-mc1.20.6-rc1-0.2.0%2Balpha.11.92.jar",
+					"version": "GkUPjy4s"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/xjgJS9KC/c2me-fabric-mc1.20.4-0.2.0%2Balpha.11.67.jar",
+					"version": "xjgJS9KC"
+				},
+				{
+					"minecraft_versions": "1.20.6-rc1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/HuIF0MCO/c2me-fabric-mc1.20.6-rc1-0.2.0%2Balpha.11.90.jar",
+					"version": "HuIF0MCO"
+				},
+				{
+					"minecraft_versions": "1.20.5",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/VSNURh3q/versions/d3wUETCr/c2me-fabric-mc1.20.5-0.2.0%2Balpha.11.89.jar",
+					"version": "d3wUETCr"
+				},
+				{
 					"minecraft_versions": "1.20.4",
 					"modloaders": "fabric",
 					"stability": "latest",
@@ -1631,7 +1687,11 @@
 			"24w13a",
 			"24w14a",
 			"1.20.5-pre1",
-			"1.20.5-rc2"
+			"1.20.5-rc2",
+			"1.20.5",
+			"1.20.6-rc1",
+			"1.20.6",
+			"24w18a"
 		]
 	}
 }

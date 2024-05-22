@@ -4,6 +4,80 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/xAXIqv7e/YungsBetterEndIsland-1.20.4-Fabric-2.4.3.jar",
+					"version": "xAXIqv7e"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/MFm60Cd1/YungsBetterEndIsland-1.20.4-NeoForge-2.4.3.jar",
+					"version": "MFm60Cd1"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/ZyoUJFuE/YungsBetterEndIsland-1.20.4-Forge-2.4.3.jar",
+					"version": "ZyoUJFuE"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/C69Ea0wV/YungsBetterEndIsland-1.20.4-Fabric-2.4.2.jar",
+					"version": "C69Ea0wV"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/PWvhCArM/YungsBetterEndIsland-1.20.4-NeoForge-2.4.2.jar",
+					"version": "PWvhCArM"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/2BwBOmBQ/versions/LjMYk6mH/YungsBetterEndIsland-1.20.4-Forge-2.4.2.jar",
+					"version": "LjMYk6mH"
+				},
+				{
 					"minecraft_versions": [
 						"1.20",
 						"1.20.1"
@@ -340,6 +414,7 @@
 	"meta": {
 		"authors": [
 			"Acarii",
+			"Drullkus",
 			"YUNGNICKYOUNG"
 		],
 		"banner": "https://cdn.modrinth.com/data/2BwBOmBQ/images/c94d0f0141791cf524d74dfe3cbafc738a5e636a.png",

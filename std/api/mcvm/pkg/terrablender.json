@@ -4,6 +4,207 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/kkmrDlKT/versions/wtCOTHGT/TerraBlender-fabric-1.20.6-3.5.0.4.jar",
+					"version": "wtCOTHGT"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "neoforged",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/kkmrDlKT/versions/HiKDZdo0/TerraBlender-neoforge-1.20.6-3.5.0.4.jar",
+					"version": "HiKDZdo0"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "forge",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/kkmrDlKT/versions/46vDGedb/TerraBlender-forge-1.20.6-3.5.0.4.jar",
+					"version": "46vDGedb"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/kkmrDlKT/versions/rJjif5b1/TerraBlender-fabric-1.20.6-3.5.0.3.jar",
+					"version": "rJjif5b1"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "neoforged",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/kkmrDlKT/versions/lY3u8Ors/TerraBlender-neoforge-1.20.6-3.5.0.3.jar",
+					"version": "lY3u8Ors"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "forge",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/kkmrDlKT/versions/oALTVpBI/TerraBlender-forge-1.20.6-3.5.0.3.jar",
+					"version": "oALTVpBI"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/kkmrDlKT/versions/3XLPwLnV/TerraBlender-fabric-1.20.1-3.0.1.6.jar",
+					"version": "3XLPwLnV"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/kkmrDlKT/versions/oCGyhKcY/TerraBlender-forge-1.20.1-3.0.1.6.jar",
+					"version": "oCGyhKcY"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/kkmrDlKT/versions/FnfW1JJL/TerraBlender-fabric-1.20.1-3.0.1.5.jar",
+					"version": "FnfW1JJL"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "forge",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/kkmrDlKT/versions/Y1XWSxDs/TerraBlender-forge-1.20.1-3.0.1.5.jar",
+					"version": "Y1XWSxDs"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "neoforged",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/kkmrDlKT/versions/Hmw9PMaH/TerraBlender-neoforge-1.20.6-3.5.0.2.jar",
+					"version": "Hmw9PMaH"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/kkmrDlKT/versions/OZV0Z5AE/TerraBlender-fabric-1.20.6-3.5.0.2.jar",
+					"version": "OZV0Z5AE"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "forge",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/kkmrDlKT/versions/9FNlKfpD/TerraBlender-forge-1.20.6-3.5.0.2.jar",
+					"version": "9FNlKfpD"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/kkmrDlKT/versions/rGKbHaah/TerraBlender-fabric-1.20.6-3.5.0.1.jar",
+					"version": "rGKbHaah"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "neoforged",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/kkmrDlKT/versions/qHR52aCH/TerraBlender-neoforge-1.20.6-3.5.0.1.jar",
+					"version": "qHR52aCH"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "forge",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/kkmrDlKT/versions/TBD7PU11/TerraBlender-forge-1.20.6-3.5.0.1.jar",
+					"version": "TBD7PU11"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/kkmrDlKT/versions/xbNuzFJi/TerraBlender-fabric-1.20.6-3.5.0.0.jar",
+					"version": "xbNuzFJi"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "neoforged",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/kkmrDlKT/versions/aM2lt6Tu/TerraBlender-neoforge-1.20.6-3.5.0.0.jar",
+					"version": "aM2lt6Tu"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/kkmrDlKT/versions/FTCsCRVl/TerraBlender-fabric-1.20.6-3.5.0.0.jar",
+					"version": "FTCsCRVl"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "neoforged",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/kkmrDlKT/versions/XcsXn3fD/TerraBlender-neoforge-1.20.6-3.5.0.0.jar",
+					"version": "XcsXn3fD"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "forge",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/kkmrDlKT/versions/xcfa1biZ/TerraBlender-forge-1.20.6-3.5.0.0.jar",
+					"version": "xcfa1biZ"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "forge",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/kkmrDlKT/versions/fni1sCoC/TerraBlender-forge-1.20.6-3.5.0.0.jar",
+					"version": "fni1sCoC"
+				},
+				{
+					"minecraft_versions": "1.20.5",
+					"modloaders": "neoforged",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/kkmrDlKT/versions/p54gG9xp/TerraBlender-neoforge-1.20.5-3.4.0.2.jar",
+					"version": "p54gG9xp"
+				},
+				{
+					"minecraft_versions": "1.20.5",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/kkmrDlKT/versions/BfQI5cZO/TerraBlender-fabric-1.20.5-3.4.0.2.jar",
+					"version": "BfQI5cZO"
+				},
+				{
 					"minecraft_versions": "1.20.4",
 					"modloaders": "neoforged",
 					"stability": "stable",
@@ -2745,7 +2946,9 @@
 			"1.20.1",
 			"1.20.2",
 			"1.20.3",
-			"1.20.4"
+			"1.20.4",
+			"1.20.5",
+			"1.20.6"
 		]
 	}
 }

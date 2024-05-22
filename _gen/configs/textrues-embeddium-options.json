@@ -1,18 +1,17 @@
 {
 	"source": "modrinth",
-	"id": "NNAgCjsB",
+	"id": "S1tndFDa",
 	"relation_substitutions": {
-		"P7dR8mSH": "fabriclike-api",
-		"G1ckZuWK": "mixinbooter",
-		"8nh1ehhB": "gtnh-mixins",
-		"rFeWTq4G": "glass-config-api",
-		"6v8kVRE3": "modmenu-beta",
-		"49lwdlH0": "none"
+		"AANobbMI": "sodium",
+		"Orvt0mRa": "indium",
+		"4ZqxOvjD": "rubidium",
+		"Bh37bMuy": "sodium-extra",
+		"sk9rgfiA": "embeddium"
 	},
 	"merge": {
 		"meta": {
 			"keywords": [
-				"cull"
+				"graphics"
 			],
 			"categories": [
 				"optimization",
@@ -20,8 +19,8 @@
 			]
 		},
 		"properties": {
+			"open_source": true,
 			"supported_modloaders": [
-				"fabriclike",
 				"forgelike"
 			]
 		}

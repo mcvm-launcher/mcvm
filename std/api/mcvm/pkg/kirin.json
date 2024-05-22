@@ -4,6 +4,22 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": [
+						"1.20.5",
+						"1.20.6"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/9aNz8Zqn/versions/MDK4h8JF/kirin-1.18.0%2B1.20.5.jar",
+					"version": "MDK4h8JF"
+				},
+				{
 					"minecraft_versions": "1.20.2",
 					"modloaders": "fabric",
 					"stability": "stable",
@@ -207,7 +223,9 @@
 			"1.20.2",
 			"1.20.4",
 			"23w51a",
-			"23w51b"
+			"23w51b",
+			"1.20.5",
+			"1.20.6"
 		]
 	}
 }

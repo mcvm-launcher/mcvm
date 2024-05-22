@@ -17,6 +17,80 @@
 						}
 					},
 					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/un603qNR/YungsBetterOceanMonuments-1.20.4-Fabric-3.4.3.jar",
+					"version": "un603qNR"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/M17dqdUp/YungsBetterOceanMonuments-1.20.4-NeoForge-3.4.3.jar",
+					"version": "M17dqdUp"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/QIJxmFw7/YungsBetterOceanMonuments-1.20.4-Forge-3.4.3.jar",
+					"version": "QIJxmFw7"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/JWN07yAs/YungsBetterOceanMonuments-1.20.4-Fabric-3.4.2.jar",
+					"version": "JWN07yAs"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/wLGDeGkC/YungsBetterOceanMonuments-1.20.4-NeoForge-3.4.2.jar",
+					"version": "wLGDeGkC"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/nlziFcdk/YungsBetterOceanMonuments-1.20.4-Forge-3.4.2.jar",
+					"version": "nlziFcdk"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
 					"url": "https://cdn.modrinth.com/data/3dT9sgt4/versions/M9acJ70z/YungsBetterOceanMonuments-1.20.4-Fabric-3.4.1.jar",
 					"version": "M9acJ70z"
 				},
@@ -289,6 +363,7 @@
 	},
 	"meta": {
 		"authors": [
+			"Drullkus",
 			"TeraBuildsStuff",
 			"YUNGNICKYOUNG"
 		],

@@ -205,12 +205,12 @@
 			"path": "pkg/mixinbooter.json",
 			"content_type": "declarative"
 		},
-		"mod-menu": {
-			"path": "pkg/mod-menu.json",
-			"content_type": "declarative"
-		},
 		"modmenu-beta": {
 			"path": "pkg/modmenu-beta.json",
+			"content_type": "declarative"
+		},
+		"mod-menu": {
+			"path": "pkg/mod-menu.json",
 			"content_type": "declarative"
 		},
 		"moonlight-lib": {
@@ -335,6 +335,10 @@
 		},
 		"terralith": {
 			"path": "pkg/terralith.json",
+			"content_type": "declarative"
+		},
+		"textrues-embeddium-options": {
+			"path": "pkg/textrues-embeddium-options.json",
 			"content_type": "declarative"
 		},
 		"trinkets": {

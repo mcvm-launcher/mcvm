@@ -4,6 +4,19 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": [
+						"1.20.5",
+						"1.20.6"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/YL57xq9U/versions/BvVRER1H/iris-1.7.0%2Bmc1.20.6.jar",
+					"version": "BvVRER1H"
+				},
+				{
 					"minecraft_versions": "1.20.1",
 					"modloaders": [
 						"fabric",
@@ -13,8 +26,8 @@
 						"dependencies": "sodium"
 					},
 					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/YL57xq9U/versions/JHbrO6Zq/iris-mc1.20.1-1.6.17.jar",
-					"version": "JHbrO6Zq"
+					"url": "https://cdn.modrinth.com/data/YL57xq9U/versions/KHQ2Hnpt/iris-1.7.0%2Bmc1.20.1.jar",
+					"version": "KHQ2Hnpt"
 				},
 				{
 					"minecraft_versions": [
@@ -29,8 +42,8 @@
 						"dependencies": "sodium"
 					},
 					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/YL57xq9U/versions/kGdJ11Rt/iris-mc1.20.4-1.6.17.jar",
-					"version": "kGdJ11Rt"
+					"url": "https://cdn.modrinth.com/data/YL57xq9U/versions/45ETshvT/iris-1.7.0%2Bmc1.20.4.jar",
+					"version": "45ETshvT"
 				},
 				{
 					"minecraft_versions": "1.19.4",
@@ -74,6 +87,48 @@
 					"stability": "stable",
 					"url": "https://cdn.modrinth.com/data/YL57xq9U/versions/ogIRhnAJ/iris-mc1.18.2-1.6.11.jar",
 					"version": "ogIRhnAJ"
+				},
+				{
+					"minecraft_versions": "1.20.5",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "sodium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/YL57xq9U/versions/JjUWi3Lj/iris-1.7.0%2Bmc1.20.5.jar",
+					"version": "JjUWi3Lj"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "sodium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/YL57xq9U/versions/JHbrO6Zq/iris-mc1.20.1-1.6.17.jar",
+					"version": "JHbrO6Zq"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.3",
+						"1.20.4"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "sodium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/YL57xq9U/versions/kGdJ11Rt/iris-mc1.20.4-1.6.17.jar",
+					"version": "kGdJ11Rt"
 				},
 				{
 					"minecraft_versions": [
@@ -1468,7 +1523,7 @@
 			"graphics"
 		],
 		"license": "LGPL-3.0-only",
-		"long_description": "# IF YOU ARE LOOKING FOR THE NEW DISTANT HORIZONS COMPATIBILITY, THIS IS NOT IT.\n\n![Iris: An open-source shaders mod compatible with OptiFine shaderpacks](https://raw.githubusercontent.com/IrisShaders/Iris/trunk/docs/banner.png)\n\n## Links\n\n* **Visit [our website](https://irisshaders.dev) for downloads and pretty screenshots!**\n* **Visit [the shaders section](https://modrinth.com/shaders) to find shader packs!**\n* Visit [our Discord server](https://discord.gg/jQJnav2jPu) to chat about the mod and get support! It's also a great place to get development updates right as they're happening.\n* Visit [the developer documentation](https://github.com/IrisShaders/Iris/tree/trunk/docs/development) for information on developing, building, and contributing to Iris!\n\n## Installation\n\nYou can find a guide to installation [here](https://github.com/IrisShaders/Iris/blob/1.20.3/docs/guide.md).\n\n## FAQ\n\n- Find answers to frequently asked questions on our [FAQ page](https://github.com/IrisShaders/Iris/blob/1.19.4/docs/faq.md).\n- Iris supports almost all shaderpacks, but a list of unsupported shaderpacks is available [here](https://github.com/IrisShaders/Iris/blob/1.19.4/docs/unsupportedshaders.md).\n- A list of unfixable limitations in Iris is available [here](https://github.com/IrisShaders/Iris/blob/1.19.4/docs/usage/limitations.md).\n\n## More Info\n\nMore info can be found on our [README](https://github.com/IrisShaders/Iris/blob/trunk/README.md).",
+		"long_description": "![Iris: An open-source shaders mod compatible with OptiFine shaderpacks](https://raw.githubusercontent.com/IrisShaders/Iris/trunk/docs/banner.png)\n\n## Links\n\n* **Visit [our website](https://irisshaders.dev) for downloads and pretty screenshots!**\n* **Visit [the shaders section](https://modrinth.com/shaders) to find shader packs!**\n* Visit [our Discord server](https://discord.gg/jQJnav2jPu) to chat about the mod and get support! It's also a great place to get development updates right as they're happening.\n* Visit [the developer documentation](https://github.com/IrisShaders/Iris/tree/trunk/docs/development) for information on developing, building, and contributing to Iris!\n\n## Installation\n\nYou can find a guide to installation [here](https://github.com/IrisShaders/Iris/blob/1.20.3/docs/guide.md).\n\n## FAQ\n\n- Find answers to frequently asked questions on our [FAQ page](https://github.com/IrisShaders/Iris/blob/1.19.4/docs/faq.md).\n- Iris supports almost all shaderpacks, but a list of unsupported shaderpacks is available [here](https://github.com/IrisShaders/Iris/blob/1.19.4/docs/unsupportedshaders.md).\n- A list of unfixable limitations in Iris is available [here](https://github.com/IrisShaders/Iris/blob/1.19.4/docs/usage/limitations.md).\n\n## More Info\n\nMore info can be found on our [README](https://github.com/IrisShaders/Iris/blob/trunk/README.md).",
 		"name": "Iris Shaders",
 		"package_maintainers": [
 			"mcvm"
@@ -1501,7 +1556,9 @@
 			"1.20.1",
 			"1.20.2",
 			"1.20.3",
-			"1.20.4"
+			"1.20.4",
+			"1.20.5",
+			"1.20.6"
 		]
 	}
 }

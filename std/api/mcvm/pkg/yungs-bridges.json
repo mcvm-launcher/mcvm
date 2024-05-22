@@ -17,6 +17,80 @@
 						}
 					},
 					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Ht4BfYp6/versions/qWsaAXJc/YungsBridges-1.20.4-Fabric-4.4.2.jar",
+					"version": "qWsaAXJc"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Ht4BfYp6/versions/eUYfoWxq/YungsBridges-1.20.4-NeoForge-4.4.2.jar",
+					"version": "eUYfoWxq"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Ht4BfYp6/versions/3zaZ4cxk/YungsBridges-1.20.4-Forge-4.4.2.jar",
+					"version": "3zaZ4cxk"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Ht4BfYp6/versions/agXdVUwG/YungsBridges-1.20.4-Fabric-4.4.1.jar",
+					"version": "agXdVUwG"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Ht4BfYp6/versions/1tsMy0YZ/YungsBridges-1.20.4-NeoForge-4.4.1.jar",
+					"version": "1tsMy0YZ"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/Ht4BfYp6/versions/qxvR9ze6/YungsBridges-1.20.4-Forge-4.4.1.jar",
+					"version": "qxvR9ze6"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
 					"url": "https://cdn.modrinth.com/data/Ht4BfYp6/versions/tx2e5Fjp/YungsBridges-1.20.4-Fabric-4.4.0.jar",
 					"version": "tx2e5Fjp"
 				},
@@ -202,6 +276,7 @@
 	},
 	"meta": {
 		"authors": [
+			"Drullkus",
 			"YUNGNICKYOUNG"
 		],
 		"banner": "https://cdn.modrinth.com/data/Ht4BfYp6/images/c9ce969fff7aed52a33885c443835d168703d721.jpeg",

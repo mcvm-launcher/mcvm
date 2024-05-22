@@ -4,6 +4,69 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/u6dRKJwZ/versions/Rytwu5pR/jei-1.20.4-neoforge-17.3.0.52.jar",
+					"version": "Rytwu5pR"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/u6dRKJwZ/versions/lRHeE5X1/jei-1.20.4-forge-17.3.0.52.jar",
+					"version": "lRHeE5X1"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/u6dRKJwZ/versions/xGApC30U/jei-1.20.4-fabric-17.3.0.52.jar",
+					"version": "xGApC30U"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/u6dRKJwZ/versions/LlWMWH8b/jei-1.20.4-neoforge-17.3.0.51.jar",
+					"version": "LlWMWH8b"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/u6dRKJwZ/versions/VfpKVbdD/jei-1.20.4-forge-17.3.0.51.jar",
+					"version": "VfpKVbdD"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/u6dRKJwZ/versions/vY0mg7DR/jei-1.20.4-fabric-17.3.0.51.jar",
+					"version": "vY0mg7DR"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/u6dRKJwZ/versions/enLHWRtU/jei-1.20.4-neoforge-17.3.0.50.jar",
+					"version": "enLHWRtU"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/u6dRKJwZ/versions/GrAMmGZb/jei-1.20.4-forge-17.3.0.50.jar",
+					"version": "GrAMmGZb"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/u6dRKJwZ/versions/6kdrT8Yz/jei-1.20.4-fabric-17.3.0.50.jar",
+					"version": "6kdrT8Yz"
+				},
+				{
 					"minecraft_versions": "1.19.2",
 					"modloaders": "forge",
 					"stability": "latest",

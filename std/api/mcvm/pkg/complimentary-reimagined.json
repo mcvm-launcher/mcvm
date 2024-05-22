@@ -51,7 +51,9 @@
 						"1.20.1",
 						"1.20.2",
 						"1.20.3",
-						"1.20.4"
+						"1.20.4",
+						"1.20.5",
+						"1.20.6"
 					],
 					"stability": "stable",
 					"url": "https://cdn.modrinth.com/data/HVnmMxH1/versions/D5fox3fg/ComplementaryReimagined_r5.1.1.zip",
@@ -749,7 +751,9 @@
 			"1.20.1",
 			"1.20.2",
 			"1.20.3",
-			"1.20.4"
+			"1.20.4",
+			"1.20.5",
+			"1.20.6"
 		]
 	},
 	"relations": {

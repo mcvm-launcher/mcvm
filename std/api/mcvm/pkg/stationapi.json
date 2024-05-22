@@ -7,6 +7,20 @@
 					"minecraft_versions": "b1.7.3",
 					"modloaders": "fabric",
 					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/472oW63Q/versions/kt2r4qkN/StationAPI-2.0-alpha.2.1.jar",
+					"version": "kt2r4qkN"
+				},
+				{
+					"minecraft_versions": "b1.7.3",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/472oW63Q/versions/ZiVDNbPV/StationAPI-2.0-alpha.2.jar",
+					"version": "ZiVDNbPV"
+				},
+				{
+					"minecraft_versions": "b1.7.3",
+					"modloaders": "fabric",
+					"stability": "latest",
 					"url": "https://cdn.modrinth.com/data/472oW63Q/versions/vVp9vR53/StationAPI-2.0-alpha.1.1.jar",
 					"version": "vVp9vR53"
 				},

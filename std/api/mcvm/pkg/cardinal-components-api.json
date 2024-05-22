@@ -4,6 +4,52 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": [
+						"1.20.5",
+						"1.20.6"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/K01OU20C/versions/PrBgg2Mj/cardinal-components-api-6.0.0-pre2.jar",
+					"version": "PrBgg2Mj"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.5",
+						"1.20.6"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/K01OU20C/versions/QZ2WtYGD/cardinal-components-api-6.0.0-pre1.jar",
+					"version": "QZ2WtYGD"
+				},
+				{
+					"minecraft_versions": "1.20.5",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/K01OU20C/versions/ba9S2OFd/cardinal-components-api-6.0.0-beta.3.jar",
+					"version": "ba9S2OFd"
+				},
+				{
+					"minecraft_versions": "1.20.5",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/K01OU20C/versions/aZhN0ofV/cardinal-components-api-6.0.0-beta.2.jar",
+					"version": "aZhN0ofV"
+				},
+				{
 					"minecraft_versions": "1.20.5-rc2",
 					"modloaders": [
 						"fabric",
@@ -249,7 +295,9 @@
 			"1.20.3-pre4",
 			"1.20.3",
 			"1.20.4",
-			"1.20.5-rc2"
+			"1.20.5-rc2",
+			"1.20.5",
+			"1.20.6"
 		]
 	}
 }

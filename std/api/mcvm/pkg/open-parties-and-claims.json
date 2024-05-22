@@ -4,6 +4,106 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "neoforged",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gF3BGWvG/versions/lhWSLcDZ/open-parties-and-claims-neoforge-1.20.6-0.22.3.jar",
+					"version": "lhWSLcDZ"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.5",
+						"1.20.6"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": [
+							"fabriclike-api",
+							"forge-config-api-port"
+						]
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gF3BGWvG/versions/yZUflsdU/open-parties-and-claims-fabric-1.20.6-0.22.2.jar",
+					"version": "yZUflsdU"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.5",
+						"1.20.6"
+					],
+					"modloaders": "neoforged",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gF3BGWvG/versions/7qkML3fC/open-parties-and-claims-neoforge-1.20.6-0.22.2.jar",
+					"version": "7qkML3fC"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "forge-config-api-port"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gF3BGWvG/versions/lE2DjZfC/open-parties-and-claims-forge-1.20.6-0.22.2.jar",
+					"version": "lE2DjZfC"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gF3BGWvG/versions/Jb1060LF/open-parties-and-claims-neoforge-1.20.4-0.22.2.jar",
+					"version": "Jb1060LF"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "forge-config-api-port"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gF3BGWvG/versions/q8EO1Xch/open-parties-and-claims-forge-1.20.4-0.22.2.jar",
+					"version": "q8EO1Xch"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "neoforged",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gF3BGWvG/versions/dvhSOfuG/open-parties-and-claims-neoforge-1.20.2-0.22.2.jar",
+					"version": "dvhSOfuG"
+				},
+				{
+					"minecraft_versions": "1.20.2",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "forge-config-api-port"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gF3BGWvG/versions/n5jULHuO/open-parties-and-claims-forge-1.20.2-0.22.2.jar",
+					"version": "n5jULHuO"
+				},
+				{
+					"minecraft_versions": [
+						"1.20",
+						"1.20.1"
+					],
+					"modloaders": "forge",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gF3BGWvG/versions/RjYGV7JX/open-parties-and-claims-forge-1.20.1-0.22.2.jar",
+					"version": "RjYGV7JX"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.5",
+						"1.20.6"
+					],
+					"modloaders": "neoforged",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/gF3BGWvG/versions/oSWS6aEU/open-parties-and-claims-neoforge-1.20.6-0.22.1.jar",
+					"version": "oSWS6aEU"
+				},
+				{
 					"minecraft_versions": "1.20.4",
 					"modloaders": [
 						"fabric",
@@ -3428,7 +3528,7 @@
 			"party"
 		],
 		"license": "LGPL-3.0-only",
-		"long_description": "_**The mod is currently in Beta!**_\n\nThis mod adds the ability to claim and to forceload world chunks, as well as create and manage player parties. It also gives server owners powerful controls over their players' usage of the mod's features.\n\nThe mod's API allows other mods or plugins to easily interact with the parties and the chunk claims, both on the server and the client side. The mod already integrates with [Xaero's Minimap](https://modrinth.com/mod/xaeros-minimap) and [World Map](https://modrinth.com/mod/xaeros-world-map) mods. Make sure to update them to the latest versions.\n\nThe API of the mod allows the implementation of player permission systems to be used by the mod for some permission nodes (e.g. for having rank-based claim limits), with Prometheus, FTB Ranks, LuckPerms and the Forge/Fabric permission APIs having built-in support. It also allows the implementation of party systems to be used by claims alongside or instead of the default party system, with Argonauts and FTB Teams having built-in support. The default party system or claims can be disabled completely in the main config file.\n\n## Commands:\n/openpac ... - player config commands\n\n/openpac-claims ... - everything claim-related\n\n/openpac-parties ... - everything party-related\n\n/opm - shortcut for the party chat\n\n## Key Bindings:\n' - open the mod UI. Can be changed in the controls menu.\n\n## Configs:\n[world directory]/serverconfig/openpartiesandclaims-server.toml - the main mod config. Make sure to shut down the server before editing it, or the server might overwrite all your changes.\n\n[world directory]/serverconfig/openpartiesandclaims-... - some global \"player configs\", although all of them can be accessed in game through the UI\n\n## FAQ\n### 1) How do I configure the mod on my server?\nThe mod is mainly configured through the main config file at _[world directory]/serverconfig/openpartiesandclaims-server.toml_, or sometimes _[server directory]/config/openpartiesandclaims-server.toml_ on Fabric/Quilt, while the server isn't running. Server claim, expired claim and wilderness configs, as well as the default player config, can be edited by OPs in-game with the UI (check your key bindings). Normal players can configure their own player config with the same UI. If the mod isn't installed on the client side, then you can use the player config chat commands instead.\n\n### 2) How do I use this mod as a regular player?\nMost things related to claims can be accessed with the in-game UI (check your key bindings). If you have the Xaero's World Map mod installed, you can view and edit your claims on the map screen as well, by right-clicking on the map or dragging with the right mouse button to make a selection. You can also use chat commands to make/edit claims. Parties can only be created and managed through chat commands at the moment.\n\n### 3) Why are some options greyed out in my player config?\nThe server admin/owner can configure with the main config file option _playerConfigurablePlayerConfigOptions_ which specific options players have access to. Everything else uses the value in the default player config.\n\n### 4) How do I disable all protection on my server?\nIn the server claim, expired claim and wilderness configs, as well as the default player config, disable the main protection option. Next, edit the config file _[world directory]/serverconfig/openpartiesandclaims-server.toml_, while the server isn't running. Remove the main option _claims.protectClaimedChunks_ from _playerConfigurablePlayerConfigOptions_.\n\n## Supported Mods:\nA lot of (usually smaller) mods should be supported by the claimed chunk protection automatically. Some mods go above and beyond with the mechanics they add to the game or modify, in which case chunk protection is not guaranteed and should be manually added, either to this mod or with an additional one. Feel free to leave suggestions on the [issue tracker](https://github.com/thexaero/open-parties-and-claims/issues) for the mods that you'd like to be supported. Please make sure that they are not already by testing it and provide an example of chunk griefing one can achieve with the mod.\n\nExplicitly supported mods:\n\n* (Since b0.8.0) Create - built into the Forge version, but requires [an extension](https://modrinth.com/mod/opac-fabric-create-support) when used on Fabric/Quilt",
+		"long_description": "_**The mod is currently in Beta!**_\n\nThis mod adds the ability to claim and to forceload world chunks, as well as create and manage player parties. It also gives server owners powerful controls over their players' usage of the mod's features.\n\nThe mod's API allows other mods or plugins to easily interact with the parties and the chunk claims, both on the server and the client side. The mod already integrates with [Xaero's Minimap](https://modrinth.com/mod/xaeros-minimap) and [World Map](https://modrinth.com/mod/xaeros-world-map) mods. Make sure to update them to the latest versions.\n\nThe API of the mod allows the implementation of player permission systems to be used by the mod for some permission nodes (e.g. for having rank-based claim limits), with Prometheus, FTB Ranks, LuckPerms and the Forge/Fabric permission APIs having built-in support. It also allows the implementation of party systems to be used by claims alongside or instead of the default party system, with Argonauts and FTB Teams having built-in support. The default party system or claims can be disabled completely in the main config file.\n\n## Commands:\n/openpac ... - player config commands\n\n/openpac-claims ... - everything claim-related\n\n/openpac-parties ... - everything party-related\n\n/opm - shortcut for the party chat\n\n## Key Bindings:\n' - open the mod UI. Can be changed in the controls menu.\n\n## Configs:\n[world directory]/serverconfig/openpartiesandclaims-server.toml - the usual location of the main config file. Make sure to shut down the server before editing it, or the server might overwrite all your changes.\n\n[server directory]/config/openpartiesandclaims-server.toml - sometimes the location of the main config file on Fabric/Quilt.\n\n[world directory]/serverconfig/openpartiesandclaims-... - some global \"player configs\", although all of them can be accessed in game through the UI\n\n## FAQ\n### 1) How do I configure the mod on my server?\nThe mod is mainly configured through the main config file at _[world directory]/serverconfig/openpartiesandclaims-server.toml_, or sometimes _[server directory]/config/openpartiesandclaims-server.toml_ on Fabric/Quilt, while the server isn't running. Server claim, expired claim and wilderness configs, as well as the default player config, can be edited by OPs in-game with the UI (check your key bindings). Normal players can configure their own player config with the same UI. If the mod isn't installed on the client side, then you can use the player config chat commands instead.\n\n### 2) How do I use this mod as a regular player?\nMost things related to claims can be accessed with the in-game UI (check your key bindings). If you have the Xaero's World Map mod installed, you can view and edit your claims on the map screen as well, by right-clicking on the map or dragging with the right mouse button to make a selection. You can also use chat commands to make/edit claims. Parties can only be created and managed through chat commands at the moment.\n\n### 3) Why are some options greyed out in my player config?\nThe server admin/owner can configure with the main config file option _playerConfigurablePlayerConfigOptions_ which specific options players have access to. Everything else uses the value in the default player config.\n\n### 4) How do I disable all protection on my server?\nIn the server claim, expired claim and wilderness configs, as well as the default player config, disable the main protection option. Next, edit the config file _[world directory]/serverconfig/openpartiesandclaims-server.toml_, while the server isn't running. Remove the main option _claims.protectClaimedChunks_ from _playerConfigurablePlayerConfigOptions_.\n\n## Supported Mods:\nA lot of (usually smaller) mods should be supported by the claimed chunk protection automatically. Some mods go above and beyond with the mechanics they add to the game or modify, in which case chunk protection is not guaranteed and should be manually added, either to this mod or with an additional one. Feel free to leave suggestions on the [issue tracker](https://github.com/thexaero/open-parties-and-claims/issues) for the mods that you'd like to be supported. Please make sure that they are not already by testing it and provide an example of chunk griefing one can achieve with the mod.\n\nExplicitly supported mods:\n\n* (Since b0.8.0) Create - built into the Forge version, but requires [an extension](https://modrinth.com/mod/opac-fabric-create-support) when used on Fabric/Quilt",
 		"name": "Open Parties and Claims",
 		"package_maintainers": [
 			"mcvm"
@@ -3467,7 +3567,9 @@
 			"1.20.1",
 			"1.20.2",
 			"1.20.3",
-			"1.20.4"
+			"1.20.4",
+			"1.20.5",
+			"1.20.6"
 		]
 	}
 }

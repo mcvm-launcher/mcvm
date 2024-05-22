@@ -4,6 +4,43 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ordsPcFz/versions/nny4EtFv/kotlinforforge-5.1.0-all.jar",
+					"version": "nny4EtFv"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.5",
+						"1.20.6"
+					],
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ordsPcFz/versions/bTzmIDY7/kotlinforforge-5.0.2-all.jar",
+					"version": "bTzmIDY7"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.5",
+						"1.20.6"
+					],
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ordsPcFz/versions/vn5h1l4P/kotlinforforge-5.0.1-all.jar",
+					"version": "vn5h1l4P"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.5",
+						"1.20.6"
+					],
+					"modloaders": "neoforged",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ordsPcFz/versions/Ac4s1p85/kotlinforforge-5.0.0-all.jar",
+					"version": "Ac4s1p85"
+				},
+				{
 					"minecraft_versions": [
 						"1.19.3",
 						"1.19.4",
@@ -653,7 +690,9 @@
 			"1.20.1",
 			"1.20.2",
 			"1.20.3",
-			"1.20.4"
+			"1.20.4",
+			"1.20.5",
+			"1.20.6"
 		]
 	}
 }

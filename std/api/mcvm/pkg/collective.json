@@ -4,6 +4,589 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/qw4UzDLO/collective-1.20.6-7.60.jar",
+					"version": "qw4UzDLO"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/MCG5iTwv/collective-1.20.4-7.60.jar",
+					"version": "MCG5iTwv"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/tbkgq2aL/collective-1.20.1-7.60.jar",
+					"version": "tbkgq2aL"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/DdVIUqCP/collective-1.19.2-7.60.jar",
+					"version": "DdVIUqCP"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/MHJyqCC3/collective-1.20.6-7.59.jar",
+					"version": "MHJyqCC3"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/80qlTsCw/collective-1.20.4-7.59.jar",
+					"version": "80qlTsCw"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/g5tMPpdR/collective-1.20.1-7.59.jar",
+					"version": "g5tMPpdR"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/qr3pOf0t/collective-1.19.2-7.59.jar",
+					"version": "qr3pOf0t"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/NYnB3DcI/collective-1.20.6-7.58.jar",
+					"version": "NYnB3DcI"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/MBk0FFCh/collective-1.20.6-7.57.jar",
+					"version": "MBk0FFCh"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/yXljDige/collective-1.20.4-7.57.jar",
+					"version": "yXljDige"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/HHgevNRj/collective-1.20.1-7.57.jar",
+					"version": "HHgevNRj"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/K9Y5Tmuu/collective-1.19.2-7.57.jar",
+					"version": "K9Y5Tmuu"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/ctANGjyc/collective-1.20.6-7.56.jar",
+					"version": "ctANGjyc"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/o1macqEn/collective-1.20.4-7.56.jar",
+					"version": "o1macqEn"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/MPpjuvwT/collective-1.20.1-7.56.jar",
+					"version": "MPpjuvwT"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/6iMYiZxi/collective-1.19.2-7.56.jar",
+					"version": "6iMYiZxi"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/4iHuNLfn/collective-1.20.6-7.55.jar",
+					"version": "4iHuNLfn"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/nB61R9dH/collective-1.20.6-7.54.jar",
+					"version": "nB61R9dH"
+				},
+				{
+					"minecraft_versions": "1.20.5",
+					"modloaders": [
+						"fabric",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/I3HtlXHN/collective-1.20.5-7.54.jar",
+					"version": "I3HtlXHN"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/RvihQRkv/collective-1.20.4-7.54.jar",
+					"version": "RvihQRkv"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/ENGS2tc8/collective-1.20.1-7.54.jar",
+					"version": "ENGS2tc8"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/WEalMFiB/collective-1.19.2-7.54.jar",
+					"version": "WEalMFiB"
+				},
+				{
+					"minecraft_versions": "1.20.5",
+					"modloaders": [
+						"fabric",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/7TtePiZG/collective-1.20.5-7.53.jar",
+					"version": "7TtePiZG"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/KusUWajf/collective-1.20.4-7.53.jar",
+					"version": "KusUWajf"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/xHMYc1JC/collective-1.20.1-7.53.jar",
+					"version": "xHMYc1JC"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/3yzltsrI/collective-1.19.2-7.53.jar",
+					"version": "3yzltsrI"
+				},
+				{
+					"minecraft_versions": "1.20.5",
+					"modloaders": [
+						"fabric",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/4T0oqkvt/collective-1.20.5-7.52.jar",
+					"version": "4T0oqkvt"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/PIpWqJOc/collective-1.20.4-7.52.jar",
+					"version": "PIpWqJOc"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/Naj0SudU/collective-1.20.1-7.52.jar",
+					"version": "Naj0SudU"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/f4tbzQaV/collective-1.19.2-7.52.jar",
+					"version": "f4tbzQaV"
+				},
+				{
+					"minecraft_versions": "1.20.5",
+					"modloaders": [
+						"fabric",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/FlDkuCuI/collective-1.20.5-7.51.jar",
+					"version": "FlDkuCuI"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/4aycctag/collective-1.20.4-7.51.jar",
+					"version": "4aycctag"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/QAOn2FAA/collective-1.20.1-7.51.jar",
+					"version": "QAOn2FAA"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/N0LGCA4x/collective-1.19.2-7.51.jar",
+					"version": "N0LGCA4x"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/wbm1k1Uy/collective-1.20.4-7.50.jar",
+					"version": "wbm1k1Uy"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/nuJkNPys/collective-1.20.1-7.50.jar",
+					"version": "nuJkNPys"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/aWMkM9hL/collective-1.19.2-7.50.jar",
+					"version": "aWMkM9hL"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/a0zM6RiQ/collective-1.20.4-7.49.jar",
+					"version": "a0zM6RiQ"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/hwGW33qv/collective-1.20.1-7.49.jar",
+					"version": "hwGW33qv"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/Dhc2pLuW/collective-1.19.2-7.49.jar",
+					"version": "Dhc2pLuW"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/CC97dyED/collective-1.20.4-7.47.jar",
+					"version": "CC97dyED"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/4yoITBxh/collective-1.20.1-7.47.jar",
+					"version": "4yoITBxh"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/kvdC8nko/collective-1.19.2-7.47.jar",
+					"version": "kvdC8nko"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/wr8FDooA/collective-1.20.4-7.46.jar",
+					"version": "wr8FDooA"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/EoDPrw5V/collective-1.20.1-7.46.jar",
+					"version": "EoDPrw5V"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/Y4d8roqC/collective-1.19.2-7.46.jar",
+					"version": "Y4d8roqC"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/m1BId9fm/collective-1.20.4-7.45.jar",
+					"version": "m1BId9fm"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"neoforged",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/snPU1UdY/collective-1.20.1-7.45.jar",
+					"version": "snPU1UdY"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": [
+						"fabric",
+						"forge",
+						"quilt"
+					],
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/1fwO1EYj/collective-1.19.2-7.45.jar",
+					"version": "1fwO1EYj"
+				},
+				{
 					"minecraft_versions": "1.20.4",
 					"modloaders": [
 						"fabric",
@@ -5830,7 +6413,9 @@
 			"1.20.1",
 			"1.20.2",
 			"1.20.3",
-			"1.20.4"
+			"1.20.4",
+			"1.20.5",
+			"1.20.6"
 		]
 	}
 }

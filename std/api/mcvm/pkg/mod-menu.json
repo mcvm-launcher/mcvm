@@ -4,7 +4,13 @@
 			"kind": "mod",
 			"versions": [
 				{
-					"minecraft_versions": "1.20.5-rc3",
+					"minecraft_versions": [
+						"1.20.5-rc3",
+						"1.20.5",
+						"1.20.6-rc1",
+						"1.20.6",
+						"24w18a"
+					],
 					"modloaders": [
 						"fabric",
 						"quilt"
@@ -1503,7 +1509,11 @@
 			"24w14potato",
 			"24w14a",
 			"1.20.5-pre1",
-			"1.20.5-rc3"
+			"1.20.5-rc3",
+			"1.20.5",
+			"1.20.6-rc1",
+			"1.20.6",
+			"24w18a"
 		]
 	}
 }

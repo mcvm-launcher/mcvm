@@ -17,6 +17,80 @@
 						}
 					},
 					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ZYgyPyfq/versions/hEhjUqf6/YungsExtras-1.20.4-Fabric-4.4.2.jar",
+					"version": "hEhjUqf6"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ZYgyPyfq/versions/GiY3Uibv/YungsExtras-1.20.4-NeoForge-4.4.2.jar",
+					"version": "GiY3Uibv"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ZYgyPyfq/versions/tA7Fnm1M/YungsExtras-1.20.4-Forge-4.4.2.jar",
+					"version": "tA7Fnm1M"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ZYgyPyfq/versions/OwgN09h2/YungsExtras-1.20.4-Fabric-4.4.1.jar",
+					"version": "OwgN09h2"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ZYgyPyfq/versions/3R3fnian/YungsExtras-1.20.4-NeoForge-4.4.1.jar",
+					"version": "3R3fnian"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/ZYgyPyfq/versions/sPIYiD2o/YungsExtras-1.20.4-Forge-4.4.1.jar",
+					"version": "sPIYiD2o"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
 					"url": "https://cdn.modrinth.com/data/ZYgyPyfq/versions/F1adMKW8/YungsExtras-1.20.4-Fabric-4.4.0.jar",
 					"version": "F1adMKW8"
 				},
@@ -203,6 +277,7 @@
 	"meta": {
 		"authors": [
 			"Acarii",
+			"Drullkus",
 			"YUNGNICKYOUNG"
 		],
 		"banner": "https://cdn.modrinth.com/data/ZYgyPyfq/images/03212b89fe65986e8e5734719a8eff4820d68d4c.png",

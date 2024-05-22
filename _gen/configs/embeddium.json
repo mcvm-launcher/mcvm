@@ -4,7 +4,9 @@
 	"relation_substitutions": {
 		"AANobbMI": "sodium",
 		"Orvt0mRa": "indium",
-		"4ZqxOvjD": "rubidium"
+		"4ZqxOvjD": "rubidium",
+		"Bh37bMuy": "sodium-extra",
+		"S1tndFDa": "textrues-embeddium-options"
 	},
 	"merge": {
 		"meta": {

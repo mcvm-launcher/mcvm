@@ -5,6 +5,32 @@
 			"versions": [
 				{
 					"minecraft_versions": [
+						"1.20.5",
+						"1.20.6"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/codAaoxh/versions/LwEV24Yy/midnightlib-fabric-1.5.5.jar",
+					"version": "LwEV24Yy"
+				},
+				{
+					"minecraft_versions": "1.20.5",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/codAaoxh/versions/D5jKfbBO/midnightlib-fabric-1.5.4.jar",
+					"version": "D5jKfbBO"
+				},
+				{
+					"minecraft_versions": [
 						"1.20",
 						"1.20.1"
 					],
@@ -186,16 +212,6 @@
 					"stability": "stable",
 					"url": "https://cdn.modrinth.com/data/codAaoxh/versions/0.4.4/midnightlib-0.4.4.jar",
 					"version": "CRaHmCcJ"
-				},
-				{
-					"minecraft_versions": "1.20.5-rc2",
-					"modloaders": "fabric",
-					"relations": {
-						"dependencies": "fabriclike-api"
-					},
-					"stability": "stable",
-					"url": "https://cdn.modrinth.com/data/codAaoxh/versions/D5jKfbBO/midnightlib-fabric-1.5.4.jar",
-					"version": "D5jKfbBO"
 				},
 				{
 					"minecraft_versions": [
@@ -567,7 +583,7 @@
 		"icon": "https://cdn.modrinth.com/data/codAaoxh/icon.png",
 		"issues": "https://github.com/TeamMidnightDust/MidnightLib/issues/",
 		"license": "MIT",
-		"long_description": "<center>MidnightLib is a lightweight library that provides common utils and a configuration system for mods.</br>\n</br>Mod developers are allowed and encouraged to bundle it with their mods via Jar-in-Jar.<br />Every feature can be toggled in the library's own config screen/file.\n<p style=\"text-align: center;\"><img src=\"https://media.discordapp.net/attachments/507982666755473427/1036592375310590022/Screenshot_Minecraft_1.19.2_3.png?width=774&height=644\" alt=\"Example configuration screen\" height=\"532\" />\n<center>Visit the new <a href=\"https://www.midnightdust.eu/wiki/midnightlib\">Wiki</a> to get started now.</center>",
+		"long_description": "<center>MidnightLib is a lightweight library that provides common utils and a configuration system for mods.</br>\n</br>Mod developers are allowed and encouraged to bundle it with their mods via Jar-in-Jar.<br />Every feature can be toggled in the library's own config screen/file.\n<p style=\"text-align: center;\"><img src=\"https://cdn.modrinth.com/data/codAaoxh/images/ee9368b0b0b09a9d01492d76e90e956d393936ce.png\" alt=\"Example configuration screen\" height=\"532\" />\n<center>Visit the new <a href=\"https://www.midnightdust.eu/wiki/midnightlib\">Wiki</a> to get started now.</center>",
 		"name": "MidnightLib",
 		"package_maintainers": [
 			"mcvm"
@@ -623,7 +639,8 @@
 			"1.20.2",
 			"1.20.3",
 			"1.20.4",
-			"1.20.5-rc2"
+			"1.20.5",
+			"1.20.6"
 		]
 	}
 }

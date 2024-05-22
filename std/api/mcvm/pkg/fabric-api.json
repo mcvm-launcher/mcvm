@@ -4,9 +4,100 @@
 			"kind": "mod",
 			"versions": [
 				{
-					"minecraft_versions": "1.20.5-rc2",
+					"minecraft_versions": "24w20a",
 					"modloaders": "fabric",
 					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/P7dR8mSH/versions/ICmfMxxh/fabric-api-0.99.0%2B1.21.jar",
+					"version": "ICmfMxxh"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/P7dR8mSH/versions/sswM8UzU/fabric-api-0.99.0%2B1.20.6.jar",
+					"version": "sswM8UzU"
+				},
+				{
+					"minecraft_versions": "24w20a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/P7dR8mSH/versions/ik31TLQH/fabric-api-0.98.2%2B1.21.jar",
+					"version": "ik31TLQH"
+				},
+				{
+					"minecraft_versions": "24w19b",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/P7dR8mSH/versions/RMl45Lr7/fabric-api-0.98.1%2B1.21.jar",
+					"version": "RMl45Lr7"
+				},
+				{
+					"minecraft_versions": "24w18a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/P7dR8mSH/versions/AVWxA6CK/fabric-api-0.98.0%2B1.21.jar",
+					"version": "AVWxA6CK"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/P7dR8mSH/versions/191HCCtF/fabric-api-0.98.0%2B1.20.6.jar",
+					"version": "191HCCtF"
+				},
+				{
+					"minecraft_versions": "24w18a",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/P7dR8mSH/versions/bWfIZwG6/fabric-api-0.97.9%2B1.21.jar",
+					"version": "bWfIZwG6"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/P7dR8mSH/versions/kAQqRNrK/fabric-api-0.97.8%2B1.20.6.jar",
+					"version": "kAQqRNrK"
+				},
+				{
+					"minecraft_versions": "1.20.5",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/P7dR8mSH/versions/GCdY4I8I/fabric-api-0.97.8%2B1.20.5.jar",
+					"version": "GCdY4I8I"
+				},
+				{
+					"minecraft_versions": "1.20.6-rc1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/P7dR8mSH/versions/w41vyG5F/fabric-api-0.97.7%2B1.20.6.jar",
+					"version": "w41vyG5F"
+				},
+				{
+					"minecraft_versions": "1.20.5",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/P7dR8mSH/versions/tftr9Gex/fabric-api-0.97.7%2B1.20.5.jar",
+					"version": "tftr9Gex"
+				},
+				{
+					"minecraft_versions": "1.20.6-rc1",
+					"modloaders": "fabric",
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/P7dR8mSH/versions/94EiEX8x/fabric-api-0.97.6%2B1.20.6.jar",
+					"version": "94EiEX8x"
+				},
+				{
+					"minecraft_versions": "1.20.5",
+					"modloaders": "fabric",
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/P7dR8mSH/versions/D7jXLoRF/fabric-api-0.97.6%2B1.20.5.jar",
+					"version": "D7jXLoRF"
+				},
+				{
+					"minecraft_versions": "1.20.5",
+					"modloaders": "fabric",
+					"stability": "stable",
 					"url": "https://cdn.modrinth.com/data/P7dR8mSH/versions/zrJxy4cn/fabric-api-0.97.5%2B1.20.5.jar",
 					"version": "zrJxy4cn"
 				},
@@ -5862,7 +5953,13 @@
 			"1.20.5-pre2",
 			"1.20.5-pre3",
 			"1.20.5-pre4",
-			"1.20.5-rc2"
+			"1.20.5-rc2",
+			"1.20.5",
+			"1.20.6-rc1",
+			"1.20.6",
+			"24w18a",
+			"24w19b",
+			"24w20a"
 		]
 	},
 	"relations": {

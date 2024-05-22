@@ -17,6 +17,80 @@
 						}
 					},
 					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/kidLKymU/versions/kI0BeaJx/YungsBetterStrongholds-1.20.4-Fabric-4.4.3.jar",
+					"version": "kI0BeaJx"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/kidLKymU/versions/4tpvfG6R/YungsBetterStrongholds-1.20.4-NeoForge-4.4.3.jar",
+					"version": "4tpvfG6R"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/kidLKymU/versions/a7u7DPrA/YungsBetterStrongholds-1.20.4-Forge-4.4.3.jar",
+					"version": "a7u7DPrA"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/kidLKymU/versions/s54qs5Zb/YungsBetterStrongholds-1.20.4-Fabric-4.4.2.jar",
+					"version": "s54qs5Zb"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "neoforged",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/kidLKymU/versions/uAbYQaPU/YungsBetterStrongholds-1.20.4-NeoForge-4.4.2.jar",
+					"version": "uAbYQaPU"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "forge",
+					"relations": {
+						"dependencies": "yungs-api"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/kidLKymU/versions/ZtfRU7aq/YungsBetterStrongholds-1.20.4-Forge-4.4.2.jar",
+					"version": "ZtfRU7aq"
+				},
+				{
+					"minecraft_versions": "1.20.4",
+					"modloaders": "fabric",
+					"relations": {
+						"dependencies": [
+							"cloth-config",
+							"fabriclike-api",
+							"yungs-api"
+						],
+						"recommendations": {
+							"value": "mod-menu"
+						}
+					},
+					"stability": "stable",
 					"url": "https://cdn.modrinth.com/data/kidLKymU/versions/lT8OssHA/YungsBetterStrongholds-1.20.4-Fabric-4.4.1.jar",
 					"version": "lT8OssHA"
 				},
@@ -230,6 +304,7 @@
 	"meta": {
 		"authors": [
 			"Acarii",
+			"Drullkus",
 			"YUNGNICKYOUNG"
 		],
 		"banner": "https://cdn.modrinth.com/data/kidLKymU/images/dea5e5a5f1422dfa68a90c35e873fe988782552d.png",

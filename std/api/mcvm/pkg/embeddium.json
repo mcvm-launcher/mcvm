@@ -4,6 +4,282 @@
 			"kind": "mod",
 			"versions": [
 				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "fabric",
+					"relations": {
+						"conflicts": [
+							"indium",
+							"sodium",
+							"sodium-extra"
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/sk9rgfiA/versions/X4vKGX9r/embeddium-fabric-0.3.19%2Bmc1.20.6.jar",
+					"version": "X4vKGX9r"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"relations": {
+						"conflicts": [
+							"indium",
+							"sodium",
+							"sodium-extra"
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/sk9rgfiA/versions/Xg1M092Q/embeddium-fabric-0.3.19%2Bmc1.20.1.jar",
+					"version": "Xg1M092Q"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "neoforged",
+					"relations": {
+						"conflicts": [
+							"rubidium",
+							"textrues-embeddium-options"
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/sk9rgfiA/versions/S48BCB3v/embeddium-0.3.19%2Bmc1.20.6.jar",
+					"version": "S48BCB3v"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"relations": {
+						"conflicts": [
+							"rubidium",
+							"textrues-embeddium-options"
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/sk9rgfiA/versions/l871Kzhu/embeddium-0.3.19%2Bmc1.20.1-all.jar",
+					"version": "l871Kzhu"
+				},
+				{
+					"minecraft_versions": "1.16.5",
+					"modloaders": "forge",
+					"relations": {
+						"conflicts": "rubidium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/sk9rgfiA/versions/9PbX7IEh/embeddium-0.3.18%2Bmc1.16.5.jar",
+					"version": "9PbX7IEh"
+				},
+				{
+					"minecraft_versions": "1.18.2",
+					"modloaders": "forge",
+					"relations": {
+						"conflicts": "rubidium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/sk9rgfiA/versions/xuVAgh89/embeddium-0.3.18%2Bmc1.18.2.jar",
+					"version": "xuVAgh89"
+				},
+				{
+					"minecraft_versions": "1.19.2",
+					"modloaders": "forge",
+					"relations": {
+						"conflicts": "rubidium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/sk9rgfiA/versions/jfqlwYJ5/embeddium-0.3.18%2Bmc1.19.2.jar",
+					"version": "jfqlwYJ5"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "fabric",
+					"relations": {
+						"conflicts": [
+							"indium",
+							"sodium"
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/sk9rgfiA/versions/VbtsS5XM/embeddium-fabric-0.3.18%2Bmc1.20.6.jar",
+					"version": "VbtsS5XM"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "neoforged",
+					"relations": {
+						"conflicts": "rubidium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/sk9rgfiA/versions/VC6jArQ5/embeddium-0.3.18%2Bmc1.20.6.jar",
+					"version": "VC6jArQ5"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"relations": {
+						"conflicts": [
+							"indium",
+							"sodium"
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/sk9rgfiA/versions/pGO3hiY8/embeddium-fabric-0.3.18%2Bmc1.20.1.jar",
+					"version": "pGO3hiY8"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"relations": {
+						"conflicts": "rubidium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/sk9rgfiA/versions/RieuySG8/embeddium-0.3.18%2Bmc1.20.1-all.jar",
+					"version": "RieuySG8"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "fabric",
+					"relations": {
+						"conflicts": [
+							"indium",
+							"sodium"
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/sk9rgfiA/versions/JMdj7A5D/embeddium-fabric-0.3.17%2Bmc1.20.6.jar",
+					"version": "JMdj7A5D"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "neoforged",
+					"relations": {
+						"conflicts": "rubidium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/sk9rgfiA/versions/nuPmAHmL/embeddium-0.3.17%2Bmc1.20.6.jar",
+					"version": "nuPmAHmL"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"relations": {
+						"conflicts": [
+							"indium",
+							"sodium"
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/sk9rgfiA/versions/VAyZt0rt/embeddium-fabric-0.3.17%2Bmc1.20.1.jar",
+					"version": "VAyZt0rt"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"relations": {
+						"conflicts": "rubidium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/sk9rgfiA/versions/GlQtV4sX/embeddium-0.3.17%2Bmc1.20.1-all.jar",
+					"version": "GlQtV4sX"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": [
+						"forge",
+						"neoforged"
+					],
+					"relations": {
+						"conflicts": "rubidium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/sk9rgfiA/versions/9C2gFT6k/embeddium-0.3.16%2Bmc1.20.1-all.jar",
+					"version": "9C2gFT6k"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "fabric",
+					"relations": {
+						"conflicts": [
+							"indium",
+							"sodium"
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/sk9rgfiA/versions/UKPPe3rg/embeddium-fabric-0.3.16%2Bmc1.20.6.jar",
+					"version": "UKPPe3rg"
+				},
+				{
+					"minecraft_versions": "1.20.6",
+					"modloaders": "neoforged",
+					"relations": {
+						"conflicts": "rubidium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/sk9rgfiA/versions/KrACbXQb/embeddium-0.3.16%2Bmc1.20.6.jar",
+					"version": "KrACbXQb"
+				},
+				{
+					"minecraft_versions": "1.20.1",
+					"modloaders": "fabric",
+					"relations": {
+						"conflicts": [
+							"indium",
+							"sodium"
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/sk9rgfiA/versions/GrAK1TyU/embeddium-fabric-0.3.16%2Bmc1.20.1.jar",
+					"version": "GrAK1TyU"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.5",
+						"1.20.6"
+					],
+					"modloaders": "fabric",
+					"relations": {
+						"conflicts": [
+							"indium",
+							"sodium"
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/sk9rgfiA/versions/E2hEqxns/embeddium-fabric-0.3.15%2Bmc1.20.5.jar",
+					"version": "E2hEqxns"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.5",
+						"1.20.6"
+					],
+					"modloaders": "neoforged",
+					"relations": {
+						"conflicts": "rubidium"
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/sk9rgfiA/versions/fITh7c6G/embeddium-0.3.14%2Bmc1.20.5.jar",
+					"version": "fITh7c6G"
+				},
+				{
+					"minecraft_versions": "1.20.5",
+					"modloaders": "fabric",
+					"relations": {
+						"conflicts": [
+							"indium",
+							"sodium"
+						]
+					},
+					"stability": "stable",
+					"url": "https://cdn.modrinth.com/data/sk9rgfiA/versions/7thkIfOS/embeddium-fabric-0.3.14%2Bmc1.20.5.jar",
+					"version": "7thkIfOS"
+				},
+				{
 					"minecraft_versions": [
 						"1.20.5-pre2",
 						"1.20.5-rc3"
@@ -2074,7 +2350,6 @@
 	"meta": {
 		"authors": [
 			"Asek3",
-			"Nolij",
 			"embeddedt",
 			"jellysquid3"
 		],
@@ -2084,14 +2359,18 @@
 		],
 		"community": "https://discord.gg/rN9Y7caguP",
 		"description": "A performance-enhancing client mod (based on Sodium) prioritizing reliability & mod compatibility",
-		"gallery": [],
+		"gallery": [
+			"https://cdn.modrinth.com/data/sk9rgfiA/images/84451725b6fca79230b02c53966ff820b7e1b9f7.png",
+			"https://cdn.modrinth.com/data/sk9rgfiA/images/9d00ad6364d8d002ef1244795559a54ab2c79cb9.png",
+			"https://cdn.modrinth.com/data/sk9rgfiA/images/d4f4c086bb168dc87cff77b5f13b1a86fb404c10.png"
+		],
 		"icon": "https://cdn.modrinth.com/data/sk9rgfiA/7f5be8843494e3c34bd628143cbb07bc6cbc77f7.png",
 		"issues": "https://github.com/embeddedt/embeddium/issues",
 		"keywords": [
 			"graphics"
 		],
 		"license": "LGPL-3.0-only",
-		"long_description": "# Embeddium\n\nEmbeddium is an unofficial fork of Sodium based off Rubidium, with additional changes and bugfixes to integrate it with the Forge modding\necosystem.\n\nEmbeddium is **not supported by CaffeineMC**. Do not report issues encountered with it to their bug tracker or in their Discord. I have my own [Discord server](https://discord.gg/rN9Y7caguP) for my mods if you would like to discuss, provide suggestions, etc.\n\n## Compatibility\n\nGenerally Embeddium should work out of the box with many more mods than Rubidium. However, given the scope of changes\nit makes to the renderer, it may have compatibility issues with some mods that use advanced rendering. Please open an\nissue if you experience problems. Some issues may require changes to be made in the other mod but it's good to have\nthem documented.\n\nThe [GitHub wiki page](https://github.com/embeddedt/embeddium/wiki/Compatibility#known-incompatibilities) has a somewhat-maintained list of known incompatibilities.\n\n**OptiFine is not supported** for obvious reasons.\n\n## Shaders\n\nFor now, please continue to use [Oculus](https://www.curseforge.com/minecraft/mc-mods/oculus) if you want shader support.\nNote that Oculus is somewhat buggy, and your experience will probably be more stable without it. I recommend removing\nOculus if you do not need shaders.\n\n## Credits\n\n* JellySquid & the CaffeineMC team, for making Sodium in the first place, without which this project would not be possible\n* Asek3, for the initial port to Forge\n* XFactHD, for providing a list of gamebreaking Rubidium issues to start this work off, and for testing early builds\n* Pepper, for their invaluable assistance with getting Forge lighting to work on Sodium 0.5\n* CelestialAbyss and input-Here for making the new logo design\n\n## License\n\nEmbeddium, like Sodium, is licensed under LGPL-3.0.\n",
+		"long_description": "# Embeddium\n\nEmbeddium is a free and open-source performance mod for Minecraft clients. It is based on the last FOSS-licensed version of the Sodium codebase, and includes additional bugfixes & features for better mod compatibility.\n\nDespite being forked from Sodium, Embeddium is **not supported by CaffeineMC**. Do not report issues encountered with it to their bug tracker or in their Discord. I have my own [Discord server](https://discord.gg/rN9Y7caguP) for my mods.\n\n## Highlights\n\n* All performance improvements from Sodium 0.5.8 and earlier, i.e. a rewritten terrain renderer, various optimizations to the immediate-mode rendering pipeline (used by entities, GUIs, block entities, etc.), and other miscellaneous improvements\n* Available for Minecraft Forge on 1.20.1 and older, and Fabric/NeoForge on 1.20.1 and newer\n* Integrated Fabric Rendering API support (Indium is no longer required, and will not work with Embeddium)\n* Frequent patch updates to fix mod compatibility issues soon after being reported & reproduced\n* Additional APIs for mod integration\n* Optional support for translucency sorting (can be enabled in Video Settings)\n\n## For developers\n\nIf you're looking to add Embeddium to your development environment, please take a look at the [dedicated wiki page](https://github.com/embeddedt/embeddium/wiki/For-Developers) for instructions & recommended guidelines for integration.\n\n## Credits\n\n* JellySquid & the CaffeineMC team, for making Sodium in the first place, without which this project would not be possible\n* Asek3, for the initial port to Forge\n* XFactHD, for providing a list of gamebreaking Rubidium issues to start this work off, and for testing early builds\n* Pepper, for their invaluable assistance with getting Forge lighting to work on Sodium 0.5\n* @CelestialAbyss and @input-Here for making the new logo design\n\n## License\n\nEmbeddium is distributed under the Lesser GNU General Public License version 3. For more details, refer to our [GitHub](https://github.com/embeddedt/embeddium) repository.",
 		"name": "Embeddium",
 		"package_maintainers": [
 			"mcvm"
@@ -2127,7 +2406,9 @@
 			"24w14a",
 			"1.20.5-pre1",
 			"1.20.5-pre2",
-			"1.20.5-rc3"
+			"1.20.5-rc3",
+			"1.20.5",
+			"1.20.6"
 		]
 	}
 }

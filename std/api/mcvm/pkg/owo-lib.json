@@ -5,6 +5,48 @@
 			"versions": [
 				{
 					"minecraft_versions": [
+						"1.20.5",
+						"1.20.6"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/5qH0boef/owo-lib-0.12.8%2B1.20.5.jar",
+					"version": "5qH0boef"
+				},
+				{
+					"minecraft_versions": [
+						"1.20.5",
+						"1.20.6"
+					],
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/cFeG2MJS/owo-lib-0.12.7%2B1.20.5.jar",
+					"version": "cFeG2MJS"
+				},
+				{
+					"minecraft_versions": "1.20.5",
+					"modloaders": [
+						"fabric",
+						"quilt"
+					],
+					"stability": "latest",
+					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/ueejHgQH/owo-lib-0.12.6%2B1.20.5.jar",
+					"version": "ueejHgQH"
+				},
+				{
+					"minecraft_versions": [
 						"1.20.3",
 						"1.20.4"
 					],
@@ -12,6 +54,9 @@
 						"fabric",
 						"quilt"
 					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
 					"stability": "stable",
 					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/Her7Z3CG/owo-lib-0.12.6%2B1.20.3.jar",
 					"version": "Her7Z3CG"
@@ -100,6 +145,9 @@
 						"fabric",
 						"quilt"
 					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
 					"stability": "stable",
 					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/DYgDdRtg/owo-lib-0.11.4%2B1.20.2.jar",
 					"version": "DYgDdRtg"
@@ -123,6 +171,9 @@
 						"fabric",
 						"quilt"
 					],
+					"relations": {
+						"dependencies": "fabriclike-api"
+					},
 					"stability": "stable",
 					"url": "https://cdn.modrinth.com/data/ccKDOlHs/versions/zyOBB7J4/owo-lib-0.11.2%2B1.20.jar",
 					"version": "zyOBB7J4"
@@ -659,7 +710,9 @@
 			"1.20.1",
 			"1.20.2",
 			"1.20.3",
-			"1.20.4"
+			"1.20.4",
+			"1.20.5",
+			"1.20.6"
 		]
 	}
 }
