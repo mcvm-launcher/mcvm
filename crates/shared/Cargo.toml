@@ -1,6 +1,6 @@
 [package]
 name = "mcvm_shared"
-version = "0.12.0"
+version = "0.13.0"
 description = "Shared libraries and utilities for mcvm crates"
 keywords = ["minecraft", "launcher", "game", "mc"]
 categories.workspace = true
