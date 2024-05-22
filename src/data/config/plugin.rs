@@ -109,11 +109,14 @@ impl PluginManager {
 		paths.project.config_dir().join("plugins.json")
 	}
 
-	/// Write the default config file
+	/// Write the default config file if it does not exist
 	pub fn create_default(paths: &Paths) -> anyhow::Result<()> {
-		let out = PluginsConfig::default();
-		json_to_file_pretty(Self::get_path(paths), &out)
-			.context("Failed to write default plugin config to file")?;
+		let path = Self::get_path(paths);
+		if !path.exists() {
+			let out = PluginsConfig::default();
+			json_to_file_pretty(path, &out)
+				.context("Failed to write default plugin config to file")?;
+		}
 
 		Ok(())
 	}
