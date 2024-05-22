@@ -71,7 +71,7 @@ pub enum Command {
 		command: PluginSubcommand,
 	},
 	#[command(about = "Manage config")]
-	#[clap(alias = "cfg")]
+	#[clap(alias = "cfg", alias = "conf")]
 	Config {
 		#[command(subcommand)]
 		command: ConfigSubcommand,
