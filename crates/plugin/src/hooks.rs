@@ -1,4 +1,4 @@
-use std::io::{BufRead, BufReader, Lines};
+use std::io::{BufRead, BufReader};
 use std::ops::Deref;
 use std::path::Path;
 use std::process::{Child, ChildStdout, Command};
@@ -96,10 +96,14 @@ pub trait Hook {
 
 			let stdout = child.stdout.take().unwrap();
 			let stdout_reader = BufReader::new(stdout);
-			let stdout_lines = stdout_reader.lines();
 
 			let handle = HookHandle {
-				inner: HookHandleInner::Process(child, stdout_lines, None),
+				inner: HookHandleInner::Process {
+					child,
+					stdout: stdout_reader,
+					line_buf: String::new(),
+					result: None,
+				},
 				plugin_state: Some(state),
 			};
 
@@ -127,48 +131,58 @@ impl<H: Hook> HookHandle<H> {
 	/// Poll the handle, returning true if the handle is ready
 	pub fn poll(&mut self, o: &mut impl MCVMOutput) -> anyhow::Result<bool> {
 		match &mut self.inner {
-			HookHandleInner::Process(_, lines, result) => {
-				// TODO: Make this actually poll instead of just reading all the lines
-				for line in lines {
-					let line = line?;
-					let action = OutputAction::deserialize(&line)
-						.context("Failed to deserialize plugin action")?;
-					match action {
-						OutputAction::SetResult(new_result) => {
-							*result = Some(
-								serde_json::from_str(&new_result)
-									.context("Failed to deserialize hook result")?,
-							);
-						}
-						OutputAction::SetState(new_state) => {
-							let state = self.plugin_state.as_mut().context(
-								"Hook handle does not have a reference to persistent state",
-							)?;
-							let mut lock = state.lock().map_err(|x| anyhow!("{x}"))?;
-							*lock = new_state;
-						}
-						OutputAction::Text(text, level) => {
-							o.display_text(text, level);
-						}
-						OutputAction::Message(message) => {
-							o.display_message(message);
-						}
-						OutputAction::StartProcess => {
-							o.start_process();
-						}
-						OutputAction::EndProcess => {
-							o.end_process();
-						}
-						OutputAction::StartSection => {
-							o.start_section();
-						}
-						OutputAction::EndSection => {
-							o.end_section();
-						}
+			HookHandleInner::Process {
+				line_buf,
+				stdout,
+				result,
+				..
+			} => {
+				line_buf.clear();
+				let result_len = stdout.read_line(line_buf)?;
+				// EoF
+				if result_len == 0 {
+					return Ok(true);
+				}
+				let line = line_buf.trim_end_matches("\r\n").trim_end_matches("\n");
+
+				let action = OutputAction::deserialize(line)
+					.context("Failed to deserialize plugin action")?;
+				match action {
+					OutputAction::SetResult(new_result) => {
+						*result = Some(
+							serde_json::from_str(&new_result)
+								.context("Failed to deserialize hook result")?,
+						);
+					}
+					OutputAction::SetState(new_state) => {
+						let state = self
+							.plugin_state
+							.as_mut()
+							.context("Hook handle does not have a reference to persistent state")?;
+						let mut lock = state.lock().map_err(|x| anyhow!("{x}"))?;
+						*lock = new_state;
+					}
+					OutputAction::Text(text, level) => {
+						o.display_text(text, level);
+					}
+					OutputAction::Message(message) => {
+						o.display_message(message);
+					}
+					OutputAction::StartProcess => {
+						o.start_process();
+					}
+					OutputAction::EndProcess => {
+						o.end_process();
+					}
+					OutputAction::StartSection => {
+						o.start_section();
+					}
+					OutputAction::EndSection => {
+						o.end_section();
 					}
 				}
 
-				Ok(true)
+				Ok(false)
 			}
 			HookHandleInner::Constant(..) => Ok(true),
 		}
@@ -176,7 +190,7 @@ impl<H: Hook> HookHandle<H> {
 
 	/// Get the result of the hook by waiting for it
 	pub fn result(mut self, o: &mut impl MCVMOutput) -> anyhow::Result<H::Result> {
-		if let HookHandleInner::Process(..) = &self.inner {
+		if let HookHandleInner::Process { .. } = &self.inner {
 			loop {
 				let result = self.poll(o)?;
 				if result {
@@ -187,7 +201,9 @@ impl<H: Hook> HookHandle<H> {
 
 		match self.inner {
 			HookHandleInner::Constant(result) => Ok(result),
-			HookHandleInner::Process(mut child, _, result) => {
+			HookHandleInner::Process {
+				mut child, result, ..
+			} => {
 				let cmd_result = child.wait()?;
 
 				if !cmd_result.success() {
@@ -210,7 +226,9 @@ impl<H: Hook> HookHandle<H> {
 		let _ = o;
 		match self.inner {
 			HookHandleInner::Constant(result) => Ok(Some(result)),
-			HookHandleInner::Process(mut child, _, result) => {
+			HookHandleInner::Process {
+				mut child, result, ..
+			} => {
 				child.kill()?;
 
 				Ok(result)
@@ -221,9 +239,14 @@ impl<H: Hook> HookHandle<H> {
 
 /// The inner value for a HookHandle
 enum HookHandleInner<H: Hook> {
-	/// A process hook
-	Process(Child, Lines<BufReader<ChildStdout>>, Option<H::Result>),
-	/// A constant result hook
+	/// Result is coming from a running process
+	Process {
+		child: Child,
+		line_buf: String,
+		stdout: BufReader<ChildStdout>,
+		result: Option<H::Result>,
+	},
+	/// Result is a constant, either from a constant hook or a takeover hook
 	Constant(H::Result),
 }
 
