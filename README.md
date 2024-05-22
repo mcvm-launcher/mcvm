@@ -41,45 +41,40 @@ in your favorite terminal.
 
 # ➕ More Info
 
-### 📦 Packages
-**_Packages_** are the big selling point of MCVM. They are simple files which are configured on profiles and instances and obtain the correct content files for your game. The `sodium` package, for example, when installed on a profile, will add the Sodium jar file to your mods folder only on client instances.
+### Packages
+**_Packages_** are a big selling point of MCVM. You just configure what packages you want on a profile or instance and all the files you need for some addon are automatically installed. The `sodium` package, for example, when installed on a profile, will add the Sodium jar file to your mods folder only on client instances.
 
-#### 🌐 A universal format
+#### A universal format
 Packages are designed in such a way that they work with any hosting system. Because they can download files from any URL, packages serve as an intermediary for the formats and conventions of many different websites.
 
-#### 🔗 Package relationships
+#### Package relationships
 MCVM's packaging format provides the ability to model complex relationships between packages. You won't have to worry about getting all of the correct dependencies for your packages, as they will be automatically installed.
 
-#### 🧮 Flexibility with scripting
+#### Flexibility with scripting
 Packages can be more than just an index of files. They can be scripts which run simple logic to determine dependencies and addon files depending on the conditions of the environment.
 
-#### 🔒 Safety
+#### Safety
 Packages are made to be as secure as possible. Even though they have scripting capabilities, they are in a controlled environment with no uneeded access to the system or ability to run arbitrary code. Public repositories will be screened often to ensure quality.
 
-#### 🔧 Control
+#### Control
 You don't have to just use the packages from the official repositories. You can use whatever local or remote package repository you please with whatever priority, as long as they match the API standard. The syncing of package files from repositories is a separate process that only happens when you explicitly say so. Changes to packages will never break your game without your knowledge.
-
-### 📄 Game options management
-With the official launcher, changing versions often means your configuration breaks. In most instanced launchers, creating a new instance doesn't bring your options along with it. MCVM combines the best of both.
-
-Global options for your clients and servers can be defined in simple files that propagate seamlessly. Even though Mojang changes the formats for their options files often, MCVM's options are consistent and fully backwards compatible.
 
 # 👷 Use Cases
 MCVM has many use cases for different applications 
 
-### ⌨️ A command-line launcher
+### A command-line launcher
 This is the main use case of most people, and is an important focus of the ecosystem.
 
-### ✨ A GUI launcher (planned)
+### A GUI launcher (planned)
 All the functionalities of the CLI in a more approachable format as a desktop application.
 
-### 📗 A library for your launcher
+### A library for your launcher
 You can use the MCVM library as a base for the functionalities of your launcher. Even if you don't use the packaging formats, MCVM contains functions to launch the game in a simple way, as well as customize the launch process to your liking.
 
-### 🪛 A server management tool
-The MCVM CLI is a perfect asset for server managers. The way that it groups configuration for instances makes it easy to orchestrate multiple running servers at once. This system will be great in the future as well when MCVM adds support for proxies like BungeeCord and Velocity.
+### A server management tool
+The MCVM CLI is the perfect assistant for server managers. The way that it groups configuration for instances makes it easy to orchestrate multiple running servers at once. Plugins can add features like launching on remote machines, config management, automatic scaling and restarts, and proxy support.
 
-### 📦 A packaging format
+### A packaging format
 Launchers can use the different MCVM crates to parse, validate, evaluate, and host MCVM packages.
 
 # 👍 Status
