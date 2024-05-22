@@ -116,6 +116,8 @@ pub struct PluginManifest {
 	pub language_map: LanguageMap,
 	/// The subcommands the plugin provides
 	pub subcommands: HashMap<String, String>,
+	/// The protocol version of the plugin
+	pub protocol_version: Option<u16>,
 }
 
 impl PluginManifest {
