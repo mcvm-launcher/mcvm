@@ -8,11 +8,6 @@ cd shared
 cargo publish
 cd ..
 
-# mcvm_plugin
-cd plugin
-cargo publish
-cd ..
-
 # mcvm_auth
 cd auth
 cargo publish
@@ -40,6 +35,11 @@ cd ..
 
 # mcvm_options
 cd options
+cargo publish
+cd ..
+
+# mcvm_plugin
+cd plugin
 cargo publish
 cd ..
 
