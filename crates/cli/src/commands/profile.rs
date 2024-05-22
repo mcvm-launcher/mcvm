@@ -150,7 +150,7 @@ async fn list(data: &mut CmdData, raw: bool) -> anyhow::Result<()> {
 			println!("{id}");
 		} else {
 			cprintln!("<s><g>   {}", id);
-			for (inst_id, instance) in profile.instances.iter() {
+			for (inst_id, instance) in profile.instances.iter().sorted_by_key(|x| x.0) {
 				match instance.get_side() {
 					Side::Client => cprintln!("   {}<y!>{}", HYPHEN_POINT, inst_id),
 					Side::Server => cprintln!("   {}<c!>{}", HYPHEN_POINT, inst_id),
