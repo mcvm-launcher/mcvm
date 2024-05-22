@@ -1,13 +1,12 @@
 use std::collections::HashMap;
-use std::fs::{self, File};
-use std::io::BufWriter;
+use std::fs;
 use std::path::{Path, PathBuf};
 
 use anyhow::Context;
 use serde::{Deserialize, Serialize};
 
 use super::files::paths::Paths;
-use super::json_from_file;
+use super::{json_from_file, json_to_file_pretty};
 
 /// A file that remembers important info like what versions and files are currently installed
 #[derive(Debug)]
@@ -78,10 +77,8 @@ impl PersistentData {
 	/// Finish using the persistent data file and write to the disk
 	pub async fn dump(&mut self, paths: &Paths) -> anyhow::Result<()> {
 		let path = Self::get_path(paths);
-		let file =
-			BufWriter::new(File::create(path).context("Failed to open persistent data file")?);
-		serde_json::to_writer_pretty(file, &self.contents)
-			.context("Failed to serialize persistent data contents")?;
+		json_to_file_pretty(path, &self.contents)
+			.context("Failed to write persistent data contents")?;
 
 		Ok(())
 	}

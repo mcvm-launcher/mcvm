@@ -20,19 +20,19 @@ pub mod update;
 /// Reads JSON from a file with a buffer
 pub fn json_from_file<D: DeserializeOwned>(path: impl AsRef<Path>) -> anyhow::Result<D> {
 	let file = BufReader::new(File::open(path).context("Failed to open file")?);
-	Ok(serde_json::from_reader(file)?)
+	Ok(simd_json::from_reader(file)?)
 }
 
 /// Writes JSON to a file with a buffer
 pub fn json_to_file<S: Serialize>(path: impl AsRef<Path>, data: &S) -> anyhow::Result<()> {
 	let file = BufWriter::new(File::create(path).context("Failed to open file")?);
-	serde_json::to_writer(file, data).context("Failed to serialize data to file")?;
+	simd_json::to_writer(file, data).context("Failed to serialize data to file")?;
 	Ok(())
 }
 
 /// Writes JSON to a file with a buffer and pretty formatting
 pub fn json_to_file_pretty<S: Serialize>(path: impl AsRef<Path>, data: &S) -> anyhow::Result<()> {
 	let file = BufWriter::new(File::create(path).context("Failed to open file")?);
-	serde_json::to_writer_pretty(file, data).context("Failed to serialize data to file")?;
+	simd_json::to_writer_pretty(file, data).context("Failed to serialize data to file")?;
 	Ok(())
 }

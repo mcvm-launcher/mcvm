@@ -107,6 +107,7 @@ serde = { version = "1.0.202", features = ["derive", "rc"] }
 serde_json = "1.0.117"
 sha2 = "0.10.8"
 shellexpand = { version = "3.0.0", features = ["path"] }
+simd-json = { version = "0.13.10", features = ["value-no-dup-keys"] }
 sys-locale = "0.3.1"
 tar = "0.4.38"
 termimad = "0.29.1"

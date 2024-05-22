@@ -205,7 +205,7 @@ impl ProgressiveDownload<Cursor<Vec<u8>>> {
 
 	/// Consume the download into JSON
 	pub fn finish_json<D: DeserializeOwned>(self) -> anyhow::Result<D> {
-		serde_json::from_slice(&self.finish()).context("Failed to deserialize downloaded output")
+		simd_json::from_slice(&mut self.finish()).context("Failed to deserialize downloaded output")
 	}
 }
 

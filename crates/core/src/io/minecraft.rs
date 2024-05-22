@@ -34,7 +34,7 @@ pub mod game_jar {
 		let file = zip
 			.by_name("version.json")
 			.context("Failed to find file in game jar")?;
-		serde_json::from_reader(file).context("Failed to parse version.json")
+		simd_json::from_reader(file).context("Failed to parse version.json")
 	}
 
 	/// Extract the version.json file optionally, only if the version has the file in there

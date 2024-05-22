@@ -28,6 +28,7 @@ reqwest = { workspace = true }
 schemars = { workspace = true, optional = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
+simd-json = { workspace = true }
 tar = { workspace = true }
 tokio = { workspace = true, features = ["fs", "macros"] }
 zip = { workspace = true }

@@ -386,9 +386,10 @@ pub async fn get(
 			}
 		}
 
-		let out = serde_json::from_slice(&bytes).context("Failed to parse client meta")?;
-
 		std::fs::write(path, &bytes).context("Failed to write client meta to a file")?;
+
+		// Parsing must come second since simd json overwrites the slice
+		let out = simd_json::from_slice(&mut bytes).context("Failed to parse client meta")?;
 
 		out
 	};
