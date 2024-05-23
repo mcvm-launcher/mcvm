@@ -45,6 +45,7 @@ pub enum PluginConfigDeser {
 		id: String,
 		/// The custom config for the plugin
 		#[serde(default)]
+		#[serde(rename = "config")]
 		custom_config: Option<serde_json::Value>,
 	},
 }
