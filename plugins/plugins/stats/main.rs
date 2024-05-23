@@ -107,14 +107,28 @@ fn print_stats(ctx: HookContext<'_, Subcommand>) -> anyhow::Result<()> {
 	Ok(())
 }
 
-fn format_time(time: u64) -> String {
-	if time < 60 {
-		format!("{time} minutes")
-	} else if time < 3600 {
-		format!("{} hours", time / 60)
-	} else {
-		format!("{} days", time / 3600)
+fn format_time(mut time: u64) -> String {
+	let mut out = String::new();
+
+	let days = time / 3600;
+	time %= 3600;
+
+	let hours = time / 60;
+	time %= 60;
+
+	let minutes = time;
+
+	if days > 0 {
+		out += &format!("{days}d ");
 	}
+
+	if hours > 0 {
+		out += &format!("{hours}h ");
+	}
+
+	out += &format!("{minutes}m");
+
+	out
 }
 
 /// The stored stats data
