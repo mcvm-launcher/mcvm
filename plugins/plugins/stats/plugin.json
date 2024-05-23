@@ -10,6 +10,9 @@
 		},
 		"on_instance_stop": {
 			"executable": "mcvm_plugin_stats"
+		},
+		"while_instance_launch": {
+			"executable": "mcvm_plugin_stats"
 		}
 	},
 	"subcommands": {

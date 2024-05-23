@@ -1,4 +1,5 @@
 use std::cmp::Reverse;
+use std::time::Duration;
 use std::{collections::HashMap, path::PathBuf};
 
 use anyhow::Context;
@@ -52,26 +53,63 @@ fn main() -> anyhow::Result<()> {
 	})?;
 
 	plugin.on_instance_stop(|mut ctx, arg| {
-		let state = ctx
-			.get_persistent_state(HashMap::<String, u64>::new())
-			.context("Failed to get persistent state")?;
-		let state: HashMap<String, u64> = serde_json::from_value(state.clone())?;
-		let Some(start_time) = state.get(&arg.inst_ref) else {
+		let Some(config) = ctx.get_custom_config() else {
 			return Ok(());
 		};
-		let now = utc_timestamp()?;
-		let diff_minutes = (now - start_time) / 60;
+		let config: Config =
+			serde_json::from_str(config).context("Failed to deserialize custom config")?;
 
-		let mut stats = Stats::open(&ctx).context("Failed to open stats")?;
-		stats
-			.instances
-			.entry(arg.inst_ref.clone())
-			.or_default()
-			.playtime += diff_minutes;
-		stats.write(&ctx).context("Failed to write stats")?;
+		// If we are live tracking, don't update when stopping since we have been updating the whole time
+		if config.live_tracking {
+			return Ok(());
+		}
 
-		Ok(())
+		update_playtime(&mut ctx, &arg.inst_ref)
 	})?;
+
+	plugin.while_instance_launch(|mut ctx, arg| {
+		let Some(config) = ctx.get_custom_config() else {
+			return Ok(());
+		};
+		let config: Config =
+			serde_json::from_str(config).context("Failed to deserialize custom config")?;
+
+		if !config.live_tracking {
+			return Ok(());
+		}
+
+		loop {
+			std::thread::sleep(Duration::from_secs(60));
+			update_playtime(&mut ctx, &arg.inst_ref).context("Failed to update playtime")?;
+		}
+	})?;
+
+	Ok(())
+}
+
+fn update_playtime<H: Hook>(ctx: &mut HookContext<'_, H>, instance: &str) -> anyhow::Result<()> {
+	let state = ctx
+		.get_persistent_state(HashMap::<String, u64>::new())
+		.context("Failed to get persistent state")?;
+	let mut state: HashMap<String, u64> = serde_json::from_value(state.clone())?;
+	let Some(start_time) = state.get_mut(instance) else {
+		return Ok(());
+	};
+	let now = utc_timestamp()?;
+	let diff_minutes = (now - *start_time) / 60;
+
+	let mut stats = Stats::open(&ctx).context("Failed to open stats")?;
+	stats
+		.instances
+		.entry(instance.to_string())
+		.or_default()
+		.playtime += diff_minutes;
+
+	// Update start time so that the next update doesn't grow exponentially
+	*start_time = utc_timestamp()?;
+	ctx.set_persistent_state(state)?;
+
+	stats.write(&ctx).context("Failed to write stats")?;
 
 	Ok(())
 }
@@ -169,4 +207,12 @@ struct InstanceStats {
 	playtime: u64,
 	/// The number of times the instance has been launched
 	launches: u32,
+}
+
+/// Config for the plugin
+#[derive(Serialize, Deserialize, Clone, Default)]
+#[serde(default)]
+struct Config {
+	/// Whether to track stats while the instance is running
+	live_tracking: bool,
 }
