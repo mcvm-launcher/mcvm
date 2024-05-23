@@ -108,7 +108,6 @@ pub async fn update_profiles(
 
 		ctx.lock
 			.finish(paths)
-			.await
 			.context("Failed to finish using lockfile")?;
 
 		if !update_packages {
@@ -158,7 +157,6 @@ pub async fn update_profiles(
 
 			ctx.lock
 				.finish(paths)
-				.await
 				.context("Failed to finish using lockfile")?;
 
 			let all_packages = Vec::from_iter(all_packages);

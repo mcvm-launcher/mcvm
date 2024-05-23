@@ -1,9 +1,9 @@
 use std::collections::HashMap;
-use std::fs::{self, File};
-use std::io::BufReader;
+use std::fs;
 use std::path::PathBuf;
 
 use anyhow::{anyhow, bail, Context};
+use mcvm_core::io::{json_from_file, json_to_file_pretty};
 use mcvm_shared::output::{MCVMOutput, MessageContents};
 use mcvm_shared::translate;
 use serde::{Deserialize, Serialize};
@@ -125,9 +125,7 @@ impl Lockfile {
 	pub fn open(paths: &Paths) -> anyhow::Result<Self> {
 		let path = Self::get_path(paths);
 		let mut contents = if path.exists() {
-			let file = File::open(&path).context("Failed to open lockfile")?;
-			let mut file = BufReader::new(file);
-			serde_json::from_reader(&mut file).context("Failed to parse JSON")?
+			json_from_file(path).context("Failed to open lockfile")?
 		} else {
 			LockfileContents::default()
 		};
@@ -141,11 +139,8 @@ impl Lockfile {
 	}
 
 	/// Finish using the lockfile and write to the disk
-	pub async fn finish(&mut self, paths: &Paths) -> anyhow::Result<()> {
-		let out = serde_json::to_string_pretty(&self.contents)
-			.context("Failed to serialize lockfile contents")?;
-		tokio::fs::write(Self::get_path(paths), out)
-			.await
+	pub fn finish(&mut self, paths: &Paths) -> anyhow::Result<()> {
+		json_to_file_pretty(Self::get_path(paths), &self.contents)
 			.context("Failed to write to lockfile")?;
 
 		Ok(())

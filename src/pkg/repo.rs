@@ -101,7 +101,7 @@ impl PkgRepo {
 
 	/// Set the index to serialized json text
 	fn set_index(&mut self, index: &mut impl std::io::Read) -> anyhow::Result<()> {
-		let parsed = serde_json::from_reader(index)?;
+		let parsed = simd_json::from_reader(index)?;
 		self.index.fill(parsed);
 		Ok(())
 	}

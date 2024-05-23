@@ -24,6 +24,7 @@ use self::profile::ProfileConfig;
 use self::user::UserConfig;
 use anyhow::{bail, ensure, Context};
 use mcvm_core::auth_crate::mc::ClientId;
+use mcvm_core::io::{json_from_file, json_to_file_pretty};
 use mcvm_core::user::UserManager;
 use mcvm_shared::id::{InstanceRef, ProfileID};
 use mcvm_shared::lang::translate::TranslationMap;
@@ -45,7 +46,6 @@ use serde_json::json;
 
 use std::collections::HashMap;
 use std::fs::File;
-use std::io::BufReader;
 use std::path::{Path, PathBuf};
 
 /// The data resulting from reading configuration.
@@ -134,15 +134,11 @@ impl Config {
 	/// Open the config from a file
 	pub fn open(path: &Path) -> anyhow::Result<ConfigDeser> {
 		if path.exists() {
-			let file = File::open(path).context("Failed to open config file")?;
-			let mut file = BufReader::new(file);
-			Ok(serde_json::from_reader(&mut file).context("Failed to parse config")?)
+			Ok(json_from_file(path).context("Failed to open config")?)
 		} else {
-			let doc = default_config();
-			let mut file = File::create(path).context("Failed to open default config file")?;
-			serde_json::to_writer_pretty(&mut file, &doc)
-				.context("Failed to write default configuration")?;
-			Ok(serde_json::from_value(doc).context("Failed to parse default configuration")?)
+			let config = default_config();
+			json_to_file_pretty(path, &config).context("Failed to write default configuration")?;
+			Ok(serde_json::from_value(config).context("Failed to parse default configuration")?)
 		}
 	}
 

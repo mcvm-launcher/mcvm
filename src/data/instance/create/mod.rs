@@ -4,12 +4,13 @@ mod client;
 mod server;
 
 use std::collections::HashSet;
-use std::fs::{self, File};
+use std::fs;
 use std::path::PathBuf;
 
 use anyhow::Context;
 use mcvm_core::instance::WindowResolution;
 use mcvm_core::io::java::classpath::Classpath;
+use mcvm_core::io::json_to_file;
 use mcvm_core::launch::LaunchConfiguration;
 use mcvm_core::user::uuid::hyphenate_uuid;
 use mcvm_core::user::{User, UserManager};
@@ -276,9 +277,7 @@ impl Instance {
 				let path = keys_dir.join(format!("{hyphenated_uuid}.json"));
 				mcvm_core::io::files::create_leading_dirs(&path)?;
 
-				let mut file = File::create(path).context("Failed to create keypair file")?;
-				serde_json::to_writer(&mut file, keypair)
-					.context("Failed to write keypair to file")?;
+				json_to_file(path, keypair).context("Failed to write keypair to file")?;
 			}
 		}
 

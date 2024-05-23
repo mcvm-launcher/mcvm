@@ -1449,6 +1449,7 @@ dependencies = [
  "serde_json",
  "sha2",
  "shellexpand",
+ "simd-json",
  "tokio",
  "version-compare",
 ]
