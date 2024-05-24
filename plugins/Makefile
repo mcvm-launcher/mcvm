@@ -5,6 +5,9 @@ install: install.args \
 				 install.stats \
 				 install.server_restart
 
+install.lang:
+	@cp plugins/lang/plugin.json ~/.local/share/mcvm/plugins/lang.json
+
 install.args: build.args
 	@cargo install --path . --bin mcvm_plugin_args --offline
 	@cp plugins/args/plugin.json ~/.local/share/mcvm/plugins/args.json
