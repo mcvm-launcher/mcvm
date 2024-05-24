@@ -18,6 +18,7 @@ pub use mcvm_shared::output::*;
 /// A plugin definition
 pub struct CustomPlugin {
 	name: String,
+	settings: PluginSettings,
 	args: Args,
 	hook: String,
 	ctx: StoredHookContext,
@@ -46,16 +47,22 @@ macro_rules! hook_interface {
 impl CustomPlugin {
 	/// Create a new plugin definition
 	pub fn new(name: &str) -> anyhow::Result<Self> {
+		Self::with_settings(name, PluginSettings::default())
+	}
+
+	/// Create a new plugin definition with more advanced settings
+	pub fn with_settings(name: &str, settings: PluginSettings) -> anyhow::Result<Self> {
 		let mut args = std::env::args();
 		args.next();
 		let hook = args.next().context("Missing hook to run")?;
 		let custom_config = std::env::var(CUSTOM_CONFIG_ENV).ok();
 		let ctx = StoredHookContext {
 			custom_config,
-			output: PluginOutput::new(),
+			output: PluginOutput::new(settings.use_base64),
 		};
 		Ok(Self {
 			name: name.into(),
+			settings,
 			args,
 			hook,
 			ctx,
@@ -112,7 +119,7 @@ impl CustomPlugin {
 				println!(
 					"{}",
 					action
-						.serialize()
+						.serialize(self.settings.use_base64)
 						.context("Failed to serialize hook result")?
 				);
 
@@ -122,7 +129,7 @@ impl CustomPlugin {
 					println!(
 						"{}",
 						action
-							.serialize()
+							.serialize(self.settings.use_base64)
 							.context("Failed to serialize new hook state")?
 					);
 				}
@@ -199,6 +206,19 @@ impl<'ctx, H: Hook> HookContext<'ctx, H> {
 		*self.state = Some(state);
 
 		Ok(())
+	}
+}
+
+/// Settings for a plugin using the API
+pub struct PluginSettings {
+	/// Whether to use base64 encoding in the plugin protocol.
+	/// If this is set to false, raw_transfer must be true in the manifest
+	pub use_base64: bool,
+}
+
+impl Default for PluginSettings {
+	fn default() -> Self {
+		Self { use_base64: true }
 	}
 }
 

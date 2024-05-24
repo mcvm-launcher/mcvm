@@ -27,18 +27,26 @@ pub enum OutputAction {
 
 impl OutputAction {
 	/// Serialize the action to be sent to the plugin runner
-	pub fn serialize(&self) -> anyhow::Result<String> {
+	pub fn serialize(&self, use_base64: bool) -> anyhow::Result<String> {
 		let json = serde_json::to_string(&self).context("Failed to serialize output action")?;
-		// We have to base64 encode it to prevent newlines from messing up the output format
-		let base64 = BASE64_STANDARD.encode(json);
-		Ok(base64)
+		if use_base64 {
+			// We have to base64 encode it to prevent newlines from messing up the output format
+			let base64 = BASE64_STANDARD.encode(json);
+			Ok(base64)
+		} else {
+			Ok(json)
+		}
 	}
 
 	/// Deserialize an action sent from the plugin
-	pub fn deserialize(action: &str) -> anyhow::Result<Self> {
-		let json = BASE64_STANDARD
-			.decode(action)
-			.context("Failed to decode action base64")?;
+	pub fn deserialize(action: &str, use_base64: bool) -> anyhow::Result<Self> {
+		let json = if use_base64 {
+			BASE64_STANDARD
+				.decode(action)
+				.context("Failed to decode action base64")?
+		} else {
+			action.bytes().collect()
+		};
 		let action =
 			serde_json::from_slice(&json).context("Failed to deserialize output action")?;
 		Ok(action)

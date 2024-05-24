@@ -66,6 +66,7 @@ impl Plugin {
 					arg,
 					args,
 					self.working_dir.as_deref(),
+					!self.manifest.raw_transfer,
 					self.custom_config.clone(),
 					self.state.clone(),
 					paths,
@@ -118,6 +119,8 @@ pub struct PluginManifest {
 	pub subcommands: HashMap<String, String>,
 	/// The protocol version of the plugin
 	pub protocol_version: Option<u16>,
+	/// Whether to disable base64 encoding in the protocol
+	pub raw_transfer: bool,
 }
 
 impl PluginManifest {

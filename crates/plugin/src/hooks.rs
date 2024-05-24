@@ -51,6 +51,7 @@ pub trait Hook {
 		arg: &Self::Arg,
 		additional_args: &[String],
 		working_dir: Option<&Path>,
+		use_base64: bool,
 		custom_config: Option<String>,
 		state: Arc<Mutex<serde_json::Value>>,
 		paths: &Paths,
@@ -105,6 +106,7 @@ pub trait Hook {
 					result: None,
 				},
 				plugin_state: Some(state),
+				use_base64,
 			};
 
 			Ok(handle)
@@ -117,6 +119,7 @@ pub trait Hook {
 pub struct HookHandle<H: Hook> {
 	inner: HookHandleInner<H>,
 	plugin_state: Option<Arc<Mutex<serde_json::Value>>>,
+	use_base64: bool,
 }
 
 impl<H: Hook> HookHandle<H> {
@@ -125,6 +128,7 @@ impl<H: Hook> HookHandle<H> {
 		Self {
 			inner: HookHandleInner::Constant(result),
 			plugin_state: None,
+			use_base64: true,
 		}
 	}
 
@@ -145,7 +149,7 @@ impl<H: Hook> HookHandle<H> {
 				}
 				let line = line_buf.trim_end_matches("\r\n").trim_end_matches('\n');
 
-				let action = OutputAction::deserialize(line)
+				let action = OutputAction::deserialize(line, self.use_base64)
 					.context("Failed to deserialize plugin action")?;
 				match action {
 					OutputAction::SetResult(new_result) => {
