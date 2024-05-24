@@ -62,7 +62,7 @@ pub async fn run(subcommand: ProfileSubcommand, data: &mut CmdData) -> anyhow::R
 			all,
 			profiles,
 			skip_packages,
-		} => update(data, &profiles, force, all, skip_packages).await,
+		} => update(data, profiles, force, all, skip_packages).await,
 		ProfileSubcommand::Add {} => add(data).await,
 		ProfileSubcommand::ProxyLaunch { profile } => proxy_launch(data, profile).await,
 	}
@@ -164,7 +164,7 @@ async fn list(data: &mut CmdData, raw: bool) -> anyhow::Result<()> {
 
 async fn update(
 	data: &mut CmdData,
-	ids: &[String],
+	ids: Vec<String>,
 	force: bool,
 	all: bool,
 	skip_packages: bool,
@@ -175,7 +175,7 @@ async fn update(
 	let ids: Vec<ProfileID> = if all {
 		config.profiles.keys().cloned().collect()
 	} else {
-		ids.iter().cloned().map(ProfileID::from).collect()
+		ids.into_iter().map(ProfileID::from).collect()
 	};
 
 	update_profiles(
