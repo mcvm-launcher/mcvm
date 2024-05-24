@@ -84,7 +84,9 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 					ctx.output,
 				)
 				.await
-				.context("Failed to get addon install tasks for package on instance")?;
+				.with_context(|| {
+					format!("Failed to get addon install tasks for package '{package}' on instance")
+				})?;
 			tasks.extend(new_tasks);
 
 			// Add any notices to the list
