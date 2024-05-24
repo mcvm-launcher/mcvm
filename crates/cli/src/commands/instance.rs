@@ -4,6 +4,8 @@ use color_print::cprintln;
 use inquire::Select;
 use itertools::Itertools;
 use mcvm::data::config::Config;
+use mcvm::data::profile::update::update_profiles;
+use mcvm::io::lock::Lockfile;
 use mcvm::shared::id::{InstanceRef, ProfileID};
 
 use mcvm::data::instance::launch::LaunchSettings;
@@ -113,6 +115,28 @@ pub async fn launch(
 	let config = data.config.get_mut();
 
 	let instance_ref = pick_instance(instance, config).context("Failed to pick instance")?;
+
+	// Perform first update if needed
+	let mut lock = Lockfile::open(&data.paths).context("Failed to open lockfile")?;
+	if !lock.has_instance_done_first_update(&instance_ref.to_string()) {
+		cprintln!("<s>Performing first update of instance profile...");
+
+		update_profiles(
+			&data.paths,
+			config,
+			&[instance_ref.get_profile_id()],
+			false,
+			true,
+			&mut data.output,
+		)
+		.await
+		.context("Failed to update instance profile")?;
+
+		// Since the update was successful, we can mark the instance as ready
+		lock.update_instance_has_done_first_update(&instance_ref.to_string());
+		lock.finish(&data.paths)
+			.context("Failed to finish using lockfile")?;
+	}
 
 	let profile = config
 		.profiles

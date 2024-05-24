@@ -24,6 +24,7 @@ pub struct Lockfile {
 struct LockfileContents {
 	packages: HashMap<String, HashMap<String, LockfilePackage>>,
 	profiles: HashMap<String, LockfileProfile>,
+	instances: HashMap<String, LockfileInstance>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -31,6 +32,14 @@ struct LockfileProfile {
 	version: String,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	paper_build: Option<u16>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Default)]
+#[serde(default)]
+struct LockfileInstance {
+	/// Whether the instance has been launched before.
+	/// Used to update the instance only before the first launch
+	has_done_first_update: bool,
 }
 
 /// Package stored in the lockfile
@@ -300,5 +309,25 @@ impl Lockfile {
 		} else {
 			false
 		}
+	}
+
+	/// Check whether an instance has done its first update successfully
+	pub fn has_instance_done_first_update(&mut self, instance: &str) -> bool {
+		let instance = self
+			.contents
+			.instances
+			.entry(instance.to_string())
+			.or_default();
+		instance.has_done_first_update
+	}
+
+	/// Update whether an instance has done its first update
+	pub fn update_instance_has_done_first_update(&mut self, instance: &str) {
+		let instance = self
+			.contents
+			.instances
+			.entry(instance.to_string())
+			.or_default();
+		instance.has_done_first_update = true;
 	}
 }
