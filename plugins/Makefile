@@ -8,6 +8,9 @@ install: install.args \
 install.lang:
 	@cp plugins/lang/plugin.json ~/.local/share/mcvm/plugins/lang.json
 
+install.extra_versions:
+	@cp plugins/extra_versions/plugin.json ~/.local/share/mcvm/plugins/extra_versions.json
+
 install.args: build.args
 	@cargo install --path . --bin mcvm_plugin_args --offline
 	@cp plugins/args/plugin.json ~/.local/share/mcvm/plugins/args.json
