@@ -48,7 +48,12 @@ pub enum PkgLocation {
 	/// Contained on the local filesystem
 	Local(PathBuf),
 	/// Contained on an external repository
-	Remote(Option<String>),
+	Remote {
+		/// The URL of the remote package
+		url: Option<String>,
+		/// The ID of the repository this package is from
+		repo_id: String,
+	},
 	/// Included in the binary
 	Core,
 }
@@ -165,7 +170,7 @@ impl Package {
 					self.data
 						.fill(PkgData::new(&tokio::fs::read_to_string(path).await?));
 				}
-				PkgLocation::Remote(url) => {
+				PkgLocation::Remote { url, .. } => {
 					let path = self.cached_path(paths);
 					if !force && path.exists() {
 						self.data
@@ -195,7 +200,7 @@ impl Package {
 		force: bool,
 		client: &Client,
 	) -> Option<impl Future<Output = anyhow::Result<()>> + 'static> {
-		if let PkgLocation::Remote(url) = &self.location {
+		if let PkgLocation::Remote { url, .. } = &self.location {
 			let path = self.cached_path(paths);
 			if force || !path.exists() {
 				let url = url
@@ -292,7 +297,10 @@ mod tests {
 	fn test_package_id() {
 		let package = Package::new(
 			PackageID::from("sodium"),
-			PkgLocation::Remote(None),
+			PkgLocation::Remote {
+				url: None,
+				repo_id: String::new(),
+			},
 			PackageContentType::Script,
 			HashSet::new(),
 		);
@@ -300,7 +308,10 @@ mod tests {
 
 		let package = Package::new(
 			PackageID::from("fabriclike-api"),
-			PkgLocation::Remote(None),
+			PkgLocation::Remote {
+				url: None,
+				repo_id: String::new(),
+			},
 			PackageContentType::Declarative,
 			HashSet::new(),
 		);

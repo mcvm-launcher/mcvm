@@ -213,7 +213,7 @@ impl PkgRepo {
 			self.ensure_index(paths, client, o).await?;
 			let index = self.index.get();
 			if let Some(entry) = index.packages.get(id) {
-				let location = get_package_location(entry, &self.location)
+				let location = get_package_location(entry, &self.location, &self.id)
 					.context("Failed to get location of package")?;
 				return Ok(Some(RepoQueryResult {
 					location,
@@ -355,9 +355,13 @@ pub async fn get_content_type(entry: &RepoPkgEntry) -> PackageContentType {
 pub fn get_package_location(
 	entry: &RepoPkgEntry,
 	repo_location: &PkgRepoLocation,
+	repo_id: &str,
 ) -> anyhow::Result<PkgLocation> {
 	if let Some(url) = &entry.url {
-		Ok(PkgLocation::Remote(Some(url.clone())))
+		Ok(PkgLocation::Remote {
+			url: Some(url.clone()),
+			repo_id: repo_id.to_string(),
+		})
 	} else if let Some(path) = &entry.path {
 		let path = PathBuf::from(path);
 		match &repo_location {
@@ -375,7 +379,10 @@ pub fn get_package_location(
 					} else {
 						url.clone() + "/"
 					};
-					Ok(PkgLocation::Remote(Some(url.to_owned() + trimmed)))
+					Ok(PkgLocation::Remote {
+						url: Some(url.to_owned() + trimmed),
+						repo_id: repo_id.to_string(),
+					})
 				} else {
 					bail!("Package path on remote repository is non-relative")
 				}
