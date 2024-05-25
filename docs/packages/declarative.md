@@ -78,7 +78,7 @@ Properties for the package that do have a meaning to MCVM and other package host
 	"supported_modloaders": ["vanilla" | "fabric" | "forge" | "quilt" | "fabriclike"],
 	"supported_plugin_loaders": ["vanilla" | "bukkit"],
 	"supported_sides": ["client" | "server"],
-	"supported_operating_systems": ["windows" | "linux" | "macos" | "other"],
+	"supported_operating_systems": ["windows" | "linux" | "macos" | "unix" | "other"],
 	"supported_architectures": ["x86" | "x86_64" | "arm" | "other"],
 	"tags": [string],
 	"open_source": bool

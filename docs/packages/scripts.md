@@ -50,7 +50,7 @@ Properties like `features` and `modrinth_id` can only be used in the `@propertie
   - `plugin_loader {plugin_loader_match}`: Checks if the plugin loader matches a `modloader_match`.
   - `side {client | server}`: Check what instance type the package is being installed on.
   - `feature {name}`: Check if a feature is enabled for this package.
-  - `os {windows | mac | linux | other}`: Check if the user is using a certain operating system.
+  - `os {windows | mac | linux | unix | other}`: Check if the user is using a certain operating system.
   - `arch {x86 | x86_64 | arm | other}`: Check if the user is using a certain system architecture.
   - `defined {variable_name}`: Check if a variable has been defined.
   - `stability {stable | latest}`: Check for the configured stability of the package. You should check this and only install release versions of addons if `stable` is selected.

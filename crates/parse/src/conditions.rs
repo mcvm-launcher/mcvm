@@ -82,6 +82,8 @@ pub enum OSCondition {
 	Linux,
 	/// MacOS
 	MacOS,
+	/// Unix-like operating system
+	Unix,
 	/// Any other operating system
 	Other,
 }
@@ -93,6 +95,7 @@ impl OSCondition {
 			"windows" => Some(Self::Windows),
 			"linux" => Some(Self::Linux),
 			"macos" => Some(Self::MacOS),
+			"unix" => Some(Self::Unix),
 			"other" => Some(Self::Other),
 			_ => None,
 		}

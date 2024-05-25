@@ -59,16 +59,15 @@ pub fn eval_condition(condition: &ConditionKind, eval: &EvalData) -> anyhow::Res
 
 /// Checks an OS condition to see if it matches the current operating system
 pub fn check_os_condition(condition: &OSCondition) -> bool {
-	if cfg!(target_os = "windows") {
-		return condition == &OSCondition::Windows;
+	match condition {
+		OSCondition::Windows => cfg!(target_os = "windows"),
+		OSCondition::Linux => cfg!(target_os = "linux"),
+		OSCondition::MacOS => cfg!(target_os = "macos"),
+		OSCondition::Unix => cfg!(target_family = "unix"),
+		OSCondition::Other => {
+			!(cfg!(target_os = "windows") || cfg!(target_os = "linux") || cfg!(target_os = "macos"))
+		}
 	}
-	if cfg!(target_os = "linux") {
-		return condition == &OSCondition::Linux;
-	}
-	if cfg!(target_os = "macos") {
-		return condition == &OSCondition::MacOS;
-	}
-	condition == &OSCondition::Other
 }
 
 /// Checks an arch condition to see if it matches the current system architecture
