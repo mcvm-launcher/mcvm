@@ -1,4 +1,9 @@
 {
 	"name": "Lang",
-	"description": "Add translation support for more languages"
+	"description": "Add translation support for more languages",
+	"hooks": {
+		"add_translations": {
+			"constant": {}
+		}
+	}
 }

@@ -6,7 +6,7 @@ use std::sync::Mutex;
 
 use anyhow::Context;
 use mcvm_core::Paths;
-use mcvm_shared::{lang::translate::LanguageMap, output::MCVMOutput};
+use mcvm_shared::output::MCVMOutput;
 use serde::{Deserialize, Deserializer};
 
 use crate::hooks::{Hook, HookHandle};
@@ -113,8 +113,6 @@ pub struct PluginManifest {
 	pub mcvm_version: Option<String>,
 	/// The hook handlers for the plugin
 	pub hooks: HashMap<String, HookHandler>,
-	/// The language map the plugin provides
-	pub language_map: LanguageMap,
 	/// The subcommands the plugin provides
 	pub subcommands: HashMap<String, String>,
 	/// The protocol version of the plugin

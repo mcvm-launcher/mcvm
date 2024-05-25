@@ -27,7 +27,6 @@ use mcvm_core::auth_crate::mc::ClientId;
 use mcvm_core::io::{json_from_file, json_to_file_pretty};
 use mcvm_core::user::UserManager;
 use mcvm_shared::id::{InstanceRef, ProfileID};
-use mcvm_shared::lang::translate::TranslationMap;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::pkg::PackageStability;
 use mcvm_shared::translate;
@@ -90,25 +89,6 @@ impl Config {
 				.values()
 				.map(|instance| profile.get_inst_ref(&instance.id))
 		})
-	}
-
-	/// Get the single-language translation map based on language and plugins
-	pub fn get_translation_map(&self) -> anyhow::Result<Option<TranslationMap>> {
-		let mut out = HashMap::new();
-		let lock = self.plugins.get_lock()?;
-		for plugin in lock.manager.iter_plugins() {
-			let Some(map) = plugin.get_manifest().language_map.get(&self.prefs.language) else {
-				continue;
-			};
-
-			out.extend(map.clone());
-		}
-
-		if out.is_empty() {
-			Ok(None)
-		} else {
-			Ok(Some(out))
-		}
 	}
 }
 

@@ -9,6 +9,7 @@ use mcvm_core::net::minecraft::MinecraftUserProfile;
 use mcvm_core::{net::game_files::version_manifest::VersionEntry, Paths};
 use mcvm_pkg::script_eval::AddonInstructionData;
 use mcvm_pkg::{RecommendedPackage, RequiredPackage};
+use mcvm_shared::lang::translate::LanguageMap;
 use mcvm_shared::pkg::PackageID;
 use mcvm_shared::{output::MCVMOutput, versions::VersionInfo, Side};
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
@@ -452,3 +453,11 @@ pub struct HandleAuthResult {
 	/// The resulting user profile
 	pub profile: Option<MinecraftUserProfile>,
 }
+
+def_hook!(
+	AddTranslations,
+	"add_translations",
+	"Hook for adding extra translations to MCVM",
+	(),
+	LanguageMap,
+);

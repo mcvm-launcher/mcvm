@@ -13,7 +13,7 @@ use color_print::{cformat, cprintln};
 use mcvm::data::config::plugin::PluginManager;
 use mcvm::data::config::{Config, ConfigDeser};
 use mcvm::io::files::paths::Paths;
-use mcvm::plugin::hooks;
+use mcvm::plugin::hooks::{self, AddTranslations};
 use mcvm::shared::later::Later;
 use mcvm::shared::output::{MCVMOutput, MessageContents, MessageLevel};
 
@@ -191,9 +191,20 @@ impl CmdData {
 			);
 		}
 
-		// Update the translation map
-		if let Some(map) = self.config.get().get_translation_map()? {
-			self.output.set_translation_map(map);
+		// Update the translation map from plugins
+		let results = self
+			.config
+			.get()
+			.plugins
+			.call_hook(AddTranslations, &(), &self.paths, &mut self.output)
+			.context("Failed to get extra translations from plugins")?;
+
+		for result in results {
+			let mut result = result.result(&mut self.output)?;
+			let map = result.remove(&self.config.get().prefs.language);
+			if let Some(map) = map {
+				self.output.set_translation_map(map);
+			}
 		}
 
 		Ok(())

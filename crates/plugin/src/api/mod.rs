@@ -96,6 +96,7 @@ impl CustomPlugin {
 		CustomPackageInstruction
 	);
 	hook_interface!(handle_auth, "handle_auth", HandleAuth);
+	hook_interface!(add_translations, "add_translations", AddTranslations);
 
 	/// Handle a hook
 	fn handle_hook<H: Hook>(
