@@ -124,9 +124,11 @@ impl PluginManager {
 
 	/// Create a new PluginManager with no plugins
 	pub fn new() -> Self {
+		let mut manager = LoadedPluginManager::new();
+		manager.set_mcvm_version(crate::VERSION);
 		Self {
 			inner: Arc::new(Mutex::new(PluginManagerInner {
-				manager: LoadedPluginManager::new(),
+				manager,
 				configs: Vec::new(),
 			})),
 		}

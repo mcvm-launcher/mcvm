@@ -24,6 +24,8 @@ pub static DATA_DIR_ENV: &str = "MCVM_DATA_DIR";
 pub static CONFIG_DIR_ENV: &str = "MCVM_CONFIG_DIR";
 /// The environment variable for the plugin state passed to a hook
 pub static PLUGIN_STATE_ENV: &str = "MCVM_PLUGIN_STATE";
+/// The environment variable for the version of MCVM
+pub static MCVM_VERSION_ENV: &str = "MCVM_VERSION";
 
 /// Trait for a hook that can be called
 pub trait Hook {
@@ -56,6 +58,7 @@ pub trait Hook {
 		custom_config: Option<String>,
 		state: Arc<Mutex<serde_json::Value>>,
 		paths: &Paths,
+		mcvm_version: Option<&str>,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<HookHandle<Self>>
 	where
@@ -74,6 +77,9 @@ pub trait Hook {
 		}
 		cmd.env(DATA_DIR_ENV, &paths.data);
 		cmd.env(CONFIG_DIR_ENV, paths.project.config_dir());
+		if let Some(mcvm_version) = mcvm_version {
+			cmd.env(MCVM_VERSION_ENV, mcvm_version.to_string());
+		}
 		if let Some(working_dir) = working_dir {
 			cmd.current_dir(working_dir);
 		}

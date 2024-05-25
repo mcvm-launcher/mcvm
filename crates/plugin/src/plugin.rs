@@ -54,6 +54,7 @@ impl Plugin {
 		hook: &H,
 		arg: &H::Arg,
 		paths: &Paths,
+		mcvm_version: Option<&str>,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Option<HookHandle<H>>> {
 		let Some(handler) = self.manifest.hooks.get(hook.get_name()) else {
@@ -70,6 +71,7 @@ impl Plugin {
 					self.custom_config.clone(),
 					self.state.clone(),
 					paths,
+					mcvm_version,
 					o,
 				)
 				.map(Some),

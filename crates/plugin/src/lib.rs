@@ -23,6 +23,7 @@ pub mod plugin;
 #[derive(Debug)]
 pub struct PluginManager {
 	plugins: Vec<Plugin>,
+	mcvm_version: Option<&'static str>,
 }
 
 impl Default for PluginManager {
@@ -36,7 +37,13 @@ impl PluginManager {
 	pub fn new() -> Self {
 		Self {
 			plugins: Vec::new(),
+			mcvm_version: None,
 		}
+	}
+
+	/// Set the MCVM version of the manager
+	pub fn set_mcvm_version(&mut self, version: &'static str) {
+		self.mcvm_version = Some(version);
 	}
 
 	/// Add a plugin to the manager
@@ -48,7 +55,7 @@ impl PluginManager {
 	) -> anyhow::Result<()> {
 		// Call the on_load hook
 		let result = plugin
-			.call_hook(&OnLoad, &(), paths, o)
+			.call_hook(&OnLoad, &(), paths, self.mcvm_version, o)
 			.context("Failed to call on_load hook of plugin")?;
 		if let Some(result) = result {
 			result.result(o)?;
@@ -70,7 +77,7 @@ impl PluginManager {
 		let mut out = Vec::new();
 		for plugin in &self.plugins {
 			let result = plugin
-				.call_hook(&hook, arg, paths, o)
+				.call_hook(&hook, arg, paths, self.mcvm_version, o)
 				.context("Plugin hook failed")?;
 			out.extend(result);
 		}
