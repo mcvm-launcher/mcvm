@@ -19,3 +19,10 @@ jobs:
         run: cargo build --workspace --release --verbose
       - name: Run tests
         run: cargo test --workspace --verbose
+      - name: Make sure CLI is built
+        run: cargo build -p mcvm_cli --release --verbose
+      - uses: actions/upload-artifact@v4
+        name: Upload CLI artifact
+        with:
+          name: cli
+          path: target/release/mcvm
