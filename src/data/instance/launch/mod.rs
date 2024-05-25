@@ -82,7 +82,7 @@ impl Instance {
 		o.end_process();
 
 		o.display(
-			MessageContents::Success(translate!(o, Launch)),
+			MessageContents::StartProcess(translate!(o, PreparingLaunch)),
 			MessageLevel::Important,
 		);
 

@@ -6,6 +6,7 @@ use std::process::{Child, Command};
 use anyhow::Context;
 use mcvm_auth::mc::AccessToken;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
+use mcvm_shared::translate;
 
 use crate::instance::InstanceKind;
 use crate::util::versions::VersionName;
@@ -38,6 +39,11 @@ pub(crate) fn launch_game_process(
 		props: params.props,
 		launch_config: params.launch_config,
 	};
+
+	o.display(
+		MessageContents::Success(translate!(o, Launch)),
+		MessageLevel::Important,
+	);
 
 	// Get the command and output it
 	let mut cmd = get_process_launch_command(proc_params)

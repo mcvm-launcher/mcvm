@@ -54,6 +54,7 @@ define_translations! {
 	StartRunningCommands, "When starting to run package commands", "Running commands";
 	FinishRunningCommands, "When finishing running package commands", "Finished running commands";
 	StartUpdatingInstance, "When starting to update an instance", "Checking for updates";
+	PreparingLaunch, "When preparing to launch the game", "Preparing to launch";
 	Launch, "When launching the game", "Launching!";
 	CoreRepoName, "Name of the core repo", "Core";
 	CoreRepoDescription, "Description of the core repo", "The built-in set of packages";
