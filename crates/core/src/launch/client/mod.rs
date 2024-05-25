@@ -5,7 +5,9 @@ use anyhow::{anyhow, bail, Context};
 
 use std::collections::HashMap;
 
-use mcvm_shared::{output::MCVMOutput, skip_none, versions::VersionPattern};
+#[cfg(target_os = "linux")]
+use mcvm_shared::versions::VersionPattern;
+use mcvm_shared::{output::MCVMOutput, skip_none};
 
 pub use args::create_quick_play_args;
 
@@ -92,6 +94,12 @@ fn get_additional_environment_variables(
 	version: &str,
 	version_list: &[String],
 ) -> HashMap<String, String> {
+	#[cfg(not(target_os = "linux"))]
+	{
+		let _ = version;
+		let _ = version_list;
+	}
+
 	#[cfg(target_os = "linux")]
 	let mut env_vars = HashMap::new();
 	#[cfg(not(target_os = "linux"))]
