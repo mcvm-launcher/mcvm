@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 #[cfg(feature = "schema")]
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
@@ -42,5 +44,15 @@ impl UserConfig {
 	/// Creates a user from this user config
 	pub fn to_user(&self, id: &str) -> User {
 		User::new(self.variant.to_user_kind(), id.into())
+	}
+}
+
+impl Display for UserVariant {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		match self {
+			Self::Microsoft {} => write!(f, "microsoft"),
+			Self::Demo {} => write!(f, "demo"),
+			Self::Unknown(other) => write!(f, "{other}"),
+		}
 	}
 }

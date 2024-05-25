@@ -3,6 +3,8 @@ use crate::output::{icons_enabled, HYPHEN_POINT, STAR};
 use anyhow::{bail, Context};
 use itertools::Itertools;
 use mcvm::core::user::UserKind;
+use mcvm::data::config::modifications::{apply_modifications_and_write, ConfigModification};
+use mcvm::data::config::user::{UserConfig, UserVariant};
 
 use clap::Subcommand;
 use color_print::{cprint, cprintln};
@@ -37,6 +39,8 @@ pub enum UserSubcommand {
 		#[arg(short, long)]
 		user: Option<String>,
 	},
+	#[command(about = "Add new users to your config")]
+	Add {},
 }
 
 pub async fn run(subcommand: UserSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
@@ -46,6 +50,7 @@ pub async fn run(subcommand: UserSubcommand, data: &mut CmdData) -> anyhow::Resu
 		UserSubcommand::Passkey { user } => passkey(data, user).await,
 		UserSubcommand::Auth { user } => auth(data, user).await,
 		UserSubcommand::Logout { user } => logout(data, user).await,
+		UserSubcommand::Add {} => add(data).await,
 	}
 }
 
@@ -162,6 +167,30 @@ async fn logout(data: &mut CmdData, user: Option<String>) -> anyhow::Result<()> 
 
 	user.logout(&data.paths.core)
 		.context("Failed to logout user")?;
+
+	Ok(())
+}
+
+async fn add(data: &mut CmdData) -> anyhow::Result<()> {
+	data.ensure_config(true).await?;
+	let mut config = data.get_raw_config()?;
+
+	// Build the user
+	let id = inquire::Text::new("What is the ID for the user?").prompt()?;
+
+	let options = vec![UserVariant::Microsoft {}, UserVariant::Demo {}];
+	let kind = inquire::Select::new("What kind of user is this?", options).prompt()?;
+
+	let user = UserConfig { variant: kind };
+
+	apply_modifications_and_write(
+		&mut config,
+		vec![ConfigModification::AddUser(id, user)],
+		&data.paths,
+	)
+	.context("Failed to write modified config")?;
+
+	cprintln!("<g>User added.");
 
 	Ok(())
 }
