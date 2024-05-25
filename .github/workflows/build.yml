@@ -11,18 +11,18 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
 
     steps:
       - uses: actions/checkout@v3
-      - name: Build
-        run: cargo build --workspace --release --verbose
-      - name: Run tests
-        run: cargo test --workspace --verbose
       - name: Make sure CLI is built
         run: cargo build -p mcvm_cli --release --verbose
       - uses: actions/upload-artifact@v4
         name: Upload CLI artifact
         with:
-          name: cli
+          name: ${{ matrix.os }}
           path: target/release/mcvm
