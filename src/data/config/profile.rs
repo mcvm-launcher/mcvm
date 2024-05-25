@@ -2,6 +2,7 @@ use std::collections::HashMap;
 
 use mcvm_core::util::versions::MinecraftVersionDeser;
 use mcvm_shared::id::{InstanceID, ProfileID};
+use mcvm_shared::util::DefaultExt;
 use mcvm_shared::Side;
 #[cfg(feature = "schema")]
 use schemars::JsonSchema;
@@ -23,24 +24,30 @@ pub struct ProfileConfig {
 	pub version: MinecraftVersionDeser,
 	/// Configured modloader
 	#[serde(default)]
+	#[serde(skip_serializing_if = "DefaultExt::is_default")]
 	pub modloader: Modloader,
 	/// Configured client type
 	#[serde(default)]
+	#[serde(skip_serializing_if = "DefaultExt::is_default")]
 	pub client_type: ClientType,
 	/// Configured server type
 	#[serde(default)]
+	#[serde(skip_serializing_if = "DefaultExt::is_default")]
 	pub server_type: ServerType,
 	/// Configured proxy
 	#[serde(default)]
+	#[serde(skip_serializing_if = "DefaultExt::is_default")]
 	pub proxy: Proxy,
 	/// Configured list of instances in this profile
 	#[serde(default)]
+	#[serde(skip_serializing_if = "HashMap::is_empty")]
 	pub instances: HashMap<InstanceID, InstanceConfig>,
 	/// Packages on this profile
 	#[serde(default)]
 	pub packages: ProfilePackageConfiguration,
 	/// Default stability setting of packages on this profile
 	#[serde(default)]
+	#[serde(skip_serializing_if = "DefaultExt::is_default")]
 	pub package_stability: PackageStability,
 }
 
