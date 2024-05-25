@@ -12,6 +12,9 @@ cargo install mcvm_cli
 ```
 in your favorite terminal. This will install the CLI on your system.
 
+### Dev Builds
+To install from one of the prebuilt development binaries, visit [nightly.link](https://nightly.link/CarbonSmasher/mcvm/workflows/build/dev) and download and extract the artifacts for your operating system. Note that these builds may be unstable.
+
 ## 2. Basic Concepts
 MCVM has some basic features that need to be explained first.
 

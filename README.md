@@ -32,12 +32,8 @@ In addition, MCVM has a ton of flexibility and power, allowing you to build your
 - 🔒 **Robustness**: A lot of design work has gone into making MCVM error-resilient, secure, and future-proof.
 - ✅ **Compatability**: MCVM is designed to work on as many operating systems and architectures as possible.
 
-# 📥 Installation
-To install the command-line interface, first install [Rust](https://rustup.rs/). Then run
-```sh
-cargo install mcvm_cli
-```
-in your favorite terminal. 
+# 🚀 Getting Started
+To get started, view our [user guide](docs/guide/1_getting_started.md).
 
 # ➕ More Info
 
