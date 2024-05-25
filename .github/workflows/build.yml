@@ -24,4 +24,4 @@ jobs:
         name: Upload CLI artifact
         with:
           name: ${{ matrix.os }}
-          path: target/release/mcvm[.exe]
+          path: target/release/mcvm*
