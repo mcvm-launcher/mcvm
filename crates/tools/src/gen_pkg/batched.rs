@@ -241,8 +241,8 @@ pub async fn batched_gen(mut config: BatchedConfig, filter: Vec<String>) {
 					team,
 					pkg_config.relation_substitutions,
 					&pkg_config.force_extensions,
-					pkg_config.make_fabriclike,
-					pkg_config.make_forgelike,
+					pkg_config.make_fabriclike.unwrap_or_default(),
+					pkg_config.make_forgelike.unwrap_or_default(),
 				)
 				.await
 			}

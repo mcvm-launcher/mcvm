@@ -29,9 +29,9 @@ pub struct PackageGenerationConfig {
 	/// Dependencies to force into extensions
 	pub force_extensions: Vec<String>,
 	/// Whether to make fabric modloaders fabriclike instead
-	pub make_fabriclike: bool,
+	pub make_fabriclike: Option<bool>,
 	/// Whether to make forge modloaders forgelike instead
-	pub make_forgelike: bool,
+	pub make_forgelike: Option<bool>,
 }
 
 impl PackageGenerationConfig {
@@ -42,6 +42,9 @@ impl PackageGenerationConfig {
 		self.relation_substitutions
 			.extend(other.relation_substitutions);
 		self.force_extensions.extend(other.force_extensions);
+		self.make_fabriclike = other.make_fabriclike.or(self.make_fabriclike);
+		self.make_forgelike = other.make_forgelike.or(self.make_forgelike);
+
 		self
 	}
 }
@@ -58,8 +61,8 @@ pub async fn gen(source: PackageSource, config: Option<PackageGenerationConfig>,
 				id,
 				config.relation_substitutions,
 				&config.force_extensions,
-				config.make_fabriclike,
-				config.make_forgelike,
+				config.make_fabriclike.unwrap_or_default(),
+				config.make_forgelike.unwrap_or_default(),
 			)
 			.await
 		}
