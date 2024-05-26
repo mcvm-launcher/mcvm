@@ -95,6 +95,11 @@ pub fn is_addon_version_valid(version: &str) -> bool {
 		return false;
 	}
 
+	// Can be exploited to create escapes in paths
+	if version.contains("..") {
+		return false;
+	}
+
 	for c in version.chars() {
 		if !c.is_ascii_alphanumeric() && c != '-' && c != '+' && c != '.' {
 			return false;
