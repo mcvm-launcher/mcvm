@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build CLI
-        run: cargo build -p mcvm_cli --release --verbose
+        run: cargo build -p mcvm_cli --release --verbose --locked
       - uses: actions/upload-artifact@v4
         name: Upload CLI artifact
         with:
