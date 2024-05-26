@@ -45,6 +45,9 @@ pub struct RepoDeser {
 	/// The Path to the repository, which may not exist
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub path: Option<String>,
+	/// Whether to disable the repo and not add it to the list
+	#[serde(default)]
+	pub disable: bool,
 }
 
 /// Deserialization struct for all configured package repositories
@@ -81,14 +84,18 @@ impl ConfigPreferences {
 	pub fn read(prefs: &PrefDeser) -> anyhow::Result<(Self, Vec<PkgRepo>)> {
 		let mut repositories = Vec::new();
 		for repo in prefs.repositories.preferred.iter() {
-			add_repo(&mut repositories, repo)?;
+			if !repo.disable {
+				add_repo(&mut repositories, repo)?;
+			}
 		}
 		repositories.extend(PkgRepo::default_repos(
 			prefs.repositories.enable_core,
 			prefs.repositories.enable_std,
 		));
 		for repo in prefs.repositories.backup.iter() {
-			add_repo(&mut repositories, repo)?;
+			if !repo.disable {
+				add_repo(&mut repositories, repo)?;
+			}
 		}
 
 		// Check for duplicate IDs
