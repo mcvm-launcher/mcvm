@@ -40,8 +40,10 @@ pub struct RepoDeser {
 	/// The ID of the repository
 	pub id: String,
 	/// The URL to the repository, which may not exist
+	#[serde(skip_serializing_if = "Option::is_none")]
 	pub url: Option<String>,
 	/// The Path to the repository, which may not exist
+	#[serde(skip_serializing_if = "Option::is_none")]
 	pub path: Option<String>,
 }
 
@@ -51,8 +53,10 @@ pub struct RepoDeser {
 #[serde(default)]
 pub struct RepositoriesDeser {
 	/// The preferred repositories over the default ones
+	#[serde(skip_serializing_if = "Vec::is_empty")]
 	pub preferred: Vec<RepoDeser>,
 	/// The backup repositories included after the default ones
+	#[serde(skip_serializing_if = "Vec::is_empty")]
 	pub backup: Vec<RepoDeser>,
 	/// Whether to enable the core repository
 	pub enable_core: bool,
