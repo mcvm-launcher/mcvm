@@ -28,6 +28,10 @@ pub struct PackageGenerationConfig {
 	pub relation_substitutions: HashMap<String, String>,
 	/// Dependencies to force into extensions
 	pub force_extensions: Vec<String>,
+	/// Whether to make fabric modloaders fabriclike instead
+	pub make_fabriclike: bool,
+	/// Whether to make forge modloaders forgelike instead
+	pub make_forgelike: bool,
 }
 
 impl PackageGenerationConfig {
@@ -50,7 +54,14 @@ pub async fn gen(source: PackageSource, config: Option<PackageGenerationConfig>,
 			smithed::gen(id, config.relation_substitutions, &config.force_extensions).await
 		}
 		PackageSource::Modrinth => {
-			modrinth::gen(id, config.relation_substitutions, &config.force_extensions).await
+			modrinth::gen(
+				id,
+				config.relation_substitutions,
+				&config.force_extensions,
+				config.make_fabriclike,
+				config.make_forgelike,
+			)
+			.await
 		}
 	};
 

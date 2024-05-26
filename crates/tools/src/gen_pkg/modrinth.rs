@@ -23,6 +23,8 @@ pub async fn gen(
 	id: &str,
 	relation_substitutions: HashMap<String, String>,
 	force_extensions: &[String],
+	make_fabriclike: bool,
+	make_forgelike: bool,
 ) -> DeclarativePackage {
 	let client = reqwest::Client::new();
 	let project = modrinth::get_project(id, &client)
@@ -43,6 +45,8 @@ pub async fn gen(
 		&members,
 		relation_substitutions,
 		force_extensions,
+		make_fabriclike,
+		make_forgelike,
 	)
 	.await
 }
@@ -53,6 +57,8 @@ pub async fn gen_raw(
 	members: &[Member],
 	relation_substitutions: HashMap<String, String>,
 	force_extensions: &[String],
+	make_fabriclike: bool,
+	make_forgelike: bool,
 ) -> DeclarativePackage {
 	// Get supported sides
 	let supported_sides = get_supported_sides(&project);
@@ -156,9 +162,17 @@ pub async fn gen_raw(
 		for loader in &version.loaders {
 			match loader {
 				Loader::Known(loader) => match loader {
-					KnownLoader::Fabric => modloaders.push(ModloaderMatch::Fabric),
+					KnownLoader::Fabric => modloaders.push(if make_fabriclike {
+						ModloaderMatch::FabricLike
+					} else {
+						ModloaderMatch::Fabric
+					}),
 					KnownLoader::Quilt => modloaders.push(ModloaderMatch::Quilt),
-					KnownLoader::Forge => modloaders.push(ModloaderMatch::Forge),
+					KnownLoader::Forge => modloaders.push(if make_forgelike {
+						ModloaderMatch::ForgeLike
+					} else {
+						ModloaderMatch::Forge
+					}),
 					KnownLoader::NeoForged => modloaders.push(ModloaderMatch::NeoForged),
 					KnownLoader::Rift => modloaders.push(ModloaderMatch::Rift),
 					KnownLoader::Liteloader => modloaders.push(ModloaderMatch::LiteLoader),
