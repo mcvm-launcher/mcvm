@@ -72,7 +72,7 @@ impl PkgRepo {
 	pub fn std() -> Self {
 		Self::new(
 			"std",
-			PkgRepoLocation::Remote("https://mcvmlauncher.github.io/mcvm/std".into()),
+			PkgRepoLocation::Remote("https://mcvm-launcher.github.io/packages/std".into()),
 		)
 	}
 
