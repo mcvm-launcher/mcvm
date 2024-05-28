@@ -42,6 +42,11 @@ pub enum InstanceSubcommand {
 		/// The instance to launch, as an instance reference (profile:instance)
 		instance: Option<String>,
 	},
+	#[command(about = "Print the directory of an instance")]
+	Dir {
+		/// The instance to print the directory of
+		instance: Option<String>,
+	},
 }
 
 pub async fn run(command: InstanceSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
@@ -52,6 +57,7 @@ pub async fn run(command: InstanceSubcommand, data: &mut CmdData) -> anyhow::Res
 			offline,
 			instance,
 		} => launch(instance, user, offline, data).await,
+		InstanceSubcommand::Dir { instance } => dir(data, instance).await,
 	}
 }
 
@@ -178,13 +184,29 @@ pub async fn launch(
 	Ok(())
 }
 
-/// Pick which instance to launch
-fn pick_instance(instance: Option<String>, config: &Config) -> anyhow::Result<InstanceRef> {
+async fn dir(data: &mut CmdData, instance: Option<String>) -> anyhow::Result<()> {
+	data.ensure_config(true).await?;
+
+	let instance = pick_instance(instance, data.config.get()).context("Failed to pick instance")?;
+	let instance = data
+		.config
+		.get_mut()
+		.get_instance_mut(&instance)
+		.context("Instance does not exist")?;
+	instance.ensure_dirs(&data.paths)?;
+
+	println!("{}", &instance.get_dirs().get().game_dir.to_string_lossy());
+
+	Ok(())
+}
+
+/// Pick which instance to use
+pub fn pick_instance(instance: Option<String>, config: &Config) -> anyhow::Result<InstanceRef> {
 	if let Some(instance) = instance {
 		InstanceRef::parse(instance).context("Failed to parse instance reference")
 	} else {
 		let options = config.get_all_instances().sorted().collect();
-		let selection = Select::new("Choose an instance to launch", options)
+		let selection = Select::new("Choose an instance", options)
 			.prompt()
 			.context("Prompt failed")?;
 
