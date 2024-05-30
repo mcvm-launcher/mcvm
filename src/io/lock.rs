@@ -38,7 +38,11 @@ struct LockfileProfile {
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 #[serde(default)]
-struct LockfileInstance {}
+struct LockfileInstance {
+	version: String,
+	#[serde(skip_serializing_if = "Option::is_none")]
+	paper_build: Option<u16>,
+}
 
 /// Package stored in the lockfile
 #[derive(Serialize, Deserialize, Debug)]
@@ -302,6 +306,47 @@ impl Lockfile {
 				}
 			} else {
 				profile.paper_build = Some(build_num);
+				false
+			}
+		} else {
+			false
+		}
+	}
+
+	/// Updates an instance in the lockfile. Returns true if the version has changed.
+	pub fn update_instance_version(&mut self, instance: &str, version: &str) -> bool {
+		if let Some(instance) = self.contents.instances.get_mut(instance) {
+			if instance.version == version {
+				false
+			} else {
+				instance.version = version.to_owned();
+				true
+			}
+		} else {
+			self.contents.instances.insert(
+				instance.to_owned(),
+				LockfileInstance {
+					version: version.to_owned(),
+					paper_build: None,
+				},
+			);
+
+			false
+		}
+	}
+
+	/// Updates an instance with a new Paper build. Returns true if the version has changed.
+	pub fn update_instance_paper_build(&mut self, instance: &str, build_num: u16) -> bool {
+		if let Some(instance) = self.contents.instances.get_mut(instance) {
+			if let Some(paper_build) = instance.paper_build.as_mut() {
+				if *paper_build == build_num {
+					false
+				} else {
+					*paper_build = build_num;
+					true
+				}
+			} else {
+				instance.paper_build = Some(build_num);
 				false
 			}
 		} else {
