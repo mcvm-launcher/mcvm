@@ -81,11 +81,6 @@ impl User {
 		matches!(self.kind, UserKind::Demo)
 	}
 
-	/// Checks if this user is an unverified user
-	pub fn is_unverified(&self) -> bool {
-		matches!(self.kind, UserKind::Demo)
-	}
-
 	/// Gets the kind of this user
 	pub fn get_kind(&self) -> &UserKind {
 		&self.kind
