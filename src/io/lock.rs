@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::fs;
 use std::path::PathBuf;
 
@@ -25,6 +25,8 @@ struct LockfileContents {
 	packages: HashMap<String, HashMap<String, LockfilePackage>>,
 	profiles: HashMap<String, LockfileProfile>,
 	instances: HashMap<String, LockfileInstance>,
+	/// Instances that have done their first update
+	created_instances: HashSet<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -36,11 +38,7 @@ struct LockfileProfile {
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 #[serde(default)]
-struct LockfileInstance {
-	/// Whether the instance has been launched before.
-	/// Used to update the instance only before the first launch
-	has_done_first_update: bool,
-}
+struct LockfileInstance {}
 
 /// Package stored in the lockfile
 #[derive(Serialize, Deserialize, Debug)]
@@ -313,21 +311,11 @@ impl Lockfile {
 
 	/// Check whether an instance has done its first update successfully
 	pub fn has_instance_done_first_update(&mut self, instance: &str) -> bool {
-		let instance = self
-			.contents
-			.instances
-			.entry(instance.to_string())
-			.or_default();
-		instance.has_done_first_update
+		self.contents.created_instances.contains(instance)
 	}
 
 	/// Update whether an instance has done its first update
 	pub fn update_instance_has_done_first_update(&mut self, instance: &str) {
-		let instance = self
-			.contents
-			.instances
-			.entry(instance.to_string())
-			.or_default();
-		instance.has_done_first_update = true;
+		self.contents.created_instances.insert(instance.to_string());
 	}
 }
