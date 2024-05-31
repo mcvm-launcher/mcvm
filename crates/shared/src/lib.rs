@@ -202,66 +202,11 @@ impl Display for Side {
 
 /// Types and structs for IDs of and references to things
 pub mod id {
-	use std::{fmt::Display, sync::Arc};
+	use std::sync::Arc;
 
 	/// The ID for an instance
 	pub type InstanceID = Arc<str>;
 
 	/// The ID for a profile
 	pub type ProfileID = Arc<str>;
-
-	/// A scoped reference to an instance with a profile ID
-	#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
-	pub struct InstanceRef {
-		/// The ID of the profile
-		pub profile: Option<ProfileID>,
-		/// The ID of the instance
-		pub instance: InstanceID,
-	}
-
-	impl InstanceRef {
-		/// Create a new InstanceRef
-		pub fn new(profile: ProfileID, instance: InstanceID) -> Self {
-			Self {
-				profile: Some(profile),
-				instance,
-			}
-		}
-
-		/// Create a new InstanceRef with an instance ID only
-		pub fn new_instance(instance: InstanceID) -> Self {
-			Self {
-				profile: None,
-				instance,
-			}
-		}
-
-		/// Parse an InstanceRef from a string
-		pub fn parse(string: String) -> Option<Self> {
-			let mut split = string.split(':');
-			let profile = split.nth(0)?;
-			let instance = split.nth(0)?;
-			Some(Self::new(profile.into(), instance.into()))
-		}
-
-		/// Get the profile ID of this ref, depending on whether it has a profile ID.
-		/// If it has no profile ID, returns the instance ID instead
-		pub fn get_profile_id(&self) -> ProfileID {
-			if let Some(profile) = &self.profile {
-				profile.clone()
-			} else {
-				self.instance.clone()
-			}
-		}
-	}
-
-	impl Display for InstanceRef {
-		fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-			if let Some(profile) = &self.profile {
-				write!(f, "{}:{}", profile, self.instance)
-			} else {
-				write!(f, "{}", self.instance)
-			}
-		}
-	}
 }

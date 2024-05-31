@@ -25,7 +25,7 @@ use anyhow::{bail, Context};
 use mcvm_core::auth_crate::mc::ClientId;
 use mcvm_core::io::{json_from_file, json_to_file_pretty};
 use mcvm_core::user::UserManager;
-use mcvm_shared::id::{InstanceID, InstanceRef, ProfileID};
+use mcvm_shared::id::{InstanceID, ProfileID};
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::translate;
 use mcvm_shared::util::is_valid_identifier;
@@ -58,18 +58,6 @@ pub struct Config {
 	pub plugins: PluginManager,
 	/// Global user preferences
 	pub prefs: ConfigPreferences,
-}
-
-impl Config {
-	/// Get an instance from an instance ref
-	pub fn get_instance(&self, instance: &InstanceRef) -> Option<&Instance> {
-		self.instances.get(&instance.instance)
-	}
-
-	/// Get an instance mutably from an instance ref
-	pub fn get_instance_mut(&mut self, instance: &InstanceRef) -> Option<&mut Instance> {
-		self.instances.get_mut(&instance.instance)
-	}
 }
 
 /// Deserialization struct for user configuration

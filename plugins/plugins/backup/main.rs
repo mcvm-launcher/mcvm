@@ -10,7 +10,6 @@ use color_print::cprintln;
 use mcvm_plugin::api::{CustomPlugin, HookContext};
 use mcvm_plugin::api::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_plugin::hooks::{self, Hook};
-use mcvm_shared::id::InstanceRef;
 
 use crate::backup::BackupSource;
 
@@ -133,11 +132,9 @@ fn list(
 	instance: &str,
 	group: Option<&str>,
 ) -> anyhow::Result<()> {
-	let inst_ref =
-		InstanceRef::parse(instance.into()).context("Failed to parse instance reference")?;
 	let group = group.unwrap_or(DEFAULT_GROUP);
 
-	let index = get_index(ctx, &inst_ref)?;
+	let index = get_index(ctx, instance)?;
 	let group = index
 		.contents
 		.groups
@@ -161,17 +158,11 @@ fn create(
 	instance: &str,
 	group: Option<&str>,
 ) -> anyhow::Result<()> {
-	let inst_ref =
-		InstanceRef::parse(instance.into()).context("Failed to parse instance reference")?;
 	let group = group.unwrap_or(DEFAULT_GROUP);
 
-	let mut index = get_index(ctx, &inst_ref)?;
+	let mut index = get_index(ctx, instance)?;
 
-	let inst_dir = ctx
-		.get_data_dir()?
-		.join("instances")
-		.join(inst_ref.get_profile_id().to_string())
-		.join(inst_ref.instance.to_string());
+	let inst_dir = ctx.get_data_dir()?.join("instances").join(instance);
 
 	index.create_backup(BackupSource::User, Some(group), &inst_dir)?;
 
@@ -188,11 +179,9 @@ fn remove(
 	group: Option<&str>,
 	backup: &str,
 ) -> anyhow::Result<()> {
-	let inst_ref =
-		InstanceRef::parse(instance.into()).context("Failed to parse instance reference")?;
 	let group = group.unwrap_or(DEFAULT_GROUP);
 
-	let mut index = get_index(ctx, &inst_ref)?;
+	let mut index = get_index(ctx, instance)?;
 
 	index.remove_backup(group, backup)?;
 	index.finish()?;
@@ -208,17 +197,11 @@ fn restore(
 	group: Option<&str>,
 	backup: &str,
 ) -> anyhow::Result<()> {
-	let inst_ref =
-		InstanceRef::parse(instance.into()).context("Failed to parse instance reference")?;
 	let group = group.unwrap_or(DEFAULT_GROUP);
 
-	let index = get_index(ctx, &inst_ref)?;
+	let index = get_index(ctx, instance)?;
 
-	let inst_dir = ctx
-		.get_data_dir()?
-		.join("instances")
-		.join(inst_ref.get_profile_id().to_string())
-		.join(inst_ref.instance.to_string());
+	let inst_dir = ctx.get_data_dir()?.join("instances").join(instance);
 
 	index.restore_backup(group, backup, &inst_dir)?;
 	index.finish()?;
@@ -234,27 +217,25 @@ fn info(
 	group: Option<&str>,
 	backup_id: &str,
 ) -> anyhow::Result<()> {
-	let inst_ref =
-		InstanceRef::parse(instance.into()).context("Failed to parse instance reference")?;
 	let group = group.unwrap_or(DEFAULT_GROUP);
 
-	let index = get_index(ctx, &inst_ref)?;
+	let index = get_index(ctx, instance)?;
 
 	let backup = index.get_backup(group, backup_id)?;
 
 	cprintln!(
 		"<s>Backup <b>{}</b> in instance <g>{}</g>:",
 		backup_id,
-		inst_ref
+		instance
 	);
 	cprintln!("<k!> - </>Date created: <c>{}", backup.date);
 
 	Ok(())
 }
 
-fn get_index<H: Hook>(ctx: &HookContext<'_, H>, inst_ref: &InstanceRef) -> anyhow::Result<Index> {
-	let dir = get_backup_directory(&get_backups_dir(ctx)?, inst_ref);
-	Index::open(&dir, inst_ref.clone(), &get_backup_config(inst_ref, ctx)?)
+fn get_index<H: Hook>(ctx: &HookContext<'_, H>, inst_id: &str) -> anyhow::Result<Index> {
+	let dir = get_backup_directory(&get_backups_dir(ctx)?, inst_id);
+	Index::open(&dir, inst_id, &get_backup_config(inst_id, ctx)?)
 }
 
 fn get_backups_dir<H: Hook>(ctx: &HookContext<'_, H>) -> anyhow::Result<PathBuf> {
@@ -263,10 +244,7 @@ fn get_backups_dir<H: Hook>(ctx: &HookContext<'_, H>) -> anyhow::Result<PathBuf>
 	Ok(dir)
 }
 
-fn get_backup_config<H: Hook>(
-	instance: &InstanceRef,
-	ctx: &HookContext<'_, H>,
-) -> anyhow::Result<Config> {
+fn get_backup_config<H: Hook>(instance: &str, ctx: &HookContext<'_, H>) -> anyhow::Result<Config> {
 	let config = ctx.get_custom_config().unwrap_or("{}");
 	let mut config: HashMap<String, Config> =
 		serde_json::from_str(config).context("Failed to deserialize custom config")?;
@@ -280,9 +258,7 @@ fn check_auto_hook<H: Hook>(
 	instance: &str,
 	inst_dir: &Path,
 ) -> anyhow::Result<()> {
-	let inst_ref =
-		InstanceRef::parse(instance.to_string()).context("Failed to parse instance ref")?;
-	let mut index = get_index(&ctx, &inst_ref)?;
+	let mut index = get_index(&ctx, instance)?;
 	let groups = index.config.groups.clone();
 
 	let creating_backups = groups

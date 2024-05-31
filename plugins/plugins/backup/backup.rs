@@ -5,7 +5,6 @@ use std::path::{Path, PathBuf};
 
 use anyhow::{anyhow, bail, Context};
 use mcvm_core::io::json_to_file;
-use mcvm_shared::id::InstanceRef;
 use mcvm_shared::util::utc_timestamp;
 use rand::Rng;
 #[cfg(feature = "schema")]
@@ -94,8 +93,8 @@ pub struct Index {
 	pub dir: PathBuf,
 	/// The config for the backups
 	pub config: Config,
-	/// The instance ref for this index
-	pub inst_ref: InstanceRef,
+	/// The instance ID for this index
+	pub inst_id: String,
 }
 
 /// Contents for the backup index
@@ -113,11 +112,7 @@ impl Index {
 	}
 
 	/// Open the index
-	pub fn open(
-		backup_directory: &Path,
-		inst_ref: InstanceRef,
-		config: &Config,
-	) -> anyhow::Result<Self> {
+	pub fn open(backup_directory: &Path, inst_id: &str, config: &Config) -> anyhow::Result<Self> {
 		fs::create_dir_all(backup_directory)?;
 		let path = Self::get_path(backup_directory);
 		let contents = if path.exists() {
@@ -129,7 +124,7 @@ impl Index {
 		let index = Self {
 			contents,
 			dir: backup_directory.to_owned(),
-			inst_ref,
+			inst_id: inst_id.to_string(),
 			config: config.clone(),
 		};
 
@@ -340,10 +335,8 @@ pub enum StorageType {
 }
 
 /// Get the backup directory for an instance
-pub fn get_backup_directory(base_dir: &Path, inst_ref: &InstanceRef) -> PathBuf {
-	base_dir
-		.join(inst_ref.get_profile_id().to_string())
-		.join(inst_ref.instance.to_string())
+pub fn get_backup_directory(base_dir: &Path, inst_id: &str) -> PathBuf {
+	base_dir.join(inst_id.to_string())
 }
 
 /// Generates a random backup ID
