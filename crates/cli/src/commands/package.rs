@@ -99,27 +99,23 @@ async fn list(data: &mut CmdData, raw: bool, instance: Option<String>) -> anyhow
 
 	if let Some(instance_id) = instance {
 		let instance_id = InstanceID::from(instance_id);
-		if let Some(instance) = config.instances.get(&instance_id) {
+		let instance = config
+			.instances
+			.get(&instance_id)
+			.with_context(|| format!("Unknown instance '{instance_id}'"))?;
+		if !raw {
+			cprintln!("<s>Packages in instance <b>{}</b>:", instance_id);
+		}
+		for pkg in instance
+			.get_configured_packages()
+			.iter()
+			.sorted_by_key(|x| &x.id)
+		{
 			if raw {
-				for pkg in instance
-					.get_configured_packages()
-					.iter()
-					.sorted_by_key(|x| &x.id)
-				{
-					println!("{}", pkg.id);
-				}
+				println!("{}", pkg.id);
 			} else {
-				cprintln!("<s>Packages in instance <b>{}</b>:", instance_id);
-				for pkg in instance
-					.get_configured_packages()
-					.iter()
-					.sorted_by_key(|x| &x.id)
-				{
-					cprintln!("{}<b!>{}</>", HYPHEN_POINT, pkg.id);
-				}
+				cprintln!("{}<b!>{}</>", HYPHEN_POINT, pkg.id);
 			}
-		} else {
-			bail!("Unknown instance '{instance_id}'");
 		}
 	} else {
 		let mut found_pkgs: HashMap<PackageID, Vec<ProfileID>> = HashMap::new();
@@ -131,13 +127,13 @@ async fn list(data: &mut CmdData, raw: bool, instance: Option<String>) -> anyhow
 					.push(id.clone());
 			}
 		}
-		if raw {
-			for (pkg, ..) in found_pkgs.iter().sorted_by_key(|x| x.0) {
-				println!("{pkg}");
-			}
-		} else {
+		if !raw {
 			cprintln!("<s>Packages:");
-			for (pkg, profiles) in found_pkgs.iter().sorted_by_key(|x| x.0) {
+		}
+		for (pkg, profiles) in found_pkgs.iter().sorted_by_key(|x| x.0) {
+			if raw {
+				println!("{pkg}");
+			} else {
 				cprintln!("<b!>{}</>", pkg);
 				for profile in profiles.iter().sorted() {
 					cprintln!("{}<k!>{}", HYPHEN_POINT, profile);
