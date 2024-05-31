@@ -46,6 +46,7 @@ glob = { workspace = true }
 itertools = { workspace = true }
 mcvm = { workspace = true }
 mcvm_core = { workspace = true }
+mcvm_net = { workspace = true }
 mcvm_plugin = { workspace = true, features = ["api"] }
 mcvm_shared = { workspace = true }
 mcvm_options = { workspace = true }

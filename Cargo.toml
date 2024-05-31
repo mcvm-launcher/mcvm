@@ -39,6 +39,7 @@ members = [
 	"crates/cli",
 	"crates/core",
 	"crates/mods",
+	"crates/net",
 	"crates/options",
 	"crates/parse",
 	"crates/pkg",
@@ -85,6 +86,7 @@ mcvm = { path = ".", version = "0.22.0" }
 mcvm_auth = { path = "crates/auth", version = "0.4.0" }
 mcvm_core = { path = "crates/core", version = "0.6.0" }
 mcvm_mods = { path = "crates/mods", version = "0.6.0" }
+mcvm_net = { path = "crates/net", version = "0.1.0" }
 mcvm_options = { path = "crates/options", version = "0.5.0" }
 mcvm_parse = { path = "crates/parse", version = "0.14.0" }
 mcvm_pkg = { path = "crates/pkg", version = "0.13.0" }

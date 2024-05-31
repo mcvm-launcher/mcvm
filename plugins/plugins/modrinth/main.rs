@@ -53,7 +53,7 @@ enum Subcommand {
 async fn get_modrinth_project(project: String) -> anyhow::Result<()> {
 	let client = Client::new();
 
-	let project = mcvm::net::modrinth::get_project_raw(&project, &client)
+	let project = mcvm_net::modrinth::get_project_raw(&project, &client)
 		.await
 		.context("Failed to get project")?;
 	let project_pretty = mcvm::core::util::json::format_json(&project);
@@ -72,7 +72,7 @@ async fn get_modrinth_project(project: String) -> anyhow::Result<()> {
 async fn get_modrinth_version(version: String) -> anyhow::Result<()> {
 	let client = Client::new();
 
-	let version = mcvm::net::modrinth::get_version_raw(&version, &client)
+	let version = mcvm_net::modrinth::get_version_raw(&version, &client)
 		.await
 		.context("Failed to get project version")?;
 	let version_pretty = mcvm::core::util::json::format_json(&version);

@@ -24,8 +24,6 @@ pub use mcvm_shared as shared;
 pub mod data;
 /// File and data format input / output
 pub mod io;
-/// API wrappers and networking utilities
-pub mod net;
 /// Dealing with packages
 pub mod pkg;
 /// Common utilities that can't live anywhere else

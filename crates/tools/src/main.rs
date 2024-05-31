@@ -1,5 +1,4 @@
 mod gen_pkg;
-mod smithed_api;
 
 use std::{fs::File, io::BufWriter, path::PathBuf};
 

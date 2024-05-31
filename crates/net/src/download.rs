@@ -1,8 +1,6 @@
-use std::{
-	fs::File,
-	io::{BufWriter, Cursor, Write},
-	path::Path,
-};
+use std::fs::File;
+use std::io::{BufWriter, Cursor, Write};
+use std::path::Path;
 
 use anyhow::{ensure, Context};
 use mcvm_shared::output::MessageContents;

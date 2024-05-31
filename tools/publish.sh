@@ -13,6 +13,11 @@ cd auth
 cargo publish
 cd ..
 
+# mcvm_net
+cd net
+cargo publish
+cd ..
+
 # mcvm_core
 cd core
 cargo publish

@@ -11,14 +11,14 @@ use mcvm::shared::util::DeserListOrSingle;
 use mcvm::shared::versions::VersionPattern;
 use reqwest::Client;
 
-use crate::smithed_api::{self, Pack};
+use mcvm_net::smithed::Pack;
 
 pub async fn gen(
 	id: &str,
 	relation_substitutions: HashMap<String, String>,
 	force_extensions: &[String],
 ) -> DeclarativePackage {
-	let pack = smithed_api::get_pack(id, &Client::new())
+	let pack = mcvm_net::smithed::get_pack(id, &Client::new())
 		.await
 		.expect("Failed to get pack");
 

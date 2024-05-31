@@ -15,6 +15,7 @@ anyhow = { workspace = true }
 clap = { workspace = true }
 iso8601-timestamp = { workspace = true }
 mcvm = { workspace = true, features = ["schema"] }
+mcvm_net = { workspace = true }
 mcvm_options = { workspace = true, features = ["schema"] }
 reqwest = { workspace = true }
 schemars = { workspace = true }

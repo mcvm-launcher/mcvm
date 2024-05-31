@@ -5,7 +5,7 @@ use std::sync::Arc;
 use std::{cmp::Reverse, collections::HashMap};
 
 use iso8601_timestamp::Timestamp;
-use mcvm::net::modrinth::Version;
+use mcvm_net::modrinth::Version;
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 use serde_json::{ser::PrettyFormatter, Serializer};
@@ -13,7 +13,7 @@ use tokio::sync::Mutex;
 use tokio::task::JoinSet;
 
 use crate::gen_pkg::json_merge;
-use crate::smithed_api;
+use mcvm_net::smithed as smithed_api;
 
 use super::{PackageGenerationConfig, PackageSource};
 
@@ -94,7 +94,7 @@ pub async fn batched_gen(mut config: BatchedConfig, filter: Vec<String>) {
 		})
 		.map(|x| x.id.clone())
 		.collect();
-	let modrinth_projects = mcvm::net::modrinth::get_multiple_projects(&modrinth_ids, &client)
+	let modrinth_projects = mcvm_net::modrinth::get_multiple_projects(&modrinth_ids, &client)
 		.await
 		.expect("Failed to get Modrinth projects");
 
@@ -121,7 +121,7 @@ pub async fn batched_gen(mut config: BatchedConfig, filter: Vec<String>) {
 		let client = client.clone();
 		let modrinth_versions = modrinth_versions.clone();
 		let task = async move {
-			let versions = mcvm::net::modrinth::get_multiple_versions(&chunk, &client)
+			let versions = mcvm_net::modrinth::get_multiple_versions(&chunk, &client)
 				.await
 				.expect("Failed to get Modrinth versions");
 			let mut lock = modrinth_versions.lock().await;
@@ -158,7 +158,7 @@ pub async fn batched_gen(mut config: BatchedConfig, filter: Vec<String>) {
 		let client = client.clone();
 		let modrinth_teams = modrinth_teams.clone();
 		let task = async move {
-			let teams = mcvm::net::modrinth::get_multiple_teams(&modrinth_team_ids, &client)
+			let teams = mcvm_net::modrinth::get_multiple_teams(&modrinth_team_ids, &client)
 				.await
 				.expect("Failed to get Modrinth teams");
 			let mut lock = modrinth_teams.lock().await;

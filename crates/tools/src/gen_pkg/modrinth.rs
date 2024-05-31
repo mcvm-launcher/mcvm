@@ -13,11 +13,11 @@ use mcvm::shared::pkg::PackageStability;
 use mcvm::shared::util::DeserListOrSingle;
 use mcvm::shared::versions::VersionPattern;
 
-use mcvm::net::modrinth::{
+use mcvm::shared::Side;
+use mcvm_net::modrinth::{
 	self, DependencyType, KnownLoader, Loader, Member, Project, ProjectType, ReleaseChannel,
 	SideSupport, Version,
 };
-use mcvm::shared::Side;
 
 pub async fn gen(
 	id: &str,

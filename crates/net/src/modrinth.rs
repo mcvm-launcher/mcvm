@@ -1,5 +1,5 @@
+use crate::download;
 use anyhow::{anyhow, Context};
-use mcvm_core::net::download;
 use mcvm_shared::modifications::{Modloader, ServerType};
 use reqwest::Client;
 use serde::{Deserialize, Serialize};

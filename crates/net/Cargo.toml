@@ -1,0 +1,26 @@
+[package]
+name = "mcvm_net"
+version = "0.1.0"
+description = "Various network APIs for MCVM"
+keywords = ["minecraft", "launcher", "game", "mc", "api"]
+categories.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[lints]
+workspace = true
+
+[features]
+
+[dependencies]
+anyhow = { workspace = true }
+bytes = { workspace = true }
+mcvm_shared = { workspace = true }
+nutype = { workspace = true }
+reqwest = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+simd-json = { workspace = true }

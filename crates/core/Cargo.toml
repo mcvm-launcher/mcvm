@@ -23,6 +23,7 @@ cfg-match = { workspace = true }
 directories = { workspace = true }
 libflate = { workspace = true }
 mcvm_auth = { workspace = true }
+mcvm_net = { workspace = true }
 mcvm_shared = { workspace = true }
 reqwest = { workspace = true }
 schemars = { workspace = true, optional = true }

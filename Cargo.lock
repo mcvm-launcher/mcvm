@@ -1501,6 +1501,7 @@ dependencies = [
  "directories",
  "libflate",
  "mcvm_auth",
+ "mcvm_net",
  "mcvm_shared",
  "reqwest 0.12.4",
  "schemars",
@@ -1523,6 +1524,20 @@ dependencies = [
  "serde",
  "serde_json",
  "tokio",
+]
+
+[[package]]
+name = "mcvm_net"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "bytes",
+ "mcvm_shared",
+ "nutype",
+ "reqwest 0.12.4",
+ "serde",
+ "serde_json",
+ "simd-json",
 ]
 
 [[package]]
@@ -1585,6 +1600,7 @@ dependencies = [
  "itertools",
  "mcvm",
  "mcvm_core",
+ "mcvm_net",
  "mcvm_options",
  "mcvm_plugin",
  "mcvm_shared",
@@ -1615,6 +1631,7 @@ dependencies = [
  "clap",
  "iso8601-timestamp",
  "mcvm",
+ "mcvm_net",
  "mcvm_options",
  "reqwest 0.12.4",
  "schemars",
