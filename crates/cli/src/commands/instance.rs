@@ -196,7 +196,7 @@ pub async fn launch(
 	let instance = config
 		.instances
 		.get_mut(&instance_id)
-		.context("Instance in profile does not exist")?;
+		.context("Instance does not exist")?;
 
 	// Perform first update if needed
 	let mut lock = Lockfile::open(&data.paths).context("Failed to open lockfile")?;
