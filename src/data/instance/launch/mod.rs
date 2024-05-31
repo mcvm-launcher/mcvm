@@ -33,7 +33,7 @@ impl Instance {
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<InstanceHandle> {
 		o.display(
-			MessageContents::StartProcess(translate!(o, StartUpdatingInstance)),
+			MessageContents::StartProcess(translate!(o, StartUpdatingInstance, "inst" = &self.id)),
 			MessageLevel::Important,
 		);
 
