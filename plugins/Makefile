@@ -59,3 +59,10 @@ install.modrinth: build.modrinth
 
 build.modrinth: plugins/modrinth
 	@cargo build -r --bin mcvm_plugin_modrinth
+
+install.gen_pkg: build.gen_pkg
+	@cargo install --path . --bin mcvm_plugin_gen_pkg --offline
+	@cp plugins/gen_pkg/plugin.json ~/.local/share/mcvm/plugins/gen_pkg.json
+
+build.gen_pkg: plugins/gen_pkg
+	@cargo build -r --bin mcvm_plugin_gen_pkg

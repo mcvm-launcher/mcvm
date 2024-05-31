@@ -9,7 +9,7 @@ use mcvm::pkg_crate::properties::PackageProperties;
 use mcvm::shared::addon::AddonKind;
 use mcvm::shared::util::DeserListOrSingle;
 use mcvm::shared::versions::VersionPattern;
-use reqwest::Client;
+use mcvm_core::net::download::Client;
 
 use mcvm_net::smithed::Pack;
 

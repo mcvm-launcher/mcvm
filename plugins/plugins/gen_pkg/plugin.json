@@ -1,0 +1,13 @@
+{
+	"name": "Gen Package",
+	"description": "Automatically generate packages from existing websites",
+	"hooks": {
+		"subcommand": {
+			"executable": "mcvm_plugin_gen_pkg"
+		}
+	},
+	"subcommands": {
+		"gen-pkg": "Generate a single package",
+		"gen-pkg-batched": "Generate lots of packages"
+	}
+}

@@ -38,11 +38,16 @@ path = "plugins/server_restart/main.rs"
 name = "mcvm_plugin_modrinth"
 path = "plugins/modrinth/main.rs"
 
+[[bin]]
+name = "mcvm_plugin_gen_pkg"
+path = "plugins/gen_pkg/main.rs"
+
 [dependencies]
 anyhow = { workspace = true }
 clap = { workspace = true }
 color-print = { workspace = true }
 glob = { workspace = true }
+iso8601-timestamp = { workspace = true }
 itertools = { workspace = true }
 mcvm = { workspace = true }
 mcvm_core = { workspace = true }

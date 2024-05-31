@@ -26,7 +26,7 @@ pub async fn gen(
 	make_fabriclike: bool,
 	make_forgelike: bool,
 ) -> DeclarativePackage {
-	let client = reqwest::Client::new();
+	let client = mcvm_core::net::download::Client::new();
 	let project = modrinth::get_project(id, &client)
 		.await
 		.expect("Failed to get Modrinth project");

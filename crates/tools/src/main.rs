@@ -1,9 +1,6 @@
-mod gen_pkg;
-
 use std::{fs::File, io::BufWriter, path::PathBuf};
 
 use clap::Parser;
-use gen_pkg::PackageSource;
 use mcvm::data::config::ConfigDeser;
 use mcvm::pkg_crate::{declarative::DeclarativePackage, repo::RepoIndex};
 use mcvm_options::Options;
@@ -13,29 +10,6 @@ async fn main() {
 	let cli = Cli::parse();
 	match cli.command {
 		Subcommand::Schemas => gen_schemas(),
-		Subcommand::GenPkg {
-			config_path,
-			source,
-			id,
-		} => {
-			let config = config_path.map(|config_path| {
-				serde_json::from_reader(
-					File::open(config_path).expect("Failed to open config file"),
-				)
-				.expect("Failed to deserialize config")
-			});
-			gen_pkg::gen(source, config, &id).await;
-		}
-		Subcommand::GenPkgBatched {
-			config_path,
-			filter,
-		} => {
-			let config = serde_json::from_reader(
-				File::open(config_path).expect("Failed to open config file"),
-			)
-			.expect("Failed to deserialize config");
-			gen_pkg::batched::batched_gen(config, filter).await;
-		}
 	}
 }
 
@@ -48,22 +22,6 @@ struct Cli {
 #[derive(clap::Subcommand)]
 enum Subcommand {
 	Schemas,
-	GenPkg {
-		/// Path to configuration for the package generation
-		#[arg(short, long)]
-		config_path: Option<String>,
-		/// The source to get the package from
-		source: PackageSource,
-		/// The ID of the package from whatever source it is from
-		id: String,
-	},
-	GenPkgBatched {
-		/// Path to configuration for the package generation
-		config_path: String,
-		/// Packages to filter and only include
-		#[arg(short, long)]
-		filter: Vec<String>,
-	},
 }
 
 fn gen_schemas() {

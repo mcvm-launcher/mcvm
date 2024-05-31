@@ -5,14 +5,13 @@ use std::sync::Arc;
 use std::{cmp::Reverse, collections::HashMap};
 
 use iso8601_timestamp::Timestamp;
+use mcvm_core::net::download::Client;
 use mcvm_net::modrinth::Version;
-use reqwest::Client;
 use serde::{Deserialize, Serialize};
 use serde_json::{ser::PrettyFormatter, Serializer};
 use tokio::sync::Mutex;
 use tokio::task::JoinSet;
 
-use crate::gen_pkg::json_merge;
 use mcvm_net::smithed as smithed_api;
 
 use super::{PackageGenerationConfig, PackageSource};
@@ -257,7 +256,7 @@ pub async fn batched_gen(mut config: BatchedConfig, filter: Vec<String>) {
 			serde_json::value::to_value(package).expect("Failed to convert package to value");
 		let merge = serde_json::value::to_value(pkg_config.merge)
 			.expect("Failed to convert merged config to value");
-		json_merge(&mut package, merge);
+		mcvm_core::util::json::merge(&mut package, merge);
 
 		// Write out the package
 		let path = PathBuf::from(&config.output_dir)
