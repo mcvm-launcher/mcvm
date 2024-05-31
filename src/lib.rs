@@ -30,6 +30,8 @@ pub mod instance;
 pub mod io;
 /// Dealing with packages
 pub mod pkg;
+/// Configuration profiles for instances
+pub mod profile;
 /// Common utilities that can't live anywhere else
 pub mod util;
 
