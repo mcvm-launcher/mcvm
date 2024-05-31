@@ -1,54 +1,26 @@
 use std::collections::HashMap;
 
-use mcvm_core::util::versions::MinecraftVersionDeser;
-use mcvm_shared::id::{InstanceID, ProfileID};
-use mcvm_shared::util::DefaultExt;
+use mcvm_shared::id::ProfileID;
 use mcvm_shared::Side;
 #[cfg(feature = "schema")]
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
-use crate::data::profile::Profile;
-
 use mcvm_shared::modifications::{ClientType, Modloader, Proxy, ServerType};
-use mcvm_shared::pkg::PackageStability;
 
-use super::instance::InstanceConfig;
+use super::instance::{merge_instance_configs, InstanceConfig};
 use super::package::PackageConfigDeser;
 
 /// Configuration for a profile
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Clone)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 pub struct ProfileConfig {
-	/// The Minecraft version of this profile
-	pub version: MinecraftVersionDeser,
-	/// Configured modloader
-	#[serde(default)]
-	#[serde(skip_serializing_if = "DefaultExt::is_default")]
-	pub modloader: Modloader,
-	/// Configured client type
-	#[serde(default)]
-	#[serde(skip_serializing_if = "DefaultExt::is_default")]
-	pub client_type: ClientType,
-	/// Configured server type
-	#[serde(default)]
-	#[serde(skip_serializing_if = "DefaultExt::is_default")]
-	pub server_type: ServerType,
-	/// Configured proxy
-	#[serde(default)]
-	#[serde(skip_serializing_if = "DefaultExt::is_default")]
-	pub proxy: Proxy,
-	/// Configured list of instances in this profile
-	#[serde(default)]
-	#[serde(skip_serializing_if = "HashMap::is_empty")]
-	pub instances: HashMap<InstanceID, InstanceConfig>,
-	/// Packages on this profile
+	/// The configuration for the instance
+	#[serde(flatten)]
+	pub instance: InstanceConfig,
+	/// Package configuration
 	#[serde(default)]
 	pub packages: ProfilePackageConfiguration,
-	/// Default stability setting of packages on this profile
-	#[serde(default)]
-	#[serde(skip_serializing_if = "DefaultExt::is_default")]
-	pub package_stability: PackageStability,
 }
 
 /// Different representations of package configuration on a profile
@@ -170,22 +142,43 @@ impl ProfilePackageConfiguration {
 	}
 }
 
-impl ProfileConfig {
-	/// Creates a profile from this profile configuration
-	pub fn to_profile(&self, profile_id: ProfileID) -> Profile {
-		Profile::new(
-			profile_id,
-			self.version.to_mc_version(),
-			GameModifications::new(
-				self.modloader.clone(),
-				self.client_type.clone(),
-				self.server_type.clone(),
-				self.proxy.clone(),
-			),
-			self.packages.clone(),
-			self.package_stability,
-		)
+/// Consolidates profile configs into the full profiles
+pub fn consolidate_profile_configs(
+	profiles: HashMap<ProfileID, ProfileConfig>,
+) -> anyhow::Result<HashMap<ProfileID, ProfileConfig>> {
+	let mut out: HashMap<_, ProfileConfig> = HashMap::with_capacity(profiles.len());
+
+	let max_iterations = 10000;
+
+	// We do this by repeatedly finding a profile with an already resolved ancenstor
+	let mut i = 0;
+	while out.len() != profiles.len() {
+		for (id, profile) in &profiles {
+			// Don't redo profiles that are already done
+			if out.contains_key(id) {
+				continue;
+			}
+
+			if let Some(parent) = &profile.instance.common.from {
+				// If the parent is already in the map (already consolidated) then we can derive from it and add to the map
+				if let Some(parent) = out.get(&ProfileID::from(parent.clone())) {
+					let mut new = profile.clone();
+					new.instance = merge_instance_configs(&parent.instance, new.instance)?;
+					out.insert(id.clone(), new);
+				}
+			} else {
+				// Profiles with no ancestor can just be added directly to the output
+				out.insert(id.clone(), profile.clone());
+			}
+		}
+
+		i += 1;
+		if i > max_iterations {
+			panic!("Max iterations exceeded while resolving profiles. This is a bug in MCVM.");
+		}
 	}
+
+	Ok(out)
 }
 
 /// Game modifications
@@ -196,23 +189,15 @@ pub struct GameModifications {
 	pub client_type: ClientType,
 	/// Type of the server
 	pub server_type: ServerType,
-	/// Proxy
-	pub proxy: Proxy,
 }
 
 impl GameModifications {
 	/// Create a new GameModifications
-	pub fn new(
-		modloader: Modloader,
-		client_type: ClientType,
-		server_type: ServerType,
-		proxy: Proxy,
-	) -> Self {
+	pub fn new(modloader: Modloader, client_type: ClientType, server_type: ServerType) -> Self {
 		Self {
 			modloader,
 			client_type,
 			server_type,
-			proxy,
 		}
 	}
 
@@ -284,5 +269,6 @@ pub fn can_install_server_type(server_type: &ServerType) -> bool {
 
 /// Check if a proxy can be installed by MCVM
 pub fn can_install_proxy(proxy: Proxy) -> bool {
+	// TODO: Support Velocity
 	matches!(proxy, Proxy::None)
 }

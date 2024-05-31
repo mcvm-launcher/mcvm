@@ -17,27 +17,25 @@ pub mod profile;
 pub mod user;
 
 use self::instance::{read_instance_config, InstanceConfig};
-use self::package::{PackageConfig, PackageConfigDeser, PackageConfigSource};
 use self::plugin::PluginManager;
 use self::preferences::PrefDeser;
 use self::profile::ProfileConfig;
 use self::user::UserConfig;
-use anyhow::{bail, ensure, Context};
+use anyhow::{bail, Context};
 use mcvm_core::auth_crate::mc::ClientId;
 use mcvm_core::io::{json_from_file, json_to_file_pretty};
 use mcvm_core::user::UserManager;
-use mcvm_shared::id::{InstanceRef, ProfileID};
+use mcvm_shared::id::{InstanceID, InstanceRef, ProfileID};
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
-use mcvm_shared::pkg::PackageStability;
 use mcvm_shared::translate;
 use mcvm_shared::util::is_valid_identifier;
 use preferences::ConfigPreferences;
+use profile::consolidate_profile_configs;
 #[cfg(feature = "schema")]
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 use super::instance::Instance;
-use super::profile::Profile;
 use crate::io::files::paths::Paths;
 use crate::pkg::reg::PkgRegistry;
 
@@ -52,12 +50,10 @@ use std::path::{Path, PathBuf};
 pub struct Config {
 	/// The user manager
 	pub users: UserManager,
-	/// The available profiles
-	pub profiles: HashMap<ProfileID, Profile>,
+	/// Instances
+	pub instances: HashMap<InstanceID, Instance>,
 	/// The registry of packages. Will include packages that are configured when created this way
 	pub packages: PkgRegistry,
-	/// Globally configured packages to include in every profile
-	pub global_packages: Vec<PackageConfig>,
 	/// Configured plugins
 	pub plugins: PluginManager,
 	/// Global user preferences
@@ -67,28 +63,12 @@ pub struct Config {
 impl Config {
 	/// Get an instance from an instance ref
 	pub fn get_instance(&self, instance: &InstanceRef) -> Option<&Instance> {
-		self.profiles
-			.get(&instance.get_profile_id())?
-			.instances
-			.get(&instance.instance)
+		self.instances.get(&instance.instance)
 	}
 
 	/// Get an instance mutably from an instance ref
 	pub fn get_instance_mut(&mut self, instance: &InstanceRef) -> Option<&mut Instance> {
-		self.profiles
-			.get_mut(&instance.get_profile_id())?
-			.instances
-			.get_mut(&instance.instance)
-	}
-
-	/// Get an iterator of all instance refs on all profiles
-	pub fn get_all_instances(&self) -> impl Iterator<Item = InstanceRef> + '_ {
-		self.profiles.values().flat_map(|profile| {
-			profile
-				.instances
-				.values()
-				.map(|instance| profile.get_inst_ref(&instance.id))
-		})
+		self.instances.get_mut(&instance.instance)
 	}
 }
 
@@ -99,9 +79,8 @@ impl Config {
 pub struct ConfigDeser {
 	users: HashMap<String, UserConfig>,
 	default_user: Option<String>,
+	instances: HashMap<InstanceID, InstanceConfig>,
 	profiles: HashMap<ProfileID, ProfileConfig>,
-	instance_presets: HashMap<String, InstanceConfig>,
-	packages: Vec<PackageConfigDeser>,
 	preferences: PrefDeser,
 }
 
@@ -142,7 +121,7 @@ impl Config {
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Self> {
 		let mut users = UserManager::new(ClientId::new("".into()));
-		let mut profiles = HashMap::new();
+		let mut instances = HashMap::with_capacity(config.instances.len());
 		// Preferences
 		let (prefs, repositories) =
 			ConfigPreferences::read(&config.preferences).context("Failed to read preferences")?;
@@ -184,86 +163,59 @@ impl Config {
 			);
 		}
 
-		// Validate instance presets
-		for (id, preset) in &config.instance_presets {
-			ensure!(
-				!preset.uses_preset(),
-				"Instance preset '{id}' cannot use another preset"
-			);
-		}
+		// Consolidate profiles
+		let profiles =
+			consolidate_profile_configs(config.profiles).context("Failed to merge profiles")?;
 
-		// Profiles
-		for (profile_id, profile_config) in config.profiles {
-			let mut profile = profile_config.to_profile(profile_id.clone());
+		// Instances
+		for (instance_id, instance_config) in config.instances {
+			if !is_valid_identifier(&instance_id) {
+				bail!("Invalid instance ID '{}'", instance_id.to_string());
+			}
+
+			let instance = read_instance_config(
+				instance_id.clone(),
+				instance_config,
+				&profiles,
+				&plugins,
+				paths,
+				o,
+			)
+			.with_context(|| format!("Failed to read config for instance {instance_id}"))?;
 
 			if show_warnings
-				&& !profile::can_install_client_type(&profile.modifications.client_type)
+				&& !profile::can_install_client_type(&instance.config.modifications.client_type)
 			{
 				o.display(
 					MessageContents::Warning(translate!(
 						o,
 						ModificationNotSupported,
-						"mod" = &format!("{}", profile.modifications.client_type)
+						"mod" = &format!("{}", instance.config.modifications.client_type)
 					)),
 					MessageLevel::Important,
 				);
 			}
 
 			if show_warnings
-				&& !profile::can_install_server_type(&profile.modifications.server_type)
+				&& !profile::can_install_server_type(&instance.config.modifications.server_type)
 			{
 				o.display(
 					MessageContents::Warning(translate!(
 						o,
 						ModificationNotSupported,
-						"mod" = &format!("{}", profile.modifications.server_type)
+						"mod" = &format!("{}", instance.config.modifications.server_type)
 					)),
 					MessageLevel::Important,
 				);
 			}
 
-			if profile_config.instances.is_empty() && show_warnings {
-				o.display(
-					MessageContents::Warning(translate!(o, EmptyProfile, "profile" = &profile_id)),
-					MessageLevel::Important,
-				);
-			}
-
-			// Create instances from profiles
-			for (instance_id, instance_config) in profile_config.instances {
-				if !is_valid_identifier(&instance_id) {
-					bail!("Invalid string '{}'", instance_id.to_string());
-				}
-				let instance = read_instance_config(
-					instance_id.clone(),
-					&instance_config,
-					&profile,
-					&config.packages,
-					&config.instance_presets,
-					&plugins,
-					paths,
-					o,
-				)
-				.with_context(|| format!("Failed to configure instance '{instance_id}'"))?;
-				profile.add_instance(instance);
-			}
-
-			profile_config.packages.validate()?;
-
-			profiles.insert(profile_id, profile);
+			instances.insert(instance_id, instance);
 		}
-
-		let global_packages = config
-			.packages
-			.into_iter()
-			.map(|x| x.to_package_config(PackageStability::default(), PackageConfigSource::Global))
-			.collect();
 
 		Ok(Self {
 			users,
-			profiles,
+			instances,
 			packages,
-			global_packages,
 			plugins,
 			prefs,
 		})
@@ -293,16 +245,20 @@ fn default_config() -> serde_json::Value {
 			},
 			"default_user": "example",
 			"profiles": {
-				"example": {
+				"1.20": {
 					"version": "1.19.3",
 					"modloader": "vanilla",
-					"server_type": "none",
-					"instances": {
-						"client": {
-							"type": "client"
-						},
-						"server": "server"
-					}
+					"server_type": "none"
+				}
+			},
+			"instances": {
+				"1.20-client": {
+					"from": "1.20",
+					"type": "client"
+				},
+				"1.20-server": {
+					"from": "1.20",
+					"type": "server"
 				}
 			}
 		}

@@ -3,7 +3,6 @@ mod files;
 mod instance;
 mod package;
 mod plugin;
-mod profile;
 mod user;
 
 use anyhow::{bail, Context};
@@ -22,19 +21,12 @@ use self::files::FilesSubcommand;
 use self::instance::InstanceSubcommand;
 use self::package::PackageSubcommand;
 use self::plugin::PluginSubcommand;
-use self::profile::ProfileSubcommand;
 use self::user::UserSubcommand;
 
 use super::output::TerminalOutput;
 
 #[derive(Debug, Subcommand)]
 pub enum Command {
-	#[command(about = "Manage profiles")]
-	#[clap(alias = "prof")]
-	Profile {
-		#[command(subcommand)]
-		command: ProfileSubcommand,
-	},
 	#[command(about = "Manage users and authentication")]
 	User {
 		#[command(subcommand)]
@@ -114,7 +106,6 @@ pub async fn run_cli() -> anyhow::Result<()> {
 	data.output.set_log_level(log_level);
 
 	let res = match cli.command {
-		Command::Profile { command } => profile::run(command, &mut data).await,
 		Command::User { command } => user::run(command, &mut data).await,
 		Command::Launch { instance } => instance::launch(instance, None, false, &mut data).await,
 		Command::Version => {

@@ -5,7 +5,6 @@ use mcvm_core::auth_crate::mc::ClientId;
 use mcvm_core::io::java::args::MemoryNum;
 use mcvm_core::io::java::install::JavaInstallationKind;
 use mcvm_core::user::UserManager;
-use mcvm_core::util::versions::MinecraftVersion;
 use mcvm_plugin::hooks::{
 	HookHandle, InstanceLaunchArg, OnInstanceLaunch, OnInstanceStop, WhileInstanceLaunch,
 };
@@ -16,9 +15,9 @@ use reqwest::Client;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
+use super::update::manager::UpdateManager;
 use crate::data::config::instance::QuickPlay;
 use crate::data::config::plugin::PluginManager;
-use crate::data::profile::update::manager::UpdateManager;
 use crate::io::files::paths::Paths;
 
 use super::Instance;
@@ -30,7 +29,6 @@ impl Instance {
 		paths: &Paths,
 		users: &mut UserManager,
 		plugins: &PluginManager,
-		version: &MinecraftVersion,
 		settings: LaunchSettings,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<InstanceHandle> {
@@ -41,7 +39,7 @@ impl Instance {
 
 		let mut manager = UpdateManager::new(false, true);
 		let client = Client::new();
-		manager.set_version(version);
+		manager.set_version(&self.config.version);
 		manager.add_requirements(self.get_requirements());
 		manager.set_client_id(settings.ms_client_id);
 		if settings.offline_auth {
@@ -59,7 +57,7 @@ impl Instance {
 		manager.add_result(result);
 
 		let hook_arg = InstanceLaunchArg {
-			inst_ref: self.get_inst_ref().to_string(),
+			id: self.id.to_string(),
 			side: Some(self.get_side()),
 			dir: self.dirs.get().inst_dir.to_string_lossy().into(),
 			game_dir: self.dirs.get().game_dir.to_string_lossy().into(),

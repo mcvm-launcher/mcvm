@@ -1,10 +1,12 @@
 use std::collections::HashMap;
 
-use anyhow::{anyhow, bail, ensure, Context};
+use anyhow::{ensure, Context};
 use mcvm_core::io::java::args::MemoryNum;
 use mcvm_core::io::java::install::JavaInstallationKind;
+use mcvm_core::util::versions::MinecraftVersionDeser;
 use mcvm_plugin::hooks::ModifyInstanceConfig;
-use mcvm_shared::id::InstanceID;
+use mcvm_shared::id::{InstanceID, ProfileID};
+use mcvm_shared::modifications::{ClientType, Modloader, ServerType};
 use mcvm_shared::output::MCVMOutput;
 use mcvm_shared::pkg::PackageStability;
 use mcvm_shared::util::{merge_options, DefaultExt};
@@ -15,85 +17,26 @@ use serde::{Deserialize, Serialize};
 
 use crate::data::instance::launch::{LaunchOptions, WrapperCommand};
 use crate::data::instance::{InstKind, Instance, InstanceStoredConfig};
-use crate::data::profile::Profile;
 use crate::io::files::paths::Paths;
 
 use super::package::{PackageConfig, PackageConfigDeser, PackageConfigSource};
 use super::plugin::PluginManager;
+use super::profile::{GameModifications, ProfileConfig};
 
-/// Different representations of configuration for an instance
+/// Configuration for an instance
 #[derive(Deserialize, Serialize, Clone)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
-#[serde(untagged)]
-#[serde(rename_all = "snake_case")]
-pub enum InstanceConfig {
-	/// Simple configuration with just a side
-	Simple(Side),
-	/// Full configuration with all options available
-	Full(FullInstanceConfig),
-}
-
-impl InstanceConfig {
-	/// Converts simple config into full
-	pub fn make_full(&self) -> FullInstanceConfig {
-		match self {
-			Self::Full(config) => config.clone(),
-			Self::Simple(side) => match side {
-				Side::Client => FullInstanceConfig::Client {
-					window: ClientWindowConfig::default(),
-					common: CommonInstanceConfig::default(),
-				},
-				Side::Server => FullInstanceConfig::Server {
-					common: CommonInstanceConfig::default(),
-				},
-			},
-		}
-	}
-
-	/// Gets the common config
-	pub fn get_common_config(&self) -> Option<&CommonInstanceConfig> {
-		match self {
-			Self::Full(
-				FullInstanceConfig::Client { common, .. }
-				| FullInstanceConfig::Server { common, .. },
-			) => Some(common),
-			_ => None,
-		}
-	}
-
-	/// Checks if this config has the preset field filled out
-	pub fn uses_preset(&self) -> bool {
-		let config = self.get_common_config();
-		if let Some(config) = config {
-			config.preset.is_some()
-		} else {
-			false
-		}
-	}
-}
-
-/// The full representation of instance config
-#[derive(Deserialize, Serialize, Clone)]
-#[cfg_attr(feature = "schema", derive(JsonSchema))]
-#[serde(tag = "type")]
-#[serde(rename_all = "snake_case")]
-pub enum FullInstanceConfig {
-	/// Config for the client
-	Client {
-		/// Common configuration
-		#[serde(flatten)]
-		common: CommonInstanceConfig,
-		/// Window configuration
-		#[serde(default)]
-		#[serde(skip_serializing_if = "DefaultExt::is_default")]
-		window: ClientWindowConfig,
-	},
-	/// Config for the server
-	Server {
-		/// Common configuration
-		#[serde(flatten)]
-		common: CommonInstanceConfig,
-	},
+pub struct InstanceConfig {
+	/// The type or side of this instance
+	#[serde(rename = "type")]
+	pub side: Option<Side>,
+	/// The common config of this instance
+	#[serde(flatten)]
+	pub common: CommonInstanceConfig,
+	/// Window configuration
+	#[serde(default)]
+	#[serde(skip_serializing_if = "DefaultExt::is_default")]
+	pub window: ClientWindowConfig,
 }
 
 /// Common full instance config for both client and server
@@ -101,12 +44,30 @@ pub enum FullInstanceConfig {
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(default)]
 pub struct CommonInstanceConfig {
+	/// A profile to use
+	#[serde(skip_serializing_if = "Option::is_none")]
+	pub from: Option<String>,
+	/// The Minecraft version
+	pub version: Option<MinecraftVersionDeser>,
+	/// Configured modloader
+	#[serde(default)]
+	#[serde(skip_serializing_if = "DefaultExt::is_default")]
+	pub modloader: Option<Modloader>,
+	/// Configured client type
+	#[serde(default)]
+	#[serde(skip_serializing_if = "DefaultExt::is_default")]
+	pub client_type: Option<ClientType>,
+	/// Configured server type
+	#[serde(default)]
+	#[serde(skip_serializing_if = "DefaultExt::is_default")]
+	pub server_type: Option<ServerType>,
+	/// Default stability setting of packages on this instance
+	#[serde(default)]
+	#[serde(skip_serializing_if = "DefaultExt::is_default")]
+	pub package_stability: Option<PackageStability>,
 	/// Launch configuration
 	#[serde(skip_serializing_if = "DefaultExt::is_default")]
 	pub launch: LaunchConfig,
-	/// An instance preset to use
-	#[serde(skip_serializing_if = "Option::is_none")]
-	pub preset: Option<String>,
 	/// The folder for global datapacks to be installed to
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub datapack_folder: Option<String>,
@@ -122,10 +83,16 @@ pub struct CommonInstanceConfig {
 impl CommonInstanceConfig {
 	/// Merge multiple common configs
 	pub fn merge(&mut self, other: Self) -> &mut Self {
+		self.from = other.from.or(self.from.clone());
+		self.version = other.version.or(self.version.clone());
+		self.modloader = other.modloader.or(self.modloader.clone());
+		self.client_type = other.client_type.or(self.client_type.clone());
+		self.server_type = other.server_type.or(self.server_type.clone());
+		self.package_stability = other.package_stability.or(self.package_stability.clone());
 		self.launch.merge(other.launch);
-		self.preset = merge_options(self.preset.clone(), other.preset);
-		self.datapack_folder = merge_options(self.datapack_folder.clone(), other.datapack_folder);
+		self.datapack_folder = other.datapack_folder.or(self.datapack_folder.clone());
 		self.packages.extend(other.packages);
+		self.plugin_config.extend(other.plugin_config);
 
 		self
 	}
@@ -378,45 +345,12 @@ impl ClientWindowConfig {
 /// Some values will be merged while others will have the right side take precendence
 pub fn merge_instance_configs(
 	preset: &InstanceConfig,
-	config: FullInstanceConfig,
-) -> anyhow::Result<FullInstanceConfig> {
-	let mut out = preset.make_full();
-	let applied = config;
-	out = match (out, applied) {
-		(
-			FullInstanceConfig::Client {
-				mut window,
-				mut common,
-				..
-			},
-			FullInstanceConfig::Client {
-				window: window2,
-				common: common2,
-				..
-			},
-		) => Ok::<FullInstanceConfig, anyhow::Error>(FullInstanceConfig::Client {
-			window: {
-				window.merge(window2);
-				window
-			},
-			common: {
-				common.merge(common2);
-				common
-			},
-		}),
-		(
-			FullInstanceConfig::Server { mut common, .. },
-			FullInstanceConfig::Server {
-				common: common2, ..
-			},
-		) => Ok::<FullInstanceConfig, anyhow::Error>(FullInstanceConfig::Server {
-			common: {
-				common.merge(common2);
-				common
-			},
-		}),
-		_ => bail!("Instance types do not match"),
-	}?;
+	config: InstanceConfig,
+) -> anyhow::Result<InstanceConfig> {
+	let mut out = preset.clone();
+	out.common.merge(config.common);
+	out.side = config.side.or(out.side);
+	out.window.merge(config.window);
 
 	Ok(out)
 }
@@ -424,68 +358,77 @@ pub fn merge_instance_configs(
 /// Read the config for an instance to create the instance
 pub fn read_instance_config(
 	id: InstanceID,
-	config: &InstanceConfig,
-	profile: &Profile,
-	global_packages: &[PackageConfigDeser],
-	presets: &HashMap<String, InstanceConfig>,
+	mut config: InstanceConfig,
+	profiles: &HashMap<ProfileID, ProfileConfig>,
 	plugins: &PluginManager,
 	paths: &Paths,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<Instance> {
-	let config = config.make_full();
-	let config = if let FullInstanceConfig::Client {
-		common: CommonInstanceConfig {
-			preset: Some(ref preset),
-			..
-		},
-		..
-	}
-	| FullInstanceConfig::Server {
-		common: CommonInstanceConfig {
-			preset: Some(ref preset),
-			..
-		},
-		..
-	} = config
-	{
-		let preset = presets
-			.get(preset)
-			.ok_or(anyhow!("Preset '{preset}' does not exist"))?;
-		merge_instance_configs(preset, config).context("Failed to merge preset with instance")?
+	// Get the parent profile if it is specified
+	let profile = if let Some(from) = &config.common.from {
+		Some(
+			profiles
+				.get(&ProfileID::from(from.clone()))
+				.context("Derived profile does not exist")?,
+		)
 	} else {
-		config
+		None
 	};
-	let (kind, mut common) = match config {
-		FullInstanceConfig::Client { window, common } => (InstKind::client(window), common),
-		FullInstanceConfig::Server { common } => (InstKind::server(), common),
+
+	// Merge with the profile
+	if let Some(profile) = profile {
+		config = merge_instance_configs(&profile.instance, config)
+			.context("Failed to merge instance config with profile")?;
+	}
+
+	let side = config.side.context("Instance type was not specified")?;
+
+	// Consolidate all of the package configs into the instance package config list
+	let packages = consolidate_package_configs(profile, &config, side);
+
+	let kind = match side {
+		Side::Client => InstKind::client(config.window),
+		Side::Server => InstKind::server(),
 	};
+
+	let game_modifications = GameModifications::new(
+		config.common.modloader.clone().unwrap_or_default(),
+		config.common.client_type.clone().unwrap_or_default(),
+		config.common.server_type.clone().unwrap_or_default(),
+	);
+
+	let version = config
+		.common
+		.version
+		.clone()
+		.context("Instance is missing a Minecraft version")?
+		.to_mc_version();
 
 	// Apply plugins
 	let results = plugins
-		.call_hook(ModifyInstanceConfig, &common.plugin_config, paths, o)
+		.call_hook(ModifyInstanceConfig, &config.common.plugin_config, paths, o)
 		.context("Failed to apply plugin instance modifications")?;
 	for result in results {
 		let result = result.result(o)?;
-		common
+		config
+			.common
 			.launch
 			.args
 			.jvm
 			.merge(Args::List(result.additional_jvm_args));
 	}
 
-	// Consolidate all of the package configs into the instance package config list
-	let packages =
-		consolidate_package_configs(profile, global_packages, &common.packages, kind.to_side());
-
 	let stored_config = InstanceStoredConfig {
-		modifications: profile.modifications.clone(),
-		launch: common.launch.to_options()?,
-		datapack_folder: common.datapack_folder,
+		version,
+		modifications: game_modifications,
+		launch: config.common.launch.to_options()?,
+		datapack_folder: config.common.datapack_folder,
 		packages,
-		plugin_config: common.plugin_config,
+		package_stability: config.common.package_stability.unwrap_or_default(),
+		plugin_config: config.common.plugin_config,
 	};
 
-	let instance = Instance::new(kind, id, profile.id.clone(), stored_config);
+	let instance = Instance::new(kind, id, stored_config);
 
 	Ok(instance)
 }
@@ -493,36 +436,32 @@ pub fn read_instance_config(
 /// Combines all of the package configs from global, profile, and instance together into
 /// the configurations for just one instance
 fn consolidate_package_configs(
-	profile: &Profile,
-	global_packages: &[PackageConfigDeser],
-	instance_packages: &[PackageConfigDeser],
+	profile: Option<&ProfileConfig>,
+	instance: &InstanceConfig,
 	side: Side,
 ) -> Vec<PackageConfig> {
+	let stability = instance.common.package_stability.unwrap_or_default();
 	// We use a map so that we can override packages from more general sources
 	// with those from more specific ones
 	let mut map = HashMap::new();
-	for pkg in global_packages {
-		let pkg = pkg
-			.clone()
-			.to_package_config(PackageStability::default(), PackageConfigSource::Global);
-		map.insert(pkg.id.clone(), pkg);
+	if let Some(profile) = profile {
+		for pkg in profile.packages.iter_global() {
+			let pkg = pkg
+				.clone()
+				.to_package_config(stability, PackageConfigSource::Profile);
+			map.insert(pkg.id.clone(), pkg);
+		}
+		for pkg in profile.packages.iter_side(side) {
+			let pkg = pkg
+				.clone()
+				.to_package_config(stability, PackageConfigSource::Profile);
+			map.insert(pkg.id.clone(), pkg);
+		}
 	}
-	for pkg in profile.packages.iter_global() {
+	for pkg in &instance.common.packages {
 		let pkg = pkg
 			.clone()
-			.to_package_config(profile.default_stability, PackageConfigSource::Profile);
-		map.insert(pkg.id.clone(), pkg);
-	}
-	for pkg in profile.packages.iter_side(side) {
-		let pkg = pkg
-			.clone()
-			.to_package_config(profile.default_stability, PackageConfigSource::Profile);
-		map.insert(pkg.id.clone(), pkg);
-	}
-	for pkg in instance_packages {
-		let pkg = pkg
-			.clone()
-			.to_package_config(profile.default_stability, PackageConfigSource::Instance);
+			.to_package_config(stability, PackageConfigSource::Instance);
 		map.insert(pkg.id.clone(), pkg);
 	}
 
@@ -537,145 +476,6 @@ fn consolidate_package_configs(
 #[cfg(test)]
 mod tests {
 	use super::*;
-
-	use crate::data::config::profile::GameModifications;
-	use crate::data::config::profile::ProfilePackageConfiguration;
-	use mcvm_core::util::versions::MinecraftVersion;
-	use mcvm_plugin::api::NoOp;
-	use mcvm_shared::id::ProfileID;
-	use mcvm_shared::modifications::{ClientType, Modloader, Proxy, ServerType};
-	use mcvm_shared::pkg::PackageStability;
-
-	#[test]
-	fn test_instance_deser() {
-		#[derive(Deserialize)]
-		struct Test {
-			instance: InstanceConfig,
-		}
-
-		let test = serde_json::from_str::<Test>(
-			r#"
-			{
-				"instance": "client"
-			}
-			"#,
-		)
-		.unwrap();
-
-		let profile = Profile::new(
-			ProfileID::from("foo"),
-			MinecraftVersion::Latest,
-			GameModifications::new(
-				Modloader::Vanilla,
-				ClientType::Vanilla,
-				ServerType::Vanilla,
-				Proxy::None,
-			),
-			ProfilePackageConfiguration::default(),
-			PackageStability::Latest,
-		);
-
-		let paths = Paths::new_no_create().unwrap();
-
-		let instance = read_instance_config(
-			InstanceID::from("foo"),
-			&test.instance,
-			&profile,
-			&[],
-			&HashMap::new(),
-			&PluginManager::new(),
-			&paths,
-			&mut NoOp,
-		)
-		.unwrap();
-		assert_eq!(instance.id, InstanceID::from("foo"));
-		assert!(matches!(instance.kind, InstKind::Client { .. }));
-	}
-
-	#[test]
-	fn test_instance_config_merging() {
-		let paths = Paths::new_no_create().unwrap();
-
-		let presets = {
-			let mut presets = HashMap::new();
-			presets.insert(
-				"hello".into(),
-				InstanceConfig::Full(FullInstanceConfig::Client {
-					window: ClientWindowConfig {
-						resolution: Some(WindowResolution {
-							width: 200,
-							height: 100,
-						}),
-					},
-					common: CommonInstanceConfig::default(),
-				}),
-			);
-			presets
-		};
-
-		let profile = Profile::new(
-			ProfileID::from("foo"),
-			MinecraftVersion::Latest,
-			GameModifications::new(
-				Modloader::Vanilla,
-				ClientType::Vanilla,
-				ServerType::Vanilla,
-				Proxy::None,
-			),
-			ProfilePackageConfiguration::default(),
-			PackageStability::Latest,
-		);
-
-		let config = InstanceConfig::Full(FullInstanceConfig::Client {
-			window: ClientWindowConfig::default(),
-			common: CommonInstanceConfig {
-				preset: Some("hello".into()),
-				..Default::default()
-			},
-		});
-		let instance = read_instance_config(
-			InstanceID::from("test"),
-			&config,
-			&profile,
-			&[],
-			&presets,
-			&PluginManager::new(),
-			&paths,
-			&mut NoOp,
-		)
-		.expect("Failed to read instance config");
-		if !matches!(
-			instance.kind,
-			InstKind::Client {
-				window: ClientWindowConfig {
-					resolution: Some(WindowResolution {
-						width: 200,
-						height: 100,
-					})
-				},
-			}
-		) {
-			panic!("Does not match: {:?}", instance.kind);
-		}
-
-		let config = InstanceConfig::Full(FullInstanceConfig::Server {
-			common: CommonInstanceConfig {
-				preset: Some("hello".into()),
-				..Default::default()
-			},
-		});
-		read_instance_config(
-			InstanceID::from("test"),
-			&config,
-			&profile,
-			&[],
-			&presets,
-			&PluginManager::new(),
-			&paths,
-			&mut NoOp,
-		)
-		.expect_err("Instance kinds should be incompatible");
-	}
 
 	#[test]
 	fn test_quickplay_deser() {

@@ -26,9 +26,9 @@ use reqwest::Client;
 
 use crate::data::config::instance::QuickPlay;
 use crate::data::config::plugin::PluginManager;
-use crate::data::profile::update::manager::{UpdateManager, UpdateMethodResult, UpdateRequirement};
 use crate::io::files::paths::Paths;
 
+use super::update::manager::{UpdateManager, UpdateMethodResult, UpdateRequirement};
 use super::{InstKind, Instance};
 
 /// The default main class for the server
@@ -107,7 +107,7 @@ impl Instance {
 		// Run plugin setup hooks
 		self.ensure_dirs(paths)?;
 		let arg = OnInstanceSetupArg {
-			inst_ref: self.get_inst_ref().to_string(),
+			id: self.id.to_string(),
 			side: Some(self.get_side()),
 			game_dir: self.dirs.get().game_dir.to_string_lossy().to_string(),
 			version_info: manager.version_info.get_clone(),
@@ -136,9 +136,8 @@ impl Instance {
 
 	/// Ensure the directories are set and exist
 	pub fn ensure_dirs(&mut self, paths: &Paths) -> anyhow::Result<()> {
-		self.dirs.ensure_full(|| {
-			InstanceDirs::new(paths, &self.id, &self.profile_id, &self.kind.to_side())
-		});
+		self.dirs
+			.ensure_full(|| InstanceDirs::new(paths, &self.id, &self.kind.to_side()));
 		self.dirs.get().ensure_exist()?;
 
 		Ok(())
@@ -296,10 +295,8 @@ pub struct InstanceDirs {
 
 impl InstanceDirs {
 	/// Create a new InstanceDirs
-	pub fn new(paths: &Paths, instance_id: &str, profile_id: &str, side: &Side) -> Self {
-		let prof_dir = paths.project.data_dir().join("instances").join(profile_id);
-
-		let inst_dir = prof_dir.join(instance_id);
+	pub fn new(paths: &Paths, instance_id: &str, side: &Side) -> Self {
+		let inst_dir = paths.project.data_dir().join("instances").join(instance_id);
 
 		let game_dir = match side {
 			Side::Client => inst_dir.join(".minecraft"),

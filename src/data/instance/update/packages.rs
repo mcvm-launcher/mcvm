@@ -13,20 +13,20 @@ use mcvm_shared::versions::VersionInfo;
 use tokio::sync::Semaphore;
 use tokio::task::JoinSet;
 
-use crate::data::profile::Profile;
+use crate::data::instance::Instance;
 use crate::pkg::eval::{resolve, EvalConstants, EvalInput, EvalParameters};
 use crate::util::select_random_n_items_from_list;
 use mcvm_shared::id::InstanceID;
 
-use super::ProfileUpdateContext;
+use super::InstanceUpdateContext;
 
-use anyhow::{anyhow, Context};
+use anyhow::Context;
 
-/// Install packages on a profile. Returns a set of all unique packages
-pub async fn update_profile_packages<'a, O: MCVMOutput>(
-	profile: &mut Profile,
+/// Install packages on multiple instances. Returns a set of all unique packages
+pub async fn update_instance_packages<'a, O: MCVMOutput>(
+	instances: &mut [&mut Instance],
 	constants: &EvalConstants,
-	ctx: &mut ProfileUpdateContext<'a, O>,
+	ctx: &mut InstanceUpdateContext<'a, O>,
 	force: bool,
 ) -> anyhow::Result<HashSet<ArcPkgReq>> {
 	// Resolve dependencies
@@ -35,7 +35,7 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 		MessageContents::StartProcess(translate!(ctx.output, StartResolvingDependencies)),
 		MessageLevel::Important,
 	);
-	let resolved_packages = resolve_and_batch(profile, constants, ctx)
+	let resolved_packages = resolve_and_batch(instances, constants, ctx)
 		.await
 		.context("Failed to resolve dependencies for profile")?;
 	ctx.output.display(
@@ -64,12 +64,13 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 		// Install the package on it's instances
 		let mut notices = Vec::new();
 		for instance_id in package_instances {
-			let instance = profile.instances.get_mut(instance_id).ok_or(anyhow!(
-				"Instance '{instance_id}' does not exist in the registry"
-			))?;
+			let instance = instances
+				.into_iter()
+				.find(|x| &x.id == instance_id)
+				.expect("Instance should exist");
 
 			let mut params = EvalParameters::new(instance.kind.to_side());
-			params.stability = profile.default_stability;
+			params.stability = instance.config.package_stability;
 
 			let input = EvalInput { constants, params };
 			let (eval, new_tasks) = instance
@@ -136,9 +137,10 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 		ctx.output.start_process();
 
 		for instance_id in package_instances {
-			let instance = profile.instances.get_mut(instance_id).ok_or(anyhow!(
-				"Instance '{instance_id}' does not exist in the registry"
-			))?;
+			let instance = instances
+				.into_iter()
+				.find(|x| &x.id == instance_id)
+				.expect("Instance should exist");
 
 			let version_info = VersionInfo {
 				version: constants.version.clone(),
@@ -173,14 +175,15 @@ pub async fn update_profile_packages<'a, O: MCVMOutput>(
 
 	// Use the instance-package map to remove unused packages and addons
 	for (instance_id, packages) in resolved_packages.instance_to_packages {
-		let instance = profile.instances.get(&instance_id).ok_or(anyhow!(
-			"Instance '{instance_id}' does not exist in the registry"
-		))?;
-		let inst_ref = instance.get_inst_ref().to_string();
+		let instance = instances
+			.iter()
+			.find(|x| x.id == instance_id)
+			.expect("Instance should exist");
+
 		let files_to_remove = ctx
 			.lock
 			.remove_unused_packages(
-				&inst_ref,
+				&instance_id,
 				&packages
 					.iter()
 					.map(|x| x.id.clone())
@@ -250,16 +253,16 @@ async fn run_addon_tasks(
 /// This allows us to update packages in a reasonable order to the user.
 /// It also returns a map of instances to packages so that unused packages can be removed
 async fn resolve_and_batch<'a, O: MCVMOutput>(
-	profile: &Profile,
+	instances: &[&mut Instance],
 	constants: &EvalConstants,
-	ctx: &mut ProfileUpdateContext<'a, O>,
+	ctx: &mut InstanceUpdateContext<'a, O>,
 ) -> anyhow::Result<ResolvedPackages> {
 	let mut batched: HashMap<ArcPkgReq, Vec<InstanceID>> = HashMap::new();
 	let mut resolved = HashMap::new();
 
-	for (instance_id, instance) in &profile.instances {
+	for instance in instances {
 		let mut params = EvalParameters::new(instance.kind.to_side());
-		params.stability = profile.default_stability;
+		params.stability = instance.config.package_stability;
 
 		let instance_pkgs = instance.get_configured_packages();
 		let instance_resolved = resolve(
@@ -274,16 +277,19 @@ async fn resolve_and_batch<'a, O: MCVMOutput>(
 		)
 		.await
 		.with_context(|| {
-			format!("Failed to resolve package dependencies for instance '{instance_id}'")
+			format!(
+				"Failed to resolve package dependencies for instance '{}'",
+				instance.id
+			)
 		})?;
 		for package in &instance_resolved.packages {
 			if let Some(entry) = batched.get_mut(package) {
-				entry.push(instance_id.clone());
+				entry.push(instance.id.clone());
 			} else {
-				batched.insert(package.clone(), vec![instance_id.clone()]);
+				batched.insert(package.clone(), vec![instance.id.clone()]);
 			}
 		}
-		resolved.insert(instance_id.clone(), instance_resolved.packages);
+		resolved.insert(instance.id.clone(), instance_resolved.packages);
 	}
 
 	Ok(ResolvedPackages {
@@ -301,7 +307,7 @@ struct ResolvedPackages {
 
 /// Checks a package with the registry to report any warnings about it
 async fn check_package<'a, O: MCVMOutput>(
-	ctx: &mut ProfileUpdateContext<'a, O>,
+	ctx: &mut InstanceUpdateContext<'a, O>,
 	pkg: &ArcPkgReq,
 ) -> anyhow::Result<()> {
 	let flags = ctx
@@ -343,7 +349,7 @@ async fn check_package<'a, O: MCVMOutput>(
 /// Prints support messages about installed packages when updating
 pub async fn print_package_support_messages<'a, O: MCVMOutput>(
 	packages: &[ArcPkgReq],
-	ctx: &mut ProfileUpdateContext<'a, O>,
+	ctx: &mut InstanceUpdateContext<'a, O>,
 ) -> anyhow::Result<()> {
 	let package_count = 5;
 	let packages = select_random_n_items_from_list(packages, package_count);

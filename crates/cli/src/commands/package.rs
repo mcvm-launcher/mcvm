@@ -4,7 +4,7 @@ use super::CmdData;
 use itertools::Itertools;
 use mcvm::parse::lex::Token;
 use mcvm::pkg_crate::{PackageContentType, PkgRequest, PkgRequestSource};
-use mcvm::shared::id::ProfileID;
+use mcvm::shared::id::{InstanceID, ProfileID};
 use mcvm::shared::util::print::ReplPrinter;
 
 use anyhow::{bail, Context};
@@ -23,9 +23,9 @@ pub enum PackageSubcommand {
 		/// Whether to remove formatting and warnings from the output
 		#[arg(short, long)]
 		raw: bool,
-		/// A profile to filter packages from
+		/// An instance to filter packages from
 		#[arg(short, long)]
-		profile: Option<String>,
+		instance: Option<String>,
 	},
 	#[command(
 		about = "Sync package indexes with ones from package repositories",
@@ -84,7 +84,7 @@ pub enum RepoSubcommand {
 
 pub async fn run(subcommand: PackageSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
 	match subcommand {
-		PackageSubcommand::List { raw, profile } => list(data, raw, profile).await,
+		PackageSubcommand::List { raw, instance } => list(data, raw, instance).await,
 		PackageSubcommand::Sync { filter } => sync(data, filter).await,
 		PackageSubcommand::Cat { raw, package } => cat(data, &package, raw).await,
 		PackageSubcommand::Info { package } => info(data, &package).await,
@@ -93,40 +93,40 @@ pub async fn run(subcommand: PackageSubcommand, data: &mut CmdData) -> anyhow::R
 	}
 }
 
-async fn list(data: &mut CmdData, raw: bool, profile: Option<String>) -> anyhow::Result<()> {
+async fn list(data: &mut CmdData, raw: bool, instance: Option<String>) -> anyhow::Result<()> {
 	data.ensure_config(!raw).await?;
 	let config = data.config.get_mut();
 
-	if let Some(profile_id) = profile {
-		let profile_id = ProfileID::from(profile_id);
-		if let Some(profile) = config.profiles.get(&profile_id) {
+	if let Some(instance_id) = instance {
+		let instance_id = InstanceID::from(instance_id);
+		if let Some(instance) = config.instances.get(&instance_id) {
 			if raw {
-				for pkg in profile
-					.packages
-					.iter_global()
-					.sorted_by_key(|x| x.get_pkg_id())
+				for pkg in instance
+					.get_configured_packages()
+					.iter()
+					.sorted_by_key(|x| &x.id)
 				{
-					println!("{}", pkg);
+					println!("{}", pkg.id);
 				}
 			} else {
-				cprintln!("<s>Packages in profile <b>{}</b>:", profile_id);
-				for pkg in profile
-					.packages
-					.iter_global()
-					.sorted_by_key(|x| x.get_pkg_id())
+				cprintln!("<s>Packages in instance <b>{}</b>:", instance_id);
+				for pkg in instance
+					.get_configured_packages()
+					.iter()
+					.sorted_by_key(|x| &x.id)
 				{
-					cprintln!("{}<b!>{}</>", HYPHEN_POINT, pkg);
+					cprintln!("{}<b!>{}</>", HYPHEN_POINT, pkg.id);
 				}
 			}
 		} else {
-			bail!("Unknown profile '{profile_id}'");
+			bail!("Unknown instance '{instance_id}'");
 		}
 	} else {
 		let mut found_pkgs: HashMap<PackageID, Vec<ProfileID>> = HashMap::new();
-		for (id, profile) in config.profiles.iter() {
-			for pkg in profile.packages.iter_global() {
+		for (id, instance) in config.instances.iter() {
+			for pkg in instance.get_configured_packages() {
 				found_pkgs
-					.entry(pkg.get_pkg_id().clone())
+					.entry(pkg.id.clone())
 					.or_default()
 					.push(id.clone());
 			}

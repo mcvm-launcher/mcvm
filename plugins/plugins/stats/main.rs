@@ -33,11 +33,7 @@ fn main() -> anyhow::Result<()> {
 		let mut stats = Stats::open(&ctx).context("Failed to open stats")?;
 
 		// Write launch count
-		stats
-			.instances
-			.entry(arg.inst_ref.clone())
-			.or_default()
-			.launches += 1;
+		stats.instances.entry(arg.id.clone()).or_default().launches += 1;
 		stats.write(&ctx).context("Failed to write stats")?;
 
 		// Track when the instance started in persistent state to get playtime
@@ -45,7 +41,7 @@ fn main() -> anyhow::Result<()> {
 			.get_persistent_state(HashMap::<String, u64>::new())
 			.context("Failed to get persistent state")?;
 		let mut state: HashMap<String, u64> = serde_json::from_value(state.clone())?;
-		state.insert(arg.inst_ref.clone(), utc_timestamp()?);
+		state.insert(arg.id.clone(), utc_timestamp()?);
 		ctx.set_persistent_state(state)
 			.context("Failed to set persistent state")?;
 
@@ -64,7 +60,7 @@ fn main() -> anyhow::Result<()> {
 			return Ok(());
 		}
 
-		update_playtime(&mut ctx, &arg.inst_ref)
+		update_playtime(&mut ctx, &arg.id)
 	})?;
 
 	plugin.while_instance_launch(|mut ctx, arg| {
@@ -80,7 +76,7 @@ fn main() -> anyhow::Result<()> {
 
 		loop {
 			std::thread::sleep(Duration::from_secs(60));
-			update_playtime(&mut ctx, &arg.inst_ref).context("Failed to update playtime")?;
+			update_playtime(&mut ctx, &arg.id).context("Failed to update playtime")?;
 		}
 	})?;
 

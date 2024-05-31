@@ -6,9 +6,9 @@ use mcvm_shared::modifications::{Modloader, ServerType};
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel, OutputProcess};
 use reqwest::Client;
 
-use crate::data::profile::update::manager::{UpdateManager, UpdateMethodResult};
 use crate::io::files::paths::Paths;
 
+use super::super::update::manager::{UpdateManager, UpdateMethodResult};
 use super::{InstKind, Instance};
 
 impl Instance {

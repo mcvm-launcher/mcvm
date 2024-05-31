@@ -82,9 +82,7 @@ impl PackageConfig {
 /// Where a package was configured from
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum PackageConfigSource {
-	/// Configured globally for all profiles and instances
-	Global,
-	/// Configured for one profile and all of it's instances
+	/// Configured for one profile
 	Profile,
 	/// Configured for one instance
 	Instance,

@@ -250,7 +250,7 @@ fn handle_no_matched_versions(addon: &DeclarativeAddon) -> anyhow::Result<()> {
 mod tests {
 	use mcvm_pkg::declarative::deserialize_declarative_package;
 	use mcvm_shared::lang::Language;
-	use mcvm_shared::modifications::{ClientType, Modloader, Proxy, ServerType};
+	use mcvm_shared::modifications::{ClientType, Modloader, ServerType};
 	use mcvm_shared::pkg::PackageStability;
 	use mcvm_shared::Side;
 
@@ -326,7 +326,6 @@ mod tests {
 				Modloader::Fabric,
 				ClientType::Fabric,
 				ServerType::Fabric,
-				Proxy::None,
 			),
 			language: Language::AmericanEnglish,
 			profile_stability: PackageStability::Latest,

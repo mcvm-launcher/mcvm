@@ -6,8 +6,12 @@ pub mod create;
 pub mod launch;
 /// Managing and installing packages on an instance
 pub mod packages;
+/// Updating an instance
+pub mod update;
 
+use mcvm_core::util::versions::MinecraftVersion;
 use mcvm_shared::later::Later;
+use mcvm_shared::pkg::PackageStability;
 use mcvm_shared::Side;
 
 use self::create::{InstanceDirs, ModificationData};
@@ -16,7 +20,7 @@ use self::launch::LaunchOptions;
 use super::config::instance::ClientWindowConfig;
 use super::config::package::PackageConfig;
 use super::config::profile::GameModifications;
-use mcvm_shared::id::{InstanceID, InstanceRef, ProfileID};
+use mcvm_shared::id::InstanceID;
 
 /// An instance of the game on a profile
 #[derive(Debug)]
@@ -25,12 +29,10 @@ pub struct Instance {
 	pub(crate) kind: InstKind,
 	/// The ID of this instance
 	pub(crate) id: InstanceID,
-	/// The ID of the parent profile for this instance
-	pub(crate) profile_id: ProfileID,
 	/// Directories of the instance
 	pub(crate) dirs: Later<InstanceDirs>,
 	/// Configuration for the instance
-	config: InstanceStoredConfig,
+	pub(crate) config: InstanceStoredConfig,
 	/// Modification data
 	modification_data: ModificationData,
 }
@@ -73,6 +75,8 @@ impl InstKind {
 /// The stored configuration on an instance
 #[derive(Debug)]
 pub struct InstanceStoredConfig {
+	/// The Minecraft version
+	pub version: MinecraftVersion,
 	/// Modifications to the instance
 	pub modifications: GameModifications,
 	/// Launch options for the instance
@@ -81,22 +85,18 @@ pub struct InstanceStoredConfig {
 	pub datapack_folder: Option<String>,
 	/// The packages on the instance, consolidated from all parent sources
 	pub packages: Vec<PackageConfig>,
+	/// Default stability for packages
+	pub package_stability: PackageStability,
 	/// Custom plugin config
 	pub plugin_config: serde_json::Map<String, serde_json::Value>,
 }
 
 impl Instance {
 	/// Create a new instance
-	pub fn new(
-		kind: InstKind,
-		id: InstanceID,
-		profile_id: ProfileID,
-		config: InstanceStoredConfig,
-	) -> Self {
+	pub fn new(kind: InstKind, id: InstanceID, config: InstanceStoredConfig) -> Self {
 		Self {
 			kind,
 			id,
-			profile_id,
 			config,
 			dirs: Later::Empty,
 			modification_data: ModificationData::new(),
@@ -118,18 +118,13 @@ impl Instance {
 		&self.id
 	}
 
-	/// Get the ID of the instance's parent profile
-	pub fn get_profile_id(&self) -> &ProfileID {
-		&self.profile_id
-	}
-
 	/// Get the instance's directories
 	pub fn get_dirs(&self) -> &Later<InstanceDirs> {
 		&self.dirs
 	}
 
-	/// Get the instance ref for this instance
-	pub fn get_inst_ref(&self) -> InstanceRef {
-		InstanceRef::new(self.profile_id.clone(), self.id.clone())
+	/// Get the instance's stored configuration
+	pub fn get_config(&self) -> &InstanceStoredConfig {
+		&self.config
 	}
 }

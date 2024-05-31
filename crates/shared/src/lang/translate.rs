@@ -44,7 +44,6 @@ define_translations! {
 	PackageInsecure, "When a package is insecure", "Package %pkg has been flagged as insecure";
 	PackageMalicious, "When a package is malicious", "Package %pkg has been flagged as malicious";
 	PackageSupportHeader, "Header for packages to consider supporting", "Packages to consider supporting";
-	StartUpdatingProfile, "When starting to update a profile", "Updating profile '%prof'";
 	StartUpdatingPackages, "When starting to update packages on a profile", "Updating packages";
 	FinishUpdatingPackages, "When finishing updating packages on a profile", "All packages installed";
 	StartUpdatingProfileVersion, "When starting to update a profile's version", "Updating profile version";
@@ -53,7 +52,7 @@ define_translations! {
 	FinishUpdatingProxy, "When finishing updating a proxy", "Proxy updated";
 	StartRunningCommands, "When starting to run package commands", "Running commands";
 	FinishRunningCommands, "When finishing running package commands", "Finished running commands";
-	StartUpdatingInstance, "When starting to update an instance", "Checking for updates";
+	StartUpdatingInstance, "When starting to update an instance", "Updating instance %inst";
 	PreparingLaunch, "When preparing to launch the game", "Preparing to launch";
 	Launch, "When launching the game", "Launching!";
 	CoreRepoName, "Name of the core repo", "Core";

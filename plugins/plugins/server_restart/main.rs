@@ -25,7 +25,7 @@ fn main() -> anyhow::Result<()> {
 		#[cfg(not(target_os = "windows"))]
 		let filename = "start.sh";
 		let path = PathBuf::from(&arg.game_dir).join(filename);
-		create_script(&path, &arg.inst_ref, config)
+		create_script(&path, &arg.id, config)
 			.context("Failed to create startup script for instance")?;
 
 		Ok(())
