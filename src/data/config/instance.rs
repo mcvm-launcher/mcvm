@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use anyhow::{ensure, Context};
+use anyhow::{bail, ensure, Context};
 use mcvm_core::io::java::args::MemoryNum;
 use mcvm_core::io::java::install::JavaInstallationKind;
 use mcvm_core::util::versions::MinecraftVersionDeser;
@@ -364,6 +364,10 @@ pub fn read_instance_config(
 	paths: &Paths,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<Instance> {
+	if !is_valid_instance_id(&id) {
+		bail!("Invalid instance ID '{}'", id.to_string());
+	}
+
 	// Get the parent profile if it is specified
 	let profile = if let Some(from) = &config.common.from {
 		Some(
@@ -431,6 +435,28 @@ pub fn read_instance_config(
 	let instance = Instance::new(kind, id, stored_config);
 
 	Ok(instance)
+}
+
+/// Checks if an instance ID is valid
+pub fn is_valid_instance_id(id: &str) -> bool {
+	for c in id.chars() {
+		if !c.is_ascii() {
+			return false;
+		}
+
+		if c.is_ascii_punctuation() {
+			match c {
+				'_' | '-' | '.' | ':' => {}
+				_ => return false,
+			}
+		}
+
+		if c.is_ascii_whitespace() {
+			return false;
+		}
+	}
+
+	true
 }
 
 /// Combines all of the package configs from global, profile, and instance together into

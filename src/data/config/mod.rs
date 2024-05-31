@@ -157,10 +157,6 @@ impl Config {
 
 		// Instances
 		for (instance_id, instance_config) in config.instances {
-			if !is_valid_identifier(&instance_id) {
-				bail!("Invalid instance ID '{}'", instance_id.to_string());
-			}
-
 			let instance = read_instance_config(
 				instance_id.clone(),
 				instance_config,
