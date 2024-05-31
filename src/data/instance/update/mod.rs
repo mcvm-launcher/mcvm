@@ -72,6 +72,7 @@ impl Instance {
 		);
 
 		manager.set_version(&self.config.version);
+		manager.add_requirements(self.get_requirements());
 		manager
 			.fulfill_requirements(ctx.users, ctx.plugins, ctx.paths, ctx.client, ctx.output)
 			.await
