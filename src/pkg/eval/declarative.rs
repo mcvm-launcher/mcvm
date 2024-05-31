@@ -7,7 +7,7 @@ use mcvm_pkg::script_eval::AddonInstructionData;
 use mcvm_pkg::RequiredPackage;
 use mcvm_shared::pkg::PackageID;
 
-use crate::data::config::plugin::PluginManager;
+use crate::config::plugin::PluginManager;
 
 use super::conditions::{check_arch_condition, check_os_condition};
 use super::{
@@ -254,7 +254,7 @@ mod tests {
 	use mcvm_shared::pkg::PackageStability;
 	use mcvm_shared::Side;
 
-	use crate::data::config::profile::GameModifications;
+	use crate::config::profile::GameModifications;
 	use crate::pkg::eval::{EvalConstants, EvalParameters, RequiredPackage};
 
 	use super::*;

@@ -2,7 +2,7 @@ use super::CmdData;
 
 use anyhow::Context;
 use clap::Subcommand;
-use mcvm::data::config::{plugin::PluginManager, Config};
+use mcvm::config::{plugin::PluginManager, Config};
 
 use std::{path::PathBuf, process::Command};
 

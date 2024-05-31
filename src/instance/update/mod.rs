@@ -3,8 +3,8 @@ pub mod manager;
 /// Updating packages on a profile
 pub mod packages;
 
-use crate::data::config::plugin::PluginManager;
-use crate::data::config::preferences::ConfigPreferences;
+use crate::config::plugin::PluginManager;
+use crate::config::preferences::ConfigPreferences;
 #[cfg(not(feature = "disable_profile_update_packages"))]
 use crate::pkg::eval::EvalConstants;
 use mcvm_core::user::UserManager;
@@ -21,7 +21,7 @@ use mcvm_shared::modifications::ServerType;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use reqwest::Client;
 
-use crate::io::files::paths::Paths;
+use crate::io::paths::Paths;
 use crate::io::lock::Lockfile;
 use crate::pkg::reg::PkgRegistry;
 

@@ -3,7 +3,7 @@ use std::fs::File;
 
 use anyhow::{anyhow, Context};
 
-use crate::io::files::paths::Paths;
+use crate::io::paths::Paths;
 use mcvm_shared::id::{InstanceID, ProfileID};
 
 use super::instance::InstanceConfig;
@@ -70,7 +70,7 @@ pub fn apply_modifications_and_write(
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use crate::data::config::user::UserVariant;
+	use crate::config::user::UserVariant;
 
 	#[test]
 	fn test_user_add_modification() {

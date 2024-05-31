@@ -3,8 +3,8 @@ use crate::output::{icons_enabled, HYPHEN_POINT, STAR};
 use anyhow::{bail, Context};
 use itertools::Itertools;
 use mcvm::core::user::UserKind;
-use mcvm::data::config::modifications::{apply_modifications_and_write, ConfigModification};
-use mcvm::data::config::user::{UserConfig, UserVariant};
+use mcvm::config::modifications::{apply_modifications_and_write, ConfigModification};
+use mcvm::config::user::{UserConfig, UserVariant};
 
 use clap::Subcommand;
 use color_print::{cprint, cprintln};

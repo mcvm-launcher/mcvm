@@ -3,12 +3,12 @@ use clap::Subcommand;
 use color_print::{cprint, cprintln};
 use inquire::Select;
 use itertools::Itertools;
-use mcvm::data::config::Config;
-use mcvm::data::instance::update::InstanceUpdateContext;
+use mcvm::config::Config;
+use mcvm::instance::update::InstanceUpdateContext;
 use mcvm::io::lock::Lockfile;
 use mcvm::shared::id::InstanceID;
 
-use mcvm::data::instance::launch::LaunchSettings;
+use mcvm::instance::launch::LaunchSettings;
 use mcvm::shared::Side;
 use reqwest::Client;
 

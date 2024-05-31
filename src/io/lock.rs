@@ -11,7 +11,7 @@ use serde::{Deserialize, Serialize};
 use mcvm_shared::addon::{Addon, AddonKind};
 use mcvm_shared::pkg::{PackageAddonOptionalHashes, PackageID};
 
-use super::files::paths::Paths;
+use super::paths::Paths;
 
 /// A file that remembers important info like what files and packages are currently installed
 #[derive(Debug)]

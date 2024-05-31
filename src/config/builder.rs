@@ -10,8 +10,8 @@ use mcvm_shared::output::MCVMOutput;
 use mcvm_shared::pkg::{PackageID, PackageStability};
 use mcvm_shared::Side;
 
-use crate::data::instance::Instance;
-use crate::io::files::paths::Paths;
+use crate::instance::Instance;
+use crate::io::paths::Paths;
 use crate::pkg::eval::EvalPermissions;
 use crate::pkg::reg::PkgRegistry;
 use crate::pkg::repo::PkgRepo;

@@ -7,7 +7,7 @@ pub mod reg;
 /// Interacting with package repositories
 pub mod repo;
 
-use crate::io::files::paths::Paths;
+use crate::io::paths::Paths;
 use mcvm_core::net::download;
 use mcvm_pkg::declarative::{deserialize_declarative_package, DeclarativePackage};
 use mcvm_pkg::repo::PackageFlag;

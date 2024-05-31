@@ -15,9 +15,9 @@ use mcvm_shared::Side;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
-use crate::data::instance::launch::{LaunchOptions, WrapperCommand};
-use crate::data::instance::{InstKind, Instance, InstanceStoredConfig};
-use crate::io::files::paths::Paths;
+use crate::instance::launch::{LaunchOptions, WrapperCommand};
+use crate::instance::{InstKind, Instance, InstanceStoredConfig};
+use crate::io::paths::Paths;
 
 use super::package::{PackageConfig, PackageConfigDeser, PackageConfigSource};
 use super::plugin::PluginManager;

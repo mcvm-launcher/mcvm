@@ -4,7 +4,7 @@ use std::{fs::File, path::PathBuf};
 use anyhow::Context;
 use color_print::{cformat, cstr};
 use inquire::{Confirm, Password};
-use mcvm::io::files::paths::Paths;
+use mcvm::io::paths::Paths;
 use mcvm::pkg_crate::{PkgRequest, PkgRequestSource};
 use mcvm::shared::lang::translate::{TranslationKey, TranslationMap};
 use mcvm::shared::output::{

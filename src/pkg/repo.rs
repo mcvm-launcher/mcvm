@@ -1,4 +1,4 @@
-use crate::io::files::paths::Paths;
+use crate::io::paths::Paths;
 use mcvm_core::net::download;
 use mcvm_pkg::repo::{
 	get_api_url, get_index_url, PackageFlag, RepoIndex, RepoMetadata, RepoPkgEntry,

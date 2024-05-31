@@ -24,9 +24,9 @@ use mcvm_shared::translate;
 use mcvm_shared::Side;
 use reqwest::Client;
 
-use crate::data::config::instance::QuickPlay;
-use crate::data::config::plugin::PluginManager;
-use crate::io::files::paths::Paths;
+use crate::config::instance::QuickPlay;
+use crate::config::plugin::PluginManager;
+use crate::io::paths::Paths;
 
 use super::update::manager::{UpdateManager, UpdateMethodResult, UpdateRequirement};
 use super::{InstKind, Instance};

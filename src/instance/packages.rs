@@ -5,15 +5,15 @@ use mcvm_shared::translate;
 use mcvm_shared::versions::VersionInfo;
 use reqwest::Client;
 
-use crate::data::addon::AddonExt;
-use crate::data::config::plugin::PluginManager;
-use crate::io::files::paths::Paths;
+use crate::addon::AddonExt;
+use crate::config::plugin::PluginManager;
 use crate::io::lock::{Lockfile, LockfileAddon};
+use crate::io::paths::Paths;
 use crate::pkg::eval::{EvalData, EvalInput, Routine};
 use crate::pkg::reg::PkgRegistry;
 
 use super::Instance;
-use crate::data::config::package::PackageConfig;
+use crate::config::package::PackageConfig;
 
 use std::collections::HashMap;
 use std::future::Future;

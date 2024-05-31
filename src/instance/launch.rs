@@ -16,9 +16,9 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 use super::update::manager::UpdateManager;
-use crate::data::config::instance::QuickPlay;
-use crate::data::config::plugin::PluginManager;
-use crate::io::files::paths::Paths;
+use crate::config::instance::QuickPlay;
+use crate::config::plugin::PluginManager;
+use crate::io::paths::Paths;
 
 use super::Instance;
 

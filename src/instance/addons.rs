@@ -4,8 +4,8 @@ use anyhow::{ensure, Context};
 use mcvm_shared::addon::{Addon, AddonKind};
 use mcvm_shared::versions::{VersionInfo, VersionPattern};
 
-use crate::data::addon::{self, AddonExt};
-use crate::io::files::paths::Paths;
+use crate::addon::{self, AddonExt};
+use crate::io::paths::Paths;
 
 use super::{InstKind, Instance};
 

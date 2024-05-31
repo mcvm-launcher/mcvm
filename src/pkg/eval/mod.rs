@@ -43,12 +43,12 @@ use self::script::eval_script_package;
 
 use super::reg::PkgRegistry;
 use super::Package;
-use crate::data::addon::{self, AddonLocation, AddonRequest};
-use crate::data::config::package::PackageConfig;
-use crate::data::config::package::PackageConfigSource;
-use crate::data::config::plugin::PluginManager;
-use crate::data::config::profile::GameModifications;
-use crate::io::files::paths::Paths;
+use crate::addon::{self, AddonLocation, AddonRequest};
+use crate::config::package::PackageConfig;
+use crate::config::package::PackageConfigSource;
+use crate::config::plugin::PluginManager;
+use crate::config::profile::GameModifications;
+use crate::io::paths::Paths;
 use crate::util::hash::{
 	get_hash_str_as_hex, HASH_SHA256_RESULT_LENGTH, HASH_SHA512_RESULT_LENGTH,
 };

@@ -16,7 +16,7 @@ use mcvm_core::io::java::install::JavaInstallation;
 // use reqwest::Client;
 
 // use crate::data::config::plugin::PluginManager;
-// use crate::io::files::paths::Paths;
+// use crate::io::paths::Paths;
 
 // use super::{update::manager::UpdateManager, Profile};
 

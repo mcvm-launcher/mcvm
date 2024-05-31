@@ -3,7 +3,7 @@ use mcvm_core::io::java::classpath::Classpath;
 use mcvm_core::user::UserManager;
 use mcvm_shared::modifications::Modloader;
 
-use crate::io::files::paths::Paths;
+use crate::io::paths::Paths;
 
 use super::super::update::manager::{UpdateManager, UpdateMethodResult};
 use super::{InstKind, Instance};

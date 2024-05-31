@@ -1,7 +1,7 @@
 use std::path::{Path, PathBuf};
 use std::sync::{Arc, MutexGuard};
 
-use crate::io::files::paths::Paths;
+use crate::io::paths::Paths;
 use anyhow::{anyhow, Context};
 use mcvm_core::io::{json_from_file, json_to_file_pretty};
 use mcvm_shared::output::MCVMOutput;

@@ -20,8 +20,12 @@ pub use mcvm_pkg as pkg_crate;
 pub use mcvm_plugin as plugin;
 pub use mcvm_shared as shared;
 
-/// Dealing with MCVM's data constructs, like instances and profiles
-pub mod data;
+/// Installable addons
+pub mod addon;
+/// MCVM configuration
+pub mod config;
+/// Launchable instances
+pub mod instance;
 /// File and data format input / output
 pub mod io;
 /// Dealing with packages

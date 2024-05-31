@@ -36,7 +36,7 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 use super::instance::Instance;
-use crate::io::files::paths::Paths;
+use crate::io::paths::Paths;
 use crate::pkg::reg::PkgRegistry;
 
 use serde_json::json;

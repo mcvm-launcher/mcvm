@@ -3,7 +3,7 @@ use mcvm_shared::addon::{Addon, AddonKind};
 use mcvm_shared::pkg::PackageAddonOptionalHashes;
 use reqwest::Client;
 
-use crate::io::files::paths::Paths;
+use crate::io::paths::Paths;
 use crate::util::hash::{get_best_hash, hash_file_with_best_hash};
 use mcvm_core::io::files::{create_leading_dirs, update_hardlink};
 use mcvm_core::net::download;
