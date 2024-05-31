@@ -167,6 +167,7 @@ async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
 		);
 	}
 
+	print_indent();
 	if icons_enabled() {
 		print!("{} ", PACKAGE);
 	}
