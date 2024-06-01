@@ -12,18 +12,20 @@ When you first run a command that reads from the config, a default configuration
 		"user": { .. }
 	},
 	"default_user": ..,
+	"instances": {
+		"instance": { .. }
+	},
 	"profiles": {
 		"profile": { .. }
 	},
-	"packages": [
-		..
-	],
-	"instance_presets": { .. },
+	"instance_groups": { 
+		"group": [ .. ]
+	},
 	"preferences": { .. }
 }
 ```
 
-- `packages`: Packages that will be applied to every profile. Can be overridden by profiles.
+- `instance_groups`: Named groups of instance IDs that can be used to easily refer to multiple instances
 
 ## Users
 
@@ -42,47 +44,19 @@ Users are defined in the `users` object in the base of the config. User structur
 
 There is a field called `default_user` where you should specify which user you are currently using. Otherwise, MCVM will not know which user to start the game with by default and you will have to specify it every time.
 
-## Profiles
-
-Profiles are listed in the same id-value format as users under the `profiles` object. They look like this:
-
-```
-"id": {
-	"version": string,
-	"modloader": modloader,
-	"client_type": client_type,
-	"server_type": client_type,
-	"instances": { .. },
-	"packages": [ .. ] | {
-		"global": [ .. ],
-		"client": [ .. ],
-		"server": [ .. ]
-	},
-	"package_stability": "stable" | "latest"
-}
-```
-
-- `version`: The Minecraft version of the profile. Can use `"latest"` or `"latest_snapshot"` as special identifiers to get the latest version.
-- `modloader` (Optional): The modloader for the profile, which can be used to set both the client and server type automatically.
-- `client_type` (Optional): The modification type for the client. Defaults to using the `modloader` setting.
-- `server_type` (Optional): The modification type for the server. Defaults to using the `modloader` setting.
-- `instances`: The list of instances attached to this profile.
-- `packages` (Optional): Can either be a list of packages to apply to every instance in the profile, or an object of multiple lists with a different set of packages for each type of instance. The `global` key will apply to every instance. These override packages installed globally, but can be overridden by instances.
-- `package_stability` (Optional): Global stability setting for all packages in this profile. Defaults to `"stable"`.
-
 ## Instances
 
-Instances are defined in the id-value format underneath the `instances` object of a profile. They have two formats:
-
-```json
-"id": "client" | "server"
-```
-
-or
+Instances are defined in the id-value format underneath the `instances` object of the config. They look like this:
 
 ```
 "id": {
 	"type": "client" | "server",
+	"from": string,
+	"version": string,
+	"modloader": modloader,
+	"client_type": client_type,
+	"server_type": client_type,
+	"package_stability": "stable" | "latest",
 	"launch": {
 		"args": {
 			"jvm": [string] | string,
@@ -124,6 +98,12 @@ or
 The first form just has the type of the instance. All fields are optional unless stated otherwise.
 
 - `type` (Required): The type of the instance, either `"client"` or `"server"`.
+- `from`: A [profile](#profiles) to derive configuration from.
+- `version`: The Minecraft version of the instance. Can use `"latest"` or `"latest_snapshot"` as special identifiers to get the latest version. This is technically a required field, but can be derived from a profile instead.
+- `modloader`: The modloader for the instance, which can be used to set both the client and server type automatically.
+- `client_type`: The modification type for the client. Defaults to using the `modloader` setting.
+- `server_type`: The modification type for the server. Defaults to using the `modloader` setting.
+- `package_stability`: Global stability setting for all packages in this instance. Defaults to `"stable"`.
 - `launch`: Options that modify the game execution.
 - `launch.args`: Custom arguments that will be passed to the Java Virtual Machine and game. Each one is optional and can either be a string of arguments separated by spaces or a list.
 - `launch.memory`: Memory sizes for the Java heap initial and maximum space. Use a string to set both (recommended), or set them individually using an object. These follow the same format as the Java arguments (e.g. `1024M` or `10G`) and should be preferred to using custom arguments as it allows MCVM to do some extra things.
@@ -131,14 +111,31 @@ The first form just has the type of the instance. All fields are optional unless
 - `launch.wrapper`: A command to wrap the launch command in. Set the command and its arguments.
 - `launch.java`: The Java installation you would like to use. Can either be one of `"auto"`, `"system"`, `"adoptium"`, `"zulu"`, or `"graalvm"`, or a path to a custom Java installation. Defaults to `"auto"`, which automatically picks or downloads the best Java flavor for your system. The `"system"` setting will try to find an existing installation on your system, and will fail if it doesn't find one. If the system setting doesn't find Java even though you know it is installed, let us know with an issue. The custom Java path must have the JVM executable at `{path}/bin/java`.
 - `launch.use_log4j_config`: Whether to use Mojang's config for Log4J on the client. Defaults to false.
-
 - `datapack_folder`: Make MCVM install datapack type addons to this folder instead of every existing world. This provides better behavior than the default one, but requires a modification of some sort that enables global datapacks. This path is relative to the game directory of the instance (`.minecraft` or the folder where the server.properties is).
-- `packages`: Packages to install on this instance specifically. Overrides packages installed globally and on the profile.
+- `packages`: Packages to install on this instance specifically. Overrides packages installed on the profile.
 - `preset`: A preset from the `instance_presets` field to base this instance on.
+
+## Profiles
+
+Profiles allow you to easily share configuration between instances and keep them in sync without having to rewrite the same thing many times. Instances and profiles can use the `from` field to derive from other profiles in a composable manner. Profiles are listed in the same id-value format as instances under the `profiles` object. They look like this:
+
+```
+"id": {
+	InstanceConfig...,
+	"packages": [ .. ] | {
+		"global": [ .. ],
+		"client": [ .. ],
+		"server": [ .. ]
+	}
+}
+```
+
+- `InstanceConfig`: Profiles have all of the same fields as instances, which they provide to instances that derive them
+- `packages` (Optional): Can either be a list of packages to apply to every instance in the profile, or an object of multiple lists with a different set of packages for each type of instance. The `global` key will apply to every instance.
 
 ## Packages
 
-Packages are specified globally in the `packages` list, for a specific profile in its `packages` list, or in an instance's package list. Each package has two valid forms:
+Packages are specified in an instance's package list or for a profile in its packages list. Each package has two valid forms:
 
 ```
 "id"
