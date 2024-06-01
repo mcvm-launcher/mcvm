@@ -9,15 +9,18 @@ use std::{path::PathBuf, process::Command};
 #[derive(Debug, Subcommand)]
 pub enum ConfigSubcommand {
 	#[command(about = "Edit config using your default text editor")]
-	Edit {},
+	Edit,
 	#[command(about = "Edit plugin config using your default text editor")]
-	EditPlugins {},
+	EditPlugins,
+	#[command(about = "Backup configuration files to identical copies")]
+	Backup,
 }
 
 pub async fn run(subcommand: ConfigSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
 	match subcommand {
-		ConfigSubcommand::Edit {} => edit(data).await,
-		ConfigSubcommand::EditPlugins {} => edit_plugins(data).await,
+		ConfigSubcommand::Edit => edit(data).await,
+		ConfigSubcommand::EditPlugins => edit_plugins(data).await,
+		ConfigSubcommand::Backup => backup(data).await,
 	}
 }
 
@@ -37,6 +40,24 @@ async fn edit_plugins(data: &mut CmdData) -> anyhow::Result<()> {
 	PluginManager::create_default(&data.paths).context("Failed to create default config")?;
 
 	edit_text(path).context("Failed to edit config")?;
+
+	Ok(())
+}
+
+async fn backup(data: &mut CmdData) -> anyhow::Result<()> {
+	let config_path = Config::get_path(&data.paths);
+	let plugins_path = PluginManager::get_path(&data.paths);
+
+	Config::create_default(&config_path).context("Failed to create default config")?;
+	PluginManager::create_default(&data.paths).context("Failed to create default plugin config")?;
+
+	let mut backup_config_path = config_path.clone();
+	let mut backup_plugins_path = plugins_path.clone();
+	backup_config_path.set_extension("json.bak");
+	backup_plugins_path.set_extension("json.bak");
+	std::fs::copy(config_path, backup_config_path).context("Failed to backup config file")?;
+	std::fs::copy(plugins_path, backup_plugins_path)
+		.context("Failed to backup plugin config file")?;
 
 	Ok(())
 }
