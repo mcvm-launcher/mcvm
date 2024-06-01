@@ -1,4 +1,6 @@
-# Modifications
++++
+title = "Modifications"
++++
 
 MCVM and its packages support multiple different types of modifications to the game, such as modloaders and plugin types. The package format attempts to support as many modifications as possible, but that does not mean that every launcher is able to install all of them automatically.
 

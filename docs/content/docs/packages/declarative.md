@@ -1,3 +1,7 @@
++++
+title = "Declarative Packages"
++++
+
 This is the format for declarative packages
 
 ```

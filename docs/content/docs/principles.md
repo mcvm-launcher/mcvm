@@ -1,4 +1,7 @@
-# MCVM Principles
++++
+title = "Principles"
++++
+
 This is a list of design principles that MCVM as a software and ecosystem will try to follow to the best of its ability.
 
 ## 1. Packages are secure

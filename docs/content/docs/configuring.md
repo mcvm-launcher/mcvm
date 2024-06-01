@@ -1,4 +1,6 @@
-# Configuring
++++
+title = "Configuring"
++++
 
 MCVM can be configured by editing the `mcvm.json` file in your config directory. On Linux, this directory is `${XDG_CONFIG_DIR}/mcvm/` (usually `~/.config/mcvm/`). On Windows, the config file will be in `%APPDATA%/Roaming/mcvm/`. Note that these paths are only relevant for the official CLI, as any implementation can (and should) change these directories to whatever they want.
 

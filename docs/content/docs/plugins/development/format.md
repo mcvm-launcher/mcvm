@@ -1,4 +1,6 @@
-# Plugin Format
++++
+title = "Plugin Format"
++++
 
 ## Files
 The plugin file format is pretty simple. Inside the plugins directory (`MCVM_DATA/plugins`), all you need is a **manifest** file, located either at `plugins/plugin_id.json` or `plugins/plugin_id/plugin.json`. The nested location allows you to bundle other assets along with your plugin easily, but both locations work exactly the same.

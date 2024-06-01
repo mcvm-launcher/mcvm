@@ -1,4 +1,9 @@
-# Getting Started With MCVM
++++
+title = "Getting Started with MCVM"
+sort_by = "title"
+template = "doc_section.html"
+page_template = "doc_page.html"
++++
 
 This guide will show you how to use the MCVM CLI (Command-line interface) from the basics to more advanced features. This guide will cover most of the important things, but more in-depth documentation can be found on reference pages like [configuring.md](../configuring.md).
 

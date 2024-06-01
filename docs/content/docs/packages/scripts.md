@@ -1,3 +1,7 @@
++++
+title = "Package Scripts"
++++
+
 Package scripts can be more difficult to maintain for most packages which just need to install one or more addons. When you need more control over the install process, a package script can be used.
 
 # Syntax

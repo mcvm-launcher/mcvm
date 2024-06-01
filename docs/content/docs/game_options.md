@@ -1,4 +1,6 @@
-# Game Options
++++
+title = "Game Options"
++++
 
 MCVM is capable of applying global options for both client and server
 that are inherited across all of your profiles. The options are agnostic
