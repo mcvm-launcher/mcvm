@@ -296,9 +296,10 @@ async fn update(
 	};
 
 	for group in groups {
+		let group = Arc::from(group);
 		let group = config
 			.instance_groups
-			.get(&Arc::from(group.clone()))
+			.get(&group)
 			.with_context(|| format!("Instance group '{group}' does not exist"))?;
 		ids.extend(group.clone());
 	}
