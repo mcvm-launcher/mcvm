@@ -167,20 +167,23 @@ In most cases the first form is all you need. If you want more control over how 
 
 ## Plugins
 
+Plugins are configured in a separate file called `plugins.json` in the same directory as your normal config file.
+
+```
+{
+	"plugins": [
+  	"plugin_name" | {
+  		"name": string,
+  		"config": any
+  	}
+  	...
+  ]
+}
+```
+
 The `plugins` field allows you to specify a list of enabled plugins and options you want for them
-
-```
-[
-	"plugin_name" | {
-		"name": string,
-		"custom_config": any
-	}
-	...
-]
-```
-
 - `plugin_name`: The name / ID of the plugin to enable
-- `custom_config` (Optional): Custom configuration to give to the plugin. This will differ for whatever plugin you are using, and some do not need it at all.
+- `config` (Optional): Custom configuration to give to the plugin. This will differ for whatever plugin you are using, and some do not need it at all.
 
 ## Preferences
 
