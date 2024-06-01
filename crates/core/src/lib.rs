@@ -4,6 +4,9 @@
 //! and correct implementation available, without being bloated with extra features. Implementations
 //! for installing certain modifications, like modloaders and alternative server runtimes, will be
 //! provided in extension plugins
+//!
+//! Note: The functions in this library expect the use of the Tokio runtime and may panic
+//! if it is not used
 
 pub use mcvm_auth as auth_crate;
 

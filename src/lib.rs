@@ -3,6 +3,9 @@
 //! This is the library for MCVM and pretty much all of the features that the
 //! CLI uses.
 //!
+//! Note: The asynchronous functions in this library expect the use of the Tokio runtime and may panic
+//! if it is not used
+//!
 //! # Features
 //!
 //! - `arc`: MCVM uses Rc's in a couple places. Although these are more performant than Arc's, they
