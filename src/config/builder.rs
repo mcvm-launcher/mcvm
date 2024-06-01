@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use std::sync::Arc;
 
 use anyhow::bail;
 use mcvm_core::auth_crate::mc::ClientId;
@@ -27,6 +28,7 @@ use super::Config;
 pub struct ConfigBuilder {
 	users: UserManager,
 	instances: HashMap<InstanceID, Instance>,
+	instance_groups: HashMap<Arc<str>, Vec<InstanceID>>,
 	packages: PkgRegistry,
 	preferences: ConfigPreferences,
 	plugins: PluginManager,
@@ -40,6 +42,7 @@ impl ConfigBuilder {
 		Self {
 			users: UserManager::new(ClientId::new("".into())),
 			instances: HashMap::new(),
+			instance_groups: HashMap::new(),
 			packages,
 			preferences: prefs,
 			plugins: PluginManager::new(),
@@ -60,6 +63,13 @@ impl ConfigBuilder {
 	/// Set the default user
 	pub fn default_user(&mut self, user_id: String) -> &mut Self {
 		self.default_user = Some(user_id);
+
+		self
+	}
+
+	/// Add an instance group
+	pub fn instance_group(&mut self, id: Arc<str>, contents: Vec<InstanceID>) -> &mut Self {
+		self.instance_groups.insert(id, contents);
 
 		self
 	}
@@ -90,6 +100,7 @@ impl ConfigBuilder {
 		Ok(Config {
 			users: self.users,
 			instances: self.instances,
+			instance_groups: self.instance_groups,
 			packages: self.packages,
 			plugins: self.plugins,
 			prefs: self.preferences,

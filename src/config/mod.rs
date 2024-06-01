@@ -44,6 +44,7 @@ use serde_json::json;
 use std::collections::HashMap;
 use std::fs::File;
 use std::path::{Path, PathBuf};
+use std::sync::Arc;
 
 /// The data resulting from reading configuration.
 /// Represents all of the configured data that MCVM will use
@@ -52,6 +53,8 @@ pub struct Config {
 	pub users: UserManager,
 	/// Instances
 	pub instances: HashMap<InstanceID, Instance>,
+	/// Named groups of instances
+	pub instance_groups: HashMap<Arc<str>, Vec<InstanceID>>,
 	/// The registry of packages. Will include packages that are configured when created this way
 	pub packages: PkgRegistry,
 	/// Configured plugins
@@ -68,6 +71,7 @@ pub struct ConfigDeser {
 	users: HashMap<String, UserConfig>,
 	default_user: Option<String>,
 	instances: HashMap<InstanceID, InstanceConfig>,
+	instance_groups: HashMap<Arc<str>, Vec<InstanceID>>,
 	profiles: HashMap<ProfileID, ProfileConfig>,
 	preferences: PrefDeser,
 }
@@ -199,6 +203,7 @@ impl Config {
 		Ok(Self {
 			users,
 			instances,
+			instance_groups: config.instance_groups,
 			packages,
 			plugins,
 			prefs,
