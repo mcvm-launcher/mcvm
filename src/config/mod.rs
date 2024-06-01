@@ -241,11 +241,11 @@ fn default_config() -> serde_json::Value {
 				}
 			},
 			"instances": {
-				"1.20-client": {
+				"example-client": {
 					"from": "1.20",
 					"type": "client"
 				},
-				"1.20-server": {
+				"example-server": {
 					"from": "1.20",
 					"type": "server"
 				}
