@@ -92,7 +92,7 @@ impl CommonInstanceConfig {
 		self.launch.merge(other.launch);
 		self.datapack_folder = other.datapack_folder.or(self.datapack_folder.clone());
 		self.packages.extend(other.packages);
-		self.plugin_config.extend(other.plugin_config);
+		mcvm_core::util::json::merge_objects(&mut self.plugin_config, other.plugin_config);
 
 		self
 	}

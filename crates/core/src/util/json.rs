@@ -22,17 +22,21 @@ pub fn format_json(text: &str) -> Result<String, serde_json::Error> {
 pub fn merge(a: &mut Value, b: Value) {
 	if let Value::Object(a) = a {
 		if let Value::Object(b) = b {
-			for (k, v) in b {
-				if v.is_null() {
-					a.remove(&k);
-				} else {
-					merge(a.entry(k).or_insert(Value::Null), v);
-				}
-			}
-
+			merge_objects(a, b);
 			return;
 		}
 	}
 
 	*a = b;
+}
+
+/// Utility function to merge serde_json objects
+pub fn merge_objects(a: &mut serde_json::Map<String, Value>, b: serde_json::Map<String, Value>) {
+	for (k, v) in b {
+		if v.is_null() {
+			a.remove(&k);
+		} else {
+			merge(a.entry(k).or_insert(Value::Null), v);
+		}
+	}
 }
