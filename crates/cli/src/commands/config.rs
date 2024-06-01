@@ -45,7 +45,14 @@ async fn edit_plugins(data: &mut CmdData) -> anyhow::Result<()> {
 fn edit_text(path: PathBuf) -> anyhow::Result<()> {
 	#[cfg(target_os = "linux")]
 	let mut command = {
-		let editor = std::env::var("EDITOR").unwrap_or_else(|_| "vim".into());
+		let editor = std::env::var("EDITOR").unwrap_or_else(|_| {
+			// Pick the best Vim-style editor based on which one is available
+			if which::which("nvim").is_ok_and(|path| path.exists()) {
+				"nvim".into()
+			} else {
+				"vim".into()
+			}
+		});
 		Command::new(editor)
 	};
 	#[cfg(target_os = "windows")]

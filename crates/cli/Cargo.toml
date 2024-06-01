@@ -28,3 +28,6 @@ serde = { workspace = true }
 serde_json = { workspace = true }
 termimad = { workspace = true }
 tokio = { workspace = true, features = ["macros", "fs"] }
+
+[target.'cfg(target_os = "linux")'.dependencies]
+which = { workspace = true }
