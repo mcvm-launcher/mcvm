@@ -30,6 +30,9 @@ pub struct InstanceConfig {
 	/// The type or side of this instance
 	#[serde(rename = "type")]
 	pub side: Option<Side>,
+	/// The display name of this instance
+	#[serde(default)]
+	pub name: Option<String>,
 	/// The common config of this instance
 	#[serde(flatten)]
 	pub common: CommonInstanceConfig,
@@ -349,6 +352,7 @@ pub fn merge_instance_configs(
 ) -> anyhow::Result<InstanceConfig> {
 	let mut out = preset.clone();
 	out.common.merge(config.common);
+	out.name = config.name.or(out.name);
 	out.side = config.side.or(out.side);
 	out.window.merge(config.window);
 

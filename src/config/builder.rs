@@ -179,11 +179,18 @@ impl<'parent> InstanceBuilder<'parent> {
 	fn with_parent(id: InstanceID, side: Side, parent: Option<&'parent mut ConfigBuilder>) -> Self {
 		let config = InstanceConfig {
 			side: Some(side),
+			name: None,
 			common: Default::default(),
 			window: Default::default(),
 		};
 
 		Self { id, config, parent }
+	}
+
+	/// Set the name of the instance
+	pub fn name(&mut self, name: String) -> &mut Self {
+		self.config.name = Some(name);
+		self
 	}
 
 	/// Set the modloader of the instance

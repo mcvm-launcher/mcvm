@@ -20,7 +20,7 @@ When you first run a command that reads from the config, a default configuration
 	"profiles": {
 		"profile": { .. }
 	},
-	"instance_groups": { 
+	"instance_groups": {
 		"group": [ .. ]
 	},
 	"preferences": { .. }
@@ -55,6 +55,7 @@ Instances are defined in the id-value format underneath the `instances` object o
 	"type": "client" | "server",
 	"from": string,
 	"version": string,
+	"name": string,
 	"modloader": modloader,
 	"client_type": client_type,
 	"server_type": client_type,
@@ -102,6 +103,7 @@ The first form just has the type of the instance. All fields are optional unless
 - `type` (Required): The type of the instance, either `"client"` or `"server"`.
 - `from`: A [profile](#profiles) to derive configuration from.
 - `version`: The Minecraft version of the instance. Can use `"latest"` or `"latest_snapshot"` as special identifiers to get the latest version. This is technically a required field, but can be derived from a profile instead.
+- `name`: A custom display name for this instance. Has no rules and does not have to be unique.
 - `modloader`: The modloader for the instance, which can be used to set both the client and server type automatically.
 - `client_type`: The modification type for the client. Defaults to using the `modloader` setting.
 - `server_type`: The modification type for the server. Defaults to using the `modloader` setting.
@@ -184,6 +186,7 @@ Plugins are configured in a separate file called `plugins.json` in the same dire
 ```
 
 The `plugins` field allows you to specify a list of enabled plugins and options you want for them
+
 - `plugin_name`: The name / ID of the plugin to enable
 - `config` (Optional): Custom configuration to give to the plugin. This will differ for whatever plugin you are using, and some do not need it at all.
 
