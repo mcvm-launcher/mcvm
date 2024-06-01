@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use anyhow::Context;
 use clap::Subcommand;
 use color_print::{cprint, cprintln};
@@ -52,6 +54,9 @@ pub enum InstanceSubcommand {
 		/// Whether to skip updating packages
 		#[arg(short = 'P', long)]
 		skip_packages: bool,
+		/// Additional instance groups to update
+		#[arg(short, long)]
+		groups: Vec<String>,
 		/// The instances to update
 		instances: Vec<String>,
 	},
@@ -75,8 +80,9 @@ pub async fn run(command: InstanceSubcommand, data: &mut CmdData) -> anyhow::Res
 			force,
 			all,
 			skip_packages,
+			groups,
 			instances,
-		} => update(data, instances, all, force, skip_packages).await,
+		} => update(data, instances, groups, all, force, skip_packages).await,
 		InstanceSubcommand::Dir { instance } => dir(data, instance).await,
 	}
 }
@@ -275,6 +281,7 @@ async fn dir(data: &mut CmdData, instance: Option<String>) -> anyhow::Result<()>
 async fn update(
 	data: &mut CmdData,
 	instances: Vec<String>,
+	groups: Vec<String>,
 	all: bool,
 	force: bool,
 	skip_packages: bool,
@@ -282,11 +289,19 @@ async fn update(
 	data.ensure_config(true).await?;
 	let config = data.config.get_mut();
 
-	let ids: Vec<InstanceID> = if all {
+	let mut ids: Vec<InstanceID> = if all {
 		config.instances.keys().cloned().collect()
 	} else {
 		instances.into_iter().map(InstanceID::from).collect()
 	};
+
+	for group in groups {
+		let group = config
+			.instance_groups
+			.get(&Arc::from(group.clone()))
+			.with_context(|| format!("Instance group '{group}' does not exist"))?;
+		ids.extend(group.clone());
+	}
 
 	let client = Client::new();
 	let mut lock = Lockfile::open(&data.paths).context("Failed to open lockfile")?;
