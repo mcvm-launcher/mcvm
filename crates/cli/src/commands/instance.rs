@@ -52,8 +52,8 @@ pub enum InstanceSubcommand {
 		/// Whether to skip updating packages
 		#[arg(short = 'P', long)]
 		skip_packages: bool,
-		/// The instance to update
-		instance: String,
+		/// The instances to update
+		instances: Vec<String>,
 	},
 	#[command(about = "Print the directory of an instance")]
 	Dir {
@@ -75,8 +75,8 @@ pub async fn run(command: InstanceSubcommand, data: &mut CmdData) -> anyhow::Res
 			force,
 			all,
 			skip_packages,
-			instance,
-		} => update(data, instance, all, force, skip_packages).await,
+			instances,
+		} => update(data, instances, all, force, skip_packages).await,
 		InstanceSubcommand::Dir { instance } => dir(data, instance).await,
 	}
 }
@@ -274,7 +274,7 @@ async fn dir(data: &mut CmdData, instance: Option<String>) -> anyhow::Result<()>
 
 async fn update(
 	data: &mut CmdData,
-	instance: String,
+	instances: Vec<String>,
 	all: bool,
 	force: bool,
 	skip_packages: bool,
@@ -285,7 +285,7 @@ async fn update(
 	let ids: Vec<InstanceID> = if all {
 		config.instances.keys().cloned().collect()
 	} else {
-		vec![InstanceID::from(instance)]
+		instances.into_iter().map(InstanceID::from).collect()
 	};
 
 	let client = Client::new();
