@@ -17,6 +17,8 @@ jobs:
           tool: zola@0.17.1
       - name: Build Docs
         run: cd docs && zola build --force
+      - name: Debug
+        run: pwd && ls
       - name: Upload docs artifact
         uses: actions/upload-pages-artifact@v3
         with:
