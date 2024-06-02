@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install Theme
-        run: git submodule init
+        run: git submodule update --init --recursive
       - name: Install Zola
         uses: taiki-e/install-action@v2
         with:
