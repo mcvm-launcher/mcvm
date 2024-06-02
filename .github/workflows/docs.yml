@@ -18,11 +18,11 @@ jobs:
       - name: Build Docs
         run: cd docs && zola build --force
       - name: Debug
-        run: pwd && ls
+        run: pwd && ls docs/public
       - name: Upload docs artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: public/**
+          path: docs/public
   deploy-docs:
     needs: build-docs
 
