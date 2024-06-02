@@ -9,6 +9,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - name: Install Theme
+        run: git submodule init
       - name: Install Zola
         uses: taiki-e/install-action@v2
         with:
