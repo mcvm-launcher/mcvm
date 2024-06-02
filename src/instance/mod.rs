@@ -6,6 +6,8 @@ pub mod create;
 pub mod launch;
 /// Managing and installing packages on an instance
 pub mod packages;
+/// Import and export of instances to other formats
+pub mod transfer;
 /// Updating an instance
 pub mod update;
 
@@ -75,6 +77,8 @@ impl InstKind {
 /// The stored configuration on an instance
 #[derive(Debug)]
 pub struct InstanceStoredConfig {
+	/// The instance display name
+	pub name: Option<String>,
 	/// The Minecraft version
 	pub version: MinecraftVersion,
 	/// Modifications to the instance

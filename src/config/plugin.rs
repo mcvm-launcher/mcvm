@@ -194,6 +194,21 @@ impl PluginManager {
 		inner.manager.call_hook(hook, arg, &paths.core, o)
 	}
 
+	/// Call a plugin hook on a specific plugin
+	pub fn call_hook_on_plugin<H: Hook>(
+		&self,
+		hook: H,
+		plugin_id: &str,
+		arg: &H::Arg,
+		paths: &Paths,
+		o: &mut impl MCVMOutput,
+	) -> anyhow::Result<Option<HookHandle<H>>> {
+		let inner = self.inner.lock().map_err(|x| anyhow!("{x}"))?;
+		inner
+			.manager
+			.call_hook_on_plugin(hook, plugin_id, arg, &paths.core, o)
+	}
+
 	/// Get a lock for the inner mutex
 	pub fn get_lock(&self) -> anyhow::Result<MutexGuard<PluginManagerInner>> {
 		let inner = self.inner.lock().map_err(|x| anyhow!("{x}"))?;

@@ -3,7 +3,7 @@
 //! This library is used by both MCVM to load plugins, and as a framework for defining
 //! Rust plugins for MCVM to use
 
-use anyhow::Context;
+use anyhow::{bail, Context};
 use hooks::{Hook, HookHandle, OnLoad};
 use mcvm_core::Paths;
 use mcvm_shared::output::MCVMOutput;
@@ -83,6 +83,27 @@ impl PluginManager {
 		}
 
 		Ok(out)
+	}
+
+	/// Call a plugin hook on the manager on a specific plugin
+	pub fn call_hook_on_plugin<H: Hook>(
+		&self,
+		hook: H,
+		plugin_id: &str,
+		arg: &H::Arg,
+		paths: &Paths,
+		o: &mut impl MCVMOutput,
+	) -> anyhow::Result<Option<HookHandle<H>>> {
+		for plugin in &self.plugins {
+			if plugin.get_id() == plugin_id {
+				let result = plugin
+					.call_hook(&hook, arg, paths, self.mcvm_version, o)
+					.context("Plugin hook failed")?;
+				return Ok(result);
+			}
+		}
+
+		bail!("No plugin found that matched the given ID")
 	}
 
 	/// Iterate over the plugins

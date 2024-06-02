@@ -48,6 +48,7 @@ pub trait Hook {
 	}
 
 	/// Call the hook using the specified program
+	#[allow(clippy::too_many_arguments)]
 	fn call(
 		&self,
 		cmd: &str,
@@ -59,6 +60,7 @@ pub trait Hook {
 		state: Arc<Mutex<serde_json::Value>>,
 		paths: &Paths,
 		mcvm_version: Option<&str>,
+		plugin_id: &str,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<HookHandle<Self>>
 	where
@@ -96,7 +98,10 @@ pub trait Hook {
 		if Self::get_takes_over() {
 			cmd.spawn()?.wait()?;
 
-			Ok(HookHandle::constant(Self::Result::default()))
+			Ok(HookHandle::constant(
+				Self::Result::default(),
+				plugin_id.to_string(),
+			))
 		} else {
 			cmd.stdout(std::process::Stdio::piped());
 
@@ -114,6 +119,7 @@ pub trait Hook {
 				},
 				plugin_state: Some(state),
 				use_base64,
+				plugin_id: plugin_id.to_string(),
 			};
 
 			Ok(handle)
@@ -127,16 +133,23 @@ pub struct HookHandle<H: Hook> {
 	inner: HookHandleInner<H>,
 	plugin_state: Option<Arc<Mutex<serde_json::Value>>>,
 	use_base64: bool,
+	plugin_id: String,
 }
 
 impl<H: Hook> HookHandle<H> {
 	/// Create a new constant handle
-	pub fn constant(result: H::Result) -> Self {
+	pub fn constant(result: H::Result, plugin_id: String) -> Self {
 		Self {
 			inner: HookHandleInner::Constant(result),
 			plugin_state: None,
 			use_base64: true,
+			plugin_id,
 		}
+	}
+
+	/// Get the ID of the plugin that returned this handle
+	pub fn get_id(&self) -> &String {
+		&self.plugin_id
 	}
 
 	/// Poll the handle, returning true if the handle is ready
@@ -467,3 +480,73 @@ def_hook!(
 	(),
 	LanguageMap,
 );
+
+def_hook!(
+	AddInstanceTransferFormat,
+	"add_instance_transfer_format",
+	"Hook for adding information about an instance transfer format",
+	(),
+	InstanceTransferFormat,
+);
+
+/// Information about an instance transfer format
+#[derive(Serialize, Deserialize, Default)]
+#[serde(default)]
+pub struct InstanceTransferFormat {
+	/// The ID for this format
+	pub id: String,
+	/// Info for the import side of this format
+	pub import: Option<InstanceTransferFormatDirection>,
+	/// Info for the export side of this format
+	pub export: Option<InstanceTransferFormatDirection>,
+}
+
+/// Information about a side of an instance transfer format
+#[derive(Serialize, Deserialize, Default)]
+#[serde(default)]
+pub struct InstanceTransferFormatDirection {
+	/// Support status of the modloader
+	pub modloader: InstanceTransferFeatureSupport,
+	/// Support status of the mods
+	pub mods: InstanceTransferFeatureSupport,
+	/// Support status of the launch settings
+	pub launch_settings: InstanceTransferFeatureSupport,
+}
+
+/// Support status of some feature in an instance transfer format
+#[derive(Serialize, Deserialize, Default, Clone, Copy)]
+pub enum InstanceTransferFeatureSupport {
+	/// This feature is supported by the transfer
+	#[default]
+	Supported,
+	/// This feature is unsupported by the nature of the format
+	FormatUnsupported,
+	/// This feature is not yet supported by the plugin
+	PluginUnsupported,
+}
+
+def_hook!(
+	ExportInstance,
+	"export_instance",
+	"Hook for exporting an instance",
+	ExportInstanceArg,
+	(),
+);
+
+/// Argument provided to the export_instance hook
+#[derive(Serialize, Deserialize, Default)]
+#[serde(default)]
+pub struct ExportInstanceArg {
+	/// The ID of the transfer format being used
+	pub format: String,
+	/// The ID of the instance
+	pub id: String,
+	/// The name of the instance
+	pub name: Option<String>,
+	/// The side of the instance
+	pub side: Option<Side>,
+	/// The directory where the instance game files are located
+	pub game_dir: String,
+	/// The desired path for the resulting instance
+	pub result_path: String,
+}

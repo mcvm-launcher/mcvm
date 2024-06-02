@@ -72,11 +72,13 @@ impl Plugin {
 					self.state.clone(),
 					paths,
 					mcvm_version,
+					&self.id,
 					o,
 				)
 				.map(Some),
 			HookHandler::Constant { constant } => Ok(Some(HookHandle::constant(
 				serde_json::from_value(constant.clone())?,
+				self.id.clone(),
 			))),
 			HookHandler::Native { function } => {
 				let arg = serde_json::to_string(arg)
@@ -84,7 +86,7 @@ impl Plugin {
 				let result = function(arg).context("Native hook handler failed")?;
 				let result = serde_json::from_str(&result)
 					.context("Failed to deserialize native hook result")?;
-				Ok(Some(HookHandle::constant(result)))
+				Ok(Some(HookHandle::constant(result, self.id.clone())))
 			}
 		}
 	}

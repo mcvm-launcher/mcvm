@@ -89,6 +89,11 @@ define_translations! {
 	StartUpdatingClient, "When starting to update a client", "Updating client '%id'";
 	StartUpdatingServer, "When starting to update a server", "Updating server '%id'";
 	PasskeyAccepted, "When finishing decrypting with a passkey", "Passkey accepted";
+	TransferFeatureUnsupportedByFormat, "When an instance transfer feature is unsupported by the format", "Transferring %feat is not supported by the format";
+	TransferFeatureUnsupportedByPlugin, "When an instance transfer feature is unsupported by the plugin", "Transferring %feat is not supported by the plugin yet";
+	TransferModloaderFeature, "Instance transfer modloader feature", "the modloader";
+	TransferModsFeature, "Instance transfer modloader feature", "mods";
+	TransferLaunchSettingsFeature, "Instance transfer launch settings feature", "launch setttings";
 }
 
 /// Replaces placeholders in a translated key

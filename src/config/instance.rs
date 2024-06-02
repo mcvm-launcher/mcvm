@@ -427,6 +427,7 @@ pub fn read_instance_config(
 	}
 
 	let stored_config = InstanceStoredConfig {
+		name: config.name,
 		version,
 		modifications: game_modifications,
 		launch: config.common.launch.to_options()?,
