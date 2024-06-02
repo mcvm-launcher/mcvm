@@ -102,6 +102,7 @@ impl CustomPlugin {
 		"add_instance_transfer_format",
 		AddInstanceTransferFormat
 	);
+	hook_interface!(export_instance, "export_instance", ExportInstance);
 
 	/// Handle a hook
 	fn handle_hook<H: Hook>(
