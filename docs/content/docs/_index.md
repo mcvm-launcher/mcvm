@@ -1,8 +1,8 @@
 +++
 title = "MCVM Documentation"
 sort_by = "title"
-template = "doc_section.html"
-page_template = "doc_page.html"
+# template = "section.html"
+# page_template = "page.html"
 +++
 
 This is the user and developer documentation for MCVM.

@@ -1,0 +1,10 @@
+{% extends "index.html" %}<!---->
+{% block main %}
+<!-- Section Title -->
+<h1 class="mb-16">{{ section.title }}</h1>
+<!-- Pages -->
+{% include "section_list.html" %}<!---->
+{% include "partials/page_list.html" %}<!---->
+<hr />
+<section>{{ section.content | safe }}</section>
+{% endblock main %}

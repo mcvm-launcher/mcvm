@@ -1,0 +1,32 @@
+<!-- Pages -->
+
+{% for subsection_name in section.subsections %}
+{% set subsection = get_section(path= subsection_name) %}
+<section
+  class="block-bg relative mb-4 rounded-lg p-4 first-of-type:mt-0 last-of-type:mb-0 active:scale-95 lg:mb-6 lg:p-6"
+>
+  {% if subsection.extra.cover_image %}
+  <figure class="mb-4 mt-0">
+    <img
+      class="h-auto w-full rounded-lg"
+      src="{{ get_url(path=subsection.extra.cover_image) }}"
+      alt="cover"
+    />
+  </figure>
+  {% endif %}<!---->
+
+  <h2 class="!my-0 pb-1 font-bold !leading-none">{{ subsection.title }}</h2>
+
+  <div class="not-prose my-1 truncate">
+    {% if subsection.description %}
+    <p>{{ subsection.description }}</p>
+    {% elif subsection.summary %}<!---->
+    {{ subsection.summary | safe }}<!---->
+    {% endif %}
+  </div>
+
+  {% include "section_info.html" %}
+
+  <a class="absolute inset-0 text-[0]" href="{{ subsection.permalink }}">{{ subsection.title }}</a>
+</section>
+{% endfor %}

@@ -4,3 +4,4 @@
 /.env
 /crates/tools/schemas
 /plugins/zipped_docs.zip
+/docs/public
