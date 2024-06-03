@@ -147,10 +147,13 @@ impl VersionPattern {
 			"*" => Self::Any,
 			text => {
 				if let Some(last) = text.chars().last() {
-					match last {
-						'-' => return Self::Before(text[..text.len() - 1].to_string()),
-						'+' => return Self::After(text[..text.len() - 1].to_string()),
-						_ => {}
+					// Check for escape
+					if !text.chars().nth(text.len() - 2).is_some_and(|x| x == '\\') {
+						match last {
+							'-' => return Self::Before(text[..text.len() - 1].to_string()),
+							'+' => return Self::After(text[..text.len() - 1].to_string()),
+							_ => {}
+						}
 					}
 				}
 
@@ -159,13 +162,16 @@ impl VersionPattern {
 					let start = range_split
 						.first()
 						.expect("First element in range split should exist");
-					let end = range_split
-						.get(1)
-						.expect("Second element in range split should exist");
-					return Self::Range(start.to_string(), end.to_string());
+					// Check for escape
+					if !start.ends_with('\\') {
+						let end = range_split
+							.get(1)
+							.expect("Second element in range split should exist");
+						return Self::Range(start.to_string(), end.to_string());
+					}
 				}
 
-				Self::Single(text.to_string())
+				Self::Single(text.replace("\\", ""))
 			}
 		}
 	}
@@ -301,6 +307,18 @@ mod tests {
 		assert_eq!(
 			VersionPattern::from("1.17.1..1.19.3"),
 			VersionPattern::Range("1.17.1".into(), "1.19.3".into())
+		);
+	}
+
+	#[test]
+	fn test_version_pattern_parse_escape() {
+		assert_eq!(
+			VersionPattern::from("1.19.5\\+"),
+			VersionPattern::Single("1.19.5+".into())
+		);
+		assert_eq!(
+			VersionPattern::from("1.17.1\\..1.19.3"),
+			VersionPattern::Single("1.17.1..1.19.3".into())
 		);
 	}
 

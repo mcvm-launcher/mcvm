@@ -47,6 +47,8 @@ Version patterns are strings that can be used to match against one or more versi
 - `latest` ("latest"): Matches only the latest version.
 - `any` ("*"): Matches any version.
 
+Each variant can be escaped using backslashes, but keep in mind that all backslashes will be stripped from the final output
+
 # The purpose of host ID instructions
 
 These should be set even if the addons for the package are not downloaded from that website. These will allow MCVM to make smart decisions in the future and automatically replace files downloaded from these sites with the correct packages and prevent file duplication.
