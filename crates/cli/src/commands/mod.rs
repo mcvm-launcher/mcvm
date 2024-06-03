@@ -27,6 +27,12 @@ use super::output::TerminalOutput;
 
 #[derive(Debug, Subcommand)]
 pub enum Command {
+	#[command(about = "Manage instances")]
+	#[clap(alias = "inst")]
+	Instance {
+		#[command(subcommand)]
+		command: InstanceSubcommand,
+	},
 	#[command(about = "Manage users and authentication")]
 	User {
 		#[command(subcommand)]
@@ -37,24 +43,11 @@ pub enum Command {
 		/// The instance to launch
 		instance: Option<String>,
 	},
-	#[command(about = "Print the mcvm version")]
-	Version,
-	#[command(about = "Deal with files created by mcvm")]
-	Files {
-		#[command(subcommand)]
-		command: FilesSubcommand,
-	},
 	#[command(about = "Manage packages")]
 	#[clap(alias = "pkg")]
 	Package {
 		#[command(subcommand)]
 		command: PackageSubcommand,
-	},
-	#[command(about = "Manage instances")]
-	#[clap(alias = "inst")]
-	Instance {
-		#[command(subcommand)]
-		command: InstanceSubcommand,
 	},
 	#[command(about = "Manage plugins")]
 	#[clap(alias = "plug")]
@@ -67,6 +60,13 @@ pub enum Command {
 	Config {
 		#[command(subcommand)]
 		command: ConfigSubcommand,
+	},
+	#[command(about = "Print the mcvm version")]
+	Version,
+	#[command(about = "Deal with files created by mcvm")]
+	Files {
+		#[command(subcommand)]
+		command: FilesSubcommand,
 	},
 	#[clap(external_subcommand)]
 	External(Vec<String>),
