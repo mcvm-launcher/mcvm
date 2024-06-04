@@ -210,6 +210,7 @@ impl PkgRegistry {
 	}
 
 	/// Evaluate a package
+	#[allow(clippy::too_many_arguments)]
 	pub async fn eval<'a>(
 		&mut self,
 		req: &ArcPkgReq,

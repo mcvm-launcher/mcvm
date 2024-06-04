@@ -171,7 +171,7 @@ impl VersionPattern {
 					}
 				}
 
-				Self::Single(text.replace("\\", ""))
+				Self::Single(text.replace('\\', ""))
 			}
 		}
 	}

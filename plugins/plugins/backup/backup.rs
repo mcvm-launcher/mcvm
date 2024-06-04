@@ -336,7 +336,7 @@ pub enum StorageType {
 
 /// Get the backup directory for an instance
 pub fn get_backup_directory(base_dir: &Path, inst_id: &str) -> PathBuf {
-	base_dir.join(inst_id.to_string())
+	base_dir.join(inst_id)
 }
 
 /// Generates a random backup ID

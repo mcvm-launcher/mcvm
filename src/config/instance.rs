@@ -91,7 +91,7 @@ impl CommonInstanceConfig {
 		self.modloader = other.modloader.or(self.modloader.clone());
 		self.client_type = other.client_type.or(self.client_type.clone());
 		self.server_type = other.server_type.or(self.server_type.clone());
-		self.package_stability = other.package_stability.or(self.package_stability.clone());
+		self.package_stability = other.package_stability.or(self.package_stability);
 		self.launch.merge(other.launch);
 		self.datapack_folder = other.datapack_folder.or(self.datapack_folder.clone());
 		self.packages.extend(other.packages);

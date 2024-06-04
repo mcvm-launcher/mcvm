@@ -65,7 +65,7 @@ pub async fn update_instance_packages<'a, O: MCVMOutput>(
 		let mut notices = Vec::new();
 		for instance_id in package_instances {
 			let instance = instances
-				.into_iter()
+				.iter_mut()
 				.find(|x| &x.id == instance_id)
 				.expect("Instance should exist");
 
@@ -138,7 +138,7 @@ pub async fn update_instance_packages<'a, O: MCVMOutput>(
 
 		for instance_id in package_instances {
 			let instance = instances
-				.into_iter()
+				.iter_mut()
 				.find(|x| &x.id == instance_id)
 				.expect("Instance should exist");
 

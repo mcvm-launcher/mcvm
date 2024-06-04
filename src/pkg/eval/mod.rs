@@ -558,6 +558,7 @@ impl<'a> PackageEvaluatorTrait<'a> for PackageEvaluator<'a> {
 }
 
 /// Resolve package dependencies
+#[allow(clippy::too_many_arguments)]
 pub async fn resolve(
 	packages: &[PackageConfig],
 	constants: &EvalConstants,

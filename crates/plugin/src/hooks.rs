@@ -80,7 +80,7 @@ pub trait Hook {
 		cmd.env(DATA_DIR_ENV, &paths.data);
 		cmd.env(CONFIG_DIR_ENV, paths.project.config_dir());
 		if let Some(mcvm_version) = mcvm_version {
-			cmd.env(MCVM_VERSION_ENV, mcvm_version.to_string());
+			cmd.env(MCVM_VERSION_ENV, mcvm_version);
 		}
 		if let Some(working_dir) = working_dir {
 			cmd.current_dir(working_dir);

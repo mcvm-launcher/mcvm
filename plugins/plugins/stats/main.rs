@@ -94,7 +94,7 @@ fn update_playtime<H: Hook>(ctx: &mut HookContext<'_, H>, instance: &str) -> any
 	let now = utc_timestamp()?;
 	let diff_minutes = (now - *start_time) / 60;
 
-	let mut stats = Stats::open(&ctx).context("Failed to open stats")?;
+	let mut stats = Stats::open(ctx).context("Failed to open stats")?;
 	stats
 		.instances
 		.entry(instance.to_string())
@@ -105,7 +105,7 @@ fn update_playtime<H: Hook>(ctx: &mut HookContext<'_, H>, instance: &str) -> any
 	*start_time = utc_timestamp()?;
 	ctx.set_persistent_state(state)?;
 
-	stats.write(&ctx).context("Failed to write stats")?;
+	stats.write(ctx).context("Failed to write stats")?;
 
 	Ok(())
 }
