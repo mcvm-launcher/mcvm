@@ -1,6 +1,6 @@
 [package]
 name = "mcvm_mods"
-version = "0.6.0"
+version = "0.7.0"
 description = "Installation of game modifications for use with mcvm_core"
 keywords = ["minecraft", "launcher", "game", "mc", "modification"]
 categories.workspace = true

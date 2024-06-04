@@ -1437,7 +1437,7 @@ dependencies = [
 
 [[package]]
 name = "mcvm"
-version = "0.22.0"
+version = "0.23.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -1465,7 +1465,7 @@ dependencies = [
 
 [[package]]
 name = "mcvm_auth"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "anyhow",
  "bytes",
@@ -1485,7 +1485,7 @@ dependencies = [
 
 [[package]]
 name = "mcvm_cli"
-version = "0.9.0"
+version = "0.10.0"
 dependencies = [
  "anyhow",
  "clap",
@@ -1503,7 +1503,7 @@ dependencies = [
 
 [[package]]
 name = "mcvm_core"
-version = "0.6.0"
+version = "0.7.0"
 dependencies = [
  "anyhow",
  "bytes",
@@ -1525,7 +1525,7 @@ dependencies = [
 
 [[package]]
 name = "mcvm_mods"
-version = "0.6.0"
+version = "0.7.0"
 dependencies = [
  "anyhow",
  "mcvm_core",
@@ -1552,7 +1552,7 @@ dependencies = [
 
 [[package]]
 name = "mcvm_options"
-version = "0.5.0"
+version = "0.6.0"
 dependencies = [
  "anyhow",
  "itertools",
@@ -1564,7 +1564,7 @@ dependencies = [
 
 [[package]]
 name = "mcvm_parse"
-version = "0.14.0"
+version = "0.15.0"
 dependencies = [
  "anyhow",
  "mcvm_shared",
@@ -1574,7 +1574,7 @@ dependencies = [
 
 [[package]]
 name = "mcvm_pkg"
-version = "0.13.0"
+version = "0.14.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -1588,7 +1588,7 @@ dependencies = [
 
 [[package]]
 name = "mcvm_plugin"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "anyhow",
  "base64 0.22.1",
@@ -1625,7 +1625,7 @@ dependencies = [
 
 [[package]]
 name = "mcvm_shared"
-version = "0.13.0"
+version = "0.14.0"
 dependencies = [
  "anyhow",
  "cfg-match",
