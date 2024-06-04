@@ -389,7 +389,6 @@ pub async fn get(
 		std::fs::write(path, &bytes).context("Failed to write client meta to a file")?;
 
 		// Parsing must come second since simd json overwrites the slice
-		
 
 		simd_json::from_slice(&mut bytes).context("Failed to parse client meta")?
 	};

@@ -21,8 +21,8 @@ use mcvm_shared::modifications::ServerType;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use reqwest::Client;
 
-use crate::io::paths::Paths;
 use crate::io::lock::Lockfile;
+use crate::io::paths::Paths;
 use crate::pkg::reg::PkgRegistry;
 
 use manager::UpdateManager;
