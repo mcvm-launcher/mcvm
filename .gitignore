@@ -5,3 +5,7 @@
 /crates/tools/schemas
 /plugins/zipped_docs.zip
 /docs/public
+
+# GUI
+/gui/target
+/gui/gen/schemas
