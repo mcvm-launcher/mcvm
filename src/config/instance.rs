@@ -346,17 +346,14 @@ impl ClientWindowConfig {
 /// Merge an InstanceConfig with a preset
 ///
 /// Some values will be merged while others will have the right side take precendence
-pub fn merge_instance_configs(
-	preset: &InstanceConfig,
-	config: InstanceConfig,
-) -> anyhow::Result<InstanceConfig> {
+pub fn merge_instance_configs(preset: &InstanceConfig, config: InstanceConfig) -> InstanceConfig {
 	let mut out = preset.clone();
 	out.common.merge(config.common);
 	out.name = config.name.or(out.name);
 	out.side = config.side.or(out.side);
 	out.window.merge(config.window);
 
-	Ok(out)
+	out
 }
 
 /// Read the config for an instance to create the instance
@@ -385,8 +382,7 @@ pub fn read_instance_config(
 
 	// Merge with the profile
 	if let Some(profile) = profile {
-		config = merge_instance_configs(&profile.instance, config)
-			.context("Failed to merge instance config with profile")?;
+		config = merge_instance_configs(&profile.instance, config);
 	}
 
 	let side = config.side.context("Instance type was not specified")?;

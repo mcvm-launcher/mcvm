@@ -73,6 +73,7 @@ pub struct ConfigDeser {
 	instances: HashMap<InstanceID, InstanceConfig>,
 	instance_groups: HashMap<Arc<str>, Vec<InstanceID>>,
 	profiles: HashMap<ProfileID, ProfileConfig>,
+	global_profile: Option<ProfileConfig>,
 	preferences: PrefDeser,
 }
 
@@ -156,8 +157,8 @@ impl Config {
 		}
 
 		// Consolidate profiles
-		let profiles =
-			consolidate_profile_configs(config.profiles).context("Failed to merge profiles")?;
+		let profiles = consolidate_profile_configs(config.profiles, config.global_profile.as_ref())
+			.context("Failed to merge profiles")?;
 
 		// Instances
 		for (instance_id, instance_config) in config.instances {
