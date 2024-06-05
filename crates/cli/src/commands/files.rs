@@ -21,13 +21,13 @@ files in your instances or any other user data."
 	},
 }
 
-pub async fn run(subcommand: FilesSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
+pub async fn run(subcommand: FilesSubcommand, data: &mut CmdData<'_>) -> anyhow::Result<()> {
 	match subcommand {
 		FilesSubcommand::Remove { data: remove_data } => remove(data, remove_data).await,
 	}
 }
 
-pub async fn remove(data: &mut CmdData, remove_data: bool) -> anyhow::Result<()> {
+pub async fn remove(data: &mut CmdData<'_>, remove_data: bool) -> anyhow::Result<()> {
 	cprintln!("<g>Removing cached files...");
 	fs::remove_dir_all(data.paths.project.cache_dir())
 		.context("Failed to remove cache directory")?;

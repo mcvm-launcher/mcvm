@@ -101,30 +101,36 @@ pub async fn run_cli() -> anyhow::Result<()> {
 	let cli = cli?;
 
 	// Prepare the command data
-	let mut data = CmdData::new().await?;
-	let log_level = get_log_level(&cli);
-	data.output.set_log_level(log_level);
+	let paths = Paths::new()
+		.await
+		.context("Failed to set up system paths")?;
+	let mut output = TerminalOutput::new(&paths).context("Failed to set up output")?;
+	let res = {
+		let mut data = CmdData::new(paths, &mut output)?;
+		let log_level = get_log_level(&cli);
+		data.output.set_log_level(log_level);
 
-	let res = match cli.command {
-		Command::User { command } => user::run(command, &mut data).await,
-		Command::Launch { instance } => instance::launch(instance, None, false, &mut data).await,
-		Command::Version => {
-			print_version();
-			Ok(())
+		match cli.command {
+			Command::User { command } => user::run(command, &mut data).await,
+			Command::Launch { instance } => instance::launch(instance, None, false, data).await,
+			Command::Version => {
+				print_version();
+				Ok(())
+			}
+			Command::Files { command } => files::run(command, &mut data).await,
+			Command::Package { command } => package::run(command, &mut data).await,
+			Command::Instance { command } => instance::run(command, data).await,
+			Command::Plugin { command } => plugin::run(command, &mut data).await,
+			Command::Config { command } => config::run(command, &mut data).await,
+			Command::External(args) => call_plugin_subcommand(args, &mut data).await,
 		}
-		Command::Files { command } => files::run(command, &mut data).await,
-		Command::Package { command } => package::run(command, &mut data).await,
-		Command::Instance { command } => instance::run(command, &mut data).await,
-		Command::Plugin { command } => plugin::run(command, &mut data).await,
-		Command::Config { command } => config::run(command, &mut data).await,
-		Command::External(args) => call_plugin_subcommand(args, &mut data).await,
 	};
 
 	if let Err(e) = &res {
 		// Don't use the existing process or section
-		data.output.end_process();
-		data.output.end_section();
-		data.output.display(
+		output.end_process();
+		output.end_section();
+		output.display(
 			MessageContents::Error(format!("{e:?}")),
 			MessageLevel::Important,
 		);
@@ -145,18 +151,14 @@ fn get_log_level(cli: &Cli) -> MessageLevel {
 }
 
 /// Data passed to commands
-pub struct CmdData {
+pub struct CmdData<'a> {
 	pub paths: Paths,
 	pub config: Later<Config>,
-	pub output: TerminalOutput,
+	pub output: &'a mut TerminalOutput,
 }
 
-impl CmdData {
-	pub async fn new() -> anyhow::Result<Self> {
-		let paths = Paths::new()
-			.await
-			.context("Failed to set up system paths")?;
-		let output = TerminalOutput::new(&paths).context("Failed to set up output")?;
+impl<'a> CmdData<'a> {
+	pub fn new(paths: Paths, output: &'a mut TerminalOutput) -> anyhow::Result<Self> {
 		Ok(Self {
 			paths,
 			config: Later::new(),
@@ -167,7 +169,7 @@ impl CmdData {
 	/// Ensure that the config is loaded
 	pub async fn ensure_config(&mut self, show_warnings: bool) -> anyhow::Result<()> {
 		if self.config.is_empty() {
-			let plugins = PluginManager::load(&self.paths, &mut self.output)
+			let plugins = PluginManager::load(&self.paths, self.output)
 				.context("Failed to load plugins configuration")?;
 
 			self.config.fill(
@@ -176,7 +178,7 @@ impl CmdData {
 					plugins,
 					show_warnings,
 					&self.paths,
-					&mut self.output,
+					self.output,
 				)
 				.context("Failed to load config")?,
 			);
@@ -187,11 +189,11 @@ impl CmdData {
 			.config
 			.get()
 			.plugins
-			.call_hook(AddTranslations, &(), &self.paths, &mut self.output)
+			.call_hook(AddTranslations, &(), &self.paths, self.output)
 			.context("Failed to get extra translations from plugins")?;
 
 		for result in results {
-			let mut result = result.result(&mut self.output)?;
+			let mut result = result.result(self.output)?;
 			let map = result.remove(&self.config.get().prefs.language);
 			if let Some(map) = map {
 				self.output.set_translation_map(map);
@@ -219,7 +221,7 @@ fn print_version() {
 }
 
 /// Call a plugin subcommand
-async fn call_plugin_subcommand(args: Vec<String>, data: &mut CmdData) -> anyhow::Result<()> {
+async fn call_plugin_subcommand(args: Vec<String>, data: &mut CmdData<'_>) -> anyhow::Result<()> {
 	data.ensure_config(true).await?;
 	let config = data.config.get();
 
@@ -241,10 +243,10 @@ async fn call_plugin_subcommand(args: Vec<String>, data: &mut CmdData) -> anyhow
 
 	let results = config
 		.plugins
-		.call_hook(hooks::Subcommand, &args, &data.paths, &mut data.output)
+		.call_hook(hooks::Subcommand, &args, &data.paths, data.output)
 		.context("Plugin subcommand failed")?;
 	for result in results {
-		result.result(&mut data.output)?;
+		result.result(data.output)?;
 	}
 
 	Ok(())

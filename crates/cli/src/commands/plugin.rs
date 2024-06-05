@@ -19,14 +19,14 @@ pub enum PluginSubcommand {
 	Info { plugin: String },
 }
 
-pub async fn run(command: PluginSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
+pub async fn run(command: PluginSubcommand, data: &mut CmdData<'_>) -> anyhow::Result<()> {
 	match command {
 		PluginSubcommand::List { raw } => list(data, raw).await,
 		PluginSubcommand::Info { plugin } => info(data, plugin).await,
 	}
 }
 
-async fn list(data: &mut CmdData, raw: bool) -> anyhow::Result<()> {
+async fn list(data: &mut CmdData<'_>, raw: bool) -> anyhow::Result<()> {
 	data.ensure_config(!raw).await?;
 	let config = data.config.get_mut();
 
@@ -42,7 +42,7 @@ async fn list(data: &mut CmdData, raw: bool) -> anyhow::Result<()> {
 	Ok(())
 }
 
-async fn info(data: &mut CmdData, plugin: String) -> anyhow::Result<()> {
+async fn info(data: &mut CmdData<'_>, plugin: String) -> anyhow::Result<()> {
 	data.ensure_config(true).await?;
 	let config = data.config.get_mut();
 

@@ -16,7 +16,7 @@ pub enum ConfigSubcommand {
 	Backup,
 }
 
-pub async fn run(subcommand: ConfigSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
+pub async fn run(subcommand: ConfigSubcommand, data: &mut CmdData<'_>) -> anyhow::Result<()> {
 	match subcommand {
 		ConfigSubcommand::Edit => edit(data).await,
 		ConfigSubcommand::EditPlugins => edit_plugins(data).await,
@@ -24,7 +24,7 @@ pub async fn run(subcommand: ConfigSubcommand, data: &mut CmdData) -> anyhow::Re
 	}
 }
 
-async fn edit(data: &mut CmdData) -> anyhow::Result<()> {
+async fn edit(data: &mut CmdData<'_>) -> anyhow::Result<()> {
 	let path = Config::get_path(&data.paths);
 
 	Config::create_default(&path).context("Failed to create default config")?;
@@ -34,7 +34,7 @@ async fn edit(data: &mut CmdData) -> anyhow::Result<()> {
 	Ok(())
 }
 
-async fn edit_plugins(data: &mut CmdData) -> anyhow::Result<()> {
+async fn edit_plugins(data: &mut CmdData<'_>) -> anyhow::Result<()> {
 	let path = PluginManager::get_path(&data.paths);
 
 	PluginManager::create_default(&data.paths).context("Failed to create default config")?;
@@ -44,7 +44,7 @@ async fn edit_plugins(data: &mut CmdData) -> anyhow::Result<()> {
 	Ok(())
 }
 
-async fn backup(data: &mut CmdData) -> anyhow::Result<()> {
+async fn backup(data: &mut CmdData<'_>) -> anyhow::Result<()> {
 	let config_path = Config::get_path(&data.paths);
 	let plugins_path = PluginManager::get_path(&data.paths);
 

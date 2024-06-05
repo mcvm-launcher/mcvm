@@ -67,27 +67,27 @@ pub enum InstanceSubcommand {
 	},
 }
 
-pub async fn run(command: InstanceSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
+pub async fn run(command: InstanceSubcommand, mut data: CmdData<'_>) -> anyhow::Result<()> {
 	match command {
-		InstanceSubcommand::List { raw, side } => list(data, raw, side).await,
+		InstanceSubcommand::List { raw, side } => list(&mut data, raw, side).await,
 		InstanceSubcommand::Launch {
 			user,
 			offline,
 			instance,
 		} => launch(instance, user, offline, data).await,
-		InstanceSubcommand::Info { instance } => info(data, &instance).await,
+		InstanceSubcommand::Info { instance } => info(&mut data, &instance).await,
 		InstanceSubcommand::Update {
 			force,
 			all,
 			skip_packages,
 			groups,
 			instances,
-		} => update(data, instances, groups, all, force, skip_packages).await,
-		InstanceSubcommand::Dir { instance } => dir(data, instance).await,
+		} => update(&mut data, instances, groups, all, force, skip_packages).await,
+		InstanceSubcommand::Dir { instance } => dir(&mut data, instance).await,
 	}
 }
 
-async fn list(data: &mut CmdData, raw: bool, side: Option<Side>) -> anyhow::Result<()> {
+async fn list(data: &mut CmdData<'_>, raw: bool, side: Option<Side>) -> anyhow::Result<()> {
 	data.ensure_config(!raw).await?;
 	let config = data.config.get_mut();
 
@@ -111,7 +111,7 @@ async fn list(data: &mut CmdData, raw: bool, side: Option<Side>) -> anyhow::Resu
 	Ok(())
 }
 
-async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
+async fn info(data: &mut CmdData<'_>, id: &str) -> anyhow::Result<()> {
 	data.ensure_config(true).await?;
 	let config = data.config.get_mut();
 
@@ -192,7 +192,7 @@ pub async fn launch(
 	instance: Option<String>,
 	user: Option<String>,
 	offline: bool,
-	data: &mut CmdData,
+	mut data: CmdData<'_>,
 ) -> anyhow::Result<()> {
 	data.ensure_config(true).await?;
 	let config = data.config.get_mut();
@@ -218,7 +218,7 @@ pub async fn launch(
 			paths: &data.paths,
 			lock: &mut lock,
 			client: &client,
-			output: &mut data.output,
+			output: data.output,
 		};
 
 		instance
@@ -249,19 +249,24 @@ pub async fn launch(
 			&mut config.users,
 			&config.plugins,
 			launch_settings,
-			&mut data.output,
+			data.output,
 		)
 		.await
 		.context("Instance failed to launch")?;
 
+	// Drop the config early so that it isn't wasting memory while the instance is running
+	let plugins = config.plugins.clone();
+	std::mem::drop(data.config);
+	// Unload plugins that we don't need anymore
+
 	instance_handle
-		.wait(&config.plugins, &data.paths, &mut data.output)
+		.wait(&plugins, &data.paths, data.output)
 		.context("Failed to wait for instance child process")?;
 
 	Ok(())
 }
 
-async fn dir(data: &mut CmdData, instance: Option<String>) -> anyhow::Result<()> {
+async fn dir(data: &mut CmdData<'_>, instance: Option<String>) -> anyhow::Result<()> {
 	data.ensure_config(true).await?;
 
 	let instance = pick_instance(instance, data.config.get()).context("Failed to pick instance")?;
@@ -279,7 +284,7 @@ async fn dir(data: &mut CmdData, instance: Option<String>) -> anyhow::Result<()>
 }
 
 async fn update(
-	data: &mut CmdData,
+	data: &mut CmdData<'_>,
 	instances: Vec<String>,
 	groups: Vec<String>,
 	all: bool,
@@ -320,7 +325,7 @@ async fn update(
 			paths: &data.paths,
 			lock: &mut lock,
 			client: &client,
-			output: &mut data.output,
+			output: data.output,
 		};
 
 		instance
