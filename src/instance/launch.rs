@@ -150,6 +150,7 @@ pub struct WrapperCommand {
 	/// The command to run
 	pub cmd: String,
 	/// The command's arguments
+	#[serde(default)]
 	pub args: Vec<String>,
 }
 
