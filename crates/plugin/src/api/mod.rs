@@ -113,9 +113,11 @@ impl CustomPlugin {
 		if self.hook == H::get_name_static() {
 			let arg = arg(self)?;
 			let mut state = None;
+			let mut state_has_changed = false;
 			let ctx = HookContext {
 				ctx: &mut self.ctx,
 				state: &mut state,
+				state_has_changed: &mut state_has_changed,
 				_h: PhantomData,
 			};
 			let result = f(ctx, arg)?;
@@ -131,14 +133,16 @@ impl CustomPlugin {
 				);
 
 				// Output state
-				if let Some(state) = state {
-					let action = OutputAction::SetState(state);
-					println!(
-						"{}",
-						action
-							.serialize(self.settings.use_base64)
-							.context("Failed to serialize new hook state")?
-					);
+				if state_has_changed {
+					if let Some(state) = state {
+						let action = OutputAction::SetState(state);
+						println!(
+							"{}",
+							action
+								.serialize(self.settings.use_base64)
+								.context("Failed to serialize new hook state")?
+						);
+					}
 				}
 			}
 			Ok(())
@@ -164,6 +168,7 @@ struct StoredHookContext {
 pub struct HookContext<'ctx, H: Hook> {
 	ctx: &'ctx mut StoredHookContext,
 	state: &'ctx mut Option<serde_json::Value>,
+	state_has_changed: &'ctx mut bool,
 	_h: PhantomData<H>,
 }
 
@@ -211,6 +216,7 @@ impl<'ctx, H: Hook> HookContext<'ctx, H> {
 	pub fn set_persistent_state(&mut self, state: impl Serialize) -> anyhow::Result<()> {
 		let state = serde_json::to_value(state)?;
 		*self.state = Some(state);
+		*self.state_has_changed = true;
 
 		Ok(())
 	}
