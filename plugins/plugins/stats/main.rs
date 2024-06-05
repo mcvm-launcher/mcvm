@@ -48,20 +48,7 @@ fn main() -> anyhow::Result<()> {
 		Ok(())
 	})?;
 
-	plugin.on_instance_stop(|mut ctx, arg| {
-		let Some(config) = ctx.get_custom_config() else {
-			return Ok(());
-		};
-		let config: Config =
-			serde_json::from_str(config).context("Failed to deserialize custom config")?;
-
-		// If we are live tracking, don't update when stopping since we have been updating the whole time
-		if config.live_tracking {
-			return Ok(());
-		}
-
-		update_playtime(&mut ctx, &arg.id)
-	})?;
+	plugin.on_instance_stop(|mut ctx, arg| update_playtime(&mut ctx, &arg.id, false))?;
 
 	plugin.while_instance_launch(|mut ctx, arg| {
 		let Some(config) = ctx.get_custom_config() else {
@@ -76,14 +63,20 @@ fn main() -> anyhow::Result<()> {
 
 		loop {
 			std::thread::sleep(Duration::from_secs(60));
-			update_playtime(&mut ctx, &arg.id).context("Failed to update playtime")?;
+			update_playtime(&mut ctx, &arg.id, true).context("Failed to update playtime")?;
 		}
 	})?;
 
 	Ok(())
 }
 
-fn update_playtime<H: Hook>(ctx: &mut HookContext<'_, H>, instance: &str) -> anyhow::Result<()> {
+/// Update the playtime. When update_state is true, the persistent state is updated for the next update
+/// so that the time delta is correct
+fn update_playtime<H: Hook>(
+	ctx: &mut HookContext<'_, H>,
+	instance: &str,
+	update_state: bool,
+) -> anyhow::Result<()> {
 	let state = ctx
 		.get_persistent_state(HashMap::<String, u64>::new())
 		.context("Failed to get persistent state")?;
@@ -102,8 +95,10 @@ fn update_playtime<H: Hook>(ctx: &mut HookContext<'_, H>, instance: &str) -> any
 		.playtime += diff_minutes;
 
 	// Update start time so that the next update doesn't grow exponentially
-	*start_time = utc_timestamp()?;
-	ctx.set_persistent_state(state)?;
+	if update_state {
+		*start_time = utc_timestamp()?;
+		ctx.set_persistent_state(state)?;
+	}
 
 	stats.write(ctx).context("Failed to write stats")?;
 
