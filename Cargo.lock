@@ -2459,6 +2459,7 @@ name = "mcvm_cli"
 version = "0.10.0"
 dependencies = [
  "anyhow",
+ "async-trait",
  "clap",
  "color-print",
  "inquire",
@@ -2498,10 +2499,14 @@ dependencies = [
 name = "mcvm_gui"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
+ "async-trait",
+ "mcvm",
  "serde",
  "serde_json",
  "tauri",
  "tauri-build",
+ "tokio",
 ]
 
 [[package]]
@@ -2609,6 +2614,7 @@ name = "mcvm_shared"
 version = "0.14.0"
 dependencies = [
  "anyhow",
+ "async-trait",
  "cfg-match",
  "schemars",
  "serde",

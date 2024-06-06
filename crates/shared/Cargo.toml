@@ -18,6 +18,7 @@ schema = ["dep:schemars"]
 
 [dependencies]
 anyhow = { workspace = true }
+async-trait = { workspace = true }
 cfg-match = { workspace = true }
 schemars = { workspace = true, optional = true }
 serde = { workspace = true }

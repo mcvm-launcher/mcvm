@@ -27,6 +27,7 @@ impl User {
 					let db = AuthDatabase::open(&params.paths.auth)
 						.context("Failed to open authentication database")?;
 					let Some((user, sensitive)) = get_full_user(&db, &self.id, o)
+						.await
 						.context("Failed to get user from database")?
 					else {
 						bail!("User not present in database. Make sure to authenticate at least once before logging in in offline mode");
@@ -103,7 +104,11 @@ impl User {
 	}
 
 	/// Updates this user's passkey using prompts
-	pub fn update_passkey(&self, paths: &Paths, o: &mut impl MCVMOutput) -> anyhow::Result<()> {
+	pub async fn update_passkey(
+		&self,
+		paths: &Paths,
+		o: &mut impl MCVMOutput,
+	) -> anyhow::Result<()> {
 		let mut db =
 			AuthDatabase::open(&paths.auth).context("Failed to open authentication database")?;
 		let user = db.get_user_mut(&self.id).context(
@@ -115,6 +120,7 @@ impl User {
 					"Enter the old passkey for user '{}'",
 					self.id
 				)))
+				.await
 				.context("Failed to get old passkey")?,
 			)
 		} else {
@@ -125,6 +131,7 @@ impl User {
 				"Enter the new passkey for user '{}'",
 				self.id
 			)))
+			.await
 			.context("Failed to get new passkey")?;
 		user.update_passkey(old_passkey.as_deref(), &new_passkey)
 			.context("Failed to update passkey for user")?;
@@ -170,8 +177,9 @@ async fn update_microsoft_user_auth(
 	}
 
 	// Check the authentication DB
-	let user_data = if let Some((db_user, sensitive)) =
-		get_full_user(&db, user_id, o).context("Failed to get full user from database")?
+	let user_data = if let Some((db_user, sensitive)) = get_full_user(&db, user_id, o)
+		.await
+		.context("Failed to get full user from database")?
 	{
 		let refresh_token = RefreshToken::new(
 			sensitive
@@ -293,7 +301,7 @@ async fn reauth_microsoft_user(
 }
 
 /// Tries to get a full valid user from the database along with a passkey prompt if applicable
-fn get_full_user<'db>(
+async fn get_full_user<'db>(
 	db: &'db AuthDatabase,
 	user_id: &str,
 	o: &mut impl MCVMOutput,
@@ -313,6 +321,7 @@ fn get_full_user<'db>(
 			MessageContents::Simple(format!("Please enter the passkey for the user '{user_id}'")),
 			o,
 		)
+		.await
 		.context("Failed to get key")?;
 
 		let out = user
@@ -337,7 +346,7 @@ fn get_full_user<'db>(
 
 /// Gets the user's private key with a repeating passkey prompt.
 /// The user must have a passkey available.
-fn get_private_key(
+async fn get_private_key(
 	user: &DatabaseUser,
 	message: MessageContents,
 	o: &mut impl MCVMOutput,
@@ -345,7 +354,7 @@ fn get_private_key(
 	const MAX_ATTEMPTS: u8 = 3;
 
 	for _ in 0..MAX_ATTEMPTS {
-		let result = o.prompt_password(message.clone());
+		let result = o.prompt_password(message.clone()).await;
 		if let Ok(passkey) = result {
 			let result = user.get_private_key(&passkey);
 			match result {

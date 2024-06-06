@@ -131,6 +131,7 @@ async fn passkey(data: &mut CmdData<'_>, user: Option<String>) -> anyhow::Result
 	};
 
 	user.update_passkey(&data.paths.core, data.output)
+		.await
 		.context("Failed to update passkey")?;
 
 	Ok(())
