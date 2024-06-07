@@ -4,17 +4,23 @@
 	line-height: 24px;
 	font-weight: 400;
 
-	color: #f6f6f6;
-	background-color: #1e1e1e;
-
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	-webkit-text-size-adjust: 100%;
+
+	/* Colors */
+	--fg: #f6f6f6;
+	--bg: #1e1e1e;
+	--bg2: #181818;
+	--text: var(--fg);
+
+	color: var(--text);
+	background-color: var(--bg);
 }
 
-.container {
+q.container {
 	margin: 0;
 	padding-top: 10vh;
 	display: flex;
@@ -50,8 +56,8 @@ button {
 	font-size: 1em;
 	font-weight: 500;
 	font-family: inherit;
-	color: #f6f6f6;
-	background-color: #181818;
+	color: var(--text);
+	background-color: var(--bg2);
 	transition: border-color 0.25s;
 	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
 }
@@ -66,4 +72,14 @@ button:hover {
 button:active {
 	border-color: #396cd8;
 	background-color: #e8e8e8;
+}
+
+/* Utility classes */
+
+.link,
+.link:link,
+.link:visited,
+.link:hover,
+.link:active {
+	color: var(--text);
 }
