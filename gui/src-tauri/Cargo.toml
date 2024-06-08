@@ -18,6 +18,7 @@ tauri-build = { version = "1", features = [] }
 [dependencies]
 anyhow = { workspace = true }
 async-trait = { workspace = true }
+itertools = { workspace = true }
 mcvm = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }

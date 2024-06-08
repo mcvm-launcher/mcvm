@@ -73,12 +73,11 @@ impl MCVMOutput for LauncherOutput {
 		#[allow(unused_assignments)]
 		let mut result = None;
 		loop {
-			println!("Waiting for password...");
 			if let Some(answer) = self.password_prompt.lock().await.take() {
 				result = Some(answer);
 				break;
 			}
-			tokio::time::sleep(Duration::from_millis(200)).await;
+			tokio::time::sleep(Duration::from_millis(50)).await;
 		}
 
 		Ok(result.unwrap())

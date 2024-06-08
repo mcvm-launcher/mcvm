@@ -1,0 +1,21 @@
+.launch-footer {
+	position: fixed;
+	bottom: 0px;
+	left: 0px;
+	width: 100vw;
+	display: flex;
+	justify-content: center;
+	height: 4rem;
+	padding: 1rem;
+	align-items: center;
+	box-sizing: border-box;
+	background-color: var(--bg);
+	border-left: none;
+	border-right: none;
+	border-bottom: none;
+	border-radius: 0px;
+}
+
+.launch-button.selected {
+	border-color: var(--accent);
+}

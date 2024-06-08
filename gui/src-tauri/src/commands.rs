@@ -1,9 +1,12 @@
 use crate::{output::LauncherOutput, State};
 use anyhow::Context;
+use itertools::Itertools;
 use mcvm::config::{plugin::PluginManager, Config};
 use mcvm::instance::launch::LaunchSettings;
 use mcvm::io::paths::Paths;
 use mcvm::shared::id::InstanceID;
+use mcvm::shared::Side;
+use serde::{Deserialize, Serialize};
 use std::fmt::Debug;
 use tauri::Manager;
 use tokio::task::JoinHandle;
@@ -89,6 +92,34 @@ async fn stop_game_impl(state: &mut tauri::State<'_, State>) -> Result<(), Strin
 	lock.take();
 
 	Ok(())
+}
+
+#[tauri::command]
+pub async fn get_instances(
+	state: tauri::State<'_, State>,
+	app_handle: tauri::AppHandle,
+) -> Result<Vec<InstanceInfo>, String> {
+	let mut output = LauncherOutput::new(app_handle, state.password_prompt.clone());
+	let config = fmt_err(load_config(&state.paths, &mut output).context("Failed to load config"))?;
+
+	let instances = config
+		.instances
+		.iter()
+		.sorted_by_key(|x| x.0)
+		.map(|(id, instance)| InstanceInfo {
+			id: id.to_string(),
+			name: instance.get_config().name.clone(),
+			side: instance.get_side(),
+		})
+		.collect();
+	Ok(instances)
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct InstanceInfo {
+	pub id: String,
+	pub name: Option<String>,
+	pub side: Side,
 }
 
 #[tauri::command]

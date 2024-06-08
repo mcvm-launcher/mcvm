@@ -1,0 +1,29 @@
+#launch-instance-list-container {
+	display: flex;
+	justify-content: center;
+	width: 100%;
+}
+
+#launch-instance-list {
+	display: flex;
+	justify-content: last baseline;
+	flex-wrap: wrap;
+	flex-direction: row;
+	flex-basis: content;
+	width: 50%;
+}
+
+.launch-instance-list-item {
+	background-color: var(--bg2);
+	margin: 0.3rem;
+	padding: 0.8rem;
+	/* padding-top: 4rem; */
+	width: 9.54%;
+	height: 50%;
+	text-align: center;
+	box-sizing: content-box;
+}
+
+.launch-instance-list-item.selected {
+	border-color: var(--accent);
+}

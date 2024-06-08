@@ -22,6 +22,7 @@ fn main() {
 			commands::launch_game,
 			commands::stop_game,
 			commands::answer_password_prompt,
+			commands::get_instances,
 		])
 		.run(tauri::generate_context!())
 		.expect("Error while running tauri application");

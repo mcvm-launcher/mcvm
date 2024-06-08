@@ -15,6 +15,8 @@
 	--bg: #1e1e1e;
 	--bg2: #181818;
 	--text: var(--fg);
+	--accent: #5f00ef;
+	--accent2: #2f0077;
 
 	color: var(--text);
 	background-color: var(--bg);
@@ -74,6 +76,15 @@ button:active {
 	background-color: #e8e8e8;
 }
 
+/* Style classes */
+
+.border {
+	border-style: solid;
+	border-width: 0.1rem;
+	border-color: var(--fg);
+	border-radius: 0.8rem;
+}
+
 /* Utility classes */
 
 .link,
@@ -82,4 +93,13 @@ button:active {
 .link:hover,
 .link:active {
 	color: var(--text);
+}
+
+.noselect, br, button {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
