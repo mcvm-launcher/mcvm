@@ -1,9 +1,10 @@
+use std::sync::Mutex;
 use std::{collections::HashMap, sync::Arc};
 
 use super::CmdData;
 use itertools::Itertools;
 use mcvm::parse::lex::Token;
-use mcvm::pkg_crate::{PackageContentType, PkgRequest, PkgRequestSource};
+use mcvm::pkg_crate::{parse_and_validate, PackageContentType, PkgRequest, PkgRequestSource};
 use mcvm::shared::id::{InstanceID, ProfileID};
 use mcvm::shared::util::print::ReplPrinter;
 
@@ -11,6 +12,7 @@ use anyhow::{bail, Context};
 use clap::Subcommand;
 use color_print::{cformat, cprint, cprintln};
 use mcvm::shared::pkg::PackageID;
+use rayon::prelude::*;
 use reqwest::Client;
 
 use crate::output::HYPHEN_POINT;
@@ -179,21 +181,41 @@ async fn sync(data: &mut CmdData<'_>, filter: Vec<String>) -> anyhow::Result<()>
 		.update_cached_packages(&data.paths, &client, data.output)
 		.await
 		.context("Failed to update cached packages")?;
+	printer.println(&cformat!("<g>Packages updated."));
+
 	printer.println(&cformat!("<s>Validating packages..."));
-	for package in config.packages.get_all_packages() {
-		match config
+	let ids = config.packages.get_all_packages();
+
+	let mut packages = Vec::with_capacity(ids.len());
+	for id in ids {
+		let contents = config
 			.packages
-			.parse_and_validate(&package, &data.paths, &client, data.output)
+			.load(&id, &data.paths, &client, data.output)
 			.await
-		{
-			Ok(..) => {}
-			Err(e) => printer.println(&cformat!(
-				"<y>Warning: Package '{}' was invalid:\n{:?}",
-				package,
-				e
-			)),
-		}
+			.context("Failed to get package contents")?;
+		let content_type = config
+			.packages
+			.get_content_type(&id, &data.paths, &client, data.output)
+			.await
+			.context("Failed to get package content type")?;
+		packages.push((id, contents, content_type));
 	}
+	let errors = Arc::new(Mutex::new(Vec::new()));
+	packages
+		.into_par_iter()
+		.for_each(|(id, contents, content_type)| {
+			if let Err(e) = parse_and_validate(&contents, content_type) {
+				errors.lock().expect("Poisoned mutex").push(cformat!(
+					"<y>Warning: Package '{}' was invalid:\n{:?}",
+					id,
+					e
+				));
+			}
+		});
+	for error in errors.lock().expect("Poisoned mutex").iter() {
+		printer.println(error);
+	}
+	printer.print(&cformat!("<g>Packages validated."));
 
 	Ok(())
 }

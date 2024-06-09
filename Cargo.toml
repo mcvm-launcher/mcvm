@@ -97,6 +97,7 @@ nutype = { version = "0.4.0", features = ["serde"] }
 oauth2 = "4.4.2"
 rand = "0.8.5"
 rand_chacha = "0.3.1"
+rayon = "1.10.0"
 reqwest = { version = "0.12.4", default_features = false, features = [
 	"json",
 	"rustls-tls",

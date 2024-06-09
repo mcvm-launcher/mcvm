@@ -24,6 +24,7 @@ color-print = { workspace = true }
 inquire = { workspace = true }
 itertools = { workspace = true }
 mcvm = { workspace = true, features = ["builder"] }
+rayon = { workspace = true }
 reqwest = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
