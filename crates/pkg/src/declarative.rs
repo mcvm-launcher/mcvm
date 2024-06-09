@@ -221,7 +221,12 @@ pub struct DeclarativeAddonVersionPatchProperties {
 
 /// Deserialize a declarative package
 pub fn deserialize_declarative_package(text: &str) -> anyhow::Result<DeclarativePackage> {
-	let out = serde_json::from_str(text)?;
+	// SAFETY: The modified, possibly invalid string is a copy that is never used again
+	let out = unsafe {
+		let mut text = text.to_string();
+		let text = text.as_bytes_mut();
+		simd_json::from_slice(text)?
+	};
 	Ok(out)
 }
 

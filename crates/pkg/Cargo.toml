@@ -10,9 +10,6 @@ authors.workspace = true
 repository.workspace = true
 rust-version.workspace = true
 
-[lints]
-workspace = true
-
 [features]
 schema = ["dep:schemars", "mcvm_parse/schema", "mcvm_shared/schema"]
 
@@ -25,3 +22,4 @@ mcvm_shared = { workspace = true }
 schemars = { workspace = true, optional = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
+simd-json = { workspace = true }

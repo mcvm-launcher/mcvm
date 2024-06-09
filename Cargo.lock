@@ -2571,6 +2571,7 @@ dependencies = [
  "schemars",
  "serde",
  "serde_json",
+ "simd-json",
 ]
 
 [[package]]
