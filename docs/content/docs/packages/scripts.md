@@ -65,7 +65,7 @@ Properties like `features` and `modrinth_id` can only be used in the `@propertie
 - `else [if {condition}] { ... }`: Can be used after an if block or another else block to run a block only if the if condition or previous else condition failed. These can be chained and work how you would expect in other languages.
 - `set {variable} {value}`: Sets the value of a variable.
 - `finish`: Will silently end the routine.
-- `fail [unsupported_version | unsupported_modloader | unsupported_plugin_loader | unsupported_features | unsupported_operating_system]`: End execution with an error.
+- `fail [unsupported_version | unsupported_side | unsupported_modloader | unsupported_plugin_loader | unsupported_features | unsupported_operating_system]`: End execution with an error.
 - `call {routine}`: Runs the contents of another routine. The called routine cannot be reserved by MCVM. Possibly recursive structures are also not allowed. MCVM will reject them.
 - `addon {id} [filename] (..)`: Add an addon to the instance. Keys and values are put inside the parentheses.
 - `require {package1} {package2} ...`: Create a dependency on one or more packages.

@@ -293,6 +293,12 @@ pub fn eval_check_properties(
 		}
 	}
 
+	if let Some(supported_sides) = &properties.supported_sides {
+		if !supported_sides.iter().any(|x| x == &input.params.side) {
+			bail!("Package does not support this side (client / server)");
+		}
+	}
+
 	if let Some(supported_modloaders) = &properties.supported_modloaders {
 		if !supported_modloaders.iter().any(|x| {
 			x.matches(
