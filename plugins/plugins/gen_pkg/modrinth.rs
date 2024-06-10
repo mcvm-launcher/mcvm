@@ -159,6 +159,7 @@ pub async fn gen_raw(
 		// Look at loaders
 		let mut modloaders = Vec::new();
 		let mut plugin_loaders = Vec::new();
+		let mut skip = false;
 		for loader in &version.loaders {
 			match loader {
 				Loader::Known(loader) => match loader {
@@ -182,11 +183,16 @@ pub async fn gen_raw(
 					KnownLoader::Sponge => plugin_loaders.push(PluginLoaderMatch::Sponge),
 					KnownLoader::Paper => plugin_loaders.push(PluginLoaderMatch::Paper),
 					KnownLoader::Purpur => plugin_loaders.push(PluginLoaderMatch::Purpur),
+					// Skip over datapack versions for now
+					KnownLoader::Datapack => skip = true,
 					// We don't care about these
 					KnownLoader::Iris | KnownLoader::Optifine | KnownLoader::Minecraft => {}
 				},
 				Loader::Unknown(other) => panic!("Unknown loader {other}"),
 			}
+		}
+		if skip {
+			continue;
 		}
 
 		// Get stability

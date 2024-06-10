@@ -184,6 +184,8 @@ pub enum KnownLoader {
 	Iris,
 	/// Optifine shader loader
 	Optifine,
+	/// Datapack loader
+	Datapack,
 }
 
 impl Loader {
