@@ -354,7 +354,9 @@ async fn get_private_key(
 	const MAX_ATTEMPTS: u8 = 3;
 
 	for _ in 0..MAX_ATTEMPTS {
-		let result = o.prompt_password(message.clone()).await;
+		let result = o
+			.prompt_special_user_passkey(message.clone(), &user.id)
+			.await;
 		if let Ok(passkey) = result {
 			let result = user.get_private_key(&passkey);
 			match result {

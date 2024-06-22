@@ -62,6 +62,16 @@ pub trait MCVMOutput: Send {
 	fn display_special_ms_auth(&mut self, url: &str, code: &str) {
 		default_special_ms_auth(self, url, code);
 	}
+
+	/// Specialized implementation for prompting a user passkey
+	async fn prompt_special_user_passkey(
+		&mut self,
+		message: MessageContents,
+		user_id: &str,
+	) -> anyhow::Result<String> {
+		let _ = user_id;
+		self.prompt_password(message).await
+	}
 }
 
 /// Displays the default Microsoft authentication messages
