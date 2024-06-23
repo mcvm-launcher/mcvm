@@ -3,6 +3,7 @@ use super::mc_msa::{
 };
 use anyhow::{anyhow, Context};
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
+use mcvm_shared::translate;
 pub use oauth2::basic::{BasicClient, BasicTokenType};
 pub use oauth2::reqwest::async_http_client;
 pub use oauth2::{
@@ -57,7 +58,7 @@ pub async fn authenticate_microsoft_user_from_token(
 	let access_token = mc_access_token_to_string(&mc_token.access_token);
 
 	o.display(
-		MessageContents::Success("Authentication successful".into()),
+		MessageContents::Success(translate!(o, AuthenticationSuccessful)),
 		MessageLevel::Important,
 	);
 

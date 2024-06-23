@@ -17,3 +17,8 @@ export interface GroupInfo {
 	id: string;
 	contents: string[];
 }
+
+export interface AuthDisplayEvent {
+	url: string;
+	device_code: string;
+}

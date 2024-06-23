@@ -17,13 +17,19 @@
         "open": true
       },
       "protocol": {
-      "asset": true,
-      "assetScope": [
-        "$APPCACHE/**",
-        "$RESOURCE/**",
-        "/home/**"
-      ]
-    }
+        "asset": true,
+        "assetScope": [
+          "$APPCACHE/**",
+          "$RESOURCE/**",
+          "/home/**"
+        ]
+      },
+      "clipboard": {
+        "all": true
+      },
+      "window": {
+        "create": true
+      }
     },
     "windows": [
       {

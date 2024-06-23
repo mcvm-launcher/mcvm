@@ -1,7 +1,10 @@
 use std::{collections::HashMap, sync::Arc, time::Duration};
 
 use anyhow::Context;
-use mcvm::shared::output::{MCVMOutput, Message, MessageContents, MessageLevel};
+use mcvm::shared::{
+	lang::translate::TranslationKey,
+	output::{MCVMOutput, Message, MessageContents, MessageLevel},
+};
 use serde::Serialize;
 use tauri::{AppHandle, Manager};
 use tokio::sync::Mutex;
@@ -120,6 +123,22 @@ impl MCVMOutput for LauncherOutput {
 				device_code: code.to_owned(),
 			},
 		);
+	}
+
+	fn translate(&self, key: TranslationKey) -> &str {
+		// Emit an event for certain keys as they notify us of progress in the launch
+		if let TranslationKey::PreparingLaunch = key {
+			let _ = self.app.emit_all("mcvm_prepare_launch", ());
+			println!("PREPARE LAUNCH");
+		}
+		if let TranslationKey::AuthenticationSuccessful = key {
+			let _ = self.app.emit_all("mcvm_close_auth_info", ());
+		}
+		if let TranslationKey::Launch = key {
+			let _ = self.app.emit_all("mcvm_launching", ());
+		}
+
+		key.get_default()
 	}
 }
 

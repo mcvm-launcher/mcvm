@@ -39,7 +39,7 @@ export default function LaunchInstanceList(props: LaunchInstanceListProps) {
 		setInstances(instances);
 
 		// Create groups
-		const groups = (await invoke("get_instance_2groups")) as GroupInfo[];
+		const groups = (await invoke("get_instance_groups")) as GroupInfo[];
 		let newGroups: GroupSectionData[] = [];
 		for (let group of groups) {
 			let newInstances = [];
