@@ -201,6 +201,12 @@ impl Config {
 			instances.insert(instance_id, instance);
 		}
 
+		for group in config.instance_groups.keys() {
+			if !is_valid_identifier(group) {
+				bail!("Invalid ID for group '{group}'");
+			}
+		}
+
 		Ok(Self {
 			users,
 			instances,
