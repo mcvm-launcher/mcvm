@@ -149,6 +149,9 @@ impl User {
 		db.logout_user(&self.id)
 			.context("Failed to logout user in database")?;
 
+		db.write()
+			.context("Failed to write authentication database")?;
+
 		Ok(())
 	}
 }
