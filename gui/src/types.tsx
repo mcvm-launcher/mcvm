@@ -12,3 +12,8 @@ export interface InstanceInfo {
 export type InstanceMap = {
 	[id: string]: InstanceInfo;
 };
+
+export interface GroupInfo {
+	id: string;
+	contents: string[];
+}

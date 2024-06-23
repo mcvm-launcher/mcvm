@@ -1,11 +1,12 @@
 #navbar {
-	position: sticky;
+	position: fixed;
 	border-left: none;
 	border-right: none;
 	border-top: none;
 	border-radius: 0px;
 	width: 100%;
-	padding: 0.05rem;
+	height: 4.2rem;
+	padding: 0.08rem;
 	border-color: var(--fg3);
 	background-color: var(--bg2);
 	left: 0px;
@@ -14,4 +15,9 @@
 	margin: 0px;
 	z-index: 1000;
 	box-sizing: border-box;
+}
+
+#navbar-gap {
+	width: 100%;
+	height: 4.2rem;
 }

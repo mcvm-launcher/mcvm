@@ -1,15 +1,21 @@
 import { createSignal, For, Match, Show, Switch } from "solid-js";
-import { InstanceIcon, InstanceInfo } from "../../types";
+import {
+	GroupInfo,
+	InstanceIcon,
+	InstanceInfo,
+	InstanceMap,
+} from "../../types";
 import { invoke } from "@tauri-apps/api";
 import "./LaunchInstanceList.css";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
-import { Box, Pin } from "../../icons";
+import { Box, Folder, Pin } from "../../icons";
 import Icon from "../Icon";
 import IconButton from "../input/IconButton";
 
 export default function LaunchInstanceList(props: LaunchInstanceListProps) {
 	const [instances, setInstances] = createSignal<InstanceInfo[]>([]);
 	const [pinned, setPinned] = createSignal<InstanceInfo[]>([]);
+	const [groups, setGroups] = createSignal<GroupSectionData[]>([]);
 	const [selectedInstance, setSelectedInstance] = createSignal<string | null>(
 		null
 	);
@@ -19,14 +25,41 @@ export default function LaunchInstanceList(props: LaunchInstanceListProps) {
 
 	async function updateInstances() {
 		const instances = (await invoke("get_instances")) as InstanceInfo[];
+
+		// Create map of instances and put pinned instances in their section
 		let newPinned = [];
+		let instanceMap: InstanceMap = {};
 		for (let instance of instances) {
 			if (instance.pinned) {
 				newPinned.push(instance);
 			}
+			instanceMap[instance.id] = instance;
 		}
 		setPinned(newPinned);
 		setInstances(instances);
+
+		// Create groups
+		const groups = (await invoke("get_instance_2groups")) as GroupInfo[];
+		let newGroups: GroupSectionData[] = [];
+		for (let group of groups) {
+			let newInstances = [];
+			for (let instanceId of group.contents) {
+				try {
+					let instance = instanceMap[instanceId];
+					newInstances.push(instance);
+				} catch (e) {
+					console.error(
+						"Failed to fetch instance '" + instanceId + "' from map"
+					);
+				}
+			}
+			const newGroup: GroupSectionData = {
+				id: group.id,
+				instances: newInstances,
+			};
+			newGroups.push(newGroup);
+		}
+		setGroups(newGroups);
 	}
 
 	updateInstances();
@@ -40,8 +73,8 @@ export default function LaunchInstanceList(props: LaunchInstanceListProps) {
 
 	return (
 		<>
-			<Show when={pinned().length > 0}>
-				<div id="launch-instance-list">
+			<div id="launch-instance-list">
+				<Show when={pinned().length > 0}>
 					<Section
 						id="pinned"
 						kind="pinned"
@@ -52,9 +85,21 @@ export default function LaunchInstanceList(props: LaunchInstanceListProps) {
 						onSelectInstance={onSelect}
 						updateList={updateInstances}
 					/>
-				</div>
-			</Show>
-			<div id="launch-instance-list">
+				</Show>
+				<For each={groups()}>
+					{(item) => (
+						<Section
+							id={`group-${item.id}`}
+							kind="group"
+							header={item.id}
+							instances={item.instances}
+							selectedInstance={selectedInstance()}
+							selectedSection={selectedSection()}
+							onSelectInstance={onSelect}
+							updateList={updateInstances}
+						/>
+					)}
+				</For>
 				<Section
 					id="all"
 					kind="all"
@@ -79,6 +124,9 @@ function Section(props: SectionProps) {
 			</Match>
 			<Match when={props.kind == "pinned"}>
 				<Icon icon={Pin} size="18px" />
+			</Match>
+			<Match when={props.kind == "group"}>
+				<Icon icon={Folder} size="18px" />
 			</Match>
 		</Switch>
 	);
@@ -124,6 +172,11 @@ interface SectionProps {
 }
 
 type SectionKind = "pinned" | "group" | "all";
+
+interface GroupSectionData {
+	id: string;
+	instances: InstanceInfo[];
+}
 
 function Item(props: ItemProps) {
 	const [isHovered, setIsHovered] = createSignal(false);

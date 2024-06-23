@@ -23,6 +23,7 @@
 
 	color: var(--text);
 	background-color: var(--bg);
+	margin: 0px;
 }
 
 q.container {
