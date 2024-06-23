@@ -1,29 +1,57 @@
-#launch-instance-list-container {
-	display: flex;
-	justify-content: center;
+.launch-instance-list-section-container {
+	justify-content: space-evenly;
+	flex-direction: row;
+	flex-basis: content;
 	width: 100%;
+	margin-bottom: 3rem;
 }
 
-#launch-instance-list {
+.launch-instance-list-section-header {
+	margin-left: 1.3rem;
+}
+
+.launch-instance-list-section-header > svg {
+	margin-right: 0.7rem;
+}
+
+.launch-instance-list-section-header > h2 {
+	line-height: 0;
+	display: inline-block;
+}
+
+.launch-instance-list-section {
 	display: flex;
-	justify-content: last baseline;
 	flex-wrap: wrap;
 	flex-direction: row;
 	flex-basis: content;
-	width: 50%;
+	flex: auto;
+	width: 100%;
 }
 
 .launch-instance-list-item {
 	background-color: var(--bg2);
-	margin: 0.3rem;
-	padding: 0.8rem;
+	margin: 0.5rem;
+	padding: 0.2rem;
 	/* padding-top: 4rem; */
-	width: 9.54%;
-	height: 50%;
+	width: 14.5%;
 	text-align: center;
-	box-sizing: content-box;
+	box-sizing: border-box;
+	border-color: var(--bg2);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
 .launch-instance-list-item.selected {
 	border-color: var(--accent);
+}
+
+.launch-instance-list-icon {
+	width: 5rem;
+	margin-bottom: 0.5rem;
+}
+
+.launch-instance-list-pin {
+	position: absolute;
+	margin-left: 4.5rem;
 }

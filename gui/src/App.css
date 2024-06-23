@@ -12,8 +12,11 @@
 
 	/* Colors */
 	--fg: #f6f6f6;
-	--bg: #1e1e1e;
-	--bg2: #181818;
+	--fg2: #d3d3d3;
+	--fg3: #777777;
+	--bg0: #131313;
+	--bg: #181818;
+	--bg2: #1e1e1e;
 	--text: var(--fg);
 	--accent: #5f00ef;
 	--accent2: #2f0077;
@@ -80,9 +83,17 @@ button:active {
 
 .border {
 	border-style: solid;
-	border-width: 0.1rem;
+	border-width: 0.15rem;
 	border-color: var(--fg);
 	border-radius: 0.8rem;
+}
+
+.border-big {
+	border-width: 0.25rem;
+}
+
+.bold {
+	font-weight: bold;
 }
 
 /* Utility classes */
@@ -95,11 +106,20 @@ button:active {
 	color: var(--text);
 }
 
-.noselect, br, button {
+.noselect,
+br,
+button {
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
 	-khtml-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
+}
+
+.center {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }

@@ -3,6 +3,9 @@ import "./LaunchFooter.css";
 import { UnlistenFn, listen, Event } from "@tauri-apps/api/event";
 import { invoke } from "@tauri-apps/api";
 import { PasswordPrompt } from "../input/PasswordPrompt";
+import { Play, Properties } from "../../icons";
+import IconTextButton from "../input/IconTextButton";
+import IconButton from "../input/IconButton";
 
 export default function LaunchFooter(props: LaunchFooterProps) {
 	// Prompts
@@ -43,15 +46,28 @@ export default function LaunchFooter(props: LaunchFooterProps) {
 
 	return (
 		<div class="launch-footer border">
-			<button
-				class={`launch-button ${props.selectedInstance === null ? "" : "selected"}`}
-				onClick={(e) => {
-					e.preventDefault();
+			<div class="launch-footer-config">
+				<IconButton
+					icon={Properties}
+					size="28px"
+					color="var(--bg2)"
+					selectedColor="var(--accent)"
+					onClick={() => {}}
+					selected={false}
+				/>
+			</div>
+			<IconTextButton
+				icon={Play}
+				text="Launch"
+				size="22px"
+				color="var(--bg2)"
+				selectedColor="var(--accent)"
+				onClick={() => {
 					launch();
 				}}
-			>
-				Launch
-			</button>
+				selected={props.selectedInstance !== null}
+			/>
+
 			<div style={`display:${showPasswordPrompt() ? "block" : "none"}`}>
 				<PasswordPrompt
 					onSubmit={() => setShowPasswordPrompt(false)}
@@ -63,5 +79,5 @@ export default function LaunchFooter(props: LaunchFooterProps) {
 }
 
 export interface LaunchFooterProps {
-	selectedInstance?: string;
+	selectedInstance: string | null;
 }

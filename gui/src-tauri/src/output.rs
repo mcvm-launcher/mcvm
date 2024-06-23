@@ -1,4 +1,4 @@
-use std::{sync::Arc, time::Duration};
+use std::{collections::HashMap, sync::Arc, time::Duration};
 
 use anyhow::Context;
 use mcvm::shared::output::{MCVMOutput, Message, MessageContents, MessageLevel};
@@ -12,13 +12,19 @@ pub type PromptResponse = Arc<Mutex<Option<String>>>;
 pub struct LauncherOutput {
 	app: AppHandle,
 	password_prompt: PromptResponse,
+	passkeys: Arc<Mutex<HashMap<String, String>>>,
 }
 
 impl LauncherOutput {
-	pub fn new(app: AppHandle, password_prompt: PromptResponse) -> Self {
+	pub fn new(
+		app: AppHandle,
+		passkeys: Arc<Mutex<HashMap<String, String>>>,
+		password_prompt: PromptResponse,
+	) -> Self {
 		Self {
 			app,
 			password_prompt,
+			passkeys,
 		}
 	}
 
@@ -60,6 +66,24 @@ impl MCVMOutput for LauncherOutput {
 			}
 			msg => self.disp(msg.default_format()),
 		}
+	}
+
+	async fn prompt_special_user_passkey(
+		&mut self,
+		message: MessageContents,
+		user_id: &str,
+	) -> anyhow::Result<String> {
+		{
+			let passkeys = self.passkeys.lock().await;
+			if let Some(existing) = passkeys.get(user_id) {
+				return Ok(existing.clone());
+			}
+		}
+
+		let result = self.prompt_password(message).await?;
+		let mut passkeys = self.passkeys.lock().await;
+		passkeys.insert(user_id.into(), result.clone());
+		Ok(result)
 	}
 
 	async fn prompt_password(&mut self, message: MessageContents) -> anyhow::Result<String> {

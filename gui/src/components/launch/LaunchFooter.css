@@ -9,7 +9,8 @@
 	padding: 1rem;
 	align-items: center;
 	box-sizing: border-box;
-	background-color: var(--bg);
+	background-color: var(--bg0);
+	border-color: var(--bg2);
 	border-left: none;
 	border-right: none;
 	border-bottom: none;
@@ -18,4 +19,10 @@
 
 .launch-button.selected {
 	border-color: var(--accent);
+	background-color: var(--accent);
+}
+
+.launch-footer-config {
+	position: relative;
+	right: 1rem;
 }

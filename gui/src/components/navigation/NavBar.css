@@ -1,7 +1,17 @@
 #navbar {
-	border-width: 0px;
-	border-bottom-width: 1px;
-	border-style: solid;
+	position: sticky;
+	border-left: none;
+	border-right: none;
+	border-top: none;
+	border-radius: 0px;
 	width: 100%;
 	padding: 0.05rem;
+	border-color: var(--fg3);
+	background-color: var(--bg2);
+	left: 0px;
+	top: 0px;
+	right: 0px;
+	margin: 0px;
+	z-index: 1000;
+	box-sizing: border-box;
 }

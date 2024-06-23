@@ -9,8 +9,10 @@ export default function LaunchPage() {
 	return (
 		<div class="container">
 			<h1 class="noselect">Launch</h1>
-			<br />
 			<LaunchInstanceList onSelectInstance={setSelected} />
+			<br />
+			<br />
+			<br />
 
 			<LaunchFooter selectedInstance={selected()} />
 		</div>

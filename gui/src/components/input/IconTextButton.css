@@ -1,0 +1,15 @@
+.icon-text-button {
+	border-radius: 8px;
+	border: 1px solid transparent;
+	padding: 0.5rem 1rem;
+	display: flex;
+}
+
+.icon-text-button-icon {
+	margin-right: 0.5rem;
+}
+
+.icon-text-button-text {
+	display: inline-block;
+	transform: translateY(0.9px);
+}
