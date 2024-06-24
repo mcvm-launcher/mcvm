@@ -12,25 +12,48 @@ use std::collections::HashMap;
 use std::sync::Arc;
 
 use anyhow::Context;
+use commands::UpdateRunStateEvent;
 use data::LauncherData;
 use mcvm::core::auth_crate::mc::ClientId;
 use mcvm::core::{net::download::Client, user::UserManager};
 use mcvm::io::paths::Paths;
+use mcvm::shared::id::InstanceID;
 use output::PromptResponse;
+use serde::{Deserialize, Serialize};
 use tauri::async_runtime::Mutex;
+use tauri::Manager;
 use tokio::task::JoinHandle;
 
 fn main() {
 	let state = tauri::async_runtime::block_on(async { State::new().await })
 		.expect("Error when initializing application state");
+	let launched_games = state.launched_games.clone();
 	tauri::Builder::default()
 		.manage(state)
+		.setup(move |app| {
+			app.listen_global("update_run_state", move |event| {
+				let payload: UpdateRunStateEvent = serde_json::from_str(
+					event
+						.payload()
+						.expect("Update run state event should have payload"),
+				)
+				.expect("Failed to deserialize state update");
+				let mut lock = tauri::async_runtime::block_on(launched_games.lock());
+				if let Some(instance) = lock.get_mut(&InstanceID::from(payload.instance)) {
+					instance.state = payload.state;
+				}
+			});
+
+			Ok(())
+		})
 		.invoke_handler(tauri::generate_handler![
 			commands::launch_game,
 			commands::stop_game,
 			commands::answer_password_prompt,
 			commands::get_instances,
 			commands::get_instance_groups,
+			commands::get_running_instances,
+			commands::set_running_instance_state,
 			commands::pin_instance,
 		])
 		.run(tauri::generate_context!())
@@ -40,7 +63,7 @@ fn main() {
 /// State for the Tauri application
 pub struct State {
 	pub data: Mutex<LauncherData>,
-	pub launched_game: Mutex<Option<JoinHandle<anyhow::Result<()>>>>,
+	pub launched_games: Arc<Mutex<HashMap<InstanceID, RunningInstance>>>,
 	pub paths: Paths,
 	pub client: Client,
 	pub user_manager: Mutex<UserManager>,
@@ -54,7 +77,7 @@ impl State {
 		let paths = Paths::new().await?;
 		Ok(Self {
 			data: Mutex::new(LauncherData::open(&paths).context("Failed to open launcher data")?),
-			launched_game: Mutex::new(None),
+			launched_games: Arc::new(Mutex::new(HashMap::new())),
 			paths,
 			client: Client::new(),
 			user_manager: Mutex::new(UserManager::new(get_ms_client_id())),
@@ -62,6 +85,25 @@ impl State {
 			password_prompt: PromptResponse::new(Mutex::new(None)),
 		})
 	}
+}
+
+/// A running instance
+pub struct RunningInstance {
+	/// The ID of the instance
+	pub id: InstanceID,
+	/// The tokio task for the running instance
+	pub task: JoinHandle<anyhow::Result<()>>,
+	/// State of the instance in it's lifecycle
+	pub state: RunState,
+}
+
+/// State of a running instance
+#[derive(Serialize, Deserialize, Clone, Copy, Debug)]
+#[serde(rename_all = "snake_case")]
+pub enum RunState {
+	NotStarted,
+	Preparing,
+	Running,
 }
 
 /// Get the Microsoft client ID

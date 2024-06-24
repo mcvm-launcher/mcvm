@@ -3,10 +3,10 @@
 	bottom: 0px;
 	left: 0px;
 	width: 100vw;
-	display: flex;
+	/* display: flex; */
 	justify-content: center;
 	height: 4rem;
-	padding: 1rem;
+	/* padding: 1.0rem; */
 	align-items: center;
 	box-sizing: border-box;
 	background-color: var(--bg0);
@@ -17,12 +17,44 @@
 	border-radius: 0px;
 }
 
-.launch-button.selected {
-	border-color: var(--accent);
-	background-color: var(--accent);
+.launch-footer-section {
+	width: calc(100vw / 3);
+	display: inline-block;
+}
+
+.launch-footer-center-inner {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 0.6rem;
+}
+
+.launch-button {
+	display: inline-block;
 }
 
 .launch-footer-config {
 	position: relative;
-	right: 1rem;
+	right: 2.5rem;
+	top: 0.13rem;
+	display: inline-block;
+	margin-right: -1.9rem;
+}
+
+.running-instance-list {
+	display: flex;
+	margin-left: 1rem;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+	top: 0.75rem;
+	gap: 0.35rem;
+}
+
+.running-instance-list-icon {
+	width: 2.0rem;
+	display: inline-block;
+	background-color: var(--bg2);
+	padding: 0.12rem;
+	border-color: var(--bg);
 }

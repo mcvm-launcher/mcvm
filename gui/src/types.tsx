@@ -18,6 +18,18 @@ export interface GroupInfo {
 	contents: string[];
 }
 
+export interface RunningInstanceInfo {
+	info: InstanceInfo;
+	state: RunState;
+}
+
+export type RunState = "not_started" | "preparing" | "running";
+
+export interface UpdateRunStateEvent {
+	instance: string;
+	state: RunState;
+}
+
 export interface AuthDisplayEvent {
 	url: string;
 	device_code: string;

@@ -1,16 +1,11 @@
 import { createSignal, For, Match, Show, Switch } from "solid-js";
-import {
-	GroupInfo,
-	InstanceIcon,
-	InstanceInfo,
-	InstanceMap,
-} from "../../types";
+import { GroupInfo, InstanceInfo, InstanceMap } from "../../types";
 import { invoke } from "@tauri-apps/api";
 import "./LaunchInstanceList.css";
-import { convertFileSrc } from "@tauri-apps/api/tauri";
 import { Box, Folder, Pin } from "../../icons";
 import Icon from "../Icon";
 import IconButton from "../input/IconButton";
+import { getIconSrc } from "../../utils";
 
 export default function LaunchInstanceList(props: LaunchInstanceListProps) {
 	const [instances, setInstances] = createSignal<InstanceInfo[]>([]);
@@ -236,14 +231,6 @@ interface ItemProps {
 	sectionKind: SectionKind;
 	onSelect: () => void;
 	updateList: () => void;
-}
-
-function getIconSrc(icon: InstanceIcon | null): string {
-	if (icon === null) {
-		return "icons/default_instance.png";
-	} else {
-		return convertFileSrc(icon);
-	}
 }
 
 export interface LaunchInstanceListProps {

@@ -2,6 +2,7 @@ use std::{collections::HashMap, sync::Arc, time::Duration};
 
 use anyhow::Context;
 use mcvm::shared::{
+	id::InstanceID,
 	lang::translate::TranslationKey,
 	output::{MCVMOutput, Message, MessageContents, MessageLevel},
 };
@@ -9,18 +10,22 @@ use serde::Serialize;
 use tauri::{AppHandle, Manager};
 use tokio::sync::Mutex;
 
+use crate::{commands::UpdateRunStateEvent, RunState};
+
 /// Response to a prompt in the frontend, shared with a mutex
 pub type PromptResponse = Arc<Mutex<Option<String>>>;
 
 pub struct LauncherOutput {
-	app: AppHandle,
+	app: Arc<AppHandle>,
 	password_prompt: PromptResponse,
 	passkeys: Arc<Mutex<HashMap<String, String>>>,
+	/// The instance launch associated with this specific output
+	instance: Option<InstanceID>,
 }
 
 impl LauncherOutput {
 	pub fn new(
-		app: AppHandle,
+		app: Arc<AppHandle>,
 		passkeys: Arc<Mutex<HashMap<String, String>>>,
 		password_prompt: PromptResponse,
 	) -> Self {
@@ -28,11 +33,16 @@ impl LauncherOutput {
 			app,
 			password_prompt,
 			passkeys,
+			instance: None,
 		}
 	}
 
-	pub fn get_app_handle(self) -> AppHandle {
+	pub fn get_app_handle(self) -> Arc<AppHandle> {
 		self.app
+	}
+
+	pub fn set_instance(&mut self, instance: InstanceID) {
+		self.instance = Some(instance);
 	}
 }
 
@@ -128,14 +138,29 @@ impl MCVMOutput for LauncherOutput {
 	fn translate(&self, key: TranslationKey) -> &str {
 		// Emit an event for certain keys as they notify us of progress in the launch
 		if let TranslationKey::PreparingLaunch = key {
-			let _ = self.app.emit_all("mcvm_prepare_launch", ());
-			println!("PREPARE LAUNCH");
+			if let Some(instance) = &self.instance {
+				let _ = self.app.emit_all(
+					"update_run_state",
+					UpdateRunStateEvent {
+						instance: instance.to_string(),
+						state: RunState::Preparing,
+					},
+				);
+			}
 		}
 		if let TranslationKey::AuthenticationSuccessful = key {
 			let _ = self.app.emit_all("mcvm_close_auth_info", ());
 		}
 		if let TranslationKey::Launch = key {
-			let _ = self.app.emit_all("mcvm_launching", ());
+			if let Some(instance) = &self.instance {
+				let _ = self.app.emit_all(
+					"update_run_state",
+					UpdateRunStateEvent {
+						instance: instance.to_string(),
+						state: RunState::Running,
+					},
+				);
+			}
 		}
 
 		key.get_default()

@@ -1,4 +1,4 @@
-import { Show, createSignal } from "solid-js";
+import { For, Show, createEffect, createSignal, onCleanup } from "solid-js";
 import "./LaunchFooter.css";
 import { UnlistenFn, listen, Event } from "@tauri-apps/api/event";
 import { invoke } from "@tauri-apps/api";
@@ -6,13 +6,16 @@ import { PasswordPrompt } from "../input/PasswordPrompt";
 import { Play, Properties } from "../../icons";
 import IconTextButton from "../input/IconTextButton";
 import IconButton from "../input/IconButton";
-import { AuthDisplayEvent } from "../../types";
+import { AuthDisplayEvent, RunningInstanceInfo } from "../../types";
 import MicrosoftAuthInfo from "../input/MicrosoftAuthInfo";
+import { getIconSrc } from "../../utils";
 
 export default function LaunchFooter(props: LaunchFooterProps) {
 	// Basic state
-	const [state, setState] = createSignal<LaunchState>("not_started");
-	const [isHovered, setIsHovered] = createSignal(false);
+	const [runningInstances, setRunningInstances] = createSignal<
+		RunningInstanceInfo[]
+	>([]);
+
 	// Prompts
 	const [showPasswordPrompt, setShowPasswordPrompt] = createSignal(false);
 	const [authInfo, setAuthInfo] = createSignal<AuthDisplayEvent | null>(null);
@@ -20,23 +23,21 @@ export default function LaunchFooter(props: LaunchFooterProps) {
 	// Unlisteners for tauri events
 	const [unlistens, setUnlistens] = createSignal<UnlistenFn[]>([]);
 
-	async function launch() {
-		if (props.selectedInstance === null) {
-			return;
-		}
+	async function updateRunningInstances() {
+		setRunningInstances(await invoke("get_running_instances"));
+	}
 
-		// Make sure we unlisten from all of the existing listeners
+	// Setup and clean up event listeners for updating state
+	createEffect(async () => {
+		updateRunningInstances();
+
 		for (let unlisten of unlistens()) {
 			unlisten();
 		}
-		let launchPromise = invoke("launch_game", {
-			instanceId: props.selectedInstance,
-			offline: false,
-		});
 
-		let prepareLaunchPromise = listen("mcvm_prepare_launch", () => {
-			console.log("Preparing");
-			setState("preparing");
+		let updateStatePromise = listen("update_run_state", () => {
+			console.log("Updating run state");
+			updateRunningInstances();
 		});
 
 		let authInfoPromise = listen(
@@ -58,71 +59,89 @@ export default function LaunchFooter(props: LaunchFooterProps) {
 			}
 		);
 
-		let launchingPromise = listen("mcvm_launching", () => {
-			console.log("Running");
-			setState("running");
+		let stoppedPromise = listen("game_finished", (event: Event<string>) => {
+			console.log("Stopped instance " + event.payload);
+			stopGame(event.payload);
 		});
 
-		let stoppedPromise = listen("game_finished", () => {
-			console.log("Stopped");
-			setState("not_started");
-		});
-
-		let [_, ...eventUnlistens] = await Promise.all([
-			launchPromise,
-			prepareLaunchPromise,
+		let eventUnlistens = await Promise.all([
+			updateStatePromise,
 			authInfoPromise,
 			authInfoClosePromise,
 			passwordPromise,
-			launchingPromise,
 			stoppedPromise,
 		]);
 
 		setUnlistens(eventUnlistens);
+	}, []);
+
+	onCleanup(() => {
+		for (const unlisten of unlistens()) {
+			unlisten();
+		}
+	});
+
+	async function launch() {
+		if (props.selectedInstance === null) {
+			return;
+		}
+
+		// Prevent launching until the current authentication screens are finished
+		if (showPasswordPrompt() || authInfo() !== null) {
+			return;
+		}
+
+		let launchPromise = invoke("launch_game", {
+			instanceId: props.selectedInstance,
+			offline: false,
+		});
+
+		await Promise.all([launchPromise]);
+
+		updateRunningInstances();
 	}
 
-	async function stopGame() {
-		setState("not_started");
+	async function stopGame(instance: string) {
 		setAuthInfo(null);
 		setShowPasswordPrompt(false);
-		await invoke("stop_game", {});
+		await invoke("stop_game", { instance: instance });
+		updateRunningInstances();
 	}
 
 	return (
 		<div class="launch-footer border">
-			<div class="launch-footer-config">
-				<IconButton
-					icon={Properties}
-					size="28px"
-					color="var(--bg2)"
-					selectedColor="var(--accent)"
-					onClick={() => {}}
-					selected={false}
-				/>
+			<div class="launch-footer-section launch-footer-left"></div>
+			<div class="launch-footer-section launch-footer-center">
+				<div class="launch-footer-center-inner">
+					<div class="launch-button-container">
+						<div class="launch-footer-config">
+							<IconButton
+								icon={Properties}
+								size="28px"
+								color="var(--bg2)"
+								selectedColor="var(--accent)"
+								onClick={() => {}}
+								selected={false}
+							/>
+						</div>
+						<div class="launch-button">
+							<IconTextButton
+								icon={Play}
+								text="Launch"
+								size="22px"
+								color="var(--bg2)"
+								selectedColor="var(--accent)"
+								onClick={() => {
+									launch();
+								}}
+								selected={props.selectedInstance !== null}
+							/>
+						</div>
+					</div>
+				</div>
 			</div>
-			<div
-				onMouseEnter={() => setIsHovered(true)}
-				onMouseLeave={() => setIsHovered(false)}
-			>
-				<IconTextButton
-					icon={Play}
-					text={
-						state() === "not_started"
-							? "Launch"
-							: state() === "preparing"
-							? "Preparing..."
-							: state() === "running"
-							? "Running"
-							: "Invalid state"
-					}
-					size="22px"
-					color="var(--bg2)"
-					selectedColor="var(--accent)"
-					onClick={() => {
-						launch();
-					}}
-					selected={props.selectedInstance !== null}
-				/>
+			<div class="launch-footer-section launch-footer-right">
+				<RunningInstanceList instances={runningInstances()} onStop={stopGame} />
 			</div>
 
 			<Show when={authInfo() !== null}>
@@ -130,7 +149,9 @@ export default function LaunchFooter(props: LaunchFooterProps) {
 					event={authInfo() as AuthDisplayEvent}
 					onCancel={() => {
 						setAuthInfo(null);
-						stopGame();
+						if (props.selectedInstance !== null) {
+							stopGame(props.selectedInstance);
+						}
 					}}
 				/>
 			</Show>
@@ -144,8 +165,30 @@ export default function LaunchFooter(props: LaunchFooterProps) {
 	);
 }
 
-type LaunchState = "not_started" | "preparing" | "running";
-
 export interface LaunchFooterProps {
 	selectedInstance: string | null;
+}
+
+// Displays a list of instance icons that can be interacted with
+function RunningInstanceList(props: RunningInstanceListProps) {
+	return (
+		<div class="running-instance-list">
+			<For each={props.instances}>
+				{(instance) => (
+					<img
+						src={getIconSrc(instance.info.icon)}
+						class="running-instance-list-icon border"
+						title={
+							instance.info.name != null ? instance.info.name : instance.info.id
+						}
+					/>
+				)}
+			</For>
+		</div>
+	);
+}
+
+interface RunningInstanceListProps {
+	instances: RunningInstanceInfo[];
+	onStop: (instance: string) => void;
 }
