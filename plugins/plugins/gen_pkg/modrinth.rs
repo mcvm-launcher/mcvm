@@ -177,6 +177,7 @@ pub async fn gen_raw(
 					KnownLoader::NeoForged => modloaders.push(ModloaderMatch::NeoForged),
 					KnownLoader::Rift => modloaders.push(ModloaderMatch::Rift),
 					KnownLoader::Liteloader => modloaders.push(ModloaderMatch::LiteLoader),
+					KnownLoader::Risugamis => modloaders.push(ModloaderMatch::Risugamis),
 					KnownLoader::Bukkit => plugin_loaders.push(PluginLoaderMatch::Bukkit),
 					KnownLoader::Folia => plugin_loaders.push(PluginLoaderMatch::Folia),
 					KnownLoader::Spigot => plugin_loaders.push(PluginLoaderMatch::Spigot),

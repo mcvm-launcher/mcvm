@@ -168,6 +168,9 @@ pub enum KnownLoader {
 	Rift,
 	/// Liteloader
 	Liteloader,
+	/// Risugami's Modloader
+	#[serde(rename = "modloader")]
+	Risugamis,
 	/// Bukkit loaders
 	Bukkit,
 	/// Spigot server
