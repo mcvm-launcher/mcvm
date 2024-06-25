@@ -213,6 +213,10 @@ pub async fn gen_raw(
 			} else {
 				panic!("Dependency {} was not substituted", dep.project_id)
 			};
+			// Don't count none relations
+			if pkg_id == "none" {
+				continue;
+			}
 			match dep.dependency_type {
 				DependencyType::Required => {
 					if force_extensions.contains(&pkg_id) {
