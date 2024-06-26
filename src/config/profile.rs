@@ -168,16 +168,7 @@ pub fn consolidate_profile_configs(
 				continue;
 			}
 
-			if let Some(parent) = &profile.instance.common.from {
-				// If the parent is already in the map (already consolidated) then we can derive from it and add to the map
-				if let Some(parent) = out.get(&ProfileID::from(parent.clone())) {
-					let mut new = parent.clone();
-					new.merge(profile.clone());
-					out.insert(id.clone(), new);
-				} else {
-					bail!("Parent profile '{parent}' does not exist");
-				}
-			} else {
+			if profile.instance.common.from.is_empty() {
 				// Profiles with no ancestor can just be added directly to the output, after deriving from the global profile
 				let mut profile = profile.clone();
 				if let Some(global_profile) = global_profile {
@@ -186,6 +177,17 @@ pub fn consolidate_profile_configs(
 					profile.merge(overlay);
 				}
 				out.insert(id.clone(), profile);
+			} else {
+				for parent in profile.instance.common.from.iter() {
+					// If the parent is already in the map (already consolidated) then we can derive from it and add to the map
+					if let Some(parent) = out.get(&ProfileID::from(parent.clone())) {
+						let mut new = parent.clone();
+						new.merge(profile.clone());
+						out.insert(id.clone(), new);
+					} else {
+						bail!("Parent profile '{parent}' does not exist");
+					}
+				}
 			}
 		}
 

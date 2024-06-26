@@ -9,7 +9,7 @@ use mcvm_shared::id::{InstanceID, ProfileID};
 use mcvm_shared::modifications::{ClientType, Modloader, ServerType};
 use mcvm_shared::output::MCVMOutput;
 use mcvm_shared::pkg::PackageStability;
-use mcvm_shared::util::{merge_options, DefaultExt};
+use mcvm_shared::util::{merge_options, DefaultExt, DeserListOrSingle};
 use mcvm_shared::Side;
 #[cfg(feature = "schema")]
 use schemars::JsonSchema;
@@ -48,8 +48,8 @@ pub struct InstanceConfig {
 #[serde(default)]
 pub struct CommonInstanceConfig {
 	/// A profile to use
-	#[serde(skip_serializing_if = "Option::is_none")]
-	pub from: Option<String>,
+	#[serde(skip_serializing_if = "DeserListOrSingle::is_empty")]
+	pub from: DeserListOrSingle<String>,
 	/// The Minecraft version
 	pub version: Option<MinecraftVersionDeser>,
 	/// Configured modloader
@@ -86,7 +86,7 @@ pub struct CommonInstanceConfig {
 impl CommonInstanceConfig {
 	/// Merge multiple common configs
 	pub fn merge(&mut self, other: Self) -> &mut Self {
-		self.from = other.from.or(self.from.clone());
+		self.from.merge(other.from);
 		self.version = other.version.or(self.version.clone());
 		self.modloader = other.modloader.or(self.modloader.clone());
 		self.client_type = other.client_type.or(self.client_type.clone());
@@ -370,25 +370,27 @@ pub fn read_instance_config(
 	}
 
 	// Get the parent profile if it is specified
-	let profile = if let Some(from) = &config.common.from {
-		Some(
+	let profiles: anyhow::Result<Vec<_>> = config
+		.common
+		.from
+		.iter()
+		.map(|x| {
 			profiles
-				.get(&ProfileID::from(from.clone()))
-				.context("Derived profile does not exist")?,
-		)
-	} else {
-		None
-	};
+				.get(&ProfileID::from(x.clone()))
+				.with_context(|| format!("Derived profile '{x}' does not exist"))
+		})
+		.collect();
+	let profiles = profiles?;
 
 	// Merge with the profile
-	if let Some(profile) = profile {
+	for profile in &profiles {
 		config = merge_instance_configs(&profile.instance, config);
 	}
 
 	let side = config.side.context("Instance type was not specified")?;
 
 	// Consolidate all of the package configs into the instance package config list
-	let packages = consolidate_package_configs(profile, &config, side);
+	let packages = consolidate_package_configs(profiles, &config, side);
 
 	let kind = match side {
 		Side::Client => InstKind::client(config.window),
@@ -463,7 +465,7 @@ pub fn is_valid_instance_id(id: &str) -> bool {
 /// Combines all of the package configs from global, profile, and instance together into
 /// the configurations for just one instance
 fn consolidate_package_configs(
-	profile: Option<&ProfileConfig>,
+	profiles: Vec<&ProfileConfig>,
 	instance: &InstanceConfig,
 	side: Side,
 ) -> Vec<PackageConfig> {
@@ -471,7 +473,7 @@ fn consolidate_package_configs(
 	// We use a map so that we can override packages from more general sources
 	// with those from more specific ones
 	let mut map = HashMap::new();
-	if let Some(profile) = profile {
+	for profile in profiles {
 		for pkg in profile.packages.iter_global() {
 			let pkg = pkg
 				.clone()

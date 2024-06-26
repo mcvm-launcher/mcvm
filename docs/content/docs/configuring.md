@@ -55,7 +55,7 @@ Instances are defined in the id-value format underneath the `instances` object o
 ```
 "id": {
 	"type": "client" | "server",
-	"from": string,
+	"from": string | [string],
 	"version": string,
 	"name": string,
 	"modloader": modloader,
@@ -103,7 +103,7 @@ Instances are defined in the id-value format underneath the `instances` object o
 The first form just has the type of the instance. All fields are optional unless stated otherwise.
 
 - `type` (Required): The type of the instance, either `"client"` or `"server"`.
-- `from`: A [profile](#profiles) to derive configuration from.
+- `from`: A [profile](#profiles) or multiple profiles to derive configuration from. The config from each profile will be applied in order, and then the config for this instance will be applied last.
 - `version`: The Minecraft version of the instance. Can use `"latest"` or `"latest_snapshot"` as special identifiers to get the latest version. This is technically a required field, but can be derived from a profile instead.
 - `name`: A custom display name for this instance. Has no rules and does not have to be unique.
 - `modloader`: The modloader for the instance, which can be used to set both the client and server type automatically.
