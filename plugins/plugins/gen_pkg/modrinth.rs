@@ -231,7 +231,7 @@ pub async fn gen_raw(
 				}),
 				DependencyType::Incompatible => conflicts.push(pkg_id),
 				// We don't need to do anything with embedded dependencies yet
-				DependencyType::Embedded => {}
+				DependencyType::Embedded => continue,
 			}
 		}
 
