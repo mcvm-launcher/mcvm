@@ -201,7 +201,7 @@ Addon versions are different files and versions of an addon
 }
 ```
 
-- ConditionSet: Addon versions contain all the fields of a ConditionSet. These conditions are used to filter down and find the version that satisfies all the requirements. If multiple versions satisfy the requirements, the one that comes first in the list is chosen.
+- ConditionSet: Addon versions contain all the fields of a ConditionSet. These conditions are used to filter down and find the version that satisfies all the requirements. If multiple versions satisfy the requirements, the evaluator will favor versions that are more specific to your system ("fabric" modloader over "fabriclike", for example). Finally, the one that comes first in the list is chosen.
 - `url`: A URL to the file for this version. Not required if `path` is specified.
 - `path`: A local filesystem path to the addon file. Not required if `url` is specified. Requires elevated permissions.
 - `version` (Optional): The unique version identifier of this addon. This is important because it lets MCVM differentiate between different versions of the file for caching purposes. If this field is not present, the addon will never be cached and will be redownloaded every time. This ID should not contain any special characters.
