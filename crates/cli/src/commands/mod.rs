@@ -178,6 +178,7 @@ impl<'a> CmdData<'a> {
 					plugins,
 					show_warnings,
 					&self.paths,
+					crate::secrets::get_ms_client_id(),
 					self.output,
 				)
 				.context("Failed to load config")?,

@@ -111,9 +111,10 @@ impl Config {
 		plugins: PluginManager,
 		show_warnings: bool,
 		paths: &Paths,
+		client_id: ClientId,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Self> {
-		let mut users = UserManager::new(ClientId::new("".into()));
+		let mut users = UserManager::new(client_id);
 		let mut instances = HashMap::with_capacity(config.instances.len());
 		// Preferences
 		let (prefs, repositories) =
@@ -223,10 +224,11 @@ impl Config {
 		plugins: PluginManager,
 		show_warnings: bool,
 		paths: &Paths,
+		client_id: ClientId,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Self> {
 		let obj = Self::open(path)?;
-		Self::load_from_deser(obj, plugins, show_warnings, paths, o)
+		Self::load_from_deser(obj, plugins, show_warnings, paths, client_id, o)
 	}
 }
 
@@ -275,6 +277,7 @@ mod tests {
 			PluginManager::new(),
 			true,
 			&Paths::new_no_create().unwrap(),
+			ClientId::new(String::new()),
 			&mut output::Simple(output::MessageLevel::Debug),
 		)
 		.unwrap();

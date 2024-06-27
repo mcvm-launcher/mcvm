@@ -297,7 +297,15 @@ pub async fn answer_password_prompt(
 
 fn load_config(paths: &Paths, o: &mut LauncherOutput) -> anyhow::Result<Config> {
 	let plugins = PluginManager::load(paths, o).context("Failed to load plugin manager")?;
-	Config::load(&Config::get_path(paths), plugins, true, paths, o).context("Failed to load config")
+	Config::load(
+		&Config::get_path(paths),
+		plugins,
+		true,
+		paths,
+		crate::get_ms_client_id(),
+		o,
+	)
+	.context("Failed to load config")
 }
 
 /// Error formatting for results
