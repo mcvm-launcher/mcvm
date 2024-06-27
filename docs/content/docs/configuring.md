@@ -77,7 +77,6 @@ Instances are defined in the id-value format underneath the `instances` object o
 			"args": [string]
 		},
 		"java": "auto" | "system" | "adoptium" | "zulu" | "graalvm" | string,
-		"preset": "none" | "akairs" | "krusic" | "obydux",
 		"quick_play": {
 			"type": "world" | "server" | "realm",
 			"world": string,
