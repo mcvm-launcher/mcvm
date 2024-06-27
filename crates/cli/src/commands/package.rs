@@ -64,6 +64,8 @@ This package does not need to be installed, it just has to be in the index."
 		#[command(subcommand)]
 		command: RepoSubcommand,
 	},
+	#[command(about = "List available packages from all repositories")]
+	ListAll {},
 	#[command(about = "Browse packages from the remote repositories")]
 	Browse {},
 }
@@ -91,6 +93,7 @@ pub async fn run(subcommand: PackageSubcommand, data: &mut CmdData<'_>) -> anyho
 		PackageSubcommand::Cat { raw, package } => cat(data, &package, raw).await,
 		PackageSubcommand::Info { package } => info(data, &package).await,
 		PackageSubcommand::Repository { command } => repo(command, data).await,
+		PackageSubcommand::ListAll {} => list_all(data).await,
 		PackageSubcommand::Browse {} => browse(data).await,
 	}
 }
@@ -494,6 +497,25 @@ async fn repo_info(data: &mut CmdData<'_>, repo_id: String) -> anyhow::Result<()
 		cprintln!("   <s>MCVM Version:</> <c>{}</>", version);
 	}
 	cprintln!("   <s>Package Count:</> <y>{}</>", pkg_count);
+
+	Ok(())
+}
+
+async fn list_all(data: &mut CmdData<'_>) -> anyhow::Result<()> {
+	data.ensure_config(true).await?;
+	let config = data.config.get_mut();
+
+	let client = Client::new();
+	let mut packages = config
+		.packages
+		.get_all_available_packages(&data.paths, &client, data.output)
+		.await
+		.context("Failed to get list of available packages")?;
+	packages.sort();
+
+	for package in packages {
+		println!("{package}");
+	}
 
 	Ok(())
 }
