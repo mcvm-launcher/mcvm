@@ -5,6 +5,7 @@ use std::sync::Arc;
 use std::{cmp::Reverse, collections::HashMap};
 
 use iso8601_timestamp::Timestamp;
+use mcvm_core::io::{json_from_file, json_to_file};
 use mcvm_core::net::download::Client;
 use mcvm_net::modrinth::Version;
 use serde::{Deserialize, Serialize};
@@ -113,6 +114,8 @@ pub async fn batched_gen(mut config: BatchedConfig, filter: Vec<String>) {
 
 	let chunks = modrinth_version_ids.chunks(batch_limit);
 
+	std::fs::create_dir_all("./pkg_cache/modrinth_versions")
+		.expect("Failed to create Modrinth cache directory");
 	let modrinth_versions = Arc::new(Mutex::new(Vec::new()));
 	let mut tasks = JoinSet::new();
 	for chunk in chunks {
@@ -120,11 +123,32 @@ pub async fn batched_gen(mut config: BatchedConfig, filter: Vec<String>) {
 		let client = client.clone();
 		let modrinth_versions = modrinth_versions.clone();
 		let task = async move {
-			let versions = mcvm_net::modrinth::get_multiple_versions(&chunk, &client)
-				.await
-				.expect("Failed to get Modrinth versions");
+			let mut cached_versions = Vec::new();
+			let mut uncached_versions = Vec::new();
+
+			for version in chunk {
+				let cached_path = get_cached_version_path(&version);
+				if cached_path.exists() {
+					let read = json_from_file(cached_path).expect("Failed to read cached version");
+					cached_versions.push(read);
+				} else {
+					uncached_versions.push(version);
+				}
+			}
+
+			let uncached_versions =
+				mcvm_net::modrinth::get_multiple_versions(&uncached_versions, &client)
+					.await
+					.expect("Failed to get Modrinth versions");
+			// Cache the new versions
+			for version in &uncached_versions {
+				let cached_path = get_cached_version_path(&version.id);
+				json_to_file(cached_path, version).expect("Failed to write cached version");
+			}
+
 			let mut lock = modrinth_versions.lock().await;
-			lock.extend(versions);
+			lock.extend(cached_versions);
+			lock.extend(uncached_versions);
 		};
 		tasks.spawn(task);
 	}
@@ -286,4 +310,9 @@ impl SortVersions {
 			),
 		}
 	}
+}
+
+/// Get the path to a cached version
+fn get_cached_version_path(version: &str) -> PathBuf {
+	format!("./pkg_cache/modrinth_versions/{version}.json").into()
 }
