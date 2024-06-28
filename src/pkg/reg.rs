@@ -47,6 +47,11 @@ impl PkgRegistry {
 		}
 	}
 
+	/// Clear the registry
+	pub fn clear(&mut self) {
+		self.packages.clear();
+	}
+
 	/// Insert a package into the registry and return a mutable reference to the
 	/// newly inserted package
 	fn insert(&mut self, req: ArcPkgReq, pkg: Package) -> &mut Package {
