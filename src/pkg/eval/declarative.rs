@@ -52,7 +52,7 @@ fn eval_declarative_package_impl<'a>(
 	// Apply conditional rules
 	for rule in &contents.conditional_rules {
 		for condition in &rule.conditions {
-			if !check_condition_set(condition, &eval_data.input) {
+			if !check_condition_set(condition, &eval_data.input, &eval_data.properties) {
 				continue;
 			}
 		}
@@ -64,12 +64,17 @@ fn eval_declarative_package_impl<'a>(
 	// Select addon versions
 	for (addon_id, addon) in &contents.addons {
 		// Check conditions
-		if !check_multiple_condition_sets(&addon.conditions, &eval_data.input) {
+		if !check_multiple_condition_sets(
+			&addon.conditions,
+			&eval_data.input,
+			&eval_data.properties,
+		) {
 			continue;
 		}
 
 		// Pick the best version
-		let version = pick_best_addon_version(&addon.versions, &eval_data.input);
+		let version =
+			pick_best_addon_version(&addon.versions, &eval_data.input, &eval_data.properties);
 		if let Some(version) = version {
 			let data = AddonInstructionData {
 				id: addon_id.clone(),
@@ -147,11 +152,12 @@ fn eval_declarative_package_impl<'a>(
 pub fn pick_best_addon_version<'a>(
 	versions: &'a [DeclarativeAddonVersion],
 	input: &'a EvalInput<'a>,
+	properties: &PackageProperties,
 ) -> Option<&'a DeclarativeAddonVersion> {
 	// Filter versions that are not allowed
 	let versions = versions
 		.iter()
-		.filter(|x| check_condition_set(&x.conditional_properties, input));
+		.filter(|x| check_condition_set(&x.conditional_properties, input, properties));
 
 	// Sort so that versions with less loader matches come first
 
@@ -181,12 +187,19 @@ pub fn pick_best_addon_version<'a>(
 fn check_multiple_condition_sets<'a>(
 	conditions: &[DeclarativeConditionSet],
 	input: &'a EvalInput<'a>,
+	properties: &PackageProperties,
 ) -> bool {
-	conditions.iter().all(|x| check_condition_set(x, input))
+	conditions
+		.iter()
+		.all(|x| check_condition_set(x, input, properties))
 }
 
 /// Filtering function for addon version picking and rule checking
-fn check_condition_set<'a>(conditions: &DeclarativeConditionSet, input: &'a EvalInput<'a>) -> bool {
+fn check_condition_set<'a>(
+	conditions: &DeclarativeConditionSet,
+	input: &'a EvalInput<'a>,
+	properties: &PackageProperties,
+) -> bool {
 	if let Some(stability) = &conditions.stability {
 		if stability > &input.params.stability {
 			return false;
@@ -253,6 +266,23 @@ fn check_condition_set<'a>(conditions: &DeclarativeConditionSet, input: &'a Eval
 	if let Some(languages) = &conditions.languages {
 		if !languages.iter().any(|x| x == &input.constants.language) {
 			return false;
+		}
+	}
+
+	if let Some(content_versions) = &conditions.content_versions {
+		if let Some(desired_version) = &input.params.content_version {
+			let default_versions = Vec::new();
+			if !content_versions.iter().any(|x| {
+				desired_version.matches_single(
+					x,
+					properties
+						.content_versions
+						.as_ref()
+						.unwrap_or(&default_versions),
+				)
+			}) {
+				return false;
+			}
 		}
 	}
 
@@ -433,8 +463,8 @@ mod tests {
 			params: EvalParameters::new(Side::Client),
 		};
 
-		let version =
-			pick_best_addon_version(&versions, &input).expect("Version should have been found");
+		let version = pick_best_addon_version(&versions, &input, &PackageProperties::default())
+			.expect("Version should have been found");
 
 		assert_eq!(version.version, Some("3".into()));
 	}

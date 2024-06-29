@@ -31,6 +31,7 @@ use mcvm_shared::output::MessageLevel;
 use mcvm_shared::pkg::ArcPkgReq;
 use mcvm_shared::pkg::PackageID;
 use mcvm_shared::util::is_valid_identifier;
+use mcvm_shared::versions::VersionPattern;
 use reqwest::Client;
 #[cfg(feature = "schema")]
 use schemars::JsonSchema;
@@ -142,6 +143,8 @@ pub struct EvalParameters {
 	pub stability: PackageStability,
 	/// Requested worlds to put addons in
 	pub worlds: Vec<String>,
+	/// Requested content version for the package
+	pub content_version: Option<VersionPattern>,
 }
 
 impl EvalParameters {
@@ -154,6 +157,7 @@ impl EvalParameters {
 			perms: EvalPermissions::default(),
 			stability: PackageStability::default(),
 			worlds: Vec::new(),
+			content_version: None,
 		}
 	}
 }
@@ -467,6 +471,7 @@ impl ConfiguredPackage for EvalPackageConfig {
 		input.params.features = features;
 		input.params.perms = self.0.permissions;
 		input.params.stability = self.0.stability;
+		input.params.content_version = self.0.content_version.as_deref().map(VersionPattern::from);
 
 		Ok(())
 	}

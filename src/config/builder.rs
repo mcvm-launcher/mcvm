@@ -307,6 +307,7 @@ where
 			permissions: Default::default(),
 			stability: Default::default(),
 			worlds: Default::default(),
+			content_version: Default::default(),
 		};
 
 		Self { config, parent }
@@ -339,6 +340,12 @@ where
 	/// Set the configured worlds of the package
 	pub fn worlds(&mut self, worlds: Vec<String>) -> &mut Self {
 		self.config.worlds = worlds;
+		self
+	}
+
+	/// Set the configured content version of the package
+	pub fn content_version(&mut self, version: String) -> &mut Self {
+		self.config.content_version = Some(version);
 		self
 	}
 

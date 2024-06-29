@@ -142,6 +142,7 @@ Condition sets are used in multiple parts of declarative packages to check prope
 	"plugin_loaders": [plugin_loader_match],
 	"stability": "stable" | "latest",
 	"features": [string],
+	"content_versions": [string],
 	"operating_systems": [operating_system],
 	"architectures": [architecture],
 	"languages": [Language]
@@ -154,6 +155,7 @@ Condition sets are used in multiple parts of declarative packages to check prope
 - `plugin_loaders`: Check if the users's plugin loader matches any of the `plugin_loader_match`'s.
 - `stability`: Check for the configured stability of the package.
 - `features`: Check if all of the listed features are enabled for this package.
+- `content_versions`: Check if the user has configured any of the given content versions for this package.
 - `operating_systems`: Check the operating system this package is being installed on.
 - `architectures`: Check the system architecture this package is being installed on.
 - `languages`: Check the user's configured language matches one of the listed ones.

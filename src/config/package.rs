@@ -30,6 +30,8 @@ pub struct PackageConfig {
 	pub stability: PackageStability,
 	/// Worlds to use for the package
 	pub worlds: Vec<String>,
+	/// Desired content version for this package
+	pub content_version: Option<String>,
 }
 
 impl PackageConfig {
@@ -43,6 +45,7 @@ impl PackageConfig {
 			permissions: EvalPermissions::default(),
 			stability: PackageStability::default(),
 			worlds: Vec::new(),
+			content_version: None,
 		}
 	}
 
@@ -120,6 +123,9 @@ pub struct FullPackageConfig {
 	/// Worlds to use for the package
 	#[serde(default)]
 	pub worlds: Vec<String>,
+	/// Desired content version for this package
+	#[serde(default)]
+	pub content_version: Option<String>,
 }
 
 /// Trick enum used to make deserialization work in the way we want
@@ -164,6 +170,7 @@ impl PackageConfigDeser {
 			permissions: self.get_permissions(),
 			stability: self.get_stability(profile_stability),
 			worlds: self.get_worlds().into_owned(),
+			content_version: self.get_content_version().cloned(),
 		}
 	}
 
@@ -207,11 +214,19 @@ impl PackageConfigDeser {
 		}
 	}
 
-	/// Get the  worlds of the config
+	/// Get the worlds of the config
 	pub fn get_worlds(&self) -> Cow<[String]> {
 		match &self {
 			Self::Basic(..) => Cow::Owned(Vec::new()),
 			Self::Full(cfg) => Cow::Borrowed(&cfg.worlds),
+		}
+	}
+
+	/// Get the content version of the config
+	pub fn get_content_version(&self) -> Option<&String> {
+		match &self {
+			Self::Basic(..) => None,
+			Self::Full(cfg) => cfg.content_version.as_ref(),
 		}
 	}
 

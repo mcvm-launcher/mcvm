@@ -116,6 +116,9 @@ pub struct DeclarativeConditionSet {
 	/// What features to allow
 	#[serde(skip_serializing_if = "DeserListOrSingle::is_option_empty")]
 	pub features: Option<DeserListOrSingle<String>>,
+	/// What content versions to allow
+	#[serde(skip_serializing_if = "DeserListOrSingle::is_option_empty")]
+	pub content_versions: Option<DeserListOrSingle<String>>,
 	/// What operating systems to allow
 	#[serde(skip_serializing_if = "DeserListOrSingle::is_option_empty")]
 	pub operating_systems: Option<DeserListOrSingle<OSCondition>>,
