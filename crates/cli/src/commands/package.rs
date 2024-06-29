@@ -209,7 +209,7 @@ async fn sync(data: &mut CmdData<'_>, filter: Vec<String>) -> anyhow::Result<()>
 		.for_each(|(id, contents, content_type)| {
 			if let Err(e) = parse_and_validate(&contents, content_type) {
 				errors.lock().expect("Poisoned mutex").push(cformat!(
-					"<y>Warning: Package '{}' was invalid:\n{:?}",
+					"<y>Warning: Package '{}' was invalid:\n{:#?}",
 					id,
 					e
 				));
