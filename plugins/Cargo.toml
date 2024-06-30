@@ -56,10 +56,12 @@ mcvm_plugin = { workspace = true, features = ["api"] }
 mcvm_shared = { workspace = true }
 mcvm_options = { workspace = true }
 rand = { workspace = true }
+regex = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
 termimad = { workspace = true }
 tokio = { workspace = true }
+version-compare = { workspace = true }
 zip = { workspace = true }
 
 [build-dependencies]
