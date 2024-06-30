@@ -4,6 +4,8 @@ use std::{collections::HashMap, sync::Arc};
 use super::CmdData;
 use itertools::Itertools;
 use mcvm::parse::lex::Token;
+use mcvm::pkg_crate::metadata::PackageMetadata;
+use mcvm::pkg_crate::properties::PackageProperties;
 use mcvm::pkg_crate::{parse_and_validate, PackageContentType, PkgRequest, PkgRequestSource};
 use mcvm::shared::id::{InstanceID, ProfileID};
 use mcvm::shared::util::print::ReplPrinter;
@@ -14,6 +16,7 @@ use color_print::{cformat, cprint, cprintln};
 use mcvm::shared::pkg::PackageID;
 use rayon::prelude::*;
 use reqwest::Client;
+use serde::Serialize;
 
 use crate::output::HYPHEN_POINT;
 
@@ -54,6 +57,9 @@ This package does not need to be installed, it just has to be in the index."
 	},
 	#[command(about = "Print information about a specific package")]
 	Info {
+		/// Whether to remove formatting and warnings from the output
+		#[arg(short, long)]
+		raw: bool,
 		/// The package to get info about
 		package: String,
 	},
@@ -91,7 +97,7 @@ pub async fn run(subcommand: PackageSubcommand, data: &mut CmdData<'_>) -> anyho
 		PackageSubcommand::List { raw, instance } => list(data, raw, instance).await,
 		PackageSubcommand::Sync { filter } => sync(data, filter).await,
 		PackageSubcommand::Cat { raw, package } => cat(data, &package, raw).await,
-		PackageSubcommand::Info { package } => info(data, &package).await,
+		PackageSubcommand::Info { raw, package } => info(data, &package, raw).await,
 		PackageSubcommand::Repository { command } => repo(command, data).await,
 		PackageSubcommand::ListAll {} => list_all(data).await,
 		PackageSubcommand::Browse {} => browse(data).await,
@@ -332,7 +338,7 @@ fn pretty_print_package_script(contents: &str) -> anyhow::Result<()> {
 	Ok(())
 }
 
-async fn info(data: &mut CmdData<'_>, id: &str) -> anyhow::Result<()> {
+async fn info(data: &mut CmdData<'_>, id: &str, raw: bool) -> anyhow::Result<()> {
 	data.ensure_config(true).await?;
 	let config = data.config.get_mut();
 
@@ -344,6 +350,33 @@ async fn info(data: &mut CmdData<'_>, id: &str) -> anyhow::Result<()> {
 		.get_metadata(&req, &data.paths, &client, data.output)
 		.await
 		.context("Failed to get metadata from the registry")?;
+
+	if raw {
+		let metadata = metadata.clone();
+
+		let properties = config
+			.packages
+			.get_properties(&req, &data.paths, &client, data.output)
+			.await
+			.context("Failed to get package properties from the registry")?;
+
+		#[derive(Serialize)]
+		struct RawOutput<'a> {
+			metadata: PackageMetadata,
+			properties: &'a PackageProperties,
+		}
+
+		let out = serde_json::to_string(&RawOutput {
+			metadata,
+			properties,
+		})
+		.context("Failed to serialize raw output")?;
+
+		print!("{out}");
+
+		return Ok(());
+	}
+
 	if let Some(name) = &metadata.name {
 		cprintln!("<s><g>Package</g> <b>{}</b>", name);
 	} else {
@@ -537,7 +570,7 @@ async fn browse(data: &mut CmdData<'_>) -> anyhow::Result<()> {
 			inquire::Select::new("Browse packages. Press Escape to exit.", packages.clone());
 		let package = select.prompt_skippable()?;
 		if let Some(package) = package {
-			info(data, &package.id).await?;
+			info(data, &package.id, false).await?;
 			inquire::Confirm::new("Press Escape to return to browse page").prompt_skippable()?;
 		} else {
 			break;
