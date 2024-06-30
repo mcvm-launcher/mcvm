@@ -65,9 +65,8 @@ pub async fn batched_gen(mut config: BatchedConfig, filter: Vec<String>) {
 					.expect("File stem missing")
 					.to_string_lossy()
 					.to_string();
-				let file = File::open(entry.path()).expect("Failed to open package config file");
 				let mut config: BatchedPackageConfig =
-					serde_json::from_reader(file).expect("Failed to read package config file");
+					json_from_file(entry.path()).expect("Failed to open package config file");
 				config.pkg_id = Some(pkg_id);
 				additional_pkgs.push(config);
 			}

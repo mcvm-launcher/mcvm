@@ -1,7 +1,5 @@
-#![allow(dead_code)]
-use std::fs::File;
-
 use anyhow::{anyhow, Context};
+use mcvm_core::io::json_to_file_pretty;
 
 use crate::io::paths::Paths;
 use mcvm_shared::id::{InstanceID, ProfileID};
@@ -60,9 +58,7 @@ pub fn apply_modifications_and_write(
 ) -> anyhow::Result<()> {
 	apply_modifications(config, modifications)?;
 	let path = Config::get_path(paths);
-	let mut file = File::create(path).context("Failed to open config file")?;
-	serde_json::to_writer_pretty(&mut file, config)
-		.context("Failed to write default configuration")?;
+	json_to_file_pretty(path, config).context("Failed to write modified configuration")?;
 
 	Ok(())
 }

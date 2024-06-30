@@ -42,7 +42,6 @@ use crate::pkg::reg::PkgRegistry;
 use serde_json::json;
 
 use std::collections::HashMap;
-use std::fs::File;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 
@@ -98,9 +97,7 @@ impl Config {
 	pub fn create_default(path: &Path) -> anyhow::Result<()> {
 		if !path.exists() {
 			let doc = default_config();
-			let mut file = File::create(path).context("Failed to open default config file")?;
-			serde_json::to_writer_pretty(&mut file, &doc)
-				.context("Failed to write default configuration")?;
+			json_to_file_pretty(path, &doc).context("Failed to write default configuration")?;
 		}
 		Ok(())
 	}

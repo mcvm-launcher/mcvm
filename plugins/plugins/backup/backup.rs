@@ -4,7 +4,7 @@ use std::io::{BufReader, BufWriter, Read};
 use std::path::{Path, PathBuf};
 
 use anyhow::{anyhow, bail, Context};
-use mcvm_core::io::json_to_file;
+use mcvm_core::io::{json_from_file, json_to_file};
 use mcvm_shared::util::utc_timestamp;
 use rand::Rng;
 #[cfg(feature = "schema")]
@@ -116,8 +116,7 @@ impl Index {
 		fs::create_dir_all(backup_directory)?;
 		let path = Self::get_path(backup_directory);
 		let contents = if path.exists() {
-			let mut file = File::open(&path).context("Failed to open backup index")?;
-			serde_json::from_reader(&mut file).context("Failed to parse JSON")?
+			json_from_file(&path).context("Failed to open backup index")?
 		} else {
 			IndexContents::default()
 		};
