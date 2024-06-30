@@ -160,7 +160,6 @@ pub fn pick_best_addon_version<'a>(
 		.filter(|x| check_condition_set(&x.conditional_properties, input, properties));
 
 	// Sort so that versions with less loader matches come first
-
 	fn get_matches(version: &DeclarativeAddonVersion) -> u16 {
 		let mut out = 0;
 		if let Some(modloaders) = &version.conditional_properties.modloaders {
@@ -179,6 +178,21 @@ pub fn pick_best_addon_version<'a>(
 	}
 
 	let mut versions = versions.sorted_by_cached_key(|x| get_matches(x));
+
+	// Sort so that versions with newer content versions come first
+	if let Some(content_versions) = &properties.content_versions {
+		versions = versions.sorted_by_cached_key(|x| {
+			if let Some(versions) = &x.conditional_properties.content_versions {
+				versions
+					.iter()
+					.map(|x| content_versions.iter().position(|candidate| candidate == x))
+					.min()
+					.unwrap_or(Some(content_versions.len()))
+			} else {
+				Some(content_versions.len())
+			}
+		});
+	}
 
 	versions.next()
 }
@@ -427,7 +441,8 @@ mod tests {
 	fn test_addon_version_picking() {
 		let version1 = DeclarativeAddonVersion {
 			conditional_properties: DeclarativeConditionSet {
-				modloaders: Some(DeserListOrSingle::List(vec![ModloaderMatch::FabricLike])),
+				modloaders: Some(DeserListOrSingle::List(vec![ModloaderMatch::Fabric])),
+				content_versions: Some(DeserListOrSingle::Single("1".into())),
 				..Default::default()
 			},
 			version: Some("1".into()),
@@ -436,10 +451,8 @@ mod tests {
 
 		let version2 = DeclarativeAddonVersion {
 			conditional_properties: DeclarativeConditionSet {
-				modloaders: Some(DeserListOrSingle::List(vec![
-					ModloaderMatch::Fabric,
-					ModloaderMatch::Quilt,
-				])),
+				modloaders: Some(DeserListOrSingle::List(vec![ModloaderMatch::Fabric])),
+				content_versions: Some(DeserListOrSingle::Single("2".into())),
 				..Default::default()
 			},
 			version: Some("2".into()),
@@ -448,7 +461,8 @@ mod tests {
 
 		let version3 = DeclarativeAddonVersion {
 			conditional_properties: DeclarativeConditionSet {
-				modloaders: Some(DeserListOrSingle::List(vec![ModloaderMatch::Fabric])),
+				modloaders: Some(DeserListOrSingle::List(vec![ModloaderMatch::FabricLike])),
+				content_versions: Some(DeserListOrSingle::Single("2".into())),
 				..Default::default()
 			},
 			version: Some("3".into()),
@@ -463,10 +477,15 @@ mod tests {
 			params: EvalParameters::new(Side::Client),
 		};
 
-		let version = pick_best_addon_version(&versions, &input, &PackageProperties::default())
+		let properties = PackageProperties {
+			content_versions: Some(vec!["2".into(), "1".into()]),
+			..Default::default()
+		};
+
+		let version = pick_best_addon_version(&versions, &input, &properties)
 			.expect("Version should have been found");
 
-		assert_eq!(version.version, Some("3".into()));
+		assert_eq!(version.version, Some("2".into()));
 	}
 
 	fn get_eval_constants() -> EvalConstants {

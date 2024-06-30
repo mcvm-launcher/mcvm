@@ -128,7 +128,7 @@ Relations are dependencies / conflicts / etc. with other packages. All fields ar
 - `extensions`: Packages that this package extends the functionality of. For example, if this package was an addon mod for the Create mod, then it would extend the `create` package. Will cause an error if the other package does not exist.
 - `bundled`: Packages included with this one. Useful for packages that group together multiple other packages, such as modpacks. Prefer using this over `dependencies` when you aren't including a library as it has a different semantic meaning to MCVM.
 - `compats`: A list of lists with two values, a source package and destination package. If the source package exists, the destination package will be automatically installed.
-- `recommendations`: Packages that will be recommended to the user if they are not installed. `value` is the package to be recommended. Setting `invert` to true will instead recommend *against* the use of the package.
+- `recommendations`: Packages that will be recommended to the user if they are not installed. `value` is the package to be recommended. Setting `invert` to true will instead recommend _against_ the use of the package.
 
 ## Conditions
 
@@ -203,7 +203,7 @@ Addon versions are different files and versions of an addon
 }
 ```
 
-- ConditionSet: Addon versions contain all the fields of a ConditionSet. These conditions are used to filter down and find the version that satisfies all the requirements. If multiple versions satisfy the requirements, the evaluator will favor versions that are more specific to your system ("fabric" modloader over "fabriclike", for example). Finally, the one that comes first in the list is chosen.
+- ConditionSet: Addon versions contain all the fields of a ConditionSet. These conditions are used to filter down and find the version that satisfies all the requirements. If multiple versions satisfy the requirements, the evaluator will first favor versions with a content version that is newer. Then, it will favor versions that are more specific to your system ("fabric" modloader over "fabriclike", for example). Finally, the one that comes first in the list is chosen.
 - `url`: A URL to the file for this version. Not required if `path` is specified.
 - `path`: A local filesystem path to the addon file. Not required if `url` is specified. Requires elevated permissions.
 - `version` (Optional): The unique version identifier of this addon. This is important because it lets MCVM differentiate between different versions of the file for caching purposes. If this field is not present, the addon will never be cached and will be redownloaded every time. This ID should not contain any special characters.
