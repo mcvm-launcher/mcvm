@@ -43,7 +43,7 @@ Metadata for a package is extra information about a package such as its display 
 	"community": string,
 	"icon": string,
 	"banner": string,
-	"gallery": string,
+	"gallery": [string],
 	"license": string,
 	"keywords": [string],
 	"categories": [string]
