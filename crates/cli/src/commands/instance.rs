@@ -332,6 +332,9 @@ async fn update(
 			.update(!skip_packages, force, &mut ctx)
 			.await
 			.context("Failed to update instance")?;
+
+		// Clear the package registry to prevent dependency chains in requests being carried over
+		config.packages.clear();
 	}
 
 	Ok(())
