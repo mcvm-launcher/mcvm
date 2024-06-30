@@ -162,15 +162,24 @@ impl PackageConfigDeser {
 		profile_stability: PackageStability,
 		source: PackageConfigSource,
 	) -> PackageConfig {
+		let id = self.get_pkg_id();
+		let content_version = self.get_content_version().cloned();
+
+		let (id, content_version) = if let Some((real_id, version)) = id.split_once('@') {
+			(real_id.into(), Some(version.into()))
+		} else {
+			(id, content_version)
+		};
+
 		PackageConfig {
-			id: self.get_pkg_id(),
+			id,
 			source,
 			features: self.get_features(),
 			use_default_features: self.get_use_default_features(),
 			permissions: self.get_permissions(),
 			stability: self.get_stability(profile_stability),
 			worlds: self.get_worlds().into_owned(),
-			content_version: self.get_content_version().cloned(),
+			content_version,
 		}
 	}
 

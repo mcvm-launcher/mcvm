@@ -163,7 +163,7 @@ or
 
 In most cases the first form is all you need. If you want more control over how the package works, use the second form.
 
-- `id`: The identifier for the package. It is very important that this field is correct for the package to work.
+- `id`: The identifier for the package. It is very important that this field is correct for the package to work. A content version can be specified for the package in the form of `package@version`, which will override the content version field.
 - `type`: The type of the package, currently only allowing a standard `"repository"` package.
 - `features` (Optional): A list of strings for package features that you would like to enable.
 - `use_default_features` (Optional): Whether or not to use the default features of this package. `true` by default.
