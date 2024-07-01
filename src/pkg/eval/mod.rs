@@ -160,6 +160,26 @@ impl EvalParameters {
 			content_version: None,
 		}
 	}
+
+	/// Apply a package config to the parameters
+	pub fn apply_config(
+		&mut self,
+		config: &PackageConfig,
+		properties: &PackageProperties,
+	) -> anyhow::Result<()> {
+		// Calculate features
+		let features = config
+			.calculate_features(properties)
+			.context("Failed to calculate features")?;
+
+		self.config_source = config.source;
+		self.features = features;
+		self.perms = config.permissions;
+		self.stability = config.stability;
+		self.content_version = config.content_version.as_deref().map(VersionPattern::from);
+
+		Ok(())
+	}
 }
 
 /// Persistent state for evaluation
@@ -462,16 +482,10 @@ impl ConfiguredPackage for EvalPackageConfig {
 		properties: &PackageProperties,
 		input: &mut Self::EvalInput<'_>,
 	) -> anyhow::Result<()> {
-		let features = self
-			.0
-			.calculate_features(properties)
-			.context("Failed to calculate features")?;
-
-		input.params.config_source = self.0.source;
-		input.params.features = features;
-		input.params.perms = self.0.permissions;
-		input.params.stability = self.0.stability;
-		input.params.content_version = self.0.content_version.as_deref().map(VersionPattern::from);
+		input
+			.params
+			.apply_config(&self.0, properties)
+			.context("Failed to apply config to parameters")?;
 
 		Ok(())
 	}

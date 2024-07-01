@@ -4,12 +4,13 @@ use std::sync::Arc;
 
 use itertools::Itertools;
 use mcvm_core::net::download::get_transfer_limit;
+use mcvm_pkg::properties::PackageProperties;
 use mcvm_pkg::repo::PackageFlag;
 use mcvm_pkg::PkgRequest;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::pkg::{ArcPkgReq, PackageID};
 use mcvm_shared::translate;
-use mcvm_shared::versions::{VersionInfo, VersionPattern};
+use mcvm_shared::versions::VersionInfo;
 use tokio::sync::Semaphore;
 use tokio::task::JoinSet;
 
@@ -72,8 +73,9 @@ pub async fn update_instance_packages<'a, O: MCVMOutput>(
 			let mut params = EvalParameters::new(instance.kind.to_side());
 			params.stability = instance.config.package_stability;
 			if let Some(config) = instance.get_package_config(&package.to_string()) {
-				params.content_version =
-					config.content_version.as_deref().map(VersionPattern::from);
+				params
+					.apply_config(config, &PackageProperties::default())
+					.context("Failed to apply config")?;
 			}
 
 			let input = EvalInput { constants, params };
