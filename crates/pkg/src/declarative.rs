@@ -162,6 +162,7 @@ pub struct DeclarativeAddon {
 	/// What kind of addon this is
 	pub kind: AddonKind,
 	/// The available versions of this addon
+	#[serde(default)]
 	#[serde(skip_serializing_if = "Vec::is_empty")]
 	pub versions: Vec<DeclarativeAddonVersion>,
 	/// Conditions for this addon to be considered
