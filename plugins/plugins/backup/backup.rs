@@ -93,8 +93,6 @@ pub struct Index {
 	pub dir: PathBuf,
 	/// The config for the backups
 	pub config: Config,
-	/// The instance ID for this index
-	pub inst_id: String,
 }
 
 /// Contents for the backup index
@@ -112,7 +110,7 @@ impl Index {
 	}
 
 	/// Open the index
-	pub fn open(backup_directory: &Path, inst_id: &str, config: &Config) -> anyhow::Result<Self> {
+	pub fn open(backup_directory: &Path, config: &Config) -> anyhow::Result<Self> {
 		fs::create_dir_all(backup_directory)?;
 		let path = Self::get_path(backup_directory);
 		let contents = if path.exists() {
@@ -123,7 +121,6 @@ impl Index {
 		let index = Self {
 			contents,
 			dir: backup_directory.to_owned(),
-			inst_id: inst_id.to_string(),
 			config: config.clone(),
 		};
 

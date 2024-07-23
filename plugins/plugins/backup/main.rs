@@ -235,7 +235,7 @@ fn info(
 
 fn get_index<H: Hook>(ctx: &HookContext<'_, H>, inst_id: &str) -> anyhow::Result<Index> {
 	let dir = get_backup_directory(&get_backups_dir(ctx)?, inst_id);
-	Index::open(&dir, inst_id, &get_backup_config(inst_id, ctx)?)
+	Index::open(&dir, &get_backup_config(inst_id, ctx)?)
 }
 
 fn get_backups_dir<H: Hook>(ctx: &HookContext<'_, H>) -> anyhow::Result<PathBuf> {
