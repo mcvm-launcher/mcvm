@@ -93,6 +93,9 @@ pub async fn get_multiple_projects(
 	projects: &[String],
 	client: &Client,
 ) -> anyhow::Result<Vec<Project>> {
+	if projects.is_empty() {
+		return Ok(Vec::new());
+	}
 	// Use the multiple-projects API endpoint as it's faster
 	let param = serde_json::to_string(projects)
 		.context("Failed to convert project list to API parameter")?;
@@ -260,6 +263,10 @@ pub async fn get_multiple_versions(
 	versions: &[String],
 	client: &Client,
 ) -> anyhow::Result<Vec<Version>> {
+	if versions.is_empty() {
+		return Ok(Vec::new());
+	}
+
 	// Use the multiple-versions API endpoint as it's faster
 	let param = serde_json::to_string(versions)
 		.context("Failed to convert version list to API parameter")?;
@@ -351,6 +358,9 @@ pub async fn get_multiple_teams(
 	teams: &[String],
 	client: &Client,
 ) -> anyhow::Result<Vec<Vec<Member>>> {
+	if teams.is_empty() {
+		return Ok(Vec::new());
+	}
 	// Use the multiple-teams API endpoint as it's faster
 	let param =
 		serde_json::to_string(teams).context("Failed to convert team list to API parameter")?;
