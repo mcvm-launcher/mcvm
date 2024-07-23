@@ -139,17 +139,10 @@ fn print_stats(ctx: HookContext<'_, Subcommand>) -> anyhow::Result<()> {
 fn format_time(mut time: u64) -> String {
 	let mut out = String::new();
 
-	let days = time / 3600;
-	time %= 3600;
-
 	let hours = time / 60;
 	time %= 60;
 
 	let minutes = time;
-
-	if days > 0 {
-		out += &format!("{days}d ");
-	}
 
 	if hours > 0 {
 		out += &format!("{hours}h ");
