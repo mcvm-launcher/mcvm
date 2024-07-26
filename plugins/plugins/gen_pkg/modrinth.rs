@@ -188,8 +188,11 @@ pub async fn gen_raw(
 					KnownLoader::Sponge => plugin_loaders.push(PluginLoaderMatch::Sponge),
 					KnownLoader::Paper => plugin_loaders.push(PluginLoaderMatch::Paper),
 					KnownLoader::Purpur => plugin_loaders.push(PluginLoaderMatch::Purpur),
-					// Skip over datapack versions for now
-					KnownLoader::Datapack => skip = true,
+					// Skip over these versions for now
+					KnownLoader::Datapack
+					| KnownLoader::BungeeCord
+					| KnownLoader::Velocity
+					| KnownLoader::Waterfall => skip = true,
 					// We don't care about these
 					KnownLoader::Iris | KnownLoader::Optifine | KnownLoader::Minecraft => {}
 				},

@@ -192,6 +192,13 @@ pub enum KnownLoader {
 	Optifine,
 	/// Datapack loader
 	Datapack,
+	/// Velocity loader
+	Velocity,
+	/// BungeeCord loader
+	#[serde(rename = "bungeecord")]
+	BungeeCord,
+	/// Waterfall loader
+	Waterfall,
 }
 
 impl Loader {
