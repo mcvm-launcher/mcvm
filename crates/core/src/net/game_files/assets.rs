@@ -153,13 +153,18 @@ pub async fn get(
 				.await
 				.context("Failed to download asset")?;
 
-			// Write JSON as minified to save storage space
-			if asset.name.ends_with(".json") {
-				let json: serde_json::Value = serde_json::from_slice(&response)
-					.context("Failed to deserialize JSON of asset")?;
-				json_to_file(&asset.path, &json)
-					.context("Failed to write minified JSON asset to file")?;
+			// Write JSON as minified to save storage space, if there are no errors
+			let result = if asset.name.ends_with(".json") {
+				if let Ok(json) = serde_json::from_slice::<serde_json::Value>(&response) {
+					json_to_file(&asset.path, &json).ok()
+				} else {
+					None
+				}
 			} else {
+				None
+			};
+
+			if result.is_none() {
 				tokio::fs::write(&asset.path, response)
 					.await
 					.context("Failed to write asset to file")?;
