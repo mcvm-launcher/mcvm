@@ -83,7 +83,7 @@ pub struct PluginManagerInner {
 impl PluginManager {
 	/// Load the PluginManager from the plugins.json file
 	pub fn load(paths: &Paths, o: &mut impl MCVMOutput) -> anyhow::Result<Self> {
-		let path = Self::get_path(paths);
+		let path = Self::get_config_path(paths);
 		let config = if path.exists() {
 			json_from_file(path).context("Failed to load plugin config from file")?
 		} else {
@@ -106,13 +106,13 @@ impl PluginManager {
 	}
 
 	/// Get the path to the config file
-	pub fn get_path(paths: &Paths) -> PathBuf {
+	pub fn get_config_path(paths: &Paths) -> PathBuf {
 		paths.project.config_dir().join("plugins.json")
 	}
 
 	/// Write the default config file if it does not exist
 	pub fn create_default(paths: &Paths) -> anyhow::Result<()> {
-		let path = Self::get_path(paths);
+		let path = Self::get_config_path(paths);
 		if !path.exists() {
 			let out = PluginsConfig::default();
 			json_to_file_pretty(path, &out)
@@ -180,6 +180,40 @@ impl PluginManager {
 		self.add_plugin(plugin, manifest, paths, plugin_dir.as_deref(), o)?;
 
 		Ok(())
+	}
+
+	/// Gets all the available plugins from the plugin directory.
+	/// Returns a list of tuples of the plugin ID and file path
+	pub fn get_available_plugins(paths: &Paths) -> anyhow::Result<Vec<(String, PathBuf)>> {
+		let reader = paths
+			.plugins
+			.read_dir()
+			.context("Failed to read plugin directory")?;
+
+		let mut out = Vec::with_capacity(reader.size_hint().0);
+		for entry in reader {
+			let Ok(entry) = entry else {
+				continue;
+			};
+
+			let Ok(file_type) = entry.file_type() else {
+				continue;
+			};
+
+			if file_type.is_dir() {
+				let config_path = entry.path().join("plugin.json");
+				if config_path.exists() {
+					out.push((entry.file_name().to_string_lossy().to_string(), config_path));
+				}
+			} else {
+				let file_name = entry.file_name().to_string_lossy().to_string();
+				if file_name.ends_with(".json") {
+					out.push((file_name.replace(".json", ""), entry.path()));
+				}
+			}
+		}
+
+		Ok(out)
 	}
 
 	/// Call a plugin hook on the manager and collects the results into a Vec

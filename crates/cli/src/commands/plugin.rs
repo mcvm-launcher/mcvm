@@ -1,7 +1,9 @@
 use anyhow::Context;
 use clap::Subcommand;
 use color_print::cprintln;
-use itertools::Itertools;
+use mcvm::{
+	config::plugin::PluginManager, core::io::json_from_file, plugin::plugin::PluginManifest,
+};
 
 use super::CmdData;
 use crate::output::HYPHEN_POINT;
@@ -14,6 +16,9 @@ pub enum PluginSubcommand {
 		/// Whether to remove formatting and warnings from the output
 		#[arg(short, long)]
 		raw: bool,
+		/// Whether to filter only the loaded plugins
+		#[arg(short, long)]
+		loaded: bool,
 	},
 	#[command(about = "Print useful information about a plugin")]
 	Info { plugin: String },
@@ -21,21 +26,41 @@ pub enum PluginSubcommand {
 
 pub async fn run(command: PluginSubcommand, data: &mut CmdData<'_>) -> anyhow::Result<()> {
 	match command {
-		PluginSubcommand::List { raw } => list(data, raw).await,
+		PluginSubcommand::List { raw, loaded } => list(data, raw, loaded).await,
 		PluginSubcommand::Info { plugin } => info(data, plugin).await,
 	}
 }
 
-async fn list(data: &mut CmdData<'_>, raw: bool) -> anyhow::Result<()> {
+async fn list(data: &mut CmdData<'_>, raw: bool, loaded: bool) -> anyhow::Result<()> {
 	data.ensure_config(!raw).await?;
 	let config = data.config.get_mut();
 
+	let mut available_plugins = PluginManager::get_available_plugins(&data.paths)
+		.context("Failed to get list of available plugins")?;
+	available_plugins.sort_by_key(|x| x.0.clone());
+
 	let lock = config.plugins.get_lock()?;
-	for plugin in lock.manager.iter_plugins().sorted_by_key(|x| x.get_id()) {
+	let loaded_plugins: Vec<_> = lock.manager.iter_plugins().map(|x| x.get_id()).collect();
+
+	for (plugin_id, plugin_path) in available_plugins {
+		let is_loaded = loaded_plugins.contains(&&plugin_id);
+		if loaded && !is_loaded {
+			continue;
+		}
+
 		if raw {
-			println!("{}", plugin.get_id());
+			println!("{}", plugin_id);
 		} else {
-			cprintln!("{}<s>{}", HYPHEN_POINT, plugin.get_id());
+			if is_loaded {
+				cprintln!("{}<s>{}</> [Loaded]", HYPHEN_POINT, plugin_id);
+			} else {
+				let is_valid = json_from_file::<PluginManifest>(plugin_path).is_ok();
+				if is_valid {
+					cprintln!("{}{} [Unloaded]", HYPHEN_POINT, plugin_id);
+				} else {
+					cprintln!("{}<r>{} [Invalid]", HYPHEN_POINT, plugin_id);
+				}
+			}
 		}
 	}
 

@@ -35,7 +35,7 @@ async fn edit(data: &mut CmdData<'_>) -> anyhow::Result<()> {
 }
 
 async fn edit_plugins(data: &mut CmdData<'_>) -> anyhow::Result<()> {
-	let path = PluginManager::get_path(&data.paths);
+	let path = PluginManager::get_config_path(&data.paths);
 
 	PluginManager::create_default(&data.paths).context("Failed to create default config")?;
 
@@ -46,7 +46,7 @@ async fn edit_plugins(data: &mut CmdData<'_>) -> anyhow::Result<()> {
 
 async fn backup(data: &mut CmdData<'_>) -> anyhow::Result<()> {
 	let config_path = Config::get_path(&data.paths);
-	let plugins_path = PluginManager::get_path(&data.paths);
+	let plugins_path = PluginManager::get_config_path(&data.paths);
 
 	Config::create_default(&config_path).context("Failed to create default config")?;
 	PluginManager::create_default(&data.paths).context("Failed to create default plugin config")?;
