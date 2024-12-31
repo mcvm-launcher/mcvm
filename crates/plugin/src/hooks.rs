@@ -16,6 +16,8 @@ use serde::{de::DeserializeOwned, Deserialize, Serialize};
 
 use crate::output::OutputAction;
 
+/// The substitution token for the plugin directory in the command
+pub static PLUGIN_DIR_TOKEN: &str = "${PLUGIN_DIR}";
 /// The environment variable for custom config passed to a hook
 pub static CUSTOM_CONFIG_ENV: &str = "MCVM_CUSTOM_CONFIG";
 /// The environment variable for the data directory passed to a hook
@@ -68,7 +70,15 @@ pub trait Hook {
 	{
 		let _ = o;
 		let arg = serde_json::to_string(arg).context("Failed to serialize hook argument")?;
+
+		let cmd = cmd.replace(
+			PLUGIN_DIR_TOKEN,
+			&working_dir
+				.map(|x| x.to_string_lossy().to_string())
+				.unwrap_or_default(),
+		);
 		let mut cmd = Command::new(cmd);
+
 		cmd.args(additional_args);
 		cmd.arg(self.get_name());
 		cmd.arg(arg);
