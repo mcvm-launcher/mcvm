@@ -9,7 +9,7 @@ use mcvm_shared::lang::translate::TranslationKey;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::translate;
 
-use crate::{config::plugin::PluginManager, io::paths::Paths};
+use crate::{io::paths::Paths, plugin::PluginManager};
 
 use super::Instance;
 

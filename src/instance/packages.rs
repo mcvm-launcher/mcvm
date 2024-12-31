@@ -6,7 +6,7 @@ use mcvm_shared::versions::VersionInfo;
 use reqwest::Client;
 
 use crate::addon::AddonExt;
-use crate::config::plugin::PluginManager;
+use crate::plugin::PluginManager;
 use crate::io::lock::{Lockfile, LockfileAddon};
 use crate::io::paths::Paths;
 use crate::pkg::eval::{EvalData, EvalInput, Routine};

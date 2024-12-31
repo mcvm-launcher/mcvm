@@ -47,7 +47,7 @@ use super::Package;
 use crate::addon::{self, AddonLocation, AddonRequest};
 use crate::config::package::PackageConfig;
 use crate::config::package::PackageConfigSource;
-use crate::config::plugin::PluginManager;
+use crate::plugin::PluginManager;
 use crate::config::profile::GameModifications;
 use crate::io::paths::Paths;
 use crate::util::hash::{

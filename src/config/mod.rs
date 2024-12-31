@@ -17,10 +17,10 @@ pub mod profile;
 pub mod user;
 
 use self::instance::{read_instance_config, InstanceConfig};
-use self::plugin::PluginManager;
 use self::preferences::PrefDeser;
 use self::profile::ProfileConfig;
 use self::user::UserConfig;
+use crate::plugin::PluginManager;
 use anyhow::{bail, Context};
 use mcvm_core::auth_crate::mc::ClientId;
 use mcvm_core::io::{json_from_file, json_to_file_pretty};

@@ -20,7 +20,7 @@ use crate::instance::{InstKind, Instance, InstanceStoredConfig};
 use crate::io::paths::Paths;
 
 use super::package::{PackageConfig, PackageConfigDeser, PackageConfigSource};
-use super::plugin::PluginManager;
+use crate::plugin::PluginManager;
 use super::profile::{GameModifications, ProfileConfig};
 
 /// Configuration for an instance

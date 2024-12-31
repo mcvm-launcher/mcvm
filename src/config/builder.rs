@@ -16,10 +16,11 @@ use crate::io::paths::Paths;
 use crate::pkg::eval::EvalPermissions;
 use crate::pkg::reg::PkgRegistry;
 use crate::pkg::repo::PkgRepo;
+use crate::plugin::PluginManager;
 
 use super::instance::{read_instance_config, ClientWindowConfig, InstanceConfig, LaunchConfig};
 use super::package::{FullPackageConfig, PackageConfigDeser};
-use super::plugin::{PluginConfig, PluginManager};
+use super::plugin::PluginConfig;
 use super::preferences::ConfigPreferences;
 use super::user::{UserConfig, UserVariant};
 use super::Config;

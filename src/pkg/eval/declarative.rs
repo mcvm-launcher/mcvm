@@ -9,7 +9,7 @@ use mcvm_pkg::RequiredPackage;
 use mcvm_shared::modifications::{ModloaderMatch, PluginLoaderMatch};
 use mcvm_shared::pkg::PackageID;
 
-use crate::config::plugin::PluginManager;
+use crate::plugin::PluginManager;
 
 use super::conditions::{check_arch_condition, check_os_condition};
 use super::{

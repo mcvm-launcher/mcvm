@@ -9,10 +9,10 @@ use anyhow::{bail, Context};
 use clap::{Parser, Subcommand};
 use color_print::{cformat, cprintln};
 
-use mcvm::config::plugin::PluginManager;
+use mcvm::plugin::PluginManager;
 use mcvm::config::{Config, ConfigDeser};
 use mcvm::io::paths::Paths;
-use mcvm::plugin::hooks::{self, AddTranslations};
+use mcvm::plugin_crate::hooks::{self, AddTranslations};
 use mcvm::shared::later::Later;
 use mcvm::shared::output::{MCVMOutput, MessageContents, MessageLevel};
 

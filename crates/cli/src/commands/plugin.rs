@@ -1,9 +1,9 @@
 use anyhow::Context;
 use clap::Subcommand;
 use color_print::cprintln;
-use mcvm::{
-	config::plugin::PluginManager, core::io::json_from_file, plugin::plugin::PluginManifest,
-};
+use mcvm::core::io::json_from_file;
+use mcvm::plugin::PluginManager;
+use mcvm::plugin_crate::plugin::PluginManifest;
 
 use super::CmdData;
 use crate::output::HYPHEN_POINT;

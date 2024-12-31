@@ -20,7 +20,7 @@
 pub use mcvm_core as core;
 pub use mcvm_parse as parse;
 pub use mcvm_pkg as pkg_crate;
-pub use mcvm_plugin as plugin;
+pub use mcvm_plugin as plugin_crate;
 pub use mcvm_shared as shared;
 
 /// Installable addons
@@ -33,6 +33,8 @@ pub mod instance;
 pub mod io;
 /// Dealing with packages
 pub mod pkg;
+/// Plugin-related things, like loading, configuration, and management/installation
+pub mod plugin;
 /// Configuration profiles for instances
 pub mod profile;
 /// Common utilities that can't live anywhere else
