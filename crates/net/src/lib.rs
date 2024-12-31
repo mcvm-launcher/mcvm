@@ -3,6 +3,8 @@
 
 /// Download utilities
 pub mod download;
+/// GitHub releases API
+pub mod github;
 /// Interacting with the Modrinth API
 pub mod modrinth;
 /// Interacting with the Smithed API
