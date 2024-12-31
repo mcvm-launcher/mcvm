@@ -11,7 +11,7 @@ use serde::{Deserialize, Serialize};
 
 use mcvm_plugin::hooks::{Hook, HookHandle};
 use mcvm_plugin::plugin::{Plugin, PluginManifest};
-use mcvm_plugin::PluginManager as LoadedPluginManager;
+use mcvm_plugin::CorePluginManager;
 use std::sync::Mutex;
 
 /// User configuration for all plugins, stored in the plugins.json file
@@ -75,7 +75,7 @@ pub struct PluginManager {
 #[derive(Debug)]
 pub struct PluginManagerInner {
 	/// The core PluginManager
-	pub manager: LoadedPluginManager,
+	pub manager: CorePluginManager,
 	/// Plugin configurations
 	pub configs: Vec<PluginConfig>,
 }
@@ -124,7 +124,7 @@ impl PluginManager {
 
 	/// Create a new PluginManager with no plugins
 	pub fn new() -> Self {
-		let mut manager = LoadedPluginManager::new();
+		let mut manager = CorePluginManager::new();
 		manager.set_mcvm_version(crate::VERSION);
 		Self {
 			inner: Arc::new(Mutex::new(PluginManagerInner {
