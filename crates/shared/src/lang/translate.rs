@@ -95,6 +95,8 @@ define_translations! {
 	TransferModsFeature, "Instance transfer modloader feature", "mods";
 	TransferLaunchSettingsFeature, "Instance transfer launch settings feature", "launch setttings";
 	AuthenticationSuccessful, "When authentication succeeds", "Authentication successful";
+	StartInstallingPlugin, "When starting to install a plugin", "Installing plugin";
+	FinishInstallingPlugin, "When finishing installing a plugin", "Plugin installed";
 }
 
 /// Replaces placeholders in a translated key

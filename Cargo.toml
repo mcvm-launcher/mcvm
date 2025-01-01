@@ -47,7 +47,7 @@ members = [
 	"crates/shared",
 	"crates/tools",
 	"plugins",
-	"gui/src-tauri"
+	"gui/src-tauri",
 ]
 
 [features]
@@ -138,6 +138,7 @@ simd-json = { workspace = true }
 sha2 = { workspace = true }
 mcvm_core = { workspace = true }
 mcvm_mods = { workspace = true }
+mcvm_net = { workspace = true }
 mcvm_parse = { workspace = true }
 mcvm_pkg = { workspace = true }
 mcvm_plugin = { workspace = true }
@@ -145,3 +146,4 @@ mcvm_shared = { workspace = true }
 shellexpand = { workspace = true }
 tokio = { workspace = true, features = ["fs"] }
 version-compare = { workspace = true }
+zip = { workspace = true }

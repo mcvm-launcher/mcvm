@@ -1,3 +1,6 @@
+/// Online plugin installation from verified GitHub repos
+pub mod install;
+
 use std::path::{Path, PathBuf};
 use std::sync::{Arc, MutexGuard};
 

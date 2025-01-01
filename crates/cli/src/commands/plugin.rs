@@ -1,9 +1,13 @@
-use anyhow::Context;
+use anyhow::{bail, Context};
 use clap::Subcommand;
 use color_print::cprintln;
 use mcvm::core::io::json_from_file;
+use mcvm::plugin::install::get_verified_plugins;
 use mcvm::plugin::PluginManager;
 use mcvm::plugin_crate::plugin::PluginManifest;
+use mcvm::shared::lang::translate::TranslationKey;
+use mcvm::shared::output::{MCVMOutput, MessageContents, MessageLevel};
+use reqwest::Client;
 
 use super::CmdData;
 use crate::output::HYPHEN_POINT;
@@ -22,12 +26,20 @@ pub enum PluginSubcommand {
 	},
 	#[command(about = "Print useful information about a plugin")]
 	Info { plugin: String },
+	#[command(about = "Install a plugin from the verified list")]
+	Install {
+		plugin: String,
+		/// The version of the plugin to install
+		#[arg(short, long)]
+		version: Option<String>,
+	},
 }
 
 pub async fn run(command: PluginSubcommand, data: &mut CmdData<'_>) -> anyhow::Result<()> {
 	match command {
 		PluginSubcommand::List { raw, loaded } => list(data, raw, loaded).await,
 		PluginSubcommand::Info { plugin } => info(data, plugin).await,
+		PluginSubcommand::Install { plugin, version } => install(data, plugin, version).await,
 	}
 }
 
@@ -90,6 +102,45 @@ async fn info(data: &mut CmdData<'_>, plugin: String) -> anyhow::Result<()> {
 		cprintln!("{}", description);
 	}
 	cprintln!("{}<s>ID:</> {}", HYPHEN_POINT, plugin.get_id());
+
+	Ok(())
+}
+
+async fn install(
+	data: &mut CmdData<'_>,
+	plugin: String,
+	version: Option<String>,
+) -> anyhow::Result<()> {
+	data.ensure_config(true).await?;
+	let client = Client::new();
+
+	let verified_list = get_verified_plugins(&client)
+		.await
+		.context("Failed to get verified plugin list")?;
+	let Some(plugin) = verified_list.get(&plugin) else {
+		bail!("Unknown plugin '{plugin}'");
+	};
+
+	data.output.display(
+		MessageContents::StartProcess(
+			data.output
+				.translate(TranslationKey::StartInstallingPlugin)
+				.to_string(),
+		),
+		MessageLevel::Important,
+	);
+	plugin
+		.install(version.as_deref(), &data.paths, &client)
+		.await
+		.context("Failed to install plugin")?;
+	data.output.display(
+		MessageContents::Success(
+			data.output
+				.translate(TranslationKey::FinishInstallingPlugin)
+				.to_string(),
+		),
+		MessageLevel::Important,
+	);
 
 	Ok(())
 }

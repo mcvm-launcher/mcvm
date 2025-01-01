@@ -2578,6 +2578,7 @@ dependencies = [
  "itertools",
  "mcvm_core",
  "mcvm_mods",
+ "mcvm_net",
  "mcvm_parse",
  "mcvm_pkg",
  "mcvm_plugin",
@@ -2592,6 +2593,7 @@ dependencies = [
  "simd-json",
  "tokio",
  "version-compare 0.2.0",
+ "zip",
 ]
 
 [[package]]
