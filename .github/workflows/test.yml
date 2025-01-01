@@ -16,15 +16,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install Ubuntu Dependencies
+        # We have to fix the source list for libwebkit2gtk-4.0-dev
         run: |
-            sudo apt update &&
-            sudo apt install libwebkit2gtk-4.0-dev \
-                build-essential \
-                curl \
-                wget \
-                libssl-dev \
-                libgtk-3-dev \
-                libayatana-appindicator3-dev \
-                librsvg2-dev
+          sudo sh -c "echo jammy >> /etc/apt/sources.list.d/ubuntu.sources" &&
+          sudo sh -c "echo jammy-security >> /etc/apt/sources.list.d/ubuntu.sources" &&
+          sudo apt update &&
+          sudo apt install libwebkit2gtk-4.0-dev \
+              build-essential \
+              curl \
+              wget \
+              libssl-dev \
+              libgtk-3-dev \
+              libayatana-appindicator3-dev \
+              librsvg2-dev
       - name: Run tests
         run: cargo test --workspace --verbose
