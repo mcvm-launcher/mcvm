@@ -118,7 +118,6 @@ async fn install(
 	plugin: String,
 	version: Option<String>,
 ) -> anyhow::Result<()> {
-	data.ensure_config(true).await?;
 	let client = Client::new();
 
 	let verified_list = get_verified_plugins(&client)
@@ -153,8 +152,6 @@ async fn install(
 }
 
 async fn uninstall(data: &mut CmdData<'_>, plugin: String) -> anyhow::Result<()> {
-	data.ensure_config(true).await?;
-
 	let Ok(result) = data.output.prompt_yes_no(
 		false,
 		MessageContents::Simple("Are you sure you want to delete this plugin?".into()),
@@ -174,7 +171,8 @@ async fn uninstall(data: &mut CmdData<'_>, plugin: String) -> anyhow::Result<()>
 }
 
 async fn browse(data: &mut CmdData<'_>) -> anyhow::Result<()> {
-	data.ensure_config(true).await?;
+	let _ = data;
+
 	let client = Client::new();
 
 	let verified_list = get_verified_plugins(&client)
