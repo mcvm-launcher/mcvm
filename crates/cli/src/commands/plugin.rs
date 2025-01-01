@@ -168,6 +168,8 @@ async fn uninstall(data: &mut CmdData<'_>, plugin: String) -> anyhow::Result<()>
 
 	PluginManager::uninstall_plugin(&plugin, &data.paths).context("Failed to remove plugin")?;
 
+	cprintln!("<g>Plugin removed.");
+
 	Ok(())
 }
 
