@@ -20,6 +20,7 @@ jobs:
         run: |
           sudo sh -c "echo jammy >> /etc/apt/sources.list.d/ubuntu.sources" &&
           sudo sh -c "echo jammy-security >> /etc/apt/sources.list.d/ubuntu.sources" &&
+          cat /etc/apt/sources.list.d/ubuntu.sources &&
           sudo apt update &&
           sudo apt install libwebkit2gtk-4.0-dev \
               build-essential \
