@@ -34,6 +34,8 @@ pub enum PluginSubcommand {
 		#[arg(short, long)]
 		version: Option<String>,
 	},
+	#[command(about = "Uninstall a plugin")]
+	Uninstall { plugin: String },
 	#[command(about = "Browse installable plugins")]
 	Browse,
 }
@@ -43,6 +45,7 @@ pub async fn run(command: PluginSubcommand, data: &mut CmdData<'_>) -> anyhow::R
 		PluginSubcommand::List { raw, loaded } => list(data, raw, loaded).await,
 		PluginSubcommand::Info { plugin } => info(data, plugin).await,
 		PluginSubcommand::Install { plugin, version } => install(data, plugin, version).await,
+		PluginSubcommand::Uninstall { plugin } => uninstall(data, plugin).await,
 		PluginSubcommand::Browse => browse(data).await,
 	}
 }
@@ -145,6 +148,25 @@ async fn install(
 		),
 		MessageLevel::Important,
 	);
+
+	Ok(())
+}
+
+async fn uninstall(data: &mut CmdData<'_>, plugin: String) -> anyhow::Result<()> {
+	data.ensure_config(true).await?;
+
+	let Ok(result) = data.output.prompt_yes_no(
+		false,
+		MessageContents::Simple("Are you sure you want to delete this plugin?".into()),
+	) else {
+		return Ok(());
+	};
+	if !result {
+		cprintln!("Keeping plugin");
+		return Ok(());
+	}
+
+	PluginManager::uninstall_plugin(&plugin, &data.paths).context("Failed to remove plugin")?;
 
 	Ok(())
 }

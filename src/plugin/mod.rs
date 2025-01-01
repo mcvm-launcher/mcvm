@@ -165,6 +165,21 @@ impl PluginManager {
 		Ok(out)
 	}
 
+	/// Uninstalls a plugin by removing its files
+	pub fn uninstall_plugin(plugin: &str, paths: &Paths) -> anyhow::Result<()> {
+		let json_path = paths.plugins.join(format!("{plugin}.json"));
+		if json_path.exists() {
+			std::fs::remove_file(json_path).context("Failed to remove plugin JSON")?;
+		}
+
+		let dir_path = paths.plugins.join(plugin);
+		if dir_path.exists() {
+			std::fs::remove_dir_all(dir_path).context("Failed to remove plugin directory")?;
+		}
+
+		Ok(())
+	}
+
 	/// Call a plugin hook on the manager and collects the results into a Vec
 	pub fn call_hook<H: Hook>(
 		&self,

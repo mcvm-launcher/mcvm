@@ -14,6 +14,8 @@ use zip::ZipArchive;
 
 use crate::io::paths::Paths;
 
+use super::PluginManager;
+
 /// Information about a single verified plugin
 #[derive(Serialize, Deserialize)]
 pub struct VerifiedPlugin {
@@ -119,11 +121,10 @@ impl VerifiedPlugin {
 			.context("Failed to download zipped plugin")?;
 
 		let mut zip = ZipArchive::new(Cursor::new(zip)).context("Failed to read zip archive")?;
-		// Remove the existing directory before extract
+		// Remove the existing plugin before extract
+		PluginManager::uninstall_plugin(&self.id, paths)
+			.context("Failed to remove existing plugin")?;
 		let dir = paths.plugins.join(&self.id);
-		if dir.exists() {
-			std::fs::remove_dir_all(&dir).context("Failed to remove existing plugin directory")?;
-		}
 		std::fs::create_dir_all(&dir).context("Failed to create plugin directory")?;
 		zip.extract(dir).context("Failed to extract plugin files")?;
 
