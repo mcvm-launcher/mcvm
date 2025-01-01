@@ -18,16 +18,16 @@ jobs:
       - name: Install Ubuntu Dependencies
         # We have to fix the source list for libwebkit2gtk-4.0-dev
         run: |
-          sudo sh -c 'echo "Types: deb" >> /etc/apt/sources.list.d/ubuntu.sources" &&
-          sudo sh -c 'echo "URIs: http://br.archive.ubuntu.com/ubuntu/" >> /etc/apt/sources.list.d/ubuntu.sources" &&
-          sudo sh -c 'echo "Suites: jammy noble-updates noble-backports" >> /etc/apt/sources.list.d/ubuntu.sources" &&
-          sudo sh -c 'echo "Components: main restricted universe multiverse" >> /etc/apt/sources.list.d/ubuntu.sources" &&
-          sudo sh -c 'echo "Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg" >> /etc/apt/sources.list.d/ubuntu.sources" &&
-          sudo sh -c 'echo "Types: deb" >> /etc/apt/sources.list.d/ubuntu.sources" &&
-          sudo sh -c 'echo "URIs: http://security.ubuntu.com/ubuntu/" >> /etc/apt/sources.list.d/ubuntu.sources" &&
-          sudo sh -c 'echo "Suites: jammy-security" >> /etc/apt/sources.list.d/ubuntu.sources" &&
-          sudo sh -c 'echo "Components: main restricted universe multiverse" >> /etc/apt/sources.list.d/ubuntu.sources" &&
-          sudo sh -c 'echo "Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg" >> /etc/apt/sources.list.d/ubuntu.sources" &&
+          sudo sh -c 'echo "Types: deb" >> /etc/apt/sources.list.d/ubuntu.sources' &&
+          sudo sh -c 'echo "URIs: http://br.archive.ubuntu.com/ubuntu/" >> /etc/apt/sources.list.d/ubuntu.sources' &&
+          sudo sh -c 'echo "Suites: jammy noble-updates noble-backports" >> /etc/apt/sources.list.d/ubuntu.sources' &&
+          sudo sh -c 'echo "Components: main restricted universe multiverse" >> /etc/apt/sources.list.d/ubuntu.sources' &&
+          sudo sh -c 'echo "Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg" >> /etc/apt/sources.list.d/ubuntu.sources' &&
+          sudo sh -c 'echo "Types: deb" >> /etc/apt/sources.list.d/ubuntu.sources' &&
+          sudo sh -c 'echo "URIs: http://security.ubuntu.com/ubuntu/" >> /etc/apt/sources.list.d/ubuntu.sources' &&
+          sudo sh -c 'echo "Suites: jammy-security" >> /etc/apt/sources.list.d/ubuntu.sources' &&
+          sudo sh -c 'echo "Components: main restricted universe multiverse" >> /etc/apt/sources.list.d/ubuntu.sources' &&
+          sudo sh -c 'echo "Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg" >> /etc/apt/sources.list.d/ubuntu.sources' &&
           cat /etc/apt/sources.list.d/ubuntu.sources &&
           sudo apt update &&
           sudo apt install libwebkit2gtk-4.0-dev \
