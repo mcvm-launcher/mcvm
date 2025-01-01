@@ -1,12 +1,12 @@
 package:
-	@cargo build --bin mcvm_plugin_args
-	@cargo build --bin mcvm_plugin_backup
-	@cargo build --bin mcvm_plugin_docs
-	@cargo build --bin mcvm_plugin_gen_pkg
-	@cargo build --bin mcvm_plugin_modrinth
-	@cargo build --bin mcvm_plugin_options
-	@cargo build --bin mcvm_plugin_server_restart
-	@cargo build --bin mcvm_plugin_stats
+	@cargo build --release --bin mcvm_plugin_args
+	@cargo build --release --bin mcvm_plugin_backup
+	@cargo build --release --bin mcvm_plugin_docs
+	@cargo build --release --bin mcvm_plugin_gen_pkg
+	@cargo build --release --bin mcvm_plugin_modrinth
+	@cargo build --release --bin mcvm_plugin_options
+	@cargo build --release --bin mcvm_plugin_server_restart
+	@cargo build --release --bin mcvm_plugin_stats
 
 	@mkdir -p release
 
