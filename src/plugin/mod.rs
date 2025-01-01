@@ -47,6 +47,11 @@ impl PluginManager {
 
 		for plugin in config.plugins {
 			let plugin = plugin.to_config();
+
+			if config.disabled.contains(&plugin.id) {
+				continue;
+			}
+
 			out.load_plugin(plugin, paths, o)
 				.context("Failed to load plugin")?;
 		}

@@ -7,8 +7,10 @@ use serde::{Deserialize, Serialize};
 #[serde(default)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 pub struct PluginsConfig {
-	/// The enabled plugins
+	/// Plugin configuration for enabled plugins
 	pub plugins: Vec<PluginConfigDeser>,
+	/// The list of disabled plugins
+	pub disabled: Vec<String>,
 }
 
 /// User configuration for a plugin
