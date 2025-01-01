@@ -4,6 +4,7 @@ use std::sync::Arc;
 use anyhow::bail;
 use mcvm_core::auth_crate::mc::ClientId;
 use mcvm_core::user::{User, UserManager};
+use mcvm_core::util::versions::MinecraftVersionDeser;
 use mcvm_plugin::plugin::PluginManifest;
 use mcvm_shared::id::InstanceID;
 use mcvm_shared::modifications::{ClientType, Modloader, ServerType};
@@ -194,6 +195,12 @@ impl<'parent> InstanceBuilder<'parent> {
 		self
 	}
 
+	/// Set the Minecraft version of the instance
+	pub fn version(&mut self, version: MinecraftVersionDeser) -> &mut Self {
+		self.config.common.version = Some(version);
+		self
+	}
+
 	/// Set the modloader of the instance
 	pub fn modloader(&mut self, modloader: Modloader) -> &mut Self {
 		self.config.common.modloader = Some(modloader);
@@ -286,6 +293,11 @@ impl<'parent> InstanceBuilder<'parent> {
 		)?;
 
 		Ok((self.id, built, self.parent))
+	}
+
+	/// Finish the builder and return just the InstanceConfig
+	pub fn build_config(self) -> InstanceConfig {
+		self.config
 	}
 }
 

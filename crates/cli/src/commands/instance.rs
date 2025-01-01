@@ -5,12 +5,16 @@ use clap::Subcommand;
 use color_print::{cprint, cprintln};
 use inquire::Select;
 use itertools::Itertools;
+use mcvm::config::builder::InstanceBuilder;
+use mcvm::config::modifications::{apply_modifications_and_write, ConfigModification};
 use mcvm::config::Config;
+use mcvm::core::util::versions::{MinecraftLatestVersion, MinecraftVersionDeser};
 use mcvm::instance::update::InstanceUpdateContext;
 use mcvm::io::lock::Lockfile;
 use mcvm::shared::id::InstanceID;
 
 use mcvm::instance::launch::LaunchSettings;
+use mcvm::shared::modifications::{ClientType, ServerType};
 use mcvm::shared::Side;
 use reqwest::Client;
 
@@ -65,6 +69,8 @@ pub enum InstanceSubcommand {
 		/// The instance to print the directory of
 		instance: Option<String>,
 	},
+	#[command(about = "Easily create a new instance")]
+	Add,
 }
 
 pub async fn run(command: InstanceSubcommand, mut data: CmdData<'_>) -> anyhow::Result<()> {
@@ -84,6 +90,7 @@ pub async fn run(command: InstanceSubcommand, mut data: CmdData<'_>) -> anyhow::
 			instances,
 		} => update(&mut data, instances, groups, all, force, skip_packages).await,
 		InstanceSubcommand::Dir { instance } => dir(&mut data, instance).await,
+		InstanceSubcommand::Add => add(&mut data).await,
 	}
 }
 
@@ -336,6 +343,70 @@ async fn update(
 		// Clear the package registry to prevent dependency chains in requests being carried over
 		config.packages.clear();
 	}
+
+	Ok(())
+}
+
+async fn add(data: &mut CmdData<'_>) -> anyhow::Result<()> {
+	data.ensure_config(true).await?;
+	let mut config = data.get_raw_config()?;
+
+	// Build the profile
+	let id = inquire::Text::new("What is the ID for the instance?").prompt()?;
+	let id = InstanceID::from(id);
+	let version = inquire::Text::new("What Minecraft version should the instance be?").prompt()?;
+	let version = match version.as_str() {
+		"latest" => MinecraftVersionDeser::Latest(MinecraftLatestVersion::Release),
+		"latest_snapshot" => MinecraftVersionDeser::Latest(MinecraftLatestVersion::Snapshot),
+		other => MinecraftVersionDeser::Version(other.into()),
+	};
+	let side_options = vec![Side::Client, Side::Server];
+	let side =
+		inquire::Select::new("What side should the instance be on?", side_options).prompt()?;
+
+	let mut instance = InstanceBuilder::new(id.clone(), side);
+	instance.version(version);
+
+	match side {
+		Side::Client => {
+			let options = vec![
+				ClientType::None,
+				ClientType::Vanilla,
+				ClientType::Fabric,
+				ClientType::Quilt,
+			];
+			let client_type =
+				inquire::Select::new("What client type should the instance use?", options)
+					.prompt()?;
+			instance.client_type(client_type);
+		}
+		Side::Server => {
+			let options = vec![
+				ServerType::None,
+				ServerType::Vanilla,
+				ServerType::Fabric,
+				ServerType::Quilt,
+				ServerType::Paper,
+				ServerType::Sponge,
+				ServerType::Folia,
+			];
+			let server_type =
+				inquire::Select::new("What server type should the instance use?", options)
+					.prompt()?;
+			instance.server_type(server_type);
+		}
+	}
+
+	let instance_config = instance.build_config();
+
+	apply_modifications_and_write(
+		&mut config,
+		vec![ConfigModification::AddInstance(id, instance_config)],
+		&data.paths,
+	)
+	.context("Failed to write modified config")?;
+
+	cprintln!("<g>Instance added.");
 
 	Ok(())
 }
