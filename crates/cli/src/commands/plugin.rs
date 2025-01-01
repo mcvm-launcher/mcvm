@@ -1,6 +1,7 @@
 use anyhow::{bail, Context};
 use clap::Subcommand;
 use color_print::cprintln;
+use itertools::Itertools;
 use mcvm::core::io::json_from_file;
 use mcvm::plugin::install::get_verified_plugins;
 use mcvm::plugin::PluginManager;
@@ -33,6 +34,8 @@ pub enum PluginSubcommand {
 		#[arg(short, long)]
 		version: Option<String>,
 	},
+	#[command(about = "Browse installable plugins")]
+	Browse,
 }
 
 pub async fn run(command: PluginSubcommand, data: &mut CmdData<'_>) -> anyhow::Result<()> {
@@ -40,6 +43,7 @@ pub async fn run(command: PluginSubcommand, data: &mut CmdData<'_>) -> anyhow::R
 		PluginSubcommand::List { raw, loaded } => list(data, raw, loaded).await,
 		PluginSubcommand::Info { plugin } => info(data, plugin).await,
 		PluginSubcommand::Install { plugin, version } => install(data, plugin, version).await,
+		PluginSubcommand::Browse => browse(data).await,
 	}
 }
 
@@ -141,6 +145,30 @@ async fn install(
 		),
 		MessageLevel::Important,
 	);
+
+	Ok(())
+}
+
+async fn browse(data: &mut CmdData<'_>) -> anyhow::Result<()> {
+	data.ensure_config(true).await?;
+	let client = Client::new();
+
+	let verified_list = get_verified_plugins(&client)
+		.await
+		.context("Failed to get verified plugin list")?;
+
+	cprintln!("<s>Available plugins:");
+	for plugin in verified_list
+		.values()
+		.sorted_by_cached_key(|x| x.id.clone())
+	{
+		cprintln!(
+			"{}<s>{}</> - {}",
+			HYPHEN_POINT,
+			plugin.id,
+			plugin.description
+		);
+	}
 
 	Ok(())
 }

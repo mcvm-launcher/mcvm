@@ -2,6 +2,7 @@
 	"lang": {
 		"id": "lang",
 		"github_owner": "mcvm-launcher",
-		"github_repo": "mcvm"
+		"github_repo": "mcvm",
+		"description": "Language translations for MCVM"
 	}
 }

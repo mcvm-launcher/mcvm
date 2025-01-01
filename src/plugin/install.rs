@@ -23,6 +23,8 @@ pub struct VerifiedPlugin {
 	pub github_owner: String,
 	/// The name of the GitHub repo where this plugin is
 	pub github_repo: String,
+	/// Short description of the plugin
+	pub description: String,
 }
 
 /// Gets the verified plugin list
