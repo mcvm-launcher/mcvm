@@ -65,7 +65,7 @@ impl VerifiedPlugin {
 		let mut selected_asset = None;
 		'outer: for release in releases {
 			// Only get releases that are tagged correctly
-			if !release.tag_name.contains("plugin") || !release.tag_name.contains(&self.id) {
+			if !release.tag_name.contains("plugin") {
 				continue;
 			}
 
@@ -86,6 +86,10 @@ impl VerifiedPlugin {
 
 			// Select the correct asset
 			for asset in release.assets {
+				if !asset.name.contains(&self.id) {
+					continue;
+				}
+
 				// Check the system
 				if !asset.name.contains("universal") && !asset.name.contains(OS) {
 					continue;
