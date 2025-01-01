@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+
 #[cfg(feature = "schema")]
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
@@ -10,7 +12,7 @@ pub struct PluginsConfig {
 	/// Plugin configuration for enabled plugins
 	pub plugins: Vec<PluginConfigDeser>,
 	/// The list of disabled plugins
-	pub disabled: Vec<String>,
+	pub disabled: HashSet<String>,
 }
 
 /// User configuration for a plugin

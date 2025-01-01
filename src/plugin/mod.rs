@@ -30,18 +30,24 @@ pub struct PluginManagerInner {
 }
 
 impl PluginManager {
-	/// Load the PluginManager from the plugins.json file
-	pub fn load(paths: &Paths, o: &mut impl MCVMOutput) -> anyhow::Result<Self> {
+	/// Open the configuration
+	pub fn open_config(paths: &Paths) -> anyhow::Result<PluginsConfig> {
 		let path = Self::get_config_path(paths);
-		let config = if path.exists() {
-			json_from_file(path).context("Failed to load plugin config from file")?
+
+		if path.exists() {
+			json_from_file(path).context("Failed to load plugin config from file")
 		} else {
 			let out = PluginsConfig::default();
 			json_to_file_pretty(path, &out)
 				.context("Failed to write default plugin config to file")?;
 
-			out
-		};
+			Ok(out)
+		}
+	}
+
+	/// Load the PluginManager from the plugins.json file
+	pub fn load(paths: &Paths, o: &mut impl MCVMOutput) -> anyhow::Result<Self> {
+		let config = Self::open_config(paths).context("Failed to open plugins config")?;
 
 		let mut out = Self::new();
 
@@ -185,7 +191,18 @@ impl PluginManager {
 			std::fs::remove_dir_all(dir_path).context("Failed to remove plugin directory")?;
 		}
 
+		Self::disable_plugin(plugin, paths)
+			.context("Failed to disable the plugin after uninstalling it")?;
+
 		Ok(())
+	}
+
+	/// Disables a plugin
+	pub fn disable_plugin(plugin: &str, paths: &Paths) -> anyhow::Result<()> {
+		let config_path = Self::get_config_path(paths);
+		let mut config = Self::open_config(paths).context("Failed to open plugin configuration")?;
+		config.disabled.insert(plugin.to_string());
+		json_to_file_pretty(config_path, &config).context("Failed to write to config file")
 	}
 
 	/// Call a plugin hook on the manager and collects the results into a Vec
