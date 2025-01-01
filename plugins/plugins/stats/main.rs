@@ -127,13 +127,13 @@ fn print_stats(ctx: HookContext<'_, Subcommand>) -> anyhow::Result<()> {
 		.into_iter()
 		.sorted_by_key(|(inst_id, stats)| Ordering {
 			launches: Reverse(stats.launches),
-			playtime: Reverse(stats.playtime),
+			playtime: Reverse(stats.calculate_playtime()),
 			instance_id: inst_id.clone(),
 		}) {
 		cprintln!(
 			"<k!> - </><b,s>{instance}</> - Launched <m>{}</> times for a total of <m!>{}</>",
 			stats.launches,
-			format_time(stats.playtime)
+			format_time(stats.calculate_playtime())
 		);
 	}
 
@@ -195,6 +195,16 @@ struct InstanceStats {
 	playtime: u64,
 	/// The number of times the instance has been launched
 	launches: u32,
+}
+
+impl InstanceStats {
+	/// Calculate playtime
+	fn calculate_playtime(&self) -> u64 {
+		// Due to the minutes always rounding down every time we stop, there will be a constant
+		// integration error of on average half a minute every launch. Counteract this by adding back that
+		// half a minute for every launch
+		self.playtime + self.launches as u64 / 2
+	}
 }
 
 /// Config for the plugin
