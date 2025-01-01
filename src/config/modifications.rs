@@ -1,5 +1,5 @@
 use anyhow::{anyhow, Context};
-use mcvm_core::io::json_to_file_pretty;
+use mcvm_core::io::json_to_file_pretty_no_simd;
 
 use crate::io::paths::Paths;
 use mcvm_shared::id::{InstanceID, ProfileID};
@@ -58,7 +58,7 @@ pub fn apply_modifications_and_write(
 ) -> anyhow::Result<()> {
 	apply_modifications(config, modifications)?;
 	let path = Config::get_path(paths);
-	json_to_file_pretty(path, config).context("Failed to write modified configuration")?;
+	json_to_file_pretty_no_simd(path, config).context("Failed to write modified configuration")?;
 
 	Ok(())
 }

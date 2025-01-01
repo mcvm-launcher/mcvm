@@ -36,3 +36,14 @@ pub fn json_to_file_pretty<S: Serialize>(path: impl AsRef<Path>, data: &S) -> an
 	simd_json::to_writer_pretty(file, data).context("Failed to serialize data to file")?;
 	Ok(())
 }
+
+/// Writes JSON to a file with a buffer and pretty formatting, without SIMD as it can make the formatting
+/// look a little weird
+pub fn json_to_file_pretty_no_simd<S: Serialize>(
+	path: impl AsRef<Path>,
+	data: &S,
+) -> anyhow::Result<()> {
+	let file = BufWriter::new(File::create(path).context("Failed to open file")?);
+	serde_json::to_writer_pretty(file, data).context("Failed to serialize data to file")?;
+	Ok(())
+}
