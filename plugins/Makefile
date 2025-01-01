@@ -10,14 +10,14 @@ package:
 
 	@mkdir -p release
 
-	@zip release/args-linux.zip ../target/release/mcvm_plugin_args plugins/args/plugin.json
-	@zip release/backup-linux.zip ../target/release/mcvm_plugin_backup plugins/backup/plugin.json
-	@zip release/docs-linux.zip ../target/release/mcvm_plugin_docs plugins/docs/plugin.json
-	@zip release/gen_pkg-linux.zip ../target/release/mcvm_plugin_gen_pkg plugins/gen_pkg/plugin.json
-	@zip release/modrinth-linux.zip ../target/release/mcvm_plugin_modrinth plugins/modrinth/plugin.json
-	@zip release/options-linux.zip ../target/release/mcvm_plugin_options plugins/options/plugin.json
-	@zip release/server_restart-linux.zip ../target/release/mcvm_plugin_server_restart plugins/server_restart/plugin.json
-	@zip release/stats-linux.zip ../target/release/mcvm_plugin_stats plugins/stats/plugin.json
+	@rm release/args-linux.zip && zip -j release/args-linux.zip ../target/release/mcvm_plugin_args plugins/args/plugin.json
+	@rm release/backup-linux.zip && zip -j release/backup-linux.zip ../target/release/mcvm_plugin_backup plugins/backup/plugin.json
+	@rm release/docs-linux.zip && zip -j release/docs-linux.zip ../target/release/mcvm_plugin_docs plugins/docs/plugin.json
+	@rm release/gen_pkg-linux.zip && zip -j release/gen_pkg-linux.zip ../target/release/mcvm_plugin_gen_pkg plugins/gen_pkg/plugin.json
+	@rm release/modrinth-linux.zip && zip -j release/modrinth-linux.zip ../target/release/mcvm_plugin_modrinth plugins/modrinth/plugin.json
+	@rm release/options-linux.zip && zip -j release/options-linux.zip ../target/release/mcvm_plugin_options plugins/options/plugin.json
+	@rm release/server_restart-linux.zip && zip -j release/server_restart-linux.zip ../target/release/mcvm_plugin_server_restart plugins/server_restart/plugin.json
+	@rm release/stats-linux.zip && zip -j release/stats-linux.zip ../target/release/mcvm_plugin_stats plugins/stats/plugin.json
 	@cp plugins/extra_versions/plugin.json release/extra_versions-universal.json
 	@cp plugins/lang/plugin.json release/lang-universal.json
 
