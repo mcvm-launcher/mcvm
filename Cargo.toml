@@ -115,7 +115,7 @@ shellexpand = { version = "3.0.0", features = ["path"] }
 simd-json = { version = "0.13.10", features = ["value-no-dup-keys"] }
 sys-locale = "0.3.1"
 tar = "0.4.38"
-termimad = "0.29.1"
+termimad = "0.31.1"
 thiserror = "1.0.61"
 tokio = { version = "1.37.0", features = ["rt-multi-thread"] }
 version-compare = "0.2.0"
