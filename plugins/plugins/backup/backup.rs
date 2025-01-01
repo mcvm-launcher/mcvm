@@ -7,8 +7,6 @@ use anyhow::{anyhow, bail, Context};
 use mcvm_core::io::{json_from_file, json_to_file};
 use mcvm_shared::util::utc_timestamp;
 use rand::Rng;
-#[cfg(feature = "schema")]
-use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use zip::{ZipArchive, ZipWriter};
 
@@ -19,7 +17,6 @@ pub const DEFAULT_GROUP: &str = "default";
 
 /// Settings for backups
 #[derive(Serialize, Deserialize, Default, Clone, Debug)]
-#[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(default)]
 pub struct Config {
 	/// Default settings for backups
@@ -320,7 +317,6 @@ pub enum BackupSource {
 
 /// Format for stored backups
 #[derive(Serialize, Deserialize, Default, Copy, Clone, Debug)]
-#[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(rename_all = "snake_case")]
 pub enum StorageType {
 	/// Stored as normal in a new directory

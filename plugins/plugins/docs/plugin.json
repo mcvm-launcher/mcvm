@@ -3,7 +3,7 @@
 	"description": "View MCVM's documentation straight from the program",
 	"hooks": {
 		"subcommand": {
-			"executable": "mcvm_plugin_docs"
+			"executable": "${PLUGIN_DIR}/mcvm_plugin_docs"
 		}
 	},
 	"subcommands": {

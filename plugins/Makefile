@@ -1,3 +1,26 @@
+package:
+	@cargo build --bin mcvm_plugin_args
+	@cargo build --bin mcvm_plugin_backup
+	@cargo build --bin mcvm_plugin_docs
+	@cargo build --bin mcvm_plugin_gen_pkg
+	@cargo build --bin mcvm_plugin_modrinth
+	@cargo build --bin mcvm_plugin_options
+	@cargo build --bin mcvm_plugin_server_restart
+	@cargo build --bin mcvm_plugin_stats
+
+	@mkdir -p release
+
+	@zip release/args-linux.zip ../target/release/mcvm_plugin_args plugins/args/plugin.json
+	@zip release/backup-linux.zip ../target/release/mcvm_plugin_backup plugins/backup/plugin.json
+	@zip release/docs-linux.zip ../target/release/mcvm_plugin_docs plugins/docs/plugin.json
+	@zip release/gen_pkg-linux.zip ../target/release/mcvm_plugin_gen_pkg plugins/gen_pkg/plugin.json
+	@zip release/modrinth-linux.zip ../target/release/mcvm_plugin_modrinth plugins/modrinth/plugin.json
+	@zip release/options-linux.zip ../target/release/mcvm_plugin_options plugins/options/plugin.json
+	@zip release/server_restart-linux.zip ../target/release/mcvm_plugin_server_restart plugins/server_restart/plugin.json
+	@zip release/stats-linux.zip ../target/release/mcvm_plugin_stats plugins/stats/plugin.json
+	@cp plugins/extra_versions/plugin.json release/extra_versions-universal.json
+	@cp plugins/lang/plugin.json release/lang-universal.json
+
 install: install.args \
 				 install.backup \
 				 install.options \
@@ -13,32 +36,32 @@ install.extra_versions:
 
 install.args:
 	@cargo install --path . --bin mcvm_plugin_args --offline
-	@cp plugins/args/plugin.json ~/.local/share/mcvm/plugins/args.json
+	@cat plugins/args/plugin.json | sed 's,\${PLUGIN_DIR}/,,' > ~/.local/share/mcvm/plugins/args.json
 
 install.backup:
 	@cargo install --path . --bin mcvm_plugin_backup --offline
-	@cp plugins/backup/plugin.json ~/.local/share/mcvm/plugins/backup.json
+	@cat plugins/backup/plugin.json | sed 's,\${PLUGIN_DIR}/,,' > ~/.local/share/mcvm/plugins/backup.json
 
 install.options:
 	@cargo install --path . --bin mcvm_plugin_options --offline
-	@cp plugins/options/plugin.json ~/.local/share/mcvm/plugins/options.json
+	@cat plugins/options/plugin.json | sed 's,\${PLUGIN_DIR}/,,' > ~/.local/share/mcvm/plugins/options.json
 
 install.docs:
 	@cargo install --path . --bin mcvm_plugin_docs --offline
-	@cp plugins/docs/plugin.json ~/.local/share/mcvm/plugins/docs.json
+	@cat plugins/docs/plugin.json | sed 's,\${PLUGIN_DIR}/,,' > ~/.local/share/mcvm/plugins/docs.json
 
 install.stats:
 	@cargo install --path . --bin mcvm_plugin_stats --offline
-	@cp plugins/stats/plugin.json ~/.local/share/mcvm/plugins/stats.json
+	@cat plugins/stats/plugin.json | sed 's,\${PLUGIN_DIR}/,,' > ~/.local/share/mcvm/plugins/stats.json
 
 install.server_restart:
 	@cargo install --path . --bin mcvm_plugin_server_restart --offline
-	@cp plugins/server_restart/plugin.json ~/.local/share/mcvm/plugins/server_restart.json
+	@cat plugins/server_restart/plugin.json | sed 's,\${PLUGIN_DIR}/,,' > ~/.local/share/mcvm/plugins/server_restart.json
 
 install.modrinth:
 	@cargo install --path . --bin mcvm_plugin_modrinth --offline
-	@cp plugins/modrinth/plugin.json ~/.local/share/mcvm/plugins/modrinth.json
+	@cat plugins/modrinth/plugin.json | sed 's,\${PLUGIN_DIR}/,,' > ~/.local/share/mcvm/plugins/modrinth.json
 
 install.gen_pkg:
 	@cargo install --path . --bin mcvm_plugin_gen_pkg --offline
-	@cp plugins/gen_pkg/plugin.json ~/.local/share/mcvm/plugins/gen_pkg.json
+	@cat plugins/gen_pkg/plugin.json | sed 's,\${PLUGIN_DIR}/,,' > ~/.local/share/mcvm/plugins/gen_pkg.json

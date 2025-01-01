@@ -4,6 +4,7 @@
 /.env
 /crates/tools/schemas
 /plugins/zipped_docs.zip
+/plugins/release
 /docs/public
 
 # GUI
