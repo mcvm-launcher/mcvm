@@ -32,6 +32,7 @@ pub struct InstanceConfig {
 	pub side: Option<Side>,
 	/// The display name of this instance
 	#[serde(default)]
+	#[serde(skip_serializing_if = "Option::is_none")]
 	pub name: Option<String>,
 	/// The common config of this instance
 	#[serde(flatten)]
