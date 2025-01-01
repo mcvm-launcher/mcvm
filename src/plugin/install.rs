@@ -116,17 +116,32 @@ impl VerifiedPlugin {
 		};
 
 		// Actually download and install
-		let zip = download::bytes(asset.browser_download_url, client)
-			.await
-			.context("Failed to download zipped plugin")?;
+		if asset.content_type.contains("zip") {
+			let zip = download::bytes(asset.browser_download_url, client)
+				.await
+				.context("Failed to download zipped plugin")?;
 
-		let mut zip = ZipArchive::new(Cursor::new(zip)).context("Failed to read zip archive")?;
-		// Remove the existing plugin before extract
-		PluginManager::uninstall_plugin(&self.id, paths)
-			.context("Failed to remove existing plugin")?;
-		let dir = paths.plugins.join(&self.id);
-		std::fs::create_dir_all(&dir).context("Failed to create plugin directory")?;
-		zip.extract(dir).context("Failed to extract plugin files")?;
+			let mut zip =
+				ZipArchive::new(Cursor::new(zip)).context("Failed to read zip archive")?;
+
+			PluginManager::uninstall_plugin(&self.id, paths)
+				.context("Failed to remove existing plugin")?;
+			let dir = paths.plugins.join(&self.id);
+			std::fs::create_dir_all(&dir).context("Failed to create plugin directory")?;
+
+			zip.extract(dir).context("Failed to extract plugin files")?;
+		} else if asset.content_type.contains("json") {
+			let bytes = download::bytes(asset.browser_download_url, client)
+				.await
+				.context("Failed to download plugin JSON")?;
+
+			PluginManager::uninstall_plugin(&self.id, paths)
+				.context("Failed to remove existing plugin")?;
+			let path = paths.plugins.join(format!("{}.json", &self.id));
+			std::fs::write(path, bytes).context("Failed to write plugin JSON")?;
+		} else {
+			bail!("Plugin files are not of the correct type");
+		}
 
 		Ok(())
 	}
