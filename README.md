@@ -9,7 +9,6 @@ In addition, MCVM has a ton of flexibility, allowing you to build your perfect l
 - 🚀 [Getting Started](https://mcvm-launcher.github.io/mcvm/docs/guide/)
 - 📖 [Documentation](https://mcvm-launcher.github.io/mcvm/docs/)
 - ✨ [Features](#✨-features)
-- 📥 [Installation](#📥-installation)
 - ➕ [More Info](#➕-more-info)
 - 👷 [Use Cases](#👷-use-cases)
 - 👍 [Status](#👍-status)
