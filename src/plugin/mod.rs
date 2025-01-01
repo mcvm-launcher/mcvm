@@ -6,7 +6,7 @@ use std::sync::{Arc, MutexGuard};
 
 use crate::config::plugin::{PluginConfig, PluginsConfig};
 use crate::io::paths::Paths;
-use anyhow::{anyhow, Context};
+use anyhow::{anyhow, bail, Context};
 use mcvm_core::io::{json_from_file, json_to_file_pretty};
 use mcvm_plugin::hooks::{Hook, HookHandle};
 use mcvm_plugin::plugin::{Plugin, PluginManifest};
@@ -124,6 +124,9 @@ impl PluginManager {
 			let dir = paths.plugins.join(&plugin.id);
 			(dir.join("plugin.json"), Some(dir))
 		};
+		if !path.exists() {
+			bail!("Could not find plugin '{}'", &plugin.id);
+		}
 		let manifest = json_from_file(path).context("Failed to read plugin manifest from file")?;
 
 		self.add_plugin(plugin, manifest, paths, plugin_dir.as_deref(), o)?;
