@@ -4,8 +4,8 @@ use std::sync::Arc;
 
 use anyhow::Context;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
-use mcvm_shared::translate;
 use mcvm_shared::versions::VersionPattern;
+use mcvm_shared::{translate, try_3};
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 use tokio::{sync::Semaphore, task::JoinSet};
@@ -85,14 +85,6 @@ pub async fn get(
 		}
 	};
 
-	struct AssetData {
-		name: String,
-		url: String,
-		path: PathBuf,
-		virtual_path: Option<PathBuf>,
-		size: usize,
-	}
-
 	let mut assets_to_download = Vec::new();
 	for (name, asset) in index.objects {
 		let hash_path = asset.get_hash_path();
@@ -149,32 +141,10 @@ pub async fn get(
 		let sem = sem.clone();
 		let fut = async move {
 			let _permit = sem.acquire().await;
-			let response = download::bytes(asset.url, &client)
-				.await
-				.context("Failed to download asset")?;
 
-			// Write JSON as minified to save storage space, if there are no errors
-			let result = if asset.name.ends_with(".json") {
-				if let Ok(json) = serde_json::from_slice::<serde_json::Value>(&response) {
-					json_to_file(&asset.path, &json).ok()
-				} else {
-					None
-				}
-			} else {
-				None
-			};
+			try_3!({ download_asset(&asset, &client).await })
+				.context("Failed three times to download asset")?;
 
-			if result.is_none() {
-				tokio::fs::write(&asset.path, response)
-					.await
-					.context("Failed to write asset to file")?;
-			}
-
-			if let Some(virtual_path) = asset.virtual_path {
-				files::update_hardlink_async(&asset.path, &virtual_path)
-					.await
-					.context("Failed to hardlink virtual asset")?;
-			}
 			Ok::<String, anyhow::Error>(asset.name)
 		};
 		join.spawn(fut);
@@ -219,6 +189,46 @@ pub async fn get(
 	o.end_process();
 
 	Ok(out)
+}
+
+/// Downloads and loads a single asset
+async fn download_asset(asset: &AssetData, client: &Client) -> anyhow::Result<()> {
+	let response = download::bytes(&asset.url, &client)
+		.await
+		.context("Failed to download asset")?;
+
+	// Write JSON as minified to save storage space, if there are no errors
+	let result = if asset.name.ends_with(".json") {
+		if let Ok(json) = serde_json::from_slice::<serde_json::Value>(&response) {
+			json_to_file(&asset.path, &json).ok()
+		} else {
+			None
+		}
+	} else {
+		None
+	};
+
+	if result.is_none() {
+		tokio::fs::write(&asset.path, response)
+			.await
+			.context("Failed to write asset to file")?;
+	}
+
+	if let Some(virtual_path) = &asset.virtual_path {
+		files::update_hardlink_async(&asset.path, virtual_path)
+			.await
+			.context("Failed to hardlink virtual asset")?;
+	}
+
+	Ok(())
+}
+
+struct AssetData {
+	name: String,
+	url: String,
+	path: PathBuf,
+	virtual_path: Option<PathBuf>,
+	size: usize,
 }
 
 /// Downloads the asset index which contains all of the assets that need to be downloaded
