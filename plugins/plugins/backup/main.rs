@@ -55,14 +55,14 @@ fn main() -> anyhow::Result<()> {
 
 	plugin.on_instance_launch(|ctx, arg| {
 		let inst_dir = PathBuf::from(&arg.dir);
-		check_auto_hook(ctx, BackupAutoHook::OnLaunch, &arg.id, &inst_dir)?;
+		check_auto_hook(ctx, BackupAutoHook::Launch, &arg.id, &inst_dir)?;
 
 		Ok(())
 	})?;
 
 	plugin.on_instance_stop(|ctx, arg| {
 		let inst_dir = PathBuf::from(&arg.dir);
-		check_auto_hook(ctx, BackupAutoHook::OnStop, &arg.id, &inst_dir)?;
+		check_auto_hook(ctx, BackupAutoHook::Stop, &arg.id, &inst_dir)?;
 
 		Ok(())
 	})?;

@@ -77,9 +77,9 @@ pub struct CommonConfig {
 #[serde(rename_all = "snake_case")]
 pub enum BackupAutoHook {
 	/// Create a backup whenever the instance is launched
-	OnLaunch,
+	Launch,
 	/// Create a backup whenever the instance is stopped
-	OnStop,
+	Stop,
 }
 
 /// Index for the backups of an instance
