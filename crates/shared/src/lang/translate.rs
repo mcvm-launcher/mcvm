@@ -97,6 +97,9 @@ define_translations! {
 	AuthenticationSuccessful, "When authentication succeeds", "Authentication successful";
 	StartInstallingPlugin, "When starting to install a plugin", "Installing plugin";
 	FinishInstallingPlugin, "When finishing installing a plugin", "Plugin installed";
+	StartExporting, "When starting to export an instance", "Exporting instance '$inst' in format '%format' using plugin '%plugin'";
+	ExportPluginNoResult, "When the plugin used for instance export doesn't return anything", "Export plugin did not return a result";
+	FinishExporting, "When finishing exporting an instance", "Export finished";
 }
 
 /// Replaces placeholders in a translated key

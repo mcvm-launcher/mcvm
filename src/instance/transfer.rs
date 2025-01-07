@@ -40,13 +40,23 @@ impl Instance {
 
 		output_support_warnings(export_info, o);
 
-		// TODO: Ensure that the instance has been created once from lockfile before allowing export
 		if !lock.has_instance_done_first_update(&self.id) {
 			bail!("Instance has not done it's first update and is not ready for transfer");
 		}
 
 		self.ensure_dirs(paths)
 			.context("Failed to ensure instance directories")?;
+
+		o.display(
+			MessageContents::StartProcess(translate!(
+				o,
+				StartExporting,
+				"instance" = &self.id,
+				"format" = &format.info.id,
+				"plugin" = &format.plugin
+			)),
+			MessageLevel::Important,
+		);
 
 		// Export using the plugin
 		let arg = ExportInstanceArg {
@@ -63,9 +73,13 @@ impl Instance {
 
 		if let Some(result) = result {
 			result.result(o)?;
+			o.display(
+				MessageContents::Success(o.translate(TranslationKey::FinishExporting).into()),
+				MessageLevel::Important,
+			);
 		} else {
 			o.display(
-				MessageContents::Error("Export plugin did not return a result".into()),
+				MessageContents::Error(o.translate(TranslationKey::ExportPluginNoResult).into()),
 				MessageLevel::Debug,
 			);
 		}
