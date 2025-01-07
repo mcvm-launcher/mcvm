@@ -21,7 +21,6 @@ fn main() {
 
 	add_file!(zip, "_index.md");
 	add_file!(zip, "configuring.md");
-	add_file!(zip, "game_options.md");
 	add_file!(zip, "modifications.md");
 	add_file!(zip, "principles.md");
 	zip.add_directory("packages", FileOptions::<()>::default())
@@ -35,8 +34,20 @@ fn main() {
 	zip.add_directory("plugins", FileOptions::<()>::default())
 		.unwrap();
 	add_file!(zip, "plugins/_index.md");
+	add_file!(zip, "plugins/user_guide.md");
 	zip.add_directory("plugins/development", FileOptions::<()>::default())
 		.unwrap();
 	add_file!(zip, "plugins/development/_index.md");
 	add_file!(zip, "plugins/development/format.md");
+	add_file!(zip, "plugins/plugins/_index.md");
+	add_file!(zip, "plugins/plugins/args.md");
+	add_file!(zip, "plugins/plugins/backup.md");
+	add_file!(zip, "plugins/plugins/docs.md");
+	add_file!(zip, "plugins/plugins/extra_versions.md");
+	add_file!(zip, "plugins/plugins/gen_pkg.md");
+	add_file!(zip, "plugins/plugins/lang.md");
+	add_file!(zip, "plugins/plugins/modrinth.md");
+	add_file!(zip, "plugins/plugins/options.md");
+	add_file!(zip, "plugins/plugins/server_restart.md");
+	add_file!(zip, "plugins/plugins/stats.md");
 }
