@@ -95,6 +95,7 @@ enum Subcommand {
 		/// The instance to create a backup for
 		instance: String,
 		/// The group to create the backup for
+		#[arg(short, long)]
 		group: Option<String>,
 	},
 	#[command(about = "Remove an existing backup")]
