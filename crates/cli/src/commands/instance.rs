@@ -1,6 +1,7 @@
+use std::path::PathBuf;
 use std::sync::Arc;
 
-use anyhow::Context;
+use anyhow::{bail, Context};
 use clap::Subcommand;
 use color_print::{cprint, cprintln};
 use inquire::Select;
@@ -9,7 +10,9 @@ use mcvm::config::builder::InstanceBuilder;
 use mcvm::config::modifications::{apply_modifications_and_write, ConfigModification};
 use mcvm::config::Config;
 use mcvm::core::util::versions::{MinecraftLatestVersion, MinecraftVersionDeser};
+use mcvm::instance::transfer::load_formats;
 use mcvm::instance::update::InstanceUpdateContext;
+use mcvm::instance::Instance;
 use mcvm::io::lock::Lockfile;
 use mcvm::shared::id::InstanceID;
 
@@ -71,6 +74,25 @@ pub enum InstanceSubcommand {
 	},
 	#[command(about = "Easily create a new instance")]
 	Add,
+	#[command(about = "Import an instance from another launcher")]
+	Import {
+		/// The ID of the new instance
+		instance: String,
+		/// Which format to use
+		#[arg(short, long)]
+		format: Option<String>,
+	},
+	#[command(about = "Export an instance for use in another launcher")]
+	Export {
+		/// The ID of the instance to export
+		instance: Option<String>,
+		/// Which format to use
+		#[arg(short, long)]
+		format: Option<String>,
+		/// Where to export the instance to. Defaults to ./<instance-id>.zip
+		#[arg(short, long)]
+		output: Option<String>,
+	},
 }
 
 pub async fn run(command: InstanceSubcommand, mut data: CmdData<'_>) -> anyhow::Result<()> {
@@ -91,6 +113,14 @@ pub async fn run(command: InstanceSubcommand, mut data: CmdData<'_>) -> anyhow::
 		} => update(&mut data, instances, groups, all, force, skip_packages).await,
 		InstanceSubcommand::Dir { instance } => dir(&mut data, instance).await,
 		InstanceSubcommand::Add => add(&mut data).await,
+		InstanceSubcommand::Import { instance, format } => {
+			import(&mut data, instance, format).await
+		}
+		InstanceSubcommand::Export {
+			instance,
+			format,
+			output,
+		} => export(&mut data, instance, format, output).await,
 	}
 }
 
@@ -407,6 +437,103 @@ async fn add(data: &mut CmdData<'_>) -> anyhow::Result<()> {
 	.context("Failed to write modified config")?;
 
 	cprintln!("<g>Instance added.");
+
+	Ok(())
+}
+
+async fn import(
+	data: &mut CmdData<'_>,
+	instance: String,
+	format: Option<String>,
+) -> anyhow::Result<()> {
+	data.ensure_config(true).await?;
+	let config = data.config.get();
+
+	let instance = InstanceID::from(instance);
+
+	if config.instances.contains_key(&instance) {
+		bail!("An instance with that ID already exists");
+	}
+
+	// Figure out the format
+	let formats = load_formats(&config.plugins, &data.paths, data.output)
+		.context("Failed to get available transfer formats")?;
+	let format = if let Some(format) = &format {
+		format
+	} else {
+		let options = formats.iter_format_names().collect();
+		inquire::Select::new("What format is the imported instance in?", options).prompt()?
+	};
+
+	let new_instance_config = Instance::import(
+		&instance,
+		format,
+		&formats,
+		&config.plugins,
+		&data.paths,
+		data.output,
+	)
+	.context("Failed to import the new instance")?;
+
+	let mut config = data.get_raw_config()?;
+	apply_modifications_and_write(
+		&mut config,
+		vec![ConfigModification::AddInstance(
+			instance,
+			new_instance_config,
+		)],
+		&data.paths,
+	)
+	.context("Failed to write modified config")?;
+
+	Ok(())
+}
+
+async fn export(
+	data: &mut CmdData<'_>,
+	instance: Option<String>,
+	format: Option<String>,
+	output: Option<String>,
+) -> anyhow::Result<()> {
+	data.ensure_config(true).await?;
+	let config = data.config.get_mut();
+
+	let instance = pick_instance(instance, config)?;
+
+	// Figure out the format
+	let formats = load_formats(&config.plugins, &data.paths, data.output)
+		.context("Failed to get available transfer formats")?;
+	let format = if let Some(format) = &format {
+		format
+	} else {
+		let options = formats.iter_format_names().collect();
+		inquire::Select::new("What format is the imported instance in?", options).prompt()?
+	};
+
+	let result_path = if let Some(output) = output {
+		PathBuf::from(output)
+	} else {
+		PathBuf::from(format!("./{instance}.zip"))
+	};
+
+	let instance = config
+		.instances
+		.get_mut(&instance)
+		.context("The provided instance does not exist")?;
+
+	let lock = Lockfile::open(&data.paths).context("Failed to open Lockfile")?;
+
+	instance
+		.export(
+			format,
+			&result_path,
+			&formats,
+			&config.plugins,
+			&lock,
+			&data.paths,
+			data.output,
+		)
+		.context("Failed to export instance")?;
 
 	Ok(())
 }

@@ -558,7 +558,7 @@ pub struct ExportInstanceArg {
 	pub side: Option<Side>,
 	/// The directory where the instance game files are located
 	pub game_dir: String,
-	/// The desired path for the resulting instance
+	/// The desired path for the resulting instance, as a file path
 	pub result_path: String,
 }
 

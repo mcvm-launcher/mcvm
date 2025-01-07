@@ -205,6 +205,13 @@ pub struct Formats {
 	formats: HashMap<String, Format>,
 }
 
+impl Formats {
+	/// Iterate over the names of the loaded formats
+	pub fn iter_format_names(&self) -> impl Iterator<Item = &String> {
+		self.formats.keys()
+	}
+}
+
 /// A single loaded transfer format
 pub struct Format {
 	/// The plugin that provides this format
