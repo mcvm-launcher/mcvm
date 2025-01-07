@@ -10,6 +10,7 @@ use mcvm_core::{net::game_files::version_manifest::VersionEntry, Paths};
 use mcvm_pkg::script_eval::AddonInstructionData;
 use mcvm_pkg::{RecommendedPackage, RequiredPackage};
 use mcvm_shared::lang::translate::LanguageMap;
+use mcvm_shared::modifications::{ClientType, ServerType};
 use mcvm_shared::pkg::PackageID;
 use mcvm_shared::{output::MCVMOutput, versions::VersionInfo, Side};
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
@@ -559,4 +560,42 @@ pub struct ExportInstanceArg {
 	pub game_dir: String,
 	/// The desired path for the resulting instance
 	pub result_path: String,
+}
+
+def_hook!(
+	ImportInstance,
+	"import_instance",
+	"Hook for importing an instance",
+	ImportInstanceArg,
+	ImportInstanceResult,
+);
+
+/// Argument provided to the import_instance hook
+#[derive(Serialize, Deserialize, Default)]
+#[serde(default)]
+pub struct ImportInstanceArg {
+	/// The ID of the transfer format being used
+	pub format: String,
+	/// The ID of the new instance
+	pub id: String,
+	/// The desired directory for the resulting instance
+	pub result_path: String,
+}
+
+/// Result from the ImportInstance hook giving information about the new instance
+#[derive(Serialize, Deserialize, Default)]
+#[serde(default)]
+pub struct ImportInstanceResult {
+	/// The ID of the transfer format being used
+	pub format: String,
+	/// The ID of the instance
+	pub id: String,
+	/// The name of the instance
+	pub name: Option<String>,
+	/// The side of the instance
+	pub side: Option<Side>,
+	/// The client type of the new instance
+	pub client_type: Option<ClientType>,
+	/// The server type of the new instance
+	pub server_type: Option<ServerType>,
 }

@@ -2,13 +2,17 @@ use std::{collections::HashMap, path::Path};
 
 use anyhow::{bail, Context};
 use mcvm_plugin::hooks::{
-	AddInstanceTransferFormat, ExportInstance, ExportInstanceArg, InstanceTransferFeatureSupport,
-	InstanceTransferFormat, InstanceTransferFormatDirection,
+	AddInstanceTransferFormat, ExportInstance, ExportInstanceArg, ImportInstance,
+	ImportInstanceArg, InstanceTransferFeatureSupport, InstanceTransferFormat,
+	InstanceTransferFormatDirection,
 };
+use mcvm_shared::id::InstanceID;
 use mcvm_shared::lang::translate::TranslationKey;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::translate;
 
+use crate::config::builder::InstanceBuilder;
+use crate::config::instance::InstanceConfig;
 use crate::io::lock::Lockfile;
 use crate::{io::paths::Paths, plugin::PluginManager};
 
@@ -22,8 +26,8 @@ impl Instance {
 		result_path: &Path,
 		formats: &Formats,
 		plugins: &PluginManager,
-		paths: &Paths,
 		lock: &Lockfile,
+		paths: &Paths,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
 		// Get and print info about the format
@@ -85,6 +89,88 @@ impl Instance {
 		}
 
 		Ok(())
+	}
+
+	/// Import an instance using the given format. Returns an InstanceConfig to add to the config file
+	pub fn import(
+		id: &str,
+		format: &str,
+		formats: &Formats,
+		plugins: &PluginManager,
+		paths: &Paths,
+		o: &mut impl MCVMOutput,
+	) -> anyhow::Result<InstanceConfig> {
+		// Get and print info about the format
+		let format = formats
+			.formats
+			.get(format)
+			.context("Transfer format does not exist")?;
+
+		let import_info = format
+			.info
+			.import
+			.as_ref()
+			.context("This format or the plugin providing it does not support importing")?;
+
+		output_support_warnings(import_info, o);
+
+		o.display(
+			MessageContents::StartProcess(translate!(
+				o,
+				StartImporting,
+				"instance" = id,
+				"format" = &format.info.id,
+				"plugin" = &format.plugin
+			)),
+			MessageLevel::Important,
+		);
+
+		// Create the target directory
+		let target_dir = paths.project.data_dir().join("instances").join(id);
+		std::fs::create_dir_all(&target_dir)
+			.context("Failed to create directory for new instance")?;
+
+		// Import using the plugin
+		let arg = ImportInstanceArg {
+			format: format.info.id.clone(),
+			id: id.to_string(),
+			result_path: target_dir.to_string_lossy().to_string(),
+		};
+		let result = plugins
+			.call_hook_on_plugin(ImportInstance, &format.plugin, &arg, paths, o)
+			.context("Failed to import instance using plugin")?;
+
+		let Some(result) = result else {
+			o.display(
+				MessageContents::Error(o.translate(TranslationKey::ImportPluginNoResult).into()),
+				MessageLevel::Debug,
+			);
+
+			bail!("Import plugin did not return a result");
+		};
+
+		let result = result.result(o)?;
+		o.display(
+			MessageContents::Success(o.translate(TranslationKey::FinishImporting).into()),
+			MessageLevel::Important,
+		);
+
+		let side = result
+			.side
+			.context("Import result is missing the instance side")?;
+		let mut builder = InstanceBuilder::new(InstanceID::from(id), side);
+
+		if let Some(name) = result.name {
+			builder.name(name);
+		}
+		if let Some(client_type) = result.client_type {
+			builder.client_type(client_type);
+		}
+		if let Some(server_type) = result.server_type {
+			builder.server_type(server_type);
+		}
+
+		Ok(builder.build_config())
 	}
 }
 

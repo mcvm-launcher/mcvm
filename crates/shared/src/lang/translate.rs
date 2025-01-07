@@ -100,6 +100,9 @@ define_translations! {
 	StartExporting, "When starting to export an instance", "Exporting instance '$inst' in format '%format' using plugin '%plugin'";
 	ExportPluginNoResult, "When the plugin used for instance export doesn't return anything", "Export plugin did not return a result";
 	FinishExporting, "When finishing exporting an instance", "Export finished";
+	StartImporting, "When starting to import an instance", "Importing instance '$inst' in format '%format' using plugin '%plugin'";
+	ImportPluginNoResult, "When the plugin used for instance import doesn't return anything", "Import plugin did not return a result";
+	FinishImporting, "When finishing importing an instance", "Import finished";
 }
 
 /// Replaces placeholders in a translated key
