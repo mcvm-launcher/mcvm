@@ -53,16 +53,18 @@ enum Mode {
 
 /// Create the restart script file at the specified path
 fn create_script(path: &Path, inst_ref: &str, config: Config) -> anyhow::Result<()> {
-	let mut file = BufWriter::new(File::create(&path)?);
-	#[cfg(target_family = "unix")]
-	{
-		writeln!(&mut file, "#!/bin/sh")?;
-		writeln!(&mut file)?;
-	}
+	if !path.exists() {
+		let mut file = BufWriter::new(File::create(&path)?);
+		#[cfg(target_family = "unix")]
+		{
+			writeln!(&mut file, "#!/bin/sh")?;
+			writeln!(&mut file)?;
+		}
 
-	match config.mode {
-		Mode::Cli => {
-			writeln!(&mut file, "mcvm instance launch {inst_ref}")?;
+		match config.mode {
+			Mode::Cli => {
+				writeln!(&mut file, "mcvm instance launch {inst_ref}")?;
+			}
 		}
 	}
 
