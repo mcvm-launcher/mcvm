@@ -1,6 +1,6 @@
 use std::{collections::HashMap, path::Path};
 
-use anyhow::Context;
+use anyhow::{bail, Context};
 use mcvm_plugin::hooks::{
 	AddInstanceTransferFormat, ExportInstance, ExportInstanceArg, InstanceTransferFeatureSupport,
 	InstanceTransferFormat, InstanceTransferFormatDirection,
@@ -9,6 +9,7 @@ use mcvm_shared::lang::translate::TranslationKey;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::translate;
 
+use crate::io::lock::Lockfile;
 use crate::{io::paths::Paths, plugin::PluginManager};
 
 use super::Instance;
@@ -22,6 +23,7 @@ impl Instance {
 		formats: &Formats,
 		plugins: &PluginManager,
 		paths: &Paths,
+		lock: &Lockfile,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
 		// Get and print info about the format
@@ -39,6 +41,10 @@ impl Instance {
 		output_support_warnings(export_info, o);
 
 		// TODO: Ensure that the instance has been created once from lockfile before allowing export
+		if !lock.has_instance_done_first_update(&self.id) {
+			bail!("Instance has not done it's first update and is not ready for transfer");
+		}
+
 		self.ensure_dirs(paths)
 			.context("Failed to ensure instance directories")?;
 

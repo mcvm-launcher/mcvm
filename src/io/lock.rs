@@ -306,7 +306,7 @@ impl Lockfile {
 	}
 
 	/// Check whether an instance has done its first update successfully
-	pub fn has_instance_done_first_update(&mut self, instance: &str) -> bool {
+	pub fn has_instance_done_first_update(&self, instance: &str) -> bool {
 		self.contents.created_instances.contains(instance)
 	}
 
