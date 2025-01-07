@@ -103,6 +103,7 @@ enum Subcommand {
 		/// The instance the backup is in
 		instance: String,
 		/// The group the backup is in
+		#[arg(short, long)]
 		group: Option<String>,
 		/// The backup to remove
 		backup: String,
@@ -112,6 +113,7 @@ enum Subcommand {
 		/// The instance the backup is in
 		instance: String,
 		/// The group the backup is in
+		#[arg(short, long)]
 		group: Option<String>,
 		/// The backup to restore
 		backup: String,
@@ -121,6 +123,7 @@ enum Subcommand {
 		/// The instance the backup is in
 		instance: String,
 		/// The group the backup is in
+		#[arg(short, long)]
 		group: Option<String>,
 		/// The backup to get info about
 		backup: String,
