@@ -372,6 +372,11 @@ async fn update(
 
 		// Clear the package registry to prevent dependency chains in requests being carried over
 		config.packages.clear();
+
+		// Mark the instance as having completed its first update
+		lock.update_instance_has_done_first_update(instance.get_id());
+		lock.finish(&data.paths)
+			.context("Failed to finish using lockfile")?;
 	}
 
 	Ok(())
