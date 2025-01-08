@@ -87,12 +87,11 @@ Launchers can use the different MCVM crates to parse, validate, evaluate, and ho
 
 # 👍 Status
 
-Right now, the launcher and library have most of the core features implemented. However, support for more complex features such as a plugin system have yet to be fleshed out. If you see something you want that isn't there, try contributing!
+Right now, the launcher and library have most of the core features implemented. The main thing that needs completed is the GUI version of the launcher, and a public repository where anyone can upload packages. If you see something you want that isn't there, try contributing!
 
 ### Things that need to be completed before 1.0.0:
 
 - Installing NeoForge
-- More in-depth plugin system and a standard plugin set, along with an easy way to install them
 - A graphical version of the launcher
 
 Join the [Discord](https://discord.gg/25fhkjeTvW) if you have any questions.
