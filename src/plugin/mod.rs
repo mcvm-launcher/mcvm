@@ -179,8 +179,8 @@ impl PluginManager {
 		Ok(out)
 	}
 
-	/// Uninstalls a plugin by removing its files
-	pub fn uninstall_plugin(plugin: &str, paths: &Paths) -> anyhow::Result<()> {
+	/// Removes a plugin's files
+	pub fn remove_plugin(plugin: &str, paths: &Paths) -> anyhow::Result<()> {
 		let json_path = paths.plugins.join(format!("{plugin}.json"));
 		if json_path.exists() {
 			std::fs::remove_file(json_path).context("Failed to remove plugin JSON")?;
@@ -190,6 +190,13 @@ impl PluginManager {
 		if dir_path.exists() {
 			std::fs::remove_dir_all(dir_path).context("Failed to remove plugin directory")?;
 		}
+
+		Ok(())
+	}
+
+	/// Uninstalls a plugin by removing its files and disabling it
+	pub fn uninstall_plugin(plugin: &str, paths: &Paths) -> anyhow::Result<()> {
+		Self::remove_plugin(plugin, paths).context("Failed to remove plugin")?;
 
 		Self::disable_plugin(plugin, paths)
 			.context("Failed to disable the plugin after uninstalling it")?;

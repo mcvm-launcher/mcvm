@@ -128,7 +128,7 @@ impl VerifiedPlugin {
 			let mut zip =
 				ZipArchive::new(Cursor::new(zip)).context("Failed to read zip archive")?;
 
-			PluginManager::uninstall_plugin(&self.id, paths)
+			PluginManager::remove_plugin(&self.id, paths)
 				.context("Failed to remove existing plugin")?;
 			let dir = paths.plugins.join(&self.id);
 			std::fs::create_dir_all(&dir).context("Failed to create plugin directory")?;
