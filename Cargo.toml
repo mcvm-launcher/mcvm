@@ -51,7 +51,7 @@ members = [
 ]
 
 [features]
-default = []
+default = ["builder"]
 arc = []
 builder = []
 disable_profile_update_packages = []

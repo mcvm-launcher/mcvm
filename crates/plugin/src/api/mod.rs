@@ -98,11 +98,12 @@ impl CustomPlugin {
 	hook_interface!(handle_auth, "handle_auth", HandleAuth);
 	hook_interface!(add_translations, "add_translations", AddTranslations);
 	hook_interface!(
-		add_instance_transfer_format,
-		"add_instance_transfer_format",
-		AddInstanceTransferFormat
+		add_instance_transfer_formats,
+		"add_instance_transfer_formats",
+		AddInstanceTransferFormats
 	);
 	hook_interface!(export_instance, "export_instance", ExportInstance);
+	hook_interface!(import_instance, "import_instance", ImportInstance);
 
 	/// Handle a hook
 	fn handle_hook<H: Hook>(

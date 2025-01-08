@@ -2,7 +2,7 @@ use std::{collections::HashMap, path::Path};
 
 use anyhow::{bail, Context};
 use mcvm_plugin::hooks::{
-	AddInstanceTransferFormat, ExportInstance, ExportInstanceArg, ImportInstance,
+	AddInstanceTransferFormats, ExportInstance, ExportInstanceArg, ImportInstance,
 	ImportInstanceArg, InstanceTransferFeatureSupport, InstanceTransferFormat,
 	InstanceTransferFormatDirection,
 };
@@ -70,6 +70,9 @@ impl Instance {
 			side: Some(self.get_side()),
 			game_dir: self.dirs.get().game_dir.to_string_lossy().to_string(),
 			result_path: result_path.to_string_lossy().to_string(),
+			minecraft_version: Some(self.config.version.clone().to_serialized()),
+			client_type: Some(self.config.modifications.client_type.clone()),
+			server_type: Some(self.config.modifications.server_type.clone()),
 		};
 		let result = plugins
 			.call_hook_on_plugin(ExportInstance, &format.plugin, &arg, paths, o)
@@ -95,6 +98,7 @@ impl Instance {
 	pub fn import(
 		id: &str,
 		format: &str,
+		source_path: &Path,
 		formats: &Formats,
 		plugins: &PluginManager,
 		paths: &Paths,
@@ -134,6 +138,7 @@ impl Instance {
 		let arg = ImportInstanceArg {
 			format: format.info.id.clone(),
 			id: id.to_string(),
+			source_path: source_path.to_string_lossy().to_string(),
 			result_path: target_dir.to_string_lossy().to_string(),
 		};
 		let result = plugins
@@ -160,6 +165,9 @@ impl Instance {
 			.context("Import result is missing the instance side")?;
 		let mut builder = InstanceBuilder::new(InstanceID::from(id), side);
 
+		if let Some(version) = result.version {
+			builder.version(version);
+		}
 		if let Some(name) = result.name {
 			builder.name(name);
 		}
@@ -181,19 +189,21 @@ pub fn load_formats(
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<Formats> {
 	let results = plugins
-		.call_hook(AddInstanceTransferFormat, &(), paths, o)
+		.call_hook(AddInstanceTransferFormats, &(), paths, o)
 		.context("Failed to get transfer formats from plugins")?;
 	let mut formats = HashMap::with_capacity(results.len());
 	for result in results {
 		let plugin_id = result.get_id().to_owned();
 		let result = result.result(o)?;
-		formats.insert(
-			result.id.clone(),
-			Format {
-				plugin: plugin_id,
-				info: result,
-			},
-		);
+		for result in result {
+			formats.insert(
+				result.id.clone(),
+				Format {
+					plugin: plugin_id.clone(),
+					info: result,
+				},
+			);
+		}
 	}
 
 	Ok(Formats { formats })

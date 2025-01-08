@@ -6,6 +6,7 @@ use std::sync::{Arc, Mutex};
 
 use anyhow::{anyhow, bail, Context};
 use mcvm_core::net::minecraft::MinecraftUserProfile;
+use mcvm_core::util::versions::MinecraftVersionDeser;
 use mcvm_core::{net::game_files::version_manifest::VersionEntry, Paths};
 use mcvm_pkg::script_eval::AddonInstructionData;
 use mcvm_pkg::{RecommendedPackage, RequiredPackage};
@@ -493,11 +494,11 @@ def_hook!(
 );
 
 def_hook!(
-	AddInstanceTransferFormat,
-	"add_instance_transfer_format",
-	"Hook for adding information about an instance transfer format",
+	AddInstanceTransferFormats,
+	"add_instance_transfer_formats",
+	"Hook for adding information about instance transfer formats",
 	(),
-	InstanceTransferFormat,
+	Vec<InstanceTransferFormat>,
 );
 
 /// Information about an instance transfer format
@@ -526,6 +527,7 @@ pub struct InstanceTransferFormatDirection {
 
 /// Support status of some feature in an instance transfer format
 #[derive(Serialize, Deserialize, Default, Clone, Copy)]
+#[serde(rename_all = "snake_case")]
 pub enum InstanceTransferFeatureSupport {
 	/// This feature is supported by the transfer
 	#[default]
@@ -560,6 +562,12 @@ pub struct ExportInstanceArg {
 	pub game_dir: String,
 	/// The desired path for the resulting instance, as a file path
 	pub result_path: String,
+	/// The Minecraft version of the instance
+	pub minecraft_version: Option<MinecraftVersionDeser>,
+	/// The client type of the new instance
+	pub client_type: Option<ClientType>,
+	/// The server type of the new instance
+	pub server_type: Option<ServerType>,
 }
 
 def_hook!(
@@ -578,6 +586,8 @@ pub struct ImportInstanceArg {
 	pub format: String,
 	/// The ID of the new instance
 	pub id: String,
+	/// The path to the instance to import
+	pub source_path: String,
 	/// The desired directory for the resulting instance
 	pub result_path: String,
 }
@@ -588,12 +598,12 @@ pub struct ImportInstanceArg {
 pub struct ImportInstanceResult {
 	/// The ID of the transfer format being used
 	pub format: String,
-	/// The ID of the instance
-	pub id: String,
 	/// The name of the instance
 	pub name: Option<String>,
 	/// The side of the instance
 	pub side: Option<Side>,
+	/// The Minecraft version of the instance
+	pub version: Option<MinecraftVersionDeser>,
 	/// The client type of the new instance
 	pub client_type: Option<ClientType>,
 	/// The server type of the new instance

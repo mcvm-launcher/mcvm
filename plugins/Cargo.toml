@@ -42,6 +42,10 @@ path = "plugins/modrinth/main.rs"
 name = "mcvm_plugin_gen_pkg"
 path = "plugins/gen_pkg/main.rs"
 
+[[bin]]
+name = "mcvm_plugin_mcvm_transfer"
+path = "plugins/mcvm_transfer/main.rs"
+
 [dependencies]
 anyhow = { workspace = true }
 clap = { workspace = true }

@@ -76,6 +76,8 @@ pub enum InstanceSubcommand {
 	Add,
 	#[command(about = "Import an instance from another launcher")]
 	Import {
+		/// The path to the instance
+		path: String,
 		/// The ID of the new instance
 		instance: String,
 		/// Which format to use
@@ -113,9 +115,11 @@ pub async fn run(command: InstanceSubcommand, mut data: CmdData<'_>) -> anyhow::
 		} => update(&mut data, instances, groups, all, force, skip_packages).await,
 		InstanceSubcommand::Dir { instance } => dir(&mut data, instance).await,
 		InstanceSubcommand::Add => add(&mut data).await,
-		InstanceSubcommand::Import { instance, format } => {
-			import(&mut data, instance, format).await
-		}
+		InstanceSubcommand::Import {
+			instance,
+			path,
+			format,
+		} => import(&mut data, instance, path, format).await,
 		InstanceSubcommand::Export {
 			instance,
 			format,
@@ -449,6 +453,7 @@ async fn add(data: &mut CmdData<'_>) -> anyhow::Result<()> {
 async fn import(
 	data: &mut CmdData<'_>,
 	instance: String,
+	path: String,
 	format: Option<String>,
 ) -> anyhow::Result<()> {
 	data.ensure_config(true).await?;
@@ -473,6 +478,7 @@ async fn import(
 	let new_instance_config = Instance::import(
 		&instance,
 		format,
+		&PathBuf::from(path),
 		&formats,
 		&config.plugins,
 		&data.paths,
@@ -512,7 +518,7 @@ async fn export(
 		format
 	} else {
 		let options = formats.iter_format_names().collect();
-		inquire::Select::new("What format is the imported instance in?", options).prompt()?
+		inquire::Select::new("What format is the exported instance in?", options).prompt()?
 	};
 
 	let result_path = if let Some(output) = output {

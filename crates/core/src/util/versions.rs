@@ -62,6 +62,15 @@ impl MinecraftVersion {
 			Self::LatestSnapshot => Ok(manifest.latest.snapshot.clone()),
 		}
 	}
+
+	/// Gets the serialized version of this Minecraft version
+	pub fn to_serialized(self) -> MinecraftVersionDeser {
+		match self {
+			Self::Latest => MinecraftVersionDeser::Latest(MinecraftLatestVersion::Release),
+			Self::LatestSnapshot => MinecraftVersionDeser::Latest(MinecraftLatestVersion::Snapshot),
+			Self::Version(version) => MinecraftVersionDeser::Version(version),
+		}
+	}
 }
 
 impl Display for MinecraftVersion {

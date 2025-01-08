@@ -1,0 +1,25 @@
+{
+	"name": "MCVM Transfer",
+	"description": "Instance transfer support that supports everything in MCVM instances",
+	"hooks": {
+		"add_instance_transfer_formats": {
+			"constant": [
+				{
+					"id": "mcvm",
+					"import": {
+						"launch_settings": "plugin_unsupported"
+					},
+					"export": {
+						"launch_settings": "plugin_unsupported"
+					}
+				}
+			]
+		},
+		"import_instance": {
+			"executable": "${PLUGIN_DIR}/mcvm_plugin_mcvm_transfer"
+		},
+		"export_instance": {
+			"executable": "${PLUGIN_DIR}/mcvm_plugin_mcvm_transfer"
+		}
+	}
+}
