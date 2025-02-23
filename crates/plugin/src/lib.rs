@@ -19,20 +19,21 @@ pub mod output;
 /// Plugins
 pub mod plugin;
 
-/// A manager for plugins that is used to call their hooks
+/// A manager for plugins that is used to call their hooks.
+/// Does not handle actually loading the plugins from files
 #[derive(Debug)]
-pub struct PluginManager {
+pub struct CorePluginManager {
 	plugins: Vec<Plugin>,
 	mcvm_version: Option<&'static str>,
 }
 
-impl Default for PluginManager {
+impl Default for CorePluginManager {
 	fn default() -> Self {
 		Self::new()
 	}
 }
 
-impl PluginManager {
+impl CorePluginManager {
 	/// Construct a new PluginManager
 	pub fn new() -> Self {
 		Self {

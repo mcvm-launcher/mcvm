@@ -38,22 +38,37 @@ fn main() -> anyhow::Result<()> {
 		}
 		// Instance-specific
 		if let Some(options) = arg.custom_config.get("options") {
-			match arg.side.unwrap() {
-				Side::Client => {
-					let options = serde_json::from_value(options.clone())?;
-					let override_keys =
-						mcvm_options::client::create_keys(&options, &arg.version_info)
-							.context("Failed to create keys for override options")?;
-					keys.extend(override_keys);
-				}
-				Side::Server => {
-					let options = serde_json::from_value(options.clone())?;
-					let override_keys =
-						mcvm_options::server::create_keys(&options, &arg.version_info)
-							.context("Failed to create keys for override options")?;
-					keys.extend(override_keys);
-				}
-			}
+			// Allow profiles to specify both client and server options
+			let override_keys =
+				if let Ok(options) = serde_json::from_value::<Options>(options.clone()) {
+					match arg.side.unwrap() {
+						Side::Client => mcvm_options::client::create_keys(
+							&options.client.unwrap_or_default(),
+							&arg.version_info,
+						)
+						.context("Failed to create keys for override options")?,
+						Side::Server => mcvm_options::server::create_keys(
+							&options.server.unwrap_or_default(),
+							&arg.version_info,
+						)
+						.context("Failed to create keys for override options")?,
+					}
+				} else {
+					match arg.side.unwrap() {
+						Side::Client => {
+							let options = serde_json::from_value(options.clone())?;
+							mcvm_options::client::create_keys(&options, &arg.version_info)
+								.context("Failed to create keys for override options")?
+						}
+						Side::Server => {
+							let options = serde_json::from_value(options.clone())?;
+							mcvm_options::server::create_keys(&options, &arg.version_info)
+								.context("Failed to create keys for override options")?
+						}
+					}
+				};
+
+			keys.extend(override_keys);
 		}
 
 		// Write the options

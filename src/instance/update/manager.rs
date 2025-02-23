@@ -17,7 +17,7 @@ use mcvm_shared::versions::VersionInfo;
 use mcvm_shared::Side;
 use reqwest::Client;
 
-use crate::config::plugin::PluginManager;
+use crate::plugin::PluginManager;
 use crate::io::paths::Paths;
 use mcvm_mods::fabric_quilt::{self, FabricQuiltMeta};
 

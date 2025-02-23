@@ -1,5 +1,6 @@
 use std::fs::File;
 use std::io::{BufWriter, Write};
+use std::os::unix::fs::PermissionsExt;
 use std::path::{Path, PathBuf};
 
 use anyhow::Context;
@@ -52,17 +53,30 @@ enum Mode {
 
 /// Create the restart script file at the specified path
 fn create_script(path: &Path, inst_ref: &str, config: Config) -> anyhow::Result<()> {
-	let mut file = BufWriter::new(File::create(path)?);
-	#[cfg(target_family = "unix")]
-	{
-		writeln!(&mut file, "#!/bin/sh")?;
-		writeln!(&mut file)?;
+	if !path.exists() {
+		let mut file = BufWriter::new(File::create(&path)?);
+		#[cfg(target_family = "unix")]
+		{
+			writeln!(&mut file, "#!/bin/sh")?;
+			writeln!(&mut file)?;
+		}
+
+		match config.mode {
+			Mode::Cli => {
+				writeln!(&mut file, "mcvm instance launch {inst_ref}")?;
+			}
+		}
 	}
 
-	match config.mode {
-		Mode::Cli => {
-			writeln!(&mut file, "mcvm instance launch {inst_ref}")?;
-		}
+	// Make executable
+	#[cfg(target_family = "unix")]
+	{
+		let mut perms = std::fs::metadata(&path)
+			.context("Failed to get file metadata")?
+			.permissions();
+		perms.set_mode(0o777);
+
+		std::fs::set_permissions(path, perms).context("Failed to set writable permissions")?;
 	}
 
 	Ok(())

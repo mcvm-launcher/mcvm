@@ -373,6 +373,22 @@ impl<T: Default + PartialEq> DefaultExt for T {
 	}
 }
 
+/// Macro to try a fallible operation multiple times before giving up and returning an error
+#[macro_export]
+macro_rules! try_3 {
+	($op:block) => {
+		if let Ok(out) = $op {
+			Ok(out)
+		} else {
+			if let Ok(out) = $op {
+				Ok(out)
+			} else {
+				$op
+			}
+		}
+	};
+}
+
 #[cfg(test)]
 mod tests {
 	use super::*;

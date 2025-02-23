@@ -42,6 +42,10 @@ path = "plugins/modrinth/main.rs"
 name = "mcvm_plugin_gen_pkg"
 path = "plugins/gen_pkg/main.rs"
 
+[[bin]]
+name = "mcvm_plugin_mcvm_transfer"
+path = "plugins/mcvm_transfer/main.rs"
+
 [dependencies]
 anyhow = { workspace = true }
 clap = { workspace = true }
@@ -56,10 +60,12 @@ mcvm_plugin = { workspace = true, features = ["api"] }
 mcvm_shared = { workspace = true }
 mcvm_options = { workspace = true }
 rand = { workspace = true }
+regex = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
 termimad = { workspace = true }
 tokio = { workspace = true }
+version-compare = { workspace = true }
 zip = { workspace = true }
 
 [build-dependencies]

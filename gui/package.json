@@ -1,0 +1,26 @@
+{
+  "name": "mcvm_gui",
+  "version": "0.1.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "start": "vite",
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
+    "tauri": "tauri"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@solidjs/router": "^0.13.5",
+    "@tauri-apps/api": "^1",
+    "solid-js": "^1.7.8",
+    "vite-plugin-solid-svg": "^0.8.1"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^1",
+    "typescript": "^5.0.2",
+    "vite": "^5.0.0",
+    "vite-plugin-solid": "^2.8.0"
+  }
+}

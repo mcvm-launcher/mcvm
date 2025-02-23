@@ -55,14 +55,14 @@ fn main() -> anyhow::Result<()> {
 
 	plugin.on_instance_launch(|ctx, arg| {
 		let inst_dir = PathBuf::from(&arg.dir);
-		check_auto_hook(ctx, BackupAutoHook::OnLaunch, &arg.id, &inst_dir)?;
+		check_auto_hook(ctx, BackupAutoHook::Launch, &arg.id, &inst_dir)?;
 
 		Ok(())
 	})?;
 
 	plugin.on_instance_stop(|ctx, arg| {
 		let inst_dir = PathBuf::from(&arg.dir);
-		check_auto_hook(ctx, BackupAutoHook::OnStop, &arg.id, &inst_dir)?;
+		check_auto_hook(ctx, BackupAutoHook::Stop, &arg.id, &inst_dir)?;
 
 		Ok(())
 	})?;
@@ -95,6 +95,7 @@ enum Subcommand {
 		/// The instance to create a backup for
 		instance: String,
 		/// The group to create the backup for
+		#[arg(short, long)]
 		group: Option<String>,
 	},
 	#[command(about = "Remove an existing backup")]
@@ -102,6 +103,7 @@ enum Subcommand {
 		/// The instance the backup is in
 		instance: String,
 		/// The group the backup is in
+		#[arg(short, long)]
 		group: Option<String>,
 		/// The backup to remove
 		backup: String,
@@ -111,6 +113,7 @@ enum Subcommand {
 		/// The instance the backup is in
 		instance: String,
 		/// The group the backup is in
+		#[arg(short, long)]
 		group: Option<String>,
 		/// The backup to restore
 		backup: String,
@@ -120,6 +123,7 @@ enum Subcommand {
 		/// The instance the backup is in
 		instance: String,
 		/// The group the backup is in
+		#[arg(short, long)]
 		group: Option<String>,
 		/// The backup to get info about
 		backup: String,
@@ -235,7 +239,7 @@ fn info(
 
 fn get_index<H: Hook>(ctx: &HookContext<'_, H>, inst_id: &str) -> anyhow::Result<Index> {
 	let dir = get_backup_directory(&get_backups_dir(ctx)?, inst_id);
-	Index::open(&dir, inst_id, &get_backup_config(inst_id, ctx)?)
+	Index::open(&dir, &get_backup_config(inst_id, ctx)?)
 }
 
 fn get_backups_dir<H: Hook>(ctx: &HookContext<'_, H>) -> anyhow::Result<PathBuf> {

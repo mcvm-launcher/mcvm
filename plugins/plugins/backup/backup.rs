@@ -4,11 +4,9 @@ use std::io::{BufReader, BufWriter, Read};
 use std::path::{Path, PathBuf};
 
 use anyhow::{anyhow, bail, Context};
-use mcvm_core::io::json_to_file;
+use mcvm_core::io::{json_from_file, json_to_file};
 use mcvm_shared::util::utc_timestamp;
 use rand::Rng;
-#[cfg(feature = "schema")]
-use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use zip::{ZipArchive, ZipWriter};
 
@@ -19,7 +17,6 @@ pub const DEFAULT_GROUP: &str = "default";
 
 /// Settings for backups
 #[derive(Serialize, Deserialize, Default, Clone, Debug)]
-#[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(default)]
 pub struct Config {
 	/// Default settings for backups
@@ -80,9 +77,9 @@ pub struct CommonConfig {
 #[serde(rename_all = "snake_case")]
 pub enum BackupAutoHook {
 	/// Create a backup whenever the instance is launched
-	OnLaunch,
+	Launch,
 	/// Create a backup whenever the instance is stopped
-	OnStop,
+	Stop,
 }
 
 /// Index for the backups of an instance
@@ -93,8 +90,6 @@ pub struct Index {
 	pub dir: PathBuf,
 	/// The config for the backups
 	pub config: Config,
-	/// The instance ID for this index
-	pub inst_id: String,
 }
 
 /// Contents for the backup index
@@ -112,19 +107,17 @@ impl Index {
 	}
 
 	/// Open the index
-	pub fn open(backup_directory: &Path, inst_id: &str, config: &Config) -> anyhow::Result<Self> {
+	pub fn open(backup_directory: &Path, config: &Config) -> anyhow::Result<Self> {
 		fs::create_dir_all(backup_directory)?;
 		let path = Self::get_path(backup_directory);
 		let contents = if path.exists() {
-			let mut file = File::open(&path).context("Failed to open backup index")?;
-			serde_json::from_reader(&mut file).context("Failed to parse JSON")?
+			json_from_file(&path).context("Failed to open backup index")?
 		} else {
 			IndexContents::default()
 		};
 		let index = Self {
 			contents,
 			dir: backup_directory.to_owned(),
-			inst_id: inst_id.to_string(),
 			config: config.clone(),
 		};
 
@@ -324,7 +317,6 @@ pub enum BackupSource {
 
 /// Format for stored backups
 #[derive(Serialize, Deserialize, Default, Copy, Clone, Debug)]
-#[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(rename_all = "snake_case")]
 pub enum StorageType {
 	/// Stored as normal in a new directory

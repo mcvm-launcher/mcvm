@@ -1,13 +1,15 @@
 use anyhow::bail;
+use itertools::Itertools;
 use mcvm_pkg::declarative::{
 	DeclarativeAddon, DeclarativeAddonVersion, DeclarativeConditionSet, DeclarativePackage,
 };
 use mcvm_pkg::properties::PackageProperties;
 use mcvm_pkg::script_eval::AddonInstructionData;
 use mcvm_pkg::RequiredPackage;
+use mcvm_shared::modifications::{ModloaderMatch, PluginLoaderMatch};
 use mcvm_shared::pkg::PackageID;
 
-use crate::config::plugin::PluginManager;
+use crate::plugin::PluginManager;
 
 use super::conditions::{check_arch_condition, check_os_condition};
 use super::{
@@ -50,7 +52,7 @@ fn eval_declarative_package_impl<'a>(
 	// Apply conditional rules
 	for rule in &contents.conditional_rules {
 		for condition in &rule.conditions {
-			if !check_condition_set(condition, &eval_data.input) {
+			if !check_condition_set(condition, &eval_data.input, &eval_data.properties) {
 				continue;
 			}
 		}
@@ -62,12 +64,17 @@ fn eval_declarative_package_impl<'a>(
 	// Select addon versions
 	for (addon_id, addon) in &contents.addons {
 		// Check conditions
-		if !check_multiple_condition_sets(&addon.conditions, &eval_data.input) {
+		if !check_multiple_condition_sets(
+			&addon.conditions,
+			&eval_data.input,
+			&eval_data.properties,
+		) {
 			continue;
 		}
 
 		// Pick the best version
-		let version = pick_best_addon_version(&addon.versions, &eval_data.input);
+		let version =
+			pick_best_addon_version(&addon.versions, &eval_data.input, &eval_data.properties);
 		if let Some(version) = version {
 			let data = AddonInstructionData {
 				id: addon_id.clone(),
@@ -145,11 +152,47 @@ fn eval_declarative_package_impl<'a>(
 pub fn pick_best_addon_version<'a>(
 	versions: &'a [DeclarativeAddonVersion],
 	input: &'a EvalInput<'a>,
+	properties: &PackageProperties,
 ) -> Option<&'a DeclarativeAddonVersion> {
 	// Filter versions that are not allowed
-	let mut versions = versions
+	let versions = versions
 		.iter()
-		.filter(|x| check_condition_set(&x.conditional_properties, input));
+		.filter(|x| check_condition_set(&x.conditional_properties, input, properties));
+
+	// Sort so that versions with less loader matches come first
+	fn get_matches(version: &DeclarativeAddonVersion) -> u16 {
+		let mut out = 0;
+		if let Some(modloaders) = &version.conditional_properties.modloaders {
+			out += modloaders
+				.iter()
+				.fold(0, |acc, x| acc + get_modloader_matches(x));
+		}
+
+		if let Some(plugin_loaders) = &version.conditional_properties.plugin_loaders {
+			out += plugin_loaders
+				.iter()
+				.fold(0, |acc, x| acc + get_plugin_loader_matches(x));
+		}
+
+		out
+	}
+
+	let mut versions = versions.sorted_by_cached_key(|x| get_matches(x));
+
+	// Sort so that versions with newer content versions come first
+	if let Some(content_versions) = &properties.content_versions {
+		versions = versions.sorted_by_cached_key(|x| {
+			if let Some(versions) = &x.conditional_properties.content_versions {
+				versions
+					.iter()
+					.map(|x| content_versions.iter().position(|candidate| candidate == x))
+					.min()
+					.unwrap_or(Some(content_versions.len()))
+			} else {
+				Some(content_versions.len())
+			}
+		});
+	}
 
 	versions.next()
 }
@@ -158,12 +201,19 @@ pub fn pick_best_addon_version<'a>(
 fn check_multiple_condition_sets<'a>(
 	conditions: &[DeclarativeConditionSet],
 	input: &'a EvalInput<'a>,
+	properties: &PackageProperties,
 ) -> bool {
-	conditions.iter().all(|x| check_condition_set(x, input))
+	conditions
+		.iter()
+		.all(|x| check_condition_set(x, input, properties))
 }
 
 /// Filtering function for addon version picking and rule checking
-fn check_condition_set<'a>(conditions: &DeclarativeConditionSet, input: &'a EvalInput<'a>) -> bool {
+fn check_condition_set<'a>(
+	conditions: &DeclarativeConditionSet,
+	input: &'a EvalInput<'a>,
+	properties: &PackageProperties,
+) -> bool {
 	if let Some(stability) = &conditions.stability {
 		if stability > &input.params.stability {
 			return false;
@@ -233,6 +283,23 @@ fn check_condition_set<'a>(conditions: &DeclarativeConditionSet, input: &'a Eval
 		}
 	}
 
+	if let Some(content_versions) = &conditions.content_versions {
+		if let Some(desired_version) = &input.params.content_version {
+			let default_versions = Vec::new();
+			if !content_versions.iter().any(|x| {
+				desired_version.matches_single(
+					x,
+					properties
+						.content_versions
+						.as_ref()
+						.unwrap_or(&default_versions),
+				)
+			}) {
+				return false;
+			}
+		}
+	}
+
 	true
 }
 
@@ -246,12 +313,29 @@ fn handle_no_matched_versions(addon: &DeclarativeAddon) -> anyhow::Result<()> {
 	bail!("No valid addon version found")
 }
 
+/// Get the number of matches that a modloader match can have
+fn get_modloader_matches(modloader: &ModloaderMatch) -> u16 {
+	match modloader {
+		ModloaderMatch::FabricLike | ModloaderMatch::ForgeLike => 2,
+		_ => 1,
+	}
+}
+
+/// Get the number of matches that a plugin loader match can have
+fn get_plugin_loader_matches(plugin_loader: &PluginLoaderMatch) -> u16 {
+	match plugin_loader {
+		PluginLoaderMatch::Bukkit => 8,
+		_ => 1,
+	}
+}
+
 #[cfg(test)]
 mod tests {
 	use mcvm_pkg::declarative::deserialize_declarative_package;
 	use mcvm_shared::lang::Language;
 	use mcvm_shared::modifications::{ClientType, Modloader, ServerType};
 	use mcvm_shared::pkg::PackageStability;
+	use mcvm_shared::util::DeserListOrSingle;
 	use mcvm_shared::Side;
 
 	use crate::config::profile::GameModifications;
@@ -319,17 +403,7 @@ mod tests {
 
 		let pkg = deserialize_declarative_package(contents).unwrap();
 
-		let constants = EvalConstants {
-			version: "1.19.2".into(),
-			version_list: vec!["1.19.2".to_string(), "1.19.3".to_string()],
-			modifications: GameModifications::new(
-				Modloader::Fabric,
-				ClientType::Fabric,
-				ServerType::Fabric,
-			),
-			language: Language::AmericanEnglish,
-			profile_stability: PackageStability::Latest,
-		};
+		let constants = get_eval_constants();
 		let input = EvalInput {
 			constants: &constants,
 			params: EvalParameters::new(Side::Client),
@@ -361,5 +435,70 @@ mod tests {
 			value: "baz".into(),
 			explicit: false
 		}]));
+	}
+
+	#[test]
+	fn test_addon_version_picking() {
+		let version1 = DeclarativeAddonVersion {
+			conditional_properties: DeclarativeConditionSet {
+				modloaders: Some(DeserListOrSingle::List(vec![ModloaderMatch::Fabric])),
+				content_versions: Some(DeserListOrSingle::Single("1".into())),
+				..Default::default()
+			},
+			version: Some("1".into()),
+			..Default::default()
+		};
+
+		let version2 = DeclarativeAddonVersion {
+			conditional_properties: DeclarativeConditionSet {
+				modloaders: Some(DeserListOrSingle::List(vec![ModloaderMatch::Fabric])),
+				content_versions: Some(DeserListOrSingle::Single("2".into())),
+				..Default::default()
+			},
+			version: Some("2".into()),
+			..Default::default()
+		};
+
+		let version3 = DeclarativeAddonVersion {
+			conditional_properties: DeclarativeConditionSet {
+				modloaders: Some(DeserListOrSingle::List(vec![ModloaderMatch::FabricLike])),
+				content_versions: Some(DeserListOrSingle::Single("2".into())),
+				..Default::default()
+			},
+			version: Some("3".into()),
+			..Default::default()
+		};
+
+		let versions = vec![version1, version2, version3];
+
+		let constants = get_eval_constants();
+		let input = EvalInput {
+			constants: &constants,
+			params: EvalParameters::new(Side::Client),
+		};
+
+		let properties = PackageProperties {
+			content_versions: Some(vec!["2".into(), "1".into()]),
+			..Default::default()
+		};
+
+		let version = pick_best_addon_version(&versions, &input, &properties)
+			.expect("Version should have been found");
+
+		assert_eq!(version.version, Some("2".into()));
+	}
+
+	fn get_eval_constants() -> EvalConstants {
+		EvalConstants {
+			version: "1.19.2".into(),
+			version_list: vec!["1.19.2".to_string(), "1.19.3".to_string()],
+			modifications: GameModifications::new(
+				Modloader::Fabric,
+				ClientType::Fabric,
+				ServerType::Fabric,
+			),
+			language: Language::AmericanEnglish,
+			profile_stability: PackageStability::Latest,
+		}
 	}
 }

@@ -11,7 +11,7 @@ use mcvm_plugin::hooks::{CustomPackageInstruction, CustomPackageInstructionArg};
 use mcvm_shared::output::NoOp;
 use mcvm_shared::pkg::PackageID;
 
-use crate::config::plugin::PluginManager;
+use crate::plugin::PluginManager;
 use crate::io::paths::Paths;
 
 use super::conditions::eval_condition;

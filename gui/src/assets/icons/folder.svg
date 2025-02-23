@@ -1,0 +1,6 @@
+<!-- https://github.com/bbfh-dev/eyecons/blob/main/.docs/pin.svg?short_path=6659513 -->
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="#ffffff">
+	<path
+		d="m3 5h10c0.554 0 1 0.446 1 1v6c0 0.554-0.446 1-1 1h-10c-0.554 0-1-0.446-1-1v-6c0-0.554 0.446-1 1-1zm0-4c-1.6274 0-3 1.3726-3 3v8c0 1.6274 1.3726 3 3 3h10c1.6274 0 3-1.3726 3-3v-6c0-1.6274-1.3726-3-3-3h-4l-2-2z"
+		fill-rule="evenodd" />
+</svg>

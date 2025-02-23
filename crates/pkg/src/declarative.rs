@@ -116,6 +116,9 @@ pub struct DeclarativeConditionSet {
 	/// What features to allow
 	#[serde(skip_serializing_if = "DeserListOrSingle::is_option_empty")]
 	pub features: Option<DeserListOrSingle<String>>,
+	/// What content versions to allow
+	#[serde(skip_serializing_if = "DeserListOrSingle::is_option_empty")]
+	pub content_versions: Option<DeserListOrSingle<String>>,
 	/// What operating systems to allow
 	#[serde(skip_serializing_if = "DeserListOrSingle::is_option_empty")]
 	pub operating_systems: Option<DeserListOrSingle<OSCondition>>,
@@ -159,6 +162,7 @@ pub struct DeclarativeAddon {
 	/// What kind of addon this is
 	pub kind: AddonKind,
 	/// The available versions of this addon
+	#[serde(default)]
 	#[serde(skip_serializing_if = "Vec::is_empty")]
 	pub versions: Vec<DeclarativeAddonVersion>,
 	/// Conditions for this addon to be considered
@@ -221,7 +225,12 @@ pub struct DeclarativeAddonVersionPatchProperties {
 
 /// Deserialize a declarative package
 pub fn deserialize_declarative_package(text: &str) -> anyhow::Result<DeclarativePackage> {
-	let out = serde_json::from_str(text)?;
+	// SAFETY: The modified, possibly invalid string is a copy that is never used again
+	let out = unsafe {
+		let mut text = text.to_string();
+		let text = text.as_bytes_mut();
+		simd_json::from_slice(text)?
+	};
 	Ok(out)
 }
 

@@ -20,6 +20,7 @@ When you first run a command that reads from the config, a default configuration
 	"profiles": {
 		"profile": { .. }
 	},
+	"global_profile": { .. },
 	"instance_groups": {
 		"group": [ .. ]
 	},
@@ -27,6 +28,7 @@ When you first run a command that reads from the config, a default configuration
 }
 ```
 
+- `global_profile`: An optional global profile that all other profiles will inherit from
 - `instance_groups`: Named groups of instance IDs that can be used to easily refer to multiple instances
 
 ## Users
@@ -53,7 +55,7 @@ Instances are defined in the id-value format underneath the `instances` object o
 ```
 "id": {
 	"type": "client" | "server",
-	"from": string,
+	"from": string | [string],
 	"version": string,
 	"name": string,
 	"modloader": modloader,
@@ -75,7 +77,6 @@ Instances are defined in the id-value format underneath the `instances` object o
 			"args": [string]
 		},
 		"java": "auto" | "system" | "adoptium" | "zulu" | "graalvm" | string,
-		"preset": "none" | "akairs" | "krusic" | "obydux",
 		"quick_play": {
 			"type": "world" | "server" | "realm",
 			"world": string,
@@ -101,7 +102,7 @@ Instances are defined in the id-value format underneath the `instances` object o
 The first form just has the type of the instance. All fields are optional unless stated otherwise.
 
 - `type` (Required): The type of the instance, either `"client"` or `"server"`.
-- `from`: A [profile](#profiles) to derive configuration from.
+- `from`: A [profile](#profiles) or multiple profiles to derive configuration from. The config from each profile will be applied in order, and then the config for this instance will be applied last.
 - `version`: The Minecraft version of the instance. Can use `"latest"` or `"latest_snapshot"` as special identifiers to get the latest version. This is technically a required field, but can be derived from a profile instead.
 - `name`: A custom display name for this instance. Has no rules and does not have to be unique.
 - `modloader`: The modloader for the instance, which can be used to set both the client and server type automatically.
@@ -155,19 +156,21 @@ or
 	"use_default_features": bool,
 	"permissions": "restricted" | "standard" | "elevated",
 	"stability": "stable" | "latest",
-	"worlds": [string]
+	"worlds": [string],
+	"content_version": string
 }
 ```
 
 In most cases the first form is all you need. If you want more control over how the package works, use the second form.
 
-- `id`: The identifier for the package. It is very important that this field is correct for the package to work.
+- `id`: The identifier for the package. It is very important that this field is correct for the package to work. A content version can be specified for the package in the form of `package@version`, which will override the content version field.
 - `type`: The type of the package, currently only allowing a standard `"repository"` package.
 - `features` (Optional): A list of strings for package features that you would like to enable.
 - `use_default_features` (Optional): Whether or not to use the default features of this package. `true` by default.
 - `permissions` (Optional): The amount of control you would like to give this package. Can be `"restricted"`, `"standard"`, or `"elevated"`. Packages you do not trust should be given the `"restricted"` level. Packages that you trust and want to provide access to special commands for can be given `"elevated"`. Defaults to `"standard"`.
 - `stability` (Optional): Specify whether you want this package to use development versions of addons or not. Defaults to using the `package_stability` setting from the profile.
 - `worlds` (Optional): A list of worlds to only apply addons like datapacks to. If left empty (the default), will apply to all worlds in the instance.
+- `content_version` (Optional): An optional content version to request the package to be. Can be a [version pattern](./packages/_index.md#version-patterns).
 
 ## Plugins
 

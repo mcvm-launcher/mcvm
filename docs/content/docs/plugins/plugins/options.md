@@ -1,13 +1,12 @@
 +++
-title = "Game Options"
+title = "Options"
 +++
+ID: `options`
 
-MCVM is capable of applying global options for both client and server
-that are inherited across all of your profiles. The options are agnostic
-to the Minecraft version and automatically converted to the correct format. Options are supplied in a JSON
-format in the file `options.json` in your config directory. This file may not exist so you might
-have to create it yourself.
+The Options plugin adds the ability to define options for your game in your configuration, and share them across instances and profiles in a backwards-compatible way. The options are agnostic to the Minecraft version and automatically converted to the correct format. 
 
+## Usage
+Global options for all instances are supplied in a JSON format in the file `options.json` in your config directory. This file may not exist so you might have to create it yourself.
 Format:
 ```
 {
@@ -22,7 +21,9 @@ Format:
 
 Options that you do not change will not be changed in the output file. Options that MCVM does not know about will not be touched either.
 
-A description will not be provided for every option as they mirror the options in-game and inside the server.properties and should be somewhat self-explanatory. Any options that need an explanation will have a note.
+Options can also be overrided on a per-instance or per-profile basis inside the `options` field on that profile or instance. For instances, just specify the options for the side the instance is on (client / server). For profiles, you can also specify the options for both clients and servers that derive from that profile.
+
+A description will not be provided for every option as they mirror the options in-game and inside the server.properties and should be somewhat self-explanatory. Any options that need an explanation will have a note at the bottom.
 
 ## Client
 
@@ -201,8 +202,91 @@ A description will not be provided for every option as they mirror the options i
 }
 ```
 
+## Server
+
+```
+{
+	"rcon": {
+		"enable": bool,
+		"port": integer,
+		"password"?: string
+	},
+	"query": {
+		"enable": bool,
+		"port": integer
+	},
+	"whitelist": {
+		"enable": bool,
+		"enforce": bool
+	},
+	"gamemode": {
+		"default": "survival" | "creative" | "adventure" | "spectator" | integer,
+		"force": bool
+	},
+	"datapacks": {
+		"function_permission_level": integer,
+		"initial_enabled": [string],
+		"initial_disabled": [string]
+	},
+	"world": {
+		"name": string,
+		"seed"?: string,
+		"type": "normal" | "flat" | "large_biomes" | "amplified" | "single_biome" | "buffet" | "custom" | string,
+		"structures": bool,
+		"generator_settings": {},
+		"max_size": integer,
+		"max_build_height": integer,
+		"allow_nether": bool
+	},
+	"resource_pack": {
+		"uri"?: string,
+		"prompt"?: string,
+		"sha1"?: string,
+		"required": bool
+	},
+	"custom": {
+		...
+	},
+	"allow_flight": bool,
+	"broadcast_console_to_ops": bool,
+	"broadcast_rcon_to_ops": bool,
+	"difficulty": "peaceful" | "easy" | "normal" | "hard" | integer,
+	"allow_command_blocks": bool,
+	"jmx_monitoring": bool,
+	"enable_status": bool,
+	"enforce_secure_profile": bool,
+	"entity_broadcast_range": integer,
+	"max_chained_neighbor_updates": integer,
+	"max_players": integer,
+	"max_tick_time": integer,
+	"motd": string,
+	"network_compression_threshold": number | "disabled" | "all",
+	"offline_mode": bool,
+	"op_permission_level": integer,
+	"player_idle_timeout": integer,
+	"prevent_proxy_connections": bool,
+	"enable_chat_preview": bool,
+	"enable_pvp": bool,
+	"rate_limit": integer,
+	"ip"?: string,
+	"port": integer,
+	"simulation_distance": integer,
+	"enable_snooper": bool,
+	"spawn_animals": bool,
+	"spawn_monsters": bool,
+	"spawn_npcs": bool,
+	"spawn_protection": integer,
+	"sync_chunk_writes": bool,
+	"use_native_transport": bool,
+	"view_distance": integer
+}
+```
+
 ### Notes:
-1. Keybinds may be any of the following strings:
+ 1. The `custom` field is an object with a mapping between keys and values. This allows you to specify custom fields in the respective config file.
+ 2. `offline_mode` is the opposite of the usual server.properties option `online_mode`
+ 3. Remember to include `"vanilla"` in the `datapacks.initial_enabled` key if you change it
+ 4. Keybinds may be any of the following strings:
 	`"unbound"`,
 	`"mouse_left"`,
 	`"mouse_right"`,
@@ -332,90 +416,3 @@ A description will not be provided for every option as they mirror the options i
 	`"print_screen"`,
 	`"world1"`,
 	`"world2"`,
-
-## Server
-
-```
-{
-	"rcon": {
-		"enable": bool,
-		"port": integer,
-		"password"?: string
-	},
-	"query": {
-		"enable": bool,
-		"port": integer
-	},
-	"whitelist": {
-		"enable": bool,
-		"enforce": bool
-	},
-	"gamemode": {
-		"default": "survival" | "creative" | "adventure" | "spectator" | integer,
-		"force": bool
-	},
-	"datapacks": {
-		"function_permission_level": integer,
-		"initial_enabled": [string],
-		"initial_disabled": [string]
-	},
-	"world": {
-		"name": string,
-		"seed"?: string,
-		"type": "normal" | "flat" | "large_biomes" | "amplified" | "single_biome" | "buffet" | "custom" | string,
-		"structures": bool,
-		"generator_settings": {},
-		"max_size": integer,
-		"max_build_height": integer,
-		"allow_nether": bool
-	},
-	"resource_pack": {
-		"uri"?: string,
-		"prompt"?: string,
-		"sha1"?: string,
-		"required": bool
-	},
-	"custom": {
-		...
-	},
-	"allow_flight": bool,
-	"broadcast_console_to_ops": bool,
-	"broadcast_rcon_to_ops": bool,
-	"difficulty": "peaceful" | "easy" | "normal" | "hard" | integer,
-	"allow_command_blocks": bool,
-	"jmx_monitoring": bool,
-	"enable_status": bool,
-	"enforce_secure_profile": bool,
-	"entity_broadcast_range": integer,
-	"max_chained_neighbor_updates": integer,
-	"max_players": integer,
-	"max_tick_time": integer,
-	"motd": string,
-	"network_compression_threshold": number | "disabled" | "all",
-	"offline_mode": bool,
-	"op_permission_level": integer,
-	"player_idle_timeout": integer,
-	"prevent_proxy_connections": bool,
-	"enable_chat_preview": bool,
-	"enable_pvp": bool,
-	"rate_limit": integer,
-	"ip"?: string,
-	"port": integer,
-	"simulation_distance": integer,
-	"enable_snooper": bool,
-	"spawn_animals": bool,
-	"spawn_monsters": bool,
-	"spawn_npcs": bool,
-	"spawn_protection": integer,
-	"sync_chunk_writes": bool,
-	"use_native_transport": bool,
-	"view_distance": integer
-}
-```
-
-### Notes:
- 1. `offline_mode` is the opposite of the usual server.properties option `online_mode`
- 2. Remember to inclue `"vanilla"` in the `datapacks.initial_enabled` key if you change it
-
-### Notes for both client and server:
- 1. The `custom` field is an object with a mapping between keys and values. This allows you to specify custom fields in the respective config file.

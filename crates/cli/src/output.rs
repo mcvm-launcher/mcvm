@@ -38,6 +38,7 @@ pub struct TerminalOutput {
 	translation_map: Option<TranslationMap>,
 }
 
+#[async_trait::async_trait]
 impl MCVMOutput for TerminalOutput {
 	fn display_text(&mut self, text: String, level: MessageLevel) {
 		let _ = self.log_message(&text, level);
@@ -88,7 +89,7 @@ impl MCVMOutput for TerminalOutput {
 		Ok(ans)
 	}
 
-	fn prompt_password(&mut self, message: MessageContents) -> anyhow::Result<String> {
+	async fn prompt_password(&mut self, message: MessageContents) -> anyhow::Result<String> {
 		let ans = Password::new(&self.format_message(message))
 			.without_confirmation()
 			.prompt()
@@ -97,7 +98,7 @@ impl MCVMOutput for TerminalOutput {
 		Ok(ans)
 	}
 
-	fn prompt_new_password(&mut self, message: MessageContents) -> anyhow::Result<String> {
+	async fn prompt_new_password(&mut self, message: MessageContents) -> anyhow::Result<String> {
 		let ans = Password::new(&self.format_message(message))
 			.prompt()
 			.context("Inquire prompt failed")?;

@@ -46,10 +46,20 @@ pub fn eval_condition(condition: &ConditionKind, eval: &EvalData) -> anyhow::Res
 		ConditionKind::Language(lang) => Ok(eval.input.constants.language == *lang.get()),
 		ConditionKind::ContentVersion(version) => {
 			let version = version.get(&eval.vars)?;
-			let version = VersionPattern::from(&version);
-			let _ = version;
-			// TODO
-			Ok(true)
+
+			let default_versions = Vec::new();
+			let matches = eval.input.params.content_version.as_ref().is_some_and(|x| {
+				x.matches_single(
+					&version,
+					&eval
+						.properties
+						.content_versions
+						.as_ref()
+						.unwrap_or(&default_versions),
+				)
+			});
+
+			Ok(matches)
 		}
 		ConditionKind::Value(left, right) => Ok(left.get(&eval.vars)? == right.get(&eval.vars)?),
 		ConditionKind::Defined(var) => Ok(eval.vars.var_exists(var.get())),

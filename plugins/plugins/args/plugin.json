@@ -3,7 +3,7 @@
 	"description": "Use argument presets to increase game performance",
 	"hooks": {
 		"modify_instance_config": {
-			"executable": "mcvm_plugin_args"
+			"executable": "${PLUGIN_DIR}/mcvm_plugin_args"
 		}
 	}
 }

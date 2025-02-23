@@ -3,13 +3,13 @@
 	"description": "Create backups of instances",
 	"hooks": {
 		"subcommand": {
-			"executable": "mcvm_plugin_backup"
+			"executable": "${PLUGIN_DIR}/mcvm_plugin_backup"
 		},
 		"on_instance_launch": {
-			"executable": "mcvm_plugin_backup"
+			"executable": "${PLUGIN_DIR}/mcvm_plugin_backup"
 		},
 		"on_instance_stop": {
-			"executable": "mcvm_plugin_backup"
+			"executable": "${PLUGIN_DIR}/mcvm_plugin_backup"
 		}
 	},
 	"subcommands": {

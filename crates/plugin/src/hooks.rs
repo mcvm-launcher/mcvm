@@ -6,16 +6,20 @@ use std::sync::{Arc, Mutex};
 
 use anyhow::{anyhow, bail, Context};
 use mcvm_core::net::minecraft::MinecraftUserProfile;
+use mcvm_core::util::versions::MinecraftVersionDeser;
 use mcvm_core::{net::game_files::version_manifest::VersionEntry, Paths};
 use mcvm_pkg::script_eval::AddonInstructionData;
 use mcvm_pkg::{RecommendedPackage, RequiredPackage};
 use mcvm_shared::lang::translate::LanguageMap;
+use mcvm_shared::modifications::{ClientType, ServerType};
 use mcvm_shared::pkg::PackageID;
 use mcvm_shared::{output::MCVMOutput, versions::VersionInfo, Side};
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 
 use crate::output::OutputAction;
 
+/// The substitution token for the plugin directory in the command
+pub static PLUGIN_DIR_TOKEN: &str = "${PLUGIN_DIR}";
 /// The environment variable for custom config passed to a hook
 pub static CUSTOM_CONFIG_ENV: &str = "MCVM_CUSTOM_CONFIG";
 /// The environment variable for the data directory passed to a hook
@@ -68,7 +72,15 @@ pub trait Hook {
 	{
 		let _ = o;
 		let arg = serde_json::to_string(arg).context("Failed to serialize hook argument")?;
+
+		let cmd = cmd.replace(
+			PLUGIN_DIR_TOKEN,
+			&working_dir
+				.map(|x| x.to_string_lossy().to_string())
+				.unwrap_or_default(),
+		);
 		let mut cmd = Command::new(cmd);
+
 		cmd.args(additional_args);
 		cmd.arg(self.get_name());
 		cmd.arg(arg);
@@ -482,11 +494,11 @@ def_hook!(
 );
 
 def_hook!(
-	AddInstanceTransferFormat,
-	"add_instance_transfer_format",
-	"Hook for adding information about an instance transfer format",
+	AddInstanceTransferFormats,
+	"add_instance_transfer_formats",
+	"Hook for adding information about instance transfer formats",
 	(),
-	InstanceTransferFormat,
+	Vec<InstanceTransferFormat>,
 );
 
 /// Information about an instance transfer format
@@ -515,6 +527,7 @@ pub struct InstanceTransferFormatDirection {
 
 /// Support status of some feature in an instance transfer format
 #[derive(Serialize, Deserialize, Default, Clone, Copy)]
+#[serde(rename_all = "snake_case")]
 pub enum InstanceTransferFeatureSupport {
 	/// This feature is supported by the transfer
 	#[default]
@@ -547,6 +560,52 @@ pub struct ExportInstanceArg {
 	pub side: Option<Side>,
 	/// The directory where the instance game files are located
 	pub game_dir: String,
-	/// The desired path for the resulting instance
+	/// The desired path for the resulting instance, as a file path
 	pub result_path: String,
+	/// The Minecraft version of the instance
+	pub minecraft_version: Option<MinecraftVersionDeser>,
+	/// The client type of the new instance
+	pub client_type: Option<ClientType>,
+	/// The server type of the new instance
+	pub server_type: Option<ServerType>,
+}
+
+def_hook!(
+	ImportInstance,
+	"import_instance",
+	"Hook for importing an instance",
+	ImportInstanceArg,
+	ImportInstanceResult,
+);
+
+/// Argument provided to the import_instance hook
+#[derive(Serialize, Deserialize, Default)]
+#[serde(default)]
+pub struct ImportInstanceArg {
+	/// The ID of the transfer format being used
+	pub format: String,
+	/// The ID of the new instance
+	pub id: String,
+	/// The path to the instance to import
+	pub source_path: String,
+	/// The desired directory for the resulting instance
+	pub result_path: String,
+}
+
+/// Result from the ImportInstance hook giving information about the new instance
+#[derive(Serialize, Deserialize, Default)]
+#[serde(default)]
+pub struct ImportInstanceResult {
+	/// The ID of the transfer format being used
+	pub format: String,
+	/// The name of the instance
+	pub name: Option<String>,
+	/// The side of the instance
+	pub side: Option<Side>,
+	/// The Minecraft version of the instance
+	pub version: Option<MinecraftVersionDeser>,
+	/// The client type of the new instance
+	pub client_type: Option<ClientType>,
+	/// The server type of the new instance
+	pub server_type: Option<ServerType>,
 }

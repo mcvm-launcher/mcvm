@@ -48,20 +48,7 @@ fn main() -> anyhow::Result<()> {
 		Ok(())
 	})?;
 
-	plugin.on_instance_stop(|mut ctx, arg| {
-		let Some(config) = ctx.get_custom_config() else {
-			return Ok(());
-		};
-		let config: Config =
-			serde_json::from_str(config).context("Failed to deserialize custom config")?;
-
-		// If we are live tracking, don't update when stopping since we have been updating the whole time
-		if config.live_tracking {
-			return Ok(());
-		}
-
-		update_playtime(&mut ctx, &arg.id)
-	})?;
+	plugin.on_instance_stop(|mut ctx, arg| update_playtime(&mut ctx, &arg.id, false))?;
 
 	plugin.while_instance_launch(|mut ctx, arg| {
 		let Some(config) = ctx.get_custom_config() else {
@@ -76,14 +63,20 @@ fn main() -> anyhow::Result<()> {
 
 		loop {
 			std::thread::sleep(Duration::from_secs(60));
-			update_playtime(&mut ctx, &arg.id).context("Failed to update playtime")?;
+			update_playtime(&mut ctx, &arg.id, true).context("Failed to update playtime")?;
 		}
 	})?;
 
 	Ok(())
 }
 
-fn update_playtime<H: Hook>(ctx: &mut HookContext<'_, H>, instance: &str) -> anyhow::Result<()> {
+/// Update the playtime. When update_state is true, the persistent state is updated for the next update
+/// so that the time delta is correct
+fn update_playtime<H: Hook>(
+	ctx: &mut HookContext<'_, H>,
+	instance: &str,
+	update_state: bool,
+) -> anyhow::Result<()> {
 	let state = ctx
 		.get_persistent_state(HashMap::<String, u64>::new())
 		.context("Failed to get persistent state")?;
@@ -102,8 +95,10 @@ fn update_playtime<H: Hook>(ctx: &mut HookContext<'_, H>, instance: &str) -> any
 		.playtime += diff_minutes;
 
 	// Update start time so that the next update doesn't grow exponentially
-	*start_time = utc_timestamp()?;
-	ctx.set_persistent_state(state)?;
+	if update_state {
+		*start_time = utc_timestamp()?;
+		ctx.set_persistent_state(state)?;
+	}
 
 	stats.write(ctx).context("Failed to write stats")?;
 
@@ -123,18 +118,22 @@ fn print_stats(ctx: HookContext<'_, Subcommand>) -> anyhow::Result<()> {
 		instance_id: String,
 	}
 
+	let total: u64 = stats.instances.values().map(|x| x.playtime).sum();
+	let total = format_time(total);
+	cprintln!("<s>Total playtime: <m!>{total}");
+
 	for (instance, stats) in stats
 		.instances
 		.into_iter()
 		.sorted_by_key(|(inst_id, stats)| Ordering {
 			launches: Reverse(stats.launches),
-			playtime: Reverse(stats.playtime),
+			playtime: Reverse(stats.calculate_playtime()),
 			instance_id: inst_id.clone(),
 		}) {
 		cprintln!(
 			"<k!> - </><b,s>{instance}</> - Launched <m>{}</> times for a total of <m!>{}</>",
 			stats.launches,
-			format_time(stats.playtime)
+			format_time(stats.calculate_playtime())
 		);
 	}
 
@@ -144,17 +143,10 @@ fn print_stats(ctx: HookContext<'_, Subcommand>) -> anyhow::Result<()> {
 fn format_time(mut time: u64) -> String {
 	let mut out = String::new();
 
-	let days = time / 3600;
-	time %= 3600;
-
 	let hours = time / 60;
 	time %= 60;
 
 	let minutes = time;
-
-	if days > 0 {
-		out += &format!("{days}d ");
-	}
 
 	if hours > 0 {
 		out += &format!("{hours}h ");
@@ -203,6 +195,16 @@ struct InstanceStats {
 	playtime: u64,
 	/// The number of times the instance has been launched
 	launches: u32,
+}
+
+impl InstanceStats {
+	/// Calculate playtime
+	fn calculate_playtime(&self) -> u64 {
+		// Due to the minutes always rounding down every time we stop, there will be a constant
+		// integration error of on average half a minute every launch. Counteract this by adding back that
+		// half a minute for every launch
+		self.playtime + self.launches as u64 / 2
+	}
 }
 
 /// Config for the plugin

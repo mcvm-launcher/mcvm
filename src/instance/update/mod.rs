@@ -3,7 +3,7 @@ pub mod manager;
 /// Updating packages on a profile
 pub mod packages;
 
-use crate::config::plugin::PluginManager;
+use crate::plugin::PluginManager;
 use crate::config::preferences::ConfigPreferences;
 #[cfg(not(feature = "disable_profile_update_packages"))]
 use crate::pkg::eval::EvalConstants;

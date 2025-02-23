@@ -1,0 +1,68 @@
+{
+	"args": {
+		"id": "args",
+		"github_owner": "mcvm-launcher",
+		"github_repo": "mcvm",
+		"description": "Use argument presets to improve game performance"
+	},
+	"backup": {
+		"id": "backup",
+		"github_owner": "mcvm-launcher",
+		"github_repo": "mcvm",
+		"description": "Create backups of instances"
+	},
+	"docs": {
+		"id": "docs",
+		"github_owner": "mcvm-launcher",
+		"github_repo": "mcvm",
+		"description": "View MCVM's documentation straight from the command line"
+	},
+	"extra_versions": {
+		"id": "extra_versions",
+		"github_owner": "mcvm-launcher",
+		"github_repo": "mcvm",
+		"description": "Add versions of Minecraft that are not normally available"
+	},
+	"gen_pkg": {
+		"id": "gen_pkg",
+		"github_owner": "mcvm-launcher",
+		"github_repo": "mcvm",
+		"description": "Automatically generate packages from existing websites"
+	},
+	"lang": {
+		"id": "lang",
+		"github_owner": "mcvm-launcher",
+		"github_repo": "mcvm",
+		"description": "Language translations for MCVM"
+	},
+	"modrinth": {
+		"id": "modrinth",
+		"github_owner": "mcvm-launcher",
+		"github_repo": "mcvm",
+		"description": "Make simple Modrinth API calls to query project versions"
+	},
+	"options": {
+		"id": "options",
+		"github_owner": "mcvm-launcher",
+		"github_repo": "mcvm",
+		"description": "Manage game options for client and server"
+	},
+	"server_restart": {
+		"id": "modrinth",
+		"github_owner": "mcvm-launcher",
+		"github_repo": "mcvm",
+		"description": "Manage restart behavior for Spigot and Paper servers"
+	},
+	"stats": {
+		"id": "stats",
+		"github_owner": "mcvm-launcher",
+		"github_repo": "mcvm",
+		"description": "Track and view playtime stats"
+	},
+	"mcvm_transfer": {
+		"id": "mcvm_transfer",
+		"github_owner": "mcvm-launcher",
+		"github_repo": "mcvm",
+		"description": "Import and export MCVM instances"
+	}
+}

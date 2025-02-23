@@ -19,7 +19,7 @@ use tokio::task::JoinSet;
 use super::eval::{EvalData, EvalInput, Routine};
 use super::repo::{query_all, PkgRepo};
 use super::{Package, PkgContents};
-use crate::config::plugin::PluginManager;
+use crate::plugin::PluginManager;
 use crate::io::paths::Paths;
 
 use std::collections::HashMap;
@@ -45,6 +45,11 @@ impl PkgRegistry {
 			packages: HashMap::new(),
 			caching_strategy,
 		}
+	}
+
+	/// Clear the registry
+	pub fn clear(&mut self) {
+		self.packages.clear();
 	}
 
 	/// Insert a package into the registry and return a mutable reference to the
@@ -163,6 +168,18 @@ impl PkgRegistry {
 		pkg.get_properties(paths, client)
 			.await
 			.context("Failed to get properties from package")
+	}
+
+	/// Get the content type of a package
+	pub async fn get_content_type<'a>(
+		&'a mut self,
+		req: &ArcPkgReq,
+		paths: &Paths,
+		client: &Client,
+		o: &mut impl MCVMOutput,
+	) -> anyhow::Result<PackageContentType> {
+		let pkg = self.ensure_package_contents(req, paths, client, o).await?;
+		Ok(pkg.content_type)
 	}
 
 	/// Load the contents of a package

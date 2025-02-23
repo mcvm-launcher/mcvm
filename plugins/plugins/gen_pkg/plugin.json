@@ -3,7 +3,7 @@
 	"description": "Automatically generate packages from existing websites",
 	"hooks": {
 		"subcommand": {
-			"executable": "mcvm_plugin_gen_pkg"
+			"executable": "${PLUGIN_DIR}/mcvm_plugin_gen_pkg"
 		}
 	},
 	"subcommands": {

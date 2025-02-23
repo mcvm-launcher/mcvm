@@ -17,10 +17,10 @@ pub mod profile;
 pub mod user;
 
 use self::instance::{read_instance_config, InstanceConfig};
-use self::plugin::PluginManager;
 use self::preferences::PrefDeser;
 use self::profile::ProfileConfig;
 use self::user::UserConfig;
+use crate::plugin::PluginManager;
 use anyhow::{bail, Context};
 use mcvm_core::auth_crate::mc::ClientId;
 use mcvm_core::io::{json_from_file, json_to_file_pretty};
@@ -42,7 +42,6 @@ use crate::pkg::reg::PkgRegistry;
 use serde_json::json;
 
 use std::collections::HashMap;
-use std::fs::File;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 
@@ -73,6 +72,7 @@ pub struct ConfigDeser {
 	instances: HashMap<InstanceID, InstanceConfig>,
 	instance_groups: HashMap<Arc<str>, Vec<InstanceID>>,
 	profiles: HashMap<ProfileID, ProfileConfig>,
+	global_profile: Option<ProfileConfig>,
 	preferences: PrefDeser,
 }
 
@@ -97,9 +97,7 @@ impl Config {
 	pub fn create_default(path: &Path) -> anyhow::Result<()> {
 		if !path.exists() {
 			let doc = default_config();
-			let mut file = File::create(path).context("Failed to open default config file")?;
-			serde_json::to_writer_pretty(&mut file, &doc)
-				.context("Failed to write default configuration")?;
+			json_to_file_pretty(path, &doc).context("Failed to write default configuration")?;
 		}
 		Ok(())
 	}
@@ -110,9 +108,10 @@ impl Config {
 		plugins: PluginManager,
 		show_warnings: bool,
 		paths: &Paths,
+		client_id: ClientId,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Self> {
-		let mut users = UserManager::new(ClientId::new("".into()));
+		let mut users = UserManager::new(client_id);
 		let mut instances = HashMap::with_capacity(config.instances.len());
 		// Preferences
 		let (prefs, repositories) =
@@ -156,8 +155,8 @@ impl Config {
 		}
 
 		// Consolidate profiles
-		let profiles =
-			consolidate_profile_configs(config.profiles).context("Failed to merge profiles")?;
+		let profiles = consolidate_profile_configs(config.profiles, config.global_profile.as_ref())
+			.context("Failed to merge profiles")?;
 
 		// Instances
 		for (instance_id, instance_config) in config.instances {
@@ -200,6 +199,12 @@ impl Config {
 			instances.insert(instance_id, instance);
 		}
 
+		for group in config.instance_groups.keys() {
+			if !is_valid_identifier(group) {
+				bail!("Invalid ID for group '{group}'");
+			}
+		}
+
 		Ok(Self {
 			users,
 			instances,
@@ -216,10 +221,11 @@ impl Config {
 		plugins: PluginManager,
 		show_warnings: bool,
 		paths: &Paths,
+		client_id: ClientId,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Self> {
 		let obj = Self::open(path)?;
-		Self::load_from_deser(obj, plugins, show_warnings, paths, o)
+		Self::load_from_deser(obj, plugins, show_warnings, paths, client_id, o)
 	}
 }
 
@@ -268,6 +274,7 @@ mod tests {
 			PluginManager::new(),
 			true,
 			&Paths::new_no_create().unwrap(),
+			ClientId::new(String::new()),
 			&mut output::Simple(output::MessageLevel::Debug),
 		)
 		.unwrap();

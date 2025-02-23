@@ -1,9 +1,12 @@
+use std::sync::Mutex;
 use std::{collections::HashMap, sync::Arc};
 
 use super::CmdData;
 use itertools::Itertools;
 use mcvm::parse::lex::Token;
-use mcvm::pkg_crate::{PackageContentType, PkgRequest, PkgRequestSource};
+use mcvm::pkg_crate::metadata::PackageMetadata;
+use mcvm::pkg_crate::properties::PackageProperties;
+use mcvm::pkg_crate::{parse_and_validate, PackageContentType, PkgRequest, PkgRequestSource};
 use mcvm::shared::id::{InstanceID, ProfileID};
 use mcvm::shared::util::print::ReplPrinter;
 
@@ -11,7 +14,9 @@ use anyhow::{bail, Context};
 use clap::Subcommand;
 use color_print::{cformat, cprint, cprintln};
 use mcvm::shared::pkg::PackageID;
+use rayon::prelude::*;
 use reqwest::Client;
+use serde::Serialize;
 
 use crate::output::HYPHEN_POINT;
 
@@ -52,6 +57,9 @@ This package does not need to be installed, it just has to be in the index."
 	},
 	#[command(about = "Print information about a specific package")]
 	Info {
+		/// Whether to remove formatting and warnings from the output
+		#[arg(short, long)]
+		raw: bool,
 		/// The package to get info about
 		package: String,
 	},
@@ -62,6 +70,8 @@ This package does not need to be installed, it just has to be in the index."
 		#[command(subcommand)]
 		command: RepoSubcommand,
 	},
+	#[command(about = "List available packages from all repositories")]
+	ListAll {},
 	#[command(about = "Browse packages from the remote repositories")]
 	Browse {},
 }
@@ -82,18 +92,19 @@ pub enum RepoSubcommand {
 	},
 }
 
-pub async fn run(subcommand: PackageSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
+pub async fn run(subcommand: PackageSubcommand, data: &mut CmdData<'_>) -> anyhow::Result<()> {
 	match subcommand {
 		PackageSubcommand::List { raw, instance } => list(data, raw, instance).await,
 		PackageSubcommand::Sync { filter } => sync(data, filter).await,
 		PackageSubcommand::Cat { raw, package } => cat(data, &package, raw).await,
-		PackageSubcommand::Info { package } => info(data, &package).await,
+		PackageSubcommand::Info { raw, package } => info(data, &package, raw).await,
 		PackageSubcommand::Repository { command } => repo(command, data).await,
+		PackageSubcommand::ListAll {} => list_all(data).await,
 		PackageSubcommand::Browse {} => browse(data).await,
 	}
 }
 
-async fn list(data: &mut CmdData, raw: bool, instance: Option<String>) -> anyhow::Result<()> {
+async fn list(data: &mut CmdData<'_>, raw: bool, instance: Option<String>) -> anyhow::Result<()> {
 	data.ensure_config(!raw).await?;
 	let config = data.config.get_mut();
 
@@ -145,7 +156,7 @@ async fn list(data: &mut CmdData, raw: bool, instance: Option<String>) -> anyhow
 	Ok(())
 }
 
-async fn sync(data: &mut CmdData, filter: Vec<String>) -> anyhow::Result<()> {
+async fn sync(data: &mut CmdData<'_>, filter: Vec<String>) -> anyhow::Result<()> {
 	data.ensure_config(true).await?;
 	let config = data.config.get_mut();
 
@@ -176,29 +187,49 @@ async fn sync(data: &mut CmdData, filter: Vec<String>) -> anyhow::Result<()> {
 	printer.print(&cformat!("<s>Updating packages..."));
 	config
 		.packages
-		.update_cached_packages(&data.paths, &client, &mut data.output)
+		.update_cached_packages(&data.paths, &client, data.output)
 		.await
 		.context("Failed to update cached packages")?;
+	printer.println(&cformat!("<g>Packages updated."));
+
 	printer.println(&cformat!("<s>Validating packages..."));
-	for package in config.packages.get_all_packages() {
-		match config
+	let ids = config.packages.get_all_packages();
+
+	let mut packages = Vec::with_capacity(ids.len());
+	for id in ids {
+		let contents = config
 			.packages
-			.parse_and_validate(&package, &data.paths, &client, &mut data.output)
+			.load(&id, &data.paths, &client, data.output)
 			.await
-		{
-			Ok(..) => {}
-			Err(e) => printer.println(&cformat!(
-				"<y>Warning: Package '{}' was invalid:\n{:?}",
-				package,
-				e
-			)),
-		}
+			.context("Failed to get package contents")?;
+		let content_type = config
+			.packages
+			.get_content_type(&id, &data.paths, &client, data.output)
+			.await
+			.context("Failed to get package content type")?;
+		packages.push((id, contents, content_type));
 	}
+	let errors = Arc::new(Mutex::new(Vec::new()));
+	packages
+		.into_par_iter()
+		.for_each(|(id, contents, content_type)| {
+			if let Err(e) = parse_and_validate(&contents, content_type) {
+				errors.lock().expect("Poisoned mutex").push(cformat!(
+					"<y>Warning: Package '{}' was invalid:\n{:#?}",
+					id,
+					e
+				));
+			}
+		});
+	for error in errors.lock().expect("Poisoned mutex").iter() {
+		printer.println(error);
+	}
+	printer.print(&cformat!("<g>Packages validated."));
 
 	Ok(())
 }
 
-async fn cat(data: &mut CmdData, id: &str, raw: bool) -> anyhow::Result<()> {
+async fn cat(data: &mut CmdData<'_>, id: &str, raw: bool) -> anyhow::Result<()> {
 	data.ensure_config(!raw).await?;
 	let config = data.config.get_mut();
 
@@ -207,7 +238,7 @@ async fn cat(data: &mut CmdData, id: &str, raw: bool) -> anyhow::Result<()> {
 	let req = Arc::new(PkgRequest::parse(id, PkgRequestSource::UserRequire));
 	let contents = config
 		.packages
-		.load(&req, &data.paths, &client, &mut data.output)
+		.load(&req, &data.paths, &client, data.output)
 		.await?;
 	if !raw {
 		cprintln!("<s,b>Contents of package <g>{}</g>:</s,b>", req);
@@ -218,7 +249,7 @@ async fn cat(data: &mut CmdData, id: &str, raw: bool) -> anyhow::Result<()> {
 	} else {
 		let content_type = config
 			.packages
-			.content_type(&req, &data.paths, &client, &mut data.output)
+			.content_type(&req, &data.paths, &client, data.output)
 			.await?;
 		if let PackageContentType::Script = content_type {
 			pretty_print_package_script(&contents)?;
@@ -307,7 +338,7 @@ fn pretty_print_package_script(contents: &str) -> anyhow::Result<()> {
 	Ok(())
 }
 
-async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
+async fn info(data: &mut CmdData<'_>, id: &str, raw: bool) -> anyhow::Result<()> {
 	data.ensure_config(true).await?;
 	let config = data.config.get_mut();
 
@@ -316,9 +347,36 @@ async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
 	let req = Arc::new(PkgRequest::parse(id, PkgRequestSource::UserRequire));
 	let metadata = config
 		.packages
-		.get_metadata(&req, &data.paths, &client, &mut data.output)
+		.get_metadata(&req, &data.paths, &client, data.output)
 		.await
 		.context("Failed to get metadata from the registry")?;
+
+	if raw {
+		let metadata = metadata.clone();
+
+		let properties = config
+			.packages
+			.get_properties(&req, &data.paths, &client, data.output)
+			.await
+			.context("Failed to get package properties from the registry")?;
+
+		#[derive(Serialize)]
+		struct RawOutput<'a> {
+			metadata: PackageMetadata,
+			properties: &'a PackageProperties,
+		}
+
+		let out = serde_json::to_string(&RawOutput {
+			metadata,
+			properties,
+		})
+		.context("Failed to serialize raw output")?;
+
+		print!("{out}");
+
+		return Ok(());
+	}
+
 	if let Some(name) = &metadata.name {
 		cprintln!("<s><g>Package</g> <b>{}</b>", name);
 	} else {
@@ -387,14 +445,14 @@ async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
 	Ok(())
 }
 
-async fn repo(subcommand: RepoSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
+async fn repo(subcommand: RepoSubcommand, data: &mut CmdData<'_>) -> anyhow::Result<()> {
 	match subcommand {
 		RepoSubcommand::List { raw } => repo_list(data, raw).await,
 		RepoSubcommand::Info { repo } => repo_info(data, repo).await,
 	}
 }
 
-async fn repo_list(data: &mut CmdData, raw: bool) -> anyhow::Result<()> {
+async fn repo_list(data: &mut CmdData<'_>, raw: bool) -> anyhow::Result<()> {
 	data.ensure_config(!raw).await?;
 	let config = data.config.get_mut();
 
@@ -421,7 +479,7 @@ async fn repo_list(data: &mut CmdData, raw: bool) -> anyhow::Result<()> {
 	Ok(())
 }
 
-async fn repo_info(data: &mut CmdData, repo_id: String) -> anyhow::Result<()> {
+async fn repo_info(data: &mut CmdData<'_>, repo_id: String) -> anyhow::Result<()> {
 	data.ensure_config(true).await?;
 	let config = data.config.get_mut();
 
@@ -434,12 +492,12 @@ async fn repo_info(data: &mut CmdData, repo_id: String) -> anyhow::Result<()> {
 	let client = Client::new();
 
 	let pkg_count = repo
-		.get_package_count(&data.paths, &client, &mut data.output)
+		.get_package_count(&data.paths, &client, data.output)
 		.await
 		.context("Failed to get repository package count")?;
 
 	let meta = repo
-		.get_metadata(&data.paths, &client, &mut data.output)
+		.get_metadata(&data.paths, &client, data.output)
 		.await
 		.context("Failed to get repository metadata")?
 		.as_ref()
@@ -476,14 +534,33 @@ async fn repo_info(data: &mut CmdData, repo_id: String) -> anyhow::Result<()> {
 	Ok(())
 }
 
-async fn browse(data: &mut CmdData) -> anyhow::Result<()> {
+async fn list_all(data: &mut CmdData<'_>) -> anyhow::Result<()> {
 	data.ensure_config(true).await?;
 	let config = data.config.get_mut();
 
 	let client = Client::new();
 	let mut packages = config
 		.packages
-		.get_all_available_packages(&data.paths, &client, &mut data.output)
+		.get_all_available_packages(&data.paths, &client, data.output)
+		.await
+		.context("Failed to get list of available packages")?;
+	packages.sort();
+
+	for package in packages {
+		println!("{package}");
+	}
+
+	Ok(())
+}
+
+async fn browse(data: &mut CmdData<'_>) -> anyhow::Result<()> {
+	data.ensure_config(true).await?;
+	let config = data.config.get_mut();
+
+	let client = Client::new();
+	let mut packages = config
+		.packages
+		.get_all_available_packages(&data.paths, &client, data.output)
 		.await
 		.context("Failed to get list of available packages")?;
 	packages.sort();
@@ -493,7 +570,7 @@ async fn browse(data: &mut CmdData) -> anyhow::Result<()> {
 			inquire::Select::new("Browse packages. Press Escape to exit.", packages.clone());
 		let package = select.prompt_skippable()?;
 		if let Some(package) = package {
-			info(data, &package.id).await?;
+			info(data, &package.id, false).await?;
 			inquire::Confirm::new("Press Escape to return to browse page").prompt_skippable()?;
 		} else {
 			break;

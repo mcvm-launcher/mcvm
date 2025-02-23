@@ -1,15 +1,20 @@
 use std::{collections::HashMap, path::Path};
 
-use anyhow::Context;
+use anyhow::{bail, Context};
 use mcvm_plugin::hooks::{
-	AddInstanceTransferFormat, ExportInstance, ExportInstanceArg, InstanceTransferFeatureSupport,
-	InstanceTransferFormat, InstanceTransferFormatDirection,
+	AddInstanceTransferFormats, ExportInstance, ExportInstanceArg, ImportInstance,
+	ImportInstanceArg, InstanceTransferFeatureSupport, InstanceTransferFormat,
+	InstanceTransferFormatDirection,
 };
+use mcvm_shared::id::InstanceID;
 use mcvm_shared::lang::translate::TranslationKey;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::translate;
 
-use crate::{config::plugin::PluginManager, io::paths::Paths};
+use crate::config::builder::InstanceBuilder;
+use crate::config::instance::InstanceConfig;
+use crate::io::lock::Lockfile;
+use crate::{io::paths::Paths, plugin::PluginManager};
 
 use super::Instance;
 
@@ -21,6 +26,7 @@ impl Instance {
 		result_path: &Path,
 		formats: &Formats,
 		plugins: &PluginManager,
+		lock: &Lockfile,
 		paths: &Paths,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
@@ -38,9 +44,23 @@ impl Instance {
 
 		output_support_warnings(export_info, o);
 
-		// TODO: Ensure that the instance has been created once from lockfile before allowing export
+		if !lock.has_instance_done_first_update(&self.id) {
+			bail!("Instance has not done it's first update and is not ready for transfer");
+		}
+
 		self.ensure_dirs(paths)
 			.context("Failed to ensure instance directories")?;
+
+		o.display(
+			MessageContents::StartProcess(translate!(
+				o,
+				StartExporting,
+				"instance" = &self.id,
+				"format" = &format.info.id,
+				"plugin" = &format.plugin
+			)),
+			MessageLevel::Important,
+		);
 
 		// Export using the plugin
 		let arg = ExportInstanceArg {
@@ -50,6 +70,9 @@ impl Instance {
 			side: Some(self.get_side()),
 			game_dir: self.dirs.get().game_dir.to_string_lossy().to_string(),
 			result_path: result_path.to_string_lossy().to_string(),
+			minecraft_version: Some(self.config.version.clone().to_serialized()),
+			client_type: Some(self.config.modifications.client_type.clone()),
+			server_type: Some(self.config.modifications.server_type.clone()),
 		};
 		let result = plugins
 			.call_hook_on_plugin(ExportInstance, &format.plugin, &arg, paths, o)
@@ -57,14 +80,105 @@ impl Instance {
 
 		if let Some(result) = result {
 			result.result(o)?;
+			o.display(
+				MessageContents::Success(o.translate(TranslationKey::FinishExporting).into()),
+				MessageLevel::Important,
+			);
 		} else {
 			o.display(
-				MessageContents::Error("Export plugin did not return a result".into()),
+				MessageContents::Error(o.translate(TranslationKey::ExportPluginNoResult).into()),
 				MessageLevel::Debug,
 			);
 		}
 
 		Ok(())
+	}
+
+	/// Import an instance using the given format. Returns an InstanceConfig to add to the config file
+	pub fn import(
+		id: &str,
+		format: &str,
+		source_path: &Path,
+		formats: &Formats,
+		plugins: &PluginManager,
+		paths: &Paths,
+		o: &mut impl MCVMOutput,
+	) -> anyhow::Result<InstanceConfig> {
+		// Get and print info about the format
+		let format = formats
+			.formats
+			.get(format)
+			.context("Transfer format does not exist")?;
+
+		let import_info = format
+			.info
+			.import
+			.as_ref()
+			.context("This format or the plugin providing it does not support importing")?;
+
+		output_support_warnings(import_info, o);
+
+		o.display(
+			MessageContents::StartProcess(translate!(
+				o,
+				StartImporting,
+				"instance" = id,
+				"format" = &format.info.id,
+				"plugin" = &format.plugin
+			)),
+			MessageLevel::Important,
+		);
+
+		// Create the target directory
+		let target_dir = paths.project.data_dir().join("instances").join(id);
+		std::fs::create_dir_all(&target_dir)
+			.context("Failed to create directory for new instance")?;
+
+		// Import using the plugin
+		let arg = ImportInstanceArg {
+			format: format.info.id.clone(),
+			id: id.to_string(),
+			source_path: source_path.to_string_lossy().to_string(),
+			result_path: target_dir.to_string_lossy().to_string(),
+		};
+		let result = plugins
+			.call_hook_on_plugin(ImportInstance, &format.plugin, &arg, paths, o)
+			.context("Failed to import instance using plugin")?;
+
+		let Some(result) = result else {
+			o.display(
+				MessageContents::Error(o.translate(TranslationKey::ImportPluginNoResult).into()),
+				MessageLevel::Debug,
+			);
+
+			bail!("Import plugin did not return a result");
+		};
+
+		let result = result.result(o)?;
+		o.display(
+			MessageContents::Success(o.translate(TranslationKey::FinishImporting).into()),
+			MessageLevel::Important,
+		);
+
+		let side = result
+			.side
+			.context("Import result is missing the instance side")?;
+		let mut builder = InstanceBuilder::new(InstanceID::from(id), side);
+
+		if let Some(version) = result.version {
+			builder.version(version);
+		}
+		if let Some(name) = result.name {
+			builder.name(name);
+		}
+		if let Some(client_type) = result.client_type {
+			builder.client_type(client_type);
+		}
+		if let Some(server_type) = result.server_type {
+			builder.server_type(server_type);
+		}
+
+		Ok(builder.build_config())
 	}
 }
 
@@ -75,19 +189,21 @@ pub fn load_formats(
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<Formats> {
 	let results = plugins
-		.call_hook(AddInstanceTransferFormat, &(), paths, o)
+		.call_hook(AddInstanceTransferFormats, &(), paths, o)
 		.context("Failed to get transfer formats from plugins")?;
 	let mut formats = HashMap::with_capacity(results.len());
 	for result in results {
 		let plugin_id = result.get_id().to_owned();
 		let result = result.result(o)?;
-		formats.insert(
-			result.id.clone(),
-			Format {
-				plugin: plugin_id,
-				info: result,
-			},
-		);
+		for result in result {
+			formats.insert(
+				result.id.clone(),
+				Format {
+					plugin: plugin_id.clone(),
+					info: result,
+				},
+			);
+		}
 	}
 
 	Ok(Formats { formats })
@@ -97,6 +213,13 @@ pub fn load_formats(
 pub struct Formats {
 	/// Map of the format IDs to the formats themselves
 	formats: HashMap<String, Format>,
+}
+
+impl Formats {
+	/// Iterate over the names of the loaded formats
+	pub fn iter_format_names(&self) -> impl Iterator<Item = &String> {
+		self.formats.keys()
+	}
 }
 
 /// A single loaded transfer format

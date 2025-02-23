@@ -4,6 +4,7 @@ use std::sync::Arc;
 use anyhow::bail;
 use mcvm_core::auth_crate::mc::ClientId;
 use mcvm_core::user::{User, UserManager};
+use mcvm_core::util::versions::MinecraftVersionDeser;
 use mcvm_plugin::plugin::PluginManifest;
 use mcvm_shared::id::InstanceID;
 use mcvm_shared::modifications::{ClientType, Modloader, ServerType};
@@ -16,10 +17,11 @@ use crate::io::paths::Paths;
 use crate::pkg::eval::EvalPermissions;
 use crate::pkg::reg::PkgRegistry;
 use crate::pkg::repo::PkgRepo;
+use crate::plugin::PluginManager;
 
 use super::instance::{read_instance_config, ClientWindowConfig, InstanceConfig, LaunchConfig};
 use super::package::{FullPackageConfig, PackageConfigDeser};
-use super::plugin::{PluginConfig, PluginManager};
+use super::plugin::PluginConfig;
 use super::preferences::ConfigPreferences;
 use super::user::{UserConfig, UserVariant};
 use super::Config;
@@ -193,6 +195,12 @@ impl<'parent> InstanceBuilder<'parent> {
 		self
 	}
 
+	/// Set the Minecraft version of the instance
+	pub fn version(&mut self, version: MinecraftVersionDeser) -> &mut Self {
+		self.config.common.version = Some(version);
+		self
+	}
+
 	/// Set the modloader of the instance
 	pub fn modloader(&mut self, modloader: Modloader) -> &mut Self {
 		self.config.common.modloader = Some(modloader);
@@ -286,6 +294,11 @@ impl<'parent> InstanceBuilder<'parent> {
 
 		Ok((self.id, built, self.parent))
 	}
+
+	/// Finish the builder and return just the InstanceConfig
+	pub fn build_config(self) -> InstanceConfig {
+		self.config
+	}
 }
 
 /// Builder for a package
@@ -307,6 +320,7 @@ where
 			permissions: Default::default(),
 			stability: Default::default(),
 			worlds: Default::default(),
+			content_version: Default::default(),
 		};
 
 		Self { config, parent }
@@ -339,6 +353,12 @@ where
 	/// Set the configured worlds of the package
 	pub fn worlds(&mut self, worlds: Vec<String>) -> &mut Self {
 		self.config.worlds = worlds;
+		self
+	}
+
+	/// Set the configured content version of the package
+	pub fn content_version(&mut self, version: String) -> &mut Self {
+		self.config.content_version = Some(version);
 		self
 	}
 

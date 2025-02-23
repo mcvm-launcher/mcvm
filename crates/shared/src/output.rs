@@ -4,7 +4,8 @@ use serde::{Deserialize, Serialize};
 use crate::{lang::translate::TranslationKey, pkg::PkgRequest};
 
 /// Trait for a type that can output information about MCVM processes
-pub trait MCVMOutput {
+#[async_trait::async_trait]
+pub trait MCVMOutput: Send {
 	/// Base function for a simple message. Used as a fallback
 	fn display_text(&mut self, text: String, level: MessageLevel);
 
@@ -39,14 +40,14 @@ pub trait MCVMOutput {
 	}
 
 	/// Offer a password / secret prompt
-	fn prompt_password(&mut self, message: MessageContents) -> anyhow::Result<String> {
+	async fn prompt_password(&mut self, message: MessageContents) -> anyhow::Result<String> {
 		let _ = message;
 		bail!("No password prompt available")
 	}
 
 	/// Offer a new password / secret prompt
-	fn prompt_new_password(&mut self, message: MessageContents) -> anyhow::Result<String> {
-		self.prompt_password(message)
+	async fn prompt_new_password(&mut self, message: MessageContents) -> anyhow::Result<String> {
+		self.prompt_password(message).await
 	}
 
 	/// Get the translation for the specified key
@@ -60,6 +61,16 @@ pub trait MCVMOutput {
 	/// Specialized implementation for details given to the user for Microsoft authentication
 	fn display_special_ms_auth(&mut self, url: &str, code: &str) {
 		default_special_ms_auth(self, url, code);
+	}
+
+	/// Specialized implementation for prompting a user passkey
+	async fn prompt_special_user_passkey(
+		&mut self,
+		message: MessageContents,
+		user_id: &str,
+	) -> anyhow::Result<String> {
+		let _ = user_id;
+		self.prompt_password(message).await
 	}
 }
 

@@ -31,6 +31,7 @@ use mcvm_shared::output::MessageLevel;
 use mcvm_shared::pkg::ArcPkgReq;
 use mcvm_shared::pkg::PackageID;
 use mcvm_shared::util::is_valid_identifier;
+use mcvm_shared::versions::VersionPattern;
 use reqwest::Client;
 #[cfg(feature = "schema")]
 use schemars::JsonSchema;
@@ -46,7 +47,7 @@ use super::Package;
 use crate::addon::{self, AddonLocation, AddonRequest};
 use crate::config::package::PackageConfig;
 use crate::config::package::PackageConfigSource;
-use crate::config::plugin::PluginManager;
+use crate::plugin::PluginManager;
 use crate::config::profile::GameModifications;
 use crate::io::paths::Paths;
 use crate::util::hash::{
@@ -142,6 +143,8 @@ pub struct EvalParameters {
 	pub stability: PackageStability,
 	/// Requested worlds to put addons in
 	pub worlds: Vec<String>,
+	/// Requested content version for the package
+	pub content_version: Option<VersionPattern>,
 }
 
 impl EvalParameters {
@@ -154,7 +157,28 @@ impl EvalParameters {
 			perms: EvalPermissions::default(),
 			stability: PackageStability::default(),
 			worlds: Vec::new(),
+			content_version: None,
 		}
+	}
+
+	/// Apply a package config to the parameters
+	pub fn apply_config(
+		&mut self,
+		config: &PackageConfig,
+		properties: &PackageProperties,
+	) -> anyhow::Result<()> {
+		// Calculate features
+		let features = config
+			.calculate_features(properties)
+			.context("Failed to calculate features")?;
+
+		self.config_source = config.source;
+		self.features = features;
+		self.perms = config.permissions;
+		self.stability = config.stability;
+		self.content_version = config.content_version.as_deref().map(VersionPattern::from);
+
+		Ok(())
 	}
 }
 
@@ -290,6 +314,12 @@ pub fn eval_check_properties(
 			.any(|x| x.matches_single(&input.constants.version, &input.constants.version_list))
 		{
 			bail!("Package does not support this Minecraft version");
+		}
+	}
+
+	if let Some(supported_sides) = &properties.supported_sides {
+		if !supported_sides.iter().any(|x| x == &input.params.side) {
+			bail!("Package does not support this side (client / server)");
 		}
 	}
 
@@ -452,15 +482,10 @@ impl ConfiguredPackage for EvalPackageConfig {
 		properties: &PackageProperties,
 		input: &mut Self::EvalInput<'_>,
 	) -> anyhow::Result<()> {
-		let features = self
-			.0
-			.calculate_features(properties)
-			.context("Failed to calculate features")?;
-
-		input.params.config_source = self.0.source;
-		input.params.features = features;
-		input.params.perms = self.0.permissions;
-		input.params.stability = self.0.stability;
+		input
+			.params
+			.apply_config(&self.0, properties)
+			.context("Failed to apply config to parameters")?;
 
 		Ok(())
 	}

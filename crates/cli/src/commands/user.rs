@@ -43,7 +43,7 @@ pub enum UserSubcommand {
 	Add {},
 }
 
-pub async fn run(subcommand: UserSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
+pub async fn run(subcommand: UserSubcommand, data: &mut CmdData<'_>) -> anyhow::Result<()> {
 	match subcommand {
 		UserSubcommand::List { raw } => list(data, raw).await,
 		UserSubcommand::Status => status(data).await,
@@ -54,7 +54,7 @@ pub async fn run(subcommand: UserSubcommand, data: &mut CmdData) -> anyhow::Resu
 	}
 }
 
-async fn list(data: &mut CmdData, raw: bool) -> anyhow::Result<()> {
+async fn list(data: &mut CmdData<'_>, raw: bool) -> anyhow::Result<()> {
 	data.ensure_config(!raw).await?;
 	let config = data.config.get();
 
@@ -89,7 +89,7 @@ async fn list(data: &mut CmdData, raw: bool) -> anyhow::Result<()> {
 	Ok(())
 }
 
-async fn status(data: &mut CmdData) -> anyhow::Result<()> {
+async fn status(data: &mut CmdData<'_>) -> anyhow::Result<()> {
 	data.ensure_config(true).await?;
 	let config = data.config.get();
 
@@ -118,7 +118,7 @@ async fn status(data: &mut CmdData) -> anyhow::Result<()> {
 	Ok(())
 }
 
-async fn passkey(data: &mut CmdData, user: Option<String>) -> anyhow::Result<()> {
+async fn passkey(data: &mut CmdData<'_>, user: Option<String>) -> anyhow::Result<()> {
 	data.ensure_config(true).await?;
 	let config = data.config.get();
 	let user = if let Some(user) = user {
@@ -130,13 +130,14 @@ async fn passkey(data: &mut CmdData, user: Option<String>) -> anyhow::Result<()>
 		bail!("Specified user does not exist");
 	};
 
-	user.update_passkey(&data.paths.core, &mut data.output)
+	user.update_passkey(&data.paths.core, data.output)
+		.await
 		.context("Failed to update passkey")?;
 
 	Ok(())
 }
 
-async fn auth(data: &mut CmdData, user: Option<String>) -> anyhow::Result<()> {
+async fn auth(data: &mut CmdData<'_>, user: Option<String>) -> anyhow::Result<()> {
 	data.ensure_config(true).await?;
 	let config = data.config.get_mut();
 	if let Some(user) = user {
@@ -146,14 +147,14 @@ async fn auth(data: &mut CmdData, user: Option<String>) -> anyhow::Result<()> {
 	let client = Client::new();
 	config
 		.users
-		.authenticate(&data.paths.core, &client, &mut data.output)
+		.authenticate(&data.paths.core, &client, data.output)
 		.await
 		.context("Failed to authenticate")?;
 
 	Ok(())
 }
 
-async fn logout(data: &mut CmdData, user: Option<String>) -> anyhow::Result<()> {
+async fn logout(data: &mut CmdData<'_>, user: Option<String>) -> anyhow::Result<()> {
 	data.ensure_config(true).await?;
 	let config = data.config.get_mut();
 	let user = if let Some(user) = user {
@@ -171,7 +172,7 @@ async fn logout(data: &mut CmdData, user: Option<String>) -> anyhow::Result<()> 
 	Ok(())
 }
 
-async fn add(data: &mut CmdData) -> anyhow::Result<()> {
+async fn add(data: &mut CmdData<'_>) -> anyhow::Result<()> {
 	data.ensure_config(true).await?;
 	let mut config = data.get_raw_config()?;
 

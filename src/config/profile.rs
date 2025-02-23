@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+use anyhow::bail;
 use mcvm_shared::id::ProfileID;
 use mcvm_shared::Side;
 #[cfg(feature = "schema")]
@@ -21,6 +22,13 @@ pub struct ProfileConfig {
 	/// Package configuration
 	#[serde(default)]
 	pub packages: ProfilePackageConfiguration,
+}
+
+impl ProfileConfig {
+	/// Merge this profile with another one
+	pub fn merge(&mut self, other: Self) {
+		self.instance = merge_instance_configs(&self.instance, other.instance);
+	}
 }
 
 /// Different representations of package configuration on a profile
@@ -145,6 +153,7 @@ impl ProfilePackageConfiguration {
 /// Consolidates profile configs into the full profiles
 pub fn consolidate_profile_configs(
 	profiles: HashMap<ProfileID, ProfileConfig>,
+	global_profile: Option<&ProfileConfig>,
 ) -> anyhow::Result<HashMap<ProfileID, ProfileConfig>> {
 	let mut out: HashMap<_, ProfileConfig> = HashMap::with_capacity(profiles.len());
 
@@ -159,16 +168,26 @@ pub fn consolidate_profile_configs(
 				continue;
 			}
 
-			if let Some(parent) = &profile.instance.common.from {
-				// If the parent is already in the map (already consolidated) then we can derive from it and add to the map
-				if let Some(parent) = out.get(&ProfileID::from(parent.clone())) {
-					let mut new = profile.clone();
-					new.instance = merge_instance_configs(&parent.instance, new.instance)?;
-					out.insert(id.clone(), new);
+			if profile.instance.common.from.is_empty() {
+				// Profiles with no ancestor can just be added directly to the output, after deriving from the global profile
+				let mut profile = profile.clone();
+				if let Some(global_profile) = global_profile {
+					let overlay = profile;
+					profile = global_profile.clone();
+					profile.merge(overlay);
 				}
+				out.insert(id.clone(), profile);
 			} else {
-				// Profiles with no ancestor can just be added directly to the output
-				out.insert(id.clone(), profile.clone());
+				for parent in profile.instance.common.from.iter() {
+					// If the parent is already in the map (already consolidated) then we can derive from it and add to the map
+					if let Some(parent) = out.get(&ProfileID::from(parent.clone())) {
+						let mut new = parent.clone();
+						new.merge(profile.clone());
+						out.insert(id.clone(), new);
+					} else {
+						bail!("Parent profile '{parent}' does not exist");
+					}
+				}
 			}
 		}
 

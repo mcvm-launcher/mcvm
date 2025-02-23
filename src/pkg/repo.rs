@@ -12,7 +12,7 @@ use mcvm_shared::translate;
 use reqwest::Client;
 
 use std::borrow::Cow;
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 use std::fmt::Display;
 use std::fs::File;
 use std::io::{BufReader, Cursor};
@@ -317,9 +317,9 @@ pub async fn get_all_packages(
 	paths: &Paths,
 	client: &Client,
 	o: &mut impl MCVMOutput,
-) -> anyhow::Result<Vec<(String, RepoPkgEntry)>> {
+) -> anyhow::Result<HashMap<String, RepoPkgEntry>> {
+	let mut out = HashMap::new();
 	// Iterate in reverse to make sure that repos at the beginning take precendence
-	let mut out = Vec::new();
 	for repo in repos.iter_mut().rev() {
 		let packages = repo
 			.get_all_packages(paths, client, o)

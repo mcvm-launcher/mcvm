@@ -1,16 +1,23 @@
+use std::path::PathBuf;
 use std::sync::Arc;
 
-use anyhow::Context;
+use anyhow::{bail, Context};
 use clap::Subcommand;
 use color_print::{cprint, cprintln};
 use inquire::Select;
 use itertools::Itertools;
+use mcvm::config::builder::InstanceBuilder;
+use mcvm::config::modifications::{apply_modifications_and_write, ConfigModification};
 use mcvm::config::Config;
+use mcvm::core::util::versions::{MinecraftLatestVersion, MinecraftVersionDeser};
+use mcvm::instance::transfer::load_formats;
 use mcvm::instance::update::InstanceUpdateContext;
+use mcvm::instance::Instance;
 use mcvm::io::lock::Lockfile;
 use mcvm::shared::id::InstanceID;
 
 use mcvm::instance::launch::LaunchSettings;
+use mcvm::shared::modifications::{ClientType, ServerType};
 use mcvm::shared::Side;
 use reqwest::Client;
 
@@ -65,29 +72,63 @@ pub enum InstanceSubcommand {
 		/// The instance to print the directory of
 		instance: Option<String>,
 	},
+	#[command(about = "Easily create a new instance")]
+	Add,
+	#[command(about = "Import an instance from another launcher")]
+	Import {
+		/// The path to the instance
+		path: String,
+		/// The ID of the new instance
+		instance: String,
+		/// Which format to use
+		#[arg(short, long)]
+		format: Option<String>,
+	},
+	#[command(about = "Export an instance for use in another launcher")]
+	Export {
+		/// The ID of the instance to export
+		instance: Option<String>,
+		/// Which format to use
+		#[arg(short, long)]
+		format: Option<String>,
+		/// Where to export the instance to. Defaults to ./<instance-id>.zip
+		#[arg(short, long)]
+		output: Option<String>,
+	},
 }
 
-pub async fn run(command: InstanceSubcommand, data: &mut CmdData) -> anyhow::Result<()> {
+pub async fn run(command: InstanceSubcommand, mut data: CmdData<'_>) -> anyhow::Result<()> {
 	match command {
-		InstanceSubcommand::List { raw, side } => list(data, raw, side).await,
+		InstanceSubcommand::List { raw, side } => list(&mut data, raw, side).await,
 		InstanceSubcommand::Launch {
 			user,
 			offline,
 			instance,
 		} => launch(instance, user, offline, data).await,
-		InstanceSubcommand::Info { instance } => info(data, &instance).await,
+		InstanceSubcommand::Info { instance } => info(&mut data, &instance).await,
 		InstanceSubcommand::Update {
 			force,
 			all,
 			skip_packages,
 			groups,
 			instances,
-		} => update(data, instances, groups, all, force, skip_packages).await,
-		InstanceSubcommand::Dir { instance } => dir(data, instance).await,
+		} => update(&mut data, instances, groups, all, force, skip_packages).await,
+		InstanceSubcommand::Dir { instance } => dir(&mut data, instance).await,
+		InstanceSubcommand::Add => add(&mut data).await,
+		InstanceSubcommand::Import {
+			instance,
+			path,
+			format,
+		} => import(&mut data, instance, path, format).await,
+		InstanceSubcommand::Export {
+			instance,
+			format,
+			output,
+		} => export(&mut data, instance, format, output).await,
 	}
 }
 
-async fn list(data: &mut CmdData, raw: bool, side: Option<Side>) -> anyhow::Result<()> {
+async fn list(data: &mut CmdData<'_>, raw: bool, side: Option<Side>) -> anyhow::Result<()> {
 	data.ensure_config(!raw).await?;
 	let config = data.config.get_mut();
 
@@ -111,7 +152,7 @@ async fn list(data: &mut CmdData, raw: bool, side: Option<Side>) -> anyhow::Resu
 	Ok(())
 }
 
-async fn info(data: &mut CmdData, id: &str) -> anyhow::Result<()> {
+async fn info(data: &mut CmdData<'_>, id: &str) -> anyhow::Result<()> {
 	data.ensure_config(true).await?;
 	let config = data.config.get_mut();
 
@@ -192,7 +233,7 @@ pub async fn launch(
 	instance: Option<String>,
 	user: Option<String>,
 	offline: bool,
-	data: &mut CmdData,
+	mut data: CmdData<'_>,
 ) -> anyhow::Result<()> {
 	data.ensure_config(true).await?;
 	let config = data.config.get_mut();
@@ -218,7 +259,7 @@ pub async fn launch(
 			paths: &data.paths,
 			lock: &mut lock,
 			client: &client,
-			output: &mut data.output,
+			output: data.output,
 		};
 
 		instance
@@ -249,19 +290,24 @@ pub async fn launch(
 			&mut config.users,
 			&config.plugins,
 			launch_settings,
-			&mut data.output,
+			data.output,
 		)
 		.await
 		.context("Instance failed to launch")?;
 
+	// Drop the config early so that it isn't wasting memory while the instance is running
+	let plugins = config.plugins.clone();
+	std::mem::drop(data.config);
+	// Unload plugins that we don't need anymore
+
 	instance_handle
-		.wait(&config.plugins, &data.paths, &mut data.output)
+		.wait(&plugins, &data.paths, data.output)
 		.context("Failed to wait for instance child process")?;
 
 	Ok(())
 }
 
-async fn dir(data: &mut CmdData, instance: Option<String>) -> anyhow::Result<()> {
+async fn dir(data: &mut CmdData<'_>, instance: Option<String>) -> anyhow::Result<()> {
 	data.ensure_config(true).await?;
 
 	let instance = pick_instance(instance, data.config.get()).context("Failed to pick instance")?;
@@ -279,7 +325,7 @@ async fn dir(data: &mut CmdData, instance: Option<String>) -> anyhow::Result<()>
 }
 
 async fn update(
-	data: &mut CmdData,
+	data: &mut CmdData<'_>,
 	instances: Vec<String>,
 	groups: Vec<String>,
 	all: bool,
@@ -320,14 +366,185 @@ async fn update(
 			paths: &data.paths,
 			lock: &mut lock,
 			client: &client,
-			output: &mut data.output,
+			output: data.output,
 		};
 
 		instance
 			.update(!skip_packages, force, &mut ctx)
 			.await
 			.context("Failed to update instance")?;
+
+		// Clear the package registry to prevent dependency chains in requests being carried over
+		config.packages.clear();
+
+		// Mark the instance as having completed its first update
+		lock.update_instance_has_done_first_update(instance.get_id());
+		lock.finish(&data.paths)
+			.context("Failed to finish using lockfile")?;
 	}
+
+	Ok(())
+}
+
+async fn add(data: &mut CmdData<'_>) -> anyhow::Result<()> {
+	data.ensure_config(true).await?;
+	let mut config = data.get_raw_config()?;
+
+	// Build the profile
+	let id = inquire::Text::new("What is the ID for the instance?").prompt()?;
+	let id = InstanceID::from(id);
+	let version = inquire::Text::new("What Minecraft version should the instance be?").prompt()?;
+	let version = match version.as_str() {
+		"latest" => MinecraftVersionDeser::Latest(MinecraftLatestVersion::Release),
+		"latest_snapshot" => MinecraftVersionDeser::Latest(MinecraftLatestVersion::Snapshot),
+		other => MinecraftVersionDeser::Version(other.into()),
+	};
+	let side_options = vec![Side::Client, Side::Server];
+	let side =
+		inquire::Select::new("What side should the instance be on?", side_options).prompt()?;
+
+	let mut instance = InstanceBuilder::new(id.clone(), side);
+	instance.version(version);
+
+	match side {
+		Side::Client => {
+			let options = vec![
+				ClientType::None,
+				ClientType::Vanilla,
+				ClientType::Fabric,
+				ClientType::Quilt,
+			];
+			let client_type =
+				inquire::Select::new("What client type should the instance use?", options)
+					.prompt()?;
+			instance.client_type(client_type);
+		}
+		Side::Server => {
+			let options = vec![
+				ServerType::None,
+				ServerType::Vanilla,
+				ServerType::Fabric,
+				ServerType::Quilt,
+				ServerType::Paper,
+				ServerType::Sponge,
+				ServerType::Folia,
+			];
+			let server_type =
+				inquire::Select::new("What server type should the instance use?", options)
+					.prompt()?;
+			instance.server_type(server_type);
+		}
+	}
+
+	let instance_config = instance.build_config();
+
+	apply_modifications_and_write(
+		&mut config,
+		vec![ConfigModification::AddInstance(id, instance_config)],
+		&data.paths,
+	)
+	.context("Failed to write modified config")?;
+
+	cprintln!("<g>Instance added.");
+
+	Ok(())
+}
+
+async fn import(
+	data: &mut CmdData<'_>,
+	instance: String,
+	path: String,
+	format: Option<String>,
+) -> anyhow::Result<()> {
+	data.ensure_config(true).await?;
+	let config = data.config.get();
+
+	let instance = InstanceID::from(instance);
+
+	if config.instances.contains_key(&instance) {
+		bail!("An instance with that ID already exists");
+	}
+
+	// Figure out the format
+	let formats = load_formats(&config.plugins, &data.paths, data.output)
+		.context("Failed to get available transfer formats")?;
+	let format = if let Some(format) = &format {
+		format
+	} else {
+		let options = formats.iter_format_names().collect();
+		inquire::Select::new("What format is the imported instance in?", options).prompt()?
+	};
+
+	let new_instance_config = Instance::import(
+		&instance,
+		format,
+		&PathBuf::from(path),
+		&formats,
+		&config.plugins,
+		&data.paths,
+		data.output,
+	)
+	.context("Failed to import the new instance")?;
+
+	let mut config = data.get_raw_config()?;
+	apply_modifications_and_write(
+		&mut config,
+		vec![ConfigModification::AddInstance(
+			instance,
+			new_instance_config,
+		)],
+		&data.paths,
+	)
+	.context("Failed to write modified config")?;
+
+	Ok(())
+}
+
+async fn export(
+	data: &mut CmdData<'_>,
+	instance: Option<String>,
+	format: Option<String>,
+	output: Option<String>,
+) -> anyhow::Result<()> {
+	data.ensure_config(true).await?;
+	let config = data.config.get_mut();
+
+	let instance = pick_instance(instance, config)?;
+
+	// Figure out the format
+	let formats = load_formats(&config.plugins, &data.paths, data.output)
+		.context("Failed to get available transfer formats")?;
+	let format = if let Some(format) = &format {
+		format
+	} else {
+		let options = formats.iter_format_names().collect();
+		inquire::Select::new("What format is the exported instance in?", options).prompt()?
+	};
+
+	let result_path = if let Some(output) = output {
+		PathBuf::from(output)
+	} else {
+		PathBuf::from(format!("./{instance}.zip"))
+	};
+
+	let instance = config
+		.instances
+		.get_mut(&instance)
+		.context("The provided instance does not exist")?;
+
+	let lock = Lockfile::open(&data.paths).context("Failed to open Lockfile")?;
+
+	instance
+		.export(
+			format,
+			&result_path,
+			&formats,
+			&config.plugins,
+			&lock,
+			&data.paths,
+			data.output,
+		)
+		.context("Failed to export instance")?;
 
 	Ok(())
 }

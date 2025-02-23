@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use std::sync::OnceLock;
 
 use mcvm::pkg_crate::declarative::{
 	DeclarativeAddon, DeclarativeAddonVersion, DeclarativeConditionSet, DeclarativePackage,
@@ -18,6 +19,7 @@ use mcvm_net::modrinth::{
 	self, DependencyType, KnownLoader, Loader, Member, Project, ProjectType, ReleaseChannel,
 	SideSupport, Version,
 };
+use regex::{Regex, RegexBuilder};
 
 pub async fn gen(
 	id: &str,
@@ -118,7 +120,7 @@ pub async fn gen_raw(
 	meta.authors = Some(members.into_iter().map(|x| x.user.username).collect());
 
 	// Create properties
-	let props = PackageProperties {
+	let mut props = PackageProperties {
 		modrinth_id: Some(project.id),
 		supported_sides: Some(supported_sides),
 		supported_versions: Some(
@@ -147,6 +149,8 @@ pub async fn gen_raw(
 		optional: false,
 	};
 
+	let mut content_versions = Vec::with_capacity(versions.len());
+
 	for version in versions {
 		let version_name = version.id.clone();
 		// Collect Minecraft versions
@@ -159,6 +163,7 @@ pub async fn gen_raw(
 		// Look at loaders
 		let mut modloaders = Vec::new();
 		let mut plugin_loaders = Vec::new();
+		let mut skip = false;
 		for loader in &version.loaders {
 			match loader {
 				Loader::Known(loader) => match loader {
@@ -176,17 +181,26 @@ pub async fn gen_raw(
 					KnownLoader::NeoForged => modloaders.push(ModloaderMatch::NeoForged),
 					KnownLoader::Rift => modloaders.push(ModloaderMatch::Rift),
 					KnownLoader::Liteloader => modloaders.push(ModloaderMatch::LiteLoader),
+					KnownLoader::Risugamis => modloaders.push(ModloaderMatch::Risugamis),
 					KnownLoader::Bukkit => plugin_loaders.push(PluginLoaderMatch::Bukkit),
 					KnownLoader::Folia => plugin_loaders.push(PluginLoaderMatch::Folia),
 					KnownLoader::Spigot => plugin_loaders.push(PluginLoaderMatch::Spigot),
 					KnownLoader::Sponge => plugin_loaders.push(PluginLoaderMatch::Sponge),
 					KnownLoader::Paper => plugin_loaders.push(PluginLoaderMatch::Paper),
 					KnownLoader::Purpur => plugin_loaders.push(PluginLoaderMatch::Purpur),
+					// Skip over these versions for now
+					KnownLoader::Datapack
+					| KnownLoader::BungeeCord
+					| KnownLoader::Velocity
+					| KnownLoader::Waterfall => skip = true,
 					// We don't care about these
 					KnownLoader::Iris | KnownLoader::Optifine | KnownLoader::Minecraft => {}
 				},
 				Loader::Unknown(other) => panic!("Unknown loader {other}"),
 			}
+		}
+		if skip {
+			continue;
 		}
 
 		// Get stability
@@ -206,6 +220,10 @@ pub async fn gen_raw(
 			} else {
 				panic!("Dependency {} was not substituted", dep.project_id)
 			};
+			// Don't count none relations
+			if pkg_id == "none" {
+				continue;
+			}
 			match dep.dependency_type {
 				DependencyType::Required => {
 					if force_extensions.contains(&pkg_id) {
@@ -220,7 +238,7 @@ pub async fn gen_raw(
 				}),
 				DependencyType::Incompatible => conflicts.push(pkg_id),
 				// We don't need to do anything with embedded dependencies yet
-				DependencyType::Embedded => {}
+				DependencyType::Embedded => continue,
 			}
 		}
 
@@ -230,6 +248,12 @@ pub async fn gen_raw(
 		extensions.sort();
 		conflicts.sort();
 
+		// Content versions
+		let content_version = cleanup_version_name(&version.version_number);
+		if !content_versions.contains(&content_version) {
+			content_versions.push(content_version.clone());
+		}
+
 		let mut pkg_version = DeclarativeAddonVersion {
 			version: Some(version_name),
 			conditional_properties: DeclarativeConditionSet {
@@ -237,6 +261,7 @@ pub async fn gen_raw(
 				modloaders: Some(DeserListOrSingle::List(modloaders)),
 				plugin_loaders: Some(DeserListOrSingle::List(plugin_loaders)),
 				stability: Some(stability),
+				content_versions: Some(DeserListOrSingle::Single(content_version)),
 				..Default::default()
 			},
 			relations: DeclarativePackageRelations {
@@ -257,6 +282,22 @@ pub async fn gen_raw(
 
 		addon.versions.push(pkg_version);
 	}
+
+	// Try to sort content versions by semver if possible
+	let mut parsed_content_versions: Option<Vec<_>> = content_versions
+		.iter()
+		.map(|x| version_compare::Version::from(x))
+		.collect();
+	if let Some(parsed) = &mut parsed_content_versions {
+		parsed.sort_by(|x, y| {
+			x.partial_cmp(y)
+				.unwrap_or(std::cmp::Ordering::Equal)
+				.reverse()
+		});
+		content_versions = parsed.iter().map(ToString::to_string).collect();
+	}
+
+	props.content_versions = Some(content_versions);
 
 	let mut addon_map = HashMap::new();
 	addon_map.insert("addon".into(), addon);
@@ -279,4 +320,19 @@ fn get_supported_sides(project: &Project) -> Vec<Side> {
 		out.push(Side::Server);
 	}
 	out
+}
+
+/// Cleanup a version name to remove things like modloaders
+fn cleanup_version_name(version: &str) -> String {
+	static MODLOADER_REGEX: OnceLock<Regex> = OnceLock::new();
+	let regex = MODLOADER_REGEX.get_or_init(|| {
+		RegexBuilder::new("(-|_|\\+)?(fabric|forge|quilt)")
+			.case_insensitive(true)
+			.build()
+			.expect("Failed to create regex")
+	});
+	let version = regex.replace_all(version, "");
+	let version = version.replace("+", "-");
+
+	version
 }

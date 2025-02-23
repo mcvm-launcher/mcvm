@@ -1,0 +1,16 @@
+.ms-auth-info {
+	border-width: 1px;
+	width: 50%;
+	height: 40%;
+	position: fixed;
+	left: 25%;
+	top: 30%;
+	background-color: var(--bg);
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	justify-content: center;
+	align-items: center;
+	padding: 2rem;
+	box-sizing: border-box;
+}

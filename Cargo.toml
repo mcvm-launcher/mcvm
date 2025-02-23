@@ -1,6 +1,6 @@
 [package]
 name = "mcvm"
-version = "0.23.0"
+version = "0.24.0"
 description = "A fast, extensible, and powerful Minecraft launcher"
 keywords = ["minecraft", "launcher", "game", "mc"]
 exclude = ["/docs", "/tools"]
@@ -47,10 +47,11 @@ members = [
 	"crates/shared",
 	"crates/tools",
 	"plugins",
+	"gui/src-tauri",
 ]
 
 [features]
-default = []
+default = ["builder"]
 arc = []
 builder = []
 disable_profile_update_packages = []
@@ -76,27 +77,29 @@ color-print = "0.3.6"
 directories = "5.0.0"
 glob = "0.3.1"
 hex = "0.4.3"
-inquire = { version = "0.6.2", default_features = false, features = [
+inquire = { version = "0.6.2", default-features = false, features = [
 	"crossterm",
 ] }
 iso8601-timestamp = "0.2.17"
 itertools = "0.11.0"
 libflate = "2.1.0"
-mcvm = { path = ".", version = "0.23.0" }
-mcvm_auth = { path = "crates/auth", version = "0.5.0" }
-mcvm_core = { path = "crates/core", version = "0.7.0" }
-mcvm_mods = { path = "crates/mods", version = "0.7.0" }
-mcvm_net = { path = "crates/net", version = "0.1.0" }
-mcvm_options = { path = "crates/options", version = "0.6.0" }
-mcvm_parse = { path = "crates/parse", version = "0.15.0" }
-mcvm_pkg = { path = "crates/pkg", version = "0.14.0" }
-mcvm_plugin = { path = "crates/plugin", version = "0.3.0", default_features = false }
-mcvm_shared = { path = "crates/shared", version = "0.14.0" }
+mcvm = { path = ".", version = "0.24.0" }
+mcvm_auth = { path = "crates/auth", version = "0.6.0" }
+mcvm_core = { path = "crates/core", version = "0.8.0" }
+mcvm_mods = { path = "crates/mods", version = "0.8.0" }
+mcvm_net = { path = "crates/net", version = "0.2.0" }
+mcvm_options = { path = "crates/options", version = "0.7.0" }
+mcvm_parse = { path = "crates/parse", version = "0.16.0" }
+mcvm_pkg = { path = "crates/pkg", version = "0.15.0" }
+mcvm_plugin = { path = "crates/plugin", version = "0.4.0", default-features = false }
+mcvm_shared = { path = "crates/shared", version = "0.15.0" }
 nutype = { version = "0.4.0", features = ["serde"] }
 oauth2 = "4.4.2"
 rand = "0.8.5"
 rand_chacha = "0.3.1"
-reqwest = { version = "0.12.4", default_features = false, features = [
+rayon = "1.10.0"
+regex = "1.10.5"
+reqwest = { version = "0.12.12", default-features = false, features = [
 	"json",
 	"rustls-tls",
 ] }
@@ -112,7 +115,7 @@ shellexpand = { version = "3.0.0", features = ["path"] }
 simd-json = { version = "0.13.10", features = ["value-no-dup-keys"] }
 sys-locale = "0.3.1"
 tar = "0.4.38"
-termimad = "0.29.1"
+termimad = "0.31.1"
 thiserror = "1.0.61"
 tokio = { version = "1.37.0", features = ["rt-multi-thread"] }
 version-compare = "0.2.0"
@@ -135,6 +138,7 @@ simd-json = { workspace = true }
 sha2 = { workspace = true }
 mcvm_core = { workspace = true }
 mcvm_mods = { workspace = true }
+mcvm_net = { workspace = true }
 mcvm_parse = { workspace = true }
 mcvm_pkg = { workspace = true }
 mcvm_plugin = { workspace = true }
@@ -142,3 +146,4 @@ mcvm_shared = { workspace = true }
 shellexpand = { workspace = true }
 tokio = { workspace = true, features = ["fs"] }
 version-compare = { workspace = true }
+zip = { workspace = true }
