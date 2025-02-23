@@ -103,6 +103,7 @@ define_translations! {
 	StartImporting, "When starting to import an instance", "Importing instance '%instance' in format '%format' using plugin '%plugin'";
 	ImportPluginNoResult, "When the plugin used for instance import doesn't return anything", "Import plugin did not return a result";
 	FinishImporting, "When finishing importing an instance", "Import finished";
+	PluginNotFound, "When a plugin cannot be found", "Could not find files for plugin %plugin";
 }
 
 /// Replaces placeholders in a translated key
