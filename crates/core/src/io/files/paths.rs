@@ -44,17 +44,18 @@ impl Paths {
 
 	/// Create the directories on an existing set of paths
 	pub fn create_dirs(&self) -> anyhow::Result<()> {
-		std::fs::create_dir_all(&self.data)?;
-		std::fs::create_dir_all(self.project.cache_dir())?;
-		std::fs::create_dir_all(self.project.config_dir())?;
-		std::fs::create_dir_all(&self.internal)?;
-		std::fs::create_dir_all(&self.assets)?;
-		std::fs::create_dir_all(&self.java)?;
-		std::fs::create_dir_all(&self.jars)?;
-		std::fs::create_dir_all(&self.auth)?;
-		std::fs::create_dir_all(&self.logs)?;
-		std::fs::create_dir_all(&self.launch_logs)?;
-		std::fs::create_dir_all(&self.run)?;
+		let _ = std::fs::create_dir_all(&self.data);
+		let _ = std::fs::create_dir_all(self.project.cache_dir());
+		let _ = std::fs::create_dir_all(self.project.config_dir());
+		let _ = std::fs::create_dir_all(&self.internal);
+		let _ = std::fs::create_dir_all(&self.assets);
+		let _ = std::fs::create_dir_all(&self.java);
+		let _ = std::fs::create_dir_all(&self.jars);
+		let _ = std::fs::create_dir_all(&self.auth);
+		let _ = std::fs::create_dir_all(&self.logs);
+		let _ = std::fs::create_dir_all(&self.launch_logs);
+		let _ = std::fs::create_dir_all(&self.run);
+
 		Ok(())
 	}
 

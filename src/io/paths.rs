@@ -49,7 +49,7 @@ impl Paths {
 
 	/// Create the directories on an existing set of paths
 	pub async fn create_dirs(&self) -> anyhow::Result<()> {
-		tokio::try_join!(
+		let _ = tokio::join!(
 			tokio::fs::create_dir_all(&self.data),
 			tokio::fs::create_dir_all(self.project.cache_dir()),
 			tokio::fs::create_dir_all(self.project.config_dir()),
@@ -64,7 +64,8 @@ impl Paths {
 			tokio::fs::create_dir_all(&self.fabric_quilt),
 			tokio::fs::create_dir_all(&self.proxy),
 			tokio::fs::create_dir_all(&self.plugins),
-		)?;
+		);
+
 		self.core.create_dirs()?;
 
 		Ok(())
