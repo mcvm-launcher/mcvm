@@ -105,7 +105,7 @@ impl Plugin {
 	}
 }
 
-/// Configuration for a plugin
+/// The manifest for a plugin that describes how it works
 #[derive(Deserialize, Debug, Default)]
 #[serde(default)]
 pub struct PluginManifest {
@@ -119,6 +119,8 @@ pub struct PluginManifest {
 	pub hooks: HashMap<String, HookHandler>,
 	/// The subcommands the plugin provides
 	pub subcommands: HashMap<String, String>,
+	/// Plugins that this plugin depends on
+	pub dependencies: Vec<String>,
 	/// The protocol version of the plugin
 	pub protocol_version: Option<u16>,
 	/// Whether to disable base64 encoding in the protocol

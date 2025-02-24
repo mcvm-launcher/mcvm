@@ -64,6 +64,8 @@ impl PluginManager {
 				.context("Failed to load plugin")?;
 		}
 
+		out.check_dependencies(o);
+
 		Ok(out)
 	}
 
@@ -107,8 +109,10 @@ impl PluginManager {
 	) -> anyhow::Result<()> {
 		let custom_config = plugin.custom_config.clone();
 		let id = plugin.id.clone();
+
 		let mut inner = self.inner.lock().map_err(|x| anyhow!("{x}"))?;
 		inner.configs.push(plugin);
+
 		let mut plugin = Plugin::new(id, manifest);
 		if let Some(custom_config) = custom_config {
 			plugin.set_custom_config(custom_config)?;
@@ -244,6 +248,32 @@ impl PluginManager {
 		inner
 			.manager
 			.call_hook_on_plugin(hook, plugin_id, arg, &paths.core, o)
+	}
+
+	/// Checks plugins to make sure that their dependencies are installed, outputting a warning if any are not
+	pub fn check_dependencies(&self, o: &mut impl MCVMOutput) {
+		let inner = self.inner.lock().expect("Failed to lock mutex");
+		let ids: Vec<_> = inner
+			.manager
+			.iter_plugins()
+			.map(|x| x.get_id().clone())
+			.collect();
+
+		for plugin in inner.manager.iter_plugins() {
+			for dependency in &plugin.get_manifest().dependencies {
+				if !ids.contains(dependency) {
+					o.display(
+						MessageContents::Warning(translate!(
+							o,
+							PluginDependencyMissing,
+							"dependency" = dependency,
+							"plugin" = plugin.get_id()
+						)),
+						MessageLevel::Important,
+					);
+				}
+			}
+		}
 	}
 
 	/// Get a lock for the inner mutex
