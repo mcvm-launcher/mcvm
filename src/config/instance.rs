@@ -20,8 +20,8 @@ use crate::instance::{InstKind, Instance, InstanceStoredConfig};
 use crate::io::paths::Paths;
 
 use super::package::{PackageConfig, PackageConfigDeser, PackageConfigSource};
-use crate::plugin::PluginManager;
 use super::profile::{GameModifications, ProfileConfig};
+use crate::plugin::PluginManager;
 
 /// Configuration for an instance
 #[derive(Deserialize, Serialize, Clone)]

@@ -25,8 +25,8 @@ use mcvm_shared::Side;
 use reqwest::Client;
 
 use crate::config::instance::QuickPlay;
-use crate::plugin::PluginManager;
 use crate::io::paths::Paths;
+use crate::plugin::PluginManager;
 
 use super::update::manager::{UpdateManager, UpdateMethodResult, UpdateRequirement};
 use super::{InstKind, Instance};

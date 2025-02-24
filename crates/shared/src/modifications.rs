@@ -239,7 +239,8 @@ impl PluginLoaderMatch {
 				other,
 				ServerType::Paper
 					| ServerType::CraftBukkit
-					| ServerType::Spigot | ServerType::Glowstone
+					| ServerType::Spigot
+					| ServerType::Glowstone
 					| ServerType::Pufferfish
 					| ServerType::Purpur
 			),

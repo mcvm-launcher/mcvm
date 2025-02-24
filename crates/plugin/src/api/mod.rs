@@ -9,7 +9,8 @@ use anyhow::Context;
 use serde::de::DeserializeOwned;
 use serde::Serialize;
 
-use crate::hooks::{Hook, CONFIG_DIR_ENV, CUSTOM_CONFIG_ENV, DATA_DIR_ENV, PLUGIN_STATE_ENV};
+use crate::hook_call::{CONFIG_DIR_ENV, CUSTOM_CONFIG_ENV, DATA_DIR_ENV, PLUGIN_STATE_ENV};
+use crate::hooks::Hook;
 use crate::output::OutputAction;
 
 use self::output::PluginOutput;

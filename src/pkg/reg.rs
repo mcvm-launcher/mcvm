@@ -19,8 +19,8 @@ use tokio::task::JoinSet;
 use super::eval::{EvalData, EvalInput, Routine};
 use super::repo::{query_all, PkgRepo};
 use super::{Package, PkgContents};
-use crate::plugin::PluginManager;
 use crate::io::paths::Paths;
+use crate::plugin::PluginManager;
 
 use std::collections::HashMap;
 use std::collections::HashSet;

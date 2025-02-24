@@ -17,8 +17,8 @@ use mcvm_shared::versions::VersionInfo;
 use mcvm_shared::Side;
 use reqwest::Client;
 
-use crate::plugin::PluginManager;
 use crate::io::paths::Paths;
+use crate::plugin::PluginManager;
 use mcvm_mods::fabric_quilt::{self, FabricQuiltMeta};
 
 /// Requirements for operations that may be shared by multiple instances in a profile

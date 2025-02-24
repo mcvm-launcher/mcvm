@@ -9,7 +9,9 @@ use mcvm_core::Paths;
 use mcvm_shared::output::MCVMOutput;
 use serde::{Deserialize, Deserializer};
 
-use crate::hooks::{Hook, HookHandle};
+use crate::hook_call::HookCallArg;
+use crate::hooks::Hook;
+use crate::HookHandle;
 
 /// A plugin
 #[derive(Debug)]
@@ -61,21 +63,21 @@ impl Plugin {
 			return Ok(None);
 		};
 		match handler {
-			HookHandler::Execute { executable, args } => hook
-				.call(
-					executable,
+			HookHandler::Execute { executable, args } => {
+				let arg = HookCallArg {
+					cmd: &executable,
 					arg,
-					args,
-					self.working_dir.as_deref(),
-					!self.manifest.raw_transfer,
-					self.custom_config.clone(),
-					self.state.clone(),
+					additional_args: args,
+					working_dir: self.working_dir.as_deref(),
+					use_base64: !self.manifest.raw_transfer,
+					custom_config: self.custom_config.clone(),
+					state: self.state.clone(),
 					paths,
 					mcvm_version,
-					&self.id,
-					o,
-				)
-				.map(Some),
+					plugin_id: &self.id,
+				};
+				hook.call(arg, o).map(Some)
+			}
 			HookHandler::Constant { constant } => Ok(Some(HookHandle::constant(
 				serde_json::from_value(constant.clone())?,
 				self.id.clone(),

@@ -4,7 +4,8 @@
 //! Rust plugins for MCVM to use
 
 use anyhow::{bail, Context};
-use hooks::{Hook, HookHandle, OnLoad};
+use hook_call::HookHandle;
+use hooks::{Hook, OnLoad};
 use mcvm_core::Paths;
 use mcvm_shared::output::MCVMOutput;
 use plugin::Plugin;
@@ -12,6 +13,8 @@ use plugin::Plugin;
 /// API for Rust-based plugins to use
 #[cfg(feature = "api")]
 pub mod api;
+/// Implementation for calling hooks
+pub mod hook_call;
 /// Plugin hooks and their definitions
 pub mod hooks;
 /// Serialized output format for plugins

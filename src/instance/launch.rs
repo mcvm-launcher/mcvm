@@ -5,8 +5,9 @@ use mcvm_core::auth_crate::mc::ClientId;
 use mcvm_core::io::java::args::MemoryNum;
 use mcvm_core::io::java::install::JavaInstallationKind;
 use mcvm_core::user::UserManager;
+use mcvm_plugin::hook_call::HookHandle;
 use mcvm_plugin::hooks::{
-	HookHandle, InstanceLaunchArg, OnInstanceLaunch, OnInstanceStop, WhileInstanceLaunch,
+	InstanceLaunchArg, OnInstanceLaunch, OnInstanceStop, WhileInstanceLaunch,
 };
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::translate;
@@ -17,8 +18,8 @@ use serde::{Deserialize, Serialize};
 
 use super::update::manager::UpdateManager;
 use crate::config::instance::QuickPlay;
-use crate::plugin::PluginManager;
 use crate::io::paths::Paths;
+use crate::plugin::PluginManager;
 
 use super::Instance;
 
