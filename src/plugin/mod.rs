@@ -122,6 +122,24 @@ impl PluginManager {
 			plugin.set_working_dir(plugin_dir.to_owned());
 		}
 
+		if let Some(plugin_mcvm_version) = &plugin.get_manifest().mcvm_version {
+			if let (Some(mcvm_version), Some(plugin_mcvm_version)) = (
+				version_compare::Version::from(crate::VERSION),
+				version_compare::Version::from(&plugin_mcvm_version),
+			) {
+				if plugin_mcvm_version > mcvm_version {
+					o.display(
+						MessageContents::Warning(translate!(
+							o,
+							PluginForNewerVersion,
+							"plugin" = plugin.get_id()
+						)),
+						MessageLevel::Important,
+					);
+				}
+			}
+		}
+
 		inner.manager.add_plugin(plugin, &paths.core, o)?;
 
 		Ok(())
