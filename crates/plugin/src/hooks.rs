@@ -30,6 +30,8 @@ pub static CONFIG_DIR_ENV: &str = "MCVM_CONFIG_DIR";
 pub static PLUGIN_STATE_ENV: &str = "MCVM_PLUGIN_STATE";
 /// The environment variable for the version of MCVM
 pub static MCVM_VERSION_ENV: &str = "MCVM_VERSION";
+/// The environment variable that tells the executable it is running as a plugin
+pub static MCVM_PLUGIN_ENV: &str = "MCVM_PLUGIN";
 
 /// Trait for a hook that can be called
 pub trait Hook {
@@ -94,6 +96,7 @@ pub trait Hook {
 		if let Some(mcvm_version) = mcvm_version {
 			cmd.env(MCVM_VERSION_ENV, mcvm_version);
 		}
+		cmd.env(MCVM_PLUGIN_ENV, "1");
 		if let Some(working_dir) = working_dir {
 			cmd.current_dir(working_dir);
 		}
