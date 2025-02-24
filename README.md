@@ -33,13 +33,13 @@ In addition, MCVM has a ton of flexibility, allowing you to build your perfect l
 
 # 🚀 Getting Started
 
-To get started, view our [user guide](docs/guide/1_getting_started.md).
+To get started with MCVM, view our [user guide](https://mcvm-launcher.github.io/mcvm/docs/guide/).
 
 # ➕ More Info
 
 ### Packages
 
-**_Packages_** are a big selling point of MCVM. You just configure what packages you want on a profile or instance and all the files you need for some addon are automatically installed. The `sodium` package, for example, when installed on a profile, will add the Sodium jar file to your mods folder only on client instances.
+**_Packages_** are a big selling point of MCVM. You simply configure what packages you want on a profile or instance and all the files you need for some addon are automatically installed.
 
 #### A universal format
 
