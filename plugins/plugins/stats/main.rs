@@ -118,7 +118,11 @@ fn print_stats(ctx: HookContext<'_, Subcommand>) -> anyhow::Result<()> {
 		instance_id: String,
 	}
 
-	let total: u64 = stats.instances.values().map(|x| x.playtime).sum();
+	let total: u64 = stats
+		.instances
+		.values()
+		.map(|x| x.calculate_playtime())
+		.sum();
 	let total = format_time(total);
 	cprintln!("<s>Total playtime: <m!>{total}");
 
