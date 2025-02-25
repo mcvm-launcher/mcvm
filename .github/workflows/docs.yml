@@ -1,7 +1,7 @@
 name: Docs
 on:
   push:
-    branches: ["main"]
+    branches: ["main", "dev"]
 
 jobs:
   build-docs:
@@ -9,20 +9,20 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Install Theme
-        run: git submodule update --init --recursive
-      - name: Install Zola
-        uses: taiki-e/install-action@v2
+      - uses: actions/setup-dotnet@v1
+        name: Setup Dotnet
         with:
-          tool: zola@0.17.1
-      - name: Build Docs
-        run: cd docs && zola build --force
+          dotnet-version: 7.0.x
+      - uses: retypeapp/action-build@latest
+        name: Build Docs
+        with:
+          config: docs
       - name: Debug
-        run: pwd && ls docs/public
+        run: pwd && ls docs/.retype
       - name: Upload docs artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: docs/public
+          path: docs/.retype
   deploy-docs:
     needs: build-docs
 
@@ -41,4 +41,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-

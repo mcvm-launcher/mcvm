@@ -6,6 +6,8 @@
 /plugins/zipped_docs.zip
 /plugins/release
 /docs/public
+/docs/.retype
+/docs/retype.manifest
 
 # GUI
 /gui/target

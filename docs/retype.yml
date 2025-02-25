@@ -1,0 +1,9 @@
+input: .
+output: .retype
+url: # Add your website address here
+branding:
+  title: MCVM
+  label: &351198019 Docs
+links:
+- text: Docs
+  link: /docs
