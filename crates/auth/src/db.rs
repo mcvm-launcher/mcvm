@@ -330,6 +330,10 @@ pub struct SensitiveUserInfo {
 	pub xbox_uid: Option<String>,
 	/// The keypair of the user, if applicable
 	pub keypair: Option<Keypair>,
+	/// The Minecraft access token
+	pub access_token: Option<String>,
+	/// When the access token expires
+	pub access_token_expires: Option<u64>,
 }
 
 /// Passkey information in the database

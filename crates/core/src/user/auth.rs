@@ -2,6 +2,7 @@ use anyhow::{bail, Context};
 use mcvm_auth::RsaPrivateKey;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::translate;
+use mcvm_shared::util::utc_timestamp;
 
 use crate::net::minecraft::MinecraftUserProfile;
 use crate::Paths;
@@ -184,24 +185,25 @@ async fn update_microsoft_user_auth(
 		.await
 		.context("Failed to get full user from database")?
 	{
-		let refresh_token = RefreshToken::new(
-			sensitive
-				.refresh_token
-				.expect("Refresh token should be present in a full valid user"),
-		);
-		// Get the access token using the refresh token
-		let oauth_client =
-			auth::create_client(params.client_id).context("Failed to create OAuth client")?;
-		let token = auth::refresh_microsoft_token(&oauth_client, &refresh_token)
-			.await
-			.context("Failed to get refreshed token")?;
-
-		let token = authenticate_microsoft_user_from_token(token, params.req_client, o)
-			.await
-			.context("Failed to authenticate with refreshed token")?;
+		// See if we have a non-expired access token already stored
+		let access_token = if let (Some(access_token), Some(expiration)) =
+			(&sensitive.access_token, &sensitive.access_token_expires)
+		{
+			if utc_timestamp().unwrap_or(std::u64::MAX) < *expiration {
+				AccessToken(access_token.clone())
+			} else {
+				update_using_refresh_token(&sensitive, &params, o)
+					.await
+					.context("Failed to refresh authentication")?
+			}
+		} else {
+			update_using_refresh_token(&sensitive, &params, o)
+				.await
+				.context("Failed to refresh authentication")?
+		};
 
 		MicrosoftUserData {
-			access_token: AccessToken(token.access_token.0.clone()),
+			access_token,
 			profile: MinecraftUserProfile {
 				name: db_user.username.clone(),
 				uuid: db_user.uuid.clone(),
@@ -219,6 +221,33 @@ async fn update_microsoft_user_auth(
 	Ok(user_data)
 }
 
+/// Gets the access token using the refresh token
+async fn update_using_refresh_token(
+	sensitive: &SensitiveUserInfo,
+	params: &AuthParameters<'_>,
+	o: &mut impl MCVMOutput,
+) -> anyhow::Result<AccessToken> {
+	let refresh_token = RefreshToken::new(
+		sensitive
+			.refresh_token
+			.clone()
+			.expect("Refresh token should be present in a full valid user"),
+	);
+	// Get the access token using the refresh token
+	let oauth_client =
+		auth::create_client(params.client_id.clone()).context("Failed to create OAuth client")?;
+	let token = auth::refresh_microsoft_token(&oauth_client, &refresh_token)
+		.await
+		.context("Failed to get refreshed token")?;
+
+	let token = authenticate_microsoft_user_from_token(token, params.req_client, o)
+		.await
+		.context("Failed to authenticate with refreshed token")?;
+
+	Ok(AccessToken(token.access_token.0.clone()))
+}
+
+/// Fully reauthenticates, getting a new refresh token using a login
 async fn reauth_microsoft_user(
 	user_id: &str,
 	db: &mut AuthDatabase,
@@ -282,6 +311,9 @@ async fn reauth_microsoft_user(
 		refresh_token: auth_result.refresh_token.map(|x| x.secret().clone()),
 		xbox_uid: Some(auth_result.xbox_uid.clone()),
 		keypair: Some(certificate.key_pair.clone()),
+		access_token: Some(auth_result.access_token.0.clone()),
+		// Expires in 24 hours
+		access_token_expires: utc_timestamp().map(|x| x + 24 * 3600).ok(),
 	};
 	let db_user = DatabaseUser::new(
 		user_id.to_string(),
