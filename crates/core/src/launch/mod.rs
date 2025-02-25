@@ -10,8 +10,8 @@ mod server;
 use std::path::Path;
 
 use anyhow::Context;
-use mcvm_shared::output::MCVMOutput;
-use mcvm_shared::Side;
+use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
+use mcvm_shared::{translate, Side};
 
 use self::client::create_quick_play_args;
 use self::process::{launch_game_process, LaunchGameProcessParameters};
@@ -34,13 +34,28 @@ pub use self::process::launch_process;
 pub use self::process::{LaunchProcessParameters, LaunchProcessProperties};
 
 pub(crate) async fn launch(
-	mut params: LaunchParameters<'_>,
+	params: LaunchParameters<'_>,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<InstanceHandle> {
 	let command = params.java.get_jvm_path();
+
+	// Make sure we are authenticated
+	if let InstanceKind::Client { .. } = &params.side {
+		o.display(
+			MessageContents::StartProcess(translate!(o, StartAuthenticating)),
+			MessageLevel::Important,
+		);
+
+		params
+			.users
+			.authenticate(params.paths, params.req_client, o)
+			.await
+			.context("Failed to ensure authentication")?;
+	}
+
 	// Get side-specific launch properties
 	let props = match params.side.get_side() {
-		Side::Client => self::client::get_launch_props(&mut params, o).await,
+		Side::Client => self::client::get_launch_props(&params).await,
 		Side::Server => self::server::get_launch_props(&params),
 	}
 	.context("Failed to generate side-specific launch properties")?;

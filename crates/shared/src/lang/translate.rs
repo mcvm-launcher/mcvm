@@ -106,6 +106,7 @@ define_translations! {
 	PluginNotFound, "When a plugin cannot be found", "Could not find files for plugin %plugin";
 	PluginDependencyMissing, "When a plugin dependency is missing", "Dependency %dependency is missing for plugin %plugin";
 	PluginForNewerVersion, "When a plugin is made for a newer version of MCVM", "Plugin %plugin is made for a newer version of MCVM";
+	StartAuthenticating, "When starting authentication", "Authenticating";
 }
 
 /// Replaces placeholders in a translated key
