@@ -17,12 +17,13 @@ jobs:
         name: Build Docs
         with:
           config: docs
+        id: retype-build
       - name: Debug
-        run: pwd && ls docs/.retype
+        run: pwd && ls ${{ steps.retype-build.outputs.retype-output-path }}
       - name: Upload docs artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: docs/.retype
+          path: ${{ steps.retype-build.outputs.retype-output-path }}
   deploy-docs:
     needs: build-docs
 
