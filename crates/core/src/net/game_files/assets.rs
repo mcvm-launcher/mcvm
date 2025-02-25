@@ -163,8 +163,24 @@ pub async fn get(
 		);
 	}
 	let mut num_done = 0;
+	let mut num_failures = 0;
 	while let Some(asset) = join.join_next().await {
-		let name = asset??;
+		let Ok(name) = asset else {
+			num_failures += 1;
+			continue;
+		};
+		let name = match name {
+			Ok(name) => name,
+			Err(e) => {
+				o.display(
+					MessageContents::Error(translate!(o, AssetFailed, "error" = &e.to_string())),
+					MessageLevel::Important,
+				);
+				num_failures += 1;
+				continue;
+			}
+		};
+
 		num_done += 1;
 		o.display(
 			MessageContents::Associated(
@@ -178,6 +194,17 @@ pub async fn get(
 					"asset" = &name
 				))),
 			),
+			MessageLevel::Important,
+		);
+	}
+
+	if num_failures > 0 {
+		o.display(
+			MessageContents::Error(translate!(
+				o,
+				AssetsFailed,
+				"num" = &num_failures.to_string()
+			)),
 			MessageLevel::Important,
 		);
 	}

@@ -107,6 +107,8 @@ define_translations! {
 	PluginDependencyMissing, "When a plugin dependency is missing", "Dependency %dependency is missing for plugin %plugin";
 	PluginForNewerVersion, "When a plugin is made for a newer version of MCVM", "Plugin %plugin is made for a newer version of MCVM";
 	StartAuthenticating, "When starting authentication", "Authenticating";
+	AssetFailed, "When a single asset fails to download", "Asset failed to download:\n%error";
+	AssetsFailed, "When one or more assets fail to download", "%num assets failed to download. Minecraft may not load properly.";
 }
 
 /// Replaces placeholders in a translated key
