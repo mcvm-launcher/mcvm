@@ -115,7 +115,7 @@ Properties like `features` and `modrinth_id` can only be used in the `@propertie
 
 ### The `addon` Instruction
 
-The `addon` instruction is a bit more complex. Inside the parentheses you put a set of keys and values to configure the addon and how it is installed. The full addon config looks like this:
+The `addon` instruction is a bit more complex. Inside the parentheses you put a set of keys and values to configure the addon and how it is installed. All fields are optional except for the ID. The full addon config looks like this:
 
 ```
 addon id filename (
