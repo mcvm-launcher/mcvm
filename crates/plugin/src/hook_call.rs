@@ -8,9 +8,9 @@ use std::{
 
 use anyhow::{anyhow, bail, Context};
 use mcvm_core::Paths;
-use mcvm_shared::output::MCVMOutput;
+use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 
-use crate::{hooks::Hook, output::OutputAction};
+use crate::{hooks::Hook, output::OutputAction, plugin_debug_enabled};
 
 /// The substitution token for the plugin directory in the command
 pub static PLUGIN_DIR_TOKEN: &str = "${PLUGIN_DIR}";
@@ -95,6 +95,13 @@ where
 				serde_json::to_string(lock.deref()).context("Failed to serialize plugin state")?;
 			cmd.env(PLUGIN_STATE_ENV, state);
 		}
+	}
+
+	if plugin_debug_enabled() {
+		o.display(
+			MessageContents::Simple(format!("{cmd:?}")),
+			MessageLevel::Debug,
+		);
 	}
 
 	if H::get_takes_over() {

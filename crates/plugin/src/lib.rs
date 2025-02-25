@@ -22,6 +22,14 @@ pub mod output;
 /// Plugins
 pub mod plugin;
 
+/// Environment variable that debugs plugins when set
+pub static PLUGIN_DEBUG_ENV: &str = "MCVM_PLUGIN_DEBUG";
+
+/// Gets whether plugin debugging is enabled
+pub fn plugin_debug_enabled() -> bool {
+	std::env::var(PLUGIN_DEBUG_ENV).unwrap_or_default() == "1"
+}
+
 /// A manager for plugins that is used to call their hooks.
 /// Does not handle actually loading the plugins from files
 #[derive(Debug)]
