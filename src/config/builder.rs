@@ -182,6 +182,7 @@ impl<'parent> InstanceBuilder<'parent> {
 		let config = InstanceConfig {
 			side: Some(side),
 			name: None,
+			icon: None,
 			common: Default::default(),
 			window: Default::default(),
 		};
@@ -192,6 +193,12 @@ impl<'parent> InstanceBuilder<'parent> {
 	/// Set the name of the instance
 	pub fn name(&mut self, name: String) -> &mut Self {
 		self.config.name = Some(name);
+		self
+	}
+
+	/// Set the icon path of the instance
+	pub fn icon(&mut self, icon: String) -> &mut Self {
+		self.config.icon = Some(icon);
 		self
 	}
 

@@ -34,6 +34,10 @@ pub struct InstanceConfig {
 	#[serde(default)]
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub name: Option<String>,
+	/// A path to an icon file for this instance
+	#[serde(default)]
+	#[serde(skip_serializing_if = "Option::is_none")]
+	pub icon: Option<String>,
 	/// The common config of this instance
 	#[serde(flatten)]
 	pub common: CommonInstanceConfig,
@@ -427,6 +431,7 @@ pub fn read_instance_config(
 
 	let stored_config = InstanceStoredConfig {
 		name: config.name,
+		icon: config.icon,
 		version,
 		modifications: game_modifications,
 		launch: config.common.launch.to_options()?,

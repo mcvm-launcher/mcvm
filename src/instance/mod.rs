@@ -79,6 +79,8 @@ impl InstKind {
 pub struct InstanceStoredConfig {
 	/// The instance display name
 	pub name: Option<String>,
+	/// A path to an icon for the instance
+	pub icon: Option<String>,
 	/// The Minecraft version
 	pub version: MinecraftVersion,
 	/// Modifications to the instance
