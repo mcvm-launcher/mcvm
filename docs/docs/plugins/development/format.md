@@ -58,3 +58,6 @@ Handler that calls an executable using the hook protocol:
 ```
 - `executable`: The path to the executable to run. The token `"${PLUGIN_DIR}"` will be replaced with the path to the directory for the plugin if present, allowing you to package executables with your plugin easily.
 - `args` (Optional): Additional command-line arguments to pass when running the hook
+
+## State
+Plugins can have state managed by MCVM for the duration of the MCVM program. This allows a plugin to communicate between hooks easily. Check documentation for how to use this state.
