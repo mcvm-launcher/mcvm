@@ -8,12 +8,12 @@ use crate::config::plugin::{PluginConfig, PluginsConfig};
 use crate::io::paths::Paths;
 use anyhow::{anyhow, Context};
 use mcvm_core::io::{json_from_file, json_to_file_pretty};
-use mcvm_plugin::api::{MessageContents, MessageLevel};
 use mcvm_plugin::hook_call::HookHandle;
 use mcvm_plugin::hooks::Hook;
 use mcvm_plugin::plugin::{Plugin, PluginManifest};
 use mcvm_plugin::CorePluginManager;
 use mcvm_shared::output::MCVMOutput;
+use mcvm_shared::output::{MessageContents, MessageLevel};
 use mcvm_shared::translate;
 use std::sync::Mutex;
 
