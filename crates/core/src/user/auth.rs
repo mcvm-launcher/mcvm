@@ -185,6 +185,8 @@ async fn update_microsoft_user_auth(
 		.await
 		.context("Failed to get full user from database")?
 	{
+		let db_user = db_user.clone();
+
 		// See if we have a non-expired access token already stored
 		let access_token = if let (Some(access_token), Some(expiration)) =
 			(&sensitive.access_token, &sensitive.access_token_expires)
@@ -192,12 +194,12 @@ async fn update_microsoft_user_auth(
 			if utc_timestamp().unwrap_or(std::u64::MAX) < *expiration {
 				AccessToken(access_token.clone())
 			} else {
-				update_using_refresh_token(&sensitive, &params, o)
+				update_using_refresh_token(user_id, &sensitive, &params, &mut db, o)
 					.await
 					.context("Failed to refresh authentication")?
 			}
 		} else {
-			update_using_refresh_token(&sensitive, &params, o)
+			update_using_refresh_token(user_id, &sensitive, &params, &mut db, o)
 				.await
 				.context("Failed to refresh authentication")?
 		};
@@ -223,8 +225,10 @@ async fn update_microsoft_user_auth(
 
 /// Gets the access token using the refresh token
 async fn update_using_refresh_token(
+	user_id: &str,
 	sensitive: &SensitiveUserInfo,
 	params: &AuthParameters<'_>,
+	db: &mut AuthDatabase,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<AccessToken> {
 	let refresh_token = RefreshToken::new(
@@ -240,11 +244,28 @@ async fn update_using_refresh_token(
 		.await
 		.context("Failed to get refreshed token")?;
 
-	let token = authenticate_microsoft_user_from_token(token, params.req_client, o)
+	let auth_result = authenticate_microsoft_user_from_token(token, params.req_client, o)
 		.await
 		.context("Failed to authenticate with refreshed token")?;
 
-	Ok(AccessToken(token.access_token.0.clone()))
+	let mut db_user = db
+		.get_user(user_id)
+		.context("Failed to get user from database")?
+		.clone();
+
+	let mut sensitive = get_sensitive_info(&db_user, o)
+		.await
+		.context("Failed to get sensitive info")?;
+	sensitive.access_token = Some(auth_result.access_token.0.clone());
+	sensitive.access_token_expires = utc_timestamp().map(|x| x + 24 * 3600).ok();
+	db_user
+		.set_sensitive_info(sensitive)
+		.context("Failed to set sensitive info for user")?;
+
+	db.update_user(db_user, user_id)
+		.context("Failed to update user in database")?;
+
+	Ok(AccessToken(auth_result.access_token.0.clone()))
 }
 
 /// Fully reauthenticates, getting a new refresh token using a login
@@ -350,16 +371,34 @@ async fn get_full_user<'db>(
 	}
 
 	// Get their sensitive info
-	let sensitive = if user.has_passkey() {
+	let sensitive = get_sensitive_info(user, o)
+		.await
+		.context("Failed to get sensitive information")?;
+	if sensitive.refresh_token.is_none() {
+		return Ok(None);
+	}
+
+	Ok(Some((user, sensitive)))
+}
+
+/// Gets sensitive info from a user using their passkey
+async fn get_sensitive_info(
+	db_user: &DatabaseUser,
+	o: &mut impl MCVMOutput,
+) -> anyhow::Result<SensitiveUserInfo> {
+	let out = if db_user.has_passkey() {
 		let private_key = get_private_key(
-			user,
-			MessageContents::Simple(format!("Please enter the passkey for the user '{user_id}'")),
+			db_user,
+			MessageContents::Simple(format!(
+				"Please enter the passkey for the user '{}'",
+				db_user.id
+			)),
 			o,
 		)
 		.await
 		.context("Failed to get key")?;
 
-		let out = user
+		let out = db_user
 			.get_sensitive_info_with_key(&private_key)
 			.context("Failed to get sensitive user info using key")?;
 		o.display(
@@ -369,14 +408,12 @@ async fn get_full_user<'db>(
 
 		out
 	} else {
-		user.get_sensitive_info_no_passkey()
+		db_user
+			.get_sensitive_info_no_passkey()
 			.context("Failed to get sensitive user info without key")?
 	};
-	if sensitive.refresh_token.is_none() {
-		return Ok(None);
-	}
 
-	Ok(Some((user, sensitive)))
+	Ok(out)
 }
 
 /// Gets the user's private key with a repeating passkey prompt.

@@ -128,7 +128,7 @@ struct DatabaseContents {
 }
 
 /// A user in the database
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct DatabaseUser {
 	/// A unique ID for the user
 	pub id: String,
@@ -337,14 +337,14 @@ pub struct SensitiveUserInfo {
 }
 
 /// Passkey information in the database
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct PasskeyInfo {
 	/// The public key that was derived from the passkey, as a hex string
 	pub public_key: String,
 }
 
 /// Sensitive user data serialization format
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(untagged)]
 pub enum SensitiveUserInfoSerialized {
 	/// No info
