@@ -9,20 +9,20 @@ When you first run a command that reads from the config, a default configuration
 ```
 {
 	"users": {
-		"user": { .. }
+		"user": { ... }
 	},
-	"default_user": ..,
+	"default_user": ...,
 	"instances": {
-		"instance": { .. }
+		"instance": { ... }
 	},
 	"profiles": {
-		"profile": { .. }
+		"profile": { ... }
 	},
-	"global_profile": { .. },
+	"global_profile": { ... },
 	"instance_groups": {
-		"group": [ .. ]
+		"group": [ ... ]
 	},
-	"preferences": { .. }
+	"preferences": { ... }
 }
 ```
 
@@ -70,7 +70,7 @@ Instances are defined in the id-value format underneath the `instances` object o
 			"init": string,
 			"max": string
 		},
-		"env": { .. },
+		"env": { ... },
 		"wrapper": {
 			"cmd": string,
 			"args": [string]
@@ -93,8 +93,7 @@ Instances are defined in the id-value format underneath the `instances` object o
 		}
 	},
 	"datapack_folder": string,
-	"packages": [ .. ],
-	"preset": string
+	"packages": [ ... ]
 }
 ```
 
@@ -117,8 +116,7 @@ All fields are optional unless stated otherwise.
 - `launch.java`: The Java installation you would like to use. Can either be one of `"auto"`, `"system"`, `"adoptium"`, `"zulu"`, or `"graalvm"`, or a path to a custom Java installation. Defaults to `"auto"`, which automatically picks or downloads the best Java flavor for your system. The `"system"` setting will try to find an existing installation on your system, and will fail if it doesn't find one. If the system setting doesn't find Java even though you know it is installed, let us know with an issue. The custom Java path must have the JVM executable at `{path}/bin/java`.
 - `launch.use_log4j_config`: Whether to use Mojang's config for Log4J on the client. Defaults to false.
 - `datapack_folder`: Make MCVM install datapack type addons to this folder instead of every existing world. This provides better behavior than the default one, but requires a modification of some sort that enables global datapacks. This path is relative to the game directory of the instance (`.minecraft` or the folder where the server.properties is).
-- `packages`: Packages to install on this instance specifically. Overrides packages installed on the profile.
-- `preset`: A preset from the `instance_presets` field to base this instance on.
+- `packages`: Packages to install on this instance.
 
 ## Profiles
 
@@ -127,10 +125,10 @@ Profiles allow you to easily share configuration between instances and keep them
 ```
 "id": {
 	InstanceConfig...,
-	"packages": [ .. ] | {
-		"global": [ .. ],
-		"client": [ .. ],
-		"server": [ .. ]
+	"packages": [ ... ] | {
+		"global": [ ... ],
+		"client": [ ... ],
+		"server": [ ... ]
 	}
 }
 ```
