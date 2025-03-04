@@ -213,7 +213,7 @@ impl Lockfile {
 		}
 
 		for file in &new_files {
-			if PathBuf::from(file).exists() {
+			if PathBuf::from(file).exists() && !file.contains("mcvm_") {
 				let allow = o
 					.prompt_yes_no(
 						false,
