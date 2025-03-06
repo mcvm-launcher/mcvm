@@ -316,6 +316,9 @@ fn clear_old_logs(paths: &Paths) -> anyhow::Result<()> {
 		}
 
 		let name = x.file_name();
+		if !name.to_string_lossy().contains("log-") {
+			return None;
+		}
 		let time = x.metadata().ok()?.created().ok()?;
 
 		count += 1;
