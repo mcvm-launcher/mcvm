@@ -62,10 +62,6 @@ schema = [
 	"mcvm_core/schema",
 ]
 
-[[bin]]
-name = "man_int_fabric_core"
-path = "test/manual_integration/fabric_core.rs"
-
 [workspace.dependencies]
 anyhow = "1.0.86"
 async-trait = "0.1.73"
