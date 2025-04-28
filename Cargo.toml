@@ -109,6 +109,7 @@ serde_json = "1.0.117"
 sha2 = "0.10.8"
 shellexpand = { version = "3.0.0", features = ["path"] }
 simd-json = { version = "0.13.10", features = ["value-no-dup-keys"] }
+sysinfo = "0.34.2"
 sys-locale = "0.3.1"
 tar = "0.4.38"
 termimad = "0.31.1"
@@ -140,6 +141,7 @@ mcvm_pkg = { workspace = true }
 mcvm_plugin = { workspace = true }
 mcvm_shared = { workspace = true }
 shellexpand = { workspace = true }
+sysinfo = { workspace = true }
 tokio = { workspace = true, features = ["fs"] }
 version-compare = { workspace = true }
 zip = { workspace = true }

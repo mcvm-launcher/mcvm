@@ -6,6 +6,8 @@ pub mod create;
 pub mod launch;
 /// Managing and installing packages on an instance
 pub mod packages;
+/// Keeping track of running instance processes
+pub mod tracking;
 /// Import and export of instances to other formats
 pub mod transfer;
 /// Updating an instance

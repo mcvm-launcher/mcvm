@@ -184,4 +184,9 @@ impl InstanceHandle {
 	pub fn get_process(self) -> std::process::Child {
 		self.process
 	}
+
+	/// Gets the PID of the instance process
+	pub fn get_pid(&self) -> u32 {
+		self.process.id()
+	}
 }
