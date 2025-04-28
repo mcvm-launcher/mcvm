@@ -48,7 +48,8 @@ This hook allows you to add extra Minecraft versions to the version manifest, al
 ```
 
 ### `on_instance_setup`
-Called when an instance is being set up, for update or launch
+Called when an instance is being set up, for update or launch. Can return modifications to make to the launch parameters
+resulting from installing a certain modification
 - Argument:
 ```
 {
@@ -59,10 +60,19 @@ Called when an instance is being set up, for update or launch
 		"version": string,
 		"versions": [string]
 	},
+	"client_type": ClientType,
+	"server_type": ServerType,
 	"custom_config": {...}
 }
 ```
-- Result: None
+- Result:
+```
+{
+	"main_class_override": string | null,
+	"jar_path_override": string | null,
+	"classpath_extension": [string]
+}
+```
 
 ### `on_instance_launch`
 Called whenever an instance is launched

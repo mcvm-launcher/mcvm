@@ -7,7 +7,7 @@ use std::collections::HashSet;
 use std::fs;
 use std::path::PathBuf;
 
-use anyhow::Context;
+use anyhow::{bail, Context};
 use mcvm_core::instance::WindowResolution;
 use mcvm_core::io::java::classpath::Classpath;
 use mcvm_core::io::json_to_file;
@@ -76,7 +76,7 @@ impl Instance {
 		client: &Client,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<UpdateMethodResult> {
-		// Start by setting up custom changes
+		// Start by setting up side-specific stuff
 		let result = match &self.kind {
 			InstKind::Client { .. } => {
 				o.display(
@@ -111,13 +111,34 @@ impl Instance {
 			side: Some(self.get_side()),
 			game_dir: self.dirs.get().game_dir.to_string_lossy().to_string(),
 			version_info: manager.version_info.get_clone(),
+			client_type: self.config.modifications.client_type(),
+			server_type: self.config.modifications.server_type(),
 			custom_config: self.config.plugin_config.clone(),
 		};
 		let results = plugins
 			.call_hook(OnInstanceSetup, &arg, paths, o)
 			.context("Failed to call instance setup hook")?;
 		for result in results {
-			result.result(o)?;
+			let result = result.result(o)?;
+			self.modification_data
+				.classpath_extension
+				.add_multiple(result.classpath_extension.iter());
+
+			if let Some(main_class) = result.main_class_override {
+				if self.modification_data.main_class_override.is_none() {
+					self.modification_data.main_class_override = Some(main_class);
+				} else {
+					bail!("Multiple plugins overwrote the main class");
+				}
+			}
+
+			if let Some(jar_path) = result.jar_path_override {
+				if self.modification_data.jar_path_override.is_none() {
+					self.modification_data.jar_path_override = Some(PathBuf::from(jar_path));
+				} else {
+					bail!("Multiple plugins overwrote the JAR path");
+				}
+			}
 		}
 
 		// Make the core instance

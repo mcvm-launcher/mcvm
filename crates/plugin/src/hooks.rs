@@ -113,7 +113,7 @@ def_hook!(
 	"on_instance_setup",
 	"Hook for doing work when setting up an instance for update or launch",
 	OnInstanceSetupArg,
-	(),
+	OnInstanceSetupResult,
 );
 
 /// Argument for the OnInstanceSetup hook
@@ -128,8 +128,24 @@ pub struct OnInstanceSetupArg {
 	pub game_dir: String,
 	/// Version info for the instance
 	pub version_info: VersionInfo,
+	/// The client type of the instance. Doesn't apply if the instance is a server
+	pub client_type: ClientType,
+	/// The server type of the instance. Doesn't apply if the instance is a client
+	pub server_type: ServerType,
 	/// Custom config on the instance
 	pub custom_config: serde_json::Map<String, serde_json::Value>,
+}
+
+/// Result from the OnInstanceSetup hook
+#[derive(Serialize, Deserialize, Default)]
+#[serde(default)]
+pub struct OnInstanceSetupResult {
+	/// Optional override for the main class
+	pub main_class_override: Option<String>,
+	/// Optional override for the path to the game JAR file
+	pub jar_path_override: Option<String>,
+	/// Optional extension to the classpath, as a list of paths
+	pub classpath_extension: Vec<String>,
 }
 
 def_hook!(

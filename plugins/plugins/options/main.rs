@@ -7,7 +7,7 @@ use mcvm_options::{
 };
 use mcvm_plugin::{
 	api::{CustomPlugin, HookContext},
-	hooks::Hook,
+	hooks::{Hook, OnInstanceSetupResult},
 };
 use mcvm_shared::Side;
 
@@ -90,7 +90,7 @@ fn main() -> anyhow::Result<()> {
 			}
 		}
 
-		Ok(())
+		Ok(OnInstanceSetupResult::default())
 	})?;
 
 	Ok(())

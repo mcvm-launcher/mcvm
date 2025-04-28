@@ -54,6 +54,13 @@ impl Classpath {
 		Ok(())
 	}
 
+	/// Adds multiple path strings to the classpath
+	pub fn add_multiple<I: AsRef<str>>(&mut self, strings: impl Iterator<Item = I>) {
+		for string in strings {
+			self.add(string.as_ref());
+		}
+	}
+
 	/// Extends the classpath with another classpath
 	pub fn extend(&mut self, other: Classpath) {
 		self.add(&other.string)
