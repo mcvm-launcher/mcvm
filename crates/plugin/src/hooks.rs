@@ -368,3 +368,20 @@ pub struct ImportInstanceResult {
 	/// The server type of the new instance
 	pub server_type: Option<ServerType>,
 }
+
+def_hook!(
+	AddSupportedGameModifications,
+	"add_supported_game_modifications",
+	"Tell MCVM that you support installing extra game modifications",
+	(),
+	SupportedGameModifications,
+);
+
+/// Game modifications with added support by a plugin
+#[derive(Serialize, Deserialize, Default)]
+pub struct SupportedGameModifications {
+	/// Client types that this plugin adds support for
+	pub client_types: Vec<ClientType>,
+	/// Server types that this plugin adds support for
+	pub server_types: Vec<ServerType>,
+}

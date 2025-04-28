@@ -182,7 +182,7 @@ async fn get_paper_properties<'a, O: MCVMOutput>(
 	mc_version: &str,
 	ctx: &mut InstanceUpdateContext<'a, O>,
 ) -> anyhow::Result<Option<(u16, String)>> {
-	let out = if let ServerType::Paper = instance.config.modifications.server_type {
+	let out = if let ServerType::Paper = instance.config.modifications.server_type() {
 		let build_num = paper::get_newest_build(paper::Mode::Paper, mc_version, ctx.client)
 			.await
 			.context("Failed to get the newest Paper build number")?;

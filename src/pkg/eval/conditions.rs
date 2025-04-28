@@ -33,7 +33,7 @@ pub fn eval_condition(condition: &ConditionKind, eval: &EvalData) -> anyhow::Res
 		)),
 		ConditionKind::PluginLoader(loader) => Ok(loader
 			.get()
-			.matches(&eval.input.constants.modifications.server_type)
+			.matches(&eval.input.constants.modifications.server_type())
 			&& matches!(eval.input.params.side, Side::Server)),
 		ConditionKind::Feature(feature) => Ok(eval
 			.input

@@ -36,7 +36,7 @@ impl Instance {
 			Classpath::new()
 		};
 
-		match self.config.modifications.server_type {
+		match self.config.modifications.server_type() {
 			ServerType::Paper => {
 				let result = self
 					.create_paper_folia(paper::Mode::Paper, manager, paths, client, o)

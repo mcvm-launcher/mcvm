@@ -202,7 +202,7 @@ async fn info(data: &mut CmdData<'_>, id: &str) -> anyhow::Result<()> {
 		}
 		cprintln!(
 			"<s>Client:</s> <g>{}",
-			instance.get_config().modifications.client_type
+			instance.get_config().modifications.client_type()
 		);
 		print_indent();
 		if icons_enabled() {
@@ -210,7 +210,7 @@ async fn info(data: &mut CmdData<'_>, id: &str) -> anyhow::Result<()> {
 		}
 		cprintln!(
 			"<s>Server:</s> <g>{}",
-			instance.get_config().modifications.server_type
+			instance.get_config().modifications.server_type()
 		);
 	}
 

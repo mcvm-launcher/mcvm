@@ -246,6 +246,18 @@ Hook called on a specific plugin to import an instance using one of the formats 
 }
 ```
 
+### `add_supported_game_modifications`
+Adds extra game modifications to the list of supported ones for installation. This should be done
+if you plan to install these game modifications with your plugin.
+- Argument: None
+- Result:
+```
+{
+	"client_types": [ClientType],
+	"server_types": [ServerType]
+}
+```
+
 ## Common Types
 ### InstanceLaunchArg
 ```
