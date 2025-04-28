@@ -1,4 +1,5 @@
 use std::fmt::Display;
+use std::path::Path;
 
 use anyhow::{anyhow, Context};
 use mcvm_core::io::java::classpath::Classpath;
@@ -7,7 +8,7 @@ use mcvm_core::io::json_from_file;
 use mcvm_core::io::update::UpdateManager;
 use mcvm_core::io::{files, json_to_file};
 use mcvm_core::net::download;
-use mcvm_core::{MCVMCore, Paths};
+use mcvm_core::MCVMCore;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel, OutputProcess};
 use mcvm_shared::versions::VersionInfo;
 use mcvm_shared::Side;
@@ -52,7 +53,7 @@ pub async fn install_from_core(
 	let meta = get_meta(
 		&version_info.version,
 		&mode,
-		core.get_paths(),
+		&core.get_paths().internal,
 		core.get_update_manager(),
 		core.get_client(),
 	)
@@ -60,7 +61,7 @@ pub async fn install_from_core(
 	.context("Failed to download Fabric/Quilt metadata")?;
 	download_files(
 		&meta,
-		core.get_paths(),
+		&core.get_paths().libraries,
 		mode,
 		core.get_update_manager(),
 		core.get_client(),
@@ -71,7 +72,7 @@ pub async fn install_from_core(
 
 	download_side_specific_files(
 		&meta,
-		core.get_paths(),
+		&core.get_paths().libraries,
 		side,
 		core.get_update_manager(),
 		core.get_client(),
@@ -79,8 +80,8 @@ pub async fn install_from_core(
 	.await
 	.context("Failed to download {mode} files for {side}")?;
 
-	let classpath =
-		get_classpath(&meta, core.get_paths(), side).context("Failed to get classpath")?;
+	let classpath = get_classpath(&meta, &core.get_paths().libraries, side)
+		.context("Failed to get classpath")?;
 
 	Ok((
 		classpath,
@@ -171,7 +172,7 @@ impl MainClass {
 pub async fn get_meta(
 	version: &str,
 	mode: &Mode,
-	paths: &Paths,
+	internal_dir: &Path,
 	manager: &UpdateManager,
 	client: &Client,
 ) -> anyhow::Result<FabricQuiltMeta> {
@@ -180,8 +181,7 @@ pub async fn get_meta(
 		Mode::Quilt => format!("https://meta.quiltmc.org/v3/versions/loader/{version}"),
 	};
 	let mode_lowercase = mode.to_string().to_lowercase();
-	let path = paths
-		.internal
+	let path = internal_dir
 		.join("fabric_quilt")
 		.join(format!("meta_{mode_lowercase}_{version}.json"));
 	files::create_leading_dirs_async(&path)
@@ -212,7 +212,7 @@ pub async fn get_meta(
 /// Download files for Quilt/Fabric that are common for both client and server
 pub async fn download_files(
 	meta: &FabricQuiltMeta,
-	paths: &Paths,
+	libraries_dir: &Path,
 	mode: Mode,
 	manager: &UpdateManager,
 	client: &Client,
@@ -227,15 +227,14 @@ pub async fn download_files(
 	);
 
 	let libs = meta.launcher_meta.libraries.common.clone();
-	let paths_clone = paths.clone();
+	let libraries_dir_clone = libraries_dir.to_path_buf();
 
 	let client_clone = client.clone();
-	let common_task =
-		tokio::spawn(
-			async move { download_libraries(&libs, &paths_clone, &client_clone, force).await },
-		);
+	let common_task = tokio::spawn(async move {
+		download_libraries(&libs, &libraries_dir_clone, &client_clone, force).await
+	});
 
-	let paths_clone = paths.clone();
+	let libraries_dir_clone = libraries_dir.to_path_buf();
 	let loader_clone = meta.loader.clone();
 	let intermediary_clone = meta.intermediary.clone();
 	let loader_url = match mode {
@@ -248,14 +247,14 @@ pub async fn download_files(
 		let task1 = download_main_library(
 			&loader_clone,
 			loader_url,
-			&paths_clone,
+			&libraries_dir_clone,
 			&client_clone,
 			force,
 		);
 		let task2 = download_main_library(
 			&intermediary_clone,
 			"https://maven.fabricmc.net/",
-			&paths_clone,
+			&libraries_dir_clone,
 			&client_clone,
 			force,
 		);
@@ -280,7 +279,7 @@ pub async fn download_files(
 /// Download files for Quilt/Fabric that are side-specific
 pub async fn download_side_specific_files(
 	meta: &FabricQuiltMeta,
-	paths: &Paths,
+	libraries_dir: &Path,
 	side: Side,
 	manager: &UpdateManager,
 	client: &Client,
@@ -290,7 +289,7 @@ pub async fn download_side_specific_files(
 		Side::Server => &meta.launcher_meta.libraries.server,
 	};
 
-	download_libraries(libs, paths, client, manager.force_reinstall()).await?;
+	download_libraries(libs, libraries_dir, client, manager.force_reinstall()).await?;
 
 	Ok(())
 }
@@ -315,7 +314,7 @@ fn get_lib_path(name: &str) -> Option<String> {
 /// Download all Fabric/Quilt libraries. Returns the resulting classpath.
 async fn download_libraries(
 	libs: &[Library],
-	paths: &Paths,
+	libraries_dir: &Path,
 	client: &Client,
 	force: bool,
 ) -> anyhow::Result<Classpath> {
@@ -324,7 +323,7 @@ async fn download_libraries(
 	for lib in libs.iter() {
 		let path = get_lib_path(&lib.name);
 		if let Some(path) = path {
-			let lib_path = paths.libraries.join(&path);
+			let lib_path = libraries_dir.join(&path);
 			classpath.add_path(&lib_path)?;
 			if !force && lib_path.exists() {
 				continue;
@@ -354,12 +353,12 @@ async fn download_libraries(
 async fn download_main_library(
 	lib: &MainLibrary,
 	url: &str,
-	paths: &Paths,
+	libraries_dir: &Path,
 	client: &Client,
 	force: bool,
 ) -> anyhow::Result<()> {
 	let path = get_lib_path(&lib.maven).expect("Expected a valid path");
-	let lib_path = paths.libraries.join(&path);
+	let lib_path = libraries_dir.join(&path);
 	if !force && lib_path.exists() {
 		return Ok(());
 	}
@@ -373,13 +372,13 @@ async fn download_main_library(
 }
 
 /// Get the classpath of a list of libraries
-fn get_lib_list_classpath(libs: &[Library], paths: &Paths) -> anyhow::Result<Classpath> {
+fn get_lib_list_classpath(libs: &[Library], libraries_dir: &Path) -> anyhow::Result<Classpath> {
 	let mut out = Classpath::new();
 
 	for lib in libs.iter() {
 		let path = get_lib_path(&lib.name);
 		if let Some(path) = path {
-			let lib_path = paths.libraries.join(&path);
+			let lib_path = libraries_dir.join(&path);
 			out.add_path(&lib_path)?;
 		}
 	}
@@ -390,14 +389,14 @@ fn get_lib_list_classpath(libs: &[Library], paths: &Paths) -> anyhow::Result<Cla
 /// Get the classpath for Quilt/Fabric
 pub fn get_classpath(
 	meta: &FabricQuiltMeta,
-	paths: &Paths,
+	libraries_dir: &Path,
 	side: Side,
 ) -> anyhow::Result<Classpath> {
 	let mut out = Classpath::new();
 
 	out.extend(get_lib_list_classpath(
 		&meta.launcher_meta.libraries.common,
-		paths,
+		libraries_dir,
 	)?);
 
 	let side_libs = match side {
@@ -405,13 +404,13 @@ pub fn get_classpath(
 		Side::Server => &meta.launcher_meta.libraries.server,
 	};
 
-	out.extend(get_lib_list_classpath(side_libs, paths)?);
+	out.extend(get_lib_list_classpath(side_libs, libraries_dir)?);
 
 	let path = get_lib_path(&meta.loader.maven).expect("Expected a valid path");
-	out.add_path(&paths.libraries.join(path))?;
+	out.add_path(&libraries_dir.join(path))?;
 
 	let path = get_lib_path(&meta.intermediary.maven).expect("Expected a valid path");
-	out.add_path(&paths.libraries.join(path))?;
+	out.add_path(&libraries_dir.join(path))?;
 
 	Ok(out)
 }

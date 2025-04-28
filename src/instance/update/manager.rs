@@ -285,7 +285,7 @@ impl UpdateManager {
 						let meta = fabric_quilt::get_meta(
 							&version_info.version,
 							mode,
-							&paths.core,
+							&paths.core.internal,
 							core.get_update_manager(),
 							client,
 						)
@@ -293,7 +293,7 @@ impl UpdateManager {
 						.context("Failed to download Fabric/Quilt metadata")?;
 						fabric_quilt::download_files(
 							&meta,
-							&paths.core,
+							&paths.core.libraries,
 							*mode,
 							core.get_update_manager(),
 							client,
@@ -306,7 +306,7 @@ impl UpdateManager {
 
 					fabric_quilt::download_side_specific_files(
 						self.fq_meta.get(),
-						&paths.core,
+						&paths.core.libraries,
 						*side,
 						core.get_update_manager(),
 						client,
