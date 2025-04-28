@@ -9,8 +9,8 @@ use super::super::update::manager::{UpdateManager, UpdateMethodResult};
 use super::{InstKind, Instance};
 
 impl Instance {
-	/// Create a client
-	pub async fn create_client(
+	/// Set up data for a client
+	pub async fn setup_client(
 		&mut self,
 		manager: &UpdateManager,
 		paths: &Paths,

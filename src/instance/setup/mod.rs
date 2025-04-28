@@ -66,8 +66,8 @@ impl Instance {
 		out
 	}
 
-	/// Create the data for the instance.
-	pub async fn create<'core>(
+	/// Setup the data and folders for the instance, preparing it for launch
+	pub async fn setup<'core>(
 		&mut self,
 		manager: &'core mut UpdateManager,
 		plugins: &PluginManager,
@@ -85,7 +85,7 @@ impl Instance {
 				);
 				o.start_section();
 				let result = self
-					.create_client(manager, paths, users)
+					.setup_client(manager, paths, users)
 					.await
 					.context("Failed to create client")?;
 				Ok::<_, anyhow::Error>(result)
@@ -97,7 +97,7 @@ impl Instance {
 				);
 				o.start_section();
 				let result = self
-					.create_server(manager, paths, client, o)
+					.setup_server(manager, paths, client, o)
 					.await
 					.context("Failed to create server")?;
 				Ok(result)

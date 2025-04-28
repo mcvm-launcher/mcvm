@@ -95,7 +95,7 @@ impl Instance {
 			.finish(ctx.paths)
 			.context("Failed to finish using lockfile")?;
 
-		self.create(
+		self.setup(
 			&mut manager,
 			ctx.plugins,
 			ctx.paths,

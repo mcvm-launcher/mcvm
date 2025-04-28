@@ -12,8 +12,8 @@ use super::super::update::manager::{UpdateManager, UpdateMethodResult};
 use super::{InstKind, Instance};
 
 impl Instance {
-	/// Create a server
-	pub async fn create_server(
+	/// Set up data for a server
+	pub async fn setup_server(
 		&mut self,
 		manager: &UpdateManager,
 		paths: &Paths,

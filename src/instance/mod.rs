@@ -1,7 +1,7 @@
 /// Addon-related functions for instances
 mod addons;
-/// Creation of instance contents
-pub mod create;
+/// Setup of instance contents
+pub mod setup;
 /// Launching an instance
 pub mod launch;
 /// Managing and installing packages on an instance
@@ -18,7 +18,7 @@ use mcvm_shared::later::Later;
 use mcvm_shared::pkg::PackageStability;
 use mcvm_shared::Side;
 
-use self::create::{InstanceDirs, ModificationData};
+use self::setup::{InstanceDirs, ModificationData};
 use self::launch::LaunchOptions;
 
 use super::config::instance::ClientWindowConfig;
