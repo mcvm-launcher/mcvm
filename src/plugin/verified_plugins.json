@@ -64,5 +64,11 @@
 		"github_owner": "mcvm-launcher",
 		"github_repo": "mcvm",
 		"description": "Import and export MCVM instances"
+	},
+	"fabric_quilt": {
+		"id": "fabric_quilt",
+		"github_owner": "mcvm-launcher",
+		"github_repo": "mcvm",
+		"description": "Install Fabric and Quilt instances"
 	}
 }

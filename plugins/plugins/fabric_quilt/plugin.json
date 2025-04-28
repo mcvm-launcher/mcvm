@@ -1,0 +1,9 @@
+{
+	"name": "Fabric/Quilt",
+	"description": "Install Fabric and Quilt instances",
+	"hooks": {
+		"on_instance_setup": {
+			"executable": "${PLUGIN_DIR}/mcvm_plugin_fabric_quilt"
+		}
+	}
+}

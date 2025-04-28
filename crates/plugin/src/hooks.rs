@@ -134,6 +134,8 @@ pub struct OnInstanceSetupArg {
 	pub server_type: ServerType,
 	/// Custom config on the instance
 	pub custom_config: serde_json::Map<String, serde_json::Value>,
+	/// Path to the MCVM internal dir
+	pub internal_dir: String,
 }
 
 /// Result from the OnInstanceSetup hook

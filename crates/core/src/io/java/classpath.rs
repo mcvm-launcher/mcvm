@@ -71,6 +71,11 @@ impl Classpath {
 		self.string.clone()
 	}
 
+	/// Split the classpath into a vector of strings
+	pub fn get_entries(&self) -> Vec<&str> {
+		self.string.split(CLASSPATH_SEP).collect()
+	}
+
 	/// Split the classpath into a vector of paths
 	pub fn get_paths(&self) -> Vec<PathBuf> {
 		self.string

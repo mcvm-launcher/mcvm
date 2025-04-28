@@ -46,6 +46,10 @@ path = "plugins/gen_pkg/main.rs"
 name = "mcvm_plugin_mcvm_transfer"
 path = "plugins/mcvm_transfer/main.rs"
 
+[[bin]]
+name = "mcvm_plugin_fabric_quilt"
+path = "plugins/fabric_quilt/main.rs"
+
 [dependencies]
 anyhow = { workspace = true }
 clap = { workspace = true }
@@ -55,10 +59,11 @@ iso8601-timestamp = { workspace = true }
 itertools = { workspace = true }
 mcvm = { workspace = true }
 mcvm_core = { workspace = true }
+mcvm_mods = { workspace = true }
 mcvm_net = { workspace = true }
+mcvm_options = { workspace = true }
 mcvm_plugin = { workspace = true, features = ["api"] }
 mcvm_shared = { workspace = true }
-mcvm_options = { workspace = true }
 rand = { workspace = true }
 regex = { workspace = true }
 serde = { workspace = true }
