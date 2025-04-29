@@ -112,6 +112,7 @@ impl Instance {
 		let current_game_mod_version = lock
 			.get_instance(&self.id)
 			.and_then(|x| x.game_modification_version.clone());
+		lock.ensure_instance_created(&self.id, &manager.version_info.get().version);
 
 		let arg = OnInstanceSetupArg {
 			id: self.id.to_string(),
@@ -158,7 +159,6 @@ impl Instance {
 				if game_mod_version_set {
 					bail!("Multiple plugins attempted to modify the game modification version");
 				}
-				lock.ensure_instance_created(&self.id, &manager.version_info.get().version);
 				lock.update_instance_game_modification_version(
 					&self.id,
 					Some(game_modification_version),
@@ -167,6 +167,14 @@ impl Instance {
 				game_mod_version_set = true;
 			}
 		}
+
+		// Update the game modifications
+		lock.update_instance_game_modifications(
+			&self.id,
+			self.config.modifications.client_type(),
+			self.config.modifications.server_type(),
+		)
+		.expect("Instance should exist");
 
 		lock.finish(paths)
 			.context("Failed to finish using lockfile")?;

@@ -4,6 +4,7 @@ use std::path::PathBuf;
 
 use anyhow::{anyhow, bail, Context};
 use mcvm_core::io::{json_from_file, json_to_file_pretty};
+use mcvm_shared::modifications::{ClientType, ServerType};
 use mcvm_shared::output::{MCVMOutput, MessageContents};
 use mcvm_shared::translate;
 use serde::{Deserialize, Serialize};
@@ -33,6 +34,8 @@ struct LockfileContents {
 pub(crate) struct LockfileInstance {
 	pub(crate) version: String,
 	pub(crate) game_modification_version: Option<String>,
+	pub(crate) client_type: ClientType,
+	pub(crate) server_type: ServerType,
 	pub(crate) paper_build: Option<u16>,
 }
 
@@ -284,6 +287,8 @@ impl Lockfile {
 				LockfileInstance {
 					version: version.to_owned(),
 					game_modification_version: None,
+					client_type: ClientType::Vanilla,
+					server_type: ServerType::Vanilla,
 					paper_build: None,
 				},
 			);
@@ -300,9 +305,27 @@ impl Lockfile {
 				LockfileInstance {
 					version: version.to_string(),
 					game_modification_version: None,
+					client_type: ClientType::Vanilla,
+					server_type: ServerType::Vanilla,
 					paper_build: None,
 				},
 			);
+		}
+	}
+
+	/// Updates the game modifications of an instance
+	pub fn update_instance_game_modifications(
+		&mut self,
+		instance: &str,
+		client_type: ClientType,
+		server_type: ServerType,
+	) -> anyhow::Result<()> {
+		if let Some(instance) = self.contents.instances.get_mut(instance) {
+			instance.client_type = client_type;
+			instance.server_type = server_type;
+			Ok(())
+		} else {
+			bail!("Instance {instance} does not exist")
 		}
 	}
 
