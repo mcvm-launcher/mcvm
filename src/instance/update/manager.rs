@@ -161,10 +161,6 @@ impl UpdateManager {
 			.context("Failed to get version")?;
 		let version_info = version.get_version_info();
 
-		self.update_fabric_quilt(&version_info, paths, client, o)
-			.await
-			.context("Failed to update Fabric/Quilt")?;
-
 		self.version_info.fill(version_info);
 
 		Ok(())
@@ -253,71 +249,6 @@ impl UpdateManager {
 			.context("Failed to get core version")?;
 
 		Ok(version)
-	}
-
-	/// Update Fabric or Quilt if it is required
-	async fn update_fabric_quilt(
-		&mut self,
-		version_info: &VersionInfo,
-		paths: &Paths,
-		client: &Client,
-		o: &mut impl MCVMOutput,
-	) -> anyhow::Result<()> {
-		if self.fq_meta.is_full() {
-			return Ok(());
-		}
-
-		let core = self.core.get();
-
-		// Check if we need to update
-		let required = matches!(
-			self.requirements
-				.iter()
-				.find(|x| matches!(x, UpdateRequirement::FabricQuilt(..))),
-			Some(..)
-		);
-
-		// Update Fabric / Quilt
-		if required {
-			for req in self.requirements.iter() {
-				if let UpdateRequirement::FabricQuilt(mode, side) = req {
-					if self.fq_meta.is_empty() {
-						let meta = fabric_quilt::get_meta(
-							&version_info.version,
-							mode,
-							&paths.core.internal,
-							core.get_update_manager(),
-							client,
-						)
-						.await
-						.context("Failed to download Fabric/Quilt metadata")?;
-						fabric_quilt::download_files(
-							&meta,
-							&paths.core.libraries,
-							*mode,
-							core.get_update_manager(),
-							client,
-							o,
-						)
-						.await
-						.context("Failed to download common Fabric/Quilt files")?;
-						self.fq_meta.fill(meta);
-					}
-
-					fabric_quilt::download_side_specific_files(
-						self.fq_meta.get(),
-						&paths.core.libraries,
-						*side,
-						core.get_update_manager(),
-						client,
-					)
-					.await
-					.context("Failed to download {mode} files for {side}")?;
-				}
-			}
-		}
-
-		Ok(())
 	}
 }
 

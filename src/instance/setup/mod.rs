@@ -85,7 +85,7 @@ impl Instance {
 				);
 				o.start_section();
 				let result = self
-					.setup_client(manager, paths, users)
+					.setup_client(paths, users)
 					.await
 					.context("Failed to create client")?;
 				Ok::<_, anyhow::Error>(result)
@@ -269,24 +269,6 @@ impl Instance {
 		}
 
 		Ok(())
-	}
-
-	fn get_fabric_quilt(
-		&mut self,
-		paths: &Paths,
-		manager: &UpdateManager,
-	) -> anyhow::Result<Classpath> {
-		let meta = manager.fq_meta.get();
-		let classpath =
-			fabric_quilt::get_classpath(meta, &paths.core.libraries, self.kind.to_side())?;
-		self.modification_data.main_class_override = Some(
-			meta.launcher_meta
-				.main_class
-				.get_main_class_string(self.kind.to_side())
-				.to_string(),
-		);
-
-		Ok(classpath)
 	}
 
 	/// Create a keypair file in the instance

@@ -1,8 +1,7 @@
 use anyhow::Context;
-use mcvm_core::io::java::classpath::Classpath;
 use mcvm_mods::paper;
 use mcvm_mods::sponge;
-use mcvm_shared::modifications::{Modloader, ServerType};
+use mcvm_shared::modifications::ServerType;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel, OutputProcess};
 use reqwest::Client;
 
@@ -25,16 +24,6 @@ impl Instance {
 		let mut out = UpdateMethodResult::new();
 
 		self.ensure_dirs(paths)?;
-
-		// Initialize the classpath based on the modifications we are using
-		let classpath = if let Modloader::Fabric | Modloader::Quilt =
-			self.config.modifications.get_modloader(self.kind.to_side())
-		{
-			self.get_fabric_quilt(paths, manager)
-				.context("Failed to get Fabric/Quilt")?
-		} else {
-			Classpath::new()
-		};
 
 		match self.config.modifications.server_type() {
 			ServerType::Paper => {
@@ -60,8 +49,6 @@ impl Instance {
 			}
 			_ => {}
 		}
-
-		self.modification_data.classpath_extension = classpath;
 
 		Ok(out)
 	}

@@ -304,10 +304,7 @@ impl GameModifications {
 
 /// Check if a client type can be installed by MCVM
 pub fn can_install_client_type(client_type: &ClientType) -> bool {
-	matches!(
-		client_type,
-		ClientType::None | ClientType::Vanilla | ClientType::Fabric | ClientType::Quilt
-	)
+	matches!(client_type, ClientType::None | ClientType::Vanilla)
 }
 
 /// Check if a server type can be installed by MCVM
@@ -319,8 +316,6 @@ pub fn can_install_server_type(server_type: &ServerType) -> bool {
 			| ServerType::Paper
 			| ServerType::Folia
 			| ServerType::Sponge
-			| ServerType::Fabric
-			| ServerType::Quilt
 	)
 }
 
