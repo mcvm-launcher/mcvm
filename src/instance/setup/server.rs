@@ -56,8 +56,8 @@ impl Instance {
 	) -> anyhow::Result<UpdateMethodResult> {
 		let version = &manager.version_info.get().version;
 
-		let process = OutputProcess::new(o);
-		process.0.display(
+		let mut process = OutputProcess::new(o);
+		process.display(
 			MessageContents::StartProcess("Checking for {mode} updates".into()),
 			MessageLevel::Important,
 		);
@@ -70,12 +70,12 @@ impl Instance {
 			.context("Failed to get the {mode} file name")?;
 		let paper_jar_path = paper::get_local_jar_path(mode, version, &paths.core);
 		if !manager.should_update_file(&paper_jar_path) {
-			process.0.display(
+			process.display(
 				MessageContents::Success(format!("{mode} is up to date")),
 				MessageLevel::Important,
 			);
 		} else {
-			process.0.display(
+			process.display(
 				MessageContents::StartProcess("Downloading {mode} server".into()),
 				MessageLevel::Important,
 			);
@@ -89,7 +89,7 @@ impl Instance {
 			)
 			.await
 			.context("Failed to download {mode} server JAR")?;
-			process.0.display(
+			process.display(
 				MessageContents::Success("{mode} server downloaded".into()),
 				MessageLevel::Important,
 			);

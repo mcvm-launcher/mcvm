@@ -41,9 +41,9 @@ pub mod game_jar {
 			return Ok(());
 		}
 
-		let process = OutputProcess::new(o);
-		let download_message = translate!(process.0, StartDownloadingGameJar, "side" = &side_str);
-		process.0.display(
+		let mut process = OutputProcess::new(o);
+		let download_message = translate!(process, StartDownloadingGameJar, "side" = &side_str);
+		process.display(
 			MessageContents::StartProcess(download_message.clone()),
 			MessageLevel::Important,
 		);
@@ -56,7 +56,7 @@ pub mod game_jar {
 		let mut download = ProgressiveDownload::file(&download.url, path, client).await?;
 		while !download.is_finished() {
 			download.poll_download().await?;
-			process.0.display(
+			process.display(
 				MessageContents::Associated(
 					Box::new(download.get_progress()),
 					Box::new(MessageContents::Simple(download_message.clone())),
@@ -67,14 +67,12 @@ pub mod game_jar {
 
 		let side_str = cap_first_letter(&side_str);
 
-		process.0.display(
-			MessageContents::Success(translate!(
-				process.0,
-				FinishDownloadingGameJar,
-				"side" = &side_str
-			)),
-			MessageLevel::Important,
-		);
+		let message = MessageContents::Success(translate!(
+			process,
+			FinishDownloadingGameJar,
+			"side" = &side_str
+		));
+		process.display(message, MessageLevel::Important);
 
 		Ok(())
 	}

@@ -220,8 +220,8 @@ pub async fn download_files(
 ) -> anyhow::Result<()> {
 	let force = manager.force_reinstall();
 
-	let process = OutputProcess::new(o);
-	process.0.display(
+	let mut process = OutputProcess::new(o);
+	process.display(
 		MessageContents::StartProcess(format!("Downloading {mode}")),
 		MessageLevel::Important,
 	);
@@ -268,7 +268,7 @@ pub async fn download_files(
 	res1.with_context(|| format!("Failed to download {mode} common libraries"))?;
 	res2.with_context(|| format!("Failed to download {mode} main libraries"))?;
 
-	process.0.display(
+	process.display(
 		MessageContents::Success(format!("{mode} downloaded")),
 		MessageLevel::Important,
 	);

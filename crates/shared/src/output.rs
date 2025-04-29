@@ -1,3 +1,5 @@
+use std::ops::{Deref, DerefMut};
+
 use anyhow::bail;
 use serde::{Deserialize, Serialize};
 
@@ -219,7 +221,7 @@ impl MCVMOutput for Simple {
 }
 
 /// RAII struct that opens and closes an output process
-pub struct OutputProcess<'a, O: MCVMOutput>(pub &'a mut O);
+pub struct OutputProcess<'a, O: MCVMOutput>(&'a mut O);
 
 impl<'a, O> OutputProcess<'a, O>
 where
@@ -238,6 +240,26 @@ where
 {
 	fn drop(&mut self) {
 		self.0.end_process();
+	}
+}
+
+impl<'a, O> Deref for OutputProcess<'a, O>
+where
+	O: MCVMOutput,
+{
+	type Target = O;
+
+	fn deref(&self) -> &Self::Target {
+		&self.0
+	}
+}
+
+impl<'a, O> DerefMut for OutputProcess<'a, O>
+where
+	O: MCVMOutput,
+{
+	fn deref_mut(&mut self) -> &mut Self::Target {
+		&mut self.0
 	}
 }
 
