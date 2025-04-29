@@ -6,6 +6,7 @@ use mcvm_pkg::{RecommendedPackage, RequiredPackage};
 use mcvm_shared::lang::translate::LanguageMap;
 use mcvm_shared::modifications::{ClientType, ServerType};
 use mcvm_shared::pkg::PackageID;
+use mcvm_shared::UpdateDepth;
 use mcvm_shared::{output::MCVMOutput, versions::VersionInfo, Side};
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 
@@ -136,6 +137,8 @@ pub struct OnInstanceSetupArg {
 	pub custom_config: serde_json::Map<String, serde_json::Value>,
 	/// Path to the MCVM internal dir
 	pub internal_dir: String,
+	/// The depth to update at
+	pub update_depth: UpdateDepth,
 }
 
 /// Result from the OnInstanceSetup hook

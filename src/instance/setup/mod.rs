@@ -115,6 +115,7 @@ impl Instance {
 			server_type: self.config.modifications.server_type(),
 			custom_config: self.config.plugin_config.clone(),
 			internal_dir: paths.internal.to_string_lossy().to_string(),
+			update_depth: manager.settings.depth,
 		};
 		let results = plugins
 			.call_hook(OnInstanceSetup, &arg, paths, o)

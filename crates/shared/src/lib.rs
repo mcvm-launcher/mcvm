@@ -212,9 +212,11 @@ pub mod id {
 }
 
 /// How deeply to update
-#[derive(Clone, Copy, PartialEq, Eq, Debug, PartialOrd, Ord)]
+#[derive(Clone, Copy, PartialEq, Eq, Debug, PartialOrd, Ord, Serialize, Deserialize, Default)]
+#[serde(rename_all = "snake_case")]
 pub enum UpdateDepth {
 	/// Only download things if they aren't there. Don't update versions of anything.
+	#[default]
 	Shallow,
 	/// Check for new versions of things and update to them if the version is not fixed.
 	/// Otherwise, don't redownload anything.

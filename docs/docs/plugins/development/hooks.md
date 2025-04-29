@@ -62,7 +62,9 @@ resulting from installing a certain modification
 	},
 	"client_type": ClientType,
 	"server_type": ServerType,
-	"custom_config": {...}
+	"custom_config": {...},
+	"internal_dir": string,
+	"update_depth": "shallow" | "full" | "force"
 }
 ```
 - Result:
