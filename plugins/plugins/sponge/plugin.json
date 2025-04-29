@@ -1,0 +1,16 @@
+{
+	"name": "Sponge",
+	"description": "Install Sponge server instances",
+	"hooks": {
+		"on_instance_setup": {
+			"executable": "${PLUGIN_DIR}/mcvm_plugin_sponge"
+		},
+		"add_supported_game_modifications": {
+			"constant": {
+				"server_types": [
+					"sponge"
+				]
+			}
+		}
+	}
+}

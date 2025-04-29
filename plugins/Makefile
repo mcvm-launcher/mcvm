@@ -8,6 +8,7 @@ package:
 	@cargo build --release --bin mcvm_plugin_modrinth
 	@cargo build --release --bin mcvm_plugin_options
 	@cargo build --release --bin mcvm_plugin_server_restart
+	@cargo build --release --bin mcvm_plugin_sponge
 	@cargo build --release --bin mcvm_plugin_stats
 
 	@mkdir -p release
@@ -21,6 +22,7 @@ package:
 	@rm -f release/modrinth-linux.zip && zip -j release/modrinth-linux.zip ../target/release/mcvm_plugin_modrinth plugins/modrinth/plugin.json
 	@rm -f release/options-linux.zip && zip -j release/options-linux.zip ../target/release/mcvm_plugin_options plugins/options/plugin.json
 	@rm -f release/server_restart-linux.zip && zip -j release/server_restart-linux.zip ../target/release/mcvm_plugin_server_restart plugins/server_restart/plugin.json
+	@rm -f release/sponge-linux.zip && zip -j release/sponge-linux.zip ../target/release/mcvm_plugin_sponge plugins/sponge/plugin.json
 	@rm -f release/stats-linux.zip && zip -j release/stats-linux.zip ../target/release/mcvm_plugin_stats plugins/stats/plugin.json
 	
 	@cp plugins/extra_versions/plugin.json release/extra_versions-universal.json
@@ -35,6 +37,7 @@ install: install.args \
 				 install.modrinth \
 				 install.options \
 				 install.server_restart \
+				 install.sponge \
 				 install.stats
 
 
@@ -79,6 +82,10 @@ install.options:
 install.server_restart:
 	@cargo install --path . --bin mcvm_plugin_server_restart --offline
 	@cat plugins/server_restart/plugin.json | sed 's,\${PLUGIN_DIR}/,,' > ~/.local/share/mcvm/plugins/server_restart.json
+
+install.sponge:
+	@cargo install --path . --bin mcvm_plugin_sponge --offline
+	@cat plugins/sponge/plugin.json | sed 's,\${PLUGIN_DIR}/,,' > ~/.local/share/mcvm/plugins/sponge.json
 
 install.stats:
 	@cargo install --path . --bin mcvm_plugin_stats --offline

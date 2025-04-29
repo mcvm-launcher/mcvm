@@ -50,6 +50,10 @@ path = "plugins/mcvm_transfer/main.rs"
 name = "mcvm_plugin_fabric_quilt"
 path = "plugins/fabric_quilt/main.rs"
 
+[[bin]]
+name = "mcvm_plugin_sponge"
+path = "plugins/sponge/main.rs"
+
 [dependencies]
 anyhow = { workspace = true }
 clap = { workspace = true }

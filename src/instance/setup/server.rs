@@ -1,6 +1,5 @@
 use anyhow::Context;
 use mcvm_mods::paper;
-use mcvm_mods::sponge;
 use mcvm_shared::modifications::ServerType;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel, OutputProcess};
 use reqwest::Client;
@@ -38,13 +37,6 @@ impl Instance {
 					.create_paper_folia(paper::Mode::Folia, manager, paths, client, o)
 					.await
 					.context("Failed to create Folia")?;
-				out.merge(result);
-			}
-			ServerType::Sponge => {
-				let result = self
-					.create_sponge(manager, paths, client, o)
-					.await
-					.context("Failed to create Sponge")?;
 				out.merge(result);
 			}
 			_ => {}
@@ -106,55 +98,5 @@ impl Instance {
 		self.modification_data.jar_path_override = Some(paper_jar_path.clone());
 
 		Ok(UpdateMethodResult::from_path(paper_jar_path))
-	}
-
-	/// Create data for Sponge on the serer
-	async fn create_sponge(
-		&mut self,
-		manager: &UpdateManager,
-		paths: &Paths,
-		client: &Client,
-		o: &mut impl MCVMOutput,
-	) -> anyhow::Result<UpdateMethodResult> {
-		let version = &manager.version_info.get().version;
-
-		let process = OutputProcess::new(o);
-		process.0.display(
-			MessageContents::StartProcess("Checking for Sponge updates".into()),
-			MessageLevel::Important,
-		);
-
-		let sponge_version = sponge::get_newest_version(sponge::Mode::Vanilla, version, client)
-			.await
-			.context("Failed to get newest Sponge version")?;
-		let sponge_jar_path =
-			sponge::get_local_jar_path(sponge::Mode::Vanilla, version, &paths.core);
-		if !manager.should_update_file(&sponge_jar_path) {
-			process.0.display(
-				MessageContents::Success("Sponge is up to date".into()),
-				MessageLevel::Important,
-			);
-		} else {
-			process.0.display(
-				MessageContents::StartProcess("Downloading Sponge server".into()),
-				MessageLevel::Important,
-			);
-			sponge::download_server_jar(
-				sponge::Mode::Vanilla,
-				version,
-				&sponge_version,
-				&paths.core,
-				client,
-			)
-			.await
-			.context("Failed to download Sponge server JAR")?;
-			process.0.display(
-				MessageContents::Success("Sponge server downloaded".into()),
-				MessageLevel::Important,
-			);
-		}
-
-		self.modification_data.jar_path_override = Some(sponge_jar_path.clone());
-		Ok(UpdateMethodResult::from_path(sponge_jar_path))
 	}
 }
