@@ -54,6 +54,10 @@ path = "plugins/fabric_quilt/main.rs"
 name = "mcvm_plugin_sponge"
 path = "plugins/sponge/main.rs"
 
+[[bin]]
+name = "mcvm_plugin_custom_files"
+path = "plugins/custom_files/main.rs"
+
 [dependencies]
 anyhow = { workspace = true }
 clap = { workspace = true }
@@ -72,6 +76,7 @@ rand = { workspace = true }
 regex = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
+shellexpand = { workspace = true }
 termimad = { workspace = true }
 tokio = { workspace = true }
 version-compare = { workspace = true }

@@ -76,5 +76,11 @@
 		"github_owner": "mcvm-launcher",
 		"github_repo": "mcvm",
 		"description": "Install Sponge server instances"
+	},
+	"custom_files": {
+		"id": "custom_files",
+		"github_owner": "mcvm-launcher",
+		"github_repo": "mcvm",
+		"description": "Share custom files across multiple instances"
 	}
 }
