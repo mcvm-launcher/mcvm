@@ -105,6 +105,7 @@ impl CustomPlugin {
 	);
 	hook_interface!(export_instance, "export_instance", ExportInstance);
 	hook_interface!(import_instance, "import_instance", ImportInstance);
+	hook_interface!(add_supported_game_modifications, "add_supported_game_modifications", AddSupportedGameModifications);
 
 	/// Handle a hook
 	fn handle_hook<H: Hook>(
