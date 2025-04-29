@@ -18,7 +18,7 @@ use mcvm::shared::id::InstanceID;
 
 use mcvm::instance::launch::LaunchSettings;
 use mcvm::shared::modifications::{ClientType, ServerType};
-use mcvm::shared::Side;
+use mcvm::shared::{Side, UpdateDepth};
 use reqwest::Client;
 
 use super::CmdData;
@@ -263,7 +263,7 @@ pub async fn launch(
 		};
 
 		instance
-			.update(true, false, &mut ctx)
+			.update(true, UpdateDepth::Full, &mut ctx)
 			.await
 			.context("Failed to perform first update for instance")?;
 
@@ -369,8 +369,14 @@ async fn update(
 			output: data.output,
 		};
 
+		let depth = if force {
+			UpdateDepth::Force
+		} else {
+			UpdateDepth::Full
+		};
+
 		instance
-			.update(!skip_packages, force, &mut ctx)
+			.update(!skip_packages, depth, &mut ctx)
 			.await
 			.context("Failed to update instance")?;
 

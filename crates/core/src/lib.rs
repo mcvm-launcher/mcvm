@@ -76,7 +76,7 @@ impl MCVMCore {
 			paths,
 			req_client: reqwest::Client::new(),
 			persistent,
-			update_manager: UpdateManager::new(config.force_reinstall, config.allow_offline),
+			update_manager: UpdateManager::new(config.update_depth),
 			versions: VersionRegistry::new(),
 			users: UserManager::new(config.ms_client_id.clone()),
 			config,

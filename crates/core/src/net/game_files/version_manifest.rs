@@ -1,6 +1,6 @@
 use anyhow::Context;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
-use mcvm_shared::translate;
+use mcvm_shared::{translate, UpdateDepth};
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 
@@ -127,7 +127,7 @@ async fn get_contents(
 	let mut path = paths.internal.join("versions");
 	files::create_dir(&path)?;
 	path.push("manifest.json");
-	if manager.allow_offline && !force && path.exists() {
+	if manager.update_depth < UpdateDepth::Force && !force && path.exists() {
 		return json_from_file(path).context("Failed to read manifest contents from file");
 	}
 

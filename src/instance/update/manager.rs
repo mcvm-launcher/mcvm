@@ -14,7 +14,7 @@ use mcvm_shared::later::Later;
 use mcvm_shared::output::MCVMOutput;
 use mcvm_shared::output::NoOp;
 use mcvm_shared::versions::VersionInfo;
-use mcvm_shared::Side;
+use mcvm_shared::{Side, UpdateDepth};
 use reqwest::Client;
 
 use crate::io::paths::Paths;
@@ -33,10 +33,8 @@ pub enum UpdateRequirement {
 /// Settings for updating
 #[derive(Debug)]
 pub struct UpdateSettings {
-	/// Whether to force file updates
-	pub force: bool,
-	/// Whether we will prioritize local files instead of remote ones
-	pub allow_offline: bool,
+	/// The depth to perform updates at
+	pub depth: UpdateDepth,
 	/// Whether to do offline authentication
 	pub offline_auth: bool,
 }
@@ -64,10 +62,9 @@ pub struct UpdateManager {
 
 impl UpdateManager {
 	/// Create a new UpdateManager
-	pub fn new(force: bool, allow_offline: bool) -> Self {
+	pub fn new(depth: UpdateDepth) -> Self {
 		let settings = UpdateSettings {
-			force,
-			allow_offline,
+			depth,
 			offline_auth: false,
 		};
 
@@ -120,7 +117,7 @@ impl UpdateManager {
 
 	/// Whether a file needs to be updated
 	pub fn should_update_file(&self, file: &Path) -> bool {
-		if self.settings.force {
+		if self.settings.depth == UpdateDepth::Force {
 			!self.files.contains(file) || !file.exists()
 		} else {
 			!file.exists()
@@ -181,8 +178,7 @@ impl UpdateManager {
 
 		// Setup the core
 		let mut core_config = mcvm_core::ConfigBuilder::new()
-			.allow_offline(self.settings.allow_offline)
-			.force_reinstall(self.settings.force)
+			.update_depth(self.settings.depth)
 			.branding(BrandingProperties::new(
 				"mcvm".into(),
 				crate::VERSION.into(),

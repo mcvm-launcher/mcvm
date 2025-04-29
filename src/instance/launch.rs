@@ -11,7 +11,7 @@ use mcvm_plugin::hooks::{
 };
 use mcvm_shared::id::InstanceID;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
-use mcvm_shared::translate;
+use mcvm_shared::{translate, UpdateDepth};
 use reqwest::Client;
 #[cfg(feature = "schema")]
 use schemars::JsonSchema;
@@ -40,7 +40,7 @@ impl Instance {
 			MessageLevel::Important,
 		);
 
-		let mut manager = UpdateManager::new(false, true);
+		let mut manager = UpdateManager::new(UpdateDepth::Shallow);
 		let client = Client::new();
 		manager.set_version(&self.config.version);
 		manager.add_requirements(self.get_requirements());

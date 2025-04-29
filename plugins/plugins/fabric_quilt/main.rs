@@ -6,7 +6,7 @@ use mcvm_mods::fabric_quilt;
 use mcvm_plugin::{api::CustomPlugin, hooks::OnInstanceSetupResult};
 use mcvm_shared::{
 	modifications::{ClientType, ServerType},
-	Side,
+	Side, UpdateDepth,
 };
 
 fn main() -> anyhow::Result<()> {
@@ -41,7 +41,7 @@ fn main() -> anyhow::Result<()> {
 
 		let internal_dir = PathBuf::from(arg.internal_dir);
 
-		let manager = UpdateManager::new(false, false);
+		let manager = UpdateManager::new(UpdateDepth::Full);
 
 		let client = mcvm_net::download::Client::new();
 

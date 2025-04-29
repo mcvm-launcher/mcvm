@@ -210,3 +210,15 @@ pub mod id {
 	/// The ID for a profile
 	pub type ProfileID = Arc<str>;
 }
+
+/// How deeply to update
+#[derive(Clone, Copy, PartialEq, Eq, Debug, PartialOrd, Ord)]
+pub enum UpdateDepth {
+	/// Only download things if they aren't there. Don't update versions of anything.
+	Shallow,
+	/// Check for new versions of things and update to them if the version is not fixed.
+	/// Otherwise, don't redownload anything.
+	Full,
+	/// Force redownloading all files
+	Force,
+}

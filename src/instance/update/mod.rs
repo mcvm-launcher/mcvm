@@ -8,7 +8,7 @@ use crate::config::preferences::ConfigPreferences;
 use crate::pkg::eval::EvalConstants;
 use crate::plugin::PluginManager;
 use mcvm_core::user::UserManager;
-use mcvm_shared::translate;
+use mcvm_shared::{translate, UpdateDepth};
 #[cfg(not(feature = "disable_profile_update_packages"))]
 use packages::print_package_support_messages;
 use packages::update_instance_packages;
@@ -54,13 +54,13 @@ impl Instance {
 	pub async fn update<'a, O: MCVMOutput>(
 		&mut self,
 		update_packages: bool,
-		force: bool,
+		depth: UpdateDepth,
 		ctx: &mut InstanceUpdateContext<'a, O>,
 	) -> anyhow::Result<()> {
 		#[cfg(feature = "disable_profile_update_packages")]
 		let _update_packages = update_packages;
 
-		let mut manager = UpdateManager::new(force, false);
+		let mut manager = UpdateManager::new(depth);
 
 		ctx.output.display(
 			MessageContents::Header(translate!(
@@ -124,8 +124,13 @@ impl Instance {
 					profile_stability: self.config.package_stability,
 				};
 
-				let packages =
-					update_instance_packages(&mut [self], &constants, ctx, force).await?;
+				let packages = update_instance_packages(
+					&mut [self],
+					&constants,
+					ctx,
+					depth == UpdateDepth::Force,
+				)
+				.await?;
 
 				ctx.output.display(
 					MessageContents::Success(translate!(ctx.output, FinishUpdatingPackages)),

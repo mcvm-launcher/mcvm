@@ -11,7 +11,7 @@ use mcvm_core::net::download;
 use mcvm_core::MCVMCore;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel, OutputProcess};
 use mcvm_shared::versions::VersionInfo;
-use mcvm_shared::Side;
+use mcvm_shared::{Side, UpdateDepth};
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 use tokio::task::JoinSet;
@@ -188,7 +188,7 @@ pub async fn get_meta(
 		.await
 		.context("Failed to create parent directories for Fabric/Quilt meta")?;
 
-	let meta = if manager.allow_offline() && path.exists() {
+	let meta = if manager.get_depth() < UpdateDepth::Force && path.exists() {
 		json_from_file(path).with_context(|| format!("Failed to parse {mode} meta from file"))?
 	} else {
 		let bytes = download::bytes(&meta_url, client)
@@ -218,7 +218,7 @@ pub async fn download_files(
 	client: &Client,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<()> {
-	let force = manager.force_reinstall();
+	let force = manager.get_depth() == UpdateDepth::Force;
 
 	let mut process = OutputProcess::new(o);
 	process.display(
@@ -289,7 +289,13 @@ pub async fn download_side_specific_files(
 		Side::Server => &meta.launcher_meta.libraries.server,
 	};
 
-	download_libraries(libs, libraries_dir, client, manager.force_reinstall()).await?;
+	download_libraries(
+		libs,
+		libraries_dir,
+		client,
+		manager.get_depth() == UpdateDepth::Force,
+	)
+	.await?;
 
 	Ok(())
 }

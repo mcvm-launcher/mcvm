@@ -1,4 +1,5 @@
 use mcvm_auth::mc::ClientId;
+use mcvm_shared::UpdateDepth;
 
 use crate::util::secrets::get_ms_client_id;
 
@@ -16,10 +17,8 @@ macro_rules! builder_method {
 pub struct Configuration {
 	/// The Microsoft client ID to use for Microsoft authentication
 	pub(crate) ms_client_id: ClientId,
-	/// Whether to force the reinstallation of files
-	pub(crate) force_reinstall: bool,
-	/// Whether to allow offline installs
-	pub(crate) allow_offline: bool,
+	/// The depth of updates to perform
+	pub(crate) update_depth: UpdateDepth,
 	/// Whether to censor user credentials in output messages and logs
 	pub(crate) censor_secrets: bool,
 	/// Whether to use file copies instead of hardlinks. Useful if you
@@ -40,8 +39,7 @@ impl Configuration {
 	pub fn new() -> Self {
 		Self {
 			ms_client_id: get_ms_client_id(),
-			force_reinstall: false,
-			allow_offline: false,
+			update_depth: UpdateDepth::Full,
 			censor_secrets: true,
 			disable_hardlinks: false,
 			branding: BrandingProperties::default(),
@@ -78,13 +76,7 @@ impl ConfigBuilder {
 		"Set the Microsoft client ID to use for Microsoft / Xbox Live authentication"
 	);
 
-	builder_method!(
-		force_reinstall,
-		bool,
-		"Set whether to force the reinstall of files"
-	);
-
-	builder_method!(allow_offline, bool, "Set whether to allow offline installs");
+	builder_method!(update_depth, UpdateDepth, "Set the depth at which to update files and versions");
 
 	builder_method!(
 		censor_secrets,

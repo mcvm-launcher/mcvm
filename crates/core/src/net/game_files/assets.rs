@@ -5,7 +5,7 @@ use std::sync::Arc;
 use anyhow::Context;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::versions::VersionPattern;
-use mcvm_shared::{translate, try_3};
+use mcvm_shared::{translate, try_3, UpdateDepth};
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 use tokio::{sync::Semaphore, task::JoinSet};
@@ -266,7 +266,7 @@ async fn download_index(
 	client: &Client,
 	force: bool,
 ) -> anyhow::Result<AssetIndex> {
-	let index = if manager.allow_offline && !force && path.exists() {
+	let index = if manager.update_depth < UpdateDepth::Force && !force && path.exists() {
 		json_from_file(path).context("Failed to read asset index contents from file")?
 	} else {
 		let index = download::json(url, client)
