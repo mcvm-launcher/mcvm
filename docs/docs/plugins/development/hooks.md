@@ -76,6 +76,28 @@ resulting from installing a certain modification
 }
 ```
 
+### `remove_game_modification`
+Called when the game modifications (client or server type) of an instance change, to allow cleaning up old or invalid files. Will be given the client / server type that needs to be removed.
+- Argument:
+```
+{
+	"id": string,
+	"side": "client" | "server",
+	"game_dir": string,
+	"version_info": {
+		"version": string,
+		"versions": [string]
+	},
+	"client_type": ClientType,
+	"server_type": ServerType,
+	"custom_config": {...},
+	"internal_dir": string,
+	"update_depth": "shallow" | "full" | "force"
+}
+```
+- Result: None
+```
+
 ### `on_instance_launch`
 Called whenever an instance is launched
 - Argument: InstanceLaunchArg

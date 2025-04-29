@@ -161,6 +161,14 @@ pub struct OnInstanceSetupResult {
 }
 
 def_hook!(
+	RemoveGameModification,
+	"remove_game_modification",
+	"Hook for removing a game modification from an instance when switching away from it",
+	OnInstanceSetupArg,
+	(),
+);
+
+def_hook!(
 	OnInstanceLaunch,
 	"on_instance_launch",
 	"Hook for doing work before an instance is launched",

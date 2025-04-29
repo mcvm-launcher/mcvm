@@ -17,7 +17,7 @@ use mcvm_core::user::{User, UserManager};
 use mcvm_core::version::InstalledVersion;
 use mcvm_core::QuickPlayType;
 use mcvm_mods::fabric_quilt;
-use mcvm_plugin::hooks::{OnInstanceSetup, OnInstanceSetupArg};
+use mcvm_plugin::hooks::{OnInstanceSetup, OnInstanceSetupArg, RemoveGameModification};
 use mcvm_shared::modifications::Modloader;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::translate;
@@ -109,12 +109,18 @@ impl Instance {
 		self.ensure_dirs(paths)?;
 
 		let mut lock = Lockfile::open(paths).context("Failed to open lockfile")?;
-		let current_game_mod_version = lock
-			.get_instance(&self.id)
-			.and_then(|x| x.game_modification_version.clone());
 		lock.ensure_instance_created(&self.id, &manager.version_info.get().version);
+		let lock_instance = lock.get_instance(&self.id);
+		let current_game_mod_version =
+			lock_instance.and_then(|x| x.game_modification_version.clone());
+		let current_client_type = lock_instance
+			.map(|x| x.client_type.clone())
+			.unwrap_or_default();
+		let current_server_type = lock_instance
+			.map(|x| x.server_type.clone())
+			.unwrap_or_default();
 
-		let arg = OnInstanceSetupArg {
+		let mut arg = OnInstanceSetupArg {
 			id: self.id.to_string(),
 			side: Some(self.get_side()),
 			game_dir: self.dirs.get().game_dir.to_string_lossy().to_string(),
@@ -127,6 +133,26 @@ impl Instance {
 			internal_dir: paths.internal.to_string_lossy().to_string(),
 			update_depth: manager.settings.depth,
 		};
+
+		// Do game modification change checks
+		if self.config.modifications.client_type() != current_client_type
+			|| self.config.modifications.server_type() != current_server_type
+		{
+			arg.client_type = current_client_type;
+			arg.server_type = current_server_type;
+			let results = plugins
+				.call_hook(RemoveGameModification, &arg, paths, o)
+				.context("Failed to call remove game modification hook")?;
+
+			for result in results {
+				result.result(o)?;
+			}
+
+			// The current game modification version is no longer valid as it is referring to the old game modification
+			arg.current_game_modification_version = None;
+			arg.client_type = self.config.modifications.client_type();
+			arg.server_type = self.config.modifications.server_type();
+		}
 
 		let results = plugins
 			.call_hook(OnInstanceSetup, &arg, paths, o)
