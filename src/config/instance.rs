@@ -10,6 +10,7 @@ use mcvm_shared::modifications::{ClientType, Modloader, ServerType};
 use mcvm_shared::output::MCVMOutput;
 use mcvm_shared::pkg::PackageStability;
 use mcvm_shared::util::{merge_options, DefaultExt, DeserListOrSingle};
+use mcvm_shared::versions::VersionPattern;
 use mcvm_shared::Side;
 #[cfg(feature = "schema")]
 use schemars::JsonSchema;
@@ -69,6 +70,10 @@ pub struct CommonInstanceConfig {
 	#[serde(default)]
 	#[serde(skip_serializing_if = "DefaultExt::is_default")]
 	pub server_type: Option<ServerType>,
+	/// The version of whatever game modification is applied to this instance
+	#[serde(default)]
+	#[serde(skip_serializing_if = "DefaultExt::is_default")]
+	pub game_modification_version: Option<VersionPattern>,
 	/// Default stability setting of packages on this instance
 	#[serde(default)]
 	#[serde(skip_serializing_if = "DefaultExt::is_default")]
@@ -434,6 +439,7 @@ pub fn read_instance_config(
 		icon: config.icon,
 		version,
 		modifications: game_modifications,
+		modification_version: config.common.game_modification_version,
 		launch: config.common.launch.to_options()?,
 		datapack_folder: config.common.datapack_folder,
 		packages,

@@ -6,6 +6,7 @@ use mcvm_pkg::{RecommendedPackage, RequiredPackage};
 use mcvm_shared::lang::translate::LanguageMap;
 use mcvm_shared::modifications::{ClientType, ServerType};
 use mcvm_shared::pkg::PackageID;
+use mcvm_shared::versions::VersionPattern;
 use mcvm_shared::UpdateDepth;
 use mcvm_shared::{output::MCVMOutput, versions::VersionInfo, Side};
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
@@ -133,6 +134,10 @@ pub struct OnInstanceSetupArg {
 	pub client_type: ClientType,
 	/// The server type of the instance. Doesn't apply if the instance is a client
 	pub server_type: ServerType,
+	/// The current version of the game modification, as stored in the lockfile. Can be used to detect version changes.
+	pub current_game_modification_version: Option<String>,
+	/// The desired version of the game modification
+	pub desired_game_modification_version: Option<VersionPattern>,
 	/// Custom config on the instance
 	pub custom_config: serde_json::Map<String, serde_json::Value>,
 	/// Path to the MCVM internal dir
@@ -151,6 +156,8 @@ pub struct OnInstanceSetupResult {
 	pub jar_path_override: Option<String>,
 	/// Optional extension to the classpath, as a list of paths
 	pub classpath_extension: Vec<String>,
+	/// Optional new version for the game modification
+	pub game_modification_version: Option<String>,
 }
 
 def_hook!(

@@ -16,6 +16,7 @@ pub mod update;
 use mcvm_core::util::versions::MinecraftVersion;
 use mcvm_shared::later::Later;
 use mcvm_shared::pkg::PackageStability;
+use mcvm_shared::versions::VersionPattern;
 use mcvm_shared::Side;
 
 use self::setup::{InstanceDirs, ModificationData};
@@ -87,6 +88,8 @@ pub struct InstanceStoredConfig {
 	pub version: MinecraftVersion,
 	/// Modifications to the instance
 	pub modifications: GameModifications,
+	/// Version for the game modification
+	pub modification_version: Option<VersionPattern>,
 	/// Launch options for the instance
 	pub launch: LaunchOptions,
 	/// The instance's global datapack folder

@@ -30,10 +30,10 @@ struct LockfileContents {
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 #[serde(default)]
-struct LockfileInstance {
-	version: String,
-	#[serde(skip_serializing_if = "Option::is_none")]
-	paper_build: Option<u16>,
+pub(crate) struct LockfileInstance {
+	pub(crate) version: String,
+	pub(crate) game_modification_version: Option<String>,
+	pub(crate) paper_build: Option<u16>,
 }
 
 /// Package stored in the lockfile
@@ -147,6 +147,11 @@ impl Lockfile {
 			.context("Failed to write to lockfile")?;
 
 		Ok(())
+	}
+
+	/// Get a specific instance from the lockfile
+	pub(crate) fn get_instance(&self, instance: &str) -> Option<&LockfileInstance> {
+		self.contents.instances.get(instance)
 	}
 
 	/// Updates a package with a new version.
@@ -278,11 +283,40 @@ impl Lockfile {
 				instance.to_owned(),
 				LockfileInstance {
 					version: version.to_owned(),
+					game_modification_version: None,
 					paper_build: None,
 				},
 			);
 
 			false
+		}
+	}
+
+	/// Ensures that an instance is created
+	pub fn ensure_instance_created(&mut self, instance: &str, version: &str) {
+		if !self.contents.instances.contains_key(instance) {
+			self.contents.instances.insert(
+				instance.to_string(),
+				LockfileInstance {
+					version: version.to_string(),
+					game_modification_version: None,
+					paper_build: None,
+				},
+			);
+		}
+	}
+
+	/// Updates the game modification version of an instance
+	pub fn update_instance_game_modification_version(
+		&mut self,
+		instance: &str,
+		version: Option<String>,
+	) -> anyhow::Result<()> {
+		if let Some(instance) = self.contents.instances.get_mut(instance) {
+			instance.game_modification_version = version;
+			Ok(())
+		} else {
+			bail!("Instance {instance} does not exist")
 		}
 	}
 

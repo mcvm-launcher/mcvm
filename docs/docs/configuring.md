@@ -59,7 +59,8 @@ Instances are defined in the id-value format underneath the `instances` object o
 	"icon": string,
 	"modloader": modloader,
 	"client_type": client_type,
-	"server_type": client_type,
+	"server_type": server_type,
+	"game_modification_version": string,
 	"package_stability": "stable" | "latest",
 	"launch": {
 		"args": {
@@ -107,6 +108,7 @@ All fields are optional unless stated otherwise.
 - `modloader`: The modloader for the instance, which can be used to set both the client and server type automatically.
 - `client_type`: The modification type for the client. Defaults to using the `modloader` setting.
 - `server_type`: The modification type for the server. Defaults to using the `modloader` setting.
+- `game_modification_version`: The desired version for the client or server type (i.e. the Paper server build number) as a version pattern. Defaults to using the newest available version.
 - `package_stability`: Global stability setting for all packages in this instance. Defaults to `"stable"`.
 - `launch`: Options that modify the game execution.
 - `launch.args`: Custom arguments that will be passed to the Java Virtual Machine and game. Each one is optional and can either be a string of arguments separated by spaces or a list.

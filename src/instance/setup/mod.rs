@@ -25,6 +25,7 @@ use mcvm_shared::Side;
 use reqwest::Client;
 
 use crate::config::instance::QuickPlay;
+use crate::io::lock::Lockfile;
 use crate::io::paths::Paths;
 use crate::plugin::PluginManager;
 
@@ -106,6 +107,12 @@ impl Instance {
 
 		// Run plugin setup hooks
 		self.ensure_dirs(paths)?;
+
+		let mut lock = Lockfile::open(paths).context("Failed to open lockfile")?;
+		let current_game_mod_version = lock
+			.get_instance(&self.id)
+			.and_then(|x| x.game_modification_version.clone());
+
 		let arg = OnInstanceSetupArg {
 			id: self.id.to_string(),
 			side: Some(self.get_side()),
@@ -113,13 +120,18 @@ impl Instance {
 			version_info: manager.version_info.get_clone(),
 			client_type: self.config.modifications.client_type(),
 			server_type: self.config.modifications.server_type(),
+			current_game_modification_version: current_game_mod_version,
+			desired_game_modification_version: self.config.modification_version.clone(),
 			custom_config: self.config.plugin_config.clone(),
 			internal_dir: paths.internal.to_string_lossy().to_string(),
 			update_depth: manager.settings.depth,
 		};
+
 		let results = plugins
 			.call_hook(OnInstanceSetup, &arg, paths, o)
 			.context("Failed to call instance setup hook")?;
+
+		let mut game_mod_version_set = false;
 		for result in results {
 			let result = result.result(o)?;
 			self.modification_data
@@ -141,7 +153,23 @@ impl Instance {
 					bail!("Multiple plugins overwrote the JAR path");
 				}
 			}
+
+			if let Some(game_modification_version) = result.game_modification_version {
+				if game_mod_version_set {
+					bail!("Multiple plugins attempted to modify the game modification version");
+				}
+				lock.ensure_instance_created(&self.id, &manager.version_info.get().version);
+				lock.update_instance_game_modification_version(
+					&self.id,
+					Some(game_modification_version),
+				)
+				.expect("Instance should exist");
+				game_mod_version_set = true;
+			}
 		}
+
+		lock.finish(paths)
+			.context("Failed to finish using lockfile")?;
 
 		// Make the core instance
 		let mut version = manager
