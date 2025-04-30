@@ -4,7 +4,7 @@ use anyhow::{anyhow, bail, Context};
 use mcvm_core::{net::download, MCVMCore};
 use mcvm_shared::{output::MCVMOutput, versions::VersionInfo, Side};
 use reqwest::Client;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use mcvm_core::io::files::paths::Paths;
 
@@ -26,7 +26,8 @@ pub enum Mode {
 }
 
 impl Mode {
-	fn to_str(self) -> &'static str {
+	/// Convert this mode to a lowercase string
+	pub fn to_str(self) -> &'static str {
 		match self {
 			Self::Paper => "paper",
 			Self::Folia => "folia",
@@ -160,9 +161,28 @@ pub async fn get_newest_build(mode: Mode, version: &str, client: &Client) -> any
 	Ok(*build)
 }
 
-#[derive(Deserialize)]
-struct VersionInfoResponse {
-	builds: Vec<u16>,
+/// Info about a project version
+#[derive(Serialize, Deserialize)]
+pub struct VersionInfoResponse {
+	/// The list of available build numbers
+	pub builds: Vec<u16>,
+}
+
+/// Gets info from the given build
+pub async fn get_build_info(
+	mode: Mode,
+	version: &str,
+	build_num: u16,
+	client: &Client,
+) -> anyhow::Result<BuildInfoResponse> {
+	let num_str = build_num.to_string();
+	let url = format!(
+		"https://api.papermc.io/v2/projects/{}/versions/{version}/builds/{num_str}",
+		mode.to_str(),
+	);
+	let resp: BuildInfoResponse = download::json(url, client).await?;
+
+	Ok(resp)
 }
 
 /// Get the name of the Paper JAR file in the API.
@@ -174,29 +194,30 @@ pub async fn get_jar_file_name(
 	build_num: u16,
 	client: &Client,
 ) -> anyhow::Result<String> {
-	let num_str = build_num.to_string();
-	let url = format!(
-		"https://api.papermc.io/v2/projects/{}/versions/{version}/builds/{num_str}",
-		mode.to_str(),
-	);
-	let resp: BuildInfoResponse = download::json(url, client).await?;
+	let info = get_build_info(mode, version, build_num, client).await?;
 
-	Ok(resp.downloads.application.name)
+	Ok(info.downloads.application.name)
 }
 
-#[derive(Deserialize)]
-struct BuildInfoResponse {
-	downloads: BuildInfoDownloads,
+/// Response from the build info API
+#[derive(Serialize, Deserialize)]
+pub struct BuildInfoResponse {
+	/// The list of downloads
+	pub downloads: BuildInfoDownloads,
 }
 
-#[derive(Deserialize)]
-struct BuildInfoDownloads {
-	application: BuildInfoApplication,
+/// Downloads for a build
+#[derive(Serialize, Deserialize)]
+pub struct BuildInfoDownloads {
+	/// Application info for the download
+	pub application: BuildInfoApplication,
 }
 
-#[derive(Deserialize)]
-struct BuildInfoApplication {
-	name: String,
+/// Application info for a build download
+#[derive(Serialize, Deserialize)]
+pub struct BuildInfoApplication {
+	/// The name of the JAR file
+	pub name: String,
 }
 
 /// Download the server jar

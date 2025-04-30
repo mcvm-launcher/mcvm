@@ -1,10 +1,13 @@
 use std::path::{Path, PathBuf};
 
 use anyhow::{bail, Context};
-use mcvm_core::Paths;
+use mcvm_core::{
+	io::{json_from_file, json_to_file},
+	Paths,
+};
 use mcvm_mods::paper;
 use mcvm_plugin::{api::CustomPlugin, hooks::OnInstanceSetupResult};
-use mcvm_shared::{modifications::ServerType, versions::VersionPattern, Side};
+use mcvm_shared::{modifications::ServerType, versions::VersionPattern, Side, UpdateDepth};
 
 fn main() -> anyhow::Result<()> {
 	let mut plugin = CustomPlugin::new("paper")?;
@@ -27,22 +30,39 @@ fn main() -> anyhow::Result<()> {
 		};
 
 		let client = mcvm_net::download::Client::new();
+		let paths = Paths::new()?;
 
 		let runtime = tokio::runtime::Runtime::new()?;
 
 		// Check if this Minecraft version is available
-		let versions = runtime
-			.block_on(paper::get_all_versions(mode, &client))
-			.context("Failed to get list of Paper versions")?;
+		let stored_versions_path = get_stored_versions_path(&paths, mode);
+		let versions = if stored_versions_path.exists() && arg.update_depth == UpdateDepth::Shallow
+		{
+			json_from_file(&stored_versions_path).context("Failed to read versions from file")?
+		} else {
+			runtime
+				.block_on(paper::get_all_versions(mode, &client))
+				.context("Failed to get list of versions")?
+		};
+		json_to_file(stored_versions_path, &versions)
+			.context("Failed to write versions to file")?;
 
 		if !versions.iter().any(|x| *x == arg.version_info.version) {
 			bail!("Could not find a Paper version for the given Minecraft version");
 		}
 
 		// Get the build numbers (actual project versions)
-		let build_nums = runtime
-			.block_on(paper::get_builds(mode, &arg.version_info.version, &client))
-			.context("Failed to get list of build numbers for {mode} project")?;
+		let builds_path = get_stored_builds_path(&paths, mode, &arg.version_info.version);
+		let build_nums = if builds_path.exists() && arg.update_depth == UpdateDepth::Shallow {
+			json_from_file(&builds_path).context("Failed to read builds from file")?
+		} else {
+			runtime
+				.block_on(paper::get_builds(mode, &arg.version_info.version, &client))
+				.with_context(|| {
+					format!("Failed to get list of build numbers for {mode} project")
+				})?
+		};
+		json_to_file(builds_path, &build_nums).context("Failed to write builds to file")?;
 
 		let build_nums_strings: Vec<_> = build_nums.iter().map(|x| x.to_string()).collect();
 
@@ -80,23 +100,29 @@ fn main() -> anyhow::Result<()> {
 		}
 
 		// Get the name of the remote JAR file we need to download
-		let remote_jar_file_name = runtime
-			.block_on(paper::get_jar_file_name(
-				mode,
-				&arg.version_info.version,
-				desired_build_num,
-				&client,
-			))
-			.with_context(|| format!("Failed to get JAR file name for new {mode} version"))?;
+		let build_info_path =
+			get_stored_build_info_path(&paths, mode, &arg.version_info.version, desired_build_num);
+		let build_info = if build_info_path.exists() && arg.update_depth == UpdateDepth::Shallow {
+			json_from_file(&build_info_path).context("Failed to read build info from file")?
+		} else {
+			runtime
+				.block_on(paper::get_build_info(
+					mode,
+					&arg.version_info.version,
+					desired_build_num,
+					&client,
+				))
+				.with_context(|| format!("Failed to get build info for new {mode} version"))?
+		};
+		json_to_file(build_info_path, &build_info).context("Failed to write build info to file")?;
 
 		// Download it
-		let paths = Paths::new()?;
 		runtime
 			.block_on(paper::download_server_jar(
 				mode,
 				&arg.version_info.version,
 				desired_build_num,
-				&remote_jar_file_name,
+				&build_info.downloads.application.name,
 				&paths,
 				&client,
 			))
@@ -114,6 +140,29 @@ fn main() -> anyhow::Result<()> {
 	})?;
 
 	Ok(())
+}
+
+fn get_stored_versions_path(paths: &Paths, mode: paper::Mode) -> PathBuf {
+	paths
+		.internal
+		.join(format!("paper/{}/versions.json", mode.to_str()))
+}
+
+fn get_stored_builds_path(paths: &Paths, mode: paper::Mode, version: &str) -> PathBuf {
+	paths
+		.internal
+		.join(format!("paper/{}/{version}_builds.json", mode.to_str()))
+}
+
+fn get_stored_build_info_path(
+	paths: &Paths,
+	mode: paper::Mode,
+	version: &str,
+	build: u16,
+) -> PathBuf {
+	paths
+		.internal
+		.join(format!("paper/{}/{version}_{build}.json", mode.to_str()))
 }
 
 fn remove_paper(game_dir: &Path, paper_file_name: String) -> anyhow::Result<()> {
