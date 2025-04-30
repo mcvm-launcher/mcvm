@@ -57,6 +57,7 @@ impl Plugin {
 		arg: &H::Arg,
 		paths: &Paths,
 		mcvm_version: Option<&str>,
+		plugin_list: &[String],
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Option<HookHandle<H>>> {
 		let Some(handler) = self.manifest.hooks.get(hook.get_name()) else {
@@ -75,6 +76,7 @@ impl Plugin {
 					paths,
 					mcvm_version,
 					plugin_id: &self.id,
+					plugin_list,
 				};
 				hook.call(arg, o).map(Some)
 			}

@@ -37,6 +37,7 @@ pub fn plugin_debug_enabled() -> bool {
 #[derive(Debug)]
 pub struct CorePluginManager {
 	plugins: Vec<Plugin>,
+	plugin_list: Vec<String>,
 	mcvm_version: Option<&'static str>,
 }
 
@@ -51,6 +52,7 @@ impl CorePluginManager {
 	pub fn new() -> Self {
 		Self {
 			plugins: Vec::new(),
+			plugin_list: Vec::new(),
 			mcvm_version: None,
 		}
 	}
@@ -67,9 +69,12 @@ impl CorePluginManager {
 		paths: &Paths,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
+		// Update the plugin list
+		self.plugin_list.push(plugin.get_id().clone());
+
 		// Call the on_load hook
 		let result = plugin
-			.call_hook(&OnLoad, &(), paths, self.mcvm_version, o)
+			.call_hook(&OnLoad, &(), paths, self.mcvm_version, &self.plugin_list, o)
 			.context("Failed to call on_load hook of plugin")?;
 		if let Some(result) = result {
 			result.result(o)?;
@@ -91,7 +96,7 @@ impl CorePluginManager {
 		let mut out = Vec::new();
 		for plugin in &self.plugins {
 			let result = plugin
-				.call_hook(&hook, arg, paths, self.mcvm_version, o)
+				.call_hook(&hook, arg, paths, self.mcvm_version, &self.plugin_list, o)
 				.context("Plugin hook failed")?;
 			out.extend(result);
 		}
@@ -111,7 +116,7 @@ impl CorePluginManager {
 		for plugin in &self.plugins {
 			if plugin.get_id() == plugin_id {
 				let result = plugin
-					.call_hook(&hook, arg, paths, self.mcvm_version, o)
+					.call_hook(&hook, arg, paths, self.mcvm_version, &self.plugin_list, o)
 					.context("Plugin hook failed")?;
 				return Ok(result);
 			}

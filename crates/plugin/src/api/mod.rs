@@ -10,7 +10,8 @@ use serde::de::DeserializeOwned;
 use serde::Serialize;
 
 use crate::hook_call::{
-	CONFIG_DIR_ENV, CUSTOM_CONFIG_ENV, DATA_DIR_ENV, HOOK_VERSION_ENV, PLUGIN_STATE_ENV,
+	CONFIG_DIR_ENV, CUSTOM_CONFIG_ENV, DATA_DIR_ENV, HOOK_VERSION_ENV, PLUGIN_LIST_ENV,
+	PLUGIN_STATE_ENV,
 };
 use crate::hooks::Hook;
 use crate::output::OutputAction;
@@ -211,6 +212,17 @@ impl<'ctx, H: Hook> HookContext<'ctx, H> {
 		get_env_path(CONFIG_DIR_ENV).context("Failed to get directory from environment variable")
 	}
 
+	/// Get the list of enabled plugins
+	pub fn get_plugin_list(&self) -> Vec<PluginListEntry> {
+		let Ok(var) = std::env::var(PLUGIN_LIST_ENV) else {
+			return Vec::new();
+		};
+
+		var.split(",")
+			.map(|x| PluginListEntry { id: x.to_string() })
+			.collect()
+	}
+
 	/// Get the persistent plugin state, kept the same for this entire hook handler,
 	/// along with a default state
 	pub fn get_persistent_state(
@@ -251,6 +263,12 @@ impl Default for PluginSettings {
 	fn default() -> Self {
 		Self { use_base64: true }
 	}
+}
+
+/// An entry in the list of enabled plugins
+pub struct PluginListEntry {
+	/// The ID of the entry
+	pub id: String,
 }
 
 /// Get a path from an environment variable

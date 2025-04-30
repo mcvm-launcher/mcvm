@@ -28,6 +28,8 @@ pub static MCVM_VERSION_ENV: &str = "MCVM_VERSION";
 pub static MCVM_PLUGIN_ENV: &str = "MCVM_PLUGIN";
 /// The environment variable that tells what version of the hook this is
 pub static HOOK_VERSION_ENV: &str = "MCVM_HOOK_VERSION";
+/// The environment variable with the list of plugins
+pub static PLUGIN_LIST_ENV: &str = "MCVM_PLUGIN_LIST";
 
 /// Argument struct for the hook call function
 pub struct HookCallArg<'a, H: Hook> {
@@ -51,6 +53,8 @@ pub struct HookCallArg<'a, H: Hook> {
 	pub mcvm_version: Option<&'a str>,
 	/// The ID of the plugin
 	pub plugin_id: &'a str,
+	/// The list of all enabled plugins and their versions
+	pub plugin_list: &'a [String],
 }
 
 pub(crate) fn call<H: Hook>(
@@ -99,6 +103,8 @@ where
 			cmd.env(PLUGIN_STATE_ENV, state);
 		}
 	}
+	let plugin_list = arg.plugin_list.join(",");
+	cmd.env(PLUGIN_LIST_ENV, plugin_list);
 
 	if plugin_debug_enabled() {
 		o.display(
