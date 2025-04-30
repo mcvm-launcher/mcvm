@@ -19,24 +19,16 @@ name = "mcvm_plugin_backup"
 path = "plugins/backup/main.rs"
 
 [[bin]]
-name = "mcvm_plugin_options"
-path = "plugins/options/main.rs"
+name = "mcvm_plugin_custom_files"
+path = "plugins/custom_files/main.rs"
 
 [[bin]]
 name = "mcvm_plugin_docs"
 path = "plugins/docs/main.rs"
 
 [[bin]]
-name = "mcvm_plugin_stats"
-path = "plugins/stats/main.rs"
-
-[[bin]]
-name = "mcvm_plugin_server_restart"
-path = "plugins/server_restart/main.rs"
-
-[[bin]]
-name = "mcvm_plugin_modrinth"
-path = "plugins/modrinth/main.rs"
+name = "mcvm_plugin_fabric_quilt"
+path = "plugins/fabric_quilt/main.rs"
 
 [[bin]]
 name = "mcvm_plugin_gen_pkg"
@@ -47,20 +39,28 @@ name = "mcvm_plugin_mcvm_transfer"
 path = "plugins/mcvm_transfer/main.rs"
 
 [[bin]]
-name = "mcvm_plugin_fabric_quilt"
-path = "plugins/fabric_quilt/main.rs"
+name = "mcvm_plugin_modrinth"
+path = "plugins/modrinth/main.rs"
+
+[[bin]]
+name = "mcvm_plugin_options"
+path = "plugins/options/main.rs"
+
+[[bin]]
+name = "mcvm_plugin_paper"
+path = "plugins/paper/main.rs"
+
+[[bin]]
+name = "mcvm_plugin_server_restart"
+path = "plugins/server_restart/main.rs"
 
 [[bin]]
 name = "mcvm_plugin_sponge"
 path = "plugins/sponge/main.rs"
 
 [[bin]]
-name = "mcvm_plugin_custom_files"
-path = "plugins/custom_files/main.rs"
-
-[[bin]]
-name = "mcvm_plugin_paper"
-path = "plugins/paper/main.rs"
+name = "mcvm_plugin_stats"
+path = "plugins/stats/main.rs"
 
 [dependencies]
 anyhow = { workspace = true }

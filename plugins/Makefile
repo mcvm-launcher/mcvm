@@ -30,20 +30,6 @@ package:
 	@cp plugins/extra_versions/plugin.json release/extra_versions-universal.json
 	@cp plugins/lang/plugin.json release/lang-universal.json
 
-install: install.args \
-				 install.backup \
-				 install.custom_files \
-				 install.docs \
-				 install.fabric_quilt \
-				 install.gen_pkg \
-				 install.mcvm_transfer \
-				 install.modrinth \
-				 install.options \
-				 install.server_restart \
-				 install.sponge \
-				 install.stats
-
-
 install.args:
 	@cargo install --path . --bin mcvm_plugin_args --offline
 	@cat plugins/args/plugin.json | sed 's,\${PLUGIN_DIR}/,,' > ~/.local/share/mcvm/plugins/args.json
