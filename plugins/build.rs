@@ -44,6 +44,7 @@ fn main() {
 	add_file!(zip, "plugins/plugins/args.md");
 	add_file!(zip, "plugins/plugins/backup.md");
 	add_file!(zip, "plugins/plugins/docs.md");
+	add_file!(zip, "plugins/plugins/custom_files.md");
 	add_file!(zip, "plugins/plugins/extra_versions.md");
 	add_file!(zip, "plugins/plugins/gen_pkg.md");
 	add_file!(zip, "plugins/plugins/lang.md");
