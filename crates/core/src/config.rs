@@ -76,7 +76,11 @@ impl ConfigBuilder {
 		"Set the Microsoft client ID to use for Microsoft / Xbox Live authentication"
 	);
 
-	builder_method!(update_depth, UpdateDepth, "Set the depth at which to update files and versions");
+	builder_method!(
+		update_depth,
+		UpdateDepth,
+		"Set the depth at which to update files and versions"
+	);
 
 	builder_method!(
 		censor_secrets,
