@@ -10,6 +10,8 @@ MCVM sets multiple environment variables on the running plugin executable
 - `MCVM_CONFIG_DIR`: Path to MCVM's config directory
 - `MCVM_PLUGIN_STATE`: The current value of this plugin's persistent state, sent as JSON
 - `MCVM_VERSION`: The version of MCVM that is running the plugin
+- `HOOK_VERSION`: The version of the hook that is running. Can be used to prevent sending back invalid data.
+- `PLUGIN_LIST`: The list of all enabled plugins, separated by commas. Will include the plugin that is running as well.
 
 ## Arguments
 Arguments to the executable will always be passed in this order
