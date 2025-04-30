@@ -46,8 +46,6 @@ define_translations! {
 	PackageSupportHeader, "Header for packages to consider supporting", "Packages to consider supporting";
 	StartUpdatingPackages, "When starting to update packages on a profile", "Updating packages";
 	FinishUpdatingPackages, "When finishing updating packages on a profile", "All packages installed";
-	StartUpdatingProfileVersion, "When starting to update a profile's version", "Updating profile version";
-	FinishUpdatingProfileVersion, "When finishing updating a profile's version", "Profile version updated";
 	StartUpdatingProxy, "When starting to update a proxy", "Checking for proxy updates";
 	FinishUpdatingProxy, "When finishing updating a proxy", "Proxy updated";
 	StartRunningCommands, "When starting to run package commands", "Running commands";
@@ -109,6 +107,9 @@ define_translations! {
 	StartAuthenticating, "When starting authentication", "Authenticating";
 	AssetFailed, "When a single asset fails to download", "Asset failed to download:\n%error";
 	AssetsFailed, "When one or more assets fail to download", "%num assets failed to download. Minecraft may not load properly.";
+	StartUpdatingInstanceVersion, "When starting to update an instance version", "Updating instance from %version1 to %version2";
+	StartUpdatingInstanceGameModification, "When starting to change an instance game modification", "Removing current game modification from the instance";
+	FinishUpdatingInstanceVersion, "When finishing updating an instance version", "Finished update";
 }
 
 /// Replaces placeholders in a translated key

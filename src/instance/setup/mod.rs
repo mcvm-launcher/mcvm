@@ -5,6 +5,7 @@ mod server;
 
 use std::collections::HashSet;
 use std::fs;
+use std::ops::DerefMut;
 use std::path::PathBuf;
 
 use anyhow::{bail, Context};
@@ -17,6 +18,7 @@ use mcvm_core::user::{User, UserManager};
 use mcvm_core::version::InstalledVersion;
 use mcvm_core::QuickPlayType;
 use mcvm_mods::fabric_quilt;
+use mcvm_plugin::api::OutputProcess;
 use mcvm_plugin::hooks::{OnInstanceSetup, OnInstanceSetupArg, RemoveGameModification};
 use mcvm_shared::modifications::Modloader;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
@@ -109,6 +111,7 @@ impl Instance {
 		let mut lock = Lockfile::open(paths).context("Failed to open lockfile")?;
 		lock.ensure_instance_created(&self.id, &manager.version_info.get().version);
 		let lock_instance = lock.get_instance(&self.id);
+		let current_version = lock_instance.map(|x| x.version.clone());
 		let current_game_mod_version =
 			lock_instance.and_then(|x| x.game_modification_version.clone());
 		let current_client_type = lock_instance
@@ -132,24 +135,56 @@ impl Instance {
 			update_depth: manager.settings.depth,
 		};
 
-		// Do game modification change checks
-		if self.config.modifications.client_type() != current_client_type
-			|| self.config.modifications.server_type() != current_server_type
-		{
+		// Do game modification and version change checks
+		let is_version_different = current_version
+			.as_ref()
+			.is_some_and(|x| x != &manager.version_info.get().version);
+		let is_game_mod_different = self.config.modifications.client_type() != current_client_type
+			|| self.config.modifications.server_type() != current_server_type;
+		if is_version_different || is_game_mod_different {
+			let mut process = OutputProcess::new(o);
+			if is_game_mod_different {
+				let message = MessageContents::StartProcess(translate!(
+					process,
+					StartUpdatingInstanceGameModification
+				));
+				process.display(message, MessageLevel::Important);
+			} else if is_version_different {
+				let message = MessageContents::StartProcess(translate!(
+					process,
+					StartUpdatingInstanceVersion,
+					"version1" = &current_version.as_ref().expect("Version should exist"),
+					"version2" = &manager.version_info.get().version
+				));
+				process.display(message, MessageLevel::Important);
+			}
+
+			// Teardown
+			self.teardown(paths)
+				.context("Failed to teardown instance")?;
+
 			arg.client_type = current_client_type;
 			arg.server_type = current_server_type;
+			if let Some(current_version) = &current_version {
+				arg.version_info.version = current_version.clone();
+			}
 			let results = plugins
-				.call_hook(RemoveGameModification, &arg, paths, o)
+				.call_hook(RemoveGameModification, &arg, paths, process.deref_mut())
 				.context("Failed to call remove game modification hook")?;
 
 			for result in results {
-				result.result(o)?;
+				result.result(process.deref_mut())?;
 			}
 
 			// The current game modification version is no longer valid as it is referring to the old game modification
 			arg.current_game_modification_version = None;
 			arg.client_type = self.config.modifications.client_type();
 			arg.server_type = self.config.modifications.server_type();
+			arg.version_info.version = manager.version_info.get().version.clone();
+
+			let message =
+				MessageContents::Success(translate!(process, FinishUpdatingInstanceVersion));
+			process.display(message, MessageLevel::Important);
 		}
 
 		let results = plugins
@@ -192,7 +227,9 @@ impl Instance {
 			}
 		}
 
-		// Update the game modifications
+		// Update the game modifications and version
+		lock.update_instance_version(&self.id, &manager.version_info.get().version)
+			.expect("Instance should exist");
 		lock.update_instance_game_modifications(
 			&self.id,
 			self.config.modifications.client_type(),

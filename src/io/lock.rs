@@ -272,31 +272,6 @@ impl Lockfile {
 		}
 	}
 
-	/// Updates an instance in the lockfile. Returns true if the version has changed.
-	pub fn update_instance_version(&mut self, instance: &str, version: &str) -> bool {
-		if let Some(instance) = self.contents.instances.get_mut(instance) {
-			if instance.version == version {
-				false
-			} else {
-				instance.version = version.to_owned();
-				true
-			}
-		} else {
-			self.contents.instances.insert(
-				instance.to_owned(),
-				LockfileInstance {
-					version: version.to_owned(),
-					game_modification_version: None,
-					client_type: ClientType::Vanilla,
-					server_type: ServerType::Vanilla,
-					paper_build: None,
-				},
-			);
-
-			false
-		}
-	}
-
 	/// Ensures that an instance is created
 	pub fn ensure_instance_created(&mut self, instance: &str, version: &str) {
 		if !self.contents.instances.contains_key(instance) {
@@ -310,6 +285,16 @@ impl Lockfile {
 					paper_build: None,
 				},
 			);
+		}
+	}
+
+	/// Updates the version of an instance
+	pub fn update_instance_version(&mut self, instance: &str, version: &str) -> anyhow::Result<()> {
+		if let Some(instance) = self.contents.instances.get_mut(instance) {
+			instance.version = version.to_string();
+			Ok(())
+		} else {
+			bail!("Instance {instance} does not exist")
 		}
 	}
 

@@ -77,10 +77,6 @@ impl Instance {
 			.context("Failed to fulfill update manager")?;
 		let mc_version = manager.version_info.get().version.clone();
 
-		check_instance_version_change(self, &mc_version, ctx)
-			.await
-			.context("Failed to check for a profile version update")?;
-
 		ctx.lock
 			.finish(ctx.paths)
 			.context("Failed to finish using lockfile")?;
@@ -135,30 +131,4 @@ impl Instance {
 
 		Ok(())
 	}
-}
-
-/// Update an instance when the Minecraft version has changed
-async fn check_instance_version_change<'a, O: MCVMOutput>(
-	instance: &mut Instance,
-	mc_version: &str,
-	ctx: &mut InstanceUpdateContext<'a, O>,
-) -> anyhow::Result<()> {
-	if ctx.lock.update_instance_version(&instance.id, mc_version) {
-		ctx.output.start_process();
-		ctx.output.display(
-			MessageContents::StartProcess(translate!(ctx.output, StartUpdatingProfileVersion)),
-			MessageLevel::Important,
-		);
-
-		instance
-			.teardown(ctx.paths)
-			.context("Failed to remove old files when updating Minecraft version")?;
-
-		ctx.output.display(
-			MessageContents::Success(translate!(ctx.output, FinishUpdatingProfileVersion)),
-			MessageLevel::Important,
-		);
-		ctx.output.end_process();
-	}
-	Ok(())
 }
