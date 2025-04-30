@@ -51,6 +51,10 @@ name = "mcvm_plugin_paper"
 path = "plugins/paper/main.rs"
 
 [[bin]]
+name = "mcvm_plugin_resource_pack_host"
+path = "plugins/resource_pack_host/main.rs"
+
+[[bin]]
 name = "mcvm_plugin_server_restart"
 path = "plugins/server_restart/main.rs"
 
