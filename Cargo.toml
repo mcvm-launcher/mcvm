@@ -134,7 +134,6 @@ serde_json = { workspace = true }
 simd-json = { workspace = true }
 sha2 = { workspace = true }
 mcvm_core = { workspace = true }
-mcvm_mods = { workspace = true }
 mcvm_net = { workspace = true }
 mcvm_parse = { workspace = true }
 mcvm_pkg = { workspace = true }

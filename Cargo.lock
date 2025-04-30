@@ -2588,7 +2588,6 @@ dependencies = [
  "hex",
  "itertools",
  "mcvm_core",
- "mcvm_mods",
  "mcvm_net",
  "mcvm_parse",
  "mcvm_pkg",

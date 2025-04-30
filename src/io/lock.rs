@@ -36,7 +36,6 @@ pub(crate) struct LockfileInstance {
 	pub(crate) game_modification_version: Option<String>,
 	pub(crate) client_type: ClientType,
 	pub(crate) server_type: ServerType,
-	pub(crate) paper_build: Option<u16>,
 }
 
 /// Package stored in the lockfile
@@ -282,7 +281,6 @@ impl Lockfile {
 					game_modification_version: None,
 					client_type: ClientType::Vanilla,
 					server_type: ServerType::Vanilla,
-					paper_build: None,
 				},
 			);
 		}
@@ -325,25 +323,6 @@ impl Lockfile {
 			Ok(())
 		} else {
 			bail!("Instance {instance} does not exist")
-		}
-	}
-
-	/// Updates an instance with a new Paper build. Returns true if the version has changed.
-	pub fn update_instance_paper_build(&mut self, instance: &str, build_num: u16) -> bool {
-		if let Some(instance) = self.contents.instances.get_mut(instance) {
-			if let Some(paper_build) = instance.paper_build.as_mut() {
-				if *paper_build == build_num {
-					false
-				} else {
-					*paper_build = build_num;
-					true
-				}
-			} else {
-				instance.paper_build = Some(build_num);
-				false
-			}
-		} else {
-			false
 		}
 	}
 

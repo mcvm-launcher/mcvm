@@ -17,10 +17,8 @@ use mcvm_core::user::uuid::hyphenate_uuid;
 use mcvm_core::user::{User, UserManager};
 use mcvm_core::version::InstalledVersion;
 use mcvm_core::QuickPlayType;
-use mcvm_mods::fabric_quilt;
 use mcvm_plugin::api::OutputProcess;
 use mcvm_plugin::hooks::{OnInstanceSetup, OnInstanceSetupArg, RemoveGameModification};
-use mcvm_shared::modifications::Modloader;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::translate;
 use mcvm_shared::Side;
@@ -35,28 +33,11 @@ use super::{InstKind, Instance};
 
 /// The default main class for the server
 pub const DEFAULT_SERVER_MAIN_CLASS: &str = "net.minecraft.server.Main";
-/// The main class for a Paper server
-pub const PAPER_SERVER_MAIN_CLASS: &str = "io.papermc.paperclip.Main";
 
 impl Instance {
 	/// Get the requirements for this instance
 	pub fn get_requirements(&self) -> HashSet<UpdateRequirement> {
 		let mut out = HashSet::new();
-		match self.config.modifications.get_modloader(self.kind.to_side()) {
-			Modloader::Fabric => {
-				out.insert(UpdateRequirement::FabricQuilt(
-					fabric_quilt::Mode::Fabric,
-					self.kind.to_side(),
-				));
-			}
-			Modloader::Quilt => {
-				out.insert(UpdateRequirement::FabricQuilt(
-					fabric_quilt::Mode::Quilt,
-					self.kind.to_side(),
-				));
-			}
-			_ => {}
-		};
 		match &self.kind {
 			InstKind::Client { .. } => {
 				if self.config.launch.use_log4j_config {

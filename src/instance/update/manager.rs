@@ -14,18 +14,15 @@ use mcvm_shared::later::Later;
 use mcvm_shared::output::MCVMOutput;
 use mcvm_shared::output::NoOp;
 use mcvm_shared::versions::VersionInfo;
-use mcvm_shared::{Side, UpdateDepth};
+use mcvm_shared::UpdateDepth;
 use reqwest::Client;
 
 use crate::io::paths::Paths;
 use crate::plugin::PluginManager;
-use mcvm_mods::fabric_quilt::{self, FabricQuiltMeta};
 
 /// Requirements for operations that may be shared by multiple instances in a profile
 #[derive(Debug, Hash, PartialEq, Eq)]
 pub enum UpdateRequirement {
-	/// Fabric and Quilt
-	FabricQuilt(fabric_quilt::Mode, Side),
 	/// Client logging configuration
 	ClientLoggingConfig,
 }
@@ -56,8 +53,6 @@ pub struct UpdateManager {
 	pub core: Later<MCVMCore>,
 	/// The version info to be fulfilled later
 	pub version_info: Later<VersionInfo>,
-	/// The Fabric/Quilt metadata to be fulfilled later
-	pub fq_meta: Later<FabricQuiltMeta>,
 }
 
 impl UpdateManager {
@@ -75,7 +70,6 @@ impl UpdateManager {
 			ms_client_id: None,
 			files: HashSet::new(),
 			version_info: Later::Empty,
-			fq_meta: Later::new(),
 			mc_version: Later::Empty,
 		}
 	}
@@ -130,7 +124,6 @@ impl UpdateManager {
 		self.mc_version.fill(version.clone());
 		// We have to clear these now since they are out of date
 		self.version_info.clear();
-		self.fq_meta.clear();
 	}
 
 	/// Run all of the operations that are part of the requirements.
