@@ -34,6 +34,9 @@ pub trait Hook {
 		false
 	}
 
+	/// Get the version number of the hook
+	fn get_version() -> u16;
+
 	/// Call the hook using the specified program
 	fn call(
 		&self,
@@ -48,7 +51,7 @@ pub trait Hook {
 }
 
 macro_rules! def_hook {
-	($struct:ident, $name:literal, $desc:literal, $arg:ty, $res:ty, $($extra:tt)*) => {
+	($struct:ident, $name:literal, $desc:literal, $arg:ty, $res:ty, $version:literal, $($extra:tt)*) => {
 		#[doc = $desc]
 		pub struct $struct;
 
@@ -58,6 +61,10 @@ macro_rules! def_hook {
 
 			fn get_name_static() -> &'static str {
 				$name
+			}
+
+			fn get_version() -> u16 {
+				$version
 			}
 
 			$(
@@ -73,6 +80,7 @@ def_hook!(
 	"Hook for when a plugin is loaded",
 	(),
 	(),
+	1,
 );
 
 def_hook!(
@@ -81,6 +89,7 @@ def_hook!(
 	"Hook for when a command's subcommands are run",
 	Vec<String>,
 	(),
+	1,
 	fn get_takes_over() -> bool {
 		true
 	}
@@ -92,6 +101,7 @@ def_hook!(
 	"Hook for modifying an instance's configuration",
 	serde_json::Map<String, serde_json::Value>,
 	ModifyInstanceConfigResult,
+	1,
 );
 
 /// Result from the ModifyInstanceConfig hook
@@ -108,6 +118,7 @@ def_hook!(
 	"Hook for adding extra versions to the version manifest",
 	(),
 	Vec<VersionEntry>,
+	1,
 );
 
 def_hook!(
@@ -116,6 +127,7 @@ def_hook!(
 	"Hook for doing work when setting up an instance for update or launch",
 	OnInstanceSetupArg,
 	OnInstanceSetupResult,
+	1,
 );
 
 /// Argument for the OnInstanceSetup hook
@@ -166,6 +178,7 @@ def_hook!(
 	"Hook for removing a game modification from an instance when the game modification or version changes",
 	OnInstanceSetupArg,
 	(),
+	1,
 );
 
 def_hook!(
@@ -174,6 +187,7 @@ def_hook!(
 	"Hook for doing work before an instance is launched",
 	InstanceLaunchArg,
 	(),
+	1,
 );
 
 def_hook!(
@@ -182,6 +196,7 @@ def_hook!(
 	"Hook for running sibling processes with an instance when it is launched",
 	InstanceLaunchArg,
 	(),
+	1,
 );
 
 def_hook!(
@@ -190,6 +205,7 @@ def_hook!(
 	"Hook for doing work when an instance is stopped gracefully",
 	InstanceLaunchArg,
 	(),
+	1,
 );
 
 /// Argument for the OnInstanceLaunch and WhileInstanceLaunch hooks
@@ -218,6 +234,7 @@ def_hook!(
 	"Hook for handling custom instructions in packages",
 	CustomPackageInstructionArg,
 	CustomPackageInstructionResult,
+	1,
 );
 
 /// Argument for the CustomPackageInstruction hook
@@ -258,6 +275,7 @@ def_hook!(
 	"Hook for handling authentication for custom user types",
 	HandleAuthArg,
 	HandleAuthResult,
+	1,
 );
 
 /// Argument for the HandleAuth hook
@@ -286,6 +304,7 @@ def_hook!(
 	"Hook for adding extra translations to MCVM",
 	(),
 	LanguageMap,
+	1,
 );
 
 def_hook!(
@@ -294,6 +313,7 @@ def_hook!(
 	"Hook for adding information about instance transfer formats",
 	(),
 	Vec<InstanceTransferFormat>,
+	1,
 );
 
 /// Information about an instance transfer format
@@ -339,6 +359,7 @@ def_hook!(
 	"Hook for exporting an instance",
 	ExportInstanceArg,
 	(),
+	1,
 );
 
 /// Argument provided to the export_instance hook
@@ -371,6 +392,7 @@ def_hook!(
 	"Hook for importing an instance",
 	ImportInstanceArg,
 	ImportInstanceResult,
+	1,
 );
 
 /// Argument provided to the import_instance hook
@@ -411,6 +433,7 @@ def_hook!(
 	"Tell MCVM that you support installing extra game modifications",
 	(),
 	SupportedGameModifications,
+	1,
 );
 
 /// Game modifications with added support by a plugin

@@ -5,11 +5,13 @@ use std::env::Args;
 use std::marker::PhantomData;
 use std::path::PathBuf;
 
-use anyhow::Context;
+use anyhow::{bail, Context};
 use serde::de::DeserializeOwned;
 use serde::Serialize;
 
-use crate::hook_call::{CONFIG_DIR_ENV, CUSTOM_CONFIG_ENV, DATA_DIR_ENV, PLUGIN_STATE_ENV};
+use crate::hook_call::{
+	CONFIG_DIR_ENV, CUSTOM_CONFIG_ENV, DATA_DIR_ENV, HOOK_VERSION_ENV, PLUGIN_STATE_ENV,
+};
 use crate::hooks::Hook;
 use crate::output::OutputAction;
 
@@ -119,6 +121,14 @@ impl CustomPlugin {
 	) -> anyhow::Result<()> {
 		// Check if we are running the given hook
 		if self.hook == H::get_name_static() {
+			// Check that the hook version of MCVM matches our hook version
+			let expected_version = std::env::var(HOOK_VERSION_ENV);
+			if let Ok(expected_version) = expected_version {
+				if expected_version != H::get_version().to_string() {
+					bail!("Hook version does not match. Try updating the plugin or MCVM.");
+				}
+			}
+
 			let arg = arg(self)?;
 			let mut state = None;
 			let mut state_has_changed = false;

@@ -26,6 +26,8 @@ pub static PLUGIN_STATE_ENV: &str = "MCVM_PLUGIN_STATE";
 pub static MCVM_VERSION_ENV: &str = "MCVM_VERSION";
 /// The environment variable that tells the executable it is running as a plugin
 pub static MCVM_PLUGIN_ENV: &str = "MCVM_PLUGIN";
+/// The environment variable that tells what version of the hook this is
+pub static HOOK_VERSION_ENV: &str = "MCVM_HOOK_VERSION";
 
 /// Argument struct for the hook call function
 pub struct HookCallArg<'a, H: Hook> {
@@ -87,6 +89,7 @@ where
 	if let Some(working_dir) = arg.working_dir {
 		cmd.current_dir(working_dir);
 	}
+	cmd.env(HOOK_VERSION_ENV, H::get_version().to_string());
 	{
 		let lock = arg.state.lock().map_err(|x| anyhow!("{x}"))?;
 		// Don't send null state to improve performance
