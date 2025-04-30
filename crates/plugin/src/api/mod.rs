@@ -21,8 +21,9 @@ pub struct CustomPlugin {
 	name: String,
 	settings: PluginSettings,
 	args: Args,
+	/// The hook that is being run
 	hook: String,
-	ctx: StoredHookContext,
+	stored_ctx: StoredHookContext,
 }
 
 macro_rules! hook_interface {
@@ -57,7 +58,7 @@ impl CustomPlugin {
 		args.next();
 		let hook = args.next().context("Missing hook to run")?;
 		let custom_config = std::env::var(CUSTOM_CONFIG_ENV).ok();
-		let ctx = StoredHookContext {
+		let stored_ctx = StoredHookContext {
 			custom_config,
 			output: PluginOutput::new(settings.use_base64),
 		};
@@ -66,7 +67,7 @@ impl CustomPlugin {
 			settings,
 			args,
 			hook,
-			ctx,
+			stored_ctx,
 		})
 	}
 
@@ -117,12 +118,13 @@ impl CustomPlugin {
 		arg: impl FnOnce(&mut Self) -> anyhow::Result<H::Arg>,
 		f: impl FnOnce(HookContext<H>, H::Arg) -> anyhow::Result<H::Result>,
 	) -> anyhow::Result<()> {
+		// Check if we are running the given hook
 		if self.hook == H::get_name_static() {
 			let arg = arg(self)?;
 			let mut state = None;
 			let mut state_has_changed = false;
 			let ctx = HookContext {
-				ctx: &mut self.ctx,
+				stored_ctx: &mut self.stored_ctx,
 				state: &mut state,
 				state_has_changed: &mut state_has_changed,
 				_h: PhantomData,
@@ -165,7 +167,7 @@ impl CustomPlugin {
 	}
 }
 
-/// Stored hook context
+/// Stored hook context in the CustomPlugin, shared with the HookContext
 struct StoredHookContext {
 	custom_config: Option<String>,
 	output: PluginOutput,
@@ -173,7 +175,7 @@ struct StoredHookContext {
 
 /// Argument passed to every hook
 pub struct HookContext<'ctx, H: Hook> {
-	ctx: &'ctx mut StoredHookContext,
+	stored_ctx: &'ctx mut StoredHookContext,
 	state: &'ctx mut Option<serde_json::Value>,
 	state_has_changed: &'ctx mut bool,
 	_h: PhantomData<H>,
@@ -182,12 +184,12 @@ pub struct HookContext<'ctx, H: Hook> {
 impl<'ctx, H: Hook> HookContext<'ctx, H> {
 	/// Get the custom configuration for the plugin passed into the hook
 	pub fn get_custom_config(&self) -> Option<&str> {
-		self.ctx.custom_config.as_deref()
+		self.stored_ctx.custom_config.as_deref()
 	}
 
 	/// Get the plugin's output stream
 	pub fn get_output(&mut self) -> &mut PluginOutput {
-		&mut self.ctx.output
+		&mut self.stored_ctx.output
 	}
 
 	/// Get the mcvm data directory path
