@@ -22,7 +22,6 @@ use mcvm_shared::modifications::Modloader;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::translate;
 use mcvm_shared::Side;
-use reqwest::Client;
 
 use crate::config::instance::QuickPlay;
 use crate::io::lock::Lockfile;
@@ -74,7 +73,6 @@ impl Instance {
 		plugins: &PluginManager,
 		paths: &Paths,
 		users: &UserManager,
-		client: &Client,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<UpdateMethodResult> {
 		// Start by setting up side-specific stuff
@@ -98,7 +96,7 @@ impl Instance {
 				);
 				o.start_section();
 				let result = self
-					.setup_server(manager, paths, client, o)
+					.setup_server(paths)
 					.await
 					.context("Failed to create server")?;
 				Ok(result)
@@ -303,11 +301,7 @@ impl Instance {
 	}
 
 	/// Removes files such as the game jar for when the profile version changes
-	pub fn teardown(
-		&mut self,
-		paths: &Paths,
-		paper_properties: Option<(u16, String)>,
-	) -> anyhow::Result<()> {
+	pub fn teardown(&mut self, paths: &Paths) -> anyhow::Result<()> {
 		self.ensure_dirs(paths)?;
 		match self.kind {
 			InstKind::Client { .. } => {
@@ -322,11 +316,6 @@ impl Instance {
 				let jar_path = game_dir.join("server.jar");
 				if jar_path.exists() {
 					fs::remove_file(jar_path).context("Failed to remove server.jar")?;
-				}
-
-				if let Some((_, file_name)) = paper_properties {
-					self.remove_paper(paths, file_name)
-						.context("Failed to remove Paper")?;
 				}
 			}
 		}

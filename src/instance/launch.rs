@@ -54,7 +54,7 @@ impl Instance {
 			.context("Update failed")?;
 
 		let result = self
-			.setup(&mut manager, plugins, paths, users, &client, o)
+			.setup(&mut manager, plugins, paths, users, o)
 			.await
 			.context("Failed to update instance")?;
 		manager.add_result(result);

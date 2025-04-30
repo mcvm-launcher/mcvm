@@ -11,7 +11,7 @@ fn main() -> anyhow::Result<()> {
 			bail!("Instance side is empty");
 		};
 
-		// Make sure this is a Fabric or Quilt instance
+		// Make sure this is a Sponge server instance
 		if side != Side::Server || arg.server_type != ServerType::Sponge {
 			return Ok(OnInstanceSetupResult::default());
 		}

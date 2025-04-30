@@ -82,5 +82,11 @@
 		"github_owner": "mcvm-launcher",
 		"github_repo": "mcvm",
 		"description": "Share custom files across multiple instances"
+	},
+	"paper": {
+		"id": "paper",
+		"github_owner": "mcvm-launcher",
+		"github_repo": "mcvm",
+		"description": "Install Paper and Folia server instances"
 	}
 }

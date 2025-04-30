@@ -1,0 +1,17 @@
+{
+	"name": "Paper",
+	"description": "Install Paper and Folia instances",
+	"hooks": {
+		"on_instance_setup": {
+			"executable": "${PLUGIN_DIR}/mcvm_plugin_paper"
+		},
+		"add_supported_game_modifications": {
+			"constant": {
+				"server_types": [
+					"paper",
+					"folia"
+				]
+			}
+		}
+	}
+}

@@ -114,13 +114,18 @@ pub async fn install_velocity(paths: &Paths, client: &Client) -> anyhow::Result<
 	))
 }
 
+/// Get all versions of a PaperMC project
+pub async fn get_all_versions(mode: Mode, client: &Client) -> anyhow::Result<Vec<String>> {
+	let url = format!("https://api.papermc.io/v2/projects/{}", mode.to_str());
+	let resp: ProjectInfoResponse = download::json(url, client).await?;
+	Ok(resp.versions)
+}
+
 /// Get the newest version of a PaperMC project
 pub async fn get_newest_version(mode: Mode, client: &Client) -> anyhow::Result<String> {
-	let url = format!("https://api.papermc.io/v2/projects/{}", mode.to_str(),);
-	let resp: ProjectInfoResponse = download::json(url, client).await?;
+	let versions = get_all_versions(mode, client).await?;
 
-	let version = resp
-		.versions
+	let version = versions
 		.last()
 		.ok_or(anyhow!("Could not find a valid {mode} version"))?;
 
@@ -132,16 +137,22 @@ struct ProjectInfoResponse {
 	versions: Vec<String>,
 }
 
-/// Get the newest build number of a PaperMC project version
-pub async fn get_newest_build(mode: Mode, version: &str, client: &Client) -> anyhow::Result<u16> {
+/// Get all available build numbers of a PaperMC project version
+pub async fn get_builds(mode: Mode, version: &str, client: &Client) -> anyhow::Result<Vec<u16>> {
 	let url = format!(
 		"https://api.papermc.io/v2/projects/{}/versions/{version}",
 		mode.to_str(),
 	);
 	let resp: VersionInfoResponse = download::json(url, client).await?;
 
-	let build = resp
-		.builds
+	Ok(resp.builds)
+}
+
+/// Get the newest build number of a PaperMC project version
+pub async fn get_newest_build(mode: Mode, version: &str, client: &Client) -> anyhow::Result<u16> {
+	let builds = get_builds(mode, version, client).await?;
+
+	let build = builds
 		.iter()
 		.max()
 		.ok_or(anyhow!("Could not find a valid {mode} build version"))?;
