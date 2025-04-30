@@ -8,7 +8,7 @@ use backup::{get_backup_directory, BackupAutoHook, Config, Index, DEFAULT_GROUP}
 use clap::Parser;
 use color_print::cprintln;
 use mcvm_plugin::api::{CustomPlugin, HookContext};
-use mcvm_plugin::api::{MCVMOutput, MessageContents, MessageLevel};
+use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_plugin::hooks::{self, Hook};
 
 use crate::backup::BackupSource;

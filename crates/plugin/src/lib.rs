@@ -22,6 +22,8 @@ pub mod output;
 /// Plugins
 pub mod plugin;
 
+pub use mcvm_shared as shared;
+
 /// Environment variable that debugs plugins when set
 pub static PLUGIN_DEBUG_ENV: &str = "MCVM_PLUGIN_DEBUG";
 

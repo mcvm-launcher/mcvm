@@ -14,7 +14,6 @@ use crate::hooks::Hook;
 use crate::output::OutputAction;
 
 use self::output::PluginOutput;
-pub use mcvm_shared::output::*;
 
 /// A plugin definition
 pub struct CustomPlugin {

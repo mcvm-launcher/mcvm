@@ -1,4 +1,5 @@
-use mcvm_plugin::api::{CustomPlugin, MCVMOutput, MessageContents, MessageLevel};
+use mcvm_plugin::api::CustomPlugin;
+use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 
 fn main() -> anyhow::Result<()> {
 	let mut plugin = CustomPlugin::new("print_custom_config")?;
