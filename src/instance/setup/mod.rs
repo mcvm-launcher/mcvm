@@ -63,7 +63,7 @@ impl Instance {
 		let result = match &self.kind {
 			InstKind::Client { .. } => {
 				o.display(
-					MessageContents::Header(translate!(o, StartUpdatingClient, "id" = &self.id)),
+					MessageContents::Header(translate!(o, StartUpdatingClient)),
 					MessageLevel::Important,
 				);
 				o.start_section();
@@ -75,7 +75,7 @@ impl Instance {
 			}
 			InstKind::Server { .. } => {
 				o.display(
-					MessageContents::Header(translate!(o, StartUpdatingServer, "id" = &self.id)),
+					MessageContents::Header(translate!(o, StartUpdatingServer)),
 					MessageLevel::Important,
 				);
 				o.start_section();
