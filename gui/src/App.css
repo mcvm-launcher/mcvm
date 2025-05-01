@@ -36,6 +36,13 @@ q.container {
 	text-align: center;
 }
 
+.container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
 .row {
 	display: flex;
 	justify-content: center;

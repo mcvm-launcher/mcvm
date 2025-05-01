@@ -19,6 +19,8 @@ use mcvm_shared::pkg::PackageStability;
 use mcvm_shared::versions::VersionPattern;
 use mcvm_shared::Side;
 
+use crate::config::instance::InstanceConfig;
+
 use self::launch::LaunchOptions;
 use self::setup::{InstanceDirs, ModificationData};
 
@@ -98,6 +100,10 @@ pub struct InstanceStoredConfig {
 	pub packages: Vec<PackageConfig>,
 	/// Default stability for packages
 	pub package_stability: PackageStability,
+	/// The original instance configuration before applying profiles
+	pub original_config: InstanceConfig,
+	/// The original instance configuration after applying profiles
+	pub original_config_with_profiles: InstanceConfig,
 	/// Custom plugin config
 	pub plugin_config: serde_json::Map<String, serde_json::Value>,
 }

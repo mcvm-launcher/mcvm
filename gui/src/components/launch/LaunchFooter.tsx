@@ -120,7 +120,11 @@ export default function LaunchFooter(props: LaunchFooterProps) {
 								size="28px"
 								color="var(--bg2)"
 								selectedColor="var(--accent)"
-								onClick={() => {}}
+								onClick={() => {
+									if (props.selectedInstance != null) {
+										window.location.href = `/instance_config/${props.selectedInstance}`;
+									}
+								}}
 								selected={false}
 							/>
 						</div>

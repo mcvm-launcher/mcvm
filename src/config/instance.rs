@@ -25,7 +25,7 @@ use super::profile::{GameModifications, ProfileConfig};
 use crate::plugin::PluginManager;
 
 /// Configuration for an instance
-#[derive(Deserialize, Serialize, Clone)]
+#[derive(Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 pub struct InstanceConfig {
 	/// The type or side of this instance
@@ -49,7 +49,7 @@ pub struct InstanceConfig {
 }
 
 /// Common full instance config for both client and server
-#[derive(Deserialize, Serialize, Clone, Default)]
+#[derive(Deserialize, Serialize, Clone, Default, Debug)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(default)]
 pub struct CommonInstanceConfig {
@@ -392,10 +392,14 @@ pub fn read_instance_config(
 		.collect();
 	let profiles = profiles?;
 
+	let original_config = config.clone();
+
 	// Merge with the profile
 	for profile in &profiles {
 		config = merge_instance_configs(&profile.instance, config);
 	}
+
+	let original_config_with_profiles = config.clone();
 
 	let side = config.side.context("Instance type was not specified")?;
 
@@ -444,6 +448,8 @@ pub fn read_instance_config(
 		datapack_folder: config.common.datapack_folder,
 		packages,
 		package_stability: config.common.package_stability.unwrap_or_default(),
+		original_config,
+		original_config_with_profiles,
 		plugin_config: config.common.plugin_config,
 	};
 
