@@ -32,3 +32,4 @@ Run the command `mcvm instance list` to create the default config file, and list
 Looks like we are ready to launch. Run `mcvm instance launch example-client` to start up the client! When launching for the first time, you will have to follow the shown login instructions in order to authenticate with your Microsoft account. Afterwards, you won't have to log in again.
 
 For more info, read the other documentation or join our [Discord server](https://discord.gg/25fhkjeTvW).
+When you want to start adding things like mods or resource packs to your instance, check out the [packages guide](packages.md).

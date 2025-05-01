@@ -31,6 +31,7 @@ fn main() {
 	zip.add_directory("guide", FileOptions::<()>::default())
 		.unwrap();
 	add_file!(zip, "guide/index.md");
+	add_file!(zip, "guide/packages.md");
 	zip.add_directory("plugins", FileOptions::<()>::default())
 		.unwrap();
 	add_file!(zip, "plugins/index.md");
