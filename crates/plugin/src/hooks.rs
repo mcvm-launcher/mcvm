@@ -438,6 +438,7 @@ def_hook!(
 
 /// Game modifications with added support by a plugin
 #[derive(Serialize, Deserialize, Default)]
+#[serde(default)]
 pub struct SupportedGameModifications {
 	/// Client types that this plugin adds support for
 	pub client_types: Vec<ClientType>,
