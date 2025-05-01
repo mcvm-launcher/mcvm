@@ -13,6 +13,9 @@ use crate::hook_call::HookCallArg;
 use crate::hooks::Hook;
 use crate::HookHandle;
 
+/// The protocol version for plugin communication
+pub const PROTOCOL_VERSION: u16 = 2;
+
 /// A plugin
 #[derive(Debug)]
 pub struct Plugin {
@@ -77,6 +80,7 @@ impl Plugin {
 					mcvm_version,
 					plugin_id: &self.id,
 					plugin_list,
+					protocol_version: self.manifest.protocol_version.unwrap_or(PROTOCOL_VERSION),
 				};
 				hook.call(arg, o).map(Some)
 			}

@@ -10,7 +10,7 @@ use anyhow::{anyhow, bail, Context};
 use mcvm_core::Paths;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 
-use crate::{hooks::Hook, output::OutputAction, plugin_debug_enabled};
+use crate::{hooks::Hook, output::OutputAction, plugin::PROTOCOL_VERSION, plugin_debug_enabled};
 
 /// The substitution token for the plugin directory in the command
 pub static PLUGIN_DIR_TOKEN: &str = "${PLUGIN_DIR}";
@@ -55,6 +55,8 @@ pub struct HookCallArg<'a, H: Hook> {
 	pub plugin_id: &'a str,
 	/// The list of all enabled plugins and their versions
 	pub plugin_list: &'a [String],
+	/// The protocol version
+	pub protocol_version: u16,
 }
 
 pub(crate) fn call<H: Hook>(
@@ -137,6 +139,7 @@ where
 			},
 			plugin_state: Some(arg.state),
 			use_base64: arg.use_base64,
+			protocol_version: arg.protocol_version,
 			plugin_id: arg.plugin_id.to_string(),
 		};
 
@@ -150,6 +153,7 @@ pub struct HookHandle<H: Hook> {
 	inner: HookHandleInner<H>,
 	plugin_state: Option<Arc<Mutex<serde_json::Value>>>,
 	use_base64: bool,
+	protocol_version: u16,
 	plugin_id: String,
 }
 
@@ -160,6 +164,7 @@ impl<H: Hook> HookHandle<H> {
 			inner: HookHandleInner::Constant(result),
 			plugin_state: None,
 			use_base64: true,
+			protocol_version: PROTOCOL_VERSION,
 			plugin_id,
 		}
 	}
@@ -186,8 +191,14 @@ impl<H: Hook> HookHandle<H> {
 				}
 				let line = line_buf.trim_end_matches("\r\n").trim_end_matches('\n');
 
-				let action = OutputAction::deserialize(line, self.use_base64)
-					.context("Failed to deserialize plugin action")?;
+				let action =
+					OutputAction::deserialize(line, self.use_base64, self.protocol_version)
+						.context("Failed to deserialize plugin action")?;
+
+				let Some(action) = action else {
+					return Ok(false);
+				};
+
 				match action {
 					OutputAction::SetResult(new_result) => {
 						*result = Some(

@@ -20,7 +20,7 @@ Arguments to the executable will always be passed in this order
 3. The argument to the hook
 
 ## Output
-This section is not applicable if using a hook that takes over, such as the `subcommand` hook. For most hooks, output is read line-by-line, with each line being a JSON item of one of the following types. *However*, it is also base64-encoded by default to prevent special characters like line breaks in strings from ruining the output. If you do not wish to have this behavior, `raw_transfer` can be enabled in the plugin manifest. Remember to not pretty-print your JSON and keep it in one line to prevent errors.
+This section is not applicable if using a hook that takes over, such as the `subcommand` hook. For most hooks, output is read line-by-line, with each line starting with the delimiter `%_` to separate output commands from stray prints. Following this delimiter, each line must then have a JSON item of one of the following types. *However*, this JSON is also base64-encoded by default to prevent special characters like line breaks in strings from ruining the output. If you do not wish to have this behavior, `raw_transfer` can be enabled in the plugin manifest. Remember to not pretty-print your JSON and keep it in one line to prevent errors.
 
 - `text`: Displays text to the output
 ```

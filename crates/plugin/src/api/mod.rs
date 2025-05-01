@@ -15,6 +15,7 @@ use crate::hook_call::{
 };
 use crate::hooks::Hook;
 use crate::output::OutputAction;
+use crate::plugin::PROTOCOL_VERSION;
 
 use self::output::PluginOutput;
 
@@ -62,7 +63,7 @@ impl CustomPlugin {
 		let custom_config = std::env::var(CUSTOM_CONFIG_ENV).ok();
 		let stored_ctx = StoredHookContext {
 			custom_config,
-			output: PluginOutput::new(settings.use_base64),
+			output: PluginOutput::new(settings.use_base64, settings.protocol_version),
 		};
 		Ok(Self {
 			name: name.into(),
@@ -147,7 +148,7 @@ impl CustomPlugin {
 				println!(
 					"{}",
 					action
-						.serialize(self.settings.use_base64)
+						.serialize(self.settings.use_base64, self.settings.protocol_version)
 						.context("Failed to serialize hook result")?
 				);
 
@@ -158,7 +159,7 @@ impl CustomPlugin {
 						println!(
 							"{}",
 							action
-								.serialize(self.settings.use_base64)
+								.serialize(self.settings.use_base64, self.settings.protocol_version)
 								.context("Failed to serialize new hook state")?
 						);
 					}
@@ -257,11 +258,16 @@ pub struct PluginSettings {
 	/// Whether to use base64 encoding in the plugin protocol.
 	/// If this is set to false, raw_transfer must be true in the manifest
 	pub use_base64: bool,
+	/// The protocol version to use
+	pub protocol_version: u16,
 }
 
 impl Default for PluginSettings {
 	fn default() -> Self {
-		Self { use_base64: true }
+		Self {
+			use_base64: true,
+			protocol_version: PROTOCOL_VERSION,
+		}
 	}
 }
 

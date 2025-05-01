@@ -1,6 +1,7 @@
 {
 	"name": "Paper",
 	"description": "Install Paper and Folia instances",
+	"protocol_version": 2,
 	"hooks": {
 		"on_instance_setup": {
 			"executable": "${PLUGIN_DIR}/mcvm_plugin_paper"

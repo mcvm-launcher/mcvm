@@ -3,6 +3,9 @@ use base64::prelude::*;
 use mcvm_shared::output::{Message, MessageLevel};
 use serde::{Deserialize, Serialize};
 
+/// The delimiter which starts every line after protocol version 2
+pub static STARTING_DELIMITER: &str = "%_";
+
 /// An action to be sent between the plugin and plugin runner
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
@@ -27,19 +30,39 @@ pub enum OutputAction {
 
 impl OutputAction {
 	/// Serialize the action to be sent to the plugin runner
-	pub fn serialize(&self, use_base64: bool) -> anyhow::Result<String> {
+	pub fn serialize(&self, use_base64: bool, protocol_version: u16) -> anyhow::Result<String> {
 		let json = serde_json::to_string(&self).context("Failed to serialize output action")?;
-		if use_base64 {
+		let out = if use_base64 {
 			// We have to base64 encode it to prevent newlines from messing up the output format
 			let base64 = BASE64_STANDARD.encode(json);
-			Ok(base64)
+			base64
 		} else {
-			Ok(json)
+			json
+		};
+
+		if protocol_version >= 2 {
+			Ok(format!("{STARTING_DELIMITER}{out}"))
+		} else {
+			Ok(out)
 		}
 	}
 
 	/// Deserialize an action sent from the plugin
-	pub fn deserialize(action: &str, use_base64: bool) -> anyhow::Result<Self> {
+	pub fn deserialize(
+		action: &str,
+		use_base64: bool,
+		protocol_version: u16,
+	) -> anyhow::Result<Option<Self>> {
+		// Remove the starting delimiter
+		let action = if protocol_version >= 2 {
+			if action.starts_with(STARTING_DELIMITER) {
+				&action[STARTING_DELIMITER.len()..]
+			} else {
+				return Ok(None);
+			}
+		} else {
+			action
+		};
 		let json = if use_base64 {
 			BASE64_STANDARD
 				.decode(action)
@@ -49,6 +72,6 @@ impl OutputAction {
 		};
 		let action =
 			serde_json::from_slice(&json).context("Failed to deserialize output action")?;
-		Ok(action)
+		Ok(Some(action))
 	}
 }
