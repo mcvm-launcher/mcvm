@@ -170,9 +170,16 @@ impl ScriptEvaluatorTrait for ScriptEvaluator {
 		Ok(())
 	}
 
-	fn run_custom(&mut self, shared: &mut Self::Shared<'_>, _custom: String) -> anyhow::Result<()> {
+	fn run_custom(
+		&mut self,
+		shared: &mut Self::Shared<'_>,
+		command: String,
+		args: Vec<String>,
+	) -> anyhow::Result<()> {
 		let arg = CustomPackageInstructionArg {
 			pkg_id: shared.eval.id.to_string(),
+			command,
+			args,
 		};
 		let results = shared.eval.plugins.call_hook(
 			CustomPackageInstruction,

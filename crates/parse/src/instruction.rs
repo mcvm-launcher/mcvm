@@ -142,7 +142,7 @@ pub enum InstrKind {
 	/// Call another routine
 	Call(Later<String>),
 	/// Custom implementation-specific instruction
-	Custom(Later<String>),
+	Custom(Later<String>, Vec<String>),
 }
 
 /// A non-nested else / else if block connected to an if
@@ -259,7 +259,7 @@ impl Instruction {
 			"extend" => Ok(InstrKind::Extend(Value::None)),
 			"notice" => Ok(InstrKind::Notice(Value::None)),
 			"call" => Ok(InstrKind::Call(Later::Empty)),
-			"custom" => Ok(InstrKind::Custom(Later::Empty)),
+			"custom" => Ok(InstrKind::Custom(Later::Empty, Vec::new())),
 			string => bail!("Unknown instruction '{string}' {}", pos),
 		}?;
 
@@ -286,7 +286,7 @@ impl Instruction {
 			| InstrKind::SmithedID(val)
 			| InstrKind::Website(val)
 			| InstrKind::Call(val)
-			| InstrKind::Custom(val) => val.is_full(),
+			| InstrKind::Custom(val, _) => val.is_full(),
 			InstrKind::Features(val)
 			| InstrKind::Authors(val)
 			| InstrKind::PackageMaintainers(val)
@@ -340,8 +340,7 @@ impl Instruction {
 				| InstrKind::Banner(text)
 				| InstrKind::License(text)
 				| InstrKind::ModrinthID(text)
-				| InstrKind::CurseForgeID(text)
-				| InstrKind::Custom(text) => {
+				| InstrKind::CurseForgeID(text) => {
 					if text.is_empty() {
 						text.fill(parse_string(tok, pos)?);
 					} else {
@@ -368,6 +367,13 @@ impl Instruction {
 				| InstrKind::Tags(list)
 				| InstrKind::Gallery(list) => list.push(parse_string(tok, pos)?),
 				InstrKind::Cmd(list) => list.push(parse_arg(tok, pos)?),
+				InstrKind::Custom(cmd, args) => {
+					if cmd.is_empty() {
+						cmd.fill(parse_string(tok, pos)?);
+					} else {
+						args.push(parse_string(tok, pos)?);
+					}
+				}
 				InstrKind::Recommend(inverted, val) => match tok {
 					Token::Bang => {
 						if *inverted || val.is_some() {

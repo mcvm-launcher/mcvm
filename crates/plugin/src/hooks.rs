@@ -243,6 +243,10 @@ def_hook!(
 pub struct CustomPackageInstructionArg {
 	/// The ID of the package
 	pub pkg_id: String,
+	/// The name of the custom command
+	pub command: String,
+	/// Any additional arguments supplied to the command
+	pub args: Vec<String>,
 }
 
 /// Result from the CustomPackageInstruction hook

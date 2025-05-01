@@ -117,7 +117,9 @@ Handles custom instructions in script packages.
 - Argument:
 ```
 {
-	"pkg_id": string
+	"pkg_id": string,
+	"command": string,
+	"args": [string]
 }
 ```
 - Result:
