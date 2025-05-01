@@ -2,7 +2,7 @@ use std::path::{Path, PathBuf};
 
 use anyhow::{bail, Context};
 use mcvm_core::{
-	io::{json_from_file, json_to_file},
+	io::{files::create_leading_dirs, json_from_file, json_to_file},
 	Paths,
 };
 use mcvm_mods::paper;
@@ -44,6 +44,7 @@ fn main() -> anyhow::Result<()> {
 				.block_on(paper::get_all_versions(mode, &client))
 				.context("Failed to get list of versions")?
 		};
+		let _ = create_leading_dirs(&stored_versions_path);
 		json_to_file(stored_versions_path, &versions)
 			.context("Failed to write versions to file")?;
 
@@ -62,6 +63,7 @@ fn main() -> anyhow::Result<()> {
 					format!("Failed to get list of build numbers for {mode} project")
 				})?
 		};
+		let _ = create_leading_dirs(&builds_path);
 		json_to_file(builds_path, &build_nums).context("Failed to write builds to file")?;
 
 		let build_nums_strings: Vec<_> = build_nums.iter().map(|x| x.to_string()).collect();
@@ -114,6 +116,7 @@ fn main() -> anyhow::Result<()> {
 				))
 				.with_context(|| format!("Failed to get build info for new {mode} version"))?
 		};
+		let _ = create_leading_dirs(&build_info_path);
 		json_to_file(build_info_path, &build_info).context("Failed to write build info to file")?;
 
 		// Download it
