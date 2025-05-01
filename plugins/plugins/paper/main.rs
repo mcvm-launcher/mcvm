@@ -217,7 +217,7 @@ fn get_build_info(
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<BuildInfoResponse> {
 	let build_info_path = get_stored_build_info_path(&paths, mode, version, build);
-	let build_info = if build_info_path.exists() && update_depth == UpdateDepth::Shallow {
+	let build_info = if build_info_path.exists() && update_depth <= UpdateDepth::Full {
 		json_from_file(&build_info_path).context("Failed to read build info from file")?
 	} else {
 		o.display(
