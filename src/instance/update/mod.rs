@@ -81,9 +81,16 @@ impl Instance {
 			.finish(ctx.paths)
 			.context("Failed to finish using lockfile")?;
 
-		self.setup(&mut manager, ctx.plugins, ctx.paths, ctx.users, ctx.output)
-			.await
-			.context("Failed to create instance")?;
+		self.setup(
+			&mut manager,
+			ctx.plugins,
+			ctx.paths,
+			ctx.users,
+			ctx.lock,
+			ctx.output,
+		)
+		.await
+		.context("Failed to create instance")?;
 
 		if update_packages {
 			#[cfg(not(feature = "disable_profile_update_packages"))]

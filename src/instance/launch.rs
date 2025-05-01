@@ -20,6 +20,7 @@ use serde::{Deserialize, Serialize};
 use super::tracking::RunningInstanceRegistry;
 use super::update::manager::UpdateManager;
 use crate::config::instance::QuickPlay;
+use crate::io::lock::Lockfile;
 use crate::io::paths::Paths;
 use crate::plugin::PluginManager;
 
@@ -53,8 +54,9 @@ impl Instance {
 			.await
 			.context("Update failed")?;
 
+		let mut lock = Lockfile::open(paths).context("Failed to open lockfile")?;
 		let result = self
-			.setup(&mut manager, plugins, paths, users, o)
+			.setup(&mut manager, plugins, paths, users, &mut lock, o)
 			.await
 			.context("Failed to update instance")?;
 		manager.add_result(result);

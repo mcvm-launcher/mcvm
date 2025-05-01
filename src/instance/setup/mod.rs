@@ -56,6 +56,7 @@ impl Instance {
 		plugins: &PluginManager,
 		paths: &Paths,
 		users: &UserManager,
+		lock: &mut Lockfile,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<UpdateMethodResult> {
 		// Start by setting up side-specific stuff
@@ -89,7 +90,6 @@ impl Instance {
 		// Run plugin setup hooks
 		self.ensure_dirs(paths)?;
 
-		let mut lock = Lockfile::open(paths).context("Failed to open lockfile")?;
 		lock.ensure_instance_created(&self.id, &manager.version_info.get().version);
 		let lock_instance = lock.get_instance(&self.id);
 		let current_version = lock_instance.map(|x| x.version.clone());
