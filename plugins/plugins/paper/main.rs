@@ -7,11 +7,16 @@ use mcvm_core::{
 };
 use mcvm_mods::paper;
 use mcvm_plugin::{api::CustomPlugin, hooks::OnInstanceSetupResult};
-use mcvm_shared::{modifications::ServerType, versions::VersionPattern, Side, UpdateDepth};
+use mcvm_shared::{
+	modifications::ServerType,
+	output::{MCVMOutput, MessageContents, MessageLevel, OutputProcess},
+	versions::VersionPattern,
+	Side, UpdateDepth,
+};
 
 fn main() -> anyhow::Result<()> {
 	let mut plugin = CustomPlugin::new("paper")?;
-	plugin.on_instance_setup(|_, arg| {
+	plugin.on_instance_setup(|mut ctx, arg| {
 		let Some(side) = arg.side else {
 			bail!("Instance side is empty");
 		};
@@ -29,6 +34,12 @@ fn main() -> anyhow::Result<()> {
 			paper::Mode::Folia
 		};
 
+		let mut process = OutputProcess::new(ctx.get_output());
+		process.display(
+			MessageContents::StartProcess(format!("Checking for {mode} updates")),
+			MessageLevel::Important,
+		);
+
 		let client = mcvm_net::download::Client::new();
 		let paths = Paths::new()?;
 
@@ -38,6 +49,10 @@ fn main() -> anyhow::Result<()> {
 		let stored_versions_path = get_stored_versions_path(&paths, mode);
 		let versions = if stored_versions_path.exists() && arg.update_depth == UpdateDepth::Shallow
 		{
+			process.display(
+				MessageContents::StartProcess(format!("Downloading version list")),
+				MessageLevel::Important,
+			);
 			json_from_file(&stored_versions_path).context("Failed to read versions from file")?
 		} else {
 			runtime
@@ -57,6 +72,10 @@ fn main() -> anyhow::Result<()> {
 		let build_nums = if builds_path.exists() && arg.update_depth == UpdateDepth::Shallow {
 			json_from_file(&builds_path).context("Failed to read builds from file")?
 		} else {
+			process.display(
+				MessageContents::StartProcess(format!("Getting build list")),
+				MessageLevel::Important,
+			);
 			runtime
 				.block_on(paper::get_builds(mode, &arg.version_info.version, &client))
 				.with_context(|| {
@@ -85,6 +104,10 @@ fn main() -> anyhow::Result<()> {
 		// use it to teardown
 		if let Some(current_build_num) = current_build_num {
 			if desired_build_num != current_build_num {
+				process.display(
+					MessageContents::StartProcess(format!("Removing old build")),
+					MessageLevel::Important,
+				);
 				let remote_jar_file_name = runtime
 					.block_on(paper::get_jar_file_name(
 						mode,
@@ -107,6 +130,10 @@ fn main() -> anyhow::Result<()> {
 		let build_info = if build_info_path.exists() && arg.update_depth == UpdateDepth::Shallow {
 			json_from_file(&build_info_path).context("Failed to read build info from file")?
 		} else {
+			process.display(
+				MessageContents::StartProcess(format!("Downloading build info")),
+				MessageLevel::Important,
+			);
 			runtime
 				.block_on(paper::get_build_info(
 					mode,
@@ -122,6 +149,10 @@ fn main() -> anyhow::Result<()> {
 		// Download the JAR
 		let jar_path = paper::get_local_jar_path(mode, &arg.version_info.version, &paths);
 		if !jar_path.exists() || arg.update_depth == UpdateDepth::Force {
+			process.display(
+				MessageContents::StartProcess(format!("Downloading JAR file")),
+				MessageLevel::Important,
+			);
 			runtime
 				.block_on(paper::download_server_jar(
 					mode,
@@ -133,6 +164,11 @@ fn main() -> anyhow::Result<()> {
 				))
 				.with_context(|| format!("Failed to download JAR file for {mode}"))?;
 		}
+
+		process.display(
+			MessageContents::Success(format!("{mode} updated")),
+			MessageLevel::Important,
+		);
 
 		let main_class = paper::PAPER_SERVER_MAIN_CLASS;
 
