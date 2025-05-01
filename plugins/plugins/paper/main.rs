@@ -1,11 +1,15 @@
-use std::path::{Path, PathBuf};
+use std::{
+	ops::DerefMut,
+	path::{Path, PathBuf},
+};
 
 use anyhow::{bail, Context};
 use mcvm_core::{
 	io::{files::create_leading_dirs, json_from_file, json_to_file},
 	Paths,
 };
-use mcvm_mods::paper;
+use mcvm_mods::paper::{self, BuildInfoResponse};
+use mcvm_net::download::Client;
 use mcvm_plugin::{api::CustomPlugin, hooks::OnInstanceSetupResult};
 use mcvm_shared::{
 	modifications::ServerType,
@@ -13,6 +17,7 @@ use mcvm_shared::{
 	versions::VersionPattern,
 	Side, UpdateDepth,
 };
+use tokio::runtime::Runtime;
 
 fn main() -> anyhow::Result<()> {
 	let mut plugin = CustomPlugin::new("paper")?;
@@ -108,43 +113,38 @@ fn main() -> anyhow::Result<()> {
 					MessageContents::StartProcess(format!("Removing old build")),
 					MessageLevel::Important,
 				);
-				let remote_jar_file_name = runtime
-					.block_on(paper::get_jar_file_name(
-						mode,
-						&arg.version_info.version,
-						current_build_num,
-						&client,
-					))
-					.with_context(|| {
-						format!("Failed to get JAR file name for current {mode} version")
-					})?;
+				let build_info = get_build_info(
+					&paths,
+					mode,
+					&arg.version_info.version,
+					current_build_num,
+					arg.update_depth,
+					&runtime,
+					&client,
+					process.deref_mut(),
+				)
+				.context("Failed to get old version build info")?;
 
-				remove_paper(&PathBuf::from(arg.game_dir), remote_jar_file_name)
-					.with_context(|| format!("Failed to remove {mode} from the instance"))?;
+				remove_paper(
+					&PathBuf::from(arg.game_dir),
+					build_info.downloads.application.name,
+				)
+				.with_context(|| format!("Failed to remove {mode} from the instance"))?;
 			}
 		}
 
 		// Get the name of the remote JAR file we need to download
-		let build_info_path =
-			get_stored_build_info_path(&paths, mode, &arg.version_info.version, desired_build_num);
-		let build_info = if build_info_path.exists() && arg.update_depth == UpdateDepth::Shallow {
-			json_from_file(&build_info_path).context("Failed to read build info from file")?
-		} else {
-			process.display(
-				MessageContents::StartProcess(format!("Downloading build info")),
-				MessageLevel::Important,
-			);
-			runtime
-				.block_on(paper::get_build_info(
-					mode,
-					&arg.version_info.version,
-					desired_build_num,
-					&client,
-				))
-				.with_context(|| format!("Failed to get build info for new {mode} version"))?
-		};
-		let _ = create_leading_dirs(&build_info_path);
-		json_to_file(build_info_path, &build_info).context("Failed to write build info to file")?;
+		let build_info = get_build_info(
+			&paths,
+			mode,
+			&arg.version_info.version,
+			desired_build_num,
+			arg.update_depth,
+			&runtime,
+			&client,
+			process.deref_mut(),
+		)
+		.context("Failed to get build info")?;
 
 		// Download the JAR
 		let jar_path = paper::get_local_jar_path(mode, &arg.version_info.version, &paths);
@@ -204,6 +204,34 @@ fn get_stored_build_info_path(
 	paths
 		.internal
 		.join(format!("paper/{}/{version}_{build}.json", mode.to_str()))
+}
+
+fn get_build_info(
+	paths: &Paths,
+	mode: paper::Mode,
+	version: &str,
+	build: u16,
+	update_depth: UpdateDepth,
+	runtime: &Runtime,
+	client: &Client,
+	o: &mut impl MCVMOutput,
+) -> anyhow::Result<BuildInfoResponse> {
+	let build_info_path = get_stored_build_info_path(&paths, mode, version, build);
+	let build_info = if build_info_path.exists() && update_depth == UpdateDepth::Shallow {
+		json_from_file(&build_info_path).context("Failed to read build info from file")?
+	} else {
+		o.display(
+			MessageContents::StartProcess(format!("Downloading build info")),
+			MessageLevel::Important,
+		);
+		runtime
+			.block_on(paper::get_build_info(mode, version, build, client))
+			.with_context(|| format!("Failed to get build info for new {mode} version"))?
+	};
+	let _ = create_leading_dirs(&build_info_path);
+	json_to_file(build_info_path, &build_info).context("Failed to write build info to file")?;
+
+	Ok(build_info)
 }
 
 fn remove_paper(game_dir: &Path, paper_file_name: String) -> anyhow::Result<()> {
