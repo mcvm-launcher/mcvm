@@ -96,7 +96,6 @@ Called when the game modifications (client or server type) of an instance change
 }
 ```
 - Result: None
-```
 
 ### `on_instance_launch`
 Called whenever an instance is launched
