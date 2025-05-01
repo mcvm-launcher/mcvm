@@ -129,4 +129,9 @@ impl CorePluginManager {
 	pub fn iter_plugins(&self) -> impl Iterator<Item = &Plugin> {
 		self.plugins.iter()
 	}
+
+	/// Checks whether the given plugin is present and enabled in the manager
+	pub fn has_plugin(&self, plugin_id: &str) -> bool {
+		self.plugin_list.iter().any(|x| x == plugin_id)
+	}
 }

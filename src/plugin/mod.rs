@@ -295,6 +295,12 @@ impl PluginManager {
 		}
 	}
 
+	/// Checks whether a plugin is present in the manager
+	pub fn has_plugin(&self, plugin: &str) -> bool {
+		let inner = self.inner.lock().expect("Failed to lock mutex");
+		inner.manager.has_plugin(plugin)
+	}
+
 	/// Get a lock for the inner mutex
 	pub fn get_lock(&self) -> anyhow::Result<MutexGuard<PluginManagerInner>> {
 		let inner = self.inner.lock().map_err(|x| anyhow!("{x}"))?;

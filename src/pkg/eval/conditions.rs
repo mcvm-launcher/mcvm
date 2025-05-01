@@ -64,6 +64,7 @@ pub fn eval_condition(condition: &ConditionKind, eval: &EvalData) -> anyhow::Res
 		ConditionKind::Value(left, right) => Ok(left.get(&eval.vars)? == right.get(&eval.vars)?),
 		ConditionKind::Defined(var) => Ok(eval.vars.var_exists(var.get())),
 		ConditionKind::Const(val) => Ok(val.get_clone()),
+		ConditionKind::Plugin(plugin) => Ok(eval.plugins.has_plugin(&plugin.get(&eval.vars)?)),
 	}
 }
 

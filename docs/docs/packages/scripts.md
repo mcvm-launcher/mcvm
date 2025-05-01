@@ -58,6 +58,7 @@ Properties like `features` and `modrinth_id` can only be used in the `@propertie
   - `stability {stable | latest}`: Check for the configured stability of the package. You should check this and only install release versions of addons if `stable` is selected.
   - `language {language}`: Check the user's configured language.
   - `content_version {content_version}`: Check the configured content version for this package.
+  - `plugin {plugin}`: Checks if the given plugin is installed and enabled.
   - `not {condition}`: Inverts a condition. You can chain these, but why would you want to.
   - `and {left} {right}`: Checks if both conditions are true.
   - `or {left} {right}`: Checks if either one of the conditions are true.
