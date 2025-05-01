@@ -1,7 +1,7 @@
-# Modrinth
-ID: `modrinth`
+# Modrinth API
+ID: `modrinth_api`
 
-The Modrinth plugin adds simple commands to interact with the Modrinth API.
+The Modrinth API plugin adds simple commands to interact with the Modrinth API.
 
 ## Usage
 ### Commands

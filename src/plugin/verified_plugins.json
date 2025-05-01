@@ -35,8 +35,8 @@
 		"github_repo": "mcvm",
 		"description": "Language translations for MCVM"
 	},
-	"modrinth": {
-		"id": "modrinth",
+	"modrinth_api": {
+		"id": "modrinth_api",
 		"github_owner": "mcvm-launcher",
 		"github_repo": "mcvm",
 		"description": "Make simple Modrinth API calls to query project versions"

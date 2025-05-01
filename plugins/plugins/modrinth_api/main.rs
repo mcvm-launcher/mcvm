@@ -4,7 +4,7 @@ use mcvm_core::net::download::Client;
 use mcvm_plugin::api::CustomPlugin;
 
 fn main() -> anyhow::Result<()> {
-	let mut plugin = CustomPlugin::new("modrinth")?;
+	let mut plugin = CustomPlugin::new("modrinth_api")?;
 	plugin.subcommand(|_, args| {
 		let Some(subcommand) = args.first() else {
 			return Ok(());
