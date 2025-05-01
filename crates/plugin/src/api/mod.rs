@@ -15,13 +15,13 @@ use crate::hook_call::{
 };
 use crate::hooks::Hook;
 use crate::output::OutputAction;
-use crate::plugin::NEWEST_PROTOCOL_VERSION;
+use crate::plugin::{PluginManifest, NEWEST_PROTOCOL_VERSION};
 
 use self::output::PluginOutput;
 
 /// A plugin definition
 pub struct CustomPlugin {
-	name: String,
+	id: String,
 	settings: PluginSettings,
 	args: Args,
 	/// The hook that is being run
@@ -51,12 +51,12 @@ macro_rules! hook_interface {
 
 impl CustomPlugin {
 	/// Create a new plugin definition
-	pub fn new(name: &str) -> anyhow::Result<Self> {
-		Self::with_settings(name, PluginSettings::default())
+	pub fn new(id: &str) -> anyhow::Result<Self> {
+		Self::with_settings(id, PluginSettings::default())
 	}
 
 	/// Create a new plugin definition with more advanced settings
-	pub fn with_settings(name: &str, settings: PluginSettings) -> anyhow::Result<Self> {
+	pub fn with_settings(id: &str, settings: PluginSettings) -> anyhow::Result<Self> {
 		let mut args = std::env::args();
 		args.next();
 		let hook = args.next().context("Missing hook to run")?;
@@ -66,7 +66,7 @@ impl CustomPlugin {
 			output: PluginOutput::new(settings.use_base64, settings.protocol_version),
 		};
 		Ok(Self {
-			name: name.into(),
+			id: id.into(),
 			settings,
 			args,
 			hook,
@@ -74,9 +74,26 @@ impl CustomPlugin {
 		})
 	}
 
-	/// Get the name of the plugin
-	pub fn get_name(&self) -> &str {
-		&self.name
+	/// Create a new plugin definition from manifest file contents
+	pub fn from_manifest_file(id: &str, manifest: &str) -> anyhow::Result<Self> {
+		let manifest =
+			serde_json::from_str(manifest).context("Failed to deserialize plugin manifest")?;
+		Self::from_manifest(id, &manifest)
+	}
+
+	/// Create a new plugin definition from a manifest
+	pub fn from_manifest(id: &str, manifest: &PluginManifest) -> anyhow::Result<Self> {
+		let settings = PluginSettings {
+			use_base64: !manifest.raw_transfer,
+			protocol_version: manifest.protocol_version.unwrap_or(NEWEST_PROTOCOL_VERSION),
+		};
+
+		Self::with_settings(id, settings)
+	}
+
+	/// Get the ID of the plugin
+	pub fn get_id(&self) -> &str {
+		&self.id
 	}
 
 	hook_interface!(on_load, "on_load", OnLoad, |_| Ok(()));
