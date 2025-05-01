@@ -37,10 +37,12 @@ The configuration for a single instance looks like this:
 Groups allow you to define different sets of settings for backups for the same instance, and can also automatically create backups. They have all the same fields as the `common` config, and simply override it. They also have some additional fields:
 ```
 {
-	"on": "launch" | "stop"
+	"on": "launch" | "stop" | "interval",
+	"interval": string
 }
 ```
-- `on`: When to automatically create the backup. By default, this backup group will not be created automatically. `"launch"` will create a backup whenever the game starts, and `"stop"` will create one whenever the game stops or crashes, but not when MCVM itself crashes.
+- `on`: When to automatically create the backup. By default, this backup group will not be created automatically. `"launch"` will create a backup whenever the game starts, and `"stop"` will create one whenever the game stops or crashes, but not when MCVM itself crashes. `"interval"` will create backups periodically as the instance is running, at whatever interval you specify in the `interval` field.
+- `interval`: The interval to create periodic backups at. Ends with either `s`, `m`, `h`, or `d` for seconds, minutes, hours, and days. Example: `30s`.
 
 ### Commands
 - `mcvm backup list <instance>`: List the backups for an instance
