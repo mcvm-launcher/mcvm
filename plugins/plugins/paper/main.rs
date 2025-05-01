@@ -119,19 +119,21 @@ fn main() -> anyhow::Result<()> {
 		let _ = create_leading_dirs(&build_info_path);
 		json_to_file(build_info_path, &build_info).context("Failed to write build info to file")?;
 
-		// Download it
-		runtime
-			.block_on(paper::download_server_jar(
-				mode,
-				&arg.version_info.version,
-				desired_build_num,
-				&build_info.downloads.application.name,
-				&paths,
-				&client,
-			))
-			.with_context(|| format!("Failed to download JAR file for {mode}"))?;
-
+		// Download the JAR
 		let jar_path = paper::get_local_jar_path(mode, &arg.version_info.version, &paths);
+		if !jar_path.exists() || arg.update_depth == UpdateDepth::Force {
+			runtime
+				.block_on(paper::download_server_jar(
+					mode,
+					&arg.version_info.version,
+					desired_build_num,
+					&build_info.downloads.application.name,
+					&paths,
+					&client,
+				))
+				.with_context(|| format!("Failed to download JAR file for {mode}"))?;
+		}
+
 		let main_class = paper::PAPER_SERVER_MAIN_CLASS;
 
 		Ok(OnInstanceSetupResult {
