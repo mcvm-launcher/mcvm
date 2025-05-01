@@ -14,7 +14,7 @@ use crate::hooks::Hook;
 use crate::HookHandle;
 
 /// The protocol version for plugin communication
-pub const PROTOCOL_VERSION: u16 = 2;
+pub const PROTOCOL_VERSION: u16 = 1;
 
 /// A plugin
 #[derive(Debug)]
