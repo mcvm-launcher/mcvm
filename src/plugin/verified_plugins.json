@@ -48,7 +48,7 @@
 		"description": "Manage game options for client and server"
 	},
 	"server_restart": {
-		"id": "modrinth",
+		"id": "server_restart",
 		"github_owner": "mcvm-launcher",
 		"github_repo": "mcvm",
 		"description": "Manage restart behavior for Spigot and Paper servers"
