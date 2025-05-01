@@ -13,8 +13,10 @@ use crate::hook_call::HookCallArg;
 use crate::hooks::Hook;
 use crate::HookHandle;
 
-/// The protocol version for plugin communication
-pub const PROTOCOL_VERSION: u16 = 1;
+/// The newest protocol version for plugin communication
+pub const NEWEST_PROTOCOL_VERSION: u16 = 2;
+/// The default protocol version used for compatability
+pub const DEFAULT_PROTOCOL_VERSION: u16 = 1;
 
 /// A plugin
 #[derive(Debug)]
@@ -80,7 +82,7 @@ impl Plugin {
 					mcvm_version,
 					plugin_id: &self.id,
 					plugin_list,
-					protocol_version: self.manifest.protocol_version.unwrap_or(PROTOCOL_VERSION),
+					protocol_version: self.manifest.protocol_version.unwrap_or(DEFAULT_PROTOCOL_VERSION),
 				};
 				hook.call(arg, o).map(Some)
 			}

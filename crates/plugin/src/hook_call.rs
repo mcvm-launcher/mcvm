@@ -10,7 +10,9 @@ use anyhow::{anyhow, bail, Context};
 use mcvm_core::Paths;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 
-use crate::{hooks::Hook, output::OutputAction, plugin::PROTOCOL_VERSION, plugin_debug_enabled};
+use crate::{
+	hooks::Hook, output::OutputAction, plugin::DEFAULT_PROTOCOL_VERSION, plugin_debug_enabled,
+};
 
 /// The substitution token for the plugin directory in the command
 pub static PLUGIN_DIR_TOKEN: &str = "${PLUGIN_DIR}";
@@ -164,7 +166,7 @@ impl<H: Hook> HookHandle<H> {
 			inner: HookHandleInner::Constant(result),
 			plugin_state: None,
 			use_base64: true,
-			protocol_version: PROTOCOL_VERSION,
+			protocol_version: DEFAULT_PROTOCOL_VERSION,
 			plugin_id,
 		}
 	}

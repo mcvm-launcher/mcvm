@@ -15,7 +15,7 @@ use crate::hook_call::{
 };
 use crate::hooks::Hook;
 use crate::output::OutputAction;
-use crate::plugin::PROTOCOL_VERSION;
+use crate::plugin::NEWEST_PROTOCOL_VERSION;
 
 use self::output::PluginOutput;
 
@@ -266,7 +266,7 @@ impl Default for PluginSettings {
 	fn default() -> Self {
 		Self {
 			use_base64: true,
-			protocol_version: PROTOCOL_VERSION,
+			protocol_version: NEWEST_PROTOCOL_VERSION,
 		}
 	}
 }
