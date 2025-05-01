@@ -72,6 +72,10 @@ install.options:
 	@cargo install --path . --bin mcvm_plugin_options --offline
 	@cat plugins/options/plugin.json | sed 's,\${PLUGIN_DIR}/,,' > ~/.local/share/mcvm/plugins/options.json
 
+install.paper:
+	@cargo install --path . --bin mcvm_plugin_paper --offline
+	@cat plugins/paper/plugin.json | sed 's,\${PLUGIN_DIR}/,,' > ~/.local/share/mcvm/plugins/paper.json
+
 install.server_restart:
 	@cargo install --path . --bin mcvm_plugin_server_restart --offline
 	@cat plugins/server_restart/plugin.json | sed 's,\${PLUGIN_DIR}/,,' > ~/.local/share/mcvm/plugins/server_restart.json
