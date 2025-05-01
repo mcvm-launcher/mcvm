@@ -133,7 +133,7 @@ async fn get_contents(
 	let mut path = paths.internal.join("versions");
 	files::create_dir(&path)?;
 	path.push("manifest.json");
-	if manager.update_depth < UpdateDepth::Force && !force && path.exists() {
+	if manager.update_depth < UpdateDepth::Full && !force && path.exists() {
 		return json_from_file(path).context("Failed to read manifest contents from file");
 	}
 
