@@ -118,6 +118,10 @@ async fn install(
 	plugins: Vec<String>,
 	version: Option<String>,
 ) -> anyhow::Result<()> {
+	if plugins.is_empty() {
+		bail!("No plugins were provided to install");
+	}
+
 	let client = Client::new();
 
 	let verified_list = get_verified_plugins(&client)
