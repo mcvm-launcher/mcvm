@@ -1,10 +1,10 @@
 # 🚀 MCVM
 
-MCVM is a Minecraft launcher and ecosystem meant to provide a plugin system and better interface with custom content such as mods and resource packs.
+MCVM is a Minecraft launcher and ecosystem meant to reinvent the launcher as you know it, providing a plugin system and a better interface with custom content such as mods and resource packs.
 
 In the official launcher and many alternative ones, you have to waste time moving files in and out of folders, downloading mods from sketchy websites, setting up servers, and sharing your config to play with friends. MCVM hopes to alleviate some of these pains with its smart systems for configuration sharing and package management.
 
-In addition, MCVM has a ton of flexibility, allowing you to build your perfect launcher by hand, or just use the amazing tools already built by the community.
+In addition, MCVM is extremely modular, allowing you to build your perfect launcher by hand, or just use the amazing tools already built by the community.
 
 - 🚀 [Getting Started](https://mcvm-launcher.github.io/mcvm/docs/guide/)
 - 📖 [Documentation](https://mcvm-launcher.github.io/mcvm/docs/)
@@ -24,7 +24,7 @@ In addition, MCVM has a ton of flexibility, allowing you to build your perfect l
 - 📦 **Packages**: Automatically install mods, resource packs, and other addons with a novel package format and intelligent dependency management.
 - 📥 **Install Everything**: Use many of the popular loaders, like Fabric and Quilt, along with server implementations like Paper, with automatic installation.
 - 🪪 **User Management**: Set up as many users as you want, and log them in and out as needed.
-- 🗃️ **Profiles**: Easily share settings across multiple instances.
+- 🗃️ **Profiles**: Easily share settings across multiple instances, both client and server.
 - 💾 **Backups**: Create archived snapshots of the files you want, and not the ones you don't.
 - ⚡**Speed**: Probably one of the fastest launchers on the market. Download files concurrently with efficient caching and optimal disk usage.
 - 🛠️ **Deep Configuration**: Sensible defaults, but plenty of options and escape hatches to make MCVM work for you.
