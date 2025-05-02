@@ -9,7 +9,7 @@ mod server;
 
 use std::path::Path;
 
-use anyhow::Context;
+use anyhow::{bail, Context};
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::{translate, Side};
 
@@ -23,6 +23,7 @@ use crate::io::java::classpath::Classpath;
 use crate::io::java::install::JavaInstallation;
 use crate::net::game_files::client_meta::ClientMeta;
 use crate::net::game_files::version_manifest::VersionManifestAndList;
+use crate::user::auth::check_game_ownership;
 use crate::user::UserManager;
 use crate::util::versions::VersionName;
 
@@ -51,6 +52,14 @@ pub(crate) async fn launch(
 			.authenticate(params.paths, params.req_client, o)
 			.await
 			.context("Failed to ensure authentication")?;
+
+		// Ensure game ownership in case we are using an alternative auth system
+		let owns_game =
+			check_game_ownership(params.paths).context("Failed to check for game ownership")?;
+
+		if !owns_game {
+			bail!("Could not prove game ownership. If using an alternative auth system, like from a plugin, you must login with a Microsoft account that owns Minecraft first.");
+		}
 	}
 
 	// Get side-specific launch properties

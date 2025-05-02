@@ -117,6 +117,14 @@ impl AuthDatabase {
 			None
 		}
 	}
+
+	/// Checks if any logged in users are present in the database
+	pub fn has_logged_in_user(&self) -> bool {
+		self.contents
+			.users
+			.values()
+			.any(|x| x.sensitive != SensitiveUserInfoSerialized::None)
+	}
 }
 
 /// Structure for the auth database
@@ -322,7 +330,7 @@ impl DatabaseUser {
 }
 
 /// Sensitive info for a user that is encoded in a string
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
 pub struct SensitiveUserInfo {
 	/// The refresh token for the user
 	pub refresh_token: Option<String>,
@@ -344,7 +352,7 @@ pub struct PasskeyInfo {
 }
 
 /// Sensitive user data serialization format
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(untagged)]
 pub enum SensitiveUserInfoSerialized {
 	/// No info

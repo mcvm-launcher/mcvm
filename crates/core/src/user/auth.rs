@@ -457,3 +457,10 @@ pub(crate) struct AuthParameters<'a> {
 	pub req_client: &'a reqwest::Client,
 	pub custom_auth_fn: Option<CustomAuthFunction>,
 }
+
+/// Checks whether an account in the database is logged in
+pub fn check_game_ownership(paths: &Paths) -> anyhow::Result<bool> {
+	let db = AuthDatabase::open(&paths.auth).context("Failed to open auth database")?;
+
+	Ok(db.has_logged_in_user())
+}
