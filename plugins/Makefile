@@ -8,6 +8,7 @@ package:
 	@cargo build --release --bin mcvm_plugin_mcvm_transfer
 	@cargo build --release --bin mcvm_plugin_modrinth_api
 	@cargo build --release --bin mcvm_plugin_options
+	@cargo build --release --bin mcvm_plugin_scripthook
 	@cargo build --release --bin mcvm_plugin_server_restart
 	@cargo build --release --bin mcvm_plugin_sponge
 	@cargo build --release --bin mcvm_plugin_stats
@@ -23,6 +24,7 @@ package:
 	@rm -f release/mcvm_transfer-linux.zip && zip -j release/mcvm_transfer-linux.zip ../target/release/mcvm_plugin_mcvm_transfer plugins/mcvm_transfer/plugin.json
 	@rm -f release/modrinth_api-linux.zip && zip -j release/modrinth_api-linux.zip ../target/release/mcvm_plugin_modrinth_api plugins/modrinth_api/plugin.json
 	@rm -f release/options-linux.zip && zip -j release/options-linux.zip ../target/release/mcvm_plugin_options plugins/options/plugin.json
+	@rm -f release/scripthook-linux.zip && zip -j release/scripthook-linux.zip ../target/release/mcvm_plugin_scripthook plugins/scripthook/plugin.json
 	@rm -f release/server_restart-linux.zip && zip -j release/server_restart-linux.zip ../target/release/mcvm_plugin_server_restart plugins/server_restart/plugin.json
 	@rm -f release/sponge-linux.zip && zip -j release/sponge-linux.zip ../target/release/mcvm_plugin_sponge plugins/sponge/plugin.json
 	@rm -f release/stats-linux.zip && zip -j release/stats-linux.zip ../target/release/mcvm_plugin_stats plugins/stats/plugin.json
@@ -75,6 +77,10 @@ install.options:
 install.paper:
 	@cargo install --path . --bin mcvm_plugin_paper --offline
 	@cat plugins/paper/plugin.json | sed 's,\${PLUGIN_DIR}/,,' > ~/.local/share/mcvm/plugins/paper.json
+
+install.scripthook:
+	@cargo install --path . --bin mcvm_plugin_scripthook --offline
+	@cat plugins/scripthook/plugin.json | sed 's,\${PLUGIN_DIR}/,,' > ~/.local/share/mcvm/plugins/scripthook.json
 
 install.server_restart:
 	@cargo install --path . --bin mcvm_plugin_server_restart --offline
