@@ -1,7 +1,7 @@
 /// Client arguments
 mod args;
 
-use anyhow::{anyhow, bail, Context};
+use anyhow::{anyhow, bail};
 
 use std::collections::HashMap;
 
@@ -58,8 +58,8 @@ pub(crate) async fn get_launch_props(
 					.join("versions")
 					.join(params.version.to_string())
 					.join("natives")
-					.to_str()
-					.context("Failed to convert natives directory to a string")?
+					.to_string_lossy()
+					.to_string()
 			));
 			jvm_args.push("-cp".into());
 			jvm_args.push(params.classpath.get_str());
