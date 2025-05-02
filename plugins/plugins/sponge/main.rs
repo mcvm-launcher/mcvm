@@ -22,19 +22,29 @@ fn main() -> anyhow::Result<()> {
 
 		let runtime = tokio::runtime::Runtime::new()?;
 
-		let sponge_version = runtime
-			.block_on(sponge::get_newest_version(
-				sponge::Mode::Vanilla,
+		let mode = sponge::Mode::Vanilla;
+
+		let artifacts = runtime
+			.block_on(sponge::get_artifacts(
+				mode,
 				&arg.version_info.version,
 				&client,
 			))
-			.context("Failed to get latest Sponge version")?;
+			.context("Failed to get list of Sponge versions")?;
+
+		let artifact = artifacts
+			.first()
+			.context("Failed to find a valid Sponge version")?;
+
+		let artifact_info = runtime
+			.block_on(sponge::get_artifact_info(mode, artifact, &client))
+			.context("Failed to get artifact info")?;
 
 		runtime
 			.block_on(sponge::download_server_jar(
 				sponge::Mode::Vanilla,
 				&arg.version_info.version,
-				&sponge_version,
+				&artifact_info,
 				&paths,
 				&client,
 			))
