@@ -44,6 +44,7 @@ fn main() {
 	add_file!(zip, "plugins/plugins/index.md");
 	add_file!(zip, "plugins/plugins/args.md");
 	add_file!(zip, "plugins/plugins/backup.md");
+	add_file!(zip, "plugins/plugins/custom_files.md");
 	add_file!(zip, "plugins/plugins/docs.md");
 	add_file!(zip, "plugins/plugins/custom_files.md");
 	add_file!(zip, "plugins/plugins/extra_versions.md");
@@ -51,6 +52,7 @@ fn main() {
 	add_file!(zip, "plugins/plugins/lang.md");
 	add_file!(zip, "plugins/plugins/modrinth_api.md");
 	add_file!(zip, "plugins/plugins/options.md");
+	add_file!(zip, "plugins/plugins/scripthook.md");
 	add_file!(zip, "plugins/plugins/server_restart.md");
 	add_file!(zip, "plugins/plugins/stats.md");
 }
