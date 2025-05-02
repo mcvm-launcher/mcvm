@@ -30,8 +30,6 @@ pub struct Paths {
 	pub run: PathBuf,
 	/// Storing instance snapshots
 	pub snapshots: PathBuf,
-	/// Storing Fabric and Quilt data
-	pub fabric_quilt: PathBuf,
 	/// Storing proxy data
 	pub proxy: PathBuf,
 	/// Holding user plugins
@@ -61,7 +59,6 @@ impl Paths {
 			tokio::fs::create_dir_all(&self.launch_logs),
 			tokio::fs::create_dir_all(&self.run),
 			tokio::fs::create_dir_all(&self.snapshots),
-			tokio::fs::create_dir_all(&self.fabric_quilt),
 			tokio::fs::create_dir_all(&self.proxy),
 			tokio::fs::create_dir_all(&self.plugins),
 		);
@@ -89,7 +86,6 @@ impl Paths {
 			.map(|x| x.to_path_buf())
 			.unwrap_or(internal.join("run"));
 		let snapshots = internal.join("snapshots");
-		let fabric_quilt = internal.join("fabric_quilt");
 		let proxy = data.join("proxy");
 		let plugins = data.join("plugins");
 
@@ -108,7 +104,6 @@ impl Paths {
 			launch_logs,
 			run,
 			snapshots,
-			fabric_quilt,
 			proxy,
 			plugins,
 		})

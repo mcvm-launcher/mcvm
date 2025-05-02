@@ -306,18 +306,6 @@ impl Instance {
 		Ok(inst)
 	}
 
-	/// Removes the paper server jar file from a server instance
-	pub fn remove_paper(&mut self, paths: &Paths, paper_file_name: String) -> anyhow::Result<()> {
-		self.ensure_dirs(paths)?;
-		let game_dir = &self.dirs.get().game_dir;
-		let paper_path = game_dir.join(paper_file_name);
-		if paper_path.exists() {
-			fs::remove_file(paper_path).context("Failed to remove Paper jar")?;
-		}
-
-		Ok(())
-	}
-
 	/// Removes files such as the game jar for when the profile version changes
 	pub fn teardown(&mut self, paths: &Paths) -> anyhow::Result<()> {
 		self.ensure_dirs(paths)?;
