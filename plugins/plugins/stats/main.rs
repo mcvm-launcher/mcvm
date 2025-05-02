@@ -13,7 +13,7 @@ use mcvm_shared::util::utc_timestamp;
 use serde::{Deserialize, Serialize};
 
 fn main() -> anyhow::Result<()> {
-	let mut plugin = CustomPlugin::new("stats")?;
+	let mut plugin = CustomPlugin::from_manifest_file("stats", include_str!("plugin.json"))?;
 	plugin.subcommand(|ctx, args| {
 		let Some(subcommand) = args.first() else {
 			return Ok(());

@@ -10,7 +10,7 @@ use mcvm_shared::{
 };
 
 fn main() -> anyhow::Result<()> {
-	let mut plugin = CustomPlugin::new("fabric_quilt")?;
+	let mut plugin = CustomPlugin::from_manifest_file("fabric_quilt", include_str!("plugin.json"))?;
 	plugin.on_instance_setup(|mut ctx, arg| {
 		let Some(side) = arg.side else {
 			bail!("Instance side is empty");

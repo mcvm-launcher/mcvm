@@ -16,7 +16,7 @@ pub mod modrinth;
 pub mod smithed;
 
 fn main() -> anyhow::Result<()> {
-	let mut plugin = CustomPlugin::new("stats")?;
+	let mut plugin = CustomPlugin::from_manifest_file("gen_pkg", include_str!("plugin.json"))?;
 	plugin.subcommand(|_, args| {
 		let Some(subcommand) = args.first() else {
 			return Ok(());

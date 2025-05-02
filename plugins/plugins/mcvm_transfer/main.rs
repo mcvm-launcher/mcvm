@@ -15,7 +15,7 @@ use serde::{Deserialize, Serialize};
 use zip::{write::FileOptions, ZipArchive, ZipWriter};
 
 fn main() -> anyhow::Result<()> {
-	let mut plugin = CustomPlugin::new("mcvm_transfer")?;
+	let mut plugin = CustomPlugin::from_manifest_file("mcvm_transfer", include_str!("plugin.json"))?;
 
 	plugin.export_instance(|_, arg| {
 		let game_dir = PathBuf::from(arg.game_dir);

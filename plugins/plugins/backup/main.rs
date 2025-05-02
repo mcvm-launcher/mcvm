@@ -15,7 +15,7 @@ use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use crate::backup::BackupSource;
 
 fn main() -> anyhow::Result<()> {
-	let mut plugin = CustomPlugin::new("backup")?;
+	let mut plugin = CustomPlugin::from_manifest_file("backup", include_str!("plugin.json"))?;
 	plugin.subcommand(|ctx, args| {
 		let Some(subcommand) = args.first() else {
 			return Ok(());

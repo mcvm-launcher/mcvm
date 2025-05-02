@@ -6,7 +6,7 @@ use mcvm_plugin::hooks::ModifyInstanceConfigResult;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 
 fn main() -> anyhow::Result<()> {
-	let mut plugin = CustomPlugin::new("args")?;
+	let mut plugin = CustomPlugin::from_manifest_file("args", include_str!("plugin.json"))?;
 	plugin.modify_instance_config(|mut ctx, config| {
 		let args = if let Some(preset) = config.get("args_preset") {
 			if let Some(preset) = preset.as_str() {

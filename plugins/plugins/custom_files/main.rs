@@ -7,7 +7,7 @@ use mcvm_plugin::hooks::OnInstanceSetupResult;
 use serde::{Deserialize, Serialize};
 
 fn main() -> anyhow::Result<()> {
-	let mut plugin = CustomPlugin::new("custom_files")?;
+	let mut plugin = CustomPlugin::from_manifest_file("custom_files", include_str!("plugin.json"))?;
 	plugin.on_instance_setup(|_, args| {
 		let Some(config) = args.custom_config.get("custom_files") else {
 			return Ok(OnInstanceSetupResult::default());

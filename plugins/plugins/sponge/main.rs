@@ -5,7 +5,7 @@ use mcvm_plugin::{api::CustomPlugin, hooks::OnInstanceSetupResult};
 use mcvm_shared::{modifications::ServerType, Side};
 
 fn main() -> anyhow::Result<()> {
-	let mut plugin = CustomPlugin::new("sponge")?;
+	let mut plugin = CustomPlugin::from_manifest_file("sponge", include_str!("plugin.json"))?;
 	plugin.on_instance_setup(|_, arg| {
 		let Some(side) = arg.side else {
 			bail!("Instance side is empty");
