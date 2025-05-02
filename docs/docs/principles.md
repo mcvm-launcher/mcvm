@@ -22,3 +22,6 @@ MCVM should not mess with files that it does not manage.
 
 ## 7. MCVM should be compatible with every version
 The oldest versions should still work just as well as the newest.
+
+## 8. We are not a cracked launcher
+Cracked launchers are always shady and always attract shady people. We won't support anyone trying to make our launcher cracked.
