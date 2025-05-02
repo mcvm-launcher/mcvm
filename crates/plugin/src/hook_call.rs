@@ -118,7 +118,7 @@ where
 	}
 
 	if H::get_takes_over() {
-		cmd.spawn()?.wait()?;
+		cmd.spawn().context("Failed to run hook command")?.wait()?;
 
 		Ok(HookHandle::constant(
 			H::Result::default(),

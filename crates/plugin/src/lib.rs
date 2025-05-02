@@ -97,7 +97,7 @@ impl CorePluginManager {
 		for plugin in &self.plugins {
 			let result = plugin
 				.call_hook(&hook, arg, paths, self.mcvm_version, &self.plugin_list, o)
-				.context("Plugin hook failed")?;
+				.with_context(|| format!("Hook failed for plugin {}", plugin.get_id()))?;
 			out.extend(result);
 		}
 
