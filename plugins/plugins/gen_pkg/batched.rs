@@ -212,6 +212,7 @@ pub async fn batched_gen(mut config: BatchedConfig, filter: Vec<String>) {
 
 	// Iterate through the packages to generate
 	println!("Generating packages...");
+	config.packages.sort_by_key(|x| x.pkg_id.clone());
 	for pkg in config.packages {
 		let pkg_id = pkg.pkg_id.as_ref().expect("Package ID should exist");
 		if !filter.is_empty() && !filter.contains(pkg_id) {
