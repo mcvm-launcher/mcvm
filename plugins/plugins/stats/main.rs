@@ -216,5 +216,10 @@ impl InstanceStats {
 #[serde(default)]
 struct Config {
 	/// Whether to track stats while the instance is running
+	#[serde(default = "default_live_tracking")]
 	live_tracking: bool,
+}
+
+fn default_live_tracking() -> bool {
+	true
 }

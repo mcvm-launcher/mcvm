@@ -13,4 +13,4 @@ Configuration is done in the custom config for the plugin.
 	"use_live_tracking": bool
 }
 ```
-- `use_live_tracking`: Whether or not to update playtime stats every minute while an instance is running. This will make playtime stats more resilient to crashes, but also use more processing for lots of instances. Defaults to `false`.
+- `use_live_tracking`: Whether or not to update playtime stats every minute while an instance is running. This will make playtime stats more resilient to crashes, but also use more processing for lots of instances. Defaults to `true`.
