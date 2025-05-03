@@ -10,7 +10,8 @@ use mcvm_shared::Side;
 use serde::Deserialize;
 
 fn main() -> anyhow::Result<()> {
-	let mut plugin = CustomPlugin::from_manifest_file("server_restart", include_str!("plugin.json"))?;
+	let mut plugin =
+		CustomPlugin::from_manifest_file("server_restart", include_str!("plugin.json"))?;
 	plugin.on_instance_setup(|_, arg| {
 		if !arg.side.is_some_and(|x| x == Side::Server) {
 			return Ok(OnInstanceSetupResult::default());

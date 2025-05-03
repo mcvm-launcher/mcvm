@@ -1,6 +1,6 @@
 [package]
 name = "mcvm"
-version = "0.24.0"
+version = "0.25.0"
 description = "A fast, extensible, and powerful Minecraft launcher"
 keywords = ["minecraft", "launcher", "game", "mc"]
 exclude = ["/docs", "/tools"]
@@ -79,16 +79,16 @@ inquire = { version = "0.6.2", default-features = false, features = [
 iso8601-timestamp = "0.2.17"
 itertools = "0.11.0"
 libflate = "2.1.0"
-mcvm = { path = ".", version = "0.24.0" }
-mcvm_auth = { path = "crates/auth", version = "0.6.0" }
-mcvm_core = { path = "crates/core", version = "0.8.0" }
-mcvm_mods = { path = "crates/mods", version = "0.8.0" }
-mcvm_net = { path = "crates/net", version = "0.2.0" }
-mcvm_options = { path = "crates/options", version = "0.7.0" }
-mcvm_parse = { path = "crates/parse", version = "0.16.0" }
-mcvm_pkg = { path = "crates/pkg", version = "0.15.0" }
-mcvm_plugin = { path = "crates/plugin", version = "0.4.0", default-features = false }
-mcvm_shared = { path = "crates/shared", version = "0.15.0" }
+mcvm = { path = ".", version = "0.25.0" }
+mcvm_auth = { path = "crates/auth", version = "0.7.0" }
+mcvm_core = { path = "crates/core", version = "0.9.0" }
+mcvm_mods = { path = "crates/mods", version = "0.9.0" }
+mcvm_net = { path = "crates/net", version = "0.3.0" }
+mcvm_options = { path = "crates/options", version = "0.8.0" }
+mcvm_parse = { path = "crates/parse", version = "0.17.0" }
+mcvm_pkg = { path = "crates/pkg", version = "0.16.0" }
+mcvm_plugin = { path = "crates/plugin", version = "0.5.0", default-features = false }
+mcvm_shared = { path = "crates/shared", version = "0.16.0" }
 nutype = { version = "0.4.0", features = ["serde"] }
 oauth2 = "4.4.2"
 rand = "0.8.5"

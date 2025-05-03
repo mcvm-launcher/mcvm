@@ -1,6 +1,6 @@
 [package]
 name = "mcvm_core"
-version = "0.8.0"
+version = "0.9.0"
 description = "Core functionality for launching Minecraft"
 keywords = ["minecraft", "launcher", "game", "mc"]
 categories.workspace = true

@@ -1,6 +1,6 @@
 [package]
 name = "mcvm_tools"
-version = "0.8.0"
+version = "0.9.0"
 description = "Utilities for MCVM"
 keywords = ["minecraft", "launcher", "game", "mc"]
 categories.workspace = true

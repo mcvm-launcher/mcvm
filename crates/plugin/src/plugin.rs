@@ -82,7 +82,10 @@ impl Plugin {
 					mcvm_version,
 					plugin_id: &self.id,
 					plugin_list,
-					protocol_version: self.manifest.protocol_version.unwrap_or(DEFAULT_PROTOCOL_VERSION),
+					protocol_version: self
+						.manifest
+						.protocol_version
+						.unwrap_or(DEFAULT_PROTOCOL_VERSION),
 				};
 				hook.call(arg, o).map(Some)
 			}
