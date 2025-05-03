@@ -76,6 +76,8 @@ Properties for the package that do have a meaning to MCVM and other package host
 	"default_features": [string],
 	"modrinth_id": string,
 	"curseforge_id": string,
+	"smithed_id": string,
+	"content_versions": [string],
 	"supported_versions": [VersionPattern],
 	"supported_modloaders": ["vanilla" | "fabric" | "forge" | "quilt" | "fabriclike"],
 	"supported_plugin_loaders": ["vanilla" | "bukkit"],
@@ -92,6 +94,7 @@ Properties for the package that do have a meaning to MCVM and other package host
 - `modrinth_id`: ID of the project for this package on Modrinth, if applicable. See [the purpose of host ID instructions](Packages.md#the-purpose-of-host-id-instructions).
 - `curseforge_id`: ID of the project for this package on CurseForge, if applicable. See [the purpose of host ID instructions](Packages.md#the-purpose-of-host-id-instructions).
 - `smithed_id`: ID of the project for this package on Smithed, if applicable. See [the purpose of host ID instructions](Packages.md#the-purpose-of-host-id-instructions).
+- `content_versions`: The content versions that are available for this package, ordered from oldest to newest.
 - `supported_versions`: Minecraft versions supported by this package. Defaults to all of them.
 - `supported_modloaders`: Modloaders supported by this package. Defaults to all of them.
 - `supported_plugin_loaders`: Plugin loaders supported by this package. Defaults to all of them.
@@ -138,6 +141,7 @@ Condition sets are used in multiple parts of declarative packages to check prope
 	"side": "client" | "server",
 	"modloaders": [modloader_match],
 	"plugin_loaders": [plugin_loader_match],
+	"content_versions": [VersionPattern],
 	"stability": "stable" | "latest",
 	"features": [string],
 	"content_versions": [string],
@@ -151,6 +155,7 @@ Condition sets are used in multiple parts of declarative packages to check prope
 - `side`: Check whether this package is being installed on client or server.
 - `modloaders`: Check if the users's modloader matches any of the `modloader_match`'s.
 - `plugin_loaders`: Check if the users's plugin loader matches any of the `plugin_loader_match`'s.
+- `content_versions`: Check if the content version requested for this package matches any of the patterns.
 - `stability`: Check for the configured stability of the package.
 - `features`: Check if all of the listed features are enabled for this package.
 - `content_versions`: Check if the user has configured any of the given content versions for this package.

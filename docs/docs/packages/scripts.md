@@ -57,7 +57,7 @@ Properties like `features` and `modrinth_id` can only be used in the `@propertie
   - `defined {variable_name}`: Check if a variable has been defined.
   - `stability {stable | latest}`: Check for the configured stability of the package. You should check this and only install release versions of addons if `stable` is selected.
   - `language {language}`: Check the user's configured language.
-  - `content_version {content_version}`: Check the configured content version for this package.
+  - `content_version {content_version}`: Check if the configured content version for this package matches a pattern.
   - `plugin {plugin}`: Checks if the given plugin is installed and enabled.
   - `not {condition}`: Inverts a condition. You can chain these, but why would you want to.
   - `and {left} {right}`: Checks if both conditions are true.
@@ -70,9 +70,9 @@ Properties like `features` and `modrinth_id` can only be used in the `@propertie
 - `addon {id} [filename] (..)`: Add an addon to the instance. Keys and values are put inside the parentheses.
 - `require {package1} {package2} ...`: Create a dependency on one or more packages.
 - `refuse {package}`: Specifies that this package is incompatible with another.
-- `bundle {package}`: Bundle another package with this one.
+- `bundle {package}`: Bundle another package with this one. Can specify a content version with @ syntax.
 - `recommend {package}`: Recommend to the user that they should use another package if it is not installed. Putting an exclamation point before the package string (e.g. `recommend !"pkg";`) will invert the recommendation.
-- `compat {package} {compat_package}`: Make a compat with other packages.
+- `compat {package} {compat_package}`: Make a compat with other packages. Can specify a content version for the compat package with @ syntax.
 - `extend {package}`: Extend another package.
 - `notice {message}`: Display a warning or important information as a message to the user. Notice messages may not be more than 128 characters long, and there cannot be more than five of them that are displayed per package evaluation.
 - `cmd {command} {arg1} {arg2} ...`: Run a command on the system. Requires elevated permissions. Only runs during the install stage, not when resolving dependencies. If the command returns a non-zero exit code, the install process will fail. Context such as current working directory is not persisted across commands.
@@ -105,6 +105,7 @@ Properties like `features` and `modrinth_id` can only be used in the `@propertie
 - `modrinth_id {id}`: Set the Modrinth ID.
 - `curseforge_id {id}`: Set the CurseForge ID.
 - `smithed_id {id}`: Set the Smithed ID.
+- `content_versions`: Set the list of available content versions, from oldest to newest.
 - `supported_versions`: Set the supported versions.
 - `supported_modloaders`: Set the supported modloaders.
 - `supported_plugin_loaders`: Set the supported plugin loaders.
@@ -136,6 +137,7 @@ Either `url` or `path` must be set, not both or neither.
 The require instruction has a syntax of a list of package groups, which can either be multiple strings inside parentheses or a single string. In the future, these groups will be able to be chained in more complex expressions, but for now they have no purpose. Just put the packages in a list.
 
 Another part is the ability to make an explicit dependency using the `<"package-id">` syntax (Note that the brackets are outside of the string).
+By putting an `@` symbol and a version pattern after the package ID, you can specify a specific content version of that package to request.
 
 # Example
 
