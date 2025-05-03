@@ -23,12 +23,19 @@ pub async fn resolve<'a, E: PackageEvaluator<'a>>(
 		constant_input: constant_eval_input,
 	};
 
-	// Create the initial EvalPackage from the installed packages
+	// Create the initial EvalPackage tasks and constraints from the installed packages
 	for config in packages.iter().sorted_by_key(|x| x.get_package()) {
 		let req = config.get_package();
+		let props = evaluator
+			.get_package_properties(&req, common_input)
+			.await
+			.context("Failed to get package properties")?;
 
 		resolver.constraints.push(Constraint {
-			kind: ConstraintKind::UserRequire(req.clone()),
+			kind: ConstraintKind::UserRequire(
+				req.clone(),
+				props.content_versions.clone().unwrap_or_default(),
+			),
 		});
 		resolver.tasks.push_back(Task::EvalPackage {
 			dest: req.clone(),
@@ -38,7 +45,10 @@ pub async fn resolve<'a, E: PackageEvaluator<'a>>(
 
 	while let Some(task) = resolver.tasks.pop_front() {
 		resolve_task(task, common_input, &mut evaluator, &mut resolver).await?;
-		resolver.check_compats();
+		resolver
+			.check_compats(&mut evaluator, common_input)
+			.await
+			.context("Failed to check compats")?;
 	}
 
 	let mut unfulfilled_recommendations = Vec::new();
@@ -179,15 +189,11 @@ async fn resolve_eval_package<'a, E: PackageEvaluator<'a>>(
 			bail!("Package '{req}' has been explicitly required by this package. This means it must be required by the user in their config.");
 		}
 		resolver.check_constraints(&req)?;
-		if !resolver.is_required(&req) {
-			resolver.constraints.push(Constraint {
-				kind: ConstraintKind::Require(req.clone()),
-			});
-			resolver.tasks.push_back(Task::EvalPackage {
-				dest: req,
-				config: None,
-			});
-		}
+		let props = evaluator
+			.get_package_properties(&req, common_input)
+			.await
+			.context("Failed to get properties for required package")?;
+		resolver.update_require_constraint(&req, props, RequireConstraint::Require)?;
 	}
 
 	for bundled in result.get_bundled().iter().sorted() {
@@ -196,13 +202,31 @@ async fn resolve_eval_package<'a, E: PackageEvaluator<'a>>(
 			PkgRequestSource::Bundled(package.clone()),
 		));
 		resolver.check_constraints(&req)?;
+		let props = evaluator
+			.get_package_properties(&req, common_input)
+			.await
+			.context("Failed to get properties for required package")?;
+		resolver.update_require_constraint(&req, props, RequireConstraint::Bundle)?;
+
+		// Upgrade a require constraint into a bundle
+		let existing_versions = resolver
+			.constraints
+			.iter()
+			.find_map(|x| {
+				if let ConstraintKind::Require(req2, versions) = &x.kind {
+					if req2 == &req {
+						Some(versions)
+					} else {
+						None
+					}
+				} else {
+					None
+				}
+			})
+			.cloned();
 		resolver.remove_require_constraint(&req);
 		resolver.constraints.push(Constraint {
-			kind: ConstraintKind::Bundle(req.clone()),
-		});
-		resolver.tasks.push_back(Task::EvalPackage {
-			dest: req,
-			config: None,
+			kind: ConstraintKind::Bundle(req.clone(), existing_versions.unwrap_or_default()),
 		});
 	}
 
@@ -276,9 +300,9 @@ where
 	fn is_required_fn(constraint: &Constraint, req: &ArcPkgReq) -> bool {
 		matches!(
 			&constraint.kind,
-			ConstraintKind::Require(dest)
-			| ConstraintKind::UserRequire(dest)
-			| ConstraintKind::Bundle(dest) if dest == req
+			ConstraintKind::Require(dest, _)
+			| ConstraintKind::UserRequire(dest, _)
+			| ConstraintKind::Bundle(dest, _) if dest == req
 		)
 	}
 
@@ -292,8 +316,8 @@ where
 	/// Whether a package has been required by the user
 	pub fn is_user_required(&self, req: &ArcPkgReq) -> bool {
 		self.constraints.iter().any(|x| {
-			matches!(&x.kind, ConstraintKind::UserRequire(dest) if dest == req)
-				|| matches!(&x.kind, ConstraintKind::Bundle(dest) if dest == req && dest.source.is_user_bundled())
+			matches!(&x.kind, ConstraintKind::UserRequire(dest, _) if dest == req)
+				|| matches!(&x.kind, ConstraintKind::Bundle(dest, _) if dest == req && dest.source.is_user_bundled())
 		})
 	}
 
@@ -302,10 +326,74 @@ where
 		let index = self
 			.constraints
 			.iter()
-			.position(|x| Self::is_required_fn(x, req));
+			.position(|x| matches!(&x.kind, ConstraintKind::Require(req2, _) if req2 == req));
 		if let Some(index) = index {
 			self.constraints.swap_remove(index);
 		}
+	}
+
+	/// Updates a require constraint, returning an error if the package is now overconstrained
+	pub fn update_require_constraint(
+		&mut self,
+		req: &ArcPkgReq,
+		properties: &PackageProperties,
+		kind: RequireConstraint,
+	) -> anyhow::Result<()> {
+		// Find an existing constraint to update
+		let existing_constraint = self.constraints.iter_mut().find_map(|x| {
+			if let ConstraintKind::Require(req2, versions)
+			| ConstraintKind::UserRequire(req2, versions)
+			| ConstraintKind::Bundle(req2, versions) = &mut x.kind
+			{
+				if req2 == req {
+					Some(versions)
+				} else {
+					None
+				}
+			} else {
+				None
+			}
+		});
+
+		// Update an existing constraint
+		if let Some(existing_versions) = existing_constraint {
+			// If the existing versions is already empty, that means this package just doesn't have any content versions
+			if existing_versions.is_empty() {
+				return Ok(());
+			}
+			// Futher constrain the list of possible content versions for the package
+			let new_versions = req.content_version.get_matches(&existing_versions);
+			// We have overconstrained to the point that there are no versions left
+			if new_versions.is_empty() {
+				bail!("Could not find a version of {req} that matches all of the content version requirements");
+			}
+			// If the number of versions is now smaller, that means a different version could be selected and we need to re-evaluate
+			if new_versions.len() != existing_versions.len() {
+				self.tasks.push_back(Task::EvalPackage {
+					dest: req.clone(),
+					config: None,
+				});
+			}
+
+			*existing_versions = new_versions;
+		} else {
+			// Create a new constraint
+			let versions = properties.content_versions.clone().unwrap_or_default();
+			let kind = match kind {
+				RequireConstraint::Require => ConstraintKind::Require(req.clone(), versions),
+				RequireConstraint::UserRequire => {
+					ConstraintKind::UserRequire(req.clone(), versions)
+				}
+				RequireConstraint::Bundle => ConstraintKind::Bundle(req.clone(), versions),
+			};
+			self.constraints.push(Constraint { kind });
+			self.tasks.push_back(Task::EvalPackage {
+				dest: req.clone(),
+				config: None,
+			});
+		}
+
+		Ok(())
 	}
 
 	fn is_refused_fn(constraint: &Constraint, req: ArcPkgReq) -> bool {
@@ -369,22 +457,28 @@ where
 	}
 
 	/// Checks compat constraints to see if new constraints are needed
-	pub fn check_compats(&mut self) {
-		let mut constraints_to_add = Vec::new();
+	pub async fn check_compats(
+		&mut self,
+		evaluator: &mut E,
+		common_input: &E::CommonInput,
+	) -> anyhow::Result<()> {
+		let mut packages_to_require = Vec::new();
 		for constraint in &self.constraints {
 			if let ConstraintKind::Compat(package, compat_package) = &constraint.kind {
 				if self.is_required(package) && !self.is_required(compat_package) {
-					constraints_to_add.push(Constraint {
-						kind: ConstraintKind::Require(compat_package.clone()),
-					});
-					self.tasks.push_back(Task::EvalPackage {
-						dest: compat_package.clone(),
-						config: None,
-					});
+					packages_to_require.push(compat_package.clone());
 				}
 			}
 		}
-		self.constraints.extend(constraints_to_add);
+		for package in packages_to_require {
+			let props = evaluator
+				.get_package_properties(&package, common_input)
+				.await
+				.context("Failed to get package properties")?;
+			self.update_require_constraint(&package, props, RequireConstraint::Require)?;
+		}
+
+		Ok(())
 	}
 
 	/// Collect all needed packages for final output
@@ -392,9 +486,9 @@ where
 		self.constraints
 			.iter()
 			.filter_map(|x| match &x.kind {
-				ConstraintKind::Require(dest)
-				| ConstraintKind::UserRequire(dest)
-				| ConstraintKind::Bundle(dest) => Some(dest.clone()),
+				ConstraintKind::Require(dest, _)
+				| ConstraintKind::UserRequire(dest, _)
+				| ConstraintKind::Bundle(dest, _) => Some(dest.clone()),
 				_ => None,
 			})
 			.collect()
@@ -407,13 +501,13 @@ struct Constraint {
 	kind: ConstraintKind,
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq)]
 enum ConstraintKind {
-	Require(ArcPkgReq),
-	UserRequire(ArcPkgReq),
+	Require(ArcPkgReq, Vec<String>),
+	UserRequire(ArcPkgReq, Vec<String>),
 	Refuse(ArcPkgReq),
 	Recommend(ArcPkgReq, bool),
-	Bundle(ArcPkgReq),
+	Bundle(ArcPkgReq, Vec<String>),
 	Compat(ArcPkgReq, ArcPkgReq),
 	Extend(ArcPkgReq),
 }
@@ -426,6 +520,16 @@ enum Task<'a, E: PackageEvaluator<'a>> {
 		/// For packages with a config
 		config: Option<E::ConfiguredPackage>,
 	},
+}
+
+/// Different types of require constraints
+pub enum RequireConstraint {
+	/// Require by a package
+	Require,
+	/// Require by the user
+	UserRequire,
+	/// A bundle dependency
+	Bundle,
 }
 
 /// Creates the error message for package context
