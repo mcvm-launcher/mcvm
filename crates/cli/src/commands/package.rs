@@ -66,6 +66,14 @@ This package does not need to be installed, it just has to be in the index."
 		/// The package to get info about
 		package: String,
 	},
+	#[command(about = "Get the available content versions for a package")]
+	Versions {
+		/// Whether to remove formatting and warnings from the output
+		#[arg(short, long)]
+		raw: bool,
+		/// The package to get info about
+		package: String,
+	},
 	#[command(about = "Query information about configured packages repositories")]
 	#[clap(alias = "repo")]
 	Repository {
@@ -108,6 +116,7 @@ pub async fn run(subcommand: PackageSubcommand, data: &mut CmdData<'_>) -> anyho
 		PackageSubcommand::Sync { filter } => sync(data, filter).await,
 		PackageSubcommand::Cat { raw, package } => cat(data, &package, raw).await,
 		PackageSubcommand::Info { raw, package } => info(data, &package, raw).await,
+		PackageSubcommand::Versions { raw, package } => versions(data, &package, raw).await,
 		PackageSubcommand::Repository { command } => repo(command, data).await,
 		PackageSubcommand::ListAll {} => list_all(data).await,
 		PackageSubcommand::Browse {} => browse(data).await,
@@ -360,11 +369,10 @@ async fn info(data: &mut CmdData<'_>, id: &str, raw: bool) -> anyhow::Result<()>
 		.packages
 		.get_metadata(&req, &data.paths, &client, data.output)
 		.await
-		.context("Failed to get metadata from the registry")?;
+		.context("Failed to get metadata from the registry")?
+		.clone();
 
 	if raw {
-		let metadata = metadata.clone();
-
 		let properties = config
 			.packages
 			.get_properties(&req, &data.paths, &client, data.output)
@@ -451,6 +459,42 @@ async fn info(data: &mut CmdData<'_>, id: &str, raw: bool) -> anyhow::Result<()>
 		if !license.is_empty() {
 			cprintln!("   <s>License:</s> <b!>{}", license);
 		}
+	}
+
+	Ok(())
+}
+
+async fn versions(data: &mut CmdData<'_>, id: &str, raw: bool) -> anyhow::Result<()> {
+	data.ensure_config(true).await?;
+	let config = data.config.get_mut();
+
+	let client = Client::new();
+
+	let req = Arc::new(PkgRequest::parse(id, PkgRequestSource::UserRequire));
+
+	let properties = config
+		.packages
+		.get_properties(&req, &data.paths, &client, data.output)
+		.await
+		.context("Failed to get package properties from the registry")?;
+
+	let default_versions = Vec::new();
+	let versions = properties
+		.content_versions
+		.as_ref()
+		.unwrap_or(&default_versions);
+
+	if raw {
+		print!("{}", versions.join("\n"));
+
+		return Ok(());
+	}
+
+	if !versions.is_empty() {
+		cprintln!("<s>Available Versions:");
+	}
+	for version_line in versions.windows(4) {
+		cprintln!("{},", version_line.join(", "));
 	}
 
 	Ok(())
