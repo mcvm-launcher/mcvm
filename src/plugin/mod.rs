@@ -55,11 +55,11 @@ impl PluginManager {
 		let mut out = Self::new();
 
 		for plugin in config.plugins {
-			let plugin = plugin.to_config();
-
-			if config.disabled.contains(&plugin.id) {
-				continue;
-			}
+			let config = config.config.get(&plugin).cloned();
+			let plugin = PluginConfig {
+				id: plugin,
+				custom_config: config,
+			};
 
 			out.load_plugin(plugin, paths, o)
 				.context("Failed to load plugin")?;
@@ -234,11 +234,19 @@ impl PluginManager {
 		Ok(())
 	}
 
+	/// Enabled a plugin
+	pub fn enable_plugin(plugin: &str, paths: &Paths) -> anyhow::Result<()> {
+		let config_path = Self::get_config_path(paths);
+		let mut config = Self::open_config(paths).context("Failed to open plugin configuration")?;
+		config.plugins.insert(plugin.to_string());
+		json_to_file_pretty(config_path, &config).context("Failed to write to config file")
+	}
+
 	/// Disables a plugin
 	pub fn disable_plugin(plugin: &str, paths: &Paths) -> anyhow::Result<()> {
 		let config_path = Self::get_config_path(paths);
 		let mut config = Self::open_config(paths).context("Failed to open plugin configuration")?;
-		config.disabled.insert(plugin.to_string());
+		config.plugins.remove(plugin);
 		json_to_file_pretty(config_path, &config).context("Failed to write to config file")
 	}
 
