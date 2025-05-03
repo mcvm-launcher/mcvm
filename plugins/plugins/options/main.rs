@@ -7,12 +7,12 @@ use mcvm_options::{
 };
 use mcvm_plugin::{
 	api::{CustomPlugin, HookContext},
-	hooks::Hook,
+	hooks::{Hook, OnInstanceSetupResult},
 };
 use mcvm_shared::Side;
 
 fn main() -> anyhow::Result<()> {
-	let mut plugin = CustomPlugin::new("options")?;
+	let mut plugin = CustomPlugin::from_manifest_file("options", include_str!("plugin.json"))?;
 	plugin.on_instance_setup(|ctx, arg| {
 		// Consolidate the options from all the sources
 		let mut keys = HashMap::new();
@@ -90,7 +90,7 @@ fn main() -> anyhow::Result<()> {
 			}
 		}
 
-		Ok(())
+		Ok(OnInstanceSetupResult::default())
 	})?;
 
 	Ok(())

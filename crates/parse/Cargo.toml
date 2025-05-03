@@ -1,6 +1,6 @@
 [package]
 name = "mcvm_parse"
-version = "0.16.0"
+version = "0.17.0"
 description = "Package script lexing, parsing, and basic evaluation for mcvm"
 keywords = ["minecraft", "launcher", "game", "mc", "parse"]
 categories.workspace = true

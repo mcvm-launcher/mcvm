@@ -1,11 +1,13 @@
 /// Addon-related functions for instances
 mod addons;
-/// Creation of instance contents
-pub mod create;
 /// Launching an instance
 pub mod launch;
 /// Managing and installing packages on an instance
 pub mod packages;
+/// Setup of instance contents
+pub mod setup;
+/// Keeping track of running instance processes
+pub mod tracking;
 /// Import and export of instances to other formats
 pub mod transfer;
 /// Updating an instance
@@ -14,10 +16,13 @@ pub mod update;
 use mcvm_core::util::versions::MinecraftVersion;
 use mcvm_shared::later::Later;
 use mcvm_shared::pkg::PackageStability;
+use mcvm_shared::versions::VersionPattern;
 use mcvm_shared::Side;
 
-use self::create::{InstanceDirs, ModificationData};
+use crate::config::instance::InstanceConfig;
+
 use self::launch::LaunchOptions;
+use self::setup::{InstanceDirs, ModificationData};
 
 use super::config::instance::ClientWindowConfig;
 use super::config::package::PackageConfig;
@@ -79,10 +84,14 @@ impl InstKind {
 pub struct InstanceStoredConfig {
 	/// The instance display name
 	pub name: Option<String>,
+	/// A path to an icon for the instance
+	pub icon: Option<String>,
 	/// The Minecraft version
 	pub version: MinecraftVersion,
 	/// Modifications to the instance
 	pub modifications: GameModifications,
+	/// Version for the game modification
+	pub modification_version: Option<VersionPattern>,
 	/// Launch options for the instance
 	pub launch: LaunchOptions,
 	/// The instance's global datapack folder
@@ -91,6 +100,10 @@ pub struct InstanceStoredConfig {
 	pub packages: Vec<PackageConfig>,
 	/// Default stability for packages
 	pub package_stability: PackageStability,
+	/// The original instance configuration before applying profiles
+	pub original_config: InstanceConfig,
+	/// The original instance configuration after applying profiles
+	pub original_config_with_profiles: InstanceConfig,
 	/// Custom plugin config
 	pub plugin_config: serde_json::Map<String, serde_json::Value>,
 }

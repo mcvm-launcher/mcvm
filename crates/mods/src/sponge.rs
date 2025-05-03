@@ -1,15 +1,16 @@
 use std::{collections::HashMap, path::PathBuf};
 
-use anyhow::{anyhow, Context};
-use mcvm_core::{net::download, MCVMCore};
-use mcvm_shared::{output::MCVMOutput, versions::VersionInfo, Side};
+use anyhow::Context;
+use mcvm_core::net::download;
+use mcvm_shared::Side;
 use reqwest::Client;
 use serde::Deserialize;
 
 use mcvm_core::io::files::paths::Paths;
 
 /// The main class for a Sponge server
-pub const SPONGE_SERVER_MAIN_CLASS: &str = "org.spongepowered.server.launch.VersionCheckingMain";
+pub const SPONGE_SERVER_MAIN_CLASS: &str =
+	"org.spongepowered.vanilla.installer.VersionCheckingMain";
 
 /// Different modes for this module,
 /// depending on the one you want to install
@@ -27,88 +28,85 @@ impl Mode {
 	}
 }
 
-/// Install Sponge using the core and information about the version.
-/// First, create the core and the version you want. Then, get the version info from the version.
-/// Finally, run this function. Returns the JAR path and main class to add to the instance you are launching
-pub async fn install_from_core(
-	core: &mut MCVMCore,
-	version_info: &VersionInfo,
-	mode: Mode,
-	o: &mut impl MCVMOutput,
-) -> anyhow::Result<(PathBuf, String)> {
-	let _ = o;
-
-	let sponge_version = get_newest_version(mode, &version_info.version, core.get_client())
-		.await
-		.context("Failed to get latest version for Sponge")?;
-	download_server_jar(
-		mode,
-		&version_info.version,
-		&sponge_version,
-		core.get_paths(),
-		core.get_client(),
-	)
-	.await
-	.context("Failed to download Sponge JAR file")?;
-
-	Ok((
-		get_local_jar_path(mode, &version_info.version, core.get_paths()),
-		SPONGE_SERVER_MAIN_CLASS.into(),
-	))
-}
-
-/// Get the newest version of a Sponge project
-pub async fn get_newest_version(
+/// Get the available artifacts of a Sponge project
+pub async fn get_artifacts(
 	mode: Mode,
 	version: &str,
 	client: &Client,
-) -> anyhow::Result<Version> {
+) -> anyhow::Result<Vec<String>> {
 	let url = format!(
-		"https://dl-api.spongepowered.org/v1/org.spongepowered/{}/downloads?type=stable&minecraft={version}",
+		"https://dl-api.spongepowered.org/v2/groups/org.spongepowered/artifacts/{}/versions?tags=,minecraft:{version}",
 		mode.to_str(),
 	);
-	let resp: Vec<Version> = download::json(url, client).await?;
+	let resp: Versions = download::json(url, client).await?;
 
-	let version = resp
-		.first()
-		.ok_or(anyhow!("Could not find a valid Sponge version"))?;
-
-	Ok(version.clone())
+	let artifacts = resp.artifacts.into_keys();
+	Ok(artifacts.collect())
 }
 
-/// Information about a version of a Sponge project, from their API
 #[derive(Deserialize, Clone)]
-pub struct Version {
+struct Versions {
 	artifacts: HashMap<String, Artifact>,
 }
 
 /// A single download artifact
 #[derive(Deserialize, Debug, Clone)]
-pub struct Artifact {
-	/// URL to download the artifact from
-	url: String,
+struct Artifact {}
+
+/// Fetches information about an artifact from the API
+pub async fn get_artifact_info(
+	mode: Mode,
+	artifact: &str,
+	client: &Client,
+) -> anyhow::Result<ArtifactInfo> {
+	let url = format!(
+		"https://dl-api.spongepowered.org/v2/groups/org.spongepowered/artifacts/{}/versions/{artifact}",
+		mode.to_str()
+	);
+	let resp = download::json(url, client).await?;
+
+	Ok(resp)
 }
 
 /// Download the Sponge server jar
 pub async fn download_server_jar(
 	mode: Mode,
 	version: &str,
-	sponge_version: &Version,
+	artifact_info: &ArtifactInfo,
 	paths: &Paths,
 	client: &Client,
 ) -> anyhow::Result<()> {
-	// For some reason this is what the artifact is called
-	let artifact = sponge_version
-		.artifacts
-		.get(":")
-		.context("Sponge version missing JAR artifact")?;
+	let asset = artifact_info
+		.assets
+		.iter()
+		.find(|x| x.classifier == "universal" && x.extension == "jar")
+		.context("Failed to find server JAR file in the asset list")?;
 
 	let file_path = get_local_jar_path(mode, version, paths);
-	download::file(&artifact.url, &file_path, client)
+	download::file(&asset.download_url, &file_path, client)
 		.await
 		.context("Failed to download Sponge JAR file")?;
 
 	Ok(())
+}
+
+/// Information about a Sponge artifact
+#[derive(Deserialize, Clone)]
+pub struct ArtifactInfo {
+	/// The assets associated with this artifact
+	assets: Vec<Asset>,
+}
+
+/// A single downloadable asset
+#[derive(Deserialize, Clone, Debug)]
+pub struct Asset {
+	/// The URL to download the asset at
+	#[serde(rename = "downloadUrl")]
+	download_url: String,
+	/// Says what this asset is for
+	classifier: String,
+	/// The file extension
+	extension: String,
 }
 
 /// Get the path to the stored Sponge JAR file

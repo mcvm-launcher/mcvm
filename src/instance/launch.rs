@@ -5,20 +5,24 @@ use mcvm_core::auth_crate::mc::ClientId;
 use mcvm_core::io::java::args::MemoryNum;
 use mcvm_core::io::java::install::JavaInstallationKind;
 use mcvm_core::user::UserManager;
+use mcvm_plugin::hook_call::HookHandle;
 use mcvm_plugin::hooks::{
-	HookHandle, InstanceLaunchArg, OnInstanceLaunch, OnInstanceStop, WhileInstanceLaunch,
+	InstanceLaunchArg, OnInstanceLaunch, OnInstanceStop, WhileInstanceLaunch,
 };
+use mcvm_shared::id::InstanceID;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
-use mcvm_shared::translate;
+use mcvm_shared::{translate, UpdateDepth};
 use reqwest::Client;
 #[cfg(feature = "schema")]
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
+use super::tracking::RunningInstanceRegistry;
 use super::update::manager::UpdateManager;
 use crate::config::instance::QuickPlay;
-use crate::plugin::PluginManager;
+use crate::io::lock::Lockfile;
 use crate::io::paths::Paths;
+use crate::plugin::PluginManager;
 
 use super::Instance;
 
@@ -37,7 +41,7 @@ impl Instance {
 			MessageLevel::Important,
 		);
 
-		let mut manager = UpdateManager::new(false, true);
+		let mut manager = UpdateManager::new(UpdateDepth::Shallow);
 		let client = Client::new();
 		manager.set_version(&self.config.version);
 		manager.add_requirements(self.get_requirements());
@@ -50,8 +54,9 @@ impl Instance {
 			.await
 			.context("Update failed")?;
 
+		let mut lock = Lockfile::open(paths).context("Failed to open lockfile")?;
 		let result = self
-			.create(&mut manager, plugins, paths, users, &client, o)
+			.setup(&mut manager, plugins, paths, users, &mut lock, o)
 			.await
 			.context("Failed to update instance")?;
 		manager.add_result(result);
@@ -104,9 +109,16 @@ impl Instance {
 			.context("Failed to call while launch hook")?;
 		let handle = InstanceHandle {
 			inner: handle,
+			instance_id: self.id.clone(),
 			hook_handles,
 			hook_arg,
 		};
+
+		// Update the running instance registry
+		let mut running_instance_registry = RunningInstanceRegistry::open(paths)
+			.context("Failed to open registry of running instances")?;
+		running_instance_registry.add_instance(handle.get_pid(), &self.id);
+		let _ = running_instance_registry.write();
 
 		Ok(handle)
 	}
@@ -158,6 +170,8 @@ pub struct WrapperCommand {
 pub struct InstanceHandle {
 	/// Core InstanceHandle with the process
 	inner: mcvm_core::InstanceHandle,
+	/// The ID of the instance
+	instance_id: InstanceID,
 	/// Handles for hooks running while the instance is running
 	hook_handles: Vec<HookHandle<WhileInstanceLaunch>>,
 	/// Arg to pass to the stop hook when the instance is stopped
@@ -172,7 +186,8 @@ impl InstanceHandle {
 		paths: &Paths,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<std::process::ExitStatus> {
-		let result = self.inner.wait()?;
+		let pid = self.get_pid();
+		let result = self.inner.wait();
 		// Kill any sibling processes now that the main one is complete
 		for handle in self.hook_handles {
 			handle
@@ -180,9 +195,9 @@ impl InstanceHandle {
 				.context("Failed to kill plugin sibling process")?;
 		}
 
-		Self::call_stop_hooks(&self.hook_arg, plugins, paths, o)?;
+		Self::on_stop(&self.instance_id, pid, &self.hook_arg, plugins, paths, o)?;
 
-		Ok(result)
+		result.context("Failed to get process exit status")
 	}
 
 	/// Kills the process early
@@ -192,6 +207,8 @@ impl InstanceHandle {
 		paths: &Paths,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
+		let pid = self.get_pid();
+
 		for handle in self.hook_handles {
 			handle
 				.kill(o)
@@ -201,7 +218,7 @@ impl InstanceHandle {
 			.kill()
 			.context("Failed to kill inner instance handle")?;
 
-		Self::call_stop_hooks(&self.hook_arg, plugins, paths, o)?;
+		Self::on_stop(&self.instance_id, pid, &self.hook_arg, plugins, paths, o)?;
 
 		Ok(())
 	}
@@ -212,19 +229,35 @@ impl InstanceHandle {
 		self.inner.get_process()
 	}
 
-	/// Calls on stop hooks
-	fn call_stop_hooks(
+	/// Gets the PID of the instance process
+	pub fn get_pid(&self) -> u32 {
+		self.inner.get_pid()
+	}
+
+	/// Function that should be run whenever the instance stops
+	fn on_stop(
+		instance_id: &str,
+		pid: u32,
 		arg: &InstanceLaunchArg,
 		plugins: &PluginManager,
 		paths: &Paths,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
+		// Remove the instance from the registry
+		let running_instance_registry = RunningInstanceRegistry::open(paths);
+		if let Ok(mut running_instance_registry) = running_instance_registry {
+			running_instance_registry.remove_instance(pid, instance_id);
+			let _ = running_instance_registry.write();
+		}
+
+		// Call on stop hooks
 		let results = plugins
 			.call_hook(OnInstanceStop, arg, paths, o)
 			.context("Failed to call on stop hook")?;
 		for result in results {
 			result.result(o)?;
 		}
+
 		Ok(())
 	}
 }

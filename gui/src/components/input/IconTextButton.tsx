@@ -8,7 +8,7 @@ export default function IconTextButton(props: IconTextButtonProps) {
 		: `background-color:${props.color};border-color:${props.color}`;
 
 	return (
-		<div
+		<button
 			class="icon-text-button bold"
 			style={`${colorStyle}`}
 			onClick={props.onClick}
@@ -17,7 +17,7 @@ export default function IconTextButton(props: IconTextButtonProps) {
 				<Icon icon={props.icon} size={`calc(${props.size} * 0.7)`} />
 			</div>
 			<div class="icon-text-button-text">{props.text}</div>
-		</div>
+		</button>
 	);
 }
 

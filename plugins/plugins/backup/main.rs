@@ -2,19 +2,20 @@ mod backup;
 
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
+use std::time::{Duration, SystemTime};
 
 use anyhow::Context;
 use backup::{get_backup_directory, BackupAutoHook, Config, Index, DEFAULT_GROUP};
 use clap::Parser;
 use color_print::cprintln;
 use mcvm_plugin::api::{CustomPlugin, HookContext};
-use mcvm_plugin::api::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_plugin::hooks::{self, Hook};
+use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 
 use crate::backup::BackupSource;
 
 fn main() -> anyhow::Result<()> {
-	let mut plugin = CustomPlugin::new("backup")?;
+	let mut plugin = CustomPlugin::from_manifest_file("backup", include_str!("plugin.json"))?;
 	plugin.subcommand(|ctx, args| {
 		let Some(subcommand) = args.first() else {
 			return Ok(());
@@ -65,6 +66,46 @@ fn main() -> anyhow::Result<()> {
 		check_auto_hook(ctx, BackupAutoHook::Stop, &arg.id, &inst_dir)?;
 
 		Ok(())
+	})?;
+
+	plugin.while_instance_launch(|ctx, arg| {
+		let inst_dir = PathBuf::from(&arg.dir);
+		let mut index = get_index(&ctx, &arg.id)?;
+
+		let mut last_update_times = HashMap::new();
+
+		let groups = index.config.groups.clone();
+
+		// Don't do this process if there are no interval hooks
+		if !groups
+			.values()
+			.any(|x| x.on == Some(BackupAutoHook::Interval))
+		{
+			return Ok(());
+		}
+
+		loop {
+			for (group_id, group) in &groups {
+				if group.on != Some(BackupAutoHook::Interval) {
+					continue;
+				}
+				let Some(interval) = &group.interval else {
+					continue;
+				};
+				let Some(interval) = parse_duration(&interval) else {
+					continue;
+				};
+
+				let now = SystemTime::now();
+				let last_update_time = last_update_times.entry(group_id).or_insert(now);
+
+				if now.duration_since(*last_update_time).unwrap_or_default() >= interval {
+					index.create_backup(BackupSource::Auto, Some(&group_id), &inst_dir)?;
+				}
+			}
+
+			std::thread::sleep(Duration::from_secs(3));
+		}
 	})?;
 
 	Ok(())
@@ -279,7 +320,6 @@ fn check_auto_hook<H: Hook>(
 
 	for (group_id, group) in groups {
 		if let Some(on) = &group.on {
-			#[allow(irrefutable_let_patterns)]
 			if on == &hook {
 				index.create_backup(BackupSource::Auto, Some(&group_id), inst_dir)?;
 			}
@@ -297,4 +337,21 @@ fn check_auto_hook<H: Hook>(
 	index.finish()?;
 
 	Ok(())
+}
+
+/// Parses a duration ending in 's', 'm', 'h', or 'd'
+fn parse_duration(string: &str) -> Option<Duration> {
+	if string.is_empty() {
+		return None;
+	}
+	let num: u64 = string[0..string.len() - 1].parse().ok()?;
+	if string.ends_with("s") {
+		Some(Duration::from_secs(num))
+	} else if string.ends_with("m") {
+		Some(Duration::from_secs(num * 60))
+	} else if string.ends_with("h") {
+		Some(Duration::from_secs(num * 3600))
+	} else {
+		Some(Duration::from_secs(num * 3600 * 24))
+	}
 }

@@ -54,6 +54,13 @@ impl Classpath {
 		Ok(())
 	}
 
+	/// Adds multiple path strings to the classpath
+	pub fn add_multiple<I: AsRef<str>>(&mut self, strings: impl Iterator<Item = I>) {
+		for string in strings {
+			self.add(string.as_ref());
+		}
+	}
+
 	/// Extends the classpath with another classpath
 	pub fn extend(&mut self, other: Classpath) {
 		self.add(&other.string)
@@ -62,6 +69,11 @@ impl Classpath {
 	/// Obtain the classpath as a string
 	pub fn get_str(&self) -> String {
 		self.string.clone()
+	}
+
+	/// Split the classpath into a vector of strings
+	pub fn get_entries(&self) -> Vec<&str> {
+		self.string.split(CLASSPATH_SEP).collect()
 	}
 
 	/// Split the classpath into a vector of paths

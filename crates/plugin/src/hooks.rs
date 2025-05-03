@@ -1,35 +1,18 @@
-use std::io::{BufRead, BufReader};
-use std::ops::Deref;
-use std::path::Path;
-use std::process::{Child, ChildStdout, Command};
-use std::sync::{Arc, Mutex};
-
-use anyhow::{anyhow, bail, Context};
+use mcvm_core::net::game_files::version_manifest::VersionEntry;
 use mcvm_core::net::minecraft::MinecraftUserProfile;
 use mcvm_core::util::versions::MinecraftVersionDeser;
-use mcvm_core::{net::game_files::version_manifest::VersionEntry, Paths};
 use mcvm_pkg::script_eval::AddonInstructionData;
 use mcvm_pkg::{RecommendedPackage, RequiredPackage};
 use mcvm_shared::lang::translate::LanguageMap;
 use mcvm_shared::modifications::{ClientType, ServerType};
 use mcvm_shared::pkg::PackageID;
+use mcvm_shared::versions::VersionPattern;
+use mcvm_shared::UpdateDepth;
 use mcvm_shared::{output::MCVMOutput, versions::VersionInfo, Side};
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 
-use crate::output::OutputAction;
-
-/// The substitution token for the plugin directory in the command
-pub static PLUGIN_DIR_TOKEN: &str = "${PLUGIN_DIR}";
-/// The environment variable for custom config passed to a hook
-pub static CUSTOM_CONFIG_ENV: &str = "MCVM_CUSTOM_CONFIG";
-/// The environment variable for the data directory passed to a hook
-pub static DATA_DIR_ENV: &str = "MCVM_DATA_DIR";
-/// The environment variable for the config directory passed to a hook
-pub static CONFIG_DIR_ENV: &str = "MCVM_CONFIG_DIR";
-/// The environment variable for the plugin state passed to a hook
-pub static PLUGIN_STATE_ENV: &str = "MCVM_PLUGIN_STATE";
-/// The environment variable for the version of MCVM
-pub static MCVM_VERSION_ENV: &str = "MCVM_VERSION";
+use crate::hook_call::HookCallArg;
+use crate::HookHandle;
 
 /// Trait for a hook that can be called
 pub trait Hook {
@@ -51,243 +34,24 @@ pub trait Hook {
 		false
 	}
 
+	/// Get the version number of the hook
+	fn get_version() -> u16;
+
 	/// Call the hook using the specified program
-	#[allow(clippy::too_many_arguments)]
 	fn call(
 		&self,
-		cmd: &str,
-		arg: &Self::Arg,
-		additional_args: &[String],
-		working_dir: Option<&Path>,
-		use_base64: bool,
-		custom_config: Option<String>,
-		state: Arc<Mutex<serde_json::Value>>,
-		paths: &Paths,
-		mcvm_version: Option<&str>,
-		plugin_id: &str,
+		arg: HookCallArg<'_, Self>,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<HookHandle<Self>>
 	where
 		Self: Sized,
 	{
-		let _ = o;
-		let arg = serde_json::to_string(arg).context("Failed to serialize hook argument")?;
-
-		let cmd = cmd.replace(
-			PLUGIN_DIR_TOKEN,
-			&working_dir
-				.map(|x| x.to_string_lossy().to_string())
-				.unwrap_or_default(),
-		);
-		let mut cmd = Command::new(cmd);
-
-		cmd.args(additional_args);
-		cmd.arg(self.get_name());
-		cmd.arg(arg);
-
-		// Set up environment
-		if let Some(custom_config) = custom_config {
-			cmd.env(CUSTOM_CONFIG_ENV, custom_config);
-		}
-		cmd.env(DATA_DIR_ENV, &paths.data);
-		cmd.env(CONFIG_DIR_ENV, paths.project.config_dir());
-		if let Some(mcvm_version) = mcvm_version {
-			cmd.env(MCVM_VERSION_ENV, mcvm_version);
-		}
-		if let Some(working_dir) = working_dir {
-			cmd.current_dir(working_dir);
-		}
-		{
-			let lock = state.lock().map_err(|x| anyhow!("{x}"))?;
-			// Don't send null state to improve performance
-			if !lock.is_null() {
-				let state = serde_json::to_string(lock.deref())
-					.context("Failed to serialize plugin state")?;
-				cmd.env(PLUGIN_STATE_ENV, state);
-			}
-		}
-
-		if Self::get_takes_over() {
-			cmd.spawn()?.wait()?;
-
-			Ok(HookHandle::constant(
-				Self::Result::default(),
-				plugin_id.to_string(),
-			))
-		} else {
-			cmd.stdout(std::process::Stdio::piped());
-
-			let mut child = cmd.spawn()?;
-
-			let stdout = child.stdout.take().unwrap();
-			let stdout_reader = BufReader::new(stdout);
-
-			let handle = HookHandle {
-				inner: HookHandleInner::Process {
-					child,
-					stdout: stdout_reader,
-					line_buf: String::new(),
-					result: None,
-				},
-				plugin_state: Some(state),
-				use_base64,
-				plugin_id: plugin_id.to_string(),
-			};
-
-			Ok(handle)
-		}
+		crate::hook_call::call(self, arg, o)
 	}
-}
-
-/// Handle returned by running a hook. Make sure to await it if you need to.
-#[must_use]
-pub struct HookHandle<H: Hook> {
-	inner: HookHandleInner<H>,
-	plugin_state: Option<Arc<Mutex<serde_json::Value>>>,
-	use_base64: bool,
-	plugin_id: String,
-}
-
-impl<H: Hook> HookHandle<H> {
-	/// Create a new constant handle
-	pub fn constant(result: H::Result, plugin_id: String) -> Self {
-		Self {
-			inner: HookHandleInner::Constant(result),
-			plugin_state: None,
-			use_base64: true,
-			plugin_id,
-		}
-	}
-
-	/// Get the ID of the plugin that returned this handle
-	pub fn get_id(&self) -> &String {
-		&self.plugin_id
-	}
-
-	/// Poll the handle, returning true if the handle is ready
-	pub fn poll(&mut self, o: &mut impl MCVMOutput) -> anyhow::Result<bool> {
-		match &mut self.inner {
-			HookHandleInner::Process {
-				line_buf,
-				stdout,
-				result,
-				..
-			} => {
-				line_buf.clear();
-				let result_len = stdout.read_line(line_buf)?;
-				// EoF
-				if result_len == 0 {
-					return Ok(true);
-				}
-				let line = line_buf.trim_end_matches("\r\n").trim_end_matches('\n');
-
-				let action = OutputAction::deserialize(line, self.use_base64)
-					.context("Failed to deserialize plugin action")?;
-				match action {
-					OutputAction::SetResult(new_result) => {
-						*result = Some(
-							serde_json::from_str(&new_result)
-								.context("Failed to deserialize hook result")?,
-						);
-					}
-					OutputAction::SetState(new_state) => {
-						let state = self
-							.plugin_state
-							.as_mut()
-							.context("Hook handle does not have a reference to persistent state")?;
-						let mut lock = state.lock().map_err(|x| anyhow!("{x}"))?;
-						*lock = new_state;
-					}
-					OutputAction::Text(text, level) => {
-						o.display_text(text, level);
-					}
-					OutputAction::Message(message) => {
-						o.display_message(message);
-					}
-					OutputAction::StartProcess => {
-						o.start_process();
-					}
-					OutputAction::EndProcess => {
-						o.end_process();
-					}
-					OutputAction::StartSection => {
-						o.start_section();
-					}
-					OutputAction::EndSection => {
-						o.end_section();
-					}
-				}
-
-				Ok(false)
-			}
-			HookHandleInner::Constant(..) => Ok(true),
-		}
-	}
-
-	/// Get the result of the hook by waiting for it
-	pub fn result(mut self, o: &mut impl MCVMOutput) -> anyhow::Result<H::Result> {
-		if let HookHandleInner::Process { .. } = &self.inner {
-			loop {
-				let result = self.poll(o)?;
-				if result {
-					break;
-				}
-			}
-		}
-
-		match self.inner {
-			HookHandleInner::Constant(result) => Ok(result),
-			HookHandleInner::Process {
-				mut child, result, ..
-			} => {
-				let cmd_result = child.wait()?;
-
-				if !cmd_result.success() {
-					if let Some(exit_code) = cmd_result.code() {
-						bail!("Hook returned a non-zero exit code of {}", exit_code);
-					} else {
-						bail!("Hook returned a non-zero exit code");
-					}
-				}
-
-				let result = result.context("Plugin hook did not return a result")?;
-
-				Ok(result)
-			}
-		}
-	}
-
-	/// Get the result of the hook by killing it
-	pub fn kill(self, o: &mut impl MCVMOutput) -> anyhow::Result<Option<H::Result>> {
-		let _ = o;
-		match self.inner {
-			HookHandleInner::Constant(result) => Ok(Some(result)),
-			HookHandleInner::Process {
-				mut child, result, ..
-			} => {
-				child.kill()?;
-
-				Ok(result)
-			}
-		}
-	}
-}
-
-/// The inner value for a HookHandle
-enum HookHandleInner<H: Hook> {
-	/// Result is coming from a running process
-	Process {
-		child: Child,
-		line_buf: String,
-		stdout: BufReader<ChildStdout>,
-		result: Option<H::Result>,
-	},
-	/// Result is a constant, either from a constant hook or a takeover hook
-	Constant(H::Result),
 }
 
 macro_rules! def_hook {
-	($struct:ident, $name:literal, $desc:literal, $arg:ty, $res:ty, $($extra:tt)*) => {
+	($struct:ident, $name:literal, $desc:literal, $arg:ty, $res:ty, $version:literal, $($extra:tt)*) => {
 		#[doc = $desc]
 		pub struct $struct;
 
@@ -297,6 +61,10 @@ macro_rules! def_hook {
 
 			fn get_name_static() -> &'static str {
 				$name
+			}
+
+			fn get_version() -> u16 {
+				$version
 			}
 
 			$(
@@ -312,6 +80,7 @@ def_hook!(
 	"Hook for when a plugin is loaded",
 	(),
 	(),
+	1,
 );
 
 def_hook!(
@@ -320,6 +89,7 @@ def_hook!(
 	"Hook for when a command's subcommands are run",
 	Vec<String>,
 	(),
+	1,
 	fn get_takes_over() -> bool {
 		true
 	}
@@ -331,6 +101,7 @@ def_hook!(
 	"Hook for modifying an instance's configuration",
 	serde_json::Map<String, serde_json::Value>,
 	ModifyInstanceConfigResult,
+	1,
 );
 
 /// Result from the ModifyInstanceConfig hook
@@ -347,6 +118,7 @@ def_hook!(
 	"Hook for adding extra versions to the version manifest",
 	(),
 	Vec<VersionEntry>,
+	1,
 );
 
 def_hook!(
@@ -354,7 +126,8 @@ def_hook!(
 	"on_instance_setup",
 	"Hook for doing work when setting up an instance for update or launch",
 	OnInstanceSetupArg,
-	(),
+	OnInstanceSetupResult,
+	1,
 );
 
 /// Argument for the OnInstanceSetup hook
@@ -369,9 +142,44 @@ pub struct OnInstanceSetupArg {
 	pub game_dir: String,
 	/// Version info for the instance
 	pub version_info: VersionInfo,
+	/// The client type of the instance. Doesn't apply if the instance is a server
+	pub client_type: ClientType,
+	/// The server type of the instance. Doesn't apply if the instance is a client
+	pub server_type: ServerType,
+	/// The current version of the game modification, as stored in the lockfile. Can be used to detect version changes.
+	pub current_game_modification_version: Option<String>,
+	/// The desired version of the game modification
+	pub desired_game_modification_version: Option<VersionPattern>,
 	/// Custom config on the instance
 	pub custom_config: serde_json::Map<String, serde_json::Value>,
+	/// Path to the MCVM internal dir
+	pub internal_dir: String,
+	/// The depth to update at
+	pub update_depth: UpdateDepth,
 }
+
+/// Result from the OnInstanceSetup hook
+#[derive(Serialize, Deserialize, Default)]
+#[serde(default)]
+pub struct OnInstanceSetupResult {
+	/// Optional override for the main class
+	pub main_class_override: Option<String>,
+	/// Optional override for the path to the game JAR file
+	pub jar_path_override: Option<String>,
+	/// Optional extension to the classpath, as a list of paths
+	pub classpath_extension: Vec<String>,
+	/// Optional new version for the game modification
+	pub game_modification_version: Option<String>,
+}
+
+def_hook!(
+	RemoveGameModification,
+	"remove_game_modification",
+	"Hook for removing a game modification from an instance when the game modification or version changes",
+	OnInstanceSetupArg,
+	(),
+	1,
+);
 
 def_hook!(
 	OnInstanceLaunch,
@@ -379,6 +187,7 @@ def_hook!(
 	"Hook for doing work before an instance is launched",
 	InstanceLaunchArg,
 	(),
+	1,
 );
 
 def_hook!(
@@ -387,6 +196,7 @@ def_hook!(
 	"Hook for running sibling processes with an instance when it is launched",
 	InstanceLaunchArg,
 	(),
+	1,
 );
 
 def_hook!(
@@ -395,6 +205,7 @@ def_hook!(
 	"Hook for doing work when an instance is stopped gracefully",
 	InstanceLaunchArg,
 	(),
+	1,
 );
 
 /// Argument for the OnInstanceLaunch and WhileInstanceLaunch hooks
@@ -423,6 +234,7 @@ def_hook!(
 	"Hook for handling custom instructions in packages",
 	CustomPackageInstructionArg,
 	CustomPackageInstructionResult,
+	1,
 );
 
 /// Argument for the CustomPackageInstruction hook
@@ -431,6 +243,10 @@ def_hook!(
 pub struct CustomPackageInstructionArg {
 	/// The ID of the package
 	pub pkg_id: String,
+	/// The name of the custom command
+	pub command: String,
+	/// Any additional arguments supplied to the command
+	pub args: Vec<String>,
 }
 
 /// Result from the CustomPackageInstruction hook
@@ -463,6 +279,7 @@ def_hook!(
 	"Hook for handling authentication for custom user types",
 	HandleAuthArg,
 	HandleAuthResult,
+	1,
 );
 
 /// Argument for the HandleAuth hook
@@ -491,6 +308,7 @@ def_hook!(
 	"Hook for adding extra translations to MCVM",
 	(),
 	LanguageMap,
+	1,
 );
 
 def_hook!(
@@ -499,6 +317,7 @@ def_hook!(
 	"Hook for adding information about instance transfer formats",
 	(),
 	Vec<InstanceTransferFormat>,
+	1,
 );
 
 /// Information about an instance transfer format
@@ -544,6 +363,7 @@ def_hook!(
 	"Hook for exporting an instance",
 	ExportInstanceArg,
 	(),
+	1,
 );
 
 /// Argument provided to the export_instance hook
@@ -576,6 +396,7 @@ def_hook!(
 	"Hook for importing an instance",
 	ImportInstanceArg,
 	ImportInstanceResult,
+	1,
 );
 
 /// Argument provided to the import_instance hook
@@ -608,4 +429,23 @@ pub struct ImportInstanceResult {
 	pub client_type: Option<ClientType>,
 	/// The server type of the new instance
 	pub server_type: Option<ServerType>,
+}
+
+def_hook!(
+	AddSupportedGameModifications,
+	"add_supported_game_modifications",
+	"Tell MCVM that you support installing extra game modifications",
+	(),
+	SupportedGameModifications,
+	1,
+);
+
+/// Game modifications with added support by a plugin
+#[derive(Serialize, Deserialize, Default)]
+#[serde(default)]
+pub struct SupportedGameModifications {
+	/// Client types that this plugin adds support for
+	pub client_types: Vec<ClientType>,
+	/// Server types that this plugin adds support for
+	pub server_types: Vec<ServerType>,
 }

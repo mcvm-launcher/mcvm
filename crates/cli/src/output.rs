@@ -4,6 +4,7 @@ use std::{fs::File, path::PathBuf};
 use anyhow::Context;
 use color_print::{cformat, cstr};
 use inquire::{Confirm, Password};
+use itertools::Itertools;
 use mcvm::io::paths::Paths;
 use mcvm::pkg_crate::{PkgRequest, PkgRequestSource};
 use mcvm::shared::lang::translate::{TranslationKey, TranslationMap};
@@ -124,6 +125,7 @@ impl MCVMOutput for TerminalOutput {
 
 impl TerminalOutput {
 	pub fn new(paths: &Paths) -> anyhow::Result<Self> {
+		let _ = clear_old_logs(paths);
 		let path = get_log_file_path(paths).context("Failed to get log file path")?;
 		let file = File::create(path).context("Failed to open log file")?;
 		let latest_file = File::create(get_latest_log_file_path(paths))
@@ -297,6 +299,41 @@ fn get_log_file_path(paths: &Paths) -> anyhow::Result<PathBuf> {
 /// Get the path to the latest log file
 fn get_latest_log_file_path(paths: &Paths) -> PathBuf {
 	paths.logs.join("latest.txt")
+}
+
+/// Clears out old log files
+fn clear_old_logs(paths: &Paths) -> anyhow::Result<()> {
+	let dir_reader = paths
+		.logs
+		.read_dir()
+		.context("Failed to read logs directory")?;
+
+	let mut count = 0;
+	let mapped = dir_reader.filter_map(|x| {
+		let x = x.ok()?;
+		if !x.file_type().ok()?.is_file() {
+			return None;
+		}
+
+		let name = x.file_name();
+		if !name.to_string_lossy().contains("log-") {
+			return None;
+		}
+		let time = x.metadata().ok()?.created().ok()?;
+
+		count += 1;
+
+		Some((name, time))
+	});
+	// Sort so that the oldest are at the end
+	let sorted = mapped.sorted_by_cached_key(|x| x.1).rev();
+	if count > 15 {
+		for (name, _) in sorted.skip(15) {
+			let _ = std::fs::remove_file(paths.logs.join(name));
+		}
+	}
+
+	Ok(())
 }
 
 /// Settings for progress bar formatting

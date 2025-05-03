@@ -4,6 +4,7 @@ use std::path::PathBuf;
 
 use anyhow::{anyhow, bail, Context};
 use mcvm_core::io::{json_from_file, json_to_file_pretty};
+use mcvm_shared::modifications::{ClientType, ServerType};
 use mcvm_shared::output::{MCVMOutput, MessageContents};
 use mcvm_shared::translate;
 use serde::{Deserialize, Serialize};
@@ -30,10 +31,11 @@ struct LockfileContents {
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 #[serde(default)]
-struct LockfileInstance {
-	version: String,
-	#[serde(skip_serializing_if = "Option::is_none")]
-	paper_build: Option<u16>,
+pub(crate) struct LockfileInstance {
+	pub(crate) version: String,
+	pub(crate) game_modification_version: Option<String>,
+	pub(crate) client_type: ClientType,
+	pub(crate) server_type: ServerType,
 }
 
 /// Package stored in the lockfile
@@ -149,6 +151,11 @@ impl Lockfile {
 		Ok(())
 	}
 
+	/// Get a specific instance from the lockfile
+	pub(crate) fn get_instance(&self, instance: &str) -> Option<&LockfileInstance> {
+		self.contents.instances.get(instance)
+	}
+
 	/// Updates a package with a new version.
 	/// Returns a list of addon files to be removed
 	pub fn update_package(
@@ -213,7 +220,7 @@ impl Lockfile {
 		}
 
 		for file in &new_files {
-			if PathBuf::from(file).exists() {
+			if PathBuf::from(file).exists() && !file.contains("mcvm_") {
 				let allow = o
 					.prompt_yes_no(
 						false,
@@ -264,44 +271,58 @@ impl Lockfile {
 		}
 	}
 
-	/// Updates an instance in the lockfile. Returns true if the version has changed.
-	pub fn update_instance_version(&mut self, instance: &str, version: &str) -> bool {
-		if let Some(instance) = self.contents.instances.get_mut(instance) {
-			if instance.version == version {
-				false
-			} else {
-				instance.version = version.to_owned();
-				true
-			}
-		} else {
+	/// Ensures that an instance is created
+	pub fn ensure_instance_created(&mut self, instance: &str, version: &str) {
+		if !self.contents.instances.contains_key(instance) {
 			self.contents.instances.insert(
-				instance.to_owned(),
+				instance.to_string(),
 				LockfileInstance {
-					version: version.to_owned(),
-					paper_build: None,
+					version: version.to_string(),
+					game_modification_version: None,
+					client_type: ClientType::Vanilla,
+					server_type: ServerType::Vanilla,
 				},
 			);
-
-			false
 		}
 	}
 
-	/// Updates an instance with a new Paper build. Returns true if the version has changed.
-	pub fn update_instance_paper_build(&mut self, instance: &str, build_num: u16) -> bool {
+	/// Updates the version of an instance
+	pub fn update_instance_version(&mut self, instance: &str, version: &str) -> anyhow::Result<()> {
 		if let Some(instance) = self.contents.instances.get_mut(instance) {
-			if let Some(paper_build) = instance.paper_build.as_mut() {
-				if *paper_build == build_num {
-					false
-				} else {
-					*paper_build = build_num;
-					true
-				}
-			} else {
-				instance.paper_build = Some(build_num);
-				false
-			}
+			instance.version = version.to_string();
+			Ok(())
 		} else {
-			false
+			bail!("Instance {instance} does not exist")
+		}
+	}
+
+	/// Updates the game modifications of an instance
+	pub fn update_instance_game_modifications(
+		&mut self,
+		instance: &str,
+		client_type: ClientType,
+		server_type: ServerType,
+	) -> anyhow::Result<()> {
+		if let Some(instance) = self.contents.instances.get_mut(instance) {
+			instance.client_type = client_type;
+			instance.server_type = server_type;
+			Ok(())
+		} else {
+			bail!("Instance {instance} does not exist")
+		}
+	}
+
+	/// Updates the game modification version of an instance
+	pub fn update_instance_game_modification_version(
+		&mut self,
+		instance: &str,
+		version: Option<String>,
+	) -> anyhow::Result<()> {
+		if let Some(instance) = self.contents.instances.get_mut(instance) {
+			instance.game_modification_version = version;
+			Ok(())
+		} else {
+			bail!("Instance {instance} does not exist")
 		}
 	}
 

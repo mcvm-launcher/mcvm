@@ -3,6 +3,7 @@ use crate::{output::LauncherOutput, State};
 use crate::{RunState, RunningInstance};
 use anyhow::Context;
 use itertools::Itertools;
+use mcvm::config::instance::InstanceConfig;
 use mcvm::config::Config;
 use mcvm::instance::launch::LaunchSettings;
 use mcvm::io::paths::Paths;
@@ -294,6 +295,32 @@ pub async fn answer_password_prompt(
 	*state.password_prompt.lock().await = Some(answer);
 
 	Ok(())
+}
+
+#[tauri::command]
+pub async fn get_instance_config(
+	state: tauri::State<'_, State>,
+	app_handle: tauri::AppHandle,
+	instance: String,
+) -> Result<(InstanceConfig, InstanceConfig), String> {
+	let app_handle = Arc::new(app_handle);
+
+	let mut output = LauncherOutput::new(
+		app_handle,
+		state.passkeys.clone(),
+		state.password_prompt.clone(),
+	);
+
+	let config = fmt_err(load_config(&state.paths, &mut output).context("Failed to load config"))?;
+
+	let Some(instance) = config.instances.get(&InstanceID::from(instance)) else {
+		return Err("Instance does not exist".into());
+	};
+
+	Ok((
+		instance.get_config().original_config.clone(),
+		instance.get_config().original_config_with_profiles.clone(),
+	))
 }
 
 fn load_config(paths: &Paths, o: &mut LauncherOutput) -> anyhow::Result<Config> {

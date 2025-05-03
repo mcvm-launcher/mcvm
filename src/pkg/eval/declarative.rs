@@ -259,7 +259,7 @@ fn check_condition_set<'a>(
 	if let Some(plugin_loaders) = &conditions.plugin_loaders {
 		if !plugin_loaders
 			.iter()
-			.any(|x| x.matches(&input.constants.modifications.server_type))
+			.any(|x| x.matches(&input.constants.modifications.server_type()))
 		{
 			return false;
 		}

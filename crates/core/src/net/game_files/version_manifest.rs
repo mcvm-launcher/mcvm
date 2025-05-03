@@ -1,6 +1,6 @@
 use anyhow::Context;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
-use mcvm_shared::translate;
+use mcvm_shared::{translate, util::DefaultExt, UpdateDepth};
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 
@@ -32,7 +32,13 @@ pub struct VersionEntry {
 	pub url: String,
 	/// Whether the client meta needs to be unzipped first
 	#[serde(default)]
+	#[serde(skip_serializing_if = "DefaultExt::is_default")]
 	pub is_zipped: bool,
+	/// The name of the source for this version, which can be used by plugins
+	/// to show that the version is from that plugin
+	#[serde(default)]
+	#[serde(skip_serializing_if = "DefaultExt::is_default")]
+	pub source: Option<String>,
 }
 
 /// Type of a version in the version manifest
@@ -127,7 +133,7 @@ async fn get_contents(
 	let mut path = paths.internal.join("versions");
 	files::create_dir(&path)?;
 	path.push("manifest.json");
-	if manager.allow_offline && !force && path.exists() {
+	if manager.update_depth < UpdateDepth::Full && !force && path.exists() {
 		return json_from_file(path).context("Failed to read manifest contents from file");
 	}
 

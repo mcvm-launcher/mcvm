@@ -85,7 +85,12 @@ pub trait ScriptEvaluator {
 	) -> anyhow::Result<()>;
 
 	/// Run a custom instruction
-	fn run_custom(&mut self, shared: &mut Self::Shared<'_>, custom: String) -> anyhow::Result<()>;
+	fn run_custom(
+		&mut self,
+		shared: &mut Self::Shared<'_>,
+		command: String,
+		args: Vec<String>,
+	) -> anyhow::Result<()>;
 }
 
 /// Configuration for script evaluation
@@ -298,6 +303,9 @@ pub fn eval_instr<E: ScriptEvaluator>(
 						};
 						e.add_addon(shared, data)?;
 					}
+				}
+				InstrKind::Custom(cmd, args) => {
+					e.run_custom(shared, cmd.get_clone(), args.clone())?;
 				}
 				_ => bail!("Instruction is not allowed in this routine context"),
 			},

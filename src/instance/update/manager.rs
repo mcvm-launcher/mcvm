@@ -14,18 +14,15 @@ use mcvm_shared::later::Later;
 use mcvm_shared::output::MCVMOutput;
 use mcvm_shared::output::NoOp;
 use mcvm_shared::versions::VersionInfo;
-use mcvm_shared::Side;
+use mcvm_shared::UpdateDepth;
 use reqwest::Client;
 
-use crate::plugin::PluginManager;
 use crate::io::paths::Paths;
-use mcvm_mods::fabric_quilt::{self, FabricQuiltMeta};
+use crate::plugin::PluginManager;
 
 /// Requirements for operations that may be shared by multiple instances in a profile
 #[derive(Debug, Hash, PartialEq, Eq)]
 pub enum UpdateRequirement {
-	/// Fabric and Quilt
-	FabricQuilt(fabric_quilt::Mode, Side),
 	/// Client logging configuration
 	ClientLoggingConfig,
 }
@@ -33,10 +30,8 @@ pub enum UpdateRequirement {
 /// Settings for updating
 #[derive(Debug)]
 pub struct UpdateSettings {
-	/// Whether to force file updates
-	pub force: bool,
-	/// Whether we will prioritize local files instead of remote ones
-	pub allow_offline: bool,
+	/// The depth to perform updates at
+	pub depth: UpdateDepth,
 	/// Whether to do offline authentication
 	pub offline_auth: bool,
 }
@@ -58,16 +53,13 @@ pub struct UpdateManager {
 	pub core: Later<MCVMCore>,
 	/// The version info to be fulfilled later
 	pub version_info: Later<VersionInfo>,
-	/// The Fabric/Quilt metadata to be fulfilled later
-	pub fq_meta: Later<FabricQuiltMeta>,
 }
 
 impl UpdateManager {
 	/// Create a new UpdateManager
-	pub fn new(force: bool, allow_offline: bool) -> Self {
+	pub fn new(depth: UpdateDepth) -> Self {
 		let settings = UpdateSettings {
-			force,
-			allow_offline,
+			depth,
 			offline_auth: false,
 		};
 
@@ -78,7 +70,6 @@ impl UpdateManager {
 			ms_client_id: None,
 			files: HashSet::new(),
 			version_info: Later::Empty,
-			fq_meta: Later::new(),
 			mc_version: Later::Empty,
 		}
 	}
@@ -120,7 +111,7 @@ impl UpdateManager {
 
 	/// Whether a file needs to be updated
 	pub fn should_update_file(&self, file: &Path) -> bool {
-		if self.settings.force {
+		if self.settings.depth == UpdateDepth::Force {
 			!self.files.contains(file) || !file.exists()
 		} else {
 			!file.exists()
@@ -133,7 +124,6 @@ impl UpdateManager {
 		self.mc_version.fill(version.clone());
 		// We have to clear these now since they are out of date
 		self.version_info.clear();
-		self.fq_meta.clear();
 	}
 
 	/// Run all of the operations that are part of the requirements.
@@ -161,10 +151,6 @@ impl UpdateManager {
 			.context("Failed to get version")?;
 		let version_info = version.get_version_info();
 
-		self.update_fabric_quilt(&version_info, paths, client, o)
-			.await
-			.context("Failed to update Fabric/Quilt")?;
-
 		self.version_info.fill(version_info);
 
 		Ok(())
@@ -185,8 +171,7 @@ impl UpdateManager {
 
 		// Setup the core
 		let mut core_config = mcvm_core::ConfigBuilder::new()
-			.allow_offline(self.settings.allow_offline)
-			.force_reinstall(self.settings.force)
+			.update_depth(self.settings.depth)
 			.branding(BrandingProperties::new(
 				"mcvm".into(),
 				crate::VERSION.into(),
@@ -253,71 +238,6 @@ impl UpdateManager {
 			.context("Failed to get core version")?;
 
 		Ok(version)
-	}
-
-	/// Update Fabric or Quilt if it is required
-	async fn update_fabric_quilt(
-		&mut self,
-		version_info: &VersionInfo,
-		paths: &Paths,
-		client: &Client,
-		o: &mut impl MCVMOutput,
-	) -> anyhow::Result<()> {
-		if self.fq_meta.is_full() {
-			return Ok(());
-		}
-
-		let core = self.core.get();
-
-		// Check if we need to update
-		let required = matches!(
-			self.requirements
-				.iter()
-				.find(|x| matches!(x, UpdateRequirement::FabricQuilt(..))),
-			Some(..)
-		);
-
-		// Update Fabric / Quilt
-		if required {
-			for req in self.requirements.iter() {
-				if let UpdateRequirement::FabricQuilt(mode, side) = req {
-					if self.fq_meta.is_empty() {
-						let meta = fabric_quilt::get_meta(
-							&version_info.version,
-							mode,
-							&paths.core,
-							core.get_update_manager(),
-							client,
-						)
-						.await
-						.context("Failed to download Fabric/Quilt metadata")?;
-						fabric_quilt::download_files(
-							&meta,
-							&paths.core,
-							*mode,
-							core.get_update_manager(),
-							client,
-							o,
-						)
-						.await
-						.context("Failed to download common Fabric/Quilt files")?;
-						self.fq_meta.fill(meta);
-					}
-
-					fabric_quilt::download_side_specific_files(
-						self.fq_meta.get(),
-						&paths.core,
-						*side,
-						core.get_update_manager(),
-						client,
-					)
-					.await
-					.context("Failed to download {mode} files for {side}")?;
-				}
-			}
-		}
-
-		Ok(())
 	}
 }
 

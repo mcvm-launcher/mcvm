@@ -219,7 +219,8 @@ impl Loader {
 				self,
 				Self::Known(
 					KnownLoader::Paper
-						| KnownLoader::Bukkit | KnownLoader::Spigot
+						| KnownLoader::Bukkit
+						| KnownLoader::Spigot
 						| KnownLoader::Sponge
 				)
 			),

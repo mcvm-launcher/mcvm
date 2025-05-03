@@ -9,9 +9,9 @@ mod server;
 
 use std::path::Path;
 
-use anyhow::Context;
-use mcvm_shared::output::MCVMOutput;
-use mcvm_shared::Side;
+use anyhow::{bail, Context};
+use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
+use mcvm_shared::{translate, Side};
 
 use self::client::create_quick_play_args;
 use self::process::{launch_game_process, LaunchGameProcessParameters};
@@ -23,6 +23,7 @@ use crate::io::java::classpath::Classpath;
 use crate::io::java::install::JavaInstallation;
 use crate::net::game_files::client_meta::ClientMeta;
 use crate::net::game_files::version_manifest::VersionManifestAndList;
+use crate::user::auth::check_game_ownership;
 use crate::user::UserManager;
 use crate::util::versions::VersionName;
 
@@ -34,13 +35,36 @@ pub use self::process::launch_process;
 pub use self::process::{LaunchProcessParameters, LaunchProcessProperties};
 
 pub(crate) async fn launch(
-	mut params: LaunchParameters<'_>,
+	params: LaunchParameters<'_>,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<InstanceHandle> {
 	let command = params.java.get_jvm_path();
+
+	// Make sure we are authenticated
+	if let InstanceKind::Client { .. } = &params.side {
+		o.display(
+			MessageContents::StartProcess(translate!(o, StartAuthenticating)),
+			MessageLevel::Important,
+		);
+
+		params
+			.users
+			.authenticate(params.paths, params.req_client, o)
+			.await
+			.context("Failed to ensure authentication")?;
+
+		// Ensure game ownership in case we are using an alternative auth system
+		let owns_game =
+			check_game_ownership(params.paths).context("Failed to check for game ownership")?;
+
+		if !owns_game {
+			bail!("Could not prove game ownership. If using an alternative auth system, like from a plugin, you must login with a Microsoft account that owns Minecraft first.");
+		}
+	}
+
 	// Get side-specific launch properties
 	let props = match params.side.get_side() {
-		Side::Client => self::client::get_launch_props(&mut params, o).await,
+		Side::Client => self::client::get_launch_props(&params).await,
 		Side::Server => self::server::get_launch_props(&params),
 	}
 	.context("Failed to generate side-specific launch properties")?;
@@ -168,5 +192,10 @@ impl InstanceHandle {
 	/// InstanceHandle
 	pub fn get_process(self) -> std::process::Child {
 		self.process
+	}
+
+	/// Gets the PID of the instance process
+	pub fn get_pid(&self) -> u32 {
+		self.process.id()
 	}
 }

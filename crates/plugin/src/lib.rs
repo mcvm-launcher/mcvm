@@ -4,7 +4,8 @@
 //! Rust plugins for MCVM to use
 
 use anyhow::{bail, Context};
-use hooks::{Hook, HookHandle, OnLoad};
+use hook_call::HookHandle;
+use hooks::{Hook, OnLoad};
 use mcvm_core::Paths;
 use mcvm_shared::output::MCVMOutput;
 use plugin::Plugin;
@@ -12,6 +13,8 @@ use plugin::Plugin;
 /// API for Rust-based plugins to use
 #[cfg(feature = "api")]
 pub mod api;
+/// Implementation for calling hooks
+pub mod hook_call;
 /// Plugin hooks and their definitions
 pub mod hooks;
 /// Serialized output format for plugins
@@ -19,11 +22,22 @@ pub mod output;
 /// Plugins
 pub mod plugin;
 
+pub use mcvm_shared as shared;
+
+/// Environment variable that debugs plugins when set
+pub static PLUGIN_DEBUG_ENV: &str = "MCVM_PLUGIN_DEBUG";
+
+/// Gets whether plugin debugging is enabled
+pub fn plugin_debug_enabled() -> bool {
+	std::env::var(PLUGIN_DEBUG_ENV).unwrap_or_default() == "1"
+}
+
 /// A manager for plugins that is used to call their hooks.
 /// Does not handle actually loading the plugins from files
 #[derive(Debug)]
 pub struct CorePluginManager {
 	plugins: Vec<Plugin>,
+	plugin_list: Vec<String>,
 	mcvm_version: Option<&'static str>,
 }
 
@@ -38,6 +52,7 @@ impl CorePluginManager {
 	pub fn new() -> Self {
 		Self {
 			plugins: Vec::new(),
+			plugin_list: Vec::new(),
 			mcvm_version: None,
 		}
 	}
@@ -54,9 +69,12 @@ impl CorePluginManager {
 		paths: &Paths,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
+		// Update the plugin list
+		self.plugin_list.push(plugin.get_id().clone());
+
 		// Call the on_load hook
 		let result = plugin
-			.call_hook(&OnLoad, &(), paths, self.mcvm_version, o)
+			.call_hook(&OnLoad, &(), paths, self.mcvm_version, &self.plugin_list, o)
 			.context("Failed to call on_load hook of plugin")?;
 		if let Some(result) = result {
 			result.result(o)?;
@@ -78,8 +96,8 @@ impl CorePluginManager {
 		let mut out = Vec::new();
 		for plugin in &self.plugins {
 			let result = plugin
-				.call_hook(&hook, arg, paths, self.mcvm_version, o)
-				.context("Plugin hook failed")?;
+				.call_hook(&hook, arg, paths, self.mcvm_version, &self.plugin_list, o)
+				.with_context(|| format!("Hook failed for plugin {}", plugin.get_id()))?;
 			out.extend(result);
 		}
 
@@ -98,7 +116,7 @@ impl CorePluginManager {
 		for plugin in &self.plugins {
 			if plugin.get_id() == plugin_id {
 				let result = plugin
-					.call_hook(&hook, arg, paths, self.mcvm_version, o)
+					.call_hook(&hook, arg, paths, self.mcvm_version, &self.plugin_list, o)
 					.context("Plugin hook failed")?;
 				return Ok(result);
 			}
@@ -110,5 +128,10 @@ impl CorePluginManager {
 	/// Iterate over the plugins
 	pub fn iter_plugins(&self) -> impl Iterator<Item = &Plugin> {
 		self.plugins.iter()
+	}
+
+	/// Checks whether the given plugin is present and enabled in the manager
+	pub fn has_plugin(&self, plugin_id: &str) -> bool {
+		self.plugin_list.iter().any(|x| x == plugin_id)
 	}
 }

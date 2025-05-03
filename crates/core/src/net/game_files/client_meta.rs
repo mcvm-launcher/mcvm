@@ -2,8 +2,8 @@ use std::io::{Cursor, Read};
 
 use anyhow::{bail, Context};
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
-use mcvm_shared::translate;
 use mcvm_shared::util::DeserListOrSingle;
+use mcvm_shared::{translate, UpdateDepth};
 use reqwest::Client;
 use serde::Deserialize;
 use zip::ZipArchive;
@@ -339,7 +339,7 @@ pub async fn get(
 	files::create_dir(&version_dir).context("Failed to create versions directory")?;
 	let path = version_dir.join(client_meta_name);
 
-	let meta = if manager.allow_offline && path.exists() {
+	let meta = if manager.update_depth < UpdateDepth::Force && path.exists() {
 		json_from_file(path).context("Failed to read client meta contents from file")?
 	} else {
 		let mut download = ProgressiveDownload::bytes(&entry.url, client).await?;

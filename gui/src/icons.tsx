@@ -8,6 +8,7 @@ import CheckIcon from "./assets/icons/check.svg?component-solid";
 import GlobeIcon from "./assets/icons/globe.svg?component-solid";
 import CrossIcon from "./assets/icons/cross.svg?component-solid";
 import SpinnerIcon from "./assets/icons/spinner.svg?component-solid";
+import AngleLeftIcon from "./assets/icons/angle_left.svg?component-solid";
 import { HasWidthHeight } from "./components/Icon";
 
 export function Pin({ width, height, viewBox }: HasWidthHeight) {
@@ -56,4 +57,8 @@ export function AnimatedSpinner({ width, height, viewBox }: HasWidthHeight) {
 			<SpinnerIcon width={width} height={height} viewBox={viewBox} />
 		</div>
 	);
+}
+
+export function AngleLeft({ width, height, viewBox }: HasWidthHeight) {
+	return <AngleLeftIcon width={width} height={height} viewBox={viewBox} />;
 }

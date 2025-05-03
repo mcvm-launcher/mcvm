@@ -10,6 +10,7 @@ use mcvm_shared::modifications::{ClientType, Modloader, ServerType};
 use mcvm_shared::output::MCVMOutput;
 use mcvm_shared::pkg::PackageStability;
 use mcvm_shared::util::{merge_options, DefaultExt, DeserListOrSingle};
+use mcvm_shared::versions::VersionPattern;
 use mcvm_shared::Side;
 #[cfg(feature = "schema")]
 use schemars::JsonSchema;
@@ -20,11 +21,11 @@ use crate::instance::{InstKind, Instance, InstanceStoredConfig};
 use crate::io::paths::Paths;
 
 use super::package::{PackageConfig, PackageConfigDeser, PackageConfigSource};
-use crate::plugin::PluginManager;
 use super::profile::{GameModifications, ProfileConfig};
+use crate::plugin::PluginManager;
 
 /// Configuration for an instance
-#[derive(Deserialize, Serialize, Clone)]
+#[derive(Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 pub struct InstanceConfig {
 	/// The type or side of this instance
@@ -34,6 +35,10 @@ pub struct InstanceConfig {
 	#[serde(default)]
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub name: Option<String>,
+	/// A path to an icon file for this instance
+	#[serde(default)]
+	#[serde(skip_serializing_if = "Option::is_none")]
+	pub icon: Option<String>,
 	/// The common config of this instance
 	#[serde(flatten)]
 	pub common: CommonInstanceConfig,
@@ -44,7 +49,7 @@ pub struct InstanceConfig {
 }
 
 /// Common full instance config for both client and server
-#[derive(Deserialize, Serialize, Clone, Default)]
+#[derive(Deserialize, Serialize, Clone, Default, Debug)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 #[serde(default)]
 pub struct CommonInstanceConfig {
@@ -65,6 +70,10 @@ pub struct CommonInstanceConfig {
 	#[serde(default)]
 	#[serde(skip_serializing_if = "DefaultExt::is_default")]
 	pub server_type: Option<ServerType>,
+	/// The version of whatever game modification is applied to this instance
+	#[serde(default)]
+	#[serde(skip_serializing_if = "DefaultExt::is_default")]
+	pub game_modification_version: Option<VersionPattern>,
 	/// Default stability setting of packages on this instance
 	#[serde(default)]
 	#[serde(skip_serializing_if = "DefaultExt::is_default")]
@@ -383,10 +392,14 @@ pub fn read_instance_config(
 		.collect();
 	let profiles = profiles?;
 
+	let original_config = config.clone();
+
 	// Merge with the profile
 	for profile in &profiles {
 		config = merge_instance_configs(&profile.instance, config);
 	}
+
+	let original_config_with_profiles = config.clone();
 
 	let side = config.side.context("Instance type was not specified")?;
 
@@ -427,12 +440,16 @@ pub fn read_instance_config(
 
 	let stored_config = InstanceStoredConfig {
 		name: config.name,
+		icon: config.icon,
 		version,
 		modifications: game_modifications,
+		modification_version: config.common.game_modification_version,
 		launch: config.common.launch.to_options()?,
 		datapack_folder: config.common.datapack_folder,
 		packages,
 		package_stability: config.common.package_stability.unwrap_or_default(),
+		original_config,
+		original_config_with_profiles,
 		plugin_config: config.common.plugin_config,
 	};
 

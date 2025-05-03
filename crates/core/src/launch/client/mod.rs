@@ -1,13 +1,13 @@
 /// Client arguments
 mod args;
 
-use anyhow::{anyhow, bail, Context};
+use anyhow::{anyhow, bail};
 
 use std::collections::HashMap;
 
+use mcvm_shared::skip_none;
 #[cfg(target_os = "linux")]
 use mcvm_shared::versions::VersionPattern;
-use mcvm_shared::{output::MCVMOutput, skip_none};
 
 pub use args::create_quick_play_args;
 
@@ -17,20 +17,12 @@ use super::{process::LaunchProcessProperties, LaunchParameters};
 
 /// Create launch properties for the client
 pub(crate) async fn get_launch_props(
-	params: &mut LaunchParameters<'_>,
-	o: &mut impl MCVMOutput,
+	params: &LaunchParameters<'_>,
 ) -> anyhow::Result<LaunchProcessProperties> {
 	// Ensure a user is picked
 	if !params.users.is_user_chosen() {
 		bail!("No user chosen");
 	}
-
-	// Ensure the user is authenticated
-	params
-		.users
-		.authenticate(params.paths, params.req_client, o)
-		.await
-		.context("Failed to authenticate user")?;
 
 	// Build up arguments
 	let mut jvm_args = Vec::new();
@@ -66,8 +58,8 @@ pub(crate) async fn get_launch_props(
 					.join("versions")
 					.join(params.version.to_string())
 					.join("natives")
-					.to_str()
-					.context("Failed to convert natives directory to a string")?
+					.to_string_lossy()
+					.to_string()
 			));
 			jvm_args.push("-cp".into());
 			jvm_args.push(params.classpath.get_str());

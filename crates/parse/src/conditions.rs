@@ -69,6 +69,8 @@ pub enum ConditionKind {
 	Language(Later<Language>),
 	/// Check the requested content version of the package
 	ContentVersion(Value),
+	/// Check if a plugin is present
+	Plugin(Value),
 }
 
 /// Value for the OS condition
@@ -145,6 +147,8 @@ impl ConditionKind {
 			"os" => Some(Self::OS(Later::Empty)),
 			"stability" => Some(Self::Stability(Later::Empty)),
 			"language" => Some(Self::Language(Later::Empty)),
+			// TODO: Content version
+			"plugin" => Some(Self::Plugin(Value::None)),
 			_ => None,
 		}
 	}
@@ -170,6 +174,7 @@ impl ConditionKind {
 			Self::Stability(val) => val.is_full(),
 			Self::Language(val) => val.is_full(),
 			Self::Value(left, right) => left.is_some() && right.is_some(),
+			Self::Plugin(plugin) => plugin.is_some(),
 		}
 	}
 
@@ -289,6 +294,13 @@ impl ConditionKind {
 				)?),
 				_ => unexpected_token!(tok, pos),
 			},
+			Self::Plugin(plugin) => {
+				if plugin.is_some() {
+					unexpected_token!(tok, pos)
+				} else {
+					*plugin = parse_arg(tok, pos)?;
+				}
+			}
 		}
 		Ok(())
 	}

@@ -3,6 +3,8 @@ use std::{collections::HashMap, sync::Arc};
 
 use super::CmdData;
 use itertools::Itertools;
+use mcvm::config::modifications::{apply_modifications_and_write, ConfigModification};
+use mcvm::config::package::PackageConfigDeser;
 use mcvm::parse::lex::Token;
 use mcvm::pkg_crate::metadata::PackageMetadata;
 use mcvm::pkg_crate::properties::PackageProperties;
@@ -18,6 +20,7 @@ use rayon::prelude::*;
 use reqwest::Client;
 use serde::Serialize;
 
+use crate::commands::instance::pick_instance;
 use crate::output::HYPHEN_POINT;
 
 #[derive(Debug, Subcommand)]
@@ -63,6 +66,14 @@ This package does not need to be installed, it just has to be in the index."
 		/// The package to get info about
 		package: String,
 	},
+	#[command(about = "Get the available content versions for a package")]
+	Versions {
+		/// Whether to remove formatting and warnings from the output
+		#[arg(short, long)]
+		raw: bool,
+		/// The package to get info about
+		package: String,
+	},
 	#[command(about = "Query information about configured packages repositories")]
 	#[clap(alias = "repo")]
 	Repository {
@@ -74,6 +85,13 @@ This package does not need to be installed, it just has to be in the index."
 	ListAll {},
 	#[command(about = "Browse packages from the remote repositories")]
 	Browse {},
+	#[command(about = "Add a package to an instance")]
+	Add {
+		/// The package to add to the instance
+		package: Option<String>,
+		/// The instance to add a package to
+		instance: Option<String>,
+	},
 }
 
 #[derive(Debug, Subcommand)]
@@ -98,9 +116,11 @@ pub async fn run(subcommand: PackageSubcommand, data: &mut CmdData<'_>) -> anyho
 		PackageSubcommand::Sync { filter } => sync(data, filter).await,
 		PackageSubcommand::Cat { raw, package } => cat(data, &package, raw).await,
 		PackageSubcommand::Info { raw, package } => info(data, &package, raw).await,
+		PackageSubcommand::Versions { raw, package } => versions(data, &package, raw).await,
 		PackageSubcommand::Repository { command } => repo(command, data).await,
 		PackageSubcommand::ListAll {} => list_all(data).await,
 		PackageSubcommand::Browse {} => browse(data).await,
+		PackageSubcommand::Add { package, instance } => add(data, package, instance).await,
 	}
 }
 
@@ -349,11 +369,10 @@ async fn info(data: &mut CmdData<'_>, id: &str, raw: bool) -> anyhow::Result<()>
 		.packages
 		.get_metadata(&req, &data.paths, &client, data.output)
 		.await
-		.context("Failed to get metadata from the registry")?;
+		.context("Failed to get metadata from the registry")?
+		.clone();
 
 	if raw {
-		let metadata = metadata.clone();
-
 		let properties = config
 			.packages
 			.get_properties(&req, &data.paths, &client, data.output)
@@ -440,6 +459,42 @@ async fn info(data: &mut CmdData<'_>, id: &str, raw: bool) -> anyhow::Result<()>
 		if !license.is_empty() {
 			cprintln!("   <s>License:</s> <b!>{}", license);
 		}
+	}
+
+	Ok(())
+}
+
+async fn versions(data: &mut CmdData<'_>, id: &str, raw: bool) -> anyhow::Result<()> {
+	data.ensure_config(true).await?;
+	let config = data.config.get_mut();
+
+	let client = Client::new();
+
+	let req = Arc::new(PkgRequest::parse(id, PkgRequestSource::UserRequire));
+
+	let properties = config
+		.packages
+		.get_properties(&req, &data.paths, &client, data.output)
+		.await
+		.context("Failed to get package properties from the registry")?;
+
+	let default_versions = Vec::new();
+	let versions = properties
+		.content_versions
+		.as_ref()
+		.unwrap_or(&default_versions);
+
+	if raw {
+		print!("{}", versions.join("\n"));
+
+		return Ok(());
+	}
+
+	if !versions.is_empty() {
+		cprintln!("<s>Available Versions:");
+	}
+	for version_line in versions.windows(4) {
+		cprintln!("{},", version_line.join(", "));
 	}
 
 	Ok(())
@@ -576,6 +631,51 @@ async fn browse(data: &mut CmdData<'_>) -> anyhow::Result<()> {
 			break;
 		}
 	}
+
+	Ok(())
+}
+
+async fn add(
+	data: &mut CmdData<'_>,
+	package: Option<String>,
+	instance: Option<String>,
+) -> anyhow::Result<()> {
+	data.ensure_config(true).await?;
+	let config = data.config.get_mut();
+
+	let client = Client::new();
+	let mut packages = config
+		.packages
+		.get_all_available_packages(&data.paths, &client, data.output)
+		.await
+		.context("Failed to get list of available packages")?;
+	packages.sort();
+
+	let package = if let Some(package) = package {
+		Arc::from(package)
+	} else {
+		inquire::Select::new("Which package would you like to install?", packages)
+			.prompt()
+			.context("Failed to get desired package")?
+			.id
+			.clone()
+	};
+
+	let instance =
+		pick_instance(instance, config).context("Failed to get instance to add package to")?;
+
+	let mut config_raw = data.get_raw_config()?;
+	apply_modifications_and_write(
+		&mut config_raw,
+		vec![ConfigModification::AddPackage(
+			instance,
+			PackageConfigDeser::Basic(package),
+		)],
+		&data.paths,
+	)
+	.context("Failed to write modified config")?;
+
+	cprintln!("<g>Package added.");
 
 	Ok(())
 }

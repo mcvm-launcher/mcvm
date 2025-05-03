@@ -117,6 +117,14 @@ impl AuthDatabase {
 			None
 		}
 	}
+
+	/// Checks if any logged in users are present in the database
+	pub fn has_logged_in_user(&self) -> bool {
+		self.contents
+			.users
+			.values()
+			.any(|x| x.sensitive != SensitiveUserInfoSerialized::None)
+	}
 }
 
 /// Structure for the auth database
@@ -128,7 +136,7 @@ struct DatabaseContents {
 }
 
 /// A user in the database
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct DatabaseUser {
 	/// A unique ID for the user
 	pub id: String,
@@ -322,7 +330,7 @@ impl DatabaseUser {
 }
 
 /// Sensitive info for a user that is encoded in a string
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
 pub struct SensitiveUserInfo {
 	/// The refresh token for the user
 	pub refresh_token: Option<String>,
@@ -330,17 +338,21 @@ pub struct SensitiveUserInfo {
 	pub xbox_uid: Option<String>,
 	/// The keypair of the user, if applicable
 	pub keypair: Option<Keypair>,
+	/// The Minecraft access token
+	pub access_token: Option<String>,
+	/// When the access token expires
+	pub access_token_expires: Option<u64>,
 }
 
 /// Passkey information in the database
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct PasskeyInfo {
 	/// The public key that was derived from the passkey, as a hex string
 	pub public_key: String,
 }
 
 /// Sensitive user data serialization format
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(untagged)]
 pub enum SensitiveUserInfoSerialized {
 	/// No info

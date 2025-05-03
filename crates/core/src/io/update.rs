@@ -1,24 +1,23 @@
 use std::collections::HashSet;
 use std::path::{Path, PathBuf};
 
+use mcvm_shared::UpdateDepth;
+
 /// Manager for when we are updating profile files.
 /// It will keep track of files we have already downloaded, manage task requirements, etc
 #[derive(Debug)]
 pub struct UpdateManager {
-	/// Whether to force file updates
-	pub(crate) force: bool,
-	/// Whether we will prioritize local files instead of remote ones
-	pub(crate) allow_offline: bool,
+	/// The depth to perform updates at.
+	pub(crate) update_depth: UpdateDepth,
 	/// File paths that are added when they have been updated by other functions
 	files: HashSet<PathBuf>,
 }
 
 impl UpdateManager {
 	/// Create a new UpdateManager
-	pub fn new(force: bool, allow_offline: bool) -> Self {
+	pub fn new(depth: UpdateDepth) -> Self {
 		Self {
-			force,
-			allow_offline,
+			update_depth: depth,
 			files: HashSet::new(),
 		}
 	}
@@ -40,23 +39,16 @@ impl UpdateManager {
 
 	/// Whether a file needs to be updated
 	pub fn should_update_file(&self, file: &Path) -> bool {
-		if self.force {
+		if self.update_depth == UpdateDepth::Force {
 			!self.files.contains(file) || !file.exists()
 		} else {
 			!file.exists()
 		}
 	}
 
-	/// Gets whether the manager allows being offline and not checking for
-	/// file updates
-	pub fn allow_offline(&self) -> bool {
-		self.allow_offline
-	}
-
-	/// Gets whether the manager forces the reinstallation of files
-	/// even if they are already installed
-	pub fn force_reinstall(&self) -> bool {
-		self.force
+	/// Gets the update depth of the manager
+	pub fn get_depth(&self) -> UpdateDepth {
+		self.update_depth
 	}
 }
 

@@ -10,7 +10,7 @@ use std::path::{Path, PathBuf};
 
 use anyhow::{bail, Context};
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
-use mcvm_shared::translate;
+use mcvm_shared::{translate, UpdateDepth};
 use tar::Archive;
 use zip::ZipArchive;
 
@@ -189,7 +189,7 @@ async fn install_adoptium(
 	params: &mut JavaInstallParameters<'_>,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<PathBuf> {
-	if params.update_manager.allow_offline {
+	if params.update_manager.update_depth == UpdateDepth::Shallow {
 		if let Some(directory) = params
 			.persistent
 			.get_java_path(PersistentDataJavaInstallation::Adoptium, major_version)
@@ -212,7 +212,7 @@ async fn install_zulu(
 	params: &mut JavaInstallParameters<'_>,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<PathBuf> {
-	if params.update_manager.allow_offline {
+	if params.update_manager.update_depth == UpdateDepth::Shallow {
 		if let Some(directory) = params
 			.persistent
 			.get_java_path(PersistentDataJavaInstallation::Zulu, major_version)
@@ -235,7 +235,7 @@ async fn install_graalvm(
 	params: &mut JavaInstallParameters<'_>,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<PathBuf> {
-	if params.update_manager.allow_offline {
+	if params.update_manager.update_depth == UpdateDepth::Shallow {
 		if let Some(directory) = params
 			.persistent
 			.get_java_path(PersistentDataJavaInstallation::GraalVM, major_version)

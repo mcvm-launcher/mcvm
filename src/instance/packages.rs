@@ -6,11 +6,11 @@ use mcvm_shared::versions::VersionInfo;
 use reqwest::Client;
 
 use crate::addon::AddonExt;
-use crate::plugin::PluginManager;
 use crate::io::lock::{Lockfile, LockfileAddon};
 use crate::io::paths::Paths;
 use crate::pkg::eval::{EvalData, EvalInput, Routine};
 use crate::pkg::reg::PkgRegistry;
+use crate::plugin::PluginManager;
 
 use super::Instance;
 use crate::config::package::PackageConfig;

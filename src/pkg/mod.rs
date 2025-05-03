@@ -13,6 +13,7 @@ use mcvm_pkg::declarative::{deserialize_declarative_package, DeclarativePackage}
 use mcvm_pkg::repo::PackageFlag;
 use mcvm_pkg::PackageContentType;
 use mcvm_shared::later::Later;
+use mcvm_shared::try_3;
 
 use std::collections::HashSet;
 use std::fs;
@@ -177,7 +178,7 @@ impl Package {
 							.fill(PkgData::new(&tokio::fs::read_to_string(path).await?));
 					} else {
 						let url = url.as_ref().expect("URL for remote package missing");
-						let text = download::text(url, client).await?;
+						let text = try_3!({ download::text(url, client).await })?;
 						tokio::fs::write(&path, &text).await?;
 						self.data.fill(PkgData::new(&text));
 					}
@@ -208,7 +209,7 @@ impl Package {
 					.expect("URL for remote package missing")
 					.clone();
 				let client = client.clone();
-				return Some(async move { download::file(url, path, &client).await });
+				return Some(async move { try_3!({ download::file(&url, &path, &client).await }) });
 			}
 		}
 

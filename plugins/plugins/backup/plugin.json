@@ -1,6 +1,7 @@
 {
 	"name": "Backup",
 	"description": "Create backups of instances",
+	"protocol_version": 2,
 	"hooks": {
 		"subcommand": {
 			"executable": "${PLUGIN_DIR}/mcvm_plugin_backup"
@@ -9,6 +10,9 @@
 			"executable": "${PLUGIN_DIR}/mcvm_plugin_backup"
 		},
 		"on_instance_stop": {
+			"executable": "${PLUGIN_DIR}/mcvm_plugin_backup"
+		},
+		"while_instance_launch": {
 			"executable": "${PLUGIN_DIR}/mcvm_plugin_backup"
 		}
 	},

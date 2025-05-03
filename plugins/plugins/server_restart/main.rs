@@ -5,14 +5,16 @@ use std::path::{Path, PathBuf};
 
 use anyhow::Context;
 use mcvm_plugin::api::CustomPlugin;
+use mcvm_plugin::hooks::OnInstanceSetupResult;
 use mcvm_shared::Side;
 use serde::Deserialize;
 
 fn main() -> anyhow::Result<()> {
-	let mut plugin = CustomPlugin::new("server_restart")?;
+	let mut plugin =
+		CustomPlugin::from_manifest_file("server_restart", include_str!("plugin.json"))?;
 	plugin.on_instance_setup(|_, arg| {
 		if !arg.side.is_some_and(|x| x == Side::Server) {
-			return Ok(());
+			return Ok(OnInstanceSetupResult::default());
 		}
 
 		let config = if let Some(config) = arg.custom_config.get("restart") {
@@ -29,7 +31,7 @@ fn main() -> anyhow::Result<()> {
 		create_script(&path, &arg.id, config)
 			.context("Failed to create startup script for instance")?;
 
-		Ok(())
+		Ok(OnInstanceSetupResult::default())
 	})?;
 
 	Ok(())

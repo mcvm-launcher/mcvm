@@ -131,22 +131,31 @@ pub(crate) fn replace_arg_placeholders(arg: &str, params: &LaunchParameters) -> 
 	out = out.replace(placeholder!("classpath"), &params.classpath.get_str());
 	out = out.replace(
 		placeholder!("natives_directory"),
-		params
+		&params
 			.paths
 			.internal
 			.join("versions")
 			.join(params.version.to_string())
 			.join("natives")
-			.to_str()?,
+			.to_string_lossy()
+			.to_string(),
 	);
 	out = out.replace(placeholder!("version_name"), params.version);
 	out = out.replace(placeholder!("version_type"), "mcvm");
-	out = out.replace(placeholder!("game_directory"), params.launch_dir.to_str()?);
-	out = out.replace(placeholder!("assets_root"), params.paths.assets.to_str()?);
+	out = out.replace(
+		placeholder!("game_directory"),
+		&params.launch_dir.to_string_lossy().to_string(),
+	);
+	out = out.replace(
+		placeholder!("assets_root"),
+		&params.paths.assets.to_string_lossy().to_string(),
+	);
 	out = out.replace(placeholder!("assets_index_name"), params.version);
 	out = out.replace(
 		placeholder!("game_assets"),
-		get_virtual_dir_path(params.paths).to_str()?,
+		&get_virtual_dir_path(params.paths)
+			.to_string_lossy()
+			.to_string(),
 	);
 
 	out = out.replace(placeholder!("clientid"), "mcvm");

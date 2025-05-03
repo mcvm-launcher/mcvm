@@ -47,9 +47,9 @@ use super::Package;
 use crate::addon::{self, AddonLocation, AddonRequest};
 use crate::config::package::PackageConfig;
 use crate::config::package::PackageConfigSource;
-use crate::plugin::PluginManager;
 use crate::config::profile::GameModifications;
 use crate::io::paths::Paths;
+use crate::plugin::PluginManager;
 use crate::util::hash::{
 	get_hash_str_as_hex, HASH_SHA256_RESULT_LENGTH, HASH_SHA512_RESULT_LENGTH,
 };
@@ -339,7 +339,7 @@ pub fn eval_check_properties(
 	if let Some(supported_plugin_loaders) = &properties.supported_plugin_loaders {
 		if !supported_plugin_loaders
 			.iter()
-			.any(|x| x.matches(&input.constants.modifications.server_type))
+			.any(|x| x.matches(&input.constants.modifications.server_type()))
 		{
 			bail!("Package does not support this plugin loader");
 		}

@@ -243,7 +243,7 @@ async fn call_mc_api_impl(
 }
 
 /// Keypair in player certificate
-#[derive(Deserialize, Serialize, Debug, Clone)]
+#[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
 pub struct Keypair {
 	/// Private key
 	#[serde(alias = "privateKey")]

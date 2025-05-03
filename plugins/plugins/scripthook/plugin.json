@@ -1,0 +1,13 @@
+{
+	"name": "Scripthook",
+	"description": "Run commands at different parts of the instance lifecycle with no coding knowledge",
+	"protocol_version": 2,
+	"hooks": {
+		"on_instance_launch": {
+			"executable": "${PLUGIN_DIR}/mcvm_plugin_scripthook"
+		},
+		"on_instance_stop": {
+			"executable": "${PLUGIN_DIR}/mcvm_plugin_scripthook"
+		}
+	}
+}

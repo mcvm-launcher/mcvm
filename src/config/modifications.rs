@@ -18,8 +18,8 @@ pub enum ConfigModification {
 	AddProfile(ProfileID, ProfileConfig),
 	/// Adds a new instance
 	AddInstance(InstanceID, InstanceConfig),
-	/// Adds a new package to a profile
-	AddPackage(ProfileID, PackageConfigDeser),
+	/// Adds a new package to an instance
+	AddPackage(InstanceID, PackageConfigDeser),
 }
 
 /// Applies modifications to the config
@@ -38,12 +38,12 @@ pub fn apply_modifications(
 			ConfigModification::AddInstance(instance_id, instance) => {
 				config.instances.insert(instance_id, instance);
 			}
-			ConfigModification::AddPackage(profile_id, package) => {
-				let profile = config
-					.profiles
-					.get_mut(&profile_id)
-					.ok_or(anyhow!("Unknown profile '{profile_id}'"))?;
-				profile.packages.add_global_package(package);
+			ConfigModification::AddPackage(instance_id, package) => {
+				let instance = config
+					.instances
+					.get_mut(&instance_id)
+					.ok_or(anyhow!("Unknown instance '{instance_id}'"))?;
+				instance.common.packages.push(package);
 			}
 		};
 	}

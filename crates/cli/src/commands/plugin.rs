@@ -27,9 +27,9 @@ pub enum PluginSubcommand {
 	},
 	#[command(about = "Print useful information about a plugin")]
 	Info { plugin: String },
-	#[command(about = "Install a plugin from the verified list")]
+	#[command(about = "Install one or more plugins from the verified list")]
 	Install {
-		plugin: String,
+		plugins: Vec<String>,
 		/// The version of the plugin to install
 		#[arg(short, long)]
 		version: Option<String>,
@@ -44,7 +44,7 @@ pub async fn run(command: PluginSubcommand, data: &mut CmdData<'_>) -> anyhow::R
 	match command {
 		PluginSubcommand::List { raw, loaded } => list(data, raw, loaded).await,
 		PluginSubcommand::Info { plugin } => info(data, plugin).await,
-		PluginSubcommand::Install { plugin, version } => install(data, plugin, version).await,
+		PluginSubcommand::Install { plugins, version } => install(data, plugins, version).await,
 		PluginSubcommand::Uninstall { plugin } => uninstall(data, plugin).await,
 		PluginSubcommand::Browse => browse(data).await,
 	}
@@ -115,38 +115,49 @@ async fn info(data: &mut CmdData<'_>, plugin: String) -> anyhow::Result<()> {
 
 async fn install(
 	data: &mut CmdData<'_>,
-	plugin: String,
+	plugins: Vec<String>,
 	version: Option<String>,
 ) -> anyhow::Result<()> {
+	if plugins.is_empty() {
+		bail!("No plugins were provided to install");
+	}
+
 	let client = Client::new();
 
 	let verified_list = get_verified_plugins(&client)
 		.await
 		.context("Failed to get verified plugin list")?;
-	let Some(plugin) = verified_list.get(&plugin) else {
-		bail!("Unknown plugin '{plugin}'");
-	};
 
-	data.output.display(
-		MessageContents::StartProcess(
-			data.output
-				.translate(TranslationKey::StartInstallingPlugin)
-				.to_string(),
-		),
-		MessageLevel::Important,
-	);
-	plugin
-		.install(version.as_deref(), &data.paths, &client)
-		.await
-		.context("Failed to install plugin")?;
-	data.output.display(
-		MessageContents::Success(
-			data.output
-				.translate(TranslationKey::FinishInstallingPlugin)
-				.to_string(),
-		),
-		MessageLevel::Important,
-	);
+	if plugins.len() > 1 && version.is_some() {
+		bail!("Cannot specify a version for multiple plugins");
+	}
+
+	for plugin in plugins {
+		let Some(plugin) = verified_list.get(&plugin) else {
+			bail!("Unknown plugin '{plugin}'");
+		};
+
+		data.output.display(
+			MessageContents::StartProcess(
+				data.output
+					.translate(TranslationKey::StartInstallingPlugin)
+					.to_string(),
+			),
+			MessageLevel::Important,
+		);
+		plugin
+			.install(version.as_deref(), &data.paths, &client)
+			.await
+			.context("Failed to install plugin")?;
+		data.output.display(
+			MessageContents::Success(
+				data.output
+					.translate(TranslationKey::FinishInstallingPlugin)
+					.to_string(),
+			),
+			MessageLevel::Important,
+		);
+	}
 
 	Ok(())
 }

@@ -46,8 +46,6 @@ define_translations! {
 	PackageSupportHeader, "Header for packages to consider supporting", "Packages to consider supporting";
 	StartUpdatingPackages, "When starting to update packages on a profile", "Updating packages";
 	FinishUpdatingPackages, "When finishing updating packages on a profile", "All packages installed";
-	StartUpdatingProfileVersion, "When starting to update a profile's version", "Updating profile version";
-	FinishUpdatingProfileVersion, "When finishing updating a profile's version", "Profile version updated";
 	StartUpdatingProxy, "When starting to update a proxy", "Checking for proxy updates";
 	FinishUpdatingProxy, "When finishing updating a proxy", "Proxy updated";
 	StartRunningCommands, "When starting to run package commands", "Running commands";
@@ -86,8 +84,8 @@ define_translations! {
 	DownloadingGraalVM, "When starting to download GraalVM", "Downloading GraalVM";
 	DownloadingZulu, "When starting to download Zulu", "Downloading Azul Zulu JRE version %version";
 	DownloadingAdoptium, "When starting to download Adoptium", "Downloading Adoptium Temurin JRE version %version";
-	StartUpdatingClient, "When starting to update a client", "Updating client '%id'";
-	StartUpdatingServer, "When starting to update a server", "Updating server '%id'";
+	StartUpdatingClient, "When starting to update a client", "Updating client data";
+	StartUpdatingServer, "When starting to update a server", "Updating server data";
 	PasskeyAccepted, "When finishing decrypting with a passkey", "Passkey accepted";
 	TransferFeatureUnsupportedByFormat, "When an instance transfer feature is unsupported by the format", "Transferring %feat is not supported by the format";
 	TransferFeatureUnsupportedByPlugin, "When an instance transfer feature is unsupported by the plugin", "Transferring %feat is not supported by the plugin yet";
@@ -103,6 +101,15 @@ define_translations! {
 	StartImporting, "When starting to import an instance", "Importing instance '%instance' in format '%format' using plugin '%plugin'";
 	ImportPluginNoResult, "When the plugin used for instance import doesn't return anything", "Import plugin did not return a result";
 	FinishImporting, "When finishing importing an instance", "Import finished";
+	PluginNotFound, "When a plugin cannot be found", "Could not find files for plugin %plugin";
+	PluginDependencyMissing, "When a plugin dependency is missing", "Dependency %dependency is missing for plugin %plugin";
+	PluginForNewerVersion, "When a plugin is made for a newer version of MCVM", "Plugin %plugin is made for a newer version of MCVM";
+	StartAuthenticating, "When starting authentication", "Authenticating";
+	AssetFailed, "When a single asset fails to download", "Asset failed to download:\n%error";
+	AssetsFailed, "When one or more assets fail to download", "%num assets failed to download. Minecraft may not load properly.";
+	StartUpdatingInstanceVersion, "When starting to update an instance version", "Updating instance from %version1 to %version2";
+	StartUpdatingInstanceGameModification, "When starting to change an instance game modification", "Removing current game modification from the instance";
+	FinishUpdatingInstanceVersion, "When finishing updating an instance version", "Finished update";
 }
 
 /// Replaces placeholders in a translated key

@@ -1,6 +1,6 @@
 [package]
 name = "mcvm_net"
-version = "0.2.0"
+version = "0.3.0"
 description = "Various network APIs for MCVM"
 keywords = ["minecraft", "launcher", "game", "mc", "api"]
 categories.workspace = true

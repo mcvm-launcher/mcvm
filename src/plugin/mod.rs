@@ -6,12 +6,15 @@ use std::sync::{Arc, MutexGuard};
 
 use crate::config::plugin::{PluginConfig, PluginsConfig};
 use crate::io::paths::Paths;
-use anyhow::{anyhow, bail, Context};
+use anyhow::{anyhow, Context};
 use mcvm_core::io::{json_from_file, json_to_file_pretty};
-use mcvm_plugin::hooks::{Hook, HookHandle};
+use mcvm_plugin::hook_call::HookHandle;
+use mcvm_plugin::hooks::Hook;
 use mcvm_plugin::plugin::{Plugin, PluginManifest};
 use mcvm_plugin::CorePluginManager;
 use mcvm_shared::output::MCVMOutput;
+use mcvm_shared::output::{MessageContents, MessageLevel};
+use mcvm_shared::translate;
 use std::sync::Mutex;
 
 /// Manager for plugin configs and the actual loaded plugin manager
@@ -52,15 +55,17 @@ impl PluginManager {
 		let mut out = Self::new();
 
 		for plugin in config.plugins {
-			let plugin = plugin.to_config();
-
-			if config.disabled.contains(&plugin.id) {
-				continue;
-			}
+			let config = config.config.get(&plugin).cloned();
+			let plugin = PluginConfig {
+				id: plugin,
+				custom_config: config,
+			};
 
 			out.load_plugin(plugin, paths, o)
 				.context("Failed to load plugin")?;
 		}
+
+		out.check_dependencies(o);
 
 		Ok(out)
 	}
@@ -105,14 +110,34 @@ impl PluginManager {
 	) -> anyhow::Result<()> {
 		let custom_config = plugin.custom_config.clone();
 		let id = plugin.id.clone();
+
 		let mut inner = self.inner.lock().map_err(|x| anyhow!("{x}"))?;
 		inner.configs.push(plugin);
+
 		let mut plugin = Plugin::new(id, manifest);
 		if let Some(custom_config) = custom_config {
 			plugin.set_custom_config(custom_config)?;
 		}
 		if let Some(plugin_dir) = plugin_dir {
 			plugin.set_working_dir(plugin_dir.to_owned());
+		}
+
+		if let Some(plugin_mcvm_version) = &plugin.get_manifest().mcvm_version {
+			if let (Some(mcvm_version), Some(plugin_mcvm_version)) = (
+				version_compare::Version::from(crate::VERSION),
+				version_compare::Version::from(&plugin_mcvm_version),
+			) {
+				if plugin_mcvm_version > mcvm_version {
+					o.display(
+						MessageContents::Warning(translate!(
+							o,
+							PluginForNewerVersion,
+							"plugin" = plugin.get_id()
+						)),
+						MessageLevel::Important,
+					);
+				}
+			}
 		}
 
 		inner.manager.add_plugin(plugin, &paths.core, o)?;
@@ -136,7 +161,12 @@ impl PluginManager {
 			(dir.join("plugin.json"), Some(dir))
 		};
 		if !path.exists() {
-			bail!("Could not find plugin '{}'", &plugin.id);
+			o.display(
+				MessageContents::Error(translate!(o, PluginNotFound, "plugin" = &plugin.id)),
+				MessageLevel::Important,
+			);
+
+			return Ok(());
 		}
 		let manifest = json_from_file(path).context("Failed to read plugin manifest from file")?;
 
@@ -204,11 +234,19 @@ impl PluginManager {
 		Ok(())
 	}
 
+	/// Enabled a plugin
+	pub fn enable_plugin(plugin: &str, paths: &Paths) -> anyhow::Result<()> {
+		let config_path = Self::get_config_path(paths);
+		let mut config = Self::open_config(paths).context("Failed to open plugin configuration")?;
+		config.plugins.insert(plugin.to_string());
+		json_to_file_pretty(config_path, &config).context("Failed to write to config file")
+	}
+
 	/// Disables a plugin
 	pub fn disable_plugin(plugin: &str, paths: &Paths) -> anyhow::Result<()> {
 		let config_path = Self::get_config_path(paths);
 		let mut config = Self::open_config(paths).context("Failed to open plugin configuration")?;
-		config.disabled.insert(plugin.to_string());
+		config.plugins.remove(plugin);
 		json_to_file_pretty(config_path, &config).context("Failed to write to config file")
 	}
 
@@ -237,6 +275,38 @@ impl PluginManager {
 		inner
 			.manager
 			.call_hook_on_plugin(hook, plugin_id, arg, &paths.core, o)
+	}
+
+	/// Checks plugins to make sure that their dependencies are installed, outputting a warning if any are not
+	pub fn check_dependencies(&self, o: &mut impl MCVMOutput) {
+		let inner = self.inner.lock().expect("Failed to lock mutex");
+		let ids: Vec<_> = inner
+			.manager
+			.iter_plugins()
+			.map(|x| x.get_id().clone())
+			.collect();
+
+		for plugin in inner.manager.iter_plugins() {
+			for dependency in &plugin.get_manifest().dependencies {
+				if !ids.contains(dependency) {
+					o.display(
+						MessageContents::Warning(translate!(
+							o,
+							PluginDependencyMissing,
+							"dependency" = dependency,
+							"plugin" = plugin.get_id()
+						)),
+						MessageLevel::Important,
+					);
+				}
+			}
+		}
+	}
+
+	/// Checks whether a plugin is present in the manager
+	pub fn has_plugin(&self, plugin: &str) -> bool {
+		let inner = self.inner.lock().expect("Failed to lock mutex");
+		inner.manager.has_plugin(plugin)
 	}
 
 	/// Get a lock for the inner mutex

@@ -1,0 +1,10 @@
+{
+	"name": "Resource Pack Host",
+	"description": "Host a resource pack locally for servers",
+	"protocol_version": 2,
+	"hooks": {
+		"on_instance_setup": {
+			"executable": "${PLUGIN_DIR}/mcvm_plugin_resource_pack_host"
+		}
+	}
+}

@@ -13,7 +13,7 @@ use mcvm_shared::util::utc_timestamp;
 use serde::{Deserialize, Serialize};
 
 fn main() -> anyhow::Result<()> {
-	let mut plugin = CustomPlugin::new("stats")?;
+	let mut plugin = CustomPlugin::from_manifest_file("stats", include_str!("plugin.json"))?;
 	plugin.subcommand(|ctx, args| {
 		let Some(subcommand) = args.first() else {
 			return Ok(());
@@ -118,7 +118,11 @@ fn print_stats(ctx: HookContext<'_, Subcommand>) -> anyhow::Result<()> {
 		instance_id: String,
 	}
 
-	let total: u64 = stats.instances.values().map(|x| x.playtime).sum();
+	let total: u64 = stats
+		.instances
+		.values()
+		.map(|x| x.calculate_playtime())
+		.sum();
 	let total = format_time(total);
 	cprintln!("<s>Total playtime: <m!>{total}");
 
@@ -212,5 +216,10 @@ impl InstanceStats {
 #[serde(default)]
 struct Config {
 	/// Whether to track stats while the instance is running
+	#[serde(default = "default_live_tracking")]
 	live_tracking: bool,
+}
+
+fn default_live_tracking() -> bool {
+	true
 }

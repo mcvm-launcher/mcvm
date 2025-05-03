@@ -71,8 +71,8 @@ impl Instance {
 			game_dir: self.dirs.get().game_dir.to_string_lossy().to_string(),
 			result_path: result_path.to_string_lossy().to_string(),
 			minecraft_version: Some(self.config.version.clone().to_serialized()),
-			client_type: Some(self.config.modifications.client_type.clone()),
-			server_type: Some(self.config.modifications.server_type.clone()),
+			client_type: Some(self.config.modifications.client_type().clone()),
+			server_type: Some(self.config.modifications.server_type().clone()),
 		};
 		let result = plugins
 			.call_hook_on_plugin(ExportInstance, &format.plugin, &arg, paths, o)

@@ -7,7 +7,7 @@ use docs::Docs;
 use mcvm_plugin::api::CustomPlugin;
 
 fn main() -> anyhow::Result<()> {
-	let mut plugin = CustomPlugin::new("docs")?;
+	let mut plugin = CustomPlugin::from_manifest_file("docs", include_str!("plugin.json"))?;
 	plugin.subcommand(|_, args| {
 		let Some(subcommand) = args.first() else {
 			return Ok(());

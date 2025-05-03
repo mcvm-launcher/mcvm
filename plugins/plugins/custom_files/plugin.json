@@ -1,0 +1,10 @@
+{
+	"name": "Custom Files",
+	"description": "Share custom files across multiple instances",
+	"protocol_version": 2,
+	"hooks": {
+		"on_instance_setup": {
+			"executable": "${PLUGIN_DIR}/mcvm_plugin_custom_files"
+		}
+	}
+}

@@ -55,6 +55,8 @@ impl Config {
 pub struct GroupConfig {
 	/// When the backup should be automatically created
 	pub on: Option<BackupAutoHook>,
+	/// Interval for the interval auto hook
+	pub interval: Option<String>,
 	/// backup settings for this group
 	#[serde(flatten)]
 	pub common: CommonConfig,
@@ -80,6 +82,8 @@ pub enum BackupAutoHook {
 	Launch,
 	/// Create a backup whenever the instance is stopped
 	Stop,
+	/// Create a backup periodically
+	Interval,
 }
 
 /// Index for the backups of an instance

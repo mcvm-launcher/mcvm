@@ -9,7 +9,14 @@ use mcvm_core::Paths;
 use mcvm_shared::output::MCVMOutput;
 use serde::{Deserialize, Deserializer};
 
-use crate::hooks::{Hook, HookHandle};
+use crate::hook_call::HookCallArg;
+use crate::hooks::Hook;
+use crate::HookHandle;
+
+/// The newest protocol version for plugin communication
+pub const NEWEST_PROTOCOL_VERSION: u16 = 2;
+/// The default protocol version used for compatability
+pub const DEFAULT_PROTOCOL_VERSION: u16 = 1;
 
 /// A plugin
 #[derive(Debug)]
@@ -55,27 +62,33 @@ impl Plugin {
 		arg: &H::Arg,
 		paths: &Paths,
 		mcvm_version: Option<&str>,
+		plugin_list: &[String],
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Option<HookHandle<H>>> {
 		let Some(handler) = self.manifest.hooks.get(hook.get_name()) else {
 			return Ok(None);
 		};
 		match handler {
-			HookHandler::Execute { executable, args } => hook
-				.call(
-					executable,
+			HookHandler::Execute { executable, args } => {
+				let arg = HookCallArg {
+					cmd: &executable,
 					arg,
-					args,
-					self.working_dir.as_deref(),
-					!self.manifest.raw_transfer,
-					self.custom_config.clone(),
-					self.state.clone(),
+					additional_args: args,
+					working_dir: self.working_dir.as_deref(),
+					use_base64: !self.manifest.raw_transfer,
+					custom_config: self.custom_config.clone(),
+					state: self.state.clone(),
 					paths,
 					mcvm_version,
-					&self.id,
-					o,
-				)
-				.map(Some),
+					plugin_id: &self.id,
+					plugin_list,
+					protocol_version: self
+						.manifest
+						.protocol_version
+						.unwrap_or(DEFAULT_PROTOCOL_VERSION),
+				};
+				hook.call(arg, o).map(Some)
+			}
 			HookHandler::Constant { constant } => Ok(Some(HookHandle::constant(
 				serde_json::from_value(constant.clone())?,
 				self.id.clone(),
@@ -105,7 +118,7 @@ impl Plugin {
 	}
 }
 
-/// Configuration for a plugin
+/// The manifest for a plugin that describes how it works
 #[derive(Deserialize, Debug, Default)]
 #[serde(default)]
 pub struct PluginManifest {
@@ -119,6 +132,8 @@ pub struct PluginManifest {
 	pub hooks: HashMap<String, HookHandler>,
 	/// The subcommands the plugin provides
 	pub subcommands: HashMap<String, String>,
+	/// Plugins that this plugin depends on
+	pub dependencies: Vec<String>,
 	/// The protocol version of the plugin
 	pub protocol_version: Option<u16>,
 	/// Whether to disable base64 encoding in the protocol
