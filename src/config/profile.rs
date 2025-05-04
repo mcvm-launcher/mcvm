@@ -309,14 +309,7 @@ pub fn can_install_client_type(client_type: &ClientType) -> bool {
 
 /// Check if a server type can be installed by MCVM
 pub fn can_install_server_type(server_type: &ServerType) -> bool {
-	matches!(
-		server_type,
-		ServerType::None
-			| ServerType::Vanilla
-			| ServerType::Paper
-			| ServerType::Folia
-			| ServerType::Sponge
-	)
+	matches!(server_type, ServerType::None | ServerType::Vanilla)
 }
 
 /// Check if a proxy can be installed by MCVM
