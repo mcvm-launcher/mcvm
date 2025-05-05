@@ -2587,6 +2587,7 @@ dependencies = [
  "directories",
  "hex",
  "itertools",
+ "mcvm_config",
  "mcvm_core",
  "mcvm_net",
  "mcvm_parse",
@@ -2646,6 +2647,20 @@ dependencies = [
  "termimad",
  "tokio",
  "which",
+]
+
+[[package]]
+name = "mcvm_config"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "cfg-match",
+ "mcvm_core",
+ "mcvm_pkg",
+ "mcvm_shared",
+ "schemars",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]

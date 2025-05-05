@@ -9,7 +9,8 @@ use anyhow::{bail, Context};
 use clap::{Parser, Subcommand};
 use color_print::{cformat, cprintln};
 
-use mcvm::config::{Config, ConfigDeser};
+use mcvm::config::Config;
+use mcvm::config_crate::ConfigDeser;
 use mcvm::io::paths::Paths;
 use mcvm::plugin::PluginManager;
 use mcvm::plugin_crate::hooks::{self, AddTranslations};

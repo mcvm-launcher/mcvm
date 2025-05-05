@@ -4,7 +4,7 @@ use std::{collections::HashMap, sync::Arc};
 use super::CmdData;
 use itertools::Itertools;
 use mcvm::config::modifications::{apply_modifications_and_write, ConfigModification};
-use mcvm::config::package::PackageConfigDeser;
+use mcvm::config_crate::package::PackageConfigDeser;
 use mcvm::parse::lex::Token;
 use mcvm::pkg_crate::metadata::PackageMetadata;
 use mcvm::pkg_crate::properties::PackageProperties;

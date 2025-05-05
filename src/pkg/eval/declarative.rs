@@ -331,6 +331,7 @@ fn get_plugin_loader_matches(plugin_loader: &PluginLoaderMatch) -> u16 {
 
 #[cfg(test)]
 mod tests {
+	use mcvm_config::instance::GameModifications;
 	use mcvm_pkg::declarative::deserialize_declarative_package;
 	use mcvm_shared::lang::Language;
 	use mcvm_shared::modifications::{ClientType, Modloader, ServerType};
@@ -338,7 +339,6 @@ mod tests {
 	use mcvm_shared::util::DeserListOrSingle;
 	use mcvm_shared::Side;
 
-	use crate::config::profile::GameModifications;
 	use crate::pkg::eval::{EvalConstants, EvalParameters, RequiredPackage};
 
 	use super::*;

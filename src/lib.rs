@@ -17,6 +17,7 @@
 //! update_profiles function will no longer update packages at all.
 //! - `schema`: Enable generation of JSON schemas using the `schemars` crate
 
+pub use mcvm_config as config_crate;
 pub use mcvm_core as core;
 pub use mcvm_net as net_crate;
 pub use mcvm_parse as parse;

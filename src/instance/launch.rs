@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 
 use anyhow::Context;
+use mcvm_config::instance::{QuickPlay, WrapperCommand};
 use mcvm_core::auth_crate::mc::ClientId;
 use mcvm_core::io::java::args::MemoryNum;
 use mcvm_core::io::java::install::JavaInstallationKind;
@@ -13,13 +14,9 @@ use mcvm_shared::id::InstanceID;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::{translate, UpdateDepth};
 use reqwest::Client;
-#[cfg(feature = "schema")]
-use schemars::JsonSchema;
-use serde::{Deserialize, Serialize};
 
 use super::tracking::RunningInstanceRegistry;
 use super::update::manager::UpdateManager;
-use crate::config::instance::QuickPlay;
 use crate::io::lock::Lockfile;
 use crate::io::paths::Paths;
 use crate::plugin::PluginManager;
@@ -153,17 +150,6 @@ pub struct LaunchOptions {
 	pub quick_play: QuickPlay,
 	/// Whether or not to use the Log4J configuration
 	pub use_log4j_config: bool,
-}
-
-/// A wrapper command
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
-#[cfg_attr(feature = "schema", derive(JsonSchema))]
-pub struct WrapperCommand {
-	/// The command to run
-	pub cmd: String,
-	/// The command's arguments
-	#[serde(default)]
-	pub args: Vec<String>,
 }
 
 /// A handle for an instance

@@ -9,6 +9,7 @@ use std::ops::DerefMut;
 use std::path::PathBuf;
 
 use anyhow::{bail, Context};
+use mcvm_config::instance::QuickPlay;
 use mcvm_core::instance::WindowResolution;
 use mcvm_core::io::java::classpath::Classpath;
 use mcvm_core::io::json_to_file;
@@ -23,7 +24,6 @@ use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::translate;
 use mcvm_shared::Side;
 
-use crate::config::instance::QuickPlay;
 use crate::io::lock::Lockfile;
 use crate::io::paths::Paths;
 use crate::plugin::PluginManager;

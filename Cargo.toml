@@ -37,6 +37,7 @@ path = "src/lib.rs"
 members = [
 	"crates/auth",
 	"crates/cli",
+	"crates/config",
 	"crates/core",
 	"crates/mods",
 	"crates/net",
@@ -57,9 +58,10 @@ builder = []
 disable_profile_update_packages = []
 schema = [
 	"dep:schemars",
+	"mcvm_config/schema",
+	"mcvm_core/schema",
 	"mcvm_pkg/schema",
 	"mcvm_shared/schema",
-	"mcvm_core/schema",
 ]
 
 [workspace.dependencies]
@@ -82,6 +84,7 @@ libflate = "2.1.0"
 mcvm = { path = ".", version = "0.25.0" }
 mcvm_auth = { path = "crates/auth", version = "0.7.0" }
 mcvm_core = { path = "crates/core", version = "0.9.0" }
+mcvm_config = { path = "crates/config", version = "0.1.0" }
 mcvm_mods = { path = "crates/mods", version = "0.9.0" }
 mcvm_net = { path = "crates/net", version = "0.3.0" }
 mcvm_options = { path = "crates/options", version = "0.8.0" }
@@ -133,6 +136,7 @@ serde = { workspace = true }
 serde_json = { workspace = true }
 simd-json = { workspace = true }
 sha2 = { workspace = true }
+mcvm_config = { workspace = true }
 mcvm_core = { workspace = true }
 mcvm_net = { workspace = true }
 mcvm_parse = { workspace = true }

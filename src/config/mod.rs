@@ -13,28 +13,21 @@ pub mod plugin;
 pub mod preferences;
 /// Configuring profiles
 pub mod profile;
-/// Configuring users
-pub mod user;
 
-use self::instance::{read_instance_config, InstanceConfig};
-use self::preferences::PrefDeser;
-use self::profile::ProfileConfig;
-use self::user::UserConfig;
+use self::instance::read_instance_config;
 use crate::plugin::PluginManager;
 use anyhow::{bail, Context};
+use mcvm_config::ConfigDeser;
 use mcvm_core::auth_crate::mc::ClientId;
 use mcvm_core::io::{json_from_file, json_to_file_pretty};
 use mcvm_core::user::UserManager;
 use mcvm_plugin::hooks::{AddSupportedGameModifications, SupportedGameModifications};
-use mcvm_shared::id::{InstanceID, ProfileID};
+use mcvm_shared::id::InstanceID;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::translate;
 use mcvm_shared::util::is_valid_identifier;
 use preferences::ConfigPreferences;
 use profile::consolidate_profile_configs;
-#[cfg(feature = "schema")]
-use schemars::JsonSchema;
-use serde::{Deserialize, Serialize};
 
 use super::instance::Instance;
 use crate::io::paths::Paths;
@@ -61,20 +54,6 @@ pub struct Config {
 	pub plugins: PluginManager,
 	/// Global user preferences
 	pub prefs: ConfigPreferences,
-}
-
-/// Deserialization struct for user configuration
-#[derive(Deserialize, Serialize, Default)]
-#[cfg_attr(feature = "schema", derive(JsonSchema))]
-#[serde(default)]
-pub struct ConfigDeser {
-	users: HashMap<String, UserConfig>,
-	default_user: Option<String>,
-	instances: HashMap<InstanceID, InstanceConfig>,
-	instance_groups: HashMap<Arc<str>, Vec<InstanceID>>,
-	profiles: HashMap<ProfileID, ProfileConfig>,
-	global_profile: Option<ProfileConfig>,
-	preferences: PrefDeser,
 }
 
 impl Config {
@@ -190,10 +169,11 @@ impl Config {
 			.with_context(|| format!("Failed to read config for instance {instance_id}"))?;
 
 			if show_warnings
-				&& !profile::can_install_client_type(&instance.config.modifications.client_type())
-				&& !supported_game_modifications
-					.client_types
-					.contains(&instance.config.modifications.client_type())
+				&& !mcvm_config::instance::can_install_client_type(
+					&instance.config.modifications.client_type(),
+				) && !supported_game_modifications
+				.client_types
+				.contains(&instance.config.modifications.client_type())
 			{
 				o.display(
 					MessageContents::Warning(translate!(
@@ -206,10 +186,11 @@ impl Config {
 			}
 
 			if show_warnings
-				&& !profile::can_install_server_type(&instance.config.modifications.server_type())
-				&& !supported_game_modifications
-					.server_types
-					.contains(&instance.config.modifications.server_type())
+				&& !mcvm_config::instance::can_install_server_type(
+					&instance.config.modifications.server_type(),
+				) && !supported_game_modifications
+				.server_types
+				.contains(&instance.config.modifications.server_type())
 			{
 				o.display(
 					MessageContents::Warning(translate!(

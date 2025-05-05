@@ -1,4 +1,5 @@
 use anyhow::{anyhow, Context};
+use mcvm_config::preferences::CachingStrategy;
 use mcvm_core::net::download;
 use mcvm_pkg::metadata::PackageMetadata;
 use mcvm_pkg::parse_and_validate;
@@ -10,9 +11,6 @@ use mcvm_pkg::PkgRequestSource;
 use mcvm_shared::output::MCVMOutput;
 use mcvm_shared::pkg::ArcPkgReq;
 use reqwest::Client;
-#[cfg(feature = "schema")]
-use schemars::JsonSchema;
-use serde::{Deserialize, Serialize};
 use tokio::sync::Semaphore;
 use tokio::task::JoinSet;
 
@@ -375,18 +373,4 @@ impl PkgRegistry {
 	pub fn get_repos(&self) -> &[PkgRepo] {
 		&self.repos
 	}
-}
-
-/// What strategy to use for the local caching of package scripts
-#[derive(Debug, Clone, Deserialize, Serialize, Default)]
-#[cfg_attr(feature = "schema", derive(JsonSchema))]
-#[serde(rename_all = "snake_case")]
-pub enum CachingStrategy {
-	/// Don't cache any packages locally. Fetch them from the repository every time
-	None,
-	/// Only cache packages when they are requested
-	Lazy,
-	/// Cache all packages whenever syncing the repositories
-	#[default]
-	All,
 }

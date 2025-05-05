@@ -1,14 +1,14 @@
 use anyhow::{anyhow, Context};
+use mcvm_config::instance::InstanceConfig;
+use mcvm_config::profile::ProfileConfig;
+use mcvm_config::ConfigDeser;
+use mcvm_config::{package::PackageConfigDeser, user::UserConfig};
 use mcvm_core::io::json_to_file_pretty;
 
 use crate::io::paths::Paths;
 use mcvm_shared::id::{InstanceID, ProfileID};
 
-use super::instance::InstanceConfig;
-use super::package::PackageConfigDeser;
-use super::profile::ProfileConfig;
-use super::user::UserConfig;
-use super::{Config, ConfigDeser};
+use super::Config;
 
 /// A modification operation that can be applied to the config
 pub enum ConfigModification {
@@ -65,8 +65,9 @@ pub fn apply_modifications_and_write(
 
 #[cfg(test)]
 mod tests {
+	use mcvm_config::user::UserVariant;
+
 	use super::*;
-	use crate::config::user::UserVariant;
 
 	#[test]
 	fn test_user_add_modification() {

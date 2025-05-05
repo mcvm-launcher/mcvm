@@ -1,7 +1,7 @@
 use std::{fs::File, io::BufWriter, path::PathBuf};
 
 use clap::Parser;
-use mcvm::config::ConfigDeser;
+use mcvm::config_crate::ConfigDeser;
 use mcvm::pkg_crate::{declarative::DeclarativePackage, repo::RepoIndex};
 use mcvm_options::Options;
 

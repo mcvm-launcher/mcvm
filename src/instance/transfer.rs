@@ -1,6 +1,7 @@
 use std::{collections::HashMap, path::Path};
 
 use anyhow::{bail, Context};
+use mcvm_config::instance::InstanceConfig;
 use mcvm_plugin::hooks::{
 	AddInstanceTransferFormats, ExportInstance, ExportInstanceArg, ImportInstance,
 	ImportInstanceArg, InstanceTransferFeatureSupport, InstanceTransferFormat,
@@ -12,7 +13,6 @@ use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::translate;
 
 use crate::config::builder::InstanceBuilder;
-use crate::config::instance::InstanceConfig;
 use crate::io::lock::Lockfile;
 use crate::{io::paths::Paths, plugin::PluginManager};
 

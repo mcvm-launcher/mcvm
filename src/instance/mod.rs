@@ -13,20 +13,17 @@ pub mod transfer;
 /// Updating an instance
 pub mod update;
 
+use mcvm_config::instance::{ClientWindowConfig, GameModifications, InstanceConfig};
 use mcvm_core::util::versions::MinecraftVersion;
 use mcvm_shared::later::Later;
 use mcvm_shared::pkg::PackageStability;
 use mcvm_shared::versions::VersionPattern;
 use mcvm_shared::Side;
 
-use crate::config::instance::InstanceConfig;
-
 use self::launch::LaunchOptions;
 use self::setup::{InstanceDirs, ModificationData};
 
-use super::config::instance::ClientWindowConfig;
 use super::config::package::PackageConfig;
-use super::config::profile::GameModifications;
 use mcvm_shared::id::InstanceID;
 
 /// An instance of the game on a profile

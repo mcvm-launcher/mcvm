@@ -2,6 +2,9 @@ use std::collections::HashMap;
 use std::sync::Arc;
 
 use anyhow::bail;
+use mcvm_config::instance::{ClientWindowConfig, InstanceConfig, LaunchConfig};
+use mcvm_config::package::{EvalPermissions, FullPackageConfig, PackageConfigDeser};
+use mcvm_config::user::{UserConfig, UserVariant};
 use mcvm_core::auth_crate::mc::ClientId;
 use mcvm_core::user::{User, UserManager};
 use mcvm_core::util::versions::MinecraftVersionDeser;
@@ -14,16 +17,13 @@ use mcvm_shared::Side;
 
 use crate::instance::Instance;
 use crate::io::paths::Paths;
-use crate::pkg::eval::EvalPermissions;
 use crate::pkg::reg::PkgRegistry;
 use crate::pkg::repo::PkgRepo;
 use crate::plugin::PluginManager;
 
-use super::instance::{read_instance_config, ClientWindowConfig, InstanceConfig, LaunchConfig};
-use super::package::{FullPackageConfig, PackageConfigDeser};
+use super::instance::read_instance_config;
 use super::plugin::PluginConfig;
 use super::preferences::ConfigPreferences;
-use super::user::{UserConfig, UserVariant};
 use super::Config;
 
 /// Simple builder for config

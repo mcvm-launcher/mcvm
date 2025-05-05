@@ -8,6 +8,8 @@ pub mod script;
 use anyhow::bail;
 use anyhow::Context;
 use async_trait::async_trait;
+use mcvm_config::instance::GameModifications;
+use mcvm_config::package::EvalPermissions;
 use mcvm_parse::routine::INSTALL_ROUTINE;
 use mcvm_parse::vars::HashMapVariableStore;
 use mcvm_pkg::properties::PackageProperties;
@@ -33,9 +35,6 @@ use mcvm_shared::pkg::PackageID;
 use mcvm_shared::util::is_valid_identifier;
 use mcvm_shared::versions::VersionPattern;
 use reqwest::Client;
-#[cfg(feature = "schema")]
-use schemars::JsonSchema;
-use serde::{Deserialize, Serialize};
 
 use self::conditions::check_arch_condition;
 use self::conditions::check_os_condition;
@@ -47,7 +46,6 @@ use super::Package;
 use crate::addon::{self, AddonLocation, AddonRequest};
 use crate::config::package::PackageConfig;
 use crate::config::package::PackageConfigSource;
-use crate::config::profile::GameModifications;
 use crate::io::paths::Paths;
 use crate::plugin::PluginManager;
 use crate::util::hash::{
@@ -62,20 +60,6 @@ use std::path::PathBuf;
 const MAX_NOTICE_INSTRUCTIONS: usize = 10;
 /// Max characters per notice instruction
 const MAX_NOTICE_CHARACTERS: usize = 128;
-
-/// Permissions level for an evaluation
-#[derive(Deserialize, Serialize, Debug, Copy, Clone, Default)]
-#[cfg_attr(feature = "schema", derive(JsonSchema))]
-#[serde(rename_all = "snake_case")]
-pub enum EvalPermissions {
-	/// Restricts certain operations that would normally be allowed
-	Restricted,
-	/// Standard permissions. Allow all common operations
-	#[default]
-	Standard,
-	/// Allow execution of things that could compromise security
-	Elevated,
-}
 
 /// Context / purpose for when we are evaluating
 pub enum Routine {
