@@ -89,6 +89,7 @@ impl CommonInstanceConfig {
 		self.modloader = other.modloader.or(self.modloader.clone());
 		self.client_type = other.client_type.or(self.client_type.clone());
 		self.server_type = other.server_type.or(self.server_type.clone());
+		self.game_modification_version = other.game_modification_version.or(self.game_modification_version.clone());
 		self.package_stability = other.package_stability.or(self.package_stability);
 		self.launch.merge(other.launch);
 		self.datapack_folder = other.datapack_folder.or(self.datapack_folder.clone());
@@ -326,6 +327,7 @@ pub fn merge_instance_configs(preset: &InstanceConfig, config: InstanceConfig) -
 	let mut out = preset.clone();
 	out.common.merge(config.common);
 	out.name = config.name.or(out.name);
+	out.icon = config.icon.or(out.icon);
 	out.side = config.side.or(out.side);
 	out.window.merge(config.window);
 
