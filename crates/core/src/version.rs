@@ -16,7 +16,7 @@ use crate::net::game_files::client_meta::{self, ClientMeta};
 use crate::net::game_files::version_manifest::{self, VersionEntry, VersionManifestAndList};
 use crate::net::game_files::{assets, libraries};
 use crate::user::UserManager;
-use crate::util::versions::VersionName;
+use crate::util::versions::{MinecraftVersion, VersionName};
 
 /// An installed version of the game. This cannot be constructed directly,
 /// only from the MCVMCore struct by using the `get_version()` method
@@ -164,7 +164,9 @@ impl VersionRegistry {
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<&mut InstalledVersionInner> {
 		// Ensure the version manifest first
+		let requested_version = MinecraftVersion::Version(version.clone());
 		let vm_params = LoadVersionManifestParameters {
+			requested_version: Some(&requested_version),
 			paths: params.paths,
 			req_client: params.req_client,
 			update_manager: params.update_manager,
@@ -197,6 +199,7 @@ impl VersionRegistry {
 	) -> anyhow::Result<&VersionManifestAndList> {
 		if self.version_manifest.is_empty() {
 			let mut manifest = version_manifest::get_with_output(
+				params.requested_version,
 				params.paths,
 				params.update_manager,
 				params.req_client,
@@ -214,11 +217,6 @@ impl VersionRegistry {
 			self.version_manifest.fill(Arc::new(combo));
 		}
 		Ok(self.version_manifest.get())
-	}
-
-	/// Get the version manifest, panicking if it does not exist
-	pub fn get_version_manifest(&self) -> &Arc<VersionManifestAndList> {
-		self.version_manifest.get()
 	}
 
 	/// Add additional versions to the manifest. Must be called before the manifest is obtained.
@@ -250,6 +248,7 @@ pub(crate) struct LoadVersionParameters<'a> {
 /// Container struct for parameters for loading the version manifest
 #[derive(Clone)]
 pub(crate) struct LoadVersionManifestParameters<'a> {
+	pub requested_version: Option<&'a MinecraftVersion>,
 	pub paths: &'a Paths,
 	pub req_client: &'a reqwest::Client,
 	pub update_manager: &'a UpdateManager,

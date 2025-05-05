@@ -35,7 +35,7 @@ use mcvm_shared::output::{self, MCVMOutput};
 use mcvm_shared::versions::VersionInfo;
 use net::game_files::version_manifest::{make_version_list, VersionEntry, VersionManifestAndList};
 use user::UserManager;
-use util::versions::MinecraftVersion;
+use util::versions::{MinecraftVersion, VersionName};
 use version::{
 	InstalledVersion, LoadVersionManifestParameters, LoadVersionParameters, VersionParameters,
 	VersionRegistry,
@@ -126,9 +126,11 @@ impl MCVMCore {
 	/// Get the version manifest
 	pub async fn get_version_manifest(
 		&mut self,
+		requested_version: Option<&MinecraftVersion>,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<&VersionManifestAndList> {
 		let params = LoadVersionManifestParameters {
+			requested_version,
 			paths: &self.paths,
 			update_manager: &self.update_manager,
 			req_client: &self.req_client,
@@ -142,12 +144,11 @@ impl MCVMCore {
 		version: &MinecraftVersion,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<InstalledVersion> {
-		self.get_version_manifest(o)
+		let version_manifest = self
+			.get_version_manifest(Some(version), o)
 			.await
 			.context("Failed to ensure version manifest exists")?;
-		let version = version
-			.get_version(&self.versions.get_version_manifest().manifest)
-			.context("Version does not exist")?;
+		let version = version.get_version(&version_manifest.manifest);
 
 		let params = LoadVersionParameters {
 			paths: &self.paths,
@@ -179,7 +180,12 @@ impl MCVMCore {
 	pub async fn get_version_info(&mut self, version: String) -> anyhow::Result<VersionInfo> {
 		let mut o = output::NoOp;
 		let manifest = self
-			.get_version_manifest(&mut o)
+			.get_version_manifest(
+				Some(&MinecraftVersion::Version(VersionName::from(
+					version.clone(),
+				))),
+				&mut o,
+			)
 			.await
 			.context("Failed to get version manifest")?;
 		let list = make_version_list(&manifest.manifest);

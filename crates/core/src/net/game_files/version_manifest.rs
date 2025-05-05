@@ -8,7 +8,7 @@ use crate::io::files::{self, paths::Paths};
 use crate::io::update::UpdateManager;
 use crate::io::{json_from_file, json_to_file};
 use crate::net::download::ProgressiveDownload;
-use crate::util::versions::VersionName;
+use crate::util::versions::{MinecraftVersion, VersionName};
 
 /// JSON format for the version manifest that contains all available Minecraft versions
 #[derive(Deserialize, Serialize, Debug, Clone)]
@@ -67,12 +67,13 @@ pub struct LatestVersions {
 
 /// Get the version manifest
 pub async fn get(
+	requested_version: Option<&MinecraftVersion>,
 	paths: &Paths,
 	manager: &UpdateManager,
 	client: &Client,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<VersionManifest> {
-	let manifest = get_contents(paths, manager, client, false, o).await;
+	let manifest = get_contents(requested_version, paths, manager, client, false, o).await;
 	let manifest = match manifest {
 		Ok(manifest) => manifest,
 		Err(err) => {
@@ -88,7 +89,7 @@ pub async fn get(
 				MessageContents::StartProcess("Redownloading".into()),
 				MessageLevel::Important,
 			);
-			get_contents(paths, manager, client, true, o)
+			get_contents(requested_version, paths, manager, client, true, o)
 				.await
 				.context("Failed to download manifest contents")?
 		}
@@ -98,6 +99,7 @@ pub async fn get(
 
 /// Get the version manifest with progress output around it
 pub async fn get_with_output(
+	requested_version: Option<&MinecraftVersion>,
 	paths: &Paths,
 	manager: &UpdateManager,
 	client: &Client,
@@ -109,7 +111,7 @@ pub async fn get_with_output(
 		MessageLevel::Important,
 	);
 
-	let manifest = get(paths, manager, client, o)
+	let manifest = get(requested_version, paths, manager, client, o)
 		.await
 		.context("Failed to get version manifest")?;
 
@@ -124,6 +126,7 @@ pub async fn get_with_output(
 
 /// Obtain the version manifest contents
 async fn get_contents(
+	requested_version: Option<&MinecraftVersion>,
 	paths: &Paths,
 	manager: &UpdateManager,
 	client: &Client,
@@ -133,8 +136,21 @@ async fn get_contents(
 	let mut path = paths.internal.join("versions");
 	files::create_dir(&path)?;
 	path.push("manifest.json");
-	if manager.update_depth < UpdateDepth::Full && !force && path.exists() {
-		return json_from_file(path).context("Failed to read manifest contents from file");
+
+	if let Some(requested_version) = requested_version {
+		if !force && manager.update_depth < UpdateDepth::Force && path.exists() {
+			let contents: VersionManifest =
+				json_from_file(&path).context("Failed to read manifest contents from file")?;
+			let version = requested_version.get_version(&contents);
+			// We can avoid redownloading even on full depth if the version is already in the manifest
+			if contents
+				.versions
+				.iter()
+				.any(|x| x.id.as_str() == version.as_ref())
+			{
+				return Ok(contents);
+			}
+		}
 	}
 
 	let mut download = ProgressiveDownload::bytes(
