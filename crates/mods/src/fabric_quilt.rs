@@ -27,6 +27,16 @@ pub enum Mode {
 	Quilt,
 }
 
+impl Mode {
+	/// Convert to a lowercase string
+	pub fn to_str(&self) -> &'static str {
+		match self {
+			Self::Fabric => "fabric",
+			Self::Quilt => "quilt",
+		}
+	}
+}
+
 impl Display for Mode {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		write!(
@@ -180,10 +190,9 @@ pub async fn get_meta(
 		Mode::Fabric => format!("https://meta.fabricmc.net/v2/versions/loader/{version}"),
 		Mode::Quilt => format!("https://meta.quiltmc.org/v3/versions/loader/{version}"),
 	};
-	let mode_lowercase = mode.to_string().to_lowercase();
 	let path = internal_dir
 		.join("fabric_quilt")
-		.join(format!("meta_{mode_lowercase}_{version}.json"));
+		.join(format!("meta_{}_{version}.json", mode.to_str()));
 	files::create_leading_dirs_async(&path)
 		.await
 		.context("Failed to create parent directories for Fabric/Quilt meta")?;
