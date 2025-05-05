@@ -21,7 +21,9 @@ use mcvm_config::ConfigDeser;
 use mcvm_core::auth_crate::mc::ClientId;
 use mcvm_core::io::{json_from_file, json_to_file_pretty};
 use mcvm_core::user::UserManager;
-use mcvm_plugin::hooks::{AddSupportedGameModifications, SupportedGameModifications};
+use mcvm_plugin::hooks::{
+	AddInstances, AddInstancesArg, AddSupportedGameModifications, SupportedGameModifications,
+};
 use mcvm_shared::id::InstanceID;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::translate;
@@ -84,7 +86,7 @@ impl Config {
 
 	/// Create the Config struct from deserialized config
 	fn load_from_deser(
-		config: ConfigDeser,
+		mut config: ConfigDeser,
 		plugins: PluginManager,
 		show_warnings: bool,
 		paths: &Paths,
@@ -132,6 +134,16 @@ impl Config {
 				MessageContents::Warning(translate!(o, NoUsers)),
 				MessageLevel::Important,
 			);
+		}
+
+		// Add instances
+		let arg = AddInstancesArg {};
+		let results = plugins
+			.call_hook(AddInstances, &arg, paths, o)
+			.context("Failed to call add instances hook")?;
+		for result in results {
+			let result = result.result(o)?;
+			config.instances.extend(result);
 		}
 
 		// Consolidate profiles

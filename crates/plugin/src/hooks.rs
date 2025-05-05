@@ -1,9 +1,12 @@
+use std::collections::HashMap;
+
 use mcvm_config::instance::InstanceConfig;
 use mcvm_core::net::game_files::version_manifest::VersionEntry;
 use mcvm_core::net::minecraft::MinecraftUserProfile;
 use mcvm_core::util::versions::MinecraftVersionDeser;
 use mcvm_pkg::script_eval::AddonInstructionData;
 use mcvm_pkg::{RecommendedPackage, RequiredPackage};
+use mcvm_shared::id::InstanceID;
 use mcvm_shared::lang::translate::LanguageMap;
 use mcvm_shared::modifications::{ClientType, ServerType};
 use mcvm_shared::pkg::PackageID;
@@ -458,3 +461,17 @@ pub struct SupportedGameModifications {
 	/// Server types that this plugin adds support for
 	pub server_types: Vec<ServerType>,
 }
+
+def_hook!(
+	AddInstances,
+	"add_instances",
+	"Hook for adding new instances",
+	AddInstancesArg,
+	HashMap<InstanceID, InstanceConfig>,
+	1,
+);
+
+/// Argument for the AddInstances hook
+#[derive(Serialize, Deserialize, Default)]
+#[serde(default)]
+pub struct AddInstancesArg {}

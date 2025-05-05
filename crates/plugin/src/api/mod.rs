@@ -131,6 +131,7 @@ impl CustomPlugin {
 		"add_supported_game_modifications",
 		AddSupportedGameModifications
 	);
+	hook_interface!(add_instances, "add_instances", AddInstances);
 
 	/// Handle a hook
 	fn handle_hook<H: Hook>(

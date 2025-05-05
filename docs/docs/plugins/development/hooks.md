@@ -298,6 +298,18 @@ if you plan to install these game modifications with your plugin.
 }
 ```
 
+### `add_instances`
+Adds new instances to the config
+- Argument: None
+- Result:
+```
+[
+	InstanceConfig,
+	InstanceConfig,
+	...
+]
+```
+
 ## Common Types
 ### InstanceLaunchArg
 ```
