@@ -22,12 +22,17 @@ Called whenever one of the subcommands that this hook registers are run. The arg
 - Result: None
 
 ### `modify_instance_config`
-Called on every instance to possibly modify its config. The argument is a JSON object representing all of the custom configuration for an instance, which are all fields that aren't on an instance normally. The result is a list of things to add to the instance's config.
-- Argument: `{...}`
+Called on every instance to possibly modify its config. The output config will be merged with the instance's current config in the same way as profiles are. Note that the input is not sequential: All plugins will be given the same config before modification, instead of applying one after the other, and the results will all be merged together.
+- Argument:
+```
+{
+	"config": InstanceConfig
+}
+```
 - Result:
 ```
 {
-	"additional_jvm_args": [string]
+	"config": InstanceConfig
 }
 ```
 

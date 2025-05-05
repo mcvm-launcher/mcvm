@@ -5,13 +5,13 @@ use crate::instance::{InstKind, Instance, InstanceStoredConfig};
 use crate::io::paths::Paths;
 use anyhow::{bail, ensure, Context};
 use mcvm_config::instance::{
-	is_valid_instance_id, merge_instance_configs, Args, GameModifications, InstanceConfig,
+	is_valid_instance_id, merge_instance_configs, GameModifications, InstanceConfig,
 	LaunchConfig, LaunchMemory,
 };
 use mcvm_config::profile::ProfileConfig;
 use mcvm_core::io::java::args::MemoryNum;
 use mcvm_core::io::java::install::JavaInstallationKind;
-use mcvm_plugin::hooks::ModifyInstanceConfig;
+use mcvm_plugin::hooks::{ModifyInstanceConfig, ModifyInstanceConfigArgument};
 use mcvm_shared::id::{InstanceID, ProfileID};
 use mcvm_shared::output::MCVMOutput;
 use mcvm_shared::Side;
@@ -52,6 +52,18 @@ pub fn read_instance_config(
 		config = merge_instance_configs(&profile.instance, config);
 	}
 
+	// Apply plugins
+	let arg = ModifyInstanceConfigArgument {
+		config: config.clone(),
+	};
+	let results = plugins
+		.call_hook(ModifyInstanceConfig, &arg, paths, o)
+		.context("Failed to apply plugin instance modifications")?;
+	for result in results {
+		let result = result.result(o)?;
+		config = merge_instance_configs(&config, result.config);
+	}
+
 	let original_config_with_profiles = config.clone();
 
 	let side = config.side.context("Instance type was not specified")?;
@@ -76,20 +88,6 @@ pub fn read_instance_config(
 		.clone()
 		.context("Instance is missing a Minecraft version")?
 		.to_mc_version();
-
-	// Apply plugins
-	let results = plugins
-		.call_hook(ModifyInstanceConfig, &config.common.plugin_config, paths, o)
-		.context("Failed to apply plugin instance modifications")?;
-	for result in results {
-		let result = result.result(o)?;
-		config
-			.common
-			.launch
-			.args
-			.jvm
-			.merge(Args::List(result.additional_jvm_args));
-	}
 
 	let stored_config = InstanceStoredConfig {
 		name: config.name,

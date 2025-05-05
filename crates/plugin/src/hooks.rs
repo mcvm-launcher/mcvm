@@ -1,3 +1,4 @@
+use mcvm_config::instance::InstanceConfig;
 use mcvm_core::net::game_files::version_manifest::VersionEntry;
 use mcvm_core::net::minecraft::MinecraftUserProfile;
 use mcvm_core::util::versions::MinecraftVersionDeser;
@@ -99,17 +100,25 @@ def_hook!(
 	ModifyInstanceConfig,
 	"modify_instance_config",
 	"Hook for modifying an instance's configuration",
-	serde_json::Map<String, serde_json::Value>,
+	ModifyInstanceConfigArgument,
 	ModifyInstanceConfigResult,
-	1,
+	2,
 );
+
+/// Argument to the ModifyInstanceConfig hook
+#[derive(Serialize, Deserialize, Default)]
+#[serde(default)]
+pub struct ModifyInstanceConfigArgument {
+	/// The instance's configuration
+	pub config: InstanceConfig,
+}
 
 /// Result from the ModifyInstanceConfig hook
 #[derive(Serialize, Deserialize, Default)]
 #[serde(default)]
 pub struct ModifyInstanceConfigResult {
-	/// Additional JVM args to add to the instance
-	pub additional_jvm_args: Vec<String>,
+	/// Configuration to apply
+	pub config: InstanceConfig,
 }
 
 def_hook!(

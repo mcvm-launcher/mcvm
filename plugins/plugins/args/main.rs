@@ -1,14 +1,17 @@
 use std::str::FromStr;
 
 use anyhow::bail;
+use mcvm::config_crate::instance::{
+	CommonInstanceConfig, InstanceConfig, LaunchArgs, LaunchConfig,
+};
 use mcvm_plugin::api::CustomPlugin;
 use mcvm_plugin::hooks::ModifyInstanceConfigResult;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 
 fn main() -> anyhow::Result<()> {
 	let mut plugin = CustomPlugin::from_manifest_file("args", include_str!("plugin.json"))?;
-	plugin.modify_instance_config(|mut ctx, config| {
-		let args = if let Some(preset) = config.get("args_preset") {
+	plugin.modify_instance_config(|mut ctx, arg| {
+		let args = if let Some(preset) = arg.config.common.plugin_config.get("args_preset") {
 			if let Some(preset) = preset.as_str() {
 				if let Ok(preset) = ArgsPreset::from_str(preset) {
 					preset.generate_args()
@@ -31,7 +34,19 @@ fn main() -> anyhow::Result<()> {
 		};
 
 		Ok(ModifyInstanceConfigResult {
-			additional_jvm_args: args,
+			config: InstanceConfig {
+				common: CommonInstanceConfig {
+					launch: LaunchConfig {
+						args: LaunchArgs {
+							jvm: mcvm::config_crate::instance::Args::List(args),
+							..Default::default()
+						},
+						..Default::default()
+					},
+					..Default::default()
+				},
+				..Default::default()
+			},
 		})
 	})?;
 
