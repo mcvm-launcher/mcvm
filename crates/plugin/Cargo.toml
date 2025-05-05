@@ -17,14 +17,6 @@ workspace = true
 default = ["api"]
 api = []
 
-[[bin]]
-name = "print_custom_config"
-path = "plugins/print_custom_config.rs"
-
-[[bin]]
-name = "echo"
-path = "plugins/echo.rs"
-
 [dependencies]
 anyhow = { workspace = true }
 base64 = { workspace = true }
