@@ -338,8 +338,10 @@ async fn download_libraries(
 
 			let client = client.clone();
 			let task = async move {
-				files::create_leading_dirs_async(&lib_path).await?;
-				let resp = download::bytes(url, &client).await?;
+				let (_, resp) = tokio::try_join!(
+					create_leading_dirs_with_correct_error(&lib_path),
+					download::bytes(url, &client)
+				)?;
 				tokio::fs::write(&lib_path, resp).await?;
 				Ok::<(), anyhow::Error>(())
 			};
@@ -369,9 +371,11 @@ async fn download_main_library(
 		return Ok(());
 	}
 	let url = url.to_owned() + &path;
-	let resp = download::bytes(url, client).await?;
 
-	files::create_leading_dirs_async(&lib_path).await?;
+	let (_, resp) = tokio::try_join!(
+		create_leading_dirs_with_correct_error(&lib_path),
+		download::bytes(url, client)
+	)?;
 	tokio::fs::write(&lib_path, resp).await?;
 
 	Ok(())
@@ -419,4 +423,11 @@ pub fn get_classpath(
 	out.add_path(&libraries_dir.join(path))?;
 
 	Ok(out)
+}
+
+/// This is done so that we can tokio::join!() with other tasks
+async fn create_leading_dirs_with_correct_error(path: &Path) -> anyhow::Result<()> {
+	files::create_leading_dirs_async(path)
+		.await
+		.context("Failed to create leading directories")
 }
