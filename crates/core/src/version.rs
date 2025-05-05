@@ -19,7 +19,7 @@ use crate::user::UserManager;
 use crate::util::versions::VersionName;
 
 /// An installed version of the game. This cannot be constructed directly,
-/// only from the MCVMCore struct by using the `install_version()` method
+/// only from the MCVMCore struct by using the `get_version()` method
 pub struct InstalledVersion<'inner, 'params> {
 	pub(crate) inner: &'inner mut InstalledVersionInner,
 	pub(crate) params: VersionParameters<'params>,
