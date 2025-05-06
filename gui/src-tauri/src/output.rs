@@ -10,7 +10,7 @@ use serde::Serialize;
 use tauri::{AppHandle, Manager};
 use tokio::sync::Mutex;
 
-use crate::{commands::UpdateRunStateEvent, RunState};
+use crate::{commands::launch::UpdateRunStateEvent, RunState};
 
 /// Response to a prompt in the frontend, shared with a mutex
 pub type PromptResponse = Arc<Mutex<Option<String>>>;

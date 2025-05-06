@@ -12,7 +12,7 @@ use std::collections::HashMap;
 use std::sync::Arc;
 
 use anyhow::Context;
-use commands::UpdateRunStateEvent;
+use commands::launch::UpdateRunStateEvent;
 use data::LauncherData;
 use mcvm::core::auth_crate::mc::ClientId;
 use mcvm::core::{net::download::Client, user::UserManager};
@@ -47,15 +47,15 @@ fn main() {
 			Ok(())
 		})
 		.invoke_handler(tauri::generate_handler![
-			commands::launch_game,
-			commands::stop_game,
-			commands::answer_password_prompt,
-			commands::get_instances,
-			commands::get_instance_groups,
-			commands::get_running_instances,
-			commands::set_running_instance_state,
-			commands::pin_instance,
-			commands::get_instance_config,
+			commands::launch::launch_game,
+			commands::launch::stop_game,
+			commands::launch::answer_password_prompt,
+			commands::instance::get_instances,
+			commands::instance::get_instance_groups,
+			commands::launch::get_running_instances,
+			commands::launch::set_running_instance_state,
+			commands::instance::pin_instance,
+			commands::instance::get_instance_config,
 		])
 		.run(tauri::generate_context!())
 		.expect("Error while running tauri application");
