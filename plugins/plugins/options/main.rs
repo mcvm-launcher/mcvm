@@ -37,7 +37,7 @@ fn main() -> anyhow::Result<()> {
 			}
 		}
 		// Instance-specific
-		if let Some(options) = arg.custom_config.get("options") {
+		if let Some(options) = arg.config.common.plugin_config.get("options") {
 			// Allow profiles to specify both client and server options
 			let override_keys =
 				if let Ok(options) = serde_json::from_value::<Options>(options.clone()) {

@@ -67,7 +67,7 @@ resulting from installing a certain modification
 	},
 	"client_type": ClientType,
 	"server_type": ServerType,
-	"custom_config": {...},
+	"config": InstanceConfig,
 	"internal_dir": string,
 	"update_depth": "shallow" | "full" | "force"
 }
@@ -247,13 +247,9 @@ Hook called on a specific plugin to export an instance using one of the formats 
 {
 	"format": string,
 	"id": string,
-	"name": string,
-	"side": "client" | "server",
+	"config": InstanceConfig,
 	"game_dir": string,
-	"result_path": string,
-	"minecraft_version": string | "latest" | "latest_snapshot",
-	"client_type": ClientType,
-	"server_type": ServerType
+	"result_path": string
 }
 ```
 - `id`: The instance ID
@@ -278,11 +274,7 @@ Hook called on a specific plugin to import an instance using one of the formats 
 ```
 {
 	"format": string,
-	"name": string | null,
-	"side": "client" | "server",
-	"version": string | "latest" | "latest_snapshot",
-	"client_type": ClientType,
-	"server_type": ServerType
+	"config": InstanceConfig
 }
 ```
 
@@ -334,7 +326,7 @@ Adds new profiles to the config
 		"version": string,
 		"versions": [string]
 	},
-	"custom_config": {...},
+	"config": InstanceConfig,
 	"pid": integer
 }
 ```

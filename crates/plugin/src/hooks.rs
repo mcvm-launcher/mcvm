@@ -4,7 +4,6 @@ use mcvm_config::instance::InstanceConfig;
 use mcvm_config::profile::ProfileConfig;
 use mcvm_core::net::game_files::version_manifest::VersionEntry;
 use mcvm_core::net::minecraft::MinecraftUserProfile;
-use mcvm_core::util::versions::MinecraftVersionDeser;
 use mcvm_pkg::script_eval::AddonInstructionData;
 use mcvm_pkg::{RecommendedPackage, RequiredPackage};
 use mcvm_shared::id::{InstanceID, ProfileID};
@@ -140,7 +139,7 @@ def_hook!(
 	"Hook for doing work when setting up an instance for update or launch",
 	OnInstanceSetupArg,
 	OnInstanceSetupResult,
-	1,
+	2,
 );
 
 /// Argument for the OnInstanceSetup hook
@@ -163,8 +162,8 @@ pub struct OnInstanceSetupArg {
 	pub current_game_modification_version: Option<String>,
 	/// The desired version of the game modification
 	pub desired_game_modification_version: Option<VersionPattern>,
-	/// Custom config on the instance
-	pub custom_config: serde_json::Map<String, serde_json::Value>,
+	/// Instance configuration
+	pub config: InstanceConfig,
 	/// Path to the MCVM internal dir
 	pub internal_dir: String,
 	/// The depth to update at
@@ -191,7 +190,7 @@ def_hook!(
 	"Hook for removing a game modification from an instance when the game modification or version changes",
 	OnInstanceSetupArg,
 	(),
-	1,
+	2,
 );
 
 def_hook!(
@@ -200,7 +199,7 @@ def_hook!(
 	"Hook for doing work before an instance is launched",
 	InstanceLaunchArg,
 	(),
-	1,
+	2,
 );
 
 def_hook!(
@@ -209,7 +208,7 @@ def_hook!(
 	"Hook for running sibling processes with an instance when it is launched",
 	InstanceLaunchArg,
 	(),
-	1,
+	2,
 );
 
 def_hook!(
@@ -218,7 +217,7 @@ def_hook!(
 	"Hook for doing work when an instance is stopped gracefully",
 	InstanceLaunchArg,
 	(),
-	1,
+	2,
 );
 
 /// Argument for the OnInstanceLaunch and WhileInstanceLaunch hooks
@@ -235,8 +234,8 @@ pub struct InstanceLaunchArg {
 	pub game_dir: String,
 	/// Version info for the instance
 	pub version_info: VersionInfo,
-	/// Custom config on the instance
-	pub custom_config: serde_json::Map<String, serde_json::Value>,
+	/// The instance's configuration
+	pub config: InstanceConfig,
 	/// The PID of the instance process
 	pub pid: Option<u32>,
 }
@@ -376,7 +375,7 @@ def_hook!(
 	"Hook for exporting an instance",
 	ExportInstanceArg,
 	(),
-	1,
+	2,
 );
 
 /// Argument provided to the export_instance hook
@@ -387,20 +386,12 @@ pub struct ExportInstanceArg {
 	pub format: String,
 	/// The ID of the instance
 	pub id: String,
-	/// The name of the instance
-	pub name: Option<String>,
-	/// The side of the instance
-	pub side: Option<Side>,
+	/// The configuration of the instance
+	pub config: InstanceConfig,
 	/// The directory where the instance game files are located
 	pub game_dir: String,
 	/// The desired path for the resulting instance, as a file path
 	pub result_path: String,
-	/// The Minecraft version of the instance
-	pub minecraft_version: Option<MinecraftVersionDeser>,
-	/// The client type of the new instance
-	pub client_type: Option<ClientType>,
-	/// The server type of the new instance
-	pub server_type: Option<ServerType>,
 }
 
 def_hook!(
@@ -409,7 +400,7 @@ def_hook!(
 	"Hook for importing an instance",
 	ImportInstanceArg,
 	ImportInstanceResult,
-	1,
+	2,
 );
 
 /// Argument provided to the import_instance hook
@@ -432,16 +423,8 @@ pub struct ImportInstanceArg {
 pub struct ImportInstanceResult {
 	/// The ID of the transfer format being used
 	pub format: String,
-	/// The name of the instance
-	pub name: Option<String>,
-	/// The side of the instance
-	pub side: Option<Side>,
-	/// The Minecraft version of the instance
-	pub version: Option<MinecraftVersionDeser>,
-	/// The client type of the new instance
-	pub client_type: Option<ClientType>,
-	/// The server type of the new instance
-	pub server_type: Option<ServerType>,
+	/// The configuration of the new instance
+	pub config: InstanceConfig,
 }
 
 def_hook!(

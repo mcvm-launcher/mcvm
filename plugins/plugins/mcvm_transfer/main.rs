@@ -5,12 +5,9 @@ use std::{
 };
 
 use anyhow::Context;
-use mcvm_core::util::versions::MinecraftVersionDeser;
+use mcvm::config_crate::instance::InstanceConfig;
 use mcvm_plugin::{api::CustomPlugin, hooks::ImportInstanceResult};
-use mcvm_shared::{
-	modifications::{ClientType, ServerType},
-	Side,
-};
+use mcvm_shared::Side;
 use serde::{Deserialize, Serialize};
 use zip::{write::FileOptions, ZipArchive, ZipWriter};
 
@@ -58,11 +55,7 @@ fn main() -> anyhow::Result<()> {
 
 		let meta = Metadata {
 			id: arg.id,
-			name: arg.name,
-			side: arg.side,
-			minecraft_version: arg.minecraft_version,
-			client_type: arg.client_type,
-			server_type: arg.server_type,
+			config: arg.config,
 		};
 
 		serde_json::to_writer(&mut zip, &meta).context("Failed to write metadata file")?;
@@ -85,7 +78,7 @@ fn main() -> anyhow::Result<()> {
 		std::mem::drop(meta_file);
 
 		// We need to write in the .minecraft directory for clients
-		let target_path = match meta.side.context("Side is missing in metadata")? {
+		let target_path = match meta.config.side.context("Side is missing in metadata")? {
 			Side::Client => target_path.join(".minecraft"),
 			Side::Server => target_path,
 		};
@@ -96,11 +89,7 @@ fn main() -> anyhow::Result<()> {
 
 		Ok(ImportInstanceResult {
 			format: arg.format,
-			name: meta.name,
-			side: meta.side,
-			version: meta.minecraft_version,
-			client_type: meta.client_type,
-			server_type: meta.server_type,
+			config: meta.config,
 		})
 	})?;
 
@@ -123,9 +112,5 @@ fn should_include_file(path: &Path) -> bool {
 #[derive(Serialize, Deserialize)]
 struct Metadata {
 	id: String,
-	name: Option<String>,
-	side: Option<Side>,
-	minecraft_version: Option<MinecraftVersionDeser>,
-	client_type: Option<ClientType>,
-	server_type: Option<ServerType>,
+	config: InstanceConfig,
 }

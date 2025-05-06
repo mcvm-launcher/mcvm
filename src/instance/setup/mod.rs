@@ -111,7 +111,7 @@ impl Instance {
 			server_type: self.config.modifications.server_type(),
 			current_game_modification_version: current_game_mod_version,
 			desired_game_modification_version: self.config.modification_version.clone(),
-			custom_config: self.config.plugin_config.clone(),
+			config: self.config.original_config_with_profiles.clone(),
 			internal_dir: paths.internal.to_string_lossy().to_string(),
 			update_depth: manager.settings.depth,
 		};

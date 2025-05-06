@@ -4,7 +4,7 @@ fn main() -> anyhow::Result<()> {
 	let mut plugin = CustomPlugin::from_manifest_file("scripthook", include_str!("plugin.json"))?;
 
 	plugin.on_instance_launch(|_, arg| {
-		if let Some(cmd) = arg.custom_config.get("on_launch") {
+		if let Some(cmd) = arg.config.common.plugin_config.get("on_launch") {
 			let cmd: String =
 				serde_json::from_value(cmd.clone()).context("Invalid command format")?;
 
@@ -15,7 +15,7 @@ fn main() -> anyhow::Result<()> {
 	})?;
 
 	plugin.on_instance_stop(|_, arg| {
-		if let Some(cmd) = arg.custom_config.get("on_stop") {
+		if let Some(cmd) = arg.config.common.plugin_config.get("on_stop") {
 			let cmd: String =
 				serde_json::from_value(cmd.clone()).context("Invalid command format")?;
 

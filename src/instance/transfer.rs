@@ -7,12 +7,10 @@ use mcvm_plugin::hooks::{
 	ImportInstanceArg, InstanceTransferFeatureSupport, InstanceTransferFormat,
 	InstanceTransferFormatDirection,
 };
-use mcvm_shared::id::InstanceID;
 use mcvm_shared::lang::translate::TranslationKey;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::translate;
 
-use crate::config::builder::InstanceBuilder;
 use crate::io::lock::Lockfile;
 use crate::{io::paths::Paths, plugin::PluginManager};
 
@@ -66,13 +64,9 @@ impl Instance {
 		let arg = ExportInstanceArg {
 			id: self.id.to_string(),
 			format: format.info.id.clone(),
-			name: self.config.name.clone(),
-			side: Some(self.get_side()),
+			config: self.config.original_config_with_profiles.clone(),
 			game_dir: self.dirs.get().game_dir.to_string_lossy().to_string(),
 			result_path: result_path.to_string_lossy().to_string(),
-			minecraft_version: Some(self.config.version.clone().to_serialized()),
-			client_type: Some(self.config.modifications.client_type().clone()),
-			server_type: Some(self.config.modifications.server_type().clone()),
 		};
 		let result = plugins
 			.call_hook_on_plugin(ExportInstance, &format.plugin, &arg, paths, o)
@@ -160,25 +154,7 @@ impl Instance {
 			MessageLevel::Important,
 		);
 
-		let side = result
-			.side
-			.context("Import result is missing the instance side")?;
-		let mut builder = InstanceBuilder::new(InstanceID::from(id), side);
-
-		if let Some(version) = result.version {
-			builder.version(version);
-		}
-		if let Some(name) = result.name {
-			builder.name(name);
-		}
-		if let Some(client_type) = result.client_type {
-			builder.client_type(client_type);
-		}
-		if let Some(server_type) = result.server_type {
-			builder.server_type(server_type);
-		}
-
-		Ok(builder.build_config())
+		Ok(result.config)
 	}
 }
 

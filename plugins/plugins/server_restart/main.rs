@@ -17,7 +17,7 @@ fn main() -> anyhow::Result<()> {
 			return Ok(OnInstanceSetupResult::default());
 		}
 
-		let config = if let Some(config) = arg.custom_config.get("restart") {
+		let config = if let Some(config) = arg.config.common.plugin_config.get("restart") {
 			serde_json::from_value(config.clone()).context("Failed to deserialize config")?
 		} else {
 			Config::default()
