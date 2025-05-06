@@ -22,7 +22,8 @@ use mcvm_core::auth_crate::mc::ClientId;
 use mcvm_core::io::{json_from_file, json_to_file_pretty};
 use mcvm_core::user::UserManager;
 use mcvm_plugin::hooks::{
-	AddInstances, AddInstancesArg, AddSupportedGameModifications, SupportedGameModifications,
+	AddInstances, AddInstancesArg, AddProfiles, AddSupportedGameModifications,
+	SupportedGameModifications,
 };
 use mcvm_shared::id::InstanceID;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
@@ -136,7 +137,7 @@ impl Config {
 			);
 		}
 
-		// Add instances
+		// Add instances from plugins
 		let arg = AddInstancesArg {};
 		let results = plugins
 			.call_hook(AddInstances, &arg, paths, o)
@@ -144,6 +145,14 @@ impl Config {
 		for result in results {
 			let result = result.result(o)?;
 			config.instances.extend(result);
+		}
+		// Add profiles from plugins
+		let results = plugins
+			.call_hook(AddProfiles, &arg, paths, o)
+			.context("Failed to call add profiles hook")?;
+		for result in results {
+			let result = result.result(o)?;
+			config.profiles.extend(result);
 		}
 
 		// Consolidate profiles

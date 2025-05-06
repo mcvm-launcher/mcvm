@@ -303,11 +303,23 @@ Adds new instances to the config
 - Argument: None
 - Result:
 ```
-[
-	InstanceConfig,
-	InstanceConfig,
+{
+	"inst1": InstanceConfig,
+	"inst2": InstanceConfig,
 	...
-]
+}
+```
+
+### `add_profiles`
+Adds new profiles to the config
+- Argument: None
+- Result:
+```
+{
+	"prof1": ProfileConfig,
+	"prof2": ProfileConfig,
+	...
+}
 ```
 
 ## Common Types

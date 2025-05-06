@@ -1,12 +1,13 @@
 use std::collections::HashMap;
 
 use mcvm_config::instance::InstanceConfig;
+use mcvm_config::profile::ProfileConfig;
 use mcvm_core::net::game_files::version_manifest::VersionEntry;
 use mcvm_core::net::minecraft::MinecraftUserProfile;
 use mcvm_core::util::versions::MinecraftVersionDeser;
 use mcvm_pkg::script_eval::AddonInstructionData;
 use mcvm_pkg::{RecommendedPackage, RequiredPackage};
-use mcvm_shared::id::InstanceID;
+use mcvm_shared::id::{InstanceID, ProfileID};
 use mcvm_shared::lang::translate::LanguageMap;
 use mcvm_shared::modifications::{ClientType, ServerType};
 use mcvm_shared::pkg::PackageID;
@@ -475,3 +476,12 @@ def_hook!(
 #[derive(Serialize, Deserialize, Default)]
 #[serde(default)]
 pub struct AddInstancesArg {}
+
+def_hook!(
+	AddProfiles,
+	"add_profiles",
+	"Hook for adding new profiles",
+	AddInstancesArg,
+	HashMap<ProfileID, ProfileConfig>,
+	1,
+);
