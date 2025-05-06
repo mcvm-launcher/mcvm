@@ -8,6 +8,6 @@
 		}
 	},
 	"subcommands": {
-		"modrinth": "Use the Smithed API"
+		"smithed": "Use the Smithed API"
 	}
 }
