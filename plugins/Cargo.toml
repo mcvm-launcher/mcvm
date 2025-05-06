@@ -51,12 +51,12 @@ name = "mcvm_plugin_options"
 path = "plugins/options/main.rs"
 
 [[bin]]
-name = "mcvm_plugin_paper"
-path = "plugins/paper/main.rs"
+name = "mcvm_plugin_packhost"
+path = "plugins/packhost/main.rs"
 
 [[bin]]
-name = "mcvm_plugin_resource_pack_host"
-path = "plugins/resource_pack_host/main.rs"
+name = "mcvm_plugin_paper"
+path = "plugins/paper/main.rs"
 
 [[bin]]
 name = "mcvm_plugin_scripthook"

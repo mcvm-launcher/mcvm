@@ -9,6 +9,8 @@ package:
 	@cargo build --release --bin mcvm_plugin_mcvm_transfer
 	@cargo build --release --bin mcvm_plugin_modrinth_api
 	@cargo build --release --bin mcvm_plugin_options
+	@cargo build --release --bin mcvm_plugin_paper
+	@cargo build --release --bin mcvm_plugin_packhost
 	@cargo build --release --bin mcvm_plugin_scripthook
 	@cargo build --release --bin mcvm_plugin_server_restart
 	@cargo build --release --bin mcvm_plugin_sponge
@@ -26,6 +28,8 @@ package:
 	@rm -f release/mcvm_transfer-linux.zip && zip -j release/mcvm_transfer-linux.zip ../target/release/mcvm_plugin_mcvm_transfer plugins/mcvm_transfer/plugin.json
 	@rm -f release/modrinth_api-linux.zip && zip -j release/modrinth_api-linux.zip ../target/release/mcvm_plugin_modrinth_api plugins/modrinth_api/plugin.json
 	@rm -f release/options-linux.zip && zip -j release/options-linux.zip ../target/release/mcvm_plugin_options plugins/options/plugin.json
+	@rm -f release/packhost-linux.zip && zip -j release/packhost-linux.zip ../target/release/mcvm_plugin_packhost plugins/packhost/plugin.json
+	@rm -f release/paper-linux.zip && zip -j release/paper-linux.zip ../target/release/mcvm_plugin_paper plugins/paper/plugin.json
 	@rm -f release/scripthook-linux.zip && zip -j release/scripthook-linux.zip ../target/release/mcvm_plugin_scripthook plugins/scripthook/plugin.json
 	@rm -f release/server_restart-linux.zip && zip -j release/server_restart-linux.zip ../target/release/mcvm_plugin_server_restart plugins/server_restart/plugin.json
 	@rm -f release/sponge-linux.zip && zip -j release/sponge-linux.zip ../target/release/mcvm_plugin_sponge plugins/sponge/plugin.json
@@ -79,6 +83,10 @@ install.modrinth_api:
 install.options:
 	@cargo install --path . --bin mcvm_plugin_options --offline
 	@cat plugins/options/plugin.json | sed 's,\${PLUGIN_DIR}/,,' > ~/.local/share/mcvm/plugins/options.json
+
+install.packhost:
+	@cargo install --path . --bin mcvm_plugin_packhost --offline
+	@cat plugins/packhost/plugin.json | sed 's,\${PLUGIN_DIR}/,,' > ~/.local/share/mcvm/plugins/packhost.json
 
 install.paper:
 	@cargo install --path . --bin mcvm_plugin_paper --offline

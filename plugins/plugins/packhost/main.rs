@@ -6,7 +6,7 @@ use mcvm_plugin::api::CustomPlugin;
 
 fn main() -> anyhow::Result<()> {
 	let mut plugin =
-		CustomPlugin::from_manifest_file("resourec_pack_host", include_str!("plugin.json"))?;
+		CustomPlugin::from_manifest_file("packhost", include_str!("plugin.json"))?;
 	plugin.while_instance_launch(|_, arg| {
 		let path = arg.custom_config.get("hosted_resource_pack");
 		let Some(path) = path else {
