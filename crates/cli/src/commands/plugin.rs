@@ -2,7 +2,7 @@ use anyhow::{bail, Context};
 use clap::Subcommand;
 use color_print::cprintln;
 use itertools::Itertools;
-use mcvm::core::io::json_from_file;
+use mcvm::core::io::{json_from_file, json_to_file_pretty};
 use mcvm::plugin::install::get_verified_plugins;
 use mcvm::plugin::PluginManager;
 use mcvm::plugin_crate::plugin::PluginManifest;
@@ -38,6 +38,10 @@ pub enum PluginSubcommand {
 	Uninstall { plugin: String },
 	#[command(about = "Browse installable plugins")]
 	Browse,
+	#[command(about = "Enable a plugin")]
+	Enable { plugin: String },
+	#[command(about = "Disable a plugin")]
+	Disable { plugin: String },
 }
 
 pub async fn run(command: PluginSubcommand, data: &mut CmdData<'_>) -> anyhow::Result<()> {
@@ -47,6 +51,8 @@ pub async fn run(command: PluginSubcommand, data: &mut CmdData<'_>) -> anyhow::R
 		PluginSubcommand::Install { plugins, version } => install(data, plugins, version).await,
 		PluginSubcommand::Uninstall { plugin } => uninstall(data, plugin).await,
 		PluginSubcommand::Browse => browse(data).await,
+		PluginSubcommand::Enable { plugin } => enable(data, plugin).await,
+		PluginSubcommand::Disable { plugin } => disable(data, plugin).await,
 	}
 }
 
@@ -202,6 +208,28 @@ async fn browse(data: &mut CmdData<'_>) -> anyhow::Result<()> {
 			plugin.description
 		);
 	}
+
+	Ok(())
+}
+
+async fn enable(data: &mut CmdData<'_>, plugin: String) -> anyhow::Result<()> {
+	let mut config = PluginManager::open_config(&data.paths).context("Failed to open config")?;
+	config.plugins.insert(plugin);
+	json_to_file_pretty(PluginManager::get_config_path(&data.paths), &config)
+		.context("Failed to write modified config")?;
+
+	cprintln!("<g>Plugin enabled.");
+
+	Ok(())
+}
+
+async fn disable(data: &mut CmdData<'_>, plugin: String) -> anyhow::Result<()> {
+	let mut config = PluginManager::open_config(&data.paths).context("Failed to open config")?;
+	config.plugins.remove(&plugin);
+	json_to_file_pretty(PluginManager::get_config_path(&data.paths), &config)
+		.context("Failed to write modified config")?;
+
+	cprintln!("<g>Plugin disabled.");
 
 	Ok(())
 }
