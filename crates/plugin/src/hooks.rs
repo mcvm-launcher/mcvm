@@ -475,7 +475,10 @@ def_hook!(
 /// Argument for the AddInstances hook
 #[derive(Serialize, Deserialize, Default)]
 #[serde(default)]
-pub struct AddInstancesArg {}
+pub struct AddInstancesArg {
+	/// Directory where configuration is located
+	pub config_dir: String,
+}
 
 def_hook!(
 	AddProfiles,

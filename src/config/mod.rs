@@ -138,7 +138,9 @@ impl Config {
 		}
 
 		// Add instances from plugins
-		let arg = AddInstancesArg {};
+		let arg = AddInstancesArg {
+			config_dir: paths.project.config_dir().to_string_lossy().to_string(),
+		};
 		let results = plugins
 			.call_hook(AddInstances, &arg, paths, o)
 			.context("Failed to call add instances hook")?;
