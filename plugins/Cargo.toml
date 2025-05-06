@@ -63,6 +63,10 @@ name = "mcvm_plugin_scripthook"
 path = "plugins/scripthook/main.rs"
 
 [[bin]]
+name = "mcvm_plugin_smithed_api"
+path = "plugins/smithed_api/main.rs"
+
+[[bin]]
 name = "mcvm_plugin_server_restart"
 path = "plugins/server_restart/main.rs"
 

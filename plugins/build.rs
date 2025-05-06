@@ -54,4 +54,6 @@ fn main() {
 	add_file!(zip, "plugins/plugins/scripthook.md");
 	add_file!(zip, "plugins/plugins/server_restart.md");
 	add_file!(zip, "plugins/plugins/stats.md");
+	add_file!(zip, "plugins/plugins/config_split.md");
+	add_file!(zip, "plugins/plugins/smithed_api.md");
 }

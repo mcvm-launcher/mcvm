@@ -13,6 +13,7 @@ package:
 	@cargo build --release --bin mcvm_plugin_packhost
 	@cargo build --release --bin mcvm_plugin_scripthook
 	@cargo build --release --bin mcvm_plugin_server_restart
+	@cargo build --release --bin mcvm_plugin_smithed_api
 	@cargo build --release --bin mcvm_plugin_sponge
 	@cargo build --release --bin mcvm_plugin_stats
 
@@ -32,6 +33,7 @@ package:
 	@rm -f release/paper-linux.zip && zip -j release/paper-linux.zip ../target/release/mcvm_plugin_paper plugins/paper/plugin.json
 	@rm -f release/scripthook-linux.zip && zip -j release/scripthook-linux.zip ../target/release/mcvm_plugin_scripthook plugins/scripthook/plugin.json
 	@rm -f release/server_restart-linux.zip && zip -j release/server_restart-linux.zip ../target/release/mcvm_plugin_server_restart plugins/server_restart/plugin.json
+	@rm -f release/smithed_api-linux.zip && zip -j release/smithed_api-linux.zip ../target/release/mcvm_plugin_smithed_api plugins/smithed_api/plugin.json
 	@rm -f release/sponge-linux.zip && zip -j release/sponge-linux.zip ../target/release/mcvm_plugin_sponge plugins/sponge/plugin.json
 	@rm -f release/stats-linux.zip && zip -j release/stats-linux.zip ../target/release/mcvm_plugin_stats plugins/stats/plugin.json
 	
@@ -99,6 +101,10 @@ install.scripthook:
 install.server_restart:
 	@cargo install --path . --bin mcvm_plugin_server_restart --offline
 	@cat plugins/server_restart/plugin.json | sed 's,\${PLUGIN_DIR}/,,' > ~/.local/share/mcvm/plugins/server_restart.json
+
+install.smithed_api:
+	@cargo install --path . --bin mcvm_plugin_smithed_api --offline
+	@cat plugins/smithed_api/plugin.json | sed 's,\${PLUGIN_DIR}/,,' > ~/.local/share/mcvm/plugins/smithed_api.json
 
 install.sponge:
 	@cargo install --path . --bin mcvm_plugin_sponge --offline

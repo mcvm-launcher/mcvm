@@ -100,5 +100,11 @@
 		"github_owner": "mcvm-launcher",
 		"github_repo": "mcvm",
 		"description": "Split parts of your configuration into multiple files"
+	},
+	"smithed_api": {
+		"id": "smithed_api",
+		"github_owner": "mcvm-launcher",
+		"github_repo": "mcvm",
+		"description": "Make simple Smithed API calls to query project versions"
 	}
 }
