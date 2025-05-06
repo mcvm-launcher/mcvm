@@ -27,6 +27,8 @@ pub const INSTANCE: &str = "\u{1F4C0}";
 pub const VERSION: &str = "\u{1F4C5}";
 /// A loader icon
 pub const LOADER: &str = "\u{1F4E5}";
+/// A check icon
+pub const CHECK: &str = "\u{2713}";
 
 /// Terminal MCVMOutput
 pub struct TerminalOutput {

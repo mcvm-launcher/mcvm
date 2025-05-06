@@ -11,7 +11,7 @@ use mcvm::shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use reqwest::Client;
 
 use super::CmdData;
-use crate::output::HYPHEN_POINT;
+use crate::output::{CHECK, HYPHEN_POINT};
 
 #[derive(Debug, Subcommand)]
 pub enum PluginSubcommand {
@@ -77,11 +77,11 @@ async fn list(data: &mut CmdData<'_>, raw: bool, loaded: bool) -> anyhow::Result
 			println!("{}", plugin_id);
 		} else {
 			if is_loaded {
-				cprintln!("{}<s>{}</> [Loaded]", HYPHEN_POINT, plugin_id);
+				cprintln!("{}<s>{CHECK} {}</> [Enabled]", HYPHEN_POINT, plugin_id);
 			} else {
 				let is_valid = json_from_file::<PluginManifest>(plugin_path).is_ok();
 				if is_valid {
-					cprintln!("{}{} [Unloaded]", HYPHEN_POINT, plugin_id);
+					cprintln!("{}{} [Disabled]", HYPHEN_POINT, plugin_id);
 				} else {
 					cprintln!("{}<r>{} [Invalid]", HYPHEN_POINT, plugin_id);
 				}
