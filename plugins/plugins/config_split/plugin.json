@@ -1,0 +1,13 @@
+{
+	"name": "Config Split",
+	"description": "Split configuration into multiple files",
+	"protocol_version": 2,
+	"hooks": {
+		"add_instances": {
+			"executable": "${PLUGIN_DIR}/mcvm_plugin_config_split"
+		},
+		"add_profiles": {
+			"executable": "${PLUGIN_DIR}/mcvm_plugin_config_split"
+		}
+	}
+}

@@ -94,5 +94,11 @@
 		"github_owner": "mcvm-launcher",
 		"github_repo": "mcvm",
 		"description": "Run commands at different parts of the instance lifecycle with no coding knowledge"
+	},
+	"config_split": {
+		"id": "config_split",
+		"github_owner": "mcvm-launcher",
+		"github_repo": "mcvm",
+		"description": "Split parts of your configuration into multiple files"
 	}
 }

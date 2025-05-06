@@ -19,6 +19,10 @@ name = "mcvm_plugin_backup"
 path = "plugins/backup/main.rs"
 
 [[bin]]
+name = "mcvm_plugin_config_split"
+path = "plugins/config_split/main.rs"
+
+[[bin]]
 name = "mcvm_plugin_custom_files"
 path = "plugins/custom_files/main.rs"
 

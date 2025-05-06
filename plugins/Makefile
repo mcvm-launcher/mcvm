@@ -1,6 +1,7 @@
 package:
 	@cargo build --release --bin mcvm_plugin_args
 	@cargo build --release --bin mcvm_plugin_backup
+	@cargo build --release --bin mcvm_plugin_config_split
 	@cargo build --release --bin mcvm_plugin_custom_files
 	@cargo build --release --bin mcvm_plugin_docs
 	@cargo build --release --bin mcvm_plugin_fabric_quilt
@@ -17,6 +18,7 @@ package:
 
 	@rm -f release/args-linux.zip && zip -j release/args-linux.zip ../target/release/mcvm_plugin_args plugins/args/plugin.json
 	@rm -f release/backup-linux.zip && zip -j release/backup-linux.zip ../target/release/mcvm_plugin_backup plugins/backup/plugin.json
+	@rm -f release/config_split-linux.zip && zip -j release/config_split-linux.zip ../target/release/mcvm_plugin_config_split plugins/config_split/plugin.json
 	@rm -f release/custom_files-linux.zip && zip -j release/custom_files-linux.zip ../target/release/mcvm_plugin_custom_files plugins/custom_files/plugin.json
 	@rm -f release/docs-linux.zip && zip -j release/docs-linux.zip ../target/release/mcvm_plugin_docs plugins/docs/plugin.json
 	@rm -f release/fabric_quilt-linux.zip && zip -j release/fabric_quilt-linux.zip ../target/release/mcvm_plugin_fabric_quilt plugins/fabric_quilt/plugin.json
@@ -39,6 +41,10 @@ install.args:
 install.backup:
 	@cargo install --path . --bin mcvm_plugin_backup --offline
 	@cat plugins/backup/plugin.json | sed 's,\${PLUGIN_DIR}/,,' > ~/.local/share/mcvm/plugins/backup.json
+
+install.config_split:
+	@cargo install --path . --bin mcvm_plugin_config_split --offline
+	@cat plugins/config_split/plugin.json | sed 's,\${PLUGIN_DIR}/,,' > ~/.local/share/mcvm/plugins/config_split.json
 
 install.custom_files:
 	@cargo install --path . --bin mcvm_plugin_custom_files --offline
