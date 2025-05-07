@@ -72,15 +72,16 @@ where
 	let _ = o;
 	let hook_arg = serde_json::to_string(arg.arg).context("Failed to serialize hook argument")?;
 
-	let cmd = arg.cmd.replace(
-		PLUGIN_DIR_TOKEN,
-		&arg.working_dir
-			.map(|x| x.to_string_lossy().to_string())
-			.unwrap_or_default(),
-	);
+	let plugin_dir = arg
+		.working_dir
+		.map(|x| x.to_string_lossy().to_string())
+		.unwrap_or_default();
+	let cmd = arg.cmd.replace(PLUGIN_DIR_TOKEN, &plugin_dir);
 	let mut cmd = Command::new(cmd);
 
-	cmd.args(arg.additional_args);
+	for arg in arg.additional_args {
+		cmd.arg(arg.replace(PLUGIN_DIR_TOKEN, &plugin_dir));
+	}
 	cmd.arg(hook.get_name());
 	cmd.arg(hook_arg);
 
