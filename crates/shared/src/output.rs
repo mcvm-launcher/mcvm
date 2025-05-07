@@ -39,7 +39,7 @@ pub trait MCVMOutput: Send {
 	where
 		Self: Sized,
 	{
-		OutputProcess(self)
+		OutputProcess::new(self)
 	}
 
 	/// Gets an OutputSection object for this output
@@ -47,7 +47,7 @@ pub trait MCVMOutput: Send {
 	where
 		Self: Sized,
 	{
-		OutputSection(self)
+		OutputSection::new(self)
 	}
 
 	/// Offer a confirmation / yes no prompt to the user.
