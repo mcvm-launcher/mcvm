@@ -10,8 +10,8 @@ package:
 	@cargo build --release --bin mcvm_plugin_modrinth
 	@cargo build --release --bin mcvm_plugin_modrinth_api
 	@cargo build --release --bin mcvm_plugin_options
-	@cargo build --release --bin mcvm_plugin_paper
 	@cargo build --release --bin mcvm_plugin_packhost
+	@cargo build --release --bin mcvm_plugin_paper
 	@cargo build --release --bin mcvm_plugin_scripthook
 	@cargo build --release --bin mcvm_plugin_server_restart
 	@cargo build --release --bin mcvm_plugin_smithed
