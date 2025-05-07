@@ -499,7 +499,7 @@ pub fn get_addon_paths(
 					vec![game_dir.join("texturepacks")]
 				}
 			} else {
-				vec![]
+				vec![game_dir.join("resourcepacks")]
 			}
 		}
 		AddonKind::Mod => vec![game_dir.join("mods")],
