@@ -165,6 +165,8 @@ fn main() -> anyhow::Result<()> {
 						}
 
 						for target_path in datapack_dirs {
+							let target_path = target_path
+								.join(format!("smithed_mcvm_{pack_id}_{latest_version_name}.zip"));
 							let _ = create_leading_dirs_async(&target_path).await;
 							update_hardlink_async(&path, &target_path)
 								.await
@@ -185,6 +187,8 @@ fn main() -> anyhow::Result<()> {
 						}
 
 						for target_path in resource_pack_dirs {
+							let target_path = target_path
+								.join(format!("smithed_mcvm_{pack_id}_{latest_version_name}.zip"));
 							let _ = create_leading_dirs_async(&target_path).await;
 							update_hardlink_async(&path, &target_path)
 								.await
