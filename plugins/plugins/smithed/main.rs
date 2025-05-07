@@ -1,4 +1,8 @@
-use std::{collections::HashMap, path::PathBuf, sync::Arc};
+use std::{
+	collections::HashMap,
+	path::{Path, PathBuf},
+	sync::Arc,
+};
 
 use anyhow::{bail, Context};
 use mcvm::config_crate::instance::get_addon_paths;
@@ -32,14 +36,42 @@ fn main() -> anyhow::Result<()> {
 			.context("Failed to get data dir")?
 			.join("internal/smithed/packs");
 
-		let Some(requested_packs) = arg.config.common.plugin_config.get("smithed_packs") else {
+		let game_dir = PathBuf::from(arg.game_dir);
+
+		let datapack_dirs = get_addon_paths(
+			&arg.config,
+			&game_dir,
+			AddonKind::Datapack,
+			&[],
+			&arg.version_info,
+		)
+		.context("Failed to get instance paths for datapacks")?;
+		let resource_pack_dirs = get_addon_paths(
+			&arg.config,
+			&game_dir,
+			AddonKind::ResourcePack,
+			&[],
+			&arg.version_info,
+		)
+		.context("Failed to get instance paths for datapacks")?;
+
+		let requested_packs = arg.config.common.plugin_config.get("smithed_packs");
+		// If requested packs is not present, clear old packs immediately instead of later so that they still get removed
+		// even if you just delete your smithed_packs field
+		if requested_packs.is_none() {
+			for dir in &datapack_dirs {
+				clear_dir(dir).context("Failed to clear existing packs in datapack directory")?;
+			}
+			for dir in &resource_pack_dirs {
+				clear_dir(dir).context("Failed to clear existing packs in datapack directory")?;
+			}
+		}
+
+		let Some(requested_packs) = requested_packs else {
 			return Ok(OnInstanceSetupResult::default());
 		};
 		let requested_packs: Vec<String> = serde_json::from_value(requested_packs.clone())
 			.context("Requested Smithed packs were not formatted correctly")?;
-		if requested_packs.is_empty() {
-			return Ok(OnInstanceSetupResult::default());
-		}
 
 		ctx.get_output().display(
 			MessageContents::Header("Updating Smithed packs".into()),
@@ -120,24 +152,13 @@ fn main() -> anyhow::Result<()> {
 
 		// Now we actually download all of the packs
 
-		let game_dir = PathBuf::from(arg.game_dir);
-
-		let datapack_dirs = get_addon_paths(
-			&arg.config,
-			&game_dir,
-			AddonKind::Datapack,
-			&[],
-			&arg.version_info,
-		)
-		.context("Failed to get instance paths for datapacks")?;
-		let resource_pack_dirs = get_addon_paths(
-			&arg.config,
-			&game_dir,
-			AddonKind::ResourcePack,
-			&[],
-			&arg.version_info,
-		)
-		.context("Failed to get instance paths for datapacks")?;
+		// Clear the existing packs
+		for dir in &datapack_dirs {
+			clear_dir(dir).context("Failed to clear existing packs in datapack directory")?;
+		}
+		for dir in &resource_pack_dirs {
+			clear_dir(dir).context("Failed to clear existing packs in datapack directory")?;
+		}
 
 		runtime.block_on(async move {
 			let mut task_set = JoinSet::new();
@@ -346,4 +367,24 @@ struct PackWithVersions {
 pub struct OptionalPackReference {
 	pub id: String,
 	pub version: Option<VersionPattern>,
+}
+
+/// Clears datapacks or resource packs from a directory that were downloaded by Smithed
+fn clear_dir(dir: &Path) -> anyhow::Result<()> {
+	for entry in dir.read_dir().context("Failed to read directory")? {
+		let entry = entry?;
+		if entry.file_type()?.is_dir() {
+			continue;
+		}
+		if entry
+			.file_name()
+			.to_string_lossy()
+			.to_string()
+			.starts_with("smithed_mcvm")
+		{
+			std::fs::remove_file(entry.path()).context("Failed to remove Smithed pack")?;
+		}
+	}
+
+	Ok(())
 }
