@@ -5,9 +5,13 @@ use std::{
 };
 
 use anyhow::{bail, Context};
-use mcvm_core::net::download;
+use mcvm_core::{io::json_from_file, net::download};
 use mcvm_net::github::get_github_releases;
-use mcvm_shared::util::TARGET_BITS_STR;
+use mcvm_plugin::plugin::PluginManifest;
+use mcvm_shared::{
+	output::{MCVMOutput, MessageContents, MessageLevel},
+	util::TARGET_BITS_STR,
+};
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 use zip::ZipArchive;
@@ -56,6 +60,7 @@ impl VerifiedPlugin {
 		version: Option<&str>,
 		paths: &Paths,
 		client: &Client,
+		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
 		// Get releases
 		let releases = get_github_releases(&self.github_owner, &self.github_repo, client)
@@ -120,7 +125,7 @@ impl VerifiedPlugin {
 		};
 
 		// Actually download and install
-		if asset.content_type.contains("zip") {
+		let manifest = if asset.content_type.contains("zip") {
 			let zip = download::bytes(asset.browser_download_url, client)
 				.await
 				.context("Failed to download zipped plugin")?;
@@ -133,7 +138,11 @@ impl VerifiedPlugin {
 			let dir = paths.plugins.join(&self.id);
 			std::fs::create_dir_all(&dir).context("Failed to create plugin directory")?;
 
-			zip.extract(dir).context("Failed to extract plugin files")?;
+			zip.extract(&dir)
+				.context("Failed to extract plugin files")?;
+
+			json_from_file::<PluginManifest>(dir.join("plugin.json"))
+				.context("Failed to read plugin manifest")?
 		} else if asset.content_type.contains("json") {
 			let bytes = download::bytes(asset.browser_download_url, client)
 				.await
@@ -142,9 +151,18 @@ impl VerifiedPlugin {
 			PluginManager::uninstall_plugin(&self.id, paths)
 				.context("Failed to remove existing plugin")?;
 			let path = paths.plugins.join(format!("{}.json", &self.id));
-			std::fs::write(path, bytes).context("Failed to write plugin JSON")?;
+			std::fs::write(path, &bytes).context("Failed to write plugin JSON")?;
+
+			serde_json::from_slice(&bytes).context("Failed to read plugin manifest")?
 		} else {
 			bail!("Plugin files are not of the correct type");
+		};
+
+		if let Some(install_message) = manifest.install_message {
+			o.display(
+				MessageContents::Warning(install_message),
+				MessageLevel::Important,
+			);
 		}
 
 		Ok(())

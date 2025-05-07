@@ -145,6 +145,7 @@ impl PluginManager {
 		Ok(())
 	}
 
+
 	/// Load a plugin from the plugin directory
 	pub fn load_plugin(
 		&mut self,

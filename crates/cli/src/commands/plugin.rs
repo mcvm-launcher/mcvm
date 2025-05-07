@@ -152,7 +152,7 @@ async fn install(
 			MessageLevel::Important,
 		);
 		plugin
-			.install(version.as_deref(), &data.paths, &client)
+			.install(version.as_deref(), &data.paths, &client, data.output)
 			.await
 			.context("Failed to install plugin")?;
 		data.output.display(

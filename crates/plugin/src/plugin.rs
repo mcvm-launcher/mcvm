@@ -134,6 +134,8 @@ pub struct PluginManifest {
 	pub subcommands: HashMap<String, String>,
 	/// Plugins that this plugin depends on
 	pub dependencies: Vec<String>,
+	/// Message to display when the plugin is installed
+	pub install_message: Option<String>,
 	/// The protocol version of the plugin
 	pub protocol_version: Option<u16>,
 	/// Whether to disable base64 encoding in the protocol
