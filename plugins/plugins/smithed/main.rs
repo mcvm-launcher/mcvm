@@ -141,7 +141,7 @@ fn main() -> anyhow::Result<()> {
 
 		runtime.block_on(async move {
 			let mut task_set = JoinSet::new();
-			for (pack_id, PackWithVersions { pack, versions }) in Arc::try_unwrap(packs)
+			for (_, PackWithVersions { pack, versions }) in Arc::try_unwrap(packs)
 				.expect("All tasks should be done")
 				.into_inner()
 			{
@@ -159,20 +159,22 @@ fn main() -> anyhow::Result<()> {
 
 					if let Some(datapack_url) = &latest_version.downloads.datapack {
 						let filename = format!("{latest_version_name}_datapack.zip");
-						let path = storage_dir.join(&pack_id).join(&filename);
+						let path = storage_dir.join(&pack.id).join(&filename);
 
 						if !path.exists() {
 							let _ = create_leading_dirs_async(&path).await;
 							download::file(datapack_url, &path, &client)
 								.await
 								.with_context(|| {
-									format!("Failed to download datapack for pack '{pack_id}'")
+									format!("Failed to download datapack for pack '{}'", pack.id)
 								})?;
 						}
 
 						for target_path in datapack_dirs {
-							let target_path = target_path
-								.join(format!("smithed_mcvm_{pack_id}_{latest_version_name}.zip"));
+							let target_path = target_path.join(format!(
+								"smithed_mcvm_{}_{latest_version_name}.zip",
+								pack.id
+							));
 							let _ = create_leading_dirs_async(&target_path).await;
 							update_hardlink_async(&path, &target_path)
 								.await
@@ -181,20 +183,25 @@ fn main() -> anyhow::Result<()> {
 					}
 					if let Some(resource_pack_url) = &latest_version.downloads.resourcepack {
 						let filename = format!("{latest_version_name}_resource_pack.zip");
-						let path = storage_dir.join(&pack_id).join(&filename);
+						let path = storage_dir.join(&pack.id).join(&filename);
 
 						if !path.exists() {
 							let _ = create_leading_dirs_async(&path).await;
 							download::file(resource_pack_url, &path, &client)
 								.await
 								.with_context(|| {
-									format!("Failed to download resource pack for pack '{pack_id}'")
+									format!(
+										"Failed to download resource pack for pack '{}'",
+										pack.id
+									)
 								})?;
 						}
 
 						for target_path in resource_pack_dirs {
-							let target_path = target_path
-								.join(format!("smithed_mcvm_{pack_id}_{latest_version_name}.zip"));
+							let target_path = target_path.join(format!(
+								"smithed_mcvm_{}_{latest_version_name}.zip",
+								pack.id
+							));
 							let _ = create_leading_dirs_async(&target_path).await;
 							update_hardlink_async(&path, &target_path)
 								.await
