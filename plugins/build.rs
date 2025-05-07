@@ -56,4 +56,6 @@ fn main() {
 	add_file!(zip, "plugins/plugins/stats.md");
 	add_file!(zip, "plugins/plugins/config_split.md");
 	add_file!(zip, "plugins/plugins/smithed_api.md");
+	add_file!(zip, "plugins/plugins/smithed.md");
+	add_file!(zip, "plugins/plugins/modrinth.md");
 }
