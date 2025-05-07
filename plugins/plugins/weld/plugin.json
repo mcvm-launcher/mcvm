@@ -1,0 +1,18 @@
+{
+	"name": "Weld",
+	"description": "Weld data and resource packs together for better compatability",
+	"protocol_version": 2,
+	"raw_transfer": true,
+	"hooks": {
+		"on_instance_setup": {
+			"executable": "python3",
+			"args": [
+				"${PLUGIN_DIR}/main.py"
+			],
+			"priority": "last"
+		}
+	},
+	"subcommands": {
+		"stats": "View playtime stats"
+	}
+}

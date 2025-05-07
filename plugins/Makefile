@@ -40,6 +40,7 @@ package:
 	@rm -f release/smithed_api-linux.zip && zip -j release/smithed_api-linux.zip ../target/release/mcvm_plugin_smithed_api plugins/smithed_api/plugin.json
 	@rm -f release/sponge-linux.zip && zip -j release/sponge-linux.zip ../target/release/mcvm_plugin_sponge plugins/sponge/plugin.json
 	@rm -f release/stats-linux.zip && zip -j release/stats-linux.zip ../target/release/mcvm_plugin_stats plugins/stats/plugin.json
+	@rm -f release/weld-linux.zip && zip -j release/weld-linux.zip plugins/weld/**
 	
 	@cp plugins/extra_versions/plugin.json release/extra_versions-universal.json
 	@cp plugins/lang/plugin.json release/lang-universal.json
@@ -125,3 +126,6 @@ install.sponge:
 install.stats:
 	@cargo install --path . --bin mcvm_plugin_stats --offline
 	@cat plugins/stats/plugin.json | sed 's,\${PLUGIN_DIR}/,,' > ~/.local/share/mcvm/plugins/stats.json
+
+install.weld:
+	@cp -r plugins/weld ~/.local/share/mcvm/plugins

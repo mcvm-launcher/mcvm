@@ -118,5 +118,11 @@
 		"github_owner": "mcvm-launcher",
 		"github_repo": "mcvm",
 		"description": "Install Modrinth projects on profiles and instances"
+	},
+	"weld": {
+		"id": "weld",
+		"github_owner": "mcvm-launcher",
+		"github_repo": "mcvm",
+		"description": "Weld data and resource packs together for better compatability"
 	}
 }
