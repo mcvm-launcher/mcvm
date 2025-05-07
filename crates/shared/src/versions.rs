@@ -237,6 +237,23 @@ pub struct VersionInfo {
 	pub versions: Vec<String>,
 }
 
+/// Parses a string of the format foo@bar, where foo is the object and bar is the optional
+/// version pattern. The @ and version can be omitted, which will return the Any version pattern.
+pub fn parse_versioned_string(string: &str) -> (&str, VersionPattern) {
+	if let Some(index) = string.find('@') {
+		let (id, mut version) = string.split_at(index);
+		if index + 1 < string.len() {
+			// Cut off the at symbol
+			version = &version[1..];
+			(id, VersionPattern::from(version))
+		} else {
+			(id, VersionPattern::Any)
+		}
+	} else {
+		(string, VersionPattern::Any)
+	}
+}
+
 #[cfg(test)]
 mod tests {
 	use super::*;
