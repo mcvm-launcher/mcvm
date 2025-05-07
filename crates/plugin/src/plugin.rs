@@ -69,7 +69,11 @@ impl Plugin {
 			return Ok(None);
 		};
 		match handler {
-			HookHandler::Execute { executable, args } => {
+			HookHandler::Execute {
+				executable,
+				args,
+				priority: _,
+			} => {
 				let arg = HookCallArg {
 					cmd: &executable,
 					arg,
@@ -89,11 +93,17 @@ impl Plugin {
 				};
 				hook.call(arg, o).map(Some)
 			}
-			HookHandler::Constant { constant } => Ok(Some(HookHandle::constant(
+			HookHandler::Constant {
+				constant,
+				priority: _,
+			} => Ok(Some(HookHandle::constant(
 				serde_json::from_value(constant.clone())?,
 				self.id.clone(),
 			))),
-			HookHandler::Native { function } => {
+			HookHandler::Native {
+				function,
+				priority: _,
+			} => {
 				let arg = serde_json::to_string(arg)
 					.context("Failed to serialize native hook argument")?;
 				let result = function(arg).context("Native hook handler failed")?;
@@ -115,6 +125,18 @@ impl Plugin {
 	/// Set the working dir of the plugin
 	pub fn set_working_dir(&mut self, dir: PathBuf) {
 		self.working_dir = Some(dir);
+	}
+
+	/// Get the priority of the given hook
+	pub fn get_hook_priority<H: Hook>(&self, hook: &H) -> HookPriority {
+		let Some(handler) = self.manifest.hooks.get(hook.get_name()) else {
+			return HookPriority::Any;
+		};
+		match handler {
+			HookHandler::Execute { priority, .. }
+			| HookHandler::Constant { priority, .. }
+			| HookHandler::Native { priority, .. } => *priority,
+		}
 	}
 }
 
@@ -161,17 +183,26 @@ pub enum HookHandler {
 		/// Arguments for the executable
 		#[serde(default)]
 		args: Vec<String>,
+		/// The priority for the hook
+		#[serde(default)]
+		priority: HookPriority,
 	},
 	/// Handle this hook by returning a constant result
 	Constant {
 		/// The constant result
 		constant: serde_json::Value,
+		/// The priority for the hook
+		#[serde(default)]
+		priority: HookPriority,
 	},
 	/// Handle this hook with a native function call
 	Native {
 		/// The function to handle the hook
 		#[serde(deserialize_with = "deserialize_native_function")]
 		function: NativeHookHandler,
+		/// The priority for the hook
+		#[serde(default)]
+		priority: HookPriority,
 	},
 }
 
@@ -179,6 +210,19 @@ impl Debug for HookHandler {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		write!(f, "HookHandler")
 	}
+}
+
+/// Priority for a hook
+#[derive(Deserialize, PartialEq, PartialOrd, Eq, Ord, Default, Clone, Copy)]
+#[serde(rename_all = "snake_case")]
+pub enum HookPriority {
+	/// The plugin will try to run before other ones
+	First,
+	/// The plugin will run at any time, usually in the middle
+	#[default]
+	Any,
+	/// The plugin will try to run after other ones
+	Last,
 }
 
 /// Deserialize function for the native hook. No plugin manifests should ever use this,

@@ -46,7 +46,8 @@ You must define handlers for each hook you want to use in your plugin manifest. 
 Constant handler that returns a fixed value every time it is called:
 ```
 "hook_id": {
-	"constant": any
+	"constant": any,
+	"priority": "first" | "any" | "last"
 }
 ```
 - `constant`: The constant result of the handler. Will be a different type depending on the hook.
@@ -56,10 +57,13 @@ Handler that calls an executable using the hook protocol:
 "hook_id": {
 	"executable": string,
 	"args": [string],
+	"priority": "first" | "any" | "last"
 }
 ```
 - `executable`: The path to the executable to run. The token `"${PLUGIN_DIR}"` will be replaced with the path to the directory for the plugin if present, allowing you to package executables with your plugin easily.
 - `args` (Optional): Additional command-line arguments to pass when running the hook. The `"${PLUGIN_DIR}"` token will be replaced for these as well.
+
+- `priority` (Optional): The priority (order) for this hook to run relative to other plugins. The order for plugins with the same priority is not defined, but this priority allows you to somewhat control how your plugin interacts with others. Defaults to `"any"`, which runs in the middle of `"first"` and `"last"` hooks.
 
 ## State
 Plugins can have state managed by MCVM for the duration of the MCVM program. This allows a plugin to communicate between hooks easily. Check documentation for how to use this state.

@@ -20,6 +20,7 @@ api = []
 [dependencies]
 anyhow = { workspace = true }
 base64 = { workspace = true }
+itertools = { workspace = true }
 mcvm_config = { workspace = true }
 mcvm_core = { workspace = true }
 mcvm_shared = { workspace = true }

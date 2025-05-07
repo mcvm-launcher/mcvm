@@ -6,6 +6,7 @@
 use anyhow::{bail, Context};
 use hook_call::HookHandle;
 use hooks::{Hook, OnLoad};
+use itertools::Itertools;
 use mcvm_core::Paths;
 use mcvm_shared::output::MCVMOutput;
 use plugin::Plugin;
@@ -94,7 +95,11 @@ impl CorePluginManager {
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Vec<HookHandle<H>>> {
 		let mut out = Vec::new();
-		for plugin in &self.plugins {
+		for plugin in self
+			.plugins
+			.iter()
+			.sorted_by_key(|x| x.get_hook_priority(&hook))
+		{
 			let result = plugin
 				.call_hook(&hook, arg, paths, self.mcvm_version, &self.plugin_list, o)
 				.with_context(|| format!("Hook failed for plugin {}", plugin.get_id()))?;
