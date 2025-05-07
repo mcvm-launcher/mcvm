@@ -203,7 +203,7 @@ pub enum KnownLoader {
 
 impl Loader {
 	/// Checks if this loader matches an mcvm modloader
-	pub fn matches_modloader(&self, modloader: Modloader) -> bool {
+	pub fn matches_modloader(&self, modloader: &Modloader) -> bool {
 		match modloader {
 			Modloader::Forge => matches!(self, Self::Known(KnownLoader::Forge)),
 			Modloader::Fabric => matches!(self, Self::Known(KnownLoader::Fabric)),
@@ -213,7 +213,7 @@ impl Loader {
 	}
 
 	/// Checks if this loader matches an mcvm plugin loader
-	pub fn matches_plugin_loader(&self, plugin_loader: ServerType) -> bool {
+	pub fn matches_plugin_loader(&self, plugin_loader: &ServerType) -> bool {
 		match plugin_loader {
 			ServerType::Paper => matches!(
 				self,

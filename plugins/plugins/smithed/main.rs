@@ -63,7 +63,7 @@ fn main() -> anyhow::Result<()> {
 				clear_dir(dir).context("Failed to clear existing packs in datapack directory")?;
 			}
 			for dir in &resource_pack_dirs {
-				clear_dir(dir).context("Failed to clear existing packs in datapack directory")?;
+				clear_dir(dir).context("Failed to clear existing packs in resource pack directory")?;
 			}
 		}
 
@@ -157,7 +157,7 @@ fn main() -> anyhow::Result<()> {
 			clear_dir(dir).context("Failed to clear existing packs in datapack directory")?;
 		}
 		for dir in &resource_pack_dirs {
-			clear_dir(dir).context("Failed to clear existing packs in datapack directory")?;
+			clear_dir(dir).context("Failed to clear existing packs in resource pack directory")?;
 		}
 
 		runtime.block_on(async move {

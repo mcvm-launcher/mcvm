@@ -47,6 +47,38 @@ impl Display for Modloader {
 	}
 }
 
+impl Modloader {
+	/// Gets the modloader from the given client and server type. If both are set, client takes precedence
+	pub fn from_client_and_server_type(
+		client_type: ClientType,
+		server_type: ServerType,
+	) -> Option<Self> {
+		match client_type {
+			ClientType::None => match server_type {
+				ServerType::None => None,
+				ServerType::Vanilla => Some(Self::Vanilla),
+				ServerType::Forge => Some(Self::Forge),
+				ServerType::NeoForged => Some(Self::NeoForged),
+				ServerType::Fabric => Some(Self::Fabric),
+				ServerType::Quilt => Some(Self::Quilt),
+				ServerType::Risugamis => Some(Self::Risugamis),
+				ServerType::Rift => Some(Self::Rift),
+				ServerType::Unknown(other) => Some(Self::Unknown(other)),
+				_ => None,
+			},
+			ClientType::Vanilla => Some(Self::Vanilla),
+			ClientType::Forge => Some(Self::Forge),
+			ClientType::NeoForged => Some(Self::NeoForged),
+			ClientType::Fabric => Some(Self::Fabric),
+			ClientType::Quilt => Some(Self::Quilt),
+			ClientType::LiteLoader => Some(Self::LiteLoader),
+			ClientType::Risugamis => Some(Self::Risugamis),
+			ClientType::Rift => Some(Self::Rift),
+			ClientType::Unknown(other) => Some(Self::Unknown(other)),
+		}
+	}
+}
+
 /// Matcher for different types of loader
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
