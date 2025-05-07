@@ -11,7 +11,7 @@ use mcvm_plugin::{api::CustomPlugin, hooks::OnInstanceSetupResult};
 use mcvm_shared::{
 	addon::AddonKind,
 	output::{MCVMOutput, MessageContents, MessageLevel},
-	versions::VersionPattern,
+	versions::{parse_versioned_string, VersionPattern},
 	UpdateDepth,
 };
 use tokio::{
@@ -62,10 +62,16 @@ fn main() -> anyhow::Result<()> {
 
 		// Add the initial packages
 		for pack in requested_packs {
+			let (id, version) = parse_versioned_string(&pack);
+			let version = if version == VersionPattern::Any {
+				None
+			} else {
+				Some(version)
+			};
 			to_evaluate_sender
 				.blocking_send(OptionalPackReference {
-					id: pack,
-					version: None,
+					id: id.to_string(),
+					version,
 				})
 				.expect("Failed to send to channel");
 		}
@@ -286,8 +292,7 @@ fn eval_pack(
 			.clone();
 
 		if let Some(requested_version) = pack.version {
-			let version_pattern = VersionPattern::from(&requested_version);
-			let new_versions = version_pattern.get_matches(&pack_data.versions);
+			let new_versions = requested_version.get_matches(&pack_data.versions);
 			// We have removed all possible versions
 			if new_versions.is_empty() {
 				bail!("No valid versions of pack '{}' could be found", pack.id);
@@ -309,7 +314,7 @@ fn eval_pack(
 				to_evaluate
 					.send(OptionalPackReference {
 						id: dep.id.clone(),
-						version: Some(dep.version.clone()),
+						version: Some(VersionPattern::Single(dep.version.clone())),
 					})
 					.await
 					.context("Failed to send value")?;
@@ -333,5 +338,5 @@ struct PackWithVersions {
 #[derive(Clone, Hash, PartialEq, Eq, PartialOrd, Ord, Debug)]
 pub struct OptionalPackReference {
 	pub id: String,
-	pub version: Option<String>,
+	pub version: Option<VersionPattern>,
 }
