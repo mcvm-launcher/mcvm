@@ -12,7 +12,7 @@ pub async fn get_pack(id: &str, client: &Client) -> anyhow::Result<Pack> {
 const API_URL: &str = "https://api.smithed.dev/v2";
 
 /// A Smithed pack
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Pack {
 	pub id: String,
 	pub display: PackDisplay,
@@ -20,7 +20,7 @@ pub struct Pack {
 }
 
 /// Display info for a Smithed pack
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct PackDisplay {
 	pub name: String,
@@ -31,7 +31,7 @@ pub struct PackDisplay {
 }
 
 /// Version of a pack
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct PackVersion {
 	pub name: String,
 	pub downloads: PackDownloads,
@@ -40,14 +40,14 @@ pub struct PackVersion {
 }
 
 /// Downloads for a pack version
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct PackDownloads {
 	pub datapack: Option<String>,
 	pub resourcepack: Option<String>,
 }
 
 /// Reference to a pack version
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct PackReference {
 	pub id: String,
 	pub version: String,

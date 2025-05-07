@@ -198,6 +198,9 @@ impl<H: Hook> HookHandle<H> {
 						.context("Failed to deserialize plugin action")?;
 
 				let Some(action) = action else {
+					if let Some(message) = line.strip_prefix("$_") {
+						println!("{message}");
+					}
 					return Ok(false);
 				};
 
@@ -262,9 +265,16 @@ impl<H: Hook> HookHandle<H> {
 
 				if !cmd_result.success() {
 					if let Some(exit_code) = cmd_result.code() {
-						bail!("Hook returned a non-zero exit code of {}", exit_code);
+						bail!(
+							"Hook from plugin '{}' returned a non-zero exit code of {}",
+							self.plugin_id,
+							exit_code
+						);
 					} else {
-						bail!("Hook returned a non-zero exit code");
+						bail!(
+							"Hook from plugin '{}' returned a non-zero exit code",
+							self.plugin_id
+						);
 					}
 				}
 

@@ -1,13 +1,14 @@
 use std::path::{Path, PathBuf};
 
 use anyhow::{ensure, Context};
-use mcvm_shared::addon::{Addon, AddonKind};
-use mcvm_shared::versions::{VersionInfo, VersionPattern};
+use mcvm_config::instance::get_addon_paths;
+use mcvm_shared::addon::Addon;
+use mcvm_shared::versions::VersionInfo;
 
 use crate::addon::{self, AddonExt};
 use crate::io::paths::Paths;
 
-use super::{InstKind, Instance};
+use super::Instance;
 
 impl Instance {
 	/// Creates an addon on the instance
@@ -41,66 +42,13 @@ impl Instance {
 	) -> anyhow::Result<Vec<PathBuf>> {
 		self.ensure_dirs(paths)?;
 		let game_dir = &self.dirs.get().game_dir;
-		Ok(match addon.kind {
-			AddonKind::ResourcePack => {
-				if let InstKind::Client { .. } = self.kind {
-					// Resource packs are texture packs on older versions
-					if VersionPattern::After("13w24a".into()).matches_info(version_info) {
-						vec![game_dir.join("resourcepacks")]
-					} else {
-						vec![game_dir.join("texturepacks")]
-					}
-				} else {
-					vec![]
-				}
-			}
-			AddonKind::Mod => vec![game_dir.join("mods")],
-			AddonKind::Plugin => {
-				if let InstKind::Server { .. } = self.kind {
-					vec![game_dir.join("plugins")]
-				} else {
-					vec![]
-				}
-			}
-			AddonKind::Shader => {
-				if let InstKind::Client { .. } = self.kind {
-					vec![game_dir.join("shaderpacks")]
-				} else {
-					vec![]
-				}
-			}
-			AddonKind::Datapack => {
-				if let Some(datapack_folder) = &self.config.datapack_folder {
-					vec![game_dir.join(datapack_folder)]
-				} else {
-					match &self.kind {
-						InstKind::Client { .. } => {
-							game_dir
-								.join("saves")
-								.read_dir()
-								.context("Failed to read saves directory")?
-								.filter_map(|world| {
-									let world = world.ok()?;
-									let path = world.path();
-									// Filter worlds not in the list
-									if !selected_worlds.is_empty() {
-										let dir_name = path.file_name()?.to_string_lossy();
-										if !selected_worlds.iter().any(|x| x == dir_name.as_ref()) {
-											return None;
-										}
-									}
-									Some(path.join("datapacks"))
-								})
-								.collect()
-						}
-						InstKind::Server { world_name, .. } => {
-							let world_dir = world_name.as_deref().unwrap_or("world");
-							vec![game_dir.join(world_dir).join("datapacks")]
-						}
-					}
-				}
-			}
-		})
+		get_addon_paths(
+			&self.config.original_config_with_profiles,
+			game_dir,
+			addon.kind,
+			selected_worlds,
+			version_info,
+		)
 	}
 
 	/// Hardlinks the addon from the path in addon storage to the correct in the instance,

@@ -1,10 +1,13 @@
 use std::collections::HashMap;
+use std::path::{Path, PathBuf};
 
+use anyhow::Context;
 use mcvm_core::util::versions::MinecraftVersionDeser;
+use mcvm_shared::addon::AddonKind;
 use mcvm_shared::modifications::{ClientType, Modloader, ServerType};
 use mcvm_shared::pkg::PackageStability;
 use mcvm_shared::util::{merge_options, DefaultExt, DeserListOrSingle};
-use mcvm_shared::versions::VersionPattern;
+use mcvm_shared::versions::{VersionInfo, VersionPattern};
 use mcvm_shared::Side;
 #[cfg(feature = "schema")]
 use schemars::JsonSchema;
@@ -89,7 +92,9 @@ impl CommonInstanceConfig {
 		self.modloader = other.modloader.or(self.modloader.clone());
 		self.client_type = other.client_type.or(self.client_type.clone());
 		self.server_type = other.server_type.or(self.server_type.clone());
-		self.game_modification_version = other.game_modification_version.or(self.game_modification_version.clone());
+		self.game_modification_version = other
+			.game_modification_version
+			.or(self.game_modification_version.clone());
 		self.package_stability = other.package_stability.or(self.package_stability);
 		self.launch.merge(other.launch);
 		self.datapack_folder = other.datapack_folder.or(self.datapack_folder.clone());
@@ -473,4 +478,80 @@ pub fn can_install_server_type(server_type: &ServerType) -> bool {
 			| ServerType::Folia
 			| ServerType::Sponge
 	)
+}
+
+/// Get the paths on an instance to put addons in
+pub fn get_addon_paths(
+	instance: &InstanceConfig,
+	game_dir: &Path,
+	addon: AddonKind,
+	selected_worlds: &[String],
+	version_info: &VersionInfo,
+) -> anyhow::Result<Vec<PathBuf>> {
+	let side = instance.side.context("Instance side missing")?;
+	Ok(match addon {
+		AddonKind::ResourcePack => {
+			if side == Side::Client {
+				// Resource packs are texture packs on older versions
+				if VersionPattern::After("13w24a".into()).matches_info(version_info) {
+					vec![game_dir.join("resourcepacks")]
+				} else {
+					vec![game_dir.join("texturepacks")]
+				}
+			} else {
+				vec![]
+			}
+		}
+		AddonKind::Mod => vec![game_dir.join("mods")],
+		AddonKind::Plugin => {
+			if side == Side::Server {
+				vec![game_dir.join("plugins")]
+			} else {
+				vec![]
+			}
+		}
+		AddonKind::Shader => {
+			if side == Side::Client {
+				vec![game_dir.join("shaderpacks")]
+			} else {
+				vec![]
+			}
+		}
+		AddonKind::Datapack => {
+			if let Some(datapack_folder) = &instance.common.datapack_folder {
+				vec![game_dir.join(datapack_folder)]
+			} else {
+				match side {
+					Side::Client => {
+						let saves_dir = game_dir.join("saves");
+						if saves_dir.exists() {
+							game_dir
+								.join("saves")
+								.read_dir()
+								.context("Failed to read saves directory")?
+								.filter_map(|world| {
+									let world = world.ok()?;
+									let path = world.path();
+									// Filter worlds not in the list
+									if !selected_worlds.is_empty() {
+										let dir_name = path.file_name()?.to_string_lossy();
+										if !selected_worlds.iter().any(|x| x == dir_name.as_ref()) {
+											return None;
+										}
+									}
+									Some(path.join("datapacks"))
+								})
+								.collect()
+						} else {
+							vec![]
+						}
+					}
+					Side::Server => {
+						// TODO: Support custom world names
+						vec![game_dir.join("world").join("datapacks")]
+					}
+				}
+			}
+		}
+	})
 }

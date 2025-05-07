@@ -34,6 +34,22 @@ pub trait MCVMOutput: Send {
 	/// End the current section and go down a level of hierarchy
 	fn end_section(&mut self) {}
 
+	/// Gets an OutputProcess object for this output
+	fn get_process(&mut self) -> OutputProcess<Self>
+	where
+		Self: Sized,
+	{
+		OutputProcess(self)
+	}
+
+	/// Gets an OutputSection object for this output
+	fn get_section(&mut self) -> OutputSection<Self>
+	where
+		Self: Sized,
+	{
+		OutputSection(self)
+	}
+
 	/// Offer a confirmation / yes no prompt to the user.
 	/// The default is the default value of the prompt.
 	fn prompt_yes_no(&mut self, default: bool, message: MessageContents) -> anyhow::Result<bool> {
@@ -255,6 +271,49 @@ where
 }
 
 impl<'a, O> DerefMut for OutputProcess<'a, O>
+where
+	O: MCVMOutput,
+{
+	fn deref_mut(&mut self) -> &mut Self::Target {
+		&mut self.0
+	}
+}
+
+/// RAII struct that opens and closes an output section
+pub struct OutputSection<'a, O: MCVMOutput>(&'a mut O);
+
+impl<'a, O> OutputSection<'a, O>
+where
+	O: MCVMOutput,
+{
+	/// Create a new OutputProcess from an MCVMOutput
+	pub fn new(o: &'a mut O) -> Self {
+		o.start_section();
+		Self(o)
+	}
+}
+
+impl<'a, O> Drop for OutputSection<'a, O>
+where
+	O: MCVMOutput,
+{
+	fn drop(&mut self) {
+		self.0.end_section();
+	}
+}
+
+impl<'a, O> Deref for OutputSection<'a, O>
+where
+	O: MCVMOutput,
+{
+	type Target = O;
+
+	fn deref(&self) -> &Self::Target {
+		&self.0
+	}
+}
+
+impl<'a, O> DerefMut for OutputSection<'a, O>
 where
 	O: MCVMOutput,
 {
