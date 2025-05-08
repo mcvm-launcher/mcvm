@@ -9,7 +9,7 @@ use hooks::{Hook, OnLoad};
 use itertools::Itertools;
 use mcvm_core::Paths;
 use mcvm_shared::output::MCVMOutput;
-use plugin::Plugin;
+use plugin::{Plugin, DEFAULT_PROTOCOL_VERSION, NEWEST_PROTOCOL_VERSION};
 
 /// API for Rust-based plugins to use
 #[cfg(feature = "api")]
@@ -70,6 +70,16 @@ impl CorePluginManager {
 		paths: &Paths,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
+		// Check the protocol version
+		if plugin
+			.get_manifest()
+			.protocol_version
+			.unwrap_or(DEFAULT_PROTOCOL_VERSION)
+			> NEWEST_PROTOCOL_VERSION
+		{
+			bail!("Plugin has a newer protocol version than MCVM");
+		}
+
 		// Update the plugin list
 		self.plugin_list.push(plugin.get_id().clone());
 

@@ -114,7 +114,7 @@ impl PluginManager {
 		let mut inner = self.inner.lock().map_err(|x| anyhow!("{x}"))?;
 		inner.configs.push(plugin);
 
-		let mut plugin = Plugin::new(id, manifest);
+		let mut plugin = Plugin::new(id.clone(), manifest);
 		if let Some(custom_config) = custom_config {
 			plugin.set_custom_config(custom_config)?;
 		}
@@ -140,11 +140,13 @@ impl PluginManager {
 			}
 		}
 
-		inner.manager.add_plugin(plugin, &paths.core, o)?;
+		inner
+			.manager
+			.add_plugin(plugin, &paths.core, o)
+			.with_context(|| format!("Failed to add plugin '{id}'"))?;
 
 		Ok(())
 	}
-
 
 	/// Load a plugin from the plugin directory
 	pub fn load_plugin(
