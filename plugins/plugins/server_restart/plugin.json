@@ -1,7 +1,7 @@
 {
 	"name": "Server Restart",
 	"description": "Manage restart behavior for Spigot and Paper servers",
-	"protocol_version": 2,
+	"protocol_version": 3,
 	"hooks": {
 		"on_instance_setup": {
 			"executable": "${PLUGIN_DIR}/mcvm_plugin_server_restart"

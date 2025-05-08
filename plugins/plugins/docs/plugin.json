@@ -1,7 +1,7 @@
 {
 	"name": "Docs",
 	"description": "View MCVM's documentation straight from the program",
-	"protocol_version": 2,
+	"protocol_version": 3,
 	"hooks": {
 		"subcommand": {
 			"executable": "${PLUGIN_DIR}/mcvm_plugin_docs"

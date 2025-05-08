@@ -1,7 +1,7 @@
 {
 	"name": "Weld",
 	"description": "Weld data and resource packs together for better compatability",
-	"protocol_version": 2,
+	"protocol_version": 3,
 	"raw_transfer": true,
 	"hooks": {
 		"on_instance_setup": {

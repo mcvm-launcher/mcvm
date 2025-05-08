@@ -162,7 +162,11 @@ impl CustomPlugin {
 			let result = f(ctx, arg)?;
 			if !H::get_takes_over() {
 				// Output result
-				let serialized = serde_json::to_string(&result)?;
+				let serialized = if self.settings.protocol_version < 3 {
+					serde_json::Value::String(serde_json::to_string(&result)?)
+				} else {
+					serde_json::to_value(result)?
+				};
 				let action = OutputAction::SetResult(serialized);
 				println!(
 					"{}",

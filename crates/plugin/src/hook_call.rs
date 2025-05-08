@@ -207,10 +207,17 @@ impl<H: Hook> HookHandle<H> {
 
 				match action {
 					OutputAction::SetResult(new_result) => {
-						*result = Some(
-							serde_json::from_str(&new_result)
-								.context("Failed to deserialize hook result")?,
-						);
+						// Before version 3, this was just a string
+						let new_result = if self.protocol_version < 3 {
+							let string: String = serde_json::from_value(new_result)
+								.context("Failed to deserialize hook result")?;
+							serde_json::from_str(&string)
+								.context("Failed to deserialize hook result")?
+						} else {
+							serde_json::from_value(new_result)
+								.context("Failed to deserialize hook result")?
+						};
+						*result = Some(new_result);
 					}
 					OutputAction::SetState(new_state) => {
 						let state = self

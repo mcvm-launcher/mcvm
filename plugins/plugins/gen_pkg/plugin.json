@@ -1,7 +1,7 @@
 {
 	"name": "Gen Package",
 	"description": "Automatically generate packages from existing websites",
-	"protocol_version": 2,
+	"protocol_version": 3,
 	"hooks": {
 		"subcommand": {
 			"executable": "${PLUGIN_DIR}/mcvm_plugin_gen_pkg"

@@ -1,7 +1,7 @@
 {
 	"name": "Stats",
 	"description": "Track and view playtime stats",
-	"protocol_version": 2,
+	"protocol_version": 3,
 	"hooks": {
 		"subcommand": {
 			"executable": "${PLUGIN_DIR}/mcvm_plugin_stats"

@@ -107,8 +107,8 @@ def run():
 def main():
 	run()
 
-output("set_result", json.dumps({
+output("set_result", {
 	"main_class_override": None,
 	"jar_path_override": None,
 	"classpath_extension": []
-}))
+})

@@ -14,7 +14,7 @@ use crate::hooks::Hook;
 use crate::HookHandle;
 
 /// The newest protocol version for plugin communication
-pub const NEWEST_PROTOCOL_VERSION: u16 = 2;
+pub const NEWEST_PROTOCOL_VERSION: u16 = 3;
 /// The default protocol version used for compatability
 pub const DEFAULT_PROTOCOL_VERSION: u16 = 1;
 

@@ -23,7 +23,7 @@ pub enum OutputAction {
 	/// End an output section
 	EndSection,
 	/// Set the result of the hook
-	SetResult(String),
+	SetResult(serde_json::Value),
 	/// Set the persistent state of the plugin
 	SetState(serde_json::Value),
 }

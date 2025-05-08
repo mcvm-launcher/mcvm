@@ -1,7 +1,7 @@
 {
 	"name": "Options",
 	"description": "Manage game options for client and server",
-	"protocol_version": 2,
+	"protocol_version": 3,
 	"hooks": {
 		"on_instance_setup": {
 			"executable": "${PLUGIN_DIR}/mcvm_plugin_options"
