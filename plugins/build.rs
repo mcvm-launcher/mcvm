@@ -44,20 +44,20 @@ fn main() {
 	add_file!(zip, "plugins/plugins/index.md");
 	add_file!(zip, "plugins/plugins/args.md");
 	add_file!(zip, "plugins/plugins/backup.md");
+	add_file!(zip, "plugins/plugins/config_split.md");
 	add_file!(zip, "plugins/plugins/custom_files.md");
 	add_file!(zip, "plugins/plugins/docs.md");
 	add_file!(zip, "plugins/plugins/extra_versions.md");
 	add_file!(zip, "plugins/plugins/gen_pkg.md");
 	add_file!(zip, "plugins/plugins/lang.md");
+	add_file!(zip, "plugins/plugins/modrinth.md");
 	add_file!(zip, "plugins/plugins/modrinth_api.md");
 	add_file!(zip, "plugins/plugins/options.md");
 	add_file!(zip, "plugins/plugins/scripthook.md");
 	add_file!(zip, "plugins/plugins/server_restart.md");
-	add_file!(zip, "plugins/plugins/stats.md");
-	add_file!(zip, "plugins/plugins/config_split.md");
-	add_file!(zip, "plugins/plugins/smithed_api.md");
 	add_file!(zip, "plugins/plugins/smithed.md");
-	add_file!(zip, "plugins/plugins/modrinth.md");
+	add_file!(zip, "plugins/plugins/smithed_api.md");
+	add_file!(zip, "plugins/plugins/stats.md");
 	add_file!(zip, "plugins/plugins/weld.md");
 	add_file!(zip, "plugins/plugins/xmcl_transfer.md");
 }
