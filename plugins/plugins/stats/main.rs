@@ -32,8 +32,12 @@ fn main() -> anyhow::Result<()> {
 	plugin.on_instance_launch(|mut ctx, arg| {
 		let mut stats = Stats::open(&ctx).context("Failed to open stats")?;
 
-		// Write launch count
-		stats.instances.entry(arg.id.clone()).or_default().launches += 1;
+		// Write launch count and launch time
+		let entry = stats.instances.entry(arg.id.clone()).or_default();
+		entry.launches += 1;
+		if let Ok(timestamp) = utc_timestamp() {
+			entry.last_launch = Some(timestamp);
+		}
 		stats.write(&ctx).context("Failed to write stats")?;
 
 		// Track when the instance started in persistent state to get playtime
@@ -199,6 +203,8 @@ struct InstanceStats {
 	playtime: u64,
 	/// The number of times the instance has been launched
 	launches: u32,
+	/// The last launch time of the instance
+	last_launch: Option<u64>,
 }
 
 impl InstanceStats {
