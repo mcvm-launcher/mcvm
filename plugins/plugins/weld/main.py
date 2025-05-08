@@ -21,7 +21,7 @@ def output(method: str, data: object | None = None):
 		out2 = json.dumps(out)
 		print(f"%_{out2}")
 
-def weld_dir(dir: Path):
+def weld_dir(dir: Path, ignore: list):
 	# Dir to store unwelded files so that they persist across updates
 	unwelded_path = dir.joinpath("unwelded")
 	if not unwelded_path.exists():
@@ -29,8 +29,13 @@ def weld_dir(dir: Path):
 	# Move all files to the unwelded dir
 	for entry in os.listdir(dir):
 		path = dir.joinpath(entry)
+
 		if "weld_pack" in entry:
 			continue
+		for ignored in ignore:
+			if ignored in entry:
+				continue
+
 		if path.is_file():
 			target = unwelded_path.joinpath(entry)
 			# It won't move if the target already exists
@@ -87,12 +92,16 @@ def run():
 
 	resourcepack_dirs = [game_dir.joinpath("resourcepacks")]
 
+	weld_ignore = []
+	if "weld_ignore" in arg["config"]:
+		weld_ignore = arg["config"]["weld_ignore"]
+
 	# Run Weld on each directory
 	for dir in datapack_dirs:
-		weld_dir(dir)
+		weld_dir(dir, weld_ignore)
 
 	for dir in resourcepack_dirs:
-		weld_dir(dir)
+		weld_dir(dir, weld_ignore)
 
 	output("message", {
 		"contents": {
