@@ -46,7 +46,7 @@ pub enum InstanceSubcommand {
 		/// if you have authenticated at least once
 		#[arg(short, long)]
 		offline: bool,
-		/// The instance to launch, as an instance reference (profile:instance)
+		/// The instance to launch
 		instance: Option<String>,
 	},
 	#[command(about = "Print useful information about an instance")]
