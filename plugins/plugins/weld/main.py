@@ -58,6 +58,9 @@ def run():
 	if arg["update_depth"] == "shallow":
 		return
 	
+	if "disable_weld" in arg["config"] and arg["config"]["disable_weld"]:
+		return
+	
 	output("start_process")
 	output("message", {
 		"contents": {
