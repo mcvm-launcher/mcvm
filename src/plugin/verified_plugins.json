@@ -124,5 +124,11 @@
 		"github_owner": "mcvm-launcher",
 		"github_repo": "mcvm",
 		"description": "Weld data and resource packs together for better compatability"
+	},
+	"xmcl_transfer": {
+		"id": "xmcl_transfer",
+		"github_owner": "mcvm-launcher",
+		"github_repo": "mcvm",
+		"description": "Instance transfer for XMCL"
 	}
 }

@@ -1,0 +1,22 @@
+{
+	"name": "XMCL Transfer",
+	"description": "Instance transfer for XMCL",
+	"protocol_version": 2,
+	"hooks": {
+		"add_instance_transfer_formats": {
+			"constant": [
+				{
+					"id": "xmcl",
+					"import": {},
+					"export": {}
+				}
+			]
+		},
+		"import_instance": {
+			"executable": "${PLUGIN_DIR}/mcvm_plugin_xmcl_transfer"
+		},
+		"export_instance": {
+			"executable": "${PLUGIN_DIR}/mcvm_plugin_xmcl_transfer"
+		}
+	}
+}

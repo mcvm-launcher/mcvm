@@ -2,6 +2,7 @@ use std::collections::HashMap;
 use std::path::{Path, PathBuf};
 
 use anyhow::Context;
+use mcvm_core::io::java::args::MemoryNum;
 use mcvm_core::util::versions::MinecraftVersionDeser;
 use mcvm_shared::addon::AddonKind;
 use mcvm_shared::modifications::{ClientType, Modloader, ServerType};
@@ -170,6 +171,24 @@ pub enum LaunchMemory {
 		/// The maximum memory
 		max: String,
 	},
+}
+
+impl LaunchMemory {
+	/// Parse this memory as a minimum and maximum memory
+	pub fn to_min_max(self) -> (Option<MemoryNum>, Option<MemoryNum>) {
+		let min_mem = match &self {
+			LaunchMemory::None => None,
+			LaunchMemory::Single(string) => MemoryNum::parse(string),
+			LaunchMemory::Both { min, .. } => MemoryNum::parse(min),
+		};
+		let max_mem = match &self {
+			LaunchMemory::None => None,
+			LaunchMemory::Single(string) => MemoryNum::parse(string),
+			LaunchMemory::Both { max, .. } => MemoryNum::parse(max),
+		};
+
+		(min_mem, max_mem)
+	}
 }
 
 fn default_java() -> String {

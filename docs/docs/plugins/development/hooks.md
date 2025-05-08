@@ -248,6 +248,8 @@ Hook called on a specific plugin to export an instance using one of the formats 
 	"format": string,
 	"id": string,
 	"config": InstanceConfig,
+	"minecraft_version": string,
+	"game_modification_version": string,
 	"game_dir": string,
 	"result_path": string
 }

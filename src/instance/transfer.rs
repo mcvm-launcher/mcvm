@@ -60,11 +60,17 @@ impl Instance {
 			MessageLevel::Important,
 		);
 
+		let lock_instance = lock
+			.get_instance(&self.id)
+			.context("Instance does not exist in lockfile. Try updating it before exporting.")?;
+
 		// Export using the plugin
 		let arg = ExportInstanceArg {
 			id: self.id.to_string(),
 			format: format.info.id.clone(),
 			config: self.config.original_config_with_profiles.clone(),
+			minecraft_version: lock_instance.version.clone(),
+			game_modification_version: lock_instance.game_modification_version.clone(),
 			game_dir: self.dirs.get().game_dir.to_string_lossy().to_string(),
 			result_path: result_path.to_string_lossy().to_string(),
 		};

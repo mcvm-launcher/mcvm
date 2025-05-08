@@ -86,6 +86,10 @@ path = "plugins/sponge/main.rs"
 name = "mcvm_plugin_stats"
 path = "plugins/stats/main.rs"
 
+[[bin]]
+name = "mcvm_plugin_xmcl_transfer"
+path = "plugins/xmcl_transfer/main.rs"
+
 [dependencies]
 anyhow = { workspace = true }
 clap = { workspace = true }

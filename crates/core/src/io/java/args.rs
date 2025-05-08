@@ -55,6 +55,12 @@ impl Display for MemoryNum {
 	}
 }
 
+impl Default for MemoryNum {
+	fn default() -> Self {
+		Self::B(0)
+	}
+}
+
 /// Different types of Java memory arguments
 pub enum MemoryArg {
 	/// Minimum heap size

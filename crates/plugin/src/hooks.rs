@@ -388,6 +388,10 @@ pub struct ExportInstanceArg {
 	pub id: String,
 	/// The configuration of the instance
 	pub config: InstanceConfig,
+	/// The actual Minecraft version of the instance
+	pub minecraft_version: String,
+	/// The actual game modification version of the instance
+	pub game_modification_version: Option<String>,
 	/// The directory where the instance game files are located
 	pub game_dir: String,
 	/// The desired path for the resulting instance, as a file path

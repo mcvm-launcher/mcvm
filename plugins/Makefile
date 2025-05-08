@@ -18,6 +18,7 @@ package:
 	@cargo build --release --bin mcvm_plugin_smithed_api
 	@cargo build --release --bin mcvm_plugin_sponge
 	@cargo build --release --bin mcvm_plugin_stats
+	@cargo build --release --bin mcvm_plugin_xmcl_transfer
 
 	@mkdir -p release
 
@@ -41,6 +42,7 @@ package:
 	@rm -f release/sponge-linux.zip && zip -j release/sponge-linux.zip ../target/release/mcvm_plugin_sponge plugins/sponge/plugin.json
 	@rm -f release/stats-linux.zip && zip -j release/stats-linux.zip ../target/release/mcvm_plugin_stats plugins/stats/plugin.json
 	@rm -f release/weld-linux.zip && zip -j release/weld-linux.zip plugins/weld/**
+	@rm -f release/xmcl_transfer-linux.zip && zip -j release/xmcl_transfer-linux.zip ../target/release/mcvm_plugin_xmcl_transfer plugins/xmcl_transfer/plugin.json
 	
 	@cp plugins/extra_versions/plugin.json release/extra_versions-universal.json
 	@cp plugins/lang/plugin.json release/lang-universal.json
@@ -129,3 +131,7 @@ install.stats:
 
 install.weld:
 	@cp -r plugins/weld ~/.local/share/mcvm/plugins
+
+install.xmcl_transfer:
+	@cargo install --path . --bin mcvm_plugin_xmcl_transfer --offline
+	@cat plugins/xmcl_transfer/plugin.json | sed 's,\${PLUGIN_DIR}/,,' > ~/.local/share/mcvm/plugins/xmcl_transfer.json
