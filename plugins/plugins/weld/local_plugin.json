@@ -5,7 +5,10 @@
 	"raw_transfer": true,
 	"hooks": {
 		"on_instance_setup": {
-			"executable": "./weld.pyz",
+			"executable": "python3",
+			"args": [
+				"${PLUGIN_DIR}/mcvm_weld.py"
+			],
 			"priority": "last"
 		}
 	}

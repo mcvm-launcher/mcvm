@@ -1,4 +1,4 @@
-package:
+package: build.weld
 	@cargo build --release --bin mcvm_plugin_args
 	@cargo build --release --bin mcvm_plugin_backup
 	@cargo build --release --bin mcvm_plugin_config_split
@@ -41,11 +41,14 @@ package:
 	@rm -f release/smithed_api-linux.zip && zip -j release/smithed_api-linux.zip ../target/release/mcvm_plugin_smithed_api plugins/smithed_api/plugin.json
 	@rm -f release/sponge-linux.zip && zip -j release/sponge-linux.zip ../target/release/mcvm_plugin_sponge plugins/sponge/plugin.json
 	@rm -f release/stats-linux.zip && zip -j release/stats-linux.zip ../target/release/mcvm_plugin_stats plugins/stats/plugin.json
-	@rm -f release/weld-linux.zip && zip -j release/weld-linux.zip plugins/weld/**
+	@rm -f release/weld-linux.zip && zip -j release/weld-linux.zip plugins/weld/plugin.json plugins/weld/weld.pyz
 	@rm -f release/xmcl_transfer-linux.zip && zip -j release/xmcl_transfer-linux.zip ../target/release/mcvm_plugin_xmcl_transfer plugins/xmcl_transfer/plugin.json
 	
 	@cp plugins/extra_versions/plugin.json release/extra_versions-universal.json
 	@cp plugins/lang/plugin.json release/lang-universal.json
+
+build.weld:
+	@shiv -o plugins/weld/weld.pyz -e mcvm_weld.main --site-packages plugins/weld smithed
 
 install.args:
 	@cargo install --path . --bin mcvm_plugin_args --offline
@@ -130,7 +133,9 @@ install.stats:
 	@cat plugins/stats/plugin.json | sed 's,\${PLUGIN_DIR}/,,' > ~/.local/share/mcvm/plugins/stats.json
 
 install.weld:
-	@cp -r plugins/weld ~/.local/share/mcvm/plugins
+	@mkdir -p ~/.local/share/mcvm/plugins/weld
+	@cp plugins/weld/mcvm_weld.py ~/.local/share/mcvm/plugins/weld
+	@cp plugins/weld/local_plugin.json ~/.local/share/mcvm/plugins/weld/plugin.json
 
 install.xmcl_transfer:
 	@cargo install --path . --bin mcvm_plugin_xmcl_transfer --offline

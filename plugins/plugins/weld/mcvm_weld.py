@@ -1,16 +1,8 @@
-import importlib.metadata, subprocess, sys
+import sys
 from smithed.weld import run_weld
 import json
 from pathlib import Path
 import os
-
-required = {'smithed'}
-installed = {pkg.metadata['Name'] for pkg in importlib.metadata.distributions()}
-missing = required - installed
-
-if missing:
-	subprocess.check_call([sys.executable, '-m', 'pip', 'install', '--upgrade', 'pip'])
-	subprocess.check_call([sys.executable, '-m', 'pip', 'install', *missing])
 
 def output(method: str, data: object | None = None):
 	if data is None:
@@ -111,7 +103,9 @@ def run():
 	})
 	output("end_process")
 
-run()
+
+def main():
+	run()
 
 output("set_result", json.dumps({
 	"main_class_override": None,
