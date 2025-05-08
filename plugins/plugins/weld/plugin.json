@@ -11,8 +11,5 @@
 			],
 			"priority": "last"
 		}
-	},
-	"subcommands": {
-		"stats": "View playtime stats"
 	}
 }
