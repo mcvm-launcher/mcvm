@@ -56,30 +56,104 @@ fn main() -> anyhow::Result<()> {
 		.context("Failed to get instance paths for datapacks")?;
 
 		let requested_packs = arg.config.common.plugin_config.get("smithed_packs");
+		let requested_bundles = arg.config.common.plugin_config.get("smithed_bundles");
 		// If requested packs is not present, clear old packs immediately instead of later so that they still get removed
 		// even if you just delete your smithed_packs field
-		if requested_packs.is_none() {
+		if requested_packs.is_none() && requested_bundles.is_none() {
 			for dir in &datapack_dirs {
 				clear_dir(dir).context("Failed to clear existing packs in datapack directory")?;
 			}
 			for dir in &resource_pack_dirs {
-				clear_dir(dir).context("Failed to clear existing packs in resource pack directory")?;
+				clear_dir(dir)
+					.context("Failed to clear existing packs in resource pack directory")?;
 			}
 		}
 
-		let Some(requested_packs) = requested_packs else {
-			return Ok(OnInstanceSetupResult::default());
-		};
-		let requested_packs: Vec<String> = serde_json::from_value(requested_packs.clone())
-			.context("Requested Smithed packs were not formatted correctly")?;
+		let client = Client::new();
+		let runtime = tokio::runtime::Runtime::new()?;
+
+		let mut all_requested_packs = Vec::new();
+		if let Some(requested_packs) = requested_packs {
+			let requested_packs: Vec<String> = serde_json::from_value(requested_packs.clone())
+				.context("Requested Smithed packs were not formatted correctly")?;
+
+			all_requested_packs.extend(requested_packs.into_iter().map(|x| {
+				let (id, version) = parse_versioned_string(&x);
+				let version = if version == VersionPattern::Any {
+					None
+				} else {
+					Some(version)
+				};
+
+				OptionalPackReference {
+					id: id.to_string(),
+					version,
+				}
+			}));
+		}
+		// Add bundles
+		if let Some(requested_bundles) = requested_bundles {
+			let requested_bundles: Vec<String> = serde_json::from_value(requested_bundles.clone())
+				.context("Requested Smithed packs were not formatted correctly")?;
+
+			let result = runtime.block_on(async {
+				let mut task_set = JoinSet::new();
+				for bundle_id in requested_bundles {
+					let client = client.clone();
+					let minecraft_version = arg.version_info.version.clone();
+					task_set.spawn(async move {
+						let (bundle_id, version) = parse_versioned_string(&bundle_id);
+
+						let bundle = smithed::get_bundle(&bundle_id, &client)
+							.await
+							.context("Failed to download bundle from Smithed API")?;
+
+						let versions: Vec<_> = bundle
+							.versions
+							.iter()
+							.filter_map(|x| {
+								if x.supports.contains(&minecraft_version) {
+									Some(x.name.clone())
+								} else {
+									None
+								}
+							})
+							.collect();
+						let versions = version.get_matches(&versions);
+						let version = versions.last().with_context(|| {
+							format!("Failed to find a valid version for the bundle '{bundle_id}'")
+						})?;
+						let version = bundle
+							.versions
+							.into_iter()
+							.find(|x| x.name == *version)
+							.expect("Should exist");
+
+						Ok::<_, anyhow::Error>(version.packs)
+					});
+				}
+
+				let mut out = Vec::new();
+
+				while let Some(result) = task_set.join_next().await {
+					let result = result??;
+					out.extend(result.into_iter().map(|x| OptionalPackReference {
+						id: x.id,
+						version: Some(VersionPattern::Single(x.version)),
+					}));
+				}
+
+				Ok::<_, anyhow::Error>(out)
+			})?;
+
+			all_requested_packs.extend(result);
+		}
 
 		ctx.get_output().display(
 			MessageContents::Header("Updating Smithed packs".into()),
 			MessageLevel::Important,
 		);
 		let mut section = ctx.get_output().get_section();
-
-		let runtime = tokio::runtime::Runtime::new()?;
 
 		let mut process = section.get_process();
 		process.display(
@@ -90,26 +164,16 @@ fn main() -> anyhow::Result<()> {
 		// Collect all the packs we need to download by walking through dependencies
 		let packs = Arc::new(Mutex::new(HashMap::new()));
 		let (to_evaluate_sender, mut to_evaluate_receiver) =
-			tokio::sync::mpsc::channel::<OptionalPackReference>(requested_packs.len() + 10);
+			tokio::sync::mpsc::channel::<OptionalPackReference>(all_requested_packs.len() + 10);
 
 		// Add the initial packages
-		for pack in requested_packs {
-			let (id, version) = parse_versioned_string(&pack);
-			let version = if version == VersionPattern::Any {
-				None
-			} else {
-				Some(version)
-			};
+		for pack in all_requested_packs {
 			to_evaluate_sender
-				.blocking_send(OptionalPackReference {
-					id: id.to_string(),
-					version,
-				})
+				.blocking_send(pack)
 				.expect("Failed to send to channel");
 		}
 
 		let mut task_set = JoinSet::new();
-		let client = Client::new();
 		// Run through all the tasks
 		runtime.block_on(async {
 			loop {
