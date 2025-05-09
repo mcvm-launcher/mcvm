@@ -130,5 +130,11 @@
 		"github_owner": "mcvm-launcher",
 		"github_repo": "mcvm",
 		"description": "Instance transfer for XMCL"
+	},
+	"archive": {
+		"id": "archive",
+		"github_owner": "mcvm-launcher",
+		"github_repo": "mcvm",
+		"description": "Clean up old files"
 	}
 }

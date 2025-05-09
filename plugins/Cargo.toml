@@ -11,6 +11,10 @@ repository.workspace = true
 rust-version.workspace = true
 
 [[bin]]
+name = "mcvm_plugin_archive"
+path = "plugins/archive/main.rs"
+
+[[bin]]
 name = "mcvm_plugin_args"
 path = "plugins/args/main.rs"
 

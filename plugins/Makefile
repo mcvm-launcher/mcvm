@@ -1,4 +1,5 @@
 package: build.weld
+	@cargo build --release --bin mcvm_plugin_archive
 	@cargo build --release --bin mcvm_plugin_args
 	@cargo build --release --bin mcvm_plugin_backup
 	@cargo build --release --bin mcvm_plugin_config_split
@@ -22,6 +23,7 @@ package: build.weld
 
 	@mkdir -p release
 
+	@rm -f release/archive-linux.zip && zip -j release/archive-linux.zip ../target/release/mcvm_plugin_archive plugins/archive/plugin.json
 	@rm -f release/args-linux.zip && zip -j release/args-linux.zip ../target/release/mcvm_plugin_args plugins/args/plugin.json
 	@rm -f release/backup-linux.zip && zip -j release/backup-linux.zip ../target/release/mcvm_plugin_backup plugins/backup/plugin.json
 	@rm -f release/config_split-linux.zip && zip -j release/config_split-linux.zip ../target/release/mcvm_plugin_config_split plugins/config_split/plugin.json
@@ -49,6 +51,10 @@ package: build.weld
 
 build.weld:
 	@shiv -o plugins/weld/weld.pyz -e mcvm_weld.main --site-packages plugins/weld smithed
+
+install.archive:
+	@cargo install --path . --bin mcvm_plugin_archive --offline
+	@cat plugins/archive/plugin.json | sed 's,\${PLUGIN_DIR}/,,' > ~/.local/share/mcvm/plugins/archive.json
 
 install.args:
 	@cargo install --path . --bin mcvm_plugin_args --offline

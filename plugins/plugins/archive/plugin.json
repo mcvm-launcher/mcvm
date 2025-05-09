@@ -1,0 +1,13 @@
+{
+	"name": "Archive",
+	"description": "Clean up old files",
+	"protocol_version": 3,
+	"hooks": {
+		"subcommand": {
+			"executable": "${PLUGIN_DIR}/mcvm_plugin_archive"
+		}
+	},
+	"subcommands": {
+		"archive": "Remove assets that aren't needed anymore"
+	}
+}
