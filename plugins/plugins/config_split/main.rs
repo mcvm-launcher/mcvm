@@ -1,8 +1,4 @@
-use std::{
-	collections::HashMap,
-	path::{Path, PathBuf},
-	sync::Arc,
-};
+use std::{collections::HashMap, path::Path, sync::Arc};
 
 use anyhow::Context;
 use mcvm_core::io::json_from_file;
@@ -12,8 +8,8 @@ use serde::de::DeserializeOwned;
 fn main() -> anyhow::Result<()> {
 	let mut plugin = CustomPlugin::from_manifest_file("config_split", include_str!("plugin.json"))?;
 
-	plugin.add_instances(|_, arg| {
-		let config_dir = PathBuf::from(arg.config_dir);
+	plugin.add_instances(|ctx, _| {
+		let config_dir = ctx.get_config_dir()?;
 		let dir = config_dir.join("instances");
 		if !dir.exists() {
 			let _ = std::fs::create_dir_all(&dir);
@@ -21,8 +17,8 @@ fn main() -> anyhow::Result<()> {
 
 		get_config_files(&dir)
 	})?;
-	plugin.add_profiles(|_, arg| {
-		let config_dir = PathBuf::from(arg.config_dir);
+	plugin.add_profiles(|ctx, _| {
+		let config_dir = ctx.get_config_dir()?;
 		let dir = config_dir.join("profiles");
 		if !dir.exists() {
 			let _ = std::fs::create_dir_all(&dir);
