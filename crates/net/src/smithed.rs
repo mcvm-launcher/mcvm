@@ -63,7 +63,6 @@ pub async fn get_bundle(id: &str, client: &Client) -> anyhow::Result<Bundle> {
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Bundle {
 	pub id: String,
-	pub display: PackDisplay,
 	pub versions: Vec<BundleVersion>,
 }
 
