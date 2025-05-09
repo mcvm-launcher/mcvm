@@ -20,6 +20,7 @@ fn main() -> anyhow::Result<()> {
 		runtime.block_on(async {
 			match cli.subcommand {
 				Subcommand::GetPack { pack } => get_smithed_pack(pack).await,
+				Subcommand::GetBundle { bundle } => get_smithed_bundle(bundle).await,
 			}
 		})?;
 
@@ -42,6 +43,11 @@ enum Subcommand {
 		/// The slug or ID of the pack
 		pack: String,
 	},
+	#[command(about = "Get a Smithed bundle")]
+	GetBundle {
+		/// The slug or ID of the bundle
+		bundle: String,
+	},
 }
 
 async fn get_smithed_pack(pack: String) -> anyhow::Result<()> {
@@ -53,6 +59,19 @@ async fn get_smithed_pack(pack: String) -> anyhow::Result<()> {
 	let pack_pretty = serde_json::to_string_pretty(&pack)?;
 
 	println!("{pack_pretty}");
+
+	Ok(())
+}
+
+async fn get_smithed_bundle(bundle: String) -> anyhow::Result<()> {
+	let client = Client::new();
+
+	let bundle = mcvm_net::smithed::get_bundle(&bundle, &client)
+		.await
+		.context("Failed to get bundle")?;
+	let bundle_pretty = serde_json::to_string_pretty(&bundle)?;
+
+	println!("{bundle_pretty}");
 
 	Ok(())
 }

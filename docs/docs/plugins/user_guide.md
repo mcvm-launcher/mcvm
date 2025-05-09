@@ -26,7 +26,7 @@ Whichever installation method you use, you must now enable the plugin in your co
 }
 ```
 
-Now, run the `mcvm plugin list` command to see the list of plugins, and the one you just added should be in the list and marked as "Loaded".
+Now, run the `mcvm plugin list` command to see the list of plugins, and the one you just added should be in the list and marked as "Loaded". You can also use the `mcvm plugin enable` and `mcvm plugin disable` commands to enable and disable plugins.
 
 ## Configuring
 
