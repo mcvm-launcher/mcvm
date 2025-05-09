@@ -39,7 +39,7 @@ pub fn consolidate_profile_configs(
 						new.merge(profile.clone());
 						out.insert(id.clone(), new);
 					} else {
-						bail!("Parent profile '{parent}' does not exist");
+						bail!("Parent profile '{parent}' does not exist, or cyclic profiles were found");
 					}
 				}
 			}
