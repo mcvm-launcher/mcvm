@@ -52,3 +52,25 @@ pub struct PackReference {
 	pub id: String,
 	pub version: String,
 }
+
+/// Get a Smithed bundle from the API
+pub async fn get_bundle(id: &str, client: &Client) -> anyhow::Result<Bundle> {
+	let url = format!("{API_URL}/bundles/{id}");
+	download::json(url, client).await
+}
+
+/// A Smithed bundle
+#[derive(Serialize, Deserialize, Clone, Debug)]
+pub struct Bundle {
+	pub id: String,
+	pub display: PackDisplay,
+	pub versions: Vec<BundleVersion>,
+}
+
+/// Version of a bundle
+#[derive(Serialize, Deserialize, Clone, Debug)]
+pub struct BundleVersion {
+	pub name: String,
+	pub supports: Vec<String>,
+	pub packs: Vec<PackReference>,
+}
