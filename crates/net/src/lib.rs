@@ -9,3 +9,5 @@ pub mod github;
 pub mod modrinth;
 /// Interacting with the Smithed API
 pub mod smithed;
+/// Downloading the NeoForge installer
+pub mod neoforge;
