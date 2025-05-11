@@ -4,7 +4,7 @@ import LaunchPage from "./pages/launch/LaunchPage";
 import NavBar from "./components/navigation/NavBar";
 import { createSignal } from "solid-js";
 import LaunchFooter from "./components/launch/LaunchFooter";
-import InstanceConfig from "./pages/config/InstanceConfig";
+import InstanceConfig, { ConfigMode } from "./pages/config/InstanceConfig";
 
 export default function App() {
 	const [selectedInstance, setSelectedInstance] = createSignal<string | null>(
@@ -21,7 +21,24 @@ export default function App() {
 				path="/"
 				component={() => <LaunchPage onSelectInstance={setSelectedInstance} />}
 			/>
-			<Route path="/instance_config/:id" component={() => <InstanceConfig />} />
+			<Route
+				path="/instance_config/:instanceId"
+				component={() => (
+					<InstanceConfig mode={ConfigMode.Instance} creating={false} />
+				)}
+			/>
+			<Route
+				path="/profile_config/:profileId"
+				component={() => (
+					<InstanceConfig mode={ConfigMode.Profile} creating={false} />
+				)}
+			/>
+			<Route
+				path="/create_instance"
+				component={() => (
+					<InstanceConfig mode={ConfigMode.Instance} creating={true} />
+				)}
+			/>
 		</Router>
 	);
 }

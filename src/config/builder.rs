@@ -4,6 +4,7 @@ use std::sync::Arc;
 use anyhow::bail;
 use mcvm_config::instance::{ClientWindowConfig, InstanceConfig, LaunchConfig};
 use mcvm_config::package::{EvalPermissions, FullPackageConfig, PackageConfigDeser};
+use mcvm_config::profile::ProfileConfig;
 use mcvm_config::user::{UserConfig, UserVariant};
 use mcvm_core::auth_crate::mc::ClientId;
 use mcvm_core::user::{User, UserManager};
@@ -103,6 +104,8 @@ impl ConfigBuilder {
 			users: self.users,
 			instances: self.instances,
 			instance_groups: self.instance_groups,
+			profiles: HashMap::new(),
+			global_profile: ProfileConfig::default(),
 			packages: self.packages,
 			plugins: self.plugins,
 			prefs: self.preferences,

@@ -2,7 +2,7 @@ import { createSignal, For, Match, Show, Switch } from "solid-js";
 import { GroupInfo, InstanceInfo, InstanceMap } from "../../types";
 import { invoke } from "@tauri-apps/api";
 import "./LaunchInstanceList.css";
-import { Box, Folder, Pin } from "../../icons";
+import { Box, Folder, Pin, Plus } from "../../icons";
 import Icon from "../Icon";
 import IconButton from "../input/IconButton";
 import { getIconSrc } from "../../utils";
@@ -150,6 +150,15 @@ function Section(props: SectionProps) {
 						/>
 					)}
 				</For>
+				{/* Button for creating a new instance */}
+				<Show when={props.kind == "all"}>
+					<div class="cont launch-instance-list-item noselect border border-big" onclick={() => window.location.href = "/create_instance"}>
+						<div class="launch-instance-list-icon" style="width:2rem">
+							<Plus/>
+						</div>
+						<div style="" class="bold">Create Instance</div>
+					</div>
+				</Show>
 			</div>
 		</div>
 	);

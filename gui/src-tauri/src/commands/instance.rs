@@ -2,8 +2,12 @@ use crate::data::InstanceIcon;
 use crate::{output::LauncherOutput, State};
 use anyhow::Context;
 use itertools::Itertools;
+use mcvm::config::modifications::{apply_modifications_and_write, ConfigModification};
+use mcvm::config::Config;
 use mcvm::config_crate::instance::InstanceConfig;
-use mcvm::shared::id::InstanceID;
+use mcvm::config_crate::profile::ProfileConfig;
+use mcvm::core::io::json_to_file_pretty;
+use mcvm::shared::id::{InstanceID, ProfileID};
 use mcvm::shared::Side;
 use serde::{Deserialize, Serialize};
 use std::fmt::Debug;
@@ -109,8 +113,8 @@ pub struct InstanceGroupInfo {
 pub async fn get_instance_config(
 	state: tauri::State<'_, State>,
 	app_handle: tauri::AppHandle,
-	instance: String,
-) -> Result<(InstanceConfig, InstanceConfig), String> {
+	id: String,
+) -> Result<InstanceConfig, String> {
 	let app_handle = Arc::new(app_handle);
 
 	let mut output = LauncherOutput::new(
@@ -121,12 +125,110 @@ pub async fn get_instance_config(
 
 	let config = fmt_err(load_config(&state.paths, &mut output).context("Failed to load config"))?;
 
-	let Some(instance) = config.instances.get(&InstanceID::from(instance)) else {
+	let Some(instance) = config.instances.get(&InstanceID::from(id)) else {
 		return Err("Instance does not exist".into());
 	};
 
-	Ok((
-		instance.get_config().original_config.clone(),
-		instance.get_config().original_config_with_profiles.clone(),
-	))
+	Ok(instance.get_config().original_config_with_profiles.clone())
+}
+
+#[tauri::command]
+pub async fn get_profile_config(
+	state: tauri::State<'_, State>,
+	app_handle: tauri::AppHandle,
+	id: String,
+) -> Result<ProfileConfig, String> {
+	let app_handle = Arc::new(app_handle);
+
+	let mut output = LauncherOutput::new(
+		app_handle,
+		state.passkeys.clone(),
+		state.password_prompt.clone(),
+	);
+
+	let config = fmt_err(load_config(&state.paths, &mut output).context("Failed to load config"))?;
+
+	let Some(profile) = config.profiles.get(&ProfileID::from(id)) else {
+		return Err("Profile does not exist".into());
+	};
+
+	Ok(profile.clone())
+}
+
+#[tauri::command]
+pub async fn get_global_profile(
+	state: tauri::State<'_, State>,
+	app_handle: tauri::AppHandle,
+) -> Result<ProfileConfig, String> {
+	let app_handle = Arc::new(app_handle);
+
+	let mut output = LauncherOutput::new(
+		app_handle,
+		state.passkeys.clone(),
+		state.password_prompt.clone(),
+	);
+
+	let config = fmt_err(load_config(&state.paths, &mut output).context("Failed to load config"))?;
+
+	Ok(config.global_profile)
+}
+
+#[tauri::command]
+pub async fn write_instance_config(
+	state: tauri::State<'_, State>,
+	id: String,
+	config: InstanceConfig,
+) -> Result<(), String> {
+	let mut configuration =
+		fmt_err(Config::open(&Config::get_path(&state.paths)).context("Failed to load config"))?;
+
+	let modifications = vec![ConfigModification::AddInstance(id.into(), config)];
+	fmt_err(
+		apply_modifications_and_write(&mut configuration, modifications, &state.paths)
+			.context("Failed to modify and write config"),
+	)?;
+
+	println!("Instance config wrote");
+
+	Ok(())
+}
+
+#[tauri::command]
+pub async fn write_profile_config(
+	state: tauri::State<'_, State>,
+	id: String,
+	config: ProfileConfig,
+) -> Result<(), String> {
+	let mut configuration =
+		fmt_err(Config::open(&Config::get_path(&state.paths)).context("Failed to load config"))?;
+
+	let modifications = vec![ConfigModification::AddProfile(id.into(), config)];
+	fmt_err(
+		apply_modifications_and_write(&mut configuration, modifications, &state.paths)
+			.context("Failed to modify and write config"),
+	)?;
+
+	println!("Profile config wrote");
+
+	Ok(())
+}
+
+#[tauri::command]
+pub async fn write_global_profile(
+	state: tauri::State<'_, State>,
+	config: ProfileConfig,
+) -> Result<(), String> {
+	let mut configuration =
+		fmt_err(Config::open(&Config::get_path(&state.paths)).context("Failed to load config"))?;
+
+	configuration.global_profile = Some(config);
+	fmt_err(
+		json_to_file_pretty(&Config::get_path(&state.paths), &configuration)
+			.context("Failed to write modified configuration"),
+	)?;
+
+	println!("Global profile wrote");
+
+
+	Ok(())
 }
