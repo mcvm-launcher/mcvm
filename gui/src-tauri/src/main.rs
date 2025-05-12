@@ -61,6 +61,8 @@ fn main() {
 			commands::instance::write_instance_config,
 			commands::instance::write_profile_config,
 			commands::instance::write_global_profile,
+			commands::package::get_packages,
+			commands::package::get_package_meta,
 		])
 		.run(tauri::generate_context!())
 		.expect("Error while running tauri application");

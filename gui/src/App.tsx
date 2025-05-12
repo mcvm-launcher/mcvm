@@ -5,6 +5,7 @@ import NavBar from "./components/navigation/NavBar";
 import { createSignal } from "solid-js";
 import LaunchFooter from "./components/launch/LaunchFooter";
 import InstanceConfig, { ConfigMode } from "./pages/config/InstanceConfig";
+import BrowsePackages from "./pages/package/BrowsePackages";
 
 export default function App() {
 	const [selectedInstance, setSelectedInstance] = createSignal<string | null>(
@@ -37,6 +38,18 @@ export default function App() {
 				path="/create_instance"
 				component={() => (
 					<InstanceConfig mode={ConfigMode.Instance} creating={true} />
+				)}
+			/>
+			<Route
+				path="/create_profile"
+				component={() => (
+					<InstanceConfig mode={ConfigMode.Profile} creating={true} />
+				)}
+			/>
+			<Route
+				path="/packages/:page"
+				component={() => (
+					<BrowsePackages />
 				)}
 			/>
 		</Router>
