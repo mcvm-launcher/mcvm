@@ -59,5 +59,6 @@ fn main() {
 	add_file!(zip, "plugins/plugins/smithed_api.md");
 	add_file!(zip, "plugins/plugins/stats.md");
 	add_file!(zip, "plugins/plugins/weld.md");
+	add_file!(zip, "plugins/plugins/webtools.md");
 	add_file!(zip, "plugins/plugins/xmcl_transfer.md");
 }

@@ -1,0 +1,13 @@
+{
+	"name": "WebTools",
+	"description": "Launch online Minecraft tools",
+	"protocol_version": 3,
+	"hooks": {
+		"subcommand": {
+			"executable": "${PLUGIN_DIR}/mcvm_plugin_webtools"
+		}
+	},
+	"subcommands": {
+		"webtool": "View and launch web tools"
+	}
+}

@@ -19,6 +19,7 @@ package: build.weld
 	@cargo build --release --bin mcvm_plugin_smithed_api
 	@cargo build --release --bin mcvm_plugin_sponge
 	@cargo build --release --bin mcvm_plugin_stats
+	@cargo build --release --bin mcvm_plugin_webtools
 	@cargo build --release --bin mcvm_plugin_xmcl_transfer
 
 	@mkdir -p release
@@ -43,6 +44,7 @@ package: build.weld
 	@rm -f release/smithed_api-linux.zip && zip -j release/smithed_api-linux.zip ../target/release/mcvm_plugin_smithed_api plugins/smithed_api/plugin.json
 	@rm -f release/sponge-linux.zip && zip -j release/sponge-linux.zip ../target/release/mcvm_plugin_sponge plugins/sponge/plugin.json
 	@rm -f release/stats-linux.zip && zip -j release/stats-linux.zip ../target/release/mcvm_plugin_stats plugins/stats/plugin.json
+	@rm -f release/webtools-linux.zip && zip -j release/webtools-linux.zip ../target/release/mcvm_plugin_webtools plugins/webtools/plugin.json
 	@rm -f release/weld-linux.zip && zip -j release/weld-linux.zip plugins/weld/plugin.json plugins/weld/weld.pyz
 	@rm -f release/xmcl_transfer-linux.zip && zip -j release/xmcl_transfer-linux.zip ../target/release/mcvm_plugin_xmcl_transfer plugins/xmcl_transfer/plugin.json
 	
@@ -137,6 +139,10 @@ install.sponge:
 install.stats:
 	@cargo install --path . --bin mcvm_plugin_stats --offline
 	@cat plugins/stats/plugin.json | sed 's,\${PLUGIN_DIR}/,,' > ~/.local/share/mcvm/plugins/stats.json
+
+install.webtools:
+	@cargo install --path . --bin mcvm_plugin_webtools --offline
+	@cat plugins/webtools/plugin.json | sed 's,\${PLUGIN_DIR}/,,' > ~/.local/share/mcvm/plugins/webtools.json
 
 install.weld:
 	@mkdir -p ~/.local/share/mcvm/plugins/weld

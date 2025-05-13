@@ -91,6 +91,10 @@ name = "mcvm_plugin_stats"
 path = "plugins/stats/main.rs"
 
 [[bin]]
+name = "mcvm_plugin_webtools"
+path = "plugins/webtools/main.rs"
+
+[[bin]]
 name = "mcvm_plugin_xmcl_transfer"
 path = "plugins/xmcl_transfer/main.rs"
 
