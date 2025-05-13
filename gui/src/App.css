@@ -17,6 +17,7 @@
 	--bg0: #131313;
 	--bg: #181818;
 	--bg2: #1e1e1e;
+	--bg3: #2b2b2b;
 	--text: var(--fg);
 	--accent: #5f00ef;
 	--accent2: #2f0077;
@@ -36,11 +37,16 @@ q.container {
 	text-align: center;
 }
 
-.container {
+.cont {
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
 	justify-content: center;
 	align-items: center;
+	gap: 0.6rem;
+}
+
+.col {
+	flex-direction: column;
 }
 
 .row {
@@ -58,7 +64,8 @@ a:hover {
 	color: #535bf2;
 }
 
-h1, h2 {
+h1,
+h2 {
 	text-align: center;
 }
 
@@ -74,6 +81,7 @@ button {
 	background-color: var(--bg2);
 	transition: border-color 0.25s;
 	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+	text-align: center;
 }
 
 button {
@@ -86,6 +94,41 @@ button:hover {
 button:active {
 	border-color: #396cd8;
 	background-color: #e8e8e8;
+}
+
+.select {
+	background-color: var(--bg2);
+	color: var(--fg);
+
+	.solid-select-control {
+		background-color: var(--bg2);
+		border-color: var(--bg2);
+		&:focus-within {
+			outline-color: var(--bg2);
+		}
+	}
+
+	.solid-select-input {
+		background-color: var(--bg2);
+		color: var(--fg);
+	}
+
+	.solid-select-list {
+		background-color: var(--bg2);
+		color: var(--fg);
+	}
+
+	.solid-select-option {
+		color: var(--fg);
+
+		&:hover {
+			background-color: var(--bg3);
+		}
+
+		&[data-focused="true"] {
+			background-color: var(--bg3);
+		}
+	}
 }
 
 /* Style classes */

@@ -14,6 +14,7 @@
   "dependencies": {
     "@solidjs/router": "^0.13.5",
     "@tauri-apps/api": "^1",
+    "@thisbeyond/solid-select": "^0.15.0",
     "solid-js": "^1.7.8",
     "vite-plugin-solid-svg": "^0.8.1"
   },

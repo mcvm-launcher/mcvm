@@ -15,4 +15,5 @@ export interface HasWidthHeight {
 	width?: string;
 	height?: string;
 	viewBox?: string;
+	[prop: string]: any;
 }

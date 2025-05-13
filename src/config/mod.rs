@@ -17,6 +17,7 @@ pub mod profile;
 use self::instance::read_instance_config;
 use crate::plugin::PluginManager;
 use anyhow::{bail, Context};
+use mcvm_config::profile::ProfileConfig;
 use mcvm_config::ConfigDeser;
 use mcvm_core::auth_crate::mc::ClientId;
 use mcvm_core::io::{json_from_file, json_to_file_pretty};
@@ -25,7 +26,7 @@ use mcvm_plugin::hooks::{
 	AddInstances, AddInstancesArg, AddProfiles, AddSupportedGameModifications,
 	SupportedGameModifications,
 };
-use mcvm_shared::id::InstanceID;
+use mcvm_shared::id::{InstanceID, ProfileID};
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm_shared::translate;
 use mcvm_shared::util::is_valid_identifier;
@@ -49,6 +50,10 @@ pub struct Config {
 	pub users: UserManager,
 	/// Instances
 	pub instances: HashMap<InstanceID, Instance>,
+	/// Profiles
+	pub profiles: HashMap<ProfileID, ProfileConfig>,
+	/// The globally applied profile
+	pub global_profile: ProfileConfig,
 	/// Named groups of instances
 	pub instance_groups: HashMap<Arc<str>, Vec<InstanceID>>,
 	/// The registry of packages. Will include packages that are configured when created this way
@@ -235,6 +240,8 @@ impl Config {
 		Ok(Self {
 			users,
 			instances,
+			profiles,
+			global_profile: config.global_profile.unwrap_or_default(),
 			instance_groups: config.instance_groups,
 			packages,
 			plugins,

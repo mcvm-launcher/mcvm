@@ -11,7 +11,7 @@ use super::instance::{merge_instance_configs, InstanceConfig};
 use super::package::PackageConfigDeser;
 
 /// Configuration for a profile
-#[derive(Deserialize, Serialize, Clone)]
+#[derive(Deserialize, Serialize, Clone, Default)]
 #[cfg_attr(feature = "schema", derive(JsonSchema))]
 pub struct ProfileConfig {
 	/// The configuration for the instance

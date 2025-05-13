@@ -1,0 +1,37 @@
+#packages-container {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 0.5rem;
+	width: 95%;
+}
+
+.package {
+	/* padding: 0.5rem; */
+	background-color: var(--bg2);
+	border-color: var(--bg2);
+	box-sizing: border-box;
+	border-width: 0px;
+	height: 12rem;
+}
+
+.package-inner {
+	display: grid;
+	grid-template-rows: minmax(0, 1fr) minmax(0, 0.35fr);
+	height: 100%;
+	gap: 0.2rem;
+}
+
+.package-image-container {
+	width: 100%;
+}
+
+.package-image {
+	width: 100%;
+	height: 100%;
+}
+
+.package-header {
+	/* text-align: center; */
+	margin-top: 0.7rem;
+	margin-left: 1.1rem;
+}
