@@ -6,6 +6,7 @@ import { createSignal } from "solid-js";
 import LaunchFooter from "./components/launch/LaunchFooter";
 import InstanceConfig, { ConfigMode } from "./pages/config/InstanceConfig";
 import BrowsePackages from "./pages/package/BrowsePackages";
+import ViewPackage from "./pages/package/ViewPackage";
 
 export default function App() {
 	const [selectedInstance, setSelectedInstance] = createSignal<string | null>(
@@ -46,12 +47,8 @@ export default function App() {
 					<InstanceConfig mode={ConfigMode.Profile} creating={true} />
 				)}
 			/>
-			<Route
-				path="/packages/:page"
-				component={() => (
-					<BrowsePackages />
-				)}
-			/>
+			<Route path="/packages/:page" component={() => <BrowsePackages />} />
+			<Route path="/package/:id" component={() => <ViewPackage />} />
 		</Router>
 	);
 }

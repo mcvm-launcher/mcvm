@@ -1,6 +1,7 @@
 use crate::{output::LauncherOutput, State};
 use anyhow::Context;
 use mcvm::pkg_crate::metadata::PackageMetadata;
+use mcvm::pkg_crate::properties::PackageProperties;
 use mcvm::pkg_crate::{PkgRequest, PkgRequestSource};
 use std::sync::Arc;
 
@@ -12,7 +13,8 @@ pub async fn get_packages(
 	app_handle: tauri::AppHandle,
 	start: usize,
 	end: usize,
-) -> Result<Vec<String>, String> {
+	search: Option<&str>,
+) -> Result<(Vec<String>, usize), String> {
 	let app_handle = Arc::new(app_handle);
 
 	let mut output = LauncherOutput::new(
@@ -32,14 +34,25 @@ pub async fn get_packages(
 	)?;
 	packages.sort();
 
-	println!("Packages got");
+	let packages = packages.into_iter().map(|x| x.id.to_string());
 
-	Ok(packages
-		.into_iter()
-		.skip(start)
-		.take(end - start)
-		.map(|x| x.id.to_string())
-		.collect())
+	// Add search
+	let packages = packages.filter(|x| {
+		if let Some(search) = &search {
+			x.contains(search)
+		} else {
+			true
+		}
+	});
+
+	let packages: Vec<_> = packages.collect();
+
+	let available_count = packages.len();
+
+	Ok((
+		packages.into_iter().skip(start).take(end - start).collect(),
+		available_count,
+	))
 }
 
 #[tauri::command]
@@ -72,4 +85,36 @@ pub async fn get_package_meta(
 	)?;
 
 	Ok(meta.clone())
+}
+
+#[tauri::command]
+pub async fn get_package_props(
+	state: tauri::State<'_, State>,
+	app_handle: tauri::AppHandle,
+	package: &str,
+) -> Result<PackageProperties, String> {
+	let app_handle = Arc::new(app_handle);
+
+	let mut output = LauncherOutput::new(
+		app_handle,
+		state.passkeys.clone(),
+		state.password_prompt.clone(),
+	);
+	let mut config =
+		fmt_err(load_config(&state.paths, &mut output).context("Failed to load config"))?;
+
+	let props = fmt_err(
+		config
+			.packages
+			.get_properties(
+				&Arc::new(PkgRequest::any(package, PkgRequestSource::UserRequire)),
+				&state.paths,
+				&state.client,
+				&mut output,
+			)
+			.await
+			.context("Failed to get properties"),
+	)?;
+
+	Ok(props.clone())
 }

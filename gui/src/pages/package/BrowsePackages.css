@@ -1,3 +1,9 @@
+#header {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	width: 100%;
+}
+
 #packages-container {
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -10,8 +16,8 @@
 	background-color: var(--bg2);
 	border-color: var(--bg2);
 	box-sizing: border-box;
-	border-width: 0px;
-	height: 12rem;
+	height: 15rem;
+	border-radius: 0.8rem;
 }
 
 .package-inner {
@@ -28,10 +34,22 @@
 .package-image {
 	width: 100%;
 	height: 100%;
+	object-fit: cover;
+	border-top-left-radius: 0.8rem;
+	border-top-right-radius: 0.8rem;
 }
 
 .package-header {
 	/* text-align: center; */
-	margin-top: 0.7rem;
+	margin-top: 0.5rem;
 	margin-left: 1.1rem;
+	justify-content: center;
+	align-items: flex-start;
+	gap: 0.1rem;
+}
+
+.package-description {
+	overflow: hidden;
+	color: var(--fg3);
+	font-size: 0.8rem;
 }

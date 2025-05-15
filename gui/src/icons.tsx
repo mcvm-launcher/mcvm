@@ -9,7 +9,10 @@ import GlobeIcon from "./assets/icons/globe.svg?component-solid";
 import CrossIcon from "./assets/icons/cross.svg?component-solid";
 import SpinnerIcon from "./assets/icons/spinner.svg?component-solid";
 import AngleLeftIcon from "./assets/icons/angle_left.svg?component-solid";
+import AngleRightIcon from "./assets/icons/angle_right.svg?component-solid";
 import PlusIcon from "./assets/icons/plus.svg?component-solid";
+import SearchIcon from "./assets/icons/search.svg?component-solid";
+import DeleteIcon from "./assets/icons/delete.svg?component-solid";
 import { HasWidthHeight } from "./components/Icon";
 
 export function Pin({ width, height, viewBox }: HasWidthHeight) {
@@ -64,6 +67,18 @@ export function AngleLeft({ width, height, viewBox }: HasWidthHeight) {
 	return <AngleLeftIcon width={width} height={height} viewBox={viewBox} />;
 }
 
+export function AngleRight({ width, height, viewBox }: HasWidthHeight) {
+	return <AngleRightIcon width={width} height={height} viewBox={viewBox} />;
+}
+
 export function Plus({ width, height, viewBox }: HasWidthHeight) {
 	return <PlusIcon width={width} height={height} viewBox={viewBox} />;
+}
+
+export function Search({ width, height, viewBox }: HasWidthHeight) {
+	return <SearchIcon width={width} height={height} viewBox={viewBox} />;
+}
+
+export function Delete({ width, height, viewBox }: HasWidthHeight) {
+	return <DeleteIcon width={width} height={height} viewBox={viewBox} />;
 }

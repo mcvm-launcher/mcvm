@@ -1,0 +1,56 @@
+#package-header-container {
+	width: 100%;
+}
+
+#package-header {
+	display: grid;
+	width: 90%;
+	grid-template-columns: minmax(0, 0.2fr) minmax(0, 1fr);
+	margin-top: 1rem;
+}
+
+#package-icon-image {
+	width: 4.3rem;
+	border-radius: 0.9rem;
+	border: 0.2rem solid var(--bg3);
+}
+
+#package-details {
+	margin-top: 0.5rem;
+	margin-left: -0.3rem;
+}
+
+#package-upper-details {
+	justify-content: flex-start;
+}
+
+#package-name {
+	font-size: 1.3rem;
+	font-weight: bold;
+}
+
+#package-id {
+	color: var(--fg3);
+	padding-bottom: 0.2rem;
+	font-weight: bold;
+}
+
+#package-short-description {
+	color: var(--fg3);
+	justify-content: flex-start;
+}
+
+#package-description {
+	width: 90%;
+	flex-wrap: wrap;
+	margin-top: 1rem;
+}
+
+#package-description img {
+	max-width: 80%;
+}
+
+#package-description div,
+#package-description p {
+	text-align: center;
+}

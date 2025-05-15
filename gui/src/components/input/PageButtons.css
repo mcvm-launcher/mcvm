@@ -1,0 +1,14 @@
+.page-buttons {
+	
+}
+
+.page-button {
+	background-color: var(--bg2);
+	width: 2.3rem;
+	height: 2.5rem;
+	border-radius: 0.5rem;
+}
+
+.page-button.selected {
+	background-color: var(--bg3);
+}

@@ -34,3 +34,14 @@ export interface AuthDisplayEvent {
 	url: string;
 	device_code: string;
 }
+
+export interface PackageMeta {
+	name?: string;
+	description?: string;
+	long_description?: string;
+	banner?: string;
+	icon?: string;
+	gallery?: string[];
+}
+
+export interface PackageProps {}

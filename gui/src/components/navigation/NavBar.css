@@ -16,7 +16,7 @@
 
 #navbar-container {
 	display: grid;
-	grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr) minmax(0, 1.75fr);
+	grid-template-columns: repeat(5, minmax(0, 1fr));
 	width: 100%;
 	height: 100%;
 }
