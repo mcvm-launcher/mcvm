@@ -4,7 +4,7 @@ import "./IconTextButton.css";
 
 export default function IconTextButton(props: IconTextButtonProps) {
 	const colorStyle = props.selected
-		? `background-color:${props.selectedColor};border-color:${props.selectedColor}`
+		? `background-color:${props.color};border-color:${props.selectedColor}`
 		: `background-color:${props.color};border-color:${props.color}`;
 
 	return (

@@ -42,7 +42,7 @@ pub async fn get_instances(
 				pinned: data.pinned.contains(&id),
 				id,
 				name: instance.get_config().name.clone(),
-				side: instance.get_side(),
+				side: Some(instance.get_side()),
 			}
 		})
 		.collect();
@@ -50,11 +50,46 @@ pub async fn get_instances(
 	Ok(instances)
 }
 
+#[tauri::command]
+pub async fn get_profiles(
+	state: tauri::State<'_, State>,
+	app_handle: tauri::AppHandle,
+) -> Result<Vec<InstanceInfo>, String> {
+	let app_handle = Arc::new(app_handle);
+
+	let mut output = LauncherOutput::new(
+		app_handle,
+		state.passkeys.clone(),
+		state.password_prompt.clone(),
+	);
+	let config = fmt_err(load_config(&state.paths, &mut output).context("Failed to load config"))?;
+
+	let data = state.data.lock().await;
+
+	let profiles = config
+		.profiles
+		.iter()
+		.sorted_by_key(|x| x.0)
+		.map(|(id, profile)| {
+			let id = id.to_string();
+			InstanceInfo {
+				icon: data.profile_icons.get(&id).cloned(),
+				pinned: false,
+				id,
+				name: None,
+				side: profile.instance.side,
+			}
+		})
+		.collect();
+
+	Ok(profiles)
+}
+
 #[derive(Serialize, Deserialize, Debug)]
 pub struct InstanceInfo {
 	pub id: String,
 	pub name: Option<String>,
-	pub side: Side,
+	pub side: Option<Side>,
 	pub icon: Option<InstanceIcon>,
 	pub pinned: bool,
 }
@@ -229,6 +264,12 @@ pub async fn write_global_profile(
 
 	println!("Global profile wrote");
 
-
 	Ok(())
+}
+
+#[derive(Deserialize)]
+#[serde(rename_all = "snake_case")]
+enum InstanceOrProfile {
+	Instance,
+	Profile,
 }

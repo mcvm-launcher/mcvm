@@ -82,7 +82,10 @@ export default function LaunchFooter(props: LaunchFooterProps) {
 	});
 
 	async function launch() {
-		if (props.selectedInstance === null) {
+		if (
+			props.selectedItem == undefined ||
+			props.selectedItem.type != "instance"
+		) {
 			return;
 		}
 
@@ -92,7 +95,7 @@ export default function LaunchFooter(props: LaunchFooterProps) {
 		}
 
 		let launchPromise = invoke("launch_game", {
-			instanceId: props.selectedInstance,
+			instanceId: props.selectedItem.id,
 			offline: false,
 		});
 
@@ -121,8 +124,8 @@ export default function LaunchFooter(props: LaunchFooterProps) {
 								color="var(--bg2)"
 								selectedColor="var(--accent)"
 								onClick={() => {
-									if (props.selectedInstance != null) {
-										window.location.href = `/instance_config/${props.selectedInstance}`;
+									if (props.selectedItem != undefined) {
+										window.location.href = `/${props.selectedItem.type}_config/${props.selectedItem.id}`;
 									}
 								}}
 								selected={false}
@@ -134,11 +137,11 @@ export default function LaunchFooter(props: LaunchFooterProps) {
 								text="Launch"
 								size="22px"
 								color="var(--bg2)"
-								selectedColor="var(--accent)"
+								selectedColor="var(--instance)"
 								onClick={() => {
 									launch();
 								}}
-								selected={props.selectedInstance !== null}
+								selected={props.selectedItem != undefined}
 							/>
 						</div>
 					</div>
@@ -153,8 +156,8 @@ export default function LaunchFooter(props: LaunchFooterProps) {
 					event={authInfo() as AuthDisplayEvent}
 					onCancel={() => {
 						setAuthInfo(null);
-						if (props.selectedInstance !== null) {
-							stopGame(props.selectedInstance);
+						if (props.selectedItem != undefined) {
+							stopGame(props.selectedItem.id);
 						}
 					}}
 				/>
@@ -170,7 +173,7 @@ export default function LaunchFooter(props: LaunchFooterProps) {
 }
 
 export interface LaunchFooterProps {
-	selectedInstance: string | null;
+	selectedItem?: SelectedFooterItem;
 }
 
 // Displays a list of instance icons that can be interacted with
@@ -195,4 +198,10 @@ function RunningInstanceList(props: RunningInstanceListProps) {
 interface RunningInstanceListProps {
 	instances: RunningInstanceInfo[];
 	onStop: (instance: string) => void;
+}
+
+// The object that is selected for the footer, an instance or profile
+export interface SelectedFooterItem {
+	type: "profile" | "instance";
+	id: string;
 }

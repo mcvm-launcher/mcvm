@@ -6,19 +6,24 @@ import { Box, Folder, Pin, Plus } from "../../icons";
 import Icon from "../Icon";
 import IconButton from "../input/IconButton";
 import { getIconSrc } from "../../utils";
+import { SelectedFooterItem } from "./LaunchFooter";
 
 export default function LaunchInstanceList(props: LaunchInstanceListProps) {
 	const [instances, setInstances] = createSignal<InstanceInfo[]>([]);
+	const [profiles, setProfiles] = createSignal<InstanceInfo[]>([]);
 	const [pinned, setPinned] = createSignal<InstanceInfo[]>([]);
 	const [groups, setGroups] = createSignal<GroupSectionData[]>([]);
-	const [selectedInstance, setSelectedInstance] = createSignal<string | null>(
-		null
-	);
+	const [selectedItem, setSelectedItem] = createSignal<
+		SelectedFooterItem | undefined
+	>(undefined);
 	const [selectedSection, setSelectedSection] = createSignal<string | null>(
 		null
 	);
+	const [instancesOrProfiles, setInstancesOrProfiles] = createSignal<
+		"instance" | "profile"
+	>("instance");
 
-	async function updateInstances() {
+	async function updateItems() {
 		const instances = (await invoke("get_instances")) as InstanceInfo[];
 
 		// Create map of instances and put pinned instances in their section
@@ -32,6 +37,12 @@ export default function LaunchInstanceList(props: LaunchInstanceListProps) {
 		}
 		setPinned(newPinned);
 		setInstances(instances);
+		const profiles = (await invoke("get_profiles")) as InstanceInfo[];
+		let profileMap: InstanceMap = {};
+		for (let profile of profiles) {
+			profileMap[profile.id] = profile;
+		}
+		setProfiles(profiles);
 
 		// Create groups
 		const groups = (await invoke("get_instance_groups")) as GroupInfo[];
@@ -57,60 +68,104 @@ export default function LaunchInstanceList(props: LaunchInstanceListProps) {
 		setGroups(newGroups);
 	}
 
-	updateInstances();
+	updateItems();
 
-	function onSelect(instance: string, section: string) {
-		setSelectedInstance(instance);
+	function onSelect(item: SelectedFooterItem, section: string) {
+		setSelectedItem(item);
 		setSelectedSection(section);
-		props.onSelectInstance(instance);
-		console.log("Instance: " + selectedInstance());
+		props.onSelect(item);
+		console.log("Selected item: " + selectedItem());
 	}
 
 	return (
 		<>
 			<div id="launch-instance-list">
-				<Show when={pinned().length > 0}>
-					<Section
-						id="pinned"
-						kind="pinned"
-						header="Pinned"
-						instances={pinned()}
-						selectedInstance={selectedInstance()}
-						selectedSection={selectedSection()}
-						onSelectInstance={onSelect}
-						updateList={updateInstances}
-					/>
-				</Show>
-				<For each={groups()}>
-					{(item) => (
+				<div class="cont">
+					<div id="launch-instance-list-header">
+						<div
+							class={`launch-instance-list-header-item instances${
+								instancesOrProfiles() == "instance" ? " selected" : ""
+							}`}
+							onclick={() => {
+								setInstancesOrProfiles("instance");
+							}}
+						>
+							Instances
+						</div>
+						<div
+							class={`launch-instance-list-header-item profiles${
+								instancesOrProfiles() == "profile" ? " selected" : ""
+							}`}
+							onclick={() => {
+								setInstancesOrProfiles("profile");
+							}}
+						>
+							Profiles
+						</div>
+					</div>
+				</div>
+				<Switch>
+					<Match when={instancesOrProfiles() == "instance"}>
+						<Show when={pinned().length > 0}>
+							<Section
+								id="pinned"
+								kind="pinned"
+								header="Pinned"
+								items={pinned()}
+								selectedItem={selectedItem()}
+								selectedSection={selectedSection()}
+								onSelectItem={onSelect}
+								updateList={updateItems}
+								itemType="instance"
+							/>
+						</Show>
+						<For each={groups()}>
+							{(item) => (
+								<Section
+									id={`group-${item.id}`}
+									kind="group"
+									header={item.id}
+									items={item.instances}
+									selectedItem={selectedItem()}
+									selectedSection={selectedSection()}
+									onSelectItem={onSelect}
+									updateList={updateItems}
+									itemType="instance"
+								/>
+							)}
+						</For>
 						<Section
-							id={`group-${item.id}`}
-							kind="group"
-							header={item.id}
-							instances={item.instances}
-							selectedInstance={selectedInstance()}
+							id="all"
+							kind="all"
+							header="All Instances"
+							items={instances()}
+							selectedItem={selectedItem()}
 							selectedSection={selectedSection()}
-							onSelectInstance={onSelect}
-							updateList={updateInstances}
+							onSelectItem={onSelect}
+							updateList={updateItems}
+							itemType="instance"
 						/>
-					)}
-				</For>
-				<Section
-					id="all"
-					kind="all"
-					header="All Instances"
-					instances={instances()}
-					selectedInstance={selectedInstance()}
-					selectedSection={selectedSection()}
-					onSelectInstance={onSelect}
-					updateList={updateInstances}
-				/>
+					</Match>
+					<Match when={instancesOrProfiles() == "profile"}>
+						<Section
+							id="profiles"
+							kind="profiles"
+							header="All Profiles"
+							items={profiles()}
+							selectedItem={selectedItem()}
+							selectedSection={selectedSection()}
+							onSelectItem={onSelect}
+							updateList={updateItems}
+							itemType="profile"
+						/>
+					</Match>
+				</Switch>
 			</div>
 		</>
 	);
 }
 
-// A section of instances, like pinned or an MCVM instance group
+// A section of items, like pinned or an MCVM instance group
 function Section(props: SectionProps) {
 	const HeaderIcon = () => (
 		<Switch>
@@ -133,30 +188,39 @@ function Section(props: SectionProps) {
 				<h2>{props.header}</h2>
 			</div>
 			<div class="launch-instance-list-section">
-				<For each={props.instances}>
+				<For each={props.items}>
 					{(item) => (
 						<Item
 							instance={item}
 							selected={
 								props.selectedSection !== null &&
 								props.selectedSection === props.id &&
-								props.selectedInstance === item.id
+								props.selectedItem?.id === item.id
 							}
 							onSelect={() => {
-								props.onSelectInstance(item.id, props.id);
+								props.onSelectItem(
+									{ id: item.id, type: props.itemType },
+									props.id
+								);
 							}}
 							sectionKind={props.kind}
+							itemKind={props.itemType}
 							updateList={props.updateList}
 						/>
 					)}
 				</For>
 				{/* Button for creating a new instance */}
 				<Show when={props.kind == "all"}>
-					<div class="cont launch-instance-list-item noselect border border-big" onclick={() => window.location.href = "/create_instance"}>
+					<div
+						class="cont launch-instance-list-item noselect border border-big"
+						onclick={() => (window.location.href = "/create_instance")}
+					>
 						<div class="launch-instance-list-icon" style="width:2rem">
-							<Plus/>
+							<Plus />
 						</div>
-						<div style="" class="bold">Create Instance</div>
+						<div style="" class="bold">
+							Create Instance
+						</div>
 					</div>
 				</Show>
 			</div>
@@ -167,15 +231,16 @@ function Section(props: SectionProps) {
 interface SectionProps {
 	id: string;
 	kind: SectionKind;
+	itemType: "instance" | "profile";
 	header: string;
-	instances: InstanceInfo[];
-	selectedInstance: string | null;
+	items: InstanceInfo[];
+	selectedItem?: SelectedFooterItem;
 	selectedSection: string | null;
-	onSelectInstance: (instance: string, section: string) => void;
+	onSelectItem: (item: SelectedFooterItem, section: string) => void;
 	updateList: () => void;
 }
 
-type SectionKind = "pinned" | "group" | "all";
+type SectionKind = "pinned" | "group" | "all" | "profiles";
 
 interface GroupSectionData {
 	id: string;
@@ -189,7 +254,7 @@ function Item(props: ItemProps) {
 		<div
 			class={`launch-instance-list-item noselect border border-big ${
 				props.selected ? "selected" : ""
-			}`}
+			} ${props.itemKind}`}
 			onClick={props.onSelect}
 			onMouseEnter={() => setIsHovered(true)}
 			onMouseLeave={() => setIsHovered(false)}
@@ -198,6 +263,7 @@ function Item(props: ItemProps) {
 			<Show
 				when={
 					isHovered() &&
+					props.itemKind == "instance" &&
 					!(props.instance.pinned && props.sectionKind !== "pinned")
 				}
 			>
@@ -206,7 +272,10 @@ function Item(props: ItemProps) {
 						icon={Pin}
 						size="22px"
 						color="var(--bg2)"
-						selectedColor="var(--accent)"
+						selectedColor="var(--instance)"
+						iconColor={
+							props.sectionKind == "pinned" ? "var(--bg2)" : "var(--fg)"
+						}
 						onClick={(e) => {
 							// Don't select the instance
 							e.stopPropagation();
@@ -238,10 +307,11 @@ interface ItemProps {
 	instance: InstanceInfo;
 	selected: boolean;
 	sectionKind: SectionKind;
+	itemKind: "instance" | "profile";
 	onSelect: () => void;
 	updateList: () => void;
 }
 
 export interface LaunchInstanceListProps {
-	onSelectInstance: (instance: string) => void;
+	onSelect: (item: SelectedFooterItem) => void;
 }

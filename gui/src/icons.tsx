@@ -13,6 +13,7 @@ import AngleRightIcon from "./assets/icons/angle_right.svg?component-solid";
 import PlusIcon from "./assets/icons/plus.svg?component-solid";
 import SearchIcon from "./assets/icons/search.svg?component-solid";
 import DeleteIcon from "./assets/icons/delete.svg?component-solid";
+import EditIcon from "./assets/icons/edit.svg?component-solid";
 import { HasWidthHeight } from "./components/Icon";
 
 export function Pin({ width, height, viewBox }: HasWidthHeight) {
@@ -81,4 +82,8 @@ export function Search({ width, height, viewBox }: HasWidthHeight) {
 
 export function Delete({ width, height, viewBox }: HasWidthHeight) {
 	return <DeleteIcon width={width} height={height} viewBox={viewBox} />;
+}
+
+export function Edit({ width, height, viewBox }: HasWidthHeight) {
+	return <EditIcon width={width} height={height} viewBox={viewBox} />;
 }

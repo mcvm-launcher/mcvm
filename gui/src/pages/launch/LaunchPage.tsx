@@ -1,17 +1,18 @@
 import "./LaunchPage.css";
 import LaunchInstanceList from "../../components/launch/LaunchInstanceList";
+import { SelectedFooterItem } from "../../components/launch/LaunchFooter";
 
 export default function LaunchPage(props: LaunchPageProps) {
 	return (
 		<div class="container">
 			{/* <h1 class="noselect">Launch</h1> */}
 			<br />
-			<LaunchInstanceList onSelectInstance={props.onSelectInstance} />
+			<LaunchInstanceList onSelect={props.onSelectItem} />
 			<br />
 		</div>
 	);
 }
 
 export interface LaunchPageProps {
-	onSelectInstance: (instance: string) => void;
+	onSelectItem: (item: SelectedFooterItem) => void;
 }

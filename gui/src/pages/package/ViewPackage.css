@@ -46,7 +46,8 @@
 	margin-top: 1rem;
 }
 
-#package-description img {
+#package-description img,
+#package-description iframe {
 	max-width: 80%;
 }
 

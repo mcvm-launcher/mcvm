@@ -51,6 +51,7 @@ fn main() {
 			commands::launch::stop_game,
 			commands::launch::answer_password_prompt,
 			commands::instance::get_instances,
+			commands::instance::get_profiles,
 			commands::instance::get_instance_groups,
 			commands::launch::get_running_instances,
 			commands::launch::set_running_instance_state,

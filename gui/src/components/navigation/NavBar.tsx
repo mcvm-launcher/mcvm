@@ -1,4 +1,4 @@
-import { AngleLeft, AngleRight } from "../../icons";
+import { AngleLeft, AngleRight, Box } from "../../icons";
 import IconButton from "../input/IconButton";
 import "./NavBar.css";
 
@@ -37,12 +37,12 @@ export default function NavBar() {
 							MCVM
 						</a>
 					</h2>
-					<div
-						class="cont navbar-item"
-						onclick={() => (window.location.href = "/packages/0")}
-					>
-						Packages
-					</div>
+					<a class="cont link navbar-item" href="/packages/0">
+						<div style="margin-top:0.3rem;margin-right:-0.2rem;color:var(--package)">
+							<Box />
+						</div>
+						<div>Packages</div>
+					</a>
 					<div class="cont navbar-item"></div>
 				</div>
 			</div>

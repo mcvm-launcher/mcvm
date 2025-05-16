@@ -155,7 +155,7 @@ pub async fn get_running_instances(
 					pinned: data.pinned.contains(&id),
 					id,
 					name: configured_instance.get_config().name.clone(),
-					side: configured_instance.get_side(),
+					side: Some(configured_instance.get_side()),
 				},
 				state: instance.state,
 			})

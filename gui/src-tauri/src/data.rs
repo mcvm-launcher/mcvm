@@ -11,6 +11,8 @@ use serde::{Deserialize, Serialize};
 pub struct LauncherData {
 	/// Icons for instances
 	pub instance_icons: HashMap<String, InstanceIcon>,
+	/// Icons for profiles
+	pub profile_icons: HashMap<String, InstanceIcon>,
 	/// Set of pinned instances
 	pub pinned: HashSet<String>,
 }

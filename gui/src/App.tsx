@@ -3,25 +3,27 @@ import "./App.css";
 import LaunchPage from "./pages/launch/LaunchPage";
 import NavBar from "./components/navigation/NavBar";
 import { createSignal } from "solid-js";
-import LaunchFooter from "./components/launch/LaunchFooter";
+import LaunchFooter, {
+	SelectedFooterItem,
+} from "./components/launch/LaunchFooter";
 import InstanceConfig, { ConfigMode } from "./pages/config/InstanceConfig";
 import BrowsePackages from "./pages/package/BrowsePackages";
 import ViewPackage from "./pages/package/ViewPackage";
 
 export default function App() {
-	const [selectedInstance, setSelectedInstance] = createSignal<string | null>(
-		null
-	);
+	const [selectedItem, setSelectedItem] = createSignal<
+		SelectedFooterItem | undefined
+	>(undefined);
 
 	return (
 		<Router
 			root={({ children }) => (
-				<Layout children={children} selectedInstance={selectedInstance()} />
+				<Layout children={children} selectedItem={selectedItem()} />
 			)}
 		>
 			<Route
 				path="/"
-				component={() => <LaunchPage onSelectInstance={setSelectedInstance} />}
+				component={() => <LaunchPage onSelectItem={setSelectedItem} />}
 			/>
 			<Route
 				path="/instance_config/:instanceId"
@@ -58,12 +60,12 @@ function Layout(props: LayoutProps) {
 		<>
 			<NavBar />
 			{props.children}
-			<LaunchFooter selectedInstance={props.selectedInstance} />
+			<LaunchFooter selectedItem={props.selectedItem} />
 		</>
 	);
 }
 
 interface LayoutProps {
-	selectedInstance: string | null;
+	selectedItem?: SelectedFooterItem;
 	children: any;
 }
