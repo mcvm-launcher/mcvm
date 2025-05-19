@@ -1,3 +1,7 @@
+#launch-instance-list {
+	width: 100%;
+}
+
 #launch-instance-list-header {
 	gap: 2rem;
 	display: grid;
@@ -26,32 +30,29 @@
 }
 
 .launch-instance-list-section-container {
-	justify-content: space-evenly;
-	flex-direction: row;
-	flex-basis: content;
 	width: 100%;
 	margin-bottom: 2.6rem;
+	gap: 0;
 }
 
 .launch-instance-list-section-header {
-	margin-left: 1.3rem;
+	/* margin-left: 1.8rem; */
+	justify-content: flex-start;
+	width: 100%;
 }
 
 .launch-instance-list-section-header > svg {
-	margin-right: 0.7rem;
+	margin-bottom: 0.4rem;
+	margin-left: 1.3rem;
 }
 
 .launch-instance-list-section-header > h2 {
 	line-height: 0;
-	display: inline-block;
 }
 
 .launch-instance-list-section {
-	display: flex;
-	flex-wrap: wrap;
-	flex-direction: row;
-	flex-basis: content;
-	flex: auto;
+	display: grid;
+	grid-template-columns: repeat(6, minmax(0, 1fr));
 	width: 100%;
 }
 
@@ -60,7 +61,6 @@
 	margin: 0.5rem;
 	padding: 0.2rem;
 	/* padding-top: 4rem; */
-	width: 14.5%;
 	text-align: center;
 	box-sizing: border-box;
 	border-color: var(--bg2);

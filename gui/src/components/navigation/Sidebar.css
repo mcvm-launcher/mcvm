@@ -1,0 +1,32 @@
+#sidebar {
+	position: fixed;
+	background-color: var(--bg2);
+	top: 3rem;
+	left: 0rem;
+	width: 15rem;
+	height: 100%;
+	box-sizing: border-box;
+	border: 0.15rem solid var(--bg3);
+	border-top-width: 0px;
+	border-left-width: 0px;
+}
+
+.sidebar-item {
+	height: 2.7rem;
+	width: 100%;
+	border-bottom: 0.15rem solid var(--bg3);
+	justify-content: flex-start;
+	font-weight: bold;
+	box-sizing: border-box;
+}
+
+.sidebar-item svg {
+	margin-left: 0.7rem;
+}
+
+.sidebar-item.selected, .sidebar-item:hover {
+	border-right-width: 0.3rem;
+	border-right-style: solid;
+	border-right-color: var(--fg2);
+	transition: border-right-width 0.1s;
+}

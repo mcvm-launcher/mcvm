@@ -14,6 +14,9 @@ import PlusIcon from "./assets/icons/plus.svg?component-solid";
 import SearchIcon from "./assets/icons/search.svg?component-solid";
 import DeleteIcon from "./assets/icons/delete.svg?component-solid";
 import EditIcon from "./assets/icons/edit.svg?component-solid";
+import JigsawIcon from "./assets/icons/jigsaw.svg?component-solid";
+import MenuIcon from "./assets/icons/menu.svg?component-solid";
+import HomeIcon from "./assets/icons/home.svg?component-solid";
 import { HasWidthHeight } from "./components/Icon";
 
 export function Pin({ width, height, viewBox }: HasWidthHeight) {
@@ -86,4 +89,16 @@ export function Delete({ width, height, viewBox }: HasWidthHeight) {
 
 export function Edit({ width, height, viewBox }: HasWidthHeight) {
 	return <EditIcon width={width} height={height} viewBox={viewBox} />;
+}
+
+export function Jigsaw({ width, height, viewBox }: HasWidthHeight) {
+	return <JigsawIcon width={width} height={height} viewBox={viewBox} />;
+}
+
+export function Menu({ width, height, viewBox }: HasWidthHeight) {
+	return <MenuIcon width={width} height={height} viewBox={viewBox} />;
+}
+
+export function Home({ width, height, viewBox }: HasWidthHeight) {
+	return <HomeIcon width={width} height={height} viewBox={viewBox} />;
 }

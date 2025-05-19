@@ -1,15 +1,25 @@
-import { AngleLeft, AngleRight, Box } from "../../icons";
+import { AngleLeft, AngleRight, Menu } from "../../icons";
 import IconButton from "../input/IconButton";
 import "./NavBar.css";
 
-export default function NavBar() {
+export default function NavBar(props: NavBarProps) {
 	return (
 		<>
 			{/* Gap used to move page content down so that it starts below the navbar */}
 			<div id="navbar-gap"></div>
 			<div id="navbar" class="border">
 				<div id="navbar-container">
-					<div class="cont navbar-item">
+					<div class="cont navbar-item" id="navbar-left">
+						<div id="sidebar-button">
+							<IconButton
+								icon={Menu}
+								size="28px"
+								color="var(--bg3)"
+								selectedColor="var(--accent)"
+								onClick={props.onSidebarToggle}
+								selected={false}
+							/>
+						</div>
 						<IconButton
 							icon={AngleLeft}
 							size="28px"
@@ -37,15 +47,14 @@ export default function NavBar() {
 							MCVM
 						</a>
 					</h2>
-					<a class="cont link navbar-item" href="/packages/0">
-						<div style="margin-top:0.3rem;margin-right:-0.2rem;color:var(--package)">
-							<Box />
-						</div>
-						<div>Packages</div>
-					</a>
+					<div class="cont navbar-item"></div>
 					<div class="cont navbar-item"></div>
 				</div>
 			</div>
 		</>
 	);
+}
+
+export interface NavBarProps {
+	onSidebarToggle: () => void;
 }

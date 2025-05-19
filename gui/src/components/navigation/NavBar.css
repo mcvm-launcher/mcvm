@@ -12,6 +12,8 @@
 	top: 0px;
 	z-index: 1000;
 	box-sizing: border-box;
+	user-select: none;
+	-webkit-user-select: none;
 }
 
 #navbar-container {
@@ -34,4 +36,9 @@
 #navbar-gap {
 	width: 100%;
 	height: 3rem;
+}
+
+#navbar-left {
+	justify-content: flex-start;
+	padding-left: 0.5rem;
 }

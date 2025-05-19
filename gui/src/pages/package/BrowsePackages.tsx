@@ -96,7 +96,7 @@ function Package(props: PackageProps) {
 		<div
 			class="cont col package"
 			style="cursor:pointer"
-			onclick={() => (window.location.href = `/package/${props.id}`)}
+			onclick={() => (window.location.href = `/packages/package/${props.id}`)}
 		>
 			<div class="package-inner">
 				<div class="package-image-container">

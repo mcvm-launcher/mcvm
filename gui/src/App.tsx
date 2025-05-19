@@ -1,4 +1,4 @@
-import { Router, Route } from "@solidjs/router";
+import { Router, Route, Location } from "@solidjs/router";
 import "./App.css";
 import LaunchPage from "./pages/launch/LaunchPage";
 import NavBar from "./components/navigation/NavBar";
@@ -9,6 +9,7 @@ import LaunchFooter, {
 import InstanceConfig, { ConfigMode } from "./pages/config/InstanceConfig";
 import BrowsePackages from "./pages/package/BrowsePackages";
 import ViewPackage from "./pages/package/ViewPackage";
+import Sidebar from "./components/navigation/Sidebar";
 
 export default function App() {
 	const [selectedItem, setSelectedItem] = createSignal<
@@ -17,8 +18,12 @@ export default function App() {
 
 	return (
 		<Router
-			root={({ children }) => (
-				<Layout children={children} selectedItem={selectedItem()} />
+			root={({ children, location }) => (
+				<Layout
+					children={children}
+					location={location}
+					selectedItem={selectedItem()}
+				/>
 			)}
 		>
 			<Route
@@ -49,16 +54,33 @@ export default function App() {
 					<InstanceConfig mode={ConfigMode.Profile} creating={true} />
 				)}
 			/>
+			<Route
+				path="/global_profile_config"
+				component={() => (
+					<InstanceConfig mode={ConfigMode.GlobalProfile} creating={false} />
+				)}
+			/>
 			<Route path="/packages/:page" component={() => <BrowsePackages />} />
-			<Route path="/package/:id" component={() => <ViewPackage />} />
+			<Route path="/packages/package/:id" component={() => <ViewPackage />} />
 		</Router>
 	);
 }
 
 function Layout(props: LayoutProps) {
+	let [showSidebar, setShowSidebar] = createSignal(false);
+
 	return (
 		<>
-			<NavBar />
+			<NavBar
+				onSidebarToggle={() => {
+					setShowSidebar(!showSidebar());
+				}}
+			/>
+			<Sidebar
+				visible={showSidebar()}
+				location={props.location}
+				setVisible={setShowSidebar}
+			/>
 			{props.children}
 			<LaunchFooter selectedItem={props.selectedItem} />
 		</>
@@ -66,6 +88,7 @@ function Layout(props: LayoutProps) {
 }
 
 interface LayoutProps {
-	selectedItem?: SelectedFooterItem;
 	children: any;
+	location: Location;
+	selectedItem?: SelectedFooterItem;
 }

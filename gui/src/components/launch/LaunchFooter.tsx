@@ -141,7 +141,10 @@ export default function LaunchFooter(props: LaunchFooterProps) {
 								onClick={() => {
 									launch();
 								}}
-								selected={props.selectedItem != undefined}
+								selected={
+									props.selectedItem != undefined &&
+									props.selectedItem.type == "instance"
+								}
 							/>
 						</div>
 					</div>

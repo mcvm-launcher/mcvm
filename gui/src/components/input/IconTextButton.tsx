@@ -3,14 +3,15 @@ import Icon, { HasWidthHeight } from "../Icon";
 import "./IconTextButton.css";
 
 export default function IconTextButton(props: IconTextButtonProps) {
-	const colorStyle = props.selected
-		? `background-color:${props.color};border-color:${props.selectedColor}`
-		: `background-color:${props.color};border-color:${props.color}`;
+	const colorStyle = () =>
+		props.selected
+			? `background-color:${props.color};border-color:${props.selectedColor}`
+			: `background-color:${props.color};border-color:${props.color}`;
 
 	return (
 		<button
 			class="icon-text-button bold"
-			style={`${colorStyle}`}
+			style={`${colorStyle()}`}
 			onClick={props.onClick}
 		>
 			<div class="icon-text-button-icon center">

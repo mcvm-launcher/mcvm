@@ -2,11 +2,12 @@ import { createSignal, For, Match, Show, Switch } from "solid-js";
 import { GroupInfo, InstanceInfo, InstanceMap } from "../../types";
 import { invoke } from "@tauri-apps/api";
 import "./LaunchInstanceList.css";
-import { Box, Folder, Pin, Plus } from "../../icons";
+import { Box, Edit, Folder, Pin, Plus } from "../../icons";
 import Icon from "../Icon";
 import IconButton from "../input/IconButton";
 import { getIconSrc } from "../../utils";
 import { SelectedFooterItem } from "./LaunchFooter";
+import IconTextButton from "../input/IconTextButton";
 
 export default function LaunchInstanceList(props: LaunchInstanceListProps) {
 	const [instances, setInstances] = createSignal<InstanceInfo[]>([]);
@@ -104,6 +105,7 @@ export default function LaunchInstanceList(props: LaunchInstanceListProps) {
 						</div>
 					</div>
 				</div>
+				<br />
 				<Switch>
 					<Match when={instancesOrProfiles() == "instance"}>
 						<Show when={pinned().length > 0}>
@@ -147,6 +149,21 @@ export default function LaunchInstanceList(props: LaunchInstanceListProps) {
 						/>
 					</Match>
 					<Match when={instancesOrProfiles() == "profile"}>
+						<br />
+						<div class="cont">
+							<IconTextButton
+								icon={Edit}
+								text="Edit Global Profile"
+								size="20px"
+								color="var(--bg2)"
+								selectedColor="var(--instance)"
+								onClick={() => {
+									window.location.href = "/global_profile_config";
+								}}
+								selected={false}
+							/>
+						</div>
+						<br />
 						<Section
 							id="profiles"
 							kind="profiles"
@@ -182,8 +199,8 @@ function Section(props: SectionProps) {
 	);
 
 	return (
-		<div class="launch-instance-list-section-container">
-			<div class="launch-instance-list-section-header">
+		<div class="cont col launch-instance-list-section-container">
+			<div class="cont launch-instance-list-section-header">
 				<HeaderIcon />
 				<h2>{props.header}</h2>
 			</div>
