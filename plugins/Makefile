@@ -40,7 +40,7 @@ package: build.weld
 	@rm -f release/paper-linux.zip && zip -j release/paper-linux.zip ../target/release/mcvm_plugin_paper plugins/paper/plugin.json
 	@rm -f release/scripthook-linux.zip && zip -j release/scripthook-linux.zip ../target/release/mcvm_plugin_scripthook plugins/scripthook/plugin.json
 	@rm -f release/server_restart-linux.zip && zip -j release/server_restart-linux.zip ../target/release/mcvm_plugin_server_restart plugins/server_restart/plugin.json
-	@rm -f release/smithed-linux.zip && zip -j release/smithed-linux.zip ../target/release/mcvm_plugin_smithed plugins/smithed/plugin.json
+	@rm -f release/smithed-linux.zip && zip -j release/smithed-linux.zip ../target/release/mcvm_plugin_smithed plugins/smithed/plugin.json plugins/smithed/page.html
 	@rm -f release/smithed_api-linux.zip && zip -j release/smithed_api-linux.zip ../target/release/mcvm_plugin_smithed_api plugins/smithed_api/plugin.json
 	@rm -f release/sponge-linux.zip && zip -j release/sponge-linux.zip ../target/release/mcvm_plugin_sponge plugins/sponge/plugin.json
 	@rm -f release/stats-linux.zip && zip -j release/stats-linux.zip ../target/release/mcvm_plugin_stats plugins/stats/plugin.json
@@ -126,7 +126,8 @@ install.server_restart:
 
 install.smithed:
 	@cargo install --path . --bin mcvm_plugin_smithed --offline
-	@cat plugins/smithed/plugin.json | sed 's,\${PLUGIN_DIR}/,,' > ~/.local/share/mcvm/plugins/smithed.json
+	@cp -r plugins/smithed ~/.local/share/mcvm/plugins
+	@cat plugins/smithed/plugin.json | sed 's,\${PLUGIN_DIR}/,,' > ~/.local/share/mcvm/plugins/smithed/plugin.json
 
 install.smithed_api:
 	@cargo install --path . --bin mcvm_plugin_smithed_api --offline

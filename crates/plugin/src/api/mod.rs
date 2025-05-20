@@ -134,6 +134,12 @@ impl CustomPlugin {
 	hook_interface!(add_instances, "add_instances", AddInstances);
 	hook_interface!(add_profiles, "add_profiles", AddProfiles);
 	hook_interface!(inject_page_script, "inject_page_script", InjectPageScript);
+	hook_interface!(
+		add_sidebar_buttons,
+		"add_sidebar_buttons",
+		AddSidebarButtons
+	);
+	hook_interface!(get_page, "get_page", GetPage);
 
 	/// Handle a hook
 	fn handle_hook<H: Hook>(

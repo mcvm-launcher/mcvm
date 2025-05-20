@@ -2,7 +2,9 @@ use crate::output::LauncherOutput;
 use crate::State;
 use anyhow::Context;
 use mcvm::plugin::PluginManager;
-use mcvm::plugin_crate::hooks::{InjectPageScript, InjectPageScriptArg};
+use mcvm::plugin_crate::hooks::{
+	AddSidebarButtons, GetPage, InjectPageScript, InjectPageScriptArg, SidebarButton,
+};
 use mcvm::{plugin::install::get_verified_plugins, shared::output::NoOp};
 use serde::{Deserialize, Serialize};
 use std::fmt::Debug;
@@ -144,4 +146,71 @@ pub async fn get_page_inject_script(
 	}
 
 	Ok(Some(out))
+}
+
+#[tauri::command]
+pub async fn get_sidebar_buttons(
+	state: tauri::State<'_, State>,
+	app_handle: tauri::AppHandle,
+) -> Result<Vec<SidebarButton>, String> {
+	let app_handle = Arc::new(app_handle);
+
+	let mut output = LauncherOutput::new(
+		app_handle,
+		state.passkeys.clone(),
+		state.password_prompt.clone(),
+	);
+
+	let config = fmt_err(load_config(&state.paths, &mut output).context("Failed to load config"))?;
+
+	let results = fmt_err(config.plugins.call_hook(
+		AddSidebarButtons,
+		&(),
+		&state.paths,
+		&mut output,
+	))?;
+
+	let mut out = Vec::new();
+	for result in results {
+		let result = fmt_err(result.result(&mut output))?;
+		out.extend(result);
+	}
+
+	Ok(out)
+}
+
+#[tauri::command]
+pub async fn get_plugin_page(
+	state: tauri::State<'_, State>,
+	app_handle: tauri::AppHandle,
+	page: &str,
+) -> Result<Option<String>, String> {
+	let app_handle = Arc::new(app_handle);
+
+	dbg!(&page);
+
+	let mut output = LauncherOutput::new(
+		app_handle,
+		state.passkeys.clone(),
+		state.password_prompt.clone(),
+	);
+
+	let config = fmt_err(load_config(&state.paths, &mut output).context("Failed to load config"))?;
+
+	let results = fmt_err(config.plugins.call_hook(
+		GetPage,
+		&page.to_string(),
+		&state.paths,
+		&mut output,
+	))?;
+
+	for result in results {
+		let result = fmt_err(result.result(&mut output))?;
+		if let Some(result) = result {
+			dbg!(&result);
+			return Ok(Some(result));
+		}
+	}
+
+	Ok(None)
 }

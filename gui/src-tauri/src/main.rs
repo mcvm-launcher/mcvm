@@ -76,6 +76,8 @@ fn main() {
 			commands::plugin::install_plugin,
 			commands::plugin::uninstall_plugin,
 			commands::plugin::get_page_inject_script,
+			commands::plugin::get_sidebar_buttons,
+			commands::plugin::get_plugin_page,
 			commands::user::get_users,
 			commands::user::select_user,
 		])

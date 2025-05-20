@@ -491,3 +491,37 @@ pub struct InjectPageScriptArg {
 	/// The identifier for whatever 'thing' this page is representing. Could be an instance, profile, anything else, or nothing.
 	pub object: Option<String>,
 }
+
+def_hook!(
+	AddSidebarButtons,
+	"add_sidebar_buttons",
+	"Hook for adding buttons to the GUI sidebar",
+	(),
+	Vec<SidebarButton>,
+	1,
+);
+
+/// Data for a GUI sidebar button
+#[derive(Serialize, Deserialize, Default)]
+#[serde(default)]
+pub struct SidebarButton {
+	/// The inner HTML of the button
+	pub html: String,
+	/// Where the button should go when pressed
+	pub href: String,
+	/// What the current URL should equal to select this item
+	pub selected_url: Option<String>,
+	/// What the current URL should start with to select this item
+	pub selected_url_start: Option<String>,
+	/// The CSS color of this button
+	pub color: String,
+}
+
+def_hook!(
+	GetPage,
+	"get_page",
+	"Hook for adding pages to the GUI",
+	String,
+	Option<String>,
+	1,
+);

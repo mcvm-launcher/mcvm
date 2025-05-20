@@ -11,10 +11,10 @@ import BrowsePackages from "./pages/package/BrowsePackages";
 import ViewPackage from "./pages/package/ViewPackage";
 import Sidebar from "./components/navigation/Sidebar";
 import Plugins from "./pages/plugin/Plugins";
-import Smithed from "./pages/Smithed";
 import Docs from "./pages/Docs";
 import { loadPagePlugins } from "./plugins";
 import { listen } from "@tauri-apps/api/event";
+import CustomPluginPage from "./pages/CustomPluginPage";
 
 export default function App() {
 	const [selectedItem, setSelectedItem] = createSignal<
@@ -22,7 +22,7 @@ export default function App() {
 	>(undefined);
 
 	let [selectedUser, setSelectedUser] = createSignal<string>();
-	
+
 	// Window refresh logic
 	let [showUi, setShowUi] = createSignal(true);
 	listen("refresh_window", () => {
@@ -81,7 +81,7 @@ export default function App() {
 				<Route path="/packages/package/:id" component={() => <ViewPackage />} />
 				<Route path="/plugins" component={() => <Plugins />} />
 				<Route path="/docs" component={() => <Docs />} />
-				<Route path="/smithed" component={() => <Smithed />} />
+				<Route path="/custom/:page" component={() => <CustomPluginPage />} />
 			</Router>
 		</Show>
 	);
@@ -100,12 +100,12 @@ function Layout(props: LayoutProps) {
 				}}
 				onSelectUser={props.onSelectUser}
 			/>
+			{props.children}
 			<Sidebar
 				visible={showSidebar()}
 				location={props.location}
 				setVisible={setShowSidebar}
 			/>
-			{props.children}
 			<LaunchFooter
 				selectedItem={props.selectedItem}
 				selectedUser={props.selectedUser}

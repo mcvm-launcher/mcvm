@@ -1,7 +1,8 @@
-import { createEffect, JSX, Show } from "solid-js";
+import { createEffect, createResource, For, JSX, Show } from "solid-js";
 import "./Sidebar.css";
 import { Box, Home, Jigsaw, Menu } from "../../icons";
 import { Location } from "@solidjs/router";
+import { invoke } from "@tauri-apps/api";
 
 export default function Sidebar(props: SidebarProps) {
 	// Close the sidebar when clicking outside of it
@@ -21,6 +22,11 @@ export default function Sidebar(props: SidebarProps) {
 				}
 			}
 		});
+	});
+
+	let [extraButtons, _] = createResource(async () => {
+		let buttons: PluginSidebarButton[] = await invoke("get_sidebar_buttons");
+		return buttons;
 	});
 
 	return (
@@ -75,18 +81,21 @@ export default function Sidebar(props: SidebarProps) {
 						</div>
 						<div>Documentation</div>
 					</SidebarItem>
-					<SidebarItem
-						href="/smithed"
-						location={props.location}
-						selectedPathStart="/smithed"
-						color="#1b48c4"
-						closeSidebar={() => props.setVisible(false)}
-					>
-						<div style="margin-top:0.2rem;margin-right:-0.2rem;color:var(--plugin)">
-							<img src="/smithed.png" width="16px" style="width: 16px" />
-						</div>
-						<div>Smithed</div>
-					</SidebarItem>
+					<Show when={extraButtons() != undefined}>
+						<For each={extraButtons()}>
+							{(button) => (
+								<SidebarItem
+									innerhtml={button.html}
+									href={button.href}
+									location={props.location}
+									selectedPath={button.selected_url}
+									selectedPathStart={button.selected_url_start}
+									color={button.color}
+									closeSidebar={() => props.setVisible(false)}
+								></SidebarItem>
+							)}
+						</For>
+					</Show>
 				</div>
 			</div>
 		</Show>
@@ -116,6 +125,7 @@ function SidebarItem(props: SidebarItemProps) {
 			href={props.href}
 			style={`border-right-color:${props.color}`}
 			onclick={() => props.closeSidebar()}
+			innerHTML={props.innerhtml}
 		>
 			{props.children}
 		</a>
@@ -123,7 +133,8 @@ function SidebarItem(props: SidebarItemProps) {
 }
 
 interface SidebarItemProps {
-	children: JSX.Element;
+	children?: JSX.Element;
+	innerhtml?: string;
 	href: string;
 	location: Location;
 	// What the current URL should equal to select this item
@@ -132,4 +143,12 @@ interface SidebarItemProps {
 	selectedPathStart?: string;
 	color: string;
 	closeSidebar: () => void;
+}
+
+interface PluginSidebarButton {
+	html: string;
+	href: string;
+	selected_url?: string;
+	selected_url_start?: string;
+	color: string;
 }
