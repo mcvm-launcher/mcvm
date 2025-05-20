@@ -18,6 +18,7 @@ import JigsawIcon from "./assets/icons/jigsaw.svg?component-solid";
 import MenuIcon from "./assets/icons/menu.svg?component-solid";
 import HomeIcon from "./assets/icons/home.svg?component-solid";
 import LogoIcon from "./assets/icons/logo.svg?component-solid";
+import RefreshIcon from "./assets/icons/refresh.svg?component-solid";
 import { HasWidthHeight } from "./components/Icon";
 
 export function Pin({ width, height, viewBox }: HasWidthHeight) {
@@ -106,4 +107,8 @@ export function Home({ width, height, viewBox }: HasWidthHeight) {
 
 export function Logo({ width, height, viewBox }: HasWidthHeight) {
 	return <LogoIcon width={width} height={height} viewBox={viewBox} />;
+}
+
+export function Refresh({ width, height, viewBox }: HasWidthHeight) {
+	return <RefreshIcon width={width} height={height} viewBox={viewBox} />;
 }

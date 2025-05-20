@@ -5,6 +5,14 @@
 	"hooks": {
 		"modify_instance_config": {
 			"executable": "${PLUGIN_DIR}/mcvm_plugin_args"
+		},
+		"inject_page_script": {
+			"property": "page",
+			"cases": {
+				"": {
+					"file": "test.js"
+				}
+			}
 		}
 	}
 }

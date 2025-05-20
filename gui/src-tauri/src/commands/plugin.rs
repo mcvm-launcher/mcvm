@@ -1,11 +1,14 @@
+use crate::output::LauncherOutput;
 use crate::State;
 use anyhow::Context;
 use mcvm::plugin::PluginManager;
+use mcvm::plugin_crate::hooks::{InjectPageScript, InjectPageScriptArg};
 use mcvm::{plugin::install::get_verified_plugins, shared::output::NoOp};
 use serde::{Deserialize, Serialize};
 use std::fmt::Debug;
+use std::sync::Arc;
 
-use super::fmt_err;
+use super::{fmt_err, load_config};
 
 #[tauri::command]
 pub async fn get_plugins(state: tauri::State<'_, State>) -> Result<Vec<PluginInfo>, String> {
@@ -107,4 +110,38 @@ pub async fn uninstall_plugin(state: tauri::State<'_, State>, plugin: &str) -> R
 	)?;
 
 	Ok(())
+}
+
+#[tauri::command]
+pub async fn get_page_inject_script(
+	state: tauri::State<'_, State>,
+	app_handle: tauri::AppHandle,
+	page: String,
+	object: Option<String>,
+) -> Result<Option<String>, String> {
+	let app_handle = Arc::new(app_handle);
+
+	let mut output = LauncherOutput::new(
+		app_handle,
+		state.passkeys.clone(),
+		state.password_prompt.clone(),
+	);
+
+	let config = fmt_err(load_config(&state.paths, &mut output).context("Failed to load config"))?;
+
+	let arg = InjectPageScriptArg { page, object };
+	let results = fmt_err(config.plugins.call_hook(
+		InjectPageScript,
+		&arg,
+		&state.paths,
+		&mut output,
+	))?;
+
+	let mut out = String::new();
+	for result in results {
+		let result = fmt_err(result.result(&mut output))?;
+		out.push_str(&result);
+	}
+
+	Ok(Some(out))
 }

@@ -3,15 +3,20 @@ import "./InstanceConfig.css";
 import IconTextButton from "../../components/input/IconTextButton";
 import { Check } from "../../icons";
 import { invoke } from "@tauri-apps/api";
-import { createEffect, createResource, createSignal, Show } from "solid-js";
-import { Select } from "@thisbeyond/solid-select";
+import {
+	createEffect,
+	createResource,
+	createSignal,
+	onMount,
+	Show,
+} from "solid-js";
 import "@thisbeyond/solid-select/style.css";
 import InlineSelect from "../../components/input/InlineSelect";
+import { loadPagePlugins } from "../../plugins";
 
 export default function InstanceConfig(props: InstanceConfigProps) {
 	let params = useParams();
 
-	// Global profile config if both IDs are null
 	let isInstance = props.mode == ConfigMode.Instance;
 	let isProfile = props.mode == ConfigMode.Profile;
 	let isGlobalProfile = props.mode == ConfigMode.GlobalProfile;
@@ -21,6 +26,17 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 		: isGlobalProfile
 		? "Global Profile"
 		: params.profileId;
+
+	onMount(() =>
+		loadPagePlugins(
+			isInstance
+				? "instance_config"
+				: isProfile
+				? "profile_config"
+				: "global_profile_config",
+			id
+		)
+	);
 
 	let [config, configOperations] = createResource(updateConfig);
 	let [from, setFrom] = createSignal<string[] | undefined>();
@@ -258,17 +274,4 @@ function emptyUndefined(value: string | undefined) {
 	} else {
 		return value;
 	}
-}
-
-function optionFormat(item: Option, type: string) {
-	if (type == "option") {
-		return item.label;
-	} else {
-		return item.name;
-	}
-}
-
-interface Option {
-	name: string;
-	label: string;
 }

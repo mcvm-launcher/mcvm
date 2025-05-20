@@ -28,7 +28,8 @@
         "all": true
       },
       "window": {
-        "create": true
+        "create": true,
+        "close": true
       }
     },
     "windows": [

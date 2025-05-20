@@ -60,7 +60,8 @@ install.archive:
 
 install.args:
 	@cargo install --path . --bin mcvm_plugin_args --offline
-	@cat plugins/args/plugin.json | sed 's,\${PLUGIN_DIR}/,,' > ~/.local/share/mcvm/plugins/args.json
+	@cp -r plugins/args ~/.local/share/mcvm/plugins
+	# @cat plugins/args/plugin.json | sed 's,\${PLUGIN_DIR}/,,' > ~/.local/share/mcvm/plugins/args.json
 
 install.backup:
 	@cargo install --path . --bin mcvm_plugin_backup --offline

@@ -20,6 +20,7 @@ use mcvm::io::paths::Paths;
 use mcvm::shared::id::InstanceID;
 use output::PromptResponse;
 use serde::{Deserialize, Serialize};
+use tauri::api::process::restart;
 use tauri::async_runtime::Mutex;
 use tauri::Manager;
 use tokio::task::JoinHandle;
@@ -42,6 +43,11 @@ fn main() {
 				if let Some(instance) = lock.get_mut(&InstanceID::from(payload.instance)) {
 					instance.state = payload.state;
 				}
+			});
+
+			let env = app.env();
+			app.listen_global("manual_restart", move |_| {
+				restart(&env);
 			});
 
 			Ok(())
@@ -69,6 +75,7 @@ fn main() {
 			commands::plugin::enable_disable_plugin,
 			commands::plugin::install_plugin,
 			commands::plugin::uninstall_plugin,
+			commands::plugin::get_page_inject_script,
 			commands::user::get_users,
 			commands::user::select_user,
 		])

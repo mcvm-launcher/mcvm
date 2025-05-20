@@ -133,6 +133,7 @@ impl CustomPlugin {
 	);
 	hook_interface!(add_instances, "add_instances", AddInstances);
 	hook_interface!(add_profiles, "add_profiles", AddProfiles);
+	hook_interface!(inject_page_script, "inject_page_script", InjectPageScript);
 
 	/// Handle a hook
 	fn handle_hook<H: Hook>(

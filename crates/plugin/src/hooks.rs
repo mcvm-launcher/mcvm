@@ -472,3 +472,22 @@ def_hook!(
 	HashMap<ProfileID, ProfileConfig>,
 	1,
 );
+
+def_hook!(
+	InjectPageScript,
+	"inject_page_script",
+	"Hook for running JavaScript on GUI pages",
+	InjectPageScriptArg,
+	String,
+	1,
+);
+
+/// Argument for the InjectPageScript hook
+#[derive(Serialize, Deserialize, Default)]
+#[serde(default)]
+pub struct InjectPageScriptArg {
+	/// The identifier for the page
+	pub page: String,
+	/// The identifier for whatever 'thing' this page is representing. Could be an instance, profile, anything else, or nothing.
+	pub object: Option<String>,
+}

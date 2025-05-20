@@ -128,7 +128,10 @@ impl Plugin {
 				// Try to read the result with quotes wrapping it if it doesn't deserialize properly the first time
 				let result = match serde_json::from_str(&contents) {
 					Ok(result) => result,
-					Err(_) => match serde_json::from_str(&format!("\"{contents}\"")) {
+					Err(_) => match serde_json::from_str(&format!(
+						"\"{}\"",
+						contents.replace("\"", "\\\"")
+					)) {
 						Ok(result) => result,
 						Err(e) => bail!("Failed to deserialize hook result: {e}"),
 					},

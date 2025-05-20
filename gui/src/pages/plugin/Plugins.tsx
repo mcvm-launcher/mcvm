@@ -2,10 +2,13 @@ import { invoke } from "@tauri-apps/api";
 import { createResource, createSignal, For, Show } from "solid-js";
 import "./Plugins.css";
 import IconTextButton from "../../components/input/IconTextButton";
+import { Refresh } from "../../icons";
+import { emit } from "@tauri-apps/api/event";
 
 export default function Plugins() {
 	let [plugins, methods] = createResource(updatePlugins);
 	let [isRemote, setIsRemote] = createSignal(false);
+	let [restartNeeded, setRestartNeeded] = createSignal(false);
 
 	async function updatePlugins() {
 		let plugins: PluginInfo[] = await invoke("get_plugins");
@@ -14,9 +17,25 @@ export default function Plugins() {
 
 	return (
 		<div id="plugins">
-			<h1 class="noselect">Plugins</h1>
+			<div id="plugins-header">
+				<div class="cont">
+					<IconTextButton
+						icon={Refresh}
+						text="Refresh Launcher"
+						size="22px"
+						color="var(--bg2)"
+						selectedColor="var(--plugin)"
+						onClick={() => {
+							emit("refresh_window");
+						}}
+						selected={restartNeeded()}
+					/>
+				</div>
+				<h1 class="noselect">Plugins</h1>
+				<div></div>
+			</div>
 			<div class="cont">
-				<div id="plugins-header">
+				<div id="plugins-subheader">
 					<div
 						class={`plugins-header-item ${isRemote() ? "" : " selected"}`}
 						onclick={() => {
@@ -46,7 +65,13 @@ export default function Plugins() {
 						let isCorrectPage = () => isRemote() == pluginIsRemote;
 						return (
 							<Show when={isCorrectPage() && !isRemoteHidden}>
-								<Plugin info={info} updatePluginList={methods.refetch} />
+								<Plugin
+									info={info}
+									updatePluginList={() => {
+										methods.refetch();
+										setRestartNeeded(true);
+									}}
+								/>
 							</Show>
 						);
 					}}

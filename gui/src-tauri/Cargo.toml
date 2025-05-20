@@ -22,7 +22,7 @@ itertools = { workspace = true }
 mcvm = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
-tauri = { version = "1", features = [ "shell-open", "protocol-asset", "clipboard-all", "window-create" ] }
+tauri = { version = "1", features = [ "window-close", "shell-open", "protocol-asset", "clipboard-all", "window-create" ] }
 tokio = { workspace = true }
 
 [features]
