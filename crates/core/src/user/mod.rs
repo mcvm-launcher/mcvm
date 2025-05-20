@@ -5,7 +5,7 @@ pub mod uuid;
 
 use std::{collections::HashMap, ops::Deref, sync::Arc};
 
-use anyhow::bail;
+use anyhow::{bail, Context};
 use mcvm_auth::mc::{AccessToken, ClientId, Keypair};
 use mcvm_shared::output::MCVMOutput;
 use reqwest::Client;
@@ -279,6 +279,31 @@ impl UserManager {
 				};
 				user.authenticate(params, o).await?;
 			}
+		}
+
+		Ok(())
+	}
+
+	/// Ensures that a specific user is authenticated
+	pub async fn authenticate_user(
+		&mut self,
+		user: &str,
+		paths: &Paths,
+		client: &Client,
+		o: &mut impl MCVMOutput,
+	) -> anyhow::Result<()> {
+		let user = self.users.get_mut(user).context("User does not exist")?;
+
+		if !user.is_authenticated() || !user.is_auth_valid(paths) {
+			let params = AuthParameters {
+				req_client: client,
+				paths,
+				force: false,
+				offline: self.offline,
+				client_id: self.ms_client_id.clone(),
+				custom_auth_fn: self.custom_auth_fn.clone(),
+			};
+			user.authenticate(params, o).await?;
 		}
 
 		Ok(())

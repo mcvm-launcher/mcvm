@@ -69,6 +69,8 @@ fn main() {
 			commands::plugin::enable_disable_plugin,
 			commands::plugin::install_plugin,
 			commands::plugin::uninstall_plugin,
+			commands::user::get_users,
+			commands::user::select_user,
 		])
 		.run(tauri::generate_context!())
 		.expect("Error while running tauri application");

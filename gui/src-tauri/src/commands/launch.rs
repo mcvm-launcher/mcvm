@@ -18,6 +18,7 @@ pub async fn launch_game(
 	state: tauri::State<'_, State>,
 	instance_id: String,
 	offline: bool,
+	user: Option<&str>,
 ) -> Result<(), String> {
 	let app_handle = Arc::new(app_handle);
 	let state = Arc::new(state);
@@ -33,9 +34,15 @@ pub async fn launch_game(
 	stop_game_impl(&state, &instance_id).await?;
 
 	let launched_game = fmt_err(
-		get_launched_game(instance_id.to_string(), offline, state.clone(), output)
-			.await
-			.context("Failed to launch game"),
+		get_launched_game(
+			instance_id.to_string(),
+			offline,
+			user,
+			state.clone(),
+			output,
+		)
+		.await
+		.context("Failed to launch game"),
 	)?;
 	let mut lock = state.launched_games.lock().await;
 	let running_instance = RunningInstance {
@@ -51,12 +58,16 @@ pub async fn launch_game(
 async fn get_launched_game(
 	instance_id: String,
 	offline: bool,
+	user: Option<&str>,
 	state: Arc<tauri::State<'_, State>>,
 	mut o: LauncherOutput,
 ) -> anyhow::Result<JoinHandle<anyhow::Result<()>>> {
 	println!("Launching game!");
 
 	let mut config = load_config(&state.paths, &mut o).context("Failed to load config")?;
+	if let Some(user) = user {
+		config.users.choose_user(user)?;
+	}
 
 	let paths = state.paths.clone();
 	let plugins = config.plugins.clone();

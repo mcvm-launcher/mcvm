@@ -15,6 +15,8 @@ pub struct LauncherData {
 	pub profile_icons: HashMap<String, InstanceIcon>,
 	/// Set of pinned instances
 	pub pinned: HashSet<String>,
+	/// The currently selected user
+	pub current_user: Option<String>,
 }
 
 impl LauncherData {

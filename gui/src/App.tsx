@@ -19,6 +19,8 @@ export default function App() {
 		SelectedFooterItem | undefined
 	>(undefined);
 
+	let [selectedUser, setSelectedUser] = createSignal<string>();
+
 	return (
 		<Router
 			root={({ children, location }) => (
@@ -26,6 +28,8 @@ export default function App() {
 					children={children}
 					location={location}
 					selectedItem={selectedItem()}
+					onSelectUser={setSelectedUser}
+					selectedUser={selectedUser()}
 				/>
 			)}
 		>
@@ -81,6 +85,7 @@ function Layout(props: LayoutProps) {
 				onSidebarToggle={() => {
 					setShowSidebar(!showSidebar());
 				}}
+				onSelectUser={props.onSelectUser}
 			/>
 			<Sidebar
 				visible={showSidebar()}
@@ -88,7 +93,10 @@ function Layout(props: LayoutProps) {
 				setVisible={setShowSidebar}
 			/>
 			{props.children}
-			<LaunchFooter selectedItem={props.selectedItem} />
+			<LaunchFooter
+				selectedItem={props.selectedItem}
+				selectedUser={props.selectedUser}
+			/>
 		</>
 	);
 }
@@ -97,4 +105,6 @@ interface LayoutProps {
 	children: any;
 	location: Location;
 	selectedItem?: SelectedFooterItem;
+	selectedUser?: string;
+	onSelectUser: (user: string) => void;
 }

@@ -1,5 +1,6 @@
 import { AngleLeft, AngleRight, Logo, Menu } from "../../icons";
 import IconButton from "../input/IconButton";
+import UserWidget from "../UserWidget";
 import "./NavBar.css";
 
 export default function NavBar(props: NavBarProps) {
@@ -51,7 +52,9 @@ export default function NavBar(props: NavBarProps) {
 						</a>
 					</h2>
 					<div class="cont navbar-item"></div>
-					<div class="cont navbar-item"></div>
+					<div class="cont navbar-item">
+						<UserWidget onSelect={props.onSelectUser} />
+					</div>
 				</div>
 			</div>
 		</>
@@ -60,4 +63,5 @@ export default function NavBar(props: NavBarProps) {
 
 export interface NavBarProps {
 	onSidebarToggle: () => void;
+	onSelectUser: (user: string) => void;
 }

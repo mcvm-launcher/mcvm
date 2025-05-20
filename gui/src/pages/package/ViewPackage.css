@@ -5,7 +5,7 @@
 #package-header {
 	display: grid;
 	width: 90%;
-	grid-template-columns: minmax(0, 0.2fr) minmax(0, 1fr);
+	grid-template-columns: minmax(0, 0.11fr) minmax(0, 1fr);
 	margin-top: 1rem;
 }
 

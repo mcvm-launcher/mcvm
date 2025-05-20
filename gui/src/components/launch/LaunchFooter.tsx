@@ -97,6 +97,7 @@ export default function LaunchFooter(props: LaunchFooterProps) {
 		let launchPromise = invoke("launch_game", {
 			instanceId: props.selectedItem.id,
 			offline: false,
+			user: props.selectedUser,
 		});
 
 		await Promise.all([launchPromise]);
@@ -177,6 +178,7 @@ export default function LaunchFooter(props: LaunchFooterProps) {
 
 export interface LaunchFooterProps {
 	selectedItem?: SelectedFooterItem;
+	selectedUser?: string;
 }
 
 // Displays a list of instance icons that can be interacted with
