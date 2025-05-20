@@ -4,6 +4,7 @@ use std::path::PathBuf;
 use std::sync::Arc;
 use std::sync::Mutex;
 
+use anyhow::bail;
 use anyhow::Context;
 use mcvm_core::Paths;
 use mcvm_shared::output::MCVMOutput;
@@ -100,6 +101,26 @@ impl Plugin {
 				serde_json::from_value(constant.clone())?,
 				self.id.clone(),
 			))),
+			HookHandler::File { file, priority: _ } => {
+				let Some(working_dir) = &self.working_dir else {
+					bail!("Plugin does not have a directory for the file hook handler to look in");
+				};
+
+				let path = working_dir.join(file);
+				let contents = std::fs::read_to_string(path)
+					.context("Failed to read hook result from file")?;
+
+				// Try to read the result with quotes wrapping it if it doesn't deserialize properly the first time
+				let result = match serde_json::from_str(&contents) {
+					Ok(result) => result,
+					Err(_) => match serde_json::from_str(&format!("\"{contents}\"")) {
+						Ok(result) => result,
+						Err(e) => bail!("Failed to deserialize hook result: {e}"),
+					},
+				};
+
+				Ok(Some(HookHandle::constant(result, self.id.clone())))
+			}
 			HookHandler::Native {
 				function,
 				priority: _,
@@ -135,6 +156,7 @@ impl Plugin {
 		match handler {
 			HookHandler::Execute { priority, .. }
 			| HookHandler::Constant { priority, .. }
+			| HookHandler::File { priority, .. }
 			| HookHandler::Native { priority, .. } => *priority,
 		}
 	}
@@ -191,6 +213,14 @@ pub enum HookHandler {
 	Constant {
 		/// The constant result
 		constant: serde_json::Value,
+		/// The priority for the hook
+		#[serde(default)]
+		priority: HookPriority,
+	},
+	/// Handle this hook by getting the contents of a file
+	File {
+		/// The path to the file, relative to the plugin directory
+		file: String,
 		/// The priority for the hook
 		#[serde(default)]
 		priority: HookPriority,
