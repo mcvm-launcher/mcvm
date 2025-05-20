@@ -69,6 +69,21 @@ impl Plugin {
 		let Some(handler) = self.manifest.hooks.get(hook.get_name()) else {
 			return Ok(None);
 		};
+
+		self.call_hook_handler(hook, handler, arg, paths, mcvm_version, plugin_list, o)
+	}
+
+	/// Call a hook handler on the plugin
+	fn call_hook_handler<H: Hook>(
+		&self,
+		hook: &H,
+		handler: &HookHandler,
+		arg: &H::Arg,
+		paths: &Paths,
+		mcvm_version: Option<&str>,
+		plugin_list: &[String],
+		o: &mut impl MCVMOutput,
+	) -> anyhow::Result<Option<HookHandle<H>>> {
 		match handler {
 			HookHandler::Execute {
 				executable,
@@ -121,6 +136,40 @@ impl Plugin {
 
 				Ok(Some(HookHandle::constant(result, self.id.clone())))
 			}
+			HookHandler::Match {
+				property,
+				cases,
+				priority: _,
+			} => {
+				let arg2 = serde_json::to_value(arg)?;
+				let lhs = if let Some(property) = property {
+					let arg2 = arg2.as_object().context(
+						"Hook argument is not an object, so a property cannot be matched",
+					)?;
+					arg2.get(property)
+						.context("Property does not exist on hook argument")
+						.cloned()?
+				} else {
+					arg2
+				};
+				let lhs = serde_json::to_string(&lhs)?;
+
+				for (case, handler) in cases.iter() {
+					if &lhs == case {
+						return self.call_hook_handler(
+							hook,
+							&handler,
+							arg,
+							paths,
+							mcvm_version,
+							plugin_list,
+							o,
+						);
+					}
+				}
+
+				Ok(None)
+			}
 			HookHandler::Native {
 				function,
 				priority: _,
@@ -157,6 +206,7 @@ impl Plugin {
 			HookHandler::Execute { priority, .. }
 			| HookHandler::Constant { priority, .. }
 			| HookHandler::File { priority, .. }
+			| HookHandler::Match { priority, .. }
 			| HookHandler::Native { priority, .. } => *priority,
 		}
 	}
@@ -221,6 +271,17 @@ pub enum HookHandler {
 	File {
 		/// The path to the file, relative to the plugin directory
 		file: String,
+		/// The priority for the hook
+		#[serde(default)]
+		priority: HookPriority,
+	},
+	/// Match against the argument to handle the hook differently
+	Match {
+		/// The property to match against
+		#[serde(default)]
+		property: Option<String>,
+		/// The cases of the match
+		cases: HashMap<String, Box<HookHandler>>,
 		/// The priority for the hook
 		#[serde(default)]
 		priority: HookPriority,

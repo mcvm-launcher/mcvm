@@ -84,6 +84,23 @@ Handler that gets the result from a file, containing the result in JSON format. 
 
 - `file`: The path to the file to get the result from, relative to the plugin directory. Will fail if no plugin directory is present.
 
+Handler that matches the hook argument to choose another hook handler to handle it with
+
+```
+"hook_id": {
+	"property": string,
+	"cases": {
+		"case": HookHandler,
+		"case2": HookHandler,
+		...
+	}
+	"priority": "first" | "any" | "last"
+}
+```
+
+- `property` (Optional): The property to match on the hook argument, if it is an object. If this is not present, the whole argument will be matched against.
+- `cases`: The cases to match the hook argument or property against. If the hook argument or property equals the key of the case, then the hook handler inside will be run. Remember to use minified JSON for the case you are matching against.
+
 - `priority` (Optional): The priority (order) for this hook to run relative to other plugins. The order for plugins with the same priority is not defined, but this priority allows you to somewhat control how your plugin interacts with others. Defaults to `"any"`, which runs in the middle of `"first"` and `"last"` hooks.
 
 ## State
