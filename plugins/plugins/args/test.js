@@ -1,1 +1,0 @@
-document.getElementById("navbar").style.backgroundColor = "red";
