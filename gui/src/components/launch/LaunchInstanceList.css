@@ -60,7 +60,7 @@
 	background-color: var(--bg2);
 	margin: 0.5rem;
 	padding: 0.2rem;
-	/* padding-top: 4rem; */
+	height: 10rem;
 	text-align: center;
 	box-sizing: border-box;
 	border-color: var(--bg2);

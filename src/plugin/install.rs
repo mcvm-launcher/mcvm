@@ -25,6 +25,8 @@ use super::PluginManager;
 pub struct VerifiedPlugin {
 	/// The ID of the plugin
 	pub id: String,
+	/// The display name of the plugin
+	pub name: Option<String>,
 	/// The organization / user that owns the repo where this plugin is
 	pub github_owner: String,
 	/// The name of the GitHub repo where this plugin is

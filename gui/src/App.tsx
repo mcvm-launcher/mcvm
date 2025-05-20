@@ -10,6 +10,9 @@ import InstanceConfig, { ConfigMode } from "./pages/config/InstanceConfig";
 import BrowsePackages from "./pages/package/BrowsePackages";
 import ViewPackage from "./pages/package/ViewPackage";
 import Sidebar from "./components/navigation/Sidebar";
+import Plugins from "./pages/plugin/Plugins";
+import Smithed from "./pages/Smithed";
+import Docs from "./pages/Docs";
 
 export default function App() {
 	const [selectedItem, setSelectedItem] = createSignal<
@@ -62,6 +65,9 @@ export default function App() {
 			/>
 			<Route path="/packages/:page" component={() => <BrowsePackages />} />
 			<Route path="/packages/package/:id" component={() => <ViewPackage />} />
+			<Route path="/plugins" component={() => <Plugins />} />
+			<Route path="/docs" component={() => <Docs />} />
+			<Route path="/smithed" component={() => <Smithed />} />
 		</Router>
 	);
 }

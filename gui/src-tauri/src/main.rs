@@ -65,6 +65,10 @@ fn main() {
 			commands::package::get_packages,
 			commands::package::get_package_meta,
 			commands::package::get_package_props,
+			commands::plugin::get_plugins,
+			commands::plugin::enable_disable_plugin,
+			commands::plugin::install_plugin,
+			commands::plugin::uninstall_plugin,
 		])
 		.run(tauri::generate_context!())
 		.expect("Error while running tauri application");

@@ -24,6 +24,7 @@
 	display: grid;
 	grid-template-rows: minmax(0, 1fr) minmax(0, 0.35fr);
 	height: 100%;
+	width: 100%;
 	gap: 0.2rem;
 }
 

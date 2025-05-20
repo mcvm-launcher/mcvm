@@ -18,11 +18,12 @@
 	--bg: #181818;
 	--bg2: #1f1f1f;
 	--bg3: #2b2b2b;
+	--bg2disabled: #1b1b1b;
 	--text: var(--fg);
 	--instance: #7ee91b;
 	--profile: #1bb9e9;
 	--package: #e9901b;
-	--plugin: #660ee9;
+	--plugin: #7f29ff;
 	--accent: #5f00ef;
 	--accent2: #2f0077;
 	--error: #c10f39;

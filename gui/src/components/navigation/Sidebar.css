@@ -20,13 +20,19 @@
 	box-sizing: border-box;
 }
 
-.sidebar-item svg {
+.sidebar-item svg,
+.sidebar-item img {
 	margin-left: 0.7rem;
 }
 
-.sidebar-item.selected, .sidebar-item:hover {
+.sidebar-item.selected,
+.sidebar-item:hover {
 	border-right-width: 0.3rem;
 	border-right-style: solid;
 	border-right-color: var(--fg2);
 	transition: border-right-width 0.1s;
+}
+
+.sidebar-item.sidebar-item.selected {
+	background-color: var(--bg);
 }

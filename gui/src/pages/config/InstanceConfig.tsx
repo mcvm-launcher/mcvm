@@ -1,11 +1,12 @@
 import { useParams } from "@solidjs/router";
 import "./InstanceConfig.css";
 import IconTextButton from "../../components/input/IconTextButton";
-import { AngleLeft, Check } from "../../icons";
+import { Check } from "../../icons";
 import { invoke } from "@tauri-apps/api";
 import { createEffect, createResource, createSignal, Show } from "solid-js";
 import { Select } from "@thisbeyond/solid-select";
 import "@thisbeyond/solid-select/style.css";
+import InlineSelect from "../../components/input/InlineSelect";
 
 export default function InstanceConfig(props: InstanceConfigProps) {
 	let params = useParams();
@@ -77,6 +78,7 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 	let [name, setName] = createSignal<string | undefined>();
 	let [side, setSide] = createSignal<"client" | "server" | undefined>();
 	let [icon, setIcon] = createSignal<string | undefined>();
+	let [version, setVersion] = createSignal<string | undefined>();
 
 	let [displayName, setDisplayName] = createSignal("");
 	let [message, setMessage] = createSignal("");
@@ -86,6 +88,7 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 			setName(config()!.name);
 			setSide(config()!.side);
 			setIcon(config()!.icon);
+			setVersion(config()!.version);
 
 			setDisplayName(config()!.name == undefined ? id : config()!.name!);
 			setMessage(
@@ -104,12 +107,14 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 		console.log(side());
 		console.log(name());
 		console.log(icon());
+		console.log(version());
 
 		let newConfig: InstanceConfig = {
 			from: from(),
-			side: side(),
+			type: side(),
 			name: name(),
 			icon: icon(),
+			version: version() == "" ? undefined : version(),
 		};
 
 		// Handle extra fields
@@ -146,23 +151,9 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 					? `Creating New ${createMessage}`
 					: `Configuration for ${message()}`}
 			</h1>
-			<div class="back-button">
-				<IconTextButton
-					icon={AngleLeft}
-					size="22px"
-					text="Back"
-					color="var(--bg2)"
-					selectedColor="var(--bg2)"
-					onClick={() => {
-						history.back();
-					}}
-					selected={false}
-				/>
-			</div>
-			<br />
 			<div id="fields" class="cont col">
-				<div class="cont">
-					<Show when={props.creating && !isGlobalProfile}>
+				<Show when={props.creating && !isGlobalProfile}>
+					<div class="cont">
 						<label for="id">{`${createMessage} ID`}</label>
 						<input
 							type="text"
@@ -170,37 +161,54 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 							name="id"
 							onChange={(e) => setNewId(e.target.value)}
 						></input>
-					</Show>
-				</div>
-				<div class="cont">
-					<label for="name">Display Name</label>
-					<input
-						type="text"
-						id="name"
-						name="name"
-						placeholder={id}
-						value={emptyUndefined(name())}
-						onChange={(e) => setName(e.target.value)}
-					></input>
-				</div>
-				<Show when={props.creating}>
+					</div>
+				</Show>
+				<Show when={!isGlobalProfile && !isProfile}>
 					<div class="cont">
+						<label for="name">Display Name</label>
+						<input
+							type="text"
+							id="name"
+							name="name"
+							placeholder={id}
+							value={emptyUndefined(name())}
+							onChange={(e) => setName(e.target.value)}
+						></input>
+					</div>
+				</Show>
+				<Show when={props.creating || isProfile || isGlobalProfile}>
+					<div class="cont col">
 						<label for="side">Side</label>
-						<Select
-							class="select"
+						<InlineSelect
+							onChange={setSide}
+							selected={side()}
 							options={[
-								{ name: "client", label: "Client" },
-								{ name: "server", label: "Server" },
+								{
+									value: "client",
+									contents: <div class="cont">Client</div>,
+									color: "var(--instance)",
+								},
+								{
+									value: "server",
+									contents: <div class="cont">Server</div>,
+									color: "var(--profile)",
+								},
 							]}
-							format={optionFormat}
-							initialValue={side()}
-							onChange={(value) => {
-								// This is dumb
-								setSide(value.name);
-							}}
+							columns={isInstance ? 2 : 3}
+							allowEmpty={!isInstance}
 						/>
 					</div>
 				</Show>
+				<div class="cont">
+					<label for="version">Minecraft Version</label>
+					<input
+						type="text"
+						id="version"
+						name="version"
+						value={emptyUndefined(version())}
+						onChange={(e) => setVersion(e.target.value)}
+					></input>
+				</div>
 			</div>
 			<br />
 			<div class="cont">
@@ -231,9 +239,10 @@ export interface InstanceConfigProps {
 
 interface InstanceConfig {
 	from?: string[];
-	side?: "client" | "server";
+	type?: "client" | "server";
 	name?: string;
 	icon?: string;
+	version?: string | "latest" | "latest_snapshot";
 	[extraKey: string]: any;
 }
 

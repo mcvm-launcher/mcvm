@@ -227,16 +227,24 @@ function Section(props: SectionProps) {
 					)}
 				</For>
 				{/* Button for creating a new instance */}
-				<Show when={props.kind == "all"}>
+				<Show when={props.kind == "all" || props.kind == "profiles"}>
 					<div
 						class="cont launch-instance-list-item noselect border border-big"
-						onclick={() => (window.location.href = "/create_instance")}
+						onclick={() => {
+							let target =
+								props.itemType == "instance"
+									? "create_instance"
+									: "create_profile";
+							window.location.href = target;
+						}}
 					>
 						<div class="launch-instance-list-icon" style="width:2rem">
 							<Plus />
 						</div>
 						<div style="" class="bold">
-							Create Instance
+							{`Create ${
+								props.itemType == "instance" ? "Instance" : "Profile"
+							}`}
 						</div>
 					</div>
 				</Show>

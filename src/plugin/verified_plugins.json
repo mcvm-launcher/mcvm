@@ -1,138 +1,161 @@
 {
 	"args": {
 		"id": "args",
+		"name": "Args",
 		"github_owner": "mcvm-launcher",
 		"github_repo": "mcvm",
 		"description": "Use argument presets to improve game performance"
 	},
 	"backup": {
 		"id": "backup",
+		"name": "Backup",
 		"github_owner": "mcvm-launcher",
 		"github_repo": "mcvm",
 		"description": "Create backups of instances"
 	},
 	"docs": {
 		"id": "docs",
+		"name": "Docs",
 		"github_owner": "mcvm-launcher",
 		"github_repo": "mcvm",
 		"description": "View MCVM's documentation straight from the command line"
 	},
 	"extra_versions": {
 		"id": "extra_versions",
+		"name": "Extra Versions",
 		"github_owner": "mcvm-launcher",
 		"github_repo": "mcvm",
 		"description": "Add versions of Minecraft that are not normally available"
 	},
 	"gen_pkg": {
 		"id": "gen_pkg",
+		"name": "Gen Package",
 		"github_owner": "mcvm-launcher",
 		"github_repo": "mcvm",
 		"description": "Automatically generate packages from existing websites"
 	},
 	"lang": {
 		"id": "lang",
+		"name": "Lang",
 		"github_owner": "mcvm-launcher",
 		"github_repo": "mcvm",
 		"description": "Language translations for MCVM"
 	},
 	"modrinth_api": {
 		"id": "modrinth_api",
+		"name": "Modrinth API",
 		"github_owner": "mcvm-launcher",
 		"github_repo": "mcvm",
 		"description": "Make simple Modrinth API calls to query project versions"
 	},
 	"options": {
 		"id": "options",
+		"name": "Options",
 		"github_owner": "mcvm-launcher",
 		"github_repo": "mcvm",
 		"description": "Manage game options for client and server"
 	},
 	"server_restart": {
 		"id": "server_restart",
+		"name": "Server Restart",
 		"github_owner": "mcvm-launcher",
 		"github_repo": "mcvm",
 		"description": "Manage restart behavior for Spigot and Paper servers"
 	},
 	"stats": {
 		"id": "stats",
+		"name": "Stats",
 		"github_owner": "mcvm-launcher",
 		"github_repo": "mcvm",
 		"description": "Track and view playtime stats"
 	},
 	"mcvm_transfer": {
 		"id": "mcvm_transfer",
+		"name": "MCVM Transfer",
 		"github_owner": "mcvm-launcher",
 		"github_repo": "mcvm",
 		"description": "Import and export MCVM instances"
 	},
 	"fabric_quilt": {
 		"id": "fabric_quilt",
+		"name": "Fabric Quilt",
 		"github_owner": "mcvm-launcher",
 		"github_repo": "mcvm",
 		"description": "Install Fabric and Quilt instances"
 	},
 	"sponge": {
 		"id": "sponge",
+		"name": "Sponge",
 		"github_owner": "mcvm-launcher",
 		"github_repo": "mcvm",
 		"description": "Install Sponge server instances"
 	},
 	"custom_files": {
 		"id": "custom_files",
+		"name": "Custom Files",
 		"github_owner": "mcvm-launcher",
 		"github_repo": "mcvm",
 		"description": "Share custom files across multiple instances"
 	},
 	"paper": {
 		"id": "paper",
+		"name": "Paper",
 		"github_owner": "mcvm-launcher",
 		"github_repo": "mcvm",
 		"description": "Install Paper and Folia server instances"
 	},
 	"scripthook": {
 		"id": "scripthook",
+		"name": "Scripthook",
 		"github_owner": "mcvm-launcher",
 		"github_repo": "mcvm",
 		"description": "Run commands at different parts of the instance lifecycle with no coding knowledge"
 	},
 	"config_split": {
 		"id": "config_split",
+		"name": "Config Split",
 		"github_owner": "mcvm-launcher",
 		"github_repo": "mcvm",
 		"description": "Split parts of your configuration into multiple files"
 	},
 	"smithed_api": {
 		"id": "smithed_api",
+		"name": "Smithed API",
 		"github_owner": "mcvm-launcher",
 		"github_repo": "mcvm",
 		"description": "Make simple Smithed API calls to query project versions"
 	},
 	"smithed": {
 		"id": "smithed",
+		"name": "Smithed",
 		"github_owner": "mcvm-launcher",
 		"github_repo": "mcvm",
 		"description": "Install Smithed packs on profiles and instances"
 	},
 	"modrinth": {
 		"id": "modrinth",
+		"name": "Modrinth",
 		"github_owner": "mcvm-launcher",
 		"github_repo": "mcvm",
 		"description": "Install Modrinth projects on profiles and instances"
 	},
 	"weld": {
 		"id": "weld",
+		"name": "Weld",
 		"github_owner": "mcvm-launcher",
 		"github_repo": "mcvm",
 		"description": "Weld data and resource packs together for better compatability"
 	},
 	"xmcl_transfer": {
 		"id": "xmcl_transfer",
+		"name": "XMCL Transfer",
 		"github_owner": "mcvm-launcher",
 		"github_repo": "mcvm",
 		"description": "Instance transfer for XMCL"
 	},
 	"archive": {
 		"id": "archive",
+		"name": "Archive",
 		"github_owner": "mcvm-launcher",
 		"github_repo": "mcvm",
 		"description": "Clean up old files"

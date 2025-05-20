@@ -1,4 +1,4 @@
-import { JSXElement } from "solid-js";
+import { JSXElement, Show } from "solid-js";
 import Icon, { HasWidthHeight } from "../Icon";
 import "./IconTextButton.css";
 
@@ -14,16 +14,18 @@ export default function IconTextButton(props: IconTextButtonProps) {
 			style={`${colorStyle()}`}
 			onClick={props.onClick}
 		>
-			<div class="icon-text-button-icon center">
-				<Icon icon={props.icon} size={`calc(${props.size} * 0.7)`} />
-			</div>
+			<Show when={props.icon != undefined}>
+				<div class="icon-text-button-icon center">
+					<Icon icon={props.icon!} size={`calc(${props.size} * 0.7)`} />
+				</div>
+			</Show>
 			<div class="icon-text-button-text">{props.text}</div>
 		</button>
 	);
 }
 
 export interface IconTextButtonProps {
-	icon: (props: HasWidthHeight) => JSXElement;
+	icon?: (props: HasWidthHeight) => JSXElement;
 	text: string;
 	color: string;
 	selectedColor: string;

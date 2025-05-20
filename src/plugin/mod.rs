@@ -148,6 +148,21 @@ impl PluginManager {
 		Ok(())
 	}
 
+	/// Reads the manifest for a plugin from the plugin directory
+	pub fn read_plugin_manifest(
+		id: &str,
+		paths: &Paths,
+	) -> anyhow::Result<PluginManifest> {
+		let path = paths.plugins.join(format!("{}.json", id));
+		let path = if path.exists() {
+			path
+		} else {
+			let dir = paths.plugins.join(id);
+			dir.join("plugin.json")
+		};
+		json_from_file(path).context("Failed to read plugin manifest from file")
+	}
+
 	/// Load a plugin from the plugin directory
 	pub fn load_plugin(
 		&mut self,

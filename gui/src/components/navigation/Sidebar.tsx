@@ -1,6 +1,6 @@
 import { createEffect, JSX, Show } from "solid-js";
 import "./Sidebar.css";
-import { Box, Home, Jigsaw } from "../../icons";
+import { Box, Home, Jigsaw, Menu } from "../../icons";
 import { Location } from "@solidjs/router";
 
 export default function Sidebar(props: SidebarProps) {
@@ -52,8 +52,9 @@ export default function Sidebar(props: SidebarProps) {
 						<div>Packages</div>
 					</SidebarItem>
 					<SidebarItem
-						href="/packages/0"
+						href="/plugins"
 						location={props.location}
+						selectedPathStart="/plugins"
 						color="var(--plugin)"
 						closeSidebar={() => props.setVisible(false)}
 					>
@@ -61,6 +62,30 @@ export default function Sidebar(props: SidebarProps) {
 							<Jigsaw />
 						</div>
 						<div>Plugins</div>
+					</SidebarItem>
+					<SidebarItem
+						href="/docs"
+						location={props.location}
+						selectedPathStart="/docs"
+						color="var(--profile)"
+						closeSidebar={() => props.setVisible(false)}
+					>
+						<div style="margin-top:0.3rem;margin-right:-0.2rem;color:var(--profile)">
+							<Menu />
+						</div>
+						<div>Documentation</div>
+					</SidebarItem>
+					<SidebarItem
+						href="/smithed"
+						location={props.location}
+						selectedPathStart="/smithed"
+						color="#1b48c4"
+						closeSidebar={() => props.setVisible(false)}
+					>
+						<div style="margin-top:0.2rem;margin-right:-0.2rem;color:var(--plugin)">
+							<img src="/smithed.png" width="16px" style="width: 16px" />
+						</div>
+						<div>Smithed</div>
 					</SidebarItem>
 				</div>
 			</div>

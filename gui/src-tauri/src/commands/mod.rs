@@ -8,6 +8,7 @@ use std::fmt::Debug;
 pub mod instance;
 pub mod launch;
 pub mod package;
+pub mod plugin;
 
 fn load_config(paths: &Paths, o: &mut LauncherOutput) -> anyhow::Result<Config> {
 	let plugins = PluginManager::load(paths, o).context("Failed to load plugin manager")?;

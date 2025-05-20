@@ -1,4 +1,4 @@
-import { AngleLeft, AngleRight, Menu } from "../../icons";
+import { AngleLeft, AngleRight, Logo, Menu } from "../../icons";
 import IconButton from "../input/IconButton";
 import "./NavBar.css";
 
@@ -43,7 +43,10 @@ export default function NavBar(props: NavBarProps) {
 					</div>
 					<div class="cont navbar-item"></div>
 					<h2 class="cont navbar-item">
-						<a href="/" class="link bold" title="Return to the homepage">
+						<a href="/" class="cont link bold" title="Return to the homepage">
+							<div style="margin-top:-0.45rem">
+								<Logo width="25px" />
+							</div>
 							MCVM
 						</a>
 					</h2>
