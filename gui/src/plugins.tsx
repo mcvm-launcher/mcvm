@@ -1,4 +1,5 @@
 import { invoke } from "@tauri-apps/api";
+import { WebviewWindow } from "@tauri-apps/api/window";
 
 // Loads plugins on a page
 export function loadPagePlugins(page: string, object?: string) {
@@ -12,4 +13,13 @@ export function loadPagePlugins(page: string, object?: string) {
 			console.error("Failed to load page plugins: " + e);
 		}
 	);
+	setupPluginFunctions();
+}
+
+export function setupPluginFunctions() {
+	let global = window as any;
+	global.tauriInvoke = async (command: any, args: any) => {
+		await invoke(command, args);
+	};
+	global.TauriWindow = WebviewWindow;
 }

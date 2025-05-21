@@ -5,6 +5,23 @@
 	"hooks": {
 		"on_instance_setup": {
 			"executable": "${PLUGIN_DIR}/mcvm_plugin_modrinth"
+		},
+		"add_sidebar_buttons": {
+			"constant": [
+				{
+					"html": "<div style=\"margin-top:0.3rem;margin-right:-0.2rem\"><img src=\"https://modrinth.com/favicon.ico\" style=\"width: 16px\" /></div><div>Modrinth</div>",
+					"href": "/custom/modrinth",
+					"selected_url_start": "/custom/modrinth",
+					"color": "#1bd96a"
+				}
+			]
+		},
+		"get_page": {
+			"cases": {
+				"\"modrinth\"": {
+					"file": "page.html"
+				}
+			}
 		}
 	}
 }

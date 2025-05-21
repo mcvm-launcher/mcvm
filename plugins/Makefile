@@ -34,7 +34,7 @@ package: build.weld
 	@rm -f release/gen_pkg-linux.zip && zip -j release/gen_pkg-linux.zip ../target/release/mcvm_plugin_gen_pkg plugins/gen_pkg/plugin.json
 	@rm -f release/mcvm_transfer-linux.zip && zip -j release/mcvm_transfer-linux.zip ../target/release/mcvm_plugin_mcvm_transfer plugins/mcvm_transfer/plugin.json
 	@rm -f release/modrinth-linux.zip && zip -j release/modrinth-linux.zip ../target/release/mcvm_plugin_modrinth plugins/modrinth/plugin.json
-	@rm -f release/modrinth_api-linux.zip && zip -j release/modrinth_api-linux.zip ../target/release/mcvm_plugin_modrinth_api plugins/modrinth_api/plugin.json
+	@rm -f release/modrinth_api-linux.zip && zip -j release/modrinth_api-linux.zip ../target/release/mcvm_plugin_modrinth_api plugins/modrinth_api/plugin.json plugins/modrinth_api/page.html
 	@rm -f release/options-linux.zip && zip -j release/options-linux.zip ../target/release/mcvm_plugin_options plugins/options/plugin.json
 	@rm -f release/packhost-linux.zip && zip -j release/packhost-linux.zip ../target/release/mcvm_plugin_packhost plugins/packhost/plugin.json
 	@rm -f release/paper-linux.zip && zip -j release/paper-linux.zip ../target/release/mcvm_plugin_paper plugins/paper/plugin.json
@@ -98,7 +98,8 @@ install.mcvm_transfer:
 
 install.modrinth:
 	@cargo install --path . --bin mcvm_plugin_modrinth --offline
-	@cat plugins/modrinth/plugin.json | sed 's,\${PLUGIN_DIR}/,,' > ~/.local/share/mcvm/plugins/modrinth.json
+	@cp -r plugins/modrinth ~/.local/share/mcvm/plugins
+	@cat plugins/modrinth/plugin.json | sed 's,\${PLUGIN_DIR}/,,' > ~/.local/share/mcvm/plugins/modrinth/plugin.json
 
 install.modrinth_api:
 	@cargo install --path . --bin mcvm_plugin_modrinth_api --offline

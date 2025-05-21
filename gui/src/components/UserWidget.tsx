@@ -2,6 +2,7 @@ import { invoke } from "@tauri-apps/api";
 import { createResource, createSignal, For, Show } from "solid-js";
 import { AngleRight } from "../icons";
 import "./UserWidget.css";
+import { stringCompare } from "../utils";
 
 export default function UserWidget(props: UserWidgetProps) {
 	let [userData, methods] = createResource(updateUsers);
@@ -21,9 +22,17 @@ export default function UserWidget(props: UserWidgetProps) {
 			users[currentUser] = undefined;
 		}
 
+		let userList = [];
+		for (let user of Object.values(users)) {
+			if (user != undefined) {
+				userList.push(user);
+			}
+		}
+		userList.sort((a, b) => stringCompare(a.id, b.id));
+
 		return {
 			currentUser: currentUserInfo,
-			users: users,
+			users: userList,
 		} as UserData;
 	}
 
@@ -50,7 +59,7 @@ export default function UserWidget(props: UserWidgetProps) {
 			</div>
 			<Show when={isOpen() && userData() != undefined}>
 				<div id="user-widget-dropdown">
-					<For each={Object.values(userData()!.users)}>
+					<For each={userData()!.users}>
 						{(user) => (
 							<Show when={user != undefined}>
 								<div class="user-widget-dropdown-item">
@@ -78,7 +87,7 @@ export interface UserWidgetProps {
 
 interface UserData {
 	currentUser?: UserInfo;
-	users: UserMap;
+	users: UserInfo[];
 }
 
 type UserMap = { [id: string]: UserInfo | undefined };

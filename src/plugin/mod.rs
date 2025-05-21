@@ -54,15 +54,15 @@ impl PluginManager {
 
 		let mut out = Self::new();
 
-		for plugin in config.plugins {
-			let config = config.config.get(&plugin).cloned();
+		for plugin_id in config.plugins {
+			let config = config.config.get(&plugin_id).cloned();
 			let plugin = PluginConfig {
-				id: plugin,
+				id: plugin_id.clone(),
 				custom_config: config,
 			};
 
 			out.load_plugin(plugin, paths, o)
-				.context("Failed to load plugin")?;
+				.with_context(|| format!("Failed to load plugin {plugin_id}"))?;
 		}
 
 		out.check_dependencies(o);
@@ -149,10 +149,7 @@ impl PluginManager {
 	}
 
 	/// Reads the manifest for a plugin from the plugin directory
-	pub fn read_plugin_manifest(
-		id: &str,
-		paths: &Paths,
-	) -> anyhow::Result<PluginManifest> {
+	pub fn read_plugin_manifest(id: &str, paths: &Paths) -> anyhow::Result<PluginManifest> {
 		let path = paths.plugins.join(format!("{}.json", id));
 		let path = if path.exists() {
 			path

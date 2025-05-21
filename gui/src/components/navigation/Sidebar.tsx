@@ -3,6 +3,7 @@ import "./Sidebar.css";
 import { Box, Home, Jigsaw, Menu } from "../../icons";
 import { Location } from "@solidjs/router";
 import { invoke } from "@tauri-apps/api";
+import { stringCompare } from "../../utils";
 
 export default function Sidebar(props: SidebarProps) {
 	// Close the sidebar when clicking outside of it
@@ -26,6 +27,7 @@ export default function Sidebar(props: SidebarProps) {
 
 	let [extraButtons, _] = createResource(async () => {
 		let buttons: PluginSidebarButton[] = await invoke("get_sidebar_buttons");
+		buttons.sort((a, b) => stringCompare(a.href, b.href));
 		return buttons;
 	});
 

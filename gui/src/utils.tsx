@@ -33,3 +33,8 @@ export function parseQueryString(string: string): QueryStringResult {
 export interface QueryStringResult {
 	[key: string]: string | undefined;
 }
+
+// Sort comparison function for strings
+export function stringCompare(a: string, b: string) {
+	return a > b ? 1 : a < b ? -1 : 0;
+}
