@@ -1,4 +1,4 @@
-import { For, Show, createEffect, createSignal, onCleanup } from "solid-js";
+import { For, Show, createSignal, onCleanup, onMount } from "solid-js";
 import "./LaunchFooter.css";
 import { UnlistenFn, listen, Event } from "@tauri-apps/api/event";
 import { invoke } from "@tauri-apps/api";
@@ -28,7 +28,7 @@ export default function LaunchFooter(props: LaunchFooterProps) {
 	}
 
 	// Setup and clean up event listeners for updating state
-	createEffect(async () => {
+	onMount(async () => {
 		updateRunningInstances();
 
 		for (let unlisten of unlistens()) {
@@ -73,7 +73,7 @@ export default function LaunchFooter(props: LaunchFooterProps) {
 		]);
 
 		setUnlistens(eventUnlistens);
-	}, []);
+	});
 
 	onCleanup(() => {
 		for (const unlisten of unlistens()) {

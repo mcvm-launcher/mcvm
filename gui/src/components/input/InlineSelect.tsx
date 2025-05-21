@@ -17,14 +17,21 @@ export default function InlineSelect(props: InlineSelectProps) {
 					}}
 					onSelect={props.onChange}
 					selected={props.selected}
+					isLast={props.selected == props.options[0].value}
+					isFirst={true}
 				/>
 			</Show>
 			<For each={props.options}>
-				{(option) => (
+				{(option, index) => (
 					<InlineSelectOption
 						option={option}
 						onSelect={props.onChange}
 						selected={props.selected}
+						isLast={
+							index() == props.options.length - 1 ||
+							props.selected == props.options[index() + 1].value
+						}
+						isFirst={index() == 0 && !props.allowEmpty}
 					/>
 				)}
 			</For>
@@ -48,8 +55,10 @@ function InlineSelectOption(props: OptionProps) {
 
 	return (
 		<div
-			class={`cont inline-select-option ${isSelected() ? "selected" : ""}`}
-			style={`border-color:${color}`}
+			class={`cont inline-select-option ${isSelected() ? "selected" : ""} ${
+				props.isLast ? "" : "not-last"
+			} ${props.isFirst ? "" : "not-first"}`}
+			style={`${isSelected() ? `border-color:${color}` : "inherit"}`}
 			onclick={() => props.onSelect(props.option.value)}
 		>
 			{props.option.contents}
@@ -60,6 +69,8 @@ function InlineSelectOption(props: OptionProps) {
 interface OptionProps {
 	option: Option;
 	selected?: string;
+	isFirst: boolean;
+	isLast: boolean;
 	onSelect: (option: string | undefined) => void;
 }
 

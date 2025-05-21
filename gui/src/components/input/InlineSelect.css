@@ -1,6 +1,8 @@
 .inline-select {
 	display: grid;
-	gap: 0.5rem;
+	/* gap: 0.5rem; */
+	background-color: var(--bg2);
+	border-radius: 0.5rem;
 }
 
 .inline-select-option {
@@ -9,6 +11,19 @@
 	border-radius: 0.5rem;
 	box-sizing: border-box;
 	cursor: pointer;
+	-webkit-user-select: none;
+	user-select: none;
+}
+
+.inline-select-option.not-last {
+	border-right: 0.15rem solid var(--bg3);
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+.inline-select-option.not-first {
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
 }
 
 .inline-select-option.selected {
