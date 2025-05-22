@@ -1,0 +1,48 @@
+<div id="all-webtools">
+	<h1>Webtools</h1>
+	<div id="tools-container" class="cont col">{{tools}}</div>
+</div>
+<style>
+	#tools-container {
+		width: 100%;
+	}
+
+	.webtool {
+		display: grid;
+		grid-template-columns: minmax(0, 0.15fr) minmax(0, 0.8fr) minmax(0, 4fr);
+		background-color: var(--bg2);
+		padding: 0.5rem;
+		border-radius: 0.5rem;
+		width: 70%;
+		cursor: pointer;
+	}
+
+	.webtool-name {
+		justify-content: flex-start;
+		font-weight: bold;
+		margin-left: 0.5rem;
+		pointer-events: none;
+	}
+
+	.webtool-description {
+		justify-content: flex-start;
+		color: var(--fg3);
+		pointer-events: none;
+	}
+</style>
+<script>
+	for (let elem of document.getElementsByClassName("webtool")) {
+		elem.addEventListener("click", (e) => {
+			let url = e.target.dataset.url;
+			console.log(url);
+			let id = e.target.dataset.id;
+			if (url == "") {
+				window.location.href = `/custom/webtools-${id}`;
+			} else {
+				new TauriWindow(`webtool_${id}`, {
+					url: url,
+				});
+			}
+		});
+	}
+</script>

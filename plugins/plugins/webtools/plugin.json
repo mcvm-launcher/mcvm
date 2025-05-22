@@ -5,6 +5,12 @@
 	"hooks": {
 		"subcommand": {
 			"executable": "${PLUGIN_DIR}/mcvm_plugin_webtools"
+		},
+		"add_sidebar_buttons": {
+			"executable": "${PLUGIN_DIR}/mcvm_plugin_webtools"
+		},
+		"get_page": {
+			"executable": "${PLUGIN_DIR}/mcvm_plugin_webtools"
 		}
 	},
 	"subcommands": {

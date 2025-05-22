@@ -187,8 +187,6 @@ pub async fn get_plugin_page(
 ) -> Result<Option<String>, String> {
 	let app_handle = Arc::new(app_handle);
 
-	dbg!(&page);
-
 	let mut output = LauncherOutput::new(
 		app_handle,
 		state.passkeys.clone(),
@@ -207,7 +205,6 @@ pub async fn get_plugin_page(
 	for result in results {
 		let result = fmt_err(result.result(&mut output))?;
 		if let Some(result) = result {
-			dbg!(&result);
 			return Ok(Some(result));
 		}
 	}

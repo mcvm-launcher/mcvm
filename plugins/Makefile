@@ -144,7 +144,8 @@ install.stats:
 
 install.webtools:
 	@cargo install --path . --bin mcvm_plugin_webtools --offline
-	@cat plugins/webtools/plugin.json | sed 's,\${PLUGIN_DIR}/,,' > ~/.local/share/mcvm/plugins/webtools.json
+	@cp -r plugins/webtools ~/.local/share/mcvm/plugins
+	@cat plugins/webtools/plugin.json | sed 's,\${PLUGIN_DIR}/,,' > ~/.local/share/mcvm/plugins/webtools/plugin.json
 
 install.weld:
 	@mkdir -p ~/.local/share/mcvm/plugins/weld
