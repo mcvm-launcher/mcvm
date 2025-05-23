@@ -210,10 +210,48 @@ button {
 		transform: rotate(360deg);
 	}
 }
+
 .rotating {
 	-webkit-animation: rotating 2s linear infinite;
 	-moz-animation: rotating 2s linear infinite;
 	-ms-animation: rotating 2s linear infinite;
 	-o-animation: rotating 2s linear infinite;
 	animation: rotating 2s linear infinite;
+}
+
+.error-shake {
+	-webkit-animation: shake 0.2s ease-in-out 0s 2;
+	animation: shake 0.2s ease-in-out 0s 2;
+	border: 0.15rem solid var(--error);
+	border-radius: 0.5rem;
+}
+
+@-webkit-keyframes shake {
+	0% {
+		margin-left: 0rem;
+	}
+	25% {
+		margin-left: 0.5rem;
+	}
+	75% {
+		margin-left: -0.5rem;
+	}
+	100% {
+		margin-left: 0rem;
+	}
+}
+
+@keyframes shake {
+	0% {
+		margin-left: 0rem;
+	}
+	25% {
+		margin-left: 0.5rem;
+	}
+	75% {
+		margin-left: -0.5rem;
+	}
+	100% {
+		margin-left: 0rem;
+	}
 }

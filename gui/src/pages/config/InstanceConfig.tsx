@@ -13,6 +13,7 @@ import {
 import "@thisbeyond/solid-select/style.css";
 import InlineSelect from "../../components/input/InlineSelect";
 import { loadPagePlugins } from "../../plugins";
+import { inputError } from "../../errors";
 
 export default function InstanceConfig(props: InstanceConfigProps) {
 	let params = useParams();
@@ -125,6 +126,22 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 		console.log(icon());
 		console.log(version());
 
+		let configId = props.creating ? newId() : id;
+
+		if (!isGlobalProfile && configId == undefined) {
+			inputError("id");
+			return;
+		}
+		if (isInstance && side() == undefined) {
+			inputError("side");
+			return;
+		}
+
+		if (isInstance && version() == undefined) {
+			inputError("version");
+			return;
+		}
+
 		let newConfig: InstanceConfig = {
 			from: from(),
 			type: side(),
@@ -141,8 +158,6 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 				}
 			}
 		}
-
-		let configId = props.creating ? newId() : id;
 
 		if (isInstance) {
 			await invoke("write_instance_config", {
@@ -195,24 +210,26 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 				<Show when={props.creating || isProfile || isGlobalProfile}>
 					<div class="cont col">
 						<label for="side">Side</label>
-						<InlineSelect
-							onChange={setSide}
-							selected={side()}
-							options={[
-								{
-									value: "client",
-									contents: <div class="cont">Client</div>,
-									color: "var(--instance)",
-								},
-								{
-									value: "server",
-									contents: <div class="cont">Server</div>,
-									color: "var(--profile)",
-								},
-							]}
-							columns={isInstance ? 2 : 3}
-							allowEmpty={!isInstance}
-						/>
+						<div id="side">
+							<InlineSelect
+								onChange={setSide}
+								selected={side()}
+								options={[
+									{
+										value: "client",
+										contents: <div class="cont">Client</div>,
+										color: "var(--instance)",
+									},
+									{
+										value: "server",
+										contents: <div class="cont">Server</div>,
+										color: "var(--profile)",
+									},
+								]}
+								columns={isInstance ? 2 : 3}
+								allowEmpty={!isInstance}
+							/>
+						</div>
 					</div>
 				</Show>
 				<div class="cont">
