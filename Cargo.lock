@@ -2775,6 +2775,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "mcvm_pkg_gen"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "mcvm_core",
+ "mcvm_net",
+ "mcvm_pkg",
+ "mcvm_shared",
+ "regex",
+ "serde",
+ "serde_json",
+ "version-compare 0.2.0",
+]
+
+[[package]]
 name = "mcvm_plugin"
 version = "0.5.0"
 dependencies = [
@@ -2804,6 +2819,7 @@ dependencies = [
  "mcvm_mods",
  "mcvm_net",
  "mcvm_options",
+ "mcvm_pkg_gen",
  "mcvm_plugin",
  "mcvm_shared",
  "rand 0.8.5",

@@ -1,27 +1,28 @@
 use std::collections::HashMap;
 use std::sync::OnceLock;
 
-use mcvm::pkg_crate::declarative::{
+use mcvm_pkg::declarative::{
 	DeclarativeAddon, DeclarativeAddonVersion, DeclarativeConditionSet, DeclarativePackage,
 	DeclarativePackageRelations,
 };
-use mcvm::pkg_crate::metadata::PackageMetadata;
-use mcvm::pkg_crate::properties::PackageProperties;
-use mcvm::pkg_crate::RecommendedPackage;
-use mcvm::shared::addon::AddonKind;
-use mcvm::shared::modifications::{ModloaderMatch, PluginLoaderMatch};
-use mcvm::shared::pkg::PackageStability;
-use mcvm::shared::util::DeserListOrSingle;
-use mcvm::shared::versions::VersionPattern;
+use mcvm_pkg::metadata::PackageMetadata;
+use mcvm_pkg::properties::PackageProperties;
+use mcvm_pkg::RecommendedPackage;
+use mcvm_shared::addon::AddonKind;
+use mcvm_shared::modifications::{ModloaderMatch, PluginLoaderMatch};
+use mcvm_shared::pkg::PackageStability;
+use mcvm_shared::util::DeserListOrSingle;
+use mcvm_shared::versions::VersionPattern;
 
-use mcvm::shared::Side;
 use mcvm_net::modrinth::{
 	self, DependencyType, KnownLoader, Loader, Member, Project, ProjectType, ReleaseChannel,
 	SideSupport, Version,
 };
+use mcvm_shared::Side;
 use regex::{Regex, RegexBuilder};
 
-pub async fn gen(
+/// Generates a Modrinth package from a Modrinth project ID
+pub async fn gen_from_id(
 	id: &str,
 	relation_substitutions: HashMap<String, String>,
 	force_extensions: &[String],
@@ -41,7 +42,7 @@ pub async fn gen(
 		.await
 		.expect("Failed to get project team members from Modrinth");
 
-	gen_raw(
+	gen(
 		project,
 		&versions,
 		&members,
@@ -53,7 +54,8 @@ pub async fn gen(
 	.await
 }
 
-pub async fn gen_raw(
+/// Generates a Modrinth package from a Modrinth project
+pub async fn gen(
 	project: Project,
 	versions: &[Version],
 	members: &[Member],

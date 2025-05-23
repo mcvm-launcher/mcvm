@@ -3,6 +3,7 @@ use std::fs::File;
 use std::io::stdout;
 
 use clap::Parser;
+use mcvm_pkg_gen::{modrinth, smithed};
 use mcvm_plugin::api::CustomPlugin;
 use serde::{Deserialize, Serialize};
 use serde_json::ser::PrettyFormatter;
@@ -10,10 +11,6 @@ use serde_json::Serializer;
 
 /// Generation of many packages
 pub mod batched;
-/// Modrinth package generation
-pub mod modrinth;
-/// Smithed package generation
-pub mod smithed;
 
 fn main() -> anyhow::Result<()> {
 	let mut plugin = CustomPlugin::from_manifest_file("gen_pkg", include_str!("plugin.json"))?;
@@ -119,10 +116,10 @@ pub async fn gen(source: PackageSource, config: Option<PackageGenerationConfig>,
 	let config = config.unwrap_or_default();
 	let mut pkg = match source {
 		PackageSource::Smithed => {
-			smithed::gen(id, config.relation_substitutions, &config.force_extensions).await
+			smithed::gen_from_id(id, config.relation_substitutions, &config.force_extensions).await
 		}
 		PackageSource::Modrinth => {
-			modrinth::gen(
+			modrinth::gen_from_id(
 				id,
 				config.relation_substitutions,
 				&config.force_extensions,

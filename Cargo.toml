@@ -44,6 +44,7 @@ members = [
 	"crates/options",
 	"crates/parse",
 	"crates/pkg",
+	"crates/pkg_gen",
 	"crates/plugin",
 	"crates/shared",
 	"crates/tools",
@@ -90,6 +91,7 @@ mcvm_net = { path = "crates/net", version = "0.3.0" }
 mcvm_options = { path = "crates/options", version = "0.8.0" }
 mcvm_parse = { path = "crates/parse", version = "0.17.0" }
 mcvm_pkg = { path = "crates/pkg", version = "0.16.0" }
+mcvm_pkg_gen = { path = "crates/pkg_gen", version = "0.1.0" }
 mcvm_plugin = { path = "crates/plugin", version = "0.5.0", default-features = false }
 mcvm_shared = { path = "crates/shared", version = "0.16.0" }
 nutype = { version = "0.4.0", features = ["serde"] }

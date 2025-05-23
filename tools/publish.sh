@@ -38,6 +38,11 @@ cd pkg
 cargo publish
 cd ..
 
+# mcvm_pkg_gen
+cd pkg_gen
+cargo publish
+cd ..
+
 # mcvm_config
 cd config
 cargo publish

@@ -8,6 +8,7 @@ use iso8601_timestamp::Timestamp;
 use mcvm_core::io::{json_from_file, json_to_file};
 use mcvm_core::net::download::Client;
 use mcvm_net::modrinth::Version;
+use mcvm_pkg_gen::{modrinth, smithed};
 use serde::{Deserialize, Serialize};
 use serde_json::{ser::PrettyFormatter, Serializer};
 use tokio::sync::Mutex;
@@ -232,7 +233,7 @@ pub async fn batched_gen(mut config: BatchedConfig, filter: Vec<String>) {
 					.iter()
 					.find(|x| x.id == pkg.id)
 					.expect("Smithed pack should have been downloaded");
-				super::smithed::gen_raw(
+				smithed::gen(
 					pack.clone(),
 					pkg_config.relation_substitutions,
 					&pkg_config.force_extensions,
@@ -258,7 +259,7 @@ pub async fn batched_gen(mut config: BatchedConfig, filter: Vec<String>) {
 					.find(|team| team.iter().any(|member| member.team_id == project.team))
 					.unwrap_or(&empty_vec);
 
-				super::modrinth::gen_raw(
+				modrinth::gen(
 					project.clone(),
 					versions,
 					team,

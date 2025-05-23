@@ -111,6 +111,7 @@ mcvm_mods = { workspace = true }
 mcvm_net = { workspace = true }
 mcvm_options = { workspace = true }
 mcvm_plugin = { workspace = true, features = ["api"] }
+mcvm_pkg_gen = { workspace = true }
 mcvm_shared = { workspace = true }
 rand = { workspace = true }
 regex = { workspace = true }

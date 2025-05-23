@@ -1,0 +1,25 @@
+[package]
+name = "mcvm_pkg_gen"
+version = "0.1.0"
+description = "MCVM package generation from existing platforms"
+keywords = ["minecraft", "launcher", "game", "mc"]
+categories.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+anyhow = { workspace = true }
+mcvm_core = { workspace = true }
+mcvm_net = { workspace = true }
+mcvm_pkg = { workspace = true }
+mcvm_shared = { workspace = true }
+regex = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+version-compare = { workspace = true }

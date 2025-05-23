@@ -1,19 +1,20 @@
 use std::collections::HashMap;
 
-use mcvm::pkg_crate::declarative::{
+use mcvm_core::net::download::Client;
+use mcvm_pkg::declarative::{
 	DeclarativeAddon, DeclarativeAddonVersion, DeclarativeConditionSet, DeclarativePackage,
 	DeclarativePackageRelations,
 };
-use mcvm::pkg_crate::metadata::PackageMetadata;
-use mcvm::pkg_crate::properties::PackageProperties;
-use mcvm::shared::addon::AddonKind;
-use mcvm::shared::util::DeserListOrSingle;
-use mcvm::shared::versions::VersionPattern;
-use mcvm_core::net::download::Client;
+use mcvm_pkg::metadata::PackageMetadata;
+use mcvm_pkg::properties::PackageProperties;
+use mcvm_shared::addon::AddonKind;
+use mcvm_shared::util::DeserListOrSingle;
+use mcvm_shared::versions::VersionPattern;
 
 use mcvm_net::smithed::Pack;
 
-pub async fn gen(
+/// Generates a Smithed package from a Smithed pack ID
+pub async fn gen_from_id(
 	id: &str,
 	relation_substitutions: HashMap<String, String>,
 	force_extensions: &[String],
@@ -22,10 +23,11 @@ pub async fn gen(
 		.await
 		.expect("Failed to get pack");
 
-	gen_raw(pack, relation_substitutions, force_extensions).await
+	gen(pack, relation_substitutions, force_extensions).await
 }
 
-pub async fn gen_raw(
+/// Generates a Smithed package from a Smithed pack
+pub async fn gen(
 	pack: Pack,
 	relation_substitutions: HashMap<String, String>,
 	force_extensions: &[String],
