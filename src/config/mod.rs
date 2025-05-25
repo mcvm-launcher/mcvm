@@ -103,9 +103,14 @@ impl Config {
 		let mut instances = HashMap::with_capacity(config.instances.len());
 		// Preferences
 		let (prefs, repositories) =
-			ConfigPreferences::read(&config.preferences).context("Failed to read preferences")?;
+			ConfigPreferences::read(&config.preferences, &plugins, paths, o)
+				.context("Failed to read preferences")?;
 
-		let packages = PkgRegistry::new(repositories, prefs.package_caching_strategy.clone());
+		let packages = PkgRegistry::new(
+			repositories,
+			&plugins,
+			prefs.package_caching_strategy.clone(),
+		);
 
 		// Users
 		for (user_id, user_config) in config.users.iter() {

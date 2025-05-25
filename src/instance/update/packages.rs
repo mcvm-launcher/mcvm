@@ -87,7 +87,6 @@ pub async fn update_instance_packages<'a, O: MCVMOutput>(
 					ctx.paths,
 					force,
 					ctx.client,
-					ctx.plugins,
 					ctx.output,
 				)
 				.await
@@ -278,7 +277,6 @@ async fn resolve_and_batch<'a, O: MCVMOutput>(
 			ctx.paths,
 			ctx.packages,
 			ctx.client,
-			ctx.plugins,
 			ctx.output,
 		)
 		.await

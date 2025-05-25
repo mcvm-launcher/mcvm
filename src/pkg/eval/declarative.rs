@@ -24,7 +24,7 @@ pub fn eval_declarative_package<'a>(
 	input: EvalInput<'a>,
 	properties: PackageProperties,
 	routine: Routine,
-	plugins: &'a PluginManager,
+	plugins: PluginManager,
 ) -> anyhow::Result<EvalData<'a>> {
 	let eval_data =
 		eval_declarative_package_impl(id, contents, input, properties, routine, plugins)?;
@@ -39,7 +39,7 @@ fn eval_declarative_package_impl<'a>(
 	input: EvalInput<'a>,
 	properties: PackageProperties,
 	routine: Routine,
-	plugins: &'a PluginManager,
+	plugins: PluginManager,
 ) -> anyhow::Result<EvalData<'a>> {
 	let pkg_id = id;
 
@@ -416,7 +416,7 @@ mod tests {
 			input,
 			PackageProperties::default(),
 			Routine::Install,
-			&plugins,
+			plugins,
 		)
 		.unwrap();
 

@@ -10,7 +10,6 @@ use crate::io::lock::{Lockfile, LockfileAddon};
 use crate::io::paths::Paths;
 use crate::pkg::eval::{EvalData, EvalInput, Routine};
 use crate::pkg::reg::PkgRegistry;
-use crate::plugin::PluginManager;
 
 use super::Instance;
 use crate::config::package::PackageConfig;
@@ -30,7 +29,6 @@ impl Instance {
 		lock: &mut Lockfile,
 		force: bool,
 		client: &Client,
-		plugins: &'a PluginManager,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<EvalData<'a>> {
 		let version_info = VersionInfo {
@@ -39,7 +37,7 @@ impl Instance {
 		};
 
 		let (eval, tasks) = self
-			.get_package_addon_tasks(pkg, eval_input, reg, paths, force, client, plugins, o)
+			.get_package_addon_tasks(pkg, eval_input, reg, paths, force, client, o)
 			.await
 			.context("Failed to get download tasks for installing package")?;
 
@@ -64,14 +62,13 @@ impl Instance {
 		paths: &'a Paths,
 		force: bool,
 		client: &Client,
-		plugins: &'a PluginManager,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<(
 		EvalData<'a>,
 		HashMap<String, impl Future<Output = anyhow::Result<()>> + Send + 'static>,
 	)> {
 		let eval = reg
-			.eval(pkg, paths, Routine::Install, eval_input, client, plugins, o)
+			.eval(pkg, paths, Routine::Install, eval_input, client, o)
 			.await
 			.context("Failed to evaluate package")?;
 

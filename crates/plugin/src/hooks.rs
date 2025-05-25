@@ -1,11 +1,12 @@
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
 use mcvm_config::instance::InstanceConfig;
 use mcvm_config::profile::ProfileConfig;
 use mcvm_core::net::game_files::version_manifest::VersionEntry;
 use mcvm_core::net::minecraft::MinecraftUserProfile;
+use mcvm_pkg::repo::{PackageFlag, RepoMetadata};
 use mcvm_pkg::script_eval::AddonInstructionData;
-use mcvm_pkg::{RecommendedPackage, RequiredPackage};
+use mcvm_pkg::{PackageContentType, RecommendedPackage, RequiredPackage};
 use mcvm_shared::id::{InstanceID, ProfileID};
 use mcvm_shared::lang::translate::LanguageMap;
 use mcvm_shared::modifications::{ClientType, ServerType};
@@ -525,3 +526,53 @@ def_hook!(
 	Option<String>,
 	1,
 );
+
+def_hook!(
+	AddCustomPackageRepositories,
+	"add_custom_package_repositories",
+	"Hook for adding custom package repositories",
+	(),
+	Vec<AddCustomPackageRepositoriesResult>,
+	1,
+);
+
+/// A single added package repository from the AddCustomPackageRepositories hook
+#[derive(Serialize, Deserialize, Default)]
+#[serde(default)]
+pub struct AddCustomPackageRepositoriesResult {
+	/// Whether the repository should be preferred or backup
+	pub is_preferred: bool,
+	/// The ID for the repository
+	pub id: String,
+	/// The metadata for the repository
+	pub metadata: RepoMetadata,
+}
+
+def_hook!(
+	QueryCustomPackageRepository,
+	"query_custom_package_repository",
+	"Hook for getting packages from a custom repository",
+	QueryCustomPackageRepositoryArg,
+	Option<CustomRepoQueryResult>,
+	1,
+);
+
+/// Argument for the QueryCustomPackageRepository hook
+#[derive(Serialize, Deserialize, Default)]
+pub struct QueryCustomPackageRepositoryArg {
+	/// The repository that is being queried
+	pub repository: String,
+	/// The package that is being asked for
+	pub package: String,
+}
+
+/// Result from querying a custom package repository
+#[derive(Serialize, Deserialize)]
+pub struct CustomRepoQueryResult {
+	/// The contents of the package
+	pub contents: String,
+	/// The content type of the package
+	pub content_type: PackageContentType,
+	/// The flags for the package
+	pub flags: HashSet<PackageFlag>,
+}

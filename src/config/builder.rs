@@ -19,7 +19,7 @@ use mcvm_shared::Side;
 use crate::instance::Instance;
 use crate::io::paths::Paths;
 use crate::pkg::reg::PkgRegistry;
-use crate::pkg::repo::PkgRepo;
+use crate::pkg::repo::PackageRepository;
 use crate::plugin::PluginManager;
 
 use super::instance::read_instance_config;
@@ -40,8 +40,12 @@ pub struct ConfigBuilder {
 
 impl ConfigBuilder {
 	/// Construct a new ConfigBuilder
-	pub fn new(prefs: ConfigPreferences, repos: Vec<PkgRepo>) -> Self {
-		let packages = PkgRegistry::new(repos, prefs.package_caching_strategy.clone());
+	pub fn new(
+		prefs: ConfigPreferences,
+		repos: Vec<PackageRepository>,
+		plugins: &PluginManager,
+	) -> Self {
+		let packages = PkgRegistry::new(repos, plugins, prefs.package_caching_strategy.clone());
 		Self {
 			users: UserManager::new(ClientId::new("".into())),
 			instances: HashMap::new(),

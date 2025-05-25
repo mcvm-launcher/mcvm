@@ -1,92 +1,59 @@
-use crate::io::paths::Paths;
-use mcvm_core::net::download;
-use mcvm_pkg::repo::{
-	get_api_url, get_index_url, PackageFlag, RepoIndex, RepoMetadata, RepoPkgEntry,
+use std::{
+	fmt::Display,
+	fs::File,
+	io::{BufReader, Cursor},
+	path::PathBuf,
 };
-use mcvm_pkg::PackageContentType;
-use mcvm_shared::later::Later;
 
 use anyhow::{bail, Context};
-use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
-use mcvm_shared::translate;
+use mcvm_net::download;
+use mcvm_pkg::repo::{get_api_url, get_index_url, RepoIndex, RepoMetadata, RepoPkgEntry};
+use mcvm_shared::{
+	later::Later,
+	output::{MCVMOutput, MessageContents, MessageLevel},
+	translate,
+};
 use reqwest::Client;
 
-use std::borrow::Cow;
-use std::collections::{HashMap, HashSet};
-use std::fmt::Display;
-use std::fs::File;
-use std::io::{BufReader, Cursor};
-use std::path::PathBuf;
+use crate::{io::paths::Paths, pkg::PkgLocation};
 
-use super::core::{
-	get_all_core_packages, get_core_package_content_type, get_core_package_count, is_core_package,
-};
-use super::PkgLocation;
+use super::{get_content_type, RepoQueryResult};
 
-/// A remote source for mcvm packages
+/// A basic repository using a package index
 #[derive(Debug)]
-pub struct PkgRepo {
+pub struct BasicPackageRepository {
 	/// The identifier for the repository
 	pub id: String,
-	location: PkgRepoLocation,
+	location: RepoLocation,
 	index: Later<RepoIndex>,
 }
 
-/// Location for a PkgRepo
+/// Location for a BasicPackageRepository
 #[derive(Debug)]
-pub enum PkgRepoLocation {
+pub enum RepoLocation {
 	/// A repository on a remote device
 	Remote(String),
 	/// A repository on the local filesystem
 	Local(PathBuf),
-	/// The internal core repository
-	Core,
 }
 
-impl Display for PkgRepoLocation {
+impl Display for RepoLocation {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		match self {
 			Self::Remote(url) => write!(f, "{url}"),
 			Self::Local(path) => write!(f, "{path:?}"),
-			Self::Core => write!(f, "internal"),
 		}
 	}
 }
 
-impl PkgRepo {
+impl BasicPackageRepository {
 	/// Create a new PkgRepo
-	pub fn new(id: &str, location: PkgRepoLocation) -> Self {
+	pub fn new(id: &str, location: RepoLocation) -> Self {
 		Self {
 			id: id.to_owned(),
 			location,
 			index: Later::new(),
 		}
-	}
-
-	/// Create the core repository
-	pub fn core() -> Self {
-		Self::new("core", PkgRepoLocation::Core)
-	}
-
-	/// Create the std repository
-	pub fn std() -> Self {
-		Self::new(
-			"std",
-			PkgRepoLocation::Remote("https://mcvm-launcher.github.io/packages/std".into()),
-		)
-	}
-
-	/// Get the default set of repositories
-	pub fn default_repos(enable_core: bool, enable_std: bool) -> Vec<Self> {
-		let mut out = Vec::new();
-		// We don't want std overriding core
-		if enable_core {
-			out.push(Self::core());
-		}
-		if enable_std {
-			out.push(Self::std());
-		}
-		out
 	}
 
 	/// The cached path of the index
@@ -95,7 +62,7 @@ impl PkgRepo {
 	}
 
 	/// Gets the location of the repository
-	pub fn get_location(&self) -> &PkgRepoLocation {
+	pub fn get_location(&self) -> &RepoLocation {
 		&self.location
 	}
 
@@ -109,13 +76,13 @@ impl PkgRepo {
 	/// Update the currently cached index file
 	pub async fn sync(&mut self, paths: &Paths, client: &Client) -> anyhow::Result<()> {
 		match &self.location {
-			PkgRepoLocation::Local(path) => {
+			RepoLocation::Local(path) => {
 				let bytes = tokio::fs::read(path).await?;
 				tokio::fs::write(self.get_path(paths), &bytes).await?;
 				let mut cursor = Cursor::new(&bytes);
 				self.set_index(&mut cursor).context("Failed to set index")?;
 			}
-			PkgRepoLocation::Remote(url) => {
+			RepoLocation::Remote(url) => {
 				let bytes = download::bytes(get_index_url(url), client)
 					.await
 					.context("Failed to download index")?;
@@ -125,7 +92,6 @@ impl PkgRepo {
 				let mut cursor = Cursor::new(&bytes);
 				self.set_index(&mut cursor).context("Failed to set index")?;
 			}
-			PkgRepoLocation::Core => {}
 		}
 
 		Ok(())
@@ -138,11 +104,6 @@ impl PkgRepo {
 		client: &Client,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
-		// The core repository doesn't have an index
-		if let PkgRepoLocation::Core = &self.location {
-			return Ok(());
-		}
-
 		if self.index.is_empty() {
 			let path = self.get_path(paths);
 			if path.exists() {
@@ -197,32 +158,18 @@ impl PkgRepo {
 		client: &Client,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Option<RepoQueryResult>> {
-		// Get from the core
-		if let PkgRepoLocation::Core = &self.location {
-			if is_core_package(id) {
-				Ok(Some(RepoQueryResult {
-					location: PkgLocation::Core,
-					content_type: get_core_package_content_type(id)
-						.expect("Core package exists and should have a content type"),
-					flags: HashSet::new(),
-				}))
-			} else {
-				Ok(None)
-			}
-		} else {
-			self.ensure_index(paths, client, o).await?;
-			let index = self.index.get();
-			if let Some(entry) = index.packages.get(id) {
-				let location = get_package_location(entry, &self.location, &self.id)
-					.context("Failed to get location of package")?;
-				return Ok(Some(RepoQueryResult {
-					location,
-					content_type: get_content_type(entry).await,
-					flags: entry.flags.clone(),
-				}));
-			}
-			Ok(None)
+		self.ensure_index(paths, client, o).await?;
+		let index = self.index.get();
+		if let Some(entry) = index.packages.get(id) {
+			let location = get_package_location(entry, &self.location, &self.id)
+				.context("Failed to get location of package")?;
+			return Ok(Some(RepoQueryResult {
+				location,
+				content_type: get_content_type(entry).await,
+				flags: entry.flags.clone(),
+			}));
 		}
+		Ok(None)
 	}
 
 	/// Get all packages from this repo
@@ -233,17 +180,13 @@ impl PkgRepo {
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Vec<(String, RepoPkgEntry)>> {
 		self.ensure_index(paths, client, o).await?;
-		// Get list from core
-		if let PkgRepoLocation::Core = &self.location {
-			Ok(get_all_core_packages())
-		} else {
-			let index = self.index.get();
-			Ok(index
-				.packages
-				.iter()
-				.map(|(id, entry)| (id.clone(), entry.clone()))
-				.collect())
-		}
+
+		let index = self.index.get();
+		Ok(index
+			.packages
+			.iter()
+			.map(|(id, entry)| (id.clone(), entry.clone()))
+			.collect())
 	}
 
 	/// Get the number of packages in the repo
@@ -255,11 +198,7 @@ impl PkgRepo {
 	) -> anyhow::Result<usize> {
 		self.ensure_index(paths, client, o).await?;
 
-		if let PkgRepoLocation::Core = &self.location {
-			Ok(get_core_package_count())
-		} else {
-			Ok(self.index.get().packages.len())
-		}
+		Ok(self.index.get().packages.len())
 	}
 
 	/// Get the repo's metadata
@@ -268,93 +207,17 @@ impl PkgRepo {
 		paths: &Paths,
 		client: &Client,
 		o: &mut impl MCVMOutput,
-	) -> anyhow::Result<Cow<RepoMetadata>> {
+	) -> anyhow::Result<&RepoMetadata> {
 		self.ensure_index(paths, client, o).await?;
 
-		if let PkgRepoLocation::Core = &self.location {
-			let meta = RepoMetadata {
-				name: Some(translate!(o, CoreRepoName)),
-				description: Some(translate!(o, CoreRepoDescription)),
-				mcvm_version: Some(crate::VERSION.into()),
-			};
-
-			Ok(Cow::Owned(meta))
-		} else {
-			Ok(Cow::Borrowed(&self.index.get().metadata))
-		}
-	}
-}
-
-/// Query a list of repos
-pub async fn query_all(
-	repos: &mut [PkgRepo],
-	id: &str,
-	paths: &Paths,
-	client: &Client,
-	o: &mut impl MCVMOutput,
-) -> anyhow::Result<Option<RepoQueryResult>> {
-	for repo in repos {
-		let query = match repo.query(id, paths, client, o).await {
-			Ok(val) => val,
-			Err(e) => {
-				o.display(
-					MessageContents::Error(e.to_string()),
-					MessageLevel::Important,
-				);
-				continue;
-			}
-		};
-		if query.is_some() {
-			return Ok(query);
-		}
-	}
-	Ok(None)
-}
-
-/// Get all packages from a list of repositories with the normal priority order
-pub async fn get_all_packages(
-	repos: &mut [PkgRepo],
-	paths: &Paths,
-	client: &Client,
-	o: &mut impl MCVMOutput,
-) -> anyhow::Result<HashMap<String, RepoPkgEntry>> {
-	let mut out = HashMap::new();
-	// Iterate in reverse to make sure that repos at the beginning take precendence
-	for repo in repos.iter_mut().rev() {
-		let packages = repo
-			.get_all_packages(paths, client, o)
-			.await
-			.with_context(|| format!("Failed to get all packages from repository '{}'", repo.id))?;
-		out.extend(packages);
-	}
-
-	Ok(out)
-}
-
-/// Result from repository querying. This represents an entry
-/// for a package that can be accessed
-pub struct RepoQueryResult {
-	/// The location to copy the package from
-	pub location: PkgLocation,
-	/// The content type of the package
-	pub content_type: PackageContentType,
-	/// The flags for the package
-	pub flags: HashSet<PackageFlag>,
-}
-
-/// Get the content type of a package from the repository
-pub async fn get_content_type(entry: &RepoPkgEntry) -> PackageContentType {
-	if let Some(content_type) = &entry.content_type {
-		*content_type
-	} else {
-		PackageContentType::Script
+		Ok(&self.index.get().metadata)
 	}
 }
 
 /// Gets the location of a package from it's repository entry in line with url and path rules
 pub fn get_package_location(
 	entry: &RepoPkgEntry,
-	repo_location: &PkgRepoLocation,
+	repo_location: &RepoLocation,
 	repo_id: &str,
 ) -> anyhow::Result<PkgLocation> {
 	if let Some(url) = &entry.url {
@@ -366,7 +229,7 @@ pub fn get_package_location(
 		let path = PathBuf::from(path);
 		match &repo_location {
 			// Relative paths on remote repositories
-			PkgRepoLocation::Remote(url) => {
+			RepoLocation::Remote(url) => {
 				if path.is_relative() {
 					// Trim the Path
 					let path = path.to_string_lossy();
@@ -388,7 +251,7 @@ pub fn get_package_location(
 				}
 			}
 			// Local paths
-			PkgRepoLocation::Local(repo_path) => {
+			RepoLocation::Local(repo_path) => {
 				let path = if path.is_relative() {
 					repo_path.join(path)
 				} else {
@@ -397,7 +260,6 @@ pub fn get_package_location(
 
 				Ok(PkgLocation::Local(path))
 			}
-			PkgRepoLocation::Core => Ok(PkgLocation::Core),
 		}
 	} else {
 		bail!("Neither url nor path entry present in package")

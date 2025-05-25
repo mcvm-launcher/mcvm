@@ -19,6 +19,7 @@ use std::collections::HashSet;
 use std::fs;
 use std::future::Future;
 use std::path::PathBuf;
+use std::sync::Arc;
 
 use self::core::get_core_package;
 use anyhow::{anyhow, bail, Context};
@@ -55,6 +56,8 @@ pub enum PkgLocation {
 		/// The ID of the repository this package is from
 		repo_id: String,
 	},
+	/// Contents are included inline in the PkgLocation
+	Inline(Arc<str>),
 	/// Included in the binary
 	Core,
 }
@@ -62,7 +65,7 @@ pub enum PkgLocation {
 /// Data pertaining to the contents of a package
 #[derive(Debug)]
 pub struct PkgData {
-	text: String,
+	text: Arc<str>,
 	contents: Later<PkgContents>,
 	metadata: Later<PackageMetadata>,
 	properties: Later<PackageProperties>,
@@ -70,9 +73,9 @@ pub struct PkgData {
 
 impl PkgData {
 	/// Create a new PkgData
-	pub fn new(text: &str) -> Self {
+	pub fn new(text: &Arc<str>) -> Self {
 		Self {
-			text: text.to_owned(),
+			text: text.clone(),
 			contents: Later::new(),
 			metadata: Later::new(),
 			properties: Later::new(),
@@ -80,7 +83,7 @@ impl PkgData {
 	}
 
 	/// Get the text content of the PkgData
-	pub fn get_text(&self) -> String {
+	pub fn get_text(&self) -> Arc<str> {
 		self.text.clone()
 	}
 }
@@ -168,25 +171,30 @@ impl Package {
 					if !path.exists() {
 						bail!("Local package path does not exist");
 					}
-					self.data
-						.fill(PkgData::new(&tokio::fs::read_to_string(path).await?));
+					self.data.fill(PkgData::new(&Arc::from(
+						tokio::fs::read_to_string(path).await?,
+					)));
 				}
 				PkgLocation::Remote { url, .. } => {
 					let path = self.cached_path(paths);
 					if !force && path.exists() {
-						self.data
-							.fill(PkgData::new(&tokio::fs::read_to_string(path).await?));
+						self.data.fill(PkgData::new(&Arc::from(
+							tokio::fs::read_to_string(path).await?,
+						)));
 					} else {
 						let url = url.as_ref().expect("URL for remote package missing");
 						let text = try_3!({ download::text(url, client).await })?;
 						tokio::fs::write(&path, &text).await?;
-						self.data.fill(PkgData::new(&text));
+						self.data.fill(PkgData::new(&Arc::from(text)));
 					}
 				}
 				PkgLocation::Core => {
 					let contents = get_core_package(&self.id)
 						.ok_or(anyhow!("Package is not a core package"))?;
-					self.data.fill(PkgData::new(contents));
+					self.data.fill(PkgData::new(&Arc::from(contents)));
+				}
+				PkgLocation::Inline(contents) => {
+					self.data.fill(PkgData::new(&contents));
 				}
 			};
 		}

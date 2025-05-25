@@ -32,7 +32,7 @@ pub fn eval_script_package<'a>(
 	routine: Routine,
 	properties: PackageProperties,
 	input: EvalInput<'a>,
-	plugins: &PluginManager,
+	plugins: PluginManager,
 	paths: &'a Paths,
 ) -> anyhow::Result<EvalData<'a>> {
 	let mut eval = EvalData::new(input, pkg_id, properties, &routine, plugins);

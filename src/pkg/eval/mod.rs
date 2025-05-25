@@ -210,12 +210,12 @@ impl<'a> EvalData<'a> {
 		id: PackageID,
 		properties: PackageProperties,
 		routine: &Routine,
-		plugins: &PluginManager,
+		plugins: PluginManager,
 	) -> Self {
 		Self {
 			input,
 			id,
-			plugins: plugins.clone(),
+			plugins,
 			reason: routine.get_reason(),
 			properties,
 			vars: HashMapVariableStore::default(),
@@ -241,7 +241,7 @@ impl Package {
 		routine: Routine,
 		input: EvalInput<'a>,
 		client: &Client,
-		plugins: &'a PluginManager,
+		plugins: PluginManager,
 	) -> anyhow::Result<EvalData<'a>> {
 		self.parse(paths, client).await?;
 
@@ -447,7 +447,6 @@ struct PackageEvaluator<'a> {
 struct EvaluatorCommonInput<'a> {
 	paths: &'a Paths,
 	client: &'a Client,
-	plugins: PluginManager,
 }
 
 /// Newtype for PkgInstanceConfig
@@ -530,7 +529,6 @@ impl<'a> PackageEvaluatorTrait<'a> for PackageEvaluator<'a> {
 				Routine::InstallResolve,
 				input.clone(),
 				common_input.client,
-				&common_input.plugins,
 				&mut output::NoOp,
 			)
 			.await
@@ -575,7 +573,6 @@ pub async fn resolve(
 	paths: &Paths,
 	reg: &mut PkgRegistry,
 	client: &Client,
-	plugins: &PluginManager,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<ResolutionResult> {
 	let evaluator = PackageEvaluator { reg };
@@ -585,11 +582,7 @@ pub async fn resolve(
 		params: default_params,
 	};
 
-	let common_input = EvaluatorCommonInput {
-		client,
-		paths,
-		plugins: plugins.clone(),
-	};
+	let common_input = EvaluatorCommonInput { client, paths };
 
 	let packages = packages
 		.iter()

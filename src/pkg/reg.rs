@@ -15,7 +15,7 @@ use tokio::sync::Semaphore;
 use tokio::task::JoinSet;
 
 use super::eval::{EvalData, EvalInput, Routine};
-use super::repo::{query_all, PkgRepo};
+use super::repo::{query_all, PackageRepository};
 use super::{Package, PkgContents};
 use crate::io::paths::Paths;
 use crate::plugin::PluginManager;
@@ -27,20 +27,25 @@ use std::sync::Arc;
 /// An object used to store and cache all of the packages that we are working with.
 /// It queries repositories automatically when asking for a package that isn't in the
 /// registry, and prevents having a bunch of copies of packages everywhere.
-#[derive(Debug)]
 pub struct PkgRegistry {
 	/// The package repositories that the user has configured
-	pub repos: Vec<PkgRepo>,
+	pub repos: Vec<PackageRepository>,
 	packages: HashMap<ArcPkgReq, Package>,
 	caching_strategy: CachingStrategy,
+	plugins: PluginManager,
 }
 
 impl PkgRegistry {
 	/// Create a new PkgRegistry with repositories and a caching strategy
-	pub fn new(repos: Vec<PkgRepo>, caching_strategy: CachingStrategy) -> Self {
+	pub fn new(
+		repos: Vec<PackageRepository>,
+		plugins: &PluginManager,
+		caching_strategy: CachingStrategy,
+	) -> Self {
 		Self {
 			repos,
 			packages: HashMap::new(),
+			plugins: plugins.clone(),
 			caching_strategy,
 		}
 	}
@@ -73,7 +78,7 @@ impl PkgRegistry {
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<&mut Package> {
 		// First check the remote repositories
-		let query = query_all(&mut self.repos, &req.id, paths, client, o)
+		let query = query_all(&mut self.repos, &req.id, paths, client, &self.plugins, o)
 			.await
 			.context("Failed to query remote repositories")?;
 		if let Some(result) = query {
@@ -190,7 +195,7 @@ impl PkgRegistry {
 	) -> anyhow::Result<String> {
 		let pkg = self.ensure_package_contents(req, paths, client, o).await?;
 		let contents = pkg.data.get().get_text();
-		Ok(contents)
+		Ok(contents.to_string())
 	}
 
 	/// Parse and validate a package
@@ -233,9 +238,9 @@ impl PkgRegistry {
 		routine: Routine,
 		input: EvalInput<'a>,
 		client: &Client,
-		plugins: &'a PluginManager,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<EvalData<'a>> {
+		let plugins = self.plugins.clone();
 		let pkg = self.ensure_package_contents(req, paths, client, o).await?;
 		let eval = pkg.eval(paths, routine, input, client, plugins).await?;
 		Ok(eval)
@@ -370,7 +375,7 @@ impl PkgRegistry {
 	}
 
 	/// Gets the repositories stored in this registry in their correct order
-	pub fn get_repos(&self) -> &[PkgRepo] {
+	pub fn get_repos(&self) -> &[PackageRepository] {
 		&self.repos
 	}
 }

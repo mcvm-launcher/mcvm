@@ -184,20 +184,20 @@ async fn sync(data: &mut CmdData<'_>, filter: Vec<String>) -> anyhow::Result<()>
 	let client = Client::new();
 	for repo in config.packages.repos.iter_mut() {
 		// Skip repositories not in the filter
-		if !filter.is_empty() && !filter.contains(&repo.id) {
+		if !filter.is_empty() && !filter.contains(&repo.get_id().to_string()) {
 			continue;
 		}
 
-		printer.print(&cformat!("Syncing repository <b>{}</b>...", repo.id));
+		printer.print(&cformat!("Syncing repository <b>{}</b>...", repo.get_id()));
 		match repo.sync(&data.paths, &client).await {
 			Ok(..) => {
-				printer.print(&cformat!("<g>Synced repository <b!>{}</b!>", repo.id));
+				printer.print(&cformat!("<g>Synced repository <b!>{}</b!>", repo.get_id()));
 			}
 			Err(e) => {
 				printer.println(&cformat!("<r>{}", e));
 				printer.print(&cformat!(
 					"<r>Failed to sync repository <r!>{}</r!>",
-					repo.id
+					repo.get_id()
 				));
 				continue;
 			}
@@ -515,19 +515,20 @@ async fn repo_list(data: &mut CmdData<'_>, raw: bool) -> anyhow::Result<()> {
 
 	if raw {
 		for repo in repos {
-			println!("{}", repo.id);
+			println!("{}", repo.get_id());
 		}
 	} else {
 		cprintln!("<s>Repositories:");
 		for repo in repos {
-			if repo.id == "core" {
-				cprint!("<s><m>{}</></>", repo.id);
-			} else if repo.id == "std" {
-				cprint!("<s><b>{}</></>", repo.id);
+			if repo.get_id() == "core" {
+				cprint!("<s><m>{}</></>", repo.get_id());
+			} else if repo.get_id() == "std" {
+				cprint!("<s><b>{}</></>", repo.get_id());
 			} else {
-				cprint!("<s>{}</>", repo.id);
+				cprint!("<s>{}</>", repo.get_id());
 			}
-			cprintln!(" <k!>-</> <m>{}</>", repo.get_location());
+
+			cprintln!(" <k!>-</> <m>{}</>", repo.get_displayed_location());
 		}
 	}
 
@@ -538,7 +539,11 @@ async fn repo_info(data: &mut CmdData<'_>, repo_id: String) -> anyhow::Result<()
 	data.ensure_config(true).await?;
 	let config = data.config.get_mut();
 
-	let repo = config.packages.repos.iter_mut().find(|x| x.id == repo_id);
+	let repo = config
+		.packages
+		.repos
+		.iter_mut()
+		.find(|x| x.get_id() == repo_id);
 	let Some(repo) = repo else {
 		bail!("Repository {repo_id} does not exist");
 	};
@@ -562,13 +567,13 @@ async fn repo_info(data: &mut CmdData<'_>, repo_id: String) -> anyhow::Result<()
 	let name = if let Some(name) = &meta.name {
 		name.clone()
 	} else {
-		repo.id.clone()
+		repo.get_id().to_string()
 	};
 
 	cprint!("<s>Repository </>");
-	if repo.id == "core" {
+	if repo.get_id() == "core" {
 		cprint!("<s><m>{}</></>", name);
-	} else if repo.id == "std" {
+	} else if repo.get_id() == "std" {
 		cprint!("<s><b>{}</></>", name);
 	} else {
 		cprint!("<s>{}</>", name);
@@ -579,12 +584,14 @@ async fn repo_info(data: &mut CmdData<'_>, repo_id: String) -> anyhow::Result<()
 	if let Some(description) = &meta.description {
 		cprintln!("   {}", description);
 	}
-	cprintln!("   <s>ID:</> {}", repo.id);
-	cprintln!("   <s>Location:</> <m>{}</>", repo.get_location());
+	cprintln!("   <s>ID:</> {}", repo.get_id());
+	cprintln!("   <s>Location:</> <m>{}</>", repo.get_displayed_location());
 	if let Some(version) = &meta.mcvm_version {
 		cprintln!("   <s>MCVM Version:</> <c>{}</>", version);
 	}
-	cprintln!("   <s>Package Count:</> <y>{}</>", pkg_count);
+	if let Some(pkg_count) = pkg_count {
+		cprintln!("   <s>Package Count:</> <y>{}</>", pkg_count);
+	}
 
 	Ok(())
 }
