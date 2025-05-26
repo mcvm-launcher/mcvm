@@ -1,5 +1,5 @@
 :root {
-	font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+	font-family: Rubik, Avenir, Helvetica, Arial, sans-serif;
 	font-size: 16px;
 	line-height: 24px;
 	font-weight: 400;
@@ -14,9 +14,9 @@
 	--fg: #f6f6f6;
 	--fg2: #d3d3d3;
 	--fg3: #777777;
-	--bg0: #131313;
-	--bg: #181818;
-	--bg2: #1f1f1f;
+	--bg0: #101010;
+	--bg: #161616;
+	--bg2: #1c1c1c;
 	--bg3: #2b2b2b;
 	--bg2disabled: #1b1b1b;
 	--text: var(--fg);
@@ -27,6 +27,9 @@
 	--accent: #5f00ef;
 	--accent2: #2f0077;
 	--error: #c10f39;
+
+	/* Other values */
+	--round: 0.4rem;
 
 	color: var(--text);
 	background-color: var(--bg);
@@ -76,7 +79,7 @@ h2 {
 
 input,
 button {
-	border-radius: 8px;
+	border-radius: var(--round);
 	border: 1px solid transparent;
 	padding: 0.6em 1.2em;
 	font-size: 1em;
@@ -142,7 +145,7 @@ button:active {
 	border-style: solid;
 	border-width: 0.15rem;
 	border-color: var(--fg);
-	border-radius: 0.8rem;
+	border-radius: var(--round);
 }
 
 .border-big {
@@ -223,7 +226,7 @@ button {
 	-webkit-animation: shake 0.2s ease-in-out 0s 2;
 	animation: shake 0.2s ease-in-out 0s 2;
 	border: 0.15rem solid var(--error);
-	border-radius: 0.5rem;
+	border-radius: var(--round);
 }
 
 @-webkit-keyframes shake {
@@ -254,4 +257,11 @@ button {
 	100% {
 		margin-left: 0rem;
 	}
+}
+
+/* Fonts */
+@font-face {
+	font-family: Rubik;
+	src: url(/Rubik.ttf);
+	font-display: swap;
 }

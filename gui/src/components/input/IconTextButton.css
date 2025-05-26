@@ -1,8 +1,9 @@
 .icon-text-button {
-	border-radius: 8px;
+	border-radius: var(--round);
 	border: 0.15rem solid transparent;
 	padding: 0.5rem 1rem;
 	display: flex;
+	align-items: center;
 }
 
 .icon-text-button-icon {
@@ -10,6 +11,5 @@
 }
 
 .icon-text-button-text {
-	display: inline-block;
-	transform: translateY(0.9px);
+	line-height: 1;
 }

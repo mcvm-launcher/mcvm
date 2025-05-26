@@ -2,13 +2,13 @@
 	display: grid;
 	/* gap: 0.5rem; */
 	background-color: var(--bg2);
-	border-radius: 0.5rem;
+	border-radius: var(--round);
 }
 
 .inline-select-option {
 	background-color: var(--bg2);
 	padding: 0.6rem;
-	border-radius: 0.5rem;
+	border-radius: var(--round);
 	box-sizing: border-box;
 	cursor: pointer;
 	-webkit-user-select: none;

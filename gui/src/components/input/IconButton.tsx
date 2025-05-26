@@ -12,7 +12,7 @@ export default function IconButton(props: IconButtonProps) {
 
 	return (
 		<div
-			class="icon-button border"
+			class="cont icon-button border"
 			style={`${colorStyle};width:${props.size};height:${props.size};${iconColorStyle}`}
 			onClick={props.onClick}
 		>

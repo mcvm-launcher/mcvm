@@ -7,7 +7,7 @@
 #packages-container {
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
-	gap: 0.5rem;
+	gap: 0.8rem;
 	width: 95%;
 }
 
@@ -17,7 +17,7 @@
 	border-color: var(--bg2);
 	box-sizing: border-box;
 	height: 15rem;
-	border-radius: 0.8rem;
+	border-radius: var(--round);
 }
 
 .package-inner {

@@ -5,14 +5,14 @@
 	padding: 0.1rem;
 }
 
-.search-bar>input:focus {
+.search-bar > input:focus {
 	border: 0px;
 }
 
 .search-bar {
 	background-color: var(--bg2);
 	padding: 0.6rem;
-	border-radius: 0.6rem;
+	border-radius: var(--round);
 }
 
 .search-bar-icon {

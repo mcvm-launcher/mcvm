@@ -1,20 +1,19 @@
 #sidebar {
 	position: fixed;
-	background-color: var(--bg2);
+	background-color: var(--bg0);
 	top: 3rem;
 	left: 0rem;
 	width: 15rem;
 	height: 100%;
 	box-sizing: border-box;
-	border: 0.15rem solid var(--bg3);
-	border-top-width: 0px;
+	border: 0.15rem solid var(--bg2);
 	border-left-width: 0px;
 }
 
 .sidebar-item {
 	height: 2.7rem;
 	width: 100%;
-	border-bottom: 0.15rem solid var(--bg3);
+	border-bottom: 0.15rem solid var(--bg2);
 	justify-content: flex-start;
 	font-weight: bold;
 	box-sizing: border-box;
@@ -34,5 +33,7 @@
 }
 
 .sidebar-item.sidebar-item.selected {
-	background-color: var(--bg);
+	background-color: var(--bg3);
+	border-top-color: var(--fg3);
+	border-bottom-color: var(--bg);
 }

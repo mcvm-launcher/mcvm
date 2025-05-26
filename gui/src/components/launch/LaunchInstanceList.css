@@ -27,6 +27,7 @@
 
 .launch-instance-list-header-item.selected {
 	border-bottom-width: 0.2rem;
+	padding-bottom: 0.2rem;
 }
 
 .launch-instance-list-section-container {
@@ -42,7 +43,7 @@
 }
 
 .launch-instance-list-section-header > svg {
-	margin-bottom: 0.4rem;
+	margin-bottom: 0.1rem;
 	margin-left: 1.3rem;
 }
 

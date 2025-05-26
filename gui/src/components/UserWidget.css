@@ -4,8 +4,8 @@
 }
 
 #user-widget-head {
-	background-color: var(--bg2);
-	border-radius: 0.5rem;
+	background-color: var(--bg);
+	border-radius: var(--round);
 	width: 13rem;
 	height: 2.2rem;
 	display: grid;
@@ -26,7 +26,7 @@
 	display: grid;
 	grid-template-columns: minmax(0, 0.15fr) minmax(0, 1fr);
 	cursor: pointer;
-	border-radius: 0.5rem;
+	border-radius: var(--round);
 	box-sizing: border-box;
 	padding: 0.3rem;
 }
@@ -48,7 +48,7 @@
 
 #user-widget-dropdown {
 	position: absolute;
-	background-color: var(--bg2);
+	background-color: var(--bg);
 	width: 13rem;
 	left: 0px;
 	border-bottom-left-radius: 0.5rem;
