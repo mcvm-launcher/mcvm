@@ -27,7 +27,7 @@ pub fn get_transfer_limit() -> usize {
 }
 
 /// The User-Agent header for requests
-fn user_agent() -> String {
+pub fn user_agent() -> String {
 	let version = env!("CARGO_PKG_VERSION");
 	format!("mcvm_core_{version}")
 }

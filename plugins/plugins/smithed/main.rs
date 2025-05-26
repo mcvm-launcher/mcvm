@@ -1,17 +1,23 @@
 use std::{
-	collections::HashMap,
+	collections::{HashMap, HashSet},
 	path::{Path, PathBuf},
 	sync::Arc,
 };
 
 use anyhow::{bail, Context};
 use mcvm::config_crate::instance::get_addon_paths;
-use mcvm_core::io::files::{create_leading_dirs_async, update_hardlink_async};
+use mcvm_core::io::{
+	files::{create_leading_dirs, create_leading_dirs_async, update_hardlink_async},
+	json_from_file, json_to_file,
+};
 use mcvm_net::{
 	download::{self, Client},
 	smithed::{self, Pack},
 };
-use mcvm_plugin::{api::CustomPlugin, hooks::OnInstanceSetupResult};
+use mcvm_plugin::{
+	api::CustomPlugin,
+	hooks::{CustomRepoQueryResult, OnInstanceSetupResult},
+};
 use mcvm_shared::{
 	addon::AddonKind,
 	output::{MCVMOutput, MessageContents, MessageLevel},
@@ -317,6 +323,46 @@ fn main() -> anyhow::Result<()> {
 		);
 
 		Ok(OnInstanceSetupResult::default())
+	})?;
+
+	plugin.query_custom_package_repository(|ctx, arg| {
+		if arg.repository != "smithed" {
+			return Ok(None);
+		}
+
+		let runtime = tokio::runtime::Runtime::new()?;
+		let client = Client::new();
+
+		let storage_dir = ctx
+			.get_data_dir()
+			.context("Failed to get data dir")?
+			.join("internal/smithed/packs");
+		let pack_path = storage_dir.join(&arg.package);
+		let pack = if pack_path.exists() {
+			json_from_file(&pack_path).context("Failed to read pack from file")?
+		} else {
+			let result = runtime.block_on(smithed::get_pack_optional(&arg.package, &client))?;
+
+			let pack = match result {
+				Some(result) => result,
+				None => return Ok(None),
+			};
+
+			let _ = create_leading_dirs(&pack_path);
+			let _ = json_to_file(&pack_path, &pack);
+
+			pack
+		};
+
+		let package = mcvm_pkg_gen::smithed::gen(pack, HashMap::new(), &[], false);
+		let package =
+			serde_json::to_string_pretty(&package).context("Failed to serialized package")?;
+
+		Ok(Some(CustomRepoQueryResult {
+			contents: package,
+			content_type: mcvm::pkg_crate::PackageContentType::Declarative,
+			flags: HashSet::new(),
+		}))
 	})?;
 
 	Ok(())

@@ -18,19 +18,26 @@ pub async fn gen_from_id(
 	id: &str,
 	relation_substitutions: HashMap<String, String>,
 	force_extensions: &[String],
+	substitute_relations: bool,
 ) -> DeclarativePackage {
 	let pack = mcvm_net::smithed::get_pack(id, &Client::new())
 		.await
 		.expect("Failed to get pack");
 
-	gen(pack, relation_substitutions, force_extensions).await
+	gen(
+		pack,
+		relation_substitutions,
+		force_extensions,
+		substitute_relations,
+	)
 }
 
 /// Generates a Smithed package from a Smithed pack
-pub async fn gen(
+pub fn gen(
 	pack: Pack,
 	relation_substitutions: HashMap<String, String>,
 	force_extensions: &[String],
+	substitute_relations: bool,
 ) -> DeclarativePackage {
 	let meta = PackageMetadata {
 		name: Some(pack.display.name),
@@ -86,14 +93,22 @@ pub async fn gen(
 		let mut extensions = Vec::new();
 
 		for dep in version.dependencies {
-			if let Some(dep_id) = relation_substitutions.get(&dep.id) {
-				if force_extensions.contains(dep_id) {
-					extensions.push(dep_id.clone());
+			if substitute_relations {
+				if let Some(dep_id) = relation_substitutions.get(&dep.id) {
+					if force_extensions.contains(dep_id) {
+						extensions.push(dep_id.clone());
+					} else {
+						deps.push(dep_id.clone());
+					}
 				} else {
-					deps.push(dep_id.clone());
+					panic!("Dependency {} was not substituted", dep.id);
 				}
 			} else {
-				panic!("Dependency {} was not substituted", dep.id);
+				if force_extensions.contains(&dep.id) {
+					extensions.push(dep.id.clone());
+				} else {
+					deps.push(dep.id.clone());
+				}
 			}
 		}
 

@@ -140,6 +140,16 @@ impl CustomPlugin {
 		AddSidebarButtons
 	);
 	hook_interface!(get_page, "get_page", GetPage);
+	hook_interface!(
+		add_custom_package_repositories,
+		"add_custom_package_repositories",
+		AddCustomPackageRepositories
+	);
+	hook_interface!(
+		query_custom_package_repository,
+		"query_custom_package_repository",
+		QueryCustomPackageRepository
+	);
 
 	/// Handle a hook
 	fn handle_hook<H: Hook>(

@@ -177,7 +177,10 @@ pub async fn query_all(
 			Ok(val) => val,
 			Err(e) => {
 				o.display(
-					MessageContents::Error(e.to_string()),
+					MessageContents::Error(format!(
+						"Failed to get package from repository {}: {e:?}",
+						repo.get_id()
+					)),
 					MessageLevel::Important,
 				);
 				continue;

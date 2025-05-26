@@ -116,7 +116,13 @@ pub async fn gen(source: PackageSource, config: Option<PackageGenerationConfig>,
 	let config = config.unwrap_or_default();
 	let mut pkg = match source {
 		PackageSource::Smithed => {
-			smithed::gen_from_id(id, config.relation_substitutions, &config.force_extensions).await
+			smithed::gen_from_id(
+				id,
+				config.relation_substitutions,
+				&config.force_extensions,
+				true,
+			)
+			.await
 		}
 		PackageSource::Modrinth => {
 			modrinth::gen_from_id(

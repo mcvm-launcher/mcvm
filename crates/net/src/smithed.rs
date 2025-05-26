@@ -1,11 +1,36 @@
-use crate::download;
-use reqwest::Client;
+use crate::download::{self, user_agent};
+use anyhow::Context;
+use reqwest::{Client, StatusCode};
 use serde::{Deserialize, Serialize};
 
 /// Get a Smithed pack from the API
 pub async fn get_pack(id: &str, client: &Client) -> anyhow::Result<Pack> {
 	let url = format!("{API_URL}/packs/{id}");
 	download::json(url, client).await
+}
+
+/// Get a Smithed pack from the API, returning None on 404
+pub async fn get_pack_optional(id: &str, client: &Client) -> anyhow::Result<Option<Pack>> {
+	let url = format!("{API_URL}/packs/{id}");
+
+	let resp = client
+		.get(url)
+		.header("User-Agent", user_agent())
+		.send()
+		.await
+		.context("Failed to send request")?;
+	if resp.status() == StatusCode::NOT_FOUND {
+		return Ok(None);
+	}
+
+	let resp = resp
+		.error_for_status()
+		.context("Server returned an error")?;
+
+	resp.json()
+		.await
+		.map(Some)
+		.context("Failed to deserialize JSON")
 }
 
 /// API URL
