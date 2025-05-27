@@ -14,6 +14,7 @@ use mcvm_net::{
 	download::{self, Client},
 	smithed::{self, Pack},
 };
+use mcvm_pkg_gen::relation_substitution::RelationSubMethod;
 use mcvm_plugin::{
 	api::CustomPlugin,
 	hooks::{CustomRepoQueryResult, OnInstanceSetupResult},
@@ -337,24 +338,32 @@ fn main() -> anyhow::Result<()> {
 			.get_data_dir()
 			.context("Failed to get data dir")?
 			.join("internal/smithed/packs");
-		let pack_path = storage_dir.join(&arg.package);
-		let pack = if pack_path.exists() {
-			json_from_file(&pack_path).context("Failed to read pack from file")?
-		} else {
-			let result = runtime.block_on(smithed::get_pack_optional(&arg.package, &client))?;
-
-			let pack = match result {
-				Some(result) => result,
-				None => return Ok(None),
-			};
-
-			let _ = create_leading_dirs(&pack_path);
-			let _ = json_to_file(&pack_path, &pack);
-
-			pack
+		let pack = get_cached_pack(&arg.package, &storage_dir, &client, &runtime)
+			.context("Failed to get pack")?;
+		let Some(pack) = pack else {
+			return Ok(None);
 		};
 
-		let package = mcvm_pkg_gen::smithed::gen(pack, HashMap::new(), &[], false);
+		let relation_sub_function = {
+			let client = client.clone();
+			let storage_dir = storage_dir.clone();
+			let runtime = tokio::runtime::Runtime::new()?;
+
+			move |relation: &str| {
+				let pack = get_cached_pack(relation, &storage_dir, &client, &runtime)
+					.context("Failed to get pack")?
+					.context("Pack does not exist")?;
+
+				Ok(pack.id)
+			}
+		};
+
+		let package = mcvm_pkg_gen::smithed::gen(
+			pack,
+			RelationSubMethod::Function(Box::new(relation_sub_function)),
+			&[],
+		)
+		.context("Failed to generate MCVM package")?;
 		let package =
 			serde_json::to_string_pretty(&package).context("Failed to serialized package")?;
 
@@ -497,4 +506,30 @@ fn clear_dir(dir: &Path) -> anyhow::Result<()> {
 	}
 
 	Ok(())
+}
+
+/// Gets a cached Smithed pack or downloads it
+fn get_cached_pack(
+	pack: &str,
+	storage_dir: &Path,
+	client: &Client,
+	runtime: &tokio::runtime::Runtime,
+) -> anyhow::Result<Option<Pack>> {
+	let pack_path = storage_dir.join(pack);
+	if pack_path.exists() {
+		json_from_file(&pack_path).context("Failed to read pack from file")
+	} else {
+		let result = runtime.block_on(smithed::get_pack_optional(pack, &client))?;
+
+		let pack = match result {
+			Some(result) => result,
+			None => return Ok(None),
+		};
+
+		let _ = create_leading_dirs(&pack_path);
+		// TODO: Store both the id and slug together, hardlinked to each other, to cache no matter which method is used to request
+		let _ = json_to_file(&pack_path, &pack);
+
+		Ok(Some(pack))
+	}
 }

@@ -4,5 +4,7 @@
 
 /// Modrinth package generation
 pub mod modrinth;
+/// Substitution for relations in generated packages
+pub mod relation_substitution;
 /// Smithed package generation
 pub mod smithed;

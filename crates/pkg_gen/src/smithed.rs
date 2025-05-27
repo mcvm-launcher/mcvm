@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+use anyhow::Context;
 use mcvm_core::net::download::Client;
 use mcvm_pkg::declarative::{
 	DeclarativeAddon, DeclarativeAddonVersion, DeclarativeConditionSet, DeclarativePackage,
@@ -13,32 +14,27 @@ use mcvm_shared::versions::VersionPattern;
 
 use mcvm_net::smithed::Pack;
 
+use crate::relation_substitution::RelationSubMethod;
+
 /// Generates a Smithed package from a Smithed pack ID
 pub async fn gen_from_id(
 	id: &str,
-	relation_substitutions: HashMap<String, String>,
+	relation_substitution: RelationSubMethod,
 	force_extensions: &[String],
-	substitute_relations: bool,
-) -> DeclarativePackage {
+) -> anyhow::Result<DeclarativePackage> {
 	let pack = mcvm_net::smithed::get_pack(id, &Client::new())
 		.await
 		.expect("Failed to get pack");
 
-	gen(
-		pack,
-		relation_substitutions,
-		force_extensions,
-		substitute_relations,
-	)
+	gen(pack, relation_substitution, force_extensions)
 }
 
 /// Generates a Smithed package from a Smithed pack
 pub fn gen(
 	pack: Pack,
-	relation_substitutions: HashMap<String, String>,
+	relation_substitution: RelationSubMethod,
 	force_extensions: &[String],
-	substitute_relations: bool,
-) -> DeclarativePackage {
+) -> anyhow::Result<DeclarativePackage> {
 	let meta = PackageMetadata {
 		name: Some(pack.display.name),
 		description: Some(pack.display.description),
@@ -93,22 +89,13 @@ pub fn gen(
 		let mut extensions = Vec::new();
 
 		for dep in version.dependencies {
-			if substitute_relations {
-				if let Some(dep_id) = relation_substitutions.get(&dep.id) {
-					if force_extensions.contains(dep_id) {
-						extensions.push(dep_id.clone());
-					} else {
-						deps.push(dep_id.clone());
-					}
-				} else {
-					panic!("Dependency {} was not substituted", dep.id);
-				}
+			let dep = relation_substitution
+				.substitute(&dep.id)
+				.context("Failed to substitute dependency")?;
+			if force_extensions.contains(&dep) {
+				extensions.push(dep);
 			} else {
-				if force_extensions.contains(&dep.id) {
-					extensions.push(dep.id.clone());
-				} else {
-					deps.push(dep.id.clone());
-				}
+				deps.push(dep);
 			}
 		}
 
@@ -143,10 +130,10 @@ pub fn gen(
 	addon_map.insert("datapack".into(), datapack);
 	addon_map.insert("resourcepack".into(), resourcepack);
 
-	DeclarativePackage {
+	Ok(DeclarativePackage {
 		meta,
 		properties: props,
 		addons: addon_map,
 		..Default::default()
-	}
+	})
 }

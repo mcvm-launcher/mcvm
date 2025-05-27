@@ -8,6 +8,7 @@ use iso8601_timestamp::Timestamp;
 use mcvm_core::io::{json_from_file, json_to_file};
 use mcvm_core::net::download::Client;
 use mcvm_net::modrinth::Version;
+use mcvm_pkg_gen::relation_substitution::RelationSubMethod;
 use mcvm_pkg_gen::{modrinth, smithed};
 use serde::{Deserialize, Serialize};
 use serde_json::{ser::PrettyFormatter, Serializer};
@@ -235,10 +236,10 @@ pub async fn batched_gen(mut config: BatchedConfig, filter: Vec<String>) {
 					.expect("Smithed pack should have been downloaded");
 				smithed::gen(
 					pack.clone(),
-					pkg_config.relation_substitutions,
+					RelationSubMethod::Map(pkg_config.relation_substitutions),
 					&pkg_config.force_extensions,
-					true,
 				)
+				.expect("Failed to generate package")
 			}
 			PackageSource::Modrinth => {
 				// Get the project
