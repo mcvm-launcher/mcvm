@@ -1,4 +1,3 @@
-use std::sync::Mutex;
 use std::{collections::HashMap, sync::Arc};
 
 use super::CmdData;
@@ -8,7 +7,7 @@ use mcvm::config_crate::package::PackageConfigDeser;
 use mcvm::parse::lex::Token;
 use mcvm::pkg_crate::metadata::PackageMetadata;
 use mcvm::pkg_crate::properties::PackageProperties;
-use mcvm::pkg_crate::{parse_and_validate, PackageContentType, PkgRequest, PkgRequestSource};
+use mcvm::pkg_crate::{PackageContentType, PkgRequest, PkgRequestSource};
 use mcvm::shared::id::{InstanceID, ProfileID};
 use mcvm::shared::util::print::ReplPrinter;
 
@@ -16,7 +15,6 @@ use anyhow::{bail, Context};
 use clap::Subcommand;
 use color_print::{cformat, cprint, cprintln};
 use mcvm::shared::pkg::PackageID;
-use rayon::prelude::*;
 use reqwest::Client;
 use serde::Serialize;
 
@@ -211,40 +209,6 @@ async fn sync(data: &mut CmdData<'_>, filter: Vec<String>) -> anyhow::Result<()>
 		.await
 		.context("Failed to update cached packages")?;
 	printer.println(&cformat!("<g>Packages updated."));
-
-	printer.println(&cformat!("<s>Validating packages..."));
-	let ids = config.packages.get_all_packages();
-
-	let mut packages = Vec::with_capacity(ids.len());
-	for id in ids {
-		let contents = config
-			.packages
-			.load(&id, &data.paths, &client, data.output)
-			.await
-			.context("Failed to get package contents")?;
-		let content_type = config
-			.packages
-			.get_content_type(&id, &data.paths, &client, data.output)
-			.await
-			.context("Failed to get package content type")?;
-		packages.push((id, contents, content_type));
-	}
-	let errors = Arc::new(Mutex::new(Vec::new()));
-	packages
-		.into_par_iter()
-		.for_each(|(id, contents, content_type)| {
-			if let Err(e) = parse_and_validate(&contents, content_type) {
-				errors.lock().expect("Poisoned mutex").push(cformat!(
-					"<y>Warning: Package '{}' was invalid:\n{:#?}",
-					id,
-					e
-				));
-			}
-		});
-	for error in errors.lock().expect("Poisoned mutex").iter() {
-		printer.println(error);
-	}
-	printer.print(&cformat!("<g>Packages validated."));
 
 	Ok(())
 }
