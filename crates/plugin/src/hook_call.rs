@@ -1,6 +1,5 @@
 use std::{
 	io::{BufRead, BufReader},
-	ops::Deref,
 	path::Path,
 	process::{Child, ChildStdout, Command},
 	sync::{Arc, Mutex},
@@ -11,7 +10,10 @@ use mcvm_core::Paths;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 
 use crate::{
-	hooks::Hook, output::OutputAction, plugin::DEFAULT_PROTOCOL_VERSION, plugin_debug_enabled,
+	hooks::Hook,
+	output::OutputAction,
+	plugin::{PluginPersistence, DEFAULT_PROTOCOL_VERSION},
+	plugin_debug_enabled,
 };
 
 /// The substitution token for the plugin directory in the command
@@ -47,8 +49,8 @@ pub struct HookCallArg<'a, H: Hook> {
 	pub use_base64: bool,
 	/// Custom configuration for the plugin
 	pub custom_config: Option<String>,
-	/// State for the plugin
-	pub state: Arc<Mutex<serde_json::Value>>,
+	/// Persistent data for the plugin
+	pub persistence: Arc<Mutex<PluginPersistence>>,
 	/// Paths
 	pub paths: &'a Paths,
 	/// The version of MCVM
@@ -100,11 +102,11 @@ where
 	}
 	cmd.env(HOOK_VERSION_ENV, H::get_version().to_string());
 	{
-		let lock = arg.state.lock().map_err(|x| anyhow!("{x}"))?;
+		let lock = arg.persistence.lock().map_err(|x| anyhow!("{x}"))?;
 		// Don't send null state to improve performance
-		if !lock.is_null() {
+		if !lock.state.is_null() {
 			let state =
-				serde_json::to_string(lock.deref()).context("Failed to serialize plugin state")?;
+				serde_json::to_string(&lock.state).context("Failed to serialize plugin state")?;
 			cmd.env(PLUGIN_STATE_ENV, state);
 		}
 	}
@@ -140,7 +142,7 @@ where
 				line_buf: String::new(),
 				result: None,
 			},
-			plugin_state: Some(arg.state),
+			plugin_persistence: Some(arg.persistence),
 			use_base64: arg.use_base64,
 			protocol_version: arg.protocol_version,
 			plugin_id: arg.plugin_id.to_string(),
@@ -154,7 +156,7 @@ where
 #[must_use]
 pub struct HookHandle<H: Hook> {
 	inner: HookHandleInner<H>,
-	plugin_state: Option<Arc<Mutex<serde_json::Value>>>,
+	plugin_persistence: Option<Arc<Mutex<PluginPersistence>>>,
 	use_base64: bool,
 	protocol_version: u16,
 	plugin_id: String,
@@ -165,7 +167,7 @@ impl<H: Hook> HookHandle<H> {
 	pub fn constant(result: H::Result, plugin_id: String) -> Self {
 		Self {
 			inner: HookHandleInner::Constant(result),
-			plugin_state: None,
+			plugin_persistence: None,
 			use_base64: true,
 			protocol_version: DEFAULT_PROTOCOL_VERSION,
 			plugin_id,
@@ -220,12 +222,11 @@ impl<H: Hook> HookHandle<H> {
 						*result = Some(new_result);
 					}
 					OutputAction::SetState(new_state) => {
-						let state = self
-							.plugin_state
-							.as_mut()
-							.context("Hook handle does not have a reference to persistent state")?;
-						let mut lock = state.lock().map_err(|x| anyhow!("{x}"))?;
-						*lock = new_state;
+						let persistence = self.plugin_persistence.as_mut().context(
+							"Hook handle does not have a reference to persistent plugin data",
+						)?;
+						let mut lock = persistence.lock().map_err(|x| anyhow!("{x}"))?;
+						lock.state = new_state;
 					}
 					OutputAction::Text(text, level) => {
 						o.display_text(text, level);

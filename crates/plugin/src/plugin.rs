@@ -31,7 +31,7 @@ pub struct Plugin {
 	/// The working directory for the plugin
 	working_dir: Option<PathBuf>,
 	/// The persistent state of the plugin
-	state: Arc<Mutex<serde_json::Value>>,
+	persistence: Arc<Mutex<PluginPersistence>>,
 }
 
 impl Plugin {
@@ -42,7 +42,7 @@ impl Plugin {
 			manifest,
 			custom_config: None,
 			working_dir: None,
-			state: Arc::new(Mutex::new(serde_json::Value::Null)),
+			persistence: Arc::new(Mutex::new(PluginPersistence::new())),
 		}
 	}
 
@@ -97,7 +97,7 @@ impl Plugin {
 					working_dir: self.working_dir.as_deref(),
 					use_base64: !self.manifest.raw_transfer,
 					custom_config: self.custom_config.clone(),
-					state: self.state.clone(),
+					persistence: self.persistence.clone(),
 					paths,
 					mcvm_version,
 					plugin_id: &self.id,
@@ -332,3 +332,19 @@ where
 
 /// Type for native plugin hook handlers
 pub type NativeHookHandler = Arc<dyn Fn(String) -> anyhow::Result<String> + Send + Sync + 'static>;
+
+/// Persistent state for plugins
+#[derive(Debug)]
+pub struct PluginPersistence {
+	/// The persistent state of the plugin
+	pub state: serde_json::Value,
+}
+
+impl PluginPersistence {
+	/// Initalize the persistent plugin state
+	pub fn new() -> Self {
+		Self {
+			state: serde_json::Value::Null,
+		}
+	}
+}
