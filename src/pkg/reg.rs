@@ -1,5 +1,4 @@
 use anyhow::{anyhow, Context};
-use mcvm_config::preferences::CachingStrategy;
 use mcvm_core::net::download;
 use mcvm_pkg::metadata::PackageMetadata;
 use mcvm_pkg::parse_and_validate;
@@ -31,22 +30,16 @@ pub struct PkgRegistry {
 	/// The package repositories that the user has configured
 	pub repos: Vec<PackageRepository>,
 	packages: HashMap<ArcPkgReq, Package>,
-	caching_strategy: CachingStrategy,
 	plugins: PluginManager,
 }
 
 impl PkgRegistry {
-	/// Create a new PkgRegistry with repositories and a caching strategy
-	pub fn new(
-		repos: Vec<PackageRepository>,
-		plugins: &PluginManager,
-		caching_strategy: CachingStrategy,
-	) -> Self {
+	/// Create a new PkgRegistry with repositories
+	pub fn new(repos: Vec<PackageRepository>, plugins: &PluginManager) -> Self {
 		Self {
 			repos,
 			packages: HashMap::new(),
 			plugins: plugins.clone(),
-			caching_strategy,
 		}
 	}
 
@@ -119,12 +112,11 @@ impl PkgRegistry {
 		client: &Client,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<&mut Package> {
-		let force = matches!(self.caching_strategy, CachingStrategy::None);
 		let pkg = self
 			.get(req, paths, client, o)
 			.await
 			.with_context(|| format!("Failed to get package {req}"))?;
-		pkg.ensure_loaded(paths, force, client)
+		pkg.ensure_loaded(paths, false, client)
 			.await
 			.with_context(|| format!("Failed to load package {req}"))?;
 		Ok(pkg)
@@ -347,28 +339,26 @@ impl PkgRegistry {
 			.context("Failed to remove all cached packages")?;
 
 		// Redownload all the packages
-		if let CachingStrategy::All = self.caching_strategy {
-			let mut tasks = JoinSet::new();
-			let semaphore = Arc::new(Semaphore::new(download::get_transfer_limit()));
-			for package in packages {
-				let pkg = self
-					.get(&package, paths, client, o)
-					.await
-					.with_context(|| format!("Failed to get package {package}"))?;
+		let mut tasks = JoinSet::new();
+		let semaphore = Arc::new(Semaphore::new(download::get_transfer_limit()));
+		for package in packages {
+			let pkg = self
+				.get(&package, paths, client, o)
+				.await
+				.with_context(|| format!("Failed to get package {package}"))?;
 
-				if let Some(task) = pkg.get_download_task(paths, true, client) {
-					let semaphore = semaphore.clone();
-					let task = async move {
-						let _ = semaphore.acquire_owned().await;
-						task.await
-					};
-					tasks.spawn(task);
-				}
+			if let Some(task) = pkg.get_download_task(paths, true, client) {
+				let semaphore = semaphore.clone();
+				let task = async move {
+					let _ = semaphore.acquire_owned().await;
+					task.await
+				};
+				tasks.spawn(task);
 			}
+		}
 
-			while let Some(res) = tasks.join_next().await {
-				res??;
-			}
+		while let Some(res) = tasks.join_next().await {
+			res??;
 		}
 
 		Ok(())

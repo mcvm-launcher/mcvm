@@ -106,11 +106,7 @@ impl Config {
 			ConfigPreferences::read(&config.preferences, &plugins, paths, o)
 				.context("Failed to read preferences")?;
 
-		let packages = PkgRegistry::new(
-			repositories,
-			&plugins,
-			prefs.package_caching_strategy.clone(),
-		);
+		let packages = PkgRegistry::new(repositories, &plugins);
 
 		// Users
 		for (user_id, user_config) in config.users.iter() {

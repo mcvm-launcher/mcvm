@@ -45,7 +45,7 @@ impl ConfigBuilder {
 		repos: Vec<PackageRepository>,
 		plugins: &PluginManager,
 	) -> Self {
-		let packages = PkgRegistry::new(repos, plugins, prefs.package_caching_strategy.clone());
+		let packages = PkgRegistry::new(repos, plugins);
 		Self {
 			users: UserManager::new(ClientId::new("".into())),
 			instances: HashMap::new(),

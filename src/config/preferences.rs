@@ -10,7 +10,7 @@ use crate::{
 	},
 	plugin::PluginManager,
 };
-use mcvm_config::preferences::{CachingStrategy, PrefDeser, RepoDeser};
+use mcvm_config::preferences::{PrefDeser, RepoDeser};
 use mcvm_core::net::download::validate_url;
 
 use anyhow::{bail, Context};
@@ -20,8 +20,6 @@ use mcvm_shared::{lang::Language, output::MCVMOutput};
 /// Configured user preferences
 #[derive(Debug)]
 pub struct ConfigPreferences {
-	/// Caching strategy for packages
-	pub package_caching_strategy: CachingStrategy,
 	/// The global language
 	pub language: Language,
 }
@@ -88,7 +86,6 @@ impl ConfigPreferences {
 
 		Ok((
 			Self {
-				package_caching_strategy: prefs.package_caching_strategy.clone(),
 				language: prefs.language,
 			},
 			repositories,
