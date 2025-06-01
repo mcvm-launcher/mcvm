@@ -1,7 +1,7 @@
 use std::{
-	io::{BufRead, BufReader},
+	io::{BufRead, BufReader, Write},
 	path::Path,
-	process::{Child, ChildStdout, Command},
+	process::{Child, ChildStdin, ChildStdout, Command},
 	sync::{Arc, Mutex},
 };
 
@@ -11,7 +11,7 @@ use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 
 use crate::{
 	hooks::Hook,
-	output::OutputAction,
+	input_output::{InputAction, OutputAction},
 	plugin::{PluginPersistence, DEFAULT_PROTOCOL_VERSION},
 	plugin_debug_enabled,
 };
@@ -129,16 +129,20 @@ where
 		))
 	} else {
 		cmd.stdout(std::process::Stdio::piped());
+		cmd.stdin(std::process::Stdio::piped());
 
 		let mut child = cmd.spawn()?;
 
 		let stdout = child.stdout.take().unwrap();
 		let stdout_reader = BufReader::new(stdout);
 
+		let stdin = child.stdin.take().unwrap();
+
 		let handle = HookHandle {
 			inner: HookHandleInner::Process {
 				child,
 				stdout: stdout_reader,
+				stdin: stdin,
 				line_buf: String::new(),
 				result: None,
 			},
@@ -254,6 +258,18 @@ impl<H: Hook> HookHandle<H> {
 		}
 	}
 
+	/// Sends an action to the plugin
+	pub fn send_input_action(&mut self, action: InputAction) -> anyhow::Result<()> {
+		if let HookHandleInner::Process { stdin, .. } = &mut self.inner {
+			let action = action
+				.serialize(self.protocol_version)
+				.context("Failed to serialize input action")?;
+			writeln!(stdin, "{action}").context("Failed to write input action to plugin")?;
+		}
+
+		Ok(())
+	}
+
 	/// Get the result of the hook by waiting for it
 	pub fn result(mut self, o: &mut impl MCVMOutput) -> anyhow::Result<H::Result> {
 		if let HookHandleInner::Process { .. } = &self.inner {
@@ -317,6 +333,7 @@ enum HookHandleInner<H: Hook> {
 		child: Child,
 		line_buf: String,
 		stdout: BufReader<ChildStdout>,
+		stdin: ChildStdin,
 		result: Option<H::Result>,
 	},
 	/// Result is a constant, either from a constant hook or a takeover hook

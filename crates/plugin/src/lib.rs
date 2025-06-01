@@ -19,7 +19,7 @@ pub mod hook_call;
 /// Plugin hooks and their definitions
 pub mod hooks;
 /// Serialized output format for plugins
-pub mod output;
+pub mod input_output;
 /// Plugins
 pub mod plugin;
 

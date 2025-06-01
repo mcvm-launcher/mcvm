@@ -2,6 +2,7 @@
 pub mod output;
 
 use std::env::Args;
+use std::io::Stdin;
 use std::marker::PhantomData;
 use std::path::PathBuf;
 
@@ -14,7 +15,7 @@ use crate::hook_call::{
 	PLUGIN_STATE_ENV,
 };
 use crate::hooks::Hook;
-use crate::output::OutputAction;
+use crate::input_output::{InputAction, OutputAction};
 use crate::plugin::{PluginManifest, NEWEST_PROTOCOL_VERSION};
 
 use self::output::PluginOutput;
@@ -27,6 +28,7 @@ pub struct CustomPlugin {
 	/// The hook that is being run
 	hook: String,
 	stored_ctx: StoredHookContext,
+	stdin: Stdin,
 }
 
 macro_rules! hook_interface {
@@ -71,6 +73,7 @@ impl CustomPlugin {
 			args,
 			hook,
 			stored_ctx,
+			stdin: std::io::stdin(),
 		})
 	}
 
@@ -174,6 +177,8 @@ impl CustomPlugin {
 				stored_ctx: &mut self.stored_ctx,
 				state: &mut state,
 				state_has_changed: &mut state_has_changed,
+				stdin: &mut self.stdin,
+				protocol_version: self.settings.protocol_version,
 				_h: PhantomData,
 			};
 			let result = f(ctx, arg)?;
@@ -229,6 +234,8 @@ pub struct HookContext<'ctx, H: Hook> {
 	stored_ctx: &'ctx mut StoredHookContext,
 	state: &'ctx mut Option<serde_json::Value>,
 	state_has_changed: &'ctx mut bool,
+	stdin: &'ctx mut Stdin,
+	protocol_version: u16,
 	_h: PhantomData<H>,
 }
 
@@ -290,6 +297,38 @@ impl<'ctx, H: Hook> HookContext<'ctx, H> {
 		*self.state_has_changed = true;
 
 		Ok(())
+	}
+
+	/// Polls the input for actions, responding to them accordingly and returning a command for you to handle if applicable
+	pub fn poll(&mut self) -> anyhow::Result<Option<(String, serde_json::Value)>> {
+		let action = self
+			.get_input_action()
+			.context("Failed to get input action")?;
+		let Some(action) = action else {
+			return Ok(None);
+		};
+
+		match action {
+			InputAction::Command { command, payload } => Ok(Some((command, payload))),
+		}
+	}
+
+	/// Gets the latest input action
+	fn get_input_action(&mut self) -> anyhow::Result<Option<InputAction>> {
+		let mut buf = String::new();
+		let result_len = self
+			.stdin
+			.read_line(&mut buf)
+			.context("Failed to read from stdin")?;
+		if result_len == 0 {
+			return Ok(None);
+		}
+		let line = buf.trim_end_matches("\r\n").trim_end_matches('\n');
+
+		let action = InputAction::deserialize(line, self.protocol_version)
+			.context("Failed to deserialize input action")?;
+
+		Ok(Some(action))
 	}
 }
 

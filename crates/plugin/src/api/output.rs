@@ -1,6 +1,6 @@
 use mcvm_shared::output::{MCVMOutput, Message, MessageLevel};
 
-use crate::{output::OutputAction, plugin::NEWEST_PROTOCOL_VERSION};
+use crate::{input_output::OutputAction, plugin::NEWEST_PROTOCOL_VERSION};
 
 /// Struct that implements the MCVMOutput trait for printing serialized messages
 /// to stdout for the plugin runner to read

@@ -3,7 +3,7 @@ use base64::prelude::*;
 use mcvm_shared::output::{Message, MessageLevel};
 use serde::{Deserialize, Serialize};
 
-/// The delimiter which starts every line after protocol version 2
+/// The delimiter which starts every output line after protocol version 2
 pub static STARTING_DELIMITER: &str = "%_";
 
 /// An action to be sent between the plugin and plugin runner
@@ -73,5 +73,35 @@ impl OutputAction {
 		let action =
 			serde_json::from_slice(&json).context("Failed to deserialize output action")?;
 		Ok(Some(action))
+	}
+}
+
+/// An action to be sent to the plugin from the plugin runner
+#[derive(Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum InputAction {
+	/// Run a custom command
+	Command {
+		/// The command to run
+		command: String,
+		/// The argument/input to the command
+		payload: serde_json::Value,
+	},
+}
+
+impl InputAction {
+	/// Serialize the action to be sent to the plugin
+	pub fn serialize(&self, protocol_version: u16) -> anyhow::Result<String> {
+		let _ = protocol_version;
+		let json = serde_json::to_string(&self).context("Failed to serialize input action")?;
+
+		Ok(json)
+	}
+
+	/// Deserialize an action sent from the plugin runner
+	pub fn deserialize(action: &str, protocol_version: u16) -> anyhow::Result<Self> {
+		let _ = protocol_version;
+		let action = serde_json::from_str(action).context("Failed to deserialize input action")?;
+		Ok(action)
 	}
 }
