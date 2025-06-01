@@ -52,7 +52,7 @@ impl ConfigBuilder {
 			instance_groups: HashMap::new(),
 			packages,
 			preferences: prefs,
-			plugins: PluginManager::new(),
+			plugins: plugins.clone(),
 			default_user: None,
 		}
 	}
