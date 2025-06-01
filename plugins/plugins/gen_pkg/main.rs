@@ -123,16 +123,15 @@ pub async fn gen(source: PackageSource, config: Option<PackageGenerationConfig>,
 		)
 		.await
 		.expect("Failed to generate package"),
-		PackageSource::Modrinth => {
-			modrinth::gen_from_id(
-				id,
-				config.relation_substitutions,
-				&config.force_extensions,
-				config.make_fabriclike.unwrap_or_default(),
-				config.make_forgelike.unwrap_or_default(),
-			)
-			.await
-		}
+		PackageSource::Modrinth => modrinth::gen_from_id(
+			id,
+			RelationSubMethod::Map(config.relation_substitutions),
+			&config.force_extensions,
+			config.make_fabriclike.unwrap_or_default(),
+			config.make_forgelike.unwrap_or_default(),
+		)
+		.await
+		.expect("Failed to generate package"),
 	};
 
 	// Improve the generated package

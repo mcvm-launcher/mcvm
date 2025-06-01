@@ -264,12 +264,12 @@ pub async fn batched_gen(mut config: BatchedConfig, filter: Vec<String>) {
 					project.clone(),
 					versions,
 					team,
-					pkg_config.relation_substitutions,
+					RelationSubMethod::Map(pkg_config.relation_substitutions),
 					&pkg_config.force_extensions,
 					pkg_config.make_fabriclike.unwrap_or_default(),
 					pkg_config.make_forgelike.unwrap_or_default(),
 				)
-				.await
+				.expect("Failed to generate package")
 			}
 		};
 

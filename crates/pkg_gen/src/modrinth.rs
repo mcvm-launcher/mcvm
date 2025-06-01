@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 use std::sync::OnceLock;
 
+use anyhow::Context;
 use mcvm_pkg::declarative::{
 	DeclarativeAddon, DeclarativeAddonVersion, DeclarativeConditionSet, DeclarativePackage,
 	DeclarativePackageRelations,
@@ -21,14 +22,16 @@ use mcvm_net::modrinth::{
 use mcvm_shared::Side;
 use regex::{Regex, RegexBuilder};
 
+use crate::relation_substitution::RelationSubMethod;
+
 /// Generates a Modrinth package from a Modrinth project ID
 pub async fn gen_from_id(
 	id: &str,
-	relation_substitutions: HashMap<String, String>,
+	relation_substitution: RelationSubMethod,
 	force_extensions: &[String],
 	make_fabriclike: bool,
 	make_forgelike: bool,
-) -> DeclarativePackage {
+) -> anyhow::Result<DeclarativePackage> {
 	let client = mcvm_core::net::download::Client::new();
 	let project = modrinth::get_project(id, &client)
 		.await
@@ -46,24 +49,23 @@ pub async fn gen_from_id(
 		project,
 		&versions,
 		&members,
-		relation_substitutions,
+		relation_substitution,
 		force_extensions,
 		make_fabriclike,
 		make_forgelike,
 	)
-	.await
 }
 
 /// Generates a Modrinth package from a Modrinth project
-pub async fn gen(
+pub fn gen(
 	project: Project,
 	versions: &[Version],
 	members: &[Member],
-	relation_substitutions: HashMap<String, String>,
+	relation_substitution: RelationSubMethod,
 	force_extensions: &[String],
 	make_fabriclike: bool,
 	make_forgelike: bool,
-) -> DeclarativePackage {
+) -> anyhow::Result<DeclarativePackage> {
 	// Get supported sides
 	let supported_sides = get_supported_sides(&project);
 
@@ -217,11 +219,9 @@ pub async fn gen(
 		let mut conflicts = Vec::new();
 
 		for dep in &version.dependencies {
-			let pkg_id = if let Some(dep_id) = relation_substitutions.get(&dep.project_id) {
-				dep_id.clone()
-			} else {
-				panic!("Dependency {} was not substituted", dep.project_id)
-			};
+			let pkg_id = relation_substitution
+				.substitute(&dep.project_id)
+				.context("Failed to substitute dependency")?;
 			// Don't count none relations
 			if pkg_id == "none" {
 				continue;
@@ -304,12 +304,12 @@ pub async fn gen(
 	let mut addon_map = HashMap::new();
 	addon_map.insert("addon".into(), addon);
 
-	DeclarativePackage {
+	Ok(DeclarativePackage {
 		meta,
 		properties: props,
 		addons: addon_map,
 		..Default::default()
-	}
+	})
 }
 
 /// Gets the list of supported sides from the project
