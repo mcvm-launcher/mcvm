@@ -185,15 +185,30 @@ impl Config {
 
 		// Instances
 		for (instance_id, instance_config) in config.instances {
-			let instance = read_instance_config(
+			let result = read_instance_config(
 				instance_id.clone(),
 				instance_config,
 				&profiles,
 				&plugins,
 				paths,
 				o,
-			)
-			.with_context(|| format!("Failed to read config for instance {instance_id}"))?;
+			);
+
+			let instance = match result {
+				Ok(instance) => instance,
+				Err(e) => {
+					o.display(
+						MessageContents::Error(translate!(
+							o,
+							InvalidInstanceConfig,
+							"instance" = &instance_id,
+							"error" = &format!("{e:#?}")
+						)),
+						MessageLevel::Important,
+					);
+					continue;
+				}
+			};
 
 			if show_warnings
 				&& !mcvm_config::instance::can_install_client_type(

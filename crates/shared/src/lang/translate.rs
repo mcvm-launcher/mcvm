@@ -110,6 +110,7 @@ define_translations! {
 	StartUpdatingInstanceVersion, "When starting to update an instance version", "Updating instance from %version1 to %version2";
 	StartUpdatingInstanceGameModification, "When starting to change an instance game modification", "Removing current game modification from the instance";
 	FinishUpdatingInstanceVersion, "When finishing updating an instance version", "Finished update";
+	InvalidInstanceConfig, "When the configuration for an instance is invalid", "Configuration for instance '%instance' is invalid:\n%error";
 }
 
 /// Replaces placeholders in a translated key
