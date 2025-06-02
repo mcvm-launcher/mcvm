@@ -158,6 +158,7 @@ impl PackageRepository {
 				name: Some(translate!(o, CoreRepoName)),
 				description: Some(translate!(o, CoreRepoDescription)),
 				mcvm_version: Some(crate::VERSION.into()),
+				color: None,
 			})),
 			Self::Custom(repo) => Ok(Cow::Borrowed(repo.get_meta())),
 		}

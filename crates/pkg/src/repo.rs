@@ -31,6 +31,9 @@ pub struct RepoMetadata {
 	/// The MCVM version of the repository
 	#[serde(default)]
 	pub mcvm_version: Option<String>,
+	/// A CSS color that represents the repository
+	#[serde(default)]
+	pub color: Option<String>,
 }
 
 /// An entry in the repository index package list that specifies information about the package
