@@ -105,15 +105,15 @@ impl PkgRequest {
 	/// Parse the package name and content version from a string
 	pub fn parse(string: impl AsRef<str>, source: PkgRequestSource) -> Self {
 		let string = string.as_ref();
-		let (id, version) = parse_versioned_string(string);
+		let (id_and_repo, version) = parse_versioned_string(string);
 
-		let (id, repository) = if let Some(pos) = id.find(":") {
-			let id = &id[pos + 1..];
-			let repository = &id[0..pos];
+		let (id, repository) = if let Some(pos) = id_and_repo.find(":") {
+			let id = &id_and_repo[pos + 1..];
+			let repository = &id_and_repo[0..pos];
 			// Empty repository should just be none
 			(id, Some(repository).filter(|x| !x.is_empty()))
 		} else {
-			(id, None)
+			(id_and_repo, None)
 		};
 		Self {
 			source,
@@ -269,5 +269,24 @@ mod tests {
 		);
 		let debug = req.debug_sources();
 		assert_eq!(debug, "Repository -> baz -> bar -> foo");
+	}
+
+	#[test]
+	fn test_pkg_req_parsing() {
+		let req = PkgRequest::parse("foo", PkgRequestSource::UserRequire);
+		assert_eq!(req.id, "foo".into());
+		assert_eq!(req.repository, None);
+		let req = PkgRequest::parse("foo@1.19.2", PkgRequestSource::UserRequire);
+		assert_eq!(req.id, "foo".into());
+		assert_eq!(req.content_version, VersionPattern::Single("1.19.2".into()));
+		let req = PkgRequest::parse("modrinth:foo@1.19.2", PkgRequestSource::UserRequire);
+		assert_eq!(req.id, "foo".into());
+		assert_eq!(req.repository, Some("modrinth".into()));
+		assert_eq!(req.content_version, VersionPattern::Single("1.19.2".into()));
+		let req = PkgRequest::parse(":foo", PkgRequestSource::UserRequire);
+		assert_eq!(req.id, "foo".into());
+		assert_eq!(req.repository, None);
+
+		let _ = PkgRequest::parse(":@", PkgRequestSource::UserRequire);
 	}
 }
