@@ -173,7 +173,19 @@ impl InstanceHandle {
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<std::process::ExitStatus> {
 		let pid = self.get_pid();
-		let result = self.inner.wait();
+
+		// Wait for the process to complete while polling plugins
+		let status = loop {
+			for handle in &mut self.hook_handles {
+				let _ = handle.poll(o);
+			}
+
+			let result = self.inner.try_wait();
+			if let Ok(Some(status)) = result {
+				break status;
+			}
+		};
+
 		// Terminate any sibling processes now that the main one is complete
 		for handle in self.hook_handles {
 			handle.terminate();
@@ -181,7 +193,7 @@ impl InstanceHandle {
 
 		Self::on_stop(&self.instance_id, pid, &self.hook_arg, plugins, paths, o)?;
 
-		result.context("Failed to get process exit status")
+		Ok(status)
 	}
 
 	/// Kills the process early

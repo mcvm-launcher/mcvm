@@ -188,6 +188,11 @@ impl InstanceHandle {
 		self.process.kill()
 	}
 
+	/// Returns the exit status of the instance process if it has finished
+	pub fn try_wait(&mut self) -> std::io::Result<Option<std::process::ExitStatus>> {
+		self.process.try_wait()
+	}
+
 	/// Gets the internal child process for the game, consuming the
 	/// InstanceHandle
 	pub fn get_process(self) -> std::process::Child {
