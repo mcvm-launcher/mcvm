@@ -1,4 +1,5 @@
 use std::{
+	collections::VecDeque,
 	io::{BufRead, BufReader, Write},
 	path::Path,
 	process::{Child, ChildStdin, ChildStdout, Command},
@@ -11,7 +12,7 @@ use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 
 use crate::{
 	hooks::Hook,
-	input_output::{InputAction, OutputAction},
+	input_output::{CommandResult, InputAction, OutputAction},
 	plugin::{PluginPersistence, DEFAULT_PROTOCOL_VERSION},
 	plugin_debug_enabled,
 };
@@ -150,6 +151,7 @@ where
 			use_base64: arg.use_base64,
 			protocol_version: arg.protocol_version,
 			plugin_id: arg.plugin_id.to_string(),
+			command_results: VecDeque::new(),
 		};
 
 		Ok(handle)
@@ -164,6 +166,7 @@ pub struct HookHandle<H: Hook> {
 	use_base64: bool,
 	protocol_version: u16,
 	plugin_id: String,
+	command_results: VecDeque<CommandResult>,
 }
 
 impl<H: Hook> HookHandle<H> {
@@ -175,6 +178,7 @@ impl<H: Hook> HookHandle<H> {
 			use_base64: true,
 			protocol_version: DEFAULT_PROTOCOL_VERSION,
 			plugin_id,
+			command_results: VecDeque::new(),
 		}
 	}
 
@@ -190,6 +194,7 @@ impl<H: Hook> HookHandle<H> {
 				line_buf,
 				stdout,
 				result,
+				stdin,
 				..
 			} => {
 				line_buf.clear();
@@ -211,6 +216,23 @@ impl<H: Hook> HookHandle<H> {
 					return Ok(false);
 				};
 
+				let persistence = self
+					.plugin_persistence
+					.as_mut()
+					.context("Hook handle does not have a reference to persistent plugin data")?;
+				let mut persistence_lock = persistence.lock().map_err(|x| anyhow!("{x}"))?;
+
+				// Send command results from the worker to this hook
+				if let Some(worker) = &mut persistence_lock.worker {
+					while let Some(result) = worker.command_results.pop_front() {
+						let action = InputAction::CommandResult(result)
+							.serialize(self.protocol_version)
+							.context("Failed to serialize input action")?;
+						writeln!(stdin, "{action}")
+							.context("Failed to write input action to plugin")?;
+					}
+				}
+
 				match action {
 					OutputAction::SetResult(new_result) => {
 						// Before version 3, this was just a string
@@ -226,11 +248,18 @@ impl<H: Hook> HookHandle<H> {
 						*result = Some(new_result);
 					}
 					OutputAction::SetState(new_state) => {
-						let persistence = self.plugin_persistence.as_mut().context(
-							"Hook handle does not have a reference to persistent plugin data",
+						persistence_lock.state = new_state;
+					}
+					OutputAction::RunWorkerCommand { command, payload } => {
+						let worker = persistence_lock.worker.as_mut().context(
+							"Command was called on plugin worker, but the worker was not started",
 						)?;
-						let mut lock = persistence.lock().map_err(|x| anyhow!("{x}"))?;
-						lock.state = new_state;
+						worker
+							.send_input_action(InputAction::Command { command, payload })
+							.context("Failed to send command to worker")?;
+					}
+					OutputAction::SetCommandResult(result) => {
+						self.command_results.push_back(result)
 					}
 					OutputAction::Text(text, level) => {
 						o.display_text(text, level);

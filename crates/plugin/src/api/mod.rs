@@ -100,6 +100,7 @@ impl CustomPlugin {
 	}
 
 	hook_interface!(on_load, "on_load", OnLoad, |_| Ok(()));
+	hook_interface!(start_worker, "start_worker", StartWorker, |_| Ok(()));
 	hook_interface!(subcommand, "subcommand", Subcommand);
 	hook_interface!(
 		modify_instance_config,
@@ -299,22 +300,8 @@ impl<'ctx, H: Hook> HookContext<'ctx, H> {
 		Ok(())
 	}
 
-	/// Polls the input for actions, responding to them accordingly and returning a command for you to handle if applicable
-	pub fn poll(&mut self) -> anyhow::Result<Option<(String, serde_json::Value)>> {
-		let action = self
-			.get_input_action()
-			.context("Failed to get input action")?;
-		let Some(action) = action else {
-			return Ok(None);
-		};
-
-		match action {
-			InputAction::Command { command, payload } => Ok(Some((command, payload))),
-		}
-	}
-
 	/// Gets the latest input action
-	fn get_input_action(&mut self) -> anyhow::Result<Option<InputAction>> {
+	pub fn poll(&mut self) -> anyhow::Result<Option<InputAction>> {
 		let mut buf = String::new();
 		let result_len = self
 			.stdin

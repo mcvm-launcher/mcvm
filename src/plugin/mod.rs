@@ -18,13 +18,12 @@ use mcvm_shared::translate;
 use std::sync::Mutex;
 
 /// Manager for plugin configs and the actual loaded plugin manager
-#[derive(Debug, Clone)]
+#[derive(Clone)]
 pub struct PluginManager {
 	inner: Arc<Mutex<PluginManagerInner>>,
 }
 
 /// Inner for the PluginManager
-#[derive(Debug)]
 pub struct PluginManagerInner {
 	/// The core PluginManager
 	pub manager: CorePluginManager,

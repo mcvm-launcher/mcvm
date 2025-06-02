@@ -89,6 +89,15 @@ def_hook!(
 );
 
 def_hook!(
+	StartWorker,
+	"start_worker",
+	"Hook for starting a long-running worker alongside the plugin runner",
+	(),
+	(),
+	1,
+);
+
+def_hook!(
 	Subcommand,
 	"subcommand",
 	"Hook for when a command's subcommands are run",

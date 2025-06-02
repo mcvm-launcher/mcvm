@@ -167,7 +167,7 @@ impl EvalParameters {
 }
 
 /// Persistent state for evaluation
-#[derive(Debug, Clone)]
+#[derive(Clone)]
 pub struct EvalData<'a> {
 	/// Input to the evaluator
 	pub input: EvalInput<'a>,

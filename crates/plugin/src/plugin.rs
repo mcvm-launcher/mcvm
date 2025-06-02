@@ -4,6 +4,7 @@ use std::path::PathBuf;
 use std::sync::Arc;
 use std::sync::Mutex;
 
+use anyhow::anyhow;
 use anyhow::bail;
 use anyhow::Context;
 use mcvm_core::Paths;
@@ -12,6 +13,7 @@ use serde::{Deserialize, Deserializer};
 
 use crate::hook_call::HookCallArg;
 use crate::hooks::Hook;
+use crate::hooks::StartWorker;
 use crate::HookHandle;
 
 /// The newest protocol version for plugin communication
@@ -20,7 +22,6 @@ pub const NEWEST_PROTOCOL_VERSION: u16 = 3;
 pub const DEFAULT_PROTOCOL_VERSION: u16 = 1;
 
 /// A plugin
-#[derive(Debug)]
 pub struct Plugin {
 	/// The plugin's ID
 	id: String,
@@ -202,6 +203,14 @@ impl Plugin {
 		self.working_dir = Some(dir);
 	}
 
+	/// Set the plugin's worker handle
+	pub fn set_worker(&mut self, worker: HookHandle<StartWorker>) -> anyhow::Result<()> {
+		let mut lock = self.persistence.lock().map_err(|x| anyhow!("{x}"))?;
+		lock.worker = Some(worker);
+
+		Ok(())
+	}
+
 	/// Get the priority of the given hook
 	pub fn get_hook_priority<H: Hook>(&self, hook: &H) -> HookPriority {
 		let Some(handler) = self.manifest.hooks.get(hook.get_name()) else {
@@ -334,10 +343,11 @@ where
 pub type NativeHookHandler = Arc<dyn Fn(String) -> anyhow::Result<String> + Send + Sync + 'static>;
 
 /// Persistent state for plugins
-#[derive(Debug)]
 pub struct PluginPersistence {
 	/// The persistent state of the plugin
 	pub state: serde_json::Value,
+	/// The long-running plugin worker
+	pub worker: Option<HookHandle<StartWorker>>,
 }
 
 impl PluginPersistence {
@@ -345,6 +355,7 @@ impl PluginPersistence {
 	pub fn new() -> Self {
 		Self {
 			state: serde_json::Value::Null,
+			worker: None,
 		}
 	}
 }

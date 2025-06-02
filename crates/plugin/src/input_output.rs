@@ -26,6 +26,15 @@ pub enum OutputAction {
 	SetResult(serde_json::Value),
 	/// Set the persistent state of the plugin
 	SetState(serde_json::Value),
+	/// Return a result from a command
+	SetCommandResult(CommandResult),
+	/// Run a command on the plugin's worker
+	RunWorkerCommand {
+		/// The command to run
+		command: String,
+		/// The argument/input to the command
+		payload: serde_json::Value,
+	},
 }
 
 impl OutputAction {
@@ -87,21 +96,29 @@ pub enum InputAction {
 		/// The argument/input to the command
 		payload: serde_json::Value,
 	},
+	/// The result of a custom command
+	CommandResult(CommandResult),
 }
 
 impl InputAction {
 	/// Serialize the action to be sent to the plugin
 	pub fn serialize(&self, protocol_version: u16) -> anyhow::Result<String> {
 		let _ = protocol_version;
-		let json = serde_json::to_string(&self).context("Failed to serialize input action")?;
-
-		Ok(json)
+		serde_json::to_string(&self).context("Failed to serialize input action")
 	}
 
 	/// Deserialize an action sent from the plugin runner
 	pub fn deserialize(action: &str, protocol_version: u16) -> anyhow::Result<Self> {
 		let _ = protocol_version;
-		let action = serde_json::from_str(action).context("Failed to deserialize input action")?;
-		Ok(action)
+		serde_json::from_str(action).context("Failed to deserialize input action")
 	}
+}
+
+/// The result of a custom command
+#[derive(Serialize, Deserialize)]
+pub struct CommandResult {
+	/// The command that was run
+	command: String,
+	/// The result from the command
+	result: serde_json::Value,
 }

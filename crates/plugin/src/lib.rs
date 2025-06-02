@@ -25,6 +25,8 @@ pub mod plugin;
 
 pub use mcvm_shared as shared;
 
+use crate::hooks::StartWorker;
+
 /// Environment variable that debugs plugins when set
 pub static PLUGIN_DEBUG_ENV: &str = "MCVM_PLUGIN_DEBUG";
 
@@ -35,7 +37,6 @@ pub fn plugin_debug_enabled() -> bool {
 
 /// A manager for plugins that is used to call their hooks.
 /// Does not handle actually loading the plugins from files
-#[derive(Debug)]
 pub struct CorePluginManager {
 	plugins: Vec<Plugin>,
 	plugin_list: Vec<String>,
@@ -66,7 +67,7 @@ impl CorePluginManager {
 	/// Add a plugin to the manager
 	pub fn add_plugin(
 		&mut self,
-		plugin: Plugin,
+		mut plugin: Plugin,
 		paths: &Paths,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
@@ -89,6 +90,23 @@ impl CorePluginManager {
 			.context("Failed to call on_load hook of plugin")?;
 		if let Some(result) = result {
 			result.result(o)?;
+		}
+
+		// Call the start_worker hook
+		let worker_handle = plugin
+			.call_hook(
+				&StartWorker,
+				&(),
+				paths,
+				self.mcvm_version,
+				&self.plugin_list,
+				o,
+			)
+			.context("Failed to call start_worker hook of plugin")?;
+		if let Some(worker_handle) = worker_handle {
+			plugin
+				.set_worker(worker_handle)
+				.context("Failed to set plugin worker")?;
 		}
 
 		self.plugins.push(plugin);
