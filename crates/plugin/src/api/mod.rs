@@ -184,20 +184,6 @@ impl CustomPlugin {
 			};
 			let result = f(ctx, arg)?;
 			if !H::get_takes_over() {
-				// Output result
-				let serialized = if self.settings.protocol_version < 3 {
-					serde_json::Value::String(serde_json::to_string(&result)?)
-				} else {
-					serde_json::to_value(result)?
-				};
-				let action = OutputAction::SetResult(serialized);
-				println!(
-					"{}",
-					action
-						.serialize(self.settings.use_base64, self.settings.protocol_version)
-						.context("Failed to serialize hook result")?
-				);
-
 				// Output state
 				if state_has_changed {
 					if let Some(state) = state {
@@ -210,6 +196,20 @@ impl CustomPlugin {
 						);
 					}
 				}
+
+				// Output result last as it will make the plugin runner stop listening
+				let serialized = if self.settings.protocol_version < 3 {
+					serde_json::Value::String(serde_json::to_string(&result)?)
+				} else {
+					serde_json::to_value(result)?
+				};
+				let action = OutputAction::SetResult(serialized);
+				println!(
+					"{}",
+					action
+						.serialize(self.settings.use_base64, self.settings.protocol_version)
+						.context("Failed to serialize hook result")?
+				);
 			}
 			Ok(())
 		} else {
