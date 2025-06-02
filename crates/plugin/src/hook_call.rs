@@ -246,6 +246,9 @@ impl<H: Hook> HookHandle<H> {
 								.context("Failed to deserialize hook result")?
 						};
 						*result = Some(new_result);
+
+						// We can stop polling early
+						return Ok(true);
 					}
 					OutputAction::SetState(new_state) => {
 						persistence_lock.state = new_state;
