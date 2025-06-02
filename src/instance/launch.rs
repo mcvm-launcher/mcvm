@@ -174,11 +174,9 @@ impl InstanceHandle {
 	) -> anyhow::Result<std::process::ExitStatus> {
 		let pid = self.get_pid();
 		let result = self.inner.wait();
-		// Kill any sibling processes now that the main one is complete
+		// Terminate any sibling processes now that the main one is complete
 		for handle in self.hook_handles {
-			handle
-				.kill(o)
-				.context("Failed to kill plugin sibling process")?;
+			handle.terminate();
 		}
 
 		Self::on_stop(&self.instance_id, pid, &self.hook_arg, plugins, paths, o)?;
@@ -196,13 +194,9 @@ impl InstanceHandle {
 		let pid = self.get_pid();
 
 		for handle in self.hook_handles {
-			handle
-				.kill(o)
-				.context("Failed to kill plugin sibling process")?;
+			let _ = handle.kill(o);
 		}
-		self.inner
-			.kill()
-			.context("Failed to kill inner instance handle")?;
+		let _ = self.inner.kill();
 
 		Self::on_stop(&self.instance_id, pid, &self.hook_arg, plugins, paths, o)?;
 

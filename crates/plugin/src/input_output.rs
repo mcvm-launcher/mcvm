@@ -98,6 +98,8 @@ pub enum InputAction {
 	},
 	/// The result of a custom command
 	CommandResult(CommandResult),
+	/// Gracefully terminate the program
+	Terminate,
 }
 
 impl InputAction {

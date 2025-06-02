@@ -8,7 +8,7 @@ use std::{
 
 use anyhow::{anyhow, bail, Context};
 use mcvm_core::Paths;
-use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
+use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel, NoOp};
 
 use crate::{
 	hooks::Hook,
@@ -351,6 +351,14 @@ impl<H: Hook> HookHandle<H> {
 
 				Ok(result)
 			}
+		}
+	}
+
+	/// Terminate the hook gracefully, without getting the result
+	pub fn terminate(mut self) {
+		let result = self.send_input_action(InputAction::Terminate);
+		if result.is_err() {
+			let _ = self.kill(&mut NoOp);
 		}
 	}
 }
