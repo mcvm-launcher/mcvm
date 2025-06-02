@@ -7,6 +7,7 @@ use mcvm_pkg::PackageContentType;
 
 use anyhow::Context;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
+use mcvm_shared::pkg::ArcPkgReq;
 use mcvm_shared::translate;
 use reqwest::Client;
 
@@ -166,14 +167,20 @@ impl PackageRepository {
 /// Query a list of repos
 pub async fn query_all(
 	repos: &mut [PackageRepository],
-	id: &str,
+	pkg: &ArcPkgReq,
 	paths: &Paths,
 	client: &Client,
 	plugins: &PluginManager,
 	o: &mut impl MCVMOutput,
 ) -> anyhow::Result<Option<RepoQueryResult>> {
 	for repo in repos {
-		let query = match repo.query(id, paths, client, plugins, o).await {
+		if let Some(requested_repo) = &pkg.repository {
+			if repo.get_id() != requested_repo {
+				continue;
+			}
+		}
+
+		let query = match repo.query(&pkg.id, paths, client, plugins, o).await {
 			Ok(val) => val,
 			Err(e) => {
 				o.display(

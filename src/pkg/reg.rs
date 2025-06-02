@@ -71,7 +71,7 @@ impl PkgRegistry {
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<&mut Package> {
 		// First check the remote repositories
-		let query = query_all(&mut self.repos, &req.id, paths, client, &self.plugins, o)
+		let query = query_all(&mut self.repos, req, paths, client, &self.plugins, o)
 			.await
 			.context("Failed to query remote repositories")?;
 		if let Some(result) = query {

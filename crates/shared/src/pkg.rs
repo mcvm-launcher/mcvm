@@ -19,6 +19,8 @@ pub struct PkgRequest {
 	pub source: PkgRequestSource,
 	/// The ID of the package to request
 	pub id: PackageID,
+	/// The requested repository of the package
+	pub repository: Option<String>,
 	/// The requested content version of the package
 	pub content_version: VersionPattern,
 }
@@ -84,28 +86,40 @@ impl PkgRequest {
 		id: impl Into<PackageID>,
 		source: PkgRequestSource,
 		content_version: VersionPattern,
+		repository: Option<String>,
 	) -> Self {
 		Self {
 			id: id.into(),
 			source,
 			content_version,
+			repository,
 		}
 	}
 
-	/// Create a new PkgRequest that matches all content versions
+	/// Create a new PkgRequest that matches all content versions and repositories
 	#[inline(always)]
 	pub fn any(id: impl Into<PackageID>, source: PkgRequestSource) -> Self {
-		Self::new(id, source, VersionPattern::Any)
+		Self::new(id, source, VersionPattern::Any, None)
 	}
 
 	/// Parse the package name and content version from a string
 	pub fn parse(string: impl AsRef<str>, source: PkgRequestSource) -> Self {
 		let string = string.as_ref();
 		let (id, version) = parse_versioned_string(string);
+
+		let (id, repository) = if let Some(pos) = id.find(":") {
+			let id = &id[pos + 1..];
+			let repository = &id[0..pos];
+			// Empty repository should just be none
+			(id, Some(repository).filter(|x| !x.is_empty()))
+		} else {
+			(id, None)
+		};
 		Self {
 			source,
 			id: id.into(),
 			content_version: version,
+			repository: repository.map(|x| x.to_string()),
 		}
 	}
 
