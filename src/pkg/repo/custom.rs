@@ -1,15 +1,12 @@
 use std::sync::Arc;
 
 use anyhow::Context;
-use mcvm_pkg::{repo::RepoMetadata, PkgRequest};
+use mcvm_pkg::repo::RepoMetadata;
 use mcvm_plugin::hooks::{
 	QueryCustomPackageRepository, QueryCustomPackageRepositoryArg, SearchCustomPackageRepository,
 	SearchCustomPackageRepositoryArg,
 };
-use mcvm_shared::{
-	output::MCVMOutput,
-	pkg::{ArcPkgReq, PackageSearchParameters},
-};
+use mcvm_shared::{output::MCVMOutput, pkg::PackageSearchParameters};
 
 use crate::{io::paths::Paths, pkg::PkgLocation, plugin::PluginManager};
 

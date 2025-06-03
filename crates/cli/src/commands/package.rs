@@ -14,7 +14,7 @@ use mcvm::shared::util::print::ReplPrinter;
 use anyhow::{bail, Context};
 use clap::Subcommand;
 use color_print::{cformat, cprint, cprintln};
-use mcvm::shared::pkg::PackageID;
+use mcvm::shared::pkg::{PackageID, PackageSearchParameters};
 use reqwest::Client;
 use serde::Serialize;
 
@@ -90,6 +90,14 @@ This package does not need to be installed, it just has to be in the index."
 		/// The instance to add a package to
 		instance: Option<String>,
 	},
+	#[command(about = "Search for packages")]
+	Search {
+		/// The query to search for in package ID's, names, and descriptions. Can be omitted.
+		query: Option<String>,
+		/// The maximum number of packages to search
+		#[arg(short = 'n', long)]
+		limit: Option<u8>,
+	},
 }
 
 #[derive(Debug, Subcommand)]
@@ -119,6 +127,17 @@ pub async fn run(subcommand: PackageSubcommand, data: &mut CmdData<'_>) -> anyho
 		PackageSubcommand::ListAll {} => list_all(data).await,
 		PackageSubcommand::Browse {} => browse(data).await,
 		PackageSubcommand::Add { package, instance } => add(data, package, instance).await,
+		PackageSubcommand::Search { query, limit } => {
+			search(
+				data,
+				PackageSearchParameters {
+					count: limit.unwrap_or(5),
+					search: query,
+					categories: Vec::new(),
+				},
+			)
+			.await
+		}
 	}
 }
 
@@ -647,6 +666,24 @@ async fn add(
 	.context("Failed to write modified config")?;
 
 	cprintln!("<g>Package added.");
+
+	Ok(())
+}
+
+async fn search(data: &mut CmdData<'_>, params: PackageSearchParameters) -> anyhow::Result<()> {
+	data.ensure_config(true).await?;
+	let config = data.config.get_mut();
+
+	let client = Client::new();
+	let packages = config
+		.packages
+		.search(params, &data.paths, &client, data.output)
+		.await
+		.context("Failed to search packages")?;
+
+	for package in packages.into_iter().sorted() {
+		cprintln!("{HYPHEN_POINT}{package}");
+	}
 
 	Ok(())
 }

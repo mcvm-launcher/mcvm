@@ -370,7 +370,6 @@ impl PkgRegistry {
 		&mut self,
 		mut params: PackageSearchParameters,
 		paths: &Paths,
-		plugins: &PluginManager,
 		client: &Client,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Vec<ArcPkgReq>> {
@@ -438,7 +437,7 @@ impl PkgRegistry {
 			}
 			if let PackageRepository::Custom(repo) = repo {
 				let result = repo
-					.search(params.clone(), plugins, paths, o)
+					.search(params.clone(), &self.plugins, paths, o)
 					.with_context(|| {
 						format!(
 							"Failed to search custom package repository {}",
