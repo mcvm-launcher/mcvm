@@ -1,4 +1,5 @@
 use anyhow::{anyhow, Context};
+use itertools::Itertools;
 use mcvm_core::net::download;
 use mcvm_pkg::metadata::PackageMetadata;
 use mcvm_pkg::parse_and_validate;
@@ -382,7 +383,7 @@ impl PkgRegistry {
 			.context("Failed to get available packages from basic repositories")?;
 
 		let mut out = Vec::with_capacity(params.count as usize);
-		for req in all_basic_packages {
+		for req in all_basic_packages.into_iter().sorted() {
 			let meta = self
 				.get_metadata(&req, paths, client, o)
 				.await
@@ -402,17 +403,18 @@ impl PkgRegistry {
 
 			if let Some(search) = &params.search {
 				let default = String::new();
-				if !req.id.contains(search)
-					&& !meta.name.as_ref().unwrap_or(&default).contains(search)
+				if !req.id.to_lowercase().contains(search)
+					&& !meta
+						.name
+						.as_ref()
+						.unwrap_or(&default)
+						.to_lowercase()
+						.contains(search)
 					&& !meta
 						.description
 						.as_ref()
 						.unwrap_or(&default)
-						.contains(search)
-					&& !meta
-						.long_description
-						.as_ref()
-						.unwrap_or(&default)
+						.to_lowercase()
 						.contains(search)
 				{
 					continue;
