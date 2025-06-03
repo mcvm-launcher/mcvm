@@ -375,6 +375,9 @@ impl PkgRegistry {
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Vec<ArcPkgReq>> {
 		let original_count = params.count;
+		if original_count == 0 {
+			return Ok(Vec::new());
+		}
 
 		// Search through all of the basic packages
 		let all_basic_packages = self
@@ -382,8 +385,13 @@ impl PkgRegistry {
 			.await
 			.context("Failed to get available packages from basic repositories")?;
 
+		// TODO: Get all the package contents at the beginning
+
 		let mut out = Vec::with_capacity(params.count as usize);
 		for req in all_basic_packages.into_iter().sorted() {
+			if out.len() >= original_count as usize {
+				break;
+			}
 			let meta = self
 				.get_metadata(&req, paths, client, o)
 				.await
