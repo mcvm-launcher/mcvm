@@ -238,6 +238,17 @@ impl PackageAddonOptionalHashes {
 /// Optional PackageAddonHashes
 pub type PackageAddonOptionalHashes = PackageAddonHashes<Option<String>>;
 
+/// Parameters for a package search
+#[derive(Serialize, Deserialize, Default, Clone)]
+pub struct PackageSearchParameters {
+	/// The number of packages to return
+	pub count: u8,
+	/// The fuzzy search term for ids, names, or descriptions
+	pub search: Option<String>,
+	/// The package categories to include
+	pub categories: Vec<String>,
+}
+
 #[cfg(test)]
 mod tests {
 	use super::*;

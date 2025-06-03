@@ -10,7 +10,7 @@ use mcvm_pkg::{PackageContentType, RecommendedPackage, RequiredPackage};
 use mcvm_shared::id::{InstanceID, ProfileID};
 use mcvm_shared::lang::translate::LanguageMap;
 use mcvm_shared::modifications::{ClientType, ServerType};
-use mcvm_shared::pkg::PackageID;
+use mcvm_shared::pkg::{PackageID, PackageSearchParameters};
 use mcvm_shared::versions::VersionPattern;
 use mcvm_shared::UpdateDepth;
 use mcvm_shared::{output::MCVMOutput, versions::VersionInfo, Side};
@@ -584,4 +584,22 @@ pub struct CustomRepoQueryResult {
 	pub content_type: PackageContentType,
 	/// The flags for the package
 	pub flags: HashSet<PackageFlag>,
+}
+
+def_hook!(
+	SearchCustomPackageRepository,
+	"search_custom_package_repository",
+	"Hook for searching or browsing a custom package repository",
+	SearchCustomPackageRepositoryArg,
+	Vec<String>,
+	1,
+);
+
+/// Argument for the SearchCustomPackageRepository hook
+#[derive(Serialize, Deserialize, Default)]
+pub struct SearchCustomPackageRepositoryArg {
+	/// The repository that is being queried
+	pub repository: String,
+	/// The parameters for the search
+	pub parameters: PackageSearchParameters,
 }

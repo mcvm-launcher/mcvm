@@ -154,6 +154,11 @@ impl CustomPlugin {
 		"query_custom_package_repository",
 		QueryCustomPackageRepository
 	);
+	hook_interface!(
+		search_custom_package_repository,
+		"search_custom_package_repository",
+		SearchCustomPackageRepository
+	);
 
 	/// Handle a hook
 	fn handle_hook<H: Hook>(

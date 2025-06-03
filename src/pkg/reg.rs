@@ -9,6 +9,7 @@ use mcvm_pkg::PkgRequest;
 use mcvm_pkg::PkgRequestSource;
 use mcvm_shared::output::MCVMOutput;
 use mcvm_shared::pkg::ArcPkgReq;
+use mcvm_shared::pkg::PackageSearchParameters;
 use reqwest::Client;
 use tokio::sync::Semaphore;
 use tokio::task::JoinSet;
@@ -362,6 +363,105 @@ impl PkgRegistry {
 		}
 
 		Ok(())
+	}
+
+	/// Searches the registry and repositories for packages
+	pub async fn search(
+		&mut self,
+		mut params: PackageSearchParameters,
+		paths: &Paths,
+		plugins: &PluginManager,
+		client: &Client,
+		o: &mut impl MCVMOutput,
+	) -> anyhow::Result<Vec<ArcPkgReq>> {
+		let original_count = params.count;
+
+		// Search through all of the basic packages
+		let all_basic_packages = self
+			.get_all_available_packages(paths, client, o)
+			.await
+			.context("Failed to get available packages from basic repositories")?;
+
+		let mut out = Vec::with_capacity(params.count as usize);
+		for req in all_basic_packages {
+			let meta = self
+				.get_metadata(&req, paths, client, o)
+				.await
+				.context("Failed to get package metadata")?;
+
+			// Check all of the parameters
+			if !params.categories.is_empty() {
+				let default = Vec::new();
+				if !params
+					.categories
+					.iter()
+					.any(|x| meta.categories.as_ref().unwrap_or(&default).contains(x))
+				{
+					continue;
+				}
+			}
+
+			if let Some(search) = &params.search {
+				let default = String::new();
+				if !req.id.contains(search)
+					&& !meta.name.as_ref().unwrap_or(&default).contains(search)
+					&& !meta
+						.description
+						.as_ref()
+						.unwrap_or(&default)
+						.contains(search)
+					&& !meta
+						.long_description
+						.as_ref()
+						.unwrap_or(&default)
+						.contains(search)
+				{
+					continue;
+				}
+			}
+
+			out.push(req);
+		}
+
+		if out.len() >= original_count as usize {
+			out.truncate(original_count as usize);
+			return Ok(out);
+		}
+
+		// Narrow the search limit
+		params.count -= out.len() as u8;
+
+		// Now search plugin repositories
+		for repo in &self.repos {
+			if out.len() >= original_count as usize {
+				break;
+			}
+			if let PackageRepository::Custom(repo) = repo {
+				let result = repo
+					.search(params.clone(), plugins, paths, o)
+					.with_context(|| {
+						format!(
+							"Failed to search custom package repository {}",
+							repo.get_id()
+						)
+					})?;
+				// Narrow the search limit
+				if result.len() <= params.count as usize {
+					params.count -= result.len() as u8;
+				}
+				let result = result.into_iter().map(|x| {
+					Arc::new(PkgRequest {
+						source: mcvm_pkg::PkgRequestSource::Repository,
+						id: x.into(),
+						repository: Some(repo.get_id().to_string()),
+						content_version: mcvm_shared::versions::VersionPattern::Any,
+					})
+				});
+				out.extend(result);
+			}
+		}
+
+		Ok(out)
 	}
 
 	/// Gets the repositories stored in this registry in their correct order

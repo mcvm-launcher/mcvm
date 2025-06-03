@@ -117,7 +117,7 @@ impl PackageRepository {
 		}
 	}
 
-	/// Get all packages from this repo
+	/// Get all packages from this repo. Returns an empty array for custom repos.
 	pub async fn get_all_packages(
 		&mut self,
 		paths: &Paths,

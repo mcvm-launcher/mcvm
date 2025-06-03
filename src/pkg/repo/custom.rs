@@ -1,9 +1,15 @@
 use std::sync::Arc;
 
 use anyhow::Context;
-use mcvm_pkg::repo::RepoMetadata;
-use mcvm_plugin::hooks::{QueryCustomPackageRepository, QueryCustomPackageRepositoryArg};
-use mcvm_shared::output::MCVMOutput;
+use mcvm_pkg::{repo::RepoMetadata, PkgRequest};
+use mcvm_plugin::hooks::{
+	QueryCustomPackageRepository, QueryCustomPackageRepositoryArg, SearchCustomPackageRepository,
+	SearchCustomPackageRepositoryArg,
+};
+use mcvm_shared::{
+	output::MCVMOutput,
+	pkg::{ArcPkgReq, PackageSearchParameters},
+};
 
 use crate::{io::paths::Paths, pkg::PkgLocation, plugin::PluginManager};
 
@@ -56,6 +62,29 @@ impl CustomPackageRepository {
 			content_type: x.content_type,
 			flags: x.flags,
 		}))
+	}
+
+	/// Searches this repository for packages
+	pub fn search(
+		&self,
+		params: PackageSearchParameters,
+		plugins: &PluginManager,
+		paths: &Paths,
+		o: &mut impl MCVMOutput,
+	) -> anyhow::Result<Vec<String>> {
+		let arg = SearchCustomPackageRepositoryArg {
+			repository: self.id.clone(),
+			parameters: params,
+		};
+		let result = plugins
+			.call_hook_on_plugin(SearchCustomPackageRepository, &self.plugin, &arg, paths, o)
+			.context("Failed to call search hook")?;
+
+		let Some(result) = result else {
+			return Ok(Vec::new());
+		};
+
+		result.result(o)
 	}
 
 	/// Gets the ID for this repository
