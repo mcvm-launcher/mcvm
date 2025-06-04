@@ -9,6 +9,7 @@ use itertools::Itertools;
 use mcvm_core::io::{json_from_file, json_to_file};
 use mcvm_plugin::api::{CustomPlugin, HookContext};
 use mcvm_plugin::hooks::{Hook, Subcommand};
+use mcvm_plugin::input_output::InputAction;
 use mcvm_shared::util::utc_timestamp;
 use serde::{Deserialize, Serialize};
 
@@ -66,9 +67,14 @@ fn main() -> anyhow::Result<()> {
 		}
 
 		loop {
-			std::thread::sleep(Duration::from_secs(60));
+			if let Some(InputAction::Terminate) = ctx.poll()? {
+				break;
+			}
+			std::thread::sleep(Duration::from_secs(1));
 			update_playtime(&mut ctx, &arg.id, true).context("Failed to update playtime")?;
 		}
+
+		Ok(())
 	})?;
 
 	Ok(())

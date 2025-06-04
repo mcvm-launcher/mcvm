@@ -10,6 +10,7 @@ use clap::Parser;
 use color_print::cprintln;
 use mcvm_plugin::api::{CustomPlugin, HookContext};
 use mcvm_plugin::hooks::{self, Hook};
+use mcvm_plugin::input_output::InputAction;
 use mcvm_shared::output::{MCVMOutput, MessageContents, MessageLevel};
 
 use crate::backup::BackupSource;
@@ -68,7 +69,7 @@ fn main() -> anyhow::Result<()> {
 		Ok(())
 	})?;
 
-	plugin.while_instance_launch(|ctx, arg| {
+	plugin.while_instance_launch(|mut ctx, arg| {
 		let inst_dir = PathBuf::from(&arg.dir);
 		let mut index = get_index(&ctx, &arg.id)?;
 
@@ -85,6 +86,10 @@ fn main() -> anyhow::Result<()> {
 		}
 
 		loop {
+			if let Some(InputAction::Terminate) = ctx.poll()? {
+				break;
+			}
+
 			for (group_id, group) in &groups {
 				if group.on != Some(BackupAutoHook::Interval) {
 					continue;
@@ -104,8 +109,10 @@ fn main() -> anyhow::Result<()> {
 				}
 			}
 
-			std::thread::sleep(Duration::from_secs(3));
+			std::thread::sleep(Duration::from_secs(1));
 		}
+
+		Ok(())
 	})?;
 
 	Ok(())
