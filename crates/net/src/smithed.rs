@@ -1,5 +1,6 @@
 use crate::download::{self, user_agent};
 use anyhow::Context;
+use mcvm_shared::pkg::PackageSearchParameters;
 use reqwest::{Client, StatusCode};
 use serde::{Deserialize, Serialize};
 
@@ -97,4 +98,32 @@ pub struct BundleVersion {
 	pub name: String,
 	pub supports: Vec<String>,
 	pub packs: Vec<PackReference>,
+}
+
+/// Search packs from the Smithed API
+pub async fn search_packs(
+	params: PackageSearchParameters,
+	client: &Client,
+) -> anyhow::Result<Vec<PackSearchResult>> {
+	let limit = if params.count > 100 {
+		100
+	} else {
+		params.count
+	};
+	let search = if let Some(search) = params.search {
+		format!("&search={search}")
+	} else {
+		String::new()
+	};
+	let url = format!("{API_URL}/packs?limit={limit}{search}");
+
+	download::json(url, client).await
+}
+
+/// A single pack search result
+#[derive(Serialize, Deserialize, Clone, Debug)]
+pub struct PackSearchResult {
+	pub id: String,
+	#[serde(rename = "displayName")]
+	pub display_name: String,
 }

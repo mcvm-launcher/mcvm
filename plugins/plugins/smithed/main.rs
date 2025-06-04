@@ -8,6 +8,7 @@ use mcvm_net::{
 };
 use mcvm_pkg_gen::relation_substitution::RelationSubMethod;
 use mcvm_plugin::{api::CustomPlugin, hooks::CustomRepoQueryResult};
+use tokio::task::JoinSet;
 
 fn main() -> anyhow::Result<()> {
 	let mut plugin = CustomPlugin::from_manifest_file("smithed", include_str!("plugin.json"))?;
@@ -24,7 +25,8 @@ fn main() -> anyhow::Result<()> {
 			.get_data_dir()
 			.context("Failed to get data dir")?
 			.join("internal/smithed/packs");
-		let pack = get_cached_pack(&arg.package, &storage_dir, &client, &runtime)
+		let pack = runtime
+			.block_on(get_cached_pack(&arg.package, &storage_dir, &client))
 			.context("Failed to get pack")?;
 		let Some(pack) = pack else {
 			return Ok(None);
@@ -36,7 +38,8 @@ fn main() -> anyhow::Result<()> {
 			let runtime = tokio::runtime::Runtime::new()?;
 
 			move |relation: &str| {
-				let pack = get_cached_pack(relation, &storage_dir, &client, &runtime)
+				let pack = runtime
+					.block_on(get_cached_pack(relation, &storage_dir, &client))
 					.context("Failed to get pack")?
 					.context("Pack does not exist")?;
 
@@ -60,21 +63,62 @@ fn main() -> anyhow::Result<()> {
 		}))
 	})?;
 
+	plugin.search_custom_package_repository(|ctx, arg| {
+		if arg.repository != "smithed" {
+			return Ok(Vec::new());
+		}
+
+		let client = Client::new();
+		let runtime = tokio::runtime::Runtime::new()?;
+		let storage_dir = ctx
+			.get_data_dir()
+			.context("Failed to get data dir")?
+			.join("internal/smithed/packs");
+
+		let packs = runtime.block_on(async move {
+			let packs = smithed::search_packs(arg.parameters, &client)
+				.await
+				.context("Failed to search packs from the API")?;
+
+			let mut tasks = JoinSet::new();
+			for pack in packs {
+				let client = client.clone();
+				let storage_dir = storage_dir.clone();
+				tasks.spawn(async move {
+					let pack = get_cached_pack(&pack.id, &storage_dir, &client)
+						.await
+						.context("Failed to get cached pack")?
+						.context("Pack does not exist")?;
+
+					Ok::<_, anyhow::Error>(pack.id)
+				});
+			}
+
+			let mut packs = Vec::new();
+			while let Some(result) = tasks.join_next().await {
+				packs.push(result??);
+			}
+
+			Ok::<_, anyhow::Error>(packs)
+		})?;
+
+		Ok(packs)
+	})?;
+
 	Ok(())
 }
 
 /// Gets a cached Smithed pack or downloads it
-fn get_cached_pack(
+async fn get_cached_pack(
 	pack: &str,
 	storage_dir: &Path,
 	client: &Client,
-	runtime: &tokio::runtime::Runtime,
 ) -> anyhow::Result<Option<Pack>> {
 	let pack_path = storage_dir.join(pack);
 	if pack_path.exists() {
 		json_from_file(&pack_path).context("Failed to read pack from file")
 	} else {
-		let result = runtime.block_on(smithed::get_pack_optional(pack, &client))?;
+		let result = smithed::get_pack_optional(pack, &client).await?;
 
 		let pack = match result {
 			Some(result) => result,
