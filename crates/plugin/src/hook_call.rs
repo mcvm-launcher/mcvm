@@ -335,7 +335,12 @@ impl<H: Hook> HookHandle<H> {
 					}
 				}
 
-				let result = result.context("Plugin hook did not return a result")?;
+				let result = result.with_context(|| {
+					format!(
+						"Plugin hook for plugin '{}' did not return a result",
+						self.plugin_id
+					)
+				})?;
 
 				Ok(result)
 			}

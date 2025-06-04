@@ -3,9 +3,6 @@
 	"description": "Install Modrinth packs on profiles and instances",
 	"protocol_version": 3,
 	"hooks": {
-		"on_instance_setup": {
-			"executable": "${PLUGIN_DIR}/mcvm_plugin_modrinth"
-		},
 		"add_sidebar_buttons": {
 			"constant": [
 				{
