@@ -22,6 +22,21 @@
 					"file": "page.html"
 				}
 			}
+		},
+		"add_custom_package_repositories": {
+			"constant": [
+				{
+					"id": "modrinth",
+					"is_preferred": false,
+					"metadata": {
+						"name": "Modrinth",
+						"description": "Package repository for packs from the Modrinth website"
+					}
+				}
+			]
+		},
+		"query_custom_package_repository": {
+			"executable": "${PLUGIN_DIR}/mcvm_plugin_modrinth"
 		}
 	}
 }

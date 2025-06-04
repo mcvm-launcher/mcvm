@@ -1,7 +1,7 @@
-use crate::download;
+use crate::download::{self, user_agent};
 use anyhow::{anyhow, Context};
 use mcvm_shared::modifications::{Modloader, ServerType};
-use reqwest::Client;
+use reqwest::{Client, StatusCode};
 use serde::{Deserialize, Serialize};
 
 /// A Modrinth project (mod, resource pack, etc.)
@@ -72,6 +72,33 @@ pub async fn get_project(project_id: &str, client: &Client) -> anyhow::Result<Pr
 		.await
 		.context("Failed to download Modrinth project")?;
 	Ok(out)
+}
+
+/// Get a project from the API, returning none if it does not exist
+pub async fn get_project_optional(
+	project_id: &str,
+	client: &Client,
+) -> anyhow::Result<Option<Project>> {
+	let url = format_get_project_url(project_id);
+
+	let resp = client
+		.get(url)
+		.header("User-Agent", user_agent())
+		.send()
+		.await
+		.context("Failed to send request")?;
+	if resp.status() == StatusCode::NOT_FOUND {
+		return Ok(None);
+	}
+
+	let resp = resp
+		.error_for_status()
+		.context("Server returned an error")?;
+
+	resp.json()
+		.await
+		.map(Some)
+		.context("Failed to deserialize JSON")
 }
 
 /// Get the raw response of a project from the API
@@ -241,6 +268,15 @@ impl Version {
 				.ok_or(anyhow!("Version has no downloads"))
 		}
 	}
+}
+
+/// Gets all the versions for a Modrinth project
+pub async fn get_project_versions(
+	project_id: &str,
+	client: &Client,
+) -> anyhow::Result<Vec<Version>> {
+	let url = format!("https://api.modrinth.com/v2/project/{project_id}/version");
+	download::json(url, client).await
 }
 
 /// Get a Modrinth project version
