@@ -91,11 +91,7 @@ fn main() -> anyhow::Result<()> {
 
 		Ok(OnInstanceSetupResult {
 			main_class_override: Some(main_class),
-			classpath_extension: classpath
-				.get_entries()
-				.into_iter()
-				.map(|x| x.to_string())
-				.collect(),
+			classpath_extension: classpath.get_entries().to_vec(),
 			..Default::default()
 		})
 	})?;

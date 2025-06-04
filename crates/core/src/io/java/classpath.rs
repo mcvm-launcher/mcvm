@@ -15,33 +15,20 @@ pub const CLASSPATH_SEP: char = ';';
 /// A utility for working with Java classpaths
 #[derive(Debug, Clone, PartialEq, Default)]
 pub struct Classpath {
-	string: String,
+	entries: Vec<String>,
 }
 
 impl Classpath {
 	/// Create a new empty classpath
 	pub fn new() -> Self {
 		Self {
-			string: String::new(),
+			entries: Vec::new(),
 		}
-	}
-
-	/// Append the classpath separator to the end of the string.
-	/// This can create invalid classpaths, so don't use it unless
-	/// you know what you are doing.
-	pub fn add_sep(&mut self) {
-		self.string.push(CLASSPATH_SEP);
 	}
 
 	/// Appends a string to the end of the classpath
 	pub fn add(&mut self, string: &str) {
-		if let Some(last_char) = self.string.chars().last() {
-			if last_char != CLASSPATH_SEP {
-				self.add_sep();
-			}
-		}
-
-		self.string.push_str(string);
+		self.entries.push(string.to_string());
 	}
 
 	/// Converts a path to a string and appends it to the classpath
@@ -63,25 +50,23 @@ impl Classpath {
 
 	/// Extends the classpath with another classpath
 	pub fn extend(&mut self, other: Classpath) {
-		self.add(&other.string)
+		self.entries.extend(other.entries);
 	}
 
 	/// Obtain the classpath as a string
 	pub fn get_str(&self) -> String {
-		self.string.clone()
+		let mut buf = [0; 4];
+		self.entries.join(CLASSPATH_SEP.encode_utf8(&mut buf))
 	}
 
-	/// Split the classpath into a vector of strings
-	pub fn get_entries(&self) -> Vec<&str> {
-		self.string.split(CLASSPATH_SEP).collect()
+	/// Get the classpath as a list of entries
+	pub fn get_entries(&self) -> &[String] {
+		&self.entries
 	}
 
 	/// Split the classpath into a vector of paths
 	pub fn get_paths(&self) -> Vec<PathBuf> {
-		self.string
-			.split(CLASSPATH_SEP)
-			.map(PathBuf::from)
-			.collect()
+		self.entries.iter().map(PathBuf::from).collect()
 	}
 }
 
