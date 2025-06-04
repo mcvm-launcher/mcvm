@@ -1,6 +1,7 @@
 package: build.weld
 	@cargo build --release --bin mcvm_plugin_archive
 	@cargo build --release --bin mcvm_plugin_args
+	@cargo build --release --bin mcvm_plugin_automate
 	@cargo build --release --bin mcvm_plugin_backup
 	@cargo build --release --bin mcvm_plugin_config_split
 	@cargo build --release --bin mcvm_plugin_custom_files
@@ -13,7 +14,6 @@ package: build.weld
 	@cargo build --release --bin mcvm_plugin_options
 	@cargo build --release --bin mcvm_plugin_packhost
 	@cargo build --release --bin mcvm_plugin_paper
-	@cargo build --release --bin mcvm_plugin_scripthook
 	@cargo build --release --bin mcvm_plugin_server_restart
 	@cargo build --release --bin mcvm_plugin_smithed
 	@cargo build --release --bin mcvm_plugin_smithed_api
@@ -26,6 +26,7 @@ package: build.weld
 
 	@rm -f release/archive-linux.zip && zip -j release/archive-linux.zip ../target/release/mcvm_plugin_archive plugins/archive/plugin.json
 	@rm -f release/args-linux.zip && zip -j release/args-linux.zip ../target/release/mcvm_plugin_args plugins/args/plugin.json
+	@rm -f release/automate-linux.zip && zip -j release/automate-linux.zip ../target/release/mcvm_plugin_automate plugins/automate/plugin.json
 	@rm -f release/backup-linux.zip && zip -j release/backup-linux.zip ../target/release/mcvm_plugin_backup plugins/backup/plugin.json
 	@rm -f release/config_split-linux.zip && zip -j release/config_split-linux.zip ../target/release/mcvm_plugin_config_split plugins/config_split/plugin.json
 	@rm -f release/custom_files-linux.zip && zip -j release/custom_files-linux.zip ../target/release/mcvm_plugin_custom_files plugins/custom_files/plugin.json
@@ -38,7 +39,6 @@ package: build.weld
 	@rm -f release/options-linux.zip && zip -j release/options-linux.zip ../target/release/mcvm_plugin_options plugins/options/plugin.json
 	@rm -f release/packhost-linux.zip && zip -j release/packhost-linux.zip ../target/release/mcvm_plugin_packhost plugins/packhost/plugin.json
 	@rm -f release/paper-linux.zip && zip -j release/paper-linux.zip ../target/release/mcvm_plugin_paper plugins/paper/plugin.json
-	@rm -f release/scripthook-linux.zip && zip -j release/scripthook-linux.zip ../target/release/mcvm_plugin_scripthook plugins/scripthook/plugin.json
 	@rm -f release/server_restart-linux.zip && zip -j release/server_restart-linux.zip ../target/release/mcvm_plugin_server_restart plugins/server_restart/plugin.json
 	@rm -f release/smithed-linux.zip && zip -j release/smithed-linux.zip ../target/release/mcvm_plugin_smithed plugins/smithed/plugin.json plugins/smithed/page.html
 	@rm -f release/smithed_api-linux.zip && zip -j release/smithed_api-linux.zip ../target/release/mcvm_plugin_smithed_api plugins/smithed_api/plugin.json
@@ -61,6 +61,10 @@ install.archive:
 install.args:
 	@cargo install --path . --bin mcvm_plugin_args --offline
 	@cat plugins/args/plugin.json | sed 's,\${PLUGIN_DIR}/,,' > ~/.local/share/mcvm/plugins/args.json
+	
+install.automate:
+	@cargo install --path . --bin mcvm_plugin_automate --offline
+	@cat plugins/automate/plugin.json | sed 's,\${PLUGIN_DIR}/,,' > ~/.local/share/mcvm/plugins/automate.json
 
 install.backup:
 	@cargo install --path . --bin mcvm_plugin_backup --offline
@@ -116,10 +120,6 @@ install.packhost:
 install.paper:
 	@cargo install --path . --bin mcvm_plugin_paper --offline
 	@cat plugins/paper/plugin.json | sed 's,\${PLUGIN_DIR}/,,' > ~/.local/share/mcvm/plugins/paper.json
-
-install.scripthook:
-	@cargo install --path . --bin mcvm_plugin_scripthook --offline
-	@cat plugins/scripthook/plugin.json | sed 's,\${PLUGIN_DIR}/,,' > ~/.local/share/mcvm/plugins/scripthook.json
 
 install.server_restart:
 	@cargo install --path . --bin mcvm_plugin_server_restart --offline

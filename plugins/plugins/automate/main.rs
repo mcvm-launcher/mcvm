@@ -1,7 +1,7 @@
 use anyhow::{bail, Context};
 use mcvm_plugin::api::CustomPlugin;
 fn main() -> anyhow::Result<()> {
-	let mut plugin = CustomPlugin::from_manifest_file("scripthook", include_str!("plugin.json"))?;
+	let mut plugin = CustomPlugin::from_manifest_file("automate", include_str!("plugin.json"))?;
 
 	plugin.on_instance_launch(|_, arg| {
 		if let Some(cmd) = arg.config.common.plugin_config.get("on_launch") {

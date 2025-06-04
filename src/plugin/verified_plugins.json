@@ -104,9 +104,9 @@
 		"github_repo": "mcvm",
 		"description": "Install Paper and Folia server instances"
 	},
-	"scripthook": {
-		"id": "scripthook",
-		"name": "Scripthook",
+	"automate": {
+		"id": "automate",
+		"name": "Automate",
 		"github_owner": "mcvm-launcher",
 		"github_repo": "mcvm",
 		"description": "Run commands at different parts of the instance lifecycle with no coding knowledge"
