@@ -186,10 +186,10 @@ impl PkgRegistry {
 		paths: &Paths,
 		client: &Client,
 		o: &mut impl MCVMOutput,
-	) -> anyhow::Result<String> {
+	) -> anyhow::Result<Arc<str>> {
 		let pkg = self.ensure_package_contents(req, paths, client, o).await?;
 		let contents = pkg.data.get().get_text();
-		Ok(contents.to_string())
+		Ok(contents)
 	}
 
 	/// Parse and validate a package
