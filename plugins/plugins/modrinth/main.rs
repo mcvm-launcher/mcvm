@@ -85,18 +85,27 @@ async fn get_cached_project(
 
 		(project, members)
 	} else {
-		let result = modrinth::get_project_optional(project, client)
-			.await
-			.context("Failed to get Modrinth project")?;
-
-		let project = match result {
-			Some(result) => result,
-			None => return Ok(None),
+		let project_task = {
+			let project = project.to_string();
+			let client = client.clone();
+			tokio::spawn(async move { modrinth::get_project_optional(&project, &client).await })
 		};
 
-		let members = modrinth::get_project_team(&project.id, client)
-			.await
-			.context("Failed to get project members")?;
+		let members_task = {
+			let project = project.to_string();
+			let client = client.clone();
+			tokio::spawn(async move { modrinth::get_project_team(&project, &client).await })
+		};
+
+		let (project, members) = tokio::try_join!(project_task, members_task)
+			.context("Failed to get project and members")?;
+		let project = project?;
+		let members = members?;
+
+		let project = match project {
+			Some(project) => project,
+			None => return Ok(None),
+		};
 
 		// Get a list of missing versions
 		let mut missing = Vec::new();
