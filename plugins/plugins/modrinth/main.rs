@@ -161,10 +161,11 @@ struct StorageDirs {
 
 impl StorageDirs {
 	pub fn new(data_dir: &Path) -> Self {
+		let modrinth_dir = data_dir.join("internal/modrinth");
 		Self {
-			projects: data_dir.join("projects"),
-			versions: data_dir.join("versions"),
-			members: data_dir.join("members"),
+			projects: modrinth_dir.join("projects"),
+			versions: modrinth_dir.join("versions"),
+			members: modrinth_dir.join("members"),
 		}
 	}
 }
