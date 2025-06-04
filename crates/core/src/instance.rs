@@ -207,7 +207,7 @@ impl<'params> Instance<'params> {
 			side: &self.config.side,
 			launch_dir: &self.config.path,
 			java: &self.java,
-			classpath: &self.classpath,
+			classpath: &mut self.classpath,
 			main_class: &self.main_class,
 			launch_config: &self.config.launch,
 			paths: self.params.paths,

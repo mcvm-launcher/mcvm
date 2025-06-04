@@ -2692,6 +2692,7 @@ dependencies = [
  "simd-json",
  "tar",
  "tokio",
+ "version-compare 0.2.0",
  "zip",
 ]
 

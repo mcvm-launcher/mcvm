@@ -1,6 +1,10 @@
-use std::path::{Path, PathBuf};
+use std::{
+	cmp::Ordering,
+	path::{Path, PathBuf},
+};
 
 use anyhow::Context;
+use version_compare::Version;
 
 /// The separator for entries in the classpath
 #[cfg(target_os = "linux")]
@@ -68,6 +72,48 @@ impl Classpath {
 	pub fn get_paths(&self) -> Vec<PathBuf> {
 		self.entries.iter().map(PathBuf::from).collect()
 	}
+
+	/// Deduplicates a specific Java library in the classpath by removing ones with the same name, only keeping the latest version.
+	pub fn deduplicate_java_libs(&mut self, library: &str) {
+		let mut occurrences = Vec::new();
+		for (i, entry) in self.entries.iter().enumerate() {
+			let path = PathBuf::from(entry);
+			let Some(filename) = path.file_stem() else {
+				continue;
+			};
+			let filename = filename.to_string_lossy();
+			let Some(last_hyphen_pos) = filename.rfind("-") else {
+				continue;
+			};
+			let name = &filename[0..last_hyphen_pos];
+			if name != library {
+				continue;
+			}
+			let version = &filename[last_hyphen_pos + 1..];
+			occurrences.push((version.to_string(), i));
+		}
+
+		let highest_version = occurrences.iter().max_by(|x, y| {
+			let Some(v1) = Version::from(&x.0) else {
+				return Ordering::Equal;
+			};
+			let Some(v2) = Version::from(&y.0) else {
+				return Ordering::Equal;
+			};
+			let cmp = v1.compare(v2);
+			cmp.ord().unwrap()
+		});
+		let Some(highest_version) = highest_version else {
+			return;
+		};
+
+		let mut i = 0;
+		self.entries.retain(|_| {
+			let should_remove = i != highest_version.1 && occurrences.iter().any(|x| x.1 == i);
+			i += 1;
+			!should_remove
+		});
+	}
 }
 
 #[cfg(test)]
@@ -101,5 +147,15 @@ mod tests {
 			classpath.get_str(),
 			format!("foo{0}bar{0}baz{0}hello{0}world", CLASSPATH_SEP)
 		);
+	}
+
+	#[test]
+	fn test_classpath_deduplication() {
+		let mut classpath = Classpath::new();
+		classpath.add("foo-0.2.0.jar");
+		classpath.add("bar-0.2.0.jar");
+		classpath.add("foo-0.1.3.jar");
+		classpath.deduplicate_java_libs("foo");
+		assert_eq!(classpath.entries, vec!["foo-0.2.0.jar", "bar-0.2.0.jar"]);
 	}
 }

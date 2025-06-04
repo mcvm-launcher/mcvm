@@ -62,6 +62,9 @@ pub(crate) async fn launch(
 		}
 	}
 
+	// Deduplicate the classpath for common libraries
+	params.classpath.deduplicate_java_libs("asm");
+
 	// Get side-specific launch properties
 	let props = match params.side.get_side() {
 		Side::Client => self::client::get_launch_props(&params).await,
@@ -100,7 +103,7 @@ pub(crate) struct LaunchParameters<'a> {
 	pub side: &'a InstanceKind,
 	pub launch_dir: &'a Path,
 	pub java: &'a JavaInstallation,
-	pub classpath: &'a Classpath,
+	pub classpath: &'a mut Classpath,
 	pub main_class: &'a str,
 	pub launch_config: &'a LaunchConfiguration,
 	pub paths: &'a Paths,
