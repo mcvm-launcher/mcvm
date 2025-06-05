@@ -99,6 +99,7 @@ button {
 button:hover {
 	border-color: #396cd8;
 }
+
 button:active {
 	border-color: #396cd8;
 	background-color: #e8e8e8;
@@ -111,6 +112,7 @@ button:active {
 	.solid-select-control {
 		background-color: var(--bg2);
 		border-color: var(--bg2);
+
 		&:focus-within {
 			outline-color: var(--bg2);
 		}
@@ -185,18 +187,23 @@ button {
 }
 
 /* Animations */
-@-webkit-keyframes rotating /* Safari and Chrome */ {
+@-webkit-keyframes rotating
+
+/* Safari and Chrome */
+	{
 	from {
 		-webkit-transform: rotate(0deg);
 		-o-transform: rotate(0deg);
 		transform: rotate(0deg);
 	}
+
 	to {
 		-webkit-transform: rotate(360deg);
 		-o-transform: rotate(360deg);
 		transform: rotate(360deg);
 	}
 }
+
 @keyframes rotating {
 	from {
 		-ms-transform: rotate(0deg);
@@ -205,6 +212,7 @@ button {
 		-o-transform: rotate(0deg);
 		transform: rotate(0deg);
 	}
+
 	to {
 		-ms-transform: rotate(360deg);
 		-moz-transform: rotate(360deg);
@@ -233,12 +241,15 @@ button {
 	0% {
 		margin-left: 0rem;
 	}
+
 	25% {
 		margin-left: 0.5rem;
 	}
+
 	75% {
 		margin-left: -0.5rem;
 	}
+
 	100% {
 		margin-left: 0rem;
 	}
@@ -246,16 +257,19 @@ button {
 
 @keyframes shake {
 	0% {
-		margin-left: 0rem;
+		transform: translateX(0rem);
 	}
+
 	25% {
-		margin-left: 0.5rem;
+		transform: translateX(.5rem);
 	}
+
 	75% {
-		margin-left: -0.5rem;
+		transform: translateX(-.5rem);
 	}
+
 	100% {
-		margin-left: 0rem;
+		transform: translateX(0rem);
 	}
 }
 

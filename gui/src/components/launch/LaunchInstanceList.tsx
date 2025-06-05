@@ -186,7 +186,7 @@ export default function LaunchInstanceList(props: LaunchInstanceListProps) {
 function Section(props: SectionProps) {
 	const HeaderIcon = () => (
 		<Switch>
-			<Match when={props.kind == "all"}>
+			<Match when={props.kind == "all" || props.kind == "profiles"}>
 				<Icon icon={Box} size="18px" />
 			</Match>
 			<Match when={props.kind == "pinned"}>

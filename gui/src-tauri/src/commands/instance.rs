@@ -149,7 +149,7 @@ pub async fn get_instance_config(
 	state: tauri::State<'_, State>,
 	app_handle: tauri::AppHandle,
 	id: String,
-) -> Result<InstanceConfig, String> {
+) -> Result<Option<InstanceConfig>, String> {
 	let app_handle = Arc::new(app_handle);
 
 	let mut output = LauncherOutput::new(
@@ -161,10 +161,12 @@ pub async fn get_instance_config(
 	let config = fmt_err(load_config(&state.paths, &mut output).context("Failed to load config"))?;
 
 	let Some(instance) = config.instances.get(&InstanceID::from(id)) else {
-		return Err("Instance does not exist".into());
+		return Ok(None);
 	};
 
-	Ok(instance.get_config().original_config_with_profiles.clone())
+	Ok(Some(
+		instance.get_config().original_config_with_profiles.clone(),
+	))
 }
 
 #[tauri::command]
@@ -172,7 +174,7 @@ pub async fn get_profile_config(
 	state: tauri::State<'_, State>,
 	app_handle: tauri::AppHandle,
 	id: String,
-) -> Result<ProfileConfig, String> {
+) -> Result<Option<ProfileConfig>, String> {
 	let app_handle = Arc::new(app_handle);
 
 	let mut output = LauncherOutput::new(
@@ -184,10 +186,10 @@ pub async fn get_profile_config(
 	let config = fmt_err(load_config(&state.paths, &mut output).context("Failed to load config"))?;
 
 	let Some(profile) = config.profiles.get(&ProfileID::from(id)) else {
-		return Err("Profile does not exist".into());
+		return Ok(None);
 	};
 
-	Ok(profile.clone())
+	Ok(Some(profile.clone()))
 }
 
 #[tauri::command]

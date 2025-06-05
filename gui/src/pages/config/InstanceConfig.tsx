@@ -139,6 +139,13 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 			inputError("id");
 			return;
 		}
+		if (props.creating) {
+			if (await idExists(configId!, props.mode)) {
+				inputError("id");
+				return;
+			}
+		}
+
 		if (isInstance && side() == undefined) {
 			inputError("side");
 			return;
@@ -152,7 +159,7 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 		let newConfig: InstanceConfig = {
 			from: from(),
 			type: side(),
-			name: name(),
+			name: name() == "" ? undefined : name(),
 			icon: icon(),
 			version: version() == "" ? undefined : version(),
 		};
@@ -167,10 +174,10 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 		}
 
 		if (isInstance) {
-			await invoke("write_instance_config", {
-				id: configId,
-				config: newConfig,
-			});
+			// await invoke("write_instance_config", {
+			// 	id: configId,
+			// 	config: newConfig,
+			// });
 		} else if (isGlobalProfile) {
 			await invoke("write_global_profile", { config: newConfig });
 		} else {
@@ -249,6 +256,7 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 							id="id"
 							name="id"
 							onChange={(e) => {
+								setNewId()
 								e.target.value = sanitizeInstanceId(e.target.value);
 								setNewId(e.target.value);
 							}}
@@ -355,4 +363,15 @@ function sanitizeInstanceId(id: string): string {
 	// let regex = new RegExp(/\W/, "ig");
 	// id = id.replace(regex, "");
 	return id;
+}
+
+async function idExists(id: string, mode: ConfigMode): Promise<boolean> {
+	let command = `get_${mode}_config`;
+	try {
+		let result = await invoke(command, { id: id });
+		return result != null;
+	} catch (e) {
+		console.error(e);
+		return false;
+	}
 }
