@@ -92,6 +92,11 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 		return parentResults;
 	}
 
+	// Input / convenience signals
+
+	// Used to check if we can automatically fill out the ID with the name. We don't want to do this if the user already typed an ID.
+	let [isIdDirty, setIsIdDirty] = createSignal(!props.creating);
+
 	// Config signals
 	let [newId, setNewId] = createSignal<string | undefined>();
 	let [name, setName] = createSignal<string | undefined>();
@@ -219,15 +224,6 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 			<Show when={tab() == "basic"}>
 
 				<div class="fields">
-					<Show when={props.creating && !isGlobalProfile}>
-						<label for="id" class="label">{`${createMessage} ID`}</label>
-						<input
-							type="text"
-							id="id"
-							name="id"
-							onChange={(e) => setNewId(e.target.value)}
-						></input>
-					</Show>
 					<Show when={!isGlobalProfile && !isProfile}>
 						<label for="name" class="label">Display Name</label>
 						<input
@@ -237,6 +233,29 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 							placeholder={id}
 							value={emptyUndefined(name())}
 							onChange={(e) => setName(e.target.value)}
+							onKeyUp={(e: any) => {
+								if (!isIdDirty()) {
+									let value = sanitizeInstanceId(e.target.value);
+									(document.getElementById("id")! as any).value = value;
+									setNewId(value);
+								}
+							}}
+						></input>
+					</Show>
+					<Show when={props.creating && !isGlobalProfile}>
+						<label for="id" class="label">{`${createMessage} ID`}</label>
+						<input
+							type="text"
+							id="id"
+							name="id"
+							onChange={(e) => {
+								e.target.value = sanitizeInstanceId(e.target.value);
+								setNewId(e.target.value);
+							}}
+							onKeyUp={(e: any) => {
+								setIsIdDirty(true);
+								e.target.value = sanitizeInstanceId(e.target.value);
+							}}
 						></input>
 					</Show>
 					<Show when={props.creating || isProfile || isGlobalProfile}>
@@ -322,4 +341,18 @@ function emptyUndefined(value: string | undefined) {
 	} else {
 		return value;
 	}
+}
+
+function sanitizeInstanceId(id: string): string {
+	id = id.toLocaleLowerCase();
+	id = id.replace(/ /g, "-");
+	id = id.replace(/\_/g, "-");
+	id = id.replace(/\./g, "-");
+	// Remove repeated hyphens
+	let regex = new RegExp(/-+/, "g");
+	id = id.replace(regex, "-");
+	// TODO: Sanitize wild characters
+	// let regex = new RegExp(/\W/, "ig");
+	// id = id.replace(regex, "");
+	return id;
 }
