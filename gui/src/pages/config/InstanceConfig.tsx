@@ -25,16 +25,16 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 	let id = isInstance
 		? params.instanceId
 		: isGlobalProfile
-		? "Global Profile"
-		: params.profileId;
+			? "Global Profile"
+			: params.profileId;
 
 	onMount(() =>
 		loadPagePlugins(
 			isInstance
 				? "instance_config"
 				: isProfile
-				? "profile_config"
-				: "global_profile_config",
+					? "profile_config"
+					: "global_profile_config",
 			id
 		)
 	);
@@ -44,6 +44,8 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 	let [parentConfigs, parentConfigOperations] =
 		createResource(updateParentConfig);
 
+	let [tab, setTab] = createSignal("basic");
+
 	async function updateConfig() {
 		if (props.creating) {
 			return undefined;
@@ -52,8 +54,8 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 		let method = isInstance
 			? "get_instance_config"
 			: isGlobalProfile
-			? "get_global_profile"
-			: "get_profile_config";
+				? "get_global_profile"
+				: "get_profile_config";
 		let result = await invoke(method, { id: id });
 		let configuration = result as InstanceConfig;
 
@@ -62,8 +64,8 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 			configuration.from == undefined
 				? undefined
 				: Array.isArray(configuration.from)
-				? configuration.from
-				: [configuration.from]
+					? configuration.from
+					: [configuration.from]
 		);
 
 		return configuration;
@@ -112,8 +114,8 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 				isInstance
 					? `Instance ${displayName()}`
 					: isGlobalProfile
-					? "Global Profile"
-					: `Profile ${displayName()}`
+						? "Global Profile"
+						: `Profile ${displayName()}`
 			);
 		}
 	});
@@ -182,21 +184,52 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 					? `Creating New ${createMessage}`
 					: `Configuration for ${message()}`}
 			</h1>
-			<div id="fields" class="cont col">
-				<Show when={props.creating && !isGlobalProfile}>
-					<div class="cont">
-						<label for="id">{`${createMessage} ID`}</label>
+			<div class="cont">
+				<div id="config-tabs">
+					<div
+						class={`config-tab ${tab() == "basic" ? "selected" : ""}`}
+						id="basic-tab"
+						onclick={() => {
+							setTab("basic");
+						}}
+					>
+						Basic
+					</div>
+					<div
+						class={`config-tab ${tab() == "packages" ? "selected" : ""}`}
+						id="packages-tab"
+						onclick={() => {
+							setTab("packages");
+						}}
+					>
+						Packages
+					</div>
+					<div
+						class={`config-tab ${tab() == "launch" ? "selected" : ""}`}
+						id="launch-tab"
+						onclick={() => {
+							setTab("launch");
+						}}
+					>
+						Launch Settings
+					</div>
+				</div>
+			</div>
+			<br />
+			<Show when={tab() == "basic"}>
+
+				<div class="fields">
+					<Show when={props.creating && !isGlobalProfile}>
+						<label for="id" class="label">{`${createMessage} ID`}</label>
 						<input
 							type="text"
 							id="id"
 							name="id"
 							onChange={(e) => setNewId(e.target.value)}
 						></input>
-					</div>
-				</Show>
-				<Show when={!isGlobalProfile && !isProfile}>
-					<div class="cont">
-						<label for="name">Display Name</label>
+					</Show>
+					<Show when={!isGlobalProfile && !isProfile}>
+						<label for="name" class="label">Display Name</label>
 						<input
 							type="text"
 							id="name"
@@ -205,35 +238,33 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 							value={emptyUndefined(name())}
 							onChange={(e) => setName(e.target.value)}
 						></input>
-					</div>
-				</Show>
-				<Show when={props.creating || isProfile || isGlobalProfile}>
-					<div class="cont col">
-						<label for="side">Side</label>
-						<div id="side">
-							<InlineSelect
-								onChange={setSide}
-								selected={side()}
-								options={[
-									{
-										value: "client",
-										contents: <div class="cont">Client</div>,
-										color: "var(--instance)",
-									},
-									{
-										value: "server",
-										contents: <div class="cont">Server</div>,
-										color: "var(--profile)",
-									},
-								]}
-								columns={isInstance ? 2 : 3}
-								allowEmpty={!isInstance}
-							/>
+					</Show>
+					<Show when={props.creating || isProfile || isGlobalProfile}>
+						<label for="side" class="label">Side</label>
+						<div class="cont col">
+							<div id="side">
+								<InlineSelect
+									onChange={setSide}
+									selected={side()}
+									options={[
+										{
+											value: "client",
+											contents: <div class="cont">Client</div>,
+											color: "var(--instance)",
+										},
+										{
+											value: "server",
+											contents: <div class="cont">Server</div>,
+											color: "var(--profile)",
+										},
+									]}
+									columns={isInstance ? 2 : 3}
+									allowEmpty={!isInstance}
+								/>
+							</div>
 						</div>
-					</div>
-				</Show>
-				<div class="cont">
-					<label for="version">Minecraft Version</label>
+					</Show>
+					<label for="version" class="label">Minecraft Version</label>
 					<input
 						type="text"
 						id="version"
@@ -242,7 +273,7 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 						onChange={(e) => setVersion(e.target.value)}
 					></input>
 				</div>
-			</div>
+			</Show>
 			<br />
 			<div class="cont">
 				<IconTextButton
