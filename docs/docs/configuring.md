@@ -172,27 +172,6 @@ In most cases the first form is all you need. If you want more control over how 
 - `worlds` (Optional): A list of worlds to only apply addons like datapacks to. If left empty (the default), will apply to all worlds in the instance.
 - `content_version` (Optional): An optional content version to request the package to be. Can be a [version pattern](./packages/_index.md#version-patterns).
 
-## Plugins
-
-Plugins are configured in a separate file called `plugins.json` in the same directory as your normal config file.
-
-```
-{
-	"plugins": [
-  	"plugin_name" | {
-  		"name": string,
-  		"config": any
-  	}
-  	...
-  ]
-}
-```
-
-The `plugins` field allows you to specify a list of enabled plugins and options you want for them
-
-- `plugin_name`: The name / ID of the plugin to enable
-- `config` (Optional): Custom configuration to give to the plugin. This will differ for whatever plugin you are using, and some do not need it at all.
-
 ## Preferences
 
 In this section you can set preferences for how the whole program will work. The format looks like this, and all fields are optional:
