@@ -12,10 +12,10 @@
 	grid-template-columns: minmax(0, 1fr) minmax(0, 0.2fr);
 	cursor: pointer;
 	box-sizing: border-box;
-	border: 0.2rem solid var(--bg3);
 }
 
 #user-widget-head.open {
+	border: 0.15rem solid var(--bg3);
 	border-bottom-width: 0px;
 	border-bottom-left-radius: 0px;
 	border-bottom-right-radius: 0px;

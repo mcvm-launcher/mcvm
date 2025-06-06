@@ -150,7 +150,7 @@ export default function LaunchInstanceList(props: LaunchInstanceListProps) {
 					</Match>
 					<Match when={instancesOrProfiles() == "profile"}>
 						<br />
-						<div class="cont">
+						<div class="cont" style="justify-content:flex-start;margin-left:0.5rem">
 							<IconTextButton
 								icon={Edit}
 								text="Edit Global Profile"
