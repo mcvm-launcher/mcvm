@@ -26,16 +26,16 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 	let id = isInstance
 		? params.instanceId
 		: isGlobalProfile
-			? "Global Profile"
-			: params.profileId;
+		? "Global Profile"
+		: params.profileId;
 
 	onMount(() =>
 		loadPagePlugins(
 			isInstance
 				? "instance_config"
 				: isProfile
-					? "profile_config"
-					: "global_profile_config",
+				? "profile_config"
+				: "global_profile_config",
 			id
 		)
 	);
@@ -44,9 +44,11 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 	let [from, setFrom] = createSignal<string[] | undefined>();
 	let [parentConfigs, parentConfigOperations] =
 		createResource(updateParentConfig);
-	let [supportedModifications, _] = createResource(getSupportedGameModifications);
+	let [supportedModifications, _] = createResource(
+		getSupportedGameModifications
+	);
 
-	let [tab, setTab] = createSignal("basic");
+	let [tab, setTab] = createSignal("general");
 
 	async function updateConfig() {
 		if (props.creating) {
@@ -56,8 +58,8 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 		let method = isInstance
 			? "get_instance_config"
 			: isGlobalProfile
-				? "get_global_profile"
-				: "get_profile_config";
+			? "get_global_profile"
+			: "get_profile_config";
 		let result = await invoke(method, { id: id });
 		let configuration = result as InstanceConfig;
 
@@ -66,8 +68,8 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 			configuration.from == undefined
 				? undefined
 				: Array.isArray(configuration.from)
-					? configuration.from
-					: [configuration.from]
+				? configuration.from
+				: [configuration.from]
 		);
 
 		return configuration;
@@ -121,10 +123,16 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 			setVersion(config()!.version);
 			setClientType(config()!.client_type);
 			setServerType(config()!.server_type);
-			if (config()!.client_type == "none" || config()!.client_type == undefined) {
+			if (
+				config()!.client_type == "none" ||
+				config()!.client_type == undefined
+			) {
 				setClientType(config()!.modloader);
 			}
-			if (config()!.server_type == "none" || config()!.server_type == undefined) {
+			if (
+				config()!.server_type == "none" ||
+				config()!.server_type == undefined
+			) {
 				setServerType(config()!.modloader);
 			}
 			setGameModVersion(config()!.game_modification_version);
@@ -132,11 +140,7 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 
 			setDisplayName(config()!.name == undefined ? id : config()!.name!);
 			setMessage(
-				isInstance
-					? `Instance ${displayName()}`
-					: isGlobalProfile
-						? "Global Profile"
-						: `Profile ${displayName()}`
+				isInstance ? `INSTANCE` : isGlobalProfile ? "GLOBAL PROFILE" : `PROFILE`
 			);
 		}
 
@@ -211,25 +215,30 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 		configOperations.refetch();
 	}
 
-	let createMessage = isInstance ? "Instance" : "Profile";
+	let createMessage = isInstance ? "INSTANCE" : "PROFILE";
 
 	return (
 		<div class="cont col" style="width:100%">
-			<h1 class="noselect">
+			<h2 id="head" class="noselect">
 				{props.creating
-					? `Creating New ${createMessage}`
-					: `Configuration for ${message()}`}
-			</h1>
+					? `CREATING NEW ${createMessage}`
+					: `CONFIGURE ${message()}`}
+			</h2>
+			<Show when={!props.creating}>
+				<h3 id="subheader" class="noselect">
+					{displayName()}
+				</h3>
+			</Show>
 			<div class="cont">
 				<div id="config-tabs">
 					<div
-						class={`config-tab ${tab() == "basic" ? "selected" : ""}`}
-						id="basic-tab"
+						class={`config-tab ${tab() == "general" ? "selected" : ""}`}
+						id="general-tab"
 						onclick={() => {
-							setTab("basic");
+							setTab("general");
 						}}
 					>
-						Basic
+						General
 					</div>
 					<div
 						class={`config-tab ${tab() == "packages" ? "selected" : ""}`}
@@ -252,12 +261,13 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 				</div>
 			</div>
 			<br />
-			<Show when={tab() == "basic"}>
+			<Show when={tab() == "general"}>
 				<div class="fields">
-					<div></div>
-					<h2>Basic Settings</h2>
+					{/* <h3>Basic Settings</h3> */}
 					<Show when={!isGlobalProfile && !isProfile}>
-						<label for="name" class="label">Display Name</label>
+						<label for="name" class="label">
+							DISPLAY NAME
+						</label>
 						<input
 							type="text"
 							id="name"
@@ -281,7 +291,7 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 							id="id"
 							name="id"
 							onChange={(e) => {
-								setNewId()
+								setNewId();
 								e.target.value = sanitizeInstanceId(e.target.value);
 								setNewId(e.target.value);
 							}}
@@ -292,31 +302,32 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 						></input>
 					</Show>
 					<Show when={props.creating || isProfile || isGlobalProfile}>
-						<label for="side" class="label">Side</label>
-						<div class="cont col">
-							<div id="side">
-								<InlineSelect
-									onChange={setSide}
-									selected={side()}
-									options={[
-										{
-											value: "client",
-											contents: <div class="cont">Client</div>,
-											color: "var(--instance)",
-										},
-										{
-											value: "server",
-											contents: <div class="cont">Server</div>,
-											color: "var(--profile)",
-										},
-									]}
-									columns={isInstance ? 2 : 3}
-									allowEmpty={!isInstance}
-								/>
-							</div>
-						</div>
+						<label for="side" class="label">
+							TYPE
+						</label>
+						<InlineSelect
+							onChange={setSide}
+							selected={side()}
+							options={[
+								{
+									value: "client",
+									contents: <div class="cont">Client</div>,
+									color: "var(--instance)",
+								},
+								{
+									value: "server",
+									contents: <div class="cont">Server</div>,
+									color: "var(--profile)",
+								},
+							]}
+							columns={isInstance ? 2 : 3}
+							allowEmpty={!isInstance}
+						/>
 					</Show>
-					<label for="version" class="label">Minecraft Version</label>
+					<hr />
+					<label for="version" class="label">
+						MINECRAFT VERSION
+					</label>
 					<input
 						type="text"
 						id="version"
@@ -324,48 +335,69 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 						value={emptyUndefined(version())}
 						onChange={(e) => setVersion(e.target.value)}
 					></input>
-					<Show when={(side() == "client" || isProfile) && supportedModifications() != undefined}>
-						<label for="client-type" class="label">{`${isProfile ? "Client " : ""}Loader`}</label>
-						<div class="cont col">
-							<div id="client-type">
-								<InlineSelect
-									onChange={setClientType}
-									selected={clientType() == undefined ? "none" : clientType()}
-									options={supportedModifications()!.client_types.map((x) => {
-										return {
-											value: x,
-											contents: <div class="cont">{x == "none" ? "Unset" : beautifyString(x)}</div>,
-											color: "var(--fg2)"
-										};
-									})}
-									columns={supportedModifications()!.client_types.length}
-									allowEmpty={false}
-								/>
-							</div>
-						</div>
+					<Show
+						when={
+							(side() == "client" || isProfile) &&
+							supportedModifications() != undefined
+						}
+					>
+						<label for="client-type" class="label">{`${
+							isProfile ? "CLIENT " : ""
+						}LOADER`}</label>
+						<InlineSelect
+							onChange={setClientType}
+							selected={clientType() == undefined ? "none" : clientType()}
+							options={supportedModifications()!.client_types.map((x) => {
+								return {
+									value: x,
+									contents: (
+										<div class="cont">
+											{x == "none" ? "Unset" : beautifyString(x)}
+										</div>
+									),
+									color: "var(--fg2)",
+								};
+							})}
+							columns={supportedModifications()!.client_types.length}
+							allowEmpty={false}
+						/>
 					</Show>
-					<Show when={(side() == "server" || isProfile) && supportedModifications() != undefined}>
-						<label for="server-type" class="label">{`${isProfile ? "Server " : ""}Loader`}</label>
-						<div class="cont col">
-							<div id="server-type">
-								<InlineSelect
-									onChange={setServerType}
-									selected={serverType() == undefined ? "none" : serverType()}
-									options={supportedModifications()!.server_types.map((x) => {
-										return {
-											value: x,
-											contents: <div class="cont">{x == "none" ? "Unset" : beautifyString(x)}</div>,
-											color: "var(--fg2)"
-										};
-									})}
-									columns={supportedModifications()!.server_types.length}
-									allowEmpty={false}
-								/>
-							</div>
-						</div>
+					<Show
+						when={
+							(side() == "server" || isProfile) &&
+							supportedModifications() != undefined
+						}
+					>
+						<label for="server-type" class="label">{`${
+							isProfile ? "SERVER " : ""
+						}LOADER`}</label>
+						<InlineSelect
+							onChange={setServerType}
+							selected={serverType() == undefined ? "none" : serverType()}
+							options={supportedModifications()!.server_types.map((x) => {
+								return {
+									value: x,
+									contents: (
+										<div class="cont">
+											{x == "none" ? "Unset" : beautifyString(x)}
+										</div>
+									),
+									color: "var(--fg2)",
+								};
+							})}
+							columns={supportedModifications()!.server_types.length}
+							allowEmpty={false}
+						/>
 					</Show>
-					<Show when={(clientType() != undefined && clientType() != "none") || (serverType() != undefined && serverType() != "none")}>
-						<label for="game-mod-version" class="label">Loader Version</label>
+					<Show
+						when={
+							(clientType() != undefined && clientType() != "none") ||
+							(serverType() != undefined && serverType() != "none")
+						}
+					>
+						<label for="game-mod-version" class="label">
+							LOADER VERSION
+						</label>
 						<input
 							type="text"
 							id="game-mod-version"
@@ -374,11 +406,10 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 							onChange={(e) => setGameModVersion(e.target.value)}
 						></input>
 					</Show>
-					<div></div>
-					<div></div>
-					<div></div>
-					<h2>Extra Settings</h2>
-					<label for="datapack-folder" class="label">Datapack Folder</label>
+					<hr />
+					<label for="datapack-folder" class="label">
+						DATAPACK FOLDER
+					</label>
 					<input
 						type="text"
 						id="datapack-folder"
@@ -478,7 +509,9 @@ async function idExists(id: string, mode: ConfigMode): Promise<boolean> {
 
 async function getSupportedGameModifications(): Promise<SupportedGameModifications> {
 	let out: SupportedGameModifications = { client_types: [], server_types: [] };
-	let results: SupportedGameModifications[] = await invoke("get_supported_game_modifications");
+	let results: SupportedGameModifications[] = await invoke(
+		"get_supported_game_modifications"
+	);
 	for (let result of results) {
 		out.client_types = out.client_types.concat(result.client_types);
 		out.server_types = out.server_types.concat(result.server_types);

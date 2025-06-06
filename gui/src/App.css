@@ -19,6 +19,7 @@
 	--bg2: #1c1c1c;
 	--bg3: #2b2b2b;
 	--bg2disabled: #1b1b1b;
+	--shadow: #121212;
 	--text: var(--fg);
 	--instance: #7ee91b;
 	--profile: #1bb9e9;
@@ -29,7 +30,8 @@
 	--error: #c10f39;
 
 	/* Other values */
-	--round: 0.4rem;
+	--round: 0.2rem;
+	--input-height: 2.2rem;
 
 	color: var(--text);
 	background-color: var(--bg);
@@ -77,19 +79,40 @@ h2 {
 	text-align: center;
 }
 
+input {
+	border-radius: var(--round);
+	padding: 0.5rem 1.2rem;
+	height: var(--input-height);
+	font-weight: bold;
+	background-color: var(--bg0);
+	transition: border-color 0.25s;
+	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+	/* text-align: center; */
+	border: 0.15rem solid var(--bg3);
+	box-sizing: border-box;
+}
+
 input,
+.input-shadow {
+	box-shadow: 0.35rem 0.35rem var(--shadow);
+}
+
 button {
 	border-radius: var(--round);
 	border: 1px solid transparent;
-	padding: 0.6em 1.2em;
-	font-size: 1em;
-	font-weight: 500;
-	font-family: inherit;
-	color: var(--text);
+	padding: 0.5rem 1.2rem;
+
 	background-color: var(--bg2);
 	transition: border-color 0.25s;
 	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
 	text-align: center;
+}
+
+button,
+input {
+	font-size: 1rem;
+	font-family: inherit;
+	color: var(--text);
 }
 
 button {
@@ -189,8 +212,7 @@ button {
 /* Animations */
 @-webkit-keyframes rotating
 
-/* Safari and Chrome */
-	{
+/* Safari and Chrome */ {
 	from {
 		-webkit-transform: rotate(0deg);
 		-o-transform: rotate(0deg);
@@ -261,11 +283,11 @@ button {
 	}
 
 	25% {
-		transform: translateX(.5rem);
+		transform: translateX(0.5rem);
 	}
 
 	75% {
-		transform: translateX(-.5rem);
+		transform: translateX(-0.5rem);
 	}
 
 	100% {

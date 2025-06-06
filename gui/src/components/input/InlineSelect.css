@@ -1,24 +1,30 @@
 .inline-select {
 	display: grid;
 	/* gap: 0.5rem; */
-	background-color: var(--bg2);
 	border-radius: var(--round);
+	width: 100%;
 }
 
 .inline-select-option {
-	background-color: var(--bg2);
-	padding: 0.6rem;
+	background-color: var(--bg0);
+	padding: 0.3rem;
 	border-radius: var(--round);
 	box-sizing: border-box;
 	cursor: pointer;
 	-webkit-user-select: none;
 	user-select: none;
+	border: 0.15rem solid var(--bg3);
+	border-right-width: 0;
 }
 
 .inline-select-option.not-last {
-	border-right: 0.15rem solid var(--bg3);
+	/* border-right: 0.15rem solid var(--bg3); */
 	border-top-right-radius: 0;
 	border-bottom-right-radius: 0;
+}
+
+.inline-select-option.last {
+	border-right-width: 0.15rem;
 }
 
 .inline-select-option.not-first {
@@ -29,5 +35,5 @@
 .inline-select-option.selected {
 	border: 0.15rem solid;
 	/* Subtract border from padding to keep layout from shifting */
-	padding: 0.45rem;
+	/* padding: 0.45rem; */
 }

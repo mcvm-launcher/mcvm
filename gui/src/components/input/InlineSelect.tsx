@@ -6,7 +6,7 @@ export default function InlineSelect(props: InlineSelectProps) {
 
 	return (
 		<div
-			class="inline-select"
+			class="input-shadow inline-select"
 			style={`grid-template-columns:repeat(${columns}, minmax(0, 1fr))`}
 		>
 			<Show when={props.allowEmpty == undefined ? false : props.allowEmpty}>
@@ -27,10 +27,7 @@ export default function InlineSelect(props: InlineSelectProps) {
 						option={option}
 						onSelect={props.onChange}
 						selected={props.selected}
-						isLast={
-							index() == props.options.length - 1 ||
-							props.selected == props.options[index() + 1].value
-						}
+						isLast={index() == props.options.length - 1}
 						isFirst={index() == 0 && !props.allowEmpty}
 					/>
 				)}
@@ -56,7 +53,7 @@ function InlineSelectOption(props: OptionProps) {
 	return (
 		<div
 			class={`cont inline-select-option ${isSelected() ? "selected" : ""} ${
-				props.isLast ? "" : "not-last"
+				props.isLast ? "last" : "not-last"
 			} ${props.isFirst ? "" : "not-first"}`}
 			style={`${isSelected() ? `border-color:${color}` : "inherit"}`}
 			onclick={() => props.onSelect(props.option.value)}
