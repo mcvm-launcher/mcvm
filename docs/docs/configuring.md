@@ -86,7 +86,6 @@ Instances are defined in the id-value format underneath the `instances` object o
 		},
 		"use_log4j_config": bool
 	},
-	"options": ClientOptions | ServerOptions,
 	"window": {
 		"resolution": {
 			"width": integer,
