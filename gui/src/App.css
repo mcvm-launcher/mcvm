@@ -21,6 +21,7 @@
 	--bg2disabled: #1b1b1b;
 	--shadow: #121212;
 	--text: var(--fg);
+
 	--instance: #7ee91b;
 	--profile: #1bb9e9;
 	--package: #e9901b;
@@ -29,8 +30,12 @@
 	--accent2: #2f0077;
 	--error: #c10f39;
 
+	--instancebg: #17220d;
+	--profilebg: #0d1f24;
+
 	/* Other values */
 	--round: 0.2rem;
+	--round2: 0.6rem;
 	--input-height: 2.2rem;
 
 	color: var(--text);

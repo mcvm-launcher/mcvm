@@ -150,7 +150,7 @@ export default function LaunchInstanceList(props: LaunchInstanceListProps) {
 					</Match>
 					<Match when={instancesOrProfiles() == "profile"}>
 						<br />
-						<div class="cont" style="justify-content:flex-start;margin-left:0.5rem">
+						<div class="cont">
 							<IconTextButton
 								icon={Edit}
 								text="Edit Global Profile"
@@ -199,55 +199,57 @@ function Section(props: SectionProps) {
 	);
 
 	return (
-		<div class="cont col launch-instance-list-section-container">
-			<div class="cont launch-instance-list-section-header">
-				<HeaderIcon />
-				<h2>{props.header}</h2>
-			</div>
-			<div class="launch-instance-list-section">
-				<For each={props.items}>
-					{(item) => (
-						<Item
-							instance={item}
-							selected={
-								props.selectedSection !== null &&
-								props.selectedSection === props.id &&
-								props.selectedItem?.id === item.id
-							}
-							onSelect={() => {
-								props.onSelectItem(
-									{ id: item.id, type: props.itemType },
-									props.id
-								);
+		<div class="cont col">
+			<div class="cont col launch-instance-list-section-container">
+				<div class="cont launch-instance-list-section-header">
+					<HeaderIcon />
+					<h2>{props.header}</h2>
+				</div>
+				<div class="launch-instance-list-section">
+					<For each={props.items}>
+						{(item) => (
+							<Item
+								instance={item}
+								selected={
+									props.selectedSection !== null &&
+									props.selectedSection === props.id &&
+									props.selectedItem?.id === item.id
+								}
+								onSelect={() => {
+									props.onSelectItem(
+										{ id: item.id, type: props.itemType },
+										props.id
+									);
+								}}
+								sectionKind={props.kind}
+								itemKind={props.itemType}
+								updateList={props.updateList}
+							/>
+						)}
+					</For>
+					{/* Button for creating a new instance */}
+					<Show when={props.kind == "all" || props.kind == "profiles"}>
+						<div
+							class="input-shadow launch-instance-list-item noselect"
+							onclick={() => {
+								let target =
+									props.itemType == "instance"
+										? "create_instance"
+										: "create_profile";
+								window.location.href = target;
 							}}
-							sectionKind={props.kind}
-							itemKind={props.itemType}
-							updateList={props.updateList}
-						/>
-					)}
-				</For>
-				{/* Button for creating a new instance */}
-				<Show when={props.kind == "all" || props.kind == "profiles"}>
-					<div
-						class="cont launch-instance-list-item noselect border border-big"
-						onclick={() => {
-							let target =
-								props.itemType == "instance"
-									? "create_instance"
-									: "create_profile";
-							window.location.href = target;
-						}}
-					>
-						<div class="launch-instance-list-icon" style="width:2rem">
-							<Plus />
+						>
+							<div class="cont launch-instance-list-icon">
+								<Plus />
+							</div>
+							<div style="" class="bold">
+								{`Create ${
+									props.itemType == "instance" ? "Instance" : "Profile"
+								}`}
+							</div>
 						</div>
-						<div style="" class="bold">
-							{`Create ${
-								props.itemType == "instance" ? "Instance" : "Profile"
-							}`}
-						</div>
-					</div>
-				</Show>
+					</Show>
+				</div>
 			</div>
 		</div>
 	);
@@ -277,7 +279,7 @@ function Item(props: ItemProps) {
 
 	return (
 		<div
-			class={`launch-instance-list-item noselect border border-big ${
+			class={`input-shadow launch-instance-list-item noselect ${
 				props.selected ? "selected" : ""
 			} ${props.itemKind}`}
 			onClick={props.onSelect}
@@ -318,12 +320,16 @@ function Item(props: ItemProps) {
 				src={getIconSrc(props.instance.icon)}
 				class="launch-instance-list-icon"
 			/>
-			<div style="" class="bold">
-				{props.instance.name !== null ? props.instance.name : props.instance.id}
+			<div class="launch-instance-list-item-details">
+				<div style="" class="bold">
+					{props.instance.name !== null
+						? props.instance.name
+						: props.instance.id}
+				</div>
+				<Show when={props.instance.name !== null}>
+					<div style="color: var(--fg3)">{props.instance.id}</div>
+				</Show>
 			</div>
-			<Show when={props.instance.name !== null}>
-				<div style="color: var(--fg3)">{props.instance.id}</div>
-			</Show>
 		</div>
 	);
 }
