@@ -38,3 +38,23 @@ export interface QueryStringResult {
 export function stringCompare(a: string, b: string) {
 	return a > b ? 1 : a < b ? -1 : 0;
 }
+
+// Makes a string pretty by capitalizing first letters and replacing -,_, and . with spaces
+export function beautifyString(string: string) {
+	string = string.replace(/\./g, " ");
+	string = string.replace(/\-/g, " ");
+	string = string.replace(/\_/g, " ");
+
+	// Capitalize
+	let last = "";
+	for (let i = 0; i < string.length; i++) {
+		if (last == "" || last == " ") {
+			let left = string.slice(0, i);
+			let right = string.slice(i + 1);
+			string = left.concat(string[i].toLocaleUpperCase()).concat(right);
+		}
+		last = string[i];
+	}
+
+	return string;
+}

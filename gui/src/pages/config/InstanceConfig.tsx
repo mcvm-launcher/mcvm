@@ -14,6 +14,7 @@ import "@thisbeyond/solid-select/style.css";
 import InlineSelect from "../../components/input/InlineSelect";
 import { loadPagePlugins } from "../../plugins";
 import { inputError } from "../../errors";
+import { beautifyString, stringCompare } from "../../utils";
 
 export default function InstanceConfig(props: InstanceConfigProps) {
 	let params = useParams();
@@ -43,6 +44,7 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 	let [from, setFrom] = createSignal<string[] | undefined>();
 	let [parentConfigs, parentConfigOperations] =
 		createResource(updateParentConfig);
+	let [supportedModifications, _] = createResource(getSupportedGameModifications);
 
 	let [tab, setTab] = createSignal("basic");
 
@@ -103,6 +105,10 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 	let [side, setSide] = createSignal<"client" | "server" | undefined>();
 	let [icon, setIcon] = createSignal<string | undefined>();
 	let [version, setVersion] = createSignal<string | undefined>();
+	let [clientType, setClientType] = createSignal<string | undefined>();
+	let [serverType, setServerType] = createSignal<string | undefined>();
+	let [gameModVersion, setGameModVersion] = createSignal<string | undefined>();
+	let [datapackFolder, setDatapackFolder] = createSignal<string | undefined>();
 
 	let [displayName, setDisplayName] = createSignal("");
 	let [message, setMessage] = createSignal("");
@@ -110,9 +116,19 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 	createEffect(() => {
 		if (config() != undefined) {
 			setName(config()!.name);
-			setSide(config()!.side);
+			setSide(config()!.type);
 			setIcon(config()!.icon);
 			setVersion(config()!.version);
+			setClientType(config()!.client_type);
+			setServerType(config()!.server_type);
+			if (config()!.client_type == "none" || config()!.client_type == undefined) {
+				setClientType(config()!.modloader);
+			}
+			if (config()!.server_type == "none" || config()!.server_type == undefined) {
+				setServerType(config()!.modloader);
+			}
+			setGameModVersion(config()!.game_modification_version);
+			setDatapackFolder(config()!.datapack_folder);
 
 			setDisplayName(config()!.name == undefined ? id : config()!.name!);
 			setMessage(
@@ -122,6 +138,10 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 						? "Global Profile"
 						: `Profile ${displayName()}`
 			);
+		}
+
+		if (props.creating && props.mode == "instance") {
+			setSide("client");
 		}
 	});
 
@@ -159,9 +179,13 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 		let newConfig: InstanceConfig = {
 			from: from(),
 			type: side(),
-			name: name() == "" ? undefined : name(),
-			icon: icon(),
-			version: version() == "" ? undefined : version(),
+			name: undefinedEmpty(name()),
+			icon: undefinedEmpty(icon()),
+			version: undefinedEmpty(version()),
+			modloader: config() != undefined ? config()!.modloader : undefined,
+			client_type: clientType(),
+			server_type: serverType(),
+			game_modification_version: undefinedEmpty(gameModVersion()),
 		};
 
 		// Handle extra fields
@@ -174,10 +198,10 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 		}
 
 		if (isInstance) {
-			// await invoke("write_instance_config", {
-			// 	id: configId,
-			// 	config: newConfig,
-			// });
+			await invoke("write_instance_config", {
+				id: configId,
+				config: newConfig,
+			});
 		} else if (isGlobalProfile) {
 			await invoke("write_global_profile", { config: newConfig });
 		} else {
@@ -229,8 +253,9 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 			</div>
 			<br />
 			<Show when={tab() == "basic"}>
-
 				<div class="fields">
+					<div></div>
+					<h2>Basic Settings</h2>
 					<Show when={!isGlobalProfile && !isProfile}>
 						<label for="name" class="label">Display Name</label>
 						<input
@@ -299,6 +324,68 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 						value={emptyUndefined(version())}
 						onChange={(e) => setVersion(e.target.value)}
 					></input>
+					<Show when={(side() == "client" || isProfile) && supportedModifications() != undefined}>
+						<label for="client-type" class="label">{`${isProfile ? "Client " : ""}Loader`}</label>
+						<div class="cont col">
+							<div id="client-type">
+								<InlineSelect
+									onChange={setClientType}
+									selected={clientType() == undefined ? "none" : clientType()}
+									options={supportedModifications()!.client_types.map((x) => {
+										return {
+											value: x,
+											contents: <div class="cont">{x == "none" ? "Unset" : beautifyString(x)}</div>,
+											color: "var(--fg2)"
+										};
+									})}
+									columns={supportedModifications()!.client_types.length}
+									allowEmpty={false}
+								/>
+							</div>
+						</div>
+					</Show>
+					<Show when={(side() == "server" || isProfile) && supportedModifications() != undefined}>
+						<label for="server-type" class="label">{`${isProfile ? "Server " : ""}Loader`}</label>
+						<div class="cont col">
+							<div id="server-type">
+								<InlineSelect
+									onChange={setServerType}
+									selected={serverType() == undefined ? "none" : serverType()}
+									options={supportedModifications()!.server_types.map((x) => {
+										return {
+											value: x,
+											contents: <div class="cont">{x == "none" ? "Unset" : beautifyString(x)}</div>,
+											color: "var(--fg2)"
+										};
+									})}
+									columns={supportedModifications()!.server_types.length}
+									allowEmpty={false}
+								/>
+							</div>
+						</div>
+					</Show>
+					<Show when={(clientType() != undefined && clientType() != "none") || (serverType() != undefined && serverType() != "none")}>
+						<label for="game-mod-version" class="label">Loader Version</label>
+						<input
+							type="text"
+							id="game-mod-version"
+							name="game-mod-version"
+							value={emptyUndefined(gameModVersion())}
+							onChange={(e) => setGameModVersion(e.target.value)}
+						></input>
+					</Show>
+					<div></div>
+					<div></div>
+					<div></div>
+					<h2>Extra Settings</h2>
+					<label for="datapack-folder" class="label">Datapack Folder</label>
+					<input
+						type="text"
+						id="datapack-folder"
+						name="datapack-folder"
+						value={emptyUndefined(datapackFolder())}
+						onChange={(e) => setDatapackFolder(e.target.value)}
+					></input>
 				</div>
 			</Show>
 			<br />
@@ -334,6 +421,11 @@ interface InstanceConfig {
 	name?: string;
 	icon?: string;
 	version?: string | "latest" | "latest_snapshot";
+	modloader?: string;
+	client_type?: string;
+	server_type?: string;
+	game_modification_version?: string;
+	datapack_folder?: string;
 	[extraKey: string]: any;
 }
 
@@ -346,6 +438,14 @@ export enum ConfigMode {
 function emptyUndefined(value: string | undefined) {
 	if (value == undefined) {
 		return "";
+	} else {
+		return value;
+	}
+}
+
+function undefinedEmpty(value: string | undefined) {
+	if (value == "") {
+		return undefined;
 	} else {
 		return value;
 	}
@@ -374,4 +474,25 @@ async function idExists(id: string, mode: ConfigMode): Promise<boolean> {
 		console.error(e);
 		return false;
 	}
+}
+
+async function getSupportedGameModifications(): Promise<SupportedGameModifications> {
+	let out: SupportedGameModifications = { client_types: [], server_types: [] };
+	let results: SupportedGameModifications[] = await invoke("get_supported_game_modifications");
+	for (let result of results) {
+		out.client_types = out.client_types.concat(result.client_types);
+		out.server_types = out.server_types.concat(result.server_types);
+	}
+
+	out.client_types.sort(stringCompare);
+	out.server_types.sort(stringCompare);
+	out.client_types = ["none", "vanilla"].concat(out.client_types);
+	out.server_types = ["none", "vanilla"].concat(out.server_types);
+
+	return out;
+}
+
+interface SupportedGameModifications {
+	client_types: string[];
+	server_types: string[];
 }

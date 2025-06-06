@@ -32,7 +32,7 @@
 
 .fields {
 	display: grid;
-	grid-template-columns: minmax(0, 10rem) minmax(0, 17rem);
+	grid-template-columns: minmax(0, 10rem) minmax(0, 22rem);
 	gap: 1rem;
 	/* Used to make the inputs centered on the page */
 	margin-left: -10rem;

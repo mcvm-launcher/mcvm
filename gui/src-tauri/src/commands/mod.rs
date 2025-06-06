@@ -7,6 +7,7 @@ use std::fmt::Debug;
 
 pub mod instance;
 pub mod launch;
+pub mod misc;
 pub mod package;
 pub mod plugin;
 pub mod user;
