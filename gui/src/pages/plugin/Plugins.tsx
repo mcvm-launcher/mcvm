@@ -90,7 +90,9 @@ function Plugin(props: PluginProps) {
 	let [inProgress, setInProgress] = createSignal(false);
 
 	return (
-		<div class={`cont col plugin ${isDisabled() ? "disabled" : ""}`}>
+		<div
+			class={`cont col input-shadow plugin ${isDisabled() ? "disabled" : ""}`}
+		>
 			<div class="plugin-top">
 				<div class="cont plugin-header">
 					<div class="plugin-name">{props.info.name}</div>

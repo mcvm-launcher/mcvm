@@ -1,5 +1,5 @@
 <!-- https://github.com/bbfh-dev/eyecons/blob/main/.docs/pin.svg?short_path=6659513 -->
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="#ffffff">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
 	<path transform="matrix(1.2813 0 0 1.2813 -.56261 -2.2504)"
 		d="m2 5.0001v5.9997c9.75e-5 1.378 1.4501 2.2744 2.6828 1.6585l6.6339-3.3169c0.55247-0.27648 0.82871-0.80894 0.82871-1.3414s-0.27624-1.0649-0.82871-1.3414l-6.6339-3.3169c-1.1775-0.58781-2.6825 0.23188-2.6828 1.6585z" />
 </svg>

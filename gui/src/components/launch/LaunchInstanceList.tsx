@@ -6,8 +6,9 @@ import { Box, Edit, Folder, Pin, Plus } from "../../icons";
 import Icon from "../Icon";
 import IconButton from "../input/IconButton";
 import { getIconSrc } from "../../utils";
-import { SelectedFooterItem } from "./LaunchFooter";
 import IconTextButton from "../input/IconTextButton";
+import { FooterData } from "../../App";
+import { FooterMode } from "./Footer";
 
 export default function LaunchInstanceList(props: LaunchInstanceListProps) {
 	const [instances, setInstances] = createSignal<InstanceInfo[]>([]);
@@ -15,7 +16,7 @@ export default function LaunchInstanceList(props: LaunchInstanceListProps) {
 	const [pinned, setPinned] = createSignal<InstanceInfo[]>([]);
 	const [groups, setGroups] = createSignal<GroupSectionData[]>([]);
 	const [selectedItem, setSelectedItem] = createSignal<
-		SelectedFooterItem | undefined
+		SelectedItem | undefined
 	>(undefined);
 	const [selectedSection, setSelectedSection] = createSignal<string | null>(
 		null
@@ -71,10 +72,14 @@ export default function LaunchInstanceList(props: LaunchInstanceListProps) {
 
 	updateItems();
 
-	function onSelect(item: SelectedFooterItem, section: string) {
+	function onSelect(item: SelectedItem, section: string) {
 		setSelectedItem(item);
 		setSelectedSection(section);
-		props.onSelect(item);
+		props.setFooterData({
+			selectedItem: item.id,
+			mode: item.type as FooterMode,
+			action: () => {},
+		});
 		console.log("Selected item: " + selectedItem());
 	}
 
@@ -112,7 +117,7 @@ export default function LaunchInstanceList(props: LaunchInstanceListProps) {
 							<Section
 								id="pinned"
 								kind="pinned"
-								header="Pinned"
+								header="PINNED"
 								items={pinned()}
 								selectedItem={selectedItem()}
 								selectedSection={selectedSection()}
@@ -126,7 +131,7 @@ export default function LaunchInstanceList(props: LaunchInstanceListProps) {
 								<Section
 									id={`group-${item.id}`}
 									kind="group"
-									header={item.id}
+									header={item.id.toLocaleUpperCase()}
 									items={item.instances}
 									selectedItem={selectedItem()}
 									selectedSection={selectedSection()}
@@ -139,7 +144,7 @@ export default function LaunchInstanceList(props: LaunchInstanceListProps) {
 						<Section
 							id="all"
 							kind="all"
-							header="All Instances"
+							header="ALL INSTANCES"
 							items={instances()}
 							selectedItem={selectedItem()}
 							selectedSection={selectedSection()}
@@ -167,7 +172,7 @@ export default function LaunchInstanceList(props: LaunchInstanceListProps) {
 						<Section
 							id="profiles"
 							kind="profiles"
-							header="All Profiles"
+							header="ALL PROFILES"
 							items={profiles()}
 							selectedItem={selectedItem()}
 							selectedSection={selectedSection()}
@@ -261,9 +266,9 @@ interface SectionProps {
 	itemType: "instance" | "profile";
 	header: string;
 	items: InstanceInfo[];
-	selectedItem?: SelectedFooterItem;
+	selectedItem?: SelectedItem;
 	selectedSection: string | null;
-	onSelectItem: (item: SelectedFooterItem, section: string) => void;
+	onSelectItem: (item: SelectedItem, section: string) => void;
 	updateList: () => void;
 }
 
@@ -344,5 +349,10 @@ interface ItemProps {
 }
 
 export interface LaunchInstanceListProps {
-	onSelect: (item: SelectedFooterItem) => void;
+	setFooterData: (data: FooterData) => void;
+}
+
+interface SelectedItem {
+	id?: string;
+	type: "instance" | "profile";
 }

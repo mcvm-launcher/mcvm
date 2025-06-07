@@ -98,6 +98,7 @@ input {
 }
 
 input,
+button,
 .input-shadow {
 	box-shadow: 0.35rem 0.35rem var(--shadow);
 }

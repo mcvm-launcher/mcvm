@@ -94,7 +94,7 @@ function Package(props: PackageProps) {
 			: props.meta.banner;
 	return (
 		<div
-			class="cont col package"
+			class="cont col input-shadow package"
 			style="cursor:pointer"
 			onclick={() => (window.location.href = `/packages/package/${props.id}`)}
 		>

@@ -15,6 +15,8 @@ import InlineSelect from "../../components/input/InlineSelect";
 import { loadPagePlugins } from "../../plugins";
 import { inputError } from "../../errors";
 import { beautifyString, stringCompare } from "../../utils";
+import { FooterData } from "../../App";
+import { FooterMode } from "../../components/launch/Footer";
 
 export default function InstanceConfig(props: InstanceConfigProps) {
 	let params = useParams();
@@ -39,6 +41,16 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 			id
 		)
 	);
+
+	createEffect(() => {
+		props.setFooterData({
+			selectedItem: props.creating ? "" : undefined,
+			mode: isInstance
+				? FooterMode.SaveInstanceConfig
+				: FooterMode.SaveProfileConfig,
+			action: saveConfig,
+		});
+	});
 
 	let [config, configOperations] = createResource(updateConfig);
 	let [from, setFrom] = createSignal<string[] | undefined>();
@@ -217,6 +229,16 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 
 	let createMessage = isInstance ? "INSTANCE" : "PROFILE";
 
+	function setDirty() {
+		props.setFooterData({
+			selectedItem: "",
+			mode: isInstance
+				? FooterMode.SaveInstanceConfig
+				: FooterMode.SaveProfileConfig,
+			action: saveConfig,
+		});
+	}
+
 	return (
 		<div class="cont col" style="width:100%">
 			<h2 id="head" class="noselect">
@@ -274,7 +296,10 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 							name="name"
 							placeholder={id}
 							value={emptyUndefined(name())}
-							onChange={(e) => setName(e.target.value)}
+							onChange={(e) => {
+								setName(e.target.value);
+								setDirty();
+							}}
 							onKeyUp={(e: any) => {
 								if (!isIdDirty()) {
 									let value = sanitizeInstanceId(e.target.value);
@@ -294,6 +319,7 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 								setNewId();
 								e.target.value = sanitizeInstanceId(e.target.value);
 								setNewId(e.target.value);
+								setDirty();
 							}}
 							onKeyUp={(e: any) => {
 								setIsIdDirty(true);
@@ -306,7 +332,10 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 							TYPE
 						</label>
 						<InlineSelect
-							onChange={setSide}
+							onChange={(x) => {
+								setSide(x as "client" | "server" | undefined);
+								setDirty();
+							}}
 							selected={side()}
 							options={[
 								{
@@ -333,7 +362,10 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 						id="version"
 						name="version"
 						value={emptyUndefined(version())}
-						onChange={(e) => setVersion(e.target.value)}
+						onChange={(e) => {
+							setVersion(e.target.value);
+							setDirty();
+						}}
 					></input>
 					<Show
 						when={
@@ -345,7 +377,10 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 							isProfile ? "CLIENT " : ""
 						}LOADER`}</label>
 						<InlineSelect
-							onChange={setClientType}
+							onChange={(x) => {
+								setClientType(x);
+								setDirty();
+							}}
 							selected={clientType() == undefined ? "none" : clientType()}
 							options={supportedModifications()!.client_types.map((x) => {
 								return {
@@ -372,7 +407,10 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 							isProfile ? "SERVER " : ""
 						}LOADER`}</label>
 						<InlineSelect
-							onChange={setServerType}
+							onChange={(x) => {
+								setServerType(x);
+								setDirty();
+							}}
 							selected={serverType() == undefined ? "none" : serverType()}
 							options={supportedModifications()!.server_types.map((x) => {
 								return {
@@ -403,7 +441,10 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 							id="game-mod-version"
 							name="game-mod-version"
 							value={emptyUndefined(gameModVersion())}
-							onChange={(e) => setGameModVersion(e.target.value)}
+							onChange={(e) => {
+								setGameModVersion(e.target.value);
+								setDirty();
+							}}
 						></input>
 					</Show>
 					<hr />
@@ -415,27 +456,16 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 						id="datapack-folder"
 						name="datapack-folder"
 						value={emptyUndefined(datapackFolder())}
-						onChange={(e) => setDatapackFolder(e.target.value)}
+						onChange={(e) => {
+							setDatapackFolder(e.target.value);
+							setDirty();
+						}}
 					></input>
 				</div>
 			</Show>
 			<br />
-			<div class="cont">
-				<IconTextButton
-					icon={Check}
-					size="22px"
-					text="Save"
-					color="var(--bg2)"
-					selectedColor="var(--bg2)"
-					onClick={() => {
-						saveConfig();
-						if (props.creating) {
-							// window.location.href = "/";
-						}
-					}}
-					selected={false}
-				/>
-			</div>
+			<br />
+			<br />
 		</div>
 	);
 }
@@ -444,6 +474,7 @@ export interface InstanceConfigProps {
 	mode: ConfigMode;
 	/* Whether we are creating a new instance or profile */
 	creating: boolean;
+	setFooterData: (data: FooterData) => void;
 }
 
 interface InstanceConfig {
@@ -458,6 +489,24 @@ interface InstanceConfig {
 	game_modification_version?: string;
 	datapack_folder?: string;
 	[extraKey: string]: any;
+}
+
+interface LaunchConfig {
+	memory?: string | LaunchMemory;
+	args?: LaunchArgs;
+	env?: string[];
+	java?: "auto" | "system" | "adoptium" | "zulu" | "graalvm" | string;
+	[extraKey: string]: any;
+}
+
+interface LaunchMemory {
+	init: string;
+	max: string;
+}
+
+interface LaunchArgs {
+	jvm?: string | string[];
+	game?: string | string[];
 }
 
 export enum ConfigMode {
