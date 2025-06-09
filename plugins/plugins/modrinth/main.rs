@@ -97,15 +97,14 @@ async fn get_cached_project(
 			tokio::spawn(async move { modrinth::get_project_team(&project, &client).await })
 		};
 
-		let (project, members) = tokio::try_join!(project_task, members_task)
-			.context("Failed to get project and members")?;
-		let project = project?;
-		let members = members?;
-
+		let (project, members) = tokio::join!(project_task, members_task);
+		let project = project??;
 		let project = match project {
 			Some(project) => project,
 			None => return Ok(None),
 		};
+
+		let members = members.context("Failed to get project members")??;
 
 		// Get a list of missing versions
 		let mut missing = Vec::new();
