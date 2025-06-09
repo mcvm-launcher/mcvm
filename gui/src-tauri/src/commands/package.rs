@@ -3,6 +3,7 @@ use anyhow::Context;
 use mcvm::pkg_crate::metadata::PackageMetadata;
 use mcvm::pkg_crate::properties::PackageProperties;
 use mcvm::pkg_crate::{PkgRequest, PkgRequestSource};
+use mcvm::shared::output::NoOp;
 use std::sync::Arc;
 
 use super::{fmt_err, load_config};
@@ -15,15 +16,9 @@ pub async fn get_packages(
 	end: usize,
 	search: Option<&str>,
 ) -> Result<(Vec<String>, usize), String> {
-	let app_handle = Arc::new(app_handle);
-
-	let mut output = LauncherOutput::new(
-		app_handle,
-		state.passkeys.clone(),
-		state.password_prompt.clone(),
-	);
+	let mut output = LauncherOutput::new(state.get_output(app_handle));
 	let mut config =
-		fmt_err(load_config(&state.paths, &mut output).context("Failed to load config"))?;
+		fmt_err(load_config(&state.paths, &mut NoOp).context("Failed to load config"))?;
 
 	let mut packages = fmt_err(
 		config
@@ -58,18 +53,10 @@ pub async fn get_packages(
 #[tauri::command]
 pub async fn get_package_meta(
 	state: tauri::State<'_, State>,
-	app_handle: tauri::AppHandle,
 	package: &str,
 ) -> Result<PackageMetadata, String> {
-	let app_handle = Arc::new(app_handle);
-
-	let mut output = LauncherOutput::new(
-		app_handle,
-		state.passkeys.clone(),
-		state.password_prompt.clone(),
-	);
 	let mut config =
-		fmt_err(load_config(&state.paths, &mut output).context("Failed to load config"))?;
+		fmt_err(load_config(&state.paths, &mut NoOp).context("Failed to load config"))?;
 
 	let meta = fmt_err(
 		config
@@ -78,7 +65,7 @@ pub async fn get_package_meta(
 				&Arc::new(PkgRequest::any(package, PkgRequestSource::UserRequire)),
 				&state.paths,
 				&state.client,
-				&mut output,
+				&mut NoOp,
 			)
 			.await
 			.context("Failed to get metadata"),
@@ -90,18 +77,10 @@ pub async fn get_package_meta(
 #[tauri::command]
 pub async fn get_package_props(
 	state: tauri::State<'_, State>,
-	app_handle: tauri::AppHandle,
 	package: &str,
 ) -> Result<PackageProperties, String> {
-	let app_handle = Arc::new(app_handle);
-
-	let mut output = LauncherOutput::new(
-		app_handle,
-		state.passkeys.clone(),
-		state.password_prompt.clone(),
-	);
 	let mut config =
-		fmt_err(load_config(&state.paths, &mut output).context("Failed to load config"))?;
+		fmt_err(load_config(&state.paths, &mut NoOp).context("Failed to load config"))?;
 
 	let props = fmt_err(
 		config
@@ -110,7 +89,7 @@ pub async fn get_package_props(
 				&Arc::new(PkgRequest::any(package, PkgRequestSource::UserRequire)),
 				&state.paths,
 				&state.client,
-				&mut output,
+				&mut NoOp,
 			)
 			.await
 			.context("Failed to get properties"),

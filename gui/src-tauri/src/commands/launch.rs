@@ -20,13 +20,9 @@ pub async fn launch_game(
 	offline: bool,
 	user: Option<&str>,
 ) -> Result<(), String> {
-	let app_handle = Arc::new(app_handle);
 	let state = Arc::new(state);
-	let output = LauncherOutput::new(
-		app_handle.clone(),
-		state.passkeys.clone(),
-		state.password_prompt.clone(),
-	);
+	let mut output = LauncherOutput::new(state.get_output(app_handle));
+	output.set_task(&format!("launch_instance_{instance_id}"));
 
 	let instance_id = InstanceID::from(instance_id);
 
@@ -92,6 +88,8 @@ async fn get_launched_game(
 				.await
 				.context("Failed to launch instance")?;
 
+			o.finish_task();
+
 			handle
 				.wait(&plugins, &paths, &mut o)
 				.context("Failed to wait for instance to finish")?;
@@ -139,13 +137,7 @@ pub async fn get_running_instances(
 	state: tauri::State<'_, State>,
 	app_handle: tauri::AppHandle,
 ) -> Result<Vec<RunningInstanceInfo>, String> {
-	let app_handle = Arc::new(app_handle);
-
-	let mut output = LauncherOutput::new(
-		app_handle,
-		state.passkeys.clone(),
-		state.password_prompt.clone(),
-	);
+	let mut output = LauncherOutput::new(state.get_output(app_handle));
 	let config = fmt_err(load_config(&state.paths, &mut output).context("Failed to load config"))?;
 
 	let data = state.data.lock().await;

@@ -9,7 +9,7 @@ mod data;
 mod output;
 
 use std::collections::HashMap;
-use std::sync::Arc;
+use std::sync::{Arc, OnceLock};
 
 use anyhow::Context;
 use commands::launch::UpdateRunStateEvent;
@@ -18,11 +18,11 @@ use mcvm::core::auth_crate::mc::ClientId;
 use mcvm::core::{net::download::Client, user::UserManager};
 use mcvm::io::paths::Paths;
 use mcvm::shared::id::InstanceID;
-use output::PromptResponse;
+use output::{OutputInner, PromptResponse};
 use serde::{Deserialize, Serialize};
 use tauri::api::process::restart;
 use tauri::async_runtime::Mutex;
-use tauri::Manager;
+use tauri::{AppHandle, Manager};
 use tokio::task::JoinHandle;
 
 fn main() {
@@ -96,6 +96,7 @@ pub struct State {
 	/// Map of users to their already entered passkeys
 	pub passkeys: Arc<Mutex<HashMap<String, String>>>,
 	pub password_prompt: PromptResponse,
+	pub output_inner: OnceLock<OutputInner>,
 }
 
 impl State {
@@ -109,6 +110,15 @@ impl State {
 			user_manager: Mutex::new(UserManager::new(get_ms_client_id())),
 			passkeys: Arc::new(Mutex::new(HashMap::new())),
 			password_prompt: PromptResponse::new(Mutex::new(None)),
+			output_inner: OnceLock::new(),
+		})
+	}
+
+	pub fn get_output(&self, app_handle: AppHandle) -> &OutputInner {
+		self.output_inner.get_or_init(|| OutputInner {
+			app: Arc::new(app_handle),
+			password_prompt: self.password_prompt.clone(),
+			passkeys: self.passkeys.clone(),
 		})
 	}
 }

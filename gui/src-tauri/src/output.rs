@@ -16,33 +16,39 @@ use crate::{commands::launch::UpdateRunStateEvent, RunState};
 pub type PromptResponse = Arc<Mutex<Option<String>>>;
 
 pub struct LauncherOutput {
-	app: Arc<AppHandle>,
-	password_prompt: PromptResponse,
-	passkeys: Arc<Mutex<HashMap<String, String>>>,
+	inner: OutputInner,
+	/// The task that this output is running
+	task: Option<String>,
 	/// The instance launch associated with this specific output
 	instance: Option<InstanceID>,
 }
 
 impl LauncherOutput {
-	pub fn new(
-		app: Arc<AppHandle>,
-		passkeys: Arc<Mutex<HashMap<String, String>>>,
-		password_prompt: PromptResponse,
-	) -> Self {
+	pub fn new(inner: &OutputInner) -> Self {
 		Self {
-			app,
-			password_prompt,
-			passkeys,
+			inner: inner.clone(),
+			task: None,
 			instance: None,
 		}
 	}
 
+	pub fn set_task(&mut self, task: &str) {
+		let _ = self.inner.app.emit_all("mcvm_output_create_task", task);
+		self.task = Some(task.to_string());
+	}
+
 	pub fn get_app_handle(self) -> Arc<AppHandle> {
-		self.app
+		self.inner.app.clone()
 	}
 
 	pub fn set_instance(&mut self, instance: InstanceID) {
 		self.instance = Some(instance);
+	}
+
+	pub fn finish_task(&self) {
+		if let Some(task) = &self.task {
+			let _ = self.inner.app.emit_all("mcvm_output_finish_task", task);
+		}
 	}
 }
 
@@ -59,12 +65,13 @@ impl MCVMOutput for LauncherOutput {
 		match message.contents {
 			MessageContents::Associated(assoc, msg) => match *assoc {
 				MessageContents::Progress { current, total } => {
-					let _ = self.app.emit_all(
+					let _ = self.inner.app.emit_all(
 						"mcvm_output_progress",
 						AssociatedProgressEvent {
 							current,
 							total,
 							message: msg.default_format(),
+							task: self.task.clone(),
 						},
 					);
 				}
@@ -75,7 +82,14 @@ impl MCVMOutput for LauncherOutput {
 				)),
 			},
 			MessageContents::Header(text) => {
-				let _ = self.app.emit_all("mcvm_output_header", MessageEvent(text));
+				let _ = self.inner.app.emit_all(
+					"mcvm_output_header",
+					MessageEvent {
+						message: text,
+						ty: MessageType::Header,
+						task: self.task.clone(),
+					},
+				);
 			}
 			msg => self.disp(msg.default_format()),
 		}
@@ -87,21 +101,22 @@ impl MCVMOutput for LauncherOutput {
 		user_id: &str,
 	) -> anyhow::Result<String> {
 		{
-			let passkeys = self.passkeys.lock().await;
+			let passkeys = self.inner.passkeys.lock().await;
 			if let Some(existing) = passkeys.get(user_id) {
 				return Ok(existing.clone());
 			}
 		}
 
 		let result = self.prompt_password(message).await?;
-		let mut passkeys = self.passkeys.lock().await;
+		let mut passkeys = self.inner.passkeys.lock().await;
 		passkeys.insert(user_id.into(), result.clone());
 		Ok(result)
 	}
 
 	async fn prompt_password(&mut self, message: MessageContents) -> anyhow::Result<String> {
 		println!("Starting password prompt");
-		self.app
+		self.inner
+			.app
 			.emit_all("mcvm_display_password_prompt", message.default_format())
 			.context("Failed to display password prompt to user")?;
 
@@ -110,7 +125,7 @@ impl MCVMOutput for LauncherOutput {
 		#[allow(unused_assignments)]
 		let mut result = None;
 		loop {
-			if let Some(answer) = self.password_prompt.lock().await.take() {
+			if let Some(answer) = self.inner.password_prompt.lock().await.take() {
 				result = Some(answer);
 				break;
 			}
@@ -126,7 +141,7 @@ impl MCVMOutput for LauncherOutput {
 
 	fn display_special_ms_auth(&mut self, url: &str, code: &str) {
 		self.display_text("Showing auth info".into(), MessageLevel::Important);
-		let _ = self.app.emit_all(
+		let _ = self.inner.app.emit_all(
 			"mcvm_display_auth_info",
 			AuthDisplayEvent {
 				url: url.to_owned(),
@@ -139,7 +154,7 @@ impl MCVMOutput for LauncherOutput {
 		// Emit an event for certain keys as they notify us of progress in the launch
 		if let TranslationKey::PreparingLaunch = key {
 			if let Some(instance) = &self.instance {
-				let _ = self.app.emit_all(
+				let _ = self.inner.app.emit_all(
 					"update_run_state",
 					UpdateRunStateEvent {
 						instance: instance.to_string(),
@@ -149,11 +164,11 @@ impl MCVMOutput for LauncherOutput {
 			}
 		}
 		if let TranslationKey::AuthenticationSuccessful = key {
-			let _ = self.app.emit_all("mcvm_close_auth_info", ());
+			let _ = self.inner.app.emit_all("mcvm_close_auth_info", ());
 		}
 		if let TranslationKey::Launch = key {
 			if let Some(instance) = &self.instance {
-				let _ = self.app.emit_all(
+				let _ = self.inner.app.emit_all(
 					"update_run_state",
 					UpdateRunStateEvent {
 						instance: instance.to_string(),
@@ -165,18 +180,59 @@ impl MCVMOutput for LauncherOutput {
 
 		key.get_default()
 	}
+
+	fn start_process(&mut self) {
+		let _ = self.inner.app.emit_all("mcvm_output_start_process", ());
+	}
+
+	fn end_process(&mut self) {
+		let _ = self.inner.app.emit_all("mcvm_output_end_process", ());
+	}
+
+	fn start_section(&mut self) {
+		let _ = self.inner.app.emit_all("mcvm_output_start_section", ());
+	}
+
+	fn end_section(&mut self) {
+		let _ = self.inner.app.emit_all("mcvm_output_end_section", ());
+	}
 }
 
 impl LauncherOutput {
 	fn disp(&mut self, text: String) {
 		println!("{text}");
-		let _ = self.app.emit_all("mcvm_output_message", MessageEvent(text));
+		let _ = self.inner.app.emit_all(
+			"mcvm_output_message",
+			MessageEvent {
+				message: text,
+				ty: MessageType::Simple,
+				task: self.task.clone(),
+			},
+		);
 	}
 }
 
-/// Event for a message
+impl Drop for LauncherOutput {
+	fn drop(&mut self) {
+		self.finish_task();
+	}
+}
+
+#[derive(Clone)]
+pub struct OutputInner {
+	pub app: Arc<AppHandle>,
+	pub password_prompt: PromptResponse,
+	pub passkeys: Arc<Mutex<HashMap<String, String>>>,
+}
+
+/// Event for a simple text message
 #[derive(Clone, Serialize)]
-pub struct MessageEvent(String);
+pub struct MessageEvent {
+	pub message: String,
+	#[serde(rename = "type")]
+	pub ty: MessageType,
+	pub task: Option<String>,
+}
 
 /// Event for an associated progressbar
 #[derive(Clone, Serialize)]
@@ -184,6 +240,7 @@ pub struct AssociatedProgressEvent {
 	pub current: u32,
 	pub total: u32,
 	pub message: String,
+	pub task: Option<String>,
 }
 
 /// Event for the auth display
@@ -198,4 +255,11 @@ pub struct AuthDisplayEvent {
 pub struct YesNoPromptEvent {
 	default: bool,
 	message: String,
+}
+
+#[derive(Clone, Serialize, Copy)]
+#[serde(rename_all = "snake_case")]
+pub enum MessageType {
+	Simple,
+	Header,
 }

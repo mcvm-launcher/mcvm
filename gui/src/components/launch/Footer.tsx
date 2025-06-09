@@ -8,6 +8,7 @@ import IconButton from "../input/IconButton";
 import { AuthDisplayEvent, RunningInstanceInfo } from "../../types";
 import MicrosoftAuthInfo from "../input/MicrosoftAuthInfo";
 import { getIconSrc } from "../../utils";
+import TaskIndicator from "../TaskIndicator";
 
 export default function LaunchFooter(props: LaunchFooterProps) {
 	// Basic state
@@ -161,7 +162,15 @@ export default function LaunchFooter(props: LaunchFooterProps) {
 				</div>
 			</div>
 			<div id="footer-right" class="footer-section">
-				<RunningInstanceList instances={runningInstances()} onStop={stopGame} />
+				<div class="cont">
+					<TaskIndicator />
+				</div>
+				<div class="cont">
+					<RunningInstanceList
+						instances={runningInstances()}
+						onStop={stopGame}
+					/>
+				</div>
 			</div>
 
 			<Show when={authInfo() !== null}>
@@ -207,7 +216,7 @@ function ActionButton(props: ActionButtonProps) {
 				return "var(--profilebg)";
 			}
 		}
-		return "var(--bg0)";
+		return "black";
 	};
 	let borderColor = () => {
 		if (props.selected) {
@@ -322,6 +331,9 @@ function RunningInstanceList(props: RunningInstanceListProps) {
 						title={
 							instance.info.name != null ? instance.info.name : instance.info.id
 						}
+						onclick={() => {
+							props.onStop(instance.info.id);
+						}}
 					/>
 				)}
 			</For>

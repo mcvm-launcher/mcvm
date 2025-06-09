@@ -1,11 +1,10 @@
 use crate::output::LauncherOutput;
 use crate::State;
 use anyhow::Context;
-use mcvm::core::user::UserKind;
+use mcvm::{core::user::UserKind, shared::output::NoOp};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::fmt::Debug;
-use std::sync::Arc;
 
 use super::{fmt_err, load_config};
 
@@ -15,16 +14,10 @@ pub async fn get_users(
 	app_handle: tauri::AppHandle,
 ) -> Result<(Option<String>, HashMap<String, UserInfo>), String> {
 	let data = state.data.lock().await;
+	let mut output = LauncherOutput::new(state.get_output(app_handle));
 
-	let app_handle = Arc::new(app_handle);
-
-	let mut output = LauncherOutput::new(
-		app_handle,
-		state.passkeys.clone(),
-		state.password_prompt.clone(),
-	);
 	let mut config =
-		fmt_err(load_config(&state.paths, &mut output).context("Failed to load config"))?;
+		fmt_err(load_config(&state.paths, &mut NoOp).context("Failed to load config"))?;
 	let user_ids: Vec<_> = config.users.iter_users().map(|x| x.0.clone()).collect();
 
 	let mut users = HashMap::with_capacity(user_ids.len());

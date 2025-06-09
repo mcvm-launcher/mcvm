@@ -1,0 +1,19 @@
+#task-indicator {
+	width: 10rem;
+	height: 1.8rem;
+	border: 0.15rem solid;
+	border-radius: var(--round2);
+	background-color: black;
+}
+
+#task-indicator-preview {
+	display: grid;
+	grid-template-columns: minmax(0, 0.2fr) minmax(0, 1fr);
+	height: 100%;
+}
+
+#task-indicator-dot {
+	width: 0.5rem;
+	height: 0.5rem;
+	border-radius: 50%;
+}

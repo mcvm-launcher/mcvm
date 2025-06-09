@@ -26,12 +26,11 @@
 	--profile: #1bb9e9;
 	--package: #e9901b;
 	--plugin: #7f29ff;
-	--accent: #5f00ef;
-	--accent2: #2f0077;
 	--error: #c10f39;
 
 	--instancebg: #17220d;
 	--profilebg: #0d1f24;
+	--pluginfg: #b380ff;
 
 	/* Other values */
 	--round: 0.2rem;

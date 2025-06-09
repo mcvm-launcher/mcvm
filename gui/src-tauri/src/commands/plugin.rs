@@ -5,15 +5,18 @@ use mcvm::plugin::PluginManager;
 use mcvm::plugin_crate::hooks::{
 	AddSidebarButtons, GetPage, InjectPageScript, InjectPageScriptArg, SidebarButton,
 };
+use mcvm::shared::output::{MCVMOutput, MessageContents, MessageLevel};
 use mcvm::{plugin::install::get_verified_plugins, shared::output::NoOp};
 use serde::{Deserialize, Serialize};
 use std::fmt::Debug;
-use std::sync::Arc;
 
 use super::{fmt_err, load_config};
 
 #[tauri::command]
-pub async fn get_plugins(state: tauri::State<'_, State>) -> Result<Vec<PluginInfo>, String> {
+pub async fn get_plugins(
+	state: tauri::State<'_, State>,
+	app_handle: tauri::AppHandle,
+) -> Result<Vec<PluginInfo>, String> {
 	let config =
 		fmt_err(PluginManager::open_config(&state.paths).context("Failed to open plugin config"))?;
 
@@ -35,11 +38,22 @@ pub async fn get_plugins(state: tauri::State<'_, State>) -> Result<Vec<PluginInf
 		})
 	});
 
+	let mut output = LauncherOutput::new(state.get_output(app_handle));
+	output.set_task("get_plugins");
+	let mut process = output.get_process();
+	process.display(
+		MessageContents::StartProcess("Getting plugins".into()),
+		MessageLevel::Important,
+	);
 	let verified_plugins = fmt_err(
 		get_verified_plugins(&state.client)
 			.await
 			.context("Failed to get verified plugins"),
 	)?;
+	process.display(
+		MessageContents::Success("Plugins Acquired".into()),
+		MessageLevel::Important,
+	);
 
 	let verified_plugins = verified_plugins.into_values().map(|x| PluginInfo {
 		id: x.id,
@@ -121,15 +135,9 @@ pub async fn get_page_inject_script(
 	page: String,
 	object: Option<String>,
 ) -> Result<Option<String>, String> {
-	let app_handle = Arc::new(app_handle);
+	let mut output = LauncherOutput::new(state.get_output(app_handle));
 
-	let mut output = LauncherOutput::new(
-		app_handle,
-		state.passkeys.clone(),
-		state.password_prompt.clone(),
-	);
-
-	let config = fmt_err(load_config(&state.paths, &mut output).context("Failed to load config"))?;
+	let config = fmt_err(load_config(&state.paths, &mut NoOp).context("Failed to load config"))?;
 
 	let arg = InjectPageScriptArg { page, object };
 	let results = fmt_err(config.plugins.call_hook(
@@ -153,15 +161,9 @@ pub async fn get_sidebar_buttons(
 	state: tauri::State<'_, State>,
 	app_handle: tauri::AppHandle,
 ) -> Result<Vec<SidebarButton>, String> {
-	let app_handle = Arc::new(app_handle);
+	let mut output = LauncherOutput::new(state.get_output(app_handle));
 
-	let mut output = LauncherOutput::new(
-		app_handle,
-		state.passkeys.clone(),
-		state.password_prompt.clone(),
-	);
-
-	let config = fmt_err(load_config(&state.paths, &mut output).context("Failed to load config"))?;
+	let config = fmt_err(load_config(&state.paths, &mut NoOp).context("Failed to load config"))?;
 
 	let results = fmt_err(config.plugins.call_hook(
 		AddSidebarButtons,
@@ -185,15 +187,9 @@ pub async fn get_plugin_page(
 	app_handle: tauri::AppHandle,
 	page: &str,
 ) -> Result<Option<String>, String> {
-	let app_handle = Arc::new(app_handle);
+	let mut output = LauncherOutput::new(state.get_output(app_handle));
 
-	let mut output = LauncherOutput::new(
-		app_handle,
-		state.passkeys.clone(),
-		state.password_prompt.clone(),
-	);
-
-	let config = fmt_err(load_config(&state.paths, &mut output).context("Failed to load config"))?;
+	let config = fmt_err(load_config(&state.paths, &mut NoOp).context("Failed to load config"))?;
 
 	let results = fmt_err(config.plugins.call_hook(
 		GetPage,
