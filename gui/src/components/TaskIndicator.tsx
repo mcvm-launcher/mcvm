@@ -21,6 +21,8 @@ export default function TaskIndicator(props: TaskIndicatorProps) {
 				setColor("instance");
 			} else if (task == "update_instance") {
 				setColor("profile");
+			} else if (task == "search_packages") {
+				setColor("package");
 			}
 
 			setTaskName(getTaskDisplayName(task));
@@ -165,11 +167,19 @@ function getTaskDisplayName(task: string) {
 		return "Updating instance";
 	} else if (task.startsWith("launch_instance")) {
 		return "Launching";
+	} else if (task == "search_packages") {
+		return "Searching Packages";
 	}
 	return task;
 }
 
-type Color = "disabled" | "running" | "instance" | "profile" | "plugin";
+type Color =
+	| "disabled"
+	| "running"
+	| "instance"
+	| "profile"
+	| "package"
+	| "plugin";
 
 // Gets the border and text colors of a color preset
 function getColors(color: Color) {
@@ -179,6 +189,8 @@ function getColors(color: Color) {
 		return ["var(--instance)", "var(--instance)"];
 	} else if (color == "profile") {
 		return ["var(--profile)", "var(--profile)"];
+	} else if (color == "package") {
+		return ["var(--package)", "var(--package)"];
 	} else if (color == "plugin") {
 		return ["var(--plugin)", "var(--pluginfg)"];
 	}

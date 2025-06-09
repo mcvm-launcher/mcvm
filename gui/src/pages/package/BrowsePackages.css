@@ -4,6 +4,12 @@
 	width: 100%;
 }
 
+.repo {
+	font-size: 0.7rem;
+	/* border-radius: var(--round2); */
+	font-weight: bold;
+}
+
 #packages-container {
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));

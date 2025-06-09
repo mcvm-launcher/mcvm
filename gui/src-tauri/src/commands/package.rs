@@ -2,8 +2,11 @@ use crate::{output::LauncherOutput, State};
 use anyhow::Context;
 use mcvm::pkg_crate::metadata::PackageMetadata;
 use mcvm::pkg_crate::properties::PackageProperties;
+use mcvm::pkg_crate::repo::RepoMetadata;
 use mcvm::pkg_crate::{PkgRequest, PkgRequestSource};
 use mcvm::shared::output::NoOp;
+use mcvm::shared::pkg::PackageSearchParameters;
+use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 
 use super::{fmt_err, load_config};
@@ -12,22 +15,29 @@ use super::{fmt_err, load_config};
 pub async fn get_packages(
 	state: tauri::State<'_, State>,
 	app_handle: tauri::AppHandle,
+	repo: &str,
 	start: usize,
 	end: usize,
 	search: Option<&str>,
 ) -> Result<(Vec<String>, usize), String> {
 	let mut output = LauncherOutput::new(state.get_output(app_handle));
+	output.set_task("search_packages");
 	let mut config =
 		fmt_err(load_config(&state.paths, &mut NoOp).context("Failed to load config"))?;
 
-	let mut packages = fmt_err(
+	let params = PackageSearchParameters {
+		count: (end - start) as u8,
+		search: search.map(|x| x.to_string()),
+		categories: Vec::new(),
+	};
+
+	let packages = fmt_err(
 		config
 			.packages
-			.get_all_available_packages(&state.paths, &state.client, &mut output)
+			.search(params, Some(repo), &state.paths, &state.client, &mut output)
 			.await
 			.context("Failed to get list of available packages"),
 	)?;
-	packages.sort();
 
 	let packages = packages.into_iter().map(|x| x.id.to_string());
 
@@ -96,4 +106,32 @@ pub async fn get_package_props(
 	)?;
 
 	Ok(props.clone())
+}
+
+#[tauri::command]
+pub async fn get_package_repos(state: tauri::State<'_, State>) -> Result<Vec<RepoInfo>, String> {
+	let mut config =
+		fmt_err(load_config(&state.paths, &mut NoOp).context("Failed to load config"))?;
+
+	let mut repos = Vec::new();
+	for repo in &mut config.packages.repos {
+		let id = repo.get_id().to_string();
+		let meta = fmt_err(
+			repo.get_metadata(&state.paths, &state.client, &mut NoOp)
+				.await
+				.context("Failed to get metadata for repository"),
+		)?;
+		repos.push(RepoInfo {
+			id,
+			meta: meta.into_owned(),
+		})
+	}
+
+	Ok(repos)
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct RepoInfo {
+	pub id: String,
+	pub meta: RepoMetadata,
 }

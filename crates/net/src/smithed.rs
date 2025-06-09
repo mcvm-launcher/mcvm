@@ -62,6 +62,7 @@ pub struct PackVersion {
 	pub name: String,
 	pub downloads: PackDownloads,
 	pub supports: Vec<String>,
+	#[serde(default)]
 	pub dependencies: Vec<PackReference>,
 }
 

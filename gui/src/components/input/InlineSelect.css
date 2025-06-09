@@ -1,39 +1,58 @@
 .inline-select {
-	display: grid;
-	/* gap: 0.5rem; */
 	border-radius: var(--round);
 	width: 100%;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
+
+.inline-select.disconnected {
+	gap: 0.7rem;
 }
 
 .inline-select-option {
-	background-color: var(--bg0);
-	padding: 0.3rem;
 	border-radius: var(--round);
 	box-sizing: border-box;
 	cursor: pointer;
 	-webkit-user-select: none;
 	user-select: none;
+}
+
+.inline-select-option.connected {
+	background-color: var(--bg0);
+	padding: 0.3rem;
 	border: 0.15rem solid var(--bg3);
 	border-right-width: 0;
 }
 
-.inline-select-option.not-last {
+.inline-select-option.disconnected {
+	background-color: var(--bg2);
+	padding: 0.3rem;
+}
+
+.inline-select-option.not-last.connected {
 	/* border-right: 0.15rem solid var(--bg3); */
 	border-top-right-radius: 0;
 	border-bottom-right-radius: 0;
 }
 
-.inline-select-option.last {
+.inline-select-option.last.connected {
 	border-right-width: 0.15rem;
 }
 
-.inline-select-option.not-first {
+.inline-select-option.not-first.connected {
 	border-top-left-radius: 0;
 	border-bottom-left-radius: 0;
 }
 
 .inline-select-option.selected {
 	border: 0.15rem solid;
-	/* Subtract border from padding to keep layout from shifting */
-	/* padding: 0.45rem; */
+}
+
+.inline-select-option.connected.selected {
+	background-color: black;
+}
+
+.inline-select-option.disconnected.selected {
+	background-color: var(--bg0);
 }

@@ -72,6 +72,7 @@ fn main() {
 			commands::package::get_packages,
 			commands::package::get_package_meta,
 			commands::package::get_package_props,
+			commands::package::get_package_repos,
 			commands::plugin::get_plugins,
 			commands::plugin::enable_disable_plugin,
 			commands::plugin::install_plugin,

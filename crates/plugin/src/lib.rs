@@ -9,7 +9,7 @@ use hooks::{Hook, OnLoad};
 use itertools::Itertools;
 use mcvm_core::Paths;
 use mcvm_shared::output::MCVMOutput;
-use plugin::{Plugin, DEFAULT_PROTOCOL_VERSION, NEWEST_PROTOCOL_VERSION};
+use plugin::{HookPriority, Plugin, DEFAULT_PROTOCOL_VERSION, NEWEST_PROTOCOL_VERSION};
 
 /// API for Rust-based plugins to use
 #[cfg(feature = "api")]
@@ -123,11 +123,10 @@ impl CorePluginManager {
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<Vec<HookHandle<H>>> {
 		let mut out = Vec::new();
-		for plugin in self
-			.plugins
-			.iter()
-			.sorted_by_key(|x| x.get_hook_priority(&hook))
-		{
+		for plugin in self.plugins.iter().sorted_by_key(|x| PluginSort {
+			priority: x.get_hook_priority(&hook),
+			id: x.get_id().clone(),
+		}) {
 			let result = plugin
 				.call_hook(&hook, arg, paths, self.mcvm_version, &self.plugin_list, o)
 				.with_context(|| format!("Hook failed for plugin {}", plugin.get_id()))?;
@@ -167,4 +166,10 @@ impl CorePluginManager {
 	pub fn has_plugin(&self, plugin_id: &str) -> bool {
 		self.plugin_list.iter().any(|x| x == plugin_id)
 	}
+}
+
+#[derive(PartialEq, PartialOrd, Eq, Ord)]
+struct PluginSort {
+	priority: HookPriority,
+	id: String,
 }

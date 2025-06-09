@@ -677,7 +677,7 @@ async fn search(data: &mut CmdData<'_>, params: PackageSearchParameters) -> anyh
 	let client = Client::new();
 	let packages = config
 		.packages
-		.search(params, &data.paths, &client, data.output)
+		.search(params, None, &data.paths, &client, data.output)
 		.await
 		.context("Failed to search packages")?;
 

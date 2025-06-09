@@ -1,7 +1,5 @@
 import { useParams } from "@solidjs/router";
 import "./InstanceConfig.css";
-import IconTextButton from "../../components/input/IconTextButton";
-import { Check } from "../../icons";
 import { invoke } from "@tauri-apps/api";
 import {
 	createEffect,
@@ -252,7 +250,7 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 				</h3>
 			</Show>
 			<div class="cont">
-				<div id="config-tabs">
+				<div class="input-shadow" id="config-tabs">
 					<div
 						class={`config-tab ${tab() == "general" ? "selected" : ""}`}
 						id="general-tab"

@@ -370,6 +370,7 @@ impl PkgRegistry {
 	pub async fn search(
 		&mut self,
 		mut params: PackageSearchParameters,
+		repo: Option<&str>,
 		paths: &Paths,
 		client: &Client,
 		o: &mut impl MCVMOutput,
@@ -379,57 +380,59 @@ impl PkgRegistry {
 			return Ok(Vec::new());
 		}
 
-		// Search through all of the basic packages
-		let all_basic_packages = self
-			.get_all_available_packages(paths, client, o)
-			.await
-			.context("Failed to get available packages from basic repositories")?;
-
 		// TODO: Get all the package contents at the beginning
 
 		let mut out = Vec::with_capacity(params.count as usize);
-		for req in all_basic_packages.into_iter().sorted() {
-			if out.len() >= original_count as usize {
-				break;
-			}
-			let meta = self
-				.get_metadata(&req, paths, client, o)
+
+		// Search through all of the basic packages
+		if repo.is_none() || repo.is_some_and(|x| x == "core" || x == "std") {
+			let all_basic_packages = self
+				.get_all_available_packages(paths, client, o)
 				.await
-				.context("Failed to get package metadata")?;
+				.context("Failed to get available packages from basic repositories")?;
 
-			// Check all of the parameters
-			if !params.categories.is_empty() {
-				let default = Vec::new();
-				if !params
-					.categories
-					.iter()
-					.any(|x| meta.categories.as_ref().unwrap_or(&default).contains(x))
-				{
-					continue;
+			for req in all_basic_packages.into_iter().sorted() {
+				if out.len() >= original_count as usize {
+					break;
 				}
-			}
+				let meta = self
+					.get_metadata(&req, paths, client, o)
+					.await
+					.context("Failed to get package metadata")?;
 
-			if let Some(search) = &params.search {
-				let default = String::new();
-				if !req.id.to_lowercase().contains(search)
-					&& !meta
-						.name
-						.as_ref()
-						.unwrap_or(&default)
-						.to_lowercase()
-						.contains(search)
-					&& !meta
+				// Check all of the parameters
+				if !params.categories.is_empty() {
+					let default = Vec::new();
+					if !params
+						.categories
+						.iter()
+						.any(|x| meta.categories.as_ref().unwrap_or(&default).contains(x))
+					{
+						continue;
+					}
+				}
+
+				if let Some(search) = &params.search {
+					let default = String::new();
+					if !req.id.to_lowercase().contains(search)
+						&& !meta
+							.name
+							.as_ref()
+							.unwrap_or(&default)
+							.to_lowercase()
+							.contains(search) && !meta
 						.description
 						.as_ref()
 						.unwrap_or(&default)
 						.to_lowercase()
 						.contains(search)
-				{
-					continue;
+					{
+						continue;
+					}
 				}
-			}
 
-			out.push(req);
+				out.push(req);
+			}
 		}
 
 		if out.len() >= original_count as usize {
@@ -441,11 +444,16 @@ impl PkgRegistry {
 		params.count -= out.len() as u8;
 
 		// Now search plugin repositories
+		let searched_repo = repo;
 		for repo in &self.repos {
 			if out.len() >= original_count as usize {
 				break;
 			}
 			if let PackageRepository::Custom(repo) = repo {
+				if searched_repo.is_some_and(|x| x != repo.get_id()) {
+					continue;
+				}
+
 				let result = repo
 					.search(params.clone(), &self.plugins, paths, o)
 					.with_context(|| {

@@ -30,7 +30,8 @@
 					"is_preferred": false,
 					"metadata": {
 						"name": "Smithed",
-						"description": "Package repository for packs from the Smithed website"
+						"description": "Package repository for packs from the Smithed website",
+						"color": "#1b48c4"
 					}
 				}
 			]
