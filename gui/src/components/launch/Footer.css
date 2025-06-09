@@ -11,7 +11,8 @@
 }
 
 #footer-left {
-	justify-content: flex-start;
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 #footer-selection-indicator {
@@ -20,9 +21,10 @@
 
 #footer-center-inner {
 	display: grid;
-	grid-template-columns: minmax(0, 0.2fr) minmax(0, 1fr);
+	grid-template-columns: minmax(0, 4rem) minmax(0, 8rem);
 	gap: 1rem;
 	height: 100%;
+	margin-left: -4rem;
 }
 
 /* Action Button */
@@ -65,10 +67,6 @@
 .footer-action-button-decoration.right {
 	border-right: 0.15rem solid;
 	border-top-right-radius: var(--round);
-}
-
-.footer-config {
-	width: 2rem;
 }
 
 #footer-right {

@@ -68,6 +68,7 @@ fn main() {
 			commands::instance::write_instance_config,
 			commands::instance::write_profile_config,
 			commands::instance::write_global_profile,
+			commands::instance::update_instance,
 			commands::package::get_packages,
 			commands::package::get_package_meta,
 			commands::package::get_package_props,

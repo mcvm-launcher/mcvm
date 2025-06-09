@@ -1,15 +1,18 @@
 use crate::data::InstanceIcon;
+use crate::output::LauncherOutput;
 use crate::State;
-use anyhow::Context;
+use anyhow::{bail, Context};
 use itertools::Itertools;
 use mcvm::config::modifications::{apply_modifications_and_write, ConfigModification};
 use mcvm::config::Config;
 use mcvm::config_crate::instance::InstanceConfig;
 use mcvm::config_crate::profile::ProfileConfig;
 use mcvm::core::io::json_to_file_pretty;
+use mcvm::instance::update::InstanceUpdateContext;
+use mcvm::io::lock::Lockfile;
 use mcvm::shared::id::{InstanceID, ProfileID};
 use mcvm::shared::output::NoOp;
-use mcvm::shared::Side;
+use mcvm::shared::{Side, UpdateDepth};
 use serde::{Deserialize, Serialize};
 use std::fmt::Debug;
 
@@ -208,6 +211,47 @@ pub async fn write_global_profile(
 	)?;
 
 	println!("Global profile wrote");
+
+	Ok(())
+}
+
+#[tauri::command]
+pub async fn update_instance(
+	state: tauri::State<'_, State>,
+	app_handle: tauri::AppHandle,
+	instance_id: String,
+) -> Result<(), String> {
+	let mut config =
+		fmt_err(load_config(&state.paths, &mut NoOp).context("Failed to load config"))?;
+
+	let mut output = LauncherOutput::new(state.get_output(app_handle));
+	output.set_task("update_instance");
+
+	let paths = state.paths.clone();
+	let client = state.client.clone();
+	let mut lock = fmt_err(Lockfile::open(&state.paths).context("Failed to open lockfile"))?;
+	let task = async move {
+		let Some(instance) = config.instances.get_mut(&InstanceID::from(instance_id)) else {
+			bail!("Instance does not exist");
+		};
+
+		let mut ctx = InstanceUpdateContext {
+			packages: &mut config.packages,
+			users: &config.users,
+			plugins: &config.plugins,
+			prefs: &config.prefs,
+			paths: &paths,
+			lock: &mut lock,
+			client: &client,
+			output: &mut output,
+		};
+
+		instance
+			.update(true, UpdateDepth::Full, &mut ctx)
+			.await
+			.context("Failed to update instance")
+	};
+	fmt_err(fmt_err(tokio::spawn(task).await)?)?;
 
 	Ok(())
 }

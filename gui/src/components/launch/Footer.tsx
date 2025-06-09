@@ -3,7 +3,7 @@ import "./Footer.css";
 import { UnlistenFn, listen, Event } from "@tauri-apps/api/event";
 import { invoke } from "@tauri-apps/api";
 import { PasswordPrompt } from "../input/PasswordPrompt";
-import { Check, Play, Properties } from "../../icons";
+import { Check, Play, Properties, Upload } from "../../icons";
 import IconButton from "../input/IconButton";
 import { AuthDisplayEvent, RunningInstanceInfo } from "../../types";
 import MicrosoftAuthInfo from "../input/MicrosoftAuthInfo";
@@ -111,11 +111,11 @@ export default function LaunchFooter(props: LaunchFooterProps) {
 
 	return (
 		<div class="footer">
-			<div id="footer-left" class="cont footer-section">
+			<div id="footer-left" class="footer-section">
 				<Show
 					when={props.selectedItem != undefined && props.selectedItem != ""}
 				>
-					<div id="footer-selection-indicator">
+					<div class="cont" id="footer-selection-indicator">
 						Selected: {props.selectedItem}
 					</div>
 				</Show>
@@ -129,19 +129,37 @@ export default function LaunchFooter(props: LaunchFooterProps) {
 						}
 						fallback={<div></div>}
 					>
-						<div class="cont footer-config">
-							<IconButton
-								icon={Properties}
-								size="28px"
-								color="var(--bg2)"
-								selectedColor="var(--accent)"
-								onClick={() => {
-									if (props.selectedItem != undefined) {
-										window.location.href = `/${props.mode}_config/${props.selectedItem}`;
-									}
-								}}
-								selected={false}
-							/>
+						<div class="cont">
+							<div class="cont footer-update">
+								<IconButton
+									icon={Upload}
+									size="28px"
+									color="var(--bg2)"
+									selectedColor="var(--accent)"
+									onClick={() => {
+										if (props.selectedItem != undefined) {
+											invoke("update_instance", {
+												instanceId: props.selectedItem,
+											});
+										}
+									}}
+									selected={false}
+								/>
+							</div>
+							<div class="cont footer-config">
+								<IconButton
+									icon={Properties}
+									size="28px"
+									color="var(--bg2)"
+									selectedColor="var(--accent)"
+									onClick={() => {
+										if (props.selectedItem != undefined) {
+											window.location.href = `/${props.mode}_config/${props.selectedItem}`;
+										}
+									}}
+									selected={false}
+								/>
+							</div>
 						</div>
 					</Show>
 					<ActionButton

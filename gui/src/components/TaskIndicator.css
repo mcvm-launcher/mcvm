@@ -1,9 +1,10 @@
 #task-indicator {
-	width: 10rem;
+	width: 11rem;
 	height: 1.8rem;
 	border: 0.15rem solid;
 	border-radius: var(--round2);
 	background-color: black;
+	font-size: 0.9rem;
 }
 
 #task-indicator-preview {

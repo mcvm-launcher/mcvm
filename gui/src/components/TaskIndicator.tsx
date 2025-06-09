@@ -7,6 +7,7 @@ export default function TaskIndicator(props: TaskIndicatorProps) {
 	// Map of tasks to messages
 	let [messages, setMessages] = createSignal<TaskMap>({});
 	let [taskCount, setTaskCount] = createSignal(0);
+	let [taskName, setTaskName] = createSignal<string | undefined>(undefined);
 	let [color, setColor] = createSignal<Color>("disabled");
 
 	function createTask(task: string) {
@@ -18,7 +19,11 @@ export default function TaskIndicator(props: TaskIndicatorProps) {
 				setColor("plugin");
 			} else if (task.startsWith("launch_instance")) {
 				setColor("instance");
+			} else if (task == "update_instance") {
+				setColor("profile");
 			}
+
+			setTaskName(getTaskDisplayName(task));
 		}
 		setMessages((messages) => {
 			messages[task] = [];
@@ -34,18 +39,21 @@ export default function TaskIndicator(props: TaskIndicatorProps) {
 			}
 		);
 
-		// (window as any).foo = messages;
+		(window as any).foo = messages;
+		(window as any).bar = taskCount;
 
 		let unlisten2 = listen(
 			"mcvm_output_message",
 			(event: Event<MessageEvent>) => {
 				if (event.payload.task != undefined) {
 					setMessages((messages) => {
-						messages[event.payload.task!]!.push({
-							type: "message",
-							message: event.payload.message,
-							messageType: event.payload.type,
-						});
+						if (messages[event.payload.task!] != undefined) {
+							messages[event.payload.task!]!.push({
+								type: "message",
+								message: event.payload.message,
+								messageType: event.payload.type,
+							});
+						}
 						return messages;
 					});
 				}
@@ -59,11 +67,13 @@ export default function TaskIndicator(props: TaskIndicatorProps) {
 					setTaskCount((taskCount) => taskCount - 1);
 				}
 				setMessages((messages) => {
-					messages[event.payload] = undefined;
+					delete messages[event.payload];
 					return messages;
 				});
 				if (taskCount() == 0) {
 					setColor("disabled");
+				} else if (taskCount() == 1) {
+					setTaskName(getTaskDisplayName(Object.keys(messages())[0]!));
 				}
 			}
 		);
@@ -102,7 +112,15 @@ export default function TaskIndicator(props: TaskIndicatorProps) {
 					</div>
 				</Show>
 				<div class="cont">
-					{taskCount()} {taskCount() == 1 ? "task" : "tasks"} running
+					<Show
+						when={taskCount() == 1}
+						fallback={`${taskCount()} ${
+							taskCount() == 1 ? "task" : "tasks"
+						} running`}
+					>
+						{taskName()}
+					</Show>
+					{/* {`${taskCount()} ${taskCount() == 1 ? "task" : "tasks"} running`} */}
 				</div>
 			</div>
 		</div>
@@ -143,11 +161,15 @@ enum MessageType {
 function getTaskDisplayName(task: string) {
 	if (task == "get_plugins") {
 		return "Getting Plugins";
+	} else if (task == "update_instance") {
+		return "Updating instance";
+	} else if (task.startsWith("launch_instance")) {
+		return "Launching";
 	}
 	return task;
 }
 
-type Color = "disabled" | "running" | "instance" | "plugin";
+type Color = "disabled" | "running" | "instance" | "profile" | "plugin";
 
 // Gets the border and text colors of a color preset
 function getColors(color: Color) {
@@ -155,6 +177,8 @@ function getColors(color: Color) {
 		return ["var(--bg3)", "var(--fg)"];
 	} else if (color == "instance") {
 		return ["var(--instance)", "var(--instance)"];
+	} else if (color == "profile") {
+		return ["var(--profile)", "var(--profile)"];
 	} else if (color == "plugin") {
 		return ["var(--plugin)", "var(--pluginfg)"];
 	}
