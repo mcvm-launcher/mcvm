@@ -15,6 +15,8 @@ use mcvm::shared::output::NoOp;
 use mcvm::shared::{Side, UpdateDepth};
 use serde::{Deserialize, Serialize};
 use std::fmt::Debug;
+use std::future::Future;
+use std::pin::Pin;
 
 use super::{fmt_err, load_config};
 
@@ -251,9 +253,30 @@ pub async fn update_instance(
 			.await
 			.context("Failed to update instance")
 	};
-	fmt_err(fmt_err(tokio::spawn(task).await)?)?;
+	fmt_err(fmt_err(tokio::spawn(MakeSend::new(task)).await)?)?;
 
 	Ok(())
+}
+
+struct MakeSend<F: Future>(Pin<Box<F>>);
+
+unsafe impl<F: Future> Send for MakeSend<F> {}
+
+impl<F: Future> Future for MakeSend<F> {
+	type Output = F::Output;
+
+	fn poll(
+		mut self: std::pin::Pin<&mut Self>,
+		cx: &mut std::task::Context<'_>,
+	) -> std::task::Poll<Self::Output> {
+		F::poll(self.0.as_mut(), cx)
+	}
+}
+
+impl<F: Future> MakeSend<F> {
+	fn new(f: F) -> Self {
+		Self(Box::pin(f))
+	}
 }
 
 #[derive(Deserialize)]

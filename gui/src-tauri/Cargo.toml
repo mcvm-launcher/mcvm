@@ -16,10 +16,11 @@ rust-version.workspace = true
 tauri-build = { version = "1", features = [] }
 
 [dependencies]
+always_send = { workspace = true }
 anyhow = { workspace = true }
 async-trait = { workspace = true }
 itertools = { workspace = true }
-mcvm = { workspace = true, features = ["disable_profile_update_packages"] }
+mcvm = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
 tauri = { version = "1", features = [ "window-close", "shell-open", "protocol-asset", "clipboard-all", "window-create" ] }
