@@ -3,7 +3,8 @@
 	bottom: 0px;
 	left: 0px;
 	width: 100vw;
-	height: 2.5rem;
+	--height: 2.5rem;
+	height: var(--height);
 	box-sizing: border-box;
 	background-color: var(--bg0);
 	display: grid;
@@ -17,13 +18,19 @@
 
 #footer-selection-indicator {
 	margin-left: 1rem;
+	font-size: 0.8rem;
+	justify-content: flex-start;
+	overflow: hidden;
+	flex-wrap: nowrap;
+	text-wrap: nowrap;
+	font-weight: bold;
 }
 
 #footer-center-inner {
 	display: grid;
 	grid-template-columns: minmax(0, 4rem) minmax(0, 8rem);
 	gap: 1rem;
-	height: 100%;
+	height: var(--height);
 	margin-left: -4rem;
 }
 

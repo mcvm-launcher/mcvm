@@ -97,7 +97,10 @@ export default function App() {
 						/>
 					)}
 				/>
-				<Route path="/packages/:page" component={() => <BrowsePackages />} />
+				<Route
+					path="/packages/:page"
+					component={() => <BrowsePackages setFooterData={setFooterData} />}
+				/>
 				<Route path="/packages/package/:id" component={() => <ViewPackage />} />
 				<Route path="/plugins" component={() => <Plugins />} />
 				<Route path="/docs" component={() => <Docs />} />

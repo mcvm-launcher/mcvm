@@ -20,6 +20,7 @@ import HomeIcon from "./assets/icons/home.svg?component-solid";
 import LogoIcon from "./assets/icons/logo.svg?component-solid";
 import RefreshIcon from "./assets/icons/refresh.svg?component-solid";
 import UploadIcon from "./assets/icons/upload.svg?component-solid";
+import DownloadIcon from "./assets/icons/download.svg?component-solid";
 import { HasWidthHeight } from "./components/Icon";
 
 export function Pin({ width, height, viewBox }: HasWidthHeight) {
@@ -116,4 +117,8 @@ export function Refresh({ width, height, viewBox }: HasWidthHeight) {
 
 export function Upload({ width, height, viewBox }: HasWidthHeight) {
 	return <UploadIcon width={width} height={height} viewBox={viewBox} />;
+}
+
+export function Download({ width, height, viewBox }: HasWidthHeight) {
+	return <DownloadIcon width={width} height={height} viewBox={viewBox} />;
 }

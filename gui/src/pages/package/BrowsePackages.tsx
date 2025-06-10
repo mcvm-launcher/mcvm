@@ -1,7 +1,13 @@
 import { useLocation, useParams } from "@solidjs/router";
 import "./BrowsePackages.css";
 import { invoke } from "@tauri-apps/api";
-import { createResource, createSignal, For, Show } from "solid-js";
+import {
+	createEffect,
+	createResource,
+	createSignal,
+	For,
+	Show,
+} from "solid-js";
 import "@thisbeyond/solid-select/style.css";
 import PageButtons from "../../components/input/PageButtons";
 import { PackageMeta } from "../../types";
@@ -9,12 +15,22 @@ import SearchBar from "../../components/input/SearchBar";
 import { parseQueryString } from "../../utils";
 import InlineSelect from "../../components/input/InlineSelect";
 import { emit } from "@tauri-apps/api/event";
+import { FooterData } from "../../App";
+import { FooterMode } from "../../components/launch/Footer";
 
 const PACKAGES_PER_PAGE = 12;
 
-export default function BrowsePackages() {
+export default function BrowsePackages(props: BrowsePackagesProps) {
 	let params = useParams();
 	let searchParams = parseQueryString(useLocation().search);
+
+	createEffect(() => {
+		props.setFooterData({
+			mode: FooterMode.PreviewPackage,
+			selectedItem: undefined,
+			action: () => {},
+		});
+	});
 
 	let page = +params.page;
 	let search = searchParams["search"];
@@ -62,7 +78,11 @@ export default function BrowsePackages() {
 			promises.push(
 				(async () => {
 					try {
-						return await invoke("get_package_meta", { package: pkg });
+						let meta = await invoke("get_package_meta", { package: pkg });
+						let props = await invoke("get_package_props", {
+							package: pkg,
+						});
+						return [meta, props];
 					} catch (e) {
 						return "error";
 					}
@@ -72,7 +92,7 @@ export default function BrowsePackages() {
 
 		try {
 			let finalPackages = (await Promise.all(promises)) as (
-				| PackageMeta
+				| [PackageMeta, PackageProps]
 				| string
 			)[];
 			console.log(finalPackages);
@@ -80,10 +100,12 @@ export default function BrowsePackages() {
 				if (val == "error") {
 					return "error";
 				} else {
+					let [meta, props] = val;
 					return {
 						id: packagesToRequest[i],
-						meta: val,
-					} as PackageProps;
+						meta: meta,
+						props: props,
+					} as PackageData;
 				}
 			});
 			return packagesAndIds;
@@ -93,6 +115,10 @@ export default function BrowsePackages() {
 			emit("mcvm_output_finish_task", "get_packages");
 		}
 	}
+
+	let [selectedPackage, setSelectedPackage] = createSignal<string | undefined>(
+		undefined
+	);
 
 	return (
 		<div class="cont col" style="width:100%">
@@ -141,13 +167,29 @@ export default function BrowsePackages() {
 			</div>
 			<div id="packages-container">
 				<For each={packages()}>
-					{(props) => {
-						if (props == "error") {
+					{(data) => {
+						if (data == "error") {
 							return (
 								<div class="cont package package-error">Error with package</div>
 							);
 						} else {
-							return <Package {...props} />;
+							return (
+								<Package
+									id={data.id}
+									meta={data.meta}
+									selected={selectedPackage()}
+									onSelect={(pkg) => {
+										setSelectedPackage(pkg);
+										props.setFooterData({
+											mode: FooterMode.PreviewPackage,
+											selectedItem: pkg,
+											action: () => {
+												window.location.href = `/packages/package/${data.id}`;
+											},
+										});
+									}}
+								/>
+							);
 						}
 					}}
 				</For>
@@ -176,11 +218,21 @@ function Package(props: PackageProps) {
 					: props.meta.icon
 				: props.meta.gallery![0]
 			: props.meta.banner;
+
+	let isSelected = () => props.selected == props.id;
+
 	return (
 		<div
-			class="cont col input-shadow package"
+			class={`cont col input-shadow package ${isSelected() ? "selected" : ""}`}
 			style="cursor:pointer"
-			onclick={() => (window.location.href = `/packages/package/${props.id}`)}
+			onclick={() => {
+				// Double click to open
+				if (isSelected()) {
+					window.location.href = `/packages/package/${props.id}`;
+				} else {
+					props.onSelect(props.id);
+				}
+			}}
 		>
 			<div class="package-inner">
 				<div class="package-image-container">
@@ -199,9 +251,17 @@ function Package(props: PackageProps) {
 	);
 }
 
+interface PackageData {
+	id: string;
+	meta: PackageMeta;
+	props: PackageProps;
+}
+
 interface PackageProps {
 	id: string;
 	meta: PackageMeta;
+	selected?: string;
+	onSelect: (pkg: string) => void;
 }
 
 interface RepoInfo {
@@ -214,4 +274,8 @@ interface RepoMetadata {
 	description?: string;
 	mcvm_verseion?: string;
 	color?: string;
+}
+
+export interface BrowsePackagesProps {
+	setFooterData: (data: FooterData) => void;
 }

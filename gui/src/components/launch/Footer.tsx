@@ -3,7 +3,7 @@ import "./Footer.css";
 import { UnlistenFn, listen, Event } from "@tauri-apps/api/event";
 import { invoke } from "@tauri-apps/api";
 import { PasswordPrompt } from "../input/PasswordPrompt";
-import { Check, Play, Properties, Upload } from "../../icons";
+import { Box, Check, Download, Play, Properties, Upload } from "../../icons";
 import IconButton from "../input/IconButton";
 import { AuthDisplayEvent, RunningInstanceInfo } from "../../types";
 import MicrosoftAuthInfo from "../input/MicrosoftAuthInfo";
@@ -116,7 +116,7 @@ export default function LaunchFooter(props: LaunchFooterProps) {
 					when={props.selectedItem != undefined && props.selectedItem != ""}
 				>
 					<div class="cont" id="footer-selection-indicator">
-						Selected: {props.selectedItem}
+						{`Selected: ${props.selectedItem}`}
 					</div>
 				</Show>
 			</div>
@@ -232,6 +232,8 @@ function ActionButton(props: ActionButtonProps) {
 				props.mode == FooterMode.SaveProfileConfig
 			) {
 				return "var(--profilebg)";
+			} else if (props.mode == FooterMode.PreviewPackage) {
+				return "var(--packagebg)";
 			}
 		}
 		return "black";
@@ -248,6 +250,8 @@ function ActionButton(props: ActionButtonProps) {
 				props.mode == FooterMode.SaveProfileConfig
 			) {
 				return "var(--profile)";
+			} else if (props.mode == FooterMode.PreviewPackage) {
+				return "var(--package)";
 			}
 		}
 		return "var(--bg3)";
@@ -262,6 +266,8 @@ function ActionButton(props: ActionButtonProps) {
 			props.mode == FooterMode.SaveProfileConfig
 		) {
 			return "Save";
+		} else if (props.mode == FooterMode.PreviewPackage) {
+			return "Open";
 		}
 	};
 	let Icon = () => {
@@ -274,6 +280,8 @@ function ActionButton(props: ActionButtonProps) {
 			props.mode == FooterMode.SaveProfileConfig
 		) {
 			return <Check />;
+		} else if (props.mode == FooterMode.PreviewPackage) {
+			return <Box />;
 		}
 	};
 
@@ -370,4 +378,5 @@ export enum FooterMode {
 	Profile = "profile",
 	SaveInstanceConfig = "save_instance_config",
 	SaveProfileConfig = "save_profile_config",
+	PreviewPackage = "preview_package",
 }
