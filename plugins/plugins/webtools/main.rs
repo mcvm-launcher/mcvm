@@ -68,7 +68,7 @@ fn main() -> anyhow::Result<()> {
 			html: format!("<div style=\"margin-top:0.3rem;margin-right:-0.2rem\">{icon}</div><div>Webtools</div>"),
 			href: "/custom/webtools".into(),
 			selected_url_start: Some("/custom/webtools".into()),
-			color: "#1b48c4".into(),
+			color: "#777777".into(),
 			..Default::default()
 		}])
 	})?;
