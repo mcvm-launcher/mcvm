@@ -4,13 +4,17 @@ use std::{
 };
 
 use anyhow::Context;
-use mcvm_core::io::{files::create_leading_dirs, json_from_file, json_to_file};
+use mcvm_core::io::{
+	files::{create_leading_dirs, update_hardlink},
+	json_from_file, json_to_file,
+};
 use mcvm_net::{
 	download::Client,
 	modrinth::{self, Member, Project, Version},
 };
 use mcvm_pkg_gen::relation_substitution::RelationSubMethod;
 use mcvm_plugin::{api::CustomPlugin, hooks::CustomRepoQueryResult};
+use serde::{Deserialize, Serialize};
 
 fn main() -> anyhow::Result<()> {
 	let mut plugin = CustomPlugin::from_manifest_file("modrinth", include_str!("plugin.json"))?;
@@ -39,7 +43,7 @@ fn main() -> anyhow::Result<()> {
 
 		let project_info = runtime
 			.block_on(get_cached_project(&arg.package, &storage_dirs, &client))
-			.context("Failed to get project")?;
+			.with_context(|| format!("Failed to get project {}", arg.package))?;
 		let Some(project_info) = project_info else {
 			return Ok(None);
 		};
@@ -94,12 +98,12 @@ fn main() -> anyhow::Result<()> {
 		let runtime = tokio::runtime::Runtime::new()?;
 
 		let projects = runtime.block_on(async move {
-			let projects = modrinth::search_projects(arg.parameters, &client)
+			let projects = modrinth::search_projects(arg.parameters, &client, false)
 				.await
 				.context("Failed to search projects from the API")?
 				.hits
 				.into_iter()
-				.map(|x| x.id);
+				.map(|x| x.slug);
 
 			Ok::<_, anyhow::Error>(projects)
 		})?;
@@ -117,13 +121,11 @@ async fn get_cached_project(
 	client: &Client,
 ) -> anyhow::Result<Option<ProjectInfo>> {
 	let project_path = storage_dirs.projects.join(project_id);
-	let members_path = storage_dirs.members.join(project_id);
-	let (project, members) = if project_path.exists() {
-		let project = json_from_file(&project_path).context("Failed to read project from file")?;
-		let members =
-			json_from_file(&members_path).context("Failed to read project members from file")?;
+	let project_info = if project_path.exists() {
+		let project_info =
+			json_from_file(&project_path).context("Failed to read project info from file")?;
 
-		(project, members)
+		project_info
 	} else {
 		let project_task = {
 			let project = project_id.to_string();
@@ -137,7 +139,13 @@ async fn get_cached_project(
 			tokio::spawn(async move { modrinth::get_project_team(&project, &client).await })
 		};
 
-		let (project, members) = tokio::join!(project_task, members_task);
+		let versions_task = {
+			let project = project_id.to_string();
+			let client = client.clone();
+			tokio::spawn(async move { modrinth::get_project_versions(&project, &client).await })
+		};
+
+		let (project, members, versions) = tokio::join!(project_task, members_task, versions_task);
 		let project = project??;
 		let project = match project {
 			Some(project) => project,
@@ -145,60 +153,28 @@ async fn get_cached_project(
 		};
 
 		let members = members.context("Failed to get project members")??;
+		let versions = versions.context("Failed to get project versions")??;
 
-		// Get a list of missing versions
-		let mut missing = Vec::new();
-		for version in &project.versions {
-			let path = storage_dirs.versions.join(version);
-			if !path.exists() {
-				missing.push(version);
-			}
-		}
-
-		if !missing.is_empty() {
-			let versions = modrinth::get_project_versions(&project.id, client)
-				.await
-				.context("Failed to get project versions")?;
-
-			for version in versions {
-				let path = storage_dirs.versions.join(&version.id);
-				let _ = create_leading_dirs(&path);
-				json_to_file(path, &version).context("Failed to write version to file")?;
-			}
-		}
-
-		let _ = create_leading_dirs(&project_path);
-		// TODO: Store both the id and slug together, hardlinked to each other, to cache no matter which method is used to request
-		let _ = json_to_file(&project_path, &project);
-
-		let _ = create_leading_dirs(&members_path);
-		let _ = json_to_file(&members_path, &members);
-
-		(project, members)
-	};
-
-	let mut versions = Vec::with_capacity(project.versions.len());
-	for version in &project.versions {
-		let path = storage_dirs.versions.join(version);
-		let result: anyhow::Result<Version> = json_from_file(&path);
-		let version = match result {
-			Ok(version) => version,
-			Err(_) => {
-				continue;
-			}
+		let project_info = ProjectInfo {
+			project: project,
+			versions: versions,
+			members: members,
 		};
 
-		versions.push(version);
-	}
+		let id_path = storage_dirs.projects.join(&project_info.project.id);
+		let slug_path = storage_dirs.projects.join(&project_info.project.slug);
+		let _ = create_leading_dirs(&id_path);
+		let _ = json_to_file(&id_path, &project_info);
+		let _ = update_hardlink(&id_path, &slug_path);
 
-	Ok(Some(ProjectInfo {
-		project,
-		versions,
-		members,
-	}))
+		project_info
+	};
+
+	Ok(Some(project_info))
 }
 
 /// Project data, versions, and team members for a Modrinth project
+#[derive(Serialize, Deserialize)]
 struct ProjectInfo {
 	project: Project,
 	versions: Vec<Version>,
@@ -209,8 +185,6 @@ struct ProjectInfo {
 #[derive(Clone)]
 struct StorageDirs {
 	projects: PathBuf,
-	versions: PathBuf,
-	members: PathBuf,
 	packages: PathBuf,
 }
 
@@ -219,8 +193,6 @@ impl StorageDirs {
 		let modrinth_dir = data_dir.join("internal/modrinth");
 		Self {
 			projects: modrinth_dir.join("projects"),
-			versions: modrinth_dir.join("versions"),
-			members: modrinth_dir.join("members"),
 			packages: modrinth_dir.join("packages"),
 		}
 	}

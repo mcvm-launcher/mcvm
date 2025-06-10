@@ -14,6 +14,8 @@ pub struct Project {
 	/// The ID of the project
 	#[serde(alias = "project_id")]
 	pub id: String,
+	/// The slug of the project
+	pub slug: String,
 	/// The type of this project and its files
 	pub project_type: ProjectType,
 	/// The ID's of the available project versions
@@ -471,10 +473,11 @@ pub struct User {
 	pub username: String,
 }
 
-/// Search projects from the Modrinth API. Note that the projects returned by this have many default fields and should NOT be used as the final projects
+/// Search projects from the Modrinth API. Note that the projects returned by this have many default fields and should NOT be used as the final projects.
 pub async fn search_projects(
 	params: PackageSearchParameters,
 	client: &Client,
+	modpacks: bool,
 ) -> anyhow::Result<SearchResults> {
 	let limit = if params.count > 100 {
 		100
@@ -486,7 +489,11 @@ pub async fn search_projects(
 	} else {
 		String::new()
 	};
-	let url = format!("https://api.modrinth.com/v2/search?limit={limit}{search}");
+	let facets = format!(
+		"facets=[[\"project_types{}modpack\"]]",
+		if modpacks { "==" } else { "!=" }
+	);
+	let url = format!("https://api.modrinth.com/v2/search?limit={limit}{search}&{facets}");
 
 	download::json(url, client).await
 }
@@ -494,5 +501,18 @@ pub async fn search_projects(
 #[derive(Deserialize, Serialize)]
 pub struct SearchResults {
 	/// The results
-	pub hits: Vec<Project>,
+	pub hits: Vec<SearchedProject>,
+}
+
+/// A project result in the search
+#[derive(Deserialize, Serialize, Clone, Default)]
+#[serde(default)]
+pub struct SearchedProject {
+	/// The ID of the project
+	#[serde(alias = "project_id")]
+	pub id: String,
+	/// The slug of the project
+	pub slug: String,
+	/// The type of this project and its files
+	pub project_type: ProjectType,
 }

@@ -63,17 +63,32 @@ export default function BrowsePackages() {
 		console.log("Waiting for packages");
 		emit("mcvm_output_create_task", "get_packages");
 		for (let pkg of packagesToRequest) {
-			promises.push(invoke("get_package_meta", { package: pkg }));
+			promises.push(
+				(async () => {
+					try {
+						return await invoke("get_package_meta", { package: pkg });
+					} catch (e) {
+						return "error";
+					}
+				})()
+			);
 		}
 
 		try {
-			let finalPackages = (await Promise.all(promises)) as PackageMeta[];
+			let finalPackages = (await Promise.all(promises)) as (
+				| PackageMeta
+				| string
+			)[];
 			console.log(finalPackages);
 			let packagesAndIds = finalPackages.map((val, i) => {
-				return {
-					id: packagesToRequest[i],
-					meta: val,
-				} as PackageProps;
+				if (val == "error") {
+					return "error";
+				} else {
+					return {
+						id: packagesToRequest[i],
+						meta: val,
+					} as PackageProps;
+				}
 			});
 			return packagesAndIds;
 		} catch (e) {
@@ -129,7 +144,17 @@ export default function BrowsePackages() {
 				</div>
 			</div>
 			<div id="packages-container">
-				<For each={packages()}>{(props) => <Package {...props} />}</For>
+				<For each={packages()}>
+					{(props) => {
+						if (props == "error") {
+							return (
+								<div class="cont package package-error">Error with package</div>
+							);
+						} else {
+							return <Package {...props} />;
+						}
+					}}
+				</For>
 			</div>
 			<PageButtons
 				page={page}
