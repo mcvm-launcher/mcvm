@@ -126,7 +126,6 @@ pub async fn search_packs(
 	};
 	let page = params.skip / params.count as usize + 1;
 	let url = format!("{API_URL}/packs?limit={limit}{search}&page={page}",);
-	eprintln!("{url}");
 
 	download::json(url, client).await
 }

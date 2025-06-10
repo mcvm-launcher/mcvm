@@ -397,39 +397,41 @@ impl PkgRegistry {
 			let mut num_skipped = 0;
 
 			for req in all_basic_packages.into_iter().sorted() {
-				let meta = self
-					.get_metadata(&req, paths, client, o)
-					.await
-					.context("Failed to get package metadata")?;
+				if !params.categories.is_empty() && !params.search.is_none() {
+					let meta = self
+						.get_metadata(&req, paths, client, o)
+						.await
+						.context("Failed to get package metadata")?;
 
-				// Check all of the parameters
-				if !params.categories.is_empty() {
-					let default = Vec::new();
-					if !params
-						.categories
-						.iter()
-						.any(|x| meta.categories.as_ref().unwrap_or(&default).contains(x))
-					{
-						continue;
+					// Check all of the parameters
+					if !params.categories.is_empty() {
+						let default = Vec::new();
+						if !params
+							.categories
+							.iter()
+							.any(|x| meta.categories.as_ref().unwrap_or(&default).contains(x))
+						{
+							continue;
+						}
 					}
-				}
 
-				if let Some(search) = &params.search {
-					let default = String::new();
-					if !req.id.to_lowercase().contains(search)
-						&& !meta
-							.name
+					if let Some(search) = &params.search {
+						let default = String::new();
+						if !req.id.to_lowercase().contains(search)
+							&& !meta
+								.name
+								.as_ref()
+								.unwrap_or(&default)
+								.to_lowercase()
+								.contains(search) && !meta
+							.description
 							.as_ref()
 							.unwrap_or(&default)
 							.to_lowercase()
-							.contains(search) && !meta
-						.description
-						.as_ref()
-						.unwrap_or(&default)
-						.to_lowercase()
-						.contains(search)
-					{
-						continue;
+							.contains(search)
+						{
+							continue;
+						}
 					}
 				}
 
