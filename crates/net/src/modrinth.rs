@@ -1,13 +1,18 @@
 use crate::download::{self, user_agent};
 use anyhow::{anyhow, Context};
-use mcvm_shared::modifications::{Modloader, ServerType};
+use mcvm_shared::{
+	modifications::{Modloader, ServerType},
+	pkg::PackageSearchParameters,
+};
 use reqwest::{Client, StatusCode};
 use serde::{Deserialize, Serialize};
 
 /// A Modrinth project (mod, resource pack, etc.)
-#[derive(Deserialize, Serialize, Clone)]
+#[derive(Deserialize, Serialize, Clone, Default)]
+#[serde(default)]
 pub struct Project {
 	/// The ID of the project
+	#[serde(alias = "project_id")]
 	pub id: String,
 	/// The type of this project and its files
 	pub project_type: ProjectType,
@@ -48,10 +53,11 @@ pub struct Project {
 }
 
 /// The type of a Modrinth project
-#[derive(Deserialize, Serialize, Copy, Clone)]
+#[derive(Deserialize, Serialize, Copy, Clone, Default)]
 #[serde(rename_all = "lowercase")]
 pub enum ProjectType {
 	/// A mod project
+	#[default]
 	Mod,
 	/// A modpack project
 	Modpack,
@@ -356,7 +362,21 @@ pub enum DependencyType {
 
 /// Information about a project license
 #[derive(Deserialize, Serialize, Clone)]
-pub struct License {
+#[serde(untagged)]
+pub enum License {
+	Short(String),
+	Long(LongLicense),
+}
+
+impl Default for License {
+	fn default() -> Self {
+		Self::Short("ARR".into())
+	}
+}
+
+/// Long information about a project license
+#[derive(Deserialize, Serialize, Clone)]
+pub struct LongLicense {
 	/// The short ID of the license
 	pub id: String,
 	/// The URL to a custom license
@@ -372,7 +392,25 @@ pub struct DonationLink {
 
 /// An entry in a project's gallery
 #[derive(Deserialize, Serialize, Clone)]
-pub struct GalleryEntry {
+#[serde(untagged)]
+pub enum GalleryEntry {
+	Simple(String),
+	Full(FullGalleryEntry),
+}
+
+impl GalleryEntry {
+	/// Get the URL to this entry
+	pub fn get_url(&self) -> &str {
+		match self {
+			Self::Simple(url) => url,
+			Self::Full(entry) => &entry.url,
+		}
+	}
+}
+
+/// An entry in a project's gallery
+#[derive(Deserialize, Serialize, Clone)]
+pub struct FullGalleryEntry {
 	/// The URL to the gallery image
 	pub url: String,
 	/// Whether the gallery image is a featured banner on the project page
@@ -380,7 +418,7 @@ pub struct GalleryEntry {
 }
 
 /// Support status for a project on a specific side
-#[derive(Deserialize, Serialize, Clone, Copy)]
+#[derive(Deserialize, Serialize, Clone, Copy, Default)]
 #[serde(rename_all = "snake_case")]
 pub enum SideSupport {
 	/// Required to be on this side
@@ -389,6 +427,9 @@ pub enum SideSupport {
 	Optional,
 	/// Unsupported on this side
 	Unsupported,
+	/// Support unknown
+	#[default]
+	Unknown,
 }
 
 /// Get the team members of a project
@@ -428,4 +469,30 @@ pub struct Member {
 pub struct User {
 	/// The user's username
 	pub username: String,
+}
+
+/// Search projects from the Modrinth API. Note that the projects returned by this have many default fields and should NOT be used as the final projects
+pub async fn search_projects(
+	params: PackageSearchParameters,
+	client: &Client,
+) -> anyhow::Result<SearchResults> {
+	let limit = if params.count > 100 {
+		100
+	} else {
+		params.count
+	};
+	let search = if let Some(search) = params.search {
+		format!("&query={search}")
+	} else {
+		String::new()
+	};
+	let url = format!("https://api.modrinth.com/v2/search?limit={limit}{search}");
+
+	download::json(url, client).await
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct SearchResults {
+	/// The results
+	pub hits: Vec<Project>,
 }

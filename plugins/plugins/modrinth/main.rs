@@ -20,11 +20,23 @@ fn main() -> anyhow::Result<()> {
 			return Ok(None);
 		}
 
+		let data_dir = ctx.get_data_dir()?;
+		let storage_dirs = StorageDirs::new(&data_dir);
+		// Check for a cached package
+		let path = storage_dirs.packages.join(&arg.package);
+		if path.exists() {
+			if let Ok(package) = std::fs::read_to_string(&path) {
+				return Ok(Some(CustomRepoQueryResult {
+					contents: package,
+					content_type: mcvm::pkg_crate::PackageContentType::Declarative,
+					flags: HashSet::new(),
+				}));
+			}
+		}
+
 		let runtime = tokio::runtime::Runtime::new()?;
 		let client = Client::new();
 
-		let data_dir = ctx.get_data_dir()?;
-		let storage_dirs = StorageDirs::new(&data_dir);
 		let project_info = runtime
 			.block_on(get_cached_project(&arg.package, &storage_dirs, &client))
 			.context("Failed to get project")?;
@@ -40,10 +52,13 @@ fn main() -> anyhow::Result<()> {
 			move |relation: &str| {
 				let project_info = runtime
 					.block_on(get_cached_project(relation, &storage_dirs, &client))
-					.context("Failed to get project")?
-					.context("Project does not exist")?;
-
-				Ok(project_info.project.id)
+					.context("Failed to get project")?;
+				if let Some(project_info) = project_info {
+					Ok(project_info.project.id)
+				} else {
+					// Theres a LOT of broken Modrinth projects
+					Ok("none".into())
+				}
 			}
 		};
 
@@ -60,6 +75,9 @@ fn main() -> anyhow::Result<()> {
 		let package =
 			serde_json::to_string_pretty(&package).context("Failed to serialized package")?;
 
+		let _ = create_leading_dirs(&path);
+		let _ = std::fs::write(path, &package);
+
 		Ok(Some(CustomRepoQueryResult {
 			contents: package,
 			content_type: mcvm::pkg_crate::PackageContentType::Declarative,
@@ -67,17 +85,39 @@ fn main() -> anyhow::Result<()> {
 		}))
 	})?;
 
+	plugin.search_custom_package_repository(|_, arg| {
+		if arg.repository != "modrinth" {
+			return Ok(Vec::new());
+		}
+
+		let client = Client::new();
+		let runtime = tokio::runtime::Runtime::new()?;
+
+		let projects = runtime.block_on(async move {
+			let projects = modrinth::search_projects(arg.parameters, &client)
+				.await
+				.context("Failed to search projects from the API")?
+				.hits
+				.into_iter()
+				.map(|x| x.id);
+
+			Ok::<_, anyhow::Error>(projects)
+		})?;
+
+		Ok(projects.collect())
+	})?;
+
 	Ok(())
 }
 
 /// Gets a cached Modrinth project and it's versions or downloads it
 async fn get_cached_project(
-	project: &str,
+	project_id: &str,
 	storage_dirs: &StorageDirs,
 	client: &Client,
 ) -> anyhow::Result<Option<ProjectInfo>> {
-	let project_path = storage_dirs.projects.join(project);
-	let members_path = storage_dirs.members.join(project);
+	let project_path = storage_dirs.projects.join(project_id);
+	let members_path = storage_dirs.members.join(project_id);
 	let (project, members) = if project_path.exists() {
 		let project = json_from_file(&project_path).context("Failed to read project from file")?;
 		let members =
@@ -86,13 +126,13 @@ async fn get_cached_project(
 		(project, members)
 	} else {
 		let project_task = {
-			let project = project.to_string();
+			let project = project_id.to_string();
 			let client = client.clone();
 			tokio::spawn(async move { modrinth::get_project_optional(&project, &client).await })
 		};
 
 		let members_task = {
-			let project = project.to_string();
+			let project = project_id.to_string();
 			let client = client.clone();
 			tokio::spawn(async move { modrinth::get_project_team(&project, &client).await })
 		};
@@ -140,7 +180,13 @@ async fn get_cached_project(
 	let mut versions = Vec::with_capacity(project.versions.len());
 	for version in &project.versions {
 		let path = storage_dirs.versions.join(version);
-		let version = json_from_file(path).context("Failed to read version from file")?;
+		let result: anyhow::Result<Version> = json_from_file(&path);
+		let version = match result {
+			Ok(version) => version,
+			Err(_) => {
+				continue;
+			}
+		};
 
 		versions.push(version);
 	}
@@ -165,6 +211,7 @@ struct StorageDirs {
 	projects: PathBuf,
 	versions: PathBuf,
 	members: PathBuf,
+	packages: PathBuf,
 }
 
 impl StorageDirs {
@@ -174,6 +221,7 @@ impl StorageDirs {
 			projects: modrinth_dir.join("projects"),
 			versions: modrinth_dir.join("versions"),
 			members: modrinth_dir.join("members"),
+			packages: modrinth_dir.join("packages"),
 		}
 	}
 }

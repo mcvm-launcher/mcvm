@@ -8,6 +8,7 @@ import { PackageMeta } from "../../types";
 import SearchBar from "../../components/input/SearchBar";
 import { parseQueryString } from "../../utils";
 import InlineSelect from "../../components/input/InlineSelect";
+import { emit } from "@tauri-apps/api/event";
 
 const PACKAGES_PER_PAGE = 12;
 
@@ -25,7 +26,6 @@ export default function BrowsePackages() {
 	let [packageCount, setPackageCount] = createSignal(0);
 
 	let selectedRepo = () => {
-		console.log(repo);
 		if (repos() == undefined) {
 			return undefined;
 		}
@@ -43,6 +43,10 @@ export default function BrowsePackages() {
 		let end = start + PACKAGES_PER_PAGE;
 
 		let repos: RepoInfo[] = await invoke("get_package_repos");
+		let index = repos.findIndex((x) => x.id == "core");
+		if (index != -1) {
+			repos.splice(index, 1);
+		}
 		setRepos(repos);
 
 		let [packagesToRequest, packageCount] = (await invoke("get_packages", {
@@ -56,19 +60,27 @@ export default function BrowsePackages() {
 		console.log("Packages fetched");
 
 		let promises = [];
+		console.log("Waiting for packages");
+		emit("mcvm_output_create_task", "get_packages");
 		for (let pkg of packagesToRequest) {
 			promises.push(invoke("get_package_meta", { package: pkg }));
 		}
 
-		let finalPackages = (await Promise.all(promises)) as PackageMeta[];
-		console.log(finalPackages);
-		let packagesAndIds = finalPackages.map((val, i) => {
-			return {
-				id: packagesToRequest[i],
-				meta: val,
-			} as PackageProps;
-		});
-		return packagesAndIds;
+		try {
+			let finalPackages = (await Promise.all(promises)) as PackageMeta[];
+			console.log(finalPackages);
+			let packagesAndIds = finalPackages.map((val, i) => {
+				return {
+					id: packagesToRequest[i],
+					meta: val,
+				} as PackageProps;
+			});
+			return packagesAndIds;
+		} catch (e) {
+			console.error(e);
+		} finally {
+			emit("mcvm_output_finish_task", "get_packages");
+		}
 	}
 
 	return (

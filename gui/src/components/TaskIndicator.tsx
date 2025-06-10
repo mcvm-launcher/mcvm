@@ -21,7 +21,7 @@ export default function TaskIndicator(props: TaskIndicatorProps) {
 				setColor("instance");
 			} else if (task == "update_instance") {
 				setColor("profile");
-			} else if (task == "search_packages") {
+			} else if (task == "search_packages" || task == "get_packages") {
 				setColor("package");
 			}
 
@@ -162,13 +162,15 @@ enum MessageType {
 
 function getTaskDisplayName(task: string) {
 	if (task == "get_plugins") {
-		return "Getting Plugins";
+		return "Getting plugins";
 	} else if (task == "update_instance") {
 		return "Updating instance";
 	} else if (task.startsWith("launch_instance")) {
 		return "Launching";
 	} else if (task == "search_packages") {
-		return "Searching Packages";
+		return "Searching packages";
+	} else if (task == "get_packages") {
+		return "Getting packages";
 	}
 	return task;
 }

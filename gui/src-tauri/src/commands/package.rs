@@ -39,16 +39,7 @@ pub async fn get_packages(
 			.context("Failed to get list of available packages"),
 	)?;
 
-	let packages = packages.into_iter().map(|x| x.id.to_string());
-
-	// Add search
-	let packages = packages.filter(|x| {
-		if let Some(search) = &search {
-			x.contains(search)
-		} else {
-			true
-		}
-	});
+	let packages = packages.into_iter().map(|x| format!("{repo}:{}", x.id));
 
 	let packages: Vec<_> = packages.collect();
 
@@ -67,20 +58,20 @@ pub async fn get_package_meta(
 ) -> Result<PackageMetadata, String> {
 	let mut config =
 		fmt_err(load_config(&state.paths, &mut NoOp).context("Failed to load config"))?;
-
+	
 	let meta = fmt_err(
 		config
-			.packages
-			.get_metadata(
-				&Arc::new(PkgRequest::any(package, PkgRequestSource::UserRequire)),
-				&state.paths,
-				&state.client,
-				&mut NoOp,
-			)
-			.await
-			.context("Failed to get metadata"),
+		.packages
+		.get_metadata(
+			&Arc::new(PkgRequest::parse(package, PkgRequestSource::UserRequire)),
+			&state.paths,
+			&state.client,
+			&mut NoOp,
+		)
+		.await
+		.context("Failed to get metadata"),
 	)?;
-
+	
 	Ok(meta.clone())
 }
 
@@ -96,7 +87,7 @@ pub async fn get_package_props(
 		config
 			.packages
 			.get_properties(
-				&Arc::new(PkgRequest::any(package, PkgRequestSource::UserRequire)),
+				&Arc::new(PkgRequest::parse(package, PkgRequestSource::UserRequire)),
 				&state.paths,
 				&state.client,
 				&mut NoOp,

@@ -16,8 +16,8 @@ use mcvm_shared::util::DeserListOrSingle;
 use mcvm_shared::versions::VersionPattern;
 
 use mcvm_net::modrinth::{
-	self, DependencyType, KnownLoader, Loader, Member, Project, ProjectType, ReleaseChannel,
-	SideSupport, Version,
+	self, DependencyType, GalleryEntry, KnownLoader, License, Loader, Member, Project, ProjectType,
+	ReleaseChannel, SideSupport, Version,
 };
 use mcvm_shared::Side;
 use regex::{Regex, RegexBuilder};
@@ -101,21 +101,34 @@ pub fn gen(
 	}
 	if let Some(gallery) = project.gallery {
 		// Get the banner image from the featured gallery image
-		if let Some(banner) = gallery.iter().find(|x| x.featured) {
-			meta.banner = Some(banner.url.clone());
+		if let Some(banner) = gallery
+			.iter()
+			.find(|x| matches!(x, GalleryEntry::Full(entry) if entry.featured))
+		{
+			meta.banner = Some(banner.get_url().to_string());
 		}
-		meta.gallery = Some(gallery.into_iter().map(|x| x.url).collect());
+		meta.gallery = Some(
+			gallery
+				.into_iter()
+				.map(|x| x.get_url().to_string())
+				.collect(),
+		);
 	}
 
 	// Handle custom licenses
-	meta.license = Some(if project.license.id == "LicenseRef-Custom" {
-		if let Some(url) = project.license.url {
-			url
-		} else {
-			"Custom".into()
+	meta.license = Some(match project.license {
+		License::Short(license) => license,
+		License::Long(license) => {
+			if license.id == "LicenseRef-Custom" {
+				if let Some(url) = license.url {
+					url
+				} else {
+					"Custom".into()
+				}
+			} else {
+				license.id
+			}
 		}
-	} else {
-		project.license.id
 	});
 
 	// Get team members and use them to fill out the authors field

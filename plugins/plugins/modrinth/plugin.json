@@ -35,6 +35,9 @@
 		},
 		"query_custom_package_repository": {
 			"executable": "${PLUGIN_DIR}/mcvm_plugin_modrinth"
+		},
+		"search_custom_package_repository": {
+			"executable": "${PLUGIN_DIR}/mcvm_plugin_modrinth"
 		}
 	}
 }
