@@ -124,10 +124,8 @@ pub async fn search_packs(
 	} else {
 		String::new()
 	};
-	let url = format!(
-		"{API_URL}/packs?limit={limit}{search}&start={}",
-		params.skip
-	);
+	let page = params.skip / params.count as usize + 1;
+	let url = format!("{API_URL}/packs?limit={limit}{search}&page={page}",);
 	eprintln!("{url}");
 
 	download::json(url, client).await
