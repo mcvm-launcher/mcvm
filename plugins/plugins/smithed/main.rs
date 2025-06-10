@@ -3,11 +3,12 @@ use std::{collections::HashSet, path::Path};
 use anyhow::Context;
 use mcvm_core::io::{files::create_leading_dirs, json_from_file, json_to_file};
 use mcvm_net::{
-	download::Client,
+	download::{self, Client},
 	smithed::{self, Pack},
 };
 use mcvm_pkg_gen::relation_substitution::RelationSubMethod;
 use mcvm_plugin::{api::CustomPlugin, hooks::CustomRepoQueryResult};
+use serde::{Deserialize, Serialize};
 use tokio::task::JoinSet;
 
 fn main() -> anyhow::Result<()> {
@@ -25,10 +26,10 @@ fn main() -> anyhow::Result<()> {
 			.get_data_dir()
 			.context("Failed to get data dir")?
 			.join("internal/smithed/packs");
-		let pack = runtime
-			.block_on(get_cached_pack(&arg.package, &storage_dir, &client))
+		let pack_info = runtime
+			.block_on(get_cached_pack(&arg.package, true, &storage_dir, &client))
 			.context("Failed to get pack")?;
-		let Some(pack) = pack else {
+		let Some(pack_info) = pack_info else {
 			return Ok(None);
 		};
 
@@ -38,17 +39,18 @@ fn main() -> anyhow::Result<()> {
 			let runtime = tokio::runtime::Runtime::new()?;
 
 			move |relation: &str| {
-				let pack = runtime
-					.block_on(get_cached_pack(relation, &storage_dir, &client))
+				let pack_info = runtime
+					.block_on(get_cached_pack(relation, false, &storage_dir, &client))
 					.context("Failed to get pack")?
 					.context("Pack does not exist")?;
 
-				Ok(pack.id)
+				Ok(pack_info.pack.id)
 			}
 		};
 
 		let package = mcvm_pkg_gen::smithed::gen(
-			pack,
+			pack_info.pack,
+			pack_info.body,
 			RelationSubMethod::Function(Box::new(relation_sub_function)),
 			&[],
 		)
@@ -85,12 +87,12 @@ fn main() -> anyhow::Result<()> {
 				let client = client.clone();
 				let storage_dir = storage_dir.clone();
 				tasks.spawn(async move {
-					let pack = get_cached_pack(&pack.id, &storage_dir, &client)
+					let pack_info = get_cached_pack(&pack.id, true, &storage_dir, &client)
 						.await
 						.context("Failed to get cached pack")?
 						.context("Pack does not exist")?;
 
-					Ok::<_, anyhow::Error>(pack.id)
+					Ok::<_, anyhow::Error>(pack_info.pack.id)
 				});
 			}
 
@@ -111,12 +113,27 @@ fn main() -> anyhow::Result<()> {
 /// Gets a cached Smithed pack or downloads it
 async fn get_cached_pack(
 	pack: &str,
+	download_body: bool,
 	storage_dir: &Path,
 	client: &Client,
-) -> anyhow::Result<Option<Pack>> {
+) -> anyhow::Result<Option<PackInfo>> {
 	let pack_path = storage_dir.join(pack);
 	if pack_path.exists() {
-		json_from_file(&pack_path).context("Failed to read pack from file")
+		let mut pack_info: PackInfo =
+			json_from_file(&pack_path).context("Failed to read pack info from file")?;
+
+		if download_body {
+			if pack_info.body_exists && pack_info.body.is_none() {
+				if let Some(body) = &pack_info.pack.display.web_page {
+					if let Ok(text) = download::text(body, client).await {
+						pack_info.body = Some(text);
+						let _ = json_to_file(&pack_path, &pack_info);
+					}
+				}
+			}
+		}
+
+		Ok(Some(pack_info))
 	} else {
 		let result = smithed::get_pack_optional(pack, &client).await?;
 
@@ -125,10 +142,33 @@ async fn get_cached_pack(
 			None => return Ok(None),
 		};
 
+		let body = if download_body {
+			if let Some(url) = &pack.display.web_page {
+				download::text(url, client).await.ok()
+			} else {
+				None
+			}
+		} else {
+			None
+		};
+
+		let pack_info = PackInfo {
+			body_exists: pack.display.web_page.is_some(),
+			pack,
+			body,
+		};
+
 		let _ = create_leading_dirs(&pack_path);
 		// TODO: Store both the id and slug together, hardlinked to each other, to cache no matter which method is used to request
-		let _ = json_to_file(&pack_path, &pack);
+		let _ = json_to_file(&pack_path, &pack_info);
 
-		Ok(Some(pack))
+		Ok(Some(pack_info))
 	}
+}
+
+#[derive(Serialize, Deserialize)]
+struct PackInfo {
+	pack: Pack,
+	body: Option<String>,
+	body_exists: bool,
 }

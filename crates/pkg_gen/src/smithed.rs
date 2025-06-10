@@ -19,6 +19,7 @@ use crate::relation_substitution::RelationSubMethod;
 /// Generates a Smithed package from a Smithed pack ID
 pub async fn gen_from_id(
 	id: &str,
+	body: Option<String>,
 	relation_substitution: RelationSubMethod,
 	force_extensions: &[String],
 ) -> anyhow::Result<DeclarativePackage> {
@@ -26,18 +27,20 @@ pub async fn gen_from_id(
 		.await
 		.expect("Failed to get pack");
 
-	gen(pack, relation_substitution, force_extensions)
+	gen(pack, body, relation_substitution, force_extensions)
 }
 
 /// Generates a Smithed package from a Smithed pack
 pub fn gen(
 	pack: Pack,
+	body: Option<String>,
 	relation_substitution: RelationSubMethod,
 	force_extensions: &[String],
 ) -> anyhow::Result<DeclarativePackage> {
 	let meta = PackageMetadata {
 		name: Some(pack.display.name),
 		description: Some(pack.display.description),
+		long_description: body,
 		icon: Some(pack.display.icon),
 		website: pack.display.web_page,
 		..Default::default()

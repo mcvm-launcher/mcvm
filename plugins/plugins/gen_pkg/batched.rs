@@ -236,6 +236,7 @@ pub async fn batched_gen(mut config: BatchedConfig, filter: Vec<String>) {
 					.expect("Smithed pack should have been downloaded");
 				smithed::gen(
 					pack.clone(),
+					None,
 					RelationSubMethod::Map(pkg_config.relation_substitutions),
 					&pkg_config.force_extensions,
 				)

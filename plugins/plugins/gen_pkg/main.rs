@@ -118,6 +118,7 @@ pub async fn gen(source: PackageSource, config: Option<PackageGenerationConfig>,
 	let mut pkg = match source {
 		PackageSource::Smithed => smithed::gen_from_id(
 			id,
+			None,
 			RelationSubMethod::Map(config.relation_substitutions),
 			&config.force_extensions,
 		)
