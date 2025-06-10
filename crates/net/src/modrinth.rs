@@ -341,7 +341,7 @@ pub struct Download {
 #[derive(Deserialize, Serialize, Clone)]
 pub struct Dependency {
 	/// The ID of the project
-	pub project_id: String,
+	pub project_id: Option<String>,
 	/// The ID of the version
 	pub version_id: Option<String>,
 	/// The type of the dependency

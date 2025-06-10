@@ -3,7 +3,7 @@ import "./Footer.css";
 import { UnlistenFn, listen, Event } from "@tauri-apps/api/event";
 import { invoke } from "@tauri-apps/api";
 import { PasswordPrompt } from "../input/PasswordPrompt";
-import { Box, Check, Download, Play, Properties, Upload } from "../../icons";
+import { Box, Check, Play, Properties, Upload } from "../../icons";
 import IconButton from "../input/IconButton";
 import { AuthDisplayEvent, RunningInstanceInfo } from "../../types";
 import MicrosoftAuthInfo from "../input/MicrosoftAuthInfo";

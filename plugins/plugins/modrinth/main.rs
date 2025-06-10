@@ -27,61 +27,78 @@ fn main() -> anyhow::Result<()> {
 
 		let data_dir = ctx.get_data_dir()?;
 		let storage_dirs = StorageDirs::new(&data_dir);
-		// Check for a cached package
-		let path = storage_dirs.packages.join(&arg.package);
-		if path.exists() {
-			if let Ok(package) = std::fs::read_to_string(&path) {
-				return Ok(Some(CustomRepoQueryResult {
-					contents: package,
-					content_type: mcvm::pkg_crate::PackageContentType::Declarative,
-					flags: HashSet::new(),
-				}));
-			}
-		}
 
 		let runtime = tokio::runtime::Runtime::new()?;
 		let client = Client::new();
-
-		let project_info = runtime
-			.block_on(get_cached_project(&arg.package, &storage_dirs, &client))
-			.with_context(|| format!("Failed to get project {}", arg.package))?;
-		let Some(project_info) = project_info else {
+		let package_or_project = runtime
+			.block_on(get_cached_package_or_project(
+				&arg.package,
+				&storage_dirs,
+				&client,
+			))
+			.with_context(|| {
+				format!("Failed to get cached package or project '{}'", arg.package)
+			})?;
+		let Some(package_or_project) = package_or_project else {
 			return Ok(None);
 		};
 
-		let relation_sub_function = {
-			let client = client.clone();
-			let storage_dirs = storage_dirs.clone();
-			let runtime = tokio::runtime::Runtime::new()?;
+		let package = match package_or_project {
+			PackageOrProjectInfo::Package { package, .. } => package,
+			PackageOrProjectInfo::ProjectInfo(project_info) => {
+				let relation_sub_function = {
+					let client = client.clone();
+					let storage_dirs = storage_dirs.clone();
+					let runtime = tokio::runtime::Runtime::new()?;
 
-			move |relation: &str| {
-				let project_info = runtime
-					.block_on(get_cached_project(relation, &storage_dirs, &client))
-					.context("Failed to get project")?;
-				if let Some(project_info) = project_info {
-					Ok(project_info.project.id)
-				} else {
-					// Theres a LOT of broken Modrinth projects
-					Ok("none".into())
-				}
+					move |relation: &str| {
+						let package_or_project = runtime
+							.block_on(get_cached_package_or_project(
+								relation,
+								&storage_dirs,
+								&client,
+							))
+							.context("Failed to get cached data")?;
+						if let Some(package_or_project) = package_or_project {
+							let id = match package_or_project {
+								PackageOrProjectInfo::Package { slug, .. } => slug,
+								PackageOrProjectInfo::ProjectInfo(info) => info.project.slug,
+							};
+							Ok(id)
+						} else {
+							// Theres a LOT of broken Modrinth projects
+							Ok("none".into())
+						}
+					}
+				};
+
+				let id = project_info.project.id.clone();
+				let slug = project_info.project.slug.clone();
+
+				let package = mcvm_pkg_gen::modrinth::gen(
+					project_info.project,
+					&project_info.versions,
+					&project_info.members,
+					RelationSubMethod::Function(Box::new(relation_sub_function)),
+					&[],
+					true,
+					true,
+				)
+				.context("Failed to generate MCVM package")?;
+				let package = serde_json::to_string_pretty(&package)
+					.context("Failed to serialized package")?;
+
+				let package_data = format!("{id};{slug};{package}");
+
+				let id_path = storage_dirs.packages.join(&id);
+				let slug_path = storage_dirs.packages.join(&slug);
+				let _ = create_leading_dirs(&id_path);
+				let _ = std::fs::write(&id_path, &package_data);
+				let _ = update_hardlink(&id_path, &slug_path);
+
+				package
 			}
 		};
-
-		let package = mcvm_pkg_gen::modrinth::gen(
-			project_info.project,
-			&project_info.versions,
-			&project_info.members,
-			RelationSubMethod::Function(Box::new(relation_sub_function)),
-			&[],
-			true,
-			true,
-		)
-		.context("Failed to generate MCVM package")?;
-		let package =
-			serde_json::to_string_pretty(&package).context("Failed to serialized package")?;
-
-		let _ = create_leading_dirs(&path);
-		let _ = std::fs::write(path, &package);
 
 		Ok(Some(CustomRepoQueryResult {
 			contents: package,
@@ -115,6 +132,35 @@ fn main() -> anyhow::Result<()> {
 	})?;
 
 	Ok(())
+}
+
+/// Gets a cached package or project info
+async fn get_cached_package_or_project(
+	project_id: &str,
+	storage_dirs: &StorageDirs,
+	client: &Client,
+) -> anyhow::Result<Option<PackageOrProjectInfo>> {
+	let package_path = storage_dirs.packages.join(project_id);
+	if package_path.exists() {
+		if let Ok(data) = std::fs::read_to_string(&package_path) {
+			let mut elems = data.splitn(3, ";");
+			let id = elems.next().context("Missing")?;
+			let slug = elems.next().context("Missing")?;
+			let package = elems.next().context("Missing")?;
+			// Remove the projects to save space, we don't need it anymore
+			let _ = std::fs::remove_file(storage_dirs.projects.join(id));
+			let _ = std::fs::remove_file(storage_dirs.projects.join(slug));
+			return Ok(Some(PackageOrProjectInfo::Package {
+				id: id.to_string(),
+				slug: slug.to_string(),
+				package: package.to_string(),
+			}));
+		}
+	}
+
+	get_cached_project(project_id, storage_dirs, client)
+		.await
+		.map(|x| x.map(PackageOrProjectInfo::ProjectInfo))
 }
 
 /// Gets a cached Modrinth project and it's versions or downloads it
@@ -157,7 +203,9 @@ async fn get_cached_project(
 		};
 
 		let (project, members, versions) = tokio::join!(project_task, members_task, versions_task);
-		let project = project??;
+		let project = project
+			.context("Failed to get project")?
+			.context("Failed to get project")?;
 		let project = match project {
 			Some(project) => project,
 			None => {
@@ -167,8 +215,12 @@ async fn get_cached_project(
 			}
 		};
 
-		let members = members.context("Failed to get project members")??;
-		let versions = versions.context("Failed to get project versions")??;
+		let members = members
+			.context("Failed to get project members")?
+			.context("Failed to get project members")?;
+		let versions = versions
+			.context("Failed to get project versions")?
+			.context("Failed to get project versions")?;
 
 		let project_info = ProjectInfo {
 			project: project,
@@ -186,6 +238,16 @@ async fn get_cached_project(
 	};
 
 	Ok(Some(project_info))
+}
+
+enum PackageOrProjectInfo {
+	Package {
+		#[allow(dead_code)]
+		id: String,
+		slug: String,
+		package: String,
+	},
+	ProjectInfo(ProjectInfo),
 }
 
 /// Project data, versions, and team members for a Modrinth project

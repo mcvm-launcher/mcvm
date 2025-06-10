@@ -232,8 +232,11 @@ pub fn gen(
 		let mut conflicts = Vec::new();
 
 		for dep in &version.dependencies {
+			let Some(project_id) = &dep.project_id else {
+				continue;
+			};
 			let pkg_id = relation_substitution
-				.substitute(&dep.project_id)
+				.substitute(project_id)
 				.context("Failed to substitute dependency")?;
 			// Don't count none relations
 			if pkg_id == "none" {
@@ -296,16 +299,6 @@ pub fn gen(
 		pkg_version.url = Some(download.url.clone());
 
 		addon.versions.push(pkg_version);
-	}
-
-	// Try to sort content versions by semver if possible
-	let mut parsed_content_versions: Option<Vec<_>> = content_versions
-		.iter()
-		.map(|x| version_compare::Version::from(x))
-		.collect();
-	if let Some(parsed) = &mut parsed_content_versions {
-		parsed.sort_by(|x, y| x.compare(y).ord().unwrap());
-		content_versions = parsed.iter().map(ToString::to_string).collect();
 	}
 
 	props.content_versions = Some(content_versions);

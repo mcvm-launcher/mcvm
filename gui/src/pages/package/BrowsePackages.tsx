@@ -84,6 +84,7 @@ export default function BrowsePackages(props: BrowsePackagesProps) {
 						});
 						return [meta, props];
 					} catch (e) {
+						console.error(e);
 						return "error";
 					}
 				})()
