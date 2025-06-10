@@ -304,11 +304,7 @@ pub fn gen(
 		.map(|x| version_compare::Version::from(x))
 		.collect();
 	if let Some(parsed) = &mut parsed_content_versions {
-		parsed.sort_by(|x, y| {
-			x.partial_cmp(y)
-				.unwrap_or(std::cmp::Ordering::Equal)
-				.reverse()
-		});
+		parsed.sort_by(|x, y| x.compare(y).ord().unwrap());
 		content_versions = parsed.iter().map(ToString::to_string).collect();
 	}
 

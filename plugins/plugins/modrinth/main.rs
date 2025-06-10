@@ -124,6 +124,14 @@ async fn get_cached_project(
 	client: &Client,
 ) -> anyhow::Result<Option<ProjectInfo>> {
 	let project_path = storage_dirs.projects.join(project_id);
+	// If a project does not exist, we create a dummy file so that we know not to fetch it again
+	let does_not_exist_path = storage_dirs
+		.projects
+		.join(format!("__missing__{project_id}"));
+	if does_not_exist_path.exists() {
+		return Ok(None);
+	}
+
 	let project_info = if project_path.exists() {
 		let project_info =
 			json_from_file(&project_path).context("Failed to read project info from file")?;
@@ -152,7 +160,11 @@ async fn get_cached_project(
 		let project = project??;
 		let project = match project {
 			Some(project) => project,
-			None => return Ok(None),
+			None => {
+				let file = std::fs::File::create(does_not_exist_path);
+				std::mem::drop(file);
+				return Ok(None);
+			}
 		};
 
 		let members = members.context("Failed to get project members")??;
