@@ -243,10 +243,21 @@ pub type PackageAddonOptionalHashes = PackageAddonHashes<Option<String>>;
 pub struct PackageSearchParameters {
 	/// The number of packages to return
 	pub count: u8,
+	/// How many results to skip
+	pub skip: usize,
 	/// The fuzzy search term for ids, names, or descriptions
 	pub search: Option<String>,
 	/// The package categories to include
 	pub categories: Vec<String>,
+}
+
+/// Results for a package search
+#[derive(Serialize, Deserialize, Default, Clone)]
+pub struct PackageSearchResults {
+	/// The package IDs returned by the search
+	pub results: Vec<String>,
+	/// The total number of results returned by the search, that weren't limited out
+	pub total_results: usize,
 }
 
 #[cfg(test)]

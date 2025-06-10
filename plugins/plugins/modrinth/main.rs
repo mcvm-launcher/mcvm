@@ -14,6 +14,7 @@ use mcvm_net::{
 };
 use mcvm_pkg_gen::relation_substitution::RelationSubMethod;
 use mcvm_plugin::{api::CustomPlugin, hooks::CustomRepoQueryResult};
+use mcvm_shared::pkg::PackageSearchResults;
 use serde::{Deserialize, Serialize};
 
 fn main() -> anyhow::Result<()> {
@@ -91,24 +92,26 @@ fn main() -> anyhow::Result<()> {
 
 	plugin.search_custom_package_repository(|_, arg| {
 		if arg.repository != "modrinth" {
-			return Ok(Vec::new());
+			return Ok(PackageSearchResults::default());
 		}
 
 		let client = Client::new();
 		let runtime = tokio::runtime::Runtime::new()?;
 
-		let projects = runtime.block_on(async move {
-			let projects = modrinth::search_projects(arg.parameters, &client, false)
+		let (projects, total_results) = runtime.block_on(async move {
+			let results = modrinth::search_projects(arg.parameters, &client, false)
 				.await
-				.context("Failed to search projects from the API")?
-				.hits
-				.into_iter()
-				.map(|x| x.slug);
+				.context("Failed to search projects from the API")?;
 
-			Ok::<_, anyhow::Error>(projects)
+			let projects = results.hits.into_iter().map(|x| x.slug);
+
+			Ok::<_, anyhow::Error>((projects, results.total_hits))
 		})?;
 
-		Ok(projects.collect())
+		Ok(PackageSearchResults {
+			results: projects.collect(),
+			total_results,
+		})
 	})?;
 
 	Ok(())

@@ -493,7 +493,10 @@ pub async fn search_projects(
 		"facets=[[\"project_types{}modpack\"]]",
 		if modpacks { "==" } else { "!=" }
 	);
-	let url = format!("https://api.modrinth.com/v2/search?limit={limit}{search}&{facets}");
+	let url = format!(
+		"https://api.modrinth.com/v2/search?limit={limit}{search}&{facets}&offset={}",
+		params.skip
+	);
 
 	download::json(url, client).await
 }
@@ -502,6 +505,8 @@ pub async fn search_projects(
 pub struct SearchResults {
 	/// The results
 	pub hits: Vec<SearchedProject>,
+	/// The total number of results outside limits
+	pub total_hits: usize,
 }
 
 /// A project result in the search

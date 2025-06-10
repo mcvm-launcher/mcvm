@@ -37,12 +37,26 @@ pub fn gen(
 	relation_substitution: RelationSubMethod,
 	force_extensions: &[String],
 ) -> anyhow::Result<DeclarativePackage> {
+	let icon = if !pack.display.gallery.is_empty() {
+		mcvm_net::smithed::get_gallery_url(&pack.id, 0)
+	} else {
+		pack.display.icon.clone()
+	};
+
 	let meta = PackageMetadata {
 		name: Some(pack.display.name),
 		description: Some(pack.display.description),
 		long_description: body,
-		icon: Some(pack.display.icon),
+		icon: Some(icon.clone()),
+		banner: Some(icon),
 		website: pack.display.web_page,
+		gallery: Some(
+			std::iter::repeat(())
+				.enumerate()
+				.map(|(i, _)| mcvm_net::smithed::get_gallery_url(&pack.id, i as u8))
+				.take(pack.display.gallery.len())
+				.collect(),
+		),
 		..Default::default()
 	};
 

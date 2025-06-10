@@ -11,13 +11,14 @@ use std::sync::Arc;
 
 use super::{fmt_err, load_config};
 
+const PACKAGES_PER_PAGE: u8 = 12;
+
 #[tauri::command]
 pub async fn get_packages(
 	state: tauri::State<'_, State>,
 	app_handle: tauri::AppHandle,
 	repo: &str,
-	start: usize,
-	end: usize,
+	page: usize,
 	search: Option<&str>,
 ) -> Result<(Vec<String>, usize), String> {
 	let mut output = LauncherOutput::new(state.get_output(app_handle));
@@ -26,12 +27,13 @@ pub async fn get_packages(
 		fmt_err(load_config(&state.paths, &mut NoOp).context("Failed to load config"))?;
 
 	let params = PackageSearchParameters {
-		count: (end - start) as u8,
+		count: PACKAGES_PER_PAGE,
+		skip: page * PACKAGES_PER_PAGE as usize,
 		search: search.map(|x| x.to_string()),
 		categories: Vec::new(),
 	};
 
-	let packages = fmt_err(
+	let results = fmt_err(
 		config
 			.packages
 			.search(params, Some(repo), &state.paths, &state.client, &mut output)
@@ -39,16 +41,7 @@ pub async fn get_packages(
 			.context("Failed to get list of available packages"),
 	)?;
 
-	let packages = packages.into_iter().map(|x| format!("{repo}:{}", x.id));
-
-	let packages: Vec<_> = packages.collect();
-
-	let available_count = packages.len();
-
-	Ok((
-		packages.into_iter().skip(start).take(end - start).collect(),
-		available_count,
-	))
+	Ok((results.results, results.total_results))
 }
 
 #[tauri::command]
@@ -58,20 +51,20 @@ pub async fn get_package_meta(
 ) -> Result<PackageMetadata, String> {
 	let mut config =
 		fmt_err(load_config(&state.paths, &mut NoOp).context("Failed to load config"))?;
-	
+
 	let meta = fmt_err(
 		config
-		.packages
-		.get_metadata(
-			&Arc::new(PkgRequest::parse(package, PkgRequestSource::UserRequire)),
-			&state.paths,
-			&state.client,
-			&mut NoOp,
-		)
-		.await
-		.context("Failed to get metadata"),
+			.packages
+			.get_metadata(
+				&Arc::new(PkgRequest::parse(package, PkgRequestSource::UserRequire)),
+				&state.paths,
+				&state.client,
+				&mut NoOp,
+			)
+			.await
+			.context("Failed to get metadata"),
 	)?;
-	
+
 	Ok(meta.clone())
 }
 

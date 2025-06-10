@@ -10,7 +10,7 @@ use mcvm_pkg::{PackageContentType, RecommendedPackage, RequiredPackage};
 use mcvm_shared::id::{InstanceID, ProfileID};
 use mcvm_shared::lang::translate::LanguageMap;
 use mcvm_shared::modifications::{ClientType, ServerType};
-use mcvm_shared::pkg::{PackageID, PackageSearchParameters};
+use mcvm_shared::pkg::{PackageID, PackageSearchParameters, PackageSearchResults};
 use mcvm_shared::versions::VersionPattern;
 use mcvm_shared::UpdateDepth;
 use mcvm_shared::{output::MCVMOutput, versions::VersionInfo, Side};
@@ -591,7 +591,7 @@ def_hook!(
 	"search_custom_package_repository",
 	"Hook for searching or browsing a custom package repository",
 	SearchCustomPackageRepositoryArg,
-	Vec<String>,
+	PackageSearchResults,
 	1,
 );
 

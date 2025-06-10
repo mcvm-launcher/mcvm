@@ -8,6 +8,7 @@ use mcvm_net::{
 };
 use mcvm_pkg_gen::relation_substitution::RelationSubMethod;
 use mcvm_plugin::{api::CustomPlugin, hooks::CustomRepoQueryResult};
+use mcvm_shared::pkg::PackageSearchResults;
 use serde::{Deserialize, Serialize};
 use tokio::task::JoinSet;
 
@@ -67,7 +68,7 @@ fn main() -> anyhow::Result<()> {
 
 	plugin.search_custom_package_repository(|ctx, arg| {
 		if arg.repository != "smithed" {
-			return Ok(Vec::new());
+			return Ok(PackageSearchResults::default());
 		}
 
 		let client = Client::new();
@@ -77,13 +78,22 @@ fn main() -> anyhow::Result<()> {
 			.context("Failed to get data dir")?
 			.join("internal/smithed/packs");
 
-		let packs = runtime.block_on(async move {
-			let packs = smithed::search_packs(arg.parameters, &client)
-				.await
-				.context("Failed to search packs from the API")?;
+		let (packs, total_results) = runtime.block_on(async move {
+			let search_task = {
+				let client = client.clone();
+				let params = arg.parameters.clone();
+				async move { smithed::search_packs(params, &client).await }
+			};
+			let count_task = {
+				let client = client.clone();
+				let params = arg.parameters.clone();
+				async move { smithed::count_packs(params, &client).await }
+			};
+
+			let (results, total_count) = tokio::try_join!(search_task, count_task)?;
 
 			let mut tasks = JoinSet::new();
-			for pack in packs {
+			for pack in results {
 				let client = client.clone();
 				let storage_dir = storage_dir.clone();
 				tasks.spawn(async move {
@@ -101,10 +111,13 @@ fn main() -> anyhow::Result<()> {
 				packs.push(result??);
 			}
 
-			Ok::<_, anyhow::Error>(packs)
+			Ok::<_, anyhow::Error>((packs, total_count))
 		})?;
 
-		Ok(packs)
+		Ok(PackageSearchResults {
+			results: packs,
+			total_results,
+		})
 	})?;
 
 	Ok(())

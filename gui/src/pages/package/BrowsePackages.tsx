@@ -39,9 +39,6 @@ export default function BrowsePackages() {
 	};
 
 	async function updatePackages() {
-		let start = PACKAGES_PER_PAGE * page;
-		let end = start + PACKAGES_PER_PAGE;
-
 		let repos: RepoInfo[] = await invoke("get_package_repos");
 		let index = repos.findIndex((x) => x.id == "core");
 		if (index != -1) {
@@ -51,8 +48,7 @@ export default function BrowsePackages() {
 
 		let [packagesToRequest, packageCount] = (await invoke("get_packages", {
 			repo: selectedRepo(),
-			start: start,
-			end: end,
+			page: page,
 			search: search,
 		})) as [string[], number];
 		setPackageCount(packageCount);
@@ -188,7 +184,11 @@ function Package(props: PackageProps) {
 		>
 			<div class="package-inner">
 				<div class="package-image-container">
-					<img src={image} class="package-image" />
+					<img
+						src={image}
+						class="package-image"
+						onerror={(e) => e.target.remove()}
+					/>
 				</div>
 				<div class="cont col package-header">
 					<div class="package-name">{props.meta.name}</div>

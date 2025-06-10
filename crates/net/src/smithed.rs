@@ -53,8 +53,16 @@ pub struct PackDisplay {
 	pub description: String,
 	pub icon: String,
 	pub hidden: bool,
+	#[serde(default)]
 	pub web_page: Option<String>,
+	#[serde(default)]
+	pub gallery: Vec<GalleryEntry>,
 }
+
+/// Etnry in a Smithed pack gallery
+#[derive(Serialize, Deserialize, Clone, Debug)]
+#[serde(rename_all = "camelCase")]
+pub struct GalleryEntry {}
 
 /// Version of a pack
 #[derive(Serialize, Deserialize, Clone, Debug)]
@@ -116,7 +124,11 @@ pub async fn search_packs(
 	} else {
 		String::new()
 	};
-	let url = format!("{API_URL}/packs?limit={limit}{search}");
+	let url = format!(
+		"{API_URL}/packs?limit={limit}{search}&start={}",
+		params.skip
+	);
+	eprintln!("{url}");
 
 	download::json(url, client).await
 }
@@ -127,4 +139,24 @@ pub struct PackSearchResult {
 	pub id: String,
 	#[serde(rename = "displayName")]
 	pub display_name: String,
+}
+
+/// Count packs from the Smithed API that match a criteris
+pub async fn count_packs(
+	params: PackageSearchParameters,
+	client: &Client,
+) -> anyhow::Result<usize> {
+	let search = if let Some(search) = params.search {
+		format!("?search={search}")
+	} else {
+		String::new()
+	};
+	let url = format!("{API_URL}/packs/count{search}");
+
+	download::json(url, client).await
+}
+
+/// Get the URL to a Smithed pack gallery entry
+pub fn get_gallery_url(pack_id: &str, index: u8) -> String {
+	format!("https://api.smithed.dev/v2/packs/{pack_id}/gallery/{index}")
 }

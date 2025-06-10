@@ -6,7 +6,10 @@ use mcvm_plugin::hooks::{
 	QueryCustomPackageRepository, QueryCustomPackageRepositoryArg, SearchCustomPackageRepository,
 	SearchCustomPackageRepositoryArg,
 };
-use mcvm_shared::{output::MCVMOutput, pkg::PackageSearchParameters};
+use mcvm_shared::{
+	output::MCVMOutput,
+	pkg::{PackageSearchParameters, PackageSearchResults},
+};
 
 use crate::{io::paths::Paths, pkg::PkgLocation, plugin::PluginManager};
 
@@ -68,7 +71,7 @@ impl CustomPackageRepository {
 		plugins: &PluginManager,
 		paths: &Paths,
 		o: &mut impl MCVMOutput,
-	) -> anyhow::Result<Vec<String>> {
+	) -> anyhow::Result<PackageSearchResults> {
 		let arg = SearchCustomPackageRepositoryArg {
 			repository: self.id.clone(),
 			parameters: params,
@@ -78,7 +81,7 @@ impl CustomPackageRepository {
 			.context("Failed to call search hook")?;
 
 		let Some(result) = result else {
-			return Ok(Vec::new());
+			return Ok(PackageSearchResults::default());
 		};
 
 		result.result(o)

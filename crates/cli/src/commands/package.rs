@@ -132,6 +132,7 @@ pub async fn run(subcommand: PackageSubcommand, data: &mut CmdData<'_>) -> anyho
 				data,
 				PackageSearchParameters {
 					count: limit.unwrap_or(5),
+					skip: 0,
 					search: query,
 					categories: Vec::new(),
 				},
@@ -675,13 +676,13 @@ async fn search(data: &mut CmdData<'_>, params: PackageSearchParameters) -> anyh
 	let config = data.config.get_mut();
 
 	let client = Client::new();
-	let packages = config
+	let results = config
 		.packages
 		.search(params, None, &data.paths, &client, data.output)
 		.await
 		.context("Failed to search packages")?;
 
-	for package in packages.into_iter().sorted() {
+	for package in results.results.into_iter().sorted() {
 		cprintln!("{HYPHEN_POINT}{package}");
 	}
 
