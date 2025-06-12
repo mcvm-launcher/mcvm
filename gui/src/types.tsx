@@ -44,4 +44,9 @@ export interface PackageMeta {
 	gallery?: string[];
 }
 
-export interface PackageProps {}
+export interface PackageProperties {
+	supported_versions?: string[];
+	supported_modloaders?: string[];
+	supported_plugin_loaders?: string[];
+	supported_sides?: Side[];
+}

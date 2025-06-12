@@ -10,7 +10,7 @@ import {
 } from "solid-js";
 import "@thisbeyond/solid-select/style.css";
 import PageButtons from "../../components/input/PageButtons";
-import { PackageMeta } from "../../types";
+import { PackageMeta, PackageProperties } from "../../types";
 import SearchBar from "../../components/input/SearchBar";
 import { parseQueryString } from "../../utils";
 import InlineSelect from "../../components/input/InlineSelect";
@@ -255,7 +255,7 @@ function Package(props: PackageProps) {
 interface PackageData {
 	id: string;
 	meta: PackageMeta;
-	props: PackageProps;
+	props: PackageProperties;
 }
 
 interface PackageProps {
