@@ -3,7 +3,7 @@ import "./ViewPackage.css";
 import { invoke } from "@tauri-apps/api";
 import { createResource, createSignal, Show } from "solid-js";
 import "@thisbeyond/solid-select/style.css";
-import { PackageMeta, PackageProps } from "../../types";
+import { PackageMeta, PackageProperties } from "../../types";
 import { marked } from "marked";
 
 export default function ViewPackage() {
@@ -35,7 +35,7 @@ export default function ViewPackage() {
 	}
 
 	async function updateProps() {
-		let props: PackageProps = await invoke("get_package_props", {
+		let props: PackageProperties = await invoke("get_package_props", {
 			package: packageId,
 		});
 

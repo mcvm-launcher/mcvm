@@ -70,6 +70,7 @@ fn main() {
 			commands::instance::write_global_profile,
 			commands::instance::update_instance,
 			commands::package::get_packages,
+			commands::package::preload_packages,
 			commands::package::get_package_meta,
 			commands::package::get_package_props,
 			commands::package::get_package_repos,

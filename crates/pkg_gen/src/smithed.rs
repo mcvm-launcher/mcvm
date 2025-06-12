@@ -14,27 +14,27 @@ use mcvm_shared::versions::VersionPattern;
 
 use mcvm_net::smithed::Pack;
 
-use crate::relation_substitution::RelationSubMethod;
+use crate::relation_substitution::{RelationSubFunction, RelationSubMethod};
 
 /// Generates a Smithed package from a Smithed pack ID
-pub async fn gen_from_id(
+pub async fn gen_from_id<A: RelationSubFunction>(
 	id: &str,
 	body: Option<String>,
-	relation_substitution: RelationSubMethod,
+	relation_substitution: RelationSubMethod<A>,
 	force_extensions: &[String],
 ) -> anyhow::Result<DeclarativePackage> {
 	let pack = mcvm_net::smithed::get_pack(id, &Client::new())
 		.await
 		.expect("Failed to get pack");
 
-	gen(pack, body, relation_substitution, force_extensions)
+	gen(pack, body, relation_substitution, force_extensions).await
 }
 
 /// Generates a Smithed package from a Smithed pack
-pub fn gen(
+pub async fn gen<A: RelationSubFunction>(
 	pack: Pack,
 	body: Option<String>,
-	relation_substitution: RelationSubMethod,
+	relation_substitution: RelationSubMethod<A>,
 	force_extensions: &[String],
 ) -> anyhow::Result<DeclarativePackage> {
 	let icon = if !pack.display.gallery.is_empty() {
@@ -108,6 +108,7 @@ pub fn gen(
 		for dep in version.dependencies {
 			let dep = relation_substitution
 				.substitute(&dep.id)
+				.await
 				.context("Failed to substitute dependency")?;
 			if force_extensions.contains(&dep) {
 				extensions.push(dep);

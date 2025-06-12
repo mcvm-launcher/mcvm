@@ -117,6 +117,21 @@ impl PackageRepository {
 		}
 	}
 
+	/// Preloads multiple packages from this repo
+	pub async fn preload(
+		&mut self,
+		packages: Vec<ArcPkgReq>,
+		paths: &Paths,
+		plugins: &PluginManager,
+		o: &mut impl MCVMOutput,
+	) -> anyhow::Result<()> {
+		match self {
+			Self::Basic(..) => Ok(()),
+			Self::Core => Ok(()),
+			Self::Custom(repo) => repo.preload(packages, plugins, paths, o),
+		}
+	}
+
 	/// Get all packages from this repo. Returns an empty array for custom repos.
 	pub async fn get_all_packages(
 		&mut self,

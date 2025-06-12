@@ -3,12 +3,13 @@ use std::sync::Arc;
 use anyhow::Context;
 use mcvm_pkg::repo::RepoMetadata;
 use mcvm_plugin::hooks::{
-	QueryCustomPackageRepository, QueryCustomPackageRepositoryArg, SearchCustomPackageRepository,
+	PreloadPackages, PreloadPackagesArg, QueryCustomPackageRepository,
+	QueryCustomPackageRepositoryArg, SearchCustomPackageRepository,
 	SearchCustomPackageRepositoryArg,
 };
 use mcvm_shared::{
 	output::MCVMOutput,
-	pkg::{PackageSearchParameters, PackageSearchResults},
+	pkg::{ArcPkgReq, PackageSearchParameters, PackageSearchResults},
 };
 
 use crate::{io::paths::Paths, pkg::PkgLocation, plugin::PluginManager};
@@ -82,6 +83,29 @@ impl CustomPackageRepository {
 
 		let Some(result) = result else {
 			return Ok(PackageSearchResults::default());
+		};
+
+		result.result(o)
+	}
+
+	/// Preloads multiple packages from this repository
+	pub fn preload(
+		&self,
+		packages: Vec<ArcPkgReq>,
+		plugins: &PluginManager,
+		paths: &Paths,
+		o: &mut impl MCVMOutput,
+	) -> anyhow::Result<()> {
+		let arg = PreloadPackagesArg {
+			repository: self.id.clone(),
+			packages: packages.into_iter().map(|x| x.id.to_string()).collect(),
+		};
+		let result = plugins
+			.call_hook_on_plugin(PreloadPackages, &self.plugin, &arg, paths, o)
+			.context("Failed to call preload hook")?;
+
+		let Some(result) = result else {
+			return Ok(());
 		};
 
 		result.result(o)

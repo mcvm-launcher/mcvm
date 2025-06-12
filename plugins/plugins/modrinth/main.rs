@@ -30,81 +30,38 @@ fn main() -> anyhow::Result<()> {
 
 		let runtime = tokio::runtime::Runtime::new()?;
 		let client = Client::new();
-		let package_or_project = runtime
-			.block_on(get_cached_package_or_project(
-				&arg.package,
-				&storage_dirs,
-				&client,
-			))
-			.with_context(|| {
-				format!("Failed to get cached package or project '{}'", arg.package)
-			})?;
-		let Some(package_or_project) = package_or_project else {
-			return Ok(None);
-		};
 
-		let package = match package_or_project {
-			PackageOrProjectInfo::Package { package, .. } => package,
-			PackageOrProjectInfo::ProjectInfo(project_info) => {
-				let relation_sub_function = {
-					let client = client.clone();
-					let storage_dirs = storage_dirs.clone();
-					let runtime = tokio::runtime::Runtime::new()?;
+		runtime.block_on(query_package(&arg.package, &client, &storage_dirs))
+	})?;
 
-					move |relation: &str| {
-						let package_or_project = runtime
-							.block_on(get_cached_package_or_project(
-								relation,
-								&storage_dirs,
-								&client,
-							))
-							.context("Failed to get cached data")?;
-						if let Some(package_or_project) = package_or_project {
-							let id = match package_or_project {
-								PackageOrProjectInfo::Package { slug, .. } => slug,
-								PackageOrProjectInfo::ProjectInfo(info) => info.project.slug,
-							};
-							Ok(id)
-						} else {
-							// Theres a LOT of broken Modrinth projects
-							Ok("none".into())
-						}
-					}
-				};
+	plugin.preload_packages(|ctx, arg| {
+		if arg.repository != "modrinth" {
+			return Ok(());
+		}
 
-				let id = project_info.project.id.clone();
-				let slug = project_info.project.slug.clone();
+		let data_dir = ctx.get_data_dir()?;
+		let storage_dirs = StorageDirs::new(&data_dir);
 
-				let package = mcvm_pkg_gen::modrinth::gen(
-					project_info.project,
-					&project_info.versions,
-					&project_info.members,
-					RelationSubMethod::Function(Box::new(relation_sub_function)),
-					&[],
-					true,
-					true,
-				)
-				.context("Failed to generate MCVM package")?;
-				let package = serde_json::to_string_pretty(&package)
-					.context("Failed to serialized package")?;
+		let runtime = tokio::runtime::Runtime::new()?;
+		let client = Client::new();
 
-				let package_data = format!("{id};{slug};{package}");
+		runtime.block_on(async move {
+			let mut tasks = tokio::task::JoinSet::new();
+			for package in arg.packages {
+				let client = client.clone();
+				let storage_dirs = storage_dirs.clone();
 
-				let id_path = storage_dirs.packages.join(&id);
-				let slug_path = storage_dirs.packages.join(&slug);
-				let _ = create_leading_dirs(&id_path);
-				let _ = std::fs::write(&id_path, &package_data);
-				let _ = update_hardlink(&id_path, &slug_path);
-
-				package
+				tasks.spawn(async move { query_package(&package, &client, &storage_dirs).await });
 			}
-		};
 
-		Ok(Some(CustomRepoQueryResult {
-			contents: package,
-			content_type: mcvm::pkg_crate::PackageContentType::Declarative,
-			flags: HashSet::new(),
-		}))
+			while let Some(task) = tasks.join_next().await {
+				let _ = task??;
+			}
+
+			Ok::<(), anyhow::Error>(())
+		})?;
+
+		Ok(())
 	})?;
 
 	plugin.search_custom_package_repository(|_, arg| {
@@ -132,6 +89,80 @@ fn main() -> anyhow::Result<()> {
 	})?;
 
 	Ok(())
+}
+
+/// Queries for a Modrinth package
+async fn query_package(
+	id: &str,
+	client: &Client,
+	storage_dirs: &StorageDirs,
+) -> anyhow::Result<Option<CustomRepoQueryResult>> {
+	let package_or_project = get_cached_package_or_project(id, storage_dirs, &client)
+		.await
+		.with_context(|| format!("Failed to get cached package or project '{id}'"))?;
+	let Some(package_or_project) = package_or_project else {
+		return Ok(None);
+	};
+
+	let package = match package_or_project {
+		PackageOrProjectInfo::Package { package, .. } => package,
+		PackageOrProjectInfo::ProjectInfo(project_info) => {
+			let relation_sub_function = {
+				let client = client.clone();
+				let storage_dirs = storage_dirs.clone();
+
+				async move |relation: &str| {
+					let package_or_project =
+						get_cached_package_or_project(relation, &storage_dirs, &client)
+							.await
+							.context("Failed to get cached data")?;
+					if let Some(package_or_project) = package_or_project {
+						let id = match package_or_project {
+							PackageOrProjectInfo::Package { slug, .. } => slug,
+							PackageOrProjectInfo::ProjectInfo(info) => info.project.slug,
+						};
+						Ok(id)
+					} else {
+						// Theres a LOT of broken Modrinth projects
+						Ok("none".into())
+					}
+				}
+			};
+
+			let id = project_info.project.id.clone();
+			let slug = project_info.project.slug.clone();
+
+			let package = mcvm_pkg_gen::modrinth::gen(
+				project_info.project,
+				&project_info.versions,
+				&project_info.members,
+				RelationSubMethod::Function(Box::new(relation_sub_function)),
+				&[],
+				true,
+				true,
+			)
+			.await
+			.context("Failed to generate MCVM package")?;
+			let package =
+				serde_json::to_string_pretty(&package).context("Failed to serialized package")?;
+
+			let package_data = format!("{id};{slug};{package}");
+
+			let id_path = storage_dirs.packages.join(&id);
+			let slug_path = storage_dirs.packages.join(&slug);
+			let _ = create_leading_dirs(&id_path);
+			let _ = std::fs::write(&id_path, &package_data);
+			let _ = update_hardlink(&id_path, &slug_path);
+
+			package
+		}
+	};
+
+	Ok(Some(CustomRepoQueryResult {
+		contents: package,
+		content_type: mcvm::pkg_crate::PackageContentType::Declarative,
+		flags: HashSet::new(),
+	}))
 }
 
 /// Gets a cached package or project info

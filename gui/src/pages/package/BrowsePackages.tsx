@@ -14,7 +14,6 @@ import { PackageMeta, PackageProperties } from "../../types";
 import SearchBar from "../../components/input/SearchBar";
 import { parseQueryString } from "../../utils";
 import InlineSelect from "../../components/input/InlineSelect";
-import { emit } from "@tauri-apps/api/event";
 import { FooterData } from "../../App";
 import { FooterMode } from "../../components/launch/Footer";
 
@@ -73,7 +72,16 @@ export default function BrowsePackages(props: BrowsePackagesProps) {
 
 		let promises = [];
 		console.log("Waiting for packages");
-		emit("mcvm_output_create_task", "get_packages");
+
+		try {
+			await invoke("preload_packages", {
+				packages: packagesToRequest,
+				repo: selectedRepo(),
+			});
+		} catch (e) {
+			console.error(e);
+		}
+
 		for (let pkg of packagesToRequest) {
 			promises.push(
 				(async () => {
@@ -112,8 +120,6 @@ export default function BrowsePackages(props: BrowsePackagesProps) {
 			return packagesAndIds;
 		} catch (e) {
 			console.error(e);
-		} finally {
-			emit("mcvm_output_finish_task", "get_packages");
 		}
 	}
 

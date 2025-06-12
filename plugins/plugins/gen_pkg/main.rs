@@ -3,7 +3,7 @@ use std::fs::File;
 use std::io::stdout;
 
 use clap::Parser;
-use mcvm_pkg_gen::relation_substitution::RelationSubMethod;
+use mcvm_pkg_gen::relation_substitution::relation_sub_map;
 use mcvm_pkg_gen::{modrinth, smithed};
 use mcvm_plugin::api::CustomPlugin;
 use serde::{Deserialize, Serialize};
@@ -119,14 +119,14 @@ pub async fn gen(source: PackageSource, config: Option<PackageGenerationConfig>,
 		PackageSource::Smithed => smithed::gen_from_id(
 			id,
 			None,
-			RelationSubMethod::Map(config.relation_substitutions),
+			relation_sub_map(config.relation_substitutions),
 			&config.force_extensions,
 		)
 		.await
 		.expect("Failed to generate package"),
 		PackageSource::Modrinth => modrinth::gen_from_id(
 			id,
-			RelationSubMethod::Map(config.relation_substitutions),
+			relation_sub_map(config.relation_substitutions),
 			&config.force_extensions,
 			config.make_fabriclike.unwrap_or_default(),
 			config.make_forgelike.unwrap_or_default(),

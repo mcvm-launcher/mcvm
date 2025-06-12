@@ -23,47 +23,38 @@ fn main() -> anyhow::Result<()> {
 		let runtime = tokio::runtime::Runtime::new()?;
 		let client = Client::new();
 
-		let storage_dir = ctx
-			.get_data_dir()
-			.context("Failed to get data dir")?
-			.join("internal/smithed/packs");
-		let pack_info = runtime
-			.block_on(get_cached_pack(&arg.package, true, &storage_dir, &client))
-			.context("Failed to get pack")?;
-		let Some(pack_info) = pack_info else {
-			return Ok(None);
-		};
+		let data_dir = ctx.get_data_dir()?;
 
-		let relation_sub_function = {
-			let client = client.clone();
-			let storage_dir = storage_dir.clone();
-			let runtime = tokio::runtime::Runtime::new()?;
+		runtime.block_on(query_package(&arg.package, &client, &data_dir))
+	})?;
 
-			move |relation: &str| {
-				let pack_info = runtime
-					.block_on(get_cached_pack(relation, false, &storage_dir, &client))
-					.context("Failed to get pack")?
-					.context("Pack does not exist")?;
+	plugin.preload_packages(|ctx, arg| {
+		if arg.repository != "smithed" {
+			return Ok(());
+		}
 
-				Ok(pack_info.pack.id)
+		let runtime = tokio::runtime::Runtime::new()?;
+		let client = Client::new();
+
+		let data_dir = ctx.get_data_dir()?;
+
+		runtime.block_on(async move {
+			let mut tasks = tokio::task::JoinSet::new();
+			for package in arg.packages {
+				let client = client.clone();
+				let data_dir = data_dir.clone();
+
+				tasks.spawn(async move { query_package(&package, &client, &data_dir).await });
 			}
-		};
 
-		let package = mcvm_pkg_gen::smithed::gen(
-			pack_info.pack,
-			pack_info.body,
-			RelationSubMethod::Function(Box::new(relation_sub_function)),
-			&[],
-		)
-		.context("Failed to generate MCVM package")?;
-		let package =
-			serde_json::to_string_pretty(&package).context("Failed to serialized package")?;
+			while let Some(task) = tasks.join_next().await {
+				let _ = task??;
+			}
 
-		Ok(Some(CustomRepoQueryResult {
-			contents: package,
-			content_type: mcvm::pkg_crate::PackageContentType::Declarative,
-			flags: HashSet::new(),
-		}))
+			Ok::<(), anyhow::Error>(())
+		})?;
+
+		Ok(())
 	})?;
 
 	plugin.search_custom_package_repository(|ctx, arg| {
@@ -121,6 +112,51 @@ fn main() -> anyhow::Result<()> {
 	})?;
 
 	Ok(())
+}
+
+/// Queries for a Smithed package
+async fn query_package(
+	id: &str,
+	client: &Client,
+	data_dir: &Path,
+) -> anyhow::Result<Option<CustomRepoQueryResult>> {
+	let storage_dir = data_dir.join("internal/smithed/packs");
+	let pack_info = get_cached_pack(id, true, &storage_dir, &client)
+		.await
+		.context("Failed to get pack")?;
+	let Some(pack_info) = pack_info else {
+		return Ok(None);
+	};
+
+	let relation_sub_function = {
+		let client = client.clone();
+		let storage_dir = storage_dir.clone();
+
+		async move |relation: &str| {
+			let pack_info = get_cached_pack(relation, false, &storage_dir, &client)
+				.await
+				.context("Failed to get pack")?
+				.context("Pack does not exist")?;
+
+			Ok(pack_info.pack.id)
+		}
+	};
+
+	let package = mcvm_pkg_gen::smithed::gen(
+		pack_info.pack,
+		pack_info.body,
+		RelationSubMethod::Function(relation_sub_function),
+		&[],
+	)
+	.await
+	.context("Failed to generate MCVM package")?;
+	let package = serde_json::to_string_pretty(&package).context("Failed to serialized package")?;
+
+	Ok(Some(CustomRepoQueryResult {
+		contents: package,
+		content_type: mcvm::pkg_crate::PackageContentType::Declarative,
+		flags: HashSet::new(),
+	}))
 }
 
 /// Gets a cached Smithed pack or downloads it

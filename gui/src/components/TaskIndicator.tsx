@@ -21,7 +21,7 @@ export default function TaskIndicator(props: TaskIndicatorProps) {
 				setColor("instance");
 			} else if (task == "update_instance") {
 				setColor("profile");
-			} else if (task == "search_packages" || task == "get_packages") {
+			} else if (task == "search_packages" || task == "load_packages") {
 				setColor("package");
 			}
 
@@ -169,8 +169,8 @@ function getTaskDisplayName(task: string) {
 		return "Launching";
 	} else if (task == "search_packages") {
 		return "Searching packages";
-	} else if (task == "get_packages") {
-		return "Getting packages";
+	} else if (task == "load_packages") {
+		return "Loading packages";
 	}
 	return task;
 }

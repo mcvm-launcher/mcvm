@@ -603,3 +603,21 @@ pub struct SearchCustomPackageRepositoryArg {
 	/// The parameters for the search
 	pub parameters: PackageSearchParameters,
 }
+
+def_hook!(
+	PreloadPackages,
+	"preload_packages",
+	"Hook for loading multiple packages from a custom package repository",
+	PreloadPackagesArg,
+	(),
+	1,
+);
+
+/// Argument for the PreloadPackages hook
+#[derive(Serialize, Deserialize, Default)]
+pub struct PreloadPackagesArg {
+	/// The repository that is being queried
+	pub repository: String,
+	/// The packages that are being preloaded
+	pub packages: Vec<String>,
+}
