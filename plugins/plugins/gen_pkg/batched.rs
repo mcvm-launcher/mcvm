@@ -8,7 +8,7 @@ use iso8601_timestamp::Timestamp;
 use mcvm_core::io::{json_from_file, json_to_file};
 use mcvm_core::net::download::Client;
 use mcvm_net::modrinth::Version;
-use mcvm_pkg_gen::relation_substitution::relation_sub_map;
+use mcvm_pkg_gen::relation_substitution::RelationSubMap;
 use mcvm_pkg_gen::{modrinth, smithed};
 use serde::{Deserialize, Serialize};
 use serde_json::{ser::PrettyFormatter, Serializer};
@@ -237,7 +237,7 @@ pub async fn batched_gen(mut config: BatchedConfig, filter: Vec<String>) {
 				smithed::gen(
 					pack.clone(),
 					None,
-					relation_sub_map(pkg_config.relation_substitutions),
+					RelationSubMap(pkg_config.relation_substitutions),
 					&pkg_config.force_extensions,
 				)
 				.await
@@ -266,7 +266,7 @@ pub async fn batched_gen(mut config: BatchedConfig, filter: Vec<String>) {
 					project.clone(),
 					versions,
 					team,
-					relation_sub_map(pkg_config.relation_substitutions),
+					RelationSubMap(pkg_config.relation_substitutions),
 					&pkg_config.force_extensions,
 					pkg_config.make_fabriclike.unwrap_or_default(),
 					pkg_config.make_forgelike.unwrap_or_default(),

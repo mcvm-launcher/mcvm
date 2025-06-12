@@ -22,4 +22,5 @@ mcvm_shared = { workspace = true }
 regex = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
+tokio = { workspace = true }
 version-compare = { workspace = true }

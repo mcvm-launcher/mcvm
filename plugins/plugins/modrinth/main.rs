@@ -12,6 +12,7 @@ use mcvm_net::{
 	download::Client,
 	modrinth::{self, Member, Project, Version},
 };
+use mcvm_pkg_gen::relation_substitution::RelationSubFunction;
 use mcvm_plugin::{api::CustomPlugin, hooks::CustomRepoQueryResult};
 use mcvm_shared::pkg::PackageSearchResults;
 use serde::{Deserialize, Serialize};
@@ -106,26 +107,9 @@ async fn query_package(
 	let package = match package_or_project {
 		PackageOrProjectInfo::Package { package, .. } => package,
 		PackageOrProjectInfo::ProjectInfo(project_info) => {
-			let relation_sub_function = {
-				let client = client.clone();
-				let storage_dirs = storage_dirs.clone();
-
-				async move |relation: &str| {
-					let package_or_project =
-						get_cached_package_or_project(relation, &storage_dirs, &client)
-							.await
-							.context("Failed to get cached data")?;
-					if let Some(package_or_project) = package_or_project {
-						let id = match package_or_project {
-							PackageOrProjectInfo::Package { slug, .. } => slug,
-							PackageOrProjectInfo::ProjectInfo(info) => info.project.slug,
-						};
-						Ok(id)
-					} else {
-						// Theres a LOT of broken Modrinth projects
-						Ok("none".into())
-					}
-				}
+			let relation_sub_function = RelationSub {
+				client: client.clone(),
+				storage_dirs: storage_dirs.clone(),
 			};
 
 			let id = project_info.project.id.clone();
@@ -162,6 +146,31 @@ async fn query_package(
 		content_type: mcvm::pkg_crate::PackageContentType::Declarative,
 		flags: HashSet::new(),
 	}))
+}
+
+#[derive(Clone)]
+struct RelationSub {
+	client: Client,
+	storage_dirs: StorageDirs,
+}
+
+impl RelationSubFunction for RelationSub {
+	async fn substitute(&self, relation: &str) -> anyhow::Result<String> {
+		let package_or_project =
+			get_cached_package_or_project(relation, &self.storage_dirs, &self.client)
+				.await
+				.context("Failed to get cached data")?;
+		if let Some(package_or_project) = package_or_project {
+			let id = match package_or_project {
+				PackageOrProjectInfo::Package { slug, .. } => slug,
+				PackageOrProjectInfo::ProjectInfo(info) => info.project.slug,
+			};
+			Ok(id)
+		} else {
+			// Theres a LOT of broken Modrinth projects
+			Ok("none".into())
+		}
+	}
 }
 
 /// Gets a cached package or project info

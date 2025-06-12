@@ -2794,6 +2794,7 @@ dependencies = [
  "regex",
  "serde",
  "serde_json",
+ "tokio",
  "version-compare 0.2.0",
 ]
 

@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
 use anyhow::Context;
 use mcvm_core::net::download::Client;
@@ -14,7 +14,7 @@ use mcvm_shared::versions::VersionPattern;
 
 use mcvm_net::smithed::Pack;
 
-use crate::relation_substitution::RelationSubFunction;
+use crate::relation_substitution::{substitute_multiple, RelationSubFunction};
 
 /// Generates a Smithed package from a Smithed pack ID
 pub async fn gen_from_id(
@@ -84,6 +84,16 @@ pub async fn gen(
 
 	let mut all_mc_versions = Vec::new();
 
+	let mut substitutions = HashSet::new();
+	for version in &pack.versions {
+		for dependency in &version.dependencies {
+			substitutions.insert(&dependency.id);
+		}
+	}
+	let substitutions = substitute_multiple(substitutions.into_iter(), relation_substitution)
+		.await
+		.context("Failed to substitute relations")?;
+
 	for version in pack.versions.into_iter().rev() {
 		// Get the sanitized version name
 		let version_name_sanitized = version.name.replace('.', "-");
@@ -106,9 +116,10 @@ pub async fn gen(
 		let mut extensions = Vec::new();
 
 		for dep in version.dependencies {
-			let dep = relation_substitution(&dep.id)
-				.await
-				.context("Failed to substitute dependency")?;
+			let dep = substitutions
+				.get(&dep.id)
+				.expect("Should have errored already")
+				.clone();
 			if force_extensions.contains(&dep) {
 				extensions.push(dep);
 			} else {

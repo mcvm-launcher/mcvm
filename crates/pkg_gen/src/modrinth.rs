@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::sync::OnceLock;
 
 use anyhow::Context;
@@ -22,7 +22,7 @@ use mcvm_net::modrinth::{
 use mcvm_shared::Side;
 use regex::{Regex, RegexBuilder};
 
-use crate::relation_substitution::RelationSubFunction;
+use crate::relation_substitution::{substitute_multiple, RelationSubFunction};
 
 /// Generates a Modrinth package from a Modrinth project ID
 pub async fn gen_from_id(
@@ -169,6 +169,19 @@ pub async fn gen(
 
 	let mut content_versions = Vec::with_capacity(versions.len());
 
+	// Make substitutions
+	let mut substitutions = HashSet::new();
+	for version in versions {
+		for dependency in &version.dependencies {
+			if let Some(project_id) = &dependency.project_id {
+				substitutions.insert(project_id);
+			}
+		}
+	}
+	let substitutions = substitute_multiple(substitutions.into_iter(), relation_substitution)
+		.await
+		.context("Failed to substitute relations")?;
+
 	for version in versions {
 		let version_name = version.id.clone();
 		// Collect Minecraft versions
@@ -236,9 +249,10 @@ pub async fn gen(
 			let Some(project_id) = &dep.project_id else {
 				continue;
 			};
-			let pkg_id = relation_substitution(project_id)
-				.await
-				.context("Failed to substitute dependency")?;
+			let pkg_id = substitutions
+				.get(project_id)
+				.expect("Should have errored already")
+				.clone();
 			// Don't count none relations
 			if pkg_id == "none" {
 				continue;

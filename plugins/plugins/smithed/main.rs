@@ -1,4 +1,7 @@
-use std::{collections::HashSet, path::Path};
+use std::{
+	collections::HashSet,
+	path::{Path, PathBuf},
+};
 
 use anyhow::Context;
 use mcvm_core::io::{files::create_leading_dirs, json_from_file, json_to_file};
@@ -6,6 +9,7 @@ use mcvm_net::{
 	download::{self, Client},
 	smithed::{self, Pack},
 };
+use mcvm_pkg_gen::relation_substitution::RelationSubFunction;
 use mcvm_plugin::{api::CustomPlugin, hooks::CustomRepoQueryResult};
 use mcvm_shared::pkg::PackageSearchResults;
 use serde::{Deserialize, Serialize};
@@ -127,18 +131,9 @@ async fn query_package(
 		return Ok(None);
 	};
 
-	let relation_sub_function = {
-		let client = client.clone();
-		let storage_dir = storage_dir.clone();
-
-		async move |relation: &str| {
-			let pack_info = get_cached_pack(relation, false, &storage_dir, &client)
-				.await
-				.context("Failed to get pack")?
-				.context("Pack does not exist")?;
-
-			Ok(pack_info.pack.id)
-		}
+	let relation_sub_function = RelationSub {
+		client: client.clone(),
+		storage_dir,
 	};
 
 	let package =
@@ -152,6 +147,23 @@ async fn query_package(
 		content_type: mcvm::pkg_crate::PackageContentType::Declarative,
 		flags: HashSet::new(),
 	}))
+}
+
+#[derive(Clone)]
+struct RelationSub {
+	client: Client,
+	storage_dir: PathBuf,
+}
+
+impl RelationSubFunction for RelationSub {
+	async fn substitute(&self, relation: &str) -> anyhow::Result<String> {
+		let pack_info = get_cached_pack(relation, false, &self.storage_dir, &self.client)
+			.await
+			.context("Failed to get pack")?
+			.context("Pack does not exist")?;
+
+		Ok(pack_info.pack.id)
+	}
 }
 
 /// Gets a cached Smithed pack or downloads it
