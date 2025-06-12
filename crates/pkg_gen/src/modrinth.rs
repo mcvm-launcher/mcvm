@@ -22,12 +22,12 @@ use mcvm_net::modrinth::{
 use mcvm_shared::Side;
 use regex::{Regex, RegexBuilder};
 
-use crate::relation_substitution::{RelationSubFunction, RelationSubMethod};
+use crate::relation_substitution::RelationSubFunction;
 
 /// Generates a Modrinth package from a Modrinth project ID
-pub async fn gen_from_id<A: RelationSubFunction>(
+pub async fn gen_from_id(
 	id: &str,
-	relation_substitution: RelationSubMethod<A>,
+	relation_substitution: impl RelationSubFunction,
 	force_extensions: &[String],
 	make_fabriclike: bool,
 	make_forgelike: bool,
@@ -58,11 +58,11 @@ pub async fn gen_from_id<A: RelationSubFunction>(
 }
 
 /// Generates a Modrinth package from a Modrinth project
-pub async fn gen<A: RelationSubFunction>(
+pub async fn gen(
 	project: Project,
 	versions: &[Version],
 	members: &[Member],
-	relation_substitution: RelationSubMethod<A>,
+	relation_substitution: impl RelationSubFunction,
 	force_extensions: &[String],
 	make_fabriclike: bool,
 	make_forgelike: bool,
@@ -236,8 +236,7 @@ pub async fn gen<A: RelationSubFunction>(
 			let Some(project_id) = &dep.project_id else {
 				continue;
 			};
-			let pkg_id = relation_substitution
-				.substitute(project_id)
+			let pkg_id = relation_substitution(project_id)
 				.await
 				.context("Failed to substitute dependency")?;
 			// Don't count none relations

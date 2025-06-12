@@ -12,7 +12,6 @@ use mcvm_net::{
 	download::Client,
 	modrinth::{self, Member, Project, Version},
 };
-use mcvm_pkg_gen::relation_substitution::RelationSubMethod;
 use mcvm_plugin::{api::CustomPlugin, hooks::CustomRepoQueryResult};
 use mcvm_shared::pkg::PackageSearchResults;
 use serde::{Deserialize, Serialize};
@@ -136,7 +135,7 @@ async fn query_package(
 				project_info.project,
 				&project_info.versions,
 				&project_info.members,
-				RelationSubMethod::Function(Box::new(relation_sub_function)),
+				relation_sub_function,
 				&[],
 				true,
 				true,

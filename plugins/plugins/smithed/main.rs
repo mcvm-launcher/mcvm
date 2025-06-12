@@ -6,7 +6,6 @@ use mcvm_net::{
 	download::{self, Client},
 	smithed::{self, Pack},
 };
-use mcvm_pkg_gen::relation_substitution::RelationSubMethod;
 use mcvm_plugin::{api::CustomPlugin, hooks::CustomRepoQueryResult};
 use mcvm_shared::pkg::PackageSearchResults;
 use serde::{Deserialize, Serialize};
@@ -142,14 +141,10 @@ async fn query_package(
 		}
 	};
 
-	let package = mcvm_pkg_gen::smithed::gen(
-		pack_info.pack,
-		pack_info.body,
-		RelationSubMethod::Function(relation_sub_function),
-		&[],
-	)
-	.await
-	.context("Failed to generate MCVM package")?;
+	let package =
+		mcvm_pkg_gen::smithed::gen(pack_info.pack, pack_info.body, relation_sub_function, &[])
+			.await
+			.context("Failed to generate MCVM package")?;
 	let package = serde_json::to_string_pretty(&package).context("Failed to serialized package")?;
 
 	Ok(Some(CustomRepoQueryResult {
