@@ -15,6 +15,7 @@ import { inputError } from "../../errors";
 import { beautifyString, stringCompare } from "../../utils";
 import { FooterData } from "../../App";
 import { FooterMode } from "../../components/launch/Footer";
+import PackagesConfig, { PackageConfig } from "./PackagesConfig";
 
 export default function InstanceConfig(props: InstanceConfigProps) {
 	let params = useParams();
@@ -122,11 +123,16 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 	let [gameModVersion, setGameModVersion] = createSignal<string | undefined>();
 	let [datapackFolder, setDatapackFolder] = createSignal<string | undefined>();
 
+	let [globalPackages, setGlobalPackages] = createSignal<PackageConfig[]>([]);
+	let [clientPackages, setClientPackages] = createSignal<PackageConfig[]>([]);
+	let [serverPackages, setServerPackages] = createSignal<PackageConfig[]>([]);
+
 	let [displayName, setDisplayName] = createSignal("");
 	let [message, setMessage] = createSignal("");
 
 	createEffect(() => {
 		if (config() != undefined) {
+			console.log(config()!);
 			setName(config()!.name);
 			setSide(config()!.type);
 			setIcon(config()!.icon);
@@ -147,6 +153,21 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 			}
 			setGameModVersion(config()!.game_modification_version);
 			setDatapackFolder(config()!.datapack_folder);
+
+			if (config()!.packages == undefined) {
+				setGlobalPackages([]);
+				setClientPackages([]);
+				setServerPackages([]);
+			} else if (length in config()!.packages!) {
+				setGlobalPackages(config()!.packages as PackageConfig[]);
+				setClientPackages([]);
+				setServerPackages([]);
+			} else {
+				let packages = config()!.packages! as any;
+				setGlobalPackages(packages.global == undefined ? [] : packages.global);
+				setClientPackages(packages.client == undefined ? [] : packages.client);
+				setServerPackages(packages.server == undefined ? [] : packages.server);
+			}
 
 			setDisplayName(config()!.name == undefined ? id : config()!.name!);
 			setMessage(
@@ -461,6 +482,27 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 					></input>
 				</div>
 			</Show>
+			<Show when={tab() == "packages"}>
+				<PackagesConfig
+					id={id}
+					isProfile={isProfile}
+					globalPackages={globalPackages()}
+					clientPackages={clientPackages()}
+					serverPackages={serverPackages()}
+					setGlobalPackages={(packages) => {
+						setGlobalPackages(packages);
+						setDirty();
+					}}
+					setClientPackages={(packages) => {
+						setClientPackages(packages);
+						setDirty();
+					}}
+					setServerPackages={(packages) => {
+						setServerPackages(packages);
+						setDirty();
+					}}
+				/>
+			</Show>
 			<br />
 			<br />
 			<br />
@@ -486,6 +528,13 @@ interface InstanceConfig {
 	server_type?: string;
 	game_modification_version?: string;
 	datapack_folder?: string;
+	packages?:
+		| PackageConfig[]
+		| {
+				global?: PackageConfig[];
+				client?: PackageConfig[];
+				server?: PackageConfig[];
+		  };
 	[extraKey: string]: any;
 }
 

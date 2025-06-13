@@ -1,5 +1,5 @@
 import { convertFileSrc } from "@tauri-apps/api/tauri";
-import { InstanceIcon } from "./types";
+import { InstanceIcon, PkgRequest } from "./types";
 
 export function getIconSrc(icon: InstanceIcon | null): string {
 	if (icon === null) {
@@ -57,4 +57,22 @@ export function beautifyString(string: string) {
 	}
 
 	return string;
+}
+
+// Parses a PkgRequest (repo:id@version) into its parts
+export function parsePkgRequest(request: string) {
+	let split = request.split(":");
+	let repo = split.length > 1 ? split[0] : undefined;
+	let right = split[split.length - 1];
+
+	let split2 = right.split("@");
+	let version = split2.length > 1 ? split2[1] : undefined;
+	let id = split2[0];
+	return { id: id, repo: repo, version: version } as PkgRequest;
+}
+
+export function pkgRequestToString(request: PkgRequest) {
+	let repo = request.repo == undefined ? "" : `${request.repo}:`;
+	let version = request.version == undefined ? "" : `@${request.version}`;
+	return `${repo}${request.id}${version}`;
 }

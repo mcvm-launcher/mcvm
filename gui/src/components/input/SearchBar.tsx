@@ -25,6 +25,7 @@ export default function SearchBar(props: SearchBarProps) {
 							style="cursor:pointer"
 							onclick={() => {
 								setTerm("");
+								props.method("");
 							}}
 						>
 							<Delete />

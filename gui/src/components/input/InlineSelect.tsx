@@ -62,15 +62,19 @@ export interface InlineSelectProps {
 }
 
 function InlineSelectOption(props: OptionProps) {
-	console.log(props.selected);
 	let isSelected = () => props.selected == props.option.value;
 	let color =
 		props.option.color == undefined ? "var(--fg2)" : props.option.color;
 
-	let borderColor = () => (isSelected() ? color : "");
 	let textColor = () =>
-		props.solidSelect && isSelected() ? "var(--bg)" : "var(--fg)";
-	let backgroundColor = () => (props.solidSelect && isSelected() ? color : "");
+		props.solidSelect && isSelected() ? "black" : "var(--fg)";
+	let backgroundColor = () =>
+		props.solidSelect && isSelected()
+			? color
+			: props.connected
+			? "var(--bg0)"
+			: "var(--bg2)";
+	let borderColor = () => `border-color:${isSelected() ? color : "var(--bg3)"}`;
 
 	return (
 		<div
@@ -81,7 +85,7 @@ function InlineSelectOption(props: OptionProps) {
 			} ${props.isLast ? "last" : "not-last"} ${
 				props.isFirst ? "" : "not-first"
 			}`}
-			style={`border-color:${borderColor()};color:${textColor()};background-color:${backgroundColor()}`}
+			style={`${borderColor()};color:${textColor()};background-color:${backgroundColor()}`}
 			onclick={() => props.onSelect(props.option.value)}
 		>
 			{props.option.contents}

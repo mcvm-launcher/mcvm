@@ -9,6 +9,7 @@
 	background-color: var(--bg0);
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
+	border-top: 0.15rem solid var(--bg3);
 }
 
 #footer-left {
@@ -20,10 +21,9 @@
 	margin-left: 1rem;
 	font-size: 0.8rem;
 	justify-content: flex-start;
-	overflow: hidden;
-	flex-wrap: nowrap;
-	text-wrap: nowrap;
 	font-weight: bold;
+	overflow: nowrap;
+	text-wrap: nowrap;
 }
 
 #footer-center-inner {
@@ -46,7 +46,7 @@
 
 #footer-action-button {
 	box-sizing: border-box;
-	border-top: 0.15rem solid;
+	/* border-top: 0.15rem solid; */
 	font-weight: bold;
 }
 
@@ -74,6 +74,11 @@
 .footer-action-button-decoration.right {
 	border-right: 0.15rem solid;
 	border-top-right-radius: var(--round);
+}
+
+.footer-action-button-decoration.right,
+#footer-action-button {
+	box-shadow: var(--shadow-offset) var(--shadow-offset) black;
 }
 
 #footer-right {

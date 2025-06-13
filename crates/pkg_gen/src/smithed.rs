@@ -37,7 +37,7 @@ pub async fn gen(
 	relation_substitution: impl RelationSubFunction,
 	force_extensions: &[String],
 ) -> anyhow::Result<DeclarativePackage> {
-	let icon = if !pack.display.gallery.is_empty() {
+	let banner = if !pack.display.gallery.is_empty() {
 		mcvm_net::smithed::get_gallery_url(&pack.id, 0)
 	} else {
 		pack.display.icon.clone()
@@ -47,8 +47,8 @@ pub async fn gen(
 		name: Some(pack.display.name),
 		description: Some(pack.display.description),
 		long_description: body,
-		icon: Some(icon.clone()),
-		banner: Some(icon),
+		icon: Some(pack.display.icon),
+		banner: Some(banner),
 		website: pack.display.web_page,
 		gallery: Some(
 			std::iter::repeat(())

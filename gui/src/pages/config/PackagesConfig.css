@@ -1,0 +1,70 @@
+#packages-config {
+	width: 35rem;
+}
+
+#packages-config-header {
+	display: grid;
+	grid-template-columns: minmax(0, 6fr) minmax(0, 4fr);
+	width: 100%;
+}
+
+.package-config-filter {
+	font-size: 0.8rem;
+	font-weight: bold;
+}
+
+#configured-packages {
+	margin-top: 1rem;
+}
+
+.configured-package {
+	height: 4rem;
+	width: 100%;
+	display: grid;
+	grid-template-columns: minmax(0, 0.6fr) minmax(0, 2fr) minmax(0, 1fr) minmax(
+			0,
+			1.5fr
+		);
+	background-color: var(--bg2);
+	border: 0.15rem solid var(--bg3);
+	border-radius: var(--round);
+}
+
+.configured-package-icon {
+	width: 2.5rem;
+	border-radius: var(--round);
+}
+
+.configured-package-details {
+	justify-content: flex-start;
+}
+
+.configured-package-details-left {
+	gap: 0;
+	align-items: flex-start;
+}
+
+.configured-package-name {
+	justify-content: flex-start;
+	font-size: 0.9rem;
+	font-weight: bold;
+}
+
+.configured-package-repo {
+	justify-content: flex-start;
+	font-size: 0.8rem;
+	font-weight: bold;
+	color: var(--fg3);
+	margin-top: -0.4rem;
+}
+
+.configured-package-version {
+	font-size: 0.8rem;
+	font-weight: bold;
+	color: var(--fg3);
+}
+
+.configured-package-controls {
+	justify-content: flex-end;
+	margin-right: 0.75rem;
+}

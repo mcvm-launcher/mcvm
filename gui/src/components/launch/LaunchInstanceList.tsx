@@ -287,7 +287,14 @@ function Item(props: ItemProps) {
 			class={`input-shadow launch-instance-list-item noselect ${
 				props.selected ? "selected" : ""
 			} ${props.itemKind}`}
-			onClick={props.onSelect}
+			onClick={() => {
+				// Double click to edit
+				if (props.selected) {
+					window.location.href = `/${props.itemKind}_config/${props.instance.id}`;
+				} else {
+					props.onSelect();
+				}
+			}}
 			onMouseEnter={() => setIsHovered(true)}
 			onMouseLeave={() => setIsHovered(false)}
 		>

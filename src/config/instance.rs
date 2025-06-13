@@ -1,22 +1,24 @@
 use std::collections::HashMap;
 
+use crate::config::package::read_package_config;
 use crate::instance::launch::LaunchOptions;
 use crate::instance::{InstKind, Instance, InstanceStoredConfig};
 use crate::io::paths::Paths;
 use anyhow::{bail, ensure, Context};
 use mcvm_config::instance::{
-	is_valid_instance_id, merge_instance_configs, GameModifications, InstanceConfig,
-	LaunchConfig, LaunchMemory,
+	is_valid_instance_id, merge_instance_configs, GameModifications, InstanceConfig, LaunchConfig,
+	LaunchMemory,
 };
+use mcvm_config::package::PackageConfigDeser;
 use mcvm_config::profile::ProfileConfig;
 use mcvm_core::io::java::args::MemoryNum;
 use mcvm_core::io::java::install::JavaInstallationKind;
+use mcvm_pkg::{PkgRequest, PkgRequestSource};
 use mcvm_plugin::hooks::{ModifyInstanceConfig, ModifyInstanceConfigArgument};
 use mcvm_shared::id::{InstanceID, ProfileID};
 use mcvm_shared::output::MCVMOutput;
 use mcvm_shared::Side;
 
-use super::package::{read_package_config, PackageConfig, PackageConfigSource};
 use crate::plugin::PluginManager;
 
 /// Read the config for an instance to create the instance
@@ -64,12 +66,19 @@ pub fn read_instance_config(
 		config = merge_instance_configs(&config, result.config);
 	}
 
-	let original_config_with_profiles = config.clone();
+	let mut original_config_with_profiles = config.clone();
 
 	let side = config.side.context("Instance type was not specified")?;
 
 	// Consolidate all of the package configs into the instance package config list
 	let packages = consolidate_package_configs(profiles, &config, side);
+
+	original_config_with_profiles.common.packages = packages.clone();
+
+	let packages = packages
+		.into_iter()
+		.map(|x| read_package_config(x, config.common.package_stability.unwrap_or_default()))
+		.collect();
 
 	let kind = match side {
 		Side::Client => InstKind::client(config.window),
@@ -148,32 +157,35 @@ pub fn consolidate_package_configs(
 	profiles: Vec<&ProfileConfig>,
 	instance: &InstanceConfig,
 	side: Side,
-) -> Vec<PackageConfig> {
-	let stability = instance.common.package_stability.unwrap_or_default();
+) -> Vec<PackageConfigDeser> {
 	// We use a map so that we can override packages from more general sources
 	// with those from more specific ones
 	let mut map = HashMap::new();
 	for profile in profiles {
 		for pkg in profile.packages.iter_global() {
-			let pkg = read_package_config(pkg.clone(), stability, PackageConfigSource::Instance);
-			map.insert(pkg.id.clone(), pkg);
+			// let pkg = read_package_config(pkg.clone(), stability, PackageConfigSource::Instance);
+			map.insert(
+				PkgRequest::parse(pkg.get_pkg_id(), PkgRequestSource::UserRequire).id,
+				pkg.clone(),
+			);
 		}
 		for pkg in profile.packages.iter_side(side) {
-			let pkg = read_package_config(pkg.clone(), stability, PackageConfigSource::Profile);
-			map.insert(pkg.id.clone(), pkg);
+			// let pkg = read_package_config(pkg.clone(), stability, PackageConfigSource::Profile);
+			map.insert(
+				PkgRequest::parse(pkg.get_pkg_id(), PkgRequestSource::UserRequire).id,
+				pkg.clone(),
+			);
 		}
 	}
 	for pkg in &instance.common.packages {
-		let pkg = read_package_config(pkg.clone(), stability, PackageConfigSource::Instance);
-		map.insert(pkg.id.clone(), pkg);
+		// let pkg = read_package_config(pkg.clone(), stability, PackageConfigSource::Instance);
+		map.insert(
+			PkgRequest::parse(pkg.get_pkg_id(), PkgRequestSource::UserRequire).id,
+			pkg.clone(),
+		);
 	}
 
-	let mut out = Vec::new();
-	for pkg in map.values() {
-		out.push(pkg.clone());
-	}
-
-	out
+	map.into_values().collect()
 }
 
 #[cfg(test)]

@@ -10,10 +10,8 @@ use mcvm_pkg::{PkgRequest, PkgRequestSource};
 /// Stored configuration for a package
 #[derive(Clone, Debug)]
 pub struct PackageConfig {
-	/// The ID of the pcakage
+	/// The ID of the package
 	pub id: PackageID,
-	/// The source of where the package was configured
-	pub source: PackageConfigSource,
 	/// The package's enabled features
 	pub features: Vec<String>,
 	/// Whether or not to use the package's default features
@@ -42,7 +40,6 @@ impl PackageConfig {
 	pub fn from_id(id: PackageID) -> Self {
 		Self {
 			id,
-			source: PackageConfigSource::Instance,
 			features: Vec::new(),
 			use_default_features: true,
 			permissions: EvalPermissions::default(),
@@ -89,7 +86,7 @@ impl PackageConfig {
 pub fn read_package_config(
 	config: PackageConfigDeser,
 	profile_stability: PackageStability,
-	source: PackageConfigSource,
+	// source: PackageConfigSource,
 ) -> PackageConfig {
 	let id = config.get_pkg_id();
 	let content_version = config.get_content_version().cloned();
@@ -102,7 +99,6 @@ pub fn read_package_config(
 
 	PackageConfig {
 		id,
-		source,
 		features: config.get_features(),
 		use_default_features: config.get_use_default_features(),
 		permissions: config.get_permissions(),

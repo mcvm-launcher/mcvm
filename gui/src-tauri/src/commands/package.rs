@@ -1,5 +1,6 @@
 use crate::{output::LauncherOutput, State};
 use anyhow::Context;
+use mcvm::io::lock::{Lockfile, LockfilePackage};
 use mcvm::pkg_crate::metadata::PackageMetadata;
 use mcvm::pkg_crate::properties::PackageProperties;
 use mcvm::pkg_crate::repo::RepoMetadata;
@@ -7,6 +8,7 @@ use mcvm::pkg_crate::{PkgRequest, PkgRequestSource};
 use mcvm::shared::output::NoOp;
 use mcvm::shared::pkg::PackageSearchParameters;
 use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 use std::sync::Arc;
 
 use super::{fmt_err, load_config};
@@ -129,6 +131,37 @@ pub async fn get_package_props(
 }
 
 #[tauri::command]
+pub async fn get_package_meta_and_props(
+	state: tauri::State<'_, State>,
+	package: &str,
+) -> Result<(PackageMetadata, PackageProperties), String> {
+	let mut config =
+		fmt_err(load_config(&state.paths, &mut NoOp).context("Failed to load config"))?;
+
+	let request = Arc::new(PkgRequest::parse(package, PkgRequestSource::UserRequire));
+
+	let meta = fmt_err(
+		config
+			.packages
+			.get_metadata(&request, &state.paths, &state.client, &mut NoOp)
+			.await
+			.context("Failed to get metadata"),
+	)?
+	.clone();
+
+	let props = fmt_err(
+		config
+			.packages
+			.get_properties(&request, &state.paths, &state.client, &mut NoOp)
+			.await
+			.context("Failed to get properties"),
+	)?
+	.clone();
+
+	Ok((meta, props))
+}
+
+#[tauri::command]
 pub async fn get_package_repos(state: tauri::State<'_, State>) -> Result<Vec<RepoInfo>, String> {
 	let mut config =
 		fmt_err(load_config(&state.paths, &mut NoOp).context("Failed to load config"))?;
@@ -154,4 +187,17 @@ pub async fn get_package_repos(state: tauri::State<'_, State>) -> Result<Vec<Rep
 pub struct RepoInfo {
 	pub id: String,
 	pub meta: RepoMetadata,
+}
+
+#[tauri::command]
+pub async fn get_instance_packages(
+	state: tauri::State<'_, State>,
+	instance: &str,
+) -> Result<HashMap<String, LockfilePackage>, String> {
+	let lock = fmt_err(Lockfile::open(&state.paths).context("Failed to open lockfile"))?;
+
+	let default = HashMap::new();
+	let packages = lock.get_instance_packages(instance).unwrap_or(&default);
+
+	Ok(packages.clone())
 }

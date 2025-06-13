@@ -16,6 +16,7 @@
 	cursor: pointer;
 	-webkit-user-select: none;
 	user-select: none;
+	border: 0.15rem solid;
 }
 
 .inline-select-option.connected {
@@ -46,7 +47,7 @@
 }
 
 .inline-select-option.selected {
-	border: 0.15rem solid;
+	border-right: 0.15rem solid;
 }
 
 .inline-select-option.connected.selected {

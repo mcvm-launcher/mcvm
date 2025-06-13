@@ -125,6 +125,9 @@ impl PackageRepository {
 		plugins: &PluginManager,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
+		if packages.is_empty() {
+			return Ok(());
+		}
 		match self {
 			Self::Basic(..) => Ok(()),
 			Self::Core => Ok(()),

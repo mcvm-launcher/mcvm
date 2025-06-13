@@ -1,4 +1,4 @@
-use std::sync::Arc;
+use std::{collections::HashSet, sync::Arc};
 
 use anyhow::Context;
 use mcvm_pkg::repo::RepoMetadata;
@@ -96,9 +96,11 @@ impl CustomPackageRepository {
 		paths: &Paths,
 		o: &mut impl MCVMOutput,
 	) -> anyhow::Result<()> {
+		// Deduplicate
+		let packages: HashSet<_> = packages.into_iter().map(|x| x.id.to_string()).collect();
 		let arg = PreloadPackagesArg {
 			repository: self.id.clone(),
-			packages: packages.into_iter().map(|x| x.id.to_string()).collect(),
+			packages: packages.into_iter().collect(),
 		};
 		let result = plugins
 			.call_hook_on_plugin(PreloadPackages, &self.plugin, &arg, paths, o)

@@ -3,17 +3,25 @@ import "./IconButton.css";
 import Icon, { HasWidthHeight } from "../Icon";
 
 export default function IconButton(props: IconButtonProps) {
-	const colorStyle = props.selected
-		? `background-color:${props.selectedColor};border-color:${props.selectedColor}`
-		: `background-color:${props.color};border-color:${props.color}`;
+	let backgroundColor = () =>
+		props.selected ? props.selectedColor : props.color;
+
+	let border = () =>
+		props.border == undefined
+			? `border-color: ${backgroundColor()}`
+			: `border-color: ${props.border}`;
+
+	let colorStyle = () => `background-color:${backgroundColor()};${border()}`;
 
 	let iconColorStyle =
 		props.iconColor == undefined ? "" : `color:${props.iconColor}`;
 
 	return (
 		<div
-			class="cont icon-button border"
-			style={`${colorStyle};width:${props.size};height:${props.size};${iconColorStyle}`}
+			class="cont icon-button"
+			style={`${colorStyle()};width:${props.size};height:${
+				props.size
+			};${iconColorStyle}`}
 			onClick={props.onClick}
 		>
 			<Icon icon={props.icon} size={`calc(${props.size} * 0.7)`} />
@@ -26,6 +34,7 @@ export interface IconButtonProps {
 	color: string;
 	selectedColor: string;
 	iconColor?: string;
+	border?: string;
 	size: string;
 	selected: boolean;
 	onClick: (e: Event) => void;

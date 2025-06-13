@@ -39,9 +39,10 @@ pub(crate) struct LockfileInstance {
 }
 
 /// Package stored in the lockfile
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct LockfilePackage {
-	addons: Vec<LockfileAddon>,
+	/// The addons of this package
+	pub addons: Vec<LockfileAddon>,
 }
 
 /// Format for an addon in the lockfile
@@ -334,5 +335,13 @@ impl Lockfile {
 	/// Update whether an instance has done its first update
 	pub fn update_instance_has_done_first_update(&mut self, instance: &str) {
 		self.contents.created_instances.insert(instance.to_string());
+	}
+
+	/// Get the locked packages of an instance. Returns None if the instance does not exist.
+	pub fn get_instance_packages(
+		&self,
+		instance: &str,
+	) -> Option<&HashMap<String, LockfilePackage>> {
+		self.contents.packages.get(instance)
 	}
 }

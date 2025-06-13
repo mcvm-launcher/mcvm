@@ -3,4 +3,6 @@
 	justify-content: center;
 	align-items: center;
 	cursor: pointer;
+	border: 0.15rem solid;
+	border-radius: var(--round);
 }

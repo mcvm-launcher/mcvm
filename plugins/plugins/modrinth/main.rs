@@ -180,6 +180,7 @@ async fn get_cached_package_or_project(
 	client: &Client,
 ) -> anyhow::Result<Option<PackageOrProjectInfo>> {
 	let package_path = storage_dirs.packages.join(project_id);
+	// Packages are stored with their id, slug, and data separated by semicolons. This is so that we don't have to parse the full JSON.
 	if package_path.exists() {
 		if let Ok(data) = std::fs::read_to_string(&package_path) {
 			let mut elems = data.splitn(3, ";");

@@ -20,13 +20,12 @@
 .package {
 	/* padding: 0.5rem; */
 	background-color: var(--bg2);
-	border-color: var(--bg2);
 	box-sizing: border-box;
 	height: 15rem;
 	border-radius: var(--round);
 	border-top-left-radius: var(--round2);
 	border-top-right-radius: var(--round2);
-	border: 0.2rem solid var(--bg2);
+	border: 0.15rem solid var(--bg3);
 }
 
 .package.selected {

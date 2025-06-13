@@ -45,7 +45,6 @@ use super::reg::PkgRegistry;
 use super::Package;
 use crate::addon::{self, AddonLocation, AddonRequest};
 use crate::config::package::PackageConfig;
-use crate::config::package::PackageConfigSource;
 use crate::io::paths::Paths;
 use crate::plugin::PluginManager;
 use crate::util::hash::{
@@ -117,8 +116,6 @@ pub struct EvalConstants {
 pub struct EvalParameters {
 	/// The side (client/server) we are installing the package on
 	pub side: Side,
-	/// The configuration source of the package
-	pub config_source: PackageConfigSource,
 	/// Features enabled for the package
 	pub features: Vec<String>,
 	/// Permissions for the package
@@ -136,7 +133,6 @@ impl EvalParameters {
 	pub fn new(side: Side) -> Self {
 		Self {
 			side,
-			config_source: PackageConfigSource::Instance,
 			features: Vec::new(),
 			perms: EvalPermissions::default(),
 			stability: PackageStability::default(),
@@ -156,7 +152,6 @@ impl EvalParameters {
 			.calculate_features(properties)
 			.context("Failed to calculate features")?;
 
-		self.config_source = config.source;
 		self.features = features;
 		self.perms = config.permissions;
 		self.stability = config.stability;

@@ -16,7 +16,7 @@
 	--fg3: #777777;
 	--bg0: #101010;
 	--bg: #161616;
-	--bg2: #1c1c1c;
+	--bg2: #1d1d1d;
 	--bg3: #2b2b2b;
 	--bg2disabled: #1b1b1b;
 	--shadow: #121212;
@@ -37,6 +37,7 @@
 	--round: 0.2rem;
 	--round2: 0.6rem;
 	--input-height: 2.2rem;
+	--shadow-offset: 0.35rem;
 
 	color: var(--text);
 	background-color: var(--bg);
@@ -100,7 +101,7 @@ input {
 input,
 button,
 .input-shadow {
-	box-shadow: 0.35rem 0.35rem var(--shadow);
+	box-shadow: var(--shadow-offset) var(--shadow-offset) var(--shadow);
 }
 
 button {

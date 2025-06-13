@@ -151,8 +151,7 @@ export default function BrowsePackages(props: BrowsePackagesProps) {
 								columns={repos()!.length}
 								onChange={(x) => {
 									if (x != undefined) {
-										let query = search == undefined ? "" : `&search=${search}`;
-										window.location.href = `/packages/0?repo=${x}${query}`;
+										window.location.href = formatUrl(0, x, search);
 									}
 								}}
 								optionClass="repo"
@@ -167,7 +166,7 @@ export default function BrowsePackages(props: BrowsePackagesProps) {
 						placeholder="Search for packages..."
 						value={search}
 						method={(term) => {
-							window.location.href = `/packages/0?search=${term}&repo=${selectedRepo()}`;
+							window.location.href = formatUrl(0, selectedRepo(), term);
 						}}
 					/>
 				</div>
@@ -205,8 +204,7 @@ export default function BrowsePackages(props: BrowsePackagesProps) {
 				page={page}
 				pageCount={Math.floor(packageCount() / PACKAGES_PER_PAGE)}
 				pageFunction={(page) => {
-					let query = search == undefined ? "" : `&search=${search}`;
-					window.location.href = `/packages/${page}?repo=${selectedRepo()}${query}`;
+					window.location.href = formatUrl(page, selectedRepo(), search);
 				}}
 			/>
 			<br />
@@ -285,4 +283,10 @@ interface RepoMetadata {
 
 export interface BrowsePackagesProps {
 	setFooterData: (data: FooterData) => void;
+}
+
+// Formats the URL to the browse page based on search parameters
+function formatUrl(page: number, repo?: string, search?: string) {
+	let query = search == undefined ? "" : `&search=${search}`;
+	return `/packages/${page}?repo=${repo}${query}`;
 }

@@ -1,4 +1,4 @@
-import { createEffect, createResource, For, JSX, Show } from "solid-js";
+import { createResource, For, JSX, onMount, Show } from "solid-js";
 import "./Sidebar.css";
 import { Box, Home, Jigsaw, Menu } from "../../icons";
 import { Location } from "@solidjs/router";
@@ -7,7 +7,7 @@ import { stringCompare } from "../../utils";
 
 export default function Sidebar(props: SidebarProps) {
 	// Close the sidebar when clicking outside of it
-	createEffect(() => {
+	onMount(() => {
 		document.addEventListener("click", (e) => {
 			let sidebar = document.getElementById("sidebar");
 			let sidebarButton = document.getElementById("sidebar-button");

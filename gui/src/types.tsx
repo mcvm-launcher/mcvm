@@ -50,3 +50,9 @@ export interface PackageProperties {
 	supported_plugin_loaders?: string[];
 	supported_sides?: Side[];
 }
+
+export interface PkgRequest {
+	id: string;
+	repo?: string;
+	version?: string;
+}

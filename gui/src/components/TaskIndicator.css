@@ -5,6 +5,7 @@
 	border-radius: var(--round2);
 	background-color: black;
 	font-size: 0.9rem;
+	box-shadow: var(--shadow-offset) var(--shadow-offset) black;
 }
 
 #task-indicator-preview {

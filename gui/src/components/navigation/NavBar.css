@@ -26,6 +26,7 @@
 	margin: 0px;
 	line-height: 0;
 	margin-top: 0.15rem;
+	text-shadow: var(--shadow-offset) var(--shadow-offset) var(--bg0);
 }
 
 #navbar-gap {

@@ -135,6 +135,7 @@ export default function LaunchFooter(props: LaunchFooterProps) {
 									icon={Upload}
 									size="28px"
 									color="var(--bg2)"
+									border="var(--bg3)"
 									selectedColor="var(--accent)"
 									onClick={() => {
 										if (props.selectedItem != undefined) {
@@ -151,6 +152,7 @@ export default function LaunchFooter(props: LaunchFooterProps) {
 									icon={Properties}
 									size="28px"
 									color="var(--bg2)"
+									border="var(--bg3)"
 									selectedColor="var(--accent)"
 									onClick={() => {
 										if (props.selectedItem != undefined) {
@@ -293,7 +295,7 @@ function ActionButton(props: ActionButtonProps) {
 			<div class="footer-action-button-decorations">
 				<div
 					class="footer-action-button-decoration left"
-					style={`${backgroundStyle()};${borderStyle()}`}
+					style={`${backgroundStyle()};${borderStyle()};border-top-width:0px`}
 				></div>
 				<div
 					class="footer-action-button-decoration right"
