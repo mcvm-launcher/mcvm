@@ -13,7 +13,9 @@
 
 #navbar-container {
 	display: grid;
-	grid-template-columns: repeat(5, minmax(0, 1fr));
+	grid-template-columns:
+		minmax(0, 0.55fr) minmax(0, 1.45fr) minmax(0, 1fr) minmax(0, 1fr)
+		minmax(0, 1fr);
 	width: 100%;
 	height: 100%;
 }
@@ -27,6 +29,7 @@
 	line-height: 0;
 	margin-top: 0.15rem;
 	text-shadow: var(--shadow-offset) var(--shadow-offset) var(--bg0);
+	font-size: 1.4rem;
 }
 
 #navbar-gap {
@@ -37,4 +40,22 @@
 #navbar-left {
 	justify-content: flex-start;
 	padding-left: 0.5rem;
+}
+
+#navbar-buttons {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	width: 100%;
+}
+
+.navbar-button {
+	height: 100%;
+	font-weight: bold;
+	box-sizing: border-box;
+	border-bottom: 0.15rem solid var(--bg);
+}
+
+.navbar-button-text {
+	font-size: 0.9rem;
+	margin-bottom: -0.2rem;
 }

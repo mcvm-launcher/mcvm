@@ -123,6 +123,7 @@ function Layout(props: LayoutProps) {
 					setShowSidebar(!showSidebar());
 				}}
 				onSelectUser={props.onSelectUser}
+				location={props.location}
 			/>
 			<ErrorBoundary
 				fallback={

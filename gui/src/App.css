@@ -25,7 +25,7 @@
 	--instance: #7ee91b;
 	--profile: #1bb9e9;
 	--package: #e9901b;
-	--plugin: #7f29ff;
+	--plugin: #8635ff;
 	--warning: #e9ca1b;
 	--error: #d40e3d;
 	
@@ -33,6 +33,7 @@
 	--profilebg: #0d1f24;
 	--packagebg: #33230f;
 	--pluginfg: #b380ff;
+	--pluginbg: #23123d;
 	--errorbg: #2b0e14;
 
 	/* Other values */
