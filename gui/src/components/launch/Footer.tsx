@@ -295,7 +295,9 @@ function ActionButton(props: ActionButtonProps) {
 			<div class="footer-action-button-decorations">
 				<div
 					class="footer-action-button-decoration left"
-					style={`${backgroundStyle()};${borderStyle()};border-top-width:0px`}
+					style={`${backgroundStyle()};${borderStyle()};${
+						props.selected ? "" : "border-top-width:0px"
+					}`}
 				></div>
 				<div
 					class="footer-action-button-decoration right"
@@ -314,7 +316,9 @@ function ActionButton(props: ActionButtonProps) {
 				id="footer-action-button"
 				class="cont"
 				onclick={props.onClick}
-				style={`background-color:${backgroundColor()};border-color:${borderColor()};color:${borderColor()}`}
+				style={`background-color:${backgroundColor()};border-color:${borderColor()};color:${borderColor()};${
+					props.selected ? "border-top:0.15rem solid" : ""
+				}`}
 			>
 				{Icon()}
 				{message()}

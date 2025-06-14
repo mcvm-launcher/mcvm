@@ -10,8 +10,9 @@
 }
 
 .search-bar {
-	background-color: var(--bg2);
+	background-color: var(--bg0);
 	padding: 0.2rem 0.6rem;
+	border: 0.15rem solid var(--bg3);
 	border-radius: var(--round);
 }
 

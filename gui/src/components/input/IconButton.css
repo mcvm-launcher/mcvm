@@ -6,3 +6,7 @@
 	border: 0.15rem solid;
 	border-radius: var(--round);
 }
+
+.icon-button > svg {
+	pointer-events: none;
+}

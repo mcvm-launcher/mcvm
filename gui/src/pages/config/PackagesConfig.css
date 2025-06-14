@@ -25,7 +25,7 @@
 			0,
 			1.5fr
 		);
-	background-color: var(--bg2);
+	background-color: var(--bg0);
 	border: 0.15rem solid var(--bg3);
 	border-radius: var(--round);
 }
@@ -36,12 +36,12 @@
 }
 
 .configured-package-details {
-	justify-content: flex-start;
+	align-items: flex-start;
+	gap: 0;
 }
 
-.configured-package-details-left {
-	gap: 0;
-	align-items: flex-start;
+.configured-package-details-top {
+	justify-content: flex-start;
 }
 
 .configured-package-name {

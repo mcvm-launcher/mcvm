@@ -15,7 +15,10 @@ import { inputError } from "../../errors";
 import { beautifyString, stringCompare } from "../../utils";
 import { FooterData } from "../../App";
 import { FooterMode } from "../../components/launch/Footer";
-import PackagesConfig, { PackageConfig } from "./PackagesConfig";
+import PackagesConfig, {
+	getPackageConfigRequest,
+	PackageConfig,
+} from "./PackagesConfig";
 
 export default function InstanceConfig(props: InstanceConfigProps) {
 	let params = useParams();
@@ -211,6 +214,23 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 			return;
 		}
 
+		// Packages
+		let packages = undefined;
+		if (isInstance) {
+			packages = globalPackages();
+		} else {
+			// Only include the global list if we don't need the other ones
+			if (clientPackages().length == 0 && serverPackages().length == 0) {
+				packages = globalPackages();
+			} else {
+				packages = {
+					global: globalPackages(),
+					client: clientPackages(),
+					server: serverPackages(),
+				}
+			}
+		}
+
 		let newConfig: InstanceConfig = {
 			from: from(),
 			type: side(),
@@ -221,6 +241,7 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 			client_type: clientType(),
 			server_type: serverType(),
 			game_modification_version: undefinedEmpty(gameModVersion()),
+			packages: packages,
 		};
 
 		// Handle extra fields
@@ -489,6 +510,23 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 					globalPackages={globalPackages()}
 					clientPackages={clientPackages()}
 					serverPackages={serverPackages()}
+					onRemove={(pkg, category) => {
+						if (category == "global") {
+							setGlobalPackages((packages) =>
+								packages.filter((x) => getPackageConfigRequest(x).id != pkg)
+							);
+						} else if (category == "client") {
+							setClientPackages((packages) =>
+								packages.filter((x) => getPackageConfigRequest(x).id != pkg)
+							);
+						} else if (category == "server") {
+							setServerPackages((packages) =>
+								packages.filter((x) => getPackageConfigRequest(x).id != pkg)
+							);
+						}
+
+						setDirty();
+					}}
 					setGlobalPackages={(packages) => {
 						setGlobalPackages(packages);
 						setDirty();

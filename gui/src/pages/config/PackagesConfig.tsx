@@ -37,27 +37,17 @@ export default function PackagesConfig(props: PackagesConfigProps) {
 		// Get a list of all packages
 		let allPackages = installedPackages.concat([]);
 
-		let func = (x: PackageConfig) => {
-			if (typeof x == "string") {
-				return x;
-			} else {
-				return x.id;
-			}
-		};
-		for (let pkg of props.globalPackages.map(func)) {
-			let req = parsePkgRequest(pkg);
-			allPackages = allPackages.filter((x) => parsePkgRequest(x).id != req.id);
-			allPackages.push(pkg);
+		for (let pkg of props.globalPackages.map(getPackageConfigRequest)) {
+			allPackages = allPackages.filter((x) => parsePkgRequest(x).id != pkg.id);
+			allPackages.push(pkgRequestToString(pkg));
 		}
-		for (let pkg of props.clientPackages.map(func)) {
-			let req = parsePkgRequest(pkg);
-			allPackages = allPackages.filter((x) => parsePkgRequest(x).id != req.id);
-			allPackages.push(pkg);
+		for (let pkg of props.clientPackages.map(getPackageConfigRequest)) {
+			allPackages = allPackages.filter((x) => parsePkgRequest(x).id != pkg.id);
+			allPackages.push(pkgRequestToString(pkg));
 		}
-		for (let pkg of props.serverPackages.map(func)) {
-			let req = parsePkgRequest(pkg);
-			allPackages = allPackages.filter((x) => parsePkgRequest(x).id != req.id);
-			allPackages.push(pkg);
+		for (let pkg of props.serverPackages.map(getPackageConfigRequest)) {
+			allPackages = allPackages.filter((x) => parsePkgRequest(x).id != pkg.id);
+			allPackages.push(pkgRequestToString(pkg));
 		}
 
 		setInstalledPackages(installedPackages);
@@ -121,7 +111,7 @@ export default function PackagesConfig(props: PackagesConfigProps) {
 							{
 								value: "bundled",
 								contents: <div>BUNDLED</div>,
-								color: "var(--profile)",
+								color: "var(--package)",
 							},
 							{
 								value: "dependencies",
@@ -227,6 +217,11 @@ export default function PackagesConfig(props: PackagesConfigProps) {
 										props={properties}
 										isInherited={false}
 										isInstalled={isInstalled}
+										isConfigured={isConfigured}
+										category={
+											isClient ? "client" : isServer ? "server" : "global"
+										}
+										onRemove={props.onRemove}
 									/>
 								</Show>
 							);
@@ -244,6 +239,7 @@ export interface PackagesConfigProps {
 	clientPackages: PackageConfig[];
 	serverPackages: PackageConfig[];
 	isProfile: boolean;
+	onRemove: (pkg: string, category: ConfiguredPackageCategory) => void;
 	setGlobalPackages: (packages: PackageConfig[]) => void;
 	setClientPackages: (packages: PackageConfig[]) => void;
 	setServerPackages: (packages: PackageConfig[]) => void;
@@ -267,15 +263,17 @@ function ConfiguredPackage(props: ConfiguredPackageProps) {
 			<div class="cont">
 				<img src={icon} class="configured-package-icon" />
 			</div>
-			<div class="cont configured-package-details">
-				<div class="cont col configured-package-details-left">
+			<div class="cont col configured-package-details">
+				<div class="cont configured-package-details-top">
 					<div class="configured-package-name">{name}</div>
-					<Show when={props.request.repo != undefined}>
-						<div class="configured-package-repo">{props.request.repo}</div>
+					<Show when={props.request.version != undefined}>
+						<div class="configured-package-version">
+							{props.request.version}
+						</div>
 					</Show>
 				</div>
-				<Show when={props.request.version != undefined}>
-					<div class="configured-package-version">{props.request.version}</div>
+				<Show when={props.request.repo != undefined}>
+					<div class="configured-package-repo">{props.request.repo}</div>
 				</Show>
 			</div>
 			<div></div>
@@ -296,18 +294,22 @@ function ConfiguredPackage(props: ConfiguredPackageProps) {
 						}}
 						selected={false}
 					/>
-					<IconButton
-						icon={Delete}
-						size="24px"
-						color="var(--bg2)"
-						border="var(--bg3)"
-						selectedColor="var(--accent)"
-						onClick={(e) => {
-							e.preventDefault();
-							e.stopPropagation();
-						}}
-						selected={false}
-					/>
+					<Show when={props.isConfigured}>
+						<IconButton
+							icon={Delete}
+							size="24px"
+							color="var(--error)"
+							border="var(--error)"
+							selectedColor="var(--accent)"
+							onClick={(e) => {
+								e.preventDefault();
+								e.stopPropagation();
+								props.onRemove(props.request.id, props.category);
+								(e.target! as any).parentElement.parentElement.remove();
+							}}
+							selected={false}
+						/>
+					</Show>
 				</Show>
 			</div>
 		</div>
@@ -320,6 +322,9 @@ interface ConfiguredPackageProps {
 	props: PackageProperties;
 	isInherited: boolean;
 	isInstalled: boolean;
+	isConfigured: boolean;
+	category: ConfiguredPackageCategory;
+	onRemove: (pkg: string, category: ConfiguredPackageCategory) => void;
 }
 
 export type PackageConfig =
@@ -328,8 +333,19 @@ export type PackageConfig =
 			id: string;
 	  };
 
+// Gets the PkgRequest from a PackageConfig
+export function getPackageConfigRequest(config: PackageConfig) {
+	if (typeof config == "string") {
+		return parsePkgRequest(config);
+	} else {
+		return parsePkgRequest(config.id);
+	}
+}
+
 interface LockfilePackage {
 	addons: LockfileAddon[];
 }
 
 interface LockfileAddon {}
+
+export type ConfiguredPackageCategory = "global" | "client" | "server";

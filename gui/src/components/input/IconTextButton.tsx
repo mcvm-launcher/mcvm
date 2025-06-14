@@ -6,11 +6,13 @@ export default function IconTextButton(props: IconTextButtonProps) {
 	const colorStyle = () =>
 		props.selected
 			? `background-color:${props.color};border-color:${props.selectedColor}`
-			: `background-color:${props.color};border-color:${props.color}`;
+			: `background-color:${props.color};border-color:var(--bg3)`;
+
+	let shadow = props.shadow == undefined ? true : props.shadow;
 
 	return (
 		<button
-			class="icon-text-button bold"
+			class={`${shadow ? "input-shadow" : ""} icon-text-button bold`}
 			style={`${colorStyle()}`}
 			onClick={props.onClick}
 		>
@@ -29,6 +31,7 @@ export interface IconTextButtonProps {
 	text: string;
 	color: string;
 	selectedColor: string;
+	shadow?: boolean;
 	size: string;
 	selected: boolean;
 	onClick: () => void;

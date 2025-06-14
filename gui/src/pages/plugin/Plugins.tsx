@@ -103,7 +103,7 @@ function Plugin(props: PluginProps) {
 						<IconTextButton
 							text={props.info.enabled ? "Disable" : "Enable"}
 							size="22px"
-							color={props.info.enabled ? "var(--bg3)" : "var(--bg2)"}
+							color="var(--bg2)"
 							selectedColor="var(--instance)"
 							onClick={() => {
 								invoke("enable_disable_plugin", {
@@ -114,6 +114,7 @@ function Plugin(props: PluginProps) {
 								});
 							}}
 							selected={false}
+							shadow={false}
 						/>
 					</Show>
 					<IconTextButton
@@ -125,11 +126,7 @@ function Plugin(props: PluginProps) {
 								: "Install"
 						}
 						size="22px"
-						color={
-							props.info.enabled || !props.info.installed
-								? "var(--bg3)"
-								: "var(--bg2)"
-						}
+						color="var(--bg2)"
 						selectedColor="var(--instance)"
 						onClick={() => {
 							setInProgress(true);
@@ -149,6 +146,7 @@ function Plugin(props: PluginProps) {
 							);
 						}}
 						selected={false}
+						shadow={false}
 					/>
 				</div>
 			</div>
