@@ -10,6 +10,7 @@ import {
 } from "../../utils";
 import IconButton from "../../components/input/IconButton";
 import { AngleRight, Delete } from "../../icons";
+import { errorToast } from "../../components/dialog/Toasts";
 
 export default function PackagesConfig(props: PackagesConfigProps) {
 	let [filter, setFilter] = createSignal("user");
@@ -74,8 +75,10 @@ export default function PackagesConfig(props: PackagesConfigProps) {
 		}
 
 		let results = await Promise.all(promises);
+		let errorExists = false;
 		for (let result of results) {
 			if (result == "error") {
+				errorExists = true;
 				continue;
 			}
 			let [id, [meta, props]] = result as [
@@ -84,6 +87,10 @@ export default function PackagesConfig(props: PackagesConfigProps) {
 			];
 			metas[id] = meta;
 			properties[id] = props;
+		}
+
+		if (errorExists) {
+			errorToast("One or more packages failed to load");
 		}
 
 		setPackageMetas(metas);
@@ -102,21 +109,29 @@ export default function PackagesConfig(props: PackagesConfigProps) {
 				<div class="cont" style="justify-content:flex-start">
 					<InlineSelect
 						options={[
-							{ value: "all", contents: <div>ALL</div>, color: "var(--fg)" },
+							{
+								value: "all",
+								contents: <div>ALL</div>,
+								color: "var(--fg)",
+								tip: "All packages",
+							},
 							{
 								value: "user",
 								contents: <div>USER</div>,
 								color: "var(--instance)",
+								tip: "Only packages you have set. No dependencies",
 							},
 							{
 								value: "bundled",
 								contents: <div>BUNDLED</div>,
 								color: "var(--package)",
+								tip: "Packages from modpacks and bundles",
 							},
 							{
 								value: "dependencies",
 								contents: <div>DEPS</div>,
 								color: "var(--plugin)",
+								tip: "Dependencies of other packages",
 							},
 						]}
 						optionClass="package-config-filter"
@@ -247,7 +262,6 @@ export interface PackagesConfigProps {
 
 function ConfiguredPackage(props: ConfiguredPackageProps) {
 	let [isHovered, setIsHovered] = createSignal(false);
-
 	let name = props.meta.name == undefined ? props.request.id : props.meta.name;
 	let icon =
 		props.meta.icon == undefined

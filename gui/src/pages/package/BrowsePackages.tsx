@@ -16,6 +16,7 @@ import { parseQueryString } from "../../utils";
 import InlineSelect from "../../components/input/InlineSelect";
 import { FooterData } from "../../App";
 import { FooterMode } from "../../components/launch/Footer";
+import { errorToast, warningToast } from "../../components/dialog/Toasts";
 
 const PACKAGES_PER_PAGE = 12;
 
@@ -54,72 +55,84 @@ export default function BrowsePackages(props: BrowsePackagesProps) {
 	};
 
 	async function updatePackages() {
-		let repos: RepoInfo[] = await invoke("get_package_repos");
+		let repos: RepoInfo[] = [];
+		try {
+			repos = await invoke("get_package_repos");
+		} catch (e) {
+			errorToast("Failed to get available repos: " + e);
+			return undefined;
+		}
+
+		if (repos.length == 0) {
+			warningToast("No repositories available");
+		}
+
 		let index = repos.findIndex((x) => x.id == "core");
 		if (index != -1) {
 			repos.splice(index, 1);
 		}
 		setRepos(repos);
 
-		let [packagesToRequest, packageCount] = (await invoke("get_packages", {
-			repo: selectedRepo(),
-			page: page,
-			search: search,
-		})) as [string[], number];
-		setPackageCount(packageCount);
-		console.log(packageCount);
-		console.log("Packages fetched");
-
-		let promises = [];
-		console.log("Waiting for packages");
-
 		try {
-			await invoke("preload_packages", {
-				packages: packagesToRequest,
+			let [packagesToRequest, packageCount] = (await invoke("get_packages", {
 				repo: selectedRepo(),
-			});
-		} catch (e) {
-			console.error(e);
-		}
+				page: page,
+				search: search,
+			})) as [string[], number];
 
-		for (let pkg of packagesToRequest) {
-			promises.push(
-				(async () => {
-					try {
-						let meta = await invoke("get_package_meta", { package: pkg });
-						let props = await invoke("get_package_props", {
-							package: pkg,
-						});
-						return [meta, props];
-					} catch (e) {
-						console.error(e);
+			setPackageCount(packageCount);
+
+			let promises = [];
+
+			try {
+				await invoke("preload_packages", {
+					packages: packagesToRequest,
+					repo: selectedRepo(),
+				});
+			} catch (e) {
+				errorToast("Failed to load packages: " + e);
+			}
+
+			for (let pkg of packagesToRequest) {
+				promises.push(
+					(async () => {
+						try {
+							let meta = await invoke("get_package_meta", { package: pkg });
+							let props = await invoke("get_package_props", {
+								package: pkg,
+							});
+							return [meta, props];
+						} catch (e) {
+							console.error(e);
+							return "error";
+						}
+					})()
+				);
+			}
+
+			try {
+				let finalPackages = (await Promise.all(promises)) as (
+					| [PackageMeta, PackageProps]
+					| string
+				)[];
+				let packagesAndIds = finalPackages.map((val, i) => {
+					if (val == "error") {
 						return "error";
+					} else {
+						let [meta, props] = val;
+						return {
+							id: packagesToRequest[i],
+							meta: meta,
+							props: props,
+						} as PackageData;
 					}
-				})()
-			);
-		}
-
-		try {
-			let finalPackages = (await Promise.all(promises)) as (
-				| [PackageMeta, PackageProps]
-				| string
-			)[];
-			console.log(finalPackages);
-			let packagesAndIds = finalPackages.map((val, i) => {
-				if (val == "error") {
-					return "error";
-				} else {
-					let [meta, props] = val;
-					return {
-						id: packagesToRequest[i],
-						meta: meta,
-						props: props,
-					} as PackageData;
-				}
-			});
-			return packagesAndIds;
+				});
+				return packagesAndIds;
+			} catch (e) {
+				errorToast("Failed to load some packages: " + e);
+			}
 		} catch (e) {
-			console.error(e);
+			errorToast("Failed to search packages: " + e);
 		}
 	}
 

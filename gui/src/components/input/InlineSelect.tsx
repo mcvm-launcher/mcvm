@@ -1,5 +1,6 @@
 import { For, JSX, Show } from "solid-js";
 import "./InlineSelect.css";
+import Tip from "../dialog/Tip";
 
 export default function InlineSelect(props: InlineSelectProps) {
 	let columns = props.columns == undefined ? 3 : props.columns;
@@ -76,7 +77,7 @@ function InlineSelectOption(props: OptionProps) {
 			: "var(--bg2)";
 	let borderColor = () => `border-color:${isSelected() ? color : "var(--bg3)"}`;
 
-	return (
+	let contents = (
 		<div
 			class={`cont inline-select-option ${
 				props.connected ? "connected" : "disconnected input-shadow"
@@ -91,6 +92,19 @@ function InlineSelectOption(props: OptionProps) {
 			{props.option.contents}
 		</div>
 	);
+
+	if (props.option.tip == undefined) {
+		return contents;
+	} else {
+		return (
+			<Tip
+				tip={<div style="color:var(--fg)">{props.option.tip}</div>}
+				side="top"
+			>
+				{contents}
+			</Tip>
+		);
+	}
 }
 
 interface OptionProps {
@@ -108,4 +122,5 @@ export interface Option {
 	value: string | undefined;
 	contents: JSX.Element;
 	color?: string;
+	tip?: JSX.Element;
 }

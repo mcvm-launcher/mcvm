@@ -19,6 +19,8 @@ import PackagesConfig, {
 	getPackageConfigRequest,
 	PackageConfig,
 } from "./PackagesConfig";
+import Tip from "../../components/dialog/Tip";
+import { errorToast } from "../../components/dialog/Toasts";
 
 export default function InstanceConfig(props: InstanceConfigProps) {
 	let params = useParams();
@@ -74,19 +76,24 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 			: isGlobalProfile
 			? "get_global_profile"
 			: "get_profile_config";
-		let result = await invoke(method, { id: id });
-		let configuration = result as InstanceConfig;
+		try {
+			let result = await invoke(method, { id: id });
+			let configuration = result as InstanceConfig;
 
-		// Canonicalize this to an array
-		setFrom(
-			configuration.from == undefined
-				? undefined
-				: Array.isArray(configuration.from)
-				? configuration.from
-				: [configuration.from]
-		);
+			// Canonicalize this to an array
+			setFrom(
+				configuration.from == undefined
+					? undefined
+					: Array.isArray(configuration.from)
+					? configuration.from
+					: [configuration.from]
+			);
 
-		return configuration;
+			return configuration;
+		} catch (e) {
+			errorToast("Failed to load configuration: " + e);
+			return undefined;
+		}
 	}
 
 	async function updateParentConfig() {
@@ -227,7 +234,7 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 					global: globalPackages(),
 					client: clientPackages(),
 					server: serverPackages(),
-				}
+				};
 			}
 		}
 
@@ -253,15 +260,22 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 			}
 		}
 
-		if (isInstance) {
-			await invoke("write_instance_config", {
-				id: configId,
-				config: newConfig,
-			});
-		} else if (isGlobalProfile) {
-			await invoke("write_global_profile", { config: newConfig });
-		} else {
-			await invoke("write_profile_config", { id: configId, config: newConfig });
+		try {
+			if (isInstance) {
+				await invoke("write_instance_config", {
+					id: configId,
+					config: newConfig,
+				});
+			} else if (isGlobalProfile) {
+				await invoke("write_global_profile", { config: newConfig });
+			} else {
+				await invoke("write_profile_config", {
+					id: configId,
+					config: newConfig,
+				});
+			}
+		} catch (e) {
+			errorToast("Failed to save: " + e);
 		}
 
 		configOperations.refetch();
@@ -293,15 +307,17 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 			</Show>
 			<div class="cont">
 				<div class="input-shadow" id="config-tabs">
-					<div
-						class={`config-tab ${tab() == "general" ? "selected" : ""}`}
-						id="general-tab"
-						onclick={() => {
-							setTab("general");
-						}}
-					>
-						General
-					</div>
+					<Tip tip="General settings" side="top">
+						<div
+							class={`config-tab ${tab() == "general" ? "selected" : ""}`}
+							id="general-tab"
+							onclick={() => {
+								setTab("general");
+							}}
+						>
+							General
+						</div>
+					</Tip>
 					<div
 						class={`config-tab ${tab() == "packages" ? "selected" : ""}`}
 						id="packages-tab"
@@ -330,83 +346,94 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 						<label for="name" class="label">
 							DISPLAY NAME
 						</label>
-						<input
-							type="text"
-							id="name"
-							name="name"
-							placeholder={id}
-							value={emptyUndefined(name())}
-							onChange={(e) => {
-								setName(e.target.value);
-								setDirty();
-							}}
-							onKeyUp={(e: any) => {
-								if (!isIdDirty()) {
-									let value = sanitizeInstanceId(e.target.value);
-									(document.getElementById("id")! as any).value = value;
-									setNewId(value);
-								}
-							}}
-						></input>
+						<Tip tip="The name of the instance" fullwidth>
+							<input
+								type="text"
+								id="name"
+								name="name"
+								placeholder={id}
+								value={emptyUndefined(name())}
+								onChange={(e) => {
+									setName(e.target.value);
+									setDirty();
+								}}
+								onKeyUp={(e: any) => {
+									if (!isIdDirty()) {
+										let value = sanitizeInstanceId(e.target.value);
+										(document.getElementById("id")! as any).value = value;
+										setNewId(value);
+									}
+								}}
+							></input>
+						</Tip>
 					</Show>
 					<Show when={props.creating && !isGlobalProfile}>
 						<label for="id" class="label">{`${createMessage} ID`}</label>
-						<input
-							type="text"
-							id="id"
-							name="id"
-							onChange={(e) => {
-								setNewId();
-								e.target.value = sanitizeInstanceId(e.target.value);
-								setNewId(e.target.value);
-								setDirty();
-							}}
-							onKeyUp={(e: any) => {
-								setIsIdDirty(true);
-								e.target.value = sanitizeInstanceId(e.target.value);
-							}}
-						></input>
+						<Tip tip="A unique name used to identify the instance" fullwidth>
+							<input
+								type="text"
+								id="id"
+								name="id"
+								onChange={(e) => {
+									setNewId();
+									e.target.value = sanitizeInstanceId(e.target.value);
+									setNewId(e.target.value);
+									setDirty();
+								}}
+								onKeyUp={(e: any) => {
+									setIsIdDirty(true);
+									e.target.value = sanitizeInstanceId(e.target.value);
+								}}
+							></input>
+						</Tip>
 					</Show>
 					<Show when={props.creating || isProfile || isGlobalProfile}>
 						<label for="side" class="label">
 							TYPE
 						</label>
-						<InlineSelect
-							onChange={(x) => {
-								setSide(x as "client" | "server" | undefined);
-								setDirty();
-							}}
-							selected={side()}
-							options={[
-								{
-									value: "client",
-									contents: <div class="cont">Client</div>,
-									color: "var(--instance)",
-								},
-								{
-									value: "server",
-									contents: <div class="cont">Server</div>,
-									color: "var(--profile)",
-								},
-							]}
-							columns={isInstance ? 2 : 3}
-							allowEmpty={!isInstance}
-						/>
+						<Tip
+							tip="Whether this is a normal instance or a dedicated server"
+							fullwidth
+						>
+							<InlineSelect
+								onChange={(x) => {
+									setSide(x as "client" | "server" | undefined);
+									setDirty();
+								}}
+								selected={side()}
+								options={[
+									{
+										value: "client",
+										contents: <div class="cont">Client</div>,
+										color: "var(--instance)",
+									},
+									{
+										value: "server",
+										contents: <div class="cont">Server</div>,
+										color: "var(--profile)",
+									},
+								]}
+								columns={isInstance ? 2 : 3}
+								allowEmpty={!isInstance}
+							/>
+						</Tip>
 					</Show>
 					<hr />
 					<label for="version" class="label">
 						MINECRAFT VERSION
 					</label>
-					<input
-						type="text"
-						id="version"
-						name="version"
-						value={emptyUndefined(version())}
-						onChange={(e) => {
-							setVersion(e.target.value);
-							setDirty();
-						}}
-					></input>
+					<Tip tip="The Minecraft version of this instance" fullwidth>
+						<input
+							type="text"
+							id="version"
+							name="version"
+							value={emptyUndefined(version())}
+							onChange={(e) => {
+								setVersion(e.target.value);
+								setDirty();
+							}}
+						></input>
+					</Tip>
 					<Show
 						when={
 							(side() == "client" || isProfile) &&
@@ -416,26 +443,36 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 						<label for="client-type" class="label">{`${
 							isProfile ? "CLIENT " : ""
 						}LOADER`}</label>
-						<InlineSelect
-							onChange={(x) => {
-								setClientType(x);
-								setDirty();
-							}}
-							selected={clientType() == undefined ? "none" : clientType()}
-							options={supportedModifications()!.client_types.map((x) => {
-								return {
-									value: x,
-									contents: (
-										<div class="cont">
-											{x == "none" ? "Unset" : beautifyString(x)}
-										</div>
-									),
-									color: "var(--fg2)",
-								};
-							})}
-							columns={supportedModifications()!.client_types.length}
-							allowEmpty={false}
-						/>
+						<Tip
+							tip={
+								isInstance
+									? "The modloader to use"
+									: "The loader to use for client instances"
+							}
+							fullwidth
+						>
+							<InlineSelect
+								onChange={(x) => {
+									setClientType(x);
+									setDirty();
+								}}
+								selected={clientType() == undefined ? "none" : clientType()}
+								options={supportedModifications()!.client_types.map((x) => {
+									return {
+										value: x,
+										contents: (
+											<div class="cont">
+												{x == "none" ? "Unset" : beautifyString(x)}
+											</div>
+										),
+										color: "var(--fg2)",
+										tip: x == "none" ? "Inherit from the profile" : undefined,
+									};
+								})}
+								columns={supportedModifications()!.client_types.length}
+								allowEmpty={false}
+							/>
+						</Tip>
 					</Show>
 					<Show
 						when={
@@ -446,26 +483,36 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 						<label for="server-type" class="label">{`${
 							isProfile ? "SERVER " : ""
 						}LOADER`}</label>
-						<InlineSelect
-							onChange={(x) => {
-								setServerType(x);
-								setDirty();
-							}}
-							selected={serverType() == undefined ? "none" : serverType()}
-							options={supportedModifications()!.server_types.map((x) => {
-								return {
-									value: x,
-									contents: (
-										<div class="cont">
-											{x == "none" ? "Unset" : beautifyString(x)}
-										</div>
-									),
-									color: "var(--fg2)",
-								};
-							})}
-							columns={supportedModifications()!.server_types.length}
-							allowEmpty={false}
-						/>
+						<Tip
+							tip={
+								isInstance
+									? "The mod or plugin loader to use"
+									: "The loader to use for server instances"
+							}
+							fullwidth
+						>
+							<InlineSelect
+								onChange={(x) => {
+									setServerType(x);
+									setDirty();
+								}}
+								selected={serverType() == undefined ? "none" : serverType()}
+								options={supportedModifications()!.server_types.map((x) => {
+									return {
+										value: x,
+										contents: (
+											<div class="cont">
+												{x == "none" ? "Unset" : beautifyString(x)}
+											</div>
+										),
+										color: "var(--fg2)",
+										tip: x == "none" ? "Inherit from the profile" : undefined,
+									};
+								})}
+								columns={supportedModifications()!.server_types.length}
+								allowEmpty={false}
+							/>
+						</Tip>
 					</Show>
 					<Show
 						when={
@@ -476,32 +523,45 @@ export default function InstanceConfig(props: InstanceConfigProps) {
 						<label for="game-mod-version" class="label">
 							LOADER VERSION
 						</label>
-						<input
-							type="text"
-							id="game-mod-version"
-							name="game-mod-version"
-							value={emptyUndefined(gameModVersion())}
-							onChange={(e) => {
-								setGameModVersion(e.target.value);
-								setDirty();
-							}}
-						></input>
+						<Tip
+							tip="The version for the loader. Leave empty to select the best version automatically."
+							fullwidth
+						>
+							<input
+								type="text"
+								id="game-mod-version"
+								name="game-mod-version"
+								value={emptyUndefined(gameModVersion())}
+								onChange={(e) => {
+									setGameModVersion(e.target.value);
+									setDirty();
+								}}
+							></input>
+						</Tip>
 					</Show>
 					<hr />
 					<label for="datapack-folder" class="label">
 						DATAPACK FOLDER
 					</label>
-					<input
-						type="text"
-						id="datapack-folder"
-						name="datapack-folder"
-						value={emptyUndefined(datapackFolder())}
-						onChange={(e) => {
-							setDatapackFolder(e.target.value);
-							setDirty();
-						}}
-					></input>
+					<Tip
+						tip="The folder, relative to the instance folder, to put datapacks in. Useful if you have a global datapack mod."
+						fullwidth
+					>
+						<input
+							type="text"
+							id="datapack-folder"
+							name="datapack-folder"
+							value={emptyUndefined(datapackFolder())}
+							onChange={(e) => {
+								setDatapackFolder(e.target.value);
+								setDirty();
+							}}
+						></input>
+					</Tip>
 				</div>
+				<br />
+				<br />
+				<br />
 			</Show>
 			<Show when={tab() == "packages"}>
 				<PackagesConfig

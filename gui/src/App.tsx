@@ -2,7 +2,7 @@ import { Router, Route, Location } from "@solidjs/router";
 import "./App.css";
 import LaunchPage from "./pages/launch/LaunchPage";
 import NavBar from "./components/navigation/NavBar";
-import { createSignal, onMount, Show } from "solid-js";
+import { createSignal, ErrorBoundary, onMount, Show } from "solid-js";
 import InstanceConfig, { ConfigMode } from "./pages/config/InstanceConfig";
 import BrowsePackages from "./pages/package/BrowsePackages";
 import ViewPackage from "./pages/package/ViewPackage";
@@ -13,6 +13,7 @@ import { loadPagePlugins } from "./plugins";
 import { listen } from "@tauri-apps/api/event";
 import CustomPluginPage from "./pages/CustomPluginPage";
 import Footer, { FooterMode } from "./components/launch/Footer";
+import Toasts from "./components/dialog/Toasts";
 
 export default function App() {
 	const [footerData, setFooterData] = createSignal<FooterData>({
@@ -123,7 +124,13 @@ function Layout(props: LayoutProps) {
 				}}
 				onSelectUser={props.onSelectUser}
 			/>
-			{props.children}
+			<ErrorBoundary
+				fallback={
+					<div>An error occurred in the page. Please report this issue.</div>
+				}
+			>
+				{props.children}
+			</ErrorBoundary>
 			<Sidebar
 				visible={showSidebar()}
 				location={props.location}
@@ -135,6 +142,7 @@ function Layout(props: LayoutProps) {
 				selectedUser={props.selectedUser}
 				action={props.footerData.action}
 			/>
+			<Toasts />
 		</>
 	);
 }

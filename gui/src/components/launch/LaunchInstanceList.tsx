@@ -9,6 +9,7 @@ import { getIconSrc } from "../../utils";
 import IconTextButton from "../input/IconTextButton";
 import { FooterData } from "../../App";
 import { FooterMode } from "./Footer";
+import { errorToast } from "../dialog/Toasts";
 
 export default function LaunchInstanceList(props: LaunchInstanceListProps) {
 	const [instances, setInstances] = createSignal<InstanceInfo[]>([]);
@@ -26,7 +27,12 @@ export default function LaunchInstanceList(props: LaunchInstanceListProps) {
 	>("instance");
 
 	async function updateItems() {
-		const instances = (await invoke("get_instances")) as InstanceInfo[];
+		let instances: InstanceInfo[] = [];
+		try {
+			instances = (await invoke("get_instances")) as InstanceInfo[];
+		} catch (e) {
+			errorToast("Failed to get instances: " + e);
+		}
 
 		// Create map of instances and put pinned instances in their section
 		let newPinned = [];
@@ -80,7 +86,6 @@ export default function LaunchInstanceList(props: LaunchInstanceListProps) {
 			mode: item.type as FooterMode,
 			action: () => {},
 		});
-		console.log("Selected item: " + selectedItem());
 	}
 
 	return (
@@ -318,11 +323,12 @@ function Item(props: ItemProps) {
 						onClick={(e) => {
 							// Don't select the instance
 							e.stopPropagation();
-
 							invoke("pin_instance", {
 								instanceId: props.instance.id,
 								pin: !props.instance.pinned,
-							}).then(props.updateList);
+							}).then(props.updateList, (e) => {
+								errorToast("Failed to pin instance: " + e);
+							});
 						}}
 						selected={props.sectionKind === "pinned"}
 					/>

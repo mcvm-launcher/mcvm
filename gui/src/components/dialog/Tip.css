@@ -1,0 +1,92 @@
+.tip-container {
+	position: relative;
+}
+
+.tip {
+	position: absolute;
+
+	/* We only set the width or the height based on what side the tip is on */
+	--total-width: 15rem;
+	--width: 14.5rem;
+	--total-height: 4rem;
+	--height: 3.5rem;
+
+	/* How far away the tip is */
+	--offset: 0.5rem;
+	display: flex;
+}
+
+.tip-body {
+	background-color: var(--bg2);
+	padding: 0.5rem;
+	border: 0.15rem solid var(--bg3);
+	border-radius: var(--round);
+	box-sizing: border-box;
+	width: var(--width);
+	height: var(--height);
+}
+
+.tip-body.right {
+	border-top-left-radius: 0;
+}
+
+.tip-body.top {
+	border-bottom-left-radius: 0;
+}
+
+.tip-body.bottom {
+	border-top-left-radius: 0;
+}
+
+.tip-arrow {
+	width: 0.5rem;
+	height: 0.5rem;
+	background-color: var(--bg2);
+	border: 0.15rem solid var(--bg3);
+}
+
+.tip-arrow.right {
+	border-right-color: var(--bg2);
+	margin-right: -0.15rem;
+	border-bottom-left-radius: 5rem;
+	box-shadow: none;
+}
+
+.tip-arrow.top {
+	border-top-color: var(--bg2);
+	margin-top: -0.15rem;
+	border-bottom-right-radius: 5rem;
+}
+
+.tip-arrow.bottom {
+	border-bottom-color: var(--bg2);
+	margin-bottom: -0.15rem;
+	border-top-right-radius: 5rem;
+	box-shadow: none;
+}
+
+.tip.right {
+	width: var(--total-width);
+	right: calc(-1 * var(--total-width) - var(--offset));
+	top: 0px;
+	--height: unset;
+	flex-direction: row-reverse;
+}
+
+.tip.top {
+	height: var(--total-height);
+	top: calc(-1 * var(--total-height) - var(--offset));
+	left: 0px;
+	--width: unset;
+	text-wrap: nowrap;
+	flex-direction: column;
+}
+
+.tip.bottom {
+	height: var(--total-height);
+	bottom: calc(-1 * var(--total-height) - var(--offset));
+	left: 0px;
+	--width: unset;
+	text-wrap: nowrap;
+	flex-direction: column;
+}

@@ -1,0 +1,60 @@
+#toasts {
+	z-index: 15;
+	position: fixed;
+	right: 1rem;
+	top: 3rem;
+	width: 16rem;
+}
+
+.toast {
+	width: 100%;
+	padding: 0.5rem;
+	box-sizing: border-box;
+	border: 0.15rem solid;
+	border-radius: var(--round);
+	position: relative;
+	align-items: flex-start;
+}
+
+.toast.message {
+	background-color: var(--bg2);
+	border-color: var(--bg3);
+	color: var(--fg);
+}
+
+.toast.success {
+	background-color: var(--instancebg);
+	border-color: var(--instance);
+	color: var(--instance);
+	font-weight: bold;
+}
+
+.toast.warning {
+	background-color: var(--bg2);
+	border-color: var(--warning);
+	color: var(--warning);
+	font-weight: bold;
+}
+
+.toast.error {
+	background-color: var(--errorbg);
+	border-color: var(--error);
+	color: var(--error);
+	font-weight: bold;
+}
+
+.toast-icon {
+	margin-top: 0.25rem;
+}
+
+.toast-message {
+	max-width: 12rem;
+}
+
+.toast-x {
+	position: absolute;
+	right: 0rem;
+	top: 0rem;
+	cursor: pointer;
+	padding: 0.5rem;
+}

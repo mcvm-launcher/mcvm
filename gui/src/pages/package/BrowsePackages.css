@@ -42,6 +42,7 @@
 
 .package-image-container {
 	width: 100%;
+	border-bottom: 0.15rem solid var(--bg3);
 }
 
 .package-image {

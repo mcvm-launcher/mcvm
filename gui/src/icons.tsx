@@ -21,6 +21,8 @@ import LogoIcon from "./assets/icons/logo.svg?component-solid";
 import RefreshIcon from "./assets/icons/refresh.svg?component-solid";
 import UploadIcon from "./assets/icons/upload.svg?component-solid";
 import DownloadIcon from "./assets/icons/download.svg?component-solid";
+import WarningIcon from "./assets/icons/warning.svg?component-solid";
+import ErrorIcon from "./assets/icons/error.svg?component-solid";
 import { HasWidthHeight } from "./components/Icon";
 
 export function Pin({ width, height, viewBox }: HasWidthHeight) {
@@ -121,4 +123,12 @@ export function Upload({ width, height, viewBox }: HasWidthHeight) {
 
 export function Download({ width, height, viewBox }: HasWidthHeight) {
 	return <DownloadIcon width={width} height={height} viewBox={viewBox} />;
+}
+
+export function Warning({ width, height, viewBox }: HasWidthHeight) {
+	return <WarningIcon width={width} height={height} viewBox={viewBox} />;
+}
+
+export function Error({ width, height, viewBox }: HasWidthHeight) {
+	return <ErrorIcon width={width} height={height} viewBox={viewBox} />;
 }

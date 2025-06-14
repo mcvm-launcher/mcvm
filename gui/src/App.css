@@ -26,12 +26,14 @@
 	--profile: #1bb9e9;
 	--package: #e9901b;
 	--plugin: #7f29ff;
-	--error: #c10f39;
+	--warning: #e9ca1b;
+	--error: #d40e3d;
 	
 	--instancebg: #17220d;
 	--profilebg: #0d1f24;
 	--packagebg: #33230f;
 	--pluginfg: #b380ff;
+	--errorbg: #2b0e14;
 
 	/* Other values */
 	--round: 0.2rem;

@@ -9,6 +9,7 @@ import { AuthDisplayEvent, RunningInstanceInfo } from "../../types";
 import MicrosoftAuthInfo from "../input/MicrosoftAuthInfo";
 import { getIconSrc } from "../../utils";
 import TaskIndicator from "../TaskIndicator";
+import { errorToast } from "../dialog/Toasts";
 
 export default function LaunchFooter(props: LaunchFooterProps) {
 	// Basic state
@@ -24,7 +25,11 @@ export default function LaunchFooter(props: LaunchFooterProps) {
 	const [unlistens, setUnlistens] = createSignal<UnlistenFn[]>([]);
 
 	async function updateRunningInstances() {
-		setRunningInstances(await invoke("get_running_instances"));
+		try {
+			setRunningInstances(await invoke("get_running_instances"));
+		} catch (e) {
+			console.error("Failed to update running instances");
+		}
 	}
 
 	// Setup and clean up event listeners for updating state
@@ -97,7 +102,11 @@ export default function LaunchFooter(props: LaunchFooterProps) {
 			user: props.selectedUser,
 		});
 
-		await Promise.all([launchPromise]);
+		try {
+			await Promise.all([launchPromise]);
+		} catch (e) {
+			errorToast("Failed to launch instance: " + e);
+		}
 
 		updateRunningInstances();
 	}
@@ -105,7 +114,11 @@ export default function LaunchFooter(props: LaunchFooterProps) {
 	async function stopGame(instance: string) {
 		setAuthInfo(null);
 		setShowPasswordPrompt(false);
-		await invoke("stop_game", { instance: instance });
+		try {
+			await invoke("stop_game", { instance: instance });
+		} catch (e) {
+			console.error(e);
+		}
 		updateRunningInstances();
 	}
 
