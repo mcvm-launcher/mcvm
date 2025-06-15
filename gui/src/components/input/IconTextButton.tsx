@@ -1,11 +1,15 @@
-import { JSXElement, Show } from "solid-js";
+import { createSignal, JSXElement, Show } from "solid-js";
 import Icon, { HasWidthHeight } from "../Icon";
 import "./IconTextButton.css";
 
 export default function IconTextButton(props: IconTextButtonProps) {
+	let [isHovered, setIsHovered] = createSignal(false);
+
 	const colorStyle = () =>
 		props.selected
 			? `background-color:${props.color};border-color:${props.selectedColor}`
+			: isHovered()
+			? `background-color:${props.color};border-color:var(--bg4)`
 			: `background-color:${props.color};border-color:var(--bg3)`;
 
 	let shadow = props.shadow == undefined ? true : props.shadow;
@@ -15,6 +19,8 @@ export default function IconTextButton(props: IconTextButtonProps) {
 			class={`${shadow ? "input-shadow" : ""} icon-text-button bold`}
 			style={`${colorStyle()}`}
 			onClick={props.onClick}
+			onmouseenter={() => setIsHovered(true)}
+			onmouseleave={() => setIsHovered(false)}
 		>
 			<Show when={props.icon != undefined}>
 				<div class="icon-text-button-icon center">

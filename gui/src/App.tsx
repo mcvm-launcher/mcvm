@@ -102,7 +102,10 @@ export default function App() {
 					path="/packages/:page"
 					component={() => <BrowsePackages setFooterData={setFooterData} />}
 				/>
-				<Route path="/packages/package/:id" component={() => <ViewPackage />} />
+				<Route
+					path="/packages/package/:id"
+					component={() => <ViewPackage setFooterData={setFooterData} />}
+				/>
 				<Route path="/plugins" component={() => <Plugins />} />
 				<Route path="/docs" component={() => <Docs />} />
 				<Route path="/custom/:page" component={() => <CustomPluginPage />} />

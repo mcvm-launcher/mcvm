@@ -42,6 +42,13 @@ export interface PackageMeta {
 	banner?: string;
 	icon?: string;
 	gallery?: string[];
+	website?: string;
+	support_link?: string;
+	documentation?: string;
+	source?: string;
+	issues?: string;
+	community?: string;
+	license?: string;
 }
 
 export interface PackageProperties {

@@ -17,7 +17,7 @@ export default function Tip(props: TipProps) {
 				{props.children}
 			</div>
 			<Show when={visible()}>
-				<div class={`tip ${side}`}>
+				<div class={`fade-in tip ${side}`}>
 					<div class={`input-shadow tip-body ${side}`}>{props.tip}</div>
 					<div class={`input-shadow tip-arrow ${side}`}></div>
 				</div>

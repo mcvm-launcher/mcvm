@@ -3,7 +3,7 @@ import "./Footer.css";
 import { UnlistenFn, listen, Event } from "@tauri-apps/api/event";
 import { invoke } from "@tauri-apps/api";
 import { PasswordPrompt } from "../input/PasswordPrompt";
-import { Box, Check, Play, Properties, Upload } from "../../icons";
+import { Box, Check, Download, Play, Properties, Upload } from "../../icons";
 import IconButton from "../input/IconButton";
 import { AuthDisplayEvent, RunningInstanceInfo } from "../../types";
 import MicrosoftAuthInfo from "../input/MicrosoftAuthInfo";
@@ -248,6 +248,8 @@ function ActionButton(props: ActionButtonProps) {
 			) {
 				return "var(--profilebg)";
 			} else if (props.mode == FooterMode.PreviewPackage) {
+				return "black";
+			} else if (props.mode == FooterMode.InstallPackage) {
 				return "var(--packagebg)";
 			}
 		}
@@ -265,7 +267,10 @@ function ActionButton(props: ActionButtonProps) {
 				props.mode == FooterMode.SaveProfileConfig
 			) {
 				return "var(--profile)";
-			} else if (props.mode == FooterMode.PreviewPackage) {
+			} else if (
+				props.mode == FooterMode.PreviewPackage ||
+				props.mode == FooterMode.InstallPackage
+			) {
 				return "var(--package)";
 			}
 		}
@@ -283,6 +288,8 @@ function ActionButton(props: ActionButtonProps) {
 			return "Save";
 		} else if (props.mode == FooterMode.PreviewPackage) {
 			return "Open";
+		} else if (props.mode == FooterMode.InstallPackage) {
+			return "Install";
 		}
 	};
 	let Icon = () => {
@@ -297,6 +304,8 @@ function ActionButton(props: ActionButtonProps) {
 			return <Check />;
 		} else if (props.mode == FooterMode.PreviewPackage) {
 			return <Box />;
+		} else if (props.mode == FooterMode.InstallPackage) {
+			return <Download />;
 		}
 	};
 
@@ -398,4 +407,5 @@ export enum FooterMode {
 	SaveInstanceConfig = "save_instance_config",
 	SaveProfileConfig = "save_profile_config",
 	PreviewPackage = "preview_package",
+	InstallPackage = "install_package",
 }

@@ -4,12 +4,7 @@ import "./Plugins.css";
 import IconTextButton from "../../components/input/IconTextButton";
 import { Refresh } from "../../icons";
 import { emit } from "@tauri-apps/api/event";
-import {
-	errorToast,
-	messageToast,
-	successToast,
-	warningToast,
-} from "../../components/dialog/Toasts";
+import { errorToast, successToast } from "../../components/dialog/Toasts";
 
 export default function Plugins() {
 	let [plugins, methods] = createResource(updatePlugins);
@@ -84,20 +79,6 @@ export default function Plugins() {
 				</For>
 			</div>
 			<br />
-			<div class="cont">
-				<button onclick={() => messageToast("Hello")}>Message</button>
-				<button onclick={() => successToast("Success!")}>Success</button>
-				<button onclick={() => warningToast("Warning")}>Warning</button>
-				<button
-					onclick={() =>
-						errorToast(
-							"BIG long error big long error big long error big long error bad things."
-						)
-					}
-				>
-					Error
-				</button>
-			</div>
 			<br />
 			<br />
 			<br />

@@ -1,4 +1,4 @@
-import { For, JSX, Show } from "solid-js";
+import { createSignal, For, JSX, Show } from "solid-js";
 import "./InlineSelect.css";
 import Tip from "../dialog/Tip";
 
@@ -63,6 +63,8 @@ export interface InlineSelectProps {
 }
 
 function InlineSelectOption(props: OptionProps) {
+	let [isHovered, setIsHovered] = createSignal(false);
+
 	let isSelected = () => props.selected == props.option.value;
 	let color =
 		props.option.color == undefined ? "var(--fg2)" : props.option.color;
@@ -75,7 +77,10 @@ function InlineSelectOption(props: OptionProps) {
 			: props.connected
 			? "var(--bg0)"
 			: "var(--bg2)";
-	let borderColor = () => `border-color:${isSelected() ? color : "var(--bg3)"}`;
+	let borderColor = () =>
+		`border-color:${
+			isSelected() ? color : isHovered() ? "var(--bg4)" : "var(--bg3)"
+		}`;
 
 	let contents = (
 		<div
@@ -88,6 +93,8 @@ function InlineSelectOption(props: OptionProps) {
 			}`}
 			style={`${borderColor()};color:${textColor()};background-color:${backgroundColor()}`}
 			onclick={() => props.onSelect(props.option.value)}
+			onmouseenter={() => setIsHovered(true)}
+			onmouseleave={() => setIsHovered(false)}
 		>
 			{props.option.contents}
 		</div>

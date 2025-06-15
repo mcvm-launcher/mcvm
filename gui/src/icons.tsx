@@ -23,6 +23,12 @@ import UploadIcon from "./assets/icons/upload.svg?component-solid";
 import DownloadIcon from "./assets/icons/download.svg?component-solid";
 import WarningIcon from "./assets/icons/warning.svg?component-solid";
 import ErrorIcon from "./assets/icons/error.svg?component-solid";
+import ScrollIcon from "./assets/icons/scroll.svg?component-solid";
+import KeyIcon from "./assets/icons/key.svg?component-solid";
+import CurlyBracesIcon from "./assets/icons/curly_braces.svg?component-solid";
+import UserIcon from "./assets/icons/user.svg?component-solid";
+import HeartIcon from "./assets/icons/heart.svg?component-solid";
+import BookIcon from "./assets/icons/book.svg?component-solid";
 import { HasWidthHeight } from "./components/Icon";
 
 export function Pin({ width, height, viewBox }: HasWidthHeight) {
@@ -131,4 +137,28 @@ export function Warning({ width, height, viewBox }: HasWidthHeight) {
 
 export function Error({ width, height, viewBox }: HasWidthHeight) {
 	return <ErrorIcon width={width} height={height} viewBox={viewBox} />;
+}
+
+export function Scroll({ width, height, viewBox }: HasWidthHeight) {
+	return <ScrollIcon width={width} height={height} viewBox={viewBox} />;
+}
+
+export function Key({ width, height, viewBox }: HasWidthHeight) {
+	return <KeyIcon width={width} height={height} viewBox={viewBox} />;
+}
+
+export function CurlyBraces({ width, height, viewBox }: HasWidthHeight) {
+	return <CurlyBracesIcon width={width} height={height} viewBox={viewBox} />;
+}
+
+export function User({ width, height, viewBox }: HasWidthHeight) {
+	return <UserIcon width={width} height={height} viewBox={viewBox} />;
+}
+
+export function Heart({ width, height, viewBox }: HasWidthHeight) {
+	return <HeartIcon width={width} height={height} viewBox={viewBox} />;
+}
+
+export function Book({ width, height, viewBox }: HasWidthHeight) {
+	return <BookIcon width={width} height={height} viewBox={viewBox} />;
 }

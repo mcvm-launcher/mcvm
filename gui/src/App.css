@@ -18,6 +18,7 @@
 	--bg: #161616;
 	--bg2: #1d1d1d;
 	--bg3: #2b2b2b;
+	--bg4: #3a3a3a;
 	--bg2disabled: #1b1b1b;
 	--shadow: #121212;
 	--text: var(--fg);
@@ -28,10 +29,10 @@
 	--plugin: #8635ff;
 	--warning: #e9ca1b;
 	--error: #d40e3d;
-	
+
 	--instancebg: #17220d;
 	--profilebg: #0d1f24;
-	--packagebg: #33230f;
+	--packagebg: #311e05;
 	--pluginfg: #b380ff;
 	--pluginbg: #23123d;
 	--errorbg: #2b0e14;
@@ -138,42 +139,6 @@ button:active {
 	background-color: #e8e8e8;
 }
 
-.select {
-	background-color: var(--bg2);
-	color: var(--fg);
-
-	.solid-select-control {
-		background-color: var(--bg2);
-		border-color: var(--bg2);
-
-		&:focus-within {
-			outline-color: var(--bg2);
-		}
-	}
-
-	.solid-select-input {
-		background-color: var(--bg2);
-		color: var(--fg);
-	}
-
-	.solid-select-list {
-		background-color: var(--bg2);
-		color: var(--fg);
-	}
-
-	.solid-select-option {
-		color: var(--fg);
-
-		&:hover {
-			background-color: var(--bg3);
-		}
-
-		&[data-focused="true"] {
-			background-color: var(--bg3);
-		}
-	}
-}
-
 /* Style classes */
 
 .border {
@@ -220,20 +185,15 @@ button {
 }
 
 /* Animations */
-@-webkit-keyframes rotating
 
-/* Safari and Chrome */ {
-	from {
-		-webkit-transform: rotate(0deg);
-		-o-transform: rotate(0deg);
-		transform: rotate(0deg);
-	}
+.rotating {
+	animation: rotating 2s linear infinite;
+}
 
-	to {
-		-webkit-transform: rotate(360deg);
-		-o-transform: rotate(360deg);
-		transform: rotate(360deg);
-	}
+.error-shake {
+	animation: shake 0.2s ease-in-out 0s 2;
+	border: 0.15rem solid var(--error);
+	border-radius: var(--round);
 }
 
 @keyframes rotating {
@@ -254,39 +214,6 @@ button {
 	}
 }
 
-.rotating {
-	-webkit-animation: rotating 2s linear infinite;
-	-moz-animation: rotating 2s linear infinite;
-	-ms-animation: rotating 2s linear infinite;
-	-o-animation: rotating 2s linear infinite;
-	animation: rotating 2s linear infinite;
-}
-
-.error-shake {
-	-webkit-animation: shake 0.2s ease-in-out 0s 2;
-	animation: shake 0.2s ease-in-out 0s 2;
-	border: 0.15rem solid var(--error);
-	border-radius: var(--round);
-}
-
-@-webkit-keyframes shake {
-	0% {
-		margin-left: 0rem;
-	}
-
-	25% {
-		margin-left: 0.5rem;
-	}
-
-	75% {
-		margin-left: -0.5rem;
-	}
-
-	100% {
-		margin-left: 0rem;
-	}
-}
-
 @keyframes shake {
 	0% {
 		transform: translateX(0rem);
@@ -302,6 +229,22 @@ button {
 
 	100% {
 		transform: translateX(0rem);
+	}
+}
+
+/* Fade in */
+
+.fade-in {
+	animation: fade-in 0.3s ease-in;
+}
+
+@keyframes fade-in {
+	0% {
+		opacity: 0%;
+	}
+
+	100% {
+		opacity: 100%;
 	}
 }
 
