@@ -248,7 +248,7 @@ pub struct PackageSearchParameters {
 	/// The fuzzy search term for ids, names, or descriptions
 	pub search: Option<String>,
 	/// The package categories to include
-	pub categories: Vec<String>,
+	pub categories: Vec<PackageCategory>,
 }
 
 /// Results for a package search
@@ -258,6 +258,50 @@ pub struct PackageSearchResults {
 	pub results: Vec<String>,
 	/// The total number of results returned by the search, that weren't limited out
 	pub total_results: usize,
+}
+
+/// A category for a package
+#[allow(missing_docs)]
+#[derive(Serialize, Deserialize, Clone, Copy, Debug, PartialEq, Eq)]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
+#[serde(rename_all = "snake_case")]
+pub enum PackageCategory {
+	Adventure,
+	Atmosphere,
+	Audio,
+	Blocks,
+	Building,
+	Cartoon,
+	Challenge,
+	Combat,
+	Decoration,
+	Economy,
+	Entities,
+	Equipment,
+	Fantasy,
+	Fonts,
+	Food,
+	GameMechanics,
+	Gui,
+	Extensive,
+	Language,
+	Lightweight,
+	Magic,
+	Minigame,
+	Mobs,
+	Multiplayer,
+	Optimization,
+	Realistic,
+	Simplistic,
+	Space,
+	Storage,
+	Structures,
+	Technology,
+	Transportation,
+	Tweaks,
+	Utility,
+	VanillaPlus,
+	Worldgen,
 }
 
 #[cfg(test)]

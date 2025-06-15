@@ -3,7 +3,7 @@ use std::fmt::Display;
 use anyhow::bail;
 use mcvm_shared::later::Later;
 use mcvm_shared::modifications::{ModloaderMatch, PluginLoaderMatch};
-use mcvm_shared::pkg::PackageAddonHashes;
+use mcvm_shared::pkg::{PackageAddonHashes, PackageCategory};
 use mcvm_shared::util::yes_no;
 use mcvm_shared::versions::VersionPattern;
 use mcvm_shared::Side;
@@ -71,7 +71,7 @@ pub enum InstrKind {
 	/// Set the package keywords metadata
 	Keywords(Vec<String>),
 	/// Set the package categories metadata
-	Categories(Vec<String>),
+	Categories(Vec<PackageCategory>),
 	/// Set the package features property
 	Features(Vec<String>),
 	/// Set the package default features property
@@ -293,7 +293,6 @@ impl Instruction {
 			| InstrKind::DefaultFeatures(val)
 			| InstrKind::ContentVersions(val)
 			| InstrKind::Keywords(val)
-			| InstrKind::Categories(val)
 			| InstrKind::Tags(val)
 			| InstrKind::Gallery(val) => !val.is_empty(),
 			InstrKind::Refuse(val)
@@ -301,6 +300,7 @@ impl Instruction {
 			| InstrKind::Bundle(val)
 			| InstrKind::Extend(val)
 			| InstrKind::Notice(val) => val.is_some(),
+			InstrKind::Categories(val) => !val.is_empty(),
 			InstrKind::SupportedVersions(val) => !val.is_empty(),
 			InstrKind::SupportedModloaders(val) => !val.is_empty(),
 			InstrKind::SupportedPluginLoaders(val) => !val.is_empty(),
@@ -363,9 +363,13 @@ impl Instruction {
 				| InstrKind::DefaultFeatures(list)
 				| InstrKind::ContentVersions(list)
 				| InstrKind::Keywords(list)
-				| InstrKind::Categories(list)
 				| InstrKind::Tags(list)
 				| InstrKind::Gallery(list) => list.push(parse_string(tok, pos)?),
+				InstrKind::Categories(list) => {
+					let category = parse_string(tok, pos)?;
+					let category = serde_json::from_str(&format!("\"{category}\""))?;
+					list.push(category);
+				}
 				InstrKind::Cmd(list) => list.push(parse_arg(tok, pos)?),
 				InstrKind::Custom(cmd, args) => {
 					if cmd.is_empty() {

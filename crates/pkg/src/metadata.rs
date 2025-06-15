@@ -1,5 +1,6 @@
 use crate::parse::{instruction::InstrKind, parse::Parsed, routine::METADATA_ROUTINE};
 use anyhow::bail;
+use mcvm_shared::pkg::PackageCategory;
 #[cfg(feature = "schema")]
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
@@ -58,7 +59,7 @@ pub struct PackageMetadata {
 	pub keywords: Option<Vec<String>>,
 	/// The categories for the package
 	#[serde(skip_serializing_if = "Option::is_none")]
-	pub categories: Option<Vec<String>>,
+	pub categories: Option<Vec<PackageCategory>>,
 }
 
 impl PackageMetadata {

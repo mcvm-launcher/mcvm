@@ -2765,6 +2765,7 @@ dependencies = [
  "mcvm_shared",
  "schemars",
  "serde",
+ "serde_json",
 ]
 
 [[package]]
