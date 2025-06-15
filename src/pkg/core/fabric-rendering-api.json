@@ -1,6 +1,7 @@
 {
 	"meta": {
-		"name": "Ensures compatability with mods that use the Fabric Rendering API",
+		"name": "Fabric Rendering API",
+		"description": "Ensures compatability with mods that use the Fabric Rendering API",
 		"authors": [
 			"mcvm"
 		]
