@@ -397,7 +397,7 @@ impl PkgRegistry {
 			let mut num_skipped = 0;
 
 			for req in all_basic_packages.into_iter().sorted() {
-				if !params.categories.is_empty() && !params.search.is_none() {
+				if !params.categories.is_empty() || !params.search.is_none() {
 					let meta = self
 						.get_metadata(&req, paths, client, o)
 						.await
