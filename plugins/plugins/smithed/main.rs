@@ -7,10 +7,13 @@ use anyhow::Context;
 use mcvm_core::io::{files::create_leading_dirs, json_from_file, json_to_file};
 use mcvm_net::{
 	download::{self, Client},
-	smithed::{self, Pack},
+	smithed::{self, Pack, PackSearchResult},
 };
 use mcvm_pkg_gen::relation_substitution::RelationSubFunction;
-use mcvm_plugin::{api::CustomPlugin, hooks::CustomRepoQueryResult};
+use mcvm_plugin::{
+	api::{utils::PackageSearchCache, CustomPlugin},
+	hooks::CustomRepoQueryResult,
+};
 use mcvm_shared::pkg::PackageSearchResults;
 use serde::{Deserialize, Serialize};
 use tokio::task::JoinSet;
@@ -65,26 +68,40 @@ fn main() -> anyhow::Result<()> {
 			return Ok(PackageSearchResults::default());
 		}
 
-		let client = Client::new();
-		let runtime = tokio::runtime::Runtime::new()?;
-		let storage_dir = ctx
+		let smithed_dir = ctx
 			.get_data_dir()
 			.context("Failed to get data dir")?
-			.join("internal/smithed/packs");
+			.join("internal/smithed");
+		let storage_dir = smithed_dir.join("packs");
+
+		let client = Client::new();
+		let runtime = tokio::runtime::Runtime::new()?;
 
 		let (packs, total_results) = runtime.block_on(async move {
-			let search_task = {
-				let client = client.clone();
-				let params = arg.parameters.clone();
-				async move { smithed::search_packs(params, &client).await }
-			};
-			let count_task = {
-				let client = client.clone();
-				let params = arg.parameters.clone();
-				async move { smithed::count_packs(params, &client).await }
-			};
+			let mut search_cache =
+				PackageSearchCache::open(smithed_dir.join("search_cache.json"), 300)
+					.context("Failed to open search cache")?;
 
-			let (results, total_count) = tokio::try_join!(search_task, count_task)?;
+			let (results, total_results) = if let Some(entry) =
+				search_cache.check::<(Vec<PackSearchResult>, usize)>(&arg.parameters)
+			{
+				entry
+			} else {
+				let search_task = {
+					let client = client.clone();
+					let params = arg.parameters.clone();
+					async move { smithed::search_packs(params, &client).await }
+				};
+				let count_task = {
+					let client = client.clone();
+					let params = arg.parameters.clone();
+					async move { smithed::count_packs(params, &client).await }
+				};
+
+				let result = tokio::try_join!(search_task, count_task)?;
+				let _ = search_cache.write(&arg.parameters, result.clone());
+				result
+			};
 
 			let mut tasks = JoinSet::new();
 			for pack in results {
@@ -105,7 +122,7 @@ fn main() -> anyhow::Result<()> {
 				packs.push(result??);
 			}
 
-			Ok::<_, anyhow::Error>((packs, total_count))
+			Ok::<_, anyhow::Error>((packs, total_results))
 		})?;
 
 		Ok(PackageSearchResults {

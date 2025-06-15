@@ -1,5 +1,7 @@
 /// Output back to the main MCVM process
 pub mod output;
+/// Utilities for plugins to use
+pub mod utils;
 
 use std::env::Args;
 use std::io::Stdin;
