@@ -88,6 +88,25 @@ fn main() -> anyhow::Result<()> {
 		})
 	})?;
 
+	plugin.sync_custom_package_repository(|ctx, arg| {
+		if arg.repository != "modrinth" {
+			return Ok(());
+		}
+
+		let storage_dirs = StorageDirs::new(&ctx.get_data_dir()?);
+
+		if storage_dirs.packages.exists() {
+			std::fs::remove_dir_all(storage_dirs.packages)
+				.context("Failed to remove cached packages")?;
+		}
+		if storage_dirs.projects.exists() {
+			std::fs::remove_dir_all(storage_dirs.projects)
+				.context("Failed to remove cached projects")?;
+		}
+
+		Ok(())
+	})?;
+
 	Ok(())
 }
 

@@ -207,7 +207,10 @@ async fn sync(data: &mut CmdData<'_>, filter: Vec<String>) -> anyhow::Result<()>
 		}
 
 		printer.print(&cformat!("Syncing repository <b>{}</b>...", repo.get_id()));
-		match repo.sync(&data.paths, &client).await {
+		match repo
+			.sync(&data.paths, &config.plugins, &client, data.output)
+			.await
+		{
 			Ok(..) => {
 				printer.print(&cformat!("<g>Synced repository <b!>{}</b!>", repo.get_id()));
 			}

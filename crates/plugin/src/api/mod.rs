@@ -162,6 +162,11 @@ impl CustomPlugin {
 		SearchCustomPackageRepository
 	);
 	hook_interface!(preload_packages, "preload_packages", PreloadPackages);
+	hook_interface!(
+		sync_custom_package_repository,
+		"sync_custom_package_repository",
+		SyncCustomPackageRepository
+	);
 
 	/// Handle a hook
 	fn handle_hook<H: Hook>(

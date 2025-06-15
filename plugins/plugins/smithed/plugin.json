@@ -44,6 +44,9 @@
 		},
 		"search_custom_package_repository": {
 			"executable": "${PLUGIN_DIR}/mcvm_plugin_smithed"
+		},
+		"sync_custom_package_repository": {
+			"executable": "${PLUGIN_DIR}/mcvm_plugin_smithed"
 		}
 	}
 }

@@ -621,3 +621,19 @@ pub struct PreloadPackagesArg {
 	/// The packages that are being preloaded
 	pub packages: Vec<String>,
 }
+
+def_hook!(
+	SyncCustomPackageRepository,
+	"sync_custom_package_repository",
+	"Hook for updating the cache of a custom package repository",
+	SyncCustomPackageRepositoryArg,
+	(),
+	1,
+);
+
+/// Argument for the SyncCustomPackageRepository hook
+#[derive(Serialize, Deserialize, Default)]
+pub struct SyncCustomPackageRepositoryArg {
+	/// The repository that is being synced
+	pub repository: String,
+}

@@ -3,13 +3,23 @@ import "./Footer.css";
 import { UnlistenFn, listen, Event } from "@tauri-apps/api/event";
 import { invoke } from "@tauri-apps/api";
 import { PasswordPrompt } from "../input/PasswordPrompt";
-import { Box, Check, Download, Play, Properties, Upload } from "../../icons";
+import {
+	Box,
+	Check,
+	Download,
+	Play,
+	Properties,
+	Refresh,
+	Upload,
+} from "../../icons";
 import IconButton from "../input/IconButton";
 import { AuthDisplayEvent, RunningInstanceInfo } from "../../types";
 import MicrosoftAuthInfo from "../input/MicrosoftAuthInfo";
 import { getIconSrc } from "../../utils";
 import TaskIndicator from "../TaskIndicator";
 import { errorToast } from "../dialog/Toasts";
+import IconTextButton from "../input/IconTextButton";
+import Tip from "../dialog/Tip";
 
 export default function LaunchFooter(props: LaunchFooterProps) {
 	// Basic state
@@ -125,24 +135,46 @@ export default function LaunchFooter(props: LaunchFooterProps) {
 	return (
 		<div class="footer">
 			<div id="footer-left" class="footer-section">
-				<Show
-					when={props.selectedItem != undefined && props.selectedItem != ""}
-				>
-					<div class="cont" id="footer-selection-indicator">
+				<div class="cont" id="footer-selection-indicator">
+					<Show
+						when={props.selectedItem != undefined && props.selectedItem != ""}
+					>
 						{`Selected: ${props.selectedItem}`}
-					</div>
-				</Show>
+					</Show>
+				</div>
+				<div class="cont" style="margin-left:1rem">
+					<Show when={props.mode == FooterMode.PreviewPackage}>
+						<Tip tip="Refetches packages and their new versions" side="top">
+							<IconTextButton
+								icon={Refresh}
+								text="Sync Packages"
+								size="22px"
+								color="var(--bg2)"
+								selectedColor="var(--package)"
+								selectedBg="var(--packagebg)"
+								onClick={async () => {
+									try {
+										await invoke("sync_packages");
+									} catch (e) {
+										errorToast("Failed to sync packages: " + e);
+									}
+								}}
+								selected={true}
+							/>
+						</Tip>
+					</Show>
+				</div>
 			</div>
 			<div id="footer-center" class="cont footer-section">
 				<div id="footer-center-inner">
-					<Show
-						when={
-							props.mode == FooterMode.Instance &&
-							props.selectedItem != undefined
-						}
-						fallback={<div></div>}
-					>
-						<div class="cont">
+					<div class="cont">
+						<Show
+							when={
+								props.mode == FooterMode.Instance &&
+								props.selectedItem != undefined
+							}
+							fallback={<div></div>}
+						>
 							<div class="cont footer-update">
 								<IconButton
 									icon={Upload}
@@ -175,8 +207,8 @@ export default function LaunchFooter(props: LaunchFooterProps) {
 									selected={false}
 								/>
 							</div>
-						</div>
-					</Show>
+						</Show>
+					</div>
 					<ActionButton
 						selected={props.selectedItem != undefined}
 						mode={props.mode}

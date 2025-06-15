@@ -15,17 +15,8 @@ export default function TaskIndicator(props: TaskIndicatorProps) {
 			setTaskCount((taskCount) => taskCount + 1);
 		}
 		if (taskCount() == 1) {
-			if (task == "get_plugins") {
-				setColor("plugin");
-			} else if (task.startsWith("launch_instance")) {
-				setColor("instance");
-			} else if (task == "update_instance") {
-				setColor("profile");
-			} else if (task == "search_packages" || task == "load_packages") {
-				setColor("package");
-			}
-
 			setTaskName(getTaskDisplayName(task));
+			setColor(getTaskColor(task));
 		}
 		setMessages((messages) => {
 			messages[task] = [];
@@ -171,8 +162,28 @@ function getTaskDisplayName(task: string) {
 		return "Searching packages";
 	} else if (task == "load_packages") {
 		return "Loading packages";
+	} else if (task == "sync_packages") {
+		return "Syncing packages";
 	}
 	return task;
+}
+
+function getTaskColor(task: string) {
+	if (task == "get_plugins") {
+		return "plugin";
+	} else if (task.startsWith("launch_instance")) {
+		return "instance";
+	} else if (task == "update_instance") {
+		return "profile";
+	} else if (
+		task == "search_packages" ||
+		task == "load_packages" ||
+		task == "sync_packages"
+	) {
+		return "package";
+	}
+
+	return "running";
 }
 
 type Color =

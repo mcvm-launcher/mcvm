@@ -17,7 +17,7 @@
 }
 
 .tip-body {
-	background-color: var(--bg2);
+	background-color: var(--bg0);
 	padding: 0.5rem;
 	border: 0.15rem solid var(--bg3);
 	border-radius: var(--round);
@@ -41,25 +41,25 @@
 .tip-arrow {
 	width: 0.5rem;
 	height: 0.5rem;
-	background-color: var(--bg2);
+	background-color: var(--bg0);
 	border: 0.15rem solid var(--bg3);
 }
 
 .tip-arrow.right {
-	border-right-color: var(--bg2);
+	border-right-color: var(--bg0);
 	margin-right: -0.15rem;
 	border-bottom-left-radius: 5rem;
 	box-shadow: none;
 }
 
 .tip-arrow.top {
-	border-top-color: var(--bg2);
+	border-top-color: var(--bg0);
 	margin-top: -0.15rem;
 	border-bottom-right-radius: 5rem;
 }
 
 .tip-arrow.bottom {
-	border-bottom-color: var(--bg2);
+	border-bottom-color: var(--bg0);
 	margin-bottom: -0.15rem;
 	border-top-right-radius: 5rem;
 	box-shadow: none;

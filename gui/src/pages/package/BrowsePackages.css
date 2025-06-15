@@ -33,6 +33,7 @@
 
 .package.selected {
 	border-color: var(--package);
+	background-color: var(--bg);
 }
 
 .package-inner {

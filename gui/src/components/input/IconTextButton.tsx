@@ -5,9 +5,12 @@ import "./IconTextButton.css";
 export default function IconTextButton(props: IconTextButtonProps) {
 	let [isHovered, setIsHovered] = createSignal(false);
 
+	let selectedBg =
+		props.selectedBg == undefined ? props.color : props.selectedBg;
+
 	const colorStyle = () =>
 		props.selected
-			? `background-color:${props.color};border-color:${props.selectedColor}`
+			? `background-color:${selectedBg};border-color:${props.selectedColor}`
 			: isHovered()
 			? `background-color:${props.color};border-color:var(--bg4)`
 			: `background-color:${props.color};border-color:var(--bg3)`;
@@ -37,6 +40,7 @@ export interface IconTextButtonProps {
 	text: string;
 	color: string;
 	selectedColor: string;
+	selectedBg?: string;
 	shadow?: boolean;
 	size: string;
 	selected: boolean;

@@ -5,10 +5,11 @@ use mcvm::pkg_crate::metadata::PackageMetadata;
 use mcvm::pkg_crate::properties::PackageProperties;
 use mcvm::pkg_crate::repo::RepoMetadata;
 use mcvm::pkg_crate::{PkgRequest, PkgRequestSource};
-use mcvm::shared::output::NoOp;
+use mcvm::shared::output::{MCVMOutput, MessageContents, MessageLevel, NoOp};
 use mcvm::shared::pkg::PackageSearchParameters;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
+use std::ops::DerefMut;
 use std::sync::Arc;
 
 use super::{fmt_err, load_config};
@@ -200,4 +201,68 @@ pub async fn get_instance_packages(
 	let packages = lock.get_instance_packages(instance).unwrap_or(&default);
 
 	Ok(packages.clone())
+}
+
+#[tauri::command]
+pub async fn sync_packages(
+	state: tauri::State<'_, State>,
+	app_handle: tauri::AppHandle,
+) -> Result<(), String> {
+	let mut config =
+		fmt_err(load_config(&state.paths, &mut NoOp).context("Failed to load config"))?;
+
+	let mut output = LauncherOutput::new(state.get_output(app_handle));
+	output.set_task("sync_packages");
+
+	for repo in config.packages.repos.iter_mut() {
+		output.display(
+			MessageContents::StartProcess(format!("Syncing repository {}", repo.get_id())),
+			MessageLevel::Important,
+		);
+		let mut process = output.get_process();
+		match repo
+			.sync(
+				&state.paths,
+				&config.plugins,
+				&state.client,
+				process.deref_mut(),
+			)
+			.await
+		{
+			Ok(..) => {
+				process.display(
+					MessageContents::Success(format!("Synced repository {}", repo.get_id())),
+					MessageLevel::Important,
+				);
+			}
+			Err(e) => {
+				process.display(
+					MessageContents::Error(format!(
+						"Failed to sync repository {}: {e}",
+						repo.get_id()
+					)),
+					MessageLevel::Important,
+				);
+			}
+		};
+	}
+
+	output.display(
+		MessageContents::StartProcess("Updating standard packages".into()),
+		MessageLevel::Important,
+	);
+	let mut process = output.get_process();
+	fmt_err(
+		config
+			.packages
+			.update_cached_packages(&state.paths, &state.client, process.deref_mut())
+			.await
+			.context("Failed to update cached packages"),
+	)?;
+	process.display(
+		MessageContents::Success("Packages updated".into()),
+		MessageLevel::Important,
+	);
+
+	Ok(())
 }

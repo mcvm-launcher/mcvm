@@ -5,7 +5,7 @@ use mcvm_pkg::repo::RepoMetadata;
 use mcvm_plugin::hooks::{
 	PreloadPackages, PreloadPackagesArg, QueryCustomPackageRepository,
 	QueryCustomPackageRepositoryArg, SearchCustomPackageRepository,
-	SearchCustomPackageRepositoryArg,
+	SearchCustomPackageRepositoryArg, SyncCustomPackageRepository, SyncCustomPackageRepositoryArg,
 };
 use mcvm_shared::{
 	output::MCVMOutput,
@@ -105,6 +105,27 @@ impl CustomPackageRepository {
 		let result = plugins
 			.call_hook_on_plugin(PreloadPackages, &self.plugin, &arg, paths, o)
 			.context("Failed to call preload hook")?;
+
+		let Some(result) = result else {
+			return Ok(());
+		};
+
+		result.result(o)
+	}
+
+	/// Syncs the cache for this repository
+	pub fn sync(
+		&self,
+		plugins: &PluginManager,
+		paths: &Paths,
+		o: &mut impl MCVMOutput,
+	) -> anyhow::Result<()> {
+		let arg = SyncCustomPackageRepositoryArg {
+			repository: self.id.clone(),
+		};
+		let result = plugins
+			.call_hook_on_plugin(SyncCustomPackageRepository, &self.plugin, &arg, paths, o)
+			.context("Failed to call sync hook")?;
 
 		let Some(result) = result else {
 			return Ok(());

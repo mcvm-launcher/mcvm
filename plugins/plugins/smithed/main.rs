@@ -112,6 +112,24 @@ fn main() -> anyhow::Result<()> {
 		})
 	})?;
 
+	plugin.sync_custom_package_repository(|ctx, arg| {
+		if arg.repository != "smithed" {
+			return Ok(());
+		}
+
+		let smithed_dir = ctx
+			.get_data_dir()
+			.context("Failed to get data dir")?
+			.join("internal/smithed");
+
+		let packs_path = smithed_dir.join("packs");
+		if packs_path.exists() {
+			std::fs::remove_dir_all(packs_path).context("Failed to remove cached packs")?;
+		}
+
+		Ok(())
+	})?;
+
 	Ok(())
 }
 

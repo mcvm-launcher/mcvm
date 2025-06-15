@@ -201,7 +201,7 @@ export default function BrowsePackages(props: BrowsePackagesProps) {
 										setSelectedPackage(pkg);
 										props.setFooterData({
 											mode: FooterMode.PreviewPackage,
-											selectedItem: pkg,
+											selectedItem: "",
 											action: () => {
 												window.location.href = `/packages/package/${data.id}`;
 											},

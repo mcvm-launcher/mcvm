@@ -81,11 +81,17 @@ impl PackageRepository {
 		out
 	}
 
-	/// Update the currently cached index file
-	pub async fn sync(&mut self, paths: &Paths, client: &Client) -> anyhow::Result<()> {
+	/// Update cached packages
+	pub async fn sync(
+		&mut self,
+		paths: &Paths,
+		plugins: &PluginManager,
+		client: &Client,
+		o: &mut impl MCVMOutput,
+	) -> anyhow::Result<()> {
 		match self {
 			Self::Basic(repo) => repo.sync(paths, client).await,
-			Self::Custom(_) => Ok(()),
+			Self::Custom(repo) => repo.sync(plugins, paths, o),
 			Self::Core => Ok(()),
 		}
 	}

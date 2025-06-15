@@ -22,7 +22,7 @@
 	font-size: 0.8rem;
 	justify-content: flex-start;
 	font-weight: bold;
-	overflow: nowrap;
+	overflow: hidden;
 	text-wrap: nowrap;
 }
 
