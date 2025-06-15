@@ -503,7 +503,7 @@ pub async fn search_projects(
 	download::json(url, client).await
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Clone)]
 pub struct SearchResults {
 	/// The results
 	pub hits: Vec<SearchedProject>,

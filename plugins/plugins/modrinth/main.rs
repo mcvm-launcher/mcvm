@@ -10,10 +10,13 @@ use mcvm_core::io::{
 };
 use mcvm_net::{
 	download::Client,
-	modrinth::{self, Member, Project, Version},
+	modrinth::{self, Member, Project, SearchResults, Version},
 };
 use mcvm_pkg_gen::relation_substitution::RelationSubFunction;
-use mcvm_plugin::{api::CustomPlugin, hooks::CustomRepoQueryResult};
+use mcvm_plugin::{
+	api::{utils::PackageSearchCache, CustomPlugin},
+	hooks::CustomRepoQueryResult,
+};
 use mcvm_shared::pkg::PackageSearchResults;
 use serde::{Deserialize, Serialize};
 
@@ -64,7 +67,7 @@ fn main() -> anyhow::Result<()> {
 		Ok(())
 	})?;
 
-	plugin.search_custom_package_repository(|_, arg| {
+	plugin.search_custom_package_repository(|ctx, arg| {
 		if arg.repository != "modrinth" {
 			return Ok(PackageSearchResults::default());
 		}
@@ -72,10 +75,24 @@ fn main() -> anyhow::Result<()> {
 		let client = Client::new();
 		let runtime = tokio::runtime::Runtime::new()?;
 
+		let data_dir = ctx.get_data_dir()?;
+
 		let (projects, total_results) = runtime.block_on(async move {
-			let results = modrinth::search_projects(arg.parameters, &client, false)
-				.await
-				.context("Failed to search projects from the API")?;
+			let mut search_cache =
+				PackageSearchCache::open(data_dir.join("internal/modrinth/search_cache.json"), 250)
+					.context("Failed to open search cache")?;
+
+			let results =
+				if let Some(results) = search_cache.check::<SearchResults>(&arg.parameters) {
+					results
+				} else {
+					let results = modrinth::search_projects(arg.parameters.clone(), &client, false)
+						.await
+						.context("Failed to search projects from the API")?;
+
+					let _ = search_cache.write(&arg.parameters, results.clone());
+					results
+				};
 
 			let projects = results.hits.into_iter().map(|x| x.slug);
 
