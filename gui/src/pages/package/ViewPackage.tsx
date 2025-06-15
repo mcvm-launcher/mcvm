@@ -19,14 +19,17 @@ import Icon, { HasWidthHeight } from "../../components/Icon";
 import {
 	Book,
 	CurlyBraces,
+	Folder,
 	Globe,
 	Heart,
 	Key,
+	Picture,
+	Text,
 	User,
 	Warning,
 } from "../../icons";
 import Modal from "../../components/dialog/Modal";
-import { packageCategoryDisplayName, packageCategoryIcon } from "../../package";
+import PackageLabels from "../../components/package/PackageLabels";
 
 export default function ViewPackage(props: ViewPackageProps) {
 	let params = useParams();
@@ -103,25 +106,9 @@ export default function ViewPackage(props: ViewPackageProps) {
 								<div class="cont" id="package-short-description">
 									{shortDescription()}
 								</div>
-								<div class="cont" id="package-labels">
-									<Show when={meta()!.categories != undefined}>
-										<For each={meta()!.categories!}>
-											{(category) => (
-												<div class="cont package-category">
-													<div class="cont package-category-icon">
-														<Icon
-															icon={packageCategoryIcon(category)}
-															size="1rem"
-														/>
-													</div>
-													<div class="cont package-category-label">
-														{packageCategoryDisplayName(category)}
-													</div>
-												</div>
-											)}
-										</For>
-									</Show>
-								</div>
+								<Show when={meta()!.categories != undefined}>
+									<PackageLabels categories={meta()!.categories!} />
+								</Show>
 							</div>
 						</div>
 					</div>
@@ -140,6 +127,7 @@ export default function ViewPackage(props: ViewPackageProps) {
 									}`}
 									onclick={() => setSelectedTab("description")}
 								>
+									<Icon icon={Text} size="1rem" />
 									Description
 								</div>
 								<div
@@ -148,6 +136,7 @@ export default function ViewPackage(props: ViewPackageProps) {
 									}`}
 									onclick={() => setSelectedTab("versions")}
 								>
+									<Icon icon={Folder} size="1rem" />
 									Versions
 								</div>
 								<div
@@ -156,6 +145,7 @@ export default function ViewPackage(props: ViewPackageProps) {
 									}`}
 									onclick={() => setSelectedTab("gallery")}
 								>
+									<Icon icon={Picture} size="1rem" />
 									Gallery
 								</div>
 							</div>

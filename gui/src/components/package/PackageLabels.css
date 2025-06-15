@@ -1,0 +1,19 @@
+.package-labels {
+	justify-content: flex-start;
+	gap: 0.9rem;
+	color: var(--fg2);
+}
+
+.package-labels.small {
+	gap: 0.7rem;
+	font-size: 0.95rem;
+}
+
+.package-category {
+	gap: 0.4rem;
+	text-wrap: nowrap;
+}
+
+.package-category.small {
+	gap: 0.3rem;
+}

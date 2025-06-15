@@ -20,7 +20,7 @@
 .package {
 	background-color: var(--bg2);
 	box-sizing: border-box;
-	height: 15rem;
+	height: 18rem;
 	border-radius: var(--round);
 	border-top-left-radius: var(--round2);
 	border-top-right-radius: var(--round2);
@@ -38,7 +38,7 @@
 
 .package-inner {
 	display: grid;
-	grid-template-rows: minmax(0, 1fr) minmax(0, 0.35fr);
+	grid-template-rows: minmax(0, 1fr) minmax(0, 0.75fr);
 	height: 100%;
 	width: 100%;
 	gap: 0.2rem;
@@ -58,18 +58,23 @@
 }
 
 .package-header {
-	/* text-align: center; */
-	margin-top: 0.5rem;
-	margin-left: 1.1rem;
+	padding: 0.75rem;
 	justify-content: center;
 	align-items: flex-start;
+	justify-content: flex-start;
 	gap: 0.1rem;
+}
+
+.package-name {
+	font-weight: bold;
+	margin-top: -0.25rem;
 }
 
 .package-description {
 	overflow: hidden;
 	color: var(--fg3);
-	font-size: 0.8rem;
+	font-size: 0.9rem;
+	line-height: 1.2;
 }
 
 .package-error {

@@ -17,6 +17,7 @@ import InlineSelect from "../../components/input/InlineSelect";
 import { FooterData } from "../../App";
 import { FooterMode } from "../../components/launch/Footer";
 import { errorToast, warningToast } from "../../components/dialog/Toasts";
+import PackageLabels from "../../components/package/PackageLabels";
 
 const PACKAGES_PER_PAGE = 12;
 
@@ -262,6 +263,15 @@ function Package(props: PackageProps) {
 				</div>
 				<div class="cont col package-header">
 					<div class="package-name">{props.meta.name}</div>
+					<Show when={props.meta.categories != undefined}>
+						<div style="margin-top:-0.2rem">
+							<PackageLabels
+								categories={props.meta.categories!}
+								small
+								limit={3}
+							/>
+						</div>
+					</Show>
 					<div class="package-description">{props.meta.description}</div>
 				</div>
 			</div>

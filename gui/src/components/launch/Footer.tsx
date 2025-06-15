@@ -151,7 +151,7 @@ export default function LaunchFooter(props: LaunchFooterProps) {
 								size="22px"
 								color="var(--bg2)"
 								selectedColor="var(--package)"
-								selectedBg="var(--packagebg)"
+								selectedBg="black"
 								onClick={async () => {
 									try {
 										await invoke("sync_packages");
