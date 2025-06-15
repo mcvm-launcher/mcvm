@@ -127,7 +127,7 @@ pub async fn search_packs(
 		String::new()
 	};
 	let page = params.skip / params.count as usize + 1;
-	let url = format!("{API_URL}/packs?limit={limit}{search}&page={page}",);
+	let url = format!("{API_URL}/packs?limit={limit}{search}&page={page}&scope=meta.rawId");
 
 	download::json(url, client).await
 }
@@ -138,6 +138,15 @@ pub struct PackSearchResult {
 	pub id: String,
 	#[serde(rename = "displayName")]
 	pub display_name: String,
+	pub meta: PackSearchResultMeta,
+}
+
+/// Metadata for a pack search result
+#[derive(Serialize, Deserialize, Clone, Debug)]
+pub struct PackSearchResultMeta {
+	/// The plaintext ID / slug of this pack
+	#[serde(rename = "rawId")]
+	pub raw_id: String,
 }
 
 /// Count packs from the Smithed API that match a criteris

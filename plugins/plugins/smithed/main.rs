@@ -16,7 +16,6 @@ use mcvm_plugin::{
 };
 use mcvm_shared::pkg::PackageSearchResults;
 use serde::{Deserialize, Serialize};
-use tokio::task::JoinSet;
 
 fn main() -> anyhow::Result<()> {
 	let mut plugin = CustomPlugin::from_manifest_file("smithed", include_str!("plugin.json"))?;
@@ -72,7 +71,6 @@ fn main() -> anyhow::Result<()> {
 			.get_data_dir()
 			.context("Failed to get data dir")?
 			.join("internal/smithed");
-		let storage_dir = smithed_dir.join("packs");
 
 		let client = Client::new();
 		let runtime = tokio::runtime::Runtime::new()?;
@@ -103,24 +101,7 @@ fn main() -> anyhow::Result<()> {
 				result
 			};
 
-			let mut tasks = JoinSet::new();
-			for pack in results {
-				let client = client.clone();
-				let storage_dir = storage_dir.clone();
-				tasks.spawn(async move {
-					let pack_info = get_cached_pack(&pack.id, true, &storage_dir, &client)
-						.await
-						.context("Failed to get cached pack")?
-						.context("Pack does not exist")?;
-
-					Ok::<_, anyhow::Error>(pack_info.pack.id)
-				});
-			}
-
-			let mut packs = Vec::new();
-			while let Some(result) = tasks.join_next().await {
-				packs.push(result??);
-			}
+			let packs = results.into_iter().map(|x| x.meta.raw_id).collect();
 
 			Ok::<_, anyhow::Error>((packs, total_results))
 		})?;
