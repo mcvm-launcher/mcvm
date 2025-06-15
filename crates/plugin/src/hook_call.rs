@@ -4,6 +4,7 @@ use std::{
 	path::Path,
 	process::{Child, ChildStdin, ChildStdout, Command},
 	sync::{Arc, Mutex},
+	time::Instant,
 };
 
 use anyhow::{anyhow, bail, Context};
@@ -139,6 +140,12 @@ where
 
 		let stdin = child.stdin.take().unwrap();
 
+		let start_time = if std::env::var("MCVM_PLUGIN_PROFILE").is_ok_and(|x| x == "1") {
+			Some(Instant::now())
+		} else {
+			None
+		};
+
 		let handle = HookHandle {
 			inner: HookHandleInner::Process {
 				child,
@@ -152,6 +159,7 @@ where
 			protocol_version: arg.protocol_version,
 			plugin_id: arg.plugin_id.to_string(),
 			command_results: VecDeque::new(),
+			start_time,
 		};
 
 		Ok(handle)
@@ -167,6 +175,7 @@ pub struct HookHandle<H: Hook> {
 	protocol_version: u16,
 	plugin_id: String,
 	command_results: VecDeque<CommandResult>,
+	start_time: Option<Instant>,
 }
 
 impl<H: Hook> HookHandle<H> {
@@ -179,6 +188,7 @@ impl<H: Hook> HookHandle<H> {
 			protocol_version: DEFAULT_PROTOCOL_VERSION,
 			plugin_id,
 			command_results: VecDeque::new(),
+			start_time: None,
 		}
 	}
 
@@ -246,6 +256,18 @@ impl<H: Hook> HookHandle<H> {
 								.context("Failed to deserialize hook result")?
 						};
 						*result = Some(new_result);
+
+						if let Some(start_time) = &self.start_time {
+							let now = Instant::now();
+							let delta = now.duration_since(*start_time);
+							o.display(
+								MessageContents::Simple(format!(
+									"Plugin {} took {delta:?} to run hook",
+									self.plugin_id
+								)),
+								MessageLevel::Extra,
+							);
+						}
 
 						// We can stop polling early
 						return Ok(true);
