@@ -215,7 +215,7 @@ async fn get_cached_pack(
 		};
 
 		let body = if download_body {
-			if let Some(url) = &pack.display.web_page {
+			if let Some(url) = pack.display.web_page.as_ref().filter(|x| !x.is_empty()) {
 				download::text(url, client).await.ok()
 			} else {
 				None
