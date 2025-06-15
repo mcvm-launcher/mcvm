@@ -29,11 +29,11 @@
 	border-right-width: 0.3rem;
 	border-right-style: solid;
 	border-right-color: var(--fg2);
+	border-bottom-color: var(--bg4);
 	transition: border-right-width 0.1s;
 }
 
 .sidebar-item.sidebar-item.selected {
-	background-color: var(--bg3);
+	background-color: var(--bg2);
 	border-top-color: var(--fg3);
-	border-bottom-color: var(--bg);
 }

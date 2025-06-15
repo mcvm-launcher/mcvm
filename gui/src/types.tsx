@@ -1,3 +1,5 @@
+import { PackageCategory } from "./package";
+
 export type Side = "client" | "server";
 export type InstanceIcon = string;
 
@@ -42,6 +44,7 @@ export interface PackageMeta {
 	banner?: string;
 	icon?: string;
 	gallery?: string[];
+	categories?: PackageCategory[];
 	website?: string;
 	support_link?: string;
 	documentation?: string;

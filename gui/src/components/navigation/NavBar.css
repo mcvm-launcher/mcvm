@@ -9,6 +9,7 @@
 	box-sizing: border-box;
 	user-select: none;
 	-webkit-user-select: none;
+	/* border-bottom: 0.15rem solid var(--bg3); */
 }
 
 #navbar-container {

@@ -5,6 +5,7 @@ import {
 	createEffect,
 	createResource,
 	createSignal,
+	For,
 	JSX,
 	Show,
 } from "solid-js";
@@ -21,10 +22,11 @@ import {
 	Globe,
 	Heart,
 	Key,
-	Scroll,
 	User,
 	Warning,
 } from "../../icons";
+import Modal from "../../components/dialog/Modal";
+import { packageCategoryDisplayName, packageCategoryIcon } from "../../package";
 
 export default function ViewPackage(props: ViewPackageProps) {
 	let params = useParams();
@@ -38,6 +40,7 @@ export default function ViewPackage(props: ViewPackageProps) {
 	let [longDescription, setLongDescription] = createSignal("");
 
 	let [selectedTab, setSelectedTab] = createSignal("description");
+	let [galleryPreview, setGalleryPreview] = createSignal<string | undefined>();
 
 	createEffect(() => {
 		props.setFooterData({
@@ -53,7 +56,7 @@ export default function ViewPackage(props: ViewPackageProps) {
 		});
 
 		let description = meta.description == undefined ? "" : meta.description;
-		setShortDescription(description.slice(0, 150));
+		setShortDescription(description.slice(0, 200));
 		let longDescription =
 			meta.long_description == undefined ? "" : meta.long_description;
 		let longDescriptionHtml = `<div>${await marked.parse(
@@ -100,6 +103,25 @@ export default function ViewPackage(props: ViewPackageProps) {
 								<div class="cont" id="package-short-description">
 									{shortDescription()}
 								</div>
+								<div class="cont" id="package-labels">
+									<Show when={meta()!.categories != undefined}>
+										<For each={meta()!.categories!}>
+											{(category) => (
+												<div class="cont package-category">
+													<div class="cont package-category-icon">
+														<Icon
+															icon={packageCategoryIcon(category)}
+															size="1rem"
+														/>
+													</div>
+													<div class="cont package-category-label">
+														{packageCategoryDisplayName(category)}
+													</div>
+												</div>
+											)}
+										</For>
+									</Show>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -144,6 +166,32 @@ export default function ViewPackage(props: ViewPackageProps) {
 										id="package-description"
 										innerHTML={longDescription()}
 									></div>
+								</Show>
+								<Show
+									when={
+										selectedTab() == "gallery" && meta()!.gallery != undefined
+									}
+								>
+									<div class="cont">
+										<div id="package-gallery">
+											<For each={meta()!.gallery!}>
+												{(entry) => (
+													<img
+														class="package-gallery-entry"
+														src={entry}
+														onclick={() => setGalleryPreview(entry)}
+													/>
+												)}
+											</For>
+										</div>
+									</div>
+									<Modal
+										width="55rem"
+										visible={galleryPreview() != undefined}
+										onClose={() => setGalleryPreview(undefined)}
+									>
+										<img id="package-gallery-preview" src={galleryPreview()} />
+									</Modal>
 								</Show>
 							</div>
 						</div>

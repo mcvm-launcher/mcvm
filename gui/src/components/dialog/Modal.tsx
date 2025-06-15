@@ -6,8 +6,14 @@ export default function Modal(props: ModalProps) {
 	return (
 		<Show when={props.visible}>
 			<PageBlock onClick={() => props.onClose(false)} />
-			<div class="modal" style={`width:${props.width}`}>
-				{props.children}
+			<div class="cont modal-container">
+				<div
+					class="cont modal-behind"
+					onclick={() => props.onClose(false)}
+				></div>
+				<div class="cont modal" style={`width:${props.width}`}>
+					{props.children}
+				</div>
 			</div>
 		</Show>
 	);

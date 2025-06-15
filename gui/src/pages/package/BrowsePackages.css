@@ -18,7 +18,6 @@
 }
 
 .package {
-	/* padding: 0.5rem; */
 	background-color: var(--bg2);
 	box-sizing: border-box;
 	height: 15rem;
@@ -26,6 +25,10 @@
 	border-top-left-radius: var(--round2);
 	border-top-right-radius: var(--round2);
 	border: 0.15rem solid var(--bg3);
+}
+
+.package:hover {
+	border-color: var(--bg4);
 }
 
 .package.selected {

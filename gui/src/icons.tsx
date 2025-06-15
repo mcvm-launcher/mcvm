@@ -29,6 +29,22 @@ import CurlyBracesIcon from "./assets/icons/curly_braces.svg?component-solid";
 import UserIcon from "./assets/icons/user.svg?component-solid";
 import HeartIcon from "./assets/icons/heart.svg?component-solid";
 import BookIcon from "./assets/icons/book.svg?component-solid";
+import AudioIcon from "./assets/icons/audio.svg?component-solid";
+import FullscreenIcon from "./assets/icons/fullscreen.svg?component-solid";
+import GearIcon from "./assets/icons/gear.svg?component-solid";
+import GraphIcon from "./assets/icons/graph.svg?component-solid";
+import LanguageIcon from "./assets/icons/language.svg?component-solid";
+import LinkIcon from "./assets/icons/link.svg?component-solid";
+import MapPinIcon from "./assets/icons/map_pin.svg?component-solid";
+import MicrophoneIcon from "./assets/icons/microphone.svg?component-solid";
+import MinecraftIcon from "./assets/icons/minecraft.svg?component-solid";
+import MoonIcon from "./assets/icons/moon.svg?component-solid";
+import PaletteIcon from "./assets/icons/palette.svg?component-solid";
+import PictureIcon from "./assets/icons/picture.svg?component-solid";
+import StarIcon from "./assets/icons/star.svg?component-solid";
+import SunIcon from "./assets/icons/sun.svg?component-solid";
+import TextIcon from "./assets/icons/text.svg?component-solid";
+import WindowIcon from "./assets/icons/window.svg?component-solid";
 import { HasWidthHeight } from "./components/Icon";
 
 export function Pin({ width, height, viewBox }: HasWidthHeight) {
@@ -161,4 +177,53 @@ export function Heart({ width, height, viewBox }: HasWidthHeight) {
 
 export function Book({ width, height, viewBox }: HasWidthHeight) {
 	return <BookIcon width={width} height={height} viewBox={viewBox} />;
+}
+
+export function Audio({ width, height, viewBox }: HasWidthHeight) {
+	return <AudioIcon width={width} height={height} viewBox={viewBox} />;
+}
+export function Fullscreen({ width, height, viewBox }: HasWidthHeight) {
+	return <FullscreenIcon width={width} height={height} viewBox={viewBox} />;
+}
+export function Gear({ width, height, viewBox }: HasWidthHeight) {
+	return <GearIcon width={width} height={height} viewBox={viewBox} />;
+}
+export function Graph({ width, height, viewBox }: HasWidthHeight) {
+	return <GraphIcon width={width} height={height} viewBox={viewBox} />;
+}
+export function Language({ width, height, viewBox }: HasWidthHeight) {
+	return <LanguageIcon width={width} height={height} viewBox={viewBox} />;
+}
+export function Link({ width, height, viewBox }: HasWidthHeight) {
+	return <LinkIcon width={width} height={height} viewBox={viewBox} />;
+}
+export function MapPin({ width, height, viewBox }: HasWidthHeight) {
+	return <MapPinIcon width={width} height={height} viewBox={viewBox} />;
+}
+export function Microphone({ width, height, viewBox }: HasWidthHeight) {
+	return <MicrophoneIcon width={width} height={height} viewBox={viewBox} />;
+}
+export function Minecraft({ width, height, viewBox }: HasWidthHeight) {
+	return <MinecraftIcon width={width} height={height} viewBox={viewBox} />;
+}
+export function Moon({ width, height, viewBox }: HasWidthHeight) {
+	return <MoonIcon width={width} height={height} viewBox={viewBox} />;
+}
+export function Palette({ width, height, viewBox }: HasWidthHeight) {
+	return <PaletteIcon width={width} height={height} viewBox={viewBox} />;
+}
+export function Picture({ width, height, viewBox }: HasWidthHeight) {
+	return <PictureIcon width={width} height={height} viewBox={viewBox} />;
+}
+export function Star({ width, height, viewBox }: HasWidthHeight) {
+	return <StarIcon width={width} height={height} viewBox={viewBox} />;
+}
+export function Sun({ width, height, viewBox }: HasWidthHeight) {
+	return <SunIcon width={width} height={height} viewBox={viewBox} />;
+}
+export function Text({ width, height, viewBox }: HasWidthHeight) {
+	return <TextIcon width={width} height={height} viewBox={viewBox} />;
+}
+export function Window({ width, height, viewBox }: HasWidthHeight) {
+	return <WindowIcon width={width} height={height} viewBox={viewBox} />;
 }
