@@ -43,6 +43,8 @@ pub struct Pack {
 	pub id: String,
 	pub display: PackDisplay,
 	pub versions: Vec<PackVersion>,
+	#[serde(default)]
+	pub categories: Vec<String>,
 }
 
 /// Display info for a Smithed pack

@@ -11,7 +11,7 @@ use mcvm_pkg::properties::PackageProperties;
 use mcvm_pkg::RecommendedPackage;
 use mcvm_shared::addon::AddonKind;
 use mcvm_shared::modifications::{ModloaderMatch, PluginLoaderMatch};
-use mcvm_shared::pkg::PackageStability;
+use mcvm_shared::pkg::{PackageCategory, PackageStability};
 use mcvm_shared::util::DeserListOrSingle;
 use mcvm_shared::versions::VersionPattern;
 
@@ -115,6 +115,15 @@ pub async fn gen(
 				.collect(),
 		);
 	}
+
+	meta.categories = Some(
+		project
+			.categories
+			.into_iter()
+			.map(|x| convert_category(&x).into_iter())
+			.flatten()
+			.collect(),
+	);
 
 	// Handle custom licenses
 	meta.license = Some(match project.license {
@@ -354,4 +363,46 @@ fn cleanup_version_name(version: &str) -> String {
 	let version = version.replace("+", "-");
 
 	version
+}
+
+fn convert_category(category: &str) -> Vec<PackageCategory> {
+	match category {
+		"adventure" => vec![PackageCategory::Adventure],
+		"atmosphere" => vec![PackageCategory::Atmosphere],
+		"audio" => vec![PackageCategory::Audio],
+		"blocks" => vec![PackageCategory::Blocks, PackageCategory::Building],
+		"cartoon" => vec![PackageCategory::Cartoon],
+		"challenging" => vec![PackageCategory::Challenge],
+		"combat" => vec![PackageCategory::Combat],
+		"decoration" => vec![PackageCategory::Decoration, PackageCategory::Building],
+		"economy" => vec![PackageCategory::Economy],
+		"entities" => vec![PackageCategory::Entities],
+		"equipment" => vec![PackageCategory::Equipment],
+		"fantasy" => vec![PackageCategory::Fantasy],
+		"fonts" => vec![PackageCategory::Fonts],
+		"food" => vec![PackageCategory::Food],
+		"game-mechanics" => vec![PackageCategory::GameMechanics],
+		"gui" => vec![PackageCategory::Gui],
+		"items" => vec![PackageCategory::Items],
+		"kitchen-sink" => vec![PackageCategory::Extensive],
+		"library" => vec![PackageCategory::Library],
+		"lightweight" => vec![PackageCategory::Lightweight],
+		"locale" => vec![PackageCategory::Language],
+		"magic" => vec![PackageCategory::Magic],
+		"minigame" => vec![PackageCategory::Minigame],
+		"mobs" => vec![PackageCategory::Mobs],
+		"multiplayer" => vec![PackageCategory::Multiplayer],
+		"optimization" => vec![PackageCategory::Optimization],
+		"realistic" => vec![PackageCategory::Realistic],
+		"simplistic" => vec![PackageCategory::Simplistic],
+		"social" => vec![PackageCategory::Social],
+		"storage" => vec![PackageCategory::Storage],
+		"technology" => vec![PackageCategory::Technology],
+		"transportation" => vec![PackageCategory::Transportation],
+		"tweaks" => vec![PackageCategory::Tweaks],
+		"utility" => vec![PackageCategory::Utility],
+		"vanilla-like" => vec![PackageCategory::VanillaPlus],
+		"worldgen" => vec![PackageCategory::Worldgen, PackageCategory::Exploration],
+		_ => Vec::new(),
+	}
 }

@@ -52,6 +52,8 @@ pub struct Project {
 	pub license: License,
 	/// The gallery items of the project
 	pub gallery: Option<Vec<GalleryEntry>>,
+	/// Categories for the project
+	pub categories: Vec<String>,
 }
 
 /// The type of a Modrinth project

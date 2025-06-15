@@ -9,6 +9,7 @@ use mcvm_pkg::declarative::{
 use mcvm_pkg::metadata::PackageMetadata;
 use mcvm_pkg::properties::PackageProperties;
 use mcvm_shared::addon::AddonKind;
+use mcvm_shared::pkg::PackageCategory;
 use mcvm_shared::util::DeserListOrSingle;
 use mcvm_shared::versions::VersionPattern;
 
@@ -55,6 +56,13 @@ pub async fn gen(
 				.enumerate()
 				.map(|(i, _)| mcvm_net::smithed::get_gallery_url(&pack.id, i as u8))
 				.take(pack.display.gallery.len())
+				.collect(),
+		),
+		categories: Some(
+			pack.categories
+				.into_iter()
+				.map(|x| convert_category(&x).into_iter())
+				.flatten()
 				.collect(),
 		),
 		..Default::default()
@@ -164,4 +172,19 @@ pub async fn gen(
 		addons: addon_map,
 		..Default::default()
 	})
+}
+
+fn convert_category(category: &str) -> Vec<PackageCategory> {
+	match category {
+		"Extensive" => vec![PackageCategory::Extensive],
+		"Lightweight" => vec![PackageCategory::Lightweight],
+		"QoL" => vec![PackageCategory::Tweaks],
+		"Vanilla+" => vec![PackageCategory::VanillaPlus],
+		"Tech" => vec![PackageCategory::Technology],
+		"Magic" => vec![PackageCategory::Magic],
+		"Exploration" => vec![PackageCategory::Exploration],
+		"World Overhaul" => vec![PackageCategory::Worldgen],
+		"Library" => vec![PackageCategory::Library],
+		_ => Vec::new(),
+	}
 }
