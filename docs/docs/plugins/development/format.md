@@ -106,3 +106,7 @@ Handler that matches the hook argument to choose another hook handler to handle 
 ## State
 
 Plugins can have state managed by MCVM for the duration of the MCVM program. This allows a plugin to communicate between hooks easily. Check documentation for how to use this state.
+
+## Profiling
+
+Plugins can be profiled by setting the environment variable `MCVM_PLUGIN_PROFILE=1` before running to see how long each plugin takes to run its hooks.

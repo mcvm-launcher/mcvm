@@ -265,7 +265,7 @@ impl<H: Hook> HookHandle<H> {
 									"Plugin {} took {delta:?} to run hook",
 									self.plugin_id
 								)),
-								MessageLevel::Extra,
+								MessageLevel::Important,
 							);
 						}
 
