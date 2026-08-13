@@ -291,7 +291,6 @@ pub async fn generate(
 		}
 
 		all_loaders.extend(loaders.clone());
-		all_loaders.extend(loaders.clone());
 
 		// Get stability
 		let stability = match version.version_type {

@@ -2,6 +2,7 @@ use anyhow::Context;
 use clap::Parser;
 use nitro_core::net::download::Client;
 use nitro_plugin::api::executable::ExecutablePlugin;
+use nitro_shared::io::config::IO_CONFIG;
 
 fn main() -> anyhow::Result<()> {
 	let mut plugin =
@@ -21,6 +22,7 @@ fn main() -> anyhow::Result<()> {
 		runtime.block_on(async {
 			match cli.subcommand {
 				Subcommand::GetMod { mod_id } => get_curse_mod(mod_id).await,
+				Subcommand::GetModDescription { mod_id } => get_curse_mod_description(mod_id).await,
 			}
 		})?;
 
@@ -40,6 +42,11 @@ struct Cli {
 enum Subcommand {
 	#[command(about = "Get a CurseForge project")]
 	GetMod {
+		/// The slug or ID of the mod / project
+		mod_id: String,
+	},
+	#[command(about = "Get a CurseForge project description")]
+	GetModDescription {
 		/// The slug or ID of the mod / project
 		mod_id: String,
 	},
@@ -64,6 +71,21 @@ async fn get_curse_mod(mod_id: String) -> anyhow::Result<()> {
 	Ok(())
 }
 
+async fn get_curse_mod_description(mod_id: String) -> anyhow::Result<()> {
+	let client = Client::new();
+
+	let curse_mod_description =
+		nitro_net::curseforge::get_mod_description(&mod_id, &get_api_key()?, &client)
+			.await
+			.context("Failed to get mod description")?;
+
+	println!("{curse_mod_description}");
+
+	Ok(())
+}
+
 fn get_api_key() -> anyhow::Result<String> {
-	std::env::var("NITRO_CURSEFORGE_API_KEY").context("API key missing")
+	IO_CONFIG
+		.get_string("curseforge_api_key")
+		.context("API key missing")
 }
