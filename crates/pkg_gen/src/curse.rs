@@ -88,11 +88,17 @@ pub async fn generate(
 					sides.insert(Side::Server);
 					sides.insert(Side::Client);
 				}
-				CurseGameVersion::Forge | CurseGameVersion::NeoForge => {
+				CurseGameVersion::Forge => {
 					loaders.insert(LoaderMatch::ForgeLike);
 				}
-				CurseGameVersion::Fabric | CurseGameVersion::Quilt => {
+				CurseGameVersion::NeoForge => {
+					loaders.insert(LoaderMatch::Loader(Loader::NeoForged));
+				}
+				CurseGameVersion::Fabric => {
 					loaders.insert(LoaderMatch::FabricLike);
+				}
+				CurseGameVersion::Quilt => {
+					loaders.insert(LoaderMatch::Loader(Loader::Quilt));
 				}
 				CurseGameVersion::LiteLoader => {
 					loaders.insert(LoaderMatch::Loader(Loader::LiteLoader));
