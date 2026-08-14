@@ -184,6 +184,7 @@ pub enum CurseGameVersion {
 	Fabric,
 	Quilt,
 	Cauldron,
+	OptiFine,
 	#[serde(untagged)]
 	Minecraft(String),
 }

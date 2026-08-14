@@ -103,6 +103,7 @@ pub async fn generate(
 				CurseGameVersion::Cauldron => {
 					skip = true;
 				}
+				CurseGameVersion::OptiFine => {}
 			}
 		}
 		if skip {
