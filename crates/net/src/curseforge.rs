@@ -24,7 +24,7 @@ pub async fn request_api<D: DeserializeOwned>(
 		.error_for_status()
 		.context("Server reported an error")?;
 
-	Ok(resp.error_for_status()?.json().await?)
+	Ok(resp.json().await?)
 }
 
 /// Requests a sub-url from the CurseForge API for text
