@@ -24,7 +24,7 @@ pub async fn request_api<D: DeserializeOwned>(
 		.error_for_status()
 		.context("Server reported an error")?;
 
-	Ok(resp.json().await?)
+	Ok(resp.json().await.context("Failed to parse response")?)
 }
 
 /// Requests a sub-url from the CurseForge API for text
@@ -48,9 +48,8 @@ pub async fn request_api_raw(
 
 /// Gets a CurseForge mod with the given ID from the API
 pub async fn get_mod(id: &str, api_key: &str, client: &Client) -> anyhow::Result<CurseMod> {
-	let mut response: CurseModResponse =
-		request_api(&format!("v1/mods/{id}"), api_key, client).await?;
-	Ok(response.data.remove(0))
+	let response: CurseModResponse = request_api(&format!("v1/mods/{id}"), api_key, client).await?;
+	Ok(response.data)
 }
 
 /// Gets a CurseForge mod with the given ID from the API that may not exist
@@ -69,8 +68,8 @@ pub async fn get_mod_optional(
 	if resp.status() == reqwest::StatusCode::NOT_FOUND {
 		Ok(None)
 	} else {
-		let mut resp: CurseModResponse = resp.json().await?;
-		Ok(Some(resp.data.remove(0)))
+		let resp: CurseModResponse = resp.json().await?;
+		Ok(Some(resp.data))
 	}
 }
 
@@ -82,7 +81,7 @@ pub async fn get_mod_raw(id: &str, api_key: &str, client: &Client) -> anyhow::Re
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CurseModResponse {
-	pub data: Vec<CurseMod>,
+	pub data: CurseMod,
 }
 
 /// Gets a CurseForge mod description with the given ID from the API
@@ -162,7 +161,7 @@ pub struct CurseFile {
 	/// File name
 	pub file_name: String,
 	/// Download URL for the file
-	pub download_url: String,
+	pub download_url: Option<String>,
 	/// Things that this file supports
 	pub game_versions: Vec<CurseGameVersion>,
 	/// Dependencies for the file
@@ -313,7 +312,7 @@ pub async fn search_mods(
 	client: &Client,
 ) -> anyhow::Result<SearchModsResponse> {
 	let mut url = format!(
-		"v1/mods/search?gameId=432&index={}&pageSize={}",
+		"v1/mods/search?gameId=432&index={}&pageSize={}&sortField=2&sortOrder=desc",
 		params.skip, params.count
 	);
 	if let Some(ty) = params.types.first() {

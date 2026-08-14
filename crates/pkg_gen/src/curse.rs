@@ -70,6 +70,10 @@ pub async fn generate(
 	let mut all_mc_versions = HashSet::new();
 
 	for file in files {
+		let Some(download_url) = file.download_url else {
+			continue;
+		};
+
 		let mut sides = HashSet::new();
 		let mut loaders = HashSet::new();
 		let mut mc_versions = HashSet::new();
@@ -135,7 +139,7 @@ pub async fn generate(
 
 		let pkg_version = DeclarativeAddonVersion {
 			version: Some(file.id.to_string()),
-			url: Some(file.download_url),
+			url: Some(download_url),
 			filename: Some(file.file_name),
 			conditional_properties: DeclarativeConditionSet {
 				minecraft_versions: Some(DeserListOrSingle::List(

@@ -316,10 +316,10 @@ struct StorageDirs {
 
 impl StorageDirs {
 	fn new(data_dir: &Path) -> Self {
-		let modrinth_dir = data_dir.join("internal/curseforge");
+		let curseforge_dir = data_dir.join("internal/curseforge");
 		Self {
-			projects: modrinth_dir.join("projects"),
-			packages: modrinth_dir.join("packages"),
+			projects: curseforge_dir.join("projects"),
+			packages: curseforge_dir.join("packages"),
 		}
 	}
 
