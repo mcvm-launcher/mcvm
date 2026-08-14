@@ -1,6 +1,6 @@
 use itertools::Itertools;
 use nitrolaunch::{
-	pkg_crate::metadata::PackageMetadata,
+	pkg_crate::metadata::{LongDescriptionFormat, PackageMetadata},
 	shared::{pkg::ArcPkgReq, util::open_link},
 };
 
@@ -8,6 +8,7 @@ use crate::{
 	components::{
 		gallery::Gallery,
 		input::tabs::TopTabs,
+		markdown::{HTMLViewer, MarkdownHTMLViewer},
 		pkg::versions::PackageVersions,
 		tag::{loader_tag, repo_tag},
 	},
@@ -186,20 +187,22 @@ impl Component for PackageView {
 		let contents = match &*tab.read() {
 			Tab::Description => {
 				if let Some(long_description) = &meta.long_description {
-					let markdown = MarkdownViewer::new(long_description.clone())
-						.width(Size::fill())
-						.paragraph_size(14.0)
-						.padding(32.0)
-						.color(theme.fg2)
-						.code_font_size(14.0)
-						.color_code(theme.fg2)
-						.background_code(theme.item);
-					let markdown = ScrollView::new()
+					let viewer = match meta.long_description_format {
+						LongDescriptionFormat::Markdown => MarkdownHTMLViewer {
+							body: long_description.clone(),
+						}
+						.into_element(),
+						LongDescriptionFormat::HTML => HTMLViewer {
+							body: long_description.clone(),
+						}
+						.into_element(),
+					};
+					let viewer = ScrollView::new()
 						.expanded()
 						.direction(Direction::Vertical)
-						.child(markdown);
+						.child(viewer);
 
-					rect().expanded().child(markdown).into_element()
+					rect().expanded().child(viewer).into_element()
 				} else if is_loading {
 					loading_spinner
 				} else {

@@ -32,6 +32,7 @@ pub mod footer;
 pub mod global;
 pub mod input;
 pub mod instance;
+pub mod markdown;
 pub mod misc;
 pub mod nav;
 pub mod output_indicator;

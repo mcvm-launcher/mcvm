@@ -9,7 +9,7 @@ use nitro_pkg::{
 		DeclarativeAddon, DeclarativeAddonVersion, DeclarativeConditionSet, DeclarativePackage,
 		DeclarativePackageRelations,
 	},
-	metadata::PackageMetadata,
+	metadata::{LongDescriptionFormat, PackageMetadata},
 	properties::PackageProperties,
 };
 use nitro_shared::{
@@ -34,6 +34,7 @@ pub async fn generate(
 		description: Some(m.summary),
 		downloads: Some(m.download_count),
 		long_description: body,
+		long_description_format: LongDescriptionFormat::HTML,
 		website: m.links.website_url,
 		issues: m.links.issues_url,
 		source: m.links.source_url,

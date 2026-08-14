@@ -1,6 +1,7 @@
 use crate::parse::{instruction::InstrKind, parse::Parsed, routine::METADATA_ROUTINE};
 use anyhow::bail;
 use nitro_shared::pkg::PackageCategory;
+use nitro_shared::util::DefaultExt;
 #[cfg(feature = "schema")]
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
@@ -66,6 +67,10 @@ pub struct PackageMetadata {
 	/// How many downloads the package has
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub downloads: Option<u32>,
+	/// The format of the long description
+	#[serde(skip_serializing_if = "DefaultExt::is_default")]
+	#[serde(default)]
+	pub long_description_format: LongDescriptionFormat,
 }
 
 impl PackageMetadata {
@@ -138,4 +143,16 @@ pub fn eval_metadata(parsed: &Parsed) -> anyhow::Result<PackageMetadata> {
 	} else {
 		Ok(PackageMetadata::default())
 	}
+}
+
+/// Format for the text in the long description field of a package
+#[derive(Deserialize, Serialize, Clone, Copy, PartialEq, Eq, Default, Debug)]
+#[serde(rename_all = "snake_case")]
+#[cfg_attr(feature = "schema", derive(JsonSchema))]
+pub enum LongDescriptionFormat {
+	/// Markdown format
+	#[default]
+	Markdown,
+	/// HTML format
+	HTML,
 }

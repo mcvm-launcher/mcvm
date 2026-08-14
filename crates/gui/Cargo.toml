@@ -42,6 +42,7 @@ clap = { workspace = true }
 itertools = { workspace = true }
 freya = { workspace = true }
 freya-core = { workspace = true }
+html_parser = { workspace = true }
 nitrolaunch = { workspace = true }
 open = { workspace = true }
 reqwest = { workspace = true }
