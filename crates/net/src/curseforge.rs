@@ -1,7 +1,7 @@
 use anyhow::Context;
 use nitro_shared::{
 	loaders::Loader,
-	pkg::{PackageKind, PackageStability},
+	pkg::{PackageKind, PackageSearchParameters, PackageStability},
 };
 use reqwest::Client;
 use serde::{Deserialize, Serialize, de::DeserializeOwned};
@@ -53,6 +53,27 @@ pub async fn get_mod(id: &str, api_key: &str, client: &Client) -> anyhow::Result
 	Ok(response.data.remove(0))
 }
 
+/// Gets a CurseForge mod with the given ID from the API that may not exist
+pub async fn get_mod_optional(
+	id: &str,
+	api_key: &str,
+	client: &Client,
+) -> anyhow::Result<Option<CurseMod>> {
+	let resp = client
+		.get(format!("https://api.curseforge.com/v1/mods/{id}"))
+		.header("User-Agent", user_agent())
+		.header("x-api-key", api_key)
+		.send()
+		.await
+		.context("Failed to send request")?;
+	if resp.status() == reqwest::StatusCode::NOT_FOUND {
+		Ok(None)
+	} else {
+		let mut resp: CurseModResponse = resp.json().await?;
+		Ok(Some(resp.data.remove(0)))
+	}
+}
+
 /// Gets a CurseForge mod with the given ID from the API
 pub async fn get_mod_raw(id: &str, api_key: &str, client: &Client) -> anyhow::Result<String> {
 	request_api_raw(&format!("v1/mods/{id}"), api_key, client).await
@@ -99,7 +120,7 @@ pub struct CurseModFilesResponse {
 }
 
 /// A project on CurseForge
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct CurseMod {
 	/// Unique ID of the mod
@@ -131,7 +152,7 @@ pub struct CurseMod {
 }
 
 /// A file for a CurseForge project
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct CurseFile {
 	/// Unique ID of the file
@@ -169,7 +190,7 @@ pub enum CurseGameVersion {
 }
 
 /// A dependency for a CurseForge project file
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct CurseFileDependency {
 	/// ID of the dependency mod
@@ -179,7 +200,7 @@ pub struct CurseFileDependency {
 }
 
 /// A file hash for a CurseForge project
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct CurseFileHash {
 	/// Hash value for the file
 	pub value: String,
@@ -188,14 +209,14 @@ pub struct CurseFileHash {
 }
 
 /// Author of a CurseForge project
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct CurseAuthor {
 	/// Unique name of the author
 	pub name: String,
 }
 
 /// Links for a CurseForge project
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct CurseLinks {
 	/// Link to website for the project
 	#[serde(default)]
@@ -212,14 +233,14 @@ pub struct CurseLinks {
 }
 
 /// Logo for a CurseForge project
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct CurseLogo {
 	/// URL to the logo for the project
 	pub url: String,
 }
 
 /// Screenshot for a CurseForge project
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct CurseScreenshot {
 	/// URL to the screenshot for the project
 	pub url: String,
@@ -238,6 +259,19 @@ pub fn parse_class_id(id: u16) -> Option<PackageKind> {
 	}
 }
 
+/// Unparses a PackageKind enum into a CurseForge class ID
+pub fn unparse_class_id(kind: PackageKind) -> Option<u16> {
+	match kind {
+		PackageKind::Plugin => Some(5),
+		PackageKind::Mod => Some(6),
+		PackageKind::ResourcePack => Some(12),
+		PackageKind::Modpack => Some(4471),
+		PackageKind::Datapack => Some(4546),
+		PackageKind::Shader => Some(6552),
+		_ => None,
+	}
+}
+
 /// Parses a CurseForge mod loader ID into a Loader enum
 pub fn parse_mod_loader(id: u8) -> Loader {
 	match id {
@@ -251,10 +285,87 @@ pub fn parse_mod_loader(id: u8) -> Loader {
 	}
 }
 
+/// Unparses a Loader enum into a CurseForge mod loader ID
+pub fn unparse_mod_loader(loader: &Loader) -> Option<u8> {
+	match loader {
+		Loader::Vanilla | Loader::Any => Some(0),
+		Loader::Forge => Some(1),
+		Loader::LiteLoader => Some(3),
+		Loader::Fabric => Some(4),
+		Loader::Quilt => Some(5),
+		Loader::NeoForged => Some(6),
+		_ => None,
+	}
+}
+
 /// Parses a CurseForge release type ID into a PackageStability enum
 pub fn parse_release_type(id: u8) -> PackageStability {
 	match id {
 		1 => PackageStability::Stable,
 		_ => PackageStability::Latest,
 	}
+}
+
+/// Searches for CurseForge mods with the given parameters
+pub async fn search_mods(
+	params: PackageSearchParameters,
+	api_key: &str,
+	client: &Client,
+) -> anyhow::Result<SearchModsResponse> {
+	let mut url = format!(
+		"v1/mods/search?gameId=432&index={}&pageSize={}",
+		params.skip, params.count
+	);
+	if let Some(ty) = params.types.first() {
+		if let Some(class_id) = unparse_class_id(*ty) {
+			url.push_str(&format!("&classId={}", class_id));
+		}
+	}
+	if let Some(search) = &params.search {
+		url.push_str(&format!("&searchFilter={}", search));
+	}
+	let loaders = params
+		.loaders
+		.iter()
+		.filter_map(|l| unparse_mod_loader(l))
+		.collect::<Vec<_>>();
+	if !loaders.is_empty() {
+		url.push_str(&format!(
+			"&modLoaderType={}",
+			loaders
+				.iter()
+				.map(|l| l.to_string())
+				.collect::<Vec<_>>()
+				.join(",")
+		));
+	}
+	if !params.minecraft_versions.is_empty() {
+		url.push_str(&format!(
+			"&gameVersions={}",
+			params
+				.minecraft_versions
+				.iter()
+				.map(|v| v.to_string())
+				.collect::<Vec<_>>()
+				.join(",")
+		));
+	}
+
+	request_api(&url, api_key, client).await
+}
+
+/// Response for a CurseForge search request
+#[derive(Serialize, Deserialize, Clone)]
+pub struct SearchModsResponse {
+	/// Mods returned by the search
+	pub data: Vec<CurseMod>,
+	/// Pagination information for the search response
+	pub pagination: Pagination,
+}
+
+/// Pagination information for a CurseForge search response
+#[derive(Serialize, Deserialize, Clone)]
+#[serde(rename_all = "camelCase")]
+pub struct Pagination {
+	pub total_count: u64,
 }

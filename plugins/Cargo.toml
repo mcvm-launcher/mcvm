@@ -19,6 +19,10 @@ name = "nitro_plugin_cleanup"
 path = "plugins/cleanup/main.rs"
 
 [[bin]]
+name = "nitro_plugin_curseforge"
+path = "plugins/curseforge/main.rs"
+
+[[bin]]
 name = "nitro_plugin_curseforge_api"
 path = "plugins/curseforge_api/main.rs"
 

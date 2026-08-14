@@ -183,6 +183,11 @@ install.config_split:
 	@cp -r plugins/config_split ~/.local/share/nitro/plugins
 	@cp -r ../target/wasm32-wasip2/release/nitro_plugin_config_split.wasm ~/.local/share/nitro/plugins/config_split/plugin.wasm
 
+install.curseforge:
+	@cargo install --path . --bin nitro_plugin_curseforge --locked --profile fast_release
+	@cp -r plugins/curseforge ~/.local/share/nitro/plugins
+	@cat plugins/curseforge/plugin.json | sed 's,\$${PLUGIN_DIR}/,,' > ~/.local/share/nitro/plugins/curseforge/plugin.json
+
 install.curseforge_api:
 	@cargo install --path . --bin nitro_plugin_curseforge_api --locked --profile fast_release
 	@mkdir -p ~/.local/share/nitro/plugins/curseforge_api

@@ -1,0 +1,47 @@
+{
+	"id": "curseforge",
+	"name": "CurseForge",
+	"description": "Install CurseForge packages and modpacks",
+	"documentation": "https://nitrolaunch.github.io/nitrolaunch/plugins/plugins/curseforge",
+	"version": "v8",
+	"nitro_version": "0.31.0",
+	"protocol_version": 3,
+	"raw_transfer": true,
+	"uninstall_dirs": ["curseforge"],
+	"hooks": {
+		"add_custom_package_repositories": {
+			"constant": [
+				{
+					"id": "curse",
+					"is_preferred": false,
+					"metadata": {
+						"name": "CurseForge",
+						"description": "Package repository for packs from the CurseForge website",
+						"color": "#f47920",
+						"text_color": "black",
+						"icon": "$file:icon.svg",
+						"package_types": [
+							"mod",
+							"resource_pack",
+							"datapack",
+							"plugin",
+							"modpack"
+						]
+					}
+				}
+			]
+		},
+		"query_custom_package_repository": {
+			"executable": "${PLUGIN_DIR}/nitro_plugin_curseforge${EXE_EXTENSION}"
+		},
+		"preload_packages": {
+			"executable": "${PLUGIN_DIR}/nitro_plugin_curseforge${EXE_EXTENSION}"
+		},
+		"search_custom_package_repository": {
+			"executable": "${PLUGIN_DIR}/nitro_plugin_curseforge${EXE_EXTENSION}"
+		},
+		"sync_custom_package_repository": {
+			"executable": "${PLUGIN_DIR}/nitro_plugin_curseforge${EXE_EXTENSION}"
+		}
+	}
+}

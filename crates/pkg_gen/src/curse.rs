@@ -1,6 +1,6 @@
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 
-use anyhow::{Context, anyhow};
+use anyhow::Context;
 use nitro_net::curseforge::{
 	CurseFile, CurseGameVersion, CurseMod, parse_class_id, parse_release_type,
 };
@@ -158,7 +158,20 @@ pub async fn generate(
 		addon.versions.push(pkg_version);
 	}
 
-	Err(anyhow!("Die"))
+	props.content_versions = Some(content_versions);
+	props.supported_sides = Some(all_sides.into_iter().collect());
+	props.supported_loaders = Some(all_loaders.into_iter().collect());
+	props.supported_versions = Some(all_mc_versions.into_iter().collect());
+
+	let mut addons = HashMap::new();
+	addons.insert("addon".into(), addon);
+
+	Ok(DeclarativePackage {
+		meta,
+		properties: props,
+		addons,
+		..Default::default()
+	})
 }
 
 /// Cleanup a version name to remove things like loaders
