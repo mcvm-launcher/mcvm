@@ -132,12 +132,19 @@ impl Instance {
 			None
 		};
 
+		let version_manifest = ctx
+			.core
+			.get_version_manifest(None, depth, section.deref_mut())
+			.await
+			.context("Failed to get Minecraft version manifest")?;
+
 		let arg = InstallModpackArg {
 			format: format.id.clone(),
 			path: modpack_path_str.clone(),
 			old_path,
 			target_path: self.dir().unwrap().to_string_lossy().to_string(),
 			side: self.side(),
+			minecraft_versions: version_manifest.list.clone(),
 		};
 
 		let result = ctx
@@ -222,7 +229,7 @@ impl Instance {
 		let constants = EvalConstants {
 			version: None,
 			loader: Loader::Any,
-			version_list,
+			version_list: version_list.clone(),
 			language: Language::default(),
 			default_stability: PackageStability::Latest,
 			suppress: Vec::new(),
@@ -285,6 +292,7 @@ impl Instance {
 			&download_result.modpack_path,
 			Some(side),
 			&transfer_formats,
+			&version_list,
 			plugins,
 			paths,
 			o,

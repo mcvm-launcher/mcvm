@@ -1,5 +1,4 @@
 use std::{
-	fs::File,
 	io::{Read, Seek},
 	path::{Path, PathBuf},
 };
@@ -11,7 +10,7 @@ use zip::ZipArchive;
 
 use crate::addon::{
 	Addon,
-	modpack::{DefaultLinkMethod, LinkMethod, Modpack},
+	modpack::{DefaultLinkMethod, LinkMethod, apply_zip_override},
 	storage,
 };
 
@@ -22,11 +21,9 @@ pub struct ModrinthPack<R> {
 	link_method: Box<dyn LinkMethod + Send + 'static>,
 }
 
-#[async_trait::async_trait]
-impl<R: Read + Seek + Send + 'static> Modpack<R> for ModrinthPack<R> {
-	type Index = ModrinthIndex;
-
-	fn from_stream(r: R) -> anyhow::Result<Self> {
+impl<R: Read + Seek> ModrinthPack<R> {
+	/// Creates a new ModrinthPack from a stream
+	pub fn from_stream(r: R) -> anyhow::Result<Self> {
 		let mut zip = ZipArchive::new(r).context("Failed to open pack zip file")?;
 		let index = zip
 			.by_name("modrinth.index.json")
@@ -41,12 +38,14 @@ impl<R: Read + Seek + Send + 'static> Modpack<R> for ModrinthPack<R> {
 		})
 	}
 
-	fn index(&self) -> &Self::Index {
+	/// Gets the index of this modpack
+	pub fn index(&self) -> &ModrinthIndex {
 		&self.index
 	}
 
+	/// Downloads all the files in this modpack to the given addons directory
 	#[cfg(feature = "net")]
-	async fn download(
+	pub async fn download(
 		&mut self,
 		addons_dir: &Path,
 		client: &nitro_net::download::Client,
@@ -73,7 +72,8 @@ impl<R: Read + Seek + Send + 'static> Modpack<R> for ModrinthPack<R> {
 		Ok(())
 	}
 
-	fn apply(
+	/// Applies this modpack to the given target directory. Files must already be downloaded.
+	pub fn apply(
 		&mut self,
 		target: &Path,
 		addons_dir: &Path,
@@ -97,7 +97,7 @@ impl<R: Read + Seek + Send + 'static> Modpack<R> for ModrinthPack<R> {
 
 		// Apply overrides
 		for i in 0..self.zip.len() {
-			let mut file = self.zip.by_index(i)?;
+			let file = self.zip.by_index(i)?;
 			if file.is_dir() {
 				continue;
 			}
@@ -121,51 +121,19 @@ impl<R: Read + Seek + Send + 'static> Modpack<R> for ModrinthPack<R> {
 				continue;
 			};
 
-			let target_path = target.join(target_rel_path);
-
-			if target_path.exists() {
-				// If this was an override in the old pack that hasn't changed on the filesystem, we will let it update.
-				if let Some(old_pack) = old_pack.as_mut() {
-					if old_pack
-						.zip
-						.file_names()
-						.any(|x| x == name.to_string_lossy())
-					{
-						let current_data = std::fs::read(&target_path)
-							.context("Failed to read existing override file")?;
-
-						let mut old_file = old_pack
-							.zip
-							.by_name(&name.to_string_lossy())
-							.context("Failed to read old override file")?;
-						let mut old_data = Vec::with_capacity(old_file.size() as usize);
-						old_file
-							.read_to_end(&mut old_data)
-							.context("Failed to read old override file")?;
-
-						if old_data != current_data {
-							continue;
-						}
-					} else {
-						continue;
-					}
-				} else {
-					continue;
-				}
-			}
-
-			if let Some(parent) = target_path.parent() {
-				let _ = std::fs::create_dir_all(parent);
-			}
-			let mut target_file = File::create(target_path)?;
-
-			std::io::copy(&mut file, &mut target_file).context("Failed to copy file")?;
+			apply_zip_override(
+				file,
+				target_rel_path,
+				target,
+				old_pack.as_mut().map(|x| &mut x.zip),
+			)?;
 		}
 
 		Ok(())
 	}
 
-	fn get_addons(&mut self, target: &Path, addons_dir: &Path) -> anyhow::Result<Vec<Addon>> {
+	/// Gets the addons in this modpack
+	pub fn get_addons(&mut self, target: &Path, addons_dir: &Path) -> anyhow::Result<Vec<Addon>> {
 		let mut out = Vec::new();
 		for file in &self.index.files {
 			let source_path = storage::get_sha256_addon_path(addons_dir, &file.hashes.sha512);
@@ -200,9 +168,7 @@ impl<R: Read + Seek + Send + 'static> Modpack<R> for ModrinthPack<R> {
 
 		Ok(out)
 	}
-}
 
-impl<R: Read + Seek> ModrinthPack<R> {
 	/// Gets the overrides as relative paths
 	pub fn get_overrides(&mut self, side: Side) -> anyhow::Result<Vec<PathBuf>> {
 		let mut out = Vec::new();

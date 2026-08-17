@@ -1,12 +1,15 @@
 use std::{
 	collections::{HashMap, HashSet},
+	fs::File,
+	io::BufReader,
 	path::{Path, PathBuf},
 	sync::Arc,
 	time::SystemTime,
 };
 
-use anyhow::Context;
+use anyhow::{Context, bail};
 use nitro_core::io::{files::create_leading_dirs, json_from_file, json_to_file};
+use nitro_instance::addon::modpack::cfpack::{CurseForgeManifest, CurseForgePack};
 use nitro_net::{
 	curseforge::{self, CurseFile, CurseMod, SearchModsResponse},
 	download::Client,
@@ -14,12 +17,15 @@ use nitro_net::{
 use nitro_pkg::{PackageMetaAndProps, PackageSearchResults, PkgRequest, PkgRequestSource};
 use nitro_plugin::{
 	api::{executable::ExecutablePlugin, utils::PackageSearchCache},
-	hook::hooks::CustomRepoQueryResult,
+	hook::hooks::{CustomRepoQueryResult, ImportInstanceResult, InstallModpackResult},
 };
 use nitro_shared::{
+	Side,
 	io::{config::IO_CONFIG, update_link},
-	versions::VersionPattern,
+	output::{MessageContents, NitroOutput},
+	versions::{MinecraftVersionDeser, VersionPattern},
 };
+use nitrolaunch::config_crate::instance::InstanceConfig;
 use serde::{Deserialize, Serialize};
 
 const PROJECT_CACHE_TIME_SECS: u64 = 3600;
@@ -155,6 +161,125 @@ fn main() -> anyhow::Result<()> {
 		}
 
 		Ok(())
+	})?;
+
+	plugin.install_modpack(|mut ctx, arg| {
+		let mut old_pack = if let Some(old_path) = arg.old_path {
+			let file = BufReader::new(File::open(old_path).context("Failed to open old modpack")?);
+			Some(CurseForgePack::from_stream(file).context("Failed to open old modpack")?)
+		} else {
+			None
+		};
+
+		let data_dir = ctx.get_data_dir()?;
+		let addons_dir = data_dir.join("internal/addons");
+		let api_key = get_api_key().context("Failed to get CurseForge API key")?;
+
+		let file = BufReader::new(File::open(arg.path).context("Failed to open modpack")?);
+		let mut pack = CurseForgePack::from_stream(file).context("Failed to open modpack")?;
+
+		let mut process = ctx.get_output().get_process();
+		process.display(MessageContents::StartProcess(
+			"Downloading modpack files".into(),
+		));
+
+		let client = Client::new();
+		let runtime = tokio::runtime::Runtime::new()?;
+
+		let (projects, files) = runtime
+			.block_on(pack.download(&addons_dir, &client, &api_key))
+			.context("Failed to download modpack files")?;
+
+		process.display(MessageContents::Success("Modpack files downloaded".into()));
+		process.finish();
+
+		let mut process = ctx.get_output().get_process();
+		process.display(MessageContents::StartProcess("Installing modpack".into()));
+
+		let addons = pack
+			.apply(
+				Path::new(&arg.target_path),
+				&files,
+				&projects,
+				&addons_dir,
+				arg.side,
+				&arg.minecraft_versions,
+				old_pack.as_mut(),
+			)
+			.context("Failed to apply modpack")?;
+
+		process.display(MessageContents::Success("CurseForge pack installed".into()));
+
+		let mut packages = Vec::new();
+		for file in &pack.manifest().files {
+			packages.push(format!("curse:{}@{}", file.project_id, file.file_id));
+		}
+
+		Ok(InstallModpackResult {
+			name: pack.manifest().name.clone(),
+			packages,
+			addons,
+		})
+	})?;
+
+	plugin.import_instance(|mut ctx, arg| {
+		if arg.format != "cfpack" {
+			bail!("Invalid format");
+		}
+
+		let source_path = PathBuf::from(arg.source_path);
+		let target_path = PathBuf::from(arg.result_path);
+
+		let addons_dir = ctx.get_data_dir()?.join("internal/addons");
+		let api_key = get_api_key().context("Failed to get CurseForge API key")?;
+
+		let output = ctx.get_output();
+
+		let side = arg.side.context("Side not specified")?;
+
+		let file = File::open(source_path).context("Failed to open pack file")?;
+		let mut modpack = CurseForgePack::from_stream(file).context("Failed to open cfpack")?;
+
+		// Download files
+		let mut process = output.get_process();
+		process.display(MessageContents::StartProcess("Downloading addons".into()));
+
+		let runtime = tokio::runtime::Runtime::new()?;
+		let client = Client::new();
+		let (projects, files) = runtime
+			.block_on(modpack.download(&addons_dir, &client, &api_key))
+			.context("Failed to download modpack files")?;
+
+		process.display(MessageContents::Success("Addons downloaded".into()));
+		process.finish();
+
+		let target_path = match side {
+			Side::Client => target_path.join(".minecraft"),
+			Side::Server => target_path,
+		};
+
+		let mut process = output.get_process();
+		process.display(MessageContents::StartProcess("Installing modpack".into()));
+		modpack
+			.apply(
+				&target_path,
+				&files,
+				&projects,
+				&addons_dir,
+				side,
+				&arg.minecraft_versions,
+				None,
+			)
+			.context("Failed to install modpack")?;
+		process.display(MessageContents::Success("Modpack installed".into()));
+		process.finish();
+
+		let config = cfpack_manifest_to_config(modpack.manifest(), side);
+
+		Ok(ImportInstanceResult {
+			format: arg.format,
+			config,
+		})
 	})?;
 
 	Ok(())
@@ -326,6 +451,45 @@ impl StorageDirs {
 	/// Get the placeholder path for a project that does not exist
 	fn get_missing_path(&self, project_id: &str) -> PathBuf {
 		self.projects.join(format!("__missing__{project_id}"))
+	}
+}
+
+/// Creates InstanceConfig from a cfpack manifest
+fn cfpack_manifest_to_config(manifest: &CurseForgeManifest, side: Side) -> InstanceConfig {
+	// Suppress mods that this pack provides
+	let mut suppress = Vec::new();
+	for file in &manifest.files {
+		suppress.push(format!("curse:{}", file.project_id));
+	}
+
+	let loader = if let Some(loader) = manifest.minecraft.mod_loaders.first() {
+		let (id, version) = match loader.id.split_once("-") {
+			Some((id, version)) => (id, Some(version)),
+			None => (loader.id.as_str(), None),
+		};
+
+		let id = match id {
+			"neoforge" => "neoforged",
+			other => other,
+		};
+
+		if let Some(version) = version {
+			Some(format!("{id}@{version}"))
+		} else {
+			Some(id.to_string())
+		}
+	} else {
+		None
+	};
+
+	InstanceConfig {
+		side: Some(side),
+		name: Some(manifest.name.clone()),
+		version: Some(MinecraftVersionDeser::Version(
+			manifest.minecraft.version.clone().into(),
+		)),
+		loader,
+		..Default::default()
 	}
 }
 

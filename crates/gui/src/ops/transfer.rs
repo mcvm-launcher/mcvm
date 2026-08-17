@@ -57,6 +57,7 @@ simple_mutation!(
 			o.set_task(Task::ImportInstance);
 
 			let formats = load_formats(&back_state.plugins, &back_state.paths, &mut o).await?;
+			let version_manifest = back_state.versions().await?;
 
 			let instance = Instance::import(
 				&id,
@@ -64,6 +65,7 @@ simple_mutation!(
 				&path,
 				side,
 				&formats,
+				&version_manifest.list,
 				&back_state.plugins,
 				&back_state.paths,
 				&mut o,

@@ -100,6 +100,7 @@ impl Instance {
 		source_path: &Path,
 		side: Option<Side>,
 		formats: &Formats,
+		minecraft_versions: &[String],
 		plugins: &PluginManager,
 		paths: &Paths,
 		o: &mut impl NitroOutput,
@@ -152,6 +153,7 @@ impl Instance {
 			source_path,
 			result_path: target_dir.to_string_lossy().to_string(),
 			side,
+			minecraft_versions: minecraft_versions.to_vec(),
 		};
 		let result = plugins
 			.call_hook_on_plugin(ImportInstance, &format.plugin, &arg, paths, o)

@@ -629,12 +629,32 @@ async fn import(
 		inquire::Select::new("What format is the imported instance in?", options).prompt()?
 	};
 
+	let client = Client::new();
+	let core = config
+		.get_core(
+			None,
+			&UpdateSettings {
+				depth: UpdateDepth::Shallow,
+				offline_auth: false,
+			},
+			&client,
+			&config.plugins,
+			&data.paths,
+			data.output,
+		)
+		.await?;
+	let version_manifest = core
+		.get_version_manifest(None, UpdateDepth::Shallow, data.output)
+		.await
+		.context("Failed to get Minecraft version manifest")?;
+
 	let new_instance_config = Instance::import(
 		&instance,
 		format,
 		&PathBuf::from(path),
 		side,
 		&formats,
+		&version_manifest.list,
 		&config.plugins,
 		&data.paths,
 		data.output,

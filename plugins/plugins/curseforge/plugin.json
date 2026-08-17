@@ -7,7 +7,9 @@
 	"nitro_version": "0.31.0",
 	"protocol_version": 3,
 	"raw_transfer": true,
-	"uninstall_dirs": ["curseforge"],
+	"uninstall_dirs": [
+		"curseforge"
+	],
 	"hooks": {
 		"add_custom_package_repositories": {
 			"constant": [
@@ -31,6 +33,25 @@
 				}
 			]
 		},
+		"add_modpack_formats": {
+			"constant": [
+				{
+					"id": "cfpack",
+					"name": "CurseForge",
+					"transfer_format": "cfpack"
+				}
+			]
+		},
+		"add_instance_transfer_formats": {
+			"constant": [
+				{
+					"id": "cfpack",
+					"name": "CurseForge Pack",
+					"import": {},
+					"needs_import_side": true
+				}
+			]
+		},
 		"query_custom_package_repository": {
 			"executable": "${PLUGIN_DIR}/nitro_plugin_curseforge${EXE_EXTENSION}"
 		},
@@ -41,6 +62,12 @@
 			"executable": "${PLUGIN_DIR}/nitro_plugin_curseforge${EXE_EXTENSION}"
 		},
 		"sync_custom_package_repository": {
+			"executable": "${PLUGIN_DIR}/nitro_plugin_curseforge${EXE_EXTENSION}"
+		},
+		"install_modpack": {
+			"executable": "${PLUGIN_DIR}/nitro_plugin_curseforge${EXE_EXTENSION}"
+		},
+		"import_instance": {
 			"executable": "${PLUGIN_DIR}/nitro_plugin_curseforge${EXE_EXTENSION}"
 		}
 	}

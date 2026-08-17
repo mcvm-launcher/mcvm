@@ -9,10 +9,7 @@ use std::{
 
 use anyhow::{Context, bail};
 use nitro_core::io::{files::create_leading_dirs, json_from_file, json_to_file};
-use nitro_instance::addon::modpack::{
-	Modpack,
-	mrpack::{ModrinthIndex, ModrinthPack},
-};
+use nitro_instance::addon::modpack::mrpack::{ModrinthIndex, ModrinthPack};
 use nitro_net::{
 	download::Client,
 	modrinth::{self, Member, Project, SearchResults, Version},

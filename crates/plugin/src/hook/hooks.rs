@@ -496,6 +496,8 @@ pub struct ImportInstanceArg {
 	pub result_path: String,
 	/// The desired side for the instance if it cannot be inferred from the format itself
 	pub side: Option<Side>,
+	/// List of Minecraft versions from oldest to newest
+	pub minecraft_versions: Vec<String>,
 }
 
 /// Result from the ImportInstance hook giving information about the new instance
@@ -1313,6 +1315,8 @@ pub struct InstallModpackArg {
 	pub target_path: String,
 	/// Side of the instance
 	pub side: Side,
+	/// List of Minecraft versions from oldest to newest
+	pub minecraft_versions: Vec<String>,
 }
 
 /// Result from the InstallModpack hook

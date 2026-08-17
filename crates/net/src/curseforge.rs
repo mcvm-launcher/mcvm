@@ -84,6 +84,41 @@ pub struct CurseModResponse {
 	pub data: CurseMod,
 }
 
+/// Requests many CurseForge mods with the given IDs from the API
+pub async fn get_mods(
+	ids: &[u32],
+	api_key: &str,
+	client: &Client,
+) -> anyhow::Result<Vec<CurseMod>> {
+	let body = CurseManyModsBody {
+		mod_ids: ids.to_vec(),
+	};
+	let resp = client
+		.post(format!("https://api.curseforge.com/v1/mods"))
+		.header("User-Agent", user_agent())
+		.header("x-api-key", api_key)
+		.json(&body)
+		.send()
+		.await
+		.context("Failed to send request")?
+		.error_for_status()?;
+	let resp: CurseModsResponse = resp.json().await?;
+	Ok(resp.data)
+}
+
+#[derive(Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+struct CurseManyModsBody {
+	mod_ids: Vec<u32>,
+}
+
+/// Response for requesting many CurseForge mods
+#[derive(Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct CurseModsResponse {
+	pub data: Vec<CurseMod>,
+}
+
 /// Gets a CurseForge mod description with the given ID from the API
 pub async fn get_mod_description(
 	id: &str,
@@ -116,6 +151,34 @@ pub async fn get_mod_files(
 #[serde(rename_all = "camelCase")]
 pub struct CurseModFilesResponse {
 	pub data: Vec<CurseFile>,
+}
+
+/// Gets many CurseForge mod files with the given IDs from the API
+pub async fn get_many_files(
+	ids: &[u32],
+	api_key: &str,
+	client: &Client,
+) -> anyhow::Result<Vec<CurseFile>> {
+	let body = CurseManyFilesBody {
+		file_ids: ids.to_vec(),
+	};
+	let resp = client
+		.post(format!("https://api.curseforge.com/v1/mods/files"))
+		.header("User-Agent", user_agent())
+		.header("x-api-key", api_key)
+		.json(&body)
+		.send()
+		.await
+		.context("Failed to send request")?
+		.error_for_status()?;
+	let resp: CurseModFilesResponse = resp.json().await?;
+	Ok(resp.data)
+}
+
+#[derive(Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+struct CurseManyFilesBody {
+	file_ids: Vec<u32>,
 }
 
 /// A project on CurseForge
@@ -156,6 +219,8 @@ pub struct CurseMod {
 pub struct CurseFile {
 	/// Unique ID of the file
 	pub id: u32,
+	/// ID of the CurseForge project this file belongs to
+	pub mod_id: u32,
 	/// Display name for the file
 	pub display_name: String,
 	/// File name
