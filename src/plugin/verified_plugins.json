@@ -358,5 +358,14 @@
 		"github_owner": "Nitrolaunch",
 		"github_repo": "plugins",
 		"description": "Install and play Purpur servers"
+	},
+	"curseforge": {
+		"id": "curseforge",
+		"name": "CurseForge",
+		"version": "v8",
+		"github_owner": "Nitrolaunch",
+		"github_repo": "plugins",
+		"description": "Install CurseForge packages and modpacks",
+		"documentation": "https://nitrolaunch.github.io/nitrolaunch/plugins/plugins/curseforge"
 	}
 }
