@@ -99,6 +99,7 @@ package_zips.platform_dependent:
 	
 	@rm -f release/beet-${OS}.zip
 	@rm -f release/cleanup-${OS}.zip
+	@rm -f release/curseforge-${OS}.zip
 	@rm -f release/curseforge_api-${OS}.zip
 	@rm -f release/discord_status-${OS}.zip
 	@rm -f release/docs-${OS}.zip
@@ -122,6 +123,7 @@ package_zips.platform_dependent:
 	@zip -j release/beet-${OS}.zip $(TARGET_DIR)/nitro_plugin_beet${EXTENSION} plugins/beet/plugin.json
 	@zip -j release/cleanup-${OS}.zip $(TARGET_DIR)/nitro_plugin_cleanup${EXTENSION} plugins/cleanup/plugin.json
 	@zip -j release/curseforge_api-${OS}.zip $(TARGET_DIR)/nitro_plugin_curseforge_api${EXTENSION} plugins/curseforge_api/plugin.json
+	@zip -j release/curseforge-${OS}.zip $(TARGET_DIR)/nitro_plugin_curseforge${EXTENSION} plugins/curseforge/plugin.json
 	@zip -j release/discord_status-${OS}.zip $(TARGET_DIR)/nitro_plugin_discord_status${EXTENSION} plugins/discord_status/plugin.json
 	@zip -j release/docs-${OS}.zip $(TARGET_DIR)/nitro_plugin_docs${EXTENSION} plugins/docs/plugin.json
 	@zip -j release/fabric_quilt-${OS}.zip $(TARGET_DIR)/nitro_plugin_fabric_quilt${EXTENSION} plugins/fabric_quilt/plugin.json
