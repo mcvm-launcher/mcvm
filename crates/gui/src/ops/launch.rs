@@ -22,7 +22,7 @@ use crate::{
 
 #[derive(Clone, PartialEq, Eq, Hash)]
 pub struct LaunchInstance {
-	back_state: Captured<BackState>,
+	pub back_state: Captured<BackState>,
 }
 
 #[derive(Clone, PartialEq, Hash)]

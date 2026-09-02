@@ -3,19 +3,25 @@
 	windows_subsystem = "windows"
 )]
 
+use clap::Parser;
 use freya::radio::use_init_radio_station;
+use nitrolaunch::shared::nitro_executable::{NitroClientId, NitroExecutableRegistry};
 use tokio::runtime::Builder;
 use tokio::sync::broadcast;
 
+use crate::cli::Cli;
 use crate::components::dialog::tip::Tips;
 use crate::components::footer::Footer;
 use crate::components::global::Global;
+use crate::ops::launch::{LaunchInstance, LaunchInstanceParams};
+use crate::ops::task::Task;
 use crate::prelude::*;
 
 use crate::components::nav::{NavBar, router::Router};
 use crate::state::{BackEvent, BackState, FrontChannel, FrontState};
 use crate::util::Shared;
 
+mod cli;
 mod components;
 mod data;
 mod dependency;
@@ -36,10 +42,41 @@ fn main() {
 	let rt = Builder::new_multi_thread().enable_all().build().unwrap();
 	let _rt = rt.enter();
 
-	let (event_tx, event_rx) = broadcast::channel(100);
+	let (event_tx, mut event_rx) = broadcast::channel(100);
 	let back_state = rt
 		.block_on(BackState::new(event_tx, event_rx.resubscribe()))
 		.unwrap();
+
+	// CLI
+	if let Ok(mut exec_registry) = NitroExecutableRegistry::open(&back_state.paths.internal) {
+		let _ = exec_registry.add_this(NitroClientId::Gui);
+	}
+	let cli = Cli::parse();
+	if let Some(instance) = cli.launch {
+		let mutation = LaunchInstance {
+			back_state: Captured(back_state.clone()),
+		};
+		let result = rt.block_on(mutation.run(&LaunchInstanceParams {
+			id: instance,
+			offline: false,
+			quick_play: cli.quick_play.unwrap_or_default(),
+		}));
+		if let Err(e) = result {
+			eprintln!("Failed to launch instance: {e:?}");
+		}
+
+		while let Some(ev) = rt.block_on(event_rx.recv()).ok() {
+			if let BackEvent::OutputEndTask {
+				task: Task::LaunchInstance(..),
+				..
+			} = ev
+			{
+				break;
+			}
+		}
+
+		return;
+	}
 
 	let window = WindowConfig::new(move || app(back_state.clone(), event_rx.resubscribe()))
 		.with_size(1400.0, 900.0)

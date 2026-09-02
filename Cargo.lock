@@ -4325,6 +4325,7 @@ version = "0.31.0"
 dependencies = [
  "anyhow",
  "async-trait",
+ "clap",
  "freya",
  "freya-core",
  "itertools 0.11.0",
