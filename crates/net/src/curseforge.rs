@@ -250,6 +250,8 @@ pub enum CurseGameVersion {
 	Quilt,
 	Cauldron,
 	OptiFine,
+	#[serde(rename = "Risugami's ModLoader")]
+	Risugamis,
 	#[serde(untagged)]
 	Minecraft(String),
 }

@@ -104,6 +104,9 @@ pub async fn generate(
 				CurseGameVersion::LiteLoader => {
 					loaders.insert(LoaderMatch::Loader(Loader::LiteLoader));
 				}
+				CurseGameVersion::Risugamis => {
+					loaders.insert(LoaderMatch::Loader(Loader::Risugamis));
+				}
 				CurseGameVersion::Minecraft(version) => {
 					mc_versions.insert(VersionPattern::Single(version));
 				}
