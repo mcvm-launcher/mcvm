@@ -143,7 +143,7 @@ pub async fn get_mod_files(
 	client: &Client,
 ) -> anyhow::Result<Vec<CurseFile>> {
 	let response: CurseModFilesResponse =
-		request_api(&format!("v1/mods/{id}/files"), api_key, client).await?;
+		request_api(&format!("v1/mods/{id}/files?pageSize=5000"), api_key, client).await?;
 	Ok(response.data)
 }
 
