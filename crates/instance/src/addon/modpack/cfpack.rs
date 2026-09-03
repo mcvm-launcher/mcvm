@@ -1,16 +1,21 @@
+#[cfg(feature = "net")]
+use std::path::Path;
 use std::{
 	io::{Read, Seek},
-	path::{Path, PathBuf},
+	path::PathBuf,
 };
 
 use anyhow::Context;
 #[cfg(feature = "net")]
 use nitro_net::curseforge::{CurseFile, CurseMod};
+#[cfg(feature = "net")]
 use nitro_shared::pkg::PackageKind;
+#[cfg(feature = "net")]
 use nitro_shared::{Side, versions::VersionInfo};
 use serde::{Deserialize, Serialize};
 use zip::ZipArchive;
 
+#[cfg(feature = "net")]
 use crate::addon::{Addon, modpack::apply_zip_override, storage};
 
 /// CurseForge modpack
