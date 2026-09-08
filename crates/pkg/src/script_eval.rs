@@ -307,6 +307,7 @@ pub async fn eval_instr<E: ScriptEvaluator>(
 							modpack_format: modpack_format
 								.get_as_option(e.get_variable_store(shared))?,
 							hashes,
+							is_manual: false,
 						};
 						e.add_addon(shared, data)?;
 					}
@@ -371,4 +372,6 @@ pub struct AddonInstructionData {
 	pub modpack_format: Option<String>,
 	/// The addon's hashes
 	pub hashes: AddonOptionalHashes,
+	/// Whether this addon's URL is a manual download page
+	pub is_manual: bool,
 }

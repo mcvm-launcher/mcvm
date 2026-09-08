@@ -1,22 +1,23 @@
 use std::path::{Path, PathBuf};
 
-use crate::io::config::IO_CONFIG;
+use crate::{io::config::IO_CONFIG, util::OS_STRING};
 
 /// IO configuration
 pub mod config;
 
 /// Tries to get the user's home dir
 pub fn home_dir() -> anyhow::Result<PathBuf> {
-	#[cfg(target_os = "linux")]
-	let path = std::env::var("HOME")?;
-	#[cfg(target_os = "windows")]
-	let path = format!("{}/..", std::env::var("%APPDATA%")?);
-	#[cfg(target_os = "macos")]
-	let path = std::env::var("HOME")?;
-	#[cfg(not(any(target_os = "linux", target_os = "windows", target_os = "macos")))]
-	let path = "/";
+	home_dir_from_os(OS_STRING)
+}
 
-	Ok(PathBuf::from(path))
+/// Tries to get the user's home dir from the given OS string
+pub fn home_dir_from_os(os: &str) -> anyhow::Result<PathBuf> {
+	match os {
+		"linux" => Ok(PathBuf::from(std::env::var("HOME")?)),
+		"windows" => Ok(PathBuf::from(format!("{}/..", std::env::var("APPDATA")?))),
+		"macos" => Ok(PathBuf::from(std::env::var("HOME")?)),
+		_ => Ok(PathBuf::from("/")),
+	}
 }
 
 /// Gets the configured IO link method

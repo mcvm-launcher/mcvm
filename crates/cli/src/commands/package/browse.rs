@@ -4,11 +4,10 @@ use std::{
 		Arc,
 		atomic::{AtomicBool, Ordering},
 	},
-	time::Duration,
 };
 
 use anyhow::{Context, bail};
-use crossterm::event::{self, KeyCode, KeyEvent};
+use crossterm::event::{KeyCode, KeyEvent};
 use dashmap::DashMap;
 use image::DynamicImage;
 use itertools::Itertools;
@@ -61,6 +60,7 @@ use crate::{
 	commands::{CmdData, modpack::install_into_config},
 	image_cache::{ImageCache, crop_image_to_ratio},
 	output::fit_message_width,
+	prompt::get_key,
 };
 
 const PAGE_SIZE: u8 = 35;
@@ -1144,22 +1144,6 @@ impl PackageInfo {
 	fn is_modpack(&self) -> bool {
 		self.preview.props.kinds.contains(&PackageKind::Modpack)
 	}
-}
-
-/// Gets a key
-fn get_key() -> anyhow::Result<Option<KeyEvent>> {
-	if !event::poll(Duration::from_millis(10)).context("Event poll failed")? {
-		return Ok(None);
-	}
-
-	let event = event::read()
-		.context("event read failed")?
-		.as_key_press_event();
-	let Some(event) = event else {
-		return Ok(None);
-	};
-
-	Ok(Some(event))
 }
 
 #[derive(Clone, Copy, PartialEq, Eq)]

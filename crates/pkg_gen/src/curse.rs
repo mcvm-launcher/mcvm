@@ -28,7 +28,7 @@ pub async fn generate(
 	repository: Option<&str>,
 ) -> anyhow::Result<DeclarativePackage> {
 	let mut meta = PackageMetadata {
-		slug: Some(m.slug),
+		slug: Some(m.slug.clone()),
 		name: Some(m.name),
 		icon: m.logo.map(|x| x.url),
 		description: Some(m.summary),
@@ -71,8 +71,12 @@ pub async fn generate(
 	let mut all_mc_versions = HashSet::new();
 
 	for file in files {
-		let Some(download_url) = file.download_url else {
-			continue;
+		let mut is_manual = false;
+		let url = if let Some(download_url) = file.download_url {
+			download_url
+		} else {
+			is_manual = true;
+			generate_download_page_url(&m.slug, file.id, pkg_ty)
 		};
 
 		let mut sides = HashSet::new();
@@ -150,7 +154,7 @@ pub async fn generate(
 
 		let pkg_version = DeclarativeAddonVersion {
 			version: Some(file.id.to_string()),
-			url: Some(download_url),
+			url: Some(url),
 			filename: Some(file.file_name),
 			conditional_properties: DeclarativeConditionSet {
 				minecraft_versions: Some(DeserListOrSingle::List(
@@ -167,6 +171,7 @@ pub async fn generate(
 				inclusions: DeserListOrSingle::List(inclusions),
 				..Default::default()
 			},
+			is_manual,
 			..Default::default()
 		};
 
@@ -192,4 +197,18 @@ pub async fn generate(
 /// Cleanup a version name to remove things like loaders
 pub fn cleanup_version_name(version: &str) -> String {
 	version.replace("+", "-")
+}
+
+fn generate_download_page_url(slug: &str, file_id: u32, ty: PackageKind) -> String {
+	let sub = match ty {
+		PackageKind::Mod => "mc-mods",
+		PackageKind::Modpack => "modpacks",
+		PackageKind::ResourcePack => "texture-packs",
+		PackageKind::Shader => "shaders",
+		PackageKind::Datapack => "data-packs",
+		PackageKind::Plugin => "bukkit-plugins",
+		_ => "mc-mods",
+	};
+
+	format!("https://www.curseforge.com/minecraft/{sub}/{slug}/download/{file_id}")
 }

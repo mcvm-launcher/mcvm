@@ -8,8 +8,9 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
 	lang::translate::TranslationKey,
+	manual_files::{self, ManualFile},
 	pkg::{PackageDiff, PkgRequest, ResolutionError},
-	util::print::ReplPrinter,
+	util::{OS_STRING, print::ReplPrinter},
 };
 
 /// Trait for a type that can output information about Nitrolaunch processes
@@ -170,6 +171,16 @@ pub trait NitroOutput: Send {
 			MessageContents::Simple("Would you like to proceed with these changes?".into()),
 		)
 		.await
+	}
+
+	/// Prompts the user to install manually downloaded files.
+	/// Should scan the downloads directory and wait until all files are downloaded before proceeding.
+	async fn prompt_special_manual_files(&mut self, files: Vec<ManualFile>) -> anyhow::Result<()> {
+		let dir = manual_files::get_scan_dir_from_os(OS_STRING);
+		while files.len() > manual_files::scan(&dir, &files).len() {
+			std::thread::sleep(std::time::Duration::from_millis(100));
+		}
+		Ok(())
 	}
 
 	/// Gets a copy of this output that may technically be used in asynchronous tasks,
@@ -337,6 +348,11 @@ impl MessageContents {
 	/// Constructs an associated message
 	pub fn associated(property: MessageContents, value: MessageContents) -> Self {
 		Self::Associated(Box::new(property), Box::new(value))
+	}
+
+	/// Constructs a list item message
+	pub fn list_item(item: MessageContents) -> Self {
+		Self::ListItem(Box::new(item))
 	}
 
 	/// Message formatting for the default implementation

@@ -6,7 +6,7 @@ use crate::{
 		account::auth::MicrosoftAuthPrompt,
 		dialog::{custom_popup::CustomPopupModal, modal::Modal},
 		instance::transfer::{InstanceTransferModal, InstanceTransferMode, MigrateModal},
-		pkg::diffs::PackageDiffsModal,
+		pkg::{diffs::PackageDiffsModal, manual::ManualFilesModal},
 	},
 	ops::instance::{DeleteInstance, DeleteTemplate},
 	pages::{config::ConfigPage, onboarding::OnboardingModal, settings::SettingsPage},
@@ -109,6 +109,11 @@ impl Component for Global {
 								.write()
 								.set_modal(Some(ModalType::PackageDiffs(diffs)));
 						}
+						BackEvent::ShowManualFilesPrompt { files } => {
+							front_state2
+								.write()
+								.set_modal(Some(ModalType::ManualFiles(files)));
+						}
 						BackEvent::InvalidateData => {
 							front_state2.write().invalidate(FrontChannel::Data);
 						}
@@ -178,6 +183,12 @@ impl Component for Global {
 				ModalType::PackageDiffs(diffs) => Some(
 					PackageDiffsModal {
 						diffs: PtrEq(diffs.clone()),
+					}
+					.into_element(),
+				),
+				ModalType::ManualFiles(files) => Some(
+					ManualFilesModal {
+						files: files.clone(),
 					}
 					.into_element(),
 				),

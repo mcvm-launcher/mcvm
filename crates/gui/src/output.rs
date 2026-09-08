@@ -1,14 +1,16 @@
 use std::{collections::HashMap, sync::Arc, time::Duration};
 
+use anyhow::bail;
 use nitrolaunch::shared::{
 	lang::translate::TranslationKey,
+	manual_files::ManualFile,
 	output::{Message, MessageContents, MessageLevel, NitroOutput},
 	pkg::{ArcPkgReq, PackageDiff, ResolutionError},
 };
 use serde::{Deserialize, Serialize};
 use tokio::sync::{Mutex, broadcast, mpsc};
 
-use crate::{ops::task::Task, state::BackEvent};
+use crate::{ops::task::Task, state::BackEvent, util::PtrEq};
 
 /// Response to a prompt in the frontend, shared with a mutex
 pub type PromptResponse = Arc<Mutex<Option<String>>>;
@@ -183,6 +185,30 @@ impl NitroOutput for LauncherOutput {
 		}
 
 		Ok(false)
+	}
+
+	async fn prompt_special_manual_files(&mut self, files: Vec<ManualFile>) -> anyhow::Result<()> {
+		let _ = self.inner.logger.try_send(Message {
+			contents: "Prompting for manual files".into(),
+			level: MessageLevel::Debug,
+		});
+
+		let _ = self.inner.event_tx.send(BackEvent::ShowManualFilesPrompt {
+			files: PtrEq(files.into_iter().collect()),
+		});
+
+		let mut event_rx = self.inner.event_rx.resubscribe();
+		while let Ok(ev) = event_rx.recv().await {
+			if let BackEvent::ConfirmYesNoPrompt { yes } = ev {
+				if yes {
+					return Ok(());
+				} else {
+					bail!("Manual files prompt was rejected by user");
+				}
+			}
+		}
+
+		bail!("Manual files prompt was closed without a response")
 	}
 
 	fn display_special_ms_auth(&mut self, url: &str, code: &str) {

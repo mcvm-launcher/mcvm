@@ -4,6 +4,7 @@ use std::time::Duration;
 
 use anyhow::{Context, bail};
 use color_print::{cformat, cstr};
+use crossterm::event::{KeyCode, KeyEvent};
 use inquire::{Confirm, Password};
 use itertools::Itertools;
 use nitrolaunch::io::logging::Logger;
@@ -11,11 +12,14 @@ use nitrolaunch::io::paths::Paths;
 use nitrolaunch::pkg_crate::{PkgRequest, PkgRequestSource};
 use nitrolaunch::shared::io::config::IO_CONFIG;
 use nitrolaunch::shared::lang::translate::{TranslationKey, TranslationMap};
+use nitrolaunch::shared::manual_files::{self, ManualFile};
 use nitrolaunch::shared::output::{Message, MessageContents, MessageLevel, NitroOutput};
 use nitrolaunch::shared::util::print::ReplPrinter;
 use tokio::sync::broadcast;
 use tokio::sync::mpsc::{UnboundedReceiver, UnboundedSender};
 use tokio::task::JoinHandle;
+
+use crate::prompt::get_key;
 
 /// A nice colored bullet point for terminal output
 pub const HYPHEN_POINT: &str = cstr!("<k!> - </k!>");
@@ -32,6 +36,8 @@ pub const VERSION: &str = "\u{1F4C5}";
 pub const LOADER: &str = "\u{1F4E5}";
 /// A check icon
 pub const CHECK: &str = "\u{2713}";
+
+const SPINNER_INTERVAL_MS: u64 = 300;
 
 /// Terminal NitroOutput
 pub struct TerminalOutput {
@@ -96,6 +102,24 @@ impl NitroOutput for TerminalOutput {
 
 	async fn prompt_new_password(&mut self, message: MessageContents) -> anyhow::Result<String> {
 		self.prompt_a_password(message, true).await
+	}
+
+	async fn prompt_special_manual_files(&mut self, files: Vec<ManualFile>) -> anyhow::Result<()> {
+		self.tx
+			.send(Event::ManualDownload(files.clone()))
+			.map_err(|_| anyhow::anyhow!("Failed to send manual download prompt event"))?;
+
+		while let Ok(response) = self.rx.recv().await {
+			if let ResponseEvent::YesNo(success) = response {
+				if success {
+					return Ok(());
+				} else {
+					bail!("Cancelled");
+				}
+			}
+		}
+
+		bail!("Failed to receive manual download prompt response");
 	}
 
 	fn translate(&self, key: TranslationKey) -> &str {
@@ -279,8 +303,7 @@ impl OutputTask {
 	}
 
 	async fn run(mut self) {
-		let spinner_interval_ms = 300;
-		let mut spinner_timer = tokio::time::interval(Duration::from_millis(spinner_interval_ms));
+		let mut spinner_timer = tokio::time::interval(Duration::from_millis(SPINNER_INTERVAL_MS));
 
 		loop {
 			tokio::select! {
@@ -323,6 +346,83 @@ impl OutputTask {
 							if let Ok(ans) = ans {
 								let _ = self.tx.send(ResponseEvent::Password { password: ans });
 							}
+						}
+						Event::ManualDownload(files) => {
+							self.display(Message {
+								contents: MessageContents::Notice("Some files must be downloaded manually".into()),
+								level: MessageLevel::Important,
+							});
+							self.display(Message {
+								contents: "Download these files into your downloads folder".into(),
+								level: MessageLevel::Important,
+							});
+							self.display(Message {
+								contents: "Press [a] to open all links in your browser and [c] to exit".into(),
+								level: MessageLevel::Important,
+							});
+							let mut remaining_files = files.iter().map(|x| x.filename.clone()).collect_vec();
+							let scan_dir = manual_files::get_scan_dir_from_os(std::env::consts::OS);
+
+							for file in &files {
+								self.display(Message {
+									contents: MessageContents::list_item(MessageContents::property(
+										file.filename.clone(),
+										MessageContents::Hyperlink(file.url.clone()),
+									)),
+									level: MessageLevel::Important,
+								});
+							}
+
+							self.start_process();
+							let mut success = true;
+							let _ = crossterm::terminal::enable_raw_mode();
+							while remaining_files.len() > 0 {
+								let scanned_files = manual_files::scan(&scan_dir, &files);
+								remaining_files.retain(|x| !scanned_files.contains(x));
+								if remaining_files.is_empty() {
+									break;
+								}
+								let remaining_str = if remaining_files.len() > 3 {
+									remaining_files.iter().take(3).join(", ") + &format!(" and {} more", remaining_files.len() - 3)
+								} else {
+									remaining_files.iter().join(", ")
+								};
+
+								self.display(Message {
+									contents: MessageContents::associated(
+										MessageContents::Progress { current: scanned_files.len() as u32, total: files.len() as u32 },
+										MessageContents::Simple(format!("Waiting for {} to be downloaded", remaining_str)),
+									),
+									level: MessageLevel::Important,
+								});
+								self.update_spinner();
+
+								if let Ok(Some(KeyEvent { code, .. })) = get_key() {
+									match code {
+										KeyCode::Char('a') => {
+											manual_files::open_all(&files);
+										}
+										KeyCode::Char('c') => {
+											success = false;
+											break;
+										}
+										_ => {}
+									}
+								}
+
+								tokio::time::sleep(Duration::from_millis(SPINNER_INTERVAL_MS)).await;
+							}
+
+							if success {
+								self.display(Message {
+									contents: MessageContents::Success("All files downloaded".into()),
+									level: MessageLevel::Important,
+								});
+							}
+							self.end_process();
+							let _ = crossterm::terminal::disable_raw_mode();
+
+							let _ = self.tx.send(ResponseEvent::YesNo(success));
 						}
 						Event::SetLevel(level) => self.level = level,
 					}
@@ -446,6 +546,7 @@ enum Event {
 		message: MessageContents,
 		is_new: bool,
 	},
+	ManualDownload(Vec<ManualFile>),
 	SetLevel(MessageLevel),
 }
 

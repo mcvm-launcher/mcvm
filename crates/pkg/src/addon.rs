@@ -23,6 +23,8 @@ pub struct PackageAddon {
 	pub modpack_format: Option<String>,
 	/// Hashes of the addon
 	pub hashes: AddonOptionalHashes,
+	/// Whether the URL is actually a manual download page
+	pub is_manual: bool,
 }
 
 impl PackageAddon {

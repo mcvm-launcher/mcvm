@@ -182,6 +182,16 @@ impl Component for Version {
 			.unique()
 			.map(|x| loader_tag(&x, true, &theme).into_element());
 
+		let manual_indicator = if self.version.0.is_manual {
+			Some(
+				icon("file_cross", 12.0)
+					.color(theme.warning)
+					.tip(&front_state, "Must be downloaded manually"),
+			)
+		} else {
+			None
+		};
+
 		rect()
 			.width(Size::fill())
 			.height(Size::px(48.0))
@@ -202,7 +212,8 @@ impl Component for Version {
 					.main_align(Alignment::End)
 					.cross_align(Alignment::Center)
 					.children(versions)
-					.children(loaders),
+					.children(loaders)
+					.maybe_child(manual_indicator),
 			)
 			.child(install)
 	}

@@ -12,6 +12,7 @@ pub mod diffs;
 pub mod error;
 pub mod filters;
 pub mod install;
+pub mod manual;
 pub mod versions;
 
 #[derive(PartialEq)]

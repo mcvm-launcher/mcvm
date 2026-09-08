@@ -1,4 +1,7 @@
+use std::time::Duration;
+
 use anyhow::Context;
+use crossterm::event::{self, KeyEvent};
 use inquire::{
 	MultiSelect, Select, Text,
 	validator::{ErrorMessage, StringValidator, Validation},
@@ -157,4 +160,20 @@ impl StringValidator for IDValidator {
 			)))
 		}
 	}
+}
+
+/// Gets a key
+pub fn get_key() -> anyhow::Result<Option<KeyEvent>> {
+	if !event::poll(Duration::from_millis(10)).context("Event poll failed")? {
+		return Ok(None);
+	}
+
+	let event = event::read()
+		.context("event read failed")?
+		.as_key_press_event();
+	let Some(event) = event else {
+		return Ok(None);
+	};
+
+	Ok(Some(event))
 }

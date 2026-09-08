@@ -14,6 +14,8 @@ pub mod java_args;
 pub mod lang;
 /// Enums for modifications to the game
 pub mod loaders;
+/// Manual file downloading for projects that don't allow automatic downloads
+pub mod manual_files;
 /// Common Mojang / Microsoft API types
 pub mod minecraft;
 /// Finding viable Nitrolaunch executables for launching instances
