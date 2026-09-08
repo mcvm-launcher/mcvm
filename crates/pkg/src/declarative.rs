@@ -6,6 +6,7 @@ use nitro_shared::Side;
 use nitro_shared::lang::Language;
 use nitro_shared::loaders::LoaderMatch;
 use nitro_shared::pkg::{AddonOptionalHashes, PackageKind, PackageStability};
+use nitro_shared::util::DefaultExt;
 use nitro_shared::util::DeserListOrSingle;
 use nitro_shared::versions::VersionPattern;
 #[cfg(feature = "schema")]
@@ -214,6 +215,10 @@ pub struct DeclarativeAddonVersion {
 	/// Hashes for this version file
 	#[serde(skip_serializing_if = "AddonOptionalHashes::is_empty")]
 	pub hashes: AddonOptionalHashes,
+	/// Whether this URL is actually a manual download page
+	#[serde(default)]
+	#[serde(skip_serializing_if = "DefaultExt::is_default")]
+	pub is_manual: bool,
 }
 
 impl DeclarativeAddonVersion {

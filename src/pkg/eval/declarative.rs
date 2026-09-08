@@ -89,6 +89,7 @@ fn eval_declarative_package_impl(
 					version: version.version.clone(),
 					modpack_format: addon.modpack_format.clone(),
 					hashes: version.hashes.clone(),
+					is_manual: version.is_manual,
 				};
 
 				let addon_req = create_valid_addon_request(data, req.clone(), &eval_data.input)?;

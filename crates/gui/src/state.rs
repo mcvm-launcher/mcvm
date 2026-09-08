@@ -24,6 +24,7 @@ use nitrolaunch::{
 	plugin_crate::hook::hooks::{self, AddCustomPackageRepositories, AddThemes},
 	shared::{
 		UpdateDepth,
+		manual_files::ManualFile,
 		output::{Message, MessageContents, MessageLevel, NitroOutput, NoOp},
 		pkg::PackageDiff,
 		versions::{MinecraftLatestVersion, MinecraftVersionDeser},
@@ -237,6 +238,7 @@ pub enum ModalType {
 	DeleteInstance(String),
 	DeleteTemplate(String),
 	PackageDiffs(Arc<[PackageDiff]>),
+	ManualFiles(PtrEq<[ManualFile]>),
 	MicrosoftAuth { url: String, device_code: String },
 	Transfer(InstanceTransferMode, Option<String>),
 	Migrate,
@@ -505,6 +507,9 @@ pub enum BackEvent {
 	ShowPasskeyPrompt,
 	ShowPackageDiffsPrompt {
 		diffs: Arc<[PackageDiff]>,
+	},
+	ShowManualFilesPrompt {
+		files: PtrEq<[ManualFile]>,
 	},
 	InvalidateData,
 }

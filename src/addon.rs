@@ -4,6 +4,7 @@ use nitro_instance::addon::storage::get_sha256_addon_path;
 use nitro_instance::lock::LockfileAddon;
 use nitro_pkg::addon::PackageAddon;
 use nitro_shared::io::update_link;
+use nitro_shared::manual_files::ManualFile;
 use nitro_shared::minecraft::AddonKind;
 use nitro_shared::pkg::AddonOptionalHashes;
 use reqwest::Client;
@@ -128,10 +129,7 @@ impl AddonRequest {
 		instance_id: &str,
 		client: &Client,
 	) -> anyhow::Result<()> {
-		let task = self
-			.get_acquire_task(paths, instance_id, client)
-			.context("Failed to prepare to acquire addon")?;
-
+		let task = self.get_acquire_task(paths, instance_id, client);
 		task.await.context("Failed to acquire addon")
 	}
 
@@ -141,9 +139,9 @@ impl AddonRequest {
 		paths: &Paths,
 		instance_id: &str,
 		client: &Client,
-	) -> anyhow::Result<impl Future<Output = anyhow::Result<()>> + Send + 'static> {
+	) -> impl Future<Output = anyhow::Result<()>> + Send + 'static {
 		let path = self.addon.get_path(paths, instance_id);
-		create_leading_dirs(&path)?;
+		let _ = create_leading_dirs(&path);
 
 		let id = self.addon.id.clone();
 		let pkg = self.addon.pkg.clone();
@@ -175,7 +173,23 @@ impl AddonRequest {
 			Ok(())
 		};
 
-		Ok(task)
+		task
+	}
+
+	/// Gets the manual file associated with this addon, if it is one
+	pub fn manual_file(&self) -> Option<ManualFile> {
+		if !self.addon.is_manual {
+			return None;
+		}
+		if let AddonLocation::Remote(url) = &self.location {
+			Some(ManualFile {
+				filename: self.addon.file_name.clone(),
+				url: url.clone(),
+				req: Some(self.addon.pkg.clone()),
+			})
+		} else {
+			None
+		}
 	}
 
 	/// Check the addon's hashes. The stored addon file must exist at this time
@@ -244,6 +258,7 @@ mod tests {
 			version: None,
 			modpack_format: None,
 			hashes: AddonOptionalHashes::default(),
+			is_manual: false,
 		};
 		assert_eq!(addon.split_filename(), ("FooBar", ".baz.jar"));
 	}

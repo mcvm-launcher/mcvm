@@ -35,10 +35,7 @@ impl Instance {
 			versions: eval.input.constants.version_list.clone(),
 		};
 
-		let tasks = self
-			.get_package_addon_tasks(eval, paths, force, client)
-			.await
-			.context("Failed to get download tasks for installing package")?;
+		let tasks = self.get_package_addon_tasks(eval, paths, force, client);
 
 		for task in tasks.into_values() {
 			task.await.context("Failed to install addon")?;
@@ -52,26 +49,22 @@ impl Instance {
 	}
 
 	/// Gets the tasks for installing addons for a package
-	#[allow(clippy::too_many_arguments)]
-	pub async fn get_package_addon_tasks(
+	pub fn get_package_addon_tasks(
 		&mut self,
 		eval: &EvalData,
 		paths: &Paths,
 		force: bool,
 		client: &Client,
-	) -> anyhow::Result<HashMap<String, impl Future<Output = anyhow::Result<()>> + Send + 'static>>
-	{
+	) -> HashMap<String, impl Future<Output = anyhow::Result<()>> + Send + 'static> {
 		let mut tasks = HashMap::new();
 		for addon in eval.addon_reqs.iter() {
 			if addon.addon.should_update(paths, &self.id) || force {
-				let task = addon
-					.get_acquire_task(paths, &self.id, client)
-					.context("Failed to get task for acquiring addon")?;
+				let task = addon.get_acquire_task(paths, &self.id, client);
 				tasks.insert(addon.get_unique_id(&self.id), task);
 			}
 		}
 
-		Ok(tasks)
+		tasks
 	}
 
 	/// Install the EvalData resulting from evaluating a package onto this instance

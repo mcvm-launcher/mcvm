@@ -1,10 +1,10 @@
 use std::collections::{HashMap, HashSet};
-use std::future::Future;
 use std::path::Path;
 use std::sync::Arc;
 
 use itertools::Itertools;
 use nitro_config::package::EvalPermissions;
+use nitro_core::io::files::create_leading_dirs;
 use nitro_core::net::get_transfer_limit;
 use nitro_instance::addon::get_addon_dirs;
 use nitro_instance::lock::InstanceLockfile;
@@ -13,11 +13,13 @@ use nitro_pkg::{PkgRequest, PkgRequestSource};
 use nitro_shared::minecraft::AddonKind;
 use nitro_shared::output::{MessageContents, NitroOutput};
 use nitro_shared::pkg::{ArcPkgReq, PackageDiff, PackageStability, merge_package_lists};
+use nitro_shared::util::OS_STRING;
 use nitro_shared::versions::{VersionInfo, VersionPattern};
-use nitro_shared::{UpdateDepth, translate};
+use nitro_shared::{UpdateDepth, manual_files, translate};
 use tokio::sync::Semaphore;
 use tokio::task::JoinSet;
 
+use crate::addon::{AddonExt, AddonRequest};
 use crate::config::package::PackageConfig;
 use crate::instance::Instance;
 use crate::pkg::eval::{EvalConstants, EvalParameters, ResolutionAndEvalResult, resolve};
@@ -92,29 +94,14 @@ pub async fn update_instance_packages<O: NitroOutput>(
 		ctx.output,
 		StartAcquiringAddons
 	)));
-	let mut tasks = HashMap::new();
+	let mut addons = Vec::new();
 	for package in resolution.packages.iter().sorted_by_key(|x| x.req.clone()) {
+		addons.extend(package.eval.addon_reqs.clone());
+
 		// Check the package to display warnings
 		check_package(ctx, &package.req)
 			.await
 			.with_context(|| format!("Failed to check package {}", package.req))?;
-
-		// Install the package on the instance
-		let new_tasks = instance
-			.get_package_addon_tasks(
-				&package.eval,
-				ctx.paths,
-				depth == UpdateDepth::Force,
-				ctx.client,
-			)
-			.await
-			.with_context(|| {
-				format!(
-					"Failed to get addon install tasks for package '{}'",
-					package.req
-				)
-			})?;
-		tasks.extend(new_tasks);
 
 		// Display any notices from the installation
 		for notice in &package.eval.notices {
@@ -126,9 +113,9 @@ pub async fn update_instance_packages<O: NitroOutput>(
 	}
 
 	// Run the acquire tasks
-	run_addon_tasks(tasks, ctx.output)
+	install_addons(addons, &instance.id, depth, ctx)
 		.await
-		.context("Failed to acquire addons")?;
+		.context("Failed to install addons")?;
 
 	ctx.output.display(MessageContents::Success(translate!(
 		ctx.output,
@@ -191,11 +178,28 @@ pub async fn update_instance_packages<O: NitroOutput>(
 	Ok(out)
 }
 
-/// Evaluates addon acquire tasks efficiently with a progress display to the user
-async fn run_addon_tasks(
-	tasks: HashMap<String, impl Future<Output = anyhow::Result<()>> + Send + 'static>,
-	o: &mut impl NitroOutput,
+/// Evaluates addon acquire tasks and manual downloads efficiently
+async fn install_addons<O: NitroOutput>(
+	addons: Vec<AddonRequest>,
+	instance_id: &str,
+	depth: UpdateDepth,
+	ctx: &mut InstanceUpdateContext<'_, O>,
 ) -> anyhow::Result<()> {
+	let mut tasks = HashMap::new();
+	let mut manual_addons = Vec::new();
+	for addon in addons {
+		if !addon.addon.should_update(ctx.paths, instance_id) && depth != UpdateDepth::Force {
+			continue;
+		}
+
+		if addon.addon.is_manual {
+			manual_addons.push(addon);
+		} else {
+			let task = addon.get_acquire_task(ctx.paths, instance_id, ctx.client);
+			tasks.insert(addon.get_unique_id(instance_id), task);
+		}
+	}
+
 	let total_count = tasks.len();
 	let mut task_set = JoinSet::new();
 
@@ -211,7 +215,7 @@ async fn run_addon_tasks(
 	}
 
 	if !task_set.is_empty() {
-		let mut process = o.get_process();
+		let mut process = ctx.output.get_process();
 		while let Some(result) = task_set.join_next().await {
 			result
 				.context("Failed to run addon acquire task")?
@@ -224,6 +228,22 @@ async fn run_addon_tasks(
 			};
 
 			process.display(progress);
+		}
+	}
+
+	if !manual_addons.is_empty() {
+		let manual_files = manual_addons
+			.iter()
+			.filter_map(|x| x.manual_file())
+			.collect();
+		ctx.output.prompt_special_manual_files(manual_files).await?;
+
+		let manual_dir = manual_files::get_scan_dir_from_os(OS_STRING);
+		for addon in manual_addons {
+			let src = manual_dir.join(&addon.addon.file_name);
+			let dest = addon.addon.get_path(ctx.paths, instance_id);
+			let _ = create_leading_dirs(&dest);
+			std::fs::rename(src, dest).context("Failed to move manual file")?;
 		}
 	}
 

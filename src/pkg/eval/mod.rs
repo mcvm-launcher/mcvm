@@ -434,6 +434,7 @@ pub fn create_valid_addon_request(
 		version,
 		modpack_format: data.modpack_format,
 		hashes: data.hashes,
+		is_manual: data.is_manual,
 	};
 
 	if let Some(url) = data.url {
