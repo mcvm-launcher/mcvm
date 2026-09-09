@@ -2,6 +2,7 @@ use std::{
 	collections::{HashMap, HashSet},
 	fs::File,
 	io::BufReader,
+	ops::DerefMut,
 	path::{Path, PathBuf},
 	sync::Arc,
 	time::SystemTime,
@@ -187,7 +188,7 @@ fn main() -> anyhow::Result<()> {
 		let runtime = tokio::runtime::Runtime::new()?;
 
 		let (projects, files) = runtime
-			.block_on(pack.download(&addons_dir, &client, &api_key))
+			.block_on(pack.download(&addons_dir, &client, &api_key, process.deref_mut()))
 			.context("Failed to download modpack files")?;
 
 		process.display(MessageContents::Success("Modpack files downloaded".into()));
@@ -247,7 +248,7 @@ fn main() -> anyhow::Result<()> {
 		let runtime = tokio::runtime::Runtime::new()?;
 		let client = Client::new();
 		let (projects, files) = runtime
-			.block_on(modpack.download(&addons_dir, &client, &api_key))
+			.block_on(modpack.download(&addons_dir, &client, &api_key, process.deref_mut()))
 			.context("Failed to download modpack files")?;
 
 		process.display(MessageContents::Success("Addons downloaded".into()));

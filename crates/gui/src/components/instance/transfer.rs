@@ -181,7 +181,6 @@ impl Component for InstanceTransferModal {
 								side: Some(import_side),
 							})
 							.await;
-						front_state2.write().set_modal(None);
 					}
 					InstanceTransferMode::Export => {
 						export_mutation
@@ -193,9 +192,9 @@ impl Component for InstanceTransferModal {
 									.expect("Exporting instance ID must be provided"),
 							})
 							.await;
-						front_state2.write().set_modal(None);
 					}
 				}
+				front_state2.write().set_modal(None);
 			});
 		};
 		let submit_title = match self.mode {
@@ -312,7 +311,8 @@ impl Component for MigrateContents {
 			if let Some(formats) = formats {
 				format2.set(
 					formats
-						.iter().find(|x| x.migrate.is_some())
+						.iter()
+						.find(|x| x.migrate.is_some())
 						.map(|x| x.id.clone()),
 				);
 			}

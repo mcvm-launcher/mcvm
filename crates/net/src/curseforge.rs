@@ -142,8 +142,12 @@ pub async fn get_mod_files(
 	api_key: &str,
 	client: &Client,
 ) -> anyhow::Result<Vec<CurseFile>> {
-	let response: CurseModFilesResponse =
-		request_api(&format!("v1/mods/{id}/files?pageSize=5000"), api_key, client).await?;
+	let response: CurseModFilesResponse = request_api(
+		&format!("v1/mods/{id}/files?pageSize=5000"),
+		api_key,
+		client,
+	)
+	.await?;
 	Ok(response.data)
 }
 
@@ -435,4 +439,19 @@ pub struct SearchModsResponse {
 #[serde(rename_all = "camelCase")]
 pub struct Pagination {
 	pub total_count: u64,
+}
+
+/// Generates a CurseForge download page URL for a given file
+pub fn generate_download_page_url(slug: &str, file_id: u32, ty: PackageKind) -> String {
+	let sub = match ty {
+		PackageKind::Mod => "mc-mods",
+		PackageKind::Modpack => "modpacks",
+		PackageKind::ResourcePack => "texture-packs",
+		PackageKind::Shader => "shaders",
+		PackageKind::Datapack => "data-packs",
+		PackageKind::Plugin => "bukkit-plugins",
+		_ => "mc-mods",
+	};
+
+	format!("https://www.curseforge.com/minecraft/{sub}/{slug}/download/{file_id}")
 }
