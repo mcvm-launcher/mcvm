@@ -7,11 +7,16 @@ use std::{
 
 use anyhow::Context;
 #[cfg(feature = "net")]
-use nitro_net::curseforge::{CurseFile, CurseMod};
+use nitro_net::curseforge::{CurseFile, CurseMod, generate_download_page_url, parse_class_id};
 #[cfg(feature = "net")]
 use nitro_shared::pkg::PackageKind;
 #[cfg(feature = "net")]
 use nitro_shared::{Side, versions::VersionInfo};
+#[cfg(feature = "net")]
+use nitro_shared::{
+	manual_files::{self, ManualFile},
+	output::NitroOutput,
+};
 use serde::{Deserialize, Serialize};
 use zip::ZipArchive;
 
@@ -49,6 +54,7 @@ impl<R: Read + Seek> CurseForgePack<R> {
 		addons_dir: &Path,
 		client: &nitro_net::download::Client,
 		api_key: &str,
+		o: &mut impl NitroOutput,
 	) -> anyhow::Result<(Vec<CurseMod>, Vec<CurseFile>)> {
 		use tokio::task::JoinSet;
 
@@ -66,6 +72,7 @@ impl<R: Read + Seek> CurseForgePack<R> {
 		.context("Failed to get CurseForge projects or files")?;
 
 		let mut tasks = JoinSet::new();
+		let mut manual = Vec::new();
 		for file in &files {
 			let source_path = storage::get_generic_addon_path(
 				addons_dir,
@@ -86,11 +93,50 @@ impl<R: Read + Seek> CurseForgePack<R> {
 					}
 					nitro_net::download::file(download_url, source_path, &client).await
 				});
+			} else {
+				let Some(project) = projects.iter().find(|p| p.id == file.mod_id) else {
+					anyhow::bail!("Failed to find project for file {}", file.display_name);
+				};
+				let url = generate_download_page_url(
+					&project.slug,
+					file.id,
+					parse_class_id(project.class_id).unwrap_or(PackageKind::Mod),
+				);
+				manual.push(ManualFile {
+					filename: file.file_name.clone(),
+					url,
+					req: None,
+				});
 			}
 		}
 
 		while let Some(result) = tasks.join_next().await {
 			result??;
+		}
+
+		if !manual.is_empty() {
+			o.prompt_special_manual_files(manual.clone())
+				.await
+				.context("Failed to prompt for manual files")?;
+			let scan_dir = manual_files::get_scan_dir_from_os(nitro_shared::util::OS_STRING);
+
+			for manual_file in manual {
+				let file = files
+					.iter()
+					.find(|x| x.file_name == manual_file.filename)
+					.expect("File should be in manual files");
+				let source_path = storage::get_generic_addon_path(
+					addons_dir,
+					&file.mod_id.to_string(),
+					Some(file.id.to_string()),
+				);
+
+				if let Some(parent) = source_path.parent() {
+					let _ = std::fs::create_dir_all(parent);
+				}
+				std::fs::rename(scan_dir.join(&manual_file.filename), source_path)
+					.context("Failed to move manual file to storage")?;
+			}
 		}
 
 		Ok((projects, files))

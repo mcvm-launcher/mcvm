@@ -1,6 +1,9 @@
 use anyhow::Context;
 use base64::prelude::*;
-use nitro_shared::output::{Message, MessageLevel};
+use nitro_shared::{
+	manual_files::ManualFile,
+	output::{Message, MessageLevel},
+};
 use serde::{Deserialize, Serialize};
 
 /// The delimiter which starts every output line after protocol version 2
@@ -22,6 +25,8 @@ pub enum OutputAction {
 	StartSection,
 	/// End an output section
 	EndSection,
+	/// Start a manual files prompt
+	StartManualFilesPrompt(Vec<ManualFile>),
 	/// Set the result of the hook
 	SetResult(serde_json::Value),
 	/// Sets an error result for the hook
@@ -104,6 +109,8 @@ pub enum InputAction {
 	CommandResult(CommandResult),
 	/// Gracefully terminate the program
 	Terminate,
+	/// The result of a prompt, successful or not
+	PromptResult(bool),
 }
 
 impl InputAction {

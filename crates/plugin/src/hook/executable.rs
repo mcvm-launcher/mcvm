@@ -213,11 +213,17 @@ impl<H: Hook> ExecutableHookHandle<H> {
 							.serialize(self.protocol_version)
 							.context("Failed to serialize input action")?;
 						stdin
-							.write(action.as_bytes())
+							.write_all(action.as_bytes())
 							.await
 							.context("Failed to write input action to plugin")?;
+						stdin
+							.write_all(b"\n")
+							.await
+							.context("Failed to write input action delimiter to plugin")?;
 					}
 				}
+
+				let mut inputs_to_send = Vec::new();
 
 				for line in lines {
 					let action =
@@ -287,7 +293,15 @@ impl<H: Hook> ExecutableHookHandle<H> {
 						OutputAction::EndSection => {
 							o.end_section();
 						}
+						OutputAction::StartManualFilesPrompt(files) => {
+							let result = o.prompt_special_manual_files(files).await;
+							inputs_to_send.push(InputAction::PromptResult(result.is_ok()));
+						}
 					}
+				}
+
+				for input in inputs_to_send {
+					self.send_input_action(input).await?;
 				}
 
 				Ok(false)
@@ -352,9 +366,13 @@ impl<H: Hook> ExecutableHookHandle<H> {
 				.context("Failed to serialize input action")?;
 
 			stdin
-				.write(action.as_bytes())
+				.write_all(action.as_bytes())
 				.await
 				.context("Failed to write input action to plugin")?;
+			stdin
+				.write_all(b"\n")
+				.await
+				.context("Failed to write input action delimiter to plugin")?;
 		}
 
 		Ok(())

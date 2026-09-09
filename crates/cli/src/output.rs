@@ -348,6 +348,7 @@ impl OutputTask {
 							}
 						}
 						Event::ManualDownload(files) => {
+							self.end_process();
 							self.display(Message {
 								contents: MessageContents::Notice("Some files must be downloaded manually".into()),
 								level: MessageLevel::Important,

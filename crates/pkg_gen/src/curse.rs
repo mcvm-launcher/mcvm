@@ -2,7 +2,8 @@ use std::collections::{HashMap, HashSet};
 
 use anyhow::Context;
 use nitro_net::curseforge::{
-	CurseFile, CurseGameVersion, CurseMod, parse_class_id, parse_release_type,
+	CurseFile, CurseGameVersion, CurseMod, generate_download_page_url, parse_class_id,
+	parse_release_type,
 };
 use nitro_pkg::{
 	declarative::{
@@ -197,18 +198,4 @@ pub async fn generate(
 /// Cleanup a version name to remove things like loaders
 pub fn cleanup_version_name(version: &str) -> String {
 	version.replace("+", "-")
-}
-
-fn generate_download_page_url(slug: &str, file_id: u32, ty: PackageKind) -> String {
-	let sub = match ty {
-		PackageKind::Mod => "mc-mods",
-		PackageKind::Modpack => "modpacks",
-		PackageKind::ResourcePack => "texture-packs",
-		PackageKind::Shader => "shaders",
-		PackageKind::Datapack => "data-packs",
-		PackageKind::Plugin => "bukkit-plugins",
-		_ => "mc-mods",
-	};
-
-	format!("https://www.curseforge.com/minecraft/{sub}/{slug}/download/{file_id}")
 }

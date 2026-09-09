@@ -10,6 +10,7 @@ use anyhow::{Context, bail};
 use serde::Serialize;
 use serde::de::DeserializeOwned;
 
+use crate::api::executable::output::poll_input_action;
 use crate::hook::Hook;
 use crate::hook::{
 	CONFIG_DIR_ENV, CUSTOM_CONFIG_ENV, DATA_DIR_ENV, HOOK_VERSION_ENV, PLUGIN_LIST_ENV,
@@ -243,20 +244,7 @@ impl<H: Hook> HookContext<'_, H> {
 
 	/// Gets the latest input action
 	pub fn poll(&mut self) -> anyhow::Result<Option<InputAction>> {
-		let mut buf = String::new();
-		let result_len = self
-			.stdin
-			.read_line(&mut buf)
-			.context("Failed to read from stdin")?;
-		if result_len == 0 {
-			return Ok(None);
-		}
-		let line = buf.trim_end_matches("\r\n").trim_end_matches('\n');
-
-		let action = InputAction::deserialize(line, self.protocol_version)
-			.context("Failed to deserialize input action")?;
-
-		Ok(Some(action))
+		poll_input_action(self.stdin, self.protocol_version)
 	}
 }
 
