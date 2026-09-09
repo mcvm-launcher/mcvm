@@ -28,6 +28,21 @@
 							"datapack",
 							"plugin",
 							"modpack"
+						],
+						"package_categories": [
+							"worldgen",
+							"structures",
+							"mobs",
+							"technology",
+							"transportation",
+							"magic",
+							"storage",
+							"library",
+							"adventure",
+							"equipment",
+							"food",
+							"utility",
+							"optimization"
 						]
 					}
 				}

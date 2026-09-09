@@ -16,7 +16,7 @@ use nitro_pkg::{
 use nitro_shared::{
 	Side,
 	loaders::{Loader, LoaderMatch},
-	pkg::PackageKind,
+	pkg::{PackageCategory, PackageKind},
 	util::DeserListOrSingle,
 	versions::VersionPattern,
 };
@@ -44,6 +44,12 @@ pub async fn generate(
 	};
 	meta.authors = Some(m.authors.into_iter().map(|x| x.name).collect());
 	meta.gallery = Some(m.screenshots.into_iter().map(|x| x.url).collect());
+	meta.categories = Some(
+		m.categories
+			.into_iter()
+			.filter_map(|x| convert_category(x.id))
+			.collect(),
+	);
 
 	let mut props = PackageProperties {
 		curseforge_id: Some(m.id.to_string()),
@@ -198,4 +204,24 @@ pub async fn generate(
 /// Cleanup a version name to remove things like loaders
 pub fn cleanup_version_name(version: &str) -> String {
 	version.replace("+", "-")
+}
+
+/// Parses a CurseForge category ID into a PackageCategory enum
+fn convert_category(id: u32) -> Option<PackageCategory> {
+	match id {
+		406 => Some(PackageCategory::Worldgen),
+		409 => Some(PackageCategory::Structures),
+		411 => Some(PackageCategory::Mobs),
+		412 => Some(PackageCategory::Technology),
+		414 => Some(PackageCategory::Transportation),
+		419 => Some(PackageCategory::Magic),
+		420 => Some(PackageCategory::Storage),
+		421 => Some(PackageCategory::Library),
+		422 => Some(PackageCategory::Adventure),
+		434 => Some(PackageCategory::Equipment),
+		436 => Some(PackageCategory::Food),
+		5191 => Some(PackageCategory::Utility),
+		6814 => Some(PackageCategory::Optimization),
+		_ => None,
+	}
 }
