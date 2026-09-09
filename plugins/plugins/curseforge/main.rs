@@ -84,7 +84,7 @@ fn main() -> anyhow::Result<()> {
 			return Ok(PackageSearchResults::default());
 		}
 
-		let api_key = get_api_key()?;
+		let api_key = get_api_key();
 		let client = Client::new();
 		let runtime = tokio::runtime::Runtime::new()?;
 
@@ -174,7 +174,7 @@ fn main() -> anyhow::Result<()> {
 
 		let data_dir = ctx.get_data_dir()?;
 		let addons_dir = data_dir.join("internal/addons");
-		let api_key = get_api_key().context("Failed to get CurseForge API key")?;
+		let api_key = get_api_key();
 
 		let file = BufReader::new(File::open(arg.path).context("Failed to open modpack")?);
 		let mut pack = CurseForgePack::from_stream(file).context("Failed to open modpack")?;
@@ -232,7 +232,7 @@ fn main() -> anyhow::Result<()> {
 		let target_path = PathBuf::from(arg.result_path);
 
 		let addons_dir = ctx.get_data_dir()?.join("internal/addons");
-		let api_key = get_api_key().context("Failed to get CurseForge API key")?;
+		let api_key = get_api_key();
 
 		let output = ctx.get_output();
 
@@ -333,7 +333,7 @@ async fn get_cached_project(
 		return Ok(None);
 	}
 
-	let api_key = get_api_key().context("Failed to get CurseForge API key")?;
+	let api_key = get_api_key();
 
 	let project_info =
 		if project_path.exists() && !project_needs_update(&project_path).unwrap_or(true) {
@@ -494,8 +494,8 @@ fn cfpack_manifest_to_config(manifest: &CurseForgeManifest, side: Side) -> Insta
 	}
 }
 
-fn get_api_key() -> anyhow::Result<String> {
+fn get_api_key() -> String {
 	IO_CONFIG
 		.get_string("curseforge_api_key")
-		.context("API key missing")
+		.unwrap_or_else(|| "$2a$10$TGR.veViPhqEjIUSXzS8QezCKs4ScZXVDPKDFNc4M45SZGY5RRJQ6".into())
 }
