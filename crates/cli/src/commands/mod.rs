@@ -206,6 +206,7 @@ pub async fn run_cli() -> anyhow::Result<()> {
 					"fabric_quilt".into(),
 					"modrinth".into(),
 					"smithed".into(),
+					"curseforge".into(),
 					"stats".into(),
 					"docs".into(),
 					"multimc_transfer".into(),

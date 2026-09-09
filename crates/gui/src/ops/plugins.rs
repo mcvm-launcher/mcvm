@@ -259,6 +259,7 @@ simple_mutation!(
 			"forge",
 			"modrinth",
 			"smithed",
+			"curseforge",
 			"multimc_transfer",
 			"xmcl_transfer",
 			"mojang_transfer",
