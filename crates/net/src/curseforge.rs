@@ -1,7 +1,7 @@
 use anyhow::Context;
 use nitro_shared::{
 	loaders::Loader,
-	pkg::{PackageKind, PackageSearchParameters, PackageStability},
+	pkg::{PackageCategory, PackageKind, PackageSearchParameters, PackageStability},
 };
 use reqwest::Client;
 use serde::{Deserialize, Serialize, de::DeserializeOwned};
@@ -203,6 +203,9 @@ pub struct CurseMod {
 	pub download_count: u32,
 	/// What type of project this is
 	pub class_id: u16,
+	/// Categories for the project
+	#[serde(default)]
+	pub categories: Vec<CurseCategory>,
 	/// Authors for the mod
 	pub authors: Vec<CurseAuthor>,
 	/// Links for the mod
@@ -215,6 +218,14 @@ pub struct CurseMod {
 	pub screenshots: Vec<CurseScreenshot>,
 	/// Latest files / versions for the mod
 	pub latest_files: Vec<CurseFile>,
+}
+
+/// A category for a CurseForge project
+#[derive(Serialize, Deserialize, Clone)]
+#[serde(rename_all = "camelCase")]
+pub struct CurseCategory {
+	/// Unique ID of the category
+	pub id: u32,
 }
 
 /// A file for a CurseForge project
@@ -343,6 +354,25 @@ pub fn unparse_class_id(kind: PackageKind) -> Option<u16> {
 	}
 }
 
+fn convert_category(category: PackageCategory) -> Option<u32> {
+	match category {
+		PackageCategory::Worldgen => Some(406),
+		PackageCategory::Structures => Some(409),
+		PackageCategory::Mobs => Some(411),
+		PackageCategory::Technology => Some(412),
+		PackageCategory::Transportation => Some(414),
+		PackageCategory::Magic => Some(419),
+		PackageCategory::Storage => Some(420),
+		PackageCategory::Library => Some(421),
+		PackageCategory::Adventure => Some(422),
+		PackageCategory::Equipment => Some(434),
+		PackageCategory::Food => Some(436),
+		PackageCategory::Utility => Some(5191),
+		PackageCategory::Optimization => Some(6814),
+		_ => None,
+	}
+}
+
 /// Parses a CurseForge mod loader ID into a Loader enum
 pub fn parse_mod_loader(id: u8) -> Loader {
 	match id {
@@ -420,6 +450,15 @@ pub async fn search_mods(
 				.collect::<Vec<_>>()
 				.join(",")
 		));
+	}
+	let categories = params
+		.categories
+		.into_iter()
+		.filter_map(convert_category)
+		.map(|id| id.to_string())
+		.collect::<Vec<_>>();
+	if !categories.is_empty() {
+		url.push_str(&format!("&categoryIds={}", categories.join(",")));
 	}
 
 	request_api(&url, api_key, client).await
