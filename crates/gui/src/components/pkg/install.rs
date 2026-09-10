@@ -86,7 +86,12 @@ impl Component for PackageInstallModal {
 			selected_item2.set(None);
 		});
 
-		let name = self.meta.0.name.clone().unwrap_or(self.req.to_string());
+		let name = self
+			.meta
+			.0
+			.name
+			.clone()
+			.unwrap_or(self.req.to_string_no_version());
 
 		let tabs = TopTabs::from_state(tab).children(
 			Tab::get_tabs(is_modpack)

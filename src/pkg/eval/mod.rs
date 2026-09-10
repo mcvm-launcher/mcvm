@@ -393,7 +393,7 @@ pub fn create_valid_addon_request(
 	}
 
 	let file_name = data.file_name.unwrap_or(addon::get_addon_instance_filename(
-		&pkg.to_string_no_version().replace(":", "_"),
+		&pkg.to_string_no_version_or_slug().replace(":", "_"),
 		&data.id,
 		&data.kind,
 	));

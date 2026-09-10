@@ -186,8 +186,23 @@ impl PkgRequest {
 		self.debug_sources_inner(String::new())
 	}
 
-	/// Converts to repository:id or id
+	/// Converts to a string without the content version
 	pub fn to_string_no_version(&self) -> String {
+		let mut out = String::new();
+		if let Some(repo) = &self.repository {
+			out.push_str(&format!("{repo}:"));
+		}
+		if let Some(slug) = &self.slug {
+			out.push_str(&format!("{slug}.{}", self.id));
+		} else {
+			out.push_str(&self.id);
+		}
+
+		out
+	}
+
+	/// Converts to repository:id or id, omitting the slug and content version
+	pub fn to_string_no_version_or_slug(&self) -> String {
 		if let Some(repo) = &self.repository {
 			format!("{repo}:{}", self.id)
 		} else {
@@ -235,10 +250,28 @@ impl Display for PkgRequest {
 		}
 
 		if let Some(slug) = &self.slug {
-			write!(f, "{slug}.{}", self.id)
+			write!(f, "{slug}.{}", self.id)?;
 		} else {
-			write!(f, "{}", self.id)
+			write!(f, "{}", self.id)?;
 		}
+
+		if self.content_version != VersionPattern::Any {
+			write!(f, "@{}", self.content_version)?;
+		}
+
+		Ok(())
+	}
+}
+
+impl From<&str> for PkgRequest {
+	fn from(string: &str) -> Self {
+		Self::parse(string, PkgRequestSource::UserRequire)
+	}
+}
+
+impl From<&String> for PkgRequest {
+	fn from(string: &String) -> Self {
+		Self::parse(string, PkgRequestSource::UserRequire)
 	}
 }
 

@@ -70,7 +70,7 @@ impl InstanceLockfile {
 		content_version: Option<String>,
 	) -> Vec<PathBuf> {
 		let mut files_to_remove = Vec::new();
-		let req = req.to_string_no_version();
+		let req = req.to_string_no_version_or_slug();
 
 		let existing_package_addons: Vec<LockfileAddon> = self
 			.contents

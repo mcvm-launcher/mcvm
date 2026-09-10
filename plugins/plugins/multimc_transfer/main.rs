@@ -204,7 +204,7 @@ fn main() -> anyhow::Result<()> {
 
 				let addon = LockfileAddon {
 					id: Some(addon_id.into()),
-					package: Some(req.to_string_no_version()),
+					package: Some(req.to_string_no_version_or_slug()),
 					from_modpack: false,
 					file_name: path.file_name().unwrap().to_string_lossy().to_string(),
 					files: vec![path.to_string_lossy().to_string()],

@@ -50,7 +50,7 @@ impl AddonExt for PackageAddon {
 
 		let pkg_dir = self
 			.get_dir(paths)
-			.join(self.pkg.to_string_no_version().replace(":", "_"));
+			.join(self.pkg.to_string_no_version_or_slug().replace(":", "_"));
 		if let Some(version) = &self.version {
 			pkg_dir.join(self.id.clone()).join(version)
 		} else {
@@ -226,7 +226,7 @@ impl ResolvedPackageAddon {
 	pub fn to_lockfile_addon(&self) -> LockfileAddon {
 		LockfileAddon {
 			id: Some(self.pkg_addon.id.clone()),
-			package: Some(self.pkg_addon.pkg.to_string_no_version()),
+			package: Some(self.pkg_addon.pkg.to_string_no_version_or_slug()),
 			from_modpack: false,
 			file_name: self.addon.file_name.clone(),
 			files: self

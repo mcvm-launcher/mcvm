@@ -49,7 +49,7 @@ pub async fn resolve<'a, E: PackageEvaluator<'a>>(
 		.iter()
 		.filter_map(|x| {
 			let req = x.get_package();
-			if resolver.overrides.suppress.contains(&req.to_string()) {
+			if is_package_overridden(&req, &resolver.overrides.suppress) {
 				None
 			} else {
 				Some(req)
@@ -115,7 +115,7 @@ pub async fn resolve<'a, E: PackageEvaluator<'a>>(
 			.filter_map(|x| {
 				#[allow(irrefutable_let_patterns)]
 				if let Task::EvalPackage { dest, .. } = x {
-					if resolver.overrides.suppress.contains(&dest.to_string()) {
+					if is_package_overridden(dest, &resolver.overrides.suppress) {
 						None
 					} else {
 						Some(dest.clone())
@@ -215,7 +215,7 @@ async fn resolve_task<'a, E: PackageEvaluator<'a>>(
 ) -> Result<(), ResolutionError> {
 	match task {
 		Task::EvalPackage { dest } => {
-			if resolver.overrides.suppress.contains(&dest.to_string()) {
+			if is_package_overridden(&dest, &resolver.overrides.suppress) {
 				return Ok(());
 			}
 

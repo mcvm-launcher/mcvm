@@ -89,7 +89,7 @@ impl Component for PackageView {
 		} else if let Some(name) = &meta.name {
 			name.clone()
 		} else {
-			self.req.to_string()
+			self.req.to_string_no_version()
 		};
 
 		let upper_details = rect()

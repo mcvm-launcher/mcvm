@@ -304,7 +304,7 @@ impl Instance {
 
 		// Download and add the icon
 		if let Some(icon) = download_result.icon {
-			let pkg_identifier = make_valid_instance_id(&modpack.to_string_no_version());
+			let pkg_identifier = make_valid_instance_id(&modpack.to_string_no_version_or_slug());
 			let path = paths.internal.join("icons").join(&pkg_identifier);
 			if !path.exists() {
 				let _ = create_leading_dirs_async(&path).await;
