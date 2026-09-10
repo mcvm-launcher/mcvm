@@ -31,7 +31,7 @@ While an instance is running, it will output messages and information to the con
 +++ App
 Navigate to the instance's page. Switch to the `Console` tab and see the output.
 
-![](assets/screenshots/instance_page.png)
+![](assets/screenshots/instance_console.png)
 +++ CLI
 When you launch the instance, its output will be visible in the console. There is no way to see the live output of a background-running instance at this time.
 +++
