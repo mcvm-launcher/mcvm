@@ -9,6 +9,7 @@ use inquire::{
 use itertools::Itertools;
 use nitrolaunch::{
 	config::Config,
+	config_crate::instance::is_valid_instance_id,
 	core::{account::AccountID, util::versions::MinecraftVersion},
 	io::paths::Paths,
 	plugin::PluginManager,
@@ -18,7 +19,6 @@ use nitrolaunch::{
 		id::{InstanceID, TemplateID},
 		loaders::Loader,
 		output::NoOp,
-		util::is_valid_identifier,
 	},
 };
 
@@ -151,7 +151,7 @@ struct IDValidator;
 
 impl StringValidator for IDValidator {
 	fn validate(&self, input: &str) -> Result<Validation, inquire::CustomUserError> {
-		if is_valid_identifier(input) {
+		if is_valid_instance_id(input) {
 			Ok(Validation::Valid)
 		} else {
 			Ok(Validation::Invalid(ErrorMessage::Custom(
