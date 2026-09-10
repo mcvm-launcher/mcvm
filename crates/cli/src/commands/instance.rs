@@ -624,6 +624,7 @@ async fn import(
 			.iter()
 			.filter(|x| x.1.supports_import())
 			.map(|x| x.0)
+			.sorted()
 			.collect();
 		if options.is_empty() {
 			bail!(
@@ -707,6 +708,7 @@ async fn export(
 			.iter()
 			.filter(|x| x.1.supports_export())
 			.map(|x| x.0)
+			.sorted()
 			.collect();
 		if options.is_empty() {
 			bail!(

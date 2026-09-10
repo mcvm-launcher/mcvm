@@ -16,6 +16,7 @@ use anyhow::{Context, bail};
 use clap::{Parser, Subcommand};
 use color_print::cformat;
 
+use itertools::Itertools;
 use nitrolaunch::config::modifications::{ConfigModification, apply_modifications_and_write};
 use nitrolaunch::config::{Config, is_first_run};
 use nitrolaunch::config_crate::ConfigDeser;
@@ -376,6 +377,7 @@ async fn migrate(
 			.iter()
 			.filter(|x| x.1.supports_migration())
 			.map(|x| x.0)
+			.sorted()
 			.collect();
 		if options.is_empty() {
 			bail!(
