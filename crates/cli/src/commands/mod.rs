@@ -369,7 +369,12 @@ async fn migrate(
 	let format = if let Some(format) = &format {
 		format
 	} else {
-		let options: Vec<_> = formats.iter_format_names().collect();
+		let options: Vec<_> = formats
+			.formats
+			.iter()
+			.filter(|x| x.1.supports_migration())
+			.map(|x| x.0)
+			.collect();
 		if options.is_empty() {
 			bail!(
 				"{}",

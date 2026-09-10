@@ -270,7 +270,7 @@ pub async fn load_formats(
 /// Represents loaded transfer formats from plugins
 pub struct Formats {
 	/// Map of the format IDs to the formats themselves
-	formats: HashMap<String, Format>,
+	pub formats: HashMap<String, Format>,
 }
 
 impl Formats {
@@ -286,6 +286,23 @@ pub struct Format {
 	plugin: String,
 	/// Information about the format
 	info: InstanceTransferFormat,
+}
+
+impl Format {
+	/// Gets whether this format supports importing
+	pub fn supports_import(&self) -> bool {
+		self.info.import.is_some()
+	}
+
+	/// Gets whether this format supports exporting
+	pub fn supports_export(&self) -> bool {
+		self.info.export.is_some()
+	}
+
+	/// Gets whether this format supports migration
+	pub fn supports_migration(&self) -> bool {
+		self.info.migrate.is_some()
+	}
 }
 
 /// Output warnings about unsupported features in the transfer

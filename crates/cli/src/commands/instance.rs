@@ -619,7 +619,12 @@ async fn import(
 	let format = if let Some(format) = &format {
 		format
 	} else {
-		let options: Vec<_> = formats.iter_format_names().collect();
+		let options: Vec<_> = formats
+			.formats
+			.iter()
+			.filter(|x| x.1.supports_import())
+			.map(|x| x.0)
+			.collect();
 		if options.is_empty() {
 			bail!(
 				"{}",
@@ -697,7 +702,12 @@ async fn export(
 	let format = if let Some(format) = &format {
 		format
 	} else {
-		let options: Vec<_> = formats.iter_format_names().collect();
+		let options: Vec<_> = formats
+			.formats
+			.iter()
+			.filter(|x| x.1.supports_export())
+			.map(|x| x.0)
+			.collect();
 		if options.is_empty() {
 			bail!(
 				"{}",
