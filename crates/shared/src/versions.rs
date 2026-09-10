@@ -61,7 +61,10 @@ impl VersionPattern {
 
 	/// Finds the newest match in a list of versions
 	pub fn get_match(&self, versions: &[String]) -> Option<String> {
-		self.get_matches(versions).last().cloned()
+		match self {
+			Self::Any | Self::Prefer(..) => versions.last().cloned(),
+			_ => self.get_matches(versions).pop(),
+		}
 	}
 
 	/// Compares this pattern to a single string.
