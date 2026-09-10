@@ -13,6 +13,7 @@ use nitro_net::download::Client;
 use nitro_plugin::{api::executable::ExecutablePlugin, hook::hooks::OnInstanceSetupResult};
 use nitro_shared::{
 	Side, UpdateDepth,
+	io::update_link,
 	loaders::Loader,
 	output::{MessageContents, NitroOutput, OutputProcess},
 };
@@ -145,6 +146,11 @@ fn main() -> anyhow::Result<()> {
 				.with_context(|| format!("Failed to download JAR file for {mode}"))?;
 		}
 
+		// Link the Mojang jar to skip redownload
+		let mojang_jar_path = get_cached_mojang_jar(Path::new(inst_dir), &arg.version_info.version);
+		let _ = create_leading_dirs(&mojang_jar_path);
+		let _ = update_link(&Path::new(&arg.game_jar_path), &mojang_jar_path);
+
 		process.display(MessageContents::Success(format!("{mode} updated")));
 
 		let main_class = paper::PAPER_SERVER_MAIN_CLASS;
@@ -211,4 +217,8 @@ fn remove_paper(game_dir: &Path, paper_file_name: String) -> anyhow::Result<()> 
 	}
 
 	Ok(())
+}
+
+fn get_cached_mojang_jar(inst_dir: &Path, version: &str) -> PathBuf {
+	inst_dir.join("cache").join(format!("mojang_{version}.jar"))
 }

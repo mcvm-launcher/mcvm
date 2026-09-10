@@ -1,12 +1,17 @@
 use std::{
 	fs::File,
 	io::{BufReader, BufWriter},
-	path::Path,
+	path::{Path, PathBuf},
 };
 
 use anyhow::{Context, bail};
 use nitro_plugin::{
-	api::wasm::{WASMPlugin, net::download_file, output::WASMPluginOutput, sys::get_data_dir},
+	api::wasm::{
+		WASMPlugin,
+		net::download_file,
+		output::WASMPluginOutput,
+		sys::{get_data_dir, update_link},
+	},
 	hook::hooks::OnInstanceSetupResult,
 	nitro_wasm_plugin,
 };
@@ -29,7 +34,11 @@ fn main(plugin: &mut WASMPlugin) -> anyhow::Result<()> {
 			bail!("Instance side is empty");
 		};
 
-		if !arg.inst_dir.is_some() || arg.config.custom_launch {
+		let Some(inst_dir) = &arg.inst_dir else {
+			return Ok(OnInstanceSetupResult::default());
+		};
+
+		if arg.config.custom_launch {
 			return Ok(OnInstanceSetupResult::default());
 		};
 
@@ -74,6 +83,13 @@ fn main(plugin: &mut WASMPlugin) -> anyhow::Result<()> {
 			download_purpur_jar(&arg.version_info.version, &build, &jar_path)
 				.context("Failed to download Purpur jar")?;
 		}
+
+		// Link the Mojang jar to skip redownload
+		let mojang_jar_path = get_cached_mojang_jar(Path::new(inst_dir), &arg.version_info.version);
+		if let Some(parent) = mojang_jar_path.parent() {
+			let _ = std::fs::create_dir_all(parent);
+		}
+		let _ = update_link(&Path::new(&arg.game_jar_path), &mojang_jar_path);
 
 		process.display(MessageContents::Success("Purpur Installed".into()));
 
@@ -137,4 +153,8 @@ struct PurpurBuilds {
 fn download_purpur_jar(minecraft_version: &str, build: &str, path: &Path) -> anyhow::Result<()> {
 	let url = format!("https://api.purpurmc.org/v2/purpur/{minecraft_version}/{build}/download",);
 	download_file(&url, path).context("Failed to download Purpur jar")
+}
+
+fn get_cached_mojang_jar(inst_dir: &Path, version: &str) -> PathBuf {
+	inst_dir.join("cache").join(format!("mojang_{version}.jar"))
 }
