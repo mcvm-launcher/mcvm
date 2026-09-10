@@ -56,4 +56,4 @@ Modpacks are just a part of your configuration, and they can be shared with inst
 
 ## Installing From a File
 
-Any modpack formats that are installed also add an instance transfer format that lets you import a modpack from a file. Keep in mind that the modpack will be imported as-is, and cannot be updated.
+Any modpack formats that are installed also add an instance transfer format that lets you import a modpack from a file. Keep in mind that the modpack will be imported as-is, and cannot be updated. See [Importing and Exporting](instance_transfer.md)
