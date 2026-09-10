@@ -116,6 +116,7 @@ define_translations! {
 	StartMigrating, "When starting to migrate instances", "Importing instances using format '%format' and plugin '%plugin'";
 	FinishMigrating, "When finishing migrating instances", "Migration finished";
 	NoTransferFormats, "When no instance transfer formats are available", "No transfer formats available. Try installing some plugins.";
+	NoInstancesToMigrate, "When no instances are available for migration", "Launcher was not found or no instances were available for migration.";
 	WrongNitroVersion, "When the current version of Nitrolaunch files are newer than the program", "Nitrolaunch files are version %current, but you are running version %new. Please update to version %current.";
 }
 

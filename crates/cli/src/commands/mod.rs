@@ -23,7 +23,9 @@ use nitrolaunch::core::QuickPlayType;
 use nitrolaunch::instance::transfer::{load_formats, migrate_instances};
 use nitrolaunch::io::paths::Paths;
 use nitrolaunch::plugin::PluginManager;
-use nitrolaunch::plugin_crate::hook::hooks::{self, AddTranslations, SubcommandArg};
+use nitrolaunch::plugin_crate::hook::hooks::{
+	self, AddTranslations, CheckMigration, SubcommandArg,
+};
 use nitrolaunch::shared::id::InstanceID;
 use nitrolaunch::shared::lang::translate::TranslationKey;
 use nitrolaunch::shared::later::Later;
@@ -382,6 +384,36 @@ async fn migrate(
 			);
 		}
 		inquire::Select::new("What launcher do you want to import from?", options).prompt()?
+	};
+
+	let result = config
+		.plugins
+		.call_hook(CheckMigration, format, &data.paths, data.output)
+		.await?
+		.first_some(data.output)
+		.await?;
+
+	let available_instances = result.map(|x| x.instances).unwrap_or_default();
+	if available_instances.is_empty() {
+		bail!(
+			"{}",
+			data.output.translate(TranslationKey::NoInstancesToMigrate)
+		);
+	}
+
+	let instances = if instances.is_empty() {
+		inquire::MultiSelect::new(
+			"Which instances do you want to migrate? Select none to migrate all of them.",
+			available_instances,
+		)
+		.prompt()?
+	} else {
+		for instance in &instances {
+			if !available_instances.contains(instance) {
+				bail!("Instance '{instance}' does not exist for migration");
+			}
+		}
+		instances
 	};
 
 	let new_configs = migrate_instances(
