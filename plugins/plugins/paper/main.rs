@@ -58,11 +58,11 @@ fn main() -> anyhow::Result<()> {
 		let stored_versions_path = get_stored_versions_path(&paths, mode);
 		let versions = if stored_versions_path.exists() && arg.update_depth == UpdateDepth::Shallow
 		{
+			json_from_file(&stored_versions_path).context("Failed to read versions from file")?
+		} else {
 			process.display(MessageContents::StartProcess(
 				"Downloading version list".to_string(),
 			));
-			json_from_file(&stored_versions_path).context("Failed to read versions from file")?
-		} else {
 			runtime
 				.block_on(paper::get_all_versions(mode, &client))
 				.context("Failed to get list of versions")?
@@ -71,29 +71,14 @@ fn main() -> anyhow::Result<()> {
 		json_to_file(stored_versions_path, &versions)
 			.context("Failed to write versions to file")?;
 
-		if !versions.contains(&arg.version_info.version) {
+		let Some(version) = versions
+			.iter()
+			.find(|v| &v.version.id == &arg.version_info.version)
+		else {
 			bail!("Could not find a Paper version for the given Minecraft version");
-		}
-
-		// Get the build numbers (actual project versions)
-		let builds_path = get_stored_builds_path(&paths, mode, &arg.version_info.version);
-		let build_nums = if builds_path.exists() && arg.update_depth == UpdateDepth::Shallow {
-			json_from_file(&builds_path).context("Failed to read builds from file")?
-		} else {
-			process.display(MessageContents::StartProcess(
-				"Getting build list".to_string(),
-			));
-			runtime
-				.block_on(paper::get_builds(mode, &arg.version_info.version, &client))
-				.with_context(|| {
-					format!("Failed to get list of build numbers for {mode} project")
-				})?
 		};
-		let _ = create_leading_dirs(&builds_path);
-		json_to_file(builds_path, &build_nums).context("Failed to write builds to file")?;
 
-		let build_nums_strings: Vec<_> = build_nums.iter().map(|x| x.to_string()).collect();
-
+		let build_nums_strings: Vec<_> = version.builds.iter().map(|x| x.to_string()).collect();
 		let desired_version = arg
 			.desired_loader_version
 			.get_match(&build_nums_strings)
@@ -153,7 +138,7 @@ fn main() -> anyhow::Result<()> {
 					mode,
 					&arg.version_info.version,
 					desired_build_num,
-					&build_info.downloads.application.name,
+					&build_info.downloads.application.url,
 					&paths,
 					&client,
 				))
@@ -178,13 +163,7 @@ fn main() -> anyhow::Result<()> {
 fn get_stored_versions_path(paths: &Paths, mode: paper::Mode) -> PathBuf {
 	paths
 		.internal
-		.join(format!("paper/{}/versions.json", mode.to_str()))
-}
-
-fn get_stored_builds_path(paths: &Paths, mode: paper::Mode, version: &str) -> PathBuf {
-	paths
-		.internal
-		.join(format!("paper/{}/{version}_builds.json", mode.to_str()))
+		.join(format!("paper/{}/versions_new.json", mode.to_str()))
 }
 
 fn get_stored_build_info_path(

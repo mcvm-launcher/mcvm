@@ -116,9 +116,12 @@ pub async fn install_velocity(paths: &Paths, client: &Client) -> anyhow::Result<
 }
 
 /// Get all versions of a PaperMC project
-pub async fn get_all_versions(mode: Mode, client: &Client) -> anyhow::Result<Vec<String>> {
-	let url = format!("https://api.papermc.io/v2/projects/{}", mode.to_str());
-	let resp: ProjectInfoResponse = download::json(url, client).await?;
+pub async fn get_all_versions(mode: Mode, client: &Client) -> anyhow::Result<Vec<VersionResponse>> {
+	let url = format!(
+		"https://fill.papermc.io/v3/projects/{}/versions",
+		mode.to_str()
+	);
+	let resp: VersionsResponse = download::json(url, client).await?;
 	Ok(resp.versions)
 }
 
@@ -127,26 +130,21 @@ pub async fn get_newest_version(mode: Mode, client: &Client) -> anyhow::Result<S
 	let versions = get_all_versions(mode, client).await?;
 
 	let version = versions
-		.last()
+		.first()
 		.ok_or(anyhow!("Could not find a valid {mode} version"))?;
 
-	Ok(version.clone())
-}
-
-#[derive(Deserialize)]
-struct ProjectInfoResponse {
-	versions: Vec<String>,
+	Ok(version.version.id.clone())
 }
 
 /// Get all available build numbers of a PaperMC project version
 pub async fn get_builds(mode: Mode, version: &str, client: &Client) -> anyhow::Result<Vec<u16>> {
 	let url = format!(
-		"https://api.papermc.io/v2/projects/{}/versions/{version}",
+		"https://fill.papermc.io/v3/projects/{}/versions/{version}/builds",
 		mode.to_str(),
 	);
-	let resp: VersionInfoResponse = download::json(url, client).await?;
+	let resp: Vec<BuildInfoResponse> = download::json(url, client).await?;
 
-	Ok(resp.builds)
+	Ok(resp.into_iter().map(|build| build.id as u16).collect())
 }
 
 /// Get the newest build number of a PaperMC project version
@@ -161,11 +159,27 @@ pub async fn get_newest_build(mode: Mode, version: &str, client: &Client) -> any
 	Ok(*build)
 }
 
-/// Info about a project version
+/// Info about a PaperMC project version
 #[derive(Serialize, Deserialize)]
-pub struct VersionInfoResponse {
+pub struct VersionsResponse {
+	/// The project versions
+	pub versions: Vec<VersionResponse>,
+}
+
+#[derive(Serialize, Deserialize)]
+/// Details about a PaperMC project version and its builds
+pub struct VersionResponse {
+	/// The version details
+	pub version: Version,
 	/// The list of available build numbers
 	pub builds: Vec<u16>,
+}
+
+#[derive(Serialize, Deserialize)]
+/// Details about a PaperMC project version
+pub struct Version {
+	/// The Minecraft version
+	pub id: String,
 }
 
 /// Gets info from the given build
@@ -177,7 +191,7 @@ pub async fn get_build_info(
 ) -> anyhow::Result<BuildInfoResponse> {
 	let num_str = build_num.to_string();
 	let url = format!(
-		"https://api.papermc.io/v2/projects/{}/versions/{version}/builds/{num_str}",
+		"https://fill.papermc.io/v3/projects/{}/versions/{version}/builds/{num_str}",
 		mode.to_str(),
 	);
 	let resp: BuildInfoResponse = download::json(url, client).await?;
@@ -202,6 +216,8 @@ pub async fn get_jar_file_name(
 /// Response from the build info API
 #[derive(Serialize, Deserialize)]
 pub struct BuildInfoResponse {
+	/// The build number
+	pub id: u32,
 	/// The list of downloads
 	pub downloads: BuildInfoDownloads,
 }
@@ -209,7 +225,8 @@ pub struct BuildInfoResponse {
 /// Downloads for a build
 #[derive(Serialize, Deserialize)]
 pub struct BuildInfoDownloads {
-	/// Application info for the download
+	/// Server application info for the download
+	#[serde(rename = "server:default")]
 	pub application: BuildInfoApplication,
 }
 
@@ -218,25 +235,21 @@ pub struct BuildInfoDownloads {
 pub struct BuildInfoApplication {
 	/// The name of the JAR file
 	pub name: String,
+	/// The direct URL of the JAR file
+	pub url: String,
 }
 
 /// Download the server jar
 pub async fn download_server_jar(
 	mode: Mode,
 	version: &str,
-	build_num: u16,
-	file_name: &str,
+	_build_num: u16,
+	file_url: &str,
 	paths: &Paths,
 	client: &Client,
 ) -> anyhow::Result<()> {
-	let num_str = build_num.to_string();
-	let url = format!(
-		"https://api.papermc.io/v2/projects/{}/versions/{version}/builds/{num_str}/downloads/{file_name}",
-		mode.to_str()
-	);
-
 	let file_path = get_local_jar_path(mode, version, paths);
-	download::file(&url, &file_path, client)
+	download::file(file_url, &file_path, client)
 		.await
 		.context("Failed to download {mode} JAR")?;
 
