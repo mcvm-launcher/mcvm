@@ -72,7 +72,7 @@ pub async fn generate(
 
 	// Fill out metadata
 	let mut meta = PackageMetadata {
-		slug: Some(project.slug),
+		slug: Some(make_valid_slug(&project.slug)),
 		name: Some(project.title),
 		description: Some(project.description),
 		downloads: Some(project.downloads),
@@ -518,4 +518,20 @@ fn convert_category(category: &str) -> Vec<PackageCategory> {
 		"worldgen" => vec![PackageCategory::Worldgen, PackageCategory::Exploration],
 		_ => Vec::new(),
 	}
+}
+
+/// Converts a string into a valid slug
+/// Special characters will be converted into hyphens
+pub fn make_valid_slug(string: &str) -> String {
+	let string = string.to_lowercase();
+	string
+		.chars()
+		.map(|c| {
+			if !c.is_ascii_alphanumeric() && c != '.' && c != ':' {
+				'-'
+			} else {
+				c
+			}
+		})
+		.collect()
 }
