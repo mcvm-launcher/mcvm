@@ -17,3 +17,9 @@ Use the `octane_preset` field in the configuration for an instance or template t
 - `aikar`: Aikar's arguments for servers
 - `krusic`: Krusic's arguments for servers
 - `obydux`: Obydux's arguments for servers
+
+### CPU Priority
+Use the `octane_priority` field in the configuration for an instance or template to choose a preset that will affect how much CPU time the game gets on your system.
+- `none`: No preset, used to clear a preset that was inherited from a template
+- `high`: High priority, should probably be what you use
+- `background`: Low priority, used if you want other apps on your system to be less affected by Minecraft

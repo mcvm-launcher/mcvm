@@ -1,7 +1,11 @@
 # Cleanup
 ID: `cleanup`
 
-The Cleanup plugin adds utilities to get rid of old files
+The Cleanup plugin adds utilities to get rid of old files.
+
+!!!warning Note
+Cleanup can only be run from the CLI for now.
+!!!
 
 ## Usage
 ### Commands

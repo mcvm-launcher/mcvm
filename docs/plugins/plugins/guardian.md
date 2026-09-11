@@ -9,8 +9,10 @@ By default, Guardian will automatically scan whenever you update an instance, re
 To do a manual scan, you can run `nitro guardian scan <file>` to get a full report on the given file.
 
 ## Configuring
-In the GUI, this can be configured by going to an instance's configuration under the `Guardian` section.
 
++++ App
+Go to an instance or template's configuration under the `Guardian` section. Here you can enable or disable scanning.
++++ CLI
 In your instance / template config:
 
 ```
@@ -22,3 +24,4 @@ In your instance / template config:
 ```
 
 - `scan`: Whether to enable scanning on this instance. Defaults to `true`.
++++

@@ -3,6 +3,10 @@ ID: `backup`
 
 The Backup plugin is used to automatically or manually create backups of some or all the files in an instance. Note that it isn't ideal for backing up individual worlds as it doesn't offer that much control.
 
+!!!warning Note
+Backups can only be managed or configured with the CLI for now.
+!!!
+
 ## Usage
 
 ### Configuring

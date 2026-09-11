@@ -4,6 +4,10 @@ ID: `options`
 The Options plugin adds the ability to define options for your game in your configuration, and share them across instances and templates in a backwards-compatible way. The options are agnostic to the Minecraft version and automatically converted to the correct format. 
 
 ## Usage
+
++++ App
+When configuring your base template, you will see many tabs for the new options you can apply. Set them up with what you want to globally apply to all instances.
++++ CLI
 Global options for all instances are supplied in a JSON format in the file `options.json` in your config directory. This file may not exist so you might have to create it yourself.
 Format:
 ```
@@ -16,6 +20,7 @@ Format:
 	}
 }
 ```
++++
 
 Options that you do not change will not be changed in the output file. Options that Nitrolaunch does not know about will not be touched either.
 

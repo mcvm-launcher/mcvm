@@ -3,6 +3,10 @@ ID: `custom_files`
 
 The Custom Files plugin allows you to easily share the same file across all instances under a template. Right now, the plugin only supports sharing single files, not folders or globs.
 
+!!!warning Note
+The plugin is only supported by the CLI for now.
+!!!
+
 ## Usage
 
 ### Configuring
