@@ -17,7 +17,7 @@ use freya::{
 	},
 	winit::window::CursorIcon,
 };
-use freya_core::style::corner_radius::CornerRadius;
+use freya_core::style::{corner_radius::CornerRadius, shadow::Shadow};
 use reqwest::Url;
 
 use crate::{

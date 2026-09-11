@@ -278,6 +278,7 @@ pub struct CurseForgeModLoader {
 	pub primary: bool,
 }
 
+#[cfg(feature = "net")]
 fn get_addon_path(file: &CurseFile, addons_dir: &Path) -> PathBuf {
 	if let Some(md5) = file.get_md5_hash() {
 		storage::get_md5_addon_path(addons_dir, &md5.to_string())
