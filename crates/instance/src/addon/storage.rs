@@ -5,6 +5,16 @@ pub fn get_sha256_addon_path(addons_dir: &Path, hash: &str) -> PathBuf {
 	addons_dir.join("sha256").join(hash)
 }
 
+/// Get the path to a sha1 addon in storage
+pub fn get_sha1_addon_path(addons_dir: &Path, hash: &str) -> PathBuf {
+	addons_dir.join("sha1").join(hash)
+}
+
+/// Get the path to a md5 addon in storage
+pub fn get_md5_addon_path(addons_dir: &Path, hash: &str) -> PathBuf {
+	addons_dir.join("md5").join(hash)
+}
+
 /// Get the path to a generic addon in storage
 pub fn get_generic_addon_path(
 	addons_dir: &Path,

@@ -252,6 +252,24 @@ pub struct CurseFile {
 	pub release_type: u8,
 }
 
+impl CurseFile {
+	/// Gets the md5 hash for this file, if it exists
+	pub fn get_md5_hash(&self) -> Option<&str> {
+		self.hashes
+			.iter()
+			.find(|x| x.algo == 2)
+			.map(|x| x.value.as_str())
+	}
+
+	/// Gets the sha1 hash for this file, if it exists
+	pub fn get_sha1_hash(&self) -> Option<&str> {
+		self.hashes
+			.iter()
+			.find(|x| x.algo == 1)
+			.map(|x| x.value.as_str())
+	}
+}
+
 /// Game version for a CurseForge project, can be loaders, sides, or Minecraft versions
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
 #[allow(missing_docs)]

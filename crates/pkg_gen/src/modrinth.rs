@@ -401,6 +401,7 @@ pub async fn generate(
 			pkg_version.hashes = AddonHashes {
 				sha256: None,
 				sha512: Some(download.hashes.sha512.clone()),
+				sha1: None,
 			}
 		}
 

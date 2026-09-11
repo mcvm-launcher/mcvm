@@ -84,6 +84,7 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 									hashes: AddonHashes {
 										sha256: Value::None,
 										sha512: Value::None,
+										sha1: Value::None,
 									},
 								},
 							};
@@ -263,6 +264,7 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 								"modpack_format" => *key = addon::Key::ModpackFormat,
 								"hash_sha256" => *key = addon::Key::HashSHA256,
 								"hash_sha512" => *key = addon::Key::HashSHA512,
+								"hash_sha1" => *key = addon::Key::HashSHA1,
 								_ => {
 									bail!(
 										"Unknown key {} for 'addon' instruction {}",
@@ -298,6 +300,7 @@ pub fn parse<'a>(tokens: impl Iterator<Item = &'a TokenAndPos>) -> anyhow::Resul
 								addon::Key::ModpackFormat => filled_keys.modpack_format = arg,
 								addon::Key::HashSHA256 => filled_keys.hashes.sha256 = arg,
 								addon::Key::HashSHA512 => filled_keys.hashes.sha512 = arg,
+								addon::Key::HashSHA1 => filled_keys.hashes.sha1 = arg,
 								_ => unexpected_token!(tok, pos),
 							}
 							*state = addon::State::Comma;
@@ -470,6 +473,7 @@ mod addon {
 		ModpackFormat,
 		HashSHA256,
 		HashSHA512,
+		HashSHA1,
 	}
 
 	/// Keys that have been filled

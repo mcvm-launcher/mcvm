@@ -335,6 +335,8 @@ pub struct AddonHashes<T: Default> {
 	pub sha256: T,
 	/// The SHA-512 hash of this addon file
 	pub sha512: T,
+	/// The SHA1 hash of this addon file
+	pub sha1: T,
 }
 
 impl AddonOptionalHashes {

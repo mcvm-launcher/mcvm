@@ -16,7 +16,7 @@ use nitro_pkg::{
 use nitro_shared::{
 	Side,
 	loaders::{Loader, LoaderMatch},
-	pkg::{PackageCategory, PackageKind},
+	pkg::{AddonHashes, PackageCategory, PackageKind},
 	util::DeserListOrSingle,
 	versions::VersionPattern,
 };
@@ -78,6 +78,8 @@ pub async fn generate(
 	let mut all_mc_versions = HashSet::new();
 
 	for file in files {
+		let sha1 = file.get_sha1_hash().map(|x| x.to_string());
+
 		let mut is_manual = false;
 		let url = if let Some(download_url) = file.download_url {
 			download_url
@@ -176,6 +178,10 @@ pub async fn generate(
 				dependencies: DeserListOrSingle::List(deps),
 				conflicts: DeserListOrSingle::List(conflicts),
 				inclusions: DeserListOrSingle::List(inclusions),
+				..Default::default()
+			},
+			hashes: AddonHashes {
+				sha1,
 				..Default::default()
 			},
 			is_manual,

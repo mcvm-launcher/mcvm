@@ -159,7 +159,7 @@ impl<R: Read + Seek> ModrinthPack<R> {
 				source: Some(source_path),
 				hashes: AddonOptionalHashes {
 					sha256: Some(file.hashes.sha512.clone()),
-					sha512: None,
+					..Default::default()
 				},
 			};
 

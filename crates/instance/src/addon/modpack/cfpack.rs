@@ -74,12 +74,7 @@ impl<R: Read + Seek> CurseForgePack<R> {
 		let mut tasks = JoinSet::new();
 		let mut manual = Vec::new();
 		for file in &files {
-			let source_path = storage::get_generic_addon_path(
-				addons_dir,
-				&file.mod_id.to_string(),
-				Some(file.id.to_string()),
-			);
-
+			let source_path = get_addon_path(file, addons_dir);
 			if source_path.exists() {
 				continue;
 			}
@@ -125,11 +120,7 @@ impl<R: Read + Seek> CurseForgePack<R> {
 					.iter()
 					.find(|x| x.file_name == manual_file.filename)
 					.expect("File should be in manual files");
-				let source_path = storage::get_generic_addon_path(
-					addons_dir,
-					&file.mod_id.to_string(),
-					Some(file.id.to_string()),
-				);
+				let source_path = get_addon_path(file, addons_dir);
 
 				if let Some(parent) = source_path.parent() {
 					let _ = std::fs::create_dir_all(parent);
@@ -285,4 +276,18 @@ pub struct CurseForgeModLoader {
 	pub id: String,
 	/// Whether this is the primary loader for the pack
 	pub primary: bool,
+}
+
+fn get_addon_path(file: &CurseFile, addons_dir: &Path) -> PathBuf {
+	if let Some(md5) = file.get_md5_hash() {
+		storage::get_md5_addon_path(addons_dir, &md5.to_string())
+	} else if let Some(sha1) = file.get_sha1_hash() {
+		storage::get_sha1_addon_path(addons_dir, &sha1.to_string())
+	} else {
+		storage::get_generic_addon_path(
+			addons_dir,
+			&file.mod_id.to_string(),
+			Some(file.id.to_string()),
+		)
+	}
 }

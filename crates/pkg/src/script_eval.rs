@@ -296,6 +296,7 @@ pub async fn eval_instr<E: ScriptEvaluator>(
 						let hashes = AddonOptionalHashes {
 							sha256: hashes.sha256.get_as_option(e.get_variable_store(shared))?,
 							sha512: hashes.sha512.get_as_option(e.get_variable_store(shared))?,
+							sha1: hashes.sha1.get_as_option(e.get_variable_store(shared))?,
 						};
 						let data = AddonInstructionData {
 							id,
