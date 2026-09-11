@@ -1,7 +1,7 @@
 use std::{path::PathBuf, rc::Rc};
 
 use freya::query::UseMutation;
-use nitrolaunch::shared::Side;
+use nitrolaunch::{config_crate::instance::make_valid_instance_id, shared::Side};
 
 use crate::{
 	components::{
@@ -55,6 +55,12 @@ impl Component for InstanceTransferModal {
 		let source_path = use_state::<Option<PathBuf>>(|| None);
 		let new_id = use_state(String::new);
 		let import_side = use_state(|| Side::Client);
+
+		let mut new_id2 = new_id.clone();
+		use_side_effect(move || {
+			let value = make_valid_instance_id(new_id.read().as_str());
+			new_id2.set_if_modified(value);
+		});
 
 		let default = Vec::new();
 		let formats = formats.read();
