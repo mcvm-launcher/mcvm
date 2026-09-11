@@ -294,6 +294,7 @@ pub struct ConfigState {
 	pub server_loader_version: State<VersionPattern>,
 	pub packages: State<TemplatePackageConfiguration>,
 	pub modpack: State<Option<String>>,
+	pub datapack_folder: State<Option<String>>,
 	pub java: State<Option<String>>,
 	pub plugin: State<Option<String>>,
 	pub plugin_config: State<ControlledConfig>,
@@ -322,6 +323,7 @@ impl ConfigState {
 			server_loader_version: use_state(|| VersionPattern::Any),
 			packages: use_state(TemplatePackageConfiguration::default),
 			modpack: use_state(|| None),
+			datapack_folder: use_state(|| None),
 			java: use_state(|| None),
 			plugin: use_state(|| None),
 			plugin_config: use_state(ControlledConfig::default),
@@ -341,6 +343,7 @@ impl ConfigState {
 			out2.server_loader_version.read();
 			out2.packages.read();
 			out2.modpack.read();
+			out2.datapack_folder.read();
 			out2.java.read();
 			out2.plugin.read();
 			out2.plugin_config.read();
@@ -393,6 +396,8 @@ impl ConfigState {
 		});
 		self.modpack.set_if_modified(config.instance.modpack);
 
+		self.datapack_folder
+			.set_if_modified(config.instance.datapack_folder);
 		self.java.set_if_modified(config.instance.launch.java);
 
 		self.plugin
@@ -483,6 +488,7 @@ impl ConfigState {
 
 		config.instance.modpack = self.modpack.peek().clone();
 
+		config.instance.datapack_folder = self.datapack_folder.peek().clone();
 		config.instance.launch.java = self.java.peek().clone();
 
 		match self.ty {

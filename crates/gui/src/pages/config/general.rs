@@ -273,6 +273,18 @@ impl Component for GeneralTab {
 			parent_configs: self.parent_configs.clone(),
 		};
 
+		let datapack_folder =
+			use_transform_optional_string(self.config_state.datapack_folder.clone());
+		let datapack_folder = TextInput::new(datapack_folder).derived_value(
+			self.config_state.datapack_folder.read().as_ref(),
+			&self.parent_configs.0,
+			|x| x.instance.datapack_folder.as_ref(),
+		);
+		let datapack_folder = field("Datapack folder", "folder", &theme, datapack_folder).tip(
+			&front_state,
+			"Folder to install global datapacks in. Relative to the instance root.",
+		);
+
 		let main = rect()
 			.width(Size::fill())
 			.padding(15.0)
@@ -281,7 +293,8 @@ impl Component for GeneralTab {
 			})
 			.maybe(show_side_field, |this| this.child(side_field))
 			.child(version_field)
-			.child(loaders_config);
+			.child(loaders_config)
+			.child(datapack_folder);
 
 		let main = ScrollView::new()
 			.width(Size::fill())

@@ -13,10 +13,15 @@ The default datapack propagation can only apply datapacks after the world has be
 !!!
 
 +++ App
-Not implemented yet.
+Configure the datapack folder field to be the relative path to the datapack folder from the instance folder.
+![](../assets/screenshots/new_instance.png)
 +++ CLI
 Configure the `datpack_folder` field on the instance using `nitro instance edit` to be the relative path to the datapack folder.
 +++
+
+!!!info Note
+This should be a relative path from the instance folder (which includes the `.minecraft` for client instances)
+!!!
 
 ## Smithed Base Template
 
