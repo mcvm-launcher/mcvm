@@ -29,6 +29,7 @@ pub mod account;
 pub mod console;
 pub mod dialog;
 pub mod footer;
+pub mod gallery;
 pub mod global;
 pub mod input;
 pub mod instance;
@@ -38,7 +39,6 @@ pub mod nav;
 pub mod output_indicator;
 pub mod pkg;
 pub mod tag;
-pub mod gallery;
 
 pub const TOAST_TIP_LAYER: u8 = 3;
 
@@ -125,6 +125,9 @@ pub trait CustomStyles {
 
 	/// Sets a derived colorway
 	fn derived_colorway(self, theme: &Theme) -> Self;
+
+	/// Adds a nice drop shadow for dialogs and overlay panels
+	fn overlay_shadow(self) -> Self;
 }
 
 impl<T: ContainerSizeExt + StyleExt + ContainerWithContentExt + TextStyleExt> CustomStyles for T {
@@ -180,6 +183,10 @@ impl<T: ContainerSizeExt + StyleExt + ContainerWithContentExt + TextStyleExt> Cu
 		self.color(theme.template)
 			.border(theme.border(theme.template))
 			.background(theme.template_bg)
+	}
+
+	fn overlay_shadow(self) -> Self {
+		self.shadow(Shadow::new().x(2.0).y(2.0).blur(8.0).color(Color::BLACK))
 	}
 }
 

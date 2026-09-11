@@ -547,7 +547,7 @@ impl<T: PartialEq + Clone + 'static> Component for Dropdown<T> {
 			.padding(theme.gap)
 			.corner_radius(theme.round)
 			.panel_colorway(&theme, false, false)
-			.shadow(Shadow::new().x(2.0).y(2.0).blur(8.0).color(Color::BLACK))
+			.overlay_shadow()
 			.on_pointer_leave(move |_| {
 				is_open.set(false);
 			})

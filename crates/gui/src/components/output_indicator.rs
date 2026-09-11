@@ -145,6 +145,7 @@ impl Component for OutputIndicator {
 				.padding(theme.gap2)
 				.panel_colorway(&theme, false, true)
 				.corner_radius(theme.round)
+				.overlay_shadow()
 				.maybe(can_cancel, |this| this.tip(&front_state, "Click to cancel"))
 				.on_press(move |_| kill_task.mutate(current_task2.clone().unwrap()))
 				.child(indicator)

@@ -58,6 +58,7 @@ impl Component for Tips {
 					.item_colorway(&theme, false, false)
 					.border(theme.border(theme.secondary))
 					.corner_radius(theme.round)
+					.overlay_shadow()
 					.center()
 					.cont()
 					.maybe(front_state.read().tip().is_none(), |this| this.opacity(0.0))
